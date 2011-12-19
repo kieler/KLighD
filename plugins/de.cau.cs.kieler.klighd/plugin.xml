@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension-point id="viewerProviders" name="ViewerProviders" schema="schema/viewerProviders.exsd"/>
+   <extension-point id="modelTransformations" name="ModelTransformations" schema="schema/modelTransformations.exsd"/>
+   <extension
+         point="org.eclipse.ui.views">
+      <view
+            allowMultiple="true"
+            category="de.cau.cs.kieler"
+            class="de.cau.cs.kieler.klighd.views.DiagramViewPart"
+            icon="icons/klighd.gif"
+            id="de.cau.cs.kieler.klighd.lightDiagramView"
+            name="Light Diagram"
+            restorable="true">
+      </view>
+   </extension>
+   <extension
+         point="de.cau.cs.kieler.core.kivi.combinations">
+      <combination
+            active="true"
+            class="de.cau.cs.kieler.klighd.combinations.KlighdVisualizeDroppedEMFModelCombination"
+            description="Enables the visualization of EMF models in resources dropped on KLighD views."
+            name="Visualize dropped EMF Resources in KLighD Views ">
+      </combination>
+      <combination
+            active="true"
+            class="de.cau.cs.kieler.klighd.combinations.KlighdAutomaticLayoutCombination"
+            description="Applies automatic layout on KLighD views which have been created or updated using the appropriate effect."
+            name="Automatic Layout after KLighD View Creation and Update">
+      </combination>
+      <combination
+            active="true"
+            class="de.cau.cs.kieler.klighd.combinations.KlighdVisualizeEMFEditorContentCombination"
+            description="Visualize EMF tree editor conten"
+            name="Visualize EMF tree editor conten">
+      </combination>
+   </extension>
+
+</plugin>

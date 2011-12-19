@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="de.cau.cs.kieler.klighd.viewerProviders">
+      <viewer
+            class="de.cau.cs.kieler.klighd.piccolo.PiccoloViewerProvider"
+            id="de.cau.cs.kieler.klighd.piccolo.piccoloViewer">
+      </viewer>
+   </extension>
+   <extension
+         point="de.cau.cs.kieler.kiml.ui.layoutManagers">
+      <manager
+            class="de.cau.cs.kieler.klighd.piccolo.graph.layout.PiccoloDiagramLayoutManager">
+      </manager>
+   </extension>
+
+</plugin>

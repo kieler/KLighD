@@ -1,0 +1,15 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: %pluginName
+Bundle-SymbolicName: de.cau.cs.kieler.core.kgraph;singleton:=true
+Bundle-Version: 0.4.0.qualifier
+Bundle-ClassPath: .
+Bundle-Vendor: %providerName
+Bundle-Localization: plugin
+Export-Package: de.cau.cs.kieler.core.kgraph,
+ de.cau.cs.kieler.core.kgraph.impl,
+ de.cau.cs.kieler.core.kgraph.util
+Require-Bundle: de.cau.cs.kieler.core,
+ org.eclipse.emf.ecore;bundle-version="2.5.0";visibility:=reexport
+Bundle-ActivationPolicy: lazy
+Bundle-RequiredExecutionEnvironment: J2SE-1.5
