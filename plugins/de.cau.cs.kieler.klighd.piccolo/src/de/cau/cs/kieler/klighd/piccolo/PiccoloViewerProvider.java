@@ -17,6 +17,7 @@ import org.eclipse.swt.widgets.Composite;
 
 import de.cau.cs.kieler.klighd.IViewer;
 import de.cau.cs.kieler.klighd.IViewerProvider;
+import edu.umd.cs.piccolo.PNode;
 
 /**
  * A viewer provider for Piccolo nodes or lists of Piccolo nodes.
@@ -39,7 +40,7 @@ public class PiccoloViewerProvider implements IViewerProvider {
      * {@inheritDoc}
      */
     public Class<?> getModelClass() {
-        return PiccoloDiagramContext.class;
+        return PNode.class;
     }
 
 }

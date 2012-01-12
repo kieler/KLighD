@@ -127,12 +127,12 @@ public class PiccoloDiagramLayoutManager implements IDiagramLayoutManager<IGraph
                 }
             }
 
-            if (viewer != null) {
-                // retrieve the layout root from the viewer
-                if (viewer.getDiagramContext() != null) {
-                    layoutRoot = viewer.getDiagramContext().getRootNode();
-                }
-            }
+//            if (viewer != null) {
+//                // retrieve the layout root from the viewer
+//                if (viewer.getDiagramContext() != null) {
+//                    layoutRoot = viewer.getDiagramContext().getRootNode();
+//                }
+//            }
         }
 
         if (layoutRoot == null) {

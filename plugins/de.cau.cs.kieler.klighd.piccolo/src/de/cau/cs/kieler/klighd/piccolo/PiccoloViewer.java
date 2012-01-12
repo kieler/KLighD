@@ -43,15 +43,13 @@ import edu.umd.cs.piccolox.swt.PSWTCanvas;
  * 
  * @author mri
  */
-public class PiccoloViewer extends AbstractViewer<PiccoloDiagramContext> implements
+public class PiccoloViewer extends AbstractViewer<PNode> implements
         INodeSelectionListener {
 
     /** the canvas used for drawing. */
     private PSWTCanvas canvas;
     /** the current selection event handler. */
     private PSWTSimpleSelectionEventHandler selectionHandler = null;
-    /** the current diagram context. */
-    private PiccoloDiagramContext diagramContext = null;
 
     /**
      * Creates a Piccolo viewer with default style.
@@ -120,24 +118,20 @@ public class PiccoloViewer extends AbstractViewer<PiccoloDiagramContext> impleme
     /**
      * {@inheritDoc}
      */
-    public void setModel(final PiccoloDiagramContext model) {
-        diagramContext = model;
+    public void setModel(final PNode model) {
         // remove the old selection handler
         if (selectionHandler != null) {
             canvas.removeInputEventListener(selectionHandler);
             selectionHandler = null;
         }
         // fill the layers
-        int index = 0;
         PCamera camera = canvas.getCamera();
         resetCamera(camera);
-        resizeAndResetLayers(model.getLayerRoots().size() + 1);
-        for (PNode rootNode : model.getLayerRoots()) {
-            camera.getLayer(index++).addChild(rootNode);
-        }
+        resizeAndResetLayers(2);
+        camera.getLayer(0).addChild(model);
         // add a node for the marquee
         PEmptyNode marqueeParent = new PEmptyNode();
-        camera.getLayer(index).addChild(marqueeParent);
+        camera.getLayer(1).addChild(marqueeParent);
         // add a selection handler
         selectionHandler = new PSWTSimpleSelectionEventHandler(camera, marqueeParent);
         canvas.addInputEventListener(selectionHandler);
@@ -290,15 +284,15 @@ public class PiccoloViewer extends AbstractViewer<PiccoloDiagramContext> impleme
      */
     @Override
     public void zoomToFit(final int duration) {
-        if (diagramContext != null) {
-            if (diagramContext.getRootNode() instanceof PNode) {
-                PNode node = (PNode) diagramContext.getRootNode();
-                // move and zoom the camera so it includes the full bounds
-                PCamera camera = canvas.getCamera();
-                camera.animateViewToCenterBounds(node.getFullBounds(), true, duration);
-                // FIXME centers the bb instead of left aligning it and could need some padding
-            }
-        }
+//        if (diagramContext != null) {
+//            if (diagramContext.getRootNode() instanceof PNode) {
+//                PNode node = (PNode) diagramContext.getRootNode();
+//                // move and zoom the camera so it includes the full bounds
+//                PCamera camera = canvas.getCamera();
+//                camera.animateViewToCenterBounds(node.getFullBounds(), true, duration);
+//                // FIXME centers the bb instead of left aligning it and could need some padding
+//            }
+//        }
     }
 
     /**
@@ -325,15 +319,6 @@ public class PiccoloViewer extends AbstractViewer<PiccoloDiagramContext> impleme
             PCamera camera = canvas.getCamera();
             camera.animateViewToCenterBounds(node.getFullBounds(), false, duration);
         }
-    }
-
-    /**
-     * Returns the currently active diagram context.
-     * 
-     * @return the diagram context or null if no diagram context is active
-     */
-    public PiccoloDiagramContext getDiagramContext() {
-        return diagramContext;
     }
 
     /**

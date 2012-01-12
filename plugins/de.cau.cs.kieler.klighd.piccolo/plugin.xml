@@ -9,10 +9,11 @@
       </viewer>
    </extension>
    <extension
-         point="de.cau.cs.kieler.kiml.ui.layoutManagers">
-      <manager
-            class="de.cau.cs.kieler.klighd.piccolo.graph.layout.PiccoloDiagramLayoutManager">
-      </manager>
+         point="de.cau.cs.kieler.klighd.modelTransformations">
+      <transformation
+            class="de.cau.cs.kieler.klighd.piccolo.krendering.KRendering2PNodeTransformation"
+            id="de.cau.cs.kieler.klighd.piccolo.krendering2pnode">
+      </transformation>
    </extension>
 
 </plugin>

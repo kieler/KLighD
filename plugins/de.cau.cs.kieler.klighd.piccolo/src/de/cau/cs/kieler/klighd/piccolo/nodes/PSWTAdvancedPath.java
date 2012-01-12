@@ -18,27 +18,35 @@ import java.awt.Color;
 import java.awt.Paint;
 import java.awt.Shape;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.Arc2D;
+import java.awt.geom.Ellipse2D;
 import java.awt.geom.GeneralPath;
+import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
+import java.awt.geom.RoundRectangle2D;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.GC;
 
+import edu.umd.cs.piccolo.PNode;
+import edu.umd.cs.piccolo.nodes.PPath;
 import edu.umd.cs.piccolo.util.PAffineTransform;
 import edu.umd.cs.piccolo.util.PAffineTransformException;
 import edu.umd.cs.piccolo.util.PBounds;
 import edu.umd.cs.piccolo.util.PPaintContext;
-import edu.umd.cs.piccolox.swt.PSWTPath;
 import edu.umd.cs.piccolox.swt.SWTGraphics2D;
+import edu.umd.cs.piccolox.swt.SWTShapeManager;
 
 /**
- * The {@code PSWTAdvancedPath} is an extension of the Piccolo {@code PSWTPath}. Provides the
- * possibility to adjust the line width and the line style and can represent polygons.
+ * The {@code PSWTAdvancedPath} is a refinement of the Piccolo {@code PSWTPath}. Provides the
+ * possibility to adjust the line width and the line style and can represent polygons.<br />
+ * <br />
+ * Most of the implementation is copied from {@code PSWTPath}.
  * 
  * @author mri
  */
-public class PSWTAdvancedPath extends PSWTPath {
+public class PSWTAdvancedPath extends PNode {
 
     /**
      * The possible line styles for an advanced path.
@@ -60,26 +68,28 @@ public class PSWTAdvancedPath extends PSWTPath {
 
     private static final Color DEFAULT_STROKE_PAINT = Color.black;
 
+    private static final Rectangle2D.Float TEMP_RECTANGLE = new Rectangle2D.Float();
+    private static final RoundRectangle2D.Float TEMP_ROUNDRECTANGLE = new RoundRectangle2D.Float();
+    private static final Ellipse2D.Float TEMP_ELLIPSE = new Ellipse2D.Float();
     private static final double BOUNDS_TOLERANCE = 0.01;
     private Paint strokePaint = DEFAULT_STROKE_PAINT;
     private static final BasicStroke BASIC_STROKE = new BasicStroke();
 
     /** the line width for this path. */
     private double lineWidth = 1.0;
-    /** indicates whether or not this path describes a polygon. */
-    private boolean isPolygon = false;
     /** the line style for this path. */
     private int lineStyle = SWT.LINE_SOLID;
 
     private boolean updatingBoundsFromPath;
     private Shape origShape;
+    private Shape shape;
 
     private PAffineTransform internalXForm;
     private AffineTransform inverseXForm;
 
-    private double[] pts;
-    private int[] xs;
-    private int[] ys;
+    private double[] shapePts;
+
+    private boolean isPolygon = false;
 
     /**
      * Creates a path representing the rectangle provided.
@@ -213,70 +223,123 @@ public class PSWTAdvancedPath extends PSWTPath {
     }
 
     /**
-     * {@inheritDoc}
+     * Creates an empty PSWTAdvancedPath.
      */
-    @Override
-    protected void internalUpdateBounds(final double x, final double y, final double width,
-            final double height) {
-        // duplicate code and computations here to handle limited visibility on some members of
-        // PSWTPath for polygons
-        if (isPolygon) {
-            if (updatingBoundsFromPath) {
-                return;
-            }
+    public PSWTAdvancedPath() {
+        strokePaint = DEFAULT_STROKE_PAINT;
+    }
 
-            final Rectangle2D pathBounds = origShape.getBounds2D();
+    /**
+     * Creates a SWTAdvancedPath in the given shape with the default paint and stroke.
+     * 
+     * @param aShape
+     *            the desired shape
+     */
+    public PSWTAdvancedPath(final Shape aShape) {
+        this();
+        setShape(aShape);
+    }
 
-            if (Math.abs(x - pathBounds.getX()) / x < BOUNDS_TOLERANCE
-                    && Math.abs(y - pathBounds.getY()) / y < BOUNDS_TOLERANCE
-                    && Math.abs(width - pathBounds.getWidth()) / width < BOUNDS_TOLERANCE
-                    && Math.abs(height - pathBounds.getHeight()) / height < BOUNDS_TOLERANCE) {
-                return;
-            }
+    /**
+     * Returns the paint to use when drawing the stroke of the shape.
+     * 
+     * @return path's stroke paint
+     */
+    public Paint getStrokePaint() {
+        return strokePaint;
+    }
 
-            if (internalXForm == null) {
-                internalXForm = new PAffineTransform();
-            }
-            internalXForm.setToIdentity();
-            internalXForm.translate(x, y);
-            internalXForm.scale(width / pathBounds.getWidth(), height / pathBounds.getHeight());
-            internalXForm.translate(-pathBounds.getX(), -pathBounds.getY());
-
-            try {
-                inverseXForm = internalXForm.createInverse();
-            } catch (final Exception e) {
-                throw new PAffineTransformException("unable to invert transform", internalXForm);
-            }
-        } else {
-            super.internalUpdateBounds(x, y, width, height);
-        }
+    /**
+     * Sets the paint to use when drawing the stroke of the shape.
+     * 
+     * @param strokeColor
+     *            new stroke color
+     */
+    public void setStrokeColor(final Paint strokeColor) {
+        final Paint old = strokePaint;
+        strokePaint = strokeColor;
+        invalidatePaint();
+        firePropertyChange(PPath.PROPERTY_CODE_STROKE_PAINT, PPath.PROPERTY_STROKE_PAINT, old,
+                strokePaint);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public boolean intersects(final Rectangle2D aBounds) {
-        if (isPolygon) {
-            if (aBounds == null || getBoundsReference().intersects(aBounds)) {
-                final Rectangle2D srcBounds;
-                if (internalXForm == null) {
-                    srcBounds = aBounds;
-                } else {
-                    srcBounds = new PBounds(aBounds);
-                    internalXForm.inverseTransform(srcBounds, srcBounds);
-                }
-
-                if (getPaint() != null && origShape.intersects(srcBounds)) {
-                    return true;
-                } else if (strokePaint != null) {
-                    return BASIC_STROKE.createStrokedShape(origShape).intersects(srcBounds);
-                }
-            }
-            return false;
-        } else {
-            return super.intersects(aBounds);
+    protected void internalUpdateBounds(final double x, final double y, final double width,
+            final double height) {
+        if (updatingBoundsFromPath) {
+            return;
         }
+        if (origShape == null) {
+            return;
+        }
+
+        final Rectangle2D pathBounds = origShape.getBounds2D();
+
+        if (Math.abs(x - pathBounds.getX()) / x < BOUNDS_TOLERANCE
+                && Math.abs(y - pathBounds.getY()) / y < BOUNDS_TOLERANCE
+                && Math.abs(width - pathBounds.getWidth()) / width < BOUNDS_TOLERANCE
+                && Math.abs(height - pathBounds.getHeight()) / height < BOUNDS_TOLERANCE) {
+            return;
+        }
+
+        if (internalXForm == null) {
+            internalXForm = new PAffineTransform();
+        }
+        internalXForm.setToIdentity();
+        internalXForm.translate(x, y);
+        internalXForm.scale(width / pathBounds.getWidth(), height / pathBounds.getHeight());
+        internalXForm.translate(-pathBounds.getX(), -pathBounds.getY());
+
+        try {
+            inverseXForm = internalXForm.createInverse();
+        } catch (final Exception e) {
+            throw new PAffineTransformException("unable to invert transform", internalXForm);
+        }
+    }
+
+    /**
+     * Returns true if path crosses the provided bounds. Takes visibility of path into account.
+     * 
+     * @param aBounds
+     *            bounds being tested for intersection
+     * @return true if path visibly crosses bounds
+     */
+    public boolean intersects(final Rectangle2D aBounds) {
+        if (super.intersects(aBounds)) {
+            final Rectangle2D srcBounds;
+            if (internalXForm == null) {
+                srcBounds = aBounds;
+            } else {
+                srcBounds = new PBounds(aBounds);
+                internalXForm.inverseTransform(srcBounds, srcBounds);
+            }
+
+            if (getPaint() != null && shape.intersects(srcBounds)) {
+                return true;
+            } else if (strokePaint != null) {
+                return BASIC_STROKE.createStrokedShape(shape).intersects(srcBounds);
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Recalculates the path's bounds by examining it's associated shape.
+     */
+    public void updateBoundsFromPath() {
+        updatingBoundsFromPath = true;
+
+        if (origShape == null) {
+            resetBounds();
+        } else {
+            final Rectangle2D b = origShape.getBounds2D();
+            // the original code creates more problems than it solves here
+            super.setBounds(b.getX(), b.getY(), b.getWidth(), b.getHeight());
+        }
+        updatingBoundsFromPath = false;
     }
 
     /**
@@ -285,91 +348,269 @@ public class PSWTAdvancedPath extends PSWTPath {
     @Override
     protected void paint(final PPaintContext paintContext) {
         SWTGraphics2D g2 = (SWTGraphics2D) paintContext.getGraphics();
+        Paint p = getPaint();
         g2.setLineWidth(lineWidth);
         GC graphicsContext = g2.getGraphicsContext();
         int oldLineStyle = graphicsContext.getLineStyle();
         graphicsContext.setLineStyle(lineStyle);
-        if (isPolygon) {
-            final Paint p = getPaint();
 
-            if (internalXForm != null) {
-                g2.transform(internalXForm);
-            }
+        if (internalXForm != null) {
+            g2.transform(internalXForm);
+        }
 
-            if (p != null) {
-                g2.setBackground((Color) p);
-                g2.fillPolygon(pts);
-            }
+        if (p != null) {
+            g2.setBackground((Color) p);
+            fillShape(g2);
+        }
 
-            if (strokePaint != null) {
-                g2.setColor((Color) strokePaint);
-                g2.drawPolygon(xs, ys, xs.length);
-            }
+        if (strokePaint != null) {
+            g2.setColor((Color) strokePaint);
+            drawShape(g2);
+        }
 
-            if (inverseXForm != null) {
-                g2.transform(inverseXForm);
-            }
-        } else {
-            super.paint(paintContext);
+        if (inverseXForm != null) {
+            g2.transform(inverseXForm);
         }
         graphicsContext.setLineStyle(oldLineStyle);
         g2.setLineWidth(1.0);
     }
 
+    // CHECKSTYLEOFF MagicNumber
+    private void drawShape(final SWTGraphics2D g2) {
+        final double lw = g2.getLineWidth();
+        if (shape instanceof Rectangle2D) {
+            g2.drawRect(shapePts[0] + lw / 2, shapePts[1] + lw / 2, shapePts[2] - lw, shapePts[3]
+                    - lw);
+        } else if (shape instanceof Ellipse2D) {
+            g2.drawOval(shapePts[0] + lw / 2, shapePts[1] + lw / 2, shapePts[2] - lw, shapePts[3]
+                    - lw);
+        } else if (shape instanceof Arc2D) {
+            g2.drawArc(shapePts[0] + lw / 2, shapePts[1] + lw / 2, shapePts[2] - lw, shapePts[3]
+                    - lw, shapePts[4], shapePts[5]);
+        } else if (shape instanceof RoundRectangle2D) {
+            g2.drawRoundRect(shapePts[0] + lw / 2, shapePts[1] + lw / 2, shapePts[2] - lw,
+                    shapePts[3] - lw, shapePts[4], shapePts[5]);
+        } else {
+            g2.draw(shape);
+        }
+    }
+
+    private void fillShape(final SWTGraphics2D g2) {
+        final double lw = g2.getLineWidth();
+        if (shape instanceof Rectangle2D) {
+            g2.fillRect(shapePts[0] + lw / 2, shapePts[1] + lw / 2, shapePts[2] - lw, shapePts[3]
+                    - lw);
+        } else if (shape instanceof Ellipse2D) {
+            g2.fillOval(shapePts[0] + lw / 2, shapePts[1] + lw / 2, shapePts[2] - lw, shapePts[3]
+                    - lw);
+        } else if (shape instanceof Arc2D) {
+            g2.fillArc(shapePts[0] + lw / 2, shapePts[1] + lw / 2, shapePts[2] - lw, shapePts[3]
+                    - lw, shapePts[4], shapePts[5]);
+        } else if (shape instanceof RoundRectangle2D) {
+            g2.fillRoundRect(shapePts[0] + lw / 2, shapePts[1] + lw / 2, shapePts[2] - lw,
+                    shapePts[3] - lw, shapePts[4], shapePts[5]);
+        } else {
+            if (isPolygon) {
+                g2.fillPolygon(shapePts);
+            } else {
+                g2.fill(shape);
+            }
+        }
+    }
+    // CHECKSTYLEON MagicNumber
+
     /**
-     * {@inheritDoc}
+     * Changes the underlying shape of this PSWTPath.
+     * 
+     * @param newShape
+     *            new associated shape of this PSWTPath
      */
-    @Override
     public void setShape(final Shape newShape) {
-        super.setShape(newShape);
-        isPolygon = false;
+        shape = cloneShape(newShape);
+        origShape = shape;
+        updateShapePoints(newShape);
+
+        firePropertyChange(PPath.PROPERTY_CODE_PATH, PPath.PROPERTY_PATH, null, shape);
+        updateBoundsFromPath();
+        invalidatePaint();
     }
 
     /**
-     * {@inheritDoc}
+     * Updates the internal points used to draw the shape.
+     * 
+     * @param aShape
+     *            shape to read points from
      */
-    @Override
+    // CHECKSTYLEOFF MagicNumber
+    public void updateShapePoints(final Shape aShape) {
+        if (aShape instanceof Rectangle2D) {
+            if (shapePts == null || shapePts.length < 4) {
+                shapePts = new double[4];
+            }
+
+            shapePts[0] = ((Rectangle2D) shape).getX();
+            shapePts[1] = ((Rectangle2D) shape).getY();
+            shapePts[2] = ((Rectangle2D) shape).getWidth();
+            shapePts[3] = ((Rectangle2D) shape).getHeight();
+        } else if (aShape instanceof Ellipse2D) {
+            if (shapePts == null || shapePts.length < 4) {
+                shapePts = new double[4];
+            }
+
+            shapePts[0] = ((Ellipse2D) shape).getX();
+            shapePts[1] = ((Ellipse2D) shape).getY();
+            shapePts[2] = ((Ellipse2D) shape).getWidth();
+            shapePts[3] = ((Ellipse2D) shape).getHeight();
+        } else if (aShape instanceof Arc2D) {
+            if (shapePts == null || shapePts.length < 6) {
+                shapePts = new double[6];
+            }
+
+            shapePts[0] = ((Arc2D) shape).getX();
+            shapePts[1] = ((Arc2D) shape).getY();
+            shapePts[2] = ((Arc2D) shape).getWidth();
+            shapePts[3] = ((Arc2D) shape).getHeight();
+            shapePts[4] = ((Arc2D) shape).getAngleStart();
+            shapePts[5] = ((Arc2D) shape).getAngleExtent();
+        } else if (aShape instanceof RoundRectangle2D) {
+            if (shapePts == null || shapePts.length < 6) {
+                shapePts = new double[6];
+            }
+
+            shapePts[0] = ((RoundRectangle2D) shape).getX();
+            shapePts[1] = ((RoundRectangle2D) shape).getY();
+            shapePts[2] = ((RoundRectangle2D) shape).getWidth();
+            shapePts[3] = ((RoundRectangle2D) shape).getHeight();
+            shapePts[4] = ((RoundRectangle2D) shape).getArcWidth();
+            shapePts[5] = ((RoundRectangle2D) shape).getArcHeight();
+        } else {
+            shapePts = SWTShapeManager.shapeToPolyline(shape);
+        }
+    }
+    // CHECKSTYLEON MagicNumber
+
+    /**
+     * Clone's the shape provided.
+     * 
+     * @param aShape
+     *            shape to be cloned
+     * 
+     * @return a cloned version of the provided shape
+     */
+    public Shape cloneShape(final Shape aShape) {
+        if (aShape instanceof Rectangle2D) {
+            return new PBounds((Rectangle2D) aShape);
+        } else if (aShape instanceof Ellipse2D) {
+            final Ellipse2D e2 = (Ellipse2D) aShape;
+            return new Ellipse2D.Double(e2.getX(), e2.getY(), e2.getWidth(), e2.getHeight());
+        } else if (aShape instanceof Arc2D) {
+            final Arc2D a2 = (Arc2D) aShape;
+            return new Arc2D.Double(a2.getX(), a2.getY(), a2.getWidth(), a2.getHeight(),
+                    a2.getAngleStart(), a2.getAngleExtent(), a2.getArcType());
+        } else if (aShape instanceof RoundRectangle2D) {
+            final RoundRectangle2D r2 = (RoundRectangle2D) aShape;
+            return new RoundRectangle2D.Double(r2.getX(), r2.getY(), r2.getWidth(), r2.getHeight(),
+                    r2.getArcWidth(), r2.getArcHeight());
+        } else if (aShape instanceof Line2D) {
+            final Line2D l2 = (Line2D) aShape;
+            return new Line2D.Double(l2.getP1(), l2.getP2());
+        } else {
+            final GeneralPath aPath = new GeneralPath();
+            aPath.append(aShape, false);
+            return aPath;
+        }
+    }
+
+    /**
+     * Resets the path to a rectangle with the dimensions and position provided.
+     * 
+     * @param x
+     *            left of the rectangle
+     * @param y
+     *            top of te rectangle
+     * @param width
+     *            width of the rectangle
+     * @param height
+     *            height of the rectangle
+     */
     public void setPathToRectangle(final float x, final float y, final float width,
             final float height) {
-        super.setPathToRectangle(x, y, width, height);
-        isPolygon = false;
+        TEMP_RECTANGLE.setFrame(x, y, width, height);
+        setShape(TEMP_RECTANGLE);
     }
 
     /**
-     * {@inheritDoc}
+     * Resets the path to a rectangle with the dimensions and position provided.
+     * 
+     * @param x
+     *            left of the rectangle
+     * @param y
+     *            top of te rectangle
+     * @param width
+     *            width of the rectangle
+     * @param height
+     *            height of the rectangle
+     * @param arcWidth
+     *            width of arc in the corners of the rectangle
+     * @param arcHeight
+     *            height of arc in the corners of the rectangle
      */
-    @Override
     public void setPathToRoundRectangle(final float x, final float y, final float width,
             final float height, final float arcWidth, final float arcHeight) {
-        super.setPathToRoundRectangle(x, y, width, height, arcWidth, arcHeight);
-        isPolygon = false;
+        TEMP_ROUNDRECTANGLE.setRoundRect(x, y, width, height, arcWidth, arcHeight);
+        setShape(TEMP_ROUNDRECTANGLE);
     }
 
     /**
-     * {@inheritDoc}
+     * Resets the path to an ellipse positioned at the coordinate provided with the dimensions
+     * provided.
+     * 
+     * @param x
+     *            left of the ellipse
+     * @param y
+     *            top of the ellipse
+     * @param width
+     *            width of the ellipse
+     * @param height
+     *            height of the ellipse
      */
-    @Override
     public void setPathToEllipse(final float x, final float y, final float width, final float height) {
-        super.setPathToEllipse(x, y, width, height);
-        isPolygon = false;
+        TEMP_ELLIPSE.setFrame(x, y, width, height);
+        setShape(TEMP_ELLIPSE);
     }
 
     /**
-     * {@inheritDoc}
+     * Sets the path to a sequence of segments described by the points.
+     * 
+     * @param points
+     *            points to that lie along the generated path
      */
-    @Override
     public void setPathToPolyline(final Point2D[] points) {
-        super.setPathToPolyline(points);
-        isPolygon = false;
+        final GeneralPath path = new GeneralPath();
+        path.reset();
+        path.moveTo((float) points[0].getX(), (float) points[0].getY());
+        for (int i = 1; i < points.length; i++) {
+            path.lineTo((float) points[i].getX(), (float) points[i].getY());
+        }
+        setShape(path);
     }
 
     /**
-     * {@inheritDoc}
+     * Sets the path to a sequence of segments described by the point components provided.
+     * 
+     * @param xp
+     *            the x components of the points along the path
+     * @param yp
+     *            the y components of the points along the path
      */
-    @Override
     public void setPathToPolyline(final float[] xp, final float[] yp) {
-        super.setPathToPolyline(xp, yp);
-        isPolygon = false;
+        final GeneralPath path = new GeneralPath();
+        path.reset();
+        path.moveTo(xp[0], yp[0]);
+        for (int i = 1; i < xp.length; i++) {
+            path.lineTo(xp[i], yp[i]);
+        }
+        setShape(path);
     }
 
     /**
@@ -379,28 +620,14 @@ public class PSWTAdvancedPath extends PSWTPath {
      *            points to that lie along the generated path
      */
     public void setPathToPolygon(final Point2D[] points) {
-        pts = new double[points.length * 2];
-        xs = new int[points.length];
-        ys = new int[points.length];
         final GeneralPath path = new GeneralPath();
         path.reset();
         path.moveTo((float) points[0].getX(), (float) points[0].getY());
-        pts[0] = points[0].getX();
-        pts[1] = points[0].getY();
-        xs[0] = (int) pts[0];
-        ys[0] = (int) pts[1];
-        int j = 1;
         for (int i = 1; i < points.length; i++) {
             path.lineTo((float) points[i].getX(), (float) points[i].getY());
-            pts[j * 2] = points[i].getX();
-            pts[j * 2 + 1] = points[i].getY();
-            xs[j] = (int) points[i].getX();
-            ys[j] = (int) points[i].getY();
-            j++;
         }
-        path.lineTo((float) points[0].getX(), (float) points[0].getY());
+        path.closePath();
         setShape(path);
-        origShape = path;
         isPolygon = true;
     }
 
@@ -413,29 +640,25 @@ public class PSWTAdvancedPath extends PSWTPath {
      *            the y components of the points along the path
      */
     public void setPathToPolygon(final float[] xp, final float[] yp) {
-        pts = new double[xp.length * 2];
-        xs = new int[xp.length];
-        ys = new int[xp.length];
         final GeneralPath path = new GeneralPath();
         path.reset();
         path.moveTo(xp[0], yp[0]);
-        pts[0] = xp[0];
-        pts[1] = yp[0];
-        xs[0] = (int) pts[0];
-        ys[0] = (int) pts[1];
-        int j = 1;
         for (int i = 1; i < xp.length; i++) {
             path.lineTo(xp[i], yp[i]);
-            pts[j * 2] = xp[i];
-            pts[j * 2 + 1] = yp[i];
-            xs[j] = (int) xp[i];
-            ys[j] = (int) yp[i];
-            j++;
         }
-        path.lineTo(xp[0], yp[0]);
+        path.closePath();
         setShape(path);
-        origShape = path;
         isPolygon = true;
+    }
+
+    /**
+     * Return the center of this SWT path node, based on its bounds.
+     * 
+     * @return the center of this SWT path node, based on its bounds
+     */
+    public Point2D getCenter() {
+        PBounds bounds = getBoundsReference();
+        return new Point2D.Double(bounds.x + (bounds.width / 2.0), bounds.y + (bounds.height / 2.0));
     }
 
     /**
@@ -502,25 +725,6 @@ public class PSWTAdvancedPath extends PSWTPath {
         default:
             return LineStyle.SOLID;
         }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void updateBoundsFromPath() {
-        updatingBoundsFromPath = true;
-        super.updateBoundsFromPath();
-        updatingBoundsFromPath = false;
-    }
-    
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setStrokeColor(final Paint strokeColor) {
-        strokePaint = strokeColor;
-        super.setStrokeColor(strokeColor);
     }
 
 }
