@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0"
+    xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="krendering"
+    nsURI="http://kieler.cs.cau.de/KRendering" nsPrefix="krendering">
+  <eClassifiers xsi:type="ecore:EClass" name="KPosition">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="x" lowerBound="1" eType="#//KXPosition"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="y" lowerBound="1" eType="#//KYPosition"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="KRendering" abstract="true" eSuperTypes="platform:/plugin/de.cau.cs.kieler.core.kgraph/model/kgraph.ecore#//KGraphData">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="parent" eType="#//KContainerRendering"
+        eOpposite="#//KContainerRendering/children"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="references" upperBound="-1"
+        eType="#//KRenderingRef" eOpposite="#//KRenderingRef/rendering"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="placementData" eType="#//KPlacementData"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="styles" upperBound="-1"
+        eType="#//KStyle" containment="true" eOpposite="#//KStyle/rendering"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="KEllipse" eSuperTypes="#//KContainerRendering"/>
+  <eClassifiers xsi:type="ecore:EClass" name="KRectangle" eSuperTypes="#//KContainerRendering"/>
+  <eClassifiers xsi:type="ecore:EClass" name="KRoundedRectangle" eSuperTypes="#//KContainerRendering">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="cornerWidth" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EFloat"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="cornerHeight" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EFloat"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="KPolyline" eSuperTypes="#//KContainerRendering"/>
+  <eClassifiers xsi:type="ecore:EClass" name="KPolygon" eSuperTypes="#//KPolyline"/>
+  <eClassifiers xsi:type="ecore:EClass" name="KImage" eSuperTypes="#//KContainerRendering">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="bundleName" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="imagePath" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="KDecoratorPlacementData" eSuperTypes="#//KPlacementData">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="location" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EFloat"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="xOffset" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EFloat"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="yOffset" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EFloat"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="relative" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="KContainerRendering" abstract="true"
+      eSuperTypes="#//KRendering">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="children" upperBound="-1"
+        eType="#//KRendering" containment="true" eOpposite="#//KRendering/parent"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="childPlacement" eType="#//KPlacement"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="KArc" eSuperTypes="#//KContainerRendering">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="startAngle" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EFloat"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="arcAngle" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EFloat"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="KStyle">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="rendering" eType="#//KRendering"
+        eOpposite="#//KRendering/styles"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="propagateToChildren" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="KRenderingLibrary" eSuperTypes="platform:/plugin/de.cau.cs.kieler.core.kgraph/model/kgraph.ecore#//KGraphData">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="renderings" upperBound="-1"
+        eType="#//KRendering" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="KRenderingRef" eSuperTypes="#//KRendering">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="rendering" lowerBound="1"
+        eType="#//KRendering" eOpposite="#//KRendering/references"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="KChildArea" eSuperTypes="#//KRendering"/>
+  <eClassifiers xsi:type="ecore:EClass" name="KText" eSuperTypes="#//KContainerRendering">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="text" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="clip" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="KPlacement" abstract="true" interface="true"/>
+  <eClassifiers xsi:type="ecore:EClass" name="KGridPlacement" eSuperTypes="#//KPlacement">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="numColumns" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="KStackPlacement" eSuperTypes="#//KPlacement"/>
+  <eClassifiers xsi:type="ecore:EClass" name="KPlacementData" abstract="true" interface="true"/>
+  <eClassifiers xsi:type="ecore:EClass" name="KGridPlacementData" eSuperTypes="#//KPlacementData">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="widthHint" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EFloat"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="heightHint" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EFloat"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="horizontalIndent" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EFloat"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="verticalIndent" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EFloat"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="KStackPlacementData" eSuperTypes="#//KPlacementData">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="insetRight" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EFloat"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="insetBottom" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EFloat"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="insetLeft" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EFloat"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="insetTop" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EFloat"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="KDirectPlacementData" eSuperTypes="#//KPlacementData">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="topLeft" lowerBound="1"
+        eType="#//KPosition" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="bottomRight" lowerBound="1"
+        eType="#//KPosition" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="KPolylinePlacementData" eSuperTypes="#//KPlacementData">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="points" lowerBound="1"
+        upperBound="-1" eType="#//KPosition" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="KCustomRendering" eSuperTypes="#//KContainerRendering">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="className" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="bundleName" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="KForegroundColor" eSuperTypes="#//KColor"/>
+  <eClassifiers xsi:type="ecore:EClass" name="KColor" abstract="true" eSuperTypes="#//KStyle">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="red" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="green" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="blue" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="KBackgroundColor" eSuperTypes="#//KColor"/>
+  <eClassifiers xsi:type="ecore:EClass" name="KLineWidth" eSuperTypes="#//KStyle">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="lineWidth" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="KVisibility" eSuperTypes="#//KStyle">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="lineVisible" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="filled" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="LineStyle">
+    <eLiterals name="SOLID"/>
+    <eLiterals name="DASH" value="1"/>
+    <eLiterals name="DOT" value="2"/>
+    <eLiterals name="DASHDOT" value="3"/>
+    <eLiterals name="DASHDOTDOT" value="4"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="KLineStyle" eSuperTypes="#//KStyle">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="lineStyle" lowerBound="1"
+        eType="#//LineStyle"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="HorizontalAlignment">
+    <eLiterals name="LEFT"/>
+    <eLiterals name="CENTER" value="1"/>
+    <eLiterals name="RIGHT" value="2"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="VerticalAlignment">
+    <eLiterals name="TOP"/>
+    <eLiterals name="CENTER" value="1"/>
+    <eLiterals name="BOTTOM" value="2"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="KVerticalAlignment" eSuperTypes="#//KStyle">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="verticalAlignment" lowerBound="1"
+        eType="#//VerticalAlignment"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="KHorizontalAlignment" eSuperTypes="#//KStyle">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="horizontalAlignment" lowerBound="1"
+        eType="#//HorizontalAlignment"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="KXPosition" abstract="true">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="absolute" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EFloat"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="relative" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EFloat"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="KYPosition" abstract="true">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="absolute" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EFloat"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="relative" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EFloat"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="KLeftPosition" eSuperTypes="#//KXPosition"/>
+  <eClassifiers xsi:type="ecore:EClass" name="KRightPosition" eSuperTypes="#//KXPosition"/>
+  <eClassifiers xsi:type="ecore:EClass" name="KTopPosition" eSuperTypes="#//KYPosition"/>
+  <eClassifiers xsi:type="ecore:EClass" name="KBottomPosition" eSuperTypes="#//KYPosition"/>
+</ecore:EPackage>
