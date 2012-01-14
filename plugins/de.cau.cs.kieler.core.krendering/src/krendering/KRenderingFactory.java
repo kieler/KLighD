@@ -314,6 +314,15 @@ public interface KRenderingFactory extends EFactory {
     KBottomPosition createKBottomPosition();
 
     /**
+     * Returns a new object of class '<em>KSpline</em>'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return a new object of class '<em>KSpline</em>'.
+     * @generated
+     */
+    KSpline createKSpline();
+
+    /**
      * Returns the package supported by this factory.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->

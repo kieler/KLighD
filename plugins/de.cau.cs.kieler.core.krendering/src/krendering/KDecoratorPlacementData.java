@@ -18,6 +18,7 @@ package krendering;
  *   <li>{@link krendering.KDecoratorPlacementData#getLocation <em>Location</em>}</li>
  *   <li>{@link krendering.KDecoratorPlacementData#getXOffset <em>XOffset</em>}</li>
  *   <li>{@link krendering.KDecoratorPlacementData#getYOffset <em>YOffset</em>}</li>
+ *   <li>{@link krendering.KDecoratorPlacementData#isRelative <em>Relative</em>}</li>
  * </ul>
  * </p>
  *
@@ -103,5 +104,31 @@ public interface KDecoratorPlacementData extends KPlacementData {
      * @generated
      */
     void setYOffset(float value);
+
+    /**
+     * Returns the value of the '<em><b>Relative</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <p>
+     * If the meaning of the '<em>Relative</em>' attribute isn't clear,
+     * there really should be more of a description here...
+     * </p>
+     * <!-- end-user-doc -->
+     * @return the value of the '<em>Relative</em>' attribute.
+     * @see #setRelative(boolean)
+     * @see krendering.KRenderingPackage#getKDecoratorPlacementData_Relative()
+     * @model required="true"
+     * @generated
+     */
+    boolean isRelative();
+
+    /**
+     * Sets the value of the '{@link krendering.KDecoratorPlacementData#isRelative <em>Relative</em>}' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @param value the new value of the '<em>Relative</em>' attribute.
+     * @see #isRelative()
+     * @generated
+     */
+    void setRelative(boolean value);
 
 } // KDecoratorPlacementData

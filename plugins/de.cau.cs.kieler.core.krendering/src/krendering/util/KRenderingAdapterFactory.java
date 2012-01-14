@@ -233,6 +233,10 @@ public class KRenderingAdapterFactory extends AdapterFactoryImpl {
                 return createKBottomPositionAdapter();
             }
             @Override
+            public Adapter caseKSpline(KSpline object) {
+                return createKSplineAdapter();
+            }
+            @Override
             public Adapter caseIPropertyHolder(IPropertyHolder object) {
                 return createIPropertyHolderAdapter();
             }
@@ -807,6 +811,20 @@ public class KRenderingAdapterFactory extends AdapterFactoryImpl {
      * @generated
      */
     public Adapter createKBottomPositionAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class '{@link krendering.KSpline <em>KSpline</em>}'.
+     * <!-- begin-user-doc -->
+     * This default implementation returns null so that we can easily ignore cases;
+     * it's useful to ignore a case when inheritance will catch all the cases anyway.
+     * <!-- end-user-doc -->
+     * @return the new adapter.
+     * @see krendering.KSpline
+     * @generated
+     */
+    public Adapter createKSplineAdapter() {
         return null;
     }
 

@@ -41,6 +41,7 @@ import krendering.KRenderingPackage;
 import krendering.KRenderingRef;
 import krendering.KRightPosition;
 import krendering.KRoundedRectangle;
+import krendering.KSpline;
 import krendering.KStackPlacement;
 import krendering.KStackPlacementData;
 import krendering.KStyle;
@@ -346,6 +347,13 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
      * <!-- end-user-doc -->
      * @generated
      */
+    private EClass kSplineEClass = null;
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
     private EEnum lineStyleEEnum = null;
 
     /**
@@ -622,6 +630,15 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
      */
     public EAttribute getKDecoratorPlacementData_YOffset() {
         return (EAttribute)kDecoratorPlacementDataEClass.getEStructuralFeatures().get(2);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EAttribute getKDecoratorPlacementData_Relative() {
+        return (EAttribute)kDecoratorPlacementDataEClass.getEStructuralFeatures().get(3);
     }
 
     /**
@@ -1232,6 +1249,15 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
      * <!-- end-user-doc -->
      * @generated
      */
+    public EClass getKSpline() {
+        return kSplineEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
     public EEnum getLineStyle() {
         return lineStyleEEnum;
     }
@@ -1312,6 +1338,7 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
         createEAttribute(kDecoratorPlacementDataEClass, KDECORATOR_PLACEMENT_DATA__LOCATION);
         createEAttribute(kDecoratorPlacementDataEClass, KDECORATOR_PLACEMENT_DATA__XOFFSET);
         createEAttribute(kDecoratorPlacementDataEClass, KDECORATOR_PLACEMENT_DATA__YOFFSET);
+        createEAttribute(kDecoratorPlacementDataEClass, KDECORATOR_PLACEMENT_DATA__RELATIVE);
 
         kContainerRenderingEClass = createEClass(KCONTAINER_RENDERING);
         createEReference(kContainerRenderingEClass, KCONTAINER_RENDERING__CHILDREN);
@@ -1410,6 +1437,8 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
 
         kBottomPositionEClass = createEClass(KBOTTOM_POSITION);
 
+        kSplineEClass = createEClass(KSPLINE);
+
         // Create enums
         lineStyleEEnum = createEEnum(LINE_STYLE);
         horizontalAlignmentEEnum = createEEnum(HORIZONTAL_ALIGNMENT);
@@ -1480,6 +1509,7 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
         kRightPositionEClass.getESuperTypes().add(this.getKXPosition());
         kTopPositionEClass.getESuperTypes().add(this.getKYPosition());
         kBottomPositionEClass.getESuperTypes().add(this.getKYPosition());
+        kSplineEClass.getESuperTypes().add(this.getKPolyline());
 
         // Initialize classes and features; add operations and parameters
         initEClass(kPositionEClass, KPosition.class, "KPosition", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -1512,6 +1542,7 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
         initEAttribute(getKDecoratorPlacementData_Location(), ecorePackage.getEFloat(), "location", null, 1, 1, KDecoratorPlacementData.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEAttribute(getKDecoratorPlacementData_XOffset(), ecorePackage.getEFloat(), "xOffset", null, 0, 1, KDecoratorPlacementData.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEAttribute(getKDecoratorPlacementData_YOffset(), ecorePackage.getEFloat(), "yOffset", null, 0, 1, KDecoratorPlacementData.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEAttribute(getKDecoratorPlacementData_Relative(), ecorePackage.getEBoolean(), "relative", null, 1, 1, KDecoratorPlacementData.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         initEClass(kContainerRenderingEClass, KContainerRendering.class, "KContainerRendering", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         initEReference(getKContainerRendering_Children(), this.getKRendering(), this.getKRendering_Parent(), "children", null, 0, -1, KContainerRendering.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -1609,6 +1640,8 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
         initEClass(kTopPositionEClass, KTopPosition.class, "KTopPosition", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
         initEClass(kBottomPositionEClass, KBottomPosition.class, "KBottomPosition", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+        initEClass(kSplineEClass, KSpline.class, "KSpline", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
         // Initialize enums and add enum literals
         initEEnum(lineStyleEEnum, LineStyle.class, "LineStyle");

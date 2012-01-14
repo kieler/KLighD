@@ -26,6 +26,7 @@ import org.eclipse.emf.ecore.impl.EObjectImpl;
  *   <li>{@link krendering.impl.KDecoratorPlacementDataImpl#getLocation <em>Location</em>}</li>
  *   <li>{@link krendering.impl.KDecoratorPlacementDataImpl#getXOffset <em>XOffset</em>}</li>
  *   <li>{@link krendering.impl.KDecoratorPlacementDataImpl#getYOffset <em>YOffset</em>}</li>
+ *   <li>{@link krendering.impl.KDecoratorPlacementDataImpl#isRelative <em>Relative</em>}</li>
  * </ul>
  * </p>
  *
@@ -91,6 +92,26 @@ public class KDecoratorPlacementDataImpl extends EObjectImpl implements KDecorat
      * @ordered
      */
     protected float yOffset = YOFFSET_EDEFAULT;
+
+    /**
+     * The default value of the '{@link #isRelative() <em>Relative</em>}' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see #isRelative()
+     * @generated
+     * @ordered
+     */
+    protected static final boolean RELATIVE_EDEFAULT = false;
+
+    /**
+     * The cached value of the '{@link #isRelative() <em>Relative</em>}' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see #isRelative()
+     * @generated
+     * @ordered
+     */
+    protected boolean relative = RELATIVE_EDEFAULT;
 
     /**
      * <!-- begin-user-doc -->
@@ -179,6 +200,27 @@ public class KDecoratorPlacementDataImpl extends EObjectImpl implements KDecorat
      * <!-- end-user-doc -->
      * @generated
      */
+    public boolean isRelative() {
+        return relative;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public void setRelative(boolean newRelative) {
+        boolean oldRelative = relative;
+        relative = newRelative;
+        if (eNotificationRequired())
+            eNotify(new ENotificationImpl(this, Notification.SET, KRenderingPackage.KDECORATOR_PLACEMENT_DATA__RELATIVE, oldRelative, relative));
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
@@ -188,6 +230,8 @@ public class KDecoratorPlacementDataImpl extends EObjectImpl implements KDecorat
                 return getXOffset();
             case KRenderingPackage.KDECORATOR_PLACEMENT_DATA__YOFFSET:
                 return getYOffset();
+            case KRenderingPackage.KDECORATOR_PLACEMENT_DATA__RELATIVE:
+                return isRelative();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -208,6 +252,9 @@ public class KDecoratorPlacementDataImpl extends EObjectImpl implements KDecorat
                 return;
             case KRenderingPackage.KDECORATOR_PLACEMENT_DATA__YOFFSET:
                 setYOffset((Float)newValue);
+                return;
+            case KRenderingPackage.KDECORATOR_PLACEMENT_DATA__RELATIVE:
+                setRelative((Boolean)newValue);
                 return;
         }
         super.eSet(featureID, newValue);
@@ -230,6 +277,9 @@ public class KDecoratorPlacementDataImpl extends EObjectImpl implements KDecorat
             case KRenderingPackage.KDECORATOR_PLACEMENT_DATA__YOFFSET:
                 setYOffset(YOFFSET_EDEFAULT);
                 return;
+            case KRenderingPackage.KDECORATOR_PLACEMENT_DATA__RELATIVE:
+                setRelative(RELATIVE_EDEFAULT);
+                return;
         }
         super.eUnset(featureID);
     }
@@ -248,6 +298,8 @@ public class KDecoratorPlacementDataImpl extends EObjectImpl implements KDecorat
                 return xOffset != XOFFSET_EDEFAULT;
             case KRenderingPackage.KDECORATOR_PLACEMENT_DATA__YOFFSET:
                 return yOffset != YOFFSET_EDEFAULT;
+            case KRenderingPackage.KDECORATOR_PLACEMENT_DATA__RELATIVE:
+                return relative != RELATIVE_EDEFAULT;
         }
         return super.eIsSet(featureID);
     }
@@ -268,6 +320,8 @@ public class KDecoratorPlacementDataImpl extends EObjectImpl implements KDecorat
         result.append(xOffset);
         result.append(", yOffset: ");
         result.append(yOffset);
+        result.append(", relative: ");
+        result.append(relative);
         result.append(')');
         return result.toString();
     }
