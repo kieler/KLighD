@@ -409,4 +409,11 @@ public class PiccoloDiagramLayoutManager implements IDiagramLayoutManager<IGraph
         return null;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    public void undoLayout(final LayoutMapping<IGraphObject> mapping) {
+        throw new UnsupportedOperationException("Undo is not supported by the Piccolo layout manager.");
+    }
+
 }
