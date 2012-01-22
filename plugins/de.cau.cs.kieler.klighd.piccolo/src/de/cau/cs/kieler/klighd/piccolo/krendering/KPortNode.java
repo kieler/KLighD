@@ -13,7 +13,9 @@
  */
 package de.cau.cs.kieler.klighd.piccolo.krendering;
 
+import de.cau.cs.kieler.klighd.piccolo.nodes.PEmptyNode;
 
-public class KPortNode {
+
+public class KPortNode extends PEmptyNode {
 
 }

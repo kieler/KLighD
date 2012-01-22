@@ -16,12 +16,14 @@ package de.cau.cs.kieler.klighd.piccolo.krendering;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.impl.AdapterImpl;
 
+import de.cau.cs.kieler.core.kgraph.KEdge;
 import de.cau.cs.kieler.core.kgraph.KNode;
 import de.cau.cs.kieler.core.ui.util.MonitoredOperation;
 import de.cau.cs.kieler.core.util.IWrapper;
 import de.cau.cs.kieler.kiml.klayoutdata.KLayoutDataPackage;
 import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout;
-import de.cau.cs.kieler.klighd.piccolo.nodes.PEmptyNode;
+import de.cau.cs.kieler.klighd.piccolo.nodes.PZIndexNode;
+import de.cau.cs.kieler.klighd.piccolo.util.NodeUtil;
 import edu.umd.cs.piccolo.util.PAffineTransform;
 
 /**
@@ -29,9 +31,14 @@ import edu.umd.cs.piccolo.util.PAffineTransform;
  * 
  * @author mri
  */
-public class KNodeNode extends PEmptyNode implements IParent, IWrapper<KNode> {
+public class KNodeNode extends PZIndexNode implements IParent, IWrapper<KNode> {
 
     private static final long serialVersionUID = 6311105654943173693L;
+
+    /** the number of z-layers (rendering, children and ports). */
+    private static final int Z_LAYERS = 2;
+    /** the z-index for the port layer. */
+    private static final int PORT_LAYER = 1;
 
     /** the encapsulated {@code KNode}. */
     private KNode node;
@@ -45,9 +52,10 @@ public class KNodeNode extends PEmptyNode implements IParent, IWrapper<KNode> {
      * Constructs a Piccolo node for representing a {@code KNode}.
      * 
      * @param node
-     *            the KNode
+     *            the node
      */
     public KNodeNode(final KNode node) {
+        super(Z_LAYERS);
         this.node = node;
         setPickable(true);
     }
@@ -63,6 +71,7 @@ public class KNodeNode extends PEmptyNode implements IParent, IWrapper<KNode> {
      * {@inheritDoc}
      */
     public void expand() {
+        // create nodes
         if (renderingController != null) {
             KChildAreaNode childAreaNode = renderingController.getChildAreaNode();
             for (KNode child : node.getChildren()) {
@@ -73,6 +82,20 @@ public class KNodeNode extends PEmptyNode implements IParent, IWrapper<KNode> {
 
                 // create the node's rendering
                 nodeNode.createRendering();
+                nodeNode.expand();
+            }
+
+            // create edges
+            for (KNode child : node.getChildren()) {
+                for (KEdge edge : child.getOutgoingEdges()) {
+                    // create the Piccolo node for the edge
+                    KEdgeNode edgeNode = new KEdgeNode(edge);
+                    edgeNode.updateLayout();
+                    childAreaNode.addChild(edgeNode);
+
+                    // create the edge's rendering
+                    edgeNode.createRendering();
+                }
             }
         }
     }
@@ -85,11 +108,12 @@ public class KNodeNode extends PEmptyNode implements IParent, IWrapper<KNode> {
     }
 
     /**
-     * Updates the rendering.
+     * Creates the rendering.
      */
     public void createRendering() {
         if (renderingController == null) {
-            renderingController = new RenderingController(node, this);
+            renderingController = new RenderingController(this);
+            renderingController.initialize();
         }
     }
 
@@ -145,17 +169,11 @@ public class KNodeNode extends PEmptyNode implements IParent, IWrapper<KNode> {
             });
         }
 
+        // apply the layout
         if (shapeLayout != null) {
-            // get the old translation
-            PAffineTransform transform = getTransformReference(true);
-            double oldX = transform.getTranslateX();
-            double oldY = transform.getTranslateY();
-
-            // apply the layout
-            translate(shapeLayout.getXpos() - oldX, shapeLayout.getYpos() - oldY);
-            setBounds(0, 0, shapeLayout.getWidth(), shapeLayout.getHeight());
+            NodeUtil.applySmartBounds(this, shapeLayout.getXpos(), shapeLayout.getYpos(),
+                    shapeLayout.getWidth(), shapeLayout.getHeight());
 
         }
     }
-
 }

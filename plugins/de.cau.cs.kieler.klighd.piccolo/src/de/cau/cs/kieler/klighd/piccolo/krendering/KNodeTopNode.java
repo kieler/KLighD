@@ -13,6 +13,7 @@
  */
 package de.cau.cs.kieler.klighd.piccolo.krendering;
 
+import de.cau.cs.kieler.core.kgraph.KEdge;
 import de.cau.cs.kieler.core.kgraph.KNode;
 import de.cau.cs.kieler.core.util.IWrapper;
 import de.cau.cs.kieler.klighd.piccolo.nodes.PEmptyNode;
@@ -50,6 +51,7 @@ public class KNodeTopNode extends PEmptyNode implements IParent, IWrapper<KNode>
      * {@inheritDoc}
      */
     public void expand() {
+        // create nodes
         for (KNode child : node.getChildren()) {
             // create the Piccolo node for the child node
             KNodeNode nodeNode = new KNodeNode(child);
@@ -58,6 +60,20 @@ public class KNodeTopNode extends PEmptyNode implements IParent, IWrapper<KNode>
 
             // create the node's rendering
             nodeNode.createRendering();
+            nodeNode.expand();
+        }
+        
+        // create edges
+        for (KNode child : node.getChildren()) {
+            for (KEdge edge : child.getOutgoingEdges()) {
+                // create the Piccolo node for the edge
+                KEdgeNode edgeNode = new KEdgeNode(edge);
+                edgeNode.updateLayout();
+                addChild(edgeNode);
+                
+                // create the edge's rendering
+                edgeNode.createRendering();
+            }
         }
     }
 

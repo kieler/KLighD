@@ -14,19 +14,11 @@
 /**
  * 
  */
-package de.cau.cs.kieler.klighd.piccolo.krendering;
-
-import edu.umd.cs.piccolo.PNode;
+package de.cau.cs.kieler.klighd.piccolo.util;
 
 /**
- * A Piccolo node for the {@code KChildArea}.
- * 
  * @author mri
  */
-public class KChildAreaNode extends PNode {
+public class MathUtil {
 
-    private static final long serialVersionUID = -403773990520864787L;
-    
-    // TODO implement the custom clipping behaviour required for the child area
-    
 }

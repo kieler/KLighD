@@ -336,6 +336,7 @@ public class PiccoloViewer extends AbstractViewer<PNode> implements
     public void selected(final PSWTSimpleSelectionEventHandler handler,
             final Collection<PNode> nodes) {
         notifyListenersSelection(nodes);
+        System.out.println(nodes);
     }
 
 }
