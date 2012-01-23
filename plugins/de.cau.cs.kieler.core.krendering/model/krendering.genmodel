@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <genmodel:GenModel xmi:version="2.0"
     xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
-    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/de.cau.cs.kieler.core.krendering/src"
-    modelPluginID="de.cau.cs.kieler.core.krendering" modelName="KRendering" importerID="org.eclipse.emf.importer.ecore"
-    complianceLevel="5.0" copyrightFields="false" usedGenPackages="platform:/plugin/de.cau.cs.kieler.core.kgraph/model/kgraph.genmodel#//kgraph">
+    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" copyrightText="KIELER - Kiel Integrated Environment for Layout Eclipse RichClient&#xA;&#xA;http://www.informatik.uni-kiel.de/rtsys/kieler/&#xA;&#xA;Copyright 2012 by&#xA;+ Christian-Albrechts-University of Kiel&#xA;  + Department of Computer Science&#xA;    + Real-Time and Embedded Systems Group&#xA;&#xA;This code is provided under the terms of the Eclipse Public License (EPL).&#xA;See the file epl-v10.html for the license text."
+    modelDirectory="/de.cau.cs.kieler.core.krendering/src" modelPluginID="de.cau.cs.kieler.core.krendering"
+    modelName="KRendering" importerID="org.eclipse.emf.importer.ecore" complianceLevel="5.0"
+    copyrightFields="false" usedGenPackages="platform:/plugin/de.cau.cs.kieler.core.kgraph/model/kgraph.genmodel#//kgraph">
   <foreignModel>krendering.ecore</foreignModel>
-  <genPackages prefix="KRendering" disposableProviderFactory="true" ecorePackage="krendering.ecore#/">
+  <genPackages prefix="KRendering" basePackage="de.cau.cs.kieler.core" disposableProviderFactory="true"
+      fileExtensions="krender" ecorePackage="krendering.ecore#/">
     <genEnums typeSafeEnumCompatible="false" ecoreEnum="krendering.ecore#//LineStyle">
       <genEnumLiterals ecoreEnumLiteral="krendering.ecore#//LineStyle/SOLID"/>
       <genEnumLiterals ecoreEnumLiteral="krendering.ecore#//LineStyle/DASH"/>
@@ -23,15 +25,9 @@
       <genEnumLiterals ecoreEnumLiteral="krendering.ecore#//VerticalAlignment/CENTER"/>
       <genEnumLiterals ecoreEnumLiteral="krendering.ecore#//VerticalAlignment/BOTTOM"/>
     </genEnums>
-    <genClasses image="false" ecoreClass="krendering.ecore#//KPosition"/>
-    <genClasses ecoreClass="krendering.ecore#//KRelativePosition">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute krendering.ecore#//KRelativePosition/xRelative"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute krendering.ecore#//KRelativePosition/yRelative"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference krendering.ecore#//KRelativePosition/offset"/>
-    </genClasses>
-    <genClasses ecoreClass="krendering.ecore#//KAbsolutePosition">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute krendering.ecore#//KAbsolutePosition/x"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute krendering.ecore#//KAbsolutePosition/y"/>
+    <genClasses image="false" ecoreClass="krendering.ecore#//KPosition">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference krendering.ecore#//KPosition/x"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference krendering.ecore#//KPosition/y"/>
     </genClasses>
     <genClasses image="false" ecoreClass="krendering.ecore#//KRendering">
       <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference krendering.ecore#//KRendering/parent"/>
@@ -53,7 +49,9 @@
     </genClasses>
     <genClasses ecoreClass="krendering.ecore#//KDecoratorPlacementData">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute krendering.ecore#//KDecoratorPlacementData/location"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference krendering.ecore#//KDecoratorPlacementData/offset"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute krendering.ecore#//KDecoratorPlacementData/xOffset"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute krendering.ecore#//KDecoratorPlacementData/yOffset"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute krendering.ecore#//KDecoratorPlacementData/relative"/>
     </genClasses>
     <genClasses image="false" ecoreClass="krendering.ecore#//KContainerRendering">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference krendering.ecore#//KContainerRendering/children"/>
@@ -94,11 +92,11 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute krendering.ecore#//KStackPlacementData/insetRight"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute krendering.ecore#//KStackPlacementData/insetBottom"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute krendering.ecore#//KStackPlacementData/insetLeft"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute krendering.ecore#//KStackPlacementData/insertTop"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute krendering.ecore#//KStackPlacementData/insetTop"/>
     </genClasses>
     <genClasses ecoreClass="krendering.ecore#//KDirectPlacementData">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference krendering.ecore#//KDirectPlacementData/bottomRight"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference krendering.ecore#//KDirectPlacementData/topLeft"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference krendering.ecore#//KDirectPlacementData/bottomRight"/>
     </genClasses>
     <genClasses ecoreClass="krendering.ecore#//KPolylinePlacementData">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference krendering.ecore#//KPolylinePlacementData/points"/>
@@ -130,5 +128,17 @@
     <genClasses ecoreClass="krendering.ecore#//KHorizontalAlignment">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute krendering.ecore#//KHorizontalAlignment/horizontalAlignment"/>
     </genClasses>
+    <genClasses image="false" ecoreClass="krendering.ecore#//KXPosition">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute krendering.ecore#//KXPosition/absolute"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute krendering.ecore#//KXPosition/relative"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="krendering.ecore#//KYPosition">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute krendering.ecore#//KYPosition/absolute"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute krendering.ecore#//KYPosition/relative"/>
+    </genClasses>
+    <genClasses ecoreClass="krendering.ecore#//KLeftPosition"/>
+    <genClasses ecoreClass="krendering.ecore#//KRightPosition"/>
+    <genClasses ecoreClass="krendering.ecore#//KTopPosition"/>
+    <genClasses ecoreClass="krendering.ecore#//KBottomPosition"/>
   </genPackages>
 </genmodel:GenModel>
