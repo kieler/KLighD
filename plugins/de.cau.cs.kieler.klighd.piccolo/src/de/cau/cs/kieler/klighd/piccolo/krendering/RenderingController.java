@@ -24,38 +24,38 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-import krendering.KBackgroundColor;
-import krendering.KChildArea;
-import krendering.KColor;
-import krendering.KContainerRendering;
-import krendering.KDirectPlacementData;
-import krendering.KEllipse;
-import krendering.KForegroundColor;
-import krendering.KGridPlacement;
-import krendering.KHorizontalAlignment;
-import krendering.KLeftPosition;
-import krendering.KLineStyle;
-import krendering.KLineWidth;
-import krendering.KPlacement;
-import krendering.KPlacementData;
-import krendering.KPolygon;
-import krendering.KPolyline;
-import krendering.KPolylinePlacementData;
-import krendering.KPosition;
-import krendering.KRectangle;
-import krendering.KRendering;
-import krendering.KRenderingFactory;
-import krendering.KRenderingPackage;
-import krendering.KRoundedRectangle;
-import krendering.KStackPlacement;
-import krendering.KStackPlacementData;
-import krendering.KStyle;
-import krendering.KTopPosition;
-import krendering.KVerticalAlignment;
-import krendering.KVisibility;
-import krendering.KXPosition;
-import krendering.KYPosition;
-import krendering.util.KRenderingSwitch;
+import de.cau.cs.kieler.core.krendering.KBackgroundColor;
+import de.cau.cs.kieler.core.krendering.KChildArea;
+import de.cau.cs.kieler.core.krendering.KColor;
+import de.cau.cs.kieler.core.krendering.KContainerRendering;
+import de.cau.cs.kieler.core.krendering.KDirectPlacementData;
+import de.cau.cs.kieler.core.krendering.KEllipse;
+import de.cau.cs.kieler.core.krendering.KForegroundColor;
+import de.cau.cs.kieler.core.krendering.KGridPlacement;
+import de.cau.cs.kieler.core.krendering.KHorizontalAlignment;
+import de.cau.cs.kieler.core.krendering.KLeftPosition;
+import de.cau.cs.kieler.core.krendering.KLineStyle;
+import de.cau.cs.kieler.core.krendering.KLineWidth;
+import de.cau.cs.kieler.core.krendering.KPlacement;
+import de.cau.cs.kieler.core.krendering.KPlacementData;
+import de.cau.cs.kieler.core.krendering.KPolygon;
+import de.cau.cs.kieler.core.krendering.KPolyline;
+import de.cau.cs.kieler.core.krendering.KPolylinePlacementData;
+import de.cau.cs.kieler.core.krendering.KPosition;
+import de.cau.cs.kieler.core.krendering.KRectangle;
+import de.cau.cs.kieler.core.krendering.KRendering;
+import de.cau.cs.kieler.core.krendering.KRenderingFactory;
+import de.cau.cs.kieler.core.krendering.KRenderingPackage;
+import de.cau.cs.kieler.core.krendering.KRoundedRectangle;
+import de.cau.cs.kieler.core.krendering.KStackPlacement;
+import de.cau.cs.kieler.core.krendering.KStackPlacementData;
+import de.cau.cs.kieler.core.krendering.KStyle;
+import de.cau.cs.kieler.core.krendering.KTopPosition;
+import de.cau.cs.kieler.core.krendering.KVerticalAlignment;
+import de.cau.cs.kieler.core.krendering.KVisibility;
+import de.cau.cs.kieler.core.krendering.KXPosition;
+import de.cau.cs.kieler.core.krendering.KYPosition;
+import de.cau.cs.kieler.core.krendering.util.KRenderingSwitch;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.impl.AdapterImpl;
@@ -116,7 +116,7 @@ public class RenderingController {
     public RenderingController(final KNodeNode node) {
         this.element = node.getWrapped();
         this.repNode = node;
-        this.childAreaNode = new KChildAreaNode();
+        this.childAreaNode = new KChildAreaNode(node);
         initializeRenderingNode(childAreaNode);
     }
 
@@ -239,7 +239,8 @@ public class RenderingController {
 
                     // handle new, moved and removed styles
                     if (msg.getNotifier() instanceof KRendering
-                            && msg.getFeatureID(KRendering.class) == KRenderingPackage.KRENDERING__STYLES) {
+                            && msg.getFeatureID(KRendering.class)
+                            == KRenderingPackage.KRENDERING__STYLES) {
                         final KRendering rendering = (KRendering) msg.getNotifier();
                         MonitoredOperation.runInUI(new Runnable() {
                             public void run() {

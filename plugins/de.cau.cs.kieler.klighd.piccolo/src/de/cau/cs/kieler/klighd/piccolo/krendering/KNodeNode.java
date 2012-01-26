@@ -16,8 +16,9 @@ package de.cau.cs.kieler.klighd.piccolo.krendering;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.impl.AdapterImpl;
 
-import de.cau.cs.kieler.core.kgraph.KEdge;
 import de.cau.cs.kieler.core.kgraph.KNode;
+import de.cau.cs.kieler.core.properties.IProperty;
+import de.cau.cs.kieler.core.properties.Property;
 import de.cau.cs.kieler.core.ui.util.MonitoredOperation;
 import de.cau.cs.kieler.core.util.IWrapper;
 import de.cau.cs.kieler.kiml.klayoutdata.KLayoutDataPackage;
@@ -31,11 +32,11 @@ import edu.umd.cs.piccolo.util.PAffineTransform;
  * 
  * @author mri
  */
-public class KNodeNode extends PZIndexNode implements IParent, IWrapper<KNode> {
+public class KNodeNode extends PZIndexNode implements INode, IWrapper<KNode> {
 
     private static final long serialVersionUID = 6311105654943173693L;
 
-    /** the number of z-layers (rendering, children and ports). */
+    /** the number of z-layers (rendering and ports). */
     private static final int Z_LAYERS = 2;
     /** the z-index for the port layer. */
     private static final int PORT_LAYER = 1;
@@ -45,6 +46,9 @@ public class KNodeNode extends PZIndexNode implements IParent, IWrapper<KNode> {
     /** the shape layout associated with this node. */
     private KShapeLayout shapeLayout = null;
 
+    /** the parent node. */
+    private INode parent;
+    
     /** the rendering controller. */
     private RenderingController renderingController;
 
@@ -53,11 +57,15 @@ public class KNodeNode extends PZIndexNode implements IParent, IWrapper<KNode> {
      * 
      * @param node
      *            the node
+     * @param parent
+     *            the parent node
      */
-    public KNodeNode(final KNode node) {
+    public KNodeNode(final KNode node, final INode parent) {
         super(Z_LAYERS);
         this.node = node;
+        this.parent = parent;
         setPickable(true);
+        RenderingContextData.get(node).setProperty(INode.PREPRESENTATION, this);
     }
 
     /**
@@ -71,32 +79,8 @@ public class KNodeNode extends PZIndexNode implements IParent, IWrapper<KNode> {
      * {@inheritDoc}
      */
     public void expand() {
-        // create nodes
         if (renderingController != null) {
-            KChildAreaNode childAreaNode = renderingController.getChildAreaNode();
-            for (KNode child : node.getChildren()) {
-                // create the Piccolo node for the child node
-                KNodeNode nodeNode = new KNodeNode(child);
-                nodeNode.updateLayout();
-                childAreaNode.addChild(nodeNode);
-
-                // create the node's rendering
-                nodeNode.createRendering();
-                nodeNode.expand();
-            }
-
-            // create edges
-            for (KNode child : node.getChildren()) {
-                for (KEdge edge : child.getOutgoingEdges()) {
-                    // create the Piccolo node for the edge
-                    KEdgeNode edgeNode = new KEdgeNode(edge);
-                    edgeNode.updateLayout();
-                    childAreaNode.addChild(edgeNode);
-
-                    // create the edge's rendering
-                    edgeNode.createRendering();
-                }
-            }
+            renderingController.getChildAreaNode().populate(node);
         }
     }
 
@@ -176,4 +160,19 @@ public class KNodeNode extends PZIndexNode implements IParent, IWrapper<KNode> {
 
         }
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    public INode getParentNode() {
+        return parent;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public KChildAreaNode getChildArea() {
+        return renderingController.getChildAreaNode();
+    }
+    
 }

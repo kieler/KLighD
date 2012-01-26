@@ -16,21 +16,41 @@
  */
 package de.cau.cs.kieler.klighd.piccolo.krendering;
 
+import de.cau.cs.kieler.core.properties.IProperty;
+import de.cau.cs.kieler.core.properties.Property;
+
 /**
- * The interface for nodes which can be expanded and collapsed.
+ * The interface for Piccolo nodes representing a {@code KNode}.
  * 
  * @author mri
  */
-public interface IParent {
+public interface INode {
+
+    /** the property for the Piccolo representation. */
+    IProperty<INode> PREPRESENTATION = new Property<INode>("klighd.piccolo.prepresentation");
 
     /**
      * Expandes the node.
      */
     void expand();
-    
+
     /**
      * Collapses the node.
      */
     void collapse();
-    
+
+    /**
+     * Returns the parent node.
+     * 
+     * @return the parent node
+     */
+    INode getParentNode();
+
+    /**
+     * Returns the child area of this parent node.
+     * 
+     * @return the child area
+     */
+    KChildAreaNode getChildArea();
+
 }

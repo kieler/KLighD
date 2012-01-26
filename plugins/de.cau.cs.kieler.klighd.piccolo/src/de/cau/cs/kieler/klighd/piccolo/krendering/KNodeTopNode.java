@@ -13,7 +13,6 @@
  */
 package de.cau.cs.kieler.klighd.piccolo.krendering;
 
-import de.cau.cs.kieler.core.kgraph.KEdge;
 import de.cau.cs.kieler.core.kgraph.KNode;
 import de.cau.cs.kieler.core.util.IWrapper;
 import de.cau.cs.kieler.klighd.piccolo.nodes.PEmptyNode;
@@ -23,12 +22,18 @@ import de.cau.cs.kieler.klighd.piccolo.nodes.PEmptyNode;
  * 
  * @author mri
  */
-public class KNodeTopNode extends PEmptyNode implements IParent, IWrapper<KNode> {
+public class KNodeTopNode extends PEmptyNode implements INode, IWrapper<KNode> {
 
     private static final long serialVersionUID = 8395163186723344696L;
 
     /** the encapsulated {@code KNode}. */
     private KNode node;
+
+    /** the Piccolo node representing the child area. */
+    private KChildAreaNode childArea;
+
+    /** whether the node is currently expanded. */
+    private boolean expanded = false;
 
     /**
      * Constructs a Piccolo node for representing the top-level {@code KNode}.
@@ -38,6 +43,11 @@ public class KNodeTopNode extends PEmptyNode implements IParent, IWrapper<KNode>
      */
     public KNodeTopNode(final KNode node) {
         this.node = node;
+        childArea = new KChildAreaNode(this);
+        childArea.setClip(false);
+        addChild(childArea);
+        setPickable(false);
+        RenderingContextData.get(node).setProperty(INode.PREPRESENTATION, this);
     }
 
     /**
@@ -51,29 +61,9 @@ public class KNodeTopNode extends PEmptyNode implements IParent, IWrapper<KNode>
      * {@inheritDoc}
      */
     public void expand() {
-        // create nodes
-        for (KNode child : node.getChildren()) {
-            // create the Piccolo node for the child node
-            KNodeNode nodeNode = new KNodeNode(child);
-            nodeNode.updateLayout();
-            addChild(nodeNode);
-
-            // create the node's rendering
-            nodeNode.createRendering();
-            nodeNode.expand();
-        }
-        
-        // create edges
-        for (KNode child : node.getChildren()) {
-            for (KEdge edge : child.getOutgoingEdges()) {
-                // create the Piccolo node for the edge
-                KEdgeNode edgeNode = new KEdgeNode(edge);
-                edgeNode.updateLayout();
-                addChild(edgeNode);
-                
-                // create the edge's rendering
-                edgeNode.createRendering();
-            }
+        if (!expanded) {
+            expanded = true;
+            childArea.populate(node);
         }
     }
 
@@ -81,7 +71,24 @@ public class KNodeTopNode extends PEmptyNode implements IParent, IWrapper<KNode>
      * {@inheritDoc}
      */
     public void collapse() {
-        // do nothing, the top-level node cannot be collapsed
+        if (expanded) {
+            expanded = false;
+            // TODO collapse it
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public INode getParentNode() {
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public KChildAreaNode getChildArea() {
+        return childArea;
     }
 
 }
