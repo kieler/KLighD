@@ -27,7 +27,7 @@ import java.util.List;
 public class BasicProgressMonitor implements IKielerProgressMonitor {
 
     /** the parent monitor. */
-    private BasicProgressMonitor parentMonitor = null;
+    private BasicProgressMonitor parentMonitor;
     /** indicates whether the monitor has been closed. */
     private boolean closed = false;
     /** list of child monitors. */
@@ -72,12 +72,20 @@ public class BasicProgressMonitor implements IKielerProgressMonitor {
     /**
      * {@inheritDoc}
      */
-    public final void begin(final String name, final float thetotalWork) {
-        if (!closed) {
+    public final boolean begin(final String name, final float thetotalWork) {
+        if (closed) {
+            throw new IllegalStateException("The task is already done.");
+        } else if (this.taskName != null) {
+            return false;
+        } else {
+            if (name == null) {
+                throw new NullPointerException();
+            }
             this.taskName = name;
             this.totalWork = thetotalWork;
             doBegin(name, thetotalWork, parentMonitor == null, maxLevels);
             startTime = System.nanoTime();
+            return true;
         }
     }
 
@@ -95,6 +103,13 @@ public class BasicProgressMonitor implements IKielerProgressMonitor {
             final boolean topInstance, final int maxHierarchyLevels) {
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    public boolean isRunning() {
+        return taskName != null && !closed;
+    }
+
     /** factor for nanoseconds. */
     private static final double NANO_FACT = 1e-9;
 
@@ -102,6 +117,9 @@ public class BasicProgressMonitor implements IKielerProgressMonitor {
      * {@inheritDoc}
      */
     public final void done() {
+        if (taskName == null) {
+            throw new IllegalStateException("The task has not begun yet.");
+        }
         if (!closed) {
             totalTime = (System.nanoTime() - startTime) * NANO_FACT;
             if (completedWork < totalWork) {
