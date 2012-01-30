@@ -17,6 +17,7 @@ import java.io.IOException;
 import java.util.Collections;
 
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -27,6 +28,7 @@ import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.ui.statushandlers.StatusManager;
 
 import de.cau.cs.kieler.core.kgraph.KNode;
+import de.cau.cs.kieler.core.ui.KielerProgressMonitor;
 import de.cau.cs.kieler.kiml.ui.diagram.LayoutMapping;
 import de.cau.cs.kieler.kiml.ui.service.LayoutOptionManager;
 import de.cau.cs.kieler.kiml.util.KimlUtil;
@@ -76,7 +78,8 @@ public class ExportKGraphAction extends Action {
                 
                 LayoutMapping<IGraphObject> layoutMapping = new PiccoloDiagramLayoutManager()
                         .buildLayoutGraph(null, viewer);
-                new LayoutOptionManager().configure(layoutMapping);
+				new LayoutOptionManager().configure(layoutMapping,
+						new KielerProgressMonitor(new NullProgressMonitor()));
 
                 KNode kgraph = layoutMapping.getLayoutGraph();
                 KimlUtil.persistDataElements(kgraph);
