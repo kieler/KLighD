@@ -17,7 +17,6 @@ import java.awt.geom.Point2D;
 import java.util.List;
 
 import org.eclipse.emf.common.notify.Notification;
-import org.eclipse.emf.common.notify.impl.AdapterImpl;
 import org.eclipse.emf.ecore.util.EContentAdapter;
 
 import de.cau.cs.kieler.core.kgraph.KEdge;

@@ -1042,7 +1042,7 @@ public class RenderingController {
      */
     private void addListener(final String property, final PNode parent, final PNode node,
             final PropertyChangeListener listener) {
-        parent.addPropertyChangeListener(PNode.PROPERTY_BOUNDS, listener);
+        parent.addPropertyChangeListener(property, listener);
         node.addAttribute(PROPERTY_LISTENER_KEY, new Pair<String, PropertyChangeListener>(property,
                 listener));
     }
