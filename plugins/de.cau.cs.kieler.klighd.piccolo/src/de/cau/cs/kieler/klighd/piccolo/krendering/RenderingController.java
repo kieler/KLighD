@@ -24,6 +24,15 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.eclipse.emf.common.notify.Notification;
+import org.eclipse.emf.common.notify.impl.AdapterImpl;
+import org.eclipse.emf.ecore.util.EContentAdapter;
+
+import com.google.common.collect.Lists;
+
+import de.cau.cs.kieler.core.kgraph.KGraphElement;
+import de.cau.cs.kieler.core.kgraph.KGraphPackage;
+import de.cau.cs.kieler.core.kgraph.KLabeledGraphElement;
 import de.cau.cs.kieler.core.krendering.KBackgroundColor;
 import de.cau.cs.kieler.core.krendering.KChildArea;
 import de.cau.cs.kieler.core.krendering.KColor;
@@ -50,32 +59,25 @@ import de.cau.cs.kieler.core.krendering.KRoundedRectangle;
 import de.cau.cs.kieler.core.krendering.KStackPlacement;
 import de.cau.cs.kieler.core.krendering.KStackPlacementData;
 import de.cau.cs.kieler.core.krendering.KStyle;
+import de.cau.cs.kieler.core.krendering.KText;
 import de.cau.cs.kieler.core.krendering.KTopPosition;
 import de.cau.cs.kieler.core.krendering.KVerticalAlignment;
 import de.cau.cs.kieler.core.krendering.KVisibility;
 import de.cau.cs.kieler.core.krendering.KXPosition;
 import de.cau.cs.kieler.core.krendering.KYPosition;
 import de.cau.cs.kieler.core.krendering.util.KRenderingSwitch;
-
-import org.eclipse.emf.common.notify.Notification;
-import org.eclipse.emf.common.notify.impl.AdapterImpl;
-import org.eclipse.emf.ecore.util.EContentAdapter;
-
-import com.google.common.collect.Lists;
-
-import de.cau.cs.kieler.core.kgraph.KGraphElement;
-import de.cau.cs.kieler.core.kgraph.KGraphPackage;
-import de.cau.cs.kieler.core.kgraph.KLabeledGraphElement;
 import de.cau.cs.kieler.core.properties.IProperty;
 import de.cau.cs.kieler.core.properties.Property;
 import de.cau.cs.kieler.core.ui.util.MonitoredOperation;
 import de.cau.cs.kieler.core.util.Pair;
+import de.cau.cs.kieler.klighd.piccolo.nodes.PAlignmentNode.HAlignment;
+import de.cau.cs.kieler.klighd.piccolo.nodes.PAlignmentNode.VAlignment;
 import de.cau.cs.kieler.klighd.piccolo.nodes.PSWTAdvancedPath;
 import de.cau.cs.kieler.klighd.piccolo.nodes.PSWTAdvancedPath.LineStyle;
-import de.cau.cs.kieler.klighd.piccolo.nodes.PSWTAdvancedText.Alignment;
 import de.cau.cs.kieler.klighd.piccolo.util.NodeUtil;
 import edu.umd.cs.piccolo.PNode;
 import edu.umd.cs.piccolo.util.PBounds;
+import edu.umd.cs.piccolox.swt.PSWTText;
 
 /**
  * The class which controls the transformation to Piccolo nodes and synchronization with the model
@@ -190,7 +192,7 @@ public class RenderingController {
         }
 
         // make sure the child area is attached to something in case of a node
-        if (repNode instanceof KNodeNode && childAreaNode == null) {
+        if (repNode instanceof KNodeNode && childAreaNode.getParent() == null) {
             createDefaultChildArea(renderingNode);
         }
     }
@@ -239,8 +241,7 @@ public class RenderingController {
 
                     // handle new, moved and removed styles
                     if (msg.getNotifier() instanceof KRendering
-                            && msg.getFeatureID(KRendering.class)
-                            == KRenderingPackage.KRENDERING__STYLES) {
+                            && msg.getFeatureID(KRendering.class) == KRenderingPackage.KRENDERING__STYLES) {
                         final KRendering rendering = (KRendering) msg.getNotifier();
                         MonitoredOperation.runInUI(new Runnable() {
                             public void run() {
@@ -543,15 +544,20 @@ public class RenderingController {
             }
 
             // Polyline
-            public PNodeController<?> caseKPolyline(final KPolyline object) {
-                return createPolyline(object, styles, childPropagatedStyles, parent, initialBounds);
+            public PNodeController<?> caseKPolyline(final KPolyline polyline) {
+                return createPolyline(polyline, styles, childPropagatedStyles, parent,
+                        initialBounds);
             }
 
-            // public PNodeController caseKArc(final KArc object) {};
-            // public PNodeController caseKPolygon(final KPolygon object) {};
-            // public PNodeController caseKImage(final KImage object) {};
-            // public PNodeController caseKCustomRendering(final KCustomRendering object) {};
-            // public PNodeController caseKText(final KText object) {};
+            // public PNodeController<?> caseKArc(final KArc object) {};
+            // public PNodeController<?> caseKPolygon(final KPolygon object) {};
+            // public PNodeController<?> caseKImage(final KImage object) {};
+            // public PNodeController<?> caseKCustomRendering(final KCustomRendering object) {};
+
+            // Text
+            public PNodeController<?> caseKText(final KText object) {
+                return null;
+            };
 
             // Child Area
             public PNodeController<?> caseKChildArea(final KChildArea childArea) {
@@ -737,6 +743,26 @@ public class RenderingController {
                 NodeUtil.applyTranslation(getNode(), (float) bounds.x, (float) bounds.y);
             }
         };
+    }
+
+    /**
+     * Creates a {@code PSWTText} representation for the {@code KText}.
+     * 
+     * @param text
+     *            the text rendering
+     * @param styles
+     *            the styles container for the rendering
+     * @param propagatedStyles
+     *            the styles propagated to the rendering's children
+     * @param parent
+     *            the parent Piccolo node
+     * @param initialBounds
+     *            the initial bounds
+     * @return the controller for the created Piccolo node
+     */
+    public PNodeController<PSWTText> createText(final KText text, final Styles styles,
+            final List<KStyle> propagatedStyles, final PNode parent, final PBounds initialBounds) {
+        return null;
     }
 
     /**
@@ -1196,20 +1222,31 @@ public class RenderingController {
         if (styles.horizontalAlignment != null) {
             switch (styles.horizontalAlignment.getHorizontalAlignment()) {
             case LEFT:
-                controller.setHorizontalAlignment(Alignment.LEFT);
+                controller.setHorizontalAlignment(HAlignment.LEFT);
                 break;
             case RIGHT:
-                controller.setVerticalAlignment(Alignment.RIGHT);
+                controller.setHorizontalAlignment(HAlignment.RIGHT);
                 break;
             case CENTER:
             default:
-                controller.setVerticalAlignment(Alignment.CENTER);
+                controller.setHorizontalAlignment(HAlignment.CENTER);
                 break;
             }
         }
         // apply vertical alignment
         if (styles.verticalAlignment != null) {
-            // TODO extend the alignment node so it supports vertical alignment
+            switch (styles.verticalAlignment.getVerticalAlignment()) {
+            case TOP:
+                controller.setVerticalAlignment(VAlignment.TOP);
+                break;
+            case BOTTOM:
+                controller.setVerticalAlignment(VAlignment.BOTTOM);
+                break;
+            case CENTER:
+            default:
+                controller.setVerticalAlignment(VAlignment.CENTER);
+                break;
+            }
         }
     }
 

@@ -17,8 +17,6 @@ import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.impl.AdapterImpl;
 
 import de.cau.cs.kieler.core.kgraph.KNode;
-import de.cau.cs.kieler.core.properties.IProperty;
-import de.cau.cs.kieler.core.properties.Property;
 import de.cau.cs.kieler.core.ui.util.MonitoredOperation;
 import de.cau.cs.kieler.core.util.IWrapper;
 import de.cau.cs.kieler.kiml.klayoutdata.KLayoutDataPackage;
@@ -48,7 +46,7 @@ public class KNodeNode extends PZIndexNode implements INode, IWrapper<KNode> {
 
     /** the parent node. */
     private INode parent;
-    
+
     /** the rendering controller. */
     private RenderingController renderingController;
 
@@ -94,7 +92,7 @@ public class KNodeNode extends PZIndexNode implements INode, IWrapper<KNode> {
     /**
      * Creates the rendering.
      */
-    public void createRendering() {
+    public void updateRendering() {
         if (renderingController == null) {
             renderingController = new RenderingController(this);
             renderingController.initialize();
@@ -112,42 +110,39 @@ public class KNodeNode extends PZIndexNode implements INode, IWrapper<KNode> {
             // register adapter on the shape layout to stay in sync
             shapeLayout.eAdapters().add(new AdapterImpl() {
                 public void notifyChanged(final Notification notification) {
-                    Object notifier = notification.getNotifier();
-                    if (notifier == shapeLayout) {
-                        switch (notification.getFeatureID(KShapeLayout.class)) {
-                        case KLayoutDataPackage.KSHAPE_LAYOUT__XPOS:
-                            MonitoredOperation.runInUI(new Runnable() {
-                                public void run() {
-                                    PAffineTransform transform = getTransformReference(true);
-                                    double oldX = transform.getTranslateX();
-                                    translate(shapeLayout.getXpos() - oldX, 0);
-                                }
-                            }, false);
-                            break;
-                        case KLayoutDataPackage.KSHAPE_LAYOUT__YPOS:
-                            MonitoredOperation.runInUI(new Runnable() {
-                                public void run() {
-                                    PAffineTransform transform = getTransformReference(true);
-                                    double oldY = transform.getTranslateY();
-                                    translate(0, shapeLayout.getYpos() - oldY);
-                                }
-                            }, false);
-                            break;
-                        case KLayoutDataPackage.KSHAPE_LAYOUT__WIDTH:
-                            MonitoredOperation.runInUI(new Runnable() {
-                                public void run() {
-                                    setWidth(shapeLayout.getWidth());
-                                }
-                            }, false);
-                            break;
-                        case KLayoutDataPackage.KSHAPE_LAYOUT__HEIGHT:
-                            MonitoredOperation.runInUI(new Runnable() {
-                                public void run() {
-                                    setHeight(shapeLayout.getHeight());
-                                }
-                            }, false);
-                            break;
-                        }
+                    switch (notification.getFeatureID(KShapeLayout.class)) {
+                    case KLayoutDataPackage.KSHAPE_LAYOUT__XPOS:
+                        MonitoredOperation.runInUI(new Runnable() {
+                            public void run() {
+                                PAffineTransform transform = getTransformReference(true);
+                                double oldX = transform.getTranslateX();
+                                translate(shapeLayout.getXpos() - oldX, 0);
+                            }
+                        }, false);
+                        break;
+                    case KLayoutDataPackage.KSHAPE_LAYOUT__YPOS:
+                        MonitoredOperation.runInUI(new Runnable() {
+                            public void run() {
+                                PAffineTransform transform = getTransformReference(true);
+                                double oldY = transform.getTranslateY();
+                                translate(0, shapeLayout.getYpos() - oldY);
+                            }
+                        }, false);
+                        break;
+                    case KLayoutDataPackage.KSHAPE_LAYOUT__WIDTH:
+                        MonitoredOperation.runInUI(new Runnable() {
+                            public void run() {
+                                setWidth(shapeLayout.getWidth());
+                            }
+                        }, false);
+                        break;
+                    case KLayoutDataPackage.KSHAPE_LAYOUT__HEIGHT:
+                        MonitoredOperation.runInUI(new Runnable() {
+                            public void run() {
+                                setHeight(shapeLayout.getHeight());
+                            }
+                        }, false);
+                        break;
                     }
                 }
             });
@@ -174,5 +169,5 @@ public class KNodeNode extends PZIndexNode implements INode, IWrapper<KNode> {
     public KChildAreaNode getChildArea() {
         return renderingController.getChildAreaNode();
     }
-    
+
 }

@@ -18,12 +18,17 @@ package de.cau.cs.kieler.klighd.piccolo.krendering;
 
 import java.util.List;
 
+import org.eclipse.emf.common.notify.Notification;
+import org.eclipse.emf.common.notify.impl.AdapterImpl;
+
 import de.cau.cs.kieler.core.kgraph.KEdge;
+import de.cau.cs.kieler.core.kgraph.KGraphPackage;
 import de.cau.cs.kieler.core.kgraph.KNode;
-import de.cau.cs.kieler.core.properties.IProperty;
-import de.cau.cs.kieler.core.properties.Property;
+import de.cau.cs.kieler.core.ui.util.MonitoredOperation;
 import de.cau.cs.kieler.klighd.piccolo.nodes.PZIndexNode;
+import edu.umd.cs.piccolo.PNode;
 import edu.umd.cs.piccolo.util.PPaintContext;
+import edu.umd.cs.piccolo.util.PPickPath;
 
 /**
  * A Piccolo node for the {@code KChildArea}.
@@ -33,10 +38,6 @@ import edu.umd.cs.piccolo.util.PPaintContext;
 public class KChildAreaNode extends PZIndexNode {
 
     private static final long serialVersionUID = -403773990520864787L;
-
-    /** the property for remembering load delayed target edges. */
-    private static final IProperty<List<KEdge>> DELAYED_TARGET_EDGES = new Property<List<KEdge>>(
-            "klighd.piccolo.delayedTargetEges");
 
     /** the number of z-layers (nodes and edges). */
     private static final int Z_LAYERS = 2;
@@ -60,6 +61,7 @@ public class KChildAreaNode extends PZIndexNode {
     public KChildAreaNode(final INode containingNode) {
         super(Z_LAYERS);
         this.containingNode = containingNode;
+        setPickable(false);
     }
 
     /**
@@ -81,39 +83,124 @@ public class KChildAreaNode extends PZIndexNode {
     public void populate(final KNode node) {
         // create the nodes
         for (KNode child : node.getChildren()) {
-            // create the Piccolo node for the child node
-            KNodeNode nodeNode = new KNodeNode(child, containingNode);
-            addNode(nodeNode);
+            addNode(child);
         }
 
         // create the edges
-        for (KNode child : node.getChildren()) {
-            for (KEdge edge : child.getOutgoingEdges()) {
-                KNode target = edge.getTarget();
-                KNode parent = findLowestCommonAncestor(edge.getSource(), edge.getTarget());
+        for (KNode source : node.getChildren()) {
+            for (KEdge edge : source.getOutgoingEdges()) {
                 // create the Piccolo node for the edge
                 KEdgeNode edgeNode = new KEdgeNode(edge);
+                addChild(edgeNode, EDGE_LAYER);
                 edgeNode.updateLayout();
-                addChild(edgeNode);
-
-                // create the edge's rendering
                 edgeNode.createRendering();
             }
         }
+
+        // add an adapter on the node's children
+        node.eAdapters().add(new AdapterImpl() {
+            public void notifyChanged(final Notification notification) {
+                if (notification.getFeatureID(KNode.class) == KGraphPackage.KNODE__CHILDREN) {
+                    switch (notification.getEventType()) {
+                    case Notification.ADD: {
+                        final KNode addedNode = (KNode) notification.getNewValue();
+                        MonitoredOperation.runInUI(new Runnable() {
+                            public void run() {
+                                addNode(addedNode);
+                            }
+                        }, false);
+                        break;
+                    }
+                    case Notification.ADD_MANY: {
+                        @SuppressWarnings("unchecked")
+                        final List<KNode> addedNodes = (List<KNode>) notification.getNewValue();
+                        MonitoredOperation.runInUI(new Runnable() {
+                            public void run() {
+                                for (KNode addedNode : addedNodes) {
+                                    addNode(addedNode);
+                                }
+                            }
+                        }, false);
+                        break;
+                    }
+                    case Notification.REMOVE: {
+                        final KNode removedNode = (KNode) notification.getOldValue();
+                        MonitoredOperation.runInUI(new Runnable() {
+                            public void run() {
+                                removeNode(removedNode);
+                            }
+                        }, false);
+                        break;
+                    }
+                    case Notification.REMOVE_MANY: {
+                        @SuppressWarnings("unchecked")
+                        final List<KNode> removedNodes = (List<KNode>) notification.getOldValue();
+                        MonitoredOperation.runInUI(new Runnable() {
+                            public void run() {
+                                for (KNode removedNode : removedNodes) {
+                                    removeNode(removedNode);
+                                }
+                            }
+                        }, false);
+                        break;
+                    }
+                    }
+                }
+            }
+        });
     }
 
     /**
-     * Adds a node to this child area.
+     * Adds the representation for the given node to this child area.
      * 
      * @param node
      *            the node
      */
-    private void addNode(final KNodeNode node) {
-        node.updateLayout();
-        addChild(node, NODE_LAYER);
-        node.createRendering();
+    private void addNode(final KNode node) {
+        RenderingContextData data = RenderingContextData.get(node);
+        INode nodeRep = data.getProperty(INode.PREPRESENTATION);
+
+        KNodeNode nodeNode;
+        if (nodeRep instanceof KNodeTopNode) {
+            // if the node is the current top-node something went wrong
+            throw new RuntimeException("The top-node can never be made a child node");
+        } else {
+            nodeNode = (KNodeNode) nodeRep;
+        }
+
+        // if there is no Piccolo representation for the node create it
+        if (nodeNode == null) {
+            nodeNode = new KNodeNode(node, containingNode);
+            nodeNode.updateLayout();
+        }
+
+        // add the node
+        addChild((PNode) nodeNode, NODE_LAYER);
+        nodeNode.updateRendering();
         // TODO remove auto expand when other means are available
-        node.expand();
+        nodeNode.expand();
+    }
+
+    /**
+     * Removes the representation for the given node from this child area.
+     * 
+     * @param node
+     *            the node
+     */
+    private void removeNode(final KNode node) {
+        RenderingContextData data = RenderingContextData.get(node);
+        INode nodeRep = data.getProperty(INode.PREPRESENTATION);
+
+        KNodeNode nodeNode;
+        if (nodeRep instanceof KNodeTopNode) {
+            // if the node is the current top-node something went wrong
+            throw new RuntimeException("The top-node can never be removed from a parent node");
+        } else {
+            nodeNode = (KNodeNode) nodeRep;
+        }
+
+        // remove the node representation from the containing child area
+        nodeNode.removeFromParent();
     }
 
     /**
@@ -122,35 +209,8 @@ public class KChildAreaNode extends PZIndexNode {
      * @param edge
      *            the edge
      */
-    private void addEdge(final KEdgeNode edge) {
+    public void addEdge(final KEdgeNode edge) {
         addChild(edge, EDGE_LAYER);
-    }
-
-    /**
-     * Returns the lowest common ancestor to both given nodes.
-     * 
-     * @param initialNode1
-     *            the first node
-     * @param initialNode2
-     *            the second node
-     * @return the lowest common ancestor
-     */
-    private KNode findLowestCommonAncestor(final KNode initialNode1, final KNode initialNode2) {
-        KNode node1 = initialNode1.getParent();
-        while (node1 != null) {
-            KNode node2 = initialNode2.getParent();
-            while (node2 != null) {
-                if (node1 == node2) {
-                    // common ancestor found
-                    return node1;
-                }
-                node2 = node2.getParent();
-            }
-            node1 = node1.getParent();
-        }
-
-        // no common ancestor
-        return null;
     }
 
     /**
@@ -171,6 +231,34 @@ public class KChildAreaNode extends PZIndexNode {
         if (clip) {
             paintContext.popClip(getBoundsReference());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean fullPick(final PPickPath pickPath) {
+        if (clip) {
+            // never pick the child area and only pick children in the clipped area
+            if (getVisible() && getChildrenPickable() && intersects(pickPath.getPickBounds())) {
+                pickPath.pushNode(this);
+                pickPath.pushTransform(getTransformReference(false));
+
+                int count = getChildrenCount();
+                for (int i = count - 1; i >= 0; i--) {
+                    PNode child = getChild(i);
+                    if (child.fullPick(pickPath)) {
+                        return true;
+                    }
+                }
+
+                pickPath.popTransform(getTransformReference(false));
+                pickPath.popNode(this);
+            }
+        } else {
+            return super.fullPick(pickPath);
+        }
+        return false;
     }
 
 }

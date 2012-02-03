@@ -18,8 +18,9 @@ package de.cau.cs.kieler.klighd.piccolo.krendering;
 
 import java.awt.Color;
 
+import de.cau.cs.kieler.klighd.piccolo.nodes.PAlignmentNode.HAlignment;
+import de.cau.cs.kieler.klighd.piccolo.nodes.PAlignmentNode.VAlignment;
 import de.cau.cs.kieler.klighd.piccolo.nodes.PSWTAdvancedPath.LineStyle;
-import de.cau.cs.kieler.klighd.piccolo.nodes.PSWTAdvancedText.Alignment;
 import edu.umd.cs.piccolo.PNode;
 import edu.umd.cs.piccolo.util.PBounds;
 
@@ -123,7 +124,7 @@ public abstract class PNodeController<T extends PNode> {
      * @param alignment
      *            the horizontal alignment
      */
-    public void setHorizontalAlignment(final Alignment alignment) {
+    public void setHorizontalAlignment(final HAlignment alignment) {
         // do nothing
     }
 
@@ -133,7 +134,7 @@ public abstract class PNodeController<T extends PNode> {
      * @param alignment
      *            the vertical alignment
      */
-    public void setVerticalAlignment(final Alignment alignment) {
+    public void setVerticalAlignment(final VAlignment alignment) {
         // do nothing
     }
 
