@@ -12,6 +12,6 @@ Export-Package: de.cau.cs.kieler.core.krendering,
  de.cau.cs.kieler.core.krendering.util
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.emf.ecore;visibility:=reexport,
- de.cau.cs.kieler.core;bundle-version="0.7.0",
+ de.cau.cs.kieler.core,
  de.cau.cs.kieler.core.kgraph;visibility:=reexport
 Bundle-ActivationPolicy: lazy

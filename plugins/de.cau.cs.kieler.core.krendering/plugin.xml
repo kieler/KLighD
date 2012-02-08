@@ -13,7 +13,7 @@
    <extension point="org.eclipse.emf.ecore.generated_package">
       <package
             uri="http://kieler.cs.cau.de/KRendering"
-            class="krendering.KRenderingPackage"
+            class="de.cau.cs.kieler.core.krendering.KRenderingPackage"
             genModel="model/krendering.genmodel"/>
    </extension>
 
