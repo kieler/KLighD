@@ -87,13 +87,9 @@ public class KChildAreaNode extends PZIndexNode {
         }
 
         // create the edges
-        for (KNode source : node.getChildren()) {
-            for (KEdge edge : source.getOutgoingEdges()) {
-                // create the Piccolo node for the edge
-                KEdgeNode edgeNode = new KEdgeNode(edge);
-                addChild(edgeNode, EDGE_LAYER);
-                edgeNode.updateLayout();
-                edgeNode.createRendering();
+        for (KNode child : node.getChildren()) {
+            for (KEdge edge : child.getOutgoingEdges()) {
+                handleEdge(edge);
             }
         }
 
@@ -156,7 +152,7 @@ public class KChildAreaNode extends PZIndexNode {
      * @param node
      *            the node
      */
-    private void addNode(final KNode node) {
+    public void addNode(final KNode node) {
         RenderingContextData data = RenderingContextData.get(node);
         INode nodeRep = data.getProperty(INode.PREPRESENTATION);
 
@@ -172,11 +168,11 @@ public class KChildAreaNode extends PZIndexNode {
         if (nodeNode == null) {
             nodeNode = new KNodeNode(node, containingNode);
             nodeNode.updateLayout();
+            nodeNode.updateRendering();
         }
 
         // add the node
         addChild((PNode) nodeNode, NODE_LAYER);
-        nodeNode.updateRendering();
         // TODO remove auto expand when other means are available
         nodeNode.expand();
     }
@@ -204,12 +200,31 @@ public class KChildAreaNode extends PZIndexNode {
     }
 
     /**
-     * Adds an edge to this child area.
+     * Handles the creation of the given edge if necessary.
      * 
      * @param edge
      *            the edge
      */
-    public void addEdge(final KEdgeNode edge) {
+    private void handleEdge(final KEdge edge) {
+        RenderingContextData data = RenderingContextData.get(edge);
+        KEdgeNode edgeRep = data.getProperty(KEdgeNode.PREPRESENTATION);
+        
+        // once created edges manage themselves and can be ignored
+        if (edgeRep == null) {
+            edgeRep = new KEdgeNode(edge);
+            edgeRep.initialize();
+            edgeRep.updateLayout();
+            edgeRep.updateRendering();
+        }
+    }
+
+    /**
+     * Adds a representation of an edge to this child area.
+     * 
+     * @param edge
+     *            the edge
+     */
+    public void addEdgeNode(final KEdgeNode edge) {
         addChild(edge, EDGE_LAYER);
     }
 

@@ -14,12 +14,18 @@
 package de.cau.cs.kieler.klighd.piccolo.krendering;
 
 import java.awt.geom.Point2D;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.List;
 
 import org.eclipse.emf.common.notify.Notification;
+import org.eclipse.emf.common.notify.impl.AdapterImpl;
 import org.eclipse.emf.ecore.util.EContentAdapter;
 
+import com.google.common.collect.Lists;
+
 import de.cau.cs.kieler.core.kgraph.KEdge;
+import de.cau.cs.kieler.core.kgraph.KGraphPackage;
 import de.cau.cs.kieler.core.kgraph.KNode;
 import de.cau.cs.kieler.core.properties.IProperty;
 import de.cau.cs.kieler.core.properties.Property;
@@ -29,6 +35,7 @@ import de.cau.cs.kieler.kiml.klayoutdata.KEdgeLayout;
 import de.cau.cs.kieler.kiml.klayoutdata.KLayoutDataPackage;
 import de.cau.cs.kieler.kiml.klayoutdata.KPoint;
 import de.cau.cs.kieler.klighd.piccolo.nodes.PChildRepresentedNode;
+import edu.umd.cs.piccolo.PNode;
 
 /**
  * The Piccolo node for representing a {@code KEdge}.
@@ -38,6 +45,10 @@ import de.cau.cs.kieler.klighd.piccolo.nodes.PChildRepresentedNode;
 public class KEdgeNode extends PChildRepresentedNode implements IWrapper<KEdge> {
 
     private static final long serialVersionUID = -1867615197736299487L;
+
+    /** the property for the Piccolo representation. */
+    public static final IProperty<KEdgeNode> PREPRESENTATION = new Property<KEdgeNode>(
+            "klighd.piccolo.prepresentation");
 
     /** the property name for changes of the edge's bend points. */
     public static final String PROPERTY_BEND_POINTS = "bendPoints";
@@ -55,7 +66,20 @@ public class KEdgeNode extends PChildRepresentedNode implements IWrapper<KEdge> 
     private Point2D[] bendPoints = new Point2D[2];
 
     /** the rendering controller. */
-    private RenderingController renderingController;
+    private RenderingController renderingController = null;
+
+    /** the current parent child area. */
+    private KChildAreaNode childAreaNode = null;
+    /** the source node. */
+    private KNodeNode sourceNode = null;
+    /** the target node. */
+    private KNodeNode targetNode = null;
+
+    /** the current child area offset. */
+    private Point2D.Float offset = new Point2D.Float(0, 0);
+
+    /** the nodes currently observed by the update offset listener. */
+    private List<PNode> observedNodes = Lists.newLinkedList();
 
     /**
      * Constructs a Piccolo node for representing a {@code KEdge}.
@@ -66,6 +90,7 @@ public class KEdgeNode extends PChildRepresentedNode implements IWrapper<KEdge> 
     public KEdgeNode(final KEdge edge) {
         this.edge = edge;
         setPickable(true);
+        RenderingContextData.get(edge).setProperty(PREPRESENTATION, this);
     }
 
     /**
@@ -85,12 +110,14 @@ public class KEdgeNode extends PChildRepresentedNode implements IWrapper<KEdge> 
     }
 
     /**
-     * Creates the rendering.
+     * Updates the rendering.
      */
-    public void createRendering() {
+    public void updateRendering() {
         if (renderingController == null) {
             renderingController = new RenderingController(this);
             renderingController.initialize();
+        } else {
+            renderingController.updateRendering();
         }
     }
 
@@ -129,6 +156,103 @@ public class KEdgeNode extends PChildRepresentedNode implements IWrapper<KEdge> 
         }
     }
 
+    /** the listener on changes to the child area offset. */
+    private PropertyChangeListener updateOffsetListener = new PropertyChangeListener() {
+        public void propertyChange(final PropertyChangeEvent evt) {
+            offset.setLocation(0, 0);
+            PNode currentNode = sourceNode.getParent();
+            while (currentNode != null && currentNode != childAreaNode) {
+                currentNode.localToParent(offset);
+                currentNode = currentNode.getParent();
+            }
+        }
+    };
+
+    /**
+     * Updates the offset of the source parent to the child area containing the edge.
+     */
+    public void updateOffset() {
+        if (childAreaNode != null && sourceNode.getParent() != childAreaNode) {
+            // remove the update offset listener from all currently observed nodes
+            removeUpdateOffsetListeners();
+
+            // calculate the offset and register the update offset listener
+            offset.setLocation(0, 0);
+            PNode currentNode = sourceNode.getParent();
+            while (currentNode != null && currentNode != childAreaNode) {
+                currentNode.localToParent(offset);
+                currentNode.addPropertyChangeListener(PNode.PROPERTY_TRANSFORM,
+                        updateOffsetListener);
+                observedNodes.add(currentNode);
+                currentNode = currentNode.getParent();
+            }
+        } else {
+            offset.setLocation(0, 0);
+        }
+
+        // update the bend points for the new offset
+        updateBendPoints();
+    }
+
+    /**
+     * Updates the edge by determining the currently valid child area to contain it.
+     */
+    public void updateParent() {
+        sourceNode = getRepresentation(edge.getSource());
+        targetNode = getRepresentation(edge.getTarget());
+
+        // find the parent child area for the edge
+        findParent();
+
+        // update the offset
+        updateOffset();
+    }
+
+    /**
+     * Initializes the edge.
+     */
+    public void initialize() {
+        // update the edge parent
+        updateParent();
+
+        // register an adapter on the edge to stay in sync
+        edge.eAdapters().add(new AdapterImpl() {
+            public void notifyChanged(final Notification notification) {
+                int featureId = notification.getFeatureID(KEdge.class);
+                if (featureId == KGraphPackage.KEDGE__SOURCE
+                        || featureId == KGraphPackage.KEDGE__TARGET) {
+                    MonitoredOperation.runInUI(new Runnable() {
+                        public void run() {
+                            updateParent();
+                        }
+                    }, false);
+                }
+            }
+        });
+    }
+
+    /**
+     * Removes the edge from its current parent child area and adds it to the currently valid child
+     * area if possible.
+     */
+    private void findParent() {
+        // remove from the current parent
+        removeFromParent();
+        childAreaNode = null;
+
+        // if the edge misses a source or target node keep it floating
+        if (sourceNode != null && targetNode != null) {
+            KNode commonParent =
+                    findLowestCommonAncestor(sourceNode.getWrapped(), targetNode.getWrapped());
+            INode commonParentNode =
+                    RenderingContextData.get(commonParent).getProperty(INode.PREPRESENTATION);
+            if (commonParentNode != null) {
+                childAreaNode = commonParentNode.getChildArea();
+                childAreaNode.addEdgeNode(this);
+            }
+        }
+    }
+
     /**
      * Updates the bend points of this edge to the ones specified in the associated
      * {@code KEdgeLayout}.
@@ -139,14 +263,14 @@ public class KEdgeNode extends PChildRepresentedNode implements IWrapper<KEdge> 
             Point2D[] points = new Point2D[edgeLayout.getBendPoints().size() + 2];
             int i = 0;
             points[i++] =
-                    new Point2D.Float(edgeLayout.getSourcePoint().getX(), edgeLayout
-                            .getSourcePoint().getY());
+                    new Point2D.Float(offset.x + edgeLayout.getSourcePoint().getX(), offset.y
+                            + edgeLayout.getSourcePoint().getY());
             for (KPoint bend : edgeLayout.getBendPoints()) {
-                points[i++] = new Point2D.Float(bend.getX(), bend.getY());
+                points[i++] = new Point2D.Float(offset.x + bend.getX(), offset.y + bend.getY());
             }
             points[i] =
-                    new Point2D.Float(edgeLayout.getTargetPoint().getX(), edgeLayout
-                            .getTargetPoint().getY());
+                    new Point2D.Float(offset.x + edgeLayout.getTargetPoint().getX(), offset.y
+                            + edgeLayout.getTargetPoint().getY());
 
             // set the new bend points
             setBendPoints(points);
@@ -169,11 +293,16 @@ public class KEdgeNode extends PChildRepresentedNode implements IWrapper<KEdge> 
      * 
      * @param node
      *            the node
-     * @return the Piccolo representation or null if no representation is linked to this node
+     * @return the Piccolo representation or null if there is no representation for the node
      */
-    private INode getPiccoloRepresentation(final KNode node) {
-        RenderingContextData data = RenderingContextData.get(node);
-        return data.getProperty(INode.PREPRESENTATION);
+    private KNodeNode getRepresentation(final KNode node) {
+        if (node != null) {
+            INode nodeRep = RenderingContextData.get(node).getProperty(INode.PREPRESENTATION);
+            if (nodeRep instanceof KNodeNode) {
+                return (KNodeNode) nodeRep;
+            }
+        }
+        return null;
     }
 
     /**
@@ -201,6 +330,18 @@ public class KEdgeNode extends PChildRepresentedNode implements IWrapper<KEdge> 
 
         // no common ancestor
         return null;
+    }
+
+    /**
+     * Removes the update offset listener from all currently observed nodes.
+     */
+    private void removeUpdateOffsetListeners() {
+        PNode observedNode = observedNodes.remove(0);
+        while (observedNode != null) {
+            observedNode.removePropertyChangeListener(PNode.PROPERTY_TRANSFORM,
+                    updateOffsetListener);
+            observedNode = observedNodes.remove(0);
+        }
     }
 
 }

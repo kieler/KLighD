@@ -90,12 +90,14 @@ public class KNodeNode extends PZIndexNode implements INode, IWrapper<KNode> {
     }
 
     /**
-     * Creates the rendering.
+     * Updates the rendering.
      */
     public void updateRendering() {
         if (renderingController == null) {
             renderingController = new RenderingController(this);
             renderingController.initialize();
+        } else {
+            renderingController.updateRendering();
         }
     }
 
@@ -152,7 +154,6 @@ public class KNodeNode extends PZIndexNode implements INode, IWrapper<KNode> {
         if (shapeLayout != null) {
             NodeUtil.applySmartBounds(this, shapeLayout.getXpos(), shapeLayout.getYpos(),
                     shapeLayout.getWidth(), shapeLayout.getHeight());
-
         }
     }
 

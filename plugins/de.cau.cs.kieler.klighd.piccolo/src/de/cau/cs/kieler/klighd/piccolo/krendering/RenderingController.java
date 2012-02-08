@@ -241,7 +241,8 @@ public class RenderingController {
 
                     // handle new, moved and removed styles
                     if (msg.getNotifier() instanceof KRendering
-                            && msg.getFeatureID(KRendering.class) == KRenderingPackage.KRENDERING__STYLES) {
+                            && msg.getFeatureID(KRendering.class)
+                            == KRenderingPackage.KRENDERING__STYLES) {
                         final KRendering rendering = (KRendering) msg.getNotifier();
                         MonitoredOperation.runInUI(new Runnable() {
                             public void run() {

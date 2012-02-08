@@ -61,20 +61,14 @@ public class KNodeTopNode extends PEmptyNode implements INode, IWrapper<KNode> {
      * {@inheritDoc}
      */
     public void expand() {
-        if (!expanded) {
-            expanded = true;
-            childArea.populate(node);
-        }
+        childArea.populate(node);
     }
 
     /**
      * {@inheritDoc}
      */
     public void collapse() {
-        if (expanded) {
-            expanded = false;
-            // TODO collapse it
-        }
+        // TODO collapse it
     }
 
     /**
