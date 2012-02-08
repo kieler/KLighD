@@ -140,5 +140,6 @@
     <genClasses ecoreClass="krendering.ecore#//KRightPosition"/>
     <genClasses ecoreClass="krendering.ecore#//KTopPosition"/>
     <genClasses ecoreClass="krendering.ecore#//KBottomPosition"/>
+    <genClasses ecoreClass="krendering.ecore#//KSpline"/>
   </genPackages>
 </genmodel:GenModel>

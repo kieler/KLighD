@@ -174,4 +174,5 @@
   <eClassifiers xsi:type="ecore:EClass" name="KRightPosition" eSuperTypes="#//KXPosition"/>
   <eClassifiers xsi:type="ecore:EClass" name="KTopPosition" eSuperTypes="#//KYPosition"/>
   <eClassifiers xsi:type="ecore:EClass" name="KBottomPosition" eSuperTypes="#//KYPosition"/>
+  <eClassifiers xsi:type="ecore:EClass" name="KSpline" eSuperTypes="#//KPolyline"/>
 </ecore:EPackage>

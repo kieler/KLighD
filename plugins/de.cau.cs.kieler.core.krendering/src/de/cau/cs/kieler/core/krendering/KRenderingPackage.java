@@ -2386,6 +2386,97 @@ public interface KRenderingPackage extends EPackage {
     int KBOTTOM_POSITION_FEATURE_COUNT = KY_POSITION_FEATURE_COUNT + 0;
 
     /**
+     * The meta object id for the '{@link de.cau.cs.kieler.core.krendering.impl.KSplineImpl <em>KSpline</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see de.cau.cs.kieler.core.krendering.impl.KSplineImpl
+     * @see de.cau.cs.kieler.core.krendering.impl.KRenderingPackageImpl#getKSpline()
+     * @generated
+     */
+    int KSPLINE = 39;
+
+    /**
+     * The feature id for the '<em><b>Properties</b></em>' map.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KSPLINE__PROPERTIES = KPOLYLINE__PROPERTIES;
+
+    /**
+     * The feature id for the '<em><b>Persistent Entries</b></em>' containment reference list.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KSPLINE__PERSISTENT_ENTRIES = KPOLYLINE__PERSISTENT_ENTRIES;
+
+    /**
+     * The feature id for the '<em><b>Parent</b></em>' container reference.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KSPLINE__PARENT = KPOLYLINE__PARENT;
+
+    /**
+     * The feature id for the '<em><b>References</b></em>' reference list.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KSPLINE__REFERENCES = KPOLYLINE__REFERENCES;
+
+    /**
+     * The feature id for the '<em><b>Placement Data</b></em>' containment reference.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KSPLINE__PLACEMENT_DATA = KPOLYLINE__PLACEMENT_DATA;
+
+    /**
+     * The feature id for the '<em><b>Styles</b></em>' containment reference list.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KSPLINE__STYLES = KPOLYLINE__STYLES;
+
+    /**
+     * The feature id for the '<em><b>Children</b></em>' containment reference list.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KSPLINE__CHILDREN = KPOLYLINE__CHILDREN;
+
+    /**
+     * The feature id for the '<em><b>Child Placement</b></em>' containment reference.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KSPLINE__CHILD_PLACEMENT = KPOLYLINE__CHILD_PLACEMENT;
+
+    /**
+     * The number of structural features of the '<em>KSpline</em>' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KSPLINE_FEATURE_COUNT = KPOLYLINE_FEATURE_COUNT + 0;
+
+    /**
      * The meta object id for the '{@link de.cau.cs.kieler.core.krendering.LineStyle <em>Line Style</em>}' enum.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -2393,7 +2484,7 @@ public interface KRenderingPackage extends EPackage {
      * @see de.cau.cs.kieler.core.krendering.impl.KRenderingPackageImpl#getLineStyle()
      * @generated
      */
-    int LINE_STYLE = 39;
+    int LINE_STYLE = 40;
 
     /**
      * The meta object id for the '{@link de.cau.cs.kieler.core.krendering.HorizontalAlignment <em>Horizontal Alignment</em>}' enum.
@@ -2403,7 +2494,7 @@ public interface KRenderingPackage extends EPackage {
      * @see de.cau.cs.kieler.core.krendering.impl.KRenderingPackageImpl#getHorizontalAlignment()
      * @generated
      */
-    int HORIZONTAL_ALIGNMENT = 40;
+    int HORIZONTAL_ALIGNMENT = 41;
 
     /**
      * The meta object id for the '{@link de.cau.cs.kieler.core.krendering.VerticalAlignment <em>Vertical Alignment</em>}' enum.
@@ -2413,7 +2504,7 @@ public interface KRenderingPackage extends EPackage {
      * @see de.cau.cs.kieler.core.krendering.impl.KRenderingPackageImpl#getVerticalAlignment()
      * @generated
      */
-    int VERTICAL_ALIGNMENT = 41;
+    int VERTICAL_ALIGNMENT = 42;
 
 
     /**
@@ -3368,6 +3459,16 @@ public interface KRenderingPackage extends EPackage {
     EClass getKBottomPosition();
 
     /**
+     * Returns the meta object for class '{@link de.cau.cs.kieler.core.krendering.KSpline <em>KSpline</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for class '<em>KSpline</em>'.
+     * @see de.cau.cs.kieler.core.krendering.KSpline
+     * @generated
+     */
+    EClass getKSpline();
+
+    /**
      * Returns the meta object for enum '{@link de.cau.cs.kieler.core.krendering.LineStyle <em>Line Style</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -4216,6 +4317,16 @@ public interface KRenderingPackage extends EPackage {
          * @generated
          */
         EClass KBOTTOM_POSITION = eINSTANCE.getKBottomPosition();
+
+        /**
+         * The meta object literal for the '{@link de.cau.cs.kieler.core.krendering.impl.KSplineImpl <em>KSpline</em>}' class.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @see de.cau.cs.kieler.core.krendering.impl.KSplineImpl
+         * @see de.cau.cs.kieler.core.krendering.impl.KRenderingPackageImpl#getKSpline()
+         * @generated
+         */
+        EClass KSPLINE = eINSTANCE.getKSpline();
 
         /**
          * The meta object literal for the '{@link de.cau.cs.kieler.core.krendering.LineStyle <em>Line Style</em>}' enum.

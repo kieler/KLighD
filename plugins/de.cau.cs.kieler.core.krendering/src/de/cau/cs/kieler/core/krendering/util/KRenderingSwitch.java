@@ -401,6 +401,18 @@ public class KRenderingSwitch<T> extends Switch<T> {
                 if (result == null) result = defaultCase(theEObject);
                 return result;
             }
+            case KRenderingPackage.KSPLINE: {
+                KSpline kSpline = (KSpline)theEObject;
+                T result = caseKSpline(kSpline);
+                if (result == null) result = caseKPolyline(kSpline);
+                if (result == null) result = caseKContainerRendering(kSpline);
+                if (result == null) result = caseKRendering(kSpline);
+                if (result == null) result = caseKGraphData(kSpline);
+                if (result == null) result = caseEMapPropertyHolder(kSpline);
+                if (result == null) result = caseIPropertyHolder(kSpline);
+                if (result == null) result = defaultCase(theEObject);
+                return result;
+            }
             default: return defaultCase(theEObject);
         }
     }
@@ -987,6 +999,21 @@ public class KRenderingSwitch<T> extends Switch<T> {
      * @generated
      */
     public T caseKBottomPosition(KBottomPosition object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>KSpline</em>'.
+     * <!-- begin-user-doc -->
+     * This implementation returns null;
+     * returning a non-null result will terminate the switch.
+     * <!-- end-user-doc -->
+     * @param object the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>KSpline</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseKSpline(KSpline object) {
         return null;
     }
 

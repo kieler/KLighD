@@ -100,6 +100,7 @@ public class KRenderingFactoryImpl extends EFactoryImpl implements KRenderingFac
             case KRenderingPackage.KRIGHT_POSITION: return createKRightPosition();
             case KRenderingPackage.KTOP_POSITION: return createKTopPosition();
             case KRenderingPackage.KBOTTOM_POSITION: return createKBottomPosition();
+            case KRenderingPackage.KSPLINE: return createKSpline();
             default:
                 throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
         }
@@ -461,6 +462,16 @@ public class KRenderingFactoryImpl extends EFactoryImpl implements KRenderingFac
     public KBottomPosition createKBottomPosition() {
         KBottomPositionImpl kBottomPosition = new KBottomPositionImpl();
         return kBottomPosition;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public KSpline createKSpline() {
+        KSplineImpl kSpline = new KSplineImpl();
+        return kSpline;
     }
 
     /**
