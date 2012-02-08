@@ -28,19 +28,25 @@ public interface IKielerProgressMonitor {
     float UNKNOWN_WORK = -1;
 
     /**
-     * Notifies that the task will begin after this method has been called. This
-     * method will have no effect is the monitor is closed.
+     * Notifies that the task will begin after this method has been called.
      * 
      * @param name readable name of the new task
      * @param totalWork total amount of work units, or <code>UNKNOWN_WORK</code>
      *            if this is not specified
+     * @return true if the task has not begun before, false otherwise
      */
-    void begin(String name, float totalWork);
+    boolean begin(String name, float totalWork);
+    
+    /**
+     * Returns true if the task has already begun and is not done yet.
+     * 
+     * @return true if the task is running
+     */
+    boolean isRunning();
 
     /**
-     * Notifies that the current task is done and closes the monitor. This
-     * method may be called multiple times, without any effect after the first
-     * time.
+     * Notifies that the current task is done and closes the monitor. This method may be called
+     * multiple times after the task has begun, without any effect after the first time.
      */
     void done();
 
