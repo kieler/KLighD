@@ -1,0 +1,46 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: KIELER KGraph Textual Editing Infrastructure
+Bundle-Vendor: Christian-Albrechts-Universität zu Kiel
+Bundle-Version: 0.1.0.qualifier
+Bundle-SymbolicName: de.cau.cs.kieler.core.kgraph.text;singleton:=true
+Bundle-ActivationPolicy: lazy
+Require-Bundle: org.eclipse.xtext;bundle-version="2.1.0";visibility:=reexport,
+ org.eclipse.xtext.xbase;bundle-version="2.1.0";resolution:=optional;visibility:=reexport,
+ org.apache.log4j;bundle-version="1.2.15";visibility:=reexport,
+ org.apache.commons.logging;bundle-version="1.0.4";resolution:=optional;visibility:=reexport,
+ org.eclipse.xtext.generator;resolution:=optional,
+ org.eclipse.emf.codegen.ecore;resolution:=optional,
+ org.eclipse.emf.mwe.utils;resolution:=optional,
+ org.eclipse.emf.mwe2.launch;resolution:=optional,
+ org.eclipse.xtext.util,
+ org.antlr.runtime,
+ de.cau.cs.kieler.core;bundle-version="0.7.0",
+ de.cau.cs.kieler.core.kgraph,
+ de.cau.cs.kieler.core.krendering,
+ de.cau.cs.kieler.kiml;bundle-version="0.10.0"
+Import-Package: org.apache.log4j,
+ org.apache.commons.logging
+Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Export-Package: de.cau.cs.kieler.core.kgraph.text,
+ de.cau.cs.kieler.core.kgraph.text.services,
+ de.cau.cs.kieler.core.kgraph.text.serializer,
+ de.cau.cs.kieler.core.kgraph.text.parser.antlr,
+ de.cau.cs.kieler.core.kgraph.text.parser.antlr.internal,
+ de.cau.cs.kieler.core.kgraph.text.scoping,
+ de.cau.cs.kieler.core.kgraph.text.formatting,
+ de.cau.cs.kieler.core.krendering.text,
+ de.cau.cs.kieler.core.krendering.text.services,
+ de.cau.cs.kieler.core.krendering.text.serializer,
+ de.cau.cs.kieler.core.krendering.text.parser.antlr,
+ de.cau.cs.kieler.core.krendering.text.parser.antlr.internal,
+ de.cau.cs.kieler.core.krendering.text.scoping,
+ de.cau.cs.kieler.core.krendering.text.formatting,
+ de.cau.cs.kieler.kiml.klayoutdata.text,
+ de.cau.cs.kieler.kiml.klayoutdata.text.services,
+ de.cau.cs.kieler.kiml.klayoutdata.text.serializer,
+ de.cau.cs.kieler.kiml.klayoutdata.text.parser.antlr,
+ de.cau.cs.kieler.kiml.klayoutdata.text.parser.antlr.internal,
+ de.cau.cs.kieler.kiml.klayoutdata.text.scoping,
+ de.cau.cs.kieler.kiml.klayoutdata.text.formatting
+

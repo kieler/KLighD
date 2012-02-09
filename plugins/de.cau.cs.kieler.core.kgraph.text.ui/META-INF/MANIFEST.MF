@@ -1,0 +1,25 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: KIELER KGraph Textual Editor
+Bundle-Vendor: Christian-Albrechts-Universität zu Kiel
+Bundle-Version: 0.1.0.qualifier
+Bundle-SymbolicName: de.cau.cs.kieler.core.kgraph.text.ui;singleton:=true
+Bundle-ActivationPolicy: lazy
+Require-Bundle: de.cau.cs.kieler.core.kgraph.text;visibility:=reexport,
+ org.eclipse.xtext.ui,
+ org.eclipse.ui.editors;bundle-version="3.5.0",
+ org.eclipse.ui.ide;bundle-version="3.5.0",
+ org.eclipse.xtext.ui.shared,
+ org.eclipse.ui,
+ org.antlr.runtime,
+ org.eclipse.compare
+Import-Package: org.apache.log4j,
+ org.apache.commons.logging
+Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Export-Package: de.cau.cs.kieler.core.kgraph.text.ui.contentassist,
+ de.cau.cs.kieler.core.kgraph.text.ui.contentassist.antlr,
+ de.cau.cs.kieler.core.krendering.text.ui.contentassist,
+ de.cau.cs.kieler.core.krendering.text.ui.contentassist.antlr,
+ de.cau.cs.kieler.kiml.klayoutdata.text.ui.contentassist,
+ de.cau.cs.kieler.kiml.klayoutdata.text.ui.contentassist.antlr
+Bundle-Activator: de.cau.cs.kieler.core.kgraph.text.ui.internal.KGraphActivator
