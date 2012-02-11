@@ -43,19 +43,57 @@ public class KLayoutDataGrammarAccess extends AbstractGrammarElementFinder {
 		private final Keyword cInsetsKeyword_7_0 = (Keyword)cGroup_7.eContents().get(0);
 		private final Assignment cInsetsAssignment_7_1 = (Assignment)cGroup_7.eContents().get(1);
 		private final RuleCall cInsetsKInsetsParserRuleCall_7_1_0 = (RuleCall)cInsetsAssignment_7_1.eContents().get(0);
-		private final Keyword cRightCurlyBracketKeyword_8 = (Keyword)cGroup.eContents().get(8);
+		private final Group cGroup_8 = (Group)cGroup.eContents().get(8);
+		private final Keyword cPersistentEntriesKeyword_8_0 = (Keyword)cGroup_8.eContents().get(0);
+		private final Keyword cColonKeyword_8_1 = (Keyword)cGroup_8.eContents().get(1);
+		private final Assignment cPersistentEntriesAssignment_8_2 = (Assignment)cGroup_8.eContents().get(2);
+		private final RuleCall cPersistentEntriesPersistentEntryParserRuleCall_8_2_0 = (RuleCall)cPersistentEntriesAssignment_8_2.eContents().get(0);
+		private final Group cGroup_8_3 = (Group)cGroup_8.eContents().get(3);
+		private final Keyword cCommaKeyword_8_3_0 = (Keyword)cGroup_8_3.eContents().get(0);
+		private final Assignment cPersistentEntriesAssignment_8_3_1 = (Assignment)cGroup_8_3.eContents().get(1);
+		private final RuleCall cPersistentEntriesPersistentEntryParserRuleCall_8_3_1_0 = (RuleCall)cPersistentEntriesAssignment_8_3_1.eContents().get(0);
+		private final Keyword cRightCurlyBracketKeyword_9 = (Keyword)cGroup.eContents().get(9);
 		
-		//KShapeLayout:
+		//KShapeLayout: //	{KShapeLayout}
+		////	'KShapeLayout'
+		////	'{'
+		////		('xpos' xpos=EFloat)?
+		////		('ypos' ypos=EFloat)?
+		////		('width' width=EFloat)?
+		////		('height' height=EFloat)?
+		////		('persistentEntries' '{' persistentEntries+=PersistentEntry ( "," persistentEntries+=PersistentEntry)* '}' )?
+		////		('insets' insets=KInsets)?
+		////    '}';
 		//	{KShapeLayout} "KShapeLayout" "{" ("xpos" xpos=EFloat)? ("ypos" ypos=EFloat)? ("width" width=EFloat)? ("height"
-		//	height=EFloat)? //		('persistentEntries' '{' persistentEntries+=PersistentEntry ( "," persistentEntries+=PersistentEntry)* '}' )?
-		//	("insets" insets=KInsets)? "}";
+		//	height=EFloat)? ("insets" insets=KInsets)? ("persistentEntries" ":" persistentEntries+=PersistentEntry (","
+		//	persistentEntries+=PersistentEntry)*)? "}";
 		public ParserRule getRule() { return rule; }
 
+		////	{KShapeLayout}
+		////	'KShapeLayout'
+		////	'{'
+		////		('xpos' xpos=EFloat)?
+		////		('ypos' ypos=EFloat)?
+		////		('width' width=EFloat)?
+		////		('height' height=EFloat)?
+		////		('persistentEntries' '{' persistentEntries+=PersistentEntry ( "," persistentEntries+=PersistentEntry)* '}' )?
+		////		('insets' insets=KInsets)?
+		////    '}';
 		//{KShapeLayout} "KShapeLayout" "{" ("xpos" xpos=EFloat)? ("ypos" ypos=EFloat)? ("width" width=EFloat)? ("height"
-		//height=EFloat)? //		('persistentEntries' '{' persistentEntries+=PersistentEntry ( "," persistentEntries+=PersistentEntry)* '}' )?
-		//("insets" insets=KInsets)? "}"
+		//height=EFloat)? ("insets" insets=KInsets)? ("persistentEntries" ":" persistentEntries+=PersistentEntry (","
+		//persistentEntries+=PersistentEntry)*)? "}"
 		public Group getGroup() { return cGroup; }
 
+		////	{KShapeLayout}
+		////	'KShapeLayout'
+		////	'{'
+		////		('xpos' xpos=EFloat)?
+		////		('ypos' ypos=EFloat)?
+		////		('width' width=EFloat)?
+		////		('height' height=EFloat)?
+		////		('persistentEntries' '{' persistentEntries+=PersistentEntry ( "," persistentEntries+=PersistentEntry)* '}' )?
+		////		('insets' insets=KInsets)?
+		////    '}';
 		//{KShapeLayout}
 		public Action getKShapeLayoutAction_0() { return cKShapeLayoutAction_0; }
 
@@ -125,8 +163,35 @@ public class KLayoutDataGrammarAccess extends AbstractGrammarElementFinder {
 		//KInsets
 		public RuleCall getInsetsKInsetsParserRuleCall_7_1_0() { return cInsetsKInsetsParserRuleCall_7_1_0; }
 
+		//("persistentEntries" ":" persistentEntries+=PersistentEntry ("," persistentEntries+=PersistentEntry)*)?
+		public Group getGroup_8() { return cGroup_8; }
+
+		//"persistentEntries"
+		public Keyword getPersistentEntriesKeyword_8_0() { return cPersistentEntriesKeyword_8_0; }
+
+		//":"
+		public Keyword getColonKeyword_8_1() { return cColonKeyword_8_1; }
+
+		//persistentEntries+=PersistentEntry
+		public Assignment getPersistentEntriesAssignment_8_2() { return cPersistentEntriesAssignment_8_2; }
+
+		//PersistentEntry
+		public RuleCall getPersistentEntriesPersistentEntryParserRuleCall_8_2_0() { return cPersistentEntriesPersistentEntryParserRuleCall_8_2_0; }
+
+		//("," persistentEntries+=PersistentEntry)*
+		public Group getGroup_8_3() { return cGroup_8_3; }
+
+		//","
+		public Keyword getCommaKeyword_8_3_0() { return cCommaKeyword_8_3_0; }
+
+		//persistentEntries+=PersistentEntry
+		public Assignment getPersistentEntriesAssignment_8_3_1() { return cPersistentEntriesAssignment_8_3_1; }
+
+		//PersistentEntry
+		public RuleCall getPersistentEntriesPersistentEntryParserRuleCall_8_3_1_0() { return cPersistentEntriesPersistentEntryParserRuleCall_8_3_1_0; }
+
 		//"}"
-		public Keyword getRightCurlyBracketKeyword_8() { return cRightCurlyBracketKeyword_8; }
+		public Keyword getRightCurlyBracketKeyword_9() { return cRightCurlyBracketKeyword_9; }
 	}
 
 	public class KInsetsElements extends AbstractParserRuleElementFinder {
@@ -227,91 +292,143 @@ public class KLayoutDataGrammarAccess extends AbstractGrammarElementFinder {
 		private final Group cGroup = (Group)rule.eContents().get(1);
 		private final Keyword cKEdgeLayoutKeyword_0 = (Keyword)cGroup.eContents().get(0);
 		private final Keyword cLeftCurlyBracketKeyword_1 = (Keyword)cGroup.eContents().get(1);
-		private final Group cGroup_2 = (Group)cGroup.eContents().get(2);
-		private final Keyword cBendPointsKeyword_2_0 = (Keyword)cGroup_2.eContents().get(0);
-		private final Keyword cLeftCurlyBracketKeyword_2_1 = (Keyword)cGroup_2.eContents().get(1);
-		private final Assignment cBendPointsAssignment_2_2 = (Assignment)cGroup_2.eContents().get(2);
-		private final RuleCall cBendPointsKPointParserRuleCall_2_2_0 = (RuleCall)cBendPointsAssignment_2_2.eContents().get(0);
-		private final Group cGroup_2_3 = (Group)cGroup_2.eContents().get(3);
-		private final Keyword cCommaKeyword_2_3_0 = (Keyword)cGroup_2_3.eContents().get(0);
-		private final Assignment cBendPointsAssignment_2_3_1 = (Assignment)cGroup_2_3.eContents().get(1);
-		private final RuleCall cBendPointsKPointParserRuleCall_2_3_1_0 = (RuleCall)cBendPointsAssignment_2_3_1.eContents().get(0);
-		private final Keyword cRightCurlyBracketKeyword_2_4 = (Keyword)cGroup_2.eContents().get(4);
-		private final Keyword cSourcePointKeyword_3 = (Keyword)cGroup.eContents().get(3);
-		private final Assignment cSourcePointAssignment_4 = (Assignment)cGroup.eContents().get(4);
-		private final RuleCall cSourcePointKPointParserRuleCall_4_0 = (RuleCall)cSourcePointAssignment_4.eContents().get(0);
-		private final Keyword cTargetPointKeyword_5 = (Keyword)cGroup.eContents().get(5);
-		private final Assignment cTargetPointAssignment_6 = (Assignment)cGroup.eContents().get(6);
-		private final RuleCall cTargetPointKPointParserRuleCall_6_0 = (RuleCall)cTargetPointAssignment_6.eContents().get(0);
-		private final Keyword cRightCurlyBracketKeyword_7 = (Keyword)cGroup.eContents().get(7);
+		private final Keyword cSourcePointKeyword_2 = (Keyword)cGroup.eContents().get(2);
+		private final Assignment cSourcePointAssignment_3 = (Assignment)cGroup.eContents().get(3);
+		private final RuleCall cSourcePointKPointParserRuleCall_3_0 = (RuleCall)cSourcePointAssignment_3.eContents().get(0);
+		private final Keyword cTargetPointKeyword_4 = (Keyword)cGroup.eContents().get(4);
+		private final Assignment cTargetPointAssignment_5 = (Assignment)cGroup.eContents().get(5);
+		private final RuleCall cTargetPointKPointParserRuleCall_5_0 = (RuleCall)cTargetPointAssignment_5.eContents().get(0);
+		private final Group cGroup_6 = (Group)cGroup.eContents().get(6);
+		private final Keyword cBendPointsKeyword_6_0 = (Keyword)cGroup_6.eContents().get(0);
+		private final Keyword cColonKeyword_6_1 = (Keyword)cGroup_6.eContents().get(1);
+		private final Assignment cBendPointsAssignment_6_2 = (Assignment)cGroup_6.eContents().get(2);
+		private final RuleCall cBendPointsKPointParserRuleCall_6_2_0 = (RuleCall)cBendPointsAssignment_6_2.eContents().get(0);
+		private final Group cGroup_6_3 = (Group)cGroup_6.eContents().get(3);
+		private final Keyword cCommaKeyword_6_3_0 = (Keyword)cGroup_6_3.eContents().get(0);
+		private final Assignment cBendPointsAssignment_6_3_1 = (Assignment)cGroup_6_3.eContents().get(1);
+		private final RuleCall cBendPointsKPointParserRuleCall_6_3_1_0 = (RuleCall)cBendPointsAssignment_6_3_1.eContents().get(0);
+		private final Group cGroup_7 = (Group)cGroup.eContents().get(7);
+		private final Keyword cPersistentEntriesKeyword_7_0 = (Keyword)cGroup_7.eContents().get(0);
+		private final Keyword cColonKeyword_7_1 = (Keyword)cGroup_7.eContents().get(1);
+		private final Assignment cPersistentEntriesAssignment_7_2 = (Assignment)cGroup_7.eContents().get(2);
+		private final RuleCall cPersistentEntriesPersistentEntryParserRuleCall_7_2_0 = (RuleCall)cPersistentEntriesAssignment_7_2.eContents().get(0);
+		private final Group cGroup_7_3 = (Group)cGroup_7.eContents().get(3);
+		private final Keyword cCommaKeyword_7_3_0 = (Keyword)cGroup_7_3.eContents().get(0);
+		private final Assignment cPersistentEntriesAssignment_7_3_1 = (Assignment)cGroup_7_3.eContents().get(1);
+		private final RuleCall cPersistentEntriesPersistentEntryParserRuleCall_7_3_1_0 = (RuleCall)cPersistentEntriesAssignment_7_3_1.eContents().get(0);
+		private final Keyword cRightCurlyBracketKeyword_8 = (Keyword)cGroup.eContents().get(8);
 		
-		//KEdgeLayout:
-		//	"KEdgeLayout" "{" //		('persistentEntries' '{' persistentEntries+=PersistentEntry ( "," persistentEntries+=PersistentEntry)* '}' )?
-		//	("bendPoints" "{" bendPoints+=KPoint ("," bendPoints+=KPoint)* "}")? "sourcePoint" sourcePoint=KPoint "targetPoint"
-		//	targetPoint=KPoint "}";
+		//KEdgeLayout: //	'KEdgeLayout'
+		////	'{'
+		//////		('persistentEntries' '{' persistentEntries+=PersistentEntry ( "," persistentEntries+=PersistentEntry)* '}' )?
+		////		('bendPoints' '{' bendPoints+=KPoint ( "," bendPoints+=KPoint)* '}' )?
+		////		'sourcePoint' sourcePoint=KPoint
+		////		'targetPoint' targetPoint=KPoint
+		////    '}';
+		//	"KEdgeLayout" "{" "sourcePoint" sourcePoint=KPoint "targetPoint" targetPoint=KPoint ("bendPoints" ":"
+		//	bendPoints+=KPoint ("," bendPoints+=KPoint)*)? ("persistentEntries" ":" persistentEntries+=PersistentEntry (","
+		//	persistentEntries+=PersistentEntry)*)? "}";
 		public ParserRule getRule() { return rule; }
 
-		//"KEdgeLayout" "{" //		('persistentEntries' '{' persistentEntries+=PersistentEntry ( "," persistentEntries+=PersistentEntry)* '}' )?
-		//("bendPoints" "{" bendPoints+=KPoint ("," bendPoints+=KPoint)* "}")? "sourcePoint" sourcePoint=KPoint "targetPoint"
-		//targetPoint=KPoint "}"
+		////	'KEdgeLayout'
+		////	'{'
+		//////		('persistentEntries' '{' persistentEntries+=PersistentEntry ( "," persistentEntries+=PersistentEntry)* '}' )?
+		////		('bendPoints' '{' bendPoints+=KPoint ( "," bendPoints+=KPoint)* '}' )?
+		////		'sourcePoint' sourcePoint=KPoint
+		////		'targetPoint' targetPoint=KPoint
+		////    '}';
+		//"KEdgeLayout" "{" "sourcePoint" sourcePoint=KPoint "targetPoint" targetPoint=KPoint ("bendPoints" ":" bendPoints+=KPoint
+		//("," bendPoints+=KPoint)*)? ("persistentEntries" ":" persistentEntries+=PersistentEntry (","
+		//persistentEntries+=PersistentEntry)*)? "}"
 		public Group getGroup() { return cGroup; }
 
+		////	'KEdgeLayout'
+		////	'{'
+		//////		('persistentEntries' '{' persistentEntries+=PersistentEntry ( "," persistentEntries+=PersistentEntry)* '}' )?
+		////		('bendPoints' '{' bendPoints+=KPoint ( "," bendPoints+=KPoint)* '}' )?
+		////		'sourcePoint' sourcePoint=KPoint
+		////		'targetPoint' targetPoint=KPoint
+		////    '}';
 		//"KEdgeLayout"
 		public Keyword getKEdgeLayoutKeyword_0() { return cKEdgeLayoutKeyword_0; }
 
 		//"{"
 		public Keyword getLeftCurlyBracketKeyword_1() { return cLeftCurlyBracketKeyword_1; }
 
-		//("bendPoints" "{" bendPoints+=KPoint ("," bendPoints+=KPoint)* "}")?
-		public Group getGroup_2() { return cGroup_2; }
-
-		//"bendPoints"
-		public Keyword getBendPointsKeyword_2_0() { return cBendPointsKeyword_2_0; }
-
-		//"{"
-		public Keyword getLeftCurlyBracketKeyword_2_1() { return cLeftCurlyBracketKeyword_2_1; }
-
-		//bendPoints+=KPoint
-		public Assignment getBendPointsAssignment_2_2() { return cBendPointsAssignment_2_2; }
-
-		//KPoint
-		public RuleCall getBendPointsKPointParserRuleCall_2_2_0() { return cBendPointsKPointParserRuleCall_2_2_0; }
-
-		//("," bendPoints+=KPoint)*
-		public Group getGroup_2_3() { return cGroup_2_3; }
-
-		//","
-		public Keyword getCommaKeyword_2_3_0() { return cCommaKeyword_2_3_0; }
-
-		//bendPoints+=KPoint
-		public Assignment getBendPointsAssignment_2_3_1() { return cBendPointsAssignment_2_3_1; }
-
-		//KPoint
-		public RuleCall getBendPointsKPointParserRuleCall_2_3_1_0() { return cBendPointsKPointParserRuleCall_2_3_1_0; }
-
-		//"}"
-		public Keyword getRightCurlyBracketKeyword_2_4() { return cRightCurlyBracketKeyword_2_4; }
-
 		//"sourcePoint"
-		public Keyword getSourcePointKeyword_3() { return cSourcePointKeyword_3; }
+		public Keyword getSourcePointKeyword_2() { return cSourcePointKeyword_2; }
 
 		//sourcePoint=KPoint
-		public Assignment getSourcePointAssignment_4() { return cSourcePointAssignment_4; }
+		public Assignment getSourcePointAssignment_3() { return cSourcePointAssignment_3; }
 
 		//KPoint
-		public RuleCall getSourcePointKPointParserRuleCall_4_0() { return cSourcePointKPointParserRuleCall_4_0; }
+		public RuleCall getSourcePointKPointParserRuleCall_3_0() { return cSourcePointKPointParserRuleCall_3_0; }
 
 		//"targetPoint"
-		public Keyword getTargetPointKeyword_5() { return cTargetPointKeyword_5; }
+		public Keyword getTargetPointKeyword_4() { return cTargetPointKeyword_4; }
 
 		//targetPoint=KPoint
-		public Assignment getTargetPointAssignment_6() { return cTargetPointAssignment_6; }
+		public Assignment getTargetPointAssignment_5() { return cTargetPointAssignment_5; }
 
 		//KPoint
-		public RuleCall getTargetPointKPointParserRuleCall_6_0() { return cTargetPointKPointParserRuleCall_6_0; }
+		public RuleCall getTargetPointKPointParserRuleCall_5_0() { return cTargetPointKPointParserRuleCall_5_0; }
+
+		//("bendPoints" ":" bendPoints+=KPoint ("," bendPoints+=KPoint)*)?
+		public Group getGroup_6() { return cGroup_6; }
+
+		//"bendPoints"
+		public Keyword getBendPointsKeyword_6_0() { return cBendPointsKeyword_6_0; }
+
+		//":"
+		public Keyword getColonKeyword_6_1() { return cColonKeyword_6_1; }
+
+		//bendPoints+=KPoint
+		public Assignment getBendPointsAssignment_6_2() { return cBendPointsAssignment_6_2; }
+
+		//KPoint
+		public RuleCall getBendPointsKPointParserRuleCall_6_2_0() { return cBendPointsKPointParserRuleCall_6_2_0; }
+
+		//("," bendPoints+=KPoint)*
+		public Group getGroup_6_3() { return cGroup_6_3; }
+
+		//","
+		public Keyword getCommaKeyword_6_3_0() { return cCommaKeyword_6_3_0; }
+
+		//bendPoints+=KPoint
+		public Assignment getBendPointsAssignment_6_3_1() { return cBendPointsAssignment_6_3_1; }
+
+		//KPoint
+		public RuleCall getBendPointsKPointParserRuleCall_6_3_1_0() { return cBendPointsKPointParserRuleCall_6_3_1_0; }
+
+		//("persistentEntries" ":" persistentEntries+=PersistentEntry ("," persistentEntries+=PersistentEntry)*)?
+		public Group getGroup_7() { return cGroup_7; }
+
+		//"persistentEntries"
+		public Keyword getPersistentEntriesKeyword_7_0() { return cPersistentEntriesKeyword_7_0; }
+
+		//":"
+		public Keyword getColonKeyword_7_1() { return cColonKeyword_7_1; }
+
+		//persistentEntries+=PersistentEntry
+		public Assignment getPersistentEntriesAssignment_7_2() { return cPersistentEntriesAssignment_7_2; }
+
+		//PersistentEntry
+		public RuleCall getPersistentEntriesPersistentEntryParserRuleCall_7_2_0() { return cPersistentEntriesPersistentEntryParserRuleCall_7_2_0; }
+
+		//("," persistentEntries+=PersistentEntry)*
+		public Group getGroup_7_3() { return cGroup_7_3; }
+
+		//","
+		public Keyword getCommaKeyword_7_3_0() { return cCommaKeyword_7_3_0; }
+
+		//persistentEntries+=PersistentEntry
+		public Assignment getPersistentEntriesAssignment_7_3_1() { return cPersistentEntriesAssignment_7_3_1; }
+
+		//PersistentEntry
+		public RuleCall getPersistentEntriesPersistentEntryParserRuleCall_7_3_1_0() { return cPersistentEntriesPersistentEntryParserRuleCall_7_3_1_0; }
 
 		//"}"
-		public Keyword getRightCurlyBracketKeyword_7() { return cRightCurlyBracketKeyword_7; }
+		public Keyword getRightCurlyBracketKeyword_8() { return cRightCurlyBracketKeyword_8; }
 	}
 
 	public class KPointElements extends AbstractParserRuleElementFinder {
@@ -319,62 +436,131 @@ public class KLayoutDataGrammarAccess extends AbstractGrammarElementFinder {
 		private final Group cGroup = (Group)rule.eContents().get(1);
 		private final Action cKPointAction_0 = (Action)cGroup.eContents().get(0);
 		private final Keyword cKPointKeyword_1 = (Keyword)cGroup.eContents().get(1);
-		private final Keyword cLeftCurlyBracketKeyword_2 = (Keyword)cGroup.eContents().get(2);
+		private final Group cGroup_2 = (Group)cGroup.eContents().get(2);
+		private final Keyword cXKeyword_2_0 = (Keyword)cGroup_2.eContents().get(0);
+		private final Assignment cXAssignment_2_1 = (Assignment)cGroup_2.eContents().get(1);
+		private final RuleCall cXEFloatParserRuleCall_2_1_0 = (RuleCall)cXAssignment_2_1.eContents().get(0);
 		private final Group cGroup_3 = (Group)cGroup.eContents().get(3);
-		private final Keyword cXKeyword_3_0 = (Keyword)cGroup_3.eContents().get(0);
-		private final Assignment cXAssignment_3_1 = (Assignment)cGroup_3.eContents().get(1);
-		private final RuleCall cXEFloatParserRuleCall_3_1_0 = (RuleCall)cXAssignment_3_1.eContents().get(0);
-		private final Group cGroup_4 = (Group)cGroup.eContents().get(4);
-		private final Keyword cYKeyword_4_0 = (Keyword)cGroup_4.eContents().get(0);
-		private final Assignment cYAssignment_4_1 = (Assignment)cGroup_4.eContents().get(1);
-		private final RuleCall cYEFloatParserRuleCall_4_1_0 = (RuleCall)cYAssignment_4_1.eContents().get(0);
-		private final Keyword cRightCurlyBracketKeyword_5 = (Keyword)cGroup.eContents().get(5);
+		private final Keyword cYKeyword_3_0 = (Keyword)cGroup_3.eContents().get(0);
+		private final Assignment cYAssignment_3_1 = (Assignment)cGroup_3.eContents().get(1);
+		private final RuleCall cYEFloatParserRuleCall_3_1_0 = (RuleCall)cYAssignment_3_1.eContents().get(0);
 		
-		////PersistentEntry returns kgraph::PersistentEntry:
-		////	'PersistentEntry'
+		//KPoint: //	{KPoint}
+		////	'KPoint'
 		////	'{'
-		////		'key' key=EString
-		////		('value' value=EString)?
+		////		('x' x=EFloat)?
+		////		('y' y=EFloat)?
 		////    '}';
-		//KPoint:
-		//	{KPoint} "KPoint" "{" ("x" x=EFloat)? ("y" y=EFloat)? "}";
+		//	{KPoint} "KPoint" ("x" x=EFloat) ("y" y=EFloat);
 		public ParserRule getRule() { return rule; }
 
-		//{KPoint} "KPoint" "{" ("x" x=EFloat)? ("y" y=EFloat)? "}"
+		////	{KPoint}
+		////	'KPoint'
+		////	'{'
+		////		('x' x=EFloat)?
+		////		('y' y=EFloat)?
+		////    '}';
+		//{KPoint} "KPoint" ("x" x=EFloat) ("y" y=EFloat)
 		public Group getGroup() { return cGroup; }
 
+		////	{KPoint}
+		////	'KPoint'
+		////	'{'
+		////		('x' x=EFloat)?
+		////		('y' y=EFloat)?
+		////    '}';
 		//{KPoint}
 		public Action getKPointAction_0() { return cKPointAction_0; }
 
 		//"KPoint"
 		public Keyword getKPointKeyword_1() { return cKPointKeyword_1; }
 
-		//"{"
-		public Keyword getLeftCurlyBracketKeyword_2() { return cLeftCurlyBracketKeyword_2; }
-
-		//("x" x=EFloat)?
-		public Group getGroup_3() { return cGroup_3; }
+		//"x" x=EFloat
+		public Group getGroup_2() { return cGroup_2; }
 
 		//"x"
-		public Keyword getXKeyword_3_0() { return cXKeyword_3_0; }
+		public Keyword getXKeyword_2_0() { return cXKeyword_2_0; }
 
 		//x=EFloat
-		public Assignment getXAssignment_3_1() { return cXAssignment_3_1; }
+		public Assignment getXAssignment_2_1() { return cXAssignment_2_1; }
 
 		//EFloat
-		public RuleCall getXEFloatParserRuleCall_3_1_0() { return cXEFloatParserRuleCall_3_1_0; }
+		public RuleCall getXEFloatParserRuleCall_2_1_0() { return cXEFloatParserRuleCall_2_1_0; }
 
-		//("y" y=EFloat)?
-		public Group getGroup_4() { return cGroup_4; }
+		//"y" y=EFloat
+		public Group getGroup_3() { return cGroup_3; }
 
 		//"y"
-		public Keyword getYKeyword_4_0() { return cYKeyword_4_0; }
+		public Keyword getYKeyword_3_0() { return cYKeyword_3_0; }
 
 		//y=EFloat
-		public Assignment getYAssignment_4_1() { return cYAssignment_4_1; }
+		public Assignment getYAssignment_3_1() { return cYAssignment_3_1; }
 
 		//EFloat
-		public RuleCall getYEFloatParserRuleCall_4_1_0() { return cYEFloatParserRuleCall_4_1_0; }
+		public RuleCall getYEFloatParserRuleCall_3_1_0() { return cYEFloatParserRuleCall_3_1_0; }
+	}
+
+	public class PersistentEntryElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "PersistentEntry");
+		private final Group cGroup = (Group)rule.eContents().get(1);
+		private final Keyword cPersistentEntryKeyword_0 = (Keyword)cGroup.eContents().get(0);
+		private final Keyword cLeftCurlyBracketKeyword_1 = (Keyword)cGroup.eContents().get(1);
+		private final Keyword cKeyKeyword_2 = (Keyword)cGroup.eContents().get(2);
+		private final Assignment cKeyAssignment_3 = (Assignment)cGroup.eContents().get(3);
+		private final RuleCall cKeyEStringParserRuleCall_3_0 = (RuleCall)cKeyAssignment_3.eContents().get(0);
+		private final Group cGroup_4 = (Group)cGroup.eContents().get(4);
+		private final Keyword cValueKeyword_4_0 = (Keyword)cGroup_4.eContents().get(0);
+		private final Assignment cValueAssignment_4_1 = (Assignment)cGroup_4.eContents().get(1);
+		private final RuleCall cValueEStringParserRuleCall_4_1_0 = (RuleCall)cValueAssignment_4_1.eContents().get(0);
+		private final Keyword cRightCurlyBracketKeyword_5 = (Keyword)cGroup.eContents().get(5);
+		
+		//PersistentEntry returns kgraph::PersistentEntry: //	'PersistentEntry'
+		////	'{'
+		////		'key' key=EString
+		////		('value' value=EString)?
+		////    '}';
+		//	"PersistentEntry" "{" "key" key=EString ("value" value=EString)? "}";
+		public ParserRule getRule() { return rule; }
+
+		////	'PersistentEntry'
+		////	'{'
+		////		'key' key=EString
+		////		('value' value=EString)?
+		////    '}';
+		//"PersistentEntry" "{" "key" key=EString ("value" value=EString)? "}"
+		public Group getGroup() { return cGroup; }
+
+		////	'PersistentEntry'
+		////	'{'
+		////		'key' key=EString
+		////		('value' value=EString)?
+		////    '}';
+		//"PersistentEntry"
+		public Keyword getPersistentEntryKeyword_0() { return cPersistentEntryKeyword_0; }
+
+		//"{"
+		public Keyword getLeftCurlyBracketKeyword_1() { return cLeftCurlyBracketKeyword_1; }
+
+		//"key"
+		public Keyword getKeyKeyword_2() { return cKeyKeyword_2; }
+
+		//key=EString
+		public Assignment getKeyAssignment_3() { return cKeyAssignment_3; }
+
+		//EString
+		public RuleCall getKeyEStringParserRuleCall_3_0() { return cKeyEStringParserRuleCall_3_0; }
+
+		//("value" value=EString)?
+		public Group getGroup_4() { return cGroup_4; }
+
+		//"value"
+		public Keyword getValueKeyword_4_0() { return cValueKeyword_4_0; }
+
+		//value=EString
+		public Assignment getValueAssignment_4_1() { return cValueAssignment_4_1; }
+
+		//EString
+		public RuleCall getValueEStringParserRuleCall_4_1_0() { return cValueEStringParserRuleCall_4_1_0; }
 
 		//"}"
 		public Keyword getRightCurlyBracketKeyword_5() { return cRightCurlyBracketKeyword_5; }
@@ -457,6 +643,7 @@ public class KLayoutDataGrammarAccess extends AbstractGrammarElementFinder {
 	private KInsetsElements pKInsets;
 	private KEdgeLayoutElements pKEdgeLayout;
 	private KPointElements pKPoint;
+	private PersistentEntryElements pPersistentEntry;
 	private EStringElements pEString;
 	private EFloatElements pEFloat;
 	
@@ -481,10 +668,19 @@ public class KLayoutDataGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	
-	//KShapeLayout:
+	//KShapeLayout: //	{KShapeLayout}
+	////	'KShapeLayout'
+	////	'{'
+	////		('xpos' xpos=EFloat)?
+	////		('ypos' ypos=EFloat)?
+	////		('width' width=EFloat)?
+	////		('height' height=EFloat)?
+	////		('persistentEntries' '{' persistentEntries+=PersistentEntry ( "," persistentEntries+=PersistentEntry)* '}' )?
+	////		('insets' insets=KInsets)?
+	////    '}';
 	//	{KShapeLayout} "KShapeLayout" "{" ("xpos" xpos=EFloat)? ("ypos" ypos=EFloat)? ("width" width=EFloat)? ("height"
-	//	height=EFloat)? //		('persistentEntries' '{' persistentEntries+=PersistentEntry ( "," persistentEntries+=PersistentEntry)* '}' )?
-	//	("insets" insets=KInsets)? "}";
+	//	height=EFloat)? ("insets" insets=KInsets)? ("persistentEntries" ":" persistentEntries+=PersistentEntry (","
+	//	persistentEntries+=PersistentEntry)*)? "}";
 	public KShapeLayoutElements getKShapeLayoutAccess() {
 		return (pKShapeLayout != null) ? pKShapeLayout : (pKShapeLayout = new KShapeLayoutElements());
 	}
@@ -504,10 +700,16 @@ public class KLayoutDataGrammarAccess extends AbstractGrammarElementFinder {
 		return getKInsetsAccess().getRule();
 	}
 
-	//KEdgeLayout:
-	//	"KEdgeLayout" "{" //		('persistentEntries' '{' persistentEntries+=PersistentEntry ( "," persistentEntries+=PersistentEntry)* '}' )?
-	//	("bendPoints" "{" bendPoints+=KPoint ("," bendPoints+=KPoint)* "}")? "sourcePoint" sourcePoint=KPoint "targetPoint"
-	//	targetPoint=KPoint "}";
+	//KEdgeLayout: //	'KEdgeLayout'
+	////	'{'
+	//////		('persistentEntries' '{' persistentEntries+=PersistentEntry ( "," persistentEntries+=PersistentEntry)* '}' )?
+	////		('bendPoints' '{' bendPoints+=KPoint ( "," bendPoints+=KPoint)* '}' )?
+	////		'sourcePoint' sourcePoint=KPoint
+	////		'targetPoint' targetPoint=KPoint
+	////    '}';
+	//	"KEdgeLayout" "{" "sourcePoint" sourcePoint=KPoint "targetPoint" targetPoint=KPoint ("bendPoints" ":"
+	//	bendPoints+=KPoint ("," bendPoints+=KPoint)*)? ("persistentEntries" ":" persistentEntries+=PersistentEntry (","
+	//	persistentEntries+=PersistentEntry)*)? "}";
 	public KEdgeLayoutElements getKEdgeLayoutAccess() {
 		return (pKEdgeLayout != null) ? pKEdgeLayout : (pKEdgeLayout = new KEdgeLayoutElements());
 	}
@@ -516,20 +718,33 @@ public class KLayoutDataGrammarAccess extends AbstractGrammarElementFinder {
 		return getKEdgeLayoutAccess().getRule();
 	}
 
-	////PersistentEntry returns kgraph::PersistentEntry:
-	////	'PersistentEntry'
+	//KPoint: //	{KPoint}
+	////	'KPoint'
 	////	'{'
-	////		'key' key=EString
-	////		('value' value=EString)?
+	////		('x' x=EFloat)?
+	////		('y' y=EFloat)?
 	////    '}';
-	//KPoint:
-	//	{KPoint} "KPoint" "{" ("x" x=EFloat)? ("y" y=EFloat)? "}";
+	//	{KPoint} "KPoint" ("x" x=EFloat) ("y" y=EFloat);
 	public KPointElements getKPointAccess() {
 		return (pKPoint != null) ? pKPoint : (pKPoint = new KPointElements());
 	}
 	
 	public ParserRule getKPointRule() {
 		return getKPointAccess().getRule();
+	}
+
+	//PersistentEntry returns kgraph::PersistentEntry: //	'PersistentEntry'
+	////	'{'
+	////		'key' key=EString
+	////		('value' value=EString)?
+	////    '}';
+	//	"PersistentEntry" "{" "key" key=EString ("value" value=EString)? "}";
+	public PersistentEntryElements getPersistentEntryAccess() {
+		return (pPersistentEntry != null) ? pPersistentEntry : (pPersistentEntry = new PersistentEntryElements());
+	}
+	
+	public ParserRule getPersistentEntryRule() {
+		return getPersistentEntryAccess().getRule();
 	}
 
 	//EString returns ecore::EString:

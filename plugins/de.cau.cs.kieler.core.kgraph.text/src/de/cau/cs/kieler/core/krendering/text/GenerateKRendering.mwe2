@@ -76,7 +76,7 @@ Workflow {
 			// scoping and exporting API 
 
 			// fragment = scoping.ImportNamespacesScopingFragment {}
-			// fragment = exporting.QualifiedNamesFragment {}
+			fragment = exporting.QualifiedNamesFragment {}
 
 
 			// formatter API 

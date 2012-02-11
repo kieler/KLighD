@@ -3,15 +3,34 @@
  */
 package de.cau.cs.kieler.core.kgraph.text.scoping;
 
+import javax.inject.Inject;
+
+import org.eclipse.emf.ecore.EReference;
+import org.eclipse.xtext.EcoreUtil2;
+import org.eclipse.xtext.naming.IQualifiedNameProvider;
+import org.eclipse.xtext.scoping.IScope;
+import org.eclipse.xtext.scoping.Scopes;
 import org.eclipse.xtext.scoping.impl.AbstractDeclarativeScopeProvider;
+import org.eclipse.xtext.xbase.lib.IterableExtensions;
+
+import de.cau.cs.kieler.core.kgraph.KEdge;
+import de.cau.cs.kieler.core.kgraph.KNode;
 
 /**
  * This class contains custom scoping description.
  * 
- * see : http://www.eclipse.org/Xtext/documentation/latest/xtext.html#scoping
- * on how and when to use it 
- *
+ * @author chsch
  */
 public class KGraphScopeProvider extends AbstractDeclarativeScopeProvider {
+    
+    @Inject
+    IQualifiedNameProvider nameProvider;
 
+    public IScope scope_KEdge_target(KEdge edge, EReference reference) {
+        return Scopes.scopeFor(
+                IterableExtensions.filter(
+                        EcoreUtil2.eAllContents(EcoreUtil2.getRootContainer(edge)), KNode.class),
+                nameProvider, IScope.NULLSCOPE);
+    }
+    
 }
