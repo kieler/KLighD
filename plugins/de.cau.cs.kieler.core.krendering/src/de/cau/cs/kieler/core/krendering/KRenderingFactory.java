@@ -242,13 +242,13 @@ public interface KRenderingFactory extends EFactory {
     KLineWidth createKLineWidth();
 
     /**
-     * Returns a new object of class '<em>KVisibility</em>'.
+     * Returns a new object of class '<em>KLine Visible</em>'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return a new object of class '<em>KVisibility</em>'.
+     * @return a new object of class '<em>KLine Visible</em>'.
      * @generated
      */
-    KVisibility createKVisibility();
+    KLineVisible createKLineVisible();
 
     /**
      * Returns a new object of class '<em>KLine Style</em>'.
@@ -321,6 +321,42 @@ public interface KRenderingFactory extends EFactory {
      * @generated
      */
     KSpline createKSpline();
+
+    /**
+     * Returns a new object of class '<em>KFilled</em>'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return a new object of class '<em>KFilled</em>'.
+     * @generated
+     */
+    KFilled createKFilled();
+
+    /**
+     * Returns a new object of class '<em>KItalic</em>'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return a new object of class '<em>KItalic</em>'.
+     * @generated
+     */
+    KItalic createKItalic();
+
+    /**
+     * Returns a new object of class '<em>KBold</em>'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return a new object of class '<em>KBold</em>'.
+     * @generated
+     */
+    KBold createKBold();
+
+    /**
+     * Returns a new object of class '<em>KFont Name</em>'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return a new object of class '<em>KFont Name</em>'.
+     * @generated
+     */
+    KFontName createKFontName();
 
     /**
      * Returns the package supported by this factory.

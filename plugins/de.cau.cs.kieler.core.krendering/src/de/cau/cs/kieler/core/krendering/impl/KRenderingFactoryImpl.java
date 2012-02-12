@@ -85,7 +85,7 @@ public class KRenderingFactoryImpl extends EFactoryImpl implements KRenderingFac
             case KRenderingPackage.KFOREGROUND_COLOR: return createKForegroundColor();
             case KRenderingPackage.KBACKGROUND_COLOR: return createKBackgroundColor();
             case KRenderingPackage.KLINE_WIDTH: return createKLineWidth();
-            case KRenderingPackage.KVISIBILITY: return createKVisibility();
+            case KRenderingPackage.KLINE_VISIBLE: return createKLineVisible();
             case KRenderingPackage.KLINE_STYLE: return createKLineStyle();
             case KRenderingPackage.KVERTICAL_ALIGNMENT: return createKVerticalAlignment();
             case KRenderingPackage.KHORIZONTAL_ALIGNMENT: return createKHorizontalAlignment();
@@ -94,6 +94,10 @@ public class KRenderingFactoryImpl extends EFactoryImpl implements KRenderingFac
             case KRenderingPackage.KTOP_POSITION: return createKTopPosition();
             case KRenderingPackage.KBOTTOM_POSITION: return createKBottomPosition();
             case KRenderingPackage.KSPLINE: return createKSpline();
+            case KRenderingPackage.KFILLED: return createKFilled();
+            case KRenderingPackage.KITALIC: return createKItalic();
+            case KRenderingPackage.KBOLD: return createKBold();
+            case KRenderingPackage.KFONT_NAME: return createKFontName();
             default:
                 throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
         }
@@ -382,9 +386,9 @@ public class KRenderingFactoryImpl extends EFactoryImpl implements KRenderingFac
      * <!-- end-user-doc -->
      * @generated
      */
-    public KVisibility createKVisibility() {
-        KVisibilityImpl kVisibility = new KVisibilityImpl();
-        return kVisibility;
+    public KLineVisible createKLineVisible() {
+        KLineVisibleImpl kLineVisible = new KLineVisibleImpl();
+        return kLineVisible;
     }
 
     /**
@@ -465,6 +469,46 @@ public class KRenderingFactoryImpl extends EFactoryImpl implements KRenderingFac
     public KSpline createKSpline() {
         KSplineImpl kSpline = new KSplineImpl();
         return kSpline;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public KFilled createKFilled() {
+        KFilledImpl kFilled = new KFilledImpl();
+        return kFilled;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public KItalic createKItalic() {
+        KItalicImpl kItalic = new KItalicImpl();
+        return kItalic;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public KBold createKBold() {
+        KBoldImpl kBold = new KBoldImpl();
+        return kBold;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public KFontName createKFontName() {
+        KFontNameImpl kFontName = new KFontNameImpl();
+        return kFontName;
     }
 
     /**
