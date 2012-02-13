@@ -21,11 +21,6 @@ Workflow {
 		registerGenModelFile = "platform:/resource/de.cau.cs.kieler.kiml/model/klayoutdata.genmodel"
 	}
 
-    // chsch: self-added
-	component = @de.cau.cs.kieler.kiml.klayoutdata.text.KLayoutData {}
-	
-	component = @de.cau.cs.kieler.core.krendering.text.KRendering {}
-
 	component = DirectoryCleaner {
 		directory = "${runtimeProject}/src-gen/de/cau/cs/kieler/core/kgraph/text"
 	}
@@ -74,14 +69,17 @@ Workflow {
 			// composedCheck = "org.eclipse.xtext.validation.NamesAreUniqueValidator"
 			// }
 
+            // chsch:
+            //  * use default local and global scope provider (no package based scoping)
+            //  * no names fragment is needed since I configured a very simple custom
+            //    IQualifiedNameProvider
 			// scoping and exporting API
 			fragment = scoping.ImportURIScopingFragment {}
-			fragment = exporting.SimpleNamesFragment {}
+			// fragment = exporting.SimpleNamesFragment {}
 
-			// scoping and exporting API 
-
+			// scoping and exporting API
 			// fragment = scoping.ImportNamespacesScopingFragment {}
-			// fragment = exporting.QualifiedNamesFragment {}
+		    // fragment = exporting.QualifiedNamesFragment {}
 
 
 			// formatter API 

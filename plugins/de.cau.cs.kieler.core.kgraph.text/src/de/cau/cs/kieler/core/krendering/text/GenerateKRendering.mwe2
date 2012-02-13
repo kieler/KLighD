@@ -49,9 +49,9 @@ Workflow {
 			fragment = serializer.SerializerFragment {}
 
 			// a custom ResourceFactory for use with EMF 
-			fragment = resourceFactory.ResourceFactoryFragment {
-				fileExtensions = file.extensions
-			}
+			// fragment = resourceFactory.ResourceFactoryFragment {
+			//	fileExtensions = file.extensions
+			// }
 
 			// the Antlr parser
 			fragment = parser.antlr.XtextAntlrGeneratorFragment {
@@ -70,11 +70,10 @@ Workflow {
 			// }
 
 			// scoping and exporting API
-			fragment = scoping.ImportURIScopingFragment {}
-			fragment = exporting.SimpleNamesFragment {}
+			// fragment = scoping.ImportURIScopingFragment {}
+			// fragment = exporting.SimpleNamesFragment {}
 
-			// scoping and exporting API 
-
+			// scoping and exporting API
 			// fragment = scoping.ImportNamespacesScopingFragment {}
 			// fragment = exporting.QualifiedNamesFragment {}
 
@@ -100,9 +99,9 @@ Workflow {
 			}
 
 			// provides a compare view
-            fragment = compare.CompareFragment {
-                fileExtensions = file.extensions
-            }
+            // fragment = compare.CompareFragment {
+            //    fileExtensions = file.extensions
+            // }
 
 			// fragment = builder.BuilderIntegrationFragment {}
 

@@ -920,8 +920,8 @@
     <styles xmi:type="notation:FontStyle" xmi:id="_nDzIlDOyEeGkqbctTutDOg" fontColor="4210752" fontName="Ubuntu" fontHeight="10"/>
     <element xmi:type="ecore:EReference" href="krendering.ecore#//KRendering/styles"/>
     <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_nDzIlTOyEeGkqbctTutDOg" points="[0, 0, -961, 0]$[961, 0, 0, 0]"/>
-    <sourceAnchor xmi:type="notation:IdentityAnchor" xmi:id="_G0sZ8lJVEeGo_8FhpSZ3jg" id="(1.0,0.5)"/>
-    <targetAnchor xmi:type="notation:IdentityAnchor" xmi:id="_G0sZ81JVEeGo_8FhpSZ3jg" id="(0.0,0.4786937480070153)"/>
+    <sourceAnchor xmi:type="notation:IdentityAnchor" xmi:id="_yHUsoFS9EeGMH9qurxppOw" id="(1.0,0.5)"/>
+    <targetAnchor xmi:type="notation:IdentityAnchor" xmi:id="_yHVTsFS9EeGMH9qurxppOw" id="(0.0,0.4786937480070153)"/>
   </edges>
   <edges xmi:type="notation:Edge" xmi:id="_nDzvojOyEeGkqbctTutDOg" type="3003" source="_nC37gDOyEeGkqbctTutDOg" target="_nDAeYDOyEeGkqbctTutDOg">
     <styles xmi:type="notation:ConnectorStyle" xmi:id="_nDzvozOyEeGkqbctTutDOg" lineColor="4210752"/>
@@ -1034,8 +1034,8 @@
     <styles xmi:type="notation:FontStyle" xmi:id="_nD52QjOyEeGkqbctTutDOg" fontColor="4210752" fontName="Ubuntu" fontHeight="10"/>
     <element xmi:type="ecore:EReference" href="krendering.ecore#//KStyle/rendering"/>
     <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_nD52QzOyEeGkqbctTutDOg" points="[0, 0, 961, 0]$[-961, 0, 0, 0]"/>
-    <sourceAnchor xmi:type="notation:IdentityAnchor" xmi:id="_G0x5gFJVEeGo_8FhpSZ3jg" id="(0.0,0.4786937480070153)"/>
-    <targetAnchor xmi:type="notation:IdentityAnchor" xmi:id="_G0x5gVJVEeGo_8FhpSZ3jg" id="(1.0,0.5)"/>
+    <sourceAnchor xmi:type="notation:IdentityAnchor" xmi:id="_yHV6wFS9EeGMH9qurxppOw" id="(0.0,0.4786937480070153)"/>
+    <targetAnchor xmi:type="notation:IdentityAnchor" xmi:id="_yHV6wVS9EeGMH9qurxppOw" id="(1.0,0.5)"/>
   </edges>
   <edges xmi:type="notation:Edge" xmi:id="_nD6dUjOyEeGkqbctTutDOg" type="3002" source="_nDEIwjOyEeGkqbctTutDOg" target="_nCzqEDOyEeGkqbctTutDOg">
     <children xmi:type="notation:Node" xmi:id="_nD6dVjOyEeGkqbctTutDOg" type="4011">

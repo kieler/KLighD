@@ -201,9 +201,57 @@ ruleKShapeLayout returns [EObject current=null]
 	    }
 
 )
-))?	otherlv_13='}' 
+))?(	otherlv_13='mapProperties' 
     {
-    	newLeafNode(otherlv_13, grammarAccess.getKShapeLayoutAccess().getRightCurlyBracketKeyword_8());
+    	newLeafNode(otherlv_13, grammarAccess.getKShapeLayoutAccess().getMapPropertiesKeyword_8_0());
+    }
+	otherlv_14=':' 
+    {
+    	newLeafNode(otherlv_14, grammarAccess.getKShapeLayoutAccess().getColonKeyword_8_1());
+    }
+(
+(
+		{ 
+	        newCompositeNode(grammarAccess.getKShapeLayoutAccess().getPersistentEntriesPersistentEntryParserRuleCall_8_2_0()); 
+	    }
+		lv_persistentEntries_15_0=rulePersistentEntry		{
+	        if ($current==null) {
+	            $current = createModelElementForParent(grammarAccess.getKShapeLayoutRule());
+	        }
+       		add(
+       			$current, 
+       			"persistentEntries",
+        		lv_persistentEntries_15_0, 
+        		"PersistentEntry");
+	        afterParserOrEnumRuleCall();
+	    }
+
+)
+)(	otherlv_16=',' 
+    {
+    	newLeafNode(otherlv_16, grammarAccess.getKShapeLayoutAccess().getCommaKeyword_8_3_0());
+    }
+(
+(
+		{ 
+	        newCompositeNode(grammarAccess.getKShapeLayoutAccess().getPersistentEntriesPersistentEntryParserRuleCall_8_3_1_0()); 
+	    }
+		lv_persistentEntries_17_0=rulePersistentEntry		{
+	        if ($current==null) {
+	            $current = createModelElementForParent(grammarAccess.getKShapeLayoutRule());
+	        }
+       		add(
+       			$current, 
+       			"persistentEntries",
+        		lv_persistentEntries_17_0, 
+        		"PersistentEntry");
+	        afterParserOrEnumRuleCall();
+	    }
+
+)
+))*)?	otherlv_18='}' 
+    {
+    	newLeafNode(otherlv_18, grammarAccess.getKShapeLayoutAccess().getRightCurlyBracketKeyword_9());
     }
 )
 ;
@@ -365,62 +413,149 @@ ruleKPoint returns [EObject current=null]
     {
     	newLeafNode(otherlv_1, grammarAccess.getKPointAccess().getKPointKeyword_1());
     }
-	otherlv_2='{' 
+(	otherlv_2='x' 
     {
-    	newLeafNode(otherlv_2, grammarAccess.getKPointAccess().getLeftCurlyBracketKeyword_2());
-    }
-(	otherlv_3='x' 
-    {
-    	newLeafNode(otherlv_3, grammarAccess.getKPointAccess().getXKeyword_3_0());
+    	newLeafNode(otherlv_2, grammarAccess.getKPointAccess().getXKeyword_2_0());
     }
 (
 (
 		{ 
-	        newCompositeNode(grammarAccess.getKPointAccess().getXEFloatParserRuleCall_3_1_0()); 
+	        newCompositeNode(grammarAccess.getKPointAccess().getXEFloatParserRuleCall_2_1_0()); 
 	    }
-		lv_x_4_0=ruleEFloat		{
+		lv_x_3_0=ruleEFloat		{
 	        if ($current==null) {
 	            $current = createModelElementForParent(grammarAccess.getKPointRule());
 	        }
        		set(
        			$current, 
        			"x",
-        		lv_x_4_0, 
+        		lv_x_3_0, 
         		"EFloat");
 	        afterParserOrEnumRuleCall();
 	    }
 
 )
-))?(	otherlv_5='y' 
+))(	otherlv_4='y' 
     {
-    	newLeafNode(otherlv_5, grammarAccess.getKPointAccess().getYKeyword_4_0());
+    	newLeafNode(otherlv_4, grammarAccess.getKPointAccess().getYKeyword_3_0());
     }
 (
 (
 		{ 
-	        newCompositeNode(grammarAccess.getKPointAccess().getYEFloatParserRuleCall_4_1_0()); 
+	        newCompositeNode(grammarAccess.getKPointAccess().getYEFloatParserRuleCall_3_1_0()); 
 	    }
-		lv_y_6_0=ruleEFloat		{
+		lv_y_5_0=ruleEFloat		{
 	        if ($current==null) {
 	            $current = createModelElementForParent(grammarAccess.getKPointRule());
 	        }
        		set(
        			$current, 
        			"y",
-        		lv_y_6_0, 
+        		lv_y_5_0, 
         		"EFloat");
 	        afterParserOrEnumRuleCall();
 	    }
 
 )
-))?	otherlv_7='}' 
-    {
-    	newLeafNode(otherlv_7, grammarAccess.getKPointAccess().getRightCurlyBracketKeyword_5());
-    }
-)
+)))
 ;
 
 
+
+
+
+// Entry rule entryRulePersistentEntry
+entryRulePersistentEntry returns [EObject current=null] 
+	:
+	{ newCompositeNode(grammarAccess.getPersistentEntryRule()); }
+	 iv_rulePersistentEntry=rulePersistentEntry 
+	 { $current=$iv_rulePersistentEntry.current; } 
+	 EOF 
+;
+
+// Rule PersistentEntry
+rulePersistentEntry returns [EObject current=null] 
+    @init { enterRule(); 
+    }
+    @after { leaveRule(); }:
+((
+(
+		{ 
+	        newCompositeNode(grammarAccess.getPersistentEntryAccess().getKeyEStringParserRuleCall_0_0()); 
+	    }
+		lv_key_0_0=ruleEString		{
+	        if ($current==null) {
+	            $current = createModelElementForParent(grammarAccess.getPersistentEntryRule());
+	        }
+       		set(
+       			$current, 
+       			"key",
+        		lv_key_0_0, 
+        		"EString");
+	        afterParserOrEnumRuleCall();
+	    }
+
+)
+)(	otherlv_1='=' 
+    {
+    	newLeafNode(otherlv_1, grammarAccess.getPersistentEntryAccess().getEqualsSignKeyword_1_0());
+    }
+(
+(
+		{ 
+	        newCompositeNode(grammarAccess.getPersistentEntryAccess().getValueEStringParserRuleCall_1_1_0()); 
+	    }
+		lv_value_2_0=ruleEString		{
+	        if ($current==null) {
+	            $current = createModelElementForParent(grammarAccess.getPersistentEntryRule());
+	        }
+       		set(
+       			$current, 
+       			"value",
+        		lv_value_2_0, 
+        		"EString");
+	        afterParserOrEnumRuleCall();
+	    }
+
+)
+))?)
+;
+
+
+
+
+
+// Entry rule entryRuleEString
+entryRuleEString returns [String current=null] 
+	:
+	{ newCompositeNode(grammarAccess.getEStringRule()); } 
+	 iv_ruleEString=ruleEString 
+	 { $current=$iv_ruleEString.current.getText(); }  
+	 EOF 
+;
+
+// Rule EString
+ruleEString returns [AntlrDatatypeRuleToken current=new AntlrDatatypeRuleToken()] 
+    @init { enterRule(); 
+    }
+    @after { leaveRule(); }:
+(    this_STRING_0=RULE_STRING    {
+		$current.merge(this_STRING_0);
+    }
+
+    { 
+    newLeafNode(this_STRING_0, grammarAccess.getEStringAccess().getSTRINGTerminalRuleCall_0()); 
+    }
+
+    |    this_ID_1=RULE_ID    {
+		$current.merge(this_ID_1);
+    }
+
+    { 
+    newLeafNode(this_ID_1, grammarAccess.getEStringAccess().getIDTerminalRuleCall_1()); 
+    }
+)
+    ;
 
 
 

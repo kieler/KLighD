@@ -1,0 +1,26 @@
+module de.cau.cs.kieler.core.kgraph.text.All
+
+import org.eclipse.emf.mwe.utils.*
+import org.eclipse.xtext.generator.*
+import org.eclipse.xtext.ui.generator.*
+
+var projectName = "de.cau.cs.kieler.core.kgraph.text"
+var runtimeProject = "../${projectName}"
+
+Workflow {
+	bean = StandaloneSetup {
+		scanClassPath  = true
+		platformUri = "${runtimeProject}/.."
+        registerGeneratedEPackage = "de.cau.cs.kieler.core.kgraph.KGraphPackage"
+		registerGeneratedEPackage = "de.cau.cs.kieler.kiml.klayoutdata.KLayoutDataPackage"
+        registerGeneratedEPackage = "de.cau.cs.kieler.core.krendering.KRenderingPackage"	
+		registerGenModelFile = "platform:/resource/de.cau.cs.kieler.core.kgraph/model/kgraph.genmodel"
+		registerGenModelFile = "platform:/resource/de.cau.cs.kieler.core.krendering/model/krendering.genmodel"	
+		registerGenModelFile = "platform:/resource/de.cau.cs.kieler.kiml/model/klayoutdata.genmodel"
+	}
+
+    // chsch: self-added
+	component = @de.cau.cs.kieler.kiml.klayoutdata.text.KLayoutData {}
+	component = @de.cau.cs.kieler.core.krendering.text.KRendering {}
+	component = @de.cau.cs.kieler.core.kgraph.text.KGraph {}
+}

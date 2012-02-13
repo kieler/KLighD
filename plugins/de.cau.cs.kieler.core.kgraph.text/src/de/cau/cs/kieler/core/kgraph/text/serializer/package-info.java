@@ -11,11 +11,7 @@
  * This code is provided under the terms of the Eclipse Public License (EPL).
  * See the file epl-v10.html for the license text.
  */
-package de.cau.cs.kieler.core.kgraph.text.serializer;
-
 /**
- * 
- * @author chsch
+ * Custom serializing configurations of the textual KGraph editing tooling.
  */
-public class KGraphSyntacticSequencer extends AbstractKGraphSyntacticSequencer {
-}
+package de.cau.cs.kieler.core.kgraph.text.serializer;
