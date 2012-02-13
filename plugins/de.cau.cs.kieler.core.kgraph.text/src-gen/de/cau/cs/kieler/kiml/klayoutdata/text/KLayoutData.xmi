@@ -53,7 +53,7 @@
           </elements>
         </elements>
         <elements xsi:type="xtext:Group" cardinality="?">
-          <elements xsi:type="xtext:Keyword" value="persistentEntries"/>
+          <elements xsi:type="xtext:Keyword" value="mapProperties"/>
           <elements xsi:type="xtext:Keyword" value=":"/>
           <elements xsi:type="xtext:Assignment" feature="persistentEntries" operator="+=">
             <terminal xsi:type="xtext:RuleCall" rule="/0/@rules.4"/>
@@ -136,7 +136,7 @@
           </elements>
         </elements>
         <elements xsi:type="xtext:Group" cardinality="?">
-          <elements xsi:type="xtext:Keyword" value="persistentEntries"/>
+          <elements xsi:type="xtext:Keyword" value="mapProperties"/>
           <elements xsi:type="xtext:Keyword" value=":"/>
           <elements xsi:type="xtext:Assignment" feature="persistentEntries" operator="+=">
             <terminal xsi:type="xtext:RuleCall" rule="/0/@rules.4"/>
@@ -181,19 +181,15 @@
         <classifier xsi:type="ecore:EClass" href="http://kieler.cs.cau.de/KGraph#//PersistentEntry"/>
       </type>
       <alternatives xsi:type="xtext:Group">
-        <elements xsi:type="xtext:Keyword" value="PersistentEntry"/>
-        <elements xsi:type="xtext:Keyword" value="{"/>
-        <elements xsi:type="xtext:Keyword" value="key"/>
         <elements xsi:type="xtext:Assignment" feature="key" operator="=">
           <terminal xsi:type="xtext:RuleCall" rule="/0/@rules.5"/>
         </elements>
         <elements xsi:type="xtext:Group" cardinality="?">
-          <elements xsi:type="xtext:Keyword" value="value"/>
+          <elements xsi:type="xtext:Keyword" value="="/>
           <elements xsi:type="xtext:Assignment" feature="value" operator="=">
             <terminal xsi:type="xtext:RuleCall" rule="/0/@rules.5"/>
           </elements>
         </elements>
-        <elements xsi:type="xtext:Keyword" value="}"/>
       </alternatives>
     </rules>
     <rules xsi:type="xtext:ParserRule" name="EString">

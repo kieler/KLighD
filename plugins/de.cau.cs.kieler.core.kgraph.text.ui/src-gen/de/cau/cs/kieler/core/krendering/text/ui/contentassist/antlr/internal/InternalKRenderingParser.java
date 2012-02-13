@@ -22,7 +22,7 @@ import java.util.ArrayList;
 @SuppressWarnings("all")
 public class InternalKRenderingParser extends AbstractInternalContentAssistParser {
     public static final String[] tokenNames = new String[] {
-        "<invalid>", "<EOR>", "<DOWN>", "<UP>", "RULE_STRING", "RULE_ID", "RULE_INT", "RULE_ML_COMMENT", "RULE_SL_COMMENT", "RULE_WS", "RULE_ANY_OTHER", "'E'", "'e'", "'SOLID'", "'DASH'", "'DOT'", "'DASHDOT'", "'DASHDOTDOT'", "'TOP'", "'CENTER'", "'BOTTOM'", "'LEFT'", "'RIGHT'", "'KRenderingLibrary'", "'{'", "'}'", "','", "'KRenderingRef'", "'rendering'", "'references'", "'('", "')'", "'placementData'", "'styles'", "'KEllipse'", "':'", "'childPlacement'", "'children'", "'KRectangle'", "'KRoundedRectangle'", "'cornerWidth'", "'cornerHeight'", "'KPolyline'", "'KPolygon'", "'KImage'", "'bundleName'", "'imagePath'", "'KArc'", "'startAngle'", "'arcAngle'", "'KChildArea'", "'KText'", "'text'", "'KCustomRendering'", "'className'", "'KSpline'", "'KDecoratorPlacementData'", "'location'", "'xOffset'", "'yOffset'", "'KGridPlacementData'", "'widthHint'", "'heightHint'", "'horizontalIndent'", "'verticalIndent'", "'KStackPlacementData'", "'insetRight'", "'insetBottom'", "'insetLeft'", "'insetTop'", "'KDirectPlacementData'", "'topLeft'", "'bottomRight'", "'points'", "'-'", "'.'", "'KPosition'", "'x'", "'y'", "'KLeftPosition'", "'absolute'", "'relative'", "'KRightPosition'", "'KTopPosition'", "'KBottomPosition'", "'KForegroundColor'", "'red'", "'green'", "'blue'", "'KBackgroundColor'", "'KLineWidth'", "'KVisibility'", "'KLineStyle'", "'KVerticalAlignment'", "'KHorizontalAlignment'", "'KGridPlacement'", "'KStackPlacement'", "'KInsets'", "'top'", "'bottom'", "'left'", "'right'", "'KPoint'", "'PersistentEntry'", "'key'", "'value'", "'clip'", "'propagateToChildren'", "'lineVisible'", "'filled'"
+        "<invalid>", "<EOR>", "<DOWN>", "<UP>", "RULE_STRING", "RULE_ID", "RULE_INT", "RULE_ML_COMMENT", "RULE_SL_COMMENT", "RULE_WS", "RULE_ANY_OTHER", "'E'", "'e'", "'SOLID'", "'DASH'", "'DOT'", "'DASHDOT'", "'DASHDOTDOT'", "'TOP'", "'CENTER'", "'BOTTOM'", "'LEFT'", "'RIGHT'", "'KRenderingLibrary'", "'{'", "'}'", "','", "'KRenderingRef'", "'rendering'", "'references'", "'('", "')'", "'placementData'", "'styles'", "'KEllipse'", "':'", "'childPlacement'", "'children'", "'KRectangle'", "'KRoundedRectangle'", "'cornerWidth'", "'cornerHeight'", "'KPolyline'", "'KPolygon'", "'KImage'", "'bundleName'", "'imagePath'", "'KArc'", "'startAngle'", "'arcAngle'", "'KChildArea'", "'KText'", "'text'", "'KCustomRendering'", "'className'", "'KSpline'", "'KDecoratorPlacementData'", "'location'", "'xOffset'", "'yOffset'", "'KGridPlacementData'", "'widthHint'", "'heightHint'", "'horizontalIndent'", "'verticalIndent'", "'KStackPlacementData'", "'insetRight'", "'insetBottom'", "'insetLeft'", "'insetTop'", "'KDirectPlacementData'", "'topLeft'", "'bottomRight'", "'points'", "'-'", "'.'", "'KPosition'", "'x'", "'y'", "'KLeftPosition'", "'absolute'", "'relative'", "'KRightPosition'", "'KTopPosition'", "'KBottomPosition'", "'KForegroundColor'", "'red'", "'green'", "'blue'", "'KBackgroundColor'", "'KLineWidth'", "'KVisibility'", "'KLineStyle'", "'KVerticalAlignment'", "'KHorizontalAlignment'", "'KGridPlacement'", "'KStackPlacement'", "'KInsets'", "'top'", "'bottom'", "'left'", "'right'", "'KPoint'", "'='", "'clip'", "'propagateToChildren'", "'lineVisible'", "'filled'"
     };
     public static final int RULE_ID=5;
     public static final int T__29=29;
@@ -97,8 +97,6 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
     public static final int T__53=53;
     public static final int T__54=54;
     public static final int T__107=107;
-    public static final int T__108=108;
-    public static final int T__109=109;
     public static final int T__103=103;
     public static final int T__59=59;
     public static final int T__104=104;
@@ -3753,7 +3751,7 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
                 alt1=9;
                 }
                 break;
-            case 106:
+            case 104:
                 {
                 alt1=10;
                 }
@@ -5521,7 +5519,7 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             int alt13=2;
             int LA13_0 = input.LA(1);
 
-            if ( (LA13_0==27||LA13_0==34||(LA13_0>=38 && LA13_0<=39)||(LA13_0>=42 && LA13_0<=44)||LA13_0==47||LA13_0==50||LA13_0==53||LA13_0==55||LA13_0==106) ) {
+            if ( (LA13_0==27||LA13_0==34||(LA13_0>=38 && LA13_0<=39)||(LA13_0>=42 && LA13_0<=44)||LA13_0==47||LA13_0==50||LA13_0==53||LA13_0==55||LA13_0==104) ) {
                 alt13=1;
             }
             switch (alt13) {
@@ -44516,7 +44514,7 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             int alt113=2;
             int LA113_0 = input.LA(1);
 
-            if ( (LA113_0==107) ) {
+            if ( (LA113_0==105) ) {
                 alt113=1;
             }
             switch (alt113) {
@@ -45660,7 +45658,7 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             int alt117=2;
             int LA117_0 = input.LA(1);
 
-            if ( (LA117_0==107) ) {
+            if ( (LA117_0==105) ) {
                 alt117=1;
             }
             switch (alt117) {
@@ -46734,7 +46732,7 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             int alt121=2;
             int LA121_0 = input.LA(1);
 
-            if ( (LA121_0==107) ) {
+            if ( (LA121_0==105) ) {
                 alt121=1;
             }
             switch (alt121) {
@@ -46980,7 +46978,7 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             int alt122=2;
             int LA122_0 = input.LA(1);
 
-            if ( (LA122_0==108) ) {
+            if ( (LA122_0==106) ) {
                 alt122=1;
             }
             switch (alt122) {
@@ -47076,7 +47074,7 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             int alt123=2;
             int LA123_0 = input.LA(1);
 
-            if ( (LA123_0==109) ) {
+            if ( (LA123_0==107) ) {
                 alt123=1;
             }
             switch (alt123) {
@@ -47167,7 +47165,7 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             int alt124=2;
             int LA124_0 = input.LA(1);
 
-            if ( (LA124_0==107) ) {
+            if ( (LA124_0==105) ) {
                 alt124=1;
             }
             switch (alt124) {
@@ -47504,7 +47502,7 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             int alt126=2;
             int LA126_0 = input.LA(1);
 
-            if ( (LA126_0==107) ) {
+            if ( (LA126_0==105) ) {
                 alt126=1;
             }
             switch (alt126) {
@@ -47755,7 +47753,7 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             int alt127=2;
             int LA127_0 = input.LA(1);
 
-            if ( (LA127_0==107) ) {
+            if ( (LA127_0==105) ) {
                 alt127=1;
             }
             switch (alt127) {
@@ -50535,21 +50533,31 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
 
 
     // $ANTLR start "rule__PersistentEntry__Group__0__Impl"
-    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19543:1: rule__PersistentEntry__Group__0__Impl : ( 'PersistentEntry' ) ;
+    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19543:1: rule__PersistentEntry__Group__0__Impl : ( ( rule__PersistentEntry__KeyAssignment_0 ) ) ;
     public final void rule__PersistentEntry__Group__0__Impl() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19547:1: ( ( 'PersistentEntry' ) )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19548:1: ( 'PersistentEntry' )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19547:1: ( ( ( rule__PersistentEntry__KeyAssignment_0 ) ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19548:1: ( ( rule__PersistentEntry__KeyAssignment_0 ) )
             {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19548:1: ( 'PersistentEntry' )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19549:1: 'PersistentEntry'
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19548:1: ( ( rule__PersistentEntry__KeyAssignment_0 ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19549:1: ( rule__PersistentEntry__KeyAssignment_0 )
             {
-             before(grammarAccess.getPersistentEntryAccess().getPersistentEntryKeyword_0()); 
-            match(input,103,FollowSets001.FOLLOW_103_in_rule__PersistentEntry__Group__0__Impl38749); 
-             after(grammarAccess.getPersistentEntryAccess().getPersistentEntryKeyword_0()); 
+             before(grammarAccess.getPersistentEntryAccess().getKeyAssignment_0()); 
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19550:1: ( rule__PersistentEntry__KeyAssignment_0 )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19550:2: rule__PersistentEntry__KeyAssignment_0
+            {
+            pushFollow(FollowSets001.FOLLOW_rule__PersistentEntry__KeyAssignment_0_in_rule__PersistentEntry__Group__0__Impl38748);
+            rule__PersistentEntry__KeyAssignment_0();
+
+            state._fsp--;
+
+
+            }
+
+             after(grammarAccess.getPersistentEntryAccess().getKeyAssignment_0()); 
 
             }
 
@@ -50572,22 +50580,17 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
 
 
     // $ANTLR start "rule__PersistentEntry__Group__1"
-    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19562:1: rule__PersistentEntry__Group__1 : rule__PersistentEntry__Group__1__Impl rule__PersistentEntry__Group__2 ;
+    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19560:1: rule__PersistentEntry__Group__1 : rule__PersistentEntry__Group__1__Impl ;
     public final void rule__PersistentEntry__Group__1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19566:1: ( rule__PersistentEntry__Group__1__Impl rule__PersistentEntry__Group__2 )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19567:2: rule__PersistentEntry__Group__1__Impl rule__PersistentEntry__Group__2
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19564:1: ( rule__PersistentEntry__Group__1__Impl )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19565:2: rule__PersistentEntry__Group__1__Impl
             {
-            pushFollow(FollowSets001.FOLLOW_rule__PersistentEntry__Group__1__Impl_in_rule__PersistentEntry__Group__138780);
+            pushFollow(FollowSets001.FOLLOW_rule__PersistentEntry__Group__1__Impl_in_rule__PersistentEntry__Group__138778);
             rule__PersistentEntry__Group__1__Impl();
-
-            state._fsp--;
-
-            pushFollow(FollowSets001.FOLLOW_rule__PersistentEntry__Group__2_in_rule__PersistentEntry__Group__138783);
-            rule__PersistentEntry__Group__2();
 
             state._fsp--;
 
@@ -50610,21 +50613,42 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
 
 
     // $ANTLR start "rule__PersistentEntry__Group__1__Impl"
-    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19574:1: rule__PersistentEntry__Group__1__Impl : ( '{' ) ;
+    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19571:1: rule__PersistentEntry__Group__1__Impl : ( ( rule__PersistentEntry__Group_1__0 )? ) ;
     public final void rule__PersistentEntry__Group__1__Impl() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19578:1: ( ( '{' ) )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19579:1: ( '{' )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19575:1: ( ( ( rule__PersistentEntry__Group_1__0 )? ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19576:1: ( ( rule__PersistentEntry__Group_1__0 )? )
             {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19579:1: ( '{' )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19580:1: '{'
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19576:1: ( ( rule__PersistentEntry__Group_1__0 )? )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19577:1: ( rule__PersistentEntry__Group_1__0 )?
             {
-             before(grammarAccess.getPersistentEntryAccess().getLeftCurlyBracketKeyword_1()); 
-            match(input,24,FollowSets001.FOLLOW_24_in_rule__PersistentEntry__Group__1__Impl38811); 
-             after(grammarAccess.getPersistentEntryAccess().getLeftCurlyBracketKeyword_1()); 
+             before(grammarAccess.getPersistentEntryAccess().getGroup_1()); 
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19578:1: ( rule__PersistentEntry__Group_1__0 )?
+            int alt133=2;
+            int LA133_0 = input.LA(1);
+
+            if ( (LA133_0==103) ) {
+                alt133=1;
+            }
+            switch (alt133) {
+                case 1 :
+                    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19578:2: rule__PersistentEntry__Group_1__0
+                    {
+                    pushFollow(FollowSets001.FOLLOW_rule__PersistentEntry__Group_1__0_in_rule__PersistentEntry__Group__1__Impl38805);
+                    rule__PersistentEntry__Group_1__0();
+
+                    state._fsp--;
+
+
+                    }
+                    break;
+
+            }
+
+             after(grammarAccess.getPersistentEntryAccess().getGroup_1()); 
 
             }
 
@@ -50646,98 +50670,23 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
     // $ANTLR end "rule__PersistentEntry__Group__1__Impl"
 
 
-    // $ANTLR start "rule__PersistentEntry__Group__2"
-    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19593:1: rule__PersistentEntry__Group__2 : rule__PersistentEntry__Group__2__Impl rule__PersistentEntry__Group__3 ;
-    public final void rule__PersistentEntry__Group__2() throws RecognitionException {
+    // $ANTLR start "rule__PersistentEntry__Group_1__0"
+    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19592:1: rule__PersistentEntry__Group_1__0 : rule__PersistentEntry__Group_1__0__Impl rule__PersistentEntry__Group_1__1 ;
+    public final void rule__PersistentEntry__Group_1__0() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19597:1: ( rule__PersistentEntry__Group__2__Impl rule__PersistentEntry__Group__3 )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19598:2: rule__PersistentEntry__Group__2__Impl rule__PersistentEntry__Group__3
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19596:1: ( rule__PersistentEntry__Group_1__0__Impl rule__PersistentEntry__Group_1__1 )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19597:2: rule__PersistentEntry__Group_1__0__Impl rule__PersistentEntry__Group_1__1
             {
-            pushFollow(FollowSets001.FOLLOW_rule__PersistentEntry__Group__2__Impl_in_rule__PersistentEntry__Group__238842);
-            rule__PersistentEntry__Group__2__Impl();
+            pushFollow(FollowSets001.FOLLOW_rule__PersistentEntry__Group_1__0__Impl_in_rule__PersistentEntry__Group_1__038840);
+            rule__PersistentEntry__Group_1__0__Impl();
 
             state._fsp--;
 
-            pushFollow(FollowSets001.FOLLOW_rule__PersistentEntry__Group__3_in_rule__PersistentEntry__Group__238845);
-            rule__PersistentEntry__Group__3();
-
-            state._fsp--;
-
-
-            }
-
-        }
-        catch (RecognitionException re) {
-            reportError(re);
-            recover(input,re);
-        }
-        finally {
-
-            	restoreStackSize(stackSize);
-
-        }
-        return ;
-    }
-    // $ANTLR end "rule__PersistentEntry__Group__2"
-
-
-    // $ANTLR start "rule__PersistentEntry__Group__2__Impl"
-    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19605:1: rule__PersistentEntry__Group__2__Impl : ( 'key' ) ;
-    public final void rule__PersistentEntry__Group__2__Impl() throws RecognitionException {
-
-        		int stackSize = keepStackSize();
-            
-        try {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19609:1: ( ( 'key' ) )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19610:1: ( 'key' )
-            {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19610:1: ( 'key' )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19611:1: 'key'
-            {
-             before(grammarAccess.getPersistentEntryAccess().getKeyKeyword_2()); 
-            match(input,104,FollowSets001.FOLLOW_104_in_rule__PersistentEntry__Group__2__Impl38873); 
-             after(grammarAccess.getPersistentEntryAccess().getKeyKeyword_2()); 
-
-            }
-
-
-            }
-
-        }
-        catch (RecognitionException re) {
-            reportError(re);
-            recover(input,re);
-        }
-        finally {
-
-            	restoreStackSize(stackSize);
-
-        }
-        return ;
-    }
-    // $ANTLR end "rule__PersistentEntry__Group__2__Impl"
-
-
-    // $ANTLR start "rule__PersistentEntry__Group__3"
-    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19624:1: rule__PersistentEntry__Group__3 : rule__PersistentEntry__Group__3__Impl rule__PersistentEntry__Group__4 ;
-    public final void rule__PersistentEntry__Group__3() throws RecognitionException {
-
-        		int stackSize = keepStackSize();
-            
-        try {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19628:1: ( rule__PersistentEntry__Group__3__Impl rule__PersistentEntry__Group__4 )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19629:2: rule__PersistentEntry__Group__3__Impl rule__PersistentEntry__Group__4
-            {
-            pushFollow(FollowSets001.FOLLOW_rule__PersistentEntry__Group__3__Impl_in_rule__PersistentEntry__Group__338904);
-            rule__PersistentEntry__Group__3__Impl();
-
-            state._fsp--;
-
-            pushFollow(FollowSets001.FOLLOW_rule__PersistentEntry__Group__4_in_rule__PersistentEntry__Group__338907);
-            rule__PersistentEntry__Group__4();
+            pushFollow(FollowSets001.FOLLOW_rule__PersistentEntry__Group_1__1_in_rule__PersistentEntry__Group_1__038843);
+            rule__PersistentEntry__Group_1__1();
 
             state._fsp--;
 
@@ -50756,35 +50705,25 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
         }
         return ;
     }
-    // $ANTLR end "rule__PersistentEntry__Group__3"
+    // $ANTLR end "rule__PersistentEntry__Group_1__0"
 
 
-    // $ANTLR start "rule__PersistentEntry__Group__3__Impl"
-    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19636:1: rule__PersistentEntry__Group__3__Impl : ( ( rule__PersistentEntry__KeyAssignment_3 ) ) ;
-    public final void rule__PersistentEntry__Group__3__Impl() throws RecognitionException {
+    // $ANTLR start "rule__PersistentEntry__Group_1__0__Impl"
+    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19604:1: rule__PersistentEntry__Group_1__0__Impl : ( '=' ) ;
+    public final void rule__PersistentEntry__Group_1__0__Impl() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19640:1: ( ( ( rule__PersistentEntry__KeyAssignment_3 ) ) )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19641:1: ( ( rule__PersistentEntry__KeyAssignment_3 ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19608:1: ( ( '=' ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19609:1: ( '=' )
             {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19641:1: ( ( rule__PersistentEntry__KeyAssignment_3 ) )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19642:1: ( rule__PersistentEntry__KeyAssignment_3 )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19609:1: ( '=' )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19610:1: '='
             {
-             before(grammarAccess.getPersistentEntryAccess().getKeyAssignment_3()); 
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19643:1: ( rule__PersistentEntry__KeyAssignment_3 )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19643:2: rule__PersistentEntry__KeyAssignment_3
-            {
-            pushFollow(FollowSets001.FOLLOW_rule__PersistentEntry__KeyAssignment_3_in_rule__PersistentEntry__Group__3__Impl38934);
-            rule__PersistentEntry__KeyAssignment_3();
-
-            state._fsp--;
-
-
-            }
-
-             after(grammarAccess.getPersistentEntryAccess().getKeyAssignment_3()); 
+             before(grammarAccess.getPersistentEntryAccess().getEqualsSignKeyword_1_0()); 
+            match(input,103,FollowSets001.FOLLOW_103_in_rule__PersistentEntry__Group_1__0__Impl38871); 
+             after(grammarAccess.getPersistentEntryAccess().getEqualsSignKeyword_1_0()); 
 
             }
 
@@ -50803,26 +50742,21 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
         }
         return ;
     }
-    // $ANTLR end "rule__PersistentEntry__Group__3__Impl"
+    // $ANTLR end "rule__PersistentEntry__Group_1__0__Impl"
 
 
-    // $ANTLR start "rule__PersistentEntry__Group__4"
-    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19653:1: rule__PersistentEntry__Group__4 : rule__PersistentEntry__Group__4__Impl rule__PersistentEntry__Group__5 ;
-    public final void rule__PersistentEntry__Group__4() throws RecognitionException {
+    // $ANTLR start "rule__PersistentEntry__Group_1__1"
+    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19623:1: rule__PersistentEntry__Group_1__1 : rule__PersistentEntry__Group_1__1__Impl ;
+    public final void rule__PersistentEntry__Group_1__1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19657:1: ( rule__PersistentEntry__Group__4__Impl rule__PersistentEntry__Group__5 )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19658:2: rule__PersistentEntry__Group__4__Impl rule__PersistentEntry__Group__5
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19627:1: ( rule__PersistentEntry__Group_1__1__Impl )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19628:2: rule__PersistentEntry__Group_1__1__Impl
             {
-            pushFollow(FollowSets001.FOLLOW_rule__PersistentEntry__Group__4__Impl_in_rule__PersistentEntry__Group__438964);
-            rule__PersistentEntry__Group__4__Impl();
-
-            state._fsp--;
-
-            pushFollow(FollowSets001.FOLLOW_rule__PersistentEntry__Group__5_in_rule__PersistentEntry__Group__438967);
-            rule__PersistentEntry__Group__5();
+            pushFollow(FollowSets001.FOLLOW_rule__PersistentEntry__Group_1__1__Impl_in_rule__PersistentEntry__Group_1__138902);
+            rule__PersistentEntry__Group_1__1__Impl();
 
             state._fsp--;
 
@@ -50841,116 +50775,35 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
         }
         return ;
     }
-    // $ANTLR end "rule__PersistentEntry__Group__4"
+    // $ANTLR end "rule__PersistentEntry__Group_1__1"
 
 
-    // $ANTLR start "rule__PersistentEntry__Group__4__Impl"
-    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19665:1: rule__PersistentEntry__Group__4__Impl : ( ( rule__PersistentEntry__Group_4__0 )? ) ;
-    public final void rule__PersistentEntry__Group__4__Impl() throws RecognitionException {
-
-        		int stackSize = keepStackSize();
-            
-        try {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19669:1: ( ( ( rule__PersistentEntry__Group_4__0 )? ) )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19670:1: ( ( rule__PersistentEntry__Group_4__0 )? )
-            {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19670:1: ( ( rule__PersistentEntry__Group_4__0 )? )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19671:1: ( rule__PersistentEntry__Group_4__0 )?
-            {
-             before(grammarAccess.getPersistentEntryAccess().getGroup_4()); 
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19672:1: ( rule__PersistentEntry__Group_4__0 )?
-            int alt133=2;
-            int LA133_0 = input.LA(1);
-
-            if ( (LA133_0==105) ) {
-                alt133=1;
-            }
-            switch (alt133) {
-                case 1 :
-                    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19672:2: rule__PersistentEntry__Group_4__0
-                    {
-                    pushFollow(FollowSets001.FOLLOW_rule__PersistentEntry__Group_4__0_in_rule__PersistentEntry__Group__4__Impl38994);
-                    rule__PersistentEntry__Group_4__0();
-
-                    state._fsp--;
-
-
-                    }
-                    break;
-
-            }
-
-             after(grammarAccess.getPersistentEntryAccess().getGroup_4()); 
-
-            }
-
-
-            }
-
-        }
-        catch (RecognitionException re) {
-            reportError(re);
-            recover(input,re);
-        }
-        finally {
-
-            	restoreStackSize(stackSize);
-
-        }
-        return ;
-    }
-    // $ANTLR end "rule__PersistentEntry__Group__4__Impl"
-
-
-    // $ANTLR start "rule__PersistentEntry__Group__5"
-    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19682:1: rule__PersistentEntry__Group__5 : rule__PersistentEntry__Group__5__Impl ;
-    public final void rule__PersistentEntry__Group__5() throws RecognitionException {
+    // $ANTLR start "rule__PersistentEntry__Group_1__1__Impl"
+    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19634:1: rule__PersistentEntry__Group_1__1__Impl : ( ( rule__PersistentEntry__ValueAssignment_1_1 ) ) ;
+    public final void rule__PersistentEntry__Group_1__1__Impl() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19686:1: ( rule__PersistentEntry__Group__5__Impl )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19687:2: rule__PersistentEntry__Group__5__Impl
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19638:1: ( ( ( rule__PersistentEntry__ValueAssignment_1_1 ) ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19639:1: ( ( rule__PersistentEntry__ValueAssignment_1_1 ) )
             {
-            pushFollow(FollowSets001.FOLLOW_rule__PersistentEntry__Group__5__Impl_in_rule__PersistentEntry__Group__539025);
-            rule__PersistentEntry__Group__5__Impl();
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19639:1: ( ( rule__PersistentEntry__ValueAssignment_1_1 ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19640:1: ( rule__PersistentEntry__ValueAssignment_1_1 )
+            {
+             before(grammarAccess.getPersistentEntryAccess().getValueAssignment_1_1()); 
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19641:1: ( rule__PersistentEntry__ValueAssignment_1_1 )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19641:2: rule__PersistentEntry__ValueAssignment_1_1
+            {
+            pushFollow(FollowSets001.FOLLOW_rule__PersistentEntry__ValueAssignment_1_1_in_rule__PersistentEntry__Group_1__1__Impl38929);
+            rule__PersistentEntry__ValueAssignment_1_1();
 
             state._fsp--;
 
 
             }
 
-        }
-        catch (RecognitionException re) {
-            reportError(re);
-            recover(input,re);
-        }
-        finally {
-
-            	restoreStackSize(stackSize);
-
-        }
-        return ;
-    }
-    // $ANTLR end "rule__PersistentEntry__Group__5"
-
-
-    // $ANTLR start "rule__PersistentEntry__Group__5__Impl"
-    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19693:1: rule__PersistentEntry__Group__5__Impl : ( '}' ) ;
-    public final void rule__PersistentEntry__Group__5__Impl() throws RecognitionException {
-
-        		int stackSize = keepStackSize();
-            
-        try {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19697:1: ( ( '}' ) )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19698:1: ( '}' )
-            {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19698:1: ( '}' )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19699:1: '}'
-            {
-             before(grammarAccess.getPersistentEntryAccess().getRightCurlyBracketKeyword_5()); 
-            match(input,25,FollowSets001.FOLLOW_25_in_rule__PersistentEntry__Group__5__Impl39053); 
-             after(grammarAccess.getPersistentEntryAccess().getRightCurlyBracketKeyword_5()); 
+             after(grammarAccess.getPersistentEntryAccess().getValueAssignment_1_1()); 
 
             }
 
@@ -50969,179 +50822,24 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
         }
         return ;
     }
-    // $ANTLR end "rule__PersistentEntry__Group__5__Impl"
-
-
-    // $ANTLR start "rule__PersistentEntry__Group_4__0"
-    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19724:1: rule__PersistentEntry__Group_4__0 : rule__PersistentEntry__Group_4__0__Impl rule__PersistentEntry__Group_4__1 ;
-    public final void rule__PersistentEntry__Group_4__0() throws RecognitionException {
-
-        		int stackSize = keepStackSize();
-            
-        try {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19728:1: ( rule__PersistentEntry__Group_4__0__Impl rule__PersistentEntry__Group_4__1 )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19729:2: rule__PersistentEntry__Group_4__0__Impl rule__PersistentEntry__Group_4__1
-            {
-            pushFollow(FollowSets001.FOLLOW_rule__PersistentEntry__Group_4__0__Impl_in_rule__PersistentEntry__Group_4__039096);
-            rule__PersistentEntry__Group_4__0__Impl();
-
-            state._fsp--;
-
-            pushFollow(FollowSets001.FOLLOW_rule__PersistentEntry__Group_4__1_in_rule__PersistentEntry__Group_4__039099);
-            rule__PersistentEntry__Group_4__1();
-
-            state._fsp--;
-
-
-            }
-
-        }
-        catch (RecognitionException re) {
-            reportError(re);
-            recover(input,re);
-        }
-        finally {
-
-            	restoreStackSize(stackSize);
-
-        }
-        return ;
-    }
-    // $ANTLR end "rule__PersistentEntry__Group_4__0"
-
-
-    // $ANTLR start "rule__PersistentEntry__Group_4__0__Impl"
-    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19736:1: rule__PersistentEntry__Group_4__0__Impl : ( 'value' ) ;
-    public final void rule__PersistentEntry__Group_4__0__Impl() throws RecognitionException {
-
-        		int stackSize = keepStackSize();
-            
-        try {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19740:1: ( ( 'value' ) )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19741:1: ( 'value' )
-            {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19741:1: ( 'value' )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19742:1: 'value'
-            {
-             before(grammarAccess.getPersistentEntryAccess().getValueKeyword_4_0()); 
-            match(input,105,FollowSets001.FOLLOW_105_in_rule__PersistentEntry__Group_4__0__Impl39127); 
-             after(grammarAccess.getPersistentEntryAccess().getValueKeyword_4_0()); 
-
-            }
-
-
-            }
-
-        }
-        catch (RecognitionException re) {
-            reportError(re);
-            recover(input,re);
-        }
-        finally {
-
-            	restoreStackSize(stackSize);
-
-        }
-        return ;
-    }
-    // $ANTLR end "rule__PersistentEntry__Group_4__0__Impl"
-
-
-    // $ANTLR start "rule__PersistentEntry__Group_4__1"
-    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19755:1: rule__PersistentEntry__Group_4__1 : rule__PersistentEntry__Group_4__1__Impl ;
-    public final void rule__PersistentEntry__Group_4__1() throws RecognitionException {
-
-        		int stackSize = keepStackSize();
-            
-        try {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19759:1: ( rule__PersistentEntry__Group_4__1__Impl )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19760:2: rule__PersistentEntry__Group_4__1__Impl
-            {
-            pushFollow(FollowSets001.FOLLOW_rule__PersistentEntry__Group_4__1__Impl_in_rule__PersistentEntry__Group_4__139158);
-            rule__PersistentEntry__Group_4__1__Impl();
-
-            state._fsp--;
-
-
-            }
-
-        }
-        catch (RecognitionException re) {
-            reportError(re);
-            recover(input,re);
-        }
-        finally {
-
-            	restoreStackSize(stackSize);
-
-        }
-        return ;
-    }
-    // $ANTLR end "rule__PersistentEntry__Group_4__1"
-
-
-    // $ANTLR start "rule__PersistentEntry__Group_4__1__Impl"
-    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19766:1: rule__PersistentEntry__Group_4__1__Impl : ( ( rule__PersistentEntry__ValueAssignment_4_1 ) ) ;
-    public final void rule__PersistentEntry__Group_4__1__Impl() throws RecognitionException {
-
-        		int stackSize = keepStackSize();
-            
-        try {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19770:1: ( ( ( rule__PersistentEntry__ValueAssignment_4_1 ) ) )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19771:1: ( ( rule__PersistentEntry__ValueAssignment_4_1 ) )
-            {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19771:1: ( ( rule__PersistentEntry__ValueAssignment_4_1 ) )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19772:1: ( rule__PersistentEntry__ValueAssignment_4_1 )
-            {
-             before(grammarAccess.getPersistentEntryAccess().getValueAssignment_4_1()); 
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19773:1: ( rule__PersistentEntry__ValueAssignment_4_1 )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19773:2: rule__PersistentEntry__ValueAssignment_4_1
-            {
-            pushFollow(FollowSets001.FOLLOW_rule__PersistentEntry__ValueAssignment_4_1_in_rule__PersistentEntry__Group_4__1__Impl39185);
-            rule__PersistentEntry__ValueAssignment_4_1();
-
-            state._fsp--;
-
-
-            }
-
-             after(grammarAccess.getPersistentEntryAccess().getValueAssignment_4_1()); 
-
-            }
-
-
-            }
-
-        }
-        catch (RecognitionException re) {
-            reportError(re);
-            recover(input,re);
-        }
-        finally {
-
-            	restoreStackSize(stackSize);
-
-        }
-        return ;
-    }
-    // $ANTLR end "rule__PersistentEntry__Group_4__1__Impl"
+    // $ANTLR end "rule__PersistentEntry__Group_1__1__Impl"
 
 
     // $ANTLR start "rule__KRenderingLibrary__RenderingsAssignment_3_0"
-    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19788:1: rule__KRenderingLibrary__RenderingsAssignment_3_0 : ( ruleKRendering ) ;
+    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19656:1: rule__KRenderingLibrary__RenderingsAssignment_3_0 : ( ruleKRendering ) ;
     public final void rule__KRenderingLibrary__RenderingsAssignment_3_0() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19792:1: ( ( ruleKRendering ) )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19793:1: ( ruleKRendering )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19660:1: ( ( ruleKRendering ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19661:1: ( ruleKRendering )
             {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19793:1: ( ruleKRendering )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19794:1: ruleKRendering
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19661:1: ( ruleKRendering )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19662:1: ruleKRendering
             {
              before(grammarAccess.getKRenderingLibraryAccess().getRenderingsKRenderingParserRuleCall_3_0_0()); 
-            pushFollow(FollowSets001.FOLLOW_ruleKRendering_in_rule__KRenderingLibrary__RenderingsAssignment_3_039224);
+            pushFollow(FollowSets001.FOLLOW_ruleKRendering_in_rule__KRenderingLibrary__RenderingsAssignment_3_038968);
             ruleKRendering();
 
             state._fsp--;
@@ -51169,20 +50867,20 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
 
 
     // $ANTLR start "rule__KRenderingLibrary__RenderingsAssignment_3_1_1"
-    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19803:1: rule__KRenderingLibrary__RenderingsAssignment_3_1_1 : ( ruleKRendering ) ;
+    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19671:1: rule__KRenderingLibrary__RenderingsAssignment_3_1_1 : ( ruleKRendering ) ;
     public final void rule__KRenderingLibrary__RenderingsAssignment_3_1_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19807:1: ( ( ruleKRendering ) )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19808:1: ( ruleKRendering )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19675:1: ( ( ruleKRendering ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19676:1: ( ruleKRendering )
             {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19808:1: ( ruleKRendering )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19809:1: ruleKRendering
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19676:1: ( ruleKRendering )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19677:1: ruleKRendering
             {
              before(grammarAccess.getKRenderingLibraryAccess().getRenderingsKRenderingParserRuleCall_3_1_1_0()); 
-            pushFollow(FollowSets001.FOLLOW_ruleKRendering_in_rule__KRenderingLibrary__RenderingsAssignment_3_1_139255);
+            pushFollow(FollowSets001.FOLLOW_ruleKRendering_in_rule__KRenderingLibrary__RenderingsAssignment_3_1_138999);
             ruleKRendering();
 
             state._fsp--;
@@ -51210,24 +50908,24 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
 
 
     // $ANTLR start "rule__KRenderingRef__ReferencesAssignment_2_2"
-    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19818:1: rule__KRenderingRef__ReferencesAssignment_2_2 : ( ( ruleEString ) ) ;
+    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19686:1: rule__KRenderingRef__ReferencesAssignment_2_2 : ( ( ruleEString ) ) ;
     public final void rule__KRenderingRef__ReferencesAssignment_2_2() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19822:1: ( ( ( ruleEString ) ) )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19823:1: ( ( ruleEString ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19690:1: ( ( ( ruleEString ) ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19691:1: ( ( ruleEString ) )
             {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19823:1: ( ( ruleEString ) )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19824:1: ( ruleEString )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19691:1: ( ( ruleEString ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19692:1: ( ruleEString )
             {
              before(grammarAccess.getKRenderingRefAccess().getReferencesKRenderingRefCrossReference_2_2_0()); 
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19825:1: ( ruleEString )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19826:1: ruleEString
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19693:1: ( ruleEString )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19694:1: ruleEString
             {
              before(grammarAccess.getKRenderingRefAccess().getReferencesKRenderingRefEStringParserRuleCall_2_2_0_1()); 
-            pushFollow(FollowSets001.FOLLOW_ruleEString_in_rule__KRenderingRef__ReferencesAssignment_2_239290);
+            pushFollow(FollowSets001.FOLLOW_ruleEString_in_rule__KRenderingRef__ReferencesAssignment_2_239034);
             ruleEString();
 
             state._fsp--;
@@ -51259,24 +50957,24 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
 
 
     // $ANTLR start "rule__KRenderingRef__ReferencesAssignment_2_3_1"
-    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19837:1: rule__KRenderingRef__ReferencesAssignment_2_3_1 : ( ( ruleEString ) ) ;
+    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19705:1: rule__KRenderingRef__ReferencesAssignment_2_3_1 : ( ( ruleEString ) ) ;
     public final void rule__KRenderingRef__ReferencesAssignment_2_3_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19841:1: ( ( ( ruleEString ) ) )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19842:1: ( ( ruleEString ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19709:1: ( ( ( ruleEString ) ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19710:1: ( ( ruleEString ) )
             {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19842:1: ( ( ruleEString ) )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19843:1: ( ruleEString )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19710:1: ( ( ruleEString ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19711:1: ( ruleEString )
             {
              before(grammarAccess.getKRenderingRefAccess().getReferencesKRenderingRefCrossReference_2_3_1_0()); 
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19844:1: ( ruleEString )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19845:1: ruleEString
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19712:1: ( ruleEString )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19713:1: ruleEString
             {
              before(grammarAccess.getKRenderingRefAccess().getReferencesKRenderingRefEStringParserRuleCall_2_3_1_0_1()); 
-            pushFollow(FollowSets001.FOLLOW_ruleEString_in_rule__KRenderingRef__ReferencesAssignment_2_3_139329);
+            pushFollow(FollowSets001.FOLLOW_ruleEString_in_rule__KRenderingRef__ReferencesAssignment_2_3_139073);
             ruleEString();
 
             state._fsp--;
@@ -51308,24 +51006,24 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
 
 
     // $ANTLR start "rule__KRenderingRef__RenderingAssignment_4"
-    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19856:1: rule__KRenderingRef__RenderingAssignment_4 : ( ( ruleEString ) ) ;
+    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19724:1: rule__KRenderingRef__RenderingAssignment_4 : ( ( ruleEString ) ) ;
     public final void rule__KRenderingRef__RenderingAssignment_4() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19860:1: ( ( ( ruleEString ) ) )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19861:1: ( ( ruleEString ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19728:1: ( ( ( ruleEString ) ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19729:1: ( ( ruleEString ) )
             {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19861:1: ( ( ruleEString ) )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19862:1: ( ruleEString )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19729:1: ( ( ruleEString ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19730:1: ( ruleEString )
             {
              before(grammarAccess.getKRenderingRefAccess().getRenderingKRenderingCrossReference_4_0()); 
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19863:1: ( ruleEString )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19864:1: ruleEString
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19731:1: ( ruleEString )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19732:1: ruleEString
             {
              before(grammarAccess.getKRenderingRefAccess().getRenderingKRenderingEStringParserRuleCall_4_0_1()); 
-            pushFollow(FollowSets001.FOLLOW_ruleEString_in_rule__KRenderingRef__RenderingAssignment_439368);
+            pushFollow(FollowSets001.FOLLOW_ruleEString_in_rule__KRenderingRef__RenderingAssignment_439112);
             ruleEString();
 
             state._fsp--;
@@ -51357,20 +51055,20 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
 
 
     // $ANTLR start "rule__KRenderingRef__PlacementDataAssignment_5_1"
-    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19875:1: rule__KRenderingRef__PlacementDataAssignment_5_1 : ( ruleKPlacementData ) ;
+    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19743:1: rule__KRenderingRef__PlacementDataAssignment_5_1 : ( ruleKPlacementData ) ;
     public final void rule__KRenderingRef__PlacementDataAssignment_5_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19879:1: ( ( ruleKPlacementData ) )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19880:1: ( ruleKPlacementData )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19747:1: ( ( ruleKPlacementData ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19748:1: ( ruleKPlacementData )
             {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19880:1: ( ruleKPlacementData )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19881:1: ruleKPlacementData
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19748:1: ( ruleKPlacementData )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19749:1: ruleKPlacementData
             {
              before(grammarAccess.getKRenderingRefAccess().getPlacementDataKPlacementDataParserRuleCall_5_1_0()); 
-            pushFollow(FollowSets001.FOLLOW_ruleKPlacementData_in_rule__KRenderingRef__PlacementDataAssignment_5_139403);
+            pushFollow(FollowSets001.FOLLOW_ruleKPlacementData_in_rule__KRenderingRef__PlacementDataAssignment_5_139147);
             ruleKPlacementData();
 
             state._fsp--;
@@ -51398,20 +51096,20 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
 
 
     // $ANTLR start "rule__KRenderingRef__StylesAssignment_6_2"
-    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19890:1: rule__KRenderingRef__StylesAssignment_6_2 : ( ruleKStyle ) ;
+    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19758:1: rule__KRenderingRef__StylesAssignment_6_2 : ( ruleKStyle ) ;
     public final void rule__KRenderingRef__StylesAssignment_6_2() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19894:1: ( ( ruleKStyle ) )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19895:1: ( ruleKStyle )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19762:1: ( ( ruleKStyle ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19763:1: ( ruleKStyle )
             {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19895:1: ( ruleKStyle )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19896:1: ruleKStyle
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19763:1: ( ruleKStyle )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19764:1: ruleKStyle
             {
              before(grammarAccess.getKRenderingRefAccess().getStylesKStyleParserRuleCall_6_2_0()); 
-            pushFollow(FollowSets001.FOLLOW_ruleKStyle_in_rule__KRenderingRef__StylesAssignment_6_239434);
+            pushFollow(FollowSets001.FOLLOW_ruleKStyle_in_rule__KRenderingRef__StylesAssignment_6_239178);
             ruleKStyle();
 
             state._fsp--;
@@ -51439,20 +51137,20 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
 
 
     // $ANTLR start "rule__KRenderingRef__StylesAssignment_6_3_1"
-    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19905:1: rule__KRenderingRef__StylesAssignment_6_3_1 : ( ruleKStyle ) ;
+    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19773:1: rule__KRenderingRef__StylesAssignment_6_3_1 : ( ruleKStyle ) ;
     public final void rule__KRenderingRef__StylesAssignment_6_3_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19909:1: ( ( ruleKStyle ) )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19910:1: ( ruleKStyle )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19777:1: ( ( ruleKStyle ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19778:1: ( ruleKStyle )
             {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19910:1: ( ruleKStyle )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19911:1: ruleKStyle
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19778:1: ( ruleKStyle )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19779:1: ruleKStyle
             {
              before(grammarAccess.getKRenderingRefAccess().getStylesKStyleParserRuleCall_6_3_1_0()); 
-            pushFollow(FollowSets001.FOLLOW_ruleKStyle_in_rule__KRenderingRef__StylesAssignment_6_3_139465);
+            pushFollow(FollowSets001.FOLLOW_ruleKStyle_in_rule__KRenderingRef__StylesAssignment_6_3_139209);
             ruleKStyle();
 
             state._fsp--;
@@ -51480,20 +51178,20 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
 
 
     // $ANTLR start "rule__KEllipse__StylesAssignment_3_2"
-    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19920:1: rule__KEllipse__StylesAssignment_3_2 : ( ruleKStyle ) ;
+    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19788:1: rule__KEllipse__StylesAssignment_3_2 : ( ruleKStyle ) ;
     public final void rule__KEllipse__StylesAssignment_3_2() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19924:1: ( ( ruleKStyle ) )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19925:1: ( ruleKStyle )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19792:1: ( ( ruleKStyle ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19793:1: ( ruleKStyle )
             {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19925:1: ( ruleKStyle )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19926:1: ruleKStyle
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19793:1: ( ruleKStyle )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19794:1: ruleKStyle
             {
              before(grammarAccess.getKEllipseAccess().getStylesKStyleParserRuleCall_3_2_0()); 
-            pushFollow(FollowSets001.FOLLOW_ruleKStyle_in_rule__KEllipse__StylesAssignment_3_239496);
+            pushFollow(FollowSets001.FOLLOW_ruleKStyle_in_rule__KEllipse__StylesAssignment_3_239240);
             ruleKStyle();
 
             state._fsp--;
@@ -51521,20 +51219,20 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
 
 
     // $ANTLR start "rule__KEllipse__StylesAssignment_3_3_1"
-    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19935:1: rule__KEllipse__StylesAssignment_3_3_1 : ( ruleKStyle ) ;
+    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19803:1: rule__KEllipse__StylesAssignment_3_3_1 : ( ruleKStyle ) ;
     public final void rule__KEllipse__StylesAssignment_3_3_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19939:1: ( ( ruleKStyle ) )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19940:1: ( ruleKStyle )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19807:1: ( ( ruleKStyle ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19808:1: ( ruleKStyle )
             {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19940:1: ( ruleKStyle )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19941:1: ruleKStyle
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19808:1: ( ruleKStyle )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19809:1: ruleKStyle
             {
              before(grammarAccess.getKEllipseAccess().getStylesKStyleParserRuleCall_3_3_1_0()); 
-            pushFollow(FollowSets001.FOLLOW_ruleKStyle_in_rule__KEllipse__StylesAssignment_3_3_139527);
+            pushFollow(FollowSets001.FOLLOW_ruleKStyle_in_rule__KEllipse__StylesAssignment_3_3_139271);
             ruleKStyle();
 
             state._fsp--;
@@ -51562,20 +51260,20 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
 
 
     // $ANTLR start "rule__KEllipse__PlacementDataAssignment_4_2"
-    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19950:1: rule__KEllipse__PlacementDataAssignment_4_2 : ( ruleKPlacementData ) ;
+    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19818:1: rule__KEllipse__PlacementDataAssignment_4_2 : ( ruleKPlacementData ) ;
     public final void rule__KEllipse__PlacementDataAssignment_4_2() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19954:1: ( ( ruleKPlacementData ) )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19955:1: ( ruleKPlacementData )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19822:1: ( ( ruleKPlacementData ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19823:1: ( ruleKPlacementData )
             {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19955:1: ( ruleKPlacementData )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19956:1: ruleKPlacementData
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19823:1: ( ruleKPlacementData )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19824:1: ruleKPlacementData
             {
              before(grammarAccess.getKEllipseAccess().getPlacementDataKPlacementDataParserRuleCall_4_2_0()); 
-            pushFollow(FollowSets001.FOLLOW_ruleKPlacementData_in_rule__KEllipse__PlacementDataAssignment_4_239558);
+            pushFollow(FollowSets001.FOLLOW_ruleKPlacementData_in_rule__KEllipse__PlacementDataAssignment_4_239302);
             ruleKPlacementData();
 
             state._fsp--;
@@ -51603,20 +51301,20 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
 
 
     // $ANTLR start "rule__KEllipse__ChildPlacementAssignment_5_2"
-    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19965:1: rule__KEllipse__ChildPlacementAssignment_5_2 : ( ruleKPlacement ) ;
+    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19833:1: rule__KEllipse__ChildPlacementAssignment_5_2 : ( ruleKPlacement ) ;
     public final void rule__KEllipse__ChildPlacementAssignment_5_2() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19969:1: ( ( ruleKPlacement ) )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19970:1: ( ruleKPlacement )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19837:1: ( ( ruleKPlacement ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19838:1: ( ruleKPlacement )
             {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19970:1: ( ruleKPlacement )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19971:1: ruleKPlacement
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19838:1: ( ruleKPlacement )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19839:1: ruleKPlacement
             {
              before(grammarAccess.getKEllipseAccess().getChildPlacementKPlacementParserRuleCall_5_2_0()); 
-            pushFollow(FollowSets001.FOLLOW_ruleKPlacement_in_rule__KEllipse__ChildPlacementAssignment_5_239589);
+            pushFollow(FollowSets001.FOLLOW_ruleKPlacement_in_rule__KEllipse__ChildPlacementAssignment_5_239333);
             ruleKPlacement();
 
             state._fsp--;
@@ -51644,20 +51342,20 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
 
 
     // $ANTLR start "rule__KEllipse__ChildrenAssignment_6_2"
-    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19980:1: rule__KEllipse__ChildrenAssignment_6_2 : ( ruleKRendering ) ;
+    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19848:1: rule__KEllipse__ChildrenAssignment_6_2 : ( ruleKRendering ) ;
     public final void rule__KEllipse__ChildrenAssignment_6_2() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19984:1: ( ( ruleKRendering ) )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19985:1: ( ruleKRendering )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19852:1: ( ( ruleKRendering ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19853:1: ( ruleKRendering )
             {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19985:1: ( ruleKRendering )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19986:1: ruleKRendering
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19853:1: ( ruleKRendering )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19854:1: ruleKRendering
             {
              before(grammarAccess.getKEllipseAccess().getChildrenKRenderingParserRuleCall_6_2_0()); 
-            pushFollow(FollowSets001.FOLLOW_ruleKRendering_in_rule__KEllipse__ChildrenAssignment_6_239620);
+            pushFollow(FollowSets001.FOLLOW_ruleKRendering_in_rule__KEllipse__ChildrenAssignment_6_239364);
             ruleKRendering();
 
             state._fsp--;
@@ -51685,20 +51383,20 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
 
 
     // $ANTLR start "rule__KEllipse__ChildrenAssignment_6_3_1"
-    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19995:1: rule__KEllipse__ChildrenAssignment_6_3_1 : ( ruleKRendering ) ;
+    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19863:1: rule__KEllipse__ChildrenAssignment_6_3_1 : ( ruleKRendering ) ;
     public final void rule__KEllipse__ChildrenAssignment_6_3_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19999:1: ( ( ruleKRendering ) )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20000:1: ( ruleKRendering )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19867:1: ( ( ruleKRendering ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19868:1: ( ruleKRendering )
             {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20000:1: ( ruleKRendering )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20001:1: ruleKRendering
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19868:1: ( ruleKRendering )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19869:1: ruleKRendering
             {
              before(grammarAccess.getKEllipseAccess().getChildrenKRenderingParserRuleCall_6_3_1_0()); 
-            pushFollow(FollowSets001.FOLLOW_ruleKRendering_in_rule__KEllipse__ChildrenAssignment_6_3_139651);
+            pushFollow(FollowSets001.FOLLOW_ruleKRendering_in_rule__KEllipse__ChildrenAssignment_6_3_139395);
             ruleKRendering();
 
             state._fsp--;
@@ -51726,20 +51424,20 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
 
 
     // $ANTLR start "rule__KRectangle__StylesAssignment_3_2"
-    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20010:1: rule__KRectangle__StylesAssignment_3_2 : ( ruleKStyle ) ;
+    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19878:1: rule__KRectangle__StylesAssignment_3_2 : ( ruleKStyle ) ;
     public final void rule__KRectangle__StylesAssignment_3_2() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20014:1: ( ( ruleKStyle ) )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20015:1: ( ruleKStyle )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19882:1: ( ( ruleKStyle ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19883:1: ( ruleKStyle )
             {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20015:1: ( ruleKStyle )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20016:1: ruleKStyle
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19883:1: ( ruleKStyle )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19884:1: ruleKStyle
             {
              before(grammarAccess.getKRectangleAccess().getStylesKStyleParserRuleCall_3_2_0()); 
-            pushFollow(FollowSets001.FOLLOW_ruleKStyle_in_rule__KRectangle__StylesAssignment_3_239682);
+            pushFollow(FollowSets001.FOLLOW_ruleKStyle_in_rule__KRectangle__StylesAssignment_3_239426);
             ruleKStyle();
 
             state._fsp--;
@@ -51767,20 +51465,20 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
 
 
     // $ANTLR start "rule__KRectangle__StylesAssignment_3_3_1"
-    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20025:1: rule__KRectangle__StylesAssignment_3_3_1 : ( ruleKStyle ) ;
+    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19893:1: rule__KRectangle__StylesAssignment_3_3_1 : ( ruleKStyle ) ;
     public final void rule__KRectangle__StylesAssignment_3_3_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20029:1: ( ( ruleKStyle ) )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20030:1: ( ruleKStyle )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19897:1: ( ( ruleKStyle ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19898:1: ( ruleKStyle )
             {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20030:1: ( ruleKStyle )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20031:1: ruleKStyle
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19898:1: ( ruleKStyle )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19899:1: ruleKStyle
             {
              before(grammarAccess.getKRectangleAccess().getStylesKStyleParserRuleCall_3_3_1_0()); 
-            pushFollow(FollowSets001.FOLLOW_ruleKStyle_in_rule__KRectangle__StylesAssignment_3_3_139713);
+            pushFollow(FollowSets001.FOLLOW_ruleKStyle_in_rule__KRectangle__StylesAssignment_3_3_139457);
             ruleKStyle();
 
             state._fsp--;
@@ -51808,20 +51506,20 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
 
 
     // $ANTLR start "rule__KRectangle__PlacementDataAssignment_4_2"
-    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20040:1: rule__KRectangle__PlacementDataAssignment_4_2 : ( ruleKPlacementData ) ;
+    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19908:1: rule__KRectangle__PlacementDataAssignment_4_2 : ( ruleKPlacementData ) ;
     public final void rule__KRectangle__PlacementDataAssignment_4_2() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20044:1: ( ( ruleKPlacementData ) )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20045:1: ( ruleKPlacementData )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19912:1: ( ( ruleKPlacementData ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19913:1: ( ruleKPlacementData )
             {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20045:1: ( ruleKPlacementData )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20046:1: ruleKPlacementData
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19913:1: ( ruleKPlacementData )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19914:1: ruleKPlacementData
             {
              before(grammarAccess.getKRectangleAccess().getPlacementDataKPlacementDataParserRuleCall_4_2_0()); 
-            pushFollow(FollowSets001.FOLLOW_ruleKPlacementData_in_rule__KRectangle__PlacementDataAssignment_4_239744);
+            pushFollow(FollowSets001.FOLLOW_ruleKPlacementData_in_rule__KRectangle__PlacementDataAssignment_4_239488);
             ruleKPlacementData();
 
             state._fsp--;
@@ -51849,20 +51547,20 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
 
 
     // $ANTLR start "rule__KRectangle__ChildPlacementAssignment_5_2"
-    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20055:1: rule__KRectangle__ChildPlacementAssignment_5_2 : ( ruleKPlacement ) ;
+    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19923:1: rule__KRectangle__ChildPlacementAssignment_5_2 : ( ruleKPlacement ) ;
     public final void rule__KRectangle__ChildPlacementAssignment_5_2() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20059:1: ( ( ruleKPlacement ) )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20060:1: ( ruleKPlacement )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19927:1: ( ( ruleKPlacement ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19928:1: ( ruleKPlacement )
             {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20060:1: ( ruleKPlacement )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20061:1: ruleKPlacement
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19928:1: ( ruleKPlacement )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19929:1: ruleKPlacement
             {
              before(grammarAccess.getKRectangleAccess().getChildPlacementKPlacementParserRuleCall_5_2_0()); 
-            pushFollow(FollowSets001.FOLLOW_ruleKPlacement_in_rule__KRectangle__ChildPlacementAssignment_5_239775);
+            pushFollow(FollowSets001.FOLLOW_ruleKPlacement_in_rule__KRectangle__ChildPlacementAssignment_5_239519);
             ruleKPlacement();
 
             state._fsp--;
@@ -51890,20 +51588,20 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
 
 
     // $ANTLR start "rule__KRectangle__ChildrenAssignment_6_2"
-    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20070:1: rule__KRectangle__ChildrenAssignment_6_2 : ( ruleKRendering ) ;
+    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19938:1: rule__KRectangle__ChildrenAssignment_6_2 : ( ruleKRendering ) ;
     public final void rule__KRectangle__ChildrenAssignment_6_2() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20074:1: ( ( ruleKRendering ) )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20075:1: ( ruleKRendering )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19942:1: ( ( ruleKRendering ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19943:1: ( ruleKRendering )
             {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20075:1: ( ruleKRendering )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20076:1: ruleKRendering
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19943:1: ( ruleKRendering )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19944:1: ruleKRendering
             {
              before(grammarAccess.getKRectangleAccess().getChildrenKRenderingParserRuleCall_6_2_0()); 
-            pushFollow(FollowSets001.FOLLOW_ruleKRendering_in_rule__KRectangle__ChildrenAssignment_6_239806);
+            pushFollow(FollowSets001.FOLLOW_ruleKRendering_in_rule__KRectangle__ChildrenAssignment_6_239550);
             ruleKRendering();
 
             state._fsp--;
@@ -51931,20 +51629,20 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
 
 
     // $ANTLR start "rule__KRectangle__ChildrenAssignment_6_3_1"
-    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20085:1: rule__KRectangle__ChildrenAssignment_6_3_1 : ( ruleKRendering ) ;
+    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19953:1: rule__KRectangle__ChildrenAssignment_6_3_1 : ( ruleKRendering ) ;
     public final void rule__KRectangle__ChildrenAssignment_6_3_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20089:1: ( ( ruleKRendering ) )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20090:1: ( ruleKRendering )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19957:1: ( ( ruleKRendering ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19958:1: ( ruleKRendering )
             {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20090:1: ( ruleKRendering )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20091:1: ruleKRendering
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19958:1: ( ruleKRendering )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19959:1: ruleKRendering
             {
              before(grammarAccess.getKRectangleAccess().getChildrenKRenderingParserRuleCall_6_3_1_0()); 
-            pushFollow(FollowSets001.FOLLOW_ruleKRendering_in_rule__KRectangle__ChildrenAssignment_6_3_139837);
+            pushFollow(FollowSets001.FOLLOW_ruleKRendering_in_rule__KRectangle__ChildrenAssignment_6_3_139581);
             ruleKRendering();
 
             state._fsp--;
@@ -51972,20 +51670,20 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
 
 
     // $ANTLR start "rule__KRoundedRectangle__CornerWidthAssignment_2_0_1"
-    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20100:1: rule__KRoundedRectangle__CornerWidthAssignment_2_0_1 : ( ruleEFloat ) ;
+    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19968:1: rule__KRoundedRectangle__CornerWidthAssignment_2_0_1 : ( ruleEFloat ) ;
     public final void rule__KRoundedRectangle__CornerWidthAssignment_2_0_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20104:1: ( ( ruleEFloat ) )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20105:1: ( ruleEFloat )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19972:1: ( ( ruleEFloat ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19973:1: ( ruleEFloat )
             {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20105:1: ( ruleEFloat )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20106:1: ruleEFloat
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19973:1: ( ruleEFloat )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19974:1: ruleEFloat
             {
              before(grammarAccess.getKRoundedRectangleAccess().getCornerWidthEFloatParserRuleCall_2_0_1_0()); 
-            pushFollow(FollowSets001.FOLLOW_ruleEFloat_in_rule__KRoundedRectangle__CornerWidthAssignment_2_0_139868);
+            pushFollow(FollowSets001.FOLLOW_ruleEFloat_in_rule__KRoundedRectangle__CornerWidthAssignment_2_0_139612);
             ruleEFloat();
 
             state._fsp--;
@@ -52013,20 +51711,20 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
 
 
     // $ANTLR start "rule__KRoundedRectangle__CornerHeightAssignment_2_0_3"
-    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20115:1: rule__KRoundedRectangle__CornerHeightAssignment_2_0_3 : ( ruleEFloat ) ;
+    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19983:1: rule__KRoundedRectangle__CornerHeightAssignment_2_0_3 : ( ruleEFloat ) ;
     public final void rule__KRoundedRectangle__CornerHeightAssignment_2_0_3() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20119:1: ( ( ruleEFloat ) )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20120:1: ( ruleEFloat )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19987:1: ( ( ruleEFloat ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19988:1: ( ruleEFloat )
             {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20120:1: ( ruleEFloat )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20121:1: ruleEFloat
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19988:1: ( ruleEFloat )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19989:1: ruleEFloat
             {
              before(grammarAccess.getKRoundedRectangleAccess().getCornerHeightEFloatParserRuleCall_2_0_3_0()); 
-            pushFollow(FollowSets001.FOLLOW_ruleEFloat_in_rule__KRoundedRectangle__CornerHeightAssignment_2_0_339899);
+            pushFollow(FollowSets001.FOLLOW_ruleEFloat_in_rule__KRoundedRectangle__CornerHeightAssignment_2_0_339643);
             ruleEFloat();
 
             state._fsp--;
@@ -52054,20 +51752,20 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
 
 
     // $ANTLR start "rule__KRoundedRectangle__CornerHeightAssignment_2_1_1"
-    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20130:1: rule__KRoundedRectangle__CornerHeightAssignment_2_1_1 : ( ruleEFloat ) ;
+    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19998:1: rule__KRoundedRectangle__CornerHeightAssignment_2_1_1 : ( ruleEFloat ) ;
     public final void rule__KRoundedRectangle__CornerHeightAssignment_2_1_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20134:1: ( ( ruleEFloat ) )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20135:1: ( ruleEFloat )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20002:1: ( ( ruleEFloat ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20003:1: ( ruleEFloat )
             {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20135:1: ( ruleEFloat )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20136:1: ruleEFloat
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20003:1: ( ruleEFloat )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20004:1: ruleEFloat
             {
              before(grammarAccess.getKRoundedRectangleAccess().getCornerHeightEFloatParserRuleCall_2_1_1_0()); 
-            pushFollow(FollowSets001.FOLLOW_ruleEFloat_in_rule__KRoundedRectangle__CornerHeightAssignment_2_1_139930);
+            pushFollow(FollowSets001.FOLLOW_ruleEFloat_in_rule__KRoundedRectangle__CornerHeightAssignment_2_1_139674);
             ruleEFloat();
 
             state._fsp--;
@@ -52095,20 +51793,20 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
 
 
     // $ANTLR start "rule__KRoundedRectangle__CornerWidthAssignment_2_1_3"
-    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20145:1: rule__KRoundedRectangle__CornerWidthAssignment_2_1_3 : ( ruleEFloat ) ;
+    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20013:1: rule__KRoundedRectangle__CornerWidthAssignment_2_1_3 : ( ruleEFloat ) ;
     public final void rule__KRoundedRectangle__CornerWidthAssignment_2_1_3() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20149:1: ( ( ruleEFloat ) )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20150:1: ( ruleEFloat )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20017:1: ( ( ruleEFloat ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20018:1: ( ruleEFloat )
             {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20150:1: ( ruleEFloat )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20151:1: ruleEFloat
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20018:1: ( ruleEFloat )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20019:1: ruleEFloat
             {
              before(grammarAccess.getKRoundedRectangleAccess().getCornerWidthEFloatParserRuleCall_2_1_3_0()); 
-            pushFollow(FollowSets001.FOLLOW_ruleEFloat_in_rule__KRoundedRectangle__CornerWidthAssignment_2_1_339961);
+            pushFollow(FollowSets001.FOLLOW_ruleEFloat_in_rule__KRoundedRectangle__CornerWidthAssignment_2_1_339705);
             ruleEFloat();
 
             state._fsp--;
@@ -52136,20 +51834,20 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
 
 
     // $ANTLR start "rule__KRoundedRectangle__StylesAssignment_3_2"
-    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20160:1: rule__KRoundedRectangle__StylesAssignment_3_2 : ( ruleKStyle ) ;
+    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20028:1: rule__KRoundedRectangle__StylesAssignment_3_2 : ( ruleKStyle ) ;
     public final void rule__KRoundedRectangle__StylesAssignment_3_2() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20164:1: ( ( ruleKStyle ) )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20165:1: ( ruleKStyle )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20032:1: ( ( ruleKStyle ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20033:1: ( ruleKStyle )
             {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20165:1: ( ruleKStyle )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20166:1: ruleKStyle
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20033:1: ( ruleKStyle )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20034:1: ruleKStyle
             {
              before(grammarAccess.getKRoundedRectangleAccess().getStylesKStyleParserRuleCall_3_2_0()); 
-            pushFollow(FollowSets001.FOLLOW_ruleKStyle_in_rule__KRoundedRectangle__StylesAssignment_3_239992);
+            pushFollow(FollowSets001.FOLLOW_ruleKStyle_in_rule__KRoundedRectangle__StylesAssignment_3_239736);
             ruleKStyle();
 
             state._fsp--;
@@ -52177,20 +51875,20 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
 
 
     // $ANTLR start "rule__KRoundedRectangle__StylesAssignment_3_3_1"
-    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20175:1: rule__KRoundedRectangle__StylesAssignment_3_3_1 : ( ruleKStyle ) ;
+    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20043:1: rule__KRoundedRectangle__StylesAssignment_3_3_1 : ( ruleKStyle ) ;
     public final void rule__KRoundedRectangle__StylesAssignment_3_3_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20179:1: ( ( ruleKStyle ) )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20180:1: ( ruleKStyle )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20047:1: ( ( ruleKStyle ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20048:1: ( ruleKStyle )
             {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20180:1: ( ruleKStyle )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20181:1: ruleKStyle
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20048:1: ( ruleKStyle )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20049:1: ruleKStyle
             {
              before(grammarAccess.getKRoundedRectangleAccess().getStylesKStyleParserRuleCall_3_3_1_0()); 
-            pushFollow(FollowSets001.FOLLOW_ruleKStyle_in_rule__KRoundedRectangle__StylesAssignment_3_3_140023);
+            pushFollow(FollowSets001.FOLLOW_ruleKStyle_in_rule__KRoundedRectangle__StylesAssignment_3_3_139767);
             ruleKStyle();
 
             state._fsp--;
@@ -52218,20 +51916,20 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
 
 
     // $ANTLR start "rule__KRoundedRectangle__PlacementDataAssignment_4_2"
-    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20190:1: rule__KRoundedRectangle__PlacementDataAssignment_4_2 : ( ruleKPlacementData ) ;
+    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20058:1: rule__KRoundedRectangle__PlacementDataAssignment_4_2 : ( ruleKPlacementData ) ;
     public final void rule__KRoundedRectangle__PlacementDataAssignment_4_2() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20194:1: ( ( ruleKPlacementData ) )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20195:1: ( ruleKPlacementData )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20062:1: ( ( ruleKPlacementData ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20063:1: ( ruleKPlacementData )
             {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20195:1: ( ruleKPlacementData )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20196:1: ruleKPlacementData
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20063:1: ( ruleKPlacementData )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20064:1: ruleKPlacementData
             {
              before(grammarAccess.getKRoundedRectangleAccess().getPlacementDataKPlacementDataParserRuleCall_4_2_0()); 
-            pushFollow(FollowSets001.FOLLOW_ruleKPlacementData_in_rule__KRoundedRectangle__PlacementDataAssignment_4_240054);
+            pushFollow(FollowSets001.FOLLOW_ruleKPlacementData_in_rule__KRoundedRectangle__PlacementDataAssignment_4_239798);
             ruleKPlacementData();
 
             state._fsp--;
@@ -52259,20 +51957,20 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
 
 
     // $ANTLR start "rule__KRoundedRectangle__ChildPlacementAssignment_5_2"
-    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20205:1: rule__KRoundedRectangle__ChildPlacementAssignment_5_2 : ( ruleKPlacement ) ;
+    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20073:1: rule__KRoundedRectangle__ChildPlacementAssignment_5_2 : ( ruleKPlacement ) ;
     public final void rule__KRoundedRectangle__ChildPlacementAssignment_5_2() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20209:1: ( ( ruleKPlacement ) )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20210:1: ( ruleKPlacement )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20077:1: ( ( ruleKPlacement ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20078:1: ( ruleKPlacement )
             {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20210:1: ( ruleKPlacement )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20211:1: ruleKPlacement
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20078:1: ( ruleKPlacement )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20079:1: ruleKPlacement
             {
              before(grammarAccess.getKRoundedRectangleAccess().getChildPlacementKPlacementParserRuleCall_5_2_0()); 
-            pushFollow(FollowSets001.FOLLOW_ruleKPlacement_in_rule__KRoundedRectangle__ChildPlacementAssignment_5_240085);
+            pushFollow(FollowSets001.FOLLOW_ruleKPlacement_in_rule__KRoundedRectangle__ChildPlacementAssignment_5_239829);
             ruleKPlacement();
 
             state._fsp--;
@@ -52300,20 +51998,20 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
 
 
     // $ANTLR start "rule__KRoundedRectangle__ChildrenAssignment_6_2"
-    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20220:1: rule__KRoundedRectangle__ChildrenAssignment_6_2 : ( ruleKRendering ) ;
+    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20088:1: rule__KRoundedRectangle__ChildrenAssignment_6_2 : ( ruleKRendering ) ;
     public final void rule__KRoundedRectangle__ChildrenAssignment_6_2() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20224:1: ( ( ruleKRendering ) )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20225:1: ( ruleKRendering )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20092:1: ( ( ruleKRendering ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20093:1: ( ruleKRendering )
             {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20225:1: ( ruleKRendering )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20226:1: ruleKRendering
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20093:1: ( ruleKRendering )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20094:1: ruleKRendering
             {
              before(grammarAccess.getKRoundedRectangleAccess().getChildrenKRenderingParserRuleCall_6_2_0()); 
-            pushFollow(FollowSets001.FOLLOW_ruleKRendering_in_rule__KRoundedRectangle__ChildrenAssignment_6_240116);
+            pushFollow(FollowSets001.FOLLOW_ruleKRendering_in_rule__KRoundedRectangle__ChildrenAssignment_6_239860);
             ruleKRendering();
 
             state._fsp--;
@@ -52341,20 +52039,20 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
 
 
     // $ANTLR start "rule__KRoundedRectangle__ChildrenAssignment_6_3_1"
-    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20235:1: rule__KRoundedRectangle__ChildrenAssignment_6_3_1 : ( ruleKRendering ) ;
+    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20103:1: rule__KRoundedRectangle__ChildrenAssignment_6_3_1 : ( ruleKRendering ) ;
     public final void rule__KRoundedRectangle__ChildrenAssignment_6_3_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20239:1: ( ( ruleKRendering ) )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20240:1: ( ruleKRendering )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20107:1: ( ( ruleKRendering ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20108:1: ( ruleKRendering )
             {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20240:1: ( ruleKRendering )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20241:1: ruleKRendering
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20108:1: ( ruleKRendering )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20109:1: ruleKRendering
             {
              before(grammarAccess.getKRoundedRectangleAccess().getChildrenKRenderingParserRuleCall_6_3_1_0()); 
-            pushFollow(FollowSets001.FOLLOW_ruleKRendering_in_rule__KRoundedRectangle__ChildrenAssignment_6_3_140147);
+            pushFollow(FollowSets001.FOLLOW_ruleKRendering_in_rule__KRoundedRectangle__ChildrenAssignment_6_3_139891);
             ruleKRendering();
 
             state._fsp--;
@@ -52382,20 +52080,20 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
 
 
     // $ANTLR start "rule__KPolyline_Impl__StylesAssignment_3_2"
-    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20250:1: rule__KPolyline_Impl__StylesAssignment_3_2 : ( ruleKStyle ) ;
+    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20118:1: rule__KPolyline_Impl__StylesAssignment_3_2 : ( ruleKStyle ) ;
     public final void rule__KPolyline_Impl__StylesAssignment_3_2() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20254:1: ( ( ruleKStyle ) )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20255:1: ( ruleKStyle )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20122:1: ( ( ruleKStyle ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20123:1: ( ruleKStyle )
             {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20255:1: ( ruleKStyle )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20256:1: ruleKStyle
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20123:1: ( ruleKStyle )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20124:1: ruleKStyle
             {
              before(grammarAccess.getKPolyline_ImplAccess().getStylesKStyleParserRuleCall_3_2_0()); 
-            pushFollow(FollowSets001.FOLLOW_ruleKStyle_in_rule__KPolyline_Impl__StylesAssignment_3_240178);
+            pushFollow(FollowSets001.FOLLOW_ruleKStyle_in_rule__KPolyline_Impl__StylesAssignment_3_239922);
             ruleKStyle();
 
             state._fsp--;
@@ -52423,20 +52121,20 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
 
 
     // $ANTLR start "rule__KPolyline_Impl__StylesAssignment_3_3_1"
-    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20265:1: rule__KPolyline_Impl__StylesAssignment_3_3_1 : ( ruleKStyle ) ;
+    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20133:1: rule__KPolyline_Impl__StylesAssignment_3_3_1 : ( ruleKStyle ) ;
     public final void rule__KPolyline_Impl__StylesAssignment_3_3_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20269:1: ( ( ruleKStyle ) )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20270:1: ( ruleKStyle )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20137:1: ( ( ruleKStyle ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20138:1: ( ruleKStyle )
             {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20270:1: ( ruleKStyle )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20271:1: ruleKStyle
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20138:1: ( ruleKStyle )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20139:1: ruleKStyle
             {
              before(grammarAccess.getKPolyline_ImplAccess().getStylesKStyleParserRuleCall_3_3_1_0()); 
-            pushFollow(FollowSets001.FOLLOW_ruleKStyle_in_rule__KPolyline_Impl__StylesAssignment_3_3_140209);
+            pushFollow(FollowSets001.FOLLOW_ruleKStyle_in_rule__KPolyline_Impl__StylesAssignment_3_3_139953);
             ruleKStyle();
 
             state._fsp--;
@@ -52464,20 +52162,20 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
 
 
     // $ANTLR start "rule__KPolyline_Impl__PlacementDataAssignment_4_2"
-    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20280:1: rule__KPolyline_Impl__PlacementDataAssignment_4_2 : ( ruleKPlacementData ) ;
+    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20148:1: rule__KPolyline_Impl__PlacementDataAssignment_4_2 : ( ruleKPlacementData ) ;
     public final void rule__KPolyline_Impl__PlacementDataAssignment_4_2() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20284:1: ( ( ruleKPlacementData ) )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20285:1: ( ruleKPlacementData )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20152:1: ( ( ruleKPlacementData ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20153:1: ( ruleKPlacementData )
             {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20285:1: ( ruleKPlacementData )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20286:1: ruleKPlacementData
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20153:1: ( ruleKPlacementData )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20154:1: ruleKPlacementData
             {
              before(grammarAccess.getKPolyline_ImplAccess().getPlacementDataKPlacementDataParserRuleCall_4_2_0()); 
-            pushFollow(FollowSets001.FOLLOW_ruleKPlacementData_in_rule__KPolyline_Impl__PlacementDataAssignment_4_240240);
+            pushFollow(FollowSets001.FOLLOW_ruleKPlacementData_in_rule__KPolyline_Impl__PlacementDataAssignment_4_239984);
             ruleKPlacementData();
 
             state._fsp--;
@@ -52505,20 +52203,20 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
 
 
     // $ANTLR start "rule__KPolyline_Impl__ChildPlacementAssignment_5_2"
-    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20295:1: rule__KPolyline_Impl__ChildPlacementAssignment_5_2 : ( ruleKPlacement ) ;
+    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20163:1: rule__KPolyline_Impl__ChildPlacementAssignment_5_2 : ( ruleKPlacement ) ;
     public final void rule__KPolyline_Impl__ChildPlacementAssignment_5_2() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20299:1: ( ( ruleKPlacement ) )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20300:1: ( ruleKPlacement )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20167:1: ( ( ruleKPlacement ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20168:1: ( ruleKPlacement )
             {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20300:1: ( ruleKPlacement )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20301:1: ruleKPlacement
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20168:1: ( ruleKPlacement )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20169:1: ruleKPlacement
             {
              before(grammarAccess.getKPolyline_ImplAccess().getChildPlacementKPlacementParserRuleCall_5_2_0()); 
-            pushFollow(FollowSets001.FOLLOW_ruleKPlacement_in_rule__KPolyline_Impl__ChildPlacementAssignment_5_240271);
+            pushFollow(FollowSets001.FOLLOW_ruleKPlacement_in_rule__KPolyline_Impl__ChildPlacementAssignment_5_240015);
             ruleKPlacement();
 
             state._fsp--;
@@ -52546,20 +52244,20 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
 
 
     // $ANTLR start "rule__KPolyline_Impl__ChildrenAssignment_6_2"
-    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20310:1: rule__KPolyline_Impl__ChildrenAssignment_6_2 : ( ruleKRendering ) ;
+    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20178:1: rule__KPolyline_Impl__ChildrenAssignment_6_2 : ( ruleKRendering ) ;
     public final void rule__KPolyline_Impl__ChildrenAssignment_6_2() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20314:1: ( ( ruleKRendering ) )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20315:1: ( ruleKRendering )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20182:1: ( ( ruleKRendering ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20183:1: ( ruleKRendering )
             {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20315:1: ( ruleKRendering )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20316:1: ruleKRendering
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20183:1: ( ruleKRendering )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20184:1: ruleKRendering
             {
              before(grammarAccess.getKPolyline_ImplAccess().getChildrenKRenderingParserRuleCall_6_2_0()); 
-            pushFollow(FollowSets001.FOLLOW_ruleKRendering_in_rule__KPolyline_Impl__ChildrenAssignment_6_240302);
+            pushFollow(FollowSets001.FOLLOW_ruleKRendering_in_rule__KPolyline_Impl__ChildrenAssignment_6_240046);
             ruleKRendering();
 
             state._fsp--;
@@ -52587,20 +52285,20 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
 
 
     // $ANTLR start "rule__KPolyline_Impl__ChildrenAssignment_6_3_1"
-    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20325:1: rule__KPolyline_Impl__ChildrenAssignment_6_3_1 : ( ruleKRendering ) ;
+    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20193:1: rule__KPolyline_Impl__ChildrenAssignment_6_3_1 : ( ruleKRendering ) ;
     public final void rule__KPolyline_Impl__ChildrenAssignment_6_3_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20329:1: ( ( ruleKRendering ) )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20330:1: ( ruleKRendering )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20197:1: ( ( ruleKRendering ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20198:1: ( ruleKRendering )
             {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20330:1: ( ruleKRendering )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20331:1: ruleKRendering
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20198:1: ( ruleKRendering )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20199:1: ruleKRendering
             {
              before(grammarAccess.getKPolyline_ImplAccess().getChildrenKRenderingParserRuleCall_6_3_1_0()); 
-            pushFollow(FollowSets001.FOLLOW_ruleKRendering_in_rule__KPolyline_Impl__ChildrenAssignment_6_3_140333);
+            pushFollow(FollowSets001.FOLLOW_ruleKRendering_in_rule__KPolyline_Impl__ChildrenAssignment_6_3_140077);
             ruleKRendering();
 
             state._fsp--;
@@ -52628,20 +52326,20 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
 
 
     // $ANTLR start "rule__KPolygon__StylesAssignment_3_2"
-    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20340:1: rule__KPolygon__StylesAssignment_3_2 : ( ruleKStyle ) ;
+    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20208:1: rule__KPolygon__StylesAssignment_3_2 : ( ruleKStyle ) ;
     public final void rule__KPolygon__StylesAssignment_3_2() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20344:1: ( ( ruleKStyle ) )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20345:1: ( ruleKStyle )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20212:1: ( ( ruleKStyle ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20213:1: ( ruleKStyle )
             {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20345:1: ( ruleKStyle )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20346:1: ruleKStyle
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20213:1: ( ruleKStyle )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20214:1: ruleKStyle
             {
              before(grammarAccess.getKPolygonAccess().getStylesKStyleParserRuleCall_3_2_0()); 
-            pushFollow(FollowSets001.FOLLOW_ruleKStyle_in_rule__KPolygon__StylesAssignment_3_240364);
+            pushFollow(FollowSets001.FOLLOW_ruleKStyle_in_rule__KPolygon__StylesAssignment_3_240108);
             ruleKStyle();
 
             state._fsp--;
@@ -52669,20 +52367,20 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
 
 
     // $ANTLR start "rule__KPolygon__StylesAssignment_3_3_1"
-    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20355:1: rule__KPolygon__StylesAssignment_3_3_1 : ( ruleKStyle ) ;
+    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20223:1: rule__KPolygon__StylesAssignment_3_3_1 : ( ruleKStyle ) ;
     public final void rule__KPolygon__StylesAssignment_3_3_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20359:1: ( ( ruleKStyle ) )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20360:1: ( ruleKStyle )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20227:1: ( ( ruleKStyle ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20228:1: ( ruleKStyle )
             {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20360:1: ( ruleKStyle )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20361:1: ruleKStyle
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20228:1: ( ruleKStyle )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20229:1: ruleKStyle
             {
              before(grammarAccess.getKPolygonAccess().getStylesKStyleParserRuleCall_3_3_1_0()); 
-            pushFollow(FollowSets001.FOLLOW_ruleKStyle_in_rule__KPolygon__StylesAssignment_3_3_140395);
+            pushFollow(FollowSets001.FOLLOW_ruleKStyle_in_rule__KPolygon__StylesAssignment_3_3_140139);
             ruleKStyle();
 
             state._fsp--;
@@ -52710,20 +52408,20 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
 
 
     // $ANTLR start "rule__KPolygon__PlacementDataAssignment_4_2"
-    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20370:1: rule__KPolygon__PlacementDataAssignment_4_2 : ( ruleKPlacementData ) ;
+    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20238:1: rule__KPolygon__PlacementDataAssignment_4_2 : ( ruleKPlacementData ) ;
     public final void rule__KPolygon__PlacementDataAssignment_4_2() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20374:1: ( ( ruleKPlacementData ) )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20375:1: ( ruleKPlacementData )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20242:1: ( ( ruleKPlacementData ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20243:1: ( ruleKPlacementData )
             {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20375:1: ( ruleKPlacementData )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20376:1: ruleKPlacementData
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20243:1: ( ruleKPlacementData )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20244:1: ruleKPlacementData
             {
              before(grammarAccess.getKPolygonAccess().getPlacementDataKPlacementDataParserRuleCall_4_2_0()); 
-            pushFollow(FollowSets001.FOLLOW_ruleKPlacementData_in_rule__KPolygon__PlacementDataAssignment_4_240426);
+            pushFollow(FollowSets001.FOLLOW_ruleKPlacementData_in_rule__KPolygon__PlacementDataAssignment_4_240170);
             ruleKPlacementData();
 
             state._fsp--;
@@ -52751,20 +52449,20 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
 
 
     // $ANTLR start "rule__KPolygon__ChildPlacementAssignment_5_2"
-    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20385:1: rule__KPolygon__ChildPlacementAssignment_5_2 : ( ruleKPlacement ) ;
+    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20253:1: rule__KPolygon__ChildPlacementAssignment_5_2 : ( ruleKPlacement ) ;
     public final void rule__KPolygon__ChildPlacementAssignment_5_2() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20389:1: ( ( ruleKPlacement ) )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20390:1: ( ruleKPlacement )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20257:1: ( ( ruleKPlacement ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20258:1: ( ruleKPlacement )
             {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20390:1: ( ruleKPlacement )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20391:1: ruleKPlacement
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20258:1: ( ruleKPlacement )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20259:1: ruleKPlacement
             {
              before(grammarAccess.getKPolygonAccess().getChildPlacementKPlacementParserRuleCall_5_2_0()); 
-            pushFollow(FollowSets001.FOLLOW_ruleKPlacement_in_rule__KPolygon__ChildPlacementAssignment_5_240457);
+            pushFollow(FollowSets001.FOLLOW_ruleKPlacement_in_rule__KPolygon__ChildPlacementAssignment_5_240201);
             ruleKPlacement();
 
             state._fsp--;
@@ -52792,20 +52490,20 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
 
 
     // $ANTLR start "rule__KPolygon__ChildrenAssignment_6_2"
-    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20400:1: rule__KPolygon__ChildrenAssignment_6_2 : ( ruleKRendering ) ;
+    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20268:1: rule__KPolygon__ChildrenAssignment_6_2 : ( ruleKRendering ) ;
     public final void rule__KPolygon__ChildrenAssignment_6_2() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20404:1: ( ( ruleKRendering ) )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20405:1: ( ruleKRendering )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20272:1: ( ( ruleKRendering ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20273:1: ( ruleKRendering )
             {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20405:1: ( ruleKRendering )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20406:1: ruleKRendering
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20273:1: ( ruleKRendering )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20274:1: ruleKRendering
             {
              before(grammarAccess.getKPolygonAccess().getChildrenKRenderingParserRuleCall_6_2_0()); 
-            pushFollow(FollowSets001.FOLLOW_ruleKRendering_in_rule__KPolygon__ChildrenAssignment_6_240488);
+            pushFollow(FollowSets001.FOLLOW_ruleKRendering_in_rule__KPolygon__ChildrenAssignment_6_240232);
             ruleKRendering();
 
             state._fsp--;
@@ -52833,20 +52531,20 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
 
 
     // $ANTLR start "rule__KPolygon__ChildrenAssignment_6_3_1"
-    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20415:1: rule__KPolygon__ChildrenAssignment_6_3_1 : ( ruleKRendering ) ;
+    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20283:1: rule__KPolygon__ChildrenAssignment_6_3_1 : ( ruleKRendering ) ;
     public final void rule__KPolygon__ChildrenAssignment_6_3_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20419:1: ( ( ruleKRendering ) )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20420:1: ( ruleKRendering )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20287:1: ( ( ruleKRendering ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20288:1: ( ruleKRendering )
             {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20420:1: ( ruleKRendering )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20421:1: ruleKRendering
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20288:1: ( ruleKRendering )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20289:1: ruleKRendering
             {
              before(grammarAccess.getKPolygonAccess().getChildrenKRenderingParserRuleCall_6_3_1_0()); 
-            pushFollow(FollowSets001.FOLLOW_ruleKRendering_in_rule__KPolygon__ChildrenAssignment_6_3_140519);
+            pushFollow(FollowSets001.FOLLOW_ruleKRendering_in_rule__KPolygon__ChildrenAssignment_6_3_140263);
             ruleKRendering();
 
             state._fsp--;
@@ -52874,20 +52572,20 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
 
 
     // $ANTLR start "rule__KImage__BundleNameAssignment_3"
-    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20430:1: rule__KImage__BundleNameAssignment_3 : ( ruleEString ) ;
+    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20298:1: rule__KImage__BundleNameAssignment_3 : ( ruleEString ) ;
     public final void rule__KImage__BundleNameAssignment_3() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20434:1: ( ( ruleEString ) )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20435:1: ( ruleEString )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20302:1: ( ( ruleEString ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20303:1: ( ruleEString )
             {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20435:1: ( ruleEString )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20436:1: ruleEString
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20303:1: ( ruleEString )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20304:1: ruleEString
             {
              before(grammarAccess.getKImageAccess().getBundleNameEStringParserRuleCall_3_0()); 
-            pushFollow(FollowSets001.FOLLOW_ruleEString_in_rule__KImage__BundleNameAssignment_340550);
+            pushFollow(FollowSets001.FOLLOW_ruleEString_in_rule__KImage__BundleNameAssignment_340294);
             ruleEString();
 
             state._fsp--;
@@ -52915,20 +52613,20 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
 
 
     // $ANTLR start "rule__KImage__ImagePathAssignment_5"
-    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20445:1: rule__KImage__ImagePathAssignment_5 : ( ruleEString ) ;
+    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20313:1: rule__KImage__ImagePathAssignment_5 : ( ruleEString ) ;
     public final void rule__KImage__ImagePathAssignment_5() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20449:1: ( ( ruleEString ) )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20450:1: ( ruleEString )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20317:1: ( ( ruleEString ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20318:1: ( ruleEString )
             {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20450:1: ( ruleEString )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20451:1: ruleEString
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20318:1: ( ruleEString )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20319:1: ruleEString
             {
              before(grammarAccess.getKImageAccess().getImagePathEStringParserRuleCall_5_0()); 
-            pushFollow(FollowSets001.FOLLOW_ruleEString_in_rule__KImage__ImagePathAssignment_540581);
+            pushFollow(FollowSets001.FOLLOW_ruleEString_in_rule__KImage__ImagePathAssignment_540325);
             ruleEString();
 
             state._fsp--;
@@ -52956,24 +52654,24 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
 
 
     // $ANTLR start "rule__KImage__ReferencesAssignment_6_2"
-    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20460:1: rule__KImage__ReferencesAssignment_6_2 : ( ( ruleEString ) ) ;
+    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20328:1: rule__KImage__ReferencesAssignment_6_2 : ( ( ruleEString ) ) ;
     public final void rule__KImage__ReferencesAssignment_6_2() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20464:1: ( ( ( ruleEString ) ) )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20465:1: ( ( ruleEString ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20332:1: ( ( ( ruleEString ) ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20333:1: ( ( ruleEString ) )
             {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20465:1: ( ( ruleEString ) )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20466:1: ( ruleEString )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20333:1: ( ( ruleEString ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20334:1: ( ruleEString )
             {
              before(grammarAccess.getKImageAccess().getReferencesKRenderingRefCrossReference_6_2_0()); 
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20467:1: ( ruleEString )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20468:1: ruleEString
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20335:1: ( ruleEString )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20336:1: ruleEString
             {
              before(grammarAccess.getKImageAccess().getReferencesKRenderingRefEStringParserRuleCall_6_2_0_1()); 
-            pushFollow(FollowSets001.FOLLOW_ruleEString_in_rule__KImage__ReferencesAssignment_6_240616);
+            pushFollow(FollowSets001.FOLLOW_ruleEString_in_rule__KImage__ReferencesAssignment_6_240360);
             ruleEString();
 
             state._fsp--;
@@ -53005,24 +52703,24 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
 
 
     // $ANTLR start "rule__KImage__ReferencesAssignment_6_3_1"
-    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20479:1: rule__KImage__ReferencesAssignment_6_3_1 : ( ( ruleEString ) ) ;
+    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20347:1: rule__KImage__ReferencesAssignment_6_3_1 : ( ( ruleEString ) ) ;
     public final void rule__KImage__ReferencesAssignment_6_3_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20483:1: ( ( ( ruleEString ) ) )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20484:1: ( ( ruleEString ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20351:1: ( ( ( ruleEString ) ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20352:1: ( ( ruleEString ) )
             {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20484:1: ( ( ruleEString ) )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20485:1: ( ruleEString )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20352:1: ( ( ruleEString ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20353:1: ( ruleEString )
             {
              before(grammarAccess.getKImageAccess().getReferencesKRenderingRefCrossReference_6_3_1_0()); 
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20486:1: ( ruleEString )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20487:1: ruleEString
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20354:1: ( ruleEString )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20355:1: ruleEString
             {
              before(grammarAccess.getKImageAccess().getReferencesKRenderingRefEStringParserRuleCall_6_3_1_0_1()); 
-            pushFollow(FollowSets001.FOLLOW_ruleEString_in_rule__KImage__ReferencesAssignment_6_3_140655);
+            pushFollow(FollowSets001.FOLLOW_ruleEString_in_rule__KImage__ReferencesAssignment_6_3_140399);
             ruleEString();
 
             state._fsp--;
@@ -53054,20 +52752,20 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
 
 
     // $ANTLR start "rule__KImage__PlacementDataAssignment_7_1"
-    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20498:1: rule__KImage__PlacementDataAssignment_7_1 : ( ruleKPlacementData ) ;
+    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20366:1: rule__KImage__PlacementDataAssignment_7_1 : ( ruleKPlacementData ) ;
     public final void rule__KImage__PlacementDataAssignment_7_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20502:1: ( ( ruleKPlacementData ) )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20503:1: ( ruleKPlacementData )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20370:1: ( ( ruleKPlacementData ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20371:1: ( ruleKPlacementData )
             {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20503:1: ( ruleKPlacementData )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20504:1: ruleKPlacementData
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20371:1: ( ruleKPlacementData )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20372:1: ruleKPlacementData
             {
              before(grammarAccess.getKImageAccess().getPlacementDataKPlacementDataParserRuleCall_7_1_0()); 
-            pushFollow(FollowSets001.FOLLOW_ruleKPlacementData_in_rule__KImage__PlacementDataAssignment_7_140690);
+            pushFollow(FollowSets001.FOLLOW_ruleKPlacementData_in_rule__KImage__PlacementDataAssignment_7_140434);
             ruleKPlacementData();
 
             state._fsp--;
@@ -53095,20 +52793,20 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
 
 
     // $ANTLR start "rule__KImage__StylesAssignment_8_2"
-    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20513:1: rule__KImage__StylesAssignment_8_2 : ( ruleKStyle ) ;
+    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20381:1: rule__KImage__StylesAssignment_8_2 : ( ruleKStyle ) ;
     public final void rule__KImage__StylesAssignment_8_2() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20517:1: ( ( ruleKStyle ) )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20518:1: ( ruleKStyle )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20385:1: ( ( ruleKStyle ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20386:1: ( ruleKStyle )
             {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20518:1: ( ruleKStyle )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20519:1: ruleKStyle
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20386:1: ( ruleKStyle )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20387:1: ruleKStyle
             {
              before(grammarAccess.getKImageAccess().getStylesKStyleParserRuleCall_8_2_0()); 
-            pushFollow(FollowSets001.FOLLOW_ruleKStyle_in_rule__KImage__StylesAssignment_8_240721);
+            pushFollow(FollowSets001.FOLLOW_ruleKStyle_in_rule__KImage__StylesAssignment_8_240465);
             ruleKStyle();
 
             state._fsp--;
@@ -53136,20 +52834,20 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
 
 
     // $ANTLR start "rule__KImage__StylesAssignment_8_3_1"
-    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20528:1: rule__KImage__StylesAssignment_8_3_1 : ( ruleKStyle ) ;
+    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20396:1: rule__KImage__StylesAssignment_8_3_1 : ( ruleKStyle ) ;
     public final void rule__KImage__StylesAssignment_8_3_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20532:1: ( ( ruleKStyle ) )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20533:1: ( ruleKStyle )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20400:1: ( ( ruleKStyle ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20401:1: ( ruleKStyle )
             {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20533:1: ( ruleKStyle )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20534:1: ruleKStyle
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20401:1: ( ruleKStyle )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20402:1: ruleKStyle
             {
              before(grammarAccess.getKImageAccess().getStylesKStyleParserRuleCall_8_3_1_0()); 
-            pushFollow(FollowSets001.FOLLOW_ruleKStyle_in_rule__KImage__StylesAssignment_8_3_140752);
+            pushFollow(FollowSets001.FOLLOW_ruleKStyle_in_rule__KImage__StylesAssignment_8_3_140496);
             ruleKStyle();
 
             state._fsp--;
@@ -53177,20 +52875,20 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
 
 
     // $ANTLR start "rule__KImage__ChildrenAssignment_9_2"
-    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20543:1: rule__KImage__ChildrenAssignment_9_2 : ( ruleKRendering ) ;
+    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20411:1: rule__KImage__ChildrenAssignment_9_2 : ( ruleKRendering ) ;
     public final void rule__KImage__ChildrenAssignment_9_2() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20547:1: ( ( ruleKRendering ) )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20548:1: ( ruleKRendering )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20415:1: ( ( ruleKRendering ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20416:1: ( ruleKRendering )
             {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20548:1: ( ruleKRendering )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20549:1: ruleKRendering
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20416:1: ( ruleKRendering )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20417:1: ruleKRendering
             {
              before(grammarAccess.getKImageAccess().getChildrenKRenderingParserRuleCall_9_2_0()); 
-            pushFollow(FollowSets001.FOLLOW_ruleKRendering_in_rule__KImage__ChildrenAssignment_9_240783);
+            pushFollow(FollowSets001.FOLLOW_ruleKRendering_in_rule__KImage__ChildrenAssignment_9_240527);
             ruleKRendering();
 
             state._fsp--;
@@ -53218,20 +52916,20 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
 
 
     // $ANTLR start "rule__KImage__ChildrenAssignment_9_3_1"
-    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20558:1: rule__KImage__ChildrenAssignment_9_3_1 : ( ruleKRendering ) ;
+    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20426:1: rule__KImage__ChildrenAssignment_9_3_1 : ( ruleKRendering ) ;
     public final void rule__KImage__ChildrenAssignment_9_3_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20562:1: ( ( ruleKRendering ) )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20563:1: ( ruleKRendering )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20430:1: ( ( ruleKRendering ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20431:1: ( ruleKRendering )
             {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20563:1: ( ruleKRendering )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20564:1: ruleKRendering
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20431:1: ( ruleKRendering )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20432:1: ruleKRendering
             {
              before(grammarAccess.getKImageAccess().getChildrenKRenderingParserRuleCall_9_3_1_0()); 
-            pushFollow(FollowSets001.FOLLOW_ruleKRendering_in_rule__KImage__ChildrenAssignment_9_3_140814);
+            pushFollow(FollowSets001.FOLLOW_ruleKRendering_in_rule__KImage__ChildrenAssignment_9_3_140558);
             ruleKRendering();
 
             state._fsp--;
@@ -53259,20 +52957,20 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
 
 
     // $ANTLR start "rule__KImage__ChildPlacementAssignment_10_1"
-    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20573:1: rule__KImage__ChildPlacementAssignment_10_1 : ( ruleKPlacement ) ;
+    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20441:1: rule__KImage__ChildPlacementAssignment_10_1 : ( ruleKPlacement ) ;
     public final void rule__KImage__ChildPlacementAssignment_10_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20577:1: ( ( ruleKPlacement ) )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20578:1: ( ruleKPlacement )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20445:1: ( ( ruleKPlacement ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20446:1: ( ruleKPlacement )
             {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20578:1: ( ruleKPlacement )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20579:1: ruleKPlacement
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20446:1: ( ruleKPlacement )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20447:1: ruleKPlacement
             {
              before(grammarAccess.getKImageAccess().getChildPlacementKPlacementParserRuleCall_10_1_0()); 
-            pushFollow(FollowSets001.FOLLOW_ruleKPlacement_in_rule__KImage__ChildPlacementAssignment_10_140845);
+            pushFollow(FollowSets001.FOLLOW_ruleKPlacement_in_rule__KImage__ChildPlacementAssignment_10_140589);
             ruleKPlacement();
 
             state._fsp--;
@@ -53300,20 +52998,20 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
 
 
     // $ANTLR start "rule__KArc__StartAngleAssignment_3_1"
-    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20588:1: rule__KArc__StartAngleAssignment_3_1 : ( ruleEFloat ) ;
+    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20456:1: rule__KArc__StartAngleAssignment_3_1 : ( ruleEFloat ) ;
     public final void rule__KArc__StartAngleAssignment_3_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20592:1: ( ( ruleEFloat ) )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20593:1: ( ruleEFloat )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20460:1: ( ( ruleEFloat ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20461:1: ( ruleEFloat )
             {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20593:1: ( ruleEFloat )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20594:1: ruleEFloat
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20461:1: ( ruleEFloat )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20462:1: ruleEFloat
             {
              before(grammarAccess.getKArcAccess().getStartAngleEFloatParserRuleCall_3_1_0()); 
-            pushFollow(FollowSets001.FOLLOW_ruleEFloat_in_rule__KArc__StartAngleAssignment_3_140876);
+            pushFollow(FollowSets001.FOLLOW_ruleEFloat_in_rule__KArc__StartAngleAssignment_3_140620);
             ruleEFloat();
 
             state._fsp--;
@@ -53341,20 +53039,20 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
 
 
     // $ANTLR start "rule__KArc__ArcAngleAssignment_4_1"
-    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20603:1: rule__KArc__ArcAngleAssignment_4_1 : ( ruleEFloat ) ;
+    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20471:1: rule__KArc__ArcAngleAssignment_4_1 : ( ruleEFloat ) ;
     public final void rule__KArc__ArcAngleAssignment_4_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20607:1: ( ( ruleEFloat ) )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20608:1: ( ruleEFloat )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20475:1: ( ( ruleEFloat ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20476:1: ( ruleEFloat )
             {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20608:1: ( ruleEFloat )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20609:1: ruleEFloat
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20476:1: ( ruleEFloat )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20477:1: ruleEFloat
             {
              before(grammarAccess.getKArcAccess().getArcAngleEFloatParserRuleCall_4_1_0()); 
-            pushFollow(FollowSets001.FOLLOW_ruleEFloat_in_rule__KArc__ArcAngleAssignment_4_140907);
+            pushFollow(FollowSets001.FOLLOW_ruleEFloat_in_rule__KArc__ArcAngleAssignment_4_140651);
             ruleEFloat();
 
             state._fsp--;
@@ -53382,24 +53080,24 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
 
 
     // $ANTLR start "rule__KArc__ReferencesAssignment_5_2"
-    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20618:1: rule__KArc__ReferencesAssignment_5_2 : ( ( ruleEString ) ) ;
+    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20486:1: rule__KArc__ReferencesAssignment_5_2 : ( ( ruleEString ) ) ;
     public final void rule__KArc__ReferencesAssignment_5_2() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20622:1: ( ( ( ruleEString ) ) )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20623:1: ( ( ruleEString ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20490:1: ( ( ( ruleEString ) ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20491:1: ( ( ruleEString ) )
             {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20623:1: ( ( ruleEString ) )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20624:1: ( ruleEString )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20491:1: ( ( ruleEString ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20492:1: ( ruleEString )
             {
              before(grammarAccess.getKArcAccess().getReferencesKRenderingRefCrossReference_5_2_0()); 
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20625:1: ( ruleEString )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20626:1: ruleEString
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20493:1: ( ruleEString )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20494:1: ruleEString
             {
              before(grammarAccess.getKArcAccess().getReferencesKRenderingRefEStringParserRuleCall_5_2_0_1()); 
-            pushFollow(FollowSets001.FOLLOW_ruleEString_in_rule__KArc__ReferencesAssignment_5_240942);
+            pushFollow(FollowSets001.FOLLOW_ruleEString_in_rule__KArc__ReferencesAssignment_5_240686);
             ruleEString();
 
             state._fsp--;
@@ -53431,24 +53129,24 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
 
 
     // $ANTLR start "rule__KArc__ReferencesAssignment_5_3_1"
-    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20637:1: rule__KArc__ReferencesAssignment_5_3_1 : ( ( ruleEString ) ) ;
+    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20505:1: rule__KArc__ReferencesAssignment_5_3_1 : ( ( ruleEString ) ) ;
     public final void rule__KArc__ReferencesAssignment_5_3_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20641:1: ( ( ( ruleEString ) ) )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20642:1: ( ( ruleEString ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20509:1: ( ( ( ruleEString ) ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20510:1: ( ( ruleEString ) )
             {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20642:1: ( ( ruleEString ) )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20643:1: ( ruleEString )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20510:1: ( ( ruleEString ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20511:1: ( ruleEString )
             {
              before(grammarAccess.getKArcAccess().getReferencesKRenderingRefCrossReference_5_3_1_0()); 
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20644:1: ( ruleEString )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20645:1: ruleEString
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20512:1: ( ruleEString )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20513:1: ruleEString
             {
              before(grammarAccess.getKArcAccess().getReferencesKRenderingRefEStringParserRuleCall_5_3_1_0_1()); 
-            pushFollow(FollowSets001.FOLLOW_ruleEString_in_rule__KArc__ReferencesAssignment_5_3_140981);
+            pushFollow(FollowSets001.FOLLOW_ruleEString_in_rule__KArc__ReferencesAssignment_5_3_140725);
             ruleEString();
 
             state._fsp--;
@@ -53480,20 +53178,20 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
 
 
     // $ANTLR start "rule__KArc__PlacementDataAssignment_6_1"
-    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20656:1: rule__KArc__PlacementDataAssignment_6_1 : ( ruleKPlacementData ) ;
+    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20524:1: rule__KArc__PlacementDataAssignment_6_1 : ( ruleKPlacementData ) ;
     public final void rule__KArc__PlacementDataAssignment_6_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20660:1: ( ( ruleKPlacementData ) )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20661:1: ( ruleKPlacementData )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20528:1: ( ( ruleKPlacementData ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20529:1: ( ruleKPlacementData )
             {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20661:1: ( ruleKPlacementData )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20662:1: ruleKPlacementData
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20529:1: ( ruleKPlacementData )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20530:1: ruleKPlacementData
             {
              before(grammarAccess.getKArcAccess().getPlacementDataKPlacementDataParserRuleCall_6_1_0()); 
-            pushFollow(FollowSets001.FOLLOW_ruleKPlacementData_in_rule__KArc__PlacementDataAssignment_6_141016);
+            pushFollow(FollowSets001.FOLLOW_ruleKPlacementData_in_rule__KArc__PlacementDataAssignment_6_140760);
             ruleKPlacementData();
 
             state._fsp--;
@@ -53521,20 +53219,20 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
 
 
     // $ANTLR start "rule__KArc__StylesAssignment_7_2"
-    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20671:1: rule__KArc__StylesAssignment_7_2 : ( ruleKStyle ) ;
+    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20539:1: rule__KArc__StylesAssignment_7_2 : ( ruleKStyle ) ;
     public final void rule__KArc__StylesAssignment_7_2() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20675:1: ( ( ruleKStyle ) )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20676:1: ( ruleKStyle )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20543:1: ( ( ruleKStyle ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20544:1: ( ruleKStyle )
             {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20676:1: ( ruleKStyle )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20677:1: ruleKStyle
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20544:1: ( ruleKStyle )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20545:1: ruleKStyle
             {
              before(grammarAccess.getKArcAccess().getStylesKStyleParserRuleCall_7_2_0()); 
-            pushFollow(FollowSets001.FOLLOW_ruleKStyle_in_rule__KArc__StylesAssignment_7_241047);
+            pushFollow(FollowSets001.FOLLOW_ruleKStyle_in_rule__KArc__StylesAssignment_7_240791);
             ruleKStyle();
 
             state._fsp--;
@@ -53562,20 +53260,20 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
 
 
     // $ANTLR start "rule__KArc__StylesAssignment_7_3_1"
-    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20686:1: rule__KArc__StylesAssignment_7_3_1 : ( ruleKStyle ) ;
+    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20554:1: rule__KArc__StylesAssignment_7_3_1 : ( ruleKStyle ) ;
     public final void rule__KArc__StylesAssignment_7_3_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20690:1: ( ( ruleKStyle ) )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20691:1: ( ruleKStyle )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20558:1: ( ( ruleKStyle ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20559:1: ( ruleKStyle )
             {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20691:1: ( ruleKStyle )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20692:1: ruleKStyle
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20559:1: ( ruleKStyle )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20560:1: ruleKStyle
             {
              before(grammarAccess.getKArcAccess().getStylesKStyleParserRuleCall_7_3_1_0()); 
-            pushFollow(FollowSets001.FOLLOW_ruleKStyle_in_rule__KArc__StylesAssignment_7_3_141078);
+            pushFollow(FollowSets001.FOLLOW_ruleKStyle_in_rule__KArc__StylesAssignment_7_3_140822);
             ruleKStyle();
 
             state._fsp--;
@@ -53603,20 +53301,20 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
 
 
     // $ANTLR start "rule__KArc__ChildrenAssignment_8_2"
-    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20701:1: rule__KArc__ChildrenAssignment_8_2 : ( ruleKRendering ) ;
+    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20569:1: rule__KArc__ChildrenAssignment_8_2 : ( ruleKRendering ) ;
     public final void rule__KArc__ChildrenAssignment_8_2() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20705:1: ( ( ruleKRendering ) )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20706:1: ( ruleKRendering )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20573:1: ( ( ruleKRendering ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20574:1: ( ruleKRendering )
             {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20706:1: ( ruleKRendering )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20707:1: ruleKRendering
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20574:1: ( ruleKRendering )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20575:1: ruleKRendering
             {
              before(grammarAccess.getKArcAccess().getChildrenKRenderingParserRuleCall_8_2_0()); 
-            pushFollow(FollowSets001.FOLLOW_ruleKRendering_in_rule__KArc__ChildrenAssignment_8_241109);
+            pushFollow(FollowSets001.FOLLOW_ruleKRendering_in_rule__KArc__ChildrenAssignment_8_240853);
             ruleKRendering();
 
             state._fsp--;
@@ -53644,20 +53342,20 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
 
 
     // $ANTLR start "rule__KArc__ChildrenAssignment_8_3_1"
-    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20716:1: rule__KArc__ChildrenAssignment_8_3_1 : ( ruleKRendering ) ;
+    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20584:1: rule__KArc__ChildrenAssignment_8_3_1 : ( ruleKRendering ) ;
     public final void rule__KArc__ChildrenAssignment_8_3_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20720:1: ( ( ruleKRendering ) )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20721:1: ( ruleKRendering )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20588:1: ( ( ruleKRendering ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20589:1: ( ruleKRendering )
             {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20721:1: ( ruleKRendering )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20722:1: ruleKRendering
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20589:1: ( ruleKRendering )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20590:1: ruleKRendering
             {
              before(grammarAccess.getKArcAccess().getChildrenKRenderingParserRuleCall_8_3_1_0()); 
-            pushFollow(FollowSets001.FOLLOW_ruleKRendering_in_rule__KArc__ChildrenAssignment_8_3_141140);
+            pushFollow(FollowSets001.FOLLOW_ruleKRendering_in_rule__KArc__ChildrenAssignment_8_3_140884);
             ruleKRendering();
 
             state._fsp--;
@@ -53685,20 +53383,20 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
 
 
     // $ANTLR start "rule__KArc__ChildPlacementAssignment_9_1"
-    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20731:1: rule__KArc__ChildPlacementAssignment_9_1 : ( ruleKPlacement ) ;
+    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20599:1: rule__KArc__ChildPlacementAssignment_9_1 : ( ruleKPlacement ) ;
     public final void rule__KArc__ChildPlacementAssignment_9_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20735:1: ( ( ruleKPlacement ) )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20736:1: ( ruleKPlacement )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20603:1: ( ( ruleKPlacement ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20604:1: ( ruleKPlacement )
             {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20736:1: ( ruleKPlacement )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20737:1: ruleKPlacement
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20604:1: ( ruleKPlacement )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20605:1: ruleKPlacement
             {
              before(grammarAccess.getKArcAccess().getChildPlacementKPlacementParserRuleCall_9_1_0()); 
-            pushFollow(FollowSets001.FOLLOW_ruleKPlacement_in_rule__KArc__ChildPlacementAssignment_9_141171);
+            pushFollow(FollowSets001.FOLLOW_ruleKPlacement_in_rule__KArc__ChildPlacementAssignment_9_140915);
             ruleKPlacement();
 
             state._fsp--;
@@ -53726,24 +53424,24 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
 
 
     // $ANTLR start "rule__KChildArea__ReferencesAssignment_3_2"
-    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20746:1: rule__KChildArea__ReferencesAssignment_3_2 : ( ( ruleEString ) ) ;
+    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20614:1: rule__KChildArea__ReferencesAssignment_3_2 : ( ( ruleEString ) ) ;
     public final void rule__KChildArea__ReferencesAssignment_3_2() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20750:1: ( ( ( ruleEString ) ) )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20751:1: ( ( ruleEString ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20618:1: ( ( ( ruleEString ) ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20619:1: ( ( ruleEString ) )
             {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20751:1: ( ( ruleEString ) )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20752:1: ( ruleEString )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20619:1: ( ( ruleEString ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20620:1: ( ruleEString )
             {
              before(grammarAccess.getKChildAreaAccess().getReferencesKRenderingRefCrossReference_3_2_0()); 
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20753:1: ( ruleEString )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20754:1: ruleEString
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20621:1: ( ruleEString )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20622:1: ruleEString
             {
              before(grammarAccess.getKChildAreaAccess().getReferencesKRenderingRefEStringParserRuleCall_3_2_0_1()); 
-            pushFollow(FollowSets001.FOLLOW_ruleEString_in_rule__KChildArea__ReferencesAssignment_3_241206);
+            pushFollow(FollowSets001.FOLLOW_ruleEString_in_rule__KChildArea__ReferencesAssignment_3_240950);
             ruleEString();
 
             state._fsp--;
@@ -53775,24 +53473,24 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
 
 
     // $ANTLR start "rule__KChildArea__ReferencesAssignment_3_3_1"
-    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20765:1: rule__KChildArea__ReferencesAssignment_3_3_1 : ( ( ruleEString ) ) ;
+    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20633:1: rule__KChildArea__ReferencesAssignment_3_3_1 : ( ( ruleEString ) ) ;
     public final void rule__KChildArea__ReferencesAssignment_3_3_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20769:1: ( ( ( ruleEString ) ) )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20770:1: ( ( ruleEString ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20637:1: ( ( ( ruleEString ) ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20638:1: ( ( ruleEString ) )
             {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20770:1: ( ( ruleEString ) )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20771:1: ( ruleEString )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20638:1: ( ( ruleEString ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20639:1: ( ruleEString )
             {
              before(grammarAccess.getKChildAreaAccess().getReferencesKRenderingRefCrossReference_3_3_1_0()); 
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20772:1: ( ruleEString )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20773:1: ruleEString
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20640:1: ( ruleEString )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20641:1: ruleEString
             {
              before(grammarAccess.getKChildAreaAccess().getReferencesKRenderingRefEStringParserRuleCall_3_3_1_0_1()); 
-            pushFollow(FollowSets001.FOLLOW_ruleEString_in_rule__KChildArea__ReferencesAssignment_3_3_141245);
+            pushFollow(FollowSets001.FOLLOW_ruleEString_in_rule__KChildArea__ReferencesAssignment_3_3_140989);
             ruleEString();
 
             state._fsp--;
@@ -53824,20 +53522,20 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
 
 
     // $ANTLR start "rule__KChildArea__PlacementDataAssignment_4_1"
-    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20784:1: rule__KChildArea__PlacementDataAssignment_4_1 : ( ruleKPlacementData ) ;
+    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20652:1: rule__KChildArea__PlacementDataAssignment_4_1 : ( ruleKPlacementData ) ;
     public final void rule__KChildArea__PlacementDataAssignment_4_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20788:1: ( ( ruleKPlacementData ) )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20789:1: ( ruleKPlacementData )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20656:1: ( ( ruleKPlacementData ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20657:1: ( ruleKPlacementData )
             {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20789:1: ( ruleKPlacementData )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20790:1: ruleKPlacementData
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20657:1: ( ruleKPlacementData )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20658:1: ruleKPlacementData
             {
              before(grammarAccess.getKChildAreaAccess().getPlacementDataKPlacementDataParserRuleCall_4_1_0()); 
-            pushFollow(FollowSets001.FOLLOW_ruleKPlacementData_in_rule__KChildArea__PlacementDataAssignment_4_141280);
+            pushFollow(FollowSets001.FOLLOW_ruleKPlacementData_in_rule__KChildArea__PlacementDataAssignment_4_141024);
             ruleKPlacementData();
 
             state._fsp--;
@@ -53865,20 +53563,20 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
 
 
     // $ANTLR start "rule__KChildArea__StylesAssignment_5_2"
-    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20799:1: rule__KChildArea__StylesAssignment_5_2 : ( ruleKStyle ) ;
+    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20667:1: rule__KChildArea__StylesAssignment_5_2 : ( ruleKStyle ) ;
     public final void rule__KChildArea__StylesAssignment_5_2() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20803:1: ( ( ruleKStyle ) )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20804:1: ( ruleKStyle )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20671:1: ( ( ruleKStyle ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20672:1: ( ruleKStyle )
             {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20804:1: ( ruleKStyle )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20805:1: ruleKStyle
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20672:1: ( ruleKStyle )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20673:1: ruleKStyle
             {
              before(grammarAccess.getKChildAreaAccess().getStylesKStyleParserRuleCall_5_2_0()); 
-            pushFollow(FollowSets001.FOLLOW_ruleKStyle_in_rule__KChildArea__StylesAssignment_5_241311);
+            pushFollow(FollowSets001.FOLLOW_ruleKStyle_in_rule__KChildArea__StylesAssignment_5_241055);
             ruleKStyle();
 
             state._fsp--;
@@ -53906,20 +53604,20 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
 
 
     // $ANTLR start "rule__KChildArea__StylesAssignment_5_3_1"
-    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20814:1: rule__KChildArea__StylesAssignment_5_3_1 : ( ruleKStyle ) ;
+    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20682:1: rule__KChildArea__StylesAssignment_5_3_1 : ( ruleKStyle ) ;
     public final void rule__KChildArea__StylesAssignment_5_3_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20818:1: ( ( ruleKStyle ) )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20819:1: ( ruleKStyle )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20686:1: ( ( ruleKStyle ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20687:1: ( ruleKStyle )
             {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20819:1: ( ruleKStyle )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20820:1: ruleKStyle
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20687:1: ( ruleKStyle )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20688:1: ruleKStyle
             {
              before(grammarAccess.getKChildAreaAccess().getStylesKStyleParserRuleCall_5_3_1_0()); 
-            pushFollow(FollowSets001.FOLLOW_ruleKStyle_in_rule__KChildArea__StylesAssignment_5_3_141342);
+            pushFollow(FollowSets001.FOLLOW_ruleKStyle_in_rule__KChildArea__StylesAssignment_5_3_141086);
             ruleKStyle();
 
             state._fsp--;
@@ -53947,24 +53645,24 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
 
 
     // $ANTLR start "rule__KText__ClipAssignment_0"
-    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20829:1: rule__KText__ClipAssignment_0 : ( ( 'clip' ) ) ;
+    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20697:1: rule__KText__ClipAssignment_0 : ( ( 'clip' ) ) ;
     public final void rule__KText__ClipAssignment_0() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20833:1: ( ( ( 'clip' ) ) )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20834:1: ( ( 'clip' ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20701:1: ( ( ( 'clip' ) ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20702:1: ( ( 'clip' ) )
             {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20834:1: ( ( 'clip' ) )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20835:1: ( 'clip' )
-            {
-             before(grammarAccess.getKTextAccess().getClipClipKeyword_0_0()); 
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20836:1: ( 'clip' )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20837:1: 'clip'
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20702:1: ( ( 'clip' ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20703:1: ( 'clip' )
             {
              before(grammarAccess.getKTextAccess().getClipClipKeyword_0_0()); 
-            match(input,106,FollowSets001.FOLLOW_106_in_rule__KText__ClipAssignment_041378); 
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20704:1: ( 'clip' )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20705:1: 'clip'
+            {
+             before(grammarAccess.getKTextAccess().getClipClipKeyword_0_0()); 
+            match(input,104,FollowSets001.FOLLOW_104_in_rule__KText__ClipAssignment_041122); 
              after(grammarAccess.getKTextAccess().getClipClipKeyword_0_0()); 
 
             }
@@ -53992,20 +53690,20 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
 
 
     // $ANTLR start "rule__KText__TextAssignment_3_1"
-    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20852:1: rule__KText__TextAssignment_3_1 : ( ruleEString ) ;
+    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20720:1: rule__KText__TextAssignment_3_1 : ( ruleEString ) ;
     public final void rule__KText__TextAssignment_3_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20856:1: ( ( ruleEString ) )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20857:1: ( ruleEString )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20724:1: ( ( ruleEString ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20725:1: ( ruleEString )
             {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20857:1: ( ruleEString )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20858:1: ruleEString
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20725:1: ( ruleEString )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20726:1: ruleEString
             {
              before(grammarAccess.getKTextAccess().getTextEStringParserRuleCall_3_1_0()); 
-            pushFollow(FollowSets001.FOLLOW_ruleEString_in_rule__KText__TextAssignment_3_141417);
+            pushFollow(FollowSets001.FOLLOW_ruleEString_in_rule__KText__TextAssignment_3_141161);
             ruleEString();
 
             state._fsp--;
@@ -54033,24 +53731,24 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
 
 
     // $ANTLR start "rule__KText__ReferencesAssignment_4_2"
-    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20867:1: rule__KText__ReferencesAssignment_4_2 : ( ( ruleEString ) ) ;
+    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20735:1: rule__KText__ReferencesAssignment_4_2 : ( ( ruleEString ) ) ;
     public final void rule__KText__ReferencesAssignment_4_2() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20871:1: ( ( ( ruleEString ) ) )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20872:1: ( ( ruleEString ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20739:1: ( ( ( ruleEString ) ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20740:1: ( ( ruleEString ) )
             {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20872:1: ( ( ruleEString ) )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20873:1: ( ruleEString )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20740:1: ( ( ruleEString ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20741:1: ( ruleEString )
             {
              before(grammarAccess.getKTextAccess().getReferencesKRenderingRefCrossReference_4_2_0()); 
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20874:1: ( ruleEString )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20875:1: ruleEString
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20742:1: ( ruleEString )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20743:1: ruleEString
             {
              before(grammarAccess.getKTextAccess().getReferencesKRenderingRefEStringParserRuleCall_4_2_0_1()); 
-            pushFollow(FollowSets001.FOLLOW_ruleEString_in_rule__KText__ReferencesAssignment_4_241452);
+            pushFollow(FollowSets001.FOLLOW_ruleEString_in_rule__KText__ReferencesAssignment_4_241196);
             ruleEString();
 
             state._fsp--;
@@ -54082,24 +53780,24 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
 
 
     // $ANTLR start "rule__KText__ReferencesAssignment_4_3_1"
-    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20886:1: rule__KText__ReferencesAssignment_4_3_1 : ( ( ruleEString ) ) ;
+    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20754:1: rule__KText__ReferencesAssignment_4_3_1 : ( ( ruleEString ) ) ;
     public final void rule__KText__ReferencesAssignment_4_3_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20890:1: ( ( ( ruleEString ) ) )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20891:1: ( ( ruleEString ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20758:1: ( ( ( ruleEString ) ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20759:1: ( ( ruleEString ) )
             {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20891:1: ( ( ruleEString ) )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20892:1: ( ruleEString )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20759:1: ( ( ruleEString ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20760:1: ( ruleEString )
             {
              before(grammarAccess.getKTextAccess().getReferencesKRenderingRefCrossReference_4_3_1_0()); 
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20893:1: ( ruleEString )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20894:1: ruleEString
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20761:1: ( ruleEString )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20762:1: ruleEString
             {
              before(grammarAccess.getKTextAccess().getReferencesKRenderingRefEStringParserRuleCall_4_3_1_0_1()); 
-            pushFollow(FollowSets001.FOLLOW_ruleEString_in_rule__KText__ReferencesAssignment_4_3_141491);
+            pushFollow(FollowSets001.FOLLOW_ruleEString_in_rule__KText__ReferencesAssignment_4_3_141235);
             ruleEString();
 
             state._fsp--;
@@ -54131,20 +53829,20 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
 
 
     // $ANTLR start "rule__KText__PlacementDataAssignment_5_1"
-    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20905:1: rule__KText__PlacementDataAssignment_5_1 : ( ruleKPlacementData ) ;
+    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20773:1: rule__KText__PlacementDataAssignment_5_1 : ( ruleKPlacementData ) ;
     public final void rule__KText__PlacementDataAssignment_5_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20909:1: ( ( ruleKPlacementData ) )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20910:1: ( ruleKPlacementData )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20777:1: ( ( ruleKPlacementData ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20778:1: ( ruleKPlacementData )
             {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20910:1: ( ruleKPlacementData )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20911:1: ruleKPlacementData
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20778:1: ( ruleKPlacementData )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20779:1: ruleKPlacementData
             {
              before(grammarAccess.getKTextAccess().getPlacementDataKPlacementDataParserRuleCall_5_1_0()); 
-            pushFollow(FollowSets001.FOLLOW_ruleKPlacementData_in_rule__KText__PlacementDataAssignment_5_141526);
+            pushFollow(FollowSets001.FOLLOW_ruleKPlacementData_in_rule__KText__PlacementDataAssignment_5_141270);
             ruleKPlacementData();
 
             state._fsp--;
@@ -54172,20 +53870,20 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
 
 
     // $ANTLR start "rule__KText__StylesAssignment_6_2"
-    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20920:1: rule__KText__StylesAssignment_6_2 : ( ruleKStyle ) ;
+    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20788:1: rule__KText__StylesAssignment_6_2 : ( ruleKStyle ) ;
     public final void rule__KText__StylesAssignment_6_2() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20924:1: ( ( ruleKStyle ) )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20925:1: ( ruleKStyle )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20792:1: ( ( ruleKStyle ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20793:1: ( ruleKStyle )
             {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20925:1: ( ruleKStyle )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20926:1: ruleKStyle
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20793:1: ( ruleKStyle )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20794:1: ruleKStyle
             {
              before(grammarAccess.getKTextAccess().getStylesKStyleParserRuleCall_6_2_0()); 
-            pushFollow(FollowSets001.FOLLOW_ruleKStyle_in_rule__KText__StylesAssignment_6_241557);
+            pushFollow(FollowSets001.FOLLOW_ruleKStyle_in_rule__KText__StylesAssignment_6_241301);
             ruleKStyle();
 
             state._fsp--;
@@ -54213,20 +53911,20 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
 
 
     // $ANTLR start "rule__KText__StylesAssignment_6_3_1"
-    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20935:1: rule__KText__StylesAssignment_6_3_1 : ( ruleKStyle ) ;
+    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20803:1: rule__KText__StylesAssignment_6_3_1 : ( ruleKStyle ) ;
     public final void rule__KText__StylesAssignment_6_3_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20939:1: ( ( ruleKStyle ) )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20940:1: ( ruleKStyle )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20807:1: ( ( ruleKStyle ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20808:1: ( ruleKStyle )
             {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20940:1: ( ruleKStyle )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20941:1: ruleKStyle
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20808:1: ( ruleKStyle )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20809:1: ruleKStyle
             {
              before(grammarAccess.getKTextAccess().getStylesKStyleParserRuleCall_6_3_1_0()); 
-            pushFollow(FollowSets001.FOLLOW_ruleKStyle_in_rule__KText__StylesAssignment_6_3_141588);
+            pushFollow(FollowSets001.FOLLOW_ruleKStyle_in_rule__KText__StylesAssignment_6_3_141332);
             ruleKStyle();
 
             state._fsp--;
@@ -54254,20 +53952,20 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
 
 
     // $ANTLR start "rule__KText__ChildrenAssignment_7_2"
-    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20950:1: rule__KText__ChildrenAssignment_7_2 : ( ruleKRendering ) ;
+    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20818:1: rule__KText__ChildrenAssignment_7_2 : ( ruleKRendering ) ;
     public final void rule__KText__ChildrenAssignment_7_2() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20954:1: ( ( ruleKRendering ) )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20955:1: ( ruleKRendering )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20822:1: ( ( ruleKRendering ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20823:1: ( ruleKRendering )
             {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20955:1: ( ruleKRendering )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20956:1: ruleKRendering
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20823:1: ( ruleKRendering )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20824:1: ruleKRendering
             {
              before(grammarAccess.getKTextAccess().getChildrenKRenderingParserRuleCall_7_2_0()); 
-            pushFollow(FollowSets001.FOLLOW_ruleKRendering_in_rule__KText__ChildrenAssignment_7_241619);
+            pushFollow(FollowSets001.FOLLOW_ruleKRendering_in_rule__KText__ChildrenAssignment_7_241363);
             ruleKRendering();
 
             state._fsp--;
@@ -54295,20 +53993,20 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
 
 
     // $ANTLR start "rule__KText__ChildrenAssignment_7_3_1"
-    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20965:1: rule__KText__ChildrenAssignment_7_3_1 : ( ruleKRendering ) ;
+    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20833:1: rule__KText__ChildrenAssignment_7_3_1 : ( ruleKRendering ) ;
     public final void rule__KText__ChildrenAssignment_7_3_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20969:1: ( ( ruleKRendering ) )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20970:1: ( ruleKRendering )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20837:1: ( ( ruleKRendering ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20838:1: ( ruleKRendering )
             {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20970:1: ( ruleKRendering )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20971:1: ruleKRendering
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20838:1: ( ruleKRendering )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20839:1: ruleKRendering
             {
              before(grammarAccess.getKTextAccess().getChildrenKRenderingParserRuleCall_7_3_1_0()); 
-            pushFollow(FollowSets001.FOLLOW_ruleKRendering_in_rule__KText__ChildrenAssignment_7_3_141650);
+            pushFollow(FollowSets001.FOLLOW_ruleKRendering_in_rule__KText__ChildrenAssignment_7_3_141394);
             ruleKRendering();
 
             state._fsp--;
@@ -54336,20 +54034,20 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
 
 
     // $ANTLR start "rule__KText__ChildPlacementAssignment_8_1"
-    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20980:1: rule__KText__ChildPlacementAssignment_8_1 : ( ruleKPlacement ) ;
+    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20848:1: rule__KText__ChildPlacementAssignment_8_1 : ( ruleKPlacement ) ;
     public final void rule__KText__ChildPlacementAssignment_8_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20984:1: ( ( ruleKPlacement ) )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20985:1: ( ruleKPlacement )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20852:1: ( ( ruleKPlacement ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20853:1: ( ruleKPlacement )
             {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20985:1: ( ruleKPlacement )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20986:1: ruleKPlacement
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20853:1: ( ruleKPlacement )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20854:1: ruleKPlacement
             {
              before(grammarAccess.getKTextAccess().getChildPlacementKPlacementParserRuleCall_8_1_0()); 
-            pushFollow(FollowSets001.FOLLOW_ruleKPlacement_in_rule__KText__ChildPlacementAssignment_8_141681);
+            pushFollow(FollowSets001.FOLLOW_ruleKPlacement_in_rule__KText__ChildPlacementAssignment_8_141425);
             ruleKPlacement();
 
             state._fsp--;
@@ -54377,20 +54075,20 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
 
 
     // $ANTLR start "rule__KCustomRendering__ClassNameAssignment_3"
-    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20995:1: rule__KCustomRendering__ClassNameAssignment_3 : ( ruleEString ) ;
+    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20863:1: rule__KCustomRendering__ClassNameAssignment_3 : ( ruleEString ) ;
     public final void rule__KCustomRendering__ClassNameAssignment_3() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20999:1: ( ( ruleEString ) )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21000:1: ( ruleEString )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20867:1: ( ( ruleEString ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20868:1: ( ruleEString )
             {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21000:1: ( ruleEString )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21001:1: ruleEString
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20868:1: ( ruleEString )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20869:1: ruleEString
             {
              before(grammarAccess.getKCustomRenderingAccess().getClassNameEStringParserRuleCall_3_0()); 
-            pushFollow(FollowSets001.FOLLOW_ruleEString_in_rule__KCustomRendering__ClassNameAssignment_341712);
+            pushFollow(FollowSets001.FOLLOW_ruleEString_in_rule__KCustomRendering__ClassNameAssignment_341456);
             ruleEString();
 
             state._fsp--;
@@ -54418,20 +54116,20 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
 
 
     // $ANTLR start "rule__KCustomRendering__BundleNameAssignment_5"
-    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21010:1: rule__KCustomRendering__BundleNameAssignment_5 : ( ruleEString ) ;
+    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20878:1: rule__KCustomRendering__BundleNameAssignment_5 : ( ruleEString ) ;
     public final void rule__KCustomRendering__BundleNameAssignment_5() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21014:1: ( ( ruleEString ) )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21015:1: ( ruleEString )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20882:1: ( ( ruleEString ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20883:1: ( ruleEString )
             {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21015:1: ( ruleEString )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21016:1: ruleEString
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20883:1: ( ruleEString )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20884:1: ruleEString
             {
              before(grammarAccess.getKCustomRenderingAccess().getBundleNameEStringParserRuleCall_5_0()); 
-            pushFollow(FollowSets001.FOLLOW_ruleEString_in_rule__KCustomRendering__BundleNameAssignment_541743);
+            pushFollow(FollowSets001.FOLLOW_ruleEString_in_rule__KCustomRendering__BundleNameAssignment_541487);
             ruleEString();
 
             state._fsp--;
@@ -54459,24 +54157,24 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
 
 
     // $ANTLR start "rule__KCustomRendering__ReferencesAssignment_6_2"
-    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21025:1: rule__KCustomRendering__ReferencesAssignment_6_2 : ( ( ruleEString ) ) ;
+    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20893:1: rule__KCustomRendering__ReferencesAssignment_6_2 : ( ( ruleEString ) ) ;
     public final void rule__KCustomRendering__ReferencesAssignment_6_2() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21029:1: ( ( ( ruleEString ) ) )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21030:1: ( ( ruleEString ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20897:1: ( ( ( ruleEString ) ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20898:1: ( ( ruleEString ) )
             {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21030:1: ( ( ruleEString ) )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21031:1: ( ruleEString )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20898:1: ( ( ruleEString ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20899:1: ( ruleEString )
             {
              before(grammarAccess.getKCustomRenderingAccess().getReferencesKRenderingRefCrossReference_6_2_0()); 
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21032:1: ( ruleEString )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21033:1: ruleEString
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20900:1: ( ruleEString )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20901:1: ruleEString
             {
              before(grammarAccess.getKCustomRenderingAccess().getReferencesKRenderingRefEStringParserRuleCall_6_2_0_1()); 
-            pushFollow(FollowSets001.FOLLOW_ruleEString_in_rule__KCustomRendering__ReferencesAssignment_6_241778);
+            pushFollow(FollowSets001.FOLLOW_ruleEString_in_rule__KCustomRendering__ReferencesAssignment_6_241522);
             ruleEString();
 
             state._fsp--;
@@ -54508,24 +54206,24 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
 
 
     // $ANTLR start "rule__KCustomRendering__ReferencesAssignment_6_3_1"
-    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21044:1: rule__KCustomRendering__ReferencesAssignment_6_3_1 : ( ( ruleEString ) ) ;
+    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20912:1: rule__KCustomRendering__ReferencesAssignment_6_3_1 : ( ( ruleEString ) ) ;
     public final void rule__KCustomRendering__ReferencesAssignment_6_3_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21048:1: ( ( ( ruleEString ) ) )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21049:1: ( ( ruleEString ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20916:1: ( ( ( ruleEString ) ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20917:1: ( ( ruleEString ) )
             {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21049:1: ( ( ruleEString ) )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21050:1: ( ruleEString )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20917:1: ( ( ruleEString ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20918:1: ( ruleEString )
             {
              before(grammarAccess.getKCustomRenderingAccess().getReferencesKRenderingRefCrossReference_6_3_1_0()); 
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21051:1: ( ruleEString )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21052:1: ruleEString
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20919:1: ( ruleEString )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20920:1: ruleEString
             {
              before(grammarAccess.getKCustomRenderingAccess().getReferencesKRenderingRefEStringParserRuleCall_6_3_1_0_1()); 
-            pushFollow(FollowSets001.FOLLOW_ruleEString_in_rule__KCustomRendering__ReferencesAssignment_6_3_141817);
+            pushFollow(FollowSets001.FOLLOW_ruleEString_in_rule__KCustomRendering__ReferencesAssignment_6_3_141561);
             ruleEString();
 
             state._fsp--;
@@ -54557,20 +54255,20 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
 
 
     // $ANTLR start "rule__KCustomRendering__PlacementDataAssignment_7_1"
-    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21063:1: rule__KCustomRendering__PlacementDataAssignment_7_1 : ( ruleKPlacementData ) ;
+    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20931:1: rule__KCustomRendering__PlacementDataAssignment_7_1 : ( ruleKPlacementData ) ;
     public final void rule__KCustomRendering__PlacementDataAssignment_7_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21067:1: ( ( ruleKPlacementData ) )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21068:1: ( ruleKPlacementData )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20935:1: ( ( ruleKPlacementData ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20936:1: ( ruleKPlacementData )
             {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21068:1: ( ruleKPlacementData )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21069:1: ruleKPlacementData
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20936:1: ( ruleKPlacementData )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20937:1: ruleKPlacementData
             {
              before(grammarAccess.getKCustomRenderingAccess().getPlacementDataKPlacementDataParserRuleCall_7_1_0()); 
-            pushFollow(FollowSets001.FOLLOW_ruleKPlacementData_in_rule__KCustomRendering__PlacementDataAssignment_7_141852);
+            pushFollow(FollowSets001.FOLLOW_ruleKPlacementData_in_rule__KCustomRendering__PlacementDataAssignment_7_141596);
             ruleKPlacementData();
 
             state._fsp--;
@@ -54598,20 +54296,20 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
 
 
     // $ANTLR start "rule__KCustomRendering__StylesAssignment_8_2"
-    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21078:1: rule__KCustomRendering__StylesAssignment_8_2 : ( ruleKStyle ) ;
+    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20946:1: rule__KCustomRendering__StylesAssignment_8_2 : ( ruleKStyle ) ;
     public final void rule__KCustomRendering__StylesAssignment_8_2() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21082:1: ( ( ruleKStyle ) )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21083:1: ( ruleKStyle )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20950:1: ( ( ruleKStyle ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20951:1: ( ruleKStyle )
             {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21083:1: ( ruleKStyle )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21084:1: ruleKStyle
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20951:1: ( ruleKStyle )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20952:1: ruleKStyle
             {
              before(grammarAccess.getKCustomRenderingAccess().getStylesKStyleParserRuleCall_8_2_0()); 
-            pushFollow(FollowSets001.FOLLOW_ruleKStyle_in_rule__KCustomRendering__StylesAssignment_8_241883);
+            pushFollow(FollowSets001.FOLLOW_ruleKStyle_in_rule__KCustomRendering__StylesAssignment_8_241627);
             ruleKStyle();
 
             state._fsp--;
@@ -54639,20 +54337,20 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
 
 
     // $ANTLR start "rule__KCustomRendering__StylesAssignment_8_3_1"
-    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21093:1: rule__KCustomRendering__StylesAssignment_8_3_1 : ( ruleKStyle ) ;
+    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20961:1: rule__KCustomRendering__StylesAssignment_8_3_1 : ( ruleKStyle ) ;
     public final void rule__KCustomRendering__StylesAssignment_8_3_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21097:1: ( ( ruleKStyle ) )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21098:1: ( ruleKStyle )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20965:1: ( ( ruleKStyle ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20966:1: ( ruleKStyle )
             {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21098:1: ( ruleKStyle )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21099:1: ruleKStyle
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20966:1: ( ruleKStyle )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20967:1: ruleKStyle
             {
              before(grammarAccess.getKCustomRenderingAccess().getStylesKStyleParserRuleCall_8_3_1_0()); 
-            pushFollow(FollowSets001.FOLLOW_ruleKStyle_in_rule__KCustomRendering__StylesAssignment_8_3_141914);
+            pushFollow(FollowSets001.FOLLOW_ruleKStyle_in_rule__KCustomRendering__StylesAssignment_8_3_141658);
             ruleKStyle();
 
             state._fsp--;
@@ -54680,20 +54378,20 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
 
 
     // $ANTLR start "rule__KCustomRendering__ChildrenAssignment_9_2"
-    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21108:1: rule__KCustomRendering__ChildrenAssignment_9_2 : ( ruleKRendering ) ;
+    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20976:1: rule__KCustomRendering__ChildrenAssignment_9_2 : ( ruleKRendering ) ;
     public final void rule__KCustomRendering__ChildrenAssignment_9_2() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21112:1: ( ( ruleKRendering ) )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21113:1: ( ruleKRendering )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20980:1: ( ( ruleKRendering ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20981:1: ( ruleKRendering )
             {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21113:1: ( ruleKRendering )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21114:1: ruleKRendering
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20981:1: ( ruleKRendering )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20982:1: ruleKRendering
             {
              before(grammarAccess.getKCustomRenderingAccess().getChildrenKRenderingParserRuleCall_9_2_0()); 
-            pushFollow(FollowSets001.FOLLOW_ruleKRendering_in_rule__KCustomRendering__ChildrenAssignment_9_241945);
+            pushFollow(FollowSets001.FOLLOW_ruleKRendering_in_rule__KCustomRendering__ChildrenAssignment_9_241689);
             ruleKRendering();
 
             state._fsp--;
@@ -54721,20 +54419,20 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
 
 
     // $ANTLR start "rule__KCustomRendering__ChildrenAssignment_9_3_1"
-    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21123:1: rule__KCustomRendering__ChildrenAssignment_9_3_1 : ( ruleKRendering ) ;
+    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20991:1: rule__KCustomRendering__ChildrenAssignment_9_3_1 : ( ruleKRendering ) ;
     public final void rule__KCustomRendering__ChildrenAssignment_9_3_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21127:1: ( ( ruleKRendering ) )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21128:1: ( ruleKRendering )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20995:1: ( ( ruleKRendering ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20996:1: ( ruleKRendering )
             {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21128:1: ( ruleKRendering )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21129:1: ruleKRendering
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20996:1: ( ruleKRendering )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20997:1: ruleKRendering
             {
              before(grammarAccess.getKCustomRenderingAccess().getChildrenKRenderingParserRuleCall_9_3_1_0()); 
-            pushFollow(FollowSets001.FOLLOW_ruleKRendering_in_rule__KCustomRendering__ChildrenAssignment_9_3_141976);
+            pushFollow(FollowSets001.FOLLOW_ruleKRendering_in_rule__KCustomRendering__ChildrenAssignment_9_3_141720);
             ruleKRendering();
 
             state._fsp--;
@@ -54762,20 +54460,20 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
 
 
     // $ANTLR start "rule__KCustomRendering__ChildPlacementAssignment_10_1"
-    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21138:1: rule__KCustomRendering__ChildPlacementAssignment_10_1 : ( ruleKPlacement ) ;
+    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21006:1: rule__KCustomRendering__ChildPlacementAssignment_10_1 : ( ruleKPlacement ) ;
     public final void rule__KCustomRendering__ChildPlacementAssignment_10_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21142:1: ( ( ruleKPlacement ) )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21143:1: ( ruleKPlacement )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21010:1: ( ( ruleKPlacement ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21011:1: ( ruleKPlacement )
             {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21143:1: ( ruleKPlacement )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21144:1: ruleKPlacement
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21011:1: ( ruleKPlacement )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21012:1: ruleKPlacement
             {
              before(grammarAccess.getKCustomRenderingAccess().getChildPlacementKPlacementParserRuleCall_10_1_0()); 
-            pushFollow(FollowSets001.FOLLOW_ruleKPlacement_in_rule__KCustomRendering__ChildPlacementAssignment_10_142007);
+            pushFollow(FollowSets001.FOLLOW_ruleKPlacement_in_rule__KCustomRendering__ChildPlacementAssignment_10_141751);
             ruleKPlacement();
 
             state._fsp--;
@@ -54803,24 +54501,24 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
 
 
     // $ANTLR start "rule__KSpline__ReferencesAssignment_3_2"
-    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21153:1: rule__KSpline__ReferencesAssignment_3_2 : ( ( ruleEString ) ) ;
+    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21021:1: rule__KSpline__ReferencesAssignment_3_2 : ( ( ruleEString ) ) ;
     public final void rule__KSpline__ReferencesAssignment_3_2() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21157:1: ( ( ( ruleEString ) ) )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21158:1: ( ( ruleEString ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21025:1: ( ( ( ruleEString ) ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21026:1: ( ( ruleEString ) )
             {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21158:1: ( ( ruleEString ) )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21159:1: ( ruleEString )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21026:1: ( ( ruleEString ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21027:1: ( ruleEString )
             {
              before(grammarAccess.getKSplineAccess().getReferencesKRenderingRefCrossReference_3_2_0()); 
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21160:1: ( ruleEString )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21161:1: ruleEString
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21028:1: ( ruleEString )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21029:1: ruleEString
             {
              before(grammarAccess.getKSplineAccess().getReferencesKRenderingRefEStringParserRuleCall_3_2_0_1()); 
-            pushFollow(FollowSets001.FOLLOW_ruleEString_in_rule__KSpline__ReferencesAssignment_3_242042);
+            pushFollow(FollowSets001.FOLLOW_ruleEString_in_rule__KSpline__ReferencesAssignment_3_241786);
             ruleEString();
 
             state._fsp--;
@@ -54852,24 +54550,24 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
 
 
     // $ANTLR start "rule__KSpline__ReferencesAssignment_3_3_1"
-    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21172:1: rule__KSpline__ReferencesAssignment_3_3_1 : ( ( ruleEString ) ) ;
+    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21040:1: rule__KSpline__ReferencesAssignment_3_3_1 : ( ( ruleEString ) ) ;
     public final void rule__KSpline__ReferencesAssignment_3_3_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21176:1: ( ( ( ruleEString ) ) )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21177:1: ( ( ruleEString ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21044:1: ( ( ( ruleEString ) ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21045:1: ( ( ruleEString ) )
             {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21177:1: ( ( ruleEString ) )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21178:1: ( ruleEString )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21045:1: ( ( ruleEString ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21046:1: ( ruleEString )
             {
              before(grammarAccess.getKSplineAccess().getReferencesKRenderingRefCrossReference_3_3_1_0()); 
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21179:1: ( ruleEString )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21180:1: ruleEString
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21047:1: ( ruleEString )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21048:1: ruleEString
             {
              before(grammarAccess.getKSplineAccess().getReferencesKRenderingRefEStringParserRuleCall_3_3_1_0_1()); 
-            pushFollow(FollowSets001.FOLLOW_ruleEString_in_rule__KSpline__ReferencesAssignment_3_3_142081);
+            pushFollow(FollowSets001.FOLLOW_ruleEString_in_rule__KSpline__ReferencesAssignment_3_3_141825);
             ruleEString();
 
             state._fsp--;
@@ -54901,20 +54599,20 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
 
 
     // $ANTLR start "rule__KSpline__PlacementDataAssignment_4_1"
-    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21191:1: rule__KSpline__PlacementDataAssignment_4_1 : ( ruleKPlacementData ) ;
+    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21059:1: rule__KSpline__PlacementDataAssignment_4_1 : ( ruleKPlacementData ) ;
     public final void rule__KSpline__PlacementDataAssignment_4_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21195:1: ( ( ruleKPlacementData ) )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21196:1: ( ruleKPlacementData )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21063:1: ( ( ruleKPlacementData ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21064:1: ( ruleKPlacementData )
             {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21196:1: ( ruleKPlacementData )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21197:1: ruleKPlacementData
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21064:1: ( ruleKPlacementData )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21065:1: ruleKPlacementData
             {
              before(grammarAccess.getKSplineAccess().getPlacementDataKPlacementDataParserRuleCall_4_1_0()); 
-            pushFollow(FollowSets001.FOLLOW_ruleKPlacementData_in_rule__KSpline__PlacementDataAssignment_4_142116);
+            pushFollow(FollowSets001.FOLLOW_ruleKPlacementData_in_rule__KSpline__PlacementDataAssignment_4_141860);
             ruleKPlacementData();
 
             state._fsp--;
@@ -54942,20 +54640,20 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
 
 
     // $ANTLR start "rule__KSpline__StylesAssignment_5_2"
-    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21206:1: rule__KSpline__StylesAssignment_5_2 : ( ruleKStyle ) ;
+    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21074:1: rule__KSpline__StylesAssignment_5_2 : ( ruleKStyle ) ;
     public final void rule__KSpline__StylesAssignment_5_2() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21210:1: ( ( ruleKStyle ) )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21211:1: ( ruleKStyle )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21078:1: ( ( ruleKStyle ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21079:1: ( ruleKStyle )
             {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21211:1: ( ruleKStyle )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21212:1: ruleKStyle
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21079:1: ( ruleKStyle )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21080:1: ruleKStyle
             {
              before(grammarAccess.getKSplineAccess().getStylesKStyleParserRuleCall_5_2_0()); 
-            pushFollow(FollowSets001.FOLLOW_ruleKStyle_in_rule__KSpline__StylesAssignment_5_242147);
+            pushFollow(FollowSets001.FOLLOW_ruleKStyle_in_rule__KSpline__StylesAssignment_5_241891);
             ruleKStyle();
 
             state._fsp--;
@@ -54983,20 +54681,20 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
 
 
     // $ANTLR start "rule__KSpline__StylesAssignment_5_3_1"
-    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21221:1: rule__KSpline__StylesAssignment_5_3_1 : ( ruleKStyle ) ;
+    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21089:1: rule__KSpline__StylesAssignment_5_3_1 : ( ruleKStyle ) ;
     public final void rule__KSpline__StylesAssignment_5_3_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21225:1: ( ( ruleKStyle ) )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21226:1: ( ruleKStyle )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21093:1: ( ( ruleKStyle ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21094:1: ( ruleKStyle )
             {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21226:1: ( ruleKStyle )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21227:1: ruleKStyle
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21094:1: ( ruleKStyle )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21095:1: ruleKStyle
             {
              before(grammarAccess.getKSplineAccess().getStylesKStyleParserRuleCall_5_3_1_0()); 
-            pushFollow(FollowSets001.FOLLOW_ruleKStyle_in_rule__KSpline__StylesAssignment_5_3_142178);
+            pushFollow(FollowSets001.FOLLOW_ruleKStyle_in_rule__KSpline__StylesAssignment_5_3_141922);
             ruleKStyle();
 
             state._fsp--;
@@ -55024,20 +54722,20 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
 
 
     // $ANTLR start "rule__KSpline__ChildrenAssignment_6_2"
-    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21236:1: rule__KSpline__ChildrenAssignment_6_2 : ( ruleKRendering ) ;
+    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21104:1: rule__KSpline__ChildrenAssignment_6_2 : ( ruleKRendering ) ;
     public final void rule__KSpline__ChildrenAssignment_6_2() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21240:1: ( ( ruleKRendering ) )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21241:1: ( ruleKRendering )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21108:1: ( ( ruleKRendering ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21109:1: ( ruleKRendering )
             {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21241:1: ( ruleKRendering )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21242:1: ruleKRendering
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21109:1: ( ruleKRendering )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21110:1: ruleKRendering
             {
              before(grammarAccess.getKSplineAccess().getChildrenKRenderingParserRuleCall_6_2_0()); 
-            pushFollow(FollowSets001.FOLLOW_ruleKRendering_in_rule__KSpline__ChildrenAssignment_6_242209);
+            pushFollow(FollowSets001.FOLLOW_ruleKRendering_in_rule__KSpline__ChildrenAssignment_6_241953);
             ruleKRendering();
 
             state._fsp--;
@@ -55065,20 +54763,20 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
 
 
     // $ANTLR start "rule__KSpline__ChildrenAssignment_6_3_1"
-    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21251:1: rule__KSpline__ChildrenAssignment_6_3_1 : ( ruleKRendering ) ;
+    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21119:1: rule__KSpline__ChildrenAssignment_6_3_1 : ( ruleKRendering ) ;
     public final void rule__KSpline__ChildrenAssignment_6_3_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21255:1: ( ( ruleKRendering ) )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21256:1: ( ruleKRendering )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21123:1: ( ( ruleKRendering ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21124:1: ( ruleKRendering )
             {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21256:1: ( ruleKRendering )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21257:1: ruleKRendering
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21124:1: ( ruleKRendering )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21125:1: ruleKRendering
             {
              before(grammarAccess.getKSplineAccess().getChildrenKRenderingParserRuleCall_6_3_1_0()); 
-            pushFollow(FollowSets001.FOLLOW_ruleKRendering_in_rule__KSpline__ChildrenAssignment_6_3_142240);
+            pushFollow(FollowSets001.FOLLOW_ruleKRendering_in_rule__KSpline__ChildrenAssignment_6_3_141984);
             ruleKRendering();
 
             state._fsp--;
@@ -55106,20 +54804,20 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
 
 
     // $ANTLR start "rule__KSpline__ChildPlacementAssignment_7_1"
-    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21266:1: rule__KSpline__ChildPlacementAssignment_7_1 : ( ruleKPlacement ) ;
+    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21134:1: rule__KSpline__ChildPlacementAssignment_7_1 : ( ruleKPlacement ) ;
     public final void rule__KSpline__ChildPlacementAssignment_7_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21270:1: ( ( ruleKPlacement ) )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21271:1: ( ruleKPlacement )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21138:1: ( ( ruleKPlacement ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21139:1: ( ruleKPlacement )
             {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21271:1: ( ruleKPlacement )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21272:1: ruleKPlacement
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21139:1: ( ruleKPlacement )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21140:1: ruleKPlacement
             {
              before(grammarAccess.getKSplineAccess().getChildPlacementKPlacementParserRuleCall_7_1_0()); 
-            pushFollow(FollowSets001.FOLLOW_ruleKPlacement_in_rule__KSpline__ChildPlacementAssignment_7_142271);
+            pushFollow(FollowSets001.FOLLOW_ruleKPlacement_in_rule__KSpline__ChildPlacementAssignment_7_142015);
             ruleKPlacement();
 
             state._fsp--;
@@ -55147,24 +54845,24 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
 
 
     // $ANTLR start "rule__KDecoratorPlacementData__RelativeAssignment_0"
-    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21281:1: rule__KDecoratorPlacementData__RelativeAssignment_0 : ( ( 'relative' ) ) ;
+    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21149:1: rule__KDecoratorPlacementData__RelativeAssignment_0 : ( ( 'relative' ) ) ;
     public final void rule__KDecoratorPlacementData__RelativeAssignment_0() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21285:1: ( ( ( 'relative' ) ) )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21286:1: ( ( 'relative' ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21153:1: ( ( ( 'relative' ) ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21154:1: ( ( 'relative' ) )
             {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21286:1: ( ( 'relative' ) )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21287:1: ( 'relative' )
-            {
-             before(grammarAccess.getKDecoratorPlacementDataAccess().getRelativeRelativeKeyword_0_0()); 
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21288:1: ( 'relative' )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21289:1: 'relative'
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21154:1: ( ( 'relative' ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21155:1: ( 'relative' )
             {
              before(grammarAccess.getKDecoratorPlacementDataAccess().getRelativeRelativeKeyword_0_0()); 
-            match(input,81,FollowSets001.FOLLOW_81_in_rule__KDecoratorPlacementData__RelativeAssignment_042307); 
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21156:1: ( 'relative' )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21157:1: 'relative'
+            {
+             before(grammarAccess.getKDecoratorPlacementDataAccess().getRelativeRelativeKeyword_0_0()); 
+            match(input,81,FollowSets001.FOLLOW_81_in_rule__KDecoratorPlacementData__RelativeAssignment_042051); 
              after(grammarAccess.getKDecoratorPlacementDataAccess().getRelativeRelativeKeyword_0_0()); 
 
             }
@@ -55192,20 +54890,20 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
 
 
     // $ANTLR start "rule__KDecoratorPlacementData__LocationAssignment_4"
-    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21304:1: rule__KDecoratorPlacementData__LocationAssignment_4 : ( ruleEFloat ) ;
+    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21172:1: rule__KDecoratorPlacementData__LocationAssignment_4 : ( ruleEFloat ) ;
     public final void rule__KDecoratorPlacementData__LocationAssignment_4() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21308:1: ( ( ruleEFloat ) )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21309:1: ( ruleEFloat )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21176:1: ( ( ruleEFloat ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21177:1: ( ruleEFloat )
             {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21309:1: ( ruleEFloat )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21310:1: ruleEFloat
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21177:1: ( ruleEFloat )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21178:1: ruleEFloat
             {
              before(grammarAccess.getKDecoratorPlacementDataAccess().getLocationEFloatParserRuleCall_4_0()); 
-            pushFollow(FollowSets001.FOLLOW_ruleEFloat_in_rule__KDecoratorPlacementData__LocationAssignment_442346);
+            pushFollow(FollowSets001.FOLLOW_ruleEFloat_in_rule__KDecoratorPlacementData__LocationAssignment_442090);
             ruleEFloat();
 
             state._fsp--;
@@ -55233,20 +54931,20 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
 
 
     // $ANTLR start "rule__KDecoratorPlacementData__XOffsetAssignment_5_1"
-    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21319:1: rule__KDecoratorPlacementData__XOffsetAssignment_5_1 : ( ruleEFloat ) ;
+    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21187:1: rule__KDecoratorPlacementData__XOffsetAssignment_5_1 : ( ruleEFloat ) ;
     public final void rule__KDecoratorPlacementData__XOffsetAssignment_5_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21323:1: ( ( ruleEFloat ) )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21324:1: ( ruleEFloat )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21191:1: ( ( ruleEFloat ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21192:1: ( ruleEFloat )
             {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21324:1: ( ruleEFloat )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21325:1: ruleEFloat
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21192:1: ( ruleEFloat )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21193:1: ruleEFloat
             {
              before(grammarAccess.getKDecoratorPlacementDataAccess().getXOffsetEFloatParserRuleCall_5_1_0()); 
-            pushFollow(FollowSets001.FOLLOW_ruleEFloat_in_rule__KDecoratorPlacementData__XOffsetAssignment_5_142377);
+            pushFollow(FollowSets001.FOLLOW_ruleEFloat_in_rule__KDecoratorPlacementData__XOffsetAssignment_5_142121);
             ruleEFloat();
 
             state._fsp--;
@@ -55274,20 +54972,20 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
 
 
     // $ANTLR start "rule__KDecoratorPlacementData__YOffsetAssignment_6_1"
-    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21334:1: rule__KDecoratorPlacementData__YOffsetAssignment_6_1 : ( ruleEFloat ) ;
+    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21202:1: rule__KDecoratorPlacementData__YOffsetAssignment_6_1 : ( ruleEFloat ) ;
     public final void rule__KDecoratorPlacementData__YOffsetAssignment_6_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21338:1: ( ( ruleEFloat ) )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21339:1: ( ruleEFloat )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21206:1: ( ( ruleEFloat ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21207:1: ( ruleEFloat )
             {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21339:1: ( ruleEFloat )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21340:1: ruleEFloat
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21207:1: ( ruleEFloat )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21208:1: ruleEFloat
             {
              before(grammarAccess.getKDecoratorPlacementDataAccess().getYOffsetEFloatParserRuleCall_6_1_0()); 
-            pushFollow(FollowSets001.FOLLOW_ruleEFloat_in_rule__KDecoratorPlacementData__YOffsetAssignment_6_142408);
+            pushFollow(FollowSets001.FOLLOW_ruleEFloat_in_rule__KDecoratorPlacementData__YOffsetAssignment_6_142152);
             ruleEFloat();
 
             state._fsp--;
@@ -55315,20 +55013,20 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
 
 
     // $ANTLR start "rule__KGridPlacementData__WidthHintAssignment_3"
-    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21349:1: rule__KGridPlacementData__WidthHintAssignment_3 : ( ruleEFloat ) ;
+    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21217:1: rule__KGridPlacementData__WidthHintAssignment_3 : ( ruleEFloat ) ;
     public final void rule__KGridPlacementData__WidthHintAssignment_3() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21353:1: ( ( ruleEFloat ) )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21354:1: ( ruleEFloat )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21221:1: ( ( ruleEFloat ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21222:1: ( ruleEFloat )
             {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21354:1: ( ruleEFloat )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21355:1: ruleEFloat
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21222:1: ( ruleEFloat )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21223:1: ruleEFloat
             {
              before(grammarAccess.getKGridPlacementDataAccess().getWidthHintEFloatParserRuleCall_3_0()); 
-            pushFollow(FollowSets001.FOLLOW_ruleEFloat_in_rule__KGridPlacementData__WidthHintAssignment_342439);
+            pushFollow(FollowSets001.FOLLOW_ruleEFloat_in_rule__KGridPlacementData__WidthHintAssignment_342183);
             ruleEFloat();
 
             state._fsp--;
@@ -55356,20 +55054,20 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
 
 
     // $ANTLR start "rule__KGridPlacementData__HeightHintAssignment_5"
-    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21364:1: rule__KGridPlacementData__HeightHintAssignment_5 : ( ruleEFloat ) ;
+    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21232:1: rule__KGridPlacementData__HeightHintAssignment_5 : ( ruleEFloat ) ;
     public final void rule__KGridPlacementData__HeightHintAssignment_5() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21368:1: ( ( ruleEFloat ) )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21369:1: ( ruleEFloat )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21236:1: ( ( ruleEFloat ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21237:1: ( ruleEFloat )
             {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21369:1: ( ruleEFloat )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21370:1: ruleEFloat
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21237:1: ( ruleEFloat )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21238:1: ruleEFloat
             {
              before(grammarAccess.getKGridPlacementDataAccess().getHeightHintEFloatParserRuleCall_5_0()); 
-            pushFollow(FollowSets001.FOLLOW_ruleEFloat_in_rule__KGridPlacementData__HeightHintAssignment_542470);
+            pushFollow(FollowSets001.FOLLOW_ruleEFloat_in_rule__KGridPlacementData__HeightHintAssignment_542214);
             ruleEFloat();
 
             state._fsp--;
@@ -55397,20 +55095,20 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
 
 
     // $ANTLR start "rule__KGridPlacementData__HorizontalIndentAssignment_7"
-    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21379:1: rule__KGridPlacementData__HorizontalIndentAssignment_7 : ( ruleEFloat ) ;
+    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21247:1: rule__KGridPlacementData__HorizontalIndentAssignment_7 : ( ruleEFloat ) ;
     public final void rule__KGridPlacementData__HorizontalIndentAssignment_7() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21383:1: ( ( ruleEFloat ) )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21384:1: ( ruleEFloat )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21251:1: ( ( ruleEFloat ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21252:1: ( ruleEFloat )
             {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21384:1: ( ruleEFloat )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21385:1: ruleEFloat
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21252:1: ( ruleEFloat )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21253:1: ruleEFloat
             {
              before(grammarAccess.getKGridPlacementDataAccess().getHorizontalIndentEFloatParserRuleCall_7_0()); 
-            pushFollow(FollowSets001.FOLLOW_ruleEFloat_in_rule__KGridPlacementData__HorizontalIndentAssignment_742501);
+            pushFollow(FollowSets001.FOLLOW_ruleEFloat_in_rule__KGridPlacementData__HorizontalIndentAssignment_742245);
             ruleEFloat();
 
             state._fsp--;
@@ -55438,20 +55136,20 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
 
 
     // $ANTLR start "rule__KGridPlacementData__VerticalIndentAssignment_9"
-    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21394:1: rule__KGridPlacementData__VerticalIndentAssignment_9 : ( ruleEFloat ) ;
+    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21262:1: rule__KGridPlacementData__VerticalIndentAssignment_9 : ( ruleEFloat ) ;
     public final void rule__KGridPlacementData__VerticalIndentAssignment_9() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21398:1: ( ( ruleEFloat ) )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21399:1: ( ruleEFloat )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21266:1: ( ( ruleEFloat ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21267:1: ( ruleEFloat )
             {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21399:1: ( ruleEFloat )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21400:1: ruleEFloat
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21267:1: ( ruleEFloat )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21268:1: ruleEFloat
             {
              before(grammarAccess.getKGridPlacementDataAccess().getVerticalIndentEFloatParserRuleCall_9_0()); 
-            pushFollow(FollowSets001.FOLLOW_ruleEFloat_in_rule__KGridPlacementData__VerticalIndentAssignment_942532);
+            pushFollow(FollowSets001.FOLLOW_ruleEFloat_in_rule__KGridPlacementData__VerticalIndentAssignment_942276);
             ruleEFloat();
 
             state._fsp--;
@@ -55479,20 +55177,20 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
 
 
     // $ANTLR start "rule__KStackPlacementData__InsetRightAssignment_3"
-    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21409:1: rule__KStackPlacementData__InsetRightAssignment_3 : ( ruleEFloat ) ;
+    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21277:1: rule__KStackPlacementData__InsetRightAssignment_3 : ( ruleEFloat ) ;
     public final void rule__KStackPlacementData__InsetRightAssignment_3() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21413:1: ( ( ruleEFloat ) )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21414:1: ( ruleEFloat )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21281:1: ( ( ruleEFloat ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21282:1: ( ruleEFloat )
             {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21414:1: ( ruleEFloat )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21415:1: ruleEFloat
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21282:1: ( ruleEFloat )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21283:1: ruleEFloat
             {
              before(grammarAccess.getKStackPlacementDataAccess().getInsetRightEFloatParserRuleCall_3_0()); 
-            pushFollow(FollowSets001.FOLLOW_ruleEFloat_in_rule__KStackPlacementData__InsetRightAssignment_342563);
+            pushFollow(FollowSets001.FOLLOW_ruleEFloat_in_rule__KStackPlacementData__InsetRightAssignment_342307);
             ruleEFloat();
 
             state._fsp--;
@@ -55520,20 +55218,20 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
 
 
     // $ANTLR start "rule__KStackPlacementData__InsetBottomAssignment_5"
-    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21424:1: rule__KStackPlacementData__InsetBottomAssignment_5 : ( ruleEFloat ) ;
+    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21292:1: rule__KStackPlacementData__InsetBottomAssignment_5 : ( ruleEFloat ) ;
     public final void rule__KStackPlacementData__InsetBottomAssignment_5() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21428:1: ( ( ruleEFloat ) )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21429:1: ( ruleEFloat )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21296:1: ( ( ruleEFloat ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21297:1: ( ruleEFloat )
             {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21429:1: ( ruleEFloat )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21430:1: ruleEFloat
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21297:1: ( ruleEFloat )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21298:1: ruleEFloat
             {
              before(grammarAccess.getKStackPlacementDataAccess().getInsetBottomEFloatParserRuleCall_5_0()); 
-            pushFollow(FollowSets001.FOLLOW_ruleEFloat_in_rule__KStackPlacementData__InsetBottomAssignment_542594);
+            pushFollow(FollowSets001.FOLLOW_ruleEFloat_in_rule__KStackPlacementData__InsetBottomAssignment_542338);
             ruleEFloat();
 
             state._fsp--;
@@ -55561,20 +55259,20 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
 
 
     // $ANTLR start "rule__KStackPlacementData__InsetLeftAssignment_7"
-    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21439:1: rule__KStackPlacementData__InsetLeftAssignment_7 : ( ruleEFloat ) ;
+    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21307:1: rule__KStackPlacementData__InsetLeftAssignment_7 : ( ruleEFloat ) ;
     public final void rule__KStackPlacementData__InsetLeftAssignment_7() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21443:1: ( ( ruleEFloat ) )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21444:1: ( ruleEFloat )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21311:1: ( ( ruleEFloat ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21312:1: ( ruleEFloat )
             {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21444:1: ( ruleEFloat )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21445:1: ruleEFloat
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21312:1: ( ruleEFloat )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21313:1: ruleEFloat
             {
              before(grammarAccess.getKStackPlacementDataAccess().getInsetLeftEFloatParserRuleCall_7_0()); 
-            pushFollow(FollowSets001.FOLLOW_ruleEFloat_in_rule__KStackPlacementData__InsetLeftAssignment_742625);
+            pushFollow(FollowSets001.FOLLOW_ruleEFloat_in_rule__KStackPlacementData__InsetLeftAssignment_742369);
             ruleEFloat();
 
             state._fsp--;
@@ -55602,20 +55300,20 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
 
 
     // $ANTLR start "rule__KStackPlacementData__InsetTopAssignment_9"
-    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21454:1: rule__KStackPlacementData__InsetTopAssignment_9 : ( ruleEFloat ) ;
+    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21322:1: rule__KStackPlacementData__InsetTopAssignment_9 : ( ruleEFloat ) ;
     public final void rule__KStackPlacementData__InsetTopAssignment_9() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21458:1: ( ( ruleEFloat ) )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21459:1: ( ruleEFloat )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21326:1: ( ( ruleEFloat ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21327:1: ( ruleEFloat )
             {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21459:1: ( ruleEFloat )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21460:1: ruleEFloat
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21327:1: ( ruleEFloat )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21328:1: ruleEFloat
             {
              before(grammarAccess.getKStackPlacementDataAccess().getInsetTopEFloatParserRuleCall_9_0()); 
-            pushFollow(FollowSets001.FOLLOW_ruleEFloat_in_rule__KStackPlacementData__InsetTopAssignment_942656);
+            pushFollow(FollowSets001.FOLLOW_ruleEFloat_in_rule__KStackPlacementData__InsetTopAssignment_942400);
             ruleEFloat();
 
             state._fsp--;
@@ -55643,20 +55341,20 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
 
 
     // $ANTLR start "rule__KDirectPlacementData__TopLeftAssignment_3"
-    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21469:1: rule__KDirectPlacementData__TopLeftAssignment_3 : ( ruleKPosition ) ;
+    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21337:1: rule__KDirectPlacementData__TopLeftAssignment_3 : ( ruleKPosition ) ;
     public final void rule__KDirectPlacementData__TopLeftAssignment_3() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21473:1: ( ( ruleKPosition ) )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21474:1: ( ruleKPosition )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21341:1: ( ( ruleKPosition ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21342:1: ( ruleKPosition )
             {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21474:1: ( ruleKPosition )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21475:1: ruleKPosition
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21342:1: ( ruleKPosition )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21343:1: ruleKPosition
             {
              before(grammarAccess.getKDirectPlacementDataAccess().getTopLeftKPositionParserRuleCall_3_0()); 
-            pushFollow(FollowSets001.FOLLOW_ruleKPosition_in_rule__KDirectPlacementData__TopLeftAssignment_342687);
+            pushFollow(FollowSets001.FOLLOW_ruleKPosition_in_rule__KDirectPlacementData__TopLeftAssignment_342431);
             ruleKPosition();
 
             state._fsp--;
@@ -55684,20 +55382,20 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
 
 
     // $ANTLR start "rule__KDirectPlacementData__BottomRightAssignment_5"
-    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21484:1: rule__KDirectPlacementData__BottomRightAssignment_5 : ( ruleKPosition ) ;
+    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21352:1: rule__KDirectPlacementData__BottomRightAssignment_5 : ( ruleKPosition ) ;
     public final void rule__KDirectPlacementData__BottomRightAssignment_5() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21488:1: ( ( ruleKPosition ) )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21489:1: ( ruleKPosition )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21356:1: ( ( ruleKPosition ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21357:1: ( ruleKPosition )
             {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21489:1: ( ruleKPosition )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21490:1: ruleKPosition
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21357:1: ( ruleKPosition )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21358:1: ruleKPosition
             {
              before(grammarAccess.getKDirectPlacementDataAccess().getBottomRightKPositionParserRuleCall_5_0()); 
-            pushFollow(FollowSets001.FOLLOW_ruleKPosition_in_rule__KDirectPlacementData__BottomRightAssignment_542718);
+            pushFollow(FollowSets001.FOLLOW_ruleKPosition_in_rule__KDirectPlacementData__BottomRightAssignment_542462);
             ruleKPosition();
 
             state._fsp--;
@@ -55725,20 +55423,20 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
 
 
     // $ANTLR start "rule__KPolylinePlacementData__PointsAssignment_2"
-    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21499:1: rule__KPolylinePlacementData__PointsAssignment_2 : ( ruleKPosition ) ;
+    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21367:1: rule__KPolylinePlacementData__PointsAssignment_2 : ( ruleKPosition ) ;
     public final void rule__KPolylinePlacementData__PointsAssignment_2() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21503:1: ( ( ruleKPosition ) )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21504:1: ( ruleKPosition )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21371:1: ( ( ruleKPosition ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21372:1: ( ruleKPosition )
             {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21504:1: ( ruleKPosition )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21505:1: ruleKPosition
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21372:1: ( ruleKPosition )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21373:1: ruleKPosition
             {
              before(grammarAccess.getKPolylinePlacementDataAccess().getPointsKPositionParserRuleCall_2_0()); 
-            pushFollow(FollowSets001.FOLLOW_ruleKPosition_in_rule__KPolylinePlacementData__PointsAssignment_242749);
+            pushFollow(FollowSets001.FOLLOW_ruleKPosition_in_rule__KPolylinePlacementData__PointsAssignment_242493);
             ruleKPosition();
 
             state._fsp--;
@@ -55766,20 +55464,20 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
 
 
     // $ANTLR start "rule__KPolylinePlacementData__PointsAssignment_3_1"
-    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21514:1: rule__KPolylinePlacementData__PointsAssignment_3_1 : ( ruleKPosition ) ;
+    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21382:1: rule__KPolylinePlacementData__PointsAssignment_3_1 : ( ruleKPosition ) ;
     public final void rule__KPolylinePlacementData__PointsAssignment_3_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21518:1: ( ( ruleKPosition ) )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21519:1: ( ruleKPosition )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21386:1: ( ( ruleKPosition ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21387:1: ( ruleKPosition )
             {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21519:1: ( ruleKPosition )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21520:1: ruleKPosition
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21387:1: ( ruleKPosition )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21388:1: ruleKPosition
             {
              before(grammarAccess.getKPolylinePlacementDataAccess().getPointsKPositionParserRuleCall_3_1_0()); 
-            pushFollow(FollowSets001.FOLLOW_ruleKPosition_in_rule__KPolylinePlacementData__PointsAssignment_3_142780);
+            pushFollow(FollowSets001.FOLLOW_ruleKPosition_in_rule__KPolylinePlacementData__PointsAssignment_3_142524);
             ruleKPosition();
 
             state._fsp--;
@@ -55807,20 +55505,20 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
 
 
     // $ANTLR start "rule__KPosition__XAssignment_3"
-    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21529:1: rule__KPosition__XAssignment_3 : ( ruleKXPosition ) ;
+    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21397:1: rule__KPosition__XAssignment_3 : ( ruleKXPosition ) ;
     public final void rule__KPosition__XAssignment_3() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21533:1: ( ( ruleKXPosition ) )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21534:1: ( ruleKXPosition )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21401:1: ( ( ruleKXPosition ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21402:1: ( ruleKXPosition )
             {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21534:1: ( ruleKXPosition )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21535:1: ruleKXPosition
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21402:1: ( ruleKXPosition )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21403:1: ruleKXPosition
             {
              before(grammarAccess.getKPositionAccess().getXKXPositionParserRuleCall_3_0()); 
-            pushFollow(FollowSets001.FOLLOW_ruleKXPosition_in_rule__KPosition__XAssignment_342811);
+            pushFollow(FollowSets001.FOLLOW_ruleKXPosition_in_rule__KPosition__XAssignment_342555);
             ruleKXPosition();
 
             state._fsp--;
@@ -55848,20 +55546,20 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
 
 
     // $ANTLR start "rule__KPosition__YAssignment_5"
-    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21544:1: rule__KPosition__YAssignment_5 : ( ruleKYPosition ) ;
+    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21412:1: rule__KPosition__YAssignment_5 : ( ruleKYPosition ) ;
     public final void rule__KPosition__YAssignment_5() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21548:1: ( ( ruleKYPosition ) )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21549:1: ( ruleKYPosition )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21416:1: ( ( ruleKYPosition ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21417:1: ( ruleKYPosition )
             {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21549:1: ( ruleKYPosition )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21550:1: ruleKYPosition
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21417:1: ( ruleKYPosition )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21418:1: ruleKYPosition
             {
              before(grammarAccess.getKPositionAccess().getYKYPositionParserRuleCall_5_0()); 
-            pushFollow(FollowSets001.FOLLOW_ruleKYPosition_in_rule__KPosition__YAssignment_542842);
+            pushFollow(FollowSets001.FOLLOW_ruleKYPosition_in_rule__KPosition__YAssignment_542586);
             ruleKYPosition();
 
             state._fsp--;
@@ -55889,20 +55587,20 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
 
 
     // $ANTLR start "rule__KLeftPosition__AbsoluteAssignment_3_1"
-    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21559:1: rule__KLeftPosition__AbsoluteAssignment_3_1 : ( ruleEFloat ) ;
+    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21427:1: rule__KLeftPosition__AbsoluteAssignment_3_1 : ( ruleEFloat ) ;
     public final void rule__KLeftPosition__AbsoluteAssignment_3_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21563:1: ( ( ruleEFloat ) )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21564:1: ( ruleEFloat )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21431:1: ( ( ruleEFloat ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21432:1: ( ruleEFloat )
             {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21564:1: ( ruleEFloat )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21565:1: ruleEFloat
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21432:1: ( ruleEFloat )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21433:1: ruleEFloat
             {
              before(grammarAccess.getKLeftPositionAccess().getAbsoluteEFloatParserRuleCall_3_1_0()); 
-            pushFollow(FollowSets001.FOLLOW_ruleEFloat_in_rule__KLeftPosition__AbsoluteAssignment_3_142873);
+            pushFollow(FollowSets001.FOLLOW_ruleEFloat_in_rule__KLeftPosition__AbsoluteAssignment_3_142617);
             ruleEFloat();
 
             state._fsp--;
@@ -55930,20 +55628,20 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
 
 
     // $ANTLR start "rule__KLeftPosition__RelativeAssignment_4_1"
-    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21574:1: rule__KLeftPosition__RelativeAssignment_4_1 : ( ruleEFloat ) ;
+    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21442:1: rule__KLeftPosition__RelativeAssignment_4_1 : ( ruleEFloat ) ;
     public final void rule__KLeftPosition__RelativeAssignment_4_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21578:1: ( ( ruleEFloat ) )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21579:1: ( ruleEFloat )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21446:1: ( ( ruleEFloat ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21447:1: ( ruleEFloat )
             {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21579:1: ( ruleEFloat )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21580:1: ruleEFloat
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21447:1: ( ruleEFloat )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21448:1: ruleEFloat
             {
              before(grammarAccess.getKLeftPositionAccess().getRelativeEFloatParserRuleCall_4_1_0()); 
-            pushFollow(FollowSets001.FOLLOW_ruleEFloat_in_rule__KLeftPosition__RelativeAssignment_4_142904);
+            pushFollow(FollowSets001.FOLLOW_ruleEFloat_in_rule__KLeftPosition__RelativeAssignment_4_142648);
             ruleEFloat();
 
             state._fsp--;
@@ -55971,20 +55669,20 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
 
 
     // $ANTLR start "rule__KRightPosition__AbsoluteAssignment_3_1"
-    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21589:1: rule__KRightPosition__AbsoluteAssignment_3_1 : ( ruleEFloat ) ;
+    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21457:1: rule__KRightPosition__AbsoluteAssignment_3_1 : ( ruleEFloat ) ;
     public final void rule__KRightPosition__AbsoluteAssignment_3_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21593:1: ( ( ruleEFloat ) )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21594:1: ( ruleEFloat )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21461:1: ( ( ruleEFloat ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21462:1: ( ruleEFloat )
             {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21594:1: ( ruleEFloat )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21595:1: ruleEFloat
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21462:1: ( ruleEFloat )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21463:1: ruleEFloat
             {
              before(grammarAccess.getKRightPositionAccess().getAbsoluteEFloatParserRuleCall_3_1_0()); 
-            pushFollow(FollowSets001.FOLLOW_ruleEFloat_in_rule__KRightPosition__AbsoluteAssignment_3_142935);
+            pushFollow(FollowSets001.FOLLOW_ruleEFloat_in_rule__KRightPosition__AbsoluteAssignment_3_142679);
             ruleEFloat();
 
             state._fsp--;
@@ -56012,20 +55710,20 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
 
 
     // $ANTLR start "rule__KRightPosition__RelativeAssignment_4_1"
-    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21604:1: rule__KRightPosition__RelativeAssignment_4_1 : ( ruleEFloat ) ;
+    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21472:1: rule__KRightPosition__RelativeAssignment_4_1 : ( ruleEFloat ) ;
     public final void rule__KRightPosition__RelativeAssignment_4_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21608:1: ( ( ruleEFloat ) )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21609:1: ( ruleEFloat )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21476:1: ( ( ruleEFloat ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21477:1: ( ruleEFloat )
             {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21609:1: ( ruleEFloat )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21610:1: ruleEFloat
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21477:1: ( ruleEFloat )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21478:1: ruleEFloat
             {
              before(grammarAccess.getKRightPositionAccess().getRelativeEFloatParserRuleCall_4_1_0()); 
-            pushFollow(FollowSets001.FOLLOW_ruleEFloat_in_rule__KRightPosition__RelativeAssignment_4_142966);
+            pushFollow(FollowSets001.FOLLOW_ruleEFloat_in_rule__KRightPosition__RelativeAssignment_4_142710);
             ruleEFloat();
 
             state._fsp--;
@@ -56053,20 +55751,20 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
 
 
     // $ANTLR start "rule__KTopPosition__AbsoluteAssignment_3_1"
-    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21619:1: rule__KTopPosition__AbsoluteAssignment_3_1 : ( ruleEFloat ) ;
+    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21487:1: rule__KTopPosition__AbsoluteAssignment_3_1 : ( ruleEFloat ) ;
     public final void rule__KTopPosition__AbsoluteAssignment_3_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21623:1: ( ( ruleEFloat ) )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21624:1: ( ruleEFloat )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21491:1: ( ( ruleEFloat ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21492:1: ( ruleEFloat )
             {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21624:1: ( ruleEFloat )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21625:1: ruleEFloat
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21492:1: ( ruleEFloat )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21493:1: ruleEFloat
             {
              before(grammarAccess.getKTopPositionAccess().getAbsoluteEFloatParserRuleCall_3_1_0()); 
-            pushFollow(FollowSets001.FOLLOW_ruleEFloat_in_rule__KTopPosition__AbsoluteAssignment_3_142997);
+            pushFollow(FollowSets001.FOLLOW_ruleEFloat_in_rule__KTopPosition__AbsoluteAssignment_3_142741);
             ruleEFloat();
 
             state._fsp--;
@@ -56094,20 +55792,20 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
 
 
     // $ANTLR start "rule__KTopPosition__RelativeAssignment_4_1"
-    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21634:1: rule__KTopPosition__RelativeAssignment_4_1 : ( ruleEFloat ) ;
+    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21502:1: rule__KTopPosition__RelativeAssignment_4_1 : ( ruleEFloat ) ;
     public final void rule__KTopPosition__RelativeAssignment_4_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21638:1: ( ( ruleEFloat ) )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21639:1: ( ruleEFloat )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21506:1: ( ( ruleEFloat ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21507:1: ( ruleEFloat )
             {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21639:1: ( ruleEFloat )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21640:1: ruleEFloat
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21507:1: ( ruleEFloat )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21508:1: ruleEFloat
             {
              before(grammarAccess.getKTopPositionAccess().getRelativeEFloatParserRuleCall_4_1_0()); 
-            pushFollow(FollowSets001.FOLLOW_ruleEFloat_in_rule__KTopPosition__RelativeAssignment_4_143028);
+            pushFollow(FollowSets001.FOLLOW_ruleEFloat_in_rule__KTopPosition__RelativeAssignment_4_142772);
             ruleEFloat();
 
             state._fsp--;
@@ -56135,20 +55833,20 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
 
 
     // $ANTLR start "rule__KBottomPosition__AbsoluteAssignment_3_1"
-    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21649:1: rule__KBottomPosition__AbsoluteAssignment_3_1 : ( ruleEFloat ) ;
+    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21517:1: rule__KBottomPosition__AbsoluteAssignment_3_1 : ( ruleEFloat ) ;
     public final void rule__KBottomPosition__AbsoluteAssignment_3_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21653:1: ( ( ruleEFloat ) )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21654:1: ( ruleEFloat )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21521:1: ( ( ruleEFloat ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21522:1: ( ruleEFloat )
             {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21654:1: ( ruleEFloat )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21655:1: ruleEFloat
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21522:1: ( ruleEFloat )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21523:1: ruleEFloat
             {
              before(grammarAccess.getKBottomPositionAccess().getAbsoluteEFloatParserRuleCall_3_1_0()); 
-            pushFollow(FollowSets001.FOLLOW_ruleEFloat_in_rule__KBottomPosition__AbsoluteAssignment_3_143059);
+            pushFollow(FollowSets001.FOLLOW_ruleEFloat_in_rule__KBottomPosition__AbsoluteAssignment_3_142803);
             ruleEFloat();
 
             state._fsp--;
@@ -56176,20 +55874,20 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
 
 
     // $ANTLR start "rule__KBottomPosition__RelativeAssignment_4_1"
-    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21664:1: rule__KBottomPosition__RelativeAssignment_4_1 : ( ruleEFloat ) ;
+    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21532:1: rule__KBottomPosition__RelativeAssignment_4_1 : ( ruleEFloat ) ;
     public final void rule__KBottomPosition__RelativeAssignment_4_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21668:1: ( ( ruleEFloat ) )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21669:1: ( ruleEFloat )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21536:1: ( ( ruleEFloat ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21537:1: ( ruleEFloat )
             {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21669:1: ( ruleEFloat )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21670:1: ruleEFloat
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21537:1: ( ruleEFloat )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21538:1: ruleEFloat
             {
              before(grammarAccess.getKBottomPositionAccess().getRelativeEFloatParserRuleCall_4_1_0()); 
-            pushFollow(FollowSets001.FOLLOW_ruleEFloat_in_rule__KBottomPosition__RelativeAssignment_4_143090);
+            pushFollow(FollowSets001.FOLLOW_ruleEFloat_in_rule__KBottomPosition__RelativeAssignment_4_142834);
             ruleEFloat();
 
             state._fsp--;
@@ -56217,24 +55915,24 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
 
 
     // $ANTLR start "rule__KForegroundColor__PropagateToChildrenAssignment_3"
-    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21679:1: rule__KForegroundColor__PropagateToChildrenAssignment_3 : ( ( 'propagateToChildren' ) ) ;
+    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21547:1: rule__KForegroundColor__PropagateToChildrenAssignment_3 : ( ( 'propagateToChildren' ) ) ;
     public final void rule__KForegroundColor__PropagateToChildrenAssignment_3() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21683:1: ( ( ( 'propagateToChildren' ) ) )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21684:1: ( ( 'propagateToChildren' ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21551:1: ( ( ( 'propagateToChildren' ) ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21552:1: ( ( 'propagateToChildren' ) )
             {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21684:1: ( ( 'propagateToChildren' ) )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21685:1: ( 'propagateToChildren' )
-            {
-             before(grammarAccess.getKForegroundColorAccess().getPropagateToChildrenPropagateToChildrenKeyword_3_0()); 
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21686:1: ( 'propagateToChildren' )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21687:1: 'propagateToChildren'
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21552:1: ( ( 'propagateToChildren' ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21553:1: ( 'propagateToChildren' )
             {
              before(grammarAccess.getKForegroundColorAccess().getPropagateToChildrenPropagateToChildrenKeyword_3_0()); 
-            match(input,107,FollowSets001.FOLLOW_107_in_rule__KForegroundColor__PropagateToChildrenAssignment_343126); 
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21554:1: ( 'propagateToChildren' )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21555:1: 'propagateToChildren'
+            {
+             before(grammarAccess.getKForegroundColorAccess().getPropagateToChildrenPropagateToChildrenKeyword_3_0()); 
+            match(input,105,FollowSets001.FOLLOW_105_in_rule__KForegroundColor__PropagateToChildrenAssignment_342870); 
              after(grammarAccess.getKForegroundColorAccess().getPropagateToChildrenPropagateToChildrenKeyword_3_0()); 
 
             }
@@ -56262,20 +55960,20 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
 
 
     // $ANTLR start "rule__KForegroundColor__RedAssignment_4_1"
-    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21702:1: rule__KForegroundColor__RedAssignment_4_1 : ( ruleEInt ) ;
+    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21570:1: rule__KForegroundColor__RedAssignment_4_1 : ( ruleEInt ) ;
     public final void rule__KForegroundColor__RedAssignment_4_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21706:1: ( ( ruleEInt ) )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21707:1: ( ruleEInt )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21574:1: ( ( ruleEInt ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21575:1: ( ruleEInt )
             {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21707:1: ( ruleEInt )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21708:1: ruleEInt
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21575:1: ( ruleEInt )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21576:1: ruleEInt
             {
              before(grammarAccess.getKForegroundColorAccess().getRedEIntParserRuleCall_4_1_0()); 
-            pushFollow(FollowSets001.FOLLOW_ruleEInt_in_rule__KForegroundColor__RedAssignment_4_143165);
+            pushFollow(FollowSets001.FOLLOW_ruleEInt_in_rule__KForegroundColor__RedAssignment_4_142909);
             ruleEInt();
 
             state._fsp--;
@@ -56303,20 +56001,20 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
 
 
     // $ANTLR start "rule__KForegroundColor__GreenAssignment_5_1"
-    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21717:1: rule__KForegroundColor__GreenAssignment_5_1 : ( ruleEInt ) ;
+    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21585:1: rule__KForegroundColor__GreenAssignment_5_1 : ( ruleEInt ) ;
     public final void rule__KForegroundColor__GreenAssignment_5_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21721:1: ( ( ruleEInt ) )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21722:1: ( ruleEInt )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21589:1: ( ( ruleEInt ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21590:1: ( ruleEInt )
             {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21722:1: ( ruleEInt )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21723:1: ruleEInt
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21590:1: ( ruleEInt )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21591:1: ruleEInt
             {
              before(grammarAccess.getKForegroundColorAccess().getGreenEIntParserRuleCall_5_1_0()); 
-            pushFollow(FollowSets001.FOLLOW_ruleEInt_in_rule__KForegroundColor__GreenAssignment_5_143196);
+            pushFollow(FollowSets001.FOLLOW_ruleEInt_in_rule__KForegroundColor__GreenAssignment_5_142940);
             ruleEInt();
 
             state._fsp--;
@@ -56344,20 +56042,20 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
 
 
     // $ANTLR start "rule__KForegroundColor__BlueAssignment_6_1"
-    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21732:1: rule__KForegroundColor__BlueAssignment_6_1 : ( ruleEInt ) ;
+    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21600:1: rule__KForegroundColor__BlueAssignment_6_1 : ( ruleEInt ) ;
     public final void rule__KForegroundColor__BlueAssignment_6_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21736:1: ( ( ruleEInt ) )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21737:1: ( ruleEInt )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21604:1: ( ( ruleEInt ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21605:1: ( ruleEInt )
             {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21737:1: ( ruleEInt )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21738:1: ruleEInt
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21605:1: ( ruleEInt )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21606:1: ruleEInt
             {
              before(grammarAccess.getKForegroundColorAccess().getBlueEIntParserRuleCall_6_1_0()); 
-            pushFollow(FollowSets001.FOLLOW_ruleEInt_in_rule__KForegroundColor__BlueAssignment_6_143227);
+            pushFollow(FollowSets001.FOLLOW_ruleEInt_in_rule__KForegroundColor__BlueAssignment_6_142971);
             ruleEInt();
 
             state._fsp--;
@@ -56385,24 +56083,24 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
 
 
     // $ANTLR start "rule__KBackgroundColor__PropagateToChildrenAssignment_3"
-    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21747:1: rule__KBackgroundColor__PropagateToChildrenAssignment_3 : ( ( 'propagateToChildren' ) ) ;
+    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21615:1: rule__KBackgroundColor__PropagateToChildrenAssignment_3 : ( ( 'propagateToChildren' ) ) ;
     public final void rule__KBackgroundColor__PropagateToChildrenAssignment_3() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21751:1: ( ( ( 'propagateToChildren' ) ) )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21752:1: ( ( 'propagateToChildren' ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21619:1: ( ( ( 'propagateToChildren' ) ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21620:1: ( ( 'propagateToChildren' ) )
             {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21752:1: ( ( 'propagateToChildren' ) )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21753:1: ( 'propagateToChildren' )
-            {
-             before(grammarAccess.getKBackgroundColorAccess().getPropagateToChildrenPropagateToChildrenKeyword_3_0()); 
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21754:1: ( 'propagateToChildren' )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21755:1: 'propagateToChildren'
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21620:1: ( ( 'propagateToChildren' ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21621:1: ( 'propagateToChildren' )
             {
              before(grammarAccess.getKBackgroundColorAccess().getPropagateToChildrenPropagateToChildrenKeyword_3_0()); 
-            match(input,107,FollowSets001.FOLLOW_107_in_rule__KBackgroundColor__PropagateToChildrenAssignment_343263); 
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21622:1: ( 'propagateToChildren' )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21623:1: 'propagateToChildren'
+            {
+             before(grammarAccess.getKBackgroundColorAccess().getPropagateToChildrenPropagateToChildrenKeyword_3_0()); 
+            match(input,105,FollowSets001.FOLLOW_105_in_rule__KBackgroundColor__PropagateToChildrenAssignment_343007); 
              after(grammarAccess.getKBackgroundColorAccess().getPropagateToChildrenPropagateToChildrenKeyword_3_0()); 
 
             }
@@ -56430,20 +56128,20 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
 
 
     // $ANTLR start "rule__KBackgroundColor__RedAssignment_4_1"
-    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21770:1: rule__KBackgroundColor__RedAssignment_4_1 : ( ruleEInt ) ;
+    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21638:1: rule__KBackgroundColor__RedAssignment_4_1 : ( ruleEInt ) ;
     public final void rule__KBackgroundColor__RedAssignment_4_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21774:1: ( ( ruleEInt ) )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21775:1: ( ruleEInt )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21642:1: ( ( ruleEInt ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21643:1: ( ruleEInt )
             {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21775:1: ( ruleEInt )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21776:1: ruleEInt
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21643:1: ( ruleEInt )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21644:1: ruleEInt
             {
              before(grammarAccess.getKBackgroundColorAccess().getRedEIntParserRuleCall_4_1_0()); 
-            pushFollow(FollowSets001.FOLLOW_ruleEInt_in_rule__KBackgroundColor__RedAssignment_4_143302);
+            pushFollow(FollowSets001.FOLLOW_ruleEInt_in_rule__KBackgroundColor__RedAssignment_4_143046);
             ruleEInt();
 
             state._fsp--;
@@ -56471,20 +56169,20 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
 
 
     // $ANTLR start "rule__KBackgroundColor__GreenAssignment_5_1"
-    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21785:1: rule__KBackgroundColor__GreenAssignment_5_1 : ( ruleEInt ) ;
+    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21653:1: rule__KBackgroundColor__GreenAssignment_5_1 : ( ruleEInt ) ;
     public final void rule__KBackgroundColor__GreenAssignment_5_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21789:1: ( ( ruleEInt ) )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21790:1: ( ruleEInt )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21657:1: ( ( ruleEInt ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21658:1: ( ruleEInt )
             {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21790:1: ( ruleEInt )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21791:1: ruleEInt
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21658:1: ( ruleEInt )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21659:1: ruleEInt
             {
              before(grammarAccess.getKBackgroundColorAccess().getGreenEIntParserRuleCall_5_1_0()); 
-            pushFollow(FollowSets001.FOLLOW_ruleEInt_in_rule__KBackgroundColor__GreenAssignment_5_143333);
+            pushFollow(FollowSets001.FOLLOW_ruleEInt_in_rule__KBackgroundColor__GreenAssignment_5_143077);
             ruleEInt();
 
             state._fsp--;
@@ -56512,20 +56210,20 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
 
 
     // $ANTLR start "rule__KBackgroundColor__BlueAssignment_6_1"
-    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21800:1: rule__KBackgroundColor__BlueAssignment_6_1 : ( ruleEInt ) ;
+    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21668:1: rule__KBackgroundColor__BlueAssignment_6_1 : ( ruleEInt ) ;
     public final void rule__KBackgroundColor__BlueAssignment_6_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21804:1: ( ( ruleEInt ) )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21805:1: ( ruleEInt )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21672:1: ( ( ruleEInt ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21673:1: ( ruleEInt )
             {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21805:1: ( ruleEInt )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21806:1: ruleEInt
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21673:1: ( ruleEInt )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21674:1: ruleEInt
             {
              before(grammarAccess.getKBackgroundColorAccess().getBlueEIntParserRuleCall_6_1_0()); 
-            pushFollow(FollowSets001.FOLLOW_ruleEInt_in_rule__KBackgroundColor__BlueAssignment_6_143364);
+            pushFollow(FollowSets001.FOLLOW_ruleEInt_in_rule__KBackgroundColor__BlueAssignment_6_143108);
             ruleEInt();
 
             state._fsp--;
@@ -56553,20 +56251,20 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
 
 
     // $ANTLR start "rule__KLineWidth__LineWidthAssignment_1"
-    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21815:1: rule__KLineWidth__LineWidthAssignment_1 : ( ruleEInt ) ;
+    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21683:1: rule__KLineWidth__LineWidthAssignment_1 : ( ruleEInt ) ;
     public final void rule__KLineWidth__LineWidthAssignment_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21819:1: ( ( ruleEInt ) )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21820:1: ( ruleEInt )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21687:1: ( ( ruleEInt ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21688:1: ( ruleEInt )
             {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21820:1: ( ruleEInt )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21821:1: ruleEInt
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21688:1: ( ruleEInt )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21689:1: ruleEInt
             {
              before(grammarAccess.getKLineWidthAccess().getLineWidthEIntParserRuleCall_1_0()); 
-            pushFollow(FollowSets001.FOLLOW_ruleEInt_in_rule__KLineWidth__LineWidthAssignment_143395);
+            pushFollow(FollowSets001.FOLLOW_ruleEInt_in_rule__KLineWidth__LineWidthAssignment_143139);
             ruleEInt();
 
             state._fsp--;
@@ -56594,24 +56292,24 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
 
 
     // $ANTLR start "rule__KLineWidth__PropagateToChildrenAssignment_2"
-    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21830:1: rule__KLineWidth__PropagateToChildrenAssignment_2 : ( ( 'propagateToChildren' ) ) ;
+    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21698:1: rule__KLineWidth__PropagateToChildrenAssignment_2 : ( ( 'propagateToChildren' ) ) ;
     public final void rule__KLineWidth__PropagateToChildrenAssignment_2() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21834:1: ( ( ( 'propagateToChildren' ) ) )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21835:1: ( ( 'propagateToChildren' ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21702:1: ( ( ( 'propagateToChildren' ) ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21703:1: ( ( 'propagateToChildren' ) )
             {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21835:1: ( ( 'propagateToChildren' ) )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21836:1: ( 'propagateToChildren' )
-            {
-             before(grammarAccess.getKLineWidthAccess().getPropagateToChildrenPropagateToChildrenKeyword_2_0()); 
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21837:1: ( 'propagateToChildren' )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21838:1: 'propagateToChildren'
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21703:1: ( ( 'propagateToChildren' ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21704:1: ( 'propagateToChildren' )
             {
              before(grammarAccess.getKLineWidthAccess().getPropagateToChildrenPropagateToChildrenKeyword_2_0()); 
-            match(input,107,FollowSets001.FOLLOW_107_in_rule__KLineWidth__PropagateToChildrenAssignment_243431); 
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21705:1: ( 'propagateToChildren' )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21706:1: 'propagateToChildren'
+            {
+             before(grammarAccess.getKLineWidthAccess().getPropagateToChildrenPropagateToChildrenKeyword_2_0()); 
+            match(input,105,FollowSets001.FOLLOW_105_in_rule__KLineWidth__PropagateToChildrenAssignment_243175); 
              after(grammarAccess.getKLineWidthAccess().getPropagateToChildrenPropagateToChildrenKeyword_2_0()); 
 
             }
@@ -56639,24 +56337,24 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
 
 
     // $ANTLR start "rule__KVisibility__LineVisibleAssignment_2"
-    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21853:1: rule__KVisibility__LineVisibleAssignment_2 : ( ( 'lineVisible' ) ) ;
+    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21721:1: rule__KVisibility__LineVisibleAssignment_2 : ( ( 'lineVisible' ) ) ;
     public final void rule__KVisibility__LineVisibleAssignment_2() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21857:1: ( ( ( 'lineVisible' ) ) )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21858:1: ( ( 'lineVisible' ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21725:1: ( ( ( 'lineVisible' ) ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21726:1: ( ( 'lineVisible' ) )
             {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21858:1: ( ( 'lineVisible' ) )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21859:1: ( 'lineVisible' )
-            {
-             before(grammarAccess.getKVisibilityAccess().getLineVisibleLineVisibleKeyword_2_0()); 
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21860:1: ( 'lineVisible' )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21861:1: 'lineVisible'
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21726:1: ( ( 'lineVisible' ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21727:1: ( 'lineVisible' )
             {
              before(grammarAccess.getKVisibilityAccess().getLineVisibleLineVisibleKeyword_2_0()); 
-            match(input,108,FollowSets001.FOLLOW_108_in_rule__KVisibility__LineVisibleAssignment_243475); 
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21728:1: ( 'lineVisible' )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21729:1: 'lineVisible'
+            {
+             before(grammarAccess.getKVisibilityAccess().getLineVisibleLineVisibleKeyword_2_0()); 
+            match(input,106,FollowSets001.FOLLOW_106_in_rule__KVisibility__LineVisibleAssignment_243219); 
              after(grammarAccess.getKVisibilityAccess().getLineVisibleLineVisibleKeyword_2_0()); 
 
             }
@@ -56684,24 +56382,24 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
 
 
     // $ANTLR start "rule__KVisibility__FilledAssignment_3"
-    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21876:1: rule__KVisibility__FilledAssignment_3 : ( ( 'filled' ) ) ;
+    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21744:1: rule__KVisibility__FilledAssignment_3 : ( ( 'filled' ) ) ;
     public final void rule__KVisibility__FilledAssignment_3() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21880:1: ( ( ( 'filled' ) ) )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21881:1: ( ( 'filled' ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21748:1: ( ( ( 'filled' ) ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21749:1: ( ( 'filled' ) )
             {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21881:1: ( ( 'filled' ) )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21882:1: ( 'filled' )
-            {
-             before(grammarAccess.getKVisibilityAccess().getFilledFilledKeyword_3_0()); 
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21883:1: ( 'filled' )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21884:1: 'filled'
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21749:1: ( ( 'filled' ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21750:1: ( 'filled' )
             {
              before(grammarAccess.getKVisibilityAccess().getFilledFilledKeyword_3_0()); 
-            match(input,109,FollowSets001.FOLLOW_109_in_rule__KVisibility__FilledAssignment_343519); 
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21751:1: ( 'filled' )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21752:1: 'filled'
+            {
+             before(grammarAccess.getKVisibilityAccess().getFilledFilledKeyword_3_0()); 
+            match(input,107,FollowSets001.FOLLOW_107_in_rule__KVisibility__FilledAssignment_343263); 
              after(grammarAccess.getKVisibilityAccess().getFilledFilledKeyword_3_0()); 
 
             }
@@ -56729,24 +56427,24 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
 
 
     // $ANTLR start "rule__KVisibility__PropagateToChildrenAssignment_4"
-    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21899:1: rule__KVisibility__PropagateToChildrenAssignment_4 : ( ( 'propagateToChildren' ) ) ;
+    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21767:1: rule__KVisibility__PropagateToChildrenAssignment_4 : ( ( 'propagateToChildren' ) ) ;
     public final void rule__KVisibility__PropagateToChildrenAssignment_4() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21903:1: ( ( ( 'propagateToChildren' ) ) )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21904:1: ( ( 'propagateToChildren' ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21771:1: ( ( ( 'propagateToChildren' ) ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21772:1: ( ( 'propagateToChildren' ) )
             {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21904:1: ( ( 'propagateToChildren' ) )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21905:1: ( 'propagateToChildren' )
-            {
-             before(grammarAccess.getKVisibilityAccess().getPropagateToChildrenPropagateToChildrenKeyword_4_0()); 
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21906:1: ( 'propagateToChildren' )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21907:1: 'propagateToChildren'
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21772:1: ( ( 'propagateToChildren' ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21773:1: ( 'propagateToChildren' )
             {
              before(grammarAccess.getKVisibilityAccess().getPropagateToChildrenPropagateToChildrenKeyword_4_0()); 
-            match(input,107,FollowSets001.FOLLOW_107_in_rule__KVisibility__PropagateToChildrenAssignment_443563); 
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21774:1: ( 'propagateToChildren' )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21775:1: 'propagateToChildren'
+            {
+             before(grammarAccess.getKVisibilityAccess().getPropagateToChildrenPropagateToChildrenKeyword_4_0()); 
+            match(input,105,FollowSets001.FOLLOW_105_in_rule__KVisibility__PropagateToChildrenAssignment_443307); 
              after(grammarAccess.getKVisibilityAccess().getPropagateToChildrenPropagateToChildrenKeyword_4_0()); 
 
             }
@@ -56774,20 +56472,20 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
 
 
     // $ANTLR start "rule__KLineStyle__LineStyleAssignment_2"
-    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21922:1: rule__KLineStyle__LineStyleAssignment_2 : ( ruleLineStyle ) ;
+    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21790:1: rule__KLineStyle__LineStyleAssignment_2 : ( ruleLineStyle ) ;
     public final void rule__KLineStyle__LineStyleAssignment_2() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21926:1: ( ( ruleLineStyle ) )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21927:1: ( ruleLineStyle )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21794:1: ( ( ruleLineStyle ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21795:1: ( ruleLineStyle )
             {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21927:1: ( ruleLineStyle )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21928:1: ruleLineStyle
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21795:1: ( ruleLineStyle )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21796:1: ruleLineStyle
             {
              before(grammarAccess.getKLineStyleAccess().getLineStyleLineStyleEnumRuleCall_2_0()); 
-            pushFollow(FollowSets001.FOLLOW_ruleLineStyle_in_rule__KLineStyle__LineStyleAssignment_243602);
+            pushFollow(FollowSets001.FOLLOW_ruleLineStyle_in_rule__KLineStyle__LineStyleAssignment_243346);
             ruleLineStyle();
 
             state._fsp--;
@@ -56815,24 +56513,24 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
 
 
     // $ANTLR start "rule__KLineStyle__PropagateToChildrenAssignment_3"
-    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21937:1: rule__KLineStyle__PropagateToChildrenAssignment_3 : ( ( 'propagateToChildren' ) ) ;
+    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21805:1: rule__KLineStyle__PropagateToChildrenAssignment_3 : ( ( 'propagateToChildren' ) ) ;
     public final void rule__KLineStyle__PropagateToChildrenAssignment_3() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21941:1: ( ( ( 'propagateToChildren' ) ) )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21942:1: ( ( 'propagateToChildren' ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21809:1: ( ( ( 'propagateToChildren' ) ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21810:1: ( ( 'propagateToChildren' ) )
             {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21942:1: ( ( 'propagateToChildren' ) )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21943:1: ( 'propagateToChildren' )
-            {
-             before(grammarAccess.getKLineStyleAccess().getPropagateToChildrenPropagateToChildrenKeyword_3_0()); 
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21944:1: ( 'propagateToChildren' )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21945:1: 'propagateToChildren'
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21810:1: ( ( 'propagateToChildren' ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21811:1: ( 'propagateToChildren' )
             {
              before(grammarAccess.getKLineStyleAccess().getPropagateToChildrenPropagateToChildrenKeyword_3_0()); 
-            match(input,107,FollowSets001.FOLLOW_107_in_rule__KLineStyle__PropagateToChildrenAssignment_343638); 
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21812:1: ( 'propagateToChildren' )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21813:1: 'propagateToChildren'
+            {
+             before(grammarAccess.getKLineStyleAccess().getPropagateToChildrenPropagateToChildrenKeyword_3_0()); 
+            match(input,105,FollowSets001.FOLLOW_105_in_rule__KLineStyle__PropagateToChildrenAssignment_343382); 
              after(grammarAccess.getKLineStyleAccess().getPropagateToChildrenPropagateToChildrenKeyword_3_0()); 
 
             }
@@ -56860,20 +56558,20 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
 
 
     // $ANTLR start "rule__KVerticalAlignment__VerticalAlignmentAssignment_1"
-    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21960:1: rule__KVerticalAlignment__VerticalAlignmentAssignment_1 : ( ruleVerticalAlignment ) ;
+    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21828:1: rule__KVerticalAlignment__VerticalAlignmentAssignment_1 : ( ruleVerticalAlignment ) ;
     public final void rule__KVerticalAlignment__VerticalAlignmentAssignment_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21964:1: ( ( ruleVerticalAlignment ) )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21965:1: ( ruleVerticalAlignment )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21832:1: ( ( ruleVerticalAlignment ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21833:1: ( ruleVerticalAlignment )
             {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21965:1: ( ruleVerticalAlignment )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21966:1: ruleVerticalAlignment
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21833:1: ( ruleVerticalAlignment )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21834:1: ruleVerticalAlignment
             {
              before(grammarAccess.getKVerticalAlignmentAccess().getVerticalAlignmentVerticalAlignmentEnumRuleCall_1_0()); 
-            pushFollow(FollowSets001.FOLLOW_ruleVerticalAlignment_in_rule__KVerticalAlignment__VerticalAlignmentAssignment_143677);
+            pushFollow(FollowSets001.FOLLOW_ruleVerticalAlignment_in_rule__KVerticalAlignment__VerticalAlignmentAssignment_143421);
             ruleVerticalAlignment();
 
             state._fsp--;
@@ -56901,24 +56599,24 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
 
 
     // $ANTLR start "rule__KVerticalAlignment__PropagateToChildrenAssignment_2"
-    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21975:1: rule__KVerticalAlignment__PropagateToChildrenAssignment_2 : ( ( 'propagateToChildren' ) ) ;
+    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21843:1: rule__KVerticalAlignment__PropagateToChildrenAssignment_2 : ( ( 'propagateToChildren' ) ) ;
     public final void rule__KVerticalAlignment__PropagateToChildrenAssignment_2() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21979:1: ( ( ( 'propagateToChildren' ) ) )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21980:1: ( ( 'propagateToChildren' ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21847:1: ( ( ( 'propagateToChildren' ) ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21848:1: ( ( 'propagateToChildren' ) )
             {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21980:1: ( ( 'propagateToChildren' ) )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21981:1: ( 'propagateToChildren' )
-            {
-             before(grammarAccess.getKVerticalAlignmentAccess().getPropagateToChildrenPropagateToChildrenKeyword_2_0()); 
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21982:1: ( 'propagateToChildren' )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21983:1: 'propagateToChildren'
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21848:1: ( ( 'propagateToChildren' ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21849:1: ( 'propagateToChildren' )
             {
              before(grammarAccess.getKVerticalAlignmentAccess().getPropagateToChildrenPropagateToChildrenKeyword_2_0()); 
-            match(input,107,FollowSets001.FOLLOW_107_in_rule__KVerticalAlignment__PropagateToChildrenAssignment_243713); 
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21850:1: ( 'propagateToChildren' )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21851:1: 'propagateToChildren'
+            {
+             before(grammarAccess.getKVerticalAlignmentAccess().getPropagateToChildrenPropagateToChildrenKeyword_2_0()); 
+            match(input,105,FollowSets001.FOLLOW_105_in_rule__KVerticalAlignment__PropagateToChildrenAssignment_243457); 
              after(grammarAccess.getKVerticalAlignmentAccess().getPropagateToChildrenPropagateToChildrenKeyword_2_0()); 
 
             }
@@ -56946,20 +56644,20 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
 
 
     // $ANTLR start "rule__KHorizontalAlignment__HorizontalAlignmentAssignment_1"
-    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21998:1: rule__KHorizontalAlignment__HorizontalAlignmentAssignment_1 : ( ruleHorizontalAlignment ) ;
+    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21866:1: rule__KHorizontalAlignment__HorizontalAlignmentAssignment_1 : ( ruleHorizontalAlignment ) ;
     public final void rule__KHorizontalAlignment__HorizontalAlignmentAssignment_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:22002:1: ( ( ruleHorizontalAlignment ) )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:22003:1: ( ruleHorizontalAlignment )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21870:1: ( ( ruleHorizontalAlignment ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21871:1: ( ruleHorizontalAlignment )
             {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:22003:1: ( ruleHorizontalAlignment )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:22004:1: ruleHorizontalAlignment
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21871:1: ( ruleHorizontalAlignment )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21872:1: ruleHorizontalAlignment
             {
              before(grammarAccess.getKHorizontalAlignmentAccess().getHorizontalAlignmentHorizontalAlignmentEnumRuleCall_1_0()); 
-            pushFollow(FollowSets001.FOLLOW_ruleHorizontalAlignment_in_rule__KHorizontalAlignment__HorizontalAlignmentAssignment_143752);
+            pushFollow(FollowSets001.FOLLOW_ruleHorizontalAlignment_in_rule__KHorizontalAlignment__HorizontalAlignmentAssignment_143496);
             ruleHorizontalAlignment();
 
             state._fsp--;
@@ -56987,24 +56685,24 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
 
 
     // $ANTLR start "rule__KHorizontalAlignment__PropagateToChildrenAssignment_2"
-    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:22013:1: rule__KHorizontalAlignment__PropagateToChildrenAssignment_2 : ( ( 'propagateToChildren' ) ) ;
+    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21881:1: rule__KHorizontalAlignment__PropagateToChildrenAssignment_2 : ( ( 'propagateToChildren' ) ) ;
     public final void rule__KHorizontalAlignment__PropagateToChildrenAssignment_2() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:22017:1: ( ( ( 'propagateToChildren' ) ) )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:22018:1: ( ( 'propagateToChildren' ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21885:1: ( ( ( 'propagateToChildren' ) ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21886:1: ( ( 'propagateToChildren' ) )
             {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:22018:1: ( ( 'propagateToChildren' ) )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:22019:1: ( 'propagateToChildren' )
-            {
-             before(grammarAccess.getKHorizontalAlignmentAccess().getPropagateToChildrenPropagateToChildrenKeyword_2_0()); 
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:22020:1: ( 'propagateToChildren' )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:22021:1: 'propagateToChildren'
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21886:1: ( ( 'propagateToChildren' ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21887:1: ( 'propagateToChildren' )
             {
              before(grammarAccess.getKHorizontalAlignmentAccess().getPropagateToChildrenPropagateToChildrenKeyword_2_0()); 
-            match(input,107,FollowSets001.FOLLOW_107_in_rule__KHorizontalAlignment__PropagateToChildrenAssignment_243788); 
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21888:1: ( 'propagateToChildren' )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21889:1: 'propagateToChildren'
+            {
+             before(grammarAccess.getKHorizontalAlignmentAccess().getPropagateToChildrenPropagateToChildrenKeyword_2_0()); 
+            match(input,105,FollowSets001.FOLLOW_105_in_rule__KHorizontalAlignment__PropagateToChildrenAssignment_243532); 
              after(grammarAccess.getKHorizontalAlignmentAccess().getPropagateToChildrenPropagateToChildrenKeyword_2_0()); 
 
             }
@@ -57032,20 +56730,20 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
 
 
     // $ANTLR start "rule__KGridPlacement__NumColumnsAssignment_2"
-    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:22036:1: rule__KGridPlacement__NumColumnsAssignment_2 : ( ruleEInt ) ;
+    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21904:1: rule__KGridPlacement__NumColumnsAssignment_2 : ( ruleEInt ) ;
     public final void rule__KGridPlacement__NumColumnsAssignment_2() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:22040:1: ( ( ruleEInt ) )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:22041:1: ( ruleEInt )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21908:1: ( ( ruleEInt ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21909:1: ( ruleEInt )
             {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:22041:1: ( ruleEInt )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:22042:1: ruleEInt
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21909:1: ( ruleEInt )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21910:1: ruleEInt
             {
              before(grammarAccess.getKGridPlacementAccess().getNumColumnsEIntParserRuleCall_2_0()); 
-            pushFollow(FollowSets001.FOLLOW_ruleEInt_in_rule__KGridPlacement__NumColumnsAssignment_243827);
+            pushFollow(FollowSets001.FOLLOW_ruleEInt_in_rule__KGridPlacement__NumColumnsAssignment_243571);
             ruleEInt();
 
             state._fsp--;
@@ -57073,20 +56771,20 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
 
 
     // $ANTLR start "rule__KInsets__TopAssignment_3_1"
-    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:22058:1: rule__KInsets__TopAssignment_3_1 : ( ruleEFloat ) ;
+    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21926:1: rule__KInsets__TopAssignment_3_1 : ( ruleEFloat ) ;
     public final void rule__KInsets__TopAssignment_3_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:22062:1: ( ( ruleEFloat ) )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:22063:1: ( ruleEFloat )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21930:1: ( ( ruleEFloat ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21931:1: ( ruleEFloat )
             {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:22063:1: ( ruleEFloat )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:22064:1: ruleEFloat
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21931:1: ( ruleEFloat )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21932:1: ruleEFloat
             {
              before(grammarAccess.getKInsetsAccess().getTopEFloatParserRuleCall_3_1_0()); 
-            pushFollow(FollowSets001.FOLLOW_ruleEFloat_in_rule__KInsets__TopAssignment_3_143865);
+            pushFollow(FollowSets001.FOLLOW_ruleEFloat_in_rule__KInsets__TopAssignment_3_143609);
             ruleEFloat();
 
             state._fsp--;
@@ -57114,20 +56812,20 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
 
 
     // $ANTLR start "rule__KInsets__BottomAssignment_4_1"
-    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:22073:1: rule__KInsets__BottomAssignment_4_1 : ( ruleEFloat ) ;
+    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21941:1: rule__KInsets__BottomAssignment_4_1 : ( ruleEFloat ) ;
     public final void rule__KInsets__BottomAssignment_4_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:22077:1: ( ( ruleEFloat ) )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:22078:1: ( ruleEFloat )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21945:1: ( ( ruleEFloat ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21946:1: ( ruleEFloat )
             {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:22078:1: ( ruleEFloat )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:22079:1: ruleEFloat
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21946:1: ( ruleEFloat )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21947:1: ruleEFloat
             {
              before(grammarAccess.getKInsetsAccess().getBottomEFloatParserRuleCall_4_1_0()); 
-            pushFollow(FollowSets001.FOLLOW_ruleEFloat_in_rule__KInsets__BottomAssignment_4_143896);
+            pushFollow(FollowSets001.FOLLOW_ruleEFloat_in_rule__KInsets__BottomAssignment_4_143640);
             ruleEFloat();
 
             state._fsp--;
@@ -57155,20 +56853,20 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
 
 
     // $ANTLR start "rule__KInsets__LeftAssignment_5_1"
-    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:22088:1: rule__KInsets__LeftAssignment_5_1 : ( ruleEFloat ) ;
+    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21956:1: rule__KInsets__LeftAssignment_5_1 : ( ruleEFloat ) ;
     public final void rule__KInsets__LeftAssignment_5_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:22092:1: ( ( ruleEFloat ) )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:22093:1: ( ruleEFloat )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21960:1: ( ( ruleEFloat ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21961:1: ( ruleEFloat )
             {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:22093:1: ( ruleEFloat )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:22094:1: ruleEFloat
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21961:1: ( ruleEFloat )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21962:1: ruleEFloat
             {
              before(grammarAccess.getKInsetsAccess().getLeftEFloatParserRuleCall_5_1_0()); 
-            pushFollow(FollowSets001.FOLLOW_ruleEFloat_in_rule__KInsets__LeftAssignment_5_143927);
+            pushFollow(FollowSets001.FOLLOW_ruleEFloat_in_rule__KInsets__LeftAssignment_5_143671);
             ruleEFloat();
 
             state._fsp--;
@@ -57196,20 +56894,20 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
 
 
     // $ANTLR start "rule__KInsets__RightAssignment_6_1"
-    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:22103:1: rule__KInsets__RightAssignment_6_1 : ( ruleEFloat ) ;
+    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21971:1: rule__KInsets__RightAssignment_6_1 : ( ruleEFloat ) ;
     public final void rule__KInsets__RightAssignment_6_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:22107:1: ( ( ruleEFloat ) )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:22108:1: ( ruleEFloat )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21975:1: ( ( ruleEFloat ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21976:1: ( ruleEFloat )
             {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:22108:1: ( ruleEFloat )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:22109:1: ruleEFloat
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21976:1: ( ruleEFloat )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21977:1: ruleEFloat
             {
              before(grammarAccess.getKInsetsAccess().getRightEFloatParserRuleCall_6_1_0()); 
-            pushFollow(FollowSets001.FOLLOW_ruleEFloat_in_rule__KInsets__RightAssignment_6_143958);
+            pushFollow(FollowSets001.FOLLOW_ruleEFloat_in_rule__KInsets__RightAssignment_6_143702);
             ruleEFloat();
 
             state._fsp--;
@@ -57237,20 +56935,20 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
 
 
     // $ANTLR start "rule__KPoint__XAssignment_2_1"
-    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:22124:1: rule__KPoint__XAssignment_2_1 : ( ruleEFloat ) ;
+    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21992:1: rule__KPoint__XAssignment_2_1 : ( ruleEFloat ) ;
     public final void rule__KPoint__XAssignment_2_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:22128:1: ( ( ruleEFloat ) )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:22129:1: ( ruleEFloat )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21996:1: ( ( ruleEFloat ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21997:1: ( ruleEFloat )
             {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:22129:1: ( ruleEFloat )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:22130:1: ruleEFloat
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21997:1: ( ruleEFloat )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:21998:1: ruleEFloat
             {
              before(grammarAccess.getKPointAccess().getXEFloatParserRuleCall_2_1_0()); 
-            pushFollow(FollowSets001.FOLLOW_ruleEFloat_in_rule__KPoint__XAssignment_2_143995);
+            pushFollow(FollowSets001.FOLLOW_ruleEFloat_in_rule__KPoint__XAssignment_2_143739);
             ruleEFloat();
 
             state._fsp--;
@@ -57278,20 +56976,20 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
 
 
     // $ANTLR start "rule__KPoint__YAssignment_3_1"
-    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:22139:1: rule__KPoint__YAssignment_3_1 : ( ruleEFloat ) ;
+    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:22007:1: rule__KPoint__YAssignment_3_1 : ( ruleEFloat ) ;
     public final void rule__KPoint__YAssignment_3_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:22143:1: ( ( ruleEFloat ) )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:22144:1: ( ruleEFloat )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:22011:1: ( ( ruleEFloat ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:22012:1: ( ruleEFloat )
             {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:22144:1: ( ruleEFloat )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:22145:1: ruleEFloat
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:22012:1: ( ruleEFloat )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:22013:1: ruleEFloat
             {
              before(grammarAccess.getKPointAccess().getYEFloatParserRuleCall_3_1_0()); 
-            pushFollow(FollowSets001.FOLLOW_ruleEFloat_in_rule__KPoint__YAssignment_3_144026);
+            pushFollow(FollowSets001.FOLLOW_ruleEFloat_in_rule__KPoint__YAssignment_3_143770);
             ruleEFloat();
 
             state._fsp--;
@@ -57318,26 +57016,26 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
     // $ANTLR end "rule__KPoint__YAssignment_3_1"
 
 
-    // $ANTLR start "rule__PersistentEntry__KeyAssignment_3"
-    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:22154:1: rule__PersistentEntry__KeyAssignment_3 : ( ruleEString ) ;
-    public final void rule__PersistentEntry__KeyAssignment_3() throws RecognitionException {
+    // $ANTLR start "rule__PersistentEntry__KeyAssignment_0"
+    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:22022:1: rule__PersistentEntry__KeyAssignment_0 : ( ruleEString ) ;
+    public final void rule__PersistentEntry__KeyAssignment_0() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:22158:1: ( ( ruleEString ) )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:22159:1: ( ruleEString )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:22026:1: ( ( ruleEString ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:22027:1: ( ruleEString )
             {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:22159:1: ( ruleEString )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:22160:1: ruleEString
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:22027:1: ( ruleEString )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:22028:1: ruleEString
             {
-             before(grammarAccess.getPersistentEntryAccess().getKeyEStringParserRuleCall_3_0()); 
-            pushFollow(FollowSets001.FOLLOW_ruleEString_in_rule__PersistentEntry__KeyAssignment_344057);
+             before(grammarAccess.getPersistentEntryAccess().getKeyEStringParserRuleCall_0_0()); 
+            pushFollow(FollowSets001.FOLLOW_ruleEString_in_rule__PersistentEntry__KeyAssignment_043801);
             ruleEString();
 
             state._fsp--;
 
-             after(grammarAccess.getPersistentEntryAccess().getKeyEStringParserRuleCall_3_0()); 
+             after(grammarAccess.getPersistentEntryAccess().getKeyEStringParserRuleCall_0_0()); 
 
             }
 
@@ -57356,29 +57054,29 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
         }
         return ;
     }
-    // $ANTLR end "rule__PersistentEntry__KeyAssignment_3"
+    // $ANTLR end "rule__PersistentEntry__KeyAssignment_0"
 
 
-    // $ANTLR start "rule__PersistentEntry__ValueAssignment_4_1"
-    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:22169:1: rule__PersistentEntry__ValueAssignment_4_1 : ( ruleEString ) ;
-    public final void rule__PersistentEntry__ValueAssignment_4_1() throws RecognitionException {
+    // $ANTLR start "rule__PersistentEntry__ValueAssignment_1_1"
+    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:22037:1: rule__PersistentEntry__ValueAssignment_1_1 : ( ruleEString ) ;
+    public final void rule__PersistentEntry__ValueAssignment_1_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:22173:1: ( ( ruleEString ) )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:22174:1: ( ruleEString )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:22041:1: ( ( ruleEString ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:22042:1: ( ruleEString )
             {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:22174:1: ( ruleEString )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:22175:1: ruleEString
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:22042:1: ( ruleEString )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:22043:1: ruleEString
             {
-             before(grammarAccess.getPersistentEntryAccess().getValueEStringParserRuleCall_4_1_0()); 
-            pushFollow(FollowSets001.FOLLOW_ruleEString_in_rule__PersistentEntry__ValueAssignment_4_144088);
+             before(grammarAccess.getPersistentEntryAccess().getValueEStringParserRuleCall_1_1_0()); 
+            pushFollow(FollowSets001.FOLLOW_ruleEString_in_rule__PersistentEntry__ValueAssignment_1_143832);
             ruleEString();
 
             state._fsp--;
 
-             after(grammarAccess.getPersistentEntryAccess().getValueEStringParserRuleCall_4_1_0()); 
+             after(grammarAccess.getPersistentEntryAccess().getValueEStringParserRuleCall_1_1_0()); 
 
             }
 
@@ -57397,7 +57095,7 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
         }
         return ;
     }
-    // $ANTLR end "rule__PersistentEntry__ValueAssignment_4_1"
+    // $ANTLR end "rule__PersistentEntry__ValueAssignment_1_1"
 
     // Delegated rules
 
@@ -57593,10 +57291,10 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
         public static final BitSet FOLLOW_rule__KRenderingLibrary__Group__1__Impl_in_rule__KRenderingLibrary__Group__13915 = new BitSet(new long[]{0x0000000001000000L});
         public static final BitSet FOLLOW_rule__KRenderingLibrary__Group__2_in_rule__KRenderingLibrary__Group__13918 = new BitSet(new long[]{0x0000000000000002L});
         public static final BitSet FOLLOW_23_in_rule__KRenderingLibrary__Group__1__Impl3946 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_rule__KRenderingLibrary__Group__2__Impl_in_rule__KRenderingLibrary__Group__23977 = new BitSet(new long[]{0x00A49CC40A000000L,0x0000040000000000L});
+        public static final BitSet FOLLOW_rule__KRenderingLibrary__Group__2__Impl_in_rule__KRenderingLibrary__Group__23977 = new BitSet(new long[]{0x00A49CC40A000000L,0x0000010000000000L});
         public static final BitSet FOLLOW_rule__KRenderingLibrary__Group__3_in_rule__KRenderingLibrary__Group__23980 = new BitSet(new long[]{0x0000000000000002L});
         public static final BitSet FOLLOW_24_in_rule__KRenderingLibrary__Group__2__Impl4008 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_rule__KRenderingLibrary__Group__3__Impl_in_rule__KRenderingLibrary__Group__34039 = new BitSet(new long[]{0x00A49CC40A000000L,0x0000040000000000L});
+        public static final BitSet FOLLOW_rule__KRenderingLibrary__Group__3__Impl_in_rule__KRenderingLibrary__Group__34039 = new BitSet(new long[]{0x00A49CC40A000000L,0x0000010000000000L});
         public static final BitSet FOLLOW_rule__KRenderingLibrary__Group__4_in_rule__KRenderingLibrary__Group__34042 = new BitSet(new long[]{0x0000000000000002L});
         public static final BitSet FOLLOW_rule__KRenderingLibrary__Group_3__0_in_rule__KRenderingLibrary__Group__3__Impl4069 = new BitSet(new long[]{0x0000000000000002L});
         public static final BitSet FOLLOW_rule__KRenderingLibrary__Group__4__Impl_in_rule__KRenderingLibrary__Group__44100 = new BitSet(new long[]{0x0000000000000002L});
@@ -57606,7 +57304,7 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
         public static final BitSet FOLLOW_rule__KRenderingLibrary__RenderingsAssignment_3_0_in_rule__KRenderingLibrary__Group_3__0__Impl4199 = new BitSet(new long[]{0x0000000000000002L});
         public static final BitSet FOLLOW_rule__KRenderingLibrary__Group_3__1__Impl_in_rule__KRenderingLibrary__Group_3__14229 = new BitSet(new long[]{0x0000000000000002L});
         public static final BitSet FOLLOW_rule__KRenderingLibrary__Group_3_1__0_in_rule__KRenderingLibrary__Group_3__1__Impl4256 = new BitSet(new long[]{0x0000000004000002L});
-        public static final BitSet FOLLOW_rule__KRenderingLibrary__Group_3_1__0__Impl_in_rule__KRenderingLibrary__Group_3_1__04291 = new BitSet(new long[]{0x00A49CC408000000L,0x0000040000000000L});
+        public static final BitSet FOLLOW_rule__KRenderingLibrary__Group_3_1__0__Impl_in_rule__KRenderingLibrary__Group_3_1__04291 = new BitSet(new long[]{0x00A49CC408000000L,0x0000010000000000L});
         public static final BitSet FOLLOW_rule__KRenderingLibrary__Group_3_1__1_in_rule__KRenderingLibrary__Group_3_1__04294 = new BitSet(new long[]{0x0000000000000002L});
         public static final BitSet FOLLOW_26_in_rule__KRenderingLibrary__Group_3_1__0__Impl4322 = new BitSet(new long[]{0x0000000000000002L});
         public static final BitSet FOLLOW_rule__KRenderingLibrary__Group_3_1__1__Impl_in_rule__KRenderingLibrary__Group_3_1__14353 = new BitSet(new long[]{0x0000000000000002L});
@@ -57734,7 +57432,7 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
         public static final BitSet FOLLOW_rule__KEllipse__Group_6__0__Impl_in_rule__KEllipse__Group_6__07166 = new BitSet(new long[]{0x0000000800000000L});
         public static final BitSet FOLLOW_rule__KEllipse__Group_6__1_in_rule__KEllipse__Group_6__07169 = new BitSet(new long[]{0x0000000000000002L});
         public static final BitSet FOLLOW_37_in_rule__KEllipse__Group_6__0__Impl7197 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_rule__KEllipse__Group_6__1__Impl_in_rule__KEllipse__Group_6__17228 = new BitSet(new long[]{0x00A49CC408000000L,0x0000040000000000L});
+        public static final BitSet FOLLOW_rule__KEllipse__Group_6__1__Impl_in_rule__KEllipse__Group_6__17228 = new BitSet(new long[]{0x00A49CC408000000L,0x0000010000000000L});
         public static final BitSet FOLLOW_rule__KEllipse__Group_6__2_in_rule__KEllipse__Group_6__17231 = new BitSet(new long[]{0x0000000000000002L});
         public static final BitSet FOLLOW_35_in_rule__KEllipse__Group_6__1__Impl7259 = new BitSet(new long[]{0x0000000000000002L});
         public static final BitSet FOLLOW_rule__KEllipse__Group_6__2__Impl_in_rule__KEllipse__Group_6__27290 = new BitSet(new long[]{0x0000000004000000L});
@@ -57742,7 +57440,7 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
         public static final BitSet FOLLOW_rule__KEllipse__ChildrenAssignment_6_2_in_rule__KEllipse__Group_6__2__Impl7320 = new BitSet(new long[]{0x0000000000000002L});
         public static final BitSet FOLLOW_rule__KEllipse__Group_6__3__Impl_in_rule__KEllipse__Group_6__37350 = new BitSet(new long[]{0x0000000000000002L});
         public static final BitSet FOLLOW_rule__KEllipse__Group_6_3__0_in_rule__KEllipse__Group_6__3__Impl7377 = new BitSet(new long[]{0x0000000004000002L});
-        public static final BitSet FOLLOW_rule__KEllipse__Group_6_3__0__Impl_in_rule__KEllipse__Group_6_3__07416 = new BitSet(new long[]{0x00A49CC408000000L,0x0000040000000000L});
+        public static final BitSet FOLLOW_rule__KEllipse__Group_6_3__0__Impl_in_rule__KEllipse__Group_6_3__07416 = new BitSet(new long[]{0x00A49CC408000000L,0x0000010000000000L});
         public static final BitSet FOLLOW_rule__KEllipse__Group_6_3__1_in_rule__KEllipse__Group_6_3__07419 = new BitSet(new long[]{0x0000000000000002L});
         public static final BitSet FOLLOW_26_in_rule__KEllipse__Group_6_3__0__Impl7447 = new BitSet(new long[]{0x0000000000000002L});
         public static final BitSet FOLLOW_rule__KEllipse__Group_6_3__1__Impl_in_rule__KEllipse__Group_6_3__17478 = new BitSet(new long[]{0x0000000000000002L});
@@ -57804,7 +57502,7 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
         public static final BitSet FOLLOW_rule__KRectangle__Group_6__0__Impl_in_rule__KRectangle__Group_6__08790 = new BitSet(new long[]{0x0000000800000000L});
         public static final BitSet FOLLOW_rule__KRectangle__Group_6__1_in_rule__KRectangle__Group_6__08793 = new BitSet(new long[]{0x0000000000000002L});
         public static final BitSet FOLLOW_37_in_rule__KRectangle__Group_6__0__Impl8821 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_rule__KRectangle__Group_6__1__Impl_in_rule__KRectangle__Group_6__18852 = new BitSet(new long[]{0x00A49CC408000000L,0x0000040000000000L});
+        public static final BitSet FOLLOW_rule__KRectangle__Group_6__1__Impl_in_rule__KRectangle__Group_6__18852 = new BitSet(new long[]{0x00A49CC408000000L,0x0000010000000000L});
         public static final BitSet FOLLOW_rule__KRectangle__Group_6__2_in_rule__KRectangle__Group_6__18855 = new BitSet(new long[]{0x0000000000000002L});
         public static final BitSet FOLLOW_35_in_rule__KRectangle__Group_6__1__Impl8883 = new BitSet(new long[]{0x0000000000000002L});
         public static final BitSet FOLLOW_rule__KRectangle__Group_6__2__Impl_in_rule__KRectangle__Group_6__28914 = new BitSet(new long[]{0x0000000004000000L});
@@ -57812,7 +57510,7 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
         public static final BitSet FOLLOW_rule__KRectangle__ChildrenAssignment_6_2_in_rule__KRectangle__Group_6__2__Impl8944 = new BitSet(new long[]{0x0000000000000002L});
         public static final BitSet FOLLOW_rule__KRectangle__Group_6__3__Impl_in_rule__KRectangle__Group_6__38974 = new BitSet(new long[]{0x0000000000000002L});
         public static final BitSet FOLLOW_rule__KRectangle__Group_6_3__0_in_rule__KRectangle__Group_6__3__Impl9001 = new BitSet(new long[]{0x0000000004000002L});
-        public static final BitSet FOLLOW_rule__KRectangle__Group_6_3__0__Impl_in_rule__KRectangle__Group_6_3__09040 = new BitSet(new long[]{0x00A49CC408000000L,0x0000040000000000L});
+        public static final BitSet FOLLOW_rule__KRectangle__Group_6_3__0__Impl_in_rule__KRectangle__Group_6_3__09040 = new BitSet(new long[]{0x00A49CC408000000L,0x0000010000000000L});
         public static final BitSet FOLLOW_rule__KRectangle__Group_6_3__1_in_rule__KRectangle__Group_6_3__09043 = new BitSet(new long[]{0x0000000000000002L});
         public static final BitSet FOLLOW_26_in_rule__KRectangle__Group_6_3__0__Impl9071 = new BitSet(new long[]{0x0000000000000002L});
         public static final BitSet FOLLOW_rule__KRectangle__Group_6_3__1__Impl_in_rule__KRectangle__Group_6_3__19102 = new BitSet(new long[]{0x0000000000000002L});
@@ -57897,7 +57595,7 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
         public static final BitSet FOLLOW_rule__KRoundedRectangle__Group_6__0__Impl_in_rule__KRoundedRectangle__Group_6__010911 = new BitSet(new long[]{0x0000000800000000L});
         public static final BitSet FOLLOW_rule__KRoundedRectangle__Group_6__1_in_rule__KRoundedRectangle__Group_6__010914 = new BitSet(new long[]{0x0000000000000002L});
         public static final BitSet FOLLOW_37_in_rule__KRoundedRectangle__Group_6__0__Impl10942 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_rule__KRoundedRectangle__Group_6__1__Impl_in_rule__KRoundedRectangle__Group_6__110973 = new BitSet(new long[]{0x00A49CC408000000L,0x0000040000000000L});
+        public static final BitSet FOLLOW_rule__KRoundedRectangle__Group_6__1__Impl_in_rule__KRoundedRectangle__Group_6__110973 = new BitSet(new long[]{0x00A49CC408000000L,0x0000010000000000L});
         public static final BitSet FOLLOW_rule__KRoundedRectangle__Group_6__2_in_rule__KRoundedRectangle__Group_6__110976 = new BitSet(new long[]{0x0000000000000002L});
         public static final BitSet FOLLOW_35_in_rule__KRoundedRectangle__Group_6__1__Impl11004 = new BitSet(new long[]{0x0000000000000002L});
         public static final BitSet FOLLOW_rule__KRoundedRectangle__Group_6__2__Impl_in_rule__KRoundedRectangle__Group_6__211035 = new BitSet(new long[]{0x0000000004000000L});
@@ -57905,7 +57603,7 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
         public static final BitSet FOLLOW_rule__KRoundedRectangle__ChildrenAssignment_6_2_in_rule__KRoundedRectangle__Group_6__2__Impl11065 = new BitSet(new long[]{0x0000000000000002L});
         public static final BitSet FOLLOW_rule__KRoundedRectangle__Group_6__3__Impl_in_rule__KRoundedRectangle__Group_6__311095 = new BitSet(new long[]{0x0000000000000002L});
         public static final BitSet FOLLOW_rule__KRoundedRectangle__Group_6_3__0_in_rule__KRoundedRectangle__Group_6__3__Impl11122 = new BitSet(new long[]{0x0000000004000002L});
-        public static final BitSet FOLLOW_rule__KRoundedRectangle__Group_6_3__0__Impl_in_rule__KRoundedRectangle__Group_6_3__011161 = new BitSet(new long[]{0x00A49CC408000000L,0x0000040000000000L});
+        public static final BitSet FOLLOW_rule__KRoundedRectangle__Group_6_3__0__Impl_in_rule__KRoundedRectangle__Group_6_3__011161 = new BitSet(new long[]{0x00A49CC408000000L,0x0000010000000000L});
         public static final BitSet FOLLOW_rule__KRoundedRectangle__Group_6_3__1_in_rule__KRoundedRectangle__Group_6_3__011164 = new BitSet(new long[]{0x0000000000000002L});
         public static final BitSet FOLLOW_26_in_rule__KRoundedRectangle__Group_6_3__0__Impl11192 = new BitSet(new long[]{0x0000000000000002L});
         public static final BitSet FOLLOW_rule__KRoundedRectangle__Group_6_3__1__Impl_in_rule__KRoundedRectangle__Group_6_3__111223 = new BitSet(new long[]{0x0000000000000002L});
@@ -57967,7 +57665,7 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
         public static final BitSet FOLLOW_rule__KPolyline_Impl__Group_6__0__Impl_in_rule__KPolyline_Impl__Group_6__012535 = new BitSet(new long[]{0x0000000800000000L});
         public static final BitSet FOLLOW_rule__KPolyline_Impl__Group_6__1_in_rule__KPolyline_Impl__Group_6__012538 = new BitSet(new long[]{0x0000000000000002L});
         public static final BitSet FOLLOW_37_in_rule__KPolyline_Impl__Group_6__0__Impl12566 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_rule__KPolyline_Impl__Group_6__1__Impl_in_rule__KPolyline_Impl__Group_6__112597 = new BitSet(new long[]{0x00A49CC408000000L,0x0000040000000000L});
+        public static final BitSet FOLLOW_rule__KPolyline_Impl__Group_6__1__Impl_in_rule__KPolyline_Impl__Group_6__112597 = new BitSet(new long[]{0x00A49CC408000000L,0x0000010000000000L});
         public static final BitSet FOLLOW_rule__KPolyline_Impl__Group_6__2_in_rule__KPolyline_Impl__Group_6__112600 = new BitSet(new long[]{0x0000000000000002L});
         public static final BitSet FOLLOW_35_in_rule__KPolyline_Impl__Group_6__1__Impl12628 = new BitSet(new long[]{0x0000000000000002L});
         public static final BitSet FOLLOW_rule__KPolyline_Impl__Group_6__2__Impl_in_rule__KPolyline_Impl__Group_6__212659 = new BitSet(new long[]{0x0000000004000000L});
@@ -57975,7 +57673,7 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
         public static final BitSet FOLLOW_rule__KPolyline_Impl__ChildrenAssignment_6_2_in_rule__KPolyline_Impl__Group_6__2__Impl12689 = new BitSet(new long[]{0x0000000000000002L});
         public static final BitSet FOLLOW_rule__KPolyline_Impl__Group_6__3__Impl_in_rule__KPolyline_Impl__Group_6__312719 = new BitSet(new long[]{0x0000000000000002L});
         public static final BitSet FOLLOW_rule__KPolyline_Impl__Group_6_3__0_in_rule__KPolyline_Impl__Group_6__3__Impl12746 = new BitSet(new long[]{0x0000000004000002L});
-        public static final BitSet FOLLOW_rule__KPolyline_Impl__Group_6_3__0__Impl_in_rule__KPolyline_Impl__Group_6_3__012785 = new BitSet(new long[]{0x00A49CC408000000L,0x0000040000000000L});
+        public static final BitSet FOLLOW_rule__KPolyline_Impl__Group_6_3__0__Impl_in_rule__KPolyline_Impl__Group_6_3__012785 = new BitSet(new long[]{0x00A49CC408000000L,0x0000010000000000L});
         public static final BitSet FOLLOW_rule__KPolyline_Impl__Group_6_3__1_in_rule__KPolyline_Impl__Group_6_3__012788 = new BitSet(new long[]{0x0000000000000002L});
         public static final BitSet FOLLOW_26_in_rule__KPolyline_Impl__Group_6_3__0__Impl12816 = new BitSet(new long[]{0x0000000000000002L});
         public static final BitSet FOLLOW_rule__KPolyline_Impl__Group_6_3__1__Impl_in_rule__KPolyline_Impl__Group_6_3__112847 = new BitSet(new long[]{0x0000000000000002L});
@@ -58037,7 +57735,7 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
         public static final BitSet FOLLOW_rule__KPolygon__Group_6__0__Impl_in_rule__KPolygon__Group_6__014159 = new BitSet(new long[]{0x0000000800000000L});
         public static final BitSet FOLLOW_rule__KPolygon__Group_6__1_in_rule__KPolygon__Group_6__014162 = new BitSet(new long[]{0x0000000000000002L});
         public static final BitSet FOLLOW_37_in_rule__KPolygon__Group_6__0__Impl14190 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_rule__KPolygon__Group_6__1__Impl_in_rule__KPolygon__Group_6__114221 = new BitSet(new long[]{0x00A49CC408000000L,0x0000040000000000L});
+        public static final BitSet FOLLOW_rule__KPolygon__Group_6__1__Impl_in_rule__KPolygon__Group_6__114221 = new BitSet(new long[]{0x00A49CC408000000L,0x0000010000000000L});
         public static final BitSet FOLLOW_rule__KPolygon__Group_6__2_in_rule__KPolygon__Group_6__114224 = new BitSet(new long[]{0x0000000000000002L});
         public static final BitSet FOLLOW_35_in_rule__KPolygon__Group_6__1__Impl14252 = new BitSet(new long[]{0x0000000000000002L});
         public static final BitSet FOLLOW_rule__KPolygon__Group_6__2__Impl_in_rule__KPolygon__Group_6__214283 = new BitSet(new long[]{0x0000000004000000L});
@@ -58045,7 +57743,7 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
         public static final BitSet FOLLOW_rule__KPolygon__ChildrenAssignment_6_2_in_rule__KPolygon__Group_6__2__Impl14313 = new BitSet(new long[]{0x0000000000000002L});
         public static final BitSet FOLLOW_rule__KPolygon__Group_6__3__Impl_in_rule__KPolygon__Group_6__314343 = new BitSet(new long[]{0x0000000000000002L});
         public static final BitSet FOLLOW_rule__KPolygon__Group_6_3__0_in_rule__KPolygon__Group_6__3__Impl14370 = new BitSet(new long[]{0x0000000004000002L});
-        public static final BitSet FOLLOW_rule__KPolygon__Group_6_3__0__Impl_in_rule__KPolygon__Group_6_3__014409 = new BitSet(new long[]{0x00A49CC408000000L,0x0000040000000000L});
+        public static final BitSet FOLLOW_rule__KPolygon__Group_6_3__0__Impl_in_rule__KPolygon__Group_6_3__014409 = new BitSet(new long[]{0x00A49CC408000000L,0x0000010000000000L});
         public static final BitSet FOLLOW_rule__KPolygon__Group_6_3__1_in_rule__KPolygon__Group_6_3__014412 = new BitSet(new long[]{0x0000000000000002L});
         public static final BitSet FOLLOW_26_in_rule__KPolygon__Group_6_3__0__Impl14440 = new BitSet(new long[]{0x0000000000000002L});
         public static final BitSet FOLLOW_rule__KPolygon__Group_6_3__1__Impl_in_rule__KPolygon__Group_6_3__114471 = new BitSet(new long[]{0x0000000000000002L});
@@ -58131,7 +57829,7 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
         public static final BitSet FOLLOW_rule__KImage__Group_9__0__Impl_in_rule__KImage__Group_9__016285 = new BitSet(new long[]{0x0000000001000000L});
         public static final BitSet FOLLOW_rule__KImage__Group_9__1_in_rule__KImage__Group_9__016288 = new BitSet(new long[]{0x0000000000000002L});
         public static final BitSet FOLLOW_37_in_rule__KImage__Group_9__0__Impl16316 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_rule__KImage__Group_9__1__Impl_in_rule__KImage__Group_9__116347 = new BitSet(new long[]{0x00A49CC408000000L,0x0000040000000000L});
+        public static final BitSet FOLLOW_rule__KImage__Group_9__1__Impl_in_rule__KImage__Group_9__116347 = new BitSet(new long[]{0x00A49CC408000000L,0x0000010000000000L});
         public static final BitSet FOLLOW_rule__KImage__Group_9__2_in_rule__KImage__Group_9__116350 = new BitSet(new long[]{0x0000000000000002L});
         public static final BitSet FOLLOW_24_in_rule__KImage__Group_9__1__Impl16378 = new BitSet(new long[]{0x0000000000000002L});
         public static final BitSet FOLLOW_rule__KImage__Group_9__2__Impl_in_rule__KImage__Group_9__216409 = new BitSet(new long[]{0x0000000006000000L});
@@ -58142,7 +57840,7 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
         public static final BitSet FOLLOW_rule__KImage__Group_9_3__0_in_rule__KImage__Group_9__3__Impl16499 = new BitSet(new long[]{0x0000000004000002L});
         public static final BitSet FOLLOW_rule__KImage__Group_9__4__Impl_in_rule__KImage__Group_9__416530 = new BitSet(new long[]{0x0000000000000002L});
         public static final BitSet FOLLOW_25_in_rule__KImage__Group_9__4__Impl16558 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_rule__KImage__Group_9_3__0__Impl_in_rule__KImage__Group_9_3__016599 = new BitSet(new long[]{0x00A49CC408000000L,0x0000040000000000L});
+        public static final BitSet FOLLOW_rule__KImage__Group_9_3__0__Impl_in_rule__KImage__Group_9_3__016599 = new BitSet(new long[]{0x00A49CC408000000L,0x0000010000000000L});
         public static final BitSet FOLLOW_rule__KImage__Group_9_3__1_in_rule__KImage__Group_9_3__016602 = new BitSet(new long[]{0x0000000000000002L});
         public static final BitSet FOLLOW_26_in_rule__KImage__Group_9_3__0__Impl16630 = new BitSet(new long[]{0x0000000000000002L});
         public static final BitSet FOLLOW_rule__KImage__Group_9_3__1__Impl_in_rule__KImage__Group_9_3__116661 = new BitSet(new long[]{0x0000000000000002L});
@@ -58239,7 +57937,7 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
         public static final BitSet FOLLOW_rule__KArc__Group_8__0__Impl_in_rule__KArc__Group_8__018781 = new BitSet(new long[]{0x0000000001000000L});
         public static final BitSet FOLLOW_rule__KArc__Group_8__1_in_rule__KArc__Group_8__018784 = new BitSet(new long[]{0x0000000000000002L});
         public static final BitSet FOLLOW_37_in_rule__KArc__Group_8__0__Impl18812 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_rule__KArc__Group_8__1__Impl_in_rule__KArc__Group_8__118843 = new BitSet(new long[]{0x00A49CC408000000L,0x0000040000000000L});
+        public static final BitSet FOLLOW_rule__KArc__Group_8__1__Impl_in_rule__KArc__Group_8__118843 = new BitSet(new long[]{0x00A49CC408000000L,0x0000010000000000L});
         public static final BitSet FOLLOW_rule__KArc__Group_8__2_in_rule__KArc__Group_8__118846 = new BitSet(new long[]{0x0000000000000002L});
         public static final BitSet FOLLOW_24_in_rule__KArc__Group_8__1__Impl18874 = new BitSet(new long[]{0x0000000000000002L});
         public static final BitSet FOLLOW_rule__KArc__Group_8__2__Impl_in_rule__KArc__Group_8__218905 = new BitSet(new long[]{0x0000000006000000L});
@@ -58250,7 +57948,7 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
         public static final BitSet FOLLOW_rule__KArc__Group_8_3__0_in_rule__KArc__Group_8__3__Impl18995 = new BitSet(new long[]{0x0000000004000002L});
         public static final BitSet FOLLOW_rule__KArc__Group_8__4__Impl_in_rule__KArc__Group_8__419026 = new BitSet(new long[]{0x0000000000000002L});
         public static final BitSet FOLLOW_25_in_rule__KArc__Group_8__4__Impl19054 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_rule__KArc__Group_8_3__0__Impl_in_rule__KArc__Group_8_3__019095 = new BitSet(new long[]{0x00A49CC408000000L,0x0000040000000000L});
+        public static final BitSet FOLLOW_rule__KArc__Group_8_3__0__Impl_in_rule__KArc__Group_8_3__019095 = new BitSet(new long[]{0x00A49CC408000000L,0x0000010000000000L});
         public static final BitSet FOLLOW_rule__KArc__Group_8_3__1_in_rule__KArc__Group_8_3__019098 = new BitSet(new long[]{0x0000000000000002L});
         public static final BitSet FOLLOW_26_in_rule__KArc__Group_8_3__0__Impl19126 = new BitSet(new long[]{0x0000000000000002L});
         public static final BitSet FOLLOW_rule__KArc__Group_8_3__1__Impl_in_rule__KArc__Group_8_3__119157 = new BitSet(new long[]{0x0000000000000002L});
@@ -58402,7 +58100,7 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
         public static final BitSet FOLLOW_rule__KText__Group_7__0__Impl_in_rule__KText__Group_7__022528 = new BitSet(new long[]{0x0000000001000000L});
         public static final BitSet FOLLOW_rule__KText__Group_7__1_in_rule__KText__Group_7__022531 = new BitSet(new long[]{0x0000000000000002L});
         public static final BitSet FOLLOW_37_in_rule__KText__Group_7__0__Impl22559 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_rule__KText__Group_7__1__Impl_in_rule__KText__Group_7__122590 = new BitSet(new long[]{0x00A49CC408000000L,0x0000040000000000L});
+        public static final BitSet FOLLOW_rule__KText__Group_7__1__Impl_in_rule__KText__Group_7__122590 = new BitSet(new long[]{0x00A49CC408000000L,0x0000010000000000L});
         public static final BitSet FOLLOW_rule__KText__Group_7__2_in_rule__KText__Group_7__122593 = new BitSet(new long[]{0x0000000000000002L});
         public static final BitSet FOLLOW_24_in_rule__KText__Group_7__1__Impl22621 = new BitSet(new long[]{0x0000000000000002L});
         public static final BitSet FOLLOW_rule__KText__Group_7__2__Impl_in_rule__KText__Group_7__222652 = new BitSet(new long[]{0x0000000006000000L});
@@ -58416,7 +58114,7 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
         public static final BitSet FOLLOW_rule__KText__Group_7_3__0_in_rule__KText__Group_7__3__Impl22742 = new BitSet(new long[]{0x0000000004000002L});
         public static final BitSet FOLLOW_rule__KText__Group_7__4__Impl_in_rule__KText__Group_7__422773 = new BitSet(new long[]{0x0000000000000002L});
         public static final BitSet FOLLOW_25_in_rule__KText__Group_7__4__Impl22801 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_rule__KText__Group_7_3__0__Impl_in_rule__KText__Group_7_3__022842 = new BitSet(new long[]{0x00A49CC408000000L,0x0000040000000000L});
+        public static final BitSet FOLLOW_rule__KText__Group_7_3__0__Impl_in_rule__KText__Group_7_3__022842 = new BitSet(new long[]{0x00A49CC408000000L,0x0000010000000000L});
         public static final BitSet FOLLOW_rule__KText__Group_7_3__1_in_rule__KText__Group_7_3__022845 = new BitSet(new long[]{0x0000000000000002L});
         public static final BitSet FOLLOW_26_in_rule__KText__Group_7_3__0__Impl22873 = new BitSet(new long[]{0x0000000000000002L});
         public static final BitSet FOLLOW_rule__KText__Group_7_3__1__Impl_in_rule__KText__Group_7_3__122904 = new BitSet(new long[]{0x0000000000000002L});
@@ -58507,7 +58205,7 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
         public static final BitSet FOLLOW_rule__KCustomRendering__Group_9__0__Impl_in_rule__KCustomRendering__Group_9__024841 = new BitSet(new long[]{0x0000000001000000L});
         public static final BitSet FOLLOW_rule__KCustomRendering__Group_9__1_in_rule__KCustomRendering__Group_9__024844 = new BitSet(new long[]{0x0000000000000002L});
         public static final BitSet FOLLOW_37_in_rule__KCustomRendering__Group_9__0__Impl24872 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_rule__KCustomRendering__Group_9__1__Impl_in_rule__KCustomRendering__Group_9__124903 = new BitSet(new long[]{0x00A49CC408000000L,0x0000040000000000L});
+        public static final BitSet FOLLOW_rule__KCustomRendering__Group_9__1__Impl_in_rule__KCustomRendering__Group_9__124903 = new BitSet(new long[]{0x00A49CC408000000L,0x0000010000000000L});
         public static final BitSet FOLLOW_rule__KCustomRendering__Group_9__2_in_rule__KCustomRendering__Group_9__124906 = new BitSet(new long[]{0x0000000000000002L});
         public static final BitSet FOLLOW_24_in_rule__KCustomRendering__Group_9__1__Impl24934 = new BitSet(new long[]{0x0000000000000002L});
         public static final BitSet FOLLOW_rule__KCustomRendering__Group_9__2__Impl_in_rule__KCustomRendering__Group_9__224965 = new BitSet(new long[]{0x0000000006000000L});
@@ -58518,7 +58216,7 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
         public static final BitSet FOLLOW_rule__KCustomRendering__Group_9_3__0_in_rule__KCustomRendering__Group_9__3__Impl25055 = new BitSet(new long[]{0x0000000004000002L});
         public static final BitSet FOLLOW_rule__KCustomRendering__Group_9__4__Impl_in_rule__KCustomRendering__Group_9__425086 = new BitSet(new long[]{0x0000000000000002L});
         public static final BitSet FOLLOW_25_in_rule__KCustomRendering__Group_9__4__Impl25114 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_rule__KCustomRendering__Group_9_3__0__Impl_in_rule__KCustomRendering__Group_9_3__025155 = new BitSet(new long[]{0x00A49CC408000000L,0x0000040000000000L});
+        public static final BitSet FOLLOW_rule__KCustomRendering__Group_9_3__0__Impl_in_rule__KCustomRendering__Group_9_3__025155 = new BitSet(new long[]{0x00A49CC408000000L,0x0000010000000000L});
         public static final BitSet FOLLOW_rule__KCustomRendering__Group_9_3__1_in_rule__KCustomRendering__Group_9_3__025158 = new BitSet(new long[]{0x0000000000000002L});
         public static final BitSet FOLLOW_26_in_rule__KCustomRendering__Group_9_3__0__Impl25186 = new BitSet(new long[]{0x0000000000000002L});
         public static final BitSet FOLLOW_rule__KCustomRendering__Group_9_3__1__Impl_in_rule__KCustomRendering__Group_9_3__125217 = new BitSet(new long[]{0x0000000000000002L});
@@ -58528,7 +58226,7 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
         public static final BitSet FOLLOW_36_in_rule__KCustomRendering__Group_10__0__Impl25309 = new BitSet(new long[]{0x0000000000000002L});
         public static final BitSet FOLLOW_rule__KCustomRendering__Group_10__1__Impl_in_rule__KCustomRendering__Group_10__125340 = new BitSet(new long[]{0x0000000000000002L});
         public static final BitSet FOLLOW_rule__KCustomRendering__ChildPlacementAssignment_10_1_in_rule__KCustomRendering__Group_10__1__Impl25367 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_rule__KSpline__Group__0__Impl_in_rule__KSpline__Group__025401 = new BitSet(new long[]{0x00A49CC408000000L,0x0000040000000000L});
+        public static final BitSet FOLLOW_rule__KSpline__Group__0__Impl_in_rule__KSpline__Group__025401 = new BitSet(new long[]{0x00A49CC408000000L,0x0000010000000000L});
         public static final BitSet FOLLOW_rule__KSpline__Group__1_in_rule__KSpline__Group__025404 = new BitSet(new long[]{0x0000000000000002L});
         public static final BitSet FOLLOW_rule__KSpline__Group__1__Impl_in_rule__KSpline__Group__125462 = new BitSet(new long[]{0x0000000001000000L});
         public static final BitSet FOLLOW_rule__KSpline__Group__2_in_rule__KSpline__Group__125465 = new BitSet(new long[]{0x0000000000000002L});
@@ -58599,7 +58297,7 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
         public static final BitSet FOLLOW_rule__KSpline__Group_6__0__Impl_in_rule__KSpline__Group_6__026965 = new BitSet(new long[]{0x0000000001000000L});
         public static final BitSet FOLLOW_rule__KSpline__Group_6__1_in_rule__KSpline__Group_6__026968 = new BitSet(new long[]{0x0000000000000002L});
         public static final BitSet FOLLOW_37_in_rule__KSpline__Group_6__0__Impl26996 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_rule__KSpline__Group_6__1__Impl_in_rule__KSpline__Group_6__127027 = new BitSet(new long[]{0x00A49CC408000000L,0x0000040000000000L});
+        public static final BitSet FOLLOW_rule__KSpline__Group_6__1__Impl_in_rule__KSpline__Group_6__127027 = new BitSet(new long[]{0x00A49CC408000000L,0x0000010000000000L});
         public static final BitSet FOLLOW_rule__KSpline__Group_6__2_in_rule__KSpline__Group_6__127030 = new BitSet(new long[]{0x0000000000000002L});
         public static final BitSet FOLLOW_24_in_rule__KSpline__Group_6__1__Impl27058 = new BitSet(new long[]{0x0000000000000002L});
         public static final BitSet FOLLOW_rule__KSpline__Group_6__2__Impl_in_rule__KSpline__Group_6__227089 = new BitSet(new long[]{0x0000000006000000L});
@@ -58610,7 +58308,7 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
         public static final BitSet FOLLOW_rule__KSpline__Group_6_3__0_in_rule__KSpline__Group_6__3__Impl27179 = new BitSet(new long[]{0x0000000004000002L});
         public static final BitSet FOLLOW_rule__KSpline__Group_6__4__Impl_in_rule__KSpline__Group_6__427210 = new BitSet(new long[]{0x0000000000000002L});
         public static final BitSet FOLLOW_25_in_rule__KSpline__Group_6__4__Impl27238 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_rule__KSpline__Group_6_3__0__Impl_in_rule__KSpline__Group_6_3__027279 = new BitSet(new long[]{0x00A49CC408000000L,0x0000040000000000L});
+        public static final BitSet FOLLOW_rule__KSpline__Group_6_3__0__Impl_in_rule__KSpline__Group_6_3__027279 = new BitSet(new long[]{0x00A49CC408000000L,0x0000010000000000L});
         public static final BitSet FOLLOW_rule__KSpline__Group_6_3__1_in_rule__KSpline__Group_6_3__027282 = new BitSet(new long[]{0x0000000000000002L});
         public static final BitSet FOLLOW_26_in_rule__KSpline__Group_6_3__0__Impl27310 = new BitSet(new long[]{0x0000000000000002L});
         public static final BitSet FOLLOW_rule__KSpline__Group_6_3__1__Impl_in_rule__KSpline__Group_6_3__127341 = new BitSet(new long[]{0x0000000000000002L});
@@ -58904,19 +58602,19 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
         public static final BitSet FOLLOW_rule__KForegroundColor__Group__1__Impl_in_rule__KForegroundColor__Group__133975 = new BitSet(new long[]{0x0000000001000000L});
         public static final BitSet FOLLOW_rule__KForegroundColor__Group__2_in_rule__KForegroundColor__Group__133978 = new BitSet(new long[]{0x0000000000000002L});
         public static final BitSet FOLLOW_85_in_rule__KForegroundColor__Group__1__Impl34006 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_rule__KForegroundColor__Group__2__Impl_in_rule__KForegroundColor__Group__234037 = new BitSet(new long[]{0x0000000002000000L,0x0000080001C00000L});
+        public static final BitSet FOLLOW_rule__KForegroundColor__Group__2__Impl_in_rule__KForegroundColor__Group__234037 = new BitSet(new long[]{0x0000000002000000L,0x0000020001C00000L});
         public static final BitSet FOLLOW_rule__KForegroundColor__Group__3_in_rule__KForegroundColor__Group__234040 = new BitSet(new long[]{0x0000000000000002L});
         public static final BitSet FOLLOW_24_in_rule__KForegroundColor__Group__2__Impl34068 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_rule__KForegroundColor__Group__3__Impl_in_rule__KForegroundColor__Group__334099 = new BitSet(new long[]{0x0000000002000000L,0x0000080001C00000L});
+        public static final BitSet FOLLOW_rule__KForegroundColor__Group__3__Impl_in_rule__KForegroundColor__Group__334099 = new BitSet(new long[]{0x0000000002000000L,0x0000020001C00000L});
         public static final BitSet FOLLOW_rule__KForegroundColor__Group__4_in_rule__KForegroundColor__Group__334102 = new BitSet(new long[]{0x0000000000000002L});
         public static final BitSet FOLLOW_rule__KForegroundColor__PropagateToChildrenAssignment_3_in_rule__KForegroundColor__Group__3__Impl34129 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_rule__KForegroundColor__Group__4__Impl_in_rule__KForegroundColor__Group__434160 = new BitSet(new long[]{0x0000000002000000L,0x0000080001C00000L});
+        public static final BitSet FOLLOW_rule__KForegroundColor__Group__4__Impl_in_rule__KForegroundColor__Group__434160 = new BitSet(new long[]{0x0000000002000000L,0x0000020001C00000L});
         public static final BitSet FOLLOW_rule__KForegroundColor__Group__5_in_rule__KForegroundColor__Group__434163 = new BitSet(new long[]{0x0000000000000002L});
         public static final BitSet FOLLOW_rule__KForegroundColor__Group_4__0_in_rule__KForegroundColor__Group__4__Impl34190 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_rule__KForegroundColor__Group__5__Impl_in_rule__KForegroundColor__Group__534221 = new BitSet(new long[]{0x0000000002000000L,0x0000080001C00000L});
+        public static final BitSet FOLLOW_rule__KForegroundColor__Group__5__Impl_in_rule__KForegroundColor__Group__534221 = new BitSet(new long[]{0x0000000002000000L,0x0000020001C00000L});
         public static final BitSet FOLLOW_rule__KForegroundColor__Group__6_in_rule__KForegroundColor__Group__534224 = new BitSet(new long[]{0x0000000000000002L});
         public static final BitSet FOLLOW_rule__KForegroundColor__Group_5__0_in_rule__KForegroundColor__Group__5__Impl34251 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_rule__KForegroundColor__Group__6__Impl_in_rule__KForegroundColor__Group__634282 = new BitSet(new long[]{0x0000000002000000L,0x0000080001C00000L});
+        public static final BitSet FOLLOW_rule__KForegroundColor__Group__6__Impl_in_rule__KForegroundColor__Group__634282 = new BitSet(new long[]{0x0000000002000000L,0x0000020001C00000L});
         public static final BitSet FOLLOW_rule__KForegroundColor__Group__7_in_rule__KForegroundColor__Group__634285 = new BitSet(new long[]{0x0000000000000002L});
         public static final BitSet FOLLOW_rule__KForegroundColor__Group_6__0_in_rule__KForegroundColor__Group__6__Impl34312 = new BitSet(new long[]{0x0000000000000002L});
         public static final BitSet FOLLOW_rule__KForegroundColor__Group__7__Impl_in_rule__KForegroundColor__Group__734343 = new BitSet(new long[]{0x0000000000000002L});
@@ -58941,19 +58639,19 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
         public static final BitSet FOLLOW_rule__KBackgroundColor__Group__1__Impl_in_rule__KBackgroundColor__Group__134848 = new BitSet(new long[]{0x0000000001000000L});
         public static final BitSet FOLLOW_rule__KBackgroundColor__Group__2_in_rule__KBackgroundColor__Group__134851 = new BitSet(new long[]{0x0000000000000002L});
         public static final BitSet FOLLOW_89_in_rule__KBackgroundColor__Group__1__Impl34879 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_rule__KBackgroundColor__Group__2__Impl_in_rule__KBackgroundColor__Group__234910 = new BitSet(new long[]{0x0000000002000000L,0x0000080001C00000L});
+        public static final BitSet FOLLOW_rule__KBackgroundColor__Group__2__Impl_in_rule__KBackgroundColor__Group__234910 = new BitSet(new long[]{0x0000000002000000L,0x0000020001C00000L});
         public static final BitSet FOLLOW_rule__KBackgroundColor__Group__3_in_rule__KBackgroundColor__Group__234913 = new BitSet(new long[]{0x0000000000000002L});
         public static final BitSet FOLLOW_24_in_rule__KBackgroundColor__Group__2__Impl34941 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_rule__KBackgroundColor__Group__3__Impl_in_rule__KBackgroundColor__Group__334972 = new BitSet(new long[]{0x0000000002000000L,0x0000080001C00000L});
+        public static final BitSet FOLLOW_rule__KBackgroundColor__Group__3__Impl_in_rule__KBackgroundColor__Group__334972 = new BitSet(new long[]{0x0000000002000000L,0x0000020001C00000L});
         public static final BitSet FOLLOW_rule__KBackgroundColor__Group__4_in_rule__KBackgroundColor__Group__334975 = new BitSet(new long[]{0x0000000000000002L});
         public static final BitSet FOLLOW_rule__KBackgroundColor__PropagateToChildrenAssignment_3_in_rule__KBackgroundColor__Group__3__Impl35002 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_rule__KBackgroundColor__Group__4__Impl_in_rule__KBackgroundColor__Group__435033 = new BitSet(new long[]{0x0000000002000000L,0x0000080001C00000L});
+        public static final BitSet FOLLOW_rule__KBackgroundColor__Group__4__Impl_in_rule__KBackgroundColor__Group__435033 = new BitSet(new long[]{0x0000000002000000L,0x0000020001C00000L});
         public static final BitSet FOLLOW_rule__KBackgroundColor__Group__5_in_rule__KBackgroundColor__Group__435036 = new BitSet(new long[]{0x0000000000000002L});
         public static final BitSet FOLLOW_rule__KBackgroundColor__Group_4__0_in_rule__KBackgroundColor__Group__4__Impl35063 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_rule__KBackgroundColor__Group__5__Impl_in_rule__KBackgroundColor__Group__535094 = new BitSet(new long[]{0x0000000002000000L,0x0000080001C00000L});
+        public static final BitSet FOLLOW_rule__KBackgroundColor__Group__5__Impl_in_rule__KBackgroundColor__Group__535094 = new BitSet(new long[]{0x0000000002000000L,0x0000020001C00000L});
         public static final BitSet FOLLOW_rule__KBackgroundColor__Group__6_in_rule__KBackgroundColor__Group__535097 = new BitSet(new long[]{0x0000000000000002L});
         public static final BitSet FOLLOW_rule__KBackgroundColor__Group_5__0_in_rule__KBackgroundColor__Group__5__Impl35124 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_rule__KBackgroundColor__Group__6__Impl_in_rule__KBackgroundColor__Group__635155 = new BitSet(new long[]{0x0000000002000000L,0x0000080001C00000L});
+        public static final BitSet FOLLOW_rule__KBackgroundColor__Group__6__Impl_in_rule__KBackgroundColor__Group__635155 = new BitSet(new long[]{0x0000000002000000L,0x0000020001C00000L});
         public static final BitSet FOLLOW_rule__KBackgroundColor__Group__7_in_rule__KBackgroundColor__Group__635158 = new BitSet(new long[]{0x0000000000000002L});
         public static final BitSet FOLLOW_rule__KBackgroundColor__Group_6__0_in_rule__KBackgroundColor__Group__6__Impl35185 = new BitSet(new long[]{0x0000000000000002L});
         public static final BitSet FOLLOW_rule__KBackgroundColor__Group__7__Impl_in_rule__KBackgroundColor__Group__735216 = new BitSet(new long[]{0x0000000000000002L});
@@ -58976,30 +58674,30 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
         public static final BitSet FOLLOW_rule__KLineWidth__Group__0__Impl_in_rule__KLineWidth__Group__035660 = new BitSet(new long[]{0x0000000000000040L,0x0000000000000400L});
         public static final BitSet FOLLOW_rule__KLineWidth__Group__1_in_rule__KLineWidth__Group__035663 = new BitSet(new long[]{0x0000000000000002L});
         public static final BitSet FOLLOW_90_in_rule__KLineWidth__Group__0__Impl35691 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_rule__KLineWidth__Group__1__Impl_in_rule__KLineWidth__Group__135722 = new BitSet(new long[]{0x0000000000000000L,0x0000080000000000L});
+        public static final BitSet FOLLOW_rule__KLineWidth__Group__1__Impl_in_rule__KLineWidth__Group__135722 = new BitSet(new long[]{0x0000000000000000L,0x0000020000000000L});
         public static final BitSet FOLLOW_rule__KLineWidth__Group__2_in_rule__KLineWidth__Group__135725 = new BitSet(new long[]{0x0000000000000002L});
         public static final BitSet FOLLOW_rule__KLineWidth__LineWidthAssignment_1_in_rule__KLineWidth__Group__1__Impl35752 = new BitSet(new long[]{0x0000000000000002L});
         public static final BitSet FOLLOW_rule__KLineWidth__Group__2__Impl_in_rule__KLineWidth__Group__235782 = new BitSet(new long[]{0x0000000000000002L});
         public static final BitSet FOLLOW_rule__KLineWidth__PropagateToChildrenAssignment_2_in_rule__KLineWidth__Group__2__Impl35809 = new BitSet(new long[]{0x0000000000000002L});
         public static final BitSet FOLLOW_rule__KVisibility__Group__0__Impl_in_rule__KVisibility__Group__035846 = new BitSet(new long[]{0x0000000000000000L,0x0000000008000000L});
         public static final BitSet FOLLOW_rule__KVisibility__Group__1_in_rule__KVisibility__Group__035849 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_rule__KVisibility__Group__1__Impl_in_rule__KVisibility__Group__135907 = new BitSet(new long[]{0x0000000000000000L,0x0000380000000000L});
+        public static final BitSet FOLLOW_rule__KVisibility__Group__1__Impl_in_rule__KVisibility__Group__135907 = new BitSet(new long[]{0x0000000000000000L,0x00000E0000000000L});
         public static final BitSet FOLLOW_rule__KVisibility__Group__2_in_rule__KVisibility__Group__135910 = new BitSet(new long[]{0x0000000000000002L});
         public static final BitSet FOLLOW_91_in_rule__KVisibility__Group__1__Impl35938 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_rule__KVisibility__Group__2__Impl_in_rule__KVisibility__Group__235969 = new BitSet(new long[]{0x0000000000000000L,0x0000380000000000L});
+        public static final BitSet FOLLOW_rule__KVisibility__Group__2__Impl_in_rule__KVisibility__Group__235969 = new BitSet(new long[]{0x0000000000000000L,0x00000E0000000000L});
         public static final BitSet FOLLOW_rule__KVisibility__Group__3_in_rule__KVisibility__Group__235972 = new BitSet(new long[]{0x0000000000000002L});
         public static final BitSet FOLLOW_rule__KVisibility__LineVisibleAssignment_2_in_rule__KVisibility__Group__2__Impl35999 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_rule__KVisibility__Group__3__Impl_in_rule__KVisibility__Group__336030 = new BitSet(new long[]{0x0000000000000000L,0x0000380000000000L});
+        public static final BitSet FOLLOW_rule__KVisibility__Group__3__Impl_in_rule__KVisibility__Group__336030 = new BitSet(new long[]{0x0000000000000000L,0x00000E0000000000L});
         public static final BitSet FOLLOW_rule__KVisibility__Group__4_in_rule__KVisibility__Group__336033 = new BitSet(new long[]{0x0000000000000002L});
         public static final BitSet FOLLOW_rule__KVisibility__FilledAssignment_3_in_rule__KVisibility__Group__3__Impl36060 = new BitSet(new long[]{0x0000000000000002L});
         public static final BitSet FOLLOW_rule__KVisibility__Group__4__Impl_in_rule__KVisibility__Group__436091 = new BitSet(new long[]{0x0000000000000002L});
         public static final BitSet FOLLOW_rule__KVisibility__PropagateToChildrenAssignment_4_in_rule__KVisibility__Group__4__Impl36118 = new BitSet(new long[]{0x0000000000000002L});
         public static final BitSet FOLLOW_rule__KLineStyle__Group__0__Impl_in_rule__KLineStyle__Group__036159 = new BitSet(new long[]{0x0000000000000000L,0x0000000010000000L});
         public static final BitSet FOLLOW_rule__KLineStyle__Group__1_in_rule__KLineStyle__Group__036162 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_rule__KLineStyle__Group__1__Impl_in_rule__KLineStyle__Group__136220 = new BitSet(new long[]{0x000000000003E000L,0x0000080000000000L});
+        public static final BitSet FOLLOW_rule__KLineStyle__Group__1__Impl_in_rule__KLineStyle__Group__136220 = new BitSet(new long[]{0x000000000003E000L,0x0000020000000000L});
         public static final BitSet FOLLOW_rule__KLineStyle__Group__2_in_rule__KLineStyle__Group__136223 = new BitSet(new long[]{0x0000000000000002L});
         public static final BitSet FOLLOW_92_in_rule__KLineStyle__Group__1__Impl36251 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_rule__KLineStyle__Group__2__Impl_in_rule__KLineStyle__Group__236282 = new BitSet(new long[]{0x000000000003E000L,0x0000080000000000L});
+        public static final BitSet FOLLOW_rule__KLineStyle__Group__2__Impl_in_rule__KLineStyle__Group__236282 = new BitSet(new long[]{0x000000000003E000L,0x0000020000000000L});
         public static final BitSet FOLLOW_rule__KLineStyle__Group__3_in_rule__KLineStyle__Group__236285 = new BitSet(new long[]{0x0000000000000002L});
         public static final BitSet FOLLOW_rule__KLineStyle__LineStyleAssignment_2_in_rule__KLineStyle__Group__2__Impl36312 = new BitSet(new long[]{0x0000000000000002L});
         public static final BitSet FOLLOW_rule__KLineStyle__Group__3__Impl_in_rule__KLineStyle__Group__336343 = new BitSet(new long[]{0x0000000000000002L});
@@ -59007,7 +58705,7 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
         public static final BitSet FOLLOW_rule__KVerticalAlignment__Group__0__Impl_in_rule__KVerticalAlignment__Group__036409 = new BitSet(new long[]{0x00000000001C0000L});
         public static final BitSet FOLLOW_rule__KVerticalAlignment__Group__1_in_rule__KVerticalAlignment__Group__036412 = new BitSet(new long[]{0x0000000000000002L});
         public static final BitSet FOLLOW_93_in_rule__KVerticalAlignment__Group__0__Impl36440 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_rule__KVerticalAlignment__Group__1__Impl_in_rule__KVerticalAlignment__Group__136471 = new BitSet(new long[]{0x0000000000000000L,0x0000080000000000L});
+        public static final BitSet FOLLOW_rule__KVerticalAlignment__Group__1__Impl_in_rule__KVerticalAlignment__Group__136471 = new BitSet(new long[]{0x0000000000000000L,0x0000020000000000L});
         public static final BitSet FOLLOW_rule__KVerticalAlignment__Group__2_in_rule__KVerticalAlignment__Group__136474 = new BitSet(new long[]{0x0000000000000002L});
         public static final BitSet FOLLOW_rule__KVerticalAlignment__VerticalAlignmentAssignment_1_in_rule__KVerticalAlignment__Group__1__Impl36501 = new BitSet(new long[]{0x0000000000000002L});
         public static final BitSet FOLLOW_rule__KVerticalAlignment__Group__2__Impl_in_rule__KVerticalAlignment__Group__236531 = new BitSet(new long[]{0x0000000000000002L});
@@ -59015,7 +58713,7 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
         public static final BitSet FOLLOW_rule__KHorizontalAlignment__Group__0__Impl_in_rule__KHorizontalAlignment__Group__036595 = new BitSet(new long[]{0x0000000000680000L});
         public static final BitSet FOLLOW_rule__KHorizontalAlignment__Group__1_in_rule__KHorizontalAlignment__Group__036598 = new BitSet(new long[]{0x0000000000000002L});
         public static final BitSet FOLLOW_94_in_rule__KHorizontalAlignment__Group__0__Impl36626 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_rule__KHorizontalAlignment__Group__1__Impl_in_rule__KHorizontalAlignment__Group__136657 = new BitSet(new long[]{0x0000000000000000L,0x0000080000000000L});
+        public static final BitSet FOLLOW_rule__KHorizontalAlignment__Group__1__Impl_in_rule__KHorizontalAlignment__Group__136657 = new BitSet(new long[]{0x0000000000000000L,0x0000020000000000L});
         public static final BitSet FOLLOW_rule__KHorizontalAlignment__Group__2_in_rule__KHorizontalAlignment__Group__136660 = new BitSet(new long[]{0x0000000000000002L});
         public static final BitSet FOLLOW_rule__KHorizontalAlignment__HorizontalAlignmentAssignment_1_in_rule__KHorizontalAlignment__Group__1__Impl36687 = new BitSet(new long[]{0x0000000000000002L});
         public static final BitSet FOLLOW_rule__KHorizontalAlignment__Group__2__Impl_in_rule__KHorizontalAlignment__Group__236717 = new BitSet(new long[]{0x0000000000000002L});
@@ -59098,177 +58796,165 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
         public static final BitSet FOLLOW_78_in_rule__KPoint__Group_3__0__Impl38626 = new BitSet(new long[]{0x0000000000000002L});
         public static final BitSet FOLLOW_rule__KPoint__Group_3__1__Impl_in_rule__KPoint__Group_3__138657 = new BitSet(new long[]{0x0000000000000002L});
         public static final BitSet FOLLOW_rule__KPoint__YAssignment_3_1_in_rule__KPoint__Group_3__1__Impl38684 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_rule__PersistentEntry__Group__0__Impl_in_rule__PersistentEntry__Group__038718 = new BitSet(new long[]{0x0000000001000000L});
+        public static final BitSet FOLLOW_rule__PersistentEntry__Group__0__Impl_in_rule__PersistentEntry__Group__038718 = new BitSet(new long[]{0x0000000000000000L,0x0000008000000000L});
         public static final BitSet FOLLOW_rule__PersistentEntry__Group__1_in_rule__PersistentEntry__Group__038721 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_103_in_rule__PersistentEntry__Group__0__Impl38749 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_rule__PersistentEntry__Group__1__Impl_in_rule__PersistentEntry__Group__138780 = new BitSet(new long[]{0x0000000000000000L,0x0000010000000000L});
-        public static final BitSet FOLLOW_rule__PersistentEntry__Group__2_in_rule__PersistentEntry__Group__138783 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_24_in_rule__PersistentEntry__Group__1__Impl38811 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_rule__PersistentEntry__Group__2__Impl_in_rule__PersistentEntry__Group__238842 = new BitSet(new long[]{0x0000000000000030L});
-        public static final BitSet FOLLOW_rule__PersistentEntry__Group__3_in_rule__PersistentEntry__Group__238845 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_104_in_rule__PersistentEntry__Group__2__Impl38873 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_rule__PersistentEntry__Group__3__Impl_in_rule__PersistentEntry__Group__338904 = new BitSet(new long[]{0x0000000002000000L,0x0000020000000000L});
-        public static final BitSet FOLLOW_rule__PersistentEntry__Group__4_in_rule__PersistentEntry__Group__338907 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_rule__PersistentEntry__KeyAssignment_3_in_rule__PersistentEntry__Group__3__Impl38934 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_rule__PersistentEntry__Group__4__Impl_in_rule__PersistentEntry__Group__438964 = new BitSet(new long[]{0x0000000002000000L,0x0000020000000000L});
-        public static final BitSet FOLLOW_rule__PersistentEntry__Group__5_in_rule__PersistentEntry__Group__438967 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_rule__PersistentEntry__Group_4__0_in_rule__PersistentEntry__Group__4__Impl38994 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_rule__PersistentEntry__Group__5__Impl_in_rule__PersistentEntry__Group__539025 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_25_in_rule__PersistentEntry__Group__5__Impl39053 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_rule__PersistentEntry__Group_4__0__Impl_in_rule__PersistentEntry__Group_4__039096 = new BitSet(new long[]{0x0000000000000030L});
-        public static final BitSet FOLLOW_rule__PersistentEntry__Group_4__1_in_rule__PersistentEntry__Group_4__039099 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_105_in_rule__PersistentEntry__Group_4__0__Impl39127 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_rule__PersistentEntry__Group_4__1__Impl_in_rule__PersistentEntry__Group_4__139158 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_rule__PersistentEntry__ValueAssignment_4_1_in_rule__PersistentEntry__Group_4__1__Impl39185 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_ruleKRendering_in_rule__KRenderingLibrary__RenderingsAssignment_3_039224 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_ruleKRendering_in_rule__KRenderingLibrary__RenderingsAssignment_3_1_139255 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_ruleEString_in_rule__KRenderingRef__ReferencesAssignment_2_239290 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_ruleEString_in_rule__KRenderingRef__ReferencesAssignment_2_3_139329 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_ruleEString_in_rule__KRenderingRef__RenderingAssignment_439368 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_ruleKPlacementData_in_rule__KRenderingRef__PlacementDataAssignment_5_139403 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_ruleKStyle_in_rule__KRenderingRef__StylesAssignment_6_239434 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_ruleKStyle_in_rule__KRenderingRef__StylesAssignment_6_3_139465 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_ruleKStyle_in_rule__KEllipse__StylesAssignment_3_239496 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_ruleKStyle_in_rule__KEllipse__StylesAssignment_3_3_139527 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_ruleKPlacementData_in_rule__KEllipse__PlacementDataAssignment_4_239558 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_ruleKPlacement_in_rule__KEllipse__ChildPlacementAssignment_5_239589 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_ruleKRendering_in_rule__KEllipse__ChildrenAssignment_6_239620 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_ruleKRendering_in_rule__KEllipse__ChildrenAssignment_6_3_139651 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_ruleKStyle_in_rule__KRectangle__StylesAssignment_3_239682 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_ruleKStyle_in_rule__KRectangle__StylesAssignment_3_3_139713 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_ruleKPlacementData_in_rule__KRectangle__PlacementDataAssignment_4_239744 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_ruleKPlacement_in_rule__KRectangle__ChildPlacementAssignment_5_239775 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_ruleKRendering_in_rule__KRectangle__ChildrenAssignment_6_239806 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_ruleKRendering_in_rule__KRectangle__ChildrenAssignment_6_3_139837 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_ruleEFloat_in_rule__KRoundedRectangle__CornerWidthAssignment_2_0_139868 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_ruleEFloat_in_rule__KRoundedRectangle__CornerHeightAssignment_2_0_339899 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_ruleEFloat_in_rule__KRoundedRectangle__CornerHeightAssignment_2_1_139930 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_ruleEFloat_in_rule__KRoundedRectangle__CornerWidthAssignment_2_1_339961 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_ruleKStyle_in_rule__KRoundedRectangle__StylesAssignment_3_239992 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_ruleKStyle_in_rule__KRoundedRectangle__StylesAssignment_3_3_140023 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_ruleKPlacementData_in_rule__KRoundedRectangle__PlacementDataAssignment_4_240054 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_ruleKPlacement_in_rule__KRoundedRectangle__ChildPlacementAssignment_5_240085 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_ruleKRendering_in_rule__KRoundedRectangle__ChildrenAssignment_6_240116 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_ruleKRendering_in_rule__KRoundedRectangle__ChildrenAssignment_6_3_140147 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_ruleKStyle_in_rule__KPolyline_Impl__StylesAssignment_3_240178 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_ruleKStyle_in_rule__KPolyline_Impl__StylesAssignment_3_3_140209 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_ruleKPlacementData_in_rule__KPolyline_Impl__PlacementDataAssignment_4_240240 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_ruleKPlacement_in_rule__KPolyline_Impl__ChildPlacementAssignment_5_240271 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_ruleKRendering_in_rule__KPolyline_Impl__ChildrenAssignment_6_240302 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_ruleKRendering_in_rule__KPolyline_Impl__ChildrenAssignment_6_3_140333 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_ruleKStyle_in_rule__KPolygon__StylesAssignment_3_240364 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_ruleKStyle_in_rule__KPolygon__StylesAssignment_3_3_140395 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_ruleKPlacementData_in_rule__KPolygon__PlacementDataAssignment_4_240426 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_ruleKPlacement_in_rule__KPolygon__ChildPlacementAssignment_5_240457 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_ruleKRendering_in_rule__KPolygon__ChildrenAssignment_6_240488 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_ruleKRendering_in_rule__KPolygon__ChildrenAssignment_6_3_140519 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_ruleEString_in_rule__KImage__BundleNameAssignment_340550 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_ruleEString_in_rule__KImage__ImagePathAssignment_540581 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_ruleEString_in_rule__KImage__ReferencesAssignment_6_240616 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_ruleEString_in_rule__KImage__ReferencesAssignment_6_3_140655 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_ruleKPlacementData_in_rule__KImage__PlacementDataAssignment_7_140690 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_ruleKStyle_in_rule__KImage__StylesAssignment_8_240721 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_ruleKStyle_in_rule__KImage__StylesAssignment_8_3_140752 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_ruleKRendering_in_rule__KImage__ChildrenAssignment_9_240783 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_ruleKRendering_in_rule__KImage__ChildrenAssignment_9_3_140814 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_ruleKPlacement_in_rule__KImage__ChildPlacementAssignment_10_140845 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_ruleEFloat_in_rule__KArc__StartAngleAssignment_3_140876 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_ruleEFloat_in_rule__KArc__ArcAngleAssignment_4_140907 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_ruleEString_in_rule__KArc__ReferencesAssignment_5_240942 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_ruleEString_in_rule__KArc__ReferencesAssignment_5_3_140981 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_ruleKPlacementData_in_rule__KArc__PlacementDataAssignment_6_141016 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_ruleKStyle_in_rule__KArc__StylesAssignment_7_241047 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_ruleKStyle_in_rule__KArc__StylesAssignment_7_3_141078 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_ruleKRendering_in_rule__KArc__ChildrenAssignment_8_241109 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_ruleKRendering_in_rule__KArc__ChildrenAssignment_8_3_141140 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_ruleKPlacement_in_rule__KArc__ChildPlacementAssignment_9_141171 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_ruleEString_in_rule__KChildArea__ReferencesAssignment_3_241206 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_ruleEString_in_rule__KChildArea__ReferencesAssignment_3_3_141245 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_ruleKPlacementData_in_rule__KChildArea__PlacementDataAssignment_4_141280 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_ruleKStyle_in_rule__KChildArea__StylesAssignment_5_241311 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_ruleKStyle_in_rule__KChildArea__StylesAssignment_5_3_141342 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_106_in_rule__KText__ClipAssignment_041378 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_ruleEString_in_rule__KText__TextAssignment_3_141417 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_ruleEString_in_rule__KText__ReferencesAssignment_4_241452 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_ruleEString_in_rule__KText__ReferencesAssignment_4_3_141491 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_ruleKPlacementData_in_rule__KText__PlacementDataAssignment_5_141526 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_ruleKStyle_in_rule__KText__StylesAssignment_6_241557 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_ruleKStyle_in_rule__KText__StylesAssignment_6_3_141588 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_ruleKRendering_in_rule__KText__ChildrenAssignment_7_241619 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_ruleKRendering_in_rule__KText__ChildrenAssignment_7_3_141650 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_ruleKPlacement_in_rule__KText__ChildPlacementAssignment_8_141681 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_ruleEString_in_rule__KCustomRendering__ClassNameAssignment_341712 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_ruleEString_in_rule__KCustomRendering__BundleNameAssignment_541743 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_ruleEString_in_rule__KCustomRendering__ReferencesAssignment_6_241778 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_ruleEString_in_rule__KCustomRendering__ReferencesAssignment_6_3_141817 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_ruleKPlacementData_in_rule__KCustomRendering__PlacementDataAssignment_7_141852 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_ruleKStyle_in_rule__KCustomRendering__StylesAssignment_8_241883 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_ruleKStyle_in_rule__KCustomRendering__StylesAssignment_8_3_141914 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_ruleKRendering_in_rule__KCustomRendering__ChildrenAssignment_9_241945 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_ruleKRendering_in_rule__KCustomRendering__ChildrenAssignment_9_3_141976 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_ruleKPlacement_in_rule__KCustomRendering__ChildPlacementAssignment_10_142007 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_ruleEString_in_rule__KSpline__ReferencesAssignment_3_242042 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_ruleEString_in_rule__KSpline__ReferencesAssignment_3_3_142081 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_ruleKPlacementData_in_rule__KSpline__PlacementDataAssignment_4_142116 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_ruleKStyle_in_rule__KSpline__StylesAssignment_5_242147 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_ruleKStyle_in_rule__KSpline__StylesAssignment_5_3_142178 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_ruleKRendering_in_rule__KSpline__ChildrenAssignment_6_242209 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_ruleKRendering_in_rule__KSpline__ChildrenAssignment_6_3_142240 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_ruleKPlacement_in_rule__KSpline__ChildPlacementAssignment_7_142271 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_81_in_rule__KDecoratorPlacementData__RelativeAssignment_042307 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_ruleEFloat_in_rule__KDecoratorPlacementData__LocationAssignment_442346 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_ruleEFloat_in_rule__KDecoratorPlacementData__XOffsetAssignment_5_142377 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_ruleEFloat_in_rule__KDecoratorPlacementData__YOffsetAssignment_6_142408 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_ruleEFloat_in_rule__KGridPlacementData__WidthHintAssignment_342439 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_ruleEFloat_in_rule__KGridPlacementData__HeightHintAssignment_542470 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_ruleEFloat_in_rule__KGridPlacementData__HorizontalIndentAssignment_742501 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_ruleEFloat_in_rule__KGridPlacementData__VerticalIndentAssignment_942532 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_ruleEFloat_in_rule__KStackPlacementData__InsetRightAssignment_342563 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_ruleEFloat_in_rule__KStackPlacementData__InsetBottomAssignment_542594 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_ruleEFloat_in_rule__KStackPlacementData__InsetLeftAssignment_742625 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_ruleEFloat_in_rule__KStackPlacementData__InsetTopAssignment_942656 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_ruleKPosition_in_rule__KDirectPlacementData__TopLeftAssignment_342687 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_ruleKPosition_in_rule__KDirectPlacementData__BottomRightAssignment_542718 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_ruleKPosition_in_rule__KPolylinePlacementData__PointsAssignment_242749 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_ruleKPosition_in_rule__KPolylinePlacementData__PointsAssignment_3_142780 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_ruleKXPosition_in_rule__KPosition__XAssignment_342811 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_ruleKYPosition_in_rule__KPosition__YAssignment_542842 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_ruleEFloat_in_rule__KLeftPosition__AbsoluteAssignment_3_142873 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_ruleEFloat_in_rule__KLeftPosition__RelativeAssignment_4_142904 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_ruleEFloat_in_rule__KRightPosition__AbsoluteAssignment_3_142935 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_ruleEFloat_in_rule__KRightPosition__RelativeAssignment_4_142966 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_ruleEFloat_in_rule__KTopPosition__AbsoluteAssignment_3_142997 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_ruleEFloat_in_rule__KTopPosition__RelativeAssignment_4_143028 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_ruleEFloat_in_rule__KBottomPosition__AbsoluteAssignment_3_143059 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_ruleEFloat_in_rule__KBottomPosition__RelativeAssignment_4_143090 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_107_in_rule__KForegroundColor__PropagateToChildrenAssignment_343126 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_ruleEInt_in_rule__KForegroundColor__RedAssignment_4_143165 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_ruleEInt_in_rule__KForegroundColor__GreenAssignment_5_143196 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_ruleEInt_in_rule__KForegroundColor__BlueAssignment_6_143227 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_107_in_rule__KBackgroundColor__PropagateToChildrenAssignment_343263 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_ruleEInt_in_rule__KBackgroundColor__RedAssignment_4_143302 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_ruleEInt_in_rule__KBackgroundColor__GreenAssignment_5_143333 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_ruleEInt_in_rule__KBackgroundColor__BlueAssignment_6_143364 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_ruleEInt_in_rule__KLineWidth__LineWidthAssignment_143395 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_107_in_rule__KLineWidth__PropagateToChildrenAssignment_243431 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_108_in_rule__KVisibility__LineVisibleAssignment_243475 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_109_in_rule__KVisibility__FilledAssignment_343519 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_107_in_rule__KVisibility__PropagateToChildrenAssignment_443563 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_ruleLineStyle_in_rule__KLineStyle__LineStyleAssignment_243602 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_107_in_rule__KLineStyle__PropagateToChildrenAssignment_343638 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_ruleVerticalAlignment_in_rule__KVerticalAlignment__VerticalAlignmentAssignment_143677 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_107_in_rule__KVerticalAlignment__PropagateToChildrenAssignment_243713 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_ruleHorizontalAlignment_in_rule__KHorizontalAlignment__HorizontalAlignmentAssignment_143752 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_107_in_rule__KHorizontalAlignment__PropagateToChildrenAssignment_243788 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_ruleEInt_in_rule__KGridPlacement__NumColumnsAssignment_243827 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_ruleEFloat_in_rule__KInsets__TopAssignment_3_143865 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_ruleEFloat_in_rule__KInsets__BottomAssignment_4_143896 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_ruleEFloat_in_rule__KInsets__LeftAssignment_5_143927 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_ruleEFloat_in_rule__KInsets__RightAssignment_6_143958 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_ruleEFloat_in_rule__KPoint__XAssignment_2_143995 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_ruleEFloat_in_rule__KPoint__YAssignment_3_144026 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_ruleEString_in_rule__PersistentEntry__KeyAssignment_344057 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_ruleEString_in_rule__PersistentEntry__ValueAssignment_4_144088 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__PersistentEntry__KeyAssignment_0_in_rule__PersistentEntry__Group__0__Impl38748 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__PersistentEntry__Group__1__Impl_in_rule__PersistentEntry__Group__138778 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__PersistentEntry__Group_1__0_in_rule__PersistentEntry__Group__1__Impl38805 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__PersistentEntry__Group_1__0__Impl_in_rule__PersistentEntry__Group_1__038840 = new BitSet(new long[]{0x0000000000000030L});
+        public static final BitSet FOLLOW_rule__PersistentEntry__Group_1__1_in_rule__PersistentEntry__Group_1__038843 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_103_in_rule__PersistentEntry__Group_1__0__Impl38871 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__PersistentEntry__Group_1__1__Impl_in_rule__PersistentEntry__Group_1__138902 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__PersistentEntry__ValueAssignment_1_1_in_rule__PersistentEntry__Group_1__1__Impl38929 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleKRendering_in_rule__KRenderingLibrary__RenderingsAssignment_3_038968 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleKRendering_in_rule__KRenderingLibrary__RenderingsAssignment_3_1_138999 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleEString_in_rule__KRenderingRef__ReferencesAssignment_2_239034 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleEString_in_rule__KRenderingRef__ReferencesAssignment_2_3_139073 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleEString_in_rule__KRenderingRef__RenderingAssignment_439112 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleKPlacementData_in_rule__KRenderingRef__PlacementDataAssignment_5_139147 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleKStyle_in_rule__KRenderingRef__StylesAssignment_6_239178 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleKStyle_in_rule__KRenderingRef__StylesAssignment_6_3_139209 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleKStyle_in_rule__KEllipse__StylesAssignment_3_239240 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleKStyle_in_rule__KEllipse__StylesAssignment_3_3_139271 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleKPlacementData_in_rule__KEllipse__PlacementDataAssignment_4_239302 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleKPlacement_in_rule__KEllipse__ChildPlacementAssignment_5_239333 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleKRendering_in_rule__KEllipse__ChildrenAssignment_6_239364 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleKRendering_in_rule__KEllipse__ChildrenAssignment_6_3_139395 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleKStyle_in_rule__KRectangle__StylesAssignment_3_239426 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleKStyle_in_rule__KRectangle__StylesAssignment_3_3_139457 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleKPlacementData_in_rule__KRectangle__PlacementDataAssignment_4_239488 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleKPlacement_in_rule__KRectangle__ChildPlacementAssignment_5_239519 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleKRendering_in_rule__KRectangle__ChildrenAssignment_6_239550 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleKRendering_in_rule__KRectangle__ChildrenAssignment_6_3_139581 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleEFloat_in_rule__KRoundedRectangle__CornerWidthAssignment_2_0_139612 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleEFloat_in_rule__KRoundedRectangle__CornerHeightAssignment_2_0_339643 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleEFloat_in_rule__KRoundedRectangle__CornerHeightAssignment_2_1_139674 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleEFloat_in_rule__KRoundedRectangle__CornerWidthAssignment_2_1_339705 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleKStyle_in_rule__KRoundedRectangle__StylesAssignment_3_239736 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleKStyle_in_rule__KRoundedRectangle__StylesAssignment_3_3_139767 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleKPlacementData_in_rule__KRoundedRectangle__PlacementDataAssignment_4_239798 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleKPlacement_in_rule__KRoundedRectangle__ChildPlacementAssignment_5_239829 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleKRendering_in_rule__KRoundedRectangle__ChildrenAssignment_6_239860 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleKRendering_in_rule__KRoundedRectangle__ChildrenAssignment_6_3_139891 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleKStyle_in_rule__KPolyline_Impl__StylesAssignment_3_239922 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleKStyle_in_rule__KPolyline_Impl__StylesAssignment_3_3_139953 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleKPlacementData_in_rule__KPolyline_Impl__PlacementDataAssignment_4_239984 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleKPlacement_in_rule__KPolyline_Impl__ChildPlacementAssignment_5_240015 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleKRendering_in_rule__KPolyline_Impl__ChildrenAssignment_6_240046 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleKRendering_in_rule__KPolyline_Impl__ChildrenAssignment_6_3_140077 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleKStyle_in_rule__KPolygon__StylesAssignment_3_240108 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleKStyle_in_rule__KPolygon__StylesAssignment_3_3_140139 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleKPlacementData_in_rule__KPolygon__PlacementDataAssignment_4_240170 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleKPlacement_in_rule__KPolygon__ChildPlacementAssignment_5_240201 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleKRendering_in_rule__KPolygon__ChildrenAssignment_6_240232 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleKRendering_in_rule__KPolygon__ChildrenAssignment_6_3_140263 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleEString_in_rule__KImage__BundleNameAssignment_340294 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleEString_in_rule__KImage__ImagePathAssignment_540325 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleEString_in_rule__KImage__ReferencesAssignment_6_240360 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleEString_in_rule__KImage__ReferencesAssignment_6_3_140399 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleKPlacementData_in_rule__KImage__PlacementDataAssignment_7_140434 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleKStyle_in_rule__KImage__StylesAssignment_8_240465 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleKStyle_in_rule__KImage__StylesAssignment_8_3_140496 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleKRendering_in_rule__KImage__ChildrenAssignment_9_240527 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleKRendering_in_rule__KImage__ChildrenAssignment_9_3_140558 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleKPlacement_in_rule__KImage__ChildPlacementAssignment_10_140589 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleEFloat_in_rule__KArc__StartAngleAssignment_3_140620 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleEFloat_in_rule__KArc__ArcAngleAssignment_4_140651 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleEString_in_rule__KArc__ReferencesAssignment_5_240686 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleEString_in_rule__KArc__ReferencesAssignment_5_3_140725 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleKPlacementData_in_rule__KArc__PlacementDataAssignment_6_140760 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleKStyle_in_rule__KArc__StylesAssignment_7_240791 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleKStyle_in_rule__KArc__StylesAssignment_7_3_140822 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleKRendering_in_rule__KArc__ChildrenAssignment_8_240853 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleKRendering_in_rule__KArc__ChildrenAssignment_8_3_140884 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleKPlacement_in_rule__KArc__ChildPlacementAssignment_9_140915 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleEString_in_rule__KChildArea__ReferencesAssignment_3_240950 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleEString_in_rule__KChildArea__ReferencesAssignment_3_3_140989 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleKPlacementData_in_rule__KChildArea__PlacementDataAssignment_4_141024 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleKStyle_in_rule__KChildArea__StylesAssignment_5_241055 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleKStyle_in_rule__KChildArea__StylesAssignment_5_3_141086 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_104_in_rule__KText__ClipAssignment_041122 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleEString_in_rule__KText__TextAssignment_3_141161 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleEString_in_rule__KText__ReferencesAssignment_4_241196 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleEString_in_rule__KText__ReferencesAssignment_4_3_141235 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleKPlacementData_in_rule__KText__PlacementDataAssignment_5_141270 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleKStyle_in_rule__KText__StylesAssignment_6_241301 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleKStyle_in_rule__KText__StylesAssignment_6_3_141332 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleKRendering_in_rule__KText__ChildrenAssignment_7_241363 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleKRendering_in_rule__KText__ChildrenAssignment_7_3_141394 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleKPlacement_in_rule__KText__ChildPlacementAssignment_8_141425 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleEString_in_rule__KCustomRendering__ClassNameAssignment_341456 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleEString_in_rule__KCustomRendering__BundleNameAssignment_541487 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleEString_in_rule__KCustomRendering__ReferencesAssignment_6_241522 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleEString_in_rule__KCustomRendering__ReferencesAssignment_6_3_141561 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleKPlacementData_in_rule__KCustomRendering__PlacementDataAssignment_7_141596 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleKStyle_in_rule__KCustomRendering__StylesAssignment_8_241627 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleKStyle_in_rule__KCustomRendering__StylesAssignment_8_3_141658 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleKRendering_in_rule__KCustomRendering__ChildrenAssignment_9_241689 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleKRendering_in_rule__KCustomRendering__ChildrenAssignment_9_3_141720 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleKPlacement_in_rule__KCustomRendering__ChildPlacementAssignment_10_141751 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleEString_in_rule__KSpline__ReferencesAssignment_3_241786 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleEString_in_rule__KSpline__ReferencesAssignment_3_3_141825 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleKPlacementData_in_rule__KSpline__PlacementDataAssignment_4_141860 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleKStyle_in_rule__KSpline__StylesAssignment_5_241891 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleKStyle_in_rule__KSpline__StylesAssignment_5_3_141922 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleKRendering_in_rule__KSpline__ChildrenAssignment_6_241953 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleKRendering_in_rule__KSpline__ChildrenAssignment_6_3_141984 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleKPlacement_in_rule__KSpline__ChildPlacementAssignment_7_142015 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_81_in_rule__KDecoratorPlacementData__RelativeAssignment_042051 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleEFloat_in_rule__KDecoratorPlacementData__LocationAssignment_442090 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleEFloat_in_rule__KDecoratorPlacementData__XOffsetAssignment_5_142121 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleEFloat_in_rule__KDecoratorPlacementData__YOffsetAssignment_6_142152 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleEFloat_in_rule__KGridPlacementData__WidthHintAssignment_342183 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleEFloat_in_rule__KGridPlacementData__HeightHintAssignment_542214 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleEFloat_in_rule__KGridPlacementData__HorizontalIndentAssignment_742245 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleEFloat_in_rule__KGridPlacementData__VerticalIndentAssignment_942276 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleEFloat_in_rule__KStackPlacementData__InsetRightAssignment_342307 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleEFloat_in_rule__KStackPlacementData__InsetBottomAssignment_542338 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleEFloat_in_rule__KStackPlacementData__InsetLeftAssignment_742369 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleEFloat_in_rule__KStackPlacementData__InsetTopAssignment_942400 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleKPosition_in_rule__KDirectPlacementData__TopLeftAssignment_342431 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleKPosition_in_rule__KDirectPlacementData__BottomRightAssignment_542462 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleKPosition_in_rule__KPolylinePlacementData__PointsAssignment_242493 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleKPosition_in_rule__KPolylinePlacementData__PointsAssignment_3_142524 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleKXPosition_in_rule__KPosition__XAssignment_342555 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleKYPosition_in_rule__KPosition__YAssignment_542586 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleEFloat_in_rule__KLeftPosition__AbsoluteAssignment_3_142617 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleEFloat_in_rule__KLeftPosition__RelativeAssignment_4_142648 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleEFloat_in_rule__KRightPosition__AbsoluteAssignment_3_142679 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleEFloat_in_rule__KRightPosition__RelativeAssignment_4_142710 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleEFloat_in_rule__KTopPosition__AbsoluteAssignment_3_142741 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleEFloat_in_rule__KTopPosition__RelativeAssignment_4_142772 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleEFloat_in_rule__KBottomPosition__AbsoluteAssignment_3_142803 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleEFloat_in_rule__KBottomPosition__RelativeAssignment_4_142834 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_105_in_rule__KForegroundColor__PropagateToChildrenAssignment_342870 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleEInt_in_rule__KForegroundColor__RedAssignment_4_142909 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleEInt_in_rule__KForegroundColor__GreenAssignment_5_142940 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleEInt_in_rule__KForegroundColor__BlueAssignment_6_142971 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_105_in_rule__KBackgroundColor__PropagateToChildrenAssignment_343007 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleEInt_in_rule__KBackgroundColor__RedAssignment_4_143046 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleEInt_in_rule__KBackgroundColor__GreenAssignment_5_143077 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleEInt_in_rule__KBackgroundColor__BlueAssignment_6_143108 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleEInt_in_rule__KLineWidth__LineWidthAssignment_143139 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_105_in_rule__KLineWidth__PropagateToChildrenAssignment_243175 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_106_in_rule__KVisibility__LineVisibleAssignment_243219 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_107_in_rule__KVisibility__FilledAssignment_343263 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_105_in_rule__KVisibility__PropagateToChildrenAssignment_443307 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleLineStyle_in_rule__KLineStyle__LineStyleAssignment_243346 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_105_in_rule__KLineStyle__PropagateToChildrenAssignment_343382 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleVerticalAlignment_in_rule__KVerticalAlignment__VerticalAlignmentAssignment_143421 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_105_in_rule__KVerticalAlignment__PropagateToChildrenAssignment_243457 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleHorizontalAlignment_in_rule__KHorizontalAlignment__HorizontalAlignmentAssignment_143496 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_105_in_rule__KHorizontalAlignment__PropagateToChildrenAssignment_243532 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleEInt_in_rule__KGridPlacement__NumColumnsAssignment_243571 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleEFloat_in_rule__KInsets__TopAssignment_3_143609 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleEFloat_in_rule__KInsets__BottomAssignment_4_143640 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleEFloat_in_rule__KInsets__LeftAssignment_5_143671 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleEFloat_in_rule__KInsets__RightAssignment_6_143702 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleEFloat_in_rule__KPoint__XAssignment_2_143739 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleEFloat_in_rule__KPoint__YAssignment_3_143770 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleEString_in_rule__PersistentEntry__KeyAssignment_043801 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleEString_in_rule__PersistentEntry__ValueAssignment_1_143832 = new BitSet(new long[]{0x0000000000000002L});
     }
 
 

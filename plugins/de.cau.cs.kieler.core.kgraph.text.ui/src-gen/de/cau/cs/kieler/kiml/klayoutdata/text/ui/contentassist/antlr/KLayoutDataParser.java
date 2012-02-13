@@ -61,7 +61,7 @@ public class KLayoutDataParser extends AbstractContentAssistParser {
 					put(grammarAccess.getKPointAccess().getGroup_2(), "rule__KPoint__Group_2__0");
 					put(grammarAccess.getKPointAccess().getGroup_3(), "rule__KPoint__Group_3__0");
 					put(grammarAccess.getPersistentEntryAccess().getGroup(), "rule__PersistentEntry__Group__0");
-					put(grammarAccess.getPersistentEntryAccess().getGroup_4(), "rule__PersistentEntry__Group_4__0");
+					put(grammarAccess.getPersistentEntryAccess().getGroup_1(), "rule__PersistentEntry__Group_1__0");
 					put(grammarAccess.getEFloatAccess().getGroup(), "rule__EFloat__Group__0");
 					put(grammarAccess.getEFloatAccess().getGroup_4(), "rule__EFloat__Group_4__0");
 					put(grammarAccess.getKShapeLayoutAccess().getXposAssignment_3_1(), "rule__KShapeLayout__XposAssignment_3_1");
@@ -83,8 +83,8 @@ public class KLayoutDataParser extends AbstractContentAssistParser {
 					put(grammarAccess.getKEdgeLayoutAccess().getPersistentEntriesAssignment_7_3_1(), "rule__KEdgeLayout__PersistentEntriesAssignment_7_3_1");
 					put(grammarAccess.getKPointAccess().getXAssignment_2_1(), "rule__KPoint__XAssignment_2_1");
 					put(grammarAccess.getKPointAccess().getYAssignment_3_1(), "rule__KPoint__YAssignment_3_1");
-					put(grammarAccess.getPersistentEntryAccess().getKeyAssignment_3(), "rule__PersistentEntry__KeyAssignment_3");
-					put(grammarAccess.getPersistentEntryAccess().getValueAssignment_4_1(), "rule__PersistentEntry__ValueAssignment_4_1");
+					put(grammarAccess.getPersistentEntryAccess().getKeyAssignment_0(), "rule__PersistentEntry__KeyAssignment_0");
+					put(grammarAccess.getPersistentEntryAccess().getValueAssignment_1_1(), "rule__PersistentEntry__ValueAssignment_1_1");
 				}
 			};
 		}

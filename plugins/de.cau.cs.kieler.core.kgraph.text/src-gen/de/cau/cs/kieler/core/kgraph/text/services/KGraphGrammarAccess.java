@@ -833,7 +833,7 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	//KRenderingLibrary: //	{KRenderingLibrary}
 	////	'KRenderingLibrary'
 	////	'{'
-	////		// ('persistentEntries' '{' persistentEntries+=PersistentEntry ( "," persistentEntries+=PersistentEntry)* '}' )?
+	////		('persistentEntries' '{' persistentEntries+=PersistentEntry ( "," persistentEntries+=PersistentEntry)* '}' )?
 	////		('renderings' '{' renderings+=KRendering ( "," renderings+=KRendering)* '}' )?
 	////    '}';
 	//	{KRenderingLibrary} "KRenderingLibrary" "{" (renderings+=KRendering ("," renderings+=KRendering)*)? "}";
@@ -910,7 +910,7 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 
 	//KRenderingRef:
 	//	"KRenderingRef" "{" ("references" "(" references+=[KRenderingRef|EString] ("," references+=[KRenderingRef|EString])*
-	//	")")? "rendering" rendering=[KRendering|EString] //		('persistentEntries' '{' persistentEntries+=PersistentEntry ( "," persistentEntries+=PersistentEntry)* '}' )?
+	//	")")? "rendering" rendering=[KRendering|EString] // ('persistentEntries' '{' persistentEntries+=PersistentEntry ( "," persistentEntries+=PersistentEntry)* '}' )?
 	//	("placementData" placementData=KPlacementData)? ("styles" "{" styles+=KStyle ("," styles+=KStyle)* "}")? "}";
 	public KRenderingGrammarAccess.KRenderingRefElements getKRenderingRefAccess() {
 		return gaKRendering.getKRenderingRefAccess();
@@ -928,7 +928,7 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	////	'KEllipse'
 	////	'{'
 	////		('references' '(' references+=[KRenderingRef|EString] ( "," references+=[KRenderingRef|EString])* ')' )?
-	//////		('persistentEntries' '{' persistentEntries+=PersistentEntry ( "," persistentEntries+=PersistentEntry)* '}' )?
+	////		('persistentEntries' '{' persistentEntries+=PersistentEntry ( "," persistentEntries+=PersistentEntry)* '}' )?
 	////		('placementData' placementData=KPlacementData)?
 	////		('styles' '{' styles+=KStyle ( "," styles+=KStyle)* '}' )?
 	////		('children' '{' children+=KRendering ( "," children+=KRendering)* '}' )?
@@ -949,7 +949,7 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	////	'KRectangle'
 	////	'{'
 	////		('references' '(' references+=[KRenderingRef|EString] ( "," references+=[KRenderingRef|EString])* ')' )?
-	//////		('persistentEntries' '{' persistentEntries+=PersistentEntry ( "," persistentEntries+=PersistentEntry)* '}' )?
+	////		('persistentEntries' '{' persistentEntries+=PersistentEntry ( "," persistentEntries+=PersistentEntry)* '}' )?
 	////		('placementData' ':' placementData=KPlacementData)?
 	////		('styles' '{' styles+=KStyle ( "," styles+=KStyle)* '}' )?
 	////		('children' '{' children+=KRendering ( "," children+=KRendering)* '}' )?
@@ -971,7 +971,7 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	////		'cornerWidth' cornerWidth=EFloat
 	////		'cornerHeight' cornerHeight=EFloat
 	////		('references' '(' references+=[KRenderingRef|EString] ( "," references+=[KRenderingRef|EString])* ')' )?
-	//////		('persistentEntries' '{' persistentEntries+=PersistentEntry ( "," persistentEntries+=PersistentEntry)* '}' )?
+	////		('persistentEntries' '{' persistentEntries+=PersistentEntry ( "," persistentEntries+=PersistentEntry)* '}' )?
 	////		('placementData' placementData=KPlacementData)?
 	////		('styles' '{' styles+=KStyle ( "," styles+=KStyle)* '}' )?
 	////		('children' '{' children+=KRendering ( "," children+=KRendering)* '}' )?
@@ -993,7 +993,7 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	////	'KPolyline'
 	////	'{'
 	////		('references' '(' references+=[KRenderingRef|EString] ( "," references+=[KRenderingRef|EString])* ')' )?
-	//////		('persistentEntries' '{' persistentEntries+=PersistentEntry ( "," persistentEntries+=PersistentEntry)* '}' )?
+	////		('persistentEntries' '{' persistentEntries+=PersistentEntry ( "," persistentEntries+=PersistentEntry)* '}' )?
 	////		('placementData' placementData=KPlacementData)?
 	////		('styles' '{' styles+=KStyle ( "," styles+=KStyle)* '}' )?
 	////		('children' '{' children+=KRendering ( "," children+=KRendering)* '}' )?
@@ -1014,7 +1014,7 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	////	'KPolygon'
 	////	'{'
 	////		('references' '(' references+=[KRenderingRef|EString] ( "," references+=[KRenderingRef|EString])* ')' )?
-	//////		('persistentEntries' '{' persistentEntries+=PersistentEntry ( "," persistentEntries+=PersistentEntry)* '}' )?
+	////		('persistentEntries' '{' persistentEntries+=PersistentEntry ( "," persistentEntries+=PersistentEntry)* '}' )?
 	////		('placementData' placementData=KPlacementData)?
 	////		('styles' '{' styles+=KStyle ( "," styles+=KStyle)* '}' )?
 	////		('children' '{' children+=KRendering ( "," children+=KRendering)* '}' )?
@@ -1033,7 +1033,7 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 
 	//KImage:
 	//	"KImage" "{" "bundleName" bundleName=EString "imagePath" imagePath=EString ("references" "("
-	//	references+=[KRenderingRef|EString] ("," references+=[KRenderingRef|EString])* ")")? //		('persistentEntries' '{' persistentEntries+=PersistentEntry ( "," persistentEntries+=PersistentEntry)* '}' )?
+	//	references+=[KRenderingRef|EString] ("," references+=[KRenderingRef|EString])* ")")? // ('persistentEntries' '{' persistentEntries+=PersistentEntry ( "," persistentEntries+=PersistentEntry)* '}' )?
 	//	("placementData" placementData=KPlacementData)? ("styles" "{" styles+=KStyle ("," styles+=KStyle)* "}")? ("children"
 	//	"{" children+=KRendering ("," children+=KRendering)* "}")? ("childPlacement" childPlacement=KPlacement)? "}";
 	public KRenderingGrammarAccess.KImageElements getKImageAccess() {
@@ -1046,7 +1046,7 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 
 	//KArc:
 	//	{KArc} "KArc" "{" ("startAngle" startAngle=EFloat)? ("arcAngle" arcAngle=EFloat)? ("references" "("
-	//	references+=[KRenderingRef|EString] ("," references+=[KRenderingRef|EString])* ")")? //		('persistentEntries' '{' persistentEntries+=PersistentEntry ( "," persistentEntries+=PersistentEntry)* '}' )?
+	//	references+=[KRenderingRef|EString] ("," references+=[KRenderingRef|EString])* ")")? // ('persistentEntries' '{' persistentEntries+=PersistentEntry ( "," persistentEntries+=PersistentEntry)* '}' )?
 	//	("placementData" placementData=KPlacementData)? ("styles" "{" styles+=KStyle ("," styles+=KStyle)* "}")? ("children"
 	//	"{" children+=KRendering ("," children+=KRendering)* "}")? ("childPlacement" childPlacement=KPlacement)? "}";
 	public KRenderingGrammarAccess.KArcElements getKArcAccess() {
@@ -1059,7 +1059,7 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 
 	//KChildArea:
 	//	{KChildArea} "KChildArea" "{" ("references" "(" references+=[KRenderingRef|EString] (","
-	//	references+=[KRenderingRef|EString])* ")")? //		('persistentEntries' '{' persistentEntries+=PersistentEntry ( "," persistentEntries+=PersistentEntry)* '}' )?
+	//	references+=[KRenderingRef|EString])* ")")? // ('persistentEntries' '{' persistentEntries+=PersistentEntry ( "," persistentEntries+=PersistentEntry)* '}' )?
 	//	("placementData" placementData=KPlacementData)? ("styles" "{" styles+=KStyle ("," styles+=KStyle)* "}")? "}";
 	public KRenderingGrammarAccess.KChildAreaElements getKChildAreaAccess() {
 		return gaKRendering.getKChildAreaAccess();
@@ -1071,7 +1071,7 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 
 	//KText:
 	//	clip?="clip" "KText" "{" ("text" text=EString)? ("references" "(" references+=[KRenderingRef|EString] (","
-	//	references+=[KRenderingRef|EString])* ")")? //		('persistentEntries' '{' persistentEntries+=PersistentEntry ( "," persistentEntries+=PersistentEntry)* '}' )?
+	//	references+=[KRenderingRef|EString])* ")")? // ('persistentEntries' '{' persistentEntries+=PersistentEntry ( "," persistentEntries+=PersistentEntry)* '}' )?
 	//	("placementData" placementData=KPlacementData)? ("styles" "{" styles+=KStyle ("," styles+=KStyle)* "}")? ("children"
 	//	"{" children+=KRendering ("," children+=KRendering)* "}")? ("childPlacement" childPlacement=KPlacement)? "}";
 	public KRenderingGrammarAccess.KTextElements getKTextAccess() {
@@ -1084,7 +1084,7 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 
 	//KCustomRendering:
 	//	"KCustomRendering" "{" "className" className=EString "bundleName" bundleName=EString ("references" "("
-	//	references+=[KRenderingRef|EString] ("," references+=[KRenderingRef|EString])* ")")? //		('persistentEntries' '{' persistentEntries+=PersistentEntry ( "," persistentEntries+=PersistentEntry)* '}' )?
+	//	references+=[KRenderingRef|EString] ("," references+=[KRenderingRef|EString])* ")")? // ('persistentEntries' '{' persistentEntries+=PersistentEntry ( "," persistentEntries+=PersistentEntry)* '}' )?
 	//	("placementData" placementData=KPlacementData)? ("styles" "{" styles+=KStyle ("," styles+=KStyle)* "}")? ("children"
 	//	"{" children+=KRendering ("," children+=KRendering)* "}")? ("childPlacement" childPlacement=KPlacement)? "}";
 	public KRenderingGrammarAccess.KCustomRenderingElements getKCustomRenderingAccess() {
@@ -1097,7 +1097,7 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 
 	//KSpline:
 	//	{KSpline} "KSpline" "{" ("references" "(" references+=[KRenderingRef|EString] (","
-	//	references+=[KRenderingRef|EString])* ")")? //		('persistentEntries' '{' persistentEntries+=PersistentEntry ( "," persistentEntries+=PersistentEntry)* '}' )?
+	//	references+=[KRenderingRef|EString])* ")")? // ('persistentEntries' '{' persistentEntries+=PersistentEntry ( "," persistentEntries+=PersistentEntry)* '}' )?
 	//	("placementData" placementData=KPlacementData)? ("styles" "{" styles+=KStyle ("," styles+=KStyle)* "}")? ("children"
 	//	"{" children+=KRendering ("," children+=KRendering)* "}")? ("childPlacement" childPlacement=KPlacement)? "}";
 	public KRenderingGrammarAccess.KSplineElements getKSplineAccess() {
@@ -1411,7 +1411,7 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	////		('insets' insets=KInsets)?
 	////    '}';
 	//	{KShapeLayout} "KShapeLayout" "{" ("xpos" xpos=EFloat)? ("ypos" ypos=EFloat)? ("width" width=EFloat)? ("height"
-	//	height=EFloat)? ("insets" insets=KInsets)? ("persistentEntries" ":" persistentEntries+=PersistentEntry (","
+	//	height=EFloat)? ("insets" insets=KInsets)? ("mapProperties" ":" persistentEntries+=PersistentEntry (","
 	//	persistentEntries+=PersistentEntry)*)? "}";
 	public KLayoutDataGrammarAccess.KShapeLayoutElements getKShapeLayoutAccess() {
 		return gaKRendering.getKShapeLayoutAccess();
@@ -1434,13 +1434,13 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 
 	//KEdgeLayout: //	'KEdgeLayout'
 	////	'{'
-	//////		('persistentEntries' '{' persistentEntries+=PersistentEntry ( "," persistentEntries+=PersistentEntry)* '}' )?
+	////		('persistentEntries' '{' persistentEntries+=PersistentEntry ( "," persistentEntries+=PersistentEntry)* '}' )?
 	////		('bendPoints' '{' bendPoints+=KPoint ( "," bendPoints+=KPoint)* '}' )?
 	////		'sourcePoint' sourcePoint=KPoint
 	////		'targetPoint' targetPoint=KPoint
 	////    '}';
 	//	"KEdgeLayout" "{" "sourcePoint" sourcePoint=KPoint "targetPoint" targetPoint=KPoint ("bendPoints" ":"
-	//	bendPoints+=KPoint ("," bendPoints+=KPoint)*)? ("persistentEntries" ":" persistentEntries+=PersistentEntry (","
+	//	bendPoints+=KPoint ("," bendPoints+=KPoint)*)? ("mapProperties" ":" persistentEntries+=PersistentEntry (","
 	//	persistentEntries+=PersistentEntry)*)? "}";
 	public KLayoutDataGrammarAccess.KEdgeLayoutElements getKEdgeLayoutAccess() {
 		return gaKRendering.getKEdgeLayoutAccess();
@@ -1470,7 +1470,7 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	////		'key' key=EString
 	////		('value' value=EString)?
 	////    '}';
-	//	"PersistentEntry" "{" "key" key=EString ("value" value=EString)? "}";
+	//	key=EString ("=" value=EString)?;
 	public KLayoutDataGrammarAccess.PersistentEntryElements getPersistentEntryAccess() {
 		return gaKRendering.getPersistentEntryAccess();
 	}
