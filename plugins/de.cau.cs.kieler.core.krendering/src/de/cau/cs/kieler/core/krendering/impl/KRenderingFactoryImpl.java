@@ -98,6 +98,7 @@ public class KRenderingFactoryImpl extends EFactoryImpl implements KRenderingFac
             case KRenderingPackage.KITALIC: return createKItalic();
             case KRenderingPackage.KBOLD: return createKBold();
             case KRenderingPackage.KFONT_NAME: return createKFontName();
+            case KRenderingPackage.KFONT_SIZE: return createKFontSize();
             default:
                 throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
         }
@@ -509,6 +510,16 @@ public class KRenderingFactoryImpl extends EFactoryImpl implements KRenderingFac
     public KFontName createKFontName() {
         KFontNameImpl kFontName = new KFontNameImpl();
         return kFontName;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public KFontSize createKFontSize() {
+        KFontSizeImpl kFontSize = new KFontSizeImpl();
+        return kFontSize;
     }
 
     /**

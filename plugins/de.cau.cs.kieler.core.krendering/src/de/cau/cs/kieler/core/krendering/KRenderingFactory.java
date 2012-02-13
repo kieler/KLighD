@@ -359,6 +359,15 @@ public interface KRenderingFactory extends EFactory {
     KFontName createKFontName();
 
     /**
+     * Returns a new object of class '<em>KFont Size</em>'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return a new object of class '<em>KFont Size</em>'.
+     * @generated
+     */
+    KFontSize createKFontSize();
+
+    /**
      * Returns the package supported by this factory.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->

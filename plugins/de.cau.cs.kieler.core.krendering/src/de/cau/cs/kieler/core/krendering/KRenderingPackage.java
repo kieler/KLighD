@@ -2645,6 +2645,52 @@ public interface KRenderingPackage extends EPackage {
     int KFONT_NAME_FEATURE_COUNT = KSTYLE_FEATURE_COUNT + 1;
 
     /**
+     * The meta object id for the '{@link de.cau.cs.kieler.core.krendering.impl.KFontSizeImpl <em>KFont Size</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see de.cau.cs.kieler.core.krendering.impl.KFontSizeImpl
+     * @see de.cau.cs.kieler.core.krendering.impl.KRenderingPackageImpl#getKFontSize()
+     * @generated
+     */
+    int KFONT_SIZE = 44;
+
+    /**
+     * The feature id for the '<em><b>Rendering</b></em>' container reference.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KFONT_SIZE__RENDERING = KSTYLE__RENDERING;
+
+    /**
+     * The feature id for the '<em><b>Propagate To Children</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KFONT_SIZE__PROPAGATE_TO_CHILDREN = KSTYLE__PROPAGATE_TO_CHILDREN;
+
+    /**
+     * The feature id for the '<em><b>Size</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KFONT_SIZE__SIZE = KSTYLE_FEATURE_COUNT + 0;
+
+    /**
+     * The number of structural features of the '<em>KFont Size</em>' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KFONT_SIZE_FEATURE_COUNT = KSTYLE_FEATURE_COUNT + 1;
+
+    /**
      * The meta object id for the '{@link de.cau.cs.kieler.core.krendering.LineStyle <em>Line Style</em>}' enum.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -2652,7 +2698,7 @@ public interface KRenderingPackage extends EPackage {
      * @see de.cau.cs.kieler.core.krendering.impl.KRenderingPackageImpl#getLineStyle()
      * @generated
      */
-    int LINE_STYLE = 44;
+    int LINE_STYLE = 45;
 
     /**
      * The meta object id for the '{@link de.cau.cs.kieler.core.krendering.HorizontalAlignment <em>Horizontal Alignment</em>}' enum.
@@ -2662,7 +2708,7 @@ public interface KRenderingPackage extends EPackage {
      * @see de.cau.cs.kieler.core.krendering.impl.KRenderingPackageImpl#getHorizontalAlignment()
      * @generated
      */
-    int HORIZONTAL_ALIGNMENT = 45;
+    int HORIZONTAL_ALIGNMENT = 46;
 
     /**
      * The meta object id for the '{@link de.cau.cs.kieler.core.krendering.VerticalAlignment <em>Vertical Alignment</em>}' enum.
@@ -2672,7 +2718,7 @@ public interface KRenderingPackage extends EPackage {
      * @see de.cau.cs.kieler.core.krendering.impl.KRenderingPackageImpl#getVerticalAlignment()
      * @generated
      */
-    int VERTICAL_ALIGNMENT = 46;
+    int VERTICAL_ALIGNMENT = 47;
 
 
     /**
@@ -3710,6 +3756,27 @@ public interface KRenderingPackage extends EPackage {
     EAttribute getKFontName_Name();
 
     /**
+     * Returns the meta object for class '{@link de.cau.cs.kieler.core.krendering.KFontSize <em>KFont Size</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for class '<em>KFont Size</em>'.
+     * @see de.cau.cs.kieler.core.krendering.KFontSize
+     * @generated
+     */
+    EClass getKFontSize();
+
+    /**
+     * Returns the meta object for the attribute '{@link de.cau.cs.kieler.core.krendering.KFontSize#getSize <em>Size</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the attribute '<em>Size</em>'.
+     * @see de.cau.cs.kieler.core.krendering.KFontSize#getSize()
+     * @see #getKFontSize()
+     * @generated
+     */
+    EAttribute getKFontSize_Size();
+
+    /**
      * Returns the meta object for enum '{@link de.cau.cs.kieler.core.krendering.LineStyle <em>Line Style</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -4632,6 +4699,24 @@ public interface KRenderingPackage extends EPackage {
          * @generated
          */
         EAttribute KFONT_NAME__NAME = eINSTANCE.getKFontName_Name();
+
+        /**
+         * The meta object literal for the '{@link de.cau.cs.kieler.core.krendering.impl.KFontSizeImpl <em>KFont Size</em>}' class.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @see de.cau.cs.kieler.core.krendering.impl.KFontSizeImpl
+         * @see de.cau.cs.kieler.core.krendering.impl.KRenderingPackageImpl#getKFontSize()
+         * @generated
+         */
+        EClass KFONT_SIZE = eINSTANCE.getKFontSize();
+
+        /**
+         * The meta object literal for the '<em><b>Size</b></em>' attribute feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EAttribute KFONT_SIZE__SIZE = eINSTANCE.getKFontSize_Size();
 
         /**
          * The meta object literal for the '{@link de.cau.cs.kieler.core.krendering.LineStyle <em>Line Style</em>}' enum.

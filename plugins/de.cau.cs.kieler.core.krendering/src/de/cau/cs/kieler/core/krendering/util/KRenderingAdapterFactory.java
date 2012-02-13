@@ -253,6 +253,10 @@ public class KRenderingAdapterFactory extends AdapterFactoryImpl {
                 return createKFontNameAdapter();
             }
             @Override
+            public Adapter caseKFontSize(KFontSize object) {
+                return createKFontSizeAdapter();
+            }
+            @Override
             public Adapter caseIPropertyHolder(IPropertyHolder object) {
                 return createIPropertyHolderAdapter();
             }
@@ -897,6 +901,20 @@ public class KRenderingAdapterFactory extends AdapterFactoryImpl {
      * @generated
      */
     public Adapter createKFontNameAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class '{@link de.cau.cs.kieler.core.krendering.KFontSize <em>KFont Size</em>}'.
+     * <!-- begin-user-doc -->
+     * This default implementation returns null so that we can easily ignore cases;
+     * it's useful to ignore a case when inheritance will catch all the cases anyway.
+     * <!-- end-user-doc -->
+     * @return the new adapter.
+     * @see de.cau.cs.kieler.core.krendering.KFontSize
+     * @generated
+     */
+    public Adapter createKFontSizeAdapter() {
         return null;
     }
 
