@@ -139,6 +139,55 @@ public abstract class PNodeController<T extends PNode> {
     }
 
     /**
+     * Sets the font name of the associated node (most likely some kind of text).
+     * 
+     * @param fontName
+     *            the font name
+     */
+    public void setFontName(final String fontName) {
+        // do nothing
+    }
+
+    /**
+     * Sets the font size of the associated node (most likely some kind of text).
+     * 
+     * @param fontSize
+     *            the font size
+     */
+    public void setFontSize(final int fontSize) {
+        // do nothing
+    }
+
+    /**
+     * Sets the italic property for the associated node (most likely some kind of text).
+     * 
+     * @param italic
+     *            the italic property
+     */
+    public void setItalic(final boolean italic) {
+        // do nothing
+    }
+
+    /**
+     * Sets the bold property for the associated node (most likely some kind of text).
+     * 
+     * @param bold
+     *            the bold property
+     */
+    public void setBold(final boolean bold) {
+        // do nothing
+    }
+    
+    /**
+     * Applies changes to the associated node.<br>
+     * <br>
+     * This can be used to apply several style changes at once to prevent costly redundancy.
+     */
+    public void applyChanges() {
+        // do nothing
+    }
+
+    /**
      * Returns the associated node.
      * 
      * @return the node

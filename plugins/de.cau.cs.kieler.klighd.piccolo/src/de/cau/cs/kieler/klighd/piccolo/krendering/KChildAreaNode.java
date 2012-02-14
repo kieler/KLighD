@@ -61,7 +61,6 @@ public class KChildAreaNode extends PZIndexNode {
     public KChildAreaNode(final INode containingNode) {
         super(Z_LAYERS);
         this.containingNode = containingNode;
-        setPickable(false);
     }
 
     /**

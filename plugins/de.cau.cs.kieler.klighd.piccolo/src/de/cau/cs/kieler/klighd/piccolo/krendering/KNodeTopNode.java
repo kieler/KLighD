@@ -44,6 +44,7 @@ public class KNodeTopNode extends PEmptyNode implements INode, IWrapper<KNode> {
     public KNodeTopNode(final KNode node) {
         this.node = node;
         childArea = new KChildAreaNode(this);
+        childArea.setPickable(false);
         childArea.setClip(false);
         addChild(childArea);
         setPickable(false);

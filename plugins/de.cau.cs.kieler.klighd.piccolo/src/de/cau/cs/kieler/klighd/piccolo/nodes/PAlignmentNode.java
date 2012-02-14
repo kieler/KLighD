@@ -15,8 +15,11 @@ package de.cau.cs.kieler.klighd.piccolo.nodes;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.LinkedHashSet;
+import java.util.List;
+
+import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 
 import edu.umd.cs.piccolo.PNode;
 import edu.umd.cs.piccolo.util.PAffineTransform;
@@ -32,8 +35,11 @@ public class PAlignmentNode extends PEmptyNode implements PropertyChangeListener
 
     private static final long serialVersionUID = -2514462331029707306L;
 
-    /** the alignment data for the aligned children. */
-    private Map<PNode, AlignmentData> alignmentData = new HashMap<PNode, AlignmentData>();
+    /** the attribute key for the alignment data. */
+    private static final Object ALIGNMENT_DATA_KEY = new Object();
+
+    /** the currently managed aligned children. */
+    private LinkedHashSet<PNode> alignedChildren = Sets.newLinkedHashSet();
 
     /**
      * The horizontal alignments.
@@ -71,30 +77,62 @@ public class PAlignmentNode extends PEmptyNode implements PropertyChangeListener
      * {@inheritDoc}
      */
     public void propertyChange(final PropertyChangeEvent event) {
-        if (event.getSource() == this && event.getPropertyName().equals(PROPERTY_BOUNDS)) {
-            // adjust aligned children
-            for (Map.Entry<PNode, AlignmentData> entry : alignmentData.entrySet()) {
-                updateAlignedChild(entry.getKey(), entry.getValue());
+        if (event.getPropertyName().equals(PROPERTY_BOUNDS)) {
+            if (event.getSource() == this) {
+                // adjust aligned children
+                for (PNode alignedChild : alignedChildren) {
+                    AlignmentData data = getAlignmentData(alignedChild);
+                    updateAlignedChildHorizontal(data, alignedChild);
+                    updateAlignedChildVertical(data, alignedChild);
+                }
+            } else {
+                // adjust the aligned child
+                PNode alignedChild = (PNode) event.getSource();
+                AlignmentData data = getAlignmentData(alignedChild);
+                updateAlignedChildHorizontal(data, alignedChild);
+                updateAlignedChildVertical(data, alignedChild);
             }
         }
     }
 
     /**
-     * Adds a child to this node with a given alignment.
+     * Sets the horizontal alignment of a child node.
      * 
      * @param node
-     *            the node
+     *            the child node
      * @param halignment
      *            the horizontal alignment
+     */
+    public void setHorizontalAlignment(final PNode node, final HAlignment halignment) {
+        if (node.getParent() != this) {
+            return;
+        }
+
+        // apply the alignment
+        AlignmentData data = getAlignmentData(node);
+        data.halignment = halignment;
+        addAlignedChild(node);
+        updateAlignedChildHorizontal(data, node);
+    }
+
+    /**
+     * Sets the vertical alignment of a child node.
+     * 
+     * @param node
+     *            the child node
      * @param valignment
      *            the vertical alignment
      */
-    public void addAlignedChild(final PNode node, final HAlignment halignment,
-            final VAlignment valignment) {
-        AlignmentData alignment = new AlignmentData(halignment, valignment);
-        alignmentData.put(node, alignment);
-        addChild(node);
-        updateAlignedChild(node, alignment);
+    public void setVerticalAlignment(final PNode node, final VAlignment valignment) {
+        if (node.getParent() != this) {
+            return;
+        }
+
+        // apply the alignment
+        AlignmentData data = getAlignmentData(node);
+        data.valignment = valignment;
+        addAlignedChild(node);
+        updateAlignedChildVertical(data, node);
     }
 
     /**
@@ -104,7 +142,7 @@ public class PAlignmentNode extends PEmptyNode implements PropertyChangeListener
     public PNode removeChild(final int index) {
         PNode node = getChild(index);
         if (node != null) {
-            alignmentData.remove(node);
+            removeAlignedChild(node);
             return super.removeChild(index);
         }
         return null;
@@ -115,23 +153,26 @@ public class PAlignmentNode extends PEmptyNode implements PropertyChangeListener
      */
     @Override
     public void removeAllChildren() {
-        alignmentData.clear();
+        List<PNode> removedNodes = Lists.newLinkedList(alignedChildren);
+        for (PNode alignedChild : removedNodes) {
+            removeAlignedChild(alignedChild);
+        }
         super.removeAllChildren();
     }
 
     /**
-     * Updates the child with the given alignment data.
+     * Updates the given aligned child's horizontal alignment.
      * 
+     * @param alignment
+     *            the child's alignment data
      * @param child
      *            the child
-     * @param alignment
-     *            the alignment data
      */
-    private void updateAlignedChild(final PNode child, final AlignmentData alignment) {
+    private void updateAlignedChildHorizontal(final AlignmentData alignment, final PNode child) {
         // get the bounds of the alignment node
         PBounds thisBounds = getBoundsReference();
         // get the bounds of the aligned child
-        PBounds childBounds = child.getBounds();
+        PBounds childBounds = child.getBoundsReference();
         // adjust the child translation
         PAffineTransform transform = child.getTransformReference(true);
         // horizontal
@@ -148,6 +189,23 @@ public class PAlignmentNode extends PEmptyNode implements PropertyChangeListener
             child.translate(dX - transform.getTranslateX(), 0);
             break;
         }
+    }
+
+    /**
+     * Updates the given aligned child's vertical alignment.
+     * 
+     * @param alignment
+     *            the child's alignment data
+     * @param child
+     *            the child
+     */
+    private void updateAlignedChildVertical(final AlignmentData alignment, final PNode child) {
+        // get the bounds of the alignment node
+        PBounds thisBounds = getBoundsReference();
+        // get the bounds of the aligned child
+        PBounds childBounds = child.getBoundsReference();
+        // adjust the child translation
+        PAffineTransform transform = child.getTransformReference(true);
         // vertical
         switch (alignment.valignment) {
         case TOP:
@@ -162,6 +220,50 @@ public class PAlignmentNode extends PEmptyNode implements PropertyChangeListener
             child.translate(0, dY - transform.getTranslateY());
             break;
         }
+    }
+
+    /**
+     * Adds a node as aligned child.
+     * 
+     * @param node
+     *            the node
+     */
+    private void addAlignedChild(final PNode node) {
+        if (alignedChildren.add(node)) {
+            node.addPropertyChangeListener(PNode.PROPERTY_BOUNDS, this);
+        }
+    }
+
+    /**
+     * Removes a node as aligned child.
+     * 
+     * @param node
+     *            the node
+     */
+    private void removeAlignedChild(final PNode node) {
+        if (alignedChildren.remove(node)) {
+            node.removePropertyChangeListener(PNode.PROPERTY_BOUNDS, this);
+            node.addAttribute(ALIGNMENT_DATA_KEY, null);
+        }
+    }
+
+    /**
+     * Returns an alignment data instance attached to the given node.
+     * 
+     * @param node
+     *            the node
+     * @return the alignment data
+     */
+    private AlignmentData getAlignmentData(final PNode node) {
+        Object data = node.getAttribute(ALIGNMENT_DATA_KEY);
+        AlignmentData alignmentData;
+        if (data == null || !(data instanceof AlignmentData)) {
+            alignmentData = new AlignmentData(HAlignment.CENTER, VAlignment.CENTER);
+            node.addAttribute(ALIGNMENT_DATA_KEY, alignmentData);
+        } else {
+            alignmentData = (AlignmentData) data;
+        }
+        return alignmentData;
     }
 
     /**
