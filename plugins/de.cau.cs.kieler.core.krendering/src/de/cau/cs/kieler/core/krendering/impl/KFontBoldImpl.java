@@ -6,7 +6,7 @@
  */
 package de.cau.cs.kieler.core.krendering.impl;
 
-import de.cau.cs.kieler.core.krendering.KItalic;
+import de.cau.cs.kieler.core.krendering.KFontBold;
 import de.cau.cs.kieler.core.krendering.KRenderingPackage;
 
 import org.eclipse.emf.common.notify.Notification;
@@ -17,44 +17,44 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
 /**
  * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>KItalic</b></em>'.
+ * An implementation of the model object '<em><b>KFont Bold</b></em>'.
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link de.cau.cs.kieler.core.krendering.impl.KItalicImpl#isItalic <em>Italic</em>}</li>
+ *   <li>{@link de.cau.cs.kieler.core.krendering.impl.KFontBoldImpl#isBold <em>Bold</em>}</li>
  * </ul>
  * </p>
  *
  * @generated
  */
-public class KItalicImpl extends KStyleImpl implements KItalic {
+public class KFontBoldImpl extends KStyleImpl implements KFontBold {
     /**
-     * The default value of the '{@link #isItalic() <em>Italic</em>}' attribute.
+     * The default value of the '{@link #isBold() <em>Bold</em>}' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see #isItalic()
+     * @see #isBold()
      * @generated
      * @ordered
      */
-    protected static final boolean ITALIC_EDEFAULT = false;
+    protected static final boolean BOLD_EDEFAULT = false;
 
     /**
-     * The cached value of the '{@link #isItalic() <em>Italic</em>}' attribute.
+     * The cached value of the '{@link #isBold() <em>Bold</em>}' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see #isItalic()
+     * @see #isBold()
      * @generated
      * @ordered
      */
-    protected boolean italic = ITALIC_EDEFAULT;
+    protected boolean bold = BOLD_EDEFAULT;
 
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      */
-    protected KItalicImpl() {
+    protected KFontBoldImpl() {
         super();
     }
 
@@ -65,7 +65,7 @@ public class KItalicImpl extends KStyleImpl implements KItalic {
      */
     @Override
     protected EClass eStaticClass() {
-        return KRenderingPackage.Literals.KITALIC;
+        return KRenderingPackage.Literals.KFONT_BOLD;
     }
 
     /**
@@ -73,8 +73,8 @@ public class KItalicImpl extends KStyleImpl implements KItalic {
      * <!-- end-user-doc -->
      * @generated
      */
-    public boolean isItalic() {
-        return italic;
+    public boolean isBold() {
+        return bold;
     }
 
     /**
@@ -82,11 +82,11 @@ public class KItalicImpl extends KStyleImpl implements KItalic {
      * <!-- end-user-doc -->
      * @generated
      */
-    public void setItalic(boolean newItalic) {
-        boolean oldItalic = italic;
-        italic = newItalic;
+    public void setBold(boolean newBold) {
+        boolean oldBold = bold;
+        bold = newBold;
         if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, KRenderingPackage.KITALIC__ITALIC, oldItalic, italic));
+            eNotify(new ENotificationImpl(this, Notification.SET, KRenderingPackage.KFONT_BOLD__BOLD, oldBold, bold));
     }
 
     /**
@@ -97,8 +97,8 @@ public class KItalicImpl extends KStyleImpl implements KItalic {
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
-            case KRenderingPackage.KITALIC__ITALIC:
-                return isItalic();
+            case KRenderingPackage.KFONT_BOLD__BOLD:
+                return isBold();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -111,8 +111,8 @@ public class KItalicImpl extends KStyleImpl implements KItalic {
     @Override
     public void eSet(int featureID, Object newValue) {
         switch (featureID) {
-            case KRenderingPackage.KITALIC__ITALIC:
-                setItalic((Boolean)newValue);
+            case KRenderingPackage.KFONT_BOLD__BOLD:
+                setBold((Boolean)newValue);
                 return;
         }
         super.eSet(featureID, newValue);
@@ -126,8 +126,8 @@ public class KItalicImpl extends KStyleImpl implements KItalic {
     @Override
     public void eUnset(int featureID) {
         switch (featureID) {
-            case KRenderingPackage.KITALIC__ITALIC:
-                setItalic(ITALIC_EDEFAULT);
+            case KRenderingPackage.KFONT_BOLD__BOLD:
+                setBold(BOLD_EDEFAULT);
                 return;
         }
         super.eUnset(featureID);
@@ -141,8 +141,8 @@ public class KItalicImpl extends KStyleImpl implements KItalic {
     @Override
     public boolean eIsSet(int featureID) {
         switch (featureID) {
-            case KRenderingPackage.KITALIC__ITALIC:
-                return italic != ITALIC_EDEFAULT;
+            case KRenderingPackage.KFONT_BOLD__BOLD:
+                return bold != BOLD_EDEFAULT;
         }
         return super.eIsSet(featureID);
     }
@@ -157,10 +157,10 @@ public class KItalicImpl extends KStyleImpl implements KItalic {
         if (eIsProxy()) return super.toString();
 
         StringBuffer result = new StringBuffer(super.toString());
-        result.append(" (italic: ");
-        result.append(italic);
+        result.append(" (bold: ");
+        result.append(bold);
         result.append(')');
         return result.toString();
     }
 
-} //KItalicImpl
+} //KFontBoldImpl

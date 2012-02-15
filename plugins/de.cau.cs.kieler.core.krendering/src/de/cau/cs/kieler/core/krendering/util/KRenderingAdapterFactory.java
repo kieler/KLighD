@@ -193,8 +193,8 @@ public class KRenderingAdapterFactory extends AdapterFactoryImpl {
                 return createKLineWidthAdapter();
             }
             @Override
-            public Adapter caseKLineVisible(KLineVisible object) {
-                return createKLineVisibleAdapter();
+            public Adapter caseKForegroundVisibility(KForegroundVisibility object) {
+                return createKForegroundVisibilityAdapter();
             }
             @Override
             public Adapter caseKLineStyle(KLineStyle object) {
@@ -233,20 +233,8 @@ public class KRenderingAdapterFactory extends AdapterFactoryImpl {
                 return createKBottomPositionAdapter();
             }
             @Override
-            public Adapter caseKSpline(KSpline object) {
-                return createKSplineAdapter();
-            }
-            @Override
-            public Adapter caseKFilled(KFilled object) {
-                return createKFilledAdapter();
-            }
-            @Override
-            public Adapter caseKItalic(KItalic object) {
-                return createKItalicAdapter();
-            }
-            @Override
-            public Adapter caseKBold(KBold object) {
-                return createKBoldAdapter();
+            public Adapter caseKBackgroundVisibility(KBackgroundVisibility object) {
+                return createKBackgroundVisibilityAdapter();
             }
             @Override
             public Adapter caseKFontName(KFontName object) {
@@ -255,6 +243,14 @@ public class KRenderingAdapterFactory extends AdapterFactoryImpl {
             @Override
             public Adapter caseKFontSize(KFontSize object) {
                 return createKFontSizeAdapter();
+            }
+            @Override
+            public Adapter caseKFontItalic(KFontItalic object) {
+                return createKFontItalicAdapter();
+            }
+            @Override
+            public Adapter caseKFontBold(KFontBold object) {
+                return createKFontBoldAdapter();
             }
             @Override
             public Adapter caseIPropertyHolder(IPropertyHolder object) {
@@ -695,16 +691,16 @@ public class KRenderingAdapterFactory extends AdapterFactoryImpl {
     }
 
     /**
-     * Creates a new adapter for an object of class '{@link de.cau.cs.kieler.core.krendering.KLineVisible <em>KLine Visible</em>}'.
+     * Creates a new adapter for an object of class '{@link de.cau.cs.kieler.core.krendering.KForegroundVisibility <em>KForeground Visibility</em>}'.
      * <!-- begin-user-doc -->
      * This default implementation returns null so that we can easily ignore cases;
      * it's useful to ignore a case when inheritance will catch all the cases anyway.
      * <!-- end-user-doc -->
      * @return the new adapter.
-     * @see de.cau.cs.kieler.core.krendering.KLineVisible
+     * @see de.cau.cs.kieler.core.krendering.KForegroundVisibility
      * @generated
      */
-    public Adapter createKLineVisibleAdapter() {
+    public Adapter createKForegroundVisibilityAdapter() {
         return null;
     }
 
@@ -835,58 +831,16 @@ public class KRenderingAdapterFactory extends AdapterFactoryImpl {
     }
 
     /**
-     * Creates a new adapter for an object of class '{@link de.cau.cs.kieler.core.krendering.KSpline <em>KSpline</em>}'.
+     * Creates a new adapter for an object of class '{@link de.cau.cs.kieler.core.krendering.KBackgroundVisibility <em>KBackground Visibility</em>}'.
      * <!-- begin-user-doc -->
      * This default implementation returns null so that we can easily ignore cases;
      * it's useful to ignore a case when inheritance will catch all the cases anyway.
      * <!-- end-user-doc -->
      * @return the new adapter.
-     * @see de.cau.cs.kieler.core.krendering.KSpline
+     * @see de.cau.cs.kieler.core.krendering.KBackgroundVisibility
      * @generated
      */
-    public Adapter createKSplineAdapter() {
-        return null;
-    }
-
-    /**
-     * Creates a new adapter for an object of class '{@link de.cau.cs.kieler.core.krendering.KFilled <em>KFilled</em>}'.
-     * <!-- begin-user-doc -->
-     * This default implementation returns null so that we can easily ignore cases;
-     * it's useful to ignore a case when inheritance will catch all the cases anyway.
-     * <!-- end-user-doc -->
-     * @return the new adapter.
-     * @see de.cau.cs.kieler.core.krendering.KFilled
-     * @generated
-     */
-    public Adapter createKFilledAdapter() {
-        return null;
-    }
-
-    /**
-     * Creates a new adapter for an object of class '{@link de.cau.cs.kieler.core.krendering.KItalic <em>KItalic</em>}'.
-     * <!-- begin-user-doc -->
-     * This default implementation returns null so that we can easily ignore cases;
-     * it's useful to ignore a case when inheritance will catch all the cases anyway.
-     * <!-- end-user-doc -->
-     * @return the new adapter.
-     * @see de.cau.cs.kieler.core.krendering.KItalic
-     * @generated
-     */
-    public Adapter createKItalicAdapter() {
-        return null;
-    }
-
-    /**
-     * Creates a new adapter for an object of class '{@link de.cau.cs.kieler.core.krendering.KBold <em>KBold</em>}'.
-     * <!-- begin-user-doc -->
-     * This default implementation returns null so that we can easily ignore cases;
-     * it's useful to ignore a case when inheritance will catch all the cases anyway.
-     * <!-- end-user-doc -->
-     * @return the new adapter.
-     * @see de.cau.cs.kieler.core.krendering.KBold
-     * @generated
-     */
-    public Adapter createKBoldAdapter() {
+    public Adapter createKBackgroundVisibilityAdapter() {
         return null;
     }
 
@@ -915,6 +869,34 @@ public class KRenderingAdapterFactory extends AdapterFactoryImpl {
      * @generated
      */
     public Adapter createKFontSizeAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class '{@link de.cau.cs.kieler.core.krendering.KFontItalic <em>KFont Italic</em>}'.
+     * <!-- begin-user-doc -->
+     * This default implementation returns null so that we can easily ignore cases;
+     * it's useful to ignore a case when inheritance will catch all the cases anyway.
+     * <!-- end-user-doc -->
+     * @return the new adapter.
+     * @see de.cau.cs.kieler.core.krendering.KFontItalic
+     * @generated
+     */
+    public Adapter createKFontItalicAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class '{@link de.cau.cs.kieler.core.krendering.KFontBold <em>KFont Bold</em>}'.
+     * <!-- begin-user-doc -->
+     * This default implementation returns null so that we can easily ignore cases;
+     * it's useful to ignore a case when inheritance will catch all the cases anyway.
+     * <!-- end-user-doc -->
+     * @return the new adapter.
+     * @see de.cau.cs.kieler.core.krendering.KFontBold
+     * @generated
+     */
+    public Adapter createKFontBoldAdapter() {
         return null;
     }
 

@@ -242,13 +242,13 @@ public interface KRenderingFactory extends EFactory {
     KLineWidth createKLineWidth();
 
     /**
-     * Returns a new object of class '<em>KLine Visible</em>'.
+     * Returns a new object of class '<em>KForeground Visibility</em>'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return a new object of class '<em>KLine Visible</em>'.
+     * @return a new object of class '<em>KForeground Visibility</em>'.
      * @generated
      */
-    KLineVisible createKLineVisible();
+    KForegroundVisibility createKForegroundVisibility();
 
     /**
      * Returns a new object of class '<em>KLine Style</em>'.
@@ -314,40 +314,13 @@ public interface KRenderingFactory extends EFactory {
     KBottomPosition createKBottomPosition();
 
     /**
-     * Returns a new object of class '<em>KSpline</em>'.
+     * Returns a new object of class '<em>KBackground Visibility</em>'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return a new object of class '<em>KSpline</em>'.
+     * @return a new object of class '<em>KBackground Visibility</em>'.
      * @generated
      */
-    KSpline createKSpline();
-
-    /**
-     * Returns a new object of class '<em>KFilled</em>'.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @return a new object of class '<em>KFilled</em>'.
-     * @generated
-     */
-    KFilled createKFilled();
-
-    /**
-     * Returns a new object of class '<em>KItalic</em>'.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @return a new object of class '<em>KItalic</em>'.
-     * @generated
-     */
-    KItalic createKItalic();
-
-    /**
-     * Returns a new object of class '<em>KBold</em>'.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @return a new object of class '<em>KBold</em>'.
-     * @generated
-     */
-    KBold createKBold();
+    KBackgroundVisibility createKBackgroundVisibility();
 
     /**
      * Returns a new object of class '<em>KFont Name</em>'.
@@ -366,6 +339,24 @@ public interface KRenderingFactory extends EFactory {
      * @generated
      */
     KFontSize createKFontSize();
+
+    /**
+     * Returns a new object of class '<em>KFont Italic</em>'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return a new object of class '<em>KFont Italic</em>'.
+     * @generated
+     */
+    KFontItalic createKFontItalic();
+
+    /**
+     * Returns a new object of class '<em>KFont Bold</em>'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return a new object of class '<em>KFont Bold</em>'.
+     * @generated
+     */
+    KFontBold createKFontBold();
 
     /**
      * Returns the package supported by this factory.

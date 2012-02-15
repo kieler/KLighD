@@ -9,21 +9,21 @@ package de.cau.cs.kieler.core.krendering;
 
 /**
  * <!-- begin-user-doc -->
- * A representation of the model object '<em><b>KItalic</b></em>'.
+ * A representation of the model object '<em><b>KFont Italic</b></em>'.
  * <!-- end-user-doc -->
  *
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link de.cau.cs.kieler.core.krendering.KItalic#isItalic <em>Italic</em>}</li>
+ *   <li>{@link de.cau.cs.kieler.core.krendering.KFontItalic#isItalic <em>Italic</em>}</li>
  * </ul>
  * </p>
  *
- * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKItalic()
+ * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKFontItalic()
  * @model
  * @generated
  */
-public interface KItalic extends KStyle {
+public interface KFontItalic extends KStyle {
     /**
      * Returns the value of the '<em><b>Italic</b></em>' attribute.
      * <!-- begin-user-doc -->
@@ -34,14 +34,14 @@ public interface KItalic extends KStyle {
      * <!-- end-user-doc -->
      * @return the value of the '<em>Italic</em>' attribute.
      * @see #setItalic(boolean)
-     * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKItalic_Italic()
+     * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKFontItalic_Italic()
      * @model required="true"
      * @generated
      */
     boolean isItalic();
 
     /**
-     * Sets the value of the '{@link de.cau.cs.kieler.core.krendering.KItalic#isItalic <em>Italic</em>}' attribute.
+     * Sets the value of the '{@link de.cau.cs.kieler.core.krendering.KFontItalic#isItalic <em>Italic</em>}' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @param value the new value of the '<em>Italic</em>' attribute.
@@ -50,4 +50,4 @@ public interface KItalic extends KStyle {
      */
     void setItalic(boolean value);
 
-} // KItalic
+} // KFontItalic

@@ -6,7 +6,7 @@
  */
 package de.cau.cs.kieler.core.krendering.impl;
 
-import de.cau.cs.kieler.core.krendering.KBold;
+import de.cau.cs.kieler.core.krendering.KBackgroundVisibility;
 import de.cau.cs.kieler.core.krendering.KRenderingPackage;
 
 import org.eclipse.emf.common.notify.Notification;
@@ -17,44 +17,44 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
 /**
  * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>KBold</b></em>'.
+ * An implementation of the model object '<em><b>KBackground Visibility</b></em>'.
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link de.cau.cs.kieler.core.krendering.impl.KBoldImpl#isBold <em>Bold</em>}</li>
+ *   <li>{@link de.cau.cs.kieler.core.krendering.impl.KBackgroundVisibilityImpl#isVisibility <em>Visibility</em>}</li>
  * </ul>
  * </p>
  *
  * @generated
  */
-public class KBoldImpl extends KStyleImpl implements KBold {
+public class KBackgroundVisibilityImpl extends KStyleImpl implements KBackgroundVisibility {
     /**
-     * The default value of the '{@link #isBold() <em>Bold</em>}' attribute.
+     * The default value of the '{@link #isVisibility() <em>Visibility</em>}' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see #isBold()
+     * @see #isVisibility()
      * @generated
      * @ordered
      */
-    protected static final boolean BOLD_EDEFAULT = false;
+    protected static final boolean VISIBILITY_EDEFAULT = false;
 
     /**
-     * The cached value of the '{@link #isBold() <em>Bold</em>}' attribute.
+     * The cached value of the '{@link #isVisibility() <em>Visibility</em>}' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see #isBold()
+     * @see #isVisibility()
      * @generated
      * @ordered
      */
-    protected boolean bold = BOLD_EDEFAULT;
+    protected boolean visibility = VISIBILITY_EDEFAULT;
 
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      */
-    protected KBoldImpl() {
+    protected KBackgroundVisibilityImpl() {
         super();
     }
 
@@ -65,7 +65,7 @@ public class KBoldImpl extends KStyleImpl implements KBold {
      */
     @Override
     protected EClass eStaticClass() {
-        return KRenderingPackage.Literals.KBOLD;
+        return KRenderingPackage.Literals.KBACKGROUND_VISIBILITY;
     }
 
     /**
@@ -73,8 +73,8 @@ public class KBoldImpl extends KStyleImpl implements KBold {
      * <!-- end-user-doc -->
      * @generated
      */
-    public boolean isBold() {
-        return bold;
+    public boolean isVisibility() {
+        return visibility;
     }
 
     /**
@@ -82,11 +82,11 @@ public class KBoldImpl extends KStyleImpl implements KBold {
      * <!-- end-user-doc -->
      * @generated
      */
-    public void setBold(boolean newBold) {
-        boolean oldBold = bold;
-        bold = newBold;
+    public void setVisibility(boolean newVisibility) {
+        boolean oldVisibility = visibility;
+        visibility = newVisibility;
         if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, KRenderingPackage.KBOLD__BOLD, oldBold, bold));
+            eNotify(new ENotificationImpl(this, Notification.SET, KRenderingPackage.KBACKGROUND_VISIBILITY__VISIBILITY, oldVisibility, visibility));
     }
 
     /**
@@ -97,8 +97,8 @@ public class KBoldImpl extends KStyleImpl implements KBold {
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
-            case KRenderingPackage.KBOLD__BOLD:
-                return isBold();
+            case KRenderingPackage.KBACKGROUND_VISIBILITY__VISIBILITY:
+                return isVisibility();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -111,8 +111,8 @@ public class KBoldImpl extends KStyleImpl implements KBold {
     @Override
     public void eSet(int featureID, Object newValue) {
         switch (featureID) {
-            case KRenderingPackage.KBOLD__BOLD:
-                setBold((Boolean)newValue);
+            case KRenderingPackage.KBACKGROUND_VISIBILITY__VISIBILITY:
+                setVisibility((Boolean)newValue);
                 return;
         }
         super.eSet(featureID, newValue);
@@ -126,8 +126,8 @@ public class KBoldImpl extends KStyleImpl implements KBold {
     @Override
     public void eUnset(int featureID) {
         switch (featureID) {
-            case KRenderingPackage.KBOLD__BOLD:
-                setBold(BOLD_EDEFAULT);
+            case KRenderingPackage.KBACKGROUND_VISIBILITY__VISIBILITY:
+                setVisibility(VISIBILITY_EDEFAULT);
                 return;
         }
         super.eUnset(featureID);
@@ -141,8 +141,8 @@ public class KBoldImpl extends KStyleImpl implements KBold {
     @Override
     public boolean eIsSet(int featureID) {
         switch (featureID) {
-            case KRenderingPackage.KBOLD__BOLD:
-                return bold != BOLD_EDEFAULT;
+            case KRenderingPackage.KBACKGROUND_VISIBILITY__VISIBILITY:
+                return visibility != VISIBILITY_EDEFAULT;
         }
         return super.eIsSet(featureID);
     }
@@ -157,10 +157,10 @@ public class KBoldImpl extends KStyleImpl implements KBold {
         if (eIsProxy()) return super.toString();
 
         StringBuffer result = new StringBuffer(super.toString());
-        result.append(" (bold: ");
-        result.append(bold);
+        result.append(" (visibility: ");
+        result.append(visibility);
         result.append(')');
         return result.toString();
     }
 
-} //KBoldImpl
+} //KBackgroundVisibilityImpl

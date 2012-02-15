@@ -9,21 +9,21 @@ package de.cau.cs.kieler.core.krendering;
 
 /**
  * <!-- begin-user-doc -->
- * A representation of the model object '<em><b>KBold</b></em>'.
+ * A representation of the model object '<em><b>KFont Bold</b></em>'.
  * <!-- end-user-doc -->
  *
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link de.cau.cs.kieler.core.krendering.KBold#isBold <em>Bold</em>}</li>
+ *   <li>{@link de.cau.cs.kieler.core.krendering.KFontBold#isBold <em>Bold</em>}</li>
  * </ul>
  * </p>
  *
- * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKBold()
+ * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKFontBold()
  * @model
  * @generated
  */
-public interface KBold extends KStyle {
+public interface KFontBold extends KStyle {
     /**
      * Returns the value of the '<em><b>Bold</b></em>' attribute.
      * <!-- begin-user-doc -->
@@ -34,14 +34,14 @@ public interface KBold extends KStyle {
      * <!-- end-user-doc -->
      * @return the value of the '<em>Bold</em>' attribute.
      * @see #setBold(boolean)
-     * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKBold_Bold()
+     * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKFontBold_Bold()
      * @model required="true"
      * @generated
      */
     boolean isBold();
 
     /**
-     * Sets the value of the '{@link de.cau.cs.kieler.core.krendering.KBold#isBold <em>Bold</em>}' attribute.
+     * Sets the value of the '{@link de.cau.cs.kieler.core.krendering.KFontBold#isBold <em>Bold</em>}' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @param value the new value of the '<em>Bold</em>' attribute.
@@ -50,4 +50,4 @@ public interface KBold extends KStyle {
      */
     void setBold(boolean value);
 
-} // KBold
+} // KFontBold
