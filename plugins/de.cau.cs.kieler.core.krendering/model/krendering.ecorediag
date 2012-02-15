@@ -580,7 +580,7 @@
     <children xmi:type="notation:Node" xmi:id="_nDauEDOyEeGkqbctTutDOg" type="4001"/>
     <children xmi:type="notation:Node" xmi:id="_nDauETOyEeGkqbctTutDOg" type="5001">
       <children xmi:type="notation:Node" xmi:id="_nDbVJDOyEeGkqbctTutDOg" type="2001">
-        <element xmi:type="ecore:EAttribute" href="krendering.ecore#//KForegroundVisibility/visibility"/>
+        <element xmi:type="ecore:EAttribute" href="krendering.ecore#//KForegroundVisibility/visible"/>
         <layoutConstraint xmi:type="notation:Location" xmi:id="_nDbVJTOyEeGkqbctTutDOg"/>
       </children>
       <styles xmi:type="notation:DrawerStyle" xmi:id="_nDauEjOyEeGkqbctTutDOg"/>
@@ -849,7 +849,7 @@
     <children xmi:type="notation:Node" xmi:id="_68rlsFfcEeGg-4bIwK49bg" type="4001"/>
     <children xmi:type="notation:Node" xmi:id="_68ta4FfcEeGg-4bIwK49bg" type="5001">
       <children xmi:type="notation:Node" xmi:id="_a0YXEFfdEeGg-4bIwK49bg" type="2001">
-        <element xmi:type="ecore:EAttribute" href="krendering.ecore#//KBackgroundVisibility/visibility"/>
+        <element xmi:type="ecore:EAttribute" href="krendering.ecore#//KBackgroundVisibility/visible"/>
         <layoutConstraint xmi:type="notation:Location" xmi:id="_a0YXEVfdEeGg-4bIwK49bg"/>
       </children>
       <styles xmi:type="notation:DrawerStyle" xmi:id="_68ta4VfcEeGg-4bIwK49bg"/>

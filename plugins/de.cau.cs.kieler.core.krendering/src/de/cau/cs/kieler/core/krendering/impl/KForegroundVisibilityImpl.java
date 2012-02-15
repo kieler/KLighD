@@ -22,7 +22,7 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link de.cau.cs.kieler.core.krendering.impl.KForegroundVisibilityImpl#isVisibility <em>Visibility</em>}</li>
+ *   <li>{@link de.cau.cs.kieler.core.krendering.impl.KForegroundVisibilityImpl#isVisible <em>Visible</em>}</li>
  * </ul>
  * </p>
  *
@@ -30,24 +30,24 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  */
 public class KForegroundVisibilityImpl extends KStyleImpl implements KForegroundVisibility {
     /**
-     * The default value of the '{@link #isVisibility() <em>Visibility</em>}' attribute.
+     * The default value of the '{@link #isVisible() <em>Visible</em>}' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see #isVisibility()
+     * @see #isVisible()
      * @generated
      * @ordered
      */
-    protected static final boolean VISIBILITY_EDEFAULT = false;
+    protected static final boolean VISIBLE_EDEFAULT = false;
 
     /**
-     * The cached value of the '{@link #isVisibility() <em>Visibility</em>}' attribute.
+     * The cached value of the '{@link #isVisible() <em>Visible</em>}' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see #isVisibility()
+     * @see #isVisible()
      * @generated
      * @ordered
      */
-    protected boolean visibility = VISIBILITY_EDEFAULT;
+    protected boolean visible = VISIBLE_EDEFAULT;
 
     /**
      * <!-- begin-user-doc -->
@@ -73,8 +73,8 @@ public class KForegroundVisibilityImpl extends KStyleImpl implements KForeground
      * <!-- end-user-doc -->
      * @generated
      */
-    public boolean isVisibility() {
-        return visibility;
+    public boolean isVisible() {
+        return visible;
     }
 
     /**
@@ -82,11 +82,11 @@ public class KForegroundVisibilityImpl extends KStyleImpl implements KForeground
      * <!-- end-user-doc -->
      * @generated
      */
-    public void setVisibility(boolean newVisibility) {
-        boolean oldVisibility = visibility;
-        visibility = newVisibility;
+    public void setVisible(boolean newVisible) {
+        boolean oldVisible = visible;
+        visible = newVisible;
         if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, KRenderingPackage.KFOREGROUND_VISIBILITY__VISIBILITY, oldVisibility, visibility));
+            eNotify(new ENotificationImpl(this, Notification.SET, KRenderingPackage.KFOREGROUND_VISIBILITY__VISIBLE, oldVisible, visible));
     }
 
     /**
@@ -97,8 +97,8 @@ public class KForegroundVisibilityImpl extends KStyleImpl implements KForeground
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
-            case KRenderingPackage.KFOREGROUND_VISIBILITY__VISIBILITY:
-                return isVisibility();
+            case KRenderingPackage.KFOREGROUND_VISIBILITY__VISIBLE:
+                return isVisible();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -111,8 +111,8 @@ public class KForegroundVisibilityImpl extends KStyleImpl implements KForeground
     @Override
     public void eSet(int featureID, Object newValue) {
         switch (featureID) {
-            case KRenderingPackage.KFOREGROUND_VISIBILITY__VISIBILITY:
-                setVisibility((Boolean)newValue);
+            case KRenderingPackage.KFOREGROUND_VISIBILITY__VISIBLE:
+                setVisible((Boolean)newValue);
                 return;
         }
         super.eSet(featureID, newValue);
@@ -126,8 +126,8 @@ public class KForegroundVisibilityImpl extends KStyleImpl implements KForeground
     @Override
     public void eUnset(int featureID) {
         switch (featureID) {
-            case KRenderingPackage.KFOREGROUND_VISIBILITY__VISIBILITY:
-                setVisibility(VISIBILITY_EDEFAULT);
+            case KRenderingPackage.KFOREGROUND_VISIBILITY__VISIBLE:
+                setVisible(VISIBLE_EDEFAULT);
                 return;
         }
         super.eUnset(featureID);
@@ -141,8 +141,8 @@ public class KForegroundVisibilityImpl extends KStyleImpl implements KForeground
     @Override
     public boolean eIsSet(int featureID) {
         switch (featureID) {
-            case KRenderingPackage.KFOREGROUND_VISIBILITY__VISIBILITY:
-                return visibility != VISIBILITY_EDEFAULT;
+            case KRenderingPackage.KFOREGROUND_VISIBILITY__VISIBLE:
+                return visible != VISIBLE_EDEFAULT;
         }
         return super.eIsSet(featureID);
     }
@@ -157,8 +157,8 @@ public class KForegroundVisibilityImpl extends KStyleImpl implements KForeground
         if (eIsProxy()) return super.toString();
 
         StringBuffer result = new StringBuffer(super.toString());
-        result.append(" (visibility: ");
-        result.append(visibility);
+        result.append(" (visible: ");
+        result.append(visible);
         result.append(')');
         return result.toString();
     }

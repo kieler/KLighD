@@ -15,7 +15,7 @@ package de.cau.cs.kieler.core.krendering;
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link de.cau.cs.kieler.core.krendering.KForegroundVisibility#isVisibility <em>Visibility</em>}</li>
+ *   <li>{@link de.cau.cs.kieler.core.krendering.KForegroundVisibility#isVisible <em>Visible</em>}</li>
  * </ul>
  * </p>
  *
@@ -25,29 +25,29 @@ package de.cau.cs.kieler.core.krendering;
  */
 public interface KForegroundVisibility extends KStyle {
     /**
-     * Returns the value of the '<em><b>Visibility</b></em>' attribute.
+     * Returns the value of the '<em><b>Visible</b></em>' attribute.
      * <!-- begin-user-doc -->
      * <p>
-     * If the meaning of the '<em>Visibility</em>' attribute isn't clear,
+     * If the meaning of the '<em>Visible</em>' attribute isn't clear,
      * there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
-     * @return the value of the '<em>Visibility</em>' attribute.
-     * @see #setVisibility(boolean)
-     * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKForegroundVisibility_Visibility()
+     * @return the value of the '<em>Visible</em>' attribute.
+     * @see #setVisible(boolean)
+     * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKForegroundVisibility_Visible()
      * @model required="true"
      * @generated
      */
-    boolean isVisibility();
+    boolean isVisible();
 
     /**
-     * Sets the value of the '{@link de.cau.cs.kieler.core.krendering.KForegroundVisibility#isVisibility <em>Visibility</em>}' attribute.
+     * Sets the value of the '{@link de.cau.cs.kieler.core.krendering.KForegroundVisibility#isVisible <em>Visible</em>}' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @param value the new value of the '<em>Visibility</em>' attribute.
-     * @see #isVisibility()
+     * @param value the new value of the '<em>Visible</em>' attribute.
+     * @see #isVisible()
      * @generated
      */
-    void setVisibility(boolean value);
+    void setVisible(boolean value);
 
 } // KForegroundVisibility

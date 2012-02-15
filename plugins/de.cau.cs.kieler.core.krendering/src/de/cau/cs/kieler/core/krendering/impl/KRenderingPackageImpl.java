@@ -1119,7 +1119,7 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
      * <!-- end-user-doc -->
      * @generated
      */
-    public EAttribute getKForegroundVisibility_Visibility() {
+    public EAttribute getKForegroundVisibility_Visible() {
         return (EAttribute)kForegroundVisibilityEClass.getEStructuralFeatures().get(0);
     }
 
@@ -1281,7 +1281,7 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
      * <!-- end-user-doc -->
      * @generated
      */
-    public EAttribute getKBackgroundVisibility_Visibility() {
+    public EAttribute getKBackgroundVisibility_Visible() {
         return (EAttribute)kBackgroundVisibilityEClass.getEStructuralFeatures().get(0);
     }
 
@@ -1513,7 +1513,7 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
         createEAttribute(kLineWidthEClass, KLINE_WIDTH__LINE_WIDTH);
 
         kForegroundVisibilityEClass = createEClass(KFOREGROUND_VISIBILITY);
-        createEAttribute(kForegroundVisibilityEClass, KFOREGROUND_VISIBILITY__VISIBILITY);
+        createEAttribute(kForegroundVisibilityEClass, KFOREGROUND_VISIBILITY__VISIBLE);
 
         kLineStyleEClass = createEClass(KLINE_STYLE);
         createEAttribute(kLineStyleEClass, KLINE_STYLE__LINE_STYLE);
@@ -1541,7 +1541,7 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
         kBottomPositionEClass = createEClass(KBOTTOM_POSITION);
 
         kBackgroundVisibilityEClass = createEClass(KBACKGROUND_VISIBILITY);
-        createEAttribute(kBackgroundVisibilityEClass, KBACKGROUND_VISIBILITY__VISIBILITY);
+        createEAttribute(kBackgroundVisibilityEClass, KBACKGROUND_VISIBILITY__VISIBLE);
 
         kFontNameEClass = createEClass(KFONT_NAME);
         createEAttribute(kFontNameEClass, KFONT_NAME__NAME);
@@ -1733,7 +1733,7 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
         initEAttribute(getKLineWidth_LineWidth(), ecorePackage.getEInt(), "lineWidth", null, 1, 1, KLineWidth.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         initEClass(kForegroundVisibilityEClass, KForegroundVisibility.class, "KForegroundVisibility", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-        initEAttribute(getKForegroundVisibility_Visibility(), ecorePackage.getEBoolean(), "visibility", null, 1, 1, KForegroundVisibility.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEAttribute(getKForegroundVisibility_Visible(), ecorePackage.getEBoolean(), "visible", null, 1, 1, KForegroundVisibility.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         initEClass(kLineStyleEClass, KLineStyle.class, "KLineStyle", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         initEAttribute(getKLineStyle_LineStyle(), this.getLineStyle(), "lineStyle", null, 1, 1, KLineStyle.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -1761,7 +1761,7 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
         initEClass(kBottomPositionEClass, KBottomPosition.class, "KBottomPosition", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
         initEClass(kBackgroundVisibilityEClass, KBackgroundVisibility.class, "KBackgroundVisibility", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-        initEAttribute(getKBackgroundVisibility_Visibility(), ecorePackage.getEBoolean(), "visibility", null, 1, 1, KBackgroundVisibility.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEAttribute(getKBackgroundVisibility_Visible(), ecorePackage.getEBoolean(), "visible", null, 1, 1, KBackgroundVisibility.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         initEClass(kFontNameEClass, KFontName.class, "KFontName", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         initEAttribute(getKFontName_Name(), ecorePackage.getEString(), "name", null, 1, 1, KFontName.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);

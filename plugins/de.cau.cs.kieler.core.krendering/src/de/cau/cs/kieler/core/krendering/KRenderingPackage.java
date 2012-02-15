@@ -1992,13 +1992,13 @@ public interface KRenderingPackage extends EPackage {
     int KFOREGROUND_VISIBILITY__PROPAGATE_TO_CHILDREN = KSTYLE__PROPAGATE_TO_CHILDREN;
 
     /**
-     * The feature id for the '<em><b>Visibility</b></em>' attribute.
+     * The feature id for the '<em><b>Visible</b></em>' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int KFOREGROUND_VISIBILITY__VISIBILITY = KSTYLE_FEATURE_COUNT + 0;
+    int KFOREGROUND_VISIBILITY__VISIBLE = KSTYLE_FEATURE_COUNT + 0;
 
     /**
      * The number of structural features of the '<em>KForeground Visibility</em>' class.
@@ -2398,13 +2398,13 @@ public interface KRenderingPackage extends EPackage {
     int KBACKGROUND_VISIBILITY__PROPAGATE_TO_CHILDREN = KSTYLE__PROPAGATE_TO_CHILDREN;
 
     /**
-     * The feature id for the '<em><b>Visibility</b></em>' attribute.
+     * The feature id for the '<em><b>Visible</b></em>' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int KBACKGROUND_VISIBILITY__VISIBILITY = KSTYLE_FEATURE_COUNT + 0;
+    int KBACKGROUND_VISIBILITY__VISIBLE = KSTYLE_FEATURE_COUNT + 0;
 
     /**
      * The number of structural features of the '<em>KBackground Visibility</em>' class.
@@ -3393,15 +3393,15 @@ public interface KRenderingPackage extends EPackage {
     EClass getKForegroundVisibility();
 
     /**
-     * Returns the meta object for the attribute '{@link de.cau.cs.kieler.core.krendering.KForegroundVisibility#isVisibility <em>Visibility</em>}'.
+     * Returns the meta object for the attribute '{@link de.cau.cs.kieler.core.krendering.KForegroundVisibility#isVisible <em>Visible</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for the attribute '<em>Visibility</em>'.
-     * @see de.cau.cs.kieler.core.krendering.KForegroundVisibility#isVisibility()
+     * @return the meta object for the attribute '<em>Visible</em>'.
+     * @see de.cau.cs.kieler.core.krendering.KForegroundVisibility#isVisible()
      * @see #getKForegroundVisibility()
      * @generated
      */
-    EAttribute getKForegroundVisibility_Visibility();
+    EAttribute getKForegroundVisibility_Visible();
 
     /**
      * Returns the meta object for class '{@link de.cau.cs.kieler.core.krendering.KLineStyle <em>KLine Style</em>}'.
@@ -3581,15 +3581,15 @@ public interface KRenderingPackage extends EPackage {
     EClass getKBackgroundVisibility();
 
     /**
-     * Returns the meta object for the attribute '{@link de.cau.cs.kieler.core.krendering.KBackgroundVisibility#isVisibility <em>Visibility</em>}'.
+     * Returns the meta object for the attribute '{@link de.cau.cs.kieler.core.krendering.KBackgroundVisibility#isVisible <em>Visible</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for the attribute '<em>Visibility</em>'.
-     * @see de.cau.cs.kieler.core.krendering.KBackgroundVisibility#isVisibility()
+     * @return the meta object for the attribute '<em>Visible</em>'.
+     * @see de.cau.cs.kieler.core.krendering.KBackgroundVisibility#isVisible()
      * @see #getKBackgroundVisibility()
      * @generated
      */
-    EAttribute getKBackgroundVisibility_Visibility();
+    EAttribute getKBackgroundVisibility_Visible();
 
     /**
      * Returns the meta object for class '{@link de.cau.cs.kieler.core.krendering.KFontName <em>KFont Name</em>}'.
@@ -4364,12 +4364,12 @@ public interface KRenderingPackage extends EPackage {
         EClass KFOREGROUND_VISIBILITY = eINSTANCE.getKForegroundVisibility();
 
         /**
-         * The meta object literal for the '<em><b>Visibility</b></em>' attribute feature.
+         * The meta object literal for the '<em><b>Visible</b></em>' attribute feature.
          * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
          * @generated
          */
-        EAttribute KFOREGROUND_VISIBILITY__VISIBILITY = eINSTANCE.getKForegroundVisibility_Visibility();
+        EAttribute KFOREGROUND_VISIBILITY__VISIBLE = eINSTANCE.getKForegroundVisibility_Visible();
 
         /**
          * The meta object literal for the '{@link de.cau.cs.kieler.core.krendering.impl.KLineStyleImpl <em>KLine Style</em>}' class.
@@ -4528,12 +4528,12 @@ public interface KRenderingPackage extends EPackage {
         EClass KBACKGROUND_VISIBILITY = eINSTANCE.getKBackgroundVisibility();
 
         /**
-         * The meta object literal for the '<em><b>Visibility</b></em>' attribute feature.
+         * The meta object literal for the '<em><b>Visible</b></em>' attribute feature.
          * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
          * @generated
          */
-        EAttribute KBACKGROUND_VISIBILITY__VISIBILITY = eINSTANCE.getKBackgroundVisibility_Visibility();
+        EAttribute KBACKGROUND_VISIBILITY__VISIBLE = eINSTANCE.getKBackgroundVisibility_Visible();
 
         /**
          * The meta object literal for the '{@link de.cau.cs.kieler.core.krendering.impl.KFontNameImpl <em>KFont Name</em>}' class.
