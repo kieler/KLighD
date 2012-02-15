@@ -34,22 +34,22 @@ import de.cau.cs.kieler.core.kgraph.KGraphElement;
 import de.cau.cs.kieler.core.kgraph.KGraphPackage;
 import de.cau.cs.kieler.core.kgraph.KLabeledGraphElement;
 import de.cau.cs.kieler.core.krendering.KBackgroundColor;
-import de.cau.cs.kieler.core.krendering.KBold;
+import de.cau.cs.kieler.core.krendering.KBackgroundVisibility;
 import de.cau.cs.kieler.core.krendering.KChildArea;
 import de.cau.cs.kieler.core.krendering.KColor;
 import de.cau.cs.kieler.core.krendering.KContainerRendering;
 import de.cau.cs.kieler.core.krendering.KDirectPlacementData;
 import de.cau.cs.kieler.core.krendering.KEllipse;
-import de.cau.cs.kieler.core.krendering.KFilled;
+import de.cau.cs.kieler.core.krendering.KFontBold;
+import de.cau.cs.kieler.core.krendering.KFontItalic;
 import de.cau.cs.kieler.core.krendering.KFontName;
 import de.cau.cs.kieler.core.krendering.KFontSize;
 import de.cau.cs.kieler.core.krendering.KForegroundColor;
+import de.cau.cs.kieler.core.krendering.KForegroundVisibility;
 import de.cau.cs.kieler.core.krendering.KGridPlacement;
 import de.cau.cs.kieler.core.krendering.KHorizontalAlignment;
-import de.cau.cs.kieler.core.krendering.KItalic;
 import de.cau.cs.kieler.core.krendering.KLeftPosition;
 import de.cau.cs.kieler.core.krendering.KLineStyle;
-import de.cau.cs.kieler.core.krendering.KLineVisible;
 import de.cau.cs.kieler.core.krendering.KLineWidth;
 import de.cau.cs.kieler.core.krendering.KPlacement;
 import de.cau.cs.kieler.core.krendering.KPlacementData;
@@ -75,9 +75,9 @@ import de.cau.cs.kieler.core.properties.IProperty;
 import de.cau.cs.kieler.core.properties.Property;
 import de.cau.cs.kieler.core.ui.util.MonitoredOperation;
 import de.cau.cs.kieler.core.util.Pair;
+import de.cau.cs.kieler.klighd.piccolo.nodes.PAlignmentNode;
 import de.cau.cs.kieler.klighd.piccolo.nodes.PAlignmentNode.HAlignment;
 import de.cau.cs.kieler.klighd.piccolo.nodes.PAlignmentNode.VAlignment;
-import de.cau.cs.kieler.klighd.piccolo.nodes.PAlignmentNode;
 import de.cau.cs.kieler.klighd.piccolo.nodes.PSWTAdvancedPath;
 import de.cau.cs.kieler.klighd.piccolo.nodes.PSWTAdvancedPath.LineStyle;
 import de.cau.cs.kieler.klighd.piccolo.util.NodeUtil;
@@ -764,7 +764,7 @@ public class RenderingController {
         // create the text
         PSWTText textNode = new PSWTText(text.getText() != null ? text.getText() : "");
         initializeRenderingNode(textNode);
-        
+
         // create the alignment node wrapping the text
         final PAlignmentNode alignmentNode = new PAlignmentNode();
         initializeRenderingNode(alignmentNode);
@@ -774,20 +774,22 @@ public class RenderingController {
         alignmentNode.setHorizontalAlignment(textNode, HAlignment.CENTER);
         alignmentNode.setVerticalAlignment(textNode, VAlignment.CENTER);
         parent.addChild(alignmentNode);
-        
+
         // handle children
         if (text.getChildren().size() > 0) {
             handleChildren(text.getChildren(), text.getChildPlacement(), propagatedStyles, textNode);
         }
-        
+
         // create a controller for the text and return it
         return new PSWTTextController(textNode) {
             public void setBounds(final PBounds bounds) {
                 NodeUtil.applySmartBounds(alignmentNode, bounds);
             }
+
             public void setHorizontalAlignment(final HAlignment alignment) {
                 alignmentNode.setHorizontalAlignment(getNode(), alignment);
             }
+
             public void setVerticalAlignment(final VAlignment alignment) {
                 alignmentNode.setVerticalAlignment(getNode(), alignment);
             }
@@ -1165,18 +1167,20 @@ public class RenderingController {
                     return true;
                 }
 
-                // line visibility
-                public Boolean caseKLineVisible(final KLineVisible lineVisible) {
-                    if (styles.lineVisible == null) {
-                        styles.lineVisible = lineVisible;
+                // foreground visibility
+                public Boolean caseKForegroundVisibility(
+                        final KForegroundVisibility foregorundVisibility) {
+                    if (styles.foregroundVisibility == null) {
+                        styles.foregroundVisibility = foregorundVisibility;
                     }
                     return true;
                 }
 
-                // fill visibility
-                public Boolean caseKFilled(final KFilled filled) {
-                    if (styles.filled == null) {
-                        styles.filled = filled;
+                // background visibility
+                public Boolean caseKBackgroundVisibility(
+                        final KBackgroundVisibility backgroundVisibility) {
+                    if (styles.backgroundVisibility == null) {
+                        styles.backgroundVisibility = backgroundVisibility;
                     }
                     return true;
                 }
@@ -1212,7 +1216,7 @@ public class RenderingController {
                     }
                     return true;
                 }
-                
+
                 // font size
                 public Boolean caseKFontSize(final KFontSize fontSize) {
                     if (styles.fontSize == null) {
@@ -1222,7 +1226,7 @@ public class RenderingController {
                 }
 
                 // italic
-                public Boolean caseKItalic(final KItalic italic) {
+                public Boolean caseKFontItalic(final KFontItalic italic) {
                     if (styles.italic == null) {
                         styles.italic = italic;
                     }
@@ -1230,7 +1234,7 @@ public class RenderingController {
                 }
 
                 // bold
-                public Boolean caseKBold(final KBold bold) {
+                public Boolean caseKFontBold(final KFontBold bold) {
                     if (styles.bold == null) {
                         styles.bold = bold;
                     }
@@ -1269,16 +1273,16 @@ public class RenderingController {
             controller.setLineWidth(styles.lineWidth.getLineWidth());
         }
 
-        // apply line visibility
-        if (styles.lineVisible != null) {
-            KLineVisible lineVisible = styles.lineVisible;
-            controller.setLineVisible(lineVisible.isLineVisible());
+        // apply foreground visibility
+        if (styles.foregroundVisibility != null) {
+            KForegroundVisibility foregroundVisibility = styles.foregroundVisibility;
+            controller.setLineVisible(foregroundVisibility.isVisible());
         }
 
-        // apply fill visibility
-        if (styles.filled != null) {
-            KFilled filled = styles.filled;
-            controller.setFilled(filled.isFilled());
+        // apply background visibility
+        if (styles.backgroundVisibility != null) {
+            KBackgroundVisibility backgroundVisibility = styles.backgroundVisibility;
+            controller.setFilled(backgroundVisibility.isVisible());
         }
 
         // apply line style
@@ -1339,7 +1343,7 @@ public class RenderingController {
         if (styles.fontName != null) {
             controller.setFontName(styles.fontName.getName());
         }
-        
+
         // apply font size
         if (styles.fontSize != null) {
             controller.setFontSize(styles.fontSize.getSize());
@@ -1354,7 +1358,7 @@ public class RenderingController {
         if (styles.bold != null) {
             controller.setBold(styles.bold.isBold());
         }
-        
+
         // give the controller the opportunity to apply styles bundled
         controller.applyChanges();
 
@@ -1371,10 +1375,10 @@ public class RenderingController {
         private KColor backgroundColor = null;
         /** the line width. */
         private KLineWidth lineWidth = null;
-        /** the line visibility. */
-        private KLineVisible lineVisible = null;
-        /** the fill visibility. */
-        private KFilled filled = null;
+        /** the foreground visibility. */
+        private KForegroundVisibility foregroundVisibility = null;
+        /** the background visibility. */
+        private KBackgroundVisibility backgroundVisibility = null;
         /** the line style. */
         private KLineStyle lineStyle = null;
         /** the horizontal alignment. */
@@ -1386,9 +1390,9 @@ public class RenderingController {
         /** the font size. */
         private KFontSize fontSize = null;
         /** the font italic property. */
-        private KItalic italic = null;
+        private KFontItalic italic = null;
         /** the font bold property. */
-        private KBold bold = null;
+        private KFontBold bold = null;
 
     }
 
