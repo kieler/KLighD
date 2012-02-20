@@ -22,7 +22,6 @@ import org.eclipse.swt.widgets.Control;
 
 import de.cau.cs.kieler.klighd.IViewer;
 import de.cau.cs.kieler.klighd.IViewerEventListener;
-import de.cau.cs.kieler.klighd.util.KlighdColor;
 
 /**
  * A viewer for string messages.
@@ -71,21 +70,6 @@ public class StringViewer implements IViewer<String> {
         synchronized (message) {
             message = model;
         }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public void setHighlight(final Object[] diagramElements, final KlighdColor foreground,
-            final KlighdColor background, final float lineWidthFactor) {
-        // do nothing
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public void removeHighlight(final Object[] diagramElements) {
-        // do nothing
     }
     
     /**

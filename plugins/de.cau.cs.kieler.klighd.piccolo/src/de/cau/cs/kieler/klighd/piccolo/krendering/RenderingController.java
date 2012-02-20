@@ -86,8 +86,8 @@ import edu.umd.cs.piccolo.util.PBounds;
 import edu.umd.cs.piccolox.swt.PSWTText;
 
 /**
- * The class which controls the transformation to Piccolo nodes and synchronization with the model
- * of KRendering data attached to nodes.
+ * The class which controls the transformation of KRendering data to Piccolo nodes and the
+ * synchronization of these Piccolo nodes with the KRendering model.
  * 
  * @author mri
  */
@@ -485,8 +485,8 @@ public class RenderingController {
 
         // create the rendering
         @SuppressWarnings("unchecked")
-        final PNodeController<PSWTAdvancedPath> controller =
-            (PNodeController<PSWTAdvancedPath>) createRendering(
+        final PNodeController<PSWTAdvancedPath> controller
+            = (PNodeController<PSWTAdvancedPath>) createRendering(
                 rendering, new ArrayList<KStyle>(0), parent, parent.getBoundsReference());
         controller.getNode().setPathToPolyline(parent.getBendPoints());
         parent.setRepresentationNode(controller.getNode());

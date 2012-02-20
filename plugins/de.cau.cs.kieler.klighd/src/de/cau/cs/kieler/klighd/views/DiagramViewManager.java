@@ -213,6 +213,9 @@ public final class DiagramViewManager implements IPartListener {
                 registerViewContext(diagramView, id, viewContext);
                 diagramView.getViewer().setModel(viewContext);
 
+                // do an initial update of the view context
+                LightDiagramServices.getInstance().updateViewContext(viewContext, model);
+
                 // trigger the create success status
                 KlighdStatusState state =
                         new KlighdStatusState(KlighdStatusState.Status.CREATE_SUCCESS, id,
@@ -312,7 +315,6 @@ public final class DiagramViewManager implements IPartListener {
             for (IViewReference viewReference : viewReferences) {
                 if (viewReference.getId().equals(PRIMARY_VIEW_ID)) {
                     DiagramViewPart view = (DiagramViewPart) viewReference.getView(false);
-                    // TODO this does not take multi view contexts into account yet
                     idPartMapping.put(viewReference.getSecondaryId(), view);
                 }
             }

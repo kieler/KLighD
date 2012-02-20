@@ -11,9 +11,8 @@
  * This code is provided under the terms of the Eclipse Public License (EPL).
  * See the file epl-v10.html for the license text.
  */
-package de.cau.cs.kieler.klighd.piccolo;
+package de.cau.cs.kieler.klighd.piccolo.krendering;
 
-import java.awt.Color;
 import java.awt.event.InputEvent;
 import java.util.Collection;
 import java.util.List;
@@ -25,11 +24,15 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Menu;
 
+import de.cau.cs.kieler.core.kgraph.KNode;
+import de.cau.cs.kieler.klighd.piccolo.INodeSelectionListener;
+import de.cau.cs.kieler.klighd.piccolo.Messages;
+import de.cau.cs.kieler.klighd.piccolo.PMouseWheelZoomEventHandler;
+import de.cau.cs.kieler.klighd.piccolo.PSWTSimpleSelectionEventHandler;
 import de.cau.cs.kieler.klighd.piccolo.activities.ZoomActivity;
 import de.cau.cs.kieler.klighd.piccolo.nodes.PEmptyNode;
 import de.cau.cs.kieler.klighd.piccolo.ui.ExportKGraphAction;
 import de.cau.cs.kieler.klighd.piccolo.ui.SaveAsImageAction;
-import de.cau.cs.kieler.klighd.util.KlighdColor;
 import de.cau.cs.kieler.klighd.viewers.AbstractViewer;
 import edu.umd.cs.piccolo.PCamera;
 import edu.umd.cs.piccolo.PLayer;
@@ -43,7 +46,7 @@ import edu.umd.cs.piccolox.swt.PSWTCanvas;
  * 
  * @author mri
  */
-public class PiccoloViewer extends AbstractViewer<PNode> implements
+public class PiccoloViewer extends AbstractViewer<KNode> implements
         INodeSelectionListener {
 
     /** the canvas used for drawing. */
@@ -118,23 +121,30 @@ public class PiccoloViewer extends AbstractViewer<PNode> implements
     /**
      * {@inheritDoc}
      */
-    public void setModel(final PNode model) {
+    public void setModel(final KNode model) {
+        KNodeTopNode topNode = new KNodeTopNode(model);
+        topNode.expand();
+        
         // remove the old selection handler
         if (selectionHandler != null) {
             canvas.removeInputEventListener(selectionHandler);
             selectionHandler = null;
         }
+        
         // fill the layers
         PCamera camera = canvas.getCamera();
         resetCamera(camera);
         resizeAndResetLayers(2);
-        camera.getLayer(0).addChild(model);
+        camera.getLayer(0).addChild(topNode);
+        
         // add a node for the marquee
         PEmptyNode marqueeParent = new PEmptyNode();
         camera.getLayer(1).addChild(marqueeParent);
+        
         // add a selection handler
         selectionHandler = new PSWTSimpleSelectionEventHandler(camera, marqueeParent);
         canvas.addInputEventListener(selectionHandler);
+        
         // forward the selection events
         selectionHandler.addSelectionListener(this);
     }
@@ -165,50 +175,6 @@ public class PiccoloViewer extends AbstractViewer<PNode> implements
         List<PLayer> layers = camera.getLayersReference();
         for (PLayer layer : layers) {
             layer.removeAllChildren();
-        }
-    }
-
-    private Object highlightKey = new Object();
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setHighlight(final Object[] diagramElements, final KlighdColor foreground,
-            final KlighdColor background, final float lineWidthFactor) {
-        for (Object diagramElement : diagramElements) {
-            if (diagramElement instanceof PNode) {
-                PNode node = (PNode) diagramElement;
-                // transform the colors to AWT colors
-                Color foregroundColor = null;
-                if (foreground != null) {
-                    foregroundColor =
-                            new Color(foreground.getR(), foreground.getG(), foreground.getB());
-                }
-                Color backgroundColor = null;
-                if (background != null) {
-                    backgroundColor =
-                            new Color(background.getR(), background.getG(), background.getB());
-                }
-                // TODO enable line styles for highlighting effects through this interface
-                // apply the highlighting effect
-                HighlightUtil.setHighlight(highlightKey, node, foregroundColor, backgroundColor,
-                        lineWidthFactor, null);
-            }
-        }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void removeHighlight(final Object[] diagramElements) {
-        for (Object diagramElement : diagramElements) {
-            if (diagramElement instanceof PNode) {
-                PNode node = (PNode) diagramElement;
-                // remove the highlighting effect
-                HighlightUtil.removeHighlight(highlightKey, node);
-            }
         }
     }
 
@@ -336,7 +302,6 @@ public class PiccoloViewer extends AbstractViewer<PNode> implements
     public void selected(final PSWTSimpleSelectionEventHandler handler,
             final Collection<PNode> nodes) {
         notifyListenersSelection(nodes);
-        System.out.println(nodes);
     }
 
 }

@@ -3,6 +3,7 @@
 <plugin>
    <extension-point id="viewerProviders" name="ViewerProviders" schema="schema/viewerProviders.exsd"/>
    <extension-point id="modelTransformations" name="ModelTransformations" schema="schema/modelTransformations.exsd"/>
+   <extension-point id="updateStrategies" name="UpdateStrategies" schema="schema/updateStrategies.exsd"/>
    <extension
          point="org.eclipse.ui.views">
       <view

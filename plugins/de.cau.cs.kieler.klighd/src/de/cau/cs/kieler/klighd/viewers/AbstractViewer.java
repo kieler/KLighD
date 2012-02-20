@@ -19,7 +19,6 @@ import java.util.Set;
 
 import de.cau.cs.kieler.klighd.IViewer;
 import de.cau.cs.kieler.klighd.IViewerEventListener;
-import de.cau.cs.kieler.klighd.util.KlighdColor;
 
 /**
  * An abstract base class for viewers which provides an implementation for the handling of listeners
@@ -34,21 +33,6 @@ public abstract class AbstractViewer<T> implements IViewer<T> {
 
     /** the listeners registered on this viewer. */
     private Set<IViewerEventListener> listeners = new LinkedHashSet<IViewerEventListener>();
-
-    /**
-     * {@inheritDoc}
-     */
-    public void setHighlight(final Object[] diagramElements, final KlighdColor foreground,
-            final KlighdColor background, final float lineWidthFactor) {
-        // do nothing
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public void removeHighlight(final Object[] diagramElements) {
-        // do nothing
-    }
 
     /**
      * {@inheritDoc}

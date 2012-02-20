@@ -20,14 +20,14 @@ Require-Bundle: org.eclipse.core.resources;bundle-version="3.6.0",
  de.cau.cs.kieler.core.model,
  de.cau.cs.kieler.core.ui,
  de.cau.cs.kieler.kiml,
- de.cau.cs.kieler.kiml.ui
+ de.cau.cs.kieler.kiml.ui,
+ de.cau.cs.kieler.core.kgraph;bundle-version="0.4.0"
 Bundle-ActivationPolicy: lazy
 Bundle-Activator: de.cau.cs.kieler.klighd.KlighdPlugin
 Export-Package: de.cau.cs.kieler.klighd,
  de.cau.cs.kieler.klighd.effects,
  de.cau.cs.kieler.klighd.transformations,
  de.cau.cs.kieler.klighd.triggers,
- de.cau.cs.kieler.klighd.util,
  de.cau.cs.kieler.klighd.viewers,
  de.cau.cs.kieler.klighd.views
 Import-Package: org.eclipse.ui.part

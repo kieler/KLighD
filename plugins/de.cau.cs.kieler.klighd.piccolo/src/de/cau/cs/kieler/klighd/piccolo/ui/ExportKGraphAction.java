@@ -33,9 +33,9 @@ import de.cau.cs.kieler.kiml.ui.diagram.LayoutMapping;
 import de.cau.cs.kieler.kiml.ui.service.LayoutOptionManager;
 import de.cau.cs.kieler.kiml.util.KimlUtil;
 import de.cau.cs.kieler.klighd.piccolo.KlighdPiccoloPlugin;
-import de.cau.cs.kieler.klighd.piccolo.PiccoloViewer;
 import de.cau.cs.kieler.klighd.piccolo.graph.IGraphObject;
 import de.cau.cs.kieler.klighd.piccolo.graph.layout.PiccoloDiagramLayoutManager;
+import de.cau.cs.kieler.klighd.piccolo.krendering.PiccoloViewer;
 
 /**
  * An action which invokes the 'export-kgraph' dialog and performs the save for Piccolo.

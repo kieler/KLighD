@@ -11,36 +11,36 @@
  * This code is provided under the terms of the Eclipse Public License (EPL).
  * See the file epl-v10.html for the license text.
  */
-package de.cau.cs.kieler.klighd.piccolo;
+package de.cau.cs.kieler.klighd.piccolo.krendering;
 
 import org.eclipse.swt.widgets.Composite;
 
+import de.cau.cs.kieler.core.kgraph.KNode;
 import de.cau.cs.kieler.klighd.IViewer;
 import de.cau.cs.kieler.klighd.IViewerProvider;
-import edu.umd.cs.piccolo.PNode;
 
 /**
- * A viewer provider for Piccolo nodes or lists of Piccolo nodes.
+ * A viewer provider for the Piccolo viewer for KGraphs with attached KRendering.
  * 
  * @author mri
  */
-public class PiccoloViewerProvider implements IViewerProvider {
+public class PiccoloViewerProvider implements IViewerProvider<KNode> {
 
     /** the identifier for this viewer provider as specified in the extension point. */
     public static final String ID = "de.cau.cs.kieler.klighd.piccolo.piccoloViewer";
-    
+
     /**
      * {@inheritDoc}
      */
-    public IViewer<?> createViewer(final Composite parent) {
+    public IViewer<KNode> createViewer(final Composite parent) {
         return new PiccoloViewer(parent);
     }
 
     /**
      * {@inheritDoc}
      */
-    public Class<?> getModelClass() {
-        return PNode.class;
+    public Class<KNode> getModelClass() {
+        return KNode.class;
     }
 
 }

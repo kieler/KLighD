@@ -27,20 +27,25 @@ import de.cau.cs.kieler.core.properties.MapPropertyHolder;
 public final class ViewContext extends MapPropertyHolder {
 
     /** the viewer provider. */
-    private IViewerProvider viewerProvider = null;
+    private IViewerProvider<?> viewerProvider = null;
+    /** the update strategy. */
+    private IUpdateStrategy<?> updateStrategy = null;
     /** the list of transformation contexts in this view context. */
     private List<TransformationContext<?, ?>> transformationContexts = Lists.newLinkedList();
     /** the reveresed list of transformation contexts. */
     private List<TransformationContext<?, ?>> transformationContextsRev = Lists
             .reverse(transformationContexts);
 
+    /** the base model for incremental update. */
+    private Object baseModel = null;
+
     /**
-     * Serts the contexts viewer provider.
+     * Sets the contexts viewer provider.
      * 
      * @param viewerProvider
      *            the viewer provider
      */
-    protected void setViewerProvider(final IViewerProvider viewerProvider) {
+    protected void setViewerProvider(final IViewerProvider<?> viewerProvider) {
         this.viewerProvider = viewerProvider;
     }
 
@@ -49,8 +54,41 @@ public final class ViewContext extends MapPropertyHolder {
      * 
      * @return the viewer provider
      */
-    public IViewerProvider getViewerProvider() {
+    public IViewerProvider<?> getViewerProvider() {
         return viewerProvider;
+    }
+
+    /**
+     * Sets the update strategy used in this view context.
+     * 
+     * @param updateStrategy
+     *            the update strategy
+     */
+    public void setUpdateStrategy(final IUpdateStrategy<?> updateStrategy) {
+        this.updateStrategy = updateStrategy;
+        if (updateStrategy != null) {
+            baseModel = updateStrategy.getInitialBaseModel(this);
+        } else {
+            baseModel = null;
+        }
+    }
+
+    /**
+     * Returns the update strategy used in this view context.
+     * 
+     * @return the update strategy
+     */
+    public IUpdateStrategy<?> getUpdateStrategy() {
+        return updateStrategy;
+    }
+
+    /**
+     * Returns the base model in this view context derived from the update strategy.
+     * 
+     * @return the base model or null if no update strategy is set
+     */
+    public Object getBaseModel() {
+        return baseModel;
     }
 
     /**
@@ -86,21 +124,27 @@ public final class ViewContext extends MapPropertyHolder {
     }
 
     /**
-     * Returns the contexts source model.
+     * Returns the class of the source model in the complete context.
      * 
-     * @return the source model
+     * @return the class of the source model or null if there is no transformation in this context
      */
-    public Object getSourceModel() {
-        return transformationContexts.get(0).getSourceModel();
+    public Class<?> getSourceClass() {
+        if (transformationContexts.size() > 0) {
+            transformationContexts.get(0).getTransformation().getSourceClass();
+        }
+        return null;
     }
 
     /**
-     * Returns the contexts target model.
+     * Returns the class of the target model in the complete context.
      * 
-     * @return the target model
+     * @return the class of the target model or null if there is no transformation in this context
      */
-    public Object getTargetModel() {
-        return transformationContextsRev.get(0).getTargetModel();
+    public Class<?> getTargetClass() {
+        if (transformationContexts.size() > 0) {
+            transformationContextsRev.get(0).getTransformation().getTargetClass();
+        }
+        return null;
     }
 
     /**
@@ -146,6 +190,9 @@ public final class ViewContext extends MapPropertyHolder {
      */
     protected void reset() {
         transformationContexts.clear();
+        viewerProvider = null;
+        updateStrategy = null;
+        baseModel = null;
     }
 
 }

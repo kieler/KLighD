@@ -35,7 +35,6 @@ import de.cau.cs.kieler.klighd.ViewContext;
 import de.cau.cs.kieler.klighd.triggers.KlighdSelectionTrigger;
 import de.cau.cs.kieler.klighd.triggers.KlighdSelectionTrigger.KlighdSelectionState;
 import de.cau.cs.kieler.klighd.triggers.KlighdSelectionTrigger.KlighdSelectionState.SelectionElement;
-import de.cau.cs.kieler.klighd.util.KlighdColor;
 
 /**
  * A viewer for instances of type {@code ViewContext}. This viewer acts as a wrapper for the viewer
@@ -92,29 +91,26 @@ public class ContextViewer extends AbstractViewer<Object> implements IViewerEven
      * {@inheritDoc}
      */
     public synchronized void setModel(final Object model) {
-        // if the model is a view context adapt the viewer to the given context, else set it as
-        // input model for the current viewer if possible or show it if it is a string
+        // if the model is a view context adapt the viewer to the given context if possible
         if (model instanceof ViewContext) {
             ViewContext viewContext = (ViewContext) model;
-            if (currentViewContext == null
-                    || currentViewContext.getViewerProvider() != viewContext.getViewerProvider()) {
-                // remove the old viewer
-                removeViewer();
-                // create the new viewer
-                IViewer<?> viewer =
-                        LightDiagramServices.getInstance().createViewer(viewContext, parent);
-                // add the new viewer
-                addViewer(viewer);
-            }
+            // remove the old viewer
+            removeViewer();
+
+            // create the new viewer
+            IViewer<?> viewer = LightDiagramServices.getInstance()
+                    .createViewer(viewContext, parent);
+
+            // add the new viewer
+            addViewer(viewer);
             // set the new view context
             currentViewContext = viewContext;
-            // set the input model
-            currentViewer.setModel(viewContext.getTargetModel());
             // reset the current selection
             resetSelection();
         } else if (model instanceof String) {
             // if the model is a string show it
             showMessage((String) model);
+
             // reset the current selection
             resetSelection();
         }
@@ -159,8 +155,8 @@ public class ContextViewer extends AbstractViewer<Object> implements IViewerEven
             // create the selection objects
             List<SelectionElement> selections = new LinkedList<SelectionElement>();
             // create the selection state
-            KlighdSelectionState state =
-                    new KlighdSelectionState(viewId, currentViewContext, currentViewer, selections);
+            KlighdSelectionState state = new KlighdSelectionState(viewId, currentViewContext,
+                    currentViewer, selections);
             // fill the selection
             for (Object diagramObject : selectedElements) {
                 selections.add(state.new SelectionElement(diagramObject));
@@ -219,7 +215,7 @@ public class ContextViewer extends AbstractViewer<Object> implements IViewerEven
     public void setSelection(final ISelection selection) {
         // not supported yet
     }
-    
+
     /**
      * {@inheritDoc}
      */
@@ -237,27 +233,6 @@ public class ContextViewer extends AbstractViewer<Object> implements IViewerEven
     public void clearSelection() {
         if (currentViewer != null) {
             currentViewer.clearSelection();
-        }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setHighlight(final Object[] diagramElements, final KlighdColor foreground,
-            final KlighdColor background, final float lineWidthFactor) {
-        if (currentViewer != null) {
-            currentViewer.setHighlight(diagramElements, foreground, background, lineWidthFactor);
-        }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void removeHighlight(final Object[] diagramElements) {
-        if (currentViewer != null) {
-            currentViewer.removeHighlight(diagramElements);
         }
     }
 
@@ -420,4 +395,3 @@ public class ContextViewer extends AbstractViewer<Object> implements IViewerEven
     }
 
 }
-

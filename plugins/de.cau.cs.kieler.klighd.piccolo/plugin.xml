@@ -4,7 +4,7 @@
    <extension
          point="de.cau.cs.kieler.klighd.viewerProviders">
       <viewer
-            class="de.cau.cs.kieler.klighd.piccolo.PiccoloViewerProvider"
+            class="de.cau.cs.kieler.klighd.piccolo.krendering.PiccoloViewerProvider"
             id="de.cau.cs.kieler.klighd.piccolo.piccoloViewer">
       </viewer>
    </extension>

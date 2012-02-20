@@ -18,7 +18,6 @@ import org.eclipse.swt.widgets.Control;
 
 import de.cau.cs.kieler.klighd.LightDiagramServices;
 import de.cau.cs.kieler.klighd.ViewContext;
-import de.cau.cs.kieler.klighd.util.KlighdColor;
 
 /**
  * The KLighD viewer can be embedded into a SWT component and is able to accept any type of input
@@ -59,23 +58,6 @@ public class KlighdViewer extends AbstractViewer<Object> {
         } else {
             contextViewer.setModel("Could not find a visualization for the model.");
         }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setHighlight(final Object[] diagramElements, final KlighdColor foreground,
-            final KlighdColor background, final float lineWidthFactor) {
-        contextViewer.setHighlight(diagramElements, foreground, background, lineWidthFactor);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void removeHighlight(final Object[] diagramElements) {
-        contextViewer.removeHighlight(diagramElements);
     }
 
     /**

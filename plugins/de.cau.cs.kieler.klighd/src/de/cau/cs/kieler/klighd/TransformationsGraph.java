@@ -15,8 +15,6 @@ package de.cau.cs.kieler.klighd;
 
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -58,9 +56,9 @@ public class TransformationsGraph {
             .newHashMap();
 
     /** the mapping of viewer provider id's on viewer provider data. */
-    private Map<String, IViewerProvider> idViewerProviderMapping = Maps.newLinkedHashMap();
+    private Map<String, IViewerProvider<?>> idViewerProviderMapping = Maps.newLinkedHashMap();
     /** the mapping of viewer providers on class nodes representing supported classes. */
-    private Map<IViewerProvider, List<ViewerProviderData>> viewerProviderDataMapping = Maps
+    private Map<IViewerProvider<?>, List<ViewerProviderData>> viewerProviderDataMapping = Maps
             .newHashMap();
 
     /**
@@ -98,7 +96,7 @@ public class TransformationsGraph {
      * @param viewerProvider
      *            the viewer provider
      */
-    public void addViewerProvider(final String id, final IViewerProvider viewerProvider) {
+    public void addViewerProvider(final String id, final IViewerProvider<?> viewerProvider) {
         // only add the viewer provider if it is not already present
         if (id.length() > 0 && !idViewerProviderMapping.containsValue(viewerProvider)
                 && !idViewerProviderMapping.containsKey(id)) {
@@ -136,7 +134,7 @@ public class TransformationsGraph {
      *            the identifier
      * @return the viewer provider or null if there is no viewer provider with the given id
      */
-    public IViewerProvider getViewerProviderById(final String id) {
+    public IViewerProvider<?> getViewerProviderById(final String id) {
         if (id == null) {
             return null;
         }
@@ -146,16 +144,13 @@ public class TransformationsGraph {
     /**
      * Configures the given view context for the specified model.
      * 
-     * @param engine
-     *            the transformation engine for performing transformations
      * @param viewContext
      *            the view context
      * @param model
      *            the model
      * @return true if the context has been configured; false else
      */
-    public boolean configureViewContext(final ITransformationEngine engine,
-            final ViewContext viewContext, final Object model) {
+    public boolean configureViewContext(final ViewContext viewContext, final Object model) {
         if (model == null) {
             return false;
         }
@@ -167,7 +162,7 @@ public class TransformationsGraph {
         List<Path> paths = findAllPathsToViewers(sourceNodes);
 
         // configure the view context using the collected paths
-        return configureViewContext(engine, viewContext, paths, model);
+        return configureViewContext(viewContext, paths, model);
     }
 
     /**
@@ -175,8 +170,6 @@ public class TransformationsGraph {
      * The model transformations have to be in the order in which they should be invoked in the
      * configured view context.
      * 
-     * @param engine
-     *            the transformation engine for performing transformations
      * @param viewContext
      *            the view context
      * @param model
@@ -185,8 +178,7 @@ public class TransformationsGraph {
      *            the model transformations
      * @return true if the context has been configured; false else
      */
-    public boolean configureViewContext(final ITransformationEngine engine,
-            final ViewContext viewContext, final Object model,
+    public boolean configureViewContext(final ViewContext viewContext, final Object model,
             final ITransformation<?, ?>... modelTransformations) {
         if (model == null) {
             return false;
@@ -194,7 +186,7 @@ public class TransformationsGraph {
 
         // make sure at least one transformation has been given
         if (modelTransformations.length == 0) {
-            return configureViewContext(engine, viewContext, model);
+            return configureViewContext(viewContext, model);
         }
 
         // find all suitable source class nodes
@@ -211,14 +203,12 @@ public class TransformationsGraph {
         }
 
         // configure the view context using the collected paths
-        return configureViewContext(engine, viewContext, newPaths, model);
+        return configureViewContext(viewContext, newPaths, model);
     }
 
     /**
      * Configures the given view context for the specified model and viewer provider.
      * 
-     * @param engine
-     *            the transformation engine for performing transformations
      * @param viewContext
      *            the view context
      * @param model
@@ -227,8 +217,8 @@ public class TransformationsGraph {
      *            the viewer provider
      * @return true if the context has been configured; false else
      */
-    public boolean configureViewContext(final ITransformationEngine engine,
-            final ViewContext viewContext, final Object model, final IViewerProvider viewerProvider) {
+    public boolean configureViewContext(final ViewContext viewContext, final Object model,
+            final IViewerProvider<?> viewerProvider) {
         if (model == null) {
             return false;
         }
@@ -237,8 +227,8 @@ public class TransformationsGraph {
         List<ClassNode> sourceNodes = findClassNodes(model.getClass());
 
         // get all suitable viewer provider data
-        List<ViewerProviderData> viewerProviderDatas =
-                viewerProviderDataMapping.get(viewerProvider);
+        List<ViewerProviderData> viewerProviderDatas = viewerProviderDataMapping
+                .get(viewerProvider);
 
         // find all possible paths
         List<Path> paths = Lists.newLinkedList();
@@ -247,7 +237,7 @@ public class TransformationsGraph {
         }
 
         // configure the view context using the collected paths
-        if (configureViewContext(engine, viewContext, paths, model)) {
+        if (configureViewContext(viewContext, paths, model)) {
             // make sure the correct viewer provider is set
             viewContext.setViewerProvider(viewerProvider);
             return true;
@@ -262,8 +252,6 @@ public class TransformationsGraph {
      * The model transformations have to be in the order in which they should be invoked in the
      * configured view context.
      * 
-     * @param engine
-     *            the transformation engine for performing transformations
      * @param viewContext
      *            the view context
      * @param model
@@ -274,9 +262,8 @@ public class TransformationsGraph {
      *            the model transformation
      * @return true if the context has been configured; false else
      */
-    public boolean configureViewContext(final ITransformationEngine engine,
-            final ViewContext viewContext, final Object model,
-            final IViewerProvider viewerProvider,
+    public boolean configureViewContext(final ViewContext viewContext, final Object model,
+            final IViewerProvider<?> viewerProvider,
             final ITransformation<?, ?>... modelTransformations) {
         if (model == null) {
             return false;
@@ -284,7 +271,7 @@ public class TransformationsGraph {
 
         // make sure at least one transformation has been given
         if (modelTransformations.length == 0) {
-            return configureViewContext(engine, viewContext, model, viewerProvider);
+            return configureViewContext(viewContext, model, viewerProvider);
         }
 
         // find all suitable source class nodes
@@ -294,8 +281,8 @@ public class TransformationsGraph {
         List<Path> paths = findAllPathsWithTransformations(sourceNodes, modelTransformations);
 
         // get all suitable viewer provider datas
-        List<ViewerProviderData> viewerProviderDatas =
-                viewerProviderDataMapping.get(viewerProvider);
+        List<ViewerProviderData> viewerProviderDatas = viewerProviderDataMapping
+                .get(viewerProvider);
 
         // find all paths which lead to the viewer
         List<Path> newPaths = Lists.newLinkedList();
@@ -308,7 +295,7 @@ public class TransformationsGraph {
         }
 
         // configure the view context using the collected paths
-        if (configureViewContext(engine, viewContext, newPaths, model)) {
+        if (configureViewContext(viewContext, newPaths, model)) {
             // make sure the correct viewer provider is set
             viewContext.setViewerProvider(viewerProvider);
             return true;
@@ -318,12 +305,9 @@ public class TransformationsGraph {
     }
 
     /**
-     * Configures the given view context with the shortest path in the list of paths which supports
-     * the model. Assumes path integrity and available viewer provider data on the target class
-     * node.
+     * Configures the given view context with the shortest path in the list of paths. Assumes path
+     * integrity and available viewer provider data on the target class node.
      * 
-     * @param engine
-     *            the transformation engine
      * @param viewContext
      *            the view context
      * @param paths
@@ -332,18 +316,17 @@ public class TransformationsGraph {
      *            the model
      * @return true if the view context has been configured with one of the paths; false else
      */
-    private boolean configureViewContext(final ITransformationEngine engine,
-            final ViewContext viewContext, final List<Path> paths, final Object model) {
+    private boolean configureViewContext(final ViewContext viewContext, final List<Path> paths,
+            final Object model) {
         viewContext.reset();
-        // sort the list - shortest path first
-        sortListOfPaths(paths);
-        // perform the transformations until a complete path is supported
-        for (Path path : paths) {
+        // get the shortest path
+        Path path = getShortestPath(paths);
+        if (path != null) {
             // initialize the view context with transformation contexts
             if (path.edges.size() > 0) {
                 for (TransformationEdge edge : path.edges) {
-                    TransformationContext<?, ?> transformationContext =
-                            TransformationContext.create(edge.transformation);
+                    TransformationContext<?, ?> transformationContext = TransformationContext
+                            .create(edge.transformation);
                     viewContext.addTransformationContext(transformationContext);
                 }
                 // set the viewer provider
@@ -351,20 +334,16 @@ public class TransformationsGraph {
                 // the list of viewer providers is never empty for paths passed to this method
                 viewContext.setViewerProvider(targetNode.viewerProviders.get(0).viewerProvider);
             } else {
-                TransformationContext<?, ?> transformationContext =
-                        TransformationContext.create(new IdentityTransformation());
+                TransformationContext<?, ?> transformationContext = TransformationContext
+                        .create(new IdentityTransformation());
                 viewContext.addTransformationContext(transformationContext);
                 // set the viewer provider
-                viewContext
-                        .setViewerProvider(path.sourceNode.viewerProviders.get(0).viewerProvider);
+                viewContext.setViewerProvider(path.sourceNode.viewerProviders.get(0).viewerProvider);
             }
-            // perform the transformation if possible
-            if (engine.tryTransform(viewContext, model)) {
-                return true;
-            }
-            viewContext.reset();
+            return true;            
+        } else {
+            return false;
         }
-        return false;
     }
 
     /**
@@ -404,8 +383,8 @@ public class TransformationsGraph {
 
         // add the first segment of the paths (from source nodes to edge sources)
         Iterator<ITransformation<?, ?>> iterator = Arrays.asList(modelTransformations).iterator();
-        List<TransformationEdge> transformationEdges =
-                transformationEdgeMapping.get(iterator.next());
+        List<TransformationEdge> transformationEdges = transformationEdgeMapping.get(iterator
+                .next());
         for (TransformationEdge transformationEdge : transformationEdges) {
             paths.addAll(combinePaths(findAllPaths(sourceNodes, transformationEdge.source),
                     transformationEdge));
@@ -422,8 +401,8 @@ public class TransformationsGraph {
                     ClassNode sourceNode = path.edges.getLast().target;
                     ClassNode targetNode = transformationEdge.source;
                     // get the paths from the map or find the paths and map them
-                    Pair<ClassNode, ClassNode> pair =
-                            new Pair<ClassNode, ClassNode>(sourceNode, targetNode);
+                    Pair<ClassNode, ClassNode> pair = new Pair<ClassNode, ClassNode>(sourceNode,
+                            targetNode);
                     List<Path> sufPaths = nodePathMap.get(pair);
                     if (sufPaths == null) {
                         sufPaths = findAllPaths(sourceNode, targetNode);
@@ -599,17 +578,22 @@ public class TransformationsGraph {
     }
 
     /**
-     * Sorts a list of paths by the number of edges in the paths.
+     * Returns the shortest path from a list of paths, that is the path with the fewest edges.
      * 
      * @param listOfPaths
      *            the list of paths
      */
-    private static void sortListOfPaths(final List<Path> listOfPaths) {
-        Collections.sort(listOfPaths, new Comparator<Path>() {
-            public int compare(final Path o1, final Path o2) {
-                return o1.edges.size() - o2.edges.size();
+    private static Path getShortestPath(final List<Path> listOfPaths) {
+        if (listOfPaths.size() == 0) {
+            return null;
+        }
+        Path shortestPath = listOfPaths.get(0);
+        for (Path path : listOfPaths) {
+            if (path.edges.size() < shortestPath.edges.size()) {
+                shortestPath = path;
             }
-        });
+        }
+        return shortestPath;
     }
 
     /**
@@ -732,7 +716,7 @@ public class TransformationsGraph {
      * @param modelClass
      *            the model class
      */
-    private void createViewerProviderDatas(final IViewerProvider viewerProvider,
+    private void createViewerProviderDatas(final IViewerProvider<?> viewerProvider,
             final Class<?> modelClass) {
         viewerProviderDataMapping.put(viewerProvider, new LinkedList<ViewerProviderData>());
         Collection<ClassNode> classNodes = classNodeMapping.values();
@@ -753,7 +737,7 @@ public class TransformationsGraph {
      *            the class node
      * @return the viewer provider data
      */
-    private void createViewerProviderData(final IViewerProvider viewerProvider,
+    private void createViewerProviderData(final IViewerProvider<?> viewerProvider,
             final ClassNode classNode) {
         ViewerProviderData viewerProviderData = new ViewerProviderData();
         viewerProviderDataMapping.get(viewerProvider).add(viewerProviderData);
@@ -771,7 +755,7 @@ public class TransformationsGraph {
      */
     private void updateViewerProviderDatas(final ClassNode classNode) {
         Class<?> clazz = classNode.clazz;
-        for (IViewerProvider viewerProvider : idViewerProviderMapping.values()) {
+        for (IViewerProvider<?> viewerProvider : idViewerProviderMapping.values()) {
             if (viewerProvider.getModelClass().isAssignableFrom(clazz)) {
                 createViewerProviderData(viewerProvider, classNode);
             }
@@ -800,7 +784,7 @@ public class TransformationsGraph {
     private static class ViewerProviderData {
 
         /** the viewer provider. */
-        private IViewerProvider viewerProvider;
+        private IViewerProvider<?> viewerProvider;
         /** the class node this viewer provider data attaches to. */
         private ClassNode classNode;
 

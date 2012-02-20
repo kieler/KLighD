@@ -15,10 +15,8 @@ package de.cau.cs.kieler.klighd;
 
 import org.eclipse.swt.widgets.Control;
 
-import de.cau.cs.kieler.klighd.util.KlighdColor;
-
 /**
- * The interface for viewers on unrestricted models.
+ * The interface for viewers on incrementally updated models.
  * 
  * @author mri
  * 
@@ -35,36 +33,15 @@ public interface IViewer<T> {
     Control getControl();
 
     /**
-     * Sets the input model for this viewer.
+     * Sets the input model for this viewer.<br>
+     * <br>
+     * This model is incrementally updated by KLighD. The implementation of the viewer should
+     * utilize a listener mechanic on the model to keep the visualization in sync.
      * 
      * @param model
      *            the input model
      */
     void setModel(T model);
-
-    /**
-     * Sets a highlighting effect on the given diagram elements using the specified foreground and
-     * background color and factor for the line width.
-     * 
-     * @param diagramElements
-     *            the diagram elements
-     * @param foreground
-     *            the foreground color or null for no change
-     * @param background
-     *            the background color or null for no change
-     * @param lineWidthFactor
-     *            the factor the line width is increased by (1.0f for no change)
-     */
-    void setHighlight(Object[] diagramElements, KlighdColor foreground, KlighdColor background,
-            float lineWidthFactor);
-
-    /**
-     * Removes the highlighting effect from the given diagram elements if any.
-     * 
-     * @param diagramElements
-     *            the diagram elements
-     */
-    void removeHighlight(Object[] diagramElements);
 
     /**
      * Sets the given selection of diagram elements as current selection.

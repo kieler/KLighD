@@ -3,7 +3,7 @@
  *
  * http://www.informatik.uni-kiel.de/rtsys/kieler/
  * 
- * Copyright 2011 by
+ * Copyright 2012 by
  * + Christian-Albrechts-University of Kiel
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
@@ -13,7 +13,6 @@
  */
 
 /**
- * Utility classes for KLighD.
+ * KLighD classes for handling KGraph with KRendering data visualizations.
  */
-package de.cau.cs.kieler.klighd.util;
-
+package de.cau.cs.kieler.klighd.krendering;
