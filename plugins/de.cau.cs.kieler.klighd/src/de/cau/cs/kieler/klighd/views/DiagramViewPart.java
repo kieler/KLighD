@@ -14,8 +14,9 @@
 package de.cau.cs.kieler.klighd.views;
 
 import org.eclipse.core.resources.IResource;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.action.Action;
-import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.swt.dnd.DND;
 import org.eclipse.swt.dnd.DropTarget;
 import org.eclipse.swt.dnd.DropTargetEvent;
@@ -24,9 +25,11 @@ import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.part.ResourceTransfer;
 import org.eclipse.ui.part.ViewPart;
+import org.eclipse.ui.statushandlers.StatusManager;
 
 import de.cau.cs.kieler.kiml.ui.KimlUiPlugin;
 import de.cau.cs.kieler.kiml.ui.diagram.DiagramLayoutEngine;
+import de.cau.cs.kieler.klighd.KlighdPlugin;
 import de.cau.cs.kieler.klighd.triggers.KlighdResourceDropTrigger;
 import de.cau.cs.kieler.klighd.triggers.KlighdResourceDropTrigger.KlighdResourceDropState;
 import de.cau.cs.kieler.klighd.viewers.ContextViewer;
@@ -147,19 +150,23 @@ public class DiagramViewPart extends ViewPart {
     }
 
     private void addLayoutButton() {
-        IMenuManager menuManager = getViewSite().getActionBars().getMenuManager();
         final DiagramViewPart view = this;
-        menuManager.add(new Action("Layout", KimlUiPlugin
+        Action layout = new Action("Layout", KimlUiPlugin
                 .getImageDescriptor("icons/menu16/kieler-arrange.gif")) {
             public void run() {
                 try {
                     DiagramLayoutEngine layoutEngine = DiagramLayoutEngine.INSTANCE;
                     layoutEngine.layout(view, null, true, false, false, true, null);
                 } catch (UnsupportedOperationException e) {
-                    // do nothing (empty view)
+                    StatusManager.getManager().handle(
+                            new Status(IStatus.WARNING, KlighdPlugin.PLUGIN_ID,
+                                    "Performing automatic layout on view content of "
+                                            + view.getPartName() + " failed with an Exception.", e));
                 }
             }
-        });
+        };
+        // getViewSite().getActionBars().getMenuManager().add(layout);
+        getViewSite().getActionBars().getToolBarManager().add(layout);
     }
 
 }
