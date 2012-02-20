@@ -40,7 +40,7 @@ public class KGraphResource extends LazyLinkingResource {
      */
     protected void doLoad(final InputStream inputStream, final Map<?, ?> options) throws IOException {
         super.doLoad(inputStream, options);
-        if (this.getContents() != null) {
+        if (!this.getContents().isEmpty()) {
             EObject o = this.getContents().get(0);
             if (o instanceof KNode) {
                 KimlUtil.loadDataElements((KNode) o);
@@ -77,7 +77,7 @@ public class KGraphResource extends LazyLinkingResource {
      * {@link de.cau.cs.kieler.core.kgraph.PersistentEntry}s.
      */
     public void doSave(final OutputStream outputStream, final Map<?, ?> options) throws IOException {
-        if (this.getContents() != null) {
+        if (!this.getContents().isEmpty()) {
             EObject o = this.getContents().get(0);
             if (o instanceof KNode) {
                 KimlUtil.persistDataElements((KNode) o);

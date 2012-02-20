@@ -84,6 +84,8 @@ public final class DiagramViewManager implements IPartListener {
      */
     private DiagramViewManager() {
         // do nothing
+        // chsch: does this the trick as well as at the other places? We'll see...
+        registerPartListener();
     }
 
     /**
@@ -146,6 +148,8 @@ public final class DiagramViewManager implements IPartListener {
 
     /**
      * Creates a diagram view with the given name and model under the specified identifier.
+     * <br><br>
+     * chsch: refactored this method s.t. a view is opened only if a valid view context exists.
      * 
      * @param id
      *            the diagram identifier (can be null for the default view)
@@ -164,41 +168,8 @@ public final class DiagramViewManager implements IPartListener {
         // register the manager as part listener if necessary
         registerPartListener();
 
-        // make sure the view exists
-        IWorkbenchWindow window = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
-        IWorkbenchPage page = window.getActivePage();
-        DiagramViewPart diagramView = getView(id);
-        if (diagramView == null) {
-            // create the view and register it
-            try {
-                IViewPart view = page.showView(PRIMARY_VIEW_ID, id, IWorkbenchPage.VIEW_VISIBLE);
-                if (view instanceof DiagramViewPart) {
-                    diagramView = (DiagramViewPart) view;
-                }
-            } catch (PartInitException e) {
-                StatusManager.getManager().handle(
-                        new Status(IStatus.ERROR, KlighdPlugin.PLUGIN_ID, e.getMessage(), e));
-                return null;
-            } catch (IllegalArgumentException e) {
-                StatusManager
-                        .getManager()
-                        .handle(new Status(IStatus.ERROR, KlighdPlugin.PLUGIN_ID,
-                                "Invalid KLighD view id: must not be empty or contain any colons."));
-                return null;
-            }
-        } else {
-            // unregister view contexts associated with the view
-            unregisterViewContexts(diagramView);
-        }
-
-        // make the view visible without giving it the focus
-        page.bringToTop(diagramView);
-
-        // set the view name
-        if (name != null) {
-            diagramView.setName(name);
-        }
-
+        DiagramViewPart diagramView = null;
+        
         // create a view context for the model
         if (model != null) {
             // let the light diagram service create a view context and register it
@@ -209,13 +180,66 @@ public final class DiagramViewManager implements IPartListener {
             } else {
                 viewContext = LightDiagramServices.getInstance().createViewContext(model);
             }
+
             if (viewContext != null) {
+
+                // make sure the view exists
+                IWorkbenchWindow window = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
+                IWorkbenchPage page = window.getActivePage();
+                diagramView = getView(id);
+
+                if (diagramView == null) {
+                    // create the view and register it
+                    try {
+                        IViewPart view = page.showView(PRIMARY_VIEW_ID, id, IWorkbenchPage.VIEW_VISIBLE);
+                        if (view instanceof DiagramViewPart) {
+                            diagramView = (DiagramViewPart) view;
+                        }
+                    } catch (PartInitException e) {
+                        StatusManager.getManager().handle(
+                                new Status(IStatus.ERROR, KlighdPlugin.PLUGIN_ID, e.getMessage(), e));
+
+                        // trigger the create failure status
+                        KlighdStatusState state = new KlighdStatusState(
+                                KlighdStatusState.Status.CREATE_FAILURE, id, null, null);
+                        if (KlighdStatusTrigger.getInstance() != null) {
+                            KlighdStatusTrigger.getInstance().trigger(state);   
+                        }
+                        return null;
+                    } catch (IllegalArgumentException e) {
+                        StatusManager
+                                .getManager()
+                                .handle(new Status(IStatus.ERROR, KlighdPlugin.PLUGIN_ID,
+                                        "Invalid KLighD view id:"
+                                        + "must not be empty or contain any colons."));
+
+                        // trigger the create failure status
+                        KlighdStatusState state = new KlighdStatusState(
+                                KlighdStatusState.Status.CREATE_FAILURE, id, null, null);
+                        if (KlighdStatusTrigger.getInstance() != null) {
+                            KlighdStatusTrigger.getInstance().trigger(state);   
+                        }
+                        return null;
+                    }
+                } else {
+                    // unregister view contexts associated with the view
+                    unregisterViewContexts(diagramView);
+                }
+
+                // set the view name
+                if (name != null) {
+                    diagramView.setName(name);
+                }
+
                 registerViewContext(diagramView, id, viewContext);
                 diagramView.getViewer().setModel(viewContext);
 
                 // do an initial update of the view context
                 LightDiagramServices.getInstance().updateViewContext(viewContext, model);
 
+                // make the view visible without giving it the focus
+                page.bringToTop(diagramView);
+                
                 // trigger the create success status
                 KlighdStatusState state =
                         new KlighdStatusState(KlighdStatusState.Status.CREATE_SUCCESS, id,
@@ -223,19 +247,6 @@ public final class DiagramViewManager implements IPartListener {
                 if (KlighdStatusTrigger.getInstance() != null) {
                     KlighdStatusTrigger.getInstance().trigger(state);
                 }
-            } else {
-                // if the newly created view could not be initialized with a diagram,
-                // hide it and return nothing.
-                page.hideView(diagramView);
-                
-                // trigger the create failure status
-                KlighdStatusState state =
-                        new KlighdStatusState(KlighdStatusState.Status.CREATE_FAILURE, id, null, null);
-                if (KlighdStatusTrigger.getInstance() != null) {
-                    KlighdStatusTrigger.getInstance().trigger(state);   
-                }
-                return null;
-
             }
         }
         return diagramView;
@@ -309,17 +320,22 @@ public final class DiagramViewManager implements IPartListener {
     private void registerPartListener() {
         if (!registered) {
             registered = true;
-            IWorkbenchWindow window = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
+            IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
             // find existing views
-            IViewReference[] viewReferences = window.getActivePage().getViewReferences();
+            IViewReference[] viewReferences = page.getViewReferences();
             for (IViewReference viewReference : viewReferences) {
                 if (viewReference.getId().equals(PRIMARY_VIEW_ID)) {
-                    DiagramViewPart view = (DiagramViewPart) viewReference.getView(false);
-                    idPartMapping.put(viewReference.getSecondaryId(), view);
+                    //  chsch: for the Moment, reset all existing views since there may
+                    //   occur errors during the (re-)initialization a further views
+                    page.hideView(viewReference);
+                    
+                    // DiagramViewPart view = (DiagramViewPart) viewReference.getView(false);
+                    // // TODO this does not take multi view contexts into account yet
+                    // idPartMapping.put(viewReference.getSecondaryId(), view);
                 }
             }
             // register as a part listener
-            window.getActivePage().addPartListener(this);
+            page.addPartListener(this);
         }
     }
 
