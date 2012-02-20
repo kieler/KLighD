@@ -356,15 +356,18 @@ KLineWidth returns KLineWidth:
 	'KLineWidth' lineWidth=EInt (propagateToChildren?='propagateToChildren')?;
 
 KVisibility returns KVisibility:
-//	propagateToChildren?='propagateToChildren'
-//	lineVisible?='lineVisible'
-//	filled?='filled'
-//	'KVisibility'
-    {KVisibility}
-	'KVisibility'
-	lineVisible?='lineVisible'?
-	filled?='filled'?
-	propagateToChildren?='propagateToChildren'?
+    KForegroundVisibility | KBackgroundVisibility
+;
+
+KForegroundVisibility returns KForegroundVisibility:
+	{KForegroundVisibility}
+	'KForegroundVisibility' (visible?='visible')? propagateToChildren?='propagateToChildren'?
+;
+
+
+KBackgroundVisibility returns KBackgroundVisibility:
+	{KBackgroundVisibility}
+	'KBackgroundVisibility' (visible?='visible')? propagateToChildren?='propagateToChildren'?
 ;
 
 KLineStyle returns KLineStyle:

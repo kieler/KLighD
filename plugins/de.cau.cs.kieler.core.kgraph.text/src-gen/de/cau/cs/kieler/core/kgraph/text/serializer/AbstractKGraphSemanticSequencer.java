@@ -11,6 +11,7 @@ import de.cau.cs.kieler.core.kgraph.PersistentEntry;
 import de.cau.cs.kieler.core.kgraph.text.services.KGraphGrammarAccess;
 import de.cau.cs.kieler.core.krendering.KArc;
 import de.cau.cs.kieler.core.krendering.KBackgroundColor;
+import de.cau.cs.kieler.core.krendering.KBackgroundVisibility;
 import de.cau.cs.kieler.core.krendering.KBottomPosition;
 import de.cau.cs.kieler.core.krendering.KChildArea;
 import de.cau.cs.kieler.core.krendering.KCustomRendering;
@@ -18,6 +19,7 @@ import de.cau.cs.kieler.core.krendering.KDecoratorPlacementData;
 import de.cau.cs.kieler.core.krendering.KDirectPlacementData;
 import de.cau.cs.kieler.core.krendering.KEllipse;
 import de.cau.cs.kieler.core.krendering.KForegroundColor;
+import de.cau.cs.kieler.core.krendering.KForegroundVisibility;
 import de.cau.cs.kieler.core.krendering.KGridPlacement;
 import de.cau.cs.kieler.core.krendering.KGridPlacementData;
 import de.cau.cs.kieler.core.krendering.KHorizontalAlignment;
@@ -41,7 +43,6 @@ import de.cau.cs.kieler.core.krendering.KStackPlacementData;
 import de.cau.cs.kieler.core.krendering.KText;
 import de.cau.cs.kieler.core.krendering.KTopPosition;
 import de.cau.cs.kieler.core.krendering.KVerticalAlignment;
-import de.cau.cs.kieler.core.krendering.KVisibility;
 import de.cau.cs.kieler.core.krendering.text.serializer.KRenderingSemanticSequencer;
 import de.cau.cs.kieler.kiml.klayoutdata.KEdgeLayout;
 import de.cau.cs.kieler.kiml.klayoutdata.KInsets;
@@ -166,6 +167,14 @@ public class AbstractKGraphSemanticSequencer extends AbstractSemanticSequencer {
 					return; 
 				}
 				else break;
+			case KRenderingPackage.KBACKGROUND_VISIBILITY:
+				if(context == grammarAccess.getKBackgroundVisibilityRule() ||
+				   context == grammarAccess.getKStyleRule() ||
+				   context == grammarAccess.getKVisibilityRule()) {
+					sequence_KBackgroundVisibility(context, (KBackgroundVisibility) semanticObject); 
+					return; 
+				}
+				else break;
 			case KRenderingPackage.KBOTTOM_POSITION:
 				if(context == grammarAccess.getKBottomPositionRule() ||
 				   context == grammarAccess.getKYPositionRule()) {
@@ -215,6 +224,14 @@ public class AbstractKGraphSemanticSequencer extends AbstractSemanticSequencer {
 				if(context == grammarAccess.getKForegroundColorRule() ||
 				   context == grammarAccess.getKStyleRule()) {
 					sequence_KForegroundColor(context, (KForegroundColor) semanticObject); 
+					return; 
+				}
+				else break;
+			case KRenderingPackage.KFOREGROUND_VISIBILITY:
+				if(context == grammarAccess.getKForegroundVisibilityRule() ||
+				   context == grammarAccess.getKStyleRule() ||
+				   context == grammarAccess.getKVisibilityRule()) {
+					sequence_KForegroundVisibility(context, (KForegroundVisibility) semanticObject); 
 					return; 
 				}
 				else break;
@@ -378,13 +395,6 @@ public class AbstractKGraphSemanticSequencer extends AbstractSemanticSequencer {
 					return; 
 				}
 				else break;
-			case KRenderingPackage.KVISIBILITY:
-				if(context == grammarAccess.getKStyleRule() ||
-				   context == grammarAccess.getKVisibilityRule()) {
-					sequence_KVisibility(context, (KVisibility) semanticObject); 
-					return; 
-				}
-				else break;
 			}
 		if (errorAcceptor != null) errorAcceptor.accept(diagnosticProvider.createInvalidContextOrTypeDiagnostic(semanticObject, context));
 	}
@@ -411,6 +421,15 @@ public class AbstractKGraphSemanticSequencer extends AbstractSemanticSequencer {
 	 *     (propagateToChildren?='propagateToChildren'? red=EInt? green=EInt? blue=EInt?)
 	 */
 	protected void sequence_KBackgroundColor(EObject context, KBackgroundColor semanticObject) {
+		superSequencer.createSequence(context, semanticObject);
+	}
+	
+	
+	/**
+	 * Constraint:
+	 *     (visible?='visible'? propagateToChildren?='propagateToChildren'?)
+	 */
+	protected void sequence_KBackgroundVisibility(EObject context, KBackgroundVisibility semanticObject) {
 		superSequencer.createSequence(context, semanticObject);
 	}
 	
@@ -511,6 +530,15 @@ public class AbstractKGraphSemanticSequencer extends AbstractSemanticSequencer {
 	 *     (propagateToChildren?='propagateToChildren'? red=EInt? green=EInt? blue=EInt?)
 	 */
 	protected void sequence_KForegroundColor(EObject context, KForegroundColor semanticObject) {
+		superSequencer.createSequence(context, semanticObject);
+	}
+	
+	
+	/**
+	 * Constraint:
+	 *     (visible?='visible'? propagateToChildren?='propagateToChildren'?)
+	 */
+	protected void sequence_KForegroundVisibility(EObject context, KForegroundVisibility semanticObject) {
 		superSequencer.createSequence(context, semanticObject);
 	}
 	
@@ -808,15 +836,6 @@ public class AbstractKGraphSemanticSequencer extends AbstractSemanticSequencer {
 	 *     (verticalAlignment=VerticalAlignment propagateToChildren?='propagateToChildren'?)
 	 */
 	protected void sequence_KVerticalAlignment(EObject context, KVerticalAlignment semanticObject) {
-		superSequencer.createSequence(context, semanticObject);
-	}
-	
-	
-	/**
-	 * Constraint:
-	 *     (lineVisible?='lineVisible'? filled?='filled'? propagateToChildren?='propagateToChildren'?)
-	 */
-	protected void sequence_KVisibility(EObject context, KVisibility semanticObject) {
 		superSequencer.createSequence(context, semanticObject);
 	}
 	

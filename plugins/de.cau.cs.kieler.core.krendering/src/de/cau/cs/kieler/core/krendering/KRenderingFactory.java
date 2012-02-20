@@ -249,15 +249,6 @@ public interface KRenderingFactory extends EFactory {
     KLineWidth createKLineWidth();
 
     /**
-     * Returns a new object of class '<em>KVisibility</em>'.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @return a new object of class '<em>KVisibility</em>'.
-     * @generated
-     */
-    KVisibility createKVisibility();
-
-    /**
      * Returns a new object of class '<em>KLine Style</em>'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -328,6 +319,60 @@ public interface KRenderingFactory extends EFactory {
      * @generated
      */
     KSpline createKSpline();
+
+    /**
+     * Returns a new object of class '<em>KForeground Visibility</em>'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return a new object of class '<em>KForeground Visibility</em>'.
+     * @generated
+     */
+    KForegroundVisibility createKForegroundVisibility();
+
+    /**
+     * Returns a new object of class '<em>KBackground Visibility</em>'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return a new object of class '<em>KBackground Visibility</em>'.
+     * @generated
+     */
+    KBackgroundVisibility createKBackgroundVisibility();
+
+    /**
+     * Returns a new object of class '<em>KFont Bold</em>'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return a new object of class '<em>KFont Bold</em>'.
+     * @generated
+     */
+    KFontBold createKFontBold();
+
+    /**
+     * Returns a new object of class '<em>KFont Italic</em>'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return a new object of class '<em>KFont Italic</em>'.
+     * @generated
+     */
+    KFontItalic createKFontItalic();
+
+    /**
+     * Returns a new object of class '<em>KFont Name</em>'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return a new object of class '<em>KFont Name</em>'.
+     * @generated
+     */
+    KFontName createKFontName();
+
+    /**
+     * Returns a new object of class '<em>KFont Size</em>'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return a new object of class '<em>KFont Size</em>'.
+     * @generated
+     */
+    KFontSize createKFontSize();
 
     /**
      * Returns the package supported by this factory.

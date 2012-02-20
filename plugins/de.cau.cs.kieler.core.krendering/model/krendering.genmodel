@@ -115,10 +115,6 @@
     <genClasses ecoreClass="krendering.ecore#//KLineWidth">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute krendering.ecore#//KLineWidth/lineWidth"/>
     </genClasses>
-    <genClasses ecoreClass="krendering.ecore#//KVisibility">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute krendering.ecore#//KVisibility/lineVisible"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute krendering.ecore#//KVisibility/filled"/>
-    </genClasses>
     <genClasses ecoreClass="krendering.ecore#//KLineStyle">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute krendering.ecore#//KLineStyle/lineStyle"/>
     </genClasses>
@@ -141,5 +137,22 @@
     <genClasses ecoreClass="krendering.ecore#//KTopPosition"/>
     <genClasses ecoreClass="krendering.ecore#//KBottomPosition"/>
     <genClasses ecoreClass="krendering.ecore#//KSpline"/>
+    <genClasses ecoreClass="krendering.ecore#//KForegroundVisibility"/>
+    <genClasses ecoreClass="krendering.ecore#//KVisibility">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute krendering.ecore#//KVisibility/visible"/>
+    </genClasses>
+    <genClasses ecoreClass="krendering.ecore#//KBackgroundVisibility"/>
+    <genClasses ecoreClass="krendering.ecore#//KFontBold">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute krendering.ecore#//KFontBold/bold"/>
+    </genClasses>
+    <genClasses ecoreClass="krendering.ecore#//KFontItalic">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute krendering.ecore#//KFontItalic/italic"/>
+    </genClasses>
+    <genClasses ecoreClass="krendering.ecore#//KFontName">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute krendering.ecore#//KFontName/name"/>
+    </genClasses>
+    <genClasses ecoreClass="krendering.ecore#//KFontSize">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute krendering.ecore#//KFontSize/size"/>
+    </genClasses>
   </genPackages>
 </genmodel:GenModel>

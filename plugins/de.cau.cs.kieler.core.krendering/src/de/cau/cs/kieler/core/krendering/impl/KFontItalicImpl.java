@@ -13,8 +13,8 @@
  */
 package de.cau.cs.kieler.core.krendering.impl;
 
+import de.cau.cs.kieler.core.krendering.KFontItalic;
 import de.cau.cs.kieler.core.krendering.KRenderingPackage;
-import de.cau.cs.kieler.core.krendering.KVisibility;
 
 import org.eclipse.emf.common.notify.Notification;
 
@@ -24,44 +24,44 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
 /**
  * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>KVisibility</b></em>'.
+ * An implementation of the model object '<em><b>KFont Italic</b></em>'.
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link de.cau.cs.kieler.core.krendering.impl.KVisibilityImpl#isVisible <em>Visible</em>}</li>
+ *   <li>{@link de.cau.cs.kieler.core.krendering.impl.KFontItalicImpl#isItalic <em>Italic</em>}</li>
  * </ul>
  * </p>
  *
  * @generated
  */
-public abstract class KVisibilityImpl extends KStyleImpl implements KVisibility {
+public class KFontItalicImpl extends KStyleImpl implements KFontItalic {
     /**
-     * The default value of the '{@link #isVisible() <em>Visible</em>}' attribute.
+     * The default value of the '{@link #isItalic() <em>Italic</em>}' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see #isVisible()
+     * @see #isItalic()
      * @generated
      * @ordered
      */
-    protected static final boolean VISIBLE_EDEFAULT = false;
+    protected static final boolean ITALIC_EDEFAULT = false;
 
     /**
-     * The cached value of the '{@link #isVisible() <em>Visible</em>}' attribute.
+     * The cached value of the '{@link #isItalic() <em>Italic</em>}' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see #isVisible()
+     * @see #isItalic()
      * @generated
      * @ordered
      */
-    protected boolean visible = VISIBLE_EDEFAULT;
+    protected boolean italic = ITALIC_EDEFAULT;
 
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      */
-    protected KVisibilityImpl() {
+    protected KFontItalicImpl() {
         super();
     }
 
@@ -72,7 +72,7 @@ public abstract class KVisibilityImpl extends KStyleImpl implements KVisibility 
      */
     @Override
     protected EClass eStaticClass() {
-        return KRenderingPackage.Literals.KVISIBILITY;
+        return KRenderingPackage.Literals.KFONT_ITALIC;
     }
 
     /**
@@ -80,8 +80,8 @@ public abstract class KVisibilityImpl extends KStyleImpl implements KVisibility 
      * <!-- end-user-doc -->
      * @generated
      */
-    public boolean isVisible() {
-        return visible;
+    public boolean isItalic() {
+        return italic;
     }
 
     /**
@@ -89,11 +89,11 @@ public abstract class KVisibilityImpl extends KStyleImpl implements KVisibility 
      * <!-- end-user-doc -->
      * @generated
      */
-    public void setVisible(boolean newVisible) {
-        boolean oldVisible = visible;
-        visible = newVisible;
+    public void setItalic(boolean newItalic) {
+        boolean oldItalic = italic;
+        italic = newItalic;
         if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, KRenderingPackage.KVISIBILITY__VISIBLE, oldVisible, visible));
+            eNotify(new ENotificationImpl(this, Notification.SET, KRenderingPackage.KFONT_ITALIC__ITALIC, oldItalic, italic));
     }
 
     /**
@@ -104,8 +104,8 @@ public abstract class KVisibilityImpl extends KStyleImpl implements KVisibility 
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
-            case KRenderingPackage.KVISIBILITY__VISIBLE:
-                return isVisible();
+            case KRenderingPackage.KFONT_ITALIC__ITALIC:
+                return isItalic();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -118,8 +118,8 @@ public abstract class KVisibilityImpl extends KStyleImpl implements KVisibility 
     @Override
     public void eSet(int featureID, Object newValue) {
         switch (featureID) {
-            case KRenderingPackage.KVISIBILITY__VISIBLE:
-                setVisible((Boolean)newValue);
+            case KRenderingPackage.KFONT_ITALIC__ITALIC:
+                setItalic((Boolean)newValue);
                 return;
         }
         super.eSet(featureID, newValue);
@@ -133,8 +133,8 @@ public abstract class KVisibilityImpl extends KStyleImpl implements KVisibility 
     @Override
     public void eUnset(int featureID) {
         switch (featureID) {
-            case KRenderingPackage.KVISIBILITY__VISIBLE:
-                setVisible(VISIBLE_EDEFAULT);
+            case KRenderingPackage.KFONT_ITALIC__ITALIC:
+                setItalic(ITALIC_EDEFAULT);
                 return;
         }
         super.eUnset(featureID);
@@ -148,8 +148,8 @@ public abstract class KVisibilityImpl extends KStyleImpl implements KVisibility 
     @Override
     public boolean eIsSet(int featureID) {
         switch (featureID) {
-            case KRenderingPackage.KVISIBILITY__VISIBLE:
-                return visible != VISIBLE_EDEFAULT;
+            case KRenderingPackage.KFONT_ITALIC__ITALIC:
+                return italic != ITALIC_EDEFAULT;
         }
         return super.eIsSet(featureID);
     }
@@ -164,10 +164,10 @@ public abstract class KVisibilityImpl extends KStyleImpl implements KVisibility 
         if (eIsProxy()) return super.toString();
 
         StringBuffer result = new StringBuffer(super.toString());
-        result.append(" (visible: ");
-        result.append(visible);
+        result.append(" (italic: ");
+        result.append(italic);
         result.append(')');
         return result.toString();
     }
 
-} //KVisibilityImpl
+} //KFontItalicImpl

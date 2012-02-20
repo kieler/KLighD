@@ -1282,17 +1282,34 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 		return getKLineWidthAccess().getRule();
 	}
 
-	//KVisibility: //	propagateToChildren?='propagateToChildren'
-	////	lineVisible?='lineVisible'
-	////	filled?='filled'
-	////	'KVisibility'
-	//	{KVisibility} "KVisibility" lineVisible?="lineVisible"? filled?="filled"? propagateToChildren?="propagateToChildren"?;
+	//KVisibility:
+	//	KForegroundVisibility | KBackgroundVisibility;
 	public KRenderingGrammarAccess.KVisibilityElements getKVisibilityAccess() {
 		return gaKRendering.getKVisibilityAccess();
 	}
 	
 	public ParserRule getKVisibilityRule() {
 		return getKVisibilityAccess().getRule();
+	}
+
+	//KForegroundVisibility:
+	//	{KForegroundVisibility} "KForegroundVisibility" visible?="visible"? propagateToChildren?="propagateToChildren"?;
+	public KRenderingGrammarAccess.KForegroundVisibilityElements getKForegroundVisibilityAccess() {
+		return gaKRendering.getKForegroundVisibilityAccess();
+	}
+	
+	public ParserRule getKForegroundVisibilityRule() {
+		return getKForegroundVisibilityAccess().getRule();
+	}
+
+	//KBackgroundVisibility:
+	//	{KBackgroundVisibility} "KBackgroundVisibility" visible?="visible"? propagateToChildren?="propagateToChildren"?;
+	public KRenderingGrammarAccess.KBackgroundVisibilityElements getKBackgroundVisibilityAccess() {
+		return gaKRendering.getKBackgroundVisibilityAccess();
+	}
+	
+	public ParserRule getKBackgroundVisibilityRule() {
+		return getKBackgroundVisibilityAccess().getRule();
 	}
 
 	//KLineStyle: //	propagateToChildren?='propagateToChildren'

@@ -1112,9 +1112,65 @@ ruleKVisibility
     }
 	:
 (
-{ before(grammarAccess.getKVisibilityAccess().getGroup()); }
-(rule__KVisibility__Group__0)
-{ after(grammarAccess.getKVisibilityAccess().getGroup()); }
+{ before(grammarAccess.getKVisibilityAccess().getAlternatives()); }
+(rule__KVisibility__Alternatives)
+{ after(grammarAccess.getKVisibilityAccess().getAlternatives()); }
+)
+
+;
+finally {
+	restoreStackSize(stackSize);
+}
+
+
+
+// Entry rule entryRuleKForegroundVisibility
+entryRuleKForegroundVisibility 
+:
+{ before(grammarAccess.getKForegroundVisibilityRule()); }
+	 ruleKForegroundVisibility
+{ after(grammarAccess.getKForegroundVisibilityRule()); } 
+	 EOF 
+;
+
+// Rule KForegroundVisibility
+ruleKForegroundVisibility
+    @init {
+		int stackSize = keepStackSize();
+    }
+	:
+(
+{ before(grammarAccess.getKForegroundVisibilityAccess().getGroup()); }
+(rule__KForegroundVisibility__Group__0)
+{ after(grammarAccess.getKForegroundVisibilityAccess().getGroup()); }
+)
+
+;
+finally {
+	restoreStackSize(stackSize);
+}
+
+
+
+// Entry rule entryRuleKBackgroundVisibility
+entryRuleKBackgroundVisibility 
+:
+{ before(grammarAccess.getKBackgroundVisibilityRule()); }
+	 ruleKBackgroundVisibility
+{ after(grammarAccess.getKBackgroundVisibilityRule()); } 
+	 EOF 
+;
+
+// Rule KBackgroundVisibility
+ruleKBackgroundVisibility
+    @init {
+		int stackSize = keepStackSize();
+    }
+	:
+(
+{ before(grammarAccess.getKBackgroundVisibilityAccess().getGroup()); }
+(rule__KBackgroundVisibility__Group__0)
+{ after(grammarAccess.getKBackgroundVisibilityAccess().getGroup()); }
 )
 
 ;
@@ -1834,6 +1890,28 @@ finally {
 	restoreStackSize(stackSize);
 }
 
+
+rule__KVisibility__Alternatives
+    @init {
+		int stackSize = keepStackSize();
+    }
+:
+(
+{ before(grammarAccess.getKVisibilityAccess().getKForegroundVisibilityParserRuleCall_0()); }
+	ruleKForegroundVisibility
+{ after(grammarAccess.getKVisibilityAccess().getKForegroundVisibilityParserRuleCall_0()); }
+)
+
+    |(
+{ before(grammarAccess.getKVisibilityAccess().getKBackgroundVisibilityParserRuleCall_1()); }
+	ruleKBackgroundVisibility
+{ after(grammarAccess.getKVisibilityAccess().getKBackgroundVisibilityParserRuleCall_1()); }
+)
+
+;
+finally {
+	restoreStackSize(stackSize);
+}
 
 rule__EString__Alternatives
     @init {
@@ -20821,60 +20899,29 @@ finally {
 
 
 
-rule__KVisibility__Group__0
+rule__KForegroundVisibility__Group__0
     @init {
 		int stackSize = keepStackSize();
     }
 :
-	rule__KVisibility__Group__0__Impl
-	rule__KVisibility__Group__1
+	rule__KForegroundVisibility__Group__0__Impl
+	rule__KForegroundVisibility__Group__1
 ;
 finally {
 	restoreStackSize(stackSize);
 }
 
-rule__KVisibility__Group__0__Impl
+rule__KForegroundVisibility__Group__0__Impl
     @init {
 		int stackSize = keepStackSize();
     }
 :
 (
-{ before(grammarAccess.getKVisibilityAccess().getKVisibilityAction_0()); }
+{ before(grammarAccess.getKForegroundVisibilityAccess().getKForegroundVisibilityAction_0()); }
 (
 
 )
-{ after(grammarAccess.getKVisibilityAccess().getKVisibilityAction_0()); }
-)
-
-;
-finally {
-	restoreStackSize(stackSize);
-}
-
-
-rule__KVisibility__Group__1
-    @init {
-		int stackSize = keepStackSize();
-    }
-:
-	rule__KVisibility__Group__1__Impl
-	rule__KVisibility__Group__2
-;
-finally {
-	restoreStackSize(stackSize);
-}
-
-rule__KVisibility__Group__1__Impl
-    @init {
-		int stackSize = keepStackSize();
-    }
-:
-(
-{ before(grammarAccess.getKVisibilityAccess().getKVisibilityKeyword_1()); }
-
-	'KVisibility' 
-
-{ after(grammarAccess.getKVisibilityAccess().getKVisibilityKeyword_1()); }
+{ after(grammarAccess.getKForegroundVisibilityAccess().getKForegroundVisibilityAction_0()); }
 )
 
 ;
@@ -20883,27 +20930,29 @@ finally {
 }
 
 
-rule__KVisibility__Group__2
+rule__KForegroundVisibility__Group__1
     @init {
 		int stackSize = keepStackSize();
     }
 :
-	rule__KVisibility__Group__2__Impl
-	rule__KVisibility__Group__3
+	rule__KForegroundVisibility__Group__1__Impl
+	rule__KForegroundVisibility__Group__2
 ;
 finally {
 	restoreStackSize(stackSize);
 }
 
-rule__KVisibility__Group__2__Impl
+rule__KForegroundVisibility__Group__1__Impl
     @init {
 		int stackSize = keepStackSize();
     }
 :
 (
-{ before(grammarAccess.getKVisibilityAccess().getLineVisibleAssignment_2()); }
-(rule__KVisibility__LineVisibleAssignment_2)?
-{ after(grammarAccess.getKVisibilityAccess().getLineVisibleAssignment_2()); }
+{ before(grammarAccess.getKForegroundVisibilityAccess().getKForegroundVisibilityKeyword_1()); }
+
+	'KForegroundVisibility' 
+
+{ after(grammarAccess.getKForegroundVisibilityAccess().getKForegroundVisibilityKeyword_1()); }
 )
 
 ;
@@ -20912,27 +20961,27 @@ finally {
 }
 
 
-rule__KVisibility__Group__3
+rule__KForegroundVisibility__Group__2
     @init {
 		int stackSize = keepStackSize();
     }
 :
-	rule__KVisibility__Group__3__Impl
-	rule__KVisibility__Group__4
+	rule__KForegroundVisibility__Group__2__Impl
+	rule__KForegroundVisibility__Group__3
 ;
 finally {
 	restoreStackSize(stackSize);
 }
 
-rule__KVisibility__Group__3__Impl
+rule__KForegroundVisibility__Group__2__Impl
     @init {
 		int stackSize = keepStackSize();
     }
 :
 (
-{ before(grammarAccess.getKVisibilityAccess().getFilledAssignment_3()); }
-(rule__KVisibility__FilledAssignment_3)?
-{ after(grammarAccess.getKVisibilityAccess().getFilledAssignment_3()); }
+{ before(grammarAccess.getKForegroundVisibilityAccess().getVisibleAssignment_2()); }
+(rule__KForegroundVisibility__VisibleAssignment_2)?
+{ after(grammarAccess.getKForegroundVisibilityAccess().getVisibleAssignment_2()); }
 )
 
 ;
@@ -20941,26 +20990,26 @@ finally {
 }
 
 
-rule__KVisibility__Group__4
+rule__KForegroundVisibility__Group__3
     @init {
 		int stackSize = keepStackSize();
     }
 :
-	rule__KVisibility__Group__4__Impl
+	rule__KForegroundVisibility__Group__3__Impl
 ;
 finally {
 	restoreStackSize(stackSize);
 }
 
-rule__KVisibility__Group__4__Impl
+rule__KForegroundVisibility__Group__3__Impl
     @init {
 		int stackSize = keepStackSize();
     }
 :
 (
-{ before(grammarAccess.getKVisibilityAccess().getPropagateToChildrenAssignment_4()); }
-(rule__KVisibility__PropagateToChildrenAssignment_4)?
-{ after(grammarAccess.getKVisibilityAccess().getPropagateToChildrenAssignment_4()); }
+{ before(grammarAccess.getKForegroundVisibilityAccess().getPropagateToChildrenAssignment_3()); }
+(rule__KForegroundVisibility__PropagateToChildrenAssignment_3)?
+{ after(grammarAccess.getKForegroundVisibilityAccess().getPropagateToChildrenAssignment_3()); }
 )
 
 ;
@@ -20969,6 +21018,131 @@ finally {
 }
 
 
+
+
+
+
+
+
+
+
+rule__KBackgroundVisibility__Group__0
+    @init {
+		int stackSize = keepStackSize();
+    }
+:
+	rule__KBackgroundVisibility__Group__0__Impl
+	rule__KBackgroundVisibility__Group__1
+;
+finally {
+	restoreStackSize(stackSize);
+}
+
+rule__KBackgroundVisibility__Group__0__Impl
+    @init {
+		int stackSize = keepStackSize();
+    }
+:
+(
+{ before(grammarAccess.getKBackgroundVisibilityAccess().getKBackgroundVisibilityAction_0()); }
+(
+
+)
+{ after(grammarAccess.getKBackgroundVisibilityAccess().getKBackgroundVisibilityAction_0()); }
+)
+
+;
+finally {
+	restoreStackSize(stackSize);
+}
+
+
+rule__KBackgroundVisibility__Group__1
+    @init {
+		int stackSize = keepStackSize();
+    }
+:
+	rule__KBackgroundVisibility__Group__1__Impl
+	rule__KBackgroundVisibility__Group__2
+;
+finally {
+	restoreStackSize(stackSize);
+}
+
+rule__KBackgroundVisibility__Group__1__Impl
+    @init {
+		int stackSize = keepStackSize();
+    }
+:
+(
+{ before(grammarAccess.getKBackgroundVisibilityAccess().getKBackgroundVisibilityKeyword_1()); }
+
+	'KBackgroundVisibility' 
+
+{ after(grammarAccess.getKBackgroundVisibilityAccess().getKBackgroundVisibilityKeyword_1()); }
+)
+
+;
+finally {
+	restoreStackSize(stackSize);
+}
+
+
+rule__KBackgroundVisibility__Group__2
+    @init {
+		int stackSize = keepStackSize();
+    }
+:
+	rule__KBackgroundVisibility__Group__2__Impl
+	rule__KBackgroundVisibility__Group__3
+;
+finally {
+	restoreStackSize(stackSize);
+}
+
+rule__KBackgroundVisibility__Group__2__Impl
+    @init {
+		int stackSize = keepStackSize();
+    }
+:
+(
+{ before(grammarAccess.getKBackgroundVisibilityAccess().getVisibleAssignment_2()); }
+(rule__KBackgroundVisibility__VisibleAssignment_2)?
+{ after(grammarAccess.getKBackgroundVisibilityAccess().getVisibleAssignment_2()); }
+)
+
+;
+finally {
+	restoreStackSize(stackSize);
+}
+
+
+rule__KBackgroundVisibility__Group__3
+    @init {
+		int stackSize = keepStackSize();
+    }
+:
+	rule__KBackgroundVisibility__Group__3__Impl
+;
+finally {
+	restoreStackSize(stackSize);
+}
+
+rule__KBackgroundVisibility__Group__3__Impl
+    @init {
+		int stackSize = keepStackSize();
+    }
+:
+(
+{ before(grammarAccess.getKBackgroundVisibilityAccess().getPropagateToChildrenAssignment_3()); }
+(rule__KBackgroundVisibility__PropagateToChildrenAssignment_3)?
+{ after(grammarAccess.getKBackgroundVisibilityAccess().getPropagateToChildrenAssignment_3()); }
+)
+
+;
+finally {
+	restoreStackSize(stackSize);
+}
 
 
 
@@ -26310,22 +26484,22 @@ finally {
 	restoreStackSize(stackSize);
 }
 
-rule__KVisibility__LineVisibleAssignment_2
+rule__KForegroundVisibility__VisibleAssignment_2
     @init {
 		int stackSize = keepStackSize();
     }
 :
 (
-{ before(grammarAccess.getKVisibilityAccess().getLineVisibleLineVisibleKeyword_2_0()); }
+{ before(grammarAccess.getKForegroundVisibilityAccess().getVisibleVisibleKeyword_2_0()); }
 (
-{ before(grammarAccess.getKVisibilityAccess().getLineVisibleLineVisibleKeyword_2_0()); }
+{ before(grammarAccess.getKForegroundVisibilityAccess().getVisibleVisibleKeyword_2_0()); }
 
-	'lineVisible' 
+	'visible' 
 
-{ after(grammarAccess.getKVisibilityAccess().getLineVisibleLineVisibleKeyword_2_0()); }
+{ after(grammarAccess.getKForegroundVisibilityAccess().getVisibleVisibleKeyword_2_0()); }
 )
 
-{ after(grammarAccess.getKVisibilityAccess().getLineVisibleLineVisibleKeyword_2_0()); }
+{ after(grammarAccess.getKForegroundVisibilityAccess().getVisibleVisibleKeyword_2_0()); }
 )
 
 ;
@@ -26333,45 +26507,68 @@ finally {
 	restoreStackSize(stackSize);
 }
 
-rule__KVisibility__FilledAssignment_3
+rule__KForegroundVisibility__PropagateToChildrenAssignment_3
     @init {
 		int stackSize = keepStackSize();
     }
 :
 (
-{ before(grammarAccess.getKVisibilityAccess().getFilledFilledKeyword_3_0()); }
+{ before(grammarAccess.getKForegroundVisibilityAccess().getPropagateToChildrenPropagateToChildrenKeyword_3_0()); }
 (
-{ before(grammarAccess.getKVisibilityAccess().getFilledFilledKeyword_3_0()); }
-
-	'filled' 
-
-{ after(grammarAccess.getKVisibilityAccess().getFilledFilledKeyword_3_0()); }
-)
-
-{ after(grammarAccess.getKVisibilityAccess().getFilledFilledKeyword_3_0()); }
-)
-
-;
-finally {
-	restoreStackSize(stackSize);
-}
-
-rule__KVisibility__PropagateToChildrenAssignment_4
-    @init {
-		int stackSize = keepStackSize();
-    }
-:
-(
-{ before(grammarAccess.getKVisibilityAccess().getPropagateToChildrenPropagateToChildrenKeyword_4_0()); }
-(
-{ before(grammarAccess.getKVisibilityAccess().getPropagateToChildrenPropagateToChildrenKeyword_4_0()); }
+{ before(grammarAccess.getKForegroundVisibilityAccess().getPropagateToChildrenPropagateToChildrenKeyword_3_0()); }
 
 	'propagateToChildren' 
 
-{ after(grammarAccess.getKVisibilityAccess().getPropagateToChildrenPropagateToChildrenKeyword_4_0()); }
+{ after(grammarAccess.getKForegroundVisibilityAccess().getPropagateToChildrenPropagateToChildrenKeyword_3_0()); }
 )
 
-{ after(grammarAccess.getKVisibilityAccess().getPropagateToChildrenPropagateToChildrenKeyword_4_0()); }
+{ after(grammarAccess.getKForegroundVisibilityAccess().getPropagateToChildrenPropagateToChildrenKeyword_3_0()); }
+)
+
+;
+finally {
+	restoreStackSize(stackSize);
+}
+
+rule__KBackgroundVisibility__VisibleAssignment_2
+    @init {
+		int stackSize = keepStackSize();
+    }
+:
+(
+{ before(grammarAccess.getKBackgroundVisibilityAccess().getVisibleVisibleKeyword_2_0()); }
+(
+{ before(grammarAccess.getKBackgroundVisibilityAccess().getVisibleVisibleKeyword_2_0()); }
+
+	'visible' 
+
+{ after(grammarAccess.getKBackgroundVisibilityAccess().getVisibleVisibleKeyword_2_0()); }
+)
+
+{ after(grammarAccess.getKBackgroundVisibilityAccess().getVisibleVisibleKeyword_2_0()); }
+)
+
+;
+finally {
+	restoreStackSize(stackSize);
+}
+
+rule__KBackgroundVisibility__PropagateToChildrenAssignment_3
+    @init {
+		int stackSize = keepStackSize();
+    }
+:
+(
+{ before(grammarAccess.getKBackgroundVisibilityAccess().getPropagateToChildrenPropagateToChildrenKeyword_3_0()); }
+(
+{ before(grammarAccess.getKBackgroundVisibilityAccess().getPropagateToChildrenPropagateToChildrenKeyword_3_0()); }
+
+	'propagateToChildren' 
+
+{ after(grammarAccess.getKBackgroundVisibilityAccess().getPropagateToChildrenPropagateToChildrenKeyword_3_0()); }
+)
+
+{ after(grammarAccess.getKBackgroundVisibilityAccess().getPropagateToChildrenPropagateToChildrenKeyword_3_0()); }
 )
 
 ;

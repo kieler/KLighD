@@ -5180,56 +5180,142 @@ ruleKVisibility returns [EObject current=null]
     @init { enterRule(); 
     }
     @after { leaveRule(); }:
+(
+    { 
+        newCompositeNode(grammarAccess.getKVisibilityAccess().getKForegroundVisibilityParserRuleCall_0()); 
+    }
+    this_KForegroundVisibility_0=ruleKForegroundVisibility
+    { 
+        $current = $this_KForegroundVisibility_0.current; 
+        afterParserOrEnumRuleCall();
+    }
+
+    |
+    { 
+        newCompositeNode(grammarAccess.getKVisibilityAccess().getKBackgroundVisibilityParserRuleCall_1()); 
+    }
+    this_KBackgroundVisibility_1=ruleKBackgroundVisibility
+    { 
+        $current = $this_KBackgroundVisibility_1.current; 
+        afterParserOrEnumRuleCall();
+    }
+)
+;
+
+
+
+
+
+// Entry rule entryRuleKForegroundVisibility
+entryRuleKForegroundVisibility returns [EObject current=null] 
+	:
+	{ newCompositeNode(grammarAccess.getKForegroundVisibilityRule()); }
+	 iv_ruleKForegroundVisibility=ruleKForegroundVisibility 
+	 { $current=$iv_ruleKForegroundVisibility.current; } 
+	 EOF 
+;
+
+// Rule KForegroundVisibility
+ruleKForegroundVisibility returns [EObject current=null] 
+    @init { enterRule(); 
+    }
+    @after { leaveRule(); }:
 ((
     {
         $current = forceCreateModelElement(
-            grammarAccess.getKVisibilityAccess().getKVisibilityAction_0(),
+            grammarAccess.getKForegroundVisibilityAccess().getKForegroundVisibilityAction_0(),
             $current);
     }
-)	otherlv_1='KVisibility' 
+)	otherlv_1='KForegroundVisibility' 
     {
-    	newLeafNode(otherlv_1, grammarAccess.getKVisibilityAccess().getKVisibilityKeyword_1());
+    	newLeafNode(otherlv_1, grammarAccess.getKForegroundVisibilityAccess().getKForegroundVisibilityKeyword_1());
     }
 (
 (
-		lv_lineVisible_2_0=	'lineVisible' 
+		lv_visible_2_0=	'visible' 
     {
-        newLeafNode(lv_lineVisible_2_0, grammarAccess.getKVisibilityAccess().getLineVisibleLineVisibleKeyword_2_0());
+        newLeafNode(lv_visible_2_0, grammarAccess.getKForegroundVisibilityAccess().getVisibleVisibleKeyword_2_0());
     }
  
 	    {
 	        if ($current==null) {
-	            $current = createModelElement(grammarAccess.getKVisibilityRule());
+	            $current = createModelElement(grammarAccess.getKForegroundVisibilityRule());
 	        }
-       		setWithLastConsumed($current, "lineVisible", true, "lineVisible");
+       		setWithLastConsumed($current, "visible", true, "visible");
 	    }
 
 )
 )?(
 (
-		lv_filled_3_0=	'filled' 
+		lv_propagateToChildren_3_0=	'propagateToChildren' 
     {
-        newLeafNode(lv_filled_3_0, grammarAccess.getKVisibilityAccess().getFilledFilledKeyword_3_0());
+        newLeafNode(lv_propagateToChildren_3_0, grammarAccess.getKForegroundVisibilityAccess().getPropagateToChildrenPropagateToChildrenKeyword_3_0());
     }
  
 	    {
 	        if ($current==null) {
-	            $current = createModelElement(grammarAccess.getKVisibilityRule());
+	            $current = createModelElement(grammarAccess.getKForegroundVisibilityRule());
 	        }
-       		setWithLastConsumed($current, "filled", true, "filled");
+       		setWithLastConsumed($current, "propagateToChildren", true, "propagateToChildren");
+	    }
+
+)
+)?)
+;
+
+
+
+
+
+// Entry rule entryRuleKBackgroundVisibility
+entryRuleKBackgroundVisibility returns [EObject current=null] 
+	:
+	{ newCompositeNode(grammarAccess.getKBackgroundVisibilityRule()); }
+	 iv_ruleKBackgroundVisibility=ruleKBackgroundVisibility 
+	 { $current=$iv_ruleKBackgroundVisibility.current; } 
+	 EOF 
+;
+
+// Rule KBackgroundVisibility
+ruleKBackgroundVisibility returns [EObject current=null] 
+    @init { enterRule(); 
+    }
+    @after { leaveRule(); }:
+((
+    {
+        $current = forceCreateModelElement(
+            grammarAccess.getKBackgroundVisibilityAccess().getKBackgroundVisibilityAction_0(),
+            $current);
+    }
+)	otherlv_1='KBackgroundVisibility' 
+    {
+    	newLeafNode(otherlv_1, grammarAccess.getKBackgroundVisibilityAccess().getKBackgroundVisibilityKeyword_1());
+    }
+(
+(
+		lv_visible_2_0=	'visible' 
+    {
+        newLeafNode(lv_visible_2_0, grammarAccess.getKBackgroundVisibilityAccess().getVisibleVisibleKeyword_2_0());
+    }
+ 
+	    {
+	        if ($current==null) {
+	            $current = createModelElement(grammarAccess.getKBackgroundVisibilityRule());
+	        }
+       		setWithLastConsumed($current, "visible", true, "visible");
 	    }
 
 )
 )?(
 (
-		lv_propagateToChildren_4_0=	'propagateToChildren' 
+		lv_propagateToChildren_3_0=	'propagateToChildren' 
     {
-        newLeafNode(lv_propagateToChildren_4_0, grammarAccess.getKVisibilityAccess().getPropagateToChildrenPropagateToChildrenKeyword_4_0());
+        newLeafNode(lv_propagateToChildren_3_0, grammarAccess.getKBackgroundVisibilityAccess().getPropagateToChildrenPropagateToChildrenKeyword_3_0());
     }
  
 	    {
 	        if ($current==null) {
-	            $current = createModelElement(grammarAccess.getKVisibilityRule());
+	            $current = createModelElement(grammarAccess.getKBackgroundVisibilityRule());
 	        }
        		setWithLastConsumed($current, "propagateToChildren", true, "propagateToChildren");
 	    }
