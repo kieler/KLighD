@@ -1,8 +1,15 @@
 /**
- * <copyright>
- * </copyright>
- *
- * $Id$
+ * KIELER - Kiel Integrated Environment for Layout Eclipse RichClient
+ * 
+ * http://www.informatik.uni-kiel.de/rtsys/kieler/
+ * 
+ * Copyright 2012 by
+ * + Christian-Albrechts-University of Kiel
+ *   + Department of Computer Science
+ *     + Real-Time and Embedded Systems Group
+ * 
+ * This code is provided under the terms of the Eclipse Public License (EPL).
+ * See the file epl-v10.html for the license text.
  */
 package de.cau.cs.kieler.core.krendering.util;
 
@@ -326,13 +333,6 @@ public class KRenderingSwitch<T> extends Switch<T> {
                 if (result == null) result = defaultCase(theEObject);
                 return result;
             }
-            case KRenderingPackage.KFOREGROUND_VISIBILITY: {
-                KForegroundVisibility kForegroundVisibility = (KForegroundVisibility)theEObject;
-                T result = caseKForegroundVisibility(kForegroundVisibility);
-                if (result == null) result = caseKStyle(kForegroundVisibility);
-                if (result == null) result = defaultCase(theEObject);
-                return result;
-            }
             case KRenderingPackage.KLINE_STYLE: {
                 KLineStyle kLineStyle = (KLineStyle)theEObject;
                 T result = caseKLineStyle(kLineStyle);
@@ -394,10 +394,52 @@ public class KRenderingSwitch<T> extends Switch<T> {
                 if (result == null) result = defaultCase(theEObject);
                 return result;
             }
+            case KRenderingPackage.KSPLINE: {
+                KSpline kSpline = (KSpline)theEObject;
+                T result = caseKSpline(kSpline);
+                if (result == null) result = caseKPolyline(kSpline);
+                if (result == null) result = caseKContainerRendering(kSpline);
+                if (result == null) result = caseKRendering(kSpline);
+                if (result == null) result = caseKGraphData(kSpline);
+                if (result == null) result = caseEMapPropertyHolder(kSpline);
+                if (result == null) result = caseIPropertyHolder(kSpline);
+                if (result == null) result = defaultCase(theEObject);
+                return result;
+            }
+            case KRenderingPackage.KFOREGROUND_VISIBILITY: {
+                KForegroundVisibility kForegroundVisibility = (KForegroundVisibility)theEObject;
+                T result = caseKForegroundVisibility(kForegroundVisibility);
+                if (result == null) result = caseKVisibility(kForegroundVisibility);
+                if (result == null) result = caseKStyle(kForegroundVisibility);
+                if (result == null) result = defaultCase(theEObject);
+                return result;
+            }
+            case KRenderingPackage.KVISIBILITY: {
+                KVisibility kVisibility = (KVisibility)theEObject;
+                T result = caseKVisibility(kVisibility);
+                if (result == null) result = caseKStyle(kVisibility);
+                if (result == null) result = defaultCase(theEObject);
+                return result;
+            }
             case KRenderingPackage.KBACKGROUND_VISIBILITY: {
                 KBackgroundVisibility kBackgroundVisibility = (KBackgroundVisibility)theEObject;
                 T result = caseKBackgroundVisibility(kBackgroundVisibility);
+                if (result == null) result = caseKVisibility(kBackgroundVisibility);
                 if (result == null) result = caseKStyle(kBackgroundVisibility);
+                if (result == null) result = defaultCase(theEObject);
+                return result;
+            }
+            case KRenderingPackage.KFONT_BOLD: {
+                KFontBold kFontBold = (KFontBold)theEObject;
+                T result = caseKFontBold(kFontBold);
+                if (result == null) result = caseKStyle(kFontBold);
+                if (result == null) result = defaultCase(theEObject);
+                return result;
+            }
+            case KRenderingPackage.KFONT_ITALIC: {
+                KFontItalic kFontItalic = (KFontItalic)theEObject;
+                T result = caseKFontItalic(kFontItalic);
+                if (result == null) result = caseKStyle(kFontItalic);
                 if (result == null) result = defaultCase(theEObject);
                 return result;
             }
@@ -412,20 +454,6 @@ public class KRenderingSwitch<T> extends Switch<T> {
                 KFontSize kFontSize = (KFontSize)theEObject;
                 T result = caseKFontSize(kFontSize);
                 if (result == null) result = caseKStyle(kFontSize);
-                if (result == null) result = defaultCase(theEObject);
-                return result;
-            }
-            case KRenderingPackage.KFONT_ITALIC: {
-                KFontItalic kFontItalic = (KFontItalic)theEObject;
-                T result = caseKFontItalic(kFontItalic);
-                if (result == null) result = caseKStyle(kFontItalic);
-                if (result == null) result = defaultCase(theEObject);
-                return result;
-            }
-            case KRenderingPackage.KFONT_BOLD: {
-                KFontBold kFontBold = (KFontBold)theEObject;
-                T result = caseKFontBold(kFontBold);
-                if (result == null) result = caseKStyle(kFontBold);
                 if (result == null) result = defaultCase(theEObject);
                 return result;
             }
@@ -869,21 +897,6 @@ public class KRenderingSwitch<T> extends Switch<T> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>KForeground Visibility</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
-     * @return the result of interpreting the object as an instance of '<em>KForeground Visibility</em>'.
-     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-     * @generated
-     */
-    public T caseKForegroundVisibility(KForegroundVisibility object) {
-        return null;
-    }
-
-    /**
      * Returns the result of interpreting the object as an instance of '<em>KLine Style</em>'.
      * <!-- begin-user-doc -->
      * This implementation returns null;
@@ -1019,6 +1032,51 @@ public class KRenderingSwitch<T> extends Switch<T> {
     }
 
     /**
+     * Returns the result of interpreting the object as an instance of '<em>KSpline</em>'.
+     * <!-- begin-user-doc -->
+     * This implementation returns null;
+     * returning a non-null result will terminate the switch.
+     * <!-- end-user-doc -->
+     * @param object the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>KSpline</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseKSpline(KSpline object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>KForeground Visibility</em>'.
+     * <!-- begin-user-doc -->
+     * This implementation returns null;
+     * returning a non-null result will terminate the switch.
+     * <!-- end-user-doc -->
+     * @param object the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>KForeground Visibility</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseKForegroundVisibility(KForegroundVisibility object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>KVisibility</em>'.
+     * <!-- begin-user-doc -->
+     * This implementation returns null;
+     * returning a non-null result will terminate the switch.
+     * <!-- end-user-doc -->
+     * @param object the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>KVisibility</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseKVisibility(KVisibility object) {
+        return null;
+    }
+
+    /**
      * Returns the result of interpreting the object as an instance of '<em>KBackground Visibility</em>'.
      * <!-- begin-user-doc -->
      * This implementation returns null;
@@ -1030,6 +1088,36 @@ public class KRenderingSwitch<T> extends Switch<T> {
      * @generated
      */
     public T caseKBackgroundVisibility(KBackgroundVisibility object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>KFont Bold</em>'.
+     * <!-- begin-user-doc -->
+     * This implementation returns null;
+     * returning a non-null result will terminate the switch.
+     * <!-- end-user-doc -->
+     * @param object the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>KFont Bold</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseKFontBold(KFontBold object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>KFont Italic</em>'.
+     * <!-- begin-user-doc -->
+     * This implementation returns null;
+     * returning a non-null result will terminate the switch.
+     * <!-- end-user-doc -->
+     * @param object the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>KFont Italic</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseKFontItalic(KFontItalic object) {
         return null;
     }
 
@@ -1060,36 +1148,6 @@ public class KRenderingSwitch<T> extends Switch<T> {
      * @generated
      */
     public T caseKFontSize(KFontSize object) {
-        return null;
-    }
-
-    /**
-     * Returns the result of interpreting the object as an instance of '<em>KFont Italic</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
-     * @return the result of interpreting the object as an instance of '<em>KFont Italic</em>'.
-     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-     * @generated
-     */
-    public T caseKFontItalic(KFontItalic object) {
-        return null;
-    }
-
-    /**
-     * Returns the result of interpreting the object as an instance of '<em>KFont Bold</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
-     * @return the result of interpreting the object as an instance of '<em>KFont Bold</em>'.
-     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-     * @generated
-     */
-    public T caseKFontBold(KFontBold object) {
         return null;
     }
 

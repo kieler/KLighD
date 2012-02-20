@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <genmodel:GenModel xmi:version="2.0"
     xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
-    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/de.cau.cs.kieler.core.krendering/src"
-    modelPluginID="de.cau.cs.kieler.core.krendering" modelName="KRendering" importerID="org.eclipse.emf.importer.ecore"
-    complianceLevel="5.0" copyrightFields="false" usedGenPackages="platform:/plugin/de.cau.cs.kieler.core.kgraph/model/kgraph.genmodel#//kgraph">
+    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" copyrightText="KIELER - Kiel Integrated Environment for Layout Eclipse RichClient&#xA;&#xA;http://www.informatik.uni-kiel.de/rtsys/kieler/&#xA;&#xA;Copyright 2012 by&#xA;+ Christian-Albrechts-University of Kiel&#xA;  + Department of Computer Science&#xA;    + Real-Time and Embedded Systems Group&#xA;&#xA;This code is provided under the terms of the Eclipse Public License (EPL).&#xA;See the file epl-v10.html for the license text."
+    modelDirectory="/de.cau.cs.kieler.core.krendering/src" modelPluginID="de.cau.cs.kieler.core.krendering"
+    modelName="KRendering" importerID="org.eclipse.emf.importer.ecore" complianceLevel="5.0"
+    copyrightFields="false" usedGenPackages="platform:/resource/de.cau.cs.kieler.core.kgraph/model/kgraph.genmodel#//kgraph">
   <foreignModel>krendering.ecore</foreignModel>
   <genPackages prefix="KRendering" basePackage="de.cau.cs.kieler.core" disposableProviderFactory="true"
-      ecorePackage="krendering.ecore#/">
+      fileExtensions="krender" ecorePackage="krendering.ecore#/">
     <genEnums typeSafeEnumCompatible="false" ecoreEnum="krendering.ecore#//LineStyle">
       <genEnumLiterals ecoreEnumLiteral="krendering.ecore#//LineStyle/SOLID"/>
       <genEnumLiterals ecoreEnumLiteral="krendering.ecore#//LineStyle/DASH"/>
@@ -114,9 +115,6 @@
     <genClasses ecoreClass="krendering.ecore#//KLineWidth">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute krendering.ecore#//KLineWidth/lineWidth"/>
     </genClasses>
-    <genClasses ecoreClass="krendering.ecore#//KForegroundVisibility">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute krendering.ecore#//KForegroundVisibility/visibility"/>
-    </genClasses>
     <genClasses ecoreClass="krendering.ecore#//KLineStyle">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute krendering.ecore#//KLineStyle/lineStyle"/>
     </genClasses>
@@ -138,21 +136,23 @@
     <genClasses ecoreClass="krendering.ecore#//KRightPosition"/>
     <genClasses ecoreClass="krendering.ecore#//KTopPosition"/>
     <genClasses ecoreClass="krendering.ecore#//KBottomPosition"/>
-    <genClasses ecoreClass="krendering.ecore#//KBackgroundVisibility">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute krendering.ecore#//KBackgroundVisibility/visibility"/>
+    <genClasses ecoreClass="krendering.ecore#//KSpline"/>
+    <genClasses ecoreClass="krendering.ecore#//KForegroundVisibility"/>
+    <genClasses ecoreClass="krendering.ecore#//KVisibility">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute krendering.ecore#//KVisibility/visible"/>
     </genClasses>
-    <genClasses ecoreClass="krendering.ecore#//EClass0"/>
+    <genClasses ecoreClass="krendering.ecore#//KBackgroundVisibility"/>
+    <genClasses ecoreClass="krendering.ecore#//KFontBold">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute krendering.ecore#//KFontBold/bold"/>
+    </genClasses>
+    <genClasses ecoreClass="krendering.ecore#//KFontItalic">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute krendering.ecore#//KFontItalic/italic"/>
+    </genClasses>
     <genClasses ecoreClass="krendering.ecore#//KFontName">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute krendering.ecore#//KFontName/name"/>
     </genClasses>
     <genClasses ecoreClass="krendering.ecore#//KFontSize">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute krendering.ecore#//KFontSize/size"/>
-    </genClasses>
-    <genClasses ecoreClass="krendering.ecore#//KFontItalic">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute krendering.ecore#//KFontItalic/italic"/>
-    </genClasses>
-    <genClasses ecoreClass="krendering.ecore#//KFontBold">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute krendering.ecore#//KFontBold/bold"/>
     </genClasses>
   </genPackages>
 </genmodel:GenModel>

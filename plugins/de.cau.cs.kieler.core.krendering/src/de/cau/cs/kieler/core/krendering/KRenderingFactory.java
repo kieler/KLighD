@@ -1,8 +1,15 @@
 /**
- * <copyright>
- * </copyright>
- *
- * $Id$
+ * KIELER - Kiel Integrated Environment for Layout Eclipse RichClient
+ * 
+ * http://www.informatik.uni-kiel.de/rtsys/kieler/
+ * 
+ * Copyright 2012 by
+ * + Christian-Albrechts-University of Kiel
+ *   + Department of Computer Science
+ *     + Real-Time and Embedded Systems Group
+ * 
+ * This code is provided under the terms of the Eclipse Public License (EPL).
+ * See the file epl-v10.html for the license text.
  */
 package de.cau.cs.kieler.core.krendering;
 
@@ -242,15 +249,6 @@ public interface KRenderingFactory extends EFactory {
     KLineWidth createKLineWidth();
 
     /**
-     * Returns a new object of class '<em>KForeground Visibility</em>'.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @return a new object of class '<em>KForeground Visibility</em>'.
-     * @generated
-     */
-    KForegroundVisibility createKForegroundVisibility();
-
-    /**
      * Returns a new object of class '<em>KLine Style</em>'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -314,6 +312,24 @@ public interface KRenderingFactory extends EFactory {
     KBottomPosition createKBottomPosition();
 
     /**
+     * Returns a new object of class '<em>KSpline</em>'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return a new object of class '<em>KSpline</em>'.
+     * @generated
+     */
+    KSpline createKSpline();
+
+    /**
+     * Returns a new object of class '<em>KForeground Visibility</em>'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return a new object of class '<em>KForeground Visibility</em>'.
+     * @generated
+     */
+    KForegroundVisibility createKForegroundVisibility();
+
+    /**
      * Returns a new object of class '<em>KBackground Visibility</em>'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -321,6 +337,24 @@ public interface KRenderingFactory extends EFactory {
      * @generated
      */
     KBackgroundVisibility createKBackgroundVisibility();
+
+    /**
+     * Returns a new object of class '<em>KFont Bold</em>'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return a new object of class '<em>KFont Bold</em>'.
+     * @generated
+     */
+    KFontBold createKFontBold();
+
+    /**
+     * Returns a new object of class '<em>KFont Italic</em>'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return a new object of class '<em>KFont Italic</em>'.
+     * @generated
+     */
+    KFontItalic createKFontItalic();
 
     /**
      * Returns a new object of class '<em>KFont Name</em>'.
@@ -339,24 +373,6 @@ public interface KRenderingFactory extends EFactory {
      * @generated
      */
     KFontSize createKFontSize();
-
-    /**
-     * Returns a new object of class '<em>KFont Italic</em>'.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @return a new object of class '<em>KFont Italic</em>'.
-     * @generated
-     */
-    KFontItalic createKFontItalic();
-
-    /**
-     * Returns a new object of class '<em>KFont Bold</em>'.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @return a new object of class '<em>KFont Bold</em>'.
-     * @generated
-     */
-    KFontBold createKFontBold();
 
     /**
      * Returns the package supported by this factory.

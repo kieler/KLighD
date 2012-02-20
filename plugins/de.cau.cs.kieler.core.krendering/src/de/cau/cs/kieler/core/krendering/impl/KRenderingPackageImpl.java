@@ -1,8 +1,15 @@
 /**
- * <copyright>
- * </copyright>
- *
- * $Id$
+ * KIELER - Kiel Integrated Environment for Layout Eclipse RichClient
+ * 
+ * http://www.informatik.uni-kiel.de/rtsys/kieler/
+ * 
+ * Copyright 2012 by
+ * + Christian-Albrechts-University of Kiel
+ *   + Department of Computer Science
+ *     + Real-Time and Embedded Systems Group
+ * 
+ * This code is provided under the terms of the Eclipse Public License (EPL).
+ * See the file epl-v10.html for the license text.
  */
 package de.cau.cs.kieler.core.krendering.impl;
 
@@ -47,12 +54,14 @@ import de.cau.cs.kieler.core.krendering.KRenderingPackage;
 import de.cau.cs.kieler.core.krendering.KRenderingRef;
 import de.cau.cs.kieler.core.krendering.KRightPosition;
 import de.cau.cs.kieler.core.krendering.KRoundedRectangle;
+import de.cau.cs.kieler.core.krendering.KSpline;
 import de.cau.cs.kieler.core.krendering.KStackPlacement;
 import de.cau.cs.kieler.core.krendering.KStackPlacementData;
 import de.cau.cs.kieler.core.krendering.KStyle;
 import de.cau.cs.kieler.core.krendering.KText;
 import de.cau.cs.kieler.core.krendering.KTopPosition;
 import de.cau.cs.kieler.core.krendering.KVerticalAlignment;
+import de.cau.cs.kieler.core.krendering.KVisibility;
 import de.cau.cs.kieler.core.krendering.KXPosition;
 import de.cau.cs.kieler.core.krendering.KYPosition;
 import de.cau.cs.kieler.core.krendering.LineStyle;
@@ -281,13 +290,6 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
      * <!-- end-user-doc -->
      * @generated
      */
-    private EClass kForegroundVisibilityEClass = null;
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
     private EClass kLineStyleEClass = null;
 
     /**
@@ -351,7 +353,42 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
      * <!-- end-user-doc -->
      * @generated
      */
+    private EClass kSplineEClass = null;
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    private EClass kForegroundVisibilityEClass = null;
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    private EClass kVisibilityEClass = null;
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
     private EClass kBackgroundVisibilityEClass = null;
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    private EClass kFontBoldEClass = null;
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    private EClass kFontItalicEClass = null;
 
     /**
      * <!-- begin-user-doc -->
@@ -366,20 +403,6 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
      * @generated
      */
     private EClass kFontSizeEClass = null;
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    private EClass kFontItalicEClass = null;
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    private EClass kFontBoldEClass = null;
 
     /**
      * <!-- begin-user-doc -->
@@ -1110,24 +1133,6 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
      * <!-- end-user-doc -->
      * @generated
      */
-    public EClass getKForegroundVisibility() {
-        return kForegroundVisibilityEClass;
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    public EAttribute getKForegroundVisibility_Visible() {
-        return (EAttribute)kForegroundVisibilityEClass.getEStructuralFeatures().get(0);
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
     public EClass getKLineStyle() {
         return kLineStyleEClass;
     }
@@ -1272,6 +1277,42 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
      * <!-- end-user-doc -->
      * @generated
      */
+    public EClass getKSpline() {
+        return kSplineEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EClass getKForegroundVisibility() {
+        return kForegroundVisibilityEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EClass getKVisibility() {
+        return kVisibilityEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EAttribute getKVisibility_Visible() {
+        return (EAttribute)kVisibilityEClass.getEStructuralFeatures().get(0);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
     public EClass getKBackgroundVisibility() {
         return kBackgroundVisibilityEClass;
     }
@@ -1281,8 +1322,35 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
      * <!-- end-user-doc -->
      * @generated
      */
-    public EAttribute getKBackgroundVisibility_Visible() {
-        return (EAttribute)kBackgroundVisibilityEClass.getEStructuralFeatures().get(0);
+    public EClass getKFontBold() {
+        return kFontBoldEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EAttribute getKFontBold_Bold() {
+        return (EAttribute)kFontBoldEClass.getEStructuralFeatures().get(0);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EClass getKFontItalic() {
+        return kFontItalicEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EAttribute getKFontItalic_Italic() {
+        return (EAttribute)kFontItalicEClass.getEStructuralFeatures().get(0);
     }
 
     /**
@@ -1319,42 +1387,6 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
      */
     public EAttribute getKFontSize_Size() {
         return (EAttribute)kFontSizeEClass.getEStructuralFeatures().get(0);
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    public EClass getKFontItalic() {
-        return kFontItalicEClass;
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    public EAttribute getKFontItalic_Italic() {
-        return (EAttribute)kFontItalicEClass.getEStructuralFeatures().get(0);
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    public EClass getKFontBold() {
-        return kFontBoldEClass;
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    public EAttribute getKFontBold_Bold() {
-        return (EAttribute)kFontBoldEClass.getEStructuralFeatures().get(0);
     }
 
     /**
@@ -1512,9 +1544,6 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
         kLineWidthEClass = createEClass(KLINE_WIDTH);
         createEAttribute(kLineWidthEClass, KLINE_WIDTH__LINE_WIDTH);
 
-        kForegroundVisibilityEClass = createEClass(KFOREGROUND_VISIBILITY);
-        createEAttribute(kForegroundVisibilityEClass, KFOREGROUND_VISIBILITY__VISIBLE);
-
         kLineStyleEClass = createEClass(KLINE_STYLE);
         createEAttribute(kLineStyleEClass, KLINE_STYLE__LINE_STYLE);
 
@@ -1540,20 +1569,26 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
 
         kBottomPositionEClass = createEClass(KBOTTOM_POSITION);
 
+        kSplineEClass = createEClass(KSPLINE);
+
+        kForegroundVisibilityEClass = createEClass(KFOREGROUND_VISIBILITY);
+
+        kVisibilityEClass = createEClass(KVISIBILITY);
+        createEAttribute(kVisibilityEClass, KVISIBILITY__VISIBLE);
+
         kBackgroundVisibilityEClass = createEClass(KBACKGROUND_VISIBILITY);
-        createEAttribute(kBackgroundVisibilityEClass, KBACKGROUND_VISIBILITY__VISIBLE);
+
+        kFontBoldEClass = createEClass(KFONT_BOLD);
+        createEAttribute(kFontBoldEClass, KFONT_BOLD__BOLD);
+
+        kFontItalicEClass = createEClass(KFONT_ITALIC);
+        createEAttribute(kFontItalicEClass, KFONT_ITALIC__ITALIC);
 
         kFontNameEClass = createEClass(KFONT_NAME);
         createEAttribute(kFontNameEClass, KFONT_NAME__NAME);
 
         kFontSizeEClass = createEClass(KFONT_SIZE);
         createEAttribute(kFontSizeEClass, KFONT_SIZE__SIZE);
-
-        kFontItalicEClass = createEClass(KFONT_ITALIC);
-        createEAttribute(kFontItalicEClass, KFONT_ITALIC__ITALIC);
-
-        kFontBoldEClass = createEClass(KFONT_BOLD);
-        createEAttribute(kFontBoldEClass, KFONT_BOLD__BOLD);
 
         // Create enums
         lineStyleEEnum = createEEnum(LINE_STYLE);
@@ -1617,7 +1652,6 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
         kColorEClass.getESuperTypes().add(this.getKStyle());
         kBackgroundColorEClass.getESuperTypes().add(this.getKColor());
         kLineWidthEClass.getESuperTypes().add(this.getKStyle());
-        kForegroundVisibilityEClass.getESuperTypes().add(this.getKStyle());
         kLineStyleEClass.getESuperTypes().add(this.getKStyle());
         kVerticalAlignmentEClass.getESuperTypes().add(this.getKStyle());
         kHorizontalAlignmentEClass.getESuperTypes().add(this.getKStyle());
@@ -1625,11 +1659,14 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
         kRightPositionEClass.getESuperTypes().add(this.getKXPosition());
         kTopPositionEClass.getESuperTypes().add(this.getKYPosition());
         kBottomPositionEClass.getESuperTypes().add(this.getKYPosition());
-        kBackgroundVisibilityEClass.getESuperTypes().add(this.getKStyle());
+        kSplineEClass.getESuperTypes().add(this.getKPolyline());
+        kForegroundVisibilityEClass.getESuperTypes().add(this.getKVisibility());
+        kVisibilityEClass.getESuperTypes().add(this.getKStyle());
+        kBackgroundVisibilityEClass.getESuperTypes().add(this.getKVisibility());
+        kFontBoldEClass.getESuperTypes().add(this.getKStyle());
+        kFontItalicEClass.getESuperTypes().add(this.getKStyle());
         kFontNameEClass.getESuperTypes().add(this.getKStyle());
         kFontSizeEClass.getESuperTypes().add(this.getKStyle());
-        kFontItalicEClass.getESuperTypes().add(this.getKStyle());
-        kFontBoldEClass.getESuperTypes().add(this.getKStyle());
 
         // Initialize classes and features; add operations and parameters
         initEClass(kPositionEClass, KPosition.class, "KPosition", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -1732,9 +1769,6 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
         initEClass(kLineWidthEClass, KLineWidth.class, "KLineWidth", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         initEAttribute(getKLineWidth_LineWidth(), ecorePackage.getEInt(), "lineWidth", null, 1, 1, KLineWidth.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-        initEClass(kForegroundVisibilityEClass, KForegroundVisibility.class, "KForegroundVisibility", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-        initEAttribute(getKForegroundVisibility_Visible(), ecorePackage.getEBoolean(), "visible", null, 1, 1, KForegroundVisibility.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-
         initEClass(kLineStyleEClass, KLineStyle.class, "KLineStyle", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         initEAttribute(getKLineStyle_LineStyle(), this.getLineStyle(), "lineStyle", null, 1, 1, KLineStyle.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
@@ -1760,20 +1794,26 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
 
         initEClass(kBottomPositionEClass, KBottomPosition.class, "KBottomPosition", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
+        initEClass(kSplineEClass, KSpline.class, "KSpline", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+        initEClass(kForegroundVisibilityEClass, KForegroundVisibility.class, "KForegroundVisibility", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+        initEClass(kVisibilityEClass, KVisibility.class, "KVisibility", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        initEAttribute(getKVisibility_Visible(), ecorePackage.getEBoolean(), "visible", null, 1, 1, KVisibility.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
         initEClass(kBackgroundVisibilityEClass, KBackgroundVisibility.class, "KBackgroundVisibility", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-        initEAttribute(getKBackgroundVisibility_Visible(), ecorePackage.getEBoolean(), "visible", null, 1, 1, KBackgroundVisibility.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+        initEClass(kFontBoldEClass, KFontBold.class, "KFontBold", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        initEAttribute(getKFontBold_Bold(), ecorePackage.getEBoolean(), "bold", null, 1, 1, KFontBold.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+        initEClass(kFontItalicEClass, KFontItalic.class, "KFontItalic", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        initEAttribute(getKFontItalic_Italic(), ecorePackage.getEBoolean(), "italic", null, 1, 1, KFontItalic.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         initEClass(kFontNameEClass, KFontName.class, "KFontName", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         initEAttribute(getKFontName_Name(), ecorePackage.getEString(), "name", null, 1, 1, KFontName.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         initEClass(kFontSizeEClass, KFontSize.class, "KFontSize", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         initEAttribute(getKFontSize_Size(), ecorePackage.getEInt(), "size", null, 1, 1, KFontSize.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-
-        initEClass(kFontItalicEClass, KFontItalic.class, "KFontItalic", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-        initEAttribute(getKFontItalic_Italic(), ecorePackage.getEBoolean(), "italic", null, 1, 1, KFontItalic.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-
-        initEClass(kFontBoldEClass, KFontBold.class, "KFontBold", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-        initEAttribute(getKFontBold_Bold(), ecorePackage.getEBoolean(), "bold", null, 1, 1, KFontBold.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         // Initialize enums and add enum literals
         initEEnum(lineStyleEEnum, LineStyle.class, "LineStyle");
