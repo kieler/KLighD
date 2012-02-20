@@ -3512,57 +3512,94 @@ public class KRenderingGrammarAccess extends AbstractGrammarElementFinder {
 
 	public class KVisibilityElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "KVisibility");
-		private final Group cGroup = (Group)rule.eContents().get(1);
-		private final Action cKVisibilityAction_0 = (Action)cGroup.eContents().get(0);
-		private final Keyword cKVisibilityKeyword_1 = (Keyword)cGroup.eContents().get(1);
-		private final Assignment cLineVisibleAssignment_2 = (Assignment)cGroup.eContents().get(2);
-		private final Keyword cLineVisibleLineVisibleKeyword_2_0 = (Keyword)cLineVisibleAssignment_2.eContents().get(0);
-		private final Assignment cFilledAssignment_3 = (Assignment)cGroup.eContents().get(3);
-		private final Keyword cFilledFilledKeyword_3_0 = (Keyword)cFilledAssignment_3.eContents().get(0);
-		private final Assignment cPropagateToChildrenAssignment_4 = (Assignment)cGroup.eContents().get(4);
-		private final Keyword cPropagateToChildrenPropagateToChildrenKeyword_4_0 = (Keyword)cPropagateToChildrenAssignment_4.eContents().get(0);
+		private final Alternatives cAlternatives = (Alternatives)rule.eContents().get(1);
+		private final RuleCall cKForegroundVisibilityParserRuleCall_0 = (RuleCall)cAlternatives.eContents().get(0);
+		private final RuleCall cKBackgroundVisibilityParserRuleCall_1 = (RuleCall)cAlternatives.eContents().get(1);
 		
-		//KVisibility: //	propagateToChildren?='propagateToChildren'
-		////	lineVisible?='lineVisible'
-		////	filled?='filled'
-		////	'KVisibility'
-		//	{KVisibility} "KVisibility" lineVisible?="lineVisible"? filled?="filled"? propagateToChildren?="propagateToChildren"?;
+		//KVisibility:
+		//	KForegroundVisibility | KBackgroundVisibility;
 		public ParserRule getRule() { return rule; }
 
-		////	propagateToChildren?='propagateToChildren'
-		////	lineVisible?='lineVisible'
-		////	filled?='filled'
-		////	'KVisibility'
-		//{KVisibility} "KVisibility" lineVisible?="lineVisible"? filled?="filled"? propagateToChildren?="propagateToChildren"?
+		//KForegroundVisibility | KBackgroundVisibility
+		public Alternatives getAlternatives() { return cAlternatives; }
+
+		//KForegroundVisibility
+		public RuleCall getKForegroundVisibilityParserRuleCall_0() { return cKForegroundVisibilityParserRuleCall_0; }
+
+		//KBackgroundVisibility
+		public RuleCall getKBackgroundVisibilityParserRuleCall_1() { return cKBackgroundVisibilityParserRuleCall_1; }
+	}
+
+	public class KForegroundVisibilityElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "KForegroundVisibility");
+		private final Group cGroup = (Group)rule.eContents().get(1);
+		private final Action cKForegroundVisibilityAction_0 = (Action)cGroup.eContents().get(0);
+		private final Keyword cKForegroundVisibilityKeyword_1 = (Keyword)cGroup.eContents().get(1);
+		private final Assignment cVisibleAssignment_2 = (Assignment)cGroup.eContents().get(2);
+		private final Keyword cVisibleVisibleKeyword_2_0 = (Keyword)cVisibleAssignment_2.eContents().get(0);
+		private final Assignment cPropagateToChildrenAssignment_3 = (Assignment)cGroup.eContents().get(3);
+		private final Keyword cPropagateToChildrenPropagateToChildrenKeyword_3_0 = (Keyword)cPropagateToChildrenAssignment_3.eContents().get(0);
+		
+		//KForegroundVisibility:
+		//	{KForegroundVisibility} "KForegroundVisibility" visible?="visible"? propagateToChildren?="propagateToChildren"?;
+		public ParserRule getRule() { return rule; }
+
+		//{KForegroundVisibility} "KForegroundVisibility" visible?="visible"? propagateToChildren?="propagateToChildren"?
 		public Group getGroup() { return cGroup; }
 
-		////	propagateToChildren?='propagateToChildren'
-		////	lineVisible?='lineVisible'
-		////	filled?='filled'
-		////	'KVisibility'
-		//{KVisibility}
-		public Action getKVisibilityAction_0() { return cKVisibilityAction_0; }
+		//{KForegroundVisibility}
+		public Action getKForegroundVisibilityAction_0() { return cKForegroundVisibilityAction_0; }
 
-		//"KVisibility"
-		public Keyword getKVisibilityKeyword_1() { return cKVisibilityKeyword_1; }
+		//"KForegroundVisibility"
+		public Keyword getKForegroundVisibilityKeyword_1() { return cKForegroundVisibilityKeyword_1; }
 
-		//lineVisible?="lineVisible"?
-		public Assignment getLineVisibleAssignment_2() { return cLineVisibleAssignment_2; }
+		//visible?="visible"?
+		public Assignment getVisibleAssignment_2() { return cVisibleAssignment_2; }
 
-		//"lineVisible"
-		public Keyword getLineVisibleLineVisibleKeyword_2_0() { return cLineVisibleLineVisibleKeyword_2_0; }
-
-		//filled?="filled"?
-		public Assignment getFilledAssignment_3() { return cFilledAssignment_3; }
-
-		//"filled"
-		public Keyword getFilledFilledKeyword_3_0() { return cFilledFilledKeyword_3_0; }
+		//"visible"
+		public Keyword getVisibleVisibleKeyword_2_0() { return cVisibleVisibleKeyword_2_0; }
 
 		//propagateToChildren?="propagateToChildren"?
-		public Assignment getPropagateToChildrenAssignment_4() { return cPropagateToChildrenAssignment_4; }
+		public Assignment getPropagateToChildrenAssignment_3() { return cPropagateToChildrenAssignment_3; }
 
 		//"propagateToChildren"
-		public Keyword getPropagateToChildrenPropagateToChildrenKeyword_4_0() { return cPropagateToChildrenPropagateToChildrenKeyword_4_0; }
+		public Keyword getPropagateToChildrenPropagateToChildrenKeyword_3_0() { return cPropagateToChildrenPropagateToChildrenKeyword_3_0; }
+	}
+
+	public class KBackgroundVisibilityElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "KBackgroundVisibility");
+		private final Group cGroup = (Group)rule.eContents().get(1);
+		private final Action cKBackgroundVisibilityAction_0 = (Action)cGroup.eContents().get(0);
+		private final Keyword cKBackgroundVisibilityKeyword_1 = (Keyword)cGroup.eContents().get(1);
+		private final Assignment cVisibleAssignment_2 = (Assignment)cGroup.eContents().get(2);
+		private final Keyword cVisibleVisibleKeyword_2_0 = (Keyword)cVisibleAssignment_2.eContents().get(0);
+		private final Assignment cPropagateToChildrenAssignment_3 = (Assignment)cGroup.eContents().get(3);
+		private final Keyword cPropagateToChildrenPropagateToChildrenKeyword_3_0 = (Keyword)cPropagateToChildrenAssignment_3.eContents().get(0);
+		
+		//KBackgroundVisibility:
+		//	{KBackgroundVisibility} "KBackgroundVisibility" visible?="visible"? propagateToChildren?="propagateToChildren"?;
+		public ParserRule getRule() { return rule; }
+
+		//{KBackgroundVisibility} "KBackgroundVisibility" visible?="visible"? propagateToChildren?="propagateToChildren"?
+		public Group getGroup() { return cGroup; }
+
+		//{KBackgroundVisibility}
+		public Action getKBackgroundVisibilityAction_0() { return cKBackgroundVisibilityAction_0; }
+
+		//"KBackgroundVisibility"
+		public Keyword getKBackgroundVisibilityKeyword_1() { return cKBackgroundVisibilityKeyword_1; }
+
+		//visible?="visible"?
+		public Assignment getVisibleAssignment_2() { return cVisibleAssignment_2; }
+
+		//"visible"
+		public Keyword getVisibleVisibleKeyword_2_0() { return cVisibleVisibleKeyword_2_0; }
+
+		//propagateToChildren?="propagateToChildren"?
+		public Assignment getPropagateToChildrenAssignment_3() { return cPropagateToChildrenAssignment_3; }
+
+		//"propagateToChildren"
+		public Keyword getPropagateToChildrenPropagateToChildrenKeyword_3_0() { return cPropagateToChildrenPropagateToChildrenKeyword_3_0; }
 	}
 
 	public class KLineStyleElements extends AbstractParserRuleElementFinder {
@@ -3946,6 +3983,8 @@ public class KRenderingGrammarAccess extends AbstractGrammarElementFinder {
 	private KBackgroundColorElements pKBackgroundColor;
 	private KLineWidthElements pKLineWidth;
 	private KVisibilityElements pKVisibility;
+	private KForegroundVisibilityElements pKForegroundVisibility;
+	private KBackgroundVisibilityElements pKBackgroundVisibility;
 	private KLineStyleElements pKLineStyle;
 	private KVerticalAlignmentElements pKVerticalAlignment;
 	private KHorizontalAlignmentElements pKHorizontalAlignment;
@@ -4429,17 +4468,34 @@ public class KRenderingGrammarAccess extends AbstractGrammarElementFinder {
 		return getKLineWidthAccess().getRule();
 	}
 
-	//KVisibility: //	propagateToChildren?='propagateToChildren'
-	////	lineVisible?='lineVisible'
-	////	filled?='filled'
-	////	'KVisibility'
-	//	{KVisibility} "KVisibility" lineVisible?="lineVisible"? filled?="filled"? propagateToChildren?="propagateToChildren"?;
+	//KVisibility:
+	//	KForegroundVisibility | KBackgroundVisibility;
 	public KVisibilityElements getKVisibilityAccess() {
 		return (pKVisibility != null) ? pKVisibility : (pKVisibility = new KVisibilityElements());
 	}
 	
 	public ParserRule getKVisibilityRule() {
 		return getKVisibilityAccess().getRule();
+	}
+
+	//KForegroundVisibility:
+	//	{KForegroundVisibility} "KForegroundVisibility" visible?="visible"? propagateToChildren?="propagateToChildren"?;
+	public KForegroundVisibilityElements getKForegroundVisibilityAccess() {
+		return (pKForegroundVisibility != null) ? pKForegroundVisibility : (pKForegroundVisibility = new KForegroundVisibilityElements());
+	}
+	
+	public ParserRule getKForegroundVisibilityRule() {
+		return getKForegroundVisibilityAccess().getRule();
+	}
+
+	//KBackgroundVisibility:
+	//	{KBackgroundVisibility} "KBackgroundVisibility" visible?="visible"? propagateToChildren?="propagateToChildren"?;
+	public KBackgroundVisibilityElements getKBackgroundVisibilityAccess() {
+		return (pKBackgroundVisibility != null) ? pKBackgroundVisibility : (pKBackgroundVisibility = new KBackgroundVisibilityElements());
+	}
+	
+	public ParserRule getKBackgroundVisibilityRule() {
+		return getKBackgroundVisibilityAccess().getRule();
 	}
 
 	//KLineStyle: //	propagateToChildren?='propagateToChildren'

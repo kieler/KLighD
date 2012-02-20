@@ -46,6 +46,7 @@ public class KRenderingParser extends AbstractContentAssistParser {
 					put(grammarAccess.getKRoundedRectangleAccess().getAlternatives_2(), "rule__KRoundedRectangle__Alternatives_2");
 					put(grammarAccess.getEFloatAccess().getAlternatives_4_0(), "rule__EFloat__Alternatives_4_0");
 					put(grammarAccess.getEBooleanAccess().getAlternatives(), "rule__EBoolean__Alternatives");
+					put(grammarAccess.getKVisibilityAccess().getAlternatives(), "rule__KVisibility__Alternatives");
 					put(grammarAccess.getEStringAccess().getAlternatives(), "rule__EString__Alternatives");
 					put(grammarAccess.getLineStyleAccess().getAlternatives(), "rule__LineStyle__Alternatives");
 					put(grammarAccess.getVerticalAlignmentAccess().getAlternatives(), "rule__VerticalAlignment__Alternatives");
@@ -182,7 +183,8 @@ public class KRenderingParser extends AbstractContentAssistParser {
 					put(grammarAccess.getKBackgroundColorAccess().getGroup_5(), "rule__KBackgroundColor__Group_5__0");
 					put(grammarAccess.getKBackgroundColorAccess().getGroup_6(), "rule__KBackgroundColor__Group_6__0");
 					put(grammarAccess.getKLineWidthAccess().getGroup(), "rule__KLineWidth__Group__0");
-					put(grammarAccess.getKVisibilityAccess().getGroup(), "rule__KVisibility__Group__0");
+					put(grammarAccess.getKForegroundVisibilityAccess().getGroup(), "rule__KForegroundVisibility__Group__0");
+					put(grammarAccess.getKBackgroundVisibilityAccess().getGroup(), "rule__KBackgroundVisibility__Group__0");
 					put(grammarAccess.getKLineStyleAccess().getGroup(), "rule__KLineStyle__Group__0");
 					put(grammarAccess.getKVerticalAlignmentAccess().getGroup(), "rule__KVerticalAlignment__Group__0");
 					put(grammarAccess.getKHorizontalAlignmentAccess().getGroup(), "rule__KHorizontalAlignment__Group__0");
@@ -343,9 +345,10 @@ public class KRenderingParser extends AbstractContentAssistParser {
 					put(grammarAccess.getKBackgroundColorAccess().getBlueAssignment_6_1(), "rule__KBackgroundColor__BlueAssignment_6_1");
 					put(grammarAccess.getKLineWidthAccess().getLineWidthAssignment_1(), "rule__KLineWidth__LineWidthAssignment_1");
 					put(grammarAccess.getKLineWidthAccess().getPropagateToChildrenAssignment_2(), "rule__KLineWidth__PropagateToChildrenAssignment_2");
-					put(grammarAccess.getKVisibilityAccess().getLineVisibleAssignment_2(), "rule__KVisibility__LineVisibleAssignment_2");
-					put(grammarAccess.getKVisibilityAccess().getFilledAssignment_3(), "rule__KVisibility__FilledAssignment_3");
-					put(grammarAccess.getKVisibilityAccess().getPropagateToChildrenAssignment_4(), "rule__KVisibility__PropagateToChildrenAssignment_4");
+					put(grammarAccess.getKForegroundVisibilityAccess().getVisibleAssignment_2(), "rule__KForegroundVisibility__VisibleAssignment_2");
+					put(grammarAccess.getKForegroundVisibilityAccess().getPropagateToChildrenAssignment_3(), "rule__KForegroundVisibility__PropagateToChildrenAssignment_3");
+					put(grammarAccess.getKBackgroundVisibilityAccess().getVisibleAssignment_2(), "rule__KBackgroundVisibility__VisibleAssignment_2");
+					put(grammarAccess.getKBackgroundVisibilityAccess().getPropagateToChildrenAssignment_3(), "rule__KBackgroundVisibility__PropagateToChildrenAssignment_3");
 					put(grammarAccess.getKLineStyleAccess().getLineStyleAssignment_2(), "rule__KLineStyle__LineStyleAssignment_2");
 					put(grammarAccess.getKLineStyleAccess().getPropagateToChildrenAssignment_3(), "rule__KLineStyle__PropagateToChildrenAssignment_3");
 					put(grammarAccess.getKVerticalAlignmentAccess().getVerticalAlignmentAssignment_1(), "rule__KVerticalAlignment__VerticalAlignmentAssignment_1");
