@@ -1,0 +1,119 @@
+module de.cau.cs.kieler.kiml.klayoutdata.text.KLayoutData
+
+import org.eclipse.emf.mwe.utils.*
+import org.eclipse.xtext.generator.*
+import org.eclipse.xtext.ui.generator.*
+
+var grammarURI = "classpath:/de/cau/cs/kieler/kiml/klayoutdata/text/KLayoutData.xtext"
+var file.extensions = "klayoutdata"
+var projectName = "de.cau.cs.kieler.core.kgraph.text"
+var runtimeProject = "../${projectName}"
+
+Workflow {
+	bean = StandaloneSetup {
+		scanClassPath  = true
+		platformUri = "${runtimeProject}/.."
+        registerGeneratedEPackage = "de.cau.cs.kieler.core.kgraph.KGraphPackage"
+		registerGeneratedEPackage = "de.cau.cs.kieler.kiml.klayoutdata.KLayoutDataPackage"
+		registerGenModelFile = "platform:/resource/de.cau.cs.kieler.core.kgraph/model/kgraph.genmodel"
+		registerGenModelFile = "platform:/resource/de.cau.cs.kieler.kiml/model/klayoutdata.genmodel"
+	}
+	
+	
+
+	component = DirectoryCleaner {
+		directory = "${runtimeProject}/src-gen/de/cau/cs/kieler/kiml/klayoutdata/text"
+	}
+
+	component = DirectoryCleaner {
+		directory = "${runtimeProject}.ui/src-gen/de/cau/cs/kieler/kiml/klayoutdata/text"
+	}
+
+	component = Generator {
+		pathRtProject = runtimeProject
+		pathUiProject = "${runtimeProject}.ui"
+		projectNameRt = projectName
+		projectNameUi = "${projectName}.ui"
+		language = {
+			uri = grammarURI
+			fileExtensions = file.extensions
+
+			// Java API to access grammar elements (required by several other fragments)
+			fragment = grammarAccess.GrammarAccessFragment {}
+
+			// generates Java API for the generated EPackages
+			// fragment = ecore.EcoreGeneratorFragment {}
+
+			// the serialization component
+			// fragment = parseTreeConstructor.ParseTreeConstructorFragment {}
+			fragment = serializer.SerializerFragment {}
+
+			// a custom ResourceFactory for use with EMF 
+			// fragment = resourceFactory.ResourceFactoryFragment {
+			//	fileExtensions = file.extensions
+			// }
+
+			// the Antlr parser
+			fragment = parser.antlr.XtextAntlrGeneratorFragment {
+				options = {
+					classSplitting = true
+				}
+			}
+
+			// the Ecore2Xtext specific terminal converter
+			fragment = ecore2xtext.Ecore2XtextValueConverterServiceFragment {}
+
+			// java-based API for validation 
+			// fragment = validation.JavaValidatorFragment {
+			// composedCheck = "org.eclipse.xtext.validation.ImportUriValidator"
+			// composedCheck = "org.eclipse.xtext.validation.NamesAreUniqueValidator"
+			// }
+
+			// scoping and exporting API
+			// fragment = scoping.ImportURIScopingFragment {}
+			// fragment = exporting.SimpleNamesFragment {}
+
+			// scoping and exporting API 
+			// fragment = scoping.ImportNamespacesScopingFragment {}
+			// fragment = exporting.QualifiedNamesFragment {}
+
+
+			// formatter API 
+			fragment = ecore2xtext.FormatterFragment {}
+
+			// labeling API 
+			fragment = labeling.LabelProviderFragment {}
+
+			// outline API 
+            // fragment = outline.OutlineTreeProviderFragment {}
+            // fragment = outline.QuickOutlineFragment {}
+
+			// java-based API for content assistance 
+			fragment = contentAssist.JavaBasedContentAssistFragment {}
+
+			// antlr parser generator tailored for content assist 
+			fragment = parser.antlr.XtextAntlrUiGeneratorFragment {
+				options = {
+					classSplitting = true
+				}
+			}
+
+			// provides a compare view
+            // fragment = compare.CompareFragment {
+            //    fileExtensions = file.extensions
+            // }
+
+			// fragment = builder.BuilderIntegrationFragment {}
+
+			// project wizard (optional) 
+
+			// fragment = projectWizard.SimpleProjectWizardFragment {
+			//		generatorProjectName = "${projectName}.generator" 
+			//		modelFileExtension = file.extensions
+			// }
+
+			// quickfix API 
+			// fragment = quickfix.QuickfixProviderFragment {}
+		}
+	}
+}
