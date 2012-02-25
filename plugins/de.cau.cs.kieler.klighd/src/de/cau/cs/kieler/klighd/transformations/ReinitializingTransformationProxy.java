@@ -59,10 +59,11 @@ public class ReinitializingTransformationProxy<S, T> extends AbstractTransformat
     
     /**
      * {@inheritDoc}<br>
-     * Delegates the 'delegate' object.
+     * Delegates to the 'delegate' object.
      */
     public T transform(final S model, final TransformationContext<S, T> transformationContext) {
-        this.transformationDelegate = this.injector.getInstance(this.transformationClass); 
+        // this.transformationDelegate = this.injector.getInstance(this.transformationClass); 
+        this.transformationDelegate = Guice.createInjector().getInstance(this.transformationClass); 
         return this.transformationDelegate.transform(model, transformationContext);
     }
     
