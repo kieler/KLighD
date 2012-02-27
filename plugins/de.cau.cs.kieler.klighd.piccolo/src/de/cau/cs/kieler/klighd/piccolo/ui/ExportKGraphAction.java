@@ -35,7 +35,7 @@ import de.cau.cs.kieler.kiml.util.KimlUtil;
 import de.cau.cs.kieler.klighd.piccolo.KlighdPiccoloPlugin;
 import de.cau.cs.kieler.klighd.piccolo.graph.IGraphObject;
 import de.cau.cs.kieler.klighd.piccolo.graph.layout.PiccoloDiagramLayoutManager;
-import de.cau.cs.kieler.klighd.piccolo.krendering.PiccoloViewer;
+import de.cau.cs.kieler.klighd.piccolo.krendering.viewer.PiccoloViewer;
 
 /**
  * An action which invokes the 'export-kgraph' dialog and performs the save for Piccolo.
@@ -71,27 +71,27 @@ public class ExportKGraphAction extends Action {
         int code = dialog.open();
         if (code == Dialog.OK) {
             try {
-                URI fileURI = URI.createPlatformResourceURI(dialog.getFilePath().toOSString(), true);
+                URI fileURI = URI
+                        .createPlatformResourceURI(dialog.getFilePath().toOSString(), true);
 
                 ResourceSet set = new ResourceSetImpl();
                 Resource resource = set.createResource(fileURI);
-                
+
                 LayoutMapping<IGraphObject> layoutMapping = new PiccoloDiagramLayoutManager()
                         .buildLayoutGraph(null, viewer);
-				new LayoutOptionManager().configure(layoutMapping,
-						new KielerProgressMonitor(new NullProgressMonitor()));
+                new LayoutOptionManager().configure(layoutMapping, new KielerProgressMonitor(
+                        new NullProgressMonitor()));
 
                 KNode kgraph = layoutMapping.getLayoutGraph();
                 KimlUtil.persistDataElements(kgraph);
                 resource.getContents().add(kgraph);
-                
+
                 resource.save(Collections.emptyMap());
                 resource.unload();
-                
+
             } catch (IOException exception) {
-                Status myStatus =
-                        new Status(IStatus.WARNING, KlighdPiccoloPlugin.PLUGIN_ID,
-                                Messages.ExportKGraphAction_export_kgraph_error, exception);
+                Status myStatus = new Status(IStatus.WARNING, KlighdPiccoloPlugin.PLUGIN_ID,
+                        Messages.ExportKGraphAction_export_kgraph_error, exception);
                 StatusManager.getManager().handle(myStatus,
                         StatusManager.BLOCK | StatusManager.SHOW);
             }

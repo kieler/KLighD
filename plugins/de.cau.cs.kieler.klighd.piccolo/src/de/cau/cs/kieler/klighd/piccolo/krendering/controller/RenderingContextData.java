@@ -14,7 +14,7 @@
 /**
  * 
  */
-package de.cau.cs.kieler.klighd.piccolo.krendering;
+package de.cau.cs.kieler.klighd.piccolo.krendering.controller;
 
 import de.cau.cs.kieler.core.kgraph.KGraphElement;
 import de.cau.cs.kieler.core.kgraph.impl.KGraphDataImpl;

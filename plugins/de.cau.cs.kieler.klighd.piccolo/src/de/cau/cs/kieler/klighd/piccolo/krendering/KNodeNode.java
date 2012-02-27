@@ -13,17 +13,10 @@
  */
 package de.cau.cs.kieler.klighd.piccolo.krendering;
 
-import org.eclipse.emf.common.notify.Notification;
-import org.eclipse.emf.common.notify.impl.AdapterImpl;
-
 import de.cau.cs.kieler.core.kgraph.KNode;
-import de.cau.cs.kieler.core.ui.util.MonitoredOperation;
 import de.cau.cs.kieler.core.util.IWrapper;
-import de.cau.cs.kieler.kiml.klayoutdata.KLayoutDataPackage;
-import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout;
+import de.cau.cs.kieler.klighd.piccolo.krendering.controller.RenderingContextData;
 import de.cau.cs.kieler.klighd.piccolo.nodes.PZIndexNode;
-import de.cau.cs.kieler.klighd.piccolo.util.NodeUtil;
-import edu.umd.cs.piccolo.util.PAffineTransform;
 
 /**
  * The Piccolo node for representing a {@code KNode}.
@@ -33,7 +26,7 @@ import edu.umd.cs.piccolo.util.PAffineTransform;
 public class KNodeNode extends PZIndexNode implements INode, IWrapper<KNode> {
 
     private static final long serialVersionUID = 6311105654943173693L;
-
+    
     /** the number of z-layers (rendering and ports). */
     private static final int Z_LAYERS = 2;
     /** the z-index for the port layer. */
@@ -41,14 +34,11 @@ public class KNodeNode extends PZIndexNode implements INode, IWrapper<KNode> {
 
     /** the encapsulated {@code KNode}. */
     private KNode node;
-    /** the shape layout associated with this node. */
-    private KShapeLayout shapeLayout = null;
-
     /** the parent node. */
     private INode parent;
 
-    /** the rendering controller. */
-    private RenderingController renderingController;
+    /** the child area for this node. */
+    private KChildAreaNode childArea = null;
 
     /**
      * Constructs a Piccolo node for representing a {@code KNode}.
@@ -63,7 +53,7 @@ public class KNodeNode extends PZIndexNode implements INode, IWrapper<KNode> {
         this.node = node;
         this.parent = parent;
         setPickable(true);
-        RenderingContextData.get(node).setProperty(INode.PREPRESENTATION, this);
+        RenderingContextData.get(node).setProperty(NODE_REP, this);
     }
 
     /**
@@ -74,87 +64,23 @@ public class KNodeNode extends PZIndexNode implements INode, IWrapper<KNode> {
     }
 
     /**
-     * {@inheritDoc}
+     * Adds the representation of a port to this node.
+     * 
+     * @param port
+     *            the port representation
      */
-    public void expand() {
-        if (renderingController != null) {
-            renderingController.getChildAreaNode().populate(node);
-        }
+    public void addPort(final KPortNode port) {
+        addChild(port, PORT_LAYER);
     }
 
     /**
-     * {@inheritDoc}
+     * Sets the child area for this node.
+     * 
+     * @param childArea
+     *            the child area
      */
-    public void collapse() {
-        // TODO implement this
-    }
-
-    /**
-     * Updates the rendering.
-     */
-    public void updateRendering() {
-        if (renderingController == null) {
-            renderingController = new RenderingController(this);
-            renderingController.initialize();
-        } else {
-            renderingController.updateRendering();
-        }
-    }
-
-    /**
-     * Updates the layout.
-     */
-    public void updateLayout() {
-        // try to get the shape layout
-        if (shapeLayout == null) {
-            shapeLayout = node.getData(KShapeLayout.class);
-
-            // register adapter on the shape layout to stay in sync
-            shapeLayout.eAdapters().add(new AdapterImpl() {
-                public void notifyChanged(final Notification notification) {
-                    switch (notification.getFeatureID(KShapeLayout.class)) {
-                    case KLayoutDataPackage.KSHAPE_LAYOUT__XPOS:
-                        MonitoredOperation.runInUI(new Runnable() {
-                            public void run() {
-                                PAffineTransform transform = getTransformReference(true);
-                                double oldX = transform.getTranslateX();
-                                translate(shapeLayout.getXpos() - oldX, 0);
-                            }
-                        }, false);
-                        break;
-                    case KLayoutDataPackage.KSHAPE_LAYOUT__YPOS:
-                        MonitoredOperation.runInUI(new Runnable() {
-                            public void run() {
-                                PAffineTransform transform = getTransformReference(true);
-                                double oldY = transform.getTranslateY();
-                                translate(0, shapeLayout.getYpos() - oldY);
-                            }
-                        }, false);
-                        break;
-                    case KLayoutDataPackage.KSHAPE_LAYOUT__WIDTH:
-                        MonitoredOperation.runInUI(new Runnable() {
-                            public void run() {
-                                setWidth(shapeLayout.getWidth());
-                            }
-                        }, false);
-                        break;
-                    case KLayoutDataPackage.KSHAPE_LAYOUT__HEIGHT:
-                        MonitoredOperation.runInUI(new Runnable() {
-                            public void run() {
-                                setHeight(shapeLayout.getHeight());
-                            }
-                        }, false);
-                        break;
-                    }
-                }
-            });
-        }
-
-        // apply the layout
-        if (shapeLayout != null) {
-            NodeUtil.applySmartBounds(this, shapeLayout.getXpos(), shapeLayout.getYpos(),
-                    shapeLayout.getWidth(), shapeLayout.getHeight());
-        }
+    public void setChildArea(final KChildAreaNode childArea) {
+        this.childArea = childArea;
     }
 
     /**
@@ -168,7 +94,7 @@ public class KNodeNode extends PZIndexNode implements INode, IWrapper<KNode> {
      * {@inheritDoc}
      */
     public KChildAreaNode getChildArea() {
-        return renderingController.getChildAreaNode();
+        return childArea;
     }
 
 }

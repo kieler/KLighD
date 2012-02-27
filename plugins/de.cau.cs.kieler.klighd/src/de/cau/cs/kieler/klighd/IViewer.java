@@ -33,15 +33,36 @@ public interface IViewer<T> {
     Control getControl();
 
     /**
-     * Sets the input model for this viewer.<br>
-     * <br>
-     * This model is incrementally updated by KLighD. The implementation of the viewer should
-     * utilize a listener mechanic on the model to keep the visualization in sync.
+     * Sets the input model for this viewer.
      * 
      * @param model
      *            the input model
      */
     void setModel(T model);
+    
+    /**
+     * Sets the input model for this viewer.<br>
+     * <br>
+     * If synchronization is enabled his model is incrementally updated by KLighD. The
+     * implementation of the viewer should utilize a listener mechanic on the model to keep the
+     * visualization in sync.
+     * 
+     * @param model
+     *            the input model
+     * @param sync
+     *            true if the viewer should synchronize the visualization with the model; false else
+     */
+    void setModel(T model, boolean sync);
+
+    /**
+     * Starts recording layout changes in the model.
+     */
+    void startRecording();
+
+    /**
+     * Stops recording layout changes in the model. This applies all recorded layout changes.
+     */
+    void stopRecording();
 
     /**
      * Sets the given selection of diagram elements as current selection.

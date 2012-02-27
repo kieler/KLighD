@@ -11,7 +11,7 @@
  * This code is provided under the terms of the Eclipse Public License (EPL).
  * See the file epl-v10.html for the license text.
  */
-package de.cau.cs.kieler.klighd.piccolo.krendering;
+package de.cau.cs.kieler.klighd.piccolo.krendering.viewer;
 
 import org.eclipse.swt.widgets.Composite;
 
@@ -20,7 +20,7 @@ import de.cau.cs.kieler.klighd.IViewer;
 import de.cau.cs.kieler.klighd.IViewerProvider;
 
 /**
- * A viewer provider for the Piccolo viewer for KGraphs with attached KRendering.
+ * A viewer provider for the Piccolo viewer for KGraphs with attached KRendering data.
  * 
  * @author mri
  */

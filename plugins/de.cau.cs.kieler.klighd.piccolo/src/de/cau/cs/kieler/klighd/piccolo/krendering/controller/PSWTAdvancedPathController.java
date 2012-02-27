@@ -14,7 +14,7 @@
 /**
  * 
  */
-package de.cau.cs.kieler.klighd.piccolo.krendering;
+package de.cau.cs.kieler.klighd.piccolo.krendering.controller;
 
 import java.awt.Color;
 

@@ -510,7 +510,7 @@ public final class LightDiagramServices {
             if (viewContext.getBaseModel() != null) {
                 @SuppressWarnings("unchecked")
                 IViewer<Object> objViewer = (IViewer<Object>) viewer;
-                objViewer.setModel(viewContext.getBaseModel());
+                objViewer.setModel(viewContext.getBaseModel(), true);
             }
             return viewer;
         }

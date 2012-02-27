@@ -13,6 +13,8 @@
  */
 
 /**
- * Classes to represent a KGraph model with attached KRendering data in Piccolo.
+ * Classes which control the transformation of a KGraph with attached KRendering data to a Piccolo
+ * scene graph structure.
  */
-package de.cau.cs.kieler.klighd.piccolo.krendering;
+package de.cau.cs.kieler.klighd.piccolo.krendering.controller;
+

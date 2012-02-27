@@ -48,7 +48,7 @@ import de.cau.cs.kieler.klighd.piccolo.graph.IGraphObject;
 import de.cau.cs.kieler.klighd.piccolo.graph.IGraphParent;
 import de.cau.cs.kieler.klighd.piccolo.graph.IGraphPort;
 import de.cau.cs.kieler.klighd.piccolo.graph.Insets;
-import de.cau.cs.kieler.klighd.piccolo.krendering.PiccoloViewer;
+import de.cau.cs.kieler.klighd.piccolo.krendering.viewer.PiccoloViewer;
 import de.cau.cs.kieler.klighd.viewers.ContextViewer;
 import de.cau.cs.kieler.klighd.views.DiagramViewPart;
 import edu.umd.cs.piccolo.PCamera;

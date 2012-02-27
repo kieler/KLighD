@@ -14,7 +14,7 @@
 /**
  * 
  */
-package de.cau.cs.kieler.klighd.piccolo.krendering;
+package de.cau.cs.kieler.klighd.piccolo.krendering.controller;
 
 import java.awt.Color;
 import java.awt.geom.Point2D;
@@ -32,7 +32,6 @@ import com.google.common.collect.Lists;
 
 import de.cau.cs.kieler.core.kgraph.KGraphElement;
 import de.cau.cs.kieler.core.kgraph.KGraphPackage;
-import de.cau.cs.kieler.core.kgraph.KLabeledGraphElement;
 import de.cau.cs.kieler.core.krendering.KBackgroundColor;
 import de.cau.cs.kieler.core.krendering.KBackgroundVisibility;
 import de.cau.cs.kieler.core.krendering.KChildArea;
@@ -75,6 +74,11 @@ import de.cau.cs.kieler.core.properties.IProperty;
 import de.cau.cs.kieler.core.properties.Property;
 import de.cau.cs.kieler.core.ui.util.MonitoredOperation;
 import de.cau.cs.kieler.core.util.Pair;
+import de.cau.cs.kieler.klighd.piccolo.krendering.KChildAreaNode;
+import de.cau.cs.kieler.klighd.piccolo.krendering.KEdgeNode;
+import de.cau.cs.kieler.klighd.piccolo.krendering.KLabelNode;
+import de.cau.cs.kieler.klighd.piccolo.krendering.KNodeNode;
+import de.cau.cs.kieler.klighd.piccolo.krendering.KPortNode;
 import de.cau.cs.kieler.klighd.piccolo.nodes.PAlignmentNode;
 import de.cau.cs.kieler.klighd.piccolo.nodes.PAlignmentNode.HAlignment;
 import de.cau.cs.kieler.klighd.piccolo.nodes.PAlignmentNode.VAlignment;
@@ -101,7 +105,7 @@ public class RenderingController {
             "de.cau.cs.kieler.klighd.piccolo.controller");
 
     /** the graph element which rendering is controlled by this controller. */
-    private KLabeledGraphElement element;
+    private KGraphElement element;
     /** the rendering currently in use by this controller. */
     private KRendering currentRendering;
 
@@ -115,11 +119,14 @@ public class RenderingController {
     /** the adapter currently installed on the rendering. */
     private AdapterImpl renderingAdapter = null;
 
+    /** whether to synchronize the rendering with the model. */
+    private boolean syncRendering = false;
+
     /**
      * Constructs a rendering controller for a node.
      * 
      * @param node
-     *            the Piccolo node representing a graph node
+     *            the Piccolo node representing a node
      */
     public RenderingController(final KNodeNode node) {
         this.element = node.getWrapped();
@@ -127,12 +134,34 @@ public class RenderingController {
         this.childAreaNode = new KChildAreaNode(node);
         initializeRenderingNode(childAreaNode);
     }
+    
+    /**
+     * Constructs a rendering controller for a port.
+     * 
+     * @param port
+     *            the Piccolo node representing a port
+     */
+    public RenderingController(final KPortNode port) {
+        this.element = port.getWrapped();
+        this.repNode = port;
+    }
+    
+    /**
+     * Constructs a rendering controller for a label.
+     * 
+     * @param label
+     *            the Piccolo node representing a label
+     */
+    public RenderingController(final KLabelNode label) {
+        this.element = label.getWrapped();
+        this.repNode = label;
+    }
 
     /**
      * Constructs a rendering controller for an edge.
      * 
      * @param edge
-     *            the Piccolo node representing a graph edge
+     *            the Piccolo node representing an edge
      */
     public RenderingController(final KEdgeNode edge) {
         this.element = edge.getWrapped();
@@ -141,13 +170,20 @@ public class RenderingController {
 
     /**
      * Initializes the rendering controller.
+     * 
+     * @param sync
+     *            true if the rendering should be synchronized with the model; false else
      */
-    public void initialize() {
+    public void initialize(final boolean sync) {
+        syncRendering = sync;
+
         // do the initial update of the rendering
         updateRendering();
 
-        // register an adapter on the element to stay in sync
-        registerElementAdapter();
+        if (syncRendering) {
+            // register an adapter on the element to stay in sync
+            registerElementAdapter();
+        }
     }
 
     /**
@@ -179,17 +215,25 @@ public class RenderingController {
                 // controller manages a node or a port
                 renderingNode = handleDirectPlacementRendering(currentRendering,
                         new ArrayList<KStyle>(0), repNode);
+            } else if (repNode instanceof KLabelNode) {
+                // controller manages a label
+                renderingNode = handleLabelRendering(currentRendering, (KLabelNode) repNode);
             } else if (repNode instanceof KEdgeNode) {
                 // controller manages an edge
                 renderingNode = handleEdgeRendering(currentRendering, (KEdgeNode) repNode);
             }
 
-            // register an adapter on the element to stay in sync
-            registerRenderingAdapter();
+            if (syncRendering) {
+                // register an adapter on the element to stay in sync
+                registerRenderingAdapter();
+            }
         } else {
             if (repNode instanceof KNodeNode || repNode instanceof KPortNode) {
                 // controller manages a node or a port
                 renderingNode = createDefaultNodeRendering(repNode);
+            } else if (repNode instanceof KLabelNode) {
+                // controller manages a label
+                renderingNode = createDefaultLabelRendering((KLabelNode) repNode);
             } else if (repNode instanceof KEdgeNode) {
                 // controller manages an edge
                 renderingNode = createDefaultEdgeRendering((KEdgeNode) repNode);
@@ -295,6 +339,7 @@ public class RenderingController {
                     case Notification.ADD_MANY:
                     case Notification.REMOVE:
                     case Notification.REMOVE_MANY:
+                        System.out.println(element.getData());
                         final KRendering rendering = element.getData(KRendering.class);
                         if (rendering != currentRendering) {
                             // a rendering has been added or removed
@@ -467,6 +512,54 @@ public class RenderingController {
     }
 
     /**
+     * Creates the Piccolo node for a rendering of a {@code KLabel} inside a parent Piccolo node.<br>
+     * <br>
+     * The rendering has to be a {@code KText} or the method fails.
+     * 
+     * @param rendering
+     *            the rendering
+     * @param parent
+     *            the parent Piccolo label node
+     * @return the Piccolo node representing the rendering
+     */
+    private PNode handleLabelRendering(final KRendering rendering, final KLabelNode parent) {
+        // the rendering of a label has to be a text
+        if (rendering instanceof KText) {
+            throw new RuntimeException("Non-text rendering attached to graph label: " + element);
+        }
+
+        // create the rendering
+        @SuppressWarnings("unchecked")
+        final PNodeController<PSWTText> controller
+            = (PNodeController<PSWTText>) createRendering(
+                rendering, new ArrayList<KStyle>(0), parent, parent.getBoundsReference());
+        controller.getNode().setText(parent.getText());
+
+        // add a listener on the parent's bend points
+        addListener(KLabelNode.PROPERTY_TEXT, parent, controller.getNode(),
+                new PropertyChangeListener() {
+                    public void propertyChange(final PropertyChangeEvent e) {
+                        controller.getNode().setText(parent.getText());
+                    }
+                });
+        
+        // add a listener on the parent's bounds
+        addListener(PNode.PROPERTY_BOUNDS, parent, controller.getNode(),
+                new PropertyChangeListener() {
+                    public void propertyChange(final PropertyChangeEvent e) {
+                        // calculate the new bounds of the rendering
+                        PBounds bounds = evaluateDirectPlacement(
+                                asDirectPlacementData(rendering.getPlacementData()),
+                                parent.getBoundsReference());
+                        // use the controller to apply the new bounds
+                        controller.setBounds(bounds);
+                    }
+                });
+
+        return controller.getNode();
+    }
+    
+    /**
      * Creates the Piccolo node for a rendering of a {@code KEdge} inside a parent Piccolo node.<br>
      * <br>
      * The rendering has to be a {@code KPolyline} or the method fails.
@@ -598,6 +691,27 @@ public class RenderingController {
 
         // create the rendering and return it
         return handleDirectPlacementRendering(rect, new ArrayList<KStyle>(0), parent);
+    }
+    
+    /**
+     * Creates a default rendering for labels without attached rendering data.
+     * 
+     * @param parent
+     *            the parent Piccolo label node
+     * @return the Piccolo node
+     */
+    private PNode createDefaultLabelRendering(final KLabelNode parent) {
+        // create the default rendering model
+        KRenderingFactory factory = KRenderingFactory.eINSTANCE;
+        KText text = factory.createKText();
+        KForegroundColor color = factory.createKForegroundColor();
+        color.setRed(0);
+        color.setGreen(0);
+        color.setBlue(0);
+        text.getStyles().add(color);
+
+        // create the rendering and return it
+        return handleLabelRendering(text, parent);
     }
 
     /**

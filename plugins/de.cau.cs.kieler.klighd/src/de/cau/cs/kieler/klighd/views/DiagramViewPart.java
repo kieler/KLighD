@@ -54,7 +54,7 @@ public class DiagramViewPart extends ViewPart {
         viewer = new ContextViewer(parent, getViewSite().getSecondaryId());
         // install a drop handler for the view
         installDropHandler(parent);
-        viewer.setModel("No model selected.");
+        viewer.setModel("No model selected.", false);
         // register the context viewer as selection provider on the workbench
         getSite().setSelectionProvider(viewer);
     }

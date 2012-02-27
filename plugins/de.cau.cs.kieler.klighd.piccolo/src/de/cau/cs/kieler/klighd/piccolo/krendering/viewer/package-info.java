@@ -3,7 +3,7 @@
  *
  * http://www.informatik.uni-kiel.de/rtsys/kieler/
  * 
- * Copyright 2012 by
+ * Copyright 2011 by
  * + Christian-Albrechts-University of Kiel
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
@@ -11,13 +11,8 @@
  * This code is provided under the terms of the Eclipse Public License (EPL).
  * See the file epl-v10.html for the license text.
  */
-package de.cau.cs.kieler.klighd.piccolo.krendering;
 
 /**
- * An implementation of the KLighD {@code IViewer} interface.
- * 
- * @author mri
+ * Piccolo viewer related classes for KGraphs with attached KRendering data.
  */
-public class KGraphViewer {
-
-}
+package de.cau.cs.kieler.klighd.piccolo.krendering.viewer;

@@ -61,8 +61,8 @@ public class ContextViewer extends AbstractViewer<Object> implements IViewerEven
     /** the current view context. */
     private ViewContext currentViewContext = null;
     /** the selection listeners registered on this view. */
-    private Set<ISelectionChangedListener> selectionListeners =
-            new LinkedHashSet<ISelectionChangedListener>();
+    private Set<ISelectionChangedListener> selectionListeners
+        = new LinkedHashSet<ISelectionChangedListener>();
     /** the current selection. */
     private Selection selection = new Selection();
 
@@ -90,7 +90,7 @@ public class ContextViewer extends AbstractViewer<Object> implements IViewerEven
     /**
      * {@inheritDoc}
      */
-    public synchronized void setModel(final Object model) {
+    public synchronized void setModel(final Object model, final boolean sync) {
         // if the model is a view context adapt the viewer to the given context if possible
         if (model instanceof ViewContext) {
             ViewContext viewContext = (ViewContext) model;
@@ -127,7 +127,7 @@ public class ContextViewer extends AbstractViewer<Object> implements IViewerEven
             removeViewer();
             addViewer(new StringViewer(parent));
         }
-        currentViewer.setModel(message);
+        currentViewer.setModel(message, false);
     }
 
     @SuppressWarnings("unchecked")
@@ -198,6 +198,20 @@ public class ContextViewer extends AbstractViewer<Object> implements IViewerEven
                 }
             }
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void startRecording() {
+        currentViewer.startRecording();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void stopRecording() {
+        currentViewer.stopRecording();
     }
 
     /**

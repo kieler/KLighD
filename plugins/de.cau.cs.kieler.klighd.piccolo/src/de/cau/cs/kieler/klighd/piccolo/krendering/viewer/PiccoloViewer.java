@@ -11,7 +11,7 @@
  * This code is provided under the terms of the Eclipse Public License (EPL).
  * See the file epl-v10.html for the license text.
  */
-package de.cau.cs.kieler.klighd.piccolo.krendering;
+package de.cau.cs.kieler.klighd.piccolo.krendering.viewer;
 
 import java.awt.event.InputEvent;
 import java.util.Collection;
@@ -30,6 +30,7 @@ import de.cau.cs.kieler.klighd.piccolo.Messages;
 import de.cau.cs.kieler.klighd.piccolo.PMouseWheelZoomEventHandler;
 import de.cau.cs.kieler.klighd.piccolo.PSWTSimpleSelectionEventHandler;
 import de.cau.cs.kieler.klighd.piccolo.activities.ZoomActivity;
+import de.cau.cs.kieler.klighd.piccolo.krendering.controller.GraphController;
 import de.cau.cs.kieler.klighd.piccolo.nodes.PEmptyNode;
 import de.cau.cs.kieler.klighd.piccolo.ui.ExportKGraphAction;
 import de.cau.cs.kieler.klighd.piccolo.ui.SaveAsImageAction;
@@ -46,14 +47,16 @@ import edu.umd.cs.piccolox.swt.PSWTCanvas;
  * 
  * @author mri
  */
-public class PiccoloViewer extends AbstractViewer<KNode> implements
-        INodeSelectionListener {
+public class PiccoloViewer extends AbstractViewer<KNode> implements INodeSelectionListener {
 
     /** the canvas used for drawing. */
     private PSWTCanvas canvas;
     /** the current selection event handler. */
     private PSWTSimpleSelectionEventHandler selectionHandler = null;
 
+    /** the graph controller. */
+    private GraphController controller;
+    
     /**
      * Creates a Piccolo viewer with default style.
      * 
@@ -97,15 +100,15 @@ public class PiccoloViewer extends AbstractViewer<KNode> implements
     private void addContextMenu(final Composite composite) {
         MenuManager menuManager = new MenuManager();
         // add the 'save-as-image' action
-        Action saveAsImageAction =
-                new SaveAsImageAction(this, Messages.PiccoloViewer_save_as_image_text);
+        Action saveAsImageAction = new SaveAsImageAction(this,
+                Messages.PiccoloViewer_save_as_image_text);
         menuManager.add(saveAsImageAction);
-        
+
         // add the 'export-kgraph' action
-        Action exportKGraphAction =
-                new ExportKGraphAction(this, Messages.PiccoloViewer_export_kgraph_text);                
+        Action exportKGraphAction = new ExportKGraphAction(this,
+                Messages.PiccoloViewer_export_kgraph_text);
         menuManager.add(exportKGraphAction);
-        
+
         // create the context menu
         Menu menu = menuManager.createContextMenu(composite);
         composite.setMenu(menu);
@@ -121,51 +124,51 @@ public class PiccoloViewer extends AbstractViewer<KNode> implements
     /**
      * {@inheritDoc}
      */
-    public void setModel(final KNode model) {
-        KNodeTopNode topNode = new KNodeTopNode(model);
-        topNode.expand();
-        
+    public void setModel(final KNode model, final boolean sync) {
         // remove the old selection handler
         if (selectionHandler != null) {
             canvas.removeInputEventListener(selectionHandler);
             selectionHandler = null;
         }
-        
-        // fill the layers
+
+        // prepare the camera
         PCamera camera = canvas.getCamera();
-        resetCamera(camera);
+        // resetCamera(camera);
         resizeAndResetLayers(2);
-        camera.getLayer(0).addChild(topNode);
-        
+
+        // create a controller for the graph
+        controller = new GraphController(model, camera.getLayer(0), sync);
+        controller.initialize();
+
         // add a node for the marquee
         PEmptyNode marqueeParent = new PEmptyNode();
         camera.getLayer(1).addChild(marqueeParent);
-        
+
         // add a selection handler
         selectionHandler = new PSWTSimpleSelectionEventHandler(camera, marqueeParent);
         canvas.addInputEventListener(selectionHandler);
-        
+
         // forward the selection events
         selectionHandler.addSelectionListener(this);
     }
 
-    private void resetCamera(final PCamera camera) {
-        camera.getViewTransformReference().setToIdentity();
-        // applies the manual reset of the camera performed above
-        camera.translateView(0, 0);
-    }
-
-    private void resizeAndResetLayers(final int count) {
+    /**
+     * Resizes the number of layers in the camera to the given number and resets them.
+     * 
+     * @param number
+     *            the number of layers
+     */
+    private void resizeAndResetLayers(final int number) {
         PRoot root = canvas.getRoot();
         PCamera camera = canvas.getCamera();
         // resize down
-        while (camera.getLayerCount() > count) {
+        while (camera.getLayerCount() > number) {
             PLayer layer = camera.getLayer(camera.getLayerCount() - 1);
             camera.removeLayer(layer);
             root.removeChild(layer);
         }
         // resize up
-        while (camera.getLayerCount() < count) {
+        while (camera.getLayerCount() < number) {
             PLayer layer = new PLayer();
             root.addChild(layer);
             camera.addLayer(layer);
@@ -176,6 +179,20 @@ public class PiccoloViewer extends AbstractViewer<KNode> implements
         for (PLayer layer : layers) {
             layer.removeAllChildren();
         }
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public void startRecording() {
+        controller.startRecording();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void stopRecording() {
+        controller.stopRecording();
     }
 
     /**
@@ -250,15 +267,15 @@ public class PiccoloViewer extends AbstractViewer<KNode> implements
      */
     @Override
     public void zoomToFit(final int duration) {
-//        if (diagramContext != null) {
-//            if (diagramContext.getRootNode() instanceof PNode) {
-//                PNode node = (PNode) diagramContext.getRootNode();
-//                // move and zoom the camera so it includes the full bounds
-//                PCamera camera = canvas.getCamera();
-//                camera.animateViewToCenterBounds(node.getFullBounds(), true, duration);
-//                // FIXME centers the bb instead of left aligning it and could need some padding
-//            }
-//        }
+        // if (diagramContext != null) {
+        // if (diagramContext.getRootNode() instanceof PNode) {
+        // PNode node = (PNode) diagramContext.getRootNode();
+        // // move and zoom the camera so it includes the full bounds
+        // PCamera camera = canvas.getCamera();
+        // camera.animateViewToCenterBounds(node.getFullBounds(), true, duration);
+        // // FIXME centers the bb instead of left aligning it and could need some padding
+        // }
+        // }
     }
 
     /**

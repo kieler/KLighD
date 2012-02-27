@@ -64,12 +64,33 @@ public class StringViewer implements IViewer<String> {
      * {@inheritDoc}
      */
     public void setModel(final String model) {
+        setModel(model, false);
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public void setModel(final String model, final boolean sync) {
         if (model == null) {
             return;
         }
         synchronized (message) {
             message = model;
         }
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public void startRecording() {
+        // do nothing
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void stopRecording() {
+        // do nothing
     }
     
     /**

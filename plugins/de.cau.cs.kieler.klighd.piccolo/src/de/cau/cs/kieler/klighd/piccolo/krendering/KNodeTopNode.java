@@ -15,6 +15,7 @@ package de.cau.cs.kieler.klighd.piccolo.krendering;
 
 import de.cau.cs.kieler.core.kgraph.KNode;
 import de.cau.cs.kieler.core.util.IWrapper;
+import de.cau.cs.kieler.klighd.piccolo.krendering.controller.RenderingContextData;
 import de.cau.cs.kieler.klighd.piccolo.nodes.PEmptyNode;
 
 /**
@@ -32,9 +33,6 @@ public class KNodeTopNode extends PEmptyNode implements INode, IWrapper<KNode> {
     /** the Piccolo node representing the child area. */
     private KChildAreaNode childArea;
 
-    /** whether the node is currently expanded. */
-    private boolean expanded = false;
-
     /**
      * Constructs a Piccolo node for representing the top-level {@code KNode}.
      * 
@@ -48,7 +46,7 @@ public class KNodeTopNode extends PEmptyNode implements INode, IWrapper<KNode> {
         childArea.setClip(false);
         addChild(childArea);
         setPickable(false);
-        RenderingContextData.get(node).setProperty(INode.PREPRESENTATION, this);
+        RenderingContextData.get(node).setProperty(NODE_REP, this);
     }
 
     /**
@@ -56,20 +54,6 @@ public class KNodeTopNode extends PEmptyNode implements INode, IWrapper<KNode> {
      */
     public KNode getWrapped() {
         return node;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public void expand() {
-        childArea.populate(node);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public void collapse() {
-        // TODO collapse it
     }
 
     /**

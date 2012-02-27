@@ -16,15 +16,6 @@
  */
 package de.cau.cs.kieler.klighd.piccolo.krendering;
 
-import java.util.List;
-
-import org.eclipse.emf.common.notify.Notification;
-import org.eclipse.emf.common.notify.impl.AdapterImpl;
-
-import de.cau.cs.kieler.core.kgraph.KEdge;
-import de.cau.cs.kieler.core.kgraph.KGraphPackage;
-import de.cau.cs.kieler.core.kgraph.KNode;
-import de.cau.cs.kieler.core.ui.util.MonitoredOperation;
 import de.cau.cs.kieler.klighd.piccolo.nodes.PZIndexNode;
 import edu.umd.cs.piccolo.PNode;
 import edu.umd.cs.piccolo.util.PPaintContext;
@@ -46,11 +37,11 @@ public class KChildAreaNode extends PZIndexNode {
     /** the z-index for the edge layer. */
     private static final int EDGE_LAYER = 1;
 
-    /** the node containing this child area. */
-    private INode containingNode;
-
     /** whether to clip nodes and edges. */
     private boolean clip = true;
+    
+    /** whether the child area is expanded. */
+    private boolean expanded = true;
 
     /**
      * Constructs a child area for a given node.
@@ -60,7 +51,6 @@ public class KChildAreaNode extends PZIndexNode {
      */
     public KChildAreaNode(final INode containingNode) {
         super(Z_LAYERS);
-        this.containingNode = containingNode;
     }
 
     /**
@@ -74,157 +64,42 @@ public class KChildAreaNode extends PZIndexNode {
     }
 
     /**
-     * Populates the child area with contents from the given node.
+     * Adds a representation of a node to this child area.
      * 
      * @param node
-     *            the node
+     *            the node representation
      */
-    public void populate(final KNode node) {
-        // create the nodes
-        for (KNode child : node.getChildren()) {
-            addNode(child);
-        }
-
-        // create the edges
-        for (KNode child : node.getChildren()) {
-            for (KEdge edge : child.getOutgoingEdges()) {
-                handleEdge(edge);
-            }
-        }
-
-        // add an adapter on the node's children
-        node.eAdapters().add(new AdapterImpl() {
-            public void notifyChanged(final Notification notification) {
-                if (notification.getFeatureID(KNode.class) == KGraphPackage.KNODE__CHILDREN) {
-                    switch (notification.getEventType()) {
-                    case Notification.ADD: {
-                        final KNode addedNode = (KNode) notification.getNewValue();
-                        MonitoredOperation.runInUI(new Runnable() {
-                            public void run() {
-                                addNode(addedNode);
-                            }
-                        }, false);
-                        break;
-                    }
-                    case Notification.ADD_MANY: {
-                        @SuppressWarnings("unchecked")
-                        final List<KNode> addedNodes = (List<KNode>) notification.getNewValue();
-                        MonitoredOperation.runInUI(new Runnable() {
-                            public void run() {
-                                for (KNode addedNode : addedNodes) {
-                                    addNode(addedNode);
-                                }
-                            }
-                        }, false);
-                        break;
-                    }
-                    case Notification.REMOVE: {
-                        final KNode removedNode = (KNode) notification.getOldValue();
-                        MonitoredOperation.runInUI(new Runnable() {
-                            public void run() {
-                                removeNode(removedNode);
-                            }
-                        }, false);
-                        break;
-                    }
-                    case Notification.REMOVE_MANY: {
-                        @SuppressWarnings("unchecked")
-                        final List<KNode> removedNodes = (List<KNode>) notification.getOldValue();
-                        MonitoredOperation.runInUI(new Runnable() {
-                            public void run() {
-                                for (KNode removedNode : removedNodes) {
-                                    removeNode(removedNode);
-                                }
-                            }
-                        }, false);
-                        break;
-                    }
-                    }
-                }
-            }
-        });
+    public void addNode(final KNodeNode node) {
+        addChild(node, NODE_LAYER);
     }
-
-    /**
-     * Adds the representation for the given node to this child area.
-     * 
-     * @param node
-     *            the node
-     */
-    public void addNode(final KNode node) {
-        RenderingContextData data = RenderingContextData.get(node);
-        INode nodeRep = data.getProperty(INode.PREPRESENTATION);
-
-        KNodeNode nodeNode;
-        if (nodeRep instanceof KNodeTopNode) {
-            // if the node is the current top-node something went wrong
-            throw new RuntimeException("The top-node can never be made a child node");
-        } else {
-            nodeNode = (KNodeNode) nodeRep;
-        }
-
-        // if there is no Piccolo representation for the node create it
-        if (nodeNode == null) {
-            nodeNode = new KNodeNode(node, containingNode);
-            nodeNode.updateLayout();
-            nodeNode.updateRendering();
-        }
-
-        // add the node
-        addChild((PNode) nodeNode, NODE_LAYER);
-        // TODO remove auto expand when other means are available
-        nodeNode.expand();
-    }
-
-    /**
-     * Removes the representation for the given node from this child area.
-     * 
-     * @param node
-     *            the node
-     */
-    private void removeNode(final KNode node) {
-        RenderingContextData data = RenderingContextData.get(node);
-        INode nodeRep = data.getProperty(INode.PREPRESENTATION);
-
-        KNodeNode nodeNode;
-        if (nodeRep instanceof KNodeTopNode) {
-            // if the node is the current top-node something went wrong
-            throw new RuntimeException("The top-node can never be removed from a parent node");
-        } else {
-            nodeNode = (KNodeNode) nodeRep;
-        }
-
-        // remove the node representation from the containing child area
-        nodeNode.removeFromParent();
-    }
-
-    /**
-     * Handles the creation of the given edge if necessary.
-     * 
-     * @param edge
-     *            the edge
-     */
-    private void handleEdge(final KEdge edge) {
-        RenderingContextData data = RenderingContextData.get(edge);
-        KEdgeNode edgeRep = data.getProperty(KEdgeNode.PREPRESENTATION);
-        
-        // once created edges manage themselves and can be ignored
-        if (edgeRep == null) {
-            edgeRep = new KEdgeNode(edge);
-            edgeRep.initialize();
-            edgeRep.updateLayout();
-            edgeRep.updateRendering();
-        }
-    }
-
+    
     /**
      * Adds a representation of an edge to this child area.
      * 
      * @param edge
-     *            the edge
+     *            the edge representation
      */
-    public void addEdgeNode(final KEdgeNode edge) {
+    public void addEdge(final KEdgeNode edge) {
         addChild(edge, EDGE_LAYER);
+    }
+    
+    /**
+     * Sets whether this child area is expanded.
+     * 
+     * @param expanded
+     *            true if this child area is expanded; false else
+     */
+    public void setExpanded(final boolean expanded) {
+        this.expanded = expanded;
+    }
+
+    /**
+     * Returns whether this child area is expanded.
+     * 
+     * @return true if this child area is expanded; false else
+     */
+    public boolean isExpanded() {
+        return expanded;
     }
 
     /**
@@ -236,7 +111,17 @@ public class KChildAreaNode extends PZIndexNode {
             paintContext.pushClip(getBoundsReference());
         }
     }
-
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void fullPaint(final PPaintContext paintContext) {
+        if (expanded) {
+            super.fullPaint(paintContext);
+        }
+    }
+    
     /**
      * {@inheritDoc}
      */
@@ -252,6 +137,12 @@ public class KChildAreaNode extends PZIndexNode {
      */
     @Override
     public boolean fullPick(final PPickPath pickPath) {
+        // if this child area is not expanded don't pick anything
+        if (!expanded) {
+            return false;
+        }
+        
+        // special picking when this child area has clipping enabled
         if (clip) {
             // never pick the child area and only pick children in the clipped area
             if (getVisible() && getChildrenPickable() && intersects(pickPath.getPickBounds())) {
