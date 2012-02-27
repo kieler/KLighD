@@ -27,6 +27,7 @@ import de.cau.cs.kieler.core.kgraph.KEdge;
 import de.cau.cs.kieler.core.kgraph.KGraphElement;
 import de.cau.cs.kieler.core.kgraph.KGraphPackage;
 import de.cau.cs.kieler.core.kgraph.KLabel;
+import de.cau.cs.kieler.core.kgraph.KLabeledGraphElement;
 import de.cau.cs.kieler.core.kgraph.KNode;
 import de.cau.cs.kieler.core.kgraph.KPort;
 import de.cau.cs.kieler.core.kgraph.util.KGraphSwitch;
@@ -218,7 +219,7 @@ public class GraphController {
             updateRendering(nodeNode);
             handlePorts(nodeNode);
             // TODO handle labels
-            
+
             if (sync) {
                 installLayoutSyncAdapter(nodeNode);
             }
@@ -260,7 +261,7 @@ public class GraphController {
         for (KPort port : node.getPorts()) {
             addPort(nodeNode, port);
         }
-        
+
         if (sync) {
             installPortSyncAdapter(nodeNode);
         }
@@ -282,7 +283,7 @@ public class GraphController {
             portNode = new KPortNode(port);
             updateLayout(portNode);
             updateRendering(portNode);
-            
+
             if (sync) {
                 installLayoutSyncAdapter(portNode);
             }
@@ -306,6 +307,25 @@ public class GraphController {
     }
 
     /**
+     * Adds representations for the labels attached to the labeled element to the labeled node.
+     * 
+     * @param labeledNode
+     *            the labeled node
+     * @param labeledElement
+     *            the labeled element
+     */
+    private void handleLabels(final ILabeledGraphElement labeledNode,
+            final KLabeledGraphElement labeledElement) {
+        for (KLabel label : labeledElement.getLabels()) {
+            addLabel(labeledNode, label);
+        }
+
+        if (sync) {
+            installLabelSyncAdapter(labeledNode, labeledElement);
+        }
+    }
+
+    /**
      * Adds a representation for the label to the given labeled node.
      * 
      * @param labeledNode
@@ -319,11 +339,13 @@ public class GraphController {
         // if there is no Piccolo representation for the label create it
         if (labelNode == null) {
             labelNode = new KLabelNode(label);
+            labelNode.setText(label.getText());
             updateLayout(labelNode);
             updateRendering(labelNode);
-            
+
             if (sync) {
                 installLayoutSyncAdapter(labelNode);
+                installTextSyncAdapter(labelNode);
             }
         }
 
@@ -351,15 +373,15 @@ public class GraphController {
      *            the edge
      */
     private void handleEdge(final KEdge edge) {
-        RenderingContextData data = RenderingContextData.get(edge);
-        KEdgeNode edgeRep = data.getProperty(KEdgeNode.EDGE_REP);
+        KEdgeNode edgeRep = RenderingContextData.get(edge).getProperty(KEdgeNode.EDGE_REP);
 
         // if there is no Piccolo representation for the edge create it
         if (edgeRep == null) {
             edgeRep = new KEdgeNode(edge);
             updateLayout(edgeRep);
             updateRendering(edgeRep);
-            
+            handleLabels(edgeRep, edge);
+
             if (sync) {
                 installLayoutSyncAdapter(edgeRep);
             }
@@ -403,7 +425,7 @@ public class GraphController {
                     shapeLayout.getWidth(), shapeLayout.getHeight());
         }
     }
-    
+
     /**
      * Updates the bounds and translation of the label representation according to the
      * {@code KShapeLayout} of the wrapped label.
@@ -471,7 +493,7 @@ public class GraphController {
             renderingController.updateRendering();
         }
     }
-    
+
     /**
      * Updates the rendering of the label.
      * 
@@ -623,7 +645,7 @@ public class GraphController {
             });
         }
     }
-    
+
     /**
      * Installs an adapter on the represented label to synchronize the representation with the
      * specified layout.
@@ -780,9 +802,9 @@ public class GraphController {
             }
         });
     }
-    
+
     /**
-     * Installs an adapter on the represented node to synchronize the  ports of the representation
+     * Installs an adapter on the represented node to synchronize the ports of the representation
      * with the specified ports in the model.
      * 
      * @param nodeRep
@@ -837,6 +859,94 @@ public class GraphController {
                         }, false);
                         break;
                     }
+                    }
+                }
+            }
+        });
+    }
+
+    /**
+     * Installs an adapter on the labeled element to synchronize the labels of the representation
+     * with the specified labels in the model.
+     * 
+     * @param labeledNode
+     *            the labeled node
+     * @param labeledElement
+     *            the labeled element
+     */
+    private void installLabelSyncAdapter(final ILabeledGraphElement labeledNode,
+            final KLabeledGraphElement labeledElement) {
+        // add an adapter on the labeled element's labels
+        labeledElement.eAdapters().add(new AdapterImpl() {
+            public void notifyChanged(final Notification notification) {
+                if (notification.getFeatureID(KLabeledGraphElement.class)
+                        == KGraphPackage.KLABELED_GRAPH_ELEMENT__LABELS) {
+                    switch (notification.getEventType()) {
+                    case Notification.ADD: {
+                        final KLabel addedLabel = (KLabel) notification.getNewValue();
+                        MonitoredOperation.runInUI(new Runnable() {
+                            public void run() {
+                                addLabel(labeledNode, addedLabel);
+                            }
+                        }, false);
+                        break;
+                    }
+                    case Notification.ADD_MANY: {
+                        @SuppressWarnings("unchecked")
+                        final List<KLabel> addedLabels = (List<KLabel>) notification.getNewValue();
+                        MonitoredOperation.runInUI(new Runnable() {
+                            public void run() {
+                                for (KLabel addedLabel : addedLabels) {
+                                    addLabel(labeledNode, addedLabel);
+                                }
+                            }
+                        }, false);
+                        break;
+                    }
+                    case Notification.REMOVE: {
+                        final KLabel removedLabel = (KLabel) notification.getOldValue();
+                        MonitoredOperation.runInUI(new Runnable() {
+                            public void run() {
+                                removeLabel(removedLabel);
+                            }
+                        }, false);
+                        break;
+                    }
+                    case Notification.REMOVE_MANY: {
+                        @SuppressWarnings("unchecked")
+                        final List<KLabel> removedLabels = (List<KLabel>) notification.getOldValue();
+                        MonitoredOperation.runInUI(new Runnable() {
+                            public void run() {
+                                for (KLabel removedLabel : removedLabels) {
+                                    removeLabel(removedLabel);
+                                }
+                            }
+                        }, false);
+                        break;
+                    }
+                    }
+                }
+            }
+        });
+    }
+
+    /**
+     * Installs an adapter on the represented label to synchronize the text of the representation
+     * with the specified text in the model.
+     * 
+     * @param nodeRep
+     *            the node representation
+     */
+    private void installTextSyncAdapter(final KLabelNode labelRep) {
+        final KLabel node = labelRep.getWrapped();
+        // add an adapter on the node's ports
+        node.eAdapters().add(new AdapterImpl() {
+            public void notifyChanged(final Notification notification) {
+                if (notification.getFeatureID(KLabel.class) == KGraphPackage.KLABEL__TEXT) {
+                    switch (notification.getEventType()) {
+                    case Notification.SET:
+                        labelRep.setText(node.getText());
+                        break;
                     }
                 }
             }

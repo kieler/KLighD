@@ -524,7 +524,7 @@ public class RenderingController {
      */
     private PNode handleLabelRendering(final KRendering rendering, final KLabelNode parent) {
         // the rendering of a label has to be a text
-        if (rendering instanceof KText) {
+        if (!(rendering instanceof KText)) {
             throw new RuntimeException("Non-text rendering attached to graph label: " + element);
         }
 
@@ -877,6 +877,7 @@ public class RenderingController {
             final List<KStyle> propagatedStyles, final PNode parent, final PBounds initialBounds) {
         // create the text
         PSWTText textNode = new PSWTText(text.getText() != null ? text.getText() : "");
+        textNode.setGreekColor(null);
         initializeRenderingNode(textNode);
 
         // create the alignment node wrapping the text

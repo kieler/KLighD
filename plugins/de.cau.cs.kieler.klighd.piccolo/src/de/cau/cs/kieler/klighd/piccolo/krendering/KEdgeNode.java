@@ -28,7 +28,8 @@ import edu.umd.cs.piccolo.PNode;
  * 
  * @author mri
  */
-public class KEdgeNode extends PChildRepresentedNode implements IWrapper<KEdge> {
+public class KEdgeNode extends PChildRepresentedNode implements IWrapper<KEdge>,
+        ILabeledGraphElement {
 
     private static final long serialVersionUID = -1867615197736299487L;
 
@@ -99,91 +100,98 @@ public class KEdgeNode extends PChildRepresentedNode implements IWrapper<KEdge> 
         return null;
     }
 
-//    /** the listener on changes to the child area offset. */
-//    private PropertyChangeListener updateOffsetListener = new PropertyChangeListener() {
-//        public void propertyChange(final PropertyChangeEvent evt) {
-//            offset.setLocation(0, 0);
-//            PNode currentNode = sourceNode.getParent();
-//            while (currentNode != null && currentNode != childAreaNode) {
-//                currentNode.localToParent(offset);
-//                currentNode = currentNode.getParent();
-//            }
-//        }
-//    };
-//
-//    /**
-//     * Updates the offset of the source parent to the child area containing the edge.
-//     */
-//    public void updateOffset() {
-//        if (childAreaNode != null && sourceNode.getParent() != childAreaNode) {
-//            // remove the update offset listener from all currently observed nodes
-//            removeUpdateOffsetListeners();
-//
-//            // calculate the offset and register the update offset listener
-//            offset.setLocation(0, 0);
-//            PNode currentNode = sourceNode.getParent();
-//            while (currentNode != null && currentNode != childAreaNode) {
-//                currentNode.localToParent(offset);
-//                currentNode.addPropertyChangeListener(PNode.PROPERTY_TRANSFORM,
-//                        updateOffsetListener);
-//                observedNodes.add(currentNode);
-//                currentNode = currentNode.getParent();
-//            }
-//        } else {
-//            offset.setLocation(0, 0);
-//        }
-//
-//        // update the bend points for the new offset
-//        updateBendPoints();
-//    }
-//
-//    /**
-//     * Updates the edge by determining the currently valid child area to contain it.
-//     */
-//    public void updateParent() {
-//        sourceNode = getRepresentation(edge.getSource());
-//        targetNode = getRepresentation(edge.getTarget());
-//
-//        // find the parent child area for the edge
-//        findParent();
-//
-//        // update the offset
-//        updateOffset();
-//    }
-//
-//    /**
-//     * Initializes the edge.
-//     */
-//    public void initialize() {
-//        // update the edge parent
-//        updateParent();
-//
-//        // register an adapter on the edge to stay in sync
-//        edge.eAdapters().add(new AdapterImpl() {
-//            public void notifyChanged(final Notification notification) {
-//                int featureId = notification.getFeatureID(KEdge.class);
-//                if (featureId == KGraphPackage.KEDGE__SOURCE
-//                        || featureId == KGraphPackage.KEDGE__TARGET) {
-//                    MonitoredOperation.runInUI(new Runnable() {
-//                        public void run() {
-//                            updateParent();
-//                        }
-//                    }, false);
-//                }
-//            }
-//        });
-//    }
-//
-//    /**
-//     * Removes the update offset listener from all currently observed nodes.
-//     */
-//    private void removeUpdateOffsetListeners() {
-//        PNode observedNode = observedNodes.remove(0);
-//        while (observedNode != null) {
-//            observedNode.removePropertyChangeListener(PNode.PROPERTY_TRANSFORM,
-//                    updateOffsetListener);
-//            observedNode = observedNodes.remove(0);
-//        }
-//    }
+    /**
+     * {@inheritDoc}
+     */
+    public void addLabel(final KLabelNode label) {
+        addChild(label);
+    }
+
+    // /** the listener on changes to the child area offset. */
+    // private PropertyChangeListener updateOffsetListener = new PropertyChangeListener() {
+    // public void propertyChange(final PropertyChangeEvent evt) {
+    // offset.setLocation(0, 0);
+    // PNode currentNode = sourceNode.getParent();
+    // while (currentNode != null && currentNode != childAreaNode) {
+    // currentNode.localToParent(offset);
+    // currentNode = currentNode.getParent();
+    // }
+    // }
+    // };
+    //
+    // /**
+    // * Updates the offset of the source parent to the child area containing the edge.
+    // */
+    // public void updateOffset() {
+    // if (childAreaNode != null && sourceNode.getParent() != childAreaNode) {
+    // // remove the update offset listener from all currently observed nodes
+    // removeUpdateOffsetListeners();
+    //
+    // // calculate the offset and register the update offset listener
+    // offset.setLocation(0, 0);
+    // PNode currentNode = sourceNode.getParent();
+    // while (currentNode != null && currentNode != childAreaNode) {
+    // currentNode.localToParent(offset);
+    // currentNode.addPropertyChangeListener(PNode.PROPERTY_TRANSFORM,
+    // updateOffsetListener);
+    // observedNodes.add(currentNode);
+    // currentNode = currentNode.getParent();
+    // }
+    // } else {
+    // offset.setLocation(0, 0);
+    // }
+    //
+    // // update the bend points for the new offset
+    // updateBendPoints();
+    // }
+    //
+    // /**
+    // * Updates the edge by determining the currently valid child area to contain it.
+    // */
+    // public void updateParent() {
+    // sourceNode = getRepresentation(edge.getSource());
+    // targetNode = getRepresentation(edge.getTarget());
+    //
+    // // find the parent child area for the edge
+    // findParent();
+    //
+    // // update the offset
+    // updateOffset();
+    // }
+    //
+    // /**
+    // * Initializes the edge.
+    // */
+    // public void initialize() {
+    // // update the edge parent
+    // updateParent();
+    //
+    // // register an adapter on the edge to stay in sync
+    // edge.eAdapters().add(new AdapterImpl() {
+    // public void notifyChanged(final Notification notification) {
+    // int featureId = notification.getFeatureID(KEdge.class);
+    // if (featureId == KGraphPackage.KEDGE__SOURCE
+    // || featureId == KGraphPackage.KEDGE__TARGET) {
+    // MonitoredOperation.runInUI(new Runnable() {
+    // public void run() {
+    // updateParent();
+    // }
+    // }, false);
+    // }
+    // }
+    // });
+    // }
+    //
+    // /**
+    // * Removes the update offset listener from all currently observed nodes.
+    // */
+    // private void removeUpdateOffsetListeners() {
+    // PNode observedNode = observedNodes.remove(0);
+    // while (observedNode != null) {
+    // observedNode.removePropertyChangeListener(PNode.PROPERTY_TRANSFORM,
+    // updateOffsetListener);
+    // observedNode = observedNodes.remove(0);
+    // }
+    // }
 
 }
