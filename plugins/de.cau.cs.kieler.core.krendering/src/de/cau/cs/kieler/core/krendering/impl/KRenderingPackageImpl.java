@@ -701,6 +701,24 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
      * <!-- end-user-doc -->
      * @generated
      */
+    public EAttribute getKDecoratorPlacementData_Width() {
+        return (EAttribute)kDecoratorPlacementDataEClass.getEStructuralFeatures().get(4);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EAttribute getKDecoratorPlacementData_Height() {
+        return (EAttribute)kDecoratorPlacementDataEClass.getEStructuralFeatures().get(5);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
     public EClass getKContainerRendering() {
         return kContainerRenderingEClass;
     }
@@ -1027,6 +1045,15 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
      */
     public EReference getKPolylinePlacementData_Points() {
         return (EReference)kPolylinePlacementDataEClass.getEStructuralFeatures().get(0);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EReference getKPolylinePlacementData_DetailPlacementData() {
+        return (EReference)kPolylinePlacementDataEClass.getEStructuralFeatures().get(1);
     }
 
     /**
@@ -1475,6 +1502,8 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
         createEAttribute(kDecoratorPlacementDataEClass, KDECORATOR_PLACEMENT_DATA__XOFFSET);
         createEAttribute(kDecoratorPlacementDataEClass, KDECORATOR_PLACEMENT_DATA__YOFFSET);
         createEAttribute(kDecoratorPlacementDataEClass, KDECORATOR_PLACEMENT_DATA__RELATIVE);
+        createEAttribute(kDecoratorPlacementDataEClass, KDECORATOR_PLACEMENT_DATA__WIDTH);
+        createEAttribute(kDecoratorPlacementDataEClass, KDECORATOR_PLACEMENT_DATA__HEIGHT);
 
         kContainerRenderingEClass = createEClass(KCONTAINER_RENDERING);
         createEReference(kContainerRenderingEClass, KCONTAINER_RENDERING__CHILDREN);
@@ -1527,6 +1556,7 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
 
         kPolylinePlacementDataEClass = createEClass(KPOLYLINE_PLACEMENT_DATA);
         createEReference(kPolylinePlacementDataEClass, KPOLYLINE_PLACEMENT_DATA__POINTS);
+        createEReference(kPolylinePlacementDataEClass, KPOLYLINE_PLACEMENT_DATA__DETAIL_PLACEMENT_DATA);
 
         kCustomRenderingEClass = createEClass(KCUSTOM_RENDERING);
         createEAttribute(kCustomRenderingEClass, KCUSTOM_RENDERING__CLASS_NAME);
@@ -1700,6 +1730,8 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
         initEAttribute(getKDecoratorPlacementData_XOffset(), ecorePackage.getEFloat(), "xOffset", null, 0, 1, KDecoratorPlacementData.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEAttribute(getKDecoratorPlacementData_YOffset(), ecorePackage.getEFloat(), "yOffset", null, 0, 1, KDecoratorPlacementData.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEAttribute(getKDecoratorPlacementData_Relative(), ecorePackage.getEBoolean(), "relative", null, 1, 1, KDecoratorPlacementData.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEAttribute(getKDecoratorPlacementData_Width(), ecorePackage.getEFloat(), "width", null, 1, 1, KDecoratorPlacementData.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEAttribute(getKDecoratorPlacementData_Height(), ecorePackage.getEFloat(), "height", null, 1, 1, KDecoratorPlacementData.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         initEClass(kContainerRenderingEClass, KContainerRendering.class, "KContainerRendering", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         initEReference(getKContainerRendering_Children(), this.getKRendering(), this.getKRendering_Parent(), "children", null, 0, -1, KContainerRendering.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -1752,6 +1784,7 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
 
         initEClass(kPolylinePlacementDataEClass, KPolylinePlacementData.class, "KPolylinePlacementData", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         initEReference(getKPolylinePlacementData_Points(), this.getKPosition(), null, "points", null, 1, -1, KPolylinePlacementData.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEReference(getKPolylinePlacementData_DetailPlacementData(), this.getKPlacementData(), null, "detailPlacementData", null, 0, 1, KPolylinePlacementData.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         initEClass(kCustomRenderingEClass, KCustomRendering.class, "KCustomRendering", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         initEAttribute(getKCustomRendering_ClassName(), ecorePackage.getEString(), "className", null, 1, 1, KCustomRendering.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);

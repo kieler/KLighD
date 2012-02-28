@@ -34,6 +34,8 @@ import org.eclipse.emf.ecore.impl.EObjectImpl;
  *   <li>{@link de.cau.cs.kieler.core.krendering.impl.KDecoratorPlacementDataImpl#getXOffset <em>XOffset</em>}</li>
  *   <li>{@link de.cau.cs.kieler.core.krendering.impl.KDecoratorPlacementDataImpl#getYOffset <em>YOffset</em>}</li>
  *   <li>{@link de.cau.cs.kieler.core.krendering.impl.KDecoratorPlacementDataImpl#isRelative <em>Relative</em>}</li>
+ *   <li>{@link de.cau.cs.kieler.core.krendering.impl.KDecoratorPlacementDataImpl#getWidth <em>Width</em>}</li>
+ *   <li>{@link de.cau.cs.kieler.core.krendering.impl.KDecoratorPlacementDataImpl#getHeight <em>Height</em>}</li>
  * </ul>
  * </p>
  *
@@ -119,6 +121,46 @@ public class KDecoratorPlacementDataImpl extends EObjectImpl implements KDecorat
      * @ordered
      */
     protected boolean relative = RELATIVE_EDEFAULT;
+
+    /**
+     * The default value of the '{@link #getWidth() <em>Width</em>}' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see #getWidth()
+     * @generated
+     * @ordered
+     */
+    protected static final float WIDTH_EDEFAULT = 0.0F;
+
+    /**
+     * The cached value of the '{@link #getWidth() <em>Width</em>}' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see #getWidth()
+     * @generated
+     * @ordered
+     */
+    protected float width = WIDTH_EDEFAULT;
+
+    /**
+     * The default value of the '{@link #getHeight() <em>Height</em>}' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see #getHeight()
+     * @generated
+     * @ordered
+     */
+    protected static final float HEIGHT_EDEFAULT = 0.0F;
+
+    /**
+     * The cached value of the '{@link #getHeight() <em>Height</em>}' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see #getHeight()
+     * @generated
+     * @ordered
+     */
+    protected float height = HEIGHT_EDEFAULT;
 
     /**
      * <!-- begin-user-doc -->
@@ -228,6 +270,48 @@ public class KDecoratorPlacementDataImpl extends EObjectImpl implements KDecorat
      * <!-- end-user-doc -->
      * @generated
      */
+    public float getWidth() {
+        return width;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public void setWidth(float newWidth) {
+        float oldWidth = width;
+        width = newWidth;
+        if (eNotificationRequired())
+            eNotify(new ENotificationImpl(this, Notification.SET, KRenderingPackage.KDECORATOR_PLACEMENT_DATA__WIDTH, oldWidth, width));
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public float getHeight() {
+        return height;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public void setHeight(float newHeight) {
+        float oldHeight = height;
+        height = newHeight;
+        if (eNotificationRequired())
+            eNotify(new ENotificationImpl(this, Notification.SET, KRenderingPackage.KDECORATOR_PLACEMENT_DATA__HEIGHT, oldHeight, height));
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
@@ -239,6 +323,10 @@ public class KDecoratorPlacementDataImpl extends EObjectImpl implements KDecorat
                 return getYOffset();
             case KRenderingPackage.KDECORATOR_PLACEMENT_DATA__RELATIVE:
                 return isRelative();
+            case KRenderingPackage.KDECORATOR_PLACEMENT_DATA__WIDTH:
+                return getWidth();
+            case KRenderingPackage.KDECORATOR_PLACEMENT_DATA__HEIGHT:
+                return getHeight();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -262,6 +350,12 @@ public class KDecoratorPlacementDataImpl extends EObjectImpl implements KDecorat
                 return;
             case KRenderingPackage.KDECORATOR_PLACEMENT_DATA__RELATIVE:
                 setRelative((Boolean)newValue);
+                return;
+            case KRenderingPackage.KDECORATOR_PLACEMENT_DATA__WIDTH:
+                setWidth((Float)newValue);
+                return;
+            case KRenderingPackage.KDECORATOR_PLACEMENT_DATA__HEIGHT:
+                setHeight((Float)newValue);
                 return;
         }
         super.eSet(featureID, newValue);
@@ -287,6 +381,12 @@ public class KDecoratorPlacementDataImpl extends EObjectImpl implements KDecorat
             case KRenderingPackage.KDECORATOR_PLACEMENT_DATA__RELATIVE:
                 setRelative(RELATIVE_EDEFAULT);
                 return;
+            case KRenderingPackage.KDECORATOR_PLACEMENT_DATA__WIDTH:
+                setWidth(WIDTH_EDEFAULT);
+                return;
+            case KRenderingPackage.KDECORATOR_PLACEMENT_DATA__HEIGHT:
+                setHeight(HEIGHT_EDEFAULT);
+                return;
         }
         super.eUnset(featureID);
     }
@@ -307,6 +407,10 @@ public class KDecoratorPlacementDataImpl extends EObjectImpl implements KDecorat
                 return yOffset != YOFFSET_EDEFAULT;
             case KRenderingPackage.KDECORATOR_PLACEMENT_DATA__RELATIVE:
                 return relative != RELATIVE_EDEFAULT;
+            case KRenderingPackage.KDECORATOR_PLACEMENT_DATA__WIDTH:
+                return width != WIDTH_EDEFAULT;
+            case KRenderingPackage.KDECORATOR_PLACEMENT_DATA__HEIGHT:
+                return height != HEIGHT_EDEFAULT;
         }
         return super.eIsSet(featureID);
     }
@@ -329,6 +433,10 @@ public class KDecoratorPlacementDataImpl extends EObjectImpl implements KDecorat
         result.append(yOffset);
         result.append(", relative: ");
         result.append(relative);
+        result.append(", width: ");
+        result.append(width);
+        result.append(", height: ");
+        result.append(height);
         result.append(')');
         return result.toString();
     }
