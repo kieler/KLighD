@@ -254,7 +254,7 @@ public class PiccoloDiagramLayoutManager implements IDiagramLayoutManager<IGraph
         for (IProperty<?> option : options) {
             LayoutOptionData<?> data = LayoutDataService.getInstance().getOptionDataBySuffix(
                     option.getId());
-            if (data != null && data.getId().equals(LayoutOptions.NO_LAYOUT_ID)) {
+            if (data != null && data.equals(LayoutOptions.NO_LAYOUT)) {
                 Object value = edge.getAttribute(data.getId());
                 if (value == null) {
                     value = edge.getAttribute(data.getId().substring(
