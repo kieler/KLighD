@@ -37,6 +37,7 @@ import de.cau.cs.kieler.core.krendering.KBackgroundVisibility;
 import de.cau.cs.kieler.core.krendering.KChildArea;
 import de.cau.cs.kieler.core.krendering.KColor;
 import de.cau.cs.kieler.core.krendering.KContainerRendering;
+import de.cau.cs.kieler.core.krendering.KDecoratorPlacementData;
 import de.cau.cs.kieler.core.krendering.KDirectPlacementData;
 import de.cau.cs.kieler.core.krendering.KEllipse;
 import de.cau.cs.kieler.core.krendering.KFontBold;
@@ -82,10 +83,13 @@ import de.cau.cs.kieler.klighd.piccolo.krendering.KPortNode;
 import de.cau.cs.kieler.klighd.piccolo.nodes.PAlignmentNode;
 import de.cau.cs.kieler.klighd.piccolo.nodes.PAlignmentNode.HAlignment;
 import de.cau.cs.kieler.klighd.piccolo.nodes.PAlignmentNode.VAlignment;
+import de.cau.cs.kieler.klighd.piccolo.nodes.PEmptyNode;
 import de.cau.cs.kieler.klighd.piccolo.nodes.PSWTAdvancedPath;
 import de.cau.cs.kieler.klighd.piccolo.nodes.PSWTAdvancedPath.LineStyle;
+import de.cau.cs.kieler.klighd.piccolo.util.MathUtil;
 import de.cau.cs.kieler.klighd.piccolo.util.NodeUtil;
 import edu.umd.cs.piccolo.PNode;
+import edu.umd.cs.piccolo.nodes.PPath;
 import edu.umd.cs.piccolo.util.PBounds;
 import edu.umd.cs.piccolox.swt.PSWTText;
 
@@ -101,8 +105,8 @@ public class RenderingController {
     private static final IProperty<List<KStyle>> PROPAGATED_STYLES = new Property<List<KStyle>>(
             "de.cau.cs.kieler.klighd.piccolo.propagatedStyles", new LinkedList<KStyle>());
     /** the property for a rendering node's controller. */
-    private static final IProperty<PNodeController<?>> CONTROLLER = new Property<PNodeController<?>>(
-            "de.cau.cs.kieler.klighd.piccolo.controller");
+    private static final IProperty<PNodeController<?>> CONTROLLER =
+            new Property<PNodeController<?>>("de.cau.cs.kieler.klighd.piccolo.controller");
 
     /** the graph element which rendering is controlled by this controller. */
     private KGraphElement element;
@@ -134,7 +138,7 @@ public class RenderingController {
         this.childAreaNode = new KChildAreaNode(node);
         initializeRenderingNode(childAreaNode);
     }
-    
+
     /**
      * Constructs a rendering controller for a port.
      * 
@@ -145,7 +149,7 @@ public class RenderingController {
         this.element = port.getWrapped();
         this.repNode = port;
     }
-    
+
     /**
      * Constructs a rendering controller for a label.
      * 
@@ -198,7 +202,7 @@ public class RenderingController {
 
         // remove the rendering node
         if (renderingNode != null) {
-            removeListener(renderingNode);
+            removeListeners(renderingNode);
             renderingNode.removeFromParent();
             renderingNode = null;
         }
@@ -213,8 +217,9 @@ public class RenderingController {
         if (currentRendering != null) {
             if (repNode instanceof KNodeNode || repNode instanceof KPortNode) {
                 // controller manages a node or a port
-                renderingNode = handleDirectPlacementRendering(currentRendering,
-                        new ArrayList<KStyle>(0), repNode);
+                renderingNode =
+                        handleDirectPlacementRendering(currentRendering, new ArrayList<KStyle>(0),
+                                repNode);
             } else if (repNode instanceof KLabelNode) {
                 // controller manages a label
                 renderingNode = handleLabelRendering(currentRendering, (KLabelNode) repNode);
@@ -378,8 +383,8 @@ public class RenderingController {
         rendering.setProperty(PROPAGATED_STYLES, propagatedStyles);
 
         // determine the new styles for this rendering
-        final Styles styles = deriveStyles(determineRenderingStyles(renderingStyles,
-                propagatedStyles));
+        final Styles styles =
+                deriveStyles(determineRenderingStyles(renderingStyles, propagatedStyles));
 
         // apply the styles to the rendering
         applyStyles(controller, styles);
@@ -389,8 +394,8 @@ public class RenderingController {
             KContainerRendering container = (KContainerRendering) rendering;
             if (container.getChildren().size() > 0) {
                 // determine the new styles for propagation to child nodes
-                final List<KStyle> childPropagatedStyles = determinePropagationStyles(
-                        renderingStyles, propagatedStyles);
+                final List<KStyle> childPropagatedStyles =
+                        determinePropagationStyles(renderingStyles, propagatedStyles);
 
                 // propagate to all children if any propagation styles are available
                 for (KRendering child : container.getChildren()) {
@@ -453,8 +458,9 @@ public class RenderingController {
     private PNode handleDirectPlacementRendering(final KRendering rendering,
             final List<KStyle> styles, final PNode parent) {
         // determine the initial bounds
-        final PBounds bounds = evaluateDirectPlacement(
-                asDirectPlacementData(rendering.getPlacementData()), parent.getBoundsReference());
+        final PBounds bounds =
+                evaluateDirectPlacement(asDirectPlacementData(rendering.getPlacementData()),
+                        parent.getBoundsReference());
 
         // create the rendering and receive its controller
         final PNodeController<?> controller = createRendering(rendering, styles, parent, bounds);
@@ -464,9 +470,10 @@ public class RenderingController {
                 new PropertyChangeListener() {
                     public void propertyChange(final PropertyChangeEvent e) {
                         // calculate the new bounds of the rendering
-                        PBounds bounds = evaluateDirectPlacement(
-                                asDirectPlacementData(rendering.getPlacementData()),
-                                parent.getBoundsReference());
+                        PBounds bounds =
+                                evaluateDirectPlacement(
+                                        asDirectPlacementData(rendering.getPlacementData()),
+                                        parent.getBoundsReference());
                         // use the controller to apply the new bounds
                         controller.setBounds(bounds);
                     }
@@ -489,8 +496,9 @@ public class RenderingController {
     private PNode handleStackPlacementRendering(final KRendering rendering,
             final List<KStyle> styles, final PNode parent) {
         // determine the initial bounds
-        final PBounds bounds = evaluateStackPlacement(
-                asStackPlacementData(rendering.getPlacementData()), parent.getBoundsReference());
+        final PBounds bounds =
+                evaluateStackPlacement(asStackPlacementData(rendering.getPlacementData()),
+                        parent.getBoundsReference());
 
         // create the rendering and receive its controller
         final PNodeController<?> controller = createRendering(rendering, styles, parent, bounds);
@@ -500,11 +508,91 @@ public class RenderingController {
                 new PropertyChangeListener() {
                     public void propertyChange(final PropertyChangeEvent e) {
                         // calculate the new bounds of the rendering
-                        PBounds bounds = evaluateStackPlacement(
-                                asStackPlacementData(rendering.getPlacementData()),
-                                parent.getBoundsReference());
+                        PBounds bounds =
+                                evaluateStackPlacement(
+                                        asStackPlacementData(rendering.getPlacementData()),
+                                        parent.getBoundsReference());
                         // use the controller to apply the new bounds
                         controller.setBounds(bounds);
+                    }
+                });
+
+        return controller.getNode();
+    }
+
+    /**
+     * Creates the Piccolo nodes for a list of renderings inside a parent Piccolo node representing
+     * a polyline for the given placement.
+     * 
+     * @param children
+     *            the list of children
+     * @param styles
+     *            the styles propagated to the children
+     * @param parent
+     *            the parent Piccolo node representing a polyline
+     */
+    private void handlePolylineChildren(final List<KRendering> children, final List<KStyle> styles,
+            final PSWTAdvancedPath parent) {
+        // Decorator Placement
+        for (final KRendering rendering : children) {
+            handleDecoratorPlacementRendering(rendering, styles, parent);
+        }
+    }
+
+    /**
+     * Creates the Piccolo node for a rendering inside a parent Piccolo node representing a polyline
+     * using decorator placement.
+     * 
+     * @param rendering
+     *            the rendering
+     * @param styles
+     *            the styles propagated to the children
+     * @param parent
+     *            the parent Piccolo node representing a polyline
+     * @return the Piccolo node representing the rendering
+     */
+    private PNode handleDecoratorPlacementRendering(final KRendering rendering,
+            final List<KStyle> styles, final PSWTAdvancedPath parent) {
+        // determine the initial bounds and rotation
+        final Decoration decoration =
+                evaluateDecoratorPlacement(asDecoratorPlacementData(rendering.getPlacementData()),
+                        parent);
+
+        // create an empty node for the decorator
+        final PEmptyNode decorator = new PEmptyNode();
+        decorator.translate(decoration.origin.getX(), decoration.origin.getY());
+        parent.addChild(decorator);
+
+        // create the rendering and receive its controller
+        final PNodeController<?> controller =
+                createRendering(rendering, styles, decorator, decoration.bounds);
+
+        // apply the initial rotation
+        final PNode node = controller.getNode();
+        node.rotate(decoration.rotation);
+
+        // add a listener on the parent's path
+        addListener(PPath.PROPERTY_PATH, parent, controller.getNode(),
+                new PropertyChangeListener() {
+
+                    // the currently applied rotation and origin
+                    private double rotation = decoration.rotation;
+
+                    public void propertyChange(final PropertyChangeEvent e) {
+                        // calculate the new bounds and rotation for the rendering
+                        Decoration decoration =
+                                evaluateDecoratorPlacement(
+                                        asDecoratorPlacementData(rendering.getPlacementData()),
+                                        parent);
+
+                        // apply the new origin
+                        NodeUtil.applyTranslation(decorator, decoration.origin);
+                        // use the controller to apply the new bounds
+                        controller.setBounds(decoration.bounds);
+                        // apply the new rotation
+                        node.rotate(decoration.rotation - rotation);
+
+                        rotation = decoration.rotation;
                     }
                 });
 
@@ -530,9 +618,9 @@ public class RenderingController {
 
         // create the rendering
         @SuppressWarnings("unchecked")
-        final PNodeController<PSWTText> controller
-            = (PNodeController<PSWTText>) createRendering(
-                rendering, new ArrayList<KStyle>(0), parent, parent.getBoundsReference());
+        final PNodeController<PSWTText> controller =
+                (PNodeController<PSWTText>) createRendering(rendering, new ArrayList<KStyle>(0),
+                        parent, parent.getBoundsReference());
         controller.getNode().setText(parent.getText());
 
         // add a listener on the parent's bend points
@@ -542,15 +630,16 @@ public class RenderingController {
                         controller.getNode().setText(parent.getText());
                     }
                 });
-        
+
         // add a listener on the parent's bounds
         addListener(PNode.PROPERTY_BOUNDS, parent, controller.getNode(),
                 new PropertyChangeListener() {
                     public void propertyChange(final PropertyChangeEvent e) {
                         // calculate the new bounds of the rendering
-                        PBounds bounds = evaluateDirectPlacement(
-                                asDirectPlacementData(rendering.getPlacementData()),
-                                parent.getBoundsReference());
+                        PBounds bounds =
+                                evaluateDirectPlacement(
+                                        asDirectPlacementData(rendering.getPlacementData()),
+                                        parent.getBoundsReference());
                         // use the controller to apply the new bounds
                         controller.setBounds(bounds);
                     }
@@ -558,7 +647,7 @@ public class RenderingController {
 
         return controller.getNode();
     }
-    
+
     /**
      * Creates the Piccolo node for a rendering of a {@code KEdge} inside a parent Piccolo node.<br>
      * <br>
@@ -578,9 +667,9 @@ public class RenderingController {
 
         // create the rendering
         @SuppressWarnings("unchecked")
-        final PNodeController<PSWTAdvancedPath> controller
-            = (PNodeController<PSWTAdvancedPath>) createRendering(
-                rendering, new ArrayList<KStyle>(0), parent, parent.getBoundsReference());
+        final PNodeController<PSWTAdvancedPath> controller =
+                (PNodeController<PSWTAdvancedPath>) createRendering(rendering,
+                        new ArrayList<KStyle>(0), parent, parent.getBoundsReference());
         controller.getNode().setPathToPolyline(parent.getBendPoints());
         parent.setRepresentationNode(controller.getNode());
 
@@ -614,12 +703,12 @@ public class RenderingController {
         List<KStyle> renderingStyles = rendering.getStyles();
 
         // determine the styles for this rendering
-        final Styles styles = deriveStyles(determineRenderingStyles(renderingStyles,
-                propagatedStyles));
+        final Styles styles =
+                deriveStyles(determineRenderingStyles(renderingStyles, propagatedStyles));
 
         // determine the styles for propagation to child nodes
-        final List<KStyle> childPropagatedStyles = determinePropagationStyles(renderingStyles,
-                propagatedStyles);
+        final List<KStyle> childPropagatedStyles =
+                determinePropagationStyles(renderingStyles, propagatedStyles);
 
         // create the rendering and return its controller
         PNodeController<?> controller = new KRenderingSwitch<PNodeController<?>>() {
@@ -692,7 +781,7 @@ public class RenderingController {
         // create the rendering and return it
         return handleDirectPlacementRendering(rect, new ArrayList<KStyle>(0), parent);
     }
-    
+
     /**
      * Creates a default rendering for labels without attached rendering data.
      * 
@@ -754,8 +843,9 @@ public class RenderingController {
             final Styles styles, final List<KStyle> propagatedStyles, final PNode parent,
             final PBounds initialBounds) {
         // create the ellipse
-        final PSWTAdvancedPath path = PSWTAdvancedPath.createEllipse(0, 0,
-                (float) initialBounds.width, (float) initialBounds.height);
+        final PSWTAdvancedPath path =
+                PSWTAdvancedPath.createEllipse(0, 0, (float) initialBounds.width,
+                        (float) initialBounds.height);
         initializeRenderingNode(path);
         path.translate(initialBounds.x, initialBounds.y);
         parent.addChild(path);
@@ -795,8 +885,9 @@ public class RenderingController {
             final Styles styles, final List<KStyle> propagatedStyles, final PNode parent,
             final PBounds initialBounds) {
         // create the rectangle
-        final PSWTAdvancedPath path = PSWTAdvancedPath.createRectangle(0, 0,
-                (float) initialBounds.width, (float) initialBounds.height);
+        final PSWTAdvancedPath path =
+                PSWTAdvancedPath.createRectangle(0, 0, (float) initialBounds.width,
+                        (float) initialBounds.height);
         initializeRenderingNode(path);
         path.translate(initialBounds.x, initialBounds.y);
         parent.addChild(path);
@@ -835,9 +926,11 @@ public class RenderingController {
             final Styles styles, final List<KStyle> propagatedStyles, final PNode parent,
             final PBounds initialBounds) {
         // create the rounded rectangle
-        final PSWTAdvancedPath path = PSWTAdvancedPath.createRoundRectangle(0, 0,
-                (float) initialBounds.width, (float) initialBounds.height, rect.getCornerWidth(),
-                rect.getCornerHeight());
+        final PSWTAdvancedPath path =
+                PSWTAdvancedPath
+                        .createRoundRectangle(0, 0, (float) initialBounds.width,
+                                (float) initialBounds.height, rect.getCornerWidth(),
+                                rect.getCornerHeight());
         initializeRenderingNode(path);
         path.translate(initialBounds.x, initialBounds.y);
         parent.addChild(path);
@@ -930,17 +1023,17 @@ public class RenderingController {
             final Styles styles, final List<KStyle> propagatedStyles, final PNode parent,
             final PBounds initialBounds) {
         // create the polyline
-        final PSWTAdvancedPath path = PSWTAdvancedPath.createPolyline(evaluatePolylinePlacement(
-                asPolylinePlacementData(polyline.getPlacementData()), initialBounds));
+        final PSWTAdvancedPath path =
+                PSWTAdvancedPath.createPolyline(evaluatePolylinePlacement(
+                        asPolylinePlacementData(polyline.getPlacementData()), initialBounds));
         initializeRenderingNode(path);
         path.translate(initialBounds.x, initialBounds.y);
         parent.addChild(path);
 
         // handle children
-        // TODO special polyline decorators
-        // if (rect.getChildren().size() > 0) {
-        // handleChildren(rect.getChildren(), rect.getChildPlacement(), propagatedStyles, path);
-        // }
+        if (polyline.getChildren().size() > 0) {
+            handlePolylineChildren(polyline.getChildren(), propagatedStyles, path);
+        }
 
         // create a controller for the polyline and return it
         return new PSWTAdvancedPathController(path) {
@@ -1089,6 +1182,50 @@ public class RenderingController {
     }
 
     /**
+     * Returns the bounds and rotation for a decorator placement data on a given path.
+     * 
+     * @param dpd
+     *            the decorator placement data
+     * @param path
+     *            the path
+     * @return the origin, bounds and rotation for the decorator
+     */
+    private Decoration evaluateDecoratorPlacement(final KDecoratorPlacementData dpd,
+            final PSWTAdvancedPath path) {
+        Decoration decoration = new Decoration();
+        Point2D[] points = path.getShapePoints();
+
+        // default case
+        if (dpd == null) {
+            decoration.origin = (Point2D) points[0].clone();
+            // CHECKSTYLEOFF MagicNumber
+            decoration.bounds = new PBounds(0.0, 0.0, 0.0, 0.0);
+            // CHECKSTYLEON MagicNumber
+            decoration.rotation = 0.0;
+            return decoration;
+        }
+
+        // get the segment and concrete point the location specifies on the path
+        Pair<Integer, Point2D> result =
+                MathUtil.getSegmentStartIndexAndPoint(points, dpd.getLocation());
+        decoration.origin = result.getSecond();
+
+        // calculate the decorator bounds
+        decoration.bounds =
+                new PBounds(dpd.getXOffset(), dpd.getYOffset(), dpd.getWidth(), dpd.getHeight());
+
+        // if the decorator placement data specifies it to be relative calculate its rotation
+        if (dpd.isRelative()) {
+            int segmentStart = result.getFirst();
+            decoration.rotation = MathUtil.angle(points[segmentStart], points[segmentStart + 1]);
+        } else {
+            decoration.rotation = 0.0;
+        }
+
+        return decoration;
+    }
+
+    /**
      * Evaluates a position inside given parent bounds.
      * 
      * @param position
@@ -1141,6 +1278,9 @@ public class RenderingController {
     private KStackPlacementData asStackPlacementData(final KPlacementData data) {
         if (data instanceof KStackPlacementData) {
             return (KStackPlacementData) data;
+        } else if (data instanceof KPolylinePlacementData) {
+            KPolylinePlacementData polylinePlacementData = (KPolylinePlacementData) data;
+            return asStackPlacementData(polylinePlacementData.getDetailPlacementData());
         }
         return null;
     }
@@ -1156,6 +1296,24 @@ public class RenderingController {
     private KPolylinePlacementData asPolylinePlacementData(final KPlacementData data) {
         if (data instanceof KPolylinePlacementData) {
             return (KPolylinePlacementData) data;
+        }
+        return null;
+    }
+
+    /**
+     * Returns the given placement data as decorator placement data.
+     * 
+     * @param data
+     *            the placement data
+     * @return the decorator placement data or null if the placement data is no decorator placement
+     *         data
+     */
+    private KDecoratorPlacementData asDecoratorPlacementData(final KPlacementData data) {
+        if (data instanceof KDecoratorPlacementData) {
+            return (KDecoratorPlacementData) data;
+        } else if (data instanceof KPolylinePlacementData) {
+            KPolylinePlacementData polylinePlacementData = (KPolylinePlacementData) data;
+            return asDecoratorPlacementData(polylinePlacementData.getDetailPlacementData());
         }
         return null;
     }
@@ -1188,8 +1346,15 @@ public class RenderingController {
     private void addListener(final String property, final PNode parent, final PNode node,
             final PropertyChangeListener listener) {
         parent.addPropertyChangeListener(property, listener);
-        node.addAttribute(PROPERTY_LISTENER_KEY, new Pair<String, PropertyChangeListener>(property,
-                listener));
+        @SuppressWarnings("unchecked")
+        List<Pair<String, PropertyChangeListener>> listeners =
+                (List<Pair<String, PropertyChangeListener>>) node
+                        .getAttribute(PROPERTY_LISTENER_KEY);
+        if (listeners == null) {
+            listeners = Lists.newLinkedList();
+            node.addAttribute(PROPERTY_LISTENER_KEY, listeners);
+        }
+        listeners.add(new Pair<String, PropertyChangeListener>(property, listener));
     }
 
     /**
@@ -1198,12 +1363,15 @@ public class RenderingController {
      * @param node
      *            the child node
      */
-    private void removeListener(final PNode node) {
+    private void removeListeners(final PNode node) {
         @SuppressWarnings("unchecked")
-        Pair<String, PropertyChangeListener> pair = (Pair<String, PropertyChangeListener>) node
-                .getAttribute(PROPERTY_LISTENER_KEY);
-        if (pair != null && node.getParent() != null) {
-            node.getParent().removePropertyChangeListener(pair.getFirst(), pair.getSecond());
+        List<Pair<String, PropertyChangeListener>> listeners =
+                (List<Pair<String, PropertyChangeListener>>) node
+                        .getAttribute(PROPERTY_LISTENER_KEY);
+        if (listeners != null && node.getParent() != null) {
+            for (Pair<String, PropertyChangeListener> pair : listeners) {
+                node.getParent().removePropertyChangeListener(pair.getFirst(), pair.getSecond());
+            }
         }
     }
 
@@ -1508,6 +1676,20 @@ public class RenderingController {
         private KFontItalic italic = null;
         /** the font bold property. */
         private KFontBold bold = null;
+
+    }
+
+    /**
+     * A data holder class for the result of evaluating a decorator.
+     */
+    private class Decoration {
+
+        /** the origin of the decoration. */
+        private Point2D origin;
+        /** the bounds of the decoration. */
+        private PBounds bounds;
+        /** the rotation of the decoration. */
+        private double rotation;
 
     }
 

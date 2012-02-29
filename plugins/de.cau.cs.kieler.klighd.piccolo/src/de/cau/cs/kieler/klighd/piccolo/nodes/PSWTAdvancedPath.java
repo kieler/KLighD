@@ -417,6 +417,7 @@ public class PSWTAdvancedPath extends PNode {
             }
         }
     }
+
     // CHECKSTYLEON MagicNumber
 
     /**
@@ -433,6 +434,19 @@ public class PSWTAdvancedPath extends PNode {
         firePropertyChange(PPath.PROPERTY_CODE_PATH, PPath.PROPERTY_PATH, null, shape);
         updateBoundsFromPath();
         invalidatePaint();
+    }
+
+    /**
+     * Returns the points of the shape.
+     * 
+     * @return the points
+     */
+    public Point2D[] getShapePoints() {
+        Point2D[] points = new Point2D[shapePts.length / 2];
+        for (int i = 0; i < points.length; ++i) {
+            points[i] = new Point2D.Double(shapePts[2 * i], shapePts[2 * i + 1]);
+        }
+        return points;
     }
 
     /**
@@ -487,6 +501,7 @@ public class PSWTAdvancedPath extends PNode {
             shapePts = SWTShapeManager.shapeToPolyline(shape);
         }
     }
+
     // CHECKSTYLEON MagicNumber
 
     /**

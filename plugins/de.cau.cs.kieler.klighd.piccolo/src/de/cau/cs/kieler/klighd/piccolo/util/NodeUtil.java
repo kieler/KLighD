@@ -16,6 +16,8 @@
  */
 package de.cau.cs.kieler.klighd.piccolo.util;
 
+import java.awt.geom.Point2D;
+
 import edu.umd.cs.piccolo.PNode;
 import edu.umd.cs.piccolo.util.PAffineTransform;
 import edu.umd.cs.piccolo.util.PBounds;
@@ -91,6 +93,24 @@ public final class NodeUtil {
 
         // apply the translation
         node.translate(x - oldX, y - oldY);
+    }
+
+    /**
+     * Applies the translation to the given node.
+     * 
+     * @param node
+     *            the node
+     * @param translation
+     *            the translation
+     */
+    public static void applyTranslation(final PNode node, final Point2D translation) {
+        // get the old translation
+        PAffineTransform transform = node.getTransformReference(true);
+        double oldX = transform.getTranslateX();
+        double oldY = transform.getTranslateY();
+
+        // apply the translation
+        node.translate(translation.getX() - oldX, translation.getY() - oldY);
     }
 
 }
