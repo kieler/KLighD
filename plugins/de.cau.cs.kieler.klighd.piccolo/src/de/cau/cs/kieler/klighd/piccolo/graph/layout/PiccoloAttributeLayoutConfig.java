@@ -91,7 +91,7 @@ public class PiccoloAttributeLayoutConfig implements ILayoutConfig {
         if (value != null) {
             if (value instanceof String) {
                 String s = (String) value;
-                if (optionData.getId().equals(LayoutOptions.ALGORITHM_ID)) {
+                if (optionData.equals(LayoutOptions.ALGORITHM)) {
                     ILayoutData layoutData = getAlgorithmData(s);
                     if (layoutData != null) {
                         return layoutData.getId();

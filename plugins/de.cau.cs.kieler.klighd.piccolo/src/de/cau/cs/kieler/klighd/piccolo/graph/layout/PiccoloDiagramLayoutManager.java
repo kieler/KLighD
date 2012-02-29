@@ -38,6 +38,7 @@ import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout;
 import de.cau.cs.kieler.kiml.options.LayoutOptions;
 import de.cau.cs.kieler.kiml.ui.diagram.IDiagramLayoutManager;
 import de.cau.cs.kieler.kiml.ui.diagram.LayoutMapping;
+import de.cau.cs.kieler.kiml.ui.service.EclipseLayoutConfig;
 import de.cau.cs.kieler.kiml.ui.service.LayoutOptionManager;
 import de.cau.cs.kieler.kiml.util.KimlUtil;
 import de.cau.cs.kieler.klighd.IViewer;
@@ -143,7 +144,7 @@ public class PiccoloDiagramLayoutManager implements IDiagramLayoutManager<IGraph
 
         // create the mapping
         LayoutMapping<IGraphObject> mapping = buildLayoutGraph(layoutRoot);
-        mapping.setProperty(LayoutOptionManager.USE_ECLIPSE_LAYOUT_CONFIG, false);
+        mapping.setProperty(EclipseLayoutConfig.ACTIVATION, false);
 
         // add the Piccolo layout config
         mapping.getLayoutConfigs().add(attributeLayoutConfig);
@@ -253,7 +254,7 @@ public class PiccoloDiagramLayoutManager implements IDiagramLayoutManager<IGraph
         for (IProperty<?> option : options) {
             LayoutOptionData<?> data = LayoutDataService.getInstance().getOptionDataBySuffix(
                     option.getId());
-            if (data != null && data.getId().equals(LayoutOptions.NO_LAYOUT_ID)) {
+            if (data != null && data.equals(LayoutOptions.NO_LAYOUT)) {
                 Object value = edge.getAttribute(data.getId());
                 if (value == null) {
                     value = edge.getAttribute(data.getId().substring(
