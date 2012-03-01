@@ -26,7 +26,7 @@ import java.util.List;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.impl.AdapterImpl;
-import org.eclipse.emf.ecore.util.EContentAdapter;
+import org.eclipse.emf.ecore.EStructuralFeature;
 
 import com.google.common.collect.Lists;
 
@@ -61,6 +61,7 @@ import de.cau.cs.kieler.core.krendering.KRectangle;
 import de.cau.cs.kieler.core.krendering.KRendering;
 import de.cau.cs.kieler.core.krendering.KRenderingFactory;
 import de.cau.cs.kieler.core.krendering.KRenderingPackage;
+import de.cau.cs.kieler.core.krendering.KRenderingRef;
 import de.cau.cs.kieler.core.krendering.KRoundedRectangle;
 import de.cau.cs.kieler.core.krendering.KStackPlacement;
 import de.cau.cs.kieler.core.krendering.KStackPlacementData;
@@ -71,6 +72,7 @@ import de.cau.cs.kieler.core.krendering.KVerticalAlignment;
 import de.cau.cs.kieler.core.krendering.KXPosition;
 import de.cau.cs.kieler.core.krendering.KYPosition;
 import de.cau.cs.kieler.core.krendering.util.KRenderingSwitch;
+import de.cau.cs.kieler.core.model.notify.CrossDocumentContentAdapter;
 import de.cau.cs.kieler.core.properties.IProperty;
 import de.cau.cs.kieler.core.properties.Property;
 import de.cau.cs.kieler.core.ui.util.MonitoredOperation;
@@ -121,7 +123,7 @@ public class RenderingController {
     private KChildAreaNode childAreaNode = null;
 
     /** the adapter currently installed on the rendering. */
-    private AdapterImpl renderingAdapter = null;
+    private CrossDocumentContentAdapter renderingAdapter = null;
 
     /** whether to synchronize the rendering with the model. */
     private boolean syncRendering = false;
@@ -235,13 +237,17 @@ public class RenderingController {
         } else {
             if (repNode instanceof KNodeNode || repNode instanceof KPortNode) {
                 // controller manages a node or a port
-                renderingNode = createDefaultNodeRendering(repNode);
+                renderingNode =
+                        handleDirectPlacementRendering(createDefaultNodeRendering(),
+                                new ArrayList<KStyle>(0), repNode);
             } else if (repNode instanceof KLabelNode) {
                 // controller manages a label
-                renderingNode = createDefaultLabelRendering((KLabelNode) repNode);
+                renderingNode =
+                        handleLabelRendering(createDefaultLabelRendering(), (KLabelNode) repNode);
             } else if (repNode instanceof KEdgeNode) {
                 // controller manages an edge
-                renderingNode = createDefaultEdgeRendering((KEdgeNode) repNode);
+                renderingNode =
+                        handleEdgeRendering(createDefaultEdgeRendering(), (KEdgeNode) repNode);
             }
         }
 
@@ -259,13 +265,19 @@ public class RenderingController {
     public KChildAreaNode getChildAreaNode() {
         return childAreaNode;
     }
-
+    
     /**
      * Registers an adapter on the current rendering to react on changes.
      */
     private void registerRenderingAdapter() {
         // register adapter on the rendering to stay in sync
-        renderingAdapter = new EContentAdapter() {
+        renderingAdapter = new CrossDocumentContentAdapter() {
+            
+            protected boolean shouldAdapt(final EStructuralFeature feature) {
+                // follow the rendering feature of the KRenderingRef
+                return feature.getFeatureID() == KRenderingPackage.KRENDERING_REF__RENDERING;
+            }
+
             public void notifyChanged(final Notification msg) {
                 super.notifyChanged(msg);
                 switch (msg.getEventType()) {
@@ -344,7 +356,6 @@ public class RenderingController {
                     case Notification.ADD_MANY:
                     case Notification.REMOVE:
                     case Notification.REMOVE_MANY:
-                        System.out.println(element.getData());
                         final KRendering rendering = element.getData(KRendering.class);
                         if (rendering != currentRendering) {
                             // a rendering has been added or removed
@@ -748,6 +759,12 @@ public class RenderingController {
             public PNodeController<?> caseKChildArea(final KChildArea childArea) {
                 return createChildArea(parent, initialBounds);
             }
+            
+            // Rendering Reference
+            public PNodeController<?> caseKRenderingRef(final KRenderingRef renderingReference) {
+                return createRenderingReference(renderingReference, styles, childPropagatedStyles,
+                        parent, initialBounds);
+            }
         } /**/.doSwitch(rendering);
 
         // set the styles for the created rendering node using the controller
@@ -764,11 +781,9 @@ public class RenderingController {
     /**
      * Creates a default rendering for nodes without attached rendering data.
      * 
-     * @param parent
-     *            the parent Piccolo node
-     * @return the Piccolo node
+     * @return the rendering
      */
-    private PNode createDefaultNodeRendering(final PNode parent) {
+    private KRendering createDefaultNodeRendering() {
         // create the default rendering model
         KRenderingFactory factory = KRenderingFactory.eINSTANCE;
         KRectangle rect = factory.createKRectangle();
@@ -777,19 +792,15 @@ public class RenderingController {
         color.setGreen(0);
         color.setBlue(0);
         rect.getStyles().add(color);
-
-        // create the rendering and return it
-        return handleDirectPlacementRendering(rect, new ArrayList<KStyle>(0), parent);
+        return rect;
     }
 
     /**
      * Creates a default rendering for labels without attached rendering data.
-     * 
-     * @param parent
-     *            the parent Piccolo label node
-     * @return the Piccolo node
+     *
+     * @return the rendering
      */
-    private PNode createDefaultLabelRendering(final KLabelNode parent) {
+    private KRendering createDefaultLabelRendering() {
         // create the default rendering model
         KRenderingFactory factory = KRenderingFactory.eINSTANCE;
         KText text = factory.createKText();
@@ -798,19 +809,15 @@ public class RenderingController {
         color.setGreen(0);
         color.setBlue(0);
         text.getStyles().add(color);
-
-        // create the rendering and return it
-        return handleLabelRendering(text, parent);
+        return text;
     }
 
     /**
      * Creates a default rendering for edges without attached rendering data.
      * 
-     * @param parentEdge
-     *            the parent Piccolo edge node
-     * @return the Piccolo node
+     * @return the rendering
      */
-    private PNode createDefaultEdgeRendering(final KEdgeNode parentEdge) {
+    private KRendering createDefaultEdgeRendering() {
         // create the default rendering model
         KRenderingFactory factory = KRenderingFactory.eINSTANCE;
         KPolyline polyline = factory.createKPolyline();
@@ -819,9 +826,7 @@ public class RenderingController {
         color.setGreen(0);
         color.setBlue(0);
         polyline.getStyles().add(color);
-
-        // create the rendering and return it
-        return handleEdgeRendering(polyline, parentEdge);
+        return polyline;
     }
 
     /**
@@ -1045,6 +1050,33 @@ public class RenderingController {
                 NodeUtil.applyTranslation(getNode(), (float) bounds.x, (float) bounds.y);
             }
         };
+    }
+    
+    /**
+     * Creates a representation for the {@code KRenderingRef}.
+     * 
+     * @param renderingReference
+     *            the rendering reference
+     * @param styles
+     *            the styles container for the rendering
+     * @param propagatedStyles
+     *            the styles propagated to the rendering's children
+     * @param parent
+     *            the parent Piccolo node
+     * @param initialBounds
+     *            the initial bounds
+     * @return the controller for the created Piccolo node
+     */
+    public PNodeController<?> createRenderingReference(
+            final KRenderingRef renderingReference, final Styles styles,
+            final List<KStyle> propagatedStyles, final PNode parent, final PBounds initialBounds) {
+        if (renderingReference.getRendering() != null) {
+            return createRendering(renderingReference.getRendering(), propagatedStyles, parent,
+                    initialBounds);
+        } else {
+            throw new RuntimeException("No referenced rendering in rendering reference: "
+                    + renderingReference);
+        }
     }
 
     /**
