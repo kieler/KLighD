@@ -1944,10 +1944,10 @@ public class KRenderingGrammarAccess extends AbstractGrammarElementFinder {
 	public class KTextElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "KText");
 		private final Group cGroup = (Group)rule.eContents().get(1);
-		private final Assignment cClipAssignment_0 = (Assignment)cGroup.eContents().get(0);
-		private final Keyword cClipClipKeyword_0_0 = (Keyword)cClipAssignment_0.eContents().get(0);
-		private final Keyword cKTextKeyword_1 = (Keyword)cGroup.eContents().get(1);
-		private final Keyword cLeftCurlyBracketKeyword_2 = (Keyword)cGroup.eContents().get(2);
+		private final Keyword cKTextKeyword_0 = (Keyword)cGroup.eContents().get(0);
+		private final Keyword cLeftCurlyBracketKeyword_1 = (Keyword)cGroup.eContents().get(1);
+		private final Assignment cClipAssignment_2 = (Assignment)cGroup.eContents().get(2);
+		private final Keyword cClipClipKeyword_2_0 = (Keyword)cClipAssignment_2.eContents().get(0);
 		private final Group cGroup_3 = (Group)cGroup.eContents().get(3);
 		private final Keyword cTextKeyword_3_0 = (Keyword)cGroup_3.eContents().get(0);
 		private final Assignment cTextAssignment_3_1 = (Assignment)cGroup_3.eContents().get(1);
@@ -1995,29 +1995,29 @@ public class KRenderingGrammarAccess extends AbstractGrammarElementFinder {
 		private final Keyword cRightCurlyBracketKeyword_9 = (Keyword)cGroup.eContents().get(9);
 		
 		//KText:
-		//	clip?="clip" "KText" "{" ("text" text=EString)? ("references" "(" references+=[KRenderingRef|EString] (","
+		//	"KText" "{" clip?="clip" ("text" text=EString)? ("references" "(" references+=[KRenderingRef|EString] (","
 		//	references+=[KRenderingRef|EString])* ")")? // ('persistentEntries' '{' persistentEntries+=PersistentEntry ( "," persistentEntries+=PersistentEntry)* '}' )?
 		//	("placementData" placementData=KPlacementData)? ("styles" "{" styles+=KStyle ("," styles+=KStyle)* "}")? ("children"
 		//	"{" children+=KRendering ("," children+=KRendering)* "}")? ("childPlacement" childPlacement=KPlacement)? "}";
 		public ParserRule getRule() { return rule; }
 
-		//clip?="clip" "KText" "{" ("text" text=EString)? ("references" "(" references+=[KRenderingRef|EString] (","
+		//"KText" "{" clip?="clip" ("text" text=EString)? ("references" "(" references+=[KRenderingRef|EString] (","
 		//references+=[KRenderingRef|EString])* ")")? // ('persistentEntries' '{' persistentEntries+=PersistentEntry ( "," persistentEntries+=PersistentEntry)* '}' )?
 		//("placementData" placementData=KPlacementData)? ("styles" "{" styles+=KStyle ("," styles+=KStyle)* "}")? ("children" "{"
 		//children+=KRendering ("," children+=KRendering)* "}")? ("childPlacement" childPlacement=KPlacement)? "}"
 		public Group getGroup() { return cGroup; }
 
-		//clip?="clip"
-		public Assignment getClipAssignment_0() { return cClipAssignment_0; }
-
-		//"clip"
-		public Keyword getClipClipKeyword_0_0() { return cClipClipKeyword_0_0; }
-
 		//"KText"
-		public Keyword getKTextKeyword_1() { return cKTextKeyword_1; }
+		public Keyword getKTextKeyword_0() { return cKTextKeyword_0; }
 
 		//"{"
-		public Keyword getLeftCurlyBracketKeyword_2() { return cLeftCurlyBracketKeyword_2; }
+		public Keyword getLeftCurlyBracketKeyword_1() { return cLeftCurlyBracketKeyword_1; }
+
+		//clip?="clip"
+		public Assignment getClipAssignment_2() { return cClipAssignment_2; }
+
+		//"clip"
+		public Keyword getClipClipKeyword_2_0() { return cClipClipKeyword_2_0; }
 
 		//("text" text=EString)?
 		public Group getGroup_3() { return cGroup_3; }
@@ -2566,10 +2566,10 @@ public class KRenderingGrammarAccess extends AbstractGrammarElementFinder {
 	public class KDecoratorPlacementDataElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "KDecoratorPlacementData");
 		private final Group cGroup = (Group)rule.eContents().get(1);
-		private final Assignment cRelativeAssignment_0 = (Assignment)cGroup.eContents().get(0);
-		private final Keyword cRelativeRelativeKeyword_0_0 = (Keyword)cRelativeAssignment_0.eContents().get(0);
-		private final Keyword cKDecoratorPlacementDataKeyword_1 = (Keyword)cGroup.eContents().get(1);
-		private final Keyword cLeftCurlyBracketKeyword_2 = (Keyword)cGroup.eContents().get(2);
+		private final Keyword cKDecoratorPlacementDataKeyword_0 = (Keyword)cGroup.eContents().get(0);
+		private final Keyword cLeftCurlyBracketKeyword_1 = (Keyword)cGroup.eContents().get(1);
+		private final Assignment cRelativeAssignment_2 = (Assignment)cGroup.eContents().get(2);
+		private final Keyword cRelativeRelativeKeyword_2_0 = (Keyword)cRelativeAssignment_2.eContents().get(0);
 		private final Keyword cLocationKeyword_3 = (Keyword)cGroup.eContents().get(3);
 		private final Assignment cLocationAssignment_4 = (Assignment)cGroup.eContents().get(4);
 		private final RuleCall cLocationEFloatParserRuleCall_4_0 = (RuleCall)cLocationAssignment_4.eContents().get(0);
@@ -2581,28 +2581,36 @@ public class KRenderingGrammarAccess extends AbstractGrammarElementFinder {
 		private final Keyword cYOffsetKeyword_6_0 = (Keyword)cGroup_6.eContents().get(0);
 		private final Assignment cYOffsetAssignment_6_1 = (Assignment)cGroup_6.eContents().get(1);
 		private final RuleCall cYOffsetEFloatParserRuleCall_6_1_0 = (RuleCall)cYOffsetAssignment_6_1.eContents().get(0);
-		private final Keyword cRightCurlyBracketKeyword_7 = (Keyword)cGroup.eContents().get(7);
+		private final Group cGroup_7 = (Group)cGroup.eContents().get(7);
+		private final Keyword cWidthKeyword_7_0 = (Keyword)cGroup_7.eContents().get(0);
+		private final Assignment cWidthAssignment_7_1 = (Assignment)cGroup_7.eContents().get(1);
+		private final RuleCall cWidthEFloatParserRuleCall_7_1_0 = (RuleCall)cWidthAssignment_7_1.eContents().get(0);
+		private final Group cGroup_8 = (Group)cGroup.eContents().get(8);
+		private final Keyword cHeightKeyword_8_0 = (Keyword)cGroup_8.eContents().get(0);
+		private final Assignment cHeightAssignment_8_1 = (Assignment)cGroup_8.eContents().get(1);
+		private final RuleCall cHeightEFloatParserRuleCall_8_1_0 = (RuleCall)cHeightAssignment_8_1.eContents().get(0);
+		private final Keyword cRightCurlyBracketKeyword_9 = (Keyword)cGroup.eContents().get(9);
 		
 		//KDecoratorPlacementData:
-		//	relative?="relative" "KDecoratorPlacementData" "{" "location" location=EFloat ("xOffset" xOffset=EFloat)? ("yOffset"
-		//	yOffset=EFloat)? "}";
+		//	"KDecoratorPlacementData" "{" relative?="relative" "location" location=EFloat ("xOffset" xOffset=EFloat)? ("yOffset"
+		//	yOffset=EFloat)? ("width" width=EFloat)? ("height" height=EFloat)? "}";
 		public ParserRule getRule() { return rule; }
 
-		//relative?="relative" "KDecoratorPlacementData" "{" "location" location=EFloat ("xOffset" xOffset=EFloat)? ("yOffset"
-		//yOffset=EFloat)? "}"
+		//"KDecoratorPlacementData" "{" relative?="relative" "location" location=EFloat ("xOffset" xOffset=EFloat)? ("yOffset"
+		//yOffset=EFloat)? ("width" width=EFloat)? ("height" height=EFloat)? "}"
 		public Group getGroup() { return cGroup; }
 
-		//relative?="relative"
-		public Assignment getRelativeAssignment_0() { return cRelativeAssignment_0; }
-
-		//"relative"
-		public Keyword getRelativeRelativeKeyword_0_0() { return cRelativeRelativeKeyword_0_0; }
-
 		//"KDecoratorPlacementData"
-		public Keyword getKDecoratorPlacementDataKeyword_1() { return cKDecoratorPlacementDataKeyword_1; }
+		public Keyword getKDecoratorPlacementDataKeyword_0() { return cKDecoratorPlacementDataKeyword_0; }
 
 		//"{"
-		public Keyword getLeftCurlyBracketKeyword_2() { return cLeftCurlyBracketKeyword_2; }
+		public Keyword getLeftCurlyBracketKeyword_1() { return cLeftCurlyBracketKeyword_1; }
+
+		//relative?="relative"
+		public Assignment getRelativeAssignment_2() { return cRelativeAssignment_2; }
+
+		//"relative"
+		public Keyword getRelativeRelativeKeyword_2_0() { return cRelativeRelativeKeyword_2_0; }
 
 		//"location"
 		public Keyword getLocationKeyword_3() { return cLocationKeyword_3; }
@@ -2637,8 +2645,32 @@ public class KRenderingGrammarAccess extends AbstractGrammarElementFinder {
 		//EFloat
 		public RuleCall getYOffsetEFloatParserRuleCall_6_1_0() { return cYOffsetEFloatParserRuleCall_6_1_0; }
 
+		//("width" width=EFloat)?
+		public Group getGroup_7() { return cGroup_7; }
+
+		//"width"
+		public Keyword getWidthKeyword_7_0() { return cWidthKeyword_7_0; }
+
+		//width=EFloat
+		public Assignment getWidthAssignment_7_1() { return cWidthAssignment_7_1; }
+
+		//EFloat
+		public RuleCall getWidthEFloatParserRuleCall_7_1_0() { return cWidthEFloatParserRuleCall_7_1_0; }
+
+		//("height" height=EFloat)?
+		public Group getGroup_8() { return cGroup_8; }
+
+		//"height"
+		public Keyword getHeightKeyword_8_0() { return cHeightKeyword_8_0; }
+
+		//height=EFloat
+		public Assignment getHeightAssignment_8_1() { return cHeightAssignment_8_1; }
+
+		//EFloat
+		public RuleCall getHeightEFloatParserRuleCall_8_1_0() { return cHeightEFloatParserRuleCall_8_1_0; }
+
 		//"}"
-		public Keyword getRightCurlyBracketKeyword_7() { return cRightCurlyBracketKeyword_7; }
+		public Keyword getRightCurlyBracketKeyword_9() { return cRightCurlyBracketKeyword_9; }
 	}
 
 	public class KGridPlacementDataElements extends AbstractParserRuleElementFinder {
@@ -4256,7 +4288,7 @@ public class KRenderingGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//KText:
-	//	clip?="clip" "KText" "{" ("text" text=EString)? ("references" "(" references+=[KRenderingRef|EString] (","
+	//	"KText" "{" clip?="clip" ("text" text=EString)? ("references" "(" references+=[KRenderingRef|EString] (","
 	//	references+=[KRenderingRef|EString])* ")")? // ('persistentEntries' '{' persistentEntries+=PersistentEntry ( "," persistentEntries+=PersistentEntry)* '}' )?
 	//	("placementData" placementData=KPlacementData)? ("styles" "{" styles+=KStyle ("," styles+=KStyle)* "}")? ("children"
 	//	"{" children+=KRendering ("," children+=KRendering)* "}")? ("childPlacement" childPlacement=KPlacement)? "}";
@@ -4295,8 +4327,8 @@ public class KRenderingGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//KDecoratorPlacementData:
-	//	relative?="relative" "KDecoratorPlacementData" "{" "location" location=EFloat ("xOffset" xOffset=EFloat)? ("yOffset"
-	//	yOffset=EFloat)? "}";
+	//	"KDecoratorPlacementData" "{" relative?="relative" "location" location=EFloat ("xOffset" xOffset=EFloat)? ("yOffset"
+	//	yOffset=EFloat)? ("width" width=EFloat)? ("height" height=EFloat)? "}";
 	public KDecoratorPlacementDataElements getKDecoratorPlacementDataAccess() {
 		return (pKDecoratorPlacementData != null) ? pKDecoratorPlacementData : (pKDecoratorPlacementData = new KDecoratorPlacementDataElements());
 	}

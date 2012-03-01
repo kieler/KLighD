@@ -432,7 +432,14 @@ public class AbstractKRenderingSemanticSequencer extends AbstractSemanticSequenc
 	
 	/**
 	 * Constraint:
-	 *     (relative?='relative' location=EFloat xOffset=EFloat? yOffset=EFloat?)
+	 *     (
+	 *         relative?='relative' 
+	 *         location=EFloat 
+	 *         xOffset=EFloat? 
+	 *         yOffset=EFloat? 
+	 *         width=EFloat? 
+	 *         height=EFloat?
+	 *     )
 	 */
 	protected void sequence_KDecoratorPlacementData(EObject context, KDecoratorPlacementData semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
