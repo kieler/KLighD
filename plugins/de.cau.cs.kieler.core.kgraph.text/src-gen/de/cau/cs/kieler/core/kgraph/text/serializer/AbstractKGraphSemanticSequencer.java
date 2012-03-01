@@ -471,7 +471,14 @@ public class AbstractKGraphSemanticSequencer extends AbstractSemanticSequencer {
 	
 	/**
 	 * Constraint:
-	 *     (relative?='relative' location=EFloat xOffset=EFloat? yOffset=EFloat?)
+	 *     (
+	 *         relative?='relative' 
+	 *         location=EFloat 
+	 *         xOffset=EFloat? 
+	 *         yOffset=EFloat? 
+	 *         width=EFloat? 
+	 *         height=EFloat?
+	 *     )
 	 */
 	protected void sequence_KDecoratorPlacementData(EObject context, KDecoratorPlacementData semanticObject) {
 		superSequencer.createSequence(context, semanticObject);
@@ -675,7 +682,7 @@ public class AbstractKGraphSemanticSequencer extends AbstractSemanticSequencer {
 	
 	/**
 	 * Constraint:
-	 *     (points+=KPosition points+=KPosition*)
+	 *     (points+=KPosition points+=KPosition* detailPlacementData=KPlacementData?)
 	 */
 	protected void sequence_KPolylinePlacementData(EObject context, KPolylinePlacementData semanticObject) {
 		superSequencer.createSequence(context, semanticObject);
