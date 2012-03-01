@@ -638,7 +638,7 @@ public class AbstractKRenderingSemanticSequencer extends AbstractSemanticSequenc
 	
 	/**
 	 * Constraint:
-	 *     (points+=KPosition points+=KPosition*)
+	 *     (points+=KPosition points+=KPosition* detailPlacementData=KPlacementData?)
 	 */
 	protected void sequence_KPolylinePlacementData(EObject context, KPolylinePlacementData semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);

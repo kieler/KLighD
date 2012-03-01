@@ -4421,7 +4421,29 @@ ruleKPolylinePlacementData returns [EObject current=null]
 	    }
 
 )
-))*)
+))*	otherlv_5='detailedPlacementData' 
+    {
+    	newLeafNode(otherlv_5, grammarAccess.getKPolylinePlacementDataAccess().getDetailedPlacementDataKeyword_4());
+    }
+(
+(
+		{ 
+	        newCompositeNode(grammarAccess.getKPolylinePlacementDataAccess().getDetailPlacementDataKPlacementDataParserRuleCall_5_0()); 
+	    }
+		lv_detailPlacementData_6_0=ruleKPlacementData		{
+	        if ($current==null) {
+	            $current = createModelElementForParent(grammarAccess.getKPolylinePlacementDataRule());
+	        }
+       		set(
+       			$current, 
+       			"detailPlacementData",
+        		lv_detailPlacementData_6_0, 
+        		"KPlacementData");
+	        afterParserOrEnumRuleCall();
+	    }
+
+)
+)?)
 ;
 
 

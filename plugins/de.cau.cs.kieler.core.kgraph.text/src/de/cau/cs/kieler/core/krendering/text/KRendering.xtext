@@ -268,7 +268,8 @@ KPolylinePlacementData returns KPolylinePlacementData:
 //	'{'
 //		'points' '{' points+=KPosition ( "," points+=KPosition)* '}' 
 //    '}';
-	'points' ':' points+=KPosition ( "," points+=KPosition)*; 
+	'points' ':' points+=KPosition ( "," points+=KPosition)* 
+    'detailedPlacementData' detailPlacementData=KPlacementData?;
 
 EFloat returns ecore::EFloat:
 	'-'? INT? '.' INT (('E'|'e') '-'? INT)?;

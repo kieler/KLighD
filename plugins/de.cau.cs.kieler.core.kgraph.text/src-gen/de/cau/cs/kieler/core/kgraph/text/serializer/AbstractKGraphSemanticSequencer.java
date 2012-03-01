@@ -682,7 +682,7 @@ public class AbstractKGraphSemanticSequencer extends AbstractSemanticSequencer {
 	
 	/**
 	 * Constraint:
-	 *     (points+=KPosition points+=KPosition*)
+	 *     (points+=KPosition points+=KPosition* detailPlacementData=KPlacementData?)
 	 */
 	protected void sequence_KPolylinePlacementData(EObject context, KPolylinePlacementData semanticObject) {
 		superSequencer.createSequence(context, semanticObject);

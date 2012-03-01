@@ -329,6 +329,7 @@ public class KRenderingParser extends AbstractContentAssistParser {
 					put(grammarAccess.getKDirectPlacementDataAccess().getBottomRightAssignment_5(), "rule__KDirectPlacementData__BottomRightAssignment_5");
 					put(grammarAccess.getKPolylinePlacementDataAccess().getPointsAssignment_2(), "rule__KPolylinePlacementData__PointsAssignment_2");
 					put(grammarAccess.getKPolylinePlacementDataAccess().getPointsAssignment_3_1(), "rule__KPolylinePlacementData__PointsAssignment_3_1");
+					put(grammarAccess.getKPolylinePlacementDataAccess().getDetailPlacementDataAssignment_5(), "rule__KPolylinePlacementData__DetailPlacementDataAssignment_5");
 					put(grammarAccess.getKPositionAccess().getXAssignment_3(), "rule__KPosition__XAssignment_3");
 					put(grammarAccess.getKPositionAccess().getYAssignment_5(), "rule__KPosition__YAssignment_5");
 					put(grammarAccess.getKLeftPositionAccess().getAbsoluteAssignment_3_1(), "rule__KLeftPosition__AbsoluteAssignment_3_1");
