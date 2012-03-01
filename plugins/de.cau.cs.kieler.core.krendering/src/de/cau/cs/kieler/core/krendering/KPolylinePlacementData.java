@@ -24,6 +24,7 @@ import org.eclipse.emf.common.util.EList;
  * The following features are supported:
  * <ul>
  *   <li>{@link de.cau.cs.kieler.core.krendering.KPolylinePlacementData#getPoints <em>Points</em>}</li>
+ *   <li>{@link de.cau.cs.kieler.core.krendering.KPolylinePlacementData#getDetailPlacementData <em>Detail Placement Data</em>}</li>
  * </ul>
  * </p>
  *
@@ -47,5 +48,31 @@ public interface KPolylinePlacementData extends KPlacementData {
      * @generated
      */
     EList<KPosition> getPoints();
+
+    /**
+     * Returns the value of the '<em><b>Detail Placement Data</b></em>' containment reference.
+     * <!-- begin-user-doc -->
+     * <p>
+     * If the meaning of the '<em>Detail Placement Data</em>' containment reference isn't clear,
+     * there really should be more of a description here...
+     * </p>
+     * <!-- end-user-doc -->
+     * @return the value of the '<em>Detail Placement Data</em>' containment reference.
+     * @see #setDetailPlacementData(KPlacementData)
+     * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKPolylinePlacementData_DetailPlacementData()
+     * @model containment="true"
+     * @generated
+     */
+    KPlacementData getDetailPlacementData();
+
+    /**
+     * Sets the value of the '{@link de.cau.cs.kieler.core.krendering.KPolylinePlacementData#getDetailPlacementData <em>Detail Placement Data</em>}' containment reference.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @param value the new value of the '<em>Detail Placement Data</em>' containment reference.
+     * @see #getDetailPlacementData()
+     * @generated
+     */
+    void setDetailPlacementData(KPlacementData value);
 
 } // KPolylinePlacementData

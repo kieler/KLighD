@@ -918,13 +918,31 @@ public interface KRenderingPackage extends EPackage {
     int KDECORATOR_PLACEMENT_DATA__RELATIVE = KPLACEMENT_DATA_FEATURE_COUNT + 3;
 
     /**
+     * The feature id for the '<em><b>Width</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KDECORATOR_PLACEMENT_DATA__WIDTH = KPLACEMENT_DATA_FEATURE_COUNT + 4;
+
+    /**
+     * The feature id for the '<em><b>Height</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KDECORATOR_PLACEMENT_DATA__HEIGHT = KPLACEMENT_DATA_FEATURE_COUNT + 5;
+
+    /**
      * The number of structural features of the '<em>KDecorator Placement Data</em>' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int KDECORATOR_PLACEMENT_DATA_FEATURE_COUNT = KPLACEMENT_DATA_FEATURE_COUNT + 4;
+    int KDECORATOR_PLACEMENT_DATA_FEATURE_COUNT = KPLACEMENT_DATA_FEATURE_COUNT + 6;
 
     /**
      * The meta object id for the '{@link de.cau.cs.kieler.core.krendering.impl.KArcImpl <em>KArc</em>}' class.
@@ -1615,13 +1633,22 @@ public interface KRenderingPackage extends EPackage {
     int KPOLYLINE_PLACEMENT_DATA__POINTS = KPLACEMENT_DATA_FEATURE_COUNT + 0;
 
     /**
+     * The feature id for the '<em><b>Detail Placement Data</b></em>' containment reference.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KPOLYLINE_PLACEMENT_DATA__DETAIL_PLACEMENT_DATA = KPLACEMENT_DATA_FEATURE_COUNT + 1;
+
+    /**
      * The number of structural features of the '<em>KPolyline Placement Data</em>' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int KPOLYLINE_PLACEMENT_DATA_FEATURE_COUNT = KPLACEMENT_DATA_FEATURE_COUNT + 1;
+    int KPOLYLINE_PLACEMENT_DATA_FEATURE_COUNT = KPLACEMENT_DATA_FEATURE_COUNT + 2;
 
     /**
      * The meta object id for the '{@link de.cau.cs.kieler.core.krendering.impl.KCustomRenderingImpl <em>KCustom Rendering</em>}' class.
@@ -3019,6 +3046,28 @@ public interface KRenderingPackage extends EPackage {
     EAttribute getKDecoratorPlacementData_Relative();
 
     /**
+     * Returns the meta object for the attribute '{@link de.cau.cs.kieler.core.krendering.KDecoratorPlacementData#getWidth <em>Width</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the attribute '<em>Width</em>'.
+     * @see de.cau.cs.kieler.core.krendering.KDecoratorPlacementData#getWidth()
+     * @see #getKDecoratorPlacementData()
+     * @generated
+     */
+    EAttribute getKDecoratorPlacementData_Width();
+
+    /**
+     * Returns the meta object for the attribute '{@link de.cau.cs.kieler.core.krendering.KDecoratorPlacementData#getHeight <em>Height</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the attribute '<em>Height</em>'.
+     * @see de.cau.cs.kieler.core.krendering.KDecoratorPlacementData#getHeight()
+     * @see #getKDecoratorPlacementData()
+     * @generated
+     */
+    EAttribute getKDecoratorPlacementData_Height();
+
+    /**
      * Returns the meta object for class '{@link de.cau.cs.kieler.core.krendering.KContainerRendering <em>KContainer Rendering</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -3409,6 +3458,17 @@ public interface KRenderingPackage extends EPackage {
      * @generated
      */
     EReference getKPolylinePlacementData_Points();
+
+    /**
+     * Returns the meta object for the containment reference '{@link de.cau.cs.kieler.core.krendering.KPolylinePlacementData#getDetailPlacementData <em>Detail Placement Data</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the containment reference '<em>Detail Placement Data</em>'.
+     * @see de.cau.cs.kieler.core.krendering.KPolylinePlacementData#getDetailPlacementData()
+     * @see #getKPolylinePlacementData()
+     * @generated
+     */
+    EReference getKPolylinePlacementData_DetailPlacementData();
 
     /**
      * Returns the meta object for class '{@link de.cau.cs.kieler.core.krendering.KCustomRendering <em>KCustom Rendering</em>}'.
@@ -4083,6 +4143,22 @@ public interface KRenderingPackage extends EPackage {
         EAttribute KDECORATOR_PLACEMENT_DATA__RELATIVE = eINSTANCE.getKDecoratorPlacementData_Relative();
 
         /**
+         * The meta object literal for the '<em><b>Width</b></em>' attribute feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EAttribute KDECORATOR_PLACEMENT_DATA__WIDTH = eINSTANCE.getKDecoratorPlacementData_Width();
+
+        /**
+         * The meta object literal for the '<em><b>Height</b></em>' attribute feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EAttribute KDECORATOR_PLACEMENT_DATA__HEIGHT = eINSTANCE.getKDecoratorPlacementData_Height();
+
+        /**
          * The meta object literal for the '{@link de.cau.cs.kieler.core.krendering.impl.KContainerRenderingImpl <em>KContainer Rendering</em>}' class.
          * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
@@ -4407,6 +4483,14 @@ public interface KRenderingPackage extends EPackage {
          * @generated
          */
         EReference KPOLYLINE_PLACEMENT_DATA__POINTS = eINSTANCE.getKPolylinePlacementData_Points();
+
+        /**
+         * The meta object literal for the '<em><b>Detail Placement Data</b></em>' containment reference feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EReference KPOLYLINE_PLACEMENT_DATA__DETAIL_PLACEMENT_DATA = eINSTANCE.getKPolylinePlacementData_DetailPlacementData();
 
         /**
          * The meta object literal for the '{@link de.cau.cs.kieler.core.krendering.impl.KCustomRenderingImpl <em>KCustom Rendering</em>}' class.
