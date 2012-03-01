@@ -181,6 +181,8 @@ public class KGraphParser extends AbstractContentAssistParser {
 					put(grammarAccess.getKDecoratorPlacementDataAccess().getGroup(), "rule__KDecoratorPlacementData__Group__0");
 					put(grammarAccess.getKDecoratorPlacementDataAccess().getGroup_5(), "rule__KDecoratorPlacementData__Group_5__0");
 					put(grammarAccess.getKDecoratorPlacementDataAccess().getGroup_6(), "rule__KDecoratorPlacementData__Group_6__0");
+					put(grammarAccess.getKDecoratorPlacementDataAccess().getGroup_7(), "rule__KDecoratorPlacementData__Group_7__0");
+					put(grammarAccess.getKDecoratorPlacementDataAccess().getGroup_8(), "rule__KDecoratorPlacementData__Group_8__0");
 					put(grammarAccess.getKGridPlacementDataAccess().getGroup(), "rule__KGridPlacementData__Group__0");
 					put(grammarAccess.getKStackPlacementDataAccess().getGroup(), "rule__KStackPlacementData__Group__0");
 					put(grammarAccess.getKDirectPlacementDataAccess().getGroup(), "rule__KDirectPlacementData__Group__0");
@@ -332,7 +334,7 @@ public class KGraphParser extends AbstractContentAssistParser {
 					put(grammarAccess.getKChildAreaAccess().getPlacementDataAssignment_4_1(), "rule__KChildArea__PlacementDataAssignment_4_1");
 					put(grammarAccess.getKChildAreaAccess().getStylesAssignment_5_2(), "rule__KChildArea__StylesAssignment_5_2");
 					put(grammarAccess.getKChildAreaAccess().getStylesAssignment_5_3_1(), "rule__KChildArea__StylesAssignment_5_3_1");
-					put(grammarAccess.getKTextAccess().getClipAssignment_0(), "rule__KText__ClipAssignment_0");
+					put(grammarAccess.getKTextAccess().getClipAssignment_2(), "rule__KText__ClipAssignment_2");
 					put(grammarAccess.getKTextAccess().getTextAssignment_3_1(), "rule__KText__TextAssignment_3_1");
 					put(grammarAccess.getKTextAccess().getReferencesAssignment_4_2(), "rule__KText__ReferencesAssignment_4_2");
 					put(grammarAccess.getKTextAccess().getReferencesAssignment_4_3_1(), "rule__KText__ReferencesAssignment_4_3_1");
@@ -360,10 +362,12 @@ public class KGraphParser extends AbstractContentAssistParser {
 					put(grammarAccess.getKSplineAccess().getChildrenAssignment_6_2(), "rule__KSpline__ChildrenAssignment_6_2");
 					put(grammarAccess.getKSplineAccess().getChildrenAssignment_6_3_1(), "rule__KSpline__ChildrenAssignment_6_3_1");
 					put(grammarAccess.getKSplineAccess().getChildPlacementAssignment_7_1(), "rule__KSpline__ChildPlacementAssignment_7_1");
-					put(grammarAccess.getKDecoratorPlacementDataAccess().getRelativeAssignment_0(), "rule__KDecoratorPlacementData__RelativeAssignment_0");
+					put(grammarAccess.getKDecoratorPlacementDataAccess().getRelativeAssignment_2(), "rule__KDecoratorPlacementData__RelativeAssignment_2");
 					put(grammarAccess.getKDecoratorPlacementDataAccess().getLocationAssignment_4(), "rule__KDecoratorPlacementData__LocationAssignment_4");
 					put(grammarAccess.getKDecoratorPlacementDataAccess().getXOffsetAssignment_5_1(), "rule__KDecoratorPlacementData__XOffsetAssignment_5_1");
 					put(grammarAccess.getKDecoratorPlacementDataAccess().getYOffsetAssignment_6_1(), "rule__KDecoratorPlacementData__YOffsetAssignment_6_1");
+					put(grammarAccess.getKDecoratorPlacementDataAccess().getWidthAssignment_7_1(), "rule__KDecoratorPlacementData__WidthAssignment_7_1");
+					put(grammarAccess.getKDecoratorPlacementDataAccess().getHeightAssignment_8_1(), "rule__KDecoratorPlacementData__HeightAssignment_8_1");
 					put(grammarAccess.getKGridPlacementDataAccess().getWidthHintAssignment_3(), "rule__KGridPlacementData__WidthHintAssignment_3");
 					put(grammarAccess.getKGridPlacementDataAccess().getHeightHintAssignment_5(), "rule__KGridPlacementData__HeightHintAssignment_5");
 					put(grammarAccess.getKGridPlacementDataAccess().getHorizontalIndentAssignment_7(), "rule__KGridPlacementData__HorizontalIndentAssignment_7");

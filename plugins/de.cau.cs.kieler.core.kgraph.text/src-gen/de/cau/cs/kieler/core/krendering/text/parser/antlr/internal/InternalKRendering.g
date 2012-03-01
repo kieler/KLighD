@@ -2474,11 +2474,19 @@ ruleKText returns [EObject current=null]
     @init { enterRule(); 
     }
     @after { leaveRule(); }:
-((
-(
-		lv_clip_0_0=	'clip' 
+(	otherlv_0='KText' 
     {
-        newLeafNode(lv_clip_0_0, grammarAccess.getKTextAccess().getClipClipKeyword_0_0());
+    	newLeafNode(otherlv_0, grammarAccess.getKTextAccess().getKTextKeyword_0());
+    }
+	otherlv_1='{' 
+    {
+    	newLeafNode(otherlv_1, grammarAccess.getKTextAccess().getLeftCurlyBracketKeyword_1());
+    }
+(
+(
+		lv_clip_2_0=	'clip' 
+    {
+        newLeafNode(lv_clip_2_0, grammarAccess.getKTextAccess().getClipClipKeyword_2_0());
     }
  
 	    {
@@ -2489,15 +2497,7 @@ ruleKText returns [EObject current=null]
 	    }
 
 )
-)	otherlv_1='KText' 
-    {
-    	newLeafNode(otherlv_1, grammarAccess.getKTextAccess().getKTextKeyword_1());
-    }
-	otherlv_2='{' 
-    {
-    	newLeafNode(otherlv_2, grammarAccess.getKTextAccess().getLeftCurlyBracketKeyword_2());
-    }
-(	otherlv_3='text' 
+)(	otherlv_3='text' 
     {
     	newLeafNode(otherlv_3, grammarAccess.getKTextAccess().getTextKeyword_3_0());
     }
@@ -3242,11 +3242,19 @@ ruleKDecoratorPlacementData returns [EObject current=null]
     @init { enterRule(); 
     }
     @after { leaveRule(); }:
-((
-(
-		lv_relative_0_0=	'relative' 
+(	otherlv_0='KDecoratorPlacementData' 
     {
-        newLeafNode(lv_relative_0_0, grammarAccess.getKDecoratorPlacementDataAccess().getRelativeRelativeKeyword_0_0());
+    	newLeafNode(otherlv_0, grammarAccess.getKDecoratorPlacementDataAccess().getKDecoratorPlacementDataKeyword_0());
+    }
+	otherlv_1='{' 
+    {
+    	newLeafNode(otherlv_1, grammarAccess.getKDecoratorPlacementDataAccess().getLeftCurlyBracketKeyword_1());
+    }
+(
+(
+		lv_relative_2_0=	'relative' 
+    {
+        newLeafNode(lv_relative_2_0, grammarAccess.getKDecoratorPlacementDataAccess().getRelativeRelativeKeyword_2_0());
     }
  
 	    {
@@ -3257,15 +3265,7 @@ ruleKDecoratorPlacementData returns [EObject current=null]
 	    }
 
 )
-)	otherlv_1='KDecoratorPlacementData' 
-    {
-    	newLeafNode(otherlv_1, grammarAccess.getKDecoratorPlacementDataAccess().getKDecoratorPlacementDataKeyword_1());
-    }
-	otherlv_2='{' 
-    {
-    	newLeafNode(otherlv_2, grammarAccess.getKDecoratorPlacementDataAccess().getLeftCurlyBracketKeyword_2());
-    }
-	otherlv_3='location' 
+)	otherlv_3='location' 
     {
     	newLeafNode(otherlv_3, grammarAccess.getKDecoratorPlacementDataAccess().getLocationKeyword_3());
     }
@@ -3331,9 +3331,53 @@ ruleKDecoratorPlacementData returns [EObject current=null]
 	    }
 
 )
-))?	otherlv_9='}' 
+))?(	otherlv_9='width' 
     {
-    	newLeafNode(otherlv_9, grammarAccess.getKDecoratorPlacementDataAccess().getRightCurlyBracketKeyword_7());
+    	newLeafNode(otherlv_9, grammarAccess.getKDecoratorPlacementDataAccess().getWidthKeyword_7_0());
+    }
+(
+(
+		{ 
+	        newCompositeNode(grammarAccess.getKDecoratorPlacementDataAccess().getWidthEFloatParserRuleCall_7_1_0()); 
+	    }
+		lv_width_10_0=ruleEFloat		{
+	        if ($current==null) {
+	            $current = createModelElementForParent(grammarAccess.getKDecoratorPlacementDataRule());
+	        }
+       		set(
+       			$current, 
+       			"width",
+        		lv_width_10_0, 
+        		"EFloat");
+	        afterParserOrEnumRuleCall();
+	    }
+
+)
+))?(	otherlv_11='height' 
+    {
+    	newLeafNode(otherlv_11, grammarAccess.getKDecoratorPlacementDataAccess().getHeightKeyword_8_0());
+    }
+(
+(
+		{ 
+	        newCompositeNode(grammarAccess.getKDecoratorPlacementDataAccess().getHeightEFloatParserRuleCall_8_1_0()); 
+	    }
+		lv_height_12_0=ruleEFloat		{
+	        if ($current==null) {
+	            $current = createModelElementForParent(grammarAccess.getKDecoratorPlacementDataRule());
+	        }
+       		set(
+       			$current, 
+       			"height",
+        		lv_height_12_0, 
+        		"EFloat");
+	        afterParserOrEnumRuleCall();
+	    }
+
+)
+))?	otherlv_13='}' 
+    {
+    	newLeafNode(otherlv_13, grammarAccess.getKDecoratorPlacementDataAccess().getRightCurlyBracketKeyword_9());
     }
 )
 ;
