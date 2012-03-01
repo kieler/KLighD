@@ -1155,7 +1155,7 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	////	'{'
 	////		'points' '{' points+=KPosition ( "," points+=KPosition)* '}' 
 	////    '}';
-	//	"points" ":" points+=KPosition ("," points+=KPosition)*;
+	//	"points" ":" points+=KPosition ("," points+=KPosition)* "detailedPlacementData" detailPlacementData=KPlacementData?;
 	public KRenderingGrammarAccess.KPolylinePlacementDataElements getKPolylinePlacementDataAccess() {
 		return gaKRendering.getKPolylinePlacementDataAccess();
 	}

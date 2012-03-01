@@ -2880,19 +2880,22 @@ public class KRenderingGrammarAccess extends AbstractGrammarElementFinder {
 		private final Keyword cCommaKeyword_3_0 = (Keyword)cGroup_3.eContents().get(0);
 		private final Assignment cPointsAssignment_3_1 = (Assignment)cGroup_3.eContents().get(1);
 		private final RuleCall cPointsKPositionParserRuleCall_3_1_0 = (RuleCall)cPointsAssignment_3_1.eContents().get(0);
+		private final Keyword cDetailedPlacementDataKeyword_4 = (Keyword)cGroup.eContents().get(4);
+		private final Assignment cDetailPlacementDataAssignment_5 = (Assignment)cGroup.eContents().get(5);
+		private final RuleCall cDetailPlacementDataKPlacementDataParserRuleCall_5_0 = (RuleCall)cDetailPlacementDataAssignment_5.eContents().get(0);
 		
 		//KPolylinePlacementData: //	'KPolylinePlacementData'
 		////	'{'
 		////		'points' '{' points+=KPosition ( "," points+=KPosition)* '}' 
 		////    '}';
-		//	"points" ":" points+=KPosition ("," points+=KPosition)*;
+		//	"points" ":" points+=KPosition ("," points+=KPosition)* "detailedPlacementData" detailPlacementData=KPlacementData?;
 		public ParserRule getRule() { return rule; }
 
 		////	'KPolylinePlacementData'
 		////	'{'
 		////		'points' '{' points+=KPosition ( "," points+=KPosition)* '}' 
 		////    '}';
-		//"points" ":" points+=KPosition ("," points+=KPosition)*
+		//"points" ":" points+=KPosition ("," points+=KPosition)* "detailedPlacementData" detailPlacementData=KPlacementData?
 		public Group getGroup() { return cGroup; }
 
 		////	'KPolylinePlacementData'
@@ -2922,6 +2925,15 @@ public class KRenderingGrammarAccess extends AbstractGrammarElementFinder {
 
 		//KPosition
 		public RuleCall getPointsKPositionParserRuleCall_3_1_0() { return cPointsKPositionParserRuleCall_3_1_0; }
+
+		//"detailedPlacementData"
+		public Keyword getDetailedPlacementDataKeyword_4() { return cDetailedPlacementDataKeyword_4; }
+
+		//detailPlacementData=KPlacementData?
+		public Assignment getDetailPlacementDataAssignment_5() { return cDetailPlacementDataAssignment_5; }
+
+		//KPlacementData
+		public RuleCall getDetailPlacementDataKPlacementDataParserRuleCall_5_0() { return cDetailPlacementDataKPlacementDataParserRuleCall_5_0; }
 	}
 
 	public class EFloatElements extends AbstractParserRuleElementFinder {
@@ -4373,7 +4385,7 @@ public class KRenderingGrammarAccess extends AbstractGrammarElementFinder {
 	////	'{'
 	////		'points' '{' points+=KPosition ( "," points+=KPosition)* '}' 
 	////    '}';
-	//	"points" ":" points+=KPosition ("," points+=KPosition)*;
+	//	"points" ":" points+=KPosition ("," points+=KPosition)* "detailedPlacementData" detailPlacementData=KPlacementData?;
 	public KPolylinePlacementDataElements getKPolylinePlacementDataAccess() {
 		return (pKPolylinePlacementData != null) ? pKPolylinePlacementData : (pKPolylinePlacementData = new KPolylinePlacementDataElements());
 	}

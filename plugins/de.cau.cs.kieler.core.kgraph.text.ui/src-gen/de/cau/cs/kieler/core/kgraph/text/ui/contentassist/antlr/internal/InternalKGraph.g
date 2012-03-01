@@ -18258,6 +18258,7 @@ rule__KPolylinePlacementData__Group__3
     }
 :
 	rule__KPolylinePlacementData__Group__3__Impl
+	rule__KPolylinePlacementData__Group__4
 ;
 finally {
 	restoreStackSize(stackSize);
@@ -18278,6 +18279,69 @@ rule__KPolylinePlacementData__Group__3__Impl
 finally {
 	restoreStackSize(stackSize);
 }
+
+
+rule__KPolylinePlacementData__Group__4
+    @init {
+		int stackSize = keepStackSize();
+    }
+:
+	rule__KPolylinePlacementData__Group__4__Impl
+	rule__KPolylinePlacementData__Group__5
+;
+finally {
+	restoreStackSize(stackSize);
+}
+
+rule__KPolylinePlacementData__Group__4__Impl
+    @init {
+		int stackSize = keepStackSize();
+    }
+:
+(
+{ before(grammarAccess.getKPolylinePlacementDataAccess().getDetailedPlacementDataKeyword_4()); }
+
+	'detailedPlacementData' 
+
+{ after(grammarAccess.getKPolylinePlacementDataAccess().getDetailedPlacementDataKeyword_4()); }
+)
+
+;
+finally {
+	restoreStackSize(stackSize);
+}
+
+
+rule__KPolylinePlacementData__Group__5
+    @init {
+		int stackSize = keepStackSize();
+    }
+:
+	rule__KPolylinePlacementData__Group__5__Impl
+;
+finally {
+	restoreStackSize(stackSize);
+}
+
+rule__KPolylinePlacementData__Group__5__Impl
+    @init {
+		int stackSize = keepStackSize();
+    }
+:
+(
+{ before(grammarAccess.getKPolylinePlacementDataAccess().getDetailPlacementDataAssignment_5()); }
+(rule__KPolylinePlacementData__DetailPlacementDataAssignment_5)?
+{ after(grammarAccess.getKPolylinePlacementDataAccess().getDetailPlacementDataAssignment_5()); }
+)
+
+;
+finally {
+	restoreStackSize(stackSize);
+}
+
+
+
+
 
 
 
@@ -26371,6 +26435,21 @@ rule__KPolylinePlacementData__PointsAssignment_3_1
 (
 { before(grammarAccess.getKPolylinePlacementDataAccess().getPointsKPositionParserRuleCall_3_1_0()); }
 	ruleKPosition{ after(grammarAccess.getKPolylinePlacementDataAccess().getPointsKPositionParserRuleCall_3_1_0()); }
+)
+
+;
+finally {
+	restoreStackSize(stackSize);
+}
+
+rule__KPolylinePlacementData__DetailPlacementDataAssignment_5
+    @init {
+		int stackSize = keepStackSize();
+    }
+:
+(
+{ before(grammarAccess.getKPolylinePlacementDataAccess().getDetailPlacementDataKPlacementDataParserRuleCall_5_0()); }
+	ruleKPlacementData{ after(grammarAccess.getKPolylinePlacementDataAccess().getDetailPlacementDataKPlacementDataParserRuleCall_5_0()); }
 )
 
 ;
