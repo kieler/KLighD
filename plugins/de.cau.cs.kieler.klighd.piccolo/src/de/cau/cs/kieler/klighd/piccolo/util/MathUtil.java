@@ -44,12 +44,21 @@ public final class MathUtil {
      */
     public static Pair<Integer, Point2D> getSegmentStartIndexAndPoint(final Point2D[] points,
             final float location) {
+        // handle special cases
+        if (points.length == 0) {
+            return new Pair<Integer, Point2D>(-1, new Point2D.Double(0, 0));
+        } else if (points.length == 1) {
+            return new Pair<Integer, Point2D>(0, (Point2D) points[0].clone());
+        }
+        
         Point2D point = new Point2D.Double();
+        
         // compute total polyline distance
         double totalDistance = 0;
         for (int i = 0; i < points.length - 1; ++i) {
             totalDistance += distance(points[i], points[i + 1]);
         }
+        
         // find the segment and point for the location
         int k = -1;
         double searchDistance = location * totalDistance;
@@ -59,6 +68,7 @@ public final class MathUtil {
             if (d <= 0) {
                 continue;
             }
+            
             if (currentDistance + d >= searchDistance) {
                 // memorize the start index of the segment
                 k = i;

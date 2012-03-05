@@ -41,8 +41,9 @@ public interface IUpdateStrategy<T> {
      *            the new model
      * @param viewContext
      *            the view context
+     * @return a new base model or null if the update strategy updated the current base model
      */
-    void update(T baseModel, T newModel, ViewContext viewContext);
+    T update(T baseModel, T newModel, ViewContext viewContext);
 
     /**
      * Returns the class of the models supported by this update strategy.

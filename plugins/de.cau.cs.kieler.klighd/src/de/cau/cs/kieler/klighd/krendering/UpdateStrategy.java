@@ -35,8 +35,9 @@ public class UpdateStrategy implements IUpdateStrategy<KNode> {
     /**
      * {@inheritDoc}
      */
-    public void update(final KNode baseModel, final KNode newModel, final ViewContext viewContext) {
+    public KNode update(final KNode baseModel, final KNode newModel, final ViewContext viewContext) {
         // TODO Auto-generated method stub
+        return null;
     }
 
     /**

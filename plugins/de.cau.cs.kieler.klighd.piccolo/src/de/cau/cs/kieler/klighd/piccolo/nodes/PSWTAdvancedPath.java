@@ -71,6 +71,7 @@ public class PSWTAdvancedPath extends PNode {
     private static final Rectangle2D.Float TEMP_RECTANGLE = new Rectangle2D.Float();
     private static final RoundRectangle2D.Float TEMP_ROUNDRECTANGLE = new RoundRectangle2D.Float();
     private static final Ellipse2D.Float TEMP_ELLIPSE = new Ellipse2D.Float();
+    private static final Arc2D.Float TEMP_ARC = new Arc2D.Float();
     private static final double BOUNDS_TOLERANCE = 0.01;
     private Paint strokePaint = DEFAULT_STROKE_PAINT;
     private static final BasicStroke BASIC_STROKE = new BasicStroke();
@@ -154,6 +155,32 @@ public class PSWTAdvancedPath extends PNode {
             final float height) {
         final PSWTAdvancedPath result = new PSWTAdvancedPath();
         result.setPathToEllipse(x, y, width, height);
+        result.setPaint(Color.white);
+        return result;
+    }
+    
+    /**
+     * Creates a path representing an arc positioned at the coordinate provided with the dimensions,
+     * angular start and angular extent provided.
+     * 
+     * @param x
+     *            left of the arc
+     * @param y
+     *            top of the arc
+     * @param width
+     *            width of the arc
+     * @param height
+     *            height of the arc
+     * @param angStart
+     *            angular start of the arc
+     * @param angExtend
+     *            angular extent of the arc
+     * @return created arc
+     */
+    public static PSWTAdvancedPath createArc(final float x, final float y, final float width,
+            final float height, final float angStart, final float angExtend) {
+        final PSWTAdvancedPath result = new PSWTAdvancedPath();
+        result.setPathToArc(x, y, width, height, angStart, angExtend);
         result.setPaint(Color.white);
         return result;
     }
@@ -376,6 +403,7 @@ public class PSWTAdvancedPath extends PNode {
     }
 
     // CHECKSTYLEOFF MagicNumber
+    
     private void drawShape(final SWTGraphics2D g2) {
         final double lw = g2.getLineWidth();
         if (shape instanceof Rectangle2D) {
@@ -592,6 +620,29 @@ public class PSWTAdvancedPath extends PNode {
     public void setPathToEllipse(final float x, final float y, final float width, final float height) {
         TEMP_ELLIPSE.setFrame(x, y, width, height);
         setShape(TEMP_ELLIPSE);
+    }
+
+    /**
+     * Resets the path to an arc positioned at the coordinate provided with the dimensions, angular
+     * start and angular extent provided.
+     * 
+     * @param x
+     *            left of the arc
+     * @param y
+     *            top of the arc
+     * @param width
+     *            width of the arc
+     * @param height
+     *            height of the arc
+     * @param angStart
+     *            angular start of the arc
+     * @param angExtend
+     *            angular extent of the arc
+     */
+    public void setPathToArc(final float x, final float y, final float width, final float height,
+            final float angStart, final float angExtend) {
+        TEMP_ARC.setArc(x, y, width, height, angStart, angExtend, Arc2D.OPEN);
+        setShape(TEMP_ARC);
     }
 
     /**

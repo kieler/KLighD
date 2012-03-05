@@ -465,14 +465,14 @@ public class GraphController {
      *            the node representation
      */
     private void updateRendering(final KNodeNode nodeRep) {
-        RenderingController renderingController = (RenderingController) nodeRep
+        KNodeRenderingController renderingController = (KNodeRenderingController) nodeRep
                 .getAttribute(RENDERING_KEY);
         if (renderingController == null) {
-            renderingController = new RenderingController(nodeRep);
+            renderingController = new KNodeRenderingController(nodeRep);
             nodeRep.addAttribute(RENDERING_KEY, renderingController);
             renderingController.initialize(sync);
         } else {
-            renderingController.updateRendering();
+            renderingController.internalUpdateRendering();
         }
     }
 
@@ -483,14 +483,14 @@ public class GraphController {
      *            the port representation
      */
     private void updateRendering(final KPortNode portRep) {
-        RenderingController renderingController = (RenderingController) portRep
+        KPortRenderingController renderingController = (KPortRenderingController) portRep
                 .getAttribute(RENDERING_KEY);
         if (renderingController == null) {
-            renderingController = new RenderingController(portRep);
+            renderingController = new KPortRenderingController(portRep);
             portRep.addAttribute(RENDERING_KEY, renderingController);
             renderingController.initialize(sync);
         } else {
-            renderingController.updateRendering();
+            renderingController.internalUpdateRendering();
         }
     }
 
@@ -501,14 +501,14 @@ public class GraphController {
      *            the label representation
      */
     private void updateRendering(final KLabelNode labelRep) {
-        RenderingController renderingController = (RenderingController) labelRep
+        KLabelRenderingController renderingController = (KLabelRenderingController) labelRep
                 .getAttribute(RENDERING_KEY);
         if (renderingController == null) {
-            renderingController = new RenderingController(labelRep);
+            renderingController = new KLabelRenderingController(labelRep);
             labelRep.addAttribute(RENDERING_KEY, renderingController);
             renderingController.initialize(sync);
         } else {
-            renderingController.updateRendering();
+            renderingController.internalUpdateRendering();
         }
     }
 
@@ -519,14 +519,14 @@ public class GraphController {
      *            the edge representation
      */
     private void updateRendering(final KEdgeNode edgeRep) {
-        RenderingController renderingController = (RenderingController) edgeRep
+        KEdgeRenderingController renderingController = (KEdgeRenderingController) edgeRep
                 .getAttribute(RENDERING_KEY);
         if (renderingController == null) {
-            renderingController = new RenderingController(edgeRep);
+            renderingController = new KEdgeRenderingController(edgeRep);
             edgeRep.addAttribute(RENDERING_KEY, renderingController);
             renderingController.initialize(sync);
         } else {
-            renderingController.updateRendering();
+            renderingController.internalUpdateRendering();
         }
     }
 

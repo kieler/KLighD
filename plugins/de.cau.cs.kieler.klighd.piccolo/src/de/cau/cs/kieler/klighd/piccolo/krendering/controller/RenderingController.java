@@ -21,17 +21,19 @@ import java.awt.geom.Point2D;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.impl.AdapterImpl;
 import org.eclipse.emf.ecore.EStructuralFeature;
 
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 
 import de.cau.cs.kieler.core.kgraph.KGraphElement;
 import de.cau.cs.kieler.core.kgraph.KGraphPackage;
+import de.cau.cs.kieler.core.krendering.KArc;
 import de.cau.cs.kieler.core.krendering.KBackgroundColor;
 import de.cau.cs.kieler.core.krendering.KBackgroundVisibility;
 import de.cau.cs.kieler.core.krendering.KChildArea;
@@ -59,7 +61,6 @@ import de.cau.cs.kieler.core.krendering.KPolylinePlacementData;
 import de.cau.cs.kieler.core.krendering.KPosition;
 import de.cau.cs.kieler.core.krendering.KRectangle;
 import de.cau.cs.kieler.core.krendering.KRendering;
-import de.cau.cs.kieler.core.krendering.KRenderingFactory;
 import de.cau.cs.kieler.core.krendering.KRenderingPackage;
 import de.cau.cs.kieler.core.krendering.KRenderingRef;
 import de.cau.cs.kieler.core.krendering.KRoundedRectangle;
@@ -74,14 +75,10 @@ import de.cau.cs.kieler.core.krendering.KYPosition;
 import de.cau.cs.kieler.core.krendering.util.KRenderingSwitch;
 import de.cau.cs.kieler.core.model.notify.CrossDocumentContentAdapter;
 import de.cau.cs.kieler.core.properties.IProperty;
+import de.cau.cs.kieler.core.properties.IPropertyHolder;
 import de.cau.cs.kieler.core.properties.Property;
 import de.cau.cs.kieler.core.ui.util.MonitoredOperation;
 import de.cau.cs.kieler.core.util.Pair;
-import de.cau.cs.kieler.klighd.piccolo.krendering.KChildAreaNode;
-import de.cau.cs.kieler.klighd.piccolo.krendering.KEdgeNode;
-import de.cau.cs.kieler.klighd.piccolo.krendering.KLabelNode;
-import de.cau.cs.kieler.klighd.piccolo.krendering.KNodeNode;
-import de.cau.cs.kieler.klighd.piccolo.krendering.KPortNode;
 import de.cau.cs.kieler.klighd.piccolo.nodes.PAlignmentNode;
 import de.cau.cs.kieler.klighd.piccolo.nodes.PAlignmentNode.HAlignment;
 import de.cau.cs.kieler.klighd.piccolo.nodes.PAlignmentNode.VAlignment;
@@ -100,78 +97,79 @@ import edu.umd.cs.piccolox.swt.PSWTText;
  * synchronization of these Piccolo nodes with the KRendering model.
  * 
  * @author mri
+ * 
+ * @param <S>
+ *            the type of the underlying graph element
+ * @param <T>
+ *            the type of the Piccolo node representing the graph element
  */
-public class RenderingController {
+public abstract class RenderingController<S extends KGraphElement, T extends PNode> {
 
-    /** the property for caching propagated styles in renderings. */
-    private static final IProperty<List<KStyle>> PROPAGATED_STYLES = new Property<List<KStyle>>(
-            "de.cau.cs.kieler.klighd.piccolo.propagatedStyles", new LinkedList<KStyle>());
     /** the property for a rendering node's controller. */
-    private static final IProperty<PNodeController<?>> CONTROLLER =
-            new Property<PNodeController<?>>("de.cau.cs.kieler.klighd.piccolo.controller");
+    private static final IProperty<Map<Object, PNodeController<?>>> CONTROLLER =
+            new Property<Map<Object, PNodeController<?>>>(
+                    "de.cau.cs.kieler.klighd.piccolo.controller");
+    /** the property for a rendering reference key. */
+    private static final IProperty<Map<Object, Object>> KEY = new Property<Map<Object, Object>>(
+            "de.cau.cs.kieler.klighd.piccolo.key");
 
     /** the graph element which rendering is controlled by this controller. */
-    private KGraphElement element;
+    private S element;
     /** the rendering currently in use by this controller. */
     private KRendering currentRendering;
 
     /** the Piccolo node representing the node. */
-    private PNode repNode;
+    private T repNode;
     /** the Piccolo node representing the rendering. */
     private PNode renderingNode = null;
-    /** the Piccolo node representing the child area. */
-    private KChildAreaNode childAreaNode = null;
 
     /** the adapter currently installed on the rendering. */
     private CrossDocumentContentAdapter renderingAdapter = null;
+
+    /** the map of properties used by this controller mapped on all mappings under that property. */
+    private Map<Object, List<Pair<IPropertyHolder, Object>>> mappedProperties = Maps.newHashMap();
 
     /** whether to synchronize the rendering with the model. */
     private boolean syncRendering = false;
 
     /**
-     * Constructs a rendering controller for a node.
+     * Constructs a rendering controller.
      * 
-     * @param node
-     *            the Piccolo node representing a node
+     * @param element
+     *            the graph element for this controller
+     * @param repNode
+     *            the Piccolo node representing the graph element
      */
-    public RenderingController(final KNodeNode node) {
-        this.element = node.getWrapped();
-        this.repNode = node;
-        this.childAreaNode = new KChildAreaNode(node);
-        initializeRenderingNode(childAreaNode);
+    public RenderingController(final S element, final T repNode) {
+        this.element = element;
+        this.repNode = repNode;
+    }
+    
+    /**
+     * Returns the underlying graph element.
+     * 
+     * @return the graph element
+     */
+    public S getGraphElement() {
+        return element;
     }
 
     /**
-     * Constructs a rendering controller for a port.
+     * Returns the Piccolo node representing the underlying graph element.
      * 
-     * @param port
-     *            the Piccolo node representing a port
+     * @return the Piccolo node
      */
-    public RenderingController(final KPortNode port) {
-        this.element = port.getWrapped();
-        this.repNode = port;
+    public T getRepresentation() {
+        return repNode;
     }
 
     /**
-     * Constructs a rendering controller for a label.
+     * Returns the rendering currently managed by this controller.
      * 
-     * @param label
-     *            the Piccolo node representing a label
+     * @return the rendering
      */
-    public RenderingController(final KLabelNode label) {
-        this.element = label.getWrapped();
-        this.repNode = label;
-    }
-
-    /**
-     * Constructs a rendering controller for an edge.
-     * 
-     * @param edge
-     *            the Piccolo node representing an edge
-     */
-    public RenderingController(final KEdgeNode edge) {
-        this.element = edge.getWrapped();
-        this.repNode = edge;
+    public KRendering getCurrentRendering() {
+        return currentRendering;
     }
 
     /**
@@ -196,10 +194,12 @@ public class RenderingController {
      * Updates the rendering by removing the current rendering and evaluating the rendering data
      * attached to the graph element.
      */
-    public void updateRendering() {
+    private void updateRendering() {
         // remove the rendering adapter
         if (currentRendering != null) {
             unregisterRenderingAdapter();
+            removeMappedProperties(CONTROLLER);
+            removeMappedProperties(KEY);
         }
 
         // remove the rendering node
@@ -208,71 +208,34 @@ public class RenderingController {
             renderingNode.removeFromParent();
             renderingNode = null;
         }
-
-        // detach child area
-        if (childAreaNode != null) {
-            childAreaNode.removeFromParent();
-        }
-
-        // evaluate the rendering data
+        
+        // get the current rendering
         currentRendering = element.getData(KRendering.class);
-        if (currentRendering != null) {
-            if (repNode instanceof KNodeNode || repNode instanceof KPortNode) {
-                // controller manages a node or a port
-                renderingNode =
-                        handleDirectPlacementRendering(currentRendering, new ArrayList<KStyle>(0),
-                                repNode);
-            } else if (repNode instanceof KLabelNode) {
-                // controller manages a label
-                renderingNode = handleLabelRendering(currentRendering, (KLabelNode) repNode);
-            } else if (repNode instanceof KEdgeNode) {
-                // controller manages an edge
-                renderingNode = handleEdgeRendering(currentRendering, (KEdgeNode) repNode);
-            }
-
-            if (syncRendering) {
-                // register an adapter on the element to stay in sync
-                registerRenderingAdapter();
-            }
-        } else {
-            if (repNode instanceof KNodeNode || repNode instanceof KPortNode) {
-                // controller manages a node or a port
-                renderingNode =
-                        handleDirectPlacementRendering(createDefaultNodeRendering(),
-                                new ArrayList<KStyle>(0), repNode);
-            } else if (repNode instanceof KLabelNode) {
-                // controller manages a label
-                renderingNode =
-                        handleLabelRendering(createDefaultLabelRendering(), (KLabelNode) repNode);
-            } else if (repNode instanceof KEdgeNode) {
-                // controller manages an edge
-                renderingNode =
-                        handleEdgeRendering(createDefaultEdgeRendering(), (KEdgeNode) repNode);
-            }
-        }
-
-        // make sure the child area is attached to something in case of a node
-        if (repNode instanceof KNodeNode && childAreaNode.getParent() == null) {
-            createDefaultChildArea(renderingNode);
+        
+        // update the rendering
+        renderingNode = internalUpdateRendering();
+        
+        // install rendering adapter if sync is enabled
+        if (syncRendering && currentRendering != null) {
+            // register an adapter on the element to stay in sync
+            registerRenderingAdapter();
         }
     }
 
     /**
-     * Returns the Piccolo node representing the child area.
+     * Performs the actual update of the rendering.
      * 
-     * @return the Piccolo node representing the child area
+     * @return the Piccolo node representing the current rendering
      */
-    public KChildAreaNode getChildAreaNode() {
-        return childAreaNode;
-    }
-    
+    protected abstract PNode internalUpdateRendering();
+
     /**
      * Registers an adapter on the current rendering to react on changes.
      */
     private void registerRenderingAdapter() {
         // register adapter on the rendering to stay in sync
         renderingAdapter = new CrossDocumentContentAdapter() {
-            
+
             protected boolean shouldAdapt(final EStructuralFeature feature) {
                 // follow the rendering feature of the KRenderingRef
                 return feature.getFeatureID() == KRenderingPackage.KRENDERING_REF__RENDERING;
@@ -294,12 +257,10 @@ public class RenderingController {
                         if (msg.getFeatureID(KStyle.class) == KRenderingPackage.KSTYLE__RENDERING) {
                             return;
                         }
-                        KStyle style = (KStyle) msg.getNotifier();
-                        final KRendering rendering = style.getRendering();
                         MonitoredOperation.runInUI(new Runnable() {
                             public void run() {
                                 // update the styles
-                                updateStyles(rendering);
+                                updateStyles();
                             }
                         }, false);
                         return;
@@ -309,11 +270,10 @@ public class RenderingController {
                     if (msg.getNotifier() instanceof KRendering
                             && msg.getFeatureID(KRendering.class)
                             == KRenderingPackage.KRENDERING__STYLES) {
-                        final KRendering rendering = (KRendering) msg.getNotifier();
                         MonitoredOperation.runInUI(new Runnable() {
                             public void run() {
                                 // update the styles
-                                updateStyles(rendering);
+                                updateStyles();
                             }
                         }, false);
                         return;
@@ -362,7 +322,7 @@ public class RenderingController {
                             MonitoredOperation.runInUI(new Runnable() {
                                 public void run() {
                                     // update the rendering
-                                    updateRendering();
+                                    internalUpdateRendering();
                                 }
                             }, false);
                         }
@@ -374,45 +334,48 @@ public class RenderingController {
     }
 
     /**
-     * Updates the styles of the rendering.
-     * 
-     * @param rendering
-     *            the rendering
+     * Updates the styles of the current rendering.
      */
-    private void updateStyles(final KRendering rendering) {
-        List<KStyle> propagatedStyles = rendering.getProperty(PROPAGATED_STYLES);
-
+    private void updateStyles() {
         // update using the recursive method
-        updateStyles(rendering, propagatedStyles);
+        updateStyles(currentRendering, null, new ArrayList<KStyle>(0), repNode);
     }
 
-    private void updateStyles(final KRendering rendering, final List<KStyle> propagatedStyles) {
-        PNodeController<?> controller = rendering.getProperty(CONTROLLER);
+    private void updateStyles(final KRendering rendering, final Styles styles,
+            final List<KStyle> propagatedStyles, final Object key) {
+        PNodeController<?> controller = getMappedProperty(rendering, CONTROLLER, key);
         List<KStyle> renderingStyles = rendering.getStyles();
 
-        // set new propagated styles
-        rendering.setProperty(PROPAGATED_STYLES, propagatedStyles);
-
-        // determine the new styles for this rendering
-        final Styles styles =
-                deriveStyles(determineRenderingStyles(renderingStyles, propagatedStyles));
+        // determine the styles for this rendering
+        final Styles newStyles =
+                deriveStyles(styles, determineRenderingStyles(renderingStyles, propagatedStyles));
 
         // apply the styles to the rendering
-        applyStyles(controller, styles);
+        applyStyles(controller, newStyles);
 
-        // update children with new propagated styles
         if (rendering instanceof KContainerRendering) {
+            // update children
             KContainerRendering container = (KContainerRendering) rendering;
             if (container.getChildren().size() > 0) {
-                // determine the new styles for propagation to child nodes
+                // determine the styles for propagation to child nodes
                 final List<KStyle> childPropagatedStyles =
                         determinePropagationStyles(renderingStyles, propagatedStyles);
 
-                // propagate to all children if any propagation styles are available
+                // propagate to all children
                 for (KRendering child : container.getChildren()) {
-                    updateStyles(child, childPropagatedStyles);
+                    updateStyles(child, null, childPropagatedStyles, key);
                 }
             }
+        } else if (rendering instanceof KRenderingRef) {
+            // update referenced rendering
+            KRenderingRef renderingRef = (KRenderingRef) rendering;
+            Object refKey = getMappedProperty(rendering, KEY, key);
+
+            // get the referenced rendering
+            KRendering referencedRendering = renderingRef.getRendering();
+
+            // proceed recursively with the referenced rendering
+            updateStyles(referencedRendering, newStyles, propagatedStyles, refKey);
         }
     }
 
@@ -428,13 +391,15 @@ public class RenderingController {
      *            the styles propagated to the children
      * @param parent
      *            the parent Piccolo node
+     * @param key
+     *            the key used to identify the current reference hierarchy
      */
-    private void handleChildren(final List<KRendering> children, final KPlacement placement,
-            final List<KStyle> styles, final PNode parent) {
+    protected void handleChildren(final List<KRendering> children, final KPlacement placement,
+            final List<KStyle> styles, final PNode parent, final Object key) {
         if (placement == null) {
             // Direct Placement
             for (final KRendering rendering : children) {
-                handleDirectPlacementRendering(rendering, styles, parent);
+                handleDirectPlacementRendering(rendering, styles, parent, key);
             }
         } else {
             new KRenderingSwitch<Boolean>() {
@@ -447,7 +412,7 @@ public class RenderingController {
                 // Stack Placement
                 public Boolean caseKStackPlacement(final KStackPlacement object) {
                     for (final KRendering rendering : children) {
-                        handleStackPlacementRendering(rendering, styles, parent);
+                        handleStackPlacementRendering(rendering, styles, parent, key);
                     }
                     return true;
                 }
@@ -464,17 +429,20 @@ public class RenderingController {
      *            the styles propagated to the children
      * @param parent
      *            the parent Piccolo node
+     * @param key
+     *            the key used to identify the current reference hierarchy
      * @return the Piccolo node representing the rendering
      */
-    private PNode handleDirectPlacementRendering(final KRendering rendering,
-            final List<KStyle> styles, final PNode parent) {
+    protected PNode handleDirectPlacementRendering(final KRendering rendering,
+            final List<KStyle> styles, final PNode parent, final Object key) {
         // determine the initial bounds
         final PBounds bounds =
                 evaluateDirectPlacement(asDirectPlacementData(rendering.getPlacementData()),
                         parent.getBoundsReference());
 
         // create the rendering and receive its controller
-        final PNodeController<?> controller = createRendering(rendering, styles, parent, bounds);
+        final PNodeController<?> controller =
+                createRendering(rendering, styles, parent, bounds, key);
 
         // add a listener on the parent's bounds
         addListener(PNode.PROPERTY_BOUNDS, parent, controller.getNode(),
@@ -502,17 +470,20 @@ public class RenderingController {
      *            the styles propagated to the children
      * @param parent
      *            the parent Piccolo node
+     * @param key
+     *            the key used to identify the current reference hierarchy
      * @return the Piccolo node representing the rendering
      */
-    private PNode handleStackPlacementRendering(final KRendering rendering,
-            final List<KStyle> styles, final PNode parent) {
+    protected PNode handleStackPlacementRendering(final KRendering rendering,
+            final List<KStyle> styles, final PNode parent, final Object key) {
         // determine the initial bounds
         final PBounds bounds =
                 evaluateStackPlacement(asStackPlacementData(rendering.getPlacementData()),
                         parent.getBoundsReference());
 
         // create the rendering and receive its controller
-        final PNodeController<?> controller = createRendering(rendering, styles, parent, bounds);
+        final PNodeController<?> controller =
+                createRendering(rendering, styles, parent, bounds, key);
 
         // add a listener on the parent's bounds
         addListener(PNode.PROPERTY_BOUNDS, parent, controller.getNode(),
@@ -532,25 +503,6 @@ public class RenderingController {
     }
 
     /**
-     * Creates the Piccolo nodes for a list of renderings inside a parent Piccolo node representing
-     * a polyline for the given placement.
-     * 
-     * @param children
-     *            the list of children
-     * @param styles
-     *            the styles propagated to the children
-     * @param parent
-     *            the parent Piccolo node representing a polyline
-     */
-    private void handlePolylineChildren(final List<KRendering> children, final List<KStyle> styles,
-            final PSWTAdvancedPath parent) {
-        // Decorator Placement
-        for (final KRendering rendering : children) {
-            handleDecoratorPlacementRendering(rendering, styles, parent);
-        }
-    }
-
-    /**
      * Creates the Piccolo node for a rendering inside a parent Piccolo node representing a polyline
      * using decorator placement.
      * 
@@ -560,10 +512,12 @@ public class RenderingController {
      *            the styles propagated to the children
      * @param parent
      *            the parent Piccolo node representing a polyline
+     * @param key
+     *            the key used to identify the current reference hierarchy
      * @return the Piccolo node representing the rendering
      */
-    private PNode handleDecoratorPlacementRendering(final KRendering rendering,
-            final List<KStyle> styles, final PSWTAdvancedPath parent) {
+    protected PNode handleDecoratorPlacementRendering(final KRendering rendering,
+            final List<KStyle> styles, final PSWTAdvancedPath parent, final Object key) {
         // determine the initial bounds and rotation
         final Decoration decoration =
                 evaluateDecoratorPlacement(asDecoratorPlacementData(rendering.getPlacementData()),
@@ -576,11 +530,10 @@ public class RenderingController {
 
         // create the rendering and receive its controller
         final PNodeController<?> controller =
-                createRendering(rendering, styles, decorator, decoration.bounds);
+                createRendering(rendering, styles, decorator, decoration.bounds, key);
 
         // apply the initial rotation
-        final PNode node = controller.getNode();
-        node.rotate(decoration.rotation);
+        decorator.rotate(decoration.rotation);
 
         // add a listener on the parent's path
         addListener(PPath.PROPERTY_PATH, parent, controller.getNode(),
@@ -601,94 +554,9 @@ public class RenderingController {
                         // use the controller to apply the new bounds
                         controller.setBounds(decoration.bounds);
                         // apply the new rotation
-                        node.rotate(decoration.rotation - rotation);
+                        decorator.rotate(decoration.rotation - rotation);
 
                         rotation = decoration.rotation;
-                    }
-                });
-
-        return controller.getNode();
-    }
-
-    /**
-     * Creates the Piccolo node for a rendering of a {@code KLabel} inside a parent Piccolo node.<br>
-     * <br>
-     * The rendering has to be a {@code KText} or the method fails.
-     * 
-     * @param rendering
-     *            the rendering
-     * @param parent
-     *            the parent Piccolo label node
-     * @return the Piccolo node representing the rendering
-     */
-    private PNode handleLabelRendering(final KRendering rendering, final KLabelNode parent) {
-        // the rendering of a label has to be a text
-        if (!(rendering instanceof KText)) {
-            throw new RuntimeException("Non-text rendering attached to graph label: " + element);
-        }
-
-        // create the rendering
-        @SuppressWarnings("unchecked")
-        final PNodeController<PSWTText> controller =
-                (PNodeController<PSWTText>) createRendering(rendering, new ArrayList<KStyle>(0),
-                        parent, parent.getBoundsReference());
-        controller.getNode().setText(parent.getText());
-
-        // add a listener on the parent's bend points
-        addListener(KLabelNode.PROPERTY_TEXT, parent, controller.getNode(),
-                new PropertyChangeListener() {
-                    public void propertyChange(final PropertyChangeEvent e) {
-                        controller.getNode().setText(parent.getText());
-                    }
-                });
-
-        // add a listener on the parent's bounds
-        addListener(PNode.PROPERTY_BOUNDS, parent, controller.getNode(),
-                new PropertyChangeListener() {
-                    public void propertyChange(final PropertyChangeEvent e) {
-                        // calculate the new bounds of the rendering
-                        PBounds bounds =
-                                evaluateDirectPlacement(
-                                        asDirectPlacementData(rendering.getPlacementData()),
-                                        parent.getBoundsReference());
-                        // use the controller to apply the new bounds
-                        controller.setBounds(bounds);
-                    }
-                });
-
-        return controller.getNode();
-    }
-
-    /**
-     * Creates the Piccolo node for a rendering of a {@code KEdge} inside a parent Piccolo node.<br>
-     * <br>
-     * The rendering has to be a {@code KPolyline} or the method fails.
-     * 
-     * @param rendering
-     *            the rendering
-     * @param parent
-     *            the parent Piccolo edge node
-     * @return the Piccolo node representing the rendering
-     */
-    private PNode handleEdgeRendering(final KRendering rendering, final KEdgeNode parent) {
-        // the rendering of an edge has to be a polyline or spline
-        if (!(rendering instanceof KPolyline) || rendering instanceof KPolygon) {
-            throw new RuntimeException("Non-polyline rendering attached to graph edge: " + element);
-        }
-
-        // create the rendering
-        @SuppressWarnings("unchecked")
-        final PNodeController<PSWTAdvancedPath> controller =
-                (PNodeController<PSWTAdvancedPath>) createRendering(rendering,
-                        new ArrayList<KStyle>(0), parent, parent.getBoundsReference());
-        controller.getNode().setPathToPolyline(parent.getBendPoints());
-        parent.setRepresentationNode(controller.getNode());
-
-        // add a listener on the parent's bend points
-        addListener(KEdgeNode.PROPERTY_BEND_POINTS, parent, controller.getNode(),
-                new PropertyChangeListener() {
-                    public void propertyChange(final PropertyChangeEvent e) {
-                        controller.getNode().setPathToPolyline(parent.getBendPoints());
                     }
                 });
 
@@ -707,126 +575,115 @@ public class RenderingController {
      *            the parent Piccolo node
      * @param initialBounds
      *            the initial bounds
+     * @param key
+     *            the key used to identify the current reference hierarchy
      * @return the controller for the created Piccolo node
      */
-    private PNodeController<?> createRendering(final KRendering rendering,
-            final List<KStyle> propagatedStyles, final PNode parent, final PBounds initialBounds) {
+    protected PNodeController<?> createRendering(final KRendering rendering,
+            final List<KStyle> propagatedStyles, final PNode parent, final PBounds initialBounds,
+            final Object key) {
         List<KStyle> renderingStyles = rendering.getStyles();
 
         // determine the styles for this rendering
         final Styles styles =
-                deriveStyles(determineRenderingStyles(renderingStyles, propagatedStyles));
+                deriveStyles(null, determineRenderingStyles(renderingStyles, propagatedStyles));
 
         // determine the styles for propagation to child nodes
         final List<KStyle> childPropagatedStyles =
                 determinePropagationStyles(renderingStyles, propagatedStyles);
 
-        // create the rendering and return its controller
-        PNodeController<?> controller = new KRenderingSwitch<PNodeController<?>>() {
-            // Ellipse
-            public PNodeController<?> caseKEllipse(final KEllipse ellipse) {
-                return createEllipse(ellipse, styles, childPropagatedStyles, parent, initialBounds);
-            }
-
-            // Rectangle
-            public PNodeController<?> caseKRectangle(final KRectangle rect) {
-                return createRectangle(rect, styles, childPropagatedStyles, parent, initialBounds);
-            }
-
-            // Rounded Rectangle
-            public PNodeController<?> caseKRoundedRectangle(final KRoundedRectangle rect) {
-                return createRoundedRectangle(rect, styles, childPropagatedStyles, parent,
-                        initialBounds);
-            }
-
-            // Polyline
-            public PNodeController<?> caseKPolyline(final KPolyline polyline) {
-                return createPolyline(polyline, styles, childPropagatedStyles, parent,
-                        initialBounds);
-            }
-
-            // public PNodeController<?> caseKArc(final KArc object) {};
-            // public PNodeController<?> caseKPolygon(final KPolygon object) {};
-            // public PNodeController<?> caseKImage(final KImage object) {};
-            // public PNodeController<?> caseKCustomRendering(final KCustomRendering object) {};
-
-            // Text
-            public PNodeController<?> caseKText(final KText text) {
-                return createText(text, styles, childPropagatedStyles, parent, initialBounds);
-            };
-
-            // Child Area
-            public PNodeController<?> caseKChildArea(final KChildArea childArea) {
-                return createChildArea(parent, initialBounds);
-            }
-            
-            // Rendering Reference
-            public PNodeController<?> caseKRenderingRef(final KRenderingRef renderingReference) {
-                return createRenderingReference(renderingReference, styles, childPropagatedStyles,
-                        parent, initialBounds);
-            }
-        } /**/.doSwitch(rendering);
+        // dispatch the rendering
+        PNodeController<?> controller =
+                createRendering(rendering, styles, childPropagatedStyles, parent, initialBounds,
+                        key);
 
         // set the styles for the created rendering node using the controller
         applyStyles(controller, styles);
 
-        // remember the propagated styles in the rendering
-        rendering.setProperty(PROPAGATED_STYLES, propagatedStyles);
         // remember the controller in the rendering
-        rendering.setProperty(CONTROLLER, controller);
+        setMappedProperty(rendering, CONTROLLER, key, controller);
 
         return controller;
     }
 
     /**
-     * Creates a default rendering for nodes without attached rendering data.
+     * Creates the Piccolo node representing the rendering inside the given parent with initial
+     * bounds and given styles.
      * 
-     * @return the rendering
+     * @param rendering
+     *            the rendering
+     * @param styles
+     *            the styles for the rendering
+     * @param childPropagatedStyles
+     *            the style propagated to the renderings children
+     * @param parent
+     *            the parent Piccolo node
+     * @param initialBounds
+     *            the initial bounds
+     * @param key
+     *            the key used to identify the current reference hierarchy
+     * @return the controller for the created Piccolo node
      */
-    private KRendering createDefaultNodeRendering() {
-        // create the default rendering model
-        KRenderingFactory factory = KRenderingFactory.eINSTANCE;
-        KRectangle rect = factory.createKRectangle();
-        KForegroundColor color = factory.createKForegroundColor();
-        color.setRed(0);
-        color.setGreen(0);
-        color.setBlue(0);
-        rect.getStyles().add(color);
-        return rect;
-    }
+    protected PNodeController<?> createRendering(final KRendering rendering, final Styles styles,
+            final List<KStyle> childPropagatedStyles, final PNode parent,
+            final PBounds initialBounds, final Object key) {
+        // create the rendering and return its controller
+        PNodeController<?> controller = new KRenderingSwitch<PNodeController<?>>() {
+            // Ellipse
+            public PNodeController<?> caseKEllipse(final KEllipse ellipse) {
+                return createEllipse(ellipse, styles, childPropagatedStyles, parent, initialBounds,
+                        key);
+            }
 
-    /**
-     * Creates a default rendering for labels without attached rendering data.
-     *
-     * @return the rendering
-     */
-    private KRendering createDefaultLabelRendering() {
-        // create the default rendering model
-        KRenderingFactory factory = KRenderingFactory.eINSTANCE;
-        KText text = factory.createKText();
-        KForegroundColor color = factory.createKForegroundColor();
-        color.setRed(0);
-        color.setGreen(0);
-        color.setBlue(0);
-        text.getStyles().add(color);
-        return text;
-    }
+            // Rectangle
+            public PNodeController<?> caseKRectangle(final KRectangle rect) {
+                return createRectangle(rect, styles, childPropagatedStyles, parent, initialBounds,
+                        key);
+            }
 
-    /**
-     * Creates a default rendering for edges without attached rendering data.
-     * 
-     * @return the rendering
-     */
-    private KRendering createDefaultEdgeRendering() {
-        // create the default rendering model
-        KRenderingFactory factory = KRenderingFactory.eINSTANCE;
-        KPolyline polyline = factory.createKPolyline();
-        KForegroundColor color = factory.createKForegroundColor();
-        color.setRed(0);
-        color.setGreen(0);
-        color.setBlue(0);
-        polyline.getStyles().add(color);
-        return polyline;
+            // Rounded Rectangle
+            public PNodeController<?> caseKRoundedRectangle(final KRoundedRectangle rect) {
+                return createRoundedRectangle(rect, styles, childPropagatedStyles, parent,
+                        initialBounds, key);
+            }
+            
+            // Arc
+            public PNodeController<?> caseKArc(final KArc arc) {
+                return createArc(arc, styles, childPropagatedStyles, parent, initialBounds, key);
+            }
+
+            // Polyline
+            public PNodeController<?> caseKPolyline(final KPolyline polyline) {
+                return createPolyline(polyline, styles, childPropagatedStyles, parent,
+                        initialBounds, key);
+            }
+            
+            // Polygon
+            public PNodeController<?> caseKPolygon(final KPolygon polygon) {
+                return createPolygon(polygon, styles, childPropagatedStyles, parent, initialBounds,
+                        key);
+            }
+
+            // public PNodeController<?> caseKImage(final KImage object) {};
+            // public PNodeController<?> caseKCustomRendering(final KCustomRendering object) {};
+
+            // Text
+            public PNodeController<?> caseKText(final KText text) {
+                return createText(text, styles, childPropagatedStyles, parent, initialBounds, key);
+            };
+
+            // Rendering Reference
+            public PNodeController<?> caseKRenderingRef(final KRenderingRef renderingReference) {
+                return createRenderingReference(renderingReference, styles, childPropagatedStyles,
+                        parent, initialBounds, key);
+            }
+
+            // Child Area
+            public PNodeController<?> caseKChildArea(final KChildArea childArea) {
+                return createChildArea(parent, initialBounds);
+            }
+        } /**/.doSwitch(rendering);
+        return controller;
     }
 
     /**
@@ -842,11 +699,13 @@ public class RenderingController {
      *            the parent Piccolo node
      * @param initialBounds
      *            the initial bounds
+     * @param key
+     *            the key used to identify the current reference hierarchy
      * @return the controller for the created Piccolo node
      */
-    public PNodeController<PSWTAdvancedPath> createEllipse(final KEllipse ellipse,
+    protected PNodeController<PSWTAdvancedPath> createEllipse(final KEllipse ellipse,
             final Styles styles, final List<KStyle> propagatedStyles, final PNode parent,
-            final PBounds initialBounds) {
+            final PBounds initialBounds, final Object key) {
         // create the ellipse
         final PSWTAdvancedPath path =
                 PSWTAdvancedPath.createEllipse(0, 0, (float) initialBounds.width,
@@ -858,7 +717,7 @@ public class RenderingController {
         // handle children
         if (ellipse.getChildren().size() > 0) {
             handleChildren(ellipse.getChildren(), ellipse.getChildPlacement(), propagatedStyles,
-                    path);
+                    path, key);
         }
 
         // return a controller for the ellipse
@@ -884,11 +743,13 @@ public class RenderingController {
      *            the parent Piccolo node
      * @param initialBounds
      *            the initial bounds
+     * @param key
+     *            the key used to identify the current reference hierarchy
      * @return the controller for the created Piccolo node
      */
-    public PNodeController<PSWTAdvancedPath> createRectangle(final KRectangle rect,
+    protected PNodeController<PSWTAdvancedPath> createRectangle(final KRectangle rect,
             final Styles styles, final List<KStyle> propagatedStyles, final PNode parent,
-            final PBounds initialBounds) {
+            final PBounds initialBounds, final Object key) {
         // create the rectangle
         final PSWTAdvancedPath path =
                 PSWTAdvancedPath.createRectangle(0, 0, (float) initialBounds.width,
@@ -899,7 +760,8 @@ public class RenderingController {
 
         // handle children
         if (rect.getChildren().size() > 0) {
-            handleChildren(rect.getChildren(), rect.getChildPlacement(), propagatedStyles, path);
+            handleChildren(rect.getChildren(), rect.getChildPlacement(), propagatedStyles, path,
+                    key);
         }
 
         // create a controller for the rectangle and return it
@@ -925,11 +787,13 @@ public class RenderingController {
      *            the parent Piccolo node
      * @param initialBounds
      *            the initial bounds
+     * @param key
+     *            the key used to identify the current reference hierarchy
      * @return the controller for the created Piccolo node
      */
-    public PNodeController<PSWTAdvancedPath> createRoundedRectangle(final KRoundedRectangle rect,
+    protected PNodeController<PSWTAdvancedPath> createRoundedRectangle(final KRoundedRectangle rect,
             final Styles styles, final List<KStyle> propagatedStyles, final PNode parent,
-            final PBounds initialBounds) {
+            final PBounds initialBounds, final Object key) {
         // create the rounded rectangle
         final PSWTAdvancedPath path =
                 PSWTAdvancedPath
@@ -942,7 +806,8 @@ public class RenderingController {
 
         // handle children
         if (rect.getChildren().size() > 0) {
-            handleChildren(rect.getChildren(), rect.getChildPlacement(), propagatedStyles, path);
+            handleChildren(rect.getChildren(), rect.getChildPlacement(), propagatedStyles, path,
+                    key);
         }
 
         // create a controller for the rounded rectangle and return it
@@ -951,6 +816,51 @@ public class RenderingController {
                 // apply the bounds
                 getNode().setPathToRoundRectangle(0, 0, (float) bounds.width,
                         (float) bounds.height, rect.getCornerWidth(), rect.getCornerHeight());
+                NodeUtil.applyTranslation(getNode(), (float) bounds.x, (float) bounds.y);
+            }
+        };
+    }
+    
+    /**
+     * Creates a {@code PSWTAdvancedPath} representation for the {@code KArc}.
+     * 
+     * @param arc
+     *            the arc rendering
+     * @param styles
+     *            the styles container for the rendering
+     * @param propagatedStyles
+     *            the styles propagated to the rendering's children
+     * @param parent
+     *            the parent Piccolo node
+     * @param initialBounds
+     *            the initial bounds
+     * @param key
+     *            the key used to identify the current reference hierarchy
+     * @return the controller for the created Piccolo node
+     */
+    protected PNodeController<PSWTAdvancedPath> createArc(final KArc arc,
+            final Styles styles, final List<KStyle> propagatedStyles, final PNode parent,
+            final PBounds initialBounds, final Object key) {
+        // create the rounded rectangle
+        final PSWTAdvancedPath path =
+                PSWTAdvancedPath.createArc(0, 0, (float) initialBounds.width,
+                        (float) initialBounds.height, arc.getStartAngle(), arc.getArcAngle());
+        initializeRenderingNode(path);
+        path.translate(initialBounds.x, initialBounds.y);
+        parent.addChild(path);
+
+        // handle children
+        if (arc.getChildren().size() > 0) {
+            handleChildren(arc.getChildren(), arc.getChildPlacement(), propagatedStyles, path,
+                    key);
+        }
+
+        // create a controller for the rounded rectangle and return it
+        return new PSWTAdvancedPathController(path) {
+            public void setBounds(final PBounds bounds) {
+                // apply the bounds
+                getNode().setPathToRoundRectangle(0, 0, (float) bounds.width,
+                        (float) bounds.height, arc.getStartAngle(), arc.getArcAngle());
                 NodeUtil.applyTranslation(getNode(), (float) bounds.x, (float) bounds.y);
             }
         };
@@ -969,10 +879,13 @@ public class RenderingController {
      *            the parent Piccolo node
      * @param initialBounds
      *            the initial bounds
+     * @param key
+     *            the key used to identify the current reference hierarchy
      * @return the controller for the created Piccolo node
      */
-    public PNodeController<PSWTText> createText(final KText text, final Styles styles,
-            final List<KStyle> propagatedStyles, final PNode parent, final PBounds initialBounds) {
+    protected PNodeController<PSWTText> createText(final KText text, final Styles styles,
+            final List<KStyle> propagatedStyles, final PNode parent, final PBounds initialBounds,
+            final Object key) {
         // create the text
         PSWTText textNode = new PSWTText(text.getText() != null ? text.getText() : "");
         textNode.setGreekColor(null);
@@ -990,7 +903,8 @@ public class RenderingController {
 
         // handle children
         if (text.getChildren().size() > 0) {
-            handleChildren(text.getChildren(), text.getChildPlacement(), propagatedStyles, textNode);
+            handleChildren(text.getChildren(), text.getChildPlacement(), propagatedStyles,
+                    textNode, key);
         }
 
         // create a controller for the text and return it
@@ -1022,11 +936,13 @@ public class RenderingController {
      *            the parent Piccolo node
      * @param initialBounds
      *            the initial bounds
+     * @param key
+     *            the key used to identify the current reference hierarchy
      * @return the controller for the created Piccolo node
      */
-    public PNodeController<PSWTAdvancedPath> createPolyline(final KPolyline polyline,
+    protected PNodeController<PSWTAdvancedPath> createPolyline(final KPolyline polyline,
             final Styles styles, final List<KStyle> propagatedStyles, final PNode parent,
-            final PBounds initialBounds) {
+            final PBounds initialBounds, final Object key) {
         // create the polyline
         final PSWTAdvancedPath path =
                 PSWTAdvancedPath.createPolyline(evaluatePolylinePlacement(
@@ -1037,7 +953,30 @@ public class RenderingController {
 
         // handle children
         if (polyline.getChildren().size() > 0) {
-            handlePolylineChildren(polyline.getChildren(), propagatedStyles, path);
+            List<KRendering> restChildren = Lists.newLinkedList();
+            for (final KRendering rendering : polyline.getChildren()) {
+                if (rendering.getPlacementData() instanceof KDecoratorPlacementData) {
+                    handleDecoratorPlacementRendering(rendering, propagatedStyles, path, key);
+                } else {
+                    restChildren.add(rendering);
+                }
+            }
+            
+            // handle children without decorator placement data if any
+            if (restChildren.size() > 0) {
+                // create a proxy parent for the children without decorator placement data
+                final PNode proxyParent = new PEmptyNode();
+                path.addChild(proxyParent);
+                NodeUtil.applySmartBounds(proxyParent, path.getBoundsReference());
+                addListener(PNode.PROPERTY_BOUNDS, path, proxyParent, new PropertyChangeListener() {
+                    public void propertyChange(final PropertyChangeEvent arg0) {
+                        NodeUtil.applySmartBounds(proxyParent, path.getBoundsReference());
+                    }
+                });
+                
+                handleChildren(restChildren, polyline.getChildPlacement(), propagatedStyles,
+                        proxyParent, key);
+            }
         }
 
         // create a controller for the polyline and return it
@@ -1053,6 +992,74 @@ public class RenderingController {
     }
     
     /**
+     * Creates a {@code PSWTAdvancedPath} representation for the {@code KPolygon}.
+     * 
+     * @param polygon
+     *            the polygon rendering
+     * @param styles
+     *            the styles container for the rendering
+     * @param propagatedStyles
+     *            the styles propagated to the rendering's children
+     * @param parent
+     *            the parent Piccolo node
+     * @param initialBounds
+     *            the initial bounds
+     * @param key
+     *            the key used to identify the current reference hierarchy
+     * @return the controller for the created Piccolo node
+     */
+    protected PNodeController<PSWTAdvancedPath> createPolygon(final KPolygon polygon,
+            final Styles styles, final List<KStyle> propagatedStyles, final PNode parent,
+            final PBounds initialBounds, final Object key) {
+        // create the polygon
+        final PSWTAdvancedPath path =
+                PSWTAdvancedPath.createPolygon(evaluatePolylinePlacement(
+                        asPolylinePlacementData(polygon.getPlacementData()), initialBounds));
+        initializeRenderingNode(path);
+        path.translate(initialBounds.x, initialBounds.y);
+        parent.addChild(path);
+        
+        // handle children
+        if (polygon.getChildren().size() > 0) {
+            List<KRendering> restChildren = Lists.newLinkedList();
+            for (final KRendering rendering : polygon.getChildren()) {
+                if (rendering.getPlacementData() instanceof KDecoratorPlacementData) {
+                    handleDecoratorPlacementRendering(rendering, propagatedStyles, path, key);
+                } else {
+                    restChildren.add(rendering);
+                }
+            }
+            
+            // handle children without decorator placement data if any
+            if (restChildren.size() > 0) {
+                // create a proxy parent for the children without decorator placement data
+                final PNode proxyParent = new PEmptyNode();
+                path.addChild(proxyParent);
+                NodeUtil.applySmartBounds(proxyParent, path.getBoundsReference());
+                addListener(PNode.PROPERTY_BOUNDS, path, proxyParent, new PropertyChangeListener() {
+                    public void propertyChange(final PropertyChangeEvent arg0) {
+                        NodeUtil.applySmartBounds(proxyParent, path.getBoundsReference());
+                    }
+                });
+                
+                handleChildren(restChildren, polygon.getChildPlacement(), propagatedStyles,
+                        proxyParent, key);
+            }
+        }
+
+        // create a controller for the polyline and return it
+        return new PSWTAdvancedPathController(path) {
+            public void setBounds(final PBounds bounds) {
+                // apply the bounds
+                getNode().setPathToPolygon(
+                        (evaluatePolylinePlacement(
+                                asPolylinePlacementData(polygon.getPlacementData()), bounds)));
+                NodeUtil.applyTranslation(getNode(), (float) bounds.x, (float) bounds.y);
+            }
+        };
+    }
+
+    /**
      * Creates a representation for the {@code KRenderingRef}.
      * 
      * @param renderingReference
@@ -1065,14 +1072,45 @@ public class RenderingController {
      *            the parent Piccolo node
      * @param initialBounds
      *            the initial bounds
+     * @param key
+     *            the key used to identify the current reference hierarchy
      * @return the controller for the created Piccolo node
      */
-    public PNodeController<?> createRenderingReference(
-            final KRenderingRef renderingReference, final Styles styles,
-            final List<KStyle> propagatedStyles, final PNode parent, final PBounds initialBounds) {
-        if (renderingReference.getRendering() != null) {
-            return createRendering(renderingReference.getRendering(), propagatedStyles, parent,
-                    initialBounds);
+    protected PNodeController<?> createRenderingReference(final KRenderingRef renderingReference,
+            final Styles styles, final List<KStyle> propagatedStyles, final PNode parent,
+            final PBounds initialBounds, final Object key) {
+        KRendering rendering = renderingReference.getRendering();
+        if (rendering != null) {
+            List<KStyle> renderingStyles = rendering.getStyles();
+
+            // determine the styles for this rendering
+            final Styles refStyles = deriveStyles(styles, renderingStyles);
+
+            // determine the styles for propagation to child nodes
+            final List<KStyle> childPropagatedStyles =
+                    determinePropagationStyles(renderingStyles, propagatedStyles);
+
+            // create a key for this reference
+            Object refKey = new Object();
+            setMappedProperty(renderingReference, KEY, key, refKey);
+
+            // dispatch the rendering
+            final PNodeController<?> controller =
+                    createRendering(rendering, refStyles, childPropagatedStyles, parent,
+                            initialBounds, refKey);
+
+            // set the styles for the created rendering node using the controller
+            applyStyles(controller, refStyles);
+
+            // remember the controller in the rendering
+            setMappedProperty(rendering, CONTROLLER, refKey, controller);
+
+            // return a controller for the reference which sets the bounds of the referenced node
+            return new PNodeController<PNode>(controller.getNode()) {
+                public void setBounds(final PBounds bounds) {
+                    controller.setBounds(bounds);
+                }
+            };
         } else {
             throw new RuntimeException("No referenced rendering in rendering reference: "
                     + renderingReference);
@@ -1088,56 +1126,9 @@ public class RenderingController {
      *            the initial bounds
      * @return the controller for the created Piccolo node
      */
-    private PNodeController<?> createChildArea(final PNode parent, final PBounds initialBounds) {
-        // only nodes can have a child area
-        if (childAreaNode == null) {
-            throw new RuntimeException("Invalid child area found in non-node graph element: "
-                    + element);
-        }
-
-        // there can only be none or one child area
-        if (childAreaNode.getParent() != null) {
-            throw new RuntimeException("More then one child area found in graph element: "
-                    + element);
-        }
-
-        // configure the child area
-        NodeUtil.applySmartBounds(childAreaNode, initialBounds);
-
-        parent.addChild(childAreaNode);
-
-        // create a controller for the child area and return it
-        return new PNodeController<PNode>(childAreaNode) {
-            public void setBounds(final PBounds bounds) {
-                // apply the bounds
-                NodeUtil.applySmartBounds(getNode(), bounds);
-            }
-        };
-    }
-
-    /**
-     * Creates the Piccolo node for the parent Piccolo node using direct placement.
-     * 
-     * @param parent
-     *            the parent Piccolo node
-     */
-    private void createDefaultChildArea(final PNode parent) {
-        // determine the initial bounds
-        PBounds bounds = evaluateDirectPlacement(null, parent.getBoundsReference());
-
-        // configure the child area
-        final PNodeController<?> controller = createChildArea(parent, bounds);
-
-        // add a listener on the parent's bounds
-        addListener(PNode.PROPERTY_BOUNDS, parent, controller.getNode(),
-                new PropertyChangeListener() {
-                    public void propertyChange(final PropertyChangeEvent e) {
-                        // calculate the new bounds of the rendering
-                        PBounds bounds = evaluateDirectPlacement(null, parent.getBoundsReference());
-                        // use the controller to apply the new bounds
-                        controller.setBounds(bounds);
-                    }
-                });
+    protected PNodeController<?> createChildArea(final PNode parent, final PBounds initialBounds) {
+        throw new RuntimeException(
+                "Child area found in graph element which does not support a child area: " + element);
     }
 
     /**
@@ -1149,7 +1140,7 @@ public class RenderingController {
      *            the parent bounds
      * @return the bounds
      */
-    private PBounds evaluateDirectPlacement(final KDirectPlacementData dpd,
+    protected PBounds evaluateDirectPlacement(final KDirectPlacementData dpd,
             final PBounds parentBounds) {
         if (dpd == null) {
             return new PBounds(0, 0, parentBounds.width, parentBounds.height);
@@ -1176,7 +1167,7 @@ public class RenderingController {
      *            the parent bounds
      * @return the bounds
      */
-    private PBounds evaluateStackPlacement(final KStackPlacementData spd, final PBounds parentBounds) {
+    protected PBounds evaluateStackPlacement(final KStackPlacementData spd, final PBounds parentBounds) {
         float width = (float) parentBounds.width;
         float height = (float) parentBounds.height;
 
@@ -1191,13 +1182,13 @@ public class RenderingController {
     /**
      * Returns the bounds for a polyline placement data in given parent bounds.
      * 
-     * @param spd
+     * @param ppd
      *            the polyline placement data
      * @param parentBounds
      *            the parent bounds
      * @return the bounds
      */
-    private Point2D[] evaluatePolylinePlacement(final KPolylinePlacementData ppd,
+    protected Point2D[] evaluatePolylinePlacement(final KPolylinePlacementData ppd,
             final PBounds parentBounds) {
         if (ppd == null) {
             return new Point2D[] { new Point2D.Float(0, 0) };
@@ -1222,7 +1213,7 @@ public class RenderingController {
      *            the path
      * @return the origin, bounds and rotation for the decorator
      */
-    private Decoration evaluateDecoratorPlacement(final KDecoratorPlacementData dpd,
+    protected Decoration evaluateDecoratorPlacement(final KDecoratorPlacementData dpd,
             final PSWTAdvancedPath path) {
         Decoration decoration = new Decoration();
         Point2D[] points = path.getShapePoints();
@@ -1230,9 +1221,7 @@ public class RenderingController {
         // default case
         if (dpd == null) {
             decoration.origin = (Point2D) points[0].clone();
-            // CHECKSTYLEOFF MagicNumber
             decoration.bounds = new PBounds(0.0, 0.0, 0.0, 0.0);
-            // CHECKSTYLEON MagicNumber
             decoration.rotation = 0.0;
             return decoration;
         }
@@ -1247,7 +1236,7 @@ public class RenderingController {
                 new PBounds(dpd.getXOffset(), dpd.getYOffset(), dpd.getWidth(), dpd.getHeight());
 
         // if the decorator placement data specifies it to be relative calculate its rotation
-        if (dpd.isRelative()) {
+        if (dpd.isRelative() && points.length > 1) {
             int segmentStart = result.getFirst();
             decoration.rotation = MathUtil.angle(points[segmentStart], points[segmentStart + 1]);
         } else {
@@ -1266,7 +1255,7 @@ public class RenderingController {
      *            the parent bounds
      * @return the evaluated position
      */
-    private Point2D.Float evaluateDirectPosition(final KPosition position,
+    protected Point2D.Float evaluateDirectPosition(final KPosition position,
             final PBounds parentBounds) {
         float width = (float) parentBounds.width;
         float height = (float) parentBounds.height;
@@ -1293,7 +1282,7 @@ public class RenderingController {
      *            the placement data
      * @return the direct placement data or null if the placement data is no direct placement data
      */
-    private KDirectPlacementData asDirectPlacementData(final KPlacementData data) {
+    protected KDirectPlacementData asDirectPlacementData(final KPlacementData data) {
         if (data instanceof KDirectPlacementData) {
             return (KDirectPlacementData) data;
         }
@@ -1307,7 +1296,7 @@ public class RenderingController {
      *            the placement data
      * @return the stack placement data or null if the placement data is no stack placement data
      */
-    private KStackPlacementData asStackPlacementData(final KPlacementData data) {
+    protected KStackPlacementData asStackPlacementData(final KPlacementData data) {
         if (data instanceof KStackPlacementData) {
             return (KStackPlacementData) data;
         } else if (data instanceof KPolylinePlacementData) {
@@ -1325,7 +1314,7 @@ public class RenderingController {
      * @return the polyline placement data or null if the placement data is no polyline placement
      *         data
      */
-    private KPolylinePlacementData asPolylinePlacementData(final KPlacementData data) {
+    protected KPolylinePlacementData asPolylinePlacementData(final KPlacementData data) {
         if (data instanceof KPolylinePlacementData) {
             return (KPolylinePlacementData) data;
         }
@@ -1340,7 +1329,7 @@ public class RenderingController {
      * @return the decorator placement data or null if the placement data is no decorator placement
      *         data
      */
-    private KDecoratorPlacementData asDecoratorPlacementData(final KPlacementData data) {
+    protected KDecoratorPlacementData asDecoratorPlacementData(final KPlacementData data) {
         if (data instanceof KDecoratorPlacementData) {
             return (KDecoratorPlacementData) data;
         } else if (data instanceof KPolylinePlacementData) {
@@ -1356,7 +1345,7 @@ public class RenderingController {
      * @param node
      *            the Piccolo node
      */
-    private void initializeRenderingNode(final PNode node) {
+    protected void initializeRenderingNode(final PNode node) {
         node.setVisible(true);
         node.setPickable(false);
     }
@@ -1375,7 +1364,7 @@ public class RenderingController {
      * @param listener
      *            the listener
      */
-    private void addListener(final String property, final PNode parent, final PNode node,
+    protected void addListener(final String property, final PNode parent, final PNode node,
             final PropertyChangeListener listener) {
         parent.addPropertyChangeListener(property, listener);
         @SuppressWarnings("unchecked")
@@ -1395,7 +1384,7 @@ public class RenderingController {
      * @param node
      *            the child node
      */
-    private void removeListeners(final PNode node) {
+    protected void removeListeners(final PNode node) {
         @SuppressWarnings("unchecked")
         List<Pair<String, PropertyChangeListener>> listeners =
                 (List<Pair<String, PropertyChangeListener>>) node
@@ -1417,7 +1406,7 @@ public class RenderingController {
      *            the propagated styles
      * @return the list of styles for the rendering
      */
-    private List<KStyle> determineRenderingStyles(final List<KStyle> renderingStyles,
+    protected List<KStyle> determineRenderingStyles(final List<KStyle> renderingStyles,
             final List<KStyle> propagatedStyles) {
         List<KStyle> combinedStyles = Lists.newLinkedList();
         combinedStyles.addAll(propagatedStyles);
@@ -1435,49 +1424,56 @@ public class RenderingController {
      *            the propagated styles
      * @return the list of styles for propagation to the children of the rendering
      */
-    private List<KStyle> determinePropagationStyles(final List<KStyle> renderingStyles,
+    protected List<KStyle> determinePropagationStyles(final List<KStyle> renderingStyles,
             final List<KStyle> propagatedStyles) {
         List<KStyle> propagationStyles = Lists.newLinkedList();
+        propagationStyles.addAll(propagatedStyles);
         for (KStyle style : renderingStyles) {
             if (style.isPropagateToChildren()) {
                 propagationStyles.add(style);
             }
         }
-        propagationStyles.addAll(propagatedStyles);
         return propagationStyles;
     }
 
     /**
-     * Returns a styles container from a list of styles.
+     * Enhances a styles container with a list of styles.
      * 
+     * @param styles
+     *            the styles container or null to create an empty one
      * @param styleList
      *            the list of styles
      * @return the styles container
      */
-    private Styles deriveStyles(final List<KStyle> styleList) {
-        final Styles styles = new Styles();
+    protected Styles deriveStyles(final Styles styles, final List<KStyle> styleList) {
+        final Styles theStyles;
+        if (styles != null) {
+            theStyles = styles;
+        } else {
+            theStyles = new Styles();
+        }
         for (KStyle style : styleList) {
             new KRenderingSwitch<Boolean>() {
                 // foreground color
                 public Boolean caseKForegroundColor(final KForegroundColor fc) {
-                    if (styles.foregroundColor == null) {
-                        styles.foregroundColor = fc;
+                    if (theStyles.foregroundColor == null) {
+                        theStyles.foregroundColor = fc;
                     }
                     return true;
                 }
 
                 // background color
                 public Boolean caseKBackgroundColor(final KBackgroundColor bc) {
-                    if (styles.backgroundColor == null) {
-                        styles.backgroundColor = bc;
+                    if (theStyles.backgroundColor == null) {
+                        theStyles.backgroundColor = bc;
                     }
                     return true;
                 }
 
                 // line width
                 public Boolean caseKLineWidth(final KLineWidth lw) {
-                    if (styles.lineWidth == null) {
-                        styles.lineWidth = lw;
+                    if (theStyles.lineWidth == null) {
+                        theStyles.lineWidth = lw;
                     }
                     return true;
                 }
@@ -1485,8 +1481,8 @@ public class RenderingController {
                 // foreground visibility
                 public Boolean caseKForegroundVisibility(
                         final KForegroundVisibility foregorundVisibility) {
-                    if (styles.foregroundVisibility == null) {
-                        styles.foregroundVisibility = foregorundVisibility;
+                    if (theStyles.foregroundVisibility == null) {
+                        theStyles.foregroundVisibility = foregorundVisibility;
                     }
                     return true;
                 }
@@ -1494,70 +1490,70 @@ public class RenderingController {
                 // background visibility
                 public Boolean caseKBackgroundVisibility(
                         final KBackgroundVisibility backgroundVisibility) {
-                    if (styles.backgroundVisibility == null) {
-                        styles.backgroundVisibility = backgroundVisibility;
+                    if (theStyles.backgroundVisibility == null) {
+                        theStyles.backgroundVisibility = backgroundVisibility;
                     }
                     return true;
                 }
 
                 // line style
                 public Boolean caseKLineStyle(final KLineStyle ls) {
-                    if (styles.lineStyle == null) {
-                        styles.lineStyle = ls;
+                    if (theStyles.lineStyle == null) {
+                        theStyles.lineStyle = ls;
                     }
                     return true;
                 }
 
                 // horizontal alignment
                 public Boolean caseKHorizontalAlignment(final KHorizontalAlignment ha) {
-                    if (styles.horizontalAlignment == null) {
-                        styles.horizontalAlignment = ha;
+                    if (theStyles.horizontalAlignment == null) {
+                        theStyles.horizontalAlignment = ha;
                     }
                     return true;
                 }
 
                 // vertical alignment
                 public Boolean caseKVerticalAlignment(final KVerticalAlignment va) {
-                    if (styles.verticalAlignment == null) {
-                        styles.verticalAlignment = va;
+                    if (theStyles.verticalAlignment == null) {
+                        theStyles.verticalAlignment = va;
                     }
                     return true;
                 }
 
                 // font name
                 public Boolean caseKFontName(final KFontName fontName) {
-                    if (styles.fontName == null) {
-                        styles.fontName = fontName;
+                    if (theStyles.fontName == null) {
+                        theStyles.fontName = fontName;
                     }
                     return true;
                 }
 
                 // font size
                 public Boolean caseKFontSize(final KFontSize fontSize) {
-                    if (styles.fontSize == null) {
-                        styles.fontSize = fontSize;
+                    if (theStyles.fontSize == null) {
+                        theStyles.fontSize = fontSize;
                     }
                     return true;
                 }
 
                 // italic
                 public Boolean caseKFontItalic(final KFontItalic italic) {
-                    if (styles.italic == null) {
-                        styles.italic = italic;
+                    if (theStyles.italic == null) {
+                        theStyles.italic = italic;
                     }
                     return true;
                 }
 
                 // bold
                 public Boolean caseKFontBold(final KFontBold bold) {
-                    if (styles.bold == null) {
-                        styles.bold = bold;
+                    if (theStyles.bold == null) {
+                        theStyles.bold = bold;
                     }
                     return true;
                 }
             } /**/.doSwitch(style);
         }
-        return styles;
+        return theStyles;
     }
 
     /**
@@ -1568,7 +1564,7 @@ public class RenderingController {
      * @param styles
      *            the styles
      */
-    private void applyStyles(final PNodeController<?> controller, final Styles styles) {
+    protected void applyStyles(final PNodeController<?> controller, final Styles styles) {
         // apply foreground color
         if (styles.foregroundColor != null) {
             KColor color = styles.foregroundColor;
@@ -1680,9 +1676,105 @@ public class RenderingController {
     }
 
     /**
+     * Sets a value for a key in a given property holder using a specified property for a map type.
+     * 
+     * @param propertyHolder
+     *            the property holder
+     * @param property
+     *            the property
+     * @param key
+     *            the key
+     * @param value
+     *            the value
+     * @param <R>
+     *            the value-type of the map
+     */
+    protected <R> void setMappedProperty(final IPropertyHolder propertyHolder,
+            final IProperty<Map<Object, R>> property, final Object key, final R value) {
+        Map<Object, R> map = propertyHolder.getProperty(property);
+        if (map == null) {
+            map = Maps.newHashMap();
+            propertyHolder.setProperty(property, map);
+        }
+        map.put(key, value);
+        
+        // track this mapping
+        List<Pair<IPropertyHolder, Object>> mappedPropertyList = mappedProperties.get(property);
+        if (mappedPropertyList == null) {
+            mappedPropertyList = Lists.newLinkedList();
+            mappedProperties.put(property, mappedPropertyList);
+        }
+        mappedPropertyList.add(new Pair<IPropertyHolder, Object>(propertyHolder, key));
+    }
+
+    /**
+     * Returns a value for a key in a given property holder using a specified property for a map
+     * type.
+     * 
+     * @param propertyHolder
+     *            the property holder
+     * @param property
+     *            the property
+     * @param key
+     *            the key
+     * @param <R>
+     *            the value-type of the map
+     * @return the value
+     */
+    protected <R> R getMappedProperty(final IPropertyHolder propertyHolder,
+            final IProperty<Map<Object, R>> property, final Object key) {
+        Map<Object, R> map = propertyHolder.getProperty(property);
+        if (map != null) {
+            return map.get(key);
+        }
+        return null;
+    }
+
+    /**
+     * Removes the key in a given property holder using a specified property for a map.
+     * 
+     * @param propertyHolder
+     *            the property holder
+     * @param property
+     *            the property
+     * @param key
+     *            the key
+     * @param <R>
+     *            the value-type of the map
+     */
+    private <R> void removeMappedProperty(final IPropertyHolder propertyHolder,
+            final IProperty<Map<Object, R>> property, final Object key) {
+        Map<Object, R> map = propertyHolder.getProperty(property);
+        if (map != null) {
+            map.remove(key);
+            if (map.isEmpty()) {
+                propertyHolder.setProperty(property, null);
+            }
+        }
+    }
+
+    /**
+     * Removes all mapped properties used in this controller from the associated property holders.
+     * 
+     * @param property
+     *            the property
+     * @param <R>
+     *            the value-type of the map
+     */
+    private <R> void removeMappedProperties(final IProperty<Map<Object, R>> property) {
+        List<Pair<IPropertyHolder, Object>> mappedPropertyList = mappedProperties.get(property);
+        if (mappedPropertyList != null) {
+            for (Pair<IPropertyHolder, Object> pair : mappedPropertyList) {
+                removeMappedProperty(pair.getFirst(), property, pair.getSecond());
+            }
+            mappedProperties.remove(property);
+        }
+    }
+
+    /**
      * A container class for the possible styles.
      */
-    private class Styles {
+    protected class Styles {
 
         /** the foreground color. */
         private KColor foregroundColor = null;
@@ -1714,7 +1806,7 @@ public class RenderingController {
     /**
      * A data holder class for the result of evaluating a decorator.
      */
-    private class Decoration {
+    protected class Decoration {
 
         /** the origin of the decoration. */
         private Point2D origin;
