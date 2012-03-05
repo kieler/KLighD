@@ -640,8 +640,9 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "KGraphData");
 		private final Alternatives cAlternatives = (Alternatives)rule.eContents().get(1);
 		private final RuleCall cKRenderingParserRuleCall_0 = (RuleCall)cAlternatives.eContents().get(0);
-		private final RuleCall cKShapeLayoutParserRuleCall_1 = (RuleCall)cAlternatives.eContents().get(1);
-		private final RuleCall cKEdgeLayoutParserRuleCall_2 = (RuleCall)cAlternatives.eContents().get(2);
+		private final RuleCall cKRenderingLibraryParserRuleCall_1 = (RuleCall)cAlternatives.eContents().get(1);
+		private final RuleCall cKShapeLayoutParserRuleCall_2 = (RuleCall)cAlternatives.eContents().get(2);
+		private final RuleCall cKEdgeLayoutParserRuleCall_3 = (RuleCall)cAlternatives.eContents().get(3);
 		
 		//// Error marker is a false positive; generation works anyway!
 		////  It occurs if eSuperType references in krendering.ecore/klayoutdata.ecore
@@ -662,7 +663,7 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 		////	'{'
 		////		('persistentEntries' '{' persistentEntries+=PersistentEntry ( "," persistentEntries+=PersistentEntry)* '}' )?
 		////    '}';
-		//	KRendering | KShapeLayout | KEdgeLayout;
+		//	KRendering | KRenderingLibrary | KShapeLayout | KEdgeLayout;
 		public ParserRule getRule() { return rule; }
 
 		////	{KGraphData}
@@ -678,7 +679,7 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 		////    '}';
 		////EString returns ecore::EString:
 		////	STRING | ID;
-		//| KShapeLayout | KEdgeLayout
+		//| KRenderingLibrary | KShapeLayout | KEdgeLayout
 		public Alternatives getAlternatives() { return cAlternatives; }
 
 		////	{KGraphData}
@@ -689,8 +690,11 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 		//KRendering
 		public RuleCall getKRenderingParserRuleCall_0() { return cKRenderingParserRuleCall_0; }
 
+		//KRenderingLibrary
+		public RuleCall getKRenderingLibraryParserRuleCall_1() { return cKRenderingLibraryParserRuleCall_1; }
+
 		//KShapeLayout
-		public RuleCall getKShapeLayoutParserRuleCall_1() { return cKShapeLayoutParserRuleCall_1; }
+		public RuleCall getKShapeLayoutParserRuleCall_2() { return cKShapeLayoutParserRuleCall_2; }
 
 		////PersistentEntry returns PersistentEntry:
 		////	'PersistentEntry'
@@ -701,7 +705,7 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 		////EString returns ecore::EString:
 		////	STRING | ID;
 		//KEdgeLayout
-		public RuleCall getKEdgeLayoutParserRuleCall_2() { return cKEdgeLayoutParserRuleCall_2; }
+		public RuleCall getKEdgeLayoutParserRuleCall_3() { return cKEdgeLayoutParserRuleCall_3; }
 	}
 	
 	
@@ -821,7 +825,7 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	////	'{'
 	////		('persistentEntries' '{' persistentEntries+=PersistentEntry ( "," persistentEntries+=PersistentEntry)* '}' )?
 	////    '}';
-	//	KRendering | KShapeLayout | KEdgeLayout;
+	//	KRendering | KRenderingLibrary | KShapeLayout | KEdgeLayout;
 	public KGraphDataElements getKGraphDataAccess() {
 		return (pKGraphData != null) ? pKGraphData : (pKGraphData = new KGraphDataElements());
 	}
@@ -830,13 +834,8 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 		return getKGraphDataAccess().getRule();
 	}
 
-	//KRenderingLibrary: //	{KRenderingLibrary}
-	////	'KRenderingLibrary'
-	////	'{'
-	////		('persistentEntries' '{' persistentEntries+=PersistentEntry ( "," persistentEntries+=PersistentEntry)* '}' )?
-	////		('renderings' '{' renderings+=KRendering ( "," renderings+=KRendering)* '}' )?
-	////    '}';
-	//	{KRenderingLibrary} "KRenderingLibrary" "{" (renderings+=KRendering ("," renderings+=KRendering)*)? "}";
+	//KRenderingLibrary:
+	//	{KRenderingLibrary} "RenderingLibrary" "{" (renderings+=KRendering ("," renderings+=KRendering)*)? "}";
 	public KRenderingGrammarAccess.KRenderingLibraryElements getKRenderingLibraryAccess() {
 		return gaKRendering.getKRenderingLibraryAccess();
 	}
@@ -909,9 +908,8 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//KRenderingRef:
-	//	"KRenderingRef" "{" ("references" "(" references+=[KRenderingRef|EString] ("," references+=[KRenderingRef|EString])*
-	//	")")? "rendering" rendering=[KRendering|EString] // ('persistentEntries' '{' persistentEntries+=PersistentEntry ( "," persistentEntries+=PersistentEntry)* '}' )?
-	//	("placementData" placementData=KPlacementData)? ("styles" "{" styles+=KStyle ("," styles+=KStyle)* "}")? "}";
+	//	{KRenderingRef} "RenderingRef" rendering=[KRendering|EString] ("{" ("placementData" placementData=KPlacementData)?
+	//	("styles" "{" styles+=KStyle ("," styles+=KStyle)* "}")? "}")?;
 	public KRenderingGrammarAccess.KRenderingRefElements getKRenderingRefAccess() {
 		return gaKRendering.getKRenderingRefAccess();
 	}
@@ -920,23 +918,10 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 		return getKRenderingRefAccess().getRule();
 	}
 
-	////KStyle_Impl returns KStyle:
-	////	propagateToChildren?='propagateToChildren'
-	////	'KStyle'
-	////;
-	//KEllipse: //	{KEllipse}
-	////	'KEllipse'
-	////	'{'
-	////		('references' '(' references+=[KRenderingRef|EString] ( "," references+=[KRenderingRef|EString])* ')' )?
-	////		('persistentEntries' '{' persistentEntries+=PersistentEntry ( "," persistentEntries+=PersistentEntry)* '}' )?
-	////		('placementData' placementData=KPlacementData)?
-	////		('styles' '{' styles+=KStyle ( "," styles+=KStyle)* '}' )?
-	////		('children' '{' children+=KRendering ( "," children+=KRendering)* '}' )?
-	////		('childPlacement' childPlacement=KPlacement)?
-	////    '}';
-	//	{KEllipse} "KEllipse" "{" ("styles" ":" styles+=KStyle ("," styles+=KStyle)*)? ("placementData" ":"
+	//KEllipse:
+	//	{KEllipse} "Ellipse" ("{" ("styles" ":" styles+=KStyle ("," styles+=KStyle)*)? ("placementData" ":"
 	//	placementData=KPlacementData)? ("childPlacement" ":" childPlacement=KPlacement)? ("children" ":" children+=KRendering
-	//	("," children+=KRendering)*)? "}";
+	//	("," children+=KRendering)*)? "}")?;
 	public KRenderingGrammarAccess.KEllipseElements getKEllipseAccess() {
 		return gaKRendering.getKEllipseAccess();
 	}
@@ -945,19 +930,10 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 		return getKEllipseAccess().getRule();
 	}
 
-	//KRectangle: //	{KRectangle}
-	////	'KRectangle'
-	////	'{'
-	////		('references' '(' references+=[KRenderingRef|EString] ( "," references+=[KRenderingRef|EString])* ')' )?
-	////		('persistentEntries' '{' persistentEntries+=PersistentEntry ( "," persistentEntries+=PersistentEntry)* '}' )?
-	////		('placementData' ':' placementData=KPlacementData)?
-	////		('styles' '{' styles+=KStyle ( "," styles+=KStyle)* '}' )?
-	////		('children' '{' children+=KRendering ( "," children+=KRendering)* '}' )?
-	////		('childPlacement' childPlacement=KPlacement)?
-	////    '}';
-	//	{KRectangle} "KRectangle" "{" ("styles" ":" styles+=KStyle ("," styles+=KStyle)*)? ("placementData" ":"
+	//KRectangle:
+	//	{KRectangle} "Rectangle" ("{" ("styles" ":" styles+=KStyle ("," styles+=KStyle)*)? ("placementData" ":"
 	//	placementData=KPlacementData)? ("childPlacement" ":" childPlacement=KPlacement)? ("children" ":" children+=KRendering
-	//	("," children+=KRendering)*)? "}";
+	//	("," children+=KRendering)*)? "}")?;
 	public KRenderingGrammarAccess.KRectangleElements getKRectangleAccess() {
 		return gaKRendering.getKRectangleAccess();
 	}
@@ -966,21 +942,10 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 		return getKRectangleAccess().getRule();
 	}
 
-	//KRoundedRectangle: //	'KRoundedRectangle'
-	////	'{'
-	////		'cornerWidth' cornerWidth=EFloat
-	////		'cornerHeight' cornerHeight=EFloat
-	////		('references' '(' references+=[KRenderingRef|EString] ( "," references+=[KRenderingRef|EString])* ')' )?
-	////		('persistentEntries' '{' persistentEntries+=PersistentEntry ( "," persistentEntries+=PersistentEntry)* '}' )?
-	////		('placementData' placementData=KPlacementData)?
-	////		('styles' '{' styles+=KStyle ( "," styles+=KStyle)* '}' )?
-	////		('children' '{' children+=KRendering ( "," children+=KRendering)* '}' )?
-	////		('childPlacement' childPlacement=KPlacement)?
-	////    '}';
-	//	"KRoundedRectangle" "{" ("cornerWidth" cornerWidth=EFloat "cornerHeight" cornerHeight=EFloat | "cornerHeight"
-	//	cornerHeight=EFloat "cornerWidth" cornerWidth=EFloat) ("styles" ":" styles+=KStyle ("," styles+=KStyle)*)?
-	//	("placementData" ":" placementData=KPlacementData)? ("childPlacement" ":" childPlacement=KPlacement)? ("children" ":"
-	//	children+=KRendering ("," children+=KRendering)*)? "}";
+	//KRoundedRectangle:
+	//	{KRoundedRectangle} "RoundedRectangle" cornerWidth=EFloat "," cornerHeight=EFloat ("{" ("styles" ":" styles+=KStyle
+	//	("," styles+=KStyle)*)? ("placementData" ":" placementData=KPlacementData)? ("childPlacement" ":"
+	//	childPlacement=KPlacement)? ("children" ":" children+=KRendering ("," children+=KRendering)*)? "}")?;
 	public KRenderingGrammarAccess.KRoundedRectangleElements getKRoundedRectangleAccess() {
 		return gaKRendering.getKRoundedRectangleAccess();
 	}
@@ -989,19 +954,10 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 		return getKRoundedRectangleAccess().getRule();
 	}
 
-	//KPolyline_Impl returns KPolyline: //	{KPolyline}
-	////	'KPolyline'
-	////	'{'
-	////		('references' '(' references+=[KRenderingRef|EString] ( "," references+=[KRenderingRef|EString])* ')' )?
-	////		('persistentEntries' '{' persistentEntries+=PersistentEntry ( "," persistentEntries+=PersistentEntry)* '}' )?
-	////		('placementData' placementData=KPlacementData)?
-	////		('styles' '{' styles+=KStyle ( "," styles+=KStyle)* '}' )?
-	////		('children' '{' children+=KRendering ( "," children+=KRendering)* '}' )?
-	////		('childPlacement' childPlacement=KPlacement)?
-	////    '}';
-	//	{KPolyline} "KPolyline" "{" ("styles" ":" styles+=KStyle ("," styles+=KStyle)*)? ("placementData" ":"
+	//KPolyline_Impl returns KPolyline:
+	//	{KPolyline} "Polyline" ("{" ("styles" ":" styles+=KStyle ("," styles+=KStyle)*)? ("placementData" ":"
 	//	placementData=KPlacementData)? ("childPlacement" ":" childPlacement=KPlacement)? ("children" ":" children+=KRendering
-	//	("," children+=KRendering)*)? "}";
+	//	("," children+=KRendering)*)? "}")?;
 	public KRenderingGrammarAccess.KPolyline_ImplElements getKPolyline_ImplAccess() {
 		return gaKRendering.getKPolyline_ImplAccess();
 	}
@@ -1010,19 +966,10 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 		return getKPolyline_ImplAccess().getRule();
 	}
 
-	//KPolygon: //	{KPolygon}
-	////	'KPolygon'
-	////	'{'
-	////		('references' '(' references+=[KRenderingRef|EString] ( "," references+=[KRenderingRef|EString])* ')' )?
-	////		('persistentEntries' '{' persistentEntries+=PersistentEntry ( "," persistentEntries+=PersistentEntry)* '}' )?
-	////		('placementData' placementData=KPlacementData)?
-	////		('styles' '{' styles+=KStyle ( "," styles+=KStyle)* '}' )?
-	////		('children' '{' children+=KRendering ( "," children+=KRendering)* '}' )?
-	////		('childPlacement' childPlacement=KPlacement)?
-	////    '}';
-	//	{KPolygon} "KPolygon" "{" ("styles" ":" styles+=KStyle ("," styles+=KStyle)*)? ("placementData" ":"
+	//KPolygon:
+	//	{KPolygon} "Polygon" ("{" ("styles" ":" styles+=KStyle ("," styles+=KStyle)*)? ("placementData" ":"
 	//	placementData=KPlacementData)? ("childPlacement" ":" childPlacement=KPlacement)? ("children" ":" children+=KRendering
-	//	("," children+=KRendering)*)? "}";
+	//	("," children+=KRendering)*)? "}")?;
 	public KRenderingGrammarAccess.KPolygonElements getKPolygonAccess() {
 		return gaKRendering.getKPolygonAccess();
 	}
@@ -1032,10 +979,9 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//KImage:
-	//	"KImage" "{" "bundleName" bundleName=EString "imagePath" imagePath=EString ("references" "("
-	//	references+=[KRenderingRef|EString] ("," references+=[KRenderingRef|EString])* ")")? // ('persistentEntries' '{' persistentEntries+=PersistentEntry ( "," persistentEntries+=PersistentEntry)* '}' )?
-	//	("placementData" placementData=KPlacementData)? ("styles" "{" styles+=KStyle ("," styles+=KStyle)* "}")? ("children"
-	//	"{" children+=KRendering ("," children+=KRendering)* "}")? ("childPlacement" childPlacement=KPlacement)? "}";
+	//	{KImage} "Image" (bundleName=EString | "-") ":" imagePath=EString ("{" ("styles" ":" styles+=KStyle (","
+	//	styles+=KStyle)*)? ("placementData" placementData=KPlacementData)? ("children" "{" children+=KRendering (","
+	//	children+=KRendering)* "}")? ("childPlacement" childPlacement=KPlacement)? "}")?;
 	public KRenderingGrammarAccess.KImageElements getKImageAccess() {
 		return gaKRendering.getKImageAccess();
 	}
@@ -1045,10 +991,9 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//KArc:
-	//	{KArc} "KArc" "{" ("startAngle" startAngle=EFloat)? ("arcAngle" arcAngle=EFloat)? ("references" "("
-	//	references+=[KRenderingRef|EString] ("," references+=[KRenderingRef|EString])* ")")? // ('persistentEntries' '{' persistentEntries+=PersistentEntry ( "," persistentEntries+=PersistentEntry)* '}' )?
-	//	("placementData" placementData=KPlacementData)? ("styles" "{" styles+=KStyle ("," styles+=KStyle)* "}")? ("children"
-	//	"{" children+=KRendering ("," children+=KRendering)* "}")? ("childPlacement" childPlacement=KPlacement)? "}";
+	//	{KArc} "Arc" startAngle=EFloat "," arcAngle=EFloat ("{" ("styles" ":" styles+=KStyle ("," styles+=KStyle)*)?
+	//	("placementData" placementData=KPlacementData)? ("children" "{" children+=KRendering ("," children+=KRendering)* "}")?
+	//	("childPlacement" childPlacement=KPlacement)? "}")?;
 	public KRenderingGrammarAccess.KArcElements getKArcAccess() {
 		return gaKRendering.getKArcAccess();
 	}
@@ -1058,9 +1003,8 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//KChildArea:
-	//	{KChildArea} "KChildArea" "{" ("references" "(" references+=[KRenderingRef|EString] (","
-	//	references+=[KRenderingRef|EString])* ")")? // ('persistentEntries' '{' persistentEntries+=PersistentEntry ( "," persistentEntries+=PersistentEntry)* '}' )?
-	//	("placementData" placementData=KPlacementData)? ("styles" "{" styles+=KStyle ("," styles+=KStyle)* "}")? "}";
+	//	{KChildArea} "ChildArea" ("{" ("styles" ":" styles+=KStyle ("," styles+=KStyle)*)? ("placementData"
+	//	placementData=KPlacementData)? "}")?;
 	public KRenderingGrammarAccess.KChildAreaElements getKChildAreaAccess() {
 		return gaKRendering.getKChildAreaAccess();
 	}
@@ -1070,10 +1014,9 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//KText:
-	//	"KText" "{" clip?="clip" ("text" text=EString)? ("references" "(" references+=[KRenderingRef|EString] (","
-	//	references+=[KRenderingRef|EString])* ")")? // ('persistentEntries' '{' persistentEntries+=PersistentEntry ( "," persistentEntries+=PersistentEntry)* '}' )?
-	//	("placementData" placementData=KPlacementData)? ("styles" "{" styles+=KStyle ("," styles+=KStyle)* "}")? ("children"
-	//	"{" children+=KRendering ("," children+=KRendering)* "}")? ("childPlacement" childPlacement=KPlacement)? "}";
+	//	{KText} "Text" text=EString? ("{" clip?="clip" ("styles" ":" styles+=KStyle ("," styles+=KStyle)*)? ("placementData"
+	//	placementData=KPlacementData)? ("children" "{" children+=KRendering ("," children+=KRendering)* "}")?
+	//	("childPlacement" childPlacement=KPlacement)? "}")?;
 	public KRenderingGrammarAccess.KTextElements getKTextAccess() {
 		return gaKRendering.getKTextAccess();
 	}
@@ -1083,10 +1026,9 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//KCustomRendering:
-	//	"KCustomRendering" "{" "className" className=EString "bundleName" bundleName=EString ("references" "("
-	//	references+=[KRenderingRef|EString] ("," references+=[KRenderingRef|EString])* ")")? // ('persistentEntries' '{' persistentEntries+=PersistentEntry ( "," persistentEntries+=PersistentEntry)* '}' )?
-	//	("placementData" placementData=KPlacementData)? ("styles" "{" styles+=KStyle ("," styles+=KStyle)* "}")? ("children"
-	//	"{" children+=KRendering ("," children+=KRendering)* "}")? ("childPlacement" childPlacement=KPlacement)? "}";
+	//	{KCustomRendering} "CustomRendering" ("{" "className" className=EString "bundleName" bundleName=EString ("styles" ":"
+	//	styles+=KStyle ("," styles+=KStyle)*)? ("placementData" placementData=KPlacementData)? ("children" "{"
+	//	children+=KRendering ("," children+=KRendering)* "}")? ("childPlacement" childPlacement=KPlacement)? "}")?;
 	public KRenderingGrammarAccess.KCustomRenderingElements getKCustomRenderingAccess() {
 		return gaKRendering.getKCustomRenderingAccess();
 	}
@@ -1096,10 +1038,9 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//KSpline:
-	//	{KSpline} "KSpline" "{" ("references" "(" references+=[KRenderingRef|EString] (","
-	//	references+=[KRenderingRef|EString])* ")")? // ('persistentEntries' '{' persistentEntries+=PersistentEntry ( "," persistentEntries+=PersistentEntry)* '}' )?
-	//	("placementData" placementData=KPlacementData)? ("styles" "{" styles+=KStyle ("," styles+=KStyle)* "}")? ("children"
-	//	"{" children+=KRendering ("," children+=KRendering)* "}")? ("childPlacement" childPlacement=KPlacement)? "}";
+	//	{KSpline} "Spline" ("{" ("styles" ":" styles+=KStyle ("," styles+=KStyle)*)? ("placementData"
+	//	placementData=KPlacementData)? ("children" "{" children+=KRendering ("," children+=KRendering)* "}")?
+	//	("childPlacement" childPlacement=KPlacement)? "}")?;
 	public KRenderingGrammarAccess.KSplineElements getKSplineAccess() {
 		return gaKRendering.getKSplineAccess();
 	}
@@ -1109,7 +1050,7 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//KDecoratorPlacementData:
-	//	"KDecoratorPlacementData" "{" relative?="relative" "location" location=EFloat ("xOffset" xOffset=EFloat)? ("yOffset"
+	//	"DecoratorPlacementData" "{" relative?="relative" "location" location=EFloat ("xOffset" xOffset=EFloat)? ("yOffset"
 	//	yOffset=EFloat)? ("width" width=EFloat)? ("height" height=EFloat)? "}";
 	public KRenderingGrammarAccess.KDecoratorPlacementDataElements getKDecoratorPlacementDataAccess() {
 		return gaKRendering.getKDecoratorPlacementDataAccess();
@@ -1120,7 +1061,7 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//KGridPlacementData:
-	//	"KGridPlacementData" "{" "widthHint" widthHint=EFloat "heightHint" heightHint=EFloat "horizontalIndent"
+	//	"GridPlacementData" "{" "widthHint" widthHint=EFloat "heightHint" heightHint=EFloat "horizontalIndent"
 	//	horizontalIndent=EFloat "verticalIndent" verticalIndent=EFloat "}";
 	public KRenderingGrammarAccess.KGridPlacementDataElements getKGridPlacementDataAccess() {
 		return gaKRendering.getKGridPlacementDataAccess();
@@ -1131,7 +1072,7 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//KStackPlacementData:
-	//	"KStackPlacementData" "{" "insetRight" insetRight=EFloat "insetBottom" insetBottom=EFloat "insetLeft" insetLeft=EFloat
+	//	"StackPlacementData" "{" "insetRight" insetRight=EFloat "insetBottom" insetBottom=EFloat "insetLeft" insetLeft=EFloat
 	//	"insetTop" insetTop=EFloat "}";
 	public KRenderingGrammarAccess.KStackPlacementDataElements getKStackPlacementDataAccess() {
 		return gaKRendering.getKStackPlacementDataAccess();
@@ -1142,7 +1083,7 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//KDirectPlacementData:
-	//	"KDirectPlacementData" "{" "topLeft" topLeft=KPosition "bottomRight" bottomRight=KPosition "}";
+	//	"DirectPlacementData" "{" "topLeft" topLeft=KPosition "bottomRight" bottomRight=KPosition "}";
 	public KRenderingGrammarAccess.KDirectPlacementDataElements getKDirectPlacementDataAccess() {
 		return gaKRendering.getKDirectPlacementDataAccess();
 	}
@@ -1151,11 +1092,9 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 		return getKDirectPlacementDataAccess().getRule();
 	}
 
-	//KPolylinePlacementData: //	'KPolylinePlacementData'
-	////	'{'
-	////		'points' '{' points+=KPosition ( "," points+=KPosition)* '}' 
-	////    '}';
-	//	"points" ":" points+=KPosition ("," points+=KPosition)* "detailedPlacementData" detailPlacementData=KPlacementData?;
+	//KPolylinePlacementData:
+	//	"PolylinePlacementData" "{" "points" ":" points+=KPosition ("," points+=KPosition)* ("detailedPlacementData"
+	//	detailPlacementData=KPlacementData)? "}";
 	public KRenderingGrammarAccess.KPolylinePlacementDataElements getKPolylinePlacementDataAccess() {
 		return gaKRendering.getKPolylinePlacementDataAccess();
 	}
@@ -1164,28 +1103,8 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 		return getKPolylinePlacementDataAccess().getRule();
 	}
 
-	//EFloat returns ecore::EFloat:
-	//	"-"? INT? "." INT (("E" | "e") "-"? INT)?;
-	public KRenderingGrammarAccess.EFloatElements getEFloatAccess() {
-		return gaKRendering.getEFloatAccess();
-	}
-	
-	public ParserRule getEFloatRule() {
-		return getEFloatAccess().getRule();
-	}
-
-	//EBoolean returns ecore::EBoolean:
-	//	"true" | "false";
-	public KRenderingGrammarAccess.EBooleanElements getEBooleanAccess() {
-		return gaKRendering.getEBooleanAccess();
-	}
-	
-	public ParserRule getEBooleanRule() {
-		return getEBooleanAccess().getRule();
-	}
-
 	//KPosition:
-	//	"KPosition" "{" "x" x=KXPosition "y" y=KYPosition "}";
+	//	x=KXPosition "/" y=KYPosition;
 	public KRenderingGrammarAccess.KPositionElements getKPositionAccess() {
 		return gaKRendering.getKPositionAccess();
 	}
@@ -1195,7 +1114,7 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//KLeftPosition:
-	//	{KLeftPosition} "KLeftPosition" "{" ("absolute" absolute=EFloat)? ("relative" relative=EFloat)? "}";
+	//	{KLeftPosition} "left" absolute=EFloat "," relative=EFloat;
 	public KRenderingGrammarAccess.KLeftPositionElements getKLeftPositionAccess() {
 		return gaKRendering.getKLeftPositionAccess();
 	}
@@ -1205,7 +1124,7 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//KRightPosition:
-	//	{KRightPosition} "KRightPosition" "{" ("absolute" absolute=EFloat)? ("relative" relative=EFloat)? "}";
+	//	{KRightPosition} "right" absolute=EFloat "," relative=EFloat;
 	public KRenderingGrammarAccess.KRightPositionElements getKRightPositionAccess() {
 		return gaKRendering.getKRightPositionAccess();
 	}
@@ -1215,7 +1134,7 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//KTopPosition:
-	//	{KTopPosition} "KTopPosition" "{" ("absolute" absolute=EFloat)? ("relative" relative=EFloat)? "}";
+	//	{KTopPosition} "top" absolute=EFloat "," relative=EFloat;
 	public KRenderingGrammarAccess.KTopPositionElements getKTopPositionAccess() {
 		return gaKRendering.getKTopPositionAccess();
 	}
@@ -1225,7 +1144,7 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//KBottomPosition:
-	//	{KBottomPosition} "KBottomPosition" "{" ("absolute" absolute=EFloat)? ("relative" relative=EFloat)? "}";
+	//	{KBottomPosition} "bottom" absolute=EFloat "," relative=EFloat;
 	public KRenderingGrammarAccess.KBottomPositionElements getKBottomPositionAccess() {
 		return gaKRendering.getKBottomPositionAccess();
 	}
@@ -1234,15 +1153,8 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 		return getKBottomPositionAccess().getRule();
 	}
 
-	//KForegroundColor: //	propagateToChildren?='propagateToChildren'
-	////	'KForegroundColor'
-	////	'{'
-	////		'red' red=EInt
-	////		'green' green=EInt
-	////		'blue' blue=EInt
-	////    '}';
-	//	{KForegroundColor} "KForegroundColor" "{" propagateToChildren?="propagateToChildren"? ("red" red=EInt)? ("green"
-	//	green=EInt)? ("blue" blue=EInt)? "}";
+	//KForegroundColor:
+	//	{KForegroundColor} "ForegroundColor" red=EInt "," green=EInt "," blue=EInt propagateToChildren?="!"?;
 	public KRenderingGrammarAccess.KForegroundColorElements getKForegroundColorAccess() {
 		return gaKRendering.getKForegroundColorAccess();
 	}
@@ -1251,15 +1163,8 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 		return getKForegroundColorAccess().getRule();
 	}
 
-	//KBackgroundColor: //	propagateToChildren?='propagateToChildren'
-	////	'KBackgroundColor'
-	////	'{'
-	////		'red' red=EInt
-	////		'green' green=EInt
-	////		'blue' blue=EInt
-	////    '}';
-	//	{KBackgroundColor} "KBackgroundColor" "{" propagateToChildren?="propagateToChildren"? ("red" red=EInt)? ("green"
-	//	green=EInt)? ("blue" blue=EInt)? "}";
+	//KBackgroundColor:
+	//	{KBackgroundColor} "BackgroundColor" red=EInt "," green=EInt "," blue=EInt propagateToChildren?="!"?;
 	public KRenderingGrammarAccess.KBackgroundColorElements getKBackgroundColorAccess() {
 		return gaKRendering.getKBackgroundColorAccess();
 	}
@@ -1268,12 +1173,8 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 		return getKBackgroundColorAccess().getRule();
 	}
 
-	//KLineWidth: //	propagateToChildren?='propagateToChildren'
-	////	'KLineWidth'
-	////	'{'
-	////		'lineWidth' lineWidth=EInt
-	////    '}';
-	//	"KLineWidth" lineWidth=EInt propagateToChildren?="propagateToChildren"?;
+	//KLineWidth:
+	//	"LineWidth" lineWidth=EInt propagateToChildren?="!"?;
 	public KRenderingGrammarAccess.KLineWidthElements getKLineWidthAccess() {
 		return gaKRendering.getKLineWidthAccess();
 	}
@@ -1293,7 +1194,7 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//KForegroundVisibility:
-	//	{KForegroundVisibility} "KForegroundVisibility" visible?="visible"? propagateToChildren?="propagateToChildren"?;
+	//	{KForegroundVisibility} "ForegroundVisibility" visible=EBoolean propagateToChildren?="!"?;
 	public KRenderingGrammarAccess.KForegroundVisibilityElements getKForegroundVisibilityAccess() {
 		return gaKRendering.getKForegroundVisibilityAccess();
 	}
@@ -1303,7 +1204,7 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//KBackgroundVisibility:
-	//	{KBackgroundVisibility} "KBackgroundVisibility" visible?="visible"? propagateToChildren?="propagateToChildren"?;
+	//	{KBackgroundVisibility} "BackgroundVisibility" visible=EBoolean propagateToChildren?="!"?;
 	public KRenderingGrammarAccess.KBackgroundVisibilityElements getKBackgroundVisibilityAccess() {
 		return gaKRendering.getKBackgroundVisibilityAccess();
 	}
@@ -1312,12 +1213,8 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 		return getKBackgroundVisibilityAccess().getRule();
 	}
 
-	//KLineStyle: //	propagateToChildren?='propagateToChildren'
-	////	'KLineStyle'
-	////	'{'
-	////		'lineStyle' lineStyle=LineStyle
-	////    '}';
-	//	{KLineStyle} "KLineStyle" lineStyle=LineStyle? propagateToChildren?="propagateToChildren"?;
+	//KLineStyle:
+	//	{KLineStyle} "LineStyle" lineStyle=LineStyle propagateToChildren?="!"?;
 	public KRenderingGrammarAccess.KLineStyleElements getKLineStyleAccess() {
 		return gaKRendering.getKLineStyleAccess();
 	}
@@ -1326,12 +1223,8 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 		return getKLineStyleAccess().getRule();
 	}
 
-	//KVerticalAlignment: //	propagateToChildren?='propagateToChildren'
-	////	'KVerticalAlignment'
-	////	'{'
-	////		'verticalAlignment' verticalAlignment=VerticalAlignment
-	////    '}';
-	//	"KVerticalAlignment" verticalAlignment=VerticalAlignment propagateToChildren?="propagateToChildren"?;
+	//KVerticalAlignment:
+	//	{KVerticalAlignment} "VerticalAlignment" verticalAlignment=VerticalAlignment propagateToChildren?="!"?;
 	public KRenderingGrammarAccess.KVerticalAlignmentElements getKVerticalAlignmentAccess() {
 		return gaKRendering.getKVerticalAlignmentAccess();
 	}
@@ -1340,12 +1233,8 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 		return getKVerticalAlignmentAccess().getRule();
 	}
 
-	//KHorizontalAlignment: //	propagateToChildren?='propagateToChildren'
-	////	'KHorizontalAlignment'
-	////	'{'
-	////		'horizontalAlignment' horizontalAlignment=HorizontalAlignment
-	////    '}';
-	//	"KHorizontalAlignment" horizontalAlignment=HorizontalAlignment propagateToChildren?="propagateToChildren";
+	//KHorizontalAlignment:
+	//	{KHorizontalAlignment} "HorizontalAlignment" horizontalAlignment=HorizontalAlignment propagateToChildren?="!";
 	public KRenderingGrammarAccess.KHorizontalAlignmentElements getKHorizontalAlignmentAccess() {
 		return gaKRendering.getKHorizontalAlignmentAccess();
 	}
@@ -1354,11 +1243,8 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 		return getKHorizontalAlignmentAccess().getRule();
 	}
 
-	//KGridPlacement: //	'KGridPlacement'
-	////	'{'
-	////		'numColumns' numColumns=EInt
-	////    '}';
-	//	{KGridPlacement} "KGridPlacement" numColumns=EInt;
+	//KGridPlacement:
+	//	{KGridPlacement} "GridPlacement" numColumns=EInt;
 	public KRenderingGrammarAccess.KGridPlacementElements getKGridPlacementAccess() {
 		return gaKRendering.getKGridPlacementAccess();
 	}
@@ -1368,7 +1254,7 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//KStackPlacement:
-	//	{KStackPlacement} "KStackPlacement";
+	//	{KStackPlacement} "StackPlacement";
 	public KRenderingGrammarAccess.KStackPlacementElements getKStackPlacementAccess() {
 		return gaKRendering.getKStackPlacementAccess();
 	}
@@ -1405,6 +1291,26 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	
 	public EnumRule getHorizontalAlignmentRule() {
 		return getHorizontalAlignmentAccess().getRule();
+	}
+
+	//EFloat returns ecore::EFloat:
+	//	"-"? INT ("." INT (("E" | "e") "-"? INT)?)?;
+	public KRenderingGrammarAccess.EFloatElements getEFloatAccess() {
+		return gaKRendering.getEFloatAccess();
+	}
+	
+	public ParserRule getEFloatRule() {
+		return getEFloatAccess().getRule();
+	}
+
+	//EBoolean returns ecore::EBoolean:
+	//	"true" | "false";
+	public KRenderingGrammarAccess.EBooleanElements getEBooleanAccess() {
+		return gaKRendering.getEBooleanAccess();
+	}
+	
+	public ParserRule getEBooleanRule() {
+		return getEBooleanAccess().getRule();
 	}
 
 	//EInt returns ecore::EInt:

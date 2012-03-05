@@ -87,7 +87,7 @@ KGraphData returns KGraphData:
 //	'{'
 //		('persistentEntries' '{' persistentEntries+=PersistentEntry ( "," persistentEntries+=PersistentEntry)* '}' )?
 //    '}';
-    KRendering | KShapeLayout | KEdgeLayout;
+    KRendering | KRenderingLibrary | KShapeLayout | KEdgeLayout;
 
 //PersistentEntry returns PersistentEntry:
 //	'PersistentEntry'
