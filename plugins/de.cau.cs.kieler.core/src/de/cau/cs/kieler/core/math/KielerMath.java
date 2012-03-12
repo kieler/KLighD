@@ -52,7 +52,7 @@ public final class KielerMath {
     public static long factl(final int x) {
         // IllegalArgumentException when x not in [0..20]
         if (x < 0) {
-            throw new IllegalArgumentException("Little argument exception");
+            throw new IllegalArgumentException("x must be positive");
         } else if (x >= FACT_TABLE.length) {
             throw new IllegalArgumentException("Big argument exception");
         }
@@ -75,7 +75,7 @@ public final class KielerMath {
     public static double factd(final int x) {
         // IllegalArgumentException when x not in [0..20]
         if (x < 0) {
-            throw new IllegalArgumentException("Little argument exception");
+            throw new IllegalArgumentException("x must be positive");
         } else if (x > FACTD_UPPER_BOUND) {
             throw new IllegalArgumentException("Big argument exception");
         } else if (x < FACT_TABLE.length) {
@@ -87,7 +87,8 @@ public final class KielerMath {
 
     /**
      * The binomial coefficient of integers n and k as long value. If n is not positive or k is not
-     * between 0 and n the result is 1. This method always returns the exact value, but may take
+     * between 0 and n the result is IllegalArgumentException. 
+     * This method always returns the exact value, but may take
      * very long for large input values.
      * 
      * @param n
@@ -95,12 +96,14 @@ public final class KielerMath {
      * @param k
      *            the lower integer
      * @return n choose k
+     * @throws IllegalArgumentException
+     *             if n < 0 or n < 0 or k > n
      */
     public static long binomiall(final int n, final int k) {
         if (n < 0 || k < 0) {
-            throw new IllegalArgumentException("Little argument exception");
+            throw new IllegalArgumentException("k and n must be positive");
         } else if (k > n) {
-            throw new IllegalArgumentException("k must be smaller than n in a binomial coefficient");
+            throw new IllegalArgumentException("k must be smaller than n");
         } else if (k == 0 || k == n) {
             return 1;
         } else if (n == 0) {
@@ -114,7 +117,8 @@ public final class KielerMath {
 
     /**
      * The binomial coefficient of integers n and k as double value. If n is not positive or k is
-     * not between 0 and n the result is 1. This method returns the exact value for small input
+     * not between 0 and n the result is IllegalArgumentException. 
+     * This method returns the exact value for small input
      * values, and uses an approximation for large input values.
      * 
      * @param n
@@ -122,10 +126,18 @@ public final class KielerMath {
      * @param k
      *            the lower integer
      * @return n choose k
+     * @throws IllegalArgumentException
+     *             if n < 0 or n < 0 or k > n
      */
     public static double binomiald(final int n, final int k) {
-        if (n <= 0 || k <= 0 || k >= n) {
+        if (n < 0 || k < 0) {
+            throw new IllegalArgumentException("k and n must be positive");
+        } else if (k > n) {
+            throw new IllegalArgumentException("k must be smaller than n");
+        } else if (k == 0 || k == n) {
             return 1;
+        } else if (n == 0) {
+            return 0;
         } else {
             return factd(n) / (factd(k) * factd(n - k));
         }
@@ -822,4 +834,5 @@ public final class KielerMath {
         return avg / values.length;
     }
 
+  
 }
