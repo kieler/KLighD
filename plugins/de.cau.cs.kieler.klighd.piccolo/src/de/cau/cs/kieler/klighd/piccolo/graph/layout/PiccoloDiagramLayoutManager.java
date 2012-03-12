@@ -85,7 +85,7 @@ public class PiccoloDiagramLayoutManager implements IDiagramLayoutManager<IGraph
     public boolean supports(final Object object) {
         if (object instanceof DiagramViewPart) {
             DiagramViewPart view = (DiagramViewPart) object;
-            return view.getViewer().getActiveViewer() instanceof PiccoloViewer;
+            return view.getContextViewer().getActiveViewer() instanceof PiccoloViewer;
         } else if (object instanceof ContextViewer) {
             ContextViewer contextViewer = (ContextViewer) object;
             return contextViewer.getActiveViewer() instanceof PiccoloViewer;
@@ -120,7 +120,7 @@ public class PiccoloDiagramLayoutManager implements IDiagramLayoutManager<IGraph
             if (viewer == null) {
                 if (workbenchPart instanceof DiagramViewPart) {
                     DiagramViewPart view = (DiagramViewPart) workbenchPart;
-                    ContextViewer contextViewer = view.getViewer();
+                    ContextViewer contextViewer = view.getContextViewer();
                     IViewer<?> activeViewer = contextViewer.getActiveViewer();
                     if (activeViewer instanceof PiccoloViewer) {
                         viewer = (PiccoloViewer) activeViewer;

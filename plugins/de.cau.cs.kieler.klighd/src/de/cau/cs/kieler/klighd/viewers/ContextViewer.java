@@ -115,6 +115,16 @@ public class ContextViewer extends AbstractViewer<Object> implements IViewerEven
             resetSelection();
         }
     }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public Object getModel() {
+        if (currentViewer != null) {
+            return currentViewer.getModel();
+        }
+        return null;
+    }
 
     /**
      * Shows the given message.

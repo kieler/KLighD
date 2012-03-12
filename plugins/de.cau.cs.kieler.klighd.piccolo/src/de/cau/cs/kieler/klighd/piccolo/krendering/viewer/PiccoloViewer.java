@@ -56,7 +56,7 @@ public class PiccoloViewer extends AbstractViewer<KNode> implements INodeSelecti
 
     /** the graph controller. */
     private GraphController controller;
-    
+
     /**
      * Creates a Piccolo viewer with default style.
      * 
@@ -100,13 +100,13 @@ public class PiccoloViewer extends AbstractViewer<KNode> implements INodeSelecti
     private void addContextMenu(final Composite composite) {
         MenuManager menuManager = new MenuManager();
         // add the 'save-as-image' action
-        Action saveAsImageAction = new SaveAsImageAction(this,
-                Messages.PiccoloViewer_save_as_image_text);
+        Action saveAsImageAction =
+                new SaveAsImageAction(this, Messages.PiccoloViewer_save_as_image_text);
         menuManager.add(saveAsImageAction);
 
         // add the 'export-kgraph' action
-        Action exportKGraphAction = new ExportKGraphAction(this,
-                Messages.PiccoloViewer_export_kgraph_text);
+        Action exportKGraphAction =
+                new ExportKGraphAction(this, Messages.PiccoloViewer_export_kgraph_text);
         menuManager.add(exportKGraphAction);
 
         // create the context menu
@@ -153,6 +153,16 @@ public class PiccoloViewer extends AbstractViewer<KNode> implements INodeSelecti
     }
 
     /**
+     * {@inheritDoc}
+     */
+    public KNode getModel() {
+        if (controller != null) {
+            return controller.getGraph();
+        }
+        return null;
+    }
+
+    /**
      * Resizes the number of layers in the camera to the given number and resets them.
      * 
      * @param number
@@ -180,7 +190,7 @@ public class PiccoloViewer extends AbstractViewer<KNode> implements INodeSelecti
             layer.removeAllChildren();
         }
     }
-    
+
     /**
      * {@inheritDoc}
      */

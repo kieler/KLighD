@@ -37,5 +37,18 @@
             name="Visualize EMF tree editor conten">
       </combination>
    </extension>
+   <extension
+         point="de.cau.cs.kieler.kiml.ui.layoutManagers">
+      <manager
+            class="de.cau.cs.kieler.klighd.krendering.DiagramLayoutManager">
+      </manager>
+   </extension>
+   <extension
+         point="de.cau.cs.kieler.klighd.updateStrategies">
+      <updateStrategy
+            class="de.cau.cs.kieler.klighd.krendering.UpdateStrategy"
+            id="de.cau.cs.kieler.klighd.krendering.updateStrategy">
+      </updateStrategy>
+   </extension>
 
 </plugin>

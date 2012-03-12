@@ -75,7 +75,7 @@ public class DiagramViewPart extends ViewPart {
      * 
      * @return the context viewer
      */
-    public ContextViewer getViewer() {
+    public ContextViewer getContextViewer() {
         return viewer;
     }
 

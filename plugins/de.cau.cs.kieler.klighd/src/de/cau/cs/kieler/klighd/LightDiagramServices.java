@@ -63,7 +63,7 @@ public final class LightDiagramServices {
     public static final String EXTP_ID_MODEL_TRANSFORMATIONS =
             "de.cau.cs.kieler.klighd.modelTransformations";
     /** identifier of the extension point for update strategies. */
-    public static final String EXTP_ID_UPDATE_STRATEGIES = "de.cau.cs.kieler.klighd.updateStrategy";
+    public static final String EXTP_ID_UPDATE_STRATEGIES = "de.cau.cs.kieler.klighd.updateStrategies";
 
     /** name of the 'viewer' element. */
     public static final String ELEMENT_VIEWER = "viewer";
@@ -422,7 +422,7 @@ public final class LightDiagramServices {
         } else {
             return null;
         }
-
+        
         // on success return the view context, otherwise return null
         if (success) {
             // get the update strategy request
@@ -435,6 +435,16 @@ public final class LightDiagramServices {
                     viewContext.setUpdateStrategy(updateStrategy);
                 }
             }
+//            else {
+//                // search for a compatible update strategy
+//                Class<?> targetClass = viewContext.getTargetClass();
+//                for (IUpdateStrategy<?> updateStrategyCandidate : idUpdateStrategyMapping.values()) {
+//                    if (targetClass.equals(updateStrategyCandidate.getModelClass())) {
+//                        viewContext.setUpdateStrategy(updateStrategyCandidate);
+//                        break;
+//                    }
+//                }
+//            }
 
             return viewContext;
         } else {
@@ -476,7 +486,7 @@ public final class LightDiagramServices {
                 if (viewer != null) {
                     @SuppressWarnings("unchecked")
                     IViewer<Object> objViewer = (IViewer<Object>) viewer;
-                    objViewer.setModel(newModel);
+                    objViewer.setModel(newModel, true);
                 }
             }
             return true;

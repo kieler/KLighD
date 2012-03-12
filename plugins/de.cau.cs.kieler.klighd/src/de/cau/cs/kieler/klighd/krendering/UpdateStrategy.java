@@ -13,6 +13,13 @@
  */
 package de.cau.cs.kieler.klighd.krendering;
 
+import java.util.List;
+
+import org.eclipse.emf.ecore.util.EcoreUtil;
+
+import com.google.common.collect.Lists;
+
+import de.cau.cs.kieler.core.kgraph.KGraphData;
 import de.cau.cs.kieler.core.kgraph.KNode;
 import de.cau.cs.kieler.kiml.util.KimlUtil;
 import de.cau.cs.kieler.klighd.IUpdateStrategy;
@@ -35,9 +42,27 @@ public class UpdateStrategy implements IUpdateStrategy<KNode> {
     /**
      * {@inheritDoc}
      */
-    public KNode update(final KNode baseModel, final KNode newModel, final ViewContext viewContext) {
-        // TODO Auto-generated method stub
-        return null;
+    public void update(final KNode baseModel, final KNode newModel, final ViewContext viewContext) {
+        // TODO only a temporary solution
+        // FIXME not working yet
+
+        // reset the base model
+        baseModel.getChildren().clear();
+        baseModel.getData().clear();
+        
+        // make a copy of the new model
+        KNode copyModel = EcoreUtil.copy(newModel);
+        
+        // merge the copy into the base model
+        List<KGraphData> copyData = Lists.newLinkedList();
+        copyData.addAll(copyModel.getData());
+        copyModel.getData().clear();
+        List<KNode> copyNodes = Lists.newLinkedList();
+        copyNodes.addAll(copyModel.getChildren());
+        copyModel.getChildren().clear();
+        baseModel.getData().addAll(copyData);
+        baseModel.getChildren().addAll(copyNodes);
+        
     }
 
     /**

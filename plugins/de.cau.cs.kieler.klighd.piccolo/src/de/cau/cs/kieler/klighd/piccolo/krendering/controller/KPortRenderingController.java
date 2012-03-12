@@ -27,7 +27,7 @@ import edu.umd.cs.piccolo.PNode;
 /**
  * @author mri
  */
-public class KPortRenderingController extends RenderingController<KPort, KPortNode> {
+public class KPortRenderingController extends AbstractRenderingController<KPort, KPortNode> {
 
     /**
      * Constructs a rendering controller for a port.
@@ -43,7 +43,7 @@ public class KPortRenderingController extends RenderingController<KPort, KPortNo
      * {@inheritDoc}
      */
     @Override
-    public PNode internalUpdateRendering() {
+    protected PNode internalUpdateRendering() {
         PNode repNode = getRepresentation();
 
         // evaluate the rendering data

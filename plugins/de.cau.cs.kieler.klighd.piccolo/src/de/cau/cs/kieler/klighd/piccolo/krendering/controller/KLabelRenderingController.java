@@ -31,7 +31,7 @@ import edu.umd.cs.piccolox.swt.PSWTText;
 /**
  * @author mri
  */
-public class KLabelRenderingController extends RenderingController<KLabel, KLabelNode> {
+public class KLabelRenderingController extends AbstractRenderingController<KLabel, KLabelNode> {
 
     /**
      * Constructs a rendering controller for a label.
@@ -47,7 +47,7 @@ public class KLabelRenderingController extends RenderingController<KLabel, KLabe
      * {@inheritDoc}
      */
     @Override
-    public PNode internalUpdateRendering() {
+    protected PNode internalUpdateRendering() {
         PNode repNode = getRepresentation();
 
         // evaluate the rendering data

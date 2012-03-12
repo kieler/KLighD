@@ -14,7 +14,6 @@
 package de.cau.cs.kieler.klighd.piccolo.krendering;
 
 import de.cau.cs.kieler.core.kgraph.KNode;
-import de.cau.cs.kieler.core.util.IWrapper;
 import de.cau.cs.kieler.klighd.piccolo.krendering.controller.RenderingContextData;
 import de.cau.cs.kieler.klighd.piccolo.nodes.PZIndexNode;
 
@@ -23,12 +22,14 @@ import de.cau.cs.kieler.klighd.piccolo.nodes.PZIndexNode;
  * 
  * @author mri
  */
-public class KNodeNode extends PZIndexNode implements INode, IWrapper<KNode> {
+public class KNodeNode extends PZIndexNode implements INode, ILabeledGraphElement {
 
     private static final long serialVersionUID = 6311105654943173693L;
     
-    /** the number of z-layers (rendering and ports). */
-    private static final int Z_LAYERS = 2;
+    /** the number of z-layers (rendering, ports and labels). */
+    private static final int Z_LAYERS = 3;
+    /** the z-index for the label layer. */
+    private static final int LABEL_LAYER = 2;
     /** the z-index for the port layer. */
     private static final int PORT_LAYER = 1;
 
@@ -73,6 +74,16 @@ public class KNodeNode extends PZIndexNode implements INode, IWrapper<KNode> {
         addChild(port, PORT_LAYER);
     }
 
+    /**
+     * Adds the representation of a label to this node.
+     * 
+     * @param label
+     *            the label representation
+     */
+    public void addLabel(final KLabelNode label) {
+        addChild(label, LABEL_LAYER);
+    }
+    
     /**
      * Sets the child area for this node.
      * 

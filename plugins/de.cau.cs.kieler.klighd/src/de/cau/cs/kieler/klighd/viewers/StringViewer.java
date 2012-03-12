@@ -70,6 +70,13 @@ public class StringViewer implements IViewer<String> {
     /**
      * {@inheritDoc}
      */
+    public String getModel() {
+        return message;
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
     public void setModel(final String model, final boolean sync) {
         if (model == null) {
             return;

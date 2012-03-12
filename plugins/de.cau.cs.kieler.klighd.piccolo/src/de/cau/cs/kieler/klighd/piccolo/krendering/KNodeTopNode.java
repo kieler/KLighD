@@ -14,7 +14,6 @@
 package de.cau.cs.kieler.klighd.piccolo.krendering;
 
 import de.cau.cs.kieler.core.kgraph.KNode;
-import de.cau.cs.kieler.core.util.IWrapper;
 import de.cau.cs.kieler.klighd.piccolo.krendering.controller.RenderingContextData;
 import de.cau.cs.kieler.klighd.piccolo.nodes.PEmptyNode;
 
@@ -23,7 +22,7 @@ import de.cau.cs.kieler.klighd.piccolo.nodes.PEmptyNode;
  * 
  * @author mri
  */
-public class KNodeTopNode extends PEmptyNode implements INode, IWrapper<KNode> {
+public class KNodeTopNode extends PEmptyNode implements INode {
 
     private static final long serialVersionUID = 8395163186723344696L;
 

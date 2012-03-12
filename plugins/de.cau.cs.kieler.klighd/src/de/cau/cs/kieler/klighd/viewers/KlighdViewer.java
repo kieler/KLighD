@@ -42,6 +42,15 @@ public class KlighdViewer extends AbstractViewer<Object> {
     }
 
     /**
+     * Returns the context viewer utilized by this viewer.
+     * 
+     * @return the context viewer.
+     */
+    public ContextViewer getContextViewer() {
+        return contextViewer;
+    }
+    
+    /**
      * {@inheritDoc}
      */
     public Control getControl() {
@@ -59,6 +68,13 @@ public class KlighdViewer extends AbstractViewer<Object> {
             contextViewer.setModel("Could not find a visualization for the model.", false);
         }
         LightDiagramServices.getInstance().updateViewContext(viewContext, model);
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public Object getModel() {
+        return contextViewer.getModel();
     }
 
     /**

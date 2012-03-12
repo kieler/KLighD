@@ -31,7 +31,7 @@ import edu.umd.cs.piccolo.PNode;
 /**
  * @author mri
  */
-public class KEdgeRenderingController extends RenderingController<KEdge, KEdgeNode> {
+public class KEdgeRenderingController extends AbstractRenderingController<KEdge, KEdgeNode> {
 
     /**
      * Constructs a rendering controller for an edge.
@@ -47,7 +47,7 @@ public class KEdgeRenderingController extends RenderingController<KEdge, KEdgeNo
      * {@inheritDoc}
      */
     @Override
-    public PNode internalUpdateRendering() {
+    protected PNode internalUpdateRendering() {
         PNode repNode = getRepresentation();
 
         // evaluate the rendering data

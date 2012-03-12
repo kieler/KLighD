@@ -53,6 +53,13 @@ public interface IViewer<T> {
      *            true if the viewer should synchronize the visualization with the model; false else
      */
     void setModel(T model, boolean sync);
+    
+    /**
+     * Returns the input model currently set for this viewer.
+     * 
+     * @return the input model or null if no input model is set
+     */
+    T getModel();
 
     /**
      * Starts recording layout changes in the model.

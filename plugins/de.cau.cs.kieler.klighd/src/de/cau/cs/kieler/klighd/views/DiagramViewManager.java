@@ -232,7 +232,7 @@ public final class DiagramViewManager implements IPartListener {
                 }
 
                 registerViewContext(diagramView, id, viewContext);
-                diagramView.getViewer().setModel(viewContext);
+                diagramView.getContextViewer().setModel(viewContext);
 
                 // do an initial update of the view context
                 LightDiagramServices.getInstance().updateViewContext(viewContext, model);

@@ -32,7 +32,7 @@ import edu.umd.cs.piccolo.util.PBounds;
 /**
  * @author mri
  */
-public class KNodeRenderingController extends RenderingController<KNode, KNodeNode> {
+public class KNodeRenderingController extends AbstractRenderingController<KNode, KNodeNode> {
 
     /** the Piccolo node representing the child area. */
     private KChildAreaNode childAreaNode;
@@ -62,7 +62,7 @@ public class KNodeRenderingController extends RenderingController<KNode, KNodeNo
      * {@inheritDoc}
      */
     @Override
-    public PNode internalUpdateRendering() {
+    protected PNode internalUpdateRendering() {
         PNode repNode = getRepresentation();
         
         // detach the child area before updating the rendering

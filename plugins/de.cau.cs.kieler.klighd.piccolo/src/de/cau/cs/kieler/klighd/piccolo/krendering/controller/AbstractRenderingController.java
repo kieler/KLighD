@@ -93,8 +93,8 @@ import edu.umd.cs.piccolo.util.PBounds;
 import edu.umd.cs.piccolox.swt.PSWTText;
 
 /**
- * The class which controls the transformation of KRendering data to Piccolo nodes and the
- * synchronization of these Piccolo nodes with the KRendering model.
+ * The abstract base class for classes which control the transformation of KRendering data to
+ * Piccolo nodes and the synchronization of these Piccolo nodes with the KRendering model.
  * 
  * @author mri
  * 
@@ -103,7 +103,7 @@ import edu.umd.cs.piccolox.swt.PSWTText;
  * @param <T>
  *            the type of the Piccolo node representing the graph element
  */
-public abstract class RenderingController<S extends KGraphElement, T extends PNode> {
+public abstract class AbstractRenderingController<S extends KGraphElement, T extends PNode> {
 
     /** the property for a rendering node's controller. */
     private static final IProperty<Map<Object, PNodeController<?>>> CONTROLLER =
@@ -140,7 +140,7 @@ public abstract class RenderingController<S extends KGraphElement, T extends PNo
      * @param repNode
      *            the Piccolo node representing the graph element
      */
-    public RenderingController(final S element, final T repNode) {
+    public AbstractRenderingController(final S element, final T repNode) {
         this.element = element;
         this.repNode = repNode;
     }
@@ -1180,13 +1180,13 @@ public abstract class RenderingController<S extends KGraphElement, T extends PNo
     }
 
     /**
-     * Returns the bounds for a polyline placement data in given parent bounds.
+     * Returns the points for a polyline placement data in given parent bounds.
      * 
      * @param ppd
      *            the polyline placement data
      * @param parentBounds
      *            the parent bounds
-     * @return the bounds
+     * @return the points
      */
     protected Point2D[] evaluatePolylinePlacement(final KPolylinePlacementData ppd,
             final PBounds parentBounds) {

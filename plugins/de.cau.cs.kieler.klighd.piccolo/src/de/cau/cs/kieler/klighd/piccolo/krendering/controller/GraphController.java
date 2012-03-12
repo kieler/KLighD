@@ -101,6 +101,15 @@ public class GraphController {
     }
 
     /**
+     * Returns the node representing the graph of this controller.
+     * 
+     * @return the graph
+     */
+    public KNode getGraph() {
+        return topNode.getWrapped();
+    }
+    
+    /**
      * Returns whether the represenation is synchronized with the graph.
      * 
      * @return true if the representation is synchronized with the graph; false else
@@ -190,6 +199,7 @@ public class GraphController {
 
         if (sync) {
             installChildrenSyncAdapter(parentNode);
+            installOutgoingEdgeSyncAdapter(parentNode);
         }
     }
 
@@ -218,7 +228,7 @@ public class GraphController {
             updateLayout(nodeNode);
             updateRendering(nodeNode);
             handlePorts(nodeNode);
-            // TODO handle labels
+            handleLabels(nodeNode, node);
 
             if (sync) {
                 installLayoutSyncAdapter(nodeNode);
@@ -237,17 +247,18 @@ public class GraphController {
      */
     private void removeNode(final KNode node) {
         INode nodeRep = RenderingContextData.get(node).getProperty(INode.NODE_REP);
+        if (nodeRep != null) {
+            KNodeNode nodeNode;
+            if (nodeRep instanceof KNodeTopNode) {
+                // if the node is the current top-node something went wrong
+                throw new RuntimeException("The top-node can never be removed from a parent node");
+            } else {
+                nodeNode = (KNodeNode) nodeRep;
+            }
 
-        KNodeNode nodeNode;
-        if (nodeRep instanceof KNodeTopNode) {
-            // if the node is the current top-node something went wrong
-            throw new RuntimeException("The top-node can never be removed from a parent node");
-        } else {
-            nodeNode = (KNodeNode) nodeRep;
+            // remove the node representation from the containing child area
+            nodeNode.removeFromParent();
         }
-
-        // remove the node representation from the containing child area
-        nodeNode.removeFromParent();
     }
 
     /**
@@ -283,6 +294,7 @@ public class GraphController {
             portNode = new KPortNode(port);
             updateLayout(portNode);
             updateRendering(portNode);
+            handleLabels(portNode, port);
 
             if (sync) {
                 installLayoutSyncAdapter(portNode);
@@ -301,9 +313,10 @@ public class GraphController {
      */
     private void removePort(final KPort port) {
         KPortNode portNode = RenderingContextData.get(port).getProperty(KPortNode.PORT_REP);
-
-        // remove the port representation from the containing node
-        portNode.removeFromParent();
+        if (portNode != null) {
+            // remove the port representation from the containing node
+            portNode.removeFromParent();
+        }
     }
 
     /**
@@ -361,9 +374,10 @@ public class GraphController {
      */
     private void removeLabel(final KLabel label) {
         KLabelNode labelNode = RenderingContextData.get(label).getProperty(KLabelNode.LABEL_REP);
-
-        // remove the label representation from the containing node
-        labelNode.removeFromParent();
+        if (labelNode != null) {
+            // remove the label representation from the containing node
+            labelNode.removeFromParent();
+        }
     }
 
     /**
@@ -390,7 +404,7 @@ public class GraphController {
         // find and set the parent for the edge
         updateEdgeParent(edgeRep);
 
-        // update the offset of the edge layout to the containg child area
+        // update the offset of the edge layout to the containing child area
         // TODO implement this + cross hierarchy sync
     }
 
@@ -582,7 +596,7 @@ public class GraphController {
                                 }
                             }
                         }
-                    }, false);
+                    }, true);
                 }
             });
         }
@@ -640,7 +654,7 @@ public class GraphController {
                                 }
                             }
                         }
-                    }, false);
+                    }, true);
                 }
             });
         }
@@ -698,7 +712,7 @@ public class GraphController {
                                 }
                             }
                         }
-                    }, false);
+                    }, true);
                 }
             });
         }
@@ -734,7 +748,7 @@ public class GraphController {
                                     updateLayout(edgeRep);
                                 }
                             }
-                        }, false);
+                        }, true);
                     }
                 }
             });
@@ -792,6 +806,47 @@ public class GraphController {
                             public void run() {
                                 for (KNode removedNode : removedNodes) {
                                     removeNode(removedNode);
+                                }
+                            }
+                        }, false);
+                        break;
+                    }
+                    }
+                }
+            }
+        });
+    }
+    
+    /**
+     * Installs an adapter on the represented node to synchronize the outgoing edges of the
+     * representation with the specified outgoing edges in the model.
+     * 
+     * @param nodeRep
+     *            the node representation
+     */
+    private void installOutgoingEdgeSyncAdapter(final INode nodeRep) {
+        KNode node = nodeRep.getWrapped();
+        // add an adapter on the node's outgoing edges
+        node.eAdapters().add(new AdapterImpl() {
+            public void notifyChanged(final Notification notification) {
+                if (notification.getFeatureID(KNode.class) == KGraphPackage.KNODE__OUTGOING_EDGES) {
+                    switch (notification.getEventType()) {
+                    case Notification.ADD: {
+                        final KEdge addedEdge = (KEdge) notification.getNewValue();
+                        MonitoredOperation.runInUI(new Runnable() {
+                            public void run() {
+                                handleEdge(addedEdge);
+                            }
+                        }, false);
+                        break;
+                    }
+                    case Notification.ADD_MANY: {
+                        @SuppressWarnings("unchecked")
+                        final List<KEdge> addedEdges = (List<KEdge>) notification.getNewValue();
+                        MonitoredOperation.runInUI(new Runnable() {
+                            public void run() {
+                                for (KEdge addedEdge : addedEdges) {
+                                    handleEdge(addedEdge);
                                 }
                             }
                         }, false);

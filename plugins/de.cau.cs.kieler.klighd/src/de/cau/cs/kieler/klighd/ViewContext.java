@@ -124,27 +124,12 @@ public final class ViewContext extends MapPropertyHolder {
     }
 
     /**
-     * Returns the class of the source model in the complete context.
-     * 
-     * @return the class of the source model or null if there is no transformation in this context
-     */
-    public Class<?> getSourceClass() {
-        if (transformationContexts.size() > 0) {
-            transformationContexts.get(0).getTransformation().getSourceClass();
-        }
-        return null;
-    }
-
-    /**
      * Returns the class of the target model in the complete context.
      * 
      * @return the class of the target model or null if there is no transformation in this context
      */
     public Class<?> getTargetClass() {
-        if (transformationContexts.size() > 0) {
-            transformationContextsRev.get(0).getTransformation().getTargetClass();
-        }
-        return null;
+        return viewerProvider.getModelClass();
     }
 
     /**
