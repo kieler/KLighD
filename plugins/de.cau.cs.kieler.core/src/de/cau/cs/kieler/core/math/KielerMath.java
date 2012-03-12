@@ -32,9 +32,12 @@ public final class KielerMath {
 
     /** table of precomputed factorial values. */
     private static final long[] FACT_TABLE = { 1L, 1L, 2L, 6L, 24L, 120L, 720L, 5040L, 40320L,
-            362880L, 3628800L, 39916800L, 479001600L, 6227020800L, 87178291200L, 1307674368000L ,
-            20922789888000L, 355687428096000L, 6402373705728000L, 121645100408832000L, 
-            2432902008176640000L  };
+            362880L, 3628800L, 39916800L, 479001600L, 6227020800L, 87178291200L, 1307674368000L,
+            20922789888000L, 355687428096000L, 6402373705728000L, 121645100408832000L,
+            2432902008176640000L };
+
+    /** the upper bound for the input of function factd. */
+    private static final int FACTD_UPPER_BOUND = 26;
 
     /**
      * The factorial of an integer x as long value. If x is negative or greater then 20 then
@@ -53,23 +56,28 @@ public final class KielerMath {
         } else if (x >= FACT_TABLE.length) {
             throw new IllegalArgumentException("Big argument exception");
         }
-        //return the appropriate value from FACT_TABLE with index x
+        // return the appropriate value from FACT_TABLE with index x
         return FACT_TABLE[x];
 
     }
 
     /**
-     * The factorial of an integer x as double value. If x is negative the result is 1. This method
-     * returns the exact value for small input values, and uses Stirling's approximation for large
-     * input values.
+     * The factorial of an integer x as double value. If x is negative or x > 26 then
+     * IllegalArgumentException. This method returns the exact value for small input values, and
+     * uses Stirling's approximation for large input values.
      * 
      * @param x
      *            an integer
      * @return the factorial of x
+     * @throws IllegalArgumentException
+     *             if x<0 or x>26
      */
     public static double factd(final int x) {
+        // IllegalArgumentException when x not in [0..20]
         if (x < 0) {
-            return 1;
+            throw new IllegalArgumentException("Little argument exception");
+        } else if (x > FACTD_UPPER_BOUND) {
+            throw new IllegalArgumentException("Big argument exception");
         } else if (x < FACT_TABLE.length) {
             return FACT_TABLE[x];
         } else {
@@ -89,7 +97,13 @@ public final class KielerMath {
      * @return n choose k
      */
     public static long binomiall(final int n, final int k) {
-        if (n <= 0 || k <= 0 || k >= n) {
+        if (n < 0 || k < 0) {
+            throw new IllegalArgumentException("Little argument exception");
+        } else if (k > n) {
+            throw new IllegalArgumentException("k must be smaller than n in a binomial coefficient");
+        } else if (k == 0) {
+            return 1;
+        } else if (n == 0) {
             return 1;
         } else if (n < FACT_TABLE.length) {
             return factl(n) / (factl(k) * factl(n - k));
@@ -806,11 +820,6 @@ public final class KielerMath {
             avg += values[i];
         }
         return avg / values.length;
-    }
-
-    public static void main(final String[] args) {
-
-        System.out.println(new KielerMath().factl(20));
     }
 
 }
