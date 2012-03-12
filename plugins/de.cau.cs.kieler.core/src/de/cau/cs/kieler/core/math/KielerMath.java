@@ -101,10 +101,10 @@ public final class KielerMath {
             throw new IllegalArgumentException("Little argument exception");
         } else if (k > n) {
             throw new IllegalArgumentException("k must be smaller than n in a binomial coefficient");
-        } else if (k == 0) {
+        } else if (k == 0 || k == n) {
             return 1;
         } else if (n == 0) {
-            return 1;
+            return 0;
         } else if (n < FACT_TABLE.length) {
             return factl(n) / (factl(k) * factl(n - k));
         } else {
