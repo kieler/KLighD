@@ -36,8 +36,6 @@ import de.cau.cs.kieler.klighd.TransformationContext;
  */
 public abstract class AbstractTransformation<S, T> implements ITransformation<S, T> {
 
-    /** The current transformation context. */
-    private TransformationContext<S, T> context = null;
     /** The lookup tables maintaining the model-image-relation of the transformation. */
     private Multimap<Object, Object> sourceTargetElementMap = null;
     private Map<Object, Object> targetSourceElementMap = null;
@@ -45,54 +43,10 @@ public abstract class AbstractTransformation<S, T> implements ITransformation<S,
     /**
      * {@inheritDoc}
      */
-    public T transform(final S model, final TransformationContext<S, T> transformationContext) {
-        context = transformationContext;
-        T targetModel = transform(transformationContext.getSourceModel());
-        context = null;
-        return targetModel;
-    }
-
-    /**
-     * Performs the actual transformation from an object of type {@code S} to a model of type
-     * {@code T}.
-     * 
-     * @param model
-     *            the source model
-     * @return the target model
-     */
-    public abstract T transform(final S model);
-
-    /**
-     * Returns the current transformation context this transformation is executing in.
-     * 
-     * @return the transformation context while executing the transform method; null else
-     */
-    public TransformationContext<S, T> getTransformationContext() {
-        return context;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     public Object getSourceElement(final Object element,
             final TransformationContext<S, T> transformationContext) {
-        context = transformationContext;
-        Object sourceElement = getSourceElement(element);
-        context = null;
-        return sourceElement;
-    }
-    
-    /**
-     * Returns the element in the source model which is represented by the given element in the
-     * target model.
-     * 
-     * @param target
-     *            the element in the target model
-     * @return the element in the source model or null if the element could not be found
-     */
-    public Object getSourceElement(final Object target) {
         if (this.targetSourceElementMap != null) {
-            return this.targetSourceElementMap.get(target);
+            return this.targetSourceElementMap.get(element);
         }
         return null;
     }
@@ -102,23 +56,8 @@ public abstract class AbstractTransformation<S, T> implements ITransformation<S,
      */
     public Object getTargetElement(final Object element,
             final TransformationContext<S, T> transformationContext) {
-        context = transformationContext;
-        Object targetElement = getTargetElement(element);
-        context = null;
-        return targetElement;
-    }
-    
-    /**
-     * Returns the element in the target model which represents the given element in the source
-     * model.
-     * 
-     * @param source
-     *            the element in the source model
-     * @return the element in the target model or null if the element could not be found
-     */
-    public Object getTargetElement(final Object source) {
         if (this.sourceTargetElementMap != null) {
-            return this.sourceTargetElementMap.get(source);
+            return this.sourceTargetElementMap.get(element);
         }
         return null;
     }
@@ -144,7 +83,26 @@ public abstract class AbstractTransformation<S, T> implements ITransformation<S,
         this.targetSourceElementMap.put(target, source);
         return target;
     }
-     
+    
+    /**
+     * A helper method allowing to adopt the mappings of another transformation.
+     * This is needed if a diagram synthesis delegates to another one.
+     * 
+     * @param other the delegate transformation to take the mapping from
+     */
+    protected void takeMappingsOf(final AbstractTransformation<?, T> other) {
+        if (other.targetSourceElementMap == null
+                || other.sourceTargetElementMap == null) {
+            return;
+        }
+        if (this.targetSourceElementMap == null
+                || this.sourceTargetElementMap == null) {
+            this.targetSourceElementMap = Maps.newHashMap();
+            this.sourceTargetElementMap = HashMultimap.create();
+        }
+        this.sourceTargetElementMap.putAll(other.sourceTargetElementMap);
+        this.targetSourceElementMap.putAll(other.targetSourceElementMap);
+    }
     
     
     /** whether it has been tried to infer the classes. */
@@ -218,7 +176,7 @@ public abstract class AbstractTransformation<S, T> implements ITransformation<S,
         Method transformMethod = null;
         for (Method method : getClass().getDeclaredMethods()) {
             if (method.getName().equals(TRANSFORM_METHOD_NAME)
-                    && method.getParameterTypes().length == 1
+                    && method.getParameterTypes().length == 2
                     && !method.getReturnType().equals(Void.TYPE)) {
                 transformMethod = method;
                 // keep searching if the parameter is of type Object
