@@ -194,15 +194,8 @@ public class PiccoloViewer extends AbstractViewer<KNode> implements INodeSelecti
     /**
      * {@inheritDoc}
      */
-    public void startRecording() {
-        controller.startRecording();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public void stopRecording() {
-        controller.stopRecording();
+    public void setRecording(final boolean recording) {
+        controller.setRecording(recording);
     }
 
     /**

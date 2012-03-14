@@ -20,7 +20,6 @@ Require-Bundle: edu.umd.cs.piccolo;bundle-version="1.3.0",
  de.cau.cs.kieler.core.kgraph,
  de.cau.cs.kieler.core.krendering;bundle-version="0.1.0"
 Export-Package: de.cau.cs.kieler.klighd.piccolo,
- de.cau.cs.kieler.klighd.piccolo.graph,
  de.cau.cs.kieler.klighd.piccolo.nodes
 Import-Package: org.eclipse.core.resources,
  org.eclipse.ui.dialogs

@@ -19,15 +19,23 @@ package de.cau.cs.kieler.klighd.piccolo.util;
 import java.awt.geom.Point2D;
 
 import edu.umd.cs.piccolo.PNode;
+import edu.umd.cs.piccolo.activities.PActivity;
+import edu.umd.cs.piccolo.activities.PActivity.PActivityDelegate;
 import edu.umd.cs.piccolo.util.PAffineTransform;
 import edu.umd.cs.piccolo.util.PBounds;
 
 /**
- * A utility class for handling common Piccolo node related tasks.
+ * A utility class for handling common Piccolo node related tasks.<br>
+ * <br>
+ * In the context of this utility class the term 'smart bounds' refers to a bounds instance, which
+ * origin is the translation of an associated node instead of a static offset.
  * 
  * @author mri
  */
 public final class NodeUtil {
+
+    /** the attribute key for the activity. */
+    private static final Object ACTIVITY_KEY = "activity";
 
     /**
      * A private constructor to prevent instantiation.
@@ -50,8 +58,8 @@ public final class NodeUtil {
      * @param height
      *            the height
      */
-    public static void applySmartBounds(final PNode node, final float x, final float y,
-            final float width, final float height) {
+    public static void applySmartBounds(final PNode node, final double x, final double y,
+            final double width, final double height) {
         // get the old translation
         PAffineTransform transform = node.getTransformReference(true);
         double oldX = transform.getTranslateX();
@@ -71,8 +79,7 @@ public final class NodeUtil {
      *            the bounds
      */
     public static void applySmartBounds(final PNode node, final PBounds bounds) {
-        applySmartBounds(node, (float) bounds.x, (float) bounds.y, (float) bounds.width,
-                (float) bounds.height);
+        applySmartBounds(node, bounds.x, bounds.y, bounds.width, bounds.height);
     }
 
     /**
@@ -85,7 +92,7 @@ public final class NodeUtil {
      * @param y
      *            the y-translation
      */
-    public static void applyTranslation(final PNode node, final float x, final float y) {
+    public static void applyTranslation(final PNode node, final double x, final double y) {
         // get the old translation
         PAffineTransform transform = node.getTransformReference(true);
         double oldX = transform.getTranslateX();
@@ -111,6 +118,71 @@ public final class NodeUtil {
 
         // apply the translation
         node.translate(translation.getX() - oldX, translation.getY() - oldY);
+    }
+
+    /**
+     * Determines the smart bounds of the given node.
+     * 
+     * @param node
+     *            the node
+     * @return the smart bounds
+     */
+    public static PBounds determineSmartBounds(final PNode node) {
+        PBounds bounds = node.getBounds();
+
+        // get the translation
+        PAffineTransform transform = node.getTransformReference(true);
+        bounds.setOrigin(transform.getTranslateX(), transform.getTranslateY());
+
+        return bounds;
+    }
+
+    /**
+     * Schedules a primary activity for the given node. This method assures that there is only one
+     * primary activity for any node at any given time.<br>
+     * <br>
+     * This method uses the activities delegate slot.
+     * 
+     * @param node
+     *            the node
+     * @param activity
+     *            the primary activity
+     */
+    public static void schedulePrimaryActivity(final PNode node, final PActivity activity) {
+        Object attribute = node.getAttribute(ACTIVITY_KEY);
+        if (attribute instanceof PActivity) {
+            PActivity oldActivity = (PActivity) attribute;
+            oldActivity.terminate();
+        }
+        node.addAttribute(ACTIVITY_KEY, activity);
+        activity.setDelegate(new PActivityDelegate() {
+            public void activityStepped(final PActivity activity) {
+                // do nothing
+            }
+            
+            public void activityStarted(final PActivity activity) {
+                // do nothing
+            }
+            
+            public void activityFinished(final PActivity activity) {
+                node.addAttribute(ACTIVITY_KEY, null);
+            }
+        });
+        node.addActivity(activity);
+    }
+
+    /**
+     * Unschedules a primary activity of the given node if any.
+     * 
+     * @param node
+     *            the node
+     */
+    public static void unschedulePrimaryActivity(final PNode node) {
+        Object attribute = node.getAttribute(ACTIVITY_KEY);
+        if (attribute instanceof PActivity) {
+            PActivity oldActivity = (PActivity) attribute;
+            oldActivity.terminate();
+        }
     }
 
 }

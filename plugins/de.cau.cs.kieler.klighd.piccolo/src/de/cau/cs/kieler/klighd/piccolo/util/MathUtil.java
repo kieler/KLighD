@@ -43,7 +43,7 @@ public final class MathUtil {
      *         location
      */
     public static Pair<Integer, Point2D> getSegmentStartIndexAndPoint(final Point2D[] points,
-            final float location) {
+            final double location) {
         // handle special cases
         if (points.length == 0) {
             return new Pair<Integer, Point2D>(-1, new Point2D.Double(0, 0));
@@ -56,7 +56,7 @@ public final class MathUtil {
         // compute total polyline distance
         double totalDistance = 0;
         for (int i = 0; i < points.length - 1; ++i) {
-            totalDistance += distance(points[i], points[i + 1]);
+            totalDistance += points[i].distance(points[i + 1]);
         }
         
         // find the segment and point for the location
@@ -64,7 +64,7 @@ public final class MathUtil {
         double searchDistance = location * totalDistance;
         double currentDistance = 0;
         for (int i = 0; i < points.length - 1; ++i) {
-            double d = distance(points[i], points[i + 1]);
+            double d = points[i].distance(points[i + 1]);
             if (d <= 0) {
                 continue;
             }
@@ -95,20 +95,19 @@ public final class MathUtil {
         }
         return new Pair<Integer, Point2D>(k, point);
     }
-
+    
     /**
-     * Returns the distance between the specified points.
+     * Given a polyline specified by a list of points and a relative location, computes the concrete
+     * point of this relative location on the polyline.
      * 
-     * @param p0
-     *            the first point
-     * @param p1
-     *            the second point
-     * @return the distance
+     * @param points
+     *            the list of points
+     * @param location
+     *            the relative location
+     * @return the concrete point for the relative location
      */
-    public static double distance(final Point2D p0, final Point2D p1) {
-        double xD = p1.getX() - p0.getX();
-        double yD = p1.getY() - p0.getY();
-        return Math.sqrt(xD * xD + yD * yD);
+    public static Point2D getPoint(final Point2D[] points, final double location) {
+        return getSegmentStartIndexAndPoint(points, location).getSecond();
     }
 
     /**
@@ -124,6 +123,24 @@ public final class MathUtil {
         double xD = p1.getX() - p0.getX();
         double yD = p1.getY() - p0.getY();
         return Math.atan2(yD, xD);
+    }
+    
+    /**
+     * Returns the length of the polyline specified by the given points.
+     * 
+     * @param points
+     *            the list of points
+     * @return the length of the polyline
+     */
+    public static double getLength(final Point2D[] points) {
+        Point2D lastBend = points[0];
+        double currentLength = 0.0f;
+        for (int i = 1; i < points.length; ++i) {
+            Point2D currentBend = points[i];
+            currentLength += lastBend.distance(currentBend);
+            lastBend = currentBend;
+        }
+        return currentLength;
     }
 
 }

@@ -16,7 +16,9 @@ package de.cau.cs.kieler.klighd;
 import org.eclipse.swt.widgets.Control;
 
 /**
- * The interface for viewers on incrementally updated models.
+ * The interface for viewers on incrementally updated models.<br>
+ * <br>
+ * All method calls on this interface have to be made from the UI thread.
  * 
  * @author mri
  * 
@@ -39,7 +41,7 @@ public interface IViewer<T> {
      *            the input model
      */
     void setModel(T model);
-    
+
     /**
      * Sets the input model for this viewer.<br>
      * <br>
@@ -53,7 +55,7 @@ public interface IViewer<T> {
      *            true if the viewer should synchronize the visualization with the model; false else
      */
     void setModel(T model, boolean sync);
-    
+
     /**
      * Returns the input model currently set for this viewer.
      * 
@@ -62,14 +64,15 @@ public interface IViewer<T> {
     T getModel();
 
     /**
-     * Starts recording layout changes in the model.
+     * Sets whether to record layout changes in the model instead of instantly applying them to the
+     * visualization.<br>
+     * <br>
+     * Setting the recording status to {@code false} applies all recorded layout changes.
+     * 
+     * @param recording
+     *            true if layout changes should be recorded; false else
      */
-    void startRecording();
-
-    /**
-     * Stops recording layout changes in the model. This applies all recorded layout changes.
-     */
-    void stopRecording();
+    void setRecording(final boolean recording);
 
     /**
      * Sets the given selection of diagram elements as current selection.

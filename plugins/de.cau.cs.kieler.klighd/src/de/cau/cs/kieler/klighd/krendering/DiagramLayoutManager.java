@@ -77,9 +77,16 @@ import de.cau.cs.kieler.klighd.views.DiagramViewPart;
  */
 public class DiagramLayoutManager implements IDiagramLayoutManager<KGraphElement> {
 
+    /** the duration for applying the layout. */
+    public static final IProperty<Integer> APPLY_LAYOUT_DURATION = new Property<Integer>(
+            "krendering.layout.applyLayoutDuration", 0);
+
+    /** the viewer visualizing the graph. */
+    public static final IProperty<IViewer<?>> VIEWER = new Property<IViewer<?>>(
+            "krendering.layout.viewer");
     /** the list of edges found in the graph. */
-    public static final IProperty<List<KEdge>> EDGES =
-            new Property<List<KEdge>>("krendering.edges");
+    private static final IProperty<List<KEdge>> EDGES =
+            new Property<List<KEdge>>("krendering.layout.edges");
 
     /** the property layout config. */
     private ILayoutConfig propertyLayoutConfig = new KGraphPropertyLayoutConfig();
@@ -120,12 +127,12 @@ public class DiagramLayoutManager implements IDiagramLayoutManager<KGraphElement
     public LayoutMapping<KGraphElement> buildLayoutGraph(final IWorkbenchPart workbenchPart,
             final Object diagramPart) {
         KNode graph = null;
+        IViewer<?> viewer = null;
 
         // search for the root node
         if (diagramPart instanceof KNode) {
             graph = (KNode) diagramPart;
         } else {
-            IViewer<?> viewer = null;
             if (workbenchPart instanceof DiagramViewPart) {
                 DiagramViewPart view = (DiagramViewPart) workbenchPart;
                 viewer = view.getContextViewer().getActiveViewer();
@@ -156,6 +163,11 @@ public class DiagramLayoutManager implements IDiagramLayoutManager<KGraphElement
         // create the mapping
         LayoutMapping<KGraphElement> mapping = buildLayoutGraph(graph);
         mapping.setProperty(EclipseLayoutConfig.ACTIVATION, false);
+        
+        // remember the viewer if any
+        if (viewer != null) {
+            mapping.setProperty(VIEWER, viewer);
+        }
         
         // add the property layout config
         mapping.getLayoutConfigs().add(propertyLayoutConfig);
@@ -366,7 +378,21 @@ public class DiagramLayoutManager implements IDiagramLayoutManager<KGraphElement
      */
     public void applyLayout(final LayoutMapping<KGraphElement> mapping, final boolean zoomToFit,
             final int animationTime) {
-        applyLayout(mapping);
+        // set the animation time as property on the root element
+        KShapeLayout parentLayout = mapping.getParentElement().getData(KShapeLayout.class);
+        parentLayout.setProperty(APPLY_LAYOUT_DURATION, animationTime);
+
+        // get the visualizing viewer if any
+        IViewer<?> viewer = mapping.getProperty(VIEWER);
+        
+        // apply the layout
+        if (viewer != null) {
+            viewer.setRecording(true);
+            applyLayout(mapping);   
+            viewer.setRecording(false);
+        } else {
+            applyLayout(mapping);
+        }
     }
 
     /**

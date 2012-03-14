@@ -80,15 +80,8 @@ public class KlighdViewer extends AbstractViewer<Object> {
     /**
      * {@inheritDoc}
      */
-    public void startRecording() {
-        contextViewer.startRecording();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public void stopRecording() {
-        contextViewer.stopRecording();
+    public void setRecording(final boolean recording) {
+        contextViewer.setRecording(recording);
     }
     
     /**

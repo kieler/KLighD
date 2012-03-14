@@ -27,6 +27,7 @@ Bundle-ActivationPolicy: lazy
 Bundle-Activator: de.cau.cs.kieler.klighd.KlighdPlugin
 Export-Package: de.cau.cs.kieler.klighd,
  de.cau.cs.kieler.klighd.effects,
+ de.cau.cs.kieler.klighd.krendering,
  de.cau.cs.kieler.klighd.transformations,
  de.cau.cs.kieler.klighd.triggers,
  de.cau.cs.kieler.klighd.viewers,

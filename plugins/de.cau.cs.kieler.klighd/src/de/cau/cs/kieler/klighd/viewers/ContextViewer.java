@@ -213,15 +213,8 @@ public class ContextViewer extends AbstractViewer<Object> implements IViewerEven
     /**
      * {@inheritDoc}
      */
-    public void startRecording() {
-        currentViewer.startRecording();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public void stopRecording() {
-        currentViewer.stopRecording();
+    public void setRecording(final boolean recording) {
+        currentViewer.setRecording(recording);
     }
 
     /**

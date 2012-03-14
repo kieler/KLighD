@@ -1112,8 +1112,15 @@ public abstract class AbstractRenderingController<S extends KGraphElement, T ext
                 }
             };
         } else {
-            throw new RuntimeException("No referenced rendering in rendering reference: "
-                    + renderingReference);
+            PNode dummyChild = new PEmptyNode();
+            parent.addChild(dummyChild);
+            return new PNodeController<PNode>(dummyChild) {
+                public void setBounds(final PBounds bounds) {
+                    // do nothing
+                }
+            };
+//            throw new RuntimeException("No referenced rendering in rendering reference: "
+//                    + renderingReference);
         }
     }
 

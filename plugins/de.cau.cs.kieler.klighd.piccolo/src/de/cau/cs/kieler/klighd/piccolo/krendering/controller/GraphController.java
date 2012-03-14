@@ -15,13 +15,13 @@ package de.cau.cs.kieler.klighd.piccolo.krendering.controller;
 
 import java.awt.geom.Point2D;
 import java.util.List;
-import java.util.Set;
+import java.util.Map;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.impl.AdapterImpl;
 import org.eclipse.emf.ecore.util.EContentAdapter;
 
-import com.google.common.collect.Sets;
+import com.google.common.collect.Maps;
 
 import de.cau.cs.kieler.core.kgraph.KEdge;
 import de.cau.cs.kieler.core.kgraph.KGraphElement;
@@ -38,6 +38,9 @@ import de.cau.cs.kieler.kiml.klayoutdata.KEdgeLayout;
 import de.cau.cs.kieler.kiml.klayoutdata.KLayoutDataPackage;
 import de.cau.cs.kieler.kiml.klayoutdata.KPoint;
 import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout;
+import de.cau.cs.kieler.klighd.krendering.DiagramLayoutManager;
+import de.cau.cs.kieler.klighd.piccolo.activities.ApplySmartBoundsActivity;
+import de.cau.cs.kieler.klighd.piccolo.krendering.ApplyBendPointsActivity;
 import de.cau.cs.kieler.klighd.piccolo.krendering.ILabeledGraphElement;
 import de.cau.cs.kieler.klighd.piccolo.krendering.INode;
 import de.cau.cs.kieler.klighd.piccolo.krendering.KChildAreaNode;
@@ -48,7 +51,9 @@ import de.cau.cs.kieler.klighd.piccolo.krendering.KNodeTopNode;
 import de.cau.cs.kieler.klighd.piccolo.krendering.KPortNode;
 import de.cau.cs.kieler.klighd.piccolo.util.NodeUtil;
 import edu.umd.cs.piccolo.PNode;
+import edu.umd.cs.piccolo.activities.PInterpolatingActivity;
 import edu.umd.cs.piccolo.util.PAffineTransform;
+import edu.umd.cs.piccolo.util.PBounds;
 
 /**
  * The class which controls the transformation of a KGraph with attached KRendering data to Piccolo
@@ -73,14 +78,8 @@ public class GraphController {
     /** whether to record layout changes. */
     private boolean record = false;
 
-    /** the set of nodes with changed layout while recording. */
-    private Set<KNodeNode> recordedNodes = Sets.newLinkedHashSet();
-    /** the set of ports with changed layout while recording. */
-    private Set<KPortNode> recordedPorts = Sets.newLinkedHashSet();
-    /** the set of labels with changed layout while recording. */
-    private Set<KLabelNode> recordedLabels = Sets.newLinkedHashSet();
-    /** the set of edges with changed layout while recording. */
-    private Set<KEdgeNode> recordedEdges = Sets.newLinkedHashSet();
+    /** the layout changes to graph elements while recording. */
+    private Map<Object, Object> recordedChanges = Maps.newLinkedHashMap();
 
     /**
      * Constructs a graph controller for the given graph. The Piccolo nodes created for the graph
@@ -119,18 +118,21 @@ public class GraphController {
     }
 
     /**
-     * Starts recording layout changes in the graph.
+     * Sets whether to record layout changes in the graph instead of instantly applying them to the
+     * associated Piccolo nodes.<br>
+     * <br>
+     * Setting the recording status to {@code false} applies all recorded layout changes.
+     * 
+     * @param recording
+     *            true if layout changes should be recorded; false else
      */
-    public void startRecording() {
-        record = true;
-    }
-
-    /**
-     * Stops recording layout changes in the graph.
-     */
-    public void stopRecording() {
-        record = false;
-        // TODO handle recorded layout changes
+    public void setRecording(final boolean recording) {
+        record = recording;
+        
+        // apply recorded layout changes
+        if (!record) {
+            handleRecordedChanges();
+        }
     }
 
     /**
@@ -409,6 +411,51 @@ public class GraphController {
     }
 
     /**
+     * Applies the recorded layout changes by creating appropriate activities.
+     */
+    private void handleRecordedChanges() {
+        // get the duration for applying the layout
+        KShapeLayout shapeLayout = topNode.getWrapped().getData(KShapeLayout.class);
+        int duration;
+        if (shapeLayout != null) {
+            duration = shapeLayout.getProperty(DiagramLayoutManager.APPLY_LAYOUT_DURATION);
+        } else {
+            duration = 0;
+        }
+        
+        // create activities to apply all recorded changes
+        for (Map.Entry<Object, Object> recordedChange : recordedChanges.entrySet()) {
+            // create the activity to apply the change
+            PInterpolatingActivity activity;
+            final PNode shapeNode;
+            if (recordedChange.getKey() instanceof KEdgeNode) {
+                // edge layout changed
+                KEdgeNode edgeNode = (KEdgeNode) recordedChange.getKey();
+                shapeNode = edgeNode;
+                Point2D[] bends = (Point2D[]) recordedChange.getValue();
+                activity =
+                        new ApplyBendPointsActivity(edgeNode, bends, duration > 0 ? duration : 1);
+            } else {
+                // shape layout changed
+                shapeNode = (PNode) recordedChange.getKey();
+                PBounds bounds = (PBounds) recordedChange.getValue();
+                activity = new ApplySmartBoundsActivity(shapeNode, bounds, duration > 0 ? duration : 1);
+            }
+            
+            if (duration > 0) {
+                // schedule the activity
+                NodeUtil.schedulePrimaryActivity(shapeNode, activity);   
+            } else {
+                // unschedule a currently running primary activity on the node if any
+                NodeUtil.unschedulePrimaryActivity(shapeNode);
+                // instantly apply the activity without scheduling it
+                activity.setRelativeTargetValue(1.0f);
+            }
+        }
+        recordedChanges.clear();
+    }
+    
+    /**
      * Updates the bounds and translation of the node representation according to the
      * {@code KShapeLayout} of the wrapped node.
      * 
@@ -552,7 +599,7 @@ public class GraphController {
      *            the node representation
      */
     private void installLayoutSyncAdapter(final KNodeNode nodeRep) {
-        KNode node = nodeRep.getWrapped();
+        final KNode node = nodeRep.getWrapped();
         final KShapeLayout shapeLayout = node.getData(KShapeLayout.class);
         if (shapeLayout != null) {
             // register adapter on the shape layout to stay in sync
@@ -566,7 +613,7 @@ public class GraphController {
                                 case KLayoutDataPackage.KSHAPE_LAYOUT__YPOS:
                                 case KLayoutDataPackage.KSHAPE_LAYOUT__WIDTH:
                                 case KLayoutDataPackage.KSHAPE_LAYOUT__HEIGHT:
-                                    recordedNodes.add(nodeRep);
+                                    recordedChanges.put(nodeRep, getBounds(shapeLayout));
                                     break;
                                 }
                             } else {
@@ -610,8 +657,8 @@ public class GraphController {
      *            the port representation
      */
     private void installLayoutSyncAdapter(final KPortNode portRep) {
-        KPort node = portRep.getWrapped();
-        final KShapeLayout shapeLayout = node.getData(KShapeLayout.class);
+        final KPort port = portRep.getWrapped();
+        final KShapeLayout shapeLayout = port.getData(KShapeLayout.class);
         if (shapeLayout != null) {
             // register adapter on the shape layout to stay in sync
             shapeLayout.eAdapters().add(new AdapterImpl() {
@@ -624,7 +671,7 @@ public class GraphController {
                                 case KLayoutDataPackage.KSHAPE_LAYOUT__YPOS:
                                 case KLayoutDataPackage.KSHAPE_LAYOUT__WIDTH:
                                 case KLayoutDataPackage.KSHAPE_LAYOUT__HEIGHT:
-                                    recordedPorts.add(portRep);
+                                    recordedChanges.put(portRep, getBounds(shapeLayout));
                                     break;
                                 }
                             } else {
@@ -668,8 +715,8 @@ public class GraphController {
      *            the label representation
      */
     private void installLayoutSyncAdapter(final KLabelNode labelRep) {
-        KLabel node = labelRep.getWrapped();
-        final KShapeLayout shapeLayout = node.getData(KShapeLayout.class);
+        final KLabel label = labelRep.getWrapped();
+        final KShapeLayout shapeLayout = label.getData(KShapeLayout.class);
         if (shapeLayout != null) {
             // register adapter on the shape layout to stay in sync
             shapeLayout.eAdapters().add(new AdapterImpl() {
@@ -682,7 +729,7 @@ public class GraphController {
                                 case KLayoutDataPackage.KSHAPE_LAYOUT__YPOS:
                                 case KLayoutDataPackage.KSHAPE_LAYOUT__WIDTH:
                                 case KLayoutDataPackage.KSHAPE_LAYOUT__HEIGHT:
-                                    recordedLabels.add(labelRep);
+                                    recordedChanges.put(labelRep, getBounds(shapeLayout));
                                     break;
                                 }
                             } else {
@@ -726,7 +773,7 @@ public class GraphController {
      *            the edge representation
      */
     private void installLayoutSyncAdapter(final KEdgeNode edgeRep) {
-        KEdge edge = edgeRep.getWrapped();
+        final KEdge edge = edgeRep.getWrapped();
         final KEdgeLayout edgeLayout = edge.getData(KEdgeLayout.class);
         if (edgeLayout != null) {
             // register adapter on the edge layout to stay in sync
@@ -743,7 +790,7 @@ public class GraphController {
                         MonitoredOperation.runInUI(new Runnable() {
                             public void run() {
                                 if (record) {
-                                    recordedEdges.add(edgeRep);
+                                    recordedChanges.put(edgeRep, getBendPoints(edgeLayout));
                                 } else {
                                     updateLayout(edgeRep);
                                 }
@@ -1008,6 +1055,20 @@ public class GraphController {
         });
     }
 
+    /**
+     * Returns bounds from the given {@code KShapeLayout}.
+     * 
+     * @param shapeLayout
+     *            the shape layout
+     * @return the bounds
+     */
+    private static PBounds getBounds(final KShapeLayout shapeLayout) {
+        PBounds bounds = new PBounds();
+        bounds.setRect(shapeLayout.getXpos(), shapeLayout.getYpos(), shapeLayout.getWidth(),
+                shapeLayout.getHeight());
+        return bounds;
+    }
+    
     /**
      * Returns an array of bend points from the given {@code KEdgeLayout}.
      * 

@@ -89,14 +89,7 @@ public class StringViewer implements IViewer<String> {
     /**
      * {@inheritDoc}
      */
-    public void startRecording() {
-        // do nothing
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public void stopRecording() {
+    public void setRecording(final boolean recording) {
         // do nothing
     }
     
