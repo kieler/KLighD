@@ -507,6 +507,7 @@ public class DiagramLayoutManager implements IDiagramLayoutManager<KGraphElement
      *            the insets
      */
     public static void calculateInsets(final KNode node, final KInsets insets) {
+        // TODO take already set insets into consideration
         KRendering rendering = node.getData(KRendering.class);
 
         // no rendering so the whole node is the child area
