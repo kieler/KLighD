@@ -52,6 +52,8 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute krendering.ecore#//KDecoratorPlacementData/xOffset"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute krendering.ecore#//KDecoratorPlacementData/yOffset"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute krendering.ecore#//KDecoratorPlacementData/relative"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute krendering.ecore#//KDecoratorPlacementData/width"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute krendering.ecore#//KDecoratorPlacementData/height"/>
     </genClasses>
     <genClasses image="false" ecoreClass="krendering.ecore#//KContainerRendering">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference krendering.ecore#//KContainerRendering/children"/>
@@ -100,6 +102,7 @@
     </genClasses>
     <genClasses ecoreClass="krendering.ecore#//KPolylinePlacementData">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference krendering.ecore#//KPolylinePlacementData/points"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference krendering.ecore#//KPolylinePlacementData/detailPlacementData"/>
     </genClasses>
     <genClasses ecoreClass="krendering.ecore#//KCustomRendering">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute krendering.ecore#//KCustomRendering/className"/>

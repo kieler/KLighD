@@ -26,6 +26,8 @@ package de.cau.cs.kieler.core.krendering;
  *   <li>{@link de.cau.cs.kieler.core.krendering.KDecoratorPlacementData#getXOffset <em>XOffset</em>}</li>
  *   <li>{@link de.cau.cs.kieler.core.krendering.KDecoratorPlacementData#getYOffset <em>YOffset</em>}</li>
  *   <li>{@link de.cau.cs.kieler.core.krendering.KDecoratorPlacementData#isRelative <em>Relative</em>}</li>
+ *   <li>{@link de.cau.cs.kieler.core.krendering.KDecoratorPlacementData#getWidth <em>Width</em>}</li>
+ *   <li>{@link de.cau.cs.kieler.core.krendering.KDecoratorPlacementData#getHeight <em>Height</em>}</li>
  * </ul>
  * </p>
  *
@@ -137,5 +139,57 @@ public interface KDecoratorPlacementData extends KPlacementData {
      * @generated
      */
     void setRelative(boolean value);
+
+    /**
+     * Returns the value of the '<em><b>Width</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <p>
+     * If the meaning of the '<em>Width</em>' attribute isn't clear,
+     * there really should be more of a description here...
+     * </p>
+     * <!-- end-user-doc -->
+     * @return the value of the '<em>Width</em>' attribute.
+     * @see #setWidth(float)
+     * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKDecoratorPlacementData_Width()
+     * @model required="true"
+     * @generated
+     */
+    float getWidth();
+
+    /**
+     * Sets the value of the '{@link de.cau.cs.kieler.core.krendering.KDecoratorPlacementData#getWidth <em>Width</em>}' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @param value the new value of the '<em>Width</em>' attribute.
+     * @see #getWidth()
+     * @generated
+     */
+    void setWidth(float value);
+
+    /**
+     * Returns the value of the '<em><b>Height</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <p>
+     * If the meaning of the '<em>Height</em>' attribute isn't clear,
+     * there really should be more of a description here...
+     * </p>
+     * <!-- end-user-doc -->
+     * @return the value of the '<em>Height</em>' attribute.
+     * @see #setHeight(float)
+     * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKDecoratorPlacementData_Height()
+     * @model required="true"
+     * @generated
+     */
+    float getHeight();
+
+    /**
+     * Sets the value of the '{@link de.cau.cs.kieler.core.krendering.KDecoratorPlacementData#getHeight <em>Height</em>}' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @param value the new value of the '<em>Height</em>' attribute.
+     * @see #getHeight()
+     * @generated
+     */
+    void setHeight(float value);
 
 } // KDecoratorPlacementData

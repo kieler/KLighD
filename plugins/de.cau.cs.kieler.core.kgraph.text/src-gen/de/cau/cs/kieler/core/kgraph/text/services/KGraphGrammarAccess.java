@@ -1070,7 +1070,7 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//KText:
-	//	clip?="clip" "KText" "{" ("text" text=EString)? ("references" "(" references+=[KRenderingRef|EString] (","
+	//	"KText" "{" clip?="clip" ("text" text=EString)? ("references" "(" references+=[KRenderingRef|EString] (","
 	//	references+=[KRenderingRef|EString])* ")")? // ('persistentEntries' '{' persistentEntries+=PersistentEntry ( "," persistentEntries+=PersistentEntry)* '}' )?
 	//	("placementData" placementData=KPlacementData)? ("styles" "{" styles+=KStyle ("," styles+=KStyle)* "}")? ("children"
 	//	"{" children+=KRendering ("," children+=KRendering)* "}")? ("childPlacement" childPlacement=KPlacement)? "}";
@@ -1109,8 +1109,8 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//KDecoratorPlacementData:
-	//	relative?="relative" "KDecoratorPlacementData" "{" "location" location=EFloat ("xOffset" xOffset=EFloat)? ("yOffset"
-	//	yOffset=EFloat)? "}";
+	//	"KDecoratorPlacementData" "{" relative?="relative" "location" location=EFloat ("xOffset" xOffset=EFloat)? ("yOffset"
+	//	yOffset=EFloat)? ("width" width=EFloat)? ("height" height=EFloat)? "}";
 	public KRenderingGrammarAccess.KDecoratorPlacementDataElements getKDecoratorPlacementDataAccess() {
 		return gaKRendering.getKDecoratorPlacementDataAccess();
 	}
@@ -1155,7 +1155,7 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	////	'{'
 	////		'points' '{' points+=KPosition ( "," points+=KPosition)* '}' 
 	////    '}';
-	//	"points" ":" points+=KPosition ("," points+=KPosition)*;
+	//	"points" ":" points+=KPosition ("," points+=KPosition)* "detailedPlacementData" detailPlacementData=KPlacementData?;
 	public KRenderingGrammarAccess.KPolylinePlacementDataElements getKPolylinePlacementDataAccess() {
 		return gaKRendering.getKPolylinePlacementDataAccess();
 	}

@@ -42,6 +42,9 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="yOffset" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EFloat"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="relative" lowerBound="1"
         eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="width" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EFloat"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="height" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EFloat"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="KContainerRendering" abstract="true"
       eSuperTypes="#//KRendering">
@@ -60,7 +63,7 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="propagateToChildren" lowerBound="1"
         eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="KRenderingLibrary" eSuperTypes="platform:/resource/de.cau.cs.kieler.core.kgraph/model/kgraph.ecore#//KGraphData">
+  <eClassifiers xsi:type="ecore:EClass" name="KRenderingLibrary" eSuperTypes="../../de.cau.cs.kieler.core.kgraph/model/kgraph.ecore#//KGraphData">
     <eStructuralFeatures xsi:type="ecore:EReference" name="renderings" upperBound="-1"
         eType="#//KRendering" containment="true"/>
   </eClassifiers>
@@ -109,6 +112,8 @@
   <eClassifiers xsi:type="ecore:EClass" name="KPolylinePlacementData" eSuperTypes="#//KPlacementData">
     <eStructuralFeatures xsi:type="ecore:EReference" name="points" lowerBound="1"
         upperBound="-1" eType="#//KPosition" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="detailPlacementData" eType="#//KPlacementData"
+        containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="KCustomRendering" eSuperTypes="#//KContainerRendering">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="className" lowerBound="1"

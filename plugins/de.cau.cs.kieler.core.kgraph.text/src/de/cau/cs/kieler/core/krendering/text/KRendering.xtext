@@ -190,9 +190,9 @@ KChildArea returns KChildArea:
     '}';
 
 KText returns KText:
-	clip?='clip'
 	'KText'
 	'{'
+        clip?='clip'
 		('text' text=EString)?
 		('references' '(' references+=[KRenderingRef|EString] ( "," references+=[KRenderingRef|EString])* ')' )?
 		// ('persistentEntries' '{' persistentEntries+=PersistentEntry ( "," persistentEntries+=PersistentEntry)* '}' )?
@@ -228,12 +228,14 @@ KSpline returns KSpline:
     '}';
 
 KDecoratorPlacementData returns KDecoratorPlacementData:
-	relative?='relative'
 	'KDecoratorPlacementData'
 	'{'
+        relative?='relative'
 		'location' location=EFloat
 		('xOffset' xOffset=EFloat)?
 		('yOffset' yOffset=EFloat)?
+		('width' width=EFloat)?
+		('height' height=EFloat)?
     '}';
 
 KGridPlacementData returns KGridPlacementData:
@@ -266,7 +268,8 @@ KPolylinePlacementData returns KPolylinePlacementData:
 //	'{'
 //		'points' '{' points+=KPosition ( "," points+=KPosition)* '}' 
 //    '}';
-	'points' ':' points+=KPosition ( "," points+=KPosition)*; 
+	'points' ':' points+=KPosition ( "," points+=KPosition)* 
+    'detailedPlacementData' detailPlacementData=KPlacementData?;
 
 EFloat returns ecore::EFloat:
 	'-'? INT? '.' INT (('E'|'e') '-'? INT)?;
