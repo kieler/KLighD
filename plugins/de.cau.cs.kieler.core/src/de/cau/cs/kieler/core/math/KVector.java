@@ -29,7 +29,7 @@ public class KVector implements IDataObject, Cloneable {
 
     /** the serial version UID. */
     private static final long serialVersionUID = -4780985519832787684L;
-    
+
     // CHECKSTYLEOFF VisibilityModifier
     /** x coordinate. */
     public double x;
@@ -221,12 +221,14 @@ public class KVector implements IDataObject, Cloneable {
         this.y *= scale;
         return this;
     }
-    
+
     /**
      * Scale the vector with different values for X and Y coordinate.
      * 
-     * @param scalex the x scaling factor
-     * @param scaley the y scaling factor
+     * @param scalex
+     *            the x scaling factor
+     * @param scaley
+     *            the y scaling factor
      * @return {@code this}
      */
     public final KVector scale(final double scalex, final double scaley) {
@@ -234,12 +236,14 @@ public class KVector implements IDataObject, Cloneable {
         this.y *= scaley;
         return this;
     }
-    
+
     /**
      * Translate the vector.
      * 
-     * @param dx the x offset
-     * @param dy the y offset
+     * @param dx
+     *            the x offset
+     * @param dy
+     *            the y offset
      * @return {@code this}
      */
     public final KVector translate(final double dx, final double dy) {
@@ -311,8 +315,10 @@ public class KVector implements IDataObject, Cloneable {
     /**
      * Add some "noise" to this vector.
      * 
-     * @param random the random number generator
-     * @param amount the amount of noise to add
+     * @param random
+     *            the random number generator
+     * @param amount
+     *            the amount of noise to add
      */
     public final void wiggle(final Random random, final double amount) {
         this.x += random.nextDouble() * amount - (amount / 2);
@@ -412,18 +418,28 @@ public class KVector implements IDataObject, Cloneable {
     public static double productDot(final KVector v1, final KVector v2) {
         return ((v1.x * v2.x) + (v1.y * v2.y));
     }
-    
+
     /**
      * Apply the given bounds to this vector.
      * 
-     * @param lowx the lower bound for x coordinate
-     * @param lowy the lower bound for y coordinate
-     * @param highx the upper bound for x coordinate
-     * @param highy the upper bound for y coordinate
+     * @param lowx
+     *            the lower bound for x coordinate
+     * @param lowy
+     *            the lower bound for y coordinate
+     * @param highx
+     *            the upper bound for x coordinate
+     * @param highy
+     *            the upper bound for y coordinate
      * @return {@code this}
+     * @throws IllegalArgumentException
+     *             if highx < lowx or highy < lowy
      */
     public KVector applyBounds(final double lowx, final double lowy, final double highx,
             final double highy) {
+        if (highx < lowx || highy < lowy) {
+            throw new IllegalArgumentException(
+                    "The highx must be bigger then lowx and the highy must be bigger then lowy");
+        }
         if (x < lowx) {
             x = lowx;
         } else if (x > highx) {
@@ -452,8 +468,7 @@ public class KVector implements IDataObject, Cloneable {
         if (start >= end) {
             throw new IllegalArgumentException("The given string does not contain any numbers.");
         }
-        StringTokenizer tokenizer = new StringTokenizer(string.substring(start, end),
-                ",; \t\r\n");
+        StringTokenizer tokenizer = new StringTokenizer(string.substring(start, end), ",; \t\r\n");
         if (tokenizer.countTokens() != 2) {
             throw new IllegalArgumentException("Exactly two numbers are expected, "
                     + tokenizer.countTokens() + " were found.");
@@ -466,12 +481,14 @@ public class KVector implements IDataObject, Cloneable {
                     "The given string contains parts that cannot be parsed as numbers." + exception);
         }
     }
-    
+
     /**
      * Determine whether the given character is a delimiter.
      * 
-     * @param c a character
-     * @param delims a string of possible delimiters
+     * @param c
+     *            a character
+     * @param delims
+     *            a string of possible delimiters
      * @return true if {@code c} is one of the characters in {@code delims}
      */
     private static boolean isdelim(final char c, final String delims) {
@@ -482,5 +499,5 @@ public class KVector implements IDataObject, Cloneable {
         }
         return false;
     }
-    
+
 }
