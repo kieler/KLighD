@@ -36,9 +36,6 @@ public final class KielerMath {
             20922789888000L, 355687428096000L, 6402373705728000L, 121645100408832000L,
             2432902008176640000L };
 
-    /** the upper bound for the input of function factd. */
-    private static final int FACTD_UPPER_BOUND = 26;
-
     /**
      * The factorial of an integer x as long value. If x is negative or greater then 20 then
      * IllegalArgumentException. This method always returns the exact value for x between 0 and 20.
@@ -50,11 +47,10 @@ public final class KielerMath {
      *             if x<0 or x>20
      */
     public static long factl(final int x) {
-        // IllegalArgumentException when x not in [0..20]
-        if (x < 0) {
-            throw new IllegalArgumentException("x must be positive");
-        } else if (x >= FACT_TABLE.length) {
-            throw new IllegalArgumentException("Big argument exception");
+        // IllegalArgumentException when x not between 0 and 20
+        if (x < 0 || x >= FACT_TABLE.length) {
+            throw new IllegalArgumentException("The input must be between 0 and "
+                    + FACT_TABLE.length);
         }
         // return the appropriate value from FACT_TABLE with index x
         return FACT_TABLE[x];
@@ -62,22 +58,20 @@ public final class KielerMath {
     }
 
     /**
-     * The factorial of an integer x as double value. If x is negative or x > 26 then
-     * IllegalArgumentException. This method returns the exact value for small input values, and
-     * uses Stirling's approximation for large input values.
+     * The factorial of an integer x as double value. If x is negative then
+     * IllegalArgumentException. If x>26 then the result is Infinity. This method returns the exact
+     * value for small input values, and uses Stirling's approximation for large input values.
      * 
      * @param x
      *            an integer
      * @return the factorial of x
      * @throws IllegalArgumentException
-     *             if x<0 or x>26
+     *             if x<0
      */
     public static double factd(final int x) {
-        // IllegalArgumentException when x not in [0..20]
+        // IllegalArgumentException when x < 0
         if (x < 0) {
-            throw new IllegalArgumentException("x must be positive");
-        } else if (x > FACTD_UPPER_BOUND) {
-            throw new IllegalArgumentException("Big argument exception");
+            throw new IllegalArgumentException("The input must be positive");
         } else if (x < FACT_TABLE.length) {
             return FACT_TABLE[x];
         } else {
@@ -87,9 +81,8 @@ public final class KielerMath {
 
     /**
      * The binomial coefficient of integers n and k as long value. If n is not positive or k is not
-     * between 0 and n the result is IllegalArgumentException. 
-     * This method always returns the exact value, but may take
-     * very long for large input values.
+     * between 0 and n the result is IllegalArgumentException. This method always returns the exact
+     * value, but may take very long for large input values.
      * 
      * @param n
      *            the upper integer
@@ -117,9 +110,8 @@ public final class KielerMath {
 
     /**
      * The binomial coefficient of integers n and k as double value. If n is not positive or k is
-     * not between 0 and n the result is IllegalArgumentException. 
-     * This method returns the exact value for small input
-     * values, and uses an approximation for large input values.
+     * not between 0 and n the result is IllegalArgumentException. This method returns the exact
+     * value for small input values, and uses an approximation for large input values.
      * 
      * @param n
      *            the upper integer
@@ -834,5 +826,4 @@ public final class KielerMath {
         return avg / values.length;
     }
 
-  
 }
