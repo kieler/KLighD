@@ -13,9 +13,55 @@
  */
 package de.cau.cs.kieler.core.kgraph.text.serializer;
 
+import org.eclipse.emf.ecore.EObject;
+
+import de.cau.cs.kieler.kiml.klayoutdata.KEdgeLayout;
+import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout;
+
 /**
+ * Customization of the KGraph serialization.
+ * The current customization are IMO bug fixes of the generated implementation.
+ * 
+ * The only difference of the given methods to their originals is the change
+ * of the 'context' element that is delivered to the called delegate methods.
  * 
  * @author chsch
  */
 public class KGraphSemanticSequencer extends AbstractKGraphSemanticSequencer {
+
+    //CHECKSTYLEOFF Method
+
+    /**
+     * Constraint:
+     *     (
+     *         xpos=EFloat? 
+     *         ypos=EFloat? 
+     *         width=EFloat? 
+     *         height=EFloat? 
+     *         insets=KInsets? 
+     *         (persistentEntries+=PersistentEntry persistentEntries+=PersistentEntry*)?
+     *     )
+     *     
+     */
+    @Override
+    protected void sequence_KShapeLayout(final EObject context, final KShapeLayout semanticObject) {
+            superSequencer.createSequence(grammarAccess.getKShapeLayoutRule(), semanticObject);
+    }
+    
+    /**
+     * Constraint:
+     *     (
+     *         sourcePoint=KPoint 
+     *         targetPoint=KPoint 
+     *         (bendPoints+=KPoint bendPoints+=KPoint*)? 
+     *         (persistentEntries+=PersistentEntry persistentEntries+=PersistentEntry*)?
+     *     )
+     */
+    @Override
+    protected void sequence_KEdgeLayout(final EObject context, final KEdgeLayout semanticObject) {
+            superSequencer.createSequence(grammarAccess.getKEdgeLayoutRule(), semanticObject);
+    }
+    
+    //CHECKSTYLEON Method
+
 }
