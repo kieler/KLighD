@@ -20,6 +20,7 @@ public class AbstractKRenderingSyntacticSequencer extends AbstractSyntacticSeque
 	protected KRenderingGrammarAccess grammarAccess;
 	protected AbstractElementAlias match_KArc___LeftCurlyBracketKeyword_5_0_RightCurlyBracketKeyword_5_5__q;
 	protected AbstractElementAlias match_KChildArea___LeftCurlyBracketKeyword_2_0_RightCurlyBracketKeyword_2_3__q;
+	protected AbstractElementAlias match_KDirectPlacementData_CommaKeyword_4_q;
 	protected AbstractElementAlias match_KEllipse___LeftCurlyBracketKeyword_2_0_RightCurlyBracketKeyword_2_5__q;
 	protected AbstractElementAlias match_KImage___LeftCurlyBracketKeyword_5_0_RightCurlyBracketKeyword_5_5__q;
 	protected AbstractElementAlias match_KPolygon___LeftCurlyBracketKeyword_2_0_RightCurlyBracketKeyword_2_5__q;
@@ -28,12 +29,14 @@ public class AbstractKRenderingSyntacticSequencer extends AbstractSyntacticSeque
 	protected AbstractElementAlias match_KRenderingRef___LeftCurlyBracketKeyword_3_0_RightCurlyBracketKeyword_3_3__q;
 	protected AbstractElementAlias match_KRoundedRectangle___LeftCurlyBracketKeyword_5_0_RightCurlyBracketKeyword_5_5__q;
 	protected AbstractElementAlias match_KSpline___LeftCurlyBracketKeyword_2_0_RightCurlyBracketKeyword_2_5__q;
+	protected AbstractElementAlias match_KText___LeftCurlyBracketKeyword_3_0_RightCurlyBracketKeyword_3_6__q;
 	
 	@Inject
 	protected void init(IGrammarAccess access) {
 		grammarAccess = (KRenderingGrammarAccess) access;
 		match_KArc___LeftCurlyBracketKeyword_5_0_RightCurlyBracketKeyword_5_5__q = new GroupAlias(false, true, new TokenAlias(false, false, grammarAccess.getKArcAccess().getLeftCurlyBracketKeyword_5_0()), new TokenAlias(false, false, grammarAccess.getKArcAccess().getRightCurlyBracketKeyword_5_5()));
 		match_KChildArea___LeftCurlyBracketKeyword_2_0_RightCurlyBracketKeyword_2_3__q = new GroupAlias(false, true, new TokenAlias(false, false, grammarAccess.getKChildAreaAccess().getLeftCurlyBracketKeyword_2_0()), new TokenAlias(false, false, grammarAccess.getKChildAreaAccess().getRightCurlyBracketKeyword_2_3()));
+		match_KDirectPlacementData_CommaKeyword_4_q = new TokenAlias(false, true, grammarAccess.getKDirectPlacementDataAccess().getCommaKeyword_4());
 		match_KEllipse___LeftCurlyBracketKeyword_2_0_RightCurlyBracketKeyword_2_5__q = new GroupAlias(false, true, new TokenAlias(false, false, grammarAccess.getKEllipseAccess().getLeftCurlyBracketKeyword_2_0()), new TokenAlias(false, false, grammarAccess.getKEllipseAccess().getRightCurlyBracketKeyword_2_5()));
 		match_KImage___LeftCurlyBracketKeyword_5_0_RightCurlyBracketKeyword_5_5__q = new GroupAlias(false, true, new TokenAlias(false, false, grammarAccess.getKImageAccess().getLeftCurlyBracketKeyword_5_0()), new TokenAlias(false, false, grammarAccess.getKImageAccess().getRightCurlyBracketKeyword_5_5()));
 		match_KPolygon___LeftCurlyBracketKeyword_2_0_RightCurlyBracketKeyword_2_5__q = new GroupAlias(false, true, new TokenAlias(false, false, grammarAccess.getKPolygonAccess().getLeftCurlyBracketKeyword_2_0()), new TokenAlias(false, false, grammarAccess.getKPolygonAccess().getRightCurlyBracketKeyword_2_5()));
@@ -42,6 +45,7 @@ public class AbstractKRenderingSyntacticSequencer extends AbstractSyntacticSeque
 		match_KRenderingRef___LeftCurlyBracketKeyword_3_0_RightCurlyBracketKeyword_3_3__q = new GroupAlias(false, true, new TokenAlias(false, false, grammarAccess.getKRenderingRefAccess().getLeftCurlyBracketKeyword_3_0()), new TokenAlias(false, false, grammarAccess.getKRenderingRefAccess().getRightCurlyBracketKeyword_3_3()));
 		match_KRoundedRectangle___LeftCurlyBracketKeyword_5_0_RightCurlyBracketKeyword_5_5__q = new GroupAlias(false, true, new TokenAlias(false, false, grammarAccess.getKRoundedRectangleAccess().getLeftCurlyBracketKeyword_5_0()), new TokenAlias(false, false, grammarAccess.getKRoundedRectangleAccess().getRightCurlyBracketKeyword_5_5()));
 		match_KSpline___LeftCurlyBracketKeyword_2_0_RightCurlyBracketKeyword_2_5__q = new GroupAlias(false, true, new TokenAlias(false, false, grammarAccess.getKSplineAccess().getLeftCurlyBracketKeyword_2_0()), new TokenAlias(false, false, grammarAccess.getKSplineAccess().getRightCurlyBracketKeyword_2_5()));
+		match_KText___LeftCurlyBracketKeyword_3_0_RightCurlyBracketKeyword_3_6__q = new GroupAlias(false, true, new TokenAlias(false, false, grammarAccess.getKTextAccess().getLeftCurlyBracketKeyword_3_0()), new TokenAlias(false, false, grammarAccess.getKTextAccess().getRightCurlyBracketKeyword_3_6()));
 	}
 	
 	@Override
@@ -60,6 +64,8 @@ public class AbstractKRenderingSyntacticSequencer extends AbstractSyntacticSeque
 				emit_KArc___LeftCurlyBracketKeyword_5_0_RightCurlyBracketKeyword_5_5__q(semanticObject, getLastNavigableState(), syntaxNodes);
 			else if(match_KChildArea___LeftCurlyBracketKeyword_2_0_RightCurlyBracketKeyword_2_3__q.equals(syntax))
 				emit_KChildArea___LeftCurlyBracketKeyword_2_0_RightCurlyBracketKeyword_2_3__q(semanticObject, getLastNavigableState(), syntaxNodes);
+			else if(match_KDirectPlacementData_CommaKeyword_4_q.equals(syntax))
+				emit_KDirectPlacementData_CommaKeyword_4_q(semanticObject, getLastNavigableState(), syntaxNodes);
 			else if(match_KEllipse___LeftCurlyBracketKeyword_2_0_RightCurlyBracketKeyword_2_5__q.equals(syntax))
 				emit_KEllipse___LeftCurlyBracketKeyword_2_0_RightCurlyBracketKeyword_2_5__q(semanticObject, getLastNavigableState(), syntaxNodes);
 			else if(match_KImage___LeftCurlyBracketKeyword_5_0_RightCurlyBracketKeyword_5_5__q.equals(syntax))
@@ -76,6 +82,8 @@ public class AbstractKRenderingSyntacticSequencer extends AbstractSyntacticSeque
 				emit_KRoundedRectangle___LeftCurlyBracketKeyword_5_0_RightCurlyBracketKeyword_5_5__q(semanticObject, getLastNavigableState(), syntaxNodes);
 			else if(match_KSpline___LeftCurlyBracketKeyword_2_0_RightCurlyBracketKeyword_2_5__q.equals(syntax))
 				emit_KSpline___LeftCurlyBracketKeyword_2_0_RightCurlyBracketKeyword_2_5__q(semanticObject, getLastNavigableState(), syntaxNodes);
+			else if(match_KText___LeftCurlyBracketKeyword_3_0_RightCurlyBracketKeyword_3_6__q.equals(syntax))
+				emit_KText___LeftCurlyBracketKeyword_3_0_RightCurlyBracketKeyword_3_6__q(semanticObject, getLastNavigableState(), syntaxNodes);
 			else acceptNodes(getLastNavigableState(), syntaxNodes);
 		}
 	}
@@ -93,6 +101,14 @@ public class AbstractKRenderingSyntacticSequencer extends AbstractSyntacticSeque
 	 *     ('{' '}')?
 	 */
 	protected void emit_KChildArea___LeftCurlyBracketKeyword_2_0_RightCurlyBracketKeyword_2_3__q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
+		acceptNodes(transition, nodes);
+	}
+	
+	/**
+	 * Syntax:
+	 *     ','?
+	 */
+	protected void emit_KDirectPlacementData_CommaKeyword_4_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
 		acceptNodes(transition, nodes);
 	}
 	
@@ -157,6 +173,14 @@ public class AbstractKRenderingSyntacticSequencer extends AbstractSyntacticSeque
 	 *     ('{' '}')?
 	 */
 	protected void emit_KSpline___LeftCurlyBracketKeyword_2_0_RightCurlyBracketKeyword_2_5__q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
+		acceptNodes(transition, nodes);
+	}
+	
+	/**
+	 * Syntax:
+	 *     ('{' '}')?
+	 */
+	protected void emit_KText___LeftCurlyBracketKeyword_3_0_RightCurlyBracketKeyword_3_6__q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
 		acceptNodes(transition, nodes);
 	}
 	

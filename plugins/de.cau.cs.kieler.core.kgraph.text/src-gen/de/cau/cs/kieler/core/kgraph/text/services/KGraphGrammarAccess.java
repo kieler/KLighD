@@ -865,10 +865,9 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 		return getKPlacementDataAccess().getRule();
 	}
 
-	//// | KStyle_Impl;
 	//KStyle:
-	//	KForegroundColor | KBackgroundColor | KLineWidth | KVisibility | KLineStyle | KVerticalAlignment |
-	//	KHorizontalAlignment;
+	//	KForegroundColor | KBackgroundColor | KLineWidth | KVisibility | KLineStyle | KFontBold | KFontItalic | KFontName |
+	//	KFontSize | KVerticalAlignment | KHorizontalAlignment;
 	public KRenderingGrammarAccess.KStyleElements getKStyleAccess() {
 		return gaKRendering.getKStyleAccess();
 	}
@@ -1014,7 +1013,7 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//KText:
-	//	{KText} "Text" text=EString? ("{" clip?="clip" ("styles" ":" styles+=KStyle ("," styles+=KStyle)*)? ("placementData"
+	//	{KText} "Text" text=EString? ("{" clip?="clip"? ("styles" ":" styles+=KStyle ("," styles+=KStyle)*)? ("placementData"
 	//	placementData=KPlacementData)? ("children" "{" children+=KRendering ("," children+=KRendering)* "}")?
 	//	("childPlacement" childPlacement=KPlacement)? "}")?;
 	public KRenderingGrammarAccess.KTextElements getKTextAccess() {
@@ -1083,7 +1082,7 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//KDirectPlacementData:
-	//	"DirectPlacementData" "{" "topLeft" topLeft=KPosition "bottomRight" bottomRight=KPosition "}";
+	//	"DirectPlacementData" "{" "topLeft" topLeft=KPosition ","? "bottomRight" bottomRight=KPosition "}";
 	public KRenderingGrammarAccess.KDirectPlacementDataElements getKDirectPlacementDataAccess() {
 		return gaKRendering.getKDirectPlacementDataAccess();
 	}
@@ -1114,7 +1113,7 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//KLeftPosition:
-	//	{KLeftPosition} "left" absolute=EFloat "," relative=EFloat;
+	//	{KLeftPosition} "left" absolute=EFloat relative=EFloat;
 	public KRenderingGrammarAccess.KLeftPositionElements getKLeftPositionAccess() {
 		return gaKRendering.getKLeftPositionAccess();
 	}
@@ -1124,7 +1123,7 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//KRightPosition:
-	//	{KRightPosition} "right" absolute=EFloat "," relative=EFloat;
+	//	{KRightPosition} "right" absolute=EFloat relative=EFloat;
 	public KRenderingGrammarAccess.KRightPositionElements getKRightPositionAccess() {
 		return gaKRendering.getKRightPositionAccess();
 	}
@@ -1134,7 +1133,7 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//KTopPosition:
-	//	{KTopPosition} "top" absolute=EFloat "," relative=EFloat;
+	//	{KTopPosition} "top" absolute=EFloat relative=EFloat;
 	public KRenderingGrammarAccess.KTopPositionElements getKTopPositionAccess() {
 		return gaKRendering.getKTopPositionAccess();
 	}
@@ -1144,7 +1143,7 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//KBottomPosition:
-	//	{KBottomPosition} "bottom" absolute=EFloat "," relative=EFloat;
+	//	{KBottomPosition} "bottom" absolute=EFloat relative=EFloat;
 	public KRenderingGrammarAccess.KBottomPositionElements getKBottomPositionAccess() {
 		return gaKRendering.getKBottomPositionAccess();
 	}
@@ -1154,7 +1153,7 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//KForegroundColor:
-	//	{KForegroundColor} "ForegroundColor" red=EInt "," green=EInt "," blue=EInt propagateToChildren?="!"?;
+	//	{KForegroundColor} "ForegroundColor" red=EInt green=EInt blue=EInt propagateToChildren?="!"?;
 	public KRenderingGrammarAccess.KForegroundColorElements getKForegroundColorAccess() {
 		return gaKRendering.getKForegroundColorAccess();
 	}
@@ -1164,7 +1163,7 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//KBackgroundColor:
-	//	{KBackgroundColor} "BackgroundColor" red=EInt "," green=EInt "," blue=EInt propagateToChildren?="!"?;
+	//	{KBackgroundColor} "BackgroundColor" red=EInt green=EInt blue=EInt propagateToChildren?="!"?;
 	public KRenderingGrammarAccess.KBackgroundColorElements getKBackgroundColorAccess() {
 		return gaKRendering.getKBackgroundColorAccess();
 	}
@@ -1221,6 +1220,46 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	
 	public ParserRule getKLineStyleRule() {
 		return getKLineStyleAccess().getRule();
+	}
+
+	//KFontBold:
+	//	{KFontBold} "bold" propagateToChildren?="!"?;
+	public KRenderingGrammarAccess.KFontBoldElements getKFontBoldAccess() {
+		return gaKRendering.getKFontBoldAccess();
+	}
+	
+	public ParserRule getKFontBoldRule() {
+		return getKFontBoldAccess().getRule();
+	}
+
+	//KFontItalic:
+	//	{KFontItalic} "italic" propagateToChildren?="!"?;
+	public KRenderingGrammarAccess.KFontItalicElements getKFontItalicAccess() {
+		return gaKRendering.getKFontItalicAccess();
+	}
+	
+	public ParserRule getKFontItalicRule() {
+		return getKFontItalicAccess().getRule();
+	}
+
+	//KFontName:
+	//	"font" name=EString propagateToChildren?="!"?;
+	public KRenderingGrammarAccess.KFontNameElements getKFontNameAccess() {
+		return gaKRendering.getKFontNameAccess();
+	}
+	
+	public ParserRule getKFontNameRule() {
+		return getKFontNameAccess().getRule();
+	}
+
+	//KFontSize:
+	//	"fontSize" size=EInt propagateToChildren?="!"?;
+	public KRenderingGrammarAccess.KFontSizeElements getKFontSizeAccess() {
+		return gaKRendering.getKFontSizeAccess();
+	}
+	
+	public ParserRule getKFontSizeRule() {
+		return getKFontSizeAccess().getRule();
 	}
 
 	//KVerticalAlignment:

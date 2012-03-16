@@ -18,7 +18,7 @@ KPlacementData returns KPlacementData:
 	KDecoratorPlacementData | KGridPlacementData | KStackPlacementData | KDirectPlacementData | KPolylinePlacementData;
 
 KStyle returns KStyle:
-	KForegroundColor | KBackgroundColor | KLineWidth | KVisibility | KLineStyle | KVerticalAlignment | KHorizontalAlignment; // | KStyle_Impl;
+	KForegroundColor | KBackgroundColor | KLineWidth | KVisibility | KLineStyle | KFontBold | KFontItalic | KFontName | KFontSize | KVerticalAlignment | KHorizontalAlignment;
 
 KPlacement returns KPlacement:
 	KGridPlacement | KStackPlacement;
@@ -119,7 +119,7 @@ KText returns KText:
     {KText}
 	'Text' (text=EString)?
 	('{'
-        clip?='clip'
+        (clip?='clip')?
         ('styles' ':' styles+=KStyle ( "," styles+=KStyle)*)?
 		('placementData' placementData=KPlacementData)?
 		('children' '{' children+=KRendering ( "," children+=KRendering)* '}' )?
@@ -180,7 +180,7 @@ KStackPlacementData returns KStackPlacementData:
 KDirectPlacementData returns KDirectPlacementData:
 	'DirectPlacementData'
 	'{'
-		'topLeft' topLeft=KPosition
+		'topLeft' topLeft=KPosition ","?
 		'bottomRight' bottomRight=KPosition
     '}';
 
@@ -196,27 +196,27 @@ KPosition returns KPosition:
 
 KLeftPosition returns KLeftPosition:
 	{KLeftPosition}
-	'left' absolute=EFloat ',' relative=EFloat;
+	'left' absolute=EFloat relative=EFloat;
 
 KRightPosition returns KRightPosition:
 	{KRightPosition}
-	'right' absolute=EFloat ',' relative=EFloat;
+	'right' absolute=EFloat relative=EFloat;
 
 KTopPosition returns KTopPosition:
 	{KTopPosition}
-	'top' absolute=EFloat ',' relative=EFloat;
+	'top' absolute=EFloat relative=EFloat;
 
 KBottomPosition returns KBottomPosition:
 	{KBottomPosition}
-	'bottom' absolute=EFloat ',' relative=EFloat;
+	'bottom' absolute=EFloat relative=EFloat;
 
 KForegroundColor returns KForegroundColor:
     {KForegroundColor}
-	'ForegroundColor' red=EInt ',' green=EInt ',' blue=EInt (propagateToChildren?='!')?;
+	'ForegroundColor' red=EInt  green=EInt blue=EInt (propagateToChildren?='!')?;
 
 KBackgroundColor returns KBackgroundColor:
     {KBackgroundColor}
-	'BackgroundColor' red=EInt ',' green=EInt ',' blue=EInt (propagateToChildren?='!')?;
+	'BackgroundColor' red=EInt green=EInt blue=EInt (propagateToChildren?='!')?;
 
 KLineWidth returns KLineWidth:
 	'LineWidth' lineWidth=EInt (propagateToChildren?='!')?;
@@ -240,6 +240,20 @@ KLineStyle returns KLineStyle:
     {KLineStyle}
 	'LineStyle' lineStyle=LineStyle propagateToChildren?='!'?;
 	
+KFontBold returns KFontBold:
+    {KFontBold}
+	'bold' propagateToChildren?='!'?;
+	
+KFontItalic returns KFontItalic:
+    {KFontItalic}
+	'italic' propagateToChildren?='!'?;
+	
+KFontName returns KFontName:
+	'font' name=EString propagateToChildren?='!'?;
+
+KFontSize returns KFontSize:
+	'fontSize' size=EInt propagateToChildren?='!'?;
+
 KVerticalAlignment returns KVerticalAlignment:
     {KVerticalAlignment}
 	'VerticalAlignment' verticalAlignment=VerticalAlignment propagateToChildren?='!'?;
