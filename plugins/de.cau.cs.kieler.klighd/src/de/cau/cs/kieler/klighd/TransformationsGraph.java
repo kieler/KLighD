@@ -19,9 +19,11 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.google.common.collect.Sets;
 
 import de.cau.cs.kieler.core.util.Pair;
 import de.cau.cs.kieler.klighd.transformations.IdentityTransformation;
@@ -44,7 +46,7 @@ public class TransformationsGraph {
     private Map<Class<?>, ClassNode> classNodeMapping = Maps.newLinkedHashMap();
 
     /** the mapping of transformation id's on transformation edges. */
-    private Map<String, ITransformation<?, ?>> idTransformationMapping = Maps.newLinkedHashMap();
+    private Set<ITransformation<?, ?>> transformations = Sets.newLinkedHashSet();
     /** the mapping of transformations on class nodes representing source classes. */
     private Map<ITransformation<?, ?>, List<TransformationEdge>> transformationEdgeMapping = Maps
             .newHashMap();
@@ -56,7 +58,7 @@ public class TransformationsGraph {
             .newHashMap();
 
     /** the mapping of viewer provider id's on viewer provider data. */
-    private Map<String, IViewerProvider<?>> idViewerProviderMapping = Maps.newLinkedHashMap();
+    private Set<IViewerProvider<?>> viewerProviders = Sets.newLinkedHashSet();
     /** the mapping of viewer providers on class nodes representing supported classes. */
     private Map<IViewerProvider<?>, List<ViewerProviderData>> viewerProviderDataMapping = Maps
             .newHashMap();
@@ -64,15 +66,12 @@ public class TransformationsGraph {
     /**
      * Adds a model transformation under a given identifier to the graph.
      * 
-     * @param id
-     *            the identifier for the model transformation
      * @param transformation
      *            the model transformation
      */
-    public void addModelTransformation(final String id, final ITransformation<?, ?> transformation) {
+    public void addTransformation(final ITransformation<?, ?> transformation) {
         // only add the transformation if it is not already present
-        if (id.length() > 0 && !idTransformationMapping.containsValue(transformation)
-                && !idTransformationMapping.containsKey(id)) {
+        if (!transformations.contains(transformation)) {
             Class<?> sourceClass = transformation.getSourceClass();
             Class<?> targetClass = transformation.getTargetClass();
             // only add the transformation if both source and target class can be determined
@@ -80,8 +79,8 @@ public class TransformationsGraph {
                 // insert the classes into the graph if they are not present already
                 createClassNode(sourceClass);
                 createClassNode(targetClass);
-                // map the identifier on the transformation
-                idTransformationMapping.put(id, transformation);
+                // add the transformation
+                transformations.add(transformation);
                 // insert the transformation
                 createTransformationEdges(transformation, sourceClass, targetClass);
             }
@@ -90,55 +89,24 @@ public class TransformationsGraph {
 
     /**
      * Adds a viewer provider under the given identifier to the graph.
-     * 
-     * @param id
-     *            the identifier for the viewer provider
+
      * @param viewerProvider
      *            the viewer provider
      */
-    public void addViewerProvider(final String id, final IViewerProvider<?> viewerProvider) {
+    public void addViewerProvider(final IViewerProvider<?> viewerProvider) {
         // only add the viewer provider if it is not already present
-        if (id.length() > 0 && !idViewerProviderMapping.containsValue(viewerProvider)
-                && !idViewerProviderMapping.containsKey(id)) {
+        if (!viewerProviders.contains(viewerProvider)) {
             // only add the viewer provider if the model class can be determined
             Class<?> modelClass = viewerProvider.getModelClass();
             if (modelClass != null) {
                 // insert the model class into the graph if it is not present already
                 createClassNode(modelClass);
-                // map the identifier on the viewer provider
-                idViewerProviderMapping.put(id, viewerProvider);
+                // add the viewer provider
+                viewerProviders.add(viewerProvider);
                 // insert the viewer provider
                 createViewerProviderDatas(viewerProvider, modelClass);
             }
         }
-    }
-
-    /**
-     * Returns the transformation with the given identifier.
-     * 
-     * @param id
-     *            the identifier
-     * @return the transformation or null if there is no transformation with the given id
-     */
-    public ITransformation<?, ?> getTransformationById(final String id) {
-        if (id == null) {
-            return null;
-        }
-        return idTransformationMapping.get(id);
-    }
-
-    /**
-     * Returns the viewer provider with the given identifier.
-     * 
-     * @param id
-     *            the identifier
-     * @return the viewer provider or null if there is no viewer provider with the given id
-     */
-    public IViewerProvider<?> getViewerProviderById(final String id) {
-        if (id == null) {
-            return null;
-        }
-        return idViewerProviderMapping.get(id);
     }
 
     /**
@@ -682,7 +650,7 @@ public class TransformationsGraph {
      */
     private void updateTransformationEdges(final ClassNode classNode) {
         Class<?> clazz = classNode.clazz;
-        for (ITransformation<?, ?> transformation : idTransformationMapping.values()) {
+        for (ITransformation<?, ?> transformation : transformations) {
             // insert edges with the class node as source if required
             if (transformation.getSourceClass().isAssignableFrom(clazz)) {
                 // create the edges
@@ -755,7 +723,7 @@ public class TransformationsGraph {
      */
     private void updateViewerProviderDatas(final ClassNode classNode) {
         Class<?> clazz = classNode.clazz;
-        for (IViewerProvider<?> viewerProvider : idViewerProviderMapping.values()) {
+        for (IViewerProvider<?> viewerProvider : viewerProviders) {
             if (viewerProvider.getModelClass().isAssignableFrom(clazz)) {
                 createViewerProviderData(viewerProvider, classNode);
             }

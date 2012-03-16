@@ -62,7 +62,12 @@ public class UpdateStrategy implements IUpdateStrategy<KNode> {
         copyModel.getChildren().clear();
         baseModel.getData().addAll(copyData);
         baseModel.getChildren().addAll(copyNodes);
-        
+     
+//        try {
+//            MatchModel match =
+//                    MatchService.doMatch(baseModel, newModel, Collections.<String, Object> emptyMap());
+//        } catch (InterruptedException e) {
+//        }
     }
 
     /**
