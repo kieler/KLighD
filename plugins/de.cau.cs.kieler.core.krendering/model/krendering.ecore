@@ -57,13 +57,13 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="startAngle" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EFloat"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="arcAngle" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EFloat"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="KStyle">
+  <eClassifiers xsi:type="ecore:EClass" name="KStyle" abstract="true">
     <eStructuralFeatures xsi:type="ecore:EReference" name="rendering" eType="#//KRendering"
         eOpposite="#//KRendering/styles"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="propagateToChildren" lowerBound="1"
         eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="KRenderingLibrary" eSuperTypes="../../de.cau.cs.kieler.core.kgraph/model/kgraph.ecore#//KGraphData">
+  <eClassifiers xsi:type="ecore:EClass" name="KRenderingLibrary" eSuperTypes="platform:/resource/de.cau.cs.kieler.core.kgraph/model/kgraph.ecore#//KGraphData">
     <eStructuralFeatures xsi:type="ecore:EReference" name="renderings" upperBound="-1"
         eType="#//KRendering" containment="true"/>
   </eClassifiers>
@@ -147,11 +147,13 @@
     <eLiterals name="LEFT"/>
     <eLiterals name="CENTER" value="1"/>
     <eLiterals name="RIGHT" value="2"/>
+    <eLiterals name="EEnumLiteral0" value="3"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EEnum" name="VerticalAlignment">
     <eLiterals name="TOP"/>
     <eLiterals name="CENTER" value="1"/>
     <eLiterals name="BOTTOM" value="2"/>
+    <eLiterals name="EEnumLiteral0" value="3"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="KVerticalAlignment" eSuperTypes="#//KStyle">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="verticalAlignment" lowerBound="1"

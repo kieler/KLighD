@@ -29,7 +29,7 @@ import org.eclipse.emf.ecore.EObject;
  * </p>
  *
  * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKStyle()
- * @model
+ * @model abstract="true"
  * @generated
  */
 public interface KStyle extends EObject {

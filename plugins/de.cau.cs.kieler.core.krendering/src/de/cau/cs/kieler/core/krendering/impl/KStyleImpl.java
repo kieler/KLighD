@@ -42,7 +42,7 @@ import org.eclipse.emf.ecore.util.EcoreUtil;
  *
  * @generated
  */
-public class KStyleImpl extends EObjectImpl implements KStyle {
+public abstract class KStyleImpl extends EObjectImpl implements KStyle {
     /**
      * The default value of the '{@link #isPropagateToChildren() <em>Propagate To Children</em>}' attribute.
      * <!-- begin-user-doc -->

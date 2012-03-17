@@ -77,7 +77,6 @@ public class KRenderingFactoryImpl extends EFactoryImpl implements KRenderingFac
             case KRenderingPackage.KIMAGE: return createKImage();
             case KRenderingPackage.KDECORATOR_PLACEMENT_DATA: return createKDecoratorPlacementData();
             case KRenderingPackage.KARC: return createKArc();
-            case KRenderingPackage.KSTYLE: return createKStyle();
             case KRenderingPackage.KRENDERING_LIBRARY: return createKRenderingLibrary();
             case KRenderingPackage.KRENDERING_REF: return createKRenderingRef();
             case KRenderingPackage.KCHILD_AREA: return createKChildArea();
@@ -237,16 +236,6 @@ public class KRenderingFactoryImpl extends EFactoryImpl implements KRenderingFac
     public KArc createKArc() {
         KArcImpl kArc = new KArcImpl();
         return kArc;
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    public KStyle createKStyle() {
-        KStyleImpl kStyle = new KStyleImpl();
-        return kStyle;
     }
 
     /**

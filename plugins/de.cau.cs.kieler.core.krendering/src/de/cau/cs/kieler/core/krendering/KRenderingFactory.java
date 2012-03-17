@@ -114,15 +114,6 @@ public interface KRenderingFactory extends EFactory {
     KArc createKArc();
 
     /**
-     * Returns a new object of class '<em>KStyle</em>'.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @return a new object of class '<em>KStyle</em>'.
-     * @generated
-     */
-    KStyle createKStyle();
-
-    /**
      * Returns a new object of class '<em>Library</em>'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
