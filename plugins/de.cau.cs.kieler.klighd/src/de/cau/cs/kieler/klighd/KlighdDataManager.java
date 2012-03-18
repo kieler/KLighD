@@ -328,6 +328,7 @@ public final class KlighdDataManager {
                         if (id == null || id.length() == 0) {
                             reportError(EXTP_ID_UPDATE_STRATEGIES, element, ATTRIBUTE_ID, null);
                         } else {
+                            transformationsGraph.addUpdateStrategy(updateStrategy);
                             idUpdateStrategyMapping.put(id, updateStrategy);
                         }
                     }

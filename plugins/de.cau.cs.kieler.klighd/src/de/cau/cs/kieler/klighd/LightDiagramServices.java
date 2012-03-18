@@ -75,7 +75,7 @@ public final class LightDiagramServices {
     public ViewContext createViewContext(final Object model) {
         ViewContext viewContext = new ViewContext();
         if (KlighdDataManager.getInstance().getTransformationsGraph()
-                .configureViewContext(viewContext, model)) {
+                .configureViewContext(viewContext, model, null)) {
             return viewContext;
         } else {
             return null;
@@ -114,6 +114,10 @@ public final class LightDiagramServices {
         if (transformations == null) {
             return null;
         }
+        
+        // get the update strategy request
+        String updateStrategyId = viewContext.getProperty(REQUESTED_UPDATE_STRATEGY);
+        IUpdateStrategy<?> updateStrategy = dataManager.getUpdateStrategyById(updateStrategyId);
 
         // call the fitting configure method on the transformations graph
         boolean success;
@@ -121,20 +125,23 @@ public final class LightDiagramServices {
             if (transformations.length > 0) {
                 // viewer and transformations hint
                 success = transformationsGraph.configureViewContext(viewContext, model,
-                        viewerProvider, transformations);
+                        viewerProvider, updateStrategy, transformations);
             } else {
                 // viewer hint
                 success = transformationsGraph.configureViewContext(viewContext, model,
-                        viewerProvider);
+                        viewerProvider, updateStrategy);
             }
         } else if (viewerProviderId == null) {
             if (transformations.length > 0) {
                 // transformations hint
-                success = transformationsGraph.configureViewContext(viewContext, model,
-                        transformations);
+                success =
+                        transformationsGraph.configureViewContext(viewContext, model,
+                                updateStrategy, transformations);
             } else {
                 // no hints
-                success = transformationsGraph.configureViewContext(viewContext, model);
+                success =
+                        transformationsGraph.configureViewContext(viewContext, model,
+                                updateStrategy);
             }
         } else {
             return null;
@@ -142,27 +149,6 @@ public final class LightDiagramServices {
         
         // on success return the view context, otherwise return null
         if (success) {
-            // get the update strategy request
-            String updateStrategyId = viewContext.getProperty(REQUESTED_UPDATE_STRATEGY);
-            IUpdateStrategy<?> updateStrategy = dataManager.getUpdateStrategyById(updateStrategyId);
-            if (updateStrategy != null) {
-                Class<?> targetClass = viewContext.getTargetClass();
-                // set the update strategy if it is compatible with the transformations
-                if (targetClass.equals(updateStrategy.getModelClass())) {
-                    viewContext.setUpdateStrategy(updateStrategy);
-                }
-            }
-//            else {
-//                // search for a compatible update strategy
-//                Class<?> targetClass = viewContext.getTargetClass();
-//                for (IUpdateStrategy<?> updateStrategyCandidate : idUpdateStrategyMapping.values()) {
-//                    if (targetClass.equals(updateStrategyCandidate.getModelClass())) {
-//                        viewContext.setUpdateStrategy(updateStrategyCandidate);
-//                        break;
-//                    }
-//                }
-//            }
-
             return viewContext;
         } else {
             return null;

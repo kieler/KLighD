@@ -45,9 +45,9 @@ public class TransformationsGraph {
     /** the mapping of model classes on model class nodes. */
     private Map<Class<?>, ClassNode> classNodeMapping = Maps.newLinkedHashMap();
 
-    /** the mapping of transformation id's on transformation edges. */
+    /** the transformations.. */
     private Set<ITransformation<?, ?>> transformations = Sets.newLinkedHashSet();
-    /** the mapping of transformations on class nodes representing source classes. */
+    /** the mapping of transformation id's on transformation edges. */
     private Map<ITransformation<?, ?>, List<TransformationEdge>> transformationEdgeMapping = Maps
             .newHashMap();
     /** the mapping of transformations on class nodes representing source classes. */
@@ -57,20 +57,22 @@ public class TransformationsGraph {
     private Map<ITransformation<?, ?>, List<ClassNode>> transformationTargetNodeMapping = Maps
             .newHashMap();
 
-    /** the mapping of viewer provider id's on viewer provider data. */
+    /** the viewer provider data. */
     private Set<IViewerProvider<?>> viewerProviders = Sets.newLinkedHashSet();
-    /** the mapping of viewer providers on class nodes representing supported classes. */
+    /** the mapping of viewer providers on viewer provider data. */
     private Map<IViewerProvider<?>, List<ViewerProviderData>> viewerProviderDataMapping = Maps
             .newHashMap();
-
+    
+    /** the update strategies. */
+    private Set<IUpdateStrategy<?>> updateStrategies = Sets.newLinkedHashSet();
+    
     /**
-     * Adds a model transformation under a given identifier to the graph.
+     * Adds a model transformation to the graph.
      * 
      * @param transformation
      *            the model transformation
      */
     public void addTransformation(final ITransformation<?, ?> transformation) {
-        // only add the transformation if it is not already present
         if (!transformations.contains(transformation)) {
             Class<?> sourceClass = transformation.getSourceClass();
             Class<?> targetClass = transformation.getTargetClass();
@@ -79,46 +81,67 @@ public class TransformationsGraph {
                 // insert the classes into the graph if they are not present already
                 createClassNode(sourceClass);
                 createClassNode(targetClass);
-                // add the transformation
-                transformations.add(transformation);
                 // insert the transformation
                 createTransformationEdges(transformation, sourceClass, targetClass);
+                transformations.add(transformation);
             }
         }
     }
 
     /**
-     * Adds a viewer provider under the given identifier to the graph.
+     * Adds a viewer provider to the graph.
 
      * @param viewerProvider
      *            the viewer provider
      */
     public void addViewerProvider(final IViewerProvider<?> viewerProvider) {
-        // only add the viewer provider if it is not already present
         if (!viewerProviders.contains(viewerProvider)) {
             // only add the viewer provider if the model class can be determined
             Class<?> modelClass = viewerProvider.getModelClass();
             if (modelClass != null) {
                 // insert the model class into the graph if it is not present already
                 createClassNode(modelClass);
-                // add the viewer provider
-                viewerProviders.add(viewerProvider);
                 // insert the viewer provider
                 createViewerProviderDatas(viewerProvider, modelClass);
+                viewerProviders.add(viewerProvider);
+            }
+        }
+    }
+    
+    /**
+     * Adds an update strategy to the graph.
+     * 
+     * @param updateStrategy
+     *            the update strategy
+     */
+    public void addUpdateStrategy(final IUpdateStrategy<?> updateStrategy) {
+        if (updateStrategies.add(updateStrategy)) {
+            // only add the update strategy if the model class can be determined
+            Class<?> modelClass = updateStrategy.getModelClass();
+            if (modelClass != null) {
+                // insert the update strategy
+                attachUpdateStrategy(updateStrategy, modelClass);
+            } else {
+                updateStrategies.remove(updateStrategy);
             }
         }
     }
 
     /**
-     * Configures the given view context for the specified model.
+     * Configures the given view context for the specified model. Optionally an update strategy can
+     * be specified.
      * 
      * @param viewContext
      *            the view context
      * @param model
      *            the model
+     * @param updateStrategy
+     *            the update strategy or null
+     *            
      * @return true if the context has been configured; false else
      */
-    public boolean configureViewContext(final ViewContext viewContext, final Object model) {
+    public boolean configureViewContext(final ViewContext viewContext, final Object model,
+            final IUpdateStrategy<?> updateStrategy) {
         if (model == null) {
             return false;
         }
@@ -130,23 +153,26 @@ public class TransformationsGraph {
         List<Path> paths = findAllPathsToViewers(sourceNodes);
 
         // configure the view context using the collected paths
-        return configureViewContext(viewContext, paths, model);
+        return configureViewContext(viewContext, paths, model, updateStrategy);
     }
 
     /**
      * Configures the given view context for the specified model and model transformations.<br>
      * The model transformations have to be in the order in which they should be invoked in the
-     * configured view context.
+     * configured view context. Optionally an update strategy can be specified.
      * 
      * @param viewContext
      *            the view context
      * @param model
      *            the model
+     * @param updateStrategy
+     *            the update strategy or null
      * @param modelTransformations
      *            the model transformations
      * @return true if the context has been configured; false else
      */
     public boolean configureViewContext(final ViewContext viewContext, final Object model,
+            final IUpdateStrategy<?> updateStrategy,
             final ITransformation<?, ?>... modelTransformations) {
         if (model == null) {
             return false;
@@ -154,7 +180,7 @@ public class TransformationsGraph {
 
         // make sure at least one transformation has been given
         if (modelTransformations.length == 0) {
-            return configureViewContext(viewContext, model);
+            return configureViewContext(viewContext, model, updateStrategy);
         }
 
         // find all suitable source class nodes
@@ -171,11 +197,12 @@ public class TransformationsGraph {
         }
 
         // configure the view context using the collected paths
-        return configureViewContext(viewContext, newPaths, model);
+        return configureViewContext(viewContext, newPaths, model, updateStrategy);
     }
 
     /**
-     * Configures the given view context for the specified model and viewer provider.
+     * Configures the given view context for the specified model and viewer provider. Optionally an
+     * update strategy can be specified.
      * 
      * @param viewContext
      *            the view context
@@ -183,10 +210,12 @@ public class TransformationsGraph {
      *            the model
      * @param viewerProvider
      *            the viewer provider
+     * @param updateStrategy
+     *            the update strategy or null
      * @return true if the context has been configured; false else
      */
     public boolean configureViewContext(final ViewContext viewContext, final Object model,
-            final IViewerProvider<?> viewerProvider) {
+            final IViewerProvider<?> viewerProvider, final IUpdateStrategy<?> updateStrategy) {
         if (model == null) {
             return false;
         }
@@ -205,7 +234,7 @@ public class TransformationsGraph {
         }
 
         // configure the view context using the collected paths
-        if (configureViewContext(viewContext, paths, model)) {
+        if (configureViewContext(viewContext, paths, model, updateStrategy)) {
             // make sure the correct viewer provider is set
             viewContext.setViewerProvider(viewerProvider);
             return true;
@@ -216,7 +245,7 @@ public class TransformationsGraph {
 
     /**
      * Configures the given view context for the specified model, model transformations and viewer
-     * provider.<br>
+     * provider. Optionally an update strategy can be specified. <br>
      * The model transformations have to be in the order in which they should be invoked in the
      * configured view context.
      * 
@@ -226,12 +255,14 @@ public class TransformationsGraph {
      *            the model
      * @param viewerProvider
      *            the viewer provider
+     * @param updateStrategy
+     *            the update strategy or null
      * @param modelTransformations
      *            the model transformation
      * @return true if the context has been configured; false else
      */
     public boolean configureViewContext(final ViewContext viewContext, final Object model,
-            final IViewerProvider<?> viewerProvider,
+            final IViewerProvider<?> viewerProvider, final IUpdateStrategy<?> updateStrategy,
             final ITransformation<?, ?>... modelTransformations) {
         if (model == null) {
             return false;
@@ -239,7 +270,7 @@ public class TransformationsGraph {
 
         // make sure at least one transformation has been given
         if (modelTransformations.length == 0) {
-            return configureViewContext(viewContext, model, viewerProvider);
+            return configureViewContext(viewContext, model, viewerProvider, updateStrategy);
         }
 
         // find all suitable source class nodes
@@ -263,7 +294,7 @@ public class TransformationsGraph {
         }
 
         // configure the view context using the collected paths
-        if (configureViewContext(viewContext, newPaths, model)) {
+        if (configureViewContext(viewContext, newPaths, model, updateStrategy)) {
             // make sure the correct viewer provider is set
             viewContext.setViewerProvider(viewerProvider);
             return true;
@@ -282,32 +313,52 @@ public class TransformationsGraph {
      *            the list of paths
      * @param model
      *            the model
+     * @param updateStrategy
+     *            the update strategy or null
      * @return true if the view context has been configured with one of the paths; false else
      */
     private boolean configureViewContext(final ViewContext viewContext, final List<Path> paths,
-            final Object model) {
+            final Object model, final IUpdateStrategy<?> updateStrategy) {
         viewContext.reset();
         // get the shortest path
         Path path = getShortestPath(paths);
         if (path != null) {
             // initialize the view context with transformation contexts
+            ClassNode targetNode;
             if (path.edges.size() > 0) {
                 for (TransformationEdge edge : path.edges) {
                     TransformationContext<?, ?> transformationContext = TransformationContext
                             .create(edge.transformation);
                     viewContext.addTransformationContext(transformationContext);
                 }
-                // set the viewer provider
-                ClassNode targetNode = path.edges.get(path.edges.size() - 1).target;
-                // the list of viewer providers is never empty for paths passed to this method
-                viewContext.setViewerProvider(targetNode.viewerProviders.get(0).viewerProvider);
+                // set the target node
+                targetNode = path.edges.get(path.edges.size() - 1).target;
             } else {
                 TransformationContext<?, ?> transformationContext = TransformationContext
                         .create(new IdentityTransformation());
                 viewContext.addTransformationContext(transformationContext);
-                // set the viewer provider
-                viewContext.setViewerProvider(path.sourceNode.viewerProviders.get(0).viewerProvider);
+                // set the target node
+                targetNode = path.sourceNode;
             }
+            
+            // set the viewer provider
+            ViewerProviderData viewerProviderData = targetNode.viewerProviders.get(0);
+            viewContext.setViewerProvider(viewerProviderData.viewerProvider);
+            
+            // set the update strategy
+            if (updateStrategy != null) {
+                if (viewerProviderData.updateStrategies.contains(updateStrategy)) {
+                    viewContext.setUpdateStrategy(updateStrategy);
+                } else if (viewerProviderData.updateStrategies.size() > 0) {
+                    viewContext.setUpdateStrategy(viewerProviderData.updateStrategies.get(0));
+
+                }
+            } else {
+                if (viewerProviderData.updateStrategies.size() > 0) {
+                    viewContext.setUpdateStrategy(viewerProviderData.updateStrategies.get(0));
+                }
+            }
+            
             return true;            
         } else {
             return false;
@@ -569,8 +620,9 @@ public class TransformationsGraph {
      * 
      * @param clazz
      *            the class
+     * @return the class node
      */
-    private void createClassNode(final Class<?> clazz) {
+    private ClassNode createClassNode(final Class<?> clazz) {
         ClassNode node = classNodeMapping.get(clazz);
         if (node == null) {
             node = new ClassNode();
@@ -581,6 +633,7 @@ public class TransformationsGraph {
             // connect the node using all possible transformation edges
             updateTransformationEdges(node);
         }
+        return node;
     }
 
     /**
@@ -711,6 +764,7 @@ public class TransformationsGraph {
         viewerProviderDataMapping.get(viewerProvider).add(viewerProviderData);
         viewerProviderData.viewerProvider = viewerProvider;
         viewerProviderData.classNode = classNode;
+        updateUpdateStrategies(viewerProviderData);
         classNode.viewerProviders.add(viewerProviderData);
     }
 
@@ -730,6 +784,48 @@ public class TransformationsGraph {
         }
     }
 
+    /**
+     * Attaches an update strategy to all viewer provider datas which support the update strategy.
+     * 
+     * @param updateStrategy
+     *            the update strategy
+     * @param modelClass
+     *            the model class
+     */
+    private void attachUpdateStrategy(final IUpdateStrategy<?> updateStrategy,
+            final Class<?> modelClass) {
+        for (List<ViewerProviderData> viewerProviderDatas : viewerProviderDataMapping.values()) {
+            for (ViewerProviderData viewerProviderData : viewerProviderDatas) {
+                Class<?> viewerProviderDataClass = viewerProviderData.classNode.clazz;
+                if (modelClass.isAssignableFrom(viewerProviderDataClass)) {
+                    Class<?> viewerProviderClass = viewerProviderData.viewerProvider.getModelClass();
+                    if (viewerProviderClass.isAssignableFrom(modelClass)) {
+                        viewerProviderData.updateStrategies.add(updateStrategy);
+                    }
+                }
+            }
+        }
+    }
+    
+    /**
+     * Attaches update strategies to the viewer provider data if supported.
+     * 
+     * @param viewerProviderData
+     *            the viewer provider data
+     */
+    private void updateUpdateStrategies(final ViewerProviderData viewerProviderData) {
+        for (IUpdateStrategy<?> updateStrategy : updateStrategies) {
+            Class<?> modelClass = updateStrategy.getModelClass();
+            Class<?> viewerProviderDataClass = viewerProviderData.classNode.clazz;
+            if (modelClass.isAssignableFrom(viewerProviderDataClass)) {
+                Class<?> viewerProviderClass = viewerProviderData.viewerProvider.getModelClass();
+                if (viewerProviderClass.isAssignableFrom(modelClass)) {
+                    viewerProviderData.updateStrategies.add(updateStrategy);
+                }
+            }
+        }
+    }
+    
     /**
      * The class for nodes in this graph representing model classes.
      */
@@ -753,6 +849,8 @@ public class TransformationsGraph {
 
         /** the viewer provider. */
         private IViewerProvider<?> viewerProvider;
+        /** the update strategies which support model instances of the model class. */
+        private LinkedList<IUpdateStrategy<?>> updateStrategies = Lists.newLinkedList();
         /** the class node this viewer provider data attaches to. */
         private ClassNode classNode;
 
