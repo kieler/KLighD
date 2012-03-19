@@ -322,7 +322,7 @@ public abstract class AbstractRenderingController<S extends KGraphElement, T ext
                             MonitoredOperation.runInUI(new Runnable() {
                                 public void run() {
                                     // update the rendering
-                                    internalUpdateRendering();
+                                    updateRendering();
                                 }
                             }, false);
                         }
@@ -845,6 +845,7 @@ public abstract class AbstractRenderingController<S extends KGraphElement, T ext
         final PSWTAdvancedPath path =
                 PSWTAdvancedPath.createArc(0, 0, (float) initialBounds.width,
                         (float) initialBounds.height, arc.getStartAngle(), arc.getArcAngle());
+        path.setPaint(null);
         initializeRenderingNode(path);
         path.translate(initialBounds.x, initialBounds.y);
         parent.addChild(path);
