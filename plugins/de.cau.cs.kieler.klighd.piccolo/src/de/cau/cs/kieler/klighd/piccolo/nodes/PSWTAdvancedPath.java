@@ -364,7 +364,9 @@ public class PSWTAdvancedPath extends PNode {
         } else {
             final Rectangle2D b = origShape.getBounds2D();
             // the original code creates more problems than it solves here
-            super.setBounds(b.getX(), b.getY(), b.getWidth(), b.getHeight());
+            super.setBounds(b.getX(), b.getY(),
+                    b.getWidth() == 0 ? BOUNDS_TOLERANCE : b.getWidth(),
+                    b.getHeight() == 0 ? BOUNDS_TOLERANCE : b.getHeight());
         }
         updatingBoundsFromPath = false;
     }
