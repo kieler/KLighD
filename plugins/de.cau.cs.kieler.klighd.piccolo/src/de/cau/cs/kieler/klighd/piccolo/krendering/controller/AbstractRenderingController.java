@@ -125,6 +125,8 @@ public abstract class AbstractRenderingController<S extends KGraphElement, T ext
 
     /** the adapter currently installed on the rendering. */
     private CrossDocumentContentAdapter renderingAdapter = null;
+    /** the element adapter currently installed on the element. */
+    private AdapterImpl elementAdapter = null;
 
     /** the map of properties used by this controller mapped on all mappings under that property. */
     private Map<Object, List<Pair<IPropertyHolder, Object>>> mappedProperties = Maps.newHashMap();
@@ -183,11 +185,6 @@ public abstract class AbstractRenderingController<S extends KGraphElement, T ext
 
         // do the initial update of the rendering
         updateRendering();
-
-        if (syncRendering) {
-            // register an adapter on the element to stay in sync
-            registerElementAdapter();
-        }
     }
 
     /**
@@ -197,6 +194,7 @@ public abstract class AbstractRenderingController<S extends KGraphElement, T ext
     private void updateRendering() {
         // remove the rendering adapter
         if (currentRendering != null) {
+            unregisterElementAdapter();
             unregisterRenderingAdapter();
             removeMappedProperties(CONTROLLER);
             removeMappedProperties(KEY);
@@ -217,8 +215,14 @@ public abstract class AbstractRenderingController<S extends KGraphElement, T ext
         
         // install rendering adapter if sync is enabled
         if (syncRendering && currentRendering != null) {
-            // register an adapter on the element to stay in sync
+            // register an adapter on the rendering to stay in sync
             registerRenderingAdapter();
+        }
+        
+        // install element adapter if sync is enabled
+        if (syncRendering) {
+            // register an adapter on the element to stay in sync
+            registerElementAdapter();
         }
     }
 
@@ -293,7 +297,7 @@ public abstract class AbstractRenderingController<S extends KGraphElement, T ext
         // add the adapter to the rendering
         currentRendering.eAdapters().add(renderingAdapter);
     }
-
+    
     /**
      * Unregisters the adapter currently installed on the rendering.
      */
@@ -308,7 +312,7 @@ public abstract class AbstractRenderingController<S extends KGraphElement, T ext
      * Registers an adapter on the graph element to react on changes in its graph data feature.
      */
     private void registerElementAdapter() {
-        element.eAdapters().add(new AdapterImpl() {
+        elementAdapter = new AdapterImpl() {
             public void notifyChanged(final Notification msg) {
                 if (msg.getFeatureID(KGraphElement.class) == KGraphPackage.KGRAPH_ELEMENT__DATA) {
                     switch (msg.getEventType()) {
@@ -330,7 +334,18 @@ public abstract class AbstractRenderingController<S extends KGraphElement, T ext
                     }
                 }
             }
-        });
+        };
+        element.eAdapters().add(elementAdapter);
+    }
+    
+    /**
+     * Unregisters the adapter currently installed on the element.
+     */
+    private void unregisterElementAdapter() {
+        if (elementAdapter != null) {
+            element.eAdapters().remove(elementAdapter);
+            elementAdapter = null;
+        }
     }
 
     /**

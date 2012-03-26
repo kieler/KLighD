@@ -29,6 +29,9 @@ import edu.umd.cs.piccolo.util.PPickPath;
 public class KChildAreaNode extends PZIndexNode {
 
     private static final long serialVersionUID = -403773990520864787L;
+    
+    /** the property name for changes of the child areas expansion status. */
+    public static final String PROPERTY_EXPANSION = "expansion";
 
     /** the number of z-layers (nodes and edges). */
     private static final int Z_LAYERS = 2;
@@ -41,7 +44,7 @@ public class KChildAreaNode extends PZIndexNode {
     private boolean clip = true;
     
     /** whether the child area is expanded. */
-    private boolean expanded = true;
+    private boolean expanded = false;
 
     /**
      * Constructs a child area for a given node.
@@ -90,7 +93,10 @@ public class KChildAreaNode extends PZIndexNode {
      *            true if this child area is expanded; false else
      */
     public void setExpanded(final boolean expanded) {
-        this.expanded = expanded;
+        if (this.expanded != expanded) {
+            this.expanded = expanded;
+            firePropertyChange(-1, PROPERTY_EXPANSION, !expanded, expanded);   
+        }
     }
 
     /**

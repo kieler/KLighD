@@ -27,6 +27,7 @@ import de.cau.cs.kieler.core.krendering.KStyle;
 import de.cau.cs.kieler.klighd.piccolo.krendering.KEdgeNode;
 import de.cau.cs.kieler.klighd.piccolo.nodes.PSWTAdvancedPath;
 import edu.umd.cs.piccolo.PNode;
+import edu.umd.cs.piccolo.util.PBounds;
 
 /**
  * @author mri
@@ -85,7 +86,7 @@ public class KEdgeRenderingController extends AbstractRenderingController<KEdge,
         @SuppressWarnings("unchecked")
         final PNodeController<PSWTAdvancedPath> controller =
                 (PNodeController<PSWTAdvancedPath>) createRendering(rendering,
-                        new ArrayList<KStyle>(0), parent, parent.getBoundsReference(),
+                        new ArrayList<KStyle>(0), parent, new PBounds(0, 0, 1, 1),
                         getRepresentation());
         controller.getNode().setPathToPolyline(parent.getBendPoints());
         parent.setRepresentationNode(controller.getNode());

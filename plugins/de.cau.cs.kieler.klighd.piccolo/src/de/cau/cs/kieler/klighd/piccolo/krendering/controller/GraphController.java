@@ -14,6 +14,8 @@
 package de.cau.cs.kieler.klighd.piccolo.krendering.controller;
 
 import java.awt.geom.Point2D;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.List;
 import java.util.Map;
 
@@ -21,6 +23,7 @@ import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.impl.AdapterImpl;
 import org.eclipse.emf.ecore.util.EContentAdapter;
 
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
 import de.cau.cs.kieler.core.kgraph.KEdge;
@@ -66,10 +69,20 @@ public class GraphController {
     /** the property for identifying whether a node has been populated. */
     private static final IProperty<Boolean> POPULATED = new Property<Boolean>("klighd.populated",
             false);
+    /** the property for identifying whether a node is currently active. */
+    private static final IProperty<Boolean> ACTIVE = new Property<Boolean>("klighd.active",
+            false);
+    /** the property for remembering the edge sync adapter on a node. */
+    private static final IProperty<AdapterImpl> EDGE_SYNC_ADAPTER = new Property<AdapterImpl>(
+            "klighd.edgeSyncAdapter");
 
     /** the attribute key for the rendering. */
     private static final Object RENDERING_KEY = new Object();
-
+    /** the attribute key for the edge offset listeners. */
+    private static final Object EDGE_OFFSET_LISTENER_KEY = new Object();
+    /** the attribute key for the nodes listed by edge offset listeners. */
+    private static final Object EDGE_OFFSET_LISTENED_KEY = new Object();
+    
     /** the Piccolo node representing the top node in the graph. */
     private KNodeTopNode topNode;
 
@@ -140,33 +153,27 @@ public class GraphController {
      */
     public void initialize() {
         // expand the top node
-        expand(topNode.getWrapped());
+        addExpansionListener(topNode);
+        RenderingContextData.get(topNode.getWrapped()).setProperty(ACTIVE, true);
+        topNode.getChildArea().setExpanded(true);
     }
 
     /**
-     * Expandes the Piccolo node representing the given node.
+     * Expandes the representation of the given node.
      * 
      * @param node
      *            the node
      */
     public void expand(final KNode node) {
-        RenderingContextData data = RenderingContextData.get(node);
-        INode nodeRep = data.getProperty(INode.NODE_REP);
+        INode nodeRep = RenderingContextData.get(node).getProperty(INode.NODE_REP);
         if (nodeRep != null) {
-            boolean populated = data.getProperty(POPULATED);
-            // populate the node if necessary
-            if (!populated) {
-                handleChildren(nodeRep);
-                data.setProperty(POPULATED, true);
-            }
-
             // set the child area to expanded
             nodeRep.getChildArea().setExpanded(true);
         }
     }
 
     /**
-     * Collapses the Piccolo node representing the given node.
+     * Collapses the representation of the given node.
      * 
      * @param node
      *            the node
@@ -175,6 +182,46 @@ public class GraphController {
         INode nodeRep = RenderingContextData.get(node).getProperty(INode.NODE_REP);
         if (nodeRep != null) {
             nodeRep.getChildArea().setExpanded(false);
+        }
+    }
+    
+    /**
+     * Adds a listener on the expansion of the child area of the given node representation.
+     * 
+     * @param nodeNode
+     *            the node representation
+     */
+    private void addExpansionListener(final INode nodeNode) {
+        KChildAreaNode childAreaNode = nodeNode.getChildArea();
+        if (childAreaNode != null) {
+            final KNode node = nodeNode.getWrapped();
+            final RenderingContextData data = RenderingContextData.get(node);
+            childAreaNode.addPropertyChangeListener(KChildAreaNode.PROPERTY_EXPANSION,
+                    new PropertyChangeListener() {
+                        public void propertyChange(final PropertyChangeEvent event) {
+                            if ((Boolean) event.getNewValue()) {
+                                // populate the node if necessary
+                                if (!data.getProperty(POPULATED)) {
+                                    handleChildren(nodeNode);
+                                    data.setProperty(POPULATED, true);
+                                } else {
+                                    // activate the subgraph
+                                    if (data.getProperty(ACTIVE)) {
+                                        for (KNode child : node.getChildren()) {
+                                            activateSubgraph(child);     
+                                        } 
+                                    }
+                                }   
+                            } else {
+                                // deactivate the subgraph if necessary
+                                if (data.getProperty(ACTIVE)) {
+                                    for (KNode child : node.getChildren()) {
+                                        deactivateSubgraph(child);
+                                    }
+                                }
+                            }
+                        }
+            });
         }
     }
 
@@ -186,22 +233,14 @@ public class GraphController {
      */
     private void handleChildren(final INode parentNode) {
         KNode parent = parentNode.getWrapped();
-
+       
         // create the nodes
         for (KNode child : parent.getChildren()) {
             addNode(parentNode, child);
         }
 
-        // create the edges
-        for (KNode child : parent.getChildren()) {
-            for (KEdge edge : child.getOutgoingEdges()) {
-                handleEdge(edge);
-            }
-        }
-
         if (sync) {
             installChildrenSyncAdapter(parentNode);
-            installOutgoingEdgeSyncAdapter(parentNode);
         }
     }
 
@@ -212,8 +251,9 @@ public class GraphController {
      *            the parent node
      * @param node
      *            the node
+     * @return the created node representation
      */
-    private void addNode(final INode parent, final KNode node) {
+    private KNodeNode addNode(final INode parent, final KNode node) {
         INode nodeRep = RenderingContextData.get(node).getProperty(INode.NODE_REP);
 
         KNodeNode nodeNode;
@@ -223,22 +263,35 @@ public class GraphController {
         } else {
             nodeNode = (KNodeNode) nodeRep;
         }
+        
+        // only add the representation if it is not added already
+        if (nodeNode == null || nodeNode.getParent() == null) {
+            // if there is no Piccolo representation for the node create it
+            if (nodeNode == null) {
+                nodeNode = new KNodeNode(node, parent);
+                updateLayout(nodeNode);
+                updateRendering(nodeNode);
+                handlePorts(nodeNode);
+                handleLabels(nodeNode, node);
+                addExpansionListener(nodeNode);
 
-        // if there is no Piccolo representation for the node create it
-        if (nodeNode == null) {
-            nodeNode = new KNodeNode(node, parent);
-            updateLayout(nodeNode);
-            updateRendering(nodeNode);
-            handlePorts(nodeNode);
-            handleLabels(nodeNode, node);
-
-            if (sync) {
-                installLayoutSyncAdapter(nodeNode);
+                // add the node
+                parent.getChildArea().addNode(nodeNode);   
+                
+                // TODO only temporary auto-expand
+                nodeNode.getChildArea().setExpanded(true);
+            } else {
+                // add the node
+                parent.getChildArea().addNode(nodeNode);   
+            }
+            
+            // activate the subgraph specified by the node
+            if (RenderingContextData.get(parent.getWrapped()).getProperty(ACTIVE)) {
+                activateSubgraph(node);
             }
         }
-
-        // add the node
-        parent.getChildArea().addNode(nodeNode);
+        
+        return nodeNode;
     }
 
     /**
@@ -257,9 +310,130 @@ public class GraphController {
             } else {
                 nodeNode = (KNodeNode) nodeRep;
             }
-
+            
+            // deactivate the subgraph
+            deactivateSubgraph(node);
+            
             // remove the node representation from the containing child area
             nodeNode.removeFromParent();
+        }
+    }
+
+    /**
+     * Adds the representations of all edges and marks all nodes as visualized in the subgraph
+     * specified by the given node.
+     * 
+     * @param node
+     *            the node
+     */
+    private void activateSubgraph(final KNode node) {
+        RenderingContextData contextData = RenderingContextData.get(node);
+        
+        // mark the node as active
+        contextData.setProperty(ACTIVE, true);
+        
+        // add all incoming edges
+        for (KEdge incomingEdge : node.getIncomingEdges()) {
+            addEdge(incomingEdge);
+        }
+        
+        // add all outgoing edges
+        for (KEdge outgoingEdge : node.getOutgoingEdges()) {
+            addEdge(outgoingEdge);
+        }
+        
+        if (sync) {
+            installEdgeSyncAdapter(node);
+        }
+        
+        // proceed recursively if the node is expanded
+        if (node.getChildren().size() > 0) {
+            INode nodeNode = contextData.getProperty(INode.NODE_REP);
+            if (nodeNode != null && nodeNode.getChildArea().isExpanded()) {
+                for (KNode child : node.getChildren()) {
+                    activateSubgraph(child);
+                }   
+            }
+        }
+    }
+    
+    /**
+     * Removes the representations of all edges and marks all nodes as not visualized in the
+     * subgraph specified by the given node.
+     * 
+     * @param node
+     *            the node
+     */
+    private void deactivateSubgraph(final KNode node) {
+        // mark the node as inactive
+        RenderingContextData.get(node).setProperty(ACTIVE, false);
+        
+        if (sync) {
+            uninstallEdgeSyncAdapter(node);
+        }
+        
+        // remove all incoming edges
+        for (KEdge incomingEdge : node.getIncomingEdges()) {
+            removeEdge(incomingEdge);
+        }
+        
+        // remove all outgoing edges
+        for (KEdge outgoingEdge : node.getOutgoingEdges()) {
+            removeEdge(outgoingEdge);
+        }
+        
+        // proceed recursively
+        for (KNode child : node.getChildren()) {
+            deactivateSubgraph(child);
+        }
+    }
+    
+    /**
+     * Adds a representation for the edge to the appropriate child area.
+     * 
+     * @param edge
+     *            the edge
+     */
+    private void addEdge(final KEdge edge) {
+        KEdgeNode edgeRep = RenderingContextData.get(edge).getProperty(KEdgeNode.EDGE_REP);
+        // only add the representation if it is not added already
+        if (edgeRep == null || edgeRep.getParent() == null) {
+            KNode source = edge.getSource();
+            KNode target = edge.getTarget();
+            if (source != null && target != null
+                    && RenderingContextData.get(source).getProperty(ACTIVE)
+                    && RenderingContextData.get(target).getProperty(ACTIVE)) {
+                // if there is no Piccolo representation for the edge create it
+                if (edgeRep == null) {
+                    edgeRep = new KEdgeNode(edge);
+                    updateLayout(edgeRep);
+                    updateRendering(edgeRep);
+                    handleLabels(edgeRep, edge);
+                }
+
+                // find and set the parent for the edge
+                updateEdgeParent(edgeRep);
+
+                // update the offset of the edge layout to the containing child area
+                updateEdgeOffset(edgeRep);
+            }
+        }
+    }
+    
+    /**
+     * Removes the representation for the edge from its parent.
+     * 
+     * @param edge
+     *            the edge
+     */
+    private void removeEdge(final KEdge edge) {
+        KEdgeNode edgeNode = RenderingContextData.get(edge).getProperty(KEdgeNode.EDGE_REP);
+        if (edgeNode != null) {
+            // remove the edge offset listeners
+            removeEdgeOffsetListener(edgeNode);
+            
+            // remove the edge representation from the containing child area
+            edgeNode.removeFromParent();
         }
     }
 
@@ -271,6 +445,7 @@ public class GraphController {
      */
     private void handlePorts(final KNodeNode nodeNode) {
         KNode node = nodeNode.getWrapped();
+        // create the ports
         for (KPort port : node.getPorts()) {
             addPort(nodeNode, port);
         }
@@ -297,10 +472,6 @@ public class GraphController {
             updateLayout(portNode);
             updateRendering(portNode);
             handleLabels(portNode, port);
-
-            if (sync) {
-                installLayoutSyncAdapter(portNode);
-            }
         }
 
         // add the port
@@ -359,7 +530,6 @@ public class GraphController {
             updateRendering(labelNode);
 
             if (sync) {
-                installLayoutSyncAdapter(labelNode);
                 installTextSyncAdapter(labelNode);
             }
         }
@@ -380,34 +550,6 @@ public class GraphController {
             // remove the label representation from the containing node
             labelNode.removeFromParent();
         }
-    }
-
-    /**
-     * Handles the creation of the given edge if necessary.
-     * 
-     * @param edge
-     *            the edge
-     */
-    private void handleEdge(final KEdge edge) {
-        KEdgeNode edgeRep = RenderingContextData.get(edge).getProperty(KEdgeNode.EDGE_REP);
-
-        // if there is no Piccolo representation for the edge create it
-        if (edgeRep == null) {
-            edgeRep = new KEdgeNode(edge);
-            updateLayout(edgeRep);
-            updateRendering(edgeRep);
-            handleLabels(edgeRep, edge);
-
-            if (sync) {
-                installLayoutSyncAdapter(edgeRep);
-            }
-        }
-
-        // find and set the parent for the edge
-        updateEdgeParent(edgeRep);
-
-        // update the offset of the edge layout to the containing child area
-        // TODO implement this + cross hierarchy sync
     }
 
     /**
@@ -459,15 +601,19 @@ public class GraphController {
      * Updates the bounds and translation of the node representation according to the
      * {@code KShapeLayout} of the wrapped node.
      * 
-     * @param nodeRep
-     *            the Piccolo node representation
+     * @param nodeNode
+     *            the node representation
      */
-    private void updateLayout(final KNodeNode nodeRep) {
-        KNode node = nodeRep.getWrapped();
+    private void updateLayout(final KNodeNode nodeNode) {
+        KNode node = nodeNode.getWrapped();
         KShapeLayout shapeLayout = node.getData(KShapeLayout.class);
         if (shapeLayout != null) {
-            NodeUtil.applySmartBounds(nodeRep, shapeLayout.getXpos(), shapeLayout.getYpos(),
+            NodeUtil.applySmartBounds(nodeNode, shapeLayout.getXpos(), shapeLayout.getYpos(),
                     shapeLayout.getWidth(), shapeLayout.getHeight());
+            
+            if (sync) {
+                installLayoutSyncAdapter(nodeNode);
+            }
         }
     }
 
@@ -475,15 +621,19 @@ public class GraphController {
      * Updates the bounds and translation of the port representation according to the
      * {@code KShapeLayout} of the wrapped port.
      * 
-     * @param portRep
-     *            the Piccolo port representation
+     * @param portNode
+     *            the port representation
      */
-    private void updateLayout(final KPortNode portRep) {
-        KPort port = portRep.getWrapped();
+    private void updateLayout(final KPortNode portNode) {
+        KPort port = portNode.getWrapped();
         KShapeLayout shapeLayout = port.getData(KShapeLayout.class);
         if (shapeLayout != null) {
-            NodeUtil.applySmartBounds(portRep, shapeLayout.getXpos(), shapeLayout.getYpos(),
+            NodeUtil.applySmartBounds(portNode, shapeLayout.getXpos(), shapeLayout.getYpos(),
                     shapeLayout.getWidth(), shapeLayout.getHeight());
+            
+            if (sync) {
+                installLayoutSyncAdapter(portNode);
+            }
         }
     }
 
@@ -491,15 +641,19 @@ public class GraphController {
      * Updates the bounds and translation of the label representation according to the
      * {@code KShapeLayout} of the wrapped label.
      * 
-     * @param labelRep
-     *            the Piccolo label representation
+     * @param labelNode
+     *            the label representation
      */
-    private void updateLayout(final KLabelNode labelRep) {
-        KLabel label = labelRep.getWrapped();
+    private void updateLayout(final KLabelNode labelNode) {
+        KLabel label = labelNode.getWrapped();
         KShapeLayout shapeLayout = label.getData(KShapeLayout.class);
         if (shapeLayout != null) {
-            NodeUtil.applySmartBounds(labelRep, shapeLayout.getXpos(), shapeLayout.getYpos(),
+            NodeUtil.applySmartBounds(labelNode, shapeLayout.getXpos(), shapeLayout.getYpos(),
                     shapeLayout.getWidth(), shapeLayout.getHeight());
+            
+            if (sync) {
+                installLayoutSyncAdapter(labelNode);
+            }
         }
     }
 
@@ -516,6 +670,10 @@ public class GraphController {
         if (edgeLayout != null) {
             Point2D[] bendPoints = getBendPoints(edgeLayout);
             edgeRep.setBendPoints(bendPoints);
+            
+            if (sync) {
+                installLayoutSyncAdapter(edgeRep);
+            }
         }
     }
 
@@ -530,6 +688,7 @@ public class GraphController {
                 .getAttribute(RENDERING_KEY);
         if (renderingController == null) {
             renderingController = new KNodeRenderingController(nodeRep);
+            nodeRep.setChildArea(renderingController.getChildAreaNode());
             nodeRep.addAttribute(RENDERING_KEY, renderingController);
             renderingController.initialize(sync);
         } else {
@@ -822,7 +981,7 @@ public class GraphController {
                             public void run() {
                                 addNode(nodeRep, addedNode);
                             }
-                        }, false);
+                        }, true);
                         break;
                     }
                     case Notification.ADD_MANY: {
@@ -834,7 +993,7 @@ public class GraphController {
                                     addNode(nodeRep, addedNode);
                                 }
                             }
-                        }, false);
+                        }, true);
                         break;
                     }
                     case Notification.REMOVE: {
@@ -843,7 +1002,7 @@ public class GraphController {
                             public void run() {
                                 removeNode(removedNode);
                             }
-                        }, false);
+                        }, true);
                         break;
                     }
                     case Notification.REMOVE_MANY: {
@@ -855,7 +1014,7 @@ public class GraphController {
                                     removeNode(removedNode);
                                 }
                             }
-                        }, false);
+                        }, true);
                         break;
                     }
                     }
@@ -865,26 +1024,35 @@ public class GraphController {
     }
     
     /**
-     * Installs an adapter on the represented node to synchronize the outgoing edges of the
-     * representation with the specified outgoing edges in the model.
+     * Installs an adapter on the node to synchronize the incoming and outgoing edges of
+     * the representation with the specified incoming and outgoing edges in the model.
      * 
-     * @param nodeRep
-     *            the node representation
+     * @param node
+     *            the node
      */
-    private void installOutgoingEdgeSyncAdapter(final INode nodeRep) {
-        KNode node = nodeRep.getWrapped();
-        // add an adapter on the node's outgoing edges
-        node.eAdapters().add(new AdapterImpl() {
+    private void installEdgeSyncAdapter(final KNode node) {
+        RenderingContextData data = RenderingContextData.get(node);
+        
+        // remove the currently installed adapter if any
+        AdapterImpl edgeSyncAdapter = data.getProperty(EDGE_SYNC_ADAPTER);
+        if (edgeSyncAdapter != null) {
+            node.eAdapters().remove(edgeSyncAdapter);
+        }
+        
+        // create an adapter on the node's edges
+        edgeSyncAdapter = new AdapterImpl() {
             public void notifyChanged(final Notification notification) {
-                if (notification.getFeatureID(KNode.class) == KGraphPackage.KNODE__OUTGOING_EDGES) {
+                int featureId = notification.getFeatureID(KNode.class);
+                if (featureId == KGraphPackage.KNODE__OUTGOING_EDGES
+                        || featureId == KGraphPackage.KNODE__INCOMING_EDGES) {
                     switch (notification.getEventType()) {
                     case Notification.ADD: {
                         final KEdge addedEdge = (KEdge) notification.getNewValue();
                         MonitoredOperation.runInUI(new Runnable() {
                             public void run() {
-                                handleEdge(addedEdge);
+                                addEdge(addedEdge);
                             }
-                        }, false);
+                        }, true);
                         break;
                     }
                     case Notification.ADD_MANY: {
@@ -893,16 +1061,57 @@ public class GraphController {
                         MonitoredOperation.runInUI(new Runnable() {
                             public void run() {
                                 for (KEdge addedEdge : addedEdges) {
-                                    handleEdge(addedEdge);
+                                    addEdge(addedEdge);
                                 }
                             }
-                        }, false);
+                        }, true);
                         break;
+                    }
+                    case Notification.REMOVE: {
+                        final KEdge removedEdge = (KEdge) notification.getOldValue();
+                        MonitoredOperation.runInUI(new Runnable() {
+                            public void run() {
+                                removeEdge(removedEdge);
+                            }
+                        }, true);
+                        break;      
+                    }
+                    case Notification.REMOVE_MANY: {
+                        @SuppressWarnings("unchecked")
+                        final List<KEdge> removedEdges = (List<KEdge>) notification.getOldValue();
+                        MonitoredOperation.runInUI(new Runnable() {
+                            public void run() {
+                                for (KEdge removedEdge : removedEdges) {
+                                    removeEdge(removedEdge);
+                                }
+                            }
+                        }, true);
+                        break;   
                     }
                     }
                 }
             }
-        });
+        };
+        
+        // remember the adapter
+        data.setProperty(EDGE_SYNC_ADAPTER, edgeSyncAdapter);
+        
+        // add the adapter
+        node.eAdapters().add(edgeSyncAdapter);
+    }
+    
+    /**
+     * Uninstalls the edge synchronization adapter on a node.
+     * 
+     * @param node
+     *            the node
+     */
+    private void uninstallEdgeSyncAdapter(final KNode node) {
+        AdapterImpl edgeSyncAdapter =
+                RenderingContextData.get(node).getProperty(EDGE_SYNC_ADAPTER);
+        if (edgeSyncAdapter != null) {
+            node.eAdapters().remove(edgeSyncAdapter);
+        }
     }
 
     /**
@@ -925,7 +1134,7 @@ public class GraphController {
                             public void run() {
                                 addPort(nodeRep, addedPort);
                             }
-                        }, false);
+                        }, true);
                         break;
                     }
                     case Notification.ADD_MANY: {
@@ -937,7 +1146,7 @@ public class GraphController {
                                     addPort(nodeRep, addedPort);
                                 }
                             }
-                        }, false);
+                        }, true);
                         break;
                     }
                     case Notification.REMOVE: {
@@ -946,7 +1155,7 @@ public class GraphController {
                             public void run() {
                                 removePort(removedPort);
                             }
-                        }, false);
+                        }, true);
                         break;
                     }
                     case Notification.REMOVE_MANY: {
@@ -958,7 +1167,7 @@ public class GraphController {
                                     removePort(removedPort);
                                 }
                             }
-                        }, false);
+                        }, true);
                         break;
                     }
                     }
@@ -990,7 +1199,7 @@ public class GraphController {
                             public void run() {
                                 addLabel(labeledNode, addedLabel);
                             }
-                        }, false);
+                        }, true);
                         break;
                     }
                     case Notification.ADD_MANY: {
@@ -1002,7 +1211,7 @@ public class GraphController {
                                     addLabel(labeledNode, addedLabel);
                                 }
                             }
-                        }, false);
+                        }, true);
                         break;
                     }
                     case Notification.REMOVE: {
@@ -1011,7 +1220,7 @@ public class GraphController {
                             public void run() {
                                 removeLabel(removedLabel);
                             }
-                        }, false);
+                        }, true);
                         break;
                     }
                     case Notification.REMOVE_MANY: {
@@ -1023,7 +1232,7 @@ public class GraphController {
                                     removeLabel(removedLabel);
                                 }
                             }
-                        }, false);
+                        }, true);
                         break;
                     }
                     }
@@ -1047,7 +1256,11 @@ public class GraphController {
                 if (notification.getFeatureID(KLabel.class) == KGraphPackage.KLABEL__TEXT) {
                     switch (notification.getEventType()) {
                     case Notification.SET:
-                        labelRep.setText(node.getText());
+                        MonitoredOperation.runInUI(new Runnable() {
+                            public void run() {
+                                labelRep.setText(node.getText());
+                            }
+                        }, true);
                         break;
                     }
                 }
@@ -1080,24 +1293,24 @@ public class GraphController {
         // build the bend point array
         Point2D[] points = new Point2D[edgeLayout.getBendPoints().size() + 2];
         int i = 0;
-        points[i++] = new Point2D.Float(edgeLayout.getSourcePoint().getX(), edgeLayout
+        points[i++] = new Point2D.Double(edgeLayout.getSourcePoint().getX(), edgeLayout
                 .getSourcePoint().getY());
         for (KPoint bend : edgeLayout.getBendPoints()) {
-            points[i++] = new Point2D.Float(bend.getX(), bend.getY());
+            points[i++] = new Point2D.Double(bend.getX(), bend.getY());
         }
-        points[i] = new Point2D.Float(edgeLayout.getTargetPoint().getX(), edgeLayout
+        points[i] = new Point2D.Double(edgeLayout.getTargetPoint().getX(), edgeLayout
                 .getTargetPoint().getY());
         return points;
     }
 
     /**
-     * Finds the parent node for edge and adds the edge to that nodes child area.
+     * Finds the parent node for the edge representation and adds the edge to that node
+     * representations child area.
      * 
      * @param edgeRep
      *            the edge representation
-     * @return the parent node representation
      */
-    private INode updateEdgeParent(final KEdgeNode edgeRep) {
+    private void updateEdgeParent(final KEdgeNode edgeRep) {
         KEdge edge = edgeRep.getWrapped();
         KNode source = edge.getSource();
         KNode target = edge.getTarget();
@@ -1108,13 +1321,81 @@ public class GraphController {
             if (commonParentNode != null) {
                 KChildAreaNode childAreaNode = commonParentNode.getChildArea();
                 childAreaNode.addEdge(edgeRep);
-                return commonParentNode;
-            } else {
-                // this should never happen
-                throw new RuntimeException("Parent representation for edge is null");
             }
         }
-        return null;
+    }
+    
+    /**
+     * Updates the offset of the edge representation.
+     * 
+     * @param edgeNode
+     *            the edge representation
+     */
+    public void updateEdgeOffset(final KEdgeNode edgeNode) {
+        final PNode edgeNodeParent = edgeNode.getParent();
+        if (edgeNodeParent != null) {
+            KEdge edge = edgeNode.getWrapped();
+            KNode source = edge.getSource();
+            INode sourceParentNode =
+                    RenderingContextData.get(source.getParent()).getProperty(INode.NODE_REP);
+            final KChildAreaNode relativeChildArea = sourceParentNode.getChildArea();
+
+            // the listener that updates the offset
+            PropertyChangeListener listener = new PropertyChangeListener() {
+                public void propertyChange(final PropertyChangeEvent arg0) {
+                    // calculate the offset
+                    Point2D offset = new Point2D.Double(0, 0);
+                    PNode currentNode = relativeChildArea;
+                    while (currentNode != null && currentNode != edgeNodeParent) {
+                        currentNode.localToParent(offset);
+                        currentNode = currentNode.getParent();
+                    }
+                    
+                    // apply the offset
+                    NodeUtil.applyTranslation(edgeNode, offset);                    
+                }
+            };
+            // remember the listener
+            edgeNode.addAttribute(EDGE_OFFSET_LISTENER_KEY, listener);
+            
+            // calculate the offset and register the update offset listener
+            List<PNode> listenedNodes = Lists.newLinkedList();
+            Point2D offset = new Point2D.Double(0, 0);
+            PNode currentNode = relativeChildArea;
+            while (currentNode != null && currentNode != edgeNodeParent) {
+                currentNode.localToParent(offset);
+                currentNode.addPropertyChangeListener(PNode.PROPERTY_TRANSFORM, listener);
+                listenedNodes.add(currentNode);
+                currentNode = currentNode.getParent();
+            }
+            
+            // remember the listened nodes
+            edgeNode.addAttribute(EDGE_OFFSET_LISTENED_KEY, listenedNodes);
+            
+            // apply the offset
+            NodeUtil.applyTranslation(edgeNode, offset);
+        }
+    }
+    
+    /**
+     * Removes all listeners used to update the edge representations offset from the associated
+     * nodes.
+     * 
+     * @param edgeNode
+     *            the edge representation
+     */
+    private void removeEdgeOffsetListener(final KEdgeNode edgeNode) {
+        PropertyChangeListener listener =
+                (PropertyChangeListener) edgeNode.getAttribute(EDGE_OFFSET_LISTENER_KEY);
+        @SuppressWarnings("unchecked")
+        List<PNode> listenedNodes = (List<PNode>) edgeNode.getAttribute(EDGE_OFFSET_LISTENED_KEY);
+        if (listener != null && listenedNodes != null) {
+            for (PNode listenedNode : listenedNodes) {
+                listenedNode.removePropertyChangeListener(PNode.PROPERTY_TRANSFORM, listener);
+            }
+        }
+        edgeNode.addAttribute(EDGE_OFFSET_LISTENER_KEY, null);
+        edgeNode.addAttribute(EDGE_OFFSET_LISTENED_KEY, null);
     }
 
     /**
