@@ -38,8 +38,7 @@ import edu.umd.cs.piccolo.util.PNodeFilter;
  * This handler provides simple interaction for node selection. Clicking selects the object under
  * the cursor and dragging with control pressed offers marquee selection. This handler does not
  * modify the selected nodes in any way, it just provides selection functionality. Much of the
- * implementation is based on {@code PSelectionEventHandler}.<br> <br>
- * The selection is visualized by applying a highlighting effect using {@code HighlightUtil}.
+ * implementation is based on {@code PSelectionEventHandler}.
  * 
  * @author mri
  */
@@ -104,7 +103,6 @@ public class PSWTSimpleSelectionEventHandler extends PDragSequenceEventHandler {
             return false;
         }
         if (selectedNodes.add(node)) {
-            HighlightUtil.setSelectionHighlight(node);
             return true;
         }
         return false;
@@ -145,7 +143,6 @@ public class PSWTSimpleSelectionEventHandler extends PDragSequenceEventHandler {
 
     private boolean internalUnselect(final PNode node) {
         if (selectedNodes.remove(node)) {
-            HighlightUtil.removeSelectionHighlight(node);
             return true;
         }
         return false;
@@ -173,9 +170,6 @@ public class PSWTSimpleSelectionEventHandler extends PDragSequenceEventHandler {
      * Removes all nodes from the selection.
      */
     public void unselectAll() {
-        for (PNode node : selectedNodes) {
-            HighlightUtil.removeSelectionHighlight(node);
-        }
         boolean unselected = selectedNodes.size() > 0;
         selectedNodes.clear();
         if (unselected) {
