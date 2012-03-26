@@ -141,6 +141,15 @@ public final class DiagramViewManager implements IPartListener {
                     return null;
                 }
             }
+            
+            // trigger the update status
+            KlighdStatusState state =
+                    new KlighdStatusState(KlighdStatusState.Status.UPDATE, id, viewContext,
+                            viewContext.getProperty(LightDiagramServices.VIEWER));
+            if (KlighdStatusTrigger.getInstance() != null) {
+                KlighdStatusTrigger.getInstance().trigger(state);
+            }
+            
             return diagramView;
         }
         return null;

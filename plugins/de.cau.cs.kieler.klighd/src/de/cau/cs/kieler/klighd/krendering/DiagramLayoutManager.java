@@ -242,7 +242,9 @@ public class DiagramLayoutManager implements IDiagramLayoutManager<KGraphElement
         // set the node layout
         KShapeLayout layoutLayout = layoutNode.getData(KShapeLayout.class);
         KShapeLayout nodeLayout = node.getData(KShapeLayout.class);
-        transferShapeLayout(nodeLayout, layoutLayout);
+        if (nodeLayout != null) {
+            transferShapeLayout(nodeLayout, layoutLayout);   
+        }
 
         // set insets if available
         KInsets layoutInsets = layoutLayout.getInsets();
@@ -288,7 +290,9 @@ public class DiagramLayoutManager implements IDiagramLayoutManager<KGraphElement
         // set the port layout
         KShapeLayout layoutLayout = layoutPort.getData(KShapeLayout.class);
         KShapeLayout portLayout = port.getData(KShapeLayout.class);
-        transferShapeLayout(portLayout, layoutLayout);
+        if (portLayout != null) {
+            transferShapeLayout(portLayout, layoutLayout);   
+        }
 
         layoutPort.setNode(layoutNode);
         mapping.getGraphMap().put(layoutPort, port);
@@ -339,7 +343,9 @@ public class DiagramLayoutManager implements IDiagramLayoutManager<KGraphElement
         // set the edge layout
         KEdgeLayout layoutLayout = layoutEdge.getData(KEdgeLayout.class);
         KEdgeLayout edgeLayout = edge.getData(KEdgeLayout.class);
-        transferEdgeLayout(edgeLayout, layoutLayout);
+        if (edgeLayout != null) {
+            transferEdgeLayout(edgeLayout, layoutLayout);   
+        }
 
         layoutEdge.setSource(layoutSource);
         layoutEdge.setTarget(layoutTarget);
@@ -368,7 +374,9 @@ public class DiagramLayoutManager implements IDiagramLayoutManager<KGraphElement
         // set the label layout
         KShapeLayout layoutLayout = layoutLabel.getData(KShapeLayout.class);
         KShapeLayout labelLayout = label.getData(KShapeLayout.class);
-        transferShapeLayout(labelLayout, layoutLayout);
+        if (labelLayout != null) {
+            transferShapeLayout(labelLayout, layoutLayout);   
+        }
 
         mapping.getGraphMap().put(layoutLabel, label);
     }
@@ -380,7 +388,9 @@ public class DiagramLayoutManager implements IDiagramLayoutManager<KGraphElement
             final int animationTime) {
         // set the animation time as property on the root element
         KShapeLayout parentLayout = mapping.getParentElement().getData(KShapeLayout.class);
-        parentLayout.setProperty(APPLY_LAYOUT_DURATION, animationTime);
+        if (parentLayout != null) {
+            parentLayout.setProperty(APPLY_LAYOUT_DURATION, animationTime);   
+        }
 
         // get the visualizing viewer if any
         IViewer<?> viewer = mapping.getProperty(VIEWER);
