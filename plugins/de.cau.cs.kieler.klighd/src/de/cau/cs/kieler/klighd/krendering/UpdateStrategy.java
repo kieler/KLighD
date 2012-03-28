@@ -20,7 +20,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.eclipse.core.runtime.IPath;
-import org.eclipse.core.runtime.Path;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.compare.diff.merge.service.MergeService;
 import org.eclipse.emf.compare.diff.metamodel.DiffElement;
@@ -36,7 +35,6 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
-import org.eclipse.emf.ecore.util.EcoreUtil;
 
 import com.google.common.collect.Maps;
 
@@ -73,8 +71,8 @@ public class UpdateStrategy implements IUpdateStrategy<KNode> {
      * {@inheritDoc}
      */
     public void update(final KNode baseModel, final KNode newModel, final ViewContext viewContext) {
-        serialize(new Path("/test/test/oldbase.kgraphx"), EcoreUtil.copy(baseModel));
-        serialize(new Path("/test/test/new.kgraphx"), EcoreUtil.copy(newModel));
+//        serialize(new Path("/test/test/oldbase.kgraphx"), EcoreUtil.copy(baseModel));
+//        serialize(new Path("/test/test/new.kgraphx"), EcoreUtil.copy(newModel));
         try {
             // match the base and the new model
             Map<String, Object> matchOptions = Maps.newHashMap();
@@ -88,10 +86,11 @@ public class UpdateStrategy implements IUpdateStrategy<KNode> {
             // merge differences
             List<DiffElement> differences = new ArrayList<DiffElement>(diff.getOwnedElements());
             MergeService.merge(differences, false);
+            
         } catch (InterruptedException e) {
             throw new RuntimeException("Failed to update KGraph");
         }
-        serialize(new Path("/test/test/newbase.kgraphx"), EcoreUtil.copy(baseModel));
+//        serialize(new Path("/test/test/newbase.kgraphx"), EcoreUtil.copy(baseModel));
     }
 
     /**
