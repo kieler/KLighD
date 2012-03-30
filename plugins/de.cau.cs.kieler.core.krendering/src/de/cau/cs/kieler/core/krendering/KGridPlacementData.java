@@ -24,8 +24,10 @@ package de.cau.cs.kieler.core.krendering;
  * <ul>
  *   <li>{@link de.cau.cs.kieler.core.krendering.KGridPlacementData#getWidthHint <em>Width Hint</em>}</li>
  *   <li>{@link de.cau.cs.kieler.core.krendering.KGridPlacementData#getHeightHint <em>Height Hint</em>}</li>
- *   <li>{@link de.cau.cs.kieler.core.krendering.KGridPlacementData#getHorizontalIndent <em>Horizontal Indent</em>}</li>
- *   <li>{@link de.cau.cs.kieler.core.krendering.KGridPlacementData#getVerticalIndent <em>Vertical Indent</em>}</li>
+ *   <li>{@link de.cau.cs.kieler.core.krendering.KGridPlacementData#getInsetRight <em>Inset Right</em>}</li>
+ *   <li>{@link de.cau.cs.kieler.core.krendering.KGridPlacementData#getInsetBottom <em>Inset Bottom</em>}</li>
+ *   <li>{@link de.cau.cs.kieler.core.krendering.KGridPlacementData#getInsetLeft <em>Inset Left</em>}</li>
+ *   <li>{@link de.cau.cs.kieler.core.krendering.KGridPlacementData#getInsetTop <em>Inset Top</em>}</li>
  * </ul>
  * </p>
  *
@@ -45,7 +47,7 @@ public interface KGridPlacementData extends KPlacementData {
      * @return the value of the '<em>Width Hint</em>' attribute.
      * @see #setWidthHint(float)
      * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKGridPlacementData_WidthHint()
-     * @model required="true"
+     * @model
      * @generated
      */
     float getWidthHint();
@@ -71,7 +73,7 @@ public interface KGridPlacementData extends KPlacementData {
      * @return the value of the '<em>Height Hint</em>' attribute.
      * @see #setHeightHint(float)
      * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKGridPlacementData_HeightHint()
-     * @model required="true"
+     * @model
      * @generated
      */
     float getHeightHint();
@@ -87,55 +89,107 @@ public interface KGridPlacementData extends KPlacementData {
     void setHeightHint(float value);
 
     /**
-     * Returns the value of the '<em><b>Horizontal Indent</b></em>' attribute.
+     * Returns the value of the '<em><b>Inset Right</b></em>' attribute.
      * <!-- begin-user-doc -->
      * <p>
-     * If the meaning of the '<em>Horizontal Indent</em>' attribute isn't clear,
+     * If the meaning of the '<em>Inset Right</em>' attribute isn't clear,
      * there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
-     * @return the value of the '<em>Horizontal Indent</em>' attribute.
-     * @see #setHorizontalIndent(float)
-     * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKGridPlacementData_HorizontalIndent()
-     * @model required="true"
+     * @return the value of the '<em>Inset Right</em>' attribute.
+     * @see #setInsetRight(float)
+     * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKGridPlacementData_InsetRight()
+     * @model
      * @generated
      */
-    float getHorizontalIndent();
+    float getInsetRight();
 
     /**
-     * Sets the value of the '{@link de.cau.cs.kieler.core.krendering.KGridPlacementData#getHorizontalIndent <em>Horizontal Indent</em>}' attribute.
+     * Sets the value of the '{@link de.cau.cs.kieler.core.krendering.KGridPlacementData#getInsetRight <em>Inset Right</em>}' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @param value the new value of the '<em>Horizontal Indent</em>' attribute.
-     * @see #getHorizontalIndent()
+     * @param value the new value of the '<em>Inset Right</em>' attribute.
+     * @see #getInsetRight()
      * @generated
      */
-    void setHorizontalIndent(float value);
+    void setInsetRight(float value);
 
     /**
-     * Returns the value of the '<em><b>Vertical Indent</b></em>' attribute.
+     * Returns the value of the '<em><b>Inset Bottom</b></em>' attribute.
      * <!-- begin-user-doc -->
      * <p>
-     * If the meaning of the '<em>Vertical Indent</em>' attribute isn't clear,
+     * If the meaning of the '<em>Inset Bottom</em>' attribute isn't clear,
      * there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
-     * @return the value of the '<em>Vertical Indent</em>' attribute.
-     * @see #setVerticalIndent(float)
-     * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKGridPlacementData_VerticalIndent()
-     * @model required="true"
+     * @return the value of the '<em>Inset Bottom</em>' attribute.
+     * @see #setInsetBottom(float)
+     * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKGridPlacementData_InsetBottom()
+     * @model
      * @generated
      */
-    float getVerticalIndent();
+    float getInsetBottom();
 
     /**
-     * Sets the value of the '{@link de.cau.cs.kieler.core.krendering.KGridPlacementData#getVerticalIndent <em>Vertical Indent</em>}' attribute.
+     * Sets the value of the '{@link de.cau.cs.kieler.core.krendering.KGridPlacementData#getInsetBottom <em>Inset Bottom</em>}' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @param value the new value of the '<em>Vertical Indent</em>' attribute.
-     * @see #getVerticalIndent()
+     * @param value the new value of the '<em>Inset Bottom</em>' attribute.
+     * @see #getInsetBottom()
      * @generated
      */
-    void setVerticalIndent(float value);
+    void setInsetBottom(float value);
+
+    /**
+     * Returns the value of the '<em><b>Inset Left</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <p>
+     * If the meaning of the '<em>Inset Left</em>' attribute isn't clear,
+     * there really should be more of a description here...
+     * </p>
+     * <!-- end-user-doc -->
+     * @return the value of the '<em>Inset Left</em>' attribute.
+     * @see #setInsetLeft(float)
+     * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKGridPlacementData_InsetLeft()
+     * @model
+     * @generated
+     */
+    float getInsetLeft();
+
+    /**
+     * Sets the value of the '{@link de.cau.cs.kieler.core.krendering.KGridPlacementData#getInsetLeft <em>Inset Left</em>}' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @param value the new value of the '<em>Inset Left</em>' attribute.
+     * @see #getInsetLeft()
+     * @generated
+     */
+    void setInsetLeft(float value);
+
+    /**
+     * Returns the value of the '<em><b>Inset Top</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <p>
+     * If the meaning of the '<em>Inset Top</em>' attribute isn't clear,
+     * there really should be more of a description here...
+     * </p>
+     * <!-- end-user-doc -->
+     * @return the value of the '<em>Inset Top</em>' attribute.
+     * @see #setInsetTop(float)
+     * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKGridPlacementData_InsetTop()
+     * @model
+     * @generated
+     */
+    float getInsetTop();
+
+    /**
+     * Sets the value of the '{@link de.cau.cs.kieler.core.krendering.KGridPlacementData#getInsetTop <em>Inset Top</em>}' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @param value the new value of the '<em>Inset Top</em>' attribute.
+     * @see #getInsetTop()
+     * @generated
+     */
+    void setInsetTop(float value);
 
 } // KGridPlacementData

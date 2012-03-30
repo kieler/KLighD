@@ -57,7 +57,15 @@ public enum VerticalAlignment implements Enumerator {
      * @generated
      * @ordered
      */
-    BOTTOM(2, "BOTTOM", "BOTTOM");
+    BOTTOM(2, "BOTTOM", "BOTTOM"), /**
+     * The '<em><b>EEnum Literal0</b></em>' literal object.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see #EENUM_LITERAL0_VALUE
+     * @generated
+     * @ordered
+     */
+    EENUM_LITERAL0(3, "EEnumLiteral0", "EEnumLiteral0");
 
     /**
      * The '<em><b>TOP</b></em>' literal value.
@@ -105,6 +113,21 @@ public enum VerticalAlignment implements Enumerator {
     public static final int BOTTOM_VALUE = 2;
 
     /**
+     * The '<em><b>EEnum Literal0</b></em>' literal value.
+     * <!-- begin-user-doc -->
+     * <p>
+     * If the meaning of '<em><b>EEnum Literal0</b></em>' literal object isn't clear,
+     * there really should be more of a description here...
+     * </p>
+     * <!-- end-user-doc -->
+     * @see #EENUM_LITERAL0
+     * @model name="EEnumLiteral0"
+     * @generated
+     * @ordered
+     */
+    public static final int EENUM_LITERAL0_VALUE = 3;
+
+    /**
      * An array of all the '<em><b>Vertical Alignment</b></em>' enumerators.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -115,6 +138,7 @@ public enum VerticalAlignment implements Enumerator {
             TOP,
             CENTER,
             BOTTOM,
+            EENUM_LITERAL0,
         };
 
     /**
@@ -168,6 +192,7 @@ public enum VerticalAlignment implements Enumerator {
             case TOP_VALUE: return TOP;
             case CENTER_VALUE: return CENTER;
             case BOTTOM_VALUE: return BOTTOM;
+            case EENUM_LITERAL0_VALUE: return EENUM_LITERAL0;
         }
         return null;
     }

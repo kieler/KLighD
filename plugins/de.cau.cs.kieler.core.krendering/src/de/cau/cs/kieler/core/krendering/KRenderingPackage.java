@@ -1495,22 +1495,40 @@ public interface KRenderingPackage extends EPackage {
     int KGRID_PLACEMENT_DATA__HEIGHT_HINT = KPLACEMENT_DATA_FEATURE_COUNT + 1;
 
     /**
-     * The feature id for the '<em><b>Horizontal Indent</b></em>' attribute.
+     * The feature id for the '<em><b>Inset Right</b></em>' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int KGRID_PLACEMENT_DATA__HORIZONTAL_INDENT = KPLACEMENT_DATA_FEATURE_COUNT + 2;
+    int KGRID_PLACEMENT_DATA__INSET_RIGHT = KPLACEMENT_DATA_FEATURE_COUNT + 2;
 
     /**
-     * The feature id for the '<em><b>Vertical Indent</b></em>' attribute.
+     * The feature id for the '<em><b>Inset Bottom</b></em>' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int KGRID_PLACEMENT_DATA__VERTICAL_INDENT = KPLACEMENT_DATA_FEATURE_COUNT + 3;
+    int KGRID_PLACEMENT_DATA__INSET_BOTTOM = KPLACEMENT_DATA_FEATURE_COUNT + 3;
+
+    /**
+     * The feature id for the '<em><b>Inset Left</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KGRID_PLACEMENT_DATA__INSET_LEFT = KPLACEMENT_DATA_FEATURE_COUNT + 4;
+
+    /**
+     * The feature id for the '<em><b>Inset Top</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KGRID_PLACEMENT_DATA__INSET_TOP = KPLACEMENT_DATA_FEATURE_COUNT + 5;
 
     /**
      * The number of structural features of the '<em>KGrid Placement Data</em>' class.
@@ -1519,7 +1537,7 @@ public interface KRenderingPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int KGRID_PLACEMENT_DATA_FEATURE_COUNT = KPLACEMENT_DATA_FEATURE_COUNT + 4;
+    int KGRID_PLACEMENT_DATA_FEATURE_COUNT = KPLACEMENT_DATA_FEATURE_COUNT + 6;
 
     /**
      * The meta object id for the '{@link de.cau.cs.kieler.core.krendering.impl.KStackPlacementDataImpl <em>KStack Placement Data</em>}' class.
@@ -3331,26 +3349,48 @@ public interface KRenderingPackage extends EPackage {
     EAttribute getKGridPlacementData_HeightHint();
 
     /**
-     * Returns the meta object for the attribute '{@link de.cau.cs.kieler.core.krendering.KGridPlacementData#getHorizontalIndent <em>Horizontal Indent</em>}'.
+     * Returns the meta object for the attribute '{@link de.cau.cs.kieler.core.krendering.KGridPlacementData#getInsetRight <em>Inset Right</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for the attribute '<em>Horizontal Indent</em>'.
-     * @see de.cau.cs.kieler.core.krendering.KGridPlacementData#getHorizontalIndent()
+     * @return the meta object for the attribute '<em>Inset Right</em>'.
+     * @see de.cau.cs.kieler.core.krendering.KGridPlacementData#getInsetRight()
      * @see #getKGridPlacementData()
      * @generated
      */
-    EAttribute getKGridPlacementData_HorizontalIndent();
+    EAttribute getKGridPlacementData_InsetRight();
 
     /**
-     * Returns the meta object for the attribute '{@link de.cau.cs.kieler.core.krendering.KGridPlacementData#getVerticalIndent <em>Vertical Indent</em>}'.
+     * Returns the meta object for the attribute '{@link de.cau.cs.kieler.core.krendering.KGridPlacementData#getInsetBottom <em>Inset Bottom</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for the attribute '<em>Vertical Indent</em>'.
-     * @see de.cau.cs.kieler.core.krendering.KGridPlacementData#getVerticalIndent()
+     * @return the meta object for the attribute '<em>Inset Bottom</em>'.
+     * @see de.cau.cs.kieler.core.krendering.KGridPlacementData#getInsetBottom()
      * @see #getKGridPlacementData()
      * @generated
      */
-    EAttribute getKGridPlacementData_VerticalIndent();
+    EAttribute getKGridPlacementData_InsetBottom();
+
+    /**
+     * Returns the meta object for the attribute '{@link de.cau.cs.kieler.core.krendering.KGridPlacementData#getInsetLeft <em>Inset Left</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the attribute '<em>Inset Left</em>'.
+     * @see de.cau.cs.kieler.core.krendering.KGridPlacementData#getInsetLeft()
+     * @see #getKGridPlacementData()
+     * @generated
+     */
+    EAttribute getKGridPlacementData_InsetLeft();
+
+    /**
+     * Returns the meta object for the attribute '{@link de.cau.cs.kieler.core.krendering.KGridPlacementData#getInsetTop <em>Inset Top</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the attribute '<em>Inset Top</em>'.
+     * @see de.cau.cs.kieler.core.krendering.KGridPlacementData#getInsetTop()
+     * @see #getKGridPlacementData()
+     * @generated
+     */
+    EAttribute getKGridPlacementData_InsetTop();
 
     /**
      * Returns the meta object for class '{@link de.cau.cs.kieler.core.krendering.KStackPlacementData <em>KStack Placement Data</em>}'.
@@ -4383,20 +4423,36 @@ public interface KRenderingPackage extends EPackage {
         EAttribute KGRID_PLACEMENT_DATA__HEIGHT_HINT = eINSTANCE.getKGridPlacementData_HeightHint();
 
         /**
-         * The meta object literal for the '<em><b>Horizontal Indent</b></em>' attribute feature.
+         * The meta object literal for the '<em><b>Inset Right</b></em>' attribute feature.
          * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
          * @generated
          */
-        EAttribute KGRID_PLACEMENT_DATA__HORIZONTAL_INDENT = eINSTANCE.getKGridPlacementData_HorizontalIndent();
+        EAttribute KGRID_PLACEMENT_DATA__INSET_RIGHT = eINSTANCE.getKGridPlacementData_InsetRight();
 
         /**
-         * The meta object literal for the '<em><b>Vertical Indent</b></em>' attribute feature.
+         * The meta object literal for the '<em><b>Inset Bottom</b></em>' attribute feature.
          * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
          * @generated
          */
-        EAttribute KGRID_PLACEMENT_DATA__VERTICAL_INDENT = eINSTANCE.getKGridPlacementData_VerticalIndent();
+        EAttribute KGRID_PLACEMENT_DATA__INSET_BOTTOM = eINSTANCE.getKGridPlacementData_InsetBottom();
+
+        /**
+         * The meta object literal for the '<em><b>Inset Left</b></em>' attribute feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EAttribute KGRID_PLACEMENT_DATA__INSET_LEFT = eINSTANCE.getKGridPlacementData_InsetLeft();
+
+        /**
+         * The meta object literal for the '<em><b>Inset Top</b></em>' attribute feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EAttribute KGRID_PLACEMENT_DATA__INSET_TOP = eINSTANCE.getKGridPlacementData_InsetTop();
 
         /**
          * The meta object literal for the '{@link de.cau.cs.kieler.core.krendering.impl.KStackPlacementDataImpl <em>KStack Placement Data</em>}' class.

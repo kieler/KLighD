@@ -164,8 +164,10 @@ KGridPlacementData returns KGridPlacementData:
 	'{'
 		'widthHint' widthHint=EFloat
 		'heightHint' heightHint=EFloat
-		'horizontalIndent' horizontalIndent=EFloat
-		'verticalIndent' verticalIndent=EFloat
+        'insetRight' insetRight=EFloat
+        'insetBottom' insetBottom=EFloat
+        'insetLeft' insetLeft=EFloat
+        'insetTop' insetTop=EFloat
     '}';
 
 KStackPlacementData returns KStackPlacementData:

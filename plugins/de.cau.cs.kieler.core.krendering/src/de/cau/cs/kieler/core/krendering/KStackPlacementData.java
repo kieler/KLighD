@@ -45,7 +45,7 @@ public interface KStackPlacementData extends KPlacementData {
      * @return the value of the '<em>Inset Right</em>' attribute.
      * @see #setInsetRight(float)
      * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKStackPlacementData_InsetRight()
-     * @model required="true"
+     * @model
      * @generated
      */
     float getInsetRight();
@@ -71,7 +71,7 @@ public interface KStackPlacementData extends KPlacementData {
      * @return the value of the '<em>Inset Bottom</em>' attribute.
      * @see #setInsetBottom(float)
      * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKStackPlacementData_InsetBottom()
-     * @model required="true"
+     * @model
      * @generated
      */
     float getInsetBottom();
@@ -97,7 +97,7 @@ public interface KStackPlacementData extends KPlacementData {
      * @return the value of the '<em>Inset Left</em>' attribute.
      * @see #setInsetLeft(float)
      * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKStackPlacementData_InsetLeft()
-     * @model required="true"
+     * @model
      * @generated
      */
     float getInsetLeft();
@@ -123,7 +123,7 @@ public interface KStackPlacementData extends KPlacementData {
      * @return the value of the '<em>Inset Top</em>' attribute.
      * @see #setInsetTop(float)
      * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKStackPlacementData_InsetTop()
-     * @model required="true"
+     * @model
      * @generated
      */
     float getInsetTop();

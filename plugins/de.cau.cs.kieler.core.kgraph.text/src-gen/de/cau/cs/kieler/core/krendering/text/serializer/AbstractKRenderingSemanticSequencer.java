@@ -515,7 +515,14 @@ public class AbstractKRenderingSemanticSequencer extends AbstractSemanticSequenc
 	
 	/**
 	 * Constraint:
-	 *     (widthHint=EFloat heightHint=EFloat horizontalIndent=EFloat verticalIndent=EFloat)
+	 *     (
+	 *         widthHint=EFloat 
+	 *         heightHint=EFloat 
+	 *         insetRight=EFloat 
+	 *         insetBottom=EFloat 
+	 *         insetLeft=EFloat 
+	 *         insetTop=EFloat
+	 *     )
 	 */
 	protected void sequence_KGridPlacementData(EObject context, KGridPlacementData semanticObject) {
 		if(errorAcceptor != null) {
@@ -523,17 +530,23 @@ public class AbstractKRenderingSemanticSequencer extends AbstractSemanticSequenc
 				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, KRenderingPackage.Literals.KGRID_PLACEMENT_DATA__WIDTH_HINT));
 			if(transientValues.isValueTransient(semanticObject, KRenderingPackage.Literals.KGRID_PLACEMENT_DATA__HEIGHT_HINT) == ValueTransient.YES)
 				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, KRenderingPackage.Literals.KGRID_PLACEMENT_DATA__HEIGHT_HINT));
-			if(transientValues.isValueTransient(semanticObject, KRenderingPackage.Literals.KGRID_PLACEMENT_DATA__HORIZONTAL_INDENT) == ValueTransient.YES)
-				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, KRenderingPackage.Literals.KGRID_PLACEMENT_DATA__HORIZONTAL_INDENT));
-			if(transientValues.isValueTransient(semanticObject, KRenderingPackage.Literals.KGRID_PLACEMENT_DATA__VERTICAL_INDENT) == ValueTransient.YES)
-				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, KRenderingPackage.Literals.KGRID_PLACEMENT_DATA__VERTICAL_INDENT));
+			if(transientValues.isValueTransient(semanticObject, KRenderingPackage.Literals.KGRID_PLACEMENT_DATA__INSET_RIGHT) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, KRenderingPackage.Literals.KGRID_PLACEMENT_DATA__INSET_RIGHT));
+			if(transientValues.isValueTransient(semanticObject, KRenderingPackage.Literals.KGRID_PLACEMENT_DATA__INSET_BOTTOM) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, KRenderingPackage.Literals.KGRID_PLACEMENT_DATA__INSET_BOTTOM));
+			if(transientValues.isValueTransient(semanticObject, KRenderingPackage.Literals.KGRID_PLACEMENT_DATA__INSET_LEFT) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, KRenderingPackage.Literals.KGRID_PLACEMENT_DATA__INSET_LEFT));
+			if(transientValues.isValueTransient(semanticObject, KRenderingPackage.Literals.KGRID_PLACEMENT_DATA__INSET_TOP) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, KRenderingPackage.Literals.KGRID_PLACEMENT_DATA__INSET_TOP));
 		}
 		INodesForEObjectProvider nodes = createNodeProvider(semanticObject);
 		SequenceFeeder feeder = createSequencerFeeder(semanticObject, nodes);
 		feeder.accept(grammarAccess.getKGridPlacementDataAccess().getWidthHintEFloatParserRuleCall_3_0(), semanticObject.getWidthHint());
 		feeder.accept(grammarAccess.getKGridPlacementDataAccess().getHeightHintEFloatParserRuleCall_5_0(), semanticObject.getHeightHint());
-		feeder.accept(grammarAccess.getKGridPlacementDataAccess().getHorizontalIndentEFloatParserRuleCall_7_0(), semanticObject.getHorizontalIndent());
-		feeder.accept(grammarAccess.getKGridPlacementDataAccess().getVerticalIndentEFloatParserRuleCall_9_0(), semanticObject.getVerticalIndent());
+		feeder.accept(grammarAccess.getKGridPlacementDataAccess().getInsetRightEFloatParserRuleCall_7_0(), semanticObject.getInsetRight());
+		feeder.accept(grammarAccess.getKGridPlacementDataAccess().getInsetBottomEFloatParserRuleCall_9_0(), semanticObject.getInsetBottom());
+		feeder.accept(grammarAccess.getKGridPlacementDataAccess().getInsetLeftEFloatParserRuleCall_11_0(), semanticObject.getInsetLeft());
+		feeder.accept(grammarAccess.getKGridPlacementDataAccess().getInsetTopEFloatParserRuleCall_13_0(), semanticObject.getInsetTop());
 		feeder.finish();
 	}
 	

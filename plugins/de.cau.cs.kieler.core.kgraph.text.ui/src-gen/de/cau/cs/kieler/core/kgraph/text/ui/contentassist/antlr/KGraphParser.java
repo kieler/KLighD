@@ -335,8 +335,10 @@ public class KGraphParser extends AbstractContentAssistParser {
 					put(grammarAccess.getKDecoratorPlacementDataAccess().getHeightAssignment_8_1(), "rule__KDecoratorPlacementData__HeightAssignment_8_1");
 					put(grammarAccess.getKGridPlacementDataAccess().getWidthHintAssignment_3(), "rule__KGridPlacementData__WidthHintAssignment_3");
 					put(grammarAccess.getKGridPlacementDataAccess().getHeightHintAssignment_5(), "rule__KGridPlacementData__HeightHintAssignment_5");
-					put(grammarAccess.getKGridPlacementDataAccess().getHorizontalIndentAssignment_7(), "rule__KGridPlacementData__HorizontalIndentAssignment_7");
-					put(grammarAccess.getKGridPlacementDataAccess().getVerticalIndentAssignment_9(), "rule__KGridPlacementData__VerticalIndentAssignment_9");
+					put(grammarAccess.getKGridPlacementDataAccess().getInsetRightAssignment_7(), "rule__KGridPlacementData__InsetRightAssignment_7");
+					put(grammarAccess.getKGridPlacementDataAccess().getInsetBottomAssignment_9(), "rule__KGridPlacementData__InsetBottomAssignment_9");
+					put(grammarAccess.getKGridPlacementDataAccess().getInsetLeftAssignment_11(), "rule__KGridPlacementData__InsetLeftAssignment_11");
+					put(grammarAccess.getKGridPlacementDataAccess().getInsetTopAssignment_13(), "rule__KGridPlacementData__InsetTopAssignment_13");
 					put(grammarAccess.getKStackPlacementDataAccess().getInsetRightAssignment_3(), "rule__KStackPlacementData__InsetRightAssignment_3");
 					put(grammarAccess.getKStackPlacementDataAccess().getInsetBottomAssignment_5(), "rule__KStackPlacementData__InsetBottomAssignment_5");
 					put(grammarAccess.getKStackPlacementDataAccess().getInsetLeftAssignment_7(), "rule__KStackPlacementData__InsetLeftAssignment_7");

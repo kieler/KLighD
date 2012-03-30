@@ -3076,53 +3076,97 @@ ruleKGridPlacementData returns [EObject current=null]
 	    }
 
 )
-)	otherlv_6='horizontalIndent' 
+)	otherlv_6='insetRight' 
     {
-    	newLeafNode(otherlv_6, grammarAccess.getKGridPlacementDataAccess().getHorizontalIndentKeyword_6());
+    	newLeafNode(otherlv_6, grammarAccess.getKGridPlacementDataAccess().getInsetRightKeyword_6());
     }
 (
 (
 		{ 
-	        newCompositeNode(grammarAccess.getKGridPlacementDataAccess().getHorizontalIndentEFloatParserRuleCall_7_0()); 
+	        newCompositeNode(grammarAccess.getKGridPlacementDataAccess().getInsetRightEFloatParserRuleCall_7_0()); 
 	    }
-		lv_horizontalIndent_7_0=ruleEFloat		{
+		lv_insetRight_7_0=ruleEFloat		{
 	        if ($current==null) {
 	            $current = createModelElementForParent(grammarAccess.getKGridPlacementDataRule());
 	        }
        		set(
        			$current, 
-       			"horizontalIndent",
-        		lv_horizontalIndent_7_0, 
+       			"insetRight",
+        		lv_insetRight_7_0, 
         		"EFloat");
 	        afterParserOrEnumRuleCall();
 	    }
 
 )
-)	otherlv_8='verticalIndent' 
+)	otherlv_8='insetBottom' 
     {
-    	newLeafNode(otherlv_8, grammarAccess.getKGridPlacementDataAccess().getVerticalIndentKeyword_8());
+    	newLeafNode(otherlv_8, grammarAccess.getKGridPlacementDataAccess().getInsetBottomKeyword_8());
     }
 (
 (
 		{ 
-	        newCompositeNode(grammarAccess.getKGridPlacementDataAccess().getVerticalIndentEFloatParserRuleCall_9_0()); 
+	        newCompositeNode(grammarAccess.getKGridPlacementDataAccess().getInsetBottomEFloatParserRuleCall_9_0()); 
 	    }
-		lv_verticalIndent_9_0=ruleEFloat		{
+		lv_insetBottom_9_0=ruleEFloat		{
 	        if ($current==null) {
 	            $current = createModelElementForParent(grammarAccess.getKGridPlacementDataRule());
 	        }
        		set(
        			$current, 
-       			"verticalIndent",
-        		lv_verticalIndent_9_0, 
+       			"insetBottom",
+        		lv_insetBottom_9_0, 
         		"EFloat");
 	        afterParserOrEnumRuleCall();
 	    }
 
 )
-)	otherlv_10='}' 
+)	otherlv_10='insetLeft' 
     {
-    	newLeafNode(otherlv_10, grammarAccess.getKGridPlacementDataAccess().getRightCurlyBracketKeyword_10());
+    	newLeafNode(otherlv_10, grammarAccess.getKGridPlacementDataAccess().getInsetLeftKeyword_10());
+    }
+(
+(
+		{ 
+	        newCompositeNode(grammarAccess.getKGridPlacementDataAccess().getInsetLeftEFloatParserRuleCall_11_0()); 
+	    }
+		lv_insetLeft_11_0=ruleEFloat		{
+	        if ($current==null) {
+	            $current = createModelElementForParent(grammarAccess.getKGridPlacementDataRule());
+	        }
+       		set(
+       			$current, 
+       			"insetLeft",
+        		lv_insetLeft_11_0, 
+        		"EFloat");
+	        afterParserOrEnumRuleCall();
+	    }
+
+)
+)	otherlv_12='insetTop' 
+    {
+    	newLeafNode(otherlv_12, grammarAccess.getKGridPlacementDataAccess().getInsetTopKeyword_12());
+    }
+(
+(
+		{ 
+	        newCompositeNode(grammarAccess.getKGridPlacementDataAccess().getInsetTopEFloatParserRuleCall_13_0()); 
+	    }
+		lv_insetTop_13_0=ruleEFloat		{
+	        if ($current==null) {
+	            $current = createModelElementForParent(grammarAccess.getKGridPlacementDataRule());
+	        }
+       		set(
+       			$current, 
+       			"insetTop",
+        		lv_insetTop_13_0, 
+        		"EFloat");
+	        afterParserOrEnumRuleCall();
+	    }
+
+)
+)	otherlv_14='}' 
+    {
+    	newLeafNode(otherlv_14, grammarAccess.getKGridPlacementDataAccess().getRightCurlyBracketKeyword_14());
     }
 )
 ;

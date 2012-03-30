@@ -944,7 +944,7 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
      * <!-- end-user-doc -->
      * @generated
      */
-    public EAttribute getKGridPlacementData_HorizontalIndent() {
+    public EAttribute getKGridPlacementData_InsetRight() {
         return (EAttribute)kGridPlacementDataEClass.getEStructuralFeatures().get(2);
     }
 
@@ -953,8 +953,26 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
      * <!-- end-user-doc -->
      * @generated
      */
-    public EAttribute getKGridPlacementData_VerticalIndent() {
+    public EAttribute getKGridPlacementData_InsetBottom() {
         return (EAttribute)kGridPlacementDataEClass.getEStructuralFeatures().get(3);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EAttribute getKGridPlacementData_InsetLeft() {
+        return (EAttribute)kGridPlacementDataEClass.getEStructuralFeatures().get(4);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EAttribute getKGridPlacementData_InsetTop() {
+        return (EAttribute)kGridPlacementDataEClass.getEStructuralFeatures().get(5);
     }
 
     /**
@@ -1541,8 +1559,10 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
         kGridPlacementDataEClass = createEClass(KGRID_PLACEMENT_DATA);
         createEAttribute(kGridPlacementDataEClass, KGRID_PLACEMENT_DATA__WIDTH_HINT);
         createEAttribute(kGridPlacementDataEClass, KGRID_PLACEMENT_DATA__HEIGHT_HINT);
-        createEAttribute(kGridPlacementDataEClass, KGRID_PLACEMENT_DATA__HORIZONTAL_INDENT);
-        createEAttribute(kGridPlacementDataEClass, KGRID_PLACEMENT_DATA__VERTICAL_INDENT);
+        createEAttribute(kGridPlacementDataEClass, KGRID_PLACEMENT_DATA__INSET_RIGHT);
+        createEAttribute(kGridPlacementDataEClass, KGRID_PLACEMENT_DATA__INSET_BOTTOM);
+        createEAttribute(kGridPlacementDataEClass, KGRID_PLACEMENT_DATA__INSET_LEFT);
+        createEAttribute(kGridPlacementDataEClass, KGRID_PLACEMENT_DATA__INSET_TOP);
 
         kStackPlacementDataEClass = createEClass(KSTACK_PLACEMENT_DATA);
         createEAttribute(kStackPlacementDataEClass, KSTACK_PLACEMENT_DATA__INSET_RIGHT);
@@ -1767,16 +1787,18 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
         initEClass(kPlacementDataEClass, KPlacementData.class, "KPlacementData", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
         initEClass(kGridPlacementDataEClass, KGridPlacementData.class, "KGridPlacementData", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-        initEAttribute(getKGridPlacementData_WidthHint(), ecorePackage.getEFloat(), "widthHint", null, 1, 1, KGridPlacementData.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        initEAttribute(getKGridPlacementData_HeightHint(), ecorePackage.getEFloat(), "heightHint", null, 1, 1, KGridPlacementData.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        initEAttribute(getKGridPlacementData_HorizontalIndent(), ecorePackage.getEFloat(), "horizontalIndent", null, 1, 1, KGridPlacementData.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        initEAttribute(getKGridPlacementData_VerticalIndent(), ecorePackage.getEFloat(), "verticalIndent", null, 1, 1, KGridPlacementData.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEAttribute(getKGridPlacementData_WidthHint(), ecorePackage.getEFloat(), "widthHint", null, 0, 1, KGridPlacementData.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEAttribute(getKGridPlacementData_HeightHint(), ecorePackage.getEFloat(), "heightHint", null, 0, 1, KGridPlacementData.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEAttribute(getKGridPlacementData_InsetRight(), ecorePackage.getEFloat(), "insetRight", null, 0, 1, KGridPlacementData.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEAttribute(getKGridPlacementData_InsetBottom(), ecorePackage.getEFloat(), "insetBottom", null, 0, 1, KGridPlacementData.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEAttribute(getKGridPlacementData_InsetLeft(), ecorePackage.getEFloat(), "insetLeft", null, 0, 1, KGridPlacementData.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEAttribute(getKGridPlacementData_InsetTop(), ecorePackage.getEFloat(), "insetTop", null, 0, 1, KGridPlacementData.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         initEClass(kStackPlacementDataEClass, KStackPlacementData.class, "KStackPlacementData", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-        initEAttribute(getKStackPlacementData_InsetRight(), ecorePackage.getEFloat(), "insetRight", null, 1, 1, KStackPlacementData.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        initEAttribute(getKStackPlacementData_InsetBottom(), ecorePackage.getEFloat(), "insetBottom", null, 1, 1, KStackPlacementData.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        initEAttribute(getKStackPlacementData_InsetLeft(), ecorePackage.getEFloat(), "insetLeft", null, 1, 1, KStackPlacementData.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        initEAttribute(getKStackPlacementData_InsetTop(), ecorePackage.getEFloat(), "insetTop", null, 1, 1, KStackPlacementData.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEAttribute(getKStackPlacementData_InsetRight(), ecorePackage.getEFloat(), "insetRight", null, 0, 1, KStackPlacementData.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEAttribute(getKStackPlacementData_InsetBottom(), ecorePackage.getEFloat(), "insetBottom", null, 0, 1, KStackPlacementData.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEAttribute(getKStackPlacementData_InsetLeft(), ecorePackage.getEFloat(), "insetLeft", null, 0, 1, KStackPlacementData.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEAttribute(getKStackPlacementData_InsetTop(), ecorePackage.getEFloat(), "insetTop", null, 0, 1, KStackPlacementData.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         initEClass(kDirectPlacementDataEClass, KDirectPlacementData.class, "KDirectPlacementData", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         initEReference(getKDirectPlacementData_TopLeft(), this.getKPosition(), null, "topLeft", null, 1, 1, KDirectPlacementData.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -1860,11 +1882,13 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
         addEEnumLiteral(horizontalAlignmentEEnum, HorizontalAlignment.LEFT);
         addEEnumLiteral(horizontalAlignmentEEnum, HorizontalAlignment.CENTER);
         addEEnumLiteral(horizontalAlignmentEEnum, HorizontalAlignment.RIGHT);
+        addEEnumLiteral(horizontalAlignmentEEnum, HorizontalAlignment.EENUM_LITERAL0);
 
         initEEnum(verticalAlignmentEEnum, VerticalAlignment.class, "VerticalAlignment");
         addEEnumLiteral(verticalAlignmentEEnum, VerticalAlignment.TOP);
         addEEnumLiteral(verticalAlignmentEEnum, VerticalAlignment.CENTER);
         addEEnumLiteral(verticalAlignmentEEnum, VerticalAlignment.BOTTOM);
+        addEEnumLiteral(verticalAlignmentEEnum, VerticalAlignment.EENUM_LITERAL0);
 
         // Create resource
         createResource(eNS_URI);

@@ -167,13 +167,21 @@
         <element xmi:type="ecore:EAttribute" href="krendering.ecore#//KGridPlacementData/heightHint"/>
         <layoutConstraint xmi:type="notation:Location" xmi:id="_3izQF23mEeGY3LLtCxEb1Q"/>
       </children>
-      <children xmi:type="notation:Node" xmi:id="_3iz3IG3mEeGY3LLtCxEb1Q" type="2001">
-        <element xmi:type="ecore:EAttribute" href="krendering.ecore#//KGridPlacementData/horizontalIndent"/>
-        <layoutConstraint xmi:type="notation:Location" xmi:id="_3iz3IW3mEeGY3LLtCxEb1Q"/>
+      <children xmi:type="notation:Node" xmi:id="_frrYkXqMEeGZZPfwOSZy-Q" type="2001">
+        <element xmi:type="ecore:EAttribute" href="krendering.ecore#//KGridPlacementData/insetRight"/>
+        <layoutConstraint xmi:type="notation:Location" xmi:id="_frrYknqMEeGZZPfwOSZy-Q"/>
       </children>
-      <children xmi:type="notation:Node" xmi:id="_3iz3Im3mEeGY3LLtCxEb1Q" type="2001">
-        <element xmi:type="ecore:EAttribute" href="krendering.ecore#//KGridPlacementData/verticalIndent"/>
-        <layoutConstraint xmi:type="notation:Location" xmi:id="_3iz3I23mEeGY3LLtCxEb1Q"/>
+      <children xmi:type="notation:Node" xmi:id="_hLdJQHqMEeGZZPfwOSZy-Q" type="2001">
+        <element xmi:type="ecore:EAttribute" href="krendering.ecore#//KGridPlacementData/insetBottom"/>
+        <layoutConstraint xmi:type="notation:Location" xmi:id="_hLdJQXqMEeGZZPfwOSZy-Q"/>
+      </children>
+      <children xmi:type="notation:Node" xmi:id="_iJCL0HqMEeGZZPfwOSZy-Q" type="2001">
+        <element xmi:type="ecore:EAttribute" href="krendering.ecore#//KGridPlacementData/insetLeft"/>
+        <layoutConstraint xmi:type="notation:Location" xmi:id="_iJCL0XqMEeGZZPfwOSZy-Q"/>
+      </children>
+      <children xmi:type="notation:Node" xmi:id="_jAc8AHqMEeGZZPfwOSZy-Q" type="2001">
+        <element xmi:type="ecore:EAttribute" href="krendering.ecore#//KGridPlacementData/insetTop"/>
+        <layoutConstraint xmi:type="notation:Location" xmi:id="_jAc8AXqMEeGZZPfwOSZy-Q"/>
       </children>
       <styles xmi:type="notation:DrawerStyle" xmi:id="_3iypBW3mEeGY3LLtCxEb1Q"/>
       <styles xmi:type="notation:SortingStyle" xmi:id="_3iypBm3mEeGY3LLtCxEb1Q"/>

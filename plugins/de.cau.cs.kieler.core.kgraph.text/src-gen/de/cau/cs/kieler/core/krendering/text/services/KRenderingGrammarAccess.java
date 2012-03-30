@@ -2163,21 +2163,27 @@ public class KRenderingGrammarAccess extends AbstractGrammarElementFinder {
 		private final Keyword cHeightHintKeyword_4 = (Keyword)cGroup.eContents().get(4);
 		private final Assignment cHeightHintAssignment_5 = (Assignment)cGroup.eContents().get(5);
 		private final RuleCall cHeightHintEFloatParserRuleCall_5_0 = (RuleCall)cHeightHintAssignment_5.eContents().get(0);
-		private final Keyword cHorizontalIndentKeyword_6 = (Keyword)cGroup.eContents().get(6);
-		private final Assignment cHorizontalIndentAssignment_7 = (Assignment)cGroup.eContents().get(7);
-		private final RuleCall cHorizontalIndentEFloatParserRuleCall_7_0 = (RuleCall)cHorizontalIndentAssignment_7.eContents().get(0);
-		private final Keyword cVerticalIndentKeyword_8 = (Keyword)cGroup.eContents().get(8);
-		private final Assignment cVerticalIndentAssignment_9 = (Assignment)cGroup.eContents().get(9);
-		private final RuleCall cVerticalIndentEFloatParserRuleCall_9_0 = (RuleCall)cVerticalIndentAssignment_9.eContents().get(0);
-		private final Keyword cRightCurlyBracketKeyword_10 = (Keyword)cGroup.eContents().get(10);
+		private final Keyword cInsetRightKeyword_6 = (Keyword)cGroup.eContents().get(6);
+		private final Assignment cInsetRightAssignment_7 = (Assignment)cGroup.eContents().get(7);
+		private final RuleCall cInsetRightEFloatParserRuleCall_7_0 = (RuleCall)cInsetRightAssignment_7.eContents().get(0);
+		private final Keyword cInsetBottomKeyword_8 = (Keyword)cGroup.eContents().get(8);
+		private final Assignment cInsetBottomAssignment_9 = (Assignment)cGroup.eContents().get(9);
+		private final RuleCall cInsetBottomEFloatParserRuleCall_9_0 = (RuleCall)cInsetBottomAssignment_9.eContents().get(0);
+		private final Keyword cInsetLeftKeyword_10 = (Keyword)cGroup.eContents().get(10);
+		private final Assignment cInsetLeftAssignment_11 = (Assignment)cGroup.eContents().get(11);
+		private final RuleCall cInsetLeftEFloatParserRuleCall_11_0 = (RuleCall)cInsetLeftAssignment_11.eContents().get(0);
+		private final Keyword cInsetTopKeyword_12 = (Keyword)cGroup.eContents().get(12);
+		private final Assignment cInsetTopAssignment_13 = (Assignment)cGroup.eContents().get(13);
+		private final RuleCall cInsetTopEFloatParserRuleCall_13_0 = (RuleCall)cInsetTopAssignment_13.eContents().get(0);
+		private final Keyword cRightCurlyBracketKeyword_14 = (Keyword)cGroup.eContents().get(14);
 		
 		//KGridPlacementData:
-		//	"GridPlacementData" "{" "widthHint" widthHint=EFloat "heightHint" heightHint=EFloat "horizontalIndent"
-		//	horizontalIndent=EFloat "verticalIndent" verticalIndent=EFloat "}";
+		//	"GridPlacementData" "{" "widthHint" widthHint=EFloat "heightHint" heightHint=EFloat "insetRight" insetRight=EFloat
+		//	"insetBottom" insetBottom=EFloat "insetLeft" insetLeft=EFloat "insetTop" insetTop=EFloat "}";
 		public ParserRule getRule() { return rule; }
 
-		//"GridPlacementData" "{" "widthHint" widthHint=EFloat "heightHint" heightHint=EFloat "horizontalIndent"
-		//horizontalIndent=EFloat "verticalIndent" verticalIndent=EFloat "}"
+		//"GridPlacementData" "{" "widthHint" widthHint=EFloat "heightHint" heightHint=EFloat "insetRight" insetRight=EFloat
+		//"insetBottom" insetBottom=EFloat "insetLeft" insetLeft=EFloat "insetTop" insetTop=EFloat "}"
 		public Group getGroup() { return cGroup; }
 
 		//"GridPlacementData"
@@ -2204,26 +2210,44 @@ public class KRenderingGrammarAccess extends AbstractGrammarElementFinder {
 		//EFloat
 		public RuleCall getHeightHintEFloatParserRuleCall_5_0() { return cHeightHintEFloatParserRuleCall_5_0; }
 
-		//"horizontalIndent"
-		public Keyword getHorizontalIndentKeyword_6() { return cHorizontalIndentKeyword_6; }
+		//"insetRight"
+		public Keyword getInsetRightKeyword_6() { return cInsetRightKeyword_6; }
 
-		//horizontalIndent=EFloat
-		public Assignment getHorizontalIndentAssignment_7() { return cHorizontalIndentAssignment_7; }
-
-		//EFloat
-		public RuleCall getHorizontalIndentEFloatParserRuleCall_7_0() { return cHorizontalIndentEFloatParserRuleCall_7_0; }
-
-		//"verticalIndent"
-		public Keyword getVerticalIndentKeyword_8() { return cVerticalIndentKeyword_8; }
-
-		//verticalIndent=EFloat
-		public Assignment getVerticalIndentAssignment_9() { return cVerticalIndentAssignment_9; }
+		//insetRight=EFloat
+		public Assignment getInsetRightAssignment_7() { return cInsetRightAssignment_7; }
 
 		//EFloat
-		public RuleCall getVerticalIndentEFloatParserRuleCall_9_0() { return cVerticalIndentEFloatParserRuleCall_9_0; }
+		public RuleCall getInsetRightEFloatParserRuleCall_7_0() { return cInsetRightEFloatParserRuleCall_7_0; }
+
+		//"insetBottom"
+		public Keyword getInsetBottomKeyword_8() { return cInsetBottomKeyword_8; }
+
+		//insetBottom=EFloat
+		public Assignment getInsetBottomAssignment_9() { return cInsetBottomAssignment_9; }
+
+		//EFloat
+		public RuleCall getInsetBottomEFloatParserRuleCall_9_0() { return cInsetBottomEFloatParserRuleCall_9_0; }
+
+		//"insetLeft"
+		public Keyword getInsetLeftKeyword_10() { return cInsetLeftKeyword_10; }
+
+		//insetLeft=EFloat
+		public Assignment getInsetLeftAssignment_11() { return cInsetLeftAssignment_11; }
+
+		//EFloat
+		public RuleCall getInsetLeftEFloatParserRuleCall_11_0() { return cInsetLeftEFloatParserRuleCall_11_0; }
+
+		//"insetTop"
+		public Keyword getInsetTopKeyword_12() { return cInsetTopKeyword_12; }
+
+		//insetTop=EFloat
+		public Assignment getInsetTopAssignment_13() { return cInsetTopAssignment_13; }
+
+		//EFloat
+		public RuleCall getInsetTopEFloatParserRuleCall_13_0() { return cInsetTopEFloatParserRuleCall_13_0; }
 
 		//"}"
-		public Keyword getRightCurlyBracketKeyword_10() { return cRightCurlyBracketKeyword_10; }
+		public Keyword getRightCurlyBracketKeyword_14() { return cRightCurlyBracketKeyword_14; }
 	}
 
 	public class KStackPlacementDataElements extends AbstractParserRuleElementFinder {
@@ -3530,8 +3554,8 @@ public class KRenderingGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//KGridPlacementData:
-	//	"GridPlacementData" "{" "widthHint" widthHint=EFloat "heightHint" heightHint=EFloat "horizontalIndent"
-	//	horizontalIndent=EFloat "verticalIndent" verticalIndent=EFloat "}";
+	//	"GridPlacementData" "{" "widthHint" widthHint=EFloat "heightHint" heightHint=EFloat "insetRight" insetRight=EFloat
+	//	"insetBottom" insetBottom=EFloat "insetLeft" insetLeft=EFloat "insetTop" insetTop=EFloat "}";
 	public KGridPlacementDataElements getKGridPlacementDataAccess() {
 		return (pKGridPlacementData != null) ? pKGridPlacementData : (pKGridPlacementData = new KGridPlacementDataElements());
 	}

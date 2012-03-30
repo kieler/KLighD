@@ -24,6 +24,11 @@ T__12=12
 T__11=11
 T__14=14
 T__13=13
+<<<<<<< HEAD
+=======
+T__96=96
+T__95=95
+>>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
 T__80=80
 T__81=81
 T__82=82
@@ -89,49 +94,86 @@ T__37=37
 T__38=38
 T__39=39
 RULE_WS=9
+<<<<<<< HEAD
 'PolylinePlacementData'=68
 'ForegroundVisibility'=79
 '/'=71
 'relative'=93
 'KPoint'=88
+=======
+'PolylinePlacementData'=66
+'ForegroundVisibility'=77
+'/'=69
+'relative'=95
+'KPoint'=90
+>>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
 'DASH'=17
 'Arc'=42
-'right'=73
+'right'=71
 'DASHDOT'=19
+<<<<<<< HEAD
 'StackPlacement'=85
 'top'=74
+=======
+'StackPlacement'=87
+'italic'=81
+'top'=72
+'fontSize'=83
+>>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
 'e'=13
 'Text'=44
 'height'=54
-'detailedPlacementData'=70
+'detailedPlacementData'=68
 'LEFT'=24
+<<<<<<< HEAD
 '.'=86
 'RenderingLibrary'=26
 'true'=14
 'VerticalAlignment'=82
 'points'=69
+=======
+'.'=88
+'RenderingLibrary'=26
+'true'=14
+'VerticalAlignment'=84
+'font'=82
+'points'=67
+>>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
 'bundleName'=47
 'childPlacement'=35
-'LineStyle'=81
+'LineStyle'=79
 'CENTER'=22
 'location'=50
+<<<<<<< HEAD
 'GridPlacement'=84
 'HorizontalAlignment'=83
 '{'=27
 'Polygon'=40
+=======
+'GridPlacement'=86
+'HorizontalAlignment'=85
+'{'=27
+'Polygon'=40
+'bold'=80
+>>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
 'DASHDOTDOT'=20
 'children'=36
-'insetLeft'=63
+'insetLeft'=60
 'BOTTOM'=23
 'CustomRendering'=45
+<<<<<<< HEAD
 'clip'=92
+=======
+'clip'=94
+>>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
 ':'=34
 '-'=11
 ','=29
 'RenderingRef'=30
-'LineWidth'=78
+'LineWidth'=76
 'SOLID'=16
 'yOffset'=52
+<<<<<<< HEAD
 '!'=94
 'width'=53
 'ChildArea'=43
@@ -147,29 +189,48 @@ RULE_WS=9
 'Spline'=48
 'insetTop'=64
 '='=91
+=======
+'!'=96
+'width'=53
+'ChildArea'=43
+'widthHint'=56
+'BackgroundVisibility'=78
+'KInsets'=89
+'insetBottom'=59
+'RoundedRectangle'=38
+'Polyline'=39
+'insetRight'=58
+'x'=91
+'bottomRight'=65
+'Spline'=48
+'insetTop'=61
+'='=93
+>>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
 'DOT'=18
 'GridPlacementData'=55
-'horizontalIndent'=58
 'TOP'=21
 'Image'=41
-'bottom'=75
-'verticalIndent'=59
+'bottom'=73
 '}'=28
 'Rectangle'=37
 'Ellipse'=33
 'heightHint'=57
 'DecoratorPlacementData'=49
+<<<<<<< HEAD
 'y'=90
+=======
+'y'=92
+>>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
 'className'=46
 'styles'=32
-'BackgroundColor'=77
-'topLeft'=66
+'BackgroundColor'=75
+'topLeft'=64
 'false'=15
-'DirectPlacementData'=65
-'ForegroundColor'=76
+'DirectPlacementData'=63
+'ForegroundColor'=74
 'RIGHT'=25
 'placementData'=31
 'E'=12
-'StackPlacementData'=60
+'StackPlacementData'=62
 'xOffset'=51
-'left'=72
+'left'=70

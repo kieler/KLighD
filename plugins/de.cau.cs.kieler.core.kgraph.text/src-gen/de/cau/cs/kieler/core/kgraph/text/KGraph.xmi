@@ -1091,6 +1091,7 @@
         <elements xsi:type="xtext:Assignment" feature="heightHint" operator="=">
           <terminal xsi:type="xtext:RuleCall" rule="/1/@rules.43"/>
         </elements>
+<<<<<<< HEAD
         <elements xsi:type="xtext:Keyword" value="horizontalIndent"/>
         <elements xsi:type="xtext:Assignment" feature="horizontalIndent" operator="=">
           <terminal xsi:type="xtext:RuleCall" rule="/1/@rules.43"/>
@@ -1098,6 +1099,23 @@
         <elements xsi:type="xtext:Keyword" value="verticalIndent"/>
         <elements xsi:type="xtext:Assignment" feature="verticalIndent" operator="=">
           <terminal xsi:type="xtext:RuleCall" rule="/1/@rules.43"/>
+=======
+        <elements xsi:type="xtext:Keyword" value="insetRight"/>
+        <elements xsi:type="xtext:Assignment" feature="insetRight" operator="=">
+          <terminal xsi:type="xtext:RuleCall" rule="/1/@rules.47"/>
+        </elements>
+        <elements xsi:type="xtext:Keyword" value="insetBottom"/>
+        <elements xsi:type="xtext:Assignment" feature="insetBottom" operator="=">
+          <terminal xsi:type="xtext:RuleCall" rule="/1/@rules.47"/>
+        </elements>
+        <elements xsi:type="xtext:Keyword" value="insetLeft"/>
+        <elements xsi:type="xtext:Assignment" feature="insetLeft" operator="=">
+          <terminal xsi:type="xtext:RuleCall" rule="/1/@rules.47"/>
+        </elements>
+        <elements xsi:type="xtext:Keyword" value="insetTop"/>
+        <elements xsi:type="xtext:Assignment" feature="insetTop" operator="=">
+          <terminal xsi:type="xtext:RuleCall" rule="/1/@rules.47"/>
+>>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
         </elements>
         <elements xsi:type="xtext:Keyword" value="}"/>
       </alternatives>

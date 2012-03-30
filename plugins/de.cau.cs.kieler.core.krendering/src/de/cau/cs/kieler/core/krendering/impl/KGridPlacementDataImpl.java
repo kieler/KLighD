@@ -32,8 +32,10 @@ import org.eclipse.emf.ecore.impl.EObjectImpl;
  * <ul>
  *   <li>{@link de.cau.cs.kieler.core.krendering.impl.KGridPlacementDataImpl#getWidthHint <em>Width Hint</em>}</li>
  *   <li>{@link de.cau.cs.kieler.core.krendering.impl.KGridPlacementDataImpl#getHeightHint <em>Height Hint</em>}</li>
- *   <li>{@link de.cau.cs.kieler.core.krendering.impl.KGridPlacementDataImpl#getHorizontalIndent <em>Horizontal Indent</em>}</li>
- *   <li>{@link de.cau.cs.kieler.core.krendering.impl.KGridPlacementDataImpl#getVerticalIndent <em>Vertical Indent</em>}</li>
+ *   <li>{@link de.cau.cs.kieler.core.krendering.impl.KGridPlacementDataImpl#getInsetRight <em>Inset Right</em>}</li>
+ *   <li>{@link de.cau.cs.kieler.core.krendering.impl.KGridPlacementDataImpl#getInsetBottom <em>Inset Bottom</em>}</li>
+ *   <li>{@link de.cau.cs.kieler.core.krendering.impl.KGridPlacementDataImpl#getInsetLeft <em>Inset Left</em>}</li>
+ *   <li>{@link de.cau.cs.kieler.core.krendering.impl.KGridPlacementDataImpl#getInsetTop <em>Inset Top</em>}</li>
  * </ul>
  * </p>
  *
@@ -81,44 +83,84 @@ public class KGridPlacementDataImpl extends EObjectImpl implements KGridPlacemen
     protected float heightHint = HEIGHT_HINT_EDEFAULT;
 
     /**
-     * The default value of the '{@link #getHorizontalIndent() <em>Horizontal Indent</em>}' attribute.
+     * The default value of the '{@link #getInsetRight() <em>Inset Right</em>}' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see #getHorizontalIndent()
+     * @see #getInsetRight()
      * @generated
      * @ordered
      */
-    protected static final float HORIZONTAL_INDENT_EDEFAULT = 0.0F;
+    protected static final float INSET_RIGHT_EDEFAULT = 0.0F;
 
     /**
-     * The cached value of the '{@link #getHorizontalIndent() <em>Horizontal Indent</em>}' attribute.
+     * The cached value of the '{@link #getInsetRight() <em>Inset Right</em>}' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see #getHorizontalIndent()
+     * @see #getInsetRight()
      * @generated
      * @ordered
      */
-    protected float horizontalIndent = HORIZONTAL_INDENT_EDEFAULT;
+    protected float insetRight = INSET_RIGHT_EDEFAULT;
 
     /**
-     * The default value of the '{@link #getVerticalIndent() <em>Vertical Indent</em>}' attribute.
+     * The default value of the '{@link #getInsetBottom() <em>Inset Bottom</em>}' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see #getVerticalIndent()
+     * @see #getInsetBottom()
      * @generated
      * @ordered
      */
-    protected static final float VERTICAL_INDENT_EDEFAULT = 0.0F;
+    protected static final float INSET_BOTTOM_EDEFAULT = 0.0F;
 
     /**
-     * The cached value of the '{@link #getVerticalIndent() <em>Vertical Indent</em>}' attribute.
+     * The cached value of the '{@link #getInsetBottom() <em>Inset Bottom</em>}' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see #getVerticalIndent()
+     * @see #getInsetBottom()
      * @generated
      * @ordered
      */
-    protected float verticalIndent = VERTICAL_INDENT_EDEFAULT;
+    protected float insetBottom = INSET_BOTTOM_EDEFAULT;
+
+    /**
+     * The default value of the '{@link #getInsetLeft() <em>Inset Left</em>}' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see #getInsetLeft()
+     * @generated
+     * @ordered
+     */
+    protected static final float INSET_LEFT_EDEFAULT = 0.0F;
+
+    /**
+     * The cached value of the '{@link #getInsetLeft() <em>Inset Left</em>}' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see #getInsetLeft()
+     * @generated
+     * @ordered
+     */
+    protected float insetLeft = INSET_LEFT_EDEFAULT;
+
+    /**
+     * The default value of the '{@link #getInsetTop() <em>Inset Top</em>}' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see #getInsetTop()
+     * @generated
+     * @ordered
+     */
+    protected static final float INSET_TOP_EDEFAULT = 0.0F;
+
+    /**
+     * The cached value of the '{@link #getInsetTop() <em>Inset Top</em>}' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see #getInsetTop()
+     * @generated
+     * @ordered
+     */
+    protected float insetTop = INSET_TOP_EDEFAULT;
 
     /**
      * <!-- begin-user-doc -->
@@ -186,8 +228,8 @@ public class KGridPlacementDataImpl extends EObjectImpl implements KGridPlacemen
      * <!-- end-user-doc -->
      * @generated
      */
-    public float getHorizontalIndent() {
-        return horizontalIndent;
+    public float getInsetRight() {
+        return insetRight;
     }
 
     /**
@@ -195,11 +237,11 @@ public class KGridPlacementDataImpl extends EObjectImpl implements KGridPlacemen
      * <!-- end-user-doc -->
      * @generated
      */
-    public void setHorizontalIndent(float newHorizontalIndent) {
-        float oldHorizontalIndent = horizontalIndent;
-        horizontalIndent = newHorizontalIndent;
+    public void setInsetRight(float newInsetRight) {
+        float oldInsetRight = insetRight;
+        insetRight = newInsetRight;
         if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, KRenderingPackage.KGRID_PLACEMENT_DATA__HORIZONTAL_INDENT, oldHorizontalIndent, horizontalIndent));
+            eNotify(new ENotificationImpl(this, Notification.SET, KRenderingPackage.KGRID_PLACEMENT_DATA__INSET_RIGHT, oldInsetRight, insetRight));
     }
 
     /**
@@ -207,8 +249,8 @@ public class KGridPlacementDataImpl extends EObjectImpl implements KGridPlacemen
      * <!-- end-user-doc -->
      * @generated
      */
-    public float getVerticalIndent() {
-        return verticalIndent;
+    public float getInsetBottom() {
+        return insetBottom;
     }
 
     /**
@@ -216,11 +258,53 @@ public class KGridPlacementDataImpl extends EObjectImpl implements KGridPlacemen
      * <!-- end-user-doc -->
      * @generated
      */
-    public void setVerticalIndent(float newVerticalIndent) {
-        float oldVerticalIndent = verticalIndent;
-        verticalIndent = newVerticalIndent;
+    public void setInsetBottom(float newInsetBottom) {
+        float oldInsetBottom = insetBottom;
+        insetBottom = newInsetBottom;
         if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, KRenderingPackage.KGRID_PLACEMENT_DATA__VERTICAL_INDENT, oldVerticalIndent, verticalIndent));
+            eNotify(new ENotificationImpl(this, Notification.SET, KRenderingPackage.KGRID_PLACEMENT_DATA__INSET_BOTTOM, oldInsetBottom, insetBottom));
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public float getInsetLeft() {
+        return insetLeft;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public void setInsetLeft(float newInsetLeft) {
+        float oldInsetLeft = insetLeft;
+        insetLeft = newInsetLeft;
+        if (eNotificationRequired())
+            eNotify(new ENotificationImpl(this, Notification.SET, KRenderingPackage.KGRID_PLACEMENT_DATA__INSET_LEFT, oldInsetLeft, insetLeft));
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public float getInsetTop() {
+        return insetTop;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public void setInsetTop(float newInsetTop) {
+        float oldInsetTop = insetTop;
+        insetTop = newInsetTop;
+        if (eNotificationRequired())
+            eNotify(new ENotificationImpl(this, Notification.SET, KRenderingPackage.KGRID_PLACEMENT_DATA__INSET_TOP, oldInsetTop, insetTop));
     }
 
     /**
@@ -235,10 +319,14 @@ public class KGridPlacementDataImpl extends EObjectImpl implements KGridPlacemen
                 return getWidthHint();
             case KRenderingPackage.KGRID_PLACEMENT_DATA__HEIGHT_HINT:
                 return getHeightHint();
-            case KRenderingPackage.KGRID_PLACEMENT_DATA__HORIZONTAL_INDENT:
-                return getHorizontalIndent();
-            case KRenderingPackage.KGRID_PLACEMENT_DATA__VERTICAL_INDENT:
-                return getVerticalIndent();
+            case KRenderingPackage.KGRID_PLACEMENT_DATA__INSET_RIGHT:
+                return getInsetRight();
+            case KRenderingPackage.KGRID_PLACEMENT_DATA__INSET_BOTTOM:
+                return getInsetBottom();
+            case KRenderingPackage.KGRID_PLACEMENT_DATA__INSET_LEFT:
+                return getInsetLeft();
+            case KRenderingPackage.KGRID_PLACEMENT_DATA__INSET_TOP:
+                return getInsetTop();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -257,11 +345,17 @@ public class KGridPlacementDataImpl extends EObjectImpl implements KGridPlacemen
             case KRenderingPackage.KGRID_PLACEMENT_DATA__HEIGHT_HINT:
                 setHeightHint((Float)newValue);
                 return;
-            case KRenderingPackage.KGRID_PLACEMENT_DATA__HORIZONTAL_INDENT:
-                setHorizontalIndent((Float)newValue);
+            case KRenderingPackage.KGRID_PLACEMENT_DATA__INSET_RIGHT:
+                setInsetRight((Float)newValue);
                 return;
-            case KRenderingPackage.KGRID_PLACEMENT_DATA__VERTICAL_INDENT:
-                setVerticalIndent((Float)newValue);
+            case KRenderingPackage.KGRID_PLACEMENT_DATA__INSET_BOTTOM:
+                setInsetBottom((Float)newValue);
+                return;
+            case KRenderingPackage.KGRID_PLACEMENT_DATA__INSET_LEFT:
+                setInsetLeft((Float)newValue);
+                return;
+            case KRenderingPackage.KGRID_PLACEMENT_DATA__INSET_TOP:
+                setInsetTop((Float)newValue);
                 return;
         }
         super.eSet(featureID, newValue);
@@ -281,11 +375,17 @@ public class KGridPlacementDataImpl extends EObjectImpl implements KGridPlacemen
             case KRenderingPackage.KGRID_PLACEMENT_DATA__HEIGHT_HINT:
                 setHeightHint(HEIGHT_HINT_EDEFAULT);
                 return;
-            case KRenderingPackage.KGRID_PLACEMENT_DATA__HORIZONTAL_INDENT:
-                setHorizontalIndent(HORIZONTAL_INDENT_EDEFAULT);
+            case KRenderingPackage.KGRID_PLACEMENT_DATA__INSET_RIGHT:
+                setInsetRight(INSET_RIGHT_EDEFAULT);
                 return;
-            case KRenderingPackage.KGRID_PLACEMENT_DATA__VERTICAL_INDENT:
-                setVerticalIndent(VERTICAL_INDENT_EDEFAULT);
+            case KRenderingPackage.KGRID_PLACEMENT_DATA__INSET_BOTTOM:
+                setInsetBottom(INSET_BOTTOM_EDEFAULT);
+                return;
+            case KRenderingPackage.KGRID_PLACEMENT_DATA__INSET_LEFT:
+                setInsetLeft(INSET_LEFT_EDEFAULT);
+                return;
+            case KRenderingPackage.KGRID_PLACEMENT_DATA__INSET_TOP:
+                setInsetTop(INSET_TOP_EDEFAULT);
                 return;
         }
         super.eUnset(featureID);
@@ -303,10 +403,14 @@ public class KGridPlacementDataImpl extends EObjectImpl implements KGridPlacemen
                 return widthHint != WIDTH_HINT_EDEFAULT;
             case KRenderingPackage.KGRID_PLACEMENT_DATA__HEIGHT_HINT:
                 return heightHint != HEIGHT_HINT_EDEFAULT;
-            case KRenderingPackage.KGRID_PLACEMENT_DATA__HORIZONTAL_INDENT:
-                return horizontalIndent != HORIZONTAL_INDENT_EDEFAULT;
-            case KRenderingPackage.KGRID_PLACEMENT_DATA__VERTICAL_INDENT:
-                return verticalIndent != VERTICAL_INDENT_EDEFAULT;
+            case KRenderingPackage.KGRID_PLACEMENT_DATA__INSET_RIGHT:
+                return insetRight != INSET_RIGHT_EDEFAULT;
+            case KRenderingPackage.KGRID_PLACEMENT_DATA__INSET_BOTTOM:
+                return insetBottom != INSET_BOTTOM_EDEFAULT;
+            case KRenderingPackage.KGRID_PLACEMENT_DATA__INSET_LEFT:
+                return insetLeft != INSET_LEFT_EDEFAULT;
+            case KRenderingPackage.KGRID_PLACEMENT_DATA__INSET_TOP:
+                return insetTop != INSET_TOP_EDEFAULT;
         }
         return super.eIsSet(featureID);
     }
@@ -325,10 +429,14 @@ public class KGridPlacementDataImpl extends EObjectImpl implements KGridPlacemen
         result.append(widthHint);
         result.append(", heightHint: ");
         result.append(heightHint);
-        result.append(", horizontalIndent: ");
-        result.append(horizontalIndent);
-        result.append(", verticalIndent: ");
-        result.append(verticalIndent);
+        result.append(", insetRight: ");
+        result.append(insetRight);
+        result.append(", insetBottom: ");
+        result.append(insetBottom);
+        result.append(", insetLeft: ");
+        result.append(insetLeft);
+        result.append(", insetTop: ");
+        result.append(insetTop);
         result.append(')');
         return result.toString();
     }
