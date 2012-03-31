@@ -15244,7 +15244,7 @@ rule__KDecoratorPlacementData__Group__2__Impl
 :
 (
 { before(grammarAccess.getKDecoratorPlacementDataAccess().getRelativeAssignment_2()); }
-(rule__KDecoratorPlacementData__RelativeAssignment_2)
+(rule__KDecoratorPlacementData__RelativeAssignment_2)?
 { after(grammarAccess.getKDecoratorPlacementDataAccess().getRelativeAssignment_2()); }
 )
 

@@ -2071,11 +2071,11 @@ public class KRenderingGrammarAccess extends AbstractGrammarElementFinder {
 		private final Keyword cRightCurlyBracketKeyword_9 = (Keyword)cGroup.eContents().get(9);
 		
 		//KDecoratorPlacementData:
-		//	"DecoratorPlacementData" "{" relative?="relative" "location" location=EFloat ("xOffset" xOffset=EFloat)? ("yOffset"
+		//	"DecoratorPlacementData" "{" relative?="relative"? "location" location=EFloat ("xOffset" xOffset=EFloat)? ("yOffset"
 		//	yOffset=EFloat)? ("width" width=EFloat)? ("height" height=EFloat)? "}";
 		public ParserRule getRule() { return rule; }
 
-		//"DecoratorPlacementData" "{" relative?="relative" "location" location=EFloat ("xOffset" xOffset=EFloat)? ("yOffset"
+		//"DecoratorPlacementData" "{" relative?="relative"? "location" location=EFloat ("xOffset" xOffset=EFloat)? ("yOffset"
 		//yOffset=EFloat)? ("width" width=EFloat)? ("height" height=EFloat)? "}"
 		public Group getGroup() { return cGroup; }
 
@@ -2085,7 +2085,7 @@ public class KRenderingGrammarAccess extends AbstractGrammarElementFinder {
 		//"{"
 		public Keyword getLeftCurlyBracketKeyword_1() { return cLeftCurlyBracketKeyword_1; }
 
-		//relative?="relative"
+		//relative?="relative"?
 		public Assignment getRelativeAssignment_2() { return cRelativeAssignment_2; }
 
 		//"relative"
@@ -3543,7 +3543,7 @@ public class KRenderingGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//KDecoratorPlacementData:
-	//	"DecoratorPlacementData" "{" relative?="relative" "location" location=EFloat ("xOffset" xOffset=EFloat)? ("yOffset"
+	//	"DecoratorPlacementData" "{" relative?="relative"? "location" location=EFloat ("xOffset" xOffset=EFloat)? ("yOffset"
 	//	yOffset=EFloat)? ("width" width=EFloat)? ("height" height=EFloat)? "}";
 	public KDecoratorPlacementDataElements getKDecoratorPlacementDataAccess() {
 		return (pKDecoratorPlacementData != null) ? pKDecoratorPlacementData : (pKDecoratorPlacementData = new KDecoratorPlacementDataElements());

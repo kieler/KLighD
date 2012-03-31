@@ -440,7 +440,7 @@ public class AbstractKRenderingSemanticSequencer extends AbstractSemanticSequenc
 	/**
 	 * Constraint:
 	 *     (
-	 *         relative?='relative' 
+	 *         relative?='relative'? 
 	 *         location=EFloat 
 	 *         xOffset=EFloat? 
 	 *         yOffset=EFloat? 

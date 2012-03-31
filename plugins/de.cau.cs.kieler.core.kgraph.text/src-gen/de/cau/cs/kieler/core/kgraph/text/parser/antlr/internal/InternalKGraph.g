@@ -3630,7 +3630,7 @@ ruleKDecoratorPlacementData returns [EObject current=null]
 	    }
 
 )
-)	otherlv_3='location' 
+)?	otherlv_3='location' 
     {
     	newLeafNode(otherlv_3, grammarAccess.getKDecoratorPlacementDataAccess().getLocationKeyword_3());
     }

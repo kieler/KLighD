@@ -470,7 +470,7 @@ public class AbstractKGraphSemanticSequencer extends AbstractSemanticSequencer {
 	/**
 	 * Constraint:
 	 *     (
-	 *         relative?='relative' 
+	 *         relative?='relative'? 
 	 *         location=EFloat 
 	 *         xOffset=EFloat? 
 	 *         yOffset=EFloat? 

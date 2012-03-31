@@ -151,7 +151,7 @@ KSpline returns KSpline:
 KDecoratorPlacementData returns KDecoratorPlacementData:
 	'DecoratorPlacementData'
 	'{'
-        relative?='relative'
+        (relative?='relative')?
 		'location' location=EFloat
 		('xOffset' xOffset=EFloat)?
 		('yOffset' yOffset=EFloat)?

@@ -1050,7 +1050,7 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//KDecoratorPlacementData:
-	//	"DecoratorPlacementData" "{" relative?="relative" "location" location=EFloat ("xOffset" xOffset=EFloat)? ("yOffset"
+	//	"DecoratorPlacementData" "{" relative?="relative"? "location" location=EFloat ("xOffset" xOffset=EFloat)? ("yOffset"
 	//	yOffset=EFloat)? ("width" width=EFloat)? ("height" height=EFloat)? "}";
 	public KRenderingGrammarAccess.KDecoratorPlacementDataElements getKDecoratorPlacementDataAccess() {
 		return gaKRendering.getKDecoratorPlacementDataAccess();

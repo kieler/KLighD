@@ -32095,12 +32095,17 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
 
 
     // $ANTLR start "rule__KDecoratorPlacementData__Group__2__Impl"
+<<<<<<< HEAD
     // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:12162:1: rule__KDecoratorPlacementData__Group__2__Impl : ( ( rule__KDecoratorPlacementData__RelativeAssignment_2 ) ) ;
+=======
+    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:12298:1: rule__KDecoratorPlacementData__Group__2__Impl : ( ( rule__KDecoratorPlacementData__RelativeAssignment_2 )? ) ;
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
     public final void rule__KDecoratorPlacementData__Group__2__Impl() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
+<<<<<<< HEAD
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:12166:1: ( ( ( rule__KDecoratorPlacementData__RelativeAssignment_2 ) ) )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:12167:1: ( ( rule__KDecoratorPlacementData__RelativeAssignment_2 ) )
             {
@@ -32113,9 +32118,34 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             {
             pushFollow(FollowSets001.FOLLOW_rule__KDecoratorPlacementData__RelativeAssignment_2_in_rule__KDecoratorPlacementData__Group__2__Impl24306);
             rule__KDecoratorPlacementData__RelativeAssignment_2();
+=======
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:12302:1: ( ( ( rule__KDecoratorPlacementData__RelativeAssignment_2 )? ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:12303:1: ( ( rule__KDecoratorPlacementData__RelativeAssignment_2 )? )
+            {
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:12303:1: ( ( rule__KDecoratorPlacementData__RelativeAssignment_2 )? )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:12304:1: ( rule__KDecoratorPlacementData__RelativeAssignment_2 )?
+            {
+             before(grammarAccess.getKDecoratorPlacementDataAccess().getRelativeAssignment_2()); 
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:12305:1: ( rule__KDecoratorPlacementData__RelativeAssignment_2 )?
+            int alt97=2;
+            int LA97_0 = input.LA(1);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
 
-            state._fsp--;
+            if ( (LA97_0==95) ) {
+                alt97=1;
+            }
+            switch (alt97) {
+                case 1 :
+                    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:12305:2: rule__KDecoratorPlacementData__RelativeAssignment_2
+                    {
+                    pushFollow(FollowSets001.FOLLOW_rule__KDecoratorPlacementData__RelativeAssignment_2_in_rule__KDecoratorPlacementData__Group__2__Impl24615);
+                    rule__KDecoratorPlacementData__RelativeAssignment_2();
 
+                    state._fsp--;
+
+
+                    }
+                    break;
 
             }
 
@@ -32151,12 +32181,20 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:12183:1: ( rule__KDecoratorPlacementData__Group__3__Impl rule__KDecoratorPlacementData__Group__4 )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:12184:2: rule__KDecoratorPlacementData__Group__3__Impl rule__KDecoratorPlacementData__Group__4
             {
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KDecoratorPlacementData__Group__3__Impl_in_rule__KDecoratorPlacementData__Group__324336);
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KDecoratorPlacementData__Group__3__Impl_in_rule__KDecoratorPlacementData__Group__324646);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KDecoratorPlacementData__Group__3__Impl();
 
             state._fsp--;
 
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KDecoratorPlacementData__Group__4_in_rule__KDecoratorPlacementData__Group__324339);
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KDecoratorPlacementData__Group__4_in_rule__KDecoratorPlacementData__Group__324649);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KDecoratorPlacementData__Group__4();
 
             state._fsp--;
@@ -32193,7 +32231,11 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:12197:1: 'location'
             {
              before(grammarAccess.getKDecoratorPlacementDataAccess().getLocationKeyword_3()); 
+<<<<<<< HEAD
             match(input,50,FollowSets001.FOLLOW_50_in_rule__KDecoratorPlacementData__Group__3__Impl24367); 
+=======
+            match(input,50,FollowSets001.FOLLOW_50_in_rule__KDecoratorPlacementData__Group__3__Impl24677); 
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
              after(grammarAccess.getKDecoratorPlacementDataAccess().getLocationKeyword_3()); 
 
             }
@@ -32226,12 +32268,20 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:12214:1: ( rule__KDecoratorPlacementData__Group__4__Impl rule__KDecoratorPlacementData__Group__5 )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:12215:2: rule__KDecoratorPlacementData__Group__4__Impl rule__KDecoratorPlacementData__Group__5
             {
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KDecoratorPlacementData__Group__4__Impl_in_rule__KDecoratorPlacementData__Group__424398);
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KDecoratorPlacementData__Group__4__Impl_in_rule__KDecoratorPlacementData__Group__424708);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KDecoratorPlacementData__Group__4__Impl();
 
             state._fsp--;
 
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KDecoratorPlacementData__Group__5_in_rule__KDecoratorPlacementData__Group__424401);
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KDecoratorPlacementData__Group__5_in_rule__KDecoratorPlacementData__Group__424711);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KDecoratorPlacementData__Group__5();
 
             state._fsp--;
@@ -32271,7 +32321,11 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:12229:1: ( rule__KDecoratorPlacementData__LocationAssignment_4 )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:12229:2: rule__KDecoratorPlacementData__LocationAssignment_4
             {
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KDecoratorPlacementData__LocationAssignment_4_in_rule__KDecoratorPlacementData__Group__4__Impl24428);
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KDecoratorPlacementData__LocationAssignment_4_in_rule__KDecoratorPlacementData__Group__4__Impl24738);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KDecoratorPlacementData__LocationAssignment_4();
 
             state._fsp--;
@@ -32311,12 +32365,20 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:12243:1: ( rule__KDecoratorPlacementData__Group__5__Impl rule__KDecoratorPlacementData__Group__6 )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:12244:2: rule__KDecoratorPlacementData__Group__5__Impl rule__KDecoratorPlacementData__Group__6
             {
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KDecoratorPlacementData__Group__5__Impl_in_rule__KDecoratorPlacementData__Group__524458);
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KDecoratorPlacementData__Group__5__Impl_in_rule__KDecoratorPlacementData__Group__524768);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KDecoratorPlacementData__Group__5__Impl();
 
             state._fsp--;
 
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KDecoratorPlacementData__Group__6_in_rule__KDecoratorPlacementData__Group__524461);
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KDecoratorPlacementData__Group__6_in_rule__KDecoratorPlacementData__Group__524771);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KDecoratorPlacementData__Group__6();
 
             state._fsp--;
@@ -32353,6 +32415,7 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:12257:1: ( rule__KDecoratorPlacementData__Group_5__0 )?
             {
              before(grammarAccess.getKDecoratorPlacementDataAccess().getGroup_5()); 
+<<<<<<< HEAD
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:12258:1: ( rule__KDecoratorPlacementData__Group_5__0 )?
             int alt96=2;
             int LA96_0 = input.LA(1);
@@ -32361,10 +32424,24 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
                 alt96=1;
             }
             switch (alt96) {
+=======
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:12394:1: ( rule__KDecoratorPlacementData__Group_5__0 )?
+            int alt98=2;
+            int LA98_0 = input.LA(1);
+
+            if ( (LA98_0==51) ) {
+                alt98=1;
+            }
+            switch (alt98) {
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
                 case 1 :
                     // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:12258:2: rule__KDecoratorPlacementData__Group_5__0
                     {
+<<<<<<< HEAD
                     pushFollow(FollowSets001.FOLLOW_rule__KDecoratorPlacementData__Group_5__0_in_rule__KDecoratorPlacementData__Group__5__Impl24488);
+=======
+                    pushFollow(FollowSets001.FOLLOW_rule__KDecoratorPlacementData__Group_5__0_in_rule__KDecoratorPlacementData__Group__5__Impl24798);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
                     rule__KDecoratorPlacementData__Group_5__0();
 
                     state._fsp--;
@@ -32407,12 +32484,20 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:12272:1: ( rule__KDecoratorPlacementData__Group__6__Impl rule__KDecoratorPlacementData__Group__7 )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:12273:2: rule__KDecoratorPlacementData__Group__6__Impl rule__KDecoratorPlacementData__Group__7
             {
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KDecoratorPlacementData__Group__6__Impl_in_rule__KDecoratorPlacementData__Group__624519);
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KDecoratorPlacementData__Group__6__Impl_in_rule__KDecoratorPlacementData__Group__624829);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KDecoratorPlacementData__Group__6__Impl();
 
             state._fsp--;
 
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KDecoratorPlacementData__Group__7_in_rule__KDecoratorPlacementData__Group__624522);
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KDecoratorPlacementData__Group__7_in_rule__KDecoratorPlacementData__Group__624832);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KDecoratorPlacementData__Group__7();
 
             state._fsp--;
@@ -32449,6 +32534,7 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:12286:1: ( rule__KDecoratorPlacementData__Group_6__0 )?
             {
              before(grammarAccess.getKDecoratorPlacementDataAccess().getGroup_6()); 
+<<<<<<< HEAD
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:12287:1: ( rule__KDecoratorPlacementData__Group_6__0 )?
             int alt97=2;
             int LA97_0 = input.LA(1);
@@ -32457,10 +32543,24 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
                 alt97=1;
             }
             switch (alt97) {
+=======
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:12423:1: ( rule__KDecoratorPlacementData__Group_6__0 )?
+            int alt99=2;
+            int LA99_0 = input.LA(1);
+
+            if ( (LA99_0==52) ) {
+                alt99=1;
+            }
+            switch (alt99) {
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
                 case 1 :
                     // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:12287:2: rule__KDecoratorPlacementData__Group_6__0
                     {
+<<<<<<< HEAD
                     pushFollow(FollowSets001.FOLLOW_rule__KDecoratorPlacementData__Group_6__0_in_rule__KDecoratorPlacementData__Group__6__Impl24549);
+=======
+                    pushFollow(FollowSets001.FOLLOW_rule__KDecoratorPlacementData__Group_6__0_in_rule__KDecoratorPlacementData__Group__6__Impl24859);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
                     rule__KDecoratorPlacementData__Group_6__0();
 
                     state._fsp--;
@@ -32503,12 +32603,20 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:12301:1: ( rule__KDecoratorPlacementData__Group__7__Impl rule__KDecoratorPlacementData__Group__8 )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:12302:2: rule__KDecoratorPlacementData__Group__7__Impl rule__KDecoratorPlacementData__Group__8
             {
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KDecoratorPlacementData__Group__7__Impl_in_rule__KDecoratorPlacementData__Group__724580);
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KDecoratorPlacementData__Group__7__Impl_in_rule__KDecoratorPlacementData__Group__724890);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KDecoratorPlacementData__Group__7__Impl();
 
             state._fsp--;
 
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KDecoratorPlacementData__Group__8_in_rule__KDecoratorPlacementData__Group__724583);
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KDecoratorPlacementData__Group__8_in_rule__KDecoratorPlacementData__Group__724893);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KDecoratorPlacementData__Group__8();
 
             state._fsp--;
@@ -32545,6 +32653,7 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:12315:1: ( rule__KDecoratorPlacementData__Group_7__0 )?
             {
              before(grammarAccess.getKDecoratorPlacementDataAccess().getGroup_7()); 
+<<<<<<< HEAD
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:12316:1: ( rule__KDecoratorPlacementData__Group_7__0 )?
             int alt98=2;
             int LA98_0 = input.LA(1);
@@ -32553,10 +32662,24 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
                 alt98=1;
             }
             switch (alt98) {
+=======
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:12452:1: ( rule__KDecoratorPlacementData__Group_7__0 )?
+            int alt100=2;
+            int LA100_0 = input.LA(1);
+
+            if ( (LA100_0==53) ) {
+                alt100=1;
+            }
+            switch (alt100) {
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
                 case 1 :
                     // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:12316:2: rule__KDecoratorPlacementData__Group_7__0
                     {
+<<<<<<< HEAD
                     pushFollow(FollowSets001.FOLLOW_rule__KDecoratorPlacementData__Group_7__0_in_rule__KDecoratorPlacementData__Group__7__Impl24610);
+=======
+                    pushFollow(FollowSets001.FOLLOW_rule__KDecoratorPlacementData__Group_7__0_in_rule__KDecoratorPlacementData__Group__7__Impl24920);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
                     rule__KDecoratorPlacementData__Group_7__0();
 
                     state._fsp--;
@@ -32599,12 +32722,20 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:12330:1: ( rule__KDecoratorPlacementData__Group__8__Impl rule__KDecoratorPlacementData__Group__9 )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:12331:2: rule__KDecoratorPlacementData__Group__8__Impl rule__KDecoratorPlacementData__Group__9
             {
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KDecoratorPlacementData__Group__8__Impl_in_rule__KDecoratorPlacementData__Group__824641);
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KDecoratorPlacementData__Group__8__Impl_in_rule__KDecoratorPlacementData__Group__824951);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KDecoratorPlacementData__Group__8__Impl();
 
             state._fsp--;
 
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KDecoratorPlacementData__Group__9_in_rule__KDecoratorPlacementData__Group__824644);
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KDecoratorPlacementData__Group__9_in_rule__KDecoratorPlacementData__Group__824954);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KDecoratorPlacementData__Group__9();
 
             state._fsp--;
@@ -32641,6 +32772,7 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:12344:1: ( rule__KDecoratorPlacementData__Group_8__0 )?
             {
              before(grammarAccess.getKDecoratorPlacementDataAccess().getGroup_8()); 
+<<<<<<< HEAD
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:12345:1: ( rule__KDecoratorPlacementData__Group_8__0 )?
             int alt99=2;
             int LA99_0 = input.LA(1);
@@ -32649,10 +32781,24 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
                 alt99=1;
             }
             switch (alt99) {
+=======
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:12481:1: ( rule__KDecoratorPlacementData__Group_8__0 )?
+            int alt101=2;
+            int LA101_0 = input.LA(1);
+
+            if ( (LA101_0==54) ) {
+                alt101=1;
+            }
+            switch (alt101) {
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
                 case 1 :
                     // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:12345:2: rule__KDecoratorPlacementData__Group_8__0
                     {
+<<<<<<< HEAD
                     pushFollow(FollowSets001.FOLLOW_rule__KDecoratorPlacementData__Group_8__0_in_rule__KDecoratorPlacementData__Group__8__Impl24671);
+=======
+                    pushFollow(FollowSets001.FOLLOW_rule__KDecoratorPlacementData__Group_8__0_in_rule__KDecoratorPlacementData__Group__8__Impl24981);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
                     rule__KDecoratorPlacementData__Group_8__0();
 
                     state._fsp--;
@@ -32695,7 +32841,11 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:12359:1: ( rule__KDecoratorPlacementData__Group__9__Impl )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:12360:2: rule__KDecoratorPlacementData__Group__9__Impl
             {
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KDecoratorPlacementData__Group__9__Impl_in_rule__KDecoratorPlacementData__Group__924702);
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KDecoratorPlacementData__Group__9__Impl_in_rule__KDecoratorPlacementData__Group__925012);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KDecoratorPlacementData__Group__9__Impl();
 
             state._fsp--;
@@ -32732,7 +32882,11 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:12372:1: '}'
             {
              before(grammarAccess.getKDecoratorPlacementDataAccess().getRightCurlyBracketKeyword_9()); 
+<<<<<<< HEAD
             match(input,28,FollowSets001.FOLLOW_28_in_rule__KDecoratorPlacementData__Group__9__Impl24730); 
+=======
+            match(input,28,FollowSets001.FOLLOW_28_in_rule__KDecoratorPlacementData__Group__9__Impl25040); 
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
              after(grammarAccess.getKDecoratorPlacementDataAccess().getRightCurlyBracketKeyword_9()); 
 
             }
@@ -32765,12 +32919,20 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:12409:1: ( rule__KDecoratorPlacementData__Group_5__0__Impl rule__KDecoratorPlacementData__Group_5__1 )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:12410:2: rule__KDecoratorPlacementData__Group_5__0__Impl rule__KDecoratorPlacementData__Group_5__1
             {
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KDecoratorPlacementData__Group_5__0__Impl_in_rule__KDecoratorPlacementData__Group_5__024781);
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KDecoratorPlacementData__Group_5__0__Impl_in_rule__KDecoratorPlacementData__Group_5__025091);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KDecoratorPlacementData__Group_5__0__Impl();
 
             state._fsp--;
 
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KDecoratorPlacementData__Group_5__1_in_rule__KDecoratorPlacementData__Group_5__024784);
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KDecoratorPlacementData__Group_5__1_in_rule__KDecoratorPlacementData__Group_5__025094);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KDecoratorPlacementData__Group_5__1();
 
             state._fsp--;
@@ -32807,7 +32969,11 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:12423:1: 'xOffset'
             {
              before(grammarAccess.getKDecoratorPlacementDataAccess().getXOffsetKeyword_5_0()); 
+<<<<<<< HEAD
             match(input,51,FollowSets001.FOLLOW_51_in_rule__KDecoratorPlacementData__Group_5__0__Impl24812); 
+=======
+            match(input,51,FollowSets001.FOLLOW_51_in_rule__KDecoratorPlacementData__Group_5__0__Impl25122); 
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
              after(grammarAccess.getKDecoratorPlacementDataAccess().getXOffsetKeyword_5_0()); 
 
             }
@@ -32840,7 +33006,11 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:12440:1: ( rule__KDecoratorPlacementData__Group_5__1__Impl )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:12441:2: rule__KDecoratorPlacementData__Group_5__1__Impl
             {
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KDecoratorPlacementData__Group_5__1__Impl_in_rule__KDecoratorPlacementData__Group_5__124843);
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KDecoratorPlacementData__Group_5__1__Impl_in_rule__KDecoratorPlacementData__Group_5__125153);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KDecoratorPlacementData__Group_5__1__Impl();
 
             state._fsp--;
@@ -32880,7 +33050,11 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:12454:1: ( rule__KDecoratorPlacementData__XOffsetAssignment_5_1 )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:12454:2: rule__KDecoratorPlacementData__XOffsetAssignment_5_1
             {
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KDecoratorPlacementData__XOffsetAssignment_5_1_in_rule__KDecoratorPlacementData__Group_5__1__Impl24870);
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KDecoratorPlacementData__XOffsetAssignment_5_1_in_rule__KDecoratorPlacementData__Group_5__1__Impl25180);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KDecoratorPlacementData__XOffsetAssignment_5_1();
 
             state._fsp--;
@@ -32920,12 +33094,20 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:12472:1: ( rule__KDecoratorPlacementData__Group_6__0__Impl rule__KDecoratorPlacementData__Group_6__1 )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:12473:2: rule__KDecoratorPlacementData__Group_6__0__Impl rule__KDecoratorPlacementData__Group_6__1
             {
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KDecoratorPlacementData__Group_6__0__Impl_in_rule__KDecoratorPlacementData__Group_6__024904);
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KDecoratorPlacementData__Group_6__0__Impl_in_rule__KDecoratorPlacementData__Group_6__025214);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KDecoratorPlacementData__Group_6__0__Impl();
 
             state._fsp--;
 
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KDecoratorPlacementData__Group_6__1_in_rule__KDecoratorPlacementData__Group_6__024907);
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KDecoratorPlacementData__Group_6__1_in_rule__KDecoratorPlacementData__Group_6__025217);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KDecoratorPlacementData__Group_6__1();
 
             state._fsp--;
@@ -32962,7 +33144,11 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:12486:1: 'yOffset'
             {
              before(grammarAccess.getKDecoratorPlacementDataAccess().getYOffsetKeyword_6_0()); 
+<<<<<<< HEAD
             match(input,52,FollowSets001.FOLLOW_52_in_rule__KDecoratorPlacementData__Group_6__0__Impl24935); 
+=======
+            match(input,52,FollowSets001.FOLLOW_52_in_rule__KDecoratorPlacementData__Group_6__0__Impl25245); 
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
              after(grammarAccess.getKDecoratorPlacementDataAccess().getYOffsetKeyword_6_0()); 
 
             }
@@ -32995,7 +33181,11 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:12503:1: ( rule__KDecoratorPlacementData__Group_6__1__Impl )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:12504:2: rule__KDecoratorPlacementData__Group_6__1__Impl
             {
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KDecoratorPlacementData__Group_6__1__Impl_in_rule__KDecoratorPlacementData__Group_6__124966);
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KDecoratorPlacementData__Group_6__1__Impl_in_rule__KDecoratorPlacementData__Group_6__125276);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KDecoratorPlacementData__Group_6__1__Impl();
 
             state._fsp--;
@@ -33035,7 +33225,11 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:12517:1: ( rule__KDecoratorPlacementData__YOffsetAssignment_6_1 )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:12517:2: rule__KDecoratorPlacementData__YOffsetAssignment_6_1
             {
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KDecoratorPlacementData__YOffsetAssignment_6_1_in_rule__KDecoratorPlacementData__Group_6__1__Impl24993);
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KDecoratorPlacementData__YOffsetAssignment_6_1_in_rule__KDecoratorPlacementData__Group_6__1__Impl25303);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KDecoratorPlacementData__YOffsetAssignment_6_1();
 
             state._fsp--;
@@ -33075,12 +33269,20 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:12535:1: ( rule__KDecoratorPlacementData__Group_7__0__Impl rule__KDecoratorPlacementData__Group_7__1 )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:12536:2: rule__KDecoratorPlacementData__Group_7__0__Impl rule__KDecoratorPlacementData__Group_7__1
             {
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KDecoratorPlacementData__Group_7__0__Impl_in_rule__KDecoratorPlacementData__Group_7__025027);
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KDecoratorPlacementData__Group_7__0__Impl_in_rule__KDecoratorPlacementData__Group_7__025337);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KDecoratorPlacementData__Group_7__0__Impl();
 
             state._fsp--;
 
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KDecoratorPlacementData__Group_7__1_in_rule__KDecoratorPlacementData__Group_7__025030);
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KDecoratorPlacementData__Group_7__1_in_rule__KDecoratorPlacementData__Group_7__025340);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KDecoratorPlacementData__Group_7__1();
 
             state._fsp--;
@@ -33117,7 +33319,11 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:12549:1: 'width'
             {
              before(grammarAccess.getKDecoratorPlacementDataAccess().getWidthKeyword_7_0()); 
+<<<<<<< HEAD
             match(input,53,FollowSets001.FOLLOW_53_in_rule__KDecoratorPlacementData__Group_7__0__Impl25058); 
+=======
+            match(input,53,FollowSets001.FOLLOW_53_in_rule__KDecoratorPlacementData__Group_7__0__Impl25368); 
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
              after(grammarAccess.getKDecoratorPlacementDataAccess().getWidthKeyword_7_0()); 
 
             }
@@ -33150,7 +33356,11 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:12566:1: ( rule__KDecoratorPlacementData__Group_7__1__Impl )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:12567:2: rule__KDecoratorPlacementData__Group_7__1__Impl
             {
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KDecoratorPlacementData__Group_7__1__Impl_in_rule__KDecoratorPlacementData__Group_7__125089);
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KDecoratorPlacementData__Group_7__1__Impl_in_rule__KDecoratorPlacementData__Group_7__125399);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KDecoratorPlacementData__Group_7__1__Impl();
 
             state._fsp--;
@@ -33190,7 +33400,11 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:12580:1: ( rule__KDecoratorPlacementData__WidthAssignment_7_1 )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:12580:2: rule__KDecoratorPlacementData__WidthAssignment_7_1
             {
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KDecoratorPlacementData__WidthAssignment_7_1_in_rule__KDecoratorPlacementData__Group_7__1__Impl25116);
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KDecoratorPlacementData__WidthAssignment_7_1_in_rule__KDecoratorPlacementData__Group_7__1__Impl25426);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KDecoratorPlacementData__WidthAssignment_7_1();
 
             state._fsp--;
@@ -33230,12 +33444,20 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:12598:1: ( rule__KDecoratorPlacementData__Group_8__0__Impl rule__KDecoratorPlacementData__Group_8__1 )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:12599:2: rule__KDecoratorPlacementData__Group_8__0__Impl rule__KDecoratorPlacementData__Group_8__1
             {
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KDecoratorPlacementData__Group_8__0__Impl_in_rule__KDecoratorPlacementData__Group_8__025150);
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KDecoratorPlacementData__Group_8__0__Impl_in_rule__KDecoratorPlacementData__Group_8__025460);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KDecoratorPlacementData__Group_8__0__Impl();
 
             state._fsp--;
 
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KDecoratorPlacementData__Group_8__1_in_rule__KDecoratorPlacementData__Group_8__025153);
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KDecoratorPlacementData__Group_8__1_in_rule__KDecoratorPlacementData__Group_8__025463);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KDecoratorPlacementData__Group_8__1();
 
             state._fsp--;
@@ -33272,7 +33494,11 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:12612:1: 'height'
             {
              before(grammarAccess.getKDecoratorPlacementDataAccess().getHeightKeyword_8_0()); 
+<<<<<<< HEAD
             match(input,54,FollowSets001.FOLLOW_54_in_rule__KDecoratorPlacementData__Group_8__0__Impl25181); 
+=======
+            match(input,54,FollowSets001.FOLLOW_54_in_rule__KDecoratorPlacementData__Group_8__0__Impl25491); 
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
              after(grammarAccess.getKDecoratorPlacementDataAccess().getHeightKeyword_8_0()); 
 
             }
@@ -33305,7 +33531,11 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:12629:1: ( rule__KDecoratorPlacementData__Group_8__1__Impl )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:12630:2: rule__KDecoratorPlacementData__Group_8__1__Impl
             {
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KDecoratorPlacementData__Group_8__1__Impl_in_rule__KDecoratorPlacementData__Group_8__125212);
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KDecoratorPlacementData__Group_8__1__Impl_in_rule__KDecoratorPlacementData__Group_8__125522);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KDecoratorPlacementData__Group_8__1__Impl();
 
             state._fsp--;
@@ -33345,7 +33575,11 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:12643:1: ( rule__KDecoratorPlacementData__HeightAssignment_8_1 )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:12643:2: rule__KDecoratorPlacementData__HeightAssignment_8_1
             {
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KDecoratorPlacementData__HeightAssignment_8_1_in_rule__KDecoratorPlacementData__Group_8__1__Impl25239);
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KDecoratorPlacementData__HeightAssignment_8_1_in_rule__KDecoratorPlacementData__Group_8__1__Impl25549);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KDecoratorPlacementData__HeightAssignment_8_1();
 
             state._fsp--;
@@ -33385,12 +33619,20 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:12661:1: ( rule__KGridPlacementData__Group__0__Impl rule__KGridPlacementData__Group__1 )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:12662:2: rule__KGridPlacementData__Group__0__Impl rule__KGridPlacementData__Group__1
             {
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KGridPlacementData__Group__0__Impl_in_rule__KGridPlacementData__Group__025273);
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KGridPlacementData__Group__0__Impl_in_rule__KGridPlacementData__Group__025583);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KGridPlacementData__Group__0__Impl();
 
             state._fsp--;
 
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KGridPlacementData__Group__1_in_rule__KGridPlacementData__Group__025276);
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KGridPlacementData__Group__1_in_rule__KGridPlacementData__Group__025586);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KGridPlacementData__Group__1();
 
             state._fsp--;
@@ -33427,7 +33669,11 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:12675:1: 'GridPlacementData'
             {
              before(grammarAccess.getKGridPlacementDataAccess().getGridPlacementDataKeyword_0()); 
+<<<<<<< HEAD
             match(input,55,FollowSets001.FOLLOW_55_in_rule__KGridPlacementData__Group__0__Impl25304); 
+=======
+            match(input,55,FollowSets001.FOLLOW_55_in_rule__KGridPlacementData__Group__0__Impl25614); 
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
              after(grammarAccess.getKGridPlacementDataAccess().getGridPlacementDataKeyword_0()); 
 
             }
@@ -33460,12 +33706,20 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:12692:1: ( rule__KGridPlacementData__Group__1__Impl rule__KGridPlacementData__Group__2 )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:12693:2: rule__KGridPlacementData__Group__1__Impl rule__KGridPlacementData__Group__2
             {
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KGridPlacementData__Group__1__Impl_in_rule__KGridPlacementData__Group__125335);
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KGridPlacementData__Group__1__Impl_in_rule__KGridPlacementData__Group__125645);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KGridPlacementData__Group__1__Impl();
 
             state._fsp--;
 
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KGridPlacementData__Group__2_in_rule__KGridPlacementData__Group__125338);
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KGridPlacementData__Group__2_in_rule__KGridPlacementData__Group__125648);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KGridPlacementData__Group__2();
 
             state._fsp--;
@@ -33502,7 +33756,11 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:12706:1: '{'
             {
              before(grammarAccess.getKGridPlacementDataAccess().getLeftCurlyBracketKeyword_1()); 
+<<<<<<< HEAD
             match(input,27,FollowSets001.FOLLOW_27_in_rule__KGridPlacementData__Group__1__Impl25366); 
+=======
+            match(input,27,FollowSets001.FOLLOW_27_in_rule__KGridPlacementData__Group__1__Impl25676); 
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
              after(grammarAccess.getKGridPlacementDataAccess().getLeftCurlyBracketKeyword_1()); 
 
             }
@@ -33535,12 +33793,20 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:12723:1: ( rule__KGridPlacementData__Group__2__Impl rule__KGridPlacementData__Group__3 )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:12724:2: rule__KGridPlacementData__Group__2__Impl rule__KGridPlacementData__Group__3
             {
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KGridPlacementData__Group__2__Impl_in_rule__KGridPlacementData__Group__225397);
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KGridPlacementData__Group__2__Impl_in_rule__KGridPlacementData__Group__225707);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KGridPlacementData__Group__2__Impl();
 
             state._fsp--;
 
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KGridPlacementData__Group__3_in_rule__KGridPlacementData__Group__225400);
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KGridPlacementData__Group__3_in_rule__KGridPlacementData__Group__225710);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KGridPlacementData__Group__3();
 
             state._fsp--;
@@ -33577,7 +33843,11 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:12737:1: 'widthHint'
             {
              before(grammarAccess.getKGridPlacementDataAccess().getWidthHintKeyword_2()); 
+<<<<<<< HEAD
             match(input,56,FollowSets001.FOLLOW_56_in_rule__KGridPlacementData__Group__2__Impl25428); 
+=======
+            match(input,56,FollowSets001.FOLLOW_56_in_rule__KGridPlacementData__Group__2__Impl25738); 
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
              after(grammarAccess.getKGridPlacementDataAccess().getWidthHintKeyword_2()); 
 
             }
@@ -33610,12 +33880,20 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:12754:1: ( rule__KGridPlacementData__Group__3__Impl rule__KGridPlacementData__Group__4 )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:12755:2: rule__KGridPlacementData__Group__3__Impl rule__KGridPlacementData__Group__4
             {
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KGridPlacementData__Group__3__Impl_in_rule__KGridPlacementData__Group__325459);
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KGridPlacementData__Group__3__Impl_in_rule__KGridPlacementData__Group__325769);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KGridPlacementData__Group__3__Impl();
 
             state._fsp--;
 
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KGridPlacementData__Group__4_in_rule__KGridPlacementData__Group__325462);
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KGridPlacementData__Group__4_in_rule__KGridPlacementData__Group__325772);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KGridPlacementData__Group__4();
 
             state._fsp--;
@@ -33655,7 +33933,11 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:12769:1: ( rule__KGridPlacementData__WidthHintAssignment_3 )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:12769:2: rule__KGridPlacementData__WidthHintAssignment_3
             {
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KGridPlacementData__WidthHintAssignment_3_in_rule__KGridPlacementData__Group__3__Impl25489);
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KGridPlacementData__WidthHintAssignment_3_in_rule__KGridPlacementData__Group__3__Impl25799);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KGridPlacementData__WidthHintAssignment_3();
 
             state._fsp--;
@@ -33695,12 +33977,20 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:12783:1: ( rule__KGridPlacementData__Group__4__Impl rule__KGridPlacementData__Group__5 )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:12784:2: rule__KGridPlacementData__Group__4__Impl rule__KGridPlacementData__Group__5
             {
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KGridPlacementData__Group__4__Impl_in_rule__KGridPlacementData__Group__425519);
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KGridPlacementData__Group__4__Impl_in_rule__KGridPlacementData__Group__425829);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KGridPlacementData__Group__4__Impl();
 
             state._fsp--;
 
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KGridPlacementData__Group__5_in_rule__KGridPlacementData__Group__425522);
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KGridPlacementData__Group__5_in_rule__KGridPlacementData__Group__425832);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KGridPlacementData__Group__5();
 
             state._fsp--;
@@ -33737,7 +34027,11 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:12797:1: 'heightHint'
             {
              before(grammarAccess.getKGridPlacementDataAccess().getHeightHintKeyword_4()); 
+<<<<<<< HEAD
             match(input,57,FollowSets001.FOLLOW_57_in_rule__KGridPlacementData__Group__4__Impl25550); 
+=======
+            match(input,57,FollowSets001.FOLLOW_57_in_rule__KGridPlacementData__Group__4__Impl25860); 
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
              after(grammarAccess.getKGridPlacementDataAccess().getHeightHintKeyword_4()); 
 
             }
@@ -33770,12 +34064,20 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:12814:1: ( rule__KGridPlacementData__Group__5__Impl rule__KGridPlacementData__Group__6 )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:12815:2: rule__KGridPlacementData__Group__5__Impl rule__KGridPlacementData__Group__6
             {
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KGridPlacementData__Group__5__Impl_in_rule__KGridPlacementData__Group__525581);
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KGridPlacementData__Group__5__Impl_in_rule__KGridPlacementData__Group__525891);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KGridPlacementData__Group__5__Impl();
 
             state._fsp--;
 
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KGridPlacementData__Group__6_in_rule__KGridPlacementData__Group__525584);
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KGridPlacementData__Group__6_in_rule__KGridPlacementData__Group__525894);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KGridPlacementData__Group__6();
 
             state._fsp--;
@@ -33815,7 +34117,11 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:12829:1: ( rule__KGridPlacementData__HeightHintAssignment_5 )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:12829:2: rule__KGridPlacementData__HeightHintAssignment_5
             {
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KGridPlacementData__HeightHintAssignment_5_in_rule__KGridPlacementData__Group__5__Impl25611);
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KGridPlacementData__HeightHintAssignment_5_in_rule__KGridPlacementData__Group__5__Impl25921);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KGridPlacementData__HeightHintAssignment_5();
 
             state._fsp--;
@@ -33855,12 +34161,20 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:12843:1: ( rule__KGridPlacementData__Group__6__Impl rule__KGridPlacementData__Group__7 )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:12844:2: rule__KGridPlacementData__Group__6__Impl rule__KGridPlacementData__Group__7
             {
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KGridPlacementData__Group__6__Impl_in_rule__KGridPlacementData__Group__625641);
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KGridPlacementData__Group__6__Impl_in_rule__KGridPlacementData__Group__625951);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KGridPlacementData__Group__6__Impl();
 
             state._fsp--;
 
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KGridPlacementData__Group__7_in_rule__KGridPlacementData__Group__625644);
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KGridPlacementData__Group__7_in_rule__KGridPlacementData__Group__625954);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KGridPlacementData__Group__7();
 
             state._fsp--;
@@ -33912,7 +34226,7 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:12993:1: 'insetRight'
             {
              before(grammarAccess.getKGridPlacementDataAccess().getInsetRightKeyword_6()); 
-            match(input,58,FollowSets001.FOLLOW_58_in_rule__KGridPlacementData__Group__6__Impl25981); 
+            match(input,58,FollowSets001.FOLLOW_58_in_rule__KGridPlacementData__Group__6__Impl25982); 
              after(grammarAccess.getKGridPlacementDataAccess().getInsetRightKeyword_6()); 
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
 
@@ -33946,12 +34260,20 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:12874:1: ( rule__KGridPlacementData__Group__7__Impl rule__KGridPlacementData__Group__8 )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:12875:2: rule__KGridPlacementData__Group__7__Impl rule__KGridPlacementData__Group__8
             {
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KGridPlacementData__Group__7__Impl_in_rule__KGridPlacementData__Group__725703);
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KGridPlacementData__Group__7__Impl_in_rule__KGridPlacementData__Group__726013);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KGridPlacementData__Group__7__Impl();
 
             state._fsp--;
 
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KGridPlacementData__Group__8_in_rule__KGridPlacementData__Group__725706);
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KGridPlacementData__Group__8_in_rule__KGridPlacementData__Group__726016);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KGridPlacementData__Group__8();
 
             state._fsp--;
@@ -34009,7 +34331,7 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:13025:1: ( rule__KGridPlacementData__InsetRightAssignment_7 )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:13025:2: rule__KGridPlacementData__InsetRightAssignment_7
             {
-            pushFollow(FollowSets001.FOLLOW_rule__KGridPlacementData__InsetRightAssignment_7_in_rule__KGridPlacementData__Group__7__Impl26042);
+            pushFollow(FollowSets001.FOLLOW_rule__KGridPlacementData__InsetRightAssignment_7_in_rule__KGridPlacementData__Group__7__Impl26043);
             rule__KGridPlacementData__InsetRightAssignment_7();
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
 
@@ -34050,12 +34372,20 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:12903:1: ( rule__KGridPlacementData__Group__8__Impl rule__KGridPlacementData__Group__9 )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:12904:2: rule__KGridPlacementData__Group__8__Impl rule__KGridPlacementData__Group__9
             {
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KGridPlacementData__Group__8__Impl_in_rule__KGridPlacementData__Group__825763);
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KGridPlacementData__Group__8__Impl_in_rule__KGridPlacementData__Group__826073);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KGridPlacementData__Group__8__Impl();
 
             state._fsp--;
 
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KGridPlacementData__Group__9_in_rule__KGridPlacementData__Group__825766);
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KGridPlacementData__Group__9_in_rule__KGridPlacementData__Group__826076);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KGridPlacementData__Group__9();
 
             state._fsp--;
@@ -34107,7 +34437,7 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:13053:1: 'insetBottom'
             {
              before(grammarAccess.getKGridPlacementDataAccess().getInsetBottomKeyword_8()); 
-            match(input,59,FollowSets001.FOLLOW_59_in_rule__KGridPlacementData__Group__8__Impl26103); 
+            match(input,59,FollowSets001.FOLLOW_59_in_rule__KGridPlacementData__Group__8__Impl26104); 
              after(grammarAccess.getKGridPlacementDataAccess().getInsetBottomKeyword_8()); 
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
 
@@ -34141,12 +34471,20 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:12934:1: ( rule__KGridPlacementData__Group__9__Impl rule__KGridPlacementData__Group__10 )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:12935:2: rule__KGridPlacementData__Group__9__Impl rule__KGridPlacementData__Group__10
             {
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KGridPlacementData__Group__9__Impl_in_rule__KGridPlacementData__Group__925825);
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KGridPlacementData__Group__9__Impl_in_rule__KGridPlacementData__Group__926135);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KGridPlacementData__Group__9__Impl();
 
             state._fsp--;
 
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KGridPlacementData__Group__10_in_rule__KGridPlacementData__Group__925828);
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KGridPlacementData__Group__10_in_rule__KGridPlacementData__Group__926138);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KGridPlacementData__Group__10();
 
             state._fsp--;
@@ -34204,7 +34542,7 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:13085:1: ( rule__KGridPlacementData__InsetBottomAssignment_9 )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:13085:2: rule__KGridPlacementData__InsetBottomAssignment_9
             {
-            pushFollow(FollowSets001.FOLLOW_rule__KGridPlacementData__InsetBottomAssignment_9_in_rule__KGridPlacementData__Group__9__Impl26164);
+            pushFollow(FollowSets001.FOLLOW_rule__KGridPlacementData__InsetBottomAssignment_9_in_rule__KGridPlacementData__Group__9__Impl26165);
             rule__KGridPlacementData__InsetBottomAssignment_9();
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
 
@@ -34254,12 +34592,16 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:13100:2: rule__KGridPlacementData__Group__10__Impl rule__KGridPlacementData__Group__11
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
             {
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KGridPlacementData__Group__10__Impl_in_rule__KGridPlacementData__Group__1025885);
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KGridPlacementData__Group__10__Impl_in_rule__KGridPlacementData__Group__1026195);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KGridPlacementData__Group__10__Impl();
 
             state._fsp--;
 
-            pushFollow(FollowSets001.FOLLOW_rule__KGridPlacementData__Group__11_in_rule__KGridPlacementData__Group__1026197);
+            pushFollow(FollowSets001.FOLLOW_rule__KGridPlacementData__Group__11_in_rule__KGridPlacementData__Group__1026198);
             rule__KGridPlacementData__Group__11();
 
             state._fsp--;
@@ -34311,7 +34653,7 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:13113:1: 'insetLeft'
             {
              before(grammarAccess.getKGridPlacementDataAccess().getInsetLeftKeyword_10()); 
-            match(input,60,FollowSets001.FOLLOW_60_in_rule__KGridPlacementData__Group__10__Impl26225); 
+            match(input,60,FollowSets001.FOLLOW_60_in_rule__KGridPlacementData__Group__10__Impl26226); 
              after(grammarAccess.getKGridPlacementDataAccess().getInsetLeftKeyword_10()); 
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
 
@@ -34345,12 +34687,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:13130:1: ( rule__KGridPlacementData__Group__11__Impl rule__KGridPlacementData__Group__12 )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:13131:2: rule__KGridPlacementData__Group__11__Impl rule__KGridPlacementData__Group__12
             {
-            pushFollow(FollowSets001.FOLLOW_rule__KGridPlacementData__Group__11__Impl_in_rule__KGridPlacementData__Group__1126256);
+            pushFollow(FollowSets001.FOLLOW_rule__KGridPlacementData__Group__11__Impl_in_rule__KGridPlacementData__Group__1126257);
             rule__KGridPlacementData__Group__11__Impl();
 
             state._fsp--;
 
-            pushFollow(FollowSets001.FOLLOW_rule__KGridPlacementData__Group__12_in_rule__KGridPlacementData__Group__1126259);
+            pushFollow(FollowSets001.FOLLOW_rule__KGridPlacementData__Group__12_in_rule__KGridPlacementData__Group__1126260);
             rule__KGridPlacementData__Group__12();
 
             state._fsp--;
@@ -34390,7 +34732,7 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:13145:1: ( rule__KGridPlacementData__InsetLeftAssignment_11 )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:13145:2: rule__KGridPlacementData__InsetLeftAssignment_11
             {
-            pushFollow(FollowSets001.FOLLOW_rule__KGridPlacementData__InsetLeftAssignment_11_in_rule__KGridPlacementData__Group__11__Impl26286);
+            pushFollow(FollowSets001.FOLLOW_rule__KGridPlacementData__InsetLeftAssignment_11_in_rule__KGridPlacementData__Group__11__Impl26287);
             rule__KGridPlacementData__InsetLeftAssignment_11();
 
             state._fsp--;
@@ -34430,12 +34772,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:13159:1: ( rule__KGridPlacementData__Group__12__Impl rule__KGridPlacementData__Group__13 )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:13160:2: rule__KGridPlacementData__Group__12__Impl rule__KGridPlacementData__Group__13
             {
-            pushFollow(FollowSets001.FOLLOW_rule__KGridPlacementData__Group__12__Impl_in_rule__KGridPlacementData__Group__1226316);
+            pushFollow(FollowSets001.FOLLOW_rule__KGridPlacementData__Group__12__Impl_in_rule__KGridPlacementData__Group__1226317);
             rule__KGridPlacementData__Group__12__Impl();
 
             state._fsp--;
 
-            pushFollow(FollowSets001.FOLLOW_rule__KGridPlacementData__Group__13_in_rule__KGridPlacementData__Group__1226319);
+            pushFollow(FollowSets001.FOLLOW_rule__KGridPlacementData__Group__13_in_rule__KGridPlacementData__Group__1226320);
             rule__KGridPlacementData__Group__13();
 
             state._fsp--;
@@ -34472,7 +34814,7 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:13173:1: 'insetTop'
             {
              before(grammarAccess.getKGridPlacementDataAccess().getInsetTopKeyword_12()); 
-            match(input,61,FollowSets001.FOLLOW_61_in_rule__KGridPlacementData__Group__12__Impl26347); 
+            match(input,61,FollowSets001.FOLLOW_61_in_rule__KGridPlacementData__Group__12__Impl26348); 
              after(grammarAccess.getKGridPlacementDataAccess().getInsetTopKeyword_12()); 
 
             }
@@ -34505,12 +34847,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:13190:1: ( rule__KGridPlacementData__Group__13__Impl rule__KGridPlacementData__Group__14 )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:13191:2: rule__KGridPlacementData__Group__13__Impl rule__KGridPlacementData__Group__14
             {
-            pushFollow(FollowSets001.FOLLOW_rule__KGridPlacementData__Group__13__Impl_in_rule__KGridPlacementData__Group__1326378);
+            pushFollow(FollowSets001.FOLLOW_rule__KGridPlacementData__Group__13__Impl_in_rule__KGridPlacementData__Group__1326379);
             rule__KGridPlacementData__Group__13__Impl();
 
             state._fsp--;
 
-            pushFollow(FollowSets001.FOLLOW_rule__KGridPlacementData__Group__14_in_rule__KGridPlacementData__Group__1326381);
+            pushFollow(FollowSets001.FOLLOW_rule__KGridPlacementData__Group__14_in_rule__KGridPlacementData__Group__1326382);
             rule__KGridPlacementData__Group__14();
 
             state._fsp--;
@@ -34550,7 +34892,7 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:13205:1: ( rule__KGridPlacementData__InsetTopAssignment_13 )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:13205:2: rule__KGridPlacementData__InsetTopAssignment_13
             {
-            pushFollow(FollowSets001.FOLLOW_rule__KGridPlacementData__InsetTopAssignment_13_in_rule__KGridPlacementData__Group__13__Impl26408);
+            pushFollow(FollowSets001.FOLLOW_rule__KGridPlacementData__InsetTopAssignment_13_in_rule__KGridPlacementData__Group__13__Impl26409);
             rule__KGridPlacementData__InsetTopAssignment_13();
 
             state._fsp--;
@@ -34590,7 +34932,7 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:13219:1: ( rule__KGridPlacementData__Group__14__Impl )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:13220:2: rule__KGridPlacementData__Group__14__Impl
             {
-            pushFollow(FollowSets001.FOLLOW_rule__KGridPlacementData__Group__14__Impl_in_rule__KGridPlacementData__Group__1426438);
+            pushFollow(FollowSets001.FOLLOW_rule__KGridPlacementData__Group__14__Impl_in_rule__KGridPlacementData__Group__1426439);
             rule__KGridPlacementData__Group__14__Impl();
 
             state._fsp--;
@@ -34627,7 +34969,7 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:13232:1: '}'
             {
              before(grammarAccess.getKGridPlacementDataAccess().getRightCurlyBracketKeyword_14()); 
-            match(input,28,FollowSets001.FOLLOW_28_in_rule__KGridPlacementData__Group__14__Impl26466); 
+            match(input,28,FollowSets001.FOLLOW_28_in_rule__KGridPlacementData__Group__14__Impl26467); 
              after(grammarAccess.getKGridPlacementDataAccess().getRightCurlyBracketKeyword_14()); 
 
             }
@@ -34670,17 +35012,25 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:13279:1: ( rule__KStackPlacementData__Group__0__Impl rule__KStackPlacementData__Group__1 )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:13280:2: rule__KStackPlacementData__Group__0__Impl rule__KStackPlacementData__Group__1
             {
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KStackPlacementData__Group__0__Impl_in_rule__KStackPlacementData__Group__026527);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KStackPlacementData__Group__0__Impl_in_rule__KStackPlacementData__Group__026528);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KStackPlacementData__Group__0__Impl();
 
             state._fsp--;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KStackPlacementData__Group__1_in_rule__KStackPlacementData__Group__025969);
 =======
             pushFollow(FollowSets001.FOLLOW_rule__KStackPlacementData__Group__1_in_rule__KStackPlacementData__Group__026530);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KStackPlacementData__Group__1_in_rule__KStackPlacementData__Group__026531);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KStackPlacementData__Group__1();
 
             state._fsp--;
@@ -34731,8 +35081,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:13293:1: 'StackPlacementData'
             {
              before(grammarAccess.getKStackPlacementDataAccess().getStackPlacementDataKeyword_0()); 
+<<<<<<< HEAD
             match(input,62,FollowSets001.FOLLOW_62_in_rule__KStackPlacementData__Group__0__Impl26558); 
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            match(input,62,FollowSets001.FOLLOW_62_in_rule__KStackPlacementData__Group__0__Impl26559); 
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
              after(grammarAccess.getKStackPlacementDataAccess().getStackPlacementDataKeyword_0()); 
 
             }
@@ -34775,17 +35129,25 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:13310:1: ( rule__KStackPlacementData__Group__1__Impl rule__KStackPlacementData__Group__2 )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:13311:2: rule__KStackPlacementData__Group__1__Impl rule__KStackPlacementData__Group__2
             {
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KStackPlacementData__Group__1__Impl_in_rule__KStackPlacementData__Group__126589);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KStackPlacementData__Group__1__Impl_in_rule__KStackPlacementData__Group__126590);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KStackPlacementData__Group__1__Impl();
 
             state._fsp--;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KStackPlacementData__Group__2_in_rule__KStackPlacementData__Group__126031);
 =======
             pushFollow(FollowSets001.FOLLOW_rule__KStackPlacementData__Group__2_in_rule__KStackPlacementData__Group__126592);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KStackPlacementData__Group__2_in_rule__KStackPlacementData__Group__126593);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KStackPlacementData__Group__2();
 
             state._fsp--;
@@ -34836,8 +35198,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:13324:1: '{'
             {
              before(grammarAccess.getKStackPlacementDataAccess().getLeftCurlyBracketKeyword_1()); 
+<<<<<<< HEAD
             match(input,27,FollowSets001.FOLLOW_27_in_rule__KStackPlacementData__Group__1__Impl26620); 
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            match(input,27,FollowSets001.FOLLOW_27_in_rule__KStackPlacementData__Group__1__Impl26621); 
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
              after(grammarAccess.getKStackPlacementDataAccess().getLeftCurlyBracketKeyword_1()); 
 
             }
@@ -34880,17 +35246,25 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:13341:1: ( rule__KStackPlacementData__Group__2__Impl rule__KStackPlacementData__Group__3 )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:13342:2: rule__KStackPlacementData__Group__2__Impl rule__KStackPlacementData__Group__3
             {
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KStackPlacementData__Group__2__Impl_in_rule__KStackPlacementData__Group__226651);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KStackPlacementData__Group__2__Impl_in_rule__KStackPlacementData__Group__226652);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KStackPlacementData__Group__2__Impl();
 
             state._fsp--;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KStackPlacementData__Group__3_in_rule__KStackPlacementData__Group__226093);
 =======
             pushFollow(FollowSets001.FOLLOW_rule__KStackPlacementData__Group__3_in_rule__KStackPlacementData__Group__226654);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KStackPlacementData__Group__3_in_rule__KStackPlacementData__Group__226655);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KStackPlacementData__Group__3();
 
             state._fsp--;
@@ -34941,8 +35315,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:13355:1: 'insetRight'
             {
              before(grammarAccess.getKStackPlacementDataAccess().getInsetRightKeyword_2()); 
+<<<<<<< HEAD
             match(input,58,FollowSets001.FOLLOW_58_in_rule__KStackPlacementData__Group__2__Impl26682); 
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            match(input,58,FollowSets001.FOLLOW_58_in_rule__KStackPlacementData__Group__2__Impl26683); 
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
              after(grammarAccess.getKStackPlacementDataAccess().getInsetRightKeyword_2()); 
 
             }
@@ -34985,17 +35363,25 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:13372:1: ( rule__KStackPlacementData__Group__3__Impl rule__KStackPlacementData__Group__4 )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:13373:2: rule__KStackPlacementData__Group__3__Impl rule__KStackPlacementData__Group__4
             {
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KStackPlacementData__Group__3__Impl_in_rule__KStackPlacementData__Group__326713);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KStackPlacementData__Group__3__Impl_in_rule__KStackPlacementData__Group__326714);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KStackPlacementData__Group__3__Impl();
 
             state._fsp--;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KStackPlacementData__Group__4_in_rule__KStackPlacementData__Group__326155);
 =======
             pushFollow(FollowSets001.FOLLOW_rule__KStackPlacementData__Group__4_in_rule__KStackPlacementData__Group__326716);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KStackPlacementData__Group__4_in_rule__KStackPlacementData__Group__326717);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KStackPlacementData__Group__4();
 
             state._fsp--;
@@ -35052,8 +35438,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:13387:1: ( rule__KStackPlacementData__InsetRightAssignment_3 )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:13387:2: rule__KStackPlacementData__InsetRightAssignment_3
             {
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KStackPlacementData__InsetRightAssignment_3_in_rule__KStackPlacementData__Group__3__Impl26743);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KStackPlacementData__InsetRightAssignment_3_in_rule__KStackPlacementData__Group__3__Impl26744);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KStackPlacementData__InsetRightAssignment_3();
 
             state._fsp--;
@@ -35103,17 +35493,25 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:13401:1: ( rule__KStackPlacementData__Group__4__Impl rule__KStackPlacementData__Group__5 )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:13402:2: rule__KStackPlacementData__Group__4__Impl rule__KStackPlacementData__Group__5
             {
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KStackPlacementData__Group__4__Impl_in_rule__KStackPlacementData__Group__426773);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KStackPlacementData__Group__4__Impl_in_rule__KStackPlacementData__Group__426774);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KStackPlacementData__Group__4__Impl();
 
             state._fsp--;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KStackPlacementData__Group__5_in_rule__KStackPlacementData__Group__426215);
 =======
             pushFollow(FollowSets001.FOLLOW_rule__KStackPlacementData__Group__5_in_rule__KStackPlacementData__Group__426776);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KStackPlacementData__Group__5_in_rule__KStackPlacementData__Group__426777);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KStackPlacementData__Group__5();
 
             state._fsp--;
@@ -35164,8 +35562,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:13415:1: 'insetBottom'
             {
              before(grammarAccess.getKStackPlacementDataAccess().getInsetBottomKeyword_4()); 
+<<<<<<< HEAD
             match(input,59,FollowSets001.FOLLOW_59_in_rule__KStackPlacementData__Group__4__Impl26804); 
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            match(input,59,FollowSets001.FOLLOW_59_in_rule__KStackPlacementData__Group__4__Impl26805); 
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
              after(grammarAccess.getKStackPlacementDataAccess().getInsetBottomKeyword_4()); 
 
             }
@@ -35208,17 +35610,25 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:13432:1: ( rule__KStackPlacementData__Group__5__Impl rule__KStackPlacementData__Group__6 )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:13433:2: rule__KStackPlacementData__Group__5__Impl rule__KStackPlacementData__Group__6
             {
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KStackPlacementData__Group__5__Impl_in_rule__KStackPlacementData__Group__526835);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KStackPlacementData__Group__5__Impl_in_rule__KStackPlacementData__Group__526836);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KStackPlacementData__Group__5__Impl();
 
             state._fsp--;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KStackPlacementData__Group__6_in_rule__KStackPlacementData__Group__526277);
 =======
             pushFollow(FollowSets001.FOLLOW_rule__KStackPlacementData__Group__6_in_rule__KStackPlacementData__Group__526838);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KStackPlacementData__Group__6_in_rule__KStackPlacementData__Group__526839);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KStackPlacementData__Group__6();
 
             state._fsp--;
@@ -35275,8 +35685,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:13447:1: ( rule__KStackPlacementData__InsetBottomAssignment_5 )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:13447:2: rule__KStackPlacementData__InsetBottomAssignment_5
             {
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KStackPlacementData__InsetBottomAssignment_5_in_rule__KStackPlacementData__Group__5__Impl26865);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KStackPlacementData__InsetBottomAssignment_5_in_rule__KStackPlacementData__Group__5__Impl26866);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KStackPlacementData__InsetBottomAssignment_5();
 
             state._fsp--;
@@ -35326,17 +35740,25 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:13461:1: ( rule__KStackPlacementData__Group__6__Impl rule__KStackPlacementData__Group__7 )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:13462:2: rule__KStackPlacementData__Group__6__Impl rule__KStackPlacementData__Group__7
             {
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KStackPlacementData__Group__6__Impl_in_rule__KStackPlacementData__Group__626895);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KStackPlacementData__Group__6__Impl_in_rule__KStackPlacementData__Group__626896);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KStackPlacementData__Group__6__Impl();
 
             state._fsp--;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KStackPlacementData__Group__7_in_rule__KStackPlacementData__Group__626337);
 =======
             pushFollow(FollowSets001.FOLLOW_rule__KStackPlacementData__Group__7_in_rule__KStackPlacementData__Group__626898);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KStackPlacementData__Group__7_in_rule__KStackPlacementData__Group__626899);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KStackPlacementData__Group__7();
 
             state._fsp--;
@@ -35387,8 +35809,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:13475:1: 'insetLeft'
             {
              before(grammarAccess.getKStackPlacementDataAccess().getInsetLeftKeyword_6()); 
+<<<<<<< HEAD
             match(input,60,FollowSets001.FOLLOW_60_in_rule__KStackPlacementData__Group__6__Impl26926); 
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            match(input,60,FollowSets001.FOLLOW_60_in_rule__KStackPlacementData__Group__6__Impl26927); 
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
              after(grammarAccess.getKStackPlacementDataAccess().getInsetLeftKeyword_6()); 
 
             }
@@ -35431,17 +35857,25 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:13492:1: ( rule__KStackPlacementData__Group__7__Impl rule__KStackPlacementData__Group__8 )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:13493:2: rule__KStackPlacementData__Group__7__Impl rule__KStackPlacementData__Group__8
             {
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KStackPlacementData__Group__7__Impl_in_rule__KStackPlacementData__Group__726957);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KStackPlacementData__Group__7__Impl_in_rule__KStackPlacementData__Group__726958);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KStackPlacementData__Group__7__Impl();
 
             state._fsp--;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KStackPlacementData__Group__8_in_rule__KStackPlacementData__Group__726399);
 =======
             pushFollow(FollowSets001.FOLLOW_rule__KStackPlacementData__Group__8_in_rule__KStackPlacementData__Group__726960);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KStackPlacementData__Group__8_in_rule__KStackPlacementData__Group__726961);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KStackPlacementData__Group__8();
 
             state._fsp--;
@@ -35498,8 +35932,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:13507:1: ( rule__KStackPlacementData__InsetLeftAssignment_7 )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:13507:2: rule__KStackPlacementData__InsetLeftAssignment_7
             {
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KStackPlacementData__InsetLeftAssignment_7_in_rule__KStackPlacementData__Group__7__Impl26987);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KStackPlacementData__InsetLeftAssignment_7_in_rule__KStackPlacementData__Group__7__Impl26988);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KStackPlacementData__InsetLeftAssignment_7();
 
             state._fsp--;
@@ -35549,17 +35987,25 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:13521:1: ( rule__KStackPlacementData__Group__8__Impl rule__KStackPlacementData__Group__9 )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:13522:2: rule__KStackPlacementData__Group__8__Impl rule__KStackPlacementData__Group__9
             {
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KStackPlacementData__Group__8__Impl_in_rule__KStackPlacementData__Group__827017);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KStackPlacementData__Group__8__Impl_in_rule__KStackPlacementData__Group__827018);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KStackPlacementData__Group__8__Impl();
 
             state._fsp--;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KStackPlacementData__Group__9_in_rule__KStackPlacementData__Group__826459);
 =======
             pushFollow(FollowSets001.FOLLOW_rule__KStackPlacementData__Group__9_in_rule__KStackPlacementData__Group__827020);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KStackPlacementData__Group__9_in_rule__KStackPlacementData__Group__827021);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KStackPlacementData__Group__9();
 
             state._fsp--;
@@ -35610,8 +36056,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:13535:1: 'insetTop'
             {
              before(grammarAccess.getKStackPlacementDataAccess().getInsetTopKeyword_8()); 
+<<<<<<< HEAD
             match(input,61,FollowSets001.FOLLOW_61_in_rule__KStackPlacementData__Group__8__Impl27048); 
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            match(input,61,FollowSets001.FOLLOW_61_in_rule__KStackPlacementData__Group__8__Impl27049); 
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
              after(grammarAccess.getKStackPlacementDataAccess().getInsetTopKeyword_8()); 
 
             }
@@ -35654,17 +36104,25 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:13552:1: ( rule__KStackPlacementData__Group__9__Impl rule__KStackPlacementData__Group__10 )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:13553:2: rule__KStackPlacementData__Group__9__Impl rule__KStackPlacementData__Group__10
             {
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KStackPlacementData__Group__9__Impl_in_rule__KStackPlacementData__Group__927079);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KStackPlacementData__Group__9__Impl_in_rule__KStackPlacementData__Group__927080);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KStackPlacementData__Group__9__Impl();
 
             state._fsp--;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KStackPlacementData__Group__10_in_rule__KStackPlacementData__Group__926521);
 =======
             pushFollow(FollowSets001.FOLLOW_rule__KStackPlacementData__Group__10_in_rule__KStackPlacementData__Group__927082);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KStackPlacementData__Group__10_in_rule__KStackPlacementData__Group__927083);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KStackPlacementData__Group__10();
 
             state._fsp--;
@@ -35721,8 +36179,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:13567:1: ( rule__KStackPlacementData__InsetTopAssignment_9 )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:13567:2: rule__KStackPlacementData__InsetTopAssignment_9
             {
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KStackPlacementData__InsetTopAssignment_9_in_rule__KStackPlacementData__Group__9__Impl27109);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KStackPlacementData__InsetTopAssignment_9_in_rule__KStackPlacementData__Group__9__Impl27110);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KStackPlacementData__InsetTopAssignment_9();
 
             state._fsp--;
@@ -35772,8 +36234,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:13581:1: ( rule__KStackPlacementData__Group__10__Impl )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:13582:2: rule__KStackPlacementData__Group__10__Impl
             {
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KStackPlacementData__Group__10__Impl_in_rule__KStackPlacementData__Group__1027139);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KStackPlacementData__Group__10__Impl_in_rule__KStackPlacementData__Group__1027140);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KStackPlacementData__Group__10__Impl();
 
             state._fsp--;
@@ -35824,8 +36290,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:13594:1: '}'
             {
              before(grammarAccess.getKStackPlacementDataAccess().getRightCurlyBracketKeyword_10()); 
+<<<<<<< HEAD
             match(input,28,FollowSets001.FOLLOW_28_in_rule__KStackPlacementData__Group__10__Impl27167); 
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            match(input,28,FollowSets001.FOLLOW_28_in_rule__KStackPlacementData__Group__10__Impl27168); 
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
              after(grammarAccess.getKStackPlacementDataAccess().getRightCurlyBracketKeyword_10()); 
 
             }
@@ -35868,17 +36338,25 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:13633:1: ( rule__KDirectPlacementData__Group__0__Impl rule__KDirectPlacementData__Group__1 )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:13634:2: rule__KDirectPlacementData__Group__0__Impl rule__KDirectPlacementData__Group__1
             {
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KDirectPlacementData__Group__0__Impl_in_rule__KDirectPlacementData__Group__027220);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KDirectPlacementData__Group__0__Impl_in_rule__KDirectPlacementData__Group__027221);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KDirectPlacementData__Group__0__Impl();
 
             state._fsp--;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KDirectPlacementData__Group__1_in_rule__KDirectPlacementData__Group__026662);
 =======
             pushFollow(FollowSets001.FOLLOW_rule__KDirectPlacementData__Group__1_in_rule__KDirectPlacementData__Group__027223);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KDirectPlacementData__Group__1_in_rule__KDirectPlacementData__Group__027224);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KDirectPlacementData__Group__1();
 
             state._fsp--;
@@ -35929,8 +36407,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:13647:1: 'DirectPlacementData'
             {
              before(grammarAccess.getKDirectPlacementDataAccess().getDirectPlacementDataKeyword_0()); 
+<<<<<<< HEAD
             match(input,63,FollowSets001.FOLLOW_63_in_rule__KDirectPlacementData__Group__0__Impl27251); 
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            match(input,63,FollowSets001.FOLLOW_63_in_rule__KDirectPlacementData__Group__0__Impl27252); 
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
              after(grammarAccess.getKDirectPlacementDataAccess().getDirectPlacementDataKeyword_0()); 
 
             }
@@ -35973,17 +36455,25 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:13664:1: ( rule__KDirectPlacementData__Group__1__Impl rule__KDirectPlacementData__Group__2 )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:13665:2: rule__KDirectPlacementData__Group__1__Impl rule__KDirectPlacementData__Group__2
             {
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KDirectPlacementData__Group__1__Impl_in_rule__KDirectPlacementData__Group__127282);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KDirectPlacementData__Group__1__Impl_in_rule__KDirectPlacementData__Group__127283);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KDirectPlacementData__Group__1__Impl();
 
             state._fsp--;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KDirectPlacementData__Group__2_in_rule__KDirectPlacementData__Group__126724);
 =======
             pushFollow(FollowSets001.FOLLOW_rule__KDirectPlacementData__Group__2_in_rule__KDirectPlacementData__Group__127285);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KDirectPlacementData__Group__2_in_rule__KDirectPlacementData__Group__127286);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KDirectPlacementData__Group__2();
 
             state._fsp--;
@@ -36034,8 +36524,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:13678:1: '{'
             {
              before(grammarAccess.getKDirectPlacementDataAccess().getLeftCurlyBracketKeyword_1()); 
+<<<<<<< HEAD
             match(input,27,FollowSets001.FOLLOW_27_in_rule__KDirectPlacementData__Group__1__Impl27313); 
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            match(input,27,FollowSets001.FOLLOW_27_in_rule__KDirectPlacementData__Group__1__Impl27314); 
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
              after(grammarAccess.getKDirectPlacementDataAccess().getLeftCurlyBracketKeyword_1()); 
 
             }
@@ -36078,17 +36572,25 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:13695:1: ( rule__KDirectPlacementData__Group__2__Impl rule__KDirectPlacementData__Group__3 )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:13696:2: rule__KDirectPlacementData__Group__2__Impl rule__KDirectPlacementData__Group__3
             {
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KDirectPlacementData__Group__2__Impl_in_rule__KDirectPlacementData__Group__227344);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KDirectPlacementData__Group__2__Impl_in_rule__KDirectPlacementData__Group__227345);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KDirectPlacementData__Group__2__Impl();
 
             state._fsp--;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KDirectPlacementData__Group__3_in_rule__KDirectPlacementData__Group__226786);
 =======
             pushFollow(FollowSets001.FOLLOW_rule__KDirectPlacementData__Group__3_in_rule__KDirectPlacementData__Group__227347);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KDirectPlacementData__Group__3_in_rule__KDirectPlacementData__Group__227348);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KDirectPlacementData__Group__3();
 
             state._fsp--;
@@ -36139,8 +36641,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:13709:1: 'topLeft'
             {
              before(grammarAccess.getKDirectPlacementDataAccess().getTopLeftKeyword_2()); 
+<<<<<<< HEAD
             match(input,64,FollowSets001.FOLLOW_64_in_rule__KDirectPlacementData__Group__2__Impl27375); 
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            match(input,64,FollowSets001.FOLLOW_64_in_rule__KDirectPlacementData__Group__2__Impl27376); 
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
              after(grammarAccess.getKDirectPlacementDataAccess().getTopLeftKeyword_2()); 
 
             }
@@ -36183,17 +36689,25 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:13726:1: ( rule__KDirectPlacementData__Group__3__Impl rule__KDirectPlacementData__Group__4 )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:13727:2: rule__KDirectPlacementData__Group__3__Impl rule__KDirectPlacementData__Group__4
             {
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KDirectPlacementData__Group__3__Impl_in_rule__KDirectPlacementData__Group__327406);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KDirectPlacementData__Group__3__Impl_in_rule__KDirectPlacementData__Group__327407);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KDirectPlacementData__Group__3__Impl();
 
             state._fsp--;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KDirectPlacementData__Group__4_in_rule__KDirectPlacementData__Group__326848);
 =======
             pushFollow(FollowSets001.FOLLOW_rule__KDirectPlacementData__Group__4_in_rule__KDirectPlacementData__Group__327409);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KDirectPlacementData__Group__4_in_rule__KDirectPlacementData__Group__327410);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KDirectPlacementData__Group__4();
 
             state._fsp--;
@@ -36250,8 +36764,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:13741:1: ( rule__KDirectPlacementData__TopLeftAssignment_3 )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:13741:2: rule__KDirectPlacementData__TopLeftAssignment_3
             {
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KDirectPlacementData__TopLeftAssignment_3_in_rule__KDirectPlacementData__Group__3__Impl27436);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KDirectPlacementData__TopLeftAssignment_3_in_rule__KDirectPlacementData__Group__3__Impl27437);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KDirectPlacementData__TopLeftAssignment_3();
 
             state._fsp--;
@@ -36301,17 +36819,25 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:13755:1: ( rule__KDirectPlacementData__Group__4__Impl rule__KDirectPlacementData__Group__5 )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:13756:2: rule__KDirectPlacementData__Group__4__Impl rule__KDirectPlacementData__Group__5
             {
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KDirectPlacementData__Group__4__Impl_in_rule__KDirectPlacementData__Group__427466);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KDirectPlacementData__Group__4__Impl_in_rule__KDirectPlacementData__Group__427467);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KDirectPlacementData__Group__4__Impl();
 
             state._fsp--;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KDirectPlacementData__Group__5_in_rule__KDirectPlacementData__Group__426908);
 =======
             pushFollow(FollowSets001.FOLLOW_rule__KDirectPlacementData__Group__5_in_rule__KDirectPlacementData__Group__427469);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KDirectPlacementData__Group__5_in_rule__KDirectPlacementData__Group__427470);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KDirectPlacementData__Group__5();
 
             state._fsp--;
@@ -36364,17 +36890,17 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             {
              before(grammarAccess.getKDirectPlacementDataAccess().getCommaKeyword_4()); 
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:13770:1: ( ',' )?
-            int alt101=2;
-            int LA101_0 = input.LA(1);
+            int alt102=2;
+            int LA102_0 = input.LA(1);
 
-            if ( (LA101_0==29) ) {
-                alt101=1;
+            if ( (LA102_0==29) ) {
+                alt102=1;
             }
-            switch (alt101) {
+            switch (alt102) {
                 case 1 :
                     // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:13771:2: ','
                     {
-                    match(input,29,FollowSets001.FOLLOW_29_in_rule__KDirectPlacementData__Group__4__Impl27498); 
+                    match(input,29,FollowSets001.FOLLOW_29_in_rule__KDirectPlacementData__Group__4__Impl27499); 
 
                     }
                     break;
@@ -36424,17 +36950,25 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:13786:1: ( rule__KDirectPlacementData__Group__5__Impl rule__KDirectPlacementData__Group__6 )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:13787:2: rule__KDirectPlacementData__Group__5__Impl rule__KDirectPlacementData__Group__6
             {
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KDirectPlacementData__Group__5__Impl_in_rule__KDirectPlacementData__Group__527531);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KDirectPlacementData__Group__5__Impl_in_rule__KDirectPlacementData__Group__527532);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KDirectPlacementData__Group__5__Impl();
 
             state._fsp--;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KDirectPlacementData__Group__6_in_rule__KDirectPlacementData__Group__526970);
 =======
             pushFollow(FollowSets001.FOLLOW_rule__KDirectPlacementData__Group__6_in_rule__KDirectPlacementData__Group__527534);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KDirectPlacementData__Group__6_in_rule__KDirectPlacementData__Group__527535);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KDirectPlacementData__Group__6();
 
             state._fsp--;
@@ -36496,7 +37030,7 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:13800:1: 'bottomRight'
             {
              before(grammarAccess.getKDirectPlacementDataAccess().getBottomRightKeyword_5()); 
-            match(input,65,FollowSets001.FOLLOW_65_in_rule__KDirectPlacementData__Group__5__Impl27562); 
+            match(input,65,FollowSets001.FOLLOW_65_in_rule__KDirectPlacementData__Group__5__Impl27563); 
              after(grammarAccess.getKDirectPlacementDataAccess().getBottomRightKeyword_5()); 
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
 
@@ -36540,15 +37074,23 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:13817:1: ( rule__KDirectPlacementData__Group__6__Impl rule__KDirectPlacementData__Group__7 )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:13818:2: rule__KDirectPlacementData__Group__6__Impl rule__KDirectPlacementData__Group__7
             {
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KDirectPlacementData__Group__6__Impl_in_rule__KDirectPlacementData__Group__627593);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KDirectPlacementData__Group__6__Impl_in_rule__KDirectPlacementData__Group__627594);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KDirectPlacementData__Group__6__Impl();
 
             state._fsp--;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
             pushFollow(FollowSets001.FOLLOW_rule__KDirectPlacementData__Group__7_in_rule__KDirectPlacementData__Group__627596);
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KDirectPlacementData__Group__7_in_rule__KDirectPlacementData__Group__627597);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KDirectPlacementData__Group__7();
 
             state._fsp--;
@@ -36604,7 +37146,7 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:13832:1: ( rule__KDirectPlacementData__BottomRightAssignment_6 )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:13832:2: rule__KDirectPlacementData__BottomRightAssignment_6
             {
-            pushFollow(FollowSets001.FOLLOW_rule__KDirectPlacementData__BottomRightAssignment_6_in_rule__KDirectPlacementData__Group__6__Impl27623);
+            pushFollow(FollowSets001.FOLLOW_rule__KDirectPlacementData__BottomRightAssignment_6_in_rule__KDirectPlacementData__Group__6__Impl27624);
             rule__KDirectPlacementData__BottomRightAssignment_6();
 
             state._fsp--;
@@ -36649,7 +37191,7 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:13846:1: ( rule__KDirectPlacementData__Group__7__Impl )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:13847:2: rule__KDirectPlacementData__Group__7__Impl
             {
-            pushFollow(FollowSets001.FOLLOW_rule__KDirectPlacementData__Group__7__Impl_in_rule__KDirectPlacementData__Group__727653);
+            pushFollow(FollowSets001.FOLLOW_rule__KDirectPlacementData__Group__7__Impl_in_rule__KDirectPlacementData__Group__727654);
             rule__KDirectPlacementData__Group__7__Impl();
 
             state._fsp--;
@@ -36686,7 +37228,7 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:13859:1: '}'
             {
              before(grammarAccess.getKDirectPlacementDataAccess().getRightCurlyBracketKeyword_7()); 
-            match(input,28,FollowSets001.FOLLOW_28_in_rule__KDirectPlacementData__Group__7__Impl27681); 
+            match(input,28,FollowSets001.FOLLOW_28_in_rule__KDirectPlacementData__Group__7__Impl27682); 
              after(grammarAccess.getKDirectPlacementDataAccess().getRightCurlyBracketKeyword_7()); 
 
             }
@@ -36726,17 +37268,25 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:13892:1: ( rule__KPolylinePlacementData__Group__0__Impl rule__KPolylinePlacementData__Group__1 )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:13893:2: rule__KPolylinePlacementData__Group__0__Impl rule__KPolylinePlacementData__Group__1
             {
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KPolylinePlacementData__Group__0__Impl_in_rule__KPolylinePlacementData__Group__027728);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KPolylinePlacementData__Group__0__Impl_in_rule__KPolylinePlacementData__Group__027729);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KPolylinePlacementData__Group__0__Impl();
 
             state._fsp--;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KPolylinePlacementData__Group__1_in_rule__KPolylinePlacementData__Group__027103);
 =======
             pushFollow(FollowSets001.FOLLOW_rule__KPolylinePlacementData__Group__1_in_rule__KPolylinePlacementData__Group__027731);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KPolylinePlacementData__Group__1_in_rule__KPolylinePlacementData__Group__027732);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KPolylinePlacementData__Group__1();
 
             state._fsp--;
@@ -36787,8 +37337,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:13906:1: 'PolylinePlacementData'
             {
              before(grammarAccess.getKPolylinePlacementDataAccess().getPolylinePlacementDataKeyword_0()); 
+<<<<<<< HEAD
             match(input,66,FollowSets001.FOLLOW_66_in_rule__KPolylinePlacementData__Group__0__Impl27759); 
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            match(input,66,FollowSets001.FOLLOW_66_in_rule__KPolylinePlacementData__Group__0__Impl27760); 
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
              after(grammarAccess.getKPolylinePlacementDataAccess().getPolylinePlacementDataKeyword_0()); 
 
             }
@@ -36831,17 +37385,25 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:13923:1: ( rule__KPolylinePlacementData__Group__1__Impl rule__KPolylinePlacementData__Group__2 )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:13924:2: rule__KPolylinePlacementData__Group__1__Impl rule__KPolylinePlacementData__Group__2
             {
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KPolylinePlacementData__Group__1__Impl_in_rule__KPolylinePlacementData__Group__127790);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KPolylinePlacementData__Group__1__Impl_in_rule__KPolylinePlacementData__Group__127791);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KPolylinePlacementData__Group__1__Impl();
 
             state._fsp--;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KPolylinePlacementData__Group__2_in_rule__KPolylinePlacementData__Group__127165);
 =======
             pushFollow(FollowSets001.FOLLOW_rule__KPolylinePlacementData__Group__2_in_rule__KPolylinePlacementData__Group__127793);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KPolylinePlacementData__Group__2_in_rule__KPolylinePlacementData__Group__127794);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KPolylinePlacementData__Group__2();
 
             state._fsp--;
@@ -36892,8 +37454,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:13937:1: '{'
             {
              before(grammarAccess.getKPolylinePlacementDataAccess().getLeftCurlyBracketKeyword_1()); 
+<<<<<<< HEAD
             match(input,27,FollowSets001.FOLLOW_27_in_rule__KPolylinePlacementData__Group__1__Impl27821); 
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            match(input,27,FollowSets001.FOLLOW_27_in_rule__KPolylinePlacementData__Group__1__Impl27822); 
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
              after(grammarAccess.getKPolylinePlacementDataAccess().getLeftCurlyBracketKeyword_1()); 
 
             }
@@ -36936,17 +37502,25 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:13954:1: ( rule__KPolylinePlacementData__Group__2__Impl rule__KPolylinePlacementData__Group__3 )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:13955:2: rule__KPolylinePlacementData__Group__2__Impl rule__KPolylinePlacementData__Group__3
             {
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KPolylinePlacementData__Group__2__Impl_in_rule__KPolylinePlacementData__Group__227852);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KPolylinePlacementData__Group__2__Impl_in_rule__KPolylinePlacementData__Group__227853);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KPolylinePlacementData__Group__2__Impl();
 
             state._fsp--;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KPolylinePlacementData__Group__3_in_rule__KPolylinePlacementData__Group__227227);
 =======
             pushFollow(FollowSets001.FOLLOW_rule__KPolylinePlacementData__Group__3_in_rule__KPolylinePlacementData__Group__227855);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KPolylinePlacementData__Group__3_in_rule__KPolylinePlacementData__Group__227856);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KPolylinePlacementData__Group__3();
 
             state._fsp--;
@@ -36997,8 +37571,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:13968:1: 'points'
             {
              before(grammarAccess.getKPolylinePlacementDataAccess().getPointsKeyword_2()); 
+<<<<<<< HEAD
             match(input,67,FollowSets001.FOLLOW_67_in_rule__KPolylinePlacementData__Group__2__Impl27883); 
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            match(input,67,FollowSets001.FOLLOW_67_in_rule__KPolylinePlacementData__Group__2__Impl27884); 
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
              after(grammarAccess.getKPolylinePlacementDataAccess().getPointsKeyword_2()); 
 
             }
@@ -37041,17 +37619,25 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:13985:1: ( rule__KPolylinePlacementData__Group__3__Impl rule__KPolylinePlacementData__Group__4 )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:13986:2: rule__KPolylinePlacementData__Group__3__Impl rule__KPolylinePlacementData__Group__4
             {
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KPolylinePlacementData__Group__3__Impl_in_rule__KPolylinePlacementData__Group__327914);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KPolylinePlacementData__Group__3__Impl_in_rule__KPolylinePlacementData__Group__327915);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KPolylinePlacementData__Group__3__Impl();
 
             state._fsp--;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KPolylinePlacementData__Group__4_in_rule__KPolylinePlacementData__Group__327289);
 =======
             pushFollow(FollowSets001.FOLLOW_rule__KPolylinePlacementData__Group__4_in_rule__KPolylinePlacementData__Group__327917);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KPolylinePlacementData__Group__4_in_rule__KPolylinePlacementData__Group__327918);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KPolylinePlacementData__Group__4();
 
             state._fsp--;
@@ -37102,8 +37688,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:13999:1: ':'
             {
              before(grammarAccess.getKPolylinePlacementDataAccess().getColonKeyword_3()); 
+<<<<<<< HEAD
             match(input,34,FollowSets001.FOLLOW_34_in_rule__KPolylinePlacementData__Group__3__Impl27945); 
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            match(input,34,FollowSets001.FOLLOW_34_in_rule__KPolylinePlacementData__Group__3__Impl27946); 
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
              after(grammarAccess.getKPolylinePlacementDataAccess().getColonKeyword_3()); 
 
             }
@@ -37146,17 +37736,25 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:14016:1: ( rule__KPolylinePlacementData__Group__4__Impl rule__KPolylinePlacementData__Group__5 )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:14017:2: rule__KPolylinePlacementData__Group__4__Impl rule__KPolylinePlacementData__Group__5
             {
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KPolylinePlacementData__Group__4__Impl_in_rule__KPolylinePlacementData__Group__427976);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KPolylinePlacementData__Group__4__Impl_in_rule__KPolylinePlacementData__Group__427977);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KPolylinePlacementData__Group__4__Impl();
 
             state._fsp--;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KPolylinePlacementData__Group__5_in_rule__KPolylinePlacementData__Group__427351);
 =======
             pushFollow(FollowSets001.FOLLOW_rule__KPolylinePlacementData__Group__5_in_rule__KPolylinePlacementData__Group__427979);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KPolylinePlacementData__Group__5_in_rule__KPolylinePlacementData__Group__427980);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KPolylinePlacementData__Group__5();
 
             state._fsp--;
@@ -37213,8 +37811,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:14031:1: ( rule__KPolylinePlacementData__PointsAssignment_4 )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:14031:2: rule__KPolylinePlacementData__PointsAssignment_4
             {
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KPolylinePlacementData__PointsAssignment_4_in_rule__KPolylinePlacementData__Group__4__Impl28006);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KPolylinePlacementData__PointsAssignment_4_in_rule__KPolylinePlacementData__Group__4__Impl28007);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KPolylinePlacementData__PointsAssignment_4();
 
             state._fsp--;
@@ -37264,17 +37866,25 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:14045:1: ( rule__KPolylinePlacementData__Group__5__Impl rule__KPolylinePlacementData__Group__6 )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:14046:2: rule__KPolylinePlacementData__Group__5__Impl rule__KPolylinePlacementData__Group__6
             {
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KPolylinePlacementData__Group__5__Impl_in_rule__KPolylinePlacementData__Group__528036);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KPolylinePlacementData__Group__5__Impl_in_rule__KPolylinePlacementData__Group__528037);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KPolylinePlacementData__Group__5__Impl();
 
             state._fsp--;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KPolylinePlacementData__Group__6_in_rule__KPolylinePlacementData__Group__527411);
 =======
             pushFollow(FollowSets001.FOLLOW_rule__KPolylinePlacementData__Group__6_in_rule__KPolylinePlacementData__Group__528039);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KPolylinePlacementData__Group__6_in_rule__KPolylinePlacementData__Group__528040);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KPolylinePlacementData__Group__6();
 
             state._fsp--;
@@ -37327,6 +37937,7 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             {
              before(grammarAccess.getKPolylinePlacementDataAccess().getGroup_5()); 
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:14060:1: ( rule__KPolylinePlacementData__Group_5__0 )*
+<<<<<<< HEAD
             loop102:
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
             do {
@@ -37339,6 +37950,19 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
 
 
                 switch (alt100) {
+=======
+            loop103:
+            do {
+                int alt103=2;
+                int LA103_0 = input.LA(1);
+
+                if ( (LA103_0==29) ) {
+                    alt103=1;
+                }
+
+
+                switch (alt103) {
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             	case 1 :
 <<<<<<< HEAD
             	    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:13763:2: rule__KPolylinePlacementData__Group_5__0
@@ -37347,8 +37971,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
 =======
             	    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:14060:2: rule__KPolylinePlacementData__Group_5__0
             	    {
+<<<<<<< HEAD
             	    pushFollow(FollowSets001.FOLLOW_rule__KPolylinePlacementData__Group_5__0_in_rule__KPolylinePlacementData__Group__5__Impl28066);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            	    pushFollow(FollowSets001.FOLLOW_rule__KPolylinePlacementData__Group_5__0_in_rule__KPolylinePlacementData__Group__5__Impl28067);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             	    rule__KPolylinePlacementData__Group_5__0();
 
             	    state._fsp--;
@@ -37358,7 +37986,11 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             	    break;
 
             	default :
+<<<<<<< HEAD
             	    break loop100;
+=======
+            	    break loop103;
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
                 }
             } while (true);
 
@@ -37404,17 +38036,25 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:14074:1: ( rule__KPolylinePlacementData__Group__6__Impl rule__KPolylinePlacementData__Group__7 )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:14075:2: rule__KPolylinePlacementData__Group__6__Impl rule__KPolylinePlacementData__Group__7
             {
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KPolylinePlacementData__Group__6__Impl_in_rule__KPolylinePlacementData__Group__628097);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KPolylinePlacementData__Group__6__Impl_in_rule__KPolylinePlacementData__Group__628098);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KPolylinePlacementData__Group__6__Impl();
 
             state._fsp--;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KPolylinePlacementData__Group__7_in_rule__KPolylinePlacementData__Group__627472);
 =======
             pushFollow(FollowSets001.FOLLOW_rule__KPolylinePlacementData__Group__7_in_rule__KPolylinePlacementData__Group__628100);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KPolylinePlacementData__Group__7_in_rule__KPolylinePlacementData__Group__628101);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KPolylinePlacementData__Group__7();
 
             state._fsp--;
@@ -37471,14 +38111,21 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             {
              before(grammarAccess.getKPolylinePlacementDataAccess().getGroup_6()); 
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:14089:1: ( rule__KPolylinePlacementData__Group_6__0 )?
-            int alt103=2;
-            int LA103_0 = input.LA(1);
+            int alt104=2;
+            int LA104_0 = input.LA(1);
 
+<<<<<<< HEAD
             if ( (LA103_0==68) ) {
                 alt103=1;
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
             }
             switch (alt101) {
+=======
+            if ( (LA104_0==68) ) {
+                alt104=1;
+            }
+            switch (alt104) {
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
                 case 1 :
 <<<<<<< HEAD
                     // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:13792:2: rule__KPolylinePlacementData__Group_6__0
@@ -37487,8 +38134,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
 =======
                     // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:14089:2: rule__KPolylinePlacementData__Group_6__0
                     {
+<<<<<<< HEAD
                     pushFollow(FollowSets001.FOLLOW_rule__KPolylinePlacementData__Group_6__0_in_rule__KPolylinePlacementData__Group__6__Impl28127);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+                    pushFollow(FollowSets001.FOLLOW_rule__KPolylinePlacementData__Group_6__0_in_rule__KPolylinePlacementData__Group__6__Impl28128);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
                     rule__KPolylinePlacementData__Group_6__0();
 
                     state._fsp--;
@@ -37541,8 +38192,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:14103:1: ( rule__KPolylinePlacementData__Group__7__Impl )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:14104:2: rule__KPolylinePlacementData__Group__7__Impl
             {
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KPolylinePlacementData__Group__7__Impl_in_rule__KPolylinePlacementData__Group__728158);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KPolylinePlacementData__Group__7__Impl_in_rule__KPolylinePlacementData__Group__728159);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KPolylinePlacementData__Group__7__Impl();
 
             state._fsp--;
@@ -37593,8 +38248,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:14116:1: '}'
             {
              before(grammarAccess.getKPolylinePlacementDataAccess().getRightCurlyBracketKeyword_7()); 
+<<<<<<< HEAD
             match(input,28,FollowSets001.FOLLOW_28_in_rule__KPolylinePlacementData__Group__7__Impl28186); 
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            match(input,28,FollowSets001.FOLLOW_28_in_rule__KPolylinePlacementData__Group__7__Impl28187); 
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
              after(grammarAccess.getKPolylinePlacementDataAccess().getRightCurlyBracketKeyword_7()); 
 
             }
@@ -37637,17 +38296,25 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:14149:1: ( rule__KPolylinePlacementData__Group_5__0__Impl rule__KPolylinePlacementData__Group_5__1 )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:14150:2: rule__KPolylinePlacementData__Group_5__0__Impl rule__KPolylinePlacementData__Group_5__1
             {
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KPolylinePlacementData__Group_5__0__Impl_in_rule__KPolylinePlacementData__Group_5__028233);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KPolylinePlacementData__Group_5__0__Impl_in_rule__KPolylinePlacementData__Group_5__028234);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KPolylinePlacementData__Group_5__0__Impl();
 
             state._fsp--;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KPolylinePlacementData__Group_5__1_in_rule__KPolylinePlacementData__Group_5__027608);
 =======
             pushFollow(FollowSets001.FOLLOW_rule__KPolylinePlacementData__Group_5__1_in_rule__KPolylinePlacementData__Group_5__028236);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KPolylinePlacementData__Group_5__1_in_rule__KPolylinePlacementData__Group_5__028237);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KPolylinePlacementData__Group_5__1();
 
             state._fsp--;
@@ -37698,8 +38365,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:14163:1: ','
             {
              before(grammarAccess.getKPolylinePlacementDataAccess().getCommaKeyword_5_0()); 
+<<<<<<< HEAD
             match(input,29,FollowSets001.FOLLOW_29_in_rule__KPolylinePlacementData__Group_5__0__Impl28264); 
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            match(input,29,FollowSets001.FOLLOW_29_in_rule__KPolylinePlacementData__Group_5__0__Impl28265); 
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
              after(grammarAccess.getKPolylinePlacementDataAccess().getCommaKeyword_5_0()); 
 
             }
@@ -37742,8 +38413,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:14180:1: ( rule__KPolylinePlacementData__Group_5__1__Impl )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:14181:2: rule__KPolylinePlacementData__Group_5__1__Impl
             {
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KPolylinePlacementData__Group_5__1__Impl_in_rule__KPolylinePlacementData__Group_5__128295);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KPolylinePlacementData__Group_5__1__Impl_in_rule__KPolylinePlacementData__Group_5__128296);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KPolylinePlacementData__Group_5__1__Impl();
 
             state._fsp--;
@@ -37800,8 +38475,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:14194:1: ( rule__KPolylinePlacementData__PointsAssignment_5_1 )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:14194:2: rule__KPolylinePlacementData__PointsAssignment_5_1
             {
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KPolylinePlacementData__PointsAssignment_5_1_in_rule__KPolylinePlacementData__Group_5__1__Impl28322);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KPolylinePlacementData__PointsAssignment_5_1_in_rule__KPolylinePlacementData__Group_5__1__Impl28323);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KPolylinePlacementData__PointsAssignment_5_1();
 
             state._fsp--;
@@ -37851,17 +38530,25 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:14212:1: ( rule__KPolylinePlacementData__Group_6__0__Impl rule__KPolylinePlacementData__Group_6__1 )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:14213:2: rule__KPolylinePlacementData__Group_6__0__Impl rule__KPolylinePlacementData__Group_6__1
             {
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KPolylinePlacementData__Group_6__0__Impl_in_rule__KPolylinePlacementData__Group_6__028356);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KPolylinePlacementData__Group_6__0__Impl_in_rule__KPolylinePlacementData__Group_6__028357);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KPolylinePlacementData__Group_6__0__Impl();
 
             state._fsp--;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KPolylinePlacementData__Group_6__1_in_rule__KPolylinePlacementData__Group_6__027731);
 =======
             pushFollow(FollowSets001.FOLLOW_rule__KPolylinePlacementData__Group_6__1_in_rule__KPolylinePlacementData__Group_6__028359);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KPolylinePlacementData__Group_6__1_in_rule__KPolylinePlacementData__Group_6__028360);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KPolylinePlacementData__Group_6__1();
 
             state._fsp--;
@@ -37912,8 +38599,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:14226:1: 'detailedPlacementData'
             {
              before(grammarAccess.getKPolylinePlacementDataAccess().getDetailedPlacementDataKeyword_6_0()); 
+<<<<<<< HEAD
             match(input,68,FollowSets001.FOLLOW_68_in_rule__KPolylinePlacementData__Group_6__0__Impl28387); 
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            match(input,68,FollowSets001.FOLLOW_68_in_rule__KPolylinePlacementData__Group_6__0__Impl28388); 
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
              after(grammarAccess.getKPolylinePlacementDataAccess().getDetailedPlacementDataKeyword_6_0()); 
 
             }
@@ -37956,8 +38647,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:14243:1: ( rule__KPolylinePlacementData__Group_6__1__Impl )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:14244:2: rule__KPolylinePlacementData__Group_6__1__Impl
             {
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KPolylinePlacementData__Group_6__1__Impl_in_rule__KPolylinePlacementData__Group_6__128418);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KPolylinePlacementData__Group_6__1__Impl_in_rule__KPolylinePlacementData__Group_6__128419);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KPolylinePlacementData__Group_6__1__Impl();
 
             state._fsp--;
@@ -38014,8 +38709,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:14257:1: ( rule__KPolylinePlacementData__DetailPlacementDataAssignment_6_1 )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:14257:2: rule__KPolylinePlacementData__DetailPlacementDataAssignment_6_1
             {
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KPolylinePlacementData__DetailPlacementDataAssignment_6_1_in_rule__KPolylinePlacementData__Group_6__1__Impl28445);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KPolylinePlacementData__DetailPlacementDataAssignment_6_1_in_rule__KPolylinePlacementData__Group_6__1__Impl28446);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KPolylinePlacementData__DetailPlacementDataAssignment_6_1();
 
             state._fsp--;
@@ -38065,17 +38764,25 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:14275:1: ( rule__KPosition__Group__0__Impl rule__KPosition__Group__1 )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:14276:2: rule__KPosition__Group__0__Impl rule__KPosition__Group__1
             {
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KPosition__Group__0__Impl_in_rule__KPosition__Group__028479);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KPosition__Group__0__Impl_in_rule__KPosition__Group__028480);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KPosition__Group__0__Impl();
 
             state._fsp--;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KPosition__Group__1_in_rule__KPosition__Group__027854);
 =======
             pushFollow(FollowSets001.FOLLOW_rule__KPosition__Group__1_in_rule__KPosition__Group__028482);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KPosition__Group__1_in_rule__KPosition__Group__028483);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KPosition__Group__1();
 
             state._fsp--;
@@ -38132,8 +38839,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:14290:1: ( rule__KPosition__XAssignment_0 )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:14290:2: rule__KPosition__XAssignment_0
             {
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KPosition__XAssignment_0_in_rule__KPosition__Group__0__Impl28509);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KPosition__XAssignment_0_in_rule__KPosition__Group__0__Impl28510);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KPosition__XAssignment_0();
 
             state._fsp--;
@@ -38183,17 +38894,25 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:14304:1: ( rule__KPosition__Group__1__Impl rule__KPosition__Group__2 )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:14305:2: rule__KPosition__Group__1__Impl rule__KPosition__Group__2
             {
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KPosition__Group__1__Impl_in_rule__KPosition__Group__128539);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KPosition__Group__1__Impl_in_rule__KPosition__Group__128540);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KPosition__Group__1__Impl();
 
             state._fsp--;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KPosition__Group__2_in_rule__KPosition__Group__127914);
 =======
             pushFollow(FollowSets001.FOLLOW_rule__KPosition__Group__2_in_rule__KPosition__Group__128542);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KPosition__Group__2_in_rule__KPosition__Group__128543);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KPosition__Group__2();
 
             state._fsp--;
@@ -38244,8 +38963,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:14318:1: '/'
             {
              before(grammarAccess.getKPositionAccess().getSolidusKeyword_1()); 
+<<<<<<< HEAD
             match(input,69,FollowSets001.FOLLOW_69_in_rule__KPosition__Group__1__Impl28570); 
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            match(input,69,FollowSets001.FOLLOW_69_in_rule__KPosition__Group__1__Impl28571); 
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
              after(grammarAccess.getKPositionAccess().getSolidusKeyword_1()); 
 
             }
@@ -38288,8 +39011,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:14335:1: ( rule__KPosition__Group__2__Impl )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:14336:2: rule__KPosition__Group__2__Impl
             {
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KPosition__Group__2__Impl_in_rule__KPosition__Group__228601);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KPosition__Group__2__Impl_in_rule__KPosition__Group__228602);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KPosition__Group__2__Impl();
 
             state._fsp--;
@@ -38346,8 +39073,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:14349:1: ( rule__KPosition__YAssignment_2 )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:14349:2: rule__KPosition__YAssignment_2
             {
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KPosition__YAssignment_2_in_rule__KPosition__Group__2__Impl28628);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KPosition__YAssignment_2_in_rule__KPosition__Group__2__Impl28629);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KPosition__YAssignment_2();
 
             state._fsp--;
@@ -38397,17 +39128,25 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:14369:1: ( rule__KLeftPosition__Group__0__Impl rule__KLeftPosition__Group__1 )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:14370:2: rule__KLeftPosition__Group__0__Impl rule__KLeftPosition__Group__1
             {
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KLeftPosition__Group__0__Impl_in_rule__KLeftPosition__Group__028664);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KLeftPosition__Group__0__Impl_in_rule__KLeftPosition__Group__028665);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KLeftPosition__Group__0__Impl();
 
             state._fsp--;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KLeftPosition__Group__1_in_rule__KLeftPosition__Group__028039);
 =======
             pushFollow(FollowSets001.FOLLOW_rule__KLeftPosition__Group__1_in_rule__KLeftPosition__Group__028667);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KLeftPosition__Group__1_in_rule__KLeftPosition__Group__028668);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KLeftPosition__Group__1();
 
             state._fsp--;
@@ -38503,17 +39242,25 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:14400:1: ( rule__KLeftPosition__Group__1__Impl rule__KLeftPosition__Group__2 )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:14401:2: rule__KLeftPosition__Group__1__Impl rule__KLeftPosition__Group__2
             {
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KLeftPosition__Group__1__Impl_in_rule__KLeftPosition__Group__128725);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KLeftPosition__Group__1__Impl_in_rule__KLeftPosition__Group__128726);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KLeftPosition__Group__1__Impl();
 
             state._fsp--;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KLeftPosition__Group__2_in_rule__KLeftPosition__Group__128100);
 =======
             pushFollow(FollowSets001.FOLLOW_rule__KLeftPosition__Group__2_in_rule__KLeftPosition__Group__128728);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KLeftPosition__Group__2_in_rule__KLeftPosition__Group__128729);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KLeftPosition__Group__2();
 
             state._fsp--;
@@ -38564,8 +39311,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:14414:1: 'left'
             {
              before(grammarAccess.getKLeftPositionAccess().getLeftKeyword_1()); 
+<<<<<<< HEAD
             match(input,70,FollowSets001.FOLLOW_70_in_rule__KLeftPosition__Group__1__Impl28756); 
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            match(input,70,FollowSets001.FOLLOW_70_in_rule__KLeftPosition__Group__1__Impl28757); 
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
              after(grammarAccess.getKLeftPositionAccess().getLeftKeyword_1()); 
 
             }
@@ -38608,17 +39359,25 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:14431:1: ( rule__KLeftPosition__Group__2__Impl rule__KLeftPosition__Group__3 )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:14432:2: rule__KLeftPosition__Group__2__Impl rule__KLeftPosition__Group__3
             {
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KLeftPosition__Group__2__Impl_in_rule__KLeftPosition__Group__228787);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KLeftPosition__Group__2__Impl_in_rule__KLeftPosition__Group__228788);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KLeftPosition__Group__2__Impl();
 
             state._fsp--;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KLeftPosition__Group__3_in_rule__KLeftPosition__Group__228162);
 =======
             pushFollow(FollowSets001.FOLLOW_rule__KLeftPosition__Group__3_in_rule__KLeftPosition__Group__228790);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KLeftPosition__Group__3_in_rule__KLeftPosition__Group__228791);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KLeftPosition__Group__3();
 
             state._fsp--;
@@ -38675,8 +39434,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:14446:1: ( rule__KLeftPosition__AbsoluteAssignment_2 )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:14446:2: rule__KLeftPosition__AbsoluteAssignment_2
             {
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KLeftPosition__AbsoluteAssignment_2_in_rule__KLeftPosition__Group__2__Impl28817);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KLeftPosition__AbsoluteAssignment_2_in_rule__KLeftPosition__Group__2__Impl28818);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KLeftPosition__AbsoluteAssignment_2();
 
             state._fsp--;
@@ -38726,8 +39489,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:14460:1: ( rule__KLeftPosition__Group__3__Impl )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:14461:2: rule__KLeftPosition__Group__3__Impl
             {
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KLeftPosition__Group__3__Impl_in_rule__KLeftPosition__Group__328847);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KLeftPosition__Group__3__Impl_in_rule__KLeftPosition__Group__328848);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KLeftPosition__Group__3__Impl();
 
             state._fsp--;
@@ -38820,7 +39587,7 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:14474:1: ( rule__KLeftPosition__RelativeAssignment_3 )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:14474:2: rule__KLeftPosition__RelativeAssignment_3
             {
-            pushFollow(FollowSets001.FOLLOW_rule__KLeftPosition__RelativeAssignment_3_in_rule__KLeftPosition__Group__3__Impl28874);
+            pushFollow(FollowSets001.FOLLOW_rule__KLeftPosition__RelativeAssignment_3_in_rule__KLeftPosition__Group__3__Impl28875);
             rule__KLeftPosition__RelativeAssignment_3();
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
 
@@ -38911,17 +39678,25 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:14496:1: ( rule__KRightPosition__Group__0__Impl rule__KRightPosition__Group__1 )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:14497:2: rule__KRightPosition__Group__0__Impl rule__KRightPosition__Group__1
             {
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KRightPosition__Group__0__Impl_in_rule__KRightPosition__Group__028912);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KRightPosition__Group__0__Impl_in_rule__KRightPosition__Group__028913);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KRightPosition__Group__0__Impl();
 
             state._fsp--;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KRightPosition__Group__1_in_rule__KRightPosition__Group__028351);
 =======
             pushFollow(FollowSets001.FOLLOW_rule__KRightPosition__Group__1_in_rule__KRightPosition__Group__028915);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KRightPosition__Group__1_in_rule__KRightPosition__Group__028916);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KRightPosition__Group__1();
 
             state._fsp--;
@@ -39017,17 +39792,25 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:14527:1: ( rule__KRightPosition__Group__1__Impl rule__KRightPosition__Group__2 )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:14528:2: rule__KRightPosition__Group__1__Impl rule__KRightPosition__Group__2
             {
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KRightPosition__Group__1__Impl_in_rule__KRightPosition__Group__128973);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KRightPosition__Group__1__Impl_in_rule__KRightPosition__Group__128974);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KRightPosition__Group__1__Impl();
 
             state._fsp--;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KRightPosition__Group__2_in_rule__KRightPosition__Group__128412);
 =======
             pushFollow(FollowSets001.FOLLOW_rule__KRightPosition__Group__2_in_rule__KRightPosition__Group__128976);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KRightPosition__Group__2_in_rule__KRightPosition__Group__128977);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KRightPosition__Group__2();
 
             state._fsp--;
@@ -39078,8 +39861,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:14541:1: 'right'
             {
              before(grammarAccess.getKRightPositionAccess().getRightKeyword_1()); 
+<<<<<<< HEAD
             match(input,71,FollowSets001.FOLLOW_71_in_rule__KRightPosition__Group__1__Impl29004); 
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            match(input,71,FollowSets001.FOLLOW_71_in_rule__KRightPosition__Group__1__Impl29005); 
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
              after(grammarAccess.getKRightPositionAccess().getRightKeyword_1()); 
 
             }
@@ -39122,17 +39909,25 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:14558:1: ( rule__KRightPosition__Group__2__Impl rule__KRightPosition__Group__3 )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:14559:2: rule__KRightPosition__Group__2__Impl rule__KRightPosition__Group__3
             {
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KRightPosition__Group__2__Impl_in_rule__KRightPosition__Group__229035);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KRightPosition__Group__2__Impl_in_rule__KRightPosition__Group__229036);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KRightPosition__Group__2__Impl();
 
             state._fsp--;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KRightPosition__Group__3_in_rule__KRightPosition__Group__228474);
 =======
             pushFollow(FollowSets001.FOLLOW_rule__KRightPosition__Group__3_in_rule__KRightPosition__Group__229038);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KRightPosition__Group__3_in_rule__KRightPosition__Group__229039);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KRightPosition__Group__3();
 
             state._fsp--;
@@ -39189,8 +39984,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:14573:1: ( rule__KRightPosition__AbsoluteAssignment_2 )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:14573:2: rule__KRightPosition__AbsoluteAssignment_2
             {
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KRightPosition__AbsoluteAssignment_2_in_rule__KRightPosition__Group__2__Impl29065);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KRightPosition__AbsoluteAssignment_2_in_rule__KRightPosition__Group__2__Impl29066);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KRightPosition__AbsoluteAssignment_2();
 
             state._fsp--;
@@ -39240,8 +40039,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:14587:1: ( rule__KRightPosition__Group__3__Impl )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:14588:2: rule__KRightPosition__Group__3__Impl
             {
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KRightPosition__Group__3__Impl_in_rule__KRightPosition__Group__329095);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KRightPosition__Group__3__Impl_in_rule__KRightPosition__Group__329096);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KRightPosition__Group__3__Impl();
 
             state._fsp--;
@@ -39301,7 +40104,7 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:14601:1: ( rule__KRightPosition__RelativeAssignment_3 )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:14601:2: rule__KRightPosition__RelativeAssignment_3
             {
-            pushFollow(FollowSets001.FOLLOW_rule__KRightPosition__RelativeAssignment_3_in_rule__KRightPosition__Group__3__Impl29122);
+            pushFollow(FollowSets001.FOLLOW_rule__KRightPosition__RelativeAssignment_3_in_rule__KRightPosition__Group__3__Impl29123);
             rule__KRightPosition__RelativeAssignment_3();
 
             state._fsp--;
@@ -39355,12 +40158,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:14623:1: ( rule__KTopPosition__Group__0__Impl rule__KTopPosition__Group__1 )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:14624:2: rule__KTopPosition__Group__0__Impl rule__KTopPosition__Group__1
             {
-            pushFollow(FollowSets001.FOLLOW_rule__KTopPosition__Group__0__Impl_in_rule__KTopPosition__Group__029160);
+            pushFollow(FollowSets001.FOLLOW_rule__KTopPosition__Group__0__Impl_in_rule__KTopPosition__Group__029161);
             rule__KTopPosition__Group__0__Impl();
 
             state._fsp--;
 
-            pushFollow(FollowSets001.FOLLOW_rule__KTopPosition__Group__1_in_rule__KTopPosition__Group__029163);
+            pushFollow(FollowSets001.FOLLOW_rule__KTopPosition__Group__1_in_rule__KTopPosition__Group__029164);
             rule__KTopPosition__Group__1();
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
 
@@ -39451,12 +40254,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:14654:1: ( rule__KTopPosition__Group__1__Impl rule__KTopPosition__Group__2 )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:14655:2: rule__KTopPosition__Group__1__Impl rule__KTopPosition__Group__2
             {
-            pushFollow(FollowSets001.FOLLOW_rule__KTopPosition__Group__1__Impl_in_rule__KTopPosition__Group__129221);
+            pushFollow(FollowSets001.FOLLOW_rule__KTopPosition__Group__1__Impl_in_rule__KTopPosition__Group__129222);
             rule__KTopPosition__Group__1__Impl();
 
             state._fsp--;
 
-            pushFollow(FollowSets001.FOLLOW_rule__KTopPosition__Group__2_in_rule__KTopPosition__Group__129224);
+            pushFollow(FollowSets001.FOLLOW_rule__KTopPosition__Group__2_in_rule__KTopPosition__Group__129225);
             rule__KTopPosition__Group__2();
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
 
@@ -39497,7 +40300,7 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:14668:1: 'top'
             {
              before(grammarAccess.getKTopPositionAccess().getTopKeyword_1()); 
-            match(input,72,FollowSets001.FOLLOW_72_in_rule__KTopPosition__Group__1__Impl29252); 
+            match(input,72,FollowSets001.FOLLOW_72_in_rule__KTopPosition__Group__1__Impl29253); 
              after(grammarAccess.getKTopPositionAccess().getTopKeyword_1()); 
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
 
@@ -39549,12 +40352,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:14685:1: ( rule__KTopPosition__Group__2__Impl rule__KTopPosition__Group__3 )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:14686:2: rule__KTopPosition__Group__2__Impl rule__KTopPosition__Group__3
             {
-            pushFollow(FollowSets001.FOLLOW_rule__KTopPosition__Group__2__Impl_in_rule__KTopPosition__Group__229283);
+            pushFollow(FollowSets001.FOLLOW_rule__KTopPosition__Group__2__Impl_in_rule__KTopPosition__Group__229284);
             rule__KTopPosition__Group__2__Impl();
 
             state._fsp--;
 
-            pushFollow(FollowSets001.FOLLOW_rule__KTopPosition__Group__3_in_rule__KTopPosition__Group__229286);
+            pushFollow(FollowSets001.FOLLOW_rule__KTopPosition__Group__3_in_rule__KTopPosition__Group__229287);
             rule__KTopPosition__Group__3();
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
 
@@ -39613,7 +40416,7 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:14700:1: ( rule__KTopPosition__AbsoluteAssignment_2 )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:14700:2: rule__KTopPosition__AbsoluteAssignment_2
             {
-            pushFollow(FollowSets001.FOLLOW_rule__KTopPosition__AbsoluteAssignment_2_in_rule__KTopPosition__Group__2__Impl29313);
+            pushFollow(FollowSets001.FOLLOW_rule__KTopPosition__AbsoluteAssignment_2_in_rule__KTopPosition__Group__2__Impl29314);
             rule__KTopPosition__AbsoluteAssignment_2();
 
             state._fsp--;
@@ -39668,7 +40471,7 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:14714:1: ( rule__KTopPosition__Group__3__Impl )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:14715:2: rule__KTopPosition__Group__3__Impl
             {
-            pushFollow(FollowSets001.FOLLOW_rule__KTopPosition__Group__3__Impl_in_rule__KTopPosition__Group__329343);
+            pushFollow(FollowSets001.FOLLOW_rule__KTopPosition__Group__3__Impl_in_rule__KTopPosition__Group__329344);
             rule__KTopPosition__Group__3__Impl();
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
 
@@ -39726,7 +40529,7 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:14728:1: ( rule__KTopPosition__RelativeAssignment_3 )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:14728:2: rule__KTopPosition__RelativeAssignment_3
             {
-            pushFollow(FollowSets001.FOLLOW_rule__KTopPosition__RelativeAssignment_3_in_rule__KTopPosition__Group__3__Impl29370);
+            pushFollow(FollowSets001.FOLLOW_rule__KTopPosition__RelativeAssignment_3_in_rule__KTopPosition__Group__3__Impl29371);
             rule__KTopPosition__RelativeAssignment_3();
 
             state._fsp--;
@@ -39785,12 +40588,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:14750:1: ( rule__KBottomPosition__Group__0__Impl rule__KBottomPosition__Group__1 )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:14751:2: rule__KBottomPosition__Group__0__Impl rule__KBottomPosition__Group__1
             {
-            pushFollow(FollowSets001.FOLLOW_rule__KBottomPosition__Group__0__Impl_in_rule__KBottomPosition__Group__029408);
+            pushFollow(FollowSets001.FOLLOW_rule__KBottomPosition__Group__0__Impl_in_rule__KBottomPosition__Group__029409);
             rule__KBottomPosition__Group__0__Impl();
 
             state._fsp--;
 
-            pushFollow(FollowSets001.FOLLOW_rule__KBottomPosition__Group__1_in_rule__KBottomPosition__Group__029411);
+            pushFollow(FollowSets001.FOLLOW_rule__KBottomPosition__Group__1_in_rule__KBottomPosition__Group__029412);
             rule__KBottomPosition__Group__1();
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
 
@@ -39881,12 +40684,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:14781:1: ( rule__KBottomPosition__Group__1__Impl rule__KBottomPosition__Group__2 )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:14782:2: rule__KBottomPosition__Group__1__Impl rule__KBottomPosition__Group__2
             {
-            pushFollow(FollowSets001.FOLLOW_rule__KBottomPosition__Group__1__Impl_in_rule__KBottomPosition__Group__129469);
+            pushFollow(FollowSets001.FOLLOW_rule__KBottomPosition__Group__1__Impl_in_rule__KBottomPosition__Group__129470);
             rule__KBottomPosition__Group__1__Impl();
 
             state._fsp--;
 
-            pushFollow(FollowSets001.FOLLOW_rule__KBottomPosition__Group__2_in_rule__KBottomPosition__Group__129472);
+            pushFollow(FollowSets001.FOLLOW_rule__KBottomPosition__Group__2_in_rule__KBottomPosition__Group__129473);
             rule__KBottomPosition__Group__2();
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
 
@@ -39927,7 +40730,7 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:14795:1: 'bottom'
             {
              before(grammarAccess.getKBottomPositionAccess().getBottomKeyword_1()); 
-            match(input,73,FollowSets001.FOLLOW_73_in_rule__KBottomPosition__Group__1__Impl29500); 
+            match(input,73,FollowSets001.FOLLOW_73_in_rule__KBottomPosition__Group__1__Impl29501); 
              after(grammarAccess.getKBottomPositionAccess().getBottomKeyword_1()); 
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
 
@@ -39979,12 +40782,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:14812:1: ( rule__KBottomPosition__Group__2__Impl rule__KBottomPosition__Group__3 )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:14813:2: rule__KBottomPosition__Group__2__Impl rule__KBottomPosition__Group__3
             {
-            pushFollow(FollowSets001.FOLLOW_rule__KBottomPosition__Group__2__Impl_in_rule__KBottomPosition__Group__229531);
+            pushFollow(FollowSets001.FOLLOW_rule__KBottomPosition__Group__2__Impl_in_rule__KBottomPosition__Group__229532);
             rule__KBottomPosition__Group__2__Impl();
 
             state._fsp--;
 
-            pushFollow(FollowSets001.FOLLOW_rule__KBottomPosition__Group__3_in_rule__KBottomPosition__Group__229534);
+            pushFollow(FollowSets001.FOLLOW_rule__KBottomPosition__Group__3_in_rule__KBottomPosition__Group__229535);
             rule__KBottomPosition__Group__3();
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
 
@@ -40042,7 +40845,7 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:14827:1: ( rule__KBottomPosition__AbsoluteAssignment_2 )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:14827:2: rule__KBottomPosition__AbsoluteAssignment_2
             {
-            pushFollow(FollowSets001.FOLLOW_rule__KBottomPosition__AbsoluteAssignment_2_in_rule__KBottomPosition__Group__2__Impl29561);
+            pushFollow(FollowSets001.FOLLOW_rule__KBottomPosition__AbsoluteAssignment_2_in_rule__KBottomPosition__Group__2__Impl29562);
             rule__KBottomPosition__AbsoluteAssignment_2();
 
             state._fsp--;
@@ -40096,7 +40899,7 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:14841:1: ( rule__KBottomPosition__Group__3__Impl )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:14842:2: rule__KBottomPosition__Group__3__Impl
             {
-            pushFollow(FollowSets001.FOLLOW_rule__KBottomPosition__Group__3__Impl_in_rule__KBottomPosition__Group__329591);
+            pushFollow(FollowSets001.FOLLOW_rule__KBottomPosition__Group__3__Impl_in_rule__KBottomPosition__Group__329592);
             rule__KBottomPosition__Group__3__Impl();
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
 
@@ -40157,7 +40960,7 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:14855:1: ( rule__KBottomPosition__RelativeAssignment_3 )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:14855:2: rule__KBottomPosition__RelativeAssignment_3
             {
-            pushFollow(FollowSets001.FOLLOW_rule__KBottomPosition__RelativeAssignment_3_in_rule__KBottomPosition__Group__3__Impl29618);
+            pushFollow(FollowSets001.FOLLOW_rule__KBottomPosition__RelativeAssignment_3_in_rule__KBottomPosition__Group__3__Impl29619);
             rule__KBottomPosition__RelativeAssignment_3();
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
 
@@ -40216,12 +41019,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:14877:1: ( rule__KForegroundColor__Group__0__Impl rule__KForegroundColor__Group__1 )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:14878:2: rule__KForegroundColor__Group__0__Impl rule__KForegroundColor__Group__1
             {
-            pushFollow(FollowSets001.FOLLOW_rule__KForegroundColor__Group__0__Impl_in_rule__KForegroundColor__Group__029656);
+            pushFollow(FollowSets001.FOLLOW_rule__KForegroundColor__Group__0__Impl_in_rule__KForegroundColor__Group__029657);
             rule__KForegroundColor__Group__0__Impl();
 
             state._fsp--;
 
-            pushFollow(FollowSets001.FOLLOW_rule__KForegroundColor__Group__1_in_rule__KForegroundColor__Group__029659);
+            pushFollow(FollowSets001.FOLLOW_rule__KForegroundColor__Group__1_in_rule__KForegroundColor__Group__029660);
             rule__KForegroundColor__Group__1();
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
 
@@ -40328,12 +41131,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:14908:1: ( rule__KForegroundColor__Group__1__Impl rule__KForegroundColor__Group__2 )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:14909:2: rule__KForegroundColor__Group__1__Impl rule__KForegroundColor__Group__2
             {
-            pushFollow(FollowSets001.FOLLOW_rule__KForegroundColor__Group__1__Impl_in_rule__KForegroundColor__Group__129717);
+            pushFollow(FollowSets001.FOLLOW_rule__KForegroundColor__Group__1__Impl_in_rule__KForegroundColor__Group__129718);
             rule__KForegroundColor__Group__1__Impl();
 
             state._fsp--;
 
-            pushFollow(FollowSets001.FOLLOW_rule__KForegroundColor__Group__2_in_rule__KForegroundColor__Group__129720);
+            pushFollow(FollowSets001.FOLLOW_rule__KForegroundColor__Group__2_in_rule__KForegroundColor__Group__129721);
             rule__KForegroundColor__Group__2();
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
 
@@ -40388,7 +41191,7 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:14922:1: 'ForegroundColor'
             {
              before(grammarAccess.getKForegroundColorAccess().getForegroundColorKeyword_1()); 
-            match(input,74,FollowSets001.FOLLOW_74_in_rule__KForegroundColor__Group__1__Impl29748); 
+            match(input,74,FollowSets001.FOLLOW_74_in_rule__KForegroundColor__Group__1__Impl29749); 
              after(grammarAccess.getKForegroundColorAccess().getForegroundColorKeyword_1()); 
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
 
@@ -40440,12 +41243,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:14939:1: ( rule__KForegroundColor__Group__2__Impl rule__KForegroundColor__Group__3 )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:14940:2: rule__KForegroundColor__Group__2__Impl rule__KForegroundColor__Group__3
             {
-            pushFollow(FollowSets001.FOLLOW_rule__KForegroundColor__Group__2__Impl_in_rule__KForegroundColor__Group__229779);
+            pushFollow(FollowSets001.FOLLOW_rule__KForegroundColor__Group__2__Impl_in_rule__KForegroundColor__Group__229780);
             rule__KForegroundColor__Group__2__Impl();
 
             state._fsp--;
 
-            pushFollow(FollowSets001.FOLLOW_rule__KForegroundColor__Group__3_in_rule__KForegroundColor__Group__229782);
+            pushFollow(FollowSets001.FOLLOW_rule__KForegroundColor__Group__3_in_rule__KForegroundColor__Group__229783);
             rule__KForegroundColor__Group__3();
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
 
@@ -40506,7 +41309,7 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:14954:1: ( rule__KForegroundColor__RedAssignment_2 )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:14954:2: rule__KForegroundColor__RedAssignment_2
             {
-            pushFollow(FollowSets001.FOLLOW_rule__KForegroundColor__RedAssignment_2_in_rule__KForegroundColor__Group__2__Impl29809);
+            pushFollow(FollowSets001.FOLLOW_rule__KForegroundColor__RedAssignment_2_in_rule__KForegroundColor__Group__2__Impl29810);
             rule__KForegroundColor__RedAssignment_2();
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
 
@@ -40565,12 +41368,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:14968:1: ( rule__KForegroundColor__Group__3__Impl rule__KForegroundColor__Group__4 )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:14969:2: rule__KForegroundColor__Group__3__Impl rule__KForegroundColor__Group__4
             {
-            pushFollow(FollowSets001.FOLLOW_rule__KForegroundColor__Group__3__Impl_in_rule__KForegroundColor__Group__329839);
+            pushFollow(FollowSets001.FOLLOW_rule__KForegroundColor__Group__3__Impl_in_rule__KForegroundColor__Group__329840);
             rule__KForegroundColor__Group__3__Impl();
 
             state._fsp--;
 
-            pushFollow(FollowSets001.FOLLOW_rule__KForegroundColor__Group__4_in_rule__KForegroundColor__Group__329842);
+            pushFollow(FollowSets001.FOLLOW_rule__KForegroundColor__Group__4_in_rule__KForegroundColor__Group__329843);
             rule__KForegroundColor__Group__4();
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
 
@@ -40628,7 +41431,7 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:14983:1: ( rule__KForegroundColor__GreenAssignment_3 )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:14983:2: rule__KForegroundColor__GreenAssignment_3
             {
-            pushFollow(FollowSets001.FOLLOW_rule__KForegroundColor__GreenAssignment_3_in_rule__KForegroundColor__Group__3__Impl29869);
+            pushFollow(FollowSets001.FOLLOW_rule__KForegroundColor__GreenAssignment_3_in_rule__KForegroundColor__Group__3__Impl29870);
             rule__KForegroundColor__GreenAssignment_3();
 
             state._fsp--;
@@ -40682,12 +41485,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:14997:1: ( rule__KForegroundColor__Group__4__Impl rule__KForegroundColor__Group__5 )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:14998:2: rule__KForegroundColor__Group__4__Impl rule__KForegroundColor__Group__5
             {
-            pushFollow(FollowSets001.FOLLOW_rule__KForegroundColor__Group__4__Impl_in_rule__KForegroundColor__Group__429899);
+            pushFollow(FollowSets001.FOLLOW_rule__KForegroundColor__Group__4__Impl_in_rule__KForegroundColor__Group__429900);
             rule__KForegroundColor__Group__4__Impl();
 
             state._fsp--;
 
-            pushFollow(FollowSets001.FOLLOW_rule__KForegroundColor__Group__5_in_rule__KForegroundColor__Group__429902);
+            pushFollow(FollowSets001.FOLLOW_rule__KForegroundColor__Group__5_in_rule__KForegroundColor__Group__429903);
             rule__KForegroundColor__Group__5();
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
 
@@ -40748,7 +41551,7 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:15012:1: ( rule__KForegroundColor__BlueAssignment_4 )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:15012:2: rule__KForegroundColor__BlueAssignment_4
             {
-            pushFollow(FollowSets001.FOLLOW_rule__KForegroundColor__BlueAssignment_4_in_rule__KForegroundColor__Group__4__Impl29929);
+            pushFollow(FollowSets001.FOLLOW_rule__KForegroundColor__BlueAssignment_4_in_rule__KForegroundColor__Group__4__Impl29930);
             rule__KForegroundColor__BlueAssignment_4();
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
 
@@ -40792,7 +41595,7 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:15026:1: ( rule__KForegroundColor__Group__5__Impl )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:15027:2: rule__KForegroundColor__Group__5__Impl
             {
-            pushFollow(FollowSets001.FOLLOW_rule__KForegroundColor__Group__5__Impl_in_rule__KForegroundColor__Group__529959);
+            pushFollow(FollowSets001.FOLLOW_rule__KForegroundColor__Group__5__Impl_in_rule__KForegroundColor__Group__529960);
             rule__KForegroundColor__Group__5__Impl();
 
             state._fsp--;
@@ -40830,17 +41633,17 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             {
              before(grammarAccess.getKForegroundColorAccess().getPropagateToChildrenAssignment_5()); 
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:15040:1: ( rule__KForegroundColor__PropagateToChildrenAssignment_5 )?
-            int alt104=2;
-            int LA104_0 = input.LA(1);
+            int alt105=2;
+            int LA105_0 = input.LA(1);
 
-            if ( (LA104_0==96) ) {
-                alt104=1;
+            if ( (LA105_0==96) ) {
+                alt105=1;
             }
-            switch (alt104) {
+            switch (alt105) {
                 case 1 :
                     // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:15040:2: rule__KForegroundColor__PropagateToChildrenAssignment_5
                     {
-                    pushFollow(FollowSets001.FOLLOW_rule__KForegroundColor__PropagateToChildrenAssignment_5_in_rule__KForegroundColor__Group__5__Impl29986);
+                    pushFollow(FollowSets001.FOLLOW_rule__KForegroundColor__PropagateToChildrenAssignment_5_in_rule__KForegroundColor__Group__5__Impl29987);
                     rule__KForegroundColor__PropagateToChildrenAssignment_5();
 
                     state._fsp--;
@@ -40902,12 +41705,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:15066:1: ( rule__KBackgroundColor__Group__0__Impl rule__KBackgroundColor__Group__1 )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:15067:2: rule__KBackgroundColor__Group__0__Impl rule__KBackgroundColor__Group__1
             {
-            pushFollow(FollowSets001.FOLLOW_rule__KBackgroundColor__Group__0__Impl_in_rule__KBackgroundColor__Group__030029);
+            pushFollow(FollowSets001.FOLLOW_rule__KBackgroundColor__Group__0__Impl_in_rule__KBackgroundColor__Group__030030);
             rule__KBackgroundColor__Group__0__Impl();
 
             state._fsp--;
 
-            pushFollow(FollowSets001.FOLLOW_rule__KBackgroundColor__Group__1_in_rule__KBackgroundColor__Group__030032);
+            pushFollow(FollowSets001.FOLLOW_rule__KBackgroundColor__Group__1_in_rule__KBackgroundColor__Group__030033);
             rule__KBackgroundColor__Group__1();
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
 
@@ -41014,12 +41817,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:15097:1: ( rule__KBackgroundColor__Group__1__Impl rule__KBackgroundColor__Group__2 )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:15098:2: rule__KBackgroundColor__Group__1__Impl rule__KBackgroundColor__Group__2
             {
-            pushFollow(FollowSets001.FOLLOW_rule__KBackgroundColor__Group__1__Impl_in_rule__KBackgroundColor__Group__130090);
+            pushFollow(FollowSets001.FOLLOW_rule__KBackgroundColor__Group__1__Impl_in_rule__KBackgroundColor__Group__130091);
             rule__KBackgroundColor__Group__1__Impl();
 
             state._fsp--;
 
-            pushFollow(FollowSets001.FOLLOW_rule__KBackgroundColor__Group__2_in_rule__KBackgroundColor__Group__130093);
+            pushFollow(FollowSets001.FOLLOW_rule__KBackgroundColor__Group__2_in_rule__KBackgroundColor__Group__130094);
             rule__KBackgroundColor__Group__2();
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
 
@@ -41074,7 +41877,7 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:15111:1: 'BackgroundColor'
             {
              before(grammarAccess.getKBackgroundColorAccess().getBackgroundColorKeyword_1()); 
-            match(input,75,FollowSets001.FOLLOW_75_in_rule__KBackgroundColor__Group__1__Impl30121); 
+            match(input,75,FollowSets001.FOLLOW_75_in_rule__KBackgroundColor__Group__1__Impl30122); 
              after(grammarAccess.getKBackgroundColorAccess().getBackgroundColorKeyword_1()); 
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
 
@@ -41126,12 +41929,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:15128:1: ( rule__KBackgroundColor__Group__2__Impl rule__KBackgroundColor__Group__3 )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:15129:2: rule__KBackgroundColor__Group__2__Impl rule__KBackgroundColor__Group__3
             {
-            pushFollow(FollowSets001.FOLLOW_rule__KBackgroundColor__Group__2__Impl_in_rule__KBackgroundColor__Group__230152);
+            pushFollow(FollowSets001.FOLLOW_rule__KBackgroundColor__Group__2__Impl_in_rule__KBackgroundColor__Group__230153);
             rule__KBackgroundColor__Group__2__Impl();
 
             state._fsp--;
 
-            pushFollow(FollowSets001.FOLLOW_rule__KBackgroundColor__Group__3_in_rule__KBackgroundColor__Group__230155);
+            pushFollow(FollowSets001.FOLLOW_rule__KBackgroundColor__Group__3_in_rule__KBackgroundColor__Group__230156);
             rule__KBackgroundColor__Group__3();
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
 
@@ -41192,7 +41995,7 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:15143:1: ( rule__KBackgroundColor__RedAssignment_2 )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:15143:2: rule__KBackgroundColor__RedAssignment_2
             {
-            pushFollow(FollowSets001.FOLLOW_rule__KBackgroundColor__RedAssignment_2_in_rule__KBackgroundColor__Group__2__Impl30182);
+            pushFollow(FollowSets001.FOLLOW_rule__KBackgroundColor__RedAssignment_2_in_rule__KBackgroundColor__Group__2__Impl30183);
             rule__KBackgroundColor__RedAssignment_2();
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
 
@@ -41251,12 +42054,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:15157:1: ( rule__KBackgroundColor__Group__3__Impl rule__KBackgroundColor__Group__4 )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:15158:2: rule__KBackgroundColor__Group__3__Impl rule__KBackgroundColor__Group__4
             {
-            pushFollow(FollowSets001.FOLLOW_rule__KBackgroundColor__Group__3__Impl_in_rule__KBackgroundColor__Group__330212);
+            pushFollow(FollowSets001.FOLLOW_rule__KBackgroundColor__Group__3__Impl_in_rule__KBackgroundColor__Group__330213);
             rule__KBackgroundColor__Group__3__Impl();
 
             state._fsp--;
 
-            pushFollow(FollowSets001.FOLLOW_rule__KBackgroundColor__Group__4_in_rule__KBackgroundColor__Group__330215);
+            pushFollow(FollowSets001.FOLLOW_rule__KBackgroundColor__Group__4_in_rule__KBackgroundColor__Group__330216);
             rule__KBackgroundColor__Group__4();
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
 
@@ -41314,7 +42117,7 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:15172:1: ( rule__KBackgroundColor__GreenAssignment_3 )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:15172:2: rule__KBackgroundColor__GreenAssignment_3
             {
-            pushFollow(FollowSets001.FOLLOW_rule__KBackgroundColor__GreenAssignment_3_in_rule__KBackgroundColor__Group__3__Impl30242);
+            pushFollow(FollowSets001.FOLLOW_rule__KBackgroundColor__GreenAssignment_3_in_rule__KBackgroundColor__Group__3__Impl30243);
             rule__KBackgroundColor__GreenAssignment_3();
 
             state._fsp--;
@@ -41373,12 +42176,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:15186:1: ( rule__KBackgroundColor__Group__4__Impl rule__KBackgroundColor__Group__5 )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:15187:2: rule__KBackgroundColor__Group__4__Impl rule__KBackgroundColor__Group__5
             {
-            pushFollow(FollowSets001.FOLLOW_rule__KBackgroundColor__Group__4__Impl_in_rule__KBackgroundColor__Group__430272);
+            pushFollow(FollowSets001.FOLLOW_rule__KBackgroundColor__Group__4__Impl_in_rule__KBackgroundColor__Group__430273);
             rule__KBackgroundColor__Group__4__Impl();
 
             state._fsp--;
 
-            pushFollow(FollowSets001.FOLLOW_rule__KBackgroundColor__Group__5_in_rule__KBackgroundColor__Group__430275);
+            pushFollow(FollowSets001.FOLLOW_rule__KBackgroundColor__Group__5_in_rule__KBackgroundColor__Group__430276);
             rule__KBackgroundColor__Group__5();
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
 
@@ -41439,7 +42242,7 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:15201:1: ( rule__KBackgroundColor__BlueAssignment_4 )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:15201:2: rule__KBackgroundColor__BlueAssignment_4
             {
-            pushFollow(FollowSets001.FOLLOW_rule__KBackgroundColor__BlueAssignment_4_in_rule__KBackgroundColor__Group__4__Impl30302);
+            pushFollow(FollowSets001.FOLLOW_rule__KBackgroundColor__BlueAssignment_4_in_rule__KBackgroundColor__Group__4__Impl30303);
             rule__KBackgroundColor__BlueAssignment_4();
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
 
@@ -41488,7 +42291,7 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:15215:1: ( rule__KBackgroundColor__Group__5__Impl )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:15216:2: rule__KBackgroundColor__Group__5__Impl
             {
-            pushFollow(FollowSets001.FOLLOW_rule__KBackgroundColor__Group__5__Impl_in_rule__KBackgroundColor__Group__530332);
+            pushFollow(FollowSets001.FOLLOW_rule__KBackgroundColor__Group__5__Impl_in_rule__KBackgroundColor__Group__530333);
             rule__KBackgroundColor__Group__5__Impl();
 
             state._fsp--;
@@ -41526,17 +42329,17 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             {
              before(grammarAccess.getKBackgroundColorAccess().getPropagateToChildrenAssignment_5()); 
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:15229:1: ( rule__KBackgroundColor__PropagateToChildrenAssignment_5 )?
-            int alt105=2;
-            int LA105_0 = input.LA(1);
+            int alt106=2;
+            int LA106_0 = input.LA(1);
 
-            if ( (LA105_0==96) ) {
-                alt105=1;
+            if ( (LA106_0==96) ) {
+                alt106=1;
             }
-            switch (alt105) {
+            switch (alt106) {
                 case 1 :
                     // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:15229:2: rule__KBackgroundColor__PropagateToChildrenAssignment_5
                     {
-                    pushFollow(FollowSets001.FOLLOW_rule__KBackgroundColor__PropagateToChildrenAssignment_5_in_rule__KBackgroundColor__Group__5__Impl30359);
+                    pushFollow(FollowSets001.FOLLOW_rule__KBackgroundColor__PropagateToChildrenAssignment_5_in_rule__KBackgroundColor__Group__5__Impl30360);
                     rule__KBackgroundColor__PropagateToChildrenAssignment_5();
 
                     state._fsp--;
@@ -41592,12 +42395,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:15255:1: ( rule__KLineWidth__Group__0__Impl rule__KLineWidth__Group__1 )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:15256:2: rule__KLineWidth__Group__0__Impl rule__KLineWidth__Group__1
             {
-            pushFollow(FollowSets001.FOLLOW_rule__KLineWidth__Group__0__Impl_in_rule__KLineWidth__Group__030402);
+            pushFollow(FollowSets001.FOLLOW_rule__KLineWidth__Group__0__Impl_in_rule__KLineWidth__Group__030403);
             rule__KLineWidth__Group__0__Impl();
 
             state._fsp--;
 
-            pushFollow(FollowSets001.FOLLOW_rule__KLineWidth__Group__1_in_rule__KLineWidth__Group__030405);
+            pushFollow(FollowSets001.FOLLOW_rule__KLineWidth__Group__1_in_rule__KLineWidth__Group__030406);
             rule__KLineWidth__Group__1();
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
 
@@ -41652,7 +42455,7 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:15269:1: 'LineWidth'
             {
              before(grammarAccess.getKLineWidthAccess().getLineWidthKeyword_0()); 
-            match(input,76,FollowSets001.FOLLOW_76_in_rule__KLineWidth__Group__0__Impl30433); 
+            match(input,76,FollowSets001.FOLLOW_76_in_rule__KLineWidth__Group__0__Impl30434); 
              after(grammarAccess.getKLineWidthAccess().getLineWidthKeyword_0()); 
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
 
@@ -41704,12 +42507,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:15286:1: ( rule__KLineWidth__Group__1__Impl rule__KLineWidth__Group__2 )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:15287:2: rule__KLineWidth__Group__1__Impl rule__KLineWidth__Group__2
             {
-            pushFollow(FollowSets001.FOLLOW_rule__KLineWidth__Group__1__Impl_in_rule__KLineWidth__Group__130464);
+            pushFollow(FollowSets001.FOLLOW_rule__KLineWidth__Group__1__Impl_in_rule__KLineWidth__Group__130465);
             rule__KLineWidth__Group__1__Impl();
 
             state._fsp--;
 
-            pushFollow(FollowSets001.FOLLOW_rule__KLineWidth__Group__2_in_rule__KLineWidth__Group__130467);
+            pushFollow(FollowSets001.FOLLOW_rule__KLineWidth__Group__2_in_rule__KLineWidth__Group__130468);
             rule__KLineWidth__Group__2();
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
 
@@ -41770,7 +42573,7 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:15301:1: ( rule__KLineWidth__LineWidthAssignment_1 )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:15301:2: rule__KLineWidth__LineWidthAssignment_1
             {
-            pushFollow(FollowSets001.FOLLOW_rule__KLineWidth__LineWidthAssignment_1_in_rule__KLineWidth__Group__1__Impl30494);
+            pushFollow(FollowSets001.FOLLOW_rule__KLineWidth__LineWidthAssignment_1_in_rule__KLineWidth__Group__1__Impl30495);
             rule__KLineWidth__LineWidthAssignment_1();
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
 
@@ -41824,7 +42627,7 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:15315:1: ( rule__KLineWidth__Group__2__Impl )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:15316:2: rule__KLineWidth__Group__2__Impl
             {
-            pushFollow(FollowSets001.FOLLOW_rule__KLineWidth__Group__2__Impl_in_rule__KLineWidth__Group__230524);
+            pushFollow(FollowSets001.FOLLOW_rule__KLineWidth__Group__2__Impl_in_rule__KLineWidth__Group__230525);
             rule__KLineWidth__Group__2__Impl();
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
 
@@ -41884,14 +42687,21 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             {
              before(grammarAccess.getKLineWidthAccess().getPropagateToChildrenAssignment_2()); 
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:15329:1: ( rule__KLineWidth__PropagateToChildrenAssignment_2 )?
-            int alt106=2;
-            int LA106_0 = input.LA(1);
+            int alt107=2;
+            int LA107_0 = input.LA(1);
 
+<<<<<<< HEAD
             if ( (LA106_0==96) ) {
                 alt106=1;
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
             }
             switch (alt102) {
+=======
+            if ( (LA107_0==96) ) {
+                alt107=1;
+            }
+            switch (alt107) {
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
                 case 1 :
 <<<<<<< HEAD
                     // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:14937:2: rule__KForegroundColor__PropagateToChildrenAssignment_7
@@ -41901,7 +42711,7 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
 =======
                     // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:15329:2: rule__KLineWidth__PropagateToChildrenAssignment_2
                     {
-                    pushFollow(FollowSets001.FOLLOW_rule__KLineWidth__PropagateToChildrenAssignment_2_in_rule__KLineWidth__Group__2__Impl30551);
+                    pushFollow(FollowSets001.FOLLOW_rule__KLineWidth__PropagateToChildrenAssignment_2_in_rule__KLineWidth__Group__2__Impl30552);
                     rule__KLineWidth__PropagateToChildrenAssignment_2();
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
 
@@ -41963,12 +42773,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:15349:1: ( rule__KForegroundVisibility__Group__0__Impl rule__KForegroundVisibility__Group__1 )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:15350:2: rule__KForegroundVisibility__Group__0__Impl rule__KForegroundVisibility__Group__1
             {
-            pushFollow(FollowSets001.FOLLOW_rule__KForegroundVisibility__Group__0__Impl_in_rule__KForegroundVisibility__Group__030588);
+            pushFollow(FollowSets001.FOLLOW_rule__KForegroundVisibility__Group__0__Impl_in_rule__KForegroundVisibility__Group__030589);
             rule__KForegroundVisibility__Group__0__Impl();
 
             state._fsp--;
 
-            pushFollow(FollowSets001.FOLLOW_rule__KForegroundVisibility__Group__1_in_rule__KForegroundVisibility__Group__030591);
+            pushFollow(FollowSets001.FOLLOW_rule__KForegroundVisibility__Group__1_in_rule__KForegroundVisibility__Group__030592);
             rule__KForegroundVisibility__Group__1();
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
 
@@ -42075,12 +42885,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:15380:1: ( rule__KForegroundVisibility__Group__1__Impl rule__KForegroundVisibility__Group__2 )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:15381:2: rule__KForegroundVisibility__Group__1__Impl rule__KForegroundVisibility__Group__2
             {
-            pushFollow(FollowSets001.FOLLOW_rule__KForegroundVisibility__Group__1__Impl_in_rule__KForegroundVisibility__Group__130649);
+            pushFollow(FollowSets001.FOLLOW_rule__KForegroundVisibility__Group__1__Impl_in_rule__KForegroundVisibility__Group__130650);
             rule__KForegroundVisibility__Group__1__Impl();
 
             state._fsp--;
 
-            pushFollow(FollowSets001.FOLLOW_rule__KForegroundVisibility__Group__2_in_rule__KForegroundVisibility__Group__130652);
+            pushFollow(FollowSets001.FOLLOW_rule__KForegroundVisibility__Group__2_in_rule__KForegroundVisibility__Group__130653);
             rule__KForegroundVisibility__Group__2();
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
 
@@ -42135,7 +42945,7 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:15394:1: 'ForegroundVisibility'
             {
              before(grammarAccess.getKForegroundVisibilityAccess().getForegroundVisibilityKeyword_1()); 
-            match(input,77,FollowSets001.FOLLOW_77_in_rule__KForegroundVisibility__Group__1__Impl30680); 
+            match(input,77,FollowSets001.FOLLOW_77_in_rule__KForegroundVisibility__Group__1__Impl30681); 
              after(grammarAccess.getKForegroundVisibilityAccess().getForegroundVisibilityKeyword_1()); 
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
 
@@ -42187,12 +42997,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:15411:1: ( rule__KForegroundVisibility__Group__2__Impl rule__KForegroundVisibility__Group__3 )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:15412:2: rule__KForegroundVisibility__Group__2__Impl rule__KForegroundVisibility__Group__3
             {
-            pushFollow(FollowSets001.FOLLOW_rule__KForegroundVisibility__Group__2__Impl_in_rule__KForegroundVisibility__Group__230711);
+            pushFollow(FollowSets001.FOLLOW_rule__KForegroundVisibility__Group__2__Impl_in_rule__KForegroundVisibility__Group__230712);
             rule__KForegroundVisibility__Group__2__Impl();
 
             state._fsp--;
 
-            pushFollow(FollowSets001.FOLLOW_rule__KForegroundVisibility__Group__3_in_rule__KForegroundVisibility__Group__230714);
+            pushFollow(FollowSets001.FOLLOW_rule__KForegroundVisibility__Group__3_in_rule__KForegroundVisibility__Group__230715);
             rule__KForegroundVisibility__Group__3();
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
 
@@ -42253,7 +43063,7 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:15426:1: ( rule__KForegroundVisibility__VisibleAssignment_2 )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:15426:2: rule__KForegroundVisibility__VisibleAssignment_2
             {
-            pushFollow(FollowSets001.FOLLOW_rule__KForegroundVisibility__VisibleAssignment_2_in_rule__KForegroundVisibility__Group__2__Impl30741);
+            pushFollow(FollowSets001.FOLLOW_rule__KForegroundVisibility__VisibleAssignment_2_in_rule__KForegroundVisibility__Group__2__Impl30742);
             rule__KForegroundVisibility__VisibleAssignment_2();
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
 
@@ -42312,7 +43122,7 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:15440:1: ( rule__KForegroundVisibility__Group__3__Impl )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:15441:2: rule__KForegroundVisibility__Group__3__Impl
             {
-            pushFollow(FollowSets001.FOLLOW_rule__KForegroundVisibility__Group__3__Impl_in_rule__KForegroundVisibility__Group__330771);
+            pushFollow(FollowSets001.FOLLOW_rule__KForegroundVisibility__Group__3__Impl_in_rule__KForegroundVisibility__Group__330772);
             rule__KForegroundVisibility__Group__3__Impl();
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
 
@@ -42368,17 +43178,17 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             {
              before(grammarAccess.getKForegroundVisibilityAccess().getPropagateToChildrenAssignment_3()); 
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:15454:1: ( rule__KForegroundVisibility__PropagateToChildrenAssignment_3 )?
-            int alt107=2;
-            int LA107_0 = input.LA(1);
+            int alt108=2;
+            int LA108_0 = input.LA(1);
 
-            if ( (LA107_0==96) ) {
-                alt107=1;
+            if ( (LA108_0==96) ) {
+                alt108=1;
             }
-            switch (alt107) {
+            switch (alt108) {
                 case 1 :
                     // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:15454:2: rule__KForegroundVisibility__PropagateToChildrenAssignment_3
                     {
-                    pushFollow(FollowSets001.FOLLOW_rule__KForegroundVisibility__PropagateToChildrenAssignment_3_in_rule__KForegroundVisibility__Group__3__Impl30798);
+                    pushFollow(FollowSets001.FOLLOW_rule__KForegroundVisibility__PropagateToChildrenAssignment_3_in_rule__KForegroundVisibility__Group__3__Impl30799);
                     rule__KForegroundVisibility__PropagateToChildrenAssignment_3();
 
                     state._fsp--;
@@ -42440,12 +43250,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:15476:1: ( rule__KBackgroundVisibility__Group__0__Impl rule__KBackgroundVisibility__Group__1 )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:15477:2: rule__KBackgroundVisibility__Group__0__Impl rule__KBackgroundVisibility__Group__1
             {
-            pushFollow(FollowSets001.FOLLOW_rule__KBackgroundVisibility__Group__0__Impl_in_rule__KBackgroundVisibility__Group__030837);
+            pushFollow(FollowSets001.FOLLOW_rule__KBackgroundVisibility__Group__0__Impl_in_rule__KBackgroundVisibility__Group__030838);
             rule__KBackgroundVisibility__Group__0__Impl();
 
             state._fsp--;
 
-            pushFollow(FollowSets001.FOLLOW_rule__KBackgroundVisibility__Group__1_in_rule__KBackgroundVisibility__Group__030840);
+            pushFollow(FollowSets001.FOLLOW_rule__KBackgroundVisibility__Group__1_in_rule__KBackgroundVisibility__Group__030841);
             rule__KBackgroundVisibility__Group__1();
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
 
@@ -42562,12 +43372,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:15507:1: ( rule__KBackgroundVisibility__Group__1__Impl rule__KBackgroundVisibility__Group__2 )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:15508:2: rule__KBackgroundVisibility__Group__1__Impl rule__KBackgroundVisibility__Group__2
             {
-            pushFollow(FollowSets001.FOLLOW_rule__KBackgroundVisibility__Group__1__Impl_in_rule__KBackgroundVisibility__Group__130898);
+            pushFollow(FollowSets001.FOLLOW_rule__KBackgroundVisibility__Group__1__Impl_in_rule__KBackgroundVisibility__Group__130899);
             rule__KBackgroundVisibility__Group__1__Impl();
 
             state._fsp--;
 
-            pushFollow(FollowSets001.FOLLOW_rule__KBackgroundVisibility__Group__2_in_rule__KBackgroundVisibility__Group__130901);
+            pushFollow(FollowSets001.FOLLOW_rule__KBackgroundVisibility__Group__2_in_rule__KBackgroundVisibility__Group__130902);
             rule__KBackgroundVisibility__Group__2();
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
 
@@ -42622,7 +43432,7 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:15521:1: 'BackgroundVisibility'
             {
              before(grammarAccess.getKBackgroundVisibilityAccess().getBackgroundVisibilityKeyword_1()); 
-            match(input,78,FollowSets001.FOLLOW_78_in_rule__KBackgroundVisibility__Group__1__Impl30929); 
+            match(input,78,FollowSets001.FOLLOW_78_in_rule__KBackgroundVisibility__Group__1__Impl30930); 
              after(grammarAccess.getKBackgroundVisibilityAccess().getBackgroundVisibilityKeyword_1()); 
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
 
@@ -42674,12 +43484,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:15538:1: ( rule__KBackgroundVisibility__Group__2__Impl rule__KBackgroundVisibility__Group__3 )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:15539:2: rule__KBackgroundVisibility__Group__2__Impl rule__KBackgroundVisibility__Group__3
             {
-            pushFollow(FollowSets001.FOLLOW_rule__KBackgroundVisibility__Group__2__Impl_in_rule__KBackgroundVisibility__Group__230960);
+            pushFollow(FollowSets001.FOLLOW_rule__KBackgroundVisibility__Group__2__Impl_in_rule__KBackgroundVisibility__Group__230961);
             rule__KBackgroundVisibility__Group__2__Impl();
 
             state._fsp--;
 
-            pushFollow(FollowSets001.FOLLOW_rule__KBackgroundVisibility__Group__3_in_rule__KBackgroundVisibility__Group__230963);
+            pushFollow(FollowSets001.FOLLOW_rule__KBackgroundVisibility__Group__3_in_rule__KBackgroundVisibility__Group__230964);
             rule__KBackgroundVisibility__Group__3();
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
 
@@ -42740,7 +43550,7 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:15553:1: ( rule__KBackgroundVisibility__VisibleAssignment_2 )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:15553:2: rule__KBackgroundVisibility__VisibleAssignment_2
             {
-            pushFollow(FollowSets001.FOLLOW_rule__KBackgroundVisibility__VisibleAssignment_2_in_rule__KBackgroundVisibility__Group__2__Impl30990);
+            pushFollow(FollowSets001.FOLLOW_rule__KBackgroundVisibility__VisibleAssignment_2_in_rule__KBackgroundVisibility__Group__2__Impl30991);
             rule__KBackgroundVisibility__VisibleAssignment_2();
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
 
@@ -42794,7 +43604,7 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:15567:1: ( rule__KBackgroundVisibility__Group__3__Impl )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:15568:2: rule__KBackgroundVisibility__Group__3__Impl
             {
-            pushFollow(FollowSets001.FOLLOW_rule__KBackgroundVisibility__Group__3__Impl_in_rule__KBackgroundVisibility__Group__331020);
+            pushFollow(FollowSets001.FOLLOW_rule__KBackgroundVisibility__Group__3__Impl_in_rule__KBackgroundVisibility__Group__331021);
             rule__KBackgroundVisibility__Group__3__Impl();
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
 
@@ -42854,14 +43664,21 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             {
              before(grammarAccess.getKBackgroundVisibilityAccess().getPropagateToChildrenAssignment_3()); 
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:15581:1: ( rule__KBackgroundVisibility__PropagateToChildrenAssignment_3 )?
-            int alt108=2;
-            int LA108_0 = input.LA(1);
+            int alt109=2;
+            int LA109_0 = input.LA(1);
 
+<<<<<<< HEAD
             if ( (LA108_0==96) ) {
                 alt108=1;
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
             }
             switch (alt103) {
+=======
+            if ( (LA109_0==96) ) {
+                alt109=1;
+            }
+            switch (alt109) {
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
                 case 1 :
 <<<<<<< HEAD
                     // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:15192:2: rule__KBackgroundColor__PropagateToChildrenAssignment_7
@@ -42871,7 +43688,7 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
 =======
                     // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:15581:2: rule__KBackgroundVisibility__PropagateToChildrenAssignment_3
                     {
-                    pushFollow(FollowSets001.FOLLOW_rule__KBackgroundVisibility__PropagateToChildrenAssignment_3_in_rule__KBackgroundVisibility__Group__3__Impl31047);
+                    pushFollow(FollowSets001.FOLLOW_rule__KBackgroundVisibility__PropagateToChildrenAssignment_3_in_rule__KBackgroundVisibility__Group__3__Impl31048);
                     rule__KBackgroundVisibility__PropagateToChildrenAssignment_3();
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
 
@@ -42914,12 +43731,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:15603:1: ( rule__KLineStyle__Group__0__Impl rule__KLineStyle__Group__1 )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:15604:2: rule__KLineStyle__Group__0__Impl rule__KLineStyle__Group__1
             {
-            pushFollow(FollowSets001.FOLLOW_rule__KLineStyle__Group__0__Impl_in_rule__KLineStyle__Group__031086);
+            pushFollow(FollowSets001.FOLLOW_rule__KLineStyle__Group__0__Impl_in_rule__KLineStyle__Group__031087);
             rule__KLineStyle__Group__0__Impl();
 
             state._fsp--;
 
-            pushFollow(FollowSets001.FOLLOW_rule__KLineStyle__Group__1_in_rule__KLineStyle__Group__031089);
+            pushFollow(FollowSets001.FOLLOW_rule__KLineStyle__Group__1_in_rule__KLineStyle__Group__031090);
             rule__KLineStyle__Group__1();
 
             state._fsp--;
@@ -43008,12 +43825,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:15634:1: ( rule__KLineStyle__Group__1__Impl rule__KLineStyle__Group__2 )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:15635:2: rule__KLineStyle__Group__1__Impl rule__KLineStyle__Group__2
             {
-            pushFollow(FollowSets001.FOLLOW_rule__KLineStyle__Group__1__Impl_in_rule__KLineStyle__Group__131147);
+            pushFollow(FollowSets001.FOLLOW_rule__KLineStyle__Group__1__Impl_in_rule__KLineStyle__Group__131148);
             rule__KLineStyle__Group__1__Impl();
 
             state._fsp--;
 
-            pushFollow(FollowSets001.FOLLOW_rule__KLineStyle__Group__2_in_rule__KLineStyle__Group__131150);
+            pushFollow(FollowSets001.FOLLOW_rule__KLineStyle__Group__2_in_rule__KLineStyle__Group__131151);
             rule__KLineStyle__Group__2();
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
 
@@ -43068,7 +43885,7 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:15648:1: 'LineStyle'
             {
              before(grammarAccess.getKLineStyleAccess().getLineStyleKeyword_1()); 
-            match(input,79,FollowSets001.FOLLOW_79_in_rule__KLineStyle__Group__1__Impl31178); 
+            match(input,79,FollowSets001.FOLLOW_79_in_rule__KLineStyle__Group__1__Impl31179); 
              after(grammarAccess.getKLineStyleAccess().getLineStyleKeyword_1()); 
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
 
@@ -43120,12 +43937,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:15665:1: ( rule__KLineStyle__Group__2__Impl rule__KLineStyle__Group__3 )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:15666:2: rule__KLineStyle__Group__2__Impl rule__KLineStyle__Group__3
             {
-            pushFollow(FollowSets001.FOLLOW_rule__KLineStyle__Group__2__Impl_in_rule__KLineStyle__Group__231209);
+            pushFollow(FollowSets001.FOLLOW_rule__KLineStyle__Group__2__Impl_in_rule__KLineStyle__Group__231210);
             rule__KLineStyle__Group__2__Impl();
 
             state._fsp--;
 
-            pushFollow(FollowSets001.FOLLOW_rule__KLineStyle__Group__3_in_rule__KLineStyle__Group__231212);
+            pushFollow(FollowSets001.FOLLOW_rule__KLineStyle__Group__3_in_rule__KLineStyle__Group__231213);
             rule__KLineStyle__Group__3();
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
 
@@ -43186,7 +44003,7 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:15680:1: ( rule__KLineStyle__LineStyleAssignment_2 )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:15680:2: rule__KLineStyle__LineStyleAssignment_2
             {
-            pushFollow(FollowSets001.FOLLOW_rule__KLineStyle__LineStyleAssignment_2_in_rule__KLineStyle__Group__2__Impl31239);
+            pushFollow(FollowSets001.FOLLOW_rule__KLineStyle__LineStyleAssignment_2_in_rule__KLineStyle__Group__2__Impl31240);
             rule__KLineStyle__LineStyleAssignment_2();
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
 
@@ -43240,7 +44057,7 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:15694:1: ( rule__KLineStyle__Group__3__Impl )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:15695:2: rule__KLineStyle__Group__3__Impl
             {
-            pushFollow(FollowSets001.FOLLOW_rule__KLineStyle__Group__3__Impl_in_rule__KLineStyle__Group__331269);
+            pushFollow(FollowSets001.FOLLOW_rule__KLineStyle__Group__3__Impl_in_rule__KLineStyle__Group__331270);
             rule__KLineStyle__Group__3__Impl();
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
 
@@ -43300,14 +44117,21 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             {
              before(grammarAccess.getKLineStyleAccess().getPropagateToChildrenAssignment_3()); 
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:15708:1: ( rule__KLineStyle__PropagateToChildrenAssignment_3 )?
-            int alt109=2;
-            int LA109_0 = input.LA(1);
+            int alt110=2;
+            int LA110_0 = input.LA(1);
 
+<<<<<<< HEAD
             if ( (LA109_0==96) ) {
                 alt109=1;
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
             }
             switch (alt104) {
+=======
+            if ( (LA110_0==96) ) {
+                alt110=1;
+            }
+            switch (alt110) {
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
                 case 1 :
 <<<<<<< HEAD
                     // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:15296:2: rule__KLineWidth__PropagateToChildrenAssignment_2
@@ -43317,7 +44141,7 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
 =======
                     // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:15708:2: rule__KLineStyle__PropagateToChildrenAssignment_3
                     {
-                    pushFollow(FollowSets001.FOLLOW_rule__KLineStyle__PropagateToChildrenAssignment_3_in_rule__KLineStyle__Group__3__Impl31296);
+                    pushFollow(FollowSets001.FOLLOW_rule__KLineStyle__PropagateToChildrenAssignment_3_in_rule__KLineStyle__Group__3__Impl31297);
                     rule__KLineStyle__PropagateToChildrenAssignment_3();
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
 
@@ -43379,12 +44203,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:15730:1: ( rule__KFontBold__Group__0__Impl rule__KFontBold__Group__1 )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:15731:2: rule__KFontBold__Group__0__Impl rule__KFontBold__Group__1
             {
-            pushFollow(FollowSets001.FOLLOW_rule__KFontBold__Group__0__Impl_in_rule__KFontBold__Group__031335);
+            pushFollow(FollowSets001.FOLLOW_rule__KFontBold__Group__0__Impl_in_rule__KFontBold__Group__031336);
             rule__KFontBold__Group__0__Impl();
 
             state._fsp--;
 
-            pushFollow(FollowSets001.FOLLOW_rule__KFontBold__Group__1_in_rule__KFontBold__Group__031338);
+            pushFollow(FollowSets001.FOLLOW_rule__KFontBold__Group__1_in_rule__KFontBold__Group__031339);
             rule__KFontBold__Group__1();
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
 
@@ -43491,12 +44315,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:15761:1: ( rule__KFontBold__Group__1__Impl rule__KFontBold__Group__2 )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:15762:2: rule__KFontBold__Group__1__Impl rule__KFontBold__Group__2
             {
-            pushFollow(FollowSets001.FOLLOW_rule__KFontBold__Group__1__Impl_in_rule__KFontBold__Group__131396);
+            pushFollow(FollowSets001.FOLLOW_rule__KFontBold__Group__1__Impl_in_rule__KFontBold__Group__131397);
             rule__KFontBold__Group__1__Impl();
 
             state._fsp--;
 
-            pushFollow(FollowSets001.FOLLOW_rule__KFontBold__Group__2_in_rule__KFontBold__Group__131399);
+            pushFollow(FollowSets001.FOLLOW_rule__KFontBold__Group__2_in_rule__KFontBold__Group__131400);
             rule__KFontBold__Group__2();
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
 
@@ -43551,7 +44375,7 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:15775:1: 'bold'
             {
              before(grammarAccess.getKFontBoldAccess().getBoldKeyword_1()); 
-            match(input,80,FollowSets001.FOLLOW_80_in_rule__KFontBold__Group__1__Impl31427); 
+            match(input,80,FollowSets001.FOLLOW_80_in_rule__KFontBold__Group__1__Impl31428); 
              after(grammarAccess.getKFontBoldAccess().getBoldKeyword_1()); 
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
 
@@ -43603,7 +44427,7 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:15792:1: ( rule__KFontBold__Group__2__Impl )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:15793:2: rule__KFontBold__Group__2__Impl
             {
-            pushFollow(FollowSets001.FOLLOW_rule__KFontBold__Group__2__Impl_in_rule__KFontBold__Group__231458);
+            pushFollow(FollowSets001.FOLLOW_rule__KFontBold__Group__2__Impl_in_rule__KFontBold__Group__231459);
             rule__KFontBold__Group__2__Impl();
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
 
@@ -43662,17 +44486,17 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             {
              before(grammarAccess.getKFontBoldAccess().getPropagateToChildrenAssignment_2()); 
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:15806:1: ( rule__KFontBold__PropagateToChildrenAssignment_2 )?
-            int alt110=2;
-            int LA110_0 = input.LA(1);
+            int alt111=2;
+            int LA111_0 = input.LA(1);
 
-            if ( (LA110_0==96) ) {
-                alt110=1;
+            if ( (LA111_0==96) ) {
+                alt111=1;
             }
-            switch (alt110) {
+            switch (alt111) {
                 case 1 :
                     // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:15806:2: rule__KFontBold__PropagateToChildrenAssignment_2
                     {
-                    pushFollow(FollowSets001.FOLLOW_rule__KFontBold__PropagateToChildrenAssignment_2_in_rule__KFontBold__Group__2__Impl31485);
+                    pushFollow(FollowSets001.FOLLOW_rule__KFontBold__PropagateToChildrenAssignment_2_in_rule__KFontBold__Group__2__Impl31486);
                     rule__KFontBold__PropagateToChildrenAssignment_2();
 
                     state._fsp--;
@@ -43728,12 +44552,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:15826:1: ( rule__KFontItalic__Group__0__Impl rule__KFontItalic__Group__1 )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:15827:2: rule__KFontItalic__Group__0__Impl rule__KFontItalic__Group__1
             {
-            pushFollow(FollowSets001.FOLLOW_rule__KFontItalic__Group__0__Impl_in_rule__KFontItalic__Group__031522);
+            pushFollow(FollowSets001.FOLLOW_rule__KFontItalic__Group__0__Impl_in_rule__KFontItalic__Group__031523);
             rule__KFontItalic__Group__0__Impl();
 
             state._fsp--;
 
-            pushFollow(FollowSets001.FOLLOW_rule__KFontItalic__Group__1_in_rule__KFontItalic__Group__031525);
+            pushFollow(FollowSets001.FOLLOW_rule__KFontItalic__Group__1_in_rule__KFontItalic__Group__031526);
             rule__KFontItalic__Group__1();
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
 
@@ -43861,12 +44685,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:15857:1: ( rule__KFontItalic__Group__1__Impl rule__KFontItalic__Group__2 )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:15858:2: rule__KFontItalic__Group__1__Impl rule__KFontItalic__Group__2
             {
-            pushFollow(FollowSets001.FOLLOW_rule__KFontItalic__Group__1__Impl_in_rule__KFontItalic__Group__131583);
+            pushFollow(FollowSets001.FOLLOW_rule__KFontItalic__Group__1__Impl_in_rule__KFontItalic__Group__131584);
             rule__KFontItalic__Group__1__Impl();
 
             state._fsp--;
 
-            pushFollow(FollowSets001.FOLLOW_rule__KFontItalic__Group__2_in_rule__KFontItalic__Group__131586);
+            pushFollow(FollowSets001.FOLLOW_rule__KFontItalic__Group__2_in_rule__KFontItalic__Group__131587);
             rule__KFontItalic__Group__2();
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
 
@@ -43925,7 +44749,7 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:15871:1: 'italic'
             {
              before(grammarAccess.getKFontItalicAccess().getItalicKeyword_1()); 
-            match(input,81,FollowSets001.FOLLOW_81_in_rule__KFontItalic__Group__1__Impl31614); 
+            match(input,81,FollowSets001.FOLLOW_81_in_rule__KFontItalic__Group__1__Impl31615); 
              after(grammarAccess.getKFontItalicAccess().getItalicKeyword_1()); 
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
 
@@ -43973,7 +44797,7 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:15888:1: ( rule__KFontItalic__Group__2__Impl )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:15889:2: rule__KFontItalic__Group__2__Impl
             {
-            pushFollow(FollowSets001.FOLLOW_rule__KFontItalic__Group__2__Impl_in_rule__KFontItalic__Group__231645);
+            pushFollow(FollowSets001.FOLLOW_rule__KFontItalic__Group__2__Impl_in_rule__KFontItalic__Group__231646);
             rule__KFontItalic__Group__2__Impl();
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
 
@@ -44029,17 +44853,17 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             {
              before(grammarAccess.getKFontItalicAccess().getPropagateToChildrenAssignment_2()); 
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:15902:1: ( rule__KFontItalic__PropagateToChildrenAssignment_2 )?
-            int alt111=2;
-            int LA111_0 = input.LA(1);
+            int alt112=2;
+            int LA112_0 = input.LA(1);
 
-            if ( (LA111_0==96) ) {
-                alt111=1;
+            if ( (LA112_0==96) ) {
+                alt112=1;
             }
-            switch (alt111) {
+            switch (alt112) {
                 case 1 :
                     // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:15902:2: rule__KFontItalic__PropagateToChildrenAssignment_2
                     {
-                    pushFollow(FollowSets001.FOLLOW_rule__KFontItalic__PropagateToChildrenAssignment_2_in_rule__KFontItalic__Group__2__Impl31672);
+                    pushFollow(FollowSets001.FOLLOW_rule__KFontItalic__PropagateToChildrenAssignment_2_in_rule__KFontItalic__Group__2__Impl31673);
                     rule__KFontItalic__PropagateToChildrenAssignment_2();
 
                     state._fsp--;
@@ -44101,12 +44925,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:15922:1: ( rule__KFontName__Group__0__Impl rule__KFontName__Group__1 )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:15923:2: rule__KFontName__Group__0__Impl rule__KFontName__Group__1
             {
-            pushFollow(FollowSets001.FOLLOW_rule__KFontName__Group__0__Impl_in_rule__KFontName__Group__031709);
+            pushFollow(FollowSets001.FOLLOW_rule__KFontName__Group__0__Impl_in_rule__KFontName__Group__031710);
             rule__KFontName__Group__0__Impl();
 
             state._fsp--;
 
-            pushFollow(FollowSets001.FOLLOW_rule__KFontName__Group__1_in_rule__KFontName__Group__031712);
+            pushFollow(FollowSets001.FOLLOW_rule__KFontName__Group__1_in_rule__KFontName__Group__031713);
             rule__KFontName__Group__1();
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
 
@@ -44171,7 +44995,7 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:15936:1: 'font'
             {
              before(grammarAccess.getKFontNameAccess().getFontKeyword_0()); 
-            match(input,82,FollowSets001.FOLLOW_82_in_rule__KFontName__Group__0__Impl31740); 
+            match(input,82,FollowSets001.FOLLOW_82_in_rule__KFontName__Group__0__Impl31741); 
              after(grammarAccess.getKFontNameAccess().getFontKeyword_0()); 
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
 
@@ -44218,12 +45042,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:15953:1: ( rule__KFontName__Group__1__Impl rule__KFontName__Group__2 )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:15954:2: rule__KFontName__Group__1__Impl rule__KFontName__Group__2
             {
-            pushFollow(FollowSets001.FOLLOW_rule__KFontName__Group__1__Impl_in_rule__KFontName__Group__131771);
+            pushFollow(FollowSets001.FOLLOW_rule__KFontName__Group__1__Impl_in_rule__KFontName__Group__131772);
             rule__KFontName__Group__1__Impl();
 
             state._fsp--;
 
-            pushFollow(FollowSets001.FOLLOW_rule__KFontName__Group__2_in_rule__KFontName__Group__131774);
+            pushFollow(FollowSets001.FOLLOW_rule__KFontName__Group__2_in_rule__KFontName__Group__131775);
             rule__KFontName__Group__2();
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
 
@@ -44282,7 +45106,7 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:15968:1: ( rule__KFontName__NameAssignment_1 )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:15968:2: rule__KFontName__NameAssignment_1
             {
-            pushFollow(FollowSets001.FOLLOW_rule__KFontName__NameAssignment_1_in_rule__KFontName__Group__1__Impl31801);
+            pushFollow(FollowSets001.FOLLOW_rule__KFontName__NameAssignment_1_in_rule__KFontName__Group__1__Impl31802);
             rule__KFontName__NameAssignment_1();
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
 
@@ -44354,7 +45178,7 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:15982:1: ( rule__KFontName__Group__2__Impl )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:15983:2: rule__KFontName__Group__2__Impl
             {
-            pushFollow(FollowSets001.FOLLOW_rule__KFontName__Group__2__Impl_in_rule__KFontName__Group__231831);
+            pushFollow(FollowSets001.FOLLOW_rule__KFontName__Group__2__Impl_in_rule__KFontName__Group__231832);
             rule__KFontName__Group__2__Impl();
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
 
@@ -44411,17 +45235,17 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             {
              before(grammarAccess.getKFontNameAccess().getPropagateToChildrenAssignment_2()); 
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:15996:1: ( rule__KFontName__PropagateToChildrenAssignment_2 )?
-            int alt112=2;
-            int LA112_0 = input.LA(1);
+            int alt113=2;
+            int LA113_0 = input.LA(1);
 
-            if ( (LA112_0==96) ) {
-                alt112=1;
+            if ( (LA113_0==96) ) {
+                alt113=1;
             }
-            switch (alt112) {
+            switch (alt113) {
                 case 1 :
                     // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:15996:2: rule__KFontName__PropagateToChildrenAssignment_2
                     {
-                    pushFollow(FollowSets001.FOLLOW_rule__KFontName__PropagateToChildrenAssignment_2_in_rule__KFontName__Group__2__Impl31858);
+                    pushFollow(FollowSets001.FOLLOW_rule__KFontName__PropagateToChildrenAssignment_2_in_rule__KFontName__Group__2__Impl31859);
                     rule__KFontName__PropagateToChildrenAssignment_2();
 
                     state._fsp--;
@@ -44479,12 +45303,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:16016:1: ( rule__KFontSize__Group__0__Impl rule__KFontSize__Group__1 )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:16017:2: rule__KFontSize__Group__0__Impl rule__KFontSize__Group__1
             {
-            pushFollow(FollowSets001.FOLLOW_rule__KFontSize__Group__0__Impl_in_rule__KFontSize__Group__031895);
+            pushFollow(FollowSets001.FOLLOW_rule__KFontSize__Group__0__Impl_in_rule__KFontSize__Group__031896);
             rule__KFontSize__Group__0__Impl();
 
             state._fsp--;
 
-            pushFollow(FollowSets001.FOLLOW_rule__KFontSize__Group__1_in_rule__KFontSize__Group__031898);
+            pushFollow(FollowSets001.FOLLOW_rule__KFontSize__Group__1_in_rule__KFontSize__Group__031899);
             rule__KFontSize__Group__1();
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
 
@@ -44539,7 +45363,7 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:16030:1: 'fontSize'
             {
              before(grammarAccess.getKFontSizeAccess().getFontSizeKeyword_0()); 
-            match(input,83,FollowSets001.FOLLOW_83_in_rule__KFontSize__Group__0__Impl31926); 
+            match(input,83,FollowSets001.FOLLOW_83_in_rule__KFontSize__Group__0__Impl31927); 
              after(grammarAccess.getKFontSizeAccess().getFontSizeKeyword_0()); 
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
 
@@ -44591,12 +45415,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:16047:1: ( rule__KFontSize__Group__1__Impl rule__KFontSize__Group__2 )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:16048:2: rule__KFontSize__Group__1__Impl rule__KFontSize__Group__2
             {
-            pushFollow(FollowSets001.FOLLOW_rule__KFontSize__Group__1__Impl_in_rule__KFontSize__Group__131957);
+            pushFollow(FollowSets001.FOLLOW_rule__KFontSize__Group__1__Impl_in_rule__KFontSize__Group__131958);
             rule__KFontSize__Group__1__Impl();
 
             state._fsp--;
 
-            pushFollow(FollowSets001.FOLLOW_rule__KFontSize__Group__2_in_rule__KFontSize__Group__131960);
+            pushFollow(FollowSets001.FOLLOW_rule__KFontSize__Group__2_in_rule__KFontSize__Group__131961);
             rule__KFontSize__Group__2();
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
 
@@ -44657,7 +45481,7 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:16062:1: ( rule__KFontSize__SizeAssignment_1 )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:16062:2: rule__KFontSize__SizeAssignment_1
             {
-            pushFollow(FollowSets001.FOLLOW_rule__KFontSize__SizeAssignment_1_in_rule__KFontSize__Group__1__Impl31987);
+            pushFollow(FollowSets001.FOLLOW_rule__KFontSize__SizeAssignment_1_in_rule__KFontSize__Group__1__Impl31988);
             rule__KFontSize__SizeAssignment_1();
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
 
@@ -44711,7 +45535,7 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:16076:1: ( rule__KFontSize__Group__2__Impl )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:16077:2: rule__KFontSize__Group__2__Impl
             {
-            pushFollow(FollowSets001.FOLLOW_rule__KFontSize__Group__2__Impl_in_rule__KFontSize__Group__232017);
+            pushFollow(FollowSets001.FOLLOW_rule__KFontSize__Group__2__Impl_in_rule__KFontSize__Group__232018);
             rule__KFontSize__Group__2__Impl();
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
 
@@ -44771,14 +45595,21 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             {
              before(grammarAccess.getKFontSizeAccess().getPropagateToChildrenAssignment_2()); 
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:16090:1: ( rule__KFontSize__PropagateToChildrenAssignment_2 )?
-            int alt113=2;
-            int LA113_0 = input.LA(1);
+            int alt114=2;
+            int LA114_0 = input.LA(1);
 
+<<<<<<< HEAD
             if ( (LA113_0==96) ) {
                 alt113=1;
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
             }
             switch (alt107) {
+=======
+            if ( (LA114_0==96) ) {
+                alt114=1;
+            }
+            switch (alt114) {
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
                 case 1 :
 <<<<<<< HEAD
                     // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:15675:2: rule__KLineStyle__PropagateToChildrenAssignment_3
@@ -44788,7 +45619,7 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
 =======
                     // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:16090:2: rule__KFontSize__PropagateToChildrenAssignment_2
                     {
-                    pushFollow(FollowSets001.FOLLOW_rule__KFontSize__PropagateToChildrenAssignment_2_in_rule__KFontSize__Group__2__Impl32044);
+                    pushFollow(FollowSets001.FOLLOW_rule__KFontSize__PropagateToChildrenAssignment_2_in_rule__KFontSize__Group__2__Impl32045);
                     rule__KFontSize__PropagateToChildrenAssignment_2();
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
 
@@ -44842,17 +45673,25 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:16110:1: ( rule__KVerticalAlignment__Group__0__Impl rule__KVerticalAlignment__Group__1 )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:16111:2: rule__KVerticalAlignment__Group__0__Impl rule__KVerticalAlignment__Group__1
             {
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KVerticalAlignment__Group__0__Impl_in_rule__KVerticalAlignment__Group__032081);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KVerticalAlignment__Group__0__Impl_in_rule__KVerticalAlignment__Group__032082);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KVerticalAlignment__Group__0__Impl();
 
             state._fsp--;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KVerticalAlignment__Group__1_in_rule__KVerticalAlignment__Group__031222);
 =======
             pushFollow(FollowSets001.FOLLOW_rule__KVerticalAlignment__Group__1_in_rule__KVerticalAlignment__Group__032084);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KVerticalAlignment__Group__1_in_rule__KVerticalAlignment__Group__032085);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KVerticalAlignment__Group__1();
 
             state._fsp--;
@@ -44948,17 +45787,25 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:16141:1: ( rule__KVerticalAlignment__Group__1__Impl rule__KVerticalAlignment__Group__2 )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:16142:2: rule__KVerticalAlignment__Group__1__Impl rule__KVerticalAlignment__Group__2
             {
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KVerticalAlignment__Group__1__Impl_in_rule__KVerticalAlignment__Group__132142);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KVerticalAlignment__Group__1__Impl_in_rule__KVerticalAlignment__Group__132143);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KVerticalAlignment__Group__1__Impl();
 
             state._fsp--;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KVerticalAlignment__Group__2_in_rule__KVerticalAlignment__Group__131283);
 =======
             pushFollow(FollowSets001.FOLLOW_rule__KVerticalAlignment__Group__2_in_rule__KVerticalAlignment__Group__132145);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KVerticalAlignment__Group__2_in_rule__KVerticalAlignment__Group__132146);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KVerticalAlignment__Group__2();
 
             state._fsp--;
@@ -45009,8 +45856,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:16155:1: 'VerticalAlignment'
             {
              before(grammarAccess.getKVerticalAlignmentAccess().getVerticalAlignmentKeyword_1()); 
+<<<<<<< HEAD
             match(input,84,FollowSets001.FOLLOW_84_in_rule__KVerticalAlignment__Group__1__Impl32173); 
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            match(input,84,FollowSets001.FOLLOW_84_in_rule__KVerticalAlignment__Group__1__Impl32174); 
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
              after(grammarAccess.getKVerticalAlignmentAccess().getVerticalAlignmentKeyword_1()); 
 
             }
@@ -45053,17 +45904,25 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:16172:1: ( rule__KVerticalAlignment__Group__2__Impl rule__KVerticalAlignment__Group__3 )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:16173:2: rule__KVerticalAlignment__Group__2__Impl rule__KVerticalAlignment__Group__3
             {
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KVerticalAlignment__Group__2__Impl_in_rule__KVerticalAlignment__Group__232204);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KVerticalAlignment__Group__2__Impl_in_rule__KVerticalAlignment__Group__232205);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KVerticalAlignment__Group__2__Impl();
 
             state._fsp--;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KVerticalAlignment__Group__3_in_rule__KVerticalAlignment__Group__231345);
 =======
             pushFollow(FollowSets001.FOLLOW_rule__KVerticalAlignment__Group__3_in_rule__KVerticalAlignment__Group__232207);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KVerticalAlignment__Group__3_in_rule__KVerticalAlignment__Group__232208);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KVerticalAlignment__Group__3();
 
             state._fsp--;
@@ -45120,8 +45979,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:16187:1: ( rule__KVerticalAlignment__VerticalAlignmentAssignment_2 )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:16187:2: rule__KVerticalAlignment__VerticalAlignmentAssignment_2
             {
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KVerticalAlignment__VerticalAlignmentAssignment_2_in_rule__KVerticalAlignment__Group__2__Impl32234);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KVerticalAlignment__VerticalAlignmentAssignment_2_in_rule__KVerticalAlignment__Group__2__Impl32235);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KVerticalAlignment__VerticalAlignmentAssignment_2();
 
             state._fsp--;
@@ -45171,8 +46034,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:16201:1: ( rule__KVerticalAlignment__Group__3__Impl )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:16202:2: rule__KVerticalAlignment__Group__3__Impl
             {
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KVerticalAlignment__Group__3__Impl_in_rule__KVerticalAlignment__Group__332264);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KVerticalAlignment__Group__3__Impl_in_rule__KVerticalAlignment__Group__332265);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KVerticalAlignment__Group__3__Impl();
 
             state._fsp--;
@@ -45229,14 +46096,21 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             {
              before(grammarAccess.getKVerticalAlignmentAccess().getPropagateToChildrenAssignment_3()); 
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:16215:1: ( rule__KVerticalAlignment__PropagateToChildrenAssignment_3 )?
-            int alt114=2;
-            int LA114_0 = input.LA(1);
+            int alt115=2;
+            int LA115_0 = input.LA(1);
 
+<<<<<<< HEAD
             if ( (LA114_0==96) ) {
                 alt114=1;
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
             }
             switch (alt108) {
+=======
+            if ( (LA115_0==96) ) {
+                alt115=1;
+            }
+            switch (alt115) {
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
                 case 1 :
 <<<<<<< HEAD
                     // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:15802:2: rule__KVerticalAlignment__PropagateToChildrenAssignment_3
@@ -45245,8 +46119,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
 =======
                     // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:16215:2: rule__KVerticalAlignment__PropagateToChildrenAssignment_3
                     {
+<<<<<<< HEAD
                     pushFollow(FollowSets001.FOLLOW_rule__KVerticalAlignment__PropagateToChildrenAssignment_3_in_rule__KVerticalAlignment__Group__3__Impl32291);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+                    pushFollow(FollowSets001.FOLLOW_rule__KVerticalAlignment__PropagateToChildrenAssignment_3_in_rule__KVerticalAlignment__Group__3__Impl32292);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
                     rule__KVerticalAlignment__PropagateToChildrenAssignment_3();
 
                     state._fsp--;
@@ -45299,17 +46177,25 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:16237:1: ( rule__KHorizontalAlignment__Group__0__Impl rule__KHorizontalAlignment__Group__1 )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:16238:2: rule__KHorizontalAlignment__Group__0__Impl rule__KHorizontalAlignment__Group__1
             {
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KHorizontalAlignment__Group__0__Impl_in_rule__KHorizontalAlignment__Group__032330);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KHorizontalAlignment__Group__0__Impl_in_rule__KHorizontalAlignment__Group__032331);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KHorizontalAlignment__Group__0__Impl();
 
             state._fsp--;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KHorizontalAlignment__Group__1_in_rule__KHorizontalAlignment__Group__031471);
 =======
             pushFollow(FollowSets001.FOLLOW_rule__KHorizontalAlignment__Group__1_in_rule__KHorizontalAlignment__Group__032333);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KHorizontalAlignment__Group__1_in_rule__KHorizontalAlignment__Group__032334);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KHorizontalAlignment__Group__1();
 
             state._fsp--;
@@ -45405,17 +46291,25 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:16268:1: ( rule__KHorizontalAlignment__Group__1__Impl rule__KHorizontalAlignment__Group__2 )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:16269:2: rule__KHorizontalAlignment__Group__1__Impl rule__KHorizontalAlignment__Group__2
             {
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KHorizontalAlignment__Group__1__Impl_in_rule__KHorizontalAlignment__Group__132391);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KHorizontalAlignment__Group__1__Impl_in_rule__KHorizontalAlignment__Group__132392);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KHorizontalAlignment__Group__1__Impl();
 
             state._fsp--;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KHorizontalAlignment__Group__2_in_rule__KHorizontalAlignment__Group__131532);
 =======
             pushFollow(FollowSets001.FOLLOW_rule__KHorizontalAlignment__Group__2_in_rule__KHorizontalAlignment__Group__132394);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KHorizontalAlignment__Group__2_in_rule__KHorizontalAlignment__Group__132395);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KHorizontalAlignment__Group__2();
 
             state._fsp--;
@@ -45466,8 +46360,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:16282:1: 'HorizontalAlignment'
             {
              before(grammarAccess.getKHorizontalAlignmentAccess().getHorizontalAlignmentKeyword_1()); 
+<<<<<<< HEAD
             match(input,85,FollowSets001.FOLLOW_85_in_rule__KHorizontalAlignment__Group__1__Impl32422); 
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            match(input,85,FollowSets001.FOLLOW_85_in_rule__KHorizontalAlignment__Group__1__Impl32423); 
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
              after(grammarAccess.getKHorizontalAlignmentAccess().getHorizontalAlignmentKeyword_1()); 
 
             }
@@ -45510,17 +46408,25 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:16299:1: ( rule__KHorizontalAlignment__Group__2__Impl rule__KHorizontalAlignment__Group__3 )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:16300:2: rule__KHorizontalAlignment__Group__2__Impl rule__KHorizontalAlignment__Group__3
             {
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KHorizontalAlignment__Group__2__Impl_in_rule__KHorizontalAlignment__Group__232453);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KHorizontalAlignment__Group__2__Impl_in_rule__KHorizontalAlignment__Group__232454);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KHorizontalAlignment__Group__2__Impl();
 
             state._fsp--;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KHorizontalAlignment__Group__3_in_rule__KHorizontalAlignment__Group__231594);
 =======
             pushFollow(FollowSets001.FOLLOW_rule__KHorizontalAlignment__Group__3_in_rule__KHorizontalAlignment__Group__232456);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KHorizontalAlignment__Group__3_in_rule__KHorizontalAlignment__Group__232457);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KHorizontalAlignment__Group__3();
 
             state._fsp--;
@@ -45577,8 +46483,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:16314:1: ( rule__KHorizontalAlignment__HorizontalAlignmentAssignment_2 )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:16314:2: rule__KHorizontalAlignment__HorizontalAlignmentAssignment_2
             {
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KHorizontalAlignment__HorizontalAlignmentAssignment_2_in_rule__KHorizontalAlignment__Group__2__Impl32483);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KHorizontalAlignment__HorizontalAlignmentAssignment_2_in_rule__KHorizontalAlignment__Group__2__Impl32484);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KHorizontalAlignment__HorizontalAlignmentAssignment_2();
 
             state._fsp--;
@@ -45628,8 +46538,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:16328:1: ( rule__KHorizontalAlignment__Group__3__Impl )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:16329:2: rule__KHorizontalAlignment__Group__3__Impl
             {
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KHorizontalAlignment__Group__3__Impl_in_rule__KHorizontalAlignment__Group__332513);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KHorizontalAlignment__Group__3__Impl_in_rule__KHorizontalAlignment__Group__332514);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KHorizontalAlignment__Group__3__Impl();
 
             state._fsp--;
@@ -45686,8 +46600,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:16342:1: ( rule__KHorizontalAlignment__PropagateToChildrenAssignment_3 )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:16342:2: rule__KHorizontalAlignment__PropagateToChildrenAssignment_3
             {
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KHorizontalAlignment__PropagateToChildrenAssignment_3_in_rule__KHorizontalAlignment__Group__3__Impl32540);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KHorizontalAlignment__PropagateToChildrenAssignment_3_in_rule__KHorizontalAlignment__Group__3__Impl32541);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KHorizontalAlignment__PropagateToChildrenAssignment_3();
 
             state._fsp--;
@@ -45737,17 +46655,25 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:16364:1: ( rule__KGridPlacement__Group__0__Impl rule__KGridPlacement__Group__1 )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:16365:2: rule__KGridPlacement__Group__0__Impl rule__KGridPlacement__Group__1
             {
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KGridPlacement__Group__0__Impl_in_rule__KGridPlacement__Group__032578);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KGridPlacement__Group__0__Impl_in_rule__KGridPlacement__Group__032579);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KGridPlacement__Group__0__Impl();
 
             state._fsp--;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KGridPlacement__Group__1_in_rule__KGridPlacement__Group__031719);
 =======
             pushFollow(FollowSets001.FOLLOW_rule__KGridPlacement__Group__1_in_rule__KGridPlacement__Group__032581);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KGridPlacement__Group__1_in_rule__KGridPlacement__Group__032582);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KGridPlacement__Group__1();
 
             state._fsp--;
@@ -45843,17 +46769,25 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:16395:1: ( rule__KGridPlacement__Group__1__Impl rule__KGridPlacement__Group__2 )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:16396:2: rule__KGridPlacement__Group__1__Impl rule__KGridPlacement__Group__2
             {
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KGridPlacement__Group__1__Impl_in_rule__KGridPlacement__Group__132639);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KGridPlacement__Group__1__Impl_in_rule__KGridPlacement__Group__132640);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KGridPlacement__Group__1__Impl();
 
             state._fsp--;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KGridPlacement__Group__2_in_rule__KGridPlacement__Group__131780);
 =======
             pushFollow(FollowSets001.FOLLOW_rule__KGridPlacement__Group__2_in_rule__KGridPlacement__Group__132642);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KGridPlacement__Group__2_in_rule__KGridPlacement__Group__132643);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KGridPlacement__Group__2();
 
             state._fsp--;
@@ -45904,8 +46838,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:16409:1: 'GridPlacement'
             {
              before(grammarAccess.getKGridPlacementAccess().getGridPlacementKeyword_1()); 
+<<<<<<< HEAD
             match(input,86,FollowSets001.FOLLOW_86_in_rule__KGridPlacement__Group__1__Impl32670); 
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            match(input,86,FollowSets001.FOLLOW_86_in_rule__KGridPlacement__Group__1__Impl32671); 
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
              after(grammarAccess.getKGridPlacementAccess().getGridPlacementKeyword_1()); 
 
             }
@@ -45948,8 +46886,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:16426:1: ( rule__KGridPlacement__Group__2__Impl )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:16427:2: rule__KGridPlacement__Group__2__Impl
             {
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KGridPlacement__Group__2__Impl_in_rule__KGridPlacement__Group__232701);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KGridPlacement__Group__2__Impl_in_rule__KGridPlacement__Group__232702);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KGridPlacement__Group__2__Impl();
 
             state._fsp--;
@@ -46006,8 +46948,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:16440:1: ( rule__KGridPlacement__NumColumnsAssignment_2 )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:16440:2: rule__KGridPlacement__NumColumnsAssignment_2
             {
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KGridPlacement__NumColumnsAssignment_2_in_rule__KGridPlacement__Group__2__Impl32728);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KGridPlacement__NumColumnsAssignment_2_in_rule__KGridPlacement__Group__2__Impl32729);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KGridPlacement__NumColumnsAssignment_2();
 
             state._fsp--;
@@ -46057,17 +47003,25 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:16460:1: ( rule__KStackPlacement__Group__0__Impl rule__KStackPlacement__Group__1 )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:16461:2: rule__KStackPlacement__Group__0__Impl rule__KStackPlacement__Group__1
             {
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KStackPlacement__Group__0__Impl_in_rule__KStackPlacement__Group__032764);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KStackPlacement__Group__0__Impl_in_rule__KStackPlacement__Group__032765);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KStackPlacement__Group__0__Impl();
 
             state._fsp--;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KStackPlacement__Group__1_in_rule__KStackPlacement__Group__031905);
 =======
             pushFollow(FollowSets001.FOLLOW_rule__KStackPlacement__Group__1_in_rule__KStackPlacement__Group__032767);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KStackPlacement__Group__1_in_rule__KStackPlacement__Group__032768);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KStackPlacement__Group__1();
 
             state._fsp--;
@@ -46163,8 +47117,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:16491:1: ( rule__KStackPlacement__Group__1__Impl )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:16492:2: rule__KStackPlacement__Group__1__Impl
             {
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KStackPlacement__Group__1__Impl_in_rule__KStackPlacement__Group__132825);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KStackPlacement__Group__1__Impl_in_rule__KStackPlacement__Group__132826);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KStackPlacement__Group__1__Impl();
 
             state._fsp--;
@@ -46215,8 +47173,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:16504:1: 'StackPlacement'
             {
              before(grammarAccess.getKStackPlacementAccess().getStackPlacementKeyword_1()); 
+<<<<<<< HEAD
             match(input,87,FollowSets001.FOLLOW_87_in_rule__KStackPlacement__Group__1__Impl32853); 
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            match(input,87,FollowSets001.FOLLOW_87_in_rule__KStackPlacement__Group__1__Impl32854); 
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
              after(grammarAccess.getKStackPlacementAccess().getStackPlacementKeyword_1()); 
 
             }
@@ -46259,17 +47221,25 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:16525:1: ( rule__EFloat__Group__0__Impl rule__EFloat__Group__1 )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:16526:2: rule__EFloat__Group__0__Impl rule__EFloat__Group__1
             {
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__EFloat__Group__0__Impl_in_rule__EFloat__Group__032888);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__EFloat__Group__0__Impl_in_rule__EFloat__Group__032889);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__EFloat__Group__0__Impl();
 
             state._fsp--;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__EFloat__Group__1_in_rule__EFloat__Group__032029);
 =======
             pushFollow(FollowSets001.FOLLOW_rule__EFloat__Group__1_in_rule__EFloat__Group__032891);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__EFloat__Group__1_in_rule__EFloat__Group__032892);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__EFloat__Group__1();
 
             state._fsp--;
@@ -46323,6 +47293,7 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             {
              before(grammarAccess.getEFloatAccess().getHyphenMinusKeyword_0()); 
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:16540:1: ( '-' )?
+<<<<<<< HEAD
             int alt115=2;
             int LA115_0 = input.LA(1);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
@@ -46331,6 +47302,15 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
                 alt109=1;
             }
             switch (alt109) {
+=======
+            int alt116=2;
+            int LA116_0 = input.LA(1);
+
+            if ( (LA116_0==11) ) {
+                alt116=1;
+            }
+            switch (alt116) {
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
                 case 1 :
 <<<<<<< HEAD
                     // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:16128:2: '-'
@@ -46339,8 +47319,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
 =======
                     // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:16541:2: '-'
                     {
+<<<<<<< HEAD
                     match(input,11,FollowSets001.FOLLOW_11_in_rule__EFloat__Group__0__Impl32920); 
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+                    match(input,11,FollowSets001.FOLLOW_11_in_rule__EFloat__Group__0__Impl32921); 
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
 
                     }
                     break;
@@ -46389,17 +47373,25 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:16556:1: ( rule__EFloat__Group__1__Impl rule__EFloat__Group__2 )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:16557:2: rule__EFloat__Group__1__Impl rule__EFloat__Group__2
             {
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__EFloat__Group__1__Impl_in_rule__EFloat__Group__132953);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__EFloat__Group__1__Impl_in_rule__EFloat__Group__132954);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__EFloat__Group__1__Impl();
 
             state._fsp--;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__EFloat__Group__2_in_rule__EFloat__Group__132094);
 =======
             pushFollow(FollowSets001.FOLLOW_rule__EFloat__Group__2_in_rule__EFloat__Group__132956);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__EFloat__Group__2_in_rule__EFloat__Group__132957);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__EFloat__Group__2();
 
             state._fsp--;
@@ -46450,8 +47442,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:16570:1: RULE_INT
             {
              before(grammarAccess.getEFloatAccess().getINTTerminalRuleCall_1()); 
+<<<<<<< HEAD
             match(input,RULE_INT,FollowSets001.FOLLOW_RULE_INT_in_rule__EFloat__Group__1__Impl32983); 
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            match(input,RULE_INT,FollowSets001.FOLLOW_RULE_INT_in_rule__EFloat__Group__1__Impl32984); 
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
              after(grammarAccess.getEFloatAccess().getINTTerminalRuleCall_1()); 
 
             }
@@ -46494,8 +47490,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:16585:1: ( rule__EFloat__Group__2__Impl )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:16586:2: rule__EFloat__Group__2__Impl
             {
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__EFloat__Group__2__Impl_in_rule__EFloat__Group__233012);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__EFloat__Group__2__Impl_in_rule__EFloat__Group__233013);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__EFloat__Group__2__Impl();
 
             state._fsp--;
@@ -46552,14 +47552,21 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             {
              before(grammarAccess.getEFloatAccess().getGroup_2()); 
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:16599:1: ( rule__EFloat__Group_2__0 )?
-            int alt116=2;
-            int LA116_0 = input.LA(1);
+            int alt117=2;
+            int LA117_0 = input.LA(1);
 
+<<<<<<< HEAD
             if ( (LA116_0==88) ) {
                 alt116=1;
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
             }
             switch (alt110) {
+=======
+            if ( (LA117_0==88) ) {
+                alt117=1;
+            }
+            switch (alt117) {
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
                 case 1 :
 <<<<<<< HEAD
                     // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:16186:2: rule__EFloat__Group_2__0
@@ -46568,8 +47575,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
 =======
                     // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:16599:2: rule__EFloat__Group_2__0
                     {
+<<<<<<< HEAD
                     pushFollow(FollowSets001.FOLLOW_rule__EFloat__Group_2__0_in_rule__EFloat__Group__2__Impl33039);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+                    pushFollow(FollowSets001.FOLLOW_rule__EFloat__Group_2__0_in_rule__EFloat__Group__2__Impl33040);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
                     rule__EFloat__Group_2__0();
 
                     state._fsp--;
@@ -46622,17 +47633,25 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:16619:1: ( rule__EFloat__Group_2__0__Impl rule__EFloat__Group_2__1 )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:16620:2: rule__EFloat__Group_2__0__Impl rule__EFloat__Group_2__1
             {
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__EFloat__Group_2__0__Impl_in_rule__EFloat__Group_2__033076);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__EFloat__Group_2__0__Impl_in_rule__EFloat__Group_2__033077);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__EFloat__Group_2__0__Impl();
 
             state._fsp--;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__EFloat__Group_2__1_in_rule__EFloat__Group_2__032217);
 =======
             pushFollow(FollowSets001.FOLLOW_rule__EFloat__Group_2__1_in_rule__EFloat__Group_2__033079);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__EFloat__Group_2__1_in_rule__EFloat__Group_2__033080);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__EFloat__Group_2__1();
 
             state._fsp--;
@@ -46683,8 +47702,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:16633:1: '.'
             {
              before(grammarAccess.getEFloatAccess().getFullStopKeyword_2_0()); 
+<<<<<<< HEAD
             match(input,88,FollowSets001.FOLLOW_88_in_rule__EFloat__Group_2__0__Impl33107); 
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            match(input,88,FollowSets001.FOLLOW_88_in_rule__EFloat__Group_2__0__Impl33108); 
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
              after(grammarAccess.getEFloatAccess().getFullStopKeyword_2_0()); 
 
             }
@@ -46727,17 +47750,25 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:16650:1: ( rule__EFloat__Group_2__1__Impl rule__EFloat__Group_2__2 )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:16651:2: rule__EFloat__Group_2__1__Impl rule__EFloat__Group_2__2
             {
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__EFloat__Group_2__1__Impl_in_rule__EFloat__Group_2__133138);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__EFloat__Group_2__1__Impl_in_rule__EFloat__Group_2__133139);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__EFloat__Group_2__1__Impl();
 
             state._fsp--;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__EFloat__Group_2__2_in_rule__EFloat__Group_2__132279);
 =======
             pushFollow(FollowSets001.FOLLOW_rule__EFloat__Group_2__2_in_rule__EFloat__Group_2__133141);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__EFloat__Group_2__2_in_rule__EFloat__Group_2__133142);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__EFloat__Group_2__2();
 
             state._fsp--;
@@ -46788,8 +47819,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:16664:1: RULE_INT
             {
              before(grammarAccess.getEFloatAccess().getINTTerminalRuleCall_2_1()); 
+<<<<<<< HEAD
             match(input,RULE_INT,FollowSets001.FOLLOW_RULE_INT_in_rule__EFloat__Group_2__1__Impl33168); 
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            match(input,RULE_INT,FollowSets001.FOLLOW_RULE_INT_in_rule__EFloat__Group_2__1__Impl33169); 
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
              after(grammarAccess.getEFloatAccess().getINTTerminalRuleCall_2_1()); 
 
             }
@@ -46832,8 +47867,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:16679:1: ( rule__EFloat__Group_2__2__Impl )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:16680:2: rule__EFloat__Group_2__2__Impl
             {
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__EFloat__Group_2__2__Impl_in_rule__EFloat__Group_2__233197);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__EFloat__Group_2__2__Impl_in_rule__EFloat__Group_2__233198);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__EFloat__Group_2__2__Impl();
 
             state._fsp--;
@@ -46887,6 +47926,7 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             {
              before(grammarAccess.getEFloatAccess().getGroup_2_2()); 
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:16693:1: ( rule__EFloat__Group_2_2__0 )?
+<<<<<<< HEAD
             int alt117=2;
             int LA117_0 = input.LA(1);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
@@ -46895,6 +47935,15 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
                 alt111=1;
             }
             switch (alt111) {
+=======
+            int alt118=2;
+            int LA118_0 = input.LA(1);
+
+            if ( ((LA118_0>=12 && LA118_0<=13)) ) {
+                alt118=1;
+            }
+            switch (alt118) {
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
                 case 1 :
 <<<<<<< HEAD
                     // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:16280:2: rule__EFloat__Group_2_2__0
@@ -46903,8 +47952,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
 =======
                     // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:16693:2: rule__EFloat__Group_2_2__0
                     {
+<<<<<<< HEAD
                     pushFollow(FollowSets001.FOLLOW_rule__EFloat__Group_2_2__0_in_rule__EFloat__Group_2__2__Impl33224);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+                    pushFollow(FollowSets001.FOLLOW_rule__EFloat__Group_2_2__0_in_rule__EFloat__Group_2__2__Impl33225);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
                     rule__EFloat__Group_2_2__0();
 
                     state._fsp--;
@@ -46957,17 +48010,25 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:16713:1: ( rule__EFloat__Group_2_2__0__Impl rule__EFloat__Group_2_2__1 )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:16714:2: rule__EFloat__Group_2_2__0__Impl rule__EFloat__Group_2_2__1
             {
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__EFloat__Group_2_2__0__Impl_in_rule__EFloat__Group_2_2__033261);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__EFloat__Group_2_2__0__Impl_in_rule__EFloat__Group_2_2__033262);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__EFloat__Group_2_2__0__Impl();
 
             state._fsp--;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__EFloat__Group_2_2__1_in_rule__EFloat__Group_2_2__032402);
 =======
             pushFollow(FollowSets001.FOLLOW_rule__EFloat__Group_2_2__1_in_rule__EFloat__Group_2_2__033264);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__EFloat__Group_2_2__1_in_rule__EFloat__Group_2_2__033265);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__EFloat__Group_2_2__1();
 
             state._fsp--;
@@ -47024,8 +48085,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:16728:1: ( rule__EFloat__Alternatives_2_2_0 )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:16728:2: rule__EFloat__Alternatives_2_2_0
             {
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__EFloat__Alternatives_2_2_0_in_rule__EFloat__Group_2_2__0__Impl33291);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__EFloat__Alternatives_2_2_0_in_rule__EFloat__Group_2_2__0__Impl33292);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__EFloat__Alternatives_2_2_0();
 
             state._fsp--;
@@ -47075,17 +48140,25 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:16742:1: ( rule__EFloat__Group_2_2__1__Impl rule__EFloat__Group_2_2__2 )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:16743:2: rule__EFloat__Group_2_2__1__Impl rule__EFloat__Group_2_2__2
             {
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__EFloat__Group_2_2__1__Impl_in_rule__EFloat__Group_2_2__133321);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__EFloat__Group_2_2__1__Impl_in_rule__EFloat__Group_2_2__133322);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__EFloat__Group_2_2__1__Impl();
 
             state._fsp--;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__EFloat__Group_2_2__2_in_rule__EFloat__Group_2_2__132462);
 =======
             pushFollow(FollowSets001.FOLLOW_rule__EFloat__Group_2_2__2_in_rule__EFloat__Group_2_2__133324);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__EFloat__Group_2_2__2_in_rule__EFloat__Group_2_2__133325);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__EFloat__Group_2_2__2();
 
             state._fsp--;
@@ -47139,6 +48212,7 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             {
              before(grammarAccess.getEFloatAccess().getHyphenMinusKeyword_2_2_1()); 
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:16757:1: ( '-' )?
+<<<<<<< HEAD
             int alt118=2;
             int LA118_0 = input.LA(1);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
@@ -47147,6 +48221,15 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
                 alt112=1;
             }
             switch (alt112) {
+=======
+            int alt119=2;
+            int LA119_0 = input.LA(1);
+
+            if ( (LA119_0==11) ) {
+                alt119=1;
+            }
+            switch (alt119) {
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
                 case 1 :
 <<<<<<< HEAD
                     // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:16345:2: '-'
@@ -47155,8 +48238,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
 =======
                     // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:16758:2: '-'
                     {
+<<<<<<< HEAD
                     match(input,11,FollowSets001.FOLLOW_11_in_rule__EFloat__Group_2_2__1__Impl33353); 
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+                    match(input,11,FollowSets001.FOLLOW_11_in_rule__EFloat__Group_2_2__1__Impl33354); 
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
 
                     }
                     break;
@@ -47205,8 +48292,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:16773:1: ( rule__EFloat__Group_2_2__2__Impl )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:16774:2: rule__EFloat__Group_2_2__2__Impl
             {
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__EFloat__Group_2_2__2__Impl_in_rule__EFloat__Group_2_2__233386);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__EFloat__Group_2_2__2__Impl_in_rule__EFloat__Group_2_2__233387);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__EFloat__Group_2_2__2__Impl();
 
             state._fsp--;
@@ -47257,8 +48348,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:16786:1: RULE_INT
             {
              before(grammarAccess.getEFloatAccess().getINTTerminalRuleCall_2_2_2()); 
+<<<<<<< HEAD
             match(input,RULE_INT,FollowSets001.FOLLOW_RULE_INT_in_rule__EFloat__Group_2_2__2__Impl33413); 
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            match(input,RULE_INT,FollowSets001.FOLLOW_RULE_INT_in_rule__EFloat__Group_2_2__2__Impl33414); 
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
              after(grammarAccess.getEFloatAccess().getINTTerminalRuleCall_2_2_2()); 
 
             }
@@ -47301,17 +48396,25 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:16807:1: ( rule__EInt__Group__0__Impl rule__EInt__Group__1 )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:16808:2: rule__EInt__Group__0__Impl rule__EInt__Group__1
             {
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__EInt__Group__0__Impl_in_rule__EInt__Group__033448);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__EInt__Group__0__Impl_in_rule__EInt__Group__033449);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__EInt__Group__0__Impl();
 
             state._fsp--;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__EInt__Group__1_in_rule__EInt__Group__032589);
 =======
             pushFollow(FollowSets001.FOLLOW_rule__EInt__Group__1_in_rule__EInt__Group__033451);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__EInt__Group__1_in_rule__EInt__Group__033452);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__EInt__Group__1();
 
             state._fsp--;
@@ -47365,6 +48468,7 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             {
              before(grammarAccess.getEIntAccess().getHyphenMinusKeyword_0()); 
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:16822:1: ( '-' )?
+<<<<<<< HEAD
             int alt119=2;
             int LA119_0 = input.LA(1);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
@@ -47373,6 +48477,15 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
                 alt113=1;
             }
             switch (alt113) {
+=======
+            int alt120=2;
+            int LA120_0 = input.LA(1);
+
+            if ( (LA120_0==11) ) {
+                alt120=1;
+            }
+            switch (alt120) {
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
                 case 1 :
 <<<<<<< HEAD
                     // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:16410:2: '-'
@@ -47381,8 +48494,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
 =======
                     // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:16823:2: '-'
                     {
+<<<<<<< HEAD
                     match(input,11,FollowSets001.FOLLOW_11_in_rule__EInt__Group__0__Impl33480); 
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+                    match(input,11,FollowSets001.FOLLOW_11_in_rule__EInt__Group__0__Impl33481); 
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
 
                     }
                     break;
@@ -47431,8 +48548,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:16838:1: ( rule__EInt__Group__1__Impl )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:16839:2: rule__EInt__Group__1__Impl
             {
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__EInt__Group__1__Impl_in_rule__EInt__Group__133513);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__EInt__Group__1__Impl_in_rule__EInt__Group__133514);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__EInt__Group__1__Impl();
 
             state._fsp--;
@@ -47483,8 +48604,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:16851:1: RULE_INT
             {
              before(grammarAccess.getEIntAccess().getINTTerminalRuleCall_1()); 
+<<<<<<< HEAD
             match(input,RULE_INT,FollowSets001.FOLLOW_RULE_INT_in_rule__EInt__Group__1__Impl33540); 
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            match(input,RULE_INT,FollowSets001.FOLLOW_RULE_INT_in_rule__EInt__Group__1__Impl33541); 
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
              after(grammarAccess.getEIntAccess().getINTTerminalRuleCall_1()); 
 
             }
@@ -47527,17 +48652,25 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:16878:1: ( rule__KInsets__Group__0__Impl rule__KInsets__Group__1 )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:16879:2: rule__KInsets__Group__0__Impl rule__KInsets__Group__1
             {
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KInsets__Group__0__Impl_in_rule__KInsets__Group__033581);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KInsets__Group__0__Impl_in_rule__KInsets__Group__033582);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KInsets__Group__0__Impl();
 
             state._fsp--;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KInsets__Group__1_in_rule__KInsets__Group__032722);
 =======
             pushFollow(FollowSets001.FOLLOW_rule__KInsets__Group__1_in_rule__KInsets__Group__033584);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KInsets__Group__1_in_rule__KInsets__Group__033585);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KInsets__Group__1();
 
             state._fsp--;
@@ -47633,17 +48766,25 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:16909:1: ( rule__KInsets__Group__1__Impl rule__KInsets__Group__2 )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:16910:2: rule__KInsets__Group__1__Impl rule__KInsets__Group__2
             {
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KInsets__Group__1__Impl_in_rule__KInsets__Group__133642);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KInsets__Group__1__Impl_in_rule__KInsets__Group__133643);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KInsets__Group__1__Impl();
 
             state._fsp--;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KInsets__Group__2_in_rule__KInsets__Group__132783);
 =======
             pushFollow(FollowSets001.FOLLOW_rule__KInsets__Group__2_in_rule__KInsets__Group__133645);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KInsets__Group__2_in_rule__KInsets__Group__133646);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KInsets__Group__2();
 
             state._fsp--;
@@ -47694,8 +48835,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:16923:1: 'KInsets'
             {
              before(grammarAccess.getKInsetsAccess().getKInsetsKeyword_1()); 
+<<<<<<< HEAD
             match(input,89,FollowSets001.FOLLOW_89_in_rule__KInsets__Group__1__Impl33673); 
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            match(input,89,FollowSets001.FOLLOW_89_in_rule__KInsets__Group__1__Impl33674); 
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
              after(grammarAccess.getKInsetsAccess().getKInsetsKeyword_1()); 
 
             }
@@ -47738,17 +48883,25 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:16940:1: ( rule__KInsets__Group__2__Impl rule__KInsets__Group__3 )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:16941:2: rule__KInsets__Group__2__Impl rule__KInsets__Group__3
             {
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KInsets__Group__2__Impl_in_rule__KInsets__Group__233704);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KInsets__Group__2__Impl_in_rule__KInsets__Group__233705);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KInsets__Group__2__Impl();
 
             state._fsp--;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KInsets__Group__3_in_rule__KInsets__Group__232845);
 =======
             pushFollow(FollowSets001.FOLLOW_rule__KInsets__Group__3_in_rule__KInsets__Group__233707);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KInsets__Group__3_in_rule__KInsets__Group__233708);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KInsets__Group__3();
 
             state._fsp--;
@@ -47799,8 +48952,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:16954:1: '{'
             {
              before(grammarAccess.getKInsetsAccess().getLeftCurlyBracketKeyword_2()); 
+<<<<<<< HEAD
             match(input,27,FollowSets001.FOLLOW_27_in_rule__KInsets__Group__2__Impl33735); 
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            match(input,27,FollowSets001.FOLLOW_27_in_rule__KInsets__Group__2__Impl33736); 
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
              after(grammarAccess.getKInsetsAccess().getLeftCurlyBracketKeyword_2()); 
 
             }
@@ -47843,17 +49000,25 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:16971:1: ( rule__KInsets__Group__3__Impl rule__KInsets__Group__4 )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:16972:2: rule__KInsets__Group__3__Impl rule__KInsets__Group__4
             {
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KInsets__Group__3__Impl_in_rule__KInsets__Group__333766);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KInsets__Group__3__Impl_in_rule__KInsets__Group__333767);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KInsets__Group__3__Impl();
 
             state._fsp--;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KInsets__Group__4_in_rule__KInsets__Group__332907);
 =======
             pushFollow(FollowSets001.FOLLOW_rule__KInsets__Group__4_in_rule__KInsets__Group__333769);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KInsets__Group__4_in_rule__KInsets__Group__333770);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KInsets__Group__4();
 
             state._fsp--;
@@ -47910,14 +49075,21 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             {
              before(grammarAccess.getKInsetsAccess().getGroup_3()); 
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:16986:1: ( rule__KInsets__Group_3__0 )?
-            int alt120=2;
-            int LA120_0 = input.LA(1);
+            int alt121=2;
+            int LA121_0 = input.LA(1);
 
+<<<<<<< HEAD
             if ( (LA120_0==72) ) {
                 alt120=1;
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
             }
             switch (alt114) {
+=======
+            if ( (LA121_0==72) ) {
+                alt121=1;
+            }
+            switch (alt121) {
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
                 case 1 :
 <<<<<<< HEAD
                     // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:16573:2: rule__KInsets__Group_3__0
@@ -47926,8 +49098,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
 =======
                     // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:16986:2: rule__KInsets__Group_3__0
                     {
+<<<<<<< HEAD
                     pushFollow(FollowSets001.FOLLOW_rule__KInsets__Group_3__0_in_rule__KInsets__Group__3__Impl33796);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+                    pushFollow(FollowSets001.FOLLOW_rule__KInsets__Group_3__0_in_rule__KInsets__Group__3__Impl33797);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
                     rule__KInsets__Group_3__0();
 
                     state._fsp--;
@@ -47980,17 +49156,25 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:17000:1: ( rule__KInsets__Group__4__Impl rule__KInsets__Group__5 )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:17001:2: rule__KInsets__Group__4__Impl rule__KInsets__Group__5
             {
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KInsets__Group__4__Impl_in_rule__KInsets__Group__433827);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KInsets__Group__4__Impl_in_rule__KInsets__Group__433828);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KInsets__Group__4__Impl();
 
             state._fsp--;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KInsets__Group__5_in_rule__KInsets__Group__432968);
 =======
             pushFollow(FollowSets001.FOLLOW_rule__KInsets__Group__5_in_rule__KInsets__Group__433830);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KInsets__Group__5_in_rule__KInsets__Group__433831);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KInsets__Group__5();
 
             state._fsp--;
@@ -48047,14 +49231,21 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             {
              before(grammarAccess.getKInsetsAccess().getGroup_4()); 
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:17015:1: ( rule__KInsets__Group_4__0 )?
-            int alt121=2;
-            int LA121_0 = input.LA(1);
+            int alt122=2;
+            int LA122_0 = input.LA(1);
 
+<<<<<<< HEAD
             if ( (LA121_0==73) ) {
                 alt121=1;
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
             }
             switch (alt115) {
+=======
+            if ( (LA122_0==73) ) {
+                alt122=1;
+            }
+            switch (alt122) {
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
                 case 1 :
 <<<<<<< HEAD
                     // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:16602:2: rule__KInsets__Group_4__0
@@ -48063,8 +49254,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
 =======
                     // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:17015:2: rule__KInsets__Group_4__0
                     {
+<<<<<<< HEAD
                     pushFollow(FollowSets001.FOLLOW_rule__KInsets__Group_4__0_in_rule__KInsets__Group__4__Impl33857);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+                    pushFollow(FollowSets001.FOLLOW_rule__KInsets__Group_4__0_in_rule__KInsets__Group__4__Impl33858);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
                     rule__KInsets__Group_4__0();
 
                     state._fsp--;
@@ -48117,17 +49312,25 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:17029:1: ( rule__KInsets__Group__5__Impl rule__KInsets__Group__6 )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:17030:2: rule__KInsets__Group__5__Impl rule__KInsets__Group__6
             {
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KInsets__Group__5__Impl_in_rule__KInsets__Group__533888);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KInsets__Group__5__Impl_in_rule__KInsets__Group__533889);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KInsets__Group__5__Impl();
 
             state._fsp--;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KInsets__Group__6_in_rule__KInsets__Group__533029);
 =======
             pushFollow(FollowSets001.FOLLOW_rule__KInsets__Group__6_in_rule__KInsets__Group__533891);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KInsets__Group__6_in_rule__KInsets__Group__533892);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KInsets__Group__6();
 
             state._fsp--;
@@ -48184,14 +49387,21 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             {
              before(grammarAccess.getKInsetsAccess().getGroup_5()); 
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:17044:1: ( rule__KInsets__Group_5__0 )?
-            int alt122=2;
-            int LA122_0 = input.LA(1);
+            int alt123=2;
+            int LA123_0 = input.LA(1);
 
+<<<<<<< HEAD
             if ( (LA122_0==70) ) {
                 alt122=1;
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
             }
             switch (alt116) {
+=======
+            if ( (LA123_0==70) ) {
+                alt123=1;
+            }
+            switch (alt123) {
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
                 case 1 :
 <<<<<<< HEAD
                     // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:16631:2: rule__KInsets__Group_5__0
@@ -48200,8 +49410,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
 =======
                     // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:17044:2: rule__KInsets__Group_5__0
                     {
+<<<<<<< HEAD
                     pushFollow(FollowSets001.FOLLOW_rule__KInsets__Group_5__0_in_rule__KInsets__Group__5__Impl33918);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+                    pushFollow(FollowSets001.FOLLOW_rule__KInsets__Group_5__0_in_rule__KInsets__Group__5__Impl33919);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
                     rule__KInsets__Group_5__0();
 
                     state._fsp--;
@@ -48254,17 +49468,25 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:17058:1: ( rule__KInsets__Group__6__Impl rule__KInsets__Group__7 )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:17059:2: rule__KInsets__Group__6__Impl rule__KInsets__Group__7
             {
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KInsets__Group__6__Impl_in_rule__KInsets__Group__633949);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KInsets__Group__6__Impl_in_rule__KInsets__Group__633950);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KInsets__Group__6__Impl();
 
             state._fsp--;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KInsets__Group__7_in_rule__KInsets__Group__633090);
 =======
             pushFollow(FollowSets001.FOLLOW_rule__KInsets__Group__7_in_rule__KInsets__Group__633952);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KInsets__Group__7_in_rule__KInsets__Group__633953);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KInsets__Group__7();
 
             state._fsp--;
@@ -48321,14 +49543,21 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             {
              before(grammarAccess.getKInsetsAccess().getGroup_6()); 
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:17073:1: ( rule__KInsets__Group_6__0 )?
-            int alt123=2;
-            int LA123_0 = input.LA(1);
+            int alt124=2;
+            int LA124_0 = input.LA(1);
 
+<<<<<<< HEAD
             if ( (LA123_0==71) ) {
                 alt123=1;
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
             }
             switch (alt117) {
+=======
+            if ( (LA124_0==71) ) {
+                alt124=1;
+            }
+            switch (alt124) {
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
                 case 1 :
 <<<<<<< HEAD
                     // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:16660:2: rule__KInsets__Group_6__0
@@ -48337,8 +49566,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
 =======
                     // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:17073:2: rule__KInsets__Group_6__0
                     {
+<<<<<<< HEAD
                     pushFollow(FollowSets001.FOLLOW_rule__KInsets__Group_6__0_in_rule__KInsets__Group__6__Impl33979);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+                    pushFollow(FollowSets001.FOLLOW_rule__KInsets__Group_6__0_in_rule__KInsets__Group__6__Impl33980);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
                     rule__KInsets__Group_6__0();
 
                     state._fsp--;
@@ -48391,8 +49624,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:17087:1: ( rule__KInsets__Group__7__Impl )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:17088:2: rule__KInsets__Group__7__Impl
             {
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KInsets__Group__7__Impl_in_rule__KInsets__Group__734010);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KInsets__Group__7__Impl_in_rule__KInsets__Group__734011);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KInsets__Group__7__Impl();
 
             state._fsp--;
@@ -48443,8 +49680,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:17100:1: '}'
             {
              before(grammarAccess.getKInsetsAccess().getRightCurlyBracketKeyword_7()); 
+<<<<<<< HEAD
             match(input,28,FollowSets001.FOLLOW_28_in_rule__KInsets__Group__7__Impl34038); 
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            match(input,28,FollowSets001.FOLLOW_28_in_rule__KInsets__Group__7__Impl34039); 
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
              after(grammarAccess.getKInsetsAccess().getRightCurlyBracketKeyword_7()); 
 
             }
@@ -48487,17 +49728,25 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:17133:1: ( rule__KInsets__Group_3__0__Impl rule__KInsets__Group_3__1 )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:17134:2: rule__KInsets__Group_3__0__Impl rule__KInsets__Group_3__1
             {
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KInsets__Group_3__0__Impl_in_rule__KInsets__Group_3__034085);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KInsets__Group_3__0__Impl_in_rule__KInsets__Group_3__034086);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KInsets__Group_3__0__Impl();
 
             state._fsp--;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KInsets__Group_3__1_in_rule__KInsets__Group_3__033226);
 =======
             pushFollow(FollowSets001.FOLLOW_rule__KInsets__Group_3__1_in_rule__KInsets__Group_3__034088);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KInsets__Group_3__1_in_rule__KInsets__Group_3__034089);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KInsets__Group_3__1();
 
             state._fsp--;
@@ -48548,8 +49797,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:17147:1: 'top'
             {
              before(grammarAccess.getKInsetsAccess().getTopKeyword_3_0()); 
+<<<<<<< HEAD
             match(input,72,FollowSets001.FOLLOW_72_in_rule__KInsets__Group_3__0__Impl34116); 
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            match(input,72,FollowSets001.FOLLOW_72_in_rule__KInsets__Group_3__0__Impl34117); 
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
              after(grammarAccess.getKInsetsAccess().getTopKeyword_3_0()); 
 
             }
@@ -48592,8 +49845,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:17164:1: ( rule__KInsets__Group_3__1__Impl )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:17165:2: rule__KInsets__Group_3__1__Impl
             {
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KInsets__Group_3__1__Impl_in_rule__KInsets__Group_3__134147);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KInsets__Group_3__1__Impl_in_rule__KInsets__Group_3__134148);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KInsets__Group_3__1__Impl();
 
             state._fsp--;
@@ -48650,8 +49907,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:17178:1: ( rule__KInsets__TopAssignment_3_1 )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:17178:2: rule__KInsets__TopAssignment_3_1
             {
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KInsets__TopAssignment_3_1_in_rule__KInsets__Group_3__1__Impl34174);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KInsets__TopAssignment_3_1_in_rule__KInsets__Group_3__1__Impl34175);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KInsets__TopAssignment_3_1();
 
             state._fsp--;
@@ -48701,17 +49962,25 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:17196:1: ( rule__KInsets__Group_4__0__Impl rule__KInsets__Group_4__1 )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:17197:2: rule__KInsets__Group_4__0__Impl rule__KInsets__Group_4__1
             {
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KInsets__Group_4__0__Impl_in_rule__KInsets__Group_4__034208);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KInsets__Group_4__0__Impl_in_rule__KInsets__Group_4__034209);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KInsets__Group_4__0__Impl();
 
             state._fsp--;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KInsets__Group_4__1_in_rule__KInsets__Group_4__033349);
 =======
             pushFollow(FollowSets001.FOLLOW_rule__KInsets__Group_4__1_in_rule__KInsets__Group_4__034211);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KInsets__Group_4__1_in_rule__KInsets__Group_4__034212);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KInsets__Group_4__1();
 
             state._fsp--;
@@ -48762,8 +50031,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:17210:1: 'bottom'
             {
              before(grammarAccess.getKInsetsAccess().getBottomKeyword_4_0()); 
+<<<<<<< HEAD
             match(input,73,FollowSets001.FOLLOW_73_in_rule__KInsets__Group_4__0__Impl34239); 
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            match(input,73,FollowSets001.FOLLOW_73_in_rule__KInsets__Group_4__0__Impl34240); 
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
              after(grammarAccess.getKInsetsAccess().getBottomKeyword_4_0()); 
 
             }
@@ -48806,8 +50079,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:17227:1: ( rule__KInsets__Group_4__1__Impl )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:17228:2: rule__KInsets__Group_4__1__Impl
             {
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KInsets__Group_4__1__Impl_in_rule__KInsets__Group_4__134270);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KInsets__Group_4__1__Impl_in_rule__KInsets__Group_4__134271);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KInsets__Group_4__1__Impl();
 
             state._fsp--;
@@ -48864,8 +50141,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:17241:1: ( rule__KInsets__BottomAssignment_4_1 )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:17241:2: rule__KInsets__BottomAssignment_4_1
             {
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KInsets__BottomAssignment_4_1_in_rule__KInsets__Group_4__1__Impl34297);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KInsets__BottomAssignment_4_1_in_rule__KInsets__Group_4__1__Impl34298);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KInsets__BottomAssignment_4_1();
 
             state._fsp--;
@@ -48915,17 +50196,25 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:17259:1: ( rule__KInsets__Group_5__0__Impl rule__KInsets__Group_5__1 )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:17260:2: rule__KInsets__Group_5__0__Impl rule__KInsets__Group_5__1
             {
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KInsets__Group_5__0__Impl_in_rule__KInsets__Group_5__034331);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KInsets__Group_5__0__Impl_in_rule__KInsets__Group_5__034332);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KInsets__Group_5__0__Impl();
 
             state._fsp--;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KInsets__Group_5__1_in_rule__KInsets__Group_5__033472);
 =======
             pushFollow(FollowSets001.FOLLOW_rule__KInsets__Group_5__1_in_rule__KInsets__Group_5__034334);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KInsets__Group_5__1_in_rule__KInsets__Group_5__034335);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KInsets__Group_5__1();
 
             state._fsp--;
@@ -48976,8 +50265,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:17273:1: 'left'
             {
              before(grammarAccess.getKInsetsAccess().getLeftKeyword_5_0()); 
+<<<<<<< HEAD
             match(input,70,FollowSets001.FOLLOW_70_in_rule__KInsets__Group_5__0__Impl34362); 
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            match(input,70,FollowSets001.FOLLOW_70_in_rule__KInsets__Group_5__0__Impl34363); 
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
              after(grammarAccess.getKInsetsAccess().getLeftKeyword_5_0()); 
 
             }
@@ -49020,8 +50313,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:17290:1: ( rule__KInsets__Group_5__1__Impl )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:17291:2: rule__KInsets__Group_5__1__Impl
             {
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KInsets__Group_5__1__Impl_in_rule__KInsets__Group_5__134393);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KInsets__Group_5__1__Impl_in_rule__KInsets__Group_5__134394);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KInsets__Group_5__1__Impl();
 
             state._fsp--;
@@ -49078,8 +50375,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:17304:1: ( rule__KInsets__LeftAssignment_5_1 )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:17304:2: rule__KInsets__LeftAssignment_5_1
             {
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KInsets__LeftAssignment_5_1_in_rule__KInsets__Group_5__1__Impl34420);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KInsets__LeftAssignment_5_1_in_rule__KInsets__Group_5__1__Impl34421);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KInsets__LeftAssignment_5_1();
 
             state._fsp--;
@@ -49129,17 +50430,25 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:17322:1: ( rule__KInsets__Group_6__0__Impl rule__KInsets__Group_6__1 )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:17323:2: rule__KInsets__Group_6__0__Impl rule__KInsets__Group_6__1
             {
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KInsets__Group_6__0__Impl_in_rule__KInsets__Group_6__034454);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KInsets__Group_6__0__Impl_in_rule__KInsets__Group_6__034455);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KInsets__Group_6__0__Impl();
 
             state._fsp--;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KInsets__Group_6__1_in_rule__KInsets__Group_6__033595);
 =======
             pushFollow(FollowSets001.FOLLOW_rule__KInsets__Group_6__1_in_rule__KInsets__Group_6__034457);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KInsets__Group_6__1_in_rule__KInsets__Group_6__034458);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KInsets__Group_6__1();
 
             state._fsp--;
@@ -49190,8 +50499,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:17336:1: 'right'
             {
              before(grammarAccess.getKInsetsAccess().getRightKeyword_6_0()); 
+<<<<<<< HEAD
             match(input,71,FollowSets001.FOLLOW_71_in_rule__KInsets__Group_6__0__Impl34485); 
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            match(input,71,FollowSets001.FOLLOW_71_in_rule__KInsets__Group_6__0__Impl34486); 
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
              after(grammarAccess.getKInsetsAccess().getRightKeyword_6_0()); 
 
             }
@@ -49234,8 +50547,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:17353:1: ( rule__KInsets__Group_6__1__Impl )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:17354:2: rule__KInsets__Group_6__1__Impl
             {
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KInsets__Group_6__1__Impl_in_rule__KInsets__Group_6__134516);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KInsets__Group_6__1__Impl_in_rule__KInsets__Group_6__134517);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KInsets__Group_6__1__Impl();
 
             state._fsp--;
@@ -49292,8 +50609,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:17367:1: ( rule__KInsets__RightAssignment_6_1 )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:17367:2: rule__KInsets__RightAssignment_6_1
             {
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KInsets__RightAssignment_6_1_in_rule__KInsets__Group_6__1__Impl34543);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KInsets__RightAssignment_6_1_in_rule__KInsets__Group_6__1__Impl34544);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KInsets__RightAssignment_6_1();
 
             state._fsp--;
@@ -49343,17 +50664,25 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:17390:1: ( rule__KPoint__Group__0__Impl rule__KPoint__Group__1 )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:17391:2: rule__KPoint__Group__0__Impl rule__KPoint__Group__1
             {
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KPoint__Group__0__Impl_in_rule__KPoint__Group__034582);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KPoint__Group__0__Impl_in_rule__KPoint__Group__034583);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KPoint__Group__0__Impl();
 
             state._fsp--;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KPoint__Group__1_in_rule__KPoint__Group__033723);
 =======
             pushFollow(FollowSets001.FOLLOW_rule__KPoint__Group__1_in_rule__KPoint__Group__034585);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KPoint__Group__1_in_rule__KPoint__Group__034586);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KPoint__Group__1();
 
             state._fsp--;
@@ -49449,17 +50778,25 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:17421:1: ( rule__KPoint__Group__1__Impl rule__KPoint__Group__2 )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:17422:2: rule__KPoint__Group__1__Impl rule__KPoint__Group__2
             {
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KPoint__Group__1__Impl_in_rule__KPoint__Group__134643);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KPoint__Group__1__Impl_in_rule__KPoint__Group__134644);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KPoint__Group__1__Impl();
 
             state._fsp--;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KPoint__Group__2_in_rule__KPoint__Group__133784);
 =======
             pushFollow(FollowSets001.FOLLOW_rule__KPoint__Group__2_in_rule__KPoint__Group__134646);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KPoint__Group__2_in_rule__KPoint__Group__134647);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KPoint__Group__2();
 
             state._fsp--;
@@ -49510,8 +50847,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:17435:1: 'KPoint'
             {
              before(grammarAccess.getKPointAccess().getKPointKeyword_1()); 
+<<<<<<< HEAD
             match(input,90,FollowSets001.FOLLOW_90_in_rule__KPoint__Group__1__Impl34674); 
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            match(input,90,FollowSets001.FOLLOW_90_in_rule__KPoint__Group__1__Impl34675); 
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
              after(grammarAccess.getKPointAccess().getKPointKeyword_1()); 
 
             }
@@ -49554,17 +50895,25 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:17452:1: ( rule__KPoint__Group__2__Impl rule__KPoint__Group__3 )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:17453:2: rule__KPoint__Group__2__Impl rule__KPoint__Group__3
             {
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KPoint__Group__2__Impl_in_rule__KPoint__Group__234705);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KPoint__Group__2__Impl_in_rule__KPoint__Group__234706);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KPoint__Group__2__Impl();
 
             state._fsp--;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KPoint__Group__3_in_rule__KPoint__Group__233846);
 =======
             pushFollow(FollowSets001.FOLLOW_rule__KPoint__Group__3_in_rule__KPoint__Group__234708);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KPoint__Group__3_in_rule__KPoint__Group__234709);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KPoint__Group__3();
 
             state._fsp--;
@@ -49621,8 +50970,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:17467:1: ( rule__KPoint__Group_2__0 )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:17467:2: rule__KPoint__Group_2__0
             {
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KPoint__Group_2__0_in_rule__KPoint__Group__2__Impl34735);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KPoint__Group_2__0_in_rule__KPoint__Group__2__Impl34736);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KPoint__Group_2__0();
 
             state._fsp--;
@@ -49672,8 +51025,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:17481:1: ( rule__KPoint__Group__3__Impl )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:17482:2: rule__KPoint__Group__3__Impl
             {
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KPoint__Group__3__Impl_in_rule__KPoint__Group__334765);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KPoint__Group__3__Impl_in_rule__KPoint__Group__334766);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KPoint__Group__3__Impl();
 
             state._fsp--;
@@ -49730,8 +51087,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:17495:1: ( rule__KPoint__Group_3__0 )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:17495:2: rule__KPoint__Group_3__0
             {
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KPoint__Group_3__0_in_rule__KPoint__Group__3__Impl34792);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KPoint__Group_3__0_in_rule__KPoint__Group__3__Impl34793);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KPoint__Group_3__0();
 
             state._fsp--;
@@ -49781,17 +51142,25 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:17517:1: ( rule__KPoint__Group_2__0__Impl rule__KPoint__Group_2__1 )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:17518:2: rule__KPoint__Group_2__0__Impl rule__KPoint__Group_2__1
             {
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KPoint__Group_2__0__Impl_in_rule__KPoint__Group_2__034830);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KPoint__Group_2__0__Impl_in_rule__KPoint__Group_2__034831);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KPoint__Group_2__0__Impl();
 
             state._fsp--;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KPoint__Group_2__1_in_rule__KPoint__Group_2__033971);
 =======
             pushFollow(FollowSets001.FOLLOW_rule__KPoint__Group_2__1_in_rule__KPoint__Group_2__034833);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KPoint__Group_2__1_in_rule__KPoint__Group_2__034834);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KPoint__Group_2__1();
 
             state._fsp--;
@@ -49842,8 +51211,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:17531:1: 'x'
             {
              before(grammarAccess.getKPointAccess().getXKeyword_2_0()); 
+<<<<<<< HEAD
             match(input,91,FollowSets001.FOLLOW_91_in_rule__KPoint__Group_2__0__Impl34861); 
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            match(input,91,FollowSets001.FOLLOW_91_in_rule__KPoint__Group_2__0__Impl34862); 
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
              after(grammarAccess.getKPointAccess().getXKeyword_2_0()); 
 
             }
@@ -49886,8 +51259,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:17548:1: ( rule__KPoint__Group_2__1__Impl )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:17549:2: rule__KPoint__Group_2__1__Impl
             {
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KPoint__Group_2__1__Impl_in_rule__KPoint__Group_2__134892);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KPoint__Group_2__1__Impl_in_rule__KPoint__Group_2__134893);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KPoint__Group_2__1__Impl();
 
             state._fsp--;
@@ -49944,8 +51321,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:17562:1: ( rule__KPoint__XAssignment_2_1 )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:17562:2: rule__KPoint__XAssignment_2_1
             {
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KPoint__XAssignment_2_1_in_rule__KPoint__Group_2__1__Impl34919);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KPoint__XAssignment_2_1_in_rule__KPoint__Group_2__1__Impl34920);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KPoint__XAssignment_2_1();
 
             state._fsp--;
@@ -49995,17 +51376,25 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:17580:1: ( rule__KPoint__Group_3__0__Impl rule__KPoint__Group_3__1 )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:17581:2: rule__KPoint__Group_3__0__Impl rule__KPoint__Group_3__1
             {
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KPoint__Group_3__0__Impl_in_rule__KPoint__Group_3__034953);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KPoint__Group_3__0__Impl_in_rule__KPoint__Group_3__034954);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KPoint__Group_3__0__Impl();
 
             state._fsp--;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KPoint__Group_3__1_in_rule__KPoint__Group_3__034094);
 =======
             pushFollow(FollowSets001.FOLLOW_rule__KPoint__Group_3__1_in_rule__KPoint__Group_3__034956);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KPoint__Group_3__1_in_rule__KPoint__Group_3__034957);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KPoint__Group_3__1();
 
             state._fsp--;
@@ -50056,8 +51445,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:17594:1: 'y'
             {
              before(grammarAccess.getKPointAccess().getYKeyword_3_0()); 
+<<<<<<< HEAD
             match(input,92,FollowSets001.FOLLOW_92_in_rule__KPoint__Group_3__0__Impl34984); 
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            match(input,92,FollowSets001.FOLLOW_92_in_rule__KPoint__Group_3__0__Impl34985); 
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
              after(grammarAccess.getKPointAccess().getYKeyword_3_0()); 
 
             }
@@ -50100,8 +51493,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:17611:1: ( rule__KPoint__Group_3__1__Impl )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:17612:2: rule__KPoint__Group_3__1__Impl
             {
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KPoint__Group_3__1__Impl_in_rule__KPoint__Group_3__135015);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KPoint__Group_3__1__Impl_in_rule__KPoint__Group_3__135016);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KPoint__Group_3__1__Impl();
 
             state._fsp--;
@@ -50158,8 +51555,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:17625:1: ( rule__KPoint__YAssignment_3_1 )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:17625:2: rule__KPoint__YAssignment_3_1
             {
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__KPoint__YAssignment_3_1_in_rule__KPoint__Group_3__1__Impl35042);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__KPoint__YAssignment_3_1_in_rule__KPoint__Group_3__1__Impl35043);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__KPoint__YAssignment_3_1();
 
             state._fsp--;
@@ -50209,17 +51610,25 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:17643:1: ( rule__PersistentEntry__Group__0__Impl rule__PersistentEntry__Group__1 )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:17644:2: rule__PersistentEntry__Group__0__Impl rule__PersistentEntry__Group__1
             {
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__PersistentEntry__Group__0__Impl_in_rule__PersistentEntry__Group__035076);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__PersistentEntry__Group__0__Impl_in_rule__PersistentEntry__Group__035077);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__PersistentEntry__Group__0__Impl();
 
             state._fsp--;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__PersistentEntry__Group__1_in_rule__PersistentEntry__Group__034217);
 =======
             pushFollow(FollowSets001.FOLLOW_rule__PersistentEntry__Group__1_in_rule__PersistentEntry__Group__035079);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__PersistentEntry__Group__1_in_rule__PersistentEntry__Group__035080);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__PersistentEntry__Group__1();
 
             state._fsp--;
@@ -50276,8 +51685,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:17658:1: ( rule__PersistentEntry__KeyAssignment_0 )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:17658:2: rule__PersistentEntry__KeyAssignment_0
             {
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__PersistentEntry__KeyAssignment_0_in_rule__PersistentEntry__Group__0__Impl35106);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__PersistentEntry__KeyAssignment_0_in_rule__PersistentEntry__Group__0__Impl35107);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__PersistentEntry__KeyAssignment_0();
 
             state._fsp--;
@@ -50327,8 +51740,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:17672:1: ( rule__PersistentEntry__Group__1__Impl )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:17673:2: rule__PersistentEntry__Group__1__Impl
             {
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__PersistentEntry__Group__1__Impl_in_rule__PersistentEntry__Group__135136);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__PersistentEntry__Group__1__Impl_in_rule__PersistentEntry__Group__135137);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__PersistentEntry__Group__1__Impl();
 
             state._fsp--;
@@ -50385,14 +51802,21 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             {
              before(grammarAccess.getPersistentEntryAccess().getGroup_1()); 
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:17686:1: ( rule__PersistentEntry__Group_1__0 )?
-            int alt124=2;
-            int LA124_0 = input.LA(1);
+            int alt125=2;
+            int LA125_0 = input.LA(1);
 
+<<<<<<< HEAD
             if ( (LA124_0==93) ) {
                 alt124=1;
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
             }
             switch (alt118) {
+=======
+            if ( (LA125_0==93) ) {
+                alt125=1;
+            }
+            switch (alt125) {
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
                 case 1 :
 <<<<<<< HEAD
                     // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:17273:2: rule__PersistentEntry__Group_1__0
@@ -50401,8 +51825,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
 =======
                     // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:17686:2: rule__PersistentEntry__Group_1__0
                     {
+<<<<<<< HEAD
                     pushFollow(FollowSets001.FOLLOW_rule__PersistentEntry__Group_1__0_in_rule__PersistentEntry__Group__1__Impl35163);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+                    pushFollow(FollowSets001.FOLLOW_rule__PersistentEntry__Group_1__0_in_rule__PersistentEntry__Group__1__Impl35164);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
                     rule__PersistentEntry__Group_1__0();
 
                     state._fsp--;
@@ -50455,17 +51883,25 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:17704:1: ( rule__PersistentEntry__Group_1__0__Impl rule__PersistentEntry__Group_1__1 )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:17705:2: rule__PersistentEntry__Group_1__0__Impl rule__PersistentEntry__Group_1__1
             {
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__PersistentEntry__Group_1__0__Impl_in_rule__PersistentEntry__Group_1__035198);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__PersistentEntry__Group_1__0__Impl_in_rule__PersistentEntry__Group_1__035199);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__PersistentEntry__Group_1__0__Impl();
 
             state._fsp--;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__PersistentEntry__Group_1__1_in_rule__PersistentEntry__Group_1__034339);
 =======
             pushFollow(FollowSets001.FOLLOW_rule__PersistentEntry__Group_1__1_in_rule__PersistentEntry__Group_1__035201);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__PersistentEntry__Group_1__1_in_rule__PersistentEntry__Group_1__035202);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__PersistentEntry__Group_1__1();
 
             state._fsp--;
@@ -50516,8 +51952,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:17718:1: '='
             {
              before(grammarAccess.getPersistentEntryAccess().getEqualsSignKeyword_1_0()); 
+<<<<<<< HEAD
             match(input,93,FollowSets001.FOLLOW_93_in_rule__PersistentEntry__Group_1__0__Impl35229); 
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            match(input,93,FollowSets001.FOLLOW_93_in_rule__PersistentEntry__Group_1__0__Impl35230); 
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
              after(grammarAccess.getPersistentEntryAccess().getEqualsSignKeyword_1_0()); 
 
             }
@@ -50560,8 +52000,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:17735:1: ( rule__PersistentEntry__Group_1__1__Impl )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:17736:2: rule__PersistentEntry__Group_1__1__Impl
             {
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__PersistentEntry__Group_1__1__Impl_in_rule__PersistentEntry__Group_1__135260);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__PersistentEntry__Group_1__1__Impl_in_rule__PersistentEntry__Group_1__135261);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__PersistentEntry__Group_1__1__Impl();
 
             state._fsp--;
@@ -50618,8 +52062,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:17749:1: ( rule__PersistentEntry__ValueAssignment_1_1 )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:17749:2: rule__PersistentEntry__ValueAssignment_1_1
             {
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_rule__PersistentEntry__ValueAssignment_1_1_in_rule__PersistentEntry__Group_1__1__Impl35287);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_rule__PersistentEntry__ValueAssignment_1_1_in_rule__PersistentEntry__Group_1__1__Impl35288);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             rule__PersistentEntry__ValueAssignment_1_1();
 
             state._fsp--;
@@ -50677,8 +52125,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:17770:1: ruleKRendering
             {
              before(grammarAccess.getKRenderingLibraryAccess().getRenderingsKRenderingParserRuleCall_3_0_0()); 
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_ruleKRendering_in_rule__KRenderingLibrary__RenderingsAssignment_3_035326);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_ruleKRendering_in_rule__KRenderingLibrary__RenderingsAssignment_3_035327);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             ruleKRendering();
 
             state._fsp--;
@@ -50733,8 +52185,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:17785:1: ruleKRendering
             {
              before(grammarAccess.getKRenderingLibraryAccess().getRenderingsKRenderingParserRuleCall_3_1_1_0()); 
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_ruleKRendering_in_rule__KRenderingLibrary__RenderingsAssignment_3_1_135357);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_ruleKRendering_in_rule__KRenderingLibrary__RenderingsAssignment_3_1_135358);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             ruleKRendering();
 
             state._fsp--;
@@ -50797,8 +52253,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:17802:1: ruleEString
             {
              before(grammarAccess.getKRenderingRefAccess().getRenderingKRenderingEStringParserRuleCall_2_0_1()); 
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_ruleEString_in_rule__KRenderingRef__RenderingAssignment_235392);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_ruleEString_in_rule__KRenderingRef__RenderingAssignment_235393);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             ruleEString();
 
             state._fsp--;
@@ -50857,8 +52317,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:17819:1: ruleKPlacementData
             {
              before(grammarAccess.getKRenderingRefAccess().getPlacementDataKPlacementDataParserRuleCall_3_1_1_0()); 
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_ruleKPlacementData_in_rule__KRenderingRef__PlacementDataAssignment_3_1_135427);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_ruleKPlacementData_in_rule__KRenderingRef__PlacementDataAssignment_3_1_135428);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             ruleKPlacementData();
 
             state._fsp--;
@@ -50913,8 +52377,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:17834:1: ruleKStyle
             {
              before(grammarAccess.getKRenderingRefAccess().getStylesKStyleParserRuleCall_3_2_2_0()); 
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_ruleKStyle_in_rule__KRenderingRef__StylesAssignment_3_2_235458);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_ruleKStyle_in_rule__KRenderingRef__StylesAssignment_3_2_235459);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             ruleKStyle();
 
             state._fsp--;
@@ -50969,8 +52437,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:17849:1: ruleKStyle
             {
              before(grammarAccess.getKRenderingRefAccess().getStylesKStyleParserRuleCall_3_2_3_1_0()); 
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_ruleKStyle_in_rule__KRenderingRef__StylesAssignment_3_2_3_135489);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_ruleKStyle_in_rule__KRenderingRef__StylesAssignment_3_2_3_135490);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             ruleKStyle();
 
             state._fsp--;
@@ -51025,8 +52497,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:17864:1: ruleKStyle
             {
              before(grammarAccess.getKEllipseAccess().getStylesKStyleParserRuleCall_2_1_2_0()); 
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_ruleKStyle_in_rule__KEllipse__StylesAssignment_2_1_235520);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_ruleKStyle_in_rule__KEllipse__StylesAssignment_2_1_235521);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             ruleKStyle();
 
             state._fsp--;
@@ -51081,8 +52557,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:17879:1: ruleKStyle
             {
              before(grammarAccess.getKEllipseAccess().getStylesKStyleParserRuleCall_2_1_3_1_0()); 
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_ruleKStyle_in_rule__KEllipse__StylesAssignment_2_1_3_135551);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_ruleKStyle_in_rule__KEllipse__StylesAssignment_2_1_3_135552);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             ruleKStyle();
 
             state._fsp--;
@@ -51137,8 +52617,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:17894:1: ruleKPlacementData
             {
              before(grammarAccess.getKEllipseAccess().getPlacementDataKPlacementDataParserRuleCall_2_2_2_0()); 
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_ruleKPlacementData_in_rule__KEllipse__PlacementDataAssignment_2_2_235582);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_ruleKPlacementData_in_rule__KEllipse__PlacementDataAssignment_2_2_235583);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             ruleKPlacementData();
 
             state._fsp--;
@@ -51193,8 +52677,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:17909:1: ruleKPlacement
             {
              before(grammarAccess.getKEllipseAccess().getChildPlacementKPlacementParserRuleCall_2_3_2_0()); 
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_ruleKPlacement_in_rule__KEllipse__ChildPlacementAssignment_2_3_235613);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_ruleKPlacement_in_rule__KEllipse__ChildPlacementAssignment_2_3_235614);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             ruleKPlacement();
 
             state._fsp--;
@@ -51249,8 +52737,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:17924:1: ruleKRendering
             {
              before(grammarAccess.getKEllipseAccess().getChildrenKRenderingParserRuleCall_2_4_2_0()); 
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_ruleKRendering_in_rule__KEllipse__ChildrenAssignment_2_4_235644);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_ruleKRendering_in_rule__KEllipse__ChildrenAssignment_2_4_235645);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             ruleKRendering();
 
             state._fsp--;
@@ -51305,8 +52797,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:17939:1: ruleKRendering
             {
              before(grammarAccess.getKEllipseAccess().getChildrenKRenderingParserRuleCall_2_4_3_1_0()); 
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_ruleKRendering_in_rule__KEllipse__ChildrenAssignment_2_4_3_135675);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_ruleKRendering_in_rule__KEllipse__ChildrenAssignment_2_4_3_135676);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             ruleKRendering();
 
             state._fsp--;
@@ -51361,8 +52857,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:17954:1: ruleKStyle
             {
              before(grammarAccess.getKRectangleAccess().getStylesKStyleParserRuleCall_2_1_2_0()); 
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_ruleKStyle_in_rule__KRectangle__StylesAssignment_2_1_235706);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_ruleKStyle_in_rule__KRectangle__StylesAssignment_2_1_235707);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             ruleKStyle();
 
             state._fsp--;
@@ -51417,8 +52917,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:17969:1: ruleKStyle
             {
              before(grammarAccess.getKRectangleAccess().getStylesKStyleParserRuleCall_2_1_3_1_0()); 
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_ruleKStyle_in_rule__KRectangle__StylesAssignment_2_1_3_135737);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_ruleKStyle_in_rule__KRectangle__StylesAssignment_2_1_3_135738);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             ruleKStyle();
 
             state._fsp--;
@@ -51473,8 +52977,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:17984:1: ruleKPlacementData
             {
              before(grammarAccess.getKRectangleAccess().getPlacementDataKPlacementDataParserRuleCall_2_2_2_0()); 
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_ruleKPlacementData_in_rule__KRectangle__PlacementDataAssignment_2_2_235768);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_ruleKPlacementData_in_rule__KRectangle__PlacementDataAssignment_2_2_235769);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             ruleKPlacementData();
 
             state._fsp--;
@@ -51529,8 +53037,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:17999:1: ruleKPlacement
             {
              before(grammarAccess.getKRectangleAccess().getChildPlacementKPlacementParserRuleCall_2_3_2_0()); 
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_ruleKPlacement_in_rule__KRectangle__ChildPlacementAssignment_2_3_235799);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_ruleKPlacement_in_rule__KRectangle__ChildPlacementAssignment_2_3_235800);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             ruleKPlacement();
 
             state._fsp--;
@@ -51585,8 +53097,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:18014:1: ruleKRendering
             {
              before(grammarAccess.getKRectangleAccess().getChildrenKRenderingParserRuleCall_2_4_2_0()); 
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_ruleKRendering_in_rule__KRectangle__ChildrenAssignment_2_4_235830);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_ruleKRendering_in_rule__KRectangle__ChildrenAssignment_2_4_235831);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             ruleKRendering();
 
             state._fsp--;
@@ -51641,8 +53157,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:18029:1: ruleKRendering
             {
              before(grammarAccess.getKRectangleAccess().getChildrenKRenderingParserRuleCall_2_4_3_1_0()); 
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_ruleKRendering_in_rule__KRectangle__ChildrenAssignment_2_4_3_135861);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_ruleKRendering_in_rule__KRectangle__ChildrenAssignment_2_4_3_135862);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             ruleKRendering();
 
             state._fsp--;
@@ -51697,8 +53217,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:18044:1: ruleEFloat
             {
              before(grammarAccess.getKRoundedRectangleAccess().getCornerWidthEFloatParserRuleCall_2_0()); 
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_ruleEFloat_in_rule__KRoundedRectangle__CornerWidthAssignment_235892);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_ruleEFloat_in_rule__KRoundedRectangle__CornerWidthAssignment_235893);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             ruleEFloat();
 
             state._fsp--;
@@ -51753,8 +53277,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:18059:1: ruleEFloat
             {
              before(grammarAccess.getKRoundedRectangleAccess().getCornerHeightEFloatParserRuleCall_4_0()); 
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_ruleEFloat_in_rule__KRoundedRectangle__CornerHeightAssignment_435923);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_ruleEFloat_in_rule__KRoundedRectangle__CornerHeightAssignment_435924);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             ruleEFloat();
 
             state._fsp--;
@@ -51809,8 +53337,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:18074:1: ruleKStyle
             {
              before(grammarAccess.getKRoundedRectangleAccess().getStylesKStyleParserRuleCall_5_1_2_0()); 
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_ruleKStyle_in_rule__KRoundedRectangle__StylesAssignment_5_1_235954);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_ruleKStyle_in_rule__KRoundedRectangle__StylesAssignment_5_1_235955);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             ruleKStyle();
 
             state._fsp--;
@@ -51865,8 +53397,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:18089:1: ruleKStyle
             {
              before(grammarAccess.getKRoundedRectangleAccess().getStylesKStyleParserRuleCall_5_1_3_1_0()); 
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_ruleKStyle_in_rule__KRoundedRectangle__StylesAssignment_5_1_3_135985);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_ruleKStyle_in_rule__KRoundedRectangle__StylesAssignment_5_1_3_135986);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             ruleKStyle();
 
             state._fsp--;
@@ -51921,8 +53457,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:18104:1: ruleKPlacementData
             {
              before(grammarAccess.getKRoundedRectangleAccess().getPlacementDataKPlacementDataParserRuleCall_5_2_2_0()); 
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_ruleKPlacementData_in_rule__KRoundedRectangle__PlacementDataAssignment_5_2_236016);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_ruleKPlacementData_in_rule__KRoundedRectangle__PlacementDataAssignment_5_2_236017);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             ruleKPlacementData();
 
             state._fsp--;
@@ -51977,8 +53517,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:18119:1: ruleKPlacement
             {
              before(grammarAccess.getKRoundedRectangleAccess().getChildPlacementKPlacementParserRuleCall_5_3_2_0()); 
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_ruleKPlacement_in_rule__KRoundedRectangle__ChildPlacementAssignment_5_3_236047);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_ruleKPlacement_in_rule__KRoundedRectangle__ChildPlacementAssignment_5_3_236048);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             ruleKPlacement();
 
             state._fsp--;
@@ -52033,8 +53577,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:18134:1: ruleKRendering
             {
              before(grammarAccess.getKRoundedRectangleAccess().getChildrenKRenderingParserRuleCall_5_4_2_0()); 
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_ruleKRendering_in_rule__KRoundedRectangle__ChildrenAssignment_5_4_236078);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_ruleKRendering_in_rule__KRoundedRectangle__ChildrenAssignment_5_4_236079);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             ruleKRendering();
 
             state._fsp--;
@@ -52089,8 +53637,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:18149:1: ruleKRendering
             {
              before(grammarAccess.getKRoundedRectangleAccess().getChildrenKRenderingParserRuleCall_5_4_3_1_0()); 
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_ruleKRendering_in_rule__KRoundedRectangle__ChildrenAssignment_5_4_3_136109);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_ruleKRendering_in_rule__KRoundedRectangle__ChildrenAssignment_5_4_3_136110);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             ruleKRendering();
 
             state._fsp--;
@@ -52145,8 +53697,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:18164:1: ruleKStyle
             {
              before(grammarAccess.getKPolyline_ImplAccess().getStylesKStyleParserRuleCall_2_1_2_0()); 
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_ruleKStyle_in_rule__KPolyline_Impl__StylesAssignment_2_1_236140);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_ruleKStyle_in_rule__KPolyline_Impl__StylesAssignment_2_1_236141);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             ruleKStyle();
 
             state._fsp--;
@@ -52201,8 +53757,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:18179:1: ruleKStyle
             {
              before(grammarAccess.getKPolyline_ImplAccess().getStylesKStyleParserRuleCall_2_1_3_1_0()); 
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_ruleKStyle_in_rule__KPolyline_Impl__StylesAssignment_2_1_3_136171);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_ruleKStyle_in_rule__KPolyline_Impl__StylesAssignment_2_1_3_136172);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             ruleKStyle();
 
             state._fsp--;
@@ -52257,8 +53817,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:18194:1: ruleKPlacementData
             {
              before(grammarAccess.getKPolyline_ImplAccess().getPlacementDataKPlacementDataParserRuleCall_2_2_2_0()); 
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_ruleKPlacementData_in_rule__KPolyline_Impl__PlacementDataAssignment_2_2_236202);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_ruleKPlacementData_in_rule__KPolyline_Impl__PlacementDataAssignment_2_2_236203);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             ruleKPlacementData();
 
             state._fsp--;
@@ -52313,8 +53877,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:18209:1: ruleKPlacement
             {
              before(grammarAccess.getKPolyline_ImplAccess().getChildPlacementKPlacementParserRuleCall_2_3_2_0()); 
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_ruleKPlacement_in_rule__KPolyline_Impl__ChildPlacementAssignment_2_3_236233);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_ruleKPlacement_in_rule__KPolyline_Impl__ChildPlacementAssignment_2_3_236234);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             ruleKPlacement();
 
             state._fsp--;
@@ -52369,8 +53937,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:18224:1: ruleKRendering
             {
              before(grammarAccess.getKPolyline_ImplAccess().getChildrenKRenderingParserRuleCall_2_4_2_0()); 
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_ruleKRendering_in_rule__KPolyline_Impl__ChildrenAssignment_2_4_236264);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_ruleKRendering_in_rule__KPolyline_Impl__ChildrenAssignment_2_4_236265);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             ruleKRendering();
 
             state._fsp--;
@@ -52425,8 +53997,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:18239:1: ruleKRendering
             {
              before(grammarAccess.getKPolyline_ImplAccess().getChildrenKRenderingParserRuleCall_2_4_3_1_0()); 
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_ruleKRendering_in_rule__KPolyline_Impl__ChildrenAssignment_2_4_3_136295);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_ruleKRendering_in_rule__KPolyline_Impl__ChildrenAssignment_2_4_3_136296);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             ruleKRendering();
 
             state._fsp--;
@@ -52481,8 +54057,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:18254:1: ruleKStyle
             {
              before(grammarAccess.getKPolygonAccess().getStylesKStyleParserRuleCall_2_1_2_0()); 
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_ruleKStyle_in_rule__KPolygon__StylesAssignment_2_1_236326);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_ruleKStyle_in_rule__KPolygon__StylesAssignment_2_1_236327);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             ruleKStyle();
 
             state._fsp--;
@@ -52537,8 +54117,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:18269:1: ruleKStyle
             {
              before(grammarAccess.getKPolygonAccess().getStylesKStyleParserRuleCall_2_1_3_1_0()); 
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_ruleKStyle_in_rule__KPolygon__StylesAssignment_2_1_3_136357);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_ruleKStyle_in_rule__KPolygon__StylesAssignment_2_1_3_136358);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             ruleKStyle();
 
             state._fsp--;
@@ -52593,8 +54177,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:18284:1: ruleKPlacementData
             {
              before(grammarAccess.getKPolygonAccess().getPlacementDataKPlacementDataParserRuleCall_2_2_2_0()); 
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_ruleKPlacementData_in_rule__KPolygon__PlacementDataAssignment_2_2_236388);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_ruleKPlacementData_in_rule__KPolygon__PlacementDataAssignment_2_2_236389);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             ruleKPlacementData();
 
             state._fsp--;
@@ -52649,8 +54237,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:18299:1: ruleKPlacement
             {
              before(grammarAccess.getKPolygonAccess().getChildPlacementKPlacementParserRuleCall_2_3_2_0()); 
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_ruleKPlacement_in_rule__KPolygon__ChildPlacementAssignment_2_3_236419);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_ruleKPlacement_in_rule__KPolygon__ChildPlacementAssignment_2_3_236420);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             ruleKPlacement();
 
             state._fsp--;
@@ -52705,8 +54297,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:18314:1: ruleKRendering
             {
              before(grammarAccess.getKPolygonAccess().getChildrenKRenderingParserRuleCall_2_4_2_0()); 
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_ruleKRendering_in_rule__KPolygon__ChildrenAssignment_2_4_236450);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_ruleKRendering_in_rule__KPolygon__ChildrenAssignment_2_4_236451);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             ruleKRendering();
 
             state._fsp--;
@@ -52761,8 +54357,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:18329:1: ruleKRendering
             {
              before(grammarAccess.getKPolygonAccess().getChildrenKRenderingParserRuleCall_2_4_3_1_0()); 
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_ruleKRendering_in_rule__KPolygon__ChildrenAssignment_2_4_3_136481);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_ruleKRendering_in_rule__KPolygon__ChildrenAssignment_2_4_3_136482);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             ruleKRendering();
 
             state._fsp--;
@@ -52817,8 +54417,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:18344:1: ruleEString
             {
              before(grammarAccess.getKImageAccess().getBundleNameEStringParserRuleCall_2_0_0()); 
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_ruleEString_in_rule__KImage__BundleNameAssignment_2_036512);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_ruleEString_in_rule__KImage__BundleNameAssignment_2_036513);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             ruleEString();
 
             state._fsp--;
@@ -52873,8 +54477,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:18359:1: ruleEString
             {
              before(grammarAccess.getKImageAccess().getImagePathEStringParserRuleCall_4_0()); 
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_ruleEString_in_rule__KImage__ImagePathAssignment_436543);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_ruleEString_in_rule__KImage__ImagePathAssignment_436544);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             ruleEString();
 
             state._fsp--;
@@ -52929,8 +54537,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:18374:1: ruleKStyle
             {
              before(grammarAccess.getKImageAccess().getStylesKStyleParserRuleCall_5_1_2_0()); 
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_ruleKStyle_in_rule__KImage__StylesAssignment_5_1_236574);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_ruleKStyle_in_rule__KImage__StylesAssignment_5_1_236575);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             ruleKStyle();
 
             state._fsp--;
@@ -52985,8 +54597,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:18389:1: ruleKStyle
             {
              before(grammarAccess.getKImageAccess().getStylesKStyleParserRuleCall_5_1_3_1_0()); 
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_ruleKStyle_in_rule__KImage__StylesAssignment_5_1_3_136605);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_ruleKStyle_in_rule__KImage__StylesAssignment_5_1_3_136606);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             ruleKStyle();
 
             state._fsp--;
@@ -53041,8 +54657,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:18404:1: ruleKPlacementData
             {
              before(grammarAccess.getKImageAccess().getPlacementDataKPlacementDataParserRuleCall_5_2_1_0()); 
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_ruleKPlacementData_in_rule__KImage__PlacementDataAssignment_5_2_136636);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_ruleKPlacementData_in_rule__KImage__PlacementDataAssignment_5_2_136637);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             ruleKPlacementData();
 
             state._fsp--;
@@ -53097,8 +54717,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:18419:1: ruleKRendering
             {
              before(grammarAccess.getKImageAccess().getChildrenKRenderingParserRuleCall_5_3_2_0()); 
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_ruleKRendering_in_rule__KImage__ChildrenAssignment_5_3_236667);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_ruleKRendering_in_rule__KImage__ChildrenAssignment_5_3_236668);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             ruleKRendering();
 
             state._fsp--;
@@ -53153,8 +54777,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:18434:1: ruleKRendering
             {
              before(grammarAccess.getKImageAccess().getChildrenKRenderingParserRuleCall_5_3_3_1_0()); 
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_ruleKRendering_in_rule__KImage__ChildrenAssignment_5_3_3_136698);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_ruleKRendering_in_rule__KImage__ChildrenAssignment_5_3_3_136699);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             ruleKRendering();
 
             state._fsp--;
@@ -53209,8 +54837,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:18449:1: ruleKPlacement
             {
              before(grammarAccess.getKImageAccess().getChildPlacementKPlacementParserRuleCall_5_4_1_0()); 
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_ruleKPlacement_in_rule__KImage__ChildPlacementAssignment_5_4_136729);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_ruleKPlacement_in_rule__KImage__ChildPlacementAssignment_5_4_136730);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             ruleKPlacement();
 
             state._fsp--;
@@ -53265,8 +54897,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:18464:1: ruleEFloat
             {
              before(grammarAccess.getKArcAccess().getStartAngleEFloatParserRuleCall_2_0()); 
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_ruleEFloat_in_rule__KArc__StartAngleAssignment_236760);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_ruleEFloat_in_rule__KArc__StartAngleAssignment_236761);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             ruleEFloat();
 
             state._fsp--;
@@ -53321,8 +54957,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:18479:1: ruleEFloat
             {
              before(grammarAccess.getKArcAccess().getArcAngleEFloatParserRuleCall_4_0()); 
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_ruleEFloat_in_rule__KArc__ArcAngleAssignment_436791);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_ruleEFloat_in_rule__KArc__ArcAngleAssignment_436792);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             ruleEFloat();
 
             state._fsp--;
@@ -53377,8 +55017,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:18494:1: ruleKStyle
             {
              before(grammarAccess.getKArcAccess().getStylesKStyleParserRuleCall_5_1_2_0()); 
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_ruleKStyle_in_rule__KArc__StylesAssignment_5_1_236822);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_ruleKStyle_in_rule__KArc__StylesAssignment_5_1_236823);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             ruleKStyle();
 
             state._fsp--;
@@ -53433,8 +55077,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:18509:1: ruleKStyle
             {
              before(grammarAccess.getKArcAccess().getStylesKStyleParserRuleCall_5_1_3_1_0()); 
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_ruleKStyle_in_rule__KArc__StylesAssignment_5_1_3_136853);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_ruleKStyle_in_rule__KArc__StylesAssignment_5_1_3_136854);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             ruleKStyle();
 
             state._fsp--;
@@ -53489,8 +55137,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:18524:1: ruleKPlacementData
             {
              before(grammarAccess.getKArcAccess().getPlacementDataKPlacementDataParserRuleCall_5_2_1_0()); 
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_ruleKPlacementData_in_rule__KArc__PlacementDataAssignment_5_2_136884);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_ruleKPlacementData_in_rule__KArc__PlacementDataAssignment_5_2_136885);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             ruleKPlacementData();
 
             state._fsp--;
@@ -53545,8 +55197,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:18539:1: ruleKRendering
             {
              before(grammarAccess.getKArcAccess().getChildrenKRenderingParserRuleCall_5_3_2_0()); 
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_ruleKRendering_in_rule__KArc__ChildrenAssignment_5_3_236915);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_ruleKRendering_in_rule__KArc__ChildrenAssignment_5_3_236916);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             ruleKRendering();
 
             state._fsp--;
@@ -53601,8 +55257,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:18554:1: ruleKRendering
             {
              before(grammarAccess.getKArcAccess().getChildrenKRenderingParserRuleCall_5_3_3_1_0()); 
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_ruleKRendering_in_rule__KArc__ChildrenAssignment_5_3_3_136946);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_ruleKRendering_in_rule__KArc__ChildrenAssignment_5_3_3_136947);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             ruleKRendering();
 
             state._fsp--;
@@ -53657,8 +55317,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:18569:1: ruleKPlacement
             {
              before(grammarAccess.getKArcAccess().getChildPlacementKPlacementParserRuleCall_5_4_1_0()); 
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_ruleKPlacement_in_rule__KArc__ChildPlacementAssignment_5_4_136977);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_ruleKPlacement_in_rule__KArc__ChildPlacementAssignment_5_4_136978);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             ruleKPlacement();
 
             state._fsp--;
@@ -53713,8 +55377,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:18584:1: ruleKStyle
             {
              before(grammarAccess.getKChildAreaAccess().getStylesKStyleParserRuleCall_2_1_2_0()); 
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_ruleKStyle_in_rule__KChildArea__StylesAssignment_2_1_237008);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_ruleKStyle_in_rule__KChildArea__StylesAssignment_2_1_237009);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             ruleKStyle();
 
             state._fsp--;
@@ -53769,8 +55437,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:18599:1: ruleKStyle
             {
              before(grammarAccess.getKChildAreaAccess().getStylesKStyleParserRuleCall_2_1_3_1_0()); 
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_ruleKStyle_in_rule__KChildArea__StylesAssignment_2_1_3_137039);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_ruleKStyle_in_rule__KChildArea__StylesAssignment_2_1_3_137040);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             ruleKStyle();
 
             state._fsp--;
@@ -53825,8 +55497,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:18614:1: ruleKPlacementData
             {
              before(grammarAccess.getKChildAreaAccess().getPlacementDataKPlacementDataParserRuleCall_2_2_1_0()); 
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_ruleKPlacementData_in_rule__KChildArea__PlacementDataAssignment_2_2_137070);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_ruleKPlacementData_in_rule__KChildArea__PlacementDataAssignment_2_2_137071);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             ruleKPlacementData();
 
             state._fsp--;
@@ -53881,8 +55557,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:18629:1: ruleEString
             {
              before(grammarAccess.getKTextAccess().getTextEStringParserRuleCall_2_0()); 
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_ruleEString_in_rule__KText__TextAssignment_237101);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_ruleEString_in_rule__KText__TextAssignment_237102);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             ruleEString();
 
             state._fsp--;
@@ -53945,8 +55625,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:18646:1: 'clip'
             {
              before(grammarAccess.getKTextAccess().getClipClipKeyword_3_1_0()); 
+<<<<<<< HEAD
             match(input,94,FollowSets001.FOLLOW_94_in_rule__KText__ClipAssignment_3_137137); 
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            match(input,94,FollowSets001.FOLLOW_94_in_rule__KText__ClipAssignment_3_137138); 
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
              after(grammarAccess.getKTextAccess().getClipClipKeyword_3_1_0()); 
 
             }
@@ -54001,8 +55685,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:18667:1: ruleKStyle
             {
              before(grammarAccess.getKTextAccess().getStylesKStyleParserRuleCall_3_2_2_0()); 
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_ruleKStyle_in_rule__KText__StylesAssignment_3_2_237176);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_ruleKStyle_in_rule__KText__StylesAssignment_3_2_237177);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             ruleKStyle();
 
             state._fsp--;
@@ -54057,8 +55745,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:18682:1: ruleKStyle
             {
              before(grammarAccess.getKTextAccess().getStylesKStyleParserRuleCall_3_2_3_1_0()); 
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_ruleKStyle_in_rule__KText__StylesAssignment_3_2_3_137207);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_ruleKStyle_in_rule__KText__StylesAssignment_3_2_3_137208);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             ruleKStyle();
 
             state._fsp--;
@@ -54113,8 +55805,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:18697:1: ruleKPlacementData
             {
              before(grammarAccess.getKTextAccess().getPlacementDataKPlacementDataParserRuleCall_3_3_1_0()); 
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_ruleKPlacementData_in_rule__KText__PlacementDataAssignment_3_3_137238);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_ruleKPlacementData_in_rule__KText__PlacementDataAssignment_3_3_137239);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             ruleKPlacementData();
 
             state._fsp--;
@@ -54169,8 +55865,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:18712:1: ruleKRendering
             {
              before(grammarAccess.getKTextAccess().getChildrenKRenderingParserRuleCall_3_4_2_0()); 
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_ruleKRendering_in_rule__KText__ChildrenAssignment_3_4_237269);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_ruleKRendering_in_rule__KText__ChildrenAssignment_3_4_237270);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             ruleKRendering();
 
             state._fsp--;
@@ -54225,8 +55925,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:18727:1: ruleKRendering
             {
              before(grammarAccess.getKTextAccess().getChildrenKRenderingParserRuleCall_3_4_3_1_0()); 
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_ruleKRendering_in_rule__KText__ChildrenAssignment_3_4_3_137300);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_ruleKRendering_in_rule__KText__ChildrenAssignment_3_4_3_137301);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             ruleKRendering();
 
             state._fsp--;
@@ -54281,8 +55985,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:18742:1: ruleKPlacement
             {
              before(grammarAccess.getKTextAccess().getChildPlacementKPlacementParserRuleCall_3_5_1_0()); 
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_ruleKPlacement_in_rule__KText__ChildPlacementAssignment_3_5_137331);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_ruleKPlacement_in_rule__KText__ChildPlacementAssignment_3_5_137332);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             ruleKPlacement();
 
             state._fsp--;
@@ -54337,8 +56045,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:18757:1: ruleEString
             {
              before(grammarAccess.getKCustomRenderingAccess().getClassNameEStringParserRuleCall_2_2_0()); 
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_ruleEString_in_rule__KCustomRendering__ClassNameAssignment_2_237362);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_ruleEString_in_rule__KCustomRendering__ClassNameAssignment_2_237363);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             ruleEString();
 
             state._fsp--;
@@ -54393,8 +56105,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:18772:1: ruleEString
             {
              before(grammarAccess.getKCustomRenderingAccess().getBundleNameEStringParserRuleCall_2_4_0()); 
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_ruleEString_in_rule__KCustomRendering__BundleNameAssignment_2_437393);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_ruleEString_in_rule__KCustomRendering__BundleNameAssignment_2_437394);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             ruleEString();
 
             state._fsp--;
@@ -54449,8 +56165,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:18787:1: ruleKStyle
             {
              before(grammarAccess.getKCustomRenderingAccess().getStylesKStyleParserRuleCall_2_5_2_0()); 
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_ruleKStyle_in_rule__KCustomRendering__StylesAssignment_2_5_237424);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_ruleKStyle_in_rule__KCustomRendering__StylesAssignment_2_5_237425);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             ruleKStyle();
 
             state._fsp--;
@@ -54505,8 +56225,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:18802:1: ruleKStyle
             {
              before(grammarAccess.getKCustomRenderingAccess().getStylesKStyleParserRuleCall_2_5_3_1_0()); 
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_ruleKStyle_in_rule__KCustomRendering__StylesAssignment_2_5_3_137455);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_ruleKStyle_in_rule__KCustomRendering__StylesAssignment_2_5_3_137456);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             ruleKStyle();
 
             state._fsp--;
@@ -54561,8 +56285,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:18817:1: ruleKPlacementData
             {
              before(grammarAccess.getKCustomRenderingAccess().getPlacementDataKPlacementDataParserRuleCall_2_6_1_0()); 
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_ruleKPlacementData_in_rule__KCustomRendering__PlacementDataAssignment_2_6_137486);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_ruleKPlacementData_in_rule__KCustomRendering__PlacementDataAssignment_2_6_137487);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             ruleKPlacementData();
 
             state._fsp--;
@@ -54617,8 +56345,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:18832:1: ruleKRendering
             {
              before(grammarAccess.getKCustomRenderingAccess().getChildrenKRenderingParserRuleCall_2_7_2_0()); 
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_ruleKRendering_in_rule__KCustomRendering__ChildrenAssignment_2_7_237517);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_ruleKRendering_in_rule__KCustomRendering__ChildrenAssignment_2_7_237518);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             ruleKRendering();
 
             state._fsp--;
@@ -54673,8 +56405,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:18847:1: ruleKRendering
             {
              before(grammarAccess.getKCustomRenderingAccess().getChildrenKRenderingParserRuleCall_2_7_3_1_0()); 
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_ruleKRendering_in_rule__KCustomRendering__ChildrenAssignment_2_7_3_137548);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_ruleKRendering_in_rule__KCustomRendering__ChildrenAssignment_2_7_3_137549);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             ruleKRendering();
 
             state._fsp--;
@@ -54729,8 +56465,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:18862:1: ruleKPlacement
             {
              before(grammarAccess.getKCustomRenderingAccess().getChildPlacementKPlacementParserRuleCall_2_8_1_0()); 
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_ruleKPlacement_in_rule__KCustomRendering__ChildPlacementAssignment_2_8_137579);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_ruleKPlacement_in_rule__KCustomRendering__ChildPlacementAssignment_2_8_137580);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             ruleKPlacement();
 
             state._fsp--;
@@ -54785,8 +56525,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:18877:1: ruleKStyle
             {
              before(grammarAccess.getKSplineAccess().getStylesKStyleParserRuleCall_2_1_2_0()); 
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_ruleKStyle_in_rule__KSpline__StylesAssignment_2_1_237610);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_ruleKStyle_in_rule__KSpline__StylesAssignment_2_1_237611);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             ruleKStyle();
 
             state._fsp--;
@@ -54841,8 +56585,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:18892:1: ruleKStyle
             {
              before(grammarAccess.getKSplineAccess().getStylesKStyleParserRuleCall_2_1_3_1_0()); 
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_ruleKStyle_in_rule__KSpline__StylesAssignment_2_1_3_137641);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_ruleKStyle_in_rule__KSpline__StylesAssignment_2_1_3_137642);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             ruleKStyle();
 
             state._fsp--;
@@ -54897,8 +56645,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:18907:1: ruleKPlacementData
             {
              before(grammarAccess.getKSplineAccess().getPlacementDataKPlacementDataParserRuleCall_2_2_1_0()); 
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_ruleKPlacementData_in_rule__KSpline__PlacementDataAssignment_2_2_137672);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_ruleKPlacementData_in_rule__KSpline__PlacementDataAssignment_2_2_137673);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             ruleKPlacementData();
 
             state._fsp--;
@@ -54953,8 +56705,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:18922:1: ruleKRendering
             {
              before(grammarAccess.getKSplineAccess().getChildrenKRenderingParserRuleCall_2_3_2_0()); 
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_ruleKRendering_in_rule__KSpline__ChildrenAssignment_2_3_237703);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_ruleKRendering_in_rule__KSpline__ChildrenAssignment_2_3_237704);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             ruleKRendering();
 
             state._fsp--;
@@ -55009,8 +56765,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:18937:1: ruleKRendering
             {
              before(grammarAccess.getKSplineAccess().getChildrenKRenderingParserRuleCall_2_3_3_1_0()); 
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_ruleKRendering_in_rule__KSpline__ChildrenAssignment_2_3_3_137734);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_ruleKRendering_in_rule__KSpline__ChildrenAssignment_2_3_3_137735);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             ruleKRendering();
 
             state._fsp--;
@@ -55065,8 +56825,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:18952:1: ruleKPlacement
             {
              before(grammarAccess.getKSplineAccess().getChildPlacementKPlacementParserRuleCall_2_4_1_0()); 
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_ruleKPlacement_in_rule__KSpline__ChildPlacementAssignment_2_4_137765);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_ruleKPlacement_in_rule__KSpline__ChildPlacementAssignment_2_4_137766);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             ruleKPlacement();
 
             state._fsp--;
@@ -55129,8 +56893,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:18969:1: 'relative'
             {
              before(grammarAccess.getKDecoratorPlacementDataAccess().getRelativeRelativeKeyword_2_0()); 
+<<<<<<< HEAD
             match(input,95,FollowSets001.FOLLOW_95_in_rule__KDecoratorPlacementData__RelativeAssignment_237801); 
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            match(input,95,FollowSets001.FOLLOW_95_in_rule__KDecoratorPlacementData__RelativeAssignment_237802); 
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
              after(grammarAccess.getKDecoratorPlacementDataAccess().getRelativeRelativeKeyword_2_0()); 
 
             }
@@ -55185,8 +56953,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:18990:1: ruleEFloat
             {
              before(grammarAccess.getKDecoratorPlacementDataAccess().getLocationEFloatParserRuleCall_4_0()); 
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_ruleEFloat_in_rule__KDecoratorPlacementData__LocationAssignment_437840);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_ruleEFloat_in_rule__KDecoratorPlacementData__LocationAssignment_437841);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             ruleEFloat();
 
             state._fsp--;
@@ -55241,8 +57013,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19005:1: ruleEFloat
             {
              before(grammarAccess.getKDecoratorPlacementDataAccess().getXOffsetEFloatParserRuleCall_5_1_0()); 
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_ruleEFloat_in_rule__KDecoratorPlacementData__XOffsetAssignment_5_137871);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_ruleEFloat_in_rule__KDecoratorPlacementData__XOffsetAssignment_5_137872);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             ruleEFloat();
 
             state._fsp--;
@@ -55297,8 +57073,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19020:1: ruleEFloat
             {
              before(grammarAccess.getKDecoratorPlacementDataAccess().getYOffsetEFloatParserRuleCall_6_1_0()); 
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_ruleEFloat_in_rule__KDecoratorPlacementData__YOffsetAssignment_6_137902);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_ruleEFloat_in_rule__KDecoratorPlacementData__YOffsetAssignment_6_137903);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             ruleEFloat();
 
             state._fsp--;
@@ -55353,8 +57133,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19035:1: ruleEFloat
             {
              before(grammarAccess.getKDecoratorPlacementDataAccess().getWidthEFloatParserRuleCall_7_1_0()); 
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_ruleEFloat_in_rule__KDecoratorPlacementData__WidthAssignment_7_137933);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_ruleEFloat_in_rule__KDecoratorPlacementData__WidthAssignment_7_137934);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             ruleEFloat();
 
             state._fsp--;
@@ -55409,8 +57193,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19050:1: ruleEFloat
             {
              before(grammarAccess.getKDecoratorPlacementDataAccess().getHeightEFloatParserRuleCall_8_1_0()); 
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_ruleEFloat_in_rule__KDecoratorPlacementData__HeightAssignment_8_137964);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_ruleEFloat_in_rule__KDecoratorPlacementData__HeightAssignment_8_137965);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             ruleEFloat();
 
             state._fsp--;
@@ -55465,8 +57253,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19065:1: ruleEFloat
             {
              before(grammarAccess.getKGridPlacementDataAccess().getWidthHintEFloatParserRuleCall_3_0()); 
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_ruleEFloat_in_rule__KGridPlacementData__WidthHintAssignment_337995);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_ruleEFloat_in_rule__KGridPlacementData__WidthHintAssignment_337996);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             ruleEFloat();
 
             state._fsp--;
@@ -55521,8 +57313,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19080:1: ruleEFloat
             {
              before(grammarAccess.getKGridPlacementDataAccess().getHeightHintEFloatParserRuleCall_5_0()); 
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_ruleEFloat_in_rule__KGridPlacementData__HeightHintAssignment_538026);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_ruleEFloat_in_rule__KGridPlacementData__HeightHintAssignment_538027);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             ruleEFloat();
 
             state._fsp--;
@@ -55568,7 +57364,7 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19095:1: ruleEFloat
             {
              before(grammarAccess.getKGridPlacementDataAccess().getInsetRightEFloatParserRuleCall_7_0()); 
-            pushFollow(FollowSets001.FOLLOW_ruleEFloat_in_rule__KGridPlacementData__InsetRightAssignment_738057);
+            pushFollow(FollowSets001.FOLLOW_ruleEFloat_in_rule__KGridPlacementData__InsetRightAssignment_738058);
             ruleEFloat();
 
             state._fsp--;
@@ -55609,7 +57405,7 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19110:1: ruleEFloat
             {
              before(grammarAccess.getKGridPlacementDataAccess().getInsetBottomEFloatParserRuleCall_9_0()); 
-            pushFollow(FollowSets001.FOLLOW_ruleEFloat_in_rule__KGridPlacementData__InsetBottomAssignment_938088);
+            pushFollow(FollowSets001.FOLLOW_ruleEFloat_in_rule__KGridPlacementData__InsetBottomAssignment_938089);
             ruleEFloat();
 
             state._fsp--;
@@ -55661,8 +57457,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19125:1: ruleEFloat
             {
              before(grammarAccess.getKGridPlacementDataAccess().getInsetLeftEFloatParserRuleCall_11_0()); 
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_ruleEFloat_in_rule__KGridPlacementData__InsetLeftAssignment_1138119);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_ruleEFloat_in_rule__KGridPlacementData__InsetLeftAssignment_1138120);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             ruleEFloat();
 
             state._fsp--;
@@ -55719,8 +57519,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19140:1: ruleEFloat
             {
              before(grammarAccess.getKGridPlacementDataAccess().getInsetTopEFloatParserRuleCall_13_0()); 
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_ruleEFloat_in_rule__KGridPlacementData__InsetTopAssignment_1338150);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_ruleEFloat_in_rule__KGridPlacementData__InsetTopAssignment_1338151);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             ruleEFloat();
 
             state._fsp--;
@@ -55775,8 +57579,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19155:1: ruleEFloat
             {
              before(grammarAccess.getKStackPlacementDataAccess().getInsetRightEFloatParserRuleCall_3_0()); 
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_ruleEFloat_in_rule__KStackPlacementData__InsetRightAssignment_338181);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_ruleEFloat_in_rule__KStackPlacementData__InsetRightAssignment_338182);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             ruleEFloat();
 
             state._fsp--;
@@ -55831,8 +57639,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19170:1: ruleEFloat
             {
              before(grammarAccess.getKStackPlacementDataAccess().getInsetBottomEFloatParserRuleCall_5_0()); 
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_ruleEFloat_in_rule__KStackPlacementData__InsetBottomAssignment_538212);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_ruleEFloat_in_rule__KStackPlacementData__InsetBottomAssignment_538213);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             ruleEFloat();
 
             state._fsp--;
@@ -55887,8 +57699,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19185:1: ruleEFloat
             {
              before(grammarAccess.getKStackPlacementDataAccess().getInsetLeftEFloatParserRuleCall_7_0()); 
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_ruleEFloat_in_rule__KStackPlacementData__InsetLeftAssignment_738243);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_ruleEFloat_in_rule__KStackPlacementData__InsetLeftAssignment_738244);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             ruleEFloat();
 
             state._fsp--;
@@ -55943,8 +57759,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19200:1: ruleEFloat
             {
              before(grammarAccess.getKStackPlacementDataAccess().getInsetTopEFloatParserRuleCall_9_0()); 
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_ruleEFloat_in_rule__KStackPlacementData__InsetTopAssignment_938274);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_ruleEFloat_in_rule__KStackPlacementData__InsetTopAssignment_938275);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             ruleEFloat();
 
             state._fsp--;
@@ -55999,8 +57819,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19215:1: ruleKPosition
             {
              before(grammarAccess.getKDirectPlacementDataAccess().getTopLeftKPositionParserRuleCall_3_0()); 
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_ruleKPosition_in_rule__KDirectPlacementData__TopLeftAssignment_338305);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_ruleKPosition_in_rule__KDirectPlacementData__TopLeftAssignment_338306);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             ruleKPosition();
 
             state._fsp--;
@@ -56057,8 +57881,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19230:1: ruleKPosition
             {
              before(grammarAccess.getKDirectPlacementDataAccess().getBottomRightKPositionParserRuleCall_6_0()); 
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_ruleKPosition_in_rule__KDirectPlacementData__BottomRightAssignment_638336);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_ruleKPosition_in_rule__KDirectPlacementData__BottomRightAssignment_638337);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             ruleKPosition();
 
             state._fsp--;
@@ -56113,8 +57941,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19245:1: ruleKPosition
             {
              before(grammarAccess.getKPolylinePlacementDataAccess().getPointsKPositionParserRuleCall_4_0()); 
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_ruleKPosition_in_rule__KPolylinePlacementData__PointsAssignment_438367);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_ruleKPosition_in_rule__KPolylinePlacementData__PointsAssignment_438368);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             ruleKPosition();
 
             state._fsp--;
@@ -56169,8 +58001,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19260:1: ruleKPosition
             {
              before(grammarAccess.getKPolylinePlacementDataAccess().getPointsKPositionParserRuleCall_5_1_0()); 
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_ruleKPosition_in_rule__KPolylinePlacementData__PointsAssignment_5_138398);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_ruleKPosition_in_rule__KPolylinePlacementData__PointsAssignment_5_138399);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             ruleKPosition();
 
             state._fsp--;
@@ -56225,8 +58061,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19275:1: ruleKPlacementData
             {
              before(grammarAccess.getKPolylinePlacementDataAccess().getDetailPlacementDataKPlacementDataParserRuleCall_6_1_0()); 
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_ruleKPlacementData_in_rule__KPolylinePlacementData__DetailPlacementDataAssignment_6_138429);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_ruleKPlacementData_in_rule__KPolylinePlacementData__DetailPlacementDataAssignment_6_138430);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             ruleKPlacementData();
 
             state._fsp--;
@@ -56281,8 +58121,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19290:1: ruleKXPosition
             {
              before(grammarAccess.getKPositionAccess().getXKXPositionParserRuleCall_0_0()); 
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_ruleKXPosition_in_rule__KPosition__XAssignment_038460);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_ruleKXPosition_in_rule__KPosition__XAssignment_038461);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             ruleKXPosition();
 
             state._fsp--;
@@ -56337,8 +58181,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19305:1: ruleKYPosition
             {
              before(grammarAccess.getKPositionAccess().getYKYPositionParserRuleCall_2_0()); 
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_ruleKYPosition_in_rule__KPosition__YAssignment_238491);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_ruleKYPosition_in_rule__KPosition__YAssignment_238492);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             ruleKYPosition();
 
             state._fsp--;
@@ -56393,8 +58241,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19320:1: ruleEFloat
             {
              before(grammarAccess.getKLeftPositionAccess().getAbsoluteEFloatParserRuleCall_2_0()); 
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_ruleEFloat_in_rule__KLeftPosition__AbsoluteAssignment_238522);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_ruleEFloat_in_rule__KLeftPosition__AbsoluteAssignment_238523);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             ruleEFloat();
 
             state._fsp--;
@@ -56451,8 +58303,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19335:1: ruleEFloat
             {
              before(grammarAccess.getKLeftPositionAccess().getRelativeEFloatParserRuleCall_3_0()); 
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_ruleEFloat_in_rule__KLeftPosition__RelativeAssignment_338553);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_ruleEFloat_in_rule__KLeftPosition__RelativeAssignment_338554);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             ruleEFloat();
 
             state._fsp--;
@@ -56507,8 +58363,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19350:1: ruleEFloat
             {
              before(grammarAccess.getKRightPositionAccess().getAbsoluteEFloatParserRuleCall_2_0()); 
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_ruleEFloat_in_rule__KRightPosition__AbsoluteAssignment_238584);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_ruleEFloat_in_rule__KRightPosition__AbsoluteAssignment_238585);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             ruleEFloat();
 
             state._fsp--;
@@ -56565,8 +58425,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19365:1: ruleEFloat
             {
              before(grammarAccess.getKRightPositionAccess().getRelativeEFloatParserRuleCall_3_0()); 
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_ruleEFloat_in_rule__KRightPosition__RelativeAssignment_338615);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_ruleEFloat_in_rule__KRightPosition__RelativeAssignment_338616);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             ruleEFloat();
 
             state._fsp--;
@@ -56621,8 +58485,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19380:1: ruleEFloat
             {
              before(grammarAccess.getKTopPositionAccess().getAbsoluteEFloatParserRuleCall_2_0()); 
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_ruleEFloat_in_rule__KTopPosition__AbsoluteAssignment_238646);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_ruleEFloat_in_rule__KTopPosition__AbsoluteAssignment_238647);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             ruleEFloat();
 
             state._fsp--;
@@ -56679,8 +58547,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19395:1: ruleEFloat
             {
              before(grammarAccess.getKTopPositionAccess().getRelativeEFloatParserRuleCall_3_0()); 
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_ruleEFloat_in_rule__KTopPosition__RelativeAssignment_338677);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_ruleEFloat_in_rule__KTopPosition__RelativeAssignment_338678);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             ruleEFloat();
 
             state._fsp--;
@@ -56735,8 +58607,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19410:1: ruleEFloat
             {
              before(grammarAccess.getKBottomPositionAccess().getAbsoluteEFloatParserRuleCall_2_0()); 
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_ruleEFloat_in_rule__KBottomPosition__AbsoluteAssignment_238708);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_ruleEFloat_in_rule__KBottomPosition__AbsoluteAssignment_238709);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             ruleEFloat();
 
             state._fsp--;
@@ -56793,8 +58669,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19425:1: ruleEFloat
             {
              before(grammarAccess.getKBottomPositionAccess().getRelativeEFloatParserRuleCall_3_0()); 
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_ruleEFloat_in_rule__KBottomPosition__RelativeAssignment_338739);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_ruleEFloat_in_rule__KBottomPosition__RelativeAssignment_338740);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             ruleEFloat();
 
             state._fsp--;
@@ -56849,8 +58729,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19440:1: ruleEInt
             {
              before(grammarAccess.getKForegroundColorAccess().getRedEIntParserRuleCall_2_0()); 
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_ruleEInt_in_rule__KForegroundColor__RedAssignment_238770);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_ruleEInt_in_rule__KForegroundColor__RedAssignment_238771);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             ruleEInt();
 
             state._fsp--;
@@ -56907,8 +58791,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19455:1: ruleEInt
             {
              before(grammarAccess.getKForegroundColorAccess().getGreenEIntParserRuleCall_3_0()); 
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_ruleEInt_in_rule__KForegroundColor__GreenAssignment_338801);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_ruleEInt_in_rule__KForegroundColor__GreenAssignment_338802);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             ruleEInt();
 
             state._fsp--;
@@ -56965,8 +58853,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19470:1: ruleEInt
             {
              before(grammarAccess.getKForegroundColorAccess().getBlueEIntParserRuleCall_4_0()); 
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_ruleEInt_in_rule__KForegroundColor__BlueAssignment_438832);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_ruleEInt_in_rule__KForegroundColor__BlueAssignment_438833);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             ruleEInt();
 
             state._fsp--;
@@ -57032,7 +58924,7 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19487:1: '!'
             {
              before(grammarAccess.getKForegroundColorAccess().getPropagateToChildrenExclamationMarkKeyword_5_0()); 
-            match(input,96,FollowSets001.FOLLOW_96_in_rule__KForegroundColor__PropagateToChildrenAssignment_538868); 
+            match(input,96,FollowSets001.FOLLOW_96_in_rule__KForegroundColor__PropagateToChildrenAssignment_538869); 
              after(grammarAccess.getKForegroundColorAccess().getPropagateToChildrenExclamationMarkKeyword_5_0()); 
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
 
@@ -57088,8 +58980,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19508:1: ruleEInt
             {
              before(grammarAccess.getKBackgroundColorAccess().getRedEIntParserRuleCall_2_0()); 
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_ruleEInt_in_rule__KBackgroundColor__RedAssignment_238907);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_ruleEInt_in_rule__KBackgroundColor__RedAssignment_238908);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             ruleEInt();
 
             state._fsp--;
@@ -57146,8 +59042,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19523:1: ruleEInt
             {
              before(grammarAccess.getKBackgroundColorAccess().getGreenEIntParserRuleCall_3_0()); 
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_ruleEInt_in_rule__KBackgroundColor__GreenAssignment_338938);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_ruleEInt_in_rule__KBackgroundColor__GreenAssignment_338939);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             ruleEInt();
 
             state._fsp--;
@@ -57204,8 +59104,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19538:1: ruleEInt
             {
              before(grammarAccess.getKBackgroundColorAccess().getBlueEIntParserRuleCall_4_0()); 
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_ruleEInt_in_rule__KBackgroundColor__BlueAssignment_438969);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_ruleEInt_in_rule__KBackgroundColor__BlueAssignment_438970);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             ruleEInt();
 
             state._fsp--;
@@ -57271,7 +59175,7 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19555:1: '!'
             {
              before(grammarAccess.getKBackgroundColorAccess().getPropagateToChildrenExclamationMarkKeyword_5_0()); 
-            match(input,96,FollowSets001.FOLLOW_96_in_rule__KBackgroundColor__PropagateToChildrenAssignment_539005); 
+            match(input,96,FollowSets001.FOLLOW_96_in_rule__KBackgroundColor__PropagateToChildrenAssignment_539006); 
              after(grammarAccess.getKBackgroundColorAccess().getPropagateToChildrenExclamationMarkKeyword_5_0()); 
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
 
@@ -57327,8 +59231,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19576:1: ruleEInt
             {
              before(grammarAccess.getKLineWidthAccess().getLineWidthEIntParserRuleCall_1_0()); 
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_ruleEInt_in_rule__KLineWidth__LineWidthAssignment_139044);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_ruleEInt_in_rule__KLineWidth__LineWidthAssignment_139045);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             ruleEInt();
 
             state._fsp--;
@@ -57391,8 +59299,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19593:1: '!'
             {
              before(grammarAccess.getKLineWidthAccess().getPropagateToChildrenExclamationMarkKeyword_2_0()); 
+<<<<<<< HEAD
             match(input,96,FollowSets001.FOLLOW_96_in_rule__KLineWidth__PropagateToChildrenAssignment_239080); 
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            match(input,96,FollowSets001.FOLLOW_96_in_rule__KLineWidth__PropagateToChildrenAssignment_239081); 
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
              after(grammarAccess.getKLineWidthAccess().getPropagateToChildrenExclamationMarkKeyword_2_0()); 
 
             }
@@ -57447,8 +59359,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19614:1: ruleEBoolean
             {
              before(grammarAccess.getKForegroundVisibilityAccess().getVisibleEBooleanParserRuleCall_2_0()); 
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_ruleEBoolean_in_rule__KForegroundVisibility__VisibleAssignment_239119);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_ruleEBoolean_in_rule__KForegroundVisibility__VisibleAssignment_239120);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             ruleEBoolean();
 
             state._fsp--;
@@ -57511,8 +59427,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19631:1: '!'
             {
              before(grammarAccess.getKForegroundVisibilityAccess().getPropagateToChildrenExclamationMarkKeyword_3_0()); 
+<<<<<<< HEAD
             match(input,96,FollowSets001.FOLLOW_96_in_rule__KForegroundVisibility__PropagateToChildrenAssignment_339155); 
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            match(input,96,FollowSets001.FOLLOW_96_in_rule__KForegroundVisibility__PropagateToChildrenAssignment_339156); 
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
              after(grammarAccess.getKForegroundVisibilityAccess().getPropagateToChildrenExclamationMarkKeyword_3_0()); 
 
             }
@@ -57567,8 +59487,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19652:1: ruleEBoolean
             {
              before(grammarAccess.getKBackgroundVisibilityAccess().getVisibleEBooleanParserRuleCall_2_0()); 
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_ruleEBoolean_in_rule__KBackgroundVisibility__VisibleAssignment_239194);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_ruleEBoolean_in_rule__KBackgroundVisibility__VisibleAssignment_239195);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             ruleEBoolean();
 
             state._fsp--;
@@ -57631,8 +59555,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19669:1: '!'
             {
              before(grammarAccess.getKBackgroundVisibilityAccess().getPropagateToChildrenExclamationMarkKeyword_3_0()); 
+<<<<<<< HEAD
             match(input,96,FollowSets001.FOLLOW_96_in_rule__KBackgroundVisibility__PropagateToChildrenAssignment_339230); 
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            match(input,96,FollowSets001.FOLLOW_96_in_rule__KBackgroundVisibility__PropagateToChildrenAssignment_339231); 
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
              after(grammarAccess.getKBackgroundVisibilityAccess().getPropagateToChildrenExclamationMarkKeyword_3_0()); 
 
             }
@@ -57687,8 +59615,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19690:1: ruleLineStyle
             {
              before(grammarAccess.getKLineStyleAccess().getLineStyleLineStyleEnumRuleCall_2_0()); 
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_ruleLineStyle_in_rule__KLineStyle__LineStyleAssignment_239269);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_ruleLineStyle_in_rule__KLineStyle__LineStyleAssignment_239270);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             ruleLineStyle();
 
             state._fsp--;
@@ -57751,8 +59683,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19707:1: '!'
             {
              before(grammarAccess.getKLineStyleAccess().getPropagateToChildrenExclamationMarkKeyword_3_0()); 
+<<<<<<< HEAD
             match(input,96,FollowSets001.FOLLOW_96_in_rule__KLineStyle__PropagateToChildrenAssignment_339305); 
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            match(input,96,FollowSets001.FOLLOW_96_in_rule__KLineStyle__PropagateToChildrenAssignment_339306); 
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
              after(grammarAccess.getKLineStyleAccess().getPropagateToChildrenExclamationMarkKeyword_3_0()); 
 
             }
@@ -57801,7 +59737,7 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19730:1: '!'
             {
              before(grammarAccess.getKFontBoldAccess().getPropagateToChildrenExclamationMarkKeyword_2_0()); 
-            match(input,96,FollowSets001.FOLLOW_96_in_rule__KFontBold__PropagateToChildrenAssignment_239349); 
+            match(input,96,FollowSets001.FOLLOW_96_in_rule__KFontBold__PropagateToChildrenAssignment_239350); 
              after(grammarAccess.getKFontBoldAccess().getPropagateToChildrenExclamationMarkKeyword_2_0()); 
 
             }
@@ -57846,7 +59782,7 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19753:1: '!'
             {
              before(grammarAccess.getKFontItalicAccess().getPropagateToChildrenExclamationMarkKeyword_2_0()); 
-            match(input,96,FollowSets001.FOLLOW_96_in_rule__KFontItalic__PropagateToChildrenAssignment_239393); 
+            match(input,96,FollowSets001.FOLLOW_96_in_rule__KFontItalic__PropagateToChildrenAssignment_239394); 
              after(grammarAccess.getKFontItalicAccess().getPropagateToChildrenExclamationMarkKeyword_2_0()); 
 
             }
@@ -57887,7 +59823,7 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19774:1: ruleEString
             {
              before(grammarAccess.getKFontNameAccess().getNameEStringParserRuleCall_1_0()); 
-            pushFollow(FollowSets001.FOLLOW_ruleEString_in_rule__KFontName__NameAssignment_139432);
+            pushFollow(FollowSets001.FOLLOW_ruleEString_in_rule__KFontName__NameAssignment_139433);
             ruleEString();
 
             state._fsp--;
@@ -57932,7 +59868,7 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19791:1: '!'
             {
              before(grammarAccess.getKFontNameAccess().getPropagateToChildrenExclamationMarkKeyword_2_0()); 
-            match(input,96,FollowSets001.FOLLOW_96_in_rule__KFontName__PropagateToChildrenAssignment_239468); 
+            match(input,96,FollowSets001.FOLLOW_96_in_rule__KFontName__PropagateToChildrenAssignment_239469); 
              after(grammarAccess.getKFontNameAccess().getPropagateToChildrenExclamationMarkKeyword_2_0()); 
 
             }
@@ -57973,7 +59909,7 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19812:1: ruleEInt
             {
              before(grammarAccess.getKFontSizeAccess().getSizeEIntParserRuleCall_1_0()); 
-            pushFollow(FollowSets001.FOLLOW_ruleEInt_in_rule__KFontSize__SizeAssignment_139507);
+            pushFollow(FollowSets001.FOLLOW_ruleEInt_in_rule__KFontSize__SizeAssignment_139508);
             ruleEInt();
 
             state._fsp--;
@@ -58018,7 +59954,7 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19829:1: '!'
             {
              before(grammarAccess.getKFontSizeAccess().getPropagateToChildrenExclamationMarkKeyword_2_0()); 
-            match(input,96,FollowSets001.FOLLOW_96_in_rule__KFontSize__PropagateToChildrenAssignment_239543); 
+            match(input,96,FollowSets001.FOLLOW_96_in_rule__KFontSize__PropagateToChildrenAssignment_239544); 
              after(grammarAccess.getKFontSizeAccess().getPropagateToChildrenExclamationMarkKeyword_2_0()); 
 
             }
@@ -58070,8 +60006,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19850:1: ruleVerticalAlignment
             {
              before(grammarAccess.getKVerticalAlignmentAccess().getVerticalAlignmentVerticalAlignmentEnumRuleCall_2_0()); 
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_ruleVerticalAlignment_in_rule__KVerticalAlignment__VerticalAlignmentAssignment_239582);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_ruleVerticalAlignment_in_rule__KVerticalAlignment__VerticalAlignmentAssignment_239583);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             ruleVerticalAlignment();
 
             state._fsp--;
@@ -58134,8 +60074,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19867:1: '!'
             {
              before(grammarAccess.getKVerticalAlignmentAccess().getPropagateToChildrenExclamationMarkKeyword_3_0()); 
+<<<<<<< HEAD
             match(input,96,FollowSets001.FOLLOW_96_in_rule__KVerticalAlignment__PropagateToChildrenAssignment_339618); 
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            match(input,96,FollowSets001.FOLLOW_96_in_rule__KVerticalAlignment__PropagateToChildrenAssignment_339619); 
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
              after(grammarAccess.getKVerticalAlignmentAccess().getPropagateToChildrenExclamationMarkKeyword_3_0()); 
 
             }
@@ -58190,8 +60134,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19888:1: ruleHorizontalAlignment
             {
              before(grammarAccess.getKHorizontalAlignmentAccess().getHorizontalAlignmentHorizontalAlignmentEnumRuleCall_2_0()); 
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_ruleHorizontalAlignment_in_rule__KHorizontalAlignment__HorizontalAlignmentAssignment_239657);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_ruleHorizontalAlignment_in_rule__KHorizontalAlignment__HorizontalAlignmentAssignment_239658);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             ruleHorizontalAlignment();
 
             state._fsp--;
@@ -58254,8 +60202,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19905:1: '!'
             {
              before(grammarAccess.getKHorizontalAlignmentAccess().getPropagateToChildrenExclamationMarkKeyword_3_0()); 
+<<<<<<< HEAD
             match(input,96,FollowSets001.FOLLOW_96_in_rule__KHorizontalAlignment__PropagateToChildrenAssignment_339693); 
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            match(input,96,FollowSets001.FOLLOW_96_in_rule__KHorizontalAlignment__PropagateToChildrenAssignment_339694); 
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
              after(grammarAccess.getKHorizontalAlignmentAccess().getPropagateToChildrenExclamationMarkKeyword_3_0()); 
 
             }
@@ -58310,8 +60262,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19926:1: ruleEInt
             {
              before(grammarAccess.getKGridPlacementAccess().getNumColumnsEIntParserRuleCall_2_0()); 
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_ruleEInt_in_rule__KGridPlacement__NumColumnsAssignment_239732);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_ruleEInt_in_rule__KGridPlacement__NumColumnsAssignment_239733);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             ruleEInt();
 
             state._fsp--;
@@ -58366,8 +60322,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19948:1: ruleEFloat
             {
              before(grammarAccess.getKInsetsAccess().getTopEFloatParserRuleCall_3_1_0()); 
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_ruleEFloat_in_rule__KInsets__TopAssignment_3_139770);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_ruleEFloat_in_rule__KInsets__TopAssignment_3_139771);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             ruleEFloat();
 
             state._fsp--;
@@ -58422,8 +60382,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19963:1: ruleEFloat
             {
              before(grammarAccess.getKInsetsAccess().getBottomEFloatParserRuleCall_4_1_0()); 
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_ruleEFloat_in_rule__KInsets__BottomAssignment_4_139801);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_ruleEFloat_in_rule__KInsets__BottomAssignment_4_139802);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             ruleEFloat();
 
             state._fsp--;
@@ -58478,8 +60442,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19978:1: ruleEFloat
             {
              before(grammarAccess.getKInsetsAccess().getLeftEFloatParserRuleCall_5_1_0()); 
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_ruleEFloat_in_rule__KInsets__LeftAssignment_5_139832);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_ruleEFloat_in_rule__KInsets__LeftAssignment_5_139833);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             ruleEFloat();
 
             state._fsp--;
@@ -58534,8 +60502,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:19993:1: ruleEFloat
             {
              before(grammarAccess.getKInsetsAccess().getRightEFloatParserRuleCall_6_1_0()); 
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_ruleEFloat_in_rule__KInsets__RightAssignment_6_139863);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_ruleEFloat_in_rule__KInsets__RightAssignment_6_139864);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             ruleEFloat();
 
             state._fsp--;
@@ -58590,8 +60562,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20014:1: ruleEFloat
             {
              before(grammarAccess.getKPointAccess().getXEFloatParserRuleCall_2_1_0()); 
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_ruleEFloat_in_rule__KPoint__XAssignment_2_139900);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_ruleEFloat_in_rule__KPoint__XAssignment_2_139901);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             ruleEFloat();
 
             state._fsp--;
@@ -58646,8 +60622,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20029:1: ruleEFloat
             {
              before(grammarAccess.getKPointAccess().getYEFloatParserRuleCall_3_1_0()); 
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_ruleEFloat_in_rule__KPoint__YAssignment_3_139931);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_ruleEFloat_in_rule__KPoint__YAssignment_3_139932);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             ruleEFloat();
 
             state._fsp--;
@@ -58702,8 +60682,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20044:1: ruleEString
             {
              before(grammarAccess.getPersistentEntryAccess().getKeyEStringParserRuleCall_0_0()); 
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_ruleEString_in_rule__PersistentEntry__KeyAssignment_039962);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_ruleEString_in_rule__PersistentEntry__KeyAssignment_039963);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             ruleEString();
 
             state._fsp--;
@@ -58758,8 +60742,12 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/krendering/text/ui/contentassist/antlr/internal/InternalKRendering.g:20059:1: ruleEString
             {
              before(grammarAccess.getPersistentEntryAccess().getValueEStringParserRuleCall_1_1_0()); 
+<<<<<<< HEAD
             pushFollow(FollowSets001.FOLLOW_ruleEString_in_rule__PersistentEntry__ValueAssignment_1_139993);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets001.FOLLOW_ruleEString_in_rule__PersistentEntry__ValueAssignment_1_139994);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             ruleEString();
 
             state._fsp--;
@@ -61392,12 +63380,13 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
         public static final BitSet FOLLOW_rule__KDecoratorPlacementData__Group__0__Impl_in_rule__KDecoratorPlacementData__Group__024461 = new BitSet(new long[]{0x0000000008000000L});
         public static final BitSet FOLLOW_rule__KDecoratorPlacementData__Group__1_in_rule__KDecoratorPlacementData__Group__024464 = new BitSet(new long[]{0x0000000000000002L});
         public static final BitSet FOLLOW_49_in_rule__KDecoratorPlacementData__Group__0__Impl24492 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_rule__KDecoratorPlacementData__Group__1__Impl_in_rule__KDecoratorPlacementData__Group__124523 = new BitSet(new long[]{0x0000000000000000L,0x0000000080000000L});
+        public static final BitSet FOLLOW_rule__KDecoratorPlacementData__Group__1__Impl_in_rule__KDecoratorPlacementData__Group__124523 = new BitSet(new long[]{0x0004000000000000L,0x0000000080000000L});
         public static final BitSet FOLLOW_rule__KDecoratorPlacementData__Group__2_in_rule__KDecoratorPlacementData__Group__124526 = new BitSet(new long[]{0x0000000000000002L});
         public static final BitSet FOLLOW_27_in_rule__KDecoratorPlacementData__Group__1__Impl24554 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_rule__KDecoratorPlacementData__Group__2__Impl_in_rule__KDecoratorPlacementData__Group__224585 = new BitSet(new long[]{0x0004000000000000L});
+        public static final BitSet FOLLOW_rule__KDecoratorPlacementData__Group__2__Impl_in_rule__KDecoratorPlacementData__Group__224585 = new BitSet(new long[]{0x0004000000000000L,0x0000000080000000L});
         public static final BitSet FOLLOW_rule__KDecoratorPlacementData__Group__3_in_rule__KDecoratorPlacementData__Group__224588 = new BitSet(new long[]{0x0000000000000002L});
         public static final BitSet FOLLOW_rule__KDecoratorPlacementData__RelativeAssignment_2_in_rule__KDecoratorPlacementData__Group__2__Impl24615 = new BitSet(new long[]{0x0000000000000002L});
+<<<<<<< HEAD
         public static final BitSet FOLLOW_rule__KDecoratorPlacementData__Group__3__Impl_in_rule__KDecoratorPlacementData__Group__324645 = new BitSet(new long[]{0x0000000000000840L});
         public static final BitSet FOLLOW_rule__KDecoratorPlacementData__Group__4_in_rule__KDecoratorPlacementData__Group__324648 = new BitSet(new long[]{0x0000000000000002L});
         public static final BitSet FOLLOW_50_in_rule__KDecoratorPlacementData__Group__3__Impl24676 = new BitSet(new long[]{0x0000000000000002L});
@@ -61996,6 +63985,605 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
         public static final BitSet FOLLOW_ruleEString_in_rule__PersistentEntry__KeyAssignment_039962 = new BitSet(new long[]{0x0000000000000002L});
         public static final BitSet FOLLOW_ruleEString_in_rule__PersistentEntry__ValueAssignment_1_139993 = new BitSet(new long[]{0x0000000000000002L});
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+        public static final BitSet FOLLOW_rule__KDecoratorPlacementData__Group__3__Impl_in_rule__KDecoratorPlacementData__Group__324646 = new BitSet(new long[]{0x0000000000000840L});
+        public static final BitSet FOLLOW_rule__KDecoratorPlacementData__Group__4_in_rule__KDecoratorPlacementData__Group__324649 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_50_in_rule__KDecoratorPlacementData__Group__3__Impl24677 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KDecoratorPlacementData__Group__4__Impl_in_rule__KDecoratorPlacementData__Group__424708 = new BitSet(new long[]{0x0078000010000000L});
+        public static final BitSet FOLLOW_rule__KDecoratorPlacementData__Group__5_in_rule__KDecoratorPlacementData__Group__424711 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KDecoratorPlacementData__LocationAssignment_4_in_rule__KDecoratorPlacementData__Group__4__Impl24738 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KDecoratorPlacementData__Group__5__Impl_in_rule__KDecoratorPlacementData__Group__524768 = new BitSet(new long[]{0x0078000010000000L});
+        public static final BitSet FOLLOW_rule__KDecoratorPlacementData__Group__6_in_rule__KDecoratorPlacementData__Group__524771 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KDecoratorPlacementData__Group_5__0_in_rule__KDecoratorPlacementData__Group__5__Impl24798 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KDecoratorPlacementData__Group__6__Impl_in_rule__KDecoratorPlacementData__Group__624829 = new BitSet(new long[]{0x0078000010000000L});
+        public static final BitSet FOLLOW_rule__KDecoratorPlacementData__Group__7_in_rule__KDecoratorPlacementData__Group__624832 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KDecoratorPlacementData__Group_6__0_in_rule__KDecoratorPlacementData__Group__6__Impl24859 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KDecoratorPlacementData__Group__7__Impl_in_rule__KDecoratorPlacementData__Group__724890 = new BitSet(new long[]{0x0078000010000000L});
+        public static final BitSet FOLLOW_rule__KDecoratorPlacementData__Group__8_in_rule__KDecoratorPlacementData__Group__724893 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KDecoratorPlacementData__Group_7__0_in_rule__KDecoratorPlacementData__Group__7__Impl24920 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KDecoratorPlacementData__Group__8__Impl_in_rule__KDecoratorPlacementData__Group__824951 = new BitSet(new long[]{0x0078000010000000L});
+        public static final BitSet FOLLOW_rule__KDecoratorPlacementData__Group__9_in_rule__KDecoratorPlacementData__Group__824954 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KDecoratorPlacementData__Group_8__0_in_rule__KDecoratorPlacementData__Group__8__Impl24981 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KDecoratorPlacementData__Group__9__Impl_in_rule__KDecoratorPlacementData__Group__925012 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_28_in_rule__KDecoratorPlacementData__Group__9__Impl25040 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KDecoratorPlacementData__Group_5__0__Impl_in_rule__KDecoratorPlacementData__Group_5__025091 = new BitSet(new long[]{0x0000000000000840L});
+        public static final BitSet FOLLOW_rule__KDecoratorPlacementData__Group_5__1_in_rule__KDecoratorPlacementData__Group_5__025094 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_51_in_rule__KDecoratorPlacementData__Group_5__0__Impl25122 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KDecoratorPlacementData__Group_5__1__Impl_in_rule__KDecoratorPlacementData__Group_5__125153 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KDecoratorPlacementData__XOffsetAssignment_5_1_in_rule__KDecoratorPlacementData__Group_5__1__Impl25180 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KDecoratorPlacementData__Group_6__0__Impl_in_rule__KDecoratorPlacementData__Group_6__025214 = new BitSet(new long[]{0x0000000000000840L});
+        public static final BitSet FOLLOW_rule__KDecoratorPlacementData__Group_6__1_in_rule__KDecoratorPlacementData__Group_6__025217 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_52_in_rule__KDecoratorPlacementData__Group_6__0__Impl25245 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KDecoratorPlacementData__Group_6__1__Impl_in_rule__KDecoratorPlacementData__Group_6__125276 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KDecoratorPlacementData__YOffsetAssignment_6_1_in_rule__KDecoratorPlacementData__Group_6__1__Impl25303 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KDecoratorPlacementData__Group_7__0__Impl_in_rule__KDecoratorPlacementData__Group_7__025337 = new BitSet(new long[]{0x0000000000000840L});
+        public static final BitSet FOLLOW_rule__KDecoratorPlacementData__Group_7__1_in_rule__KDecoratorPlacementData__Group_7__025340 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_53_in_rule__KDecoratorPlacementData__Group_7__0__Impl25368 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KDecoratorPlacementData__Group_7__1__Impl_in_rule__KDecoratorPlacementData__Group_7__125399 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KDecoratorPlacementData__WidthAssignment_7_1_in_rule__KDecoratorPlacementData__Group_7__1__Impl25426 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KDecoratorPlacementData__Group_8__0__Impl_in_rule__KDecoratorPlacementData__Group_8__025460 = new BitSet(new long[]{0x0000000000000840L});
+        public static final BitSet FOLLOW_rule__KDecoratorPlacementData__Group_8__1_in_rule__KDecoratorPlacementData__Group_8__025463 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_54_in_rule__KDecoratorPlacementData__Group_8__0__Impl25491 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KDecoratorPlacementData__Group_8__1__Impl_in_rule__KDecoratorPlacementData__Group_8__125522 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KDecoratorPlacementData__HeightAssignment_8_1_in_rule__KDecoratorPlacementData__Group_8__1__Impl25549 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KGridPlacementData__Group__0__Impl_in_rule__KGridPlacementData__Group__025583 = new BitSet(new long[]{0x0000000008000000L});
+        public static final BitSet FOLLOW_rule__KGridPlacementData__Group__1_in_rule__KGridPlacementData__Group__025586 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_55_in_rule__KGridPlacementData__Group__0__Impl25614 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KGridPlacementData__Group__1__Impl_in_rule__KGridPlacementData__Group__125645 = new BitSet(new long[]{0x0100000000000000L});
+        public static final BitSet FOLLOW_rule__KGridPlacementData__Group__2_in_rule__KGridPlacementData__Group__125648 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_27_in_rule__KGridPlacementData__Group__1__Impl25676 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KGridPlacementData__Group__2__Impl_in_rule__KGridPlacementData__Group__225707 = new BitSet(new long[]{0x0000000000000840L});
+        public static final BitSet FOLLOW_rule__KGridPlacementData__Group__3_in_rule__KGridPlacementData__Group__225710 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_56_in_rule__KGridPlacementData__Group__2__Impl25738 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KGridPlacementData__Group__3__Impl_in_rule__KGridPlacementData__Group__325769 = new BitSet(new long[]{0x0200000000000000L});
+        public static final BitSet FOLLOW_rule__KGridPlacementData__Group__4_in_rule__KGridPlacementData__Group__325772 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KGridPlacementData__WidthHintAssignment_3_in_rule__KGridPlacementData__Group__3__Impl25799 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KGridPlacementData__Group__4__Impl_in_rule__KGridPlacementData__Group__425829 = new BitSet(new long[]{0x0000000000000840L});
+        public static final BitSet FOLLOW_rule__KGridPlacementData__Group__5_in_rule__KGridPlacementData__Group__425832 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_57_in_rule__KGridPlacementData__Group__4__Impl25860 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KGridPlacementData__Group__5__Impl_in_rule__KGridPlacementData__Group__525891 = new BitSet(new long[]{0x0400000000000000L});
+        public static final BitSet FOLLOW_rule__KGridPlacementData__Group__6_in_rule__KGridPlacementData__Group__525894 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KGridPlacementData__HeightHintAssignment_5_in_rule__KGridPlacementData__Group__5__Impl25921 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KGridPlacementData__Group__6__Impl_in_rule__KGridPlacementData__Group__625951 = new BitSet(new long[]{0x0000000000000840L});
+        public static final BitSet FOLLOW_rule__KGridPlacementData__Group__7_in_rule__KGridPlacementData__Group__625954 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_58_in_rule__KGridPlacementData__Group__6__Impl25982 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KGridPlacementData__Group__7__Impl_in_rule__KGridPlacementData__Group__726013 = new BitSet(new long[]{0x0800000000000000L});
+        public static final BitSet FOLLOW_rule__KGridPlacementData__Group__8_in_rule__KGridPlacementData__Group__726016 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KGridPlacementData__InsetRightAssignment_7_in_rule__KGridPlacementData__Group__7__Impl26043 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KGridPlacementData__Group__8__Impl_in_rule__KGridPlacementData__Group__826073 = new BitSet(new long[]{0x0000000000000840L});
+        public static final BitSet FOLLOW_rule__KGridPlacementData__Group__9_in_rule__KGridPlacementData__Group__826076 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_59_in_rule__KGridPlacementData__Group__8__Impl26104 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KGridPlacementData__Group__9__Impl_in_rule__KGridPlacementData__Group__926135 = new BitSet(new long[]{0x1000000000000000L});
+        public static final BitSet FOLLOW_rule__KGridPlacementData__Group__10_in_rule__KGridPlacementData__Group__926138 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KGridPlacementData__InsetBottomAssignment_9_in_rule__KGridPlacementData__Group__9__Impl26165 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KGridPlacementData__Group__10__Impl_in_rule__KGridPlacementData__Group__1026195 = new BitSet(new long[]{0x0000000000000840L});
+        public static final BitSet FOLLOW_rule__KGridPlacementData__Group__11_in_rule__KGridPlacementData__Group__1026198 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_60_in_rule__KGridPlacementData__Group__10__Impl26226 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KGridPlacementData__Group__11__Impl_in_rule__KGridPlacementData__Group__1126257 = new BitSet(new long[]{0x2000000000000000L});
+        public static final BitSet FOLLOW_rule__KGridPlacementData__Group__12_in_rule__KGridPlacementData__Group__1126260 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KGridPlacementData__InsetLeftAssignment_11_in_rule__KGridPlacementData__Group__11__Impl26287 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KGridPlacementData__Group__12__Impl_in_rule__KGridPlacementData__Group__1226317 = new BitSet(new long[]{0x0000000000000840L});
+        public static final BitSet FOLLOW_rule__KGridPlacementData__Group__13_in_rule__KGridPlacementData__Group__1226320 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_61_in_rule__KGridPlacementData__Group__12__Impl26348 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KGridPlacementData__Group__13__Impl_in_rule__KGridPlacementData__Group__1326379 = new BitSet(new long[]{0x0000000010000000L});
+        public static final BitSet FOLLOW_rule__KGridPlacementData__Group__14_in_rule__KGridPlacementData__Group__1326382 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KGridPlacementData__InsetTopAssignment_13_in_rule__KGridPlacementData__Group__13__Impl26409 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KGridPlacementData__Group__14__Impl_in_rule__KGridPlacementData__Group__1426439 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_28_in_rule__KGridPlacementData__Group__14__Impl26467 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KStackPlacementData__Group__0__Impl_in_rule__KStackPlacementData__Group__026528 = new BitSet(new long[]{0x0000000008000000L});
+        public static final BitSet FOLLOW_rule__KStackPlacementData__Group__1_in_rule__KStackPlacementData__Group__026531 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_62_in_rule__KStackPlacementData__Group__0__Impl26559 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KStackPlacementData__Group__1__Impl_in_rule__KStackPlacementData__Group__126590 = new BitSet(new long[]{0x0400000000000000L});
+        public static final BitSet FOLLOW_rule__KStackPlacementData__Group__2_in_rule__KStackPlacementData__Group__126593 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_27_in_rule__KStackPlacementData__Group__1__Impl26621 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KStackPlacementData__Group__2__Impl_in_rule__KStackPlacementData__Group__226652 = new BitSet(new long[]{0x0000000000000840L});
+        public static final BitSet FOLLOW_rule__KStackPlacementData__Group__3_in_rule__KStackPlacementData__Group__226655 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_58_in_rule__KStackPlacementData__Group__2__Impl26683 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KStackPlacementData__Group__3__Impl_in_rule__KStackPlacementData__Group__326714 = new BitSet(new long[]{0x0800000000000000L});
+        public static final BitSet FOLLOW_rule__KStackPlacementData__Group__4_in_rule__KStackPlacementData__Group__326717 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KStackPlacementData__InsetRightAssignment_3_in_rule__KStackPlacementData__Group__3__Impl26744 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KStackPlacementData__Group__4__Impl_in_rule__KStackPlacementData__Group__426774 = new BitSet(new long[]{0x0000000000000840L});
+        public static final BitSet FOLLOW_rule__KStackPlacementData__Group__5_in_rule__KStackPlacementData__Group__426777 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_59_in_rule__KStackPlacementData__Group__4__Impl26805 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KStackPlacementData__Group__5__Impl_in_rule__KStackPlacementData__Group__526836 = new BitSet(new long[]{0x1000000000000000L});
+        public static final BitSet FOLLOW_rule__KStackPlacementData__Group__6_in_rule__KStackPlacementData__Group__526839 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KStackPlacementData__InsetBottomAssignment_5_in_rule__KStackPlacementData__Group__5__Impl26866 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KStackPlacementData__Group__6__Impl_in_rule__KStackPlacementData__Group__626896 = new BitSet(new long[]{0x0000000000000840L});
+        public static final BitSet FOLLOW_rule__KStackPlacementData__Group__7_in_rule__KStackPlacementData__Group__626899 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_60_in_rule__KStackPlacementData__Group__6__Impl26927 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KStackPlacementData__Group__7__Impl_in_rule__KStackPlacementData__Group__726958 = new BitSet(new long[]{0x2000000000000000L});
+        public static final BitSet FOLLOW_rule__KStackPlacementData__Group__8_in_rule__KStackPlacementData__Group__726961 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KStackPlacementData__InsetLeftAssignment_7_in_rule__KStackPlacementData__Group__7__Impl26988 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KStackPlacementData__Group__8__Impl_in_rule__KStackPlacementData__Group__827018 = new BitSet(new long[]{0x0000000000000840L});
+        public static final BitSet FOLLOW_rule__KStackPlacementData__Group__9_in_rule__KStackPlacementData__Group__827021 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_61_in_rule__KStackPlacementData__Group__8__Impl27049 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KStackPlacementData__Group__9__Impl_in_rule__KStackPlacementData__Group__927080 = new BitSet(new long[]{0x0000000010000000L});
+        public static final BitSet FOLLOW_rule__KStackPlacementData__Group__10_in_rule__KStackPlacementData__Group__927083 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KStackPlacementData__InsetTopAssignment_9_in_rule__KStackPlacementData__Group__9__Impl27110 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KStackPlacementData__Group__10__Impl_in_rule__KStackPlacementData__Group__1027140 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_28_in_rule__KStackPlacementData__Group__10__Impl27168 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KDirectPlacementData__Group__0__Impl_in_rule__KDirectPlacementData__Group__027221 = new BitSet(new long[]{0x0000000008000000L});
+        public static final BitSet FOLLOW_rule__KDirectPlacementData__Group__1_in_rule__KDirectPlacementData__Group__027224 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_63_in_rule__KDirectPlacementData__Group__0__Impl27252 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KDirectPlacementData__Group__1__Impl_in_rule__KDirectPlacementData__Group__127283 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000001L});
+        public static final BitSet FOLLOW_rule__KDirectPlacementData__Group__2_in_rule__KDirectPlacementData__Group__127286 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_27_in_rule__KDirectPlacementData__Group__1__Impl27314 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KDirectPlacementData__Group__2__Impl_in_rule__KDirectPlacementData__Group__227345 = new BitSet(new long[]{0x0000000000000000L,0x00000000000000C0L});
+        public static final BitSet FOLLOW_rule__KDirectPlacementData__Group__3_in_rule__KDirectPlacementData__Group__227348 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_64_in_rule__KDirectPlacementData__Group__2__Impl27376 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KDirectPlacementData__Group__3__Impl_in_rule__KDirectPlacementData__Group__327407 = new BitSet(new long[]{0x0000000020000000L,0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KDirectPlacementData__Group__4_in_rule__KDirectPlacementData__Group__327410 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KDirectPlacementData__TopLeftAssignment_3_in_rule__KDirectPlacementData__Group__3__Impl27437 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KDirectPlacementData__Group__4__Impl_in_rule__KDirectPlacementData__Group__427467 = new BitSet(new long[]{0x0000000020000000L,0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KDirectPlacementData__Group__5_in_rule__KDirectPlacementData__Group__427470 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_29_in_rule__KDirectPlacementData__Group__4__Impl27499 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KDirectPlacementData__Group__5__Impl_in_rule__KDirectPlacementData__Group__527532 = new BitSet(new long[]{0x0000000000000000L,0x00000000000000C0L});
+        public static final BitSet FOLLOW_rule__KDirectPlacementData__Group__6_in_rule__KDirectPlacementData__Group__527535 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_65_in_rule__KDirectPlacementData__Group__5__Impl27563 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KDirectPlacementData__Group__6__Impl_in_rule__KDirectPlacementData__Group__627594 = new BitSet(new long[]{0x0000000010000000L});
+        public static final BitSet FOLLOW_rule__KDirectPlacementData__Group__7_in_rule__KDirectPlacementData__Group__627597 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KDirectPlacementData__BottomRightAssignment_6_in_rule__KDirectPlacementData__Group__6__Impl27624 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KDirectPlacementData__Group__7__Impl_in_rule__KDirectPlacementData__Group__727654 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_28_in_rule__KDirectPlacementData__Group__7__Impl27682 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KPolylinePlacementData__Group__0__Impl_in_rule__KPolylinePlacementData__Group__027729 = new BitSet(new long[]{0x0000000008000000L});
+        public static final BitSet FOLLOW_rule__KPolylinePlacementData__Group__1_in_rule__KPolylinePlacementData__Group__027732 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_66_in_rule__KPolylinePlacementData__Group__0__Impl27760 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KPolylinePlacementData__Group__1__Impl_in_rule__KPolylinePlacementData__Group__127791 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000008L});
+        public static final BitSet FOLLOW_rule__KPolylinePlacementData__Group__2_in_rule__KPolylinePlacementData__Group__127794 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_27_in_rule__KPolylinePlacementData__Group__1__Impl27822 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KPolylinePlacementData__Group__2__Impl_in_rule__KPolylinePlacementData__Group__227853 = new BitSet(new long[]{0x0000000400000000L});
+        public static final BitSet FOLLOW_rule__KPolylinePlacementData__Group__3_in_rule__KPolylinePlacementData__Group__227856 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_67_in_rule__KPolylinePlacementData__Group__2__Impl27884 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KPolylinePlacementData__Group__3__Impl_in_rule__KPolylinePlacementData__Group__327915 = new BitSet(new long[]{0x0000000000000000L,0x00000000000000C0L});
+        public static final BitSet FOLLOW_rule__KPolylinePlacementData__Group__4_in_rule__KPolylinePlacementData__Group__327918 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_34_in_rule__KPolylinePlacementData__Group__3__Impl27946 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KPolylinePlacementData__Group__4__Impl_in_rule__KPolylinePlacementData__Group__427977 = new BitSet(new long[]{0x0000000030000000L,0x0000000000000010L});
+        public static final BitSet FOLLOW_rule__KPolylinePlacementData__Group__5_in_rule__KPolylinePlacementData__Group__427980 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KPolylinePlacementData__PointsAssignment_4_in_rule__KPolylinePlacementData__Group__4__Impl28007 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KPolylinePlacementData__Group__5__Impl_in_rule__KPolylinePlacementData__Group__528037 = new BitSet(new long[]{0x0000000030000000L,0x0000000000000010L});
+        public static final BitSet FOLLOW_rule__KPolylinePlacementData__Group__6_in_rule__KPolylinePlacementData__Group__528040 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KPolylinePlacementData__Group_5__0_in_rule__KPolylinePlacementData__Group__5__Impl28067 = new BitSet(new long[]{0x0000000020000002L});
+        public static final BitSet FOLLOW_rule__KPolylinePlacementData__Group__6__Impl_in_rule__KPolylinePlacementData__Group__628098 = new BitSet(new long[]{0x0000000030000000L,0x0000000000000010L});
+        public static final BitSet FOLLOW_rule__KPolylinePlacementData__Group__7_in_rule__KPolylinePlacementData__Group__628101 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KPolylinePlacementData__Group_6__0_in_rule__KPolylinePlacementData__Group__6__Impl28128 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KPolylinePlacementData__Group__7__Impl_in_rule__KPolylinePlacementData__Group__728159 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_28_in_rule__KPolylinePlacementData__Group__7__Impl28187 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KPolylinePlacementData__Group_5__0__Impl_in_rule__KPolylinePlacementData__Group_5__028234 = new BitSet(new long[]{0x0000000000000000L,0x00000000000000C0L});
+        public static final BitSet FOLLOW_rule__KPolylinePlacementData__Group_5__1_in_rule__KPolylinePlacementData__Group_5__028237 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_29_in_rule__KPolylinePlacementData__Group_5__0__Impl28265 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KPolylinePlacementData__Group_5__1__Impl_in_rule__KPolylinePlacementData__Group_5__128296 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KPolylinePlacementData__PointsAssignment_5_1_in_rule__KPolylinePlacementData__Group_5__1__Impl28323 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KPolylinePlacementData__Group_6__0__Impl_in_rule__KPolylinePlacementData__Group_6__028357 = new BitSet(new long[]{0xC082000000000000L,0x0000000000000004L});
+        public static final BitSet FOLLOW_rule__KPolylinePlacementData__Group_6__1_in_rule__KPolylinePlacementData__Group_6__028360 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_68_in_rule__KPolylinePlacementData__Group_6__0__Impl28388 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KPolylinePlacementData__Group_6__1__Impl_in_rule__KPolylinePlacementData__Group_6__128419 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KPolylinePlacementData__DetailPlacementDataAssignment_6_1_in_rule__KPolylinePlacementData__Group_6__1__Impl28446 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KPosition__Group__0__Impl_in_rule__KPosition__Group__028480 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000020L});
+        public static final BitSet FOLLOW_rule__KPosition__Group__1_in_rule__KPosition__Group__028483 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KPosition__XAssignment_0_in_rule__KPosition__Group__0__Impl28510 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KPosition__Group__1__Impl_in_rule__KPosition__Group__128540 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000300L});
+        public static final BitSet FOLLOW_rule__KPosition__Group__2_in_rule__KPosition__Group__128543 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_69_in_rule__KPosition__Group__1__Impl28571 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KPosition__Group__2__Impl_in_rule__KPosition__Group__228602 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KPosition__YAssignment_2_in_rule__KPosition__Group__2__Impl28629 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KLeftPosition__Group__0__Impl_in_rule__KLeftPosition__Group__028665 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000040L});
+        public static final BitSet FOLLOW_rule__KLeftPosition__Group__1_in_rule__KLeftPosition__Group__028668 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KLeftPosition__Group__1__Impl_in_rule__KLeftPosition__Group__128726 = new BitSet(new long[]{0x0000000000000840L});
+        public static final BitSet FOLLOW_rule__KLeftPosition__Group__2_in_rule__KLeftPosition__Group__128729 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_70_in_rule__KLeftPosition__Group__1__Impl28757 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KLeftPosition__Group__2__Impl_in_rule__KLeftPosition__Group__228788 = new BitSet(new long[]{0x0000000000000840L});
+        public static final BitSet FOLLOW_rule__KLeftPosition__Group__3_in_rule__KLeftPosition__Group__228791 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KLeftPosition__AbsoluteAssignment_2_in_rule__KLeftPosition__Group__2__Impl28818 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KLeftPosition__Group__3__Impl_in_rule__KLeftPosition__Group__328848 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KLeftPosition__RelativeAssignment_3_in_rule__KLeftPosition__Group__3__Impl28875 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KRightPosition__Group__0__Impl_in_rule__KRightPosition__Group__028913 = new BitSet(new long[]{0x0000000000000000L,0x00000000000000C0L});
+        public static final BitSet FOLLOW_rule__KRightPosition__Group__1_in_rule__KRightPosition__Group__028916 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KRightPosition__Group__1__Impl_in_rule__KRightPosition__Group__128974 = new BitSet(new long[]{0x0000000000000840L});
+        public static final BitSet FOLLOW_rule__KRightPosition__Group__2_in_rule__KRightPosition__Group__128977 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_71_in_rule__KRightPosition__Group__1__Impl29005 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KRightPosition__Group__2__Impl_in_rule__KRightPosition__Group__229036 = new BitSet(new long[]{0x0000000000000840L});
+        public static final BitSet FOLLOW_rule__KRightPosition__Group__3_in_rule__KRightPosition__Group__229039 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KRightPosition__AbsoluteAssignment_2_in_rule__KRightPosition__Group__2__Impl29066 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KRightPosition__Group__3__Impl_in_rule__KRightPosition__Group__329096 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KRightPosition__RelativeAssignment_3_in_rule__KRightPosition__Group__3__Impl29123 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KTopPosition__Group__0__Impl_in_rule__KTopPosition__Group__029161 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000100L});
+        public static final BitSet FOLLOW_rule__KTopPosition__Group__1_in_rule__KTopPosition__Group__029164 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KTopPosition__Group__1__Impl_in_rule__KTopPosition__Group__129222 = new BitSet(new long[]{0x0000000000000840L});
+        public static final BitSet FOLLOW_rule__KTopPosition__Group__2_in_rule__KTopPosition__Group__129225 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_72_in_rule__KTopPosition__Group__1__Impl29253 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KTopPosition__Group__2__Impl_in_rule__KTopPosition__Group__229284 = new BitSet(new long[]{0x0000000000000840L});
+        public static final BitSet FOLLOW_rule__KTopPosition__Group__3_in_rule__KTopPosition__Group__229287 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KTopPosition__AbsoluteAssignment_2_in_rule__KTopPosition__Group__2__Impl29314 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KTopPosition__Group__3__Impl_in_rule__KTopPosition__Group__329344 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KTopPosition__RelativeAssignment_3_in_rule__KTopPosition__Group__3__Impl29371 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KBottomPosition__Group__0__Impl_in_rule__KBottomPosition__Group__029409 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000300L});
+        public static final BitSet FOLLOW_rule__KBottomPosition__Group__1_in_rule__KBottomPosition__Group__029412 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KBottomPosition__Group__1__Impl_in_rule__KBottomPosition__Group__129470 = new BitSet(new long[]{0x0000000000000840L});
+        public static final BitSet FOLLOW_rule__KBottomPosition__Group__2_in_rule__KBottomPosition__Group__129473 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_73_in_rule__KBottomPosition__Group__1__Impl29501 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KBottomPosition__Group__2__Impl_in_rule__KBottomPosition__Group__229532 = new BitSet(new long[]{0x0000000000000840L});
+        public static final BitSet FOLLOW_rule__KBottomPosition__Group__3_in_rule__KBottomPosition__Group__229535 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KBottomPosition__AbsoluteAssignment_2_in_rule__KBottomPosition__Group__2__Impl29562 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KBottomPosition__Group__3__Impl_in_rule__KBottomPosition__Group__329592 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KBottomPosition__RelativeAssignment_3_in_rule__KBottomPosition__Group__3__Impl29619 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KForegroundColor__Group__0__Impl_in_rule__KForegroundColor__Group__029657 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000400L});
+        public static final BitSet FOLLOW_rule__KForegroundColor__Group__1_in_rule__KForegroundColor__Group__029660 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KForegroundColor__Group__1__Impl_in_rule__KForegroundColor__Group__129718 = new BitSet(new long[]{0x0000000000000840L});
+        public static final BitSet FOLLOW_rule__KForegroundColor__Group__2_in_rule__KForegroundColor__Group__129721 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_74_in_rule__KForegroundColor__Group__1__Impl29749 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KForegroundColor__Group__2__Impl_in_rule__KForegroundColor__Group__229780 = new BitSet(new long[]{0x0000000000000840L});
+        public static final BitSet FOLLOW_rule__KForegroundColor__Group__3_in_rule__KForegroundColor__Group__229783 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KForegroundColor__RedAssignment_2_in_rule__KForegroundColor__Group__2__Impl29810 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KForegroundColor__Group__3__Impl_in_rule__KForegroundColor__Group__329840 = new BitSet(new long[]{0x0000000000000840L});
+        public static final BitSet FOLLOW_rule__KForegroundColor__Group__4_in_rule__KForegroundColor__Group__329843 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KForegroundColor__GreenAssignment_3_in_rule__KForegroundColor__Group__3__Impl29870 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KForegroundColor__Group__4__Impl_in_rule__KForegroundColor__Group__429900 = new BitSet(new long[]{0x0000000000000000L,0x0000000100000000L});
+        public static final BitSet FOLLOW_rule__KForegroundColor__Group__5_in_rule__KForegroundColor__Group__429903 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KForegroundColor__BlueAssignment_4_in_rule__KForegroundColor__Group__4__Impl29930 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KForegroundColor__Group__5__Impl_in_rule__KForegroundColor__Group__529960 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KForegroundColor__PropagateToChildrenAssignment_5_in_rule__KForegroundColor__Group__5__Impl29987 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KBackgroundColor__Group__0__Impl_in_rule__KBackgroundColor__Group__030030 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000800L});
+        public static final BitSet FOLLOW_rule__KBackgroundColor__Group__1_in_rule__KBackgroundColor__Group__030033 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KBackgroundColor__Group__1__Impl_in_rule__KBackgroundColor__Group__130091 = new BitSet(new long[]{0x0000000000000840L});
+        public static final BitSet FOLLOW_rule__KBackgroundColor__Group__2_in_rule__KBackgroundColor__Group__130094 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_75_in_rule__KBackgroundColor__Group__1__Impl30122 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KBackgroundColor__Group__2__Impl_in_rule__KBackgroundColor__Group__230153 = new BitSet(new long[]{0x0000000000000840L});
+        public static final BitSet FOLLOW_rule__KBackgroundColor__Group__3_in_rule__KBackgroundColor__Group__230156 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KBackgroundColor__RedAssignment_2_in_rule__KBackgroundColor__Group__2__Impl30183 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KBackgroundColor__Group__3__Impl_in_rule__KBackgroundColor__Group__330213 = new BitSet(new long[]{0x0000000000000840L});
+        public static final BitSet FOLLOW_rule__KBackgroundColor__Group__4_in_rule__KBackgroundColor__Group__330216 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KBackgroundColor__GreenAssignment_3_in_rule__KBackgroundColor__Group__3__Impl30243 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KBackgroundColor__Group__4__Impl_in_rule__KBackgroundColor__Group__430273 = new BitSet(new long[]{0x0000000000000000L,0x0000000100000000L});
+        public static final BitSet FOLLOW_rule__KBackgroundColor__Group__5_in_rule__KBackgroundColor__Group__430276 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KBackgroundColor__BlueAssignment_4_in_rule__KBackgroundColor__Group__4__Impl30303 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KBackgroundColor__Group__5__Impl_in_rule__KBackgroundColor__Group__530333 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KBackgroundColor__PropagateToChildrenAssignment_5_in_rule__KBackgroundColor__Group__5__Impl30360 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KLineWidth__Group__0__Impl_in_rule__KLineWidth__Group__030403 = new BitSet(new long[]{0x0000000000000840L});
+        public static final BitSet FOLLOW_rule__KLineWidth__Group__1_in_rule__KLineWidth__Group__030406 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_76_in_rule__KLineWidth__Group__0__Impl30434 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KLineWidth__Group__1__Impl_in_rule__KLineWidth__Group__130465 = new BitSet(new long[]{0x0000000000000000L,0x0000000100000000L});
+        public static final BitSet FOLLOW_rule__KLineWidth__Group__2_in_rule__KLineWidth__Group__130468 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KLineWidth__LineWidthAssignment_1_in_rule__KLineWidth__Group__1__Impl30495 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KLineWidth__Group__2__Impl_in_rule__KLineWidth__Group__230525 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KLineWidth__PropagateToChildrenAssignment_2_in_rule__KLineWidth__Group__2__Impl30552 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KForegroundVisibility__Group__0__Impl_in_rule__KForegroundVisibility__Group__030589 = new BitSet(new long[]{0x0000000000000000L,0x0000000000002000L});
+        public static final BitSet FOLLOW_rule__KForegroundVisibility__Group__1_in_rule__KForegroundVisibility__Group__030592 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KForegroundVisibility__Group__1__Impl_in_rule__KForegroundVisibility__Group__130650 = new BitSet(new long[]{0x000000000000C000L});
+        public static final BitSet FOLLOW_rule__KForegroundVisibility__Group__2_in_rule__KForegroundVisibility__Group__130653 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_77_in_rule__KForegroundVisibility__Group__1__Impl30681 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KForegroundVisibility__Group__2__Impl_in_rule__KForegroundVisibility__Group__230712 = new BitSet(new long[]{0x0000000000000000L,0x0000000100000000L});
+        public static final BitSet FOLLOW_rule__KForegroundVisibility__Group__3_in_rule__KForegroundVisibility__Group__230715 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KForegroundVisibility__VisibleAssignment_2_in_rule__KForegroundVisibility__Group__2__Impl30742 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KForegroundVisibility__Group__3__Impl_in_rule__KForegroundVisibility__Group__330772 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KForegroundVisibility__PropagateToChildrenAssignment_3_in_rule__KForegroundVisibility__Group__3__Impl30799 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KBackgroundVisibility__Group__0__Impl_in_rule__KBackgroundVisibility__Group__030838 = new BitSet(new long[]{0x0000000000000000L,0x0000000000006000L});
+        public static final BitSet FOLLOW_rule__KBackgroundVisibility__Group__1_in_rule__KBackgroundVisibility__Group__030841 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KBackgroundVisibility__Group__1__Impl_in_rule__KBackgroundVisibility__Group__130899 = new BitSet(new long[]{0x000000000000C000L});
+        public static final BitSet FOLLOW_rule__KBackgroundVisibility__Group__2_in_rule__KBackgroundVisibility__Group__130902 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_78_in_rule__KBackgroundVisibility__Group__1__Impl30930 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KBackgroundVisibility__Group__2__Impl_in_rule__KBackgroundVisibility__Group__230961 = new BitSet(new long[]{0x0000000000000000L,0x0000000100000000L});
+        public static final BitSet FOLLOW_rule__KBackgroundVisibility__Group__3_in_rule__KBackgroundVisibility__Group__230964 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KBackgroundVisibility__VisibleAssignment_2_in_rule__KBackgroundVisibility__Group__2__Impl30991 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KBackgroundVisibility__Group__3__Impl_in_rule__KBackgroundVisibility__Group__331021 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KBackgroundVisibility__PropagateToChildrenAssignment_3_in_rule__KBackgroundVisibility__Group__3__Impl31048 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KLineStyle__Group__0__Impl_in_rule__KLineStyle__Group__031087 = new BitSet(new long[]{0x0000000000000000L,0x0000000000008000L});
+        public static final BitSet FOLLOW_rule__KLineStyle__Group__1_in_rule__KLineStyle__Group__031090 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KLineStyle__Group__1__Impl_in_rule__KLineStyle__Group__131148 = new BitSet(new long[]{0x00000000001F0000L});
+        public static final BitSet FOLLOW_rule__KLineStyle__Group__2_in_rule__KLineStyle__Group__131151 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_79_in_rule__KLineStyle__Group__1__Impl31179 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KLineStyle__Group__2__Impl_in_rule__KLineStyle__Group__231210 = new BitSet(new long[]{0x0000000000000000L,0x0000000100000000L});
+        public static final BitSet FOLLOW_rule__KLineStyle__Group__3_in_rule__KLineStyle__Group__231213 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KLineStyle__LineStyleAssignment_2_in_rule__KLineStyle__Group__2__Impl31240 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KLineStyle__Group__3__Impl_in_rule__KLineStyle__Group__331270 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KLineStyle__PropagateToChildrenAssignment_3_in_rule__KLineStyle__Group__3__Impl31297 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KFontBold__Group__0__Impl_in_rule__KFontBold__Group__031336 = new BitSet(new long[]{0x0000000000000000L,0x0000000000010000L});
+        public static final BitSet FOLLOW_rule__KFontBold__Group__1_in_rule__KFontBold__Group__031339 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KFontBold__Group__1__Impl_in_rule__KFontBold__Group__131397 = new BitSet(new long[]{0x0000000000000000L,0x0000000100000000L});
+        public static final BitSet FOLLOW_rule__KFontBold__Group__2_in_rule__KFontBold__Group__131400 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_80_in_rule__KFontBold__Group__1__Impl31428 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KFontBold__Group__2__Impl_in_rule__KFontBold__Group__231459 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KFontBold__PropagateToChildrenAssignment_2_in_rule__KFontBold__Group__2__Impl31486 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KFontItalic__Group__0__Impl_in_rule__KFontItalic__Group__031523 = new BitSet(new long[]{0x0000000000000000L,0x0000000000020000L});
+        public static final BitSet FOLLOW_rule__KFontItalic__Group__1_in_rule__KFontItalic__Group__031526 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KFontItalic__Group__1__Impl_in_rule__KFontItalic__Group__131584 = new BitSet(new long[]{0x0000000000000000L,0x0000000100000000L});
+        public static final BitSet FOLLOW_rule__KFontItalic__Group__2_in_rule__KFontItalic__Group__131587 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_81_in_rule__KFontItalic__Group__1__Impl31615 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KFontItalic__Group__2__Impl_in_rule__KFontItalic__Group__231646 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KFontItalic__PropagateToChildrenAssignment_2_in_rule__KFontItalic__Group__2__Impl31673 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KFontName__Group__0__Impl_in_rule__KFontName__Group__031710 = new BitSet(new long[]{0x0000000000000030L});
+        public static final BitSet FOLLOW_rule__KFontName__Group__1_in_rule__KFontName__Group__031713 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_82_in_rule__KFontName__Group__0__Impl31741 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KFontName__Group__1__Impl_in_rule__KFontName__Group__131772 = new BitSet(new long[]{0x0000000000000000L,0x0000000100000000L});
+        public static final BitSet FOLLOW_rule__KFontName__Group__2_in_rule__KFontName__Group__131775 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KFontName__NameAssignment_1_in_rule__KFontName__Group__1__Impl31802 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KFontName__Group__2__Impl_in_rule__KFontName__Group__231832 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KFontName__PropagateToChildrenAssignment_2_in_rule__KFontName__Group__2__Impl31859 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KFontSize__Group__0__Impl_in_rule__KFontSize__Group__031896 = new BitSet(new long[]{0x0000000000000840L});
+        public static final BitSet FOLLOW_rule__KFontSize__Group__1_in_rule__KFontSize__Group__031899 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_83_in_rule__KFontSize__Group__0__Impl31927 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KFontSize__Group__1__Impl_in_rule__KFontSize__Group__131958 = new BitSet(new long[]{0x0000000000000000L,0x0000000100000000L});
+        public static final BitSet FOLLOW_rule__KFontSize__Group__2_in_rule__KFontSize__Group__131961 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KFontSize__SizeAssignment_1_in_rule__KFontSize__Group__1__Impl31988 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KFontSize__Group__2__Impl_in_rule__KFontSize__Group__232018 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KFontSize__PropagateToChildrenAssignment_2_in_rule__KFontSize__Group__2__Impl32045 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KVerticalAlignment__Group__0__Impl_in_rule__KVerticalAlignment__Group__032082 = new BitSet(new long[]{0x0000000000000000L,0x0000000000100000L});
+        public static final BitSet FOLLOW_rule__KVerticalAlignment__Group__1_in_rule__KVerticalAlignment__Group__032085 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KVerticalAlignment__Group__1__Impl_in_rule__KVerticalAlignment__Group__132143 = new BitSet(new long[]{0x0000000000E00000L});
+        public static final BitSet FOLLOW_rule__KVerticalAlignment__Group__2_in_rule__KVerticalAlignment__Group__132146 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_84_in_rule__KVerticalAlignment__Group__1__Impl32174 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KVerticalAlignment__Group__2__Impl_in_rule__KVerticalAlignment__Group__232205 = new BitSet(new long[]{0x0000000000000000L,0x0000000100000000L});
+        public static final BitSet FOLLOW_rule__KVerticalAlignment__Group__3_in_rule__KVerticalAlignment__Group__232208 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KVerticalAlignment__VerticalAlignmentAssignment_2_in_rule__KVerticalAlignment__Group__2__Impl32235 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KVerticalAlignment__Group__3__Impl_in_rule__KVerticalAlignment__Group__332265 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KVerticalAlignment__PropagateToChildrenAssignment_3_in_rule__KVerticalAlignment__Group__3__Impl32292 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KHorizontalAlignment__Group__0__Impl_in_rule__KHorizontalAlignment__Group__032331 = new BitSet(new long[]{0x0000000000000000L,0x00000000003FFC00L});
+        public static final BitSet FOLLOW_rule__KHorizontalAlignment__Group__1_in_rule__KHorizontalAlignment__Group__032334 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KHorizontalAlignment__Group__1__Impl_in_rule__KHorizontalAlignment__Group__132392 = new BitSet(new long[]{0x0000000003400000L});
+        public static final BitSet FOLLOW_rule__KHorizontalAlignment__Group__2_in_rule__KHorizontalAlignment__Group__132395 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_85_in_rule__KHorizontalAlignment__Group__1__Impl32423 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KHorizontalAlignment__Group__2__Impl_in_rule__KHorizontalAlignment__Group__232454 = new BitSet(new long[]{0x0000000000000000L,0x0000000100000000L});
+        public static final BitSet FOLLOW_rule__KHorizontalAlignment__Group__3_in_rule__KHorizontalAlignment__Group__232457 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KHorizontalAlignment__HorizontalAlignmentAssignment_2_in_rule__KHorizontalAlignment__Group__2__Impl32484 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KHorizontalAlignment__Group__3__Impl_in_rule__KHorizontalAlignment__Group__332514 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KHorizontalAlignment__PropagateToChildrenAssignment_3_in_rule__KHorizontalAlignment__Group__3__Impl32541 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KGridPlacement__Group__0__Impl_in_rule__KGridPlacement__Group__032579 = new BitSet(new long[]{0x0000000000000000L,0x0000000000400000L});
+        public static final BitSet FOLLOW_rule__KGridPlacement__Group__1_in_rule__KGridPlacement__Group__032582 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KGridPlacement__Group__1__Impl_in_rule__KGridPlacement__Group__132640 = new BitSet(new long[]{0x0000000000000840L});
+        public static final BitSet FOLLOW_rule__KGridPlacement__Group__2_in_rule__KGridPlacement__Group__132643 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_86_in_rule__KGridPlacement__Group__1__Impl32671 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KGridPlacement__Group__2__Impl_in_rule__KGridPlacement__Group__232702 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KGridPlacement__NumColumnsAssignment_2_in_rule__KGridPlacement__Group__2__Impl32729 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KStackPlacement__Group__0__Impl_in_rule__KStackPlacement__Group__032765 = new BitSet(new long[]{0x0000000000000000L,0x0000000000C00000L});
+        public static final BitSet FOLLOW_rule__KStackPlacement__Group__1_in_rule__KStackPlacement__Group__032768 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KStackPlacement__Group__1__Impl_in_rule__KStackPlacement__Group__132826 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_87_in_rule__KStackPlacement__Group__1__Impl32854 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__EFloat__Group__0__Impl_in_rule__EFloat__Group__032889 = new BitSet(new long[]{0x0000000000000840L});
+        public static final BitSet FOLLOW_rule__EFloat__Group__1_in_rule__EFloat__Group__032892 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_11_in_rule__EFloat__Group__0__Impl32921 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__EFloat__Group__1__Impl_in_rule__EFloat__Group__132954 = new BitSet(new long[]{0x0000000000000000L,0x0000000001000000L});
+        public static final BitSet FOLLOW_rule__EFloat__Group__2_in_rule__EFloat__Group__132957 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_RULE_INT_in_rule__EFloat__Group__1__Impl32984 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__EFloat__Group__2__Impl_in_rule__EFloat__Group__233013 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__EFloat__Group_2__0_in_rule__EFloat__Group__2__Impl33040 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__EFloat__Group_2__0__Impl_in_rule__EFloat__Group_2__033077 = new BitSet(new long[]{0x0000000000000040L});
+        public static final BitSet FOLLOW_rule__EFloat__Group_2__1_in_rule__EFloat__Group_2__033080 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_88_in_rule__EFloat__Group_2__0__Impl33108 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__EFloat__Group_2__1__Impl_in_rule__EFloat__Group_2__133139 = new BitSet(new long[]{0x0000000000003000L});
+        public static final BitSet FOLLOW_rule__EFloat__Group_2__2_in_rule__EFloat__Group_2__133142 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_RULE_INT_in_rule__EFloat__Group_2__1__Impl33169 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__EFloat__Group_2__2__Impl_in_rule__EFloat__Group_2__233198 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__EFloat__Group_2_2__0_in_rule__EFloat__Group_2__2__Impl33225 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__EFloat__Group_2_2__0__Impl_in_rule__EFloat__Group_2_2__033262 = new BitSet(new long[]{0x0000000000000840L});
+        public static final BitSet FOLLOW_rule__EFloat__Group_2_2__1_in_rule__EFloat__Group_2_2__033265 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__EFloat__Alternatives_2_2_0_in_rule__EFloat__Group_2_2__0__Impl33292 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__EFloat__Group_2_2__1__Impl_in_rule__EFloat__Group_2_2__133322 = new BitSet(new long[]{0x0000000000000840L});
+        public static final BitSet FOLLOW_rule__EFloat__Group_2_2__2_in_rule__EFloat__Group_2_2__133325 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_11_in_rule__EFloat__Group_2_2__1__Impl33354 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__EFloat__Group_2_2__2__Impl_in_rule__EFloat__Group_2_2__233387 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_RULE_INT_in_rule__EFloat__Group_2_2__2__Impl33414 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__EInt__Group__0__Impl_in_rule__EInt__Group__033449 = new BitSet(new long[]{0x0000000000000840L});
+        public static final BitSet FOLLOW_rule__EInt__Group__1_in_rule__EInt__Group__033452 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_11_in_rule__EInt__Group__0__Impl33481 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__EInt__Group__1__Impl_in_rule__EInt__Group__133514 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_RULE_INT_in_rule__EInt__Group__1__Impl33541 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KInsets__Group__0__Impl_in_rule__KInsets__Group__033582 = new BitSet(new long[]{0x0000000000000000L,0x0000000002000000L});
+        public static final BitSet FOLLOW_rule__KInsets__Group__1_in_rule__KInsets__Group__033585 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KInsets__Group__1__Impl_in_rule__KInsets__Group__133643 = new BitSet(new long[]{0x0000000008000000L});
+        public static final BitSet FOLLOW_rule__KInsets__Group__2_in_rule__KInsets__Group__133646 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_89_in_rule__KInsets__Group__1__Impl33674 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KInsets__Group__2__Impl_in_rule__KInsets__Group__233705 = new BitSet(new long[]{0x0000000010000000L,0x00000000000003C0L});
+        public static final BitSet FOLLOW_rule__KInsets__Group__3_in_rule__KInsets__Group__233708 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_27_in_rule__KInsets__Group__2__Impl33736 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KInsets__Group__3__Impl_in_rule__KInsets__Group__333767 = new BitSet(new long[]{0x0000000010000000L,0x00000000000003C0L});
+        public static final BitSet FOLLOW_rule__KInsets__Group__4_in_rule__KInsets__Group__333770 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KInsets__Group_3__0_in_rule__KInsets__Group__3__Impl33797 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KInsets__Group__4__Impl_in_rule__KInsets__Group__433828 = new BitSet(new long[]{0x0000000010000000L,0x00000000000003C0L});
+        public static final BitSet FOLLOW_rule__KInsets__Group__5_in_rule__KInsets__Group__433831 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KInsets__Group_4__0_in_rule__KInsets__Group__4__Impl33858 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KInsets__Group__5__Impl_in_rule__KInsets__Group__533889 = new BitSet(new long[]{0x0000000010000000L,0x00000000000003C0L});
+        public static final BitSet FOLLOW_rule__KInsets__Group__6_in_rule__KInsets__Group__533892 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KInsets__Group_5__0_in_rule__KInsets__Group__5__Impl33919 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KInsets__Group__6__Impl_in_rule__KInsets__Group__633950 = new BitSet(new long[]{0x0000000010000000L,0x00000000000003C0L});
+        public static final BitSet FOLLOW_rule__KInsets__Group__7_in_rule__KInsets__Group__633953 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KInsets__Group_6__0_in_rule__KInsets__Group__6__Impl33980 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KInsets__Group__7__Impl_in_rule__KInsets__Group__734011 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_28_in_rule__KInsets__Group__7__Impl34039 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KInsets__Group_3__0__Impl_in_rule__KInsets__Group_3__034086 = new BitSet(new long[]{0x0000000000000840L});
+        public static final BitSet FOLLOW_rule__KInsets__Group_3__1_in_rule__KInsets__Group_3__034089 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_72_in_rule__KInsets__Group_3__0__Impl34117 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KInsets__Group_3__1__Impl_in_rule__KInsets__Group_3__134148 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KInsets__TopAssignment_3_1_in_rule__KInsets__Group_3__1__Impl34175 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KInsets__Group_4__0__Impl_in_rule__KInsets__Group_4__034209 = new BitSet(new long[]{0x0000000000000840L});
+        public static final BitSet FOLLOW_rule__KInsets__Group_4__1_in_rule__KInsets__Group_4__034212 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_73_in_rule__KInsets__Group_4__0__Impl34240 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KInsets__Group_4__1__Impl_in_rule__KInsets__Group_4__134271 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KInsets__BottomAssignment_4_1_in_rule__KInsets__Group_4__1__Impl34298 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KInsets__Group_5__0__Impl_in_rule__KInsets__Group_5__034332 = new BitSet(new long[]{0x0000000000000840L});
+        public static final BitSet FOLLOW_rule__KInsets__Group_5__1_in_rule__KInsets__Group_5__034335 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_70_in_rule__KInsets__Group_5__0__Impl34363 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KInsets__Group_5__1__Impl_in_rule__KInsets__Group_5__134394 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KInsets__LeftAssignment_5_1_in_rule__KInsets__Group_5__1__Impl34421 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KInsets__Group_6__0__Impl_in_rule__KInsets__Group_6__034455 = new BitSet(new long[]{0x0000000000000840L});
+        public static final BitSet FOLLOW_rule__KInsets__Group_6__1_in_rule__KInsets__Group_6__034458 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_71_in_rule__KInsets__Group_6__0__Impl34486 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KInsets__Group_6__1__Impl_in_rule__KInsets__Group_6__134517 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KInsets__RightAssignment_6_1_in_rule__KInsets__Group_6__1__Impl34544 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KPoint__Group__0__Impl_in_rule__KPoint__Group__034583 = new BitSet(new long[]{0x0000000000000000L,0x0000000004000000L});
+        public static final BitSet FOLLOW_rule__KPoint__Group__1_in_rule__KPoint__Group__034586 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KPoint__Group__1__Impl_in_rule__KPoint__Group__134644 = new BitSet(new long[]{0x0000000000000000L,0x0000000008000000L});
+        public static final BitSet FOLLOW_rule__KPoint__Group__2_in_rule__KPoint__Group__134647 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_90_in_rule__KPoint__Group__1__Impl34675 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KPoint__Group__2__Impl_in_rule__KPoint__Group__234706 = new BitSet(new long[]{0x0000000000000000L,0x0000000010000000L});
+        public static final BitSet FOLLOW_rule__KPoint__Group__3_in_rule__KPoint__Group__234709 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KPoint__Group_2__0_in_rule__KPoint__Group__2__Impl34736 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KPoint__Group__3__Impl_in_rule__KPoint__Group__334766 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KPoint__Group_3__0_in_rule__KPoint__Group__3__Impl34793 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KPoint__Group_2__0__Impl_in_rule__KPoint__Group_2__034831 = new BitSet(new long[]{0x0000000000000840L});
+        public static final BitSet FOLLOW_rule__KPoint__Group_2__1_in_rule__KPoint__Group_2__034834 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_91_in_rule__KPoint__Group_2__0__Impl34862 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KPoint__Group_2__1__Impl_in_rule__KPoint__Group_2__134893 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KPoint__XAssignment_2_1_in_rule__KPoint__Group_2__1__Impl34920 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KPoint__Group_3__0__Impl_in_rule__KPoint__Group_3__034954 = new BitSet(new long[]{0x0000000000000840L});
+        public static final BitSet FOLLOW_rule__KPoint__Group_3__1_in_rule__KPoint__Group_3__034957 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_92_in_rule__KPoint__Group_3__0__Impl34985 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KPoint__Group_3__1__Impl_in_rule__KPoint__Group_3__135016 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KPoint__YAssignment_3_1_in_rule__KPoint__Group_3__1__Impl35043 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__PersistentEntry__Group__0__Impl_in_rule__PersistentEntry__Group__035077 = new BitSet(new long[]{0x0000000000000000L,0x0000000020000000L});
+        public static final BitSet FOLLOW_rule__PersistentEntry__Group__1_in_rule__PersistentEntry__Group__035080 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__PersistentEntry__KeyAssignment_0_in_rule__PersistentEntry__Group__0__Impl35107 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__PersistentEntry__Group__1__Impl_in_rule__PersistentEntry__Group__135137 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__PersistentEntry__Group_1__0_in_rule__PersistentEntry__Group__1__Impl35164 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__PersistentEntry__Group_1__0__Impl_in_rule__PersistentEntry__Group_1__035199 = new BitSet(new long[]{0x0000000000000030L});
+        public static final BitSet FOLLOW_rule__PersistentEntry__Group_1__1_in_rule__PersistentEntry__Group_1__035202 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_93_in_rule__PersistentEntry__Group_1__0__Impl35230 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__PersistentEntry__Group_1__1__Impl_in_rule__PersistentEntry__Group_1__135261 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__PersistentEntry__ValueAssignment_1_1_in_rule__PersistentEntry__Group_1__1__Impl35288 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleKRendering_in_rule__KRenderingLibrary__RenderingsAssignment_3_035327 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleKRendering_in_rule__KRenderingLibrary__RenderingsAssignment_3_1_135358 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleEString_in_rule__KRenderingRef__RenderingAssignment_235393 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleKPlacementData_in_rule__KRenderingRef__PlacementDataAssignment_3_1_135428 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleKStyle_in_rule__KRenderingRef__StylesAssignment_3_2_235459 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleKStyle_in_rule__KRenderingRef__StylesAssignment_3_2_3_135490 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleKStyle_in_rule__KEllipse__StylesAssignment_2_1_235521 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleKStyle_in_rule__KEllipse__StylesAssignment_2_1_3_135552 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleKPlacementData_in_rule__KEllipse__PlacementDataAssignment_2_2_235583 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleKPlacement_in_rule__KEllipse__ChildPlacementAssignment_2_3_235614 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleKRendering_in_rule__KEllipse__ChildrenAssignment_2_4_235645 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleKRendering_in_rule__KEllipse__ChildrenAssignment_2_4_3_135676 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleKStyle_in_rule__KRectangle__StylesAssignment_2_1_235707 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleKStyle_in_rule__KRectangle__StylesAssignment_2_1_3_135738 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleKPlacementData_in_rule__KRectangle__PlacementDataAssignment_2_2_235769 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleKPlacement_in_rule__KRectangle__ChildPlacementAssignment_2_3_235800 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleKRendering_in_rule__KRectangle__ChildrenAssignment_2_4_235831 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleKRendering_in_rule__KRectangle__ChildrenAssignment_2_4_3_135862 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleEFloat_in_rule__KRoundedRectangle__CornerWidthAssignment_235893 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleEFloat_in_rule__KRoundedRectangle__CornerHeightAssignment_435924 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleKStyle_in_rule__KRoundedRectangle__StylesAssignment_5_1_235955 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleKStyle_in_rule__KRoundedRectangle__StylesAssignment_5_1_3_135986 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleKPlacementData_in_rule__KRoundedRectangle__PlacementDataAssignment_5_2_236017 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleKPlacement_in_rule__KRoundedRectangle__ChildPlacementAssignment_5_3_236048 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleKRendering_in_rule__KRoundedRectangle__ChildrenAssignment_5_4_236079 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleKRendering_in_rule__KRoundedRectangle__ChildrenAssignment_5_4_3_136110 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleKStyle_in_rule__KPolyline_Impl__StylesAssignment_2_1_236141 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleKStyle_in_rule__KPolyline_Impl__StylesAssignment_2_1_3_136172 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleKPlacementData_in_rule__KPolyline_Impl__PlacementDataAssignment_2_2_236203 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleKPlacement_in_rule__KPolyline_Impl__ChildPlacementAssignment_2_3_236234 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleKRendering_in_rule__KPolyline_Impl__ChildrenAssignment_2_4_236265 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleKRendering_in_rule__KPolyline_Impl__ChildrenAssignment_2_4_3_136296 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleKStyle_in_rule__KPolygon__StylesAssignment_2_1_236327 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleKStyle_in_rule__KPolygon__StylesAssignment_2_1_3_136358 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleKPlacementData_in_rule__KPolygon__PlacementDataAssignment_2_2_236389 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleKPlacement_in_rule__KPolygon__ChildPlacementAssignment_2_3_236420 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleKRendering_in_rule__KPolygon__ChildrenAssignment_2_4_236451 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleKRendering_in_rule__KPolygon__ChildrenAssignment_2_4_3_136482 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleEString_in_rule__KImage__BundleNameAssignment_2_036513 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleEString_in_rule__KImage__ImagePathAssignment_436544 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleKStyle_in_rule__KImage__StylesAssignment_5_1_236575 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleKStyle_in_rule__KImage__StylesAssignment_5_1_3_136606 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleKPlacementData_in_rule__KImage__PlacementDataAssignment_5_2_136637 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleKRendering_in_rule__KImage__ChildrenAssignment_5_3_236668 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleKRendering_in_rule__KImage__ChildrenAssignment_5_3_3_136699 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleKPlacement_in_rule__KImage__ChildPlacementAssignment_5_4_136730 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleEFloat_in_rule__KArc__StartAngleAssignment_236761 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleEFloat_in_rule__KArc__ArcAngleAssignment_436792 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleKStyle_in_rule__KArc__StylesAssignment_5_1_236823 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleKStyle_in_rule__KArc__StylesAssignment_5_1_3_136854 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleKPlacementData_in_rule__KArc__PlacementDataAssignment_5_2_136885 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleKRendering_in_rule__KArc__ChildrenAssignment_5_3_236916 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleKRendering_in_rule__KArc__ChildrenAssignment_5_3_3_136947 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleKPlacement_in_rule__KArc__ChildPlacementAssignment_5_4_136978 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleKStyle_in_rule__KChildArea__StylesAssignment_2_1_237009 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleKStyle_in_rule__KChildArea__StylesAssignment_2_1_3_137040 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleKPlacementData_in_rule__KChildArea__PlacementDataAssignment_2_2_137071 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleEString_in_rule__KText__TextAssignment_237102 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_94_in_rule__KText__ClipAssignment_3_137138 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleKStyle_in_rule__KText__StylesAssignment_3_2_237177 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleKStyle_in_rule__KText__StylesAssignment_3_2_3_137208 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleKPlacementData_in_rule__KText__PlacementDataAssignment_3_3_137239 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleKRendering_in_rule__KText__ChildrenAssignment_3_4_237270 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleKRendering_in_rule__KText__ChildrenAssignment_3_4_3_137301 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleKPlacement_in_rule__KText__ChildPlacementAssignment_3_5_137332 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleEString_in_rule__KCustomRendering__ClassNameAssignment_2_237363 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleEString_in_rule__KCustomRendering__BundleNameAssignment_2_437394 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleKStyle_in_rule__KCustomRendering__StylesAssignment_2_5_237425 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleKStyle_in_rule__KCustomRendering__StylesAssignment_2_5_3_137456 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleKPlacementData_in_rule__KCustomRendering__PlacementDataAssignment_2_6_137487 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleKRendering_in_rule__KCustomRendering__ChildrenAssignment_2_7_237518 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleKRendering_in_rule__KCustomRendering__ChildrenAssignment_2_7_3_137549 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleKPlacement_in_rule__KCustomRendering__ChildPlacementAssignment_2_8_137580 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleKStyle_in_rule__KSpline__StylesAssignment_2_1_237611 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleKStyle_in_rule__KSpline__StylesAssignment_2_1_3_137642 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleKPlacementData_in_rule__KSpline__PlacementDataAssignment_2_2_137673 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleKRendering_in_rule__KSpline__ChildrenAssignment_2_3_237704 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleKRendering_in_rule__KSpline__ChildrenAssignment_2_3_3_137735 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleKPlacement_in_rule__KSpline__ChildPlacementAssignment_2_4_137766 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_95_in_rule__KDecoratorPlacementData__RelativeAssignment_237802 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleEFloat_in_rule__KDecoratorPlacementData__LocationAssignment_437841 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleEFloat_in_rule__KDecoratorPlacementData__XOffsetAssignment_5_137872 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleEFloat_in_rule__KDecoratorPlacementData__YOffsetAssignment_6_137903 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleEFloat_in_rule__KDecoratorPlacementData__WidthAssignment_7_137934 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleEFloat_in_rule__KDecoratorPlacementData__HeightAssignment_8_137965 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleEFloat_in_rule__KGridPlacementData__WidthHintAssignment_337996 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleEFloat_in_rule__KGridPlacementData__HeightHintAssignment_538027 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleEFloat_in_rule__KGridPlacementData__InsetRightAssignment_738058 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleEFloat_in_rule__KGridPlacementData__InsetBottomAssignment_938089 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleEFloat_in_rule__KGridPlacementData__InsetLeftAssignment_1138120 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleEFloat_in_rule__KGridPlacementData__InsetTopAssignment_1338151 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleEFloat_in_rule__KStackPlacementData__InsetRightAssignment_338182 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleEFloat_in_rule__KStackPlacementData__InsetBottomAssignment_538213 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleEFloat_in_rule__KStackPlacementData__InsetLeftAssignment_738244 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleEFloat_in_rule__KStackPlacementData__InsetTopAssignment_938275 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleKPosition_in_rule__KDirectPlacementData__TopLeftAssignment_338306 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleKPosition_in_rule__KDirectPlacementData__BottomRightAssignment_638337 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleKPosition_in_rule__KPolylinePlacementData__PointsAssignment_438368 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleKPosition_in_rule__KPolylinePlacementData__PointsAssignment_5_138399 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleKPlacementData_in_rule__KPolylinePlacementData__DetailPlacementDataAssignment_6_138430 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleKXPosition_in_rule__KPosition__XAssignment_038461 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleKYPosition_in_rule__KPosition__YAssignment_238492 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleEFloat_in_rule__KLeftPosition__AbsoluteAssignment_238523 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleEFloat_in_rule__KLeftPosition__RelativeAssignment_338554 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleEFloat_in_rule__KRightPosition__AbsoluteAssignment_238585 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleEFloat_in_rule__KRightPosition__RelativeAssignment_338616 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleEFloat_in_rule__KTopPosition__AbsoluteAssignment_238647 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleEFloat_in_rule__KTopPosition__RelativeAssignment_338678 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleEFloat_in_rule__KBottomPosition__AbsoluteAssignment_238709 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleEFloat_in_rule__KBottomPosition__RelativeAssignment_338740 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleEInt_in_rule__KForegroundColor__RedAssignment_238771 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleEInt_in_rule__KForegroundColor__GreenAssignment_338802 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleEInt_in_rule__KForegroundColor__BlueAssignment_438833 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_96_in_rule__KForegroundColor__PropagateToChildrenAssignment_538869 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleEInt_in_rule__KBackgroundColor__RedAssignment_238908 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleEInt_in_rule__KBackgroundColor__GreenAssignment_338939 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleEInt_in_rule__KBackgroundColor__BlueAssignment_438970 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_96_in_rule__KBackgroundColor__PropagateToChildrenAssignment_539006 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleEInt_in_rule__KLineWidth__LineWidthAssignment_139045 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_96_in_rule__KLineWidth__PropagateToChildrenAssignment_239081 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleEBoolean_in_rule__KForegroundVisibility__VisibleAssignment_239120 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_96_in_rule__KForegroundVisibility__PropagateToChildrenAssignment_339156 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleEBoolean_in_rule__KBackgroundVisibility__VisibleAssignment_239195 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_96_in_rule__KBackgroundVisibility__PropagateToChildrenAssignment_339231 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleLineStyle_in_rule__KLineStyle__LineStyleAssignment_239270 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_96_in_rule__KLineStyle__PropagateToChildrenAssignment_339306 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_96_in_rule__KFontBold__PropagateToChildrenAssignment_239350 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_96_in_rule__KFontItalic__PropagateToChildrenAssignment_239394 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleEString_in_rule__KFontName__NameAssignment_139433 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_96_in_rule__KFontName__PropagateToChildrenAssignment_239469 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleEInt_in_rule__KFontSize__SizeAssignment_139508 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_96_in_rule__KFontSize__PropagateToChildrenAssignment_239544 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleVerticalAlignment_in_rule__KVerticalAlignment__VerticalAlignmentAssignment_239583 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_96_in_rule__KVerticalAlignment__PropagateToChildrenAssignment_339619 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleHorizontalAlignment_in_rule__KHorizontalAlignment__HorizontalAlignmentAssignment_239658 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_96_in_rule__KHorizontalAlignment__PropagateToChildrenAssignment_339694 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleEInt_in_rule__KGridPlacement__NumColumnsAssignment_239733 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleEFloat_in_rule__KInsets__TopAssignment_3_139771 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleEFloat_in_rule__KInsets__BottomAssignment_4_139802 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleEFloat_in_rule__KInsets__LeftAssignment_5_139833 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleEFloat_in_rule__KInsets__RightAssignment_6_139864 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleEFloat_in_rule__KPoint__XAssignment_2_139901 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleEFloat_in_rule__KPoint__YAssignment_3_139932 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleEString_in_rule__PersistentEntry__KeyAssignment_039963 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleEString_in_rule__PersistentEntry__ValueAssignment_1_139994 = new BitSet(new long[]{0x0000000000000002L});
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
     }
 
 

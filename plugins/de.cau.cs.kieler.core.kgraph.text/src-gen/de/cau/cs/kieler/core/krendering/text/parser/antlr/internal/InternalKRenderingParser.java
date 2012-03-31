@@ -7416,7 +7416,11 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleKDecoratorPlacementData"
+<<<<<<< HEAD
     // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:2865:1: ruleKDecoratorPlacementData returns [EObject current=null] : (otherlv_0= 'DecoratorPlacementData' otherlv_1= '{' ( (lv_relative_2_0= 'relative' ) ) otherlv_3= 'location' ( (lv_location_4_0= ruleEFloat ) ) (otherlv_5= 'xOffset' ( (lv_xOffset_6_0= ruleEFloat ) ) )? (otherlv_7= 'yOffset' ( (lv_yOffset_8_0= ruleEFloat ) ) )? (otherlv_9= 'width' ( (lv_width_10_0= ruleEFloat ) ) )? (otherlv_11= 'height' ( (lv_height_12_0= ruleEFloat ) ) )? otherlv_13= '}' ) ;
+=======
+    // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:2905:1: ruleKDecoratorPlacementData returns [EObject current=null] : (otherlv_0= 'DecoratorPlacementData' otherlv_1= '{' ( (lv_relative_2_0= 'relative' ) )? otherlv_3= 'location' ( (lv_location_4_0= ruleEFloat ) ) (otherlv_5= 'xOffset' ( (lv_xOffset_6_0= ruleEFloat ) ) )? (otherlv_7= 'yOffset' ( (lv_yOffset_8_0= ruleEFloat ) ) )? (otherlv_9= 'width' ( (lv_width_10_0= ruleEFloat ) ) )? (otherlv_11= 'height' ( (lv_height_12_0= ruleEFloat ) ) )? otherlv_13= '}' ) ;
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
     public final EObject ruleKDecoratorPlacementData() throws RecognitionException {
         EObject current = null;
 
@@ -7443,11 +7447,19 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
          enterRule(); 
             
         try {
+<<<<<<< HEAD
             // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:2868:28: ( (otherlv_0= 'DecoratorPlacementData' otherlv_1= '{' ( (lv_relative_2_0= 'relative' ) ) otherlv_3= 'location' ( (lv_location_4_0= ruleEFloat ) ) (otherlv_5= 'xOffset' ( (lv_xOffset_6_0= ruleEFloat ) ) )? (otherlv_7= 'yOffset' ( (lv_yOffset_8_0= ruleEFloat ) ) )? (otherlv_9= 'width' ( (lv_width_10_0= ruleEFloat ) ) )? (otherlv_11= 'height' ( (lv_height_12_0= ruleEFloat ) ) )? otherlv_13= '}' ) )
             // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:2869:1: (otherlv_0= 'DecoratorPlacementData' otherlv_1= '{' ( (lv_relative_2_0= 'relative' ) ) otherlv_3= 'location' ( (lv_location_4_0= ruleEFloat ) ) (otherlv_5= 'xOffset' ( (lv_xOffset_6_0= ruleEFloat ) ) )? (otherlv_7= 'yOffset' ( (lv_yOffset_8_0= ruleEFloat ) ) )? (otherlv_9= 'width' ( (lv_width_10_0= ruleEFloat ) ) )? (otherlv_11= 'height' ( (lv_height_12_0= ruleEFloat ) ) )? otherlv_13= '}' )
             {
             // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:2869:1: (otherlv_0= 'DecoratorPlacementData' otherlv_1= '{' ( (lv_relative_2_0= 'relative' ) ) otherlv_3= 'location' ( (lv_location_4_0= ruleEFloat ) ) (otherlv_5= 'xOffset' ( (lv_xOffset_6_0= ruleEFloat ) ) )? (otherlv_7= 'yOffset' ( (lv_yOffset_8_0= ruleEFloat ) ) )? (otherlv_9= 'width' ( (lv_width_10_0= ruleEFloat ) ) )? (otherlv_11= 'height' ( (lv_height_12_0= ruleEFloat ) ) )? otherlv_13= '}' )
             // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:2869:3: otherlv_0= 'DecoratorPlacementData' otherlv_1= '{' ( (lv_relative_2_0= 'relative' ) ) otherlv_3= 'location' ( (lv_location_4_0= ruleEFloat ) ) (otherlv_5= 'xOffset' ( (lv_xOffset_6_0= ruleEFloat ) ) )? (otherlv_7= 'yOffset' ( (lv_yOffset_8_0= ruleEFloat ) ) )? (otherlv_9= 'width' ( (lv_width_10_0= ruleEFloat ) ) )? (otherlv_11= 'height' ( (lv_height_12_0= ruleEFloat ) ) )? otherlv_13= '}'
+=======
+            // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:2908:28: ( (otherlv_0= 'DecoratorPlacementData' otherlv_1= '{' ( (lv_relative_2_0= 'relative' ) )? otherlv_3= 'location' ( (lv_location_4_0= ruleEFloat ) ) (otherlv_5= 'xOffset' ( (lv_xOffset_6_0= ruleEFloat ) ) )? (otherlv_7= 'yOffset' ( (lv_yOffset_8_0= ruleEFloat ) ) )? (otherlv_9= 'width' ( (lv_width_10_0= ruleEFloat ) ) )? (otherlv_11= 'height' ( (lv_height_12_0= ruleEFloat ) ) )? otherlv_13= '}' ) )
+            // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:2909:1: (otherlv_0= 'DecoratorPlacementData' otherlv_1= '{' ( (lv_relative_2_0= 'relative' ) )? otherlv_3= 'location' ( (lv_location_4_0= ruleEFloat ) ) (otherlv_5= 'xOffset' ( (lv_xOffset_6_0= ruleEFloat ) ) )? (otherlv_7= 'yOffset' ( (lv_yOffset_8_0= ruleEFloat ) ) )? (otherlv_9= 'width' ( (lv_width_10_0= ruleEFloat ) ) )? (otherlv_11= 'height' ( (lv_height_12_0= ruleEFloat ) ) )? otherlv_13= '}' )
+            {
+            // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:2909:1: (otherlv_0= 'DecoratorPlacementData' otherlv_1= '{' ( (lv_relative_2_0= 'relative' ) )? otherlv_3= 'location' ( (lv_location_4_0= ruleEFloat ) ) (otherlv_5= 'xOffset' ( (lv_xOffset_6_0= ruleEFloat ) ) )? (otherlv_7= 'yOffset' ( (lv_yOffset_8_0= ruleEFloat ) ) )? (otherlv_9= 'width' ( (lv_width_10_0= ruleEFloat ) ) )? (otherlv_11= 'height' ( (lv_height_12_0= ruleEFloat ) ) )? otherlv_13= '}' )
+            // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:2909:3: otherlv_0= 'DecoratorPlacementData' otherlv_1= '{' ( (lv_relative_2_0= 'relative' ) )? otherlv_3= 'location' ( (lv_location_4_0= ruleEFloat ) ) (otherlv_5= 'xOffset' ( (lv_xOffset_6_0= ruleEFloat ) ) )? (otherlv_7= 'yOffset' ( (lv_yOffset_8_0= ruleEFloat ) ) )? (otherlv_9= 'width' ( (lv_width_10_0= ruleEFloat ) ) )? (otherlv_11= 'height' ( (lv_height_12_0= ruleEFloat ) ) )? otherlv_13= '}'
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             {
             otherlv_0=(Token)match(input,36,FollowSets000.FOLLOW_36_in_ruleKDecoratorPlacementData6082); 
 
@@ -7457,6 +7469,7 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
 
                 	newLeafNode(otherlv_1, grammarAccess.getKDecoratorPlacementDataAccess().getLeftCurlyBracketKeyword_1());
                 
+<<<<<<< HEAD
             // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:2877:1: ( (lv_relative_2_0= 'relative' ) )
             // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:2878:1: (lv_relative_2_0= 'relative' )
             {
@@ -7464,22 +7477,46 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
             // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:2879:3: lv_relative_2_0= 'relative'
             {
             lv_relative_2_0=(Token)match(input,37,FollowSets000.FOLLOW_37_in_ruleKDecoratorPlacementData6112); 
+=======
+            // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:2917:1: ( (lv_relative_2_0= 'relative' ) )?
+            int alt90=2;
+            int LA90_0 = input.LA(1);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
 
-                    newLeafNode(lv_relative_2_0, grammarAccess.getKDecoratorPlacementDataAccess().getRelativeRelativeKeyword_2_0());
-                
+            if ( (LA90_0==37) ) {
+                alt90=1;
+            }
+            switch (alt90) {
+                case 1 :
+                    // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:2918:1: (lv_relative_2_0= 'relative' )
+                    {
+                    // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:2918:1: (lv_relative_2_0= 'relative' )
+                    // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:2919:3: lv_relative_2_0= 'relative'
+                    {
+                    lv_relative_2_0=(Token)match(input,37,FollowSets000.FOLLOW_37_in_ruleKDecoratorPlacementData6221); 
 
-            	        if (current==null) {
-            	            current = createModelElement(grammarAccess.getKDecoratorPlacementDataRule());
-            	        }
-                   		setWithLastConsumed(current, "relative", true, "relative");
-            	    
+                            newLeafNode(lv_relative_2_0, grammarAccess.getKDecoratorPlacementDataAccess().getRelativeRelativeKeyword_2_0());
+                        
+
+                    	        if (current==null) {
+                    	            current = createModelElement(grammarAccess.getKDecoratorPlacementDataRule());
+                    	        }
+                           		setWithLastConsumed(current, "relative", true, "relative");
+                    	    
+
+                    }
+
+
+                    }
+                    break;
 
             }
 
-
-            }
-
+<<<<<<< HEAD
             otherlv_3=(Token)match(input,38,FollowSets000.FOLLOW_38_in_ruleKDecoratorPlacementData6137); 
+=======
+            otherlv_3=(Token)match(input,38,FollowSets000.FOLLOW_38_in_ruleKDecoratorPlacementData6247); 
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
 
                 	newLeafNode(otherlv_3, grammarAccess.getKDecoratorPlacementDataAccess().getLocationKeyword_3());
                 
@@ -7492,7 +7529,11 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
              
             	        newCompositeNode(grammarAccess.getKDecoratorPlacementDataAccess().getLocationEFloatParserRuleCall_4_0()); 
             	    
+<<<<<<< HEAD
             pushFollow(FollowSets000.FOLLOW_ruleEFloat_in_ruleKDecoratorPlacementData6158);
+=======
+            pushFollow(FollowSets000.FOLLOW_ruleEFloat_in_ruleKDecoratorPlacementData6268);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             lv_location_4_0=ruleEFloat();
 
             state._fsp--;
@@ -7514,6 +7555,7 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
 
             }
 
+<<<<<<< HEAD
             // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:2914:2: (otherlv_5= 'xOffset' ( (lv_xOffset_6_0= ruleEFloat ) ) )?
             int alt89=2;
             int LA89_0 = input.LA(1);
@@ -7522,10 +7564,24 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
                 alt89=1;
             }
             switch (alt89) {
+=======
+            // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:2954:2: (otherlv_5= 'xOffset' ( (lv_xOffset_6_0= ruleEFloat ) ) )?
+            int alt91=2;
+            int LA91_0 = input.LA(1);
+
+            if ( (LA91_0==39) ) {
+                alt91=1;
+            }
+            switch (alt91) {
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
                 case 1 :
                     // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:2914:4: otherlv_5= 'xOffset' ( (lv_xOffset_6_0= ruleEFloat ) )
                     {
+<<<<<<< HEAD
                     otherlv_5=(Token)match(input,39,FollowSets000.FOLLOW_39_in_ruleKDecoratorPlacementData6171); 
+=======
+                    otherlv_5=(Token)match(input,39,FollowSets000.FOLLOW_39_in_ruleKDecoratorPlacementData6281); 
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
 
                         	newLeafNode(otherlv_5, grammarAccess.getKDecoratorPlacementDataAccess().getXOffsetKeyword_5_0());
                         
@@ -7538,7 +7594,11 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
                      
                     	        newCompositeNode(grammarAccess.getKDecoratorPlacementDataAccess().getXOffsetEFloatParserRuleCall_5_1_0()); 
                     	    
+<<<<<<< HEAD
                     pushFollow(FollowSets000.FOLLOW_ruleEFloat_in_ruleKDecoratorPlacementData6192);
+=======
+                    pushFollow(FollowSets000.FOLLOW_ruleEFloat_in_ruleKDecoratorPlacementData6302);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
                     lv_xOffset_6_0=ruleEFloat();
 
                     state._fsp--;
@@ -7566,6 +7626,7 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
 
             }
 
+<<<<<<< HEAD
             // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:2936:4: (otherlv_7= 'yOffset' ( (lv_yOffset_8_0= ruleEFloat ) ) )?
             int alt90=2;
             int LA90_0 = input.LA(1);
@@ -7574,10 +7635,24 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
                 alt90=1;
             }
             switch (alt90) {
+=======
+            // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:2976:4: (otherlv_7= 'yOffset' ( (lv_yOffset_8_0= ruleEFloat ) ) )?
+            int alt92=2;
+            int LA92_0 = input.LA(1);
+
+            if ( (LA92_0==40) ) {
+                alt92=1;
+            }
+            switch (alt92) {
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
                 case 1 :
                     // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:2936:6: otherlv_7= 'yOffset' ( (lv_yOffset_8_0= ruleEFloat ) )
                     {
+<<<<<<< HEAD
                     otherlv_7=(Token)match(input,40,FollowSets000.FOLLOW_40_in_ruleKDecoratorPlacementData6207); 
+=======
+                    otherlv_7=(Token)match(input,40,FollowSets000.FOLLOW_40_in_ruleKDecoratorPlacementData6317); 
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
 
                         	newLeafNode(otherlv_7, grammarAccess.getKDecoratorPlacementDataAccess().getYOffsetKeyword_6_0());
                         
@@ -7590,7 +7665,11 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
                      
                     	        newCompositeNode(grammarAccess.getKDecoratorPlacementDataAccess().getYOffsetEFloatParserRuleCall_6_1_0()); 
                     	    
+<<<<<<< HEAD
                     pushFollow(FollowSets000.FOLLOW_ruleEFloat_in_ruleKDecoratorPlacementData6228);
+=======
+                    pushFollow(FollowSets000.FOLLOW_ruleEFloat_in_ruleKDecoratorPlacementData6338);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
                     lv_yOffset_8_0=ruleEFloat();
 
                     state._fsp--;
@@ -7618,6 +7697,7 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
 
             }
 
+<<<<<<< HEAD
             // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:2958:4: (otherlv_9= 'width' ( (lv_width_10_0= ruleEFloat ) ) )?
             int alt91=2;
             int LA91_0 = input.LA(1);
@@ -7626,10 +7706,24 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
                 alt91=1;
             }
             switch (alt91) {
+=======
+            // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:2998:4: (otherlv_9= 'width' ( (lv_width_10_0= ruleEFloat ) ) )?
+            int alt93=2;
+            int LA93_0 = input.LA(1);
+
+            if ( (LA93_0==41) ) {
+                alt93=1;
+            }
+            switch (alt93) {
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
                 case 1 :
                     // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:2958:6: otherlv_9= 'width' ( (lv_width_10_0= ruleEFloat ) )
                     {
+<<<<<<< HEAD
                     otherlv_9=(Token)match(input,41,FollowSets000.FOLLOW_41_in_ruleKDecoratorPlacementData6243); 
+=======
+                    otherlv_9=(Token)match(input,41,FollowSets000.FOLLOW_41_in_ruleKDecoratorPlacementData6353); 
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
 
                         	newLeafNode(otherlv_9, grammarAccess.getKDecoratorPlacementDataAccess().getWidthKeyword_7_0());
                         
@@ -7642,7 +7736,11 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
                      
                     	        newCompositeNode(grammarAccess.getKDecoratorPlacementDataAccess().getWidthEFloatParserRuleCall_7_1_0()); 
                     	    
+<<<<<<< HEAD
                     pushFollow(FollowSets000.FOLLOW_ruleEFloat_in_ruleKDecoratorPlacementData6264);
+=======
+                    pushFollow(FollowSets000.FOLLOW_ruleEFloat_in_ruleKDecoratorPlacementData6374);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
                     lv_width_10_0=ruleEFloat();
 
                     state._fsp--;
@@ -7670,6 +7768,7 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
 
             }
 
+<<<<<<< HEAD
             // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:2980:4: (otherlv_11= 'height' ( (lv_height_12_0= ruleEFloat ) ) )?
             int alt92=2;
             int LA92_0 = input.LA(1);
@@ -7678,10 +7777,24 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
                 alt92=1;
             }
             switch (alt92) {
+=======
+            // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:3020:4: (otherlv_11= 'height' ( (lv_height_12_0= ruleEFloat ) ) )?
+            int alt94=2;
+            int LA94_0 = input.LA(1);
+
+            if ( (LA94_0==42) ) {
+                alt94=1;
+            }
+            switch (alt94) {
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
                 case 1 :
                     // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:2980:6: otherlv_11= 'height' ( (lv_height_12_0= ruleEFloat ) )
                     {
+<<<<<<< HEAD
                     otherlv_11=(Token)match(input,42,FollowSets000.FOLLOW_42_in_ruleKDecoratorPlacementData6279); 
+=======
+                    otherlv_11=(Token)match(input,42,FollowSets000.FOLLOW_42_in_ruleKDecoratorPlacementData6389); 
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
 
                         	newLeafNode(otherlv_11, grammarAccess.getKDecoratorPlacementDataAccess().getHeightKeyword_8_0());
                         
@@ -7694,7 +7807,11 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
                      
                     	        newCompositeNode(grammarAccess.getKDecoratorPlacementDataAccess().getHeightEFloatParserRuleCall_8_1_0()); 
                     	    
+<<<<<<< HEAD
                     pushFollow(FollowSets000.FOLLOW_ruleEFloat_in_ruleKDecoratorPlacementData6300);
+=======
+                    pushFollow(FollowSets000.FOLLOW_ruleEFloat_in_ruleKDecoratorPlacementData6410);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
                     lv_height_12_0=ruleEFloat();
 
                     state._fsp--;
@@ -7722,7 +7839,11 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
 
             }
 
+<<<<<<< HEAD
             otherlv_13=(Token)match(input,14,FollowSets000.FOLLOW_14_in_ruleKDecoratorPlacementData6314); 
+=======
+            otherlv_13=(Token)match(input,14,FollowSets000.FOLLOW_14_in_ruleKDecoratorPlacementData6424); 
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
 
                 	newLeafNode(otherlv_13, grammarAccess.getKDecoratorPlacementDataAccess().getRightCurlyBracketKeyword_9());
                 
@@ -7759,13 +7880,21 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
             // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:3016:2: iv_ruleKGridPlacementData= ruleKGridPlacementData EOF
             {
              newCompositeNode(grammarAccess.getKGridPlacementDataRule()); 
+<<<<<<< HEAD
             pushFollow(FollowSets000.FOLLOW_ruleKGridPlacementData_in_entryRuleKGridPlacementData6350);
+=======
+            pushFollow(FollowSets000.FOLLOW_ruleKGridPlacementData_in_entryRuleKGridPlacementData6460);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             iv_ruleKGridPlacementData=ruleKGridPlacementData();
 
             state._fsp--;
 
              current =iv_ruleKGridPlacementData; 
+<<<<<<< HEAD
             match(input,EOF,FollowSets000.FOLLOW_EOF_in_entryRuleKGridPlacementData6360); 
+=======
+            match(input,EOF,FollowSets000.FOLLOW_EOF_in_entryRuleKGridPlacementData6470); 
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
 
             }
 
@@ -7830,6 +7959,7 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
             // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:3067:3: otherlv_0= 'GridPlacementData' otherlv_1= '{' otherlv_2= 'widthHint' ( (lv_widthHint_3_0= ruleEFloat ) ) otherlv_4= 'heightHint' ( (lv_heightHint_5_0= ruleEFloat ) ) otherlv_6= 'insetRight' ( (lv_insetRight_7_0= ruleEFloat ) ) otherlv_8= 'insetBottom' ( (lv_insetBottom_9_0= ruleEFloat ) ) otherlv_10= 'insetLeft' ( (lv_insetLeft_11_0= ruleEFloat ) ) otherlv_12= 'insetTop' ( (lv_insetTop_13_0= ruleEFloat ) ) otherlv_14= '}'
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
             {
+<<<<<<< HEAD
             otherlv_0=(Token)match(input,43,FollowSets000.FOLLOW_43_in_ruleKGridPlacementData6397); 
 
                 	newLeafNode(otherlv_0, grammarAccess.getKGridPlacementDataAccess().getGridPlacementDataKeyword_0());
@@ -7839,6 +7969,17 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
                 	newLeafNode(otherlv_1, grammarAccess.getKGridPlacementDataAccess().getLeftCurlyBracketKeyword_1());
                 
             otherlv_2=(Token)match(input,44,FollowSets000.FOLLOW_44_in_ruleKGridPlacementData6421); 
+=======
+            otherlv_0=(Token)match(input,43,FollowSets000.FOLLOW_43_in_ruleKGridPlacementData6507); 
+
+                	newLeafNode(otherlv_0, grammarAccess.getKGridPlacementDataAccess().getGridPlacementDataKeyword_0());
+                
+            otherlv_1=(Token)match(input,12,FollowSets000.FOLLOW_12_in_ruleKGridPlacementData6519); 
+
+                	newLeafNode(otherlv_1, grammarAccess.getKGridPlacementDataAccess().getLeftCurlyBracketKeyword_1());
+                
+            otherlv_2=(Token)match(input,44,FollowSets000.FOLLOW_44_in_ruleKGridPlacementData6531); 
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
 
                 	newLeafNode(otherlv_2, grammarAccess.getKGridPlacementDataAccess().getWidthHintKeyword_2());
                 
@@ -7851,7 +7992,11 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
              
             	        newCompositeNode(grammarAccess.getKGridPlacementDataAccess().getWidthHintEFloatParserRuleCall_3_0()); 
             	    
+<<<<<<< HEAD
             pushFollow(FollowSets000.FOLLOW_ruleEFloat_in_ruleKGridPlacementData6442);
+=======
+            pushFollow(FollowSets000.FOLLOW_ruleEFloat_in_ruleKGridPlacementData6552);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             lv_widthHint_3_0=ruleEFloat();
 
             state._fsp--;
@@ -7873,7 +8018,11 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
 
             }
 
+<<<<<<< HEAD
             otherlv_4=(Token)match(input,45,FollowSets000.FOLLOW_45_in_ruleKGridPlacementData6454); 
+=======
+            otherlv_4=(Token)match(input,45,FollowSets000.FOLLOW_45_in_ruleKGridPlacementData6564); 
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
 
                 	newLeafNode(otherlv_4, grammarAccess.getKGridPlacementDataAccess().getHeightHintKeyword_4());
                 
@@ -7886,7 +8035,11 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
              
             	        newCompositeNode(grammarAccess.getKGridPlacementDataAccess().getHeightHintEFloatParserRuleCall_5_0()); 
             	    
+<<<<<<< HEAD
             pushFollow(FollowSets000.FOLLOW_ruleEFloat_in_ruleKGridPlacementData6475);
+=======
+            pushFollow(FollowSets000.FOLLOW_ruleEFloat_in_ruleKGridPlacementData6585);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             lv_heightHint_5_0=ruleEFloat();
 
             state._fsp--;
@@ -7908,7 +8061,11 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
 
             }
 
+<<<<<<< HEAD
             otherlv_6=(Token)match(input,46,FollowSets000.FOLLOW_46_in_ruleKGridPlacementData6487); 
+=======
+            otherlv_6=(Token)match(input,46,FollowSets000.FOLLOW_46_in_ruleKGridPlacementData6597); 
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
 
                 	newLeafNode(otherlv_6, grammarAccess.getKGridPlacementDataAccess().getInsetRightKeyword_6());
                 
@@ -7930,10 +8087,14 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
             	        newCompositeNode(grammarAccess.getKGridPlacementDataAccess().getInsetRightEFloatParserRuleCall_7_0()); 
             	    
 <<<<<<< HEAD
+<<<<<<< HEAD
             pushFollow(FollowSets000.FOLLOW_ruleEFloat_in_ruleKGridPlacementData6508);
             lv_horizontalIndent_7_0=ruleEFloat();
 =======
             pushFollow(FollowSets000.FOLLOW_ruleEFloat_in_ruleKGridPlacementData6617);
+=======
+            pushFollow(FollowSets000.FOLLOW_ruleEFloat_in_ruleKGridPlacementData6618);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             lv_insetRight_7_0=ruleEFloat();
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
 
@@ -7956,7 +8117,11 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
 
             }
 
+<<<<<<< HEAD
             otherlv_8=(Token)match(input,47,FollowSets000.FOLLOW_47_in_ruleKGridPlacementData6520); 
+=======
+            otherlv_8=(Token)match(input,47,FollowSets000.FOLLOW_47_in_ruleKGridPlacementData6630); 
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
 
                 	newLeafNode(otherlv_8, grammarAccess.getKGridPlacementDataAccess().getInsetBottomKeyword_8());
                 
@@ -7978,10 +8143,14 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
             	        newCompositeNode(grammarAccess.getKGridPlacementDataAccess().getInsetBottomEFloatParserRuleCall_9_0()); 
             	    
 <<<<<<< HEAD
+<<<<<<< HEAD
             pushFollow(FollowSets000.FOLLOW_ruleEFloat_in_ruleKGridPlacementData6541);
             lv_verticalIndent_9_0=ruleEFloat();
 =======
             pushFollow(FollowSets000.FOLLOW_ruleEFloat_in_ruleKGridPlacementData6650);
+=======
+            pushFollow(FollowSets000.FOLLOW_ruleEFloat_in_ruleKGridPlacementData6651);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             lv_insetBottom_9_0=ruleEFloat();
 
             state._fsp--;
@@ -8003,7 +8172,7 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
 
             }
 
-            otherlv_10=(Token)match(input,48,FollowSets000.FOLLOW_48_in_ruleKGridPlacementData6662); 
+            otherlv_10=(Token)match(input,48,FollowSets000.FOLLOW_48_in_ruleKGridPlacementData6663); 
 
                 	newLeafNode(otherlv_10, grammarAccess.getKGridPlacementDataAccess().getInsetLeftKeyword_10());
                 
@@ -8016,7 +8185,7 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
              
             	        newCompositeNode(grammarAccess.getKGridPlacementDataAccess().getInsetLeftEFloatParserRuleCall_11_0()); 
             	    
-            pushFollow(FollowSets000.FOLLOW_ruleEFloat_in_ruleKGridPlacementData6683);
+            pushFollow(FollowSets000.FOLLOW_ruleEFloat_in_ruleKGridPlacementData6684);
             lv_insetLeft_11_0=ruleEFloat();
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
 
@@ -8040,10 +8209,14 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
             }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
             otherlv_10=(Token)match(input,14,FollowSets000.FOLLOW_14_in_ruleKGridPlacementData6553); 
 =======
             otherlv_12=(Token)match(input,49,FollowSets000.FOLLOW_49_in_ruleKGridPlacementData6695); 
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            otherlv_12=(Token)match(input,49,FollowSets000.FOLLOW_49_in_ruleKGridPlacementData6696); 
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
 
                 	newLeafNode(otherlv_12, grammarAccess.getKGridPlacementDataAccess().getInsetTopKeyword_12());
                 
@@ -8056,7 +8229,7 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
              
             	        newCompositeNode(grammarAccess.getKGridPlacementDataAccess().getInsetTopEFloatParserRuleCall_13_0()); 
             	    
-            pushFollow(FollowSets000.FOLLOW_ruleEFloat_in_ruleKGridPlacementData6716);
+            pushFollow(FollowSets000.FOLLOW_ruleEFloat_in_ruleKGridPlacementData6717);
             lv_insetTop_13_0=ruleEFloat();
 
             state._fsp--;
@@ -8078,7 +8251,7 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
 
             }
 
-            otherlv_14=(Token)match(input,14,FollowSets000.FOLLOW_14_in_ruleKGridPlacementData6728); 
+            otherlv_14=(Token)match(input,14,FollowSets000.FOLLOW_14_in_ruleKGridPlacementData6729); 
 
                 	newLeafNode(otherlv_14, grammarAccess.getKGridPlacementDataAccess().getRightCurlyBracketKeyword_14());
                 
@@ -8126,18 +8299,26 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
             // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:3221:2: iv_ruleKStackPlacementData= ruleKStackPlacementData EOF
             {
              newCompositeNode(grammarAccess.getKStackPlacementDataRule()); 
+<<<<<<< HEAD
             pushFollow(FollowSets000.FOLLOW_ruleKStackPlacementData_in_entryRuleKStackPlacementData6764);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets000.FOLLOW_ruleKStackPlacementData_in_entryRuleKStackPlacementData6765);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             iv_ruleKStackPlacementData=ruleKStackPlacementData();
 
             state._fsp--;
 
              current =iv_ruleKStackPlacementData; 
 <<<<<<< HEAD
+<<<<<<< HEAD
             match(input,EOF,FollowSets000.FOLLOW_EOF_in_entryRuleKStackPlacementData6599); 
 =======
             match(input,EOF,FollowSets000.FOLLOW_EOF_in_entryRuleKStackPlacementData6774); 
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            match(input,EOF,FollowSets000.FOLLOW_EOF_in_entryRuleKStackPlacementData6775); 
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
 
             }
 
@@ -8213,15 +8394,15 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
             // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:3232:1: (otherlv_0= 'StackPlacementData' otherlv_1= '{' otherlv_2= 'insetRight' ( (lv_insetRight_3_0= ruleEFloat ) ) otherlv_4= 'insetBottom' ( (lv_insetBottom_5_0= ruleEFloat ) ) otherlv_6= 'insetLeft' ( (lv_insetLeft_7_0= ruleEFloat ) ) otherlv_8= 'insetTop' ( (lv_insetTop_9_0= ruleEFloat ) ) otherlv_10= '}' )
             // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:3232:3: otherlv_0= 'StackPlacementData' otherlv_1= '{' otherlv_2= 'insetRight' ( (lv_insetRight_3_0= ruleEFloat ) ) otherlv_4= 'insetBottom' ( (lv_insetBottom_5_0= ruleEFloat ) ) otherlv_6= 'insetLeft' ( (lv_insetLeft_7_0= ruleEFloat ) ) otherlv_8= 'insetTop' ( (lv_insetTop_9_0= ruleEFloat ) ) otherlv_10= '}'
             {
-            otherlv_0=(Token)match(input,50,FollowSets000.FOLLOW_50_in_ruleKStackPlacementData6811); 
+            otherlv_0=(Token)match(input,50,FollowSets000.FOLLOW_50_in_ruleKStackPlacementData6812); 
 
                 	newLeafNode(otherlv_0, grammarAccess.getKStackPlacementDataAccess().getStackPlacementDataKeyword_0());
                 
-            otherlv_1=(Token)match(input,12,FollowSets000.FOLLOW_12_in_ruleKStackPlacementData6823); 
+            otherlv_1=(Token)match(input,12,FollowSets000.FOLLOW_12_in_ruleKStackPlacementData6824); 
 
                 	newLeafNode(otherlv_1, grammarAccess.getKStackPlacementDataAccess().getLeftCurlyBracketKeyword_1());
                 
-            otherlv_2=(Token)match(input,46,FollowSets000.FOLLOW_46_in_ruleKStackPlacementData6835); 
+            otherlv_2=(Token)match(input,46,FollowSets000.FOLLOW_46_in_ruleKStackPlacementData6836); 
 
                 	newLeafNode(otherlv_2, grammarAccess.getKStackPlacementDataAccess().getInsetRightKeyword_2());
                 
@@ -8236,10 +8417,14 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
             	        newCompositeNode(grammarAccess.getKStackPlacementDataAccess().getInsetRightEFloatParserRuleCall_3_0()); 
             	    
 <<<<<<< HEAD
+<<<<<<< HEAD
             pushFollow(FollowSets000.FOLLOW_ruleEFloat_in_ruleKStackPlacementData6681);
 =======
             pushFollow(FollowSets000.FOLLOW_ruleEFloat_in_ruleKStackPlacementData6856);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets000.FOLLOW_ruleEFloat_in_ruleKStackPlacementData6857);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             lv_insetRight_3_0=ruleEFloat();
 
             state._fsp--;
@@ -8262,6 +8447,7 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
             }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
             otherlv_4=(Token)match(input,50,FollowSets000.FOLLOW_50_in_ruleKStackPlacementData6693); 
 
                 	newLeafNode(otherlv_4, grammarAccess.getKStackPlacementDataAccess().getInsetBottomKeyword_4());
@@ -8273,6 +8459,9 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
             // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:3184:3: lv_insetBottom_5_0= ruleEFloat
 =======
             otherlv_4=(Token)match(input,47,FollowSets000.FOLLOW_47_in_ruleKStackPlacementData6868); 
+=======
+            otherlv_4=(Token)match(input,47,FollowSets000.FOLLOW_47_in_ruleKStackPlacementData6869); 
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
 
                 	newLeafNode(otherlv_4, grammarAccess.getKStackPlacementDataAccess().getInsetBottomKeyword_4());
                 
@@ -8287,10 +8476,14 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
             	        newCompositeNode(grammarAccess.getKStackPlacementDataAccess().getInsetBottomEFloatParserRuleCall_5_0()); 
             	    
 <<<<<<< HEAD
+<<<<<<< HEAD
             pushFollow(FollowSets000.FOLLOW_ruleEFloat_in_ruleKStackPlacementData6714);
 =======
             pushFollow(FollowSets000.FOLLOW_ruleEFloat_in_ruleKStackPlacementData6889);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets000.FOLLOW_ruleEFloat_in_ruleKStackPlacementData6890);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             lv_insetBottom_5_0=ruleEFloat();
 
             state._fsp--;
@@ -8313,6 +8506,7 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
             }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
             otherlv_6=(Token)match(input,51,FollowSets000.FOLLOW_51_in_ruleKStackPlacementData6726); 
 
                 	newLeafNode(otherlv_6, grammarAccess.getKStackPlacementDataAccess().getInsetLeftKeyword_6());
@@ -8324,6 +8518,9 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
             // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:3206:3: lv_insetLeft_7_0= ruleEFloat
 =======
             otherlv_6=(Token)match(input,48,FollowSets000.FOLLOW_48_in_ruleKStackPlacementData6901); 
+=======
+            otherlv_6=(Token)match(input,48,FollowSets000.FOLLOW_48_in_ruleKStackPlacementData6902); 
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
 
                 	newLeafNode(otherlv_6, grammarAccess.getKStackPlacementDataAccess().getInsetLeftKeyword_6());
                 
@@ -8338,10 +8535,14 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
             	        newCompositeNode(grammarAccess.getKStackPlacementDataAccess().getInsetLeftEFloatParserRuleCall_7_0()); 
             	    
 <<<<<<< HEAD
+<<<<<<< HEAD
             pushFollow(FollowSets000.FOLLOW_ruleEFloat_in_ruleKStackPlacementData6747);
 =======
             pushFollow(FollowSets000.FOLLOW_ruleEFloat_in_ruleKStackPlacementData6922);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets000.FOLLOW_ruleEFloat_in_ruleKStackPlacementData6923);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             lv_insetLeft_7_0=ruleEFloat();
 
             state._fsp--;
@@ -8364,6 +8565,7 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
             }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
             otherlv_8=(Token)match(input,52,FollowSets000.FOLLOW_52_in_ruleKStackPlacementData6759); 
 
                 	newLeafNode(otherlv_8, grammarAccess.getKStackPlacementDataAccess().getInsetTopKeyword_8());
@@ -8375,6 +8577,9 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
             // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:3228:3: lv_insetTop_9_0= ruleEFloat
 =======
             otherlv_8=(Token)match(input,49,FollowSets000.FOLLOW_49_in_ruleKStackPlacementData6934); 
+=======
+            otherlv_8=(Token)match(input,49,FollowSets000.FOLLOW_49_in_ruleKStackPlacementData6935); 
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
 
                 	newLeafNode(otherlv_8, grammarAccess.getKStackPlacementDataAccess().getInsetTopKeyword_8());
                 
@@ -8389,10 +8594,14 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
             	        newCompositeNode(grammarAccess.getKStackPlacementDataAccess().getInsetTopEFloatParserRuleCall_9_0()); 
             	    
 <<<<<<< HEAD
+<<<<<<< HEAD
             pushFollow(FollowSets000.FOLLOW_ruleEFloat_in_ruleKStackPlacementData6780);
 =======
             pushFollow(FollowSets000.FOLLOW_ruleEFloat_in_ruleKStackPlacementData6955);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets000.FOLLOW_ruleEFloat_in_ruleKStackPlacementData6956);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             lv_insetTop_9_0=ruleEFloat();
 
             state._fsp--;
@@ -8415,10 +8624,14 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
             }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
             otherlv_10=(Token)match(input,14,FollowSets000.FOLLOW_14_in_ruleKStackPlacementData6792); 
 =======
             otherlv_10=(Token)match(input,14,FollowSets000.FOLLOW_14_in_ruleKStackPlacementData6967); 
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            otherlv_10=(Token)match(input,14,FollowSets000.FOLLOW_14_in_ruleKStackPlacementData6968); 
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
 
                 	newLeafNode(otherlv_10, grammarAccess.getKStackPlacementDataAccess().getRightCurlyBracketKeyword_10());
                 
@@ -8466,18 +8679,26 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
             // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:3342:2: iv_ruleKDirectPlacementData= ruleKDirectPlacementData EOF
             {
              newCompositeNode(grammarAccess.getKDirectPlacementDataRule()); 
+<<<<<<< HEAD
             pushFollow(FollowSets000.FOLLOW_ruleKDirectPlacementData_in_entryRuleKDirectPlacementData7003);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets000.FOLLOW_ruleKDirectPlacementData_in_entryRuleKDirectPlacementData7004);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             iv_ruleKDirectPlacementData=ruleKDirectPlacementData();
 
             state._fsp--;
 
              current =iv_ruleKDirectPlacementData; 
 <<<<<<< HEAD
+<<<<<<< HEAD
             match(input,EOF,FollowSets000.FOLLOW_EOF_in_entryRuleKDirectPlacementData6838); 
 =======
             match(input,EOF,FollowSets000.FOLLOW_EOF_in_entryRuleKDirectPlacementData7013); 
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            match(input,EOF,FollowSets000.FOLLOW_EOF_in_entryRuleKDirectPlacementData7014); 
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
 
             }
 
@@ -8547,15 +8768,15 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
             // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:3353:1: (otherlv_0= 'DirectPlacementData' otherlv_1= '{' otherlv_2= 'topLeft' ( (lv_topLeft_3_0= ruleKPosition ) ) (otherlv_4= ',' )? otherlv_5= 'bottomRight' ( (lv_bottomRight_6_0= ruleKPosition ) ) otherlv_7= '}' )
             // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:3353:3: otherlv_0= 'DirectPlacementData' otherlv_1= '{' otherlv_2= 'topLeft' ( (lv_topLeft_3_0= ruleKPosition ) ) (otherlv_4= ',' )? otherlv_5= 'bottomRight' ( (lv_bottomRight_6_0= ruleKPosition ) ) otherlv_7= '}'
             {
-            otherlv_0=(Token)match(input,51,FollowSets000.FOLLOW_51_in_ruleKDirectPlacementData7050); 
+            otherlv_0=(Token)match(input,51,FollowSets000.FOLLOW_51_in_ruleKDirectPlacementData7051); 
 
                 	newLeafNode(otherlv_0, grammarAccess.getKDirectPlacementDataAccess().getDirectPlacementDataKeyword_0());
                 
-            otherlv_1=(Token)match(input,12,FollowSets000.FOLLOW_12_in_ruleKDirectPlacementData7062); 
+            otherlv_1=(Token)match(input,12,FollowSets000.FOLLOW_12_in_ruleKDirectPlacementData7063); 
 
                 	newLeafNode(otherlv_1, grammarAccess.getKDirectPlacementDataAccess().getLeftCurlyBracketKeyword_1());
                 
-            otherlv_2=(Token)match(input,52,FollowSets000.FOLLOW_52_in_ruleKDirectPlacementData7074); 
+            otherlv_2=(Token)match(input,52,FollowSets000.FOLLOW_52_in_ruleKDirectPlacementData7075); 
 
                 	newLeafNode(otherlv_2, grammarAccess.getKDirectPlacementDataAccess().getTopLeftKeyword_2());
                 
@@ -8570,10 +8791,14 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
             	        newCompositeNode(grammarAccess.getKDirectPlacementDataAccess().getTopLeftKPositionParserRuleCall_3_0()); 
             	    
 <<<<<<< HEAD
+<<<<<<< HEAD
             pushFollow(FollowSets000.FOLLOW_ruleKPosition_in_ruleKDirectPlacementData6920);
 =======
             pushFollow(FollowSets000.FOLLOW_ruleKPosition_in_ruleKDirectPlacementData7095);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets000.FOLLOW_ruleKPosition_in_ruleKDirectPlacementData7096);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             lv_topLeft_3_0=ruleKPosition();
 
             state._fsp--;
@@ -8599,17 +8824,17 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
             otherlv_4=(Token)match(input,55,FollowSets000.FOLLOW_55_in_ruleKDirectPlacementData6932); 
 =======
             // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:3383:2: (otherlv_4= ',' )?
-            int alt94=2;
-            int LA94_0 = input.LA(1);
+            int alt95=2;
+            int LA95_0 = input.LA(1);
 
-            if ( (LA94_0==13) ) {
-                alt94=1;
+            if ( (LA95_0==13) ) {
+                alt95=1;
             }
-            switch (alt94) {
+            switch (alt95) {
                 case 1 :
                     // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:3383:4: otherlv_4= ','
                     {
-                    otherlv_4=(Token)match(input,13,FollowSets000.FOLLOW_13_in_ruleKDirectPlacementData7108); 
+                    otherlv_4=(Token)match(input,13,FollowSets000.FOLLOW_13_in_ruleKDirectPlacementData7109); 
 
                         	newLeafNode(otherlv_4, grammarAccess.getKDirectPlacementDataAccess().getCommaKeyword_4());
                         
@@ -8619,8 +8844,12 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
 
             }
 
+<<<<<<< HEAD
             otherlv_5=(Token)match(input,53,FollowSets000.FOLLOW_53_in_ruleKDirectPlacementData7122); 
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            otherlv_5=(Token)match(input,53,FollowSets000.FOLLOW_53_in_ruleKDirectPlacementData7123); 
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
 
                 	newLeafNode(otherlv_4, grammarAccess.getKDirectPlacementDataAccess().getBottomRightKeyword_4());
                 
@@ -8642,10 +8871,14 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
             	        newCompositeNode(grammarAccess.getKDirectPlacementDataAccess().getBottomRightKPositionParserRuleCall_5_0()); 
             	    
 <<<<<<< HEAD
+<<<<<<< HEAD
             pushFollow(FollowSets000.FOLLOW_ruleKPosition_in_ruleKDirectPlacementData6953);
             lv_bottomRight_5_0=ruleKPosition();
 =======
             pushFollow(FollowSets000.FOLLOW_ruleKPosition_in_ruleKDirectPlacementData7143);
+=======
+            pushFollow(FollowSets000.FOLLOW_ruleKPosition_in_ruleKDirectPlacementData7144);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             lv_bottomRight_6_0=ruleKPosition();
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
 
@@ -8669,10 +8902,14 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
             }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
             otherlv_6=(Token)match(input,14,FollowSets000.FOLLOW_14_in_ruleKDirectPlacementData6965); 
 =======
             otherlv_7=(Token)match(input,14,FollowSets000.FOLLOW_14_in_ruleKDirectPlacementData7155); 
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            otherlv_7=(Token)match(input,14,FollowSets000.FOLLOW_14_in_ruleKDirectPlacementData7156); 
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
 
                 	newLeafNode(otherlv_6, grammarAccess.getKDirectPlacementDataAccess().getRightCurlyBracketKeyword_6());
                 
@@ -8720,18 +8957,26 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
             // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:3423:2: iv_ruleKPolylinePlacementData= ruleKPolylinePlacementData EOF
             {
              newCompositeNode(grammarAccess.getKPolylinePlacementDataRule()); 
+<<<<<<< HEAD
             pushFollow(FollowSets000.FOLLOW_ruleKPolylinePlacementData_in_entryRuleKPolylinePlacementData7191);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets000.FOLLOW_ruleKPolylinePlacementData_in_entryRuleKPolylinePlacementData7192);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             iv_ruleKPolylinePlacementData=ruleKPolylinePlacementData();
 
             state._fsp--;
 
              current =iv_ruleKPolylinePlacementData; 
 <<<<<<< HEAD
+<<<<<<< HEAD
             match(input,EOF,FollowSets000.FOLLOW_EOF_in_entryRuleKPolylinePlacementData7011); 
 =======
             match(input,EOF,FollowSets000.FOLLOW_EOF_in_entryRuleKPolylinePlacementData7201); 
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            match(input,EOF,FollowSets000.FOLLOW_EOF_in_entryRuleKPolylinePlacementData7202); 
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
 
             }
 
@@ -8809,19 +9054,19 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
             // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:3434:1: (otherlv_0= 'PolylinePlacementData' otherlv_1= '{' otherlv_2= 'points' otherlv_3= ':' ( (lv_points_4_0= ruleKPosition ) ) (otherlv_5= ',' ( (lv_points_6_0= ruleKPosition ) ) )* (otherlv_7= 'detailedPlacementData' ( (lv_detailPlacementData_8_0= ruleKPlacementData ) ) )? otherlv_9= '}' )
             // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:3434:3: otherlv_0= 'PolylinePlacementData' otherlv_1= '{' otherlv_2= 'points' otherlv_3= ':' ( (lv_points_4_0= ruleKPosition ) ) (otherlv_5= ',' ( (lv_points_6_0= ruleKPosition ) ) )* (otherlv_7= 'detailedPlacementData' ( (lv_detailPlacementData_8_0= ruleKPlacementData ) ) )? otherlv_9= '}'
             {
-            otherlv_0=(Token)match(input,54,FollowSets000.FOLLOW_54_in_ruleKPolylinePlacementData7238); 
+            otherlv_0=(Token)match(input,54,FollowSets000.FOLLOW_54_in_ruleKPolylinePlacementData7239); 
 
                 	newLeafNode(otherlv_0, grammarAccess.getKPolylinePlacementDataAccess().getPolylinePlacementDataKeyword_0());
                 
-            otherlv_1=(Token)match(input,12,FollowSets000.FOLLOW_12_in_ruleKPolylinePlacementData7250); 
+            otherlv_1=(Token)match(input,12,FollowSets000.FOLLOW_12_in_ruleKPolylinePlacementData7251); 
 
                 	newLeafNode(otherlv_1, grammarAccess.getKPolylinePlacementDataAccess().getLeftCurlyBracketKeyword_1());
                 
-            otherlv_2=(Token)match(input,55,FollowSets000.FOLLOW_55_in_ruleKPolylinePlacementData7262); 
+            otherlv_2=(Token)match(input,55,FollowSets000.FOLLOW_55_in_ruleKPolylinePlacementData7263); 
 
                 	newLeafNode(otherlv_2, grammarAccess.getKPolylinePlacementDataAccess().getPointsKeyword_2());
                 
-            otherlv_3=(Token)match(input,19,FollowSets000.FOLLOW_19_in_ruleKPolylinePlacementData7274); 
+            otherlv_3=(Token)match(input,19,FollowSets000.FOLLOW_19_in_ruleKPolylinePlacementData7275); 
 
                 	newLeafNode(otherlv_3, grammarAccess.getKPolylinePlacementDataAccess().getColonKeyword_3());
                 
@@ -8836,10 +9081,14 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
             	        newCompositeNode(grammarAccess.getKPolylinePlacementDataAccess().getPointsKPositionParserRuleCall_4_0()); 
             	    
 <<<<<<< HEAD
+<<<<<<< HEAD
             pushFollow(FollowSets000.FOLLOW_ruleKPosition_in_ruleKPolylinePlacementData7105);
 =======
             pushFollow(FollowSets000.FOLLOW_ruleKPosition_in_ruleKPolylinePlacementData7295);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets000.FOLLOW_ruleKPosition_in_ruleKPolylinePlacementData7296);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             lv_points_4_0=ruleKPosition();
 
             state._fsp--;
@@ -8866,6 +9115,7 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
             loop93:
 =======
             // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:3468:2: (otherlv_5= ',' ( (lv_points_6_0= ruleKPosition ) ) )*
+<<<<<<< HEAD
             loop95:
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
             do {
@@ -8878,6 +9128,19 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
 
 
                 switch (alt93) {
+=======
+            loop96:
+            do {
+                int alt96=2;
+                int LA96_0 = input.LA(1);
+
+                if ( (LA96_0==13) ) {
+                    alt96=1;
+                }
+
+
+                switch (alt96) {
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             	case 1 :
 <<<<<<< HEAD
             	    // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:3380:4: otherlv_5= ',' ( (lv_points_6_0= ruleKPosition ) )
@@ -8894,7 +9157,7 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
 =======
             	    // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:3468:4: otherlv_5= ',' ( (lv_points_6_0= ruleKPosition ) )
             	    {
-            	    otherlv_5=(Token)match(input,13,FollowSets000.FOLLOW_13_in_ruleKPolylinePlacementData7308); 
+            	    otherlv_5=(Token)match(input,13,FollowSets000.FOLLOW_13_in_ruleKPolylinePlacementData7309); 
 
             	        	newLeafNode(otherlv_5, grammarAccess.getKPolylinePlacementDataAccess().getCommaKeyword_5_0());
             	        
@@ -8909,10 +9172,14 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
             	    	        newCompositeNode(grammarAccess.getKPolylinePlacementDataAccess().getPointsKPositionParserRuleCall_5_1_0()); 
             	    	    
 <<<<<<< HEAD
+<<<<<<< HEAD
             	    pushFollow(FollowSets000.FOLLOW_ruleKPosition_in_ruleKPolylinePlacementData7139);
 =======
             	    pushFollow(FollowSets000.FOLLOW_ruleKPosition_in_ruleKPolylinePlacementData7329);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            	    pushFollow(FollowSets000.FOLLOW_ruleKPosition_in_ruleKPolylinePlacementData7330);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             	    lv_points_6_0=ruleKPosition();
 
             	    state._fsp--;
@@ -8939,7 +9206,11 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
             	    break;
 
             	default :
+<<<<<<< HEAD
             	    break loop93;
+=======
+            	    break loop96;
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
                 }
             } while (true);
 
@@ -8952,14 +9223,21 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
                 alt94=1;
 =======
             // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:3490:4: (otherlv_7= 'detailedPlacementData' ( (lv_detailPlacementData_8_0= ruleKPlacementData ) ) )?
-            int alt96=2;
-            int LA96_0 = input.LA(1);
+            int alt97=2;
+            int LA97_0 = input.LA(1);
 
+<<<<<<< HEAD
             if ( (LA96_0==56) ) {
                 alt96=1;
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
             }
             switch (alt94) {
+=======
+            if ( (LA97_0==56) ) {
+                alt97=1;
+            }
+            switch (alt97) {
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
                 case 1 :
 <<<<<<< HEAD
                     // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:3402:6: otherlv_7= 'detailedPlacementData' ( (lv_detailPlacementData_8_0= ruleKPlacementData ) )
@@ -8976,7 +9254,7 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
 =======
                     // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:3490:6: otherlv_7= 'detailedPlacementData' ( (lv_detailPlacementData_8_0= ruleKPlacementData ) )
                     {
-                    otherlv_7=(Token)match(input,56,FollowSets000.FOLLOW_56_in_ruleKPolylinePlacementData7344); 
+                    otherlv_7=(Token)match(input,56,FollowSets000.FOLLOW_56_in_ruleKPolylinePlacementData7345); 
 
                         	newLeafNode(otherlv_7, grammarAccess.getKPolylinePlacementDataAccess().getDetailedPlacementDataKeyword_6_0());
                         
@@ -8991,10 +9269,14 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
                     	        newCompositeNode(grammarAccess.getKPolylinePlacementDataAccess().getDetailPlacementDataKPlacementDataParserRuleCall_6_1_0()); 
                     	    
 <<<<<<< HEAD
+<<<<<<< HEAD
                     pushFollow(FollowSets000.FOLLOW_ruleKPlacementData_in_ruleKPolylinePlacementData7175);
 =======
                     pushFollow(FollowSets000.FOLLOW_ruleKPlacementData_in_ruleKPolylinePlacementData7365);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+                    pushFollow(FollowSets000.FOLLOW_ruleKPlacementData_in_ruleKPolylinePlacementData7366);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
                     lv_detailPlacementData_8_0=ruleKPlacementData();
 
                     state._fsp--;
@@ -9023,10 +9305,14 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
             }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
             otherlv_9=(Token)match(input,14,FollowSets000.FOLLOW_14_in_ruleKPolylinePlacementData7189); 
 =======
             otherlv_9=(Token)match(input,14,FollowSets000.FOLLOW_14_in_ruleKPolylinePlacementData7379); 
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            otherlv_9=(Token)match(input,14,FollowSets000.FOLLOW_14_in_ruleKPolylinePlacementData7380); 
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
 
                 	newLeafNode(otherlv_9, grammarAccess.getKPolylinePlacementDataAccess().getRightCurlyBracketKeyword_7());
                 
@@ -9074,18 +9360,26 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
             // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:3526:2: iv_ruleKPosition= ruleKPosition EOF
             {
              newCompositeNode(grammarAccess.getKPositionRule()); 
+<<<<<<< HEAD
             pushFollow(FollowSets000.FOLLOW_ruleKPosition_in_entryRuleKPosition7415);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets000.FOLLOW_ruleKPosition_in_entryRuleKPosition7416);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             iv_ruleKPosition=ruleKPosition();
 
             state._fsp--;
 
              current =iv_ruleKPosition; 
 <<<<<<< HEAD
+<<<<<<< HEAD
             match(input,EOF,FollowSets000.FOLLOW_EOF_in_entryRuleKPosition7235); 
 =======
             match(input,EOF,FollowSets000.FOLLOW_EOF_in_entryRuleKPosition7425); 
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            match(input,EOF,FollowSets000.FOLLOW_EOF_in_entryRuleKPosition7426); 
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
 
             }
 
@@ -9150,10 +9444,14 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
             	        newCompositeNode(grammarAccess.getKPositionAccess().getXKXPositionParserRuleCall_0_0()); 
             	    
 <<<<<<< HEAD
+<<<<<<< HEAD
             pushFollow(FollowSets000.FOLLOW_ruleKXPosition_in_ruleKPosition7281);
 =======
             pushFollow(FollowSets000.FOLLOW_ruleKXPosition_in_ruleKPosition7471);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets000.FOLLOW_ruleKXPosition_in_ruleKPosition7472);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             lv_x_0_0=ruleKXPosition();
 
             state._fsp--;
@@ -9176,6 +9474,7 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
             }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
             otherlv_1=(Token)match(input,59,FollowSets000.FOLLOW_59_in_ruleKPosition7293); 
 
                 	newLeafNode(otherlv_1, grammarAccess.getKPositionAccess().getSolidusKeyword_1());
@@ -9187,6 +9486,9 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
             // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:3473:3: lv_y_2_0= ruleKYPosition
 =======
             otherlv_1=(Token)match(input,57,FollowSets000.FOLLOW_57_in_ruleKPosition7483); 
+=======
+            otherlv_1=(Token)match(input,57,FollowSets000.FOLLOW_57_in_ruleKPosition7484); 
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
 
                 	newLeafNode(otherlv_1, grammarAccess.getKPositionAccess().getSolidusKeyword_1());
                 
@@ -9201,10 +9503,14 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
             	        newCompositeNode(grammarAccess.getKPositionAccess().getYKYPositionParserRuleCall_2_0()); 
             	    
 <<<<<<< HEAD
+<<<<<<< HEAD
             pushFollow(FollowSets000.FOLLOW_ruleKYPosition_in_ruleKPosition7314);
 =======
             pushFollow(FollowSets000.FOLLOW_ruleKYPosition_in_ruleKPosition7504);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets000.FOLLOW_ruleKYPosition_in_ruleKPosition7505);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             lv_y_2_0=ruleKYPosition();
 
             state._fsp--;
@@ -9270,18 +9576,26 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
             // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:3587:2: iv_ruleKLeftPosition= ruleKLeftPosition EOF
             {
              newCompositeNode(grammarAccess.getKLeftPositionRule()); 
+<<<<<<< HEAD
             pushFollow(FollowSets000.FOLLOW_ruleKLeftPosition_in_entryRuleKLeftPosition7540);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets000.FOLLOW_ruleKLeftPosition_in_entryRuleKLeftPosition7541);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             iv_ruleKLeftPosition=ruleKLeftPosition();
 
             state._fsp--;
 
              current =iv_ruleKLeftPosition; 
 <<<<<<< HEAD
+<<<<<<< HEAD
             match(input,EOF,FollowSets000.FOLLOW_EOF_in_entryRuleKLeftPosition7360); 
 =======
             match(input,EOF,FollowSets000.FOLLOW_EOF_in_entryRuleKLeftPosition7550); 
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            match(input,EOF,FollowSets000.FOLLOW_EOF_in_entryRuleKLeftPosition7551); 
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
 
             }
 
@@ -9346,6 +9660,7 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
             }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
             otherlv_1=(Token)match(input,60,FollowSets000.FOLLOW_60_in_ruleKLeftPosition7406); 
 
                 	newLeafNode(otherlv_1, grammarAccess.getKLeftPositionAccess().getLeftKeyword_1());
@@ -9357,6 +9672,9 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
             // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:3522:3: lv_absolute_2_0= ruleEFloat
 =======
             otherlv_1=(Token)match(input,58,FollowSets000.FOLLOW_58_in_ruleKLeftPosition7596); 
+=======
+            otherlv_1=(Token)match(input,58,FollowSets000.FOLLOW_58_in_ruleKLeftPosition7597); 
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
 
                 	newLeafNode(otherlv_1, grammarAccess.getKLeftPositionAccess().getLeftKeyword_1());
                 
@@ -9371,10 +9689,14 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
             	        newCompositeNode(grammarAccess.getKLeftPositionAccess().getAbsoluteEFloatParserRuleCall_2_0()); 
             	    
 <<<<<<< HEAD
+<<<<<<< HEAD
             pushFollow(FollowSets000.FOLLOW_ruleEFloat_in_ruleKLeftPosition7427);
 =======
             pushFollow(FollowSets000.FOLLOW_ruleEFloat_in_ruleKLeftPosition7617);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets000.FOLLOW_ruleEFloat_in_ruleKLeftPosition7618);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             lv_absolute_2_0=ruleEFloat();
 
             state._fsp--;
@@ -9418,10 +9740,14 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
             	        newCompositeNode(grammarAccess.getKLeftPositionAccess().getRelativeEFloatParserRuleCall_4_0()); 
             	    
 <<<<<<< HEAD
+<<<<<<< HEAD
             pushFollow(FollowSets000.FOLLOW_ruleEFloat_in_ruleKLeftPosition7460);
             lv_relative_4_0=ruleEFloat();
 =======
             pushFollow(FollowSets000.FOLLOW_ruleEFloat_in_ruleKLeftPosition7638);
+=======
+            pushFollow(FollowSets000.FOLLOW_ruleEFloat_in_ruleKLeftPosition7639);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             lv_relative_3_0=ruleEFloat();
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
 
@@ -9488,18 +9814,26 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
             // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:3654:2: iv_ruleKRightPosition= ruleKRightPosition EOF
             {
              newCompositeNode(grammarAccess.getKRightPositionRule()); 
+<<<<<<< HEAD
             pushFollow(FollowSets000.FOLLOW_ruleKRightPosition_in_entryRuleKRightPosition7674);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets000.FOLLOW_ruleKRightPosition_in_entryRuleKRightPosition7675);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             iv_ruleKRightPosition=ruleKRightPosition();
 
             state._fsp--;
 
              current =iv_ruleKRightPosition; 
 <<<<<<< HEAD
+<<<<<<< HEAD
             match(input,EOF,FollowSets000.FOLLOW_EOF_in_entryRuleKRightPosition7506); 
 =======
             match(input,EOF,FollowSets000.FOLLOW_EOF_in_entryRuleKRightPosition7684); 
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            match(input,EOF,FollowSets000.FOLLOW_EOF_in_entryRuleKRightPosition7685); 
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
 
             }
 
@@ -9564,6 +9898,7 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
             }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
             otherlv_1=(Token)match(input,61,FollowSets000.FOLLOW_61_in_ruleKRightPosition7552); 
 
                 	newLeafNode(otherlv_1, grammarAccess.getKRightPositionAccess().getRightKeyword_1());
@@ -9575,6 +9910,9 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
             // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:3593:3: lv_absolute_2_0= ruleEFloat
 =======
             otherlv_1=(Token)match(input,59,FollowSets000.FOLLOW_59_in_ruleKRightPosition7730); 
+=======
+            otherlv_1=(Token)match(input,59,FollowSets000.FOLLOW_59_in_ruleKRightPosition7731); 
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
 
                 	newLeafNode(otherlv_1, grammarAccess.getKRightPositionAccess().getRightKeyword_1());
                 
@@ -9589,10 +9927,14 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
             	        newCompositeNode(grammarAccess.getKRightPositionAccess().getAbsoluteEFloatParserRuleCall_2_0()); 
             	    
 <<<<<<< HEAD
+<<<<<<< HEAD
             pushFollow(FollowSets000.FOLLOW_ruleEFloat_in_ruleKRightPosition7573);
 =======
             pushFollow(FollowSets000.FOLLOW_ruleEFloat_in_ruleKRightPosition7751);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets000.FOLLOW_ruleEFloat_in_ruleKRightPosition7752);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             lv_absolute_2_0=ruleEFloat();
 
             state._fsp--;
@@ -9636,10 +9978,14 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
             	        newCompositeNode(grammarAccess.getKRightPositionAccess().getRelativeEFloatParserRuleCall_4_0()); 
             	    
 <<<<<<< HEAD
+<<<<<<< HEAD
             pushFollow(FollowSets000.FOLLOW_ruleEFloat_in_ruleKRightPosition7606);
             lv_relative_4_0=ruleEFloat();
 =======
             pushFollow(FollowSets000.FOLLOW_ruleEFloat_in_ruleKRightPosition7772);
+=======
+            pushFollow(FollowSets000.FOLLOW_ruleEFloat_in_ruleKRightPosition7773);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             lv_relative_3_0=ruleEFloat();
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
 
@@ -9706,18 +10052,26 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
             // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:3721:2: iv_ruleKTopPosition= ruleKTopPosition EOF
             {
              newCompositeNode(grammarAccess.getKTopPositionRule()); 
+<<<<<<< HEAD
             pushFollow(FollowSets000.FOLLOW_ruleKTopPosition_in_entryRuleKTopPosition7808);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets000.FOLLOW_ruleKTopPosition_in_entryRuleKTopPosition7809);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             iv_ruleKTopPosition=ruleKTopPosition();
 
             state._fsp--;
 
              current =iv_ruleKTopPosition; 
 <<<<<<< HEAD
+<<<<<<< HEAD
             match(input,EOF,FollowSets000.FOLLOW_EOF_in_entryRuleKTopPosition7652); 
 =======
             match(input,EOF,FollowSets000.FOLLOW_EOF_in_entryRuleKTopPosition7818); 
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            match(input,EOF,FollowSets000.FOLLOW_EOF_in_entryRuleKTopPosition7819); 
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
 
             }
 
@@ -9782,6 +10136,7 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
             }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
             otherlv_1=(Token)match(input,62,FollowSets000.FOLLOW_62_in_ruleKTopPosition7698); 
 
                 	newLeafNode(otherlv_1, grammarAccess.getKTopPositionAccess().getTopKeyword_1());
@@ -9793,6 +10148,9 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
             // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:3664:3: lv_absolute_2_0= ruleEFloat
 =======
             otherlv_1=(Token)match(input,60,FollowSets000.FOLLOW_60_in_ruleKTopPosition7864); 
+=======
+            otherlv_1=(Token)match(input,60,FollowSets000.FOLLOW_60_in_ruleKTopPosition7865); 
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
 
                 	newLeafNode(otherlv_1, grammarAccess.getKTopPositionAccess().getTopKeyword_1());
                 
@@ -9807,10 +10165,14 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
             	        newCompositeNode(grammarAccess.getKTopPositionAccess().getAbsoluteEFloatParserRuleCall_2_0()); 
             	    
 <<<<<<< HEAD
+<<<<<<< HEAD
             pushFollow(FollowSets000.FOLLOW_ruleEFloat_in_ruleKTopPosition7719);
 =======
             pushFollow(FollowSets000.FOLLOW_ruleEFloat_in_ruleKTopPosition7885);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets000.FOLLOW_ruleEFloat_in_ruleKTopPosition7886);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             lv_absolute_2_0=ruleEFloat();
 
             state._fsp--;
@@ -9854,10 +10216,14 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
             	        newCompositeNode(grammarAccess.getKTopPositionAccess().getRelativeEFloatParserRuleCall_4_0()); 
             	    
 <<<<<<< HEAD
+<<<<<<< HEAD
             pushFollow(FollowSets000.FOLLOW_ruleEFloat_in_ruleKTopPosition7752);
             lv_relative_4_0=ruleEFloat();
 =======
             pushFollow(FollowSets000.FOLLOW_ruleEFloat_in_ruleKTopPosition7906);
+=======
+            pushFollow(FollowSets000.FOLLOW_ruleEFloat_in_ruleKTopPosition7907);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             lv_relative_3_0=ruleEFloat();
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
 
@@ -9924,18 +10290,26 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
             // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:3788:2: iv_ruleKBottomPosition= ruleKBottomPosition EOF
             {
              newCompositeNode(grammarAccess.getKBottomPositionRule()); 
+<<<<<<< HEAD
             pushFollow(FollowSets000.FOLLOW_ruleKBottomPosition_in_entryRuleKBottomPosition7942);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets000.FOLLOW_ruleKBottomPosition_in_entryRuleKBottomPosition7943);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             iv_ruleKBottomPosition=ruleKBottomPosition();
 
             state._fsp--;
 
              current =iv_ruleKBottomPosition; 
 <<<<<<< HEAD
+<<<<<<< HEAD
             match(input,EOF,FollowSets000.FOLLOW_EOF_in_entryRuleKBottomPosition7798); 
 =======
             match(input,EOF,FollowSets000.FOLLOW_EOF_in_entryRuleKBottomPosition7952); 
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            match(input,EOF,FollowSets000.FOLLOW_EOF_in_entryRuleKBottomPosition7953); 
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
 
             }
 
@@ -10000,6 +10374,7 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
             }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
             otherlv_1=(Token)match(input,63,FollowSets000.FOLLOW_63_in_ruleKBottomPosition7844); 
 
                 	newLeafNode(otherlv_1, grammarAccess.getKBottomPositionAccess().getBottomKeyword_1());
@@ -10011,6 +10386,9 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
             // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:3735:3: lv_absolute_2_0= ruleEFloat
 =======
             otherlv_1=(Token)match(input,61,FollowSets000.FOLLOW_61_in_ruleKBottomPosition7998); 
+=======
+            otherlv_1=(Token)match(input,61,FollowSets000.FOLLOW_61_in_ruleKBottomPosition7999); 
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
 
                 	newLeafNode(otherlv_1, grammarAccess.getKBottomPositionAccess().getBottomKeyword_1());
                 
@@ -10025,10 +10403,14 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
             	        newCompositeNode(grammarAccess.getKBottomPositionAccess().getAbsoluteEFloatParserRuleCall_2_0()); 
             	    
 <<<<<<< HEAD
+<<<<<<< HEAD
             pushFollow(FollowSets000.FOLLOW_ruleEFloat_in_ruleKBottomPosition7865);
 =======
             pushFollow(FollowSets000.FOLLOW_ruleEFloat_in_ruleKBottomPosition8019);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets000.FOLLOW_ruleEFloat_in_ruleKBottomPosition8020);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             lv_absolute_2_0=ruleEFloat();
 
             state._fsp--;
@@ -10072,10 +10454,14 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
             	        newCompositeNode(grammarAccess.getKBottomPositionAccess().getRelativeEFloatParserRuleCall_4_0()); 
             	    
 <<<<<<< HEAD
+<<<<<<< HEAD
             pushFollow(FollowSets000.FOLLOW_ruleEFloat_in_ruleKBottomPosition7898);
             lv_relative_4_0=ruleEFloat();
 =======
             pushFollow(FollowSets000.FOLLOW_ruleEFloat_in_ruleKBottomPosition8040);
+=======
+            pushFollow(FollowSets000.FOLLOW_ruleEFloat_in_ruleKBottomPosition8041);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             lv_relative_3_0=ruleEFloat();
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
 
@@ -10142,18 +10528,26 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
             // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:3855:2: iv_ruleKForegroundColor= ruleKForegroundColor EOF
             {
              newCompositeNode(grammarAccess.getKForegroundColorRule()); 
+<<<<<<< HEAD
             pushFollow(FollowSets000.FOLLOW_ruleKForegroundColor_in_entryRuleKForegroundColor8076);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets000.FOLLOW_ruleKForegroundColor_in_entryRuleKForegroundColor8077);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             iv_ruleKForegroundColor=ruleKForegroundColor();
 
             state._fsp--;
 
              current =iv_ruleKForegroundColor; 
 <<<<<<< HEAD
+<<<<<<< HEAD
             match(input,EOF,FollowSets000.FOLLOW_EOF_in_entryRuleKForegroundColor7944); 
 =======
             match(input,EOF,FollowSets000.FOLLOW_EOF_in_entryRuleKForegroundColor8086); 
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            match(input,EOF,FollowSets000.FOLLOW_EOF_in_entryRuleKForegroundColor8087); 
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
 
             }
 
@@ -10222,6 +10616,7 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
             }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
             otherlv_1=(Token)match(input,64,FollowSets000.FOLLOW_64_in_ruleKForegroundColor7990); 
 
                 	newLeafNode(otherlv_1, grammarAccess.getKForegroundColorAccess().getForegroundColorKeyword_1());
@@ -10233,6 +10628,9 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
             // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:3806:3: lv_red_2_0= ruleEInt
 =======
             otherlv_1=(Token)match(input,62,FollowSets000.FOLLOW_62_in_ruleKForegroundColor8132); 
+=======
+            otherlv_1=(Token)match(input,62,FollowSets000.FOLLOW_62_in_ruleKForegroundColor8133); 
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
 
                 	newLeafNode(otherlv_1, grammarAccess.getKForegroundColorAccess().getForegroundColorKeyword_1());
                 
@@ -10247,10 +10645,14 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
             	        newCompositeNode(grammarAccess.getKForegroundColorAccess().getRedEIntParserRuleCall_2_0()); 
             	    
 <<<<<<< HEAD
+<<<<<<< HEAD
             pushFollow(FollowSets000.FOLLOW_ruleEInt_in_ruleKForegroundColor8011);
 =======
             pushFollow(FollowSets000.FOLLOW_ruleEInt_in_ruleKForegroundColor8153);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets000.FOLLOW_ruleEInt_in_ruleKForegroundColor8154);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             lv_red_2_0=ruleEInt();
 
             state._fsp--;
@@ -10294,10 +10696,14 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
             	        newCompositeNode(grammarAccess.getKForegroundColorAccess().getGreenEIntParserRuleCall_4_0()); 
             	    
 <<<<<<< HEAD
+<<<<<<< HEAD
             pushFollow(FollowSets000.FOLLOW_ruleEInt_in_ruleKForegroundColor8044);
             lv_green_4_0=ruleEInt();
 =======
             pushFollow(FollowSets000.FOLLOW_ruleEInt_in_ruleKForegroundColor8174);
+=======
+            pushFollow(FollowSets000.FOLLOW_ruleEInt_in_ruleKForegroundColor8175);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             lv_green_3_0=ruleEInt();
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
 
@@ -10342,10 +10748,14 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
             	        newCompositeNode(grammarAccess.getKForegroundColorAccess().getBlueEIntParserRuleCall_6_0()); 
             	    
 <<<<<<< HEAD
+<<<<<<< HEAD
             pushFollow(FollowSets000.FOLLOW_ruleEInt_in_ruleKForegroundColor8077);
             lv_blue_6_0=ruleEInt();
 =======
             pushFollow(FollowSets000.FOLLOW_ruleEInt_in_ruleKForegroundColor8195);
+=======
+            pushFollow(FollowSets000.FOLLOW_ruleEInt_in_ruleKForegroundColor8196);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             lv_blue_4_0=ruleEInt();
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
 
@@ -10377,14 +10787,21 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
                 alt95=1;
 =======
             // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:3930:2: ( (lv_propagateToChildren_5_0= '!' ) )?
-            int alt97=2;
-            int LA97_0 = input.LA(1);
+            int alt98=2;
+            int LA98_0 = input.LA(1);
 
+<<<<<<< HEAD
             if ( (LA97_0==63) ) {
                 alt97=1;
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
             }
             switch (alt95) {
+=======
+            if ( (LA98_0==63) ) {
+                alt98=1;
+            }
+            switch (alt98) {
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
                 case 1 :
 <<<<<<< HEAD
                     // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:3867:1: (lv_propagateToChildren_7_0= '!' )
@@ -10399,8 +10816,12 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
                     // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:3931:1: (lv_propagateToChildren_5_0= '!' )
                     // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:3932:3: lv_propagateToChildren_5_0= '!'
                     {
+<<<<<<< HEAD
                     lv_propagateToChildren_5_0=(Token)match(input,63,FollowSets000.FOLLOW_63_in_ruleKForegroundColor8213); 
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+                    lv_propagateToChildren_5_0=(Token)match(input,63,FollowSets000.FOLLOW_63_in_ruleKForegroundColor8214); 
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
 
                             newLeafNode(lv_propagateToChildren_7_0, grammarAccess.getKForegroundColorAccess().getPropagateToChildrenExclamationMarkKeyword_7_0());
                         
@@ -10463,18 +10884,26 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
             // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:3955:2: iv_ruleKBackgroundColor= ruleKBackgroundColor EOF
             {
              newCompositeNode(grammarAccess.getKBackgroundColorRule()); 
+<<<<<<< HEAD
             pushFollow(FollowSets000.FOLLOW_ruleKBackgroundColor_in_entryRuleKBackgroundColor8263);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets000.FOLLOW_ruleKBackgroundColor_in_entryRuleKBackgroundColor8264);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             iv_ruleKBackgroundColor=ruleKBackgroundColor();
 
             state._fsp--;
 
              current =iv_ruleKBackgroundColor; 
 <<<<<<< HEAD
+<<<<<<< HEAD
             match(input,EOF,FollowSets000.FOLLOW_EOF_in_entryRuleKBackgroundColor8155); 
 =======
             match(input,EOF,FollowSets000.FOLLOW_EOF_in_entryRuleKBackgroundColor8273); 
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            match(input,EOF,FollowSets000.FOLLOW_EOF_in_entryRuleKBackgroundColor8274); 
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
 
             }
 
@@ -10543,6 +10972,7 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
             }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
             otherlv_1=(Token)match(input,66,FollowSets000.FOLLOW_66_in_ruleKBackgroundColor8201); 
 
                 	newLeafNode(otherlv_1, grammarAccess.getKBackgroundColorAccess().getBackgroundColorKeyword_1());
@@ -10554,6 +10984,9 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
             // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:3914:3: lv_red_2_0= ruleEInt
 =======
             otherlv_1=(Token)match(input,64,FollowSets000.FOLLOW_64_in_ruleKBackgroundColor8319); 
+=======
+            otherlv_1=(Token)match(input,64,FollowSets000.FOLLOW_64_in_ruleKBackgroundColor8320); 
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
 
                 	newLeafNode(otherlv_1, grammarAccess.getKBackgroundColorAccess().getBackgroundColorKeyword_1());
                 
@@ -10568,10 +11001,14 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
             	        newCompositeNode(grammarAccess.getKBackgroundColorAccess().getRedEIntParserRuleCall_2_0()); 
             	    
 <<<<<<< HEAD
+<<<<<<< HEAD
             pushFollow(FollowSets000.FOLLOW_ruleEInt_in_ruleKBackgroundColor8222);
 =======
             pushFollow(FollowSets000.FOLLOW_ruleEInt_in_ruleKBackgroundColor8340);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets000.FOLLOW_ruleEInt_in_ruleKBackgroundColor8341);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             lv_red_2_0=ruleEInt();
 
             state._fsp--;
@@ -10615,10 +11052,14 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
             	        newCompositeNode(grammarAccess.getKBackgroundColorAccess().getGreenEIntParserRuleCall_4_0()); 
             	    
 <<<<<<< HEAD
+<<<<<<< HEAD
             pushFollow(FollowSets000.FOLLOW_ruleEInt_in_ruleKBackgroundColor8255);
             lv_green_4_0=ruleEInt();
 =======
             pushFollow(FollowSets000.FOLLOW_ruleEInt_in_ruleKBackgroundColor8361);
+=======
+            pushFollow(FollowSets000.FOLLOW_ruleEInt_in_ruleKBackgroundColor8362);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             lv_green_3_0=ruleEInt();
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
 
@@ -10663,10 +11104,14 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
             	        newCompositeNode(grammarAccess.getKBackgroundColorAccess().getBlueEIntParserRuleCall_6_0()); 
             	    
 <<<<<<< HEAD
+<<<<<<< HEAD
             pushFollow(FollowSets000.FOLLOW_ruleEInt_in_ruleKBackgroundColor8288);
             lv_blue_6_0=ruleEInt();
 =======
             pushFollow(FollowSets000.FOLLOW_ruleEInt_in_ruleKBackgroundColor8382);
+=======
+            pushFollow(FollowSets000.FOLLOW_ruleEInt_in_ruleKBackgroundColor8383);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             lv_blue_4_0=ruleEInt();
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
 
@@ -10698,14 +11143,21 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
                 alt96=1;
 =======
             // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:4030:2: ( (lv_propagateToChildren_5_0= '!' ) )?
-            int alt98=2;
-            int LA98_0 = input.LA(1);
+            int alt99=2;
+            int LA99_0 = input.LA(1);
 
+<<<<<<< HEAD
             if ( (LA98_0==63) ) {
                 alt98=1;
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
             }
             switch (alt96) {
+=======
+            if ( (LA99_0==63) ) {
+                alt99=1;
+            }
+            switch (alt99) {
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
                 case 1 :
 <<<<<<< HEAD
                     // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:3975:1: (lv_propagateToChildren_7_0= '!' )
@@ -10720,8 +11172,12 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
                     // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:4031:1: (lv_propagateToChildren_5_0= '!' )
                     // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:4032:3: lv_propagateToChildren_5_0= '!'
                     {
+<<<<<<< HEAD
                     lv_propagateToChildren_5_0=(Token)match(input,63,FollowSets000.FOLLOW_63_in_ruleKBackgroundColor8400); 
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+                    lv_propagateToChildren_5_0=(Token)match(input,63,FollowSets000.FOLLOW_63_in_ruleKBackgroundColor8401); 
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
 
                             newLeafNode(lv_propagateToChildren_7_0, grammarAccess.getKBackgroundColorAccess().getPropagateToChildrenExclamationMarkKeyword_7_0());
                         
@@ -10784,18 +11240,26 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
             // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:4055:2: iv_ruleKLineWidth= ruleKLineWidth EOF
             {
              newCompositeNode(grammarAccess.getKLineWidthRule()); 
+<<<<<<< HEAD
             pushFollow(FollowSets000.FOLLOW_ruleKLineWidth_in_entryRuleKLineWidth8450);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets000.FOLLOW_ruleKLineWidth_in_entryRuleKLineWidth8451);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             iv_ruleKLineWidth=ruleKLineWidth();
 
             state._fsp--;
 
              current =iv_ruleKLineWidth; 
 <<<<<<< HEAD
+<<<<<<< HEAD
             match(input,EOF,FollowSets000.FOLLOW_EOF_in_entryRuleKLineWidth8366); 
 =======
             match(input,EOF,FollowSets000.FOLLOW_EOF_in_entryRuleKLineWidth8460); 
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            match(input,EOF,FollowSets000.FOLLOW_EOF_in_entryRuleKLineWidth8461); 
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
 
             }
 
@@ -10852,7 +11316,7 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
             // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:4066:1: (otherlv_0= 'LineWidth' ( (lv_lineWidth_1_0= ruleEInt ) ) ( (lv_propagateToChildren_2_0= '!' ) )? )
             // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:4066:3: otherlv_0= 'LineWidth' ( (lv_lineWidth_1_0= ruleEInt ) ) ( (lv_propagateToChildren_2_0= '!' ) )?
             {
-            otherlv_0=(Token)match(input,65,FollowSets000.FOLLOW_65_in_ruleKLineWidth8497); 
+            otherlv_0=(Token)match(input,65,FollowSets000.FOLLOW_65_in_ruleKLineWidth8498); 
 
                 	newLeafNode(otherlv_0, grammarAccess.getKLineWidthAccess().getLineWidthKeyword_0());
                 
@@ -10867,10 +11331,14 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
             	        newCompositeNode(grammarAccess.getKLineWidthAccess().getLineWidthEIntParserRuleCall_1_0()); 
             	    
 <<<<<<< HEAD
+<<<<<<< HEAD
             pushFollow(FollowSets000.FOLLOW_ruleEInt_in_ruleKLineWidth8424);
 =======
             pushFollow(FollowSets000.FOLLOW_ruleEInt_in_ruleKLineWidth8518);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets000.FOLLOW_ruleEInt_in_ruleKLineWidth8519);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             lv_lineWidth_1_0=ruleEInt();
 
             state._fsp--;
@@ -10901,14 +11369,21 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
                 alt97=1;
 =======
             // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:4088:2: ( (lv_propagateToChildren_2_0= '!' ) )?
-            int alt99=2;
-            int LA99_0 = input.LA(1);
+            int alt100=2;
+            int LA100_0 = input.LA(1);
 
+<<<<<<< HEAD
             if ( (LA99_0==63) ) {
                 alt99=1;
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
             }
             switch (alt97) {
+=======
+            if ( (LA100_0==63) ) {
+                alt100=1;
+            }
+            switch (alt100) {
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
                 case 1 :
 <<<<<<< HEAD
                     // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:4033:1: (lv_propagateToChildren_2_0= '!' )
@@ -10923,8 +11398,12 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
                     // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:4089:1: (lv_propagateToChildren_2_0= '!' )
                     // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:4090:3: lv_propagateToChildren_2_0= '!'
                     {
+<<<<<<< HEAD
                     lv_propagateToChildren_2_0=(Token)match(input,63,FollowSets000.FOLLOW_63_in_ruleKLineWidth8536); 
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+                    lv_propagateToChildren_2_0=(Token)match(input,63,FollowSets000.FOLLOW_63_in_ruleKLineWidth8537); 
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
 
                             newLeafNode(lv_propagateToChildren_2_0, grammarAccess.getKLineWidthAccess().getPropagateToChildrenExclamationMarkKeyword_2_0());
                         
@@ -10987,18 +11466,26 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
             // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:4113:2: iv_ruleKVisibility= ruleKVisibility EOF
             {
              newCompositeNode(grammarAccess.getKVisibilityRule()); 
+<<<<<<< HEAD
             pushFollow(FollowSets000.FOLLOW_ruleKVisibility_in_entryRuleKVisibility8586);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets000.FOLLOW_ruleKVisibility_in_entryRuleKVisibility8587);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             iv_ruleKVisibility=ruleKVisibility();
 
             state._fsp--;
 
              current =iv_ruleKVisibility; 
 <<<<<<< HEAD
+<<<<<<< HEAD
             match(input,EOF,FollowSets000.FOLLOW_EOF_in_entryRuleKVisibility8502); 
 =======
             match(input,EOF,FollowSets000.FOLLOW_EOF_in_entryRuleKVisibility8596); 
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            match(input,EOF,FollowSets000.FOLLOW_EOF_in_entryRuleKVisibility8597); 
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
 
             }
 
@@ -11050,12 +11537,13 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
             // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:4124:1: (this_KForegroundVisibility_0= ruleKForegroundVisibility | this_KBackgroundVisibility_1= ruleKBackgroundVisibility )
             {
             // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:4124:1: (this_KForegroundVisibility_0= ruleKForegroundVisibility | this_KBackgroundVisibility_1= ruleKBackgroundVisibility )
-            int alt100=2;
-            int LA100_0 = input.LA(1);
+            int alt101=2;
+            int LA101_0 = input.LA(1);
 
-            if ( (LA100_0==66) ) {
-                alt100=1;
+            if ( (LA101_0==66) ) {
+                alt101=1;
             }
+<<<<<<< HEAD
             else if ( (LA100_0==67) ) {
                 alt100=2;
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
@@ -11067,6 +11555,18 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
                 throw nvae;
             }
             switch (alt98) {
+=======
+            else if ( (LA101_0==67) ) {
+                alt101=2;
+            }
+            else {
+                NoViableAltException nvae =
+                    new NoViableAltException("", 101, 0, input);
+
+                throw nvae;
+            }
+            switch (alt101) {
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
                 case 1 :
 <<<<<<< HEAD
                     // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:4069:5: this_KForegroundVisibility_0= ruleKForegroundVisibility
@@ -11078,10 +11578,14 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
                             newCompositeNode(grammarAccess.getKVisibilityAccess().getKForegroundVisibilityParserRuleCall_0()); 
                         
 <<<<<<< HEAD
+<<<<<<< HEAD
                     pushFollow(FollowSets000.FOLLOW_ruleKForegroundVisibility_in_ruleKVisibility8549);
 =======
                     pushFollow(FollowSets000.FOLLOW_ruleKForegroundVisibility_in_ruleKVisibility8643);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+                    pushFollow(FollowSets000.FOLLOW_ruleKForegroundVisibility_in_ruleKVisibility8644);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
                     this_KForegroundVisibility_0=ruleKForegroundVisibility();
 
                     state._fsp--;
@@ -11104,10 +11608,14 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
                             newCompositeNode(grammarAccess.getKVisibilityAccess().getKBackgroundVisibilityParserRuleCall_1()); 
                         
 <<<<<<< HEAD
+<<<<<<< HEAD
                     pushFollow(FollowSets000.FOLLOW_ruleKBackgroundVisibility_in_ruleKVisibility8576);
 =======
                     pushFollow(FollowSets000.FOLLOW_ruleKBackgroundVisibility_in_ruleKVisibility8670);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+                    pushFollow(FollowSets000.FOLLOW_ruleKBackgroundVisibility_in_ruleKVisibility8671);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
                     this_KBackgroundVisibility_1=ruleKBackgroundVisibility();
 
                     state._fsp--;
@@ -11163,18 +11671,26 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
             // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:4153:2: iv_ruleKForegroundVisibility= ruleKForegroundVisibility EOF
             {
              newCompositeNode(grammarAccess.getKForegroundVisibilityRule()); 
+<<<<<<< HEAD
             pushFollow(FollowSets000.FOLLOW_ruleKForegroundVisibility_in_entryRuleKForegroundVisibility8705);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets000.FOLLOW_ruleKForegroundVisibility_in_entryRuleKForegroundVisibility8706);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             iv_ruleKForegroundVisibility=ruleKForegroundVisibility();
 
             state._fsp--;
 
              current =iv_ruleKForegroundVisibility; 
 <<<<<<< HEAD
+<<<<<<< HEAD
             match(input,EOF,FollowSets000.FOLLOW_EOF_in_entryRuleKForegroundVisibility8621); 
 =======
             match(input,EOF,FollowSets000.FOLLOW_EOF_in_entryRuleKForegroundVisibility8715); 
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            match(input,EOF,FollowSets000.FOLLOW_EOF_in_entryRuleKForegroundVisibility8716); 
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
 
             }
 
@@ -11237,6 +11753,7 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
             }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
             otherlv_1=(Token)match(input,68,FollowSets000.FOLLOW_68_in_ruleKForegroundVisibility8667); 
 
                 	newLeafNode(otherlv_1, grammarAccess.getKForegroundVisibilityAccess().getForegroundVisibilityKeyword_1());
@@ -11248,6 +11765,9 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
             // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:4120:3: lv_visible_2_0= ruleEBoolean
 =======
             otherlv_1=(Token)match(input,66,FollowSets000.FOLLOW_66_in_ruleKForegroundVisibility8761); 
+=======
+            otherlv_1=(Token)match(input,66,FollowSets000.FOLLOW_66_in_ruleKForegroundVisibility8762); 
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
 
                 	newLeafNode(otherlv_1, grammarAccess.getKForegroundVisibilityAccess().getForegroundVisibilityKeyword_1());
                 
@@ -11262,10 +11782,14 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
             	        newCompositeNode(grammarAccess.getKForegroundVisibilityAccess().getVisibleEBooleanParserRuleCall_2_0()); 
             	    
 <<<<<<< HEAD
+<<<<<<< HEAD
             pushFollow(FollowSets000.FOLLOW_ruleEBoolean_in_ruleKForegroundVisibility8688);
 =======
             pushFollow(FollowSets000.FOLLOW_ruleEBoolean_in_ruleKForegroundVisibility8782);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets000.FOLLOW_ruleEBoolean_in_ruleKForegroundVisibility8783);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             lv_visible_2_0=ruleEBoolean();
 
             state._fsp--;
@@ -11296,14 +11820,21 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
                 alt99=1;
 =======
             // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:4192:2: ( (lv_propagateToChildren_3_0= '!' ) )?
-            int alt101=2;
-            int LA101_0 = input.LA(1);
+            int alt102=2;
+            int LA102_0 = input.LA(1);
 
+<<<<<<< HEAD
             if ( (LA101_0==63) ) {
                 alt101=1;
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
             }
             switch (alt99) {
+=======
+            if ( (LA102_0==63) ) {
+                alt102=1;
+            }
+            switch (alt102) {
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
                 case 1 :
 <<<<<<< HEAD
                     // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:4137:1: (lv_propagateToChildren_3_0= '!' )
@@ -11318,8 +11849,12 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
                     // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:4193:1: (lv_propagateToChildren_3_0= '!' )
                     // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:4194:3: lv_propagateToChildren_3_0= '!'
                     {
+<<<<<<< HEAD
                     lv_propagateToChildren_3_0=(Token)match(input,63,FollowSets000.FOLLOW_63_in_ruleKForegroundVisibility8800); 
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+                    lv_propagateToChildren_3_0=(Token)match(input,63,FollowSets000.FOLLOW_63_in_ruleKForegroundVisibility8801); 
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
 
                             newLeafNode(lv_propagateToChildren_3_0, grammarAccess.getKForegroundVisibilityAccess().getPropagateToChildrenExclamationMarkKeyword_3_0());
                         
@@ -11382,18 +11917,26 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
             // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:4217:2: iv_ruleKBackgroundVisibility= ruleKBackgroundVisibility EOF
             {
              newCompositeNode(grammarAccess.getKBackgroundVisibilityRule()); 
+<<<<<<< HEAD
             pushFollow(FollowSets000.FOLLOW_ruleKBackgroundVisibility_in_entryRuleKBackgroundVisibility8850);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets000.FOLLOW_ruleKBackgroundVisibility_in_entryRuleKBackgroundVisibility8851);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             iv_ruleKBackgroundVisibility=ruleKBackgroundVisibility();
 
             state._fsp--;
 
              current =iv_ruleKBackgroundVisibility; 
 <<<<<<< HEAD
+<<<<<<< HEAD
             match(input,EOF,FollowSets000.FOLLOW_EOF_in_entryRuleKBackgroundVisibility8766); 
 =======
             match(input,EOF,FollowSets000.FOLLOW_EOF_in_entryRuleKBackgroundVisibility8860); 
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            match(input,EOF,FollowSets000.FOLLOW_EOF_in_entryRuleKBackgroundVisibility8861); 
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
 
             }
 
@@ -11456,6 +11999,7 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
             }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
             otherlv_1=(Token)match(input,69,FollowSets000.FOLLOW_69_in_ruleKBackgroundVisibility8812); 
 
                 	newLeafNode(otherlv_1, grammarAccess.getKBackgroundVisibilityAccess().getBackgroundVisibilityKeyword_1());
@@ -11467,6 +12011,9 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
             // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:4184:3: lv_visible_2_0= ruleEBoolean
 =======
             otherlv_1=(Token)match(input,67,FollowSets000.FOLLOW_67_in_ruleKBackgroundVisibility8906); 
+=======
+            otherlv_1=(Token)match(input,67,FollowSets000.FOLLOW_67_in_ruleKBackgroundVisibility8907); 
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
 
                 	newLeafNode(otherlv_1, grammarAccess.getKBackgroundVisibilityAccess().getBackgroundVisibilityKeyword_1());
                 
@@ -11481,10 +12028,14 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
             	        newCompositeNode(grammarAccess.getKBackgroundVisibilityAccess().getVisibleEBooleanParserRuleCall_2_0()); 
             	    
 <<<<<<< HEAD
+<<<<<<< HEAD
             pushFollow(FollowSets000.FOLLOW_ruleEBoolean_in_ruleKBackgroundVisibility8833);
 =======
             pushFollow(FollowSets000.FOLLOW_ruleEBoolean_in_ruleKBackgroundVisibility8927);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets000.FOLLOW_ruleEBoolean_in_ruleKBackgroundVisibility8928);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             lv_visible_2_0=ruleEBoolean();
 
             state._fsp--;
@@ -11515,14 +12066,21 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
                 alt100=1;
 =======
             // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:4256:2: ( (lv_propagateToChildren_3_0= '!' ) )?
-            int alt102=2;
-            int LA102_0 = input.LA(1);
+            int alt103=2;
+            int LA103_0 = input.LA(1);
 
+<<<<<<< HEAD
             if ( (LA102_0==63) ) {
                 alt102=1;
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
             }
             switch (alt100) {
+=======
+            if ( (LA103_0==63) ) {
+                alt103=1;
+            }
+            switch (alt103) {
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
                 case 1 :
 <<<<<<< HEAD
                     // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:4201:1: (lv_propagateToChildren_3_0= '!' )
@@ -11537,8 +12095,12 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
                     // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:4257:1: (lv_propagateToChildren_3_0= '!' )
                     // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:4258:3: lv_propagateToChildren_3_0= '!'
                     {
+<<<<<<< HEAD
                     lv_propagateToChildren_3_0=(Token)match(input,63,FollowSets000.FOLLOW_63_in_ruleKBackgroundVisibility8945); 
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+                    lv_propagateToChildren_3_0=(Token)match(input,63,FollowSets000.FOLLOW_63_in_ruleKBackgroundVisibility8946); 
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
 
                             newLeafNode(lv_propagateToChildren_3_0, grammarAccess.getKBackgroundVisibilityAccess().getPropagateToChildrenExclamationMarkKeyword_3_0());
                         
@@ -11601,18 +12163,26 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
             // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:4281:2: iv_ruleKLineStyle= ruleKLineStyle EOF
             {
              newCompositeNode(grammarAccess.getKLineStyleRule()); 
+<<<<<<< HEAD
             pushFollow(FollowSets000.FOLLOW_ruleKLineStyle_in_entryRuleKLineStyle8995);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets000.FOLLOW_ruleKLineStyle_in_entryRuleKLineStyle8996);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             iv_ruleKLineStyle=ruleKLineStyle();
 
             state._fsp--;
 
              current =iv_ruleKLineStyle; 
 <<<<<<< HEAD
+<<<<<<< HEAD
             match(input,EOF,FollowSets000.FOLLOW_EOF_in_entryRuleKLineStyle8911); 
 =======
             match(input,EOF,FollowSets000.FOLLOW_EOF_in_entryRuleKLineStyle9005); 
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            match(input,EOF,FollowSets000.FOLLOW_EOF_in_entryRuleKLineStyle9006); 
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
 
             }
 
@@ -11675,6 +12245,7 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
             }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
             otherlv_1=(Token)match(input,70,FollowSets000.FOLLOW_70_in_ruleKLineStyle8957); 
 
                 	newLeafNode(otherlv_1, grammarAccess.getKLineStyleAccess().getLineStyleKeyword_1());
@@ -11686,6 +12257,9 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
             // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:4248:3: lv_lineStyle_2_0= ruleLineStyle
 =======
             otherlv_1=(Token)match(input,68,FollowSets000.FOLLOW_68_in_ruleKLineStyle9051); 
+=======
+            otherlv_1=(Token)match(input,68,FollowSets000.FOLLOW_68_in_ruleKLineStyle9052); 
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
 
                 	newLeafNode(otherlv_1, grammarAccess.getKLineStyleAccess().getLineStyleKeyword_1());
                 
@@ -11700,10 +12274,14 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
             	        newCompositeNode(grammarAccess.getKLineStyleAccess().getLineStyleLineStyleEnumRuleCall_2_0()); 
             	    
 <<<<<<< HEAD
+<<<<<<< HEAD
             pushFollow(FollowSets000.FOLLOW_ruleLineStyle_in_ruleKLineStyle8978);
 =======
             pushFollow(FollowSets000.FOLLOW_ruleLineStyle_in_ruleKLineStyle9072);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets000.FOLLOW_ruleLineStyle_in_ruleKLineStyle9073);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             lv_lineStyle_2_0=ruleLineStyle();
 
             state._fsp--;
@@ -11734,14 +12312,21 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
                 alt101=1;
 =======
             // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:4320:2: ( (lv_propagateToChildren_3_0= '!' ) )?
-            int alt103=2;
-            int LA103_0 = input.LA(1);
+            int alt104=2;
+            int LA104_0 = input.LA(1);
 
+<<<<<<< HEAD
             if ( (LA103_0==63) ) {
                 alt103=1;
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
             }
             switch (alt101) {
+=======
+            if ( (LA104_0==63) ) {
+                alt104=1;
+            }
+            switch (alt104) {
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
                 case 1 :
 <<<<<<< HEAD
                     // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:4265:1: (lv_propagateToChildren_3_0= '!' )
@@ -11756,8 +12341,12 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
                     // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:4321:1: (lv_propagateToChildren_3_0= '!' )
                     // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:4322:3: lv_propagateToChildren_3_0= '!'
                     {
+<<<<<<< HEAD
                     lv_propagateToChildren_3_0=(Token)match(input,63,FollowSets000.FOLLOW_63_in_ruleKLineStyle9090); 
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+                    lv_propagateToChildren_3_0=(Token)match(input,63,FollowSets000.FOLLOW_63_in_ruleKLineStyle9091); 
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
 
                             newLeafNode(lv_propagateToChildren_3_0, grammarAccess.getKLineStyleAccess().getPropagateToChildrenExclamationMarkKeyword_3_0());
                         
@@ -11813,13 +12402,13 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
             // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:4345:2: iv_ruleKFontBold= ruleKFontBold EOF
             {
              newCompositeNode(grammarAccess.getKFontBoldRule()); 
-            pushFollow(FollowSets000.FOLLOW_ruleKFontBold_in_entryRuleKFontBold9140);
+            pushFollow(FollowSets000.FOLLOW_ruleKFontBold_in_entryRuleKFontBold9141);
             iv_ruleKFontBold=ruleKFontBold();
 
             state._fsp--;
 
              current =iv_ruleKFontBold; 
-            match(input,EOF,FollowSets000.FOLLOW_EOF_in_entryRuleKFontBold9150); 
+            match(input,EOF,FollowSets000.FOLLOW_EOF_in_entryRuleKFontBold9151); 
 
             }
 
@@ -11864,25 +12453,25 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
 
             }
 
-            otherlv_1=(Token)match(input,69,FollowSets000.FOLLOW_69_in_ruleKFontBold9196); 
+            otherlv_1=(Token)match(input,69,FollowSets000.FOLLOW_69_in_ruleKFontBold9197); 
 
                 	newLeafNode(otherlv_1, grammarAccess.getKFontBoldAccess().getBoldKeyword_1());
                 
             // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:4366:1: ( (lv_propagateToChildren_2_0= '!' ) )?
-            int alt104=2;
-            int LA104_0 = input.LA(1);
+            int alt105=2;
+            int LA105_0 = input.LA(1);
 
-            if ( (LA104_0==63) ) {
-                alt104=1;
+            if ( (LA105_0==63) ) {
+                alt105=1;
             }
-            switch (alt104) {
+            switch (alt105) {
                 case 1 :
                     // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:4367:1: (lv_propagateToChildren_2_0= '!' )
                     {
                     // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:4367:1: (lv_propagateToChildren_2_0= '!' )
                     // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:4368:3: lv_propagateToChildren_2_0= '!'
                     {
-                    lv_propagateToChildren_2_0=(Token)match(input,63,FollowSets000.FOLLOW_63_in_ruleKFontBold9214); 
+                    lv_propagateToChildren_2_0=(Token)match(input,63,FollowSets000.FOLLOW_63_in_ruleKFontBold9215); 
 
                             newLeafNode(lv_propagateToChildren_2_0, grammarAccess.getKFontBoldAccess().getPropagateToChildrenExclamationMarkKeyword_2_0());
                         
@@ -11934,13 +12523,13 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
             // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:4391:2: iv_ruleKFontItalic= ruleKFontItalic EOF
             {
              newCompositeNode(grammarAccess.getKFontItalicRule()); 
-            pushFollow(FollowSets000.FOLLOW_ruleKFontItalic_in_entryRuleKFontItalic9264);
+            pushFollow(FollowSets000.FOLLOW_ruleKFontItalic_in_entryRuleKFontItalic9265);
             iv_ruleKFontItalic=ruleKFontItalic();
 
             state._fsp--;
 
              current =iv_ruleKFontItalic; 
-            match(input,EOF,FollowSets000.FOLLOW_EOF_in_entryRuleKFontItalic9274); 
+            match(input,EOF,FollowSets000.FOLLOW_EOF_in_entryRuleKFontItalic9275); 
 
             }
 
@@ -11985,25 +12574,25 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
 
             }
 
-            otherlv_1=(Token)match(input,70,FollowSets000.FOLLOW_70_in_ruleKFontItalic9320); 
+            otherlv_1=(Token)match(input,70,FollowSets000.FOLLOW_70_in_ruleKFontItalic9321); 
 
                 	newLeafNode(otherlv_1, grammarAccess.getKFontItalicAccess().getItalicKeyword_1());
                 
             // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:4412:1: ( (lv_propagateToChildren_2_0= '!' ) )?
-            int alt105=2;
-            int LA105_0 = input.LA(1);
+            int alt106=2;
+            int LA106_0 = input.LA(1);
 
-            if ( (LA105_0==63) ) {
-                alt105=1;
+            if ( (LA106_0==63) ) {
+                alt106=1;
             }
-            switch (alt105) {
+            switch (alt106) {
                 case 1 :
                     // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:4413:1: (lv_propagateToChildren_2_0= '!' )
                     {
                     // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:4413:1: (lv_propagateToChildren_2_0= '!' )
                     // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:4414:3: lv_propagateToChildren_2_0= '!'
                     {
-                    lv_propagateToChildren_2_0=(Token)match(input,63,FollowSets000.FOLLOW_63_in_ruleKFontItalic9338); 
+                    lv_propagateToChildren_2_0=(Token)match(input,63,FollowSets000.FOLLOW_63_in_ruleKFontItalic9339); 
 
                             newLeafNode(lv_propagateToChildren_2_0, grammarAccess.getKFontItalicAccess().getPropagateToChildrenExclamationMarkKeyword_2_0());
                         
@@ -12055,13 +12644,13 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
             // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:4437:2: iv_ruleKFontName= ruleKFontName EOF
             {
              newCompositeNode(grammarAccess.getKFontNameRule()); 
-            pushFollow(FollowSets000.FOLLOW_ruleKFontName_in_entryRuleKFontName9388);
+            pushFollow(FollowSets000.FOLLOW_ruleKFontName_in_entryRuleKFontName9389);
             iv_ruleKFontName=ruleKFontName();
 
             state._fsp--;
 
              current =iv_ruleKFontName; 
-            match(input,EOF,FollowSets000.FOLLOW_EOF_in_entryRuleKFontName9398); 
+            match(input,EOF,FollowSets000.FOLLOW_EOF_in_entryRuleKFontName9399); 
 
             }
 
@@ -12097,7 +12686,7 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
             // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:4448:1: (otherlv_0= 'font' ( (lv_name_1_0= ruleEString ) ) ( (lv_propagateToChildren_2_0= '!' ) )? )
             // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:4448:3: otherlv_0= 'font' ( (lv_name_1_0= ruleEString ) ) ( (lv_propagateToChildren_2_0= '!' ) )?
             {
-            otherlv_0=(Token)match(input,71,FollowSets000.FOLLOW_71_in_ruleKFontName9435); 
+            otherlv_0=(Token)match(input,71,FollowSets000.FOLLOW_71_in_ruleKFontName9436); 
 
                 	newLeafNode(otherlv_0, grammarAccess.getKFontNameAccess().getFontKeyword_0());
                 
@@ -12110,7 +12699,7 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
              
             	        newCompositeNode(grammarAccess.getKFontNameAccess().getNameEStringParserRuleCall_1_0()); 
             	    
-            pushFollow(FollowSets000.FOLLOW_ruleEString_in_ruleKFontName9456);
+            pushFollow(FollowSets000.FOLLOW_ruleEString_in_ruleKFontName9457);
             lv_name_1_0=ruleEString();
 
             state._fsp--;
@@ -12133,20 +12722,20 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
             }
 
             // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:4470:2: ( (lv_propagateToChildren_2_0= '!' ) )?
-            int alt106=2;
-            int LA106_0 = input.LA(1);
+            int alt107=2;
+            int LA107_0 = input.LA(1);
 
-            if ( (LA106_0==63) ) {
-                alt106=1;
+            if ( (LA107_0==63) ) {
+                alt107=1;
             }
-            switch (alt106) {
+            switch (alt107) {
                 case 1 :
                     // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:4471:1: (lv_propagateToChildren_2_0= '!' )
                     {
                     // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:4471:1: (lv_propagateToChildren_2_0= '!' )
                     // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:4472:3: lv_propagateToChildren_2_0= '!'
                     {
-                    lv_propagateToChildren_2_0=(Token)match(input,63,FollowSets000.FOLLOW_63_in_ruleKFontName9474); 
+                    lv_propagateToChildren_2_0=(Token)match(input,63,FollowSets000.FOLLOW_63_in_ruleKFontName9475); 
 
                             newLeafNode(lv_propagateToChildren_2_0, grammarAccess.getKFontNameAccess().getPropagateToChildrenExclamationMarkKeyword_2_0());
                         
@@ -12198,13 +12787,13 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
             // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:4495:2: iv_ruleKFontSize= ruleKFontSize EOF
             {
              newCompositeNode(grammarAccess.getKFontSizeRule()); 
-            pushFollow(FollowSets000.FOLLOW_ruleKFontSize_in_entryRuleKFontSize9524);
+            pushFollow(FollowSets000.FOLLOW_ruleKFontSize_in_entryRuleKFontSize9525);
             iv_ruleKFontSize=ruleKFontSize();
 
             state._fsp--;
 
              current =iv_ruleKFontSize; 
-            match(input,EOF,FollowSets000.FOLLOW_EOF_in_entryRuleKFontSize9534); 
+            match(input,EOF,FollowSets000.FOLLOW_EOF_in_entryRuleKFontSize9535); 
 
             }
 
@@ -12240,7 +12829,7 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
             // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:4506:1: (otherlv_0= 'fontSize' ( (lv_size_1_0= ruleEInt ) ) ( (lv_propagateToChildren_2_0= '!' ) )? )
             // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:4506:3: otherlv_0= 'fontSize' ( (lv_size_1_0= ruleEInt ) ) ( (lv_propagateToChildren_2_0= '!' ) )?
             {
-            otherlv_0=(Token)match(input,72,FollowSets000.FOLLOW_72_in_ruleKFontSize9571); 
+            otherlv_0=(Token)match(input,72,FollowSets000.FOLLOW_72_in_ruleKFontSize9572); 
 
                 	newLeafNode(otherlv_0, grammarAccess.getKFontSizeAccess().getFontSizeKeyword_0());
                 
@@ -12253,7 +12842,7 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
              
             	        newCompositeNode(grammarAccess.getKFontSizeAccess().getSizeEIntParserRuleCall_1_0()); 
             	    
-            pushFollow(FollowSets000.FOLLOW_ruleEInt_in_ruleKFontSize9592);
+            pushFollow(FollowSets000.FOLLOW_ruleEInt_in_ruleKFontSize9593);
             lv_size_1_0=ruleEInt();
 
             state._fsp--;
@@ -12276,20 +12865,20 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
             }
 
             // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:4528:2: ( (lv_propagateToChildren_2_0= '!' ) )?
-            int alt107=2;
-            int LA107_0 = input.LA(1);
+            int alt108=2;
+            int LA108_0 = input.LA(1);
 
-            if ( (LA107_0==63) ) {
-                alt107=1;
+            if ( (LA108_0==63) ) {
+                alt108=1;
             }
-            switch (alt107) {
+            switch (alt108) {
                 case 1 :
                     // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:4529:1: (lv_propagateToChildren_2_0= '!' )
                     {
                     // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:4529:1: (lv_propagateToChildren_2_0= '!' )
                     // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:4530:3: lv_propagateToChildren_2_0= '!'
                     {
-                    lv_propagateToChildren_2_0=(Token)match(input,63,FollowSets000.FOLLOW_63_in_ruleKFontSize9610); 
+                    lv_propagateToChildren_2_0=(Token)match(input,63,FollowSets000.FOLLOW_63_in_ruleKFontSize9611); 
 
                             newLeafNode(lv_propagateToChildren_2_0, grammarAccess.getKFontSizeAccess().getPropagateToChildrenExclamationMarkKeyword_2_0());
                         
@@ -12349,18 +12938,26 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
             // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:4553:2: iv_ruleKVerticalAlignment= ruleKVerticalAlignment EOF
             {
              newCompositeNode(grammarAccess.getKVerticalAlignmentRule()); 
+<<<<<<< HEAD
             pushFollow(FollowSets000.FOLLOW_ruleKVerticalAlignment_in_entryRuleKVerticalAlignment9660);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets000.FOLLOW_ruleKVerticalAlignment_in_entryRuleKVerticalAlignment9661);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             iv_ruleKVerticalAlignment=ruleKVerticalAlignment();
 
             state._fsp--;
 
              current =iv_ruleKVerticalAlignment; 
 <<<<<<< HEAD
+<<<<<<< HEAD
             match(input,EOF,FollowSets000.FOLLOW_EOF_in_entryRuleKVerticalAlignment9056); 
 =======
             match(input,EOF,FollowSets000.FOLLOW_EOF_in_entryRuleKVerticalAlignment9670); 
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            match(input,EOF,FollowSets000.FOLLOW_EOF_in_entryRuleKVerticalAlignment9671); 
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
 
             }
 
@@ -12423,6 +13020,7 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
             }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
             otherlv_1=(Token)match(input,71,FollowSets000.FOLLOW_71_in_ruleKVerticalAlignment9102); 
 
                 	newLeafNode(otherlv_1, grammarAccess.getKVerticalAlignmentAccess().getVerticalAlignmentKeyword_1());
@@ -12434,6 +13032,9 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
             // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:4312:3: lv_verticalAlignment_2_0= ruleVerticalAlignment
 =======
             otherlv_1=(Token)match(input,73,FollowSets000.FOLLOW_73_in_ruleKVerticalAlignment9716); 
+=======
+            otherlv_1=(Token)match(input,73,FollowSets000.FOLLOW_73_in_ruleKVerticalAlignment9717); 
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
 
                 	newLeafNode(otherlv_1, grammarAccess.getKVerticalAlignmentAccess().getVerticalAlignmentKeyword_1());
                 
@@ -12448,10 +13049,14 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
             	        newCompositeNode(grammarAccess.getKVerticalAlignmentAccess().getVerticalAlignmentVerticalAlignmentEnumRuleCall_2_0()); 
             	    
 <<<<<<< HEAD
+<<<<<<< HEAD
             pushFollow(FollowSets000.FOLLOW_ruleVerticalAlignment_in_ruleKVerticalAlignment9123);
 =======
             pushFollow(FollowSets000.FOLLOW_ruleVerticalAlignment_in_ruleKVerticalAlignment9737);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets000.FOLLOW_ruleVerticalAlignment_in_ruleKVerticalAlignment9738);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             lv_verticalAlignment_2_0=ruleVerticalAlignment();
 
             state._fsp--;
@@ -12482,14 +13087,21 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
                 alt102=1;
 =======
             // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:4592:2: ( (lv_propagateToChildren_3_0= '!' ) )?
-            int alt108=2;
-            int LA108_0 = input.LA(1);
+            int alt109=2;
+            int LA109_0 = input.LA(1);
 
+<<<<<<< HEAD
             if ( (LA108_0==63) ) {
                 alt108=1;
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
             }
             switch (alt102) {
+=======
+            if ( (LA109_0==63) ) {
+                alt109=1;
+            }
+            switch (alt109) {
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
                 case 1 :
 <<<<<<< HEAD
                     // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:4329:1: (lv_propagateToChildren_3_0= '!' )
@@ -12504,8 +13116,12 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
                     // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:4593:1: (lv_propagateToChildren_3_0= '!' )
                     // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:4594:3: lv_propagateToChildren_3_0= '!'
                     {
+<<<<<<< HEAD
                     lv_propagateToChildren_3_0=(Token)match(input,63,FollowSets000.FOLLOW_63_in_ruleKVerticalAlignment9755); 
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+                    lv_propagateToChildren_3_0=(Token)match(input,63,FollowSets000.FOLLOW_63_in_ruleKVerticalAlignment9756); 
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
 
                             newLeafNode(lv_propagateToChildren_3_0, grammarAccess.getKVerticalAlignmentAccess().getPropagateToChildrenExclamationMarkKeyword_3_0());
                         
@@ -12568,18 +13184,26 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
             // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:4617:2: iv_ruleKHorizontalAlignment= ruleKHorizontalAlignment EOF
             {
              newCompositeNode(grammarAccess.getKHorizontalAlignmentRule()); 
+<<<<<<< HEAD
             pushFollow(FollowSets000.FOLLOW_ruleKHorizontalAlignment_in_entryRuleKHorizontalAlignment9805);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets000.FOLLOW_ruleKHorizontalAlignment_in_entryRuleKHorizontalAlignment9806);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             iv_ruleKHorizontalAlignment=ruleKHorizontalAlignment();
 
             state._fsp--;
 
              current =iv_ruleKHorizontalAlignment; 
 <<<<<<< HEAD
+<<<<<<< HEAD
             match(input,EOF,FollowSets000.FOLLOW_EOF_in_entryRuleKHorizontalAlignment9201); 
 =======
             match(input,EOF,FollowSets000.FOLLOW_EOF_in_entryRuleKHorizontalAlignment9815); 
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            match(input,EOF,FollowSets000.FOLLOW_EOF_in_entryRuleKHorizontalAlignment9816); 
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
 
             }
 
@@ -12642,6 +13266,7 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
             }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
             otherlv_1=(Token)match(input,72,FollowSets000.FOLLOW_72_in_ruleKHorizontalAlignment9247); 
 
                 	newLeafNode(otherlv_1, grammarAccess.getKHorizontalAlignmentAccess().getHorizontalAlignmentKeyword_1());
@@ -12653,6 +13278,9 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
             // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:4376:3: lv_horizontalAlignment_2_0= ruleHorizontalAlignment
 =======
             otherlv_1=(Token)match(input,74,FollowSets000.FOLLOW_74_in_ruleKHorizontalAlignment9861); 
+=======
+            otherlv_1=(Token)match(input,74,FollowSets000.FOLLOW_74_in_ruleKHorizontalAlignment9862); 
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
 
                 	newLeafNode(otherlv_1, grammarAccess.getKHorizontalAlignmentAccess().getHorizontalAlignmentKeyword_1());
                 
@@ -12667,10 +13295,14 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
             	        newCompositeNode(grammarAccess.getKHorizontalAlignmentAccess().getHorizontalAlignmentHorizontalAlignmentEnumRuleCall_2_0()); 
             	    
 <<<<<<< HEAD
+<<<<<<< HEAD
             pushFollow(FollowSets000.FOLLOW_ruleHorizontalAlignment_in_ruleKHorizontalAlignment9268);
 =======
             pushFollow(FollowSets000.FOLLOW_ruleHorizontalAlignment_in_ruleKHorizontalAlignment9882);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets000.FOLLOW_ruleHorizontalAlignment_in_ruleKHorizontalAlignment9883);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             lv_horizontalAlignment_2_0=ruleHorizontalAlignment();
 
             state._fsp--;
@@ -12707,8 +13339,12 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
             // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:4657:1: (lv_propagateToChildren_3_0= '!' )
             // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:4658:3: lv_propagateToChildren_3_0= '!'
             {
+<<<<<<< HEAD
             lv_propagateToChildren_3_0=(Token)match(input,63,FollowSets000.FOLLOW_63_in_ruleKHorizontalAlignment9900); 
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            lv_propagateToChildren_3_0=(Token)match(input,63,FollowSets000.FOLLOW_63_in_ruleKHorizontalAlignment9901); 
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
 
                     newLeafNode(lv_propagateToChildren_3_0, grammarAccess.getKHorizontalAlignmentAccess().getPropagateToChildrenExclamationMarkKeyword_3_0());
                 
@@ -12768,18 +13404,26 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
             // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:4681:2: iv_ruleKGridPlacement= ruleKGridPlacement EOF
             {
              newCompositeNode(grammarAccess.getKGridPlacementRule()); 
+<<<<<<< HEAD
             pushFollow(FollowSets000.FOLLOW_ruleKGridPlacement_in_entryRuleKGridPlacement9949);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets000.FOLLOW_ruleKGridPlacement_in_entryRuleKGridPlacement9950);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             iv_ruleKGridPlacement=ruleKGridPlacement();
 
             state._fsp--;
 
              current =iv_ruleKGridPlacement; 
 <<<<<<< HEAD
+<<<<<<< HEAD
             match(input,EOF,FollowSets000.FOLLOW_EOF_in_entryRuleKGridPlacement9345); 
 =======
             match(input,EOF,FollowSets000.FOLLOW_EOF_in_entryRuleKGridPlacement9959); 
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            match(input,EOF,FollowSets000.FOLLOW_EOF_in_entryRuleKGridPlacement9960); 
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
 
             }
 
@@ -12841,6 +13485,7 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
             }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
             otherlv_1=(Token)match(input,73,FollowSets000.FOLLOW_73_in_ruleKGridPlacement9391); 
 
                 	newLeafNode(otherlv_1, grammarAccess.getKGridPlacementAccess().getGridPlacementKeyword_1());
@@ -12852,6 +13497,9 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
             // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:4440:3: lv_numColumns_2_0= ruleEInt
 =======
             otherlv_1=(Token)match(input,75,FollowSets000.FOLLOW_75_in_ruleKGridPlacement10005); 
+=======
+            otherlv_1=(Token)match(input,75,FollowSets000.FOLLOW_75_in_ruleKGridPlacement10006); 
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
 
                 	newLeafNode(otherlv_1, grammarAccess.getKGridPlacementAccess().getGridPlacementKeyword_1());
                 
@@ -12866,10 +13514,14 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
             	        newCompositeNode(grammarAccess.getKGridPlacementAccess().getNumColumnsEIntParserRuleCall_2_0()); 
             	    
 <<<<<<< HEAD
+<<<<<<< HEAD
             pushFollow(FollowSets000.FOLLOW_ruleEInt_in_ruleKGridPlacement9412);
 =======
             pushFollow(FollowSets000.FOLLOW_ruleEInt_in_ruleKGridPlacement10026);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets000.FOLLOW_ruleEInt_in_ruleKGridPlacement10027);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             lv_numColumns_2_0=ruleEInt();
 
             state._fsp--;
@@ -12935,18 +13587,26 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
             // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:4730:2: iv_ruleKStackPlacement= ruleKStackPlacement EOF
             {
              newCompositeNode(grammarAccess.getKStackPlacementRule()); 
+<<<<<<< HEAD
             pushFollow(FollowSets000.FOLLOW_ruleKStackPlacement_in_entryRuleKStackPlacement10062);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets000.FOLLOW_ruleKStackPlacement_in_entryRuleKStackPlacement10063);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             iv_ruleKStackPlacement=ruleKStackPlacement();
 
             state._fsp--;
 
              current =iv_ruleKStackPlacement; 
 <<<<<<< HEAD
+<<<<<<< HEAD
             match(input,EOF,FollowSets000.FOLLOW_EOF_in_entryRuleKStackPlacement9458); 
 =======
             match(input,EOF,FollowSets000.FOLLOW_EOF_in_entryRuleKStackPlacement10072); 
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            match(input,EOF,FollowSets000.FOLLOW_EOF_in_entryRuleKStackPlacement10073); 
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
 
             }
 
@@ -13006,10 +13666,14 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
             }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
             otherlv_1=(Token)match(input,74,FollowSets000.FOLLOW_74_in_ruleKStackPlacement9504); 
 =======
             otherlv_1=(Token)match(input,76,FollowSets000.FOLLOW_76_in_ruleKStackPlacement10118); 
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            otherlv_1=(Token)match(input,76,FollowSets000.FOLLOW_76_in_ruleKStackPlacement10119); 
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
 
                 	newLeafNode(otherlv_1, grammarAccess.getKStackPlacementAccess().getStackPlacementKeyword_1());
                 
@@ -13057,18 +13721,26 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
             // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:4761:2: iv_ruleEFloat= ruleEFloat EOF
             {
              newCompositeNode(grammarAccess.getEFloatRule()); 
+<<<<<<< HEAD
             pushFollow(FollowSets000.FOLLOW_ruleEFloat_in_entryRuleEFloat10155);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets000.FOLLOW_ruleEFloat_in_entryRuleEFloat10156);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             iv_ruleEFloat=ruleEFloat();
 
             state._fsp--;
 
              current =iv_ruleEFloat.getText(); 
 <<<<<<< HEAD
+<<<<<<< HEAD
             match(input,EOF,FollowSets000.FOLLOW_EOF_in_entryRuleEFloat9552); 
 =======
             match(input,EOF,FollowSets000.FOLLOW_EOF_in_entryRuleEFloat10166); 
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            match(input,EOF,FollowSets000.FOLLOW_EOF_in_entryRuleEFloat10167); 
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
 
             }
 
@@ -13120,6 +13792,7 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
             // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:4772:2: (kw= '-' )? this_INT_1= RULE_INT (kw= '.' this_INT_3= RULE_INT ( (kw= 'E' | kw= 'e' ) (kw= '-' )? this_INT_7= RULE_INT )? )?
             {
             // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:4772:2: (kw= '-' )?
+<<<<<<< HEAD
             int alt109=2;
             int LA109_0 = input.LA(1);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
@@ -13128,6 +13801,15 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
                 alt103=1;
             }
             switch (alt103) {
+=======
+            int alt110=2;
+            int LA110_0 = input.LA(1);
+
+            if ( (LA110_0==27) ) {
+                alt110=1;
+            }
+            switch (alt110) {
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
                 case 1 :
 <<<<<<< HEAD
                     // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:4509:2: kw= '-'
@@ -13136,8 +13818,12 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
 =======
                     // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:4773:2: kw= '-'
                     {
+<<<<<<< HEAD
                     kw=(Token)match(input,27,FollowSets000.FOLLOW_27_in_ruleEFloat10205); 
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+                    kw=(Token)match(input,27,FollowSets000.FOLLOW_27_in_ruleEFloat10206); 
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
 
                             current.merge(kw);
                             newLeafNode(kw, grammarAccess.getEFloatAccess().getHyphenMinusKeyword_0()); 
@@ -13149,10 +13835,14 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
             }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
             this_INT_1=(Token)match(input,RULE_INT,FollowSets000.FOLLOW_RULE_INT_in_ruleEFloat9608); 
 =======
             this_INT_1=(Token)match(input,RULE_INT,FollowSets000.FOLLOW_RULE_INT_in_ruleEFloat10222); 
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            this_INT_1=(Token)match(input,RULE_INT,FollowSets000.FOLLOW_RULE_INT_in_ruleEFloat10223); 
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
 
             		current.merge(this_INT_1);
                 
@@ -13168,14 +13858,21 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
                 alt107=1;
 =======
             // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:4785:1: (kw= '.' this_INT_3= RULE_INT ( (kw= 'E' | kw= 'e' ) (kw= '-' )? this_INT_7= RULE_INT )? )?
-            int alt113=2;
-            int LA113_0 = input.LA(1);
+            int alt114=2;
+            int LA114_0 = input.LA(1);
 
+<<<<<<< HEAD
             if ( (LA113_0==77) ) {
                 alt113=1;
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
             }
             switch (alt107) {
+=======
+            if ( (LA114_0==77) ) {
+                alt114=1;
+            }
+            switch (alt114) {
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
                 case 1 :
 <<<<<<< HEAD
                     // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:4522:2: kw= '.' this_INT_3= RULE_INT ( (kw= 'E' | kw= 'e' ) (kw= '-' )? this_INT_7= RULE_INT )?
@@ -13184,17 +13881,25 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
 =======
                     // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:4786:2: kw= '.' this_INT_3= RULE_INT ( (kw= 'E' | kw= 'e' ) (kw= '-' )? this_INT_7= RULE_INT )?
                     {
+<<<<<<< HEAD
                     kw=(Token)match(input,77,FollowSets000.FOLLOW_77_in_ruleEFloat10241); 
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+                    kw=(Token)match(input,77,FollowSets000.FOLLOW_77_in_ruleEFloat10242); 
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
 
                             current.merge(kw);
                             newLeafNode(kw, grammarAccess.getEFloatAccess().getFullStopKeyword_2_0()); 
                         
 <<<<<<< HEAD
+<<<<<<< HEAD
                     this_INT_3=(Token)match(input,RULE_INT,FollowSets000.FOLLOW_RULE_INT_in_ruleEFloat9642); 
 =======
                     this_INT_3=(Token)match(input,RULE_INT,FollowSets000.FOLLOW_RULE_INT_in_ruleEFloat10256); 
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+                    this_INT_3=(Token)match(input,RULE_INT,FollowSets000.FOLLOW_RULE_INT_in_ruleEFloat10257); 
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
 
                     		current.merge(this_INT_3);
                         
@@ -13210,14 +13915,21 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
                         alt106=1;
 =======
                     // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:4798:1: ( (kw= 'E' | kw= 'e' ) (kw= '-' )? this_INT_7= RULE_INT )?
-                    int alt112=2;
-                    int LA112_0 = input.LA(1);
+                    int alt113=2;
+                    int LA113_0 = input.LA(1);
 
+<<<<<<< HEAD
                     if ( ((LA112_0>=78 && LA112_0<=79)) ) {
                         alt112=1;
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
                     }
                     switch (alt106) {
+=======
+                    if ( ((LA113_0>=78 && LA113_0<=79)) ) {
+                        alt113=1;
+                    }
+                    switch (alt113) {
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
                         case 1 :
 <<<<<<< HEAD
                             // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:4534:2: (kw= 'E' | kw= 'e' ) (kw= '-' )? this_INT_7= RULE_INT
@@ -13235,12 +13947,13 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
                             // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:4798:2: (kw= 'E' | kw= 'e' ) (kw= '-' )? this_INT_7= RULE_INT
                             {
                             // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:4798:2: (kw= 'E' | kw= 'e' )
-                            int alt110=2;
-                            int LA110_0 = input.LA(1);
+                            int alt111=2;
+                            int LA111_0 = input.LA(1);
 
-                            if ( (LA110_0==78) ) {
-                                alt110=1;
+                            if ( (LA111_0==78) ) {
+                                alt111=1;
                             }
+<<<<<<< HEAD
                             else if ( (LA110_0==79) ) {
                                 alt110=2;
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
@@ -13252,6 +13965,18 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
                                 throw nvae;
                             }
                             switch (alt104) {
+=======
+                            else if ( (LA111_0==79) ) {
+                                alt111=2;
+                            }
+                            else {
+                                NoViableAltException nvae =
+                                    new NoViableAltException("", 111, 0, input);
+
+                                throw nvae;
+                            }
+                            switch (alt111) {
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
                                 case 1 :
 <<<<<<< HEAD
                                     // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:4535:2: kw= 'E'
@@ -13260,8 +13985,12 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
 =======
                                     // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:4799:2: kw= 'E'
                                     {
+<<<<<<< HEAD
                                     kw=(Token)match(input,78,FollowSets000.FOLLOW_78_in_ruleEFloat10276); 
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+                                    kw=(Token)match(input,78,FollowSets000.FOLLOW_78_in_ruleEFloat10277); 
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
 
                                             current.merge(kw);
                                             newLeafNode(kw, grammarAccess.getEFloatAccess().getEKeyword_2_2_0_0()); 
@@ -13277,8 +14006,12 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
 =======
                                     // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:4806:2: kw= 'e'
                                     {
+<<<<<<< HEAD
                                     kw=(Token)match(input,79,FollowSets000.FOLLOW_79_in_ruleEFloat10295); 
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+                                    kw=(Token)match(input,79,FollowSets000.FOLLOW_79_in_ruleEFloat10296); 
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
 
                                             current.merge(kw);
                                             newLeafNode(kw, grammarAccess.getEFloatAccess().getEKeyword_2_2_0_1()); 
@@ -13295,6 +14028,7 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
                             int LA105_0 = input.LA(1);
 =======
                             // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:4811:2: (kw= '-' )?
+<<<<<<< HEAD
                             int alt111=2;
                             int LA111_0 = input.LA(1);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
@@ -13303,6 +14037,15 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
                                 alt105=1;
                             }
                             switch (alt105) {
+=======
+                            int alt112=2;
+                            int LA112_0 = input.LA(1);
+
+                            if ( (LA112_0==27) ) {
+                                alt112=1;
+                            }
+                            switch (alt112) {
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
                                 case 1 :
 <<<<<<< HEAD
                                     // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:4548:2: kw= '-'
@@ -13311,8 +14054,12 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
 =======
                                     // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:4812:2: kw= '-'
                                     {
+<<<<<<< HEAD
                                     kw=(Token)match(input,27,FollowSets000.FOLLOW_27_in_ruleEFloat10310); 
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+                                    kw=(Token)match(input,27,FollowSets000.FOLLOW_27_in_ruleEFloat10311); 
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
 
                                             current.merge(kw);
                                             newLeafNode(kw, grammarAccess.getEFloatAccess().getHyphenMinusKeyword_2_2_1()); 
@@ -13324,10 +14071,14 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
                             }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
                             this_INT_7=(Token)match(input,RULE_INT,FollowSets000.FOLLOW_RULE_INT_in_ruleEFloat9713); 
 =======
                             this_INT_7=(Token)match(input,RULE_INT,FollowSets000.FOLLOW_RULE_INT_in_ruleEFloat10327); 
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+                            this_INT_7=(Token)match(input,RULE_INT,FollowSets000.FOLLOW_RULE_INT_in_ruleEFloat10328); 
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
 
                             		current.merge(this_INT_7);
                                 
@@ -13390,18 +14141,26 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
             // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:4834:2: iv_ruleEBoolean= ruleEBoolean EOF
             {
              newCompositeNode(grammarAccess.getEBooleanRule()); 
+<<<<<<< HEAD
             pushFollow(FollowSets000.FOLLOW_ruleEBoolean_in_entryRuleEBoolean10377);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets000.FOLLOW_ruleEBoolean_in_entryRuleEBoolean10378);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             iv_ruleEBoolean=ruleEBoolean();
 
             state._fsp--;
 
              current =iv_ruleEBoolean.getText(); 
 <<<<<<< HEAD
+<<<<<<< HEAD
             match(input,EOF,FollowSets000.FOLLOW_EOF_in_entryRuleEBoolean9774); 
 =======
             match(input,EOF,FollowSets000.FOLLOW_EOF_in_entryRuleEBoolean10388); 
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            match(input,EOF,FollowSets000.FOLLOW_EOF_in_entryRuleEBoolean10389); 
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
 
             }
 
@@ -13450,12 +14209,13 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
             // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:4845:1: (kw= 'true' | kw= 'false' )
             {
             // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:4845:1: (kw= 'true' | kw= 'false' )
-            int alt114=2;
-            int LA114_0 = input.LA(1);
+            int alt115=2;
+            int LA115_0 = input.LA(1);
 
-            if ( (LA114_0==80) ) {
-                alt114=1;
+            if ( (LA115_0==80) ) {
+                alt115=1;
             }
+<<<<<<< HEAD
             else if ( (LA114_0==81) ) {
                 alt114=2;
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
@@ -13467,6 +14227,18 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
                 throw nvae;
             }
             switch (alt108) {
+=======
+            else if ( (LA115_0==81) ) {
+                alt115=2;
+            }
+            else {
+                NoViableAltException nvae =
+                    new NoViableAltException("", 115, 0, input);
+
+                throw nvae;
+            }
+            switch (alt115) {
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
                 case 1 :
 <<<<<<< HEAD
                     // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:4582:2: kw= 'true'
@@ -13475,8 +14247,12 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
 =======
                     // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:4846:2: kw= 'true'
                     {
+<<<<<<< HEAD
                     kw=(Token)match(input,80,FollowSets000.FOLLOW_80_in_ruleEBoolean10426); 
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+                    kw=(Token)match(input,80,FollowSets000.FOLLOW_80_in_ruleEBoolean10427); 
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
 
                             current.merge(kw);
                             newLeafNode(kw, grammarAccess.getEBooleanAccess().getTrueKeyword_0()); 
@@ -13492,8 +14268,12 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
 =======
                     // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:4853:2: kw= 'false'
                     {
+<<<<<<< HEAD
                     kw=(Token)match(input,81,FollowSets000.FOLLOW_81_in_ruleEBoolean10445); 
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+                    kw=(Token)match(input,81,FollowSets000.FOLLOW_81_in_ruleEBoolean10446); 
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
 
                             current.merge(kw);
                             newLeafNode(kw, grammarAccess.getEBooleanAccess().getFalseKeyword_1()); 
@@ -13545,18 +14325,26 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
             // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:4868:2: iv_ruleEInt= ruleEInt EOF
             {
              newCompositeNode(grammarAccess.getEIntRule()); 
+<<<<<<< HEAD
             pushFollow(FollowSets000.FOLLOW_ruleEInt_in_entryRuleEInt10486);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets000.FOLLOW_ruleEInt_in_entryRuleEInt10487);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             iv_ruleEInt=ruleEInt();
 
             state._fsp--;
 
              current =iv_ruleEInt.getText(); 
 <<<<<<< HEAD
+<<<<<<< HEAD
             match(input,EOF,FollowSets000.FOLLOW_EOF_in_entryRuleEInt9883); 
 =======
             match(input,EOF,FollowSets000.FOLLOW_EOF_in_entryRuleEInt10497); 
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            match(input,EOF,FollowSets000.FOLLOW_EOF_in_entryRuleEInt10498); 
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
 
             }
 
@@ -13606,6 +14394,7 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
             // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:4879:2: (kw= '-' )? this_INT_1= RULE_INT
             {
             // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:4879:2: (kw= '-' )?
+<<<<<<< HEAD
             int alt115=2;
             int LA115_0 = input.LA(1);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
@@ -13614,6 +14403,15 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
                 alt109=1;
             }
             switch (alt109) {
+=======
+            int alt116=2;
+            int LA116_0 = input.LA(1);
+
+            if ( (LA116_0==27) ) {
+                alt116=1;
+            }
+            switch (alt116) {
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
                 case 1 :
 <<<<<<< HEAD
                     // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:4616:2: kw= '-'
@@ -13622,8 +14420,12 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
 =======
                     // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:4880:2: kw= '-'
                     {
+<<<<<<< HEAD
                     kw=(Token)match(input,27,FollowSets000.FOLLOW_27_in_ruleEInt10536); 
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+                    kw=(Token)match(input,27,FollowSets000.FOLLOW_27_in_ruleEInt10537); 
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
 
                             current.merge(kw);
                             newLeafNode(kw, grammarAccess.getEIntAccess().getHyphenMinusKeyword_0()); 
@@ -13635,10 +14437,14 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
             }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
             this_INT_1=(Token)match(input,RULE_INT,FollowSets000.FOLLOW_RULE_INT_in_ruleEInt9939); 
 =======
             this_INT_1=(Token)match(input,RULE_INT,FollowSets000.FOLLOW_RULE_INT_in_ruleEInt10553); 
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            this_INT_1=(Token)match(input,RULE_INT,FollowSets000.FOLLOW_RULE_INT_in_ruleEInt10554); 
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
 
             		current.merge(this_INT_1);
                 
@@ -13689,18 +14495,26 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
             // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:4904:2: iv_ruleKInsets= ruleKInsets EOF
             {
              newCompositeNode(grammarAccess.getKInsetsRule()); 
+<<<<<<< HEAD
             pushFollow(FollowSets000.FOLLOW_ruleKInsets_in_entryRuleKInsets10600);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets000.FOLLOW_ruleKInsets_in_entryRuleKInsets10601);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             iv_ruleKInsets=ruleKInsets();
 
             state._fsp--;
 
              current =iv_ruleKInsets; 
 <<<<<<< HEAD
+<<<<<<< HEAD
             match(input,EOF,FollowSets000.FOLLOW_EOF_in_entryRuleKInsets9996); 
 =======
             match(input,EOF,FollowSets000.FOLLOW_EOF_in_entryRuleKInsets10610); 
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            match(input,EOF,FollowSets000.FOLLOW_EOF_in_entryRuleKInsets10611); 
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
 
             }
 
@@ -13774,6 +14588,7 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
             }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
             otherlv_1=(Token)match(input,80,FollowSets000.FOLLOW_80_in_ruleKInsets10042); 
 
                 	newLeafNode(otherlv_1, grammarAccess.getKInsetsAccess().getKInsetsKeyword_1());
@@ -13790,22 +14605,32 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
                 alt110=1;
 =======
             otherlv_1=(Token)match(input,82,FollowSets000.FOLLOW_82_in_ruleKInsets10656); 
+=======
+            otherlv_1=(Token)match(input,82,FollowSets000.FOLLOW_82_in_ruleKInsets10657); 
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
 
                 	newLeafNode(otherlv_1, grammarAccess.getKInsetsAccess().getKInsetsKeyword_1());
                 
-            otherlv_2=(Token)match(input,12,FollowSets000.FOLLOW_12_in_ruleKInsets10668); 
+            otherlv_2=(Token)match(input,12,FollowSets000.FOLLOW_12_in_ruleKInsets10669); 
 
                 	newLeafNode(otherlv_2, grammarAccess.getKInsetsAccess().getLeftCurlyBracketKeyword_2());
                 
             // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:4929:1: (otherlv_3= 'top' ( (lv_top_4_0= ruleEFloat ) ) )?
-            int alt116=2;
-            int LA116_0 = input.LA(1);
+            int alt117=2;
+            int LA117_0 = input.LA(1);
 
+<<<<<<< HEAD
             if ( (LA116_0==60) ) {
                 alt116=1;
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
             }
             switch (alt110) {
+=======
+            if ( (LA117_0==60) ) {
+                alt117=1;
+            }
+            switch (alt117) {
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
                 case 1 :
 <<<<<<< HEAD
                     // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:4665:3: otherlv_3= 'top' ( (lv_top_4_0= ruleEFloat ) )
@@ -13822,7 +14647,7 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
 =======
                     // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:4929:3: otherlv_3= 'top' ( (lv_top_4_0= ruleEFloat ) )
                     {
-                    otherlv_3=(Token)match(input,60,FollowSets000.FOLLOW_60_in_ruleKInsets10681); 
+                    otherlv_3=(Token)match(input,60,FollowSets000.FOLLOW_60_in_ruleKInsets10682); 
 
                         	newLeafNode(otherlv_3, grammarAccess.getKInsetsAccess().getTopKeyword_3_0());
                         
@@ -13837,10 +14662,14 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
                     	        newCompositeNode(grammarAccess.getKInsetsAccess().getTopEFloatParserRuleCall_3_1_0()); 
                     	    
 <<<<<<< HEAD
+<<<<<<< HEAD
                     pushFollow(FollowSets000.FOLLOW_ruleEFloat_in_ruleKInsets10088);
 =======
                     pushFollow(FollowSets000.FOLLOW_ruleEFloat_in_ruleKInsets10702);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+                    pushFollow(FollowSets000.FOLLOW_ruleEFloat_in_ruleKInsets10703);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
                     lv_top_4_0=ruleEFloat();
 
                     state._fsp--;
@@ -13877,14 +14706,21 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
                 alt111=1;
 =======
             // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:4951:4: (otherlv_5= 'bottom' ( (lv_bottom_6_0= ruleEFloat ) ) )?
-            int alt117=2;
-            int LA117_0 = input.LA(1);
+            int alt118=2;
+            int LA118_0 = input.LA(1);
 
+<<<<<<< HEAD
             if ( (LA117_0==61) ) {
                 alt117=1;
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
             }
             switch (alt111) {
+=======
+            if ( (LA118_0==61) ) {
+                alt118=1;
+            }
+            switch (alt118) {
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
                 case 1 :
 <<<<<<< HEAD
                     // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:4687:6: otherlv_5= 'bottom' ( (lv_bottom_6_0= ruleEFloat ) )
@@ -13901,7 +14737,7 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
 =======
                     // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:4951:6: otherlv_5= 'bottom' ( (lv_bottom_6_0= ruleEFloat ) )
                     {
-                    otherlv_5=(Token)match(input,61,FollowSets000.FOLLOW_61_in_ruleKInsets10717); 
+                    otherlv_5=(Token)match(input,61,FollowSets000.FOLLOW_61_in_ruleKInsets10718); 
 
                         	newLeafNode(otherlv_5, grammarAccess.getKInsetsAccess().getBottomKeyword_4_0());
                         
@@ -13916,10 +14752,14 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
                     	        newCompositeNode(grammarAccess.getKInsetsAccess().getBottomEFloatParserRuleCall_4_1_0()); 
                     	    
 <<<<<<< HEAD
+<<<<<<< HEAD
                     pushFollow(FollowSets000.FOLLOW_ruleEFloat_in_ruleKInsets10124);
 =======
                     pushFollow(FollowSets000.FOLLOW_ruleEFloat_in_ruleKInsets10738);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+                    pushFollow(FollowSets000.FOLLOW_ruleEFloat_in_ruleKInsets10739);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
                     lv_bottom_6_0=ruleEFloat();
 
                     state._fsp--;
@@ -13956,14 +14796,21 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
                 alt112=1;
 =======
             // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:4973:4: (otherlv_7= 'left' ( (lv_left_8_0= ruleEFloat ) ) )?
-            int alt118=2;
-            int LA118_0 = input.LA(1);
+            int alt119=2;
+            int LA119_0 = input.LA(1);
 
+<<<<<<< HEAD
             if ( (LA118_0==58) ) {
                 alt118=1;
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
             }
             switch (alt112) {
+=======
+            if ( (LA119_0==58) ) {
+                alt119=1;
+            }
+            switch (alt119) {
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
                 case 1 :
 <<<<<<< HEAD
                     // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:4709:6: otherlv_7= 'left' ( (lv_left_8_0= ruleEFloat ) )
@@ -13980,7 +14827,7 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
 =======
                     // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:4973:6: otherlv_7= 'left' ( (lv_left_8_0= ruleEFloat ) )
                     {
-                    otherlv_7=(Token)match(input,58,FollowSets000.FOLLOW_58_in_ruleKInsets10753); 
+                    otherlv_7=(Token)match(input,58,FollowSets000.FOLLOW_58_in_ruleKInsets10754); 
 
                         	newLeafNode(otherlv_7, grammarAccess.getKInsetsAccess().getLeftKeyword_5_0());
                         
@@ -13995,10 +14842,14 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
                     	        newCompositeNode(grammarAccess.getKInsetsAccess().getLeftEFloatParserRuleCall_5_1_0()); 
                     	    
 <<<<<<< HEAD
+<<<<<<< HEAD
                     pushFollow(FollowSets000.FOLLOW_ruleEFloat_in_ruleKInsets10160);
 =======
                     pushFollow(FollowSets000.FOLLOW_ruleEFloat_in_ruleKInsets10774);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+                    pushFollow(FollowSets000.FOLLOW_ruleEFloat_in_ruleKInsets10775);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
                     lv_left_8_0=ruleEFloat();
 
                     state._fsp--;
@@ -14035,14 +14886,21 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
                 alt113=1;
 =======
             // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:4995:4: (otherlv_9= 'right' ( (lv_right_10_0= ruleEFloat ) ) )?
-            int alt119=2;
-            int LA119_0 = input.LA(1);
+            int alt120=2;
+            int LA120_0 = input.LA(1);
 
+<<<<<<< HEAD
             if ( (LA119_0==59) ) {
                 alt119=1;
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
             }
             switch (alt113) {
+=======
+            if ( (LA120_0==59) ) {
+                alt120=1;
+            }
+            switch (alt120) {
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
                 case 1 :
 <<<<<<< HEAD
                     // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:4731:6: otherlv_9= 'right' ( (lv_right_10_0= ruleEFloat ) )
@@ -14059,7 +14917,7 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
 =======
                     // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:4995:6: otherlv_9= 'right' ( (lv_right_10_0= ruleEFloat ) )
                     {
-                    otherlv_9=(Token)match(input,59,FollowSets000.FOLLOW_59_in_ruleKInsets10789); 
+                    otherlv_9=(Token)match(input,59,FollowSets000.FOLLOW_59_in_ruleKInsets10790); 
 
                         	newLeafNode(otherlv_9, grammarAccess.getKInsetsAccess().getRightKeyword_6_0());
                         
@@ -14074,10 +14932,14 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
                     	        newCompositeNode(grammarAccess.getKInsetsAccess().getRightEFloatParserRuleCall_6_1_0()); 
                     	    
 <<<<<<< HEAD
+<<<<<<< HEAD
                     pushFollow(FollowSets000.FOLLOW_ruleEFloat_in_ruleKInsets10196);
 =======
                     pushFollow(FollowSets000.FOLLOW_ruleEFloat_in_ruleKInsets10810);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+                    pushFollow(FollowSets000.FOLLOW_ruleEFloat_in_ruleKInsets10811);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
                     lv_right_10_0=ruleEFloat();
 
                     state._fsp--;
@@ -14106,10 +14968,14 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
             }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
             otherlv_11=(Token)match(input,14,FollowSets000.FOLLOW_14_in_ruleKInsets10210); 
 =======
             otherlv_11=(Token)match(input,14,FollowSets000.FOLLOW_14_in_ruleKInsets10824); 
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            otherlv_11=(Token)match(input,14,FollowSets000.FOLLOW_14_in_ruleKInsets10825); 
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
 
                 	newLeafNode(otherlv_11, grammarAccess.getKInsetsAccess().getRightCurlyBracketKeyword_7());
                 
@@ -14157,18 +15023,26 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
             // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:5033:2: iv_ruleKPoint= ruleKPoint EOF
             {
              newCompositeNode(grammarAccess.getKPointRule()); 
+<<<<<<< HEAD
             pushFollow(FollowSets000.FOLLOW_ruleKPoint_in_entryRuleKPoint10862);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets000.FOLLOW_ruleKPoint_in_entryRuleKPoint10863);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             iv_ruleKPoint=ruleKPoint();
 
             state._fsp--;
 
              current =iv_ruleKPoint; 
 <<<<<<< HEAD
+<<<<<<< HEAD
             match(input,EOF,FollowSets000.FOLLOW_EOF_in_entryRuleKPoint10258); 
 =======
             match(input,EOF,FollowSets000.FOLLOW_EOF_in_entryRuleKPoint10872); 
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            match(input,EOF,FollowSets000.FOLLOW_EOF_in_entryRuleKPoint10873); 
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
 
             }
 
@@ -14234,6 +15108,7 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
             }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
             otherlv_1=(Token)match(input,81,FollowSets000.FOLLOW_81_in_ruleKPoint10304); 
 
                 	newLeafNode(otherlv_1, grammarAccess.getKPointAccess().getKPointKeyword_1());
@@ -14252,13 +15127,16 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
             // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:4796:3: lv_x_3_0= ruleEFloat
 =======
             otherlv_1=(Token)match(input,83,FollowSets000.FOLLOW_83_in_ruleKPoint10918); 
+=======
+            otherlv_1=(Token)match(input,83,FollowSets000.FOLLOW_83_in_ruleKPoint10919); 
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
 
                 	newLeafNode(otherlv_1, grammarAccess.getKPointAccess().getKPointKeyword_1());
                 
             // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:5054:1: (otherlv_2= 'x' ( (lv_x_3_0= ruleEFloat ) ) )
             // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:5054:3: otherlv_2= 'x' ( (lv_x_3_0= ruleEFloat ) )
             {
-            otherlv_2=(Token)match(input,84,FollowSets000.FOLLOW_84_in_ruleKPoint10931); 
+            otherlv_2=(Token)match(input,84,FollowSets000.FOLLOW_84_in_ruleKPoint10932); 
 
                 	newLeafNode(otherlv_2, grammarAccess.getKPointAccess().getXKeyword_2_0());
                 
@@ -14273,10 +15151,14 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
             	        newCompositeNode(grammarAccess.getKPointAccess().getXEFloatParserRuleCall_2_1_0()); 
             	    
 <<<<<<< HEAD
+<<<<<<< HEAD
             pushFollow(FollowSets000.FOLLOW_ruleEFloat_in_ruleKPoint10338);
 =======
             pushFollow(FollowSets000.FOLLOW_ruleEFloat_in_ruleKPoint10952);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets000.FOLLOW_ruleEFloat_in_ruleKPoint10953);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             lv_x_3_0=ruleEFloat();
 
             state._fsp--;
@@ -14318,7 +15200,7 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
             // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:5076:3: (otherlv_4= 'y' ( (lv_y_5_0= ruleEFloat ) ) )
             // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:5076:5: otherlv_4= 'y' ( (lv_y_5_0= ruleEFloat ) )
             {
-            otherlv_4=(Token)match(input,85,FollowSets000.FOLLOW_85_in_ruleKPoint10966); 
+            otherlv_4=(Token)match(input,85,FollowSets000.FOLLOW_85_in_ruleKPoint10967); 
 
                 	newLeafNode(otherlv_4, grammarAccess.getKPointAccess().getYKeyword_3_0());
                 
@@ -14333,10 +15215,14 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
             	        newCompositeNode(grammarAccess.getKPointAccess().getYEFloatParserRuleCall_3_1_0()); 
             	    
 <<<<<<< HEAD
+<<<<<<< HEAD
             pushFollow(FollowSets000.FOLLOW_ruleEFloat_in_ruleKPoint10373);
 =======
             pushFollow(FollowSets000.FOLLOW_ruleEFloat_in_ruleKPoint10987);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets000.FOLLOW_ruleEFloat_in_ruleKPoint10988);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             lv_y_5_0=ruleEFloat();
 
             state._fsp--;
@@ -14405,18 +15291,26 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
             // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:5108:2: iv_rulePersistentEntry= rulePersistentEntry EOF
             {
              newCompositeNode(grammarAccess.getPersistentEntryRule()); 
+<<<<<<< HEAD
             pushFollow(FollowSets000.FOLLOW_rulePersistentEntry_in_entryRulePersistentEntry11024);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets000.FOLLOW_rulePersistentEntry_in_entryRulePersistentEntry11025);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             iv_rulePersistentEntry=rulePersistentEntry();
 
             state._fsp--;
 
              current =iv_rulePersistentEntry; 
 <<<<<<< HEAD
+<<<<<<< HEAD
             match(input,EOF,FollowSets000.FOLLOW_EOF_in_entryRulePersistentEntry10420); 
 =======
             match(input,EOF,FollowSets000.FOLLOW_EOF_in_entryRulePersistentEntry11034); 
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            match(input,EOF,FollowSets000.FOLLOW_EOF_in_entryRulePersistentEntry11035); 
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
 
             }
 
@@ -14481,10 +15375,14 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
             	        newCompositeNode(grammarAccess.getPersistentEntryAccess().getKeyEStringParserRuleCall_0_0()); 
             	    
 <<<<<<< HEAD
+<<<<<<< HEAD
             pushFollow(FollowSets000.FOLLOW_ruleEString_in_rulePersistentEntry10466);
 =======
             pushFollow(FollowSets000.FOLLOW_ruleEString_in_rulePersistentEntry11080);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets000.FOLLOW_ruleEString_in_rulePersistentEntry11081);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             lv_key_0_0=ruleEString();
 
             state._fsp--;
@@ -14515,14 +15413,21 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
                 alt114=1;
 =======
             // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:5137:2: (otherlv_1= '=' ( (lv_value_2_0= ruleEString ) ) )?
-            int alt120=2;
-            int LA120_0 = input.LA(1);
+            int alt121=2;
+            int LA121_0 = input.LA(1);
 
+<<<<<<< HEAD
             if ( (LA120_0==86) ) {
                 alt120=1;
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
             }
             switch (alt114) {
+=======
+            if ( (LA121_0==86) ) {
+                alt121=1;
+            }
+            switch (alt121) {
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
                 case 1 :
 <<<<<<< HEAD
                     // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:4873:4: otherlv_1= '=' ( (lv_value_2_0= ruleEString ) )
@@ -14539,7 +15444,7 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
 =======
                     // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:5137:4: otherlv_1= '=' ( (lv_value_2_0= ruleEString ) )
                     {
-                    otherlv_1=(Token)match(input,86,FollowSets000.FOLLOW_86_in_rulePersistentEntry11093); 
+                    otherlv_1=(Token)match(input,86,FollowSets000.FOLLOW_86_in_rulePersistentEntry11094); 
 
                         	newLeafNode(otherlv_1, grammarAccess.getPersistentEntryAccess().getEqualsSignKeyword_1_0());
                         
@@ -14554,10 +15459,14 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
                     	        newCompositeNode(grammarAccess.getPersistentEntryAccess().getValueEStringParserRuleCall_1_1_0()); 
                     	    
 <<<<<<< HEAD
+<<<<<<< HEAD
                     pushFollow(FollowSets000.FOLLOW_ruleEString_in_rulePersistentEntry10500);
 =======
                     pushFollow(FollowSets000.FOLLOW_ruleEString_in_rulePersistentEntry11114);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+                    pushFollow(FollowSets000.FOLLOW_ruleEString_in_rulePersistentEntry11115);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
                     lv_value_2_0=ruleEString();
 
                     state._fsp--;
@@ -14629,18 +15538,26 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
             // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:5169:2: iv_ruleEString= ruleEString EOF
             {
              newCompositeNode(grammarAccess.getEStringRule()); 
+<<<<<<< HEAD
             pushFollow(FollowSets000.FOLLOW_ruleEString_in_entryRuleEString11153);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            pushFollow(FollowSets000.FOLLOW_ruleEString_in_entryRuleEString11154);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
             iv_ruleEString=ruleEString();
 
             state._fsp--;
 
              current =iv_ruleEString.getText(); 
 <<<<<<< HEAD
+<<<<<<< HEAD
             match(input,EOF,FollowSets000.FOLLOW_EOF_in_entryRuleEString10550); 
 =======
             match(input,EOF,FollowSets000.FOLLOW_EOF_in_entryRuleEString11164); 
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+            match(input,EOF,FollowSets000.FOLLOW_EOF_in_entryRuleEString11165); 
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
 
             }
 
@@ -14684,6 +15601,7 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
             // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:5180:1: (this_STRING_0= RULE_STRING | this_ID_1= RULE_ID )
             {
             // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:5180:1: (this_STRING_0= RULE_STRING | this_ID_1= RULE_ID )
+<<<<<<< HEAD
             int alt121=2;
             int LA121_0 = input.LA(1);
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
@@ -14701,6 +15619,24 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
                 throw nvae;
             }
             switch (alt115) {
+=======
+            int alt122=2;
+            int LA122_0 = input.LA(1);
+
+            if ( (LA122_0==RULE_STRING) ) {
+                alt122=1;
+            }
+            else if ( (LA122_0==RULE_ID) ) {
+                alt122=2;
+            }
+            else {
+                NoViableAltException nvae =
+                    new NoViableAltException("", 122, 0, input);
+
+                throw nvae;
+            }
+            switch (alt122) {
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
                 case 1 :
 <<<<<<< HEAD
                     // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:4916:6: this_STRING_0= RULE_STRING
@@ -14709,8 +15645,12 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
 =======
                     // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:5180:6: this_STRING_0= RULE_STRING
                     {
+<<<<<<< HEAD
                     this_STRING_0=(Token)match(input,RULE_STRING,FollowSets000.FOLLOW_RULE_STRING_in_ruleEString11204); 
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+                    this_STRING_0=(Token)match(input,RULE_STRING,FollowSets000.FOLLOW_RULE_STRING_in_ruleEString11205); 
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
 
                     		current.merge(this_STRING_0);
                         
@@ -14728,8 +15668,12 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
 =======
                     // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:5188:10: this_ID_1= RULE_ID
                     {
+<<<<<<< HEAD
                     this_ID_1=(Token)match(input,RULE_ID,FollowSets000.FOLLOW_RULE_ID_in_ruleEString11230); 
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+                    this_ID_1=(Token)match(input,RULE_ID,FollowSets000.FOLLOW_RULE_ID_in_ruleEString11231); 
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
 
                     		current.merge(this_ID_1);
                         
@@ -14789,12 +15733,16 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
             // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:5206:1: ( (enumLiteral_0= 'SOLID' ) | (enumLiteral_1= 'DASH' ) | (enumLiteral_2= 'DOT' ) | (enumLiteral_3= 'DASHDOT' ) | (enumLiteral_4= 'DASHDOTDOT' ) )
             {
             // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:5206:1: ( (enumLiteral_0= 'SOLID' ) | (enumLiteral_1= 'DASH' ) | (enumLiteral_2= 'DOT' ) | (enumLiteral_3= 'DASHDOT' ) | (enumLiteral_4= 'DASHDOTDOT' ) )
-            int alt122=5;
+            int alt123=5;
             switch ( input.LA(1) ) {
             case 87:
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
                 {
+<<<<<<< HEAD
                 alt116=1;
+=======
+                alt123=1;
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
                 }
                 break;
 <<<<<<< HEAD
@@ -14803,7 +15751,11 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
             case 88:
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
                 {
+<<<<<<< HEAD
                 alt116=2;
+=======
+                alt123=2;
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
                 }
                 break;
 <<<<<<< HEAD
@@ -14812,7 +15764,11 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
             case 89:
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
                 {
+<<<<<<< HEAD
                 alt116=3;
+=======
+                alt123=3;
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
                 }
                 break;
 <<<<<<< HEAD
@@ -14821,7 +15777,11 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
             case 90:
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
                 {
+<<<<<<< HEAD
                 alt116=4;
+=======
+                alt123=4;
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
                 }
                 break;
 <<<<<<< HEAD
@@ -14830,17 +15790,29 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
             case 91:
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
                 {
+<<<<<<< HEAD
                 alt116=5;
+=======
+                alt123=5;
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
                 }
                 break;
             default:
                 NoViableAltException nvae =
+<<<<<<< HEAD
                     new NoViableAltException("", 116, 0, input);
+=======
+                    new NoViableAltException("", 123, 0, input);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
 
                 throw nvae;
             }
 
+<<<<<<< HEAD
             switch (alt116) {
+=======
+            switch (alt123) {
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
                 case 1 :
 <<<<<<< HEAD
                     // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:4942:2: (enumLiteral_0= 'SOLID' )
@@ -14855,8 +15827,12 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
                     // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:5206:2: (enumLiteral_0= 'SOLID' )
                     // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:5206:4: enumLiteral_0= 'SOLID'
                     {
+<<<<<<< HEAD
                     enumLiteral_0=(Token)match(input,87,FollowSets000.FOLLOW_87_in_ruleLineStyle11289); 
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+                    enumLiteral_0=(Token)match(input,87,FollowSets000.FOLLOW_87_in_ruleLineStyle11290); 
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
 
                             current = grammarAccess.getLineStyleAccess().getSOLIDEnumLiteralDeclaration_0().getEnumLiteral().getInstance();
                             newLeafNode(enumLiteral_0, grammarAccess.getLineStyleAccess().getSOLIDEnumLiteralDeclaration_0()); 
@@ -14881,8 +15857,12 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
                     // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:5212:6: (enumLiteral_1= 'DASH' )
                     // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:5212:8: enumLiteral_1= 'DASH'
                     {
+<<<<<<< HEAD
                     enumLiteral_1=(Token)match(input,88,FollowSets000.FOLLOW_88_in_ruleLineStyle11306); 
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+                    enumLiteral_1=(Token)match(input,88,FollowSets000.FOLLOW_88_in_ruleLineStyle11307); 
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
 
                             current = grammarAccess.getLineStyleAccess().getDASHEnumLiteralDeclaration_1().getEnumLiteral().getInstance();
                             newLeafNode(enumLiteral_1, grammarAccess.getLineStyleAccess().getDASHEnumLiteralDeclaration_1()); 
@@ -14907,8 +15887,12 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
                     // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:5218:6: (enumLiteral_2= 'DOT' )
                     // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:5218:8: enumLiteral_2= 'DOT'
                     {
+<<<<<<< HEAD
                     enumLiteral_2=(Token)match(input,89,FollowSets000.FOLLOW_89_in_ruleLineStyle11323); 
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+                    enumLiteral_2=(Token)match(input,89,FollowSets000.FOLLOW_89_in_ruleLineStyle11324); 
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
 
                             current = grammarAccess.getLineStyleAccess().getDOTEnumLiteralDeclaration_2().getEnumLiteral().getInstance();
                             newLeafNode(enumLiteral_2, grammarAccess.getLineStyleAccess().getDOTEnumLiteralDeclaration_2()); 
@@ -14933,8 +15917,12 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
                     // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:5224:6: (enumLiteral_3= 'DASHDOT' )
                     // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:5224:8: enumLiteral_3= 'DASHDOT'
                     {
+<<<<<<< HEAD
                     enumLiteral_3=(Token)match(input,90,FollowSets000.FOLLOW_90_in_ruleLineStyle11340); 
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+                    enumLiteral_3=(Token)match(input,90,FollowSets000.FOLLOW_90_in_ruleLineStyle11341); 
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
 
                             current = grammarAccess.getLineStyleAccess().getDASHDOTEnumLiteralDeclaration_3().getEnumLiteral().getInstance();
                             newLeafNode(enumLiteral_3, grammarAccess.getLineStyleAccess().getDASHDOTEnumLiteralDeclaration_3()); 
@@ -14959,8 +15947,12 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
                     // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:5230:6: (enumLiteral_4= 'DASHDOTDOT' )
                     // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:5230:8: enumLiteral_4= 'DASHDOTDOT'
                     {
+<<<<<<< HEAD
                     enumLiteral_4=(Token)match(input,91,FollowSets000.FOLLOW_91_in_ruleLineStyle11357); 
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+                    enumLiteral_4=(Token)match(input,91,FollowSets000.FOLLOW_91_in_ruleLineStyle11358); 
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
 
                             current = grammarAccess.getLineStyleAccess().getDASHDOTDOTEnumLiteralDeclaration_4().getEnumLiteral().getInstance();
                             newLeafNode(enumLiteral_4, grammarAccess.getLineStyleAccess().getDASHDOTDOTEnumLiteralDeclaration_4()); 
@@ -15019,12 +16011,16 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
             // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:5243:1: ( (enumLiteral_0= 'TOP' ) | (enumLiteral_1= 'CENTER' ) | (enumLiteral_2= 'BOTTOM' ) )
             {
             // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:5243:1: ( (enumLiteral_0= 'TOP' ) | (enumLiteral_1= 'CENTER' ) | (enumLiteral_2= 'BOTTOM' ) )
-            int alt123=3;
+            int alt124=3;
             switch ( input.LA(1) ) {
             case 92:
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
                 {
+<<<<<<< HEAD
                 alt117=1;
+=======
+                alt124=1;
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
                 }
                 break;
 <<<<<<< HEAD
@@ -15033,7 +16029,11 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
             case 93:
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
                 {
+<<<<<<< HEAD
                 alt117=2;
+=======
+                alt124=2;
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
                 }
                 break;
 <<<<<<< HEAD
@@ -15042,17 +16042,29 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
             case 94:
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
                 {
+<<<<<<< HEAD
                 alt117=3;
+=======
+                alt124=3;
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
                 }
                 break;
             default:
                 NoViableAltException nvae =
+<<<<<<< HEAD
                     new NoViableAltException("", 117, 0, input);
+=======
+                    new NoViableAltException("", 124, 0, input);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
 
                 throw nvae;
             }
 
+<<<<<<< HEAD
             switch (alt117) {
+=======
+            switch (alt124) {
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
                 case 1 :
 <<<<<<< HEAD
                     // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:4979:2: (enumLiteral_0= 'TOP' )
@@ -15067,8 +16079,12 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
                     // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:5243:2: (enumLiteral_0= 'TOP' )
                     // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:5243:4: enumLiteral_0= 'TOP'
                     {
+<<<<<<< HEAD
                     enumLiteral_0=(Token)match(input,92,FollowSets000.FOLLOW_92_in_ruleVerticalAlignment11402); 
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+                    enumLiteral_0=(Token)match(input,92,FollowSets000.FOLLOW_92_in_ruleVerticalAlignment11403); 
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
 
                             current = grammarAccess.getVerticalAlignmentAccess().getTOPEnumLiteralDeclaration_0().getEnumLiteral().getInstance();
                             newLeafNode(enumLiteral_0, grammarAccess.getVerticalAlignmentAccess().getTOPEnumLiteralDeclaration_0()); 
@@ -15093,8 +16109,12 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
                     // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:5249:6: (enumLiteral_1= 'CENTER' )
                     // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:5249:8: enumLiteral_1= 'CENTER'
                     {
+<<<<<<< HEAD
                     enumLiteral_1=(Token)match(input,93,FollowSets000.FOLLOW_93_in_ruleVerticalAlignment11419); 
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+                    enumLiteral_1=(Token)match(input,93,FollowSets000.FOLLOW_93_in_ruleVerticalAlignment11420); 
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
 
                             current = grammarAccess.getVerticalAlignmentAccess().getCENTEREnumLiteralDeclaration_1().getEnumLiteral().getInstance();
                             newLeafNode(enumLiteral_1, grammarAccess.getVerticalAlignmentAccess().getCENTEREnumLiteralDeclaration_1()); 
@@ -15119,8 +16139,12 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
                     // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:5255:6: (enumLiteral_2= 'BOTTOM' )
                     // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:5255:8: enumLiteral_2= 'BOTTOM'
                     {
+<<<<<<< HEAD
                     enumLiteral_2=(Token)match(input,94,FollowSets000.FOLLOW_94_in_ruleVerticalAlignment11436); 
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+                    enumLiteral_2=(Token)match(input,94,FollowSets000.FOLLOW_94_in_ruleVerticalAlignment11437); 
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
 
                             current = grammarAccess.getVerticalAlignmentAccess().getBOTTOMEnumLiteralDeclaration_2().getEnumLiteral().getInstance();
                             newLeafNode(enumLiteral_2, grammarAccess.getVerticalAlignmentAccess().getBOTTOMEnumLiteralDeclaration_2()); 
@@ -15179,12 +16203,16 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
             // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:5268:1: ( (enumLiteral_0= 'LEFT' ) | (enumLiteral_1= 'CENTER' ) | (enumLiteral_2= 'RIGHT' ) )
             {
             // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:5268:1: ( (enumLiteral_0= 'LEFT' ) | (enumLiteral_1= 'CENTER' ) | (enumLiteral_2= 'RIGHT' ) )
-            int alt124=3;
+            int alt125=3;
             switch ( input.LA(1) ) {
             case 95:
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
                 {
+<<<<<<< HEAD
                 alt118=1;
+=======
+                alt125=1;
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
                 }
                 break;
 <<<<<<< HEAD
@@ -15193,7 +16221,11 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
             case 93:
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
                 {
+<<<<<<< HEAD
                 alt118=2;
+=======
+                alt125=2;
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
                 }
                 break;
 <<<<<<< HEAD
@@ -15202,17 +16234,29 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
             case 96:
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
                 {
+<<<<<<< HEAD
                 alt118=3;
+=======
+                alt125=3;
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
                 }
                 break;
             default:
                 NoViableAltException nvae =
+<<<<<<< HEAD
                     new NoViableAltException("", 118, 0, input);
+=======
+                    new NoViableAltException("", 125, 0, input);
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
 
                 throw nvae;
             }
 
+<<<<<<< HEAD
             switch (alt118) {
+=======
+            switch (alt125) {
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
                 case 1 :
 <<<<<<< HEAD
                     // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:5004:2: (enumLiteral_0= 'LEFT' )
@@ -15227,8 +16271,12 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
                     // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:5268:2: (enumLiteral_0= 'LEFT' )
                     // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:5268:4: enumLiteral_0= 'LEFT'
                     {
+<<<<<<< HEAD
                     enumLiteral_0=(Token)match(input,95,FollowSets000.FOLLOW_95_in_ruleHorizontalAlignment11481); 
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+                    enumLiteral_0=(Token)match(input,95,FollowSets000.FOLLOW_95_in_ruleHorizontalAlignment11482); 
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
 
                             current = grammarAccess.getHorizontalAlignmentAccess().getLEFTEnumLiteralDeclaration_0().getEnumLiteral().getInstance();
                             newLeafNode(enumLiteral_0, grammarAccess.getHorizontalAlignmentAccess().getLEFTEnumLiteralDeclaration_0()); 
@@ -15253,8 +16301,12 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
                     // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:5274:6: (enumLiteral_1= 'CENTER' )
                     // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:5274:8: enumLiteral_1= 'CENTER'
                     {
+<<<<<<< HEAD
                     enumLiteral_1=(Token)match(input,93,FollowSets000.FOLLOW_93_in_ruleHorizontalAlignment11498); 
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+                    enumLiteral_1=(Token)match(input,93,FollowSets000.FOLLOW_93_in_ruleHorizontalAlignment11499); 
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
 
                             current = grammarAccess.getHorizontalAlignmentAccess().getCENTEREnumLiteralDeclaration_1().getEnumLiteral().getInstance();
                             newLeafNode(enumLiteral_1, grammarAccess.getHorizontalAlignmentAccess().getCENTEREnumLiteralDeclaration_1()); 
@@ -15279,8 +16331,12 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
                     // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:5280:6: (enumLiteral_2= 'RIGHT' )
                     // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/krendering/text/parser/antlr/internal/InternalKRendering.g:5280:8: enumLiteral_2= 'RIGHT'
                     {
+<<<<<<< HEAD
                     enumLiteral_2=(Token)match(input,96,FollowSets000.FOLLOW_96_in_ruleHorizontalAlignment11515); 
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+                    enumLiteral_2=(Token)match(input,96,FollowSets000.FOLLOW_96_in_ruleHorizontalAlignment11516); 
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
 
                             current = grammarAccess.getHorizontalAlignmentAccess().getRIGHTEnumLiteralDeclaration_2().getEnumLiteral().getInstance();
                             newLeafNode(enumLiteral_2, grammarAccess.getHorizontalAlignmentAccess().getRIGHTEnumLiteralDeclaration_2()); 
@@ -16093,8 +17149,9 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
         public static final BitSet FOLLOW_ruleKDecoratorPlacementData_in_entryRuleKDecoratorPlacementData6144 = new BitSet(new long[]{0x0000000000000000L});
         public static final BitSet FOLLOW_EOF_in_entryRuleKDecoratorPlacementData6154 = new BitSet(new long[]{0x0000000000000002L});
         public static final BitSet FOLLOW_36_in_ruleKDecoratorPlacementData6191 = new BitSet(new long[]{0x0000000000001000L});
-        public static final BitSet FOLLOW_12_in_ruleKDecoratorPlacementData6203 = new BitSet(new long[]{0x0000002000000000L});
+        public static final BitSet FOLLOW_12_in_ruleKDecoratorPlacementData6203 = new BitSet(new long[]{0x0000006000000000L});
         public static final BitSet FOLLOW_37_in_ruleKDecoratorPlacementData6221 = new BitSet(new long[]{0x0000004000000000L});
+<<<<<<< HEAD
         public static final BitSet FOLLOW_38_in_ruleKDecoratorPlacementData6246 = new BitSet(new long[]{0x0000000008000010L});
         public static final BitSet FOLLOW_ruleEFloat_in_ruleKDecoratorPlacementData6267 = new BitSet(new long[]{0x0000078000004000L});
         public static final BitSet FOLLOW_39_in_ruleKDecoratorPlacementData6280 = new BitSet(new long[]{0x0000000008000010L});
@@ -16315,6 +17372,227 @@ public class InternalKRenderingParser extends AbstractInternalAntlrParser {
         public static final BitSet FOLLOW_93_in_ruleHorizontalAlignment11498 = new BitSet(new long[]{0x0000000000000002L});
         public static final BitSet FOLLOW_96_in_ruleHorizontalAlignment11515 = new BitSet(new long[]{0x0000000000000002L});
 >>>>>>> fa4c414... Changed the KGridPlacementData of the KRendering metamodel
+=======
+        public static final BitSet FOLLOW_38_in_ruleKDecoratorPlacementData6247 = new BitSet(new long[]{0x0000000008000010L});
+        public static final BitSet FOLLOW_ruleEFloat_in_ruleKDecoratorPlacementData6268 = new BitSet(new long[]{0x0000078000004000L});
+        public static final BitSet FOLLOW_39_in_ruleKDecoratorPlacementData6281 = new BitSet(new long[]{0x0000000008000010L});
+        public static final BitSet FOLLOW_ruleEFloat_in_ruleKDecoratorPlacementData6302 = new BitSet(new long[]{0x0000070000004000L});
+        public static final BitSet FOLLOW_40_in_ruleKDecoratorPlacementData6317 = new BitSet(new long[]{0x0000000008000010L});
+        public static final BitSet FOLLOW_ruleEFloat_in_ruleKDecoratorPlacementData6338 = new BitSet(new long[]{0x0000060000004000L});
+        public static final BitSet FOLLOW_41_in_ruleKDecoratorPlacementData6353 = new BitSet(new long[]{0x0000000008000010L});
+        public static final BitSet FOLLOW_ruleEFloat_in_ruleKDecoratorPlacementData6374 = new BitSet(new long[]{0x0000040000004000L});
+        public static final BitSet FOLLOW_42_in_ruleKDecoratorPlacementData6389 = new BitSet(new long[]{0x0000000008000010L});
+        public static final BitSet FOLLOW_ruleEFloat_in_ruleKDecoratorPlacementData6410 = new BitSet(new long[]{0x0000000000004000L});
+        public static final BitSet FOLLOW_14_in_ruleKDecoratorPlacementData6424 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleKGridPlacementData_in_entryRuleKGridPlacementData6460 = new BitSet(new long[]{0x0000000000000000L});
+        public static final BitSet FOLLOW_EOF_in_entryRuleKGridPlacementData6470 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_43_in_ruleKGridPlacementData6507 = new BitSet(new long[]{0x0000000000001000L});
+        public static final BitSet FOLLOW_12_in_ruleKGridPlacementData6519 = new BitSet(new long[]{0x0000100000000000L});
+        public static final BitSet FOLLOW_44_in_ruleKGridPlacementData6531 = new BitSet(new long[]{0x0000000008000010L});
+        public static final BitSet FOLLOW_ruleEFloat_in_ruleKGridPlacementData6552 = new BitSet(new long[]{0x0000200000000000L});
+        public static final BitSet FOLLOW_45_in_ruleKGridPlacementData6564 = new BitSet(new long[]{0x0000000008000010L});
+        public static final BitSet FOLLOW_ruleEFloat_in_ruleKGridPlacementData6585 = new BitSet(new long[]{0x0000400000000000L});
+        public static final BitSet FOLLOW_46_in_ruleKGridPlacementData6597 = new BitSet(new long[]{0x0000000008000010L});
+        public static final BitSet FOLLOW_ruleEFloat_in_ruleKGridPlacementData6618 = new BitSet(new long[]{0x0000800000000000L});
+        public static final BitSet FOLLOW_47_in_ruleKGridPlacementData6630 = new BitSet(new long[]{0x0000000008000010L});
+        public static final BitSet FOLLOW_ruleEFloat_in_ruleKGridPlacementData6651 = new BitSet(new long[]{0x0001000000000000L});
+        public static final BitSet FOLLOW_48_in_ruleKGridPlacementData6663 = new BitSet(new long[]{0x0000000008000010L});
+        public static final BitSet FOLLOW_ruleEFloat_in_ruleKGridPlacementData6684 = new BitSet(new long[]{0x0002000000000000L});
+        public static final BitSet FOLLOW_49_in_ruleKGridPlacementData6696 = new BitSet(new long[]{0x0000000008000010L});
+        public static final BitSet FOLLOW_ruleEFloat_in_ruleKGridPlacementData6717 = new BitSet(new long[]{0x0000000000004000L});
+        public static final BitSet FOLLOW_14_in_ruleKGridPlacementData6729 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleKStackPlacementData_in_entryRuleKStackPlacementData6765 = new BitSet(new long[]{0x0000000000000000L});
+        public static final BitSet FOLLOW_EOF_in_entryRuleKStackPlacementData6775 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_50_in_ruleKStackPlacementData6812 = new BitSet(new long[]{0x0000000000001000L});
+        public static final BitSet FOLLOW_12_in_ruleKStackPlacementData6824 = new BitSet(new long[]{0x0000400000000000L});
+        public static final BitSet FOLLOW_46_in_ruleKStackPlacementData6836 = new BitSet(new long[]{0x0000000008000010L});
+        public static final BitSet FOLLOW_ruleEFloat_in_ruleKStackPlacementData6857 = new BitSet(new long[]{0x0000800000000000L});
+        public static final BitSet FOLLOW_47_in_ruleKStackPlacementData6869 = new BitSet(new long[]{0x0000000008000010L});
+        public static final BitSet FOLLOW_ruleEFloat_in_ruleKStackPlacementData6890 = new BitSet(new long[]{0x0001000000000000L});
+        public static final BitSet FOLLOW_48_in_ruleKStackPlacementData6902 = new BitSet(new long[]{0x0000000008000010L});
+        public static final BitSet FOLLOW_ruleEFloat_in_ruleKStackPlacementData6923 = new BitSet(new long[]{0x0002000000000000L});
+        public static final BitSet FOLLOW_49_in_ruleKStackPlacementData6935 = new BitSet(new long[]{0x0000000008000010L});
+        public static final BitSet FOLLOW_ruleEFloat_in_ruleKStackPlacementData6956 = new BitSet(new long[]{0x0000000000004000L});
+        public static final BitSet FOLLOW_14_in_ruleKStackPlacementData6968 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleKDirectPlacementData_in_entryRuleKDirectPlacementData7004 = new BitSet(new long[]{0x0000000000000000L});
+        public static final BitSet FOLLOW_EOF_in_entryRuleKDirectPlacementData7014 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_51_in_ruleKDirectPlacementData7051 = new BitSet(new long[]{0x0000000000001000L});
+        public static final BitSet FOLLOW_12_in_ruleKDirectPlacementData7063 = new BitSet(new long[]{0x0010000000000000L});
+        public static final BitSet FOLLOW_52_in_ruleKDirectPlacementData7075 = new BitSet(new long[]{0x0C00000000000000L});
+        public static final BitSet FOLLOW_ruleKPosition_in_ruleKDirectPlacementData7096 = new BitSet(new long[]{0x0020000000002000L});
+        public static final BitSet FOLLOW_13_in_ruleKDirectPlacementData7109 = new BitSet(new long[]{0x0020000000000000L});
+        public static final BitSet FOLLOW_53_in_ruleKDirectPlacementData7123 = new BitSet(new long[]{0x0C00000000000000L});
+        public static final BitSet FOLLOW_ruleKPosition_in_ruleKDirectPlacementData7144 = new BitSet(new long[]{0x0000000000004000L});
+        public static final BitSet FOLLOW_14_in_ruleKDirectPlacementData7156 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleKPolylinePlacementData_in_entryRuleKPolylinePlacementData7192 = new BitSet(new long[]{0x0000000000000000L});
+        public static final BitSet FOLLOW_EOF_in_entryRuleKPolylinePlacementData7202 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_54_in_ruleKPolylinePlacementData7239 = new BitSet(new long[]{0x0000000000001000L});
+        public static final BitSet FOLLOW_12_in_ruleKPolylinePlacementData7251 = new BitSet(new long[]{0x0080000000000000L});
+        public static final BitSet FOLLOW_55_in_ruleKPolylinePlacementData7263 = new BitSet(new long[]{0x0000000000080000L});
+        public static final BitSet FOLLOW_19_in_ruleKPolylinePlacementData7275 = new BitSet(new long[]{0x0C00000000000000L});
+        public static final BitSet FOLLOW_ruleKPosition_in_ruleKPolylinePlacementData7296 = new BitSet(new long[]{0x0100000000006000L});
+        public static final BitSet FOLLOW_13_in_ruleKPolylinePlacementData7309 = new BitSet(new long[]{0x0C00000000000000L});
+        public static final BitSet FOLLOW_ruleKPosition_in_ruleKPolylinePlacementData7330 = new BitSet(new long[]{0x0100000000006000L});
+        public static final BitSet FOLLOW_56_in_ruleKPolylinePlacementData7345 = new BitSet(new long[]{0x004C081000000000L});
+        public static final BitSet FOLLOW_ruleKPlacementData_in_ruleKPolylinePlacementData7366 = new BitSet(new long[]{0x0000000000004000L});
+        public static final BitSet FOLLOW_14_in_ruleKPolylinePlacementData7380 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleKPosition_in_entryRuleKPosition7416 = new BitSet(new long[]{0x0000000000000000L});
+        public static final BitSet FOLLOW_EOF_in_entryRuleKPosition7426 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleKXPosition_in_ruleKPosition7472 = new BitSet(new long[]{0x0200000000000000L});
+        public static final BitSet FOLLOW_57_in_ruleKPosition7484 = new BitSet(new long[]{0x3000000000000000L});
+        public static final BitSet FOLLOW_ruleKYPosition_in_ruleKPosition7505 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleKLeftPosition_in_entryRuleKLeftPosition7541 = new BitSet(new long[]{0x0000000000000000L});
+        public static final BitSet FOLLOW_EOF_in_entryRuleKLeftPosition7551 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_58_in_ruleKLeftPosition7597 = new BitSet(new long[]{0x0000000008000010L});
+        public static final BitSet FOLLOW_ruleEFloat_in_ruleKLeftPosition7618 = new BitSet(new long[]{0x0000000008000010L});
+        public static final BitSet FOLLOW_ruleEFloat_in_ruleKLeftPosition7639 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleKRightPosition_in_entryRuleKRightPosition7675 = new BitSet(new long[]{0x0000000000000000L});
+        public static final BitSet FOLLOW_EOF_in_entryRuleKRightPosition7685 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_59_in_ruleKRightPosition7731 = new BitSet(new long[]{0x0000000008000010L});
+        public static final BitSet FOLLOW_ruleEFloat_in_ruleKRightPosition7752 = new BitSet(new long[]{0x0000000008000010L});
+        public static final BitSet FOLLOW_ruleEFloat_in_ruleKRightPosition7773 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleKTopPosition_in_entryRuleKTopPosition7809 = new BitSet(new long[]{0x0000000000000000L});
+        public static final BitSet FOLLOW_EOF_in_entryRuleKTopPosition7819 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_60_in_ruleKTopPosition7865 = new BitSet(new long[]{0x0000000008000010L});
+        public static final BitSet FOLLOW_ruleEFloat_in_ruleKTopPosition7886 = new BitSet(new long[]{0x0000000008000010L});
+        public static final BitSet FOLLOW_ruleEFloat_in_ruleKTopPosition7907 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleKBottomPosition_in_entryRuleKBottomPosition7943 = new BitSet(new long[]{0x0000000000000000L});
+        public static final BitSet FOLLOW_EOF_in_entryRuleKBottomPosition7953 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_61_in_ruleKBottomPosition7999 = new BitSet(new long[]{0x0000000008000010L});
+        public static final BitSet FOLLOW_ruleEFloat_in_ruleKBottomPosition8020 = new BitSet(new long[]{0x0000000008000010L});
+        public static final BitSet FOLLOW_ruleEFloat_in_ruleKBottomPosition8041 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleKForegroundColor_in_entryRuleKForegroundColor8077 = new BitSet(new long[]{0x0000000000000000L});
+        public static final BitSet FOLLOW_EOF_in_entryRuleKForegroundColor8087 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_62_in_ruleKForegroundColor8133 = new BitSet(new long[]{0x0000000008000010L});
+        public static final BitSet FOLLOW_ruleEInt_in_ruleKForegroundColor8154 = new BitSet(new long[]{0x0000000008000010L});
+        public static final BitSet FOLLOW_ruleEInt_in_ruleKForegroundColor8175 = new BitSet(new long[]{0x0000000008000010L});
+        public static final BitSet FOLLOW_ruleEInt_in_ruleKForegroundColor8196 = new BitSet(new long[]{0x8000000000000002L});
+        public static final BitSet FOLLOW_63_in_ruleKForegroundColor8214 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleKBackgroundColor_in_entryRuleKBackgroundColor8264 = new BitSet(new long[]{0x0000000000000000L});
+        public static final BitSet FOLLOW_EOF_in_entryRuleKBackgroundColor8274 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_64_in_ruleKBackgroundColor8320 = new BitSet(new long[]{0x0000000008000010L});
+        public static final BitSet FOLLOW_ruleEInt_in_ruleKBackgroundColor8341 = new BitSet(new long[]{0x0000000008000010L});
+        public static final BitSet FOLLOW_ruleEInt_in_ruleKBackgroundColor8362 = new BitSet(new long[]{0x0000000008000010L});
+        public static final BitSet FOLLOW_ruleEInt_in_ruleKBackgroundColor8383 = new BitSet(new long[]{0x8000000000000002L});
+        public static final BitSet FOLLOW_63_in_ruleKBackgroundColor8401 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleKLineWidth_in_entryRuleKLineWidth8451 = new BitSet(new long[]{0x0000000000000000L});
+        public static final BitSet FOLLOW_EOF_in_entryRuleKLineWidth8461 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_65_in_ruleKLineWidth8498 = new BitSet(new long[]{0x0000000008000010L});
+        public static final BitSet FOLLOW_ruleEInt_in_ruleKLineWidth8519 = new BitSet(new long[]{0x8000000000000002L});
+        public static final BitSet FOLLOW_63_in_ruleKLineWidth8537 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleKVisibility_in_entryRuleKVisibility8587 = new BitSet(new long[]{0x0000000000000000L});
+        public static final BitSet FOLLOW_EOF_in_entryRuleKVisibility8597 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleKForegroundVisibility_in_ruleKVisibility8644 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleKBackgroundVisibility_in_ruleKVisibility8671 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleKForegroundVisibility_in_entryRuleKForegroundVisibility8706 = new BitSet(new long[]{0x0000000000000000L});
+        public static final BitSet FOLLOW_EOF_in_entryRuleKForegroundVisibility8716 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_66_in_ruleKForegroundVisibility8762 = new BitSet(new long[]{0x0000000000000000L,0x0000000000030000L});
+        public static final BitSet FOLLOW_ruleEBoolean_in_ruleKForegroundVisibility8783 = new BitSet(new long[]{0x8000000000000002L});
+        public static final BitSet FOLLOW_63_in_ruleKForegroundVisibility8801 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleKBackgroundVisibility_in_entryRuleKBackgroundVisibility8851 = new BitSet(new long[]{0x0000000000000000L});
+        public static final BitSet FOLLOW_EOF_in_entryRuleKBackgroundVisibility8861 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_67_in_ruleKBackgroundVisibility8907 = new BitSet(new long[]{0x0000000000000000L,0x0000000000030000L});
+        public static final BitSet FOLLOW_ruleEBoolean_in_ruleKBackgroundVisibility8928 = new BitSet(new long[]{0x8000000000000002L});
+        public static final BitSet FOLLOW_63_in_ruleKBackgroundVisibility8946 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleKLineStyle_in_entryRuleKLineStyle8996 = new BitSet(new long[]{0x0000000000000000L});
+        public static final BitSet FOLLOW_EOF_in_entryRuleKLineStyle9006 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_68_in_ruleKLineStyle9052 = new BitSet(new long[]{0x0000000000000000L,0x000000000F800000L});
+        public static final BitSet FOLLOW_ruleLineStyle_in_ruleKLineStyle9073 = new BitSet(new long[]{0x8000000000000002L});
+        public static final BitSet FOLLOW_63_in_ruleKLineStyle9091 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleKFontBold_in_entryRuleKFontBold9141 = new BitSet(new long[]{0x0000000000000000L});
+        public static final BitSet FOLLOW_EOF_in_entryRuleKFontBold9151 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_69_in_ruleKFontBold9197 = new BitSet(new long[]{0x8000000000000002L});
+        public static final BitSet FOLLOW_63_in_ruleKFontBold9215 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleKFontItalic_in_entryRuleKFontItalic9265 = new BitSet(new long[]{0x0000000000000000L});
+        public static final BitSet FOLLOW_EOF_in_entryRuleKFontItalic9275 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_70_in_ruleKFontItalic9321 = new BitSet(new long[]{0x8000000000000002L});
+        public static final BitSet FOLLOW_63_in_ruleKFontItalic9339 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleKFontName_in_entryRuleKFontName9389 = new BitSet(new long[]{0x0000000000000000L});
+        public static final BitSet FOLLOW_EOF_in_entryRuleKFontName9399 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_71_in_ruleKFontName9436 = new BitSet(new long[]{0x0000000000000060L});
+        public static final BitSet FOLLOW_ruleEString_in_ruleKFontName9457 = new BitSet(new long[]{0x8000000000000002L});
+        public static final BitSet FOLLOW_63_in_ruleKFontName9475 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleKFontSize_in_entryRuleKFontSize9525 = new BitSet(new long[]{0x0000000000000000L});
+        public static final BitSet FOLLOW_EOF_in_entryRuleKFontSize9535 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_72_in_ruleKFontSize9572 = new BitSet(new long[]{0x0000000008000010L});
+        public static final BitSet FOLLOW_ruleEInt_in_ruleKFontSize9593 = new BitSet(new long[]{0x8000000000000002L});
+        public static final BitSet FOLLOW_63_in_ruleKFontSize9611 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleKVerticalAlignment_in_entryRuleKVerticalAlignment9661 = new BitSet(new long[]{0x0000000000000000L});
+        public static final BitSet FOLLOW_EOF_in_entryRuleKVerticalAlignment9671 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_73_in_ruleKVerticalAlignment9717 = new BitSet(new long[]{0x0000000000000000L,0x0000000070000000L});
+        public static final BitSet FOLLOW_ruleVerticalAlignment_in_ruleKVerticalAlignment9738 = new BitSet(new long[]{0x8000000000000002L});
+        public static final BitSet FOLLOW_63_in_ruleKVerticalAlignment9756 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleKHorizontalAlignment_in_entryRuleKHorizontalAlignment9806 = new BitSet(new long[]{0x0000000000000000L});
+        public static final BitSet FOLLOW_EOF_in_entryRuleKHorizontalAlignment9816 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_74_in_ruleKHorizontalAlignment9862 = new BitSet(new long[]{0x0000000000000000L,0x00000001A0000000L});
+        public static final BitSet FOLLOW_ruleHorizontalAlignment_in_ruleKHorizontalAlignment9883 = new BitSet(new long[]{0x8000000000000000L});
+        public static final BitSet FOLLOW_63_in_ruleKHorizontalAlignment9901 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleKGridPlacement_in_entryRuleKGridPlacement9950 = new BitSet(new long[]{0x0000000000000000L});
+        public static final BitSet FOLLOW_EOF_in_entryRuleKGridPlacement9960 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_75_in_ruleKGridPlacement10006 = new BitSet(new long[]{0x0000000008000010L});
+        public static final BitSet FOLLOW_ruleEInt_in_ruleKGridPlacement10027 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleKStackPlacement_in_entryRuleKStackPlacement10063 = new BitSet(new long[]{0x0000000000000000L});
+        public static final BitSet FOLLOW_EOF_in_entryRuleKStackPlacement10073 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_76_in_ruleKStackPlacement10119 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleEFloat_in_entryRuleEFloat10156 = new BitSet(new long[]{0x0000000000000000L});
+        public static final BitSet FOLLOW_EOF_in_entryRuleEFloat10167 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_27_in_ruleEFloat10206 = new BitSet(new long[]{0x0000000000000010L});
+        public static final BitSet FOLLOW_RULE_INT_in_ruleEFloat10223 = new BitSet(new long[]{0x0000000000000002L,0x0000000000002000L});
+        public static final BitSet FOLLOW_77_in_ruleEFloat10242 = new BitSet(new long[]{0x0000000000000010L});
+        public static final BitSet FOLLOW_RULE_INT_in_ruleEFloat10257 = new BitSet(new long[]{0x0000000000000002L,0x000000000000C000L});
+        public static final BitSet FOLLOW_78_in_ruleEFloat10277 = new BitSet(new long[]{0x0000000008000010L});
+        public static final BitSet FOLLOW_79_in_ruleEFloat10296 = new BitSet(new long[]{0x0000000008000010L});
+        public static final BitSet FOLLOW_27_in_ruleEFloat10311 = new BitSet(new long[]{0x0000000000000010L});
+        public static final BitSet FOLLOW_RULE_INT_in_ruleEFloat10328 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleEBoolean_in_entryRuleEBoolean10378 = new BitSet(new long[]{0x0000000000000000L});
+        public static final BitSet FOLLOW_EOF_in_entryRuleEBoolean10389 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_80_in_ruleEBoolean10427 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_81_in_ruleEBoolean10446 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleEInt_in_entryRuleEInt10487 = new BitSet(new long[]{0x0000000000000000L});
+        public static final BitSet FOLLOW_EOF_in_entryRuleEInt10498 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_27_in_ruleEInt10537 = new BitSet(new long[]{0x0000000000000010L});
+        public static final BitSet FOLLOW_RULE_INT_in_ruleEInt10554 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleKInsets_in_entryRuleKInsets10601 = new BitSet(new long[]{0x0000000000000000L});
+        public static final BitSet FOLLOW_EOF_in_entryRuleKInsets10611 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_82_in_ruleKInsets10657 = new BitSet(new long[]{0x0000000000001000L});
+        public static final BitSet FOLLOW_12_in_ruleKInsets10669 = new BitSet(new long[]{0x3C00000000004000L});
+        public static final BitSet FOLLOW_60_in_ruleKInsets10682 = new BitSet(new long[]{0x0000000008000010L});
+        public static final BitSet FOLLOW_ruleEFloat_in_ruleKInsets10703 = new BitSet(new long[]{0x2C00000000004000L});
+        public static final BitSet FOLLOW_61_in_ruleKInsets10718 = new BitSet(new long[]{0x0000000008000010L});
+        public static final BitSet FOLLOW_ruleEFloat_in_ruleKInsets10739 = new BitSet(new long[]{0x0C00000000004000L});
+        public static final BitSet FOLLOW_58_in_ruleKInsets10754 = new BitSet(new long[]{0x0000000008000010L});
+        public static final BitSet FOLLOW_ruleEFloat_in_ruleKInsets10775 = new BitSet(new long[]{0x0800000000004000L});
+        public static final BitSet FOLLOW_59_in_ruleKInsets10790 = new BitSet(new long[]{0x0000000008000010L});
+        public static final BitSet FOLLOW_ruleEFloat_in_ruleKInsets10811 = new BitSet(new long[]{0x0000000000004000L});
+        public static final BitSet FOLLOW_14_in_ruleKInsets10825 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleKPoint_in_entryRuleKPoint10863 = new BitSet(new long[]{0x0000000000000000L});
+        public static final BitSet FOLLOW_EOF_in_entryRuleKPoint10873 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_83_in_ruleKPoint10919 = new BitSet(new long[]{0x0000000000000000L,0x0000000000100000L});
+        public static final BitSet FOLLOW_84_in_ruleKPoint10932 = new BitSet(new long[]{0x0000000008000010L});
+        public static final BitSet FOLLOW_ruleEFloat_in_ruleKPoint10953 = new BitSet(new long[]{0x0000000000000000L,0x0000000000200000L});
+        public static final BitSet FOLLOW_85_in_ruleKPoint10967 = new BitSet(new long[]{0x0000000008000010L});
+        public static final BitSet FOLLOW_ruleEFloat_in_ruleKPoint10988 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rulePersistentEntry_in_entryRulePersistentEntry11025 = new BitSet(new long[]{0x0000000000000000L});
+        public static final BitSet FOLLOW_EOF_in_entryRulePersistentEntry11035 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleEString_in_rulePersistentEntry11081 = new BitSet(new long[]{0x0000000000000002L,0x0000000000400000L});
+        public static final BitSet FOLLOW_86_in_rulePersistentEntry11094 = new BitSet(new long[]{0x0000000000000060L});
+        public static final BitSet FOLLOW_ruleEString_in_rulePersistentEntry11115 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleEString_in_entryRuleEString11154 = new BitSet(new long[]{0x0000000000000000L});
+        public static final BitSet FOLLOW_EOF_in_entryRuleEString11165 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_RULE_STRING_in_ruleEString11205 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_RULE_ID_in_ruleEString11231 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_87_in_ruleLineStyle11290 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_88_in_ruleLineStyle11307 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_89_in_ruleLineStyle11324 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_90_in_ruleLineStyle11341 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_91_in_ruleLineStyle11358 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_92_in_ruleVerticalAlignment11403 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_93_in_ruleVerticalAlignment11420 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_94_in_ruleVerticalAlignment11437 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_95_in_ruleHorizontalAlignment11482 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_93_in_ruleHorizontalAlignment11499 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_96_in_ruleHorizontalAlignment11516 = new BitSet(new long[]{0x0000000000000002L});
+>>>>>>> 7fb0b04... Slightly adjusted KDecoratorData in the KRendering syntax
     }
 
 
