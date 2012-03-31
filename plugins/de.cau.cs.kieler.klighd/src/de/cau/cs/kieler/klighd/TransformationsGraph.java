@@ -15,6 +15,8 @@ package de.cau.cs.kieler.klighd;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -801,6 +803,13 @@ public class TransformationsGraph {
                     Class<?> viewerProviderClass = viewerProviderData.viewerProvider.getModelClass();
                     if (viewerProviderClass.isAssignableFrom(modelClass)) {
                         viewerProviderData.updateStrategies.add(updateStrategy);
+                        Collections.sort(viewerProviderData.updateStrategies,
+                                new Comparator<IUpdateStrategy<?>>() {
+                                    public int compare(final IUpdateStrategy<?> arg0,
+                                            final IUpdateStrategy<?> arg1) {
+                                        return arg1.getPriority() - arg0.getPriority();
+                                    }
+                                });
                     }
                 }
             }

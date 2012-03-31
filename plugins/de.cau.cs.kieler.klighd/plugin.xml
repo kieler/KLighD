@@ -43,6 +43,13 @@
             class="de.cau.cs.kieler.klighd.krendering.DiagramLayoutManager">
       </manager>
    </extension>
+   <extension
+         point="de.cau.cs.kieler.klighd.updateStrategies">
+      <updateStrategy
+            class="de.cau.cs.kieler.klighd.krendering.SimpleUpdateStrategy"
+            id="de.cau.cs.kieler.klighd.krendering.simpleUpdateStrategy">
+      </updateStrategy>
+   </extension>
    <!--
    <extension
          point="de.cau.cs.kieler.klighd.updateStrategies">

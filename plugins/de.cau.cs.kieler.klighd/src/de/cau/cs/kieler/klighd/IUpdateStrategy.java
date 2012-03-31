@@ -24,6 +24,13 @@ package de.cau.cs.kieler.klighd;
 public interface IUpdateStrategy<T> {
 
     /**
+     * Returns the priority for this update strategy. Higher value means higher priority.
+     * 
+     * @return the priority
+     */
+    int getPriority();
+    
+    /**
      * Returns the initial base model for the incremental update process.
      * 
      * @param viewContext

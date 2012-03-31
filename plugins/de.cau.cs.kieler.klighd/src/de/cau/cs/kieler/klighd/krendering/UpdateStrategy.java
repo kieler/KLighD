@@ -53,6 +53,16 @@ import de.cau.cs.kieler.klighd.ViewContext;
  */
 public class UpdateStrategy implements IUpdateStrategy<KNode> {
 
+    /** the priority for this update strategy. */
+    public static final int PRIORITY = 20;
+    
+    /**
+     * {@inheritDoc}
+     */
+    public int getPriority() {
+        return PRIORITY;
+    }
+    
     /** the match scope provider for the EMF compare matching. */
     private MatchScopeProvider scopeProvider = new MatchScopeProvider();
     
