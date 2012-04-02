@@ -24,13 +24,18 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Menu;
 
+import com.google.common.collect.Lists;
+
+import de.cau.cs.kieler.core.kgraph.KGraphElement;
 import de.cau.cs.kieler.core.kgraph.KNode;
 import de.cau.cs.kieler.klighd.piccolo.INodeSelectionListener;
 import de.cau.cs.kieler.klighd.piccolo.Messages;
 import de.cau.cs.kieler.klighd.piccolo.PMouseWheelZoomEventHandler;
 import de.cau.cs.kieler.klighd.piccolo.PSWTSimpleSelectionEventHandler;
 import de.cau.cs.kieler.klighd.piccolo.activities.ZoomActivity;
+import de.cau.cs.kieler.klighd.piccolo.krendering.IGraphElement;
 import de.cau.cs.kieler.klighd.piccolo.krendering.controller.GraphController;
+import de.cau.cs.kieler.klighd.piccolo.krendering.controller.RenderingContextData;
 import de.cau.cs.kieler.klighd.piccolo.nodes.PEmptyNode;
 import de.cau.cs.kieler.klighd.piccolo.ui.ExportKGraphAction;
 import de.cau.cs.kieler.klighd.piccolo.ui.SaveAsImageAction;
@@ -226,12 +231,9 @@ public class PiccoloViewer extends AbstractViewer<KNode> implements INodeSelecti
     public void select(final Object[] diagramElements) {
         if (selectionHandler != null) {
             for (Object diagramElement : diagramElements) {
-                if (diagramElement instanceof PNode) {
-                    PNode node = (PNode) diagramElement;
-                    // does the node belong to this viewer?
-                    if (node.getRoot() == canvas.getRoot()) {
-                        selectionHandler.select(node);
-                    }
+                PNode node = getRepresentation(diagramElement);
+                if (node != null) {
+                    selectionHandler.select(node);
                 }
             }
         }
@@ -244,8 +246,8 @@ public class PiccoloViewer extends AbstractViewer<KNode> implements INodeSelecti
     public void unselect(final Object[] diagramElements) {
         if (selectionHandler != null) {
             for (Object diagramElement : diagramElements) {
-                if (diagramElement instanceof PNode) {
-                    PNode node = (PNode) diagramElement;
+                PNode node = getRepresentation(diagramElement);
+                if (node != null) {
                     selectionHandler.unselect(node);
                 }
             }
@@ -270,15 +272,15 @@ public class PiccoloViewer extends AbstractViewer<KNode> implements INodeSelecti
      */
     @Override
     public void zoomToFit(final int duration) {
-        // if (diagramContext != null) {
-        // if (diagramContext.getRootNode() instanceof PNode) {
-        // PNode node = (PNode) diagramContext.getRootNode();
-        // // move and zoom the camera so it includes the full bounds
-        // PCamera camera = canvas.getCamera();
-        // camera.animateViewToCenterBounds(node.getFullBounds(), true, duration);
-        // // FIXME centers the bb instead of left aligning it and could need some padding
-        // }
-        // }
+//        if (diagramContext != null) {
+//            if (diagramContext.getRootNode() instanceof PNode) {
+//                PNode node = (PNode) diagramContext.getRootNode();
+//                // move and zoom the camera so it includes the full bounds
+//                PCamera camera = canvas.getCamera();
+//                camera.animateViewToCenterBounds(node.getFullBounds(), true, duration);
+//                // FIXME centers the bb instead of left aligning it and could need some padding
+//            }
+//        }
     }
 
     /**
@@ -286,8 +288,8 @@ public class PiccoloViewer extends AbstractViewer<KNode> implements INodeSelecti
      */
     @Override
     public void reveal(final Object diagramElement, final int duration) {
-        if (diagramElement instanceof PNode) {
-            PNode node = (PNode) diagramElement;
+        PNode node = getRepresentation(diagramElement);
+        if (node != null) {
             // move the camera so it includes the bounds of the node
             PCamera camera = canvas.getCamera();
             camera.animateViewToPanToBounds(node.getFullBounds(), duration);
@@ -299,12 +301,30 @@ public class PiccoloViewer extends AbstractViewer<KNode> implements INodeSelecti
      */
     @Override
     public void centerOn(final Object diagramElement, final int duration) {
-        if (diagramElement instanceof PNode) {
-            PNode node = (PNode) diagramElement;
+        PNode node = getRepresentation(diagramElement);
+        if (node != null) {
             // center the camera on the node
             PCamera camera = canvas.getCamera();
             camera.animateViewToCenterBounds(node.getFullBounds(), false, duration);
         }
+    }
+    
+    /**
+     * Returns the Piccolo representation for the given diagram element.
+     * 
+     * @param diagramElement
+     *            the diagram element
+     * @return the Piccolo representation
+     */
+    private PNode getRepresentation(final Object diagramElement) {
+        if (diagramElement instanceof KGraphElement) {
+            KGraphElement element = (KGraphElement) diagramElement;
+            PNode node = RenderingContextData.get(element).getProperty(GraphController.REP);
+            if (node != null && node.getRoot() == canvas.getRoot()) {
+                return node;
+            }
+        }
+        return null;
     }
 
     /**
@@ -319,9 +339,38 @@ public class PiccoloViewer extends AbstractViewer<KNode> implements INodeSelecti
     /**
      * {@inheritDoc}
      */
-    public void selected(final PSWTSimpleSelectionEventHandler handler,
+    public void selected(final PSWTSimpleSelectionEventHandler handler, final PNode node) {
+        if (node instanceof IGraphElement<?>) {
+            IGraphElement<?> graphElement = (IGraphElement<?>) node;
+            notifyListenersSelected(graphElement.getGraphElement());
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void unselected(final PSWTSimpleSelectionEventHandler handler, final PNode node) {
+        if (node instanceof IGraphElement<?>) {
+            IGraphElement<?> graphElement = (IGraphElement<?>) node;
+            notifyListenersSelected(graphElement.getGraphElement());
+        }
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public void selection(final PSWTSimpleSelectionEventHandler handler,
             final Collection<PNode> nodes) {
-        notifyListenersSelection(nodes);
+        List<KGraphElement> graphElements = Lists.newLinkedList();
+        for (PNode node : nodes) {
+            if (node instanceof IGraphElement<?>) {
+                IGraphElement<?> graphElement = (IGraphElement<?>) node;
+                graphElements.add(graphElement.getGraphElement());
+            }
+        }
+        if (graphElements.size() > 0) {
+            notifyListenersSelection(graphElements);
+        }
     }
 
 }

@@ -13,12 +13,16 @@
  */
 package de.cau.cs.kieler.klighd.piccolo.krendering;
 
+import de.cau.cs.kieler.core.kgraph.KLabeledGraphElement;
+
 /**
  * The interface for Piccolo nodes representing a {@code KLabeledGraphElement}.
  * 
  * @author mri
+ * 
+ * @param <T> the type of the labeled graph element
  */
-public interface ILabeledGraphElement {
+public interface ILabeledGraphElement<T extends KLabeledGraphElement> extends IGraphElement<T> {
 
     /**
      * Adds the representation of a label to this element.

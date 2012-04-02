@@ -25,13 +25,33 @@ import edu.umd.cs.piccolo.PNode;
 public interface INodeSelectionListener {
 
     /**
-     * Handles the selection of a number of nodes.
+     * Handles the selection of a node.
+     * 
+     * @param handler
+     *            the handler notifying the listener
+     * @param node
+     *            the newly selected node
+     */
+    void selected(final PSWTSimpleSelectionEventHandler handler, final PNode node);
+
+    /**
+     * Handles the unselection of a node.
+     * 
+     * @param handler
+     *            the handler notifying the listener
+     * @param node
+     *            the newly unselected node
+     */
+    void unselected(final PSWTSimpleSelectionEventHandler handler, final PNode node);
+
+    /**
+     * Handles the change of the selection of nodes.
      * 
      * @param handler
      *            the handler notifying the listener
      * @param nodes
      *            the selected nodes
      */
-    void selected(final PSWTSimpleSelectionEventHandler handler, final Collection<PNode> nodes);
-
+    void selection(final PSWTSimpleSelectionEventHandler handler, final Collection<PNode> nodes);
+    
 }

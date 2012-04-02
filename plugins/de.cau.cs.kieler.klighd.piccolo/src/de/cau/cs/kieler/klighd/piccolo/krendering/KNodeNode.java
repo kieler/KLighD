@@ -22,7 +22,7 @@ import de.cau.cs.kieler.klighd.piccolo.nodes.PZIndexNode;
  * 
  * @author mri
  */
-public class KNodeNode extends PZIndexNode implements INode, ILabeledGraphElement {
+public class KNodeNode extends PZIndexNode implements INode, ILabeledGraphElement<KNode> {
 
     private static final long serialVersionUID = 6311105654943173693L;
     
@@ -60,7 +60,7 @@ public class KNodeNode extends PZIndexNode implements INode, ILabeledGraphElemen
     /**
      * {@inheritDoc}
      */
-    public KNode getWrapped() {
+    public KNode getGraphElement() {
         return node;
     }
 

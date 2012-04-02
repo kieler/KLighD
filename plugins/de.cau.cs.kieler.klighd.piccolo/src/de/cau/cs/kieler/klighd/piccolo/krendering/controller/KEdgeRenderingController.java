@@ -41,7 +41,7 @@ public class KEdgeRenderingController extends AbstractRenderingController<KEdge,
      *            the Piccolo node representing an edge
      */
     public KEdgeRenderingController(final KEdgeNode edge) {
-        super(edge.getWrapped(), edge);
+        super(edge.getGraphElement(), edge);
     }
 
     /**

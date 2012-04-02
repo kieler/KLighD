@@ -155,11 +155,25 @@ public class ContextViewer extends AbstractViewer<Object> implements IViewerEven
             currentViewContext = null;
         }
     }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public void selected(final IViewer<?> viewer, final Object selectedElement) {
+        notifyListenersSelected(selectedElement);
+    }
 
     /**
      * {@inheritDoc}
      */
-    public void selected(final IViewer<?> viewer, final Collection<?> selectedElements) {
+    public void unselected(final IViewer<?> viewer, final Object unselectedElement) {
+        notifyListenersUnselected(unselectedElement);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void selection(final IViewer<?> viewer, final Collection<?> selectedElements) {
         KlighdSelectionTrigger trigger = KlighdSelectionTrigger.getInstance();
         if (trigger != null) {
             // create the selection objects
@@ -173,10 +187,12 @@ public class ContextViewer extends AbstractViewer<Object> implements IViewerEven
             }
             trigger.trigger(state);
         }
+        
         // update the selection status for the ISelectionProvider interface
         updateSelection(selectedElements);
+        
         // propagate event to listeners on this viewer
-        notifyListenersSelection(selectedElements);
+        notifyListenersSelection(selectedElements);  
     }
 
     private void updateSelection(final Collection<?> selectedElements) {

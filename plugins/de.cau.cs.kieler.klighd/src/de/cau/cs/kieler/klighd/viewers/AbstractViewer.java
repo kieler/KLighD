@@ -119,9 +119,33 @@ public abstract class AbstractViewer<T> implements IViewer<T> {
      */
     protected void notifyListenersSelection(final Collection<?> selectedElements) {
         for (IViewerEventListener listener : listeners) {
-            listener.selected(this, selectedElements);
+            listener.selection(this, selectedElements);
         }
     }
 
+    /**
+     * Notifies the registered listeners about the occurrence of a selected event.
+     * 
+     * @param selectedElement
+     *            the selected element
+     */
+    protected void notifyListenersSelected(final Object selectedElement) {
+        for (IViewerEventListener listener : listeners) {
+            listener.selected(this, selectedElement);
+        }
+    }
+    
+    /**
+     * Notifies the registered listeners about the occurrence of a unselected event.
+     * 
+     * @param unselectedElement
+     *            the selected element
+     */
+    protected void notifyListenersUnselected(final Object unselectedElement) {
+        for (IViewerEventListener listener : listeners) {
+            listener.unselected(this, unselectedElement);
+        }
+    }
+    
 }
 

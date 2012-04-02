@@ -18,7 +18,6 @@ import java.awt.geom.Point2D;
 import de.cau.cs.kieler.core.kgraph.KEdge;
 import de.cau.cs.kieler.core.properties.IProperty;
 import de.cau.cs.kieler.core.properties.Property;
-import de.cau.cs.kieler.core.util.IWrapper;
 import de.cau.cs.kieler.klighd.piccolo.krendering.controller.RenderingContextData;
 import de.cau.cs.kieler.klighd.piccolo.nodes.PChildRepresentedNode;
 import edu.umd.cs.piccolo.PNode;
@@ -28,8 +27,7 @@ import edu.umd.cs.piccolo.PNode;
  * 
  * @author mri
  */
-public class KEdgeNode extends PChildRepresentedNode implements IWrapper<KEdge>,
-        ILabeledGraphElement {
+public class KEdgeNode extends PChildRepresentedNode implements ILabeledGraphElement<KEdge> {
 
     private static final long serialVersionUID = -1867615197736299487L;
 
@@ -63,7 +61,7 @@ public class KEdgeNode extends PChildRepresentedNode implements IWrapper<KEdge>,
     /**
      * {@inheritDoc}
      */
-    public KEdge getWrapped() {
+    public KEdge getGraphElement() {
         return edge;
     }
 

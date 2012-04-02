@@ -41,7 +41,7 @@ public class KLabelRenderingController extends AbstractRenderingController<KLabe
      *            the Piccolo node representing a label
      */
     public KLabelRenderingController(final KLabelNode label) {
-        super(label.getWrapped(), label);
+        super(label.getGraphElement(), label);
     }
 
     /**

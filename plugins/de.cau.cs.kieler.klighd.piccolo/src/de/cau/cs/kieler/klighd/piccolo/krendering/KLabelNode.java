@@ -16,7 +16,6 @@ package de.cau.cs.kieler.klighd.piccolo.krendering;
 import de.cau.cs.kieler.core.kgraph.KLabel;
 import de.cau.cs.kieler.core.properties.IProperty;
 import de.cau.cs.kieler.core.properties.Property;
-import de.cau.cs.kieler.core.util.IWrapper;
 import de.cau.cs.kieler.klighd.piccolo.krendering.controller.RenderingContextData;
 import de.cau.cs.kieler.klighd.piccolo.nodes.PEmptyNode;
 
@@ -25,7 +24,7 @@ import de.cau.cs.kieler.klighd.piccolo.nodes.PEmptyNode;
  * 
  * @author mri
  */
-public class KLabelNode extends PEmptyNode implements IWrapper<KLabel> {
+public class KLabelNode extends PEmptyNode implements IGraphElement<KLabel> {
 
     private static final long serialVersionUID = -3999806360081871118L;
 
@@ -57,7 +56,7 @@ public class KLabelNode extends PEmptyNode implements IWrapper<KLabel> {
     /**
      * {@inheritDoc}
      */
-    public KLabel getWrapped() {
+    public KLabel getGraphElement() {
         return label;
     }
 

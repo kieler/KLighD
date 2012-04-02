@@ -51,15 +51,8 @@ public class KNodeTopNode extends PEmptyNode implements INode {
     /**
      * {@inheritDoc}
      */
-    public KNode getWrapped() {
+    public KNode getGraphElement() {
         return node;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public INode getParentNode() {
-        return null;
     }
 
     /**

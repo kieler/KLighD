@@ -23,13 +23,33 @@ import java.util.Collection;
 public interface IViewerEventListener {
 
     /**
-     * Handles a selection event.
+     * Handles the selection of an element.
      * 
      * @param viewer
-     *            the viewer where the event origined from
+     *            the viewer where the event originated from
+     * @param selectedElement
+     *            the selected element
+     */
+    void selected(final IViewer<?> viewer, final Object selectedElement);
+
+    /**
+     * Handles the unselection of an element.
+     * 
+     * @param viewer
+     *            the viewer where the event originated from
+     * @param unselectedElement
+     *            the unselected element
+     */
+    void unselected(final IViewer<?> viewer, final Object unselectedElement);
+
+    /**
+     * Handles a change of selection.
+     * 
+     * @param viewer
+     *            the viewer where the event originated from
      * @param selectedElements
      *            the currently selected elements
      */
-    void selected(final IViewer<?> viewer, final Collection<?> selectedElements);
+    void selection(final IViewer<?> viewer, final Collection<?> selectedElements);
 
 }

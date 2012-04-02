@@ -16,7 +16,6 @@ package de.cau.cs.kieler.klighd.piccolo.krendering;
 import de.cau.cs.kieler.core.kgraph.KPort;
 import de.cau.cs.kieler.core.properties.IProperty;
 import de.cau.cs.kieler.core.properties.Property;
-import de.cau.cs.kieler.core.util.IWrapper;
 import de.cau.cs.kieler.klighd.piccolo.krendering.controller.RenderingContextData;
 import de.cau.cs.kieler.klighd.piccolo.nodes.PZIndexNode;
 
@@ -25,7 +24,7 @@ import de.cau.cs.kieler.klighd.piccolo.nodes.PZIndexNode;
  * 
  * @author mri
  */
-public class KPortNode extends PZIndexNode implements IWrapper<KPort>, ILabeledGraphElement {
+public class KPortNode extends PZIndexNode implements ILabeledGraphElement<KPort> {
 
     private static final long serialVersionUID = 6016725932024647084L;
 
@@ -67,7 +66,7 @@ public class KPortNode extends PZIndexNode implements IWrapper<KPort>, ILabeledG
     /**
      * {@inheritDoc}
      */
-    public KPort getWrapped() {
+    public KPort getGraphElement() {
         return port;
     }
 

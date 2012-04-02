@@ -36,7 +36,7 @@ public class KPortRenderingController extends AbstractRenderingController<KPort,
      *            the Piccolo node representing a port
      */
     public KPortRenderingController(final KPortNode port) {
-        super(port.getWrapped(), port);
+        super(port.getGraphElement(), port);
     }
 
     /**

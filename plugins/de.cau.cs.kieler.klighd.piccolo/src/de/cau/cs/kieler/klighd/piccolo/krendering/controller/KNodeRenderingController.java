@@ -45,7 +45,7 @@ public class KNodeRenderingController extends AbstractRenderingController<KNode,
      *            the Piccolo node representing a node
      */
     public KNodeRenderingController(final KNodeNode node) {
-        super(node.getWrapped(), node);
+        super(node.getGraphElement(), node);
         this.childAreaNode = new KChildAreaNode(node);
         initializeRenderingNode(childAreaNode);
     }

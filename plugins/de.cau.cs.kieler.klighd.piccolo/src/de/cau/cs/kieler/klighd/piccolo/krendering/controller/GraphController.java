@@ -66,6 +66,10 @@ import edu.umd.cs.piccolo.util.PBounds;
  */
 public class GraphController {
 
+    /** the property for the Piccolo representation of a node. */
+    public static final IProperty<PNode> REP =
+            new Property<PNode>("klighd.piccolo.prepresentation");
+    
     /** the property for identifying whether a node has been populated. */
     private static final IProperty<Boolean> POPULATED = new Property<Boolean>("klighd.populated",
             false);
@@ -118,7 +122,7 @@ public class GraphController {
      * @return the graph
      */
     public KNode getGraph() {
-        return topNode.getWrapped();
+        return topNode.getGraphElement();
     }
     
     /**
@@ -154,7 +158,7 @@ public class GraphController {
     public void initialize() {
         // expand the top node
         addExpansionListener(topNode);
-        RenderingContextData.get(topNode.getWrapped()).setProperty(ACTIVE, true);
+        RenderingContextData.get(topNode.getGraphElement()).setProperty(ACTIVE, true);
         topNode.getChildArea().setExpanded(true);
     }
 
@@ -194,7 +198,7 @@ public class GraphController {
     private void addExpansionListener(final INode nodeNode) {
         KChildAreaNode childAreaNode = nodeNode.getChildArea();
         if (childAreaNode != null) {
-            final KNode node = nodeNode.getWrapped();
+            final KNode node = nodeNode.getGraphElement();
             final RenderingContextData data = RenderingContextData.get(node);
             childAreaNode.addPropertyChangeListener(KChildAreaNode.PROPERTY_EXPANSION,
                     new PropertyChangeListener() {
@@ -232,7 +236,7 @@ public class GraphController {
      *            the parent node
      */
     private void handleChildren(final INode parentNode) {
-        KNode parent = parentNode.getWrapped();
+        KNode parent = parentNode.getGraphElement();
        
         // create the nodes
         for (KNode child : parent.getChildren()) {
@@ -286,7 +290,7 @@ public class GraphController {
             }
             
             // activate the subgraph specified by the node
-            if (RenderingContextData.get(parent.getWrapped()).getProperty(ACTIVE)) {
+            if (RenderingContextData.get(parent.getGraphElement()).getProperty(ACTIVE)) {
                 activateSubgraph(node);
             }
         }
@@ -444,7 +448,7 @@ public class GraphController {
      *            the node representation
      */
     private void handlePorts(final KNodeNode nodeNode) {
-        KNode node = nodeNode.getWrapped();
+        KNode node = nodeNode.getGraphElement();
         // create the ports
         for (KPort port : node.getPorts()) {
             addPort(nodeNode, port);
@@ -500,7 +504,7 @@ public class GraphController {
      * @param labeledElement
      *            the labeled element
      */
-    private void handleLabels(final ILabeledGraphElement labeledNode,
+    private void handleLabels(final ILabeledGraphElement<?> labeledNode,
             final KLabeledGraphElement labeledElement) {
         for (KLabel label : labeledElement.getLabels()) {
             addLabel(labeledNode, label);
@@ -519,7 +523,7 @@ public class GraphController {
      * @param label
      *            the label
      */
-    private void addLabel(final ILabeledGraphElement labeledNode, final KLabel label) {
+    private void addLabel(final ILabeledGraphElement<?> labeledNode, final KLabel label) {
         KLabelNode labelNode = RenderingContextData.get(label).getProperty(KLabelNode.LABEL_REP);
 
         // if there is no Piccolo representation for the label create it
@@ -557,7 +561,7 @@ public class GraphController {
      */
     private void handleRecordedChanges() {
         // get the duration for applying the layout
-        KShapeLayout shapeLayout = topNode.getWrapped().getData(KShapeLayout.class);
+        KShapeLayout shapeLayout = topNode.getGraphElement().getData(KShapeLayout.class);
         int duration;
         if (shapeLayout != null) {
             duration = shapeLayout.getProperty(DiagramLayoutManager.APPLY_LAYOUT_DURATION);
@@ -605,7 +609,7 @@ public class GraphController {
      *            the node representation
      */
     private void updateLayout(final KNodeNode nodeNode) {
-        KNode node = nodeNode.getWrapped();
+        KNode node = nodeNode.getGraphElement();
         KShapeLayout shapeLayout = node.getData(KShapeLayout.class);
         if (shapeLayout != null) {
             NodeUtil.applySmartBounds(nodeNode, shapeLayout.getXpos(), shapeLayout.getYpos(),
@@ -625,7 +629,7 @@ public class GraphController {
      *            the port representation
      */
     private void updateLayout(final KPortNode portNode) {
-        KPort port = portNode.getWrapped();
+        KPort port = portNode.getGraphElement();
         KShapeLayout shapeLayout = port.getData(KShapeLayout.class);
         if (shapeLayout != null) {
             NodeUtil.applySmartBounds(portNode, shapeLayout.getXpos(), shapeLayout.getYpos(),
@@ -645,7 +649,7 @@ public class GraphController {
      *            the label representation
      */
     private void updateLayout(final KLabelNode labelNode) {
-        KLabel label = labelNode.getWrapped();
+        KLabel label = labelNode.getGraphElement();
         KShapeLayout shapeLayout = label.getData(KShapeLayout.class);
         if (shapeLayout != null) {
             NodeUtil.applySmartBounds(labelNode, shapeLayout.getXpos(), shapeLayout.getYpos(),
@@ -665,7 +669,7 @@ public class GraphController {
      *            the edge representation
      */
     private void updateLayout(final KEdgeNode edgeRep) {
-        KEdge edge = edgeRep.getWrapped();
+        KEdge edge = edgeRep.getGraphElement();
         KEdgeLayout edgeLayout = edge.getData(KEdgeLayout.class);
         if (edgeLayout != null) {
             Point2D[] bendPoints = getBendPoints(edgeLayout);
@@ -758,7 +762,7 @@ public class GraphController {
      *            the node representation
      */
     private void installLayoutSyncAdapter(final KNodeNode nodeRep) {
-        final KNode node = nodeRep.getWrapped();
+        final KNode node = nodeRep.getGraphElement();
         final KShapeLayout shapeLayout = node.getData(KShapeLayout.class);
         if (shapeLayout != null) {
             // register adapter on the shape layout to stay in sync
@@ -816,7 +820,7 @@ public class GraphController {
      *            the port representation
      */
     private void installLayoutSyncAdapter(final KPortNode portRep) {
-        final KPort port = portRep.getWrapped();
+        final KPort port = portRep.getGraphElement();
         final KShapeLayout shapeLayout = port.getData(KShapeLayout.class);
         if (shapeLayout != null) {
             // register adapter on the shape layout to stay in sync
@@ -874,7 +878,7 @@ public class GraphController {
      *            the label representation
      */
     private void installLayoutSyncAdapter(final KLabelNode labelRep) {
-        final KLabel label = labelRep.getWrapped();
+        final KLabel label = labelRep.getGraphElement();
         final KShapeLayout shapeLayout = label.getData(KShapeLayout.class);
         if (shapeLayout != null) {
             // register adapter on the shape layout to stay in sync
@@ -932,7 +936,7 @@ public class GraphController {
      *            the edge representation
      */
     private void installLayoutSyncAdapter(final KEdgeNode edgeRep) {
-        final KEdge edge = edgeRep.getWrapped();
+        final KEdge edge = edgeRep.getGraphElement();
         final KEdgeLayout edgeLayout = edge.getData(KEdgeLayout.class);
         if (edgeLayout != null) {
             // register adapter on the edge layout to stay in sync
@@ -969,7 +973,7 @@ public class GraphController {
      *            the node representation
      */
     private void installChildrenSyncAdapter(final INode nodeRep) {
-        KNode node = nodeRep.getWrapped();
+        KNode node = nodeRep.getGraphElement();
         // add an adapter on the node's children
         node.eAdapters().add(new AdapterImpl() {
             public void notifyChanged(final Notification notification) {
@@ -1122,7 +1126,7 @@ public class GraphController {
      *            the node representation
      */
     private void installPortSyncAdapter(final KNodeNode nodeRep) {
-        KNode node = nodeRep.getWrapped();
+        KNode node = nodeRep.getGraphElement();
         // add an adapter on the node's ports
         node.eAdapters().add(new AdapterImpl() {
             public void notifyChanged(final Notification notification) {
@@ -1185,7 +1189,7 @@ public class GraphController {
      * @param labeledElement
      *            the labeled element
      */
-    private void installLabelSyncAdapter(final ILabeledGraphElement labeledNode,
+    private void installLabelSyncAdapter(final ILabeledGraphElement<?> labeledNode,
             final KLabeledGraphElement labeledElement) {
         // add an adapter on the labeled element's labels
         labeledElement.eAdapters().add(new AdapterImpl() {
@@ -1249,7 +1253,7 @@ public class GraphController {
      *            the node representation
      */
     private void installTextSyncAdapter(final KLabelNode labelRep) {
-        final KLabel node = labelRep.getWrapped();
+        final KLabel node = labelRep.getGraphElement();
         // add an adapter on the node's ports
         node.eAdapters().add(new AdapterImpl() {
             public void notifyChanged(final Notification notification) {
@@ -1311,7 +1315,7 @@ public class GraphController {
      *            the edge representation
      */
     private void updateEdgeParent(final KEdgeNode edgeRep) {
-        KEdge edge = edgeRep.getWrapped();
+        KEdge edge = edgeRep.getGraphElement();
         KNode source = edge.getSource();
         KNode target = edge.getTarget();
         if (source != null && target != null) {
@@ -1334,7 +1338,7 @@ public class GraphController {
     public void updateEdgeOffset(final KEdgeNode edgeNode) {
         final PNode edgeNodeParent = edgeNode.getParent();
         if (edgeNodeParent != null) {
-            KEdge edge = edgeNode.getWrapped();
+            KEdge edge = edgeNode.getGraphElement();
             KNode source = edge.getSource();
             INode sourceParentNode =
                     RenderingContextData.get(source.getParent()).getProperty(INode.NODE_REP);
