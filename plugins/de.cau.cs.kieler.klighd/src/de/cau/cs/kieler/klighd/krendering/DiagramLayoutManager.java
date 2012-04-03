@@ -71,7 +71,7 @@ import de.cau.cs.kieler.klighd.views.DiagramViewPart;
  * A diagram layout manager for KLighD viewers which support instances of {@code KNode}.<br>
  * <br>
  * If the {@code KNode} instances have attached {@code KRendering} data the manager uses it to
- * compute the node insets if not set otherwise.
+ * compute the node insets.
  * 
  * @author mri
  */
