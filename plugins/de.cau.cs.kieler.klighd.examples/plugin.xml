@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="de.cau.cs.kieler.core.kivi.combinations">
+      <combination
+            active="true"
+            class="de.cau.cs.kieler.klighd.examples.ecore.EcoreDiagramSynthesisCombination"
+            name="Visualize chosen Ecore classes">
+      </combination>
+   </extension>
+   <extension
+         point="de.cau.cs.kieler.klighd.modelTransformations">
+      <transformation
+            class="de.cau.cs.kieler.klighd/de.cau.cs.kieler.klighd.transformations.GuiceBasedTransformationFactory:de.cau.cs.kieler.klighd.examples.ecore.EcoreDiagramSynthesis"
+            id="de.cau.cs.kieler.klighd.examples.ecore.EcoreDiagramSynthesis">
+      </transformation>
+   </extension>
+
+</plugin>
