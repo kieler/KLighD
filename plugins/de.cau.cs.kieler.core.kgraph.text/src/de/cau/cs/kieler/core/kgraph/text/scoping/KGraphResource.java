@@ -19,10 +19,10 @@ import java.io.OutputStream;
 import java.util.Map;
 
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.xtext.EcoreUtil2;
 import org.eclipse.xtext.linking.lazy.LazyLinkingResource;
 import org.eclipse.xtext.nodemodel.util.NodeModelUtils;
 
-import de.cau.cs.kieler.core.kgraph.KGraphPackage;
 import de.cau.cs.kieler.core.kgraph.KNode;
 import de.cau.cs.kieler.kiml.util.KimlUtil;
 
@@ -61,13 +61,7 @@ public class KGraphResource extends LazyLinkingResource {
         
         EObject refreshed = NodeModelUtils.findActualSemanticObjectFor(NodeModelUtils
                 .findLeafNodeAtOffset(this.getParseResult().getRootNode(), offset));
-        while (!KGraphPackage.eINSTANCE.getKNode().isInstance(refreshed)) {
-            refreshed = refreshed.eContainer();
-            if (refreshed == null) {
-                return;
-            }
-        }
-        KimlUtil.loadDataElements((KNode) refreshed);
+        KimlUtil.loadDataElements((KNode) EcoreUtil2.getRootContainer(refreshed));
     }
     
     /**

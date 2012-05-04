@@ -18,104 +18,130 @@ import java.util.ListIterator;
 
 /**
  * Mathematics utility class for the KIELER projects.
- *
+ * 
  * @kieler.rating 2009-12-11 proposed yellow msp
  * @author msp
  */
 public final class KielerMath {
-    
+
     /**
      * Hidden constructor to avoid instantiation.
      */
     private KielerMath() {
     }
-    
+
     /** table of precomputed factorial values. */
-    private static final long[] FACT_TABLE = {
-        1L, 1L, 2L, 6L, 24L, 120L, 720L, 5040L, 40320L, 362880L, 3628800L,
-        39916800L, 479001600L, 6227020800L, 87178291200L, 1307674368000L
-    };
-    
+    private static final long[] FACT_TABLE = { 1L, 1L, 2L, 6L, 24L, 120L, 720L, 5040L, 40320L,
+            362880L, 3628800L, 39916800L, 479001600L, 6227020800L, 87178291200L, 1307674368000L,
+            20922789888000L, 355687428096000L, 6402373705728000L, 121645100408832000L,
+            2432902008176640000L };
+
     /**
-     * The factorial of an integer x as long value. If x is negative the result is 1.
-     * This method always returns the exact value, but may lead to overflow for
-     * large input values.
+     * The factorial of an integer x as long value. If x is negative or greater then 20 then
+     * IllegalArgumentException. This method always returns the exact value for x between 0 and 20.
      * 
-     * @param x an integer
+     * @param x
+     *            an integer
      * @return the factorial of x
+     * @throws IllegalArgumentException
+     *             if x<0 or x>20
      */
-    public static long factl(final int x) { 
-        long result = 1;
-        for (int i = x; i > 1; i--) {
-            if (i < FACT_TABLE.length) {
-                return result * FACT_TABLE[i];
-            }
-            result *= i;
+    public static long factl(final int x) {
+        // IllegalArgumentException when x not between 0 and 20
+        if (x < 0 || x >= FACT_TABLE.length) {
+            throw new IllegalArgumentException("The input must be between 0 and "
+                    + FACT_TABLE.length);
         }
-        return result;
+        // return the appropriate value from FACT_TABLE with index x
+        return FACT_TABLE[x];
+
     }
-    
+
     /**
-     * The factorial of an integer x as double value. If x is negative the result is 1.
-     * This method returns the exact value for small input values, and uses
-     * Stirling's approximation for large input values.
+     * The factorial of an integer x as double value. If x is negative then
+     * IllegalArgumentException. If x>26 then the result is Infinity. This method returns the exact
+     * value for small input values, and uses Stirling's approximation for large input values.
      * 
-     * @param x an integer
+     * @param x
+     *            an integer
      * @return the factorial of x
+     * @throws IllegalArgumentException
+     *             if x<0
      */
     public static double factd(final int x) {
+        // IllegalArgumentException when x < 0
         if (x < 0) {
-            return 1;
+            throw new IllegalArgumentException("The input must be positive");
         } else if (x < FACT_TABLE.length) {
             return FACT_TABLE[x];
         } else {
             return Math.sqrt(2.0 * Math.PI * x) * (pow(x, x) / pow(Math.E, x));
         }
     }
-    
+
     /**
-     * The binomial coefficient of integers n and k as long value. If n is not
-     * positive or k is not between 0 and n the result is 1. This method
-     * always returns the exact value, but may take very long for large
-     * input values.
+     * The binomial coefficient of integers n and k as long value. If n is not positive or k is not
+     * between 0 and n the result is IllegalArgumentException. This method always returns the exact
+     * value, but may take very long for large input values.
      * 
-     * @param n the upper integer
-     * @param k the lower integer
+     * @param n
+     *            the upper integer
+     * @param k
+     *            the lower integer
      * @return n choose k
+     * @throws IllegalArgumentException
+     *             if n < 0 or n < 0 or k > n
      */
     public static long binomiall(final int n, final int k) {
-        if (n <= 0 || k <= 0 || k >= n) {
+        if (n < 0 || k < 0) {
+            throw new IllegalArgumentException("k and n must be positive");
+        } else if (k > n) {
+            throw new IllegalArgumentException("k must be smaller than n");
+        } else if (k == 0 || k == n) {
             return 1;
+        } else if (n == 0) {
+            return 0;
         } else if (n < FACT_TABLE.length) {
             return factl(n) / (factl(k) * factl(n - k));
         } else {
             return binomiall(n - 1, k - 1) + binomiall(n - 1, k);
         }
     }
-    
+
     /**
-     * The binomial coefficient of integers n and k as double value. If n is not
-     * positive or k is not between 0 and n the result is 1. This method returns
-     * the exact value for small input values, and uses an approximation for
-     * large input values.
+     * The binomial coefficient of integers n and k as double value. If n is not positive or k is
+     * not between 0 and n the result is IllegalArgumentException. This method returns the exact
+     * value for small input values, and uses an approximation for large input values.
      * 
-     * @param n the upper integer
-     * @param k the lower integer
+     * @param n
+     *            the upper integer
+     * @param k
+     *            the lower integer
      * @return n choose k
+     * @throws IllegalArgumentException
+     *             if n < 0 or n < 0 or k > n
      */
     public static double binomiald(final int n, final int k) {
-        if (n <= 0 || k <= 0 || k >= n) {
+        if (n < 0 || k < 0) {
+            throw new IllegalArgumentException("k and n must be positive");
+        } else if (k > n) {
+            throw new IllegalArgumentException("k must be smaller than n");
+        } else if (k == 0 || k == n) {
             return 1;
+        } else if (n == 0) {
+            return 0;
         } else {
             return factd(n) / (factd(k) * factd(n - k));
         }
     }
-    
+
     /**
      * The first argument raised to the power of the second argument.
      * 
-     * @param a the base
-     * @param b the exponent
+     * @param a
+     *            the base
+     * @param b
+     *            the exponent
      * @return a to the power of b
      */
     public static double pow(final double a, final int b) {
@@ -136,12 +162,14 @@ public final class KielerMath {
             return result;
         }
     }
-    
+
     /**
      * The first argument raised to the power of the second argument.
      * 
-     * @param a the base
-     * @param b the exponent
+     * @param a
+     *            the base
+     * @param b
+     *            the exponent
      * @return a to the power of b
      */
     public static float pow(final float a, final int b) {
@@ -162,19 +190,19 @@ public final class KielerMath {
             return result;
         }
     }
-    
+
     /**
-     * Calculates a number of points on the Bezier curve defined by the given control points.
-     * The degree of the curve is derived from the number of control points. The array of
-     * resulting curve points includes the target point, but does not include the source point
-     * of the curve.
+     * Calculates a number of points on the Bezier curve defined by the given control points. The
+     * degree of the curve is derived from the number of control points. The array of resulting
+     * curve points includes the target point, but does not include the source point of the curve.
      * 
-     * @param controlPoints list of control points
-     * @param resultSize number of returned curve points
+     * @param controlPoints
+     *            list of control points
+     * @param resultSize
+     *            number of returned curve points
      * @return points on the curve defined by the given control points
      */
-    public static KVector[] calcBezierPoints(final List<KVector> controlPoints,
-            final int resultSize) {
+    public static KVector[] calcBezierPoints(final List<KVector> controlPoints, final int resultSize) {
         if (resultSize <= 0) {
             return new KVector[0];
         }
@@ -194,19 +222,19 @@ public final class KielerMath {
         }
         return result;
     }
-    
+
     /**
-     * Calculate a number of points on the Bezier curve defined by the given control points.
-     * The degree of the curve is derived from the number of control points. The array of
-     * resulting curve points includes the target point, but does not include the source point
-     * of the curve.
+     * Calculate a number of points on the Bezier curve defined by the given control points. The
+     * degree of the curve is derived from the number of control points. The array of resulting
+     * curve points includes the target point, but does not include the source point of the curve.
      * 
-     * @param controlPoints the control points
-     * @param resultSize number of returned curve points
+     * @param controlPoints
+     *            the control points
+     * @param resultSize
+     *            number of returned curve points
      * @return points on the curve defined by the given control points
      */
-    public static KVector[] calcBezierPoints(final int resultSize,
-            final KVector ... controlPoints) {
+    public static KVector[] calcBezierPoints(final int resultSize, final KVector... controlPoints) {
         if (resultSize <= 0) {
             return new KVector[0];
         }
@@ -226,38 +254,41 @@ public final class KielerMath {
         }
         return result;
     }
-    
+
     /**
-     * Calculate a number of points on the Bezier curve defined by the given control points.
-     * The degree of the curve is derived from the number of control points. The array of
-     * resulting curve points includes the target point, but does not include the source point
-     * of the curve. The number of approximation points is derived from the given control points.
+     * Calculate a number of points on the Bezier curve defined by the given control points. The
+     * degree of the curve is derived from the number of control points. The array of resulting
+     * curve points includes the target point, but does not include the source point of the curve.
+     * The number of approximation points is derived from the given control points.
      * 
-     * @param controlPoints the control points
+     * @param controlPoints
+     *            the control points
      * @return points on the curve defined by the given control points
      */
-    public static KVector[] calcBezierPoints(final KVector ... controlPoints) {
+    public static KVector[] calcBezierPoints(final KVector... controlPoints) {
         return calcBezierPoints(getApproximationCount(controlPoints), controlPoints);
     }
-    
+
     /**
-     * Calculate a suggestion for the number of approximation points of the Bezier curve that
-     * is defined by the given control points. The degree of the curve is derived from the
-     * number of control points.
+     * Calculate a suggestion for the number of approximation points of the Bezier curve that is
+     * defined by the given control points. The degree of the curve is derived from the number of
+     * control points.
      * 
-     * @param controlPoints the control points
+     * @param controlPoints
+     *            the control points
      * @return a recommendation for the number of approximation points for the curve
      */
-    public static int getApproximationCount(final KVector ... controlPoints) {
+    public static int getApproximationCount(final KVector... controlPoints) {
         // TODO find a more intelligent count for the approximation points
         return controlPoints.length;
     }
-    
+
     /**
-     * Computes an approximation for the spline that is defined by the given control points.
-     * The control points are interpreted as a series of cubic Bezier curves.
+     * Computes an approximation for the spline that is defined by the given control points. The
+     * control points are interpreted as a series of cubic Bezier curves.
      * 
-     * @param controlPoints control points of a piecewise cubic spline
+     * @param controlPoints
+     *            control points of a piecewise cubic spline
      * @return a vector chain that approximates the spline
      */
     public static KVectorChain appoximateSpline(final KVectorChain controlPoints) {
@@ -284,22 +315,27 @@ public final class KielerMath {
         }
         return spline;
     }
-    
+
     /** degree of splines equation to find roots. */
     private static final int W_DEGREE = 5;
-    
+
     /**
      * Calculate the distance from a cubic spline curve to the point needle.
      * 
-     * @param start starting point
-     * @param c1 control point 1
-     * @param c2 control point 2
-     * @param end end point
-     * @param needle point to look for
+     * @param start
+     *            starting point
+     * @param c1
+     *            control point 1
+     * @param c2
+     *            control point 2
+     * @param end
+     *            end point
+     * @param needle
+     *            point to look for
      * @return distance from needle to curve
      */
-    public static double distanceFromSpline(final KVector start, final KVector c1, final KVector c2,
-            final KVector end, final KVector needle) {
+    public static double distanceFromSpline(final KVector start, final KVector c1,
+            final KVector c2, final KVector end, final KVector needle) {
         double[] tCandidate = new double[W_DEGREE]; // possible roots
         KVector[] v = { start, c1, c2, end };
 
@@ -335,17 +371,16 @@ public final class KielerMath {
         KVector pn = new KVector(bezier(v, DEGREE, t, null, null));
         return Math.sqrt(pn.distance(needle));
     }
-    
+
     /** cubic Bezier curves. */
     private static final int DEGREE = 3;
     /** precomputed "z" for cubics. */
-    private static final double[][] CUBIC_Z = { { 1.0, 0.6, 0.3, 0.1 },
-        { 0.4, 0.6, 0.6, 0.4 }, { 0.1, 0.3, 0.6, 1.0 }, };
-    
+    private static final double[][] CUBIC_Z = { { 1.0, 0.6, 0.3, 0.1 }, { 0.4, 0.6, 0.6, 0.4 },
+            { 0.1, 0.3, 0.6, 1.0 }, };
+
     /**
-     * Given a point and a Bezier curve, generate a 5th-degree Bezier-format
-     * equation whose solution finds the point on the curve nearest the
-     * user-defined point.
+     * Given a point and a Bezier curve, generate a 5th-degree Bezier-format equation whose solution
+     * finds the point on the curve nearest the user-defined point.
      */
     private static KVector[] convertToBezierForm(final KVector[] v, final KVector pa) {
         KVector[] c = new KVector[DEGREE + 1]; // v(i) - pa
@@ -363,16 +398,14 @@ public final class KielerMath {
         // each control point from the next
         double s = DEGREE;
         for (int i = 0; i <= DEGREE - 1; i++) {
-            d[i] = new KVector(s * (v[i + 1].x - v[i].x), s
-                    * (v[i + 1].y - v[i].y));
+            d[i] = new KVector(s * (v[i + 1].x - v[i].x), s * (v[i + 1].y - v[i].y));
         }
 
         // Create the c,d table -- this is a table of dot products of the
         // c's and d's */
         for (int row = 0; row <= DEGREE - 1; row++) {
             for (int column = 0; column <= DEGREE; column++) {
-                cdTable[row][column] = (d[row].x * c[column].x)
-                        + (d[row].y * c[column].y);
+                cdTable[row][column] = (d[row].x * c[column].x) + (d[row].y * c[column].y);
             }
         }
 
@@ -395,13 +428,13 @@ public final class KielerMath {
 
         return w;
     }
-    
+
     /** maximum depth for recursion. */
     private static final int MAXDEPTH = 64;
-    
+
     /**
-     * Given a 5th-degree equation in Bernstein-Bezier form, find all of the
-     * roots in the interval [0, 1].
+     * Given a 5th-degree equation in Bernstein-Bezier form, find all of the roots in the interval
+     * [0, 1].
      * 
      * @return the number of roots found.
      */
@@ -447,13 +480,13 @@ public final class KielerMath {
         // Send back total number of solutions */
         return leftCount + rightCount;
     }
-    
+
     /** Flatness. */
     private static final double EPSILON = 1.0 * Math.pow(2, -MAXDEPTH - 1);
-    
+
     /**
-     * Check if the control polygon of a Bezier curve is flat enough for
-     * recursive subdivision to bottom out.
+     * Check if the control polygon of a Bezier curve is flat enough for recursive subdivision to
+     * bottom out.
      */
     private static boolean controlPolygonFlatEnough(final KVector[] v, final int degree) {
 
@@ -525,7 +558,7 @@ public final class KielerMath {
 
         return error < EPSILON;
     }
-    
+
     /**
      * Compute intersection of chord from first control point to last with 0-axis.
      */
@@ -539,10 +572,10 @@ public final class KielerMath {
 
         return (xnm * ymk - ynm * xmk) * detInv;
     }
-    
+
     /**
-     * Count the number of times a Bezier control polygon crosses the 0-axis.
-     * This number is >= the number of roots.
+     * Count the number of times a Bezier control polygon crosses the 0-axis. This number is >= the
+     * number of roots.
      */
     private static int crossingCount(final KVector[] v, final int degree) {
         int nCrossings = 0;
@@ -557,16 +590,19 @@ public final class KielerMath {
         }
         return nCrossings;
     }
-    
+
     /**
      * Compute bezier curve.
      * 
-     * @param c control points
-     * @param degree degree of curve
-     * @param t parameter for bezier function
+     * @param c
+     *            control points
+     * @param degree
+     *            degree of curve
+     * @param t
+     *            parameter for bezier function
      */
-    private static KVector bezier(final KVector[] c, final int degree,
-            final double t, final KVector[] left, final KVector[] right) {
+    private static KVector bezier(final KVector[] c, final int degree, final double t,
+            final KVector[] left, final KVector[] right) {
         KVector[][] p = new KVector[W_DEGREE + 1][W_DEGREE + 1];
 
         for (int j = 0; j <= degree; j++) {
@@ -575,9 +611,8 @@ public final class KielerMath {
 
         for (int i = 1; i <= degree; i++) {
             for (int j = 0; j <= degree - i; j++) {
-                p[i][j] = new KVector((1.0 - t) * p[i - 1][j].x + t
-                        * p[i - 1][j + 1].x, (1.0 - t) * p[i - 1][j].y + t
-                        * p[i - 1][j + 1].y);
+                p[i][j] = new KVector((1.0 - t) * p[i - 1][j].x + t * p[i - 1][j + 1].x, (1.0 - t)
+                        * p[i - 1][j].y + t * p[i - 1][j + 1].y);
             }
         }
 
@@ -594,14 +629,15 @@ public final class KielerMath {
         }
         return p[degree][0];
     }
-    
+
     /**
      * Determines the maximum for an arbitrary number of integers.
      * 
-     * @param values integer values
+     * @param values
+     *            integer values
      * @return the maximum of the given values, or {@code MIN_VALUE} if no values are given
      */
-    public static int maxi(final int ... values) {
+    public static int maxi(final int... values) {
         int max = Integer.MIN_VALUE;
         for (int i = 0; i < values.length; i++) {
             if (values[i] > max) {
@@ -610,14 +646,15 @@ public final class KielerMath {
         }
         return max;
     }
-    
+
     /**
      * Determines the minimum for an arbitrary number of integers.
      * 
-     * @param values integer values
+     * @param values
+     *            integer values
      * @return the minimum of the given values, or {@code MAX_VALUE} if no values are given
      */
-    public static int mini(final int ... values) {
+    public static int mini(final int... values) {
         int min = Integer.MAX_VALUE;
         for (int i = 0; i < values.length; i++) {
             if (values[i] < min) {
@@ -626,28 +663,30 @@ public final class KielerMath {
         }
         return min;
     }
-    
+
     /**
      * Determines the average for an arbitrary number of integers.
      * 
-     * @param values integer values
+     * @param values
+     *            integer values
      * @return the average of the given values
      */
-    public static int averagei(final int ... values) {
+    public static int averagei(final int... values) {
         int avg = 0;
         for (int i = 0; i < values.length; i++) {
             avg += values[i];
         }
         return avg / values.length;
     }
-    
+
     /**
      * Determines the maximum for an arbitrary number of long integers.
      * 
-     * @param values integer values
+     * @param values
+     *            integer values
      * @return the maximum of the given values, or {@code MIN_VALUE} if no values are given
      */
-    public static long maxl(final long ... values) {
+    public static long maxl(final long... values) {
         long max = Integer.MIN_VALUE;
         for (int i = 0; i < values.length; i++) {
             if (values[i] > max) {
@@ -656,14 +695,15 @@ public final class KielerMath {
         }
         return max;
     }
-    
+
     /**
      * Determines the minimum for an arbitrary number of long integers.
      * 
-     * @param values integer values
+     * @param values
+     *            integer values
      * @return the minimum of the given values, or {@code MAX_VALUE} if no values are given
      */
-    public static long minl(final long ... values) {
+    public static long minl(final long... values) {
         long min = Integer.MAX_VALUE;
         for (int i = 0; i < values.length; i++) {
             if (values[i] < min) {
@@ -672,28 +712,30 @@ public final class KielerMath {
         }
         return min;
     }
-    
+
     /**
      * Determines the average for an arbitrary number of long integers.
      * 
-     * @param values integer values
+     * @param values
+     *            integer values
      * @return the average of the given values
      */
-    public static long averagei(final long ... values) {
+    public static long averagei(final long... values) {
         long avg = 0;
         for (int i = 0; i < values.length; i++) {
             avg += values[i];
         }
         return avg / values.length;
     }
-    
+
     /**
      * Determines the maximum for an arbitrary number of floats.
      * 
-     * @param values float values
+     * @param values
+     *            float values
      * @return the maximum of the given values, or {@code -MAX_VALUE} if no values are given
      */
-    public static float maxf(final float ... values) {
+    public static float maxf(final float... values) {
         float max = -Float.MAX_VALUE;
         for (int i = 0; i < values.length; i++) {
             if (values[i] > max) {
@@ -702,14 +744,15 @@ public final class KielerMath {
         }
         return max;
     }
-    
+
     /**
      * Determines the minimum for an arbitrary number of floats.
      * 
-     * @param values float values
+     * @param values
+     *            float values
      * @return the minimum of the given values, or {@code MAX_VALUE} if no values are given
      */
-    public static float minf(final float ... values) {
+    public static float minf(final float... values) {
         float min = Float.MAX_VALUE;
         for (int i = 0; i < values.length; i++) {
             if (values[i] < min) {
@@ -718,28 +761,30 @@ public final class KielerMath {
         }
         return min;
     }
-    
+
     /**
      * Determines the average for an arbitrary number of floats.
      * 
-     * @param values float values
+     * @param values
+     *            float values
      * @return the average of the given values
      */
-    public static float averagef(final float ... values) {
+    public static float averagef(final float... values) {
         float avg = 0;
         for (int i = 0; i < values.length; i++) {
             avg += values[i];
         }
         return avg / values.length;
     }
-    
+
     /**
      * Determines the maximum for an arbitrary number of doubles.
      * 
-     * @param values double values
+     * @param values
+     *            double values
      * @return the maximum of the given values, or {@code -MAX_VALUE} if no values are given
      */
-    public static double maxd(final double ... values) {
+    public static double maxd(final double... values) {
         double max = -Double.MAX_VALUE;
         for (int i = 0; i < values.length; i++) {
             if (values[i] > max) {
@@ -748,14 +793,15 @@ public final class KielerMath {
         }
         return max;
     }
-    
+
     /**
      * Determines the minimum for an arbitrary number of doubles.
      * 
-     * @param values double values
+     * @param values
+     *            double values
      * @return the minimum of the given values, or {@code MAX_VALUE} if no values are given
      */
-    public static double mind(final double ... values) {
+    public static double mind(final double... values) {
         double min = Double.MAX_VALUE;
         for (int i = 0; i < values.length; i++) {
             if (values[i] < min) {
@@ -764,14 +810,15 @@ public final class KielerMath {
         }
         return min;
     }
-    
+
     /**
      * Determines the average for an arbitrary number of doubles.
      * 
-     * @param values double values
+     * @param values
+     *            double values
      * @return the average of the given values
      */
-    public static double averaged(final double ... values) {
+    public static double averaged(final double... values) {
         double avg = 0;
         for (int i = 0; i < values.length; i++) {
             avg += values[i];

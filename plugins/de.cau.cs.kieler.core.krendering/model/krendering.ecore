@@ -141,11 +141,13 @@
     <eLiterals name="LEFT"/>
     <eLiterals name="CENTER" value="1"/>
     <eLiterals name="RIGHT" value="2"/>
+    <eLiterals name="EEnumLiteral0" value="3"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EEnum" name="VerticalAlignment">
     <eLiterals name="TOP"/>
     <eLiterals name="CENTER" value="1"/>
     <eLiterals name="BOTTOM" value="2"/>
+    <eLiterals name="EEnumLiteral0" value="3"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="KVerticalAlignment" eSuperTypes="#//KStyle">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="verticalAlignment" lowerBound="1"

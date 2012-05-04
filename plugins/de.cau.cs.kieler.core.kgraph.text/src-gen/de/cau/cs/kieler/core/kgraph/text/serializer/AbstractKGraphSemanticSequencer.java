@@ -18,6 +18,10 @@ import de.cau.cs.kieler.core.krendering.KCustomRendering;
 import de.cau.cs.kieler.core.krendering.KDecoratorPlacementData;
 import de.cau.cs.kieler.core.krendering.KDirectPlacementData;
 import de.cau.cs.kieler.core.krendering.KEllipse;
+import de.cau.cs.kieler.core.krendering.KFontBold;
+import de.cau.cs.kieler.core.krendering.KFontItalic;
+import de.cau.cs.kieler.core.krendering.KFontName;
+import de.cau.cs.kieler.core.krendering.KFontSize;
 import de.cau.cs.kieler.core.krendering.KForegroundColor;
 import de.cau.cs.kieler.core.krendering.KForegroundVisibility;
 import de.cau.cs.kieler.core.krendering.KGridPlacement;
@@ -217,6 +221,34 @@ public class AbstractKGraphSemanticSequencer extends AbstractSemanticSequencer {
 				   context == grammarAccess.getKGraphDataRule() ||
 				   context == grammarAccess.getKRenderingRule()) {
 					sequence_KEllipse(context, (KEllipse) semanticObject); 
+					return; 
+				}
+				else break;
+			case KRenderingPackage.KFONT_BOLD:
+				if(context == grammarAccess.getKFontBoldRule() ||
+				   context == grammarAccess.getKStyleRule()) {
+					sequence_KFontBold(context, (KFontBold) semanticObject); 
+					return; 
+				}
+				else break;
+			case KRenderingPackage.KFONT_ITALIC:
+				if(context == grammarAccess.getKFontItalicRule() ||
+				   context == grammarAccess.getKStyleRule()) {
+					sequence_KFontItalic(context, (KFontItalic) semanticObject); 
+					return; 
+				}
+				else break;
+			case KRenderingPackage.KFONT_NAME:
+				if(context == grammarAccess.getKFontNameRule() ||
+				   context == grammarAccess.getKStyleRule()) {
+					sequence_KFontName(context, (KFontName) semanticObject); 
+					return; 
+				}
+				else break;
+			case KRenderingPackage.KFONT_SIZE:
+				if(context == grammarAccess.getKFontSizeRule() ||
+				   context == grammarAccess.getKStyleRule()) {
+					sequence_KFontSize(context, (KFontSize) semanticObject); 
 					return; 
 				}
 				else break;
@@ -532,6 +564,42 @@ public class AbstractKGraphSemanticSequencer extends AbstractSemanticSequencer {
 	
 	/**
 	 * Constraint:
+	 *     (propagateToChildren?='!'?)
+	 */
+	protected void sequence_KFontBold(EObject context, KFontBold semanticObject) {
+		superSequencer.createSequence(context, semanticObject);
+	}
+	
+	
+	/**
+	 * Constraint:
+	 *     (propagateToChildren?='!'?)
+	 */
+	protected void sequence_KFontItalic(EObject context, KFontItalic semanticObject) {
+		superSequencer.createSequence(context, semanticObject);
+	}
+	
+	
+	/**
+	 * Constraint:
+	 *     (name=EString propagateToChildren?='!'?)
+	 */
+	protected void sequence_KFontName(EObject context, KFontName semanticObject) {
+		superSequencer.createSequence(context, semanticObject);
+	}
+	
+	
+	/**
+	 * Constraint:
+	 *     (size=EInt propagateToChildren?='!'?)
+	 */
+	protected void sequence_KFontSize(EObject context, KFontSize semanticObject) {
+		superSequencer.createSequence(context, semanticObject);
+	}
+	
+	
+	/**
+	 * Constraint:
 	 *     (red=EInt green=EInt blue=EInt propagateToChildren?='!'?)
 	 */
 	protected void sequence_KForegroundColor(EObject context, KForegroundColor semanticObject) {
@@ -805,7 +873,7 @@ public class AbstractKGraphSemanticSequencer extends AbstractSemanticSequencer {
 	 *     (
 	 *         text=EString? 
 	 *         (
-	 *             clip?='clip' 
+	 *             clip?='clip'? 
 	 *             (styles+=KStyle styles+=KStyle*)? 
 	 *             placementData=KPlacementData? 
 	 *             (children+=KRendering children+=KRendering*)? 

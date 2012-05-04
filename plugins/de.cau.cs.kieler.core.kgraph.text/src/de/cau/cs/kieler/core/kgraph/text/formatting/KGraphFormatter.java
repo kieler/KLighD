@@ -43,9 +43,9 @@ public class KGraphFormatter extends AbstractDeclarativeFormatter {
             c.setNoSpace().before(comma);
             c.setLinewrap().after(comma);
         }
-        for (RuleCall value : f.findRuleCalls(f.getEFloatRule(), f.getEIntRule())) {
-            c.setLinewrap().after(value);            
-        }
+//        for (RuleCall value : f.findRuleCalls(f.getEFloatRule(), f.getEIntRule())) {
+//            c.setLinewrap().after(value);            
+//        }
         
         c.setNoLinewrap().after(
                 f.getKRenderingGrammarAccess().getKLayoutDataGrammarAccess().getKPointAccess()

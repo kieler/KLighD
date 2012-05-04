@@ -13,6 +13,10 @@ import de.cau.cs.kieler.core.krendering.KCustomRendering;
 import de.cau.cs.kieler.core.krendering.KDecoratorPlacementData;
 import de.cau.cs.kieler.core.krendering.KDirectPlacementData;
 import de.cau.cs.kieler.core.krendering.KEllipse;
+import de.cau.cs.kieler.core.krendering.KFontBold;
+import de.cau.cs.kieler.core.krendering.KFontItalic;
+import de.cau.cs.kieler.core.krendering.KFontName;
+import de.cau.cs.kieler.core.krendering.KFontSize;
 import de.cau.cs.kieler.core.krendering.KForegroundColor;
 import de.cau.cs.kieler.core.krendering.KForegroundVisibility;
 import de.cau.cs.kieler.core.krendering.KGridPlacement;
@@ -186,6 +190,34 @@ public class AbstractKRenderingSemanticSequencer extends AbstractSemanticSequenc
 				if(context == grammarAccess.getKEllipseRule() ||
 				   context == grammarAccess.getKRenderingRule()) {
 					sequence_KEllipse(context, (KEllipse) semanticObject); 
+					return; 
+				}
+				else break;
+			case KRenderingPackage.KFONT_BOLD:
+				if(context == grammarAccess.getKFontBoldRule() ||
+				   context == grammarAccess.getKStyleRule()) {
+					sequence_KFontBold(context, (KFontBold) semanticObject); 
+					return; 
+				}
+				else break;
+			case KRenderingPackage.KFONT_ITALIC:
+				if(context == grammarAccess.getKFontItalicRule() ||
+				   context == grammarAccess.getKStyleRule()) {
+					sequence_KFontItalic(context, (KFontItalic) semanticObject); 
+					return; 
+				}
+				else break;
+			case KRenderingPackage.KFONT_NAME:
+				if(context == grammarAccess.getKFontNameRule() ||
+				   context == grammarAccess.getKStyleRule()) {
+					sequence_KFontName(context, (KFontName) semanticObject); 
+					return; 
+				}
+				else break;
+			case KRenderingPackage.KFONT_SIZE:
+				if(context == grammarAccess.getKFontSizeRule() ||
+				   context == grammarAccess.getKStyleRule()) {
+					sequence_KFontSize(context, (KFontSize) semanticObject); 
 					return; 
 				}
 				else break;
@@ -405,7 +437,7 @@ public class AbstractKRenderingSemanticSequencer extends AbstractSemanticSequenc
 		INodesForEObjectProvider nodes = createNodeProvider(semanticObject);
 		SequenceFeeder feeder = createSequencerFeeder(semanticObject, nodes);
 		feeder.accept(grammarAccess.getKBottomPositionAccess().getAbsoluteEFloatParserRuleCall_2_0(), semanticObject.getAbsolute());
-		feeder.accept(grammarAccess.getKBottomPositionAccess().getRelativeEFloatParserRuleCall_4_0(), semanticObject.getRelative());
+		feeder.accept(grammarAccess.getKBottomPositionAccess().getRelativeEFloatParserRuleCall_3_0(), semanticObject.getRelative());
 		feeder.finish();
 	}
 	
@@ -467,7 +499,7 @@ public class AbstractKRenderingSemanticSequencer extends AbstractSemanticSequenc
 		INodesForEObjectProvider nodes = createNodeProvider(semanticObject);
 		SequenceFeeder feeder = createSequencerFeeder(semanticObject, nodes);
 		feeder.accept(grammarAccess.getKDirectPlacementDataAccess().getTopLeftKPositionParserRuleCall_3_0(), semanticObject.getTopLeft());
-		feeder.accept(grammarAccess.getKDirectPlacementDataAccess().getBottomRightKPositionParserRuleCall_5_0(), semanticObject.getBottomRight());
+		feeder.accept(grammarAccess.getKDirectPlacementDataAccess().getBottomRightKPositionParserRuleCall_6_0(), semanticObject.getBottomRight());
 		feeder.finish();
 	}
 	
@@ -491,6 +523,42 @@ public class AbstractKRenderingSemanticSequencer extends AbstractSemanticSequenc
 	 *     (((styles+=KStyle styles+=KStyle*)? placementData=KPlacementData? childPlacement=KPlacement? (children+=KRendering children+=KRendering*)?)?)
 	 */
 	protected void sequence_KEllipse(EObject context, KEllipse semanticObject) {
+		genericSequencer.createSequence(context, semanticObject);
+	}
+	
+	
+	/**
+	 * Constraint:
+	 *     (propagateToChildren?='!'?)
+	 */
+	protected void sequence_KFontBold(EObject context, KFontBold semanticObject) {
+		genericSequencer.createSequence(context, semanticObject);
+	}
+	
+	
+	/**
+	 * Constraint:
+	 *     (propagateToChildren?='!'?)
+	 */
+	protected void sequence_KFontItalic(EObject context, KFontItalic semanticObject) {
+		genericSequencer.createSequence(context, semanticObject);
+	}
+	
+	
+	/**
+	 * Constraint:
+	 *     (name=EString propagateToChildren?='!'?)
+	 */
+	protected void sequence_KFontName(EObject context, KFontName semanticObject) {
+		genericSequencer.createSequence(context, semanticObject);
+	}
+	
+	
+	/**
+	 * Constraint:
+	 *     (size=EInt propagateToChildren?='!'?)
+	 */
+	protected void sequence_KFontSize(EObject context, KFontSize semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
 	}
 	
@@ -612,7 +680,7 @@ public class AbstractKRenderingSemanticSequencer extends AbstractSemanticSequenc
 		INodesForEObjectProvider nodes = createNodeProvider(semanticObject);
 		SequenceFeeder feeder = createSequencerFeeder(semanticObject, nodes);
 		feeder.accept(grammarAccess.getKLeftPositionAccess().getAbsoluteEFloatParserRuleCall_2_0(), semanticObject.getAbsolute());
-		feeder.accept(grammarAccess.getKLeftPositionAccess().getRelativeEFloatParserRuleCall_4_0(), semanticObject.getRelative());
+		feeder.accept(grammarAccess.getKLeftPositionAccess().getRelativeEFloatParserRuleCall_3_0(), semanticObject.getRelative());
 		feeder.finish();
 	}
 	
@@ -740,7 +808,7 @@ public class AbstractKRenderingSemanticSequencer extends AbstractSemanticSequenc
 		INodesForEObjectProvider nodes = createNodeProvider(semanticObject);
 		SequenceFeeder feeder = createSequencerFeeder(semanticObject, nodes);
 		feeder.accept(grammarAccess.getKRightPositionAccess().getAbsoluteEFloatParserRuleCall_2_0(), semanticObject.getAbsolute());
-		feeder.accept(grammarAccess.getKRightPositionAccess().getRelativeEFloatParserRuleCall_4_0(), semanticObject.getRelative());
+		feeder.accept(grammarAccess.getKRightPositionAccess().getRelativeEFloatParserRuleCall_3_0(), semanticObject.getRelative());
 		feeder.finish();
 	}
 	
@@ -813,7 +881,7 @@ public class AbstractKRenderingSemanticSequencer extends AbstractSemanticSequenc
 	 *     (
 	 *         text=EString? 
 	 *         (
-	 *             clip?='clip' 
+	 *             clip?='clip'? 
 	 *             (styles+=KStyle styles+=KStyle*)? 
 	 *             placementData=KPlacementData? 
 	 *             (children+=KRendering children+=KRendering*)? 
@@ -840,7 +908,7 @@ public class AbstractKRenderingSemanticSequencer extends AbstractSemanticSequenc
 		INodesForEObjectProvider nodes = createNodeProvider(semanticObject);
 		SequenceFeeder feeder = createSequencerFeeder(semanticObject, nodes);
 		feeder.accept(grammarAccess.getKTopPositionAccess().getAbsoluteEFloatParserRuleCall_2_0(), semanticObject.getAbsolute());
-		feeder.accept(grammarAccess.getKTopPositionAccess().getRelativeEFloatParserRuleCall_4_0(), semanticObject.getRelative());
+		feeder.accept(grammarAccess.getKTopPositionAccess().getRelativeEFloatParserRuleCall_3_0(), semanticObject.getRelative());
 		feeder.finish();
 	}
 	

@@ -83,7 +83,26 @@ public abstract class AbstractTransformation<S, T> implements ITransformation<S,
         this.targetSourceElementMap.put(target, source);
         return target;
     }
-     
+    
+    /**
+     * A helper method allowing to adopt the mappings of another transformation.
+     * This is needed if a diagram synthesis delegates to another one.
+     * 
+     * @param other the delegate transformation to take the mapping from
+     */
+    protected void takeMappingsOf(final AbstractTransformation<?, T> other) {
+        if (other.targetSourceElementMap == null
+                || other.sourceTargetElementMap == null) {
+            return;
+        }
+        if (this.targetSourceElementMap == null
+                || this.sourceTargetElementMap == null) {
+            this.targetSourceElementMap = Maps.newHashMap();
+            this.sourceTargetElementMap = HashMultimap.create();
+        }
+        this.sourceTargetElementMap.putAll(other.sourceTargetElementMap);
+        this.targetSourceElementMap.putAll(other.targetSourceElementMap);
+    }
     
     
     /** whether it has been tried to infer the classes. */
