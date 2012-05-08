@@ -23,12 +23,12 @@ KNode returns KNode:
 	{KNode}
 	'KNode'
 	'{'
-		('ports' ports+=KPort ( "," ports+=KPort)* )?
-		('data' ':' data+=KGraphData ( "," data+=KGraphData)* )?
-		//('labels' '{' labels+=KLabel ( "," labels+=KLabel)* '}' )?
-		('children' ':' children+=KNode ( "," children+=KNode)* )?
+		('ports' ports+=KPort ( ","? ports+=KPort)* )?
+		('data' ':'? data+=KGraphData ( ","? data+=KGraphData)* )?
+		//('labels' '{' labels+=KLabel ( ","? labels+=KLabel)* '}' )?
+		('children' ':'? children+=KNode ( ","? children+=KNode)* )?
     '}'
-    (outgoingEdges+=KEdge ( "," outgoingEdges+=KEdge)*)?
+    (outgoingEdges+=KEdge ( ","? outgoingEdges+=KEdge)*)?
     ;
 
 KLabel returns KLabel:
@@ -39,7 +39,7 @@ KLabel returns KLabel:
 //    '}';
 	'KLabel' text=EString
 	'{'
-		('data' ':' data+=KGraphData ( "," data+=KGraphData)* )?
+		('data' ':'? data+=KGraphData ( ","? data+=KGraphData)* )?
     '}';
 
 KPort returns KPort:
@@ -53,9 +53,9 @@ KPort returns KPort:
 	{KPort}
 	'KPort'
 	'{'
-		('edges' ':' edges+=[KEdge|EString] ( "," edges+=[KEdge|EString])*)?
-		('data' ':' data+=KGraphData ( "," data+=KGraphData)*)?
-		('labels' ':' labels+=KLabel ( "," labels+=KLabel)*)?
+		('edges' ':'? edges+=[KEdge|EString] ( ","? edges+=[KEdge|EString])*)?
+		('data' ':'? data+=KGraphData ( ","? data+=KGraphData)*)?
+		('labels' ':'? labels+=KLabel ( ","? labels+=KLabel)*)?
     '}';
 
 KEdge returns KEdge:
@@ -67,12 +67,12 @@ KEdge returns KEdge:
 //		('data' '{' data+=KGraphData ( "," data+=KGraphData)* '}' )?
 //		('labels' '{' labels+=KLabel ( "," labels+=KLabel)* '}' )?
 //    '}';
-	'-->' 'target' target=[KNode|EString]
+	'-->' target=[KNode|EString]
 	'{'
 		('sourcePort' sourcePort=[KPort|EString])?
 		('targetPort' targetPort=[KPort|EString])?
-		('data' ':' data+=KGraphData ( "," data+=KGraphData)*)?
-		('labels' ':' labels+=KLabel ( "," labels+=KLabel)*)?
+		('data' ':'? data+=KGraphData ( ","? data+=KGraphData)*)?
+		('labels' ':'? labels+=KLabel ( ","? labels+=KLabel)*)?
     '}';
 
 // Error marker is a false positive; generation works anyway!

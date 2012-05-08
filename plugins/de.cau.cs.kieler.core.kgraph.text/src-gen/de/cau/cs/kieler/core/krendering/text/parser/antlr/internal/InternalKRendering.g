@@ -110,11 +110,11 @@ ruleKRenderingLibrary returns [EObject current=null]
 	    }
 
 )
-)(	otherlv_4=',' 
+)((	otherlv_4=',' 
     {
     	newLeafNode(otherlv_4, grammarAccess.getKRenderingLibraryAccess().getCommaKeyword_3_1_0());
     }
-(
+)?(
 (
 		{ 
 	        newCompositeNode(grammarAccess.getKRenderingLibraryAccess().getRenderingsKRenderingParserRuleCall_3_1_1_0()); 
@@ -694,11 +694,11 @@ ruleKRenderingRef returns [EObject current=null]
 	    }
 
 )
-)(	otherlv_9=',' 
+)((	otherlv_9=',' 
     {
     	newLeafNode(otherlv_9, grammarAccess.getKRenderingRefAccess().getCommaKeyword_3_2_3_0());
     }
-(
+)?(
 (
 		{ 
 	        newCompositeNode(grammarAccess.getKRenderingRefAccess().getStylesKStyleParserRuleCall_3_2_3_1_0()); 
@@ -763,11 +763,11 @@ ruleKEllipse returns [EObject current=null]
     {
     	newLeafNode(otherlv_3, grammarAccess.getKEllipseAccess().getStylesKeyword_2_1_0());
     }
-	otherlv_4=':' 
+(	otherlv_4=':' 
     {
     	newLeafNode(otherlv_4, grammarAccess.getKEllipseAccess().getColonKeyword_2_1_1());
     }
-(
+)?(
 (
 		{ 
 	        newCompositeNode(grammarAccess.getKEllipseAccess().getStylesKStyleParserRuleCall_2_1_2_0()); 
@@ -785,11 +785,11 @@ ruleKEllipse returns [EObject current=null]
 	    }
 
 )
-)(	otherlv_6=',' 
+)((	otherlv_6=',' 
     {
     	newLeafNode(otherlv_6, grammarAccess.getKEllipseAccess().getCommaKeyword_2_1_3_0());
     }
-(
+)?(
 (
 		{ 
 	        newCompositeNode(grammarAccess.getKEllipseAccess().getStylesKStyleParserRuleCall_2_1_3_1_0()); 
@@ -811,11 +811,11 @@ ruleKEllipse returns [EObject current=null]
     {
     	newLeafNode(otherlv_8, grammarAccess.getKEllipseAccess().getPlacementDataKeyword_2_2_0());
     }
-	otherlv_9=':' 
+(	otherlv_9=':' 
     {
     	newLeafNode(otherlv_9, grammarAccess.getKEllipseAccess().getColonKeyword_2_2_1());
     }
-(
+)?(
 (
 		{ 
 	        newCompositeNode(grammarAccess.getKEllipseAccess().getPlacementDataKPlacementDataParserRuleCall_2_2_2_0()); 
@@ -837,11 +837,11 @@ ruleKEllipse returns [EObject current=null]
     {
     	newLeafNode(otherlv_11, grammarAccess.getKEllipseAccess().getChildPlacementKeyword_2_3_0());
     }
-	otherlv_12=':' 
+(	otherlv_12=':' 
     {
     	newLeafNode(otherlv_12, grammarAccess.getKEllipseAccess().getColonKeyword_2_3_1());
     }
-(
+)?(
 (
 		{ 
 	        newCompositeNode(grammarAccess.getKEllipseAccess().getChildPlacementKPlacementParserRuleCall_2_3_2_0()); 
@@ -863,11 +863,11 @@ ruleKEllipse returns [EObject current=null]
     {
     	newLeafNode(otherlv_14, grammarAccess.getKEllipseAccess().getChildrenKeyword_2_4_0());
     }
-	otherlv_15=':' 
+(	otherlv_15=':' 
     {
     	newLeafNode(otherlv_15, grammarAccess.getKEllipseAccess().getColonKeyword_2_4_1());
     }
-(
+)?(
 (
 		{ 
 	        newCompositeNode(grammarAccess.getKEllipseAccess().getChildrenKRenderingParserRuleCall_2_4_2_0()); 
@@ -885,11 +885,11 @@ ruleKEllipse returns [EObject current=null]
 	    }
 
 )
-)(	otherlv_17=',' 
+)((	otherlv_17=',' 
     {
     	newLeafNode(otherlv_17, grammarAccess.getKEllipseAccess().getCommaKeyword_2_4_3_0());
     }
-(
+)?(
 (
 		{ 
 	        newCompositeNode(grammarAccess.getKEllipseAccess().getChildrenKRenderingParserRuleCall_2_4_3_1_0()); 
@@ -950,11 +950,11 @@ ruleKRectangle returns [EObject current=null]
     {
     	newLeafNode(otherlv_3, grammarAccess.getKRectangleAccess().getStylesKeyword_2_1_0());
     }
-	otherlv_4=':' 
+(	otherlv_4=':' 
     {
     	newLeafNode(otherlv_4, grammarAccess.getKRectangleAccess().getColonKeyword_2_1_1());
     }
-(
+)?(
 (
 		{ 
 	        newCompositeNode(grammarAccess.getKRectangleAccess().getStylesKStyleParserRuleCall_2_1_2_0()); 
@@ -972,11 +972,11 @@ ruleKRectangle returns [EObject current=null]
 	    }
 
 )
-)(	otherlv_6=',' 
+)((	otherlv_6=',' 
     {
     	newLeafNode(otherlv_6, grammarAccess.getKRectangleAccess().getCommaKeyword_2_1_3_0());
     }
-(
+)?(
 (
 		{ 
 	        newCompositeNode(grammarAccess.getKRectangleAccess().getStylesKStyleParserRuleCall_2_1_3_1_0()); 
@@ -998,11 +998,11 @@ ruleKRectangle returns [EObject current=null]
     {
     	newLeafNode(otherlv_8, grammarAccess.getKRectangleAccess().getPlacementDataKeyword_2_2_0());
     }
-	otherlv_9=':' 
+(	otherlv_9=':' 
     {
     	newLeafNode(otherlv_9, grammarAccess.getKRectangleAccess().getColonKeyword_2_2_1());
     }
-(
+)?(
 (
 		{ 
 	        newCompositeNode(grammarAccess.getKRectangleAccess().getPlacementDataKPlacementDataParserRuleCall_2_2_2_0()); 
@@ -1024,11 +1024,11 @@ ruleKRectangle returns [EObject current=null]
     {
     	newLeafNode(otherlv_11, grammarAccess.getKRectangleAccess().getChildPlacementKeyword_2_3_0());
     }
-	otherlv_12=':' 
+(	otherlv_12=':' 
     {
     	newLeafNode(otherlv_12, grammarAccess.getKRectangleAccess().getColonKeyword_2_3_1());
     }
-(
+)?(
 (
 		{ 
 	        newCompositeNode(grammarAccess.getKRectangleAccess().getChildPlacementKPlacementParserRuleCall_2_3_2_0()); 
@@ -1050,11 +1050,11 @@ ruleKRectangle returns [EObject current=null]
     {
     	newLeafNode(otherlv_14, grammarAccess.getKRectangleAccess().getChildrenKeyword_2_4_0());
     }
-	otherlv_15=':' 
+(	otherlv_15=':' 
     {
     	newLeafNode(otherlv_15, grammarAccess.getKRectangleAccess().getColonKeyword_2_4_1());
     }
-(
+)?(
 (
 		{ 
 	        newCompositeNode(grammarAccess.getKRectangleAccess().getChildrenKRenderingParserRuleCall_2_4_2_0()); 
@@ -1072,11 +1072,11 @@ ruleKRectangle returns [EObject current=null]
 	    }
 
 )
-)(	otherlv_17=',' 
+)((	otherlv_17=',' 
     {
     	newLeafNode(otherlv_17, grammarAccess.getKRectangleAccess().getCommaKeyword_2_4_3_0());
     }
-(
+)?(
 (
 		{ 
 	        newCompositeNode(grammarAccess.getKRectangleAccess().getChildrenKRenderingParserRuleCall_2_4_3_1_0()); 
@@ -1147,11 +1147,11 @@ ruleKRoundedRectangle returns [EObject current=null]
 	    }
 
 )
-)	otherlv_3=',' 
+)(	otherlv_3=',' 
     {
     	newLeafNode(otherlv_3, grammarAccess.getKRoundedRectangleAccess().getCommaKeyword_3());
     }
-(
+)?(
 (
 		{ 
 	        newCompositeNode(grammarAccess.getKRoundedRectangleAccess().getCornerHeightEFloatParserRuleCall_4_0()); 
@@ -1177,11 +1177,11 @@ ruleKRoundedRectangle returns [EObject current=null]
     {
     	newLeafNode(otherlv_6, grammarAccess.getKRoundedRectangleAccess().getStylesKeyword_5_1_0());
     }
-	otherlv_7=':' 
+(	otherlv_7=':' 
     {
     	newLeafNode(otherlv_7, grammarAccess.getKRoundedRectangleAccess().getColonKeyword_5_1_1());
     }
-(
+)?(
 (
 		{ 
 	        newCompositeNode(grammarAccess.getKRoundedRectangleAccess().getStylesKStyleParserRuleCall_5_1_2_0()); 
@@ -1199,11 +1199,11 @@ ruleKRoundedRectangle returns [EObject current=null]
 	    }
 
 )
-)(	otherlv_9=',' 
+)((	otherlv_9=',' 
     {
     	newLeafNode(otherlv_9, grammarAccess.getKRoundedRectangleAccess().getCommaKeyword_5_1_3_0());
     }
-(
+)?(
 (
 		{ 
 	        newCompositeNode(grammarAccess.getKRoundedRectangleAccess().getStylesKStyleParserRuleCall_5_1_3_1_0()); 
@@ -1225,11 +1225,11 @@ ruleKRoundedRectangle returns [EObject current=null]
     {
     	newLeafNode(otherlv_11, grammarAccess.getKRoundedRectangleAccess().getPlacementDataKeyword_5_2_0());
     }
-	otherlv_12=':' 
+(	otherlv_12=':' 
     {
     	newLeafNode(otherlv_12, grammarAccess.getKRoundedRectangleAccess().getColonKeyword_5_2_1());
     }
-(
+)?(
 (
 		{ 
 	        newCompositeNode(grammarAccess.getKRoundedRectangleAccess().getPlacementDataKPlacementDataParserRuleCall_5_2_2_0()); 
@@ -1251,11 +1251,11 @@ ruleKRoundedRectangle returns [EObject current=null]
     {
     	newLeafNode(otherlv_14, grammarAccess.getKRoundedRectangleAccess().getChildPlacementKeyword_5_3_0());
     }
-	otherlv_15=':' 
+(	otherlv_15=':' 
     {
     	newLeafNode(otherlv_15, grammarAccess.getKRoundedRectangleAccess().getColonKeyword_5_3_1());
     }
-(
+)?(
 (
 		{ 
 	        newCompositeNode(grammarAccess.getKRoundedRectangleAccess().getChildPlacementKPlacementParserRuleCall_5_3_2_0()); 
@@ -1277,11 +1277,11 @@ ruleKRoundedRectangle returns [EObject current=null]
     {
     	newLeafNode(otherlv_17, grammarAccess.getKRoundedRectangleAccess().getChildrenKeyword_5_4_0());
     }
-	otherlv_18=':' 
+(	otherlv_18=':' 
     {
     	newLeafNode(otherlv_18, grammarAccess.getKRoundedRectangleAccess().getColonKeyword_5_4_1());
     }
-(
+)?(
 (
 		{ 
 	        newCompositeNode(grammarAccess.getKRoundedRectangleAccess().getChildrenKRenderingParserRuleCall_5_4_2_0()); 
@@ -1299,11 +1299,11 @@ ruleKRoundedRectangle returns [EObject current=null]
 	    }
 
 )
-)(	otherlv_20=',' 
+)((	otherlv_20=',' 
     {
     	newLeafNode(otherlv_20, grammarAccess.getKRoundedRectangleAccess().getCommaKeyword_5_4_3_0());
     }
-(
+)?(
 (
 		{ 
 	        newCompositeNode(grammarAccess.getKRoundedRectangleAccess().getChildrenKRenderingParserRuleCall_5_4_3_1_0()); 
@@ -1364,11 +1364,11 @@ ruleKPolyline_Impl returns [EObject current=null]
     {
     	newLeafNode(otherlv_3, grammarAccess.getKPolyline_ImplAccess().getStylesKeyword_2_1_0());
     }
-	otherlv_4=':' 
+(	otherlv_4=':' 
     {
     	newLeafNode(otherlv_4, grammarAccess.getKPolyline_ImplAccess().getColonKeyword_2_1_1());
     }
-(
+)?(
 (
 		{ 
 	        newCompositeNode(grammarAccess.getKPolyline_ImplAccess().getStylesKStyleParserRuleCall_2_1_2_0()); 
@@ -1386,11 +1386,11 @@ ruleKPolyline_Impl returns [EObject current=null]
 	    }
 
 )
-)(	otherlv_6=',' 
+)((	otherlv_6=',' 
     {
     	newLeafNode(otherlv_6, grammarAccess.getKPolyline_ImplAccess().getCommaKeyword_2_1_3_0());
     }
-(
+)?(
 (
 		{ 
 	        newCompositeNode(grammarAccess.getKPolyline_ImplAccess().getStylesKStyleParserRuleCall_2_1_3_1_0()); 
@@ -1412,11 +1412,11 @@ ruleKPolyline_Impl returns [EObject current=null]
     {
     	newLeafNode(otherlv_8, grammarAccess.getKPolyline_ImplAccess().getPlacementDataKeyword_2_2_0());
     }
-	otherlv_9=':' 
+(	otherlv_9=':' 
     {
     	newLeafNode(otherlv_9, grammarAccess.getKPolyline_ImplAccess().getColonKeyword_2_2_1());
     }
-(
+)?(
 (
 		{ 
 	        newCompositeNode(grammarAccess.getKPolyline_ImplAccess().getPlacementDataKPlacementDataParserRuleCall_2_2_2_0()); 
@@ -1438,11 +1438,11 @@ ruleKPolyline_Impl returns [EObject current=null]
     {
     	newLeafNode(otherlv_11, grammarAccess.getKPolyline_ImplAccess().getChildPlacementKeyword_2_3_0());
     }
-	otherlv_12=':' 
+(	otherlv_12=':' 
     {
     	newLeafNode(otherlv_12, grammarAccess.getKPolyline_ImplAccess().getColonKeyword_2_3_1());
     }
-(
+)?(
 (
 		{ 
 	        newCompositeNode(grammarAccess.getKPolyline_ImplAccess().getChildPlacementKPlacementParserRuleCall_2_3_2_0()); 
@@ -1464,11 +1464,11 @@ ruleKPolyline_Impl returns [EObject current=null]
     {
     	newLeafNode(otherlv_14, grammarAccess.getKPolyline_ImplAccess().getChildrenKeyword_2_4_0());
     }
-	otherlv_15=':' 
+(	otherlv_15=':' 
     {
     	newLeafNode(otherlv_15, grammarAccess.getKPolyline_ImplAccess().getColonKeyword_2_4_1());
     }
-(
+)?(
 (
 		{ 
 	        newCompositeNode(grammarAccess.getKPolyline_ImplAccess().getChildrenKRenderingParserRuleCall_2_4_2_0()); 
@@ -1486,11 +1486,11 @@ ruleKPolyline_Impl returns [EObject current=null]
 	    }
 
 )
-)(	otherlv_17=',' 
+)((	otherlv_17=',' 
     {
     	newLeafNode(otherlv_17, grammarAccess.getKPolyline_ImplAccess().getCommaKeyword_2_4_3_0());
     }
-(
+)?(
 (
 		{ 
 	        newCompositeNode(grammarAccess.getKPolyline_ImplAccess().getChildrenKRenderingParserRuleCall_2_4_3_1_0()); 
@@ -1551,11 +1551,11 @@ ruleKPolygon returns [EObject current=null]
     {
     	newLeafNode(otherlv_3, grammarAccess.getKPolygonAccess().getStylesKeyword_2_1_0());
     }
-	otherlv_4=':' 
+(	otherlv_4=':' 
     {
     	newLeafNode(otherlv_4, grammarAccess.getKPolygonAccess().getColonKeyword_2_1_1());
     }
-(
+)?(
 (
 		{ 
 	        newCompositeNode(grammarAccess.getKPolygonAccess().getStylesKStyleParserRuleCall_2_1_2_0()); 
@@ -1573,11 +1573,11 @@ ruleKPolygon returns [EObject current=null]
 	    }
 
 )
-)(	otherlv_6=',' 
+)((	otherlv_6=',' 
     {
     	newLeafNode(otherlv_6, grammarAccess.getKPolygonAccess().getCommaKeyword_2_1_3_0());
     }
-(
+)?(
 (
 		{ 
 	        newCompositeNode(grammarAccess.getKPolygonAccess().getStylesKStyleParserRuleCall_2_1_3_1_0()); 
@@ -1599,11 +1599,11 @@ ruleKPolygon returns [EObject current=null]
     {
     	newLeafNode(otherlv_8, grammarAccess.getKPolygonAccess().getPlacementDataKeyword_2_2_0());
     }
-	otherlv_9=':' 
+(	otherlv_9=':' 
     {
     	newLeafNode(otherlv_9, grammarAccess.getKPolygonAccess().getColonKeyword_2_2_1());
     }
-(
+)?(
 (
 		{ 
 	        newCompositeNode(grammarAccess.getKPolygonAccess().getPlacementDataKPlacementDataParserRuleCall_2_2_2_0()); 
@@ -1625,11 +1625,11 @@ ruleKPolygon returns [EObject current=null]
     {
     	newLeafNode(otherlv_11, grammarAccess.getKPolygonAccess().getChildPlacementKeyword_2_3_0());
     }
-	otherlv_12=':' 
+(	otherlv_12=':' 
     {
     	newLeafNode(otherlv_12, grammarAccess.getKPolygonAccess().getColonKeyword_2_3_1());
     }
-(
+)?(
 (
 		{ 
 	        newCompositeNode(grammarAccess.getKPolygonAccess().getChildPlacementKPlacementParserRuleCall_2_3_2_0()); 
@@ -1651,11 +1651,11 @@ ruleKPolygon returns [EObject current=null]
     {
     	newLeafNode(otherlv_14, grammarAccess.getKPolygonAccess().getChildrenKeyword_2_4_0());
     }
-	otherlv_15=':' 
+(	otherlv_15=':' 
     {
     	newLeafNode(otherlv_15, grammarAccess.getKPolygonAccess().getColonKeyword_2_4_1());
     }
-(
+)?(
 (
 		{ 
 	        newCompositeNode(grammarAccess.getKPolygonAccess().getChildrenKRenderingParserRuleCall_2_4_2_0()); 
@@ -1673,11 +1673,11 @@ ruleKPolygon returns [EObject current=null]
 	    }
 
 )
-)(	otherlv_17=',' 
+)((	otherlv_17=',' 
     {
     	newLeafNode(otherlv_17, grammarAccess.getKPolygonAccess().getCommaKeyword_2_4_3_0());
     }
-(
+)?(
 (
 		{ 
 	        newCompositeNode(grammarAccess.getKPolygonAccess().getChildrenKRenderingParserRuleCall_2_4_3_1_0()); 
@@ -1753,179 +1753,175 @@ ruleKImage returns [EObject current=null]
     {
     	newLeafNode(otherlv_3, grammarAccess.getKImageAccess().getHyphenMinusKeyword_2_1());
     }
-)	otherlv_4=':' 
-    {
-    	newLeafNode(otherlv_4, grammarAccess.getKImageAccess().getColonKeyword_3());
-    }
-(
+)(
 (
 		{ 
-	        newCompositeNode(grammarAccess.getKImageAccess().getImagePathEStringParserRuleCall_4_0()); 
+	        newCompositeNode(grammarAccess.getKImageAccess().getImagePathEStringParserRuleCall_3_0()); 
 	    }
-		lv_imagePath_5_0=ruleEString		{
+		lv_imagePath_4_0=ruleEString		{
 	        if ($current==null) {
 	            $current = createModelElementForParent(grammarAccess.getKImageRule());
 	        }
        		set(
        			$current, 
        			"imagePath",
-        		lv_imagePath_5_0, 
+        		lv_imagePath_4_0, 
         		"EString");
 	        afterParserOrEnumRuleCall();
 	    }
 
 )
-)(	otherlv_6='{' 
+)(	otherlv_5='{' 
     {
-    	newLeafNode(otherlv_6, grammarAccess.getKImageAccess().getLeftCurlyBracketKeyword_5_0());
+    	newLeafNode(otherlv_5, grammarAccess.getKImageAccess().getLeftCurlyBracketKeyword_4_0());
     }
-(	otherlv_7='styles' 
+(	otherlv_6='styles' 
     {
-    	newLeafNode(otherlv_7, grammarAccess.getKImageAccess().getStylesKeyword_5_1_0());
+    	newLeafNode(otherlv_6, grammarAccess.getKImageAccess().getStylesKeyword_4_1_0());
     }
-	otherlv_8=':' 
+(	otherlv_7=':' 
     {
-    	newLeafNode(otherlv_8, grammarAccess.getKImageAccess().getColonKeyword_5_1_1());
+    	newLeafNode(otherlv_7, grammarAccess.getKImageAccess().getColonKeyword_4_1_1());
     }
-(
+)?(
 (
 		{ 
-	        newCompositeNode(grammarAccess.getKImageAccess().getStylesKStyleParserRuleCall_5_1_2_0()); 
+	        newCompositeNode(grammarAccess.getKImageAccess().getStylesKStyleParserRuleCall_4_1_2_0()); 
 	    }
-		lv_styles_9_0=ruleKStyle		{
+		lv_styles_8_0=ruleKStyle		{
 	        if ($current==null) {
 	            $current = createModelElementForParent(grammarAccess.getKImageRule());
 	        }
        		add(
        			$current, 
        			"styles",
-        		lv_styles_9_0, 
+        		lv_styles_8_0, 
         		"KStyle");
 	        afterParserOrEnumRuleCall();
 	    }
 
 )
-)(	otherlv_10=',' 
+)((	otherlv_9=',' 
     {
-    	newLeafNode(otherlv_10, grammarAccess.getKImageAccess().getCommaKeyword_5_1_3_0());
+    	newLeafNode(otherlv_9, grammarAccess.getKImageAccess().getCommaKeyword_4_1_3_0());
     }
-(
+)?(
 (
 		{ 
-	        newCompositeNode(grammarAccess.getKImageAccess().getStylesKStyleParserRuleCall_5_1_3_1_0()); 
+	        newCompositeNode(grammarAccess.getKImageAccess().getStylesKStyleParserRuleCall_4_1_3_1_0()); 
 	    }
-		lv_styles_11_0=ruleKStyle		{
+		lv_styles_10_0=ruleKStyle		{
 	        if ($current==null) {
 	            $current = createModelElementForParent(grammarAccess.getKImageRule());
 	        }
        		add(
        			$current, 
        			"styles",
-        		lv_styles_11_0, 
+        		lv_styles_10_0, 
         		"KStyle");
 	        afterParserOrEnumRuleCall();
 	    }
 
 )
-))*)?(	otherlv_12='placementData' 
+))*)?(	otherlv_11='placementData' 
     {
-    	newLeafNode(otherlv_12, grammarAccess.getKImageAccess().getPlacementDataKeyword_5_2_0());
+    	newLeafNode(otherlv_11, grammarAccess.getKImageAccess().getPlacementDataKeyword_4_2_0());
     }
 (
 (
 		{ 
-	        newCompositeNode(grammarAccess.getKImageAccess().getPlacementDataKPlacementDataParserRuleCall_5_2_1_0()); 
+	        newCompositeNode(grammarAccess.getKImageAccess().getPlacementDataKPlacementDataParserRuleCall_4_2_1_0()); 
 	    }
-		lv_placementData_13_0=ruleKPlacementData		{
+		lv_placementData_12_0=ruleKPlacementData		{
 	        if ($current==null) {
 	            $current = createModelElementForParent(grammarAccess.getKImageRule());
 	        }
        		set(
        			$current, 
        			"placementData",
-        		lv_placementData_13_0, 
+        		lv_placementData_12_0, 
         		"KPlacementData");
 	        afterParserOrEnumRuleCall();
 	    }
 
 )
-))?(	otherlv_14='children' 
+))?(	otherlv_13='children' 
     {
-    	newLeafNode(otherlv_14, grammarAccess.getKImageAccess().getChildrenKeyword_5_3_0());
+    	newLeafNode(otherlv_13, grammarAccess.getKImageAccess().getChildrenKeyword_4_3_0());
     }
-	otherlv_15='{' 
+	otherlv_14='{' 
     {
-    	newLeafNode(otherlv_15, grammarAccess.getKImageAccess().getLeftCurlyBracketKeyword_5_3_1());
+    	newLeafNode(otherlv_14, grammarAccess.getKImageAccess().getLeftCurlyBracketKeyword_4_3_1());
     }
 (
 (
 		{ 
-	        newCompositeNode(grammarAccess.getKImageAccess().getChildrenKRenderingParserRuleCall_5_3_2_0()); 
+	        newCompositeNode(grammarAccess.getKImageAccess().getChildrenKRenderingParserRuleCall_4_3_2_0()); 
 	    }
-		lv_children_16_0=ruleKRendering		{
+		lv_children_15_0=ruleKRendering		{
 	        if ($current==null) {
 	            $current = createModelElementForParent(grammarAccess.getKImageRule());
 	        }
        		add(
        			$current, 
        			"children",
-        		lv_children_16_0, 
+        		lv_children_15_0, 
         		"KRendering");
 	        afterParserOrEnumRuleCall();
 	    }
 
 )
-)(	otherlv_17=',' 
+)((	otherlv_16=',' 
     {
-    	newLeafNode(otherlv_17, grammarAccess.getKImageAccess().getCommaKeyword_5_3_3_0());
+    	newLeafNode(otherlv_16, grammarAccess.getKImageAccess().getCommaKeyword_4_3_3_0());
     }
-(
+)?(
 (
 		{ 
-	        newCompositeNode(grammarAccess.getKImageAccess().getChildrenKRenderingParserRuleCall_5_3_3_1_0()); 
+	        newCompositeNode(grammarAccess.getKImageAccess().getChildrenKRenderingParserRuleCall_4_3_3_1_0()); 
 	    }
-		lv_children_18_0=ruleKRendering		{
+		lv_children_17_0=ruleKRendering		{
 	        if ($current==null) {
 	            $current = createModelElementForParent(grammarAccess.getKImageRule());
 	        }
        		add(
        			$current, 
        			"children",
-        		lv_children_18_0, 
+        		lv_children_17_0, 
         		"KRendering");
 	        afterParserOrEnumRuleCall();
 	    }
 
 )
-))*	otherlv_19='}' 
+))*	otherlv_18='}' 
     {
-    	newLeafNode(otherlv_19, grammarAccess.getKImageAccess().getRightCurlyBracketKeyword_5_3_4());
+    	newLeafNode(otherlv_18, grammarAccess.getKImageAccess().getRightCurlyBracketKeyword_4_3_4());
     }
-)?(	otherlv_20='childPlacement' 
+)?(	otherlv_19='childPlacement' 
     {
-    	newLeafNode(otherlv_20, grammarAccess.getKImageAccess().getChildPlacementKeyword_5_4_0());
+    	newLeafNode(otherlv_19, grammarAccess.getKImageAccess().getChildPlacementKeyword_4_4_0());
     }
 (
 (
 		{ 
-	        newCompositeNode(grammarAccess.getKImageAccess().getChildPlacementKPlacementParserRuleCall_5_4_1_0()); 
+	        newCompositeNode(grammarAccess.getKImageAccess().getChildPlacementKPlacementParserRuleCall_4_4_1_0()); 
 	    }
-		lv_childPlacement_21_0=ruleKPlacement		{
+		lv_childPlacement_20_0=ruleKPlacement		{
 	        if ($current==null) {
 	            $current = createModelElementForParent(grammarAccess.getKImageRule());
 	        }
        		set(
        			$current, 
        			"childPlacement",
-        		lv_childPlacement_21_0, 
+        		lv_childPlacement_20_0, 
         		"KPlacement");
 	        afterParserOrEnumRuleCall();
 	    }
 
 )
-))?	otherlv_22='}' 
+))?	otherlv_21='}' 
     {
-    	newLeafNode(otherlv_22, grammarAccess.getKImageAccess().getRightCurlyBracketKeyword_5_5());
+    	newLeafNode(otherlv_21, grammarAccess.getKImageAccess().getRightCurlyBracketKeyword_4_5());
     }
 )?)
 ;
@@ -1976,11 +1972,11 @@ ruleKArc returns [EObject current=null]
 	    }
 
 )
-)	otherlv_3=',' 
+)(	otherlv_3=',' 
     {
     	newLeafNode(otherlv_3, grammarAccess.getKArcAccess().getCommaKeyword_3());
     }
-(
+)?(
 (
 		{ 
 	        newCompositeNode(grammarAccess.getKArcAccess().getArcAngleEFloatParserRuleCall_4_0()); 
@@ -2006,11 +2002,11 @@ ruleKArc returns [EObject current=null]
     {
     	newLeafNode(otherlv_6, grammarAccess.getKArcAccess().getStylesKeyword_5_1_0());
     }
-	otherlv_7=':' 
+(	otherlv_7=':' 
     {
     	newLeafNode(otherlv_7, grammarAccess.getKArcAccess().getColonKeyword_5_1_1());
     }
-(
+)?(
 (
 		{ 
 	        newCompositeNode(grammarAccess.getKArcAccess().getStylesKStyleParserRuleCall_5_1_2_0()); 
@@ -2028,11 +2024,11 @@ ruleKArc returns [EObject current=null]
 	    }
 
 )
-)(	otherlv_9=',' 
+)((	otherlv_9=',' 
     {
     	newLeafNode(otherlv_9, grammarAccess.getKArcAccess().getCommaKeyword_5_1_3_0());
     }
-(
+)?(
 (
 		{ 
 	        newCompositeNode(grammarAccess.getKArcAccess().getStylesKStyleParserRuleCall_5_1_3_1_0()); 
@@ -2098,11 +2094,11 @@ ruleKArc returns [EObject current=null]
 	    }
 
 )
-)(	otherlv_16=',' 
+)((	otherlv_16=',' 
     {
     	newLeafNode(otherlv_16, grammarAccess.getKArcAccess().getCommaKeyword_5_3_3_0());
     }
-(
+)?(
 (
 		{ 
 	        newCompositeNode(grammarAccess.getKArcAccess().getChildrenKRenderingParserRuleCall_5_3_3_1_0()); 
@@ -2189,11 +2185,11 @@ ruleKChildArea returns [EObject current=null]
     {
     	newLeafNode(otherlv_3, grammarAccess.getKChildAreaAccess().getStylesKeyword_2_1_0());
     }
-	otherlv_4=':' 
+(	otherlv_4=':' 
     {
     	newLeafNode(otherlv_4, grammarAccess.getKChildAreaAccess().getColonKeyword_2_1_1());
     }
-(
+)?(
 (
 		{ 
 	        newCompositeNode(grammarAccess.getKChildAreaAccess().getStylesKStyleParserRuleCall_2_1_2_0()); 
@@ -2211,11 +2207,11 @@ ruleKChildArea returns [EObject current=null]
 	    }
 
 )
-)(	otherlv_6=',' 
+)((	otherlv_6=',' 
     {
     	newLeafNode(otherlv_6, grammarAccess.getKChildAreaAccess().getCommaKeyword_2_1_3_0());
     }
-(
+)?(
 (
 		{ 
 	        newCompositeNode(grammarAccess.getKChildAreaAccess().getStylesKStyleParserRuleCall_2_1_3_1_0()); 
@@ -2331,11 +2327,11 @@ ruleKText returns [EObject current=null]
     {
     	newLeafNode(otherlv_5, grammarAccess.getKTextAccess().getStylesKeyword_3_2_0());
     }
-	otherlv_6=':' 
+(	otherlv_6=':' 
     {
     	newLeafNode(otherlv_6, grammarAccess.getKTextAccess().getColonKeyword_3_2_1());
     }
-(
+)?(
 (
 		{ 
 	        newCompositeNode(grammarAccess.getKTextAccess().getStylesKStyleParserRuleCall_3_2_2_0()); 
@@ -2353,11 +2349,11 @@ ruleKText returns [EObject current=null]
 	    }
 
 )
-)(	otherlv_8=',' 
+)((	otherlv_8=',' 
     {
     	newLeafNode(otherlv_8, grammarAccess.getKTextAccess().getCommaKeyword_3_2_3_0());
     }
-(
+)?(
 (
 		{ 
 	        newCompositeNode(grammarAccess.getKTextAccess().getStylesKStyleParserRuleCall_3_2_3_1_0()); 
@@ -2423,11 +2419,11 @@ ruleKText returns [EObject current=null]
 	    }
 
 )
-)(	otherlv_15=',' 
+)((	otherlv_15=',' 
     {
     	newLeafNode(otherlv_15, grammarAccess.getKTextAccess().getCommaKeyword_3_4_3_0());
     }
-(
+)?(
 (
 		{ 
 	        newCompositeNode(grammarAccess.getKTextAccess().getChildrenKRenderingParserRuleCall_3_4_3_1_0()); 
@@ -2558,11 +2554,11 @@ ruleKCustomRendering returns [EObject current=null]
     {
     	newLeafNode(otherlv_7, grammarAccess.getKCustomRenderingAccess().getStylesKeyword_2_5_0());
     }
-	otherlv_8=':' 
+(	otherlv_8=':' 
     {
     	newLeafNode(otherlv_8, grammarAccess.getKCustomRenderingAccess().getColonKeyword_2_5_1());
     }
-(
+)?(
 (
 		{ 
 	        newCompositeNode(grammarAccess.getKCustomRenderingAccess().getStylesKStyleParserRuleCall_2_5_2_0()); 
@@ -2580,11 +2576,11 @@ ruleKCustomRendering returns [EObject current=null]
 	    }
 
 )
-)(	otherlv_10=',' 
+)((	otherlv_10=',' 
     {
     	newLeafNode(otherlv_10, grammarAccess.getKCustomRenderingAccess().getCommaKeyword_2_5_3_0());
     }
-(
+)?(
 (
 		{ 
 	        newCompositeNode(grammarAccess.getKCustomRenderingAccess().getStylesKStyleParserRuleCall_2_5_3_1_0()); 
@@ -2650,11 +2646,11 @@ ruleKCustomRendering returns [EObject current=null]
 	    }
 
 )
-)(	otherlv_17=',' 
+)((	otherlv_17=',' 
     {
     	newLeafNode(otherlv_17, grammarAccess.getKCustomRenderingAccess().getCommaKeyword_2_7_3_0());
     }
-(
+)?(
 (
 		{ 
 	        newCompositeNode(grammarAccess.getKCustomRenderingAccess().getChildrenKRenderingParserRuleCall_2_7_3_1_0()); 
@@ -2741,11 +2737,11 @@ ruleKSpline returns [EObject current=null]
     {
     	newLeafNode(otherlv_3, grammarAccess.getKSplineAccess().getStylesKeyword_2_1_0());
     }
-	otherlv_4=':' 
+(	otherlv_4=':' 
     {
     	newLeafNode(otherlv_4, grammarAccess.getKSplineAccess().getColonKeyword_2_1_1());
     }
-(
+)?(
 (
 		{ 
 	        newCompositeNode(grammarAccess.getKSplineAccess().getStylesKStyleParserRuleCall_2_1_2_0()); 
@@ -2763,11 +2759,11 @@ ruleKSpline returns [EObject current=null]
 	    }
 
 )
-)(	otherlv_6=',' 
+)((	otherlv_6=',' 
     {
     	newLeafNode(otherlv_6, grammarAccess.getKSplineAccess().getCommaKeyword_2_1_3_0());
     }
-(
+)?(
 (
 		{ 
 	        newCompositeNode(grammarAccess.getKSplineAccess().getStylesKStyleParserRuleCall_2_1_3_1_0()); 
@@ -2833,11 +2829,11 @@ ruleKSpline returns [EObject current=null]
 	    }
 
 )
-)(	otherlv_13=',' 
+)((	otherlv_13=',' 
     {
     	newLeafNode(otherlv_13, grammarAccess.getKSplineAccess().getCommaKeyword_2_3_3_0());
     }
-(
+)?(
 (
 		{ 
 	        newCompositeNode(grammarAccess.getKSplineAccess().getChildrenKRenderingParserRuleCall_2_3_3_1_0()); 
@@ -3443,11 +3439,11 @@ ruleKPolylinePlacementData returns [EObject current=null]
     {
     	newLeafNode(otherlv_2, grammarAccess.getKPolylinePlacementDataAccess().getPointsKeyword_2());
     }
-	otherlv_3=':' 
+(	otherlv_3=':' 
     {
     	newLeafNode(otherlv_3, grammarAccess.getKPolylinePlacementDataAccess().getColonKeyword_3());
     }
-(
+)?(
 (
 		{ 
 	        newCompositeNode(grammarAccess.getKPolylinePlacementDataAccess().getPointsKPositionParserRuleCall_4_0()); 
@@ -3465,11 +3461,11 @@ ruleKPolylinePlacementData returns [EObject current=null]
 	    }
 
 )
-)(	otherlv_5=',' 
+)((	otherlv_5=',' 
     {
     	newLeafNode(otherlv_5, grammarAccess.getKPolylinePlacementDataAccess().getCommaKeyword_5_0());
     }
-(
+)?(
 (
 		{ 
 	        newCompositeNode(grammarAccess.getKPolylinePlacementDataAccess().getPointsKPositionParserRuleCall_5_1_0()); 

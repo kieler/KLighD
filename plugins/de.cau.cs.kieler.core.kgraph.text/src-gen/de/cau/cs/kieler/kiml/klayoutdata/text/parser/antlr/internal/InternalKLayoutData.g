@@ -227,11 +227,11 @@ ruleKShapeLayout returns [EObject current=null]
 	    }
 
 )
-)(	otherlv_16=',' 
+)((	otherlv_16=',' 
     {
     	newLeafNode(otherlv_16, grammarAccess.getKShapeLayoutAccess().getCommaKeyword_8_3_0());
     }
-(
+)?(
 (
 		{ 
 	        newCompositeNode(grammarAccess.getKShapeLayoutAccess().getPersistentEntriesPersistentEntryParserRuleCall_8_3_1_0()); 

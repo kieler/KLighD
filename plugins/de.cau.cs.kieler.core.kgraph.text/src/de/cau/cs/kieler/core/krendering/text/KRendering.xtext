@@ -8,7 +8,7 @@ KRenderingLibrary returns KRenderingLibrary:
 	{KRenderingLibrary}
 	'RenderingLibrary'
 	'{'
-		(renderings+=KRendering ( "," renderings+=KRendering)*)?
+		(renderings+=KRendering ( ","? renderings+=KRendering)*)?
     '}';
 
 KRendering returns KRendering:
@@ -34,76 +34,76 @@ KRenderingRef returns KRenderingRef:
 	'RenderingRef' rendering=[KRendering|EString]
 	('{'
 		('placementData' placementData=KPlacementData)?
-		('styles' '{' styles+=KStyle ( "," styles+=KStyle)* '}' )?
+		('styles' '{' styles+=KStyle ( ","? styles+=KStyle)* '}' )?
     '}')?;
     
 KEllipse returns KEllipse:
 	{KEllipse}
 	'Ellipse'
 	('{'
-		('styles' ':' styles+=KStyle ( "," styles+=KStyle)*)?
-		('placementData' ':' placementData=KPlacementData)?
-		('childPlacement' ':' childPlacement=KPlacement)?
-		('children' ':' children+=KRendering ( "," children+=KRendering)*)?
+		('styles' ':'? styles+=KStyle ( ","? styles+=KStyle)*)?
+		('placementData' ':'? placementData=KPlacementData)?
+		('childPlacement' ':'? childPlacement=KPlacement)?
+		('children' ':'? children+=KRendering ( ","? children+=KRendering)*)?
     '}')?;
 
 KRectangle returns KRectangle:
 	{KRectangle}
 	'Rectangle'
 	('{'
-		('styles' ':' styles+=KStyle ( "," styles+=KStyle)*)?
-		('placementData' ':' placementData=KPlacementData)?
-		('childPlacement' ':' childPlacement=KPlacement)?
-		('children' ':' children+=KRendering ( "," children+=KRendering)*)?
+		('styles' ':'? styles+=KStyle ( ","? styles+=KStyle)*)?
+		('placementData' ':'? placementData=KPlacementData)?
+		('childPlacement' ':'? childPlacement=KPlacement)?
+		('children' ':'? children+=KRendering ( ","? children+=KRendering)*)?
     '}')?;
 
 KRoundedRectangle returns KRoundedRectangle:
     {KRoundedRectangle}
-	'RoundedRectangle' cornerWidth=EFloat ',' cornerHeight=EFloat
+	'RoundedRectangle' cornerWidth=EFloat ','? cornerHeight=EFloat
 	('{'
-		('styles' ':' styles+=KStyle ( "," styles+=KStyle)*)?
-		('placementData' ':' placementData=KPlacementData)?
-		('childPlacement' ':' childPlacement=KPlacement)?
-		('children' ':' children+=KRendering ( "," children+=KRendering)*)?
+		('styles' ':'? styles+=KStyle ( ","? styles+=KStyle)*)?
+		('placementData' ':'? placementData=KPlacementData)?
+		('childPlacement' ':'? childPlacement=KPlacement)?
+		('children' ':'? children+=KRendering ( ","? children+=KRendering)*)?
     '}')?;
 
 KPolyline_Impl returns KPolyline:
 	{KPolyline}
 	'Polyline'
 	('{'
-		('styles' ':' styles+=KStyle ( "," styles+=KStyle)*)?
-		('placementData' ':' placementData=KPlacementData)?
-		('childPlacement' ':' childPlacement=KPlacement)?
-		('children' ':' children+=KRendering ( "," children+=KRendering)*)?
+		('styles' ':'? styles+=KStyle ( ","? styles+=KStyle)*)?
+		('placementData' ':'? placementData=KPlacementData)?
+		('childPlacement' ':'? childPlacement=KPlacement)?
+		('children' ':'? children+=KRendering ( ","? children+=KRendering)*)?
     '}')?;
 
 KPolygon returns KPolygon:
 	{KPolygon}
 	'Polygon'
 	('{'
-		('styles' ':' styles+=KStyle ( "," styles+=KStyle)*)?
-		('placementData' ':' placementData=KPlacementData)?
-		('childPlacement' ':' childPlacement=KPlacement)?
-		('children' ':' children+=KRendering ( "," children+=KRendering)*)?
+		('styles' ':'? styles+=KStyle ( ","? styles+=KStyle)*)?
+		('placementData' ':'? placementData=KPlacementData)?
+		('childPlacement' ':'? childPlacement=KPlacement)?
+		('children' ':'? children+=KRendering ( ","? children+=KRendering)*)?
     '}')?;
 
 KImage returns KImage:
     {KImage}
-	'Image' ((bundleName=EString) | '-') ':' imagePath=EString
+	'Image' ((bundleName=EString) | '-') imagePath=EString
 	('{'
-        ('styles' ':' styles+=KStyle ( "," styles+=KStyle)*)?
+        ('styles' ':'? styles+=KStyle ( ","? styles+=KStyle)*)?
 		('placementData' placementData=KPlacementData)?
-		('children' '{' children+=KRendering ( "," children+=KRendering)* '}' )?
+		('children' '{' children+=KRendering ( ","? children+=KRendering)* '}' )?
 		('childPlacement' childPlacement=KPlacement)?
     '}')?;
 
 KArc returns KArc:
 	{KArc}
-	'Arc' startAngle=EFloat ',' arcAngle=EFloat
+	'Arc' startAngle=EFloat ','? arcAngle=EFloat
 	('{'
-        ('styles' ':' styles+=KStyle ( "," styles+=KStyle)*)?
+        ('styles' ':'? styles+=KStyle ( ","? styles+=KStyle)*)?
 		('placementData' placementData=KPlacementData)?
-		('children' '{' children+=KRendering ( "," children+=KRendering)* '}' )?
+		('children' '{' children+=KRendering ( ","? children+=KRendering)* '}' )?
 		('childPlacement' childPlacement=KPlacement)?
     '}')?;
 
@@ -111,7 +111,7 @@ KChildArea returns KChildArea:
 	{KChildArea}
 	'ChildArea'
 	('{'
-        ('styles' ':' styles+=KStyle ( "," styles+=KStyle)*)?
+        ('styles' ':'? styles+=KStyle ( ","? styles+=KStyle)*)?
 		('placementData' placementData=KPlacementData)?
     '}')?;
 
@@ -120,9 +120,9 @@ KText returns KText:
 	'Text' (text=EString)?
 	('{'
         (clip?='clip')?
-        ('styles' ':' styles+=KStyle ( "," styles+=KStyle)*)?
+        ('styles' ':'? styles+=KStyle ( ","? styles+=KStyle)*)?
 		('placementData' placementData=KPlacementData)?
-		('children' '{' children+=KRendering ( "," children+=KRendering)* '}' )?
+		('children' '{' children+=KRendering ( ","? children+=KRendering)* '}' )?
 		('childPlacement' childPlacement=KPlacement)?
     '}')?;
 
@@ -132,9 +132,9 @@ KCustomRendering returns KCustomRendering:
 	('{'
 		'className' className=EString
 		'bundleName' bundleName=EString
-        ('styles' ':' styles+=KStyle ( "," styles+=KStyle)*)?
+        ('styles' ':'? styles+=KStyle ( ","? styles+=KStyle)*)?
 		('placementData' placementData=KPlacementData)?
-		('children' '{' children+=KRendering ( "," children+=KRendering)* '}' )?
+		('children' '{' children+=KRendering ( ","? children+=KRendering)* '}' )?
 		('childPlacement' childPlacement=KPlacement)?
     '}')?;
 
@@ -142,9 +142,9 @@ KSpline returns KSpline:
 	{KSpline}
 	'Spline'
 	('{'
-        ('styles' ':' styles+=KStyle ( "," styles+=KStyle)*)?
+        ('styles' ':'? styles+=KStyle ( ","? styles+=KStyle)*)?
 		('placementData' placementData=KPlacementData)?
-		('children' '{' children+=KRendering ( "," children+=KRendering)* '}' )?
+		('children' '{' children+=KRendering ( ","? children+=KRendering)* '}' )?
 		('childPlacement' childPlacement=KPlacement)?
     '}')?;
 
@@ -189,7 +189,7 @@ KDirectPlacementData returns KDirectPlacementData:
 KPolylinePlacementData returns KPolylinePlacementData:
     'PolylinePlacementData'
     '{'
-    	'points' ':' points+=KPosition ( "," points+=KPosition)* 
+    	'points' ':'? points+=KPosition ( ","? points+=KPosition)* 
         ('detailedPlacementData' detailPlacementData=KPlacementData)?
     '}';
 

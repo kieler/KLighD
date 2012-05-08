@@ -1055,9 +1055,9 @@ rule__KShapeLayout__Group_8_3__0__Impl
 :
 (
 { before(grammarAccess.getKShapeLayoutAccess().getCommaKeyword_8_3_0()); }
-
+(
 	',' 
-
+)?
 { after(grammarAccess.getKShapeLayoutAccess().getCommaKeyword_8_3_0()); }
 )
 

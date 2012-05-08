@@ -69,8 +69,9 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 		////		('ports' '{' ports+=KPort ( "," ports+=KPort)* '}' )?
 		////		('outgoingEdges' '{' outgoingEdges+=KEdge ( "," outgoingEdges+=KEdge)* '}' )?
 		////    '}';
-		//	{KNode} "KNode" "{" ("ports" ports+=KPort ("," ports+=KPort)*)? ("data" ":" data+=KGraphData ("," data+=KGraphData)*)? //('labels' '{' labels+=KLabel ( "," labels+=KLabel)* '}' )?
-		//	("children" ":" children+=KNode ("," children+=KNode)*)? "}" (outgoingEdges+=KEdge ("," outgoingEdges+=KEdge)*)?;
+		//	{KNode} "KNode" "{" ("ports" ports+=KPort (","? ports+=KPort)*)? ("data" ":"? data+=KGraphData (","?
+		//	data+=KGraphData)*)? //('labels' '{' labels+=KLabel ( ","? labels+=KLabel)* '}' )?
+		//	("children" ":"? children+=KNode (","? children+=KNode)*)? "}" (outgoingEdges+=KEdge (","? outgoingEdges+=KEdge)*)?;
 		public ParserRule getRule() { return rule; }
 
 		////	{KNode}
@@ -83,8 +84,9 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 		////		('ports' '{' ports+=KPort ( "," ports+=KPort)* '}' )?
 		////		('outgoingEdges' '{' outgoingEdges+=KEdge ( "," outgoingEdges+=KEdge)* '}' )?
 		////    '}';
-		//{KNode} "KNode" "{" ("ports" ports+=KPort ("," ports+=KPort)*)? ("data" ":" data+=KGraphData ("," data+=KGraphData)*)? //('labels' '{' labels+=KLabel ( "," labels+=KLabel)* '}' )?
-		//("children" ":" children+=KNode ("," children+=KNode)*)? "}" (outgoingEdges+=KEdge ("," outgoingEdges+=KEdge)*)?
+		//{KNode} "KNode" "{" ("ports" ports+=KPort (","? ports+=KPort)*)? ("data" ":"? data+=KGraphData (","?
+		//data+=KGraphData)*)? //('labels' '{' labels+=KLabel ( ","? labels+=KLabel)* '}' )?
+		//("children" ":"? children+=KNode (","? children+=KNode)*)? "}" (outgoingEdges+=KEdge (","? outgoingEdges+=KEdge)*)?
 		public Group getGroup() { return cGroup; }
 
 		////	{KNode}
@@ -106,7 +108,7 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 		//"{"
 		public Keyword getLeftCurlyBracketKeyword_2() { return cLeftCurlyBracketKeyword_2; }
 
-		//("ports" ports+=KPort ("," ports+=KPort)*)?
+		//("ports" ports+=KPort (","? ports+=KPort)*)?
 		public Group getGroup_3() { return cGroup_3; }
 
 		//"ports"
@@ -118,10 +120,10 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 		//KPort
 		public RuleCall getPortsKPortParserRuleCall_3_1_0() { return cPortsKPortParserRuleCall_3_1_0; }
 
-		//("," ports+=KPort)*
+		//(","? ports+=KPort)*
 		public Group getGroup_3_2() { return cGroup_3_2; }
 
-		//","
+		//","?
 		public Keyword getCommaKeyword_3_2_0() { return cCommaKeyword_3_2_0; }
 
 		//ports+=KPort
@@ -130,13 +132,13 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 		//KPort
 		public RuleCall getPortsKPortParserRuleCall_3_2_1_0() { return cPortsKPortParserRuleCall_3_2_1_0; }
 
-		//("data" ":" data+=KGraphData ("," data+=KGraphData)*)?
+		//("data" ":"? data+=KGraphData (","? data+=KGraphData)*)?
 		public Group getGroup_4() { return cGroup_4; }
 
 		//"data"
 		public Keyword getDataKeyword_4_0() { return cDataKeyword_4_0; }
 
-		//":"
+		//":"?
 		public Keyword getColonKeyword_4_1() { return cColonKeyword_4_1; }
 
 		//data+=KGraphData
@@ -145,10 +147,10 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 		//KGraphData
 		public RuleCall getDataKGraphDataParserRuleCall_4_2_0() { return cDataKGraphDataParserRuleCall_4_2_0; }
 
-		//("," data+=KGraphData)*
+		//(","? data+=KGraphData)*
 		public Group getGroup_4_3() { return cGroup_4_3; }
 
-		//","
+		//","?
 		public Keyword getCommaKeyword_4_3_0() { return cCommaKeyword_4_3_0; }
 
 		//data+=KGraphData
@@ -157,13 +159,13 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 		//KGraphData
 		public RuleCall getDataKGraphDataParserRuleCall_4_3_1_0() { return cDataKGraphDataParserRuleCall_4_3_1_0; }
 
-		//("children" ":" children+=KNode ("," children+=KNode)*)?
+		//("children" ":"? children+=KNode (","? children+=KNode)*)?
 		public Group getGroup_5() { return cGroup_5; }
 
 		//"children"
 		public Keyword getChildrenKeyword_5_0() { return cChildrenKeyword_5_0; }
 
-		//":"
+		//":"?
 		public Keyword getColonKeyword_5_1() { return cColonKeyword_5_1; }
 
 		//children+=KNode
@@ -172,10 +174,10 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 		//KNode
 		public RuleCall getChildrenKNodeParserRuleCall_5_2_0() { return cChildrenKNodeParserRuleCall_5_2_0; }
 
-		//("," children+=KNode)*
+		//(","? children+=KNode)*
 		public Group getGroup_5_3() { return cGroup_5_3; }
 
-		//","
+		//","?
 		public Keyword getCommaKeyword_5_3_0() { return cCommaKeyword_5_3_0; }
 
 		//children+=KNode
@@ -187,7 +189,7 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 		//"}"
 		public Keyword getRightCurlyBracketKeyword_6() { return cRightCurlyBracketKeyword_6; }
 
-		//(outgoingEdges+=KEdge ("," outgoingEdges+=KEdge)*)?
+		//(outgoingEdges+=KEdge (","? outgoingEdges+=KEdge)*)?
 		public Group getGroup_7() { return cGroup_7; }
 
 		//outgoingEdges+=KEdge
@@ -196,10 +198,10 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 		//KEdge
 		public RuleCall getOutgoingEdgesKEdgeParserRuleCall_7_0_0() { return cOutgoingEdgesKEdgeParserRuleCall_7_0_0; }
 
-		//("," outgoingEdges+=KEdge)*
+		//(","? outgoingEdges+=KEdge)*
 		public Group getGroup_7_1() { return cGroup_7_1; }
 
-		//","
+		//","?
 		public Keyword getCommaKeyword_7_1_0() { return cCommaKeyword_7_1_0; }
 
 		//outgoingEdges+=KEdge
@@ -232,7 +234,7 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 		////		'text' text=EString
 		////		('data' '{' data+=KGraphData ( "," data+=KGraphData)* '}' )?
 		////    '}';
-		//	"KLabel" text=EString "{" ("data" ":" data+=KGraphData ("," data+=KGraphData)*)? "}";
+		//	"KLabel" text=EString "{" ("data" ":"? data+=KGraphData (","? data+=KGraphData)*)? "}";
 		public ParserRule getRule() { return rule; }
 
 		////	'KLabel'
@@ -240,7 +242,7 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 		////		'text' text=EString
 		////		('data' '{' data+=KGraphData ( "," data+=KGraphData)* '}' )?
 		////    '}';
-		//"KLabel" text=EString "{" ("data" ":" data+=KGraphData ("," data+=KGraphData)*)? "}"
+		//"KLabel" text=EString "{" ("data" ":"? data+=KGraphData (","? data+=KGraphData)*)? "}"
 		public Group getGroup() { return cGroup; }
 
 		////	'KLabel'
@@ -260,13 +262,13 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 		//"{"
 		public Keyword getLeftCurlyBracketKeyword_2() { return cLeftCurlyBracketKeyword_2; }
 
-		//("data" ":" data+=KGraphData ("," data+=KGraphData)*)?
+		//("data" ":"? data+=KGraphData (","? data+=KGraphData)*)?
 		public Group getGroup_3() { return cGroup_3; }
 
 		//"data"
 		public Keyword getDataKeyword_3_0() { return cDataKeyword_3_0; }
 
-		//":"
+		//":"?
 		public Keyword getColonKeyword_3_1() { return cColonKeyword_3_1; }
 
 		//data+=KGraphData
@@ -275,10 +277,10 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 		//KGraphData
 		public RuleCall getDataKGraphDataParserRuleCall_3_2_0() { return cDataKGraphDataParserRuleCall_3_2_0; }
 
-		//("," data+=KGraphData)*
+		//(","? data+=KGraphData)*
 		public Group getGroup_3_3() { return cGroup_3_3; }
 
-		//","
+		//","?
 		public Keyword getCommaKeyword_3_3_0() { return cCommaKeyword_3_3_0; }
 
 		//data+=KGraphData
@@ -335,8 +337,8 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 		////		('data' '{' data+=KGraphData ( "," data+=KGraphData)* '}' )?
 		////		('labels' '{' labels+=KLabel ( "," labels+=KLabel)* '}' )?
 		////    '}';
-		//	{KPort} "KPort" "{" ("edges" ":" edges+=[KEdge|EString] ("," edges+=[KEdge|EString])*)? ("data" ":" data+=KGraphData
-		//	("," data+=KGraphData)*)? ("labels" ":" labels+=KLabel ("," labels+=KLabel)*)? "}";
+		//	{KPort} "KPort" "{" ("edges" ":"? edges+=[KEdge|EString] (","? edges+=[KEdge|EString])*)? ("data" ":"? data+=KGraphData
+		//	(","? data+=KGraphData)*)? ("labels" ":"? labels+=KLabel (","? labels+=KLabel)*)? "}";
 		public ParserRule getRule() { return rule; }
 
 		////	{KPort}
@@ -346,8 +348,8 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 		////		('data' '{' data+=KGraphData ( "," data+=KGraphData)* '}' )?
 		////		('labels' '{' labels+=KLabel ( "," labels+=KLabel)* '}' )?
 		////    '}';
-		//{KPort} "KPort" "{" ("edges" ":" edges+=[KEdge|EString] ("," edges+=[KEdge|EString])*)? ("data" ":" data+=KGraphData
-		//("," data+=KGraphData)*)? ("labels" ":" labels+=KLabel ("," labels+=KLabel)*)? "}"
+		//{KPort} "KPort" "{" ("edges" ":"? edges+=[KEdge|EString] (","? edges+=[KEdge|EString])*)? ("data" ":"? data+=KGraphData
+		//(","? data+=KGraphData)*)? ("labels" ":"? labels+=KLabel (","? labels+=KLabel)*)? "}"
 		public Group getGroup() { return cGroup; }
 
 		////	{KPort}
@@ -366,13 +368,13 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 		//"{"
 		public Keyword getLeftCurlyBracketKeyword_2() { return cLeftCurlyBracketKeyword_2; }
 
-		//("edges" ":" edges+=[KEdge|EString] ("," edges+=[KEdge|EString])*)?
+		//("edges" ":"? edges+=[KEdge|EString] (","? edges+=[KEdge|EString])*)?
 		public Group getGroup_3() { return cGroup_3; }
 
 		//"edges"
 		public Keyword getEdgesKeyword_3_0() { return cEdgesKeyword_3_0; }
 
-		//":"
+		//":"?
 		public Keyword getColonKeyword_3_1() { return cColonKeyword_3_1; }
 
 		//edges+=[KEdge|EString]
@@ -384,10 +386,10 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 		//EString
 		public RuleCall getEdgesKEdgeEStringParserRuleCall_3_2_0_1() { return cEdgesKEdgeEStringParserRuleCall_3_2_0_1; }
 
-		//("," edges+=[KEdge|EString])*
+		//(","? edges+=[KEdge|EString])*
 		public Group getGroup_3_3() { return cGroup_3_3; }
 
-		//","
+		//","?
 		public Keyword getCommaKeyword_3_3_0() { return cCommaKeyword_3_3_0; }
 
 		//edges+=[KEdge|EString]
@@ -399,13 +401,13 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 		//EString
 		public RuleCall getEdgesKEdgeEStringParserRuleCall_3_3_1_0_1() { return cEdgesKEdgeEStringParserRuleCall_3_3_1_0_1; }
 
-		//("data" ":" data+=KGraphData ("," data+=KGraphData)*)?
+		//("data" ":"? data+=KGraphData (","? data+=KGraphData)*)?
 		public Group getGroup_4() { return cGroup_4; }
 
 		//"data"
 		public Keyword getDataKeyword_4_0() { return cDataKeyword_4_0; }
 
-		//":"
+		//":"?
 		public Keyword getColonKeyword_4_1() { return cColonKeyword_4_1; }
 
 		//data+=KGraphData
@@ -414,10 +416,10 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 		//KGraphData
 		public RuleCall getDataKGraphDataParserRuleCall_4_2_0() { return cDataKGraphDataParserRuleCall_4_2_0; }
 
-		//("," data+=KGraphData)*
+		//(","? data+=KGraphData)*
 		public Group getGroup_4_3() { return cGroup_4_3; }
 
-		//","
+		//","?
 		public Keyword getCommaKeyword_4_3_0() { return cCommaKeyword_4_3_0; }
 
 		//data+=KGraphData
@@ -426,13 +428,13 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 		//KGraphData
 		public RuleCall getDataKGraphDataParserRuleCall_4_3_1_0() { return cDataKGraphDataParserRuleCall_4_3_1_0; }
 
-		//("labels" ":" labels+=KLabel ("," labels+=KLabel)*)?
+		//("labels" ":"? labels+=KLabel (","? labels+=KLabel)*)?
 		public Group getGroup_5() { return cGroup_5; }
 
 		//"labels"
 		public Keyword getLabelsKeyword_5_0() { return cLabelsKeyword_5_0; }
 
-		//":"
+		//":"?
 		public Keyword getColonKeyword_5_1() { return cColonKeyword_5_1; }
 
 		//labels+=KLabel
@@ -441,10 +443,10 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 		//KLabel
 		public RuleCall getLabelsKLabelParserRuleCall_5_2_0() { return cLabelsKLabelParserRuleCall_5_2_0; }
 
-		//("," labels+=KLabel)*
+		//(","? labels+=KLabel)*
 		public Group getGroup_5_3() { return cGroup_5_3; }
 
-		//","
+		//","?
 		public Keyword getCommaKeyword_5_3_0() { return cCommaKeyword_5_3_0; }
 
 		//labels+=KLabel
@@ -461,40 +463,39 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "KEdge");
 		private final Group cGroup = (Group)rule.eContents().get(1);
 		private final Keyword cHyphenMinusHyphenMinusGreaterThanSignKeyword_0 = (Keyword)cGroup.eContents().get(0);
-		private final Keyword cTargetKeyword_1 = (Keyword)cGroup.eContents().get(1);
-		private final Assignment cTargetAssignment_2 = (Assignment)cGroup.eContents().get(2);
-		private final CrossReference cTargetKNodeCrossReference_2_0 = (CrossReference)cTargetAssignment_2.eContents().get(0);
-		private final RuleCall cTargetKNodeEStringParserRuleCall_2_0_1 = (RuleCall)cTargetKNodeCrossReference_2_0.eContents().get(1);
-		private final Keyword cLeftCurlyBracketKeyword_3 = (Keyword)cGroup.eContents().get(3);
+		private final Assignment cTargetAssignment_1 = (Assignment)cGroup.eContents().get(1);
+		private final CrossReference cTargetKNodeCrossReference_1_0 = (CrossReference)cTargetAssignment_1.eContents().get(0);
+		private final RuleCall cTargetKNodeEStringParserRuleCall_1_0_1 = (RuleCall)cTargetKNodeCrossReference_1_0.eContents().get(1);
+		private final Keyword cLeftCurlyBracketKeyword_2 = (Keyword)cGroup.eContents().get(2);
+		private final Group cGroup_3 = (Group)cGroup.eContents().get(3);
+		private final Keyword cSourcePortKeyword_3_0 = (Keyword)cGroup_3.eContents().get(0);
+		private final Assignment cSourcePortAssignment_3_1 = (Assignment)cGroup_3.eContents().get(1);
+		private final CrossReference cSourcePortKPortCrossReference_3_1_0 = (CrossReference)cSourcePortAssignment_3_1.eContents().get(0);
+		private final RuleCall cSourcePortKPortEStringParserRuleCall_3_1_0_1 = (RuleCall)cSourcePortKPortCrossReference_3_1_0.eContents().get(1);
 		private final Group cGroup_4 = (Group)cGroup.eContents().get(4);
-		private final Keyword cSourcePortKeyword_4_0 = (Keyword)cGroup_4.eContents().get(0);
-		private final Assignment cSourcePortAssignment_4_1 = (Assignment)cGroup_4.eContents().get(1);
-		private final CrossReference cSourcePortKPortCrossReference_4_1_0 = (CrossReference)cSourcePortAssignment_4_1.eContents().get(0);
-		private final RuleCall cSourcePortKPortEStringParserRuleCall_4_1_0_1 = (RuleCall)cSourcePortKPortCrossReference_4_1_0.eContents().get(1);
+		private final Keyword cTargetPortKeyword_4_0 = (Keyword)cGroup_4.eContents().get(0);
+		private final Assignment cTargetPortAssignment_4_1 = (Assignment)cGroup_4.eContents().get(1);
+		private final CrossReference cTargetPortKPortCrossReference_4_1_0 = (CrossReference)cTargetPortAssignment_4_1.eContents().get(0);
+		private final RuleCall cTargetPortKPortEStringParserRuleCall_4_1_0_1 = (RuleCall)cTargetPortKPortCrossReference_4_1_0.eContents().get(1);
 		private final Group cGroup_5 = (Group)cGroup.eContents().get(5);
-		private final Keyword cTargetPortKeyword_5_0 = (Keyword)cGroup_5.eContents().get(0);
-		private final Assignment cTargetPortAssignment_5_1 = (Assignment)cGroup_5.eContents().get(1);
-		private final CrossReference cTargetPortKPortCrossReference_5_1_0 = (CrossReference)cTargetPortAssignment_5_1.eContents().get(0);
-		private final RuleCall cTargetPortKPortEStringParserRuleCall_5_1_0_1 = (RuleCall)cTargetPortKPortCrossReference_5_1_0.eContents().get(1);
+		private final Keyword cDataKeyword_5_0 = (Keyword)cGroup_5.eContents().get(0);
+		private final Keyword cColonKeyword_5_1 = (Keyword)cGroup_5.eContents().get(1);
+		private final Assignment cDataAssignment_5_2 = (Assignment)cGroup_5.eContents().get(2);
+		private final RuleCall cDataKGraphDataParserRuleCall_5_2_0 = (RuleCall)cDataAssignment_5_2.eContents().get(0);
+		private final Group cGroup_5_3 = (Group)cGroup_5.eContents().get(3);
+		private final Keyword cCommaKeyword_5_3_0 = (Keyword)cGroup_5_3.eContents().get(0);
+		private final Assignment cDataAssignment_5_3_1 = (Assignment)cGroup_5_3.eContents().get(1);
+		private final RuleCall cDataKGraphDataParserRuleCall_5_3_1_0 = (RuleCall)cDataAssignment_5_3_1.eContents().get(0);
 		private final Group cGroup_6 = (Group)cGroup.eContents().get(6);
-		private final Keyword cDataKeyword_6_0 = (Keyword)cGroup_6.eContents().get(0);
+		private final Keyword cLabelsKeyword_6_0 = (Keyword)cGroup_6.eContents().get(0);
 		private final Keyword cColonKeyword_6_1 = (Keyword)cGroup_6.eContents().get(1);
-		private final Assignment cDataAssignment_6_2 = (Assignment)cGroup_6.eContents().get(2);
-		private final RuleCall cDataKGraphDataParserRuleCall_6_2_0 = (RuleCall)cDataAssignment_6_2.eContents().get(0);
+		private final Assignment cLabelsAssignment_6_2 = (Assignment)cGroup_6.eContents().get(2);
+		private final RuleCall cLabelsKLabelParserRuleCall_6_2_0 = (RuleCall)cLabelsAssignment_6_2.eContents().get(0);
 		private final Group cGroup_6_3 = (Group)cGroup_6.eContents().get(3);
 		private final Keyword cCommaKeyword_6_3_0 = (Keyword)cGroup_6_3.eContents().get(0);
-		private final Assignment cDataAssignment_6_3_1 = (Assignment)cGroup_6_3.eContents().get(1);
-		private final RuleCall cDataKGraphDataParserRuleCall_6_3_1_0 = (RuleCall)cDataAssignment_6_3_1.eContents().get(0);
-		private final Group cGroup_7 = (Group)cGroup.eContents().get(7);
-		private final Keyword cLabelsKeyword_7_0 = (Keyword)cGroup_7.eContents().get(0);
-		private final Keyword cColonKeyword_7_1 = (Keyword)cGroup_7.eContents().get(1);
-		private final Assignment cLabelsAssignment_7_2 = (Assignment)cGroup_7.eContents().get(2);
-		private final RuleCall cLabelsKLabelParserRuleCall_7_2_0 = (RuleCall)cLabelsAssignment_7_2.eContents().get(0);
-		private final Group cGroup_7_3 = (Group)cGroup_7.eContents().get(3);
-		private final Keyword cCommaKeyword_7_3_0 = (Keyword)cGroup_7_3.eContents().get(0);
-		private final Assignment cLabelsAssignment_7_3_1 = (Assignment)cGroup_7_3.eContents().get(1);
-		private final RuleCall cLabelsKLabelParserRuleCall_7_3_1_0 = (RuleCall)cLabelsAssignment_7_3_1.eContents().get(0);
-		private final Keyword cRightCurlyBracketKeyword_8 = (Keyword)cGroup.eContents().get(8);
+		private final Assignment cLabelsAssignment_6_3_1 = (Assignment)cGroup_6_3.eContents().get(1);
+		private final RuleCall cLabelsKLabelParserRuleCall_6_3_1_0 = (RuleCall)cLabelsAssignment_6_3_1.eContents().get(0);
+		private final Keyword cRightCurlyBracketKeyword_7 = (Keyword)cGroup.eContents().get(7);
 		
 		//KEdge: //	'KEdge'
 		////	'{'
@@ -504,9 +505,8 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 		////		('data' '{' data+=KGraphData ( "," data+=KGraphData)* '}' )?
 		////		('labels' '{' labels+=KLabel ( "," labels+=KLabel)* '}' )?
 		////    '}';
-		//	"-->" "target" target=[KNode|EString] "{" ("sourcePort" sourcePort=[KPort|EString])? ("targetPort"
-		//	targetPort=[KPort|EString])? ("data" ":" data+=KGraphData ("," data+=KGraphData)*)? ("labels" ":" labels+=KLabel (","
-		//	labels+=KLabel)*)? "}";
+		//	"-->" target=[KNode|EString] "{" ("sourcePort" sourcePort=[KPort|EString])? ("targetPort" targetPort=[KPort|EString])?
+		//	("data" ":"? data+=KGraphData (","? data+=KGraphData)*)? ("labels" ":"? labels+=KLabel (","? labels+=KLabel)*)? "}";
 		public ParserRule getRule() { return rule; }
 
 		////	'KEdge'
@@ -517,9 +517,8 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 		////		('data' '{' data+=KGraphData ( "," data+=KGraphData)* '}' )?
 		////		('labels' '{' labels+=KLabel ( "," labels+=KLabel)* '}' )?
 		////    '}';
-		//"-->" "target" target=[KNode|EString] "{" ("sourcePort" sourcePort=[KPort|EString])? ("targetPort"
-		//targetPort=[KPort|EString])? ("data" ":" data+=KGraphData ("," data+=KGraphData)*)? ("labels" ":" labels+=KLabel (","
-		//labels+=KLabel)*)? "}"
+		//"-->" target=[KNode|EString] "{" ("sourcePort" sourcePort=[KPort|EString])? ("targetPort" targetPort=[KPort|EString])?
+		//("data" ":"? data+=KGraphData (","? data+=KGraphData)*)? ("labels" ":"? labels+=KLabel (","? labels+=KLabel)*)? "}"
 		public Group getGroup() { return cGroup; }
 
 		////	'KEdge'
@@ -533,107 +532,104 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 		//"-->"
 		public Keyword getHyphenMinusHyphenMinusGreaterThanSignKeyword_0() { return cHyphenMinusHyphenMinusGreaterThanSignKeyword_0; }
 
-		//"target"
-		public Keyword getTargetKeyword_1() { return cTargetKeyword_1; }
-
 		//target=[KNode|EString]
-		public Assignment getTargetAssignment_2() { return cTargetAssignment_2; }
+		public Assignment getTargetAssignment_1() { return cTargetAssignment_1; }
 
 		//[KNode|EString]
-		public CrossReference getTargetKNodeCrossReference_2_0() { return cTargetKNodeCrossReference_2_0; }
+		public CrossReference getTargetKNodeCrossReference_1_0() { return cTargetKNodeCrossReference_1_0; }
 
 		//EString
-		public RuleCall getTargetKNodeEStringParserRuleCall_2_0_1() { return cTargetKNodeEStringParserRuleCall_2_0_1; }
+		public RuleCall getTargetKNodeEStringParserRuleCall_1_0_1() { return cTargetKNodeEStringParserRuleCall_1_0_1; }
 
 		//"{"
-		public Keyword getLeftCurlyBracketKeyword_3() { return cLeftCurlyBracketKeyword_3; }
+		public Keyword getLeftCurlyBracketKeyword_2() { return cLeftCurlyBracketKeyword_2; }
 
 		//("sourcePort" sourcePort=[KPort|EString])?
-		public Group getGroup_4() { return cGroup_4; }
+		public Group getGroup_3() { return cGroup_3; }
 
 		//"sourcePort"
-		public Keyword getSourcePortKeyword_4_0() { return cSourcePortKeyword_4_0; }
+		public Keyword getSourcePortKeyword_3_0() { return cSourcePortKeyword_3_0; }
 
 		//sourcePort=[KPort|EString]
-		public Assignment getSourcePortAssignment_4_1() { return cSourcePortAssignment_4_1; }
+		public Assignment getSourcePortAssignment_3_1() { return cSourcePortAssignment_3_1; }
 
 		//[KPort|EString]
-		public CrossReference getSourcePortKPortCrossReference_4_1_0() { return cSourcePortKPortCrossReference_4_1_0; }
+		public CrossReference getSourcePortKPortCrossReference_3_1_0() { return cSourcePortKPortCrossReference_3_1_0; }
 
 		//EString
-		public RuleCall getSourcePortKPortEStringParserRuleCall_4_1_0_1() { return cSourcePortKPortEStringParserRuleCall_4_1_0_1; }
+		public RuleCall getSourcePortKPortEStringParserRuleCall_3_1_0_1() { return cSourcePortKPortEStringParserRuleCall_3_1_0_1; }
 
 		//("targetPort" targetPort=[KPort|EString])?
-		public Group getGroup_5() { return cGroup_5; }
+		public Group getGroup_4() { return cGroup_4; }
 
 		//"targetPort"
-		public Keyword getTargetPortKeyword_5_0() { return cTargetPortKeyword_5_0; }
+		public Keyword getTargetPortKeyword_4_0() { return cTargetPortKeyword_4_0; }
 
 		//targetPort=[KPort|EString]
-		public Assignment getTargetPortAssignment_5_1() { return cTargetPortAssignment_5_1; }
+		public Assignment getTargetPortAssignment_4_1() { return cTargetPortAssignment_4_1; }
 
 		//[KPort|EString]
-		public CrossReference getTargetPortKPortCrossReference_5_1_0() { return cTargetPortKPortCrossReference_5_1_0; }
+		public CrossReference getTargetPortKPortCrossReference_4_1_0() { return cTargetPortKPortCrossReference_4_1_0; }
 
 		//EString
-		public RuleCall getTargetPortKPortEStringParserRuleCall_5_1_0_1() { return cTargetPortKPortEStringParserRuleCall_5_1_0_1; }
+		public RuleCall getTargetPortKPortEStringParserRuleCall_4_1_0_1() { return cTargetPortKPortEStringParserRuleCall_4_1_0_1; }
 
-		//("data" ":" data+=KGraphData ("," data+=KGraphData)*)?
-		public Group getGroup_6() { return cGroup_6; }
+		//("data" ":"? data+=KGraphData (","? data+=KGraphData)*)?
+		public Group getGroup_5() { return cGroup_5; }
 
 		//"data"
-		public Keyword getDataKeyword_6_0() { return cDataKeyword_6_0; }
+		public Keyword getDataKeyword_5_0() { return cDataKeyword_5_0; }
 
-		//":"
-		public Keyword getColonKeyword_6_1() { return cColonKeyword_6_1; }
-
-		//data+=KGraphData
-		public Assignment getDataAssignment_6_2() { return cDataAssignment_6_2; }
-
-		//KGraphData
-		public RuleCall getDataKGraphDataParserRuleCall_6_2_0() { return cDataKGraphDataParserRuleCall_6_2_0; }
-
-		//("," data+=KGraphData)*
-		public Group getGroup_6_3() { return cGroup_6_3; }
-
-		//","
-		public Keyword getCommaKeyword_6_3_0() { return cCommaKeyword_6_3_0; }
+		//":"?
+		public Keyword getColonKeyword_5_1() { return cColonKeyword_5_1; }
 
 		//data+=KGraphData
-		public Assignment getDataAssignment_6_3_1() { return cDataAssignment_6_3_1; }
+		public Assignment getDataAssignment_5_2() { return cDataAssignment_5_2; }
 
 		//KGraphData
-		public RuleCall getDataKGraphDataParserRuleCall_6_3_1_0() { return cDataKGraphDataParserRuleCall_6_3_1_0; }
+		public RuleCall getDataKGraphDataParserRuleCall_5_2_0() { return cDataKGraphDataParserRuleCall_5_2_0; }
 
-		//("labels" ":" labels+=KLabel ("," labels+=KLabel)*)?
-		public Group getGroup_7() { return cGroup_7; }
+		//(","? data+=KGraphData)*
+		public Group getGroup_5_3() { return cGroup_5_3; }
+
+		//","?
+		public Keyword getCommaKeyword_5_3_0() { return cCommaKeyword_5_3_0; }
+
+		//data+=KGraphData
+		public Assignment getDataAssignment_5_3_1() { return cDataAssignment_5_3_1; }
+
+		//KGraphData
+		public RuleCall getDataKGraphDataParserRuleCall_5_3_1_0() { return cDataKGraphDataParserRuleCall_5_3_1_0; }
+
+		//("labels" ":"? labels+=KLabel (","? labels+=KLabel)*)?
+		public Group getGroup_6() { return cGroup_6; }
 
 		//"labels"
-		public Keyword getLabelsKeyword_7_0() { return cLabelsKeyword_7_0; }
+		public Keyword getLabelsKeyword_6_0() { return cLabelsKeyword_6_0; }
 
-		//":"
-		public Keyword getColonKeyword_7_1() { return cColonKeyword_7_1; }
-
-		//labels+=KLabel
-		public Assignment getLabelsAssignment_7_2() { return cLabelsAssignment_7_2; }
-
-		//KLabel
-		public RuleCall getLabelsKLabelParserRuleCall_7_2_0() { return cLabelsKLabelParserRuleCall_7_2_0; }
-
-		//("," labels+=KLabel)*
-		public Group getGroup_7_3() { return cGroup_7_3; }
-
-		//","
-		public Keyword getCommaKeyword_7_3_0() { return cCommaKeyword_7_3_0; }
+		//":"?
+		public Keyword getColonKeyword_6_1() { return cColonKeyword_6_1; }
 
 		//labels+=KLabel
-		public Assignment getLabelsAssignment_7_3_1() { return cLabelsAssignment_7_3_1; }
+		public Assignment getLabelsAssignment_6_2() { return cLabelsAssignment_6_2; }
 
 		//KLabel
-		public RuleCall getLabelsKLabelParserRuleCall_7_3_1_0() { return cLabelsKLabelParserRuleCall_7_3_1_0; }
+		public RuleCall getLabelsKLabelParserRuleCall_6_2_0() { return cLabelsKLabelParserRuleCall_6_2_0; }
+
+		//(","? labels+=KLabel)*
+		public Group getGroup_6_3() { return cGroup_6_3; }
+
+		//","?
+		public Keyword getCommaKeyword_6_3_0() { return cCommaKeyword_6_3_0; }
+
+		//labels+=KLabel
+		public Assignment getLabelsAssignment_6_3_1() { return cLabelsAssignment_6_3_1; }
+
+		//KLabel
+		public RuleCall getLabelsKLabelParserRuleCall_6_3_1_0() { return cLabelsKLabelParserRuleCall_6_3_1_0; }
 
 		//"}"
-		public Keyword getRightCurlyBracketKeyword_8() { return cRightCurlyBracketKeyword_8; }
+		public Keyword getRightCurlyBracketKeyword_7() { return cRightCurlyBracketKeyword_7; }
 	}
 
 	public class KGraphDataElements extends AbstractParserRuleElementFinder {
@@ -746,8 +742,9 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	////		('ports' '{' ports+=KPort ( "," ports+=KPort)* '}' )?
 	////		('outgoingEdges' '{' outgoingEdges+=KEdge ( "," outgoingEdges+=KEdge)* '}' )?
 	////    '}';
-	//	{KNode} "KNode" "{" ("ports" ports+=KPort ("," ports+=KPort)*)? ("data" ":" data+=KGraphData ("," data+=KGraphData)*)? //('labels' '{' labels+=KLabel ( "," labels+=KLabel)* '}' )?
-	//	("children" ":" children+=KNode ("," children+=KNode)*)? "}" (outgoingEdges+=KEdge ("," outgoingEdges+=KEdge)*)?;
+	//	{KNode} "KNode" "{" ("ports" ports+=KPort (","? ports+=KPort)*)? ("data" ":"? data+=KGraphData (","?
+	//	data+=KGraphData)*)? //('labels' '{' labels+=KLabel ( ","? labels+=KLabel)* '}' )?
+	//	("children" ":"? children+=KNode (","? children+=KNode)*)? "}" (outgoingEdges+=KEdge (","? outgoingEdges+=KEdge)*)?;
 	public KNodeElements getKNodeAccess() {
 		return (pKNode != null) ? pKNode : (pKNode = new KNodeElements());
 	}
@@ -761,7 +758,7 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	////		'text' text=EString
 	////		('data' '{' data+=KGraphData ( "," data+=KGraphData)* '}' )?
 	////    '}';
-	//	"KLabel" text=EString "{" ("data" ":" data+=KGraphData ("," data+=KGraphData)*)? "}";
+	//	"KLabel" text=EString "{" ("data" ":"? data+=KGraphData (","? data+=KGraphData)*)? "}";
 	public KLabelElements getKLabelAccess() {
 		return (pKLabel != null) ? pKLabel : (pKLabel = new KLabelElements());
 	}
@@ -777,8 +774,8 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	////		('data' '{' data+=KGraphData ( "," data+=KGraphData)* '}' )?
 	////		('labels' '{' labels+=KLabel ( "," labels+=KLabel)* '}' )?
 	////    '}';
-	//	{KPort} "KPort" "{" ("edges" ":" edges+=[KEdge|EString] ("," edges+=[KEdge|EString])*)? ("data" ":" data+=KGraphData
-	//	("," data+=KGraphData)*)? ("labels" ":" labels+=KLabel ("," labels+=KLabel)*)? "}";
+	//	{KPort} "KPort" "{" ("edges" ":"? edges+=[KEdge|EString] (","? edges+=[KEdge|EString])*)? ("data" ":"? data+=KGraphData
+	//	(","? data+=KGraphData)*)? ("labels" ":"? labels+=KLabel (","? labels+=KLabel)*)? "}";
 	public KPortElements getKPortAccess() {
 		return (pKPort != null) ? pKPort : (pKPort = new KPortElements());
 	}
@@ -795,9 +792,8 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	////		('data' '{' data+=KGraphData ( "," data+=KGraphData)* '}' )?
 	////		('labels' '{' labels+=KLabel ( "," labels+=KLabel)* '}' )?
 	////    '}';
-	//	"-->" "target" target=[KNode|EString] "{" ("sourcePort" sourcePort=[KPort|EString])? ("targetPort"
-	//	targetPort=[KPort|EString])? ("data" ":" data+=KGraphData ("," data+=KGraphData)*)? ("labels" ":" labels+=KLabel (","
-	//	labels+=KLabel)*)? "}";
+	//	"-->" target=[KNode|EString] "{" ("sourcePort" sourcePort=[KPort|EString])? ("targetPort" targetPort=[KPort|EString])?
+	//	("data" ":"? data+=KGraphData (","? data+=KGraphData)*)? ("labels" ":"? labels+=KLabel (","? labels+=KLabel)*)? "}";
 	public KEdgeElements getKEdgeAccess() {
 		return (pKEdge != null) ? pKEdge : (pKEdge = new KEdgeElements());
 	}
@@ -835,7 +831,7 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//KRenderingLibrary:
-	//	{KRenderingLibrary} "RenderingLibrary" "{" (renderings+=KRendering ("," renderings+=KRendering)*)? "}";
+	//	{KRenderingLibrary} "RenderingLibrary" "{" (renderings+=KRendering (","? renderings+=KRendering)*)? "}";
 	public KRenderingGrammarAccess.KRenderingLibraryElements getKRenderingLibraryAccess() {
 		return gaKRendering.getKRenderingLibraryAccess();
 	}
@@ -908,7 +904,7 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 
 	//KRenderingRef:
 	//	{KRenderingRef} "RenderingRef" rendering=[KRendering|EString] ("{" ("placementData" placementData=KPlacementData)?
-	//	("styles" "{" styles+=KStyle ("," styles+=KStyle)* "}")? "}")?;
+	//	("styles" "{" styles+=KStyle (","? styles+=KStyle)* "}")? "}")?;
 	public KRenderingGrammarAccess.KRenderingRefElements getKRenderingRefAccess() {
 		return gaKRendering.getKRenderingRefAccess();
 	}
@@ -918,9 +914,9 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//KEllipse:
-	//	{KEllipse} "Ellipse" ("{" ("styles" ":" styles+=KStyle ("," styles+=KStyle)*)? ("placementData" ":"
-	//	placementData=KPlacementData)? ("childPlacement" ":" childPlacement=KPlacement)? ("children" ":" children+=KRendering
-	//	("," children+=KRendering)*)? "}")?;
+	//	{KEllipse} "Ellipse" ("{" ("styles" ":"? styles+=KStyle (","? styles+=KStyle)*)? ("placementData" ":"?
+	//	placementData=KPlacementData)? ("childPlacement" ":"? childPlacement=KPlacement)? ("children" ":"?
+	//	children+=KRendering (","? children+=KRendering)*)? "}")?;
 	public KRenderingGrammarAccess.KEllipseElements getKEllipseAccess() {
 		return gaKRendering.getKEllipseAccess();
 	}
@@ -930,9 +926,9 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//KRectangle:
-	//	{KRectangle} "Rectangle" ("{" ("styles" ":" styles+=KStyle ("," styles+=KStyle)*)? ("placementData" ":"
-	//	placementData=KPlacementData)? ("childPlacement" ":" childPlacement=KPlacement)? ("children" ":" children+=KRendering
-	//	("," children+=KRendering)*)? "}")?;
+	//	{KRectangle} "Rectangle" ("{" ("styles" ":"? styles+=KStyle (","? styles+=KStyle)*)? ("placementData" ":"?
+	//	placementData=KPlacementData)? ("childPlacement" ":"? childPlacement=KPlacement)? ("children" ":"?
+	//	children+=KRendering (","? children+=KRendering)*)? "}")?;
 	public KRenderingGrammarAccess.KRectangleElements getKRectangleAccess() {
 		return gaKRendering.getKRectangleAccess();
 	}
@@ -942,9 +938,9 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//KRoundedRectangle:
-	//	{KRoundedRectangle} "RoundedRectangle" cornerWidth=EFloat "," cornerHeight=EFloat ("{" ("styles" ":" styles+=KStyle
-	//	("," styles+=KStyle)*)? ("placementData" ":" placementData=KPlacementData)? ("childPlacement" ":"
-	//	childPlacement=KPlacement)? ("children" ":" children+=KRendering ("," children+=KRendering)*)? "}")?;
+	//	{KRoundedRectangle} "RoundedRectangle" cornerWidth=EFloat ","? cornerHeight=EFloat ("{" ("styles" ":"? styles+=KStyle
+	//	(","? styles+=KStyle)*)? ("placementData" ":"? placementData=KPlacementData)? ("childPlacement" ":"?
+	//	childPlacement=KPlacement)? ("children" ":"? children+=KRendering (","? children+=KRendering)*)? "}")?;
 	public KRenderingGrammarAccess.KRoundedRectangleElements getKRoundedRectangleAccess() {
 		return gaKRendering.getKRoundedRectangleAccess();
 	}
@@ -954,9 +950,9 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//KPolyline_Impl returns KPolyline:
-	//	{KPolyline} "Polyline" ("{" ("styles" ":" styles+=KStyle ("," styles+=KStyle)*)? ("placementData" ":"
-	//	placementData=KPlacementData)? ("childPlacement" ":" childPlacement=KPlacement)? ("children" ":" children+=KRendering
-	//	("," children+=KRendering)*)? "}")?;
+	//	{KPolyline} "Polyline" ("{" ("styles" ":"? styles+=KStyle (","? styles+=KStyle)*)? ("placementData" ":"?
+	//	placementData=KPlacementData)? ("childPlacement" ":"? childPlacement=KPlacement)? ("children" ":"?
+	//	children+=KRendering (","? children+=KRendering)*)? "}")?;
 	public KRenderingGrammarAccess.KPolyline_ImplElements getKPolyline_ImplAccess() {
 		return gaKRendering.getKPolyline_ImplAccess();
 	}
@@ -966,9 +962,9 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//KPolygon:
-	//	{KPolygon} "Polygon" ("{" ("styles" ":" styles+=KStyle ("," styles+=KStyle)*)? ("placementData" ":"
-	//	placementData=KPlacementData)? ("childPlacement" ":" childPlacement=KPlacement)? ("children" ":" children+=KRendering
-	//	("," children+=KRendering)*)? "}")?;
+	//	{KPolygon} "Polygon" ("{" ("styles" ":"? styles+=KStyle (","? styles+=KStyle)*)? ("placementData" ":"?
+	//	placementData=KPlacementData)? ("childPlacement" ":"? childPlacement=KPlacement)? ("children" ":"?
+	//	children+=KRendering (","? children+=KRendering)*)? "}")?;
 	public KRenderingGrammarAccess.KPolygonElements getKPolygonAccess() {
 		return gaKRendering.getKPolygonAccess();
 	}
@@ -978,8 +974,8 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//KImage:
-	//	{KImage} "Image" (bundleName=EString | "-") ":" imagePath=EString ("{" ("styles" ":" styles+=KStyle (","
-	//	styles+=KStyle)*)? ("placementData" placementData=KPlacementData)? ("children" "{" children+=KRendering (","
+	//	{KImage} "Image" (bundleName=EString | "-") imagePath=EString ("{" ("styles" ":"? styles+=KStyle (","?
+	//	styles+=KStyle)*)? ("placementData" placementData=KPlacementData)? ("children" "{" children+=KRendering (","?
 	//	children+=KRendering)* "}")? ("childPlacement" childPlacement=KPlacement)? "}")?;
 	public KRenderingGrammarAccess.KImageElements getKImageAccess() {
 		return gaKRendering.getKImageAccess();
@@ -990,9 +986,9 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//KArc:
-	//	{KArc} "Arc" startAngle=EFloat "," arcAngle=EFloat ("{" ("styles" ":" styles+=KStyle ("," styles+=KStyle)*)?
-	//	("placementData" placementData=KPlacementData)? ("children" "{" children+=KRendering ("," children+=KRendering)* "}")?
-	//	("childPlacement" childPlacement=KPlacement)? "}")?;
+	//	{KArc} "Arc" startAngle=EFloat ","? arcAngle=EFloat ("{" ("styles" ":"? styles+=KStyle (","? styles+=KStyle)*)?
+	//	("placementData" placementData=KPlacementData)? ("children" "{" children+=KRendering (","? children+=KRendering)*
+	//	"}")? ("childPlacement" childPlacement=KPlacement)? "}")?;
 	public KRenderingGrammarAccess.KArcElements getKArcAccess() {
 		return gaKRendering.getKArcAccess();
 	}
@@ -1002,7 +998,7 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//KChildArea:
-	//	{KChildArea} "ChildArea" ("{" ("styles" ":" styles+=KStyle ("," styles+=KStyle)*)? ("placementData"
+	//	{KChildArea} "ChildArea" ("{" ("styles" ":"? styles+=KStyle (","? styles+=KStyle)*)? ("placementData"
 	//	placementData=KPlacementData)? "}")?;
 	public KRenderingGrammarAccess.KChildAreaElements getKChildAreaAccess() {
 		return gaKRendering.getKChildAreaAccess();
@@ -1013,9 +1009,9 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//KText:
-	//	{KText} "Text" text=EString? ("{" clip?="clip"? ("styles" ":" styles+=KStyle ("," styles+=KStyle)*)? ("placementData"
-	//	placementData=KPlacementData)? ("children" "{" children+=KRendering ("," children+=KRendering)* "}")?
-	//	("childPlacement" childPlacement=KPlacement)? "}")?;
+	//	{KText} "Text" text=EString? ("{" clip?="clip"? ("styles" ":"? styles+=KStyle (","? styles+=KStyle)*)?
+	//	("placementData" placementData=KPlacementData)? ("children" "{" children+=KRendering (","? children+=KRendering)*
+	//	"}")? ("childPlacement" childPlacement=KPlacement)? "}")?;
 	public KRenderingGrammarAccess.KTextElements getKTextAccess() {
 		return gaKRendering.getKTextAccess();
 	}
@@ -1025,9 +1021,9 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//KCustomRendering:
-	//	{KCustomRendering} "CustomRendering" ("{" "className" className=EString "bundleName" bundleName=EString ("styles" ":"
-	//	styles+=KStyle ("," styles+=KStyle)*)? ("placementData" placementData=KPlacementData)? ("children" "{"
-	//	children+=KRendering ("," children+=KRendering)* "}")? ("childPlacement" childPlacement=KPlacement)? "}")?;
+	//	{KCustomRendering} "CustomRendering" ("{" "className" className=EString "bundleName" bundleName=EString ("styles" ":"?
+	//	styles+=KStyle (","? styles+=KStyle)*)? ("placementData" placementData=KPlacementData)? ("children" "{"
+	//	children+=KRendering (","? children+=KRendering)* "}")? ("childPlacement" childPlacement=KPlacement)? "}")?;
 	public KRenderingGrammarAccess.KCustomRenderingElements getKCustomRenderingAccess() {
 		return gaKRendering.getKCustomRenderingAccess();
 	}
@@ -1037,8 +1033,8 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//KSpline:
-	//	{KSpline} "Spline" ("{" ("styles" ":" styles+=KStyle ("," styles+=KStyle)*)? ("placementData"
-	//	placementData=KPlacementData)? ("children" "{" children+=KRendering ("," children+=KRendering)* "}")?
+	//	{KSpline} "Spline" ("{" ("styles" ":"? styles+=KStyle (","? styles+=KStyle)*)? ("placementData"
+	//	placementData=KPlacementData)? ("children" "{" children+=KRendering (","? children+=KRendering)* "}")?
 	//	("childPlacement" childPlacement=KPlacement)? "}")?;
 	public KRenderingGrammarAccess.KSplineElements getKSplineAccess() {
 		return gaKRendering.getKSplineAccess();
@@ -1092,7 +1088,7 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//KPolylinePlacementData:
-	//	"PolylinePlacementData" "{" "points" ":" points+=KPosition ("," points+=KPosition)* ("detailedPlacementData"
+	//	"PolylinePlacementData" "{" "points" ":"? points+=KPosition (","? points+=KPosition)* ("detailedPlacementData"
 	//	detailPlacementData=KPlacementData)? "}";
 	public KRenderingGrammarAccess.KPolylinePlacementDataElements getKPolylinePlacementDataAccess() {
 		return gaKRendering.getKPolylinePlacementDataAccess();
@@ -1373,7 +1369,7 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	////		('insets' insets=KInsets)?
 	////    '}';
 	//	{KShapeLayout} "KShapeLayout" "{" ("xpos" xpos=EFloat)? ("ypos" ypos=EFloat)? ("width" width=EFloat)? ("height"
-	//	height=EFloat)? ("insets" insets=KInsets)? ("mapProperties" ":" persistentEntries+=PersistentEntry (","
+	//	height=EFloat)? ("insets" insets=KInsets)? ("mapProperties" ":" persistentEntries+=PersistentEntry (","?
 	//	persistentEntries+=PersistentEntry)*)? "}";
 	public KLayoutDataGrammarAccess.KShapeLayoutElements getKShapeLayoutAccess() {
 		return gaKRendering.getKShapeLayoutAccess();
@@ -1402,7 +1398,7 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	////		'targetPoint' targetPoint=KPoint
 	////    '}';
 	//	"KEdgeLayout" "{" "sourcePoint" sourcePoint=KPoint "targetPoint" targetPoint=KPoint ("bendPoints" ":"
-	//	bendPoints+=KPoint ("," bendPoints+=KPoint)*)? ("mapProperties" ":" persistentEntries+=PersistentEntry (","
+	//	bendPoints+=KPoint (","? bendPoints+=KPoint)*)? ("mapProperties" ":" persistentEntries+=PersistentEntry (","?
 	//	persistentEntries+=PersistentEntry)*)? "}";
 	public KLayoutDataGrammarAccess.KEdgeLayoutElements getKEdgeLayoutAccess() {
 		return gaKRendering.getKEdgeLayoutAccess();

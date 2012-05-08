@@ -24,7 +24,7 @@ KShapeLayout returns KShapeLayout:
 		('width' width=EFloat)?
 		('height' height=EFloat)?
 		('insets' insets=KInsets)?
-		('mapProperties' ':' persistentEntries+=PersistentEntry ( "," persistentEntries+=PersistentEntry)*)?
+		('mapProperties' ':' persistentEntries+=PersistentEntry ( ","? persistentEntries+=PersistentEntry)*)?
     '}';
 
 KInsets returns KInsets:
@@ -49,8 +49,8 @@ KEdgeLayout returns KEdgeLayout:
 	'{'
 		'sourcePoint' sourcePoint=KPoint
 		'targetPoint' targetPoint=KPoint
-		('bendPoints' ':' bendPoints+=KPoint ( "," bendPoints+=KPoint)*)?
-		('mapProperties'':'  persistentEntries+=PersistentEntry ( "," persistentEntries+=PersistentEntry)*)?
+		('bendPoints' ':' bendPoints+=KPoint ( ","? bendPoints+=KPoint)*)?
+		('mapProperties'':'  persistentEntries+=PersistentEntry ( ","? persistentEntries+=PersistentEntry)*)?
     '}';
 
 KPoint returns KPoint:
@@ -76,5 +76,3 @@ EString returns ecore::EString:
 
 EFloat returns ecore::EFloat:
     '-'? INT? '.' INT (('E'|'e') '-'? INT)?;
-
-	
