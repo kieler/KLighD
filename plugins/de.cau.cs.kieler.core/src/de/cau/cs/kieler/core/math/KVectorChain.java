@@ -163,9 +163,35 @@ public class KVectorChain extends LinkedList<KVector> implements IDataObject {
             add(vector);
         }
     }
+    
+    /**
+     * Iterate through all vectors and scale them by the given amount.
+     * 
+     * @param scale
+     *            scaling factor
+     */
+    public final void scale(final double scale) {
+        for (KVector vector : this) {
+            vector.scale(scale);
+        }
+    }
+    
+    /**
+     * Iterate through all vectors and scale them with different values for X and Y coordinate.
+     * 
+     * @param scalex
+     *            the x scaling factor
+     * @param scaley
+     *            the y scaling factor
+     */
+    public final void scale(final double scalex, final double scaley) {
+        for (KVector vector : this) {
+            vector.scale(scalex, scaley);
+        }
+    }
 
     /**
-     * Iterates through all vectors and adds the offset to them.
+     * Iterate through all vectors and add the offset to them.
      * 
      * @param offset
      *            the offset to add to the vectors.
@@ -177,7 +203,7 @@ public class KVectorChain extends LinkedList<KVector> implements IDataObject {
     }
 
     /**
-     * Iterates through all vectors and adds the offset to them.
+     * Iterate through all vectors and add the offset to them.
      * 
      * @param dx
      *            x value to add.
