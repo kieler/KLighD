@@ -171,16 +171,18 @@ public class KVector implements IDataObject, Cloneable {
     }
 
     /**
-     * Returns the sum of two given vectors as a new vector instance.
+     * Returns the sum of arbitrarily many vectors as a new vector instance.
      * 
-     * @param v1
-     *            first vector
-     * @param v2
-     *            second vector
-     * @return new vector first + second
+     * @param vs vectors to be added
+     * @return a new vector containing the sum of given vectors
      */
-    public static KVector add(final KVector v1, final KVector v2) {
-        return new KVector(v1.x + v2.x, v1.y + v2.y);
+    public static KVector sum(final KVector... vs) {
+        KVector sum = new KVector();
+        for (KVector v : vs) {
+            sum.x += v.x;
+            sum.y += v.y;
+        }
+        return sum;
     }
 
     /**
@@ -205,7 +207,7 @@ public class KVector implements IDataObject, Cloneable {
      *            second vector
      * @return new vector first - second
      */
-    public static KVector sub(final KVector v1, final KVector v2) {
+    public static KVector diff(final KVector v1, final KVector v2) {
         return new KVector(v1.x - v2.x, v1.y - v2.y);
     }
 
