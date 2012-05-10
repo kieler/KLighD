@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.ui.IWorkbenchPart;
 
 import com.google.common.collect.BiMap;
@@ -51,7 +52,6 @@ import de.cau.cs.kieler.core.krendering.util.KRenderingSwitch;
 import de.cau.cs.kieler.core.properties.IProperty;
 import de.cau.cs.kieler.core.properties.Property;
 import de.cau.cs.kieler.kiml.config.ILayoutConfig;
-import de.cau.cs.kieler.kiml.config.IMutableLayoutConfig;
 import de.cau.cs.kieler.kiml.klayoutdata.KEdgeLayout;
 import de.cau.cs.kieler.kiml.klayoutdata.KInsets;
 import de.cau.cs.kieler.kiml.klayoutdata.KLayoutDataFactory;
@@ -124,6 +124,29 @@ public class DiagramLayoutManager implements IDiagramLayoutManager<KGraphElement
     /**
      * {@inheritDoc}
      */
+    @SuppressWarnings({ "rawtypes", "unchecked" })
+    public Object getAdapter(final Object object, final Class adapterType) {
+        if (adapterType.isAssignableFrom(KGraphElement.class)) {
+            if (object instanceof KGraphElement) {
+                return object;
+            }
+        }
+        if (object instanceof IAdaptable) {
+            return ((IAdaptable) object).getAdapter(adapterType);
+        }
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public Class<?>[] getAdapterList() {
+        return new Class<?>[] { KGraphElement.class };
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public LayoutMapping<KGraphElement> buildLayoutGraph(final IWorkbenchPart workbenchPart,
             final Object diagramPart) {
         KNode graph = null;
@@ -182,8 +205,8 @@ public class DiagramLayoutManager implements IDiagramLayoutManager<KGraphElement
      *            the graph to build the layout graph from
      * @return the layout graph mapping
      */
-    public static LayoutMapping<KGraphElement> buildLayoutGraph(final KNode graph) {
-        LayoutMapping<KGraphElement> mapping = new LayoutMapping<KGraphElement>();
+    public LayoutMapping<KGraphElement> buildLayoutGraph(final KNode graph) {
+        LayoutMapping<KGraphElement> mapping = new LayoutMapping<KGraphElement>(this);
         mapping.setProperty(EDGES, new LinkedList<KEdge>());
 
         // set the parent element
@@ -834,13 +857,6 @@ public class DiagramLayoutManager implements IDiagramLayoutManager<KGraphElement
     public void undoLayout(final LayoutMapping<KGraphElement> mapping) {
         throw new UnsupportedOperationException(
                 "Undo is not supported by the KLighD KRendering layout manager.");
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public IMutableLayoutConfig getLayoutConfig() {
-        return null;
     }
 
     /**
