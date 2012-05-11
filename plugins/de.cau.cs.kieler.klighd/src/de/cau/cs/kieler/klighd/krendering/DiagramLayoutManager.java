@@ -340,8 +340,17 @@ public class DiagramLayoutManager implements IDiagramLayoutManager<KGraphElement
         for (KEdge edge : edges) {
             KNode layoutSource = (KNode) graphMap.get(edge.getSource());
             KNode layoutTarget = (KNode) graphMap.get(edge.getTarget());
+            
+            KPort layoutSourcePort = null;
+            if(edge.getSourcePort() != null) {
+            	layoutSourcePort = (KPort) graphMap.get(edge.getSourcePort());
+            }
+            KPort layoutTargetPort = null;
+            if(edge.getTargetPort() != null) {
+                layoutTargetPort = (KPort) graphMap.get(edge.getTargetPort());
+            }
             if (layoutSource != null && layoutTarget != null) {
-                createEdge(mapping, edge, layoutSource, layoutTarget);
+                createEdge(mapping, edge, layoutSource, layoutTarget, layoutSourcePort, layoutTargetPort);
             }
         }
     }
@@ -360,7 +369,7 @@ public class DiagramLayoutManager implements IDiagramLayoutManager<KGraphElement
      *            the layout target node
      */
     private static void createEdge(final LayoutMapping<KGraphElement> mapping, final KEdge edge,
-            final KNode layoutSource, final KNode layoutTarget) {
+            final KNode layoutSource, final KNode layoutTarget, final KPort layoutSourcePort, final KPort layoutTargetPort) {
         KEdge layoutEdge = KimlUtil.createInitializedEdge();
 
         // set the edge layout
@@ -372,8 +381,11 @@ public class DiagramLayoutManager implements IDiagramLayoutManager<KGraphElement
 
         layoutEdge.setSource(layoutSource);
         layoutEdge.setTarget(layoutTarget);
+        layoutEdge.setSourcePort(layoutSourcePort);
+        layoutEdge.setTargetPort(layoutTargetPort);
+        
         mapping.getGraphMap().put(layoutEdge, edge);
-
+        
         // process labels
         for (KLabel label : edge.getLabels()) {
             createLabel(mapping, label, layoutEdge);
