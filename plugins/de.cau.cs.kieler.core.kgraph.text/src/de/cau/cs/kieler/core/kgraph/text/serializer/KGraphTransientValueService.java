@@ -58,7 +58,9 @@ public class KGraphTransientValueService extends TransientValueService implement
             final EStructuralFeature feature) {
         if (feature == KGraphPackage.eINSTANCE.getKNode_Parent()
                 || feature == KGraphPackage.eINSTANCE.getKNode_IncomingEdges()
-                || feature == KGraphPackage.eINSTANCE.getKEdge_Source()) {
+                || feature == KGraphPackage.eINSTANCE.getKEdge_Source()
+                || feature == KGraphPackage.eINSTANCE.getKPort_Node()
+                || feature == KGraphPackage.eINSTANCE.getKLabel_Parent()) {
             return ValueTransient.YES;
         }
         return super.isValueTransient(semanticObject, feature);
@@ -81,10 +83,11 @@ public class KGraphTransientValueService extends TransientValueService implement
             final int index) {
         if (feature == KGraphPackage.eINSTANCE.getKNode_Parent()
                 || feature == KGraphPackage.eINSTANCE.getKNode_IncomingEdges()
-                || feature == KGraphPackage.eINSTANCE.getKEdge_Source()) {
+                || feature == KGraphPackage.eINSTANCE.getKEdge_Source()
+                || feature == KGraphPackage.eINSTANCE.getKPort_Node()
+                || feature == KGraphPackage.eINSTANCE.getKLabel_Parent()) {
             return true;
         }
         return false;
     }
-
 }
