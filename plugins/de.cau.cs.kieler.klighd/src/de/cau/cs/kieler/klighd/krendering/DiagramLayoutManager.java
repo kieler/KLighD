@@ -400,6 +400,8 @@ public class DiagramLayoutManager implements IDiagramLayoutManager<KGraphElement
         if (labelLayout != null) {
             transferShapeLayout(labelLayout, layoutLayout);   
         }
+        
+        layoutLabel.setText(label.getText());
 
         mapping.getGraphMap().put(layoutLabel, label);
     }
