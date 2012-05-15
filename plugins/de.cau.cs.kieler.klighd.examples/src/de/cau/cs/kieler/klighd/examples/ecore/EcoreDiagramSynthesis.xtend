@@ -4,7 +4,7 @@ import de.cau.cs.kieler.klighd.transformations.AbstractTransformation
 import de.cau.cs.kieler.klighd.TransformationContext
 import de.cau.cs.kieler.core.kgraph.KNode
 import de.cau.cs.kieler.kiml.util.KimlUtil
-import de.cau.cs.kieler.klighd.examples.EModelElementCollection
+import de.cau.cs.kieler.klighd.examples.ecore.EModelElementCollection
 import org.eclipse.emf.ecore.EClassifier
 import de.cau.cs.kieler.klighd.examples.KRenderingUtil
 import com.google.inject.Inject
