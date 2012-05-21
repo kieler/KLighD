@@ -381,8 +381,14 @@ public class DiagramLayoutManager implements IDiagramLayoutManager<KGraphElement
 
         layoutEdge.setSource(layoutSource);
         layoutEdge.setTarget(layoutTarget);
-        layoutEdge.setSourcePort(layoutSourcePort);
-        layoutEdge.setTargetPort(layoutTargetPort);
+        if (layoutSourcePort != null) {
+            layoutEdge.setSourcePort(layoutSourcePort);
+            layoutSourcePort.getEdges().add(layoutEdge);
+        }
+        if (layoutTargetPort != null) {
+            layoutEdge.setTargetPort(layoutTargetPort);
+            layoutTargetPort.getEdges().add(layoutEdge);
+        }
         
         mapping.getGraphMap().put(layoutEdge, edge);
         
