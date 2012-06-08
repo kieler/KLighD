@@ -244,11 +244,11 @@ KLineStyle returns KLineStyle:
 	
 KFontBold returns KFontBold:
     {KFontBold}
-	'bold' propagateToChildren?='!'?;
+	bold?='bold' propagateToChildren?='!'?;
 	
 KFontItalic returns KFontItalic:
     {KFontItalic}
-	'italic' propagateToChildren?='!'?;
+	italic?='italic' propagateToChildren?='!'?;
 	
 KFontName returns KFontName:
 	'font' name=EString propagateToChildren?='!'?;
@@ -262,7 +262,7 @@ KVerticalAlignment returns KVerticalAlignment:
 	
 KHorizontalAlignment returns KHorizontalAlignment:
     {KHorizontalAlignment}
-	'HorizontalAlignment' horizontalAlignment=HorizontalAlignment propagateToChildren?='!';
+	'HorizontalAlignment' horizontalAlignment=HorizontalAlignment propagateToChildren?='!'?;
 
 KGridPlacement returns KGridPlacement:
     {KGridPlacement}

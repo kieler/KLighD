@@ -15,6 +15,9 @@ package de.cau.cs.kieler.core.kgraph.text.serializer;
 
 import org.eclipse.emf.ecore.EObject;
 
+import com.google.inject.Inject;
+
+import de.cau.cs.kieler.core.kgraph.text.services.KGraphGrammarAccess;
 import de.cau.cs.kieler.kiml.klayoutdata.KEdgeLayout;
 import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout;
 
@@ -31,6 +34,9 @@ public class KGraphSemanticSequencer extends AbstractKGraphSemanticSequencer {
 
     //CHECKSTYLEOFF Method
 
+    @Inject
+    private KGraphGrammarAccess grammarAccess;
+
     /**
      * Constraint:
      *     (
@@ -45,7 +51,7 @@ public class KGraphSemanticSequencer extends AbstractKGraphSemanticSequencer {
      */
     @Override
     protected void sequence_KShapeLayout(final EObject context, final KShapeLayout semanticObject) {
-            superSequencer.createSequence(grammarAccess.getKShapeLayoutRule(), semanticObject);
+        genericSequencer.createSequence(grammarAccess.getKShapeLayoutRule(), semanticObject);
     }
     
     /**
@@ -59,7 +65,7 @@ public class KGraphSemanticSequencer extends AbstractKGraphSemanticSequencer {
      */
     @Override
     protected void sequence_KEdgeLayout(final EObject context, final KEdgeLayout semanticObject) {
-            superSequencer.createSequence(grammarAccess.getKEdgeLayoutRule(), semanticObject);
+        genericSequencer.createSequence(grammarAccess.getKEdgeLayoutRule(), semanticObject);
     }
     
     //CHECKSTYLEON Method
