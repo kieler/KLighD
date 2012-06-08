@@ -24,7 +24,8 @@ Require-Bundle: org.eclipse.core.resources;bundle-version="3.6.0",
  de.cau.cs.kieler.kiml,
  de.cau.cs.kieler.kiml.ui,
  de.cau.cs.kieler.core.kgraph;bundle-version="0.4.0",
- de.cau.cs.kieler.core.krendering;bundle-version="0.1.0"
+ de.cau.cs.kieler.core.krendering;bundle-version="0.1.0",
+ de.cau.cs.kieler.kiml.kivi;bundle-version="0.1.0"
 Bundle-ActivationPolicy: lazy
 Bundle-Activator: de.cau.cs.kieler.klighd.KlighdPlugin
 Export-Package: de.cau.cs.kieler.klighd,
