@@ -34,6 +34,8 @@ import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableList;
 
 import de.cau.cs.kieler.core.kgraph.KGraphData;
+import de.cau.cs.kieler.core.kgraph.KGraphPackage;
+import de.cau.cs.kieler.core.kgraph.KNode;
 import de.cau.cs.kieler.kiml.LayoutContext;
 import de.cau.cs.kieler.kiml.LayoutDataService;
 import de.cau.cs.kieler.kiml.LayoutOptionData;
@@ -174,6 +176,8 @@ public class DiagramViewPart extends ViewPart {
 
     /**
      * LayoutActionButtonContribution.
+     * Specialized Button to be attached to the local toolbar of the KLighD view part
+     * offering the application of the automatic layout wrt. a given configuration (e.g. direction).
      * 
      * @author chsch
      */
@@ -207,6 +211,12 @@ public class DiagramViewPart extends ViewPart {
             DiagramViewPart.this.getViewSite().getActionBars().getToolBarManager().add(this);
         }
 
+        /**
+         * {@inheritDoc}
+         * 
+         * The <code>run</code> method of the button action. Triggers the automatic layout
+         * and provides a related {@link ButtonLayoutConfig}. 
+         */
         public void run() {
             final DiagramViewPart view = DiagramViewPart.this;
             try {
@@ -233,6 +243,9 @@ public class DiagramViewPart extends ViewPart {
 
     /**
      * ButtonLayoutConfig.
+     * 
+     * Special layout configuration handed over to the {@link DiagramLayoutEngine} if the
+     * layout is invoked by the above introduced buttons.
      * 
      * @author chsch
      */
@@ -266,7 +279,12 @@ public class DiagramViewPart extends ViewPart {
 
         public void transferValues(final KGraphData graphData, final LayoutContext context) {
             Object diagramPart = context.getProperty(LayoutContext.DIAGRAM_PART);
-            if (diagramPart.getClass().getCanonicalName().endsWith("DiagramNode")) {
+              // This is the old Pictogram-Piccolo-based version:
+              //  if (diagramPart.getClass().getCanonicalName().endsWith("DiagramNode")) {
+              // KRendering-based diagrams consist of KNodes, the layout option is
+              //  attached to the root one (with no container) only.
+              if (KGraphPackage.eINSTANCE.getKNode().isInstance(diagramPart)
+                      && ((KNode) diagramPart).eContainer() == null) {
                 if (this.dir != null) {
                     graphData.setProperty(LayoutOptions.DIRECTION, this.dir);
                 }
