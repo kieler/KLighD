@@ -228,7 +228,7 @@ public class BasicProgressMonitor implements IKielerProgressMonitor {
     private void internalWorked(final float work) {
         if (totalWork > 0 && completedWork < totalWork) {
             completedWork += work;
-            doWorked(work, completedWork, parentMonitor == null);
+            doWorked(completedWork, totalWork, parentMonitor == null);
             if (parentMonitor != null && parentMonitor.currentChildWork > 0 && maxLevels != 0) {
                 parentMonitor.internalWorked(work / totalWork * parentMonitor.currentChildWork);
             }
@@ -239,11 +239,12 @@ public class BasicProgressMonitor implements IKielerProgressMonitor {
      * Invoked when work is done for this progress monitor, to be overridden by
      * subclasses. This implementation does nothing.
      * 
-     * @param work amount of work that has just been done
      * @param thecompletedWork total number of work that is done for this task
+     * @param thetotalWork total number of work that is targeted for completion
      * @param topInstance if true, this progress monitor is the top instance
      */
-    protected void doWorked(final float work, final float thecompletedWork, final boolean topInstance) {
+    protected void doWorked(final float thecompletedWork, final float thetotalWork,
+            final boolean topInstance) {
     }
 
 }

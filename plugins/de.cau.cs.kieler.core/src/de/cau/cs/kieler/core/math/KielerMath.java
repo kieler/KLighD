@@ -266,21 +266,10 @@ public final class KielerMath {
      * @return points on the curve defined by the given control points
      */
     public static KVector[] calcBezierPoints(final KVector... controlPoints) {
-        return calcBezierPoints(getApproximationCount(controlPoints), controlPoints);
-    }
-
-    /**
-     * Calculate a suggestion for the number of approximation points of the Bezier curve that is
-     * defined by the given control points. The degree of the curve is derived from the number of
-     * control points.
-     * 
-     * @param controlPoints
-     *            the control points
-     * @return a recommendation for the number of approximation points for the curve
-     */
-    public static int getApproximationCount(final KVector... controlPoints) {
-        // TODO find a more intelligent count for the approximation points
-        return controlPoints.length;
+        // The number of approximation points simply equals the number of control points.
+        // Although there might be more accurate approximations, this approach is the fastest.
+        int approximationCount = controlPoints.length;
+        return calcBezierPoints(approximationCount, controlPoints);
     }
 
     /**
@@ -720,7 +709,7 @@ public final class KielerMath {
      *            integer values
      * @return the average of the given values
      */
-    public static long averagei(final long... values) {
+    public static long averagel(final long... values) {
         long avg = 0;
         for (int i = 0; i < values.length; i++) {
             avg += values[i];
@@ -824,6 +813,74 @@ public final class KielerMath {
             avg += values[i];
         }
         return avg / values.length;
+    }
+    
+    /**
+     * Limit the given integer to a specific range.
+     * 
+     * @param x an integer value
+     * @param lower the lower limit
+     * @param upper the upper limit
+     * @return if x is beyond the limits, return the limit, otherwise just return x
+     */
+    public static int limit(final int x, final int lower, final int upper) {
+        if (x <= lower) {
+            return lower;
+        } else if (x >= upper) {
+            return upper;
+        }
+        return x;
+    }
+    
+    /**
+     * Limit the given long to a specific range.
+     * 
+     * @param x an long value
+     * @param lower the lower limit
+     * @param upper the upper limit
+     * @return if x is beyond the limits, return the limit, otherwise just return x
+     */
+    public static long limit(final long x, final long lower, final long upper) {
+        if (x <= lower) {
+            return lower;
+        } else if (x >= upper) {
+            return upper;
+        }
+        return x;
+    }
+    
+    /**
+     * Limit the given float to a specific range.
+     * 
+     * @param x a float value
+     * @param lower the lower limit
+     * @param upper the upper limit
+     * @return if x is beyond the limits, return the limit, otherwise just return x
+     */
+    public static float limit(final float x, final float lower, final float upper) {
+        if (x <= lower) {
+            return lower;
+        } else if (x >= upper) {
+            return upper;
+        }
+        return x;
+    }
+    
+    /**
+     * Limit the given double to a specific range.
+     * 
+     * @param x a double value
+     * @param lower the lower limit
+     * @param upper the upper limit
+     * @return if x is beyond the limits, return the limit, otherwise just return x
+     */
+    public static double limit(final double x, final double lower, final double upper) {
+        if (x <= lower) {
+            return lower;
+        } else if (x >= upper) {
+            return upper;
+        }
+        return x;
     }
 
 }

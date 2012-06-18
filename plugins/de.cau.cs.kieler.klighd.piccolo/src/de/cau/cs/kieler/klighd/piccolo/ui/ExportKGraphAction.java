@@ -28,7 +28,7 @@ import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.ui.statushandlers.StatusManager;
 
 import de.cau.cs.kieler.core.kgraph.KNode;
-import de.cau.cs.kieler.core.ui.KielerProgressMonitor;
+import de.cau.cs.kieler.core.ui.ProgressMonitorAdapter;
 import de.cau.cs.kieler.kiml.ui.diagram.IDiagramLayoutManager;
 import de.cau.cs.kieler.kiml.ui.diagram.LayoutMapping;
 import de.cau.cs.kieler.kiml.ui.service.EclipseLayoutInfoService;
@@ -80,7 +80,7 @@ public class ExportKGraphAction extends Action {
                 IDiagramLayoutManager<?> layoutManager =
                         EclipseLayoutInfoService.getInstance().getManager(null, viewer);
                 LayoutMapping<?> layoutMapping = layoutManager.buildLayoutGraph(null, viewer);
-                new LayoutOptionManager().configure(layoutMapping, new KielerProgressMonitor(
+                new LayoutOptionManager().configure(layoutMapping, new ProgressMonitorAdapter(
                         new NullProgressMonitor()));
 
                 KNode kgraph = layoutMapping.getLayoutGraph();
