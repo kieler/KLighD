@@ -342,15 +342,15 @@ public class DiagramLayoutManager implements IDiagramLayoutManager<KGraphElement
             KNode layoutTarget = (KNode) graphMap.get(edge.getTarget());
             
             KPort layoutSourcePort = null;
-            if(edge.getSourcePort() != null) {
-            	layoutSourcePort = (KPort) graphMap.get(edge.getSourcePort());
+            if (edge.getSourcePort() != null) {
+                layoutSourcePort = (KPort) graphMap.get(edge.getSourcePort());
             }
             KPort layoutTargetPort = null;
-            if(edge.getTargetPort() != null) {
+            if (edge.getTargetPort() != null) {
                 layoutTargetPort = (KPort) graphMap.get(edge.getTargetPort());
             }
             if (layoutSource != null && layoutTarget != null) {
-                createEdge(mapping, edge, layoutSource, layoutTarget, layoutSourcePort, layoutTargetPort);
+               createEdge(mapping, edge, layoutSource, layoutTarget, layoutSourcePort, layoutTargetPort);
             }
         }
     }
@@ -369,7 +369,8 @@ public class DiagramLayoutManager implements IDiagramLayoutManager<KGraphElement
      *            the layout target node
      */
     private static void createEdge(final LayoutMapping<KGraphElement> mapping, final KEdge edge,
-            final KNode layoutSource, final KNode layoutTarget, final KPort layoutSourcePort, final KPort layoutTargetPort) {
+            final KNode layoutSource, final KNode layoutTarget, final KPort layoutSourcePort,
+            final KPort layoutTargetPort) {
         KEdge layoutEdge = KimlUtil.createInitializedEdge();
 
         // set the edge layout
@@ -523,15 +524,25 @@ public class DiagramLayoutManager implements IDiagramLayoutManager<KGraphElement
      *            the source edge layout
      * @param targetEdgeLayout
      *            the target edge layout
+     * @author mri, chsch
      */
     private static void transferEdgeLayout(final KEdgeLayout sourceEdgeLayout,
             final KEdgeLayout targetEdgeLayout) {
+        
+        // do not notify listeners about any change on the displayed KGraph but...
+        final boolean deliver = targetEdgeLayout.eDeliver();
+        targetEdgeLayout.eSetDeliver(false);
+        
         targetEdgeLayout.setSourcePoint(copyPoint(sourceEdgeLayout.getSourcePoint()));
-        targetEdgeLayout.setTargetPoint(copyPoint(sourceEdgeLayout.getTargetPoint()));
+
         targetEdgeLayout.getBendPoints().clear();
         for (KPoint bendPoint : sourceEdgeLayout.getBendPoints()) {
             targetEdgeLayout.getBendPoints().add(copyPoint(bendPoint));
         }
+        
+        // ... the final one!  
+        targetEdgeLayout.eSetDeliver(deliver);
+        targetEdgeLayout.setTargetPoint(copyPoint(sourceEdgeLayout.getTargetPoint()));
     }
 
     /**
