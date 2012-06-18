@@ -185,6 +185,7 @@ public abstract class AbstractRenderingController<S extends KGraphElement, T ext
      * Updates the rendering by removing the current rendering and evaluating the rendering data
      * attached to the graph element.
      */
+    // Review: TODO make public/package protected
     private void updateRendering() {
         // remove the rendering adapter
         if (currentRendering != null) {
@@ -215,7 +216,7 @@ public abstract class AbstractRenderingController<S extends KGraphElement, T ext
         
         // install element adapter if sync is enabled
         if (syncRendering) {
-            // register an adapter on the element to stay in sync
+            // register an adapter on the element (KGE) to stay in sync
             registerElementAdapter();
         }
     }
@@ -586,45 +587,41 @@ public abstract class AbstractRenderingController<S extends KGraphElement, T ext
     protected PNode handleDecoratorPlacementRendering(final KRendering rendering,
             final List<KStyle> styles, final PSWTAdvancedPath parent, final Object key) {
         // determine the initial bounds and rotation
-        final Decoration decoration =
-                PlacementUtil.evaluateDecoratorPlacement(
-                        PlacementUtil.asDecoratorPlacementData(rendering.getPlacementData()),
-                        parent);
+        final Decoration decoration = PlacementUtil.evaluateDecoratorPlacement(
+                PlacementUtil.asDecoratorPlacementData(rendering.getPlacementData()), parent);
 
         // create an empty node for the decorator
         final PEmptyNode decorator = new PEmptyNode();
-        NodeUtil.applyTranslation(decorator, decoration.getOrigin());
+
+        // NodeUtil.applyTranslation(decorator, decoration.getOrigin());
         parent.addChild(decorator);
-        
+
         // create the rendering and receive its controller
-        final PNodeController<?> controller =
-                createRendering(rendering, styles, decorator, decoration.getBounds(), key);
+        final PNodeController<?> controller = createRendering(rendering, styles, decorator,
+                decoration.getBounds(), key);
 
         // apply the initial rotation
-        decorator.rotate(decoration.getRotation());
+        decorator.setRotation(decoration.getRotation());
 
         // add a listener on the parent's path
         addListener(PPath.PROPERTY_PATH, parent, controller.getNode(),
                 new PropertyChangeListener() {
 
-                    // the currently applied rotation and origin
-                    private double rotation = decoration.getRotation();
-
                     public void propertyChange(final PropertyChangeEvent e) {
                         // calculate the new bounds and rotation for the rendering
-                        Decoration decoration =
-                                PlacementUtil.evaluateDecoratorPlacement(PlacementUtil
+                        Decoration decoration = PlacementUtil.evaluateDecoratorPlacement(
+                                PlacementUtil
                                         .asDecoratorPlacementData(rendering.getPlacementData()),
-                                        parent);
+                                parent);
 
-                        // apply the new origin
-                        NodeUtil.applyTranslation(decorator, decoration.getOrigin());
+                        // apply the new offset
+                        decorator.setOffset(decoration.getOrigin().getX(), decoration.getOrigin()
+                                .getY());
+
                         // use the controller to apply the new bounds
                         controller.setBounds(decoration.getBounds());
                         // apply the new rotation
-                        decorator.rotate(decoration.getRotation() - rotation);
-
-                        rotation = decoration.getRotation();
+                        decorator.setRotation(decoration.getRotation());
                     }
                 });
 
@@ -668,7 +665,7 @@ public abstract class AbstractRenderingController<S extends KGraphElement, T ext
         // set the styles for the created rendering node using the controller
         applyStyles(controller, styles);
 
-        // remember the controller in the rendering
+        // remember the controller in the related KRendering rendering
         setMappedProperty(rendering, CONTROLLER, key, controller);
 
         return controller;
