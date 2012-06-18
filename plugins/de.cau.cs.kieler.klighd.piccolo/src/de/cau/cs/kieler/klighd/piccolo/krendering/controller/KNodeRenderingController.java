@@ -31,6 +31,10 @@ import edu.umd.cs.piccolo.PNode;
 import edu.umd.cs.piccolo.util.PBounds;
 
 /**
+ * An {@link AbstractRenderingController} for KNodes generating the rendering PNodes
+ *  according to the related KRendering rendering description.
+ * 
+ * 
  * @author mri
  */
 public class KNodeRenderingController extends AbstractRenderingController<KNode, KNodeNode> {
@@ -84,6 +88,8 @@ public class KNodeRenderingController extends AbstractRenderingController<KNode,
         
         // make sure the child area is attached to something
         if (childAreaNode.getParent() == null) {
+            // if the childArea is not part of the above created PNode rendering tree
+            //  let the whole figure be the child area
             createDefaultChildArea(getRepresentation());
         }
         
