@@ -57,16 +57,16 @@ public final class NodeUtil {
      *            the width
      * @param height
      *            the height
+     *            
+     * @author mri, chsch
      */
     public static void applySmartBounds(final PNode node, final double x, final double y,
             final double width, final double height) {
-        // get the old translation
-        PAffineTransform transform = node.getTransformReference(true);
-        double oldX = transform.getTranslateX();
-        double oldY = transform.getTranslateY();
+        // apply the layout;
+        // positions the node at the given coordinates (taken from the related shape layout)
+        node.setOffset(x, y);
 
-        // apply the layout
-        node.translate(x - oldX, y - oldY);
+        // sets the size of the node, does not influence the above determined position
         node.setBounds(0, 0, width, height);
     }
 
@@ -91,15 +91,12 @@ public final class NodeUtil {
      *            the x-translation
      * @param y
      *            the y-translation
+     *            
+     * @author mri, chsch
      */
     public static void applyTranslation(final PNode node, final double x, final double y) {
-        // get the old translation
-        PAffineTransform transform = node.getTransformReference(true);
-        double oldX = transform.getTranslateX();
-        double oldY = transform.getTranslateY();
-
         // apply the translation
-        node.translate(x - oldX, y - oldY);
+        node.setOffset(x, y);
     }
 
     /**
@@ -109,15 +106,12 @@ public final class NodeUtil {
      *            the node
      * @param translation
      *            the translation
+     *            
+     * @author mri, chsch
      */
     public static void applyTranslation(final PNode node, final Point2D translation) {
-        // get the old translation
-        PAffineTransform transform = node.getTransformReference(true);
-        double oldX = transform.getTranslateX();
-        double oldY = transform.getTranslateY();
-
         // apply the translation
-        node.translate(translation.getX() - oldX, translation.getY() - oldY);
+        applyTranslation(node, translation.getX(), translation.getY());
     }
 
     /**
@@ -159,11 +153,11 @@ public final class NodeUtil {
             public void activityStepped(final PActivity activity) {
                 // do nothing
             }
-            
+
             public void activityStarted(final PActivity activity) {
                 // do nothing
             }
-            
+
             public void activityFinished(final PActivity activity) {
                 node.addAttribute(ACTIVITY_KEY, null);
             }
