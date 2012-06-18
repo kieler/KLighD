@@ -50,7 +50,8 @@ class EcoreDiagramSynthesis extends AbstractTransformation<EModelElementCollecti
 	
 	def createClassifierFigures(Iterable<EClassifier> classes, KNode rootNode) {
 		classes.forEach[
-			val classNode = it.createRectangulareNode(80, 180);
+		    val boxWidth = if (it.name.length < 10) 180 else it.name.length*12+50;
+			val classNode = it.createRectangulareNode(80, boxWidth);
 			classNode.KRendering.add(
 				factory.createKText.of(it.name).add(factory.createKFontSize.of(20))
 					.add(factory.createKFontBold.setbold).add("lemon".bgColor)
