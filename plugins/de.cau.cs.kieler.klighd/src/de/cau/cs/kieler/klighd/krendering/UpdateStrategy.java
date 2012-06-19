@@ -174,6 +174,7 @@ public class UpdateStrategy implements IUpdateStrategy<KNode> {
         
     }
     
+    @SuppressWarnings("unused") // helper for debugging purposes!
     private void serialize(final IPath path, final EObject object) {
         URI fileURI = URI.createPlatformResourceURI(path.toOSString(), true);
         
