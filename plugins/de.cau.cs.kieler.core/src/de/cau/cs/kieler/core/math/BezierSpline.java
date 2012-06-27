@@ -204,12 +204,12 @@ public class BezierSpline {
      */
     @Override
     public String toString() {
-        String s = "";
+        StringBuilder s = new StringBuilder();
         for (BezierCurve cu : curves) {
-            s += "" + cu.start + " -> " + cu.fstControlPnt + " -> " + cu.sndControlPnt + " -> "
-                    + cu.end + "\n";
+            s.append("" + cu.start + " -> " + cu.fstControlPnt + " -> " + cu.sndControlPnt + " -> "
+                    + cu.end + "\n");
         }
-        return s;
+        return s.toString();
     }
 
     /**
@@ -221,7 +221,7 @@ public class BezierSpline {
      * @author uru
      * 
      */
-    public class BezierCurve {
+    public static class BezierCurve {
 
         // for easier handling.
         // CHECKSTYLEOFF VisibilityModifier

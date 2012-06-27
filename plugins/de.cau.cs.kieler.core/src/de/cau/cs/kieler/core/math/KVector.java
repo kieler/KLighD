@@ -96,7 +96,15 @@ public class KVector implements IDataObject, Cloneable {
      */
     @Override
     public KVector clone() {
-        return new KVector(this.x, this.y);
+        try {
+            KVector clone = (KVector) super.clone();
+            clone.x = this.x;
+            clone.y = this.y;
+            return clone;
+        } catch (CloneNotSupportedException e) {
+            // This cannot happen since we're implementing the Cloneable interface
+            return null;
+        }
     }
 
     /**

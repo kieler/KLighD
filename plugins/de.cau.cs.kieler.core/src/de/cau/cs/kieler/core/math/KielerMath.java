@@ -352,7 +352,6 @@ public final class KielerMath {
         // Finally, look at distance to end point, where t = 1.0
         double distance = needle.distance(end);
         if (distance < minDistance) {
-            minDistance = distance;
             t = 1.0;
         }
 

@@ -26,12 +26,14 @@ public class Property<T> implements IProperty<T>, Comparable<IProperty<?>> {
     /** the default lower bound, which is smaller than everything else. */
     public static final Comparable<?> NEGATIVE_INFINITY = new Comparable<Object>() {
         public int compareTo(final Object other) {
+            // Ignore FindBugs warning
             return -1;
         }
     };
     /** the default upper bound, which is greater than everything else. */
     public static final Comparable<?> POSITIVE_INFINITY = new Comparable<Object>() {
         public int compareTo(final Object other) {
+            // Ignore FindBugs warning
             return 1;
         }
     };
