@@ -13,6 +13,7 @@
  */
 package de.cau.cs.kieler.core.properties;
 
+import java.io.Serializable;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -24,8 +25,11 @@ import java.util.Map;
  *     reviewed by haf, cmot, soh
  * @author msp
  */
-public class MapPropertyHolder implements IPropertyHolder {
+public class MapPropertyHolder implements IPropertyHolder, Serializable {
 
+    /** the serial version UID. */
+    private static final long serialVersionUID = 4507851447415709893L;
+    
     /** map of property identifiers to their values. */
     private Map<IProperty<?>, Object> propertyMap = null;
     

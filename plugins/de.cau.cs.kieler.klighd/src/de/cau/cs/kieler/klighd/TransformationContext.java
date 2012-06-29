@@ -27,6 +27,9 @@ import de.cau.cs.kieler.core.properties.MapPropertyHolder;
  */
 public final class TransformationContext<S, T> extends MapPropertyHolder {
 
+    /** the serial version UID. */
+    private static final long serialVersionUID = 5978103676819795006L;
+
     /**
      * Creates a transformation context for a given transformation.
      * 
