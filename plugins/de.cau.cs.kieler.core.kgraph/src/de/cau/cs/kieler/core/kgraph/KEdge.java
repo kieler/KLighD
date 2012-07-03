@@ -167,4 +167,24 @@ public interface KEdge extends KLabeledGraphElement {
      */
     void setTargetPort(KPort value);
 
+    /**
+     * <!-- begin-user-doc -->
+     * Completely connects this edge to the given port. This affects the edge's source node and
+     * source port as well as the port's list of edges.
+     * <!-- end-user-doc -->
+     * @model portRequired="true"
+     * @generated
+     */
+    void connectSourcePort(KPort port);
+
+    /**
+     * <!-- begin-user-doc -->
+     * Completely connects the edge to the given port. This affects the edge's target node and
+     * target port as well as the port's list of edges.
+     * <!-- end-user-doc -->
+     * @model portRequired="true"
+     * @generated
+     */
+    void connectTargetPort(KPort port);
+
 } // KEdge

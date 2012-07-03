@@ -277,6 +277,30 @@ public class KEdgeImpl extends KLabeledGraphElementImpl implements KEdge {
 
     /**
      * <!-- begin-user-doc -->
+     * {@inheritDoc}
+     * <!-- end-user-doc -->
+     * @generated NOT
+     */
+    public void connectSourcePort(KPort port) {
+        setSource(port.getNode());
+        setSourcePort(port);
+        port.getEdges().add(this);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * {@inheritDoc}
+     * <!-- end-user-doc -->
+     * @generated NOT
+     */
+    public void connectTargetPort(KPort port) {
+        setTarget(port.getNode());
+        setTargetPort(port);
+        port.getEdges().add(this);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      */
