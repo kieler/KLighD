@@ -38,6 +38,30 @@ public class Pair<F, S> {
     
     /**
      * Constructs a pair with {@code null} elements.
+     *
+     * @param <T1> type of first element
+     * @param <T2> type of second element
+     * @return a new pair
+     */
+    public static <T1, T2> Pair<T1, T2> create() {
+        return new Pair<T1, T2>();
+    }
+    
+    /**
+     * Constructs a pair given both elements.
+     * 
+     * @param first the first element
+     * @param second the second element
+     * @param <T1> type of first element
+     * @param <T2> type of second element
+     * @return a new pair
+     */
+    public static <T1, T2> Pair<T1, T2> create(final T1 first, final T2 second) {
+        return new Pair<T1, T2>(first, second);
+    }
+    
+    /**
+     * Constructs a pair with {@code null} elements.
      */
     public Pair() {
     }
