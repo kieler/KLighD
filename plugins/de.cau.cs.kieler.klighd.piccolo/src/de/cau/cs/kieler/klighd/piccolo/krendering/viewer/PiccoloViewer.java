@@ -350,7 +350,7 @@ public class PiccoloViewer extends AbstractViewer<KNode> implements INodeSelecti
     public void unselected(final PSWTSimpleSelectionEventHandler handler, final PNode node) {
         if (node instanceof IGraphElement<?>) {
             IGraphElement<?> graphElement = (IGraphElement<?>) node;
-            notifyListenersSelected(graphElement.getGraphElement());
+            notifyListenersUnselected(graphElement.getGraphElement());
         }
     }
     
@@ -367,6 +367,8 @@ public class PiccoloViewer extends AbstractViewer<KNode> implements INodeSelecti
             }
         }
         if (graphElements.size() > 0) {
+            // chsch question: Is this restriction reasonable?
+            //  one may also be informed on the clearing of the selection...
             notifyListenersSelection(graphElements);
         }
     }
