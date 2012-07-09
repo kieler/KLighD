@@ -26,6 +26,7 @@ import java.util.Map;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.impl.AdapterImpl;
 import org.eclipse.emf.ecore.EStructuralFeature;
+import org.eclipse.ui.PlatformUI;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -69,7 +70,6 @@ import de.cau.cs.kieler.core.model.notify.CrossDocumentContentAdapter;
 import de.cau.cs.kieler.core.properties.IProperty;
 import de.cau.cs.kieler.core.properties.IPropertyHolder;
 import de.cau.cs.kieler.core.properties.Property;
-import de.cau.cs.kieler.core.ui.util.MonitoredOperation;
 import de.cau.cs.kieler.core.util.Pair;
 import de.cau.cs.kieler.klighd.piccolo.krendering.util.PlacementUtil;
 import de.cau.cs.kieler.klighd.piccolo.krendering.util.PlacementUtil.Decoration;
@@ -256,12 +256,12 @@ public abstract class AbstractRenderingController<S extends KGraphElement, T ext
                         if (msg.getFeatureID(KStyle.class) == KRenderingPackage.KSTYLE__RENDERING) {
                             return;
                         }
-                        MonitoredOperation.runInUI(new Runnable() {
+                        PlatformUI.getWorkbench().getDisplay().syncExec(new Runnable() {
                             public void run() {
                                 // update the styles
                                 updateStyles();
                             }
-                        }, true);
+                        });
                         return;
                     }
 
@@ -269,22 +269,22 @@ public abstract class AbstractRenderingController<S extends KGraphElement, T ext
                     if (msg.getNotifier() instanceof KRendering
                             && msg.getFeatureID(KRendering.class)
                             == KRenderingPackage.KRENDERING__STYLES) {
-                        MonitoredOperation.runInUI(new Runnable() {
+                        PlatformUI.getWorkbench().getDisplay().syncExec(new Runnable() {
                             public void run() {
                                 // update the styles
                                 updateStyles();
                             }
-                        }, true);
+                        });
                         return;
                     }
 
                     // handle other changes by reevaluating the rendering
-                    MonitoredOperation.runInUI(new Runnable() {
+                    PlatformUI.getWorkbench().getDisplay().syncExec(new Runnable() {
                         public void run() {
                             // update the rendering
                             updateRendering();
                         }
-                    }, true);
+                    });
                 }
             }
         };
@@ -318,12 +318,12 @@ public abstract class AbstractRenderingController<S extends KGraphElement, T ext
                         final KRendering rendering = element.getData(KRendering.class);
                         if (rendering != currentRendering) {
                             // a rendering has been added or removed
-                            MonitoredOperation.runInUI(new Runnable() {
+                            PlatformUI.getWorkbench().getDisplay().syncExec(new Runnable() {
                                 public void run() {
                                     // update the rendering
                                     updateRendering();
                                 }
-                            }, true);
+                            });
                         }
                         break;
                     }
