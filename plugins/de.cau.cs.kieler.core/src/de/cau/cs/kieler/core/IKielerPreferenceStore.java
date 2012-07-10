@@ -30,8 +30,8 @@ package de.cau.cs.kieler.core;
  * A preference store may be linked to the UI so the user is able to change
  * preference values.
  * 
- * @kieler.rating 2009-12-11 proposed yellow msp
  * @author msp
+ * @deprecated this isn't used anywhere
  */
 public interface IKielerPreferenceStore {
 

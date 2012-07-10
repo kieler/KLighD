@@ -46,8 +46,7 @@ import org.eclipse.emf.ecore.impl.EPackageImpl;
  * An implementation of the model <b>Package</b>.
  * <!-- end-user-doc -->
  * @generated
- * @kieler.rating 2011-02-01 yellow
- *     reviewed by cmot, soh
+ * @kieler.design 2011-02-01 reviewed by cmot, soh
  */
 public class KGraphPackageImpl extends EPackageImpl implements KGraphPackage {
     /**

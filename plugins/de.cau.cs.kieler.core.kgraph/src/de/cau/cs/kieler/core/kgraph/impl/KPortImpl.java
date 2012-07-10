@@ -48,8 +48,7 @@ import org.eclipse.emf.ecore.util.EcoreUtil;
  * </p>
  *
  * @generated
- * @kieler.rating 2011-02-01 yellow
- *     reviewed by cmot, soh
+ * @kieler.design 2011-02-01 reviewed by cmot, soh
  */
 public class KPortImpl extends KLabeledGraphElementImpl implements KPort {
     /**

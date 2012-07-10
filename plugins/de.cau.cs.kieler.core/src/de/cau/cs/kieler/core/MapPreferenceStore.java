@@ -23,8 +23,8 @@ import java.util.Map;
  * and default values. This can be used to write these keys together with
  * their values to a file for permanent storage.
  * 
- * @kieler.rating 2009-12-11 proposed yellow msp
  * @author msp
+ * @deprecated this isn't used anywhere
  */
 public class MapPreferenceStore implements IKielerPreferenceStore {
 
