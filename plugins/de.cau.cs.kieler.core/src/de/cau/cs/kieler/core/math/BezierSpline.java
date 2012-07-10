@@ -22,7 +22,6 @@ import java.util.List;
  * smooth spline.
  * 
  * @author uru
- * 
  */
 public class BezierSpline {
 

@@ -22,6 +22,7 @@ import java.util.Map;
  * An abstract holder class for properties that uses a hash map.
  *
  * @kieler.design 2011-01-17 reviewed by haf, cmot, soh
+ * @kieler.rating 2012-07-10 proposed yellow msp
  * @author msp
  */
 public class MapPropertyHolder implements IPropertyHolder, Serializable {
