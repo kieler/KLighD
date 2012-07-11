@@ -13,61 +13,57 @@
  */
 package de.cau.cs.kieler.core.kgraph.text.serializer;
 
-import org.eclipse.emf.ecore.EObject;
-
-import com.google.inject.Inject;
-
-import de.cau.cs.kieler.core.kgraph.text.services.KGraphGrammarAccess;
-import de.cau.cs.kieler.kiml.klayoutdata.KEdgeLayout;
-import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout;
-
 /**
- * Customization of the KGraph serialization.
- * The current customization are IMO bug fixes of the generated implementation.
+ * Customization of the KGraph serialization. The current customizations are IMO bug fixes of the
+ * generated implementation.
  * 
- * The only difference of the given methods to their originals is the change
- * of the 'context' element that is delivered to the called delegate methods.
+ * The only difference of the given methods to their originals is the change of the 'context'
+ * element that is delivered to the called delegate methods.
+ * 
+ * UPDATE: The issues seem to be absent with Xtext 2.3 release so I deactivate the content. If that
+ * observation proves valid in future the content should be wiped out.
  * 
  * @author chsch
  */
+//@SuppressWarnings("restriction")
 public class KGraphSemanticSequencer extends AbstractKGraphSemanticSequencer {
 
-    //CHECKSTYLEOFF Method
-
-    @Inject
-    private KGraphGrammarAccess grammarAccess;
-
-    /**
-     * Constraint:
-     *     (
-     *         xpos=EFloat? 
-     *         ypos=EFloat? 
-     *         width=EFloat? 
-     *         height=EFloat? 
-     *         insets=KInsets? 
-     *         (persistentEntries+=PersistentEntry persistentEntries+=PersistentEntry*)?
-     *     )
-     *     
-     */
-    @Override
-    protected void sequence_KShapeLayout(final EObject context, final KShapeLayout semanticObject) {
-        genericSequencer.createSequence(grammarAccess.getKShapeLayoutRule(), semanticObject);
-    }
-    
-    /**
-     * Constraint:
-     *     (
-     *         sourcePoint=KPoint 
-     *         targetPoint=KPoint 
-     *         (bendPoints+=KPoint bendPoints+=KPoint*)? 
-     *         (persistentEntries+=PersistentEntry persistentEntries+=PersistentEntry*)?
-     *     )
-     */
-    @Override
-    protected void sequence_KEdgeLayout(final EObject context, final KEdgeLayout semanticObject) {
-        genericSequencer.createSequence(grammarAccess.getKEdgeLayoutRule(), semanticObject);
-    }
-    
-    //CHECKSTYLEON Method
+//    //CHECKSTYLEOFF Method
+//
+//    @Inject
+//    private KGraphGrammarAccess grammarAccess;
+//
+//    /**
+//     * Constraint:
+//     *     (
+//     *         xpos=EFloat? 
+//     *         ypos=EFloat? 
+//     *         width=EFloat? 
+//     *         height=EFloat? 
+//     *         insets=KInsets? 
+//     *         (persistentEntries+=PersistentEntry persistentEntries+=PersistentEntry*)?
+//     *     )
+//     *     
+//     */
+//    @Override
+//    protected void sequence_KShapeLayout(final EObject context, final KShapeLayout semanticObject) {
+//        genericSequencer.createSequence(grammarAccess.getKShapeLayoutRule(), semanticObject);
+//    }
+//    
+//    /**
+//     * Constraint:
+//     *     (
+//     *         sourcePoint=KPoint 
+//     *         targetPoint=KPoint 
+//     *         (bendPoints+=KPoint bendPoints+=KPoint*)? 
+//     *         (persistentEntries+=PersistentEntry persistentEntries+=PersistentEntry*)?
+//     *     )
+//     */
+//    @Override
+//    protected void sequence_KEdgeLayout(final EObject context, final KEdgeLayout semanticObject) {
+//        genericSequencer.createSequence(grammarAccess.getKEdgeLayoutRule(), semanticObject);
+//    }
+//    
+//    //CHECKSTYLEON Method
 
 }
