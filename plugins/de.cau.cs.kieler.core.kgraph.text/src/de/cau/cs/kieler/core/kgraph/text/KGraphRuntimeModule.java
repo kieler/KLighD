@@ -80,12 +80,14 @@ public class KGraphRuntimeModule extends de.cau.cs.kieler.core.kgraph.text.Abstr
     }
     
     /**
-     * Method registers a customized {@link org.eclipse.xtext.serializer.sequencer.TransientValueService}
-     * in order to serialize KGraph specifications correctly (suppresses EOpposite relations).
+     * Method registers a customized
+     * {@link org.eclipse.xtext.serializer.sequencer.TransientValueService} in order to serialize
+     * KGraph specifications correctly (suppresses EOpposite relations).
+     * 
+     * @return the {@link KGraphTransientValueService} class
      */
-	@SuppressWarnings("restriction")
-	public Class<? extends ITransientValueService> bindITransientValueService() {
-		return KGraphTransientValueService.class;
-	}
-  
+    @SuppressWarnings("restriction")
+    public Class<? extends ITransientValueService> bindITransientValueService() {
+        return KGraphTransientValueService.class;
+    }
 }
