@@ -16,7 +16,6 @@ package de.cau.cs.kieler.core.kgraph.text.formatting;
 import org.eclipse.xtext.formatting.impl.AbstractDeclarativeFormatter;
 import org.eclipse.xtext.formatting.impl.FormattingConfig;
 import org.eclipse.xtext.Keyword;
-import org.eclipse.xtext.RuleCall;
 import org.eclipse.xtext.util.Pair;
 
 import de.cau.cs.kieler.core.kgraph.text.services.KGraphGrammarAccess;
@@ -43,17 +42,21 @@ public class KGraphFormatter extends AbstractDeclarativeFormatter {
             c.setNoSpace().before(comma);
             c.setLinewrap().after(comma);
         }
-//        for (RuleCall value : f.findRuleCalls(f.getEFloatRule(), f.getEIntRule())) {
-//            c.setLinewrap().after(value);            
-//        }
-        
+        for (Keyword word : f.findKeywords("mapProperties", "children", "styles", "bendPoints",
+                "placementData", "detailedPlacementData", "sourcePort", "targetPort", "topLeft",
+                "bottomRight", "lineStyle", "lineWidth", "backgroundColor", "forgroundColor",
+                "backgroundVisibility", "foregroundVisibility", "font", "fontSize", "fontColor",
+                "bold", "italic", "horizontalAlignment", "verticalAlignment", "left", "right",
+                "location", "xOffset", "width")) {
+            c.setLinewrap().before(word);
+        }
+        for (Keyword word : f.findKeywords("points")) {
+            c.setLinewrap().after(word);
+        }
+
         c.setNoLinewrap().after(
                 f.getKRenderingGrammarAccess().getKLayoutDataGrammarAccess().getKPointAccess()
                         .getXEFloatParserRuleCall_2_1_0());
-        // c.setNoLinewrap().after(
-        //        f.getKRenderingGrammarAccess().getKLayoutDataGrammarAccess().getKPointAccess()
-        //                .getYEFloatParserRuleCall_3_1_0());
-        
         c.setLinewrap().before(
                 f.getKRenderingGrammarAccess().getKLayoutDataGrammarAccess().getKEdgeLayoutAccess()
                         .getSourcePointKeyword_2());
