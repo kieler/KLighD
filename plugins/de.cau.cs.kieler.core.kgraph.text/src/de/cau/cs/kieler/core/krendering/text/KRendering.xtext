@@ -214,14 +214,14 @@ KBottomPosition returns KBottomPosition:
 
 KForegroundColor returns KForegroundColor:
     {KForegroundColor}
-	'ForegroundColor' red=EInt  green=EInt blue=EInt (propagateToChildren?='!')?;
+	'foregroundColor' red=EInt  green=EInt blue=EInt (propagateToChildren?='!')?;
 
 KBackgroundColor returns KBackgroundColor:
     {KBackgroundColor}
-	'BackgroundColor' red=EInt green=EInt blue=EInt (propagateToChildren?='!')?;
+	'backgroundColor' red=EInt green=EInt blue=EInt (propagateToChildren?='!')?;
 
 KLineWidth returns KLineWidth:
-	'LineWidth' lineWidth=EInt (propagateToChildren?='!')?;
+	'lineWidth' lineWidth=EInt (propagateToChildren?='!')?;
 
 KVisibility returns KVisibility:
     KForegroundVisibility | KBackgroundVisibility
@@ -229,18 +229,18 @@ KVisibility returns KVisibility:
 
 KForegroundVisibility returns KForegroundVisibility:
 	{KForegroundVisibility}
-	'ForegroundVisibility' visible=EBoolean propagateToChildren?='!'?
+	'foregroundVisibility' visible=EBoolean propagateToChildren?='!'?
 ;
 
 
 KBackgroundVisibility returns KBackgroundVisibility:
 	{KBackgroundVisibility}
-	'BackgroundVisibility' visible=EBoolean propagateToChildren?='!'?
+	'backgroundVisibility' visible=EBoolean propagateToChildren?='!'?
 ;
 
 KLineStyle returns KLineStyle:
     {KLineStyle}
-	'LineStyle' lineStyle=LineStyle propagateToChildren?='!'?;
+	'lineStyle' lineStyle=LineStyle propagateToChildren?='!'?;
 	
 KFontBold returns KFontBold:
     {KFontBold}
@@ -258,19 +258,19 @@ KFontSize returns KFontSize:
 
 KVerticalAlignment returns KVerticalAlignment:
     {KVerticalAlignment}
-	'VerticalAlignment' verticalAlignment=VerticalAlignment propagateToChildren?='!'?;
+	'verticalAlignment' verticalAlignment=VerticalAlignment propagateToChildren?='!'?;
 	
 KHorizontalAlignment returns KHorizontalAlignment:
     {KHorizontalAlignment}
-	'HorizontalAlignment' horizontalAlignment=HorizontalAlignment propagateToChildren?='!'?;
+	'horizontalAlignment' horizontalAlignment=HorizontalAlignment propagateToChildren?='!'?;
 
 KGridPlacement returns KGridPlacement:
     {KGridPlacement}
-	'GridPlacement' numColumns=EInt;
+	'gridPlacement' numColumns=EInt;
 
 KStackPlacement returns KStackPlacement:
 	{KStackPlacement}
-	'StackPlacement'
+	'stackPlacement'
 ;
 
 enum LineStyle returns LineStyle:
