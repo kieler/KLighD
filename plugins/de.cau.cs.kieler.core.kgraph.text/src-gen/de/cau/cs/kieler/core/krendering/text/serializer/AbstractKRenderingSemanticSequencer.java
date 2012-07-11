@@ -54,44 +54,17 @@ import org.eclipse.xtext.serializer.acceptor.ISemanticSequenceAcceptor;
 import org.eclipse.xtext.serializer.acceptor.SequenceFeeder;
 import org.eclipse.xtext.serializer.diagnostic.ISemanticSequencerDiagnosticProvider;
 import org.eclipse.xtext.serializer.diagnostic.ISerializationDiagnostic.Acceptor;
-import org.eclipse.xtext.serializer.sequencer.AbstractSemanticSequencer;
 import org.eclipse.xtext.serializer.sequencer.GenericSequencer;
 import org.eclipse.xtext.serializer.sequencer.ISemanticNodeProvider.INodesForEObjectProvider;
 import org.eclipse.xtext.serializer.sequencer.ISemanticSequencer;
 import org.eclipse.xtext.serializer.sequencer.ITransientValueService;
 import org.eclipse.xtext.serializer.sequencer.ITransientValueService.ValueTransient;
 
-@SuppressWarnings("restriction")
-public class AbstractKRenderingSemanticSequencer extends AbstractSemanticSequencer {
+@SuppressWarnings("all")
+public abstract class AbstractKRenderingSemanticSequencer extends KLayoutDataSemanticSequencer {
 
 	@Inject
-	protected KRenderingGrammarAccess grammarAccess;
-	
-	@Inject
-	protected ISemanticSequencerDiagnosticProvider diagnosticProvider;
-	
-	@Inject
-	protected ITransientValueService transientValues;
-	
-	@Inject
-	@GenericSequencer
-	protected Provider<ISemanticSequencer> genericSequencerProvider;
-	
-	protected ISemanticSequencer genericSequencer;
-	
-	@Inject
-	protected Provider<KLayoutDataSemanticSequencer> superSequencerProvider;
-	 
-	protected KLayoutDataSemanticSequencer superSequencer; 
-	
-	@Override
-	public void init(ISemanticSequencer sequencer, ISemanticSequenceAcceptor sequenceAcceptor, Acceptor errorAcceptor) {
-		super.init(sequencer, sequenceAcceptor, errorAcceptor);
-		this.genericSequencer = genericSequencerProvider.get();
-		this.genericSequencer.init(sequencer, sequenceAcceptor, errorAcceptor);
-		this.superSequencer = superSequencerProvider.get();
-		this.superSequencer.init(sequencer, sequenceAcceptor, errorAcceptor); 
-	}
+	private KRenderingGrammarAccess grammarAccess;
 	
 	public void createSequence(EObject context, EObject semanticObject) {
 		if(semanticObject.eClass().getEPackage() == KGraphPackage.eINSTANCE) switch(semanticObject.eClass().getClassifierID()) {
@@ -356,7 +329,7 @@ public class AbstractKRenderingSemanticSequencer extends AbstractSemanticSequenc
 			case KRenderingPackage.KSTACK_PLACEMENT:
 				if(context == grammarAccess.getKPlacementRule() ||
 				   context == grammarAccess.getKStackPlacementRule()) {
-					sequence_KPlacement(context, (KStackPlacement) semanticObject); 
+					sequence_KStackPlacement(context, (KStackPlacement) semanticObject); 
 					return; 
 				}
 				else break;
@@ -506,20 +479,6 @@ public class AbstractKRenderingSemanticSequencer extends AbstractSemanticSequenc
 	
 	/**
 	 * Constraint:
-	 *     (
-	 *         sourcePoint=KPoint 
-	 *         targetPoint=KPoint 
-	 *         (bendPoints+=KPoint bendPoints+=KPoint*)? 
-	 *         (persistentEntries+=PersistentEntry persistentEntries+=PersistentEntry*)?
-	 *     )
-	 */
-	protected void sequence_KEdgeLayout(EObject context, KEdgeLayout semanticObject) {
-		superSequencer.createSequence(context, semanticObject);
-	}
-	
-	
-	/**
-	 * Constraint:
 	 *     (((styles+=KStyle styles+=KStyle*)? placementData=KPlacementData? childPlacement=KPlacement? (children+=KRendering children+=KRendering*)?)?)
 	 */
 	protected void sequence_KEllipse(EObject context, KEllipse semanticObject) {
@@ -529,7 +488,7 @@ public class AbstractKRenderingSemanticSequencer extends AbstractSemanticSequenc
 	
 	/**
 	 * Constraint:
-	 *     (propagateToChildren?='!'?)
+	 *     (bold?='bold' propagateToChildren?='!'?)
 	 */
 	protected void sequence_KFontBold(EObject context, KFontBold semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
@@ -538,7 +497,7 @@ public class AbstractKRenderingSemanticSequencer extends AbstractSemanticSequenc
 	
 	/**
 	 * Constraint:
-	 *     (propagateToChildren?='!'?)
+	 *     (italic?='italic' propagateToChildren?='!'?)
 	 */
 	protected void sequence_KFontItalic(EObject context, KFontItalic semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
@@ -637,7 +596,7 @@ public class AbstractKRenderingSemanticSequencer extends AbstractSemanticSequenc
 	
 	/**
 	 * Constraint:
-	 *     (horizontalAlignment=HorizontalAlignment propagateToChildren?='!')
+	 *     (horizontalAlignment=HorizontalAlignment propagateToChildren?='!'?)
 	 */
 	protected void sequence_KHorizontalAlignment(EObject context, KHorizontalAlignment semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
@@ -654,15 +613,6 @@ public class AbstractKRenderingSemanticSequencer extends AbstractSemanticSequenc
 	 */
 	protected void sequence_KImage(EObject context, KImage semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
-	}
-	
-	
-	/**
-	 * Constraint:
-	 *     (top=EFloat? bottom=EFloat? left=EFloat? right=EFloat?)
-	 */
-	protected void sequence_KInsets(EObject context, KInsets semanticObject) {
-		superSequencer.createSequence(context, semanticObject);
 	}
 	
 	
@@ -700,24 +650,6 @@ public class AbstractKRenderingSemanticSequencer extends AbstractSemanticSequenc
 	 */
 	protected void sequence_KLineWidth(EObject context, KLineWidth semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
-	}
-	
-	
-	/**
-	 * Constraint:
-	 *     {KStackPlacement}
-	 */
-	protected void sequence_KPlacement(EObject context, KStackPlacement semanticObject) {
-		genericSequencer.createSequence(context, semanticObject);
-	}
-	
-	
-	/**
-	 * Constraint:
-	 *     (x=EFloat y=EFloat)
-	 */
-	protected void sequence_KPoint(EObject context, KPoint semanticObject) {
-		superSequencer.createSequence(context, semanticObject);
 	}
 	
 	
@@ -828,22 +760,6 @@ public class AbstractKRenderingSemanticSequencer extends AbstractSemanticSequenc
 	
 	/**
 	 * Constraint:
-	 *     (
-	 *         xpos=EFloat? 
-	 *         ypos=EFloat? 
-	 *         width=EFloat? 
-	 *         height=EFloat? 
-	 *         insets=KInsets? 
-	 *         (persistentEntries+=PersistentEntry persistentEntries+=PersistentEntry*)?
-	 *     )
-	 */
-	protected void sequence_KShapeLayout(EObject context, KShapeLayout semanticObject) {
-		superSequencer.createSequence(context, semanticObject);
-	}
-	
-	
-	/**
-	 * Constraint:
 	 *     (((styles+=KStyle styles+=KStyle*)? placementData=KPlacementData? (children+=KRendering children+=KRendering*)? childPlacement=KPlacement?)?)
 	 */
 	protected void sequence_KSpline(EObject context, KSpline semanticObject) {
@@ -873,6 +789,15 @@ public class AbstractKRenderingSemanticSequencer extends AbstractSemanticSequenc
 		feeder.accept(grammarAccess.getKStackPlacementDataAccess().getInsetLeftEFloatParserRuleCall_7_0(), semanticObject.getInsetLeft());
 		feeder.accept(grammarAccess.getKStackPlacementDataAccess().getInsetTopEFloatParserRuleCall_9_0(), semanticObject.getInsetTop());
 		feeder.finish();
+	}
+	
+	
+	/**
+	 * Constraint:
+	 *     {KStackPlacement}
+	 */
+	protected void sequence_KStackPlacement(EObject context, KStackPlacement semanticObject) {
+		genericSequencer.createSequence(context, semanticObject);
 	}
 	
 	
@@ -919,14 +844,5 @@ public class AbstractKRenderingSemanticSequencer extends AbstractSemanticSequenc
 	 */
 	protected void sequence_KVerticalAlignment(EObject context, KVerticalAlignment semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
-	}
-	
-	
-	/**
-	 * Constraint:
-	 *     (key=EString value=EString?)
-	 */
-	protected void sequence_PersistentEntry(EObject context, PersistentEntry semanticObject) {
-		superSequencer.createSequence(context, semanticObject);
 	}
 }

@@ -78,6 +78,9 @@ public class KGraphParser extends AbstractContentAssistParser {
 					put(grammarAccess.getKEdgeAccess().getGroup_5_3(), "rule__KEdge__Group_5_3__0");
 					put(grammarAccess.getKEdgeAccess().getGroup_6(), "rule__KEdge__Group_6__0");
 					put(grammarAccess.getKEdgeAccess().getGroup_6_3(), "rule__KEdge__Group_6_3__0");
+					put(grammarAccess.getKGraphDataImplAccess().getGroup(), "rule__KGraphDataImpl__Group__0");
+					put(grammarAccess.getKGraphDataImplAccess().getGroup_3(), "rule__KGraphDataImpl__Group_3__0");
+					put(grammarAccess.getKGraphDataImplAccess().getGroup_3_3(), "rule__KGraphDataImpl__Group_3_3__0");
 					put(grammarAccess.getKRenderingLibraryAccess().getGroup(), "rule__KRenderingLibrary__Group__0");
 					put(grammarAccess.getKRenderingLibraryAccess().getGroup_3(), "rule__KRenderingLibrary__Group_3__0");
 					put(grammarAccess.getKRenderingLibraryAccess().getGroup_3_1(), "rule__KRenderingLibrary__Group_3_1__0");
@@ -252,6 +255,8 @@ public class KGraphParser extends AbstractContentAssistParser {
 					put(grammarAccess.getKEdgeAccess().getDataAssignment_5_3_1(), "rule__KEdge__DataAssignment_5_3_1");
 					put(grammarAccess.getKEdgeAccess().getLabelsAssignment_6_2(), "rule__KEdge__LabelsAssignment_6_2");
 					put(grammarAccess.getKEdgeAccess().getLabelsAssignment_6_3_1(), "rule__KEdge__LabelsAssignment_6_3_1");
+					put(grammarAccess.getKGraphDataImplAccess().getPersistentEntriesAssignment_3_2(), "rule__KGraphDataImpl__PersistentEntriesAssignment_3_2");
+					put(grammarAccess.getKGraphDataImplAccess().getPersistentEntriesAssignment_3_3_1(), "rule__KGraphDataImpl__PersistentEntriesAssignment_3_3_1");
 					put(grammarAccess.getKRenderingLibraryAccess().getRenderingsAssignment_3_0(), "rule__KRenderingLibrary__RenderingsAssignment_3_0");
 					put(grammarAccess.getKRenderingLibraryAccess().getRenderingsAssignment_3_1_1(), "rule__KRenderingLibrary__RenderingsAssignment_3_1_1");
 					put(grammarAccess.getKRenderingRefAccess().getRenderingAssignment_2(), "rule__KRenderingRef__RenderingAssignment_2");
@@ -378,7 +383,9 @@ public class KGraphParser extends AbstractContentAssistParser {
 					put(grammarAccess.getKBackgroundVisibilityAccess().getPropagateToChildrenAssignment_3(), "rule__KBackgroundVisibility__PropagateToChildrenAssignment_3");
 					put(grammarAccess.getKLineStyleAccess().getLineStyleAssignment_2(), "rule__KLineStyle__LineStyleAssignment_2");
 					put(grammarAccess.getKLineStyleAccess().getPropagateToChildrenAssignment_3(), "rule__KLineStyle__PropagateToChildrenAssignment_3");
+					put(grammarAccess.getKFontBoldAccess().getBoldAssignment_1(), "rule__KFontBold__BoldAssignment_1");
 					put(grammarAccess.getKFontBoldAccess().getPropagateToChildrenAssignment_2(), "rule__KFontBold__PropagateToChildrenAssignment_2");
+					put(grammarAccess.getKFontItalicAccess().getItalicAssignment_1(), "rule__KFontItalic__ItalicAssignment_1");
 					put(grammarAccess.getKFontItalicAccess().getPropagateToChildrenAssignment_2(), "rule__KFontItalic__PropagateToChildrenAssignment_2");
 					put(grammarAccess.getKFontNameAccess().getNameAssignment_1(), "rule__KFontName__NameAssignment_1");
 					put(grammarAccess.getKFontNameAccess().getPropagateToChildrenAssignment_2(), "rule__KFontName__PropagateToChildrenAssignment_2");

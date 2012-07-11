@@ -7,6 +7,8 @@ package de.cau.cs.kieler.core.kgraph.text.services;
 import com.google.inject.Singleton;
 import com.google.inject.Inject;
 
+import java.util.List;
+
 import org.eclipse.xtext.*;
 import org.eclipse.xtext.service.GrammarProvider;
 import org.eclipse.xtext.service.AbstractElementFinder.*;
@@ -639,6 +641,7 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 		private final RuleCall cKRenderingLibraryParserRuleCall_1 = (RuleCall)cAlternatives.eContents().get(1);
 		private final RuleCall cKShapeLayoutParserRuleCall_2 = (RuleCall)cAlternatives.eContents().get(2);
 		private final RuleCall cKEdgeLayoutParserRuleCall_3 = (RuleCall)cAlternatives.eContents().get(3);
+		private final RuleCall cKGraphDataImplParserRuleCall_4 = (RuleCall)cAlternatives.eContents().get(4);
 		
 		//// Error marker is a false positive; generation works anyway!
 		////  It occurs if eSuperType references in krendering.ecore/klayoutdata.ecore
@@ -646,20 +649,12 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 		////  but should be platform:/resource/de.cau.cs.kieler.core.kgraph/model/kgraph.ecore#//KGraphData
 		////  since Xtext obviously compares concrete string representations of the fragmentURIs.
 		////  This is why packages are referred to the same way in the preamble.   
-		////PersistentEntry returns PersistentEntry:
-		////	'PersistentEntry'
-		////	'{'
-		////		'key' key=EString
-		////		('value' value=EString)?
-		////    '}';
-		////EString returns ecore::EString:
-		////	STRING | ID;
 		//KGraphData: //	{KGraphData}
 		////	'KGraphData'
 		////	'{'
 		////		('persistentEntries' '{' persistentEntries+=PersistentEntry ( "," persistentEntries+=PersistentEntry)* '}' )?
 		////    '}';
-		//	KRendering | KRenderingLibrary | KShapeLayout | KEdgeLayout;
+		//	KRendering | KRenderingLibrary | KShapeLayout | KEdgeLayout | KGraphDataImpl;
 		public ParserRule getRule() { return rule; }
 
 		////	{KGraphData}
@@ -667,15 +662,7 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 		////	'{'
 		////		('persistentEntries' '{' persistentEntries+=PersistentEntry ( "," persistentEntries+=PersistentEntry)* '}' )?
 		////    '}';
-		//KRendering //PersistentEntry returns PersistentEntry:
-		////	'PersistentEntry'
-		////	'{'
-		////		'key' key=EString
-		////		('value' value=EString)?
-		////    '}';
-		////EString returns ecore::EString:
-		////	STRING | ID;
-		//| KRenderingLibrary | KShapeLayout | KEdgeLayout
+		//KRendering | KRenderingLibrary | KShapeLayout | KEdgeLayout | KGraphDataImpl
 		public Alternatives getAlternatives() { return cAlternatives; }
 
 		////	{KGraphData}
@@ -692,6 +679,31 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 		//KShapeLayout
 		public RuleCall getKShapeLayoutParserRuleCall_2() { return cKShapeLayoutParserRuleCall_2; }
 
+		//KEdgeLayout
+		public RuleCall getKEdgeLayoutParserRuleCall_3() { return cKEdgeLayoutParserRuleCall_3; }
+
+		//KGraphDataImpl
+		public RuleCall getKGraphDataImplParserRuleCall_4() { return cKGraphDataImplParserRuleCall_4; }
+	}
+
+	public class KGraphDataImplElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "KGraphDataImpl");
+		private final Group cGroup = (Group)rule.eContents().get(1);
+		private final Action cKGraphDataAction_0 = (Action)cGroup.eContents().get(0);
+		private final Keyword cKGraphDataKeyword_1 = (Keyword)cGroup.eContents().get(1);
+		private final Keyword cLeftCurlyBracketKeyword_2 = (Keyword)cGroup.eContents().get(2);
+		private final Group cGroup_3 = (Group)cGroup.eContents().get(3);
+		private final Keyword cPersistentEntriesKeyword_3_0 = (Keyword)cGroup_3.eContents().get(0);
+		private final Keyword cLeftCurlyBracketKeyword_3_1 = (Keyword)cGroup_3.eContents().get(1);
+		private final Assignment cPersistentEntriesAssignment_3_2 = (Assignment)cGroup_3.eContents().get(2);
+		private final RuleCall cPersistentEntriesPersistentEntryParserRuleCall_3_2_0 = (RuleCall)cPersistentEntriesAssignment_3_2.eContents().get(0);
+		private final Group cGroup_3_3 = (Group)cGroup_3.eContents().get(3);
+		private final Keyword cCommaKeyword_3_3_0 = (Keyword)cGroup_3_3.eContents().get(0);
+		private final Assignment cPersistentEntriesAssignment_3_3_1 = (Assignment)cGroup_3_3.eContents().get(1);
+		private final RuleCall cPersistentEntriesPersistentEntryParserRuleCall_3_3_1_0 = (RuleCall)cPersistentEntriesAssignment_3_3_1.eContents().get(0);
+		private final Keyword cRightCurlyBracketKeyword_3_4 = (Keyword)cGroup_3.eContents().get(4);
+		private final Keyword cRightCurlyBracketKeyword_4 = (Keyword)cGroup.eContents().get(4);
+		
 		////PersistentEntry returns PersistentEntry:
 		////	'PersistentEntry'
 		////	'{'
@@ -700,8 +712,71 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 		////    '}';
 		////EString returns ecore::EString:
 		////	STRING | ID;
-		//KEdgeLayout
-		public RuleCall getKEdgeLayoutParserRuleCall_3() { return cKEdgeLayoutParserRuleCall_3; }
+		//KGraphDataImpl returns KGraphData:
+		//	{KGraphData} "KGraphData" "{" ("persistentEntries" "{" persistentEntries+=PersistentEntry (","
+		//	persistentEntries+=PersistentEntry)* "}")? "}";
+		public ParserRule getRule() { return rule; }
+
+		//{KGraphData} "KGraphData" "{" ("persistentEntries" "{" persistentEntries+=PersistentEntry (","
+		//persistentEntries+=PersistentEntry)* "}")? "}" //PersistentEntry returns PersistentEntry:
+		////	'PersistentEntry'
+		////	'{'
+		////		'key' key=EString
+		////		('value' value=EString)?
+		////    '}';
+		////EString returns ecore::EString:
+		////	STRING | ID;
+		public Group getGroup() { return cGroup; }
+
+		//{KGraphData}
+		public Action getKGraphDataAction_0() { return cKGraphDataAction_0; }
+
+		//"KGraphData"
+		public Keyword getKGraphDataKeyword_1() { return cKGraphDataKeyword_1; }
+
+		//"{"
+		public Keyword getLeftCurlyBracketKeyword_2() { return cLeftCurlyBracketKeyword_2; }
+
+		//("persistentEntries" "{" persistentEntries+=PersistentEntry ("," persistentEntries+=PersistentEntry)* "}")?
+		public Group getGroup_3() { return cGroup_3; }
+
+		//"persistentEntries"
+		public Keyword getPersistentEntriesKeyword_3_0() { return cPersistentEntriesKeyword_3_0; }
+
+		//"{"
+		public Keyword getLeftCurlyBracketKeyword_3_1() { return cLeftCurlyBracketKeyword_3_1; }
+
+		//persistentEntries+=PersistentEntry
+		public Assignment getPersistentEntriesAssignment_3_2() { return cPersistentEntriesAssignment_3_2; }
+
+		//PersistentEntry
+		public RuleCall getPersistentEntriesPersistentEntryParserRuleCall_3_2_0() { return cPersistentEntriesPersistentEntryParserRuleCall_3_2_0; }
+
+		//("," persistentEntries+=PersistentEntry)*
+		public Group getGroup_3_3() { return cGroup_3_3; }
+
+		//","
+		public Keyword getCommaKeyword_3_3_0() { return cCommaKeyword_3_3_0; }
+
+		//persistentEntries+=PersistentEntry
+		public Assignment getPersistentEntriesAssignment_3_3_1() { return cPersistentEntriesAssignment_3_3_1; }
+
+		//PersistentEntry
+		public RuleCall getPersistentEntriesPersistentEntryParserRuleCall_3_3_1_0() { return cPersistentEntriesPersistentEntryParserRuleCall_3_3_1_0; }
+
+		//"}"
+		public Keyword getRightCurlyBracketKeyword_3_4() { return cRightCurlyBracketKeyword_3_4; }
+
+		////PersistentEntry returns PersistentEntry:
+		////	'PersistentEntry'
+		////	'{'
+		////		'key' key=EString
+		////		('value' value=EString)?
+		////    '}';
+		////EString returns ecore::EString:
+		////	STRING | ID;
+		//"}"
+		public Keyword getRightCurlyBracketKeyword_4() { return cRightCurlyBracketKeyword_4; }
 	}
 	
 	
@@ -710,20 +785,38 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	private KPortElements pKPort;
 	private KEdgeElements pKEdge;
 	private KGraphDataElements pKGraphData;
+	private KGraphDataImplElements pKGraphDataImpl;
 	
-	private final GrammarProvider grammarProvider;
+	private final Grammar grammar;
 
 	private KRenderingGrammarAccess gaKRendering;
 
 	@Inject
 	public KGraphGrammarAccess(GrammarProvider grammarProvider,
 		KRenderingGrammarAccess gaKRendering) {
-		this.grammarProvider = grammarProvider;
+		this.grammar = internalFindGrammar(grammarProvider);
 		this.gaKRendering = gaKRendering;
 	}
 	
-	public Grammar getGrammar() {	
-		return grammarProvider.getGrammar(this);
+	protected Grammar internalFindGrammar(GrammarProvider grammarProvider) {
+		Grammar grammar = grammarProvider.getGrammar(this);
+		while (grammar != null) {
+			if ("de.cau.cs.kieler.core.kgraph.text.KGraph".equals(grammar.getName())) {
+				return grammar;
+			}
+			List<Grammar> grammars = grammar.getUsedGrammars();
+			if (!grammars.isEmpty()) {
+				grammar = grammars.iterator().next();
+			} else {
+				return null;
+			}
+		}
+		return grammar;
+	}
+	
+	
+	public Grammar getGrammar() {
+		return grammar;
 	}
 	
 
@@ -808,6 +901,20 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	////  but should be platform:/resource/de.cau.cs.kieler.core.kgraph/model/kgraph.ecore#//KGraphData
 	////  since Xtext obviously compares concrete string representations of the fragmentURIs.
 	////  This is why packages are referred to the same way in the preamble.   
+	//KGraphData: //	{KGraphData}
+	////	'KGraphData'
+	////	'{'
+	////		('persistentEntries' '{' persistentEntries+=PersistentEntry ( "," persistentEntries+=PersistentEntry)* '}' )?
+	////    '}';
+	//	KRendering | KRenderingLibrary | KShapeLayout | KEdgeLayout | KGraphDataImpl;
+	public KGraphDataElements getKGraphDataAccess() {
+		return (pKGraphData != null) ? pKGraphData : (pKGraphData = new KGraphDataElements());
+	}
+	
+	public ParserRule getKGraphDataRule() {
+		return getKGraphDataAccess().getRule();
+	}
+
 	////PersistentEntry returns PersistentEntry:
 	////	'PersistentEntry'
 	////	'{'
@@ -816,18 +923,15 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	////    '}';
 	////EString returns ecore::EString:
 	////	STRING | ID;
-	//KGraphData: //	{KGraphData}
-	////	'KGraphData'
-	////	'{'
-	////		('persistentEntries' '{' persistentEntries+=PersistentEntry ( "," persistentEntries+=PersistentEntry)* '}' )?
-	////    '}';
-	//	KRendering | KRenderingLibrary | KShapeLayout | KEdgeLayout;
-	public KGraphDataElements getKGraphDataAccess() {
-		return (pKGraphData != null) ? pKGraphData : (pKGraphData = new KGraphDataElements());
+	//KGraphDataImpl returns KGraphData:
+	//	{KGraphData} "KGraphData" "{" ("persistentEntries" "{" persistentEntries+=PersistentEntry (","
+	//	persistentEntries+=PersistentEntry)* "}")? "}";
+	public KGraphDataImplElements getKGraphDataImplAccess() {
+		return (pKGraphDataImpl != null) ? pKGraphDataImpl : (pKGraphDataImpl = new KGraphDataImplElements());
 	}
 	
-	public ParserRule getKGraphDataRule() {
-		return getKGraphDataAccess().getRule();
+	public ParserRule getKGraphDataImplRule() {
+		return getKGraphDataImplAccess().getRule();
 	}
 
 	//KRenderingLibrary:
@@ -1149,7 +1253,7 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//KForegroundColor:
-	//	{KForegroundColor} "ForegroundColor" red=EInt green=EInt blue=EInt propagateToChildren?="!"?;
+	//	{KForegroundColor} "foregroundColor" red=EInt green=EInt blue=EInt propagateToChildren?="!"?;
 	public KRenderingGrammarAccess.KForegroundColorElements getKForegroundColorAccess() {
 		return gaKRendering.getKForegroundColorAccess();
 	}
@@ -1159,7 +1263,7 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//KBackgroundColor:
-	//	{KBackgroundColor} "BackgroundColor" red=EInt green=EInt blue=EInt propagateToChildren?="!"?;
+	//	{KBackgroundColor} "backgroundColor" red=EInt green=EInt blue=EInt propagateToChildren?="!"?;
 	public KRenderingGrammarAccess.KBackgroundColorElements getKBackgroundColorAccess() {
 		return gaKRendering.getKBackgroundColorAccess();
 	}
@@ -1169,7 +1273,7 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//KLineWidth:
-	//	"LineWidth" lineWidth=EInt propagateToChildren?="!"?;
+	//	"lineWidth" lineWidth=EInt propagateToChildren?="!"?;
 	public KRenderingGrammarAccess.KLineWidthElements getKLineWidthAccess() {
 		return gaKRendering.getKLineWidthAccess();
 	}
@@ -1189,7 +1293,7 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//KForegroundVisibility:
-	//	{KForegroundVisibility} "ForegroundVisibility" visible=EBoolean propagateToChildren?="!"?;
+	//	{KForegroundVisibility} "foregroundVisibility" visible=EBoolean propagateToChildren?="!"?;
 	public KRenderingGrammarAccess.KForegroundVisibilityElements getKForegroundVisibilityAccess() {
 		return gaKRendering.getKForegroundVisibilityAccess();
 	}
@@ -1199,7 +1303,7 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//KBackgroundVisibility:
-	//	{KBackgroundVisibility} "BackgroundVisibility" visible=EBoolean propagateToChildren?="!"?;
+	//	{KBackgroundVisibility} "backgroundVisibility" visible=EBoolean propagateToChildren?="!"?;
 	public KRenderingGrammarAccess.KBackgroundVisibilityElements getKBackgroundVisibilityAccess() {
 		return gaKRendering.getKBackgroundVisibilityAccess();
 	}
@@ -1209,7 +1313,7 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//KLineStyle:
-	//	{KLineStyle} "LineStyle" lineStyle=LineStyle propagateToChildren?="!"?;
+	//	{KLineStyle} "lineStyle" lineStyle=LineStyle propagateToChildren?="!"?;
 	public KRenderingGrammarAccess.KLineStyleElements getKLineStyleAccess() {
 		return gaKRendering.getKLineStyleAccess();
 	}
@@ -1219,7 +1323,7 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//KFontBold:
-	//	{KFontBold} "bold" propagateToChildren?="!"?;
+	//	{KFontBold} bold?="bold" propagateToChildren?="!"?;
 	public KRenderingGrammarAccess.KFontBoldElements getKFontBoldAccess() {
 		return gaKRendering.getKFontBoldAccess();
 	}
@@ -1229,7 +1333,7 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//KFontItalic:
-	//	{KFontItalic} "italic" propagateToChildren?="!"?;
+	//	{KFontItalic} italic?="italic" propagateToChildren?="!"?;
 	public KRenderingGrammarAccess.KFontItalicElements getKFontItalicAccess() {
 		return gaKRendering.getKFontItalicAccess();
 	}
@@ -1259,7 +1363,7 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//KVerticalAlignment:
-	//	{KVerticalAlignment} "VerticalAlignment" verticalAlignment=VerticalAlignment propagateToChildren?="!"?;
+	//	{KVerticalAlignment} "verticalAlignment" verticalAlignment=VerticalAlignment propagateToChildren?="!"?;
 	public KRenderingGrammarAccess.KVerticalAlignmentElements getKVerticalAlignmentAccess() {
 		return gaKRendering.getKVerticalAlignmentAccess();
 	}
@@ -1269,7 +1373,7 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//KHorizontalAlignment:
-	//	{KHorizontalAlignment} "HorizontalAlignment" horizontalAlignment=HorizontalAlignment propagateToChildren?="!";
+	//	{KHorizontalAlignment} "horizontalAlignment" horizontalAlignment=HorizontalAlignment propagateToChildren?="!"?;
 	public KRenderingGrammarAccess.KHorizontalAlignmentElements getKHorizontalAlignmentAccess() {
 		return gaKRendering.getKHorizontalAlignmentAccess();
 	}
@@ -1279,7 +1383,7 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//KGridPlacement:
-	//	{KGridPlacement} "GridPlacement" numColumns=EInt;
+	//	{KGridPlacement} "gridPlacement" numColumns=EInt;
 	public KRenderingGrammarAccess.KGridPlacementElements getKGridPlacementAccess() {
 		return gaKRendering.getKGridPlacementAccess();
 	}
@@ -1289,7 +1393,7 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//KStackPlacement:
-	//	{KStackPlacement} "StackPlacement";
+	//	{KStackPlacement} "stackPlacement";
 	public KRenderingGrammarAccess.KStackPlacementElements getKStackPlacementAccess() {
 		return gaKRendering.getKStackPlacementAccess();
 	}

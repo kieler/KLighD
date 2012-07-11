@@ -14888,7 +14888,7 @@ rule__KForegroundColor__Group__1__Impl
 (
 { before(grammarAccess.getKForegroundColorAccess().getForegroundColorKeyword_1()); }
 
-	'ForegroundColor' 
+	'foregroundColor' 
 
 { after(grammarAccess.getKForegroundColorAccess().getForegroundColorKeyword_1()); }
 )
@@ -15077,7 +15077,7 @@ rule__KBackgroundColor__Group__1__Impl
 (
 { before(grammarAccess.getKBackgroundColorAccess().getBackgroundColorKeyword_1()); }
 
-	'BackgroundColor' 
+	'backgroundColor' 
 
 { after(grammarAccess.getKBackgroundColorAccess().getBackgroundColorKeyword_1()); }
 )
@@ -15235,7 +15235,7 @@ rule__KLineWidth__Group__0__Impl
 (
 { before(grammarAccess.getKLineWidthAccess().getLineWidthKeyword_0()); }
 
-	'LineWidth' 
+	'lineWidth' 
 
 { after(grammarAccess.getKLineWidthAccess().getLineWidthKeyword_0()); }
 )
@@ -15360,7 +15360,7 @@ rule__KForegroundVisibility__Group__1__Impl
 (
 { before(grammarAccess.getKForegroundVisibilityAccess().getForegroundVisibilityKeyword_1()); }
 
-	'ForegroundVisibility' 
+	'foregroundVisibility' 
 
 { after(grammarAccess.getKForegroundVisibilityAccess().getForegroundVisibilityKeyword_1()); }
 )
@@ -15487,7 +15487,7 @@ rule__KBackgroundVisibility__Group__1__Impl
 (
 { before(grammarAccess.getKBackgroundVisibilityAccess().getBackgroundVisibilityKeyword_1()); }
 
-	'BackgroundVisibility' 
+	'backgroundVisibility' 
 
 { after(grammarAccess.getKBackgroundVisibilityAccess().getBackgroundVisibilityKeyword_1()); }
 )
@@ -15614,7 +15614,7 @@ rule__KLineStyle__Group__1__Impl
 (
 { before(grammarAccess.getKLineStyleAccess().getLineStyleKeyword_1()); }
 
-	'LineStyle' 
+	'lineStyle' 
 
 { after(grammarAccess.getKLineStyleAccess().getLineStyleKeyword_1()); }
 )
@@ -15739,11 +15739,9 @@ rule__KFontBold__Group__1__Impl
     }
 :
 (
-{ before(grammarAccess.getKFontBoldAccess().getBoldKeyword_1()); }
-
-	'bold' 
-
-{ after(grammarAccess.getKFontBoldAccess().getBoldKeyword_1()); }
+{ before(grammarAccess.getKFontBoldAccess().getBoldAssignment_1()); }
+(rule__KFontBold__BoldAssignment_1)
+{ after(grammarAccess.getKFontBoldAccess().getBoldAssignment_1()); }
 )
 
 ;
@@ -15835,11 +15833,9 @@ rule__KFontItalic__Group__1__Impl
     }
 :
 (
-{ before(grammarAccess.getKFontItalicAccess().getItalicKeyword_1()); }
-
-	'italic' 
-
-{ after(grammarAccess.getKFontItalicAccess().getItalicKeyword_1()); }
+{ before(grammarAccess.getKFontItalicAccess().getItalicAssignment_1()); }
+(rule__KFontItalic__ItalicAssignment_1)
+{ after(grammarAccess.getKFontItalicAccess().getItalicAssignment_1()); }
 )
 
 ;
@@ -16121,7 +16117,7 @@ rule__KVerticalAlignment__Group__1__Impl
 (
 { before(grammarAccess.getKVerticalAlignmentAccess().getVerticalAlignmentKeyword_1()); }
 
-	'VerticalAlignment' 
+	'verticalAlignment' 
 
 { after(grammarAccess.getKVerticalAlignmentAccess().getVerticalAlignmentKeyword_1()); }
 )
@@ -16248,7 +16244,7 @@ rule__KHorizontalAlignment__Group__1__Impl
 (
 { before(grammarAccess.getKHorizontalAlignmentAccess().getHorizontalAlignmentKeyword_1()); }
 
-	'HorizontalAlignment' 
+	'horizontalAlignment' 
 
 { after(grammarAccess.getKHorizontalAlignmentAccess().getHorizontalAlignmentKeyword_1()); }
 )
@@ -16306,7 +16302,7 @@ rule__KHorizontalAlignment__Group__3__Impl
 :
 (
 { before(grammarAccess.getKHorizontalAlignmentAccess().getPropagateToChildrenAssignment_3()); }
-(rule__KHorizontalAlignment__PropagateToChildrenAssignment_3)
+(rule__KHorizontalAlignment__PropagateToChildrenAssignment_3)?
 { after(grammarAccess.getKHorizontalAlignmentAccess().getPropagateToChildrenAssignment_3()); }
 )
 
@@ -16375,7 +16371,7 @@ rule__KGridPlacement__Group__1__Impl
 (
 { before(grammarAccess.getKGridPlacementAccess().getGridPlacementKeyword_1()); }
 
-	'GridPlacement' 
+	'gridPlacement' 
 
 { after(grammarAccess.getKGridPlacementAccess().getGridPlacementKeyword_1()); }
 )
@@ -16470,7 +16466,7 @@ rule__KStackPlacement__Group__1__Impl
 (
 { before(grammarAccess.getKStackPlacementAccess().getStackPlacementKeyword_1()); }
 
-	'StackPlacement' 
+	'stackPlacement' 
 
 { after(grammarAccess.getKStackPlacementAccess().getStackPlacementKeyword_1()); }
 )
@@ -19686,6 +19682,29 @@ finally {
 	restoreStackSize(stackSize);
 }
 
+rule__KFontBold__BoldAssignment_1
+    @init {
+		int stackSize = keepStackSize();
+    }
+:
+(
+{ before(grammarAccess.getKFontBoldAccess().getBoldBoldKeyword_1_0()); }
+(
+{ before(grammarAccess.getKFontBoldAccess().getBoldBoldKeyword_1_0()); }
+
+	'bold' 
+
+{ after(grammarAccess.getKFontBoldAccess().getBoldBoldKeyword_1_0()); }
+)
+
+{ after(grammarAccess.getKFontBoldAccess().getBoldBoldKeyword_1_0()); }
+)
+
+;
+finally {
+	restoreStackSize(stackSize);
+}
+
 rule__KFontBold__PropagateToChildrenAssignment_2
     @init {
 		int stackSize = keepStackSize();
@@ -19702,6 +19721,29 @@ rule__KFontBold__PropagateToChildrenAssignment_2
 )
 
 { after(grammarAccess.getKFontBoldAccess().getPropagateToChildrenExclamationMarkKeyword_2_0()); }
+)
+
+;
+finally {
+	restoreStackSize(stackSize);
+}
+
+rule__KFontItalic__ItalicAssignment_1
+    @init {
+		int stackSize = keepStackSize();
+    }
+:
+(
+{ before(grammarAccess.getKFontItalicAccess().getItalicItalicKeyword_1_0()); }
+(
+{ before(grammarAccess.getKFontItalicAccess().getItalicItalicKeyword_1_0()); }
+
+	'italic' 
+
+{ after(grammarAccess.getKFontItalicAccess().getItalicItalicKeyword_1_0()); }
+)
+
+{ after(grammarAccess.getKFontItalicAccess().getItalicItalicKeyword_1_0()); }
 )
 
 ;

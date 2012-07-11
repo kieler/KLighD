@@ -13,8 +13,8 @@ import org.eclipse.xtext.serializer.analysis.ISyntacticSequencerPDAProvider.ISyn
 import org.eclipse.xtext.serializer.analysis.ISyntacticSequencerPDAProvider.ISynTransition;
 import org.eclipse.xtext.serializer.sequencer.AbstractSyntacticSequencer;
 
-@SuppressWarnings("restriction")
-public class AbstractKLayoutDataSyntacticSequencer extends AbstractSyntacticSequencer {
+@SuppressWarnings("all")
+public abstract class AbstractKLayoutDataSyntacticSequencer extends AbstractSyntacticSequencer {
 
 	protected KLayoutDataGrammarAccess grammarAccess;
 	protected AbstractElementAlias match_KEdgeLayout_CommaKeyword_6_3_0_q;

@@ -1039,7 +1039,7 @@
             <classifier xsi:type="ecore:EClass" href="http://kieler.cs.cau.de/KRendering#//KForegroundColor"/>
           </type>
         </elements>
-        <elements xsi:type="xtext:Keyword" value="ForegroundColor"/>
+        <elements xsi:type="xtext:Keyword" value="foregroundColor"/>
         <elements xsi:type="xtext:Assignment" feature="red" operator="=">
           <terminal xsi:type="xtext:RuleCall" rule="/0/@rules.49"/>
         </elements>
@@ -1064,7 +1064,7 @@
             <classifier xsi:type="ecore:EClass" href="http://kieler.cs.cau.de/KRendering#//KBackgroundColor"/>
           </type>
         </elements>
-        <elements xsi:type="xtext:Keyword" value="BackgroundColor"/>
+        <elements xsi:type="xtext:Keyword" value="backgroundColor"/>
         <elements xsi:type="xtext:Assignment" feature="red" operator="=">
           <terminal xsi:type="xtext:RuleCall" rule="/0/@rules.49"/>
         </elements>
@@ -1084,7 +1084,7 @@
         <classifier xsi:type="ecore:EClass" href="http://kieler.cs.cau.de/KRendering#//KLineWidth"/>
       </type>
       <alternatives xsi:type="xtext:Group">
-        <elements xsi:type="xtext:Keyword" value="LineWidth"/>
+        <elements xsi:type="xtext:Keyword" value="lineWidth"/>
         <elements xsi:type="xtext:Assignment" feature="lineWidth" operator="=">
           <terminal xsi:type="xtext:RuleCall" rule="/0/@rules.49"/>
         </elements>
@@ -1112,7 +1112,7 @@
             <classifier xsi:type="ecore:EClass" href="http://kieler.cs.cau.de/KRendering#//KForegroundVisibility"/>
           </type>
         </elements>
-        <elements xsi:type="xtext:Keyword" value="ForegroundVisibility"/>
+        <elements xsi:type="xtext:Keyword" value="foregroundVisibility"/>
         <elements xsi:type="xtext:Assignment" feature="visible" operator="=">
           <terminal xsi:type="xtext:RuleCall" rule="/0/@rules.48"/>
         </elements>
@@ -1131,7 +1131,7 @@
             <classifier xsi:type="ecore:EClass" href="http://kieler.cs.cau.de/KRendering#//KBackgroundVisibility"/>
           </type>
         </elements>
-        <elements xsi:type="xtext:Keyword" value="BackgroundVisibility"/>
+        <elements xsi:type="xtext:Keyword" value="backgroundVisibility"/>
         <elements xsi:type="xtext:Assignment" feature="visible" operator="=">
           <terminal xsi:type="xtext:RuleCall" rule="/0/@rules.48"/>
         </elements>
@@ -1150,7 +1150,7 @@
             <classifier xsi:type="ecore:EClass" href="http://kieler.cs.cau.de/KRendering#//KLineStyle"/>
           </type>
         </elements>
-        <elements xsi:type="xtext:Keyword" value="LineStyle"/>
+        <elements xsi:type="xtext:Keyword" value="lineStyle"/>
         <elements xsi:type="xtext:Assignment" feature="lineStyle" operator="=">
           <terminal xsi:type="xtext:RuleCall" rule="/0/@rules.44"/>
         </elements>
@@ -1169,7 +1169,9 @@
             <classifier xsi:type="ecore:EClass" href="http://kieler.cs.cau.de/KRendering#//KFontBold"/>
           </type>
         </elements>
-        <elements xsi:type="xtext:Keyword" value="bold"/>
+        <elements xsi:type="xtext:Assignment" feature="bold" operator="?=">
+          <terminal xsi:type="xtext:Keyword" value="bold"/>
+        </elements>
         <elements xsi:type="xtext:Assignment" cardinality="?" feature="propagateToChildren" operator="?=">
           <terminal xsi:type="xtext:Keyword" value="!"/>
         </elements>
@@ -1185,7 +1187,9 @@
             <classifier xsi:type="ecore:EClass" href="http://kieler.cs.cau.de/KRendering#//KFontItalic"/>
           </type>
         </elements>
-        <elements xsi:type="xtext:Keyword" value="italic"/>
+        <elements xsi:type="xtext:Assignment" feature="italic" operator="?=">
+          <terminal xsi:type="xtext:Keyword" value="italic"/>
+        </elements>
         <elements xsi:type="xtext:Assignment" cardinality="?" feature="propagateToChildren" operator="?=">
           <terminal xsi:type="xtext:Keyword" value="!"/>
         </elements>
@@ -1229,7 +1233,7 @@
             <classifier xsi:type="ecore:EClass" href="http://kieler.cs.cau.de/KRendering#//KVerticalAlignment"/>
           </type>
         </elements>
-        <elements xsi:type="xtext:Keyword" value="VerticalAlignment"/>
+        <elements xsi:type="xtext:Keyword" value="verticalAlignment"/>
         <elements xsi:type="xtext:Assignment" feature="verticalAlignment" operator="=">
           <terminal xsi:type="xtext:RuleCall" rule="/0/@rules.45"/>
         </elements>
@@ -1248,11 +1252,11 @@
             <classifier xsi:type="ecore:EClass" href="http://kieler.cs.cau.de/KRendering#//KHorizontalAlignment"/>
           </type>
         </elements>
-        <elements xsi:type="xtext:Keyword" value="HorizontalAlignment"/>
+        <elements xsi:type="xtext:Keyword" value="horizontalAlignment"/>
         <elements xsi:type="xtext:Assignment" feature="horizontalAlignment" operator="=">
           <terminal xsi:type="xtext:RuleCall" rule="/0/@rules.46"/>
         </elements>
-        <elements xsi:type="xtext:Assignment" feature="propagateToChildren" operator="?=">
+        <elements xsi:type="xtext:Assignment" cardinality="?" feature="propagateToChildren" operator="?=">
           <terminal xsi:type="xtext:Keyword" value="!"/>
         </elements>
       </alternatives>
@@ -1267,7 +1271,7 @@
             <classifier xsi:type="ecore:EClass" href="http://kieler.cs.cau.de/KRendering#//KGridPlacement"/>
           </type>
         </elements>
-        <elements xsi:type="xtext:Keyword" value="GridPlacement"/>
+        <elements xsi:type="xtext:Keyword" value="gridPlacement"/>
         <elements xsi:type="xtext:Assignment" feature="numColumns" operator="=">
           <terminal xsi:type="xtext:RuleCall" rule="/0/@rules.49"/>
         </elements>
@@ -1283,7 +1287,7 @@
             <classifier xsi:type="ecore:EClass" href="http://kieler.cs.cau.de/KRendering#//KStackPlacement"/>
           </type>
         </elements>
-        <elements xsi:type="xtext:Keyword" value="StackPlacement"/>
+        <elements xsi:type="xtext:Keyword" value="stackPlacement"/>
       </alternatives>
     </rules>
     <rules xsi:type="xtext:EnumRule" name="LineStyle">

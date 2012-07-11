@@ -7,6 +7,8 @@ package de.cau.cs.kieler.core.krendering.text.services;
 import com.google.inject.Singleton;
 import com.google.inject.Inject;
 
+import java.util.List;
+
 import org.eclipse.xtext.*;
 import org.eclipse.xtext.service.GrammarProvider;
 import org.eclipse.xtext.service.AbstractElementFinder.*;
@@ -2653,16 +2655,16 @@ public class KRenderingGrammarAccess extends AbstractGrammarElementFinder {
 		private final Keyword cPropagateToChildrenExclamationMarkKeyword_5_0 = (Keyword)cPropagateToChildrenAssignment_5.eContents().get(0);
 		
 		//KForegroundColor:
-		//	{KForegroundColor} "ForegroundColor" red=EInt green=EInt blue=EInt propagateToChildren?="!"?;
+		//	{KForegroundColor} "foregroundColor" red=EInt green=EInt blue=EInt propagateToChildren?="!"?;
 		public ParserRule getRule() { return rule; }
 
-		//{KForegroundColor} "ForegroundColor" red=EInt green=EInt blue=EInt propagateToChildren?="!"?
+		//{KForegroundColor} "foregroundColor" red=EInt green=EInt blue=EInt propagateToChildren?="!"?
 		public Group getGroup() { return cGroup; }
 
 		//{KForegroundColor}
 		public Action getKForegroundColorAction_0() { return cKForegroundColorAction_0; }
 
-		//"ForegroundColor"
+		//"foregroundColor"
 		public Keyword getForegroundColorKeyword_1() { return cForegroundColorKeyword_1; }
 
 		//red=EInt
@@ -2705,16 +2707,16 @@ public class KRenderingGrammarAccess extends AbstractGrammarElementFinder {
 		private final Keyword cPropagateToChildrenExclamationMarkKeyword_5_0 = (Keyword)cPropagateToChildrenAssignment_5.eContents().get(0);
 		
 		//KBackgroundColor:
-		//	{KBackgroundColor} "BackgroundColor" red=EInt green=EInt blue=EInt propagateToChildren?="!"?;
+		//	{KBackgroundColor} "backgroundColor" red=EInt green=EInt blue=EInt propagateToChildren?="!"?;
 		public ParserRule getRule() { return rule; }
 
-		//{KBackgroundColor} "BackgroundColor" red=EInt green=EInt blue=EInt propagateToChildren?="!"?
+		//{KBackgroundColor} "backgroundColor" red=EInt green=EInt blue=EInt propagateToChildren?="!"?
 		public Group getGroup() { return cGroup; }
 
 		//{KBackgroundColor}
 		public Action getKBackgroundColorAction_0() { return cKBackgroundColorAction_0; }
 
-		//"BackgroundColor"
+		//"backgroundColor"
 		public Keyword getBackgroundColorKeyword_1() { return cBackgroundColorKeyword_1; }
 
 		//red=EInt
@@ -2752,13 +2754,13 @@ public class KRenderingGrammarAccess extends AbstractGrammarElementFinder {
 		private final Keyword cPropagateToChildrenExclamationMarkKeyword_2_0 = (Keyword)cPropagateToChildrenAssignment_2.eContents().get(0);
 		
 		//KLineWidth:
-		//	"LineWidth" lineWidth=EInt propagateToChildren?="!"?;
+		//	"lineWidth" lineWidth=EInt propagateToChildren?="!"?;
 		public ParserRule getRule() { return rule; }
 
-		//"LineWidth" lineWidth=EInt propagateToChildren?="!"?
+		//"lineWidth" lineWidth=EInt propagateToChildren?="!"?
 		public Group getGroup() { return cGroup; }
 
-		//"LineWidth"
+		//"lineWidth"
 		public Keyword getLineWidthKeyword_0() { return cLineWidthKeyword_0; }
 
 		//lineWidth=EInt
@@ -2805,16 +2807,16 @@ public class KRenderingGrammarAccess extends AbstractGrammarElementFinder {
 		private final Keyword cPropagateToChildrenExclamationMarkKeyword_3_0 = (Keyword)cPropagateToChildrenAssignment_3.eContents().get(0);
 		
 		//KForegroundVisibility:
-		//	{KForegroundVisibility} "ForegroundVisibility" visible=EBoolean propagateToChildren?="!"?;
+		//	{KForegroundVisibility} "foregroundVisibility" visible=EBoolean propagateToChildren?="!"?;
 		public ParserRule getRule() { return rule; }
 
-		//{KForegroundVisibility} "ForegroundVisibility" visible=EBoolean propagateToChildren?="!"?
+		//{KForegroundVisibility} "foregroundVisibility" visible=EBoolean propagateToChildren?="!"?
 		public Group getGroup() { return cGroup; }
 
 		//{KForegroundVisibility}
 		public Action getKForegroundVisibilityAction_0() { return cKForegroundVisibilityAction_0; }
 
-		//"ForegroundVisibility"
+		//"foregroundVisibility"
 		public Keyword getForegroundVisibilityKeyword_1() { return cForegroundVisibilityKeyword_1; }
 
 		//visible=EBoolean
@@ -2841,16 +2843,16 @@ public class KRenderingGrammarAccess extends AbstractGrammarElementFinder {
 		private final Keyword cPropagateToChildrenExclamationMarkKeyword_3_0 = (Keyword)cPropagateToChildrenAssignment_3.eContents().get(0);
 		
 		//KBackgroundVisibility:
-		//	{KBackgroundVisibility} "BackgroundVisibility" visible=EBoolean propagateToChildren?="!"?;
+		//	{KBackgroundVisibility} "backgroundVisibility" visible=EBoolean propagateToChildren?="!"?;
 		public ParserRule getRule() { return rule; }
 
-		//{KBackgroundVisibility} "BackgroundVisibility" visible=EBoolean propagateToChildren?="!"?
+		//{KBackgroundVisibility} "backgroundVisibility" visible=EBoolean propagateToChildren?="!"?
 		public Group getGroup() { return cGroup; }
 
 		//{KBackgroundVisibility}
 		public Action getKBackgroundVisibilityAction_0() { return cKBackgroundVisibilityAction_0; }
 
-		//"BackgroundVisibility"
+		//"backgroundVisibility"
 		public Keyword getBackgroundVisibilityKeyword_1() { return cBackgroundVisibilityKeyword_1; }
 
 		//visible=EBoolean
@@ -2877,16 +2879,16 @@ public class KRenderingGrammarAccess extends AbstractGrammarElementFinder {
 		private final Keyword cPropagateToChildrenExclamationMarkKeyword_3_0 = (Keyword)cPropagateToChildrenAssignment_3.eContents().get(0);
 		
 		//KLineStyle:
-		//	{KLineStyle} "LineStyle" lineStyle=LineStyle propagateToChildren?="!"?;
+		//	{KLineStyle} "lineStyle" lineStyle=LineStyle propagateToChildren?="!"?;
 		public ParserRule getRule() { return rule; }
 
-		//{KLineStyle} "LineStyle" lineStyle=LineStyle propagateToChildren?="!"?
+		//{KLineStyle} "lineStyle" lineStyle=LineStyle propagateToChildren?="!"?
 		public Group getGroup() { return cGroup; }
 
 		//{KLineStyle}
 		public Action getKLineStyleAction_0() { return cKLineStyleAction_0; }
 
-		//"LineStyle"
+		//"lineStyle"
 		public Keyword getLineStyleKeyword_1() { return cLineStyleKeyword_1; }
 
 		//lineStyle=LineStyle
@@ -2906,22 +2908,26 @@ public class KRenderingGrammarAccess extends AbstractGrammarElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "KFontBold");
 		private final Group cGroup = (Group)rule.eContents().get(1);
 		private final Action cKFontBoldAction_0 = (Action)cGroup.eContents().get(0);
-		private final Keyword cBoldKeyword_1 = (Keyword)cGroup.eContents().get(1);
+		private final Assignment cBoldAssignment_1 = (Assignment)cGroup.eContents().get(1);
+		private final Keyword cBoldBoldKeyword_1_0 = (Keyword)cBoldAssignment_1.eContents().get(0);
 		private final Assignment cPropagateToChildrenAssignment_2 = (Assignment)cGroup.eContents().get(2);
 		private final Keyword cPropagateToChildrenExclamationMarkKeyword_2_0 = (Keyword)cPropagateToChildrenAssignment_2.eContents().get(0);
 		
 		//KFontBold:
-		//	{KFontBold} "bold" propagateToChildren?="!"?;
+		//	{KFontBold} bold?="bold" propagateToChildren?="!"?;
 		public ParserRule getRule() { return rule; }
 
-		//{KFontBold} "bold" propagateToChildren?="!"?
+		//{KFontBold} bold?="bold" propagateToChildren?="!"?
 		public Group getGroup() { return cGroup; }
 
 		//{KFontBold}
 		public Action getKFontBoldAction_0() { return cKFontBoldAction_0; }
 
+		//bold?="bold"
+		public Assignment getBoldAssignment_1() { return cBoldAssignment_1; }
+
 		//"bold"
-		public Keyword getBoldKeyword_1() { return cBoldKeyword_1; }
+		public Keyword getBoldBoldKeyword_1_0() { return cBoldBoldKeyword_1_0; }
 
 		//propagateToChildren?="!"?
 		public Assignment getPropagateToChildrenAssignment_2() { return cPropagateToChildrenAssignment_2; }
@@ -2934,22 +2940,26 @@ public class KRenderingGrammarAccess extends AbstractGrammarElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "KFontItalic");
 		private final Group cGroup = (Group)rule.eContents().get(1);
 		private final Action cKFontItalicAction_0 = (Action)cGroup.eContents().get(0);
-		private final Keyword cItalicKeyword_1 = (Keyword)cGroup.eContents().get(1);
+		private final Assignment cItalicAssignment_1 = (Assignment)cGroup.eContents().get(1);
+		private final Keyword cItalicItalicKeyword_1_0 = (Keyword)cItalicAssignment_1.eContents().get(0);
 		private final Assignment cPropagateToChildrenAssignment_2 = (Assignment)cGroup.eContents().get(2);
 		private final Keyword cPropagateToChildrenExclamationMarkKeyword_2_0 = (Keyword)cPropagateToChildrenAssignment_2.eContents().get(0);
 		
 		//KFontItalic:
-		//	{KFontItalic} "italic" propagateToChildren?="!"?;
+		//	{KFontItalic} italic?="italic" propagateToChildren?="!"?;
 		public ParserRule getRule() { return rule; }
 
-		//{KFontItalic} "italic" propagateToChildren?="!"?
+		//{KFontItalic} italic?="italic" propagateToChildren?="!"?
 		public Group getGroup() { return cGroup; }
 
 		//{KFontItalic}
 		public Action getKFontItalicAction_0() { return cKFontItalicAction_0; }
 
+		//italic?="italic"
+		public Assignment getItalicAssignment_1() { return cItalicAssignment_1; }
+
 		//"italic"
-		public Keyword getItalicKeyword_1() { return cItalicKeyword_1; }
+		public Keyword getItalicItalicKeyword_1_0() { return cItalicItalicKeyword_1_0; }
 
 		//propagateToChildren?="!"?
 		public Assignment getPropagateToChildrenAssignment_2() { return cPropagateToChildrenAssignment_2; }
@@ -3033,16 +3043,16 @@ public class KRenderingGrammarAccess extends AbstractGrammarElementFinder {
 		private final Keyword cPropagateToChildrenExclamationMarkKeyword_3_0 = (Keyword)cPropagateToChildrenAssignment_3.eContents().get(0);
 		
 		//KVerticalAlignment:
-		//	{KVerticalAlignment} "VerticalAlignment" verticalAlignment=VerticalAlignment propagateToChildren?="!"?;
+		//	{KVerticalAlignment} "verticalAlignment" verticalAlignment=VerticalAlignment propagateToChildren?="!"?;
 		public ParserRule getRule() { return rule; }
 
-		//{KVerticalAlignment} "VerticalAlignment" verticalAlignment=VerticalAlignment propagateToChildren?="!"?
+		//{KVerticalAlignment} "verticalAlignment" verticalAlignment=VerticalAlignment propagateToChildren?="!"?
 		public Group getGroup() { return cGroup; }
 
 		//{KVerticalAlignment}
 		public Action getKVerticalAlignmentAction_0() { return cKVerticalAlignmentAction_0; }
 
-		//"VerticalAlignment"
+		//"verticalAlignment"
 		public Keyword getVerticalAlignmentKeyword_1() { return cVerticalAlignmentKeyword_1; }
 
 		//verticalAlignment=VerticalAlignment
@@ -3069,16 +3079,16 @@ public class KRenderingGrammarAccess extends AbstractGrammarElementFinder {
 		private final Keyword cPropagateToChildrenExclamationMarkKeyword_3_0 = (Keyword)cPropagateToChildrenAssignment_3.eContents().get(0);
 		
 		//KHorizontalAlignment:
-		//	{KHorizontalAlignment} "HorizontalAlignment" horizontalAlignment=HorizontalAlignment propagateToChildren?="!";
+		//	{KHorizontalAlignment} "horizontalAlignment" horizontalAlignment=HorizontalAlignment propagateToChildren?="!"?;
 		public ParserRule getRule() { return rule; }
 
-		//{KHorizontalAlignment} "HorizontalAlignment" horizontalAlignment=HorizontalAlignment propagateToChildren?="!"
+		//{KHorizontalAlignment} "horizontalAlignment" horizontalAlignment=HorizontalAlignment propagateToChildren?="!"?
 		public Group getGroup() { return cGroup; }
 
 		//{KHorizontalAlignment}
 		public Action getKHorizontalAlignmentAction_0() { return cKHorizontalAlignmentAction_0; }
 
-		//"HorizontalAlignment"
+		//"horizontalAlignment"
 		public Keyword getHorizontalAlignmentKeyword_1() { return cHorizontalAlignmentKeyword_1; }
 
 		//horizontalAlignment=HorizontalAlignment
@@ -3087,7 +3097,7 @@ public class KRenderingGrammarAccess extends AbstractGrammarElementFinder {
 		//HorizontalAlignment
 		public RuleCall getHorizontalAlignmentHorizontalAlignmentEnumRuleCall_2_0() { return cHorizontalAlignmentHorizontalAlignmentEnumRuleCall_2_0; }
 
-		//propagateToChildren?="!"
+		//propagateToChildren?="!"?
 		public Assignment getPropagateToChildrenAssignment_3() { return cPropagateToChildrenAssignment_3; }
 
 		//"!"
@@ -3103,16 +3113,16 @@ public class KRenderingGrammarAccess extends AbstractGrammarElementFinder {
 		private final RuleCall cNumColumnsEIntParserRuleCall_2_0 = (RuleCall)cNumColumnsAssignment_2.eContents().get(0);
 		
 		//KGridPlacement:
-		//	{KGridPlacement} "GridPlacement" numColumns=EInt;
+		//	{KGridPlacement} "gridPlacement" numColumns=EInt;
 		public ParserRule getRule() { return rule; }
 
-		//{KGridPlacement} "GridPlacement" numColumns=EInt
+		//{KGridPlacement} "gridPlacement" numColumns=EInt
 		public Group getGroup() { return cGroup; }
 
 		//{KGridPlacement}
 		public Action getKGridPlacementAction_0() { return cKGridPlacementAction_0; }
 
-		//"GridPlacement"
+		//"gridPlacement"
 		public Keyword getGridPlacementKeyword_1() { return cGridPlacementKeyword_1; }
 
 		//numColumns=EInt
@@ -3129,16 +3139,16 @@ public class KRenderingGrammarAccess extends AbstractGrammarElementFinder {
 		private final Keyword cStackPlacementKeyword_1 = (Keyword)cGroup.eContents().get(1);
 		
 		//KStackPlacement:
-		//	{KStackPlacement} "StackPlacement";
+		//	{KStackPlacement} "stackPlacement";
 		public ParserRule getRule() { return rule; }
 
-		//{KStackPlacement} "StackPlacement"
+		//{KStackPlacement} "stackPlacement"
 		public Group getGroup() { return cGroup; }
 
 		//{KStackPlacement}
 		public Action getKStackPlacementAction_0() { return cKStackPlacementAction_0; }
 
-		//"StackPlacement"
+		//"stackPlacement"
 		public Keyword getStackPlacementKeyword_1() { return cStackPlacementKeyword_1; }
 	}
 
@@ -3414,19 +3424,36 @@ public class KRenderingGrammarAccess extends AbstractGrammarElementFinder {
 	private EBooleanElements pEBoolean;
 	private EIntElements pEInt;
 	
-	private final GrammarProvider grammarProvider;
+	private final Grammar grammar;
 
 	private KLayoutDataGrammarAccess gaKLayoutData;
 
 	@Inject
 	public KRenderingGrammarAccess(GrammarProvider grammarProvider,
 		KLayoutDataGrammarAccess gaKLayoutData) {
-		this.grammarProvider = grammarProvider;
+		this.grammar = internalFindGrammar(grammarProvider);
 		this.gaKLayoutData = gaKLayoutData;
 	}
 	
-	public Grammar getGrammar() {	
-		return grammarProvider.getGrammar(this);
+	protected Grammar internalFindGrammar(GrammarProvider grammarProvider) {
+		Grammar grammar = grammarProvider.getGrammar(this);
+		while (grammar != null) {
+			if ("de.cau.cs.kieler.core.krendering.text.KRendering".equals(grammar.getName())) {
+				return grammar;
+			}
+			List<Grammar> grammars = grammar.getUsedGrammars();
+			if (!grammars.isEmpty()) {
+				grammar = grammars.iterator().next();
+			} else {
+				return null;
+			}
+		}
+		return grammar;
+	}
+	
+	
+	public Grammar getGrammar() {
+		return grammar;
 	}
 	
 
@@ -3754,7 +3781,7 @@ public class KRenderingGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//KForegroundColor:
-	//	{KForegroundColor} "ForegroundColor" red=EInt green=EInt blue=EInt propagateToChildren?="!"?;
+	//	{KForegroundColor} "foregroundColor" red=EInt green=EInt blue=EInt propagateToChildren?="!"?;
 	public KForegroundColorElements getKForegroundColorAccess() {
 		return (pKForegroundColor != null) ? pKForegroundColor : (pKForegroundColor = new KForegroundColorElements());
 	}
@@ -3764,7 +3791,7 @@ public class KRenderingGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//KBackgroundColor:
-	//	{KBackgroundColor} "BackgroundColor" red=EInt green=EInt blue=EInt propagateToChildren?="!"?;
+	//	{KBackgroundColor} "backgroundColor" red=EInt green=EInt blue=EInt propagateToChildren?="!"?;
 	public KBackgroundColorElements getKBackgroundColorAccess() {
 		return (pKBackgroundColor != null) ? pKBackgroundColor : (pKBackgroundColor = new KBackgroundColorElements());
 	}
@@ -3774,7 +3801,7 @@ public class KRenderingGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//KLineWidth:
-	//	"LineWidth" lineWidth=EInt propagateToChildren?="!"?;
+	//	"lineWidth" lineWidth=EInt propagateToChildren?="!"?;
 	public KLineWidthElements getKLineWidthAccess() {
 		return (pKLineWidth != null) ? pKLineWidth : (pKLineWidth = new KLineWidthElements());
 	}
@@ -3794,7 +3821,7 @@ public class KRenderingGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//KForegroundVisibility:
-	//	{KForegroundVisibility} "ForegroundVisibility" visible=EBoolean propagateToChildren?="!"?;
+	//	{KForegroundVisibility} "foregroundVisibility" visible=EBoolean propagateToChildren?="!"?;
 	public KForegroundVisibilityElements getKForegroundVisibilityAccess() {
 		return (pKForegroundVisibility != null) ? pKForegroundVisibility : (pKForegroundVisibility = new KForegroundVisibilityElements());
 	}
@@ -3804,7 +3831,7 @@ public class KRenderingGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//KBackgroundVisibility:
-	//	{KBackgroundVisibility} "BackgroundVisibility" visible=EBoolean propagateToChildren?="!"?;
+	//	{KBackgroundVisibility} "backgroundVisibility" visible=EBoolean propagateToChildren?="!"?;
 	public KBackgroundVisibilityElements getKBackgroundVisibilityAccess() {
 		return (pKBackgroundVisibility != null) ? pKBackgroundVisibility : (pKBackgroundVisibility = new KBackgroundVisibilityElements());
 	}
@@ -3814,7 +3841,7 @@ public class KRenderingGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//KLineStyle:
-	//	{KLineStyle} "LineStyle" lineStyle=LineStyle propagateToChildren?="!"?;
+	//	{KLineStyle} "lineStyle" lineStyle=LineStyle propagateToChildren?="!"?;
 	public KLineStyleElements getKLineStyleAccess() {
 		return (pKLineStyle != null) ? pKLineStyle : (pKLineStyle = new KLineStyleElements());
 	}
@@ -3824,7 +3851,7 @@ public class KRenderingGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//KFontBold:
-	//	{KFontBold} "bold" propagateToChildren?="!"?;
+	//	{KFontBold} bold?="bold" propagateToChildren?="!"?;
 	public KFontBoldElements getKFontBoldAccess() {
 		return (pKFontBold != null) ? pKFontBold : (pKFontBold = new KFontBoldElements());
 	}
@@ -3834,7 +3861,7 @@ public class KRenderingGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//KFontItalic:
-	//	{KFontItalic} "italic" propagateToChildren?="!"?;
+	//	{KFontItalic} italic?="italic" propagateToChildren?="!"?;
 	public KFontItalicElements getKFontItalicAccess() {
 		return (pKFontItalic != null) ? pKFontItalic : (pKFontItalic = new KFontItalicElements());
 	}
@@ -3864,7 +3891,7 @@ public class KRenderingGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//KVerticalAlignment:
-	//	{KVerticalAlignment} "VerticalAlignment" verticalAlignment=VerticalAlignment propagateToChildren?="!"?;
+	//	{KVerticalAlignment} "verticalAlignment" verticalAlignment=VerticalAlignment propagateToChildren?="!"?;
 	public KVerticalAlignmentElements getKVerticalAlignmentAccess() {
 		return (pKVerticalAlignment != null) ? pKVerticalAlignment : (pKVerticalAlignment = new KVerticalAlignmentElements());
 	}
@@ -3874,7 +3901,7 @@ public class KRenderingGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//KHorizontalAlignment:
-	//	{KHorizontalAlignment} "HorizontalAlignment" horizontalAlignment=HorizontalAlignment propagateToChildren?="!";
+	//	{KHorizontalAlignment} "horizontalAlignment" horizontalAlignment=HorizontalAlignment propagateToChildren?="!"?;
 	public KHorizontalAlignmentElements getKHorizontalAlignmentAccess() {
 		return (pKHorizontalAlignment != null) ? pKHorizontalAlignment : (pKHorizontalAlignment = new KHorizontalAlignmentElements());
 	}
@@ -3884,7 +3911,7 @@ public class KRenderingGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//KGridPlacement:
-	//	{KGridPlacement} "GridPlacement" numColumns=EInt;
+	//	{KGridPlacement} "gridPlacement" numColumns=EInt;
 	public KGridPlacementElements getKGridPlacementAccess() {
 		return (pKGridPlacement != null) ? pKGridPlacement : (pKGridPlacement = new KGridPlacementElements());
 	}
@@ -3894,7 +3921,7 @@ public class KRenderingGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//KStackPlacement:
-	//	{KStackPlacement} "StackPlacement";
+	//	{KStackPlacement} "stackPlacement";
 	public KStackPlacementElements getKStackPlacementAccess() {
 		return (pKStackPlacement != null) ? pKStackPlacement : (pKStackPlacement = new KStackPlacementElements());
 	}

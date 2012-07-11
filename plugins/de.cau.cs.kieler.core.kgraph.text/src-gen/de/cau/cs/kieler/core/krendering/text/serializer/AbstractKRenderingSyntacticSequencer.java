@@ -14,8 +14,8 @@ import org.eclipse.xtext.serializer.analysis.ISyntacticSequencerPDAProvider.ISyn
 import org.eclipse.xtext.serializer.analysis.ISyntacticSequencerPDAProvider.ISynTransition;
 import org.eclipse.xtext.serializer.sequencer.AbstractSyntacticSequencer;
 
-@SuppressWarnings("restriction")
-public class AbstractKRenderingSyntacticSequencer extends AbstractSyntacticSequencer {
+@SuppressWarnings("all")
+public abstract class AbstractKRenderingSyntacticSequencer extends AbstractSyntacticSequencer {
 
 	protected KRenderingGrammarAccess grammarAccess;
 	protected AbstractElementAlias match_KArc_ColonKeyword_5_1_1_q;

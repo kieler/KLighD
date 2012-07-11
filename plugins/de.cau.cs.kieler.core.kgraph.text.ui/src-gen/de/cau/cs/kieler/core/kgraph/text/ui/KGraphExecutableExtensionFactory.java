@@ -8,6 +8,8 @@ import org.osgi.framework.Bundle;
 
 import com.google.inject.Injector;
 
+import de.cau.cs.kieler.core.kgraph.text.ui.internal.KGraphActivator;
+
 /**
  * This class was generated. Customizations should only happen in a newly
  * introduced subclass. 
@@ -16,12 +18,12 @@ public class KGraphExecutableExtensionFactory extends AbstractGuiceAwareExecutab
 
 	@Override
 	protected Bundle getBundle() {
-		return de.cau.cs.kieler.core.kgraph.text.ui.internal.KGraphActivator.getInstance().getBundle();
+		return KGraphActivator.getInstance().getBundle();
 	}
 	
 	@Override
 	protected Injector getInjector() {
-		return de.cau.cs.kieler.core.kgraph.text.ui.internal.KGraphActivator.getInstance().getInjector("de.cau.cs.kieler.core.kgraph.text.KGraph");
+		return KGraphActivator.getInstance().getInjector(KGraphActivator.DE_CAU_CS_KIELER_CORE_KGRAPH_TEXT_KGRAPH);
 	}
 	
 }

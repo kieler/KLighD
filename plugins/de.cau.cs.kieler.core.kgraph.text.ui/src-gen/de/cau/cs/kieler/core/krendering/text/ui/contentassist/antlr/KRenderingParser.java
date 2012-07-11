@@ -327,7 +327,9 @@ public class KRenderingParser extends AbstractContentAssistParser {
 					put(grammarAccess.getKBackgroundVisibilityAccess().getPropagateToChildrenAssignment_3(), "rule__KBackgroundVisibility__PropagateToChildrenAssignment_3");
 					put(grammarAccess.getKLineStyleAccess().getLineStyleAssignment_2(), "rule__KLineStyle__LineStyleAssignment_2");
 					put(grammarAccess.getKLineStyleAccess().getPropagateToChildrenAssignment_3(), "rule__KLineStyle__PropagateToChildrenAssignment_3");
+					put(grammarAccess.getKFontBoldAccess().getBoldAssignment_1(), "rule__KFontBold__BoldAssignment_1");
 					put(grammarAccess.getKFontBoldAccess().getPropagateToChildrenAssignment_2(), "rule__KFontBold__PropagateToChildrenAssignment_2");
+					put(grammarAccess.getKFontItalicAccess().getItalicAssignment_1(), "rule__KFontItalic__ItalicAssignment_1");
 					put(grammarAccess.getKFontItalicAccess().getPropagateToChildrenAssignment_2(), "rule__KFontItalic__PropagateToChildrenAssignment_2");
 					put(grammarAccess.getKFontNameAccess().getNameAssignment_1(), "rule__KFontName__NameAssignment_1");
 					put(grammarAccess.getKFontNameAccess().getPropagateToChildrenAssignment_2(), "rule__KFontName__PropagateToChildrenAssignment_2");

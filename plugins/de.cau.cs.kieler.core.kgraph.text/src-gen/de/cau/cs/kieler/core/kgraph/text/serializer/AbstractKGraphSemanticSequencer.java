@@ -3,6 +3,7 @@ package de.cau.cs.kieler.core.kgraph.text.serializer;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import de.cau.cs.kieler.core.kgraph.KEdge;
+import de.cau.cs.kieler.core.kgraph.KGraphData;
 import de.cau.cs.kieler.core.kgraph.KGraphPackage;
 import de.cau.cs.kieler.core.kgraph.KLabel;
 import de.cau.cs.kieler.core.kgraph.KNode;
@@ -57,48 +58,28 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.xtext.serializer.acceptor.ISemanticSequenceAcceptor;
 import org.eclipse.xtext.serializer.diagnostic.ISemanticSequencerDiagnosticProvider;
 import org.eclipse.xtext.serializer.diagnostic.ISerializationDiagnostic.Acceptor;
-import org.eclipse.xtext.serializer.sequencer.AbstractSemanticSequencer;
 import org.eclipse.xtext.serializer.sequencer.GenericSequencer;
 import org.eclipse.xtext.serializer.sequencer.ISemanticSequencer;
 import org.eclipse.xtext.serializer.sequencer.ITransientValueService;
 
-@SuppressWarnings("restriction")
-public class AbstractKGraphSemanticSequencer extends AbstractSemanticSequencer {
+@SuppressWarnings("all")
+public abstract class AbstractKGraphSemanticSequencer extends KRenderingSemanticSequencer {
 
 	@Inject
-	protected KGraphGrammarAccess grammarAccess;
-	
-	@Inject
-	protected ISemanticSequencerDiagnosticProvider diagnosticProvider;
-	
-	@Inject
-	protected ITransientValueService transientValues;
-	
-	@Inject
-	@GenericSequencer
-	protected Provider<ISemanticSequencer> genericSequencerProvider;
-	
-	protected ISemanticSequencer genericSequencer;
-	
-	@Inject
-	protected Provider<KRenderingSemanticSequencer> superSequencerProvider;
-	 
-	protected KRenderingSemanticSequencer superSequencer; 
-	
-	@Override
-	public void init(ISemanticSequencer sequencer, ISemanticSequenceAcceptor sequenceAcceptor, Acceptor errorAcceptor) {
-		super.init(sequencer, sequenceAcceptor, errorAcceptor);
-		this.genericSequencer = genericSequencerProvider.get();
-		this.genericSequencer.init(sequencer, sequenceAcceptor, errorAcceptor);
-		this.superSequencer = superSequencerProvider.get();
-		this.superSequencer.init(sequencer, sequenceAcceptor, errorAcceptor); 
-	}
+	private KGraphGrammarAccess grammarAccess;
 	
 	public void createSequence(EObject context, EObject semanticObject) {
 		if(semanticObject.eClass().getEPackage() == KGraphPackage.eINSTANCE) switch(semanticObject.eClass().getClassifierID()) {
 			case KGraphPackage.KEDGE:
 				if(context == grammarAccess.getKEdgeRule()) {
 					sequence_KEdge(context, (KEdge) semanticObject); 
+					return; 
+				}
+				else break;
+			case KGraphPackage.KGRAPH_DATA:
+				if(context == grammarAccess.getKGraphDataRule() ||
+				   context == grammarAccess.getKGraphDataImplRule()) {
+					sequence_KGraphDataImpl(context, (KGraphData) semanticObject); 
 					return; 
 				}
 				else break;
@@ -395,7 +376,7 @@ public class AbstractKGraphSemanticSequencer extends AbstractSemanticSequencer {
 			case KRenderingPackage.KSTACK_PLACEMENT:
 				if(context == grammarAccess.getKPlacementRule() ||
 				   context == grammarAccess.getKStackPlacementRule()) {
-					sequence_KPlacement(context, (KStackPlacement) semanticObject); 
+					sequence_KStackPlacement(context, (KStackPlacement) semanticObject); 
 					return; 
 				}
 				else break;
@@ -435,112 +416,6 @@ public class AbstractKGraphSemanticSequencer extends AbstractSemanticSequencer {
 	/**
 	 * Constraint:
 	 *     (
-	 *         startAngle=EFloat 
-	 *         arcAngle=EFloat 
-	 *         ((styles+=KStyle styles+=KStyle*)? placementData=KPlacementData? (children+=KRendering children+=KRendering*)? childPlacement=KPlacement?)?
-	 *     )
-	 */
-	protected void sequence_KArc(EObject context, KArc semanticObject) {
-		superSequencer.createSequence(context, semanticObject);
-	}
-	
-	
-	/**
-	 * Constraint:
-	 *     (red=EInt green=EInt blue=EInt propagateToChildren?='!'?)
-	 */
-	protected void sequence_KBackgroundColor(EObject context, KBackgroundColor semanticObject) {
-		superSequencer.createSequence(context, semanticObject);
-	}
-	
-	
-	/**
-	 * Constraint:
-	 *     (visible=EBoolean propagateToChildren?='!'?)
-	 */
-	protected void sequence_KBackgroundVisibility(EObject context, KBackgroundVisibility semanticObject) {
-		superSequencer.createSequence(context, semanticObject);
-	}
-	
-	
-	/**
-	 * Constraint:
-	 *     (absolute=EFloat relative=EFloat)
-	 */
-	protected void sequence_KBottomPosition(EObject context, KBottomPosition semanticObject) {
-		superSequencer.createSequence(context, semanticObject);
-	}
-	
-	
-	/**
-	 * Constraint:
-	 *     (((styles+=KStyle styles+=KStyle*)? placementData=KPlacementData?)?)
-	 */
-	protected void sequence_KChildArea(EObject context, KChildArea semanticObject) {
-		superSequencer.createSequence(context, semanticObject);
-	}
-	
-	
-	/**
-	 * Constraint:
-	 *     (
-	 *         (
-	 *             className=EString 
-	 *             bundleName=EString 
-	 *             (styles+=KStyle styles+=KStyle*)? 
-	 *             placementData=KPlacementData? 
-	 *             (children+=KRendering children+=KRendering*)? 
-	 *             childPlacement=KPlacement?
-	 *         )?
-	 *     )
-	 */
-	protected void sequence_KCustomRendering(EObject context, KCustomRendering semanticObject) {
-		superSequencer.createSequence(context, semanticObject);
-	}
-	
-	
-	/**
-	 * Constraint:
-	 *     (
-	 *         relative?='relative'? 
-	 *         location=EFloat 
-	 *         xOffset=EFloat? 
-	 *         yOffset=EFloat? 
-	 *         width=EFloat? 
-	 *         height=EFloat?
-	 *     )
-	 */
-	protected void sequence_KDecoratorPlacementData(EObject context, KDecoratorPlacementData semanticObject) {
-		superSequencer.createSequence(context, semanticObject);
-	}
-	
-	
-	/**
-	 * Constraint:
-	 *     (topLeft=KPosition bottomRight=KPosition)
-	 */
-	protected void sequence_KDirectPlacementData(EObject context, KDirectPlacementData semanticObject) {
-		superSequencer.createSequence(context, semanticObject);
-	}
-	
-	
-	/**
-	 * Constraint:
-	 *     (
-	 *         sourcePoint=KPoint 
-	 *         targetPoint=KPoint 
-	 *         (bendPoints+=KPoint bendPoints+=KPoint*)? 
-	 *         (persistentEntries+=PersistentEntry persistentEntries+=PersistentEntry*)?
-	 *     )
-	 */
-	protected void sequence_KEdgeLayout(EObject context, KEdgeLayout semanticObject) {
-		superSequencer.createSequence(context, semanticObject);
-	}
-	
-	
-	/**
-	 * Constraint:
-	 *     (
 	 *         target=[KNode|EString] 
 	 *         sourcePort=[KPort|EString]? 
 	 *         targetPort=[KPort|EString]? 
@@ -555,120 +430,10 @@ public class AbstractKGraphSemanticSequencer extends AbstractSemanticSequencer {
 	
 	/**
 	 * Constraint:
-	 *     (((styles+=KStyle styles+=KStyle*)? placementData=KPlacementData? childPlacement=KPlacement? (children+=KRendering children+=KRendering*)?)?)
+	 *     ((persistentEntries+=PersistentEntry persistentEntries+=PersistentEntry*)?)
 	 */
-	protected void sequence_KEllipse(EObject context, KEllipse semanticObject) {
-		superSequencer.createSequence(context, semanticObject);
-	}
-	
-	
-	/**
-	 * Constraint:
-	 *     (propagateToChildren?='!'?)
-	 */
-	protected void sequence_KFontBold(EObject context, KFontBold semanticObject) {
-		superSequencer.createSequence(context, semanticObject);
-	}
-	
-	
-	/**
-	 * Constraint:
-	 *     (propagateToChildren?='!'?)
-	 */
-	protected void sequence_KFontItalic(EObject context, KFontItalic semanticObject) {
-		superSequencer.createSequence(context, semanticObject);
-	}
-	
-	
-	/**
-	 * Constraint:
-	 *     (name=EString propagateToChildren?='!'?)
-	 */
-	protected void sequence_KFontName(EObject context, KFontName semanticObject) {
-		superSequencer.createSequence(context, semanticObject);
-	}
-	
-	
-	/**
-	 * Constraint:
-	 *     (size=EInt propagateToChildren?='!'?)
-	 */
-	protected void sequence_KFontSize(EObject context, KFontSize semanticObject) {
-		superSequencer.createSequence(context, semanticObject);
-	}
-	
-	
-	/**
-	 * Constraint:
-	 *     (red=EInt green=EInt blue=EInt propagateToChildren?='!'?)
-	 */
-	protected void sequence_KForegroundColor(EObject context, KForegroundColor semanticObject) {
-		superSequencer.createSequence(context, semanticObject);
-	}
-	
-	
-	/**
-	 * Constraint:
-	 *     (visible=EBoolean propagateToChildren?='!'?)
-	 */
-	protected void sequence_KForegroundVisibility(EObject context, KForegroundVisibility semanticObject) {
-		superSequencer.createSequence(context, semanticObject);
-	}
-	
-	
-	/**
-	 * Constraint:
-	 *     (
-	 *         widthHint=EFloat 
-	 *         heightHint=EFloat 
-	 *         insetRight=EFloat 
-	 *         insetBottom=EFloat 
-	 *         insetLeft=EFloat 
-	 *         insetTop=EFloat
-	 *     )
-	 */
-	protected void sequence_KGridPlacementData(EObject context, KGridPlacementData semanticObject) {
-		superSequencer.createSequence(context, semanticObject);
-	}
-	
-	
-	/**
-	 * Constraint:
-	 *     numColumns=EInt
-	 */
-	protected void sequence_KGridPlacement(EObject context, KGridPlacement semanticObject) {
-		superSequencer.createSequence(context, semanticObject);
-	}
-	
-	
-	/**
-	 * Constraint:
-	 *     (horizontalAlignment=HorizontalAlignment propagateToChildren?='!')
-	 */
-	protected void sequence_KHorizontalAlignment(EObject context, KHorizontalAlignment semanticObject) {
-		superSequencer.createSequence(context, semanticObject);
-	}
-	
-	
-	/**
-	 * Constraint:
-	 *     (
-	 *         bundleName=EString? 
-	 *         imagePath=EString 
-	 *         ((styles+=KStyle styles+=KStyle*)? placementData=KPlacementData? (children+=KRendering children+=KRendering*)? childPlacement=KPlacement?)?
-	 *     )
-	 */
-	protected void sequence_KImage(EObject context, KImage semanticObject) {
-		superSequencer.createSequence(context, semanticObject);
-	}
-	
-	
-	/**
-	 * Constraint:
-	 *     (top=EFloat? bottom=EFloat? left=EFloat? right=EFloat?)
-	 */
-	protected void sequence_KInsets(EObject context, KInsets semanticObject) {
-		superSequencer.createSequence(context, semanticObject);
+	protected void sequence_KGraphDataImpl(EObject context, KGraphData semanticObject) {
+		genericSequencer.createSequence(context, semanticObject);
 	}
 	
 	
@@ -678,33 +443,6 @@ public class AbstractKGraphSemanticSequencer extends AbstractSemanticSequencer {
 	 */
 	protected void sequence_KLabel(EObject context, KLabel semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
-	}
-	
-	
-	/**
-	 * Constraint:
-	 *     (absolute=EFloat relative=EFloat)
-	 */
-	protected void sequence_KLeftPosition(EObject context, KLeftPosition semanticObject) {
-		superSequencer.createSequence(context, semanticObject);
-	}
-	
-	
-	/**
-	 * Constraint:
-	 *     (lineStyle=LineStyle propagateToChildren?='!'?)
-	 */
-	protected void sequence_KLineStyle(EObject context, KLineStyle semanticObject) {
-		superSequencer.createSequence(context, semanticObject);
-	}
-	
-	
-	/**
-	 * Constraint:
-	 *     (lineWidth=EInt propagateToChildren?='!'?)
-	 */
-	protected void sequence_KLineWidth(EObject context, KLineWidth semanticObject) {
-		superSequencer.createSequence(context, semanticObject);
 	}
 	
 	
@@ -724,191 +462,9 @@ public class AbstractKGraphSemanticSequencer extends AbstractSemanticSequencer {
 	
 	/**
 	 * Constraint:
-	 *     {KStackPlacement}
-	 */
-	protected void sequence_KPlacement(EObject context, KStackPlacement semanticObject) {
-		genericSequencer.createSequence(context, semanticObject);
-	}
-	
-	
-	/**
-	 * Constraint:
-	 *     (x=EFloat y=EFloat)
-	 */
-	protected void sequence_KPoint(EObject context, KPoint semanticObject) {
-		superSequencer.createSequence(context, semanticObject);
-	}
-	
-	
-	/**
-	 * Constraint:
-	 *     (((styles+=KStyle styles+=KStyle*)? placementData=KPlacementData? childPlacement=KPlacement? (children+=KRendering children+=KRendering*)?)?)
-	 */
-	protected void sequence_KPolygon(EObject context, KPolygon semanticObject) {
-		superSequencer.createSequence(context, semanticObject);
-	}
-	
-	
-	/**
-	 * Constraint:
-	 *     (points+=KPosition points+=KPosition* detailPlacementData=KPlacementData?)
-	 */
-	protected void sequence_KPolylinePlacementData(EObject context, KPolylinePlacementData semanticObject) {
-		superSequencer.createSequence(context, semanticObject);
-	}
-	
-	
-	/**
-	 * Constraint:
-	 *     (((styles+=KStyle styles+=KStyle*)? placementData=KPlacementData? childPlacement=KPlacement? (children+=KRendering children+=KRendering*)?)?)
-	 */
-	protected void sequence_KPolyline_Impl(EObject context, KPolyline semanticObject) {
-		superSequencer.createSequence(context, semanticObject);
-	}
-	
-	
-	/**
-	 * Constraint:
 	 *     ((edges+=[KEdge|EString] edges+=[KEdge|EString]*)? (data+=KGraphData data+=KGraphData*)? (labels+=KLabel labels+=KLabel*)?)
 	 */
 	protected void sequence_KPort(EObject context, KPort semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
-	}
-	
-	
-	/**
-	 * Constraint:
-	 *     (x=KXPosition y=KYPosition)
-	 */
-	protected void sequence_KPosition(EObject context, KPosition semanticObject) {
-		superSequencer.createSequence(context, semanticObject);
-	}
-	
-	
-	/**
-	 * Constraint:
-	 *     (((styles+=KStyle styles+=KStyle*)? placementData=KPlacementData? childPlacement=KPlacement? (children+=KRendering children+=KRendering*)?)?)
-	 */
-	protected void sequence_KRectangle(EObject context, KRectangle semanticObject) {
-		superSequencer.createSequence(context, semanticObject);
-	}
-	
-	
-	/**
-	 * Constraint:
-	 *     ((renderings+=KRendering renderings+=KRendering*)?)
-	 */
-	protected void sequence_KRenderingLibrary(EObject context, KRenderingLibrary semanticObject) {
-		superSequencer.createSequence(context, semanticObject);
-	}
-	
-	
-	/**
-	 * Constraint:
-	 *     (rendering=[KRendering|EString] (placementData=KPlacementData? (styles+=KStyle styles+=KStyle*)?)?)
-	 */
-	protected void sequence_KRenderingRef(EObject context, KRenderingRef semanticObject) {
-		superSequencer.createSequence(context, semanticObject);
-	}
-	
-	
-	/**
-	 * Constraint:
-	 *     (absolute=EFloat relative=EFloat)
-	 */
-	protected void sequence_KRightPosition(EObject context, KRightPosition semanticObject) {
-		superSequencer.createSequence(context, semanticObject);
-	}
-	
-	
-	/**
-	 * Constraint:
-	 *     (
-	 *         cornerWidth=EFloat 
-	 *         cornerHeight=EFloat 
-	 *         ((styles+=KStyle styles+=KStyle*)? placementData=KPlacementData? childPlacement=KPlacement? (children+=KRendering children+=KRendering*)?)?
-	 *     )
-	 */
-	protected void sequence_KRoundedRectangle(EObject context, KRoundedRectangle semanticObject) {
-		superSequencer.createSequence(context, semanticObject);
-	}
-	
-	
-	/**
-	 * Constraint:
-	 *     (
-	 *         xpos=EFloat? 
-	 *         ypos=EFloat? 
-	 *         width=EFloat? 
-	 *         height=EFloat? 
-	 *         insets=KInsets? 
-	 *         (persistentEntries+=PersistentEntry persistentEntries+=PersistentEntry*)?
-	 *     )
-	 */
-	protected void sequence_KShapeLayout(EObject context, KShapeLayout semanticObject) {
-		superSequencer.createSequence(context, semanticObject);
-	}
-	
-	
-	/**
-	 * Constraint:
-	 *     (((styles+=KStyle styles+=KStyle*)? placementData=KPlacementData? (children+=KRendering children+=KRendering*)? childPlacement=KPlacement?)?)
-	 */
-	protected void sequence_KSpline(EObject context, KSpline semanticObject) {
-		superSequencer.createSequence(context, semanticObject);
-	}
-	
-	
-	/**
-	 * Constraint:
-	 *     (insetRight=EFloat insetBottom=EFloat insetLeft=EFloat insetTop=EFloat)
-	 */
-	protected void sequence_KStackPlacementData(EObject context, KStackPlacementData semanticObject) {
-		superSequencer.createSequence(context, semanticObject);
-	}
-	
-	
-	/**
-	 * Constraint:
-	 *     (
-	 *         text=EString? 
-	 *         (
-	 *             clip?='clip'? 
-	 *             (styles+=KStyle styles+=KStyle*)? 
-	 *             placementData=KPlacementData? 
-	 *             (children+=KRendering children+=KRendering*)? 
-	 *             childPlacement=KPlacement?
-	 *         )?
-	 *     )
-	 */
-	protected void sequence_KText(EObject context, KText semanticObject) {
-		superSequencer.createSequence(context, semanticObject);
-	}
-	
-	
-	/**
-	 * Constraint:
-	 *     (absolute=EFloat relative=EFloat)
-	 */
-	protected void sequence_KTopPosition(EObject context, KTopPosition semanticObject) {
-		superSequencer.createSequence(context, semanticObject);
-	}
-	
-	
-	/**
-	 * Constraint:
-	 *     (verticalAlignment=VerticalAlignment propagateToChildren?='!'?)
-	 */
-	protected void sequence_KVerticalAlignment(EObject context, KVerticalAlignment semanticObject) {
-		superSequencer.createSequence(context, semanticObject);
-	}
-	
-	
-	/**
-	 * Constraint:
-	 *     (key=EString value=EString?)
-	 */
-	protected void sequence_PersistentEntry(EObject context, PersistentEntry semanticObject) {
-		superSequencer.createSequence(context, semanticObject);
 	}
 }

@@ -8,6 +8,8 @@ import org.osgi.framework.Bundle;
 
 import com.google.inject.Injector;
 
+import de.cau.cs.kieler.core.krendering.text.ui.internal.KRenderingActivator;
+
 /**
  * This class was generated. Customizations should only happen in a newly
  * introduced subclass. 
@@ -16,12 +18,12 @@ public class KRenderingExecutableExtensionFactory extends AbstractGuiceAwareExec
 
 	@Override
 	protected Bundle getBundle() {
-		return de.cau.cs.kieler.core.krendering.text.ui.internal.KRenderingActivator.getInstance().getBundle();
+		return KRenderingActivator.getInstance().getBundle();
 	}
 	
 	@Override
 	protected Injector getInjector() {
-		return de.cau.cs.kieler.core.krendering.text.ui.internal.KRenderingActivator.getInstance().getInjector("de.cau.cs.kieler.core.krendering.text.KRendering");
+		return KRenderingActivator.getInstance().getInjector(KRenderingActivator.DE_CAU_CS_KIELER_CORE_KRENDERING_TEXT_KRENDERING);
 	}
 	
 }

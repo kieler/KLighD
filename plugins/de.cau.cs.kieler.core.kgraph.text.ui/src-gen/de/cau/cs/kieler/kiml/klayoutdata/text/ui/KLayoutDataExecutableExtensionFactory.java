@@ -8,6 +8,8 @@ import org.osgi.framework.Bundle;
 
 import com.google.inject.Injector;
 
+import de.cau.cs.kieler.kiml.klayoutdata.text.ui.internal.KLayoutDataActivator;
+
 /**
  * This class was generated. Customizations should only happen in a newly
  * introduced subclass. 
@@ -16,12 +18,12 @@ public class KLayoutDataExecutableExtensionFactory extends AbstractGuiceAwareExe
 
 	@Override
 	protected Bundle getBundle() {
-		return de.cau.cs.kieler.kiml.klayoutdata.text.ui.internal.KLayoutDataActivator.getInstance().getBundle();
+		return KLayoutDataActivator.getInstance().getBundle();
 	}
 	
 	@Override
 	protected Injector getInjector() {
-		return de.cau.cs.kieler.kiml.klayoutdata.text.ui.internal.KLayoutDataActivator.getInstance().getInjector("de.cau.cs.kieler.kiml.klayoutdata.text.KLayoutData");
+		return KLayoutDataActivator.getInstance().getInjector(KLayoutDataActivator.DE_CAU_CS_KIELER_KIML_KLAYOUTDATA_TEXT_KLAYOUTDATA);
 	}
 	
 }

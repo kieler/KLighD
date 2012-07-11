@@ -794,6 +794,107 @@ ruleKGraphData returns [EObject current=null]
         $current = $this_KEdgeLayout_3.current; 
         afterParserOrEnumRuleCall();
     }
+
+    |
+    { 
+        newCompositeNode(grammarAccess.getKGraphDataAccess().getKGraphDataImplParserRuleCall_4()); 
+    }
+    this_KGraphDataImpl_4=ruleKGraphDataImpl
+    { 
+        $current = $this_KGraphDataImpl_4.current; 
+        afterParserOrEnumRuleCall();
+    }
+)
+;
+
+
+
+
+
+// Entry rule entryRuleKGraphDataImpl
+entryRuleKGraphDataImpl returns [EObject current=null] 
+	:
+	{ newCompositeNode(grammarAccess.getKGraphDataImplRule()); }
+	 iv_ruleKGraphDataImpl=ruleKGraphDataImpl 
+	 { $current=$iv_ruleKGraphDataImpl.current; } 
+	 EOF 
+;
+
+// Rule KGraphDataImpl
+ruleKGraphDataImpl returns [EObject current=null] 
+    @init { enterRule(); 
+    }
+    @after { leaveRule(); }:
+((
+    {
+        $current = forceCreateModelElement(
+            grammarAccess.getKGraphDataImplAccess().getKGraphDataAction_0(),
+            $current);
+    }
+)	otherlv_1='KGraphData' 
+    {
+    	newLeafNode(otherlv_1, grammarAccess.getKGraphDataImplAccess().getKGraphDataKeyword_1());
+    }
+	otherlv_2='{' 
+    {
+    	newLeafNode(otherlv_2, grammarAccess.getKGraphDataImplAccess().getLeftCurlyBracketKeyword_2());
+    }
+(	otherlv_3='persistentEntries' 
+    {
+    	newLeafNode(otherlv_3, grammarAccess.getKGraphDataImplAccess().getPersistentEntriesKeyword_3_0());
+    }
+	otherlv_4='{' 
+    {
+    	newLeafNode(otherlv_4, grammarAccess.getKGraphDataImplAccess().getLeftCurlyBracketKeyword_3_1());
+    }
+(
+(
+		{ 
+	        newCompositeNode(grammarAccess.getKGraphDataImplAccess().getPersistentEntriesPersistentEntryParserRuleCall_3_2_0()); 
+	    }
+		lv_persistentEntries_5_0=rulePersistentEntry		{
+	        if ($current==null) {
+	            $current = createModelElementForParent(grammarAccess.getKGraphDataImplRule());
+	        }
+       		add(
+       			$current, 
+       			"persistentEntries",
+        		lv_persistentEntries_5_0, 
+        		"PersistentEntry");
+	        afterParserOrEnumRuleCall();
+	    }
+
+)
+)(	otherlv_6=',' 
+    {
+    	newLeafNode(otherlv_6, grammarAccess.getKGraphDataImplAccess().getCommaKeyword_3_3_0());
+    }
+(
+(
+		{ 
+	        newCompositeNode(grammarAccess.getKGraphDataImplAccess().getPersistentEntriesPersistentEntryParserRuleCall_3_3_1_0()); 
+	    }
+		lv_persistentEntries_7_0=rulePersistentEntry		{
+	        if ($current==null) {
+	            $current = createModelElementForParent(grammarAccess.getKGraphDataImplRule());
+	        }
+       		add(
+       			$current, 
+       			"persistentEntries",
+        		lv_persistentEntries_7_0, 
+        		"PersistentEntry");
+	        afterParserOrEnumRuleCall();
+	    }
+
+)
+))*	otherlv_8='}' 
+    {
+    	newLeafNode(otherlv_8, grammarAccess.getKGraphDataImplAccess().getRightCurlyBracketKeyword_3_4());
+    }
+)?	otherlv_9='}' 
+    {
+    	newLeafNode(otherlv_9, grammarAccess.getKGraphDataImplAccess().getRightCurlyBracketKeyword_4());
+    }
 )
 ;
 
@@ -4602,7 +4703,7 @@ ruleKForegroundColor returns [EObject current=null]
             grammarAccess.getKForegroundColorAccess().getKForegroundColorAction_0(),
             $current);
     }
-)	otherlv_1='ForegroundColor' 
+)	otherlv_1='foregroundColor' 
     {
     	newLeafNode(otherlv_1, grammarAccess.getKForegroundColorAccess().getForegroundColorKeyword_1());
     }
@@ -4702,7 +4803,7 @@ ruleKBackgroundColor returns [EObject current=null]
             grammarAccess.getKBackgroundColorAccess().getKBackgroundColorAction_0(),
             $current);
     }
-)	otherlv_1='BackgroundColor' 
+)	otherlv_1='backgroundColor' 
     {
     	newLeafNode(otherlv_1, grammarAccess.getKBackgroundColorAccess().getBackgroundColorKeyword_1());
     }
@@ -4796,7 +4897,7 @@ ruleKLineWidth returns [EObject current=null]
     @init { enterRule(); 
     }
     @after { leaveRule(); }:
-(	otherlv_0='LineWidth' 
+(	otherlv_0='lineWidth' 
     {
     	newLeafNode(otherlv_0, grammarAccess.getKLineWidthAccess().getLineWidthKeyword_0());
     }
@@ -4900,7 +5001,7 @@ ruleKForegroundVisibility returns [EObject current=null]
             grammarAccess.getKForegroundVisibilityAccess().getKForegroundVisibilityAction_0(),
             $current);
     }
-)	otherlv_1='ForegroundVisibility' 
+)	otherlv_1='foregroundVisibility' 
     {
     	newLeafNode(otherlv_1, grammarAccess.getKForegroundVisibilityAccess().getForegroundVisibilityKeyword_1());
     }
@@ -4964,7 +5065,7 @@ ruleKBackgroundVisibility returns [EObject current=null]
             grammarAccess.getKBackgroundVisibilityAccess().getKBackgroundVisibilityAction_0(),
             $current);
     }
-)	otherlv_1='BackgroundVisibility' 
+)	otherlv_1='backgroundVisibility' 
     {
     	newLeafNode(otherlv_1, grammarAccess.getKBackgroundVisibilityAccess().getBackgroundVisibilityKeyword_1());
     }
@@ -5028,7 +5129,7 @@ ruleKLineStyle returns [EObject current=null]
             grammarAccess.getKLineStyleAccess().getKLineStyleAction_0(),
             $current);
     }
-)	otherlv_1='LineStyle' 
+)	otherlv_1='lineStyle' 
     {
     	newLeafNode(otherlv_1, grammarAccess.getKLineStyleAccess().getLineStyleKeyword_1());
     }
@@ -5092,11 +5193,22 @@ ruleKFontBold returns [EObject current=null]
             grammarAccess.getKFontBoldAccess().getKFontBoldAction_0(),
             $current);
     }
-)	otherlv_1='bold' 
-    {
-    	newLeafNode(otherlv_1, grammarAccess.getKFontBoldAccess().getBoldKeyword_1());
-    }
+)(
 (
+		lv_bold_1_0=	'bold' 
+    {
+        newLeafNode(lv_bold_1_0, grammarAccess.getKFontBoldAccess().getBoldBoldKeyword_1_0());
+    }
+ 
+	    {
+	        if ($current==null) {
+	            $current = createModelElement(grammarAccess.getKFontBoldRule());
+	        }
+       		setWithLastConsumed($current, "bold", true, "bold");
+	    }
+
+)
+)(
 (
 		lv_propagateToChildren_2_0=	'!' 
     {
@@ -5138,11 +5250,22 @@ ruleKFontItalic returns [EObject current=null]
             grammarAccess.getKFontItalicAccess().getKFontItalicAction_0(),
             $current);
     }
-)	otherlv_1='italic' 
-    {
-    	newLeafNode(otherlv_1, grammarAccess.getKFontItalicAccess().getItalicKeyword_1());
-    }
+)(
 (
+		lv_italic_1_0=	'italic' 
+    {
+        newLeafNode(lv_italic_1_0, grammarAccess.getKFontItalicAccess().getItalicItalicKeyword_1_0());
+    }
+ 
+	    {
+	        if ($current==null) {
+	            $current = createModelElement(grammarAccess.getKFontItalicRule());
+	        }
+       		setWithLastConsumed($current, "italic", true, "italic");
+	    }
+
+)
+)(
 (
 		lv_propagateToChildren_2_0=	'!' 
     {
@@ -5300,7 +5423,7 @@ ruleKVerticalAlignment returns [EObject current=null]
             grammarAccess.getKVerticalAlignmentAccess().getKVerticalAlignmentAction_0(),
             $current);
     }
-)	otherlv_1='VerticalAlignment' 
+)	otherlv_1='verticalAlignment' 
     {
     	newLeafNode(otherlv_1, grammarAccess.getKVerticalAlignmentAccess().getVerticalAlignmentKeyword_1());
     }
@@ -5364,7 +5487,7 @@ ruleKHorizontalAlignment returns [EObject current=null]
             grammarAccess.getKHorizontalAlignmentAccess().getKHorizontalAlignmentAction_0(),
             $current);
     }
-)	otherlv_1='HorizontalAlignment' 
+)	otherlv_1='horizontalAlignment' 
     {
     	newLeafNode(otherlv_1, grammarAccess.getKHorizontalAlignmentAccess().getHorizontalAlignmentKeyword_1());
     }
@@ -5401,7 +5524,7 @@ ruleKHorizontalAlignment returns [EObject current=null]
 	    }
 
 )
-))
+)?)
 ;
 
 
@@ -5428,7 +5551,7 @@ ruleKGridPlacement returns [EObject current=null]
             grammarAccess.getKGridPlacementAccess().getKGridPlacementAction_0(),
             $current);
     }
-)	otherlv_1='GridPlacement' 
+)	otherlv_1='gridPlacement' 
     {
     	newLeafNode(otherlv_1, grammarAccess.getKGridPlacementAccess().getGridPlacementKeyword_1());
     }
@@ -5477,7 +5600,7 @@ ruleKStackPlacement returns [EObject current=null]
             grammarAccess.getKStackPlacementAccess().getKStackPlacementAction_0(),
             $current);
     }
-)	otherlv_1='StackPlacement' 
+)	otherlv_1='stackPlacement' 
     {
     	newLeafNode(otherlv_1, grammarAccess.getKStackPlacementAccess().getStackPlacementKeyword_1());
     }
