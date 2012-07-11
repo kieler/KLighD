@@ -1,6 +1,6 @@
 /*
  * KIELER - Kiel Integrated Environment for Layout Eclipse RichClient
- * 
+ *
  * http://www.informatik.uni-kiel.de/rtsys/kieler/
  * 
  * Copyright 2012 by
@@ -11,40 +11,28 @@
  * This code is provided under the terms of the Eclipse Public License (EPL).
  * See the file epl-v10.html for the license text.
  */
-package de.cau.cs.kieler.core.kgraph.text.serializer;
+package de.cau.cs.kieler.core.krendering.text.serializer;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
-
-import de.cau.cs.kieler.core.kgraph.KGraphPackage;
-import de.cau.cs.kieler.core.krendering.text.serializer.KRenderingTransientValueService;
-import de.cau.cs.kieler.kiml.klayoutdata.KLayoutDataPackage;
+import org.eclipse.xtext.serializer.sequencer.TransientValueService;
 
 /**
  * A KGraph specific {@link org.eclipse.xtext.serializer.sequencer.ITransientValueService}.
  * Prevents serializer from trying to dump out eOpposite relations and
  * {@link de.cau.cs.kieler.core.properties.IProperty} data.
  * 
+ * Since all current needs are covered by the {@link TransientValueService}, the methods
+ * just delegate to the super ones.
+ * 
  * @author chsch
  */
 @SuppressWarnings("restriction")
-public class KGraphTransientValueService extends KRenderingTransientValueService {
+public class KRenderingTransientValueService extends TransientValueService {
 
     @Override
     public ListTransient isListTransient(final EObject semanticObject,
             final EStructuralFeature feature) {
-        // the whole lists of nodes' incoming edges, IProperties, ...
-        if (feature == KGraphPackage.eINSTANCE.getKNode_IncomingEdges()
-             || feature == KGraphPackage.eINSTANCE.getEMapPropertyHolder_Properties()
-             || (feature == KGraphPackage.eINSTANCE.getEMapPropertyHolder_PersistentEntries()
-                  // ... and persisted entries of non-KLayoutData ...    
-                  && !(KLayoutDataPackage.eINSTANCE.getKShapeLayout().isInstance(semanticObject)
-                        || KLayoutDataPackage.eINSTANCE.getKEdgeLayout().isInstance(semanticObject)))) {
-            // must not be serialized as they either do not have related elements in the concrete syntax,
-            //  or are no EObjects (IProperties).
-            //  
-            return ListTransient.YES;
-        }
         return super.isListTransient(semanticObject, feature);
     }
 
@@ -59,4 +47,5 @@ public class KGraphTransientValueService extends KRenderingTransientValueService
             final EStructuralFeature feature) {
         return super.isValueTransient(semanticObject, feature);
     }
+
 }

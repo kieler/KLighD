@@ -16,12 +16,10 @@ package de.cau.cs.kieler.core.kgraph.text;
 import org.eclipse.xtext.linking.impl.Linker;
 import org.eclipse.xtext.naming.IQualifiedNameConverter;
 import org.eclipse.xtext.naming.IQualifiedNameProvider;
-import org.eclipse.xtext.parsetree.reconstr.ITransientValueService;
 import org.eclipse.xtext.resource.XtextResource;
 
 import de.cau.cs.kieler.core.kgraph.text.scoping.KGraphQualifiedNameConverter;
 import de.cau.cs.kieler.core.kgraph.text.scoping.KGraphQualifiedNameProvider;
-import de.cau.cs.kieler.core.kgraph.text.scoping.KGraphResource;
 import de.cau.cs.kieler.core.kgraph.text.serializer.KGraphTransientValueService;
 
 /**
@@ -81,13 +79,15 @@ public class KGraphRuntimeModule extends de.cau.cs.kieler.core.kgraph.text.Abstr
     
     /**
      * Method registers a customized
-     * {@link org.eclipse.xtext.serializer.sequencer.TransientValueService} in order to serialize
-     * KGraph specifications correctly (suppresses EOpposite relations).
+     * {@link org.eclipse.xtext.serializer.sequencer.ITransientValueService} in order to serialize
+     * KGraph specifications correctly (e.g. suppresses EOpposite relations).
      * 
      * @return the {@link KGraphTransientValueService} class
      */
     @SuppressWarnings("restriction")
-    public Class<? extends ITransientValueService> bindITransientValueService() {
+    public Class<? extends org.eclipse.xtext.serializer.sequencer.ITransientValueService>
+        bindNewITransientValueService() {
         return KGraphTransientValueService.class;
     }
+
 }

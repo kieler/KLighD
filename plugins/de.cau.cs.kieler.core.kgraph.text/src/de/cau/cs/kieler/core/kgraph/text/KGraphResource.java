@@ -11,7 +11,7 @@
  * This code is provided under the terms of the Eclipse Public License (EPL).
  * See the file epl-v10.html for the license text.
  */
-package de.cau.cs.kieler.core.kgraph.text.scoping;
+package de.cau.cs.kieler.core.kgraph.text;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -22,6 +22,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.xtext.EcoreUtil2;
 import org.eclipse.xtext.linking.lazy.LazyLinkingResource;
 import org.eclipse.xtext.nodemodel.util.NodeModelUtils;
+import org.eclipse.xtext.resource.SaveOptions;
 
 import de.cau.cs.kieler.core.kgraph.KNode;
 import de.cau.cs.kieler.kiml.util.KimlUtil;
@@ -29,6 +30,9 @@ import de.cau.cs.kieler.kiml.util.KimlUtil;
 /**
  * A customized {@link LazyLinkingResource} handling the (de-) serialization of
  * {@link de.cau.cs.kieler.core.properties.IProperty}s correctly.
+ * 
+ * Deactivates the syntax validation during the serialization since it relies on the
+ * ITransientValueService of the out-dated parse tree constructor.
  * 
  * @author chsch
  */
@@ -77,6 +81,10 @@ public class KGraphResource extends LazyLinkingResource {
                 KimlUtil.persistDataElements((KNode) o);
             }
         }
-        super.doSave(outputStream, options);
+        
+        // validation is deactivated since it relies on the ITransientValueService of the
+        //  out-dated parse tree constructor
+        super.doSave(outputStream, SaveOptions.newBuilder().format().noValidation().getOptions()
+                .toOptionsMap());
     }
 }
