@@ -15,6 +15,12 @@ package de.cau.cs.kieler.klighd;
 
 import java.util.List;
 
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.jface.viewers.Viewer;
+import org.eclipse.ui.IWorkbenchPart;
+import org.eclipse.ui.statushandlers.StatusManager;
+
 import com.google.common.collect.Lists;
 
 import de.cau.cs.kieler.core.properties.MapPropertyHolder;
@@ -26,18 +32,62 @@ import de.cau.cs.kieler.core.properties.MapPropertyHolder;
  */
 public final class ViewContext extends MapPropertyHolder {
 
+    /** the part the source model was selected from (if can reasonably be determined). */
+    private IWorkbenchPart sourceWorkbenchPart = null;
     /** the viewer provider. */
     private IViewerProvider<?> viewerProvider = null;
     /** the update strategy. */
     private IUpdateStrategy<?> updateStrategy = null;
     /** the list of transformation contexts in this view context. */
     private List<TransformationContext<?, ?>> transformationContexts = Lists.newLinkedList();
-    /** the reveresed list of transformation contexts. */
+    /** the reversed list of transformation contexts. */
     private List<TransformationContext<?, ?>> transformationContextsRev = Lists
             .reverse(transformationContexts);
 
     /** the base model for incremental update. */
     private Object baseModel = null;
+
+    /**
+     * Sets the source workbench part (part the source model has been chosen in).
+     * 
+     * @param theSourceWorkbenchPart
+     *            the source workbench part (part the source model has been chosen in)
+     */
+    public void setSourceWorkbenchPart(final IWorkbenchPart theSourceWorkbenchPart) {
+        this.sourceWorkbenchPart = theSourceWorkbenchPart;
+    }
+
+    /**
+     * Returns the source workbench part.
+     * 
+     * @return the source workbench part (part the source model has been chosen in)
+     */
+    public IWorkbenchPart getSourceWorkbenchPart() {
+        return sourceWorkbenchPart;
+    }
+
+    /**
+     * Returns the source workbench part viewer (experimental).
+     * 
+     * @return the source workbench part viewer(viewer the source model has been chosen in)
+     */
+    public Viewer getSourceWorkbenchPartViewer() {
+        if (this.sourceWorkbenchPart == null) {
+            return null;
+        }
+        try {
+            IWorkbenchPart part = this.sourceWorkbenchPart;
+            return (Viewer) part.getClass().getMethod("getViewer").invoke(part);
+        } catch (Exception e) {
+            StatusManager.getManager().addLoggedStatus(
+                    new Status(IStatus.ERROR, KlighdPlugin.PLUGIN_ID,
+                            "KLighD: Determination of a viewer widget (beyond the KLighD viewer) "
+                                    + "showing the currently depicted model failed.\n"
+                                    + "This error might occured while trying to focus a depicted model "
+                                    + "element in a related editor."));
+        }
+        return null;               
+    }
 
     /**
      * Sets the contexts viewer provider.
