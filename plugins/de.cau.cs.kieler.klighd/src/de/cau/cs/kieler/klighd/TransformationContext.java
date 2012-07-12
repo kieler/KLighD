@@ -13,6 +13,12 @@
  */
 package de.cau.cs.kieler.klighd;
 
+import java.util.Map;
+
+import com.google.common.collect.HashMultimap;
+import com.google.common.collect.Maps;
+import com.google.common.collect.Multimap;
+
 import de.cau.cs.kieler.core.properties.MapPropertyHolder;
 
 /**
@@ -38,7 +44,7 @@ public final class TransformationContext<S, T> extends MapPropertyHolder {
      *            the transformation
      * @return the transformation context
      */
-    protected static <S, T> TransformationContext<S, T> create(
+    public static <S, T> TransformationContext<S, T> create(
             final ITransformation<S, T> transformation) {
         TransformationContext<S, T> transformationContext = new TransformationContext<S, T>();
         transformationContext.transformation = transformation;
@@ -77,30 +83,6 @@ public final class TransformationContext<S, T> extends MapPropertyHolder {
     }
 
     /**
-     * Returns the element in the source model which is represented by the given element in the
-     * target model.
-     * 
-     * @param element
-     *            the element in the target model
-     * @return the element in the source model or null if the element could not be found
-     */
-    public Object getSourceElement(final Object element) {
-        return transformation.getSourceElement(element, this);
-    }
-
-    /**
-     * Returns the element in the target model which represents the given element in the source
-     * model.
-     * 
-     * @param element
-     *            the element in the source model
-     * @return the element in the target model or null if the element could not be found
-     */
-    public Object getTargetElement(final Object element) {
-        return transformation.getTargetElement(element, this);
-    }
-
-    /**
      * Sets the view context containing this transformation context.<br>
      * <br>
      * Invoked only by {@code ViewContext}.
@@ -112,4 +94,67 @@ public final class TransformationContext<S, T> extends MapPropertyHolder {
         this.viewContext = viewContext;
     }
 
+
+    /** The lookup tables maintaining the model-image-relation of the transformation. */
+    private Multimap<Object, Object> sourceTargetElementMap = null;
+    private Map<Object, Object> targetSourceElementMap = null;
+   
+    /**
+     * Put a pair of a model and a derived element into the lookup table.
+     * 
+     * @param derived the derived element
+     * @param model the model element
+     */
+    public void addSourceTargetPair(final Object model, final Object derived) {
+        if (this.targetSourceElementMap == null
+                || this.sourceTargetElementMap == null) {
+            this.targetSourceElementMap = Maps.newHashMap();
+            this.sourceTargetElementMap = HashMultimap.create();
+        }
+        this.sourceTargetElementMap.put(model, derived);        
+        this.targetSourceElementMap.put(derived, model);        
+    }
+
+    /**
+     * Returns the element in the source model which is represented by the given element in the
+     * target model.
+     * 
+     * @param element
+     *            the element in the target model
+     * @return the element in the source model or null if the element could not be found
+     */
+    public Object getSourceElement(final Object element) {
+        if (this.targetSourceElementMap != null) {
+            return this.targetSourceElementMap.get(element);
+        }
+        return null;
+    }
+
+    /**
+     * Returns the element in the target model which represents the given element in the source
+     * model.
+     * 
+     * @param element
+     *            the element in the source model
+     * @return the element in the target model or null if the element could not be found
+     */
+    public Object getTargetElement(final Object element) {
+        if (this.sourceTargetElementMap != null) {
+            return this.sourceTargetElementMap.get(element);
+        }
+        return null;
+    }
+    
+    /**
+     * Cleans up the source target mappings.
+     */
+    public void clear() {
+        if (this.sourceTargetElementMap != null) {
+            this.sourceTargetElementMap.clear();
+        }
+        if (this.targetSourceElementMap != null) {
+            this.targetSourceElementMap.clear();
+        }
+    }
+    
 }

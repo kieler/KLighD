@@ -14,18 +14,28 @@
 package de.cau.cs.kieler.klighd.transformations;
 
 import java.lang.reflect.Method;
-import java.util.Map;
+//import java.util.Map;
+//
+//import com.google.common.collect.HashMultimap;
+//import com.google.common.collect.Maps;
+//import com.google.common.collect.Multimap;
 
-import com.google.common.collect.HashMultimap;
-import com.google.common.collect.Maps;
-import com.google.common.collect.Multimap;
-
+import de.cau.cs.kieler.core.KielerModelException;
+import de.cau.cs.kieler.core.WrappedException;
 import de.cau.cs.kieler.klighd.ITransformation;
 import de.cau.cs.kieler.klighd.TransformationContext;
 
 /**
  * An abstract base class for KLighD model transformations.<br>
  * Provides a {@code transform} method with a simpler signature.
+ * 
+ * chsch: Currently it is not clear for, whether we need the
+ * getSourceElement/getTargetElement methods, since my current
+ * transformation save the mapping immediately in the related context
+ * so the context does not need to ask the transformation for that
+ * (and actually does not do that).
+ * However I might imaging that this feature is desirable in some context
+ * so I leave the methods still in here.
  * 
  * @author mri
  * 
@@ -35,20 +45,27 @@ import de.cau.cs.kieler.klighd.TransformationContext;
  *            the type of the target model
  */
 public abstract class AbstractTransformation<S, T> implements ITransformation<S, T> {
-
-    /** The lookup tables maintaining the model-image-relation of the transformation. */
-    private Multimap<Object, Object> sourceTargetElementMap = null;
-    private Map<Object, Object> targetSourceElementMap = null;
+    
+    private TransformationContext<S, T> currentContext = null;
+    
+    /**
+     * Initializes the transformation run.
+     * Currently, just keeps the context to be used
+     * (allowing to neglect it in the concrete transformation methods).
+     * 
+     * @param transformationContext the context to be used during the current run
+     */
+    protected void use(final TransformationContext<S, T> transformationContext) {        
+        this.currentContext = transformationContext;
+        this.currentContext.clear();
+    }
 
     /**
      * {@inheritDoc}
      */
     public Object getSourceElement(final Object element,
             final TransformationContext<S, T> transformationContext) {
-        if (this.targetSourceElementMap != null) {
-            return this.targetSourceElementMap.get(element);
-        }
-        return null;
+        return this.currentContext.getSourceElement(element);
     }
     
     /**
@@ -56,54 +73,35 @@ public abstract class AbstractTransformation<S, T> implements ITransformation<S,
      */
     public Object getTargetElement(final Object element,
             final TransformationContext<S, T> transformationContext) {
-        if (this.sourceTargetElementMap != null) {
-            return this.sourceTargetElementMap.get(element);
-        }
-        return null;
+        return this.currentContext.getTargetElement(element);
     }
 
     /**
      * Method to put a pair of source target into the lookup table.<br>
      * Name, Parameter ordering, and return value (the target) are optimized for
      * calling in Xtend2 based transformations in a fluent interface fashion, like
-     * "model.createShape().putToSourceTargetLookUpWith(model);"
+     * "model.createShape().putToSourceTargetLookUpWith(model);"<br><br>
      * 
-     * @param <C> the type of the target element which is implicitly determined 
-     * @param target the image element
+     * Usage requires to perform 'use(TransformationContext)' at the beginning of
+     * {@link ITransformation#transform(Object, TransformationContext)}.
+     * 
+     * @param <D> the type of the target element which is implicitly determined 
+     * @param derived the derived element
      * @param source the model element
      * @return the image element
      */
-    protected <C> C putToLookUpWith(final C target, final Object source) {
-        if (this.targetSourceElementMap == null
-                || this.sourceTargetElementMap == null) {
-            this.targetSourceElementMap = Maps.newHashMap();
-            this.sourceTargetElementMap = HashMultimap.create();
+    protected <D> D putToLookUpWith(final D derived, final Object source) {
+        if (this.currentContext == null) {
+            throw new WrappedException(new KielerModelException("KLighD transformation "
+                    + this.getClass().getCanonicalName()
+                    + " uses 'putToLookUp(...) and probably does not invoke"
+                    + "'use(TransformationContxt)' at the beginning of its 'transform()' method",
+                    this));
         }
-        this.sourceTargetElementMap.put(source, target);
-        this.targetSourceElementMap.put(target, source);
-        return target;
+        this.currentContext.addSourceTargetPair(source, derived);
+        return derived;
     }
-    
-    /**
-     * A helper method allowing to adopt the mappings of another transformation.
-     * This is needed if a diagram synthesis delegates to another one.
-     * 
-     * @param other the delegate transformation to take the mapping from
-     */
-    protected void takeMappingsOf(final AbstractTransformation<?, T> other) {
-        if (other.targetSourceElementMap == null
-                || other.sourceTargetElementMap == null) {
-            return;
-        }
-        if (this.targetSourceElementMap == null
-                || this.sourceTargetElementMap == null) {
-            this.targetSourceElementMap = Maps.newHashMap();
-            this.sourceTargetElementMap = HashMultimap.create();
-        }
-        this.sourceTargetElementMap.putAll(other.sourceTargetElementMap);
-        this.targetSourceElementMap.putAll(other.targetSourceElementMap);
-    }
-    
+
     
     /** whether it has been tried to infer the classes. */
     private boolean triedToInferClasses = false;
