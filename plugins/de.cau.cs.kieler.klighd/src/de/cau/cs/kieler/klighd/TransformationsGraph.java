@@ -32,7 +32,7 @@ import de.cau.cs.kieler.klighd.transformations.IdentityTransformation;
 
 /**
  * A graph structure to express the relations between instances of {@code ITransformation} and
- * {@code IViewerProvider} and infered source, target and model classes.<br>
+ * {@code IViewerProvider} and inferred source, target and model classes.<br>
  * <br>
  * Provides the functionality required to configure a view context for a given model, with or
  * without a number of hints for transformations and viewers.
