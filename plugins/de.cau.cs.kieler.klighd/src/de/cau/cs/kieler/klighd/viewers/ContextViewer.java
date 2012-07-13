@@ -28,6 +28,8 @@ import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
+import com.google.common.collect.Lists;
+
 import de.cau.cs.kieler.klighd.IViewer;
 import de.cau.cs.kieler.klighd.IViewerEventListener;
 import de.cau.cs.kieler.klighd.LightDiagramServices;
@@ -188,11 +190,25 @@ public class ContextViewer extends AbstractViewer<Object> implements IViewerEven
             trigger.trigger(state);
         }
         
+        // chsch: was 
+        //  updateSelection(selectedElements);
+        //  notifyListenersSelection(selectedElements);
+        //
+        // updated it since it makes IMO more sense this way:
+
         // update the selection status for the ISelectionProvider interface
-        updateSelection(selectedElements);
+        List<Object> selectedModelElements = Lists.newArrayList();
+        Object modelElement;
+        for (Object element : selectedElements) {            
+            modelElement = getCurrentViewContext().getSourceElement(element);
+            if (modelElement != null) {
+                selectedModelElements.add(modelElement);
+            }
+        }
+        updateSelection(selectedModelElements);
         
         // propagate event to listeners on this viewer
-        notifyListenersSelection(selectedElements);  
+        notifyListenersSelection(selectedModelElements);  
     }
 
     private void updateSelection(final Collection<?> selectedElements) {
