@@ -17,7 +17,6 @@ import java.io.IOException;
 import java.util.Collections;
 
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -28,11 +27,6 @@ import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.ui.statushandlers.StatusManager;
 
 import de.cau.cs.kieler.core.kgraph.KNode;
-import de.cau.cs.kieler.core.ui.ProgressMonitorAdapter;
-import de.cau.cs.kieler.kiml.ui.diagram.IDiagramLayoutManager;
-import de.cau.cs.kieler.kiml.ui.diagram.LayoutMapping;
-import de.cau.cs.kieler.kiml.ui.service.EclipseLayoutInfoService;
-import de.cau.cs.kieler.kiml.ui.service.LayoutOptionManager;
 import de.cau.cs.kieler.kiml.util.KimlUtil;
 import de.cau.cs.kieler.klighd.piccolo.KlighdPiccoloPlugin;
 import de.cau.cs.kieler.klighd.piccolo.krendering.viewer.PiccoloViewer;
@@ -66,6 +60,7 @@ public class ExportKGraphAction extends Action {
      */
     @Override
     public void run() {
+        
         // open the dialog to receive the required user input
         ExportKGraphDialog dialog = new ExportKGraphDialog(viewer.getCanvas().getShell());
         int code = dialog.open();
@@ -77,13 +72,19 @@ public class ExportKGraphAction extends Action {
                 ResourceSet set = new ResourceSetImpl();
                 Resource resource = set.createResource(fileURI);
 
-                IDiagramLayoutManager<?> layoutManager =
-                        EclipseLayoutInfoService.getInstance().getManager(null, viewer);
-                LayoutMapping<?> layoutMapping = layoutManager.buildLayoutGraph(null, viewer);
-                new LayoutOptionManager().configure(layoutMapping, new ProgressMonitorAdapter(
-                        new NullProgressMonitor()));
+                // chsch: the previous way to obtain the KGraph
+                // 
+                // IDiagramLayoutManager<?> layoutManager =
+                //         EclipseLayoutInfoService.getInstance().getManager(null, viewer);
+                // LayoutMapping<?> layoutMapping = layoutManager.buildLayoutGraph(null, viewer);
+                // new LayoutOptionManager().configure(layoutMapping, new ProgressMonitorAdapter(
+                //         new NullProgressMonitor()));
+                //
+                // KNode kgraph = layoutMapping.getLayoutGraph();
+                
+                // chsch: the new one :-)
+                KNode kgraph = viewer.getModel();
 
-                KNode kgraph = layoutMapping.getLayoutGraph();
                 KimlUtil.persistDataElements(kgraph);
                 resource.getContents().add(kgraph);
 
