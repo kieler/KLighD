@@ -15,8 +15,6 @@ package de.cau.cs.kieler.klighd.krendering;
 
 import java.util.List;
 
-import org.eclipse.emf.ecore.util.EcoreUtil;
-
 import com.google.common.collect.Lists;
 
 import de.cau.cs.kieler.core.kgraph.KGraphData;
@@ -26,11 +24,16 @@ import de.cau.cs.kieler.core.krendering.KRenderingLibrary;
 import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout;
 import de.cau.cs.kieler.kiml.util.KimlUtil;
 import de.cau.cs.kieler.klighd.IUpdateStrategy;
+import de.cau.cs.kieler.klighd.TransformationContext;
 import de.cau.cs.kieler.klighd.ViewContext;
+import de.cau.cs.kieler.klighd.transformations.DuplicatingTransformation;
 
 /**
- * A simple update strategy for KGraph with KRendering which merges by copying the new model.
- * 
+ * A simple update strategy for KGraph with KRendering which merges by copying the new model.<br>
+ * Uses a {@link DuplicatingTransformation} in order to decouple the given model and the depicted
+ * one for use with the textual KGraph editor and adds a related {@link TransformationContext} to
+ * the used view context for ensuring the model-image-traceability.
+ *
  * @author mri
  */
 public class SimpleUpdateStrategy implements IUpdateStrategy<KNode> {
@@ -53,11 +56,29 @@ public class SimpleUpdateStrategy implements IUpdateStrategy<KNode> {
         return baseModel;
     }
 
+    private DuplicatingTransformation<KNode> duplicator = new DuplicatingTransformation<KNode>();
+    
     /**
      * {@inheritDoc}
      */
+    @SuppressWarnings("unchecked")
     public void update(final KNode baseModel, final KNode newModel, final ViewContext viewContext) {
-        KNode newModelCopy = EcoreUtil.copy(newModel);
+        // KNode newModelCopy = EcoreUtil.copy(newModel);
+        
+        List<TransformationContext<?, ?>> contexts = viewContext.getTransformationContexts();
+        TransformationContext<KNode, KNode> duplicatorContext = null;
+        if (!contexts.isEmpty()) {
+            TransformationContext<?, ?> last = contexts.get(contexts.size() - 1); 
+                if ((last.getTransformation() instanceof DuplicatingTransformation<?>)) {
+                    duplicatorContext = (TransformationContext<KNode, KNode>) last;
+                } else {
+                    duplicatorContext = TransformationContext.<KNode, KNode>create(duplicator);
+                    viewContext.getTransformationContexts().add(duplicatorContext);
+                }
+        }
+
+        KNode newModelCopy = duplicator.transform(newModel, duplicatorContext);
+
         List<KNode> children = Lists.newArrayList(newModelCopy.getChildren());
         List<KGraphData> data = Lists.newArrayList(newModelCopy.getData());
         newModelCopy.getChildren().clear();
