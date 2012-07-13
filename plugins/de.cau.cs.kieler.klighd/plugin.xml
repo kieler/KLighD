@@ -20,21 +20,26 @@
          point="de.cau.cs.kieler.core.kivi.combinations">
       <combination
             active="true"
-            class="de.cau.cs.kieler.klighd.combinations.KlighdVisualizeDroppedEMFModelCombination"
-            description="Enables the visualization of EMF models in resources dropped on KLighD views."
-            name="Visualize dropped EMF Resources in KLighD Views ">
-      </combination>
-      <combination
-            active="true"
             class="de.cau.cs.kieler.klighd.combinations.KlighdAutomaticLayoutCombination"
             description="Applies automatic layout on KLighD views which have been created or updated using the appropriate effect."
-            name="Automatic Layout after KLighD View Creation and Update">
+            name="Automatic Layout after KLighD View Creation and Update (KLighD)">
       </combination>
       <combination
             active="true"
+            class="de.cau.cs.kieler.klighd.combinations.KlighdVisualizeDroppedEMFModelCombination"
+            description="Enables the visualization of EMF models in resources dropped on KLighD views."
+            name="Visualize dropped EMF Resources in KLighD Views (KLighD)">
+      </combination>
+      <combination
+            active="false"
             class="de.cau.cs.kieler.klighd.combinations.KlighdVisualizeEMFEditorContentCombination"
-            description="Visualize EMF tree editor conten"
-            name="Visualize EMF tree editor conten">
+            description="Visualize EMF tree editor content"
+            name="Visualize EMF tree editor content  (KLighD)">
+      </combination>
+      <combination
+            active="true"
+            class="de.cau.cs.kieler.klighd.combinations.KLighdFocusSelectedElementInTreeViewerCombination"
+            name="Focus selected Element in tree viewer (KLighD)">
       </combination>
    </extension>
    <extension
