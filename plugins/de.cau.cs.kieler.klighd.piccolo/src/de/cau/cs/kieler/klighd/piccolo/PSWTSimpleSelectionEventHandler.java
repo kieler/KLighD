@@ -93,7 +93,12 @@ public class PSWTSimpleSelectionEventHandler extends PDragSequenceEventHandler {
      * @return true if the node was newly added to the selection; false else
      */
     public boolean select(final PNode node) {
-        return internalSelect(node);
+        // chsch: implementation changed
+        boolean selected = internalSelect(node);
+        if (selected) {
+            notifyListenersSelection();
+        }
+        return selected;
     }
 
     private boolean internalSelect(final PNode node) {
@@ -133,7 +138,12 @@ public class PSWTSimpleSelectionEventHandler extends PDragSequenceEventHandler {
      * @return true if the node has been removed from the selection; false else
      */
     public boolean unselect(final PNode node) {
-        return internalUnselect(node);
+        // chsch: implementation changed
+        boolean unselected = internalUnselect(node);
+        if (unselected) {
+            notifyListenersSelection();
+        }
+        return unselected;
     }
 
     private boolean internalUnselect(final PNode node) {
