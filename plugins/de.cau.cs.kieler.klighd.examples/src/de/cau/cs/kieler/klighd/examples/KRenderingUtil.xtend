@@ -19,11 +19,12 @@ import de.cau.cs.kieler.kiml.klayoutdata.KEdgeLayout
 import com.google.inject.Inject
 import de.cau.cs.kieler.core.krendering.KFontSize
 import de.cau.cs.kieler.core.krendering.KFontBold
+import de.cau.cs.kieler.core.krendering.KBackgroundVisibility
 
 class KRenderingUtil {
 	
-	@Inject
-	extension XtendArithmeticExtensions
+//	@Inject
+//	extension XtendArithmeticExtensions
 	
 	@Inject
 	extension KRenderingColors
@@ -49,11 +50,16 @@ class KRenderingUtil {
 		return r
 	}
 	
-	def dispatch KRendering add(KRendering r, KStyle s) {
-		r.styles.add(s);
-		return r
-	}
-	
+    def dispatch KRendering add(KRendering r, KStyle s) {
+        r.styles.add(s);
+        return r
+    }
+    
+    def KRendering addFirst(KRendering r, KStyle s) {
+        r.styles.add(0,s);
+        return r
+    }
+    
 	def KText of(KText text, String content) {
 		text.text = content;
 		return text;
@@ -64,11 +70,16 @@ class KRenderingUtil {
 		return style;
 	}
 	
-	def KFontBold setbold(KFontBold style) {
-		style.bold = true;
-		return style;
-	}
-	
+    def KFontBold setbold(KFontBold style) {
+        style.bold = true;
+        return style;
+    }
+    
+    def KBackgroundVisibility setFalse(KBackgroundVisibility style) {
+        style.visible = false;
+        return style;
+    }
+    
 	def KLineWidth of(KLineWidth style, int width) {
 		style.lineWidth = width;
 		return style;
@@ -162,7 +173,7 @@ class KRenderingUtil {
         dpd.XOffset = -15 * actualScale;
         dpd.YOffset = (dpd.height+scale.float/2.float) / (-2).float;
         dpd.relative = true; // this directs klighd to rotate the decorator accordingly!!
-        dpd.location = if (toHead) "1.0".float else 0;
+        dpd.location = if (toHead) 1 else 0;
 
         val plp = factory.createKPolylinePlacementData;
 		plp.detailPlacementData = dpd;        

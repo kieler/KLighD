@@ -17,6 +17,7 @@ import de.cau.cs.kieler.core.krendering.KPolyline
 import de.cau.cs.kieler.klighd.examples.KRenderingColors
 import de.cau.cs.kieler.kiml.options.EdgeType
 import de.cau.cs.kieler.core.util.Pair
+import com.google.common.collect.Lists
 
 class EcoreDiagramSynthesis extends AbstractTransformation<EModelElementCollection, KNode> {
 	
@@ -27,16 +28,23 @@ class EcoreDiagramSynthesis extends AbstractTransformation<EModelElementCollecti
 	extension KRenderingColors
 	
 	override KNode transform(EModelElementCollection model, TransformationContext<EModelElementCollection, KNode> transformationContext) {
+	    use(transformationContext);
 		
 		val rootNode = KimlUtil::createInitializedNode;
 		rootNode.KShapeLayout.setProperty(LayoutOptions::ALGORITHM, "de.cau.cs.kieler.kiml.ogdf.planarization");
 		rootNode.KShapeLayout.setProperty(LayoutOptions::SPACING, 75.float);
 	    rootNode.KShapeLayout.setProperty(LayoutOptions::DIRECTION, Direction::UP);
 		
-		val classifier = model.filter(typeof(EClassifier)).toList;
-		classifier.createClassifierFigures(rootNode);
-		classifier.createAssociationConnections;
-		classifier.createInheritanceConnections;
+		val classifier = model.filter(typeof(EClass)).toList;
+		
+	    val list = Lists::newArrayList(model.filter(typeof(EClassifier)));
+	    classifier.forEach[list.addAll(it.EStructuralFeatures.filter(typeof(EReference)).map[it.EType])];
+	    classifier.forEach[list.addAll(it.ESuperTypes)];
+	    list.createClassifierFigures(rootNode);
+	    list.createAssociationConnections;
+	    list.createInheritanceConnections;
+	    
+	    classifier.forEach[it.node.KRendering.addFirst("red".fgColor)];
 		
 		model.filter(typeof(EPackage)).forEach[
 			val classifiers = it.EClassifiers;
@@ -51,10 +59,10 @@ class EcoreDiagramSynthesis extends AbstractTransformation<EModelElementCollecti
 	def createClassifierFigures(Iterable<EClassifier> classes, KNode rootNode) {
 		classes.forEach[
 		    val boxWidth = if (it.name.length < 10) 180 else it.name.length*12+50;
-			val classNode = it.createRectangulareNode(80, boxWidth);
+			val classNode = it.createRectangulareNode(80, boxWidth).putToLookUpWith(it);
 			classNode.KRendering.add(
-				factory.createKText.of(it.name).add(factory.createKFontSize.of(20))
-					.add(factory.createKFontBold.setbold).add("lemon".bgColor)
+				factory.createKText.of(it.name).putToLookUpWith(it).add(factory.createKFontSize.of(20))
+					.add(factory.createKFontBold.setbold).add(factory.createKBackgroundVisibility.setFalse)
 			);
 			classNode.KRendering.add(factory.createKLineWidth.of(2)).add("lemon".bgColor);
 			rootNode.children.add(classNode);
