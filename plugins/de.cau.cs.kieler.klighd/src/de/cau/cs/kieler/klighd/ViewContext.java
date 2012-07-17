@@ -32,8 +32,12 @@ import de.cau.cs.kieler.core.properties.MapPropertyHolder;
  */
 public final class ViewContext extends MapPropertyHolder {
 
+    /** the serial version UID. */
+    private static final long serialVersionUID = -431994394109554393L;
+
     /** the part the source model was selected from (if can reasonably be determined). */
     private IWorkbenchPart sourceWorkbenchPart = null;
+    
     /** the viewer provider. */
     private IViewerProvider<?> viewerProvider = null;
     /** the update strategy. */

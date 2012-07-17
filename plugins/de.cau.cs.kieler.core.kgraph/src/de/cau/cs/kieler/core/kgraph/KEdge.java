@@ -38,8 +38,7 @@ package de.cau.cs.kieler.core.kgraph;
  * @see de.cau.cs.kieler.core.kgraph.KGraphPackage#getKEdge()
  * @model
  * @generated
- * @kieler.rating 2011-02-01 yellow
- *     reviewed by cmot, soh
+ * @kieler.design 2011-02-01 reviewed by cmot, soh
  */
 public interface KEdge extends KLabeledGraphElement {
     /**
@@ -166,5 +165,25 @@ public interface KEdge extends KLabeledGraphElement {
      * @generated
      */
     void setTargetPort(KPort value);
+
+    /**
+     * <!-- begin-user-doc -->
+     * Completely connects this edge to the given port. This affects the edge's source node and
+     * source port as well as the port's list of edges.
+     * <!-- end-user-doc -->
+     * @model portRequired="true"
+     * @generated
+     */
+    void connectSourcePort(KPort port);
+
+    /**
+     * <!-- begin-user-doc -->
+     * Completely connects the edge to the given port. This affects the edge's target node and
+     * target port as well as the port's list of edges.
+     * <!-- end-user-doc -->
+     * @model portRequired="true"
+     * @generated
+     */
+    void connectTargetPort(KPort port);
 
 } // KEdge

@@ -20,6 +20,7 @@ import java.util.LinkedList;
  *
  * @param <T> the type of instances that are held by this pool
  * @author msp
+ * @kieler.rating 2012-07-10 proposed yellow msp
  */
 public class InstancePool<T> {
     

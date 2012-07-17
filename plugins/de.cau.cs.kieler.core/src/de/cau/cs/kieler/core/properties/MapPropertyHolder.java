@@ -13,6 +13,7 @@
  */
 package de.cau.cs.kieler.core.properties;
 
+import java.io.Serializable;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -20,12 +21,15 @@ import java.util.Map;
 /**
  * An abstract holder class for properties that uses a hash map.
  *
- * @kieler.rating 2011-01-17 yellow
- *     reviewed by haf, cmot, soh
+ * @kieler.design 2011-01-17 reviewed by haf, cmot, soh
+ * @kieler.rating 2012-07-10 proposed yellow msp
  * @author msp
  */
-public class MapPropertyHolder implements IPropertyHolder {
+public class MapPropertyHolder implements IPropertyHolder, Serializable {
 
+    /** the serial version UID. */
+    private static final long serialVersionUID = 4507851447415709893L;
+    
     /** map of property identifiers to their values. */
     private Map<IProperty<?>, Object> propertyMap = null;
     

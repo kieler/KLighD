@@ -21,7 +21,6 @@ import java.util.LinkedList;
  * As described in "Graphic Gems, Andrew Glassner (editor), Academic Press, 1990".
  * 
  * @author uru
- * 
  */
 public class CubicSplineInterpolator implements ISplineInterpolator {
 

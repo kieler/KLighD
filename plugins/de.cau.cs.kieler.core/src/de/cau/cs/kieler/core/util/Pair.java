@@ -23,8 +23,8 @@ import java.util.Map.Entry;
 /**
  * A simple pair implementation.
  * 
- * @kieler.rating 2011-03-14 yellow
- *     reviewed by cmot, cds
+ * @kieler.design 2011-03-14 reviewed by cmot, cds
+ * @kieler.rating 2012-07-10 proposed yellow msp
  * @param <F> type of first contained object
  * @param <S> type of second contained object
  * @author msp
@@ -35,6 +35,30 @@ public class Pair<F, S> {
     private F first;
     /** the second element. */
     private S second;
+    
+    /**
+     * Constructs a pair with {@code null} elements.
+     *
+     * @param <T1> type of first element
+     * @param <T2> type of second element
+     * @return a new pair
+     */
+    public static <T1, T2> Pair<T1, T2> create() {
+        return new Pair<T1, T2>();
+    }
+    
+    /**
+     * Constructs a pair given both elements.
+     * 
+     * @param first the first element
+     * @param second the second element
+     * @param <T1> type of first element
+     * @param <T2> type of second element
+     * @return a new pair
+     */
+    public static <T1, T2> Pair<T1, T2> create(final T1 first, final T2 second) {
+        return new Pair<T1, T2>(first, second);
+    }
     
     /**
      * Constructs a pair with {@code null} elements.

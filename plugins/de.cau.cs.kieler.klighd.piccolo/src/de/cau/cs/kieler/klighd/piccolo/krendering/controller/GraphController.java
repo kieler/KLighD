@@ -23,6 +23,7 @@ import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.impl.AdapterImpl;
 import org.eclipse.emf.ecore.util.EContentAdapter;
+import org.eclipse.ui.PlatformUI;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -37,7 +38,6 @@ import de.cau.cs.kieler.core.kgraph.KPort;
 import de.cau.cs.kieler.core.kgraph.util.KGraphSwitch;
 import de.cau.cs.kieler.core.properties.IProperty;
 import de.cau.cs.kieler.core.properties.Property;
-import de.cau.cs.kieler.core.ui.util.MonitoredOperation;
 import de.cau.cs.kieler.kiml.klayoutdata.KEdgeLayout;
 import de.cau.cs.kieler.kiml.klayoutdata.KLayoutDataPackage;
 import de.cau.cs.kieler.kiml.klayoutdata.KPoint;
@@ -1040,44 +1040,44 @@ public class GraphController {
                     switch (notification.getEventType()) {
                     case Notification.ADD: {
                         final KNode addedNode = (KNode) notification.getNewValue();
-                        MonitoredOperation.runInUI(new Runnable() {
+                        PlatformUI.getWorkbench().getDisplay().syncExec(new Runnable() {
                             public void run() {
                                 addNode(nodeRep, addedNode);
                             }
-                        }, true);
+                        });
                         break;
                     }
                     case Notification.ADD_MANY: {
                         @SuppressWarnings("unchecked")
                         final List<KNode> addedNodes = (List<KNode>) notification.getNewValue();
-                        MonitoredOperation.runInUI(new Runnable() {
+                        PlatformUI.getWorkbench().getDisplay().syncExec(new Runnable() {
                             public void run() {
                                 for (KNode addedNode : addedNodes) {
                                     addNode(nodeRep, addedNode);
                                 }
                             }
-                        }, true);
+                        });
                         break;
                     }
                     case Notification.REMOVE: {
                         final KNode removedNode = (KNode) notification.getOldValue();
-                        MonitoredOperation.runInUI(new Runnable() {
+                        PlatformUI.getWorkbench().getDisplay().syncExec(new Runnable() {
                             public void run() {
                                 removeNode(removedNode);
                             }
-                        }, true);
+                        });
                         break;
                     }
                     case Notification.REMOVE_MANY: {
                         @SuppressWarnings("unchecked")
                         final List<KNode> removedNodes = (List<KNode>) notification.getOldValue();
-                        MonitoredOperation.runInUI(new Runnable() {
+                        PlatformUI.getWorkbench().getDisplay().syncExec(new Runnable() {
                             public void run() {
                                 for (KNode removedNode : removedNodes) {
                                     removeNode(removedNode);
                                 }
                             }
-                        }, true);
+                        });
                         break;
                     }
                     }
@@ -1111,44 +1111,44 @@ public class GraphController {
                     switch (notification.getEventType()) {
                     case Notification.ADD: {
                         final KEdge addedEdge = (KEdge) notification.getNewValue();
-                        MonitoredOperation.runInUI(new Runnable() {
+                        PlatformUI.getWorkbench().getDisplay().syncExec(new Runnable() {
                             public void run() {
                                 addEdge(addedEdge);
                             }
-                        }, true);
+                        });
                         break;
                     }
                     case Notification.ADD_MANY: {
                         @SuppressWarnings("unchecked")
                         final List<KEdge> addedEdges = (List<KEdge>) notification.getNewValue();
-                        MonitoredOperation.runInUI(new Runnable() {
+                        PlatformUI.getWorkbench().getDisplay().syncExec(new Runnable() {
                             public void run() {
                                 for (KEdge addedEdge : addedEdges) {
                                     addEdge(addedEdge);
                                 }
                             }
-                        }, true);
+                        });
                         break;
                     }
                     case Notification.REMOVE: {
                         final KEdge removedEdge = (KEdge) notification.getOldValue();
-                        MonitoredOperation.runInUI(new Runnable() {
+                        PlatformUI.getWorkbench().getDisplay().syncExec(new Runnable() {
                             public void run() {
                                 removeEdge(removedEdge);
                             }
-                        }, true);
+                        });
                         break;
                     }
                     case Notification.REMOVE_MANY: {
                         @SuppressWarnings("unchecked")
                         final List<KEdge> removedEdges = (List<KEdge>) notification.getOldValue();
-                        MonitoredOperation.runInUI(new Runnable() {
+                        PlatformUI.getWorkbench().getDisplay().syncExec(new Runnable() {
                             public void run() {
                                 for (KEdge removedEdge : removedEdges) {
                                     removeEdge(removedEdge);
                                 }
                             }
-                        }, true);
+                        });
                         break;
                     }
                     }
@@ -1192,44 +1192,44 @@ public class GraphController {
                     switch (notification.getEventType()) {
                     case Notification.ADD: {
                         final KPort addedPort = (KPort) notification.getNewValue();
-                        MonitoredOperation.runInUI(new Runnable() {
+                        PlatformUI.getWorkbench().getDisplay().syncExec(new Runnable() {
                             public void run() {
                                 addPort(nodeRep, addedPort);
                             }
-                        }, true);
+                        });
                         break;
                     }
                     case Notification.ADD_MANY: {
                         @SuppressWarnings("unchecked")
                         final List<KPort> addedPorts = (List<KPort>) notification.getNewValue();
-                        MonitoredOperation.runInUI(new Runnable() {
+                        PlatformUI.getWorkbench().getDisplay().syncExec(new Runnable() {
                             public void run() {
                                 for (KPort addedPort : addedPorts) {
                                     addPort(nodeRep, addedPort);
                                 }
                             }
-                        }, true);
+                        });
                         break;
                     }
                     case Notification.REMOVE: {
                         final KPort removedPort = (KPort) notification.getOldValue();
-                        MonitoredOperation.runInUI(new Runnable() {
+                        PlatformUI.getWorkbench().getDisplay().syncExec(new Runnable() {
                             public void run() {
                                 removePort(removedPort);
                             }
-                        }, true);
+                        });
                         break;
                     }
                     case Notification.REMOVE_MANY: {
                         @SuppressWarnings("unchecked")
                         final List<KPort> removedPorts = (List<KPort>) notification.getOldValue();
-                        MonitoredOperation.runInUI(new Runnable() {
+                        PlatformUI.getWorkbench().getDisplay().syncExec(new Runnable() {
                             public void run() {
                                 for (KPort removedPort : removedPorts) {
                                     removePort(removedPort);
                                 }
                             }
-                        }, true);
+                        });
                         break;
                     }
                     }
@@ -1257,45 +1257,45 @@ public class GraphController {
                     switch (notification.getEventType()) {
                     case Notification.ADD: {
                         final KLabel addedLabel = (KLabel) notification.getNewValue();
-                        MonitoredOperation.runInUI(new Runnable() {
+                        PlatformUI.getWorkbench().getDisplay().syncExec(new Runnable() {
                             public void run() {
                                 addLabel(labeledNode, addedLabel);
                             }
-                        }, true);
+                        });
                         break;
                     }
                     case Notification.ADD_MANY: {
                         @SuppressWarnings("unchecked")
                         final List<KLabel> addedLabels = (List<KLabel>) notification.getNewValue();
-                        MonitoredOperation.runInUI(new Runnable() {
+                        PlatformUI.getWorkbench().getDisplay().syncExec(new Runnable() {
                             public void run() {
                                 for (KLabel addedLabel : addedLabels) {
                                     addLabel(labeledNode, addedLabel);
                                 }
                             }
-                        }, true);
+                        });
                         break;
                     }
                     case Notification.REMOVE: {
                         final KLabel removedLabel = (KLabel) notification.getOldValue();
-                        MonitoredOperation.runInUI(new Runnable() {
+                        PlatformUI.getWorkbench().getDisplay().syncExec(new Runnable() {
                             public void run() {
                                 removeLabel(removedLabel);
                             }
-                        }, true);
+                        });
                         break;
                     }
                     case Notification.REMOVE_MANY: {
                         @SuppressWarnings("unchecked")
                         final List<KLabel> removedLabels = (List<KLabel>) notification
                                 .getOldValue();
-                        MonitoredOperation.runInUI(new Runnable() {
+                        PlatformUI.getWorkbench().getDisplay().syncExec(new Runnable() {
                             public void run() {
                                 for (KLabel removedLabel : removedLabels) {
                                     removeLabel(removedLabel);
                                 }
                             }
-                        }, true);
+                        });
                         break;
                     }
                     }
@@ -1319,11 +1319,11 @@ public class GraphController {
                 if (notification.getFeatureID(KLabel.class) == KGraphPackage.KLABEL__TEXT) {
                     switch (notification.getEventType()) {
                     case Notification.SET:
-                        MonitoredOperation.runInUI(new Runnable() {
+                        PlatformUI.getWorkbench().getDisplay().syncExec(new Runnable() {
                             public void run() {
                                 labelRep.setText(node.getText());
                             }
-                        }, true);
+                        });
                         break;
                     }
                 }

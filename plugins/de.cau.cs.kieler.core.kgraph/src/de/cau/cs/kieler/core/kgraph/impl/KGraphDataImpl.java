@@ -26,8 +26,7 @@ import org.eclipse.emf.ecore.EClass;
  * </p>
  *
  * @generated
- * @kieler.rating 2011-02-01 yellow
- *     reviewed by cmot, soh
+ * @kieler.design 2011-02-01 reviewed by cmot, soh
  */
 public class KGraphDataImpl extends EMapPropertyHolderImpl implements KGraphData {
     /**

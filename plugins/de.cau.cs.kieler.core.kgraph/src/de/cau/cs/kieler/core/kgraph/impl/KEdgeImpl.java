@@ -45,8 +45,7 @@ import org.eclipse.emf.ecore.util.EcoreUtil;
  * </p>
  *
  * @generated
- * @kieler.rating 2011-02-01 yellow
- *     reviewed by cmot, soh
+ * @kieler.design 2011-02-01 reviewed by cmot, soh
  */
 public class KEdgeImpl extends KLabeledGraphElementImpl implements KEdge {
     /**
@@ -273,6 +272,30 @@ public class KEdgeImpl extends KLabeledGraphElementImpl implements KEdge {
         targetPort = newTargetPort;
         if (eNotificationRequired())
             eNotify(new ENotificationImpl(this, Notification.SET, KGraphPackage.KEDGE__TARGET_PORT, oldTargetPort, targetPort));
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * {@inheritDoc}
+     * <!-- end-user-doc -->
+     * @generated NOT
+     */
+    public void connectSourcePort(KPort port) {
+        setSource(port.getNode());
+        setSourcePort(port);
+        port.getEdges().add(this);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * {@inheritDoc}
+     * <!-- end-user-doc -->
+     * @generated NOT
+     */
+    public void connectTargetPort(KPort port) {
+        setTarget(port.getNode());
+        setTargetPort(port);
+        port.getEdges().add(this);
     }
 
     /**

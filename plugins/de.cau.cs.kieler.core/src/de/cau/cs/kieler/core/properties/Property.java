@@ -16,8 +16,8 @@ package de.cau.cs.kieler.core.properties;
 /**
  * A property that uses a string for identification.
  *
- * @kieler.rating 2011-01-17 yellow
- *     reviewed by haf, cmot, soh
+ * @kieler.design 2011-01-17 reviewed by haf, cmot, soh
+ * @kieler.rating 2012-07-10 proposed yellow msp
  * @param <T> type of the property
  * @author msp
  */
@@ -26,12 +26,14 @@ public class Property<T> implements IProperty<T>, Comparable<IProperty<?>> {
     /** the default lower bound, which is smaller than everything else. */
     public static final Comparable<?> NEGATIVE_INFINITY = new Comparable<Object>() {
         public int compareTo(final Object other) {
+            // Ignore FindBugs warning
             return -1;
         }
     };
     /** the default upper bound, which is greater than everything else. */
     public static final Comparable<?> POSITIVE_INFINITY = new Comparable<Object>() {
         public int compareTo(final Object other) {
+            // Ignore FindBugs warning
             return 1;
         }
     };

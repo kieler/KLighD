@@ -46,8 +46,7 @@ import org.eclipse.emf.ecore.impl.EPackageImpl;
  * An implementation of the model <b>Package</b>.
  * <!-- end-user-doc -->
  * @generated
- * @kieler.rating 2011-02-01 yellow
- *     reviewed by cmot, soh
+ * @kieler.design 2011-02-01 reviewed by cmot, soh
  */
 public class KGraphPackageImpl extends EPackageImpl implements KGraphPackage {
     /**
@@ -639,6 +638,12 @@ public class KGraphPackageImpl extends EPackageImpl implements KGraphPackage {
         initEReference(getKEdge_Target(), this.getKNode(), this.getKNode_IncomingEdges(), "target", null, 1, 1, KEdge.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEReference(getKEdge_SourcePort(), this.getKPort(), null, "sourcePort", null, 0, 1, KEdge.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEReference(getKEdge_TargetPort(), this.getKPort(), null, "targetPort", null, 0, 1, KEdge.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+        op = addEOperation(kEdgeEClass, null, "connectSourcePort", 0, 1, IS_UNIQUE, IS_ORDERED);
+        addEParameter(op, this.getKPort(), "port", 1, 1, IS_UNIQUE, IS_ORDERED);
+
+        op = addEOperation(kEdgeEClass, null, "connectTargetPort", 0, 1, IS_UNIQUE, IS_ORDERED);
+        addEParameter(op, this.getKPort(), "port", 1, 1, IS_UNIQUE, IS_ORDERED);
 
         initEClass(kPortEClass, KPort.class, "KPort", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         initEReference(getKPort_Node(), this.getKNode(), this.getKNode_Ports(), "node", null, 1, 1, KPort.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
