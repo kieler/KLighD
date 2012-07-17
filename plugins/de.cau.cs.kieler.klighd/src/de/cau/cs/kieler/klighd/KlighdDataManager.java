@@ -100,7 +100,13 @@ public final class KlighdDataManager {
         instance = new KlighdDataManager();
         // load the data from the extension points
         instance.loadViewerProviderExtension();
-        instance.loadModelTransformationsExtension();
+        try {
+            instance.loadModelTransformationsExtension();
+        } catch (Exception e) {
+            StatusManager.getManager().handle(
+                    new Status(IStatus.ERROR, KlighdPlugin.PLUGIN_ID,
+                            "KLighD: Failure while loading registered transformations.", e));
+        }
         instance.loadUpdateStrategyExtension();
     }
 
