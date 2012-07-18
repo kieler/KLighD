@@ -73,6 +73,8 @@ public class GuiceBasedTransformationFactory implements IExecutableExtension,
     public Object create() throws CoreException {
         try {
             Class<?> clazz = null;
+            // chsch: noticed bug, need to explore the duality of 'contributingBundleId' and
+            //  'contributingBundleName'; should be due to some API shortcomings
             if (Strings.isNullOrEmpty(this.contributingBundleName)) {
                 Bundle contributingBundle = KlighdPlugin.getDefault().getBundle()
                         .getBundleContext().getBundle(Long.parseLong(this.contributingBundleId));
