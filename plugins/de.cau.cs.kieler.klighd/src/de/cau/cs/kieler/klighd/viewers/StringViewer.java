@@ -26,6 +26,8 @@ import de.cau.cs.kieler.klighd.IViewerEventListener;
 /**
  * A viewer for string messages.
  * 
+ * chsch: TODO class and its interaction with the framework must be reviewed!!
+ * 
  * @author mri
  */
 public class StringViewer implements IViewer<String> {
@@ -81,9 +83,10 @@ public class StringViewer implements IViewer<String> {
         if (model == null) {
             return;
         }
-        synchronized (message) {
+        // chsch: is the synchronization actually needed? The way below it won't work right, anyway!
+        // synchronized (message) {
             message = model;
-        }
+        // }
     }
     
     /**
