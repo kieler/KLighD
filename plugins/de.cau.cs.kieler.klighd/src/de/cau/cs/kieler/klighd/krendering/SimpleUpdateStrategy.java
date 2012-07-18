@@ -68,13 +68,16 @@ public class SimpleUpdateStrategy implements IUpdateStrategy<KNode> {
         List<TransformationContext<?, ?>> contexts = viewContext.getTransformationContexts();
         TransformationContext<KNode, KNode> duplicatorContext = null;
         if (!contexts.isEmpty()) {
-            TransformationContext<?, ?> last = contexts.get(contexts.size() - 1); 
-                if ((last.getTransformation() instanceof DuplicatingTransformation<?>)) {
-                    duplicatorContext = (TransformationContext<KNode, KNode>) last;
-                } else {
-                    duplicatorContext = TransformationContext.<KNode, KNode>create(duplicator);
-                    viewContext.getTransformationContexts().add(duplicatorContext);
-                }
+            TransformationContext<?, ?> last = contexts.get(contexts.size() - 1);
+            if ((last.getTransformation() instanceof DuplicatingTransformation<?>)) {
+                duplicatorContext = (TransformationContext<KNode, KNode>) last;
+            } else {
+                duplicatorContext = TransformationContext.<KNode, KNode>create(duplicator);
+                viewContext.getTransformationContexts().add(duplicatorContext);
+            }
+        } else {
+            duplicatorContext = TransformationContext.<KNode, KNode>create(duplicator);
+            viewContext.getTransformationContexts().add(duplicatorContext);
         }
 
         KNode newModelCopy = duplicator.transform(newModel, duplicatorContext);
