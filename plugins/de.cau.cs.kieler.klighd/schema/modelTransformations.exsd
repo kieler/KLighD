@@ -19,7 +19,6 @@
       <complexType>
          <sequence minOccurs="0" maxOccurs="unbounded">
             <element ref="transformation"/>
-            <element ref="xtendBasedTransformation"/>
          </sequence>
          <attribute name="point" type="string" use="required">
             <annotation>
@@ -65,42 +64,6 @@
                <appinfo>
                   <meta.attribute kind="java" basedOn="de.cau.cs.kieler.klighd.transformations.AbstractTransformation:de.cau.cs.kieler.klighd.IModelTransformation"/>
                </appinfo>
-            </annotation>
-         </attribute>
-      </complexType>
-   </element>
-
-   <element name="xtendBasedTransformation">
-      <complexType>
-         <sequence minOccurs="0" maxOccurs="unbounded">
-            <element ref="EPackage"/>
-         </sequence>
-         <attribute name="id" type="string" use="required">
-            <annotation>
-               <documentation>
-                  
-               </documentation>
-            </annotation>
-         </attribute>
-         <attribute name="extFile" type="string" use="required">
-            <annotation>
-               <documentation>
-                  The Xtend file containing the transformation specification. It has to be located in a source folder and given by means of a path without the source folder prefix. Both &apos;/&apos; and &apos;::&apos; can be used as path separator. The extension (&apos;.ext&apos;) is can be skipped.&lt;br&gt;&lt;br&gt;
-
-In the rare case that the transformation file is situated in a another bundle than the one contributing the extension to KLighD the path of the Xtend file must be given by means of the &apos;::&apos; path separator, prefixed with the file&apos;s host bundle name + &apos;/&apos;.&lt;br&gt;&lt;br&gt;
-For example:&lt;br&gt;
-org.example/.::transformation (in case the transformation.ext file is located in the root of a source folder)
-               </documentation>
-               <appinfo>
-                  <meta.attribute kind="resource"/>
-               </appinfo>
-            </annotation>
-         </attribute>
-         <attribute name="extension" type="string" use="required">
-            <annotation>
-               <documentation>
-                  The root extension to be called by KLighD. This extension is also used to determine the source and target model types of the transformation.
-               </documentation>
             </annotation>
          </attribute>
       </complexType>

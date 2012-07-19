@@ -13,10 +13,6 @@
  */
 package de.cau.cs.kieler.klighd;
 
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.eclipse.core.runtime.CoreException;
@@ -24,13 +20,9 @@ import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.ui.statushandlers.StatusManager;
-import org.osgi.framework.Bundle;
 
 import com.google.common.collect.Maps;
-
-import de.cau.cs.kieler.klighd.transformations.XtendBasedTransformation;
 
 /**
  * Singleton for accessing transformations, viewers and update strategies registered with KLighD.
@@ -51,8 +43,6 @@ public final class KlighdDataManager {
     public static final String ELEMENT_VIEWER = "viewer";
     /** name of the 'transformation' element. */
     public static final String ELEMENT_TRANSFORMATION = "transformation";
-    /** name of the 'xtendBasedTransformation' element. */
-    public static final String ELEMENT_XTEND_BASED_TRANSFORMATION = "xtendBasedTransformation";
     /** name of the 'updateStrategy' element. */
     public static final String ELEMENT_UPDATE_STRATEGY = "updateStrategy";
 
@@ -60,14 +50,6 @@ public final class KlighdDataManager {
     public static final String ATTRIBUTE_ID = "id";
     /** name of the 'class' attribute in the extension points. */
     public static final String ATTRIBUTE_CLASS = "class";
-    /** name of the 'extFile' attribute in the extension points. */
-    public static final String ATTRIBUTE_EXTENSION_FILE = "extFile";
-    /** name of the 'extension' attribute in the extension points. */
-    public static final String ATTRIBUTE_EXTENSION = "extension";
-    /** name of the 'EPackage' attribute in the extension points. */
-    public static final String ATTRIBUTE_EPACKAGE = "EPackage";
-    /** name of the 'EPackageClass' attribute in the extension points. */
-    public static final String ATTRIBUTE_EPACKAGE_CLASS = "EPackageClass";
     
     /** error msg if registered class cannot be found. */
     private static final String NO_CLASS_DEF_FOUND_ERROR_MSG = 
@@ -168,8 +150,6 @@ public final class KlighdDataManager {
         }
     }
 
-    private HashMap<String, EPackage> ePackages = new HashMap<String, EPackage>();
-
     /**
      * Loads and registers all model transformations from the extension point.
      */
@@ -203,116 +183,6 @@ public final class KlighdDataManager {
                         idTransformationMapping.put(id, modelTransformation);
                     }
                 }
-            } else if (ELEMENT_XTEND_BASED_TRANSFORMATION.equals(element.getName())) {
-                //
-                // handle xtendBasedTransformation extensions
-                //
-                String id = element.getAttribute(ATTRIBUTE_ID);
-                String extFile = element.getAttribute(ATTRIBUTE_EXTENSION_FILE);
-                String extension = element.getAttribute(ATTRIBUTE_EXTENSION);
-                Bundle contributingBundle = Platform.getBundle(element.getContributor().getName());
-                String coContributingBundlesName = null;
-
-                int index = extFile.indexOf("::");
-                if (index != -1) {
-                    // in case the extFile's path contain '::' it may involve an
-                    // external co-contributing bundle indicated by a '/' in the path
-                    index = extFile.indexOf("/");
-                    if (index != -1) {
-                        // there is a '/'!
-                        // determine the co-contributing bundle's name...
-                        coContributingBundlesName = extFile.substring(0, index);
-                        // ... as well as the actual path of the extFile
-                        extFile = extFile.substring(index + 1);
-                    }
-                }
-
-                // "normalize" the Xtend file path
-                extFile = extFile.replaceAll("::", "/");
-                if (!extFile.endsWith(".ext")) {
-                    extFile = extFile + ".ext";
-                }
-
-                URL extFileURL = null;
-                if (contributingBundle != null) {
-                    // try to reveal the Xtend file in the bundle the extension is declared in
-                    extFileURL = contributingBundle.getEntry(extFile);
-
-                    if (extFileURL == null) {
-                        extFileURL = contributingBundle.getEntry("src/" + extFile);
-                    }
-
-                    if (extFileURL == null) {
-                        extFileURL = contributingBundle.getEntry("transformations/" + extFile);
-                    }
-
-                    // in case a the Xtend file is located in a bundle different from
-                    // 'contributingBundle' try to reveal that bundle and the Xtend file by
-                    // means of the 'contributingBundle' entry in the extension (refered to as
-                    // coContributingBundlesName)
-                    // this, however, should not be used extensively but is helpful during the
-                    // prototyping state
-                    if (extFileURL == null && coContributingBundlesName != null
-                            && !coContributingBundlesName.equals("")) {
-                        Bundle coContributingBundle = Platform.getBundle(coContributingBundlesName);
-                        extFileURL = coContributingBundle.getEntry(extFile);
-
-                        if (extFileURL == null) {
-                            extFileURL = coContributingBundle.getEntry("src/" + extFile);
-                        }
-
-                        if (extFileURL == null) {
-                            extFileURL = coContributingBundle
-                                    .getEntry("transformations/" + extFile);
-                        }
-                    }
-                }
-
-                if (extFileURL == null) {
-                    continue;
-                }
-
-                // chsch: tried to avoid this and infer the meta models (EPackages) from the EMF
-                // registry. Doesn't works since the EPackages are registered lazily. Non-used
-                // EPackages are represented by a proxy that is addressed by means of the NSURI
-                // (which in turn is not inferable based on the short name mentioned in Xtend
-                // transformations).
-                List<EPackage> metamodels = new ArrayList<EPackage>();
-
-                for (IConfigurationElement epackageDecl : element.getChildren(ATTRIBUTE_EPACKAGE)) {
-
-                    String ePackageClassName = epackageDecl.getAttribute(ATTRIBUTE_EPACKAGE_CLASS);
-                    EPackage ePackageInstance = ePackages.get(ePackageClassName);
-
-                    if (ePackageInstance == null) {
-                        try {
-
-                            Class<?> ePackage = contributingBundle.loadClass(ePackageClassName);
-                            ePackageInstance = (EPackage) ePackage.getField("eINSTANCE").get(null);
-                            this.ePackages.put(ePackageClassName, ePackageInstance);
-                        } catch (Exception e) {
-                            String msg = "EPackage " + ePackageClassName + " could not be loaded";
-                            StatusManager.getManager().addLoggedStatus(
-                                    new Status(IStatus.ERROR, KlighdPlugin.PLUGIN_ID, msg, e));
-                            continue;
-                        }
-                    }
-
-                    if (ePackageInstance != null) {
-                        metamodels.add(ePackageInstance);
-                    }
-
-                }
-                
-                // hack (abuse of runtime type erasure)
-                ITransformation<?, ?> modelTransformationTmp = new XtendBasedTransformation(
-                        extFileURL, extension, metamodels);
-                @SuppressWarnings("unchecked")
-                ITransformation<Object, ?> modelTransformation =
-                        (ITransformation<Object, ?>) modelTransformationTmp;
-                transformationsGraph.addTransformation(modelTransformation);
-                idTransformationMapping.put(id, modelTransformation);
-                
             }
         }
     }
