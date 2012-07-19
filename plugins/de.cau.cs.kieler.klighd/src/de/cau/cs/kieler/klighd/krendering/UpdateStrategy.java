@@ -113,7 +113,7 @@ public class UpdateStrategy implements IUpdateStrategy<KNode> {
     /**
      * The match scope provider for the KGraph with KRendering and KLayoutData matching.
      */
-    private class MatchScopeProvider implements IMatchScopeProvider {
+    private static class MatchScopeProvider implements IMatchScopeProvider {
 
         /** the match scope. */
         private IMatchScope scope = new MatchScope();
@@ -152,7 +152,7 @@ public class UpdateStrategy implements IUpdateStrategy<KNode> {
     /**
      * The match scope for the KGraph with KRendering and KLayoutData matching.
      */
-    private class MatchScope implements IMatchScope {
+    private static class MatchScope implements IMatchScope {
 
         /**
          * {@inheritDoc}

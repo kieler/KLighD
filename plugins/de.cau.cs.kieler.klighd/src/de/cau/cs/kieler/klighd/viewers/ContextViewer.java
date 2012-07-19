@@ -181,7 +181,7 @@ public class ContextViewer extends AbstractViewer<Object> implements IViewerEven
             // create the selection objects
             List<SelectionElement> selections = new LinkedList<SelectionElement>();
             // create the selection state
-            KlighdSelectionState state = new KlighdSelectionState(viewId, currentViewContext,
+            KlighdSelectionState state = new KlighdSelectionState(viewId, getCurrentViewContext(),
                     currentViewer, selections);
             // fill the selection
             for (Object diagramObject : selectedElements) {
@@ -373,7 +373,7 @@ public class ContextViewer extends AbstractViewer<Object> implements IViewerEven
      * 
      * @return the view context
      */
-    public ViewContext getCurrentViewContext() {
+    public synchronized ViewContext getCurrentViewContext() {
         return currentViewContext;
     }
 

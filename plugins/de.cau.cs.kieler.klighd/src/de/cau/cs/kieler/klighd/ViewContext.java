@@ -36,21 +36,28 @@ public final class ViewContext extends MapPropertyHolder {
     private static final long serialVersionUID = -431994394109554393L;
 
     /** the part the source model was selected from (if can reasonably be determined). */
-    private IWorkbenchPart sourceWorkbenchPart = null;
+    private transient IWorkbenchPart sourceWorkbenchPart = null;
     
     /** the viewer provider. */
-    private IViewerProvider<?> viewerProvider = null;
+    private transient IViewerProvider<?> viewerProvider = null;
     /** the update strategy. */
-    private IUpdateStrategy<?> updateStrategy = null;
+    private transient IUpdateStrategy<?> updateStrategy = null;
     /** the list of transformation contexts in this view context. */
-    private List<TransformationContext<?, ?>> transformationContexts = Lists.newLinkedList();
+    private transient List<TransformationContext<?, ?>> transformationContexts = null;
     /** the reversed list of transformation contexts. */
-    private List<TransformationContext<?, ?>> transformationContextsRev = Lists
-            .reverse(transformationContexts);
-
+    private transient List<TransformationContext<?, ?>> transformationContextsRev = null;
     /** the base model for incremental update. */
     private Object baseModel = null;
-
+    
+    /**
+     * Default constructor.
+     */
+    public ViewContext() {
+        super();
+        this.transformationContexts = Lists.newLinkedList();
+        this.transformationContextsRev = Lists.reverse(transformationContexts);
+    }
+    
     /**
      * Sets the source workbench part (part the source model has been chosen in).
      * 

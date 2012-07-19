@@ -75,6 +75,7 @@ public class GuiceBasedTransformationFactory implements IExecutableExtension,
             Class<?> clazz = null;
             // chsch: noticed bug, need to explore the duality of 'contributingBundleId' and
             //  'contributingBundleName'; should be due to some API shortcomings
+            //  is tracked in KIELER-2166
             if (Strings.isNullOrEmpty(this.contributingBundleName)) {
                 Bundle contributingBundle = KlighdPlugin.getDefault().getBundle()
                         .getBundleContext().getBundle(Long.parseLong(this.contributingBundleId));

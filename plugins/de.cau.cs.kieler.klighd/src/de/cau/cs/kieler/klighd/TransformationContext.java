@@ -19,8 +19,6 @@ import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Multimap;
 
-import de.cau.cs.kieler.core.properties.MapPropertyHolder;
-
 /**
  * The context in which a model transformation is executed.
  * 
@@ -31,10 +29,7 @@ import de.cau.cs.kieler.core.properties.MapPropertyHolder;
  * @param <T>
  *            the type of the target model
  */
-public final class TransformationContext<S, T> extends MapPropertyHolder {
-
-    /** the serial version UID. */
-    private static final long serialVersionUID = 5978103676819795006L;
+public final class TransformationContext<S, T> {
 
     /**
      * Creates a transformation context for a given transformation.

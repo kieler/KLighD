@@ -882,7 +882,7 @@ public class TransformationsGraph {
     /**
      * The class for paths in this graph.
      */
-    private static class Path {
+    private static class Path implements Cloneable {
 
         /** the source class node of the path. */
         private ClassNode sourceNode;

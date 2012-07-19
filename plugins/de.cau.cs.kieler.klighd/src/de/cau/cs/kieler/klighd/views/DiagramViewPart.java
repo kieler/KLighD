@@ -249,7 +249,7 @@ public class DiagramViewPart extends ViewPart {
      * 
      * @author chsch
      */
-    private class ButtonLayoutConfig implements ILayoutConfig {
+    private static class ButtonLayoutConfig implements ILayoutConfig {
 
         private Direction dir;
         private LayoutOptionData<?> option;
