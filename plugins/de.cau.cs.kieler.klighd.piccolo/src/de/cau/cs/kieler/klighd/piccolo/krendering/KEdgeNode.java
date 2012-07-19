@@ -39,7 +39,7 @@ public class KEdgeNode extends PChildRepresentedNode implements ILabeledGraphEle
     public static final String PROPERTY_BEND_POINTS = "bendPoints";
 
     /** the encapsulated {@code KEdge}. */
-    private KEdge edge;
+    private transient KEdge edge;
 
     /** the bend points. */
     private Point2D[] bendPoints = new Point2D[2];

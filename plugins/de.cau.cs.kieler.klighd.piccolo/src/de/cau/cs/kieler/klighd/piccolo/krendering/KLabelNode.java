@@ -36,7 +36,7 @@ public class KLabelNode extends PEmptyNode implements IGraphElement<KLabel> {
     public static final String PROPERTY_TEXT = "labelText";
 
     /** the encapsulated {@code KLabel}. */
-    private KLabel label;
+    private transient KLabel label;
 
     /** the text. */
     private String text = "";

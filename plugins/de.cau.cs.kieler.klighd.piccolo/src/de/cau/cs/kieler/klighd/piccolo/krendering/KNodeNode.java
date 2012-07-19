@@ -34,7 +34,7 @@ public class KNodeNode extends PZIndexNode implements INode, ILabeledGraphElemen
     private static final int PORT_LAYER = 1;
 
     /** the encapsulated {@code KNode}. */
-    private KNode node;
+    private transient KNode node;
     /** the parent node. */
     private INode parent;
 

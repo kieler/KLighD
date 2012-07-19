@@ -38,7 +38,7 @@ public class KPortNode extends PZIndexNode implements ILabeledGraphElement<KPort
     private static final int LABEL_LAYER = 1;
     
     /** the encapsulated {@code KPort}. */
-    private KPort port;
+    private transient KPort port;
 
     /**
      * Constructs a Piccolo node for representing a {@code KPort}.

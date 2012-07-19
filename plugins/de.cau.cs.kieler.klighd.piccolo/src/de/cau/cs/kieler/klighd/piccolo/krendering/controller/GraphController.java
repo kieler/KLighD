@@ -836,6 +836,8 @@ public class GraphController {
                         case KLayoutDataPackage.KSHAPE_LAYOUT__HEIGHT:
                             recordedChanges.put(nodeRep, getBounds(shapeLayout));
                             break;
+                        default:
+                            break;
                         }
                     } else {
 
@@ -864,6 +866,8 @@ public class GraphController {
                             nodeRep.setHeight(shapeLayout.getHeight());
                             break;
                         }
+                        default:
+                            break;
                         }
                         // }
                         // }, true);
@@ -895,6 +899,8 @@ public class GraphController {
                         case KLayoutDataPackage.KSHAPE_LAYOUT__HEIGHT:
                             recordedChanges.put(portRep, getBounds(shapeLayout));
                             break;
+                        default:
+                            break;
                         }
                     } else {
                         // MonitoredOperation.runInUI(new Runnable() {
@@ -920,6 +926,8 @@ public class GraphController {
                             portRep.setHeight(shapeLayout.getHeight());
                             break;
                         }
+                        default:
+                            break;
                         }
                         // }
                         // }, true);
@@ -951,6 +959,8 @@ public class GraphController {
                         case KLayoutDataPackage.KSHAPE_LAYOUT__HEIGHT:
                             recordedChanges.put(labelRep, getBounds(shapeLayout));
                             break;
+                        default:
+                            break;
                         }
                     } else {
                         // MonitoredOperation.runInUI(new Runnable() {
@@ -976,6 +986,8 @@ public class GraphController {
                             labelRep.setHeight(shapeLayout.getHeight());
                             break;
                         }
+                        default:
+                            break;
                         }
                         // }
                         // }, true);
@@ -1080,6 +1092,8 @@ public class GraphController {
                         });
                         break;
                     }
+                    default:
+                        break;
                     }
                 }
             }
@@ -1151,6 +1165,8 @@ public class GraphController {
                         });
                         break;
                     }
+                    default:
+                        break;
                     }
                 }
             }
@@ -1232,6 +1248,8 @@ public class GraphController {
                         });
                         break;
                     }
+                    default:
+                        break;
                     }
                 }
             }
@@ -1298,6 +1316,8 @@ public class GraphController {
                         });
                         break;
                     }
+                    default:
+                        break;
                     }
                 }
             }
@@ -1324,6 +1344,8 @@ public class GraphController {
                                 labelRep.setText(node.getText());
                             }
                         });
+                        break;
+                    default:
                         break;
                     }
                 }

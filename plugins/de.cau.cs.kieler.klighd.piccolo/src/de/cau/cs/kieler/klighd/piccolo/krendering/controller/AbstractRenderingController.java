@@ -285,6 +285,9 @@ public abstract class AbstractRenderingController<S extends KGraphElement, T ext
                             updateRendering();
                         }
                     });
+                    break;
+                default:
+                    break;
                 }
             }
         };
@@ -325,6 +328,8 @@ public abstract class AbstractRenderingController<S extends KGraphElement, T ext
                                 }
                             });
                         }
+                        break;
+                    default:
                         break;
                     }
                 }

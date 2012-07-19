@@ -27,7 +27,7 @@ public class KNodeTopNode extends PEmptyNode implements INode {
     private static final long serialVersionUID = 8395163186723344696L;
 
     /** the encapsulated {@code KNode}. */
-    private KNode node;
+    private transient KNode node;
 
     /** the Piccolo node representing the child area. */
     private KChildAreaNode childArea;

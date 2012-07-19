@@ -269,7 +269,7 @@ public class PAlignmentNode extends PEmptyNode implements PropertyChangeListener
     /**
      * A private data holder class.
      */
-    private class AlignmentData {
+    private static class AlignmentData {
 
         /** the horizontal alignment. */
         private HAlignment halignment;
