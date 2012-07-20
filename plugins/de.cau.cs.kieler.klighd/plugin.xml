@@ -38,7 +38,7 @@
       </combination>
       <combination
             active="true"
-            class="de.cau.cs.kieler.klighd.combinations.KLighdFocusSelectedElementInTreeViewerCombination"
+            class="de.cau.cs.kieler.klighd.combinations.KlighdFocusSelectedElementInTreeViewerCombination"
             name="Focus selected Element in tree viewer (KLighD)">
       </combination>
    </extension>
