@@ -20,7 +20,7 @@ package de.cau.cs.kieler.core.properties;
  * implementations.
  *
  * @kieler.design 2011-01-17 reviewed by haf, cmot, soh
- * @kieler.rating 2012-07-10 proposed yellow msp
+ * @kieler.rating proposed yellow 2012-07-10 msp
  * @param <T> type of the property
  * @author msp
  */

@@ -18,7 +18,7 @@ package de.cau.cs.kieler.core.alg;
  *
  * @param <T> type of instances that are created by this factory
  * @author msp
- * @kieler.rating 2012-07-10 proposed yellow msp
+ * @kieler.rating proposed yellow 2012-07-10 msp
  */
 public interface IFactory<T> {
 
