@@ -20,7 +20,7 @@ Workflow {
 	}
 
     // chsch: self-added
-	component = @de.cau.cs.kieler.kiml.klayoutdata.text.KLayoutData {}
-	component = @de.cau.cs.kieler.core.krendering.text.KRendering {}
+	component = @de.cau.cs.kieler.core.kgraph.text.klayoutdata.KLayoutData {}
+	component = @de.cau.cs.kieler.core.kgraph.text.krendering.KRendering {}
 	component = @de.cau.cs.kieler.core.kgraph.text.KGraph {}
 }

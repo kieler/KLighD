@@ -13,8 +13,8 @@ import org.eclipse.xtext.*;
 import org.eclipse.xtext.service.GrammarProvider;
 import org.eclipse.xtext.service.AbstractElementFinder.*;
 
-import de.cau.cs.kieler.core.krendering.text.services.KRenderingGrammarAccess;
-import de.cau.cs.kieler.kiml.klayoutdata.text.services.KLayoutDataGrammarAccess;
+import de.cau.cs.kieler.core.kgraph.text.krendering.services.KRenderingGrammarAccess;
+import de.cau.cs.kieler.core.kgraph.text.klayoutdata.services.KLayoutDataGrammarAccess;
 
 @Singleton
 public class KGraphGrammarAccess extends AbstractGrammarElementFinder {

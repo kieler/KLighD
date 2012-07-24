@@ -1,0 +1,78 @@
+grammar de.cau.cs.kieler.core.kgraph.text.klayoutdata.KLayoutData with org.eclipse.xtext.common.Terminals
+
+import "platform:/resource/de.cau.cs.kieler.kiml/model/klayoutdata.ecore" 
+
+import "platform:/resource/de.cau.cs.kieler.core.kgraph/model/kgraph.ecore" as kgraph
+import "http://www.eclipse.org/emf/2002/Ecore" as ecore
+
+KShapeLayout returns KShapeLayout:
+//	{KShapeLayout}
+//	'KShapeLayout'
+//	'{'
+//		('xpos' xpos=EFloat)?
+//		('ypos' ypos=EFloat)?
+//		('width' width=EFloat)?
+//		('height' height=EFloat)?
+//		('persistentEntries' '{' persistentEntries+=PersistentEntry ( "," persistentEntries+=PersistentEntry)* '}' )?
+//		('insets' insets=KInsets)?
+//    '}';
+	{KShapeLayout}
+	'KShapeLayout'
+	'{'
+		('xpos' xpos=EFloat)?
+		('ypos' ypos=EFloat)?
+		('width' width=EFloat)?
+		('height' height=EFloat)?
+		('insets' insets=KInsets)?
+		('mapProperties' ':' persistentEntries+=PersistentEntry ( ","? persistentEntries+=PersistentEntry)*)?
+    '}';
+
+KInsets returns KInsets:
+	{KInsets}
+	'KInsets'
+	'{'
+		('top' top=EFloat)?
+		('bottom' bottom=EFloat)?
+		('left' left=EFloat)?
+		('right' right=EFloat)?
+    '}';
+
+KEdgeLayout returns KEdgeLayout:
+//	'KEdgeLayout'
+//	'{'
+//		('persistentEntries' '{' persistentEntries+=PersistentEntry ( "," persistentEntries+=PersistentEntry)* '}' )?
+//		('bendPoints' '{' bendPoints+=KPoint ( "," bendPoints+=KPoint)* '}' )?
+//		'sourcePoint' sourcePoint=KPoint
+//		'targetPoint' targetPoint=KPoint
+//    '}';
+	'KEdgeLayout'
+	'{'
+		'sourcePoint' sourcePoint=KPoint
+		'targetPoint' targetPoint=KPoint
+		('bendPoints' ':' bendPoints+=KPoint ( ","? bendPoints+=KPoint)*)?
+		('mapProperties'':'  persistentEntries+=PersistentEntry ( ","? persistentEntries+=PersistentEntry)*)?
+    '}';
+
+KPoint returns KPoint:
+//	{KPoint}
+//	'KPoint'
+//	'{'
+//		('x' x=EFloat)?
+//		('y' y=EFloat)?
+//    '}';
+	{KPoint}
+	'KPoint' ('x' x=EFloat) ('y' y=EFloat);
+
+PersistentEntry returns kgraph::PersistentEntry:
+//	'PersistentEntry'
+//	'{'
+//		'key' key=EString
+//		('value' value=EString)?
+//    '}';
+    key=EString ('=' value=EString)?;
+
+EString returns ecore::EString:
+	STRING | ID;
+
+EFloat returns ecore::EFloat:
+    '-'? INT? '.' INT (('E'|'e') '-'? INT)?;

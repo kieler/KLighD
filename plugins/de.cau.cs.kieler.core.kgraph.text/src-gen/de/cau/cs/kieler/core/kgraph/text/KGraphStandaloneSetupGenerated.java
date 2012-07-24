@@ -15,7 +15,7 @@ import com.google.inject.Injector;
 public class KGraphStandaloneSetupGenerated implements ISetup {
 
 	public Injector createInjectorAndDoEMFRegistration() {
-		de.cau.cs.kieler.core.krendering.text.KRenderingStandaloneSetup.doSetup();
+		de.cau.cs.kieler.core.kgraph.text.krendering.KRenderingStandaloneSetup.doSetup();
 
 		Injector injector = createInjector();
 		register(injector);

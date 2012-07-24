@@ -17,7 +17,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
 
 import de.cau.cs.kieler.core.kgraph.KGraphPackage;
-import de.cau.cs.kieler.core.krendering.text.serializer.KRenderingTransientValueService;
+import de.cau.cs.kieler.core.kgraph.text.krendering.serializer.KRenderingTransientValueService;
 import de.cau.cs.kieler.kiml.klayoutdata.KLayoutDataPackage;
 
 /**

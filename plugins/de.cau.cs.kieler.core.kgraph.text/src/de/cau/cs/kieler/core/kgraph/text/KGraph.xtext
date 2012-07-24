@@ -1,4 +1,4 @@
-grammar de.cau.cs.kieler.core.kgraph.text.KGraph with de.cau.cs.kieler.core.krendering.text.KRendering 
+grammar de.cau.cs.kieler.core.kgraph.text.KGraph with de.cau.cs.kieler.core.kgraph.text.krendering.KRendering 
 
 //import "platform:/resource/de.cau.cs.kieler.core.kgraph/model/kgraph.ecore" 
 import "http://kieler.cs.cau.de/KGraph"

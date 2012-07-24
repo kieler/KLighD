@@ -5,7 +5,7 @@ package de.cau.cs.kieler.core.kgraph.text.ui.contentassist;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.xtext.*;
-import de.cau.cs.kieler.core.krendering.text.ui.contentassist.KRenderingProposalProvider;
+import de.cau.cs.kieler.core.kgraph.text.krendering.ui.contentassist.KRenderingProposalProvider;
 import org.eclipse.xtext.ui.editor.contentassist.ICompletionProposalAcceptor;
 import org.eclipse.xtext.ui.editor.contentassist.ContentAssistContext;
 
