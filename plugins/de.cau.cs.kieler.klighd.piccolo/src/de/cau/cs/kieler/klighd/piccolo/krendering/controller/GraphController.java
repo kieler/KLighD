@@ -1388,7 +1388,7 @@ public class GraphController {
         boolean approx = edgeLayout.getProperty(LayoutOptions.EDGE_ROUTING) == EdgeRouting.SPLINES;
         // in other cases an approximation is used
         if (approx && bendPoints.size() >= 1) {
-            bendPoints = KielerMath.appoximateSpline(bendPoints);
+            bendPoints = KielerMath.approximateSpline(bendPoints);
         }
         
         // build the bend point array
