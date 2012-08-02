@@ -532,6 +532,8 @@ public class DiagramLayoutManager implements IDiagramLayoutManager<KGraphElement
         // do not notify listeners about any change on the displayed KGraph but...
         final boolean deliver = targetEdgeLayout.eDeliver();
         targetEdgeLayout.eSetDeliver(false);
+
+        targetEdgeLayout.copyProperties(sourceEdgeLayout);
         
         targetEdgeLayout.setSourcePoint(copyPoint(sourceEdgeLayout.getSourcePoint()));
 
