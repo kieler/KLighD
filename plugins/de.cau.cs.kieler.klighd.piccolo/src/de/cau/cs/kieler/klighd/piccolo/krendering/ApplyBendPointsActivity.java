@@ -150,11 +150,20 @@ public class ApplyBendPointsActivity extends PInterpolatingActivity {
             double targetRel = targetRels[i];
             // only inserts proxy bend points as long as it is still possible to use all
             // existing ones (i.e. don't insert proxy bends instead of real ones)
-            if (sourceRels[k] > targetRel && targetRels.length - i > sourceRels.length - k) {
-                sourceBends[i] = MathUtil.getPoint(sourceBendsTemp, targetRel);
+
+            // chsch: original code, produced an ArrayIndexOutOfBound exception...
+            // if (sourceRels[k] > targetRel && targetRels.length - i > sourceRels.length - k) {
+            //     sourceBends[i] = MathUtil.getPoint(sourceBendsTemp, targetRel);
+            // } else {
+            //     sourceBends[i] = (Point2D) sourceBendsTemp[k].clone();
+            //     ++k;
+            // }
+            
+            // chsch: my replacement,  
+            if (k < sourceRels.length && sourceRels[k] <= targetRel) {
+                sourceBends[i] = (Point2D) sourceBendsTemp[k++].clone();
             } else {
-                sourceBends[i] = (Point2D) sourceBendsTemp[k].clone();
-                ++k;
+                sourceBends[i] = MathUtil.getPoint(sourceBendsTemp, targetRel);
             }
         }
         
@@ -187,6 +196,8 @@ public class ApplyBendPointsActivity extends PInterpolatingActivity {
         int k = 0;
         for (int i = 0; i < sourceRels.length; ++i) {
             double sourceRel = sourceRels[i];
+            
+            // chsch: the following code maybe erroneous, see foregoing method
             if (targetRels[k] > sourceRel && sourceRels.length - i > targetRels.length - k) {
                 targetBendsTemp[i] = MathUtil.getPoint(targetBends, sourceRel);
             } else {

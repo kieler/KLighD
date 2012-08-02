@@ -36,12 +36,16 @@ import de.cau.cs.kieler.core.kgraph.KLabeledGraphElement;
 import de.cau.cs.kieler.core.kgraph.KNode;
 import de.cau.cs.kieler.core.kgraph.KPort;
 import de.cau.cs.kieler.core.kgraph.util.KGraphSwitch;
+import de.cau.cs.kieler.core.math.KVector;
+import de.cau.cs.kieler.core.math.KVectorChain;
+import de.cau.cs.kieler.core.math.KielerMath;
 import de.cau.cs.kieler.core.properties.IProperty;
 import de.cau.cs.kieler.core.properties.Property;
 import de.cau.cs.kieler.kiml.klayoutdata.KEdgeLayout;
 import de.cau.cs.kieler.kiml.klayoutdata.KLayoutDataPackage;
-import de.cau.cs.kieler.kiml.klayoutdata.KPoint;
 import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout;
+import de.cau.cs.kieler.kiml.options.EdgeRouting;
+import de.cau.cs.kieler.kiml.options.LayoutOptions;
 import de.cau.cs.kieler.klighd.krendering.DiagramLayoutManager;
 import de.cau.cs.kieler.klighd.piccolo.activities.ApplySmartBoundsActivity;
 import de.cau.cs.kieler.klighd.piccolo.krendering.ApplyBendPointsActivity;
@@ -1375,13 +1379,25 @@ public class GraphController {
      * @return the bend points
      */
     private static Point2D[] getBendPoints(final KEdgeLayout edgeLayout) {
+
+        // chsch: the following 8 lines for approximating spline connections are mainly taken
+        //  from de.cau.cs.kieler.kiml.gmf.GmfLayoutEditPolicy#getBendPoints()
+        KVectorChain bendPoints = edgeLayout.createVectorChain();
+
+        // for connections that support splines the control points are passed without change
+        boolean approx = edgeLayout.getProperty(LayoutOptions.EDGE_ROUTING) == EdgeRouting.SPLINES;
+        // in other cases an approximation is used
+        if (approx && bendPoints.size() >= 1) {
+            bendPoints = KielerMath.appoximateSpline(bendPoints);
+        }
+        
         // build the bend point array
-        Point2D[] points = new Point2D[edgeLayout.getBendPoints().size() + 2];
+        Point2D[] points = new Point2D[bendPoints.size() + 2];
         int i = 0;
         points[i++] = new Point2D.Double(edgeLayout.getSourcePoint().getX(), edgeLayout
                 .getSourcePoint().getY());
-        for (KPoint bend : edgeLayout.getBendPoints()) {
-            points[i++] = new Point2D.Double(bend.getX(), bend.getY());
+        for (KVector bend : bendPoints) {
+            points[i++] = new Point2D.Double(bend.x, bend.y);
         }
         points[i] = new Point2D.Double(edgeLayout.getTargetPoint().getX(), edgeLayout
                 .getTargetPoint().getY());
