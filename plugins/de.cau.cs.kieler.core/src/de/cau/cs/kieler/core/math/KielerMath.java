@@ -280,7 +280,7 @@ public final class KielerMath {
      *            control points of a piecewise cubic spline
      * @return a vector chain that approximates the spline
      */
-    public static KVectorChain appoximateSpline(final KVectorChain controlPoints) {
+    public static KVectorChain approximateSpline(final KVectorChain controlPoints) {
         int ctrlPtCount = controlPoints.size();
         KVectorChain spline = new KVectorChain();
         ListIterator<KVector> controlIter = controlPoints.listIterator();
