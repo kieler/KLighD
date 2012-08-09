@@ -268,7 +268,7 @@ public final class KielerMath {
     public static KVector[] calcBezierPoints(final KVector... controlPoints) {
         // The number of approximation points simply equals the number of control points.
         // Although there might be more accurate approximations, this approach is the fastest.
-        int approximationCount = controlPoints.length;
+        int approximationCount = controlPoints.length + 1;
         return calcBezierPoints(approximationCount, controlPoints);
     }
 
