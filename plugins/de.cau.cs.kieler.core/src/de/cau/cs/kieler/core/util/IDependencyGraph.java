@@ -76,7 +76,7 @@ public interface IDependencyGraph<S extends Comparable<S>, T extends IDepending<
      *            the objects
      * @return a sorted list respecting dependencies between the objects
      */
-    List<T> dependencySort(final List<T> objects);
+    List<T> dependencySort(Collection<T> objects);
 
     /**
      * Derives a new object from an object in the graph, preserving the
