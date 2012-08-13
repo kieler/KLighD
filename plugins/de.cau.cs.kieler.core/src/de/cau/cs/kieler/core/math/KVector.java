@@ -308,17 +308,17 @@ public class KVector implements IDataObject, Cloneable {
     public double toDegrees() {
         double length = this.getLength();
         assert length > 0;
-        double sin = Math.asin(x / length);
-        double cos = Math.acos(y / length);
+        double dsin = Math.toDegrees(Math.asin(x / length));
+        double dcos = Math.toDegrees(Math.acos(y / length));
 
         if (y < 0 && x < 0) {
-            return (FULL_CIRCLE / 2) - Math.toDegrees(sin);
+            return (FULL_CIRCLE / 2) - dsin;
         } else if (y < 0) {
-            return Math.toDegrees(cos);
+            return dcos;
         } else if (x < 0) {
-            return FULL_CIRCLE + sin;
+            return FULL_CIRCLE + dsin;
         } else {
-            return Math.toDegrees(cos);
+            return dcos;
         }
     }
     
