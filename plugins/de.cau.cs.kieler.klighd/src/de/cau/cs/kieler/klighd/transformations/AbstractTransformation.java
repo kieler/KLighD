@@ -20,8 +20,8 @@ import java.lang.reflect.Method;
 //import com.google.common.collect.Maps;
 //import com.google.common.collect.Multimap;
 
-import de.cau.cs.kieler.core.KielerModelException;
 import de.cau.cs.kieler.core.WrappedException;
+import de.cau.cs.kieler.core.ui.KielerModelException;
 import de.cau.cs.kieler.klighd.ITransformation;
 import de.cau.cs.kieler.klighd.TransformationContext;
 
