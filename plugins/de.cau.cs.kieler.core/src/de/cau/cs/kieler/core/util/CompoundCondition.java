@@ -20,9 +20,9 @@ import java.util.List;
 /**
  * A condition that is composed of a set of other conditions.
  * 
- * @kieler.rating 2010-01-26 proposed yellow msp
  * @param <T> the type for which the condition is used
  * @author msp
+ * @deprecated use {@code com.google.common.base.Predicates.and(...)} instead (contained in Guava)
  */
 public class CompoundCondition<T> implements ICondition<T> {
 

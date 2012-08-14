@@ -16,9 +16,9 @@ package de.cau.cs.kieler.core.util;
 /**
  * Interface for conditions that can be evaluated on a specific object.
  *
- * @kieler.rating 2010-01-26 proposed yellow msp
  * @param <T> the type for which the condition is used
  * @author msp
+ * @deprecated use {@code com.google.common.base.Predicate} instead (contained in Guava)
  */
 public interface ICondition<T> {
 
