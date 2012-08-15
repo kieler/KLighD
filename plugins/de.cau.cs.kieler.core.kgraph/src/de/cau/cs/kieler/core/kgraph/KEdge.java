@@ -38,7 +38,6 @@ package de.cau.cs.kieler.core.kgraph;
  * @see de.cau.cs.kieler.core.kgraph.KGraphPackage#getKEdge()
  * @model
  * @generated
- * @kieler.design 2011-02-01 reviewed by cmot, soh
  */
 public interface KEdge extends KLabeledGraphElement {
     /**

@@ -24,7 +24,6 @@ import org.eclipse.emf.ecore.EFactory;
  * <!-- end-user-doc -->
  * @see de.cau.cs.kieler.core.kgraph.KGraphPackage
  * @generated
- * @kieler.design 2011-02-01 reviewed by cmot, soh
  */
 public interface KGraphFactory extends EFactory {
     /**

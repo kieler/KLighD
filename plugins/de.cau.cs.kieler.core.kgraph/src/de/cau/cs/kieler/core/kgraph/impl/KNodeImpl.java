@@ -53,7 +53,6 @@ import org.eclipse.emf.ecore.util.InternalEList;
  * </p>
  *
  * @generated
- * @kieler.design 2011-02-01 reviewed by cmot, soh
  */
 public class KNodeImpl extends KLabeledGraphElementImpl implements KNode {
     /**

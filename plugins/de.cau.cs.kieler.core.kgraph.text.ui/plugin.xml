@@ -9,7 +9,7 @@
             class="de.cau.cs.kieler.core.kgraph.text.ui.KGraphExecutableExtensionFactory:org.eclipse.xtext.ui.editor.XtextEditor"
             contributorClass="org.eclipse.ui.editors.text.TextEditorActionContributor"
             default="true"
-            extensions="kgraph"
+            extensions="kgt"
             id="de.cau.cs.kieler.core.kgraph.text.KGraph"
             name="KGraph Editor">
         </editor>
@@ -127,7 +127,7 @@
             locationURI="popup:org.eclipse.ui.popup.any?after=additions">
          <command
                commandId="de.cau.cs.kieler.core.model.convert"
-               label="Convert to Textual Model (kgraph)"
+               label="Convert to Textual Model (kgt)"
                style="push"
                tooltip="Convert the model to textual KGraph format">
             <visibleWhen
@@ -140,21 +140,21 @@
                      <test
                            forcePluginActivation="false"
                            property="org.eclipse.core.resources.extension"
-                           value="keg">
+                           value="kgx">
                      </test>
                   </adapt>
                </iterate>
             </visibleWhen>
             <parameter
                   name="de.cau.cs.kieler.convert.targetExtension"
-                  value="kgraph">
+                  value="kgt">
             </parameter>
          </command>
                   <command
                commandId="de.cau.cs.kieler.core.model.convert"
-               label="Convert to XMI Model (keg)"
+               label="Convert to XMI Model (kgx)"
                style="push"
-               tooltip="Convert the model to XMI-based KGRaph format">
+               tooltip="Convert the model to XMI-based KGraph format">
             <visibleWhen
                   checkEnabled="false">
                <iterate
@@ -165,14 +165,14 @@
                      <test
                            forcePluginActivation="false"
                            property="org.eclipse.core.resources.extension"
-                           value="kgraph">
+                           value="kgt">
                      </test>
                   </adapt>
                </iterate>
             </visibleWhen>
             <parameter
                   name="de.cau.cs.kieler.convert.targetExtension"
-                  value="keg">
+                  value="kgx">
             </parameter>
          </command>
      </menuContribution>
@@ -195,13 +195,13 @@
 		point="org.eclipse.emf.ecore.extension_parser">
 		<parser
 			class="de.cau.cs.kieler.core.kgraph.text.ui.KGraphExecutableExtensionFactory:org.eclipse.xtext.resource.IResourceFactory"
-			type="kgraph">
+			type="kgt">
 		</parser>
 	</extension>
 	<extension point="org.eclipse.xtext.extension_resourceServiceProvider">
         <resourceServiceProvider
             class="de.cau.cs.kieler.core.kgraph.text.ui.KGraphExecutableExtensionFactory:org.eclipse.xtext.ui.resource.IResourceUIServiceProvider"
-            uriExtension="kgraph">
+            uriExtension="kgt">
         </resourceServiceProvider>
     </extension>
 
@@ -209,19 +209,19 @@
   <extension point="org.eclipse.compare.contentViewers">
     <viewer id="de.cau.cs.kieler.core.kgraph.text.KGraph.compare.contentViewers"
             class="de.cau.cs.kieler.core.kgraph.text.ui.KGraphExecutableExtensionFactory:org.eclipse.xtext.ui.compare.InjectableViewerCreator"
-            extensions="kgraph">
+            extensions="kgt">
     </viewer>
   </extension>
   <extension point="org.eclipse.compare.contentMergeViewers">
     <viewer id="de.cau.cs.kieler.core.kgraph.text.KGraph.compare.contentMergeViewers"
             class="de.cau.cs.kieler.core.kgraph.text.ui.KGraphExecutableExtensionFactory:org.eclipse.xtext.ui.compare.InjectableViewerCreator"
-            extensions="kgraph" label="KGraph Compare">
+            extensions="kgt" label="KGraph Compare">
      </viewer>
   </extension>
   <extension point="org.eclipse.ui.editors.documentProviders">
     <provider id="de.cau.cs.kieler.core.kgraph.text.KGraph.editors.documentProviders"
             class="de.cau.cs.kieler.core.kgraph.text.ui.KGraphExecutableExtensionFactory:org.eclipse.xtext.ui.editor.model.XtextDocumentProvider"
-            extensions="kgraph">
+            extensions="kgt">
     </provider>
   </extension>
 
