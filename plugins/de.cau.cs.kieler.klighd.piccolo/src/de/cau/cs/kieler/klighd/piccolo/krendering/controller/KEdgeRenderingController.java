@@ -23,6 +23,7 @@ import de.cau.cs.kieler.core.krendering.KPolygon;
 import de.cau.cs.kieler.core.krendering.KPolyline;
 import de.cau.cs.kieler.core.krendering.KRendering;
 import de.cau.cs.kieler.core.krendering.KRenderingFactory;
+import de.cau.cs.kieler.core.krendering.KSpline;
 import de.cau.cs.kieler.core.krendering.KStyle;
 import de.cau.cs.kieler.klighd.piccolo.krendering.KEdgeNode;
 import de.cau.cs.kieler.klighd.piccolo.nodes.PSWTAdvancedPath;
@@ -77,7 +78,7 @@ public class KEdgeRenderingController extends AbstractRenderingController<KEdge,
      */
     private PNode handleEdgeRendering(final KRendering rendering, final KEdgeNode parent) {
         // the rendering of an edge has to be a polyline or spline
-        if (!(rendering instanceof KPolyline) || rendering instanceof KPolygon) {
+        if (!(rendering instanceof KPolyline)) {
             throw new RuntimeException("Non-polyline rendering attached to graph edge: "
                     + getGraphElement());
         }
@@ -88,14 +89,22 @@ public class KEdgeRenderingController extends AbstractRenderingController<KEdge,
                 (PNodeController<PSWTAdvancedPath>) createRendering(rendering,
                         new ArrayList<KStyle>(0), parent, new PBounds(0, 0, 1, 1),
                         getRepresentation());
-        controller.getNode().setPathToPolyline(parent.getBendPoints());
+        if (rendering instanceof KSpline) {
+            controller.getNode().setPathToSpline(parent.getBendPoints());
+        } else {
+            controller.getNode().setPathToPolyline(parent.getBendPoints());
+        }
         parent.setRepresentationNode(controller.getNode());
 
         // add a listener on the parent's bend points
         addListener(KEdgeNode.PROPERTY_BEND_POINTS, parent, controller.getNode(),
                 new PropertyChangeListener() {
                     public void propertyChange(final PropertyChangeEvent e) {
-                        controller.getNode().setPathToPolyline(parent.getBendPoints());
+                        if (rendering instanceof KSpline) {
+                            controller.getNode().setPathToSpline(parent.getBendPoints());
+                        } else {
+                            controller.getNode().setPathToPolyline(parent.getBendPoints());
+                        }
                     }
                 });
 

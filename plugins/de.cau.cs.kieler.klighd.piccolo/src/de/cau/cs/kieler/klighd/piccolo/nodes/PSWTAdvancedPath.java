@@ -46,6 +46,7 @@ import edu.umd.cs.piccolox.swt.SWTShapeManager;
  * 
  * @author mri
  */
+@SuppressWarnings("unused")
 public class PSWTAdvancedPath extends PNode {
 
     /**
@@ -158,7 +159,7 @@ public class PSWTAdvancedPath extends PNode {
         result.setPaint(Color.white);
         return result;
     }
-    
+
     /**
      * Creates a path representing an arc positioned at the coordinate provided with the dimensions,
      * angular start and angular extent provided.
@@ -182,6 +183,22 @@ public class PSWTAdvancedPath extends PNode {
         final PSWTAdvancedPath result = new PSWTAdvancedPath();
         result.setPathToArc(x, y, width, height, angStart, angExtend);
         result.setPaint(Color.white);
+        return result;
+    }
+
+    /**
+     * Creates a path for the spline for the given points.
+     * 
+     * @param points
+     *            array of points for the point lines
+     * @return created spline for the given points
+     * 
+     * @author sgu, chsch
+     */
+    public static PSWTAdvancedPath createSpline(final Point2D[] points) {
+        final PSWTAdvancedPath result = new PSWTSplinePath();
+        result.setPathToSpline(points);
+        result.setPaint(Color.black);
         return result;
     }
 
@@ -265,6 +282,14 @@ public class PSWTAdvancedPath extends PNode {
     public PSWTAdvancedPath(final Shape aShape) {
         this();
         setShape(aShape);
+    }
+
+    static class PSWTSplinePath extends PSWTAdvancedPath {
+
+        public PSWTSplinePath() {
+            super();
+        }
+
     }
 
     /**
@@ -405,7 +430,7 @@ public class PSWTAdvancedPath extends PNode {
     }
 
     // CHECKSTYLEOFF MagicNumber
-    
+
     private void drawShape(final SWTGraphics2D g2) {
         final double lw = g2.getLineWidth();
         if (shape instanceof Rectangle2D) {
@@ -645,6 +670,49 @@ public class PSWTAdvancedPath extends PNode {
             final float angStart, final float angExtend) {
         TEMP_ARC.setArc(x, y, width, height, angStart, angExtend, Arc2D.OPEN);
         setShape(TEMP_ARC);
+    }
+
+    /**
+     * @see de.cau.cs.kieler.core.model.gmf.figures.SplineConnection#outlineShape
+     * 
+     * Sets the path to a sequence of segments described by the points.
+     * 
+     * @param points
+     *            points to that lie along the generated path
+     */
+    public void setPathToSpline(final Point2D[] points) {
+        final GeneralPath path = new GeneralPath();
+        path.reset();
+        int size = points.length;
+        if (size < 1) {
+            return; // nothing to do
+        }
+        path.moveTo((float) points[0].getX(), (float) points[0].getY());
+
+        // draw cubic sections
+        int i = 1;
+        for (; i < size - 2; i += 3) { // SUPPRESS CHECKSTYLE MagicNumber
+            path.curveTo((float) points[i].getX(), (float) points[i].getY(),
+                    (float) points[i + 1].getX(), (float) points[i + 1].getY(),
+                    (float) points[i + 2].getX(), (float) points[i + 2].getY());
+        }
+
+        // draw remaining sections, won't happen if DOT was applied
+        // size-1: one straight line
+        // size-2: one quadratic
+        switch (size - i) {
+        case 1:
+            path.lineTo((float) points[i].getX(), (float) points[i].getY());
+            break;
+        case 2:
+            path.quadTo((float) points[i].getX(), (float) points[i].getY(),
+                    (float) points[i].getX(), (float) points[i].getY());
+            break;
+        default:
+            // this should not happen
+            break;
+        }
+        setShape(path);
     }
 
     /**
