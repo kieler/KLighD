@@ -968,6 +968,7 @@ public abstract class AbstractRenderingController<S extends KGraphElement, T ext
         // create the text
         PSWTText textNode = new PSWTText(text.getText() != null ? text.getText() : "");
         textNode.setGreekColor(null);
+        textNode.setTransparent(true);  // supplement due to KIELER-2155
         initializeRenderingNode(textNode);
 
         // create the alignment node wrapping the text
