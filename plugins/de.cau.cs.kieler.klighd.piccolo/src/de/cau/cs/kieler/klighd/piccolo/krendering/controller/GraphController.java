@@ -1406,7 +1406,9 @@ public class GraphController {
 
     /**
      * Finds the parent node for the edge representation and adds the edge to that node
-     * representations child area.
+     * representations child area. This is needed since the clipping property of
+     * {@link KChildAreaNode}s will clip the edges. Hence they are located in the
+     * {@link KChildAreaNode} of lowest common ancestor.
      * 
      * @param edgeRep
      *            the edge representation
@@ -1427,7 +1429,9 @@ public class GraphController {
     }
 
     /**
-     * Updates the offset of the edge representation.
+     * Updates the offset of the edge representation. Takes care about insets due to
+     * {@link de.cau.cs.kieler.core.krendering.KPlacementData KPlacementData} and the relocation
+     * performed in {@link #updateEdgeParent(KEdgeNode)}-
      * 
      * @param edgeNode
      *            the edge representation
@@ -1436,9 +1440,12 @@ public class GraphController {
         final PNode edgeNodeParent = edgeNode.getParent();
         if (edgeNodeParent != null) {
             KEdge edge = edgeNode.getGraphElement();
-            KNode source = edge.getSource();
-            INode sourceParentNode = RenderingContextData.get(source.getParent()).getProperty(
-                    INode.NODE_REP);
+            // chsch: change due to KIELER-1988; // SUPPRESS CHECKSTYLE NEXT 3 LineLength
+            //  edges uses different reference points as indicated by 
+            //  http://rtsys.informatik.uni-kiel.de/~kieler/files/documentation/klayoutdata-reference-points.png
+            //  see page http://rtsys.informatik.uni-kiel.de/confluence/display/KIELER/KLayoutData+Meta+Model
+            INode sourceParentNode = RenderingContextData.get(determineReferenceNodeOf(edge))
+                    .getProperty(INode.NODE_REP);
             final KChildAreaNode relativeChildArea = sourceParentNode.getChildArea();
 
             // the listener that updates the offset
@@ -1497,6 +1504,25 @@ public class GraphController {
         }
         edgeNode.addAttribute(EDGE_OFFSET_LISTENER_KEY, null);
         edgeNode.addAttribute(EDGE_OFFSET_LISTENED_KEY, null);
+    }
+
+    /** Needed as edge coordinates uses different reference nodes as indicated by
+     *   http://rtsys.informatik.uni-kiel.de/~kieler/files/documentation/klayoutdata-reference-points.png
+     *   see page http://rtsys.informatik.uni-kiel.de/confluence/display/KIELER/KLayoutData+Meta+Model.
+     * @param edge the edge whose reference node is to be determined,
+     * @return its reference node
+     */
+    private static KNode determineReferenceNodeOf(final KEdge edge) {
+        // determine whether the edge directs to an inner node
+        KNode node = edge.getTarget();
+        while (node != null && node != edge.getSource()) {
+            node = node.getParent();
+        }
+        // if (node != null) holds, node == edge.getSource() holds and therefore the target node is
+        // contained in the source node; in this case the source node's child area denotes the
+        // reference point of the edge's coordinates, the child area of the source node's parent
+        // otherwise, as indicated by the above mentioned illustration
+        return node != null ? edge.getSource() : edge.getSource().getParent();
     }
 
     /**
