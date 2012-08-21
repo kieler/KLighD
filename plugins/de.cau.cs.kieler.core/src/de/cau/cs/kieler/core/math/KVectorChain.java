@@ -239,13 +239,13 @@ public class KVectorChain extends LinkedList<KVector> implements IDataObject {
      * Calculate a point on this vector chain with given distance. The result is a point whose
      * distance from the first point on the chain equals the given distance. If the parameter is
      * negative, the result is mirrored, i.e. the distance is seen from the last point on the chain.
+     * The vector chain must contain at least one point.
      * 
      * @param dist
      *            the distance from the first point (if positive) or the last point (if negative)
      * @return a point on the vector chain
      */
     public KVector getPointOnLine(final double dist) {
-        // if KVectorChain.size() >0
         if (size() >= 2) {
             double absDistance = Math.abs(dist);
             double distanceSum = 0;
@@ -297,6 +297,62 @@ public class KVectorChain extends LinkedList<KVector> implements IDataObject {
             return get(0);
         } else {
             throw new IllegalStateException("Cannot determine a point on an empty vector chain.");
+        }
+    }
+    
+    /**
+     * Calculate the angle of a line segment of this vector chain with given distance. The angle is
+     * measured on the point whose distance from the first point on the chain equals the given
+     * distance. If the parameter is negative, the result is mirrored, i.e. the distance is seen
+     * from the last point on the chain and the angle is rotated by pi. The vector chain must contain
+     * at least two points.
+     * 
+     * @param dist
+     *            the distance from the first point (if positive) or the last point (if negative)
+     * @return an angle on the vector chain in radians
+     */
+    public double getAngleOnLine(final double dist) {
+        if (size() >= 2) {
+            double absDistance = Math.abs(dist);
+            double distanceSum = 0;
+            // if distance is positive
+            if (dist >= 0) {
+                ListIterator<KVector> iter = listIterator();
+                KVector currentPoint = iter.next();
+                KVector nextPoint = null;
+                while (iter.hasNext()) {
+                    nextPoint = iter.next();
+                    double additionalDistanceToNext = KVector.distance(currentPoint, nextPoint);
+                    if (additionalDistanceToNext > 0) {
+                        distanceSum += additionalDistanceToNext;
+                        if (distanceSum >= absDistance) {
+                            // the line segment has been found
+                            break;
+                        }
+                    }
+                    currentPoint = nextPoint;
+                }
+                return KVector.diff(nextPoint, currentPoint).toRadians();
+            } else {
+                ListIterator<KVector> iter = listIterator(size() - 1);
+                KVector currentPoint = iter.previous();
+                KVector nextPoint = null;
+                while (iter.hasPrevious()) {
+                    nextPoint = iter.previous();
+                    double additionalDistanceToNext = KVector.distance(currentPoint, nextPoint);
+                    if (additionalDistanceToNext > 0) {
+                        distanceSum += additionalDistanceToNext;
+                        if (distanceSum >= absDistance) {
+                            // the line segment has been found
+                            break;
+                        }
+                    }
+                    currentPoint = nextPoint;
+                }
+                return KVector.diff(nextPoint, currentPoint).toRadians();
+            }
+        } else {
+            throw new IllegalStateException("Need at least two points to determine an angle.");
         }
     }
 
