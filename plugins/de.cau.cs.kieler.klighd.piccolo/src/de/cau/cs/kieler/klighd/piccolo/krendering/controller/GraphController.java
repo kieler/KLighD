@@ -36,6 +36,9 @@ import de.cau.cs.kieler.core.kgraph.KLabeledGraphElement;
 import de.cau.cs.kieler.core.kgraph.KNode;
 import de.cau.cs.kieler.core.kgraph.KPort;
 import de.cau.cs.kieler.core.kgraph.util.KGraphSwitch;
+import de.cau.cs.kieler.core.krendering.KPolyline;
+import de.cau.cs.kieler.core.krendering.KRendering;
+import de.cau.cs.kieler.core.krendering.KSpline;
 import de.cau.cs.kieler.core.math.KVector;
 import de.cau.cs.kieler.core.math.KVectorChain;
 import de.cau.cs.kieler.core.math.KielerMath;
@@ -733,8 +736,12 @@ public class GraphController {
     private void updateLayout(final KEdgeNode edgeRep) {
         KEdge edge = edgeRep.getGraphElement();
         KEdgeLayout edgeLayout = edge.getData(KEdgeLayout.class);
+        KRendering rendering = edge.getData(KRendering.class);
+        boolean renderedAsPolyline = rendering instanceof KPolyline
+                && !(rendering instanceof KSpline);
+        
         if (edgeLayout != null) {
-            Point2D[] bendPoints = getBendPoints(edgeLayout);
+            Point2D[] bendPoints = getBendPoints(edgeLayout, renderedAsPolyline);
             edgeRep.setBendPoints(bendPoints);
 
             if (sync) {
@@ -1013,6 +1020,10 @@ public class GraphController {
     private void installLayoutSyncAdapter(final KEdgeNode edgeRep) {
         final KEdge edge = edgeRep.getGraphElement();
         final KEdgeLayout edgeLayout = edge.getData(KEdgeLayout.class);
+        final KRendering rendering = edge.getData(KRendering.class);
+        final boolean renderedAsPolyline = rendering instanceof KPolyline
+                && !(rendering instanceof KSpline);
+        
         if (edgeLayout != null) {
             // register adapter on the edge layout to stay in sync
             edgeLayout.eAdapters().add(new EContentAdapter() {
@@ -1028,9 +1039,9 @@ public class GraphController {
                                     || featureId == KLayoutDataPackage.KEDGE_LAYOUT__TARGET_POINT)) {
 
                         if (record) {
-                            recordedChanges.put(edgeRep, getBendPoints(edgeLayout));
+                            recordedChanges.put(edgeRep, getBendPoints(edgeLayout, renderedAsPolyline));
                         } else {
-                            edgeRep.setBendPoints(getBendPoints(edgeLayout));
+                            edgeRep.setBendPoints(getBendPoints(edgeLayout, renderedAsPolyline));
                             // original:
                             // updateLayout(edgeRep);
                         }
@@ -1376,31 +1387,32 @@ public class GraphController {
      * 
      * @param edgeLayout
      *            the edge layout
+     * @param renderedAsPolyline
+     *            true if the edge is rendered by a polyline, causes approximation of the bend points
+     *            if the layouter returned spline-based ones
      * @return the bend points
      */
-    private static Point2D[] getBendPoints(final KEdgeLayout edgeLayout) {
+    private static Point2D[] getBendPoints(final KEdgeLayout edgeLayout,
+            final boolean renderedAsPolyline) {
 
         // chsch: the following 8 lines for approximating spline connections are mainly taken
         //  from de.cau.cs.kieler.kiml.gmf.GmfLayoutEditPolicy#getBendPoints()
         KVectorChain bendPoints = edgeLayout.createVectorChain();
 
         // for connections that support splines the control points are passed without change
-        boolean approx = edgeLayout.getProperty(LayoutOptions.EDGE_ROUTING) == EdgeRouting.SPLINES;
-        // in other cases an approximation is used
-        if (approx && bendPoints.size() >= 1) {
+        boolean layoutedAsSpline =
+                edgeLayout.getProperty(LayoutOptions.EDGE_ROUTING) == EdgeRouting.SPLINES;
+        // in other cases an approximation is used // SUPPRESS CHECKSTYLE NEXT MagicNumber
+        if (renderedAsPolyline && layoutedAsSpline && bendPoints.size() >= 4) {
             bendPoints = KielerMath.approximateSpline(bendPoints);
         }
         
         // build the bend point array
-        Point2D[] points = new Point2D[bendPoints.size() + 2];
+        Point2D[] points = new Point2D[bendPoints.size()];
         int i = 0;
-        points[i++] = new Point2D.Double(edgeLayout.getSourcePoint().getX(), edgeLayout
-                .getSourcePoint().getY());
         for (KVector bend : bendPoints) {
             points[i++] = new Point2D.Double(bend.x, bend.y);
         }
-        points[i] = new Point2D.Double(edgeLayout.getTargetPoint().getX(), edgeLayout
-                .getTargetPoint().getY());
         return points;
     }
 

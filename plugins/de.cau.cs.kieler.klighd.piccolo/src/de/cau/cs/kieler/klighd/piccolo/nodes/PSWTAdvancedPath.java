@@ -46,7 +46,6 @@ import edu.umd.cs.piccolox.swt.SWTShapeManager;
  * 
  * @author mri
  */
-@SuppressWarnings("unused")
 public class PSWTAdvancedPath extends PNode {
 
     /**
@@ -196,7 +195,7 @@ public class PSWTAdvancedPath extends PNode {
      * @author sgu, chsch
      */
     public static PSWTAdvancedPath createSpline(final Point2D[] points) {
-        final PSWTAdvancedPath result = new PSWTSplinePath();
+        final PSWTAdvancedPath result = new PSWTAdvancedPath();
         result.setPathToSpline(points);
         result.setPaint(Color.black);
         return result;
@@ -282,14 +281,6 @@ public class PSWTAdvancedPath extends PNode {
     public PSWTAdvancedPath(final Shape aShape) {
         this();
         setShape(aShape);
-    }
-
-    static class PSWTSplinePath extends PSWTAdvancedPath {
-
-        public PSWTSplinePath() {
-            super();
-        }
-
     }
 
     /**
@@ -697,7 +688,7 @@ public class PSWTAdvancedPath extends PNode {
                     (float) points[i + 2].getX(), (float) points[i + 2].getY());
         }
 
-        // draw remaining sections, won't happen if DOT was applied
+        // draw remaining sections, won't happen if 'Graphviz Dot' was applied
         // size-1: one straight line
         // size-2: one quadratic
         switch (size - i) {
