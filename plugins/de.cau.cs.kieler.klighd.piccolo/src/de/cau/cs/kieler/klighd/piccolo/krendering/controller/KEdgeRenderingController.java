@@ -78,7 +78,9 @@ public class KEdgeRenderingController extends AbstractRenderingController<KEdge,
      */
     private PNode handleEdgeRendering(final KRendering rendering, final KEdgeNode parent) {
         // the rendering of an edge has to be a polyline or spline
-        if (!(rendering instanceof KPolyline)) {
+        //  hence, throw an exception if a non-KPolyline rendering or a KPolygon is served,
+        //  since KPolygon is a special KPolyline
+        if (!(rendering instanceof KPolyline) || rendering instanceof KPolygon) {
             throw new RuntimeException("Non-polyline rendering attached to graph edge: "
                     + getGraphElement());
         }
