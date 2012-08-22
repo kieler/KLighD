@@ -249,11 +249,11 @@ public class KVectorChain extends LinkedList<KVector> implements IDataObject {
         if (size() >= 2) {
             double absDistance = Math.abs(dist);
             double distanceSum = 0;
-            // if distance is positive
             if (dist >= 0) {
+                // traverse the points in normal direction
                 ListIterator<KVector> iter = listIterator();
                 KVector currentPoint = iter.next();
-                while (iter.hasNext()) {
+                do {
                     double oldDistanceSum = distanceSum;
                     KVector nextPoint = iter.next();
                     double additionalDistanceToNext = KVector.distance(currentPoint, nextPoint);
@@ -269,12 +269,13 @@ public class KVectorChain extends LinkedList<KVector> implements IDataObject {
                         }
                     }
                     currentPoint = nextPoint;
-                }
+                } while (iter.hasNext());
                 return iter.previous();
             } else {
+                // traverse the points in reversed direction
                 ListIterator<KVector> iter = listIterator(size() - 1);
                 KVector currentPoint = iter.previous();
-                while (iter.hasPrevious()) {
+                do {
                     double oldDistanceSum = distanceSum;
                     KVector nextPoint = iter.previous();
                     double additionalDistanceToNext = KVector.distance(currentPoint, nextPoint);
@@ -290,7 +291,7 @@ public class KVectorChain extends LinkedList<KVector> implements IDataObject {
                         }
                     }
                     currentPoint = nextPoint;
-                }
+                } while (iter.hasPrevious());
                 return iter.next();
             }
         } else if (size() == 1) {
@@ -315,12 +316,13 @@ public class KVectorChain extends LinkedList<KVector> implements IDataObject {
         if (size() >= 2) {
             double absDistance = Math.abs(dist);
             double distanceSum = 0;
-            // if distance is positive
             if (dist >= 0) {
+                // traverse the points in normal direction
                 ListIterator<KVector> iter = listIterator();
-                KVector currentPoint = iter.next();
-                KVector nextPoint = null;
-                while (iter.hasNext()) {
+                KVector currentPoint;
+                KVector nextPoint = iter.next();
+                do {
+                    currentPoint = nextPoint;
                     nextPoint = iter.next();
                     double additionalDistanceToNext = KVector.distance(currentPoint, nextPoint);
                     if (additionalDistanceToNext > 0) {
@@ -330,14 +332,15 @@ public class KVectorChain extends LinkedList<KVector> implements IDataObject {
                             break;
                         }
                     }
-                    currentPoint = nextPoint;
-                }
+                } while (iter.hasNext());
                 return KVector.diff(nextPoint, currentPoint).toRadians();
             } else {
+                // traverse the points in reversed direction
                 ListIterator<KVector> iter = listIterator(size() - 1);
-                KVector currentPoint = iter.previous();
-                KVector nextPoint = null;
-                while (iter.hasPrevious()) {
+                KVector currentPoint;
+                KVector nextPoint = iter.previous();
+                do {
+                    currentPoint = nextPoint;
                     nextPoint = iter.previous();
                     double additionalDistanceToNext = KVector.distance(currentPoint, nextPoint);
                     if (additionalDistanceToNext > 0) {
@@ -347,8 +350,7 @@ public class KVectorChain extends LinkedList<KVector> implements IDataObject {
                             break;
                         }
                     }
-                    currentPoint = nextPoint;
-                }
+                } while (iter.hasPrevious());
                 return KVector.diff(nextPoint, currentPoint).toRadians();
             }
         } else {
