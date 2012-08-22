@@ -45,7 +45,6 @@ import org.eclipse.emf.ecore.util.EcoreUtil;
  * </p>
  *
  * @generated
- * @kieler.design 2011-02-01 reviewed by cmot, soh
  */
 public class KEdgeImpl extends KLabeledGraphElementImpl implements KEdge {
     /**

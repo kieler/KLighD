@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<genmodel:GenModel xmi:version="2.0"
-    xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
+<genmodel:GenModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
     xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" copyrightText="KIELER - Kiel Integrated Environment for Layout Eclipse RichClient&#xA;&#xA;http://www.informatik.uni-kiel.de/rtsys/kieler/&#xA;&#xA;Copyright 2009 by&#xA;+ Christian-Albrechts-University of Kiel&#xA;  + Department of Computer Science&#xA;    + Real-Time and Embedded Systems Group&#xA;&#xA;This code is provided under the terms of the Eclipse Public License (EPL).&#xA;See the file epl-v10.html for the license text."
     modelDirectory="/de.cau.cs.kieler.core.kgraph/src" editDirectory="/de.cau.cs.kieler.core.kgraph.edit/src"
     editorDirectory="/de.cau.cs.kieler.core.kgraph.editor/src" modelPluginID="de.cau.cs.kieler.core.kgraph"
@@ -11,7 +10,7 @@
     language="">
   <foreignModel>kgraph.ecore</foreignModel>
   <genPackages prefix="KGraph" basePackage="de.cau.cs.kieler.core" disposableProviderFactory="true"
-      ecorePackage="kgraph.ecore#/">
+      fileExtensions="kgraph,kgx" ecorePackage="kgraph.ecore#/">
     <genDataTypes ecoreDataType="kgraph.ecore#//IProperty">
       <genTypeParameters ecoreTypeParameter="kgraph.ecore#//IProperty/T"/>
     </genDataTypes>
@@ -53,6 +52,12 @@
           propertySortChoices="true" ecoreFeature="ecore:EReference kgraph.ecore#//KEdge/sourcePort"/>
       <genFeatures notify="false" createChild="false" propertyDescription="The target port, which may be null for graphs without ports"
           propertySortChoices="true" ecoreFeature="ecore:EReference kgraph.ecore#//KEdge/targetPort"/>
+      <genOperations ecoreOperation="kgraph.ecore#//KEdge/connectSourcePort">
+        <genParameters ecoreParameter="kgraph.ecore#//KEdge/connectSourcePort/port"/>
+      </genOperations>
+      <genOperations ecoreOperation="kgraph.ecore#//KEdge/connectTargetPort">
+        <genParameters ecoreParameter="kgraph.ecore#//KEdge/connectTargetPort/port"/>
+      </genOperations>
     </genClasses>
     <genClasses ecoreClass="kgraph.ecore#//KPort">
       <genFeatures property="None" notify="false" createChild="false" propertyDescription="The node that contains this port"

@@ -54,7 +54,6 @@ import org.eclipse.emf.ecore.util.InternalEList;
  * </p>
  *
  * @generated
- * @kieler.design 2011-02-01 reviewed by cmot, soh
  */
 public abstract class EMapPropertyHolderImpl extends EObjectImpl implements EMapPropertyHolder {
     /**

@@ -30,7 +30,6 @@ package de.cau.cs.kieler.core.kgraph;
  * @see de.cau.cs.kieler.core.kgraph.KGraphPackage#getKGraphData()
  * @model
  * @generated
- * @kieler.design 2011-02-01 reviewed by cmot, soh
  */
 public interface KGraphData extends EMapPropertyHolder {
 } // KGraphData

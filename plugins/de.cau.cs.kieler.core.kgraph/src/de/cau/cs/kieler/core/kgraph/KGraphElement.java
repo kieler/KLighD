@@ -41,7 +41,6 @@ import org.eclipse.emf.ecore.EObject;
  * @see de.cau.cs.kieler.core.kgraph.KGraphPackage#getKGraphElement()
  * @model abstract="true"
  * @generated
- * @kieler.design 2011-02-01 reviewed by cmot, soh
  */
 public interface KGraphElement extends EObject {
     /**

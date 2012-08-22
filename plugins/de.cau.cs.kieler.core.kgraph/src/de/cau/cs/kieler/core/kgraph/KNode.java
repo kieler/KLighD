@@ -44,7 +44,6 @@ import org.eclipse.emf.common.util.EList;
  * @see de.cau.cs.kieler.core.kgraph.KGraphPackage#getKNode()
  * @model
  * @generated
- * @kieler.design 2011-02-01 reviewed by cmot, soh
  */
 public interface KNode extends KLabeledGraphElement {
     /**

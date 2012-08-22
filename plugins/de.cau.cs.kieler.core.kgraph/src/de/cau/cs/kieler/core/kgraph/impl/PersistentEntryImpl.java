@@ -36,7 +36,6 @@ import org.eclipse.emf.ecore.impl.EObjectImpl;
  * </p>
  *
  * @generated
- * @kieler.design 2011-02-01 reviewed by cmot, soh
  */
 public class PersistentEntryImpl extends EObjectImpl implements PersistentEntry {
     /**

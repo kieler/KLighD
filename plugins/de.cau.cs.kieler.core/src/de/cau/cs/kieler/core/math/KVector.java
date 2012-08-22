@@ -306,20 +306,7 @@ public class KVector implements IDataObject, Cloneable {
      * @return value within [0,360)
      */
     public double toDegrees() {
-        double length = this.getLength();
-        assert length > 0;
-        double dsin = Math.toDegrees(Math.asin(x / length));
-        double dcos = Math.toDegrees(Math.acos(y / length));
-
-        if (y < 0 && x < 0) {
-            return (FULL_CIRCLE / 2) - dsin;
-        } else if (y < 0) {
-            return dcos;
-        } else if (x < 0) {
-            return FULL_CIRCLE + dsin;
-        } else {
-            return dcos;
-        }
+        return Math.toDegrees(toRadians());
     }
     
     /**
@@ -330,17 +317,13 @@ public class KVector implements IDataObject, Cloneable {
     public double toRadians() {
         double length = this.getLength();
         assert length > 0;
-        double sin = Math.asin(x / length);
-        double cos = Math.acos(y / length);
 
-        if (y < 0 && x < 0) {
-            return Math.PI - sin;
-        } else if (y < 0) {
-            return cos;
-        } else if (x < 0) {
-            return 2 * Math.PI + sin;
-        } else {
-            return cos;
+        if (x >= 0 && y >= 0) {  // 1st quadrant
+            return Math.asin(y / length);
+        } else if (x < 0) {      // 2nd or 3rd quadrant
+            return Math.PI - Math.asin(y / length);
+        } else {                 // 4th quadrant
+            return 2 * Math.PI + Math.asin(y / length);
         }
     }
 

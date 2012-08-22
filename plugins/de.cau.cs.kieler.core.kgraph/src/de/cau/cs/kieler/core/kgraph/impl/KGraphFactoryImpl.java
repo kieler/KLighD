@@ -40,7 +40,6 @@ import org.eclipse.emf.ecore.plugin.EcorePlugin;
  * An implementation of the model <b>Factory</b>.
  * <!-- end-user-doc -->
  * @generated
- * @kieler.design 2011-02-01 reviewed by cmot, soh
  */
 public class KGraphFactoryImpl extends EFactoryImpl implements KGraphFactory {
     /**
