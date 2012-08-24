@@ -1525,6 +1525,11 @@ public class GraphController {
      * @return its reference node
      */
     private static KNode determineReferenceNodeOf(final KEdge edge) {
+        // in case of a self loop, the reference node the source/target's parent
+        if (edge.getSource() == edge.getTarget()) {
+            return edge.getSource().getParent();
+        }
+        
         // determine whether the edge directs to an inner node
         KNode node = edge.getTarget();
         while (node != null && node != edge.getSource()) {
