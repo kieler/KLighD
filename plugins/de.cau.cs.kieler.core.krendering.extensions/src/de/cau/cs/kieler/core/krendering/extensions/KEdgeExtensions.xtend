@@ -59,6 +59,13 @@ class KEdgeExtensions {
     }
     
     /**
+     * A convenience method to create a KEdge without relating it to a business object. 
+     */
+    def KEdge createEdge() {
+        return KimlUtil::createInitializedEdge()
+    }
+    
+    /**
      * An alias of {@link #getEdge(Object o1)} allowing to express in business that the KEdge will
      * be created at this place. It is just syntactic sugar.  
      */

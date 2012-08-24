@@ -16,8 +16,6 @@ import de.cau.cs.kieler.kiml.LayoutOptionData$Type
 import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout
 import de.cau.cs.kieler.kiml.util.KimlUtil
 
-import org.eclipse.emf.ecore.EObject
-
 class KNodeExtensions {
 	
     private static val AnnotationsPackage annotationsPackage = AnnotationsPackage::eINSTANCE;
@@ -29,14 +27,21 @@ class KNodeExtensions {
     /**
      * A convenient getter preserving the element image relation by a create extension.
      */	
-    def KNode create node: KimlUtil::createInitializedNode getNode(EObject o) {
+    def KNode create node: KimlUtil::createInitializedNode getNode(Object o) {
+    }
+    
+    /**
+     * A convenience method to create a KNode without relating it to a business object. 
+     */
+    def KNode createNode() {
+        return KimlUtil::createInitializedNode();
     }
     
     /**
      * An alias of {@link #getNode} allowing to express in business that the KNode will
      * be created at this place. It is just syntactic sugar.  
      */
-    def KNode createNode(EObject o) {
+    def KNode createNode(Object o) {
         return o.node
     }
     
