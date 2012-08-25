@@ -47,7 +47,7 @@ public class KGraphFormatter extends AbstractDeclarativeFormatter {
                 "bottomRight", "lineStyle", "lineWidth", "backgroundColor", "forgroundColor",
                 "backgroundVisibility", "foregroundVisibility", "font", "fontSize", "fontColor",
                 "bold", "italic", "horizontalAlignment", "verticalAlignment", "left", "right",
-                "location", "xOffset", "width")) {
+                "location", "xOffset", "width", "insets", "KInsets")) {
             c.setLinewrap().before(word);
         }
         for (Keyword word : f.findKeywords("points")) {
@@ -63,6 +63,8 @@ public class KGraphFormatter extends AbstractDeclarativeFormatter {
         c.setLinewrap().before(
                 f.getKRenderingGrammarAccess().getKLayoutDataGrammarAccess().getKEdgeLayoutAccess()
                         .getTargetPointKeyword_4());
+        c.setLinewrap().after(
+                f.getPersistentEntryAccess().getValueEStringParserRuleCall_1_1_0());
         
         c.setLinewrap(0, 1, 2).before(f.getSL_COMMENTRule());
         c.setLinewrap(0, 1, 2).before(f.getML_COMMENTRule());
