@@ -84,6 +84,7 @@ import de.cau.cs.kieler.klighd.piccolo.nodes.PSWTAdvancedPath;
 import de.cau.cs.kieler.klighd.piccolo.nodes.PSWTAdvancedPath.LineStyle;
 import de.cau.cs.kieler.klighd.piccolo.util.NodeUtil;
 import edu.umd.cs.piccolo.PNode;
+import edu.umd.cs.piccolo.nodes.PImage;
 import edu.umd.cs.piccolo.nodes.PPath;
 import edu.umd.cs.piccolo.util.PBounds;
 import edu.umd.cs.piccolox.swt.PSWTText;
@@ -1227,8 +1228,24 @@ public abstract class AbstractRenderingController<S extends KGraphElement, T ext
     protected PNodeController<?> createImage(final KImage image, final Styles styles,
             final List<KStyle> propagatedStyles, final PNode parent, final PBounds initialBounds,
             final Object key) {
-        // TODO implement this and return a real node controller
-        return createDummy(parent, initialBounds);
+        
+        final PImage img = new PImage(image.getImagePath());
+        parent.addChild(img);
+
+        // handle children
+        if (image.getChildren().size() > 0) {
+            handleChildren(image.getChildren(), image.getChildPlacement(), propagatedStyles, img,
+                    key);
+        }
+
+        // create a controller for the rounded rectangle and return it
+        return new PNodeController<PImage>(img) {
+            public void setBounds(final PBounds bounds) {
+                // apply the bounds
+                getNode().setBounds(bounds);
+                NodeUtil.applyTranslation(getNode(), (float) bounds.x, (float) bounds.y);
+            }
+        };
     }
 
     /**
