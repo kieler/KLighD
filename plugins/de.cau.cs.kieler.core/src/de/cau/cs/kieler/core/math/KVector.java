@@ -467,6 +467,24 @@ public class KVector implements IDataObject, Cloneable {
         }
         return this;
     }
+    
+    /**
+     * Determine whether any of the two values are NaN.
+     * 
+     * @return true if x is NaN or y is NaN
+     */
+    public boolean isNaN() {
+        return Double.isNaN(x) || Double.isNaN(y);
+    }
+    
+    /**
+     * Determine whether any of the two values are infinite.
+     * 
+     * @return true if x is infinite or y is infinite
+     */
+    public boolean isInfinite() {
+        return Double.isInfinite(x) || Double.isInfinite(y);
+    }
 
     /**
      * {@inheritDoc}
