@@ -80,7 +80,7 @@ class KNodeExtensions {
      */
     def void transferAnnotationsOf(KNode node, Annotatable a) {
         val service = LayoutDataService::instance;
-        a.annotations.forEach[
+        a.annotations.filter[!it.name.nullOrEmpty].forEach[
             val LayoutOptionData<?> data =
                 service.getOptionData(it.name)?:
                 service.getOptionDataBySuffix(it.name);
