@@ -234,6 +234,34 @@ public class KVectorChain extends LinkedList<KVector> implements IDataObject {
         }
         return length;
     }
+    
+    /**
+     * Determine whether any of the contained vectors is NaN.
+     * 
+     * @return true if one of the vectors is NaN
+     */
+    public boolean isNaN() {
+        for (KVector v : this) {
+            if (v.isNaN()) {
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    /**
+     * Determine whether any of the contained vectors is infinite.
+     * 
+     * @return true if one of the vectors is infinite
+     */
+    public boolean isInfinite() {
+        for (KVector v : this) {
+            if (v.isInfinite()) {
+                return true;
+            }
+        }
+        return false;
+    }
 
     /**
      * Calculate a point on this vector chain with given distance. The result is a point whose

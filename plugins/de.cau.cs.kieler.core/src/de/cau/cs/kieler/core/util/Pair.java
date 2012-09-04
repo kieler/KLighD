@@ -140,12 +140,11 @@ public class Pair<F, S> {
     public boolean equals(final Object obj) {
         if (obj instanceof Pair<?, ?>) {
             Pair<?, ?> other = (Pair<?, ?>) obj;
-            return this.first == null ? other.first == null
-                    && (this.second == null ? other.second == null
-                    : this.second.equals(other.second))
-                    : this.first.equals(other.first)
-                    && (this.second == null ? other.second == null
+            boolean firstEqual = (this.first == null ? other.first == null
+                    : this.first.equals(other.first));
+            boolean secondEqual = (this.second == null ? other.second == null
                     : this.second.equals(other.second));
+            return firstEqual && secondEqual;
         } else {
             return false;
         }
