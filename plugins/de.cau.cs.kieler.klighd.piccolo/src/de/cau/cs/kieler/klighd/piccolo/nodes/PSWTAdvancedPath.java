@@ -197,7 +197,9 @@ public class PSWTAdvancedPath extends PNode {
     public static PSWTAdvancedPath createSpline(final Point2D[] points) {
         final PSWTAdvancedPath result = new PSWTAdvancedPath();
         result.setPathToSpline(points);
-        result.setPaint(Color.black);
+        // chsch: do not set the paint of a line this will impair the
+        //  selection determination (using #intersects(), see below)
+        // result.setPaint(Color.white);
         return result;
     }
 
@@ -212,7 +214,9 @@ public class PSWTAdvancedPath extends PNode {
     public static PSWTAdvancedPath createPolyline(final Point2D[] points) {
         final PSWTAdvancedPath result = new PSWTAdvancedPath();
         result.setPathToPolyline(points);
-        result.setPaint(Color.white);
+        // chsch: do not set the paint of a line this will impair the
+        //  selection determination (using #intersects(), see below)
+        // result.setPaint(Color.white);
         return result;
     }
 
@@ -229,7 +233,9 @@ public class PSWTAdvancedPath extends PNode {
     public static PSWTAdvancedPath createPolyline(final float[] xp, final float[] yp) {
         final PSWTAdvancedPath result = new PSWTAdvancedPath();
         result.setPathToPolyline(xp, yp);
-        result.setPaint(Color.white);
+        // chsch: do not set the paint of a line this will impair the
+        //  selection determination (using #intersects(), see below)
+        // result.setPaint(Color.white);
         return result;
     }
 
