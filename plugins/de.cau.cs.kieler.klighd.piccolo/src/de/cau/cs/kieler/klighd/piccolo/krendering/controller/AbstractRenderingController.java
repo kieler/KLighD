@@ -27,7 +27,6 @@ import java.util.Map;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.impl.AdapterImpl;
 import org.eclipse.emf.ecore.EStructuralFeature;
-import org.eclipse.gef.ui.properties.SetPropertyValueCommand;
 import org.eclipse.ui.PlatformUI;
 
 import com.google.common.collect.Lists;
@@ -74,7 +73,6 @@ import de.cau.cs.kieler.core.properties.IProperty;
 import de.cau.cs.kieler.core.properties.IPropertyHolder;
 import de.cau.cs.kieler.core.properties.Property;
 import de.cau.cs.kieler.core.util.Pair;
-import de.cau.cs.kieler.klighd.piccolo.krendering.IGraphElement;
 import de.cau.cs.kieler.klighd.piccolo.krendering.util.PlacementUtil;
 import de.cau.cs.kieler.klighd.piccolo.krendering.util.PlacementUtil.Decoration;
 import de.cau.cs.kieler.klighd.piccolo.krendering.util.PlacementUtil.GridPlacer;
@@ -105,8 +103,8 @@ import edu.umd.cs.piccolox.swt.PSWTText;
 public abstract class AbstractRenderingController<S extends KGraphElement, T extends PNode> {
 
     /** the property for a rendering node's controller. */
-    private static final IProperty<Map<Object, PNodeController<?>>> CONTROLLER = new Property<Map<Object, PNodeController<?>>>(
-            "de.cau.cs.kieler.klighd.piccolo.controller");
+    private static final IProperty<Map<Object, PNodeController<?>>> CONTROLLER =
+            new Property<Map<Object, PNodeController<?>>>("de.cau.cs.kieler.klighd.piccolo.controller");
     /** the property for a rendering reference key. */
     private static final IProperty<Map<Object, Object>> KEY = new Property<Map<Object, Object>>(
             "de.cau.cs.kieler.klighd.piccolo.key");
@@ -271,7 +269,8 @@ public abstract class AbstractRenderingController<S extends KGraphElement, T ext
 
                     // handle new, moved and removed styles
                     if (msg.getNotifier() instanceof KRendering
-                            && msg.getFeatureID(KRendering.class) == KRenderingPackage.KRENDERING__STYLES) {
+                            && msg.getFeatureID(KRendering.class)
+                                == KRenderingPackage.KRENDERING__STYLES) {
                         PlatformUI.getWorkbench().getDisplay().syncExec(new Runnable() {
                             public void run() {
                                 // update the styles
@@ -1324,8 +1323,8 @@ public abstract class AbstractRenderingController<S extends KGraphElement, T ext
             final PropertyChangeListener listener) {
         parent.addPropertyChangeListener(property, listener);
         @SuppressWarnings("unchecked")
-        List<Pair<String, PropertyChangeListener>> listeners = (List<Pair<String, PropertyChangeListener>>) node
-                .getAttribute(PROPERTY_LISTENER_KEY);
+        List<Pair<String, PropertyChangeListener>> listeners =
+                (List<Pair<String, PropertyChangeListener>>) node.getAttribute(PROPERTY_LISTENER_KEY);
         if (listeners == null) {
             listeners = Lists.newLinkedList();
             node.addAttribute(PROPERTY_LISTENER_KEY, listeners);
@@ -1341,8 +1340,8 @@ public abstract class AbstractRenderingController<S extends KGraphElement, T ext
      */
     protected void removeListeners(final PNode node) {
         @SuppressWarnings("unchecked")
-        List<Pair<String, PropertyChangeListener>> listeners = (List<Pair<String, PropertyChangeListener>>) node
-                .getAttribute(PROPERTY_LISTENER_KEY);
+        List<Pair<String, PropertyChangeListener>> listeners =
+                (List<Pair<String, PropertyChangeListener>>) node.getAttribute(PROPERTY_LISTENER_KEY);
         if (listeners != null && node.getParent() != null) {
             for (Pair<String, PropertyChangeListener> pair : listeners) {
                 node.getParent().removePropertyChangeListener(pair.getFirst(), pair.getSecond());

@@ -357,7 +357,9 @@ public final class PlacementUtil {
     public static Decoration evaluateDecoratorPlacement(final KDecoratorPlacementData dpd,
             final PSWTAdvancedPath path) {
         Decoration decoration = new Decoration();
-        Point2D[] points = path.getShapePoints();
+        
+        Point2D[] points = ((PSWTAdvancedPath) path
+                .getAttribute(PSWTAdvancedPath.APPROXIMATED_PATH)).getShapePoints();
         
         // default case
         if (dpd == null) {

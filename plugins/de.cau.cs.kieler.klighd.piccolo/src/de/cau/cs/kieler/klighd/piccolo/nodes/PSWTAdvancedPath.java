@@ -63,6 +63,12 @@ public class PSWTAdvancedPath extends PNode {
         /** dash followed by two dots. */
         DASHDOTDOT
     }
+    
+    /**
+     * A property identifier leading to the approximated path if the path is a Bézier curve or to
+     * itself otherwise. This approximated path is needed while computing the decorator rotations.
+     */
+    public static final String APPROXIMATED_PATH = "ApproximatedPath";
 
     private static final long serialVersionUID = 8034306769936734586L;
 
@@ -710,6 +716,11 @@ public class PSWTAdvancedPath extends PNode {
             break;
         }
         setShape(path);
+
+        // supplement (chsch):
+        PSWTAdvancedPath approxPath = new PSWTAdvancedPath();
+        approxPath.setPathToPolyline(points);
+        this.addAttribute(APPROXIMATED_PATH, approxPath);
     }
 
     /**
@@ -726,6 +737,9 @@ public class PSWTAdvancedPath extends PNode {
             path.lineTo((float) points[i].getX(), (float) points[i].getY());
         }
         setShape(path);
+        
+        // supplement (chsch):
+        this.addAttribute(APPROXIMATED_PATH, this);
     }
 
     /**
