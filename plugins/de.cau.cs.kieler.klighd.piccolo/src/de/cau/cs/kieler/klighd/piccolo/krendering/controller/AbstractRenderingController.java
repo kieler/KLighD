@@ -27,6 +27,7 @@ import java.util.Map;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.impl.AdapterImpl;
 import org.eclipse.emf.ecore.EStructuralFeature;
+import org.eclipse.gef.ui.properties.SetPropertyValueCommand;
 import org.eclipse.ui.PlatformUI;
 
 import com.google.common.collect.Lists;
@@ -73,6 +74,7 @@ import de.cau.cs.kieler.core.properties.IProperty;
 import de.cau.cs.kieler.core.properties.IPropertyHolder;
 import de.cau.cs.kieler.core.properties.Property;
 import de.cau.cs.kieler.core.util.Pair;
+import de.cau.cs.kieler.klighd.piccolo.krendering.IGraphElement;
 import de.cau.cs.kieler.klighd.piccolo.krendering.util.PlacementUtil;
 import de.cau.cs.kieler.klighd.piccolo.krendering.util.PlacementUtil.Decoration;
 import de.cau.cs.kieler.klighd.piccolo.krendering.util.PlacementUtil.GridPlacer;
@@ -82,6 +84,7 @@ import de.cau.cs.kieler.klighd.piccolo.nodes.PAlignmentNode.VAlignment;
 import de.cau.cs.kieler.klighd.piccolo.nodes.PEmptyNode;
 import de.cau.cs.kieler.klighd.piccolo.nodes.PSWTAdvancedPath;
 import de.cau.cs.kieler.klighd.piccolo.nodes.PSWTAdvancedPath.LineStyle;
+import de.cau.cs.kieler.klighd.piccolo.nodes.PSWTTracingText;
 import de.cau.cs.kieler.klighd.piccolo.util.NodeUtil;
 import edu.umd.cs.piccolo.PNode;
 import edu.umd.cs.piccolo.nodes.PPath;
@@ -961,10 +964,13 @@ public abstract class AbstractRenderingController<S extends KGraphElement, T ext
             final List<KStyle> propagatedStyles, final PNode parent, final PBounds initialBounds,
             final Object key) {
         // create the text
-        PSWTText textNode = new PSWTText(text.getText() != null ? text.getText() : "");
+        PSWTTracingText textNode = new PSWTTracingText(text);
         textNode.setGreekColor(null);
         textNode.setTransparent(true);  // supplement due to KIELER-2155
         initializeRenderingNode(textNode);
+        
+        // supplement (chsch)
+        textNode.setPickable(true);
 
         // create the alignment node wrapping the text
         final PAlignmentNode alignmentNode = new PAlignmentNode();

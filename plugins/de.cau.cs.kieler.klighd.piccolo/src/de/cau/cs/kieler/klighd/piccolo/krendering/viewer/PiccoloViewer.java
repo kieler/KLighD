@@ -33,7 +33,8 @@ import de.cau.cs.kieler.klighd.piccolo.Messages;
 import de.cau.cs.kieler.klighd.piccolo.PMouseWheelZoomEventHandler;
 import de.cau.cs.kieler.klighd.piccolo.PSWTSimpleSelectionEventHandler;
 import de.cau.cs.kieler.klighd.piccolo.activities.ZoomActivity;
-import de.cau.cs.kieler.klighd.piccolo.krendering.IGraphElement;
+//import de.cau.cs.kieler.klighd.piccolo.krendering.IGraphElement;
+import de.cau.cs.kieler.klighd.piccolo.krendering.ITracingElement;
 import de.cau.cs.kieler.klighd.piccolo.krendering.controller.GraphController;
 import de.cau.cs.kieler.klighd.piccolo.krendering.controller.RenderingContextData;
 import de.cau.cs.kieler.klighd.piccolo.nodes.PEmptyNode;
@@ -338,8 +339,8 @@ public class PiccoloViewer extends AbstractViewer<KNode> implements INodeSelecti
      * {@inheritDoc}
      */
     public void selected(final PSWTSimpleSelectionEventHandler handler, final PNode node) {
-        if (node instanceof IGraphElement<?>) {
-            IGraphElement<?> graphElement = (IGraphElement<?>) node;
+        if (node instanceof ITracingElement<?>) {
+            ITracingElement<?> graphElement = (ITracingElement<?>) node;
             notifyListenersSelected(graphElement.getGraphElement());
         }
     }
@@ -348,8 +349,8 @@ public class PiccoloViewer extends AbstractViewer<KNode> implements INodeSelecti
      * {@inheritDoc}
      */
     public void unselected(final PSWTSimpleSelectionEventHandler handler, final PNode node) {
-        if (node instanceof IGraphElement<?>) {
-            IGraphElement<?> graphElement = (IGraphElement<?>) node;
+        if (node instanceof ITracingElement<?>) {
+            ITracingElement<?> graphElement = (ITracingElement<?>) node;
             notifyListenersUnselected(graphElement.getGraphElement());
         }
     }
@@ -359,10 +360,10 @@ public class PiccoloViewer extends AbstractViewer<KNode> implements INodeSelecti
      */
     public void selection(final PSWTSimpleSelectionEventHandler handler,
             final Collection<PNode> nodes) {
-        List<KGraphElement> graphElements = Lists.newLinkedList();
+        List<Object> graphElements = Lists.newLinkedList();
         for (PNode node : nodes) {
-            if (node instanceof IGraphElement<?>) {
-                IGraphElement<?> graphElement = (IGraphElement<?>) node;
+            if (node instanceof ITracingElement<?>) {
+                ITracingElement<?> graphElement = (ITracingElement<?>) node;
                 graphElements.add(graphElement.getGraphElement());
             }
         }

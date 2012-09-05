@@ -18,11 +18,16 @@ import de.cau.cs.kieler.core.kgraph.KGraphElement;
 /**
  * The interface for Piccolo nodes representing a {@code KGraphElement}.
  * 
+ * Info (chsch): Since the introduction of {@link ITracingElement} this interface is basically
+ *   obsolete by now. It is still kept as it may be helpful during the implementation of other
+ *   intended use cases.
+ * 
  * @author mri
  * 
- * @param <T> the type of the graph element
+ * @param <T>
+ *            the type of the graph element
  */
-public interface IGraphElement<T extends KGraphElement> {
+public interface IGraphElement<T extends KGraphElement> extends ITracingElement<T> {
 
     /**
      * Returns the graph element represented by this node.
