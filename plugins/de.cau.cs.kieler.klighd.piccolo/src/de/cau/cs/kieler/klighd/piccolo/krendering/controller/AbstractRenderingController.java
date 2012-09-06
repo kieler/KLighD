@@ -27,6 +27,8 @@ import java.util.Map;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.impl.AdapterImpl;
 import org.eclipse.emf.ecore.EStructuralFeature;
+import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.PlatformUI;
 
 import com.google.common.collect.Lists;
@@ -87,6 +89,8 @@ import edu.umd.cs.piccolo.PNode;
 import edu.umd.cs.piccolo.nodes.PImage;
 import edu.umd.cs.piccolo.nodes.PPath;
 import edu.umd.cs.piccolo.util.PBounds;
+import edu.umd.cs.piccolox.swt.PSWTCanvas;
+import edu.umd.cs.piccolox.swt.PSWTImage;
 import edu.umd.cs.piccolox.swt.PSWTText;
 
 /**
@@ -109,6 +113,8 @@ public abstract class AbstractRenderingController<S extends KGraphElement, T ext
     private static final IProperty<Map<Object, Object>> KEY = new Property<Map<Object, Object>>(
             "de.cau.cs.kieler.klighd.piccolo.key");
 
+    protected PSWTCanvas canvas;
+    
     /** the graph element which rendering is controlled by this controller. */
     private S element;
     /** the rendering currently in use by this controller. */
@@ -749,7 +755,7 @@ public abstract class AbstractRenderingController<S extends KGraphElement, T ext
 
             // Image
             public PNodeController<?> caseKImage(final KImage object) {
-                return null;
+                return createImage(object, styles, childPropagatedStyles, parent, initialBounds, key);
             }
 
             // Custom Rendering
@@ -1229,9 +1235,8 @@ public abstract class AbstractRenderingController<S extends KGraphElement, T ext
             final List<KStyle> propagatedStyles, final PNode parent, final PBounds initialBounds,
             final Object key) {
         
-        final PImage img = new PImage(image.getImagePath());
+        final PSWTImage img = new PSWTImage(canvas,"D:\\kielertxt\\ksbaseConfiguration.png");
         parent.addChild(img);
-
         // handle children
         if (image.getChildren().size() > 0) {
             handleChildren(image.getChildren(), image.getChildPlacement(), propagatedStyles, img,
@@ -1239,7 +1244,7 @@ public abstract class AbstractRenderingController<S extends KGraphElement, T ext
         }
 
         // create a controller for the rounded rectangle and return it
-        return new PNodeController<PImage>(img) {
+        return new PNodeController<PNode>(img) {
             public void setBounds(final PBounds bounds) {
                 // apply the bounds
                 getNode().setBounds(bounds);
