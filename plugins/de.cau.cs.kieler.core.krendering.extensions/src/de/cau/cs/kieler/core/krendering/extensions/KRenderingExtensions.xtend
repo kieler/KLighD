@@ -23,6 +23,7 @@ import de.cau.cs.kieler.core.krendering.KColor
 import de.cau.cs.kieler.core.krendering.KRoundedRectangle
 
 import org.eclipse.emf.ecore.util.EcoreUtil
+import de.cau.cs.kieler.core.kgraph.KGraphElement
 
 class KRenderingExtensions {
 	
@@ -31,6 +32,13 @@ class KRenderingExtensions {
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////
     ////////////////////////					KRenderingExtensions
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    /**
+     * Reveals the KRendering of a KGraphElement, e.g. for the purpose of highlighting. 
+     */
+    def KRendering getKRendering(KGraphElement kge) {
+        return kge.getData(typeof(KRendering));
+    }
 
     /**
      * @returns the child! 
