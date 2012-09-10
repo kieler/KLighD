@@ -14,6 +14,8 @@
 package de.cau.cs.kieler.klighd;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -21,7 +23,9 @@ import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.statushandlers.StatusManager;
 
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 
 import de.cau.cs.kieler.core.properties.MapPropertyHolder;
 
@@ -48,6 +52,8 @@ public final class ViewContext extends MapPropertyHolder {
     private transient List<TransformationContext<?, ?>> transformationContextsRev = null;
     /** the base model for incremental update. */
     private Object baseModel = null;
+    /** the model to be represented by means of this context. */
+    private Object currentModel = null;
     
     /**
      * Default constructor.
@@ -239,6 +245,46 @@ public final class ViewContext extends MapPropertyHolder {
         viewerProvider = null;
         updateStrategy = null;
         baseModel = null;
+        currentModel = null;
+    }
+    
+    private Map<TransformationContext<?, ?>, Set<TransformationOption>> options = null;
+    
+    /**
+     * Returns the set of {@link TransformationOption TransformationOptions} declared by the
+     * transformation and forward to the users in the UI in order to allow them to influence the
+     * transformation result.
+     * 
+     * @return the set of {@link TransformationOption TransformationOptions}
+     * 
+     * @author chsch
+     */
+    public Map<TransformationContext<?, ?>, Set<TransformationOption>> getTransformationOptions() {
+        if (this.options == null) {
+            Map<TransformationContext<?, ?>, Set<TransformationOption>> map = Maps
+                    .newLinkedHashMap();
+            for (TransformationContext<?, ?> c : this.transformationContexts) {
+                map.put(c, c.getTransformationOptions());
+            }        
+            this.options = ImmutableMap.copyOf(map);
+        }
+        return this.options;
+    }
+    
+    /**
+     * Setter.
+     * @param model the model to be represented.
+     */
+    public void setCurrentModel(final Object model) {
+        this.currentModel = model;        
+    }
+    
+    /**
+     * Getter.
+     * @return the current model to be represented.
+     */
+    public Object getCurrentModel() {
+        return this.currentModel;
     }
 
 }

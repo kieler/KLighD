@@ -37,8 +37,14 @@ import de.cau.cs.kieler.klighd.KlighdPlugin;
 public class GuiceBasedTransformationFactory implements IExecutableExtension,
         IExecutableExtensionFactory {
 
+    /** This bundleId is a {@link Long} value in shape of a String.
+     * It must not be confused with the bundle id determined in the bundles' manifests. */
     private String contributingBundleId;
+    
+    /** This is an id as determined in the bundles' manifests. */
     private String contributingBundleName;
+    
+    /** Obvious... */
     private String transformationClassName;
 
     
@@ -55,11 +61,11 @@ public class GuiceBasedTransformationFactory implements IExecutableExtension,
                 this.contributingBundleId = ((RegistryContributor) config.getContributor()).getId();
                 this.transformationClassName = string;
             } else {
-                /* for experimental use I want to allow to regisiter transformations that are
+                /* for experimental use I want to allow to register transformations that are
                  * deposited in another plugin;
                  * in order to use this specify a the class name preceded by a '/' preceded by
                  * the contributing bundles symbolic name (id) */
-                this.contributingBundleId = string.substring(0, index).trim();
+                this.contributingBundleName = string.substring(0, index).trim();
                 this.transformationClassName = string.substring(index + 1).trim();
             }
         }

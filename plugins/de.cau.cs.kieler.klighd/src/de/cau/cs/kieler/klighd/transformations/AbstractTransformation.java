@@ -14,6 +14,8 @@
 package de.cau.cs.kieler.klighd.transformations;
 
 import java.lang.reflect.Method;
+import java.util.Collections;
+import java.util.Set;
 //import java.util.Map;
 //
 //import com.google.common.collect.HashMultimap;
@@ -24,6 +26,7 @@ import de.cau.cs.kieler.core.WrappedException;
 import de.cau.cs.kieler.core.ui.KielerModelException;
 import de.cau.cs.kieler.klighd.ITransformation;
 import de.cau.cs.kieler.klighd.TransformationContext;
+import de.cau.cs.kieler.klighd.TransformationOption;
 
 /**
  * An abstract base class for KLighD model transformations.<br>
@@ -59,6 +62,16 @@ public abstract class AbstractTransformation<S, T> implements ITransformation<S,
         this.currentContext = transformationContext;
         this.currentContext.clear();
     }
+    
+    /**
+     * Getter.
+     * 
+     * @return the currently used transformation context or <code>null</code> if no one is set.
+     */
+    protected TransformationContext<S, T> getCurrentContext() {
+        return this.currentContext;
+    }
+    
 
     /**
      * {@inheritDoc}
@@ -158,6 +171,16 @@ public abstract class AbstractTransformation<S, T> implements ITransformation<S,
      */
     public boolean supports(final Object model) {
         return true;
+    }
+    
+    /**
+     * {@inheritDoc}
+     * 
+     * Concrete transformations are supposed to override this method in order to register
+     * {@link TransformationOption TransformationOptions}. 
+     */
+    public Set<TransformationOption> getTransformationOptions() {
+        return Collections.emptySet();
     }
 
 

@@ -175,7 +175,8 @@ public final class LightDiagramServices {
         }
 
         // update the view context
-        try {
+        try {            
+            viewContext.setCurrentModel(model);
             Object newModel = performTransformations(viewContext, model);
             // use update strategy if possible
             if (viewContext.getUpdateStrategy() != null) {

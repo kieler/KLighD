@@ -13,6 +13,8 @@
  */
 package de.cau.cs.kieler.klighd;
 
+import java.util.Set;
+
 /**
  * An interface for a model-to-model transformation between two unrestricted models.
  * 
@@ -74,5 +76,13 @@ public interface ITransformation<S, T> {
      * @return the class of the target model
      */
     Class<?> getTargetClass();
+
+    /**
+     * Provides the set of {@link TransformationOption TransformationOptions} forward to the users
+     * in the UI in order to allow them to influence the transformation result.
+     * 
+     * @return the set of {@link TransformationOption TransformationOptions}
+     */
+    Set<TransformationOption> getTransformationOptions();
 
 }

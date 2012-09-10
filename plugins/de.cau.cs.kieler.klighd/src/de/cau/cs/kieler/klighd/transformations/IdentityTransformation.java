@@ -13,8 +13,12 @@
  */
 package de.cau.cs.kieler.klighd.transformations;
 
+import java.util.Collections;
+import java.util.Set;
+
 import de.cau.cs.kieler.klighd.ITransformation;
 import de.cau.cs.kieler.klighd.TransformationContext;
+import de.cau.cs.kieler.klighd.TransformationOption;
 
 /**
  * An implementation of {@code ITransformation} which represents the identity.
@@ -68,4 +72,10 @@ public class IdentityTransformation implements ITransformation<Object, Object> {
         return true;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    public Set<TransformationOption> getTransformationOptions() {
+        return Collections.emptySet();
+    }
 }

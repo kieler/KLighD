@@ -26,6 +26,7 @@ import org.eclipse.swt.dnd.DropTargetEvent;
 import org.eclipse.swt.dnd.DropTargetListener;
 import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Event;
 import org.eclipse.ui.part.ResourceTransfer;
 import org.eclipse.ui.part.ViewPart;
 import org.eclipse.ui.statushandlers.StatusManager;
@@ -58,7 +59,7 @@ public class DiagramViewPart extends ViewPart {
 
     /** the default name for this view. */
     public static final String DEFAULT_NAME = "Light Diagram";
-
+    
     /** the viewer for this view part. */
     private ContextViewer viewer;
 
@@ -66,10 +67,20 @@ public class DiagramViewPart extends ViewPart {
      * {@inheritDoc}
      */
     @Override
-    public void createPartControl(final Composite parent) {
+    public void createPartControl(final Composite parent) {        
+        this.getViewSite()
+                .getActionBars()
+                .getToolBarManager()
+                .add(new Action("Refresh", KlighdPlugin
+                        .getImageDescriptor("icons/full/elcl16/refresh.gif")) {
+                    public void runWithEvent(final Event event) {
+                        DiagramViewManager.getInstance().updateView(viewer.getViewPartId());
+                    }
+                });
+        
         addLayoutButton();
         // create a context viewer
-        viewer = new ContextViewer(parent, getViewSite().getSecondaryId());
+        viewer = new ContextViewer(parent, getViewSite().getSecondaryId(), this);
         // install a drop handler for the view
         installDropHandler(parent);
         viewer.setModel("No model selected.", false);
@@ -162,6 +173,7 @@ public class DiagramViewPart extends ViewPart {
 
         });
     }
+    
 
     private void addLayoutButton() {
         new LayoutAction("Arrange", KimlUiPlugin.getImageDescriptor("icons/menu16/kieler-arrange.gif"));

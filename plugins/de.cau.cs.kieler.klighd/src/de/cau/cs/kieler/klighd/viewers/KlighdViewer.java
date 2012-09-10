@@ -38,7 +38,7 @@ public class KlighdViewer extends AbstractViewer<Object> {
      *            the parent composite
      */
     public KlighdViewer(final Composite parent) {
-        contextViewer = new ContextViewer(parent, null);
+        contextViewer = new ContextViewer(parent, null, null);
     }
 
     /**

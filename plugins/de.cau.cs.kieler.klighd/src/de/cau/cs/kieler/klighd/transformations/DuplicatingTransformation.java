@@ -13,13 +13,16 @@
  */
 package de.cau.cs.kieler.klighd.transformations;
 
+import java.util.Collections;
 import java.util.Map;
+import java.util.Set;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.EcoreUtil.Copier;
 
 import de.cau.cs.kieler.klighd.ITransformation;
 import de.cau.cs.kieler.klighd.TransformationContext;
+import de.cau.cs.kieler.klighd.TransformationOption;
 
 /**
  * A duplicating transformation á la {@link org.eclipse.emf.ecore.util.EcoreUtil#copy
@@ -80,6 +83,13 @@ public class DuplicatingTransformation<S extends EObject> implements ITransforma
      */
     public Class<?> getTargetClass() {
         return EObject.class;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public Set<TransformationOption> getTransformationOptions() {
+        return Collections.emptySet();
     }
 
 }
