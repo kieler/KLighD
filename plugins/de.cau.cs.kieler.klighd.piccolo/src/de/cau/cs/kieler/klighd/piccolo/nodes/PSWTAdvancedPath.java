@@ -16,6 +16,7 @@ package de.cau.cs.kieler.klighd.piccolo.nodes;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Paint;
+import java.awt.Point;
 import java.awt.Shape;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Arc2D;
@@ -23,11 +24,17 @@ import java.awt.geom.Ellipse2D;
 import java.awt.geom.GeneralPath;
 import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
+import java.awt.geom.Point2D.Double;
 import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
+import java.util.ArrayList;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.GC;
+
+import de.cau.cs.kieler.core.math.KVector;
+import de.cau.cs.kieler.core.math.KVectorChain;
+import de.cau.cs.kieler.core.math.KielerMath;
 
 import edu.umd.cs.piccolo.PNode;
 import edu.umd.cs.piccolo.nodes.PPath;
@@ -715,12 +722,22 @@ public class PSWTAdvancedPath extends PNode {
             // this should not happen
             break;
         }
-        setShape(path);
-
         // supplement (chsch):
         PSWTAdvancedPath approxPath = new PSWTAdvancedPath();
-        approxPath.setPathToPolyline(points);
+        KVectorChain chain = new KVectorChain();
+        for (Point2D p : points) {
+            chain.add(p.getX(), p.getY());
+        }
+        chain = KielerMath.approximateSpline(chain);
+        ArrayList<Point2D> approxPoints = new ArrayList<Point2D>(points.length);
+        for (KVector v : chain) {
+            approxPoints.add(new Point2D.Double(v.x, v.y));
+        }
+        approxPath.setPathToPolyline(approxPoints.toArray(new Point2D.Double[points.length]));
         this.addAttribute(APPROXIMATED_PATH, approxPath);
+
+        // this operation finally integrates the path fires the change listeners
+        setShape(path);
     }
 
     /**
@@ -736,10 +753,12 @@ public class PSWTAdvancedPath extends PNode {
         for (int i = 1; i < points.length; i++) {
             path.lineTo((float) points[i].getX(), (float) points[i].getY());
         }
-        setShape(path);
-        
+
         // supplement (chsch):
         this.addAttribute(APPROXIMATED_PATH, this);
+
+        // this operation finally integrates the path fires the change listeners
+        setShape(path);
     }
 
     /**
