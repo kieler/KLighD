@@ -10,6 +10,7 @@ import org.eclipse.emf.ecore.EPackage
 import org.eclipse.emf.ecore.EClass
 import de.cau.cs.kieler.core.model.triggers.PartTrigger
 import org.eclipse.core.runtime.IPath
+import de.cau.cs.kieler.klighd.effects.KlighdDiagramEffect
 
 /**
  * Combination that triggers the synthesis of Ecore diagrams.
@@ -38,7 +39,7 @@ class EcoreDiagramSynthesisCombination extends AbstractCombination {
                 if (inputPath != null) {
                     val id = inputPath.toPortableString().replace(":", "") as String;
                     this.schedule(
-                        new KlighdUpdateDiagramEffect(id, inputPath.lastSegment,
+                        new KlighdDiagramEffect(id, inputPath.lastSegment,
                             EModelElementCollection::of(selectionState.selectedObjects as Collection),
                             es.editorPart
                         )
