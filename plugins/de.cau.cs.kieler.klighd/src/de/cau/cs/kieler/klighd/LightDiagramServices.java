@@ -169,9 +169,13 @@ public final class LightDiagramServices {
      */
     public boolean updateViewContext(final ViewContext viewContext, final Object model,
             final IPropertyHolder... propertyHolders) {
-        // copy the properties to the view context
-        for (IPropertyHolder propertyHolder : propertyHolders) {
-            viewContext.copyProperties(propertyHolder);
+        if (propertyHolders.length != 0 && propertyHolders[0] != null) {
+            // the opposite might happen if the method is called with a propertyHolder equal to null
+            
+            // copy the properties to the view context
+            for (IPropertyHolder propertyHolder : propertyHolders) {
+                viewContext.copyProperties(propertyHolder);
+            }
         }
 
         // update the view context
