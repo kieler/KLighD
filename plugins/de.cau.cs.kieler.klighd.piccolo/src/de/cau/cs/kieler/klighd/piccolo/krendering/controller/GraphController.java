@@ -61,6 +61,8 @@ import de.cau.cs.kieler.klighd.piccolo.krendering.KNodeNode;
 import de.cau.cs.kieler.klighd.piccolo.krendering.KNodeTopNode;
 import de.cau.cs.kieler.klighd.piccolo.krendering.KPortNode;
 import de.cau.cs.kieler.klighd.piccolo.util.NodeUtil;
+import edu.umd.cs.piccolo.PCamera;
+import edu.umd.cs.piccolo.PLayer;
 import edu.umd.cs.piccolo.PNode;
 import edu.umd.cs.piccolo.activities.PInterpolatingActivity;
 import edu.umd.cs.piccolo.util.PAffineTransform;
@@ -127,6 +129,8 @@ public class GraphController {
     /** whether to record layout changes. */
     // Right now: will be set to true by the DiagramLayoutManager.
     private boolean record = false;
+    /** whether to perform 'zoom to fit' while applying the layout.*/
+    private boolean zoomToFit = false;
 
     /** the layout changes to graph elements while recording. */
     private Map<Object, Object> recordedChanges = Maps.newLinkedHashMap();
@@ -156,7 +160,7 @@ public class GraphController {
     }
 
     /**
-     * Returns the node representing the graph of this controller.
+     * Returns the root of the represented (KNode) graph.
      * 
      * @return the graph
      */
@@ -193,6 +197,17 @@ public class GraphController {
     }
 
     /**
+     * Instructs controller to perform 'zoom to fit' after the layout has been applied.
+     * 
+     * @param zoomToFit
+     *            true if 'zoom to fit' should be applied.
+     * @author chsch
+     */
+    public void setZoomToFit(final boolean zoomToFit) {
+        this.zoomToFit = zoomToFit;
+    }
+    
+    /**
      * Initializes the graph controller.
      */
     public void initialize() {
@@ -228,7 +243,29 @@ public class GraphController {
             nodeRep.getChildArea().setExpanded(false);
         }
     }
+    
+    /**
+     * 
+     * @param duration 
+     */
+    public void zoomToFit(final int duration) {
+        if (topNode.getParent() instanceof PLayer) {
+            KShapeLayout topNodeLayout = topNode.getGraphElement().getData(KShapeLayout.class);
+            // chsch: I don't like this exploit of implicit knowledge!
+            //   Would an API change be reasonable here?
+            //   (leads to worse class structure, less encapsulation)
+            PCamera camera = ((PLayer) topNode.getParent()).getCamera(0);
+            PBounds newBounds = new PBounds(topNodeLayout.getXpos(), topNodeLayout.getYpos(),
+                    topNodeLayout.getWidth(), topNodeLayout.getHeight());
+            camera.animateViewToCenterBounds(newBounds, true, duration);
+        }
+    }
+    
 
+    /* --------------------------------------------- */
+    /*       internal part                           */
+    /* --------------------------------------------- */
+    
     /**
      * Adds a listener on the expansion of the child area of the given node representation.
      * 
@@ -641,13 +678,14 @@ public class GraphController {
                 KEdgeNode edgeNode = (KEdgeNode) recordedChange.getKey();
                 shapeNode = edgeNode;
                 Point2D[] bends = (Point2D[]) recordedChange.getValue();
-                activity = new ApplyBendPointsActivity(edgeNode, bends, duration > 0 ? duration : 1);
+                activity = new ApplyBendPointsActivity(edgeNode, bends,
+                        duration > 0 ? duration : 1);
             } else {
                 // shape layout changed
                 shapeNode = (PNode) recordedChange.getKey();
                 PBounds bounds = (PBounds) recordedChange.getValue();
-                activity = new ApplySmartBoundsActivity(shapeNode, bounds, duration > 0 ? duration
-                        : 1);
+                activity = new ApplySmartBoundsActivity(shapeNode, bounds,
+                        duration > 0 ? duration : 1);
             }
 
             if (duration > 0) {
@@ -661,6 +699,10 @@ public class GraphController {
             }
         }
         recordedChanges.clear();
+        
+        if (this.zoomToFit) {
+            zoomToFit(duration);
+        }
     }
 
     /**
@@ -1448,7 +1490,7 @@ public class GraphController {
      * @param edgeNode
      *            the edge representation
      */
-    public void updateEdgeOffset(final KEdgeNode edgeNode) {
+    private void updateEdgeOffset(final KEdgeNode edgeNode) {
         final PNode edgeNodeParent = edgeNode.getParent();
         if (edgeNodeParent != null) {
             KEdge edge = edgeNode.getGraphElement();

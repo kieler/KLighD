@@ -207,6 +207,13 @@ public class PiccoloViewer extends AbstractViewer<KNode> implements INodeSelecti
     /**
      * {@inheritDoc}
      */
+    public void setZoomToFit(final boolean zoomToFit) {
+        controller.setZoomToFit(zoomToFit);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void setSelection(final Object[] diagramElements) {
         if (selectionHandler != null) {
@@ -273,13 +280,7 @@ public class PiccoloViewer extends AbstractViewer<KNode> implements INodeSelecti
      */
     @Override
     public void zoomToFit(final int duration) {
-//        if (diagramContext.getRootNode() instanceof PNode) {
-//            PNode node = (PNode) diagramContext.getRootNode();
-//            // move and zoom the camera so it includes the full bounds
-//            PCamera camera = canvas.getCamera();
-//            camera.animateViewToCenterBounds(node.getFullBounds(), true, duration);
-//            // FIXME centers the bb instead of left aligning it and could need some padding
-//        }
+        controller.zoomToFit(duration);
     }
 
     /**

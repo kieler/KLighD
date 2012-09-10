@@ -97,6 +97,13 @@ public class StringViewer implements IViewer<String> {
     }
     
     /**
+     * {@inheritDoc} 
+     */
+    public void setZoomToFit(final boolean zoomToFit) {
+        // do nothing
+    }
+    
+    /**
      * {@inheritDoc}
      */
     public void setSelection(final Object[] diagramElements) {

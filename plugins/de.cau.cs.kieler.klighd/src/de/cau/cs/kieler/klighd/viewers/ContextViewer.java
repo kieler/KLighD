@@ -250,6 +250,13 @@ public class ContextViewer extends AbstractViewer<Object> implements IViewerEven
     }
 
     /**
+     * {@inheritDoc} 
+     */
+    public void setZoomToFit(final boolean zoomToFit) {
+        currentViewer.setZoomToFit(zoomToFit);
+    }
+    
+    /**
      * {@inheritDoc}
      */
     public ISelection getSelection() {

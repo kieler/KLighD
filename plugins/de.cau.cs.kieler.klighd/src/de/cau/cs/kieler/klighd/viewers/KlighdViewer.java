@@ -85,6 +85,13 @@ public class KlighdViewer extends AbstractViewer<Object> {
     }
     
     /**
+     * {@inheritDoc} 
+     */
+    public void setZoomToFit(final boolean zoomToFit) {
+        contextViewer.setZoomToFit(zoomToFit);
+    }
+    
+    /**
      * {@inheritDoc}
      */
     @Override

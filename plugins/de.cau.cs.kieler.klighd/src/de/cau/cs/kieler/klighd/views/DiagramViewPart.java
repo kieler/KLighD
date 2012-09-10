@@ -231,7 +231,7 @@ public class DiagramViewPart extends ViewPart {
                             keyValue.substring(index + 1)));
                 }
                 DiagramLayoutEngine layoutEngine = DiagramLayoutEngine.INSTANCE;
-                layoutEngine.layout(view, null, true, false, false, false, options);
+                layoutEngine.layout(view, null, true, false, false, true, options);
             } catch (UnsupportedOperationException e) {
                 StatusManager.getManager().handle(
                         new Status(IStatus.WARNING, KlighdPlugin.PLUGIN_ID,

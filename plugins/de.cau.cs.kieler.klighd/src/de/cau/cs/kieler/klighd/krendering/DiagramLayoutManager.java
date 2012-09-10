@@ -80,7 +80,6 @@ public class DiagramLayoutManager implements IDiagramLayoutManager<KGraphElement
     /** the duration for applying the layout. */
     public static final IProperty<Integer> APPLY_LAYOUT_DURATION = new Property<Integer>(
             "krendering.layout.applyLayoutDuration", 0);
-
     /** the viewer visualizing the graph. */
     public static final IProperty<IViewer<?>> VIEWER = new Property<IViewer<?>>(
             "krendering.layout.viewer");
@@ -442,7 +441,8 @@ public class DiagramLayoutManager implements IDiagramLayoutManager<KGraphElement
         // apply the layout
         if (viewer != null) {
             viewer.setRecording(true);
-            applyLayout(mapping);   
+            applyLayout(mapping);
+            viewer.setZoomToFit(zoomToFit);
             viewer.setRecording(false);
         } else {
             applyLayout(mapping);
@@ -455,7 +455,7 @@ public class DiagramLayoutManager implements IDiagramLayoutManager<KGraphElement
      * @param mapping
      *            the layout mapping that was created by this manager
      */
-    public static void applyLayout(final LayoutMapping<KGraphElement> mapping) {
+    private static void applyLayout(final LayoutMapping<KGraphElement> mapping) {
         Set<Entry<KGraphElement, KGraphElement>> elementMappings = mapping.getGraphMap().entrySet();
 
         // apply the layout of all mapped layout elements back to the associated element
