@@ -11,7 +11,6 @@ Require-Bundle: org.eclipse.core.resources;bundle-version="3.6.0",
  org.eclipse.emf.compare.diff;bundle-version="1.2.1",
  org.eclipse.emf.compare.match;bundle-version="1.2.1",
  org.eclipse.emf.ecore;bundle-version="2.6.0",
- org.eclipse.gmf.runtime.diagram.core,
  org.eclipse.ui;bundle-version="3.6.0",
  org.eclipse.xtend;bundle-version="1.2.0";visibility:=reexport,
  org.eclipse.xtend.typesystem.emf;visibility:=reexport,
@@ -25,7 +24,8 @@ Require-Bundle: org.eclipse.core.resources;bundle-version="3.6.0",
  de.cau.cs.kieler.kiml.ui,
  de.cau.cs.kieler.core.kgraph;bundle-version="0.4.0",
  de.cau.cs.kieler.core.krendering;bundle-version="0.1.0",
- org.eclipse.ui.ide
+ org.eclipse.ui.ide,
+ org.eclipse.emf.edit
 Bundle-ActivationPolicy: lazy
 Bundle-Activator: de.cau.cs.kieler.klighd.KlighdPlugin
 Export-Package: de.cau.cs.kieler.klighd,
