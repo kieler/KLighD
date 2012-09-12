@@ -50,10 +50,12 @@ public final class ViewContext extends MapPropertyHolder {
     private transient List<TransformationContext<?, ?>> transformationContexts = null;
     /** the reversed list of transformation contexts. */
     private transient List<TransformationContext<?, ?>> transformationContextsRev = null;
-    /** the base model for incremental update. */
-    private Object baseModel = null;
-    /** the model to be represented by means of this context. */
-    private Object currentModel = null;
+    /** the business model to be represented by means of this context. */
+    private Object businessModel = null;
+    /** the view model initiated while configuring an {@link IUpdateStrategy}
+     * and kept for the whole life-cycle of the view context,
+     * in order to enable proper incremental update. */
+    private Object viewModel = null;
     
     /**
      * Default constructor.
@@ -105,6 +107,25 @@ public final class ViewContext extends MapPropertyHolder {
         }
         return null;               
     }
+    
+    /**
+     * Sets the input model.
+     * 
+     * @param model
+     *            the input model
+     */    
+    protected void setInputModel(final Object model) {
+        this.businessModel = model; 
+    }
+
+    /**
+     * Returns the current model to be represented.
+     * 
+     * @return the current model to be represented.
+     */
+    public Object getInputModel() {
+        return this.businessModel;
+    }
 
     /**
      * Sets the contexts viewer provider.
@@ -127,6 +148,9 @@ public final class ViewContext extends MapPropertyHolder {
 
     /**
      * Sets the update strategy used in this view context.
+     * In addition, it configures the view model root, which
+     * is kept for the whole life-cycle of the view context,
+     * in order to enable proper incremental update. 
      * 
      * @param updateStrategy
      *            the update strategy
@@ -134,9 +158,9 @@ public final class ViewContext extends MapPropertyHolder {
     public void setUpdateStrategy(final IUpdateStrategy<?> updateStrategy) {
         this.updateStrategy = updateStrategy;
         if (updateStrategy != null) {
-            baseModel = updateStrategy.getInitialBaseModel(this);
+            viewModel = updateStrategy.getInitialBaseModel(this);
         } else {
-            baseModel = null;
+            viewModel = null;
         }
     }
 
@@ -150,12 +174,14 @@ public final class ViewContext extends MapPropertyHolder {
     }
 
     /**
-     * Returns the base model in this view context derived from the update strategy.
+     * Returns the view model root, which is derived from the update strategy
+     * and kept for the whole life-cycle of the view context,
+     * in order to enable proper incremental update.
      * 
      * @return the base model or null if no update strategy is set
      */
-    public Object getBaseModel() {
-        return baseModel;
+    public Object getViewModel() {
+        return viewModel;
     }
 
     /**
@@ -244,8 +270,8 @@ public final class ViewContext extends MapPropertyHolder {
         transformationContexts.clear();
         viewerProvider = null;
         updateStrategy = null;
-        baseModel = null;
-        currentModel = null;
+        businessModel = null;
+        viewModel = null;
     }
     
     private Map<TransformationContext<?, ?>, Set<TransformationOption>> options = null;
@@ -270,21 +296,4 @@ public final class ViewContext extends MapPropertyHolder {
         }
         return this.options;
     }
-    
-    /**
-     * Setter.
-     * @param model the model to be represented.
-     */
-    public void setCurrentModel(final Object model) {
-        this.currentModel = model;        
-    }
-    
-    /**
-     * Getter.
-     * @return the current model to be represented.
-     */
-    public Object getCurrentModel() {
-        return this.currentModel;
-    }
-
 }
