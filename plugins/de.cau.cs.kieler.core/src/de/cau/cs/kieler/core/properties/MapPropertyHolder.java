@@ -85,6 +85,9 @@ public class MapPropertyHolder implements IPropertyHolder, Serializable {
      * {@inheritDoc}
      */
     public void copyProperties(final IPropertyHolder other) {
+        if (other == null) {
+            return;
+        }
         Map<IProperty<?>, Object> otherMap = other.getAllProperties();
         if (this.propertyMap == null) {
             propertyMap = new HashMap<IProperty<?>, Object>(otherMap);
