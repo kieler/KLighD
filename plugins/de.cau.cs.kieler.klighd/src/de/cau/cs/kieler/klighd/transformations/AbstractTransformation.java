@@ -32,14 +32,6 @@ import de.cau.cs.kieler.klighd.TransformationOption;
  * An abstract base class for KLighD model transformations.<br>
  * Provides a {@code transform} method with a simpler signature.
  * 
- * chsch: Currently it is not clear for, whether we need the
- * getSourceElement/getTargetElement methods, since my current
- * transformation save the mapping immediately in the related context
- * so the context does not need to ask the transformation for that
- * (and actually does not do that).
- * However I might imaging that this feature is desirable in some context
- * so I leave the methods still in here.
- * 
  * @author mri
  * 
  * @param <S>
@@ -68,27 +60,10 @@ public abstract class AbstractTransformation<S, T> implements ITransformation<S,
      * 
      * @return the currently used transformation context or <code>null</code> if no one is set.
      */
-    protected TransformationContext<S, T> getCurrentContext() {
+    protected TransformationContext<S, T> getUsedContext() {
         return this.currentContext;
     }
     
-
-    /**
-     * {@inheritDoc}
-     */
-    public Object getSourceElement(final Object element,
-            final TransformationContext<S, T> transformationContext) {
-        return this.currentContext.getSourceElement(element);
-    }
-    
-    /**
-     * {@inheritDoc}
-     */
-    public Object getTargetElement(final Object element,
-            final TransformationContext<S, T> transformationContext) {
-        return this.currentContext.getTargetElement(element);
-    }
-
     /**
      * Method to put a pair of source target into the lookup table.<br>
      * Name, Parameter ordering, and return value (the target) are optimized for

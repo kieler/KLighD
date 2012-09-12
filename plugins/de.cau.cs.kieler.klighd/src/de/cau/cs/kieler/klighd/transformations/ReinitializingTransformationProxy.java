@@ -82,25 +82,7 @@ public class ReinitializingTransformationProxy<S, T> extends AbstractTransformat
         return null;
     }
 
-    
-    /**
-     * {@inheritDoc}
-     */
-    public Object getSourceElement(final Object element,
-            final TransformationContext<S, T> transformationContext) {
-        return this.transformationDelegate.getSourceElement(element, transformationContext);
-    }
-    
-    
-    /**
-     * {@inheritDoc}
-     */
-    public Object getTargetElement(final Object element,
-            final TransformationContext<S, T> transformationContext) {
-        return this.transformationDelegate.getTargetElement(element, transformationContext);
-    }
-    
-    
+
     /**
      * {@inheritDoc}
      */
@@ -124,7 +106,7 @@ public class ReinitializingTransformationProxy<S, T> extends AbstractTransformat
      * Getter for the delegate attribute.
      * @return the delegate
      */
-    protected ITransformation<S, T> getDelegate() {
+    public ITransformation<S, T> getDelegate() {
         return this.transformationDelegate;
     }
     

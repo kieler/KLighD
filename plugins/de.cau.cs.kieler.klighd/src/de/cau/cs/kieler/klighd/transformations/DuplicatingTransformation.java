@@ -25,10 +25,14 @@ import de.cau.cs.kieler.klighd.TransformationContext;
 import de.cau.cs.kieler.klighd.TransformationOption;
 
 /**
- * A duplicating transformation á la {@link org.eclipse.emf.ecore.util.EcoreUtil#copy
+ * A duplicating transformation à la {@link org.eclipse.emf.ecore.util.EcoreUtil#copy
  * EcoreUtil#copy} preserving the source-target-mapping.<br>
- * Is currently used in the {@link de.cau.cs.kieler.klighd.krendering.SimpleUpdateStrategy
- * SimpleUpdateStrategy}.
+ * Is used in the {@link de.cau.cs.kieler.klighd.TransformationsGraph TransformationsGraph} while
+ * configuring {@link de.cau.cs.kieler.klighd.ViewContext ViewContexts} in case no semantic
+ * transformation is needed in order to visualize the given model. Its aim is to decouple the model
+ * access performed e.g. by the model editor and those performed by
+ * {@link de.cau.cs.kieler.klighd.IUpdateStrategy IUpdateStrategys} and
+ * KLighD {@link de.cau.cs.kieler.klighd.IViewer IViewers}.
  * 
  * @author chsch
  * 
@@ -53,22 +57,6 @@ public class DuplicatingTransformation<S extends EObject> implements ITransforma
             transformationContext.addSourceTargetPair(entry.getKey(), entry.getValue());
         }
         return (S) result;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public Object getSourceElement(final Object element,
-            final TransformationContext<S, S> transformationContext) {
-        return transformationContext.getSourceElement(element);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public Object getTargetElement(final Object element,
-            final TransformationContext<S, S> transformationContext) {
-        return transformationContext.getTargetElement(element);
     }
 
     /**

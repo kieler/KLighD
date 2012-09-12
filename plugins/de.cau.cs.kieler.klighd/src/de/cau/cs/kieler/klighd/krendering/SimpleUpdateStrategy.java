@@ -24,9 +24,7 @@ import de.cau.cs.kieler.core.krendering.KRenderingLibrary;
 import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout;
 import de.cau.cs.kieler.kiml.util.KimlUtil;
 import de.cau.cs.kieler.klighd.IUpdateStrategy;
-import de.cau.cs.kieler.klighd.TransformationContext;
 import de.cau.cs.kieler.klighd.ViewContext;
-import de.cau.cs.kieler.klighd.transformations.DuplicatingTransformation;
 
 /**
  * A simple update strategy for KGraph with KRendering which merges by copying the new model.<br>
@@ -56,36 +54,15 @@ public class SimpleUpdateStrategy implements IUpdateStrategy<KNode> {
         return baseModel;
     }
 
-    private DuplicatingTransformation<KNode> duplicator = new DuplicatingTransformation<KNode>();
-    
     /**
      * {@inheritDoc}
      */
-    @SuppressWarnings("unchecked")
     public void update(final KNode baseModel, final KNode newModel, final ViewContext viewContext) {
-        // KNode newModelCopy = EcoreUtil.copy(newModel);
-        
-        List<TransformationContext<?, ?>> contexts = viewContext.getTransformationContexts();
-        TransformationContext<KNode, KNode> duplicatorContext = null;
-        if (!contexts.isEmpty()) {
-            TransformationContext<?, ?> last = contexts.get(contexts.size() - 1);
-            if ((last.getTransformation() instanceof DuplicatingTransformation<?>)) {
-                duplicatorContext = (TransformationContext<KNode, KNode>) last;
-            } else {
-                duplicatorContext = TransformationContext.<KNode, KNode>create(duplicator);
-                viewContext.getTransformationContexts().add(duplicatorContext);
-            }
-        } else {
-            duplicatorContext = TransformationContext.<KNode, KNode>create(duplicator);
-            viewContext.getTransformationContexts().add(duplicatorContext);
-        }
 
-        KNode newModelCopy = duplicator.transform(newModel, duplicatorContext);
-
-        List<KNode> children = Lists.newArrayList(newModelCopy.getChildren());
-        List<KGraphData> data = Lists.newArrayList(newModelCopy.getData());
-        newModelCopy.getChildren().clear();
-        newModelCopy.getData().clear();
+        List<KNode> children = Lists.newArrayList(newModel.getChildren());
+        List<KGraphData> data = Lists.newArrayList(newModel.getData());
+        newModel.getChildren().clear();
+        newModel.getData().clear();
         List<KGraphData> removeData = Lists.newLinkedList();
         for (KGraphData graphData : baseModel.getData()) {
             if (graphData instanceof KRendering || graphData instanceof KRenderingLibrary
