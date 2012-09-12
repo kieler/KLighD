@@ -24,6 +24,8 @@ import de.cau.cs.kieler.core.krendering.KRoundedRectangle
 
 import org.eclipse.emf.ecore.util.EcoreUtil
 import de.cau.cs.kieler.core.kgraph.KGraphElement
+import de.cau.cs.kieler.core.krendering.LineStyle
+import de.cau.cs.kieler.core.krendering.KLineStyle
 
 class KRenderingExtensions {
 	
@@ -88,107 +90,129 @@ class KRenderingExtensions {
         ];
     }
  
-	def setLineWidth(KRendering rendering, int with){
-		return renderingFactory.createKLineWidth => [
-            it.setLineWidth(with);
-		    rendering.styles.removeAll(rendering.styles.filter(typeof(KLineWidth)).toList);
-		    rendering.styles.add(it);
-		];
-	}
-	
-    def void setBackgroundColor(KRendering rendering, KColor color){
-        rendering.styles.removeAll(rendering.styles.filter(typeof(KBackgroundColor)).toList);        
-        rendering.styles += renderingFactory.createKBackgroundColor => [
-            it.red = color.red;
-            it.green = color.green;
-            it.blue = color.blue;
+    def KRendering setLineWidth(KRendering rendering, int with) {
+        rendering.styles.removeAll(rendering.styles.filter(typeof(KLineWidth)).toList);
+        return rendering => [
+            it.styles += renderingFactory.createKLineWidth() => [
+                it.setLineWidth(with);
+            ]
         ];
     }
     
-	def setBackgroundColor(KRendering rendering, int red, int green, int blue){
-		return renderingFactory.createKBackgroundColor => [
-		    it.setRed(red);
-            it.setGreen(green);
-            it.setBlue(blue);
-		    rendering.styles.removeAll(rendering.styles.filter(typeof(KBackgroundColor)).toList);
-            rendering.styles += it;
+    def KRendering setLineStyle(KRendering rendering, LineStyle style) {
+        rendering.styles.removeAll(rendering.styles.filter(typeof(KLineStyle)).toList);
+        return rendering => [
+            it.styles += renderingFactory.createKLineStyle => [
+                it.setLineStyle(style);
+            ];
+        ];
+    }
+    
+    def KRendering setBackgroundColor(KRendering rendering, KColor color) {
+        rendering.styles.removeAll(rendering.styles.filter(typeof(KBackgroundColor)).toList);        
+        return rendering => [
+            it.styles += renderingFactory.createKBackgroundColor => [
+                it.red = color.red;
+                it.green = color.green;
+                it.blue = color.blue;
+            ];
+        ];
+    }
+    
+	def KRendering setBackgroundColor(KRendering rendering, int red, int green, int blue) {
+		rendering.styles.removeAll(rendering.styles.filter(typeof(KBackgroundColor)).toList);
+		return rendering => [
+		    it.styles += renderingFactory.createKBackgroundColor => [
+    		    it.setRed(red);
+                it.setGreen(green);
+                it.setBlue(blue);
+		    ]; 
 		];		
 	}
     
-    def void setForegroundColor(KRendering rendering, KColor color){
+    def KRendering setForegroundColor(KRendering rendering, KColor color) {
         rendering.styles.removeAll(rendering.styles.filter(typeof(KForegroundColor)).toList);        
-        rendering.styles += renderingFactory.createKForegroundColor => [
-            it.red = color.red;
-            it.green = color.green;
-            it.blue = color.blue;
-        ];
+        return rendering => [
+            it.styles += renderingFactory.createKForegroundColor => [
+                it.red = color.red;
+                it.green = color.green;
+                it.blue = color.blue;
+            ]; 
+        ];      
     }
 	
-	def setForegroundColor(KRendering rendering, int red, int green, int blue){
-        return renderingFactory.createKForegroundColor => [
-            it.setRed(red);
-            it.setGreen(green);
-            it.setBlue(blue);
-            rendering.styles.removeAll(rendering.styles.filter(typeof(KForegroundColor)).toList);
-            rendering.styles += it;
+	def KRendering setForegroundColor(KRendering rendering, int red, int green, int blue) {
+        rendering.styles.removeAll(rendering.styles.filter(typeof(KForegroundColor)).toList);        
+        return rendering => [
+            it.styles += renderingFactory.createKForegroundColor => [
+                it.setRed(red);
+                it.setGreen(green);
+                it.setBlue(blue);
+            ]; 
         ];      
 	}
 	
-	def setBackgroundVisibility(KRendering rendering, boolean visible){
-		return renderingFactory.createKBackgroundVisibility => [
-		    it.setVisible(visible);
-		    rendering.styles.removeAll(rendering.styles.filter(typeof(KBackgroundVisibility)).toList);
-		    rendering.styles.add(it);
+	def KRendering setBackgroundVisibility(KRendering rendering, boolean visible) {
+		rendering.styles.removeAll(rendering.styles.filter(typeof(KBackgroundVisibility)).toList);
+		return rendering => [
+            it.styles += renderingFactory.createKBackgroundVisibility => [
+		        it.setVisible(visible);
+		    ];
 		];
 	}
 		
 	
-	def setForegroundVisibility(KRendering rendering, boolean visible){
-        return renderingFactory.createKForegroundVisibility => [
-            it.setVisible(visible);
-            rendering.styles.removeAll(rendering.styles.filter(typeof(KForegroundVisibility)).toList);
-            rendering.styles.add(it);
+	def KRendering setForegroundVisibility(KRendering rendering, boolean visible) {
+        rendering.styles.removeAll(rendering.styles.filter(typeof(KForegroundVisibility)).toList);
+        return rendering => [
+            it.styles += renderingFactory.createKForegroundVisibility => [
+                it.setVisible(visible);
+            ];
         ];
 	}
 	
-	def setFontBold(KRendering rendering, boolean bold){
-		return renderingFactory.createKFontBold => [
-		    it.setBold(bold);
-            rendering.styles.removeAll(rendering.styles.filter(typeof(KFontBold)).toList);
-		    rendering.styles.add(it);
+	def KRendering setFontBold(KRendering rendering, boolean bold) {
+        rendering.styles.removeAll(rendering.styles.filter(typeof(KFontBold)).toList);
+		return rendering => [
+            it.styles += renderingFactory.createKFontBold => [
+    		    it.setBold(bold);
+		    ];
 		];		
 	}
 	
-	def setFontItalic(KRendering rendering, boolean italic){
-        return renderingFactory.createKFontItalic => [
-		    it.setItalic(italic);
-            rendering.styles.removeAll(rendering.styles.filter(typeof(KFontItalic)).toList);
-            rendering.styles.add(it);            
+	def KRendering setFontItalic(KRendering rendering, boolean italic) {
+        rendering.styles.removeAll(rendering.styles.filter(typeof(KFontItalic)).toList);
+        return rendering => [
+            it.styles += renderingFactory.createKFontItalic => [
+    		    it.setItalic(italic);
+		    ];
         ];
 	}
 	
-	def setFontSize(KRendering rendering, int size){
-		return renderingFactory.createKFontSize => [
-            it.setSize(size);
-            rendering.styles.removeAll(rendering.styles.filter(typeof(KFontSize)).toList);
-            rendering.styles.add(it);
-		]		
-		
-	}
-	
-	def setHorizontalAlignment(KRendering rendering, HorizontalAlignment ha){
-		return renderingFactory.createKHorizontalAlignment => [
-            it.setHorizontalAlignment(ha);
-            rendering.styles.removeAll(rendering.styles.filter(typeof(KHorizontalAlignment)).toList);
-            rendering.styles.add(it);
+	def KRendering setFontSize(KRendering rendering, int size) {
+        rendering.styles.removeAll(rendering.styles.filter(typeof(KFontSize)).toList);
+		return rendering => [
+            it.styles += renderingFactory.createKFontSize => [
+                it.setSize(size);
+            ];
 		];		
 	}
 	
-	def setVerticalAlignment(KRendering rendering, VerticalAlignment va){
-		return renderingFactory.createKVerticalAlignment => [
-            it.setVerticalAlignment(va);
-            rendering.styles.removeAll(rendering.styles.filter(typeof(KVerticalAlignment)).toList);
-            rendering.styles.add(it);		
+	def KRendering setHorizontalAlignment(KRendering rendering, HorizontalAlignment ha) {
+        rendering.styles.removeAll(rendering.styles.filter(typeof(KHorizontalAlignment)).toList);
+		return rendering => [
+            it.styles += renderingFactory.createKHorizontalAlignment => [
+                it.setHorizontalAlignment(ha);
+            ];
+    	];		
+	}
+	
+	def KRendering setVerticalAlignment(KRendering rendering, VerticalAlignment va) {
+        rendering.styles.removeAll(rendering.styles.filter(typeof(KVerticalAlignment)).toList);
+		return rendering => [
+            it.styles += renderingFactory.createKVerticalAlignment => [
+                it.setVerticalAlignment(va);
+            ];
 		];
 	}
 	
