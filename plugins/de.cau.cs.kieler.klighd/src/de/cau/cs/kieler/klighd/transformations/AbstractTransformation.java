@@ -16,14 +16,7 @@ package de.cau.cs.kieler.klighd.transformations;
 import java.lang.reflect.Method;
 import java.util.Collections;
 import java.util.Set;
-//import java.util.Map;
-//
-//import com.google.common.collect.HashMultimap;
-//import com.google.common.collect.Maps;
-//import com.google.common.collect.Multimap;
 
-import de.cau.cs.kieler.core.WrappedException;
-import de.cau.cs.kieler.core.ui.KielerModelException;
 import de.cau.cs.kieler.klighd.ITransformation;
 import de.cau.cs.kieler.klighd.TransformationContext;
 import de.cau.cs.kieler.klighd.TransformationOption;
@@ -80,11 +73,10 @@ public abstract class AbstractTransformation<S, T> implements ITransformation<S,
      */
     protected <D> D putToLookUpWith(final D derived, final Object source) {
         if (this.currentContext == null) {
-            throw new WrappedException(new KielerModelException("KLighD transformation "
+            throw new IllegalStateException("KLighD transformation "
                     + this.getClass().getCanonicalName()
                     + " uses 'putToLookUp(...) and probably does not invoke"
-                    + "'use(TransformationContxt)' at the beginning of its 'transform()' method",
-                    this));
+                    + "'use(TransformationContxt)' at the beginning of its 'transform()' method");
         }
         this.currentContext.addSourceTargetPair(source, derived);
         return derived;
