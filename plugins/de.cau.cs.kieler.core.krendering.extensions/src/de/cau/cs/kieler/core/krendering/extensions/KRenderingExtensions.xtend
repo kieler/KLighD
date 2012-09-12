@@ -60,9 +60,9 @@ class KRenderingExtensions {
 
     def KLineWidth getLineWidth(KRendering rendering) {
         // chsch: I'm currently not sure whether the first or the last will win...
-        return rendering.styles.filter(typeof(KLineWidth)).last?:renderingFactory.createKLineWidth => [
+        return rendering.styles.filter(typeof(KLineWidth)).last?:(renderingFactory.createKLineWidth => [
             lineWidth = 1
-        ];
+        ]);
     }
  
     def KForegroundColor getFGColor(KRendering rendering) {
