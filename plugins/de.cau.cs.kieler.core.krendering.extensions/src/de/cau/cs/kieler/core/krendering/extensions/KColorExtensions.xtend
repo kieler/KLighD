@@ -39,9 +39,19 @@ class KColorExtensions {
                 color.setBlue(0);
             }
             case "blue" : {
+                color.setRed(0);
+                color.setGreen(0);
+                color.setBlue(255);
+            }
+            case "customblue" : {
                 color.setRed(51);
                 color.setGreen(51);
                 color.setBlue(153);
+            }
+            case "darkSlateBlue" : {
+                color.setRed(72);
+                color.setGreen(61);
+                color.setBlue(139);
             }
             case "darkGray" : {
                 color.setRed(105);
@@ -82,6 +92,11 @@ class KColorExtensions {
                 color.setRed(135);
                 color.setGreen(206);
                 color.setBlue(250);
+            }
+            case "purple" : {
+                color.setRed(128);
+                color.setGreen(0);
+                color.setBlue(128);
             }
             case "red" : {
                 color.setRed(255);
