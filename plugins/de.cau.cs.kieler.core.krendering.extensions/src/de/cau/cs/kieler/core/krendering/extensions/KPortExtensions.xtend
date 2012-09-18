@@ -14,6 +14,8 @@ import de.cau.cs.kieler.kiml.options.LayoutOptions
 import de.cau.cs.kieler.kiml.options.PortSide
 import de.cau.cs.kieler.core.properties.IProperty
 import java.util.ArrayList
+import de.cau.cs.kieler.core.krendering.KText
+import de.cau.cs.kieler.core.krendering.KRendering
 
 /**
  * @author chsch
@@ -242,6 +244,14 @@ class KPortExtensions {
                 ];
             ];
         ];
+    }
+    
+    /**
+     * Reveals the first KText element of a port KRendering, which is assumed to be the port label.
+     * This is useful for additionally linking it with the business element represented by the port.
+     */
+    def KText getFirstText(KPort port) {
+        return port?.getData(typeof(KRendering))?.eAllContents?.filter(typeof(KText))?.head;
     }
 
 

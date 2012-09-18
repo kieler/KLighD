@@ -13,11 +13,13 @@
  */
 package de.cau.cs.kieler.klighd.transformations;
 
+import java.util.Set;
+
 import com.google.inject.Guice;
-import com.google.inject.Injector;
 
 import de.cau.cs.kieler.klighd.ITransformation;
 import de.cau.cs.kieler.klighd.TransformationContext;
+import de.cau.cs.kieler.klighd.TransformationOption;
 
 
 /**
@@ -43,7 +45,6 @@ import de.cau.cs.kieler.klighd.TransformationContext;
  */
 public class ReinitializingTransformationProxy<S, T> extends AbstractTransformation<S, T> {
 
-    private Injector injector = Guice.createInjector();
     private Class<AbstractTransformation<S, T>> transformationClass = null;
     private ITransformation<S, T> transformationDelegate = null;
     
@@ -57,13 +58,17 @@ public class ReinitializingTransformationProxy<S, T> extends AbstractTransformat
     }
     
     
+    private AbstractTransformation<S, T> getNewDelegateInstance() {
+        return Guice.createInjector().getInstance(this.transformationClass);
+    }
+    
+    
     /**
      * {@inheritDoc}<br>
      * Delegates to the 'delegate' object.
      */
     public T transform(final S model, final TransformationContext<S, T> transformationContext) {
-        // this.transformationDelegate = this.injector.getInstance(this.transformationClass); 
-        this.transformationDelegate = Guice.createInjector().getInstance(this.transformationClass); 
+        this.transformationDelegate = getNewDelegateInstance(); 
         return this.transformationDelegate.transform(model, transformationContext);
     }
     
@@ -77,30 +82,31 @@ public class ReinitializingTransformationProxy<S, T> extends AbstractTransformat
         return null;
     }
 
-    
+
     /**
      * {@inheritDoc}
      */
-    public Object getSourceElement(final Object element,
-            final TransformationContext<S, T> transformationContext) {
-        return this.transformationDelegate.getSourceElement(element, transformationContext);
+    public Set<TransformationOption> getTransformationOptions() {
+        if (this.transformationDelegate == null) {
+            return getNewDelegateInstance().getTransformationOptions();
+        }
+        return this.transformationDelegate.getTransformationOptions();
     }
     
     
     /**
      * {@inheritDoc}
      */
-    public Object getTargetElement(final Object element,
-            final TransformationContext<S, T> transformationContext) {
-        return this.transformationDelegate.getTargetElement(element, transformationContext);
+    public String toString() {
+        return this.getClass().getSimpleName() + "(" + getNewDelegateInstance() + ")";
     }
     
-    
+
     /**
      * Getter for the delegate attribute.
      * @return the delegate
      */
-    protected ITransformation<S, T> getDelegate() {
+    public ITransformation<S, T> getDelegate() {
         return this.transformationDelegate;
     }
     
@@ -110,7 +116,7 @@ public class ReinitializingTransformationProxy<S, T> extends AbstractTransformat
      */
     protected void inferSourceAndTargetModelClass() {
         this.setTriedToInferClass();
-        AbstractTransformation<S, T> delegate = injector.getInstance(this.transformationClass);        
+        AbstractTransformation<S, T> delegate = getNewDelegateInstance();        
         if (delegate != null) {
             delegate.inferSourceAndTargetModelClass();
             this.setSourceClass(delegate.getSourceClass());

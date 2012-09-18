@@ -75,6 +75,15 @@ public interface IViewer<T> {
     void setRecording(final boolean recording);
 
     /**
+     * Instructs the viewer to perform 'zoom to fit' after layout has been applied.
+     * 
+     * @param zoomToFit
+     *            true if 'zoom to fit' shall be performed.
+     * @author chsch
+     */
+    void setZoomToFit(final boolean zoomToFit);
+
+    /**
      * Sets the given selection of diagram elements as current selection.
      * 
      * @param diagramElements

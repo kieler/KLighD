@@ -13,13 +13,22 @@
  */
 package de.cau.cs.kieler.klighd.transformations;
 
+import java.util.Collections;
+import java.util.Set;
+
 import de.cau.cs.kieler.klighd.ITransformation;
 import de.cau.cs.kieler.klighd.TransformationContext;
+import de.cau.cs.kieler.klighd.TransformationOption;
 
 /**
- * An implementation of {@code ITransformation} which represents the identity.
+ * An implementation of {@code ITransformation} which represents the identity. <br>
+ * <br>
+ * The class was used in the {@link de.cau.cs.kieler.klighd.TransformationsGraph
+ * TransformationsGraph} while configuring {@link de.cau.cs.kieler.klighd.ViewContext ViewContexts}
+ * in case no semantic transformation is needed but is currently replaced by the
+ * {@link DuplicatingTransformation}
  * 
- * @author mri
+ * @author mri, chsch
  */
 public class IdentityTransformation implements ITransformation<Object, Object> {
 
@@ -29,22 +38,6 @@ public class IdentityTransformation implements ITransformation<Object, Object> {
     public Object transform(final Object model,
             final TransformationContext<Object, Object> transformationContext) {
         return model;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public Object getSourceElement(final Object element,
-            final TransformationContext<Object, Object> transformationContext) {
-        return element;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public Object getTargetElement(final Object element,
-            final TransformationContext<Object, Object> transformationContext) {
-        return element;
     }
 
     /**
@@ -68,4 +61,10 @@ public class IdentityTransformation implements ITransformation<Object, Object> {
         return true;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    public Set<TransformationOption> getTransformationOptions() {
+        return Collections.emptySet();
+    }
 }

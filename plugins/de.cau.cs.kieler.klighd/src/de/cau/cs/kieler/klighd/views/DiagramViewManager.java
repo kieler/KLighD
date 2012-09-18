@@ -99,6 +99,24 @@ public final class DiagramViewManager implements IPartListener {
         return idPartMapping.get(id);
     }
 
+    
+    /**
+     * Updates the diagram view with the given identifier.<br>
+     * <br>
+     * The model has to be of the type of the old model, i.e. the view context associated with the
+     * identifier must support the model.
+     * 
+     * @param id
+     *            the diagram identifier (can be null for the default view)
+     * @return the view with the identifier or null on failure
+     * 
+     * @author chsch
+     */
+    public DiagramViewPart updateView(final String id) {
+        return updateView(id, null, null, null);
+    }
+    
+    
     /**
      * Updates the diagram view with the given identifier with a specified name and model.<br>
      * <br>
@@ -133,10 +151,11 @@ public final class DiagramViewManager implements IPartListener {
             }
 
             // update the view context
-            if (model != null) {
+            if (model != null || viewContext.getInputModel() != null) {
                 page.bringToTop(diagramView);
                 // update the view context and viewer
-                if (!LightDiagramServices.getInstance().updateViewContext(viewContext, model,
+                Object theModel = (model != null ? model : viewContext.getInputModel());
+                if (!LightDiagramServices.getInstance().updateViewContext(viewContext, theModel,
                         propertyHolder)) {
                     return null;
                 }
@@ -154,6 +173,7 @@ public final class DiagramViewManager implements IPartListener {
         }
         return null;
     }
+    
 
     /**
      * Creates a diagram view with the given name and model under the specified identifier. <br>

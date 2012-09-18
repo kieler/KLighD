@@ -38,7 +38,7 @@ public class KlighdViewer extends AbstractViewer<Object> {
      *            the parent composite
      */
     public KlighdViewer(final Composite parent) {
-        contextViewer = new ContextViewer(parent, null);
+        contextViewer = new ContextViewer(parent, null, null);
     }
 
     /**
@@ -82,6 +82,13 @@ public class KlighdViewer extends AbstractViewer<Object> {
      */
     public void setRecording(final boolean recording) {
         contextViewer.setRecording(recording);
+    }
+    
+    /**
+     * {@inheritDoc} 
+     */
+    public void setZoomToFit(final boolean zoomToFit) {
+        contextViewer.setZoomToFit(zoomToFit);
     }
     
     /**

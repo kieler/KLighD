@@ -1,71 +1,147 @@
 package de.cau.cs.kieler.klighd.examples.ecore
 
+import javax.inject.Inject
 import de.cau.cs.kieler.klighd.transformations.AbstractTransformation
 import de.cau.cs.kieler.klighd.TransformationContext
 import de.cau.cs.kieler.core.kgraph.KNode
 import de.cau.cs.kieler.kiml.util.KimlUtil
 import de.cau.cs.kieler.klighd.examples.ecore.EModelElementCollection
 import org.eclipse.emf.ecore.EClassifier
-import de.cau.cs.kieler.klighd.examples.KRenderingUtil
-import com.google.inject.Inject
 import org.eclipse.emf.ecore.EPackage
 import org.eclipse.emf.ecore.EClass
 import org.eclipse.emf.ecore.EReference
 import de.cau.cs.kieler.kiml.options.LayoutOptions
 import de.cau.cs.kieler.kiml.options.Direction
-import de.cau.cs.kieler.core.krendering.KPolyline
-import de.cau.cs.kieler.klighd.examples.KRenderingColors
 import de.cau.cs.kieler.kiml.options.EdgeType
 import de.cau.cs.kieler.core.util.Pair
+import de.cau.cs.kieler.core.krendering.extensions.KNodeExtensions
+import de.cau.cs.kieler.core.krendering.extensions.KEdgeExtensions
+import de.cau.cs.kieler.core.krendering.extensions.KRenderingExtensions
+import de.cau.cs.kieler.core.krendering.KRenderingFactory
+import de.cau.cs.kieler.core.krendering.extensions.KPolylineExtensions
+import de.cau.cs.kieler.core.krendering.extensions.KColorExtensions
+import de.cau.cs.kieler.klighd.TransformationOption
+import com.google.common.collect.ImmutableSet
+import com.google.common.collect.ImmutableList
 import com.google.common.collect.Lists
 
 class EcoreDiagramSynthesis extends AbstractTransformation<EModelElementCollection, KNode> {
 	
 	@Inject
-	extension KRenderingUtil
+	extension KNodeExtensions
 	
 	@Inject
-	extension KRenderingColors
+	extension KEdgeExtensions
 	
-	override KNode transform(EModelElementCollection model, TransformationContext<EModelElementCollection, KNode> transformationContext) {
+    @Inject
+    extension KRenderingExtensions
+    
+    @Inject
+    extension KPolylineExtensions
+    
+	@Inject
+	extension KColorExtensions
+	
+    private static val KRenderingFactory renderingFactory = KRenderingFactory::eINSTANCE
+
+    private static val CHOSEN = "Chosen classes";
+    private static val CHOSEN_AND_RELATED = "Chosen (highlighted) & related classes";
+    private static val ALL = "All classes, selection highlighted";
+    
+    private static val String CLASS_FILTER_NAME = "Class filter";
+
+    /**
+     * The class filter option definition that allows the user to customize the class diagram.
+     */
+    private static val TransformationOption CLASS_FILTER = TransformationOption::createChoiceOption(CLASS_FILTER_NAME,
+       ImmutableList::of(CHOSEN, CHOSEN_AND_RELATED, ALL), CHOSEN_AND_RELATED);
+
+    
+    /**
+     * {@inheritDoc}
+     * <br><br>
+     * Registers the content filter option.
+     */
+    override public getTransformationOptions() {
+        return ImmutableSet::of(CLASS_FILTER);
+    }   
+
+
+    /**
+     * {@inheritDoc}
+     */
+	override KNode transform(EModelElementCollection choice, TransformationContext<EModelElementCollection, KNode> transformationContext) {
 	    use(transformationContext);
 		
-		val rootNode = KimlUtil::createInitializedNode;
-		rootNode.KShapeLayout.setProperty(LayoutOptions::ALGORITHM, "de.cau.cs.kieler.kiml.ogdf.planarization");
-		rootNode.KShapeLayout.setProperty(LayoutOptions::SPACING, 75.float);
-	    rootNode.KShapeLayout.setProperty(LayoutOptions::DIRECTION, Direction::UP);
+		return KimlUtil::createInitializedNode => [
+            it.addLayoutParam(LayoutOptions::ALGORITHM, "de.cau.cs.kieler.kiml.ogdf.planarization");
+            it.addLayoutParam(LayoutOptions::SPACING, 75f);
+            it.addLayoutParam(LayoutOptions::DIRECTION, Direction::UP);
 		
-		val classifier = model.filter(typeof(EClass)).toList;
-		
-	    val list = Lists::newArrayList(model.filter(typeof(EClassifier)));
-	    classifier.forEach[list.addAll(it.EStructuralFeatures.filter(typeof(EReference)).map[it.EType])];
-	    classifier.forEach[list.addAll(it.ESuperTypes)];
-	    list.createClassifierFigures(rootNode);
-	    list.createAssociationConnections;
-	    list.createInheritanceConnections;
+            // The chosen (depicted) classifiers. This list will be supplemented with related classifiers,
+            //  depending on the value of CLASS_FILTER.
+            val depictedClasses = choice.filter(typeof(EClassifier)).toList;
 	    
-	    classifier.forEach[it.node.KRendering.addFirst("red".fgColor)];
+	        if (transformationContext.getOptionValue(CLASS_FILTER) == CHOSEN) {
+                
+                depictedClasses.createElementFigures(it);
+                
+	        } else if (transformationContext.getOptionValue(CLASS_FILTER) == CHOSEN_AND_RELATED) {
+                
+                // The chosen classes ...
+                val chosenClasses = choice.filter(typeof(EClass)).toList => [
+                   // ... are inspected, their related classes are put into the classifiers list as well!
+	               it.forEach[depictedClasses.addAll(it.EStructuralFeatures.filter(typeof(EReference)).map[it.EType])];
+                   it.forEach[depictedClasses.addAll(it.ESuperTypes)];
+                ];
+                
+                depictedClasses.createElementFigures(it);
+
+                chosenClasses.forEach[
+                    it.node.KRendering.setBackgroundColor("lightPink".color)
+                ];
+                
+	        } else {
+                val chosenClasse = Lists::newArrayList(depictedClasses);
+                
+                depictedClasses += depictedClasses.head.EPackage.EClassifiers => [classes |
+                    classes.createElementFigures(it)
+                ];
+
+                chosenClasse.forEach[
+                    it.node.KRendering.setBackgroundColor("lightPink".color)
+                ];
+	        }
 		
-		model.filter(typeof(EPackage)).forEach[
-			val classifiers = it.EClassifiers;
-			classifiers.createClassifierFigures(rootNode);
-			classifiers.createAssociationConnections;
-			classifiers.createInheritanceConnections;
+            choice.filter(typeof(EPackage)).forEach[ ePackage |
+                ePackage.EClassifiers => [ clazz |
+                    clazz.createElementFigures(it);
+                ];
+            ];
 		];
-		
-		return rootNode;
+	}
+	
+	def createElementFigures(Iterable<EClassifier> classes, KNode rootNode) {
+	    classes.createClassifierFigures(rootNode);
+	    classes.createAssociationConnections();
+	    classes.createInheritanceConnections();
 	}
 	
 	def createClassifierFigures(Iterable<EClassifier> classes, KNode rootNode) {
-		classes.forEach[
-		    val boxWidth = if (it.name.length < 10) 180 else it.name.length*12+50;
-			val classNode = it.createRectangulareNode(80, boxWidth).putToLookUpWith(it);
-			classNode.KRendering.add(
-				factory.createKText.of(it.name).putToLookUpWith(it).add(factory.createKFontSize.of(20))
-					.add(factory.createKFontBold.setbold).add(factory.createKBackgroundVisibility.setFalse)
-			);
-			classNode.KRendering.add(factory.createKLineWidth.of(2)).add("lemon".bgColor);
-			rootNode.children.add(classNode);
+		classes.forEach[ EClassifier clazz |
+            rootNode.children += clazz.createNode().putToLookUpWith(clazz) => [
+                val boxWidth = if (clazz.name.length < 10) 180 else clazz.name.length*12+50;
+                it.setNodeSize(boxWidth, 80);
+                it.data += renderingFactory.createKRectangle() => [
+                    it.setLineWidth(2);
+                    it.setBackgroundColor("lemon".color);
+                    it.children += renderingFactory.createKText().putToLookUpWith(clazz) => [
+                        it.text = clazz.name;
+                        it.setFontSize(20);
+                        it.setFontBold(true);
+                    ];
+                ];         
+            ];
 		];
 	}
 	
@@ -79,12 +155,14 @@ class EcoreDiagramSynthesis extends AbstractTransformation<EModelElementCollecti
 	}
 	
 	def createAssociationConnection(EReference ref) {
-		val edge = ref.createPolyLineEdge;
-		edge.KRendering.add(factory.createKLineWidth.of(2));
-		(edge.KRendering as KPolyline).addConnectionArrow(2, true);
-		edge.source = ref.eContainer.node;
-		edge.target = ref.EType.node;
-		ref.eContainer.node.outgoingEdges.add(edge);
+	    ref.createEdge() => [
+    		it.source = ref.eContainer.node;
+	       	it.target = ref.EType.node;
+	        it.data += renderingFactory.createKPolyline() => [
+	            it.setLineWidth(2);
+	            it.addArrowDecorator();
+	        ];
+	    ];
 	}
 	
 	def createInheritanceConnections(Iterable<EClassifier> classes) {
@@ -96,14 +174,15 @@ class EcoreDiagramSynthesis extends AbstractTransformation<EModelElementCollecti
 	}
 	
 	def createInheritanceConnection(EClass child, EClass parent) {
-		val edge = new Pair(child, parent).createPolyLineEdge;
-		val line = edge.KRendering as KPolyline
-		edge.KEdgeLayout.setProperty(LayoutOptions::EDGE_TYPE, EdgeType::GENERALIZATION)
-		line.add(factory.createKLineWidth.of(2))
-		line.addInheritanceConnectionArrow(2, true);
-		edge.source = child.node;
-		edge.target = parent.node;
-		child.node.outgoingEdges.add(edge);
+		new Pair(child, parent).createEdge() => [
+            it.addLayoutParam(LayoutOptions::EDGE_TYPE, EdgeType::GENERALIZATION);
+    	    it.source = child.node;
+	        it.target = parent.node;
+	        it.data += renderingFactory.createKPolyline() => [
+                it.setLineWidth(2);
+                it.addInheritanceTriangleArrowDecorator();
+	        ];		    
+		];
 	}
 	
 }

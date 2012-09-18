@@ -13,10 +13,14 @@
  */
 package de.cau.cs.kieler.klighd;
 
+import java.util.Set;
+
 /**
  * An interface for a model-to-model transformation between two unrestricted models.
+ * ITransformation are intended to be stateless (wrt. data kept in mind for the next run).
+ * Hence, all semantic knowledge must be deposited in the provided {@link TransformationContext}.
  * 
- * @author mri
+ * @author mri, chsch
  * 
  * @param <S>
  *            the type of the source model
@@ -38,30 +42,6 @@ public interface ITransformation<S, T> {
     T transform(S model, TransformationContext<S, T> transformationContext);
 
     /**
-     * Returns the element in the source model which is represented by the given element in the
-     * target model.
-     * 
-     * @param element
-     *            the element in the target model
-     * @param transformationContext
-     *            the transformation context
-     * @return the element in the source model or null if the element could not be found
-     */
-    Object getSourceElement(Object element, TransformationContext<S, T> transformationContext);
-
-    /**
-     * Returns the element in the target model which represents the given element in the source
-     * model.
-     * 
-     * @param element
-     *            the element in the source model
-     * @param transformationContext
-     *            the transformation context
-     * @return the element in the target model or null if the element could not be found
-     */
-    Object getTargetElement(Object element, TransformationContext<S, T> transformationContext);
-
-    /**
      * Returns the class of the source model.
      * 
      * @return the class of the source model
@@ -74,5 +54,13 @@ public interface ITransformation<S, T> {
      * @return the class of the target model
      */
     Class<?> getTargetClass();
+
+    /**
+     * Provides the set of {@link TransformationOption TransformationOptions} forward to the users
+     * in the UI in order to allow them to influence the transformation result.
+     * 
+     * @return the set of {@link TransformationOption TransformationOptions}
+     */
+    Set<TransformationOption> getTransformationOptions();
 
 }

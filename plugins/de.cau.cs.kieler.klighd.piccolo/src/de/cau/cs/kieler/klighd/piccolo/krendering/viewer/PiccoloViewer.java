@@ -33,7 +33,8 @@ import de.cau.cs.kieler.klighd.piccolo.Messages;
 import de.cau.cs.kieler.klighd.piccolo.PMouseWheelZoomEventHandler;
 import de.cau.cs.kieler.klighd.piccolo.PSWTSimpleSelectionEventHandler;
 import de.cau.cs.kieler.klighd.piccolo.activities.ZoomActivity;
-import de.cau.cs.kieler.klighd.piccolo.krendering.IGraphElement;
+//import de.cau.cs.kieler.klighd.piccolo.krendering.IGraphElement;
+import de.cau.cs.kieler.klighd.piccolo.krendering.ITracingElement;
 import de.cau.cs.kieler.klighd.piccolo.krendering.controller.GraphController;
 import de.cau.cs.kieler.klighd.piccolo.krendering.controller.RenderingContextData;
 import de.cau.cs.kieler.klighd.piccolo.nodes.PEmptyNode;
@@ -206,6 +207,13 @@ public class PiccoloViewer extends AbstractViewer<KNode> implements INodeSelecti
     /**
      * {@inheritDoc}
      */
+    public void setZoomToFit(final boolean zoomToFit) {
+        controller.setZoomToFit(zoomToFit);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void setSelection(final Object[] diagramElements) {
         if (selectionHandler != null) {
@@ -272,13 +280,7 @@ public class PiccoloViewer extends AbstractViewer<KNode> implements INodeSelecti
      */
     @Override
     public void zoomToFit(final int duration) {
-//        if (diagramContext.getRootNode() instanceof PNode) {
-//            PNode node = (PNode) diagramContext.getRootNode();
-//            // move and zoom the camera so it includes the full bounds
-//            PCamera camera = canvas.getCamera();
-//            camera.animateViewToCenterBounds(node.getFullBounds(), true, duration);
-//            // FIXME centers the bb instead of left aligning it and could need some padding
-//        }
+        controller.zoomToFit(duration);
     }
 
     /**
@@ -338,8 +340,8 @@ public class PiccoloViewer extends AbstractViewer<KNode> implements INodeSelecti
      * {@inheritDoc}
      */
     public void selected(final PSWTSimpleSelectionEventHandler handler, final PNode node) {
-        if (node instanceof IGraphElement<?>) {
-            IGraphElement<?> graphElement = (IGraphElement<?>) node;
+        if (node instanceof ITracingElement<?>) {
+            ITracingElement<?> graphElement = (ITracingElement<?>) node;
             notifyListenersSelected(graphElement.getGraphElement());
         }
     }
@@ -348,8 +350,8 @@ public class PiccoloViewer extends AbstractViewer<KNode> implements INodeSelecti
      * {@inheritDoc}
      */
     public void unselected(final PSWTSimpleSelectionEventHandler handler, final PNode node) {
-        if (node instanceof IGraphElement<?>) {
-            IGraphElement<?> graphElement = (IGraphElement<?>) node;
+        if (node instanceof ITracingElement<?>) {
+            ITracingElement<?> graphElement = (ITracingElement<?>) node;
             notifyListenersUnselected(graphElement.getGraphElement());
         }
     }
@@ -359,10 +361,10 @@ public class PiccoloViewer extends AbstractViewer<KNode> implements INodeSelecti
      */
     public void selection(final PSWTSimpleSelectionEventHandler handler,
             final Collection<PNode> nodes) {
-        List<KGraphElement> graphElements = Lists.newLinkedList();
+        List<Object> graphElements = Lists.newLinkedList();
         for (PNode node : nodes) {
-            if (node instanceof IGraphElement<?>) {
-                IGraphElement<?> graphElement = (IGraphElement<?>) node;
+            if (node instanceof ITracingElement<?>) {
+                ITracingElement<?> graphElement = (ITracingElement<?>) node;
                 graphElements.add(graphElement.getGraphElement());
             }
         }

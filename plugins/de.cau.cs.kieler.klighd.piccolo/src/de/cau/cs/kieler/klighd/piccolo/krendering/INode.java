@@ -23,6 +23,10 @@ import de.cau.cs.kieler.core.properties.Property;
 /**
  * The interface for Piccolo nodes representing a {@code KNode}.
  * 
+ * Info (chsch): So far I figured out, only INodes are set pickable, concrete rendering nodes
+ *  such as rectangles, paths, ... are not pickable. This influences e.g. the selection
+ *  handling.
+ * 
  * @author mri
  */
 public interface INode extends IGraphElement<KNode> {

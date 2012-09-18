@@ -25,6 +25,10 @@ import edu.umd.cs.piccolo.PNode;
 /**
  * The Piccolo node for representing a {@code KEdge}.
  * 
+ * Warning (chsch): KEdge renderings, i.e. splines and polylines, must not have a
+ *  paint (box color) since this will impair the correct selection determination.
+ *  (surrounding edge will cover node and other edges) 
+ * 
  * @author mri
  */
 public class KEdgeNode extends PChildRepresentedNode implements ILabeledGraphElement<KEdge> {
@@ -53,6 +57,7 @@ public class KEdgeNode extends PChildRepresentedNode implements ILabeledGraphEle
     public KEdgeNode(final KEdge edge) {
         this.edge = edge;
         setPickable(true);
+        setChildrenPickable(false);
         bendPoints[0] = new Point2D.Double();
         bendPoints[1] = new Point2D.Double();
         RenderingContextData.get(edge).setProperty(EDGE_REP, this);
@@ -106,5 +111,5 @@ public class KEdgeNode extends PChildRepresentedNode implements ILabeledGraphEle
     public void addLabel(final KLabelNode label) {
         addChild(label);
     }
-
+    
 }

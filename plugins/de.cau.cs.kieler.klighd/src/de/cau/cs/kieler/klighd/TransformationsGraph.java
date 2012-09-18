@@ -23,12 +23,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.eclipse.emf.ecore.EObject;
+
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 
 import de.cau.cs.kieler.core.util.Pair;
-import de.cau.cs.kieler.klighd.transformations.IdentityTransformation;
+import de.cau.cs.kieler.klighd.transformations.DuplicatingTransformation;
 
 /**
  * A graph structure to express the relations between instances of {@code ITransformation} and
@@ -325,6 +327,11 @@ public class TransformationsGraph {
         // get the shortest path
         Path path = getShortestPath(paths);
         if (path != null) {
+            // keep the current input business model in the view context
+            // this allows to update the visual representation e.g. in case of a transformation
+            // option change
+            viewContext.setInputModel(model);
+            
             // initialize the view context with transformation contexts
             ClassNode targetNode;
             if (path.edges.size() > 0) {
@@ -336,8 +343,13 @@ public class TransformationsGraph {
                 // set the target node
                 targetNode = path.edges.get(path.edges.size() - 1).target;
             } else {
+                // in case we need no transformation, e.g. while visualizing KGraph models
+                //  the original model will at least deeply copied in order to clearly decouple
+                //  the model input source (e.g. the editor) and the (succeeding) model manipulations
+                //  potentially performed by an update strategy.
                 TransformationContext<?, ?> transformationContext = TransformationContext
-                        .create(new IdentityTransformation());
+                        // .create(new IdentityTransformation());
+                        .create(new DuplicatingTransformation<EObject>());
                 viewContext.addTransformationContext(transformationContext);
                 // set the target node
                 targetNode = path.sourceNode;

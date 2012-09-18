@@ -84,6 +84,7 @@ import de.cau.cs.kieler.klighd.piccolo.nodes.PAlignmentNode.VAlignment;
 import de.cau.cs.kieler.klighd.piccolo.nodes.PEmptyNode;
 import de.cau.cs.kieler.klighd.piccolo.nodes.PSWTAdvancedPath;
 import de.cau.cs.kieler.klighd.piccolo.nodes.PSWTAdvancedPath.LineStyle;
+import de.cau.cs.kieler.klighd.piccolo.nodes.PSWTTracingText;
 import de.cau.cs.kieler.klighd.piccolo.util.NodeUtil;
 import edu.umd.cs.piccolo.PNode;
 import edu.umd.cs.piccolo.nodes.PImage;
@@ -107,8 +108,8 @@ import edu.umd.cs.piccolox.swt.PSWTText;
 public abstract class AbstractRenderingController<S extends KGraphElement, T extends PNode> {
 
     /** the property for a rendering node's controller. */
-    private static final IProperty<Map<Object, PNodeController<?>>> CONTROLLER = new Property<Map<Object, PNodeController<?>>>(
-            "de.cau.cs.kieler.klighd.piccolo.controller");
+    private static final IProperty<Map<Object, PNodeController<?>>> CONTROLLER =
+            new Property<Map<Object, PNodeController<?>>>("de.cau.cs.kieler.klighd.piccolo.controller");
     /** the property for a rendering reference key. */
     private static final IProperty<Map<Object, Object>> KEY = new Property<Map<Object, Object>>(
             "de.cau.cs.kieler.klighd.piccolo.key");
@@ -275,7 +276,8 @@ public abstract class AbstractRenderingController<S extends KGraphElement, T ext
 
                     // handle new, moved and removed styles
                     if (msg.getNotifier() instanceof KRendering
-                            && msg.getFeatureID(KRendering.class) == KRenderingPackage.KRENDERING__STYLES) {
+                            && msg.getFeatureID(KRendering.class)
+                                == KRenderingPackage.KRENDERING__STYLES) {
                         PlatformUI.getWorkbench().getDisplay().syncExec(new Runnable() {
                             public void run() {
                                 // update the styles
@@ -968,10 +970,13 @@ public abstract class AbstractRenderingController<S extends KGraphElement, T ext
             final List<KStyle> propagatedStyles, final PNode parent, final PBounds initialBounds,
             final Object key) {
         // create the text
-        PSWTText textNode = new PSWTText(text.getText() != null ? text.getText() : "");
+        PSWTTracingText textNode = new PSWTTracingText(text);
         textNode.setGreekColor(null);
         textNode.setTransparent(true);  // supplement due to KIELER-2155
         initializeRenderingNode(textNode);
+        
+        // supplement (chsch)
+        textNode.setPickable(true);
 
         // create the alignment node wrapping the text
         final PAlignmentNode alignmentNode = new PAlignmentNode();
@@ -1340,8 +1345,8 @@ public abstract class AbstractRenderingController<S extends KGraphElement, T ext
             final PropertyChangeListener listener) {
         parent.addPropertyChangeListener(property, listener);
         @SuppressWarnings("unchecked")
-        List<Pair<String, PropertyChangeListener>> listeners = (List<Pair<String, PropertyChangeListener>>) node
-                .getAttribute(PROPERTY_LISTENER_KEY);
+        List<Pair<String, PropertyChangeListener>> listeners =
+                (List<Pair<String, PropertyChangeListener>>) node.getAttribute(PROPERTY_LISTENER_KEY);
         if (listeners == null) {
             listeners = Lists.newLinkedList();
             node.addAttribute(PROPERTY_LISTENER_KEY, listeners);
@@ -1357,8 +1362,8 @@ public abstract class AbstractRenderingController<S extends KGraphElement, T ext
      */
     protected void removeListeners(final PNode node) {
         @SuppressWarnings("unchecked")
-        List<Pair<String, PropertyChangeListener>> listeners = (List<Pair<String, PropertyChangeListener>>) node
-                .getAttribute(PROPERTY_LISTENER_KEY);
+        List<Pair<String, PropertyChangeListener>> listeners =
+                (List<Pair<String, PropertyChangeListener>>) node.getAttribute(PROPERTY_LISTENER_KEY);
         if (listeners != null && node.getParent() != null) {
             for (Pair<String, PropertyChangeListener> pair : listeners) {
                 node.getParent().removePropertyChangeListener(pair.getFirst(), pair.getSecond());

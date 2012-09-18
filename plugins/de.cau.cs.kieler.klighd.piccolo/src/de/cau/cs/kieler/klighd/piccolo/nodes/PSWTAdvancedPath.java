@@ -25,9 +25,14 @@ import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
+import java.util.ArrayList;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.GC;
+
+import de.cau.cs.kieler.core.math.KVector;
+import de.cau.cs.kieler.core.math.KVectorChain;
+import de.cau.cs.kieler.core.math.KielerMath;
 
 import edu.umd.cs.piccolo.PNode;
 import edu.umd.cs.piccolo.nodes.PPath;
@@ -63,6 +68,12 @@ public class PSWTAdvancedPath extends PNode {
         /** dash followed by two dots. */
         DASHDOTDOT
     }
+    
+    /**
+     * A property identifier leading to the approximated path if the path is a Bézier curve or to
+     * itself otherwise. This approximated path is needed while computing the decorator rotations.
+     */
+    public static final String APPROXIMATED_PATH = "ApproximatedPath";
 
     private static final long serialVersionUID = 8034306769936734586L;
 
@@ -197,7 +208,9 @@ public class PSWTAdvancedPath extends PNode {
     public static PSWTAdvancedPath createSpline(final Point2D[] points) {
         final PSWTAdvancedPath result = new PSWTAdvancedPath();
         result.setPathToSpline(points);
-        result.setPaint(Color.black);
+        // chsch: do not set the paint of a line this will impair the
+        //  selection determination (using #intersects(), see below)
+        // result.setPaint(Color.white);
         return result;
     }
 
@@ -212,7 +225,9 @@ public class PSWTAdvancedPath extends PNode {
     public static PSWTAdvancedPath createPolyline(final Point2D[] points) {
         final PSWTAdvancedPath result = new PSWTAdvancedPath();
         result.setPathToPolyline(points);
-        result.setPaint(Color.white);
+        // chsch: do not set the paint of a line this will impair the
+        //  selection determination (using #intersects(), see below)
+        // result.setPaint(Color.white);
         return result;
     }
 
@@ -229,7 +244,9 @@ public class PSWTAdvancedPath extends PNode {
     public static PSWTAdvancedPath createPolyline(final float[] xp, final float[] yp) {
         final PSWTAdvancedPath result = new PSWTAdvancedPath();
         result.setPathToPolyline(xp, yp);
-        result.setPaint(Color.white);
+        // chsch: do not set the paint of a line this will impair the
+        //  selection determination (using #intersects(), see below)
+        // result.setPaint(Color.white);
         return result;
     }
 
@@ -703,6 +720,21 @@ public class PSWTAdvancedPath extends PNode {
             // this should not happen
             break;
         }
+        // supplement (chsch):
+        PSWTAdvancedPath approxPath = new PSWTAdvancedPath();
+        KVectorChain chain = new KVectorChain();
+        for (Point2D p : points) {
+            chain.add(p.getX(), p.getY());
+        }
+        chain = KielerMath.approximateSpline(chain);
+        ArrayList<Point2D> approxPoints = new ArrayList<Point2D>(points.length);
+        for (KVector v : chain) {
+            approxPoints.add(new Point2D.Double(v.x, v.y));
+        }
+        approxPath.setPathToPolyline(approxPoints.toArray(new Point2D.Double[points.length]));
+        this.addAttribute(APPROXIMATED_PATH, approxPath);
+
+        // this operation finally integrates the path fires the change listeners
         setShape(path);
     }
 
@@ -719,6 +751,11 @@ public class PSWTAdvancedPath extends PNode {
         for (int i = 1; i < points.length; i++) {
             path.lineTo((float) points[i].getX(), (float) points[i].getY());
         }
+
+        // supplement (chsch):
+        this.addAttribute(APPROXIMATED_PATH, this);
+
+        // this operation finally integrates the path fires the change listeners
         setShape(path);
     }
 

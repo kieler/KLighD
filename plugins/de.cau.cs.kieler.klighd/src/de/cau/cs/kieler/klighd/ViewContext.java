@@ -14,6 +14,8 @@
 package de.cau.cs.kieler.klighd;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -21,7 +23,9 @@ import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.statushandlers.StatusManager;
 
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 
 import de.cau.cs.kieler.core.properties.MapPropertyHolder;
 
@@ -46,8 +50,12 @@ public final class ViewContext extends MapPropertyHolder {
     private transient List<TransformationContext<?, ?>> transformationContexts = null;
     /** the reversed list of transformation contexts. */
     private transient List<TransformationContext<?, ?>> transformationContextsRev = null;
-    /** the base model for incremental update. */
-    private Object baseModel = null;
+    /** the business model to be represented by means of this context. */
+    private Object businessModel = null;
+    /** the view model initiated while configuring an {@link IUpdateStrategy}
+     * and kept for the whole life-cycle of the view context,
+     * in order to enable proper incremental update. */
+    private Object viewModel = null;
     
     /**
      * Default constructor.
@@ -99,6 +107,25 @@ public final class ViewContext extends MapPropertyHolder {
         }
         return null;               
     }
+    
+    /**
+     * Sets the input model.
+     * 
+     * @param model
+     *            the input model
+     */    
+    protected void setInputModel(final Object model) {
+        this.businessModel = model; 
+    }
+
+    /**
+     * Returns the current model to be represented.
+     * 
+     * @return the current model to be represented.
+     */
+    public Object getInputModel() {
+        return this.businessModel;
+    }
 
     /**
      * Sets the contexts viewer provider.
@@ -121,6 +148,9 @@ public final class ViewContext extends MapPropertyHolder {
 
     /**
      * Sets the update strategy used in this view context.
+     * In addition, it configures the view model root, which
+     * is kept for the whole life-cycle of the view context,
+     * in order to enable proper incremental update. 
      * 
      * @param updateStrategy
      *            the update strategy
@@ -128,9 +158,9 @@ public final class ViewContext extends MapPropertyHolder {
     public void setUpdateStrategy(final IUpdateStrategy<?> updateStrategy) {
         this.updateStrategy = updateStrategy;
         if (updateStrategy != null) {
-            baseModel = updateStrategy.getInitialBaseModel(this);
+            viewModel = updateStrategy.getInitialBaseModel(this);
         } else {
-            baseModel = null;
+            viewModel = null;
         }
     }
 
@@ -144,12 +174,14 @@ public final class ViewContext extends MapPropertyHolder {
     }
 
     /**
-     * Returns the base model in this view context derived from the update strategy.
+     * Returns the view model root, which is derived from the update strategy
+     * and kept for the whole life-cycle of the view context,
+     * in order to enable proper incremental update.
      * 
      * @return the base model or null if no update strategy is set
      */
-    public Object getBaseModel() {
-        return baseModel;
+    public Object getViewModel() {
+        return viewModel;
     }
 
     /**
@@ -238,7 +270,30 @@ public final class ViewContext extends MapPropertyHolder {
         transformationContexts.clear();
         viewerProvider = null;
         updateStrategy = null;
-        baseModel = null;
+        businessModel = null;
+        viewModel = null;
     }
-
+    
+    private Map<TransformationContext<?, ?>, Set<TransformationOption>> options = null;
+    
+    /**
+     * Returns the set of {@link TransformationOption TransformationOptions} declared by the
+     * transformation and forward to the users in the UI in order to allow them to influence the
+     * transformation result.
+     * 
+     * @return the set of {@link TransformationOption TransformationOptions}
+     * 
+     * @author chsch
+     */
+    public Map<TransformationContext<?, ?>, Set<TransformationOption>> getTransformationOptions() {
+        if (this.options == null) {
+            Map<TransformationContext<?, ?>, Set<TransformationOption>> map = Maps
+                    .newLinkedHashMap();
+            for (TransformationContext<?, ?> c : this.transformationContexts) {
+                map.put(c, c.getTransformationOptions());
+            }        
+            this.options = ImmutableMap.copyOf(map);
+        }
+        return this.options;
+    }
 }

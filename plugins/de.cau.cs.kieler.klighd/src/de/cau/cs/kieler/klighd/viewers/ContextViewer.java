@@ -18,25 +18,36 @@ import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
+import org.eclipse.jface.action.Action;
+import org.eclipse.jface.action.IAction;
+import org.eclipse.jface.action.IMenuManager;
+import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.ISelectionProvider;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Event;
 
 import com.google.common.collect.Lists;
 
 import de.cau.cs.kieler.klighd.IViewer;
 import de.cau.cs.kieler.klighd.IViewerEventListener;
 import de.cau.cs.kieler.klighd.LightDiagramServices;
+import de.cau.cs.kieler.klighd.TransformationContext;
+import de.cau.cs.kieler.klighd.TransformationOption;
 import de.cau.cs.kieler.klighd.ViewContext;
 import de.cau.cs.kieler.klighd.triggers.KlighdSelectionTrigger;
 import de.cau.cs.kieler.klighd.triggers.KlighdSelectionTrigger.KlighdSelectionState;
 import de.cau.cs.kieler.klighd.triggers.KlighdSelectionTrigger.KlighdSelectionState.SelectionElement;
+import de.cau.cs.kieler.klighd.views.DiagramViewManager;
+import de.cau.cs.kieler.klighd.views.DiagramViewPart;
 
 /**
  * A viewer for instances of type {@code ViewContext}. This viewer acts as a wrapper for the viewer
@@ -49,11 +60,12 @@ import de.cau.cs.kieler.klighd.triggers.KlighdSelectionTrigger.KlighdSelectionSt
  * This viewer also implements the {@code ISelectionProvider} interface and acts as the KLighD view
  * provider for selection events.
  * 
- * @author mri
+ * @author mri, chsch
  */
 public class ContextViewer extends AbstractViewer<Object> implements IViewerEventListener,
         ISelectionProvider {
 
+    private DiagramViewPart viewPart;
     /** the parent composite. */
     private Composite parent;
     /** the id of the view this viewer belongs to. */
@@ -75,10 +87,13 @@ public class ContextViewer extends AbstractViewer<Object> implements IViewerEven
      *            the parent composite
      * @param viewId
      *            the id of the view this viewer belongs to
+     * @param viewPart
+     *            the viewPart this view is attached to
      */
-    public ContextViewer(final Composite parent, final String viewId) {
+    public ContextViewer(final Composite parent, final String viewId, final DiagramViewPart viewPart) {
         this.parent = parent;
         this.viewId = viewId;
+        this.viewPart = viewPart;
         showMessage("");
     }
 
@@ -88,6 +103,7 @@ public class ContextViewer extends AbstractViewer<Object> implements IViewerEven
     public Control getControl() {
         return currentViewer.getControl();
     }
+    
 
     /**
      * {@inheritDoc}
@@ -109,6 +125,7 @@ public class ContextViewer extends AbstractViewer<Object> implements IViewerEven
             currentViewContext = viewContext;
             // reset the current selection
             resetSelection();
+            
         } else if (model instanceof String) {
             // if the model is a string show it
             showMessage((String) model);
@@ -116,8 +133,83 @@ public class ContextViewer extends AbstractViewer<Object> implements IViewerEven
             // reset the current selection
             resetSelection();
         }
+        
+        // fill menu with the option entries provided by the incorporated transformations
+        updateOptionsMenu();
     }
     
+    
+    /**
+     * Fills the synthesis option menu after the model (viewContext) has been set.
+     */
+    private void updateOptionsMenu() {
+        if (viewPart == null) {
+            return;
+        }
+
+        final ViewContext context = viewPart.getContextViewer().getCurrentViewContext();
+        if (context == null) {
+            return;
+        }
+
+        IMenuManager mm = viewPart.getViewSite().getActionBars().getMenuManager();
+        mm.removeAll();
+
+        for (final Map.Entry<TransformationContext<?, ?>, Set<TransformationOption>> entry : context
+                .getTransformationOptions().entrySet()) {
+            
+            for (final TransformationOption option : entry.getValue()) {
+                
+                if (option.isCheckOption()) {
+                    mm.add(new OptionEntryAction(option.getName(), IAction.AS_CHECK_BOX,
+                            (Boolean) entry.getKey().getOptionValue(option)) {
+                        public void runWithEvent(final Event event) {
+                            if ((event.type & SWT.MouseUp) != 0) {
+                                entry.getKey().configureOption(option, isChecked());
+                                DiagramViewManager.getInstance().updateView(viewId);
+                            }
+                        }
+                    });
+                    
+                } else if (option.isChoiceOption()) {
+                    mm.add(new Separator(entry.getKey().getTransformation().getClass()
+                            .getSimpleName() + "_" + option.getName()));
+                    
+                    for (final Object value : option.getValues()) {
+                        
+                        mm.add(new OptionEntryAction(value.toString(), IAction.AS_RADIO_BUTTON,
+                                option.getInitialValue().equals(value)) {
+                            public void runWithEvent(final Event event) {
+                                if ((event.type & SWT.MouseUp) != 0 && isChecked()) {
+                                    entry.getKey().configureOption(option, value);
+                                    DiagramViewManager.getInstance().updateView(viewId);
+                                }
+                            }                        
+                        });
+                    }
+                }
+            }
+            mm.add(new Separator());
+        }
+        viewPart.getViewSite().getActionBars().updateActionBars();
+    }
+    
+    
+    /**
+     * A {@link Action Actions} representing view synthesis options in
+     * {@link org.eclipse.ui.IViewPart IViewParts}' menus.
+     * 
+     * @author chsch
+     */
+    private static class OptionEntryAction extends Action {
+     
+        public OptionEntryAction(final String text, final int style, final Boolean initiallyChecked) {
+            super(text, style);
+            this.setChecked(initiallyChecked);
+        }
+    }
+    
+
     /**
      * {@inheritDoc}
      */
@@ -250,6 +342,13 @@ public class ContextViewer extends AbstractViewer<Object> implements IViewerEven
     }
 
     /**
+     * {@inheritDoc} 
+     */
+    public void setZoomToFit(final boolean zoomToFit) {
+        currentViewer.setZoomToFit(zoomToFit);
+    }
+    
+    /**
      * {@inheritDoc}
      */
     public ISelection getSelection() {
@@ -366,6 +465,15 @@ public class ContextViewer extends AbstractViewer<Object> implements IViewerEven
      */
     public IViewer<?> getActiveViewer() {
         return currentViewer;
+    }
+
+    /**
+     * Returns the id of the related view part.
+     * 
+     * @return the view part id.
+     */
+    public String getViewPartId() {
+        return viewId;
     }
 
     /**

@@ -24,6 +24,7 @@ import org.eclipse.ui.statushandlers.StatusManager;
 import de.cau.cs.kieler.core.properties.IProperty;
 import de.cau.cs.kieler.core.properties.IPropertyHolder;
 import de.cau.cs.kieler.core.properties.Property;
+import de.cau.cs.kieler.klighd.transformations.ReinitializingTransformationProxy;
 
 /**
  * Singleton for accessing basic KLighD services.
@@ -104,6 +105,9 @@ public final class LightDiagramServices {
             viewContext.copyProperties(propertyHolder);
         }
 
+        // chsch: obtain the instructions on the viewer provider and transformations to
+        //  be used that might have been added to the viewContext by the foregoing for-loop
+        
         // get the viewer provider request
         String viewerProviderId = viewContext.getProperty(REQUESTED_VIEWER_PROVIDER);
         IViewerProvider<?> viewerProvider = dataManager.getViewerProviderById(viewerProviderId);
@@ -173,33 +177,55 @@ public final class LightDiagramServices {
         for (IPropertyHolder propertyHolder : propertyHolders) {
             viewContext.copyProperties(propertyHolder);
         }
+        
+        // clear out the mapping data of the involved transformation contexts 
+        for (TransformationContext<?, ?> tContext : viewContext.getTransformationContexts()) {
+            tContext.clear();
+        }
 
-        // update the view context
-        try {
-            Object newModel = performTransformations(viewContext, model);
-            // use update strategy if possible
-            if (viewContext.getUpdateStrategy() != null) {
+        // re-run the involved transformations
+        Object viewModel = performTransformations(viewContext, model);
+        if (viewModel == null) {
+            return false;
+        }
+        
+        // use update strategy if possible
+        if (viewContext.getUpdateStrategy() != null) {
+            @SuppressWarnings("unchecked")
+            IUpdateStrategy<Object> updateStrategy = (IUpdateStrategy<Object>) viewContext
+                    .getUpdateStrategy();
+            try {
+                updateStrategy.update(viewContext.getViewModel(), viewModel, viewContext);
+            } catch (Exception e) {
+                StatusManager.getManager().handle(
+                        new Status(IStatus.ERROR, KlighdPlugin.PLUGIN_ID,
+                                "KLighD: LightDiagramService failed to update a view context:\n"
+                                        + e.getClass().getSimpleName()
+                                        + " occured while performing "
+                                        + updateStrategy.getClass().getSimpleName() + ":\n"
+                                        + e.getMessage(), e), StatusManager.LOG);
+                return false;
+            }
+        } else {
+            // if no update strategy is present just set the new model into the viewer
+            IViewer<?> viewer = viewContext.getProperty(VIEWER);
+            if (viewer != null) {
                 @SuppressWarnings("unchecked")
-                IUpdateStrategy<Object> updateStrategy = (IUpdateStrategy<Object>) viewContext
-                        .getUpdateStrategy();
-                updateStrategy.update(viewContext.getBaseModel(), newModel, viewContext);
-            } else {
-                // if no update strategy is present just set the new model into the viewer
-                IViewer<?> viewer = viewContext.getProperty(VIEWER);
-                if (viewer != null) {
-                    @SuppressWarnings("unchecked")
-                    IViewer<Object> objViewer = (IViewer<Object>) viewer;
-                    objViewer.setModel(newModel, true);
+                IViewer<Object> objViewer = (IViewer<Object>) viewer;
+                try {
+                    objViewer.setModel(viewModel, true);
+                } catch (Exception e) {
+                    StatusManager.getManager().handle(
+                            new Status(IStatus.ERROR, KlighdPlugin.PLUGIN_ID,
+                                    "KLighD: LightDiagramService failed to update a view context:\n"
+                                            + e.getClass().getSimpleName() + " updating "
+                                            + objViewer.getClass().getSimpleName() + ":\n"
+                                            + e.getMessage(), e), StatusManager.LOG);
+                    return false;
                 }
             }
-            return true;
-        } catch (Exception e) {
-            StatusManager.getManager().handle(
-                    new Status(IStatus.ERROR, KlighdPlugin.PLUGIN_ID,
-                            "KLighD: LightDiagramService failed to update a view context.", e),
-                    StatusManager.LOG);
         }
-        return false;
+        return true;
     }
 
     /**
@@ -221,10 +247,10 @@ public final class LightDiagramServices {
             // remember the created viewer in a property
             viewContext.setProperty(VIEWER, viewer);
             // set the base model if possible
-            if (viewContext.getBaseModel() != null) {
+            if (viewContext.getViewModel() != null) {
                 @SuppressWarnings("unchecked")
                 IViewer<Object> objViewer = (IViewer<Object>) viewer;
-                objViewer.setModel(viewContext.getBaseModel(), true);
+                objViewer.setModel(viewContext.getViewModel(), true);
             }
             return viewer;
         }
@@ -272,7 +298,22 @@ public final class LightDiagramServices {
                 (TransformationContext<Object, Object>) transformationContext;
             ITransformation<Object, Object> transformation = objTransformationContext
                     .getTransformation();
-            currentModel = transformation.transform(currentModel, objTransformationContext);
+            try {
+                currentModel = transformation.transform(currentModel, objTransformationContext);
+            } catch (Exception e) {
+                if (transformation instanceof ReinitializingTransformationProxy<?, ?>) {
+                    transformation = ((ReinitializingTransformationProxy<Object, Object>) transformation)
+                            .getDelegate();
+                }
+                StatusManager.getManager().handle(
+                        new Status(IStatus.ERROR, KlighdPlugin.PLUGIN_ID,
+                                "KLighD: LightDiagramService failed to update a view context:\n"
+                                        + e.getClass().getSimpleName()
+                                        + " occured while performing "
+                                        + transformation.getClass().getSimpleName() + ":\n"
+                                        + e.getMessage(), e), StatusManager.LOG);
+                return null;
+            }
         }
         return currentModel;
     }
