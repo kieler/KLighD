@@ -27,7 +27,10 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
+import de.cau.cs.kieler.core.properties.IProperty;
 import de.cau.cs.kieler.core.properties.MapPropertyHolder;
+import de.cau.cs.kieler.core.properties.Property;
+import de.cau.cs.kieler.core.util.RunnableWithResult;
 
 /**
  * A view context contains a viewer provider and a model that is accepted by the viewer provider.
@@ -38,6 +41,12 @@ public final class ViewContext extends MapPropertyHolder {
 
     /** the serial version UID. */
     private static final long serialVersionUID = -431994394109554393L;
+
+    /** A pre-defined property to be used for handing over an {@link RunnableWithResult} to the
+     * KLighD view allowing to update the represented model. */
+    public static final IProperty<RunnableWithResult<?>> MODEL_ACCESS =
+            new Property<RunnableWithResult<?>>("modelAccess"); 
+
 
     /** the part the source model was selected from (if can reasonably be determined). */
     private transient IWorkbenchPart sourceWorkbenchPart = null;
@@ -124,6 +133,11 @@ public final class ViewContext extends MapPropertyHolder {
      * @return the current model to be represented.
      */
     public Object getInputModel() {
+        RunnableWithResult<?> modelAccess = this.getProperty(MODEL_ACCESS);
+        if (modelAccess != null) {
+            modelAccess.run();
+            return modelAccess.getResult();
+        }
         return this.businessModel;
     }
 

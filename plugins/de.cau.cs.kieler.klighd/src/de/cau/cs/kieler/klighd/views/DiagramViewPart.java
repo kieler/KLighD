@@ -68,17 +68,8 @@ public class DiagramViewPart extends ViewPart {
      */
     @Override
     public void createPartControl(final Composite parent) {        
-        this.getViewSite()
-                .getActionBars()
-                .getToolBarManager()
-                .add(new Action("Refresh", KlighdPlugin
-                        .getImageDescriptor("icons/full/elcl16/refresh.gif")) {
-                    public void runWithEvent(final Event event) {
-                        DiagramViewManager.getInstance().updateView(viewer.getViewPartId());
-                    }
-                });
         
-        addLayoutButton();
+        addButtons();
         // create a context viewer
         viewer = new ContextViewer(parent, getViewSite().getSecondaryId(), this);
         // install a drop handler for the view
@@ -175,7 +166,21 @@ public class DiagramViewPart extends ViewPart {
     }
     
 
-    private void addLayoutButton() {
+    private void addButtons() {
+        this.getViewSite()
+                .getActionBars()
+                .getToolBarManager()
+                .add(new Action("Refresh diagram", KlighdPlugin
+                        .getImageDescriptor("icons/full/elcl16/refresh.gif")) {
+                    public void runWithEvent(final Event event) {
+                        DiagramViewManager.getInstance().updateView(viewer.getViewPartId());
+                    }
+                });
+//        DiagramViewPart.this.getViewSite().getActionBars().getToolBarManager()
+//                .add(new Action("Zoom to fit", IAction.AS_CHECK_BOX) {
+//                    public void run() {
+//                    }
+//                });
         new LayoutAction("Arrange", KimlUiPlugin.getImageDescriptor("icons/menu16/kieler-arrange.gif"));
         new LayoutAction("Arrange rightward", Direction.RIGHT, "icons/full/elcl16/forward_nav.gif");
         new LayoutAction("Arrange downward", Direction.DOWN, "icons/full/elcl16/downward_nav.gif");

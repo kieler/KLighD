@@ -45,17 +45,17 @@ public final class LightDiagramServices {
 
     /** the property for a viewer associated with the view context. */
     public static final IProperty<IViewer<?>> VIEWER = new Property<IViewer<?>>("klighd.viewer");
-    
+
     /** the singleton instance. */
     private static LightDiagramServices instance = new LightDiagramServices();
-    
+
     /**
      * A private constructor to prevent instantiation.
      */
     private LightDiagramServices() {
         // do nothing
     }
-    
+
     /**
      * Returns the singleton instance.
      * 
@@ -64,7 +64,7 @@ public final class LightDiagramServices {
     public static LightDiagramServices getInstance() {
         return instance;
     }
-    
+
     /**
      * Creates a view context for the given model if possible.
      * 
@@ -106,8 +106,8 @@ public final class LightDiagramServices {
         }
 
         // chsch: obtain the instructions on the viewer provider and transformations to
-        //  be used that might have been added to the viewContext by the foregoing for-loop
-        
+        // be used that might have been added to the viewContext by the foregoing for-loop
+
         // get the viewer provider request
         String viewerProviderId = viewContext.getProperty(REQUESTED_VIEWER_PROVIDER);
         IViewerProvider<?> viewerProvider = dataManager.getViewerProviderById(viewerProviderId);
@@ -118,7 +118,7 @@ public final class LightDiagramServices {
         if (transformations == null) {
             return null;
         }
-        
+
         // get the update strategy request
         String updateStrategyId = viewContext.getProperty(REQUESTED_UPDATE_STRATEGY);
         IUpdateStrategy<?> updateStrategy = dataManager.getUpdateStrategyById(updateStrategyId);
@@ -138,19 +138,17 @@ public final class LightDiagramServices {
         } else if (viewerProviderId == null) {
             if (transformations.length > 0) {
                 // transformations hint
-                success =
-                        transformationsGraph.configureViewContext(viewContext, model,
-                                updateStrategy, transformations);
+                success = transformationsGraph.configureViewContext(viewContext, model,
+                        updateStrategy, transformations);
             } else {
                 // no hints
-                success =
-                        transformationsGraph.configureViewContext(viewContext, model,
-                                updateStrategy);
+                success = transformationsGraph.configureViewContext(viewContext, model,
+                        updateStrategy);
             }
         } else {
             return null;
         }
-        
+
         // on success return the view context, otherwise return null
         if (success) {
             return viewContext;
@@ -177,8 +175,8 @@ public final class LightDiagramServices {
         for (IPropertyHolder propertyHolder : propertyHolders) {
             viewContext.copyProperties(propertyHolder);
         }
-        
-        // clear out the mapping data of the involved transformation contexts 
+
+        // clear out the mapping data of the involved transformation contexts
         for (TransformationContext<?, ?> tContext : viewContext.getTransformationContexts()) {
             tContext.clear();
         }
@@ -188,7 +186,7 @@ public final class LightDiagramServices {
         if (viewModel == null) {
             return false;
         }
-        
+
         // use update strategy if possible
         if (viewContext.getUpdateStrategy() != null) {
             @SuppressWarnings("unchecked")
@@ -268,8 +266,8 @@ public final class LightDiagramServices {
         LinkedList<ITransformation<?, ?>> transformations = new LinkedList<ITransformation<?, ?>>();
         if (transformationIds.size() > 0) {
             for (String transformationId : transformationIds) {
-                ITransformation<?, ?> transformation =
-                        KlighdDataManager.getInstance().getTransformationById(transformationId);
+                ITransformation<?, ?> transformation = KlighdDataManager.getInstance()
+                        .getTransformationById(transformationId);
                 if (transformation != null) {
                     transformations.add(transformation);
                 } else {
@@ -295,7 +293,7 @@ public final class LightDiagramServices {
                 .getTransformationContexts()) {
             @SuppressWarnings("unchecked")
             TransformationContext<Object, Object> objTransformationContext =
-                (TransformationContext<Object, Object>) transformationContext;
+                    (TransformationContext<Object, Object>) transformationContext;
             ITransformation<Object, Object> transformation = objTransformationContext
                     .getTransformation();
             try {
@@ -305,17 +303,24 @@ public final class LightDiagramServices {
                     transformation = ((ReinitializingTransformationProxy<Object, Object>) transformation)
                             .getDelegate();
                 }
-                StatusManager.getManager().handle(
-                        new Status(IStatus.ERROR, KlighdPlugin.PLUGIN_ID,
+                StatusManager
+                        .getManager()
+                        .handle(new Status(
+                                IStatus.ERROR,
+                                KlighdPlugin.PLUGIN_ID,
                                 "KLighD: LightDiagramService failed to update a view context:\n"
                                         + e.getClass().getSimpleName()
-                                        + " occured while performing "
-                                        + transformation.getClass().getSimpleName() + ":\n"
-                                        + e.getMessage(), e), StatusManager.LOG);
+                                        + " occured while performing the transformation "
+                                        + transformation.getClass().getSimpleName()
+                                        + ":\n"
+                                        + e.getMessage()
+                                        + "\n Please perform a 'Clean' operation on your project"
+                                        + " and re-try.",
+                                e), StatusManager.LOG);
                 return null;
             }
         }
         return currentModel;
     }
-    
+
 }
