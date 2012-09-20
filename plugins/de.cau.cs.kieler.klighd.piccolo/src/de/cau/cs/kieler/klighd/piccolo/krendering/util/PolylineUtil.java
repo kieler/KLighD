@@ -34,7 +34,8 @@ public final class PolylineUtil {
      * neighbor by this factor times the given bend radius.
      */
     private static final double CONTROL_POINTS_SHARE = 0.25;
-    private static final boolean DEBUG = true; 
+    
+    private static final boolean DEBUG = false; 
     
     /** Hidden constructor.*/
     private PolylineUtil() {
