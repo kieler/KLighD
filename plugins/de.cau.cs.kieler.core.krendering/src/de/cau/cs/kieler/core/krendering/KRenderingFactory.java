@@ -366,6 +366,15 @@ public interface KRenderingFactory extends EFactory {
     KFontSize createKFontSize();
 
     /**
+     * Returns a new object of class '<em>KRounded Bends Polyline</em>'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return a new object of class '<em>KRounded Bends Polyline</em>'.
+     * @generated
+     */
+    KRoundedBendsPolyline createKRoundedBendsPolyline();
+
+    /**
      * Returns the package supported by this factory.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->

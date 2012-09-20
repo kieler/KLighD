@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<genmodel:GenModel xmi:version="2.0"
-    xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
+<genmodel:GenModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
     xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" copyrightText="KIELER - Kiel Integrated Environment for Layout Eclipse RichClient&#xA;&#xA;http://www.informatik.uni-kiel.de/rtsys/kieler/&#xA;&#xA;Copyright 2012 by&#xA;+ Christian-Albrechts-University of Kiel&#xA;  + Department of Computer Science&#xA;    + Real-Time and Embedded Systems Group&#xA;&#xA;This code is provided under the terms of the Eclipse Public License (EPL).&#xA;See the file epl-v10.html for the license text."
     modelDirectory="/de.cau.cs.kieler.core.krendering/src" modelPluginID="de.cau.cs.kieler.core.krendering"
     modelName="KRendering" importerID="org.eclipse.emf.importer.ecore" complianceLevel="5.0"
-    copyrightFields="false" usedGenPackages="platform:/resource/de.cau.cs.kieler.core.kgraph/model/kgraph.genmodel#//kgraph">
+    copyrightFields="false" usedGenPackages="../../de.cau.cs.kieler.core.kgraph/model/kgraph.genmodel#//kgraph">
   <foreignModel>krendering.ecore</foreignModel>
   <genPackages prefix="KRendering" basePackage="de.cau.cs.kieler.core" disposableProviderFactory="true"
       fileExtensions="krender" ecorePackage="krendering.ecore#/">
@@ -19,11 +18,13 @@
       <genEnumLiterals ecoreEnumLiteral="krendering.ecore#//HorizontalAlignment/LEFT"/>
       <genEnumLiterals ecoreEnumLiteral="krendering.ecore#//HorizontalAlignment/CENTER"/>
       <genEnumLiterals ecoreEnumLiteral="krendering.ecore#//HorizontalAlignment/RIGHT"/>
+      <genEnumLiterals ecoreEnumLiteral="krendering.ecore#//HorizontalAlignment/EEnumLiteral0"/>
     </genEnums>
     <genEnums typeSafeEnumCompatible="false" ecoreEnum="krendering.ecore#//VerticalAlignment">
       <genEnumLiterals ecoreEnumLiteral="krendering.ecore#//VerticalAlignment/TOP"/>
       <genEnumLiterals ecoreEnumLiteral="krendering.ecore#//VerticalAlignment/CENTER"/>
       <genEnumLiterals ecoreEnumLiteral="krendering.ecore#//VerticalAlignment/BOTTOM"/>
+      <genEnumLiterals ecoreEnumLiteral="krendering.ecore#//VerticalAlignment/EEnumLiteral0"/>
     </genEnums>
     <genClasses image="false" ecoreClass="krendering.ecore#//KPosition">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference krendering.ecore#//KPosition/x"/>
@@ -87,8 +88,10 @@
     <genClasses ecoreClass="krendering.ecore#//KGridPlacementData">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute krendering.ecore#//KGridPlacementData/widthHint"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute krendering.ecore#//KGridPlacementData/heightHint"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute krendering.ecore#//KGridPlacementData/horizontalIndent"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute krendering.ecore#//KGridPlacementData/verticalIndent"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute krendering.ecore#//KGridPlacementData/insetRight"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute krendering.ecore#//KGridPlacementData/insetBottom"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute krendering.ecore#//KGridPlacementData/insetLeft"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute krendering.ecore#//KGridPlacementData/insetTop"/>
     </genClasses>
     <genClasses ecoreClass="krendering.ecore#//KStackPlacementData">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute krendering.ecore#//KStackPlacementData/insetRight"/>
@@ -156,6 +159,9 @@
     </genClasses>
     <genClasses ecoreClass="krendering.ecore#//KFontSize">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute krendering.ecore#//KFontSize/size"/>
+    </genClasses>
+    <genClasses ecoreClass="krendering.ecore#//KRoundedBendsPolyline">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute krendering.ecore#//KRoundedBendsPolyline/bendRadius"/>
     </genClasses>
   </genPackages>
 </genmodel:GenModel>
