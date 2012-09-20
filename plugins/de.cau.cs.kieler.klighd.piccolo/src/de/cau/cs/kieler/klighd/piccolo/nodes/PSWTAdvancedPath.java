@@ -33,6 +33,7 @@ import org.eclipse.swt.graphics.GC;
 import de.cau.cs.kieler.core.math.KVector;
 import de.cau.cs.kieler.core.math.KVectorChain;
 import de.cau.cs.kieler.core.math.KielerMath;
+import de.cau.cs.kieler.klighd.piccolo.krendering.util.PolylineUtil;
 
 import edu.umd.cs.piccolo.PNode;
 import edu.umd.cs.piccolo.nodes.PPath;
@@ -225,6 +226,26 @@ public class PSWTAdvancedPath extends PNode {
     public static PSWTAdvancedPath createPolyline(final Point2D[] points) {
         final PSWTAdvancedPath result = new PSWTAdvancedPath();
         result.setPathToPolyline(points);
+        // chsch: do not set the paint of a line this will impair the
+        //  selection determination (using #intersects(), see below)
+        // result.setPaint(Color.white);
+        return result;
+    }
+
+    /**
+     * Creates a path for the poly-line with rounded bend points for the given points.
+     * 
+     * @param points
+     *            array of points for the point lines
+     * @param bendRadius
+     *            the radius of the bend points
+     * 
+     * @return created poly-line with rounded bend points for the given points
+     */
+    public static PSWTAdvancedPath createRoundedBendPolyline(final Point2D[] points,
+            final float bendRadius) {
+        final PSWTAdvancedPath result = new PSWTAdvancedPath();
+        result.setPathToRoundedBendPolyline(points, bendRadius);
         // chsch: do not set the paint of a line this will impair the
         //  selection determination (using #intersects(), see below)
         // result.setPaint(Color.white);
@@ -758,6 +779,30 @@ public class PSWTAdvancedPath extends PNode {
         // this operation finally integrates the path fires the change listeners
         setShape(path);
     }
+
+    // CHECKSTYLEOFF MagicNumber
+    
+    /**
+     * Sets the path to a sequence of segments described by the points.
+     * 
+     * @param points
+     *            points to that lie along the generated path
+     * @param bendRadius
+     *            the radius of the bend points
+     */
+    public void setPathToRoundedBendPolyline(final Point2D[] points, final float bendRadius) {
+        final GeneralPath path = new GeneralPath();
+        path.reset();
+
+        PolylineUtil.createRoundedBendPoints(path, points, bendRadius, this);
+        
+        // supplement (chsch):
+        this.addAttribute(APPROXIMATED_PATH, this);
+
+        // this operation finally integrates the path fires the change listeners
+        setShape(path);
+    }
+
 
     /**
      * Sets the path to a sequence of segments described by the point components provided.

@@ -23,6 +23,7 @@ import de.cau.cs.kieler.core.krendering.KPolygon;
 import de.cau.cs.kieler.core.krendering.KPolyline;
 import de.cau.cs.kieler.core.krendering.KRendering;
 import de.cau.cs.kieler.core.krendering.KRenderingFactory;
+import de.cau.cs.kieler.core.krendering.KRoundedBendsPolyline;
 import de.cau.cs.kieler.core.krendering.KSpline;
 import de.cau.cs.kieler.core.krendering.KStyle;
 import de.cau.cs.kieler.klighd.piccolo.krendering.KEdgeNode;
@@ -93,6 +94,9 @@ public class KEdgeRenderingController extends AbstractRenderingController<KEdge,
                         getRepresentation());
         if (rendering instanceof KSpline) {
             controller.getNode().setPathToSpline(parent.getBendPoints());
+        } else if (rendering instanceof KRoundedBendsPolyline) {
+            controller.getNode().setPathToRoundedBendPolyline(parent.getBendPoints(),
+                    ((KRoundedBendsPolyline) rendering).getBendRadius());
         } else {
             controller.getNode().setPathToPolyline(parent.getBendPoints());
         }
@@ -104,6 +108,9 @@ public class KEdgeRenderingController extends AbstractRenderingController<KEdge,
                     public void propertyChange(final PropertyChangeEvent e) {
                         if (rendering instanceof KSpline) {
                             controller.getNode().setPathToSpline(parent.getBendPoints());
+                        } else if (rendering instanceof KRoundedBendsPolyline) {
+                            controller.getNode().setPathToRoundedBendPolyline(parent.getBendPoints(),
+                                    ((KRoundedBendsPolyline) rendering).getBendRadius());
                         } else {
                             controller.getNode().setPathToPolyline(parent.getBendPoints());
                         }

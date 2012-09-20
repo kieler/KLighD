@@ -61,6 +61,7 @@ import de.cau.cs.kieler.core.krendering.KRectangle;
 import de.cau.cs.kieler.core.krendering.KRendering;
 import de.cau.cs.kieler.core.krendering.KRenderingPackage;
 import de.cau.cs.kieler.core.krendering.KRenderingRef;
+import de.cau.cs.kieler.core.krendering.KRoundedBendsPolyline;
 import de.cau.cs.kieler.core.krendering.KRoundedRectangle;
 import de.cau.cs.kieler.core.krendering.KSpline;
 import de.cau.cs.kieler.core.krendering.KStackPlacement;
@@ -731,6 +732,12 @@ public abstract class AbstractRenderingController<S extends KGraphElement, T ext
                         key);
             }
 
+            // RoundedBendPolyline
+            public PNodeController<?> caseKRoundedBendsPolyline(final KRoundedBendsPolyline polyline) {
+                return createLine(polyline, styles, childPropagatedStyles, parent, initialBounds,
+                        key);
+            }
+
             // Polygon
             public PNodeController<?> caseKPolygon(final KPolygon polygon) {
                 return createPolygon(polygon, styles, childPropagatedStyles, parent, initialBounds,
@@ -1028,9 +1035,18 @@ public abstract class AbstractRenderingController<S extends KGraphElement, T ext
         Point2D[] points = PlacementUtil.evaluatePolylinePlacement(
                 PlacementUtil.asPolylinePlacementData(line.getPlacementData()), initialBounds);
 
-        // create the spline or polyline
-        final PSWTAdvancedPath path = line instanceof KSpline ? PSWTAdvancedPath
-                .createSpline(points) : PSWTAdvancedPath.createPolyline(points);
+        final PSWTAdvancedPath path;
+        if (line instanceof KSpline) {
+            // create the spline
+            path = PSWTAdvancedPath.createSpline(points);
+        } else if (line instanceof KRoundedBendsPolyline) {
+            // create the rounded bends polyline
+            path = PSWTAdvancedPath.createRoundedBendPolyline(points,
+                    ((KRoundedBendsPolyline) line).getBendRadius());
+        } else {
+            // create the polyline
+            path = PSWTAdvancedPath.createPolyline(points);
+        }
 
         initializeRenderingNode(path);
         path.translate(initialBounds.x, initialBounds.y);
@@ -1075,6 +1091,10 @@ public abstract class AbstractRenderingController<S extends KGraphElement, T ext
                 if (line instanceof KSpline) {
                     // update spline
                     getNode().setPathToSpline(points);
+                } else if (line instanceof KRoundedBendsPolyline) {
+                    // update rounded bend polyline
+                    getNode().setPathToRoundedBendPolyline(points,
+                            ((KRoundedBendsPolyline) line).getBendRadius());
                 } else {
                     // update polyline
                     getNode().setPathToPolyline(points);
