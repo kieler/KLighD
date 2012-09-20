@@ -90,14 +90,15 @@ public class KRenderingGrammarAccess extends AbstractGrammarElementFinder {
 		private final RuleCall cKTextParserRuleCall_9 = (RuleCall)cAlternatives.eContents().get(9);
 		private final RuleCall cKCustomRenderingParserRuleCall_10 = (RuleCall)cAlternatives.eContents().get(10);
 		private final RuleCall cKSplineParserRuleCall_11 = (RuleCall)cAlternatives.eContents().get(11);
+		private final RuleCall cKRoundedBendsPolylineParserRuleCall_12 = (RuleCall)cAlternatives.eContents().get(12);
 		
 		//KRendering:
 		//	KEllipse | KRectangle | KRoundedRectangle | KPolyline_Impl | KPolygon | KImage | KArc | KRenderingRef | KChildArea |
-		//	KText | KCustomRendering | KSpline;
+		//	KText | KCustomRendering | KSpline | KRoundedBendsPolyline;
 		public ParserRule getRule() { return rule; }
 
 		//KEllipse | KRectangle | KRoundedRectangle | KPolyline_Impl | KPolygon | KImage | KArc | KRenderingRef | KChildArea |
-		//KText | KCustomRendering | KSpline
+		//KText | KCustomRendering | KSpline | KRoundedBendsPolyline
 		public Alternatives getAlternatives() { return cAlternatives; }
 
 		//KEllipse
@@ -135,6 +136,9 @@ public class KRenderingGrammarAccess extends AbstractGrammarElementFinder {
 
 		//KSpline
 		public RuleCall getKSplineParserRuleCall_11() { return cKSplineParserRuleCall_11; }
+
+		//KRoundedBendsPolyline
+		public RuleCall getKRoundedBendsPolylineParserRuleCall_12() { return cKRoundedBendsPolylineParserRuleCall_12; }
 	}
 
 	public class KPlacementDataElements extends AbstractParserRuleElementFinder {
@@ -1007,6 +1011,164 @@ public class KRenderingGrammarAccess extends AbstractGrammarElementFinder {
 
 		//"}"
 		public Keyword getRightCurlyBracketKeyword_2_5() { return cRightCurlyBracketKeyword_2_5; }
+	}
+
+	public class KRoundedBendsPolylineElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "KRoundedBendsPolyline");
+		private final Group cGroup = (Group)rule.eContents().get(1);
+		private final Action cKRoundedBendsPolylineAction_0 = (Action)cGroup.eContents().get(0);
+		private final Keyword cRoundedBendsPolylineKeyword_1 = (Keyword)cGroup.eContents().get(1);
+		private final Assignment cBendRadiusAssignment_2 = (Assignment)cGroup.eContents().get(2);
+		private final RuleCall cBendRadiusEFloatParserRuleCall_2_0 = (RuleCall)cBendRadiusAssignment_2.eContents().get(0);
+		private final Group cGroup_3 = (Group)cGroup.eContents().get(3);
+		private final Keyword cLeftCurlyBracketKeyword_3_0 = (Keyword)cGroup_3.eContents().get(0);
+		private final Group cGroup_3_1 = (Group)cGroup_3.eContents().get(1);
+		private final Keyword cStylesKeyword_3_1_0 = (Keyword)cGroup_3_1.eContents().get(0);
+		private final Keyword cColonKeyword_3_1_1 = (Keyword)cGroup_3_1.eContents().get(1);
+		private final Assignment cStylesAssignment_3_1_2 = (Assignment)cGroup_3_1.eContents().get(2);
+		private final RuleCall cStylesKStyleParserRuleCall_3_1_2_0 = (RuleCall)cStylesAssignment_3_1_2.eContents().get(0);
+		private final Group cGroup_3_1_3 = (Group)cGroup_3_1.eContents().get(3);
+		private final Keyword cCommaKeyword_3_1_3_0 = (Keyword)cGroup_3_1_3.eContents().get(0);
+		private final Assignment cStylesAssignment_3_1_3_1 = (Assignment)cGroup_3_1_3.eContents().get(1);
+		private final RuleCall cStylesKStyleParserRuleCall_3_1_3_1_0 = (RuleCall)cStylesAssignment_3_1_3_1.eContents().get(0);
+		private final Group cGroup_3_2 = (Group)cGroup_3.eContents().get(2);
+		private final Keyword cPlacementDataKeyword_3_2_0 = (Keyword)cGroup_3_2.eContents().get(0);
+		private final Keyword cColonKeyword_3_2_1 = (Keyword)cGroup_3_2.eContents().get(1);
+		private final Assignment cPlacementDataAssignment_3_2_2 = (Assignment)cGroup_3_2.eContents().get(2);
+		private final RuleCall cPlacementDataKPlacementDataParserRuleCall_3_2_2_0 = (RuleCall)cPlacementDataAssignment_3_2_2.eContents().get(0);
+		private final Group cGroup_3_3 = (Group)cGroup_3.eContents().get(3);
+		private final Keyword cChildPlacementKeyword_3_3_0 = (Keyword)cGroup_3_3.eContents().get(0);
+		private final Keyword cColonKeyword_3_3_1 = (Keyword)cGroup_3_3.eContents().get(1);
+		private final Assignment cChildPlacementAssignment_3_3_2 = (Assignment)cGroup_3_3.eContents().get(2);
+		private final RuleCall cChildPlacementKPlacementParserRuleCall_3_3_2_0 = (RuleCall)cChildPlacementAssignment_3_3_2.eContents().get(0);
+		private final Group cGroup_3_4 = (Group)cGroup_3.eContents().get(4);
+		private final Keyword cChildrenKeyword_3_4_0 = (Keyword)cGroup_3_4.eContents().get(0);
+		private final Keyword cColonKeyword_3_4_1 = (Keyword)cGroup_3_4.eContents().get(1);
+		private final Assignment cChildrenAssignment_3_4_2 = (Assignment)cGroup_3_4.eContents().get(2);
+		private final RuleCall cChildrenKRenderingParserRuleCall_3_4_2_0 = (RuleCall)cChildrenAssignment_3_4_2.eContents().get(0);
+		private final Group cGroup_3_4_3 = (Group)cGroup_3_4.eContents().get(3);
+		private final Keyword cCommaKeyword_3_4_3_0 = (Keyword)cGroup_3_4_3.eContents().get(0);
+		private final Assignment cChildrenAssignment_3_4_3_1 = (Assignment)cGroup_3_4_3.eContents().get(1);
+		private final RuleCall cChildrenKRenderingParserRuleCall_3_4_3_1_0 = (RuleCall)cChildrenAssignment_3_4_3_1.eContents().get(0);
+		private final Keyword cRightCurlyBracketKeyword_3_5 = (Keyword)cGroup_3.eContents().get(5);
+		
+		//KRoundedBendsPolyline:
+		//	{KRoundedBendsPolyline} "RoundedBendsPolyline" bendRadius=EFloat ("{" ("styles" ":"? styles+=KStyle (","?
+		//	styles+=KStyle)*)? ("placementData" ":"? placementData=KPlacementData)? ("childPlacement" ":"?
+		//	childPlacement=KPlacement)? ("children" ":"? children+=KRendering (","? children+=KRendering)*)? "}")?;
+		public ParserRule getRule() { return rule; }
+
+		//{KRoundedBendsPolyline} "RoundedBendsPolyline" bendRadius=EFloat ("{" ("styles" ":"? styles+=KStyle (","?
+		//styles+=KStyle)*)? ("placementData" ":"? placementData=KPlacementData)? ("childPlacement" ":"?
+		//childPlacement=KPlacement)? ("children" ":"? children+=KRendering (","? children+=KRendering)*)? "}")?
+		public Group getGroup() { return cGroup; }
+
+		//{KRoundedBendsPolyline}
+		public Action getKRoundedBendsPolylineAction_0() { return cKRoundedBendsPolylineAction_0; }
+
+		//"RoundedBendsPolyline"
+		public Keyword getRoundedBendsPolylineKeyword_1() { return cRoundedBendsPolylineKeyword_1; }
+
+		//bendRadius=EFloat
+		public Assignment getBendRadiusAssignment_2() { return cBendRadiusAssignment_2; }
+
+		//EFloat
+		public RuleCall getBendRadiusEFloatParserRuleCall_2_0() { return cBendRadiusEFloatParserRuleCall_2_0; }
+
+		//("{" ("styles" ":"? styles+=KStyle (","? styles+=KStyle)*)? ("placementData" ":"? placementData=KPlacementData)?
+		//("childPlacement" ":"? childPlacement=KPlacement)? ("children" ":"? children+=KRendering (","? children+=KRendering)*)?
+		//"}")?
+		public Group getGroup_3() { return cGroup_3; }
+
+		//"{"
+		public Keyword getLeftCurlyBracketKeyword_3_0() { return cLeftCurlyBracketKeyword_3_0; }
+
+		//("styles" ":"? styles+=KStyle (","? styles+=KStyle)*)?
+		public Group getGroup_3_1() { return cGroup_3_1; }
+
+		//"styles"
+		public Keyword getStylesKeyword_3_1_0() { return cStylesKeyword_3_1_0; }
+
+		//":"?
+		public Keyword getColonKeyword_3_1_1() { return cColonKeyword_3_1_1; }
+
+		//styles+=KStyle
+		public Assignment getStylesAssignment_3_1_2() { return cStylesAssignment_3_1_2; }
+
+		//KStyle
+		public RuleCall getStylesKStyleParserRuleCall_3_1_2_0() { return cStylesKStyleParserRuleCall_3_1_2_0; }
+
+		//(","? styles+=KStyle)*
+		public Group getGroup_3_1_3() { return cGroup_3_1_3; }
+
+		//","?
+		public Keyword getCommaKeyword_3_1_3_0() { return cCommaKeyword_3_1_3_0; }
+
+		//styles+=KStyle
+		public Assignment getStylesAssignment_3_1_3_1() { return cStylesAssignment_3_1_3_1; }
+
+		//KStyle
+		public RuleCall getStylesKStyleParserRuleCall_3_1_3_1_0() { return cStylesKStyleParserRuleCall_3_1_3_1_0; }
+
+		//("placementData" ":"? placementData=KPlacementData)?
+		public Group getGroup_3_2() { return cGroup_3_2; }
+
+		//"placementData"
+		public Keyword getPlacementDataKeyword_3_2_0() { return cPlacementDataKeyword_3_2_0; }
+
+		//":"?
+		public Keyword getColonKeyword_3_2_1() { return cColonKeyword_3_2_1; }
+
+		//placementData=KPlacementData
+		public Assignment getPlacementDataAssignment_3_2_2() { return cPlacementDataAssignment_3_2_2; }
+
+		//KPlacementData
+		public RuleCall getPlacementDataKPlacementDataParserRuleCall_3_2_2_0() { return cPlacementDataKPlacementDataParserRuleCall_3_2_2_0; }
+
+		//("childPlacement" ":"? childPlacement=KPlacement)?
+		public Group getGroup_3_3() { return cGroup_3_3; }
+
+		//"childPlacement"
+		public Keyword getChildPlacementKeyword_3_3_0() { return cChildPlacementKeyword_3_3_0; }
+
+		//":"?
+		public Keyword getColonKeyword_3_3_1() { return cColonKeyword_3_3_1; }
+
+		//childPlacement=KPlacement
+		public Assignment getChildPlacementAssignment_3_3_2() { return cChildPlacementAssignment_3_3_2; }
+
+		//KPlacement
+		public RuleCall getChildPlacementKPlacementParserRuleCall_3_3_2_0() { return cChildPlacementKPlacementParserRuleCall_3_3_2_0; }
+
+		//("children" ":"? children+=KRendering (","? children+=KRendering)*)?
+		public Group getGroup_3_4() { return cGroup_3_4; }
+
+		//"children"
+		public Keyword getChildrenKeyword_3_4_0() { return cChildrenKeyword_3_4_0; }
+
+		//":"?
+		public Keyword getColonKeyword_3_4_1() { return cColonKeyword_3_4_1; }
+
+		//children+=KRendering
+		public Assignment getChildrenAssignment_3_4_2() { return cChildrenAssignment_3_4_2; }
+
+		//KRendering
+		public RuleCall getChildrenKRenderingParserRuleCall_3_4_2_0() { return cChildrenKRenderingParserRuleCall_3_4_2_0; }
+
+		//(","? children+=KRendering)*
+		public Group getGroup_3_4_3() { return cGroup_3_4_3; }
+
+		//","?
+		public Keyword getCommaKeyword_3_4_3_0() { return cCommaKeyword_3_4_3_0; }
+
+		//children+=KRendering
+		public Assignment getChildrenAssignment_3_4_3_1() { return cChildrenAssignment_3_4_3_1; }
+
+		//KRendering
+		public RuleCall getChildrenKRenderingParserRuleCall_3_4_3_1_0() { return cChildrenKRenderingParserRuleCall_3_4_3_1_0; }
+
+		//"}"
+		public Keyword getRightCurlyBracketKeyword_3_5() { return cRightCurlyBracketKeyword_3_5; }
 	}
 
 	public class KPolygonElements extends AbstractParserRuleElementFinder {
@@ -3385,6 +3547,7 @@ public class KRenderingGrammarAccess extends AbstractGrammarElementFinder {
 	private KRectangleElements pKRectangle;
 	private KRoundedRectangleElements pKRoundedRectangle;
 	private KPolyline_ImplElements pKPolyline_Impl;
+	private KRoundedBendsPolylineElements pKRoundedBendsPolyline;
 	private KPolygonElements pKPolygon;
 	private KImageElements pKImage;
 	private KArcElements pKArc;
@@ -3474,7 +3637,7 @@ public class KRenderingGrammarAccess extends AbstractGrammarElementFinder {
 
 	//KRendering:
 	//	KEllipse | KRectangle | KRoundedRectangle | KPolyline_Impl | KPolygon | KImage | KArc | KRenderingRef | KChildArea |
-	//	KText | KCustomRendering | KSpline;
+	//	KText | KCustomRendering | KSpline | KRoundedBendsPolyline;
 	public KRenderingElements getKRenderingAccess() {
 		return (pKRendering != null) ? pKRendering : (pKRendering = new KRenderingElements());
 	}
@@ -3591,6 +3754,18 @@ public class KRenderingGrammarAccess extends AbstractGrammarElementFinder {
 	
 	public ParserRule getKPolyline_ImplRule() {
 		return getKPolyline_ImplAccess().getRule();
+	}
+
+	//KRoundedBendsPolyline:
+	//	{KRoundedBendsPolyline} "RoundedBendsPolyline" bendRadius=EFloat ("{" ("styles" ":"? styles+=KStyle (","?
+	//	styles+=KStyle)*)? ("placementData" ":"? placementData=KPlacementData)? ("childPlacement" ":"?
+	//	childPlacement=KPlacement)? ("children" ":"? children+=KRendering (","? children+=KRendering)*)? "}")?;
+	public KRoundedBendsPolylineElements getKRoundedBendsPolylineAccess() {
+		return (pKRoundedBendsPolyline != null) ? pKRoundedBendsPolyline : (pKRoundedBendsPolyline = new KRoundedBendsPolylineElements());
+	}
+	
+	public ParserRule getKRoundedBendsPolylineRule() {
+		return getKRoundedBendsPolylineAccess().getRule();
 	}
 
 	//KPolygon:
@@ -4029,7 +4204,7 @@ public class KRenderingGrammarAccess extends AbstractGrammarElementFinder {
 	////		'sourcePoint' sourcePoint=KPoint
 	////		'targetPoint' targetPoint=KPoint
 	////    '}';
-	//	"KEdgeLayout" "{" "sourcePoint" sourcePoint=KPoint "targetPoint" targetPoint=KPoint ("bendPoints" ":"
+	//	"KEdgeLayout" "{" ("sourcePoint" sourcePoint=KPoint)? ("targetPoint" targetPoint=KPoint)? ("bendPoints" ":"
 	//	bendPoints+=KPoint (","? bendPoints+=KPoint)*)? ("mapProperties" ":" persistentEntries+=PersistentEntry (","?
 	//	persistentEntries+=PersistentEntry)*)? "}";
 	public KLayoutDataGrammarAccess.KEdgeLayoutElements getKEdgeLayoutAccess() {

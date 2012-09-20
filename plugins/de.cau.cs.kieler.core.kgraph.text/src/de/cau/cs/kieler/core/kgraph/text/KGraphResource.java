@@ -31,6 +31,7 @@ import de.cau.cs.kieler.core.kgraph.KGraphElement;
 import de.cau.cs.kieler.core.kgraph.KGraphPackage;
 import de.cau.cs.kieler.core.kgraph.KNode;
 import de.cau.cs.kieler.kiml.klayoutdata.KEdgeLayout;
+import de.cau.cs.kieler.kiml.klayoutdata.KLayoutDataFactory;
 import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout;
 import de.cau.cs.kieler.kiml.util.KimlUtil;
 
@@ -81,8 +82,8 @@ public class KGraphResource extends LazyLinkingResource {
     /**
      * {@inheritDoc}<br>
      * This customized implementation serializes attached
-     * {@link de.cau.cs.kieler.core.properties.IProperty}s into
-     * {@link de.cau.cs.kieler.core.kgraph.PersistentEntry}s.
+     * {@link de.cau.cs.kieler.core.properties.IProperty IProperty}s into
+     * {@link de.cau.cs.kieler.core.kgraph.PersistentEntry PersistentEntry}s.
      */
     public void doSave(final OutputStream outputStream, final Map<?, ?> options) throws IOException {
         if (!this.getContents().isEmpty()) {
@@ -118,6 +119,14 @@ public class KGraphResource extends LazyLinkingResource {
             if (KGraphPackage.eINSTANCE.getKEdge().isInstance(e)) {
                 if (e.getData(KEdgeLayout.class) == null) {
                     e.getData().add(KimlUtil.createInitializedEdge().getData(KEdgeLayout.class));
+                } else {
+                    KEdgeLayout el = e.getData(KEdgeLayout.class);
+                    if (el.getSourcePoint() == null) {
+                        el.setSourcePoint(KLayoutDataFactory.eINSTANCE.createKPoint());
+                    }
+                    if (el.getTargetPoint() == null) {
+                        el.setTargetPoint(KLayoutDataFactory.eINSTANCE.createKPoint());
+                    }
                 }
             }
        }

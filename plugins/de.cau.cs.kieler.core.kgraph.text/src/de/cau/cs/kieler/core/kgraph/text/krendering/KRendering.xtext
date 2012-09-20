@@ -12,7 +12,7 @@ KRenderingLibrary returns KRenderingLibrary:
     '}';
 
 KRendering returns KRendering:
-	KEllipse | KRectangle | KRoundedRectangle | KPolyline_Impl | KPolygon | KImage | KArc | KRenderingRef | KChildArea | KText | KCustomRendering | KSpline;
+	KEllipse | KRectangle | KRoundedRectangle | KPolyline_Impl | KPolygon | KImage | KArc | KRenderingRef | KChildArea | KText | KCustomRendering | KSpline | KRoundedBendsPolyline;
 
 KPlacementData returns KPlacementData:
 	KDecoratorPlacementData | KGridPlacementData | KStackPlacementData | KDirectPlacementData | KPolylinePlacementData;
@@ -68,13 +68,23 @@ KRoundedRectangle returns KRoundedRectangle:
     '}')?;
 
 KPolyline_Impl returns KPolyline:
-	{KPolyline}
-	'Polyline'
-	('{'
-		('styles' ':'? styles+=KStyle ( ","? styles+=KStyle)*)?
-		('placementData' ':'? placementData=KPlacementData)?
-		('childPlacement' ':'? childPlacement=KPlacement)?
-		('children' ':'? children+=KRendering ( ","? children+=KRendering)*)?
+    {KPolyline}
+    'Polyline'
+    ('{'
+        ('styles' ':'? styles+=KStyle ( ","? styles+=KStyle)*)?
+        ('placementData' ':'? placementData=KPlacementData)?
+        ('childPlacement' ':'? childPlacement=KPlacement)?
+        ('children' ':'? children+=KRendering ( ","? children+=KRendering)*)?
+    '}')?;
+
+KRoundedBendsPolyline returns KRoundedBendsPolyline:
+    {KRoundedBendsPolyline}
+    'RoundedBendsPolyline' bendRadius=EFloat
+    ('{'
+        ('styles' ':'? styles+=KStyle ( ","? styles+=KStyle)*)?
+        ('placementData' ':'? placementData=KPlacementData)?
+        ('childPlacement' ':'? childPlacement=KPlacement)?
+        ('children' ':'? children+=KRendering ( ","? children+=KRendering)*)?
     '}')?;
 
 KPolygon returns KPolygon:

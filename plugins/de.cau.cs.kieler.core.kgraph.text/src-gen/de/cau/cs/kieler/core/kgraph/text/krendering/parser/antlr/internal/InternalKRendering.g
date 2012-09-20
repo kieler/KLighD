@@ -276,6 +276,16 @@ ruleKRendering returns [EObject current=null]
         $current = $this_KSpline_11.current; 
         afterParserOrEnumRuleCall();
     }
+
+    |
+    { 
+        newCompositeNode(grammarAccess.getKRenderingAccess().getKRoundedBendsPolylineParserRuleCall_12()); 
+    }
+    this_KRoundedBendsPolyline_12=ruleKRoundedBendsPolyline
+    { 
+        $current = $this_KRoundedBendsPolyline_12.current; 
+        afterParserOrEnumRuleCall();
+    }
 )
 ;
 
@@ -1511,6 +1521,211 @@ ruleKPolyline_Impl returns [EObject current=null]
 ))*)?	otherlv_19='}' 
     {
     	newLeafNode(otherlv_19, grammarAccess.getKPolyline_ImplAccess().getRightCurlyBracketKeyword_2_5());
+    }
+)?)
+;
+
+
+
+
+
+// Entry rule entryRuleKRoundedBendsPolyline
+entryRuleKRoundedBendsPolyline returns [EObject current=null] 
+	:
+	{ newCompositeNode(grammarAccess.getKRoundedBendsPolylineRule()); }
+	 iv_ruleKRoundedBendsPolyline=ruleKRoundedBendsPolyline 
+	 { $current=$iv_ruleKRoundedBendsPolyline.current; } 
+	 EOF 
+;
+
+// Rule KRoundedBendsPolyline
+ruleKRoundedBendsPolyline returns [EObject current=null] 
+    @init { enterRule(); 
+    }
+    @after { leaveRule(); }:
+((
+    {
+        $current = forceCreateModelElement(
+            grammarAccess.getKRoundedBendsPolylineAccess().getKRoundedBendsPolylineAction_0(),
+            $current);
+    }
+)	otherlv_1='RoundedBendsPolyline' 
+    {
+    	newLeafNode(otherlv_1, grammarAccess.getKRoundedBendsPolylineAccess().getRoundedBendsPolylineKeyword_1());
+    }
+(
+(
+		{ 
+	        newCompositeNode(grammarAccess.getKRoundedBendsPolylineAccess().getBendRadiusEFloatParserRuleCall_2_0()); 
+	    }
+		lv_bendRadius_2_0=ruleEFloat		{
+	        if ($current==null) {
+	            $current = createModelElementForParent(grammarAccess.getKRoundedBendsPolylineRule());
+	        }
+       		set(
+       			$current, 
+       			"bendRadius",
+        		lv_bendRadius_2_0, 
+        		"EFloat");
+	        afterParserOrEnumRuleCall();
+	    }
+
+)
+)(	otherlv_3='{' 
+    {
+    	newLeafNode(otherlv_3, grammarAccess.getKRoundedBendsPolylineAccess().getLeftCurlyBracketKeyword_3_0());
+    }
+(	otherlv_4='styles' 
+    {
+    	newLeafNode(otherlv_4, grammarAccess.getKRoundedBendsPolylineAccess().getStylesKeyword_3_1_0());
+    }
+(	otherlv_5=':' 
+    {
+    	newLeafNode(otherlv_5, grammarAccess.getKRoundedBendsPolylineAccess().getColonKeyword_3_1_1());
+    }
+)?(
+(
+		{ 
+	        newCompositeNode(grammarAccess.getKRoundedBendsPolylineAccess().getStylesKStyleParserRuleCall_3_1_2_0()); 
+	    }
+		lv_styles_6_0=ruleKStyle		{
+	        if ($current==null) {
+	            $current = createModelElementForParent(grammarAccess.getKRoundedBendsPolylineRule());
+	        }
+       		add(
+       			$current, 
+       			"styles",
+        		lv_styles_6_0, 
+        		"KStyle");
+	        afterParserOrEnumRuleCall();
+	    }
+
+)
+)((	otherlv_7=',' 
+    {
+    	newLeafNode(otherlv_7, grammarAccess.getKRoundedBendsPolylineAccess().getCommaKeyword_3_1_3_0());
+    }
+)?(
+(
+		{ 
+	        newCompositeNode(grammarAccess.getKRoundedBendsPolylineAccess().getStylesKStyleParserRuleCall_3_1_3_1_0()); 
+	    }
+		lv_styles_8_0=ruleKStyle		{
+	        if ($current==null) {
+	            $current = createModelElementForParent(grammarAccess.getKRoundedBendsPolylineRule());
+	        }
+       		add(
+       			$current, 
+       			"styles",
+        		lv_styles_8_0, 
+        		"KStyle");
+	        afterParserOrEnumRuleCall();
+	    }
+
+)
+))*)?(	otherlv_9='placementData' 
+    {
+    	newLeafNode(otherlv_9, grammarAccess.getKRoundedBendsPolylineAccess().getPlacementDataKeyword_3_2_0());
+    }
+(	otherlv_10=':' 
+    {
+    	newLeafNode(otherlv_10, grammarAccess.getKRoundedBendsPolylineAccess().getColonKeyword_3_2_1());
+    }
+)?(
+(
+		{ 
+	        newCompositeNode(grammarAccess.getKRoundedBendsPolylineAccess().getPlacementDataKPlacementDataParserRuleCall_3_2_2_0()); 
+	    }
+		lv_placementData_11_0=ruleKPlacementData		{
+	        if ($current==null) {
+	            $current = createModelElementForParent(grammarAccess.getKRoundedBendsPolylineRule());
+	        }
+       		set(
+       			$current, 
+       			"placementData",
+        		lv_placementData_11_0, 
+        		"KPlacementData");
+	        afterParserOrEnumRuleCall();
+	    }
+
+)
+))?(	otherlv_12='childPlacement' 
+    {
+    	newLeafNode(otherlv_12, grammarAccess.getKRoundedBendsPolylineAccess().getChildPlacementKeyword_3_3_0());
+    }
+(	otherlv_13=':' 
+    {
+    	newLeafNode(otherlv_13, grammarAccess.getKRoundedBendsPolylineAccess().getColonKeyword_3_3_1());
+    }
+)?(
+(
+		{ 
+	        newCompositeNode(grammarAccess.getKRoundedBendsPolylineAccess().getChildPlacementKPlacementParserRuleCall_3_3_2_0()); 
+	    }
+		lv_childPlacement_14_0=ruleKPlacement		{
+	        if ($current==null) {
+	            $current = createModelElementForParent(grammarAccess.getKRoundedBendsPolylineRule());
+	        }
+       		set(
+       			$current, 
+       			"childPlacement",
+        		lv_childPlacement_14_0, 
+        		"KPlacement");
+	        afterParserOrEnumRuleCall();
+	    }
+
+)
+))?(	otherlv_15='children' 
+    {
+    	newLeafNode(otherlv_15, grammarAccess.getKRoundedBendsPolylineAccess().getChildrenKeyword_3_4_0());
+    }
+(	otherlv_16=':' 
+    {
+    	newLeafNode(otherlv_16, grammarAccess.getKRoundedBendsPolylineAccess().getColonKeyword_3_4_1());
+    }
+)?(
+(
+		{ 
+	        newCompositeNode(grammarAccess.getKRoundedBendsPolylineAccess().getChildrenKRenderingParserRuleCall_3_4_2_0()); 
+	    }
+		lv_children_17_0=ruleKRendering		{
+	        if ($current==null) {
+	            $current = createModelElementForParent(grammarAccess.getKRoundedBendsPolylineRule());
+	        }
+       		add(
+       			$current, 
+       			"children",
+        		lv_children_17_0, 
+        		"KRendering");
+	        afterParserOrEnumRuleCall();
+	    }
+
+)
+)((	otherlv_18=',' 
+    {
+    	newLeafNode(otherlv_18, grammarAccess.getKRoundedBendsPolylineAccess().getCommaKeyword_3_4_3_0());
+    }
+)?(
+(
+		{ 
+	        newCompositeNode(grammarAccess.getKRoundedBendsPolylineAccess().getChildrenKRenderingParserRuleCall_3_4_3_1_0()); 
+	    }
+		lv_children_19_0=ruleKRendering		{
+	        if ($current==null) {
+	            $current = createModelElementForParent(grammarAccess.getKRoundedBendsPolylineRule());
+	        }
+       		add(
+       			$current, 
+       			"children",
+        		lv_children_19_0, 
+        		"KRendering");
+	        afterParserOrEnumRuleCall();
+	    }
+
+)
+))*)?	otherlv_20='}' 
+    {
+    	newLeafNode(otherlv_20, grammarAccess.getKRoundedBendsPolylineAccess().getRightCurlyBracketKeyword_3_5());
     }
 )?)
 ;

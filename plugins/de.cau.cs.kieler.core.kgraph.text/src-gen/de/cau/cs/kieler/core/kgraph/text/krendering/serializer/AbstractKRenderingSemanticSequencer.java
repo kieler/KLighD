@@ -37,6 +37,7 @@ import de.cau.cs.kieler.core.krendering.KRenderingLibrary;
 import de.cau.cs.kieler.core.krendering.KRenderingPackage;
 import de.cau.cs.kieler.core.krendering.KRenderingRef;
 import de.cau.cs.kieler.core.krendering.KRightPosition;
+import de.cau.cs.kieler.core.krendering.KRoundedBendsPolyline;
 import de.cau.cs.kieler.core.krendering.KRoundedRectangle;
 import de.cau.cs.kieler.core.krendering.KSpline;
 import de.cau.cs.kieler.core.krendering.KStackPlacement;
@@ -309,6 +310,13 @@ public abstract class AbstractKRenderingSemanticSequencer extends KLayoutDataSem
 				if(context == grammarAccess.getKRightPositionRule() ||
 				   context == grammarAccess.getKXPositionRule()) {
 					sequence_KRightPosition(context, (KRightPosition) semanticObject); 
+					return; 
+				}
+				else break;
+			case KRenderingPackage.KROUNDED_BENDS_POLYLINE:
+				if(context == grammarAccess.getKRenderingRule() ||
+				   context == grammarAccess.getKRoundedBendsPolylineRule()) {
+					sequence_KRoundedBendsPolyline(context, (KRoundedBendsPolyline) semanticObject); 
 					return; 
 				}
 				else break;
@@ -742,6 +750,18 @@ public abstract class AbstractKRenderingSemanticSequencer extends KLayoutDataSem
 		feeder.accept(grammarAccess.getKRightPositionAccess().getAbsoluteEFloatParserRuleCall_2_0(), semanticObject.getAbsolute());
 		feeder.accept(grammarAccess.getKRightPositionAccess().getRelativeEFloatParserRuleCall_3_0(), semanticObject.getRelative());
 		feeder.finish();
+	}
+	
+	
+	/**
+	 * Constraint:
+	 *     (
+	 *         bendRadius=EFloat 
+	 *         ((styles+=KStyle styles+=KStyle*)? placementData=KPlacementData? childPlacement=KPlacement? (children+=KRendering children+=KRendering*)?)?
+	 *     )
+	 */
+	protected void sequence_KRoundedBendsPolyline(EObject context, KRoundedBendsPolyline semanticObject) {
+		genericSequencer.createSequence(context, semanticObject);
 	}
 	
 	

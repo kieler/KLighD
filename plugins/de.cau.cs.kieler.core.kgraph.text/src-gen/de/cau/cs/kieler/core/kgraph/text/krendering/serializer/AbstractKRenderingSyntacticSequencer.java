@@ -30,8 +30,8 @@ public abstract class AbstractKRenderingSyntacticSequencer extends AbstractSynta
 	protected AbstractElementAlias match_KCustomRendering_CommaKeyword_2_5_3_0_q;
 	protected AbstractElementAlias match_KCustomRendering_CommaKeyword_2_7_3_0_q;
 	protected AbstractElementAlias match_KDirectPlacementData_CommaKeyword_4_q;
-	protected AbstractElementAlias match_KEdgeLayout_CommaKeyword_6_3_0_q;
-	protected AbstractElementAlias match_KEdgeLayout_CommaKeyword_7_3_0_q;
+	protected AbstractElementAlias match_KEdgeLayout_CommaKeyword_4_3_0_q;
+	protected AbstractElementAlias match_KEdgeLayout_CommaKeyword_5_3_0_q;
 	protected AbstractElementAlias match_KEllipse_ColonKeyword_2_1_1_q;
 	protected AbstractElementAlias match_KEllipse_ColonKeyword_2_2_1_q;
 	protected AbstractElementAlias match_KEllipse_ColonKeyword_2_3_1_q;
@@ -69,6 +69,13 @@ public abstract class AbstractKRenderingSyntacticSequencer extends AbstractSynta
 	protected AbstractElementAlias match_KRenderingLibrary_CommaKeyword_3_1_0_q;
 	protected AbstractElementAlias match_KRenderingRef_CommaKeyword_3_2_3_0_q;
 	protected AbstractElementAlias match_KRenderingRef___LeftCurlyBracketKeyword_3_0_RightCurlyBracketKeyword_3_3__q;
+	protected AbstractElementAlias match_KRoundedBendsPolyline_ColonKeyword_3_1_1_q;
+	protected AbstractElementAlias match_KRoundedBendsPolyline_ColonKeyword_3_2_1_q;
+	protected AbstractElementAlias match_KRoundedBendsPolyline_ColonKeyword_3_3_1_q;
+	protected AbstractElementAlias match_KRoundedBendsPolyline_ColonKeyword_3_4_1_q;
+	protected AbstractElementAlias match_KRoundedBendsPolyline_CommaKeyword_3_1_3_0_q;
+	protected AbstractElementAlias match_KRoundedBendsPolyline_CommaKeyword_3_4_3_0_q;
+	protected AbstractElementAlias match_KRoundedBendsPolyline___LeftCurlyBracketKeyword_3_0_RightCurlyBracketKeyword_3_5__q;
 	protected AbstractElementAlias match_KRoundedRectangle_ColonKeyword_5_1_1_q;
 	protected AbstractElementAlias match_KRoundedRectangle_ColonKeyword_5_2_1_q;
 	protected AbstractElementAlias match_KRoundedRectangle_ColonKeyword_5_3_1_q;
@@ -102,8 +109,8 @@ public abstract class AbstractKRenderingSyntacticSequencer extends AbstractSynta
 		match_KCustomRendering_CommaKeyword_2_5_3_0_q = new TokenAlias(false, true, grammarAccess.getKCustomRenderingAccess().getCommaKeyword_2_5_3_0());
 		match_KCustomRendering_CommaKeyword_2_7_3_0_q = new TokenAlias(false, true, grammarAccess.getKCustomRenderingAccess().getCommaKeyword_2_7_3_0());
 		match_KDirectPlacementData_CommaKeyword_4_q = new TokenAlias(false, true, grammarAccess.getKDirectPlacementDataAccess().getCommaKeyword_4());
-		match_KEdgeLayout_CommaKeyword_6_3_0_q = new TokenAlias(false, true, grammarAccess.getKEdgeLayoutAccess().getCommaKeyword_6_3_0());
-		match_KEdgeLayout_CommaKeyword_7_3_0_q = new TokenAlias(false, true, grammarAccess.getKEdgeLayoutAccess().getCommaKeyword_7_3_0());
+		match_KEdgeLayout_CommaKeyword_4_3_0_q = new TokenAlias(false, true, grammarAccess.getKEdgeLayoutAccess().getCommaKeyword_4_3_0());
+		match_KEdgeLayout_CommaKeyword_5_3_0_q = new TokenAlias(false, true, grammarAccess.getKEdgeLayoutAccess().getCommaKeyword_5_3_0());
 		match_KEllipse_ColonKeyword_2_1_1_q = new TokenAlias(false, true, grammarAccess.getKEllipseAccess().getColonKeyword_2_1_1());
 		match_KEllipse_ColonKeyword_2_2_1_q = new TokenAlias(false, true, grammarAccess.getKEllipseAccess().getColonKeyword_2_2_1());
 		match_KEllipse_ColonKeyword_2_3_1_q = new TokenAlias(false, true, grammarAccess.getKEllipseAccess().getColonKeyword_2_3_1());
@@ -141,6 +148,13 @@ public abstract class AbstractKRenderingSyntacticSequencer extends AbstractSynta
 		match_KRenderingLibrary_CommaKeyword_3_1_0_q = new TokenAlias(false, true, grammarAccess.getKRenderingLibraryAccess().getCommaKeyword_3_1_0());
 		match_KRenderingRef_CommaKeyword_3_2_3_0_q = new TokenAlias(false, true, grammarAccess.getKRenderingRefAccess().getCommaKeyword_3_2_3_0());
 		match_KRenderingRef___LeftCurlyBracketKeyword_3_0_RightCurlyBracketKeyword_3_3__q = new GroupAlias(false, true, new TokenAlias(false, false, grammarAccess.getKRenderingRefAccess().getLeftCurlyBracketKeyword_3_0()), new TokenAlias(false, false, grammarAccess.getKRenderingRefAccess().getRightCurlyBracketKeyword_3_3()));
+		match_KRoundedBendsPolyline_ColonKeyword_3_1_1_q = new TokenAlias(false, true, grammarAccess.getKRoundedBendsPolylineAccess().getColonKeyword_3_1_1());
+		match_KRoundedBendsPolyline_ColonKeyword_3_2_1_q = new TokenAlias(false, true, grammarAccess.getKRoundedBendsPolylineAccess().getColonKeyword_3_2_1());
+		match_KRoundedBendsPolyline_ColonKeyword_3_3_1_q = new TokenAlias(false, true, grammarAccess.getKRoundedBendsPolylineAccess().getColonKeyword_3_3_1());
+		match_KRoundedBendsPolyline_ColonKeyword_3_4_1_q = new TokenAlias(false, true, grammarAccess.getKRoundedBendsPolylineAccess().getColonKeyword_3_4_1());
+		match_KRoundedBendsPolyline_CommaKeyword_3_1_3_0_q = new TokenAlias(false, true, grammarAccess.getKRoundedBendsPolylineAccess().getCommaKeyword_3_1_3_0());
+		match_KRoundedBendsPolyline_CommaKeyword_3_4_3_0_q = new TokenAlias(false, true, grammarAccess.getKRoundedBendsPolylineAccess().getCommaKeyword_3_4_3_0());
+		match_KRoundedBendsPolyline___LeftCurlyBracketKeyword_3_0_RightCurlyBracketKeyword_3_5__q = new GroupAlias(false, true, new TokenAlias(false, false, grammarAccess.getKRoundedBendsPolylineAccess().getLeftCurlyBracketKeyword_3_0()), new TokenAlias(false, false, grammarAccess.getKRoundedBendsPolylineAccess().getRightCurlyBracketKeyword_3_5()));
 		match_KRoundedRectangle_ColonKeyword_5_1_1_q = new TokenAlias(false, true, grammarAccess.getKRoundedRectangleAccess().getColonKeyword_5_1_1());
 		match_KRoundedRectangle_ColonKeyword_5_2_1_q = new TokenAlias(false, true, grammarAccess.getKRoundedRectangleAccess().getColonKeyword_5_2_1());
 		match_KRoundedRectangle_ColonKeyword_5_3_1_q = new TokenAlias(false, true, grammarAccess.getKRoundedRectangleAccess().getColonKeyword_5_3_1());
@@ -196,10 +210,10 @@ public abstract class AbstractKRenderingSyntacticSequencer extends AbstractSynta
 				emit_KCustomRendering_CommaKeyword_2_7_3_0_q(semanticObject, getLastNavigableState(), syntaxNodes);
 			else if(match_KDirectPlacementData_CommaKeyword_4_q.equals(syntax))
 				emit_KDirectPlacementData_CommaKeyword_4_q(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if(match_KEdgeLayout_CommaKeyword_6_3_0_q.equals(syntax))
-				emit_KEdgeLayout_CommaKeyword_6_3_0_q(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if(match_KEdgeLayout_CommaKeyword_7_3_0_q.equals(syntax))
-				emit_KEdgeLayout_CommaKeyword_7_3_0_q(semanticObject, getLastNavigableState(), syntaxNodes);
+			else if(match_KEdgeLayout_CommaKeyword_4_3_0_q.equals(syntax))
+				emit_KEdgeLayout_CommaKeyword_4_3_0_q(semanticObject, getLastNavigableState(), syntaxNodes);
+			else if(match_KEdgeLayout_CommaKeyword_5_3_0_q.equals(syntax))
+				emit_KEdgeLayout_CommaKeyword_5_3_0_q(semanticObject, getLastNavigableState(), syntaxNodes);
 			else if(match_KEllipse_ColonKeyword_2_1_1_q.equals(syntax))
 				emit_KEllipse_ColonKeyword_2_1_1_q(semanticObject, getLastNavigableState(), syntaxNodes);
 			else if(match_KEllipse_ColonKeyword_2_2_1_q.equals(syntax))
@@ -274,6 +288,20 @@ public abstract class AbstractKRenderingSyntacticSequencer extends AbstractSynta
 				emit_KRenderingRef_CommaKeyword_3_2_3_0_q(semanticObject, getLastNavigableState(), syntaxNodes);
 			else if(match_KRenderingRef___LeftCurlyBracketKeyword_3_0_RightCurlyBracketKeyword_3_3__q.equals(syntax))
 				emit_KRenderingRef___LeftCurlyBracketKeyword_3_0_RightCurlyBracketKeyword_3_3__q(semanticObject, getLastNavigableState(), syntaxNodes);
+			else if(match_KRoundedBendsPolyline_ColonKeyword_3_1_1_q.equals(syntax))
+				emit_KRoundedBendsPolyline_ColonKeyword_3_1_1_q(semanticObject, getLastNavigableState(), syntaxNodes);
+			else if(match_KRoundedBendsPolyline_ColonKeyword_3_2_1_q.equals(syntax))
+				emit_KRoundedBendsPolyline_ColonKeyword_3_2_1_q(semanticObject, getLastNavigableState(), syntaxNodes);
+			else if(match_KRoundedBendsPolyline_ColonKeyword_3_3_1_q.equals(syntax))
+				emit_KRoundedBendsPolyline_ColonKeyword_3_3_1_q(semanticObject, getLastNavigableState(), syntaxNodes);
+			else if(match_KRoundedBendsPolyline_ColonKeyword_3_4_1_q.equals(syntax))
+				emit_KRoundedBendsPolyline_ColonKeyword_3_4_1_q(semanticObject, getLastNavigableState(), syntaxNodes);
+			else if(match_KRoundedBendsPolyline_CommaKeyword_3_1_3_0_q.equals(syntax))
+				emit_KRoundedBendsPolyline_CommaKeyword_3_1_3_0_q(semanticObject, getLastNavigableState(), syntaxNodes);
+			else if(match_KRoundedBendsPolyline_CommaKeyword_3_4_3_0_q.equals(syntax))
+				emit_KRoundedBendsPolyline_CommaKeyword_3_4_3_0_q(semanticObject, getLastNavigableState(), syntaxNodes);
+			else if(match_KRoundedBendsPolyline___LeftCurlyBracketKeyword_3_0_RightCurlyBracketKeyword_3_5__q.equals(syntax))
+				emit_KRoundedBendsPolyline___LeftCurlyBracketKeyword_3_0_RightCurlyBracketKeyword_3_5__q(semanticObject, getLastNavigableState(), syntaxNodes);
 			else if(match_KRoundedRectangle_ColonKeyword_5_1_1_q.equals(syntax))
 				emit_KRoundedRectangle_ColonKeyword_5_1_1_q(semanticObject, getLastNavigableState(), syntaxNodes);
 			else if(match_KRoundedRectangle_ColonKeyword_5_2_1_q.equals(syntax))
@@ -412,7 +440,7 @@ public abstract class AbstractKRenderingSyntacticSequencer extends AbstractSynta
 	 * Syntax:
 	 *     ','?
 	 */
-	protected void emit_KEdgeLayout_CommaKeyword_6_3_0_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
+	protected void emit_KEdgeLayout_CommaKeyword_4_3_0_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
 		acceptNodes(transition, nodes);
 	}
 	
@@ -420,7 +448,7 @@ public abstract class AbstractKRenderingSyntacticSequencer extends AbstractSynta
 	 * Syntax:
 	 *     ','?
 	 */
-	protected void emit_KEdgeLayout_CommaKeyword_7_3_0_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
+	protected void emit_KEdgeLayout_CommaKeyword_5_3_0_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
 		acceptNodes(transition, nodes);
 	}
 	
@@ -717,6 +745,62 @@ public abstract class AbstractKRenderingSyntacticSequencer extends AbstractSynta
 	 *     ('{' '}')?
 	 */
 	protected void emit_KRenderingRef___LeftCurlyBracketKeyword_3_0_RightCurlyBracketKeyword_3_3__q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
+		acceptNodes(transition, nodes);
+	}
+	
+	/**
+	 * Syntax:
+	 *     ':'?
+	 */
+	protected void emit_KRoundedBendsPolyline_ColonKeyword_3_1_1_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
+		acceptNodes(transition, nodes);
+	}
+	
+	/**
+	 * Syntax:
+	 *     ':'?
+	 */
+	protected void emit_KRoundedBendsPolyline_ColonKeyword_3_2_1_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
+		acceptNodes(transition, nodes);
+	}
+	
+	/**
+	 * Syntax:
+	 *     ':'?
+	 */
+	protected void emit_KRoundedBendsPolyline_ColonKeyword_3_3_1_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
+		acceptNodes(transition, nodes);
+	}
+	
+	/**
+	 * Syntax:
+	 *     ':'?
+	 */
+	protected void emit_KRoundedBendsPolyline_ColonKeyword_3_4_1_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
+		acceptNodes(transition, nodes);
+	}
+	
+	/**
+	 * Syntax:
+	 *     ','?
+	 */
+	protected void emit_KRoundedBendsPolyline_CommaKeyword_3_1_3_0_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
+		acceptNodes(transition, nodes);
+	}
+	
+	/**
+	 * Syntax:
+	 *     ','?
+	 */
+	protected void emit_KRoundedBendsPolyline_CommaKeyword_3_4_3_0_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
+		acceptNodes(transition, nodes);
+	}
+	
+	/**
+	 * Syntax:
+	 *     ('{' '}')?
+	 */
+	protected void emit_KRoundedBendsPolyline___LeftCurlyBracketKeyword_3_0_RightCurlyBracketKeyword_3_5__q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
 		acceptNodes(transition, nodes);
 	}
 	

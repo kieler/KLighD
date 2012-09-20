@@ -946,7 +946,7 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 
 	//KRendering:
 	//	KEllipse | KRectangle | KRoundedRectangle | KPolyline_Impl | KPolygon | KImage | KArc | KRenderingRef | KChildArea |
-	//	KText | KCustomRendering | KSpline;
+	//	KText | KCustomRendering | KSpline | KRoundedBendsPolyline;
 	public KRenderingGrammarAccess.KRenderingElements getKRenderingAccess() {
 		return gaKRendering.getKRenderingAccess();
 	}
@@ -1063,6 +1063,18 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	
 	public ParserRule getKPolyline_ImplRule() {
 		return getKPolyline_ImplAccess().getRule();
+	}
+
+	//KRoundedBendsPolyline:
+	//	{KRoundedBendsPolyline} "RoundedBendsPolyline" bendRadius=EFloat ("{" ("styles" ":"? styles+=KStyle (","?
+	//	styles+=KStyle)*)? ("placementData" ":"? placementData=KPlacementData)? ("childPlacement" ":"?
+	//	childPlacement=KPlacement)? ("children" ":"? children+=KRendering (","? children+=KRendering)*)? "}")?;
+	public KRenderingGrammarAccess.KRoundedBendsPolylineElements getKRoundedBendsPolylineAccess() {
+		return gaKRendering.getKRoundedBendsPolylineAccess();
+	}
+	
+	public ParserRule getKRoundedBendsPolylineRule() {
+		return getKRoundedBendsPolylineAccess().getRule();
 	}
 
 	//KPolygon:
@@ -1501,7 +1513,7 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	////		'sourcePoint' sourcePoint=KPoint
 	////		'targetPoint' targetPoint=KPoint
 	////    '}';
-	//	"KEdgeLayout" "{" "sourcePoint" sourcePoint=KPoint "targetPoint" targetPoint=KPoint ("bendPoints" ":"
+	//	"KEdgeLayout" "{" ("sourcePoint" sourcePoint=KPoint)? ("targetPoint" targetPoint=KPoint)? ("bendPoints" ":"
 	//	bendPoints+=KPoint (","? bendPoints+=KPoint)*)? ("mapProperties" ":" persistentEntries+=PersistentEntry (","?
 	//	persistentEntries+=PersistentEntry)*)? "}";
 	public KLayoutDataGrammarAccess.KEdgeLayoutElements getKEdgeLayoutAccess() {
