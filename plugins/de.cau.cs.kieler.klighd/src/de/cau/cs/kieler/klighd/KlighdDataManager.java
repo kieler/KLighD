@@ -24,6 +24,8 @@ import org.eclipse.ui.statushandlers.StatusManager;
 
 import com.google.common.collect.Maps;
 
+import de.cau.cs.kieler.core.WrappedException;
+
 /**
  * Singleton for accessing transformations, viewers and update strategies registered with KLighD.
  * 
@@ -173,6 +175,11 @@ public final class KlighdDataManager {
                             new Status(IStatus.ERROR, KlighdPlugin.PLUGIN_ID,
                                     NO_CLASS_DEF_FOUND_ERROR_MSG.replace("<<CLAZZ>>",
                                             element.getAttribute(ATTRIBUTE_CLASS)), exception));
+                } catch (WrappedException exception) {
+                    StatusManager.getManager().handle(
+                            new Status(IStatus.ERROR, KlighdPlugin.PLUGIN_ID,
+                                    NO_CLASS_DEF_FOUND_ERROR_MSG.replace("<<CLAZZ>>",
+                                            element.getAttribute(ATTRIBUTE_CLASS)), exception.getCause()));
                 }
                 if (modelTransformation != null) {
                     String id = element.getAttribute(ATTRIBUTE_ID);

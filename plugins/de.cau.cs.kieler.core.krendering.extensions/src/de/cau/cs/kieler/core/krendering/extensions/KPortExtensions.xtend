@@ -169,7 +169,6 @@ class KPortExtensions {
 
 
     def private KPort create port: os.internalCreatePort() createLabeledEPort(KNode node, String label, ArrayList<Object> os) {
-//        return os.internalCreatePort()
         port => [
             node.ports += it;
             it.setPortSize(portEdgeLength, portEdgeLength)
@@ -209,8 +208,7 @@ class KPortExtensions {
     }
 
     def private KPort create port: os.internalCreatePort() createLabeledWPort(KNode node, String label, ArrayList<Object> os) {
-//        return os.internalCreatePort()
-          port => [
+        port => [
             node.ports += it;
             it.setPortSize(portEdgeLength, portEdgeLength)
             it.addLayoutParam(LayoutOptions::PORT_SIDE, PortSide::WEST);

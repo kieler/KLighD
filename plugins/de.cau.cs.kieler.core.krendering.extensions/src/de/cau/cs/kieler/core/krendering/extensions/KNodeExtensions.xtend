@@ -53,6 +53,10 @@ class KNodeExtensions {
         ];
     }
 
+    def float getHeight(KNode node) {
+        node.getData(typeof(KShapeLayout)).height;
+    }
+    
     /**
      * Is used in KPortExtensions
      */    
