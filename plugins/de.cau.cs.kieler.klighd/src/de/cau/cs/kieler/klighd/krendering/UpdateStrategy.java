@@ -14,15 +14,12 @@
 package de.cau.cs.kieler.klighd.krendering;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
 import java.util.Map;
 
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.compare.diff.merge.service.MergeService;
-import org.eclipse.emf.compare.diff.metamodel.DiffElement;
 import org.eclipse.emf.compare.diff.metamodel.DiffModel;
 import org.eclipse.emf.compare.diff.service.DiffService;
 import org.eclipse.emf.compare.match.MatchOptions;
@@ -49,10 +46,13 @@ import de.cau.cs.kieler.klighd.ViewContext;
 /**
  * The update strategy for KGraph models with attached KRendering data.
  * 
- * @author mri
+ * @author mri, chsch
  */
 public class UpdateStrategy implements IUpdateStrategy<KNode> {
 
+    /** The id used at registration of the strategy in the plugin.xml. */
+    public static final String ID = SimpleUpdateStrategy.class.getCanonicalName();
+    
     /** the priority for this update strategy. */
     public static final int PRIORITY = 20;
     
@@ -81,8 +81,6 @@ public class UpdateStrategy implements IUpdateStrategy<KNode> {
      * {@inheritDoc}
      */
     public void update(final KNode baseModel, final KNode newModel, final ViewContext viewContext) {
-//        serialize(new Path("/test/test/oldbase.kgraphx"), EcoreUtil.copy(baseModel));
-//        serialize(new Path("/test/test/new.kgraphx"), EcoreUtil.copy(newModel));
         try {
             // match the base and the new model
             Map<String, Object> matchOptions = Maps.newHashMap();
@@ -92,15 +90,13 @@ public class UpdateStrategy implements IUpdateStrategy<KNode> {
 
             // compute differences
             DiffModel diff = DiffService.doDiff(match, false);
+            // serialize(new Path("/test2/diff.xmi"), EcoreUtil.copy(diff), baseModel, newModel);
             
             // merge differences
-            List<DiffElement> differences = new ArrayList<DiffElement>(diff.getOwnedElements());
-            MergeService.merge(differences, false);
-            
+            MergeService.merge(diff.getOwnedElements(), false);
         } catch (InterruptedException e) {
             throw new RuntimeException("Failed to update KGraph");
         }
-//        serialize(new Path("/test/test/newbase.kgraphx"), EcoreUtil.copy(baseModel));
     }
 
     /**
@@ -175,17 +171,19 @@ public class UpdateStrategy implements IUpdateStrategy<KNode> {
     }
     
     @SuppressWarnings("unused") // helper for debugging purposes!
-    private void serialize(final IPath path, final EObject object) {
+    private void serialize(final IPath path, final EObject... objects) {
         URI fileURI = URI.createPlatformResourceURI(path.toOSString(), true);
         
         ResourceSet set = new ResourceSetImpl();
         Resource resource = set.createResource(fileURI);
 
-        if (object instanceof KNode) {
-            KimlUtil.persistDataElements((KNode) object);   
+        for (EObject object : objects) {
+            if (object instanceof KNode) {
+                KimlUtil.persistDataElements((KNode) object);
+            }
+            resource.getContents().add(object);
         }
-        resource.getContents().add(object);
-
+        
         try {
             resource.save(Collections.emptyMap());
         } catch (IOException e) {
