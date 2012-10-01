@@ -16,6 +16,7 @@ package de.cau.cs.kieler.klighd.piccolo.krendering.util;
 import java.awt.geom.Point2D;
 import java.util.Arrays;
 
+import de.cau.cs.kieler.core.krendering.KBottomPosition;
 import de.cau.cs.kieler.core.krendering.KDecoratorPlacementData;
 import de.cau.cs.kieler.core.krendering.KDirectPlacementData;
 import de.cau.cs.kieler.core.krendering.KGridPlacement;
@@ -24,6 +25,7 @@ import de.cau.cs.kieler.core.krendering.KLeftPosition;
 import de.cau.cs.kieler.core.krendering.KPlacementData;
 import de.cau.cs.kieler.core.krendering.KPolylinePlacementData;
 import de.cau.cs.kieler.core.krendering.KPosition;
+import de.cau.cs.kieler.core.krendering.KRightPosition;
 import de.cau.cs.kieler.core.krendering.KStackPlacementData;
 import de.cau.cs.kieler.core.krendering.KTopPosition;
 import de.cau.cs.kieler.core.krendering.KXPosition;
@@ -407,13 +409,19 @@ public final class PlacementUtil {
         KYPosition yPos = position.getY();
         if (xPos instanceof KLeftPosition) {
             point.x = xPos.getAbsolute() + xPos.getRelative() * width;
-        } else {
+        } else if (xPos instanceof KRightPosition) {
             point.x = width - xPos.getAbsolute() - xPos.getRelative() * width;
+        } else {        // SUPPRESS CHECKSTYLE EmptyBlock
+            // this branch is reached in case xPos has been set to 'null', e.g. by EMF Compare
+            //  do nothing as the value will be re-set most certainly in near future :-)!
         }
         if (yPos instanceof KTopPosition) {
             point.y = yPos.getAbsolute() + yPos.getRelative() * height;
-        } else {
+        } else if (yPos instanceof KBottomPosition) {
             point.y = height - yPos.getAbsolute() - yPos.getRelative() * height;
+        } else {        // SUPPRESS CHECKSTYLE EmptyBlock
+            // this branch is reached in case xPos has been set to 'null', e.g. by EMF Compare
+            //  do nothing as the value will be re-set most certainly in near future :-)!
         }
         return point;
     }
