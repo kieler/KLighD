@@ -259,12 +259,15 @@ public abstract class AbstractRenderingController<S extends KGraphElement, T ext
                         if (msg.getFeatureID(KStyle.class) == KRenderingPackage.KSTYLE__RENDERING) {
                             return;
                         }
-                        PlatformUI.getWorkbench().getDisplay().syncExec(new Runnable() {
-                            public void run() {
-                                // update the styles
-                                updateStyles();
-                            }
-                        });
+                        // PlatformUI.getWorkbench().getDisplay().syncExec(new Runnable() {
+                        // public void run() {
+                        // update the styles
+                        if (msg.getNewValue() != null) {
+                            // this test is supposed to reduce the huge amount of refreshs
+                            // introduced by the element-wise modifications performed by EMF Compare
+                            updateStyles();
+                        }
+                        // });
                         return;
                     }
 
@@ -272,22 +275,29 @@ public abstract class AbstractRenderingController<S extends KGraphElement, T ext
                     if (msg.getNotifier() instanceof KRendering
                             && msg.getFeatureID(KRendering.class)
                                 == KRenderingPackage.KRENDERING__STYLES) {
-                        PlatformUI.getWorkbench().getDisplay().syncExec(new Runnable() {
-                            public void run() {
+//                        PlatformUI.getWorkbench().getDisplay().syncExec(new Runnable() {
+//                            public void run() {
                                 // update the styles
-                                updateStyles();
+                        if (msg.getNewValue() != null) {
+                            // this test is supposed to reduce the huge amount of refreshs
+                            // introduced by the element-wise modifications performed by EMF Compare
+                            updateStyles();
                             }
-                        });
+//                        });
                         return;
                     }
 
                     // handle other changes by reevaluating the rendering
-                    PlatformUI.getWorkbench().getDisplay().syncExec(new Runnable() {
-                        public void run() {
+//                    PlatformUI.getWorkbench().getDisplay().syncExec(new Runnable() {
+//                        public void run() {
                             // update the rendering
-                            updateRendering();
-                        }
-                    });
+                    if (msg.getNewValue() != null) {
+                        // this test is supposed to reduce the huge amount of refreshs
+                        //  introduced by the element-wise modifications performed by EMF Compare 
+                        updateRendering();
+                    }
+//                        }
+//                    });
                     break;
                 default:
                     break;
@@ -361,7 +371,12 @@ public abstract class AbstractRenderingController<S extends KGraphElement, T ext
 
     private void updateStyles(final KRendering rendering, final Styles styles,
             final List<KStyle> propagatedStyles, final Object key) {
+        
         PNodeController<?> controller = getMappedProperty(rendering, CONTROLLER, key);
+        if (controller == null) {
+            return;
+        }
+        
         List<KStyle> renderingStyles = rendering.getStyles();
 
         // determine the styles for this rendering
