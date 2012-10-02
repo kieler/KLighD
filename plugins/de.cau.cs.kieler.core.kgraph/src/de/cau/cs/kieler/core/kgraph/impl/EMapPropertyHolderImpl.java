@@ -129,18 +129,20 @@ public abstract class EMapPropertyHolderImpl extends EObjectImpl implements EMap
         List<PersistentEntry> persisEntries = getPersistentEntries();
         int i = 0;
         for (Entry<IProperty<?>, Object> entry : getProperties()) {
-            PersistentEntry persisEntry;
-            if (i >= persisEntries.size()) {
-                persisEntry = KGraphFactory.eINSTANCE.createPersistentEntry();
-                persisEntries.add(persisEntry);
-            } else {
-                persisEntry = persisEntries.get(i);
-            }
             IProperty<?> key = entry.getKey();
-            persisEntry.setKey(key == null ? null : key.getId());
             Object value = entry.getValue();
-            persisEntry.setValue(value == null ? null : value.toString());
-            i++;
+            if (key != null && value != null) {
+                PersistentEntry persisEntry;
+                if (i >= persisEntries.size()) {
+                    persisEntry = KGraphFactory.eINSTANCE.createPersistentEntry();
+                    persisEntries.add(persisEntry);
+                } else {
+                    persisEntry = persisEntries.get(i);
+                }
+                persisEntry.setKey(key.getId());
+                persisEntry.setValue(value.toString());
+                i++;
+            }
         }
     }
 
