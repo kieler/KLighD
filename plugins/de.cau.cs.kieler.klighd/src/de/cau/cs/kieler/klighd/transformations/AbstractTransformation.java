@@ -56,6 +56,34 @@ public abstract class AbstractTransformation<S, T> implements ITransformation<S,
     protected TransformationContext<S, T> getUsedContext() {
         return this.currentContext;
     }
+
+    /**
+     * Convenience getter.
+     * 
+     * @param option the option to evaluate the configuration state / the configured value.
+     * @return the configured value of {@link TransformationOption} option.
+     */
+    public Object getOptionValue(final TransformationOption option) {
+        return this.getUsedContext().getOptionValue(option);
+    }
+    
+    /**
+     * Convenience getter.
+     * 
+     * @param option the option to evaluate the configuration state / the configured value.
+     * @return the configured value of {@link TransformationOption} option.
+     */
+    public Boolean getOptionBooleanValue(final TransformationOption option) {
+        Object result = this.getUsedContext().getOptionValue(option);
+        if (result instanceof Boolean) {
+            return (Boolean) result; 
+        } else {
+            throw new IllegalArgumentException("KLighD transformation option handling: "
+                    + "The transformation " + this
+                    + " attempted to evaluate the non-Boolean valued transformation option "
+                    + option.getName() + "expecting a Boolean value.");
+        }
+    }
     
     /**
      * Method to put a pair of source target into the lookup table.<br>
