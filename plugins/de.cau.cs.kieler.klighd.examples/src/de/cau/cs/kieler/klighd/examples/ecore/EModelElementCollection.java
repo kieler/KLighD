@@ -15,8 +15,10 @@ package de.cau.cs.kieler.klighd.examples.ecore;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
 
 import org.eclipse.emf.ecore.EModelElement;
+import org.eclipse.xtext.xbase.lib.IteratorExtensions;
 
 /**
  * A specialized {@link ArrayList} restricted to {@link EModelElement}s.
@@ -34,5 +36,9 @@ public class EModelElementCollection extends ArrayList<EModelElement> {
     
     public static EModelElementCollection of(Collection<EModelElement> elements) {
         return new EModelElementCollection(elements);
+    }
+
+    public static EModelElementCollection of(Iterator<? extends EModelElement> elements) {
+        return new EModelElementCollection(IteratorExtensions.toList(elements));
     }
 }
