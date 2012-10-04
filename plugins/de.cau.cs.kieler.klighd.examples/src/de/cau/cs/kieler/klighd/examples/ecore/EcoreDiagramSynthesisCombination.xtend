@@ -8,9 +8,13 @@ import de.cau.cs.kieler.klighd.examples.ecore.EModelElementCollection
 import java.util.Collection
 import org.eclipse.emf.ecore.EPackage
 import org.eclipse.emf.ecore.EClass
+import org.eclipse.emf.ecore.EClassifier
 import de.cau.cs.kieler.core.model.triggers.PartTrigger
 import org.eclipse.core.runtime.IPath
 import de.cau.cs.kieler.klighd.effects.KlighdDiagramEffect
+import de.cau.cs.kieler.klighd.triggers.KlighdSelectionTrigger$KlighdSelectionState
+import org.eclipse.emf.ecore.EModelElement
+
 
 /**
  * Combination that triggers the synthesis of Ecore diagrams.
@@ -22,14 +26,28 @@ class EcoreDiagramSynthesisCombination extends AbstractCombination {
 	/**
 	 * The 'execute()' method, see doc of {@link AbstractCombination}.
 	 */
-	def public void execute(PartTrigger$EditorState es, SelectionTrigger$SelectionState selectionState) {
+	def public void execute(PartTrigger$EditorState es, SelectionTrigger$SelectionState selectionState,
+	    KlighdSelectionTrigger$KlighdSelectionState klighdSelectionState) {
 		
 		if (this.latestState() == es) {
 		   //inputPath = es.getProperty(PartTrigger::EDITOR_INPUT_PATH) as IPath;
 		   return; // do only react on selectionState
 		}
-		val selection = selectionState.selectedObjects;
+				
+		if (this.latestState() == klighdSelectionState && klighdSelectionState.selections.size > 1) {
+		    // in case a selection has been performed in the diagram ...
+		    //  (the case of selections.size == 1 is skipped as this interferes with the
+		    //   'highlight in source functionality')
+            this.schedule(
+                  new KlighdUpdateDiagramEffect(
+                      EModelElementCollection::of(klighdSelectionState.selectedEModelElements
+                          .filter(typeof(EClassifier)))
+                  )
+            );
+            return;
+		}
 		
+		val selection = selectionState.selectedObjects;
 		if (!selection.nullOrEmpty) {
             if (selection.forall[typeof(EPackage).isInstance(it) || typeof(EClass).isInstance(it)]) {
                 // in case the elements to be depicted are given immediately,
@@ -55,8 +73,8 @@ class EcoreDiagramSynthesisCombination extends AbstractCombination {
 		                new KlighdUpdateDiagramEffect(
 		                    EModelElementCollection::of(
 		                        selectionState.selectedObjects.map[
-		                            (it as EcoreDomainNavigatorItem).EObject
-            		            ] as Collection)
+		                            (it as EcoreDomainNavigatorItem).EObject as EModelElement
+            		            ])
             	        )
                 	);
                 }

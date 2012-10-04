@@ -82,11 +82,11 @@ class EcoreDiagramSynthesis extends AbstractTransformation<EModelElementCollecti
             //  depending on the value of CLASS_FILTER.
             val depictedClasses = choice.filter(typeof(EClassifier)).toList;
 	    
-	        if (transformationContext.getOptionValue(CLASS_FILTER) == CHOSEN) {
+	        if (CLASS_FILTER.optionValue == CHOSEN) {
                 
                 depictedClasses.createElementFigures(it);
                 
-	        } else if (transformationContext.getOptionValue(CLASS_FILTER) == CHOSEN_AND_RELATED) {
+	        } else if (CLASS_FILTER.optionValue == CHOSEN_AND_RELATED) {
                 
                 // The chosen classes ...
                 val chosenClasses = choice.filter(typeof(EClass)).toList => [
