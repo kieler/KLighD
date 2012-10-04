@@ -24,6 +24,7 @@ import de.cau.cs.kieler.core.kgraph.KGraphPackage;
 import de.cau.cs.kieler.core.kgraph.PersistentEntry;
 import de.cau.cs.kieler.core.properties.IProperty;
 import de.cau.cs.kieler.core.properties.IPropertyHolder;
+import de.cau.cs.kieler.core.properties.IPropertyValueProxy;
 
 import java.util.Collection;
 import org.eclipse.emf.common.notify.NotificationChain;
@@ -166,11 +167,17 @@ public abstract class EMapPropertyHolderImpl extends EObjectImpl implements EMap
      * <!-- end-user-doc -->
      * @generated NOT
      */
+    @SuppressWarnings("unchecked")
     public <T> T getProperty(IProperty<T> property) {
-        @SuppressWarnings("unchecked")
-        T value = (T) getProperties().get(property);
-        if (value != null) {
-            return value;
+        Object value = getProperties().get(property);
+        if (value instanceof IPropertyValueProxy) {
+            value = ((IPropertyValueProxy) value).resolveValue(property);
+            if (value != null) {
+                getProperties().put(property, value);
+                return (T) value;
+            }
+        } else if (value != null) {
+            return (T) value;
         }
         return property.getDefault();
     }
@@ -183,7 +190,20 @@ public abstract class EMapPropertyHolderImpl extends EObjectImpl implements EMap
      */
     public void copyProperties(IPropertyHolder holder) {
         if (holder instanceof EMapPropertyHolder) {
-            this.getProperties().putAll(((EMapPropertyHolder) holder).getProperties());
+            EMapPropertyHolder other = (EMapPropertyHolder) holder;
+            EMap<IProperty<?>, Object> ourProps = this.getProperties();
+            for (Map.Entry<IProperty<?>, Object> entry : other.getProperties()) {
+                Object value = entry.getValue();
+                if (value instanceof IPropertyValueProxy) {
+                    IPropertyValueProxy proxy = (IPropertyValueProxy) value;
+                    Object newValue = proxy.resolveValue(entry.getKey());
+                    if (newValue != null) {
+                        entry.setValue(newValue);
+                        value = newValue;
+                    }
+                }
+                ourProps.put(entry.getKey(), value);
+            }
         } else {
             this.getProperties().putAll(holder.getAllProperties());
         }
@@ -196,7 +216,15 @@ public abstract class EMapPropertyHolderImpl extends EObjectImpl implements EMap
      * @generated NOT
      */
     public Map<IProperty<?>, Object> getAllProperties() {
-        return getProperties().map();
+        EMap<IProperty<?>, Object> props = getProperties();
+        // check for unresolved properties
+        for (Map.Entry<IProperty<?>, Object> entry : props) {
+            if (entry.getValue() instanceof IPropertyValueProxy) {
+                IPropertyValueProxy proxy = (IPropertyValueProxy) entry.getValue();
+                entry.setValue(proxy.resolveValue(entry.getKey()));
+            }
+        }
+        return props.map();
     }
 
     /**
