@@ -168,8 +168,8 @@ class KPortExtensions {
     }
 
 
-    def private KPort createLabeledEPort(KNode node, String label, ArrayList<Object> os) {
-        return os.internalCreatePort() => [
+    def private KPort create port: os.internalCreatePort() createLabeledEPort(KNode node, String label, ArrayList<Object> os) {
+        port => [
             node.ports += it;
             it.setPortSize(portEdgeLength, portEdgeLength)
             it.addLayoutParam(LayoutOptions::PORT_SIDE, PortSide::EAST);
@@ -207,8 +207,8 @@ class KPortExtensions {
         ];
     }
 
-    def private KPort createLabeledWPort(KNode node, String label, ArrayList<Object> os) {
-        return os.internalCreatePort() => [
+    def private KPort create port: os.internalCreatePort() createLabeledWPort(KNode node, String label, ArrayList<Object> os) {
+        port => [
             node.ports += it;
             it.setPortSize(portEdgeLength, portEdgeLength)
             it.addLayoutParam(LayoutOptions::PORT_SIDE, PortSide::WEST);
@@ -313,13 +313,13 @@ class KPortExtensions {
     def Float nextEPortYPosition(KNode node) {
         val Maybe<Float> memo = ePortYPositionMemo(node);
         val f = memo.get();
-        memo.set(f+15);
+        memo.set(f+verticalPortSpacing);
         return f;
     }
     def Float nextWPortYPosition(KNode node) {
         val Maybe<Float> memo = wPortYPositionMemo(node);
         val f = memo.get();
-        memo.set(f+15);
+        memo.set(f+verticalPortSpacing);
         return f;
     }
     

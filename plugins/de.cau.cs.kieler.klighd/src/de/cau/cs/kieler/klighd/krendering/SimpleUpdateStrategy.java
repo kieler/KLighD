@@ -36,7 +36,10 @@ import de.cau.cs.kieler.klighd.ViewContext;
  */
 public class SimpleUpdateStrategy implements IUpdateStrategy<KNode> {
 
-    /** the priority for this update strategy. */
+    /** The id used at registration of the strategy in the plugin.xml. */
+    public static final String ID = SimpleUpdateStrategy.class.getCanonicalName();
+    
+    /** The priority for this update strategy. */
     public static final int PRIORITY = 0;
 
     /**

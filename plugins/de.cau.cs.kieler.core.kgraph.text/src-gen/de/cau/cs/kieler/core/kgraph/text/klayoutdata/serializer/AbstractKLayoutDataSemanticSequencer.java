@@ -69,8 +69,8 @@ public abstract class AbstractKLayoutDataSemanticSequencer extends AbstractDeleg
 	/**
 	 * Constraint:
 	 *     (
-	 *         sourcePoint=KPoint 
-	 *         targetPoint=KPoint 
+	 *         sourcePoint=KPoint? 
+	 *         targetPoint=KPoint? 
 	 *         (bendPoints+=KPoint bendPoints+=KPoint*)? 
 	 *         (persistentEntries+=PersistentEntry persistentEntries+=PersistentEntry*)?
 	 *     )

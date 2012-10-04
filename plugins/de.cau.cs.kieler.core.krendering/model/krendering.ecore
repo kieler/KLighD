@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ecore:EPackage xmi:version="2.0"
-    xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="krendering"
-    nsURI="http://kieler.cs.cau.de/KRendering" nsPrefix="krendering">
+<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="krendering" nsURI="http://kieler.cs.cau.de/KRendering" nsPrefix="krendering">
   <eClassifiers xsi:type="ecore:EClass" name="KPosition">
     <eStructuralFeatures xsi:type="ecore:EReference" name="x" lowerBound="1" eType="#//KXPosition"
         containment="true"/>
@@ -188,5 +186,8 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="KFontSize" eSuperTypes="#//KStyle">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="size" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="KRoundedBendsPolyline" eSuperTypes="#//KPolyline">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="bendRadius" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EFloat"/>
   </eClassifiers>
 </ecore:EPackage>

@@ -53,6 +53,7 @@ import de.cau.cs.kieler.core.krendering.KRenderingLibrary;
 import de.cau.cs.kieler.core.krendering.KRenderingPackage;
 import de.cau.cs.kieler.core.krendering.KRenderingRef;
 import de.cau.cs.kieler.core.krendering.KRightPosition;
+import de.cau.cs.kieler.core.krendering.KRoundedBendsPolyline;
 import de.cau.cs.kieler.core.krendering.KRoundedRectangle;
 import de.cau.cs.kieler.core.krendering.KSpline;
 import de.cau.cs.kieler.core.krendering.KStackPlacement;
@@ -403,6 +404,13 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
      * @generated
      */
     private EClass kFontSizeEClass = null;
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    private EClass kRoundedBendsPolylineEClass = null;
 
     /**
      * <!-- begin-user-doc -->
@@ -1439,6 +1447,24 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
      * <!-- end-user-doc -->
      * @generated
      */
+    public EClass getKRoundedBendsPolyline() {
+        return kRoundedBendsPolylineEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EAttribute getKRoundedBendsPolyline_BendRadius() {
+        return (EAttribute)kRoundedBendsPolylineEClass.getEStructuralFeatures().get(0);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
     public EEnum getLineStyle() {
         return lineStyleEEnum;
     }
@@ -1640,6 +1666,9 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
         kFontSizeEClass = createEClass(KFONT_SIZE);
         createEAttribute(kFontSizeEClass, KFONT_SIZE__SIZE);
 
+        kRoundedBendsPolylineEClass = createEClass(KROUNDED_BENDS_POLYLINE);
+        createEAttribute(kRoundedBendsPolylineEClass, KROUNDED_BENDS_POLYLINE__BEND_RADIUS);
+
         // Create enums
         lineStyleEEnum = createEEnum(LINE_STYLE);
         horizontalAlignmentEEnum = createEEnum(HORIZONTAL_ALIGNMENT);
@@ -1717,6 +1746,7 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
         kFontItalicEClass.getESuperTypes().add(this.getKStyle());
         kFontNameEClass.getESuperTypes().add(this.getKStyle());
         kFontSizeEClass.getESuperTypes().add(this.getKStyle());
+        kRoundedBendsPolylineEClass.getESuperTypes().add(this.getKPolyline());
 
         // Initialize classes and features; add operations and parameters
         initEClass(kPositionEClass, KPosition.class, "KPosition", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -1869,6 +1899,9 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
 
         initEClass(kFontSizeEClass, KFontSize.class, "KFontSize", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         initEAttribute(getKFontSize_Size(), ecorePackage.getEInt(), "size", null, 1, 1, KFontSize.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+        initEClass(kRoundedBendsPolylineEClass, KRoundedBendsPolyline.class, "KRoundedBendsPolyline", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        initEAttribute(getKRoundedBendsPolyline_BendRadius(), ecorePackage.getEFloat(), "bendRadius", null, 0, 1, KRoundedBendsPolyline.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         // Initialize enums and add enum literals
         initEEnum(lineStyleEEnum, LineStyle.class, "LineStyle");

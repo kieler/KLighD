@@ -105,14 +105,21 @@ class KEdgeExtensions {
     }
     
     def KPolyline addPolyline(KEdge e){
-        return renderingFactory.createKPolyline => [
-            e.data.add(it)
+        return renderingFactory.createKPolyline() => [
+            e.data += it;
         ];
     }
     
+    def KPolyline addRoundedBendsPolyline(KEdge e, float bendRadius){
+        return renderingFactory.createKRoundedBendsPolyline() => [
+            e.data += it;
+            it.bendRadius = bendRadius;
+        ];
+    }
+
     def KPolyline addSpline(KEdge e){
         return renderingFactory.createKSpline => [
-            e.data.add(it)
+            e.data += it;
         ];
     }
     

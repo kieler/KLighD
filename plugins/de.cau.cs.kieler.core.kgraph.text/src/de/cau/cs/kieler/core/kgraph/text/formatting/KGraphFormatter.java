@@ -43,11 +43,12 @@ public class KGraphFormatter extends AbstractDeclarativeFormatter {
             c.setLinewrap().after(comma);
         }
         for (Keyword word : f.findKeywords("mapProperties", "children", "styles", "bendPoints",
-                "placementData", "detailedPlacementData", "sourcePort", "targetPort", "topLeft",
-                "bottomRight", "lineStyle", "lineWidth", "backgroundColor", "forgroundColor",
-                "backgroundVisibility", "foregroundVisibility", "font", "fontSize", "fontColor",
-                "bold", "italic", "horizontalAlignment", "verticalAlignment", "left", "right",
-                "location", "xOffset", "width", "insets", "KInsets")) {
+                "placementData", "detailedPlacementData", "sourcePoint", "targetPoint",
+                "sourcePort", "targetPort", "topLeft", "bottomRight", "lineStyle", "lineWidth",
+                "backgroundColor", "forgroundColor", "backgroundVisibility",
+                "foregroundVisibility", "font", "fontSize", "fontColor", "bold", "italic",
+                "horizontalAlignment", "verticalAlignment", "left", "right", "location", "xOffset",
+                "width", "insets", "KInsets")) {
             c.setLinewrap().before(word);
         }
         for (Keyword word : f.findKeywords("points")) {
@@ -57,12 +58,12 @@ public class KGraphFormatter extends AbstractDeclarativeFormatter {
         c.setNoLinewrap().after(
                 f.getKRenderingGrammarAccess().getKLayoutDataGrammarAccess().getKPointAccess()
                         .getXEFloatParserRuleCall_2_1_0());
-        c.setLinewrap().before(
-                f.getKRenderingGrammarAccess().getKLayoutDataGrammarAccess().getKEdgeLayoutAccess()
-                        .getSourcePointKeyword_2());
-        c.setLinewrap().before(
-                f.getKRenderingGrammarAccess().getKLayoutDataGrammarAccess().getKEdgeLayoutAccess()
-                        .getTargetPointKeyword_4());
+//        c.setLinewrap().before(
+//                f.getKRenderingGrammarAccess().getKLayoutDataGrammarAccess().getKEdgeLayoutAccess()
+//                        .getSourcePointKeyword_2_0());
+//        c.setLinewrap().before(
+//                f.getKRenderingGrammarAccess().getKLayoutDataGrammarAccess().getKEdgeLayoutAccess()
+//                        .getTargetPointKeyword_3_0());
         c.setLinewrap().after(
                 f.getPersistentEntryAccess().getValueEStringParserRuleCall_1_1_0());
         

@@ -151,10 +151,11 @@ public final class DiagramViewManager implements IPartListener {
             }
 
             // update the view context
-            if (model != null || viewContext.getInputModel() != null) {
+            Object currentInputModel = viewContext.getInputModel(); 
+            if (model != null || currentInputModel != null) {
                 page.bringToTop(diagramView);
                 // update the view context and viewer
-                Object theModel = (model != null ? model : viewContext.getInputModel());
+                Object theModel = (model != null ? model : currentInputModel);
                 if (!LightDiagramServices.getInstance().updateViewContext(viewContext, theModel,
                         propertyHolder)) {
                     return null;

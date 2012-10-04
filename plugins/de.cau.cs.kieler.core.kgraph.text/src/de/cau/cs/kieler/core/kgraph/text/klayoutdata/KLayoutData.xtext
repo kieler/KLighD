@@ -47,10 +47,10 @@ KEdgeLayout returns KEdgeLayout:
 //    '}';
 	'KEdgeLayout'
 	'{'
-		'sourcePoint' sourcePoint=KPoint
-		'targetPoint' targetPoint=KPoint
-		('bendPoints' ':' bendPoints+=KPoint ( ","? bendPoints+=KPoint)*)?
-		('mapProperties'':'  persistentEntries+=PersistentEntry ( ","? persistentEntries+=PersistentEntry)*)?
+		('sourcePoint' sourcePoint=KPoint)?
+		('targetPoint' targetPoint=KPoint)?
+		('bendPoints' ':'? bendPoints+=KPoint ( ","? bendPoints+=KPoint)*)?
+		('mapProperties'':'?  persistentEntries+=PersistentEntry ( ","? persistentEntries+=PersistentEntry)*)?
     '}';
 
 KPoint returns KPoint:

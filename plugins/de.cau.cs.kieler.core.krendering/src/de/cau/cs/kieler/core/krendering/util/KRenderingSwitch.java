@@ -457,6 +457,18 @@ public class KRenderingSwitch<T> extends Switch<T> {
                 if (result == null) result = defaultCase(theEObject);
                 return result;
             }
+            case KRenderingPackage.KROUNDED_BENDS_POLYLINE: {
+                KRoundedBendsPolyline kRoundedBendsPolyline = (KRoundedBendsPolyline)theEObject;
+                T result = caseKRoundedBendsPolyline(kRoundedBendsPolyline);
+                if (result == null) result = caseKPolyline(kRoundedBendsPolyline);
+                if (result == null) result = caseKContainerRendering(kRoundedBendsPolyline);
+                if (result == null) result = caseKRendering(kRoundedBendsPolyline);
+                if (result == null) result = caseKGraphData(kRoundedBendsPolyline);
+                if (result == null) result = caseEMapPropertyHolder(kRoundedBendsPolyline);
+                if (result == null) result = caseIPropertyHolder(kRoundedBendsPolyline);
+                if (result == null) result = defaultCase(theEObject);
+                return result;
+            }
             default: return defaultCase(theEObject);
         }
     }
@@ -1148,6 +1160,21 @@ public class KRenderingSwitch<T> extends Switch<T> {
      * @generated
      */
     public T caseKFontSize(KFontSize object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>KRounded Bends Polyline</em>'.
+     * <!-- begin-user-doc -->
+     * This implementation returns null;
+     * returning a non-null result will terminate the switch.
+     * <!-- end-user-doc -->
+     * @param object the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>KRounded Bends Polyline</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseKRoundedBendsPolyline(KRoundedBendsPolyline object) {
         return null;
     }
 

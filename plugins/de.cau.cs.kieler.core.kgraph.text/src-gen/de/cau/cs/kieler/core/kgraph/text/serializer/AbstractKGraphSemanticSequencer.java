@@ -42,6 +42,7 @@ import de.cau.cs.kieler.core.krendering.KRenderingLibrary;
 import de.cau.cs.kieler.core.krendering.KRenderingPackage;
 import de.cau.cs.kieler.core.krendering.KRenderingRef;
 import de.cau.cs.kieler.core.krendering.KRightPosition;
+import de.cau.cs.kieler.core.krendering.KRoundedBendsPolyline;
 import de.cau.cs.kieler.core.krendering.KRoundedRectangle;
 import de.cau.cs.kieler.core.krendering.KSpline;
 import de.cau.cs.kieler.core.krendering.KStackPlacement;
@@ -354,6 +355,14 @@ public abstract class AbstractKGraphSemanticSequencer extends KRenderingSemantic
 				if(context == grammarAccess.getKRightPositionRule() ||
 				   context == grammarAccess.getKXPositionRule()) {
 					sequence_KRightPosition(context, (KRightPosition) semanticObject); 
+					return; 
+				}
+				else break;
+			case KRenderingPackage.KROUNDED_BENDS_POLYLINE:
+				if(context == grammarAccess.getKGraphDataRule() ||
+				   context == grammarAccess.getKRenderingRule() ||
+				   context == grammarAccess.getKRoundedBendsPolylineRule()) {
+					sequence_KRoundedBendsPolyline(context, (KRoundedBendsPolyline) semanticObject); 
 					return; 
 				}
 				else break;
