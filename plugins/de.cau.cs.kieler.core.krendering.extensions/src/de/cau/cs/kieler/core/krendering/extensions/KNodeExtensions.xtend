@@ -87,9 +87,9 @@ class KNodeExtensions {
         node.getData(typeof(KShapeLayout)).width;
     }
     
-    def KNode setNodeSize(KNode node, float with, float height) {
+    def KNode setNodeSize(KNode node, float width, float height) {
         return node => [
-            getData(typeof(KShapeLayout)).setSize(with, height)
+            getData(typeof(KShapeLayout)).setSize(width, height)
         ];
     }
     

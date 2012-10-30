@@ -1,14 +1,22 @@
 package de.cau.cs.kieler.core.krendering.extensions
 
+import javax.inject.Inject
+
 import de.cau.cs.kieler.core.kgraph.KLabel
-import de.cau.cs.kieler.kiml.util.KimlUtil
 import de.cau.cs.kieler.core.kgraph.KLabeledGraphElement
+import de.cau.cs.kieler.core.krendering.KRenderingFactory
 import de.cau.cs.kieler.core.properties.IProperty
 import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout
+import de.cau.cs.kieler.kiml.options.LayoutOptions
+import de.cau.cs.kieler.kiml.options.EdgeLabelPlacement
+import de.cau.cs.kieler.kiml.util.KimlUtil
 
 class KLabelExtensions {
     
-//    static KRenderingFactory renderingFactory = KRenderingFactory::eINSTANCE
+    static KRenderingFactory renderingFactory = KRenderingFactory::eINSTANCE
+    
+    @Inject
+    extension KRenderingExtensions
     
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////
     ////////////////////////                    KLabelExtensions
@@ -27,6 +35,16 @@ class KLabelExtensions {
      */
     def KLabel createLabel(Object o, KLabeledGraphElement labeledElement) {
         return o.getLabel(labeledElement)
+    }
+    
+    def KLabel configureCenteralLabel(KLabel label, String labelText, int fontSize, String fontName) {
+        return label => [
+            it.text = labelText;
+            it.data += renderingFactory.createKText().setFontName(fontName).setFontSize(fontSize);
+            it.addLayoutParam(LayoutOptions::EDGE_LABEL_PLACEMENT, EdgeLabelPlacement::CENTER);
+            it.addLayoutParam(LayoutOptions::FONT_NAME, fontName);
+            it.addLayoutParam(LayoutOptions::FONT_SIZE, fontSize+2);
+        ];
     }
     
     def KLabel addLayoutParam(KLabel node, IProperty<?> property, Object value) {

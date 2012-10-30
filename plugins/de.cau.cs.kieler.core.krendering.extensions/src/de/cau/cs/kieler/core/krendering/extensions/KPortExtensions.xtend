@@ -182,25 +182,46 @@ class KPortExtensions {
                 it.setBackgroundColor(0,0,0)
                 it.children += renderingFactory.createKText.withCopyOf(portLabelFontSize()) => [
                     it.text = label;
-                    it.setHorizontalAlignment(HorizontalAlignment::RIGHT)
+                    it.setHorizontalAlignment(
+                        if (inlyingPortLabels) HorizontalAlignment::RIGHT else HorizontalAlignment::LEFT
+                    );
                     it.setVerticalAlignment(VerticalAlignment::CENTER)
                     it.placementData = renderingFactory.createKDirectPlacementData() => [
-                        topLeft = renderingFactory.createKPosition() => [
-                            it.x = renderingFactory.createKLeftPosition() => [
-                                it.absolute = -2
+                        if (inlyingPortLabels) {
+                            topLeft = renderingFactory.createKPosition() => [
+                                it.x = renderingFactory.createKLeftPosition() => [
+                                    it.absolute = -2
+                                ];
+                                it.y = renderingFactory.createKTopPosition() => [
+                                    it.absolute = portEdgeLength/2;
+                                ];
                             ];
-                            it.y = renderingFactory.createKTopPosition() => [
-                                it.absolute = portEdgeLength()/2;
+                            bottomRight = renderingFactory.createKPosition() => [
+                                it.x = renderingFactory.createKLeftPosition() => [
+                                    it.absolute = -2
+                                ];
+                                it.y = renderingFactory.createKTopPosition() => [
+                                    it.absolute = portEdgeLength/2;
+                                ];
                             ];
-                        ];
-                        bottomRight = renderingFactory.createKPosition() => [
-                            it.x = renderingFactory.createKLeftPosition() => [
-                                it.absolute = -2
+                        } else {
+                            topLeft = renderingFactory.createKPosition() => [
+                                it.x = renderingFactory.createKRightPosition() => [
+                                    it.absolute = -2
+                                ];
+                                it.y = renderingFactory.createKTopPosition() => [
+                                    it.absolute = portEdgeLength/2;
+                                ];
+                            ]
+                            bottomRight = renderingFactory.createKPosition() => [
+                                it.x = renderingFactory.createKRightPosition() => [
+                                    it.absolute = -2
+                                ];
+                                it.y = renderingFactory.createKTopPosition() => [
+                                    it.absolute = portEdgeLength/2;
+                                ];
                             ];
-                            it.y = renderingFactory.createKTopPosition() => [
-                                it.absolute = portEdgeLength()/2;
-                            ];
-                        ];
+                        }
                     ];
                 ];
             ];
@@ -221,25 +242,46 @@ class KPortExtensions {
                 it.setBackgroundColor(0,0,0)
                 it.children += renderingFactory.createKText.withCopyOf(portLabelFontSize()) => [
                     it.text = label;
-                    it.setHorizontalAlignment(HorizontalAlignment::LEFT)
+                    it.setHorizontalAlignment(
+                        if (inlyingPortLabels) HorizontalAlignment::LEFT else HorizontalAlignment::RIGHT
+                    );
                     it.setVerticalAlignment(VerticalAlignment::CENTER)
                     it.placementData = renderingFactory.createKDirectPlacementData() => [
-                        topLeft = renderingFactory.createKPosition() => [
-                            it.x = renderingFactory.createKRightPosition() => [
-                                it.absolute = -2
+                        if (inlyingPortLabels) {
+                            topLeft = renderingFactory.createKPosition() => [
+                                it.x = renderingFactory.createKRightPosition() => [
+                                    it.absolute = -2
+                                ];
+                                it.y = renderingFactory.createKTopPosition() => [
+                                    it.absolute = portEdgeLength/2;
+                                ];
+                            ]
+                            bottomRight = renderingFactory.createKPosition() => [
+                                it.x = renderingFactory.createKRightPosition() => [
+                                    it.absolute = -2
+                                ];
+                                it.y = renderingFactory.createKTopPosition() => [
+                                    it.absolute = portEdgeLength/2;
+                                ];
                             ];
-                            it.y = renderingFactory.createKTopPosition() => [
-                                it.absolute = portEdgeLength()/2;
+                        } else {
+                            topLeft = renderingFactory.createKPosition() => [
+                                it.x = renderingFactory.createKLeftPosition() => [
+                                    it.absolute = -2
+                                ];
+                                it.y = renderingFactory.createKTopPosition() => [
+                                    it.absolute = portEdgeLength/2;
+                                ];
                             ];
-                        ]
-                        bottomRight = renderingFactory.createKPosition() => [
-                            it.x = renderingFactory.createKRightPosition() => [
-                                it.absolute = -2
+                            bottomRight = renderingFactory.createKPosition() => [
+                                it.x = renderingFactory.createKLeftPosition() => [
+                                    it.absolute = -2
+                                ];
+                                it.y = renderingFactory.createKTopPosition() => [
+                                    it.absolute = portEdgeLength/2;
+                                ];
                             ];
-                            it.y = renderingFactory.createKTopPosition() => [
-                                it.absolute = portEdgeLength()/2;
-                            ];
-                        ];
+                        }
                     ];
                 ];
             ];
@@ -285,24 +327,48 @@ class KPortExtensions {
         it.set(PORT_FIGURE_EDGE_LENGTH);
     }
     
-    def Float portEdgeLength() {
+    def Float getPortEdgeLength() {
         portEdgeLengthMemo.get();
     }
     
-    def Maybe<Float> create it: Maybe::^create() portTopOffsetMemo() {
+    def void setPortEdgeLength(Float f) {
+        portEdgeLengthMemo.set(f);
+    }
+    
+    def private Maybe<Float> create it: Maybe::^create() portTopOffsetMemo() {
         it.set(PORT_TOP_OFFSET);
     }
     
-    def Float portTopOffset() {
+    def Float getPortTopOffset() {
         portTopOffsetMemo.get();
     }
     
-    def Maybe<Float> create it: Maybe::^create() verticalPortSpacingMemo() {
+    def void setPortTopOffset(Float f) {
+        portTopOffsetMemo.set(f);
+    }
+    
+    def private Maybe<Float> create it: Maybe::^create() verticalPortSpacingMemo() {
         it.set(VERTICAL_PORT_SPACING);
     }
     
-    def Float verticalPortSpacing() {
+    def Float getVerticalPortSpacing() {
         verticalPortSpacingMemo.get();
+    }
+    
+    def void setVerticalPortSpacing(Float f) {
+        verticalPortSpacingMemo.set(f);
+    }
+    
+    def private Maybe<Boolean> create it: Maybe::^create() inlyingPortLabelsMemo() {
+        it.set(true);
+    }
+    
+    def Boolean getInlyingPortLabels() {
+        inlyingPortLabelsMemo.get();
+    }
+    
+    def void setInlyingPortLabels(Boolean b) {
+        inlyingPortLabelsMemo.set(b);
     }
     
     def private Maybe<Float> create it: Maybe::^create() => [it.set(portTopOffset)] ePortYPositionMemo(KNode node) {
