@@ -242,7 +242,7 @@ class KPortExtensions {
             it.setPortSize(portEdgeLength, portEdgeLength)
             it.addLayoutParam(LayoutOptions::PORT_SIDE, PortSide::NORTH);
             it.addLayoutParam(LayoutOptions::OFFSET, 0f);
-            it.setPortPos(node.nextNPortYPosition, 0);
+            it.setPortPos(node.nextNPortYPosition, 1);
             it.data += createEPortRendering(label).setRotation(-90f)
         ];
     }

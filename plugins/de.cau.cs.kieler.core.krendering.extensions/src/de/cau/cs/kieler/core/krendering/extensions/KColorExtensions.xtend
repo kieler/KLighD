@@ -56,10 +56,20 @@ class KColorExtensions {
                 color.setGreen(0);
                 color.setBlue(255);
             }
-            case "customblue" : {
+            case "cadetBlue1" : {
+                color.red = 152;
+                color.green = 245;
+                color.blue = 255;
+            }
+            case "customBlue" : {
                 color.setRed(51);
                 color.setGreen(51);
                 color.setBlue(153);
+            }
+            case "customLightBlue" : {
+                color.setRed(226);
+                color.setGreen(237);
+                color.setBlue(255);
             }
             case "darkSlateBlue" : {
                 color.setRed(72);
@@ -97,9 +107,9 @@ class KColorExtensions {
                 color.setBlue(205);
             }
             case "lightBlue" : {
-                color.setRed(150);
-                color.setGreen(150);
-                color.setBlue(255);
+                color.setRed(173);
+                color.setGreen(216);
+                color.setBlue(230);
             }
             case "lightPink" : {
                 color.setRed(255);
@@ -120,6 +130,11 @@ class KColorExtensions {
                 color.setRed(255);
                 color.setGreen(0);
                 color.setBlue(0);
+            }
+            case "skyBlue" : {
+                color.red = 135;
+                color.green = 206;
+                color.blue = 235;
             }
             case "white" : {
                 color.setRed(255);
