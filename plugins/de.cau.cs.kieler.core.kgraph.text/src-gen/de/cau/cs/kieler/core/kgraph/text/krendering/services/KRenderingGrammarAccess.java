@@ -181,20 +181,21 @@ public class KRenderingGrammarAccess extends AbstractGrammarElementFinder {
 		private final RuleCall cKLineWidthParserRuleCall_2 = (RuleCall)cAlternatives.eContents().get(2);
 		private final RuleCall cKVisibilityParserRuleCall_3 = (RuleCall)cAlternatives.eContents().get(3);
 		private final RuleCall cKLineStyleParserRuleCall_4 = (RuleCall)cAlternatives.eContents().get(4);
-		private final RuleCall cKFontBoldParserRuleCall_5 = (RuleCall)cAlternatives.eContents().get(5);
-		private final RuleCall cKFontItalicParserRuleCall_6 = (RuleCall)cAlternatives.eContents().get(6);
-		private final RuleCall cKFontNameParserRuleCall_7 = (RuleCall)cAlternatives.eContents().get(7);
-		private final RuleCall cKFontSizeParserRuleCall_8 = (RuleCall)cAlternatives.eContents().get(8);
-		private final RuleCall cKVerticalAlignmentParserRuleCall_9 = (RuleCall)cAlternatives.eContents().get(9);
-		private final RuleCall cKHorizontalAlignmentParserRuleCall_10 = (RuleCall)cAlternatives.eContents().get(10);
+		private final RuleCall cKRotationParserRuleCall_5 = (RuleCall)cAlternatives.eContents().get(5);
+		private final RuleCall cKFontBoldParserRuleCall_6 = (RuleCall)cAlternatives.eContents().get(6);
+		private final RuleCall cKFontItalicParserRuleCall_7 = (RuleCall)cAlternatives.eContents().get(7);
+		private final RuleCall cKFontNameParserRuleCall_8 = (RuleCall)cAlternatives.eContents().get(8);
+		private final RuleCall cKFontSizeParserRuleCall_9 = (RuleCall)cAlternatives.eContents().get(9);
+		private final RuleCall cKVerticalAlignmentParserRuleCall_10 = (RuleCall)cAlternatives.eContents().get(10);
+		private final RuleCall cKHorizontalAlignmentParserRuleCall_11 = (RuleCall)cAlternatives.eContents().get(11);
 		
 		//KStyle:
-		//	KForegroundColor | KBackgroundColor | KLineWidth | KVisibility | KLineStyle | KFontBold | KFontItalic | KFontName |
-		//	KFontSize | KVerticalAlignment | KHorizontalAlignment;
+		//	KForegroundColor | KBackgroundColor | KLineWidth | KVisibility | KLineStyle | KRotation | KFontBold | KFontItalic |
+		//	KFontName | KFontSize | KVerticalAlignment | KHorizontalAlignment;
 		public ParserRule getRule() { return rule; }
 
-		//KForegroundColor | KBackgroundColor | KLineWidth | KVisibility | KLineStyle | KFontBold | KFontItalic | KFontName |
-		//KFontSize | KVerticalAlignment | KHorizontalAlignment
+		//KForegroundColor | KBackgroundColor | KLineWidth | KVisibility | KLineStyle | KRotation | KFontBold | KFontItalic |
+		//KFontName | KFontSize | KVerticalAlignment | KHorizontalAlignment
 		public Alternatives getAlternatives() { return cAlternatives; }
 
 		//KForegroundColor
@@ -212,23 +213,26 @@ public class KRenderingGrammarAccess extends AbstractGrammarElementFinder {
 		//KLineStyle
 		public RuleCall getKLineStyleParserRuleCall_4() { return cKLineStyleParserRuleCall_4; }
 
+		//KRotation
+		public RuleCall getKRotationParserRuleCall_5() { return cKRotationParserRuleCall_5; }
+
 		//KFontBold
-		public RuleCall getKFontBoldParserRuleCall_5() { return cKFontBoldParserRuleCall_5; }
+		public RuleCall getKFontBoldParserRuleCall_6() { return cKFontBoldParserRuleCall_6; }
 
 		//KFontItalic
-		public RuleCall getKFontItalicParserRuleCall_6() { return cKFontItalicParserRuleCall_6; }
+		public RuleCall getKFontItalicParserRuleCall_7() { return cKFontItalicParserRuleCall_7; }
 
 		//KFontName
-		public RuleCall getKFontNameParserRuleCall_7() { return cKFontNameParserRuleCall_7; }
+		public RuleCall getKFontNameParserRuleCall_8() { return cKFontNameParserRuleCall_8; }
 
 		//KFontSize
-		public RuleCall getKFontSizeParserRuleCall_8() { return cKFontSizeParserRuleCall_8; }
+		public RuleCall getKFontSizeParserRuleCall_9() { return cKFontSizeParserRuleCall_9; }
 
 		//KVerticalAlignment
-		public RuleCall getKVerticalAlignmentParserRuleCall_9() { return cKVerticalAlignmentParserRuleCall_9; }
+		public RuleCall getKVerticalAlignmentParserRuleCall_10() { return cKVerticalAlignmentParserRuleCall_10; }
 
 		//KHorizontalAlignment
-		public RuleCall getKHorizontalAlignmentParserRuleCall_10() { return cKHorizontalAlignmentParserRuleCall_10; }
+		public RuleCall getKHorizontalAlignmentParserRuleCall_11() { return cKHorizontalAlignmentParserRuleCall_11; }
 	}
 
 	public class KPlacementElements extends AbstractParserRuleElementFinder {
@@ -3066,6 +3070,42 @@ public class KRenderingGrammarAccess extends AbstractGrammarElementFinder {
 		public Keyword getPropagateToChildrenExclamationMarkKeyword_3_0() { return cPropagateToChildrenExclamationMarkKeyword_3_0; }
 	}
 
+	public class KRotationElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "KRotation");
+		private final Group cGroup = (Group)rule.eContents().get(1);
+		private final Action cKRotationAction_0 = (Action)cGroup.eContents().get(0);
+		private final Keyword cRotationKeyword_1 = (Keyword)cGroup.eContents().get(1);
+		private final Assignment cRotationAssignment_2 = (Assignment)cGroup.eContents().get(2);
+		private final RuleCall cRotationEFloatParserRuleCall_2_0 = (RuleCall)cRotationAssignment_2.eContents().get(0);
+		private final Assignment cPropagateToChildrenAssignment_3 = (Assignment)cGroup.eContents().get(3);
+		private final Keyword cPropagateToChildrenExclamationMarkKeyword_3_0 = (Keyword)cPropagateToChildrenAssignment_3.eContents().get(0);
+		
+		//KRotation:
+		//	{KRotation} "rotation" rotation=EFloat propagateToChildren?="!"?;
+		public ParserRule getRule() { return rule; }
+
+		//{KRotation} "rotation" rotation=EFloat propagateToChildren?="!"?
+		public Group getGroup() { return cGroup; }
+
+		//{KRotation}
+		public Action getKRotationAction_0() { return cKRotationAction_0; }
+
+		//"rotation"
+		public Keyword getRotationKeyword_1() { return cRotationKeyword_1; }
+
+		//rotation=EFloat
+		public Assignment getRotationAssignment_2() { return cRotationAssignment_2; }
+
+		//EFloat
+		public RuleCall getRotationEFloatParserRuleCall_2_0() { return cRotationEFloatParserRuleCall_2_0; }
+
+		//propagateToChildren?="!"?
+		public Assignment getPropagateToChildrenAssignment_3() { return cPropagateToChildrenAssignment_3; }
+
+		//"!"
+		public Keyword getPropagateToChildrenExclamationMarkKeyword_3_0() { return cPropagateToChildrenExclamationMarkKeyword_3_0; }
+	}
+
 	public class KFontBoldElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "KFontBold");
 		private final Group cGroup = (Group)rule.eContents().get(1);
@@ -3572,6 +3612,7 @@ public class KRenderingGrammarAccess extends AbstractGrammarElementFinder {
 	private KForegroundVisibilityElements pKForegroundVisibility;
 	private KBackgroundVisibilityElements pKBackgroundVisibility;
 	private KLineStyleElements pKLineStyle;
+	private KRotationElements pKRotation;
 	private KFontBoldElements pKFontBold;
 	private KFontItalicElements pKFontItalic;
 	private KFontNameElements pKFontName;
@@ -3657,8 +3698,8 @@ public class KRenderingGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//KStyle:
-	//	KForegroundColor | KBackgroundColor | KLineWidth | KVisibility | KLineStyle | KFontBold | KFontItalic | KFontName |
-	//	KFontSize | KVerticalAlignment | KHorizontalAlignment;
+	//	KForegroundColor | KBackgroundColor | KLineWidth | KVisibility | KLineStyle | KRotation | KFontBold | KFontItalic |
+	//	KFontName | KFontSize | KVerticalAlignment | KHorizontalAlignment;
 	public KStyleElements getKStyleAccess() {
 		return (pKStyle != null) ? pKStyle : (pKStyle = new KStyleElements());
 	}
@@ -4025,6 +4066,16 @@ public class KRenderingGrammarAccess extends AbstractGrammarElementFinder {
 		return getKLineStyleAccess().getRule();
 	}
 
+	//KRotation:
+	//	{KRotation} "rotation" rotation=EFloat propagateToChildren?="!"?;
+	public KRotationElements getKRotationAccess() {
+		return (pKRotation != null) ? pKRotation : (pKRotation = new KRotationElements());
+	}
+	
+	public ParserRule getKRotationRule() {
+		return getKRotationAccess().getRule();
+	}
+
 	//KFontBold:
 	//	{KFontBold} bold?="bold" propagateToChildren?="!"?;
 	public KFontBoldElements getKFontBoldAccess() {
@@ -4204,8 +4255,8 @@ public class KRenderingGrammarAccess extends AbstractGrammarElementFinder {
 	////		'sourcePoint' sourcePoint=KPoint
 	////		'targetPoint' targetPoint=KPoint
 	////    '}';
-	//	"KEdgeLayout" "{" ("sourcePoint" sourcePoint=KPoint)? ("targetPoint" targetPoint=KPoint)? ("bendPoints" ":"
-	//	bendPoints+=KPoint (","? bendPoints+=KPoint)*)? ("mapProperties" ":" persistentEntries+=PersistentEntry (","?
+	//	"KEdgeLayout" "{" ("sourcePoint" sourcePoint=KPoint)? ("targetPoint" targetPoint=KPoint)? ("bendPoints" ":"?
+	//	bendPoints+=KPoint (","? bendPoints+=KPoint)*)? ("mapProperties" ":"? persistentEntries+=PersistentEntry (","?
 	//	persistentEntries+=PersistentEntry)*)? "}";
 	public KLayoutDataGrammarAccess.KEdgeLayoutElements getKEdgeLayoutAccess() {
 		return gaKLayoutData.getKEdgeLayoutAccess();

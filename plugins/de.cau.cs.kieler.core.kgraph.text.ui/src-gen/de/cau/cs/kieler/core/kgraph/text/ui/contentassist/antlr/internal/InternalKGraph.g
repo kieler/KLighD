@@ -1260,6 +1260,34 @@ finally {
 
 
 
+// Entry rule entryRuleKRotation
+entryRuleKRotation 
+:
+{ before(grammarAccess.getKRotationRule()); }
+	 ruleKRotation
+{ after(grammarAccess.getKRotationRule()); } 
+	 EOF 
+;
+
+// Rule KRotation
+ruleKRotation
+    @init {
+		int stackSize = keepStackSize();
+    }
+	:
+(
+{ before(grammarAccess.getKRotationAccess().getGroup()); }
+(rule__KRotation__Group__0)
+{ after(grammarAccess.getKRotationAccess().getGroup()); }
+)
+
+;
+finally {
+	restoreStackSize(stackSize);
+}
+
+
+
 // Entry rule entryRuleKFontBold
 entryRuleKFontBold 
 :
@@ -1998,39 +2026,45 @@ rule__KStyle__Alternatives
 )
 
     |(
-{ before(grammarAccess.getKStyleAccess().getKFontBoldParserRuleCall_5()); }
+{ before(grammarAccess.getKStyleAccess().getKRotationParserRuleCall_5()); }
+	ruleKRotation
+{ after(grammarAccess.getKStyleAccess().getKRotationParserRuleCall_5()); }
+)
+
+    |(
+{ before(grammarAccess.getKStyleAccess().getKFontBoldParserRuleCall_6()); }
 	ruleKFontBold
-{ after(grammarAccess.getKStyleAccess().getKFontBoldParserRuleCall_5()); }
+{ after(grammarAccess.getKStyleAccess().getKFontBoldParserRuleCall_6()); }
 )
 
     |(
-{ before(grammarAccess.getKStyleAccess().getKFontItalicParserRuleCall_6()); }
+{ before(grammarAccess.getKStyleAccess().getKFontItalicParserRuleCall_7()); }
 	ruleKFontItalic
-{ after(grammarAccess.getKStyleAccess().getKFontItalicParserRuleCall_6()); }
+{ after(grammarAccess.getKStyleAccess().getKFontItalicParserRuleCall_7()); }
 )
 
     |(
-{ before(grammarAccess.getKStyleAccess().getKFontNameParserRuleCall_7()); }
+{ before(grammarAccess.getKStyleAccess().getKFontNameParserRuleCall_8()); }
 	ruleKFontName
-{ after(grammarAccess.getKStyleAccess().getKFontNameParserRuleCall_7()); }
+{ after(grammarAccess.getKStyleAccess().getKFontNameParserRuleCall_8()); }
 )
 
     |(
-{ before(grammarAccess.getKStyleAccess().getKFontSizeParserRuleCall_8()); }
+{ before(grammarAccess.getKStyleAccess().getKFontSizeParserRuleCall_9()); }
 	ruleKFontSize
-{ after(grammarAccess.getKStyleAccess().getKFontSizeParserRuleCall_8()); }
+{ after(grammarAccess.getKStyleAccess().getKFontSizeParserRuleCall_9()); }
 )
 
     |(
-{ before(grammarAccess.getKStyleAccess().getKVerticalAlignmentParserRuleCall_9()); }
+{ before(grammarAccess.getKStyleAccess().getKVerticalAlignmentParserRuleCall_10()); }
 	ruleKVerticalAlignment
-{ after(grammarAccess.getKStyleAccess().getKVerticalAlignmentParserRuleCall_9()); }
+{ after(grammarAccess.getKStyleAccess().getKVerticalAlignmentParserRuleCall_10()); }
 )
 
     |(
-{ before(grammarAccess.getKStyleAccess().getKHorizontalAlignmentParserRuleCall_10()); }
+{ before(grammarAccess.getKStyleAccess().getKHorizontalAlignmentParserRuleCall_11()); }
 	ruleKHorizontalAlignment
-{ after(grammarAccess.getKStyleAccess().getKHorizontalAlignmentParserRuleCall_10()); }
+{ after(grammarAccess.getKStyleAccess().getKHorizontalAlignmentParserRuleCall_11()); }
 )
 
 ;
@@ -20076,6 +20110,133 @@ finally {
 
 
 
+rule__KRotation__Group__0
+    @init {
+		int stackSize = keepStackSize();
+    }
+:
+	rule__KRotation__Group__0__Impl
+	rule__KRotation__Group__1
+;
+finally {
+	restoreStackSize(stackSize);
+}
+
+rule__KRotation__Group__0__Impl
+    @init {
+		int stackSize = keepStackSize();
+    }
+:
+(
+{ before(grammarAccess.getKRotationAccess().getKRotationAction_0()); }
+(
+
+)
+{ after(grammarAccess.getKRotationAccess().getKRotationAction_0()); }
+)
+
+;
+finally {
+	restoreStackSize(stackSize);
+}
+
+
+rule__KRotation__Group__1
+    @init {
+		int stackSize = keepStackSize();
+    }
+:
+	rule__KRotation__Group__1__Impl
+	rule__KRotation__Group__2
+;
+finally {
+	restoreStackSize(stackSize);
+}
+
+rule__KRotation__Group__1__Impl
+    @init {
+		int stackSize = keepStackSize();
+    }
+:
+(
+{ before(grammarAccess.getKRotationAccess().getRotationKeyword_1()); }
+
+	'rotation' 
+
+{ after(grammarAccess.getKRotationAccess().getRotationKeyword_1()); }
+)
+
+;
+finally {
+	restoreStackSize(stackSize);
+}
+
+
+rule__KRotation__Group__2
+    @init {
+		int stackSize = keepStackSize();
+    }
+:
+	rule__KRotation__Group__2__Impl
+	rule__KRotation__Group__3
+;
+finally {
+	restoreStackSize(stackSize);
+}
+
+rule__KRotation__Group__2__Impl
+    @init {
+		int stackSize = keepStackSize();
+    }
+:
+(
+{ before(grammarAccess.getKRotationAccess().getRotationAssignment_2()); }
+(rule__KRotation__RotationAssignment_2)
+{ after(grammarAccess.getKRotationAccess().getRotationAssignment_2()); }
+)
+
+;
+finally {
+	restoreStackSize(stackSize);
+}
+
+
+rule__KRotation__Group__3
+    @init {
+		int stackSize = keepStackSize();
+    }
+:
+	rule__KRotation__Group__3__Impl
+;
+finally {
+	restoreStackSize(stackSize);
+}
+
+rule__KRotation__Group__3__Impl
+    @init {
+		int stackSize = keepStackSize();
+    }
+:
+(
+{ before(grammarAccess.getKRotationAccess().getPropagateToChildrenAssignment_3()); }
+(rule__KRotation__PropagateToChildrenAssignment_3)?
+{ after(grammarAccess.getKRotationAccess().getPropagateToChildrenAssignment_3()); }
+)
+
+;
+finally {
+	restoreStackSize(stackSize);
+}
+
+
+
+
+
+
+
+
+
+
 rule__KFontBold__Group__0
     @init {
 		int stackSize = keepStackSize();
@@ -22939,9 +23100,9 @@ rule__KEdgeLayout__Group_4__1__Impl
 :
 (
 { before(grammarAccess.getKEdgeLayoutAccess().getColonKeyword_4_1()); }
-
+(
 	':' 
-
+)?
 { after(grammarAccess.getKEdgeLayoutAccess().getColonKeyword_4_1()); }
 )
 
@@ -23129,9 +23290,9 @@ rule__KEdgeLayout__Group_5__1__Impl
 :
 (
 { before(grammarAccess.getKEdgeLayoutAccess().getColonKeyword_5_1()); }
-
+(
 	':' 
-
+)?
 { after(grammarAccess.getKEdgeLayoutAccess().getColonKeyword_5_1()); }
 )
 
@@ -26113,6 +26274,44 @@ rule__KLineStyle__PropagateToChildrenAssignment_3
 )
 
 { after(grammarAccess.getKLineStyleAccess().getPropagateToChildrenExclamationMarkKeyword_3_0()); }
+)
+
+;
+finally {
+	restoreStackSize(stackSize);
+}
+
+rule__KRotation__RotationAssignment_2
+    @init {
+		int stackSize = keepStackSize();
+    }
+:
+(
+{ before(grammarAccess.getKRotationAccess().getRotationEFloatParserRuleCall_2_0()); }
+	ruleEFloat{ after(grammarAccess.getKRotationAccess().getRotationEFloatParserRuleCall_2_0()); }
+)
+
+;
+finally {
+	restoreStackSize(stackSize);
+}
+
+rule__KRotation__PropagateToChildrenAssignment_3
+    @init {
+		int stackSize = keepStackSize();
+    }
+:
+(
+{ before(grammarAccess.getKRotationAccess().getPropagateToChildrenExclamationMarkKeyword_3_0()); }
+(
+{ before(grammarAccess.getKRotationAccess().getPropagateToChildrenExclamationMarkKeyword_3_0()); }
+
+	'!' 
+
+{ after(grammarAccess.getKRotationAccess().getPropagateToChildrenExclamationMarkKeyword_3_0()); }
+)
+
+{ after(grammarAccess.getKRotationAccess().getPropagateToChildrenExclamationMarkKeyword_3_0()); }
 )
 
 ;

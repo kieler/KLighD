@@ -30,6 +30,8 @@ public abstract class AbstractKGraphSyntacticSequencer extends AbstractSyntactic
 	protected AbstractElementAlias match_KCustomRendering_CommaKeyword_2_5_3_0_q;
 	protected AbstractElementAlias match_KCustomRendering_CommaKeyword_2_7_3_0_q;
 	protected AbstractElementAlias match_KDirectPlacementData_CommaKeyword_4_q;
+	protected AbstractElementAlias match_KEdgeLayout_ColonKeyword_4_1_q;
+	protected AbstractElementAlias match_KEdgeLayout_ColonKeyword_5_1_q;
 	protected AbstractElementAlias match_KEdgeLayout_CommaKeyword_4_3_0_q;
 	protected AbstractElementAlias match_KEdgeLayout_CommaKeyword_5_3_0_q;
 	protected AbstractElementAlias match_KEdge_ColonKeyword_5_1_q;
@@ -127,6 +129,8 @@ public abstract class AbstractKGraphSyntacticSequencer extends AbstractSyntactic
 		match_KCustomRendering_CommaKeyword_2_5_3_0_q = new TokenAlias(false, true, grammarAccess.getKCustomRenderingAccess().getCommaKeyword_2_5_3_0());
 		match_KCustomRendering_CommaKeyword_2_7_3_0_q = new TokenAlias(false, true, grammarAccess.getKCustomRenderingAccess().getCommaKeyword_2_7_3_0());
 		match_KDirectPlacementData_CommaKeyword_4_q = new TokenAlias(false, true, grammarAccess.getKDirectPlacementDataAccess().getCommaKeyword_4());
+		match_KEdgeLayout_ColonKeyword_4_1_q = new TokenAlias(false, true, grammarAccess.getKEdgeLayoutAccess().getColonKeyword_4_1());
+		match_KEdgeLayout_ColonKeyword_5_1_q = new TokenAlias(false, true, grammarAccess.getKEdgeLayoutAccess().getColonKeyword_5_1());
 		match_KEdgeLayout_CommaKeyword_4_3_0_q = new TokenAlias(false, true, grammarAccess.getKEdgeLayoutAccess().getCommaKeyword_4_3_0());
 		match_KEdgeLayout_CommaKeyword_5_3_0_q = new TokenAlias(false, true, grammarAccess.getKEdgeLayoutAccess().getCommaKeyword_5_3_0());
 		match_KEdge_ColonKeyword_5_1_q = new TokenAlias(false, true, grammarAccess.getKEdgeAccess().getColonKeyword_5_1());
@@ -246,6 +250,10 @@ public abstract class AbstractKGraphSyntacticSequencer extends AbstractSyntactic
 				emit_KCustomRendering_CommaKeyword_2_7_3_0_q(semanticObject, getLastNavigableState(), syntaxNodes);
 			else if(match_KDirectPlacementData_CommaKeyword_4_q.equals(syntax))
 				emit_KDirectPlacementData_CommaKeyword_4_q(semanticObject, getLastNavigableState(), syntaxNodes);
+			else if(match_KEdgeLayout_ColonKeyword_4_1_q.equals(syntax))
+				emit_KEdgeLayout_ColonKeyword_4_1_q(semanticObject, getLastNavigableState(), syntaxNodes);
+			else if(match_KEdgeLayout_ColonKeyword_5_1_q.equals(syntax))
+				emit_KEdgeLayout_ColonKeyword_5_1_q(semanticObject, getLastNavigableState(), syntaxNodes);
 			else if(match_KEdgeLayout_CommaKeyword_4_3_0_q.equals(syntax))
 				emit_KEdgeLayout_CommaKeyword_4_3_0_q(semanticObject, getLastNavigableState(), syntaxNodes);
 			else if(match_KEdgeLayout_CommaKeyword_5_3_0_q.equals(syntax))
@@ -505,6 +513,22 @@ public abstract class AbstractKGraphSyntacticSequencer extends AbstractSyntactic
 	 *     ','?
 	 */
 	protected void emit_KDirectPlacementData_CommaKeyword_4_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
+		acceptNodes(transition, nodes);
+	}
+	
+	/**
+	 * Syntax:
+	 *     ':'?
+	 */
+	protected void emit_KEdgeLayout_ColonKeyword_4_1_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
+		acceptNodes(transition, nodes);
+	}
+	
+	/**
+	 * Syntax:
+	 *     ':'?
+	 */
+	protected void emit_KEdgeLayout_ColonKeyword_5_1_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
 		acceptNodes(transition, nodes);
 	}
 	

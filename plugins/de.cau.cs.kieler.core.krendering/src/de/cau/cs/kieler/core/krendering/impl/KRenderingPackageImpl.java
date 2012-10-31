@@ -53,6 +53,7 @@ import de.cau.cs.kieler.core.krendering.KRenderingLibrary;
 import de.cau.cs.kieler.core.krendering.KRenderingPackage;
 import de.cau.cs.kieler.core.krendering.KRenderingRef;
 import de.cau.cs.kieler.core.krendering.KRightPosition;
+import de.cau.cs.kieler.core.krendering.KRotation;
 import de.cau.cs.kieler.core.krendering.KRoundedBendsPolyline;
 import de.cau.cs.kieler.core.krendering.KRoundedRectangle;
 import de.cau.cs.kieler.core.krendering.KSpline;
@@ -411,6 +412,13 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
      * @generated
      */
     private EClass kRoundedBendsPolylineEClass = null;
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    private EClass kRotationEClass = null;
 
     /**
      * <!-- begin-user-doc -->
@@ -1465,6 +1473,24 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
      * <!-- end-user-doc -->
      * @generated
      */
+    public EClass getKRotation() {
+        return kRotationEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EAttribute getKRotation_Rotation() {
+        return (EAttribute)kRotationEClass.getEStructuralFeatures().get(0);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
     public EEnum getLineStyle() {
         return lineStyleEEnum;
     }
@@ -1669,6 +1695,9 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
         kRoundedBendsPolylineEClass = createEClass(KROUNDED_BENDS_POLYLINE);
         createEAttribute(kRoundedBendsPolylineEClass, KROUNDED_BENDS_POLYLINE__BEND_RADIUS);
 
+        kRotationEClass = createEClass(KROTATION);
+        createEAttribute(kRotationEClass, KROTATION__ROTATION);
+
         // Create enums
         lineStyleEEnum = createEEnum(LINE_STYLE);
         horizontalAlignmentEEnum = createEEnum(HORIZONTAL_ALIGNMENT);
@@ -1747,6 +1776,7 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
         kFontNameEClass.getESuperTypes().add(this.getKStyle());
         kFontSizeEClass.getESuperTypes().add(this.getKStyle());
         kRoundedBendsPolylineEClass.getESuperTypes().add(this.getKPolyline());
+        kRotationEClass.getESuperTypes().add(this.getKStyle());
 
         // Initialize classes and features; add operations and parameters
         initEClass(kPositionEClass, KPosition.class, "KPosition", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -1902,6 +1932,9 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
 
         initEClass(kRoundedBendsPolylineEClass, KRoundedBendsPolyline.class, "KRoundedBendsPolyline", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         initEAttribute(getKRoundedBendsPolyline_BendRadius(), ecorePackage.getEFloat(), "bendRadius", null, 0, 1, KRoundedBendsPolyline.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+        initEClass(kRotationEClass, KRotation.class, "KRotation", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        initEAttribute(getKRotation_Rotation(), ecorePackage.getEFloat(), "rotation", null, 1, 1, KRotation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         // Initialize enums and add enum literals
         initEEnum(lineStyleEEnum, LineStyle.class, "LineStyle");

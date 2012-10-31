@@ -18,7 +18,7 @@ KPlacementData returns KPlacementData:
 	KDecoratorPlacementData | KGridPlacementData | KStackPlacementData | KDirectPlacementData | KPolylinePlacementData;
 
 KStyle returns KStyle:
-	KForegroundColor | KBackgroundColor | KLineWidth | KVisibility | KLineStyle | KFontBold | KFontItalic | KFontName | KFontSize | KVerticalAlignment | KHorizontalAlignment;
+	KForegroundColor | KBackgroundColor | KLineWidth | KVisibility | KLineStyle | KRotation | KFontBold | KFontItalic | KFontName | KFontSize | KVerticalAlignment | KHorizontalAlignment;
 
 KPlacement returns KPlacement:
 	KGridPlacement | KStackPlacement;
@@ -250,8 +250,12 @@ KBackgroundVisibility returns KBackgroundVisibility:
 
 KLineStyle returns KLineStyle:
     {KLineStyle}
-	'lineStyle' lineStyle=LineStyle propagateToChildren?='!'?;
-	
+    'lineStyle' lineStyle=LineStyle propagateToChildren?='!'?;
+    
+KRotation returns KRotation:
+    {KRotation}
+    'rotation' rotation=EFloat propagateToChildren?='!'?;
+    
 KFontBold returns KFontBold:
     {KFontBold}
 	bold?='bold' propagateToChildren?='!'?;

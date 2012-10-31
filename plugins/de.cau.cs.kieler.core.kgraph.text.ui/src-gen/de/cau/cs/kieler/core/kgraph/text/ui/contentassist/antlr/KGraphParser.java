@@ -204,6 +204,7 @@ public class KGraphParser extends AbstractContentAssistParser {
 					put(grammarAccess.getKForegroundVisibilityAccess().getGroup(), "rule__KForegroundVisibility__Group__0");
 					put(grammarAccess.getKBackgroundVisibilityAccess().getGroup(), "rule__KBackgroundVisibility__Group__0");
 					put(grammarAccess.getKLineStyleAccess().getGroup(), "rule__KLineStyle__Group__0");
+					put(grammarAccess.getKRotationAccess().getGroup(), "rule__KRotation__Group__0");
 					put(grammarAccess.getKFontBoldAccess().getGroup(), "rule__KFontBold__Group__0");
 					put(grammarAccess.getKFontItalicAccess().getGroup(), "rule__KFontItalic__Group__0");
 					put(grammarAccess.getKFontNameAccess().getGroup(), "rule__KFontName__Group__0");
@@ -400,6 +401,8 @@ public class KGraphParser extends AbstractContentAssistParser {
 					put(grammarAccess.getKBackgroundVisibilityAccess().getPropagateToChildrenAssignment_3(), "rule__KBackgroundVisibility__PropagateToChildrenAssignment_3");
 					put(grammarAccess.getKLineStyleAccess().getLineStyleAssignment_2(), "rule__KLineStyle__LineStyleAssignment_2");
 					put(grammarAccess.getKLineStyleAccess().getPropagateToChildrenAssignment_3(), "rule__KLineStyle__PropagateToChildrenAssignment_3");
+					put(grammarAccess.getKRotationAccess().getRotationAssignment_2(), "rule__KRotation__RotationAssignment_2");
+					put(grammarAccess.getKRotationAccess().getPropagateToChildrenAssignment_3(), "rule__KRotation__PropagateToChildrenAssignment_3");
 					put(grammarAccess.getKFontBoldAccess().getBoldAssignment_1(), "rule__KFontBold__BoldAssignment_1");
 					put(grammarAccess.getKFontBoldAccess().getPropagateToChildrenAssignment_2(), "rule__KFontBold__PropagateToChildrenAssignment_2");
 					put(grammarAccess.getKFontItalicAccess().getItalicAssignment_1(), "rule__KFontItalic__ItalicAssignment_1");

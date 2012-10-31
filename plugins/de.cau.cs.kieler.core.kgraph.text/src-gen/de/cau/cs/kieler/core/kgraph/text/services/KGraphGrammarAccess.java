@@ -966,8 +966,8 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//KStyle:
-	//	KForegroundColor | KBackgroundColor | KLineWidth | KVisibility | KLineStyle | KFontBold | KFontItalic | KFontName |
-	//	KFontSize | KVerticalAlignment | KHorizontalAlignment;
+	//	KForegroundColor | KBackgroundColor | KLineWidth | KVisibility | KLineStyle | KRotation | KFontBold | KFontItalic |
+	//	KFontName | KFontSize | KVerticalAlignment | KHorizontalAlignment;
 	public KRenderingGrammarAccess.KStyleElements getKStyleAccess() {
 		return gaKRendering.getKStyleAccess();
 	}
@@ -1334,6 +1334,16 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 		return getKLineStyleAccess().getRule();
 	}
 
+	//KRotation:
+	//	{KRotation} "rotation" rotation=EFloat propagateToChildren?="!"?;
+	public KRenderingGrammarAccess.KRotationElements getKRotationAccess() {
+		return gaKRendering.getKRotationAccess();
+	}
+	
+	public ParserRule getKRotationRule() {
+		return getKRotationAccess().getRule();
+	}
+
 	//KFontBold:
 	//	{KFontBold} bold?="bold" propagateToChildren?="!"?;
 	public KRenderingGrammarAccess.KFontBoldElements getKFontBoldAccess() {
@@ -1513,8 +1523,8 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	////		'sourcePoint' sourcePoint=KPoint
 	////		'targetPoint' targetPoint=KPoint
 	////    '}';
-	//	"KEdgeLayout" "{" ("sourcePoint" sourcePoint=KPoint)? ("targetPoint" targetPoint=KPoint)? ("bendPoints" ":"
-	//	bendPoints+=KPoint (","? bendPoints+=KPoint)*)? ("mapProperties" ":" persistentEntries+=PersistentEntry (","?
+	//	"KEdgeLayout" "{" ("sourcePoint" sourcePoint=KPoint)? ("targetPoint" targetPoint=KPoint)? ("bendPoints" ":"?
+	//	bendPoints+=KPoint (","? bendPoints+=KPoint)*)? ("mapProperties" ":"? persistentEntries+=PersistentEntry (","?
 	//	persistentEntries+=PersistentEntry)*)? "}";
 	public KLayoutDataGrammarAccess.KEdgeLayoutElements getKEdgeLayoutAccess() {
 		return gaKRendering.getKEdgeLayoutAccess();

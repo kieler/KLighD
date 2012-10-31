@@ -90,4 +90,10 @@ public abstract class PSWTAdvancedPathController extends PNodeController<PSWTAdv
         getNode().setLineStyle(lineStyle);
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    public void setRotation(final float rotation) {
+        getNode().setRotation(Math.toRadians(rotation));
+    }
 }

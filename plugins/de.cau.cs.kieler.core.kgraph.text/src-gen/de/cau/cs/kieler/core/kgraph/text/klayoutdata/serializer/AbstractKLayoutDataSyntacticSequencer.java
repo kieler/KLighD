@@ -17,6 +17,8 @@ import org.eclipse.xtext.serializer.sequencer.AbstractSyntacticSequencer;
 public abstract class AbstractKLayoutDataSyntacticSequencer extends AbstractSyntacticSequencer {
 
 	protected KLayoutDataGrammarAccess grammarAccess;
+	protected AbstractElementAlias match_KEdgeLayout_ColonKeyword_4_1_q;
+	protected AbstractElementAlias match_KEdgeLayout_ColonKeyword_5_1_q;
 	protected AbstractElementAlias match_KEdgeLayout_CommaKeyword_4_3_0_q;
 	protected AbstractElementAlias match_KEdgeLayout_CommaKeyword_5_3_0_q;
 	protected AbstractElementAlias match_KShapeLayout_CommaKeyword_8_3_0_q;
@@ -24,6 +26,8 @@ public abstract class AbstractKLayoutDataSyntacticSequencer extends AbstractSynt
 	@Inject
 	protected void init(IGrammarAccess access) {
 		grammarAccess = (KLayoutDataGrammarAccess) access;
+		match_KEdgeLayout_ColonKeyword_4_1_q = new TokenAlias(false, true, grammarAccess.getKEdgeLayoutAccess().getColonKeyword_4_1());
+		match_KEdgeLayout_ColonKeyword_5_1_q = new TokenAlias(false, true, grammarAccess.getKEdgeLayoutAccess().getColonKeyword_5_1());
 		match_KEdgeLayout_CommaKeyword_4_3_0_q = new TokenAlias(false, true, grammarAccess.getKEdgeLayoutAccess().getCommaKeyword_4_3_0());
 		match_KEdgeLayout_CommaKeyword_5_3_0_q = new TokenAlias(false, true, grammarAccess.getKEdgeLayoutAccess().getCommaKeyword_5_3_0());
 		match_KShapeLayout_CommaKeyword_8_3_0_q = new TokenAlias(false, true, grammarAccess.getKShapeLayoutAccess().getCommaKeyword_8_3_0());
@@ -41,7 +45,11 @@ public abstract class AbstractKLayoutDataSyntacticSequencer extends AbstractSynt
 		List<INode> transitionNodes = collectNodes(fromNode, toNode);
 		for (AbstractElementAlias syntax : transition.getAmbiguousSyntaxes()) {
 			List<INode> syntaxNodes = getNodesFor(transitionNodes, syntax);
-			if(match_KEdgeLayout_CommaKeyword_4_3_0_q.equals(syntax))
+			if(match_KEdgeLayout_ColonKeyword_4_1_q.equals(syntax))
+				emit_KEdgeLayout_ColonKeyword_4_1_q(semanticObject, getLastNavigableState(), syntaxNodes);
+			else if(match_KEdgeLayout_ColonKeyword_5_1_q.equals(syntax))
+				emit_KEdgeLayout_ColonKeyword_5_1_q(semanticObject, getLastNavigableState(), syntaxNodes);
+			else if(match_KEdgeLayout_CommaKeyword_4_3_0_q.equals(syntax))
 				emit_KEdgeLayout_CommaKeyword_4_3_0_q(semanticObject, getLastNavigableState(), syntaxNodes);
 			else if(match_KEdgeLayout_CommaKeyword_5_3_0_q.equals(syntax))
 				emit_KEdgeLayout_CommaKeyword_5_3_0_q(semanticObject, getLastNavigableState(), syntaxNodes);
@@ -51,6 +59,22 @@ public abstract class AbstractKLayoutDataSyntacticSequencer extends AbstractSynt
 		}
 	}
 
+	/**
+	 * Syntax:
+	 *     ':'?
+	 */
+	protected void emit_KEdgeLayout_ColonKeyword_4_1_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
+		acceptNodes(transition, nodes);
+	}
+	
+	/**
+	 * Syntax:
+	 *     ':'?
+	 */
+	protected void emit_KEdgeLayout_ColonKeyword_5_1_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
+		acceptNodes(transition, nodes);
+	}
+	
 	/**
 	 * Syntax:
 	 *     ','?

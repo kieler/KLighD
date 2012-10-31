@@ -1267,61 +1267,71 @@ ruleKStyle returns [EObject current=null]
 
     |
     { 
-        newCompositeNode(grammarAccess.getKStyleAccess().getKFontBoldParserRuleCall_5()); 
+        newCompositeNode(grammarAccess.getKStyleAccess().getKRotationParserRuleCall_5()); 
     }
-    this_KFontBold_5=ruleKFontBold
+    this_KRotation_5=ruleKRotation
     { 
-        $current = $this_KFontBold_5.current; 
+        $current = $this_KRotation_5.current; 
         afterParserOrEnumRuleCall();
     }
 
     |
     { 
-        newCompositeNode(grammarAccess.getKStyleAccess().getKFontItalicParserRuleCall_6()); 
+        newCompositeNode(grammarAccess.getKStyleAccess().getKFontBoldParserRuleCall_6()); 
     }
-    this_KFontItalic_6=ruleKFontItalic
+    this_KFontBold_6=ruleKFontBold
     { 
-        $current = $this_KFontItalic_6.current; 
+        $current = $this_KFontBold_6.current; 
         afterParserOrEnumRuleCall();
     }
 
     |
     { 
-        newCompositeNode(grammarAccess.getKStyleAccess().getKFontNameParserRuleCall_7()); 
+        newCompositeNode(grammarAccess.getKStyleAccess().getKFontItalicParserRuleCall_7()); 
     }
-    this_KFontName_7=ruleKFontName
+    this_KFontItalic_7=ruleKFontItalic
     { 
-        $current = $this_KFontName_7.current; 
+        $current = $this_KFontItalic_7.current; 
         afterParserOrEnumRuleCall();
     }
 
     |
     { 
-        newCompositeNode(grammarAccess.getKStyleAccess().getKFontSizeParserRuleCall_8()); 
+        newCompositeNode(grammarAccess.getKStyleAccess().getKFontNameParserRuleCall_8()); 
     }
-    this_KFontSize_8=ruleKFontSize
+    this_KFontName_8=ruleKFontName
     { 
-        $current = $this_KFontSize_8.current; 
+        $current = $this_KFontName_8.current; 
         afterParserOrEnumRuleCall();
     }
 
     |
     { 
-        newCompositeNode(grammarAccess.getKStyleAccess().getKVerticalAlignmentParserRuleCall_9()); 
+        newCompositeNode(grammarAccess.getKStyleAccess().getKFontSizeParserRuleCall_9()); 
     }
-    this_KVerticalAlignment_9=ruleKVerticalAlignment
+    this_KFontSize_9=ruleKFontSize
     { 
-        $current = $this_KVerticalAlignment_9.current; 
+        $current = $this_KFontSize_9.current; 
         afterParserOrEnumRuleCall();
     }
 
     |
     { 
-        newCompositeNode(grammarAccess.getKStyleAccess().getKHorizontalAlignmentParserRuleCall_10()); 
+        newCompositeNode(grammarAccess.getKStyleAccess().getKVerticalAlignmentParserRuleCall_10()); 
     }
-    this_KHorizontalAlignment_10=ruleKHorizontalAlignment
+    this_KVerticalAlignment_10=ruleKVerticalAlignment
     { 
-        $current = $this_KHorizontalAlignment_10.current; 
+        $current = $this_KVerticalAlignment_10.current; 
+        afterParserOrEnumRuleCall();
+    }
+
+    |
+    { 
+        newCompositeNode(grammarAccess.getKStyleAccess().getKHorizontalAlignmentParserRuleCall_11()); 
+    }
+    this_KHorizontalAlignment_11=ruleKHorizontalAlignment
+    { 
+        $current = $this_KHorizontalAlignment_11.current; 
         afterParserOrEnumRuleCall();
     }
 )
@@ -5388,6 +5398,70 @@ ruleKLineStyle returns [EObject current=null]
 
 
 
+// Entry rule entryRuleKRotation
+entryRuleKRotation returns [EObject current=null] 
+	:
+	{ newCompositeNode(grammarAccess.getKRotationRule()); }
+	 iv_ruleKRotation=ruleKRotation 
+	 { $current=$iv_ruleKRotation.current; } 
+	 EOF 
+;
+
+// Rule KRotation
+ruleKRotation returns [EObject current=null] 
+    @init { enterRule(); 
+    }
+    @after { leaveRule(); }:
+((
+    {
+        $current = forceCreateModelElement(
+            grammarAccess.getKRotationAccess().getKRotationAction_0(),
+            $current);
+    }
+)	otherlv_1='rotation' 
+    {
+    	newLeafNode(otherlv_1, grammarAccess.getKRotationAccess().getRotationKeyword_1());
+    }
+(
+(
+		{ 
+	        newCompositeNode(grammarAccess.getKRotationAccess().getRotationEFloatParserRuleCall_2_0()); 
+	    }
+		lv_rotation_2_0=ruleEFloat		{
+	        if ($current==null) {
+	            $current = createModelElementForParent(grammarAccess.getKRotationRule());
+	        }
+       		set(
+       			$current, 
+       			"rotation",
+        		lv_rotation_2_0, 
+        		"EFloat");
+	        afterParserOrEnumRuleCall();
+	    }
+
+)
+)(
+(
+		lv_propagateToChildren_3_0=	'!' 
+    {
+        newLeafNode(lv_propagateToChildren_3_0, grammarAccess.getKRotationAccess().getPropagateToChildrenExclamationMarkKeyword_3_0());
+    }
+ 
+	    {
+	        if ($current==null) {
+	            $current = createModelElement(grammarAccess.getKRotationRule());
+	        }
+       		setWithLastConsumed($current, "propagateToChildren", true, "!");
+	    }
+
+)
+)?)
+;
+
+
+
+
+
 // Entry rule entryRuleKFontBold
 entryRuleKFontBold returns [EObject current=null] 
 	:
@@ -6361,11 +6435,11 @@ ruleKEdgeLayout returns [EObject current=null]
     {
     	newLeafNode(otherlv_6, grammarAccess.getKEdgeLayoutAccess().getBendPointsKeyword_4_0());
     }
-	otherlv_7=':' 
+(	otherlv_7=':' 
     {
     	newLeafNode(otherlv_7, grammarAccess.getKEdgeLayoutAccess().getColonKeyword_4_1());
     }
-(
+)?(
 (
 		{ 
 	        newCompositeNode(grammarAccess.getKEdgeLayoutAccess().getBendPointsKPointParserRuleCall_4_2_0()); 
@@ -6409,11 +6483,11 @@ ruleKEdgeLayout returns [EObject current=null]
     {
     	newLeafNode(otherlv_11, grammarAccess.getKEdgeLayoutAccess().getMapPropertiesKeyword_5_0());
     }
-	otherlv_12=':' 
+(	otherlv_12=':' 
     {
     	newLeafNode(otherlv_12, grammarAccess.getKEdgeLayoutAccess().getColonKeyword_5_1());
     }
-(
+)?(
 (
 		{ 
 	        newCompositeNode(grammarAccess.getKEdgeLayoutAccess().getPersistentEntriesPersistentEntryParserRuleCall_5_2_0()); 

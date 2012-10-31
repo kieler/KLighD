@@ -163,5 +163,8 @@
     <genClasses ecoreClass="krendering.ecore#//KRoundedBendsPolyline">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute krendering.ecore#//KRoundedBendsPolyline/bendRadius"/>
     </genClasses>
+    <genClasses ecoreClass="krendering.ecore#//KRotation">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute krendering.ecore#//KRotation/rotation"/>
+    </genClasses>
   </genPackages>
 </genmodel:GenModel>
