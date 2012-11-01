@@ -17,15 +17,19 @@ import org.eclipse.xtext.linking.impl.Linker;
 import org.eclipse.xtext.naming.IQualifiedNameConverter;
 import org.eclipse.xtext.naming.IQualifiedNameProvider;
 import org.eclipse.xtext.resource.XtextResource;
+import org.eclipse.xtext.scoping.impl.SimpleLocalScopeProvider;
 
-import de.cau.cs.kieler.core.kgraph.text.scoping.KGraphQualifiedNameConverter;
-import de.cau.cs.kieler.core.kgraph.text.scoping.KGraphQualifiedNameProvider;
+import de.cau.cs.kieler.core.kgraph.text.naming.KGraphQualifiedNameConverter;
+import de.cau.cs.kieler.core.kgraph.text.naming.KGraphQualifiedNameProvider;
+import de.cau.cs.kieler.core.kgraph.text.serializer.CustomKGraphSyntacticSequencer;
 import de.cau.cs.kieler.core.kgraph.text.serializer.KGraphTransientValueService;
 
 /**
  * This class defines some customizations on the textual KGraph editing tooling.
  * 
  * @author chsch 
+ * @kieler.design proposed 2012-11-01 chsch
+ * @kieler.rating proposed yellow 2012-11-01 chsch
  */
 public class KGraphRuntimeModule extends de.cau.cs.kieler.core.kgraph.text.AbstractKGraphRuntimeModule {
 
@@ -53,6 +57,18 @@ public class KGraphRuntimeModule extends de.cau.cs.kieler.core.kgraph.text.Abstr
     public Class<? extends IQualifiedNameProvider> bindIQualifiedNameProvider() {
         return KGraphQualifiedNameProvider.class;
     }
+    
+    /**
+     * Method registers the {@link org.eclipse.xtext.scoping.impl.SimpleLocalScopeProvider
+     * SimpleLocalScopeProvider} that suffices entirely, a custom scope provider is not needed.
+     * Hence, no scoping fragments are active in the related generation workflow file.
+     * 
+     * @return the {@link SimpleLocalScopeProvider} class
+     */
+    public Class<? extends org.eclipse.xtext.scoping.IScopeProvider> bindIScopeProvider() {
+        return SimpleLocalScopeProvider.class;
+    }
+
     
     /**
      * Method registers the non-lazy linking Linker since the default
@@ -88,6 +104,18 @@ public class KGraphRuntimeModule extends de.cau.cs.kieler.core.kgraph.text.Abstr
     public Class<? extends org.eclipse.xtext.serializer.sequencer.ITransientValueService>
         bindNewITransientValueService() {
         return KGraphTransientValueService.class;
+    }
+
+    /**
+     * Method registers a customized
+     * {@link org.eclipse.xtext.serializer.sequencer.ISyntacticSequencer} in order to serialize
+     * KGraph specifications correctly (e.g. dump out optional colon keywords).
+     * 
+     * @return the {@link KGraphSyntacticSequencer} class
+     */
+    @SuppressWarnings("restriction") // SUPPRESS CHECKSTYLE NEXT LineLength
+    public Class<? extends org.eclipse.xtext.serializer.sequencer.ISyntacticSequencer> bindISyntacticSequencer() {
+        return CustomKGraphSyntacticSequencer.class;
     }
 
 }

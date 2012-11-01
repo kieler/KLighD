@@ -99,9 +99,4 @@ public abstract class AbstractKRenderingRuntimeModule extends DefaultRuntimeModu
 		return org.eclipse.xtext.common.services.Ecore2XtextTerminalConverters.class;
 	}
 
-	// contributed by org.eclipse.xtext.generator.formatting.FormatterFragment
-	public Class<? extends org.eclipse.xtext.formatting.IFormatter> bindIFormatter() {
-		return de.cau.cs.kieler.core.kgraph.text.krendering.formatting.KRenderingFormatter.class;
-	}
-
 }

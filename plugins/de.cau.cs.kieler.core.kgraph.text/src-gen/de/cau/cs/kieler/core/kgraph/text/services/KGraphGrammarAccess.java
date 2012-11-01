@@ -61,45 +61,45 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 		private final Assignment cOutgoingEdgesAssignment_7_1_1 = (Assignment)cGroup_7_1.eContents().get(1);
 		private final RuleCall cOutgoingEdgesKEdgeParserRuleCall_7_1_1_0 = (RuleCall)cOutgoingEdgesAssignment_7_1_1.eContents().get(0);
 		
-		//KNode: //	{KNode}
-		////	'KNode'
-		////	'{'
-		////		('incomingEdges' '(' incomingEdges+=[KEdge|EString] ( "," incomingEdges+=[KEdge|EString])* ')' )?
-		////		('data' '{' data+=KGraphData ( "," data+=KGraphData)* '}' )?
-		////		('labels' '{' labels+=KLabel ( "," labels+=KLabel)* '}' )?
-		////		('children' '{' children+=KNode ( "," children+=KNode)* '}' )?
-		////		('ports' '{' ports+=KPort ( "," ports+=KPort)* '}' )?
-		////		('outgoingEdges' '{' outgoingEdges+=KEdge ( "," outgoingEdges+=KEdge)* '}' )?
+		//KNode: //    {KNode}
+		////    'KNode'
+		////    '{'
+		////        ('incomingEdges' '(' incomingEdges+=[KEdge|EString] ( "," incomingEdges+=[KEdge|EString])* ')' )?
+		////        ('data' '{' data+=KGraphData ( "," data+=KGraphData)* '}' )?
+		////        ('labels' '{' labels+=KLabel ( "," labels+=KLabel)* '}' )?
+		////        ('children' '{' children+=KNode ( "," children+=KNode)* '}' )?
+		////        ('ports' '{' ports+=KPort ( "," ports+=KPort)* '}' )?
+		////        ('outgoingEdges' '{' outgoingEdges+=KEdge ( "," outgoingEdges+=KEdge)* '}' )?
 		////    '}';
 		//	{KNode} "KNode" "{" ("ports" ports+=KPort (","? ports+=KPort)*)? ("data" ":"? data+=KGraphData (","?
 		//	data+=KGraphData)*)? //('labels' '{' labels+=KLabel ( ","? labels+=KLabel)* '}' )?
 		//	("children" ":"? children+=KNode (","? children+=KNode)*)? "}" (outgoingEdges+=KEdge (","? outgoingEdges+=KEdge)*)?;
 		public ParserRule getRule() { return rule; }
 
-		////	{KNode}
-		////	'KNode'
-		////	'{'
-		////		('incomingEdges' '(' incomingEdges+=[KEdge|EString] ( "," incomingEdges+=[KEdge|EString])* ')' )?
-		////		('data' '{' data+=KGraphData ( "," data+=KGraphData)* '}' )?
-		////		('labels' '{' labels+=KLabel ( "," labels+=KLabel)* '}' )?
-		////		('children' '{' children+=KNode ( "," children+=KNode)* '}' )?
-		////		('ports' '{' ports+=KPort ( "," ports+=KPort)* '}' )?
-		////		('outgoingEdges' '{' outgoingEdges+=KEdge ( "," outgoingEdges+=KEdge)* '}' )?
+		////    {KNode}
+		////    'KNode'
+		////    '{'
+		////        ('incomingEdges' '(' incomingEdges+=[KEdge|EString] ( "," incomingEdges+=[KEdge|EString])* ')' )?
+		////        ('data' '{' data+=KGraphData ( "," data+=KGraphData)* '}' )?
+		////        ('labels' '{' labels+=KLabel ( "," labels+=KLabel)* '}' )?
+		////        ('children' '{' children+=KNode ( "," children+=KNode)* '}' )?
+		////        ('ports' '{' ports+=KPort ( "," ports+=KPort)* '}' )?
+		////        ('outgoingEdges' '{' outgoingEdges+=KEdge ( "," outgoingEdges+=KEdge)* '}' )?
 		////    '}';
 		//{KNode} "KNode" "{" ("ports" ports+=KPort (","? ports+=KPort)*)? ("data" ":"? data+=KGraphData (","?
 		//data+=KGraphData)*)? //('labels' '{' labels+=KLabel ( ","? labels+=KLabel)* '}' )?
 		//("children" ":"? children+=KNode (","? children+=KNode)*)? "}" (outgoingEdges+=KEdge (","? outgoingEdges+=KEdge)*)?
 		public Group getGroup() { return cGroup; }
 
-		////	{KNode}
-		////	'KNode'
-		////	'{'
-		////		('incomingEdges' '(' incomingEdges+=[KEdge|EString] ( "," incomingEdges+=[KEdge|EString])* ')' )?
-		////		('data' '{' data+=KGraphData ( "," data+=KGraphData)* '}' )?
-		////		('labels' '{' labels+=KLabel ( "," labels+=KLabel)* '}' )?
-		////		('children' '{' children+=KNode ( "," children+=KNode)* '}' )?
-		////		('ports' '{' ports+=KPort ( "," ports+=KPort)* '}' )?
-		////		('outgoingEdges' '{' outgoingEdges+=KEdge ( "," outgoingEdges+=KEdge)* '}' )?
+		////    {KNode}
+		////    'KNode'
+		////    '{'
+		////        ('incomingEdges' '(' incomingEdges+=[KEdge|EString] ( "," incomingEdges+=[KEdge|EString])* ')' )?
+		////        ('data' '{' data+=KGraphData ( "," data+=KGraphData)* '}' )?
+		////        ('labels' '{' labels+=KLabel ( "," labels+=KLabel)* '}' )?
+		////        ('children' '{' children+=KNode ( "," children+=KNode)* '}' )?
+		////        ('ports' '{' ports+=KPort ( "," ports+=KPort)* '}' )?
+		////        ('outgoingEdges' '{' outgoingEdges+=KEdge ( "," outgoingEdges+=KEdge)* '}' )?
 		////    '}';
 		//{KNode}
 		public Action getKNodeAction_0() { return cKNodeAction_0; }
@@ -231,26 +231,26 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 		private final RuleCall cDataKGraphDataParserRuleCall_3_3_1_0 = (RuleCall)cDataAssignment_3_3_1.eContents().get(0);
 		private final Keyword cRightCurlyBracketKeyword_4 = (Keyword)cGroup.eContents().get(4);
 		
-		//KLabel: //	'KLabel'
-		////	'{'
-		////		'text' text=EString
-		////		('data' '{' data+=KGraphData ( "," data+=KGraphData)* '}' )?
+		//KLabel: //    'KLabel'
+		////    '{'
+		////        'text' text=EString
+		////        ('data' '{' data+=KGraphData ( "," data+=KGraphData)* '}' )?
 		////    '}';
 		//	"KLabel" text=EString "{" ("data" ":"? data+=KGraphData (","? data+=KGraphData)*)? "}";
 		public ParserRule getRule() { return rule; }
 
-		////	'KLabel'
-		////	'{'
-		////		'text' text=EString
-		////		('data' '{' data+=KGraphData ( "," data+=KGraphData)* '}' )?
+		////    'KLabel'
+		////    '{'
+		////        'text' text=EString
+		////        ('data' '{' data+=KGraphData ( "," data+=KGraphData)* '}' )?
 		////    '}';
 		//"KLabel" text=EString "{" ("data" ":"? data+=KGraphData (","? data+=KGraphData)*)? "}"
 		public Group getGroup() { return cGroup; }
 
-		////	'KLabel'
-		////	'{'
-		////		'text' text=EString
-		////		('data' '{' data+=KGraphData ( "," data+=KGraphData)* '}' )?
+		////    'KLabel'
+		////    '{'
+		////        'text' text=EString
+		////        ('data' '{' data+=KGraphData ( "," data+=KGraphData)* '}' )?
 		////    '}';
 		//"KLabel"
 		public Keyword getKLabelKeyword_0() { return cKLabelKeyword_0; }
@@ -332,34 +332,34 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 		private final RuleCall cLabelsKLabelParserRuleCall_5_3_1_0 = (RuleCall)cLabelsAssignment_5_3_1.eContents().get(0);
 		private final Keyword cRightCurlyBracketKeyword_6 = (Keyword)cGroup.eContents().get(6);
 		
-		//KPort: //	{KPort}
-		////	'KPort'
-		////	'{'
-		////		('edges' '(' edges+=[KEdge|EString] ( "," edges+=[KEdge|EString])* ')' )?
-		////		('data' '{' data+=KGraphData ( "," data+=KGraphData)* '}' )?
-		////		('labels' '{' labels+=KLabel ( "," labels+=KLabel)* '}' )?
+		//KPort: //    {KPort}
+		////    'KPort'
+		////    '{'
+		////        ('edges' '(' edges+=[KEdge|EString] ( "," edges+=[KEdge|EString])* ')' )?
+		////        ('data' '{' data+=KGraphData ( "," data+=KGraphData)* '}' )?
+		////        ('labels' '{' labels+=KLabel ( "," labels+=KLabel)* '}' )?
 		////    '}';
 		//	{KPort} "KPort" "{" ("edges" ":"? edges+=[KEdge|EString] (","? edges+=[KEdge|EString])*)? ("data" ":"? data+=KGraphData
 		//	(","? data+=KGraphData)*)? ("labels" ":"? labels+=KLabel (","? labels+=KLabel)*)? "}";
 		public ParserRule getRule() { return rule; }
 
-		////	{KPort}
-		////	'KPort'
-		////	'{'
-		////		('edges' '(' edges+=[KEdge|EString] ( "," edges+=[KEdge|EString])* ')' )?
-		////		('data' '{' data+=KGraphData ( "," data+=KGraphData)* '}' )?
-		////		('labels' '{' labels+=KLabel ( "," labels+=KLabel)* '}' )?
+		////    {KPort}
+		////    'KPort'
+		////    '{'
+		////        ('edges' '(' edges+=[KEdge|EString] ( "," edges+=[KEdge|EString])* ')' )?
+		////        ('data' '{' data+=KGraphData ( "," data+=KGraphData)* '}' )?
+		////        ('labels' '{' labels+=KLabel ( "," labels+=KLabel)* '}' )?
 		////    '}';
 		//{KPort} "KPort" "{" ("edges" ":"? edges+=[KEdge|EString] (","? edges+=[KEdge|EString])*)? ("data" ":"? data+=KGraphData
 		//(","? data+=KGraphData)*)? ("labels" ":"? labels+=KLabel (","? labels+=KLabel)*)? "}"
 		public Group getGroup() { return cGroup; }
 
-		////	{KPort}
-		////	'KPort'
-		////	'{'
-		////		('edges' '(' edges+=[KEdge|EString] ( "," edges+=[KEdge|EString])* ')' )?
-		////		('data' '{' data+=KGraphData ( "," data+=KGraphData)* '}' )?
-		////		('labels' '{' labels+=KLabel ( "," labels+=KLabel)* '}' )?
+		////    {KPort}
+		////    'KPort'
+		////    '{'
+		////        ('edges' '(' edges+=[KEdge|EString] ( "," edges+=[KEdge|EString])* ')' )?
+		////        ('data' '{' data+=KGraphData ( "," data+=KGraphData)* '}' )?
+		////        ('labels' '{' labels+=KLabel ( "," labels+=KLabel)* '}' )?
 		////    '}';
 		//{KPort}
 		public Action getKPortAction_0() { return cKPortAction_0; }
@@ -499,38 +499,44 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 		private final RuleCall cLabelsKLabelParserRuleCall_6_3_1_0 = (RuleCall)cLabelsAssignment_6_3_1.eContents().get(0);
 		private final Keyword cRightCurlyBracketKeyword_7 = (Keyword)cGroup.eContents().get(7);
 		
-		//KEdge: //	'KEdge'
-		////	'{'
-		////		'target' target=[KNode|EString]
-		////		('sourcePort' sourcePort=[KPort|EString])?
-		////		('targetPort' targetPort=[KPort|EString])?
-		////		('data' '{' data+=KGraphData ( "," data+=KGraphData)* '}' )?
-		////		('labels' '{' labels+=KLabel ( "," labels+=KLabel)* '}' )?
+		//KEdge: //    'KEdge'
+		////    '{'
+		////        'target' target=[KNode|EString]
+		////        ('sourcePort' sourcePort=[KPort|EString])?
+		////        ('targetPort' targetPort=[KPort|EString])?
+		////        ('data' '{' data+=KGraphData ( "," data+=KGraphData)* '}' )?
+		////        ('labels' '{' labels+=KLabel ( "," labels+=KLabel)* '}' )?
 		////    '}';
+		//// TODO: In an advanced version of the textual KGraph language the fragment URI used to identify the
+		//// edge's target and ports shall be parsed and decomposed by related parser rules.
 		//	"-->" target=[KNode|EString] "{" ("sourcePort" sourcePort=[KPort|EString])? ("targetPort" targetPort=[KPort|EString])?
 		//	("data" ":"? data+=KGraphData (","? data+=KGraphData)*)? ("labels" ":"? labels+=KLabel (","? labels+=KLabel)*)? "}";
 		public ParserRule getRule() { return rule; }
 
-		////	'KEdge'
-		////	'{'
-		////		'target' target=[KNode|EString]
-		////		('sourcePort' sourcePort=[KPort|EString])?
-		////		('targetPort' targetPort=[KPort|EString])?
-		////		('data' '{' data+=KGraphData ( "," data+=KGraphData)* '}' )?
-		////		('labels' '{' labels+=KLabel ( "," labels+=KLabel)* '}' )?
+		////    'KEdge'
+		////    '{'
+		////        'target' target=[KNode|EString]
+		////        ('sourcePort' sourcePort=[KPort|EString])?
+		////        ('targetPort' targetPort=[KPort|EString])?
+		////        ('data' '{' data+=KGraphData ( "," data+=KGraphData)* '}' )?
+		////        ('labels' '{' labels+=KLabel ( "," labels+=KLabel)* '}' )?
 		////    '}';
+		//// TODO: In an advanced version of the textual KGraph language the fragment URI used to identify the
+		//// edge's target and ports shall be parsed and decomposed by related parser rules.
 		//"-->" target=[KNode|EString] "{" ("sourcePort" sourcePort=[KPort|EString])? ("targetPort" targetPort=[KPort|EString])?
 		//("data" ":"? data+=KGraphData (","? data+=KGraphData)*)? ("labels" ":"? labels+=KLabel (","? labels+=KLabel)*)? "}"
 		public Group getGroup() { return cGroup; }
 
-		////	'KEdge'
-		////	'{'
-		////		'target' target=[KNode|EString]
-		////		('sourcePort' sourcePort=[KPort|EString])?
-		////		('targetPort' targetPort=[KPort|EString])?
-		////		('data' '{' data+=KGraphData ( "," data+=KGraphData)* '}' )?
-		////		('labels' '{' labels+=KLabel ( "," labels+=KLabel)* '}' )?
+		////    'KEdge'
+		////    '{'
+		////        'target' target=[KNode|EString]
+		////        ('sourcePort' sourcePort=[KPort|EString])?
+		////        ('targetPort' targetPort=[KPort|EString])?
+		////        ('data' '{' data+=KGraphData ( "," data+=KGraphData)* '}' )?
+		////        ('labels' '{' labels+=KLabel ( "," labels+=KLabel)* '}' )?
 		////    '}';
+		//// TODO: In an advanced version of the textual KGraph language the fragment URI used to identify the
+		//// edge's target and ports shall be parsed and decomposed by related parser rules.
 		//"-->"
 		public Keyword getHyphenMinusHyphenMinusGreaterThanSignKeyword_0() { return cHyphenMinusHyphenMinusGreaterThanSignKeyword_0; }
 
@@ -643,32 +649,26 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 		private final RuleCall cKEdgeLayoutParserRuleCall_3 = (RuleCall)cAlternatives.eContents().get(3);
 		private final RuleCall cKGraphDataImplParserRuleCall_4 = (RuleCall)cAlternatives.eContents().get(4);
 		
-		//// Error marker is a false positive; generation works anyway!
-		////  It occurs if eSuperType references in krendering.ecore/klayoutdata.ecore
-		////  are like ../../de.cau.cs.kieler.core.kgraph/model/kgraph.ecore#//KGraphData
-		////  but should be platform:/resource/de.cau.cs.kieler.core.kgraph/model/kgraph.ecore#//KGraphData
-		////  since Xtext obviously compares concrete string representations of the fragmentURIs.
-		////  This is why packages are referred to the same way in the preamble.   
-		//KGraphData: //	{KGraphData}
-		////	'KGraphData'
-		////	'{'
-		////		('persistentEntries' '{' persistentEntries+=PersistentEntry ( "," persistentEntries+=PersistentEntry)* '}' )?
+		//KGraphData: //    {KGraphData}
+		////    'KGraphData'
+		////    '{'
+		////        ('persistentEntries' '{' persistentEntries+=PersistentEntry ( "," persistentEntries+=PersistentEntry)* '}' )?
 		////    '}';
 		//	KRendering | KRenderingLibrary | KShapeLayout | KEdgeLayout | KGraphDataImpl;
 		public ParserRule getRule() { return rule; }
 
-		////	{KGraphData}
-		////	'KGraphData'
-		////	'{'
-		////		('persistentEntries' '{' persistentEntries+=PersistentEntry ( "," persistentEntries+=PersistentEntry)* '}' )?
+		////    {KGraphData}
+		////    'KGraphData'
+		////    '{'
+		////        ('persistentEntries' '{' persistentEntries+=PersistentEntry ( "," persistentEntries+=PersistentEntry)* '}' )?
 		////    '}';
 		//KRendering | KRenderingLibrary | KShapeLayout | KEdgeLayout | KGraphDataImpl
 		public Alternatives getAlternatives() { return cAlternatives; }
 
-		////	{KGraphData}
-		////	'KGraphData'
-		////	'{'
-		////		('persistentEntries' '{' persistentEntries+=PersistentEntry ( "," persistentEntries+=PersistentEntry)* '}' )?
+		////    {KGraphData}
+		////    'KGraphData'
+		////    '{'
+		////        ('persistentEntries' '{' persistentEntries+=PersistentEntry ( "," persistentEntries+=PersistentEntry)* '}' )?
 		////    '}';
 		//KRendering
 		public RuleCall getKRenderingParserRuleCall_0() { return cKRenderingParserRuleCall_0; }
@@ -705,13 +705,13 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 		private final Keyword cRightCurlyBracketKeyword_4 = (Keyword)cGroup.eContents().get(4);
 		
 		////PersistentEntry returns PersistentEntry:
-		////	'PersistentEntry'
-		////	'{'
-		////		'key' key=EString
-		////		('value' value=EString)?
+		////    'PersistentEntry'
+		////    '{'
+		////        'key' key=EString
+		////        ('value' value=EString)?
 		////    '}';
 		////EString returns ecore::EString:
-		////	STRING | ID;
+		////    STRING | ID;
 		//KGraphDataImpl returns KGraphData:
 		//	{KGraphData} "KGraphData" "{" ("persistentEntries" "{" persistentEntries+=PersistentEntry (","
 		//	persistentEntries+=PersistentEntry)* "}")? "}";
@@ -719,13 +719,13 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 
 		//{KGraphData} "KGraphData" "{" ("persistentEntries" "{" persistentEntries+=PersistentEntry (","
 		//persistentEntries+=PersistentEntry)* "}")? "}" //PersistentEntry returns PersistentEntry:
-		////	'PersistentEntry'
-		////	'{'
-		////		'key' key=EString
-		////		('value' value=EString)?
+		////    'PersistentEntry'
+		////    '{'
+		////        'key' key=EString
+		////        ('value' value=EString)?
 		////    '}';
 		////EString returns ecore::EString:
-		////	STRING | ID;
+		////    STRING | ID;
 		public Group getGroup() { return cGroup; }
 
 		//{KGraphData}
@@ -768,13 +768,13 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 		public Keyword getRightCurlyBracketKeyword_3_4() { return cRightCurlyBracketKeyword_3_4; }
 
 		////PersistentEntry returns PersistentEntry:
-		////	'PersistentEntry'
-		////	'{'
-		////		'key' key=EString
-		////		('value' value=EString)?
+		////    'PersistentEntry'
+		////    '{'
+		////        'key' key=EString
+		////        ('value' value=EString)?
 		////    '}';
 		////EString returns ecore::EString:
-		////	STRING | ID;
+		////    STRING | ID;
 		//"}"
 		public Keyword getRightCurlyBracketKeyword_4() { return cRightCurlyBracketKeyword_4; }
 	}
@@ -825,15 +825,15 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	
-	//KNode: //	{KNode}
-	////	'KNode'
-	////	'{'
-	////		('incomingEdges' '(' incomingEdges+=[KEdge|EString] ( "," incomingEdges+=[KEdge|EString])* ')' )?
-	////		('data' '{' data+=KGraphData ( "," data+=KGraphData)* '}' )?
-	////		('labels' '{' labels+=KLabel ( "," labels+=KLabel)* '}' )?
-	////		('children' '{' children+=KNode ( "," children+=KNode)* '}' )?
-	////		('ports' '{' ports+=KPort ( "," ports+=KPort)* '}' )?
-	////		('outgoingEdges' '{' outgoingEdges+=KEdge ( "," outgoingEdges+=KEdge)* '}' )?
+	//KNode: //    {KNode}
+	////    'KNode'
+	////    '{'
+	////        ('incomingEdges' '(' incomingEdges+=[KEdge|EString] ( "," incomingEdges+=[KEdge|EString])* ')' )?
+	////        ('data' '{' data+=KGraphData ( "," data+=KGraphData)* '}' )?
+	////        ('labels' '{' labels+=KLabel ( "," labels+=KLabel)* '}' )?
+	////        ('children' '{' children+=KNode ( "," children+=KNode)* '}' )?
+	////        ('ports' '{' ports+=KPort ( "," ports+=KPort)* '}' )?
+	////        ('outgoingEdges' '{' outgoingEdges+=KEdge ( "," outgoingEdges+=KEdge)* '}' )?
 	////    '}';
 	//	{KNode} "KNode" "{" ("ports" ports+=KPort (","? ports+=KPort)*)? ("data" ":"? data+=KGraphData (","?
 	//	data+=KGraphData)*)? //('labels' '{' labels+=KLabel ( ","? labels+=KLabel)* '}' )?
@@ -846,10 +846,10 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 		return getKNodeAccess().getRule();
 	}
 
-	//KLabel: //	'KLabel'
-	////	'{'
-	////		'text' text=EString
-	////		('data' '{' data+=KGraphData ( "," data+=KGraphData)* '}' )?
+	//KLabel: //    'KLabel'
+	////    '{'
+	////        'text' text=EString
+	////        ('data' '{' data+=KGraphData ( "," data+=KGraphData)* '}' )?
 	////    '}';
 	//	"KLabel" text=EString "{" ("data" ":"? data+=KGraphData (","? data+=KGraphData)*)? "}";
 	public KLabelElements getKLabelAccess() {
@@ -860,12 +860,12 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 		return getKLabelAccess().getRule();
 	}
 
-	//KPort: //	{KPort}
-	////	'KPort'
-	////	'{'
-	////		('edges' '(' edges+=[KEdge|EString] ( "," edges+=[KEdge|EString])* ')' )?
-	////		('data' '{' data+=KGraphData ( "," data+=KGraphData)* '}' )?
-	////		('labels' '{' labels+=KLabel ( "," labels+=KLabel)* '}' )?
+	//KPort: //    {KPort}
+	////    'KPort'
+	////    '{'
+	////        ('edges' '(' edges+=[KEdge|EString] ( "," edges+=[KEdge|EString])* ')' )?
+	////        ('data' '{' data+=KGraphData ( "," data+=KGraphData)* '}' )?
+	////        ('labels' '{' labels+=KLabel ( "," labels+=KLabel)* '}' )?
 	////    '}';
 	//	{KPort} "KPort" "{" ("edges" ":"? edges+=[KEdge|EString] (","? edges+=[KEdge|EString])*)? ("data" ":"? data+=KGraphData
 	//	(","? data+=KGraphData)*)? ("labels" ":"? labels+=KLabel (","? labels+=KLabel)*)? "}";
@@ -877,14 +877,16 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 		return getKPortAccess().getRule();
 	}
 
-	//KEdge: //	'KEdge'
-	////	'{'
-	////		'target' target=[KNode|EString]
-	////		('sourcePort' sourcePort=[KPort|EString])?
-	////		('targetPort' targetPort=[KPort|EString])?
-	////		('data' '{' data+=KGraphData ( "," data+=KGraphData)* '}' )?
-	////		('labels' '{' labels+=KLabel ( "," labels+=KLabel)* '}' )?
+	//KEdge: //    'KEdge'
+	////    '{'
+	////        'target' target=[KNode|EString]
+	////        ('sourcePort' sourcePort=[KPort|EString])?
+	////        ('targetPort' targetPort=[KPort|EString])?
+	////        ('data' '{' data+=KGraphData ( "," data+=KGraphData)* '}' )?
+	////        ('labels' '{' labels+=KLabel ( "," labels+=KLabel)* '}' )?
 	////    '}';
+	//// TODO: In an advanced version of the textual KGraph language the fragment URI used to identify the
+	//// edge's target and ports shall be parsed and decomposed by related parser rules.
 	//	"-->" target=[KNode|EString] "{" ("sourcePort" sourcePort=[KPort|EString])? ("targetPort" targetPort=[KPort|EString])?
 	//	("data" ":"? data+=KGraphData (","? data+=KGraphData)*)? ("labels" ":"? labels+=KLabel (","? labels+=KLabel)*)? "}";
 	public KEdgeElements getKEdgeAccess() {
@@ -895,16 +897,10 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 		return getKEdgeAccess().getRule();
 	}
 
-	//// Error marker is a false positive; generation works anyway!
-	////  It occurs if eSuperType references in krendering.ecore/klayoutdata.ecore
-	////  are like ../../de.cau.cs.kieler.core.kgraph/model/kgraph.ecore#//KGraphData
-	////  but should be platform:/resource/de.cau.cs.kieler.core.kgraph/model/kgraph.ecore#//KGraphData
-	////  since Xtext obviously compares concrete string representations of the fragmentURIs.
-	////  This is why packages are referred to the same way in the preamble.   
-	//KGraphData: //	{KGraphData}
-	////	'KGraphData'
-	////	'{'
-	////		('persistentEntries' '{' persistentEntries+=PersistentEntry ( "," persistentEntries+=PersistentEntry)* '}' )?
+	//KGraphData: //    {KGraphData}
+	////    'KGraphData'
+	////    '{'
+	////        ('persistentEntries' '{' persistentEntries+=PersistentEntry ( "," persistentEntries+=PersistentEntry)* '}' )?
 	////    '}';
 	//	KRendering | KRenderingLibrary | KShapeLayout | KEdgeLayout | KGraphDataImpl;
 	public KGraphDataElements getKGraphDataAccess() {
@@ -916,13 +912,13 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	////PersistentEntry returns PersistentEntry:
-	////	'PersistentEntry'
-	////	'{'
-	////		'key' key=EString
-	////		('value' value=EString)?
+	////    'PersistentEntry'
+	////    '{'
+	////        'key' key=EString
+	////        ('value' value=EString)?
 	////    '}';
 	////EString returns ecore::EString:
-	////	STRING | ID;
+	////    STRING | ID;
 	//KGraphDataImpl returns KGraphData:
 	//	{KGraphData} "KGraphData" "{" ("persistentEntries" "{" persistentEntries+=PersistentEntry (","
 	//	persistentEntries+=PersistentEntry)* "}")? "}";
@@ -1172,8 +1168,9 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//KGridPlacementData:
-	//	"GridPlacementData" "{" "widthHint" widthHint=EFloat "heightHint" heightHint=EFloat "insetRight" insetRight=EFloat
-	//	"insetBottom" insetBottom=EFloat "insetLeft" insetLeft=EFloat "insetTop" insetTop=EFloat "}";
+	//	{KGridPlacementData} "GridPlacementData" "{" ("widthHint" widthHint=EFloat)? ("heightHint" heightHint=EFloat)?
+	//	("insetRight" insetRight=EFloat)? ("insetBottom" insetBottom=EFloat)? ("insetLeft" insetLeft=EFloat)? ("insetTop"
+	//	insetTop=EFloat)? "}";
 	public KRenderingGrammarAccess.KGridPlacementDataElements getKGridPlacementDataAccess() {
 		return gaKRendering.getKGridPlacementDataAccess();
 	}
@@ -1183,8 +1180,8 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//KStackPlacementData:
-	//	"StackPlacementData" "{" "insetRight" insetRight=EFloat "insetBottom" insetBottom=EFloat "insetLeft" insetLeft=EFloat
-	//	"insetTop" insetTop=EFloat "}";
+	//	{KStackPlacementData} "StackPlacementData" "{" ("insetRight" insetRight=EFloat)? ("insetBottom" insetBottom=EFloat)?
+	//	("insetLeft" insetLeft=EFloat)? ("insetTop" insetTop=EFloat)? "}";
 	public KRenderingGrammarAccess.KStackPlacementDataElements getKStackPlacementDataAccess() {
 		return gaKRendering.getKStackPlacementDataAccess();
 	}
@@ -1484,15 +1481,15 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 		return getEIntAccess().getRule();
 	}
 
-	//KShapeLayout: //	{KShapeLayout}
-	////	'KShapeLayout'
-	////	'{'
-	////		('xpos' xpos=EFloat)?
-	////		('ypos' ypos=EFloat)?
-	////		('width' width=EFloat)?
-	////		('height' height=EFloat)?
-	////		('persistentEntries' '{' persistentEntries+=PersistentEntry ( "," persistentEntries+=PersistentEntry)* '}' )?
-	////		('insets' insets=KInsets)?
+	//KShapeLayout: //    {KShapeLayout}
+	////    'KShapeLayout'
+	////    '{'
+	////        ('xpos' xpos=EFloat)?
+	////        ('ypos' ypos=EFloat)?
+	////        ('width' width=EFloat)?
+	////        ('height' height=EFloat)?
+	////        ('persistentEntries' '{' persistentEntries+=PersistentEntry ( "," persistentEntries+=PersistentEntry)* '}' )?
+	////        ('insets' insets=KInsets)?
 	////    '}';
 	//	{KShapeLayout} "KShapeLayout" "{" ("xpos" xpos=EFloat)? ("ypos" ypos=EFloat)? ("width" width=EFloat)? ("height"
 	//	height=EFloat)? ("insets" insets=KInsets)? ("mapProperties" ":" persistentEntries+=PersistentEntry (","?
@@ -1516,15 +1513,15 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 		return getKInsetsAccess().getRule();
 	}
 
-	//KEdgeLayout: //	'KEdgeLayout'
-	////	'{'
-	////		('persistentEntries' '{' persistentEntries+=PersistentEntry ( "," persistentEntries+=PersistentEntry)* '}' )?
-	////		('bendPoints' '{' bendPoints+=KPoint ( "," bendPoints+=KPoint)* '}' )?
-	////		'sourcePoint' sourcePoint=KPoint
-	////		'targetPoint' targetPoint=KPoint
+	//KEdgeLayout: //    'KEdgeLayout'
+	////    '{'
+	////        ('persistentEntries' '{' persistentEntries+=PersistentEntry ( "," persistentEntries+=PersistentEntry)* '}' )?
+	////        ('bendPoints' '{' bendPoints+=KPoint ( "," bendPoints+=KPoint)* '}' )?
+	////        'sourcePoint' sourcePoint=KPoint
+	////        'targetPoint' targetPoint=KPoint
 	////    '}';
-	//	"KEdgeLayout" "{" ("sourcePoint" sourcePoint=KPoint)? ("targetPoint" targetPoint=KPoint)? ("bendPoints" ":"?
-	//	bendPoints+=KPoint (","? bendPoints+=KPoint)*)? ("mapProperties" ":"? persistentEntries+=PersistentEntry (","?
+	//	{KEdgeLayout} "KEdgeLayout" "{" ("sourcePoint" sourcePoint=KPoint)? ("targetPoint" targetPoint=KPoint)? ("bendPoints"
+	//	":"? bendPoints+=KPoint (","? bendPoints+=KPoint)*)? ("mapProperties" ":"? persistentEntries+=PersistentEntry (","?
 	//	persistentEntries+=PersistentEntry)*)? "}";
 	public KLayoutDataGrammarAccess.KEdgeLayoutElements getKEdgeLayoutAccess() {
 		return gaKRendering.getKEdgeLayoutAccess();
@@ -1534,11 +1531,11 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 		return getKEdgeLayoutAccess().getRule();
 	}
 
-	//KPoint: //	{KPoint}
-	////	'KPoint'
-	////	'{'
-	////		('x' x=EFloat)?
-	////		('y' y=EFloat)?
+	//KPoint: //    {KPoint}
+	////    'KPoint'
+	////    '{'
+	////        ('x' x=EFloat)?
+	////        ('y' y=EFloat)?
 	////    '}';
 	//	{KPoint} "KPoint" ("x" x=EFloat) ("y" y=EFloat);
 	public KLayoutDataGrammarAccess.KPointElements getKPointAccess() {
@@ -1549,10 +1546,10 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 		return getKPointAccess().getRule();
 	}
 
-	//PersistentEntry returns kgraph::PersistentEntry: //	'PersistentEntry'
-	////	'{'
-	////		'key' key=EString
-	////		('value' value=EString)?
+	//PersistentEntry returns kgraph::PersistentEntry: //    'PersistentEntry'
+	////    '{'
+	////        'key' key=EString
+	////        ('value' value=EString)?
 	////    '}';
 	//	key=EString ("=" value=EString)?;
 	public KLayoutDataGrammarAccess.PersistentEntryElements getPersistentEntryAccess() {

@@ -17,7 +17,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
 
 import de.cau.cs.kieler.core.kgraph.KGraphPackage;
-import de.cau.cs.kieler.core.kgraph.text.krendering.serializer.KRenderingTransientValueService;
+import de.cau.cs.kieler.core.kgraph.text.krendering.KRenderingTransientValueService;
 import de.cau.cs.kieler.kiml.klayoutdata.KLayoutDataPackage;
 
 /**
@@ -26,8 +26,14 @@ import de.cau.cs.kieler.kiml.klayoutdata.KLayoutDataPackage;
  * {@link de.cau.cs.kieler.core.properties.IProperty} data.
  * 
  * @author chsch
+ * @kieler.design proposed 2012-11-01 chsch
+ * @kieler.rating proposed yellow 2012-11-01 chsch
  */
 @SuppressWarnings("restriction")
+// chsch: Don't understand the 'internal' visibility state of TransientValueService
+//  as this appears to be the one being established in future.
+//  Currently the xtext guys propose to specialice the one of the parse tree constructor API
+//  that I don't want to use anymore. Expect/Hope that this will change in future.
 public class KGraphTransientValueService extends KRenderingTransientValueService {
 
     @Override

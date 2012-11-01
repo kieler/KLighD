@@ -35,6 +35,8 @@ import de.cau.cs.kieler.kiml.util.KimlUtil;
  * ITransientValueService of the out-dated parse tree constructor.
  * 
  * @author chsch
+ * @kieler.design proposed 2012-11-01 chsch
+ * @kieler.rating proposed yellow 2012-11-01 chsch
  */
 public class KGraphResource extends LazyLinkingResource {
 

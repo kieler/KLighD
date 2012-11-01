@@ -38,16 +38,6 @@ public abstract class AbstractKLayoutDataUiModule extends DefaultUiModule {
 		binder.bind(org.eclipse.xtext.parser.antlr.ITokenDefProvider.class).annotatedWith(com.google.inject.name.Names.named(org.eclipse.xtext.ui.LexerUIBindings.HIGHLIGHTING)).to(org.eclipse.xtext.parser.antlr.AntlrTokenDefProvider.class);
 	}
 
-	// contributed by org.eclipse.xtext.ui.generator.labeling.LabelProviderFragment
-	public Class<? extends org.eclipse.jface.viewers.ILabelProvider> bindILabelProvider() {
-		return de.cau.cs.kieler.core.kgraph.text.klayoutdata.ui.labeling.KLayoutDataLabelProvider.class;
-	}
-
-	// contributed by org.eclipse.xtext.ui.generator.labeling.LabelProviderFragment
-	public void configureResourceUIServiceLabelProvider(com.google.inject.Binder binder) {
-		binder.bind(org.eclipse.jface.viewers.ILabelProvider.class).annotatedWith(org.eclipse.xtext.ui.resource.ResourceServiceDescriptionLabelProvider.class).to(de.cau.cs.kieler.core.kgraph.text.klayoutdata.ui.labeling.KLayoutDataDescriptionLabelProvider.class);
-	}
-
 	// contributed by org.eclipse.xtext.ui.generator.contentAssist.JavaBasedContentAssistFragment
 	public Class<? extends org.eclipse.xtext.ui.editor.contentassist.IContentProposalProvider> bindIContentProposalProvider() {
 		return de.cau.cs.kieler.core.kgraph.text.klayoutdata.ui.contentassist.KLayoutDataProposalProvider.class;

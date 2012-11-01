@@ -78,9 +78,9 @@
             name="KGraph">
             <keywordReference id="de.cau.cs.kieler.core.kgraph.text.ui.keyword_KGraph"/>
             <enabledWhen>
-	            <adapt type="org.eclipse.core.resources.IProject"/>
-			</enabledWhen>
-	        <filter name="projectNature" value="org.eclipse.xtext.ui.shared.xtextNature"/>
+                <adapt type="org.eclipse.core.resources.IProject"/>
+            </enabledWhen>
+            <filter name="projectNature" value="org.eclipse.xtext.ui.shared.xtextNature"/>
         </page>
     </extension>
     <extension
@@ -113,14 +113,14 @@
          </menuContribution>
     </extension>
     <extension point="org.eclipse.ui.menus">
-		<menuContribution locationURI="popup:#TextEditorContext?endof=group.find">
-			<command commandId="org.eclipse.xtext.ui.editor.FindReferences">
-				<visibleWhen checkEnabled="false">
-                	<reference definitionId="de.cau.cs.kieler.core.kgraph.text.KGraph.Editor.opened">
-                	</reference>
-            	</visibleWhen>
-			</command>
-		</menuContribution>
+        <menuContribution locationURI="popup:#TextEditorContext?endof=group.find">
+            <command commandId="org.eclipse.xtext.ui.editor.FindReferences">
+                <visibleWhen checkEnabled="false">
+                    <reference definitionId="de.cau.cs.kieler.core.kgraph.text.KGraph.Editor.opened">
+                    </reference>
+                </visibleWhen>
+            </command>
+        </menuContribution>
     </extension>
     <extension point="org.eclipse.ui.menus">
          <menuContribution
@@ -176,9 +176,9 @@
             </parameter>
          </command>
      </menuContribution>
-	</extension>
-	<extension point="org.eclipse.ui.handlers">
-	    <handler
+    </extension>
+    <extension point="org.eclipse.ui.handlers">
+        <handler
             class="de.cau.cs.kieler.core.kgraph.text.ui.KGraphExecutableExtensionFactory:org.eclipse.xtext.ui.editor.findrefs.FindReferencesHandler"
             commandId="org.eclipse.xtext.ui.editor.FindReferences">
             <activeWhen>
@@ -191,14 +191,14 @@
 
 <!-- adding resource factories -->
 
-	<extension
-		point="org.eclipse.emf.ecore.extension_parser">
-		<parser
-			class="de.cau.cs.kieler.core.kgraph.text.ui.KGraphExecutableExtensionFactory:org.eclipse.xtext.resource.IResourceFactory"
-			type="kgt">
-		</parser>
-	</extension>
-	<extension point="org.eclipse.xtext.extension_resourceServiceProvider">
+    <extension
+        point="org.eclipse.emf.ecore.extension_parser">
+        <parser
+            class="de.cau.cs.kieler.core.kgraph.text.ui.KGraphExecutableExtensionFactory:org.eclipse.xtext.resource.IResourceFactory"
+            type="kgt">
+        </parser>
+    </extension>
+    <extension point="org.eclipse.xtext.extension_resourceServiceProvider">
         <resourceServiceProvider
             class="de.cau.cs.kieler.core.kgraph.text.ui.KGraphExecutableExtensionFactory:org.eclipse.xtext.ui.resource.IResourceUIServiceProvider"
             uriExtension="kgt">
@@ -206,18 +206,6 @@
     </extension>
 
 
-  <extension point="org.eclipse.compare.contentViewers">
-    <viewer id="de.cau.cs.kieler.core.kgraph.text.KGraph.compare.contentViewers"
-            class="de.cau.cs.kieler.core.kgraph.text.ui.KGraphExecutableExtensionFactory:org.eclipse.xtext.ui.compare.InjectableViewerCreator"
-            extensions="kgt">
-    </viewer>
-  </extension>
-  <extension point="org.eclipse.compare.contentMergeViewers">
-    <viewer id="de.cau.cs.kieler.core.kgraph.text.KGraph.compare.contentMergeViewers"
-            class="de.cau.cs.kieler.core.kgraph.text.ui.KGraphExecutableExtensionFactory:org.eclipse.xtext.ui.compare.InjectableViewerCreator"
-            extensions="kgt" label="KGraph Compare">
-     </viewer>
-  </extension>
   <extension point="org.eclipse.ui.editors.documentProviders">
     <provider id="de.cau.cs.kieler.core.kgraph.text.KGraph.editors.documentProviders"
             class="de.cau.cs.kieler.core.kgraph.text.ui.KGraphExecutableExtensionFactory:org.eclipse.xtext.ui.editor.model.XtextDocumentProvider"
