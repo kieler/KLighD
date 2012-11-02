@@ -19,6 +19,8 @@ package de.cau.cs.kieler.core.util;
  * I need that for handing over some executable to the KLighD view in order
  * to ask the model for a newer version while updating the diagram.
  * 
+ * @kieler.design proposed 2012-11-02 cds
+ * @kieler.rating 2012-11-02 proposed yellow cds
  * @param <T> the type of the result
  * @author chsch
  */
