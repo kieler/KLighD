@@ -22,6 +22,7 @@ import java.util.List;
  * An output stream that can be used to send the same output to multiple
  * output streams.
  * 
+ * @kieler.design proposed 2012-11-02 cds
  * @kieler.rating 2009-12-11 proposed yellow msp
  * @author msp
  */

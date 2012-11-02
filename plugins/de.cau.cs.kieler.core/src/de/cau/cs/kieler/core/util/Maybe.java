@@ -52,6 +52,7 @@ package de.cau.cs.kieler.core.util;
  * </pre>
  * </p>
  * 
+ * @kieler.design proposed 2012-11-02 cds
  * @kieler.rating 2009-12-11 proposed yellow msp
  * @param <T> type of contained object
  * @author msp

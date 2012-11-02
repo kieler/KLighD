@@ -19,6 +19,7 @@ import java.util.List;
  * Interface for monitors of progress of a job. A progress monitor can be used
  * in conjunction with {@link IAlgorithm} to track progress of an algorithm run.
  * 
+ * @kieler.design proposed 2012-11-02 cds
  * @kieler.rating 2009-12-11 proposed yellow msp
  * @author msp
  */

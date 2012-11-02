@@ -21,6 +21,7 @@ import java.io.Serializable;
  * accessible and create an instance with default content.
  *
  * @kieler.design 2011-02-01 reviewed by cmot, soh
+ * @kieler.rating proposed yellow 2012-11-02 cds
  * @author msp
  */
 public interface IDataObject extends Serializable {

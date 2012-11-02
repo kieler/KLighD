@@ -20,7 +20,6 @@ package de.cau.cs.kieler.core.util;
  * to ask the model for a newer version while updating the diagram.
  * 
  * @param <T> the type of the result
- * 
  * @author chsch
  */
 public interface RunnableWithResult<T> extends Runnable {
