@@ -16,6 +16,8 @@ package de.cau.cs.kieler.klighd.piccolo.krendering.controller;
 import java.awt.Color;
 import java.awt.Font;
 
+import de.cau.cs.kieler.klighd.KlighdConstants;
+
 import edu.umd.cs.piccolox.swt.PSWTText;
 
 /**
@@ -26,13 +28,11 @@ import edu.umd.cs.piccolox.swt.PSWTText;
 public abstract class PSWTTextController extends PNodeController<PSWTText> {
 
     /** the name of the currently used font. */
-    private String fontName = "Arial";
+    private String fontName = KlighdConstants.DEFAULT_FONT_NAME;
     /** the currently used font size. */
-    // CHECKSTYLEOFF MagicNumber
-    private int fontSize = 10;
-    // CHECKSTYLEON MagicNumber
+    private int fontSize = KlighdConstants.DEFAULT_FONT_SIZE;
     /** the currently used font style. */
-    private int fontStyle = Font.PLAIN;
+    private int fontStyle = KlighdConstants.DEFAULT_FONT_STYLE;
 
     /**
      * Constructs a node controller for a {@code PSWTText}.
