@@ -106,6 +106,7 @@ public class KRenderingFactoryImpl extends EFactoryImpl implements KRenderingFac
             case KRenderingPackage.KFONT_NAME: return createKFontName();
             case KRenderingPackage.KFONT_SIZE: return createKFontSize();
             case KRenderingPackage.KROUNDED_BENDS_POLYLINE: return createKRoundedBendsPolyline();
+            case KRenderingPackage.KROTATION: return createKRotation();
             default:
                 throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
         }
@@ -527,6 +528,16 @@ public class KRenderingFactoryImpl extends EFactoryImpl implements KRenderingFac
     public KRoundedBendsPolyline createKRoundedBendsPolyline() {
         KRoundedBendsPolylineImpl kRoundedBendsPolyline = new KRoundedBendsPolylineImpl();
         return kRoundedBendsPolyline;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public KRotation createKRotation() {
+        KRotationImpl kRotation = new KRotationImpl();
+        return kRotation;
     }
 
     /**

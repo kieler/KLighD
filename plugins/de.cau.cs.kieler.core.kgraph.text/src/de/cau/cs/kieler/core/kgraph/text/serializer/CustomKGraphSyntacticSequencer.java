@@ -26,7 +26,10 @@ import org.eclipse.xtext.serializer.analysis.ISyntacticSequencerPDAProvider.ISyn
  * @author chsch
  */
 @SuppressWarnings("restriction")
-public class KGraphSyntacticSequencer extends AbstractKGraphSyntacticSequencer {
+public class CustomKGraphSyntacticSequencer extends KGraphSyntacticSequencer {
+    
+    // CHECKSTYLEOFF Method|Parameter|LineLength
+    //  as the given methods skeletons are determined by the generated AbstractKGraphSyntacticSequencer
 
     /**
      * Syntax: ':'?

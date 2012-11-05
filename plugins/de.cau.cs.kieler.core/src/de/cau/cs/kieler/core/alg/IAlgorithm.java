@@ -17,6 +17,7 @@ package de.cau.cs.kieler.core.alg;
  * Interface that serves as super-interface for all algorithm interfaces.
  * Contains progress monitors to keep track of the progress of an algorithm run.
  * 
+ * @kieler.design proposed 2012-11-02 cds
  * @kieler.rating 2009-12-11 proposed yellow msp
  * @see IKielerProgressMonitor
  * @author msp

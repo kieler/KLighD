@@ -30,7 +30,9 @@ import com.google.common.collect.Multimap;
  * @param <T>
  *            the type of the target model
  */
-public final class TransformationContext<S, T> {
+public class TransformationContext<S, T> {
+    // SUPPRESS CHECKSTYLE PREVIOUS FinalClass
+    //  chsch: Since I need a subclass of this one this class cannot be final.
 
     /**
      * Creates a transformation context for a given transformation.
@@ -51,6 +53,46 @@ public final class TransformationContext<S, T> {
             transformationContext.configureOption(option, option.getInitialValue());
         }
         return transformationContext;
+    }
+    
+    /**
+     * Creates an aliasing {@link TransformationContext} allowing to reuse parts of
+     * "third party" {@link ITransformation ITransformations}.
+     * 
+     * @param <S>
+     *            the type of the source model
+     * @param <T>
+     *            the type of the target model
+     * @param theOriginal
+     *            the original context to be aliased
+     * @return the intended transformation context
+     */
+    public static <S, T> TransformationContext<S, T> createAlias(
+            final TransformationContext<?, T> theOriginal) {
+        return new TransformationContext<S, T>() {
+            
+            private TransformationContext<?, T> original = theOriginal;
+            
+            /**
+             * Getter.
+             * 
+             * @param option the option to evaluate the configuration state / the configured value.
+             * @return the configured value of {@link TransformationOption} option.
+             */
+            public Object getOptionValue(final TransformationOption option) {
+                return this.original.getOptionValue(option);
+            }
+            
+            /**
+             * Put a pair of a model and a derived element into the lookup table.
+             * 
+             * @param derived the derived element
+             * @param model the model element
+             */
+            public void addSourceTargetPair(final Object model, final Object derived) {
+                this.original.addSourceTargetPair(model, derived);
+            }
+        };
     }
 
     /** the transformation in this context. */

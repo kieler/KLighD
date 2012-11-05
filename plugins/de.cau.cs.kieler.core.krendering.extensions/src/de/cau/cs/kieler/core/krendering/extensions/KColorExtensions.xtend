@@ -1,3 +1,16 @@
+/*
+ * KIELER - Kiel Integrated Environment for Layout Eclipse RichClient
+ *
+ * http://www.informatik.uni-kiel.de/rtsys/kieler/
+ * 
+ * Copyright 2012 by
+ * + Christian-Albrechts-University of Kiel
+ *   + Department of Computer Science
+ *     + Real-Time and Embedded Systems Group
+ * 
+ * This code is provided under the terms of the Eclipse Public License (EPL).
+ * See the file epl-v10.html for the license text.
+ */
 package de.cau.cs.kieler.core.krendering.extensions
 
 import de.cau.cs.kieler.core.krendering.KColor
@@ -6,7 +19,7 @@ import de.cau.cs.kieler.core.krendering.KBackgroundColor
 import de.cau.cs.kieler.core.krendering.KRenderingFactory
 
 class KColorExtensions {
-	
+
     private static val KRenderingFactory renderingFactory = KRenderingFactory::eINSTANCE
 
     def KColor getColor(String name) {
@@ -14,7 +27,7 @@ class KColorExtensions {
             return name.fgColor;
     }
 
-	def KForegroundColor getFgColor(String name) {
+    def KForegroundColor getFgColor(String name) {
 		return renderingFactory.createKForegroundColor() => [
 		    it.setColor(name);
 		];
@@ -43,10 +56,20 @@ class KColorExtensions {
                 color.setGreen(0);
                 color.setBlue(255);
             }
-            case "customblue" : {
+            case "cadetBlue1" : {
+                color.red = 152;
+                color.green = 245;
+                color.blue = 255;
+            }
+            case "customBlue" : {
                 color.setRed(51);
                 color.setGreen(51);
                 color.setBlue(153);
+            }
+            case "customLightBlue" : {
+                color.setRed(226);
+                color.setGreen(237);
+                color.setBlue(255);
             }
             case "darkSlateBlue" : {
                 color.setRed(72);
@@ -62,6 +85,11 @@ class KColorExtensions {
                 color.setRed(248);
                 color.setGreen(179);
                 color.setBlue(0);
+            }
+            case "gold" : {
+                color.setRed(255);
+                color.setGreen(215);
+                color.setBlue(000);
             }
             case "gray" : {
                 color.setRed(190);
@@ -79,9 +107,9 @@ class KColorExtensions {
                 color.setBlue(205);
             }
             case "lightBlue" : {
-                color.setRed(150);
-                color.setGreen(150);
-                color.setBlue(255);
+                color.setRed(173);
+                color.setGreen(216);
+                color.setBlue(230);
             }
             case "lightPink" : {
                 color.setRed(255);
@@ -102,6 +130,11 @@ class KColorExtensions {
                 color.setRed(255);
                 color.setGreen(0);
                 color.setBlue(0);
+            }
+            case "skyBlue" : {
+                color.red = 135;
+                color.green = 206;
+                color.blue = 235;
             }
             case "white" : {
                 color.setRed(255);

@@ -2889,6 +2889,52 @@ public interface KRenderingPackage extends EPackage {
     int KROUNDED_BENDS_POLYLINE_FEATURE_COUNT = KPOLYLINE_FEATURE_COUNT + 1;
 
     /**
+     * The meta object id for the '{@link de.cau.cs.kieler.core.krendering.impl.KRotationImpl <em>KRotation</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see de.cau.cs.kieler.core.krendering.impl.KRotationImpl
+     * @see de.cau.cs.kieler.core.krendering.impl.KRenderingPackageImpl#getKRotation()
+     * @generated
+     */
+    int KROTATION = 47;
+
+    /**
+     * The feature id for the '<em><b>Rendering</b></em>' container reference.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KROTATION__RENDERING = KSTYLE__RENDERING;
+
+    /**
+     * The feature id for the '<em><b>Propagate To Children</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KROTATION__PROPAGATE_TO_CHILDREN = KSTYLE__PROPAGATE_TO_CHILDREN;
+
+    /**
+     * The feature id for the '<em><b>Rotation</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KROTATION__ROTATION = KSTYLE_FEATURE_COUNT + 0;
+
+    /**
+     * The number of structural features of the '<em>KRotation</em>' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KROTATION_FEATURE_COUNT = KSTYLE_FEATURE_COUNT + 1;
+
+    /**
      * The meta object id for the '{@link de.cau.cs.kieler.core.krendering.LineStyle <em>Line Style</em>}' enum.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -2896,7 +2942,7 @@ public interface KRenderingPackage extends EPackage {
      * @see de.cau.cs.kieler.core.krendering.impl.KRenderingPackageImpl#getLineStyle()
      * @generated
      */
-    int LINE_STYLE = 47;
+    int LINE_STYLE = 48;
 
     /**
      * The meta object id for the '{@link de.cau.cs.kieler.core.krendering.HorizontalAlignment <em>Horizontal Alignment</em>}' enum.
@@ -2906,7 +2952,7 @@ public interface KRenderingPackage extends EPackage {
      * @see de.cau.cs.kieler.core.krendering.impl.KRenderingPackageImpl#getHorizontalAlignment()
      * @generated
      */
-    int HORIZONTAL_ALIGNMENT = 48;
+    int HORIZONTAL_ALIGNMENT = 49;
 
     /**
      * The meta object id for the '{@link de.cau.cs.kieler.core.krendering.VerticalAlignment <em>Vertical Alignment</em>}' enum.
@@ -2916,7 +2962,7 @@ public interface KRenderingPackage extends EPackage {
      * @see de.cau.cs.kieler.core.krendering.impl.KRenderingPackageImpl#getVerticalAlignment()
      * @generated
      */
-    int VERTICAL_ALIGNMENT = 49;
+    int VERTICAL_ALIGNMENT = 50;
 
 
     /**
@@ -4050,6 +4096,27 @@ public interface KRenderingPackage extends EPackage {
     EAttribute getKRoundedBendsPolyline_BendRadius();
 
     /**
+     * Returns the meta object for class '{@link de.cau.cs.kieler.core.krendering.KRotation <em>KRotation</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for class '<em>KRotation</em>'.
+     * @see de.cau.cs.kieler.core.krendering.KRotation
+     * @generated
+     */
+    EClass getKRotation();
+
+    /**
+     * Returns the meta object for the attribute '{@link de.cau.cs.kieler.core.krendering.KRotation#getRotation <em>Rotation</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the attribute '<em>Rotation</em>'.
+     * @see de.cau.cs.kieler.core.krendering.KRotation#getRotation()
+     * @see #getKRotation()
+     * @generated
+     */
+    EAttribute getKRotation_Rotation();
+
+    /**
      * Returns the meta object for enum '{@link de.cau.cs.kieler.core.krendering.LineStyle <em>Line Style</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -5050,6 +5117,24 @@ public interface KRenderingPackage extends EPackage {
          * @generated
          */
         EAttribute KROUNDED_BENDS_POLYLINE__BEND_RADIUS = eINSTANCE.getKRoundedBendsPolyline_BendRadius();
+
+        /**
+         * The meta object literal for the '{@link de.cau.cs.kieler.core.krendering.impl.KRotationImpl <em>KRotation</em>}' class.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @see de.cau.cs.kieler.core.krendering.impl.KRotationImpl
+         * @see de.cau.cs.kieler.core.krendering.impl.KRenderingPackageImpl#getKRotation()
+         * @generated
+         */
+        EClass KROTATION = eINSTANCE.getKRotation();
+
+        /**
+         * The meta object literal for the '<em><b>Rotation</b></em>' attribute feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EAttribute KROTATION__ROTATION = eINSTANCE.getKRotation_Rotation();
 
         /**
          * The meta object literal for the '{@link de.cau.cs.kieler.core.krendering.LineStyle <em>Line Style</em>}' enum.

@@ -86,6 +86,13 @@ public abstract class PSWTTextController extends PNodeController<PSWTText> {
     /**
      * {@inheritDoc}
      */
+    public void setRotation(final float rotation) {
+        getNode().setRotation(Math.toRadians(rotation));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void setFontName(final String fontName) {
         this.fontName = fontName;

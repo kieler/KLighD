@@ -23,16 +23,8 @@ import org.eclipse.xtext.EcoreUtil2;
 import org.eclipse.xtext.linking.lazy.LazyLinkingResource;
 import org.eclipse.xtext.nodemodel.util.NodeModelUtils;
 import org.eclipse.xtext.resource.SaveOptions;
-import org.eclipse.xtext.xbase.lib.IteratorExtensions;
 
-import com.google.common.collect.Iterators;
-
-import de.cau.cs.kieler.core.kgraph.KGraphElement;
-import de.cau.cs.kieler.core.kgraph.KGraphPackage;
 import de.cau.cs.kieler.core.kgraph.KNode;
-import de.cau.cs.kieler.kiml.klayoutdata.KEdgeLayout;
-import de.cau.cs.kieler.kiml.klayoutdata.KLayoutDataFactory;
-import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout;
 import de.cau.cs.kieler.kiml.util.KimlUtil;
 
 /**
@@ -43,6 +35,8 @@ import de.cau.cs.kieler.kiml.util.KimlUtil;
  * ITransientValueService of the out-dated parse tree constructor.
  * 
  * @author chsch
+ * @kieler.design proposed 2012-11-01 chsch
+ * @kieler.rating proposed yellow 2012-11-01 chsch
  */
 public class KGraphResource extends LazyLinkingResource {
 
@@ -55,8 +49,10 @@ public class KGraphResource extends LazyLinkingResource {
         if (!this.getContents().isEmpty()) {
             EObject o = this.getContents().get(0);
             if (o instanceof KNode) {
+                // parse persisted key-value pairs using KIML's layout data service
                 KimlUtil.loadDataElements((KNode) o);
-                ensureKGraphElementsInitialization((KNode) o);
+                // validate layout data and references and fill in missing data
+                KimlUtil.validate((KNode) o);
             }
         }
     }
@@ -75,8 +71,10 @@ public class KGraphResource extends LazyLinkingResource {
         EObject refreshed = NodeModelUtils.findActualSemanticObjectFor(NodeModelUtils
                 .findLeafNodeAtOffset(this.getParseResult().getRootNode(), offset));
         KNode node = (KNode) EcoreUtil2.getRootContainer(refreshed);
+        // parse persisted key-value pairs using KIML's layout data service
         KimlUtil.loadDataElements(node);
-        ensureKGraphElementsInitialization(node);
+        // validate layout data and references and fill in missing data
+        KimlUtil.validate(node);
     }
     
     /**
@@ -99,36 +97,4 @@ public class KGraphResource extends LazyLinkingResource {
                 .toOptionsMap());
     }
     
-    /**
-     * Ensure proper initialization of KEdges. 
-     * 
-     * @param node the root KNode to perfom on
-     */
-    private void ensureKGraphElementsInitialization(final KNode node) {
-
-        for (KGraphElement e : IteratorExtensions.toIterable(Iterators.filter(node.eAllContents(),
-                KGraphElement.class))) {
-            if (KGraphPackage.eINSTANCE.getKNode().isInstance(e)
-                    || KGraphPackage.eINSTANCE.getKPort().isInstance(e)
-                    || KGraphPackage.eINSTANCE.getKLabel().isInstance(e)) {
-                if (e.getData(KShapeLayout.class) == null) {
-                    e.getData().add(KimlUtil.createInitializedNode().getData(KShapeLayout.class));
-                }
-            }
-
-            if (KGraphPackage.eINSTANCE.getKEdge().isInstance(e)) {
-                if (e.getData(KEdgeLayout.class) == null) {
-                    e.getData().add(KimlUtil.createInitializedEdge().getData(KEdgeLayout.class));
-                } else {
-                    KEdgeLayout el = e.getData(KEdgeLayout.class);
-                    if (el.getSourcePoint() == null) {
-                        el.setSourcePoint(KLayoutDataFactory.eINSTANCE.createKPoint());
-                    }
-                    if (el.getTargetPoint() == null) {
-                        el.setTargetPoint(KLayoutDataFactory.eINSTANCE.createKPoint());
-                    }
-                }
-            }
-       }
-    }
 }

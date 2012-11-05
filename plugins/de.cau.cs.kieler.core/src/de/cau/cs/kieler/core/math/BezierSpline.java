@@ -23,6 +23,8 @@ import java.util.ListIterator;
  * smooth spline.
  * 
  * @author uru
+ * @kieler.design proposed 2012-11-02 cds
+ * @kieler.rating proposed yellow 2012-11-02 cds
  */
 public class BezierSpline {
 

@@ -119,6 +119,16 @@ public abstract class PNodeController<T extends PNode> {
     }
 
     /**
+     * Sets the rotation of the associated node.
+     * 
+     * @param rotation
+     *            the rotation
+     */
+    public void setRotation(final float rotation) {
+        // do nothing
+    }
+
+    /**
      * Sets the horizontal alignment of the associated node.
      * 
      * @param alignment

@@ -1,3 +1,16 @@
+/*
+ * KIELER - Kiel Integrated Environment for Layout Eclipse RichClient
+ * 
+ * http://www.informatik.uni-kiel.de/rtsys/kieler/
+ * 
+ * Copyright 2012 by
+ * + Christian-Albrechts-University of Kiel
+ *   + Department of Computer Science
+ *     + Real-Time and Embedded Systems Group
+ * 
+ * This code is provided under the terms of the Eclipse Public License (EPL).
+ * See the file epl-v10.html for the license text.
+ */
 module de.cau.cs.kieler.core.kgraph.text.KGraph
 
 import org.eclipse.emf.mwe.utils.*
@@ -10,114 +23,120 @@ var projectName = "de.cau.cs.kieler.core.kgraph.text"
 var runtimeProject = "../${projectName}"
 
 Workflow {
-	bean = StandaloneSetup {
-		scanClassPath  = true
-		platformUri = "${runtimeProject}/.."
+    bean = StandaloneSetup {
+        scanClassPath  = true
+        platformUri = "${runtimeProject}/.."
         registerGeneratedEPackage = "de.cau.cs.kieler.core.kgraph.KGraphPackage"
-		registerGeneratedEPackage = "de.cau.cs.kieler.kiml.klayoutdata.KLayoutDataPackage"
-        registerGeneratedEPackage = "de.cau.cs.kieler.core.krendering.KRenderingPackage"	
-		registerGenModelFile = "platform:/resource/de.cau.cs.kieler.core.kgraph/model/kgraph.genmodel"
-		registerGenModelFile = "platform:/resource/de.cau.cs.kieler.core.krendering/model/krendering.genmodel"	
-		registerGenModelFile = "platform:/resource/de.cau.cs.kieler.kiml/model/klayoutdata.genmodel"
-	}
+        registerGeneratedEPackage = "de.cau.cs.kieler.kiml.klayoutdata.KLayoutDataPackage"
+        registerGeneratedEPackage = "de.cau.cs.kieler.core.krendering.KRenderingPackage"    
+        registerGenModelFile = "platform:/resource/de.cau.cs.kieler.core.kgraph/model/kgraph.genmodel"
+        registerGenModelFile = "platform:/resource/de.cau.cs.kieler.core.krendering/model/krendering.genmodel"    
+        registerGenModelFile = "platform:/resource/de.cau.cs.kieler.kiml/model/klayoutdata.genmodel"
+    }
 
-	component = DirectoryCleaner {
-		directory = "${runtimeProject}/src-gen/de/cau/cs/kieler/core/kgraph/text"
-	}
+    component = DirectoryCleaner {
+        directory = "${runtimeProject}/src-gen/de/cau/cs/kieler/core/kgraph/text"
+    }
 
-	component = DirectoryCleaner {
-		directory = "${runtimeProject}.ui/src-gen/de/cau/cs/kieler/core/kgraph/text"
-	}
-	
-	component = Generator {
-		pathRtProject = runtimeProject
-		pathUiProject = "${runtimeProject}.ui"
-		projectNameRt = projectName
-		projectNameUi = "${projectName}.ui"
-		language = {
-			uri = grammarURI
-			fileExtensions = file.extensions
+    component = DirectoryCleaner {
+        directory = "${runtimeProject}.ui/src-gen/de/cau/cs/kieler/core/kgraph/text/ui"
+    }
+    
+    component = Generator {
+        pathRtProject = runtimeProject
+        pathUiProject = "${runtimeProject}.ui"
+        projectNameRt = projectName
+        projectNameUi = "${projectName}.ui"
+        language = {
+            uri = grammarURI
+            fileExtensions = file.extensions
 
-			// Java API to access grammar elements (required by several other fragments)
-			fragment = grammarAccess.GrammarAccessFragment {}
+            // Java API to access grammar elements (required by several other fragments)
+            fragment = grammarAccess.GrammarAccessFragment {}
 
-			// generates Java API for the generated EPackages
-			// fragment = ecore.EcoreGeneratorFragment {}
+            // generates Java API for the generated EPackages
+            // fragment = ecore.EcoreGeneratorFragment {}
 
-			// the serialization component
-			// fragment = parseTreeConstructor.ParseTreeConstructorFragment {}
-			fragment = serializer.SerializerFragment {}
+            // the serialization component
+            // fragment = parseTreeConstructor.ParseTreeConstructorFragment {}
+            fragment = serializer.SerializerFragment {
+                generateStub = false
+            }
 
-			// a custom ResourceFactory for use with EMF 
-			fragment = resourceFactory.ResourceFactoryFragment {
-				fileExtensions = file.extensions
-			}
-
-			// the Antlr parser
-			fragment = parser.antlr.XtextAntlrGeneratorFragment {
-				options = {
-					classSplitting = true
-				}
-			}
-
-			// the Ecore2Xtext specific terminal converter
-			fragment = ecore2xtext.Ecore2XtextValueConverterServiceFragment {}
-
-			// java-based API for validation 
-			// fragment = validation.JavaValidatorFragment {
-			// composedCheck = "org.eclipse.xtext.validation.ImportUriValidator"
-			// composedCheck = "org.eclipse.xtext.validation.NamesAreUniqueValidator"
-			// }
-
-            // chsch:
-            //  * use default local and global scope provider (no package based scoping)
-            //  * no names fragment is needed since I configured a very simple custom
-            //    IQualifiedNameProvider
-			// scoping and exporting API
-			fragment = scoping.ImportURIScopingFragment {}
-			// fragment = exporting.SimpleNamesFragment {}
-
-			// scoping and exporting API
-			// fragment = scoping.ImportNamespacesScopingFragment {}
-		    // fragment = exporting.QualifiedNamesFragment {}
-
-
-			// formatter API 
-			fragment = ecore2xtext.FormatterFragment {}
-
-			// labeling API 
-			fragment = labeling.LabelProviderFragment {}
-
-			// outline API 
-            // fragment = outline.OutlineTreeProviderFragment {}
-            // fragment = outline.QuickOutlineFragment {}
-
-			// java-based API for content assistance 
-			fragment = contentAssist.JavaBasedContentAssistFragment {}
-
-			// antlr parser generator tailored for content assist 
-			fragment = parser.antlr.XtextAntlrUiGeneratorFragment {
-				options = {
-					classSplitting = true
-				}
-			}
-
-			// provides a compare view
-            fragment = compare.CompareFragment {
+            // a custom ResourceFactory for use with EMF 
+            fragment = resourceFactory.ResourceFactoryFragment {
                 fileExtensions = file.extensions
             }
 
-			// fragment = builder.BuilderIntegrationFragment {}
+            // the Antlr parser
+            fragment = parser.antlr.XtextAntlrGeneratorFragment {
+                options = {
+                    classSplitting = true
+                }
+            }
 
-			// project wizard (optional) 
+            // the Ecore2Xtext specific terminal converter
+            fragment = ecore2xtext.Ecore2XtextValueConverterServiceFragment {}
 
-			// fragment = projectWizard.SimpleProjectWizardFragment {
-			//		generatorProjectName = "${projectName}.generator" 
-			//		modelFileExtension = file.extensions
-			// }
+            // java-based API for validation 
+            // fragment = validation.JavaValidatorFragment {
+            // composedCheck = "org.eclipse.xtext.validation.ImportUriValidator"
+            // composedCheck = "org.eclipse.xtext.validation.NamesAreUniqueValidator"
+            // }
 
-			// quickfix API 
-			// fragment = quickfix.QuickfixProviderFragment {}
-		}
-	}
+            // chsch:
+            //  * no advanced local and global scope provider are needed (no package or import URI
+            //     based scoping as this is not allowed by our current abstract and concrete syntax)
+            //    thus, the scoping fragments are deactivated since I registered the (sufficient)
+            //    SimpleLocalScopeProvider 
+            //  * no names fragment is needed since I configured a very simple custom
+            //    IQualifiedNameProvider
+            // scoping and exporting API
+            // fragment = scoping.ImportURIScopingFragment {}
+            // fragment = exporting.SimpleNamesFragment {}
+
+            // scoping and exporting API
+            // fragment = scoping.ImportNamespacesScopingFragment {}
+            // fragment = exporting.QualifiedNamesFragment {}
+
+
+            // formatter API 
+            fragment = ecore2xtext.FormatterFragment {}
+
+            // labeling API 
+            // fragment = labeling.LabelProviderFragment {                
+            // }
+
+            // outline API 
+            // fragment = outline.OutlineTreeProviderFragment {}
+            // fragment = outline.QuickOutlineFragment {}
+
+            // java-based API for content assistance 
+            fragment = contentAssist.JavaBasedContentAssistFragment {}
+
+            // antlr parser generator tailored for content assist 
+            fragment = parser.antlr.XtextAntlrUiGeneratorFragment {
+                options = {
+                    classSplitting = true
+                }
+            }
+
+            // provides a compare view
+            // fragment = compare.CompareFragment {
+            //    fileExtensions = file.extensions
+            // }
+
+            // fragment = builder.BuilderIntegrationFragment {}
+
+            // project wizard (optional) 
+
+            // fragment = projectWizard.SimpleProjectWizardFragment {
+            //        generatorProjectName = "${projectName}.generator" 
+            //        modelFileExtension = file.extensions
+            // }
+
+            // quickfix API 
+            // fragment = quickfix.QuickfixProviderFragment {}
+        }
+    }
 }

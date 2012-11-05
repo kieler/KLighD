@@ -19,6 +19,8 @@ package de.cau.cs.kieler.core;
  * to the user) without the need to explicitly declare the error in every method signature.
  *
  * @author msp
+ * @kieler.design proposed 2012-11-02 cds
+ * @kieler.rating proposed yellow 2012-11-02 cds
  */
 public class WrappedException extends RuntimeException {
 

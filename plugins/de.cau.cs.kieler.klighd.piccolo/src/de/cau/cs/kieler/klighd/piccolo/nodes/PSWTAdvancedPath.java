@@ -735,7 +735,7 @@ public class PSWTAdvancedPath extends PNode {
             break;
         case 2:
             path.quadTo((float) points[i].getX(), (float) points[i].getY(),
-                    (float) points[i].getX(), (float) points[i].getY());
+                    (float) points[i + 1].getX(), (float) points[i + 1].getY());
             break;
         default:
             // this should not happen

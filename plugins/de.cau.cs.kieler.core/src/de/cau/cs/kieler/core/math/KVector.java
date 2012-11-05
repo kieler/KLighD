@@ -21,6 +21,7 @@ import de.cau.cs.kieler.core.util.IDataObject;
 /**
  * A simple 2D vector class which supports translation, scaling, normalization etc.
  * 
+ * @kieler.design proposed 2012-11-02 cds
  * @kieler.rating 2011-01-13 proposed yellow msp
  * @author uru
  * @author owo

@@ -24,6 +24,7 @@ import de.cau.cs.kieler.core.util.IDataObject;
 /**
  * A chain of vectors. Can be used to describe polylines or similar constructs.
  * 
+ * @kieler.design proposed 2012-11-02 cds
  * @kieler.rating 2011-01-13 proposed yellow msp
  * @author msp
  */

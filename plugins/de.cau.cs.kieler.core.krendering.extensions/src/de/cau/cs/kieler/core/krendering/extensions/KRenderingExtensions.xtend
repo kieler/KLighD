@@ -26,7 +26,13 @@ import org.eclipse.emf.ecore.util.EcoreUtil
 import de.cau.cs.kieler.core.kgraph.KGraphElement
 import de.cau.cs.kieler.core.krendering.LineStyle
 import de.cau.cs.kieler.core.krendering.KLineStyle
+import de.cau.cs.kieler.core.krendering.KFontName
+import de.cau.cs.kieler.core.krendering.KRotation
 
+/**
+ * This utility class contains various methods that are convenient while composing KRendering data.
+ * It does not claim to be complete ;-).
+ */
 class KRenderingExtensions {
 	
 	private static val KRenderingFactory renderingFactory = KRenderingFactory::eINSTANCE
@@ -60,18 +66,6 @@ class KRenderingExtensions {
         ];
     }
 
-    def KLineWidth getLineWidth(KRendering rendering) {
-        // chsch: I'm currently not sure whether the first or the last will win...
-        return rendering.styles.filter(typeof(KLineWidth)).last?:(renderingFactory.createKLineWidth => [
-            lineWidth = 1
-        ]);
-    }
- 
-    def KForegroundColor getFGColor(KRendering rendering) {
-        // chsch: I'm currently not sure whether the first or the last will win...
-        return rendering.styles.filter(typeof(KForegroundColor)).last?:renderingFactory.createKForegroundColor;
-    }
- 
     def <T extends KRendering> T with(T rendering, KPlacementData pd) {
         return rendering => [
             it.placementData = pd
@@ -88,6 +82,13 @@ class KRenderingExtensions {
         return rendering => [
             it.styles += EcoreUtil::copy(style);
         ];
+    }
+ 
+    def KLineWidth getLineWidth(KRendering rendering) {
+        // chsch: I'm currently not sure whether the first or the last will win...
+        return rendering.styles.filter(typeof(KLineWidth)).last?:(renderingFactory.createKLineWidth => [
+            lineWidth = 1
+        ]);
     }
  
     def <T extends KRendering> T setLineWidth(T rendering, int with) {
@@ -108,6 +109,15 @@ class KRenderingExtensions {
         ];
     }
     
+    def <T extends KRendering> T setRotation(T rendering, Float rotation) {
+        rendering.styles.removeAll(rendering.styles.filter(typeof(KRotation)).toList);
+        return rendering => [
+            it.styles += renderingFactory.createKRotation => [
+                it.setRotation(rotation);
+            ];
+        ];
+    }
+    
     def <T extends KRendering> T setBackgroundColor(T rendering, KColor color) {
         rendering.styles.removeAll(rendering.styles.filter(typeof(KBackgroundColor)).toList);        
         return rendering => [
@@ -119,6 +129,11 @@ class KRenderingExtensions {
         ];
     }
     
+    def KBackgroundColor getBGColor(KRendering rendering) {
+        // chsch: I'm currently not sure whether the first or the last will win...
+        return rendering.styles.filter(typeof(KBackgroundColor)).last?:renderingFactory.createKBackgroundColor;
+    }
+ 
 	def <T extends KRendering> T setBackgroundColor(T rendering, int red, int green, int blue) {
 		rendering.styles.removeAll(rendering.styles.filter(typeof(KBackgroundColor)).toList);
 		return rendering => [
@@ -130,6 +145,11 @@ class KRenderingExtensions {
 		];		
 	}
     
+    def KForegroundColor getFGColor(KRendering rendering) {
+        // chsch: I'm currently not sure whether the first or the last will win...
+        return rendering.styles.filter(typeof(KForegroundColor)).last?:renderingFactory.createKForegroundColor;
+    }
+ 
     def <T extends KRendering> T setForegroundColor(T rendering, KColor color) {
         rendering.styles.removeAll(rendering.styles.filter(typeof(KForegroundColor)).toList);        
         return rendering => [
@@ -189,15 +209,38 @@ class KRenderingExtensions {
         ];
 	}
 	
-	def <T extends KRendering> T setFontSize(T rendering, int size) {
+    def KFontSize getFontSize(KRendering rendering) {
+        // chsch: I'm currently not sure whether the first or the last will win...
+        return rendering.styles.filter(typeof(KFontSize)).last?:(renderingFactory.createKFontSize => [
+            size = 10
+        ]);
+    }
+ 
+    def <T extends KRendering> T setFontSize(T rendering, int size) {
         rendering.styles.removeAll(rendering.styles.filter(typeof(KFontSize)).toList);
-		return rendering => [
+        return rendering => [
             it.styles += renderingFactory.createKFontSize => [
                 it.setSize(size);
             ];
-		];		
-	}
-	
+        ];      
+    }
+    
+    def KFontName getFontName(KRendering rendering) {
+        // chsch: I'm currently not sure whether the first or the last will win...
+        return rendering.styles.filter(typeof(KFontName)).last?:(renderingFactory.createKFontName => [
+            name = "Arial"
+        ]);
+    }
+ 
+    def <T extends KRendering> T setFontName(T rendering, String name) {
+        rendering.styles.removeAll(rendering.styles.filter(typeof(KFontName)).toList);
+        return rendering => [
+            it.styles += renderingFactory.createKFontName => [
+                it.setName(name);
+            ];
+        ];      
+    }
+    
 	def <T extends KRendering> T setHorizontalAlignment(T rendering, HorizontalAlignment ha) {
         rendering.styles.removeAll(rendering.styles.filter(typeof(KHorizontalAlignment)).toList);
 		return rendering => [
@@ -253,6 +296,12 @@ class KRenderingExtensions {
         ];
 	}
 	
+    public val PositionReferenceX LEFT = PositionReferenceX::LEFT;
+    public val PositionReferenceX RIGHT = PositionReferenceX::RIGHT;
+    
+    public val PositionReferenceY TOP = PositionReferenceY::TOP;
+    public val PositionReferenceY BOTTOM = PositionReferenceY::BOTTOM;
+    
     def KPosition createKPosition(PositionReferenceX px, float absoluteLR, float relativeLR,
                                   PositionReferenceY py, float absoluteTB, float relativeTB){
         return renderingFactory.createKPosition => [

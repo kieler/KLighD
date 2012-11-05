@@ -23,7 +23,7 @@ import org.eclipse.xtext.serializer.sequencer.ITransientValueService;
 import org.eclipse.xtext.serializer.sequencer.ITransientValueService.ValueTransient;
 
 @SuppressWarnings("all")
-public abstract class AbstractKLayoutDataSemanticSequencer extends AbstractDelegatingSemanticSequencer {
+public class KLayoutDataSemanticSequencer extends AbstractDelegatingSemanticSequencer {
 
 	@Inject
 	private KLayoutDataGrammarAccess grammarAccess;

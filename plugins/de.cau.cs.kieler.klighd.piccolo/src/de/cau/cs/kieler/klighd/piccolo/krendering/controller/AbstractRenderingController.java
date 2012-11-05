@@ -63,6 +63,7 @@ import de.cau.cs.kieler.core.krendering.KRectangle;
 import de.cau.cs.kieler.core.krendering.KRendering;
 import de.cau.cs.kieler.core.krendering.KRenderingPackage;
 import de.cau.cs.kieler.core.krendering.KRenderingRef;
+import de.cau.cs.kieler.core.krendering.KRotation;
 import de.cau.cs.kieler.core.krendering.KRoundedBendsPolyline;
 import de.cau.cs.kieler.core.krendering.KRoundedRectangle;
 import de.cau.cs.kieler.core.krendering.KSpline;
@@ -1514,6 +1515,14 @@ public abstract class AbstractRenderingController<S extends KGraphElement, T ext
                     return true;
                 }
 
+                // rotation
+                public Boolean caseKRotation(final KRotation r) {
+                    if (theStyles.rotation == null) {
+                        theStyles.rotation = r;
+                    }
+                    return true;
+                }
+
                 // horizontal alignment
                 public Boolean caseKHorizontalAlignment(final KHorizontalAlignment ha) {
                     if (theStyles.horizontalAlignment == null) {
@@ -1626,6 +1635,13 @@ public abstract class AbstractRenderingController<S extends KGraphElement, T ext
                 controller.setLineStyle(LineStyle.SOLID);
                 break;
             }
+        }
+        
+        
+        // apply rotation
+        if (styles.rotation != null) {
+            KRotation rotation = styles.rotation;
+            controller.setRotation(rotation.getRotation());
         }
 
         // apply horizontal alignment
@@ -1798,6 +1814,8 @@ public abstract class AbstractRenderingController<S extends KGraphElement, T ext
         private KBackgroundVisibility backgroundVisibility = null;
         /** the line style. */
         private KLineStyle lineStyle = null;
+        /** the horizontal alignment. */
+        private KRotation rotation = null;
         /** the horizontal alignment. */
         private KHorizontalAlignment horizontalAlignment = null;
         /** the vertical alignment. */

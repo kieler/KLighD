@@ -15,6 +15,7 @@ import de.cau.cs.kieler.kiml.LayoutOptionData
 import de.cau.cs.kieler.kiml.LayoutOptionData$Type
 import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout
 import de.cau.cs.kieler.kiml.util.KimlUtil
+import java.util.ArrayList
 
 class KNodeExtensions {
 	
@@ -26,8 +27,22 @@ class KNodeExtensions {
 
     /**
      * A convenient getter preserving the element image relation by a create extension.
-     */	
-    def KNode create node: KimlUtil::createInitializedNode getNode(Object o) {
+     */ 
+    def private KNode create node: KimlUtil::createInitializedNode internalCreateNode(ArrayList<Object> oc) {
+    }
+
+    /**
+     * A convenient getter preserving the element image relation by a create extension.
+     */ 
+    def KNode getNode(Object o) {
+        newArrayList(o).internalCreateNode
+    }
+    
+    /**
+     * A convenient getter preserving the element image relation by a create extension.
+     */ 
+    def KNode getNode(Object o1, Object o2) {
+        newArrayList(o1, o2).internalCreateNode
     }
     
     /**
@@ -43,6 +58,14 @@ class KNodeExtensions {
      */
     def KNode createNode(Object o) {
         return o.node
+    }
+    
+    /**
+     * An alias of {@link #getNode} allowing to express in business that the KNode will
+     * be created at this place. It is just syntactic sugar.  
+     */
+    def KNode createNode(Object o1, Object o2) {
+        return o1.getNode(o2)
     }
     
     def Pair<Float, Float> getNodeSize(KNode node) {
@@ -64,9 +87,9 @@ class KNodeExtensions {
         node.getData(typeof(KShapeLayout)).width;
     }
     
-    def KNode setNodeSize(KNode node, float with, float height) {
+    def KNode setNodeSize(KNode node, float width, float height) {
         return node => [
-            getData(typeof(KShapeLayout)).setSize(with, height)
+            getData(typeof(KShapeLayout)).setSize(width, height)
         ];
     }
     

@@ -37,6 +37,7 @@ import de.cau.cs.kieler.core.krendering.KRenderingLibrary;
 import de.cau.cs.kieler.core.krendering.KRenderingPackage;
 import de.cau.cs.kieler.core.krendering.KRenderingRef;
 import de.cau.cs.kieler.core.krendering.KRightPosition;
+import de.cau.cs.kieler.core.krendering.KRotation;
 import de.cau.cs.kieler.core.krendering.KRoundedBendsPolyline;
 import de.cau.cs.kieler.core.krendering.KRoundedRectangle;
 import de.cau.cs.kieler.core.krendering.KSpline;
@@ -62,7 +63,7 @@ import org.eclipse.xtext.serializer.sequencer.ITransientValueService;
 import org.eclipse.xtext.serializer.sequencer.ITransientValueService.ValueTransient;
 
 @SuppressWarnings("all")
-public abstract class AbstractKRenderingSemanticSequencer extends KLayoutDataSemanticSequencer {
+public class KRenderingSemanticSequencer extends KLayoutDataSemanticSequencer {
 
 	@Inject
 	private KRenderingGrammarAccess grammarAccess;
@@ -313,6 +314,13 @@ public abstract class AbstractKRenderingSemanticSequencer extends KLayoutDataSem
 					return; 
 				}
 				else break;
+			case KRenderingPackage.KROTATION:
+				if(context == grammarAccess.getKRotationRule() ||
+				   context == grammarAccess.getKStyleRule()) {
+					sequence_KRotation(context, (KRotation) semanticObject); 
+					return; 
+				}
+				else break;
 			case KRenderingPackage.KROUNDED_BENDS_POLYLINE:
 				if(context == grammarAccess.getKRenderingRule() ||
 				   context == grammarAccess.getKRoundedBendsPolylineRule()) {
@@ -551,38 +559,16 @@ public abstract class AbstractKRenderingSemanticSequencer extends KLayoutDataSem
 	/**
 	 * Constraint:
 	 *     (
-	 *         widthHint=EFloat 
-	 *         heightHint=EFloat 
-	 *         insetRight=EFloat 
-	 *         insetBottom=EFloat 
-	 *         insetLeft=EFloat 
-	 *         insetTop=EFloat
+	 *         widthHint=EFloat? 
+	 *         heightHint=EFloat? 
+	 *         insetRight=EFloat? 
+	 *         insetBottom=EFloat? 
+	 *         insetLeft=EFloat? 
+	 *         insetTop=EFloat?
 	 *     )
 	 */
 	protected void sequence_KGridPlacementData(EObject context, KGridPlacementData semanticObject) {
-		if(errorAcceptor != null) {
-			if(transientValues.isValueTransient(semanticObject, KRenderingPackage.Literals.KGRID_PLACEMENT_DATA__WIDTH_HINT) == ValueTransient.YES)
-				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, KRenderingPackage.Literals.KGRID_PLACEMENT_DATA__WIDTH_HINT));
-			if(transientValues.isValueTransient(semanticObject, KRenderingPackage.Literals.KGRID_PLACEMENT_DATA__HEIGHT_HINT) == ValueTransient.YES)
-				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, KRenderingPackage.Literals.KGRID_PLACEMENT_DATA__HEIGHT_HINT));
-			if(transientValues.isValueTransient(semanticObject, KRenderingPackage.Literals.KGRID_PLACEMENT_DATA__INSET_RIGHT) == ValueTransient.YES)
-				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, KRenderingPackage.Literals.KGRID_PLACEMENT_DATA__INSET_RIGHT));
-			if(transientValues.isValueTransient(semanticObject, KRenderingPackage.Literals.KGRID_PLACEMENT_DATA__INSET_BOTTOM) == ValueTransient.YES)
-				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, KRenderingPackage.Literals.KGRID_PLACEMENT_DATA__INSET_BOTTOM));
-			if(transientValues.isValueTransient(semanticObject, KRenderingPackage.Literals.KGRID_PLACEMENT_DATA__INSET_LEFT) == ValueTransient.YES)
-				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, KRenderingPackage.Literals.KGRID_PLACEMENT_DATA__INSET_LEFT));
-			if(transientValues.isValueTransient(semanticObject, KRenderingPackage.Literals.KGRID_PLACEMENT_DATA__INSET_TOP) == ValueTransient.YES)
-				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, KRenderingPackage.Literals.KGRID_PLACEMENT_DATA__INSET_TOP));
-		}
-		INodesForEObjectProvider nodes = createNodeProvider(semanticObject);
-		SequenceFeeder feeder = createSequencerFeeder(semanticObject, nodes);
-		feeder.accept(grammarAccess.getKGridPlacementDataAccess().getWidthHintEFloatParserRuleCall_3_0(), semanticObject.getWidthHint());
-		feeder.accept(grammarAccess.getKGridPlacementDataAccess().getHeightHintEFloatParserRuleCall_5_0(), semanticObject.getHeightHint());
-		feeder.accept(grammarAccess.getKGridPlacementDataAccess().getInsetRightEFloatParserRuleCall_7_0(), semanticObject.getInsetRight());
-		feeder.accept(grammarAccess.getKGridPlacementDataAccess().getInsetBottomEFloatParserRuleCall_9_0(), semanticObject.getInsetBottom());
-		feeder.accept(grammarAccess.getKGridPlacementDataAccess().getInsetLeftEFloatParserRuleCall_11_0(), semanticObject.getInsetLeft());
-		feeder.accept(grammarAccess.getKGridPlacementDataAccess().getInsetTopEFloatParserRuleCall_13_0(), semanticObject.getInsetTop());
-		feeder.finish();
+		genericSequencer.createSequence(context, semanticObject);
 	}
 	
 	
@@ -755,6 +741,15 @@ public abstract class AbstractKRenderingSemanticSequencer extends KLayoutDataSem
 	
 	/**
 	 * Constraint:
+	 *     (rotation=EFloat propagateToChildren?='!'?)
+	 */
+	protected void sequence_KRotation(EObject context, KRotation semanticObject) {
+		genericSequencer.createSequence(context, semanticObject);
+	}
+	
+	
+	/**
+	 * Constraint:
 	 *     (
 	 *         bendRadius=EFloat 
 	 *         ((styles+=KStyle styles+=KStyle*)? placementData=KPlacementData? childPlacement=KPlacement? (children+=KRendering children+=KRendering*)?)?
@@ -789,26 +784,10 @@ public abstract class AbstractKRenderingSemanticSequencer extends KLayoutDataSem
 	
 	/**
 	 * Constraint:
-	 *     (insetRight=EFloat insetBottom=EFloat insetLeft=EFloat insetTop=EFloat)
+	 *     (insetRight=EFloat? insetBottom=EFloat? insetLeft=EFloat? insetTop=EFloat?)
 	 */
 	protected void sequence_KStackPlacementData(EObject context, KStackPlacementData semanticObject) {
-		if(errorAcceptor != null) {
-			if(transientValues.isValueTransient(semanticObject, KRenderingPackage.Literals.KSTACK_PLACEMENT_DATA__INSET_RIGHT) == ValueTransient.YES)
-				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, KRenderingPackage.Literals.KSTACK_PLACEMENT_DATA__INSET_RIGHT));
-			if(transientValues.isValueTransient(semanticObject, KRenderingPackage.Literals.KSTACK_PLACEMENT_DATA__INSET_BOTTOM) == ValueTransient.YES)
-				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, KRenderingPackage.Literals.KSTACK_PLACEMENT_DATA__INSET_BOTTOM));
-			if(transientValues.isValueTransient(semanticObject, KRenderingPackage.Literals.KSTACK_PLACEMENT_DATA__INSET_LEFT) == ValueTransient.YES)
-				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, KRenderingPackage.Literals.KSTACK_PLACEMENT_DATA__INSET_LEFT));
-			if(transientValues.isValueTransient(semanticObject, KRenderingPackage.Literals.KSTACK_PLACEMENT_DATA__INSET_TOP) == ValueTransient.YES)
-				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, KRenderingPackage.Literals.KSTACK_PLACEMENT_DATA__INSET_TOP));
-		}
-		INodesForEObjectProvider nodes = createNodeProvider(semanticObject);
-		SequenceFeeder feeder = createSequencerFeeder(semanticObject, nodes);
-		feeder.accept(grammarAccess.getKStackPlacementDataAccess().getInsetRightEFloatParserRuleCall_3_0(), semanticObject.getInsetRight());
-		feeder.accept(grammarAccess.getKStackPlacementDataAccess().getInsetBottomEFloatParserRuleCall_5_0(), semanticObject.getInsetBottom());
-		feeder.accept(grammarAccess.getKStackPlacementDataAccess().getInsetLeftEFloatParserRuleCall_7_0(), semanticObject.getInsetLeft());
-		feeder.accept(grammarAccess.getKStackPlacementDataAccess().getInsetTopEFloatParserRuleCall_9_0(), semanticObject.getInsetTop());
-		feeder.finish();
+		genericSequencer.createSequence(context, semanticObject);
 	}
 	
 	

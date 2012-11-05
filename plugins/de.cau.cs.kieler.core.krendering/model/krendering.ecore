@@ -190,4 +190,8 @@
   <eClassifiers xsi:type="ecore:EClass" name="KRoundedBendsPolyline" eSuperTypes="#//KPolyline">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="bendRadius" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EFloat"/>
   </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="KRotation" eSuperTypes="#//KStyle">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="rotation" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EFloat"/>
+  </eClassifiers>
 </ecore:EPackage>

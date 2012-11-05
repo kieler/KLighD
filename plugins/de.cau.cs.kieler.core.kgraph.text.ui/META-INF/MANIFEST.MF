@@ -17,12 +17,10 @@ Require-Bundle: org.eclipse.xtext.ui,
 Import-Package: org.apache.log4j,
  org.apache.commons.logging
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
-Export-Package: de.cau.cs.kieler.core.kgraph.text.klayoutdata.ui.contentassist,
- de.cau.cs.kieler.core.kgraph.text.klayoutdata.ui.contentassist.antlr,
- de.cau.cs.kieler.core.kgraph.text.krendering.ui.contentassist,
+Export-Package: de.cau.cs.kieler.core.kgraph.text.klayoutdata.ui.contentassist.antlr,
  de.cau.cs.kieler.core.kgraph.text.krendering.ui.contentassist.antlr,
- de.cau.cs.kieler.core.kgraph.text.ui.contentassist,
  de.cau.cs.kieler.core.kgraph.text.ui.contentassist.antlr,
- de.cau.cs.kieler.core.kgraph.text.krendering.ui.contentassist.antlr,
- de.cau.cs.kieler.core.kgraph.text.klayoutdata.ui.contentassist.antlr
+ de.cau.cs.kieler.core.kgraph.text.ui.contentassist,
+ de.cau.cs.kieler.core.kgraph.text.klayoutdata.ui.contentassist,
+ de.cau.cs.kieler.core.kgraph.text.krendering.ui.contentassist
 Bundle-Activator: de.cau.cs.kieler.core.kgraph.text.ui.internal.KGraphActivator

@@ -179,7 +179,8 @@ public final class KlighdDataManager {
                     StatusManager.getManager().handle(
                             new Status(IStatus.ERROR, KlighdPlugin.PLUGIN_ID,
                                     NO_CLASS_DEF_FOUND_ERROR_MSG.replace("<<CLAZZ>>",
-                                            element.getAttribute(ATTRIBUTE_CLASS)), exception.getCause()));
+                                            element.getAttribute(ATTRIBUTE_CLASS)), exception
+                                            .getCause()));
                 }
                 if (modelTransformation != null) {
                     String id = element.getAttribute(ATTRIBUTE_ID);
