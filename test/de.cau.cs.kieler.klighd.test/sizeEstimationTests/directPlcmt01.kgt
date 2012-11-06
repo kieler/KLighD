@@ -1,0 +1,47 @@
+KNode {
+	children KNode {
+		data RoundedRectangle 30.0 30.0 {
+			children:
+			Polyline {
+				placementData:
+				PolylinePlacementData {
+					points
+					left 0.0 0.0 / top 20.0 0.0,
+					right 0.0 0.0 / top 20.0 0.0
+				}
+			}
+			Rectangle {
+				placementData:
+				DirectPlacementData {
+					topLeft
+					left 0.0 0.1 / top 20.0 0.1,
+					bottomRight
+					right 0.0 0.1 / bottom 0.0 0.1
+				}
+				children:
+				Text "Hallo Du\n   da !!" {
+					styles
+					font "Lucida Handwriting"
+					fontSize 10
+					bold
+				}
+			}
+			RoundedRectangle 20.0 20.0 {
+				styles 
+				    backgroundVisibility false 
+				placementData DirectPlacementData {
+					topLeft
+					left 0.0 0.1 / top 0.0 0.3,
+					bottomRight
+					right 0.0 0.2 / bottom 0.0 0.2
+				}				
+				children Text "Hallo Du ii da" {
+					styles
+					font "Lucida Grande"
+					fontSize 20
+				bold
+				}
+			}
+		}
+	}
+}

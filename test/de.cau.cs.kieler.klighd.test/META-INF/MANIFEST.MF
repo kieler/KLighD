@@ -1,0 +1,15 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: KLighD Tests
+Bundle-SymbolicName: de.cau.cs.kieler.klighd.test
+Bundle-Version: 0.1.0.qualifier
+Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Require-Bundle: org.junit4;bundle-version="4.8.1",
+ org.eclipse.core.runtime,
+ de.cau.cs.kieler.core.test;bundle-version="0.7.0",
+ de.cau.cs.kieler.core.kgraph;bundle-version="0.4.1",
+ de.cau.cs.kieler.core.krendering;bundle-version="0.2.0",
+ de.cau.cs.kieler.core.krendering.extensions;bundle-version="0.1.0",
+ de.cau.cs.kieler.core.kgraph.text;bundle-version="0.1.0",
+ de.cau.cs.kieler.kiml;bundle-version="0.11.0",
+ de.cau.cs.kieler.klighd;bundle-version="0.2.0"
