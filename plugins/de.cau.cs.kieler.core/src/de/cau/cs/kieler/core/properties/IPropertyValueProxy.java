@@ -16,6 +16,8 @@ package de.cau.cs.kieler.core.properties;
 /**
  * A proxy object for properties that are resolved lazily.
  *
+ * @kieler.rating proposed yellow 2012-11-06 cds
+ * @kieler.design proposed 2012-11-06 cds
  * @author msp
  */
 public interface IPropertyValueProxy {
