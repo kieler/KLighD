@@ -16,6 +16,7 @@ package de.cau.cs.kieler.core.util;
 /**
  * Interface for conditions that can be evaluated on a specific object.
  *
+ * @kieler.design proposed 2012-11-07 msp cds Think about whether to move this stuff to KARMA.
  * @param <T> the type for which the condition is used
  * @author msp
  * @deprecated use {@code com.google.common.base.Predicate} instead (contained in Guava)
