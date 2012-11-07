@@ -67,7 +67,7 @@ public class KLayoutDataGrammarAccess extends AbstractGrammarElementFinder {
 		////        ('insets' insets=KInsets)?
 		////    '}';
 		//	{KShapeLayout} "KShapeLayout" "{" ("xpos" xpos=EFloat)? ("ypos" ypos=EFloat)? ("width" width=EFloat)? ("height"
-		//	height=EFloat)? ("insets" insets=KInsets)? ("mapProperties" ":" persistentEntries+=PersistentEntry (","?
+		//	height=EFloat)? ("insets" insets=KInsets)? ("mapProperties" ":"? persistentEntries+=PersistentEntry (","?
 		//	persistentEntries+=PersistentEntry)*)? "}";
 		public ParserRule getRule() { return rule; }
 
@@ -82,7 +82,7 @@ public class KLayoutDataGrammarAccess extends AbstractGrammarElementFinder {
 		////        ('insets' insets=KInsets)?
 		////    '}';
 		//{KShapeLayout} "KShapeLayout" "{" ("xpos" xpos=EFloat)? ("ypos" ypos=EFloat)? ("width" width=EFloat)? ("height"
-		//height=EFloat)? ("insets" insets=KInsets)? ("mapProperties" ":" persistentEntries+=PersistentEntry (","?
+		//height=EFloat)? ("insets" insets=KInsets)? ("mapProperties" ":"? persistentEntries+=PersistentEntry (","?
 		//persistentEntries+=PersistentEntry)*)? "}"
 		public Group getGroup() { return cGroup; }
 
@@ -165,13 +165,13 @@ public class KLayoutDataGrammarAccess extends AbstractGrammarElementFinder {
 		//KInsets
 		public RuleCall getInsetsKInsetsParserRuleCall_7_1_0() { return cInsetsKInsetsParserRuleCall_7_1_0; }
 
-		//("mapProperties" ":" persistentEntries+=PersistentEntry (","? persistentEntries+=PersistentEntry)*)?
+		//("mapProperties" ":"? persistentEntries+=PersistentEntry (","? persistentEntries+=PersistentEntry)*)?
 		public Group getGroup_8() { return cGroup_8; }
 
 		//"mapProperties"
 		public Keyword getMapPropertiesKeyword_8_0() { return cMapPropertiesKeyword_8_0; }
 
-		//":"
+		//":"?
 		public Keyword getColonKeyword_8_1() { return cColonKeyword_8_1; }
 
 		//persistentEntries+=PersistentEntry
@@ -694,7 +694,7 @@ public class KLayoutDataGrammarAccess extends AbstractGrammarElementFinder {
 	////        ('insets' insets=KInsets)?
 	////    '}';
 	//	{KShapeLayout} "KShapeLayout" "{" ("xpos" xpos=EFloat)? ("ypos" ypos=EFloat)? ("width" width=EFloat)? ("height"
-	//	height=EFloat)? ("insets" insets=KInsets)? ("mapProperties" ":" persistentEntries+=PersistentEntry (","?
+	//	height=EFloat)? ("insets" insets=KInsets)? ("mapProperties" ":"? persistentEntries+=PersistentEntry (","?
 	//	persistentEntries+=PersistentEntry)*)? "}";
 	public KShapeLayoutElements getKShapeLayoutAccess() {
 		return (pKShapeLayout != null) ? pKShapeLayout : (pKShapeLayout = new KShapeLayoutElements());

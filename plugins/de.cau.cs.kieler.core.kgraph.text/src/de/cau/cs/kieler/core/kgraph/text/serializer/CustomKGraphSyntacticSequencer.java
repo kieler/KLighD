@@ -159,6 +159,14 @@ public class CustomKGraphSyntacticSequencer extends KGraphSyntacticSequencer {
         acceptUnassignedKeyword(grammarAccess.getKTextAccess().getColonKeyword_3_2_1(), ":", null);
     }
     
+    /**
+     * Syntax:
+     *     ':'?
+     */
+    protected void emit_KText_ColonKeyword_3_6_1_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
+        acceptUnassignedKeyword(grammarAccess.getKTextAccess().getColonKeyword_3_6_1(), ":", null);
+    }
+    
 
 
 }

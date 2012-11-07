@@ -809,7 +809,8 @@ public class KRenderingSemanticSequencer extends KLayoutDataSemanticSequencer {
 	 *             (styles+=KStyle styles+=KStyle*)? 
 	 *             placementData=KPlacementData? 
 	 *             (children+=KRendering children+=KRendering*)? 
-	 *             childPlacement=KPlacement?
+	 *             childPlacement=KPlacement? 
+	 *             (persistentEntries+=PersistentEntry persistentEntries+=PersistentEntry*)?
 	 *         )?
 	 *     )
 	 */

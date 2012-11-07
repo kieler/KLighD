@@ -1783,17 +1783,32 @@ public class KRenderingGrammarAccess extends AbstractGrammarElementFinder {
 		private final Keyword cChildPlacementKeyword_3_5_0 = (Keyword)cGroup_3_5.eContents().get(0);
 		private final Assignment cChildPlacementAssignment_3_5_1 = (Assignment)cGroup_3_5.eContents().get(1);
 		private final RuleCall cChildPlacementKPlacementParserRuleCall_3_5_1_0 = (RuleCall)cChildPlacementAssignment_3_5_1.eContents().get(0);
-		private final Keyword cRightCurlyBracketKeyword_3_6 = (Keyword)cGroup_3.eContents().get(6);
+		private final Group cGroup_3_6 = (Group)cGroup_3.eContents().get(6);
+		private final Keyword cMapPropertiesKeyword_3_6_0 = (Keyword)cGroup_3_6.eContents().get(0);
+		private final Keyword cColonKeyword_3_6_1 = (Keyword)cGroup_3_6.eContents().get(1);
+		private final Assignment cPersistentEntriesAssignment_3_6_2 = (Assignment)cGroup_3_6.eContents().get(2);
+		private final RuleCall cPersistentEntriesPersistentEntryParserRuleCall_3_6_2_0 = (RuleCall)cPersistentEntriesAssignment_3_6_2.eContents().get(0);
+		private final Group cGroup_3_6_3 = (Group)cGroup_3_6.eContents().get(3);
+		private final Keyword cCommaKeyword_3_6_3_0 = (Keyword)cGroup_3_6_3.eContents().get(0);
+		private final Assignment cPersistentEntriesAssignment_3_6_3_1 = (Assignment)cGroup_3_6_3.eContents().get(1);
+		private final RuleCall cPersistentEntriesPersistentEntryParserRuleCall_3_6_3_1_0 = (RuleCall)cPersistentEntriesAssignment_3_6_3_1.eContents().get(0);
+		private final Keyword cRightCurlyBracketKeyword_3_7 = (Keyword)cGroup_3.eContents().get(7);
 		
 		//KText:
 		//	{KText} "Text" text=EString? ("{" clip?="clip"? ("styles" ":"? styles+=KStyle (","? styles+=KStyle)*)?
 		//	("placementData" placementData=KPlacementData)? ("children" "{" children+=KRendering (","? children+=KRendering)*
-		//	"}")? ("childPlacement" childPlacement=KPlacement)? "}")?;
+		//	"}")? ("childPlacement" childPlacement=KPlacement)? // allow mapProperties in order to specify size for size estimation tests
+		//	//  (I don't trust in the different SWT implementations to
+		//	//   provide the same size of a text on different platforms)
+		//	("mapProperties" ":"? persistentEntries+=PersistentEntry (","? persistentEntries+=PersistentEntry)*)? "}")?;
 		public ParserRule getRule() { return rule; }
 
 		//{KText} "Text" text=EString? ("{" clip?="clip"? ("styles" ":"? styles+=KStyle (","? styles+=KStyle)*)? ("placementData"
 		//placementData=KPlacementData)? ("children" "{" children+=KRendering (","? children+=KRendering)* "}")?
-		//("childPlacement" childPlacement=KPlacement)? "}")?
+		//("childPlacement" childPlacement=KPlacement)? // allow mapProperties in order to specify size for size estimation tests
+		////  (I don't trust in the different SWT implementations to
+		////   provide the same size of a text on different platforms)
+		//("mapProperties" ":"? persistentEntries+=PersistentEntry (","? persistentEntries+=PersistentEntry)*)? "}")?
 		public Group getGroup() { return cGroup; }
 
 		//{KText}
@@ -1810,7 +1825,10 @@ public class KRenderingGrammarAccess extends AbstractGrammarElementFinder {
 
 		//("{" clip?="clip"? ("styles" ":"? styles+=KStyle (","? styles+=KStyle)*)? ("placementData"
 		//placementData=KPlacementData)? ("children" "{" children+=KRendering (","? children+=KRendering)* "}")?
-		//("childPlacement" childPlacement=KPlacement)? "}")?
+		//("childPlacement" childPlacement=KPlacement)? // allow mapProperties in order to specify size for size estimation tests
+		////  (I don't trust in the different SWT implementations to
+		////   provide the same size of a text on different platforms)
+		//("mapProperties" ":"? persistentEntries+=PersistentEntry (","? persistentEntries+=PersistentEntry)*)? "}")?
 		public Group getGroup_3() { return cGroup_3; }
 
 		//"{"
@@ -1903,8 +1921,35 @@ public class KRenderingGrammarAccess extends AbstractGrammarElementFinder {
 		//KPlacement
 		public RuleCall getChildPlacementKPlacementParserRuleCall_3_5_1_0() { return cChildPlacementKPlacementParserRuleCall_3_5_1_0; }
 
+		//("mapProperties" ":"? persistentEntries+=PersistentEntry (","? persistentEntries+=PersistentEntry)*)?
+		public Group getGroup_3_6() { return cGroup_3_6; }
+
+		//"mapProperties"
+		public Keyword getMapPropertiesKeyword_3_6_0() { return cMapPropertiesKeyword_3_6_0; }
+
+		//":"?
+		public Keyword getColonKeyword_3_6_1() { return cColonKeyword_3_6_1; }
+
+		//persistentEntries+=PersistentEntry
+		public Assignment getPersistentEntriesAssignment_3_6_2() { return cPersistentEntriesAssignment_3_6_2; }
+
+		//PersistentEntry
+		public RuleCall getPersistentEntriesPersistentEntryParserRuleCall_3_6_2_0() { return cPersistentEntriesPersistentEntryParserRuleCall_3_6_2_0; }
+
+		//(","? persistentEntries+=PersistentEntry)*
+		public Group getGroup_3_6_3() { return cGroup_3_6_3; }
+
+		//","?
+		public Keyword getCommaKeyword_3_6_3_0() { return cCommaKeyword_3_6_3_0; }
+
+		//persistentEntries+=PersistentEntry
+		public Assignment getPersistentEntriesAssignment_3_6_3_1() { return cPersistentEntriesAssignment_3_6_3_1; }
+
+		//PersistentEntry
+		public RuleCall getPersistentEntriesPersistentEntryParserRuleCall_3_6_3_1_0() { return cPersistentEntriesPersistentEntryParserRuleCall_3_6_3_1_0; }
+
 		//"}"
-		public Keyword getRightCurlyBracketKeyword_3_6() { return cRightCurlyBracketKeyword_3_6; }
+		public Keyword getRightCurlyBracketKeyword_3_7() { return cRightCurlyBracketKeyword_3_7; }
 	}
 
 	public class KCustomRenderingElements extends AbstractParserRuleElementFinder {
@@ -3909,7 +3954,10 @@ public class KRenderingGrammarAccess extends AbstractGrammarElementFinder {
 	//KText:
 	//	{KText} "Text" text=EString? ("{" clip?="clip"? ("styles" ":"? styles+=KStyle (","? styles+=KStyle)*)?
 	//	("placementData" placementData=KPlacementData)? ("children" "{" children+=KRendering (","? children+=KRendering)*
-	//	"}")? ("childPlacement" childPlacement=KPlacement)? "}")?;
+	//	"}")? ("childPlacement" childPlacement=KPlacement)? // allow mapProperties in order to specify size for size estimation tests
+	//	//  (I don't trust in the different SWT implementations to
+	//	//   provide the same size of a text on different platforms)
+	//	("mapProperties" ":"? persistentEntries+=PersistentEntry (","? persistentEntries+=PersistentEntry)*)? "}")?;
 	public KTextElements getKTextAccess() {
 		return (pKText != null) ? pKText : (pKText = new KTextElements());
 	}
@@ -4278,7 +4326,7 @@ public class KRenderingGrammarAccess extends AbstractGrammarElementFinder {
 	////        ('insets' insets=KInsets)?
 	////    '}';
 	//	{KShapeLayout} "KShapeLayout" "{" ("xpos" xpos=EFloat)? ("ypos" ypos=EFloat)? ("width" width=EFloat)? ("height"
-	//	height=EFloat)? ("insets" insets=KInsets)? ("mapProperties" ":" persistentEntries+=PersistentEntry (","?
+	//	height=EFloat)? ("insets" insets=KInsets)? ("mapProperties" ":"? persistentEntries+=PersistentEntry (","?
 	//	persistentEntries+=PersistentEntry)*)? "}";
 	public KLayoutDataGrammarAccess.KShapeLayoutElements getKShapeLayoutAccess() {
 		return gaKLayoutData.getKShapeLayoutAccess();

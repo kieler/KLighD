@@ -147,6 +147,10 @@ KText returns KText:
         ('placementData' placementData=KPlacementData)?
         ('children' '{' children+=KRendering ( ","? children+=KRendering)* '}' )?
         ('childPlacement' childPlacement=KPlacement)?
+        // allow mapProperties in order to specify size for size estimation tests
+        //  (I don't trust in the different SWT implementations to
+        //   provide the same size of a text on different platforms)
+        ('mapProperties' ':'? persistentEntries+=PersistentEntry ( ","? persistentEntries+=PersistentEntry)*)?
     '}')?;
 
 KCustomRendering returns KCustomRendering:
