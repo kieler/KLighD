@@ -17,6 +17,9 @@ import java.awt.Font;
 
 import org.eclipse.swt.SWT;
 
+import de.cau.cs.kieler.core.properties.IProperty;
+import de.cau.cs.kieler.core.properties.Property;
+
 /**
  * This class contains definitions of initial & default values.
  * 
@@ -62,6 +65,33 @@ public final class KlighdConstants {
      */
     public static final int DEFAULT_TEXT_PADDING = 10;
 
+    /**
+     * Property to be attached to the {@link de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout
+     * KShapeLayout} of a view model's nodes in some regression tests.
+     */
+    public static final IProperty<Float> KLIGHD_TESTING_EXPECTED_HEIGHT = new Property<Float>(
+            "klighd.testing.expected.height");
+
+    /**
+     * Property to be attached to the {@link de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout
+     * KShapeLayout} of a view model's nodes for properly performing regression tests.
+     */
+    public static final IProperty<Float> KLIGHD_TESTING_EXPECTED_WIDTH = new Property<Float>(
+            "klighd.testing.expected.width");
+
+    /**
+     * Property to be attached to the {@link de.cau.cs.kieler.core.krendering.KText KTexts} of a
+     * view model for properly performing various regression tests.
+     */
+    public static final IProperty<Float> KLIGHD_TESTING_HEIGHT = new Property<Float>(
+            "klighd.testing.height");
+
+    /**
+     * Property to be attached to the {@link de.cau.cs.kieler.core.krendering.KText KTexts} of a
+     * view model for properly performing various regression tests.
+     */
+    public static final IProperty<Float> KLIGHD_TESTING_WIDTH = new Property<Float>(
+            "klighd.testing.width");
 
     /**
      * Hidden default constructor.

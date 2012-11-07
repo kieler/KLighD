@@ -126,7 +126,7 @@ public final class PlacementUtil {
     /**
      * A data holder class for bounds.
      */
-    static class Bounds {
+    public static class Bounds {
 
         /** the x-coordinate. */
         float x;
@@ -155,7 +155,7 @@ public final class PlacementUtil {
         /**
          * Constructs bounds from the dimensions of the given Bounds.
          * 
-         * @param point
+         * @param bounds
          *            the Bounds to take the data from
          */
         public Bounds(final Bounds bounds) {
@@ -207,15 +207,53 @@ public final class PlacementUtil {
             this.width = bounds.width;
             this.height = bounds.height;
         }
+        
+        /**
+         * Getter used in JUnit test of the placement logic.
+         * 
+         * @return height
+         */
+        public float getHeight() {
+            return height;
+        }
+        
+        /**
+         * Getter used in JUnit test of the placement logic.
+         * 
+         * @return width
+         */
+        public float getWidth() {
+            return width;
+        }
     }
 
     // CHECKSTYLEON Visibility
 
     private static final KRenderingPackage KRENDERING_PACKAGE = KRenderingPackage.eINSTANCE;
 
+    
     /**
-     * Returns the minimal bounds for a KRendering and updates the placement data of internal
-     * KRenderings accordingly.
+     * Returns the minimal size of a {@link KNode} based on the minimal size of contained
+     * {@link KText KTexts} if present.
+     * 
+     * @param node the node to estimate the size for
+     * @return the estimated size or (0, 0) if no text is contained. 
+     */
+    public static Bounds estimateSize(final KNode node) {
+        KShapeLayout nodeLayout = node.getData(KShapeLayout.class);
+        KRendering nodeRendering = node.getData(KRendering.class);
+        
+        if (nodeLayout != null && nodeRendering != null) {
+            return estimateSize(nodeRendering,
+                    new Bounds(nodeLayout.getWidth(), nodeLayout.getHeight()));
+        } else {
+            return new Bounds(0, 0);
+        }
+    }
+    
+    /**
+     * Returns the minimal size of a KRendering and updates the placement data of internal
+     * KRenderings if necessary (grid placement).
      * 
      * @param rendering
      *            the KRenderings to be evaluated
@@ -276,6 +314,18 @@ public final class PlacementUtil {
      * @return the minimal bounds for the string
      */
     public static Bounds estimateTextSize(final KText kText) {
+        
+        Object testHeight = kText.getProperties().get(KlighdConstants.KLIGHD_TESTING_HEIGHT);
+        Object testWidth = kText.getProperties().get(KlighdConstants.KLIGHD_TESTING_WIDTH);
+        if (testHeight != null || testWidth != null) {
+            // code for the regression tests
+            //  (I don't trust in the different SWT implementations to
+            //   provide the same size of a text on different platforms
+            //   so given data are to be used)
+            float height = testHeight != null ? Float.parseFloat(testHeight.toString()) : 0f;
+            float width = testWidth != null ? Float.parseFloat(testWidth.toString()) : 0f;
+            return new Bounds(width, height);
+        }
 
         KFontName kFontName = IterableExtensions.head(Iterables.filter(kText.getStyles(),
                 KFontName.class));
