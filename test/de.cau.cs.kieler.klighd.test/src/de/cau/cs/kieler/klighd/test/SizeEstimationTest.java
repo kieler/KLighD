@@ -129,7 +129,7 @@ public class SizeEstimationTest {
         
         if (!containsSizeData) {
             throw new IllegalArgumentException(
-                    "The KShapeLayout of the root node must be equipped with properties"
+                    "The KShapeLayout of the tested node must be equipped with properties"
                             + " named " + KLIGHD_TESTING_EXPECTED_HEIGHT + " and "
                             + KLIGHD_TESTING_EXPECTED_WIDTH
                             + " defining the related expected size of the node.");

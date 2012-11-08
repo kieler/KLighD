@@ -13,3 +13,5 @@ Require-Bundle: org.junit4;bundle-version="4.8.1",
  de.cau.cs.kieler.core.kgraph.text;bundle-version="0.1.0",
  de.cau.cs.kieler.kiml;bundle-version="0.11.0",
  de.cau.cs.kieler.klighd;bundle-version="0.2.0"
+Export-Package: de.cau.cs.kieler.klighd.test
+Bundle-Vendor: Christian-Albrechts-Universität zu Kiel
