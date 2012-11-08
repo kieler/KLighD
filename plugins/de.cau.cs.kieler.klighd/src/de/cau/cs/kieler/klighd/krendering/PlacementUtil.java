@@ -324,7 +324,9 @@ public final class PlacementUtil {
             //   so given data are to be used)
             float height = testHeight != null ? Float.parseFloat(testHeight.toString()) : 0f;
             float width = testWidth != null ? Float.parseFloat(testWidth.toString()) : 0f;
-            return new Bounds(width, height);
+            if (height != 0f || width != 0f) {
+                return new Bounds(width, height);
+            }
         }
 
         KFontName kFontName = IterableExtensions.head(Iterables.filter(kText.getStyles(),
