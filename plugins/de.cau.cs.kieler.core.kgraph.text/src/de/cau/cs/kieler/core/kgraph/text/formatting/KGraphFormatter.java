@@ -1,5 +1,5 @@
 /*
- * KIELER - Kiel Integrated Environment for Layout Eclipse RichClient
+  * KIELER - Kiel Integrated Environment for Layout Eclipse RichClient
  * 
  * http://www.informatik.uni-kiel.de/rtsys/kieler/
  * 
@@ -55,7 +55,7 @@ public class KGraphFormatter extends AbstractDeclarativeFormatter {
                 "backgroundColor", "forgroundColor", "backgroundVisibility",
                 "foregroundVisibility", "font", "fontSize", "fontColor", "bold", "italic",
                 "horizontalAlignment", "verticalAlignment", "left", "right", "location", "xOffset",
-                "width", "insets", "KInsets")) {
+                "width", "insets", "KNode, KInsets")) {
             c.setLinewrap().before(word);
         }
         
@@ -72,6 +72,14 @@ public class KGraphFormatter extends AbstractDeclarativeFormatter {
         // configures the line wrap after a valid map property tuple
         c.setLinewrap().after(
                 f.getPersistentEntryAccess().getValueEStringParserRuleCall_1_1_0());
+        
+        // configures the line wrap after 'mapProperties', if no colon follows
+        c.setLinewrap().between(f.getKEdgeLayoutAccess().getMapPropertiesKeyword_6_0(),
+                f.getPersistentEntryAccess().getKeyEStringParserRuleCall_0_0());
+        c.setLinewrap().between(f.getKShapeLayoutAccess().getMapPropertiesKeyword_8_0(),
+                f.getPersistentEntryAccess().getKeyEStringParserRuleCall_0_0());
+        c.setLinewrap().between(f.getKTextAccess().getMapPropertiesKeyword_3_6_0(),
+                f.getPersistentEntryAccess().getKeyEStringParserRuleCall_0_0());
         
         // standard rules targeting comments
         c.setLinewrap(0, 1, 2).before(f.getSL_COMMENTRule());

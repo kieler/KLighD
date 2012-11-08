@@ -63,5 +63,10 @@ public abstract class AbstractKGraphUiModule extends DefaultUiModule {
 		binder.bind(org.eclipse.xtext.ui.editor.contentassist.antlr.internal.Lexer.class).annotatedWith(com.google.inject.name.Names.named(org.eclipse.xtext.ui.LexerUIBindings.CONTENT_ASSIST)).to(de.cau.cs.kieler.core.kgraph.text.ui.contentassist.antlr.internal.InternalKGraphLexer.class);
 	}
 
+	// contributed by org.eclipse.xtext.ui.generator.quickfix.QuickfixProviderFragment
+	public Class<? extends org.eclipse.xtext.ui.editor.quickfix.IssueResolutionProvider> bindIssueResolutionProvider() {
+		return de.cau.cs.kieler.core.kgraph.text.ui.quickfix.KGraphQuickfixProvider.class;
+	}
+
 
 }

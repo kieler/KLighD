@@ -67,6 +67,22 @@ public class CustomKGraphSyntacticSequencer extends KGraphSyntacticSequencer {
      * Syntax:
      *     ':'?
      */
+    protected void emit_KEdgeLayout_ColonKeyword_5_1_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
+        acceptUnassignedKeyword(grammarAccess.getKEdgeLayoutAccess().getColonKeyword_5_1(), ":", null);
+    }
+    
+    /**
+     * Syntax:
+     *     ':'?
+     */
+    protected void emit_KEdgeLayout_ColonKeyword_6_1_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
+        acceptUnassignedKeyword(grammarAccess.getKEdgeLayoutAccess().getColonKeyword_6_1(), ":", null);
+    }
+    
+    /**
+     * Syntax:
+     *     ':'?
+     */
     protected void emit_KPolyline_Impl_ColonKeyword_2_1_1_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
         acceptUnassignedKeyword(grammarAccess.getKPolyline_ImplAccess().getColonKeyword_2_1_1(), ":", null);
     }
@@ -167,6 +183,12 @@ public class CustomKGraphSyntacticSequencer extends KGraphSyntacticSequencer {
         acceptUnassignedKeyword(grammarAccess.getKTextAccess().getColonKeyword_3_6_1(), ":", null);
     }
     
-
-
+    /**
+     * Syntax:
+     *     ':'?
+     */
+    protected void emit_KShapeLayout_ColonKeyword_8_1_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
+        acceptUnassignedKeyword(grammarAccess.getKShapeLayoutAccess().getColonKeyword_8_1(), ":", null);
+    }
+    
 }

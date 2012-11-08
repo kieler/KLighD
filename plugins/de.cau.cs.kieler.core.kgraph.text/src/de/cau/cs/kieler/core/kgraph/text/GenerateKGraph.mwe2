@@ -79,10 +79,10 @@ Workflow {
             fragment = ecore2xtext.Ecore2XtextValueConverterServiceFragment {}
 
             // java-based API for validation 
-            // fragment = validation.JavaValidatorFragment {
+            fragment = validation.JavaValidatorFragment {
             // composedCheck = "org.eclipse.xtext.validation.ImportUriValidator"
             // composedCheck = "org.eclipse.xtext.validation.NamesAreUniqueValidator"
-            // }
+            }
 
             // chsch:
             //  * no advanced local and global scope provider are needed (no package or import URI
@@ -136,7 +136,7 @@ Workflow {
             // }
 
             // quickfix API 
-            // fragment = quickfix.QuickfixProviderFragment {}
+            fragment = quickfix.QuickfixProviderFragment {}
         }
     }
 }
