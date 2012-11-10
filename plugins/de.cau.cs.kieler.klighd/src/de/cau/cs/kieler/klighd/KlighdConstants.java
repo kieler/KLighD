@@ -60,10 +60,16 @@ public final class KlighdConstants {
     
     
     /**
-     * This constant defines the standard margin size around a KText rendering,
-     * if it is defined by related placement data.
+     * This constant defines the standard margin size around a KText rendering, if it is not defined
+     * by related placement data.
+     * 
+     * @Attention It is primitively incorporated in
+     * {@link de.cau.cs.kieler.klighd.krendering.PlacementUtil#estimateTextSize
+     * (de.cau.cs.kieler.core.krendering.KText) PlacementUtil#estimateTextSize(KText)}.
+     * I'm, however, not convinced that this is reasonable approach so I set it to zero for the
+     * moment.
      */
-    public static final int DEFAULT_TEXT_PADDING = 10;
+    public static final int DEFAULT_TEXT_PADDING = 0;
 
     /**
      * Property to be attached to the {@link de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout

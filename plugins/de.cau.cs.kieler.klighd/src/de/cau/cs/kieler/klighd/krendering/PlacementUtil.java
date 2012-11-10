@@ -27,6 +27,7 @@ import com.google.common.base.Strings;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 
+import de.cau.cs.kieler.core.kgraph.KLabel;
 import de.cau.cs.kieler.core.kgraph.KNode;
 import de.cau.cs.kieler.core.krendering.KChildArea;
 import de.cau.cs.kieler.core.krendering.KContainerRendering;
@@ -307,41 +308,79 @@ public final class PlacementUtil {
     }
 
     /**
-     * Returns the minimal bounds for a string.
+     * Returns the minimal bounds for a KText.
      * 
      * @param kText
-     *            the KText whose size are to be estimated.
-     * @return the minimal bounds for the string
+     *            the KText containing the text string whose size is to be estimated.
+     * @return the minimal bounds for the {@link KText}
      */
     public static Bounds estimateTextSize(final KText kText) {
+        return estimateTextSize(kText, kText.getText());
+    }
+
+    /**
+     * Returns the minimal bounds for a KLabel.
+     * Font configurations like font name, size, and style may be provided via an attached
+     * {@link KText} rendering.
+     * 
+     * @param kLabel
+     *            the {@link KLabel} whose size is to be estimated.
+     * @return the minimal bounds for the {@link KLabel}
+     */
+    public static Bounds estimateTextSize(final KLabel kLabel) {
+        return estimateTextSize(kLabel.getData(KText.class), kLabel.getText());
+    }
+
+    /**
+     * Returns the minimal bounds for a string based on configurations of a {@link KText}.
+     * The string is handed over separately in order to allow the text size estimation for
+     * {@link KLabel KLabels}, whose text string is given outside of the {@link KText} rendering.
+     * 
+     * @param kText
+     *            the KText providing font configurations like font name, size, and style; maybe
+     *            <code>null</code>
+     * @param text
+     *            the actual text string whose size is to be estimated; maybe <code>null</code>
+     * @return the minimal bounds for the string
+     */
+    public static Bounds estimateTextSize(final KText kText, final String text) {
         
-        Object testHeight = kText.getProperties().get(KlighdConstants.KLIGHD_TESTING_HEIGHT);
-        Object testWidth = kText.getProperties().get(KlighdConstants.KLIGHD_TESTING_WIDTH);
-        if (testHeight != null || testWidth != null) {
-            // code for the regression tests
-            //  (I don't trust in the different SWT implementations to
-            //   provide the same size of a text on different platforms
-            //   so given data are to be used)
-            float height = testHeight != null ? Float.parseFloat(testHeight.toString()) : 0f;
-            float width = testWidth != null ? Float.parseFloat(testWidth.toString()) : 0f;
-            if (height != 0f || width != 0f) {
-                return new Bounds(width, height);
+        KFontName kFontName = null;
+        KFontSize kFontSize = null;
+        KFontBold kFontBold = null;
+        KFontItalic kFontItalic = null;
+        
+        if (kText != null) {
+            Object testHeight = kText.getProperties().get(KlighdConstants.KLIGHD_TESTING_HEIGHT);
+            Object testWidth = kText.getProperties().get(KlighdConstants.KLIGHD_TESTING_WIDTH);
+            if (testHeight != null || testWidth != null) {
+                // code for the regression tests
+                //  (I don't trust in the different SWT implementations to
+                //   provide the same size of a text on different platforms
+                //   so given data are to be used)
+                float height = testHeight != null ? Float.parseFloat(testHeight.toString()) : 0f;
+                float width = testWidth != null ? Float.parseFloat(testWidth.toString()) : 0f;
+                if (height != 0f || width != 0f) {
+                    return new Bounds(width, height);
+                }
             }
+            kFontName = IterableExtensions.head(Iterables.filter(kText.getStyles(),
+                    KFontName.class));
+            
+            kFontSize = IterableExtensions.head(Iterables.filter(kText.getStyles(),
+                    KFontSize.class));
+
+            kFontBold = IterableExtensions
+                    .head(Iterables.filter(kText.getStyles(), KFontBold.class));
+            kFontItalic = IterableExtensions
+                    .head(Iterables.filter(kText.getStyles(), KFontItalic.class));
         }
 
-        KFontName kFontName = IterableExtensions.head(Iterables.filter(kText.getStyles(),
-                KFontName.class));
         String fontName = kFontName != null ? kFontName.getName()
                 : KlighdConstants.DEFAULT_FONT_NAME;
 
-        KFontSize kFontSize = IterableExtensions.head(Iterables.filter(kText.getStyles(),
-                KFontSize.class));
         int fontSize = kFontSize != null ? kFontSize.getSize() : KlighdConstants.DEFAULT_FONT_SIZE;
 
-        KFontBold kFontBold = IterableExtensions.head(Iterables.filter(kText.getStyles(),
-                KFontBold.class));
-        KFontItalic kFontItalic = IterableExtensions.head(Iterables.filter(kText.getStyles(),
-                KFontItalic.class));
         int fontStyle = kFontBold != null && kFontBold.isBold() ? KlighdConstants.DEFAULT_FONT_STYLE_SWT
                 | SWT.BOLD
                 : KlighdConstants.DEFAULT_FONT_STYLE_SWT;
@@ -349,23 +388,22 @@ public final class PlacementUtil {
                 : fontStyle;
 
         // In order to estimate the required size of a given string according to the determined
-        // font,
-        // style, and size a GC is instantiated, configured, and queried for each line of the text.
-        // This code has basically taken from PSWTText and condensed.
-        GC gc = new GC(Display.getDefault());
+        // font, style, and size a GC is instantiated, configured, and queried for each line of the
+        // text. This code has basically taken from PSWTText and condensed.
+        final GC gc = new GC(Display.getDefault());
         gc.setAntialias(SWT.ON);
         gc.setFont(new Font(Display.getDefault(), fontName, fontSize, fontStyle));
         final FontMetrics fm = gc.getFontMetrics();
 
         Bounds textBounds = new Bounds(0, 0);
 
-        if (kText == null || Strings.isNullOrEmpty(kText.getText())) {
+        if (Strings.isNullOrEmpty(text)) {
             // if no text string is given, take the bounds of a space character,
             textBounds = new Bounds(gc.stringExtent(" "));
         } else {
             // else calculate the bounds (according to
             boolean firstLine = true;
-            for (String line : KTextUtil.getTextLines(kText)) {
+            for (String line : KTextUtil.getTextLines(text)) {
                 Bounds lineBounds = new Bounds(gc.stringExtent(line));
                 if (firstLine) {
                     textBounds.width = lineBounds.width;
@@ -592,7 +630,7 @@ public final class PlacementUtil {
         case RIGHT_LEFT:
             // bottom right comes from right
             // top left comes from left
-            relWidth = (1f - bR.getX().getRelative()) - (tL.getX().getRelative());
+            relWidth = 1f - bR.getX().getRelative() - (tL.getX().getRelative());
             absXOffest = bR.getX().getAbsolute() + tL.getX().getAbsolute();
             break;
 
@@ -606,14 +644,14 @@ public final class PlacementUtil {
         case RIGHT_RIGHT:
             // bottom right comes from right
             // top left comes from right
-            relWidth = tL.getX().getRelative() - bR.getX().getRelative();
+            relWidth = 1f - tL.getX().getRelative() - bR.getX().getRelative();
             absXOffest = Math.round(bR.getX().getAbsolute() - tL.getX().getAbsolute());
             break;
 
         case LEFT_LEFT:
             // bottom right comes from left
             // top left comes from left
-            relWidth = bR.getX().getRelative() - tL.getX().getRelative();
+            relWidth = 1f - bR.getX().getRelative() - tL.getX().getRelative();
             absXOffest = Math.round(tL.getX().getAbsolute() - bR.getX().getAbsolute());
             break;
 
@@ -663,14 +701,14 @@ public final class PlacementUtil {
         case BOTTOM_BOTTOM:
             // bottom right comes from bottom
             // top left comes from bottom
-            relHeight = tL.getY().getRelative() - bR.getY().getRelative();
+            relHeight = 1f - tL.getY().getRelative() - bR.getY().getRelative();
             absYOffest = bR.getY().getAbsolute() - tL.getY().getAbsolute();
             break;
 
         case TOP_TOP:
             // bottom right comes from top
             // top left comes from top
-            relHeight = bR.getY().getRelative() - tL.getY().getRelative();
+            relHeight = 1f - bR.getY().getRelative() - tL.getY().getRelative();
             absYOffest = tL.getY().getAbsolute() - bR.getY().getAbsolute();
             break;
 
