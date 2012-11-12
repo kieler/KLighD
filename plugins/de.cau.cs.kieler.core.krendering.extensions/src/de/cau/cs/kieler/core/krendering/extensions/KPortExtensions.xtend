@@ -380,7 +380,7 @@ class KPortExtensions {
      * This is useful for additionally linking it with the business element represented by the port.
      */
     def KText getFirstText(KPort port) {
-        return port?.getData(typeof(KRendering))?.eAllContents?.filter(typeof(KText))?.head;
+        return port?.getData(typeof(KText))?:(port?.getData(typeof(KRendering))?.eAllContents?.filter(typeof(KText))?.head);
     }
 
 
