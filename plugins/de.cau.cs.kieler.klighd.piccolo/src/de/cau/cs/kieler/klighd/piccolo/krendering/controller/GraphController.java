@@ -151,8 +151,11 @@ public class GraphController {
      *            true if the visualization should be synchronized with the graph; false else
      * 
      *            review hint: setting to false will prevent the application of automatic layout
+     *  @param canvas
+     *            the canvas this graph is drawn on.
      */
-    public GraphController(final KNode graph, final PNode parent, final boolean sync, final PSWTCanvas canvas) {
+    public GraphController(final KNode graph, final PNode parent, final boolean sync, 
+            final PSWTCanvas canvas) {
         // Review: kgraph nodes maintain context information,
         // these information is removed by this statement,
         // mainly needed if textual kgraph editor is used

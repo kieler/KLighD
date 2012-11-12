@@ -48,6 +48,8 @@ public class KNodeRenderingController extends AbstractRenderingController<KNode,
      * 
      * @param node
      *            the Piccolo node representing a node
+     * @param canvas
+     *            the PSWTCanvas this node is drawn on. Necessary to display images.
      */
     public KNodeRenderingController(final KNodeNode node, final PSWTCanvas canvas) {
         super(node.getGraphElement(), node);

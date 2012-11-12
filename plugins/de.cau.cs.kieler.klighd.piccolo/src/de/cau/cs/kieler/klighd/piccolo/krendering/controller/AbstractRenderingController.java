@@ -20,16 +20,22 @@ import java.awt.Color;
 import java.awt.geom.Point2D;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.impl.AdapterImpl;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.graphics.ImageData;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.PlatformUI;
+import org.osgi.framework.Bundle;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -89,7 +95,6 @@ import de.cau.cs.kieler.klighd.piccolo.nodes.PSWTAdvancedPath.LineStyle;
 import de.cau.cs.kieler.klighd.piccolo.nodes.PSWTTracingText;
 import de.cau.cs.kieler.klighd.piccolo.util.NodeUtil;
 import edu.umd.cs.piccolo.PNode;
-import edu.umd.cs.piccolo.nodes.PImage;
 import edu.umd.cs.piccolo.nodes.PPath;
 import edu.umd.cs.piccolo.util.PBounds;
 import edu.umd.cs.piccolox.swt.PSWTCanvas;
@@ -1275,23 +1280,37 @@ public abstract class AbstractRenderingController<S extends KGraphElement, T ext
     protected PNodeController<?> createImage(final KImage image, final Styles styles,
             final List<KStyle> propagatedStyles, final PNode parent, final PBounds initialBounds,
             final Object key) {
-        
-        final PSWTImage img = new PSWTImage(canvas,"D:\\kielertxt\\ksbaseConfiguration.png");
-        parent.addChild(img);
-        // handle children
-        if (image.getChildren().size() > 0) {
-            handleChildren(image.getChildren(), image.getChildPlacement(), propagatedStyles, img,
-                    key);
-        }
+        Image swtImage = null;
 
-        // create a controller for the rounded rectangle and return it
-        return new PNodeController<PNode>(img) {
-            public void setBounds(final PBounds bounds) {
-                // apply the bounds
-                getNode().setBounds(bounds);
-                NodeUtil.applyTranslation(getNode(), (float) bounds.x, (float) bounds.y);
+        String bundleName = image.getBundleName();
+        String imagePath = image.getImagePath();
+        Bundle bundle = Platform.getBundle(bundleName);
+        File file = bundle.getDataFile(imagePath);
+        try {
+            swtImage = new Image(Display.getDefault(), new ImageData(new FileInputStream(file)));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        if (swtImage != null && canvas != null) {
+            final PSWTImage img = new PSWTImage(canvas, swtImage);
+            parent.addChild(img);
+            // handle children
+            if (image.getChildren().size() > 0) {
+                handleChildren(image.getChildren(), image.getChildPlacement(), propagatedStyles,
+                        img, key);
             }
-        };
+
+            // create a controller for the image and return it
+            return new PNodeController<PNode>(img) {
+                public void setBounds(final PBounds bounds) {
+                    // apply the bounds
+                    getNode().setBounds(bounds);
+                    NodeUtil.applyTranslation(getNode(), (float) bounds.x, (float) bounds.y);
+                }
+            };
+        } else {
+            return createDummy(parent, initialBounds);
+        }
     }
 
     /**
