@@ -12,10 +12,11 @@ Require-Bundle: org.eclipse.xtext.ui,
  org.eclipse.ui,
  org.antlr.runtime,
  org.eclipse.compare,
- de.cau.cs.kieler.core.kgraph.text;visibility:=reexport,
- de.cau.cs.kieler.core.model
+ de.cau.cs.kieler.core.kgraph;bundle-version="0.4.1",
+ de.cau.cs.kieler.core.kgraph.text;visibility:=reexport
 Import-Package: org.apache.log4j,
  org.apache.commons.logging
+DynamicImport-Package: de.cau.cs.kieler.klighd.test
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Export-Package: de.cau.cs.kieler.core.kgraph.text.klayoutdata.ui.contentassist.antlr,
  de.cau.cs.kieler.core.kgraph.text.krendering.ui.contentassist.antlr,

@@ -18,6 +18,7 @@ import org.eclipse.emf.ecore.EStructuralFeature;
 
 import de.cau.cs.kieler.core.kgraph.KGraphPackage;
 import de.cau.cs.kieler.core.kgraph.text.krendering.KRenderingTransientValueService;
+import de.cau.cs.kieler.core.krendering.KRenderingPackage;
 import de.cau.cs.kieler.kiml.klayoutdata.KLayoutDataPackage;
 
 /**
@@ -30,9 +31,9 @@ import de.cau.cs.kieler.kiml.klayoutdata.KLayoutDataPackage;
  * @kieler.rating proposed yellow 2012-11-01 chsch
  */
 @SuppressWarnings("restriction")
-// chsch: Don't understand the 'internal' visibility state of TransientValueService
+// chsch: I don't understand the 'internal' visibility state of TransientValueService
 //  as this appears to be the one being established in future.
-//  Currently the xtext guys propose to specialice the one of the parse tree constructor API
+//  Currently the xtext guys propose to specialize the one of the parse tree constructor API
 //  that I don't want to use anymore. Expect/Hope that this will change in future.
 public class KGraphTransientValueService extends KRenderingTransientValueService {
 
@@ -43,9 +44,11 @@ public class KGraphTransientValueService extends KRenderingTransientValueService
         if (feature == KGraphPackage.eINSTANCE.getKNode_IncomingEdges()
              || feature == KGraphPackage.eINSTANCE.getEMapPropertyHolder_Properties()
              || (feature == KGraphPackage.eINSTANCE.getEMapPropertyHolder_PersistentEntries()
-                  // ... and persisted entries of non-KLayoutData ...    
+                  // ... and persisted entries of non-KLayoutData/KTexts
+                  //     (used for testing purposes) ...    
                   && !(KLayoutDataPackage.eINSTANCE.getKShapeLayout().isInstance(semanticObject)
-                        || KLayoutDataPackage.eINSTANCE.getKEdgeLayout().isInstance(semanticObject)))) {
+                        || KLayoutDataPackage.eINSTANCE.getKEdgeLayout().isInstance(semanticObject)
+                        || KRenderingPackage.eINSTANCE.getKText().isInstance(semanticObject)))) {
             // must not be serialized as they either do not have related elements in the concrete syntax,
             //  or are no EObjects (IProperties).
             //  

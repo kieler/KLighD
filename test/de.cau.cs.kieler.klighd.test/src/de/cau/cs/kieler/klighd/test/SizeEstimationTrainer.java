@@ -1,0 +1,114 @@
+/*
+ * KIELER - Kiel Integrated Environment for Layout Eclipse RichClient
+ *
+ * http://www.informatik.uni-kiel.de/rtsys/kieler/
+ * 
+ * Copyright 2012 by
+ * + Christian-Albrechts-University of Kiel
+ *   + Department of Computer Science
+ *     + Real-Time and Embedded Systems Group
+ * 
+ * This code is provided under the terms of the Eclipse Public License (EPL).
+ * See the file epl-v10.html for the license text.
+ */
+package de.cau.cs.kieler.klighd.test;
+
+import java.util.Iterator;
+
+import com.google.common.base.Function;
+import com.google.common.base.Predicate;
+import com.google.common.collect.Iterables;
+import com.google.common.collect.Iterators;
+
+import de.cau.cs.kieler.core.kgraph.KGraphData;
+import de.cau.cs.kieler.core.kgraph.KGraphFactory;
+import de.cau.cs.kieler.core.kgraph.KNode;
+import de.cau.cs.kieler.core.kgraph.PersistentEntry;
+import de.cau.cs.kieler.core.krendering.KText;
+import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout;
+import de.cau.cs.kieler.kiml.util.KimlUtil;
+import de.cau.cs.kieler.kiml.util.LayoutOptionProxy;
+import de.cau.cs.kieler.klighd.KlighdConstants;
+import de.cau.cs.kieler.klighd.krendering.PlacementUtil;
+import de.cau.cs.kieler.klighd.krendering.PlacementUtil.Bounds;
+
+/**
+ * Class provides method to train {@link KNode KNodes} for the {@link SizeEstimationTest}, i.e.
+ * attaches required size properties as required by the test.
+ * 
+ * @author chsch
+ */
+public final class SizeEstimationTrainer {
+
+    /**
+     * Hidden default constructor.
+     */
+    private SizeEstimationTrainer() {
+    }
+    
+    /**
+     * Methods trains the given KNode, i.e. attaches required size properties as required by the
+     * {@link SizeEstimationTest}.
+     * 
+     * @param node
+     *            the KNode to train.
+     */
+    public static void train(final KNode node) {
+        
+        boolean textsPresent = false;
+        
+        for (KText text : new Iterable<KText>() {
+            public Iterator<KText> iterator() {
+                return Iterators.concat(Iterators.transform(node.getData().iterator(),
+                        new Function<KGraphData, Iterator<KText>>() {
+                            public Iterator<KText> apply(final KGraphData data) {
+                                return Iterators.filter(data.eAllContents(), KText.class);
+                            }
+                        }));
+            }
+        }) {
+            textsPresent = true;
+
+            LayoutOptionProxy.setProxyValue(text, KlighdConstants.KLIGHD_TESTING_HEIGHT.getId(),
+                    "0.0");
+            LayoutOptionProxy.setProxyValue(text, KlighdConstants.KLIGHD_TESTING_WIDTH.getId(),
+                    "0.0");
+            
+            Bounds b = PlacementUtil.estimateTextSize(text);
+            
+            getPE(text, KlighdConstants.KLIGHD_TESTING_HEIGHT.getId()).setValue(
+                    Float.toString(b.getHeight()));
+            getPE(text, KlighdConstants.KLIGHD_TESTING_WIDTH.getId()).setValue(
+                    Float.toString(b.getWidth()));            
+        }
+        
+        if (textsPresent) {
+            KShapeLayout sl = node.getData(KShapeLayout.class);
+            if (sl != null) {
+                node.getData().remove(sl);
+                KimlUtil.validate(node);
+                sl = node.getData(KShapeLayout.class);
+            }
+            Bounds b = PlacementUtil.estimateSize(node);
+            getPE(sl, KlighdConstants.KLIGHD_TESTING_EXPECTED_HEIGHT.getId()).setValue(
+                    Float.toString(b.getHeight()));
+            getPE(sl, KlighdConstants.KLIGHD_TESTING_EXPECTED_WIDTH.getId()).setValue(
+                    Float.toString(b.getWidth()));            
+        }
+    }
+    
+    private static PersistentEntry getPE(final KGraphData data, final String id) {
+        PersistentEntry pe = Iterables.find(data.getPersistentEntries(),
+                new Predicate<PersistentEntry>() {
+                    public boolean apply(final PersistentEntry pe) {
+                        return pe.getKey().equals(id);
+                    }
+                }, null);
+        if (pe == null) {
+            pe = KGraphFactory.eINSTANCE.createPersistentEntry();
+            pe.setKey(id);
+            data.getPersistentEntries().add(pe);
+        }
+        return pe;
+    }
+}

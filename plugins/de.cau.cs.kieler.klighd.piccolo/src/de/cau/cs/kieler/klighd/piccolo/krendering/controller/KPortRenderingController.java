@@ -16,9 +16,7 @@ package de.cau.cs.kieler.klighd.piccolo.krendering.controller;
 import java.util.ArrayList;
 
 import de.cau.cs.kieler.core.kgraph.KPort;
-import de.cau.cs.kieler.core.krendering.KBackgroundVisibility;
 import de.cau.cs.kieler.core.krendering.KForegroundColor;
-import de.cau.cs.kieler.core.krendering.KForegroundVisibility;
 import de.cau.cs.kieler.core.krendering.KRectangle;
 import de.cau.cs.kieler.core.krendering.KRendering;
 import de.cau.cs.kieler.core.krendering.KRenderingFactory;

@@ -21,6 +21,7 @@ public class KLayoutDataSyntacticSequencer extends AbstractSyntacticSequencer {
 	protected AbstractElementAlias match_KEdgeLayout_ColonKeyword_6_1_q;
 	protected AbstractElementAlias match_KEdgeLayout_CommaKeyword_5_3_0_q;
 	protected AbstractElementAlias match_KEdgeLayout_CommaKeyword_6_3_0_q;
+	protected AbstractElementAlias match_KShapeLayout_ColonKeyword_8_1_q;
 	protected AbstractElementAlias match_KShapeLayout_CommaKeyword_8_3_0_q;
 	
 	@Inject
@@ -30,6 +31,7 @@ public class KLayoutDataSyntacticSequencer extends AbstractSyntacticSequencer {
 		match_KEdgeLayout_ColonKeyword_6_1_q = new TokenAlias(false, true, grammarAccess.getKEdgeLayoutAccess().getColonKeyword_6_1());
 		match_KEdgeLayout_CommaKeyword_5_3_0_q = new TokenAlias(false, true, grammarAccess.getKEdgeLayoutAccess().getCommaKeyword_5_3_0());
 		match_KEdgeLayout_CommaKeyword_6_3_0_q = new TokenAlias(false, true, grammarAccess.getKEdgeLayoutAccess().getCommaKeyword_6_3_0());
+		match_KShapeLayout_ColonKeyword_8_1_q = new TokenAlias(false, true, grammarAccess.getKShapeLayoutAccess().getColonKeyword_8_1());
 		match_KShapeLayout_CommaKeyword_8_3_0_q = new TokenAlias(false, true, grammarAccess.getKShapeLayoutAccess().getCommaKeyword_8_3_0());
 	}
 	
@@ -53,6 +55,8 @@ public class KLayoutDataSyntacticSequencer extends AbstractSyntacticSequencer {
 				emit_KEdgeLayout_CommaKeyword_5_3_0_q(semanticObject, getLastNavigableState(), syntaxNodes);
 			else if(match_KEdgeLayout_CommaKeyword_6_3_0_q.equals(syntax))
 				emit_KEdgeLayout_CommaKeyword_6_3_0_q(semanticObject, getLastNavigableState(), syntaxNodes);
+			else if(match_KShapeLayout_ColonKeyword_8_1_q.equals(syntax))
+				emit_KShapeLayout_ColonKeyword_8_1_q(semanticObject, getLastNavigableState(), syntaxNodes);
 			else if(match_KShapeLayout_CommaKeyword_8_3_0_q.equals(syntax))
 				emit_KShapeLayout_CommaKeyword_8_3_0_q(semanticObject, getLastNavigableState(), syntaxNodes);
 			else acceptNodes(getLastNavigableState(), syntaxNodes);
@@ -88,6 +92,14 @@ public class KLayoutDataSyntacticSequencer extends AbstractSyntacticSequencer {
 	 *     ','?
 	 */
 	protected void emit_KEdgeLayout_CommaKeyword_6_3_0_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
+		acceptNodes(transition, nodes);
+	}
+	
+	/**
+	 * Syntax:
+	 *     ':'?
+	 */
+	protected void emit_KShapeLayout_ColonKeyword_8_1_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
 		acceptNodes(transition, nodes);
 	}
 	

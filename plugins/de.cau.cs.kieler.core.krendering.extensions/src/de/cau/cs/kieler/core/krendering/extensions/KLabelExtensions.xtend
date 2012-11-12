@@ -47,6 +47,18 @@ class KLabelExtensions {
         ];
     }
     
+    def KLabel setLabelSize(KLabel label, float width, float height) {
+        return label => [
+            getData(typeof(KShapeLayout)).setSize(width, height)
+        ];
+    }
+    
+    def KLabel setLabelPos(KLabel label, float x, float y) {
+        return label => [
+            getData(typeof(KShapeLayout)).setPos(x, y)
+        ];
+    }
+    
     def KLabel addLayoutParam(KLabel node, IProperty<?> property, Object value) {
         return node => [
             it.getData(typeof(KShapeLayout)).setProperty(property, value)

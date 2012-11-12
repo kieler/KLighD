@@ -14,6 +14,7 @@
 package de.cau.cs.kieler.klighd.piccolo.nodes;
 
 import de.cau.cs.kieler.core.krendering.KText;
+import de.cau.cs.kieler.klighd.krendering.KTextUtil;
 import de.cau.cs.kieler.klighd.piccolo.krendering.ITracingElement;
 import edu.umd.cs.piccolox.swt.PSWTText;
 
@@ -37,7 +38,7 @@ public class PSWTTracingText extends PSWTText implements ITracingElement<KText> 
      * @param theKText The KText rendering model.
      */
     public PSWTTracingText(final KText theKText) {
-        super(theKText.getText() != null ? theKText.getText() : "");
+        super(KTextUtil.getTextLines(theKText));
         this.kText = theKText;
     }
 

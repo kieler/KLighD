@@ -22,7 +22,6 @@ import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.ui.IWorkbenchPart;
 
 import com.google.common.collect.BiMap;
-import com.google.common.collect.Lists;
 
 import de.cau.cs.kieler.core.kgraph.KEdge;
 import de.cau.cs.kieler.core.kgraph.KGraphElement;
@@ -31,24 +30,7 @@ import de.cau.cs.kieler.core.kgraph.KLabeledGraphElement;
 import de.cau.cs.kieler.core.kgraph.KNode;
 import de.cau.cs.kieler.core.kgraph.KPort;
 import de.cau.cs.kieler.core.kgraph.util.KGraphSwitch;
-import de.cau.cs.kieler.core.krendering.KChildArea;
-import de.cau.cs.kieler.core.krendering.KContainerRendering;
-import de.cau.cs.kieler.core.krendering.KDirectPlacementData;
-import de.cau.cs.kieler.core.krendering.KGridPlacement;
-import de.cau.cs.kieler.core.krendering.KLeftPosition;
-import de.cau.cs.kieler.core.krendering.KPlacement;
-import de.cau.cs.kieler.core.krendering.KPlacementData;
-import de.cau.cs.kieler.core.krendering.KPolyline;
-import de.cau.cs.kieler.core.krendering.KPolylinePlacementData;
-import de.cau.cs.kieler.core.krendering.KPosition;
 import de.cau.cs.kieler.core.krendering.KRendering;
-import de.cau.cs.kieler.core.krendering.KRenderingRef;
-import de.cau.cs.kieler.core.krendering.KStackPlacement;
-import de.cau.cs.kieler.core.krendering.KStackPlacementData;
-import de.cau.cs.kieler.core.krendering.KTopPosition;
-import de.cau.cs.kieler.core.krendering.KXPosition;
-import de.cau.cs.kieler.core.krendering.KYPosition;
-import de.cau.cs.kieler.core.krendering.util.KRenderingSwitch;
 import de.cau.cs.kieler.core.properties.IProperty;
 import de.cau.cs.kieler.core.properties.Property;
 import de.cau.cs.kieler.kiml.config.ILayoutConfig;
@@ -63,6 +45,7 @@ import de.cau.cs.kieler.kiml.ui.service.EclipseLayoutConfig;
 import de.cau.cs.kieler.kiml.util.KimlUtil;
 import de.cau.cs.kieler.klighd.IViewer;
 import de.cau.cs.kieler.klighd.ViewContext;
+import de.cau.cs.kieler.klighd.krendering.PlacementUtil.Bounds;
 import de.cau.cs.kieler.klighd.viewers.ContextViewer;
 import de.cau.cs.kieler.klighd.viewers.KlighdViewer;
 import de.cau.cs.kieler.klighd.views.DiagramViewPart;
@@ -84,12 +67,12 @@ public class DiagramLayoutManager implements IDiagramLayoutManager<KGraphElement
     public static final IProperty<IViewer<?>> VIEWER = new Property<IViewer<?>>(
             "krendering.layout.viewer");
     /** the list of edges found in the graph. */
-    private static final IProperty<List<KEdge>> EDGES =
-            new Property<List<KEdge>>("krendering.layout.edges");
+    private static final IProperty<List<KEdge>> EDGES = new Property<List<KEdge>>(
+            "krendering.layout.edges");
 
     /** the property layout config. */
     private ILayoutConfig propertyLayoutConfig = new KGraphPropertyLayoutConfig();
-    
+
     /**
      * {@inheritDoc}
      */
@@ -185,12 +168,12 @@ public class DiagramLayoutManager implements IDiagramLayoutManager<KGraphElement
         // create the mapping
         LayoutMapping<KGraphElement> mapping = buildLayoutGraph(graph);
         mapping.setProperty(EclipseLayoutConfig.ACTIVATION, false);
-        
+
         // remember the viewer if any
         if (viewer != null) {
             mapping.setProperty(VIEWER, viewer);
         }
-        
+
         // add the property layout config
         mapping.getLayoutConfigs().add(propertyLayoutConfig);
 
@@ -264,13 +247,30 @@ public class DiagramLayoutManager implements IDiagramLayoutManager<KGraphElement
         // set the node layout
         KShapeLayout layoutLayout = layoutNode.getData(KShapeLayout.class);
         KShapeLayout nodeLayout = node.getData(KShapeLayout.class);
+
         if (nodeLayout != null) {
-            transferShapeLayout(nodeLayout, layoutLayout);   
+            KRendering rootRendering = node.getData(KRendering.class);
+
+            if (rootRendering != null) {
+                // calculate the minimal size need for the first rendering and update the node size
+                // if it exceeds its size
+                Bounds defaultSize = new Bounds(nodeLayout.getWidth(), nodeLayout.getHeight());
+                Bounds minSize = PlacementUtil.estimateSize(rootRendering, defaultSize);
+                
+                if (minSize.width > nodeLayout.getWidth()) {
+                    nodeLayout.setWidth(minSize.width);
+                }
+                if (minSize.height > nodeLayout.getHeight()) {
+                    nodeLayout.setHeight(minSize.height);
+                }
+            }
+
+            transferShapeLayout(nodeLayout, layoutLayout);
         }
 
         // set insets if available
         KInsets layoutInsets = layoutLayout.getInsets();
-        calculateInsets(node, layoutInsets);
+        PlacementUtil.calculateInsets(node, layoutInsets);
 
         layoutParent.getChildren().add(layoutNode);
         mapping.getGraphMap().put(layoutNode, node);
@@ -313,7 +313,7 @@ public class DiagramLayoutManager implements IDiagramLayoutManager<KGraphElement
         KShapeLayout layoutLayout = layoutPort.getData(KShapeLayout.class);
         KShapeLayout portLayout = port.getData(KShapeLayout.class);
         if (portLayout != null) {
-            transferShapeLayout(portLayout, layoutLayout);   
+            transferShapeLayout(portLayout, layoutLayout);
         }
 
         layoutPort.setNode(layoutNode);
@@ -339,7 +339,7 @@ public class DiagramLayoutManager implements IDiagramLayoutManager<KGraphElement
         for (KEdge edge : edges) {
             KNode layoutSource = (KNode) graphMap.get(edge.getSource());
             KNode layoutTarget = (KNode) graphMap.get(edge.getTarget());
-            
+
             KPort layoutSourcePort = null;
             if (edge.getSourcePort() != null) {
                 layoutSourcePort = (KPort) graphMap.get(edge.getSourcePort());
@@ -349,7 +349,8 @@ public class DiagramLayoutManager implements IDiagramLayoutManager<KGraphElement
                 layoutTargetPort = (KPort) graphMap.get(edge.getTargetPort());
             }
             if (layoutSource != null && layoutTarget != null) {
-               createEdge(mapping, edge, layoutSource, layoutTarget, layoutSourcePort, layoutTargetPort);
+                createEdge(mapping, edge, layoutSource, layoutTarget, layoutSourcePort,
+                        layoutTargetPort);
             }
         }
     }
@@ -376,7 +377,7 @@ public class DiagramLayoutManager implements IDiagramLayoutManager<KGraphElement
         KEdgeLayout layoutLayout = layoutEdge.getData(KEdgeLayout.class);
         KEdgeLayout edgeLayout = edge.getData(KEdgeLayout.class);
         if (edgeLayout != null) {
-            transferEdgeLayout(edgeLayout, layoutLayout);   
+            transferEdgeLayout(edgeLayout, layoutLayout);
         }
 
         layoutEdge.setSource(layoutSource);
@@ -389,9 +390,9 @@ public class DiagramLayoutManager implements IDiagramLayoutManager<KGraphElement
             layoutEdge.setTargetPort(layoutTargetPort);
             layoutTargetPort.getEdges().add(layoutEdge);
         }
-        
+
         mapping.getGraphMap().put(layoutEdge, edge);
-        
+
         // process labels
         for (KLabel label : edge.getLabels()) {
             createLabel(mapping, label, layoutEdge);
@@ -416,9 +417,9 @@ public class DiagramLayoutManager implements IDiagramLayoutManager<KGraphElement
         KShapeLayout layoutLayout = layoutLabel.getData(KShapeLayout.class);
         KShapeLayout labelLayout = label.getData(KShapeLayout.class);
         if (labelLayout != null) {
-            transferShapeLayout(labelLayout, layoutLayout);   
+            transferShapeLayout(labelLayout, layoutLayout);
         }
-        
+
         layoutLabel.setText(label.getText());
 
         mapping.getGraphMap().put(layoutLabel, label);
@@ -432,12 +433,12 @@ public class DiagramLayoutManager implements IDiagramLayoutManager<KGraphElement
         // set the animation time as property on the root element
         KShapeLayout parentLayout = mapping.getParentElement().getData(KShapeLayout.class);
         if (parentLayout != null) {
-            parentLayout.setProperty(APPLY_LAYOUT_DURATION, animationTime);   
+            parentLayout.setProperty(APPLY_LAYOUT_DURATION, animationTime);
         }
 
         // get the visualizing viewer if any
         IViewer<?> viewer = mapping.getProperty(VIEWER);
-        
+
         // apply the layout
         if (viewer != null) {
             viewer.setRecording(true);
@@ -528,21 +529,21 @@ public class DiagramLayoutManager implements IDiagramLayoutManager<KGraphElement
      */
     private static void transferEdgeLayout(final KEdgeLayout sourceEdgeLayout,
             final KEdgeLayout targetEdgeLayout) {
-        
+
         // do not notify listeners about any change on the displayed KGraph but...
         final boolean deliver = targetEdgeLayout.eDeliver();
         targetEdgeLayout.eSetDeliver(false);
 
         targetEdgeLayout.copyProperties(sourceEdgeLayout);
-        
+
         targetEdgeLayout.setSourcePoint(copyPoint(sourceEdgeLayout.getSourcePoint()));
 
         targetEdgeLayout.getBendPoints().clear();
         for (KPoint bendPoint : sourceEdgeLayout.getBendPoints()) {
             targetEdgeLayout.getBendPoints().add(copyPoint(bendPoint));
         }
-        
-        // ... the final one!  
+
+        // ... the final one!
         targetEdgeLayout.eSetDeliver(deliver);
         targetEdgeLayout.setTargetPoint(copyPoint(sourceEdgeLayout.getTargetPoint()));
     }
@@ -560,329 +561,7 @@ public class DiagramLayoutManager implements IDiagramLayoutManager<KGraphElement
         return copy;
     }
 
-    /**
-     * Calculates the offset of the child area in the given node, which equals the insets of the
-     * node.<br>
-     * <br>
-     * To ensure correct layout, changes in the bounds of the node are not allowed to influence the
-     * insets. If this is not given the insets can be incorrect.
-     * 
-     * @param node
-     *            the node
-     * @param insets
-     *            the insets
-     */
-    public static void calculateInsets(final KNode node, final KInsets insets) {
-        // TODO take already set insets into consideration
-        KRendering rendering = node.getData(KRendering.class);
 
-        // no rendering so the whole node is the child area
-        if (rendering == null) {
-            return;
-        }
-
-        // find the path to the child area
-        LinkedList<KRendering> path = Lists.newLinkedList();
-        if (!findChildArea(rendering, path)) {
-            // no child area so the whole node is the child area
-            return;
-        }
-
-        // get the shape layout for the initial bounds of the reference parent
-        KShapeLayout shapeLayout = node.getData(KShapeLayout.class);
-        if (shapeLayout == null) {
-            return;
-        }
-
-        // the data of the reference parent
-        KContainerRendering currentParent = null;
-        Bounds currentBounds =
-                new Bounds(0.0f, 0.0f, shapeLayout.getWidth(), shapeLayout.getHeight());
-
-        // the calculated insets
-        float leftInset = 0.0f;
-        float rightInset = 0.0f;
-        float topInset = 0.0f;
-        float bottomInset = 0.0f;
-
-        while (!path.isEmpty()) {
-            KRendering currentRendering = path.pollFirst();
-
-            // calculate the bounds of the current rendering
-            Bounds bounds;
-            if (currentParent == null) {
-                bounds = calculateBounds(null, currentBounds, null, currentRendering);
-            } else {
-                bounds =
-                        calculateBounds(currentParent.getChildPlacement(), currentBounds,
-                                currentParent.getChildren(), currentRendering);
-            }
-
-            // update the insets using the new bounds
-            leftInset += bounds.x;
-            rightInset += currentBounds.width - bounds.x - bounds.width;
-            topInset += bounds.y;
-            bottomInset += currentBounds.height - bounds.y - bounds.height;
-
-            // dereference all rendering references
-            while (currentRendering instanceof KRenderingRef) {
-                KRenderingRef renderingRef = (KRenderingRef) currentRendering;
-                currentRendering = renderingRef.getRendering();
-                path.removeFirst();
-            }
-
-            // if the rendering is a container rendering set the new current parent
-            if (currentRendering instanceof KContainerRendering) {
-                currentParent = (KContainerRendering) currentRendering;
-                currentBounds = bounds;
-            }
-        }
-
-        // set the insets
-        insets.setLeft(leftInset);
-        insets.setRight(rightInset);
-        insets.setTop(topInset);
-        insets.setBottom(bottomInset);
-    }
-
-    /**
-     * Calculates the bounds of a child rendering inside a parent with given placement and bounds.
-     * 
-     * @param placement
-     *            the placement
-     * @param parentBounds
-     *            the parent bounds
-     * @param children
-     *            the other children of the parent containing this rendering
-     * @param child
-     *            the child rendering
-     * @return the bounds of the child rendering inside the parent rendering
-     */
-    private static Bounds calculateBounds(final KPlacement placement, final Bounds parentBounds,
-            final List<KRendering> children, final KRendering child) {
-        Bounds bounds = null;
-        if (placement == null) {
-            bounds =
-                    evaluateDirectPlacement(asDirectPlacementData(child.getPlacementData()),
-                            parentBounds);
-        } else {
-            bounds = new KRenderingSwitch<Bounds>() {
-                public Bounds caseKGridPlacement(final KGridPlacement gridPlacement) {
-                    // TODO implement this
-                    return new Bounds(0, 0, parentBounds.width, parentBounds.height);
-                }
-
-                public Bounds caseKStackPlacement(final KStackPlacement stackPlacement) {
-                    return evaluateStackPlacement(asStackPlacementData(child.getPlacementData()),
-                            parentBounds);
-                }
-            } /**/.doSwitch(placement);
-        }
-
-        if (child instanceof KPolyline) {
-            return evaluatePolylinePlacement(asPolylinePlacementData(child.getPlacementData()),
-                    bounds);
-        } else {
-            return bounds;
-        }
-    }
-
-    /**
-     * Returns the bounds for a direct placement data in given parent bounds.
-     * 
-     * @param dpd
-     *            the direct placement data
-     * @param parentBounds
-     *            the parent bounds
-     * @return the bounds
-     */
-    private static Bounds evaluateDirectPlacement(final KDirectPlacementData dpd,
-            final Bounds parentBounds) {
-        if (dpd == null) {
-            return new Bounds(0, 0, parentBounds.width, parentBounds.height);
-        }
-
-        // determine the top-left
-        KPosition topLeft = dpd.getTopLeft();
-        Point topLeftPoint = evaluateDirectPosition(topLeft, parentBounds);
-
-        // determine the bottom-right
-        KPosition bottomRight = dpd.getBottomRight();
-        Point bottomRightPoint = evaluateDirectPosition(bottomRight, parentBounds);
-
-        return new Bounds(topLeftPoint.x, topLeftPoint.y, bottomRightPoint.x - topLeftPoint.x,
-                bottomRightPoint.y - topLeftPoint.y);
-    }
-
-    /**
-     * Returns the bounds for a stack placement data in given parent bounds.
-     * 
-     * @param spd
-     *            the stack placement data
-     * @param parentBounds
-     *            the parent bounds
-     * @return the bounds
-     */
-    private static Bounds evaluateStackPlacement(final KStackPlacementData spd,
-            final Bounds parentBounds) {
-        float width = (float) parentBounds.width;
-        float height = (float) parentBounds.height;
-
-        if (spd == null) {
-            return new Bounds(0, 0, width, height);
-        }
-
-        return new Bounds(spd.getInsetLeft(), spd.getInsetTop(), width - spd.getInsetRight(),
-                height - spd.getInsetBottom());
-    }
-
-    /**
-     * Returns the bounds for a polyline placement data in given parent bounds.
-     * 
-     * @param ppd
-     *            the polyline placement data
-     * @param parentBounds
-     *            the parent bounds
-     * @return the bounds
-     */
-    private static Bounds evaluatePolylinePlacement(final KPolylinePlacementData ppd,
-            final Bounds parentBounds) {
-        if (ppd == null || ppd.getPoints().size() == 0) {
-            return new Bounds(0, 0, parentBounds.width, parentBounds.height);
-        }
-
-        // evaluate the points of the polyline inside the parent bounds to compute the bounding box
-        float minX = Float.MAX_VALUE;
-        float maxX = Float.MIN_VALUE;
-        float minY = Float.MAX_VALUE;
-        float maxY = Float.MIN_VALUE;
-        for (KPosition polyPoint : ppd.getPoints()) {
-            Point point = evaluateDirectPosition(polyPoint, parentBounds);
-            if (point.x < minX) {
-                minX = point.x;
-            }
-            if (point.x > maxX) {
-                maxX = point.x;
-            }
-            if (point.y < minY) {
-                minY = point.y;
-            }
-            if (point.y > maxY) {
-                maxY = point.y;
-            }
-        }
-
-        return new Bounds(minX, minY, parentBounds.width - maxX, parentBounds.height - maxY);
-    }
-
-    /**
-     * Evaluates a position inside given parent bounds.
-     * 
-     * @param position
-     *            the position
-     * @param parentBounds
-     *            the parent bounds
-     * @return the evaluated position
-     */
-    private static Point evaluateDirectPosition(final KPosition position, final Bounds parentBounds) {
-        float width = (float) parentBounds.width;
-        float height = (float) parentBounds.height;
-        Point point = new Point(0.0f, 0.0f);
-        KXPosition xPos = position.getX();
-        KYPosition yPos = position.getY();
-        if (xPos instanceof KLeftPosition) {
-            point.x = xPos.getAbsolute() + xPos.getRelative() * width;
-        } else {
-            point.x = width - xPos.getAbsolute() - xPos.getRelative() * width;
-        }
-        if (yPos instanceof KTopPosition) {
-            point.y = yPos.getAbsolute() + yPos.getRelative() * height;
-        } else {
-            point.y = height - yPos.getAbsolute() - yPos.getRelative() * height;
-        }
-        return point;
-    }
-
-    /**
-     * Returns the given placement data as direct placement data.
-     * 
-     * @param data
-     *            the placement data
-     * @return the direct placement data or null if the placement data is no direct placement data
-     */
-    private static KDirectPlacementData asDirectPlacementData(final KPlacementData data) {
-        if (data instanceof KDirectPlacementData) {
-            return (KDirectPlacementData) data;
-        }
-        return null;
-    }
-
-    /**
-     * Returns the given placement data as stack placement data.
-     * 
-     * @param data
-     *            the placement data
-     * @return the stack placement data or null if the placement data is no stack placement data
-     */
-    private static KStackPlacementData asStackPlacementData(final KPlacementData data) {
-        if (data instanceof KStackPlacementData) {
-            return (KStackPlacementData) data;
-        } else if (data instanceof KPolylinePlacementData) {
-            KPolylinePlacementData polylinePlacementData = (KPolylinePlacementData) data;
-            return asStackPlacementData(polylinePlacementData.getDetailPlacementData());
-        }
-        return null;
-    }
-
-    /**
-     * Returns the given placement data as polyline placement data.
-     * 
-     * @param data
-     *            the placement data
-     * @return the polyline placement data or null if the placement data is no polyline placement
-     *         data
-     */
-    private static KPolylinePlacementData asPolylinePlacementData(final KPlacementData data) {
-        if (data instanceof KPolylinePlacementData) {
-            return (KPolylinePlacementData) data;
-        }
-        return null;
-    }
-
-    /**
-     * Searches the rendering for a child area and records the path in the given list of renderings.
-     * 
-     * @param rendering
-     *            the rendering
-     * @param path
-     *            the list of renderings which will contain the path of renderings to the child area
-     * @return true if a child area has been found; false else
-     */
-    private static boolean findChildArea(final KRendering rendering,
-            final LinkedList<KRendering> path) {
-        path.addLast(rendering);
-        if (rendering instanceof KChildArea) {
-            return true;
-        }
-        if (rendering instanceof KContainerRendering) {
-            KContainerRendering containerRendering = (KContainerRendering) rendering;
-            for (KRendering childRendering : containerRendering.getChildren()) {
-                if (findChildArea(childRendering, path)) {
-                    return true;
-                }
-            }
-        } else if (rendering instanceof KRenderingRef) {
-            KRenderingRef renderingReference = (KRenderingRef) rendering;
-            KRendering referencedRendering = renderingReference.getRendering();
-            if (referencedRendering != null) {
-                if (findChildArea(referencedRendering, path)) {
-                    return true;
-                }
-            }
-        }
-        path.removeLast();
-        return false;
-    }
 
     /**
      * {@inheritDoc}
@@ -890,66 +569,6 @@ public class DiagramLayoutManager implements IDiagramLayoutManager<KGraphElement
     public void undoLayout(final LayoutMapping<KGraphElement> mapping) {
         throw new UnsupportedOperationException(
                 "Undo is not supported by the KLighD KRendering layout manager.");
-    }
-
-    /**
-     * A data holder class for bounds.
-     */
-    private static class Bounds {
-
-        /** the x-coordinate. */
-        private float x;
-        /** the y-coordinate. */
-        private float y;
-        /** the width. */
-        private float width;
-        /** the height. */
-        private float height;
-
-        /**
-         * Constructs bounds from the given coordinates and dimensions.
-         * 
-         * @param x
-         *            the x-coordinate
-         * @param y
-         *            the y-coordinate
-         * @param width
-         *            the width
-         * @param height
-         *            the height
-         */
-        public Bounds(final float x, final float y, final float width, final float height) {
-            this.x = x;
-            this.y = y;
-            this.width = width;
-            this.height = height;
-        }
-
-    }
-
-    /**
-     * A data holder class for points.
-     */
-    private static class Point {
-
-        /** the x-coordinate. */
-        private float x;
-        /** the y-coordinate. */
-        private float y;
-
-        /**
-         * Constructs a point from the given coordinates.
-         * 
-         * @param x
-         *            the x-coordinate
-         * @param y
-         *            the y-coordinate
-         */
-        public Point(final float x, final float y) {
-            this.x = x;
-            this.y = y;
-        }
-
     }
 
 }

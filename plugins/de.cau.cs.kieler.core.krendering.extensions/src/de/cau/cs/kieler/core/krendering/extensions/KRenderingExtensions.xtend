@@ -241,6 +241,17 @@ class KRenderingExtensions {
         ];      
     }
     
+    public val HorizontalAlignment H_LEFT = HorizontalAlignment::LEFT; 
+    public val HorizontalAlignment H_CENTRAL = HorizontalAlignment::CENTER; 
+    public val HorizontalAlignment H_RIGHT = HorizontalAlignment::RIGHT; 
+    
+    def KHorizontalAlignment getHorizontalAlignment(KRendering rendering) {
+        // chsch: I'm currently not sure whether the first or the last will win...
+        return rendering.styles.filter(typeof(KHorizontalAlignment)).last?:(renderingFactory.createKHorizontalAlignment => [
+            horizontalAlignment = H_CENTRAL;
+        ]);
+    }
+ 
 	def <T extends KRendering> T setHorizontalAlignment(T rendering, HorizontalAlignment ha) {
         rendering.styles.removeAll(rendering.styles.filter(typeof(KHorizontalAlignment)).toList);
 		return rendering => [
@@ -250,6 +261,17 @@ class KRenderingExtensions {
     	];		
 	}
 	
+    public val VerticalAlignment V_TOP = VerticalAlignment::TOP; 
+    public val VerticalAlignment V_CENTRAL = VerticalAlignment::CENTER; 
+    public val VerticalAlignment V_BOTTOM = VerticalAlignment::BOTTOM; 
+    
+    def KVerticalAlignment getVerticalAlignment(KRendering rendering) {
+        // chsch: I'm currently not sure whether the first or the last will win...
+        return rendering.styles.filter(typeof(KVerticalAlignment)).last?:(renderingFactory.createKVerticalAlignment => [
+            verticalAlignment = V_CENTRAL;
+        ]);
+    }
+ 
 	def <T extends KRendering> T setVerticalAlignment(T rendering, VerticalAlignment va) {
         rendering.styles.removeAll(rendering.styles.filter(typeof(KVerticalAlignment)).toList);
 		return rendering => [

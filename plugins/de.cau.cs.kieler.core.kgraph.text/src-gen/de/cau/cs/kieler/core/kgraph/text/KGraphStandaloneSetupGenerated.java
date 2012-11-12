@@ -34,5 +34,6 @@ public class KGraphStandaloneSetupGenerated implements ISetup {
 		org.eclipse.xtext.resource.IResourceServiceProvider.Registry.INSTANCE.getExtensionToFactoryMap().put("kgt", serviceProvider);
 		
 
+
 	}
 }

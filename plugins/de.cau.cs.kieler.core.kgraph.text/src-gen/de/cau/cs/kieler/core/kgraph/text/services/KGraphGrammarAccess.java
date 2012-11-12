@@ -1123,7 +1123,10 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	//KText:
 	//	{KText} "Text" text=EString? ("{" clip?="clip"? ("styles" ":"? styles+=KStyle (","? styles+=KStyle)*)?
 	//	("placementData" placementData=KPlacementData)? ("children" "{" children+=KRendering (","? children+=KRendering)*
-	//	"}")? ("childPlacement" childPlacement=KPlacement)? "}")?;
+	//	"}")? ("childPlacement" childPlacement=KPlacement)? // allow mapProperties in order to specify size for size estimation tests
+	//	//  (I don't trust in the different SWT implementations to
+	//	//   provide the same size of a text on different platforms)
+	//	("mapProperties" ":"? persistentEntries+=PersistentEntry (","? persistentEntries+=PersistentEntry)*)? "}")?;
 	public KRenderingGrammarAccess.KTextElements getKTextAccess() {
 		return gaKRendering.getKTextAccess();
 	}
@@ -1492,7 +1495,7 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	////        ('insets' insets=KInsets)?
 	////    '}';
 	//	{KShapeLayout} "KShapeLayout" "{" ("xpos" xpos=EFloat)? ("ypos" ypos=EFloat)? ("width" width=EFloat)? ("height"
-	//	height=EFloat)? ("insets" insets=KInsets)? ("mapProperties" ":" persistentEntries+=PersistentEntry (","?
+	//	height=EFloat)? ("insets" insets=KInsets)? ("mapProperties" ":"? persistentEntries+=PersistentEntry (","?
 	//	persistentEntries+=PersistentEntry)*)? "}";
 	public KLayoutDataGrammarAccess.KShapeLayoutElements getKShapeLayoutAccess() {
 		return gaKRendering.getKShapeLayoutAccess();

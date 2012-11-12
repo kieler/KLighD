@@ -205,11 +205,11 @@ ruleKShapeLayout returns [EObject current=null]
     {
     	newLeafNode(otherlv_13, grammarAccess.getKShapeLayoutAccess().getMapPropertiesKeyword_8_0());
     }
-	otherlv_14=':' 
+(	otherlv_14=':' 
     {
     	newLeafNode(otherlv_14, grammarAccess.getKShapeLayoutAccess().getColonKeyword_8_1());
     }
-(
+)?(
 (
 		{ 
 	        newCompositeNode(grammarAccess.getKShapeLayoutAccess().getPersistentEntriesPersistentEntryParserRuleCall_8_2_0()); 

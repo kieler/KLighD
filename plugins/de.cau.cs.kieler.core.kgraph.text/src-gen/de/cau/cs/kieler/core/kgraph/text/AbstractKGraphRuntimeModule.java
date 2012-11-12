@@ -99,6 +99,11 @@ public abstract class AbstractKGraphRuntimeModule extends DefaultRuntimeModule {
 		return org.eclipse.xtext.common.services.Ecore2XtextTerminalConverters.class;
 	}
 
+	// contributed by org.eclipse.xtext.generator.validation.JavaValidatorFragment
+	@org.eclipse.xtext.service.SingletonBinding(eager=true)	public Class<? extends de.cau.cs.kieler.core.kgraph.text.validation.KGraphJavaValidator> bindKGraphJavaValidator() {
+		return de.cau.cs.kieler.core.kgraph.text.validation.KGraphJavaValidator.class;
+	}
+
 	// contributed by org.eclipse.xtext.generator.formatting.FormatterFragment
 	public Class<? extends org.eclipse.xtext.formatting.IFormatter> bindIFormatter() {
 		return de.cau.cs.kieler.core.kgraph.text.formatting.KGraphFormatter.class;

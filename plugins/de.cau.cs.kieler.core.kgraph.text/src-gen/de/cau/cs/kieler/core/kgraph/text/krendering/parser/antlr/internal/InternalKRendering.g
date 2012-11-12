@@ -2692,9 +2692,57 @@ ruleKText returns [EObject current=null]
 	    }
 
 )
-))?	otherlv_20='}' 
+))?(	otherlv_20='mapProperties' 
     {
-    	newLeafNode(otherlv_20, grammarAccess.getKTextAccess().getRightCurlyBracketKeyword_3_6());
+    	newLeafNode(otherlv_20, grammarAccess.getKTextAccess().getMapPropertiesKeyword_3_6_0());
+    }
+(	otherlv_21=':' 
+    {
+    	newLeafNode(otherlv_21, grammarAccess.getKTextAccess().getColonKeyword_3_6_1());
+    }
+)?(
+(
+		{ 
+	        newCompositeNode(grammarAccess.getKTextAccess().getPersistentEntriesPersistentEntryParserRuleCall_3_6_2_0()); 
+	    }
+		lv_persistentEntries_22_0=rulePersistentEntry		{
+	        if ($current==null) {
+	            $current = createModelElementForParent(grammarAccess.getKTextRule());
+	        }
+       		add(
+       			$current, 
+       			"persistentEntries",
+        		lv_persistentEntries_22_0, 
+        		"PersistentEntry");
+	        afterParserOrEnumRuleCall();
+	    }
+
+)
+)((	otherlv_23=',' 
+    {
+    	newLeafNode(otherlv_23, grammarAccess.getKTextAccess().getCommaKeyword_3_6_3_0());
+    }
+)?(
+(
+		{ 
+	        newCompositeNode(grammarAccess.getKTextAccess().getPersistentEntriesPersistentEntryParserRuleCall_3_6_3_1_0()); 
+	    }
+		lv_persistentEntries_24_0=rulePersistentEntry		{
+	        if ($current==null) {
+	            $current = createModelElementForParent(grammarAccess.getKTextRule());
+	        }
+       		add(
+       			$current, 
+       			"persistentEntries",
+        		lv_persistentEntries_24_0, 
+        		"PersistentEntry");
+	        afterParserOrEnumRuleCall();
+	    }
+
+)
+))*)?	otherlv_25='}' 
+    {
+    	newLeafNode(otherlv_25, grammarAccess.getKTextAccess().getRightCurlyBracketKeyword_3_7());
     }
 )?)
 ;

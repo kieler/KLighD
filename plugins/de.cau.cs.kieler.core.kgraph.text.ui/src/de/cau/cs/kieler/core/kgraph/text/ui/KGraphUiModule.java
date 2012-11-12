@@ -32,4 +32,15 @@ public class KGraphUiModule extends AbstractKGraphUiModule {
     public KGraphUiModule(final AbstractUIPlugin plugin) {
         super(plugin);
     }
+    
+    /**
+     * Registers custom {@link org.eclipse.xtext.ui.editor.model.edit.ITextEditComposer
+     * ITextEditComposer}.
+     * 
+     * @return the text edit composer class
+     */
+    public Class<? extends org.eclipse.xtext.ui.editor.model.edit.ITextEditComposer> bindITextEditComposer() {
+        return KGraphTextEditComposer.class; // SUPPRESS CHECKSTYLE PREVIOUS LineLength
+    }
+
 }

@@ -959,9 +959,9 @@ rule__KShapeLayout__Group_8__1__Impl
 :
 (
 { before(grammarAccess.getKShapeLayoutAccess().getColonKeyword_8_1()); }
-
+(
 	':' 
-
+)?
 { after(grammarAccess.getKShapeLayoutAccess().getColonKeyword_8_1()); }
 )
 
