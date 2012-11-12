@@ -39,6 +39,7 @@ import org.osgi.framework.Bundle;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.google.common.base.Strings;
 
 import de.cau.cs.kieler.core.kgraph.KGraphElement;
 import de.cau.cs.kieler.core.kgraph.KGraphPackage;
@@ -1284,12 +1285,14 @@ public abstract class AbstractRenderingController<S extends KGraphElement, T ext
 
         String bundleName = image.getBundleName();
         String imagePath = image.getImagePath();
-        Bundle bundle = Platform.getBundle(bundleName);
-        File file = bundle.getDataFile(imagePath);
-        try {
-            swtImage = new Image(Display.getDefault(), new ImageData(new FileInputStream(file)));
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
+        if (!Strings.isNullOrEmpty(bundleName) && !Strings.isNullOrEmpty(imagePath)) {
+            Bundle bundle = Platform.getBundle(bundleName);
+            File file = bundle.getDataFile(imagePath);
+            try {
+                swtImage = new Image(Display.getDefault(), new ImageData(new FileInputStream(file)));
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
         }
         if (swtImage != null && canvas != null) {
             final PSWTImage img = new PSWTImage(canvas, swtImage);
