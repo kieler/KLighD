@@ -1282,16 +1282,20 @@ public abstract class AbstractRenderingController<S extends KGraphElement, T ext
             final List<KStyle> propagatedStyles, final PNode parent, final PBounds initialBounds,
             final Object key) {
         Image swtImage = null;
-
+        Object imageObject = image.getImageObject();
         String bundleName = image.getBundleName();
         String imagePath = image.getImagePath();
-        if (!Strings.isNullOrEmpty(bundleName) && !Strings.isNullOrEmpty(imagePath)) {
-            Bundle bundle = Platform.getBundle(bundleName);
-            File file = bundle.getDataFile(imagePath);
-            try {
-                swtImage = new Image(Display.getDefault(), new ImageData(new FileInputStream(file)));
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
+        if (imageObject != null && imageObject instanceof Image) {
+            swtImage = (Image) imageObject;
+        } else {
+            if (!Strings.isNullOrEmpty(bundleName) && !Strings.isNullOrEmpty(imagePath)) {
+                Bundle bundle = Platform.getBundle(bundleName);
+                File file = bundle.getDataFile(imagePath);
+                try {
+                    swtImage = new Image(Display.getDefault(), new ImageData(new FileInputStream(file)));
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
             }
         }
         if (swtImage != null && canvas != null) {
