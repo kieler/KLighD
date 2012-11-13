@@ -77,8 +77,8 @@ public class KLayoutDataParser extends AbstractContentAssistParser {
 					put(grammarAccess.getKInsetsAccess().getBottomAssignment_4_1(), "rule__KInsets__BottomAssignment_4_1");
 					put(grammarAccess.getKInsetsAccess().getLeftAssignment_5_1(), "rule__KInsets__LeftAssignment_5_1");
 					put(grammarAccess.getKInsetsAccess().getRightAssignment_6_1(), "rule__KInsets__RightAssignment_6_1");
-					put(grammarAccess.getKEdgeLayoutAccess().getSourcePointAssignment_3_1(), "rule__KEdgeLayout__SourcePointAssignment_3_1");
-					put(grammarAccess.getKEdgeLayoutAccess().getTargetPointAssignment_4_1(), "rule__KEdgeLayout__TargetPointAssignment_4_1");
+					put(grammarAccess.getKEdgeLayoutAccess().getSourcePointAssignment_3_2(), "rule__KEdgeLayout__SourcePointAssignment_3_2");
+					put(grammarAccess.getKEdgeLayoutAccess().getTargetPointAssignment_4_2(), "rule__KEdgeLayout__TargetPointAssignment_4_2");
 					put(grammarAccess.getKEdgeLayoutAccess().getBendPointsAssignment_5_2(), "rule__KEdgeLayout__BendPointsAssignment_5_2");
 					put(grammarAccess.getKEdgeLayoutAccess().getBendPointsAssignment_5_3_1(), "rule__KEdgeLayout__BendPointsAssignment_5_3_1");
 					put(grammarAccess.getKEdgeLayoutAccess().getPersistentEntriesAssignment_6_2(), "rule__KEdgeLayout__PersistentEntriesAssignment_6_2");

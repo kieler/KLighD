@@ -46,8 +46,8 @@ KRenderingRef returns KRenderingRef:
     {KRenderingRef}
     'RenderingRef' rendering=[KRendering|EString]
     ('{'
-        ('placementData' placementData=KPlacementData)?
-        ('styles' '{' styles+=KStyle ( ","? styles+=KStyle)* '}' )?
+        ('styles' ':'?  styles+=KStyle ( ","? styles+=KStyle)*)?
+        ('placementData' ':'? placementData=KPlacementData)?
     '}')?;
     
 KEllipse returns KEllipse:
@@ -115,9 +115,9 @@ KImage returns KImage:
     'Image' ((bundleName=EString) | '-') imagePath=EString
     ('{'
         ('styles' ':'? styles+=KStyle ( ","? styles+=KStyle)*)?
-        ('placementData' placementData=KPlacementData)?
-        ('children' '{' children+=KRendering ( ","? children+=KRendering)* '}' )?
-        ('childPlacement' childPlacement=KPlacement)?
+        ('placementData' ':'? placementData=KPlacementData)?
+        ('childPlacement' ':'? childPlacement=KPlacement)?
+        ('children' ':'? children+=KRendering ( ","? children+=KRendering)*)?
     '}')?;
 
 KArc returns KArc:
@@ -125,9 +125,9 @@ KArc returns KArc:
     'Arc' startAngle=EFloat ','? arcAngle=EFloat
     ('{'
         ('styles' ':'? styles+=KStyle ( ","? styles+=KStyle)*)?
-        ('placementData' placementData=KPlacementData)?
-        ('children' '{' children+=KRendering ( ","? children+=KRendering)* '}' )?
-        ('childPlacement' childPlacement=KPlacement)?
+        ('placementData' ':'? placementData=KPlacementData)?
+        ('childPlacement' ':'? childPlacement=KPlacement)?
+        ('children' ':'? children+=KRendering ( ","? children+=KRendering)*)?
     '}')?;
 
 KChildArea returns KChildArea:
@@ -135,7 +135,7 @@ KChildArea returns KChildArea:
     'ChildArea'
     ('{'
         ('styles' ':'? styles+=KStyle ( ","? styles+=KStyle)*)?
-        ('placementData' placementData=KPlacementData)?
+        ('placementData' ':'? placementData=KPlacementData)?
     '}')?;
 
 KText returns KText:
@@ -144,9 +144,9 @@ KText returns KText:
     ('{'
         (clip?='clip')?
         ('styles' ':'? styles+=KStyle ( ","? styles+=KStyle)*)?
-        ('placementData' placementData=KPlacementData)?
-        ('children' '{' children+=KRendering ( ","? children+=KRendering)* '}' )?
-        ('childPlacement' childPlacement=KPlacement)?
+        ('placementData' ':'? placementData=KPlacementData)?
+        ('childPlacement' ':'? childPlacement=KPlacement)?
+        ('children' ':'? children+=KRendering ( ","? children+=KRendering)*)?
         // allow mapProperties in order to specify size for size estimation tests
         //  (I don't trust in the different SWT implementations to
         //   provide the same size of a text on different platforms)
@@ -160,9 +160,9 @@ KCustomRendering returns KCustomRendering:
         'className' className=EString
         'bundleName' bundleName=EString
         ('styles' ':'? styles+=KStyle ( ","? styles+=KStyle)*)?
-        ('placementData' placementData=KPlacementData)?
-        ('children' '{' children+=KRendering ( ","? children+=KRendering)* '}' )?
-        ('childPlacement' childPlacement=KPlacement)?
+        ('placementData' ':'? placementData=KPlacementData)?
+        ('childPlacement' ':'? childPlacement=KPlacement)?
+        ('children' ':'? children+=KRendering ( ","? children+=KRendering)*)?
     '}')?;
 
 KSpline returns KSpline:
@@ -170,9 +170,9 @@ KSpline returns KSpline:
     'Spline'
     ('{'
         ('styles' ':'? styles+=KStyle ( ","? styles+=KStyle)*)?
-        ('placementData' placementData=KPlacementData)?
-        ('children' '{' children+=KRendering ( ","? children+=KRendering)* '}' )?
-        ('childPlacement' childPlacement=KPlacement)?
+        ('placementData' ':'? placementData=KPlacementData)?
+        ('childPlacement' ':'? childPlacement=KPlacement)?
+        ('children' ':'? children+=KRendering ( ","? children+=KRendering)*)?
     '}')?;
 
 KDecoratorPlacementData returns KDecoratorPlacementData:
@@ -219,7 +219,7 @@ KPolylinePlacementData returns KPolylinePlacementData:
     'PolylinePlacementData'
     '{'
         'points' ':'? points+=KPosition ( ","? points+=KPosition)* 
-        ('detailedPlacementData' detailPlacementData=KPlacementData)?
+        ('detailedPlacementData' ':'? detailPlacementData=KPlacementData)?
     '}';
 
 KPosition returns KPosition:

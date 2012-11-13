@@ -133,14 +133,8 @@
         <elements xsi:type="xtext:Group" cardinality="?">
           <elements xsi:type="xtext:Keyword" value="{"/>
           <elements xsi:type="xtext:Group" cardinality="?">
-            <elements xsi:type="xtext:Keyword" value="placementData"/>
-            <elements xsi:type="xtext:Assignment" feature="placementData" operator="=">
-              <terminal xsi:type="xtext:RuleCall" rule="/0/@rules.2"/>
-            </elements>
-          </elements>
-          <elements xsi:type="xtext:Group" cardinality="?">
             <elements xsi:type="xtext:Keyword" value="styles"/>
-            <elements xsi:type="xtext:Keyword" value="{"/>
+            <elements xsi:type="xtext:Keyword" cardinality="?" value=":"/>
             <elements xsi:type="xtext:Assignment" feature="styles" operator="+=">
               <terminal xsi:type="xtext:RuleCall" rule="/0/@rules.3"/>
             </elements>
@@ -150,7 +144,13 @@
                 <terminal xsi:type="xtext:RuleCall" rule="/0/@rules.3"/>
               </elements>
             </elements>
-            <elements xsi:type="xtext:Keyword" value="}"/>
+          </elements>
+          <elements xsi:type="xtext:Group" cardinality="?">
+            <elements xsi:type="xtext:Keyword" value="placementData"/>
+            <elements xsi:type="xtext:Keyword" cardinality="?" value=":"/>
+            <elements xsi:type="xtext:Assignment" feature="placementData" operator="=">
+              <terminal xsi:type="xtext:RuleCall" rule="/0/@rules.2"/>
+            </elements>
           </elements>
           <elements xsi:type="xtext:Keyword" value="}"/>
         </elements>
@@ -545,13 +545,21 @@
           </elements>
           <elements xsi:type="xtext:Group" cardinality="?">
             <elements xsi:type="xtext:Keyword" value="placementData"/>
+            <elements xsi:type="xtext:Keyword" cardinality="?" value=":"/>
             <elements xsi:type="xtext:Assignment" feature="placementData" operator="=">
               <terminal xsi:type="xtext:RuleCall" rule="/0/@rules.2"/>
             </elements>
           </elements>
           <elements xsi:type="xtext:Group" cardinality="?">
+            <elements xsi:type="xtext:Keyword" value="childPlacement"/>
+            <elements xsi:type="xtext:Keyword" cardinality="?" value=":"/>
+            <elements xsi:type="xtext:Assignment" feature="childPlacement" operator="=">
+              <terminal xsi:type="xtext:RuleCall" rule="/0/@rules.4"/>
+            </elements>
+          </elements>
+          <elements xsi:type="xtext:Group" cardinality="?">
             <elements xsi:type="xtext:Keyword" value="children"/>
-            <elements xsi:type="xtext:Keyword" value="{"/>
+            <elements xsi:type="xtext:Keyword" cardinality="?" value=":"/>
             <elements xsi:type="xtext:Assignment" feature="children" operator="+=">
               <terminal xsi:type="xtext:RuleCall" rule="/0/@rules.1"/>
             </elements>
@@ -560,13 +568,6 @@
               <elements xsi:type="xtext:Assignment" feature="children" operator="+=">
                 <terminal xsi:type="xtext:RuleCall" rule="/0/@rules.1"/>
               </elements>
-            </elements>
-            <elements xsi:type="xtext:Keyword" value="}"/>
-          </elements>
-          <elements xsi:type="xtext:Group" cardinality="?">
-            <elements xsi:type="xtext:Keyword" value="childPlacement"/>
-            <elements xsi:type="xtext:Assignment" feature="childPlacement" operator="=">
-              <terminal xsi:type="xtext:RuleCall" rule="/0/@rules.4"/>
             </elements>
           </elements>
           <elements xsi:type="xtext:Keyword" value="}"/>
@@ -608,13 +609,21 @@
           </elements>
           <elements xsi:type="xtext:Group" cardinality="?">
             <elements xsi:type="xtext:Keyword" value="placementData"/>
+            <elements xsi:type="xtext:Keyword" cardinality="?" value=":"/>
             <elements xsi:type="xtext:Assignment" feature="placementData" operator="=">
               <terminal xsi:type="xtext:RuleCall" rule="/0/@rules.2"/>
             </elements>
           </elements>
           <elements xsi:type="xtext:Group" cardinality="?">
+            <elements xsi:type="xtext:Keyword" value="childPlacement"/>
+            <elements xsi:type="xtext:Keyword" cardinality="?" value=":"/>
+            <elements xsi:type="xtext:Assignment" feature="childPlacement" operator="=">
+              <terminal xsi:type="xtext:RuleCall" rule="/0/@rules.4"/>
+            </elements>
+          </elements>
+          <elements xsi:type="xtext:Group" cardinality="?">
             <elements xsi:type="xtext:Keyword" value="children"/>
-            <elements xsi:type="xtext:Keyword" value="{"/>
+            <elements xsi:type="xtext:Keyword" cardinality="?" value=":"/>
             <elements xsi:type="xtext:Assignment" feature="children" operator="+=">
               <terminal xsi:type="xtext:RuleCall" rule="/0/@rules.1"/>
             </elements>
@@ -623,13 +632,6 @@
               <elements xsi:type="xtext:Assignment" feature="children" operator="+=">
                 <terminal xsi:type="xtext:RuleCall" rule="/0/@rules.1"/>
               </elements>
-            </elements>
-            <elements xsi:type="xtext:Keyword" value="}"/>
-          </elements>
-          <elements xsi:type="xtext:Group" cardinality="?">
-            <elements xsi:type="xtext:Keyword" value="childPlacement"/>
-            <elements xsi:type="xtext:Assignment" feature="childPlacement" operator="=">
-              <terminal xsi:type="xtext:RuleCall" rule="/0/@rules.4"/>
             </elements>
           </elements>
           <elements xsi:type="xtext:Keyword" value="}"/>
@@ -664,6 +666,7 @@
           </elements>
           <elements xsi:type="xtext:Group" cardinality="?">
             <elements xsi:type="xtext:Keyword" value="placementData"/>
+            <elements xsi:type="xtext:Keyword" cardinality="?" value=":"/>
             <elements xsi:type="xtext:Assignment" feature="placementData" operator="=">
               <terminal xsi:type="xtext:RuleCall" rule="/0/@rules.2"/>
             </elements>
@@ -706,13 +709,21 @@
           </elements>
           <elements xsi:type="xtext:Group" cardinality="?">
             <elements xsi:type="xtext:Keyword" value="placementData"/>
+            <elements xsi:type="xtext:Keyword" cardinality="?" value=":"/>
             <elements xsi:type="xtext:Assignment" feature="placementData" operator="=">
               <terminal xsi:type="xtext:RuleCall" rule="/0/@rules.2"/>
             </elements>
           </elements>
           <elements xsi:type="xtext:Group" cardinality="?">
+            <elements xsi:type="xtext:Keyword" value="childPlacement"/>
+            <elements xsi:type="xtext:Keyword" cardinality="?" value=":"/>
+            <elements xsi:type="xtext:Assignment" feature="childPlacement" operator="=">
+              <terminal xsi:type="xtext:RuleCall" rule="/0/@rules.4"/>
+            </elements>
+          </elements>
+          <elements xsi:type="xtext:Group" cardinality="?">
             <elements xsi:type="xtext:Keyword" value="children"/>
-            <elements xsi:type="xtext:Keyword" value="{"/>
+            <elements xsi:type="xtext:Keyword" cardinality="?" value=":"/>
             <elements xsi:type="xtext:Assignment" feature="children" operator="+=">
               <terminal xsi:type="xtext:RuleCall" rule="/0/@rules.1"/>
             </elements>
@@ -721,13 +732,6 @@
               <elements xsi:type="xtext:Assignment" feature="children" operator="+=">
                 <terminal xsi:type="xtext:RuleCall" rule="/0/@rules.1"/>
               </elements>
-            </elements>
-            <elements xsi:type="xtext:Keyword" value="}"/>
-          </elements>
-          <elements xsi:type="xtext:Group" cardinality="?">
-            <elements xsi:type="xtext:Keyword" value="childPlacement"/>
-            <elements xsi:type="xtext:Assignment" feature="childPlacement" operator="=">
-              <terminal xsi:type="xtext:RuleCall" rule="/0/@rules.4"/>
             </elements>
           </elements>
           <elements xsi:type="xtext:Group" cardinality="?">
@@ -783,13 +787,21 @@
           </elements>
           <elements xsi:type="xtext:Group" cardinality="?">
             <elements xsi:type="xtext:Keyword" value="placementData"/>
+            <elements xsi:type="xtext:Keyword" cardinality="?" value=":"/>
             <elements xsi:type="xtext:Assignment" feature="placementData" operator="=">
               <terminal xsi:type="xtext:RuleCall" rule="/0/@rules.2"/>
             </elements>
           </elements>
           <elements xsi:type="xtext:Group" cardinality="?">
+            <elements xsi:type="xtext:Keyword" value="childPlacement"/>
+            <elements xsi:type="xtext:Keyword" cardinality="?" value=":"/>
+            <elements xsi:type="xtext:Assignment" feature="childPlacement" operator="=">
+              <terminal xsi:type="xtext:RuleCall" rule="/0/@rules.4"/>
+            </elements>
+          </elements>
+          <elements xsi:type="xtext:Group" cardinality="?">
             <elements xsi:type="xtext:Keyword" value="children"/>
-            <elements xsi:type="xtext:Keyword" value="{"/>
+            <elements xsi:type="xtext:Keyword" cardinality="?" value=":"/>
             <elements xsi:type="xtext:Assignment" feature="children" operator="+=">
               <terminal xsi:type="xtext:RuleCall" rule="/0/@rules.1"/>
             </elements>
@@ -798,13 +810,6 @@
               <elements xsi:type="xtext:Assignment" feature="children" operator="+=">
                 <terminal xsi:type="xtext:RuleCall" rule="/0/@rules.1"/>
               </elements>
-            </elements>
-            <elements xsi:type="xtext:Keyword" value="}"/>
-          </elements>
-          <elements xsi:type="xtext:Group" cardinality="?">
-            <elements xsi:type="xtext:Keyword" value="childPlacement"/>
-            <elements xsi:type="xtext:Assignment" feature="childPlacement" operator="=">
-              <terminal xsi:type="xtext:RuleCall" rule="/0/@rules.4"/>
             </elements>
           </elements>
           <elements xsi:type="xtext:Keyword" value="}"/>
@@ -839,13 +844,21 @@
           </elements>
           <elements xsi:type="xtext:Group" cardinality="?">
             <elements xsi:type="xtext:Keyword" value="placementData"/>
+            <elements xsi:type="xtext:Keyword" cardinality="?" value=":"/>
             <elements xsi:type="xtext:Assignment" feature="placementData" operator="=">
               <terminal xsi:type="xtext:RuleCall" rule="/0/@rules.2"/>
             </elements>
           </elements>
           <elements xsi:type="xtext:Group" cardinality="?">
+            <elements xsi:type="xtext:Keyword" value="childPlacement"/>
+            <elements xsi:type="xtext:Keyword" cardinality="?" value=":"/>
+            <elements xsi:type="xtext:Assignment" feature="childPlacement" operator="=">
+              <terminal xsi:type="xtext:RuleCall" rule="/0/@rules.4"/>
+            </elements>
+          </elements>
+          <elements xsi:type="xtext:Group" cardinality="?">
             <elements xsi:type="xtext:Keyword" value="children"/>
-            <elements xsi:type="xtext:Keyword" value="{"/>
+            <elements xsi:type="xtext:Keyword" cardinality="?" value=":"/>
             <elements xsi:type="xtext:Assignment" feature="children" operator="+=">
               <terminal xsi:type="xtext:RuleCall" rule="/0/@rules.1"/>
             </elements>
@@ -854,13 +867,6 @@
               <elements xsi:type="xtext:Assignment" feature="children" operator="+=">
                 <terminal xsi:type="xtext:RuleCall" rule="/0/@rules.1"/>
               </elements>
-            </elements>
-            <elements xsi:type="xtext:Keyword" value="}"/>
-          </elements>
-          <elements xsi:type="xtext:Group" cardinality="?">
-            <elements xsi:type="xtext:Keyword" value="childPlacement"/>
-            <elements xsi:type="xtext:Assignment" feature="childPlacement" operator="=">
-              <terminal xsi:type="xtext:RuleCall" rule="/0/@rules.4"/>
             </elements>
           </elements>
           <elements xsi:type="xtext:Keyword" value="}"/>
@@ -1037,6 +1043,7 @@
         </elements>
         <elements xsi:type="xtext:Group" cardinality="?">
           <elements xsi:type="xtext:Keyword" value="detailedPlacementData"/>
+          <elements xsi:type="xtext:Keyword" cardinality="?" value=":"/>
           <elements xsi:type="xtext:Assignment" feature="detailPlacementData" operator="=">
             <terminal xsi:type="xtext:RuleCall" rule="/0/@rules.2"/>
           </elements>
@@ -1640,12 +1647,14 @@
         <elements xsi:type="xtext:Keyword" value="{"/>
         <elements xsi:type="xtext:Group" cardinality="?">
           <elements xsi:type="xtext:Keyword" value="sourcePoint"/>
+          <elements xsi:type="xtext:Keyword" cardinality="?" value=":"/>
           <elements xsi:type="xtext:Assignment" feature="sourcePoint" operator="=">
             <terminal xsi:type="xtext:RuleCall" rule="/1/@rules.3"/>
           </elements>
         </elements>
         <elements xsi:type="xtext:Group" cardinality="?">
           <elements xsi:type="xtext:Keyword" value="targetPoint"/>
+          <elements xsi:type="xtext:Keyword" cardinality="?" value=":"/>
           <elements xsi:type="xtext:Assignment" feature="targetPoint" operator="=">
             <terminal xsi:type="xtext:RuleCall" rule="/1/@rules.3"/>
           </elements>
