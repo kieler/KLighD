@@ -57,7 +57,7 @@ public class KEdgeNode extends PChildRepresentedNode implements ILabeledGraphEle
     public KEdgeNode(final KEdge edge) {
         this.edge = edge;
         setPickable(true);
-        setChildrenPickable(false);
+        setChildrenPickable(true);
         bendPoints[0] = new Point2D.Double();
         bendPoints[1] = new Point2D.Double();
         RenderingContextData.get(edge).setProperty(EDGE_REP, this);

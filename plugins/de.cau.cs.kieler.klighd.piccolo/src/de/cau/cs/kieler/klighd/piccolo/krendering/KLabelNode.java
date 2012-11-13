@@ -18,6 +18,7 @@ import de.cau.cs.kieler.core.properties.IProperty;
 import de.cau.cs.kieler.core.properties.Property;
 import de.cau.cs.kieler.klighd.piccolo.krendering.controller.RenderingContextData;
 import de.cau.cs.kieler.klighd.piccolo.nodes.PEmptyNode;
+import edu.umd.cs.piccolo.util.PPickPath;
 
 /**
  * The Piccolo node for representing a {@code KLabel}.
@@ -80,4 +81,16 @@ public class KLabelNode extends PEmptyNode implements IGraphElement<KLabel> {
         return text;
     }
 
+    /**
+     * {@inheritDoc}.<br>
+     * <br>
+     * By means of this configuration the {@link KLabelNode KLabelNodes} themselves are pickable
+     * rather then their children (KText renderings). This allows reduction of the tracing
+     * information needed in order to link view and (source) model.
+     * 
+     * @return true since we can abstract the pick of a concrete text rendering node this way.
+     */
+    protected boolean pick(final PPickPath pickPath) {
+        return true;
+    }
 }
