@@ -31,6 +31,7 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  * <ul>
  *   <li>{@link de.cau.cs.kieler.core.krendering.impl.KImageImpl#getBundleName <em>Bundle Name</em>}</li>
  *   <li>{@link de.cau.cs.kieler.core.krendering.impl.KImageImpl#getImagePath <em>Image Path</em>}</li>
+ *   <li>{@link de.cau.cs.kieler.core.krendering.impl.KImageImpl#getImageObject <em>Image Object</em>}</li>
  * </ul>
  * </p>
  *
@@ -76,6 +77,26 @@ public class KImageImpl extends KContainerRenderingImpl implements KImage {
      * @ordered
      */
     protected String imagePath = IMAGE_PATH_EDEFAULT;
+
+    /**
+     * The default value of the '{@link #getImageObject() <em>Image Object</em>}' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see #getImageObject()
+     * @generated
+     * @ordered
+     */
+    protected static final Object IMAGE_OBJECT_EDEFAULT = null;
+
+    /**
+     * The cached value of the '{@link #getImageObject() <em>Image Object</em>}' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see #getImageObject()
+     * @generated
+     * @ordered
+     */
+    protected Object imageObject = IMAGE_OBJECT_EDEFAULT;
 
     /**
      * <!-- begin-user-doc -->
@@ -143,6 +164,27 @@ public class KImageImpl extends KContainerRenderingImpl implements KImage {
      * <!-- end-user-doc -->
      * @generated
      */
+    public Object getImageObject() {
+        return imageObject;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public void setImageObject(Object newImageObject) {
+        Object oldImageObject = imageObject;
+        imageObject = newImageObject;
+        if (eNotificationRequired())
+            eNotify(new ENotificationImpl(this, Notification.SET, KRenderingPackage.KIMAGE__IMAGE_OBJECT, oldImageObject, imageObject));
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
@@ -150,6 +192,8 @@ public class KImageImpl extends KContainerRenderingImpl implements KImage {
                 return getBundleName();
             case KRenderingPackage.KIMAGE__IMAGE_PATH:
                 return getImagePath();
+            case KRenderingPackage.KIMAGE__IMAGE_OBJECT:
+                return getImageObject();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -167,6 +211,9 @@ public class KImageImpl extends KContainerRenderingImpl implements KImage {
                 return;
             case KRenderingPackage.KIMAGE__IMAGE_PATH:
                 setImagePath((String)newValue);
+                return;
+            case KRenderingPackage.KIMAGE__IMAGE_OBJECT:
+                setImageObject(newValue);
                 return;
         }
         super.eSet(featureID, newValue);
@@ -186,6 +233,9 @@ public class KImageImpl extends KContainerRenderingImpl implements KImage {
             case KRenderingPackage.KIMAGE__IMAGE_PATH:
                 setImagePath(IMAGE_PATH_EDEFAULT);
                 return;
+            case KRenderingPackage.KIMAGE__IMAGE_OBJECT:
+                setImageObject(IMAGE_OBJECT_EDEFAULT);
+                return;
         }
         super.eUnset(featureID);
     }
@@ -202,6 +252,8 @@ public class KImageImpl extends KContainerRenderingImpl implements KImage {
                 return BUNDLE_NAME_EDEFAULT == null ? bundleName != null : !BUNDLE_NAME_EDEFAULT.equals(bundleName);
             case KRenderingPackage.KIMAGE__IMAGE_PATH:
                 return IMAGE_PATH_EDEFAULT == null ? imagePath != null : !IMAGE_PATH_EDEFAULT.equals(imagePath);
+            case KRenderingPackage.KIMAGE__IMAGE_OBJECT:
+                return IMAGE_OBJECT_EDEFAULT == null ? imageObject != null : !IMAGE_OBJECT_EDEFAULT.equals(imageObject);
         }
         return super.eIsSet(featureID);
     }
@@ -220,6 +272,8 @@ public class KImageImpl extends KContainerRenderingImpl implements KImage {
         result.append(bundleName);
         result.append(", imagePath: ");
         result.append(imagePath);
+        result.append(", imageObject: ");
+        result.append(imageObject);
         result.append(')');
         return result.toString();
     }

@@ -844,13 +844,22 @@ public interface KRenderingPackage extends EPackage {
     int KIMAGE__IMAGE_PATH = KCONTAINER_RENDERING_FEATURE_COUNT + 1;
 
     /**
+     * The feature id for the '<em><b>Image Object</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KIMAGE__IMAGE_OBJECT = KCONTAINER_RENDERING_FEATURE_COUNT + 2;
+
+    /**
      * The number of structural features of the '<em>KImage</em>' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int KIMAGE_FEATURE_COUNT = KCONTAINER_RENDERING_FEATURE_COUNT + 2;
+    int KIMAGE_FEATURE_COUNT = KCONTAINER_RENDERING_FEATURE_COUNT + 3;
 
     /**
      * The meta object id for the '{@link de.cau.cs.kieler.core.krendering.KPlacementData <em>KPlacement Data</em>}' class.
@@ -3156,6 +3165,17 @@ public interface KRenderingPackage extends EPackage {
     EAttribute getKImage_ImagePath();
 
     /**
+     * Returns the meta object for the attribute '{@link de.cau.cs.kieler.core.krendering.KImage#getImageObject <em>Image Object</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the attribute '<em>Image Object</em>'.
+     * @see de.cau.cs.kieler.core.krendering.KImage#getImageObject()
+     * @see #getKImage()
+     * @generated
+     */
+    EAttribute getKImage_ImageObject();
+
+    /**
      * Returns the meta object for class '{@link de.cau.cs.kieler.core.krendering.KDecoratorPlacementData <em>KDecorator Placement Data</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -4327,6 +4347,14 @@ public interface KRenderingPackage extends EPackage {
          * @generated
          */
         EAttribute KIMAGE__IMAGE_PATH = eINSTANCE.getKImage_ImagePath();
+
+        /**
+         * The meta object literal for the '<em><b>Image Object</b></em>' attribute feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EAttribute KIMAGE__IMAGE_OBJECT = eINSTANCE.getKImage_ImageObject();
 
         /**
          * The meta object literal for the '{@link de.cau.cs.kieler.core.krendering.impl.KDecoratorPlacementDataImpl <em>KDecorator Placement Data</em>}' class.
