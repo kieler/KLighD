@@ -47,6 +47,7 @@
     <genClasses ecoreClass="krendering.ecore#//KImage">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute krendering.ecore#//KImage/bundleName"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute krendering.ecore#//KImage/imagePath"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute krendering.ecore#//KImage/imageObject"/>
     </genClasses>
     <genClasses ecoreClass="krendering.ecore#//KDecoratorPlacementData">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute krendering.ecore#//KDecoratorPlacementData/location"/>

@@ -24,6 +24,7 @@ package de.cau.cs.kieler.core.krendering;
  * <ul>
  *   <li>{@link de.cau.cs.kieler.core.krendering.KImage#getBundleName <em>Bundle Name</em>}</li>
  *   <li>{@link de.cau.cs.kieler.core.krendering.KImage#getImagePath <em>Image Path</em>}</li>
+ *   <li>{@link de.cau.cs.kieler.core.krendering.KImage#getImageObject <em>Image Object</em>}</li>
  * </ul>
  * </p>
  *
@@ -83,5 +84,31 @@ public interface KImage extends KContainerRendering {
      * @generated
      */
     void setImagePath(String value);
+
+    /**
+     * Returns the value of the '<em><b>Image Object</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <p>
+     * If the meaning of the '<em>Image Object</em>' attribute isn't clear,
+     * there really should be more of a description here...
+     * </p>
+     * <!-- end-user-doc -->
+     * @return the value of the '<em>Image Object</em>' attribute.
+     * @see #setImageObject(Object)
+     * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKImage_ImageObject()
+     * @model transient="true"
+     * @generated
+     */
+    Object getImageObject();
+
+    /**
+     * Sets the value of the '{@link de.cau.cs.kieler.core.krendering.KImage#getImageObject <em>Image Object</em>}' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @param value the new value of the '<em>Image Object</em>' attribute.
+     * @see #getImageObject()
+     * @generated
+     */
+    void setImageObject(Object value);
 
 } // KImage
