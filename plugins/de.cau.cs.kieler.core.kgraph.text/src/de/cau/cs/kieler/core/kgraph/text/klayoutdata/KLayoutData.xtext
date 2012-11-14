@@ -61,8 +61,8 @@ KEdgeLayout returns KEdgeLayout:
     {KEdgeLayout}
     'KEdgeLayout'
     '{'
-        ('sourcePoint' sourcePoint=KPoint)?
-        ('targetPoint' targetPoint=KPoint)?
+        ('sourcePoint' ':'? sourcePoint=KPoint)?
+        ('targetPoint' ':'? targetPoint=KPoint)?
         ('bendPoints' ':'? bendPoints+=KPoint ( ","? bendPoints+=KPoint)*)?
         ('mapProperties' ':'?  persistentEntries+=PersistentEntry ( ","? persistentEntries+=PersistentEntry)*)?
     '}';

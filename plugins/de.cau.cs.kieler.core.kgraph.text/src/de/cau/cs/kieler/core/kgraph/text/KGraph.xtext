@@ -29,9 +29,9 @@ KNode returns KNode:
     {KNode}
     'KNode'
     '{'
-        ('ports' ports+=KPort ( ","? ports+=KPort)* )?
+        ('ports' ':'? ports+=KPort ( ","? ports+=KPort)* )?
         ('data' ':'? data+=KGraphData ( ","? data+=KGraphData)* )?
-        //('labels' '{' labels+=KLabel ( ","? labels+=KLabel)* '}' )?
+        ('labels' ':'? labels+=KLabel ( ","? labels+=KLabel)* )?
         ('children' ':'? children+=KNode ( ","? children+=KNode)* )?
     '}'
     (outgoingEdges+=KEdge ( ","? outgoingEdges+=KEdge)*)?
@@ -96,7 +96,7 @@ KGraphDataImpl returns KGraphData:
   {KGraphData}
   'KGraphData'
   '{'
-      ('persistentEntries' '{' persistentEntries+=PersistentEntry ( "," persistentEntries+=PersistentEntry)* '}' )?
+      ('mapProperties' ':'? '{' persistentEntries+=PersistentEntry ( "," persistentEntries+=PersistentEntry)* '}' )?
   '}';
 
 

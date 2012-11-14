@@ -52,10 +52,10 @@ public class KGraphFormatter extends AbstractDeclarativeFormatter {
         for (Keyword word : f.findKeywords("mapProperties", "children", "styles", "bendPoints",
                 "placementData", "detailedPlacementData", "sourcePoint", "targetPoint",
                 "sourcePort", "targetPort", "topLeft", "bottomRight", "lineStyle", "lineWidth",
-                "backgroundColor", "forgroundColor", "backgroundVisibility",
+                "backgroundColor", "foregroundColor", "backgroundVisibility",
                 "foregroundVisibility", "font", "fontSize", "fontColor", "bold", "italic",
                 "horizontalAlignment", "verticalAlignment", "left", "right", "location", "xOffset",
-                "width", "insets", "KNode, KInsets")) {
+                "width", "insets", "KNode", "KInsets", "KPoint")) {
             c.setLinewrap().before(word);
         }
         
@@ -63,6 +63,10 @@ public class KGraphFormatter extends AbstractDeclarativeFormatter {
         for (Keyword word : f.findKeywords("points")) {
             c.setLinewrap().after(word);
         }
+        
+        // suppress the line wrap after 'topLeft' and 'bottomRight' of directPlacementData 
+        c.setNoLinewrap().after(f.getKDirectPlacementDataAccess().getTopLeftKeyword_2());
+        c.setNoLinewrap().after(f.getKDirectPlacementDataAccess().getBottomRightKeyword_5());
 
         // some custom formatting of coordinate numbers 
         c.setNoLinewrap().after(

@@ -16,8 +16,13 @@ package de.cau.cs.kieler.core.kgraph.text.serializer;
 import java.util.List;
 
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.xtext.Keyword;
+import org.eclipse.xtext.XtextPackage;
 import org.eclipse.xtext.nodemodel.INode;
-import org.eclipse.xtext.serializer.analysis.ISyntacticSequencerPDAProvider.ISynNavigable;
+import org.eclipse.xtext.serializer.analysis.GrammarAlias;
+import org.eclipse.xtext.serializer.analysis.ISyntacticSequencerPDAProvider.ISynTransition;
+
+import com.google.common.collect.Iterables;
 
 /**
  * A specialized {@link org.eclipse.xtext.serializer.sequencer.ISyntacticSequencer} forcing optional
@@ -28,167 +33,47 @@ import org.eclipse.xtext.serializer.analysis.ISyntacticSequencerPDAProvider.ISyn
 @SuppressWarnings("restriction")
 public class CustomKGraphSyntacticSequencer extends KGraphSyntacticSequencer {
     
-    // CHECKSTYLEOFF Method|Parameter|LineLength
-    //  as the given methods skeletons are determined by the generated AbstractKGraphSyntacticSequencer
-
     /**
-     * Syntax: ':'?
+     * This method overrides
+     * {@link KGraphSyntacticSequencer#emitUnassignedTokens(EObject, ISynTransition, INode, INode)}
+     * for the sake of instructing the serializer to always dump out optional colon keywords. Other
+     * optional keywords are omitted. This realization avoids the implementation of a huge amount
+     * of methods each of them dedicated to a certain occurrence of the colon in the grammar(s).<br> 
+     * <br>
+     * Note: Method is partially copied from the super implementation.
+     * 
+     * @param semanticObject
+     *            serializer data
+     * @param transition
+     *            serializer data
+     * @param fromNode
+     *            serializer data
+     * @param toNode
+     *            serializer data
      */
-    protected void emit_KNode_ColonKeyword_4_1_q(EObject semanticObject, ISynNavigable transition,
-            List<INode> nodes) {
-        acceptUnassignedKeyword(grammarAccess.getKNodeAccess().getColonKeyword_4_1(), ":", null);
-    }
-
-    /**
-     * Syntax: ':'?
-     */
-    protected void emit_KNode_ColonKeyword_5_1_q(EObject semanticObject, ISynNavigable transition,
-            List<INode> nodes) {
-        acceptUnassignedKeyword(grammarAccess.getKNodeAccess().getColonKeyword_5_1(), ":", null);
-    }
-    
-    /**
-     * Syntax:
-     *     ':'?
-     */
-    protected void emit_KEdge_ColonKeyword_5_1_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
-        acceptUnassignedKeyword(grammarAccess.getKEdgeAccess().getColonKeyword_5_1(), ":", null);
-    }
-    
-    /**
-     * Syntax:
-     *     ':'?
-     */
-    protected void emit_KEdge_ColonKeyword_6_1_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
-        acceptUnassignedKeyword(grammarAccess.getKEdgeAccess().getColonKeyword_6_1(), ":", null);
-    }
-
-    /**
-     * Syntax:
-     *     ':'?
-     */
-    protected void emit_KEdgeLayout_ColonKeyword_5_1_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
-        acceptUnassignedKeyword(grammarAccess.getKEdgeLayoutAccess().getColonKeyword_5_1(), ":", null);
-    }
-    
-    /**
-     * Syntax:
-     *     ':'?
-     */
-    protected void emit_KEdgeLayout_ColonKeyword_6_1_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
-        acceptUnassignedKeyword(grammarAccess.getKEdgeLayoutAccess().getColonKeyword_6_1(), ":", null);
-    }
-    
-    /**
-     * Syntax:
-     *     ':'?
-     */
-    protected void emit_KPolyline_Impl_ColonKeyword_2_1_1_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
-        acceptUnassignedKeyword(grammarAccess.getKPolyline_ImplAccess().getColonKeyword_2_1_1(), ":", null);
-    }
-    
-    /**
-     * Syntax:
-     *     ':'?
-     */
-    protected void emit_KPolyline_Impl_ColonKeyword_2_2_1_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
-        acceptUnassignedKeyword(grammarAccess.getKPolyline_ImplAccess().getColonKeyword_2_2_1(), ":", null);
-    }
-    
-    /**
-     * Syntax:
-     *     ':'?
-     */
-    protected void emit_KPolyline_Impl_ColonKeyword_2_3_1_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
-        acceptUnassignedKeyword(grammarAccess.getKPolyline_ImplAccess().getColonKeyword_2_3_1(), ":", null);
-    }
-    
-    /**
-     * Syntax:
-     *     ':'?
-     */
-    protected void emit_KPolyline_Impl_ColonKeyword_2_4_1_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
-        acceptUnassignedKeyword(grammarAccess.getKPolyline_ImplAccess().getColonKeyword_2_4_1(), ":", null);
-    }
-    
-    /**
-     * Syntax:
-     *     ':'?
-     */
-    protected void emit_KPort_ColonKeyword_3_1_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
-        acceptUnassignedKeyword(grammarAccess.getKPortAccess().getColonKeyword_3_1(), ":", null);
-    }
-    
-    /**
-     * Syntax:
-     *     ':'?
-     */
-    protected void emit_KPort_ColonKeyword_4_1_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
-        acceptUnassignedKeyword(grammarAccess.getKPortAccess().getColonKeyword_4_1(), ":", null);
-    }
-    
-    /**
-     * Syntax:
-     *     ':'?
-     */
-    protected void emit_KPort_ColonKeyword_5_1_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
-        acceptUnassignedKeyword(grammarAccess.getKPortAccess().getColonKeyword_5_1(), ":", null);
-    }
-    
-    /**
-     * Syntax:
-     *     ':'?
-     */
-    protected void emit_KRectangle_ColonKeyword_2_1_1_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
-        acceptUnassignedKeyword(grammarAccess.getKRectangleAccess().getColonKeyword_2_1_1(), ":", null);
-    }
-    
-    /**
-     * Syntax:
-     *     ':'?
-     */
-    protected void emit_KRectangle_ColonKeyword_2_2_1_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
-        acceptUnassignedKeyword(grammarAccess.getKRectangleAccess().getColonKeyword_2_2_1(), ":", null);
-    }
-    
-    /**
-     * Syntax:
-     *     ':'?
-     */
-    protected void emit_KRectangle_ColonKeyword_2_3_1_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
-        acceptUnassignedKeyword(grammarAccess.getKRectangleAccess().getColonKeyword_2_3_1(), ":", null);
-    }
-    
-    /**
-     * Syntax:
-     *     ':'?
-     */
-    protected void emit_KRectangle_ColonKeyword_2_4_1_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
-        acceptUnassignedKeyword(grammarAccess.getKRectangleAccess().getColonKeyword_2_4_1(), ":", null);
-    }
-
-    /**
-     * Syntax:
-     *     ':'?
-     */
-    protected void emit_KText_ColonKeyword_3_2_1_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
-        acceptUnassignedKeyword(grammarAccess.getKTextAccess().getColonKeyword_3_2_1(), ":", null);
-    }
-    
-    /**
-     * Syntax:
-     *     ':'?
-     */
-    protected void emit_KText_ColonKeyword_3_6_1_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
-        acceptUnassignedKeyword(grammarAccess.getKTextAccess().getColonKeyword_3_6_1(), ":", null);
-    }
-    
-    /**
-     * Syntax:
-     *     ':'?
-     */
-    protected void emit_KShapeLayout_ColonKeyword_8_1_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
-        acceptUnassignedKeyword(grammarAccess.getKShapeLayoutAccess().getColonKeyword_8_1(), ":", null);
-    }
-    
+    protected void emitUnassignedTokens(final EObject semanticObject,
+            final ISynTransition transition, final INode fromNode, final INode toNode) {
+        // the copied part
+        if (transition.getAmbiguousSyntaxes().isEmpty()) return;
+        List<INode> transitionNodes = collectNodes(fromNode, toNode);
+        for (GrammarAlias.TokenAlias syntax : Iterables.filter(transition.getAmbiguousSyntaxes(),
+                GrammarAlias.TokenAlias.class)) {
+            List<INode> syntaxNodes = getNodesFor(transitionNodes, syntax);
+            // the custom part:
+            if (XtextPackage.eINSTANCE.getKeyword().isInstance(syntax.getToken())) {
+                // if we're examining a keyword ...
+                Keyword k = (Keyword) syntax.getToken();
+                if (k.getValue().equals(":")) {
+                    // ... and the keyword is a colon dump out the keyword!
+                    acceptUnassignedKeyword(k, k.getValue(), null);
+                } else {
+                    // do the default stuff for other key words 
+                    acceptNodes(transition, syntaxNodes);
+                }
+            } else {
+                // do the default stuff otherwise 
+                acceptNodes(transition, syntaxNodes);
+            }
+        }
+    }    
 }

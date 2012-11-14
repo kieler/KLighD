@@ -342,13 +342,18 @@ public final class DiagramViewManager implements IPartListener {
         if (id.equals("")) {
             return false;
         }
-        IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
-        IViewReference viewRef = page.findViewReference(PRIMARY_VIEW_ID, id);
+        try {
+            IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
+            IViewReference viewRef = page.findViewReference(PRIMARY_VIEW_ID, id);
 
-        if (viewRef != null) {
-            page.hideView(viewRef);
-            return true;
+            if (viewRef != null) {
+                page.hideView(viewRef);
+                return true;
+            }
+        } catch (NullPointerException e) {
+            /* do nothing */
         }
+
         return false;
     }
 
@@ -364,9 +369,14 @@ public final class DiagramViewManager implements IPartListener {
             IViewReference[] viewReferences = page.getViewReferences();
             for (IViewReference viewReference : viewReferences) {
                 if (viewReference.getId().equals(PRIMARY_VIEW_ID)) {
+                    // SUPPRESS CHECKSTYLE PREVIOUS block
+                    
                     // chsch: for the Moment, reset all existing views since there may
                     // occur errors during the (re-)initialization a further views
-                    page.hideView(viewReference);
+                    
+                    // Update: deactivated the closing of existing view skeletons as
+                    // the behavior seems to be changed in e4
+                    // page.hideView(viewReference);
 
                     // DiagramViewPart view = (DiagramViewPart) viewReference.getView(false);
                     // // TODO this does not take multi view contexts into account yet

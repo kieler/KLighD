@@ -468,6 +468,7 @@ public class KGraphSemanticSequencer extends KRenderingSemanticSequencer {
 	 *     (
 	 *         (ports+=KPort ports+=KPort*)? 
 	 *         (data+=KGraphData data+=KGraphData*)? 
+	 *         (labels+=KLabel labels+=KLabel*)? 
 	 *         (children+=KNode children+=KNode*)? 
 	 *         (outgoingEdges+=KEdge outgoingEdges+=KEdge*)?
 	 *     )
