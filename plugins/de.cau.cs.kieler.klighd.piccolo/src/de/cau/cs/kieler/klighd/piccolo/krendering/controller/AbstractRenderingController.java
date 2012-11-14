@@ -1312,7 +1312,7 @@ public abstract class AbstractRenderingController<S extends KGraphElement, T ext
                 public void setBounds(final PBounds bounds) {
                     // apply the bounds
                     getNode().setBounds(bounds);
-                    NodeUtil.applyTranslation(getNode(), (float) bounds.x, (float) bounds.y);
+                   // NodeUtil.applyTranslation(getNode(), (float) bounds.x, (float) bounds.y);
                 }
             };
         } else {
