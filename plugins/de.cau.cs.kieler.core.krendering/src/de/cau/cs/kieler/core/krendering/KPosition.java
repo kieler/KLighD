@@ -20,6 +20,10 @@ import org.eclipse.emf.ecore.EObject;
  * A representation of the model object '<em><b>KPosition</b></em>'.
  * <!-- end-user-doc -->
  *
+ * <!-- begin-model-doc -->
+ * Used to set an absolute Position of a single point by defining x and y coordinates of this point
+ * <!-- end-model-doc -->
+ *
  * <p>
  * The following features are supported:
  * <ul>

@@ -20,6 +20,11 @@ import org.eclipse.emf.ecore.EObject;
  * A representation of the model object '<em><b>KStyle</b></em>'.
  * <!-- end-user-doc -->
  *
+ * <!-- begin-model-doc -->
+ * Adds additionalStyleInformation to a rendering.
+ * can be set to propagate to children to make redefinining styles unneccessary
+ * <!-- end-model-doc -->
+ *
  * <p>
  * The following features are supported:
  * <ul>

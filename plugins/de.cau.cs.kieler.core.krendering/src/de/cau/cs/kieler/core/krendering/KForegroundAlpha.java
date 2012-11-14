@@ -16,13 +16,17 @@ package de.cau.cs.kieler.core.krendering;
 
 /**
  * <!-- begin-user-doc -->
- * A representation of the model object '<em><b>KStack Placement</b></em>'.
+ * A representation of the model object '<em><b>KForeground Alpha</b></em>'.
  * <!-- end-user-doc -->
  *
+ * <!-- begin-model-doc -->
+ * Defines the alphaChannel of a foregroudRendering
+ * <!-- end-model-doc -->
  *
- * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKStackPlacement()
+ *
+ * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKForegroundAlpha()
  * @model
  * @generated
  */
-public interface KStackPlacement extends KPlacement {
-} // KStackPlacement
+public interface KForegroundAlpha extends KAlpha {
+} // KForegroundAlpha

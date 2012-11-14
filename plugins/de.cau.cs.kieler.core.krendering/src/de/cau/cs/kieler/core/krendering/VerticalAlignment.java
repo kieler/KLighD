@@ -57,7 +57,9 @@ public enum VerticalAlignment implements Enumerator {
      * @generated
      * @ordered
      */
-    BOTTOM(2, "BOTTOM", "BOTTOM"), /**
+    BOTTOM(2, "BOTTOM", "BOTTOM"),
+
+    /**
      * The '<em><b>EEnum Literal0</b></em>' literal object.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->

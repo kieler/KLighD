@@ -82,11 +82,8 @@ public class KRenderingFactoryImpl extends EFactoryImpl implements KRenderingFac
             case KRenderingPackage.KCHILD_AREA: return createKChildArea();
             case KRenderingPackage.KTEXT: return createKText();
             case KRenderingPackage.KGRID_PLACEMENT: return createKGridPlacement();
-            case KRenderingPackage.KSTACK_PLACEMENT: return createKStackPlacement();
             case KRenderingPackage.KGRID_PLACEMENT_DATA: return createKGridPlacementData();
-            case KRenderingPackage.KSTACK_PLACEMENT_DATA: return createKStackPlacementData();
             case KRenderingPackage.KDIRECT_PLACEMENT_DATA: return createKDirectPlacementData();
-            case KRenderingPackage.KPOLYLINE_PLACEMENT_DATA: return createKPolylinePlacementData();
             case KRenderingPackage.KCUSTOM_RENDERING: return createKCustomRendering();
             case KRenderingPackage.KFOREGROUND_COLOR: return createKForegroundColor();
             case KRenderingPackage.KBACKGROUND_COLOR: return createKBackgroundColor();
@@ -99,14 +96,15 @@ public class KRenderingFactoryImpl extends EFactoryImpl implements KRenderingFac
             case KRenderingPackage.KTOP_POSITION: return createKTopPosition();
             case KRenderingPackage.KBOTTOM_POSITION: return createKBottomPosition();
             case KRenderingPackage.KSPLINE: return createKSpline();
-            case KRenderingPackage.KFOREGROUND_VISIBILITY: return createKForegroundVisibility();
-            case KRenderingPackage.KBACKGROUND_VISIBILITY: return createKBackgroundVisibility();
+            case KRenderingPackage.KFOREGROUND_ALPHA: return createKForegroundAlpha();
+            case KRenderingPackage.KBACKGROUND_ALPHA: return createKBackgroundAlpha();
             case KRenderingPackage.KFONT_BOLD: return createKFontBold();
             case KRenderingPackage.KFONT_ITALIC: return createKFontItalic();
             case KRenderingPackage.KFONT_NAME: return createKFontName();
             case KRenderingPackage.KFONT_SIZE: return createKFontSize();
             case KRenderingPackage.KROUNDED_BENDS_POLYLINE: return createKRoundedBendsPolyline();
             case KRenderingPackage.KROTATION: return createKRotation();
+            case KRenderingPackage.KGRADIENT_STYLE: return createKGradientStyle();
             default:
                 throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
         }
@@ -295,16 +293,6 @@ public class KRenderingFactoryImpl extends EFactoryImpl implements KRenderingFac
      * <!-- end-user-doc -->
      * @generated
      */
-    public KStackPlacement createKStackPlacement() {
-        KStackPlacementImpl kStackPlacement = new KStackPlacementImpl();
-        return kStackPlacement;
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
     public KGridPlacementData createKGridPlacementData() {
         KGridPlacementDataImpl kGridPlacementData = new KGridPlacementDataImpl();
         return kGridPlacementData;
@@ -315,29 +303,9 @@ public class KRenderingFactoryImpl extends EFactoryImpl implements KRenderingFac
      * <!-- end-user-doc -->
      * @generated
      */
-    public KStackPlacementData createKStackPlacementData() {
-        KStackPlacementDataImpl kStackPlacementData = new KStackPlacementDataImpl();
-        return kStackPlacementData;
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
     public KDirectPlacementData createKDirectPlacementData() {
         KDirectPlacementDataImpl kDirectPlacementData = new KDirectPlacementDataImpl();
         return kDirectPlacementData;
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    public KPolylinePlacementData createKPolylinePlacementData() {
-        KPolylinePlacementDataImpl kPolylinePlacementData = new KPolylinePlacementDataImpl();
-        return kPolylinePlacementData;
     }
 
     /**
@@ -465,9 +433,9 @@ public class KRenderingFactoryImpl extends EFactoryImpl implements KRenderingFac
      * <!-- end-user-doc -->
      * @generated
      */
-    public KForegroundVisibility createKForegroundVisibility() {
-        KForegroundVisibilityImpl kForegroundVisibility = new KForegroundVisibilityImpl();
-        return kForegroundVisibility;
+    public KForegroundAlpha createKForegroundAlpha() {
+        KForegroundAlphaImpl kForegroundAlpha = new KForegroundAlphaImpl();
+        return kForegroundAlpha;
     }
 
     /**
@@ -475,9 +443,9 @@ public class KRenderingFactoryImpl extends EFactoryImpl implements KRenderingFac
      * <!-- end-user-doc -->
      * @generated
      */
-    public KBackgroundVisibility createKBackgroundVisibility() {
-        KBackgroundVisibilityImpl kBackgroundVisibility = new KBackgroundVisibilityImpl();
-        return kBackgroundVisibility;
+    public KBackgroundAlpha createKBackgroundAlpha() {
+        KBackgroundAlphaImpl kBackgroundAlpha = new KBackgroundAlphaImpl();
+        return kBackgroundAlpha;
     }
 
     /**
@@ -538,6 +506,16 @@ public class KRenderingFactoryImpl extends EFactoryImpl implements KRenderingFac
     public KRotation createKRotation() {
         KRotationImpl kRotation = new KRotationImpl();
         return kRotation;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public KGradientStyle createKGradientStyle() {
+        KGradientStyleImpl kGradientStyle = new KGradientStyleImpl();
+        return kGradientStyle;
     }
 
     /**

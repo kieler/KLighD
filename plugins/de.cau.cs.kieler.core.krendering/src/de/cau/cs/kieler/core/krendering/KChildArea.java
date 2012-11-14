@@ -19,6 +19,10 @@ package de.cau.cs.kieler.core.krendering;
  * A representation of the model object '<em><b>KChild Area</b></em>'.
  * <!-- end-user-doc -->
  *
+ * <!-- begin-model-doc -->
+ * define a child area inside of a rendering to stop children being placed anywhere but in the defined area
+ * <!-- end-model-doc -->
+ *
  *
  * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKChildArea()
  * @model

@@ -19,6 +19,10 @@ package de.cau.cs.kieler.core.krendering;
  * A representation of the model object '<em><b>Ref</b></em>'.
  * <!-- end-user-doc -->
  *
+ * <!-- begin-model-doc -->
+ * references an already defined rendering to make redefining unneccessary.
+ * <!-- end-model-doc -->
+ *
  * <p>
  * The following features are supported:
  * <ul>

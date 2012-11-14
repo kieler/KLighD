@@ -19,6 +19,10 @@ package de.cau.cs.kieler.core.krendering;
  * A representation of the model object '<em><b>KDirect Placement Data</b></em>'.
  * <!-- end-user-doc -->
  *
+ * <!-- begin-model-doc -->
+ * specifies the area for an element by setting TopLeft and BottomRight corner absolutely
+ * <!-- end-model-doc -->
+ *
  * <p>
  * The following features are supported:
  * <ul>

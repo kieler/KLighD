@@ -19,6 +19,10 @@ package de.cau.cs.kieler.core.krendering;
  * A representation of the model object '<em><b>KLine Width</b></em>'.
  * <!-- end-user-doc -->
  *
+ * <!-- begin-model-doc -->
+ * specifies a lineWidth for any rendering. Negative values change the size of the rendering.
+ * <!-- end-model-doc -->
+ *
  * <p>
  * The following features are supported:
  * <ul>

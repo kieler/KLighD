@@ -14,11 +14,13 @@
 package de.cau.cs.kieler.core.krendering.impl;
 
 import de.cau.cs.kieler.core.krendering.KGridPlacement;
+import de.cau.cs.kieler.core.krendering.KPosition;
 import de.cau.cs.kieler.core.krendering.KRenderingPackage;
 
 import org.eclipse.emf.common.notify.Notification;
 
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.EObjectImpl;
@@ -31,6 +33,8 @@ import org.eclipse.emf.ecore.impl.EObjectImpl;
  * The following features are implemented:
  * <ul>
  *   <li>{@link de.cau.cs.kieler.core.krendering.impl.KGridPlacementImpl#getNumColumns <em>Num Columns</em>}</li>
+ *   <li>{@link de.cau.cs.kieler.core.krendering.impl.KGridPlacementImpl#getTopLeft <em>Top Left</em>}</li>
+ *   <li>{@link de.cau.cs.kieler.core.krendering.impl.KGridPlacementImpl#getBottomRight <em>Bottom Right</em>}</li>
  * </ul>
  * </p>
  *
@@ -56,6 +60,26 @@ public class KGridPlacementImpl extends EObjectImpl implements KGridPlacement {
      * @ordered
      */
     protected int numColumns = NUM_COLUMNS_EDEFAULT;
+
+    /**
+     * The cached value of the '{@link #getTopLeft() <em>Top Left</em>}' reference.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see #getTopLeft()
+     * @generated
+     * @ordered
+     */
+    protected KPosition topLeft;
+
+    /**
+     * The cached value of the '{@link #getBottomRight() <em>Bottom Right</em>}' reference.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see #getBottomRight()
+     * @generated
+     * @ordered
+     */
+    protected KPosition bottomRight;
 
     /**
      * <!-- begin-user-doc -->
@@ -102,11 +126,93 @@ public class KGridPlacementImpl extends EObjectImpl implements KGridPlacement {
      * <!-- end-user-doc -->
      * @generated
      */
+    public KPosition getTopLeft() {
+        if (topLeft != null && topLeft.eIsProxy()) {
+            InternalEObject oldTopLeft = (InternalEObject)topLeft;
+            topLeft = (KPosition)eResolveProxy(oldTopLeft);
+            if (topLeft != oldTopLeft) {
+                if (eNotificationRequired())
+                    eNotify(new ENotificationImpl(this, Notification.RESOLVE, KRenderingPackage.KGRID_PLACEMENT__TOP_LEFT, oldTopLeft, topLeft));
+            }
+        }
+        return topLeft;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public KPosition basicGetTopLeft() {
+        return topLeft;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public void setTopLeft(KPosition newTopLeft) {
+        KPosition oldTopLeft = topLeft;
+        topLeft = newTopLeft;
+        if (eNotificationRequired())
+            eNotify(new ENotificationImpl(this, Notification.SET, KRenderingPackage.KGRID_PLACEMENT__TOP_LEFT, oldTopLeft, topLeft));
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public KPosition getBottomRight() {
+        if (bottomRight != null && bottomRight.eIsProxy()) {
+            InternalEObject oldBottomRight = (InternalEObject)bottomRight;
+            bottomRight = (KPosition)eResolveProxy(oldBottomRight);
+            if (bottomRight != oldBottomRight) {
+                if (eNotificationRequired())
+                    eNotify(new ENotificationImpl(this, Notification.RESOLVE, KRenderingPackage.KGRID_PLACEMENT__BOTTOM_RIGHT, oldBottomRight, bottomRight));
+            }
+        }
+        return bottomRight;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public KPosition basicGetBottomRight() {
+        return bottomRight;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public void setBottomRight(KPosition newBottomRight) {
+        KPosition oldBottomRight = bottomRight;
+        bottomRight = newBottomRight;
+        if (eNotificationRequired())
+            eNotify(new ENotificationImpl(this, Notification.SET, KRenderingPackage.KGRID_PLACEMENT__BOTTOM_RIGHT, oldBottomRight, bottomRight));
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
             case KRenderingPackage.KGRID_PLACEMENT__NUM_COLUMNS:
                 return getNumColumns();
+            case KRenderingPackage.KGRID_PLACEMENT__TOP_LEFT:
+                if (resolve) return getTopLeft();
+                return basicGetTopLeft();
+            case KRenderingPackage.KGRID_PLACEMENT__BOTTOM_RIGHT:
+                if (resolve) return getBottomRight();
+                return basicGetBottomRight();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -121,6 +227,12 @@ public class KGridPlacementImpl extends EObjectImpl implements KGridPlacement {
         switch (featureID) {
             case KRenderingPackage.KGRID_PLACEMENT__NUM_COLUMNS:
                 setNumColumns((Integer)newValue);
+                return;
+            case KRenderingPackage.KGRID_PLACEMENT__TOP_LEFT:
+                setTopLeft((KPosition)newValue);
+                return;
+            case KRenderingPackage.KGRID_PLACEMENT__BOTTOM_RIGHT:
+                setBottomRight((KPosition)newValue);
                 return;
         }
         super.eSet(featureID, newValue);
@@ -137,6 +249,12 @@ public class KGridPlacementImpl extends EObjectImpl implements KGridPlacement {
             case KRenderingPackage.KGRID_PLACEMENT__NUM_COLUMNS:
                 setNumColumns(NUM_COLUMNS_EDEFAULT);
                 return;
+            case KRenderingPackage.KGRID_PLACEMENT__TOP_LEFT:
+                setTopLeft((KPosition)null);
+                return;
+            case KRenderingPackage.KGRID_PLACEMENT__BOTTOM_RIGHT:
+                setBottomRight((KPosition)null);
+                return;
         }
         super.eUnset(featureID);
     }
@@ -151,6 +269,10 @@ public class KGridPlacementImpl extends EObjectImpl implements KGridPlacement {
         switch (featureID) {
             case KRenderingPackage.KGRID_PLACEMENT__NUM_COLUMNS:
                 return numColumns != NUM_COLUMNS_EDEFAULT;
+            case KRenderingPackage.KGRID_PLACEMENT__TOP_LEFT:
+                return topLeft != null;
+            case KRenderingPackage.KGRID_PLACEMENT__BOTTOM_RIGHT:
+                return bottomRight != null;
         }
         return super.eIsSet(featureID);
     }

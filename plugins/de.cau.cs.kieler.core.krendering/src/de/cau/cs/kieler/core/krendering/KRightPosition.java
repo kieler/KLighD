@@ -19,6 +19,11 @@ package de.cau.cs.kieler.core.krendering;
  * A representation of the model object '<em><b>KRight Position</b></em>'.
  * <!-- end-user-doc -->
  *
+ * <!-- begin-model-doc -->
+ * defines a position starting at the leftmost point of the parent rendering.
+ * pos = (R-absolute) - (R-L-absolute)*relative
+ * <!-- end-model-doc -->
+ *
  *
  * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKRightPosition()
  * @model

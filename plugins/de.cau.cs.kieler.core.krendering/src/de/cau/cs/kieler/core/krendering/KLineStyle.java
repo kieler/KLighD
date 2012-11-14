@@ -19,6 +19,10 @@ package de.cau.cs.kieler.core.krendering;
  * A representation of the model object '<em><b>KLine Style</b></em>'.
  * <!-- end-user-doc -->
  *
+ * <!-- begin-model-doc -->
+ * defines the linestyle of a rendering by setting one of the available lineStyles
+ * <!-- end-model-doc -->
+ *
  * <p>
  * The following features are supported:
  * <ul>

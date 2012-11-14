@@ -156,10 +156,6 @@ public class KRenderingAdapterFactory extends AdapterFactoryImpl {
                 return createKGridPlacementAdapter();
             }
             @Override
-            public Adapter caseKStackPlacement(KStackPlacement object) {
-                return createKStackPlacementAdapter();
-            }
-            @Override
             public Adapter caseKPlacementData(KPlacementData object) {
                 return createKPlacementDataAdapter();
             }
@@ -168,16 +164,8 @@ public class KRenderingAdapterFactory extends AdapterFactoryImpl {
                 return createKGridPlacementDataAdapter();
             }
             @Override
-            public Adapter caseKStackPlacementData(KStackPlacementData object) {
-                return createKStackPlacementDataAdapter();
-            }
-            @Override
             public Adapter caseKDirectPlacementData(KDirectPlacementData object) {
                 return createKDirectPlacementDataAdapter();
-            }
-            @Override
-            public Adapter caseKPolylinePlacementData(KPolylinePlacementData object) {
-                return createKPolylinePlacementDataAdapter();
             }
             @Override
             public Adapter caseKCustomRendering(KCustomRendering object) {
@@ -240,16 +228,16 @@ public class KRenderingAdapterFactory extends AdapterFactoryImpl {
                 return createKSplineAdapter();
             }
             @Override
-            public Adapter caseKForegroundVisibility(KForegroundVisibility object) {
-                return createKForegroundVisibilityAdapter();
+            public Adapter caseKForegroundAlpha(KForegroundAlpha object) {
+                return createKForegroundAlphaAdapter();
             }
             @Override
-            public Adapter caseKVisibility(KVisibility object) {
-                return createKVisibilityAdapter();
+            public Adapter caseKAlpha(KAlpha object) {
+                return createKAlphaAdapter();
             }
             @Override
-            public Adapter caseKBackgroundVisibility(KBackgroundVisibility object) {
-                return createKBackgroundVisibilityAdapter();
+            public Adapter caseKBackgroundAlpha(KBackgroundAlpha object) {
+                return createKBackgroundAlphaAdapter();
             }
             @Override
             public Adapter caseKFontBold(KFontBold object) {
@@ -274,6 +262,10 @@ public class KRenderingAdapterFactory extends AdapterFactoryImpl {
             @Override
             public Adapter caseKRotation(KRotation object) {
                 return createKRotationAdapter();
+            }
+            @Override
+            public Adapter caseKGradientStyle(KGradientStyle object) {
+                return createKGradientStyleAdapter();
             }
             @Override
             public Adapter caseIPropertyHolder(IPropertyHolder object) {
@@ -560,20 +552,6 @@ public class KRenderingAdapterFactory extends AdapterFactoryImpl {
     }
 
     /**
-     * Creates a new adapter for an object of class '{@link de.cau.cs.kieler.core.krendering.KStackPlacement <em>KStack Placement</em>}'.
-     * <!-- begin-user-doc -->
-     * This default implementation returns null so that we can easily ignore cases;
-     * it's useful to ignore a case when inheritance will catch all the cases anyway.
-     * <!-- end-user-doc -->
-     * @return the new adapter.
-     * @see de.cau.cs.kieler.core.krendering.KStackPlacement
-     * @generated
-     */
-    public Adapter createKStackPlacementAdapter() {
-        return null;
-    }
-
-    /**
      * Creates a new adapter for an object of class '{@link de.cau.cs.kieler.core.krendering.KPlacementData <em>KPlacement Data</em>}'.
      * <!-- begin-user-doc -->
      * This default implementation returns null so that we can easily ignore cases;
@@ -602,20 +580,6 @@ public class KRenderingAdapterFactory extends AdapterFactoryImpl {
     }
 
     /**
-     * Creates a new adapter for an object of class '{@link de.cau.cs.kieler.core.krendering.KStackPlacementData <em>KStack Placement Data</em>}'.
-     * <!-- begin-user-doc -->
-     * This default implementation returns null so that we can easily ignore cases;
-     * it's useful to ignore a case when inheritance will catch all the cases anyway.
-     * <!-- end-user-doc -->
-     * @return the new adapter.
-     * @see de.cau.cs.kieler.core.krendering.KStackPlacementData
-     * @generated
-     */
-    public Adapter createKStackPlacementDataAdapter() {
-        return null;
-    }
-
-    /**
      * Creates a new adapter for an object of class '{@link de.cau.cs.kieler.core.krendering.KDirectPlacementData <em>KDirect Placement Data</em>}'.
      * <!-- begin-user-doc -->
      * This default implementation returns null so that we can easily ignore cases;
@@ -626,20 +590,6 @@ public class KRenderingAdapterFactory extends AdapterFactoryImpl {
      * @generated
      */
     public Adapter createKDirectPlacementDataAdapter() {
-        return null;
-    }
-
-    /**
-     * Creates a new adapter for an object of class '{@link de.cau.cs.kieler.core.krendering.KPolylinePlacementData <em>KPolyline Placement Data</em>}'.
-     * <!-- begin-user-doc -->
-     * This default implementation returns null so that we can easily ignore cases;
-     * it's useful to ignore a case when inheritance will catch all the cases anyway.
-     * <!-- end-user-doc -->
-     * @return the new adapter.
-     * @see de.cau.cs.kieler.core.krendering.KPolylinePlacementData
-     * @generated
-     */
-    public Adapter createKPolylinePlacementDataAdapter() {
         return null;
     }
 
@@ -854,44 +804,44 @@ public class KRenderingAdapterFactory extends AdapterFactoryImpl {
     }
 
     /**
-     * Creates a new adapter for an object of class '{@link de.cau.cs.kieler.core.krendering.KForegroundVisibility <em>KForeground Visibility</em>}'.
+     * Creates a new adapter for an object of class '{@link de.cau.cs.kieler.core.krendering.KForegroundAlpha <em>KForeground Alpha</em>}'.
      * <!-- begin-user-doc -->
      * This default implementation returns null so that we can easily ignore cases;
      * it's useful to ignore a case when inheritance will catch all the cases anyway.
      * <!-- end-user-doc -->
      * @return the new adapter.
-     * @see de.cau.cs.kieler.core.krendering.KForegroundVisibility
+     * @see de.cau.cs.kieler.core.krendering.KForegroundAlpha
      * @generated
      */
-    public Adapter createKForegroundVisibilityAdapter() {
+    public Adapter createKForegroundAlphaAdapter() {
         return null;
     }
 
     /**
-     * Creates a new adapter for an object of class '{@link de.cau.cs.kieler.core.krendering.KVisibility <em>KVisibility</em>}'.
+     * Creates a new adapter for an object of class '{@link de.cau.cs.kieler.core.krendering.KAlpha <em>KAlpha</em>}'.
      * <!-- begin-user-doc -->
      * This default implementation returns null so that we can easily ignore cases;
      * it's useful to ignore a case when inheritance will catch all the cases anyway.
      * <!-- end-user-doc -->
      * @return the new adapter.
-     * @see de.cau.cs.kieler.core.krendering.KVisibility
+     * @see de.cau.cs.kieler.core.krendering.KAlpha
      * @generated
      */
-    public Adapter createKVisibilityAdapter() {
+    public Adapter createKAlphaAdapter() {
         return null;
     }
 
     /**
-     * Creates a new adapter for an object of class '{@link de.cau.cs.kieler.core.krendering.KBackgroundVisibility <em>KBackground Visibility</em>}'.
+     * Creates a new adapter for an object of class '{@link de.cau.cs.kieler.core.krendering.KBackgroundAlpha <em>KBackground Alpha</em>}'.
      * <!-- begin-user-doc -->
      * This default implementation returns null so that we can easily ignore cases;
      * it's useful to ignore a case when inheritance will catch all the cases anyway.
      * <!-- end-user-doc -->
      * @return the new adapter.
-     * @see de.cau.cs.kieler.core.krendering.KBackgroundVisibility
+     * @see de.cau.cs.kieler.core.krendering.KBackgroundAlpha
      * @generated
      */
-    public Adapter createKBackgroundVisibilityAdapter() {
+    public Adapter createKBackgroundAlphaAdapter() {
         return null;
     }
 
@@ -976,6 +926,20 @@ public class KRenderingAdapterFactory extends AdapterFactoryImpl {
      * @generated
      */
     public Adapter createKRotationAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class '{@link de.cau.cs.kieler.core.krendering.KGradientStyle <em>KGradient Style</em>}'.
+     * <!-- begin-user-doc -->
+     * This default implementation returns null so that we can easily ignore cases;
+     * it's useful to ignore a case when inheritance will catch all the cases anyway.
+     * <!-- end-user-doc -->
+     * @return the new adapter.
+     * @see de.cau.cs.kieler.core.krendering.KGradientStyle
+     * @generated
+     */
+    public Adapter createKGradientStyleAdapter() {
         return null;
     }
 

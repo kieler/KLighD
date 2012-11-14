@@ -30,12 +30,13 @@ import org.eclipse.emf.ecore.impl.EObjectImpl;
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link de.cau.cs.kieler.core.krendering.impl.KDecoratorPlacementDataImpl#getLocation <em>Location</em>}</li>
+ *   <li>{@link de.cau.cs.kieler.core.krendering.impl.KDecoratorPlacementDataImpl#getAbsolute <em>Absolute</em>}</li>
  *   <li>{@link de.cau.cs.kieler.core.krendering.impl.KDecoratorPlacementDataImpl#getXOffset <em>XOffset</em>}</li>
  *   <li>{@link de.cau.cs.kieler.core.krendering.impl.KDecoratorPlacementDataImpl#getYOffset <em>YOffset</em>}</li>
- *   <li>{@link de.cau.cs.kieler.core.krendering.impl.KDecoratorPlacementDataImpl#isRelative <em>Relative</em>}</li>
+ *   <li>{@link de.cau.cs.kieler.core.krendering.impl.KDecoratorPlacementDataImpl#isRotateWithLine <em>Rotate With Line</em>}</li>
  *   <li>{@link de.cau.cs.kieler.core.krendering.impl.KDecoratorPlacementDataImpl#getWidth <em>Width</em>}</li>
  *   <li>{@link de.cau.cs.kieler.core.krendering.impl.KDecoratorPlacementDataImpl#getHeight <em>Height</em>}</li>
+ *   <li>{@link de.cau.cs.kieler.core.krendering.impl.KDecoratorPlacementDataImpl#getRelative <em>Relative</em>}</li>
  * </ul>
  * </p>
  *
@@ -43,24 +44,24 @@ import org.eclipse.emf.ecore.impl.EObjectImpl;
  */
 public class KDecoratorPlacementDataImpl extends EObjectImpl implements KDecoratorPlacementData {
     /**
-     * The default value of the '{@link #getLocation() <em>Location</em>}' attribute.
+     * The default value of the '{@link #getAbsolute() <em>Absolute</em>}' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see #getLocation()
+     * @see #getAbsolute()
      * @generated
      * @ordered
      */
-    protected static final float LOCATION_EDEFAULT = 0.0F;
+    protected static final float ABSOLUTE_EDEFAULT = 0.0F;
 
     /**
-     * The cached value of the '{@link #getLocation() <em>Location</em>}' attribute.
+     * The cached value of the '{@link #getAbsolute() <em>Absolute</em>}' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see #getLocation()
+     * @see #getAbsolute()
      * @generated
      * @ordered
      */
-    protected float location = LOCATION_EDEFAULT;
+    protected float absolute = ABSOLUTE_EDEFAULT;
 
     /**
      * The default value of the '{@link #getXOffset() <em>XOffset</em>}' attribute.
@@ -103,24 +104,24 @@ public class KDecoratorPlacementDataImpl extends EObjectImpl implements KDecorat
     protected float yOffset = YOFFSET_EDEFAULT;
 
     /**
-     * The default value of the '{@link #isRelative() <em>Relative</em>}' attribute.
+     * The default value of the '{@link #isRotateWithLine() <em>Rotate With Line</em>}' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see #isRelative()
+     * @see #isRotateWithLine()
      * @generated
      * @ordered
      */
-    protected static final boolean RELATIVE_EDEFAULT = false;
+    protected static final boolean ROTATE_WITH_LINE_EDEFAULT = false;
 
     /**
-     * The cached value of the '{@link #isRelative() <em>Relative</em>}' attribute.
+     * The cached value of the '{@link #isRotateWithLine() <em>Rotate With Line</em>}' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see #isRelative()
+     * @see #isRotateWithLine()
      * @generated
      * @ordered
      */
-    protected boolean relative = RELATIVE_EDEFAULT;
+    protected boolean rotateWithLine = ROTATE_WITH_LINE_EDEFAULT;
 
     /**
      * The default value of the '{@link #getWidth() <em>Width</em>}' attribute.
@@ -163,6 +164,26 @@ public class KDecoratorPlacementDataImpl extends EObjectImpl implements KDecorat
     protected float height = HEIGHT_EDEFAULT;
 
     /**
+     * The default value of the '{@link #getRelative() <em>Relative</em>}' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see #getRelative()
+     * @generated
+     * @ordered
+     */
+    protected static final float RELATIVE_EDEFAULT = 0.0F;
+
+    /**
+     * The cached value of the '{@link #getRelative() <em>Relative</em>}' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see #getRelative()
+     * @generated
+     * @ordered
+     */
+    protected float relative = RELATIVE_EDEFAULT;
+
+    /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
@@ -186,8 +207,8 @@ public class KDecoratorPlacementDataImpl extends EObjectImpl implements KDecorat
      * <!-- end-user-doc -->
      * @generated
      */
-    public float getLocation() {
-        return location;
+    public float getAbsolute() {
+        return absolute;
     }
 
     /**
@@ -195,11 +216,11 @@ public class KDecoratorPlacementDataImpl extends EObjectImpl implements KDecorat
      * <!-- end-user-doc -->
      * @generated
      */
-    public void setLocation(float newLocation) {
-        float oldLocation = location;
-        location = newLocation;
+    public void setAbsolute(float newAbsolute) {
+        float oldAbsolute = absolute;
+        absolute = newAbsolute;
         if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, KRenderingPackage.KDECORATOR_PLACEMENT_DATA__LOCATION, oldLocation, location));
+            eNotify(new ENotificationImpl(this, Notification.SET, KRenderingPackage.KDECORATOR_PLACEMENT_DATA__ABSOLUTE, oldAbsolute, absolute));
     }
 
     /**
@@ -249,8 +270,8 @@ public class KDecoratorPlacementDataImpl extends EObjectImpl implements KDecorat
      * <!-- end-user-doc -->
      * @generated
      */
-    public boolean isRelative() {
-        return relative;
+    public boolean isRotateWithLine() {
+        return rotateWithLine;
     }
 
     /**
@@ -258,11 +279,11 @@ public class KDecoratorPlacementDataImpl extends EObjectImpl implements KDecorat
      * <!-- end-user-doc -->
      * @generated
      */
-    public void setRelative(boolean newRelative) {
-        boolean oldRelative = relative;
-        relative = newRelative;
+    public void setRotateWithLine(boolean newRotateWithLine) {
+        boolean oldRotateWithLine = rotateWithLine;
+        rotateWithLine = newRotateWithLine;
         if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, KRenderingPackage.KDECORATOR_PLACEMENT_DATA__RELATIVE, oldRelative, relative));
+            eNotify(new ENotificationImpl(this, Notification.SET, KRenderingPackage.KDECORATOR_PLACEMENT_DATA__ROTATE_WITH_LINE, oldRotateWithLine, rotateWithLine));
     }
 
     /**
@@ -312,21 +333,44 @@ public class KDecoratorPlacementDataImpl extends EObjectImpl implements KDecorat
      * <!-- end-user-doc -->
      * @generated
      */
+    public float getRelative() {
+        return relative;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public void setRelative(float newRelative) {
+        float oldRelative = relative;
+        relative = newRelative;
+        if (eNotificationRequired())
+            eNotify(new ENotificationImpl(this, Notification.SET, KRenderingPackage.KDECORATOR_PLACEMENT_DATA__RELATIVE, oldRelative, relative));
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
-            case KRenderingPackage.KDECORATOR_PLACEMENT_DATA__LOCATION:
-                return getLocation();
+            case KRenderingPackage.KDECORATOR_PLACEMENT_DATA__ABSOLUTE:
+                return getAbsolute();
             case KRenderingPackage.KDECORATOR_PLACEMENT_DATA__XOFFSET:
                 return getXOffset();
             case KRenderingPackage.KDECORATOR_PLACEMENT_DATA__YOFFSET:
                 return getYOffset();
-            case KRenderingPackage.KDECORATOR_PLACEMENT_DATA__RELATIVE:
-                return isRelative();
+            case KRenderingPackage.KDECORATOR_PLACEMENT_DATA__ROTATE_WITH_LINE:
+                return isRotateWithLine();
             case KRenderingPackage.KDECORATOR_PLACEMENT_DATA__WIDTH:
                 return getWidth();
             case KRenderingPackage.KDECORATOR_PLACEMENT_DATA__HEIGHT:
                 return getHeight();
+            case KRenderingPackage.KDECORATOR_PLACEMENT_DATA__RELATIVE:
+                return getRelative();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -339,8 +383,8 @@ public class KDecoratorPlacementDataImpl extends EObjectImpl implements KDecorat
     @Override
     public void eSet(int featureID, Object newValue) {
         switch (featureID) {
-            case KRenderingPackage.KDECORATOR_PLACEMENT_DATA__LOCATION:
-                setLocation((Float)newValue);
+            case KRenderingPackage.KDECORATOR_PLACEMENT_DATA__ABSOLUTE:
+                setAbsolute((Float)newValue);
                 return;
             case KRenderingPackage.KDECORATOR_PLACEMENT_DATA__XOFFSET:
                 setXOffset((Float)newValue);
@@ -348,14 +392,17 @@ public class KDecoratorPlacementDataImpl extends EObjectImpl implements KDecorat
             case KRenderingPackage.KDECORATOR_PLACEMENT_DATA__YOFFSET:
                 setYOffset((Float)newValue);
                 return;
-            case KRenderingPackage.KDECORATOR_PLACEMENT_DATA__RELATIVE:
-                setRelative((Boolean)newValue);
+            case KRenderingPackage.KDECORATOR_PLACEMENT_DATA__ROTATE_WITH_LINE:
+                setRotateWithLine((Boolean)newValue);
                 return;
             case KRenderingPackage.KDECORATOR_PLACEMENT_DATA__WIDTH:
                 setWidth((Float)newValue);
                 return;
             case KRenderingPackage.KDECORATOR_PLACEMENT_DATA__HEIGHT:
                 setHeight((Float)newValue);
+                return;
+            case KRenderingPackage.KDECORATOR_PLACEMENT_DATA__RELATIVE:
+                setRelative((Float)newValue);
                 return;
         }
         super.eSet(featureID, newValue);
@@ -369,8 +416,8 @@ public class KDecoratorPlacementDataImpl extends EObjectImpl implements KDecorat
     @Override
     public void eUnset(int featureID) {
         switch (featureID) {
-            case KRenderingPackage.KDECORATOR_PLACEMENT_DATA__LOCATION:
-                setLocation(LOCATION_EDEFAULT);
+            case KRenderingPackage.KDECORATOR_PLACEMENT_DATA__ABSOLUTE:
+                setAbsolute(ABSOLUTE_EDEFAULT);
                 return;
             case KRenderingPackage.KDECORATOR_PLACEMENT_DATA__XOFFSET:
                 setXOffset(XOFFSET_EDEFAULT);
@@ -378,14 +425,17 @@ public class KDecoratorPlacementDataImpl extends EObjectImpl implements KDecorat
             case KRenderingPackage.KDECORATOR_PLACEMENT_DATA__YOFFSET:
                 setYOffset(YOFFSET_EDEFAULT);
                 return;
-            case KRenderingPackage.KDECORATOR_PLACEMENT_DATA__RELATIVE:
-                setRelative(RELATIVE_EDEFAULT);
+            case KRenderingPackage.KDECORATOR_PLACEMENT_DATA__ROTATE_WITH_LINE:
+                setRotateWithLine(ROTATE_WITH_LINE_EDEFAULT);
                 return;
             case KRenderingPackage.KDECORATOR_PLACEMENT_DATA__WIDTH:
                 setWidth(WIDTH_EDEFAULT);
                 return;
             case KRenderingPackage.KDECORATOR_PLACEMENT_DATA__HEIGHT:
                 setHeight(HEIGHT_EDEFAULT);
+                return;
+            case KRenderingPackage.KDECORATOR_PLACEMENT_DATA__RELATIVE:
+                setRelative(RELATIVE_EDEFAULT);
                 return;
         }
         super.eUnset(featureID);
@@ -399,18 +449,20 @@ public class KDecoratorPlacementDataImpl extends EObjectImpl implements KDecorat
     @Override
     public boolean eIsSet(int featureID) {
         switch (featureID) {
-            case KRenderingPackage.KDECORATOR_PLACEMENT_DATA__LOCATION:
-                return location != LOCATION_EDEFAULT;
+            case KRenderingPackage.KDECORATOR_PLACEMENT_DATA__ABSOLUTE:
+                return absolute != ABSOLUTE_EDEFAULT;
             case KRenderingPackage.KDECORATOR_PLACEMENT_DATA__XOFFSET:
                 return xOffset != XOFFSET_EDEFAULT;
             case KRenderingPackage.KDECORATOR_PLACEMENT_DATA__YOFFSET:
                 return yOffset != YOFFSET_EDEFAULT;
-            case KRenderingPackage.KDECORATOR_PLACEMENT_DATA__RELATIVE:
-                return relative != RELATIVE_EDEFAULT;
+            case KRenderingPackage.KDECORATOR_PLACEMENT_DATA__ROTATE_WITH_LINE:
+                return rotateWithLine != ROTATE_WITH_LINE_EDEFAULT;
             case KRenderingPackage.KDECORATOR_PLACEMENT_DATA__WIDTH:
                 return width != WIDTH_EDEFAULT;
             case KRenderingPackage.KDECORATOR_PLACEMENT_DATA__HEIGHT:
                 return height != HEIGHT_EDEFAULT;
+            case KRenderingPackage.KDECORATOR_PLACEMENT_DATA__RELATIVE:
+                return relative != RELATIVE_EDEFAULT;
         }
         return super.eIsSet(featureID);
     }
@@ -425,18 +477,20 @@ public class KDecoratorPlacementDataImpl extends EObjectImpl implements KDecorat
         if (eIsProxy()) return super.toString();
 
         StringBuffer result = new StringBuffer(super.toString());
-        result.append(" (location: ");
-        result.append(location);
+        result.append(" (absolute: ");
+        result.append(absolute);
         result.append(", xOffset: ");
         result.append(xOffset);
         result.append(", yOffset: ");
         result.append(yOffset);
-        result.append(", relative: ");
-        result.append(relative);
+        result.append(", rotateWithLine: ");
+        result.append(rotateWithLine);
         result.append(", width: ");
         result.append(width);
         result.append(", height: ");
         result.append(height);
+        result.append(", relative: ");
+        result.append(relative);
         result.append(')');
         return result.toString();
     }

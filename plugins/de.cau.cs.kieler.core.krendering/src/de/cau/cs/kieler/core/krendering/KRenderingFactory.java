@@ -159,15 +159,6 @@ public interface KRenderingFactory extends EFactory {
     KGridPlacement createKGridPlacement();
 
     /**
-     * Returns a new object of class '<em>KStack Placement</em>'.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @return a new object of class '<em>KStack Placement</em>'.
-     * @generated
-     */
-    KStackPlacement createKStackPlacement();
-
-    /**
      * Returns a new object of class '<em>KGrid Placement Data</em>'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -177,15 +168,6 @@ public interface KRenderingFactory extends EFactory {
     KGridPlacementData createKGridPlacementData();
 
     /**
-     * Returns a new object of class '<em>KStack Placement Data</em>'.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @return a new object of class '<em>KStack Placement Data</em>'.
-     * @generated
-     */
-    KStackPlacementData createKStackPlacementData();
-
-    /**
      * Returns a new object of class '<em>KDirect Placement Data</em>'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -193,15 +175,6 @@ public interface KRenderingFactory extends EFactory {
      * @generated
      */
     KDirectPlacementData createKDirectPlacementData();
-
-    /**
-     * Returns a new object of class '<em>KPolyline Placement Data</em>'.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @return a new object of class '<em>KPolyline Placement Data</em>'.
-     * @generated
-     */
-    KPolylinePlacementData createKPolylinePlacementData();
 
     /**
      * Returns a new object of class '<em>KCustom Rendering</em>'.
@@ -312,22 +285,22 @@ public interface KRenderingFactory extends EFactory {
     KSpline createKSpline();
 
     /**
-     * Returns a new object of class '<em>KForeground Visibility</em>'.
+     * Returns a new object of class '<em>KForeground Alpha</em>'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return a new object of class '<em>KForeground Visibility</em>'.
+     * @return a new object of class '<em>KForeground Alpha</em>'.
      * @generated
      */
-    KForegroundVisibility createKForegroundVisibility();
+    KForegroundAlpha createKForegroundAlpha();
 
     /**
-     * Returns a new object of class '<em>KBackground Visibility</em>'.
+     * Returns a new object of class '<em>KBackground Alpha</em>'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return a new object of class '<em>KBackground Visibility</em>'.
+     * @return a new object of class '<em>KBackground Alpha</em>'.
      * @generated
      */
-    KBackgroundVisibility createKBackgroundVisibility();
+    KBackgroundAlpha createKBackgroundAlpha();
 
     /**
      * Returns a new object of class '<em>KFont Bold</em>'.
@@ -382,6 +355,15 @@ public interface KRenderingFactory extends EFactory {
      * @generated
      */
     KRotation createKRotation();
+
+    /**
+     * Returns a new object of class '<em>KGradient Style</em>'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return a new object of class '<em>KGradient Style</em>'.
+     * @generated
+     */
+    KGradientStyle createKGradientStyle();
 
     /**
      * Returns the package supported by this factory.

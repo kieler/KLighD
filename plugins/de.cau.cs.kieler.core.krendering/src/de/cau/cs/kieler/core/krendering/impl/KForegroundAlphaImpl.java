@@ -13,29 +13,27 @@
  */
 package de.cau.cs.kieler.core.krendering.impl;
 
+import de.cau.cs.kieler.core.krendering.KForegroundAlpha;
 import de.cau.cs.kieler.core.krendering.KRenderingPackage;
-import de.cau.cs.kieler.core.krendering.KStackPlacement;
 
 import org.eclipse.emf.ecore.EClass;
 
-import org.eclipse.emf.ecore.impl.EObjectImpl;
-
 /**
  * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>KStack Placement</b></em>'.
+ * An implementation of the model object '<em><b>KForeground Alpha</b></em>'.
  * <!-- end-user-doc -->
  * <p>
  * </p>
  *
  * @generated
  */
-public class KStackPlacementImpl extends EObjectImpl implements KStackPlacement {
+public class KForegroundAlphaImpl extends KAlphaImpl implements KForegroundAlpha {
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      */
-    protected KStackPlacementImpl() {
+    protected KForegroundAlphaImpl() {
         super();
     }
 
@@ -46,7 +44,7 @@ public class KStackPlacementImpl extends EObjectImpl implements KStackPlacement 
      */
     @Override
     protected EClass eStaticClass() {
-        return KRenderingPackage.Literals.KSTACK_PLACEMENT;
+        return KRenderingPackage.Literals.KFOREGROUND_ALPHA;
     }
 
-} //KStackPlacementImpl
+} //KForegroundAlphaImpl

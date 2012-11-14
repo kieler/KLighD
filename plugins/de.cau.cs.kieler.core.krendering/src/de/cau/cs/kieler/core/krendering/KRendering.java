@@ -22,6 +22,14 @@ import org.eclipse.emf.common.util.EList;
  * A representation of the model object '<em><b>KRendering</b></em>'.
  * <!-- end-user-doc -->
  *
+ * <!-- begin-model-doc -->
+ * AbstractClass to define members of a shapeType.
+ * Is placed inside a parent Container
+ * can reference another Rendering instead of redefining it
+ * A rendering can contain placementData to define the size of a derived object
+ * 
+ * <!-- end-model-doc -->
+ *
  * <p>
  * The following features are supported:
  * <ul>

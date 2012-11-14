@@ -20,6 +20,10 @@ import org.eclipse.emf.common.util.EList;
  * A representation of the model object '<em><b>KContainer Rendering</b></em>'.
  * <!-- end-user-doc -->
  *
+ * <!-- begin-model-doc -->
+ * KRendering that can have Children. Each ContainerRendering can define an area where children should be placed
+ * <!-- end-model-doc -->
+ *
  * <p>
  * The following features are supported:
  * <ul>

@@ -57,7 +57,9 @@ public enum HorizontalAlignment implements Enumerator {
      * @generated
      * @ordered
      */
-    RIGHT(2, "RIGHT", "RIGHT"), /**
+    RIGHT(2, "RIGHT", "RIGHT"),
+
+    /**
      * The '<em><b>EEnum Literal0</b></em>' literal object.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->

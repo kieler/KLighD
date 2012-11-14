@@ -19,6 +19,10 @@ package de.cau.cs.kieler.core.krendering;
  * A representation of the model object '<em><b>KRectangle</b></em>'.
  * <!-- end-user-doc -->
  *
+ * <!-- begin-model-doc -->
+ * define a rectangle by adding the topLeft and bottomRight coordinates
+ * <!-- end-model-doc -->
+ *
  *
  * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKRectangle()
  * @model

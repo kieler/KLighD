@@ -13,27 +13,27 @@
  */
 package de.cau.cs.kieler.core.krendering.impl;
 
-import de.cau.cs.kieler.core.krendering.KForegroundVisibility;
+import de.cau.cs.kieler.core.krendering.KBackgroundAlpha;
 import de.cau.cs.kieler.core.krendering.KRenderingPackage;
 
 import org.eclipse.emf.ecore.EClass;
 
 /**
  * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>KForeground Visibility</b></em>'.
+ * An implementation of the model object '<em><b>KBackground Alpha</b></em>'.
  * <!-- end-user-doc -->
  * <p>
  * </p>
  *
  * @generated
  */
-public class KForegroundVisibilityImpl extends KVisibilityImpl implements KForegroundVisibility {
+public class KBackgroundAlphaImpl extends KAlphaImpl implements KBackgroundAlpha {
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      */
-    protected KForegroundVisibilityImpl() {
+    protected KBackgroundAlphaImpl() {
         super();
     }
 
@@ -44,7 +44,7 @@ public class KForegroundVisibilityImpl extends KVisibilityImpl implements KForeg
      */
     @Override
     protected EClass eStaticClass() {
-        return KRenderingPackage.Literals.KFOREGROUND_VISIBILITY;
+        return KRenderingPackage.Literals.KBACKGROUND_ALPHA;
     }
 
-} //KForegroundVisibilityImpl
+} //KBackgroundAlphaImpl

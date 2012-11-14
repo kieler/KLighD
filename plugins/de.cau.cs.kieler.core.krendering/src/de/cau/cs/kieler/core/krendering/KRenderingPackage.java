@@ -644,13 +644,22 @@ public interface KRenderingPackage extends EPackage {
     int KPOLYLINE__CHILD_PLACEMENT = KCONTAINER_RENDERING__CHILD_PLACEMENT;
 
     /**
+     * The feature id for the '<em><b>Points</b></em>' containment reference list.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KPOLYLINE__POINTS = KCONTAINER_RENDERING_FEATURE_COUNT + 0;
+
+    /**
      * The number of structural features of the '<em>KPolyline</em>' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int KPOLYLINE_FEATURE_COUNT = KCONTAINER_RENDERING_FEATURE_COUNT + 0;
+    int KPOLYLINE_FEATURE_COUNT = KCONTAINER_RENDERING_FEATURE_COUNT + 1;
 
     /**
      * The meta object id for the '{@link de.cau.cs.kieler.core.krendering.impl.KPolygonImpl <em>KPolygon</em>}' class.
@@ -733,6 +742,15 @@ public interface KRenderingPackage extends EPackage {
      * @ordered
      */
     int KPOLYGON__CHILD_PLACEMENT = KPOLYLINE__CHILD_PLACEMENT;
+
+    /**
+     * The feature id for the '<em><b>Points</b></em>' containment reference list.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KPOLYGON__POINTS = KPOLYLINE__POINTS;
 
     /**
      * The number of structural features of the '<em>KPolygon</em>' class.
@@ -869,7 +887,7 @@ public interface KRenderingPackage extends EPackage {
      * @see de.cau.cs.kieler.core.krendering.impl.KRenderingPackageImpl#getKPlacementData()
      * @generated
      */
-    int KPLACEMENT_DATA = 19;
+    int KPLACEMENT_DATA = 18;
 
     /**
      * The number of structural features of the '<em>KPlacement Data</em>' class.
@@ -891,13 +909,13 @@ public interface KRenderingPackage extends EPackage {
     int KDECORATOR_PLACEMENT_DATA = 8;
 
     /**
-     * The feature id for the '<em><b>Location</b></em>' attribute.
+     * The feature id for the '<em><b>Absolute</b></em>' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int KDECORATOR_PLACEMENT_DATA__LOCATION = KPLACEMENT_DATA_FEATURE_COUNT + 0;
+    int KDECORATOR_PLACEMENT_DATA__ABSOLUTE = KPLACEMENT_DATA_FEATURE_COUNT + 0;
 
     /**
      * The feature id for the '<em><b>XOffset</b></em>' attribute.
@@ -918,13 +936,13 @@ public interface KRenderingPackage extends EPackage {
     int KDECORATOR_PLACEMENT_DATA__YOFFSET = KPLACEMENT_DATA_FEATURE_COUNT + 2;
 
     /**
-     * The feature id for the '<em><b>Relative</b></em>' attribute.
+     * The feature id for the '<em><b>Rotate With Line</b></em>' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int KDECORATOR_PLACEMENT_DATA__RELATIVE = KPLACEMENT_DATA_FEATURE_COUNT + 3;
+    int KDECORATOR_PLACEMENT_DATA__ROTATE_WITH_LINE = KPLACEMENT_DATA_FEATURE_COUNT + 3;
 
     /**
      * The feature id for the '<em><b>Width</b></em>' attribute.
@@ -945,13 +963,22 @@ public interface KRenderingPackage extends EPackage {
     int KDECORATOR_PLACEMENT_DATA__HEIGHT = KPLACEMENT_DATA_FEATURE_COUNT + 5;
 
     /**
+     * The feature id for the '<em><b>Relative</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KDECORATOR_PLACEMENT_DATA__RELATIVE = KPLACEMENT_DATA_FEATURE_COUNT + 6;
+
+    /**
      * The number of structural features of the '<em>KDecorator Placement Data</em>' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int KDECORATOR_PLACEMENT_DATA_FEATURE_COUNT = KPLACEMENT_DATA_FEATURE_COUNT + 6;
+    int KDECORATOR_PLACEMENT_DATA_FEATURE_COUNT = KPLACEMENT_DATA_FEATURE_COUNT + 7;
 
     /**
      * The meta object id for the '{@link de.cau.cs.kieler.core.krendering.impl.KArcImpl <em>KArc</em>}' class.
@@ -1401,13 +1428,22 @@ public interface KRenderingPackage extends EPackage {
     int KTEXT__CLIP = KCONTAINER_RENDERING_FEATURE_COUNT + 1;
 
     /**
+     * The feature id for the '<em><b>Scaling</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KTEXT__SCALING = KCONTAINER_RENDERING_FEATURE_COUNT + 2;
+
+    /**
      * The number of structural features of the '<em>KText</em>' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int KTEXT_FEATURE_COUNT = KCONTAINER_RENDERING_FEATURE_COUNT + 2;
+    int KTEXT_FEATURE_COUNT = KCONTAINER_RENDERING_FEATURE_COUNT + 3;
 
     /**
      * The meta object id for the '{@link de.cau.cs.kieler.core.krendering.KPlacement <em>KPlacement</em>}' class.
@@ -1448,160 +1484,31 @@ public interface KRenderingPackage extends EPackage {
     int KGRID_PLACEMENT__NUM_COLUMNS = KPLACEMENT_FEATURE_COUNT + 0;
 
     /**
+     * The feature id for the '<em><b>Top Left</b></em>' reference.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KGRID_PLACEMENT__TOP_LEFT = KPLACEMENT_FEATURE_COUNT + 1;
+
+    /**
+     * The feature id for the '<em><b>Bottom Right</b></em>' reference.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KGRID_PLACEMENT__BOTTOM_RIGHT = KPLACEMENT_FEATURE_COUNT + 2;
+
+    /**
      * The number of structural features of the '<em>KGrid Placement</em>' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int KGRID_PLACEMENT_FEATURE_COUNT = KPLACEMENT_FEATURE_COUNT + 1;
-
-    /**
-     * The meta object id for the '{@link de.cau.cs.kieler.core.krendering.impl.KStackPlacementImpl <em>KStack Placement</em>}' class.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @see de.cau.cs.kieler.core.krendering.impl.KStackPlacementImpl
-     * @see de.cau.cs.kieler.core.krendering.impl.KRenderingPackageImpl#getKStackPlacement()
-     * @generated
-     */
-    int KSTACK_PLACEMENT = 18;
-
-    /**
-     * The number of structural features of the '<em>KStack Placement</em>' class.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int KSTACK_PLACEMENT_FEATURE_COUNT = KPLACEMENT_FEATURE_COUNT + 0;
-
-    /**
-     * The meta object id for the '{@link de.cau.cs.kieler.core.krendering.impl.KGridPlacementDataImpl <em>KGrid Placement Data</em>}' class.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @see de.cau.cs.kieler.core.krendering.impl.KGridPlacementDataImpl
-     * @see de.cau.cs.kieler.core.krendering.impl.KRenderingPackageImpl#getKGridPlacementData()
-     * @generated
-     */
-    int KGRID_PLACEMENT_DATA = 20;
-
-    /**
-     * The feature id for the '<em><b>Width Hint</b></em>' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int KGRID_PLACEMENT_DATA__WIDTH_HINT = KPLACEMENT_DATA_FEATURE_COUNT + 0;
-
-    /**
-     * The feature id for the '<em><b>Height Hint</b></em>' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int KGRID_PLACEMENT_DATA__HEIGHT_HINT = KPLACEMENT_DATA_FEATURE_COUNT + 1;
-
-    /**
-     * The feature id for the '<em><b>Inset Right</b></em>' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int KGRID_PLACEMENT_DATA__INSET_RIGHT = KPLACEMENT_DATA_FEATURE_COUNT + 2;
-
-    /**
-     * The feature id for the '<em><b>Inset Bottom</b></em>' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int KGRID_PLACEMENT_DATA__INSET_BOTTOM = KPLACEMENT_DATA_FEATURE_COUNT + 3;
-
-    /**
-     * The feature id for the '<em><b>Inset Left</b></em>' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int KGRID_PLACEMENT_DATA__INSET_LEFT = KPLACEMENT_DATA_FEATURE_COUNT + 4;
-
-    /**
-     * The feature id for the '<em><b>Inset Top</b></em>' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int KGRID_PLACEMENT_DATA__INSET_TOP = KPLACEMENT_DATA_FEATURE_COUNT + 5;
-
-    /**
-     * The number of structural features of the '<em>KGrid Placement Data</em>' class.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int KGRID_PLACEMENT_DATA_FEATURE_COUNT = KPLACEMENT_DATA_FEATURE_COUNT + 6;
-
-    /**
-     * The meta object id for the '{@link de.cau.cs.kieler.core.krendering.impl.KStackPlacementDataImpl <em>KStack Placement Data</em>}' class.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @see de.cau.cs.kieler.core.krendering.impl.KStackPlacementDataImpl
-     * @see de.cau.cs.kieler.core.krendering.impl.KRenderingPackageImpl#getKStackPlacementData()
-     * @generated
-     */
-    int KSTACK_PLACEMENT_DATA = 21;
-
-    /**
-     * The feature id for the '<em><b>Inset Right</b></em>' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int KSTACK_PLACEMENT_DATA__INSET_RIGHT = KPLACEMENT_DATA_FEATURE_COUNT + 0;
-
-    /**
-     * The feature id for the '<em><b>Inset Bottom</b></em>' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int KSTACK_PLACEMENT_DATA__INSET_BOTTOM = KPLACEMENT_DATA_FEATURE_COUNT + 1;
-
-    /**
-     * The feature id for the '<em><b>Inset Left</b></em>' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int KSTACK_PLACEMENT_DATA__INSET_LEFT = KPLACEMENT_DATA_FEATURE_COUNT + 2;
-
-    /**
-     * The feature id for the '<em><b>Inset Top</b></em>' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int KSTACK_PLACEMENT_DATA__INSET_TOP = KPLACEMENT_DATA_FEATURE_COUNT + 3;
-
-    /**
-     * The number of structural features of the '<em>KStack Placement Data</em>' class.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int KSTACK_PLACEMENT_DATA_FEATURE_COUNT = KPLACEMENT_DATA_FEATURE_COUNT + 4;
+    int KGRID_PLACEMENT_FEATURE_COUNT = KPLACEMENT_FEATURE_COUNT + 3;
 
     /**
      * The meta object id for the '{@link de.cau.cs.kieler.core.krendering.impl.KDirectPlacementDataImpl <em>KDirect Placement Data</em>}' class.
@@ -1611,7 +1518,7 @@ public interface KRenderingPackage extends EPackage {
      * @see de.cau.cs.kieler.core.krendering.impl.KRenderingPackageImpl#getKDirectPlacementData()
      * @generated
      */
-    int KDIRECT_PLACEMENT_DATA = 22;
+    int KDIRECT_PLACEMENT_DATA = 20;
 
     /**
      * The feature id for the '<em><b>Top Left</b></em>' containment reference.
@@ -1641,41 +1548,59 @@ public interface KRenderingPackage extends EPackage {
     int KDIRECT_PLACEMENT_DATA_FEATURE_COUNT = KPLACEMENT_DATA_FEATURE_COUNT + 2;
 
     /**
-     * The meta object id for the '{@link de.cau.cs.kieler.core.krendering.impl.KPolylinePlacementDataImpl <em>KPolyline Placement Data</em>}' class.
+     * The meta object id for the '{@link de.cau.cs.kieler.core.krendering.impl.KGridPlacementDataImpl <em>KGrid Placement Data</em>}' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see de.cau.cs.kieler.core.krendering.impl.KPolylinePlacementDataImpl
-     * @see de.cau.cs.kieler.core.krendering.impl.KRenderingPackageImpl#getKPolylinePlacementData()
+     * @see de.cau.cs.kieler.core.krendering.impl.KGridPlacementDataImpl
+     * @see de.cau.cs.kieler.core.krendering.impl.KRenderingPackageImpl#getKGridPlacementData()
      * @generated
      */
-    int KPOLYLINE_PLACEMENT_DATA = 23;
+    int KGRID_PLACEMENT_DATA = 19;
 
     /**
-     * The feature id for the '<em><b>Points</b></em>' containment reference list.
+     * The feature id for the '<em><b>Top Left</b></em>' containment reference.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int KPOLYLINE_PLACEMENT_DATA__POINTS = KPLACEMENT_DATA_FEATURE_COUNT + 0;
+    int KGRID_PLACEMENT_DATA__TOP_LEFT = KDIRECT_PLACEMENT_DATA__TOP_LEFT;
 
     /**
-     * The feature id for the '<em><b>Detail Placement Data</b></em>' containment reference.
+     * The feature id for the '<em><b>Bottom Right</b></em>' containment reference.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int KPOLYLINE_PLACEMENT_DATA__DETAIL_PLACEMENT_DATA = KPLACEMENT_DATA_FEATURE_COUNT + 1;
+    int KGRID_PLACEMENT_DATA__BOTTOM_RIGHT = KDIRECT_PLACEMENT_DATA__BOTTOM_RIGHT;
 
     /**
-     * The number of structural features of the '<em>KPolyline Placement Data</em>' class.
+     * The feature id for the '<em><b>Width Hint</b></em>' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int KPOLYLINE_PLACEMENT_DATA_FEATURE_COUNT = KPLACEMENT_DATA_FEATURE_COUNT + 2;
+    int KGRID_PLACEMENT_DATA__WIDTH_HINT = KDIRECT_PLACEMENT_DATA_FEATURE_COUNT + 0;
+
+    /**
+     * The feature id for the '<em><b>Height Hint</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KGRID_PLACEMENT_DATA__HEIGHT_HINT = KDIRECT_PLACEMENT_DATA_FEATURE_COUNT + 1;
+
+    /**
+     * The number of structural features of the '<em>KGrid Placement Data</em>' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KGRID_PLACEMENT_DATA_FEATURE_COUNT = KDIRECT_PLACEMENT_DATA_FEATURE_COUNT + 2;
 
     /**
      * The meta object id for the '{@link de.cau.cs.kieler.core.krendering.impl.KCustomRenderingImpl <em>KCustom Rendering</em>}' class.
@@ -1685,7 +1610,7 @@ public interface KRenderingPackage extends EPackage {
      * @see de.cau.cs.kieler.core.krendering.impl.KRenderingPackageImpl#getKCustomRendering()
      * @generated
      */
-    int KCUSTOM_RENDERING = 24;
+    int KCUSTOM_RENDERING = 21;
 
     /**
      * The feature id for the '<em><b>Properties</b></em>' map.
@@ -1803,7 +1728,7 @@ public interface KRenderingPackage extends EPackage {
      * @see de.cau.cs.kieler.core.krendering.impl.KRenderingPackageImpl#getKColor()
      * @generated
      */
-    int KCOLOR = 26;
+    int KCOLOR = 23;
 
     /**
      * The feature id for the '<em><b>Rendering</b></em>' container reference.
@@ -1867,7 +1792,7 @@ public interface KRenderingPackage extends EPackage {
      * @see de.cau.cs.kieler.core.krendering.impl.KRenderingPackageImpl#getKForegroundColor()
      * @generated
      */
-    int KFOREGROUND_COLOR = 25;
+    int KFOREGROUND_COLOR = 22;
 
     /**
      * The feature id for the '<em><b>Rendering</b></em>' container reference.
@@ -1931,7 +1856,7 @@ public interface KRenderingPackage extends EPackage {
      * @see de.cau.cs.kieler.core.krendering.impl.KRenderingPackageImpl#getKBackgroundColor()
      * @generated
      */
-    int KBACKGROUND_COLOR = 27;
+    int KBACKGROUND_COLOR = 24;
 
     /**
      * The feature id for the '<em><b>Rendering</b></em>' container reference.
@@ -1995,7 +1920,7 @@ public interface KRenderingPackage extends EPackage {
      * @see de.cau.cs.kieler.core.krendering.impl.KRenderingPackageImpl#getKLineWidth()
      * @generated
      */
-    int KLINE_WIDTH = 28;
+    int KLINE_WIDTH = 25;
 
     /**
      * The feature id for the '<em><b>Rendering</b></em>' container reference.
@@ -2041,7 +1966,7 @@ public interface KRenderingPackage extends EPackage {
      * @see de.cau.cs.kieler.core.krendering.impl.KRenderingPackageImpl#getKLineStyle()
      * @generated
      */
-    int KLINE_STYLE = 29;
+    int KLINE_STYLE = 26;
 
     /**
      * The feature id for the '<em><b>Rendering</b></em>' container reference.
@@ -2087,7 +2012,7 @@ public interface KRenderingPackage extends EPackage {
      * @see de.cau.cs.kieler.core.krendering.impl.KRenderingPackageImpl#getKVerticalAlignment()
      * @generated
      */
-    int KVERTICAL_ALIGNMENT = 30;
+    int KVERTICAL_ALIGNMENT = 27;
 
     /**
      * The feature id for the '<em><b>Rendering</b></em>' container reference.
@@ -2133,7 +2058,7 @@ public interface KRenderingPackage extends EPackage {
      * @see de.cau.cs.kieler.core.krendering.impl.KRenderingPackageImpl#getKHorizontalAlignment()
      * @generated
      */
-    int KHORIZONTAL_ALIGNMENT = 31;
+    int KHORIZONTAL_ALIGNMENT = 28;
 
     /**
      * The feature id for the '<em><b>Rendering</b></em>' container reference.
@@ -2179,7 +2104,7 @@ public interface KRenderingPackage extends EPackage {
      * @see de.cau.cs.kieler.core.krendering.impl.KRenderingPackageImpl#getKXPosition()
      * @generated
      */
-    int KX_POSITION = 32;
+    int KX_POSITION = 29;
 
     /**
      * The feature id for the '<em><b>Absolute</b></em>' attribute.
@@ -2216,7 +2141,7 @@ public interface KRenderingPackage extends EPackage {
      * @see de.cau.cs.kieler.core.krendering.impl.KRenderingPackageImpl#getKYPosition()
      * @generated
      */
-    int KY_POSITION = 33;
+    int KY_POSITION = 30;
 
     /**
      * The feature id for the '<em><b>Absolute</b></em>' attribute.
@@ -2253,7 +2178,7 @@ public interface KRenderingPackage extends EPackage {
      * @see de.cau.cs.kieler.core.krendering.impl.KRenderingPackageImpl#getKLeftPosition()
      * @generated
      */
-    int KLEFT_POSITION = 34;
+    int KLEFT_POSITION = 31;
 
     /**
      * The feature id for the '<em><b>Absolute</b></em>' attribute.
@@ -2290,7 +2215,7 @@ public interface KRenderingPackage extends EPackage {
      * @see de.cau.cs.kieler.core.krendering.impl.KRenderingPackageImpl#getKRightPosition()
      * @generated
      */
-    int KRIGHT_POSITION = 35;
+    int KRIGHT_POSITION = 32;
 
     /**
      * The feature id for the '<em><b>Absolute</b></em>' attribute.
@@ -2327,7 +2252,7 @@ public interface KRenderingPackage extends EPackage {
      * @see de.cau.cs.kieler.core.krendering.impl.KRenderingPackageImpl#getKTopPosition()
      * @generated
      */
-    int KTOP_POSITION = 36;
+    int KTOP_POSITION = 33;
 
     /**
      * The feature id for the '<em><b>Absolute</b></em>' attribute.
@@ -2364,7 +2289,7 @@ public interface KRenderingPackage extends EPackage {
      * @see de.cau.cs.kieler.core.krendering.impl.KRenderingPackageImpl#getKBottomPosition()
      * @generated
      */
-    int KBOTTOM_POSITION = 37;
+    int KBOTTOM_POSITION = 34;
 
     /**
      * The feature id for the '<em><b>Absolute</b></em>' attribute.
@@ -2401,7 +2326,7 @@ public interface KRenderingPackage extends EPackage {
      * @see de.cau.cs.kieler.core.krendering.impl.KRenderingPackageImpl#getKSpline()
      * @generated
      */
-    int KSPLINE = 38;
+    int KSPLINE = 35;
 
     /**
      * The feature id for the '<em><b>Properties</b></em>' map.
@@ -2476,6 +2401,15 @@ public interface KRenderingPackage extends EPackage {
     int KSPLINE__CHILD_PLACEMENT = KPOLYLINE__CHILD_PLACEMENT;
 
     /**
+     * The feature id for the '<em><b>Points</b></em>' containment reference list.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KSPLINE__POINTS = KPOLYLINE__POINTS;
+
+    /**
      * The number of structural features of the '<em>KSpline</em>' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -2485,14 +2419,14 @@ public interface KRenderingPackage extends EPackage {
     int KSPLINE_FEATURE_COUNT = KPOLYLINE_FEATURE_COUNT + 0;
 
     /**
-     * The meta object id for the '{@link de.cau.cs.kieler.core.krendering.impl.KVisibilityImpl <em>KVisibility</em>}' class.
+     * The meta object id for the '{@link de.cau.cs.kieler.core.krendering.impl.KAlphaImpl <em>KAlpha</em>}' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see de.cau.cs.kieler.core.krendering.impl.KVisibilityImpl
-     * @see de.cau.cs.kieler.core.krendering.impl.KRenderingPackageImpl#getKVisibility()
+     * @see de.cau.cs.kieler.core.krendering.impl.KAlphaImpl
+     * @see de.cau.cs.kieler.core.krendering.impl.KRenderingPackageImpl#getKAlpha()
      * @generated
      */
-    int KVISIBILITY = 40;
+    int KALPHA = 37;
 
     /**
      * The feature id for the '<em><b>Rendering</b></em>' container reference.
@@ -2501,7 +2435,7 @@ public interface KRenderingPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int KVISIBILITY__RENDERING = KSTYLE__RENDERING;
+    int KALPHA__RENDERING = KSTYLE__RENDERING;
 
     /**
      * The feature id for the '<em><b>Propagate To Children</b></em>' attribute.
@@ -2510,35 +2444,35 @@ public interface KRenderingPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int KVISIBILITY__PROPAGATE_TO_CHILDREN = KSTYLE__PROPAGATE_TO_CHILDREN;
+    int KALPHA__PROPAGATE_TO_CHILDREN = KSTYLE__PROPAGATE_TO_CHILDREN;
 
     /**
-     * The feature id for the '<em><b>Visible</b></em>' attribute.
+     * The feature id for the '<em><b>Alpha</b></em>' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int KVISIBILITY__VISIBLE = KSTYLE_FEATURE_COUNT + 0;
+    int KALPHA__ALPHA = KSTYLE_FEATURE_COUNT + 0;
 
     /**
-     * The number of structural features of the '<em>KVisibility</em>' class.
+     * The number of structural features of the '<em>KAlpha</em>' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int KVISIBILITY_FEATURE_COUNT = KSTYLE_FEATURE_COUNT + 1;
+    int KALPHA_FEATURE_COUNT = KSTYLE_FEATURE_COUNT + 1;
 
     /**
-     * The meta object id for the '{@link de.cau.cs.kieler.core.krendering.impl.KForegroundVisibilityImpl <em>KForeground Visibility</em>}' class.
+     * The meta object id for the '{@link de.cau.cs.kieler.core.krendering.impl.KForegroundAlphaImpl <em>KForeground Alpha</em>}' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see de.cau.cs.kieler.core.krendering.impl.KForegroundVisibilityImpl
-     * @see de.cau.cs.kieler.core.krendering.impl.KRenderingPackageImpl#getKForegroundVisibility()
+     * @see de.cau.cs.kieler.core.krendering.impl.KForegroundAlphaImpl
+     * @see de.cau.cs.kieler.core.krendering.impl.KRenderingPackageImpl#getKForegroundAlpha()
      * @generated
      */
-    int KFOREGROUND_VISIBILITY = 39;
+    int KFOREGROUND_ALPHA = 36;
 
     /**
      * The feature id for the '<em><b>Rendering</b></em>' container reference.
@@ -2547,7 +2481,7 @@ public interface KRenderingPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int KFOREGROUND_VISIBILITY__RENDERING = KVISIBILITY__RENDERING;
+    int KFOREGROUND_ALPHA__RENDERING = KALPHA__RENDERING;
 
     /**
      * The feature id for the '<em><b>Propagate To Children</b></em>' attribute.
@@ -2556,35 +2490,35 @@ public interface KRenderingPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int KFOREGROUND_VISIBILITY__PROPAGATE_TO_CHILDREN = KVISIBILITY__PROPAGATE_TO_CHILDREN;
+    int KFOREGROUND_ALPHA__PROPAGATE_TO_CHILDREN = KALPHA__PROPAGATE_TO_CHILDREN;
 
     /**
-     * The feature id for the '<em><b>Visible</b></em>' attribute.
+     * The feature id for the '<em><b>Alpha</b></em>' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int KFOREGROUND_VISIBILITY__VISIBLE = KVISIBILITY__VISIBLE;
+    int KFOREGROUND_ALPHA__ALPHA = KALPHA__ALPHA;
 
     /**
-     * The number of structural features of the '<em>KForeground Visibility</em>' class.
+     * The number of structural features of the '<em>KForeground Alpha</em>' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int KFOREGROUND_VISIBILITY_FEATURE_COUNT = KVISIBILITY_FEATURE_COUNT + 0;
+    int KFOREGROUND_ALPHA_FEATURE_COUNT = KALPHA_FEATURE_COUNT + 0;
 
     /**
-     * The meta object id for the '{@link de.cau.cs.kieler.core.krendering.impl.KBackgroundVisibilityImpl <em>KBackground Visibility</em>}' class.
+     * The meta object id for the '{@link de.cau.cs.kieler.core.krendering.impl.KBackgroundAlphaImpl <em>KBackground Alpha</em>}' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see de.cau.cs.kieler.core.krendering.impl.KBackgroundVisibilityImpl
-     * @see de.cau.cs.kieler.core.krendering.impl.KRenderingPackageImpl#getKBackgroundVisibility()
+     * @see de.cau.cs.kieler.core.krendering.impl.KBackgroundAlphaImpl
+     * @see de.cau.cs.kieler.core.krendering.impl.KRenderingPackageImpl#getKBackgroundAlpha()
      * @generated
      */
-    int KBACKGROUND_VISIBILITY = 41;
+    int KBACKGROUND_ALPHA = 38;
 
     /**
      * The feature id for the '<em><b>Rendering</b></em>' container reference.
@@ -2593,7 +2527,7 @@ public interface KRenderingPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int KBACKGROUND_VISIBILITY__RENDERING = KVISIBILITY__RENDERING;
+    int KBACKGROUND_ALPHA__RENDERING = KALPHA__RENDERING;
 
     /**
      * The feature id for the '<em><b>Propagate To Children</b></em>' attribute.
@@ -2602,25 +2536,25 @@ public interface KRenderingPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int KBACKGROUND_VISIBILITY__PROPAGATE_TO_CHILDREN = KVISIBILITY__PROPAGATE_TO_CHILDREN;
+    int KBACKGROUND_ALPHA__PROPAGATE_TO_CHILDREN = KALPHA__PROPAGATE_TO_CHILDREN;
 
     /**
-     * The feature id for the '<em><b>Visible</b></em>' attribute.
+     * The feature id for the '<em><b>Alpha</b></em>' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int KBACKGROUND_VISIBILITY__VISIBLE = KVISIBILITY__VISIBLE;
+    int KBACKGROUND_ALPHA__ALPHA = KALPHA__ALPHA;
 
     /**
-     * The number of structural features of the '<em>KBackground Visibility</em>' class.
+     * The number of structural features of the '<em>KBackground Alpha</em>' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int KBACKGROUND_VISIBILITY_FEATURE_COUNT = KVISIBILITY_FEATURE_COUNT + 0;
+    int KBACKGROUND_ALPHA_FEATURE_COUNT = KALPHA_FEATURE_COUNT + 0;
 
     /**
      * The meta object id for the '{@link de.cau.cs.kieler.core.krendering.impl.KFontBoldImpl <em>KFont Bold</em>}' class.
@@ -2630,7 +2564,7 @@ public interface KRenderingPackage extends EPackage {
      * @see de.cau.cs.kieler.core.krendering.impl.KRenderingPackageImpl#getKFontBold()
      * @generated
      */
-    int KFONT_BOLD = 42;
+    int KFONT_BOLD = 39;
 
     /**
      * The feature id for the '<em><b>Rendering</b></em>' container reference.
@@ -2676,7 +2610,7 @@ public interface KRenderingPackage extends EPackage {
      * @see de.cau.cs.kieler.core.krendering.impl.KRenderingPackageImpl#getKFontItalic()
      * @generated
      */
-    int KFONT_ITALIC = 43;
+    int KFONT_ITALIC = 40;
 
     /**
      * The feature id for the '<em><b>Rendering</b></em>' container reference.
@@ -2722,7 +2656,7 @@ public interface KRenderingPackage extends EPackage {
      * @see de.cau.cs.kieler.core.krendering.impl.KRenderingPackageImpl#getKFontName()
      * @generated
      */
-    int KFONT_NAME = 44;
+    int KFONT_NAME = 41;
 
     /**
      * The feature id for the '<em><b>Rendering</b></em>' container reference.
@@ -2768,7 +2702,7 @@ public interface KRenderingPackage extends EPackage {
      * @see de.cau.cs.kieler.core.krendering.impl.KRenderingPackageImpl#getKFontSize()
      * @generated
      */
-    int KFONT_SIZE = 45;
+    int KFONT_SIZE = 42;
 
     /**
      * The feature id for the '<em><b>Rendering</b></em>' container reference.
@@ -2814,7 +2748,7 @@ public interface KRenderingPackage extends EPackage {
      * @see de.cau.cs.kieler.core.krendering.impl.KRenderingPackageImpl#getKRoundedBendsPolyline()
      * @generated
      */
-    int KROUNDED_BENDS_POLYLINE = 46;
+    int KROUNDED_BENDS_POLYLINE = 43;
 
     /**
      * The feature id for the '<em><b>Properties</b></em>' map.
@@ -2889,6 +2823,15 @@ public interface KRenderingPackage extends EPackage {
     int KROUNDED_BENDS_POLYLINE__CHILD_PLACEMENT = KPOLYLINE__CHILD_PLACEMENT;
 
     /**
+     * The feature id for the '<em><b>Points</b></em>' containment reference list.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KROUNDED_BENDS_POLYLINE__POINTS = KPOLYLINE__POINTS;
+
+    /**
      * The feature id for the '<em><b>Bend Radius</b></em>' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -2914,7 +2857,7 @@ public interface KRenderingPackage extends EPackage {
      * @see de.cau.cs.kieler.core.krendering.impl.KRenderingPackageImpl#getKRotation()
      * @generated
      */
-    int KROTATION = 47;
+    int KROTATION = 44;
 
     /**
      * The feature id for the '<em><b>Rendering</b></em>' container reference.
@@ -2953,6 +2896,70 @@ public interface KRenderingPackage extends EPackage {
     int KROTATION_FEATURE_COUNT = KSTYLE_FEATURE_COUNT + 1;
 
     /**
+     * The meta object id for the '{@link de.cau.cs.kieler.core.krendering.impl.KGradientStyleImpl <em>KGradient Style</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see de.cau.cs.kieler.core.krendering.impl.KGradientStyleImpl
+     * @see de.cau.cs.kieler.core.krendering.impl.KRenderingPackageImpl#getKGradientStyle()
+     * @generated
+     */
+    int KGRADIENT_STYLE = 45;
+
+    /**
+     * The feature id for the '<em><b>Rendering</b></em>' container reference.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KGRADIENT_STYLE__RENDERING = KSTYLE__RENDERING;
+
+    /**
+     * The feature id for the '<em><b>Propagate To Children</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KGRADIENT_STYLE__PROPAGATE_TO_CHILDREN = KSTYLE__PROPAGATE_TO_CHILDREN;
+
+    /**
+     * The feature id for the '<em><b>Angle</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KGRADIENT_STYLE__ANGLE = KSTYLE_FEATURE_COUNT + 0;
+
+    /**
+     * The feature id for the '<em><b>Start Color</b></em>' reference.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KGRADIENT_STYLE__START_COLOR = KSTYLE_FEATURE_COUNT + 1;
+
+    /**
+     * The feature id for the '<em><b>End Color</b></em>' reference.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KGRADIENT_STYLE__END_COLOR = KSTYLE_FEATURE_COUNT + 2;
+
+    /**
+     * The number of structural features of the '<em>KGradient Style</em>' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KGRADIENT_STYLE_FEATURE_COUNT = KSTYLE_FEATURE_COUNT + 3;
+
+    /**
      * The meta object id for the '{@link de.cau.cs.kieler.core.krendering.LineStyle <em>Line Style</em>}' enum.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -2960,7 +2967,7 @@ public interface KRenderingPackage extends EPackage {
      * @see de.cau.cs.kieler.core.krendering.impl.KRenderingPackageImpl#getLineStyle()
      * @generated
      */
-    int LINE_STYLE = 48;
+    int LINE_STYLE = 46;
 
     /**
      * The meta object id for the '{@link de.cau.cs.kieler.core.krendering.HorizontalAlignment <em>Horizontal Alignment</em>}' enum.
@@ -2970,7 +2977,7 @@ public interface KRenderingPackage extends EPackage {
      * @see de.cau.cs.kieler.core.krendering.impl.KRenderingPackageImpl#getHorizontalAlignment()
      * @generated
      */
-    int HORIZONTAL_ALIGNMENT = 49;
+    int HORIZONTAL_ALIGNMENT = 47;
 
     /**
      * The meta object id for the '{@link de.cau.cs.kieler.core.krendering.VerticalAlignment <em>Vertical Alignment</em>}' enum.
@@ -2980,7 +2987,7 @@ public interface KRenderingPackage extends EPackage {
      * @see de.cau.cs.kieler.core.krendering.impl.KRenderingPackageImpl#getVerticalAlignment()
      * @generated
      */
-    int VERTICAL_ALIGNMENT = 50;
+    int VERTICAL_ALIGNMENT = 48;
 
 
     /**
@@ -3132,6 +3139,17 @@ public interface KRenderingPackage extends EPackage {
     EClass getKPolyline();
 
     /**
+     * Returns the meta object for the containment reference list '{@link de.cau.cs.kieler.core.krendering.KPolyline#getPoints <em>Points</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the containment reference list '<em>Points</em>'.
+     * @see de.cau.cs.kieler.core.krendering.KPolyline#getPoints()
+     * @see #getKPolyline()
+     * @generated
+     */
+    EReference getKPolyline_Points();
+
+    /**
      * Returns the meta object for class '{@link de.cau.cs.kieler.core.krendering.KPolygon <em>KPolygon</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -3195,15 +3213,15 @@ public interface KRenderingPackage extends EPackage {
     EClass getKDecoratorPlacementData();
 
     /**
-     * Returns the meta object for the attribute '{@link de.cau.cs.kieler.core.krendering.KDecoratorPlacementData#getLocation <em>Location</em>}'.
+     * Returns the meta object for the attribute '{@link de.cau.cs.kieler.core.krendering.KDecoratorPlacementData#getAbsolute <em>Absolute</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for the attribute '<em>Location</em>'.
-     * @see de.cau.cs.kieler.core.krendering.KDecoratorPlacementData#getLocation()
+     * @return the meta object for the attribute '<em>Absolute</em>'.
+     * @see de.cau.cs.kieler.core.krendering.KDecoratorPlacementData#getAbsolute()
      * @see #getKDecoratorPlacementData()
      * @generated
      */
-    EAttribute getKDecoratorPlacementData_Location();
+    EAttribute getKDecoratorPlacementData_Absolute();
 
     /**
      * Returns the meta object for the attribute '{@link de.cau.cs.kieler.core.krendering.KDecoratorPlacementData#getXOffset <em>XOffset</em>}'.
@@ -3228,15 +3246,15 @@ public interface KRenderingPackage extends EPackage {
     EAttribute getKDecoratorPlacementData_YOffset();
 
     /**
-     * Returns the meta object for the attribute '{@link de.cau.cs.kieler.core.krendering.KDecoratorPlacementData#isRelative <em>Relative</em>}'.
+     * Returns the meta object for the attribute '{@link de.cau.cs.kieler.core.krendering.KDecoratorPlacementData#isRotateWithLine <em>Rotate With Line</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for the attribute '<em>Relative</em>'.
-     * @see de.cau.cs.kieler.core.krendering.KDecoratorPlacementData#isRelative()
+     * @return the meta object for the attribute '<em>Rotate With Line</em>'.
+     * @see de.cau.cs.kieler.core.krendering.KDecoratorPlacementData#isRotateWithLine()
      * @see #getKDecoratorPlacementData()
      * @generated
      */
-    EAttribute getKDecoratorPlacementData_Relative();
+    EAttribute getKDecoratorPlacementData_RotateWithLine();
 
     /**
      * Returns the meta object for the attribute '{@link de.cau.cs.kieler.core.krendering.KDecoratorPlacementData#getWidth <em>Width</em>}'.
@@ -3259,6 +3277,17 @@ public interface KRenderingPackage extends EPackage {
      * @generated
      */
     EAttribute getKDecoratorPlacementData_Height();
+
+    /**
+     * Returns the meta object for the attribute '{@link de.cau.cs.kieler.core.krendering.KDecoratorPlacementData#getRelative <em>Relative</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the attribute '<em>Relative</em>'.
+     * @see de.cau.cs.kieler.core.krendering.KDecoratorPlacementData#getRelative()
+     * @see #getKDecoratorPlacementData()
+     * @generated
+     */
+    EAttribute getKDecoratorPlacementData_Relative();
 
     /**
      * Returns the meta object for class '{@link de.cau.cs.kieler.core.krendering.KContainerRendering <em>KContainer Rendering</em>}'.
@@ -3441,6 +3470,17 @@ public interface KRenderingPackage extends EPackage {
     EAttribute getKText_Clip();
 
     /**
+     * Returns the meta object for the attribute '{@link de.cau.cs.kieler.core.krendering.KText#isScaling <em>Scaling</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the attribute '<em>Scaling</em>'.
+     * @see de.cau.cs.kieler.core.krendering.KText#isScaling()
+     * @see #getKText()
+     * @generated
+     */
+    EAttribute getKText_Scaling();
+
+    /**
      * Returns the meta object for class '{@link de.cau.cs.kieler.core.krendering.KPlacement <em>KPlacement</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -3472,14 +3512,26 @@ public interface KRenderingPackage extends EPackage {
     EAttribute getKGridPlacement_NumColumns();
 
     /**
-     * Returns the meta object for class '{@link de.cau.cs.kieler.core.krendering.KStackPlacement <em>KStack Placement</em>}'.
+     * Returns the meta object for the reference '{@link de.cau.cs.kieler.core.krendering.KGridPlacement#getTopLeft <em>Top Left</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for class '<em>KStack Placement</em>'.
-     * @see de.cau.cs.kieler.core.krendering.KStackPlacement
+     * @return the meta object for the reference '<em>Top Left</em>'.
+     * @see de.cau.cs.kieler.core.krendering.KGridPlacement#getTopLeft()
+     * @see #getKGridPlacement()
      * @generated
      */
-    EClass getKStackPlacement();
+    EReference getKGridPlacement_TopLeft();
+
+    /**
+     * Returns the meta object for the reference '{@link de.cau.cs.kieler.core.krendering.KGridPlacement#getBottomRight <em>Bottom Right</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the reference '<em>Bottom Right</em>'.
+     * @see de.cau.cs.kieler.core.krendering.KGridPlacement#getBottomRight()
+     * @see #getKGridPlacement()
+     * @generated
+     */
+    EReference getKGridPlacement_BottomRight();
 
     /**
      * Returns the meta object for class '{@link de.cau.cs.kieler.core.krendering.KPlacementData <em>KPlacement Data</em>}'.
@@ -3524,104 +3576,6 @@ public interface KRenderingPackage extends EPackage {
     EAttribute getKGridPlacementData_HeightHint();
 
     /**
-     * Returns the meta object for the attribute '{@link de.cau.cs.kieler.core.krendering.KGridPlacementData#getInsetRight <em>Inset Right</em>}'.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @return the meta object for the attribute '<em>Inset Right</em>'.
-     * @see de.cau.cs.kieler.core.krendering.KGridPlacementData#getInsetRight()
-     * @see #getKGridPlacementData()
-     * @generated
-     */
-    EAttribute getKGridPlacementData_InsetRight();
-
-    /**
-     * Returns the meta object for the attribute '{@link de.cau.cs.kieler.core.krendering.KGridPlacementData#getInsetBottom <em>Inset Bottom</em>}'.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @return the meta object for the attribute '<em>Inset Bottom</em>'.
-     * @see de.cau.cs.kieler.core.krendering.KGridPlacementData#getInsetBottom()
-     * @see #getKGridPlacementData()
-     * @generated
-     */
-    EAttribute getKGridPlacementData_InsetBottom();
-
-    /**
-     * Returns the meta object for the attribute '{@link de.cau.cs.kieler.core.krendering.KGridPlacementData#getInsetLeft <em>Inset Left</em>}'.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @return the meta object for the attribute '<em>Inset Left</em>'.
-     * @see de.cau.cs.kieler.core.krendering.KGridPlacementData#getInsetLeft()
-     * @see #getKGridPlacementData()
-     * @generated
-     */
-    EAttribute getKGridPlacementData_InsetLeft();
-
-    /**
-     * Returns the meta object for the attribute '{@link de.cau.cs.kieler.core.krendering.KGridPlacementData#getInsetTop <em>Inset Top</em>}'.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @return the meta object for the attribute '<em>Inset Top</em>'.
-     * @see de.cau.cs.kieler.core.krendering.KGridPlacementData#getInsetTop()
-     * @see #getKGridPlacementData()
-     * @generated
-     */
-    EAttribute getKGridPlacementData_InsetTop();
-
-    /**
-     * Returns the meta object for class '{@link de.cau.cs.kieler.core.krendering.KStackPlacementData <em>KStack Placement Data</em>}'.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @return the meta object for class '<em>KStack Placement Data</em>'.
-     * @see de.cau.cs.kieler.core.krendering.KStackPlacementData
-     * @generated
-     */
-    EClass getKStackPlacementData();
-
-    /**
-     * Returns the meta object for the attribute '{@link de.cau.cs.kieler.core.krendering.KStackPlacementData#getInsetRight <em>Inset Right</em>}'.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @return the meta object for the attribute '<em>Inset Right</em>'.
-     * @see de.cau.cs.kieler.core.krendering.KStackPlacementData#getInsetRight()
-     * @see #getKStackPlacementData()
-     * @generated
-     */
-    EAttribute getKStackPlacementData_InsetRight();
-
-    /**
-     * Returns the meta object for the attribute '{@link de.cau.cs.kieler.core.krendering.KStackPlacementData#getInsetBottom <em>Inset Bottom</em>}'.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @return the meta object for the attribute '<em>Inset Bottom</em>'.
-     * @see de.cau.cs.kieler.core.krendering.KStackPlacementData#getInsetBottom()
-     * @see #getKStackPlacementData()
-     * @generated
-     */
-    EAttribute getKStackPlacementData_InsetBottom();
-
-    /**
-     * Returns the meta object for the attribute '{@link de.cau.cs.kieler.core.krendering.KStackPlacementData#getInsetLeft <em>Inset Left</em>}'.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @return the meta object for the attribute '<em>Inset Left</em>'.
-     * @see de.cau.cs.kieler.core.krendering.KStackPlacementData#getInsetLeft()
-     * @see #getKStackPlacementData()
-     * @generated
-     */
-    EAttribute getKStackPlacementData_InsetLeft();
-
-    /**
-     * Returns the meta object for the attribute '{@link de.cau.cs.kieler.core.krendering.KStackPlacementData#getInsetTop <em>Inset Top</em>}'.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @return the meta object for the attribute '<em>Inset Top</em>'.
-     * @see de.cau.cs.kieler.core.krendering.KStackPlacementData#getInsetTop()
-     * @see #getKStackPlacementData()
-     * @generated
-     */
-    EAttribute getKStackPlacementData_InsetTop();
-
-    /**
      * Returns the meta object for class '{@link de.cau.cs.kieler.core.krendering.KDirectPlacementData <em>KDirect Placement Data</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -3652,38 +3606,6 @@ public interface KRenderingPackage extends EPackage {
      * @generated
      */
     EReference getKDirectPlacementData_BottomRight();
-
-    /**
-     * Returns the meta object for class '{@link de.cau.cs.kieler.core.krendering.KPolylinePlacementData <em>KPolyline Placement Data</em>}'.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @return the meta object for class '<em>KPolyline Placement Data</em>'.
-     * @see de.cau.cs.kieler.core.krendering.KPolylinePlacementData
-     * @generated
-     */
-    EClass getKPolylinePlacementData();
-
-    /**
-     * Returns the meta object for the containment reference list '{@link de.cau.cs.kieler.core.krendering.KPolylinePlacementData#getPoints <em>Points</em>}'.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @return the meta object for the containment reference list '<em>Points</em>'.
-     * @see de.cau.cs.kieler.core.krendering.KPolylinePlacementData#getPoints()
-     * @see #getKPolylinePlacementData()
-     * @generated
-     */
-    EReference getKPolylinePlacementData_Points();
-
-    /**
-     * Returns the meta object for the containment reference '{@link de.cau.cs.kieler.core.krendering.KPolylinePlacementData#getDetailPlacementData <em>Detail Placement Data</em>}'.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @return the meta object for the containment reference '<em>Detail Placement Data</em>'.
-     * @see de.cau.cs.kieler.core.krendering.KPolylinePlacementData#getDetailPlacementData()
-     * @see #getKPolylinePlacementData()
-     * @generated
-     */
-    EReference getKPolylinePlacementData_DetailPlacementData();
 
     /**
      * Returns the meta object for class '{@link de.cau.cs.kieler.core.krendering.KCustomRendering <em>KCustom Rendering</em>}'.
@@ -3990,45 +3912,45 @@ public interface KRenderingPackage extends EPackage {
     EClass getKSpline();
 
     /**
-     * Returns the meta object for class '{@link de.cau.cs.kieler.core.krendering.KForegroundVisibility <em>KForeground Visibility</em>}'.
+     * Returns the meta object for class '{@link de.cau.cs.kieler.core.krendering.KForegroundAlpha <em>KForeground Alpha</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for class '<em>KForeground Visibility</em>'.
-     * @see de.cau.cs.kieler.core.krendering.KForegroundVisibility
+     * @return the meta object for class '<em>KForeground Alpha</em>'.
+     * @see de.cau.cs.kieler.core.krendering.KForegroundAlpha
      * @generated
      */
-    EClass getKForegroundVisibility();
+    EClass getKForegroundAlpha();
 
     /**
-     * Returns the meta object for class '{@link de.cau.cs.kieler.core.krendering.KVisibility <em>KVisibility</em>}'.
+     * Returns the meta object for class '{@link de.cau.cs.kieler.core.krendering.KAlpha <em>KAlpha</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for class '<em>KVisibility</em>'.
-     * @see de.cau.cs.kieler.core.krendering.KVisibility
+     * @return the meta object for class '<em>KAlpha</em>'.
+     * @see de.cau.cs.kieler.core.krendering.KAlpha
      * @generated
      */
-    EClass getKVisibility();
+    EClass getKAlpha();
 
     /**
-     * Returns the meta object for the attribute '{@link de.cau.cs.kieler.core.krendering.KVisibility#isVisible <em>Visible</em>}'.
+     * Returns the meta object for the attribute '{@link de.cau.cs.kieler.core.krendering.KAlpha#getAlpha <em>Alpha</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for the attribute '<em>Visible</em>'.
-     * @see de.cau.cs.kieler.core.krendering.KVisibility#isVisible()
-     * @see #getKVisibility()
+     * @return the meta object for the attribute '<em>Alpha</em>'.
+     * @see de.cau.cs.kieler.core.krendering.KAlpha#getAlpha()
+     * @see #getKAlpha()
      * @generated
      */
-    EAttribute getKVisibility_Visible();
+    EAttribute getKAlpha_Alpha();
 
     /**
-     * Returns the meta object for class '{@link de.cau.cs.kieler.core.krendering.KBackgroundVisibility <em>KBackground Visibility</em>}'.
+     * Returns the meta object for class '{@link de.cau.cs.kieler.core.krendering.KBackgroundAlpha <em>KBackground Alpha</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for class '<em>KBackground Visibility</em>'.
-     * @see de.cau.cs.kieler.core.krendering.KBackgroundVisibility
+     * @return the meta object for class '<em>KBackground Alpha</em>'.
+     * @see de.cau.cs.kieler.core.krendering.KBackgroundAlpha
      * @generated
      */
-    EClass getKBackgroundVisibility();
+    EClass getKBackgroundAlpha();
 
     /**
      * Returns the meta object for class '{@link de.cau.cs.kieler.core.krendering.KFontBold <em>KFont Bold</em>}'.
@@ -4155,6 +4077,49 @@ public interface KRenderingPackage extends EPackage {
      * @generated
      */
     EAttribute getKRotation_Rotation();
+
+    /**
+     * Returns the meta object for class '{@link de.cau.cs.kieler.core.krendering.KGradientStyle <em>KGradient Style</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for class '<em>KGradient Style</em>'.
+     * @see de.cau.cs.kieler.core.krendering.KGradientStyle
+     * @generated
+     */
+    EClass getKGradientStyle();
+
+    /**
+     * Returns the meta object for the attribute '{@link de.cau.cs.kieler.core.krendering.KGradientStyle#getAngle <em>Angle</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the attribute '<em>Angle</em>'.
+     * @see de.cau.cs.kieler.core.krendering.KGradientStyle#getAngle()
+     * @see #getKGradientStyle()
+     * @generated
+     */
+    EAttribute getKGradientStyle_Angle();
+
+    /**
+     * Returns the meta object for the reference '{@link de.cau.cs.kieler.core.krendering.KGradientStyle#getStartColor <em>Start Color</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the reference '<em>Start Color</em>'.
+     * @see de.cau.cs.kieler.core.krendering.KGradientStyle#getStartColor()
+     * @see #getKGradientStyle()
+     * @generated
+     */
+    EReference getKGradientStyle_StartColor();
+
+    /**
+     * Returns the meta object for the reference '{@link de.cau.cs.kieler.core.krendering.KGradientStyle#getEndColor <em>End Color</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the reference '<em>End Color</em>'.
+     * @see de.cau.cs.kieler.core.krendering.KGradientStyle#getEndColor()
+     * @see #getKGradientStyle()
+     * @generated
+     */
+    EReference getKGradientStyle_EndColor();
 
     /**
      * Returns the meta object for enum '{@link de.cau.cs.kieler.core.krendering.LineStyle <em>Line Style</em>}'.
@@ -4333,6 +4298,14 @@ public interface KRenderingPackage extends EPackage {
         EClass KPOLYLINE = eINSTANCE.getKPolyline();
 
         /**
+         * The meta object literal for the '<em><b>Points</b></em>' containment reference list feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EReference KPOLYLINE__POINTS = eINSTANCE.getKPolyline_Points();
+
+        /**
          * The meta object literal for the '{@link de.cau.cs.kieler.core.krendering.impl.KPolygonImpl <em>KPolygon</em>}' class.
          * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
@@ -4387,12 +4360,12 @@ public interface KRenderingPackage extends EPackage {
         EClass KDECORATOR_PLACEMENT_DATA = eINSTANCE.getKDecoratorPlacementData();
 
         /**
-         * The meta object literal for the '<em><b>Location</b></em>' attribute feature.
+         * The meta object literal for the '<em><b>Absolute</b></em>' attribute feature.
          * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
          * @generated
          */
-        EAttribute KDECORATOR_PLACEMENT_DATA__LOCATION = eINSTANCE.getKDecoratorPlacementData_Location();
+        EAttribute KDECORATOR_PLACEMENT_DATA__ABSOLUTE = eINSTANCE.getKDecoratorPlacementData_Absolute();
 
         /**
          * The meta object literal for the '<em><b>XOffset</b></em>' attribute feature.
@@ -4411,12 +4384,12 @@ public interface KRenderingPackage extends EPackage {
         EAttribute KDECORATOR_PLACEMENT_DATA__YOFFSET = eINSTANCE.getKDecoratorPlacementData_YOffset();
 
         /**
-         * The meta object literal for the '<em><b>Relative</b></em>' attribute feature.
+         * The meta object literal for the '<em><b>Rotate With Line</b></em>' attribute feature.
          * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
          * @generated
          */
-        EAttribute KDECORATOR_PLACEMENT_DATA__RELATIVE = eINSTANCE.getKDecoratorPlacementData_Relative();
+        EAttribute KDECORATOR_PLACEMENT_DATA__ROTATE_WITH_LINE = eINSTANCE.getKDecoratorPlacementData_RotateWithLine();
 
         /**
          * The meta object literal for the '<em><b>Width</b></em>' attribute feature.
@@ -4433,6 +4406,14 @@ public interface KRenderingPackage extends EPackage {
          * @generated
          */
         EAttribute KDECORATOR_PLACEMENT_DATA__HEIGHT = eINSTANCE.getKDecoratorPlacementData_Height();
+
+        /**
+         * The meta object literal for the '<em><b>Relative</b></em>' attribute feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EAttribute KDECORATOR_PLACEMENT_DATA__RELATIVE = eINSTANCE.getKDecoratorPlacementData_Relative();
 
         /**
          * The meta object literal for the '{@link de.cau.cs.kieler.core.krendering.impl.KContainerRenderingImpl <em>KContainer Rendering</em>}' class.
@@ -4585,6 +4566,14 @@ public interface KRenderingPackage extends EPackage {
         EAttribute KTEXT__CLIP = eINSTANCE.getKText_Clip();
 
         /**
+         * The meta object literal for the '<em><b>Scaling</b></em>' attribute feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EAttribute KTEXT__SCALING = eINSTANCE.getKText_Scaling();
+
+        /**
          * The meta object literal for the '{@link de.cau.cs.kieler.core.krendering.KPlacement <em>KPlacement</em>}' class.
          * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
@@ -4613,14 +4602,20 @@ public interface KRenderingPackage extends EPackage {
         EAttribute KGRID_PLACEMENT__NUM_COLUMNS = eINSTANCE.getKGridPlacement_NumColumns();
 
         /**
-         * The meta object literal for the '{@link de.cau.cs.kieler.core.krendering.impl.KStackPlacementImpl <em>KStack Placement</em>}' class.
+         * The meta object literal for the '<em><b>Top Left</b></em>' reference feature.
          * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-         * @see de.cau.cs.kieler.core.krendering.impl.KStackPlacementImpl
-         * @see de.cau.cs.kieler.core.krendering.impl.KRenderingPackageImpl#getKStackPlacement()
          * @generated
          */
-        EClass KSTACK_PLACEMENT = eINSTANCE.getKStackPlacement();
+        EReference KGRID_PLACEMENT__TOP_LEFT = eINSTANCE.getKGridPlacement_TopLeft();
+
+        /**
+         * The meta object literal for the '<em><b>Bottom Right</b></em>' reference feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EReference KGRID_PLACEMENT__BOTTOM_RIGHT = eINSTANCE.getKGridPlacement_BottomRight();
 
         /**
          * The meta object literal for the '{@link de.cau.cs.kieler.core.krendering.KPlacementData <em>KPlacement Data</em>}' class.
@@ -4659,80 +4654,6 @@ public interface KRenderingPackage extends EPackage {
         EAttribute KGRID_PLACEMENT_DATA__HEIGHT_HINT = eINSTANCE.getKGridPlacementData_HeightHint();
 
         /**
-         * The meta object literal for the '<em><b>Inset Right</b></em>' attribute feature.
-         * <!-- begin-user-doc -->
-         * <!-- end-user-doc -->
-         * @generated
-         */
-        EAttribute KGRID_PLACEMENT_DATA__INSET_RIGHT = eINSTANCE.getKGridPlacementData_InsetRight();
-
-        /**
-         * The meta object literal for the '<em><b>Inset Bottom</b></em>' attribute feature.
-         * <!-- begin-user-doc -->
-         * <!-- end-user-doc -->
-         * @generated
-         */
-        EAttribute KGRID_PLACEMENT_DATA__INSET_BOTTOM = eINSTANCE.getKGridPlacementData_InsetBottom();
-
-        /**
-         * The meta object literal for the '<em><b>Inset Left</b></em>' attribute feature.
-         * <!-- begin-user-doc -->
-         * <!-- end-user-doc -->
-         * @generated
-         */
-        EAttribute KGRID_PLACEMENT_DATA__INSET_LEFT = eINSTANCE.getKGridPlacementData_InsetLeft();
-
-        /**
-         * The meta object literal for the '<em><b>Inset Top</b></em>' attribute feature.
-         * <!-- begin-user-doc -->
-         * <!-- end-user-doc -->
-         * @generated
-         */
-        EAttribute KGRID_PLACEMENT_DATA__INSET_TOP = eINSTANCE.getKGridPlacementData_InsetTop();
-
-        /**
-         * The meta object literal for the '{@link de.cau.cs.kieler.core.krendering.impl.KStackPlacementDataImpl <em>KStack Placement Data</em>}' class.
-         * <!-- begin-user-doc -->
-         * <!-- end-user-doc -->
-         * @see de.cau.cs.kieler.core.krendering.impl.KStackPlacementDataImpl
-         * @see de.cau.cs.kieler.core.krendering.impl.KRenderingPackageImpl#getKStackPlacementData()
-         * @generated
-         */
-        EClass KSTACK_PLACEMENT_DATA = eINSTANCE.getKStackPlacementData();
-
-        /**
-         * The meta object literal for the '<em><b>Inset Right</b></em>' attribute feature.
-         * <!-- begin-user-doc -->
-         * <!-- end-user-doc -->
-         * @generated
-         */
-        EAttribute KSTACK_PLACEMENT_DATA__INSET_RIGHT = eINSTANCE.getKStackPlacementData_InsetRight();
-
-        /**
-         * The meta object literal for the '<em><b>Inset Bottom</b></em>' attribute feature.
-         * <!-- begin-user-doc -->
-         * <!-- end-user-doc -->
-         * @generated
-         */
-        EAttribute KSTACK_PLACEMENT_DATA__INSET_BOTTOM = eINSTANCE.getKStackPlacementData_InsetBottom();
-
-        /**
-         * The meta object literal for the '<em><b>Inset Left</b></em>' attribute feature.
-         * <!-- begin-user-doc -->
-         * <!-- end-user-doc -->
-         * @generated
-         */
-        EAttribute KSTACK_PLACEMENT_DATA__INSET_LEFT = eINSTANCE.getKStackPlacementData_InsetLeft();
-
-        /**
-         * The meta object literal for the '<em><b>Inset Top</b></em>' attribute feature.
-         * <!-- begin-user-doc -->
-         * <!-- end-user-doc -->
-         * @generated
-         */
-        EAttribute KSTACK_PLACEMENT_DATA__INSET_TOP = eINSTANCE.getKStackPlacementData_InsetTop();
-
-        /**
          * The meta object literal for the '{@link de.cau.cs.kieler.core.krendering.impl.KDirectPlacementDataImpl <em>KDirect Placement Data</em>}' class.
          * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
@@ -4757,32 +4678,6 @@ public interface KRenderingPackage extends EPackage {
          * @generated
          */
         EReference KDIRECT_PLACEMENT_DATA__BOTTOM_RIGHT = eINSTANCE.getKDirectPlacementData_BottomRight();
-
-        /**
-         * The meta object literal for the '{@link de.cau.cs.kieler.core.krendering.impl.KPolylinePlacementDataImpl <em>KPolyline Placement Data</em>}' class.
-         * <!-- begin-user-doc -->
-         * <!-- end-user-doc -->
-         * @see de.cau.cs.kieler.core.krendering.impl.KPolylinePlacementDataImpl
-         * @see de.cau.cs.kieler.core.krendering.impl.KRenderingPackageImpl#getKPolylinePlacementData()
-         * @generated
-         */
-        EClass KPOLYLINE_PLACEMENT_DATA = eINSTANCE.getKPolylinePlacementData();
-
-        /**
-         * The meta object literal for the '<em><b>Points</b></em>' containment reference list feature.
-         * <!-- begin-user-doc -->
-         * <!-- end-user-doc -->
-         * @generated
-         */
-        EReference KPOLYLINE_PLACEMENT_DATA__POINTS = eINSTANCE.getKPolylinePlacementData_Points();
-
-        /**
-         * The meta object literal for the '<em><b>Detail Placement Data</b></em>' containment reference feature.
-         * <!-- begin-user-doc -->
-         * <!-- end-user-doc -->
-         * @generated
-         */
-        EReference KPOLYLINE_PLACEMENT_DATA__DETAIL_PLACEMENT_DATA = eINSTANCE.getKPolylinePlacementData_DetailPlacementData();
 
         /**
          * The meta object literal for the '{@link de.cau.cs.kieler.core.krendering.impl.KCustomRenderingImpl <em>KCustom Rendering</em>}' class.
@@ -5047,42 +4942,42 @@ public interface KRenderingPackage extends EPackage {
         EClass KSPLINE = eINSTANCE.getKSpline();
 
         /**
-         * The meta object literal for the '{@link de.cau.cs.kieler.core.krendering.impl.KForegroundVisibilityImpl <em>KForeground Visibility</em>}' class.
+         * The meta object literal for the '{@link de.cau.cs.kieler.core.krendering.impl.KForegroundAlphaImpl <em>KForeground Alpha</em>}' class.
          * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-         * @see de.cau.cs.kieler.core.krendering.impl.KForegroundVisibilityImpl
-         * @see de.cau.cs.kieler.core.krendering.impl.KRenderingPackageImpl#getKForegroundVisibility()
+         * @see de.cau.cs.kieler.core.krendering.impl.KForegroundAlphaImpl
+         * @see de.cau.cs.kieler.core.krendering.impl.KRenderingPackageImpl#getKForegroundAlpha()
          * @generated
          */
-        EClass KFOREGROUND_VISIBILITY = eINSTANCE.getKForegroundVisibility();
+        EClass KFOREGROUND_ALPHA = eINSTANCE.getKForegroundAlpha();
 
         /**
-         * The meta object literal for the '{@link de.cau.cs.kieler.core.krendering.impl.KVisibilityImpl <em>KVisibility</em>}' class.
+         * The meta object literal for the '{@link de.cau.cs.kieler.core.krendering.impl.KAlphaImpl <em>KAlpha</em>}' class.
          * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-         * @see de.cau.cs.kieler.core.krendering.impl.KVisibilityImpl
-         * @see de.cau.cs.kieler.core.krendering.impl.KRenderingPackageImpl#getKVisibility()
+         * @see de.cau.cs.kieler.core.krendering.impl.KAlphaImpl
+         * @see de.cau.cs.kieler.core.krendering.impl.KRenderingPackageImpl#getKAlpha()
          * @generated
          */
-        EClass KVISIBILITY = eINSTANCE.getKVisibility();
+        EClass KALPHA = eINSTANCE.getKAlpha();
 
         /**
-         * The meta object literal for the '<em><b>Visible</b></em>' attribute feature.
+         * The meta object literal for the '<em><b>Alpha</b></em>' attribute feature.
          * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
          * @generated
          */
-        EAttribute KVISIBILITY__VISIBLE = eINSTANCE.getKVisibility_Visible();
+        EAttribute KALPHA__ALPHA = eINSTANCE.getKAlpha_Alpha();
 
         /**
-         * The meta object literal for the '{@link de.cau.cs.kieler.core.krendering.impl.KBackgroundVisibilityImpl <em>KBackground Visibility</em>}' class.
+         * The meta object literal for the '{@link de.cau.cs.kieler.core.krendering.impl.KBackgroundAlphaImpl <em>KBackground Alpha</em>}' class.
          * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-         * @see de.cau.cs.kieler.core.krendering.impl.KBackgroundVisibilityImpl
-         * @see de.cau.cs.kieler.core.krendering.impl.KRenderingPackageImpl#getKBackgroundVisibility()
+         * @see de.cau.cs.kieler.core.krendering.impl.KBackgroundAlphaImpl
+         * @see de.cau.cs.kieler.core.krendering.impl.KRenderingPackageImpl#getKBackgroundAlpha()
          * @generated
          */
-        EClass KBACKGROUND_VISIBILITY = eINSTANCE.getKBackgroundVisibility();
+        EClass KBACKGROUND_ALPHA = eINSTANCE.getKBackgroundAlpha();
 
         /**
          * The meta object literal for the '{@link de.cau.cs.kieler.core.krendering.impl.KFontBoldImpl <em>KFont Bold</em>}' class.
@@ -5191,6 +5086,40 @@ public interface KRenderingPackage extends EPackage {
          * @generated
          */
         EAttribute KROTATION__ROTATION = eINSTANCE.getKRotation_Rotation();
+
+        /**
+         * The meta object literal for the '{@link de.cau.cs.kieler.core.krendering.impl.KGradientStyleImpl <em>KGradient Style</em>}' class.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @see de.cau.cs.kieler.core.krendering.impl.KGradientStyleImpl
+         * @see de.cau.cs.kieler.core.krendering.impl.KRenderingPackageImpl#getKGradientStyle()
+         * @generated
+         */
+        EClass KGRADIENT_STYLE = eINSTANCE.getKGradientStyle();
+
+        /**
+         * The meta object literal for the '<em><b>Angle</b></em>' attribute feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EAttribute KGRADIENT_STYLE__ANGLE = eINSTANCE.getKGradientStyle_Angle();
+
+        /**
+         * The meta object literal for the '<em><b>Start Color</b></em>' reference feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EReference KGRADIENT_STYLE__START_COLOR = eINSTANCE.getKGradientStyle_StartColor();
+
+        /**
+         * The meta object literal for the '<em><b>End Color</b></em>' reference feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EReference KGRADIENT_STYLE__END_COLOR = eINSTANCE.getKGradientStyle_EndColor();
 
         /**
          * The meta object literal for the '{@link de.cau.cs.kieler.core.krendering.LineStyle <em>Line Style</em>}' enum.

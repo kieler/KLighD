@@ -19,6 +19,10 @@ package de.cau.cs.kieler.core.krendering;
  * A representation of the model object '<em><b>KBackground Color</b></em>'.
  * <!-- end-user-doc -->
  *
+ * <!-- begin-model-doc -->
+ * specifies a background color for an element
+ * <!-- end-model-doc -->
+ *
  *
  * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKBackgroundColor()
  * @model

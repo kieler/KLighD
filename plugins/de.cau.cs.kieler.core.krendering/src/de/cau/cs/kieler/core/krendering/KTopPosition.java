@@ -19,6 +19,12 @@ package de.cau.cs.kieler.core.krendering;
  * A representation of the model object '<em><b>KTop Position</b></em>'.
  * <!-- end-user-doc -->
  *
+ * <!-- begin-model-doc -->
+ * defines a position starting at the highest point H of the parent rendering. 
+ * pos = (H+absolute) + (L-H-absolute)*relative
+ * pos = (H+absolute) + heightOfParent*relative
+ * <!-- end-model-doc -->
+ *
  *
  * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKTopPosition()
  * @model

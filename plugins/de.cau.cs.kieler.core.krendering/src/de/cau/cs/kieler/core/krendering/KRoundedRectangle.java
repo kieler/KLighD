@@ -19,6 +19,13 @@ package de.cau.cs.kieler.core.krendering;
  * A representation of the model object '<em><b>KRounded Rectangle</b></em>'.
  * <!-- end-user-doc -->
  *
+ * <!-- begin-model-doc -->
+ * The rounded rectangle is used to create a rectangle with rounded corners. Corner width and height need to be passed in order to define the style of the corners.
+ * The roundedRectangle fits inside the area defined by the placementData. If children do not fit inside this area, the rectangle grows in size.
+ * Layout can make the rectangle shrink as well when children don't need the space defined.
+ * 
+ * <!-- end-model-doc -->
+ *
  * <p>
  * The following features are supported:
  * <ul>

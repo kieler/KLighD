@@ -16,45 +16,49 @@ package de.cau.cs.kieler.core.krendering;
 
 /**
  * <!-- begin-user-doc -->
- * A representation of the model object '<em><b>KVisibility</b></em>'.
+ * A representation of the model object '<em><b>KAlpha</b></em>'.
  * <!-- end-user-doc -->
+ *
+ * <!-- begin-model-doc -->
+ * Defines the alphaChannel of an Object
+ * <!-- end-model-doc -->
  *
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link de.cau.cs.kieler.core.krendering.KVisibility#isVisible <em>Visible</em>}</li>
+ *   <li>{@link de.cau.cs.kieler.core.krendering.KAlpha#getAlpha <em>Alpha</em>}</li>
  * </ul>
  * </p>
  *
- * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKVisibility()
+ * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKAlpha()
  * @model abstract="true"
  * @generated
  */
-public interface KVisibility extends KStyle {
+public interface KAlpha extends KStyle {
     /**
-     * Returns the value of the '<em><b>Visible</b></em>' attribute.
+     * Returns the value of the '<em><b>Alpha</b></em>' attribute.
      * <!-- begin-user-doc -->
      * <p>
-     * If the meaning of the '<em>Visible</em>' attribute isn't clear,
+     * If the meaning of the '<em>Alpha</em>' attribute isn't clear,
      * there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
-     * @return the value of the '<em>Visible</em>' attribute.
-     * @see #setVisible(boolean)
-     * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKVisibility_Visible()
+     * @return the value of the '<em>Alpha</em>' attribute.
+     * @see #setAlpha(float)
+     * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKAlpha_Alpha()
      * @model required="true"
      * @generated
      */
-    boolean isVisible();
+    float getAlpha();
 
     /**
-     * Sets the value of the '{@link de.cau.cs.kieler.core.krendering.KVisibility#isVisible <em>Visible</em>}' attribute.
+     * Sets the value of the '{@link de.cau.cs.kieler.core.krendering.KAlpha#getAlpha <em>Alpha</em>}' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @param value the new value of the '<em>Visible</em>' attribute.
-     * @see #isVisible()
+     * @param value the new value of the '<em>Alpha</em>' attribute.
+     * @see #getAlpha()
      * @generated
      */
-    void setVisible(boolean value);
+    void setAlpha(float value);
 
-} // KVisibility
+} // KAlpha

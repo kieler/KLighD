@@ -19,10 +19,17 @@ package de.cau.cs.kieler.core.krendering;
  * A representation of the model object '<em><b>KGrid Placement</b></em>'.
  * <!-- end-user-doc -->
  *
+ * <!-- begin-model-doc -->
+ * Creates a grid with <numColumns> inside the area defined by <topLeft> and <bottomRight>.
+ * the grids number of rows depends on the numer of child elements to be placed. Each child is set to the first free column inside the grid. If no column is left in a row, the next childElement is placed in the first column of a new row.
+ * <!-- end-model-doc -->
+ *
  * <p>
  * The following features are supported:
  * <ul>
  *   <li>{@link de.cau.cs.kieler.core.krendering.KGridPlacement#getNumColumns <em>Num Columns</em>}</li>
+ *   <li>{@link de.cau.cs.kieler.core.krendering.KGridPlacement#getTopLeft <em>Top Left</em>}</li>
+ *   <li>{@link de.cau.cs.kieler.core.krendering.KGridPlacement#getBottomRight <em>Bottom Right</em>}</li>
  * </ul>
  * </p>
  *
@@ -56,5 +63,57 @@ public interface KGridPlacement extends KPlacement {
      * @generated
      */
     void setNumColumns(int value);
+
+    /**
+     * Returns the value of the '<em><b>Top Left</b></em>' reference.
+     * <!-- begin-user-doc -->
+     * <p>
+     * If the meaning of the '<em>Top Left</em>' reference isn't clear,
+     * there really should be more of a description here...
+     * </p>
+     * <!-- end-user-doc -->
+     * @return the value of the '<em>Top Left</em>' reference.
+     * @see #setTopLeft(KPosition)
+     * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKGridPlacement_TopLeft()
+     * @model
+     * @generated
+     */
+    KPosition getTopLeft();
+
+    /**
+     * Sets the value of the '{@link de.cau.cs.kieler.core.krendering.KGridPlacement#getTopLeft <em>Top Left</em>}' reference.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @param value the new value of the '<em>Top Left</em>' reference.
+     * @see #getTopLeft()
+     * @generated
+     */
+    void setTopLeft(KPosition value);
+
+    /**
+     * Returns the value of the '<em><b>Bottom Right</b></em>' reference.
+     * <!-- begin-user-doc -->
+     * <p>
+     * If the meaning of the '<em>Bottom Right</em>' reference isn't clear,
+     * there really should be more of a description here...
+     * </p>
+     * <!-- end-user-doc -->
+     * @return the value of the '<em>Bottom Right</em>' reference.
+     * @see #setBottomRight(KPosition)
+     * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKGridPlacement_BottomRight()
+     * @model
+     * @generated
+     */
+    KPosition getBottomRight();
+
+    /**
+     * Sets the value of the '{@link de.cau.cs.kieler.core.krendering.KGridPlacement#getBottomRight <em>Bottom Right</em>}' reference.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @param value the new value of the '<em>Bottom Right</em>' reference.
+     * @see #getBottomRight()
+     * @generated
+     */
+    void setBottomRight(KPosition value);
 
 } // KGridPlacement
