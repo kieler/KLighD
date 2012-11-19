@@ -14,6 +14,8 @@
 package de.cau.cs.kieler.klighd.piccolo.krendering;
 
 import de.cau.cs.kieler.core.kgraph.KNode;
+import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout;
+import de.cau.cs.kieler.klighd.KlighdConstants;
 import de.cau.cs.kieler.klighd.piccolo.krendering.controller.RenderingContextData;
 import de.cau.cs.kieler.klighd.piccolo.nodes.PZIndexNode;
 
@@ -53,7 +55,9 @@ public class KNodeNode extends PZIndexNode implements INode, ILabeledGraphElemen
         super(Z_LAYERS);
         this.node = node;
         this.parent = parent;
-        setPickable(true);
+        Object o = node.getData(KShapeLayout.class).getProperty(
+                KlighdConstants.KLIGHD_SELECTION_UNPICKABLE);
+        setPickable(o != null && o.equals(Boolean.TRUE) ? false : true);
         RenderingContextData.get(node).setProperty(NODE_REP, this);
     }
 
