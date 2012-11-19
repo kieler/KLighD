@@ -249,23 +249,26 @@ public class DiagramLayoutManager implements IDiagramLayoutManager<KGraphElement
         KShapeLayout nodeLayout = node.getData(KShapeLayout.class);
 
         if (nodeLayout != null) {
-            KRendering rootRendering = node.getData(KRendering.class);
-
-            if (rootRendering != null) {
-                // calculate the minimal size need for the first rendering and update the node size
-                // if it exceeds its size
-                Bounds defaultSize = new Bounds(nodeLayout.getWidth(), nodeLayout.getHeight());
-                Bounds minSize = PlacementUtil.estimateSize(rootRendering, defaultSize);
-                
-                if (minSize.width > nodeLayout.getWidth()) {
-                    nodeLayout.setWidth(minSize.width);
-                }
-                if (minSize.height > nodeLayout.getHeight()) {
-                    nodeLayout.setHeight(minSize.height);
-                }
-            }
 
             transferShapeLayout(nodeLayout, layoutLayout);
+
+            // integrate the minimal estimated node size based on the updated layoutLayout
+            //  - manipulating the nodeLayout may cause immediate glitches in the diagram
+            //   (through the listeners)
+            KRendering rootRendering = node.getData(KRendering.class);
+            if (rootRendering != null) {
+                // calculate the minimal size need for the first rendering ... 
+                Bounds minSize = PlacementUtil.estimateSize(rootRendering,
+                        new Bounds(layoutLayout.getWidth(), layoutLayout.getHeight()));
+                
+                // ... and update the node size if it exceeds its size
+                if (minSize.width > layoutLayout.getWidth()) {
+                    layoutLayout.setWidth(minSize.width);
+                }
+                if (minSize.height > layoutLayout.getHeight()) {
+                    layoutLayout.setHeight(minSize.height);
+                }
+            }
         }
 
         // set insets if available
