@@ -16,9 +16,13 @@ package de.cau.cs.kieler.klighd;
 import java.util.Set;
 
 /**
- * An interface for a model-to-model transformation between two unrestricted models.
- * ITransformation are intended to be stateless (wrt. data kept in mind for the next run).
- * Hence, all semantic knowledge must be deposited in the provided {@link TransformationContext}.
+ * An interface for a model-to-model transformation between two unrestricted models. ITransformation
+ * are intended to be stateless (wrt. data kept in mind for the next run). Hence, all semantic
+ * knowledge must be deposited in the provided {@link TransformationContext}.
+ * 
+ * For implementing custom view synthesis transformation we suggest to take
+ * {@link de.cau.cs.kieler.klighd.transformations.AbstractTransformation AbstractTransformation} as
+ * super class.
  * 
  * @author mri, chsch
  * 

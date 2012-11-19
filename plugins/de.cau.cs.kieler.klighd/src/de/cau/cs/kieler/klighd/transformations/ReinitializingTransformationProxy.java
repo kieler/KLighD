@@ -15,7 +15,13 @@ package de.cau.cs.kieler.klighd.transformations;
 
 import java.util.Set;
 
+import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
+
+import com.google.inject.Binder;
 import com.google.inject.Guice;
+import com.google.inject.Module;
+import com.google.inject.TypeLiteral;
 
 import de.cau.cs.kieler.klighd.ITransformation;
 import de.cau.cs.kieler.klighd.TransformationContext;
@@ -29,7 +35,7 @@ import de.cau.cs.kieler.klighd.TransformationOption;
  * initialization by means of Guice.<br>
  * <br>
  * 
- * Transformation that shall be preceded with an instance of this class must be registered by
+ * Transformations that shall be wrapped with an instance of this class must be registered by
  * prefixing their class name with the string <code>
  * "de.cau.cs.kieler.klighd/de.cau.cs.kieler.klighd.transformations.GuiceBasedTransformationFactory:"
  * </code>.
@@ -47,6 +53,7 @@ public class ReinitializingTransformationProxy<S, T> extends AbstractTransformat
 
     private Class<AbstractTransformation<S, T>> transformationClass = null;
     private ITransformation<S, T> transformationDelegate = null;
+    private Module transformationClassBinding = null;
     
 
     /**
@@ -55,13 +62,29 @@ public class ReinitializingTransformationProxy<S, T> extends AbstractTransformat
      */
     ReinitializingTransformationProxy(final Class<AbstractTransformation<S, T>> clazz) {
         this.transformationClass = clazz;
+        
+        // The following module definition allows to create cyclic references between the
+        //  instances of the major transformation ('clazz') and helper classes with outsourced
+        //  parts, e.g. the visualization of domain-specific expressions, that will be injected
+        //  into instances of 'clazz'.
+        // If the outsourced transformation has an injected field of type AbstractTransformation<?, ?>
+        //  and 'clazz' is annotated with @Singleton the helper classes can access the current
+        //  instance of 'clazz', the transformation context and thus, e.g., the source image lookup
+        //  library.
+        // In addition, a standard binding of ResourceSet is provided for special use requiring one.
+        this.transformationClassBinding = new Module() {
+            public void configure(final Binder binder) {
+                binder.bind(ResourceSet.class).to(ResourceSetImpl.class);
+                binder.bind(new TypeLiteral<AbstractTransformation<?, ?>>() { }).to(clazz);
+            }
+        };
     }
     
     
     private AbstractTransformation<S, T> getNewDelegateInstance() {
-        return Guice.createInjector().getInstance(this.transformationClass);
+        return Guice.createInjector(this.transformationClassBinding).getInstance(
+                this.transformationClass);
     }
-    
     
     /**
      * {@inheritDoc}<br>
