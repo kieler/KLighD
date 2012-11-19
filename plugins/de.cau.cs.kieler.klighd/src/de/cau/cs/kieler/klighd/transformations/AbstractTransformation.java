@@ -40,9 +40,9 @@ import de.cau.cs.kieler.klighd.TransformationOption;
  * be achieved by simply declaring an injected field ore extension and calling the related
  * {@link #transform(Object, TransformationContext)} method. If multiple instance of such a delegate
  * transformation are needed (e.g. due to the use of create extensions) a field of type
- * {@link javax.inject.Provider Provider&lt;yourTransformationClass&gt;} can be declared. Each time
- * calling {@link javax.inject.Provider#get() get()} on this provider a new instance will be
- * obtained as long as the provided class is <b>not</b> declared as singleton (via &#64;Singleton).
+ * {@link com.google.inject.Provider Provider&lt;yourTransformationClass&gt;} can be declared. Each
+ * time calling {@link com.google.inject.Provider#get() get()} on this provider a new instance will
+ * be obtained as long as the provided class is <b>not</b> declared as singleton (via &#64;Singleton).
  * 
  * @author mri
  * 
