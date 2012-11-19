@@ -29,10 +29,12 @@ import de.cau.cs.kieler.core.properties.IProperty
 import java.util.ArrayList
 import de.cau.cs.kieler.core.krendering.KText
 import de.cau.cs.kieler.core.krendering.KRendering
+import javax.inject.Singleton
 
 /**
  * @author chsch
  */
+@Singleton
 class KPortExtensions {
 
     /**
@@ -241,7 +243,7 @@ class KPortExtensions {
             node.ports += it;
             it.setPortSize(portEdgeLength, portEdgeLength)
             it.addLayoutParam(LayoutOptions::PORT_SIDE, PortSide::NORTH);
-            it.addLayoutParam(LayoutOptions::OFFSET, 0f);
+            it.addLayoutParam(LayoutOptions::OFFSET, -portEdgeLength);
             it.setPortPos(node.nextNPortYPosition, 1);
             it.data += createEPortRendering(label).setRotation(-90f)
         ];
