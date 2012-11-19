@@ -489,6 +489,7 @@ public class ContextViewer extends AbstractViewer<Object> implements IViewerEven
      * An implementation of {@code IStructuredSelection} for the {@code ISelectionProvider}.
      */
     private class Selection implements IStructuredSelection, Iterable<Object>, Cloneable {
+        // TODO chsch: IMO implementing ITreeSelection is reasonable and helpful 
 
         /** the objects which make up the selection. */
         private List<Object> selectedElements = new LinkedList<Object>();
