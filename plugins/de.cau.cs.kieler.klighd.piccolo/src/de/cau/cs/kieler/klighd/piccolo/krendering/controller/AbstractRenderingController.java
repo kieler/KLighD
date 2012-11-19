@@ -254,6 +254,9 @@ public abstract class AbstractRenderingController<S extends KGraphElement, T ext
                 case Notification.ADD_MANY:
                 case Notification.REMOVE:
                 case Notification.REMOVE_MANY:
+
+                    // Attention: Don't add 'newValue == null' as this will forbid to remove styles!!
+                    
                     // handle style changes
                     if (msg.getNotifier() instanceof KStyle) {
                         // exclude opposite relation
@@ -262,12 +265,8 @@ public abstract class AbstractRenderingController<S extends KGraphElement, T ext
                         }
                         // PlatformUI.getWorkbench().getDisplay().syncExec(new Runnable() {
                         // public void run() {
-                        // update the styles
-                        if (msg.getNewValue() != null) {
-                            // this test is supposed to reduce the huge amount of refreshs
-                            // introduced by the element-wise modifications performed by EMF Compare
+                            // update the styles
                             updateStyles();
-                        }
                         // });
                         return;
                     }
@@ -276,29 +275,21 @@ public abstract class AbstractRenderingController<S extends KGraphElement, T ext
                     if (msg.getNotifier() instanceof KRendering
                             && msg.getFeatureID(KRendering.class)
                                 == KRenderingPackage.KRENDERING__STYLES) {
-//                        PlatformUI.getWorkbench().getDisplay().syncExec(new Runnable() {
-//                            public void run() {
+                        // PlatformUI.getWorkbench().getDisplay().syncExec(new Runnable() {
+                            // public void run() {
                                 // update the styles
-                        if (msg.getNewValue() != null) {
-                            // this test is supposed to reduce the huge amount of refreshs
-                            // introduced by the element-wise modifications performed by EMF Compare
-                            updateStyles();
-                            }
-//                        });
+                                updateStyles();
+                        // });
                         return;
                     }
 
                     // handle other changes by reevaluating the rendering
-//                    PlatformUI.getWorkbench().getDisplay().syncExec(new Runnable() {
-//                        public void run() {
+                    // PlatformUI.getWorkbench().getDisplay().syncExec(new Runnable() {
+                        // public void run() {
                             // update the rendering
-                    if (msg.getNewValue() != null) {
-                        // this test is supposed to reduce the huge amount of refreshs
-                        //  introduced by the element-wise modifications performed by EMF Compare 
-                        updateRendering();
-                    }
-//                        }
-//                    });
+                            updateRendering();
+                        // }
+                    // });
                     break;
                 default:
                     break;
@@ -1591,6 +1582,9 @@ public abstract class AbstractRenderingController<S extends KGraphElement, T ext
         if (styles.backgroundVisibility != null) {
             KBackgroundVisibility backgroundVisibility = styles.backgroundVisibility;
             controller.setFilled(backgroundVisibility.isVisible());
+        } else if (controller instanceof PSWTTextController) {
+            // chsch: supplement due to KIELER-2155: the standard case for texts is transparent
+            controller.setFilled(false);
         }
 
         // apply line style
@@ -1613,6 +1607,8 @@ public abstract class AbstractRenderingController<S extends KGraphElement, T ext
                 controller.setLineStyle(LineStyle.SOLID);
                 break;
             }
+        } else {
+            controller.setLineStyle(LineStyle.SOLID);
         }
         
         
