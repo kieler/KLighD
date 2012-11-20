@@ -25,12 +25,11 @@ import de.cau.cs.kieler.kiml.options.EdgeLabelPlacement
 import de.cau.cs.kieler.kiml.util.KimlUtil
 import de.cau.cs.kieler.core.krendering.KRendering
 import de.cau.cs.kieler.core.krendering.KText
-import javax.inject.Singleton
 
 /**
  * @author chsch
  */
-@Singleton
+@ViewSynthesisShared
 class KLabelExtensions {
     
     static KRenderingFactory renderingFactory = KRenderingFactory::eINSTANCE

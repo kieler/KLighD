@@ -21,12 +21,11 @@ import de.cau.cs.kieler.kiml.klayoutdata.KEdgeLayout
 import de.cau.cs.kieler.core.properties.IProperty
 import de.cau.cs.kieler.kiml.util.KimlUtil
 import java.util.ArrayList
-import javax.inject.Singleton
 
 /**
  * @author chsch, alb
  */
-@Singleton
+@ViewSynthesisShared
 class KEdgeExtensions {
 
 	private static val KRenderingFactory renderingFactory = KRenderingFactory::eINSTANCE

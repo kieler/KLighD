@@ -29,12 +29,11 @@ import de.cau.cs.kieler.core.properties.IProperty
 import java.util.ArrayList
 import de.cau.cs.kieler.core.krendering.KText
 import de.cau.cs.kieler.core.krendering.KRendering
-import javax.inject.Singleton
 
 /**
  * @author chsch
  */
-@Singleton
+@ViewSynthesisShared
 class KPortExtensions {
 
     /**

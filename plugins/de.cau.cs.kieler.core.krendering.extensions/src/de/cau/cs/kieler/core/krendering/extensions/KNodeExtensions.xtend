@@ -29,12 +29,11 @@ import de.cau.cs.kieler.kiml.LayoutOptionData$Type
 import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout
 import de.cau.cs.kieler.kiml.util.KimlUtil
 import java.util.ArrayList
-import javax.inject.Singleton
 
 /**
  * @author chsch
  */
-@Singleton
+@ViewSynthesisShared
 class KNodeExtensions {
 	
     private static val AnnotationsPackage annotationsPackage = AnnotationsPackage::eINSTANCE;
