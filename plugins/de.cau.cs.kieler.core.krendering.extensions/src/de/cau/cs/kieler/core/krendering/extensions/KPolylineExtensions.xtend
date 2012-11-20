@@ -3,7 +3,6 @@ package de.cau.cs.kieler.core.krendering.extensions
 import javax.inject.Inject
 
 import de.cau.cs.kieler.core.krendering.KPolyline
-import de.cau.cs.kieler.core.krendering.KPolylinePlacementData
 import de.cau.cs.kieler.core.krendering.KRenderingFactory
 import de.cau.cs.kieler.core.krendering.KXPosition
 import de.cau.cs.kieler.core.krendering.KYPosition
@@ -28,37 +27,34 @@ class KPolylineExtensions {
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	
 	def KRendering addArrowDecorator(KPolyline pl) {
-		return pl.drawArrow() => [
-		    (it.placementData as KPolylinePlacementData).detailPlacementData = 
-		        renderingFactory.createKDecoratorPlacementData => [
-		            it.setRelative(true);
-                    it.setLocation(1)
-                    it.setXOffset(-8)
-                    it.setYOffset(-3)
-                    it.setWidth(7)
-                    it.setHeight(5)
-		        ];
-		];
+		return pl.drawTriangle() => [
+		    it.placementData = renderingFactory.createKDecoratorPlacementData => [
+                it.setRotateWithLine(true);
+                it.setAbsolute(1)
+                it.setXOffset(-8)
+                it.setYOffset(-3)
+                it.setWidth(7)
+                it.setHeight(5)
+            ];
+        ];
 	}
 	
 	def KRendering addInheritanceTriangleArrowDecorator(KPolyline pl) {
         return pl.drawTriangle() => [
-            (it.placementData as KPolylinePlacementData).detailPlacementData = 
-                renderingFactory.createKDecoratorPlacementData => [
-             	    val int scale = pl.lineWidth.lineWidth;
-                    val float modifiedScale = Math::sqrt(3*scale).floatValue;
-                    
-                    it.setRelative(true);
-                    it.setLocation(1)
-                    it.setHeight(15 * modifiedScale);
-                    it.setWidth(15 * modifiedScale);
-                    it.setXOffset(-15 * modifiedScale)
-                    it.setYOffset(-(it.height + scale/2) / 2)
-                ];
+            it.placementData = renderingFactory.createKDecoratorPlacementData => [
+         	    val int scale = pl.lineWidth.lineWidth;
+                val float modifiedScale = Math::sqrt(3*scale).floatValue;
+                it.setRotateWithLine(true);
+                it.setAbsolute(1)
+                it.setHeight(15 * modifiedScale);
+                it.setWidth(15 * modifiedScale);
+                it.setXOffset(-15 * modifiedScale)
+                it.setYOffset(-(it.height + scale/2) / 2)
+            ];
         ];
     }
 	
-	def KPosition addKPosition(KPolylinePlacementData ppd, KXPosition xPos, KYPosition yPos) {
+	def KPosition addKPosition(KPolyline ppd, KXPosition xPos, KYPosition yPos) {
 		renderingFactory.createKPosition => [
 	        it.setX(xPos);
 		    it.setY(yPos);

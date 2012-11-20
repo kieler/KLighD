@@ -22,6 +22,7 @@ import de.cau.cs.kieler.core.krendering.KRectangle
 import de.cau.cs.kieler.core.krendering.KRenderingFactory
 import de.cau.cs.kieler.core.krendering.KPolygon
 import de.cau.cs.kieler.core.krendering.KGridPlacement
+import de.cau.cs.kieler.core.krendering.KPosition
 
 /**
  * @author chsch, alb
@@ -45,12 +46,13 @@ class KContainerRenderingExtensions {
 	}
 	
 	
-	def KRectangle addGridBox(KContainerRendering cr, float widthHint, float heightHint, float insetRight, float insetBottom, float insetLeft, float insetTop){
+	def KRectangle addGridBox(KContainerRendering cr, float widthHint, float heightHint, 
+	    KPosition topLeft, KPosition bottomRight){
 		return renderingFactory.createKRectangle => [
 		    cr.children.add(it);
-            it.setBackgroundVisibility(false);
-            it.setForegroundVisibility(false);
-            it.setGridPlacementData(widthHint, heightHint, insetRight, insetBottom, insetLeft, insetTop);
+            it.setBackgroundAlpha(0.0f);
+            it.setForegroundAlpha(0.0f);
+            it.setGridPlacementData(widthHint, heightHint, topLeft, bottomRight);
 		];
 	}
 	
@@ -58,24 +60,26 @@ class KContainerRenderingExtensions {
 		return renderingFactory.createKPolyline => [
 		   cr.addChild(it);
 		   it.setLineWidth(1);
-		   it.placementData = renderingFactory.createKPolylinePlacementData => [
-		       it.points.add(createKPosition(PositionReferenceX::LEFT, 0, 0, PositionReferenceY::BOTTOM, 0, 0))
-		       it.points.add(createKPosition(PositionReferenceX::RIGHT, 0, 0, PositionReferenceY::BOTTOM, 0, 0))
-		   ];
-		];
+		   it.points.add(createKPosition(PositionReferenceX::LEFT, 0, 0, PositionReferenceY::BOTTOM, 0, 0));
+		   it.points.add(createKPosition(PositionReferenceX::RIGHT, 0, 0, PositionReferenceY::BOTTOM, 0, 0))
+        ];
 	}
 	
 	def KPolyline addHorizontalSeperatorLine(KContainerRendering cr, int lineWidth, int spacing){
         return renderingFactory.createKPolyline => [
             cr.addChild(it);
             it.setLineWidth(lineWidth);
-            it.placementData = renderingFactory.createKPolylinePlacementData => [
-                it.points.add(createKPosition(PositionReferenceX::LEFT, 0, 0, PositionReferenceY::TOP, 0, 0.5f))
-                it.points.add(createKPosition(PositionReferenceX::RIGHT, 0, 0, PositionReferenceY::TOP, 0, 0.5f))
-                it.detailPlacementData = renderingFactory.createKGridPlacementData => [
-                    it.setHeightHint(lineWidth + spacing)
-                ]; 
-            ];
+            it.points.add(createKPosition(PositionReferenceX::LEFT, 0, 0, PositionReferenceY::TOP, 0, 0.5f))
+            it.points.add(createKPosition(PositionReferenceX::RIGHT, 0, 0, PositionReferenceY::TOP, 0, 0.5f))
+            it.placementData = renderingFactory.createKGridPlacementData => [
+                it.setHeightHint(lineWidth + spacing)
+            ]; 
+//          TODO: check spacing  
+//            it.placementData = renderingFactory.createKPolylinePlacementData => [
+//                it.detailPlacementData = renderingFactory.createKGridPlacementData => [
+//                    it.setHeightHint(lineWidth + spacing)
+//                ]; 
+//            ];
         ];
         
     }
@@ -91,25 +95,20 @@ class KContainerRenderingExtensions {
         return renderingFactory.createKPolygon => [
             cr.addChild(it).withCopyOf(cr.lineWidth).withCopyOf(cr.FGColor);
             it.setBackgroundColor(cr.FGColor);
-            it.placementData = 
-                renderingFactory.createKPolylinePlacementData => [
-                    it.points.add(createKPosition(PositionReferenceX::LEFT, 0, 0, PositionReferenceY::TOP, 0, 0))
-                    it.points.add(createKPosition(PositionReferenceX::LEFT, 0, 0.4f, PositionReferenceY::TOP, 0, 0.5f))
-                    it.points.add(createKPosition(PositionReferenceX::LEFT, 0, 0, PositionReferenceY::BOTTOM, 0, 0))
-                    it.points.add(createKPosition(PositionReferenceX::RIGHT, 0, 0, PositionReferenceY::BOTTOM, 0, 0.5f))	
-	            ];
-        ];
-	}
+            it.points.add(createKPosition(PositionReferenceX::LEFT, 0, 0, PositionReferenceY::TOP, 0, 0))
+            it.points.add(createKPosition(PositionReferenceX::LEFT, 0, 0.4f, PositionReferenceY::TOP, 0, 0.5f))
+            it.points.add(createKPosition(PositionReferenceX::LEFT, 0, 0, PositionReferenceY::BOTTOM, 0, 0))
+            it.points.add(createKPosition(PositionReferenceX::RIGHT, 0, 0, PositionReferenceY::BOTTOM, 0, 0.5f))	
+       ];    
+    }
 	
 	def KPolygon drawTriangle(KContainerRendering cr){
         return renderingFactory.createKPolygon => [
-            cr.addChild(it).withCopyOf(cr.lineWidth).withCopyOf(cr.FGColor).placementData = 
-                renderingFactory.createKPolylinePlacementData => [
-                    it.points.add(createKPosition(PositionReferenceX::LEFT, 0, 0, PositionReferenceY::TOP, 0, 0))
-                    // ppd.points.add(createKPosition(PositionReferenceX::LEFT, 0, "0.5".f, PositionReferenceY::TOP, 0, 0.5f))
-                    it.points.add(createKPosition(PositionReferenceX::LEFT, 0, 0, PositionReferenceY::BOTTOM, 0, 0))
-                    it.points.add(createKPosition(PositionReferenceX::RIGHT, 0, 0, PositionReferenceY::BOTTOM, 0, 0.5f))
-                ];
+            cr.addChild(it).withCopyOf(cr.lineWidth).withCopyOf(cr.FGColor);
+            it.points.add(createKPosition(PositionReferenceX::LEFT, 0, 0, PositionReferenceY::TOP, 0, 0))
+            // ppd.points.add(createKPosition(PositionReferenceX::LEFT, 0, "0.5".f, PositionReferenceY::TOP, 0, 0.5f))
+            it.points.add(createKPosition(PositionReferenceX::LEFT, 0, 0, PositionReferenceY::BOTTOM, 0, 0))
+            it.points.add(createKPosition(PositionReferenceX::RIGHT, 0, 0, PositionReferenceY::BOTTOM, 0, 0.5f))
         ];
     }
 

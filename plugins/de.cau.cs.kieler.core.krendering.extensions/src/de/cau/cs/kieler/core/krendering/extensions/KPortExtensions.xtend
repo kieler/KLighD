@@ -272,9 +272,9 @@ class KPortExtensions {
     
     def private KRendering createWPortRendering(String label) {
         return renderingFactory.createKRectangle => [
-                it.setForegroundVisibility(true);
+                it.setForegroundAlpha(255.0f);
                 it.setForegroundColor(0,0,0)
-                it.setBackgroundVisibility(true)
+                it.setBackgroundAlpha(255.0f)
                 it.setBackgroundColor(0,0,0)
                 it.children += renderingFactory.createKText.withCopyOf(portLabelFontSize()) => [
                     it.text = label;
@@ -325,9 +325,9 @@ class KPortExtensions {
     
     def private KRendering createEPortRendering(String label) {
         return renderingFactory.createKRectangle => [
-                it.setForegroundVisibility(true);
+                it.setForegroundAlpha(255.0f);
                 it.setForegroundColor(0,0,0)
-                it.setBackgroundVisibility(true)
+                it.setBackgroundAlpha(255.0f)
                 it.setBackgroundColor(0,0,0)
                 it.children += renderingFactory.createKText.withCopyOf(portLabelFontSize()) => [
                     it.text = label;

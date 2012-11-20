@@ -3,12 +3,12 @@ package de.cau.cs.kieler.core.krendering.extensions
 import de.cau.cs.kieler.core.kgraph.KNode
 import de.cau.cs.kieler.core.krendering.HorizontalAlignment
 import de.cau.cs.kieler.core.krendering.KBackgroundColor
-import de.cau.cs.kieler.core.krendering.KBackgroundVisibility
+import de.cau.cs.kieler.core.krendering.KBackgroundAlpha
 import de.cau.cs.kieler.core.krendering.KFontBold
 import de.cau.cs.kieler.core.krendering.KFontItalic
 import de.cau.cs.kieler.core.krendering.KFontSize
 import de.cau.cs.kieler.core.krendering.KForegroundColor
-import de.cau.cs.kieler.core.krendering.KForegroundVisibility
+import de.cau.cs.kieler.core.krendering.KForegroundAlpha
 import de.cau.cs.kieler.core.krendering.KHorizontalAlignment
 import de.cau.cs.kieler.core.krendering.KLineWidth
 import de.cau.cs.kieler.core.krendering.KPosition
@@ -194,31 +194,21 @@ class KRenderingExtensions {
         ];      
 	}
 	
-    def <T extends KRendering> boolean getBackgroundVisibility(T rendering) {
-        // chsch: I'm currently not sure whether the first or the last will win...
-        return rendering.styles.filter(typeof(KBackgroundVisibility)).last?.visible?:true;
-    }
-    
-	def <T extends KRendering> T setBackgroundVisibility(T rendering, boolean visible) {
-		rendering.styles.removeAll(rendering.styles.filter(typeof(KBackgroundVisibility)).toList);
+	def <T extends KRendering> T setBackgroundAlpha(T rendering, float alphaValue) {
+		rendering.styles.removeAll(rendering.styles.filter(typeof(KBackgroundAlpha)).toList);
 		return rendering => [
-            it.styles += renderingFactory.createKBackgroundVisibility => [
-		        it.setVisible(visible);
+            it.styles += renderingFactory.createKBackgroundAlpha => [
+		        it.setAlpha(alphaValue);
 		    ];
 		];
 	}
 		
 	
-    def <T extends KRendering> boolean getForegroundVisibility(T rendering) {
-        // chsch: I'm currently not sure whether the first or the last will win...
-        return rendering.styles.filter(typeof(KForegroundVisibility)).last?.visible?:true;
-    }
-    
-    def <T extends KRendering> T setForegroundVisibility(T rendering, boolean visible) {
-        rendering.styles.removeAll(rendering.styles.filter(typeof(KForegroundVisibility)).toList);
+	def <T extends KRendering> T setForegroundAlpha(T rendering, float alphaValue) {
+        rendering.styles.removeAll(rendering.styles.filter(typeof(KForegroundAlpha)).toList);
         return rendering => [
-            it.styles += renderingFactory.createKForegroundVisibility => [
-                it.setVisible(visible);
+            it.styles += renderingFactory.createKForegroundAlpha => [
+                it.setAlpha(alphaValue);
             ];
         ];
     }
@@ -314,30 +304,15 @@ class KRenderingExtensions {
 	}
 	
 	
-	def <T extends KRendering> T setStackPlacementData(T rendering, float insetRight,
-            float insetBottom, float insetLeft, float insetTop) {
-		return rendering => [
-		    rendering.placementData = renderingFactory.createKStackPlacementData => [
-                it.insetRight = insetRight;
-                it.insetBottom = insetBottom;
-                it.insetLeft = insetLeft;
-                it.insetTop = insetTop;
-                rendering.setPlacementData(it);            
-           ]; 
-		];		
-	}
-	
 	def <T extends KRendering> T setGridPlacementData(T rendering, float widthHint,
-	        float heightHint, float insetLeft, float insetRight, float insetTop, float insetBottom) {
+	        float heightHint, KPosition topLeft, KPosition bottomRight) {
 		return rendering => [
 		    rendering.placementData = renderingFactory.createKGridPlacementData => [
                 it.setWidthHint(widthHint);
                 it.setHeightHint(heightHint);
-                it.setInsetRight(insetRight);
-                it.setInsetLeft(insetLeft);
-                it.setInsetTop(insetTop);
-                it.setInsetBottom(insetBottom);
-    		];
+                it.setTopLeft(topLeft);
+                it.setBottomRight(bottomRight);
+            ];
 		];
 	}
 	
