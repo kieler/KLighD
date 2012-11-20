@@ -66,8 +66,8 @@ public abstract class PSWTAdvancedPathController extends PNodeController<PSWTAdv
      * {@inheritDoc}
      */
     @Override
-    public void setLineVisible(final boolean lineVisible) {
-        if (!lineVisible) {
+    public void setLineAlpha(final float lineAlpha) {
+        if (lineAlpha == 0.0f) {
             getNode().setStrokeColor(null);
         }
     }
@@ -76,8 +76,8 @@ public abstract class PSWTAdvancedPathController extends PNodeController<PSWTAdv
      * {@inheritDoc}
      */
     @Override
-    public void setFilled(final boolean filled) {
-        if (!filled) {
+    public void setAlpha(final float backgroundAlpha) {
+        if (backgroundAlpha == 0.0f) {
             getNode().setPaint(null);
         }
     }

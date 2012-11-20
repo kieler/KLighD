@@ -43,7 +43,7 @@ import de.cau.cs.kieler.core.kgraph.KGraphElement;
 import de.cau.cs.kieler.core.kgraph.KGraphPackage;
 import de.cau.cs.kieler.core.krendering.KArc;
 import de.cau.cs.kieler.core.krendering.KBackgroundColor;
-import de.cau.cs.kieler.core.krendering.KBackgroundVisibility;
+import de.cau.cs.kieler.core.krendering.KBackgroundAlpha;
 import de.cau.cs.kieler.core.krendering.KChildArea;
 import de.cau.cs.kieler.core.krendering.KColor;
 import de.cau.cs.kieler.core.krendering.KContainerRendering;
@@ -54,7 +54,7 @@ import de.cau.cs.kieler.core.krendering.KFontItalic;
 import de.cau.cs.kieler.core.krendering.KFontName;
 import de.cau.cs.kieler.core.krendering.KFontSize;
 import de.cau.cs.kieler.core.krendering.KForegroundColor;
-import de.cau.cs.kieler.core.krendering.KForegroundVisibility;
+import de.cau.cs.kieler.core.krendering.KForegroundAlpha;
 import de.cau.cs.kieler.core.krendering.KGridPlacement;
 import de.cau.cs.kieler.core.krendering.KGridPlacementData;
 import de.cau.cs.kieler.core.krendering.KHorizontalAlignment;
@@ -72,7 +72,6 @@ import de.cau.cs.kieler.core.krendering.KRotation;
 import de.cau.cs.kieler.core.krendering.KRoundedBendsPolyline;
 import de.cau.cs.kieler.core.krendering.KRoundedRectangle;
 import de.cau.cs.kieler.core.krendering.KSpline;
-import de.cau.cs.kieler.core.krendering.KStackPlacement;
 import de.cau.cs.kieler.core.krendering.KStyle;
 import de.cau.cs.kieler.core.krendering.KText;
 import de.cau.cs.kieler.core.krendering.KVerticalAlignment;
@@ -119,8 +118,8 @@ import edu.umd.cs.piccolox.swt.PSWTText;
 public abstract class AbstractRenderingController<S extends KGraphElement, T extends PNode> {
 
     /** the property for a rendering node's controller. */
-    private static final IProperty<Map<Object, PNodeController<?>>> CONTROLLER =
-            new Property<Map<Object, PNodeController<?>>>("de.cau.cs.kieler.klighd.piccolo.controller");
+    private static final IProperty<Map<Object, PNodeController<?>>> CONTROLLER = new Property<Map<Object, PNodeController<?>>>(
+            "de.cau.cs.kieler.klighd.piccolo.controller");
     /** the property for a rendering reference key. */
     private static final IProperty<Map<Object, Object>> KEY = new Property<Map<Object, Object>>(
             "de.cau.cs.kieler.klighd.piccolo.key");
@@ -377,12 +376,12 @@ public abstract class AbstractRenderingController<S extends KGraphElement, T ext
 
     private void updateStyles(final KRendering rendering, final Styles styles,
             final List<KStyle> propagatedStyles, final Object key) {
-        
+
         PNodeController<?> controller = getMappedProperty(rendering, CONTROLLER, key);
         if (controller == null) {
             return;
         }
-        
+
         List<KStyle> renderingStyles = rendering.getStyles();
 
         // determine the styles for this rendering
@@ -445,14 +444,6 @@ public abstract class AbstractRenderingController<S extends KGraphElement, T ext
                 // Grid Placement
                 public Boolean caseKGridPlacement(final KGridPlacement object) {
                     handleGridPlacementRendering(object, children, styles, parent, key);
-                    return true;
-                }
-
-                // Stack Placement
-                public Boolean caseKStackPlacement(final KStackPlacement object) {
-                    for (final KRendering rendering : children) {
-                        handleStackPlacementRendering(rendering, styles, parent, key);
-                    }
                     return true;
                 }
             } /**/.doSwitch(placement);
@@ -553,46 +544,6 @@ public abstract class AbstractRenderingController<S extends KGraphElement, T ext
                         }
                     }
                 });
-    }
-
-    /**
-     * Creates the Piccolo node for a rendering inside a parent Piccolo node using stack placement.
-     * 
-     * @param rendering
-     *            the rendering
-     * @param styles
-     *            the styles propagated to the children
-     * @param parent
-     *            the parent Piccolo node
-     * @param key
-     *            the key used to identify the current reference hierarchy
-     * @return the Piccolo node representing the rendering
-     */
-    protected PNode handleStackPlacementRendering(final KRendering rendering,
-            final List<KStyle> styles, final PNode parent, final Object key) {
-        // determine the initial bounds
-        final PBounds bounds = PlacementUtil.evaluateStackPlacement(
-                PlacementUtil.asStackPlacementData(rendering.getPlacementData()),
-                parent.getBoundsReference());
-
-        // create the rendering and receive its controller
-        final PNodeController<?> controller = createRendering(rendering, styles, parent, bounds,
-                key);
-
-        // add a listener on the parent's bounds
-        addListener(PNode.PROPERTY_BOUNDS, parent, controller.getNode(),
-                new PropertyChangeListener() {
-                    public void propertyChange(final PropertyChangeEvent e) {
-                        // calculate the new bounds of the rendering
-                        PBounds bounds = PlacementUtil.evaluateStackPlacement(
-                                PlacementUtil.asStackPlacementData(rendering.getPlacementData()),
-                                parent.getBoundsReference());
-                        // use the controller to apply the new bounds
-                        controller.setBounds(bounds);
-                    }
-                });
-
-        return controller.getNode();
     }
 
     /**
@@ -747,8 +698,7 @@ public abstract class AbstractRenderingController<S extends KGraphElement, T ext
 
             // Spline
             public PNodeController<?> caseKSpline(final KSpline spline) {
-                return createLine(spline, styles, childPropagatedStyles, parent, initialBounds,
-                        key);
+                return createLine(spline, styles, childPropagatedStyles, parent, initialBounds, key);
             }
 
             // Polyline
@@ -998,9 +948,9 @@ public abstract class AbstractRenderingController<S extends KGraphElement, T ext
         // create the text
         PSWTTracingText textNode = new PSWTTracingText(text);
         textNode.setGreekColor(null);
-        textNode.setTransparent(true);  // supplement due to KIELER-2155
+        textNode.setTransparent(true); // supplement due to KIELER-2155
         initializeRenderingNode(textNode);
-        
+
         // supplement (chsch)
         textNode.setPickable(true);
 
@@ -1058,8 +1008,7 @@ public abstract class AbstractRenderingController<S extends KGraphElement, T ext
             final Styles styles, final List<KStyle> propagatedStyles, final PNode parent,
             final PBounds initialBounds, final Object key) {
 
-        Point2D[] points = PlacementUtil.evaluatePolylinePlacement(
-                PlacementUtil.asPolylinePlacementData(line.getPlacementData()), initialBounds);
+        Point2D[] points = PlacementUtil.evaluatePolylinePlacement(line, initialBounds);
 
         final PSWTAdvancedPath path;
         if (line instanceof KSpline) {
@@ -1111,8 +1060,7 @@ public abstract class AbstractRenderingController<S extends KGraphElement, T ext
             public void setBounds(final PBounds bounds) {
                 // apply the bounds
 
-                Point2D[] points = PlacementUtil.evaluatePolylinePlacement(
-                        PlacementUtil.asPolylinePlacementData(line.getPlacementData()), bounds);
+                Point2D[] points = PlacementUtil.evaluatePolylinePlacement(line, bounds);
 
                 if (line instanceof KSpline) {
                     // update spline
@@ -1153,9 +1101,7 @@ public abstract class AbstractRenderingController<S extends KGraphElement, T ext
             final PBounds initialBounds, final Object key) {
         // create the polygon
         final PSWTAdvancedPath path = PSWTAdvancedPath.createPolygon(PlacementUtil
-                .evaluatePolylinePlacement(
-                        PlacementUtil.asPolylinePlacementData(polygon.getPlacementData()),
-                        initialBounds));
+                .evaluatePolylinePlacement(polygon, initialBounds));
         initializeRenderingNode(path);
         path.translate(initialBounds.x, initialBounds.y);
         parent.addChild(path);
@@ -1193,9 +1139,7 @@ public abstract class AbstractRenderingController<S extends KGraphElement, T ext
             public void setBounds(final PBounds bounds) {
                 // apply the bounds
                 getNode().setPathToPolygon(
-                        (PlacementUtil.evaluatePolylinePlacement(
-                                PlacementUtil.asPolylinePlacementData(polygon.getPlacementData()),
-                                bounds)));
+                        (PlacementUtil.evaluatePolylinePlacement(polygon, bounds)));
                 NodeUtil.applyTranslation(getNode(), (float) bounds.x, (float) bounds.y);
             }
         };
@@ -1468,8 +1412,8 @@ public abstract class AbstractRenderingController<S extends KGraphElement, T ext
             final PropertyChangeListener listener) {
         parent.addPropertyChangeListener(property, listener);
         @SuppressWarnings("unchecked")
-        List<Pair<String, PropertyChangeListener>> listeners =
-                (List<Pair<String, PropertyChangeListener>>) node.getAttribute(PROPERTY_LISTENER_KEY);
+        List<Pair<String, PropertyChangeListener>> listeners = (List<Pair<String, PropertyChangeListener>>) node
+                .getAttribute(PROPERTY_LISTENER_KEY);
         if (listeners == null) {
             listeners = Lists.newLinkedList();
             node.addAttribute(PROPERTY_LISTENER_KEY, listeners);
@@ -1485,8 +1429,8 @@ public abstract class AbstractRenderingController<S extends KGraphElement, T ext
      */
     protected void removeListeners(final PNode node) {
         @SuppressWarnings("unchecked")
-        List<Pair<String, PropertyChangeListener>> listeners =
-                (List<Pair<String, PropertyChangeListener>>) node.getAttribute(PROPERTY_LISTENER_KEY);
+        List<Pair<String, PropertyChangeListener>> listeners = (List<Pair<String, PropertyChangeListener>>) node
+                .getAttribute(PROPERTY_LISTENER_KEY);
         if (listeners != null && node.getParent() != null) {
             for (Pair<String, PropertyChangeListener> pair : listeners) {
                 node.getParent().removePropertyChangeListener(pair.getFirst(), pair.getSecond());
@@ -1577,19 +1521,19 @@ public abstract class AbstractRenderingController<S extends KGraphElement, T ext
                 }
 
                 // foreground visibility
-                public Boolean caseKForegroundVisibility(
-                        final KForegroundVisibility foregorundVisibility) {
-                    if (theStyles.foregroundVisibility == null) {
-                        theStyles.foregroundVisibility = foregorundVisibility;
+                public Boolean caseKForegroundAlpha(
+                        final KForegroundAlpha foregorundAlpha) {
+                    if (theStyles.foregroundAlpha == null) {
+                        theStyles.foregroundAlpha = foregorundAlpha;
                     }
                     return true;
                 }
 
                 // background visibility
-                public Boolean caseKBackgroundVisibility(
-                        final KBackgroundVisibility backgroundVisibility) {
-                    if (theStyles.backgroundVisibility == null) {
-                        theStyles.backgroundVisibility = backgroundVisibility;
+                public Boolean caseKBackgroundAlpha(
+                        final KBackgroundAlpha backgroundAlpha) {
+                    if (theStyles.backgroundAlpha == null) {
+                        theStyles.backgroundAlpha = backgroundAlpha;
                     }
                     return true;
                 }
@@ -1690,19 +1634,16 @@ public abstract class AbstractRenderingController<S extends KGraphElement, T ext
             controller.setLineWidth(styles.lineWidth.getLineWidth());
         }
 
-        // apply foreground visibility
-        if (styles.foregroundVisibility != null) {
-            KForegroundVisibility foregroundVisibility = styles.foregroundVisibility;
-            controller.setLineVisible(foregroundVisibility.isVisible());
+        // apply foreground alpha
+        if (styles.foregroundAlpha != null) {
+            KForegroundAlpha foregroundAlpha = styles.foregroundAlpha;
+            controller.setLineAlpha(foregroundAlpha.getAlpha());
         }
 
-        // apply background visibility
-        if (styles.backgroundVisibility != null) {
-            KBackgroundVisibility backgroundVisibility = styles.backgroundVisibility;
-            controller.setFilled(backgroundVisibility.isVisible());
-        } else if (controller instanceof PSWTTextController) {
-            // chsch: supplement due to KIELER-2155: the standard case for texts is transparent
-            controller.setFilled(false);
+        // apply background alpha
+        if (styles.backgroundAlpha != null) {
+            KBackgroundAlpha backgroundAlpha = styles.backgroundAlpha;
+            controller.setAlpha(backgroundAlpha.getAlpha());
         }
 
         // apply line style
@@ -1728,8 +1669,7 @@ public abstract class AbstractRenderingController<S extends KGraphElement, T ext
         } else {
             controller.setLineStyle(LineStyle.SOLID);
         }
-        
-        
+
         // apply rotation
         if (styles.rotation != null) {
             KRotation rotation = styles.rotation;
@@ -1901,9 +1841,9 @@ public abstract class AbstractRenderingController<S extends KGraphElement, T ext
         /** the line width. */
         private KLineWidth lineWidth = null;
         /** the foreground visibility. */
-        private KForegroundVisibility foregroundVisibility = null;
+        private KForegroundAlpha foregroundAlpha = null;
         /** the background visibility. */
-        private KBackgroundVisibility backgroundVisibility = null;
+        private KBackgroundAlpha backgroundAlpha = null;
         /** the line style. */
         private KLineStyle lineStyle = null;
         /** the horizontal alignment. */

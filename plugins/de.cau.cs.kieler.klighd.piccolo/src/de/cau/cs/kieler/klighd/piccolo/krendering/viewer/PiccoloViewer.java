@@ -36,7 +36,7 @@ import de.cau.cs.kieler.core.kgraph.KGraphElement;
 import de.cau.cs.kieler.core.kgraph.KGraphPackage;
 import de.cau.cs.kieler.core.kgraph.KNode;
 import de.cau.cs.kieler.core.krendering.KBackgroundColor;
-import de.cau.cs.kieler.core.krendering.KBackgroundVisibility;
+import de.cau.cs.kieler.core.krendering.KBackgroundAlpha;
 import de.cau.cs.kieler.core.krendering.KLineStyle;
 import de.cau.cs.kieler.core.krendering.KRendering;
 import de.cau.cs.kieler.core.krendering.KRenderingFactory;
@@ -426,9 +426,9 @@ public class PiccoloViewer extends AbstractViewer<KNode> implements INodeSelecti
                     selectionHighlighting.put(element, Lists.newArrayList(style));
                 }
             } else if (KRenderingPackage.eINSTANCE.getKText().isInstance(element)) {
-                final KBackgroundVisibility bgv = KRenderingFactory.eINSTANCE
-                        .createKBackgroundVisibility();
-                bgv.setVisible(true);
+                final KBackgroundAlpha bgv = KRenderingFactory.eINSTANCE
+                        .createKBackgroundAlpha();
+                bgv.setAlpha(255f);  // SUPPRESS CHECKSTYLE MagicNumber // TODO: create constant!
                 final KBackgroundColor bgc = KRenderingFactory.eINSTANCE.createKBackgroundColor();
                 // the color values of 'DimGray'   // SUPPRESS CHECKSTYLE NEXT 3 MagicNumber
                 bgc.setRed(190);

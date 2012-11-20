@@ -23,10 +23,9 @@ import de.cau.cs.kieler.core.krendering.KGridPlacement;
 import de.cau.cs.kieler.core.krendering.KGridPlacementData;
 import de.cau.cs.kieler.core.krendering.KLeftPosition;
 import de.cau.cs.kieler.core.krendering.KPlacementData;
-import de.cau.cs.kieler.core.krendering.KPolylinePlacementData;
+import de.cau.cs.kieler.core.krendering.KPolyline;
 import de.cau.cs.kieler.core.krendering.KPosition;
 import de.cau.cs.kieler.core.krendering.KRightPosition;
-import de.cau.cs.kieler.core.krendering.KStackPlacementData;
 import de.cau.cs.kieler.core.krendering.KTopPosition;
 import de.cau.cs.kieler.core.krendering.KXPosition;
 import de.cau.cs.kieler.core.krendering.KYPosition;
@@ -75,7 +74,7 @@ public final class PlacementUtil {
         return new PBounds(topLeftPoint.getX(), topLeftPoint.getY(), bottomRightPoint.getX()
                 - topLeftPoint.getX(), bottomRightPoint.getY() - topLeftPoint.getY());
     }
-    
+
     /**
      * Returns a placer for grid placement data in given grid placement.
      * 
@@ -89,11 +88,11 @@ public final class PlacementUtil {
             final KGridPlacementData[] gpds) {
         GridPlacer placer = new GridPlacer();
         placer.gpds = gpds;
-        
+
         if (gpds.length == 0) {
             return placer;
         }
-        
+
         // the following prepares the placer
 
         // determine the required number of columns and rows
@@ -112,20 +111,40 @@ public final class PlacementUtil {
             if (gpd == null) {
                 continue;
             }
-            
+
             int col = i % placer.numColumns;
             int row = i / placer.numColumns;
-            
+
             // determine the maximum col width and row height
-            float widthHint = gpd.getWidthHint() + gpd.getInsetLeft() + gpd.getInsetRight();
-            float heightHint = gpd.getHeightHint() + gpd.getInsetTop() + gpd.getInsetBottom();
+
+            float widthHint = gpd.getWidthHint()
+                    +
+                    // insetLeft
+                    gpd.getTopLeft().getX().getAbsolute()
+                    + gpd.getTopLeft().getX().getRelative()
+                    * 0
+                    + // TODO (size of col)
+                    // insetRight
+                    gpd.getBottomRight().getX().getAbsolute()
+                    + gpd.getBottomRight().getX().getRelative() * 0; // TODO (size of col)
+            float heightHint = gpd.getHeightHint()
+                    +
+                    // insetTop
+                    gpd.getTopLeft().getY().getAbsolute()
+                    + gpd.getTopLeft().getY().getRelative()
+                    * 0
+                    + // TODO (height of col)
+                    // insetBottom
+                    gpd.getBottomRight().getY().getAbsolute()
+                    + gpd.getBottomRight().getY().getRelative() * 0; // TODO (height of col)
+
             if (widthHint > 0 && widthHint > placer.colWidths[col]) {
                 placer.colWidths[col] = widthHint;
             }
             if (heightHint > 0 && heightHint > placer.rowHeights[row]) {
                 placer.rowHeights[row] = heightHint;
             }
-            
+
             // determine the cols/rows with variable width/height
             if (gpd.getWidthHint() > 0) {
                 placer.fixedColumns[col] = true;
@@ -147,12 +166,12 @@ public final class PlacementUtil {
 
         return placer;
     }
-    
+
     /**
      * A helper class to calculate bounds for elements placed on a grid.
      */
     public static class GridPlacer {
-        
+
         /** the associated grid placement data. */
         private KGridPlacementData[] gpds;
         /** the number of columns. */
@@ -169,13 +188,13 @@ public final class PlacementUtil {
         private float[] rowHeights;
         /** the total width hinted. */
         private float totalWidth = 0;
-        /** the total height hinted.  */
+        /** the total height hinted. */
         private float totalHeight = 0;
         /** the number of variable width columns. */
         private int numVariableColumns = 0;
         /** the number of variable height rows. */
         private int numVariableRows = 0;
-        
+
         /**
          * Evaluates the grid placement for the given parent bounds.
          * 
@@ -191,7 +210,7 @@ public final class PlacementUtil {
             PBounds[] bounds = new PBounds[gpds.length];
             float width = (float) parentBounds.width;
             float height = (float) parentBounds.height;
-            
+
             // calculate scaling and variable width/height per column/row
             float variableWidth;
             float variableHeight;
@@ -220,7 +239,7 @@ public final class PlacementUtil {
                 if (col == 0) {
                     currentX = 0;
                 }
-                
+
                 // determine insets and width/height hints
                 float insetLeft = 0;
                 float insetRight = 0;
@@ -229,25 +248,28 @@ public final class PlacementUtil {
                 float widthHint = 0;
                 float heightHint = 0;
                 if (gpd != null) {
-                    insetLeft = gpd.getInsetLeft();
-                    insetRight = gpd.getInsetRight();
-                    insetTop = gpd.getInsetTop();
-                    insetBottom = gpd.getInsetBottom();
+                    insetLeft = gpd.getTopLeft().getX().getAbsolute()
+                            + gpd.getTopLeft().getX().getRelative() * 0; // TODO (size of col)
+                    insetRight = gpd.getBottomRight().getX().getAbsolute()
+                            + gpd.getBottomRight().getX().getRelative() * 0; // TODO (size of col)
+                    insetTop = gpd.getTopLeft().getY().getAbsolute()
+                            + gpd.getTopLeft().getY().getRelative() * 0; // TODO (height of col)
+                    insetBottom = gpd.getBottomRight().getY().getAbsolute()
+                            + gpd.getBottomRight().getY().getRelative() * 0; // TODO (height of col)
                     widthHint = gpd.getWidthHint();
                     heightHint = gpd.getHeightHint();
                 }
-                
+
                 // determine the elements bounds
                 float elementX;
                 float elementY;
                 float elementWidth;
-                float elementHeight;                  
+                float elementHeight;
                 // determine x-coordinate and width
                 if (fixedColumns[col]) {
                     // column has a fixed width
                     if (widthHint > 0) {
-                        float inset =
-                                (colWidths[col] - widthHint - insetLeft - insetRight) / 2.0f;
+                        float inset = (colWidths[col] - widthHint - insetLeft - insetRight) / 2.0f;
                         elementX = currentX + (inset + insetLeft) * widthScale;
                         elementWidth = widthHint * widthScale;
                     } else {
@@ -267,8 +289,7 @@ public final class PlacementUtil {
                 if (fixedRows[row]) {
                     // row has a fixed height
                     if (heightHint > 0) {
-                        float inset =
-                                (rowHeights[row] - heightHint - insetTop - insetBottom) / 2.0f;
+                        float inset = (rowHeights[row] - heightHint - insetTop - insetBottom) / 2.0f;
                         elementY = currentY + (inset + insetTop) * heightScale;
                         elementHeight = heightHint * heightScale;
                     } else {
@@ -281,10 +302,10 @@ public final class PlacementUtil {
                     elementY = currentY + insetTop * heightScale;
                     elementHeight = (rowHeight - insetTop - insetBottom) * heightScale;
                 }
-                
+
                 // create the bounds
                 bounds[i] = new PBounds(elementX, elementY, elementWidth, elementHeight);
-                
+
                 // advance the current y-coordinate if necessary
                 if (col == numColumns - 1) {
                     if (fixedRows[row]) {
@@ -294,32 +315,10 @@ public final class PlacementUtil {
                     }
                 }
             }
-            
+
             return bounds;
         }
-        
-    }
 
-    /**
-     * Returns the bounds for a stack placement data in given parent bounds.
-     * 
-     * @param spd
-     *            the stack placement data
-     * @param parentBounds
-     *            the parent bounds
-     * @return the bounds
-     */
-    public static PBounds evaluateStackPlacement(final KStackPlacementData spd,
-            final PBounds parentBounds) {
-        float width = (float) parentBounds.width;
-        float height = (float) parentBounds.height;
-
-        if (spd == null) {
-            return new PBounds(0, 0, width, height);
-        }
-
-        return new PBounds(spd.getInsetLeft(), spd.getInsetTop(), width - spd.getInsetRight(),
-                height - spd.getInsetBottom());
     }
 
     /**
@@ -331,16 +330,16 @@ public final class PlacementUtil {
      *            the parent bounds
      * @return the points
      */
-    public static Point2D[] evaluatePolylinePlacement(final KPolylinePlacementData ppd,
+    public static Point2D[] evaluatePolylinePlacement(final KPolyline line,
             final PBounds parentBounds) {
-        if (ppd == null) {
+        if (line == null) {
             return new Point2D[] { new Point2D.Float(0, 0) };
         }
 
         // evaluate the points of the polyline inside the parent bounds
-        Point2D[] points = new Point2D[ppd.getPoints().size()];
+        Point2D[] points = new Point2D[line.getPoints().size()];
         int i = 0;
-        for (KPosition point : ppd.getPoints()) {
+        for (KPosition point : line.getPoints()) {
             points[i++] = evaluateDirectPosition(point, parentBounds);
         }
 
@@ -359,10 +358,10 @@ public final class PlacementUtil {
     public static Decoration evaluateDecoratorPlacement(final KDecoratorPlacementData dpd,
             final PSWTAdvancedPath path) {
         Decoration decoration = new Decoration();
-        
+
         Point2D[] points = ((PSWTAdvancedPath) path
                 .getAttribute(PSWTAdvancedPath.APPROXIMATED_PATH)).getShapePoints();
-        
+
         // default case
         if (dpd == null) {
             decoration.origin = (Point2D) points[0].clone();
@@ -370,18 +369,18 @@ public final class PlacementUtil {
             decoration.rotation = 0.0;
             return decoration;
         }
-        
+
         // get the segment and concrete point the location specifies on the path
-        Pair<Integer, Point2D> result =
-                MathUtil.getSegmentStartIndexAndPoint(points, dpd.getLocation());
+        Pair<Integer, Point2D> result = MathUtil.getSegmentStartIndexAndPoint(points,
+                dpd.getAbsolute());
         decoration.origin = result.getSecond();
 
         // calculate the decorator bounds
-        decoration.bounds =
-                new PBounds(dpd.getXOffset(), dpd.getYOffset(), dpd.getWidth(), dpd.getHeight());
+        decoration.bounds = new PBounds(dpd.getXOffset(), dpd.getYOffset(), dpd.getWidth(),
+                dpd.getHeight());
 
         // if the decorator placement data specifies it to be relative calculate its rotation
-        if (dpd.isRelative() && points.length > 1) {
+        if (dpd.isRotateWithLine() && points.length > 1) {
             int segmentStart = result.getFirst();
             decoration.rotation = MathUtil.angle(points[segmentStart], points[segmentStart + 1]);
         } else {
@@ -411,17 +410,17 @@ public final class PlacementUtil {
             point.x = xPos.getAbsolute() + xPos.getRelative() * width;
         } else if (xPos instanceof KRightPosition) {
             point.x = width - xPos.getAbsolute() - xPos.getRelative() * width;
-        } else {        // SUPPRESS CHECKSTYLE EmptyBlock
+        } else { // SUPPRESS CHECKSTYLE EmptyBlock
             // this branch is reached in case xPos has been set to 'null', e.g. by EMF Compare
-            //  do nothing as the value will be re-set most certainly in near future :-)!
+            // do nothing as the value will be re-set most certainly in near future :-)!
         }
         if (yPos instanceof KTopPosition) {
             point.y = yPos.getAbsolute() + yPos.getRelative() * height;
         } else if (yPos instanceof KBottomPosition) {
             point.y = height - yPos.getAbsolute() - yPos.getRelative() * height;
-        } else {        // SUPPRESS CHECKSTYLE EmptyBlock
+        } else { // SUPPRESS CHECKSTYLE EmptyBlock
             // this branch is reached in case xPos has been set to 'null', e.g. by EMF Compare
-            //  do nothing as the value will be re-set most certainly in near future :-)!
+            // do nothing as the value will be re-set most certainly in near future :-)!
         }
         return point;
     }
@@ -450,41 +449,6 @@ public final class PlacementUtil {
     public static KGridPlacementData asGridPlacementData(final KPlacementData data) {
         if (data instanceof KGridPlacementData) {
             return (KGridPlacementData) data;
-        } else if (data instanceof KPolylinePlacementData) {
-            KPolylinePlacementData polylinePlacementData = (KPolylinePlacementData) data;
-            return asGridPlacementData(polylinePlacementData.getDetailPlacementData());
-        }
-        return null;
-    }
-
-    /**
-     * Returns the given placement data as stack placement data.
-     * 
-     * @param data
-     *            the placement data
-     * @return the stack placement data or null if the placement data is no stack placement data
-     */
-    public static KStackPlacementData asStackPlacementData(final KPlacementData data) {
-        if (data instanceof KStackPlacementData) {
-            return (KStackPlacementData) data;
-        } else if (data instanceof KPolylinePlacementData) {
-            KPolylinePlacementData polylinePlacementData = (KPolylinePlacementData) data;
-            return asStackPlacementData(polylinePlacementData.getDetailPlacementData());
-        }
-        return null;
-    }
-
-    /**
-     * Returns the given placement data as polyline placement data.
-     * 
-     * @param data
-     *            the placement data
-     * @return the polyline placement data or null if the placement data is no polyline placement
-     *         data
-     */
-    public static KPolylinePlacementData asPolylinePlacementData(final KPlacementData data) {
-        if (data instanceof KPolylinePlacementData) {
-            return (KPolylinePlacementData) data;
         }
         return null;
     }
@@ -500,9 +464,6 @@ public final class PlacementUtil {
     public static KDecoratorPlacementData asDecoratorPlacementData(final KPlacementData data) {
         if (data instanceof KDecoratorPlacementData) {
             return (KDecoratorPlacementData) data;
-        } else if (data instanceof KPolylinePlacementData) {
-            KPolylinePlacementData polylinePlacementData = (KPolylinePlacementData) data;
-            return asDecoratorPlacementData(polylinePlacementData.getDetailPlacementData());
         }
         return null;
     }

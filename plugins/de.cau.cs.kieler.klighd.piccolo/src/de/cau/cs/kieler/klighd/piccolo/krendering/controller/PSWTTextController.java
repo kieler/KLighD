@@ -64,8 +64,8 @@ public abstract class PSWTTextController extends PNodeController<PSWTText> {
      * {@inheritDoc}
      */
     @Override
-    public void setLineVisible(final boolean lineVisible) {
-        if (!lineVisible) {
+    public void setLineAlpha(final float lineAlpha) {
+        if (lineAlpha == 0.0f) {
             getNode().setPenColor(null);
         }
     }
@@ -74,8 +74,8 @@ public abstract class PSWTTextController extends PNodeController<PSWTText> {
      * {@inheritDoc}
      */
     @Override
-    public void setFilled(final boolean filled) {
-        if (!filled) {
+    public void setAlpha(final float backgroundAlpha) {
+        if (backgroundAlpha == 0.0f) {
             getNode().setBackgroundColor(null);
             getNode().setTransparent(true);
         } else {

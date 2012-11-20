@@ -94,7 +94,7 @@ public abstract class PNodeController<T extends PNode> {
      * @param lineVisible
      *            the line visibility
      */
-    public void setLineVisible(final boolean lineVisible) {
+    public void setLineAlpha(final float lineAlpha) {
         // do nothing
     }
 
@@ -104,7 +104,7 @@ public abstract class PNodeController<T extends PNode> {
      * @param filled
      *            the filled status
      */
-    public void setFilled(final boolean filled) {
+    public void setAlpha(final float backgroundAlpha) {
         // do nothing
     }
 
