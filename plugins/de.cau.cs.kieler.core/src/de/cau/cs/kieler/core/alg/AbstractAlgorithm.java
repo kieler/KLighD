@@ -17,10 +17,8 @@ package de.cau.cs.kieler.core.alg;
  * Superclass for algorithms used in the KIELER project. This class stores a
  * reference to the currently used progress monitor.
  * 
- * @kieler.design proposed 2012-11-02 cds
- * @kieler.rating 2009-12-11 proposed yellow msp
- * @see IKielerProgressMonitor
  * @author msp
+ * @deprecated this interface is not helpful for algorithm implementation
  */
 public abstract class AbstractAlgorithm implements IAlgorithm {
 
