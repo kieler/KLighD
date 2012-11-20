@@ -18,11 +18,17 @@ import java.util.Set;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 
+import com.google.common.collect.Iterables;
+import com.google.common.collect.Sets;
 import com.google.inject.Binder;
 import com.google.inject.Guice;
+import com.google.inject.Key;
 import com.google.inject.Module;
+import com.google.inject.Provider;
+import com.google.inject.Scope;
 import com.google.inject.TypeLiteral;
 
+import de.cau.cs.kieler.core.krendering.extensions.ViewSynthesisShared;
 import de.cau.cs.kieler.klighd.ITransformation;
 import de.cau.cs.kieler.klighd.TransformationContext;
 import de.cau.cs.kieler.klighd.TransformationOption;
@@ -63,21 +69,142 @@ public class ReinitializingTransformationProxy<S, T> extends AbstractTransformat
     ReinitializingTransformationProxy(final Class<AbstractTransformation<S, T>> clazz) {
         this.transformationClass = clazz;
         
-        // The following module definition allows to create cyclic references between the
-        //  instances of the major transformation ('clazz') and helper classes with outsourced
-        //  parts, e.g. the visualization of domain-specific expressions, that will be injected
-        //  into instances of 'clazz'.
-        // If the outsourced transformation has an injected field of type AbstractTransformation<?, ?>
-        //  and 'clazz' is annotated with @Singleton the helper classes can access the current
-        //  instance of 'clazz', the transformation context and thus, e.g., the source image lookup
-        //  library.
-        // In addition, a standard binding of ResourceSet is provided for special use requiring one.
+        // The following module definition provides the various features:
+        //  * A standard binding of ResourceSet is provided for special uses requiring one.
+        //  * Helper transformations injected into the main one may declare an injected field
+        //    or extension of type AbstractTransformation<?, ?> in order to generically access
+        //    the main transformation (current instance of 'clazz'), e.g. for adding stuff to
+        //    the current transformation context. Guice is taking care of not deadlocking in
+        //    such a cyclic reference; this is resolved by providing the already created instance
+        //    of 'clazz' which is exactly what I want :-).
+        //  * An instance of ViewSynthesisScope is registered and bound to the annotation type
+        //    'ViewSynthesisShared' causing the integration of that scope instance into the
+        //    field injection logic for all classes annotated with this annotation
         this.transformationClassBinding = new Module() {
             public void configure(final Binder binder) {
                 binder.bind(ResourceSet.class).to(ResourceSetImpl.class);
                 binder.bind(new TypeLiteral<AbstractTransformation<?, ?>>() { }).to(clazz);
+                binder.bindScope(ViewSynthesisShared.class, new ViewSynthesisScope(clazz));
             }
         };
+    }
+    
+    /**
+     * This {@link Scope} realizes the requirement of injecting the same instances of of helper
+     * classes into further helper classes. <br>
+     * <br>
+     * Example:
+     * DataDependencyVisualisation --requires--> KNodeExtensions,<br>
+     * DataDependencyVisualisation --requires--> ExpressionVisuHelper --requires--> KNodeExtensions,<br>
+     * <br>
+     * while the instances of KNodeExtensions should be the same.<br>
+     *
+     * In addition, the DataDependencyVisualisation may re-use the StateMachineVisualisation with<br>
+     * <br>
+     * DataDependencyVisualisation --requires--> KNodeExtensions,<br>
+     * <br>
+     * both sub types of {@link AbstractTransformation}. The helper instance(s) of that class however
+     * shall be disjoint from the ones of DataDependencyVisualisation's instance(s).<br>
+     * This requirement is realized by this {@link Scope} by maintaining a Set of instances that
+     * have already been created. If, however, an instance of {@link AbstractTransformation} or a
+     * subclass is requested, those instances will be forgotten - the set is cleared. Thus, new
+     * ones are requested from the upstream {@link Provider}.<br>
+     * <br>
+     * <b>Attention</b>: Classes whose instantiation shall be controlled by this {@link Scope} must
+     * by annotated with the {@link ViewSynthesisShared} annotation.  
+     * 
+     * 
+     * @author chsch
+     */
+    public class ViewSynthesisScope implements Scope {
+        
+        /**
+         * Constructor.
+         * 
+         * @param themainTransformationClazz
+         *              the main transformation class
+         */
+        public ViewSynthesisScope(
+                final Class<AbstractTransformation<S, T>> themainTransformationClazz) {
+            this.mainTransformationClazz = themainTransformationClazz;
+        }
+        
+        private Class<AbstractTransformation<S, T>> mainTransformationClazz = null;
+        private Set<Object> instances = Sets.newHashSet();
+
+        /**
+         * {@inheritDoc}<br>
+         * <br>
+         * This method is called once for each class ('key') to be injected. Hence (potentially)
+         * multiple {@link Provider Providers} accessing the {@link #instances} set exist.
+         * The returned provider is called each time an instance of 'key' is required.
+         * 
+         * @return a {@link Provider} dedicated to the class denoted by 'key' 
+         */
+        public <U> Provider<U> scope(final Key<U> key, final Provider<U> unscoped) {
+            
+            return new Provider<U>() {
+                
+                /**
+                 * {@inheritDoc}<br>
+                 * <br>
+                 * This method contains the realization logic of the requirements described in
+                 * {@link ViewSynthesisScope}. Realize that this method will be called recursively
+                 * as the call of 'unscoped.get()' will result in a call of another {@link Provider}
+                 * created by {@link ViewSynthesisScope#scope(Key, Provider)}. Thus the call of
+                 * 'get()' for the required instance of 'mainTransformationClazz' invoked by the
+                 * 'getInstance()' call in
+                 * {@link ReinitializingTransformationProxy#getNewDelegateInstance} will be the
+                 * first one entering this method, and the last one leaving it.
+                 */
+                public U get() {
+                    
+                    // determine the class to provide an instance for
+                    @SuppressWarnings("unchecked")
+                    final Class<U> theClazzToBeInjected = (Class<U>) key.getTypeLiteral()
+                            .getRawType();
+
+                    U instance = null;
+                    if (theClazzToBeInjected != mainTransformationClazz
+                            && AbstractTransformation.class.isAssignableFrom(theClazzToBeInjected)) {
+                        // in case an instance of another fully-fledged transformation class requested
+                        //  the current provider makes the scope (!) to forget all its known class
+                        //  instances as stated in the requirements description above.
+                        instances.clear();
+                    } else {
+                        // other try to reveal the first instance of 'theClazzToBeInjected' from the
+                        //  instances memory (their must exist at most one; Guice resolves the mapping
+                        //  of interfaces or abstract classes to concrete once in advance)
+                        instance = Iterables.getFirst(
+                                Iterables.filter(instances, theClazzToBeInjected), null);
+                        if (instance != null) {
+                            // if such an instance exists we're done :-) ...
+                            return instance;
+                        }
+                    }
+                    
+                    // ... otherwise request the upstream Provider, keep the instance in mind, and return
+                    instance = unscoped.get();
+                    instances.add(instance);
+                    return instance;
+                }
+
+                /**
+                 * {@inheritDoc}
+                 */
+                public String toString() {
+                    // implementation derived from com.google.Scopes.SINGLETON
+                    return String.format("%s[%s]", unscoped, ViewSynthesisScope.this);
+                }
+            };
+        }
+        
+        /**
+         * {@inheritDoc}
+         */
+        public String toString() {
+            return "KLighD.ViewSynthesisShared";
+        }
     }
     
     
