@@ -19,10 +19,18 @@ import java.util.List;
 import org.eclipse.xtext.xbase.lib.Functions;
 import org.eclipse.xtext.xbase.lib.IterableExtensions;
 
+import com.google.common.base.Predicate;
 import com.google.common.base.Strings;
+import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 
+import de.cau.cs.kieler.core.kgraph.KNode;
+import de.cau.cs.kieler.core.kgraph.KPort;
 import de.cau.cs.kieler.core.krendering.KText;
+import de.cau.cs.kieler.core.krendering.extensions.KPortExtensions;
+import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout;
+import de.cau.cs.kieler.kiml.options.LayoutOptions;
+import de.cau.cs.kieler.kiml.options.PortSide;
 
 /**
  * Some convenience methods supporting the proper handling of KText renderings.
@@ -75,4 +83,29 @@ public final class KTextUtil {
                 }));
     }
 
+    /**
+     * This helper determines the width of the longest {@link de.cau.cs.kieler.core.kgraph.KLabel
+     * KLabel} of the {@link KPort KPorts} of the given {@link KNode} wrt. the given
+     * {@link PortSide}. For north and south ports this value denotes the height of the port label
+     * area.
+     * 
+     * @param node
+     *            the node to compute the required port label width
+     * @param side
+     *            the side on the node
+     * @return the maximal width of the port labels of 'node' on 'side'
+     */
+    public static Float getLabelAreaWidth(final KNode node, final PortSide side) {
+        return IterableExtensions.fold(Iterables.filter(node.getPorts(), new Predicate<KPort>() {
+            public boolean apply(final KPort port) {
+                return port.getData(KShapeLayout.class).getProperty(LayoutOptions.PORT_SIDE) == side;
+            }
+        }), 0f, new Functions.Function2<Float, KPort, Float>() {
+            public Float apply(final Float length, final KPort port) {
+                return Math.max(length,
+                        PlacementUtil.estimateTextSize(new KPortExtensions().getFirstText(port))
+                                .getWidth());
+            }
+        });
+    }
 }

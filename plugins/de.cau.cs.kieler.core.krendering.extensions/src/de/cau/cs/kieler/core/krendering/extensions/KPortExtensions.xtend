@@ -33,6 +33,7 @@ import de.cau.cs.kieler.core.krendering.KRendering
 /**
  * @author chsch
  */
+@ViewSynthesisShared
 class KPortExtensions {
 
     /**
@@ -241,7 +242,7 @@ class KPortExtensions {
             node.ports += it;
             it.setPortSize(portEdgeLength, portEdgeLength)
             it.addLayoutParam(LayoutOptions::PORT_SIDE, PortSide::NORTH);
-            it.addLayoutParam(LayoutOptions::OFFSET, 0f);
+            it.addLayoutParam(LayoutOptions::OFFSET, -portEdgeLength);
             it.setPortPos(node.nextNPortYPosition, 1);
             it.data += createEPortRendering(label).setRotation(-90f)
         ];

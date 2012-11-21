@@ -23,7 +23,26 @@ import de.cau.cs.kieler.klighd.TransformationOption;
 
 /**
  * An abstract base class for KLighD model transformations.<br>
- * Provides a {@code transform} method with a simpler signature.
+ * <br>
+ * Some hints for the use with Xtend2:<br>
+ * If your custom view synthesis transformation is written in Xtend2 and leverages <b>create
+ * extensions</b> or <b>dependency injection</b> with Google Guice, please note the hint in
+ * {@link ReinitializingTransformationProxy} on registering such transformations.<br>
+ * <br>
+ * If a transformation implementation incorporates helper transformations containing shared or
+ * outsourced parts and the outsourced ones need to have access to the main transformation instance,
+ * e.g. for accessing the transformation context, this can be realized by means of Guice, too. The
+ * helper transformation implementation must declare an injected field of type
+ * AbstractTransformation&lt;?, ?&gt;, the main transformation must be annotated with &#64;Singleton.
+ * This way the helper classes are provided with the current instance of the main transformation. <br>
+ * <br>
+ * Furthermore, transformations may leverage other ones, e.g. for realizing composed views. This can
+ * be achieved by simply declaring an injected field ore extension and calling the related
+ * {@link #transform(Object, TransformationContext)} method. If multiple instance of such a delegate
+ * transformation are needed (e.g. due to the use of create extensions) a field of type
+ * {@link com.google.inject.Provider Provider&lt;yourTransformationClass&gt;} can be declared. Each
+ * time calling {@link com.google.inject.Provider#get() get()} on this provider a new instance will
+ * be obtained as long as the provided class is <b>not</b> declared as singleton (via &#64;Singleton).
  * 
  * @author mri
  * 
@@ -99,7 +118,7 @@ public abstract class AbstractTransformation<S, T> implements ITransformation<S,
      * @param source the model element
      * @return the image element
      */
-    protected <D> D putToLookUpWith(final D derived, final Object source) {
+    public <D> D putToLookUpWith(final D derived, final Object source) {
         if (this.currentContext == null) {
             throw new IllegalStateException("KLighD transformation "
                     + this.getClass().getCanonicalName()

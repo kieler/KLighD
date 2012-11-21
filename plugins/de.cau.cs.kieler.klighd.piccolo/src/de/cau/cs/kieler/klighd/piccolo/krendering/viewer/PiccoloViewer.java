@@ -16,7 +16,10 @@ package de.cau.cs.kieler.klighd.piccolo.krendering.viewer;
 import java.awt.event.InputEvent;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.swt.SWT;
@@ -24,16 +27,27 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Menu;
 
+import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 
 import de.cau.cs.kieler.core.kgraph.KGraphElement;
+import de.cau.cs.kieler.core.kgraph.KGraphPackage;
 import de.cau.cs.kieler.core.kgraph.KNode;
+import de.cau.cs.kieler.core.krendering.KBackgroundColor;
+import de.cau.cs.kieler.core.krendering.KBackgroundVisibility;
+import de.cau.cs.kieler.core.krendering.KLineStyle;
+import de.cau.cs.kieler.core.krendering.KRendering;
+import de.cau.cs.kieler.core.krendering.KRenderingFactory;
+import de.cau.cs.kieler.core.krendering.KRenderingPackage;
+import de.cau.cs.kieler.core.krendering.KStyle;
+import de.cau.cs.kieler.core.krendering.KText;
+import de.cau.cs.kieler.core.krendering.LineStyle;
 import de.cau.cs.kieler.klighd.piccolo.INodeSelectionListener;
 import de.cau.cs.kieler.klighd.piccolo.Messages;
 import de.cau.cs.kieler.klighd.piccolo.PMouseWheelZoomEventHandler;
 import de.cau.cs.kieler.klighd.piccolo.PSWTSimpleSelectionEventHandler;
 import de.cau.cs.kieler.klighd.piccolo.activities.ZoomActivity;
-//import de.cau.cs.kieler.klighd.piccolo.krendering.IGraphElement;
 import de.cau.cs.kieler.klighd.piccolo.krendering.ITracingElement;
 import de.cau.cs.kieler.klighd.piccolo.krendering.controller.GraphController;
 import de.cau.cs.kieler.klighd.piccolo.krendering.controller.RenderingContextData;
@@ -47,6 +61,7 @@ import edu.umd.cs.piccolo.PNode;
 import edu.umd.cs.piccolo.PRoot;
 import edu.umd.cs.piccolo.event.PInputEventFilter;
 import edu.umd.cs.piccolox.swt.PSWTCanvas;
+//import de.cau.cs.kieler.klighd.piccolo.krendering.IGraphElement;
 
 /**
  * A viewer for Piccolo diagram contexts.
@@ -59,7 +74,9 @@ public class PiccoloViewer extends AbstractViewer<KNode> implements INodeSelecti
     private PSWTCanvas canvas;
     /** the current selection event handler. */
     private PSWTSimpleSelectionEventHandler selectionHandler = null;
-
+    /** a map used track highlighting style attached to selected elements. */
+    private Map<EObject, Iterable<? extends KStyle>> selectionHighlighting = Maps.newHashMap();
+    
     /** the graph controller. */
     private GraphController controller;
 
@@ -156,6 +173,10 @@ public class PiccoloViewer extends AbstractViewer<KNode> implements INodeSelecti
 
         // forward the selection events
         selectionHandler.addSelectionListener(this);
+        for (KStyle style: Iterables.concat(selectionHighlighting.values())) {
+            EcoreUtil.remove(style);
+        }
+        selectionHighlighting.clear();
     }
 
     /**
@@ -368,6 +389,42 @@ public class PiccoloViewer extends AbstractViewer<KNode> implements INodeSelecti
                 graphElements.add(graphElement.getGraphElement());
             }
         }
+        
+        // chsch: the following lines realizes the highlighting of selected diagram elements
+        //  (if the diagram is given as a KGraph/KRendering model)
+        List<EObject> noLongerSelected = Lists.newLinkedList(selectionHighlighting.keySet());
+        noLongerSelected.removeAll(graphElements);
+        for (EObject element : noLongerSelected) {
+            // the related value should never be null!!
+            for (KStyle style : selectionHighlighting.remove(element)) {
+                EcoreUtil.remove(style);
+            }
+        }
+        
+        List<EObject> newlySelected = Lists.newLinkedList(Iterables.filter(graphElements,
+                EObject.class));
+        newlySelected.removeAll(selectionHighlighting.keySet());
+        for (EObject element : newlySelected) {
+            KLineStyle style = KRenderingFactory.eINSTANCE.createKLineStyle();
+            style.setLineStyle(LineStyle.DASH);
+            if (KGraphPackage.eINSTANCE.getKGraphElement().isInstance(element)) {
+                ((KGraphElement) element).getData(KRendering.class).getStyles().add(0, style);
+                selectionHighlighting.put(element, Lists.newArrayList(style));
+            } else if (KRenderingPackage.eINSTANCE.getKText().isInstance(element)) {
+                final KBackgroundVisibility bgv = KRenderingFactory.eINSTANCE
+                        .createKBackgroundVisibility();
+                bgv.setVisible(true);
+                final KBackgroundColor bgc = KRenderingFactory.eINSTANCE.createKBackgroundColor();
+                // the color values of 'DimGray'   // SUPPRESS CHECKSTYLE NEXT 3 MagicNumber
+                bgc.setRed(190);
+                bgc.setGreen(190);
+                bgc.setBlue(190);
+                ((KText) element).getStyles().addAll(Lists.newArrayList(bgv, bgc));
+                selectionHighlighting.put(element, Lists.newArrayList(bgv, bgc));
+            }
+        }
+        // end of selection highlighting stuff
+        
         if (graphElements.size() > 0) {
             // chsch question: Is this restriction reasonable?
             //  one may also be informed on the clearing of the selection...

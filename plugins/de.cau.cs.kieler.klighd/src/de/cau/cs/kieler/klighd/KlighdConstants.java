@@ -98,6 +98,13 @@ public final class KlighdConstants {
      */
     public static final IProperty<Float> KLIGHD_TESTING_WIDTH = new Property<Float>(
             "klighd.testing.width");
+    
+    /**
+     * Property of {@link de.cau.cs.kieler.core.kgraph.KNode KNodes} indicating that the containing
+     * node is not pickable in a KLighD diagram. Can be used to mask auxiliary encapsulating nodes.
+     */
+    public static final IProperty<Boolean> KLIGHD_SELECTION_UNPICKABLE = new Property<Boolean>(
+            "klighd.selection.unpickable");
 
     /**
      * Hidden default constructor.
