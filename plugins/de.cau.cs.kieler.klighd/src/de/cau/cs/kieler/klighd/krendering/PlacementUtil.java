@@ -42,14 +42,11 @@ import de.cau.cs.kieler.core.krendering.KLeftPosition;
 import de.cau.cs.kieler.core.krendering.KPlacement;
 import de.cau.cs.kieler.core.krendering.KPlacementData;
 import de.cau.cs.kieler.core.krendering.KPolyline;
-import de.cau.cs.kieler.core.krendering.KPolylinePlacementData;
 import de.cau.cs.kieler.core.krendering.KPosition;
 import de.cau.cs.kieler.core.krendering.KRendering;
 import de.cau.cs.kieler.core.krendering.KRenderingFactory;
 import de.cau.cs.kieler.core.krendering.KRenderingPackage;
 import de.cau.cs.kieler.core.krendering.KRenderingRef;
-import de.cau.cs.kieler.core.krendering.KStackPlacement;
-import de.cau.cs.kieler.core.krendering.KStackPlacementData;
 import de.cau.cs.kieler.core.krendering.KText;
 import de.cau.cs.kieler.core.krendering.KTopPosition;
 import de.cau.cs.kieler.core.krendering.KXPosition;
@@ -343,12 +340,6 @@ public final class PlacementUtil {
                 // calculate the number of columns and rows of the grid to the bounds of a inner
                 // rendering
                 return estimateGridSize(container, givenBounds);
-
-            case KRenderingPackage.KSTACK_PLACEMENT:
-                // in case of a StackPlacement
-                // find the biggest rendering in width and height
-                return estimateStackSize(container, givenBounds);
-
             default:
                 // in case of a DirectPlacement
                 // calculate the offsets of each rendering and find the biggest rendering in width
@@ -588,11 +579,6 @@ public final class PlacementUtil {
 
             float insetWidth = 0;
             float insetHeight = 0;
-            if (rendering.getPlacementData() instanceof KStackPlacementData) {
-                KStackPlacementData plctData = (KStackPlacementData) rendering.getPlacementData();
-                insetWidth = (plctData.getInsetRight() + plctData.getInsetLeft());
-                insetHeight = (plctData.getInsetTop() + plctData.getInsetBottom());
-            }
             Bounds childBounds = estimateSize(rendering, new Bounds(minBounds.width - insetWidth,
                     minBounds.height - insetHeight));
 
@@ -1015,17 +1001,11 @@ public final class PlacementUtil {
                     // TODO implement this
                     return new Bounds(0, 0, parentBounds.width, parentBounds.height);
                 }
-
-                public Bounds caseKStackPlacement(final KStackPlacement stackPlacement) {
-                    return evaluateStackPlacement(asStackPlacementData(child.getPlacementData()),
-                            parentBounds);
-                }
             } /**/.doSwitch(placement);
         }
 
         if (child instanceof KPolyline) {
-            return evaluatePolylinePlacement(asPolylinePlacementData(child.getPlacementData()),
-                    bounds);
+            return evaluatePolylinePlacement((KPolyline)child, bounds);
         } else {
             return bounds;
         }
@@ -1059,28 +1039,6 @@ public final class PlacementUtil {
     }
 
     /**
-     * Returns the bounds for a stack placement data in given parent bounds.
-     * 
-     * @param spd
-     *            the stack placement data
-     * @param parentBounds
-     *            the parent bounds
-     * @return the bounds
-     */
-    public static Bounds evaluateStackPlacement(final KStackPlacementData spd,
-            final Bounds parentBounds) {
-        float width = (float) parentBounds.width;
-        float height = (float) parentBounds.height;
-
-        if (spd == null) {
-            return new Bounds(0, 0, width, height);
-        }
-
-        return new Bounds(spd.getInsetLeft(), spd.getInsetTop(), width - spd.getInsetRight(),
-                height - spd.getInsetBottom());
-    }
-
-    /**
      * Returns the bounds for a polyline placement data in given parent bounds.
      * 
      * @param ppd
@@ -1089,9 +1047,9 @@ public final class PlacementUtil {
      *            the parent bounds
      * @return the bounds
      */
-    public static Bounds evaluatePolylinePlacement(final KPolylinePlacementData ppd,
+    public static Bounds evaluatePolylinePlacement(final KPolyline line,
             final Bounds parentBounds) {
-        if (ppd == null || ppd.getPoints().size() == 0) {
+        if (line == null || line.getPoints().size() == 0) {
             return new Bounds(0, 0, parentBounds.width, parentBounds.height);
         }
 
@@ -1100,7 +1058,7 @@ public final class PlacementUtil {
         float maxX = Float.MIN_VALUE;
         float minY = Float.MAX_VALUE;
         float maxY = Float.MIN_VALUE;
-        for (KPosition polyPoint : ppd.getPoints()) {
+        for (KPosition polyPoint : line.getPoints()) {
             Point point = evaluateDirectPosition(polyPoint, parentBounds);
             if (point.x < minX) {
                 minX = point.x;
@@ -1157,38 +1115,6 @@ public final class PlacementUtil {
     public static KDirectPlacementData asDirectPlacementData(final KPlacementData data) {
         if (data instanceof KDirectPlacementData) {
             return (KDirectPlacementData) data;
-        }
-        return null;
-    }
-
-    /**
-     * Returns the given placement data as stack placement data.
-     * 
-     * @param data
-     *            the placement data
-     * @return the stack placement data or null if the placement data is no stack placement data
-     */
-    public static KStackPlacementData asStackPlacementData(final KPlacementData data) {
-        if (data instanceof KStackPlacementData) {
-            return (KStackPlacementData) data;
-        } else if (data instanceof KPolylinePlacementData) {
-            KPolylinePlacementData polylinePlacementData = (KPolylinePlacementData) data;
-            return asStackPlacementData(polylinePlacementData.getDetailPlacementData());
-        }
-        return null;
-    }
-
-    /**
-     * Returns the given placement data as polyline placement data.
-     * 
-     * @param data
-     *            the placement data
-     * @return the polyline placement data or null if the placement data is no polyline placement
-     *         data
-     */
-    public static KPolylinePlacementData asPolylinePlacementData(final KPlacementData data) {
-        if (data instanceof KPolylinePlacementData) {
-            return (KPolylinePlacementData) data;
         }
         return null;
     }
