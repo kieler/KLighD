@@ -28,13 +28,13 @@ KRendering returns KRendering:
     KEllipse | KRectangle | KRoundedRectangle | KPolyline_Impl | KPolygon | KImage | KArc | KRenderingRef | KChildArea | KText | KCustomRendering | KSpline | KRoundedBendsPolyline;
 
 KPlacementData returns KPlacementData:
-    KDecoratorPlacementData | KGridPlacementData | KStackPlacementData | KDirectPlacementData | KPolylinePlacementData;
+    KDecoratorPlacementData | KGridPlacementData | KDirectPlacementData;
 
 KStyle returns KStyle:
-    KForegroundColor | KBackgroundColor | KLineWidth | KVisibility | KLineStyle | KRotation | KFontBold | KFontItalic | KFontName | KFontSize | KVerticalAlignment | KHorizontalAlignment;
+    KForegroundColor | KBackgroundColor | KLineWidth | KAlpha | KLineStyle | KRotation | KFontBold | KFontItalic | KFontName | KFontSize | KVerticalAlignment | KHorizontalAlignment; //| KGradient;
 
 KPlacement returns KPlacement:
-    KGridPlacement | KStackPlacement;
+    KGridPlacement;
 
 KXPosition returns KXPosition:
     KLeftPosition | KRightPosition;
@@ -84,6 +84,7 @@ KPolyline_Impl returns KPolyline:
     {KPolyline}
     'Polyline'
     ('{'
+        'points' ':'? points+=KPosition ( ","? points+=KPosition)* 
         ('styles' ':'? styles+=KStyle ( ","? styles+=KStyle)*)?
         ('placementData' ':'? placementData=KPlacementData)?
         ('childPlacement' ':'? childPlacement=KPlacement)?
@@ -148,8 +149,8 @@ KText returns KText:
         ('childPlacement' ':'? childPlacement=KPlacement)?
         ('children' ':'? children+=KRendering ( ","? children+=KRendering)*)?
         // allow mapProperties in order to specify size for size estimation tests
-        //  (I don't trust in the different SWT implementations to
-        //   provide the same size of a text on different platforms)
+        // (I don't trust in the different SWT implementations to
+        // provide the same size of a text on different platforms)
         ('mapProperties' ':'? persistentEntries+=PersistentEntry ( ","? persistentEntries+=PersistentEntry)*)?
     '}')?;
 
@@ -178,8 +179,9 @@ KSpline returns KSpline:
 KDecoratorPlacementData returns KDecoratorPlacementData:
     'DecoratorPlacementData'
     '{'
-        (relative?='relative')?
-        'location' location=EFloat
+        (rotateWithLine?='rotateWithLine')?
+        'absolute' absolute=EFloat
+        ('relative' relative=EFloat)?
         ('xOffset' xOffset=EFloat)?
         ('yOffset' yOffset=EFloat)?
         ('width' width=EFloat)?
@@ -192,20 +194,8 @@ KGridPlacementData returns KGridPlacementData:
     '{'
         ('widthHint' widthHint=EFloat)?
         ('heightHint' heightHint=EFloat)?
-        ('insetRight' insetRight=EFloat)?
-        ('insetBottom' insetBottom=EFloat)?
-        ('insetLeft' insetLeft=EFloat)?
-        ('insetTop' insetTop=EFloat)?
-    '}';
-
-KStackPlacementData returns KStackPlacementData:
-    {KStackPlacementData}
-    'StackPlacementData'
-    '{'
-        ('insetRight' insetRight=EFloat)?
-        ('insetBottom' insetBottom=EFloat)?
-        ('insetLeft' insetLeft=EFloat)?
-        ('insetTop' insetTop=EFloat)?
+        ('topLeft' topLeft=KPosition)?
+        ('bottomRight' bottomRight=KPosition)?
     '}';
 
 KDirectPlacementData returns KDirectPlacementData:
@@ -213,13 +203,6 @@ KDirectPlacementData returns KDirectPlacementData:
     '{'
         'topLeft' topLeft=KPosition ","?
         'bottomRight' bottomRight=KPosition
-    '}';
-
-KPolylinePlacementData returns KPolylinePlacementData:
-    'PolylinePlacementData'
-    '{'
-        'points' ':'? points+=KPosition ( ","? points+=KPosition)* 
-        ('detailedPlacementData' ':'? detailPlacementData=KPlacementData)?
     '}';
 
 KPosition returns KPosition:
@@ -252,19 +235,19 @@ KBackgroundColor returns KBackgroundColor:
 KLineWidth returns KLineWidth:
     'lineWidth' lineWidth=EInt (propagateToChildren?='!')?;
 
-KVisibility returns KVisibility:
-    KForegroundVisibility | KBackgroundVisibility
+KAlpha returns KAlpha:
+    KForegroundAlpha | KBackgroundAlpha
 ;
 
-KForegroundVisibility returns KForegroundVisibility:
-    {KForegroundVisibility}
-    'foregroundVisibility' visible=EBoolean propagateToChildren?='!'?
+KForegroundAlpha returns KForegroundAlpha:
+    {KForegroundAlpha}
+    'foregroundAlpha' alpha=EFloat propagateToChildren?='!'?
 ;
 
 
-KBackgroundVisibility returns KBackgroundVisibility:
-    {KBackgroundVisibility}
-    'backgroundVisibility' visible=EBoolean propagateToChildren?='!'?
+KBackgroundAlpha returns KBackgroundAlpha:
+    {KBackgroundAlpha}
+    'backgroundAlpha' alpha=EFloat propagateToChildren?='!'?
 ;
 
 KLineStyle returns KLineStyle:
@@ -297,14 +280,17 @@ KHorizontalAlignment returns KHorizontalAlignment:
     {KHorizontalAlignment}
     'horizontalAlignment' horizontalAlignment=HorizontalAlignment propagateToChildren?='!'?;
 
+//KGradient returns KGradient:
+//    {KGradient}
+//    'angle' angle=EFloat
+//    'startColor' red=EInt green=EInt blue=EInt
+//    'endColor' red=EInt green=EInt blue=EInt
+//;
+
 KGridPlacement returns KGridPlacement:
     {KGridPlacement}
     'gridPlacement' numColumns=EInt;
-
-KStackPlacement returns KStackPlacement:
-    {KStackPlacement}
-    'stackPlacement'
-;
+    
 
 enum LineStyle returns LineStyle:
     SOLID = 'SOLID' | DASH = 'DASH' | DOT = 'DOT' | DASHDOT = 'DASHDOT' | DASHDOTDOT = 'DASHDOTDOT';

@@ -80,16 +80,14 @@ public class KGraphSyntacticSequencer extends AbstractSyntacticSequencer {
 	protected AbstractElementAlias match_KPolygon_CommaKeyword_2_1_3_0_q;
 	protected AbstractElementAlias match_KPolygon_CommaKeyword_2_4_3_0_q;
 	protected AbstractElementAlias match_KPolygon___LeftCurlyBracketKeyword_2_0_RightCurlyBracketKeyword_2_5__q;
-	protected AbstractElementAlias match_KPolylinePlacementData_ColonKeyword_3_q;
-	protected AbstractElementAlias match_KPolylinePlacementData_ColonKeyword_6_1_q;
-	protected AbstractElementAlias match_KPolylinePlacementData_CommaKeyword_5_0_q;
-	protected AbstractElementAlias match_KPolyline_Impl_ColonKeyword_2_1_1_q;
-	protected AbstractElementAlias match_KPolyline_Impl_ColonKeyword_2_2_1_q;
-	protected AbstractElementAlias match_KPolyline_Impl_ColonKeyword_2_3_1_q;
-	protected AbstractElementAlias match_KPolyline_Impl_ColonKeyword_2_4_1_q;
-	protected AbstractElementAlias match_KPolyline_Impl_CommaKeyword_2_1_3_0_q;
-	protected AbstractElementAlias match_KPolyline_Impl_CommaKeyword_2_4_3_0_q;
-	protected AbstractElementAlias match_KPolyline_Impl___LeftCurlyBracketKeyword_2_0_RightCurlyBracketKeyword_2_5__q;
+	protected AbstractElementAlias match_KPolyline_Impl_ColonKeyword_2_2_q;
+	protected AbstractElementAlias match_KPolyline_Impl_ColonKeyword_2_5_1_q;
+	protected AbstractElementAlias match_KPolyline_Impl_ColonKeyword_2_6_1_q;
+	protected AbstractElementAlias match_KPolyline_Impl_ColonKeyword_2_7_1_q;
+	protected AbstractElementAlias match_KPolyline_Impl_ColonKeyword_2_8_1_q;
+	protected AbstractElementAlias match_KPolyline_Impl_CommaKeyword_2_4_0_q;
+	protected AbstractElementAlias match_KPolyline_Impl_CommaKeyword_2_5_3_0_q;
+	protected AbstractElementAlias match_KPolyline_Impl_CommaKeyword_2_8_3_0_q;
 	protected AbstractElementAlias match_KPort_ColonKeyword_3_1_q;
 	protected AbstractElementAlias match_KPort_ColonKeyword_4_1_q;
 	protected AbstractElementAlias match_KPort_ColonKeyword_5_1_q;
@@ -207,16 +205,14 @@ public class KGraphSyntacticSequencer extends AbstractSyntacticSequencer {
 		match_KPolygon_CommaKeyword_2_1_3_0_q = new TokenAlias(false, true, grammarAccess.getKPolygonAccess().getCommaKeyword_2_1_3_0());
 		match_KPolygon_CommaKeyword_2_4_3_0_q = new TokenAlias(false, true, grammarAccess.getKPolygonAccess().getCommaKeyword_2_4_3_0());
 		match_KPolygon___LeftCurlyBracketKeyword_2_0_RightCurlyBracketKeyword_2_5__q = new GroupAlias(false, true, new TokenAlias(false, false, grammarAccess.getKPolygonAccess().getLeftCurlyBracketKeyword_2_0()), new TokenAlias(false, false, grammarAccess.getKPolygonAccess().getRightCurlyBracketKeyword_2_5()));
-		match_KPolylinePlacementData_ColonKeyword_3_q = new TokenAlias(false, true, grammarAccess.getKPolylinePlacementDataAccess().getColonKeyword_3());
-		match_KPolylinePlacementData_ColonKeyword_6_1_q = new TokenAlias(false, true, grammarAccess.getKPolylinePlacementDataAccess().getColonKeyword_6_1());
-		match_KPolylinePlacementData_CommaKeyword_5_0_q = new TokenAlias(false, true, grammarAccess.getKPolylinePlacementDataAccess().getCommaKeyword_5_0());
-		match_KPolyline_Impl_ColonKeyword_2_1_1_q = new TokenAlias(false, true, grammarAccess.getKPolyline_ImplAccess().getColonKeyword_2_1_1());
-		match_KPolyline_Impl_ColonKeyword_2_2_1_q = new TokenAlias(false, true, grammarAccess.getKPolyline_ImplAccess().getColonKeyword_2_2_1());
-		match_KPolyline_Impl_ColonKeyword_2_3_1_q = new TokenAlias(false, true, grammarAccess.getKPolyline_ImplAccess().getColonKeyword_2_3_1());
-		match_KPolyline_Impl_ColonKeyword_2_4_1_q = new TokenAlias(false, true, grammarAccess.getKPolyline_ImplAccess().getColonKeyword_2_4_1());
-		match_KPolyline_Impl_CommaKeyword_2_1_3_0_q = new TokenAlias(false, true, grammarAccess.getKPolyline_ImplAccess().getCommaKeyword_2_1_3_0());
-		match_KPolyline_Impl_CommaKeyword_2_4_3_0_q = new TokenAlias(false, true, grammarAccess.getKPolyline_ImplAccess().getCommaKeyword_2_4_3_0());
-		match_KPolyline_Impl___LeftCurlyBracketKeyword_2_0_RightCurlyBracketKeyword_2_5__q = new GroupAlias(false, true, new TokenAlias(false, false, grammarAccess.getKPolyline_ImplAccess().getLeftCurlyBracketKeyword_2_0()), new TokenAlias(false, false, grammarAccess.getKPolyline_ImplAccess().getRightCurlyBracketKeyword_2_5()));
+		match_KPolyline_Impl_ColonKeyword_2_2_q = new TokenAlias(false, true, grammarAccess.getKPolyline_ImplAccess().getColonKeyword_2_2());
+		match_KPolyline_Impl_ColonKeyword_2_5_1_q = new TokenAlias(false, true, grammarAccess.getKPolyline_ImplAccess().getColonKeyword_2_5_1());
+		match_KPolyline_Impl_ColonKeyword_2_6_1_q = new TokenAlias(false, true, grammarAccess.getKPolyline_ImplAccess().getColonKeyword_2_6_1());
+		match_KPolyline_Impl_ColonKeyword_2_7_1_q = new TokenAlias(false, true, grammarAccess.getKPolyline_ImplAccess().getColonKeyword_2_7_1());
+		match_KPolyline_Impl_ColonKeyword_2_8_1_q = new TokenAlias(false, true, grammarAccess.getKPolyline_ImplAccess().getColonKeyword_2_8_1());
+		match_KPolyline_Impl_CommaKeyword_2_4_0_q = new TokenAlias(false, true, grammarAccess.getKPolyline_ImplAccess().getCommaKeyword_2_4_0());
+		match_KPolyline_Impl_CommaKeyword_2_5_3_0_q = new TokenAlias(false, true, grammarAccess.getKPolyline_ImplAccess().getCommaKeyword_2_5_3_0());
+		match_KPolyline_Impl_CommaKeyword_2_8_3_0_q = new TokenAlias(false, true, grammarAccess.getKPolyline_ImplAccess().getCommaKeyword_2_8_3_0());
 		match_KPort_ColonKeyword_3_1_q = new TokenAlias(false, true, grammarAccess.getKPortAccess().getColonKeyword_3_1());
 		match_KPort_ColonKeyword_4_1_q = new TokenAlias(false, true, grammarAccess.getKPortAccess().getColonKeyword_4_1());
 		match_KPort_ColonKeyword_5_1_q = new TokenAlias(false, true, grammarAccess.getKPortAccess().getColonKeyword_5_1());
@@ -406,26 +402,22 @@ public class KGraphSyntacticSequencer extends AbstractSyntacticSequencer {
 				emit_KPolygon_CommaKeyword_2_4_3_0_q(semanticObject, getLastNavigableState(), syntaxNodes);
 			else if(match_KPolygon___LeftCurlyBracketKeyword_2_0_RightCurlyBracketKeyword_2_5__q.equals(syntax))
 				emit_KPolygon___LeftCurlyBracketKeyword_2_0_RightCurlyBracketKeyword_2_5__q(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if(match_KPolylinePlacementData_ColonKeyword_3_q.equals(syntax))
-				emit_KPolylinePlacementData_ColonKeyword_3_q(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if(match_KPolylinePlacementData_ColonKeyword_6_1_q.equals(syntax))
-				emit_KPolylinePlacementData_ColonKeyword_6_1_q(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if(match_KPolylinePlacementData_CommaKeyword_5_0_q.equals(syntax))
-				emit_KPolylinePlacementData_CommaKeyword_5_0_q(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if(match_KPolyline_Impl_ColonKeyword_2_1_1_q.equals(syntax))
-				emit_KPolyline_Impl_ColonKeyword_2_1_1_q(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if(match_KPolyline_Impl_ColonKeyword_2_2_1_q.equals(syntax))
-				emit_KPolyline_Impl_ColonKeyword_2_2_1_q(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if(match_KPolyline_Impl_ColonKeyword_2_3_1_q.equals(syntax))
-				emit_KPolyline_Impl_ColonKeyword_2_3_1_q(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if(match_KPolyline_Impl_ColonKeyword_2_4_1_q.equals(syntax))
-				emit_KPolyline_Impl_ColonKeyword_2_4_1_q(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if(match_KPolyline_Impl_CommaKeyword_2_1_3_0_q.equals(syntax))
-				emit_KPolyline_Impl_CommaKeyword_2_1_3_0_q(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if(match_KPolyline_Impl_CommaKeyword_2_4_3_0_q.equals(syntax))
-				emit_KPolyline_Impl_CommaKeyword_2_4_3_0_q(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if(match_KPolyline_Impl___LeftCurlyBracketKeyword_2_0_RightCurlyBracketKeyword_2_5__q.equals(syntax))
-				emit_KPolyline_Impl___LeftCurlyBracketKeyword_2_0_RightCurlyBracketKeyword_2_5__q(semanticObject, getLastNavigableState(), syntaxNodes);
+			else if(match_KPolyline_Impl_ColonKeyword_2_2_q.equals(syntax))
+				emit_KPolyline_Impl_ColonKeyword_2_2_q(semanticObject, getLastNavigableState(), syntaxNodes);
+			else if(match_KPolyline_Impl_ColonKeyword_2_5_1_q.equals(syntax))
+				emit_KPolyline_Impl_ColonKeyword_2_5_1_q(semanticObject, getLastNavigableState(), syntaxNodes);
+			else if(match_KPolyline_Impl_ColonKeyword_2_6_1_q.equals(syntax))
+				emit_KPolyline_Impl_ColonKeyword_2_6_1_q(semanticObject, getLastNavigableState(), syntaxNodes);
+			else if(match_KPolyline_Impl_ColonKeyword_2_7_1_q.equals(syntax))
+				emit_KPolyline_Impl_ColonKeyword_2_7_1_q(semanticObject, getLastNavigableState(), syntaxNodes);
+			else if(match_KPolyline_Impl_ColonKeyword_2_8_1_q.equals(syntax))
+				emit_KPolyline_Impl_ColonKeyword_2_8_1_q(semanticObject, getLastNavigableState(), syntaxNodes);
+			else if(match_KPolyline_Impl_CommaKeyword_2_4_0_q.equals(syntax))
+				emit_KPolyline_Impl_CommaKeyword_2_4_0_q(semanticObject, getLastNavigableState(), syntaxNodes);
+			else if(match_KPolyline_Impl_CommaKeyword_2_5_3_0_q.equals(syntax))
+				emit_KPolyline_Impl_CommaKeyword_2_5_3_0_q(semanticObject, getLastNavigableState(), syntaxNodes);
+			else if(match_KPolyline_Impl_CommaKeyword_2_8_3_0_q.equals(syntax))
+				emit_KPolyline_Impl_CommaKeyword_2_8_3_0_q(semanticObject, getLastNavigableState(), syntaxNodes);
 			else if(match_KPort_ColonKeyword_3_1_q.equals(syntax))
 				emit_KPort_ColonKeyword_3_1_q(semanticObject, getLastNavigableState(), syntaxNodes);
 			else if(match_KPort_ColonKeyword_4_1_q.equals(syntax))
@@ -1032,7 +1024,7 @@ public class KGraphSyntacticSequencer extends AbstractSyntacticSequencer {
 	 * Syntax:
 	 *     ':'?
 	 */
-	protected void emit_KPolylinePlacementData_ColonKeyword_3_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
+	protected void emit_KPolyline_Impl_ColonKeyword_2_2_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
 		acceptNodes(transition, nodes);
 	}
 	
@@ -1040,7 +1032,31 @@ public class KGraphSyntacticSequencer extends AbstractSyntacticSequencer {
 	 * Syntax:
 	 *     ':'?
 	 */
-	protected void emit_KPolylinePlacementData_ColonKeyword_6_1_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
+	protected void emit_KPolyline_Impl_ColonKeyword_2_5_1_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
+		acceptNodes(transition, nodes);
+	}
+	
+	/**
+	 * Syntax:
+	 *     ':'?
+	 */
+	protected void emit_KPolyline_Impl_ColonKeyword_2_6_1_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
+		acceptNodes(transition, nodes);
+	}
+	
+	/**
+	 * Syntax:
+	 *     ':'?
+	 */
+	protected void emit_KPolyline_Impl_ColonKeyword_2_7_1_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
+		acceptNodes(transition, nodes);
+	}
+	
+	/**
+	 * Syntax:
+	 *     ':'?
+	 */
+	protected void emit_KPolyline_Impl_ColonKeyword_2_8_1_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
 		acceptNodes(transition, nodes);
 	}
 	
@@ -1048,39 +1064,7 @@ public class KGraphSyntacticSequencer extends AbstractSyntacticSequencer {
 	 * Syntax:
 	 *     ','?
 	 */
-	protected void emit_KPolylinePlacementData_CommaKeyword_5_0_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
-		acceptNodes(transition, nodes);
-	}
-	
-	/**
-	 * Syntax:
-	 *     ':'?
-	 */
-	protected void emit_KPolyline_Impl_ColonKeyword_2_1_1_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
-		acceptNodes(transition, nodes);
-	}
-	
-	/**
-	 * Syntax:
-	 *     ':'?
-	 */
-	protected void emit_KPolyline_Impl_ColonKeyword_2_2_1_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
-		acceptNodes(transition, nodes);
-	}
-	
-	/**
-	 * Syntax:
-	 *     ':'?
-	 */
-	protected void emit_KPolyline_Impl_ColonKeyword_2_3_1_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
-		acceptNodes(transition, nodes);
-	}
-	
-	/**
-	 * Syntax:
-	 *     ':'?
-	 */
-	protected void emit_KPolyline_Impl_ColonKeyword_2_4_1_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
+	protected void emit_KPolyline_Impl_CommaKeyword_2_4_0_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
 		acceptNodes(transition, nodes);
 	}
 	
@@ -1088,7 +1072,7 @@ public class KGraphSyntacticSequencer extends AbstractSyntacticSequencer {
 	 * Syntax:
 	 *     ','?
 	 */
-	protected void emit_KPolyline_Impl_CommaKeyword_2_1_3_0_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
+	protected void emit_KPolyline_Impl_CommaKeyword_2_5_3_0_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
 		acceptNodes(transition, nodes);
 	}
 	
@@ -1096,15 +1080,7 @@ public class KGraphSyntacticSequencer extends AbstractSyntacticSequencer {
 	 * Syntax:
 	 *     ','?
 	 */
-	protected void emit_KPolyline_Impl_CommaKeyword_2_4_3_0_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
-		acceptNodes(transition, nodes);
-	}
-	
-	/**
-	 * Syntax:
-	 *     ('{' '}')?
-	 */
-	protected void emit_KPolyline_Impl___LeftCurlyBracketKeyword_2_0_RightCurlyBracketKeyword_2_5__q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
+	protected void emit_KPolyline_Impl_CommaKeyword_2_8_3_0_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
 		acceptNodes(transition, nodes);
 	}
 	
