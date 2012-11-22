@@ -108,7 +108,7 @@ public final class PlacementUtil {
         Arrays.fill(placer.colWidths, 0);
         placer.rowHeights = new float[placer.numRows];
         Arrays.fill(placer.rowHeights, 0);
-        for (int i = 0; i < gpds.length; ++i) {
+        for (int i = 0; i < gpds.length; i++) {
             KGridPlacementData gpd = gpds[i];
             if (gpd == null) {
                 continue;
@@ -118,26 +118,29 @@ public final class PlacementUtil {
             int row = i / placer.numColumns;
 
             // determine the maximum col width and row height
+            // relative sizes can be ignored here, because they
+            // will be determined later based on the calculated absolute
+            float relativeWidth = 1.0f - gpd.getTopLeft().getX().getRelative()
+                    - gpd.getBottomRight().getX().getRelative();
+            float absoluteWidth = gpd.getWidthHint() // width of element
+                    + gpd.getTopLeft().getX().getAbsolute()// insetLeft
+                    + gpd.getBottomRight().getX().getAbsolute();// insetRight
+            float widthHint = absoluteWidth;
+            if (relativeWidth > 0f) {
+                widthHint = absoluteWidth / relativeWidth; // make cell bigger according to
+                                                           // relative indents
+            }
 
-            float widthHint = gpd.getWidthHint()
-                    // insetLeft
-                    + gpd.getTopLeft().getX().getAbsolute()
-                    + gpd.getTopLeft().getX().getRelative()
-                    * 0// TODO (size of col)
-                       // insetRight
-                    + gpd.getBottomRight().getX().getAbsolute()
-                    + gpd.getBottomRight().getX().getRelative() * 0; // TODO (size of col)
-            float heightHint = gpd.getHeightHint()
-                    +
-                    // insetTop
-                    gpd.getTopLeft().getY().getAbsolute()
-                    + gpd.getTopLeft().getY().getRelative()
-                    * 0
-                    + // TODO (height of col)
-                      // insetBottom
-                    gpd.getBottomRight().getY().getAbsolute()
-                    + gpd.getBottomRight().getY().getRelative() * 0; // TODO (height of col)
-
+            float relativeHeight = 1.0f - gpd.getTopLeft().getY().getRelative()
+                    - gpd.getBottomRight().getY().getRelative();
+            float absoluteHeight = gpd.getHeightHint() + // height of element
+                    gpd.getTopLeft().getY().getAbsolute() + // insetTop
+                    gpd.getBottomRight().getY().getAbsolute(); // insetBottom
+            float heightHint = absoluteHeight;
+            if (relativeHeight > 0f) {
+                heightHint = absoluteHeight / relativeHeight; // make cell bigger according to
+                                                              // relative indents
+            }
             if (widthHint > 0 && widthHint > placer.colWidths[col]) {
                 placer.colWidths[col] = widthHint;
             }
@@ -232,7 +235,7 @@ public final class PlacementUtil {
             // create the bounds
             float currentX = 0;
             float currentY = 0;
-            for (int i = 0; i < gpds.length; ++i) {
+            for (int i = 0; i < gpds.length; i++) {
                 KGridPlacementData gpd = gpds[i];
                 int col = i % numColumns;
                 int row = i / numColumns;
@@ -247,42 +250,38 @@ public final class PlacementUtil {
                 float insetBottom = 0;
                 float widthHint = 0;
                 float heightHint = 0;
+                float cellHeight = fixedRows[row] ? rowHeights[row] : variableHeight;
+                float cellWidth = fixedColumns[col] ? colWidths[col] : variableWidth;
                 if (gpd != null) {
                     insetLeft = gpd.getTopLeft().getX().eClass().getClassifierID() == KRenderingPackage.KLEFT_POSITION ?
                     // left indent measured from left so just take it
                     gpd.getTopLeft().getX().getAbsolute()
-                            + (gpd.getTopLeft().getX().getRelative() * ((float) parentBounds.width))
+                            + (gpd.getTopLeft().getX().getRelative() * cellWidth)
                             : // left indent measured from right, so calculate based on parentWidth
-                            (float) parentBounds.width
-                                    - gpd.getTopLeft().getX().getAbsolute()
-                                    - ((gpd.getTopLeft().getX().getRelative() * (float) parentBounds.width));
+                            cellWidth - gpd.getTopLeft().getX().getAbsolute()
+                                    - (gpd.getTopLeft().getX().getRelative() * cellWidth);
                     insetRight = gpd.getBottomRight().getX().eClass().getClassifierID() == KRenderingPackage.KRIGHT_POSITION ?
                     // right indent measured from right so just take it
                     gpd.getBottomRight().getX().getAbsolute()
-                            + (gpd.getBottomRight().getX().getRelative() * ((float) parentBounds.width))
+                            + (gpd.getBottomRight().getX().getRelative() * cellWidth)
                             : // right indent measured from right, so calculate based on parentWidth
-                            (float) parentBounds.width
-                                    - gpd.getBottomRight().getX().getAbsolute()
-                                    - (gpd.getBottomRight().getX().getRelative() * (float) parentBounds
-                                            .getWidth());
+                            cellWidth - gpd.getBottomRight().getX().getAbsolute()
+                                    - (gpd.getBottomRight().getX().getRelative() * cellWidth);
                     insetTop = gpd.getTopLeft().getY().eClass().getClassifierID() == KRenderingPackage.KTOP_POSITION ?
                     // top indent measured from top so just take it
                     gpd.getTopLeft().getY().getAbsolute()
-                            + (gpd.getTopLeft().getY().getRelative() * (float) parentBounds.height)
+
+                    + (gpd.getTopLeft().getY().getRelative() * cellHeight)
                             : // top indent measured from bottom so calculate based on parentHeight
-                            (float) parentBounds.height
-                                    - gpd.getTopLeft().getY().getAbsolute()
-                                    - (gpd.getTopLeft().getY().getRelative() * (float) parentBounds.height);
+                            cellHeight - gpd.getTopLeft().getY().getAbsolute()
+                                    - (gpd.getTopLeft().getY().getRelative() * cellHeight);
                     insetBottom = gpd.getBottomRight().getY().eClass().getClassifierID() == KRenderingPackage.KBOTTOM_POSITION ?
                     // bottom indent measured from bottom so just take it
                     gpd.getBottomRight().getY().getAbsolute()
-                            + (gpd.getBottomRight().getY().getRelative() * (float) parentBounds
-                                    .getHeight())
+                            + (gpd.getBottomRight().getY().getRelative() * cellHeight)
                             : // bottom indent measured from top so calculate based on parentHeight
-                            (float) parentBounds.getHeight()
-                                    - gpd.getBottomRight().getY().getAbsolute()
-                                    - (gpd.getBottomRight().getY().getRelative() * (float) parentBounds
-                                            .getHeight());
+                            cellHeight - gpd.getBottomRight().getY().getAbsolute()
+                                    - (gpd.getBottomRight().getY().getRelative() * cellHeight);
                     widthHint = gpd.getWidthHint();
                     heightHint = gpd.getHeightHint();
                 }
