@@ -209,7 +209,7 @@ public class PSWTAdvancedPath extends PNode {
     public static PSWTAdvancedPath createSpline(final Point2D[] points) {
         final PSWTAdvancedPath result = new PSWTAdvancedPath();
         result.setPathToSpline(points);
-        // chsch: do not set the paint of a line this will impair the
+        // chsch: do not set the paint of a line as this will impair the
         //  selection determination (using #intersects(), see below)
         // result.setPaint(Color.white);
         return result;
@@ -226,7 +226,7 @@ public class PSWTAdvancedPath extends PNode {
     public static PSWTAdvancedPath createPolyline(final Point2D[] points) {
         final PSWTAdvancedPath result = new PSWTAdvancedPath();
         result.setPathToPolyline(points);
-        // chsch: do not set the paint of a line this will impair the
+        // chsch: do not set the paint of a line as this will impair the
         //  selection determination (using #intersects(), see below)
         // result.setPaint(Color.white);
         return result;
@@ -246,7 +246,7 @@ public class PSWTAdvancedPath extends PNode {
             final float bendRadius) {
         final PSWTAdvancedPath result = new PSWTAdvancedPath();
         result.setPathToRoundedBendPolyline(points, bendRadius);
-        // chsch: do not set the paint of a line this will impair the
+        // chsch: do not set the paint of a line as this will impair the
         //  selection determination (using #intersects(), see below)
         // result.setPaint(Color.white);
         return result;
@@ -265,7 +265,7 @@ public class PSWTAdvancedPath extends PNode {
     public static PSWTAdvancedPath createPolyline(final float[] xp, final float[] yp) {
         final PSWTAdvancedPath result = new PSWTAdvancedPath();
         result.setPathToPolyline(xp, yp);
-        // chsch: do not set the paint of a line this will impair the
+        // chsch: do not set the paint of a line as this will impair the
         //  selection determination (using #intersects(), see below)
         // result.setPaint(Color.white);
         return result;
