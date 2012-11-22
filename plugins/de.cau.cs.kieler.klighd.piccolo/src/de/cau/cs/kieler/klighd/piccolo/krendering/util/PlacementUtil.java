@@ -25,6 +25,7 @@ import de.cau.cs.kieler.core.krendering.KLeftPosition;
 import de.cau.cs.kieler.core.krendering.KPlacementData;
 import de.cau.cs.kieler.core.krendering.KPolyline;
 import de.cau.cs.kieler.core.krendering.KPosition;
+import de.cau.cs.kieler.core.krendering.KRenderingPackage;
 import de.cau.cs.kieler.core.krendering.KRightPosition;
 import de.cau.cs.kieler.core.krendering.KTopPosition;
 import de.cau.cs.kieler.core.krendering.KXPosition;
@@ -86,6 +87,7 @@ public final class PlacementUtil {
      */
     public static GridPlacer evaluateGridPlacement(final KGridPlacement gridPlacement,
             final KGridPlacementData[] gpds) {
+        // KOCH MARKER
         GridPlacer placer = new GridPlacer();
         placer.gpds = gpds;
 
@@ -118,14 +120,12 @@ public final class PlacementUtil {
             // determine the maximum col width and row height
 
             float widthHint = gpd.getWidthHint()
-                    +
                     // insetLeft
-                    gpd.getTopLeft().getX().getAbsolute()
+                    + gpd.getTopLeft().getX().getAbsolute()
                     + gpd.getTopLeft().getX().getRelative()
-                    * 0
-                    + // TODO (size of col)
-                    // insetRight
-                    gpd.getBottomRight().getX().getAbsolute()
+                    * 0// TODO (size of col)
+                       // insetRight
+                    + gpd.getBottomRight().getX().getAbsolute()
                     + gpd.getBottomRight().getX().getRelative() * 0; // TODO (size of col)
             float heightHint = gpd.getHeightHint()
                     +
@@ -134,7 +134,7 @@ public final class PlacementUtil {
                     + gpd.getTopLeft().getY().getRelative()
                     * 0
                     + // TODO (height of col)
-                    // insetBottom
+                      // insetBottom
                     gpd.getBottomRight().getY().getAbsolute()
                     + gpd.getBottomRight().getY().getRelative() * 0; // TODO (height of col)
 
@@ -248,14 +248,41 @@ public final class PlacementUtil {
                 float widthHint = 0;
                 float heightHint = 0;
                 if (gpd != null) {
-                    insetLeft = gpd.getTopLeft().getX().getAbsolute()
-                            + gpd.getTopLeft().getX().getRelative() * 0; // TODO (size of col)
-                    insetRight = gpd.getBottomRight().getX().getAbsolute()
-                            + gpd.getBottomRight().getX().getRelative() * 0; // TODO (size of col)
-                    insetTop = gpd.getTopLeft().getY().getAbsolute()
-                            + gpd.getTopLeft().getY().getRelative() * 0; // TODO (height of col)
-                    insetBottom = gpd.getBottomRight().getY().getAbsolute()
-                            + gpd.getBottomRight().getY().getRelative() * 0; // TODO (height of col)
+                    insetLeft = gpd.getTopLeft().getX().eClass().getClassifierID() == KRenderingPackage.KLEFT_POSITION ?
+                    // left indent measured from left so just take it
+                    gpd.getTopLeft().getX().getAbsolute()
+                            + (gpd.getTopLeft().getX().getRelative() * ((float) parentBounds.width))
+                            : // left indent measured from right, so calculate based on parentWidth
+                            (float) parentBounds.width
+                                    - gpd.getTopLeft().getX().getAbsolute()
+                                    - ((gpd.getTopLeft().getX().getRelative() * (float) parentBounds.width));
+                    insetRight = gpd.getBottomRight().getX().eClass().getClassifierID() == KRenderingPackage.KRIGHT_POSITION ?
+                    // right indent measured from right so just take it
+                    gpd.getBottomRight().getX().getAbsolute()
+                            + (gpd.getBottomRight().getX().getRelative() * ((float) parentBounds.width))
+                            : // right indent measured from right, so calculate based on parentWidth
+                            (float) parentBounds.width
+                                    - gpd.getBottomRight().getX().getAbsolute()
+                                    - (gpd.getBottomRight().getX().getRelative() * (float) parentBounds
+                                            .getWidth());
+                    insetTop = gpd.getTopLeft().getY().eClass().getClassifierID() == KRenderingPackage.KTOP_POSITION ?
+                    // top indent measured from top so just take it
+                    gpd.getTopLeft().getY().getAbsolute()
+                            + (gpd.getTopLeft().getY().getRelative() * (float) parentBounds.height)
+                            : // top indent measured from bottom so calculate based on parentHeight
+                            (float) parentBounds.height
+                                    - gpd.getTopLeft().getY().getAbsolute()
+                                    - (gpd.getTopLeft().getY().getRelative() * (float) parentBounds.height);
+                    insetBottom = gpd.getBottomRight().getY().eClass().getClassifierID() == KRenderingPackage.KBOTTOM_POSITION ?
+                    // bottom indent measured from bottom so just take it
+                    gpd.getBottomRight().getY().getAbsolute()
+                            + (gpd.getBottomRight().getY().getRelative() * (float) parentBounds
+                                    .getHeight())
+                            : // bottom indent measured from top so calculate based on parentHeight
+                            (float) parentBounds.getHeight()
+                                    - gpd.getBottomRight().getY().getAbsolute()
+                                    - (gpd.getBottomRight().getY().getRelative() * (float) parentBounds
+                                            .getHeight());
                     widthHint = gpd.getWidthHint();
                     heightHint = gpd.getHeightHint();
                 }
@@ -318,7 +345,6 @@ public final class PlacementUtil {
 
             return bounds;
         }
-
     }
 
     /**
@@ -419,7 +445,7 @@ public final class PlacementUtil {
         } else if (yPos instanceof KBottomPosition) {
             point.y = height - yPos.getAbsolute() - yPos.getRelative() * height;
         } else { // SUPPRESS CHECKSTYLE EmptyBlock
-            // this branch is reached in case xPos has been set to 'null', e.g. by EMF Compare
+            // this branch is reached in case yPos has been set to 'null', e.g. by EMF Compare
             // do nothing as the value will be re-set most certainly in near future :-)!
         }
         return point;

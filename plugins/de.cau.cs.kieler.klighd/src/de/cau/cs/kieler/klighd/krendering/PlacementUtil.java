@@ -704,14 +704,14 @@ public final class PlacementUtil {
             // bottom right comes from right
             // top left comes from left
             relWidth = 1f - bR.getX().getRelative() - (tL.getX().getRelative());
-            absXOffest = bR.getX().getAbsolute() + tL.getX().getAbsolute();
+            absXOffset = bR.getX().getAbsolute() + tL.getX().getAbsolute();
             break;
 
         case LEFT_RIGHT:
             // bottom right comes from left
             // top left comes from right
             relWidth = bR.getX().getRelative() + tL.getX().getRelative() - 1f;
-            absXOffest = -bR.getX().getAbsolute() - tL.getX().getAbsolute();
+            absXOffset = -bR.getX().getAbsolute() - tL.getX().getAbsolute();
             break;
 
         case RIGHT_RIGHT:
@@ -999,7 +999,7 @@ public final class PlacementUtil {
             bounds = new KRenderingSwitch<Bounds>() {
                 public Bounds caseKGridPlacement(final KGridPlacement gridPlacement) {
                     // TODO implement this
-                    return new Bounds(0, 0, parentBounds.width, parentBounds.height);
+                    return new Bounds(0, 0, 100f, 100f);//KOCH MARKER: parentBounds.width, parentBounds.height);
                 }
             } /**/.doSwitch(placement);
         }
