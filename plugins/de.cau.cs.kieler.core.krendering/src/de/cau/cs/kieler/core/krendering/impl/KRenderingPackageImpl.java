@@ -971,7 +971,7 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
      * <!-- end-user-doc -->
      * @generated
      */
-    public EAttribute getKGridPlacementData_WidthHint() {
+    public EAttribute getKGridPlacementData_MinCellWidth() {
         return (EAttribute)kGridPlacementDataEClass.getEStructuralFeatures().get(0);
     }
 
@@ -980,8 +980,26 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
      * <!-- end-user-doc -->
      * @generated
      */
-    public EAttribute getKGridPlacementData_HeightHint() {
+    public EAttribute getKGridPlacementData_MaxCellWidth() {
         return (EAttribute)kGridPlacementDataEClass.getEStructuralFeatures().get(1);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EAttribute getKGridPlacementData_MinCellHeight() {
+        return (EAttribute)kGridPlacementDataEClass.getEStructuralFeatures().get(2);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EAttribute getKGridPlacementData_MaxCellHeight() {
+        return (EAttribute)kGridPlacementDataEClass.getEStructuralFeatures().get(3);
     }
 
     /**
@@ -1579,8 +1597,10 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
         kPlacementDataEClass = createEClass(KPLACEMENT_DATA);
 
         kGridPlacementDataEClass = createEClass(KGRID_PLACEMENT_DATA);
-        createEAttribute(kGridPlacementDataEClass, KGRID_PLACEMENT_DATA__WIDTH_HINT);
-        createEAttribute(kGridPlacementDataEClass, KGRID_PLACEMENT_DATA__HEIGHT_HINT);
+        createEAttribute(kGridPlacementDataEClass, KGRID_PLACEMENT_DATA__MIN_CELL_WIDTH);
+        createEAttribute(kGridPlacementDataEClass, KGRID_PLACEMENT_DATA__MAX_CELL_WIDTH);
+        createEAttribute(kGridPlacementDataEClass, KGRID_PLACEMENT_DATA__MIN_CELL_HEIGHT);
+        createEAttribute(kGridPlacementDataEClass, KGRID_PLACEMENT_DATA__MAX_CELL_HEIGHT);
 
         kDirectPlacementDataEClass = createEClass(KDIRECT_PLACEMENT_DATA);
         createEReference(kDirectPlacementDataEClass, KDIRECT_PLACEMENT_DATA__TOP_LEFT);
@@ -1811,8 +1831,10 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
         initEClass(kPlacementDataEClass, KPlacementData.class, "KPlacementData", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
         initEClass(kGridPlacementDataEClass, KGridPlacementData.class, "KGridPlacementData", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-        initEAttribute(getKGridPlacementData_WidthHint(), ecorePackage.getEFloat(), "widthHint", null, 0, 1, KGridPlacementData.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        initEAttribute(getKGridPlacementData_HeightHint(), ecorePackage.getEFloat(), "heightHint", null, 0, 1, KGridPlacementData.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEAttribute(getKGridPlacementData_MinCellWidth(), ecorePackage.getEFloat(), "minCellWidth", null, 0, 1, KGridPlacementData.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEAttribute(getKGridPlacementData_MaxCellWidth(), ecorePackage.getEFloat(), "maxCellWidth", null, 0, 1, KGridPlacementData.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEAttribute(getKGridPlacementData_MinCellHeight(), ecorePackage.getEFloat(), "minCellHeight", null, 0, 1, KGridPlacementData.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEAttribute(getKGridPlacementData_MaxCellHeight(), ecorePackage.getEFloat(), "maxCellHeight", null, 0, 1, KGridPlacementData.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         initEClass(kDirectPlacementDataEClass, KDirectPlacementData.class, "KDirectPlacementData", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         initEReference(getKDirectPlacementData_TopLeft(), this.getKPosition(), null, "topLeft", null, 1, 1, KDirectPlacementData.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);

@@ -27,8 +27,10 @@ package de.cau.cs.kieler.core.krendering;
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link de.cau.cs.kieler.core.krendering.KGridPlacementData#getWidthHint <em>Width Hint</em>}</li>
- *   <li>{@link de.cau.cs.kieler.core.krendering.KGridPlacementData#getHeightHint <em>Height Hint</em>}</li>
+ *   <li>{@link de.cau.cs.kieler.core.krendering.KGridPlacementData#getMinCellWidth <em>Min Cell Width</em>}</li>
+ *   <li>{@link de.cau.cs.kieler.core.krendering.KGridPlacementData#getMaxCellWidth <em>Max Cell Width</em>}</li>
+ *   <li>{@link de.cau.cs.kieler.core.krendering.KGridPlacementData#getMinCellHeight <em>Min Cell Height</em>}</li>
+ *   <li>{@link de.cau.cs.kieler.core.krendering.KGridPlacementData#getMaxCellHeight <em>Max Cell Height</em>}</li>
  * </ul>
  * </p>
  *
@@ -37,56 +39,109 @@ package de.cau.cs.kieler.core.krendering;
  * @generated
  */
 public interface KGridPlacementData extends KDirectPlacementData {
+
     /**
-     * Returns the value of the '<em><b>Width Hint</b></em>' attribute.
+     * Returns the value of the '<em><b>Min Cell Width</b></em>' attribute.
      * <!-- begin-user-doc -->
      * <p>
-     * If the meaning of the '<em>Width Hint</em>' attribute isn't clear,
+     * If the meaning of the '<em>Min Cell Width</em>' attribute isn't clear,
      * there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
-     * @return the value of the '<em>Width Hint</em>' attribute.
-     * @see #setWidthHint(float)
-     * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKGridPlacementData_WidthHint()
+     * @return the value of the '<em>Min Cell Width</em>' attribute.
+     * @see #setMinCellWidth(float)
+     * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKGridPlacementData_MinCellWidth()
      * @model
      * @generated
      */
-    float getWidthHint();
+    float getMinCellWidth();
 
     /**
-     * Sets the value of the '{@link de.cau.cs.kieler.core.krendering.KGridPlacementData#getWidthHint <em>Width Hint</em>}' attribute.
+     * Sets the value of the '{@link de.cau.cs.kieler.core.krendering.KGridPlacementData#getMinCellWidth <em>Min Cell Width</em>}' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @param value the new value of the '<em>Width Hint</em>' attribute.
-     * @see #getWidthHint()
+     * @param value the new value of the '<em>Min Cell Width</em>' attribute.
+     * @see #getMinCellWidth()
      * @generated
      */
-    void setWidthHint(float value);
+    void setMinCellWidth(float value);
 
     /**
-     * Returns the value of the '<em><b>Height Hint</b></em>' attribute.
+     * Returns the value of the '<em><b>Max Cell Width</b></em>' attribute.
      * <!-- begin-user-doc -->
      * <p>
-     * If the meaning of the '<em>Height Hint</em>' attribute isn't clear,
+     * If the meaning of the '<em>Max Cell Width</em>' attribute isn't clear,
      * there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
-     * @return the value of the '<em>Height Hint</em>' attribute.
-     * @see #setHeightHint(float)
-     * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKGridPlacementData_HeightHint()
+     * @return the value of the '<em>Max Cell Width</em>' attribute.
+     * @see #setMaxCellWidth(float)
+     * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKGridPlacementData_MaxCellWidth()
      * @model
      * @generated
      */
-    float getHeightHint();
+    float getMaxCellWidth();
 
     /**
-     * Sets the value of the '{@link de.cau.cs.kieler.core.krendering.KGridPlacementData#getHeightHint <em>Height Hint</em>}' attribute.
+     * Sets the value of the '{@link de.cau.cs.kieler.core.krendering.KGridPlacementData#getMaxCellWidth <em>Max Cell Width</em>}' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @param value the new value of the '<em>Height Hint</em>' attribute.
-     * @see #getHeightHint()
+     * @param value the new value of the '<em>Max Cell Width</em>' attribute.
+     * @see #getMaxCellWidth()
      * @generated
      */
-    void setHeightHint(float value);
+    void setMaxCellWidth(float value);
+
+    /**
+     * Returns the value of the '<em><b>Min Cell Height</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <p>
+     * If the meaning of the '<em>Min Cell Height</em>' attribute isn't clear,
+     * there really should be more of a description here...
+     * </p>
+     * <!-- end-user-doc -->
+     * @return the value of the '<em>Min Cell Height</em>' attribute.
+     * @see #setMinCellHeight(float)
+     * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKGridPlacementData_MinCellHeight()
+     * @model
+     * @generated
+     */
+    float getMinCellHeight();
+
+    /**
+     * Sets the value of the '{@link de.cau.cs.kieler.core.krendering.KGridPlacementData#getMinCellHeight <em>Min Cell Height</em>}' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @param value the new value of the '<em>Min Cell Height</em>' attribute.
+     * @see #getMinCellHeight()
+     * @generated
+     */
+    void setMinCellHeight(float value);
+
+    /**
+     * Returns the value of the '<em><b>Max Cell Height</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <p>
+     * If the meaning of the '<em>Max Cell Height</em>' attribute isn't clear,
+     * there really should be more of a description here...
+     * </p>
+     * <!-- end-user-doc -->
+     * @return the value of the '<em>Max Cell Height</em>' attribute.
+     * @see #setMaxCellHeight(float)
+     * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKGridPlacementData_MaxCellHeight()
+     * @model
+     * @generated
+     */
+    float getMaxCellHeight();
+
+    /**
+     * Sets the value of the '{@link de.cau.cs.kieler.core.krendering.KGridPlacementData#getMaxCellHeight <em>Max Cell Height</em>}' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @param value the new value of the '<em>Max Cell Height</em>' attribute.
+     * @see #getMaxCellHeight()
+     * @generated
+     */
+    void setMaxCellHeight(float value);
 
 } // KGridPlacementData

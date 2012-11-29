@@ -29,8 +29,10 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link de.cau.cs.kieler.core.krendering.impl.KGridPlacementDataImpl#getWidthHint <em>Width Hint</em>}</li>
- *   <li>{@link de.cau.cs.kieler.core.krendering.impl.KGridPlacementDataImpl#getHeightHint <em>Height Hint</em>}</li>
+ *   <li>{@link de.cau.cs.kieler.core.krendering.impl.KGridPlacementDataImpl#getMinCellWidth <em>Min Cell Width</em>}</li>
+ *   <li>{@link de.cau.cs.kieler.core.krendering.impl.KGridPlacementDataImpl#getMaxCellWidth <em>Max Cell Width</em>}</li>
+ *   <li>{@link de.cau.cs.kieler.core.krendering.impl.KGridPlacementDataImpl#getMinCellHeight <em>Min Cell Height</em>}</li>
+ *   <li>{@link de.cau.cs.kieler.core.krendering.impl.KGridPlacementDataImpl#getMaxCellHeight <em>Max Cell Height</em>}</li>
  * </ul>
  * </p>
  *
@@ -38,44 +40,78 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  */
 public class KGridPlacementDataImpl extends KDirectPlacementDataImpl implements KGridPlacementData {
     /**
-     * The default value of the '{@link #getWidthHint() <em>Width Hint</em>}' attribute.
+     * The default value of the '{@link #getMinCellWidth() <em>Min Cell Width</em>}' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see #getWidthHint()
+     * @see #getMinCellWidth()
      * @generated
      * @ordered
      */
-    protected static final float WIDTH_HINT_EDEFAULT = 0.0F;
+    protected static final float MIN_CELL_WIDTH_EDEFAULT = 0.0F;
+    /**
+     * The cached value of the '{@link #getMinCellWidth() <em>Min Cell Width</em>}' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see #getMinCellWidth()
+     * @generated
+     * @ordered
+     */
+    protected float minCellWidth = MIN_CELL_WIDTH_EDEFAULT;
 
     /**
-     * The cached value of the '{@link #getWidthHint() <em>Width Hint</em>}' attribute.
+     * The default value of the '{@link #getMaxCellWidth() <em>Max Cell Width</em>}' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see #getWidthHint()
+     * @see #getMaxCellWidth()
      * @generated
      * @ordered
      */
-    protected float widthHint = WIDTH_HINT_EDEFAULT;
-
+    protected static final float MAX_CELL_WIDTH_EDEFAULT = 0.0F;
     /**
-     * The default value of the '{@link #getHeightHint() <em>Height Hint</em>}' attribute.
+     * The cached value of the '{@link #getMaxCellWidth() <em>Max Cell Width</em>}' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see #getHeightHint()
+     * @see #getMaxCellWidth()
      * @generated
      * @ordered
      */
-    protected static final float HEIGHT_HINT_EDEFAULT = 0.0F;
-
+    protected float maxCellWidth = MAX_CELL_WIDTH_EDEFAULT;
     /**
-     * The cached value of the '{@link #getHeightHint() <em>Height Hint</em>}' attribute.
+     * The default value of the '{@link #getMinCellHeight() <em>Min Cell Height</em>}' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see #getHeightHint()
+     * @see #getMinCellHeight()
      * @generated
      * @ordered
      */
-    protected float heightHint = HEIGHT_HINT_EDEFAULT;
+    protected static final float MIN_CELL_HEIGHT_EDEFAULT = 0.0F;
+    /**
+     * The cached value of the '{@link #getMinCellHeight() <em>Min Cell Height</em>}' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see #getMinCellHeight()
+     * @generated
+     * @ordered
+     */
+    protected float minCellHeight = MIN_CELL_HEIGHT_EDEFAULT;
+    /**
+     * The default value of the '{@link #getMaxCellHeight() <em>Max Cell Height</em>}' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see #getMaxCellHeight()
+     * @generated
+     * @ordered
+     */
+    protected static final float MAX_CELL_HEIGHT_EDEFAULT = 0.0F;
+    /**
+     * The cached value of the '{@link #getMaxCellHeight() <em>Max Cell Height</em>}' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see #getMaxCellHeight()
+     * @generated
+     * @ordered
+     */
+    protected float maxCellHeight = MAX_CELL_HEIGHT_EDEFAULT;
 
     /**
      * <!-- begin-user-doc -->
@@ -101,8 +137,8 @@ public class KGridPlacementDataImpl extends KDirectPlacementDataImpl implements 
      * <!-- end-user-doc -->
      * @generated
      */
-    public float getWidthHint() {
-        return widthHint;
+    public float getMinCellWidth() {
+        return minCellWidth;
     }
 
     /**
@@ -110,11 +146,11 @@ public class KGridPlacementDataImpl extends KDirectPlacementDataImpl implements 
      * <!-- end-user-doc -->
      * @generated
      */
-    public void setWidthHint(float newWidthHint) {
-        float oldWidthHint = widthHint;
-        widthHint = newWidthHint;
+    public void setMinCellWidth(float newMinCellWidth) {
+        float oldMinCellWidth = minCellWidth;
+        minCellWidth = newMinCellWidth;
         if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, KRenderingPackage.KGRID_PLACEMENT_DATA__WIDTH_HINT, oldWidthHint, widthHint));
+            eNotify(new ENotificationImpl(this, Notification.SET, KRenderingPackage.KGRID_PLACEMENT_DATA__MIN_CELL_WIDTH, oldMinCellWidth, minCellWidth));
     }
 
     /**
@@ -122,8 +158,8 @@ public class KGridPlacementDataImpl extends KDirectPlacementDataImpl implements 
      * <!-- end-user-doc -->
      * @generated
      */
-    public float getHeightHint() {
-        return heightHint;
+    public float getMaxCellWidth() {
+        return maxCellWidth;
     }
 
     /**
@@ -131,11 +167,53 @@ public class KGridPlacementDataImpl extends KDirectPlacementDataImpl implements 
      * <!-- end-user-doc -->
      * @generated
      */
-    public void setHeightHint(float newHeightHint) {
-        float oldHeightHint = heightHint;
-        heightHint = newHeightHint;
+    public void setMaxCellWidth(float newMaxCellWidth) {
+        float oldMaxCellWidth = maxCellWidth;
+        maxCellWidth = newMaxCellWidth;
         if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, KRenderingPackage.KGRID_PLACEMENT_DATA__HEIGHT_HINT, oldHeightHint, heightHint));
+            eNotify(new ENotificationImpl(this, Notification.SET, KRenderingPackage.KGRID_PLACEMENT_DATA__MAX_CELL_WIDTH, oldMaxCellWidth, maxCellWidth));
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public float getMinCellHeight() {
+        return minCellHeight;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public void setMinCellHeight(float newMinCellHeight) {
+        float oldMinCellHeight = minCellHeight;
+        minCellHeight = newMinCellHeight;
+        if (eNotificationRequired())
+            eNotify(new ENotificationImpl(this, Notification.SET, KRenderingPackage.KGRID_PLACEMENT_DATA__MIN_CELL_HEIGHT, oldMinCellHeight, minCellHeight));
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public float getMaxCellHeight() {
+        return maxCellHeight;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public void setMaxCellHeight(float newMaxCellHeight) {
+        float oldMaxCellHeight = maxCellHeight;
+        maxCellHeight = newMaxCellHeight;
+        if (eNotificationRequired())
+            eNotify(new ENotificationImpl(this, Notification.SET, KRenderingPackage.KGRID_PLACEMENT_DATA__MAX_CELL_HEIGHT, oldMaxCellHeight, maxCellHeight));
     }
 
     /**
@@ -146,10 +224,14 @@ public class KGridPlacementDataImpl extends KDirectPlacementDataImpl implements 
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
-            case KRenderingPackage.KGRID_PLACEMENT_DATA__WIDTH_HINT:
-                return getWidthHint();
-            case KRenderingPackage.KGRID_PLACEMENT_DATA__HEIGHT_HINT:
-                return getHeightHint();
+            case KRenderingPackage.KGRID_PLACEMENT_DATA__MIN_CELL_WIDTH:
+                return getMinCellWidth();
+            case KRenderingPackage.KGRID_PLACEMENT_DATA__MAX_CELL_WIDTH:
+                return getMaxCellWidth();
+            case KRenderingPackage.KGRID_PLACEMENT_DATA__MIN_CELL_HEIGHT:
+                return getMinCellHeight();
+            case KRenderingPackage.KGRID_PLACEMENT_DATA__MAX_CELL_HEIGHT:
+                return getMaxCellHeight();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -162,11 +244,17 @@ public class KGridPlacementDataImpl extends KDirectPlacementDataImpl implements 
     @Override
     public void eSet(int featureID, Object newValue) {
         switch (featureID) {
-            case KRenderingPackage.KGRID_PLACEMENT_DATA__WIDTH_HINT:
-                setWidthHint((Float)newValue);
+            case KRenderingPackage.KGRID_PLACEMENT_DATA__MIN_CELL_WIDTH:
+                setMinCellWidth((Float)newValue);
                 return;
-            case KRenderingPackage.KGRID_PLACEMENT_DATA__HEIGHT_HINT:
-                setHeightHint((Float)newValue);
+            case KRenderingPackage.KGRID_PLACEMENT_DATA__MAX_CELL_WIDTH:
+                setMaxCellWidth((Float)newValue);
+                return;
+            case KRenderingPackage.KGRID_PLACEMENT_DATA__MIN_CELL_HEIGHT:
+                setMinCellHeight((Float)newValue);
+                return;
+            case KRenderingPackage.KGRID_PLACEMENT_DATA__MAX_CELL_HEIGHT:
+                setMaxCellHeight((Float)newValue);
                 return;
         }
         super.eSet(featureID, newValue);
@@ -180,11 +268,17 @@ public class KGridPlacementDataImpl extends KDirectPlacementDataImpl implements 
     @Override
     public void eUnset(int featureID) {
         switch (featureID) {
-            case KRenderingPackage.KGRID_PLACEMENT_DATA__WIDTH_HINT:
-                setWidthHint(WIDTH_HINT_EDEFAULT);
+            case KRenderingPackage.KGRID_PLACEMENT_DATA__MIN_CELL_WIDTH:
+                setMinCellWidth(MIN_CELL_WIDTH_EDEFAULT);
                 return;
-            case KRenderingPackage.KGRID_PLACEMENT_DATA__HEIGHT_HINT:
-                setHeightHint(HEIGHT_HINT_EDEFAULT);
+            case KRenderingPackage.KGRID_PLACEMENT_DATA__MAX_CELL_WIDTH:
+                setMaxCellWidth(MAX_CELL_WIDTH_EDEFAULT);
+                return;
+            case KRenderingPackage.KGRID_PLACEMENT_DATA__MIN_CELL_HEIGHT:
+                setMinCellHeight(MIN_CELL_HEIGHT_EDEFAULT);
+                return;
+            case KRenderingPackage.KGRID_PLACEMENT_DATA__MAX_CELL_HEIGHT:
+                setMaxCellHeight(MAX_CELL_HEIGHT_EDEFAULT);
                 return;
         }
         super.eUnset(featureID);
@@ -198,10 +292,14 @@ public class KGridPlacementDataImpl extends KDirectPlacementDataImpl implements 
     @Override
     public boolean eIsSet(int featureID) {
         switch (featureID) {
-            case KRenderingPackage.KGRID_PLACEMENT_DATA__WIDTH_HINT:
-                return widthHint != WIDTH_HINT_EDEFAULT;
-            case KRenderingPackage.KGRID_PLACEMENT_DATA__HEIGHT_HINT:
-                return heightHint != HEIGHT_HINT_EDEFAULT;
+            case KRenderingPackage.KGRID_PLACEMENT_DATA__MIN_CELL_WIDTH:
+                return minCellWidth != MIN_CELL_WIDTH_EDEFAULT;
+            case KRenderingPackage.KGRID_PLACEMENT_DATA__MAX_CELL_WIDTH:
+                return maxCellWidth != MAX_CELL_WIDTH_EDEFAULT;
+            case KRenderingPackage.KGRID_PLACEMENT_DATA__MIN_CELL_HEIGHT:
+                return minCellHeight != MIN_CELL_HEIGHT_EDEFAULT;
+            case KRenderingPackage.KGRID_PLACEMENT_DATA__MAX_CELL_HEIGHT:
+                return maxCellHeight != MAX_CELL_HEIGHT_EDEFAULT;
         }
         return super.eIsSet(featureID);
     }
@@ -216,10 +314,14 @@ public class KGridPlacementDataImpl extends KDirectPlacementDataImpl implements 
         if (eIsProxy()) return super.toString();
 
         StringBuffer result = new StringBuffer(super.toString());
-        result.append(" (widthHint: ");
-        result.append(widthHint);
-        result.append(", heightHint: ");
-        result.append(heightHint);
+        result.append(" (minCellWidth: ");
+        result.append(minCellWidth);
+        result.append(", maxCellWidth: ");
+        result.append(maxCellWidth);
+        result.append(", minCellHeight: ");
+        result.append(minCellHeight);
+        result.append(", maxCellHeight: ");
+        result.append(maxCellHeight);
         result.append(')');
         return result.toString();
     }
