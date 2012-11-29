@@ -511,32 +511,32 @@ public final class PlacementUtil {
             KPlacementData plcData = rens.get(k).getPlacementData();
             KGridPlacementData gridData = null;
 
-            if (plcData instanceof KGridPlacementData) {
-                gridData = (KGridPlacementData) plcData;
-
-                if (gridData.getWidthHint() < childMinBounds.width) {
-                    gridData.setWidthHint(childMinBounds.width);
-                } else {
-                    childMinBounds.width = gridData.getWidthHint();
-                }
-                if (gridData.getHeightHint() < childMinBounds.height) {
-                    gridData.setHeightHint(childMinBounds.height);
-                } else {
-                    childMinBounds.height = gridData.getHeightHint();
-                }
-            } else {
-                // If there is another placement data than expected
-                // we replace it with a grid placement data
-                // Chsch: I'm a bit concerned about that ...
-                if (((minBounds.width / numColumns) < childMinBounds.width)
-                        || ((minBounds.height / numRows) < childMinBounds.height)) {
-
-                    gridData = KRenderingFactory.eINSTANCE.createKGridPlacementData();
-                    gridData.setWidthHint(childMinBounds.width);
-                    gridData.setHeightHint(childMinBounds.height);
-                    rens.get(k).setPlacementData(gridData);
-                }
-            }
+//            if (plcData instanceof KGridPlacementData) {
+//                gridData = (KGridPlacementData) plcData;
+//
+//                if (gridData.getMinCellWidth() < childMinBounds.width) {
+//                    gridData.setMinCellWidth(childMinBounds.width);
+//                } else {
+//                    childMinBounds.width = gridData.getMinCellWidth();
+//                }
+//                if (gridData.getMinCellHeight() < childMinBounds.height) {
+//                    gridData.setMinCellHeight(childMinBounds.height);
+//                } else {
+//                    childMinBounds.height = gridData.getMinCellHeight();
+//                }
+//            } else {
+//                // If there is another placement data than expected
+//                // we replace it with a grid placement data
+//                // Chsch: I'm a bit concerned about that ...
+//                if (((minBounds.width / numColumns) < childMinBounds.width)
+//                        || ((minBounds.height / numRows) < childMinBounds.height)) {
+//
+//                    gridData = KRenderingFactory.eINSTANCE.createKGridPlacementData();
+//                    gridData.setMinCellWidth(childMinBounds.width);
+//                    gridData.setMinCellHeight(childMinBounds.height);
+//                    rens.get(k).setPlacementData(gridData);
+//                }
+//            }
 
             // compare the width and height of the current rendering with the biggest width
             // and height of the corresponding row and column and update the values with the
