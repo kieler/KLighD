@@ -121,7 +121,8 @@ public class KEdgeRenderingController extends AbstractRenderingController<KEdge,
         // create the rendering
         @SuppressWarnings("unchecked")
         final PNodeController<PSWTAdvancedPath> controller =
-                (PNodeController<PSWTAdvancedPath>) createRendering(rendering,
+                (PNodeController<PSWTAdvancedPath>) 
+                createRendering(rendering,
                         new ArrayList<KStyle>(0), parent, new PBounds(0, 0, 1, 1),
                         getRepresentation());
         if (rendering instanceof KSpline) {
