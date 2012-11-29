@@ -192,11 +192,13 @@ KGridPlacementData returns KGridPlacementData:
     {KGridPlacementData}
     'GridPlacementData'
     '{'
-        ('widthHint' widthHint=EFloat)?
-        ('heightHint' heightHint=EFloat)?
+        ('minCellWidth' minCellWidth=EFloat)?
+        ('minCellHeight' minCellHeight=EFloat)?
+        ('maxCellWidth' maxCellWidth=EFloat)?
+        ('maxCellHeight' maxCellHeight=EFloat)?
         ('topLeft' topLeft=KPosition)?
         ('bottomRight' bottomRight=KPosition)?
-    '}';
+     '}';
 
 KDirectPlacementData returns KDirectPlacementData:
     'DirectPlacementData'

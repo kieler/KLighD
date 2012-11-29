@@ -2445,30 +2445,40 @@ public class KRenderingGrammarAccess extends AbstractGrammarElementFinder {
 		private final Keyword cGridPlacementDataKeyword_1 = (Keyword)cGroup.eContents().get(1);
 		private final Keyword cLeftCurlyBracketKeyword_2 = (Keyword)cGroup.eContents().get(2);
 		private final Group cGroup_3 = (Group)cGroup.eContents().get(3);
-		private final Keyword cWidthHintKeyword_3_0 = (Keyword)cGroup_3.eContents().get(0);
-		private final Assignment cWidthHintAssignment_3_1 = (Assignment)cGroup_3.eContents().get(1);
-		private final RuleCall cWidthHintEFloatParserRuleCall_3_1_0 = (RuleCall)cWidthHintAssignment_3_1.eContents().get(0);
+		private final Keyword cMinCellWidthKeyword_3_0 = (Keyword)cGroup_3.eContents().get(0);
+		private final Assignment cMinCellWidthAssignment_3_1 = (Assignment)cGroup_3.eContents().get(1);
+		private final RuleCall cMinCellWidthEFloatParserRuleCall_3_1_0 = (RuleCall)cMinCellWidthAssignment_3_1.eContents().get(0);
 		private final Group cGroup_4 = (Group)cGroup.eContents().get(4);
-		private final Keyword cHeightHintKeyword_4_0 = (Keyword)cGroup_4.eContents().get(0);
-		private final Assignment cHeightHintAssignment_4_1 = (Assignment)cGroup_4.eContents().get(1);
-		private final RuleCall cHeightHintEFloatParserRuleCall_4_1_0 = (RuleCall)cHeightHintAssignment_4_1.eContents().get(0);
+		private final Keyword cMinCellHeightKeyword_4_0 = (Keyword)cGroup_4.eContents().get(0);
+		private final Assignment cMinCellHeightAssignment_4_1 = (Assignment)cGroup_4.eContents().get(1);
+		private final RuleCall cMinCellHeightEFloatParserRuleCall_4_1_0 = (RuleCall)cMinCellHeightAssignment_4_1.eContents().get(0);
 		private final Group cGroup_5 = (Group)cGroup.eContents().get(5);
-		private final Keyword cTopLeftKeyword_5_0 = (Keyword)cGroup_5.eContents().get(0);
-		private final Assignment cTopLeftAssignment_5_1 = (Assignment)cGroup_5.eContents().get(1);
-		private final RuleCall cTopLeftKPositionParserRuleCall_5_1_0 = (RuleCall)cTopLeftAssignment_5_1.eContents().get(0);
+		private final Keyword cMaxCellWidthKeyword_5_0 = (Keyword)cGroup_5.eContents().get(0);
+		private final Assignment cMaxCellWidthAssignment_5_1 = (Assignment)cGroup_5.eContents().get(1);
+		private final RuleCall cMaxCellWidthEFloatParserRuleCall_5_1_0 = (RuleCall)cMaxCellWidthAssignment_5_1.eContents().get(0);
 		private final Group cGroup_6 = (Group)cGroup.eContents().get(6);
-		private final Keyword cBottomRightKeyword_6_0 = (Keyword)cGroup_6.eContents().get(0);
-		private final Assignment cBottomRightAssignment_6_1 = (Assignment)cGroup_6.eContents().get(1);
-		private final RuleCall cBottomRightKPositionParserRuleCall_6_1_0 = (RuleCall)cBottomRightAssignment_6_1.eContents().get(0);
-		private final Keyword cRightCurlyBracketKeyword_7 = (Keyword)cGroup.eContents().get(7);
+		private final Keyword cMaxCellHeightKeyword_6_0 = (Keyword)cGroup_6.eContents().get(0);
+		private final Assignment cMaxCellHeightAssignment_6_1 = (Assignment)cGroup_6.eContents().get(1);
+		private final RuleCall cMaxCellHeightEFloatParserRuleCall_6_1_0 = (RuleCall)cMaxCellHeightAssignment_6_1.eContents().get(0);
+		private final Group cGroup_7 = (Group)cGroup.eContents().get(7);
+		private final Keyword cTopLeftKeyword_7_0 = (Keyword)cGroup_7.eContents().get(0);
+		private final Assignment cTopLeftAssignment_7_1 = (Assignment)cGroup_7.eContents().get(1);
+		private final RuleCall cTopLeftKPositionParserRuleCall_7_1_0 = (RuleCall)cTopLeftAssignment_7_1.eContents().get(0);
+		private final Group cGroup_8 = (Group)cGroup.eContents().get(8);
+		private final Keyword cBottomRightKeyword_8_0 = (Keyword)cGroup_8.eContents().get(0);
+		private final Assignment cBottomRightAssignment_8_1 = (Assignment)cGroup_8.eContents().get(1);
+		private final RuleCall cBottomRightKPositionParserRuleCall_8_1_0 = (RuleCall)cBottomRightAssignment_8_1.eContents().get(0);
+		private final Keyword cRightCurlyBracketKeyword_9 = (Keyword)cGroup.eContents().get(9);
 		
 		//KGridPlacementData:
-		//	{KGridPlacementData} "GridPlacementData" "{" ("widthHint" widthHint=EFloat)? ("heightHint" heightHint=EFloat)?
-		//	("topLeft" topLeft=KPosition)? ("bottomRight" bottomRight=KPosition)? "}";
+		//	{KGridPlacementData} "GridPlacementData" "{" ("minCellWidth" minCellWidth=EFloat)? ("minCellHeight"
+		//	minCellHeight=EFloat)? ("maxCellWidth" maxCellWidth=EFloat)? ("maxCellHeight" maxCellHeight=EFloat)? ("topLeft"
+		//	topLeft=KPosition)? ("bottomRight" bottomRight=KPosition)? "}";
 		public ParserRule getRule() { return rule; }
 
-		//{KGridPlacementData} "GridPlacementData" "{" ("widthHint" widthHint=EFloat)? ("heightHint" heightHint=EFloat)?
-		//("topLeft" topLeft=KPosition)? ("bottomRight" bottomRight=KPosition)? "}"
+		//{KGridPlacementData} "GridPlacementData" "{" ("minCellWidth" minCellWidth=EFloat)? ("minCellHeight"
+		//minCellHeight=EFloat)? ("maxCellWidth" maxCellWidth=EFloat)? ("maxCellHeight" maxCellHeight=EFloat)? ("topLeft"
+		//topLeft=KPosition)? ("bottomRight" bottomRight=KPosition)? "}"
 		public Group getGroup() { return cGroup; }
 
 		//{KGridPlacementData}
@@ -2480,56 +2490,80 @@ public class KRenderingGrammarAccess extends AbstractGrammarElementFinder {
 		//"{"
 		public Keyword getLeftCurlyBracketKeyword_2() { return cLeftCurlyBracketKeyword_2; }
 
-		//("widthHint" widthHint=EFloat)?
+		//("minCellWidth" minCellWidth=EFloat)?
 		public Group getGroup_3() { return cGroup_3; }
 
-		//"widthHint"
-		public Keyword getWidthHintKeyword_3_0() { return cWidthHintKeyword_3_0; }
+		//"minCellWidth"
+		public Keyword getMinCellWidthKeyword_3_0() { return cMinCellWidthKeyword_3_0; }
 
-		//widthHint=EFloat
-		public Assignment getWidthHintAssignment_3_1() { return cWidthHintAssignment_3_1; }
+		//minCellWidth=EFloat
+		public Assignment getMinCellWidthAssignment_3_1() { return cMinCellWidthAssignment_3_1; }
 
 		//EFloat
-		public RuleCall getWidthHintEFloatParserRuleCall_3_1_0() { return cWidthHintEFloatParserRuleCall_3_1_0; }
+		public RuleCall getMinCellWidthEFloatParserRuleCall_3_1_0() { return cMinCellWidthEFloatParserRuleCall_3_1_0; }
 
-		//("heightHint" heightHint=EFloat)?
+		//("minCellHeight" minCellHeight=EFloat)?
 		public Group getGroup_4() { return cGroup_4; }
 
-		//"heightHint"
-		public Keyword getHeightHintKeyword_4_0() { return cHeightHintKeyword_4_0; }
+		//"minCellHeight"
+		public Keyword getMinCellHeightKeyword_4_0() { return cMinCellHeightKeyword_4_0; }
 
-		//heightHint=EFloat
-		public Assignment getHeightHintAssignment_4_1() { return cHeightHintAssignment_4_1; }
+		//minCellHeight=EFloat
+		public Assignment getMinCellHeightAssignment_4_1() { return cMinCellHeightAssignment_4_1; }
 
 		//EFloat
-		public RuleCall getHeightHintEFloatParserRuleCall_4_1_0() { return cHeightHintEFloatParserRuleCall_4_1_0; }
+		public RuleCall getMinCellHeightEFloatParserRuleCall_4_1_0() { return cMinCellHeightEFloatParserRuleCall_4_1_0; }
 
-		//("topLeft" topLeft=KPosition)?
+		//("maxCellWidth" maxCellWidth=EFloat)?
 		public Group getGroup_5() { return cGroup_5; }
 
-		//"topLeft"
-		public Keyword getTopLeftKeyword_5_0() { return cTopLeftKeyword_5_0; }
+		//"maxCellWidth"
+		public Keyword getMaxCellWidthKeyword_5_0() { return cMaxCellWidthKeyword_5_0; }
 
-		//topLeft=KPosition
-		public Assignment getTopLeftAssignment_5_1() { return cTopLeftAssignment_5_1; }
+		//maxCellWidth=EFloat
+		public Assignment getMaxCellWidthAssignment_5_1() { return cMaxCellWidthAssignment_5_1; }
 
-		//KPosition
-		public RuleCall getTopLeftKPositionParserRuleCall_5_1_0() { return cTopLeftKPositionParserRuleCall_5_1_0; }
+		//EFloat
+		public RuleCall getMaxCellWidthEFloatParserRuleCall_5_1_0() { return cMaxCellWidthEFloatParserRuleCall_5_1_0; }
 
-		//("bottomRight" bottomRight=KPosition)?
+		//("maxCellHeight" maxCellHeight=EFloat)?
 		public Group getGroup_6() { return cGroup_6; }
 
-		//"bottomRight"
-		public Keyword getBottomRightKeyword_6_0() { return cBottomRightKeyword_6_0; }
+		//"maxCellHeight"
+		public Keyword getMaxCellHeightKeyword_6_0() { return cMaxCellHeightKeyword_6_0; }
 
-		//bottomRight=KPosition
-		public Assignment getBottomRightAssignment_6_1() { return cBottomRightAssignment_6_1; }
+		//maxCellHeight=EFloat
+		public Assignment getMaxCellHeightAssignment_6_1() { return cMaxCellHeightAssignment_6_1; }
+
+		//EFloat
+		public RuleCall getMaxCellHeightEFloatParserRuleCall_6_1_0() { return cMaxCellHeightEFloatParserRuleCall_6_1_0; }
+
+		//("topLeft" topLeft=KPosition)?
+		public Group getGroup_7() { return cGroup_7; }
+
+		//"topLeft"
+		public Keyword getTopLeftKeyword_7_0() { return cTopLeftKeyword_7_0; }
+
+		//topLeft=KPosition
+		public Assignment getTopLeftAssignment_7_1() { return cTopLeftAssignment_7_1; }
 
 		//KPosition
-		public RuleCall getBottomRightKPositionParserRuleCall_6_1_0() { return cBottomRightKPositionParserRuleCall_6_1_0; }
+		public RuleCall getTopLeftKPositionParserRuleCall_7_1_0() { return cTopLeftKPositionParserRuleCall_7_1_0; }
+
+		//("bottomRight" bottomRight=KPosition)?
+		public Group getGroup_8() { return cGroup_8; }
+
+		//"bottomRight"
+		public Keyword getBottomRightKeyword_8_0() { return cBottomRightKeyword_8_0; }
+
+		//bottomRight=KPosition
+		public Assignment getBottomRightAssignment_8_1() { return cBottomRightAssignment_8_1; }
+
+		//KPosition
+		public RuleCall getBottomRightKPositionParserRuleCall_8_1_0() { return cBottomRightKPositionParserRuleCall_8_1_0; }
 
 		//"}"
-		public Keyword getRightCurlyBracketKeyword_7() { return cRightCurlyBracketKeyword_7; }
+		public Keyword getRightCurlyBracketKeyword_9() { return cRightCurlyBracketKeyword_9; }
 	}
 
 	public class KDirectPlacementDataElements extends AbstractParserRuleElementFinder {
@@ -3846,8 +3880,9 @@ public class KRenderingGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//KGridPlacementData:
-	//	{KGridPlacementData} "GridPlacementData" "{" ("widthHint" widthHint=EFloat)? ("heightHint" heightHint=EFloat)?
-	//	("topLeft" topLeft=KPosition)? ("bottomRight" bottomRight=KPosition)? "}";
+	//	{KGridPlacementData} "GridPlacementData" "{" ("minCellWidth" minCellWidth=EFloat)? ("minCellHeight"
+	//	minCellHeight=EFloat)? ("maxCellWidth" maxCellWidth=EFloat)? ("maxCellHeight" maxCellHeight=EFloat)? ("topLeft"
+	//	topLeft=KPosition)? ("bottomRight" bottomRight=KPosition)? "}";
 	public KGridPlacementDataElements getKGridPlacementDataAccess() {
 		return (pKGridPlacementData != null) ? pKGridPlacementData : (pKGridPlacementData = new KGridPlacementDataElements());
 	}

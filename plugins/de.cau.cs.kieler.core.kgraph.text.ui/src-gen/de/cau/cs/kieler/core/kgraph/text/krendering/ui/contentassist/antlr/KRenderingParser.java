@@ -165,6 +165,8 @@ public class KRenderingParser extends AbstractContentAssistParser {
 					put(grammarAccess.getKGridPlacementDataAccess().getGroup_4(), "rule__KGridPlacementData__Group_4__0");
 					put(grammarAccess.getKGridPlacementDataAccess().getGroup_5(), "rule__KGridPlacementData__Group_5__0");
 					put(grammarAccess.getKGridPlacementDataAccess().getGroup_6(), "rule__KGridPlacementData__Group_6__0");
+					put(grammarAccess.getKGridPlacementDataAccess().getGroup_7(), "rule__KGridPlacementData__Group_7__0");
+					put(grammarAccess.getKGridPlacementDataAccess().getGroup_8(), "rule__KGridPlacementData__Group_8__0");
 					put(grammarAccess.getKDirectPlacementDataAccess().getGroup(), "rule__KDirectPlacementData__Group__0");
 					put(grammarAccess.getKPositionAccess().getGroup(), "rule__KPosition__Group__0");
 					put(grammarAccess.getKLeftPositionAccess().getGroup(), "rule__KLeftPosition__Group__0");
@@ -311,10 +313,12 @@ public class KRenderingParser extends AbstractContentAssistParser {
 					put(grammarAccess.getKDecoratorPlacementDataAccess().getYOffsetAssignment_7_1(), "rule__KDecoratorPlacementData__YOffsetAssignment_7_1");
 					put(grammarAccess.getKDecoratorPlacementDataAccess().getWidthAssignment_8_1(), "rule__KDecoratorPlacementData__WidthAssignment_8_1");
 					put(grammarAccess.getKDecoratorPlacementDataAccess().getHeightAssignment_9_1(), "rule__KDecoratorPlacementData__HeightAssignment_9_1");
-					put(grammarAccess.getKGridPlacementDataAccess().getWidthHintAssignment_3_1(), "rule__KGridPlacementData__WidthHintAssignment_3_1");
-					put(grammarAccess.getKGridPlacementDataAccess().getHeightHintAssignment_4_1(), "rule__KGridPlacementData__HeightHintAssignment_4_1");
-					put(grammarAccess.getKGridPlacementDataAccess().getTopLeftAssignment_5_1(), "rule__KGridPlacementData__TopLeftAssignment_5_1");
-					put(grammarAccess.getKGridPlacementDataAccess().getBottomRightAssignment_6_1(), "rule__KGridPlacementData__BottomRightAssignment_6_1");
+					put(grammarAccess.getKGridPlacementDataAccess().getMinCellWidthAssignment_3_1(), "rule__KGridPlacementData__MinCellWidthAssignment_3_1");
+					put(grammarAccess.getKGridPlacementDataAccess().getMinCellHeightAssignment_4_1(), "rule__KGridPlacementData__MinCellHeightAssignment_4_1");
+					put(grammarAccess.getKGridPlacementDataAccess().getMaxCellWidthAssignment_5_1(), "rule__KGridPlacementData__MaxCellWidthAssignment_5_1");
+					put(grammarAccess.getKGridPlacementDataAccess().getMaxCellHeightAssignment_6_1(), "rule__KGridPlacementData__MaxCellHeightAssignment_6_1");
+					put(grammarAccess.getKGridPlacementDataAccess().getTopLeftAssignment_7_1(), "rule__KGridPlacementData__TopLeftAssignment_7_1");
+					put(grammarAccess.getKGridPlacementDataAccess().getBottomRightAssignment_8_1(), "rule__KGridPlacementData__BottomRightAssignment_8_1");
 					put(grammarAccess.getKDirectPlacementDataAccess().getTopLeftAssignment_3(), "rule__KDirectPlacementData__TopLeftAssignment_3");
 					put(grammarAccess.getKDirectPlacementDataAccess().getBottomRightAssignment_6(), "rule__KDirectPlacementData__BottomRightAssignment_6");
 					put(grammarAccess.getKPositionAccess().getXAssignment_0(), "rule__KPosition__XAssignment_0");

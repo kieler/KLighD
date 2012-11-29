@@ -1217,8 +1217,9 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//KGridPlacementData:
-	//	{KGridPlacementData} "GridPlacementData" "{" ("widthHint" widthHint=EFloat)? ("heightHint" heightHint=EFloat)?
-	//	("topLeft" topLeft=KPosition)? ("bottomRight" bottomRight=KPosition)? "}";
+	//	{KGridPlacementData} "GridPlacementData" "{" ("minCellWidth" minCellWidth=EFloat)? ("minCellHeight"
+	//	minCellHeight=EFloat)? ("maxCellWidth" maxCellWidth=EFloat)? ("maxCellHeight" maxCellHeight=EFloat)? ("topLeft"
+	//	topLeft=KPosition)? ("bottomRight" bottomRight=KPosition)? "}";
 	public KRenderingGrammarAccess.KGridPlacementDataElements getKGridPlacementDataAccess() {
 		return gaKRendering.getKGridPlacementDataAccess();
 	}

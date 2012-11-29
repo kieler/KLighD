@@ -1220,14 +1220,26 @@
         <elements xsi:type="xtext:Keyword" value="GridPlacementData"/>
         <elements xsi:type="xtext:Keyword" value="{"/>
         <elements xsi:type="xtext:Group" cardinality="?">
-          <elements xsi:type="xtext:Keyword" value="widthHint"/>
-          <elements xsi:type="xtext:Assignment" feature="widthHint" operator="=">
+          <elements xsi:type="xtext:Keyword" value="minCellWidth"/>
+          <elements xsi:type="xtext:Assignment" feature="minCellWidth" operator="=">
             <terminal xsi:type="xtext:RuleCall" rule="/1/@rules.46"/>
           </elements>
         </elements>
         <elements xsi:type="xtext:Group" cardinality="?">
-          <elements xsi:type="xtext:Keyword" value="heightHint"/>
-          <elements xsi:type="xtext:Assignment" feature="heightHint" operator="=">
+          <elements xsi:type="xtext:Keyword" value="minCellHeight"/>
+          <elements xsi:type="xtext:Assignment" feature="minCellHeight" operator="=">
+            <terminal xsi:type="xtext:RuleCall" rule="/1/@rules.46"/>
+          </elements>
+        </elements>
+        <elements xsi:type="xtext:Group" cardinality="?">
+          <elements xsi:type="xtext:Keyword" value="maxCellWidth"/>
+          <elements xsi:type="xtext:Assignment" feature="maxCellWidth" operator="=">
+            <terminal xsi:type="xtext:RuleCall" rule="/1/@rules.46"/>
+          </elements>
+        </elements>
+        <elements xsi:type="xtext:Group" cardinality="?">
+          <elements xsi:type="xtext:Keyword" value="maxCellHeight"/>
+          <elements xsi:type="xtext:Assignment" feature="maxCellHeight" operator="=">
             <terminal xsi:type="xtext:RuleCall" rule="/1/@rules.46"/>
           </elements>
         </elements>

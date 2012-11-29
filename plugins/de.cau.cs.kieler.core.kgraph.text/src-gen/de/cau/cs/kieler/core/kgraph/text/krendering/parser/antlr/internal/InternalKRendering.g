@@ -3411,97 +3411,141 @@ ruleKGridPlacementData returns [EObject current=null]
     {
     	newLeafNode(otherlv_2, grammarAccess.getKGridPlacementDataAccess().getLeftCurlyBracketKeyword_2());
     }
-(	otherlv_3='widthHint' 
+(	otherlv_3='minCellWidth' 
     {
-    	newLeafNode(otherlv_3, grammarAccess.getKGridPlacementDataAccess().getWidthHintKeyword_3_0());
+    	newLeafNode(otherlv_3, grammarAccess.getKGridPlacementDataAccess().getMinCellWidthKeyword_3_0());
     }
 (
 (
 		{ 
-	        newCompositeNode(grammarAccess.getKGridPlacementDataAccess().getWidthHintEFloatParserRuleCall_3_1_0()); 
+	        newCompositeNode(grammarAccess.getKGridPlacementDataAccess().getMinCellWidthEFloatParserRuleCall_3_1_0()); 
 	    }
-		lv_widthHint_4_0=ruleEFloat		{
+		lv_minCellWidth_4_0=ruleEFloat		{
 	        if ($current==null) {
 	            $current = createModelElementForParent(grammarAccess.getKGridPlacementDataRule());
 	        }
        		set(
        			$current, 
-       			"widthHint",
-        		lv_widthHint_4_0, 
+       			"minCellWidth",
+        		lv_minCellWidth_4_0, 
         		"EFloat");
 	        afterParserOrEnumRuleCall();
 	    }
 
 )
-))?(	otherlv_5='heightHint' 
+))?(	otherlv_5='minCellHeight' 
     {
-    	newLeafNode(otherlv_5, grammarAccess.getKGridPlacementDataAccess().getHeightHintKeyword_4_0());
+    	newLeafNode(otherlv_5, grammarAccess.getKGridPlacementDataAccess().getMinCellHeightKeyword_4_0());
     }
 (
 (
 		{ 
-	        newCompositeNode(grammarAccess.getKGridPlacementDataAccess().getHeightHintEFloatParserRuleCall_4_1_0()); 
+	        newCompositeNode(grammarAccess.getKGridPlacementDataAccess().getMinCellHeightEFloatParserRuleCall_4_1_0()); 
 	    }
-		lv_heightHint_6_0=ruleEFloat		{
+		lv_minCellHeight_6_0=ruleEFloat		{
 	        if ($current==null) {
 	            $current = createModelElementForParent(grammarAccess.getKGridPlacementDataRule());
 	        }
        		set(
        			$current, 
-       			"heightHint",
-        		lv_heightHint_6_0, 
+       			"minCellHeight",
+        		lv_minCellHeight_6_0, 
         		"EFloat");
 	        afterParserOrEnumRuleCall();
 	    }
 
 )
-))?(	otherlv_7='topLeft' 
+))?(	otherlv_7='maxCellWidth' 
     {
-    	newLeafNode(otherlv_7, grammarAccess.getKGridPlacementDataAccess().getTopLeftKeyword_5_0());
+    	newLeafNode(otherlv_7, grammarAccess.getKGridPlacementDataAccess().getMaxCellWidthKeyword_5_0());
     }
 (
 (
 		{ 
-	        newCompositeNode(grammarAccess.getKGridPlacementDataAccess().getTopLeftKPositionParserRuleCall_5_1_0()); 
+	        newCompositeNode(grammarAccess.getKGridPlacementDataAccess().getMaxCellWidthEFloatParserRuleCall_5_1_0()); 
 	    }
-		lv_topLeft_8_0=ruleKPosition		{
+		lv_maxCellWidth_8_0=ruleEFloat		{
+	        if ($current==null) {
+	            $current = createModelElementForParent(grammarAccess.getKGridPlacementDataRule());
+	        }
+       		set(
+       			$current, 
+       			"maxCellWidth",
+        		lv_maxCellWidth_8_0, 
+        		"EFloat");
+	        afterParserOrEnumRuleCall();
+	    }
+
+)
+))?(	otherlv_9='maxCellHeight' 
+    {
+    	newLeafNode(otherlv_9, grammarAccess.getKGridPlacementDataAccess().getMaxCellHeightKeyword_6_0());
+    }
+(
+(
+		{ 
+	        newCompositeNode(grammarAccess.getKGridPlacementDataAccess().getMaxCellHeightEFloatParserRuleCall_6_1_0()); 
+	    }
+		lv_maxCellHeight_10_0=ruleEFloat		{
+	        if ($current==null) {
+	            $current = createModelElementForParent(grammarAccess.getKGridPlacementDataRule());
+	        }
+       		set(
+       			$current, 
+       			"maxCellHeight",
+        		lv_maxCellHeight_10_0, 
+        		"EFloat");
+	        afterParserOrEnumRuleCall();
+	    }
+
+)
+))?(	otherlv_11='topLeft' 
+    {
+    	newLeafNode(otherlv_11, grammarAccess.getKGridPlacementDataAccess().getTopLeftKeyword_7_0());
+    }
+(
+(
+		{ 
+	        newCompositeNode(grammarAccess.getKGridPlacementDataAccess().getTopLeftKPositionParserRuleCall_7_1_0()); 
+	    }
+		lv_topLeft_12_0=ruleKPosition		{
 	        if ($current==null) {
 	            $current = createModelElementForParent(grammarAccess.getKGridPlacementDataRule());
 	        }
        		set(
        			$current, 
        			"topLeft",
-        		lv_topLeft_8_0, 
+        		lv_topLeft_12_0, 
         		"KPosition");
 	        afterParserOrEnumRuleCall();
 	    }
 
 )
-))?(	otherlv_9='bottomRight' 
+))?(	otherlv_13='bottomRight' 
     {
-    	newLeafNode(otherlv_9, grammarAccess.getKGridPlacementDataAccess().getBottomRightKeyword_6_0());
+    	newLeafNode(otherlv_13, grammarAccess.getKGridPlacementDataAccess().getBottomRightKeyword_8_0());
     }
 (
 (
 		{ 
-	        newCompositeNode(grammarAccess.getKGridPlacementDataAccess().getBottomRightKPositionParserRuleCall_6_1_0()); 
+	        newCompositeNode(grammarAccess.getKGridPlacementDataAccess().getBottomRightKPositionParserRuleCall_8_1_0()); 
 	    }
-		lv_bottomRight_10_0=ruleKPosition		{
+		lv_bottomRight_14_0=ruleKPosition		{
 	        if ($current==null) {
 	            $current = createModelElementForParent(grammarAccess.getKGridPlacementDataRule());
 	        }
        		set(
        			$current, 
        			"bottomRight",
-        		lv_bottomRight_10_0, 
+        		lv_bottomRight_14_0, 
         		"KPosition");
 	        afterParserOrEnumRuleCall();
 	    }
 
 )
-))?	otherlv_11='}' 
+))?	otherlv_15='}' 
     {
-    	newLeafNode(otherlv_11, grammarAccess.getKGridPlacementDataAccess().getRightCurlyBracketKeyword_7());
+    	newLeafNode(otherlv_15, grammarAccess.getKGridPlacementDataAccess().getRightCurlyBracketKeyword_9());
     }
 )
 ;

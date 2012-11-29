@@ -535,7 +535,14 @@ public class KRenderingSemanticSequencer extends KLayoutDataSemanticSequencer {
 	
 	/**
 	 * Constraint:
-	 *     (widthHint=EFloat? heightHint=EFloat? topLeft=KPosition? bottomRight=KPosition?)
+	 *     (
+	 *         minCellWidth=EFloat? 
+	 *         minCellHeight=EFloat? 
+	 *         maxCellWidth=EFloat? 
+	 *         maxCellHeight=EFloat? 
+	 *         topLeft=KPosition? 
+	 *         bottomRight=KPosition?
+	 *     )
 	 */
 	protected void sequence_KGridPlacementData(EObject context, KGridPlacementData semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
