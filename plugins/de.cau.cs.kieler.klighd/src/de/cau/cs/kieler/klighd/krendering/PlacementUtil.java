@@ -25,6 +25,7 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.xtext.xbase.lib.IterableExtensions;
 
 import com.google.common.base.Strings;
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 
@@ -566,19 +567,19 @@ public final class PlacementUtil {
             minColumnWidths[colunm] = Math.max(minColumnWidths[colunm], childMinBounds.width);
         }
 
-        // the minimum total bound is the sum of the biggest renderings in height and width
-        // Bounds childBounds = new Bounds(0, 0);
-        // for (float width : minColumnWidths) {
-        // childBounds.width += width;
-        // }
-        // for (float height : minRowHeights) {
-        // childBounds.height += height;
-        // }
+         //the minimum total bound is the sum of the biggest renderings in height and width
+         Bounds childBounds = new Bounds(0, 0);
+         for (float width : minColumnWidths) {
+         childBounds.width += width;
+         }
+         for (float height : minRowHeights) {
+         childBounds.height += height;
+         }
 
         // compare the minimal need size with the maximal yet found size and
         // update the minimal size accordingly
-        // minBounds.x = Math.max(minBounds.x, childBounds.x);
-        // minBounds.y = Math.max(minBounds.y, childBounds.y);
+         minBounds.x = Math.max(minBounds.x, childBounds.x);
+         minBounds.y = Math.max(minBounds.y, childBounds.y);
 
         return minBounds;
         // return childBounds;
@@ -1019,18 +1020,14 @@ public final class PlacementUtil {
             bounds = new KRenderingSwitch<Bounds>() {
                 public Bounds caseKGridPlacement(final KGridPlacement gridPlacement) {
 
-                    // TODO implement this
-                    // placement
-                    // bounds
-                    // children
-
-                    // collect the grid placement data
+                    // collect the grid placement data from the children
                     final KGridPlacementData[] gpds = new KGridPlacementData[children.size()];
                     int i = 0;
                     for (KRendering rendering : children) {
                         gpds[i++] = asGridPlacementData(rendering.getPlacementData());
                     }
-
+                    
+                    //evaluate grid based on that data and print placement for current child
                     return evaluateGridPlacement(gridPlacement, gpds, parentBounds)[children
                             .lastIndexOf(child)];
                 }
@@ -1240,12 +1237,13 @@ public final class PlacementUtil {
             Bounds[] bounds = new Bounds[gpds.length];
             float availableParentWidth = (float) parentBounds.width;
             float availableParentHeight = (float) parentBounds.height;
+            //System.out.println(parentBounds.width+" "+parentBounds.height);
 
             // calculate scaling and variable width/height per column/row
             float widthScale = 1;
             // determine the width of columns
             // start by giving each column it's desired minimum width
-            calculatedColumnWidth = columnMaxMinWidth;
+            calculatedColumnWidth = columnMaxMinWidth.clone();
             if (minTotalWidth > availableParentWidth) {
                 // if that's already too big, adapt scale
                 widthScale = availableParentWidth / minTotalWidth;
@@ -1285,7 +1283,7 @@ public final class PlacementUtil {
             float heightScale = 1;
             // determine the height of rows
             // start by giving each row it's desired minimum height
-            calculatedRowHeight = rowMaxMinHeight;
+            calculatedRowHeight = rowMaxMinHeight.clone();
             if (minTotalHeight > availableParentHeight) {
                 // if that's already too big, adapt scale
                 heightScale = availableParentHeight / minTotalHeight;
@@ -1374,6 +1372,7 @@ public final class PlacementUtil {
                 float elementWidth = (cellWidth - insetLeft - insetRight) * widthScale;
                 float elementY = currentY + insetTop * heightScale;
                 float elementHeight = (cellHeight - insetTop - insetBottom) * heightScale;
+                //System.out.println(IterableExtensions.join(ImmutableList.of(elementX, elementY, elementWidth, elementHeight), "\t"));
                 // set bounds
                 bounds[i] = new Bounds(elementX, elementY, elementWidth, elementHeight);
 

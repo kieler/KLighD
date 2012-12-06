@@ -70,6 +70,7 @@ public class ApplySmartBoundsActivity extends PInterpolatingActivity {
      */
     @Override
     public void setRelativeTargetValue(final float zeroToOne) {
+        //System.out.println("New Round " + zeroToOne);
         super.setRelativeTargetValue(zeroToOne);
         if (zeroToOne == 1.0f) {
             // when the activity completes set the target bounds

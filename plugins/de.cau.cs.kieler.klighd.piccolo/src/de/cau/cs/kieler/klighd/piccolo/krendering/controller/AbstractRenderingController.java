@@ -522,8 +522,11 @@ public abstract class AbstractRenderingController<S extends KGraphElement, T ext
         }
 
         // calculate the bounds
-        Bounds parentBounds = new Bounds((float) parent.getBoundsReference().getX(), (float) parent
-                .getBoundsReference().getY(), (float) parent.getBoundsReference().getWidth(),
+        Bounds parentBounds = 
+                new Bounds(
+                (float) parent.getBoundsReference().getX(), 
+                (float) parent.getBoundsReference().getY(), 
+                (float) parent.getBoundsReference().getWidth(),
                 (float) parent.getBoundsReference().getHeight());
         final GridPlacer gridPlacer = PlacementUtil.getGridPlacementObject(gridPlacement, gpds);
         Bounds elementBounds[] = gridPlacer.evaluate(parentBounds);

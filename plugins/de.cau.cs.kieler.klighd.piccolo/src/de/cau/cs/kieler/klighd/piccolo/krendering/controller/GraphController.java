@@ -685,6 +685,9 @@ public class GraphController {
                 activity = new ApplySmartBoundsActivity(shapeNode, bounds,
                         duration > 0 ? duration : 1);
             }
+            
+            activity.setDuration(100);
+            activity.setStepRate(50);
 
             if (duration > 0) {
                 // schedule the activity
