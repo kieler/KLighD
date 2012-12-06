@@ -25,7 +25,7 @@ import de.cau.cs.kieler.core.krendering.KRenderingFactory;
 import de.cau.cs.kieler.core.krendering.KStyle;
 import de.cau.cs.kieler.klighd.piccolo.krendering.KChildAreaNode;
 import de.cau.cs.kieler.klighd.piccolo.krendering.KNodeNode;
-import de.cau.cs.kieler.klighd.piccolo.krendering.util.PlacementUtil;
+import de.cau.cs.kieler.klighd.piccolo.krendering.util.PiccoloPlacementUtil;
 import de.cau.cs.kieler.klighd.piccolo.util.NodeUtil;
 import edu.umd.cs.piccolo.PNode;
 import edu.umd.cs.piccolo.util.PBounds;
@@ -129,7 +129,7 @@ public class KNodeRenderingController extends AbstractRenderingController<KNode,
      */
     private void createDefaultChildArea(final PNode parent) {
         // determine the initial bounds
-        PBounds bounds = PlacementUtil.evaluateDirectPlacement(null, parent.getBoundsReference());
+        PBounds bounds = PiccoloPlacementUtil.evaluateDirectPlacement(null, parent.getBoundsReference());
 
         // configure the child area
         final PNodeController<?> controller = createChildArea(parent, bounds);
@@ -140,7 +140,7 @@ public class KNodeRenderingController extends AbstractRenderingController<KNode,
                     public void propertyChange(final PropertyChangeEvent e) {
                         // calculate the new bounds of the rendering
                         PBounds bounds =
-                                PlacementUtil.evaluateDirectPlacement(null,
+                                PiccoloPlacementUtil.evaluateDirectPlacement(null,
                                         parent.getBoundsReference());
                         // use the controller to apply the new bounds
                         controller.setBounds(bounds);

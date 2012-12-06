@@ -25,7 +25,7 @@ import de.cau.cs.kieler.core.krendering.KStyle;
 import de.cau.cs.kieler.core.krendering.KText;
 import de.cau.cs.kieler.klighd.krendering.KTextUtil;
 import de.cau.cs.kieler.klighd.piccolo.krendering.KLabelNode;
-import de.cau.cs.kieler.klighd.piccolo.krendering.util.PlacementUtil;
+import de.cau.cs.kieler.klighd.piccolo.krendering.util.PiccoloPlacementUtil;
 import edu.umd.cs.piccolo.PNode;
 import edu.umd.cs.piccolo.util.PBounds;
 import edu.umd.cs.piccolox.swt.PSWTText;
@@ -104,7 +104,7 @@ public class KLabelRenderingController extends AbstractRenderingController<KLabe
                     public void propertyChange(final PropertyChangeEvent e) {
                         // calculate the new bounds of the rendering
                         PBounds bounds =
-                                PlacementUtil.evaluateDirectPlacement(PlacementUtil
+                                PiccoloPlacementUtil.evaluateDirectPlacement(PiccoloPlacementUtil
                                         .asDirectPlacementData(rendering.getPlacementData()),
                                         parent.getBoundsReference());
                         // use the controller to apply the new bounds

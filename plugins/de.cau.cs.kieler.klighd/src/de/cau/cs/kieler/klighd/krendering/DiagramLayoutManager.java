@@ -259,7 +259,7 @@ public class DiagramLayoutManager implements IDiagramLayoutManager<KGraphElement
         // set the node layout
         KShapeLayout layoutLayout = layoutNode.getData(KShapeLayout.class);
         KShapeLayout nodeLayout = node.getData(KShapeLayout.class);
-
+        Bounds minSize;
         if (nodeLayout != null) {
 
             transferShapeLayout(nodeLayout, layoutLayout);
@@ -270,12 +270,14 @@ public class DiagramLayoutManager implements IDiagramLayoutManager<KGraphElement
             KRendering rootRendering = node.getData(KRendering.class);
             if (rootRendering != null) {
                 // calculate the minimal size need for the first rendering ... 
-                Bounds minSize = PlacementUtil.estimateSize(rootRendering,
+
+                minSize = PlacementUtil.estimateSize(rootRendering,
                         new Bounds(layoutLayout.getWidth(), layoutLayout.getHeight()));
                 
                 // ... and update the node size if it exceeds its size
                 if (minSize.width > layoutLayout.getWidth()) {
                     layoutLayout.setWidth(minSize.width);
+
                     // In order to instruct KIML to not shrink the node beyond the minimal size,
                     //  e.g. due to less space required by child nodes,
                     //  configure a related layout option!
@@ -296,8 +298,9 @@ public class DiagramLayoutManager implements IDiagramLayoutManager<KGraphElement
         PlacementUtil.calculateInsets(node, layoutInsets);
 
         layoutParent.getChildren().add(layoutNode);
+        BiMap<KGraphElement,KGraphElement> map = mapping.getGraphMap();
         mapping.getGraphMap().put(layoutNode, node);
-
+        
         // process ports
         for (KPort port : node.getPorts()) {
             createPort(mapping, port, layoutNode);
