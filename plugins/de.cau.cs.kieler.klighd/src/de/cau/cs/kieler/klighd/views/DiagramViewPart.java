@@ -36,6 +36,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
+import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Sash;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.ScrolledForm;
@@ -95,10 +96,8 @@ public class DiagramViewPart extends ViewPart {
         // create the options container
         createOptionsContainer(parent);
         GridLayout gridLayout = new GridLayout(3, false); // SUPPRESS CHECKSTYLE MagicNumber
-        gridLayout.marginTop = 0;
-        gridLayout.marginBottom = 0;
-        gridLayout.marginLeft = 0;
-        gridLayout.marginRight = 0;
+        gridLayout.marginWidth = 0;
+        gridLayout.marginHeight = 0;
         parent.setLayout(gridLayout);
         
         // install a drop handler for the view
@@ -145,6 +144,9 @@ public class DiagramViewPart extends ViewPart {
         setPartName(name);
     }
     
+    private static final int DEFAULT_PALETTE_WIDTH = 150;
+    private static final int MIN_WIDTH = 60;
+    
     private void createOptionsContainer(final Composite parent) {
         Sash sash = new Sash(parent, SWT.VERTICAL);
         GridData gridData = new GridData(SWT.RIGHT, SWT.FILL, false, true);
@@ -160,9 +162,11 @@ public class DiagramViewPart extends ViewPart {
         });
         
         toolkit = new FormToolkit(parent.getDisplay());
-        ScrolledForm form = toolkit.createScrolledForm(parent);
+        final ScrolledForm form = toolkit.createScrolledForm(parent);
         form.setText("Options");
-        form.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, true));
+        final GridData formLayoutData = new GridData(SWT.FILL, SWT.FILL, false, true);
+        formLayoutData.widthHint = DEFAULT_PALETTE_WIDTH;
+        form.setLayoutData(formLayoutData);
         Composite optionsContainer = form.getBody();
         optionsContainer.setLayout(new GridLayout(2, false));
         
@@ -171,6 +175,19 @@ public class DiagramViewPart extends ViewPart {
         optionControlFactory.createControl(LayoutOptions.ALGORITHM.getId());
         optionControlFactory.createControl(LayoutOptions.SPACING.getId(), 3f, 200f);
         optionControlFactory.createControl(LayoutOptions.RANDOM_SEED.getId(), 1f, 100f);
+        
+        sash.addListener(SWT.Selection, new Listener() {
+            public void handleEvent(final Event event) {
+                if (event.detail == SWT.DRAG) {
+                    // FIXME the "27" in the next line was determined experimentally
+                    int newWidth = parent.getClientArea().width - (event.x + 27);
+                    if (event.x > MIN_WIDTH && newWidth > MIN_WIDTH) {
+                        formLayoutData.widthHint = newWidth;
+                        parent.layout();
+                    }
+                }
+            }
+        });
     }
 
     /**
