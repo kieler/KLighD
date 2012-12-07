@@ -20,13 +20,31 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.dnd.DND;
 import org.eclipse.swt.dnd.DropTarget;
 import org.eclipse.swt.dnd.DropTargetEvent;
 import org.eclipse.swt.dnd.DropTargetListener;
 import org.eclipse.swt.dnd.Transfer;
+import org.eclipse.swt.events.PaintEvent;
+import org.eclipse.swt.events.PaintListener;
+import org.eclipse.swt.graphics.Point;
+import org.eclipse.swt.layout.FillLayout;
+import org.eclipse.swt.layout.FormAttachment;
+import org.eclipse.swt.layout.FormData;
+import org.eclipse.swt.layout.FormLayout;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
+import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Sash;
+import org.eclipse.ui.forms.widgets.Form;
+import org.eclipse.ui.forms.widgets.FormToolkit;
+import org.eclipse.ui.forms.widgets.ScrolledForm;
 import org.eclipse.ui.part.ResourceTransfer;
 import org.eclipse.ui.part.ViewPart;
 import org.eclipse.ui.statushandlers.StatusManager;
@@ -46,6 +64,7 @@ import de.cau.cs.kieler.kiml.options.LayoutOptions;
 import de.cau.cs.kieler.kiml.ui.KimlUiPlugin;
 import de.cau.cs.kieler.kiml.ui.diagram.DiagramLayoutEngine;
 import de.cau.cs.kieler.klighd.KlighdPlugin;
+import de.cau.cs.kieler.klighd.options.OptionControlFactory;
 import de.cau.cs.kieler.klighd.triggers.KlighdResourceDropTrigger;
 import de.cau.cs.kieler.klighd.triggers.KlighdResourceDropTrigger.KlighdResourceDropState;
 import de.cau.cs.kieler.klighd.viewers.ContextViewer;
@@ -62,21 +81,47 @@ public class DiagramViewPart extends ViewPart {
     
     /** the viewer for this view part. */
     private ContextViewer viewer;
+    /** the form toolkit. */
+    private FormToolkit toolkit;
 
     /**
      * {@inheritDoc}
      */
     @Override
     public void createPartControl(final Composite parent) {        
-        
+        // add buttons to the view toolbar 
         addButtons();
-        // create a context viewer
-        viewer = new ContextViewer(parent, getViewSite().getSecondaryId(), this);
+        
+        // create the context viewer
+        Composite diagramContainer = new Composite(parent, SWT.NONE);
+        viewer = new ContextViewer(diagramContainer, getViewSite().getSecondaryId(), this);
+        diagramContainer.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+        diagramContainer.setLayout(new FillLayout());
+        
+        // create the options container
+        createOptionsContainer(parent);
+        GridLayout gridLayout = new GridLayout(3, false); // SUPPRESS CHECKSTYLE MagicNumber
+        gridLayout.marginTop = 0;
+        gridLayout.marginBottom = 0;
+        gridLayout.marginLeft = 0;
+        gridLayout.marginRight = 0;
+        parent.setLayout(gridLayout);
+        
         // install a drop handler for the view
-        installDropHandler(parent);
+        installDropHandler(diagramContainer);
         viewer.setModel("No model selected.", false);
+        
         // register the context viewer as selection provider on the workbench
         getSite().setSelectionProvider(viewer);
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void dispose() {
+        super.dispose();
+        toolkit.dispose();
     }
 
     /**
@@ -104,6 +149,37 @@ public class DiagramViewPart extends ViewPart {
      */
     public void setName(final String name) {
         setPartName(name);
+    }
+    
+    private void createOptionsContainer(final Composite parent) {
+        Sash sash = new Sash(parent, SWT.VERTICAL);
+        GridData gridData = new GridData(SWT.RIGHT, SWT.FILL, false, true);
+        gridData.minimumWidth = 3; // SUPPRESS CHECKSTYLE MagicNumber
+        sash.setLayoutData(gridData);
+        sash.addPaintListener(new PaintListener() {
+            public void paintControl(final PaintEvent event) {
+                Point size = ((Control) event.widget).getSize();
+                event.gc.setForeground(Display.getCurrent().getSystemColor(
+                        SWT.COLOR_WIDGET_NORMAL_SHADOW));
+                event.gc.drawLine(1, 0, 1, size.y);
+            }
+        });
+        
+        toolkit = new FormToolkit(parent.getDisplay());
+        ScrolledForm form = toolkit.createScrolledForm(parent);
+        form.setText("Options");
+        form.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, true));
+        
+        Composite optionsContainer = form.getBody();
+        FormLayout contentLayout = new FormLayout();
+        contentLayout.marginWidth = 0;
+        form.getBody().setLayout(contentLayout);
+        
+        // TODO implement a generic interface for selecting layout options
+        OptionControlFactory optionControlFactory = new OptionControlFactory(optionsContainer, this);
+        optionControlFactory.createControl(LayoutOptions.SPACING.getId(), 0f, 100f);
+        
+        optionsContainer.setLayout(new GridLayout(2, false));
     }
 
     /**
