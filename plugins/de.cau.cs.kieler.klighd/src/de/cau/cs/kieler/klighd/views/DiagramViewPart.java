@@ -21,7 +21,6 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.dnd.DND;
 import org.eclipse.swt.dnd.DropTarget;
 import org.eclipse.swt.dnd.DropTargetEvent;
@@ -31,18 +30,13 @@ import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.FillLayout;
-import org.eclipse.swt.layout.FormAttachment;
-import org.eclipse.swt.layout.FormData;
-import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
-import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Sash;
-import org.eclipse.ui.forms.widgets.Form;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.ScrolledForm;
 import org.eclipse.ui.part.ResourceTransfer;
@@ -169,17 +163,14 @@ public class DiagramViewPart extends ViewPart {
         ScrolledForm form = toolkit.createScrolledForm(parent);
         form.setText("Options");
         form.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, true));
-        
         Composite optionsContainer = form.getBody();
-        FormLayout contentLayout = new FormLayout();
-        contentLayout.marginWidth = 0;
-        form.getBody().setLayout(contentLayout);
+        optionsContainer.setLayout(new GridLayout(2, false));
         
         // TODO implement a generic interface for selecting layout options
         OptionControlFactory optionControlFactory = new OptionControlFactory(optionsContainer, this);
-        optionControlFactory.createControl(LayoutOptions.SPACING.getId(), 0f, 100f);
-        
-        optionsContainer.setLayout(new GridLayout(2, false));
+        optionControlFactory.createControl(LayoutOptions.ALGORITHM.getId());
+        optionControlFactory.createControl(LayoutOptions.SPACING.getId(), 3f, 200f);
+        optionControlFactory.createControl(LayoutOptions.RANDOM_SEED.getId(), 1f, 100f);
     }
 
     /**
