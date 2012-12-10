@@ -13,6 +13,8 @@
  */
 package de.cau.cs.kieler.klighd.views;
 
+import java.util.Collection;
+import java.util.LinkedList;
 import java.util.List;
 
 import org.eclipse.core.resources.IResource;
@@ -28,7 +30,9 @@ import org.eclipse.swt.dnd.DropTargetListener;
 import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
+import org.eclipse.swt.graphics.Resource;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -36,6 +40,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Sash;
 import org.eclipse.ui.forms.widgets.FormToolkit;
@@ -78,6 +83,8 @@ public class DiagramViewPart extends ViewPart {
     private ContextViewer viewer;
     /** the form toolkit. */
     private FormToolkit toolkit;
+    /** the set of resources to be disposed when the view is closed. */
+    private Collection<Resource> resources = new LinkedList<Resource>();
 
     /**
      * {@inheritDoc}
@@ -90,7 +97,9 @@ public class DiagramViewPart extends ViewPart {
         // create the context viewer
         Composite diagramContainer = new Composite(parent, SWT.NONE);
         viewer = new ContextViewer(diagramContainer, getViewSite().getSecondaryId(), this);
-        diagramContainer.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+        GridData gridData = new GridData(SWT.FILL, SWT.FILL, true, true);
+        gridData.verticalSpan = 2;
+        diagramContainer.setLayoutData(gridData);
         diagramContainer.setLayout(new FillLayout());
         
         // create the options container
@@ -114,7 +123,14 @@ public class DiagramViewPart extends ViewPart {
     @Override
     public void dispose() {
         super.dispose();
-        toolkit.dispose();
+        if (toolkit != null) {
+            toolkit.dispose();
+            toolkit = null;
+        }
+        for (Resource res : resources) {
+            res.dispose();
+        }
+        resources.clear();
     }
 
     /**
@@ -148,10 +164,28 @@ public class DiagramViewPart extends ViewPart {
     private static final int MIN_WIDTH = 60;
     
     private void createOptionsContainer(final Composite parent) {
+        // create the separator line
+        Label arrowLabel = new Label(parent, SWT.NONE);
+        arrowLabel.setLayoutData(new GridData(SWT.RIGHT, SWT.TOP, false, false));
+        Image rightArrow = KlighdPlugin.getImageDescriptor("icons/arrow-right.gif").createImage();
+        resources.add(rightArrow);
+        arrowLabel.setImage(rightArrow);
+        
+        // create container for options
+        toolkit = new FormToolkit(parent.getDisplay());
+        final ScrolledForm form = toolkit.createScrolledForm(parent);
+        form.setText("Options");
+        final GridData formLayoutData = new GridData(SWT.FILL, SWT.FILL, false, true);
+        formLayoutData.widthHint = DEFAULT_PALETTE_WIDTH;
+        formLayoutData.verticalSpan = 2;
+        form.setLayoutData(formLayoutData);
+        Composite optionsContainer = form.getBody();
+        optionsContainer.setLayout(new GridLayout(2, false));
+        
+        createOptions(optionsContainer); 
+        
         Sash sash = new Sash(parent, SWT.VERTICAL);
-        GridData gridData = new GridData(SWT.RIGHT, SWT.FILL, false, true);
-        gridData.minimumWidth = 3; // SUPPRESS CHECKSTYLE MagicNumber
-        sash.setLayoutData(gridData);
+        sash.setLayoutData(new GridData(SWT.CENTER, SWT.FILL, false, true));
         sash.addPaintListener(new PaintListener() {
             public void paintControl(final PaintEvent event) {
                 Point size = ((Control) event.widget).getSize();
@@ -160,27 +194,11 @@ public class DiagramViewPart extends ViewPart {
                 event.gc.drawLine(1, 0, 1, size.y);
             }
         });
-        
-        toolkit = new FormToolkit(parent.getDisplay());
-        final ScrolledForm form = toolkit.createScrolledForm(parent);
-        form.setText("Options");
-        final GridData formLayoutData = new GridData(SWT.FILL, SWT.FILL, false, true);
-        formLayoutData.widthHint = DEFAULT_PALETTE_WIDTH;
-        form.setLayoutData(formLayoutData);
-        Composite optionsContainer = form.getBody();
-        optionsContainer.setLayout(new GridLayout(2, false));
-        
-        // TODO implement a generic interface for selecting layout options
-        OptionControlFactory optionControlFactory = new OptionControlFactory(optionsContainer, this);
-        optionControlFactory.createControl(LayoutOptions.ALGORITHM.getId());
-        optionControlFactory.createControl(LayoutOptions.SPACING.getId(), 3f, 200f);
-        optionControlFactory.createControl(LayoutOptions.RANDOM_SEED.getId(), 1f, 100f);
-        
         sash.addListener(SWT.Selection, new Listener() {
             public void handleEvent(final Event event) {
                 if (event.detail == SWT.DRAG) {
-                    // FIXME the "27" in the next line was determined experimentally
-                    int newWidth = parent.getClientArea().width - (event.x + 27);
+                    // FIXME the "30" in the next line was determined experimentally
+                    int newWidth = parent.getClientArea().width - (event.x + 30);
                     if (event.x > MIN_WIDTH && newWidth > MIN_WIDTH) {
                         formLayoutData.widthHint = newWidth;
                         parent.layout();
@@ -188,6 +206,14 @@ public class DiagramViewPart extends ViewPart {
                 }
             }
         });
+    }
+    
+    private void createOptions(final Composite optionsContainer) {
+        // TODO implement a generic interface for selecting layout options
+        OptionControlFactory optionControlFactory = new OptionControlFactory(optionsContainer, this);
+        optionControlFactory.createControl(LayoutOptions.ALGORITHM.getId());
+        optionControlFactory.createControl(LayoutOptions.SPACING.getId(), 3f, 200f);
+        optionControlFactory.createControl(LayoutOptions.RANDOM_SEED.getId(), 1f, 100f);
     }
 
     /**

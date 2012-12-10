@@ -48,8 +48,8 @@ public class OptionControlFactory {
         this.workbenchPart = workbenchPart;
     }
     
-    private void refreshLayout() {
-        DiagramLayoutEngine.INSTANCE.layout(workbenchPart, null, false, false, false, false,
+    private void refreshLayout(final boolean animate) {
+        DiagramLayoutEngine.INSTANCE.layout(workbenchPart, null, animate, false, false, false,
                 ImmutableList.<ILayoutConfig>of(layoutConfig));
     }
     
@@ -92,7 +92,7 @@ public class OptionControlFactory {
             final Float maxValue) {
         if (optionData.equals(LayoutOptions.ALGORITHM)) {
             Button button = new Button(parent, SWT.PUSH);
-            button.setText("Select Layout Algorithm");
+            button.setText("Select Layout Algorithm...");
             button.setToolTipText(optionData.getDescription());
             button.addSelectionListener(new AlgorithmListener());
             GridData gridData = new GridData(SWT.LEFT, SWT.TOP, false, false);
@@ -190,7 +190,7 @@ public class OptionControlFactory {
             }
             
             // trigger a new layout on the displayed diagram
-            refreshLayout();
+            refreshLayout(false);
         }
 
         /**
@@ -215,7 +215,7 @@ public class OptionControlFactory {
             }
             
             // trigger a new layout on the displayed diagram
-            refreshLayout();
+            refreshLayout(true);
         }
 
         /**
