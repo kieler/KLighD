@@ -28,6 +28,8 @@ import org.eclipse.swt.dnd.DropTarget;
 import org.eclipse.swt.dnd.DropTargetEvent;
 import org.eclipse.swt.dnd.DropTargetListener;
 import org.eclipse.swt.dnd.Transfer;
+import org.eclipse.swt.events.MouseAdapter;
+import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.graphics.Image;
@@ -73,6 +75,7 @@ import de.cau.cs.kieler.klighd.viewers.ContextViewer;
  * A view which is able to display models in light-weight diagrams.
  * 
  * @author mri
+ * @author msp
  */
 public class DiagramViewPart extends ViewPart {
 
@@ -81,6 +84,10 @@ public class DiagramViewPart extends ViewPart {
     
     /** the viewer for this view part. */
     private ContextViewer viewer;
+    /** controller for the expanded options pane. */
+    private final PaneController expandedController = new PaneController();
+    /** controller for the collapsed options pane. */
+    private final PaneController collapsedController = new PaneController();
     /** the form toolkit. */
     private FormToolkit toolkit;
     /** the set of resources to be disposed when the view is closed. */
@@ -160,20 +167,30 @@ public class DiagramViewPart extends ViewPart {
         setPartName(name);
     }
     
+    private final class LinePainter implements PaintListener {
+        public void paintControl(final PaintEvent event) {
+            Point size = ((Control) event.widget).getSize();
+            event.gc.setForeground(Display.getCurrent().getSystemColor(
+                    SWT.COLOR_WIDGET_NORMAL_SHADOW));
+            event.gc.drawLine(1, 0, 1, size.y);
+        }
+    }
+    
     private static final int DEFAULT_PALETTE_WIDTH = 150;
     private static final int MIN_WIDTH = 60;
     
     private void createOptionsContainer(final Composite parent) {
-        // create the separator line
-        Label arrowLabel = new Label(parent, SWT.NONE);
-        arrowLabel.setLayoutData(new GridData(SWT.RIGHT, SWT.TOP, false, false));
+        // create the right arrow for collapsing the options pane
+        Label rightArrowLabel = new Label(parent, SWT.NONE);
+        GridData rightArrowLayoutData = new GridData(SWT.CENTER, SWT.TOP, false, false);
+        rightArrowLabel.setLayoutData(rightArrowLayoutData);
         Image rightArrow = KlighdPlugin.getImageDescriptor("icons/arrow-right.gif").createImage();
         resources.add(rightArrow);
-        arrowLabel.setImage(rightArrow);
+        rightArrowLabel.setImage(rightArrow);
         
         // create container for options
         toolkit = new FormToolkit(parent.getDisplay());
-        final ScrolledForm form = toolkit.createScrolledForm(parent);
+        ScrolledForm form = toolkit.createScrolledForm(parent);
         form.setText("Options");
         final GridData formLayoutData = new GridData(SWT.FILL, SWT.FILL, false, true);
         formLayoutData.widthHint = DEFAULT_PALETTE_WIDTH;
@@ -182,18 +199,22 @@ public class DiagramViewPart extends ViewPart {
         Composite optionsContainer = form.getBody();
         optionsContainer.setLayout(new GridLayout(2, false));
         
-        createOptions(optionsContainer); 
+        createOptions(optionsContainer);
         
+        // create the left arrow for expanding the options pane
+        Label leftArrowLabel = new Label(parent, SWT.NONE);
+        GridData leftArrowLayoutData = new GridData(SWT.CENTER, SWT.TOP, false, false);
+        leftArrowLayoutData.horizontalSpan = 2;
+        leftArrowLabel.setLayoutData(leftArrowLayoutData);
+        Image leftArrow = KlighdPlugin.getImageDescriptor("icons/arrow-left.gif").createImage();
+        resources.add(leftArrow);
+        leftArrowLabel.setImage(leftArrow);
+        
+        // create the sash for resizing the options pane
         Sash sash = new Sash(parent, SWT.VERTICAL);
-        sash.setLayoutData(new GridData(SWT.CENTER, SWT.FILL, false, true));
-        sash.addPaintListener(new PaintListener() {
-            public void paintControl(final PaintEvent event) {
-                Point size = ((Control) event.widget).getSize();
-                event.gc.setForeground(Display.getCurrent().getSystemColor(
-                        SWT.COLOR_WIDGET_NORMAL_SHADOW));
-                event.gc.drawLine(1, 0, 1, size.y);
-            }
-        });
+        GridData sashLayoutData = new GridData(SWT.CENTER, SWT.FILL, false, true);
+        sash.setLayoutData(sashLayoutData);
+        sash.addPaintListener(new LinePainter());
         sash.addListener(SWT.Selection, new Listener() {
             public void handleEvent(final Event event) {
                 if (event.detail == SWT.DRAG) {
@@ -206,6 +227,60 @@ public class DiagramViewPart extends ViewPart {
                 }
             }
         });
+        
+        // create a line below the expansion arrow
+        Composite dummyLine = new Composite(parent, SWT.NONE);
+        GridData dummyLineLayoutData = new GridData(SWT.CENTER, SWT.FILL, false, true);
+        dummyLineLayoutData.widthHint = 3;  // SUPPRESS CHECKSTYLE MagicNumber
+        dummyLineLayoutData.horizontalSpan = 2;
+        dummyLine.setLayoutData(dummyLineLayoutData);
+        dummyLine.addPaintListener(new LinePainter());
+        
+        // create controllers for collapsing and expanding
+        expandedController.controls = new Control[] {
+                rightArrowLabel, sash, form
+        };
+        expandedController.layoutData = new GridData[] {
+                rightArrowLayoutData, sashLayoutData, formLayoutData
+        };
+        collapsedController.controls = new Control[] {
+                leftArrowLabel, dummyLine
+        };
+        collapsedController.layoutData = new GridData[] {
+                leftArrowLayoutData, dummyLineLayoutData
+        };
+        collapsedController.setVisible(false); // XXX
+        
+        // register actions for the collapse / expand labels
+        rightArrowLabel.addMouseListener(new MouseAdapter() {
+            public void mouseUp(final MouseEvent event) {
+                expandedController.setVisible(false);
+                collapsedController.setVisible(true);
+                parent.layout();
+            }
+        });
+        leftArrowLabel.addMouseListener(new MouseAdapter() {
+            public void mouseUp(final MouseEvent event) {
+                collapsedController.setVisible(false);
+                expandedController.setVisible(true);
+                parent.layout();
+            }
+        });
+    }
+    
+    private class PaneController {
+        
+        Control[] controls;
+        GridData[] layoutData;
+        
+        void setVisible(final boolean visible) {
+            for (Control c : controls) {
+                c.setVisible(visible);
+            }
+            for (GridData ld : layoutData) {
+                ld.exclude = !visible;
+            }
+        }
     }
     
     private void createOptions(final Composite optionsContainer) {
