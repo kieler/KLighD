@@ -84,6 +84,8 @@ public class DiagramViewPart extends ViewPart {
     
     /** the viewer for this view part. */
     private ContextViewer viewer;
+    /** the factory for option controls. */
+    private OptionControlFactory optionControlFactory;
     /** controller for the expanded options pane. */
     private final PaneController expandedController = new PaneController();
     /** controller for the collapsed options pane. */
@@ -91,7 +93,7 @@ public class DiagramViewPart extends ViewPart {
     /** the form toolkit. */
     private FormToolkit toolkit;
     /** the set of resources to be disposed when the view is closed. */
-    private Collection<Resource> resources = new LinkedList<Resource>();
+    private final Collection<Resource> resources = new LinkedList<Resource>();
 
     /**
      * {@inheritDoc}
@@ -109,19 +111,32 @@ public class DiagramViewPart extends ViewPart {
         diagramContainer.setLayoutData(gridData);
         diagramContainer.setLayout(new FillLayout());
         
-        // create the options container
+        // create the options pane
         createOptionsContainer(parent);
-        GridLayout gridLayout = new GridLayout(3, false); // SUPPRESS CHECKSTYLE MagicNumber
-        gridLayout.marginWidth = 0;
-        gridLayout.marginHeight = 0;
-        parent.setLayout(gridLayout);
         
-        // install a drop handler for the view
+        // install a drop handler for the view (XXX this could be omitted)
         installDropHandler(diagramContainer);
         viewer.setModel("No model selected.", false);
         
         // register the context viewer as selection provider on the workbench
         getSite().setSelectionProvider(viewer);
+    }
+    
+    /**
+     * Update the options to be displayed in the options pane.
+     * TODO make the selection of options configurable through method arguments
+     */
+    public void updateOptions() {
+        optionControlFactory.clear();
+        
+        // TODO implement a generic interface for selecting layout options
+        optionControlFactory.createControl(LayoutOptions.ALGORITHM.getId());
+        optionControlFactory.createControl(LayoutOptions.SPACING.getId(), 3f, 200f);
+        optionControlFactory.createControl(LayoutOptions.RANDOM_SEED.getId(), 1f, 100f);
+        
+        // TODO make this configurable, too
+        collapsedController.setVisible(false);
+        expandedController.setVisible(true);
     }
     
     /**
@@ -167,6 +182,9 @@ public class DiagramViewPart extends ViewPart {
         setPartName(name);
     }
     
+    /**
+     * A simple paint listener that draws a vertical line.
+     */
     private final class LinePainter implements PaintListener {
         public void paintControl(final PaintEvent event) {
             Point size = ((Control) event.widget).getSize();
@@ -176,9 +194,20 @@ public class DiagramViewPart extends ViewPart {
         }
     }
     
+    /**
+     * The initial width of the option pane.
+     */
     private static final int DEFAULT_PALETTE_WIDTH = 150;
+    /**
+     * The minimal width of the option pane and the diagram viewer.
+     */
     private static final int MIN_WIDTH = 60;
     
+    /**
+     * Create the container for layout options, including controls for collapsing and expanding.
+     * 
+     * @param parent the parent composite into which controls are created
+     */
     private void createOptionsContainer(final Composite parent) {
         // create the right arrow for collapsing the options pane
         Label rightArrowLabel = new Label(parent, SWT.NONE);
@@ -199,7 +228,8 @@ public class DiagramViewPart extends ViewPart {
         Composite optionsContainer = form.getBody();
         optionsContainer.setLayout(new GridLayout(2, false));
         
-        createOptions(optionsContainer);
+        // create the factory for option controls to fill the options container
+        optionControlFactory = new OptionControlFactory(optionsContainer, this);
         
         // create the left arrow for expanding the options pane
         Label leftArrowLabel = new Label(parent, SWT.NONE);
@@ -243,13 +273,14 @@ public class DiagramViewPart extends ViewPart {
         expandedController.layoutData = new GridData[] {
                 rightArrowLayoutData, sashLayoutData, formLayoutData
         };
+        expandedController.setVisible(false);
         collapsedController.controls = new Control[] {
                 leftArrowLabel, dummyLine
         };
         collapsedController.layoutData = new GridData[] {
                 leftArrowLayoutData, dummyLineLayoutData
         };
-        collapsedController.setVisible(false); // XXX
+        collapsedController.setVisible(false);
         
         // register actions for the collapse / expand labels
         rightArrowLabel.addMouseListener(new MouseAdapter() {
@@ -266,13 +297,30 @@ public class DiagramViewPart extends ViewPart {
                 parent.layout();
             }
         });
+        
+        // set the grid layout of the parent container
+        GridLayout gridLayout = new GridLayout(3, false); // SUPPRESS CHECKSTYLE MagicNumber
+        gridLayout.marginWidth = 0;
+        gridLayout.marginHeight = 0;
+        parent.setLayout(gridLayout);
     }
     
+    /**
+     * A controller class for easy collapsing and expanding.
+     */
     private class PaneController {
         
-        Control[] controls;
-        GridData[] layoutData;
+        /** the controls that are made visible or invisible. */
+        private Control[] controls;
+        /** the layout data of the controls, used to exclude the controls from the grid. */
+        private GridData[] layoutData;
         
+        /**
+         * Make the contained controls visible or invisible.
+         * 
+         * @param visible {@code true} to make all controls visible, or {@code false} to make
+         *              them all invisible
+         */
         void setVisible(final boolean visible) {
             for (Control c : controls) {
                 c.setVisible(visible);
@@ -281,14 +329,6 @@ public class DiagramViewPart extends ViewPart {
                 ld.exclude = !visible;
             }
         }
-    }
-    
-    private void createOptions(final Composite optionsContainer) {
-        // TODO implement a generic interface for selecting layout options
-        OptionControlFactory optionControlFactory = new OptionControlFactory(optionsContainer, this);
-        optionControlFactory.createControl(LayoutOptions.ALGORITHM.getId());
-        optionControlFactory.createControl(LayoutOptions.SPACING.getId(), 3f, 200f);
-        optionControlFactory.createControl(LayoutOptions.RANDOM_SEED.getId(), 1f, 100f);
     }
 
     /**

@@ -134,6 +134,10 @@ public class ContextViewer extends AbstractViewer<Object> implements IViewerEven
             resetSelection();
         }
         
+        // fill the options pane according to the the incorporated transformations
+        // TODO implement this (the following line is a placeholder)
+        viewPart.updateOptions();
+        
         // fill menu with the option entries provided by the incorporated transformations
         updateOptionsMenu();
     }
