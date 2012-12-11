@@ -12,7 +12,7 @@
    <extension
          point="de.cau.cs.kieler.klighd.modelTransformations">
       <transformation
-            class="de.cau.cs.kieler.klighd/de.cau.cs.kieler.klighd.transformations.GuiceBasedTransformationFactory:de.cau.cs.kieler.klighd.examples.ecore.EcoreDiagramSynthesis"
+            class="de.cau.cs.kieler.klighd.transformations.GuiceBasedTransformationFactory:de.cau.cs.kieler.klighd.examples.ecore.EcoreDiagramSynthesis"
             id="de.cau.cs.kieler.klighd.examples.ecore.EcoreDiagramSynthesis">
       </transformation>
    </extension>
