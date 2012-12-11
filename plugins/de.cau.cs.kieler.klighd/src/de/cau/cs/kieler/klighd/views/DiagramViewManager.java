@@ -274,6 +274,10 @@ public final class DiagramViewManager implements IPartListener {
 
                 // do an initial update of the view context
                 LightDiagramServices.getInstance().updateViewContext(viewContext, model);
+                
+                // fill the options pane according to the the incorporated transformations
+                // TODO implement this (the following line is a placeholder)
+//                diagramView.updateOptions();
 
                 // make the view visible without giving it the focus
                 page.bringToTop(diagramView);

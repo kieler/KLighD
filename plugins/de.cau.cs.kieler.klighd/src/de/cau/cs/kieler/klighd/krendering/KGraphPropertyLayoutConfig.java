@@ -63,9 +63,10 @@ public class KGraphPropertyLayoutConfig implements ILayoutConfig {
                 context.setProperty(LayoutContext.GRAPH_ELEM, element);
             }
             
-            if (context.getProperty(DefaultLayoutConfig.OPT_MAKE_OPTIONS) && elementLayout != null) {
+            if (context.getProperty(DefaultLayoutConfig.OPT_MAKE_OPTIONS)) {
                 // if not defined yet, check whether a hint for the layout algorithm has been set
-                if (context.getProperty(DefaultLayoutConfig.CONTENT_HINT) == null) {
+                if (context.getProperty(DefaultLayoutConfig.CONTENT_HINT) == null
+                        && elementLayout != null) {
                     String contentHint = elementLayout.getProperty(LayoutOptions.ALGORITHM);
                     if (contentHint != null) {
                         context.setProperty(DefaultLayoutConfig.CONTENT_HINT, contentHint);

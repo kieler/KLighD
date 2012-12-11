@@ -92,7 +92,7 @@ public class DiagramViewPart extends ViewPart {
     /** controller for the collapsed options pane. */
     private final PaneController collapsedController = new PaneController();
     /** the form toolkit. */
-    private FormToolkit toolkit;
+    private FormToolkit formToolkit;
     /** the set of resources to be disposed when the view is closed. */
     private final Collection<Resource> resources = new LinkedList<Resource>();
 
@@ -151,9 +151,9 @@ public class DiagramViewPart extends ViewPart {
     @Override
     public void dispose() {
         super.dispose();
-        if (toolkit != null) {
-            toolkit.dispose();
-            toolkit = null;
+        if (formToolkit != null) {
+            formToolkit.dispose();
+            formToolkit = null;
         }
         for (Resource res : resources) {
             res.dispose();
@@ -224,8 +224,8 @@ public class DiagramViewPart extends ViewPart {
         rightArrowLabel.setImage(rightArrow);
         
         // create container for options
-        toolkit = new FormToolkit(parent.getDisplay());
-        ScrolledForm form = toolkit.createScrolledForm(parent);
+        formToolkit = new FormToolkit(parent.getDisplay());
+        ScrolledForm form = formToolkit.createScrolledForm(parent);
         form.setText("Options");
         final GridData formLayoutData = new GridData(SWT.FILL, SWT.FILL, false, true);
         formLayoutData.widthHint = DEFAULT_PALETTE_WIDTH;
@@ -235,7 +235,7 @@ public class DiagramViewPart extends ViewPart {
         optionsContainer.setLayout(new GridLayout(2, false));
         
         // create the factory for option controls to fill the options container
-        optionControlFactory = new OptionControlFactory(optionsContainer, this);
+        optionControlFactory = new OptionControlFactory(optionsContainer, this, formToolkit);
         
         // create the left arrow for expanding the options pane
         Label leftArrowLabel = new Label(parent, SWT.NONE);

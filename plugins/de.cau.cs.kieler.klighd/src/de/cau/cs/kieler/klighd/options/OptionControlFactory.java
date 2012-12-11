@@ -14,6 +14,7 @@
 package de.cau.cs.kieler.klighd.options;
 
 import java.util.Collection;
+import java.util.EnumSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 
@@ -29,6 +30,7 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Slider;
 import org.eclipse.ui.IWorkbenchPart;
+import org.eclipse.ui.forms.widgets.FormToolkit;
 
 import com.google.common.collect.ImmutableList;
 
@@ -42,6 +44,7 @@ import de.cau.cs.kieler.kiml.ui.AlgorithmSelectionDialog;
 import de.cau.cs.kieler.kiml.ui.diagram.DiagramLayoutEngine;
 import de.cau.cs.kieler.kiml.ui.service.EclipseLayoutConfig;
 import de.cau.cs.kieler.kiml.ui.service.LayoutOptionManager;
+import de.cau.cs.kieler.klighd.IViewer;
 import de.cau.cs.kieler.klighd.ViewContext;
 import de.cau.cs.kieler.klighd.krendering.KGraphPropertyLayoutConfig;
 import de.cau.cs.kieler.klighd.views.DiagramViewPart;
@@ -57,6 +60,8 @@ public class OptionControlFactory {
     private Composite parent;
     /** The workbench part containing the diagram viewer. */
     private IWorkbenchPart workbenchPart;
+    /** the form toolkit used to create controls. */
+    private FormToolkit formToolkit;
     /** The layout configurator for retrieving initial values of controls. */
     private ILayoutConfig defaultLayoutConfig;
     /** The layout context for retrieving initial values of controls. */
@@ -71,10 +76,13 @@ public class OptionControlFactory {
      * 
      * @param parent the parent container
      * @param workbenchPart the workbench part containing the diagram viewer
+     * @param formToolkit the form toolkit used to create controls
      */
-    public OptionControlFactory(final Composite parent, final IWorkbenchPart workbenchPart) {
+    public OptionControlFactory(final Composite parent, final IWorkbenchPart workbenchPart,
+            final FormToolkit formToolkit) {
         this.parent = parent;
         this.workbenchPart = workbenchPart;
+        this.formToolkit = formToolkit;
         // set a dummy configurator with default values
         defaultLayoutConfig = new DefaultLayoutConfig();
         defaultLayoutContext = new LayoutContext();
@@ -107,6 +115,10 @@ public class OptionControlFactory {
                 }
                 viewModel = viewContext.getViewModel();
             }
+            IViewer<?> viewer = ((DiagramViewPart) workbenchPart).getContextViewer().getActiveViewer();
+            if (viewer != null) {
+                viewModel = viewer.getModel();
+            }
         }
         // create the layout configurator
         LayoutOptionManager optionManager = DiagramLayoutEngine.INSTANCE.getOptionManager();
@@ -117,6 +129,8 @@ public class OptionControlFactory {
         defaultLayoutContext.setProperty(LayoutContext.DOMAIN_MODEL, inputModel);
         defaultLayoutContext.setProperty(LayoutContext.DIAGRAM_PART, viewModel);
         defaultLayoutContext.setProperty(DefaultLayoutConfig.OPT_MAKE_OPTIONS, true);
+        defaultLayoutContext.setProperty(LayoutContext.OPT_TARGETS,
+                EnumSet.of(LayoutOptionData.Target.PARENTS));
         defaultLayoutConfig.enrich(defaultLayoutContext);
     }
     
@@ -179,7 +193,9 @@ public class OptionControlFactory {
         }
     }
     
+    /** minimal width of sliders. */
     private static final int SLIDER_MIN_WIDTH = 80;
+    /** number of columns in the grid for enumeration value selection. */
     private static final int ENUM_GRID_COLS = 3;
     
     /**
@@ -195,8 +211,7 @@ public class OptionControlFactory {
             final Float maxValue, final Collection<?> availableValues) {
         
         if (optionData.equals(LayoutOptions.ALGORITHM)) {
-            Button button = new Button(parent, SWT.PUSH);
-            button.setText("Select Layout Algorithm...");
+            Button button = formToolkit.createButton(parent, "Select Layout Algorithm...", SWT.PUSH);
             button.setToolTipText(optionData.getDescription());
             button.addSelectionListener(new AlgorithmListener());
             GridData gridData = new GridData(SWT.LEFT, SWT.TOP, false, false);
@@ -204,15 +219,13 @@ public class OptionControlFactory {
             button.setLayoutData(gridData);
             controls.add(button);
             // set initial value for the algorithm selection dialog
-            String algorithmHint = (String) defaultLayoutConfig.getValue(optionData,
-                    defaultLayoutContext);
-            if (algorithmHint.length() > 0) {
+            String algorithmHint = defaultLayoutContext.getProperty(DefaultLayoutConfig.CONTENT_HINT);
+            if (algorithmHint != null && algorithmHint.length() > 0) {
                 lightLayoutConfig.setOption(optionData, algorithmHint);
             }
             
         } else {
-            Label label = new Label(parent, SWT.NONE);
-            label.setText(optionData.getName());
+            Label label = formToolkit.createLabel(parent, optionData.getName());
             label.setLayoutData(new GridData(SWT.LEFT, SWT.TOP, false, false));
             controls.add(label);
             
@@ -245,15 +258,14 @@ public class OptionControlFactory {
                 slider.addSelectionListener(sliderListener);
                 break;
             }
+            
             case BOOLEAN: {
-                Composite valuesContainer = new Composite(parent, SWT.NONE);
+                Composite valuesContainer = formToolkit.createComposite(parent);
                 valuesContainer.setLayout(new GridLayout(2, false));
-                Button trueButton = new Button(valuesContainer, SWT.RADIO);
-                trueButton.setText("True");
+                Button trueButton = formToolkit.createButton(valuesContainer, "True", SWT.RADIO);
                 trueButton.setToolTipText(optionData.getDescription());
                 trueButton.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false));
-                Button falseButton = new Button(valuesContainer, SWT.RADIO);
-                falseButton.setText("False");
+                Button falseButton = formToolkit.createButton(valuesContainer, "False", SWT.RADIO);
                 falseButton.setToolTipText(optionData.getDescription());
                 falseButton.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false));
                 controls.add(valuesContainer);
@@ -268,8 +280,9 @@ public class OptionControlFactory {
                 falseButton.addSelectionListener(new EnumerationListener(optionData, Boolean.FALSE));
                 break;
             }
+            
             case ENUM: {
-                Composite valuesContainer = new Composite(parent, SWT.NONE);
+                Composite valuesContainer = formToolkit.createComposite(parent);
                 valuesContainer.setLayout(new GridLayout(ENUM_GRID_COLS, false));
                 Object[] values;
                 if (availableValues != null) {
@@ -279,8 +292,8 @@ public class OptionControlFactory {
                 }
                 Object initialValue = defaultLayoutConfig.getValue(optionData, defaultLayoutContext);
                 for (Object value : values) {
-                    Button button = new Button(valuesContainer, SWT.RADIO);
-                    button.setText(getUserValue(value));
+                    Button button = formToolkit.createButton(valuesContainer, getUserValue(value),
+                            SWT.RADIO);
                     button.setToolTipText(optionData.getDescription());
                     button.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false));
                     if (value.equals(initialValue)) {
@@ -291,6 +304,7 @@ public class OptionControlFactory {
                 controls.add(valuesContainer);
                 break;
             }
+            
             default:
                 label = new Label(parent, SWT.NONE);
                 label.setText("This option type is not supported");
