@@ -14,6 +14,7 @@
 package de.cau.cs.kieler.klighd.views;
 
 import java.util.Collection;
+import java.util.EnumSet;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -133,6 +134,8 @@ public class DiagramViewPart extends ViewPart {
         optionControlFactory.createControl(LayoutOptions.ALGORITHM.getId());
         optionControlFactory.createControl(LayoutOptions.SPACING.getId(), 3f, 200f);
         optionControlFactory.createControl(LayoutOptions.RANDOM_SEED.getId(), 1f, 100f);
+        optionControlFactory.createControl(LayoutOptions.DIRECTION.getId(),
+                EnumSet.of(Direction.LEFT, Direction.RIGHT, Direction.UP, Direction.DOWN));
         
         // TODO make this configurable, too
         collapsedController.setVisible(false);

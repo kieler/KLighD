@@ -20,6 +20,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -91,7 +92,7 @@ public class OptionControlFactory {
     public void createControl(final String optionId) {
         LayoutOptionData<?> optionData = LayoutDataService.getInstance().getOptionData(optionId);
         if (optionData != null) {
-            createControl(optionData, null, null);
+            createControl(optionData, null, null, null);
         }
     }
     
@@ -105,21 +106,36 @@ public class OptionControlFactory {
     public void createControl(final String optionId, final Float minValue, final Float maxValue) {
         LayoutOptionData<?> optionData = LayoutDataService.getInstance().getOptionData(optionId);
         if (optionData != null) {
-            createControl(optionData, minValue, maxValue);
+            createControl(optionData, minValue, maxValue, null);
         }
     }
     
-    private static final int SLIDER_MIN_WIDTH = 100;
+    /**
+     * Create a control for the given layout option identifier with given available option values.
+     * 
+     * @param optionId a layout option identifier
+     * @param availableValues the set of values to offer
+     */
+    public void createControl(final String optionId, final Collection<?> availableValues) {
+        LayoutOptionData<?> optionData = LayoutDataService.getInstance().getOptionData(optionId);
+        if (optionData != null) {
+            createControl(optionData, null, null, availableValues);
+        }
+    }
+    
+    private static final int SLIDER_MIN_WIDTH = 80;
     
     /**
      * Create a control for the given layout option data instance with given bounds.
      * 
      * @param optionData a layout option data instance
-     * @param minValue the minimal value for the option
-     * @param maxValue the maximal value for the option
+     * @param minValue the minimal value for the option, or {@code null}
+     * @param maxValue the maximal value for the option, or {@code null}
+     * @param availableValues the set of values to offer, or {@code null}
      */
-    public void createControl(final LayoutOptionData<?> optionData, final Float minValue,
-            final Float maxValue) {
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+    private void createControl(final LayoutOptionData<?> optionData, final Float minValue,
+            final Float maxValue, final Collection<?> availableValues) {
         if (optionData.equals(LayoutOptions.ALGORITHM)) {
             Button button = new Button(parent, SWT.PUSH);
             button.setText("Select Layout Algorithm...");
@@ -139,7 +155,7 @@ public class OptionControlFactory {
             switch (optionData.getType()) {
             case INT:
             case FLOAT: {
-                Slider slider = new Slider(parent, 0);
+                Slider slider = new Slider(parent, SWT.NONE);
                 slider.setToolTipText(optionData.getDescription());
                 slider.addSelectionListener(new SliderListener(optionData,
                         getMinValue(optionData, minValue), getMaxValue(optionData, maxValue)));
@@ -147,6 +163,42 @@ public class OptionControlFactory {
                 gridData.minimumWidth = SLIDER_MIN_WIDTH;
                 slider.setLayoutData(gridData);
                 controls.add(slider);
+                // TODO retrieve initial values for layout options
+                break;
+            }
+            case BOOLEAN: {
+                Composite valuesContainer = new Composite(parent, SWT.NONE);
+                Button trueButton = new Button(valuesContainer, SWT.RADIO);
+                trueButton.setText("True");
+                trueButton.setToolTipText(optionData.getDescription());
+                trueButton.addSelectionListener(new EnumerationListener(optionData, Boolean.TRUE));
+                trueButton.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false));
+                Button falseButton = new Button(valuesContainer, SWT.RADIO);
+                falseButton.setText("False");
+                falseButton.setToolTipText(optionData.getDescription());
+                falseButton.addSelectionListener(new EnumerationListener(optionData, Boolean.FALSE));
+                falseButton.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false));
+                controls.add(valuesContainer);
+                // TODO retrieve initial values for layout options
+                break;
+            }
+            case ENUM: {
+                Composite valuesContainer = new Composite(parent, SWT.NONE);
+                Object[] values;
+                if (availableValues != null) {
+                    values = availableValues.toArray();
+                } else {
+                    values = ((Class<Enum>) optionData.getOptionClass()).getEnumConstants();
+                }
+                valuesContainer.setLayout(new GridLayout(values.length, false));
+                for (Object value : values) {
+                    Button button = new Button(valuesContainer, SWT.RADIO);
+                    button.setText(getUserValue(value));
+                    button.setToolTipText(optionData.getDescription());
+                    button.addSelectionListener(new EnumerationListener(optionData, value));
+                    button.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false));
+                }
+                controls.add(valuesContainer);
                 // TODO retrieve initial values for layout options
                 break;
             }
@@ -206,6 +258,30 @@ public class OptionControlFactory {
     }
     
     /**
+     * Get a user-friendly value for the given object.
+     * 
+     * @param object an object, e.g. an enumeration value
+     * @return a user-friendly string to display in the UI
+     */
+    private static String getUserValue(final Object object) {
+        String string = object.toString();
+        StringBuilder builder = new StringBuilder(string.length());
+        boolean capital = true;
+        for (int i = 0; i < string.length(); i++) {
+            if (string.charAt(i) == '_') {
+                builder.append(' ');
+                capital = true;
+            } else if (capital) {
+                builder.append(Character.toUpperCase(string.charAt(i)));
+                capital = false;
+            } else {
+                builder.append(Character.toLowerCase(string.charAt(i)));
+            }
+        }
+        return builder.toString();
+    }
+    
+    /**
      * A listener for sliders.
      */
     private class SliderListener implements SelectionListener {
@@ -259,8 +335,7 @@ public class OptionControlFactory {
         /**
          * {@inheritDoc}
          */
-        public void widgetDefaultSelected(final SelectionEvent event) {
-        }
+        public void widgetDefaultSelected(final SelectionEvent event) { }
     }
     
     /**
@@ -287,8 +362,44 @@ public class OptionControlFactory {
         /**
          * {@inheritDoc}
          */
-        public void widgetDefaultSelected(final SelectionEvent event) {
+        public void widgetDefaultSelected(final SelectionEvent event) { }
+    }
+    
+    /**
+     * A listener for enumeration values.
+     */
+    private class EnumerationListener implements SelectionListener {
+        
+        /** the layout option that is affected by the button. */
+        private LayoutOptionData<?> optionData;
+        /** the enumeration value to set when selection is triggered. */
+        private Object value;
+        
+        /**
+         * Creates an enumeration listener.
+         * 
+         * @param optionData the layout option that is affected by the button
+         * @param value the enumeration value to set when selection is triggered
+         */
+        public EnumerationListener(final LayoutOptionData<?> optionData, final Object value) {
+            this.optionData = optionData;
+            this.value = value;
         }
+
+        /**
+         * {@inheritDoc}
+         */
+        public void widgetSelected(final SelectionEvent event) {
+            if (((Button) event.widget).getSelection()) {
+                layoutConfig.setOption(optionData, value);
+                refreshLayout(true);
+            }
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        public void widgetDefaultSelected(final SelectionEvent event) { }
     }
 
 }
