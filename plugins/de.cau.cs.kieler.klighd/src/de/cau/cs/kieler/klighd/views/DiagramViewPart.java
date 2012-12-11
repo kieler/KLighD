@@ -128,7 +128,10 @@ public class DiagramViewPart extends ViewPart {
      * TODO make the selection of options configurable through method arguments
      */
     public void updateOptions() {
+        // remove any option controls that have been created before
         optionControlFactory.clear();
+        // initialize a layout configuration for retrieving default values
+        optionControlFactory.initialize();
         
         // TODO implement a generic interface for selecting layout options
         optionControlFactory.createControl(LayoutOptions.ALGORITHM.getId());

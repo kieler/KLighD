@@ -74,6 +74,13 @@ public class LightLayoutConfig implements ILayoutConfig {
     public Object getOption(final LayoutOptionData<?> optionData) {
         return optionMap.get(optionData);
     }
+    
+    /**
+     * Clear all stored values.
+     */
+    public void clear() {
+        optionMap.clear();
+    }
 
     /**
      * {@inheritDoc}
