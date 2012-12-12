@@ -505,84 +505,77 @@ public final class PlacementUtil {
             final Bounds minBounds) {
 
         int numColumns = ((KGridPlacement) container.getChildPlacement()).getNumColumns();
-        List<KRendering> rens = container.getChildren();
+        List<KRendering> childRenderings = container.getChildren();
         int numRows;
         if (numColumns < 2) {
-            // if the number of columns is not set or is 1 then in each row is one rendering
+            // if the number of columns is not set or is 1 then in each row is one rendering,
+            // so numRows = number of elements to place
             numColumns = 1;
-            numRows = rens.size();
+            numRows = childRenderings.size();
 
             // Chsch: This is OK for the moment. In future, however, the semantics of a value less
             // than 1 (or 0) might change
         } else {
-            // else we have to round up the quotient of rendering and columns
-            numRows = (rens.size() + numColumns - 1) / numColumns;
+            // else calculate number of rows based on number of child elements and columns
+            numRows = (childRenderings.size() + numColumns - 1) / numColumns;
         }
 
         // initialize the minimal size for each row and column with zero
         float[] minColumnWidths = new float[numColumns];
         float[] minRowHeights = new float[numRows];
-        for (int k = 0; k < rens.size(); k++) {
-            // calculate the bounds of the inner rendering and update its placement data if
-            // it exceeds its size
-            // TODO : check this
-            Bounds childMinBounds = estimateSize(rens.get(k), new Bounds(minBounds.width
-                    / numColumns, minBounds.height / numRows));
-            KPlacementData plcData = rens.get(k).getPlacementData();
+
+        // to make the layout as compact as possible but have space to place all children,
+        // evaluate the space needed for each child
+        for (int k = 0; k < childRenderings.size(); k++) {
+            int row = k / numColumns;
+            int col = k - row * numColumns;
+            Bounds childMinBounds = estimateSize(childRenderings.get(k), new Bounds(1.0f, 1.0f));
+
+            float elementHeight = childMinBounds.getHeight();
+            float elementWidth = childMinBounds.getWidth();
+
+            // evaluate given PlacementData
+            KPlacementData plcData = childRenderings.get(k).getPlacementData();
             KGridPlacementData gridData = null;
 
-            // if (plcData instanceof KGridPlacementData) {
-            // gridData = (KGridPlacementData) plcData;
-            //
-            // if (gridData.getMinCellWidth() < childMinBounds.width) {
-            // gridData.setMinCellWidth(childMinBounds.width);
-            // } else {
-            // childMinBounds.width = gridData.getMinCellWidth();
-            // }
-            // if (gridData.getMinCellHeight() < childMinBounds.height) {
-            // gridData.setMinCellHeight(childMinBounds.height);
-            // } else {
-            // childMinBounds.height = gridData.getMinCellHeight();
-            // }
-            // } else {
-            // // If there is another placement data than expected
-            // // we replace it with a grid placement data
-            // // Chsch: I'm a bit concerned about that ...
-            // if (((minBounds.width / numColumns) < childMinBounds.width)
-            // || ((minBounds.height / numRows) < childMinBounds.height)) {
-            //
-            // gridData = KRenderingFactory.eINSTANCE.createKGridPlacementData();
-            // gridData.setMinCellWidth(childMinBounds.width);
-            // gridData.setMinCellHeight(childMinBounds.height);
-            // rens.get(k).setPlacementData(gridData);
-            // }
-            // }
+            if (plcData instanceof KGridPlacementData) {
+                gridData = (KGridPlacementData) plcData;
 
+                if (KRENDERING_PACKAGE.getKText().isInstance(childRenderings.get(k))){
+                    //update Text with minimum needed space if already set value is less than that
+                    gridData.setMinCellHeight(Math.max(elementHeight,gridData.getMinCellHeight()));
+                    gridData.setMinCellWidth(Math.max(elementWidth, gridData.getMinCellWidth()));
+                    childRenderings.get(k).setPlacementData(gridData);
+                }
+                elementHeight = Math.max(gridData.getMinCellHeight(), elementHeight);
+                elementWidth = Math.max(gridData.getMinCellWidth(), elementWidth);
+            }
+            
+            
             // compare the width and height of the current rendering with the biggest width
             // and height of the corresponding row and column and update the values with the
             // maximum
-            int row = k / numColumns;
-            minRowHeights[row] = Math.max(minRowHeights[row], childMinBounds.height);
-            int colunm = k - row * numColumns;
-            minColumnWidths[colunm] = Math.max(minColumnWidths[colunm], childMinBounds.width);
+
+            minRowHeights[row] = Math.max(minRowHeights[row], elementHeight);
+            minColumnWidths[col] = Math.max(minColumnWidths[col], elementWidth);
         }
 
-         //the minimum total bound is the sum of the biggest renderings in height and width
-         Bounds childBounds = new Bounds(0, 0);
-         for (float width : minColumnWidths) {
-         childBounds.width += width;
-         }
-         for (float height : minRowHeights) {
-         childBounds.height += height;
-         }
+        // the minimum total bound is the sum of the biggest renderings in height and width
+        Bounds childBounds = new Bounds(0, 0);
+        for (float width : minColumnWidths) {
+            childBounds.width += width;
+        }
+        for (float height : minRowHeights) {
+            childBounds.height += height;
+        }
 
         // compare the minimal need size with the maximal yet found size and
         // update the minimal size accordingly
-         minBounds.x = Math.max(minBounds.x, childBounds.x);
-         minBounds.y = Math.max(minBounds.y, childBounds.y);
+        minBounds.width = Math.max(minBounds.width, childBounds.width);
+        minBounds.height = 500; //Math.max(childBounds.height, childBounds.height);
 
-        return minBounds;
-        // return childBounds;
+        return childBounds;
+
     }
 
     /**
@@ -1026,8 +1019,8 @@ public final class PlacementUtil {
                     for (KRendering rendering : children) {
                         gpds[i++] = asGridPlacementData(rendering.getPlacementData());
                     }
-                    
-                    //evaluate grid based on that data and print placement for current child
+
+                    // evaluate grid based on that data and print placement for current child
                     return evaluateGridPlacement(gridPlacement, gpds, parentBounds)[children
                             .lastIndexOf(child)];
                 }
@@ -1085,9 +1078,13 @@ public final class PlacementUtil {
 
     /**
      * returns a gridPlacer to calculate bounds of single elements inside the grid
-     * @param gridPlacement the grid data
-     * @param gpds the placement data of elements inside the grid
-     * @param parentBounds the bounds to consider
+     * 
+     * @param gridPlacement
+     *            the grid data
+     * @param gpds
+     *            the placement data of elements inside the grid
+     * @param parentBounds
+     *            the bounds to consider
      * @return the gridPlacer
      */
     public static GridPlacer getGridPlacementObject(final KGridPlacement gridPlacement,
@@ -1237,7 +1234,7 @@ public final class PlacementUtil {
             Bounds[] bounds = new Bounds[gpds.length];
             float availableParentWidth = (float) parentBounds.width;
             float availableParentHeight = (float) parentBounds.height;
-            //System.out.println(parentBounds.width+" "+parentBounds.height);
+            // System.out.println(parentBounds.width+" "+parentBounds.height);
 
             // calculate scaling and variable width/height per column/row
             float widthScale = 1;
@@ -1372,7 +1369,8 @@ public final class PlacementUtil {
                 float elementWidth = (cellWidth - insetLeft - insetRight) * widthScale;
                 float elementY = currentY + insetTop * heightScale;
                 float elementHeight = (cellHeight - insetTop - insetBottom) * heightScale;
-                //System.out.println(IterableExtensions.join(ImmutableList.of(elementX, elementY, elementWidth, elementHeight), "\t"));
+                // System.out.println(IterableExtensions.join(ImmutableList.of(elementX, elementY,
+                // elementWidth, elementHeight), "\t"));
                 // set bounds
                 bounds[i] = new Bounds(elementX, elementY, elementWidth, elementHeight);
 

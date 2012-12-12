@@ -270,7 +270,6 @@ public class DiagramLayoutManager implements IDiagramLayoutManager<KGraphElement
             KRendering rootRendering = node.getData(KRendering.class);
             if (rootRendering != null) {
                 // calculate the minimal size need for the first rendering ... 
-
                 minSize = PlacementUtil.estimateSize(rootRendering,
                         new Bounds(layoutLayout.getWidth(), layoutLayout.getHeight()));
                 

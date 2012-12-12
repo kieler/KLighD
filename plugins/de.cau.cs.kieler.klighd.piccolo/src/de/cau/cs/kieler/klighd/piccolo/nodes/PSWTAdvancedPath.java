@@ -796,6 +796,10 @@ public class PSWTAdvancedPath extends PNode {
      *            points to that lie along the generated path
      */
     public void setPathToPolyline(final Point2D[] points) {
+        if (points.length == 0){
+            return;
+        }
+        
         final GeneralPath path = new GeneralPath();
         path.reset();
         path.moveTo((float) points[0].getX(), (float) points[0].getY());

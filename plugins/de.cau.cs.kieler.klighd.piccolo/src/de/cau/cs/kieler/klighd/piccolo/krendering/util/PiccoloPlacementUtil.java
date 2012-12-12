@@ -14,27 +14,19 @@
 package de.cau.cs.kieler.klighd.piccolo.krendering.util;
 
 import java.awt.geom.Point2D;
-import java.util.Arrays;
-
-import javax.swing.tree.VariableHeightLayoutCache;
 
 import de.cau.cs.kieler.core.krendering.KBottomPosition;
 import de.cau.cs.kieler.core.krendering.KDecoratorPlacementData;
 import de.cau.cs.kieler.core.krendering.KDirectPlacementData;
-import de.cau.cs.kieler.core.krendering.KGridPlacement;
-import de.cau.cs.kieler.core.krendering.KGridPlacementData;
 import de.cau.cs.kieler.core.krendering.KLeftPosition;
 import de.cau.cs.kieler.core.krendering.KPlacementData;
 import de.cau.cs.kieler.core.krendering.KPolyline;
 import de.cau.cs.kieler.core.krendering.KPosition;
-import de.cau.cs.kieler.core.krendering.KRenderingPackage;
 import de.cau.cs.kieler.core.krendering.KRightPosition;
 import de.cau.cs.kieler.core.krendering.KTopPosition;
 import de.cau.cs.kieler.core.krendering.KXPosition;
 import de.cau.cs.kieler.core.krendering.KYPosition;
 import de.cau.cs.kieler.core.util.Pair;
-import de.cau.cs.kieler.klighd.krendering.PlacementUtil;
-import de.cau.cs.kieler.klighd.krendering.PlacementUtil.GridPlacer;
 import de.cau.cs.kieler.klighd.piccolo.nodes.PSWTAdvancedPath;
 import de.cau.cs.kieler.klighd.piccolo.util.MathUtil;
 import edu.umd.cs.piccolo.util.PBounds;
@@ -266,7 +258,5 @@ public final class PiccoloPlacementUtil {
         public final double getRotation() {
             return rotation;
         }
-
     }
-
 }

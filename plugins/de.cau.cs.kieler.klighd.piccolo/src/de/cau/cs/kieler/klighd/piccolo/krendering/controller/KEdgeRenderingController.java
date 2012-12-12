@@ -15,6 +15,7 @@ package de.cau.cs.kieler.klighd.piccolo.krendering.controller;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 
 import org.eclipse.core.runtime.IStatus;
@@ -25,6 +26,7 @@ import de.cau.cs.kieler.core.kgraph.KEdge;
 import de.cau.cs.kieler.core.krendering.KCustomRendering;
 import de.cau.cs.kieler.core.krendering.KForegroundColor;
 import de.cau.cs.kieler.core.krendering.KPolyline;
+import de.cau.cs.kieler.core.krendering.KPosition;
 import de.cau.cs.kieler.core.krendering.KRendering;
 import de.cau.cs.kieler.core.krendering.KRenderingFactory;
 import de.cau.cs.kieler.core.krendering.KRenderingPackage;
