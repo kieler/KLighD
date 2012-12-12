@@ -22,7 +22,10 @@ package de.cau.cs.kieler.core.kgraph;
  *
  * <!-- begin-model-doc -->
  * An edge must be assigned a source and a target node, but the source and target ports
- * are optional.
+ * are optional. The source and target references are opposite to the lists of outgoing and
+ * incoming edges of nodes, respectively. The source and target port references are
+ * not opposite to the ports' list of edges, but despite that, setting these references will
+ * automatically update the edges reference of the corresponding port.
  * <!-- end-model-doc -->
  *
  * <p>
@@ -49,7 +52,8 @@ public interface KEdge extends KLabeledGraphElement {
      * The source node is expected to be set for each edge. This is especially
      * important because the source node is defined to be the container of the
      * edge, which is relevant for many EMF features such as XML storage or
-     * copying.
+     * copying. The source reference is opposite to the nodes' list of outgoing
+     * edges, hence those references are synchronized automatically.
      * <!-- end-model-doc -->
      * @return the value of the '<em>Source</em>' container reference.
      * @see #setSource(KNode)
@@ -63,8 +67,7 @@ public interface KEdge extends KLabeledGraphElement {
     /**
      * Sets the value of the '{@link de.cau.cs.kieler.core.kgraph.KEdge#getSource <em>Source</em>}' container reference.
      * <!-- begin-user-doc -->
-     * This automatically adds the edge to the the source node's list of outgoing
-     * edges.
+     * This automatically adds the edge to the the source node's list of outgoing edges.
      * <!-- end-user-doc -->
      * @param value the new value of the '<em>Source</em>' container reference.
      * @see #getSource()
@@ -79,6 +82,8 @@ public interface KEdge extends KLabeledGraphElement {
      * <!-- end-user-doc -->
      * <!-- begin-model-doc -->
      * The target node is expected to be set for each edge.
+     * The target reference is opposite to the nodes' list of incoming
+     * edges, hence those references are synchronized automatically.
      * <!-- end-model-doc -->
      * @return the value of the '<em>Target</em>' reference.
      * @see #setTarget(KNode)
@@ -92,8 +97,7 @@ public interface KEdge extends KLabeledGraphElement {
     /**
      * Sets the value of the '{@link de.cau.cs.kieler.core.kgraph.KEdge#getTarget <em>Target</em>}' reference.
      * <!-- begin-user-doc -->
-     * This automatically adds the edge to the target node's list of incoming
-     * edges.
+     * This automatically adds the edge to the target node's list of incoming edges.
      * <!-- end-user-doc -->
      * @param value the new value of the '<em>Target</em>' reference.
      * @see #getTarget()
@@ -107,6 +111,8 @@ public interface KEdge extends KLabeledGraphElement {
      * <!-- end-user-doc -->
      * <!-- begin-model-doc -->
      * This reference is optional, as a node may have no ports.
+     * The reference is not opposite to the list of edges stored by ports,
+     * but setting it automatically updates that list.
      * <!-- end-model-doc -->
      * @return the value of the '<em>Source Port</em>' reference.
      * @see #setSourcePort(KPort)
@@ -119,12 +125,11 @@ public interface KEdge extends KLabeledGraphElement {
     /**
      * Sets the value of the '{@link de.cau.cs.kieler.core.kgraph.KEdge#getSourcePort <em>Source Port</em>}' reference.
      * <!-- begin-user-doc -->
-     * As this reference is not bidirectional, the edge must be added to
-     * the list obtained with the {@link KPort#getEdges() getEdges} method
-     * of the given port.
+     * This reference is not bidirectional, but setting it automatically adds the edge to the
+     * {@link KPort#getEdges() <em>Edges</em>} reference of the given port. If the reference was already
+     * set before, the edge is automatically removed from the old port's list of edges.
      * <p>
-     * The node related to the source port must be equal to the source node
-     * of this edge.
+     * The node related to the source port must be equal to the source node of this edge.
      * </p>
      * <!-- end-user-doc -->
      * @param value the new value of the '<em>Source Port</em>' reference.
@@ -139,6 +144,8 @@ public interface KEdge extends KLabeledGraphElement {
      * <!-- end-user-doc -->
      * <!-- begin-model-doc -->
      * This reference is optional, as a node may have no ports.
+     * The reference is not opposite to the list of edges stored by ports,
+     * but setting it automatically updates that list.
      * <!-- end-model-doc -->
      * @return the value of the '<em>Target Port</em>' reference.
      * @see #setTargetPort(KPort)
@@ -151,12 +158,11 @@ public interface KEdge extends KLabeledGraphElement {
     /**
      * Sets the value of the '{@link de.cau.cs.kieler.core.kgraph.KEdge#getTargetPort <em>Target Port</em>}' reference.
      * <!-- begin-user-doc -->
-     * As this reference is not bidirectional, the edge must be added to
-     * the list obtained with the {@link KPort#getEdges() getEdges} method
-     * of the given port.the given port.
+     * This reference is not bidirectional, but setting it automatically adds the edge to the
+     * {@link KPort#getEdges() <em>Edges</em>} reference of the given port. If the reference was already
+     * set before, the edge is automatically removed from the old port's list of edges.
      * <p>
-     * The node related to the target port must be equal to the target node
-     * of this edge.
+     * The node related to the target port must be equal to the target node of this edge.
      * </p>
      * <!-- end-user-doc -->
      * @param value the new value of the '<em>Target Port</em>' reference.
@@ -172,6 +178,8 @@ public interface KEdge extends KLabeledGraphElement {
      * <!-- end-user-doc -->
      * @model portRequired="true"
      * @generated
+     * @deprecated Now {@link #setSourcePort(KPort)} also updates the port's list of edges,
+     *          hence this utility operation is not required anymore.
      */
     void connectSourcePort(KPort port);
 
@@ -182,6 +190,8 @@ public interface KEdge extends KLabeledGraphElement {
      * <!-- end-user-doc -->
      * @model portRequired="true"
      * @generated
+     * @deprecated Now {@link #setTargetPort(KPort)} also updates the port's list of edges,
+     *          hence this utility operation is not required anymore.
      */
     void connectTargetPort(KPort port);
 

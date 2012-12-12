@@ -46,7 +46,7 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="KGraphData" eSuperTypes="#//EMapPropertyHolder">
     <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-      <details key="documentation" value="This class can be extended to hold arbitrary additional data for each&#xA;graph element."/>
+      <details key="documentation" value="This class can be extended to hold arbitrary additional data for&#xA;graph elements, such as layout or rendering information.&#xA;Furthermore, graph data extensions are property holders, hence&#xA;they can be annotated with key-value pairs, e.g. for setting options&#xA;that control the layout algorithms."/>
     </eAnnotations>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="KNode" eSuperTypes="#//KLabeledGraphElement">
@@ -78,7 +78,7 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="KEdge" eSuperTypes="#//KLabeledGraphElement">
     <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-      <details key="documentation" value="An edge must be assigned a source and a target node, but the source and target ports&#xA;are optional."/>
+      <details key="documentation" value="An edge must be assigned a source and a target node, but the source and target ports&#xA;are optional. The source and target references are opposite to the lists of outgoing and&#xA;incoming edges of nodes, respectively. The source and target port references are&#xA;not opposite to the ports' list of edges, but despite that, setting these references will&#xA;automatically update the edges reference of the corresponding port."/>
     </eAnnotations>
     <eOperations name="connectSourcePort">
       <eParameters name="port" lowerBound="1" eType="#//KPort"/>
@@ -89,29 +89,29 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="source" lowerBound="1"
         eType="#//KNode" eOpposite="#//KNode/outgoingEdges">
       <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-        <details key="documentation" value="The source node is expected to be set for each edge. This is especially&#xA;important because the source node is defined to be the container of the&#xA;edge, which is relevant for many EMF features such as XML storage or&#xA;copying."/>
+        <details key="documentation" value="The source node is expected to be set for each edge. This is especially&#xA;important because the source node is defined to be the container of the&#xA;edge, which is relevant for many EMF features such as XML storage or&#xA;copying. The source reference is opposite to the nodes' list of outgoing&#xA;edges, hence those references are synchronized automatically."/>
       </eAnnotations>
     </eStructuralFeatures>
     <eStructuralFeatures xsi:type="ecore:EReference" name="target" lowerBound="1"
         eType="#//KNode" eOpposite="#//KNode/incomingEdges">
       <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-        <details key="documentation" value="The target node is expected to be set for each edge."/>
+        <details key="documentation" value="The target node is expected to be set for each edge.&#xA;The target reference is opposite to the nodes' list of incoming&#xA;edges, hence those references are synchronized automatically."/>
       </eAnnotations>
     </eStructuralFeatures>
     <eStructuralFeatures xsi:type="ecore:EReference" name="sourcePort" eType="#//KPort">
       <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-        <details key="documentation" value="This reference is optional, as a node may have no ports."/>
+        <details key="documentation" value="This reference is optional, as a node may have no ports.&#xA;The reference is not opposite to the list of edges stored by ports,&#xA;but setting it automatically updates that list."/>
       </eAnnotations>
     </eStructuralFeatures>
     <eStructuralFeatures xsi:type="ecore:EReference" name="targetPort" eType="#//KPort">
       <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-        <details key="documentation" value="This reference is optional, as a node may have no ports."/>
+        <details key="documentation" value="This reference is optional, as a node may have no ports.&#xA;The reference is not opposite to the list of edges stored by ports,&#xA;but setting it automatically updates that list."/>
       </eAnnotations>
     </eStructuralFeatures>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="KPort" eSuperTypes="#//KLabeledGraphElement">
     <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-      <details key="documentation" value="Each port must be assigned a containing node. A port may contain incoming&#xA;edges as well as outgoing edges, independently of its type."/>
+      <details key="documentation" value="Each port must be assigned a containing node. A port may contain incoming&#xA;edges as well as outgoing edges, but usually either one or the other kind is&#xA;referenced. The list of edges is not opposite to the edges' source or target&#xA;port reference. However, the list content is automatically updated when those&#xA;references are set.&#xA;&lt;p>&#xA;Since the information contained in this list is redundant, it is marked as transient,&#xA;i.e. it is not serialized.&#xA;&lt;/p>"/>
     </eAnnotations>
     <eStructuralFeatures xsi:type="ecore:EReference" name="node" lowerBound="1" eType="#//KNode"
         eOpposite="#//KNode/ports">
@@ -120,9 +120,9 @@
       </eAnnotations>
     </eStructuralFeatures>
     <eStructuralFeatures xsi:type="ecore:EReference" name="edges" upperBound="-1"
-        eType="#//KEdge">
+        eType="#//KEdge" transient="true">
       <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-        <details key="documentation" value="Edges in this list may be incoming as well as outgoing with respect&#xA;to the containing node."/>
+        <details key="documentation" value="Edges in this list may be incoming as well as outgoing with respect&#xA;to the containing node. The list of edges is not opposite to the edges'&#xA;source or target port reference. Just adding an edge to this list does&#xA;not imply that the source or target port reference is set, since it is&#xA;unclear which reference to pick. However, the list content is automatically&#xA;updated when one of those references is set or unset."/>
       </eAnnotations>
     </eStructuralFeatures>
   </eClassifiers>

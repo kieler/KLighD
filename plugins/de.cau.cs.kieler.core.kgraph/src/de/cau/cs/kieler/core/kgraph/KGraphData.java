@@ -22,8 +22,11 @@ package de.cau.cs.kieler.core.kgraph;
  * <!-- end-user-doc -->
  *
  * <!-- begin-model-doc -->
- * This class can be extended to hold arbitrary additional data for each
- * graph element.
+ * This class can be extended to hold arbitrary additional data for
+ * graph elements, such as layout or rendering information.
+ * Furthermore, graph data extensions are property holders, hence
+ * they can be annotated with key-value pairs, e.g. for setting options
+ * that control the layout algorithms.
  * <!-- end-model-doc -->
  *
  *
