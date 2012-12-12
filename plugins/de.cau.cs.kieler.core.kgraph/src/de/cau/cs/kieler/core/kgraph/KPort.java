@@ -82,7 +82,7 @@ public interface KPort extends KLabeledGraphElement {
      * The list contents are of type {@link de.cau.cs.kieler.core.kgraph.KEdge}.
      * <!-- begin-user-doc -->
      * This reference is not bidirectional, so adding edges to it does not
-     * affect the source or target port references of the edges.
+     * affect the source or target port references of the edges.<br/>
      * <!-- end-user-doc -->
      * <!-- begin-model-doc -->
      * Edges in this list may be incoming as well as outgoing with respect
@@ -91,6 +91,9 @@ public interface KPort extends KLabeledGraphElement {
      * not imply that the source or target port reference is set, since it is
      * unclear which reference to pick. However, the list content is automatically
      * updated when one of those references is set or unset.
+     * Therefore it is advisable not to modify this list directly, but to use
+     * {@link KEdge#setSourcePort(KPort)} or {@link KEdge#setTargetPort(KPort)}
+     * instead.
      * <!-- end-model-doc -->
      * @return the value of the '<em>Edges</em>' reference list.
      * @see de.cau.cs.kieler.core.kgraph.KGraphPackage#getKPort_Edges()

@@ -235,7 +235,7 @@ public class KEdgeImpl extends KLabeledGraphElementImpl implements KEdge {
         if (oldSourcePort != null) {
             oldSourcePort.getEdges().remove(this);
         }
-        if (newSourcePort != null) {
+        if (newSourcePort != null && !newSourcePort.getEdges().contains(this)) {
             newSourcePort.getEdges().add(this);
         }
         if (eNotificationRequired()) {
@@ -281,7 +281,7 @@ public class KEdgeImpl extends KLabeledGraphElementImpl implements KEdge {
         if (oldTargetPort != null) {
             oldTargetPort.getEdges().remove(this);
         }
-        if (newTargetPort != null) {
+        if (newTargetPort != null && !newTargetPort.getEdges().contains(this)) {
             newTargetPort.getEdges().add(this);
         }
         if (eNotificationRequired()) {

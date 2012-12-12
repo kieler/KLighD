@@ -122,7 +122,7 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="edges" upperBound="-1"
         eType="#//KEdge" transient="true">
       <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-        <details key="documentation" value="Edges in this list may be incoming as well as outgoing with respect&#xA;to the containing node. The list of edges is not opposite to the edges'&#xA;source or target port reference. Just adding an edge to this list does&#xA;not imply that the source or target port reference is set, since it is&#xA;unclear which reference to pick. However, the list content is automatically&#xA;updated when one of those references is set or unset."/>
+        <details key="documentation" value="Edges in this list may be incoming as well as outgoing with respect&#xA;to the containing node. The list of edges is not opposite to the edges'&#xA;source or target port reference. Just adding an edge to this list does&#xA;not imply that the source or target port reference is set, since it is&#xA;unclear which reference to pick. However, the list content is automatically&#xA;updated when one of those references is set or unset.&#xA;Therefore it is advisable not to modify this list directly, but to use&#xA;{@link KEdge#setSourcePort(KPort)} or {@link KEdge#setTargetPort(KPort)}&#xA;instead."/>
       </eAnnotations>
     </eStructuralFeatures>
   </eClassifiers>
