@@ -47,7 +47,7 @@ public interface KPolyline extends KContainerRendering {
      * <!-- end-user-doc -->
      * @return the value of the '<em>Points</em>' containment reference list.
      * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKPolyline_Points()
-     * @model containment="true"
+     * @model containment="true" required="true"
      * @generated
      */
     EList<KPosition> getPoints();

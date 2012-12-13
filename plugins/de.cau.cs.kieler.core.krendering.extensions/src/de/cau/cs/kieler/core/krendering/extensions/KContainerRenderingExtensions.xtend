@@ -72,7 +72,7 @@ class KContainerRenderingExtensions {
             it.points.add(createKPosition(PositionReferenceX::LEFT, 0, 0, PositionReferenceY::TOP, 0, 0.5f))
             it.points.add(createKPosition(PositionReferenceX::RIGHT, 0, 0, PositionReferenceY::TOP, 0, 0.5f))
             it.placementData = renderingFactory.createKGridPlacementData => [
-                it.setHeightHint(lineWidth + spacing)
+                it.setMinCellHeight(lineWidth + spacing)
             ]; 
 //          TODO: check spacing  
 //            it.placementData = renderingFactory.createKPolylinePlacementData => [

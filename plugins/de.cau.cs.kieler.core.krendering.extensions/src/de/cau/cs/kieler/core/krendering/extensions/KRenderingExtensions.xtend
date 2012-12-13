@@ -304,12 +304,12 @@ class KRenderingExtensions {
 	}
 	
 	
-	def <T extends KRendering> T setGridPlacementData(T rendering, float widthHint,
-	        float heightHint, KPosition topLeft, KPosition bottomRight) {
+	def <T extends KRendering> T setGridPlacementData(T rendering, float minCellWidth,
+	        float minCellHeight, KPosition topLeft, KPosition bottomRight) {
 		return rendering => [
 		    rendering.placementData = renderingFactory.createKGridPlacementData => [
-                it.setWidthHint(widthHint);
-                it.setHeightHint(heightHint);
+                it.setMinCellWidth(minCellWidth);
+                it.setMinCellHeight(minCellHeight);
                 it.setTopLeft(topLeft);
                 it.setBottomRight(bottomRight);
             ];
