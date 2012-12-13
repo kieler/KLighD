@@ -109,7 +109,9 @@ public class DiagramLayoutManager implements IDiagramLayoutManager<KGraphElement
      */
     @SuppressWarnings({ "rawtypes", "unchecked" })
     public Object getAdapter(final Object object, final Class adapterType) {
-        if (adapterType.isAssignableFrom(KGraphElement.class)) {
+        if (adapterType.isAssignableFrom(KGraphPropertyLayoutConfig.class)) {
+            return propertyLayoutConfig;
+        } else if (adapterType.isAssignableFrom(KGraphElement.class)) {
             if (object instanceof KGraphElement) {
                 return object;
             }
@@ -396,11 +398,9 @@ public class DiagramLayoutManager implements IDiagramLayoutManager<KGraphElement
         layoutEdge.setTarget(layoutTarget);
         if (layoutSourcePort != null) {
             layoutEdge.setSourcePort(layoutSourcePort);
-            layoutSourcePort.getEdges().add(layoutEdge);
         }
         if (layoutTargetPort != null) {
             layoutEdge.setTargetPort(layoutTargetPort);
-            layoutTargetPort.getEdges().add(layoutEdge);
         }
 
         mapping.getGraphMap().put(layoutEdge, edge);
