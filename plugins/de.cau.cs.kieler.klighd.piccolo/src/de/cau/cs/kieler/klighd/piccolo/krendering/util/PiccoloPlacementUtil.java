@@ -191,20 +191,6 @@ public final class PiccoloPlacementUtil {
         return null;
     }
 
-    // /**
-    // * Returns the given placement data as grid placement data.
-    // *
-    // * @param data
-    // * the placement data
-    // * @return the grid placement data or null if the placement data is no grid placement data
-    // */
-    // public static KGridPlacementData asGridPlacementData(final KPlacementData data) {
-    // if (data instanceof KGridPlacementData) {
-    // return (KGridPlacementData) data;
-    // }
-    // return null;
-    // }
-
     /**
      * Returns the given placement data as decorator placement data.
      * 

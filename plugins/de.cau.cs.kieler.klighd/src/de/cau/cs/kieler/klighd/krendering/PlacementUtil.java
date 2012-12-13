@@ -29,6 +29,7 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 
+import de.cau.cs.kieler.core.kgraph.KGraphFactory;
 import de.cau.cs.kieler.core.kgraph.KLabel;
 import de.cau.cs.kieler.core.kgraph.KNode;
 import de.cau.cs.kieler.core.krendering.KChildArea;
@@ -55,7 +56,9 @@ import de.cau.cs.kieler.core.krendering.KXPosition;
 import de.cau.cs.kieler.core.krendering.KYPosition;
 import de.cau.cs.kieler.core.krendering.util.KRenderingSwitch;
 import de.cau.cs.kieler.kiml.klayoutdata.KInsets;
+import de.cau.cs.kieler.kiml.klayoutdata.KLayoutDataFactory;
 import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout;
+import de.cau.cs.kieler.kiml.klayoutdata.impl.KInsetsImpl;
 import de.cau.cs.kieler.klighd.KlighdConstants;
 
 /**
@@ -135,6 +138,11 @@ public final class PlacementUtil {
         float width;
         /** the height. */
         float height;
+        /**
+         * the insets used to transport the position of a ChildAreaCell from estimateGridSize to
+         * calculateInsets-method
+         */
+        private KInsets insets = null;
 
         /**
          * Constructs bounds from the dimensions with coordinates (0,0).
@@ -149,6 +157,7 @@ public final class PlacementUtil {
             this.y = 0;
             this.width = width;
             this.height = height;
+            this.insets = KLayoutDataFactory.eINSTANCE.createKInsets();
         }
 
         /**
@@ -162,6 +171,7 @@ public final class PlacementUtil {
             this.y = bounds.y;
             this.width = bounds.width;
             this.height = bounds.height;
+            this.insets = KLayoutDataFactory.eINSTANCE.createKInsets();
         }
 
         /**
@@ -173,6 +183,7 @@ public final class PlacementUtil {
         public Bounds(final org.eclipse.swt.graphics.Point point) {
             this.width = point.x;
             this.height = point.y;
+            this.insets = KLayoutDataFactory.eINSTANCE.createKInsets();
         }
 
         /**
@@ -192,6 +203,7 @@ public final class PlacementUtil {
             this.y = y;
             this.width = width;
             this.height = height;
+            this.insets = KLayoutDataFactory.eINSTANCE.createKInsets();
         }
 
         /**
@@ -205,6 +217,7 @@ public final class PlacementUtil {
             this.y = bounds.y;
             this.width = bounds.width;
             this.height = bounds.height;
+            this.insets = KLayoutDataFactory.eINSTANCE.createKInsets();
         }
 
         /**
@@ -231,7 +244,7 @@ public final class PlacementUtil {
          * @return height
          */
         public float getHeight() {
-            return height;
+            return this.height;
         }
 
         /**
@@ -240,7 +253,26 @@ public final class PlacementUtil {
          * @return width
          */
         public float getWidth() {
-            return width;
+            return this.width;
+        }
+
+        /**
+         * Getter to access the Insets of this Bounds.
+         * 
+         * @return width
+         */
+        public KInsets getInsets() {
+            return this.insets;
+        }
+
+        /**
+         * Setter for the Insets of this Bound
+         * 
+         * @param insets
+         *            the insets to be set
+         */
+        public void setInsets(KInsets insets) {
+            this.insets = insets;
         }
     }
     
@@ -333,21 +365,17 @@ public final class PlacementUtil {
      */
     public static Bounds estimateSize(final KRendering rendering, final Bounds givenBounds) {
 
-        int id = KRENDERING_PACKAGE.getKText().isInstance(rendering) ? KRenderingPackage.KTEXT
-                : (KRENDERING_PACKAGE.getKContainerRendering().isInstance(rendering)
-                        ? KRenderingPackage.KCONTAINER_RENDERING
-                                : KRENDERING_PACKAGE.getKChildArea().isInstance(rendering)
-                                    ? KRenderingPackage.KCHILD_AREA : KRenderingPackage.KRENDERING);
+        Bounds textBounds = null;
+        Bounds placementBounds;
+        if (KRENDERING_PACKAGE.getKText().isInstance(rendering)) {
+            // evaluate the space needed to display the text
+            textBounds = estimateTextSize((KText) rendering);
+        }
 
+        // look at attached placementData
+        int id = (KRENDERING_PACKAGE.getKContainerRendering().isInstance(rendering) ? KRenderingPackage.KCONTAINER_RENDERING
+                : KRenderingPackage.KRENDERING);
         switch (id) {
-        case KRenderingPackage.KTEXT:
-            // for a text rendering just calculate the bounds of the text
-            // and put the minimal size into 'minBounds'
-            return estimateTextSize((KText) rendering);
-        case KRenderingPackage.KCHILD_AREA:
-            // KChildAreas do not cover any space that is not gathered by the (macro) layout
-            return new Bounds(0, 0);
-
         case KRenderingPackage.KCONTAINER_RENDERING:
             KContainerRendering container = (KContainerRendering) rendering;
 
@@ -359,20 +387,33 @@ public final class PlacementUtil {
                 // in case of a GridPlacement
                 // calculate the number of columns and rows of the grid to the bounds of a inner
                 // rendering
-                return estimateGridSize(container, givenBounds);
+                placementBounds = estimateGridSize(container, defBounds);
+                break;
             default:
                 // in case of a DirectPlacement
                 // calculate the offsets of each rendering and find the biggest rendering in width
                 // and height
-                return estimateDirectSize(container, givenBounds);
+                placementBounds = estimateDirectSize(container, defBounds);
+                break;
             }
-
+            break;
         default:
-            // there is something else than a text box or a container, e.q. a KPolyline
-            // just taken the given 'defBounds' as minimal bounds as we consider only KTexts
+            // there is something else than a text box or a container, e.g. a KPolyline
+            // just take the given 'defBounds' as minimal bounds as we consider only KTexts
             // as "atomic minimal bounds provider"
             return givenBounds;
         }
+
+        // if there were textBounds calculated that are smaller than a defined attached
+        // placementData
+        // use the maximum of those to be possible to
+        // give as much space as needed and give the defined minimum space
+        if (textBounds != null) {
+            return new Bounds(placementBounds.getX(), placementBounds.getY(), Math.max(
+                    textBounds.getWidth(), placementBounds.getWidth()), Math.max(
+                    textBounds.getHeight(), placementBounds.getHeight()));
+        }
+        return placementBounds;
     }
 
     /**
@@ -503,16 +544,15 @@ public final class PlacementUtil {
      */
     public static Bounds estimateGridSize(final KContainerRendering container,
             final Bounds minBounds) {
-
         int numColumns = ((KGridPlacement) container.getChildPlacement()).getNumColumns();
         List<KRendering> childRenderings = container.getChildren();
+
         int numRows;
         if (numColumns < 2) {
             // if the number of columns is not set or is 1 then in each row is one rendering,
             // so numRows = number of elements to place
             numColumns = 1;
             numRows = childRenderings.size();
-
             // Chsch: This is OK for the moment. In future, however, the semantics of a value less
             // than 1 (or 0) might change
         } else {
@@ -524,12 +564,17 @@ public final class PlacementUtil {
         float[] minColumnWidths = new float[numColumns];
         float[] minRowHeights = new float[numRows];
 
+        // first evaluate the grid to get position and size of each cell
+        int childAreaRowId = -1;
+        int childAreaColId = -1;
+
         // to make the layout as compact as possible but have space to place all children,
         // evaluate the space needed for each child
         for (int k = 0; k < childRenderings.size(); k++) {
             int row = k / numColumns;
             int col = k - row * numColumns;
-            Bounds childMinBounds = estimateSize(childRenderings.get(k), new Bounds(1.0f, 1.0f));
+
+            Bounds childMinBounds = estimateSize(childRenderings.get(k), new Bounds(0.0f, 0.0f));
 
             float elementHeight = childMinBounds.getHeight();
             float elementWidth = childMinBounds.getWidth();
@@ -538,44 +583,98 @@ public final class PlacementUtil {
             KPlacementData plcData = childRenderings.get(k).getPlacementData();
             KGridPlacementData gridData = null;
 
+            if (childRenderings.get(k) instanceof KChildArea) {
+                // remember the position of the area to be able to calculate
+                // the size of the parentNode correctly
+                // later this is used to calculate insets based on x and y pos of the
+                childAreaColId = col;
+                childAreaRowId = row;
+            }
+
             if (plcData instanceof KGridPlacementData) {
                 gridData = (KGridPlacementData) plcData;
 
-                if (KRENDERING_PACKAGE.getKText().isInstance(childRenderings.get(k))){
-                    //update Text with minimum needed space if already set value is less than that
-                    gridData.setMinCellHeight(Math.max(elementHeight,gridData.getMinCellHeight()));
+                if (KRENDERING_PACKAGE.getKText().isInstance(childRenderings.get(k))) {
+                    // update Text with minimum needed space if already set value is less than that
+                    // to make it possible for the gridPlacer to give that space to the text
+                    // (otherwise
+                    // the grid placer would not know the size needed and just give the text the
+                    // space
+                    // defined in the placementData
+                    gridData.setMinCellHeight(Math.max(elementHeight, gridData.getMinCellHeight()));
                     gridData.setMinCellWidth(Math.max(elementWidth, gridData.getMinCellWidth()));
                     childRenderings.get(k).setPlacementData(gridData);
                 }
                 elementHeight = Math.max(gridData.getMinCellHeight(), elementHeight);
                 elementWidth = Math.max(gridData.getMinCellWidth(), elementWidth);
             }
-            
-            
             // compare the width and height of the current rendering with the biggest width
             // and height of the corresponding row and column and update the values with the
             // maximum
-
             minRowHeights[row] = Math.max(minRowHeights[row], elementHeight);
             minColumnWidths[col] = Math.max(minColumnWidths[col], elementWidth);
         }
 
         // the minimum total bound is the sum of the biggest renderings in height and width
-        Bounds childBounds = new Bounds(0, 0);
+        Bounds childBounds = new Bounds(0, 0, 0, 0);
         for (float width : minColumnWidths) {
             childBounds.width += width;
         }
         for (float height : minRowHeights) {
             childBounds.height += height;
         }
+        float inset = 0.0f;
+        if (childAreaColId >= 0 && childAreaRowId >= 0) {
+            // found a childArea earlier, calculate 'insets' based on position
+            // left inset is everything left of the childAreaCell
+            for (int left = 0; left < childAreaColId; left++) {
+                inset += minColumnWidths[left];
+            }
+            childBounds.getInsets().setLeft(inset);
+            // right inset is fullWidth-insetLeft-childAreaWidth
+            childBounds.getInsets().setRight(
+                    childBounds.width - inset - minColumnWidths[childAreaColId]);
+
+            // reset for next calculation
+            inset = 0.0f;
+            // top inset is everything top of the childAreaCell
+            for (int top = 0; top < childAreaRowId; top++) {
+                inset += minRowHeights[top];
+            }
+            childBounds.getInsets().setTop(inset);
+            // bottom inset is fullHeight-insetTop-childAreaHeight
+            childBounds.getInsets().setBottom(
+                    childBounds.height - inset - minRowHeights[childAreaRowId]);
+        }
 
         // compare the minimal need size with the maximal yet found size and
         // update the minimal size accordingly
+        // transport the insets-sums on each side through the position
+        minBounds.setInsets(childBounds.getInsets());
+
         minBounds.width = Math.max(minBounds.width, childBounds.width);
-        minBounds.height = 500; //Math.max(childBounds.height, childBounds.height);
+        minBounds.height = Math.max(minBounds.height, childBounds.height);
 
-        return childBounds;
+        // update placement data of parent childArea gridPlacement if child grows
+        // search for the childArea
+        //KOCH
+//        KContainerRendering parent = container.getParent();
+//        if (parent != null) {
+//            List<KRendering> siblings = parent.getChildren();
+//            for (int i = 0; i < siblings.size(); i++) {
+//                KRendering currentSibling = siblings.get(i);
+//                if (currentSibling instanceof KChildArea) {
+//                    System.out.println("has");
+//                }
+//                else {
+//                    System.out.println("hasnt");
+//                }
+//            }
+//        } else {
+//            System.out.println("null");
+//        }
 
+        return minBounds;
     }
 
     /**
@@ -919,7 +1018,6 @@ public final class PlacementUtil {
      *            the insets
      */
     public static void calculateInsets(final KNode node, final KInsets insets) {
-        // TODO take already set insets into consideration
         KRendering rendering = node.getData(KRendering.class);
 
         // no rendering so the whole node is the child area
@@ -946,10 +1044,10 @@ public final class PlacementUtil {
                 shapeLayout.getHeight());
 
         // the calculated insets
-        float leftInset = 0.0f;
-        float rightInset = 0.0f;
-        float topInset = 0.0f;
-        float bottomInset = 0.0f;
+        float leftInset = insets.getLeft();
+        float rightInset = insets.getRight();
+        float topInset = insets.getTop();
+        float bottomInset = insets.getBottom();
 
         while (!path.isEmpty()) {
             KRendering currentRendering = path.pollFirst();

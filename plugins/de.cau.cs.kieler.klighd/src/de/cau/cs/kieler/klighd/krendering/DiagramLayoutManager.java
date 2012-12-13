@@ -20,6 +20,16 @@ import java.util.Map.Entry;
 import java.util.Set;
 
 import org.eclipse.core.runtime.IAdaptable;
+import org.eclipse.emf.common.notify.Adapter;
+import org.eclipse.emf.common.notify.Notification;
+import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.common.util.TreeIterator;
+import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EOperation;
+import org.eclipse.emf.ecore.EReference;
+import org.eclipse.emf.ecore.EStructuralFeature;
+import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.ui.IWorkbenchPart;
 
 import com.google.common.collect.BiMap;
@@ -255,27 +265,27 @@ public class DiagramLayoutManager implements IDiagramLayoutManager<KGraphElement
     private static void createNode(final LayoutMapping<KGraphElement> mapping, final KNode node,
             final KNode layoutParent) {
         KNode layoutNode = KimlUtil.createInitializedNode();
-
         // set the node layout
-        KShapeLayout layoutLayout = layoutNode.getData(KShapeLayout.class);
+        // initialize with defaultLayout and try to get specific layout attached to the node
+        KShapeLayout useLayout = layoutNode.getData(KShapeLayout.class);
         KShapeLayout nodeLayout = node.getData(KShapeLayout.class);
         Bounds minSize;
         if (nodeLayout != null) {
+            // there is layoutData attached to the node,
+            // so take that as node layout instead of the default-layout
+            transferShapeLayout(nodeLayout, useLayout);
 
-            transferShapeLayout(nodeLayout, layoutLayout);
-
-            // integrate the minimal estimated node size based on the updated layoutLayout
-            //  - manipulating the nodeLayout may cause immediate glitches in the diagram
-            //   (through the listeners)
+            // integrate the minimal estimated node size based on the updated useLayout
+            // - manipulating the nodeLayout may cause immediate glitches in the diagram
+            // (through the listeners)
             KRendering rootRendering = node.getData(KRendering.class);
             if (rootRendering != null) {
-                // calculate the minimal size need for the first rendering ... 
-                minSize = PlacementUtil.estimateSize(rootRendering,
-                        new Bounds(layoutLayout.getWidth(), layoutLayout.getHeight()));
-                
+                // calculate the minimal size need for the rendering ...
+                minSize = PlacementUtil.estimateSize(rootRendering, new Bounds(
+                        useLayout.getWidth(), useLayout.getHeight()));
                 // ... and update the node size if it exceeds its size
-                if (minSize.width > layoutLayout.getWidth()) {
-                    layoutLayout.setWidth(minSize.width);
+                if (minSize.width > useLayout.getWidth()) {
+                    useLayout.setWidth(minSize.width);
 
                     // In order to instruct KIML to not shrink the node beyond the minimal size,
                     //  e.g. due to less space required by child nodes,
@@ -284,22 +294,23 @@ public class DiagramLayoutManager implements IDiagramLayoutManager<KGraphElement
                     //  transfered by the {@link KGraphPropertyLayoutConfig}.
                     nodeLayout.setProperty(LayoutOptions.MIN_WIDTH, minSize.width);
                 }
-                if (minSize.height > layoutLayout.getHeight()) {
-                    layoutLayout.setHeight(minSize.height);
+                if (minSize.height > useLayout.getHeight()) {
+                    useLayout.setHeight(useLayout.getHeight());
                     // see comment above
                     nodeLayout.setProperty(LayoutOptions.MIN_HEIGHT, minSize.height);
                 }
+                useLayout.setInsets(minSize.getInsets());
             }
         }
-
+        
         // set insets if available
-        KInsets layoutInsets = layoutLayout.getInsets();
+        KInsets layoutInsets = useLayout.getInsets();
         PlacementUtil.calculateInsets(node, layoutInsets);
 
         layoutParent.getChildren().add(layoutNode);
-        BiMap<KGraphElement,KGraphElement> map = mapping.getGraphMap();
+        BiMap<KGraphElement, KGraphElement> map = mapping.getGraphMap();
         mapping.getGraphMap().put(layoutNode, node);
-        
+
         // process ports
         for (KPort port : node.getPorts()) {
             createPort(mapping, port, layoutNode);
@@ -663,7 +674,6 @@ public class DiagramLayoutManager implements IDiagramLayoutManager<KGraphElement
         }
         targetPoint.applyVector(p.sub(offset));
     }
-
 
     /**
      * {@inheritDoc}
