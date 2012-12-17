@@ -55,7 +55,6 @@ import de.cau.cs.kieler.core.krendering.KTopPosition;
 import de.cau.cs.kieler.core.krendering.KXPosition;
 import de.cau.cs.kieler.core.krendering.KYPosition;
 import de.cau.cs.kieler.core.krendering.util.KRenderingSwitch;
-import de.cau.cs.kieler.core.util.Pair;
 import de.cau.cs.kieler.kiml.klayoutdata.KInsets;
 import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout;
 import de.cau.cs.kieler.klighd.KlighdConstants;
@@ -227,6 +226,58 @@ public final class PlacementUtil {
             return width;
         }
     }
+    
+    /**
+     * Data container class that is convenient if a method shall return up to 3 results.
+     * 
+     * @author chsch
+     *
+     * @param <A> The return type of result a;
+     * @param <B> The return type of result b;
+     * @param <C> The return type of result c;
+     */
+    public static class Triple<A, B, C> {
+        
+        private A a;
+        private B b;
+        private C c;
+        
+        /**
+         * Constructor.
+         * 
+         * @param theA The result a
+         * @param theB The result b
+         * @param theC The result c
+         */
+        public Triple(final A theA, final B theB, final C theC) {
+            this.a = theA;
+            this.b = theB;
+            this.c = theC;
+        }
+
+        /**
+         * @return the a
+         */
+        public A getA() {
+            return this.a;
+        }
+
+        /**
+         * @return the b
+         */
+        public B getB() {
+            return this.b;
+        }
+
+        /**
+         * @return the c
+         */
+        public C getC() {
+            return this.c;
+        }
+        
+        
+    }
 
     // CHECKSTYLEON Visibility
 
@@ -258,21 +309,27 @@ public final class PlacementUtil {
      * 
      * @param rendering
      *            the KRenderings to be evaluated
-     * @param defBounds
-     *            the size that would be given by default from the containing rendering
+     * @param givenBounds
+     *            the size that is given from the container rendering or the KShapeLayout
+     *            respectively
      * @return the minimal size
      */
-    public static Bounds estimateSize(final KRendering rendering, final Bounds defBounds) {
+    public static Bounds estimateSize(final KRendering rendering, final Bounds givenBounds) {
 
         int id = KRENDERING_PACKAGE.getKText().isInstance(rendering) ? KRenderingPackage.KTEXT
                 : (KRENDERING_PACKAGE.getKContainerRendering().isInstance(rendering)
-                        ? KRenderingPackage.KCONTAINER_RENDERING : KRenderingPackage.KRENDERING);
+                        ? KRenderingPackage.KCONTAINER_RENDERING
+                                : KRENDERING_PACKAGE.getKChildArea().isInstance(rendering)
+                                    ? KRenderingPackage.KCHILD_AREA : KRenderingPackage.KRENDERING);
 
         switch (id) {
         case KRenderingPackage.KTEXT:
             // for a text rendering just calculate the bounds of the text
             // and put the minimal size into 'minBounds'
             return estimateTextSize((KText) rendering);
+        case KRenderingPackage.KCHILD_AREA:
+            // KChildAreas do not cover any space that is not gathered by the (macro) layout
+            return new Bounds(0, 0);
 
         case KRenderingPackage.KCONTAINER_RENDERING:
             KContainerRendering container = (KContainerRendering) rendering;
@@ -285,25 +342,25 @@ public final class PlacementUtil {
                 // in case of a GridPlacement
                 // calculate the number of columns and rows of the grid to the bounds of a inner
                 // rendering
-                return estimateGridSize(container, defBounds);
+                return estimateGridSize(container, givenBounds);
 
             case KRenderingPackage.KSTACK_PLACEMENT:
                 // in case of a StackPlacement
                 // find the biggest rendering in width and height
-                return estimateStackSize(container, defBounds);
+                return estimateStackSize(container, givenBounds);
 
             default:
                 // in case of a DirectPlacement
                 // calculate the offsets of each rendering and find the biggest rendering in width
                 // and height
-                return estimateDirectSize(container, defBounds);
+                return estimateDirectSize(container, givenBounds);
             }
 
         default:
             // there is something else than a text box or a container, e.q. a KPolyline
             // just taken the given 'defBounds' as minimal bounds as we consider only KTexts
             // as "atomic minimal bounds provider"
-            return defBounds;
+            return givenBounds;
         }
     }
 
@@ -549,44 +606,70 @@ public final class PlacementUtil {
      * 
      * @param container
      *            b
-     * @param defBounds
+     * @param givenBounds
      *            a
      * @return d
      */
     public static Bounds estimateDirectSize(final KContainerRendering container,
-            final Bounds defBounds) {
-        final Bounds minBounds = new Bounds(defBounds);
+            final Bounds givenBounds) {
+        final Bounds minBounds = new Bounds(givenBounds);        
         for (KRendering rendering : container.getChildren()) {
-            KPlacementData plcData = rendering.getPlacementData();
+            estimateDirectlyPlacedChildSize(
+                    rendering, minBounds,
+                    evaluateDirectPlacement(asDirectPlacementData(rendering.getPlacementData()),
+                            givenBounds));
+        }
+        return minBounds;
+    }
+    
+    /**
+     * 
+     * @param rendering a
+     * @param minBounds c
+     * @param givenBounds b
+     * @return d
+     */
+    public static Bounds estimateDirectlyPlacedChildSize(final KRendering rendering,
+            final Bounds minBounds, final Bounds givenBounds) {
+            
             float absXOffest = 0;
             float relWidth = 1f;
             float absYOffest = 0;
             float relHeight = 1f;
+            
+            KPlacementData plcData = rendering.getPlacementData();
             if (plcData instanceof KDirectPlacementData) {
                 KDirectPlacementData dpd = (KDirectPlacementData) plcData;
-                KPosition tL = dpd.getTopLeft();
-                KPosition bR = dpd.getBottomRight();
-
-                Pair<Float, Float> horSize = getHorizontalSize(tL, bR);
-                absXOffest = horSize.getFirst();
-                relWidth = horSize.getSecond();
-
-                Pair<Float, Float> verSize = getVerticalSize(tL, bR);
-                absYOffest = verSize.getFirst();
-                relHeight = verSize.getSecond();
-
-                final Bounds bounds = evaluateDirectPlacement(dpd, new Bounds(defBounds));
 
                 // determine minimal needed size of the child
-                Bounds childMinSize = estimateSize(rendering, minBounds);
+                final Bounds childMinSize = estimateSize(rendering, givenBounds);
+                // determine the being assigned wrt. the 
+                final Bounds bounds = evaluateDirectPlacement(dpd, givenBounds);
 
-                // compute child bounds, by scaling the default bounds with the relative
-                // part and subtract the absolute value
-                // Point childBounds = new Point(defBounds.x * relWidth - absXOffest, defBounds.y
-                // * relHeight - absYOffest);
+                if ((bounds.width < childMinSize.width)
+                        || (bounds.height < childMinSize.height)
+                        || (givenBounds.width < childMinSize.width)
+                        || (givenBounds.height < childMinSize.height)
+                        || (givenBounds.width  < bounds.width)
+                        || (givenBounds.height < bounds.height)
+                        ) {
 
-                if ((bounds.width < childMinSize.width) || (bounds.height < childMinSize.height)) {
+                    KPosition tL = dpd.getTopLeft();
+                    KPosition bR = dpd.getBottomRight();
 
+                    Triple<Float, Float, Boolean> horSize = getHorizontalSize(tL, bR);
+                    absXOffest = horSize.getA();
+                    relWidth = horSize.getB() != 0f ? horSize.getB() : 1f;
+                    @SuppressWarnings("unused")
+                    boolean absoluteWidth = horSize.getC();
+                    // the idea of that variable is to provide an information whether the size of
+                    //  figure is influenced by the size of the parent or whether it's fully determined
+                    //  by the absolute positioning components; need thinking on that further
+                    
+                    Triple<Float, Float, Boolean> verSize = getVerticalSize(tL, bR);
+                    absYOffest = verSize.getA();
+                    relHeight = verSize.getB() != 0f ? verSize.getB() : 1f;
+                    
                     // compare the minimal need size with the maximal yet found size ad
                     // update the minimal size accordingly
                     // relWidth and relHeight are now the total relative size of the
@@ -601,7 +684,6 @@ public final class PlacementUtil {
                 // directly with the maximal needed bounds
                 minBounds.setBounds(estimateSize(rendering, minBounds));
             }
-        }
         return minBounds; // scaleBounds(container, minBounds, defBounds);
     }
 
@@ -619,9 +701,14 @@ public final class PlacementUtil {
     private static final int RIGHT_LEFT = KRenderingPackage.KRIGHT_POSITION * TOP_LEFT_OFFSET
             + KRenderingPackage.KLEFT_POSITION;
 
-    private static Pair<Float, Float> getHorizontalSize(final KPosition tL, final KPosition bR) {
+    private static Triple<Float, Float, Boolean> getHorizontalSize(final KPosition tL,
+            final KPosition bR) {
         float absXOffest = 0;
         float relWidth = 1f;
+        boolean absoluteLength = false;
+         // the idea of that variable is to provide an information whether the size of
+         //  figure is influenced by the size of the parent or whether it's fully determined
+         //  by the absolute positioning components; need thinking on that further
 
         int position = bR.getX().eClass().getClassifierID() * TOP_LEFT_OFFSET
                 + tL.getX().eClass().getClassifierID();
@@ -644,15 +731,15 @@ public final class PlacementUtil {
         case RIGHT_RIGHT:
             // bottom right comes from right
             // top left comes from right
-            relWidth = 1f - tL.getX().getRelative() - bR.getX().getRelative();
-            absXOffest = Math.round(bR.getX().getAbsolute() - tL.getX().getAbsolute());
+            relWidth = tL.getX().getRelative() - bR.getX().getRelative();
+            absXOffest = Math.min(bR.getX().getAbsolute(), tL.getX().getAbsolute());
             break;
 
         case LEFT_LEFT:
             // bottom right comes from left
             // top left comes from left
-            relWidth = 1f - bR.getX().getRelative() - tL.getX().getRelative();
-            absXOffest = Math.round(tL.getX().getAbsolute() - bR.getX().getAbsolute());
+            relWidth = bR.getX().getRelative() - tL.getX().getRelative();
+            absXOffest = Math.min(tL.getX().getAbsolute(), bR.getX().getAbsolute());
             break;
 
         default:
@@ -661,7 +748,7 @@ public final class PlacementUtil {
             System.err.println("Found unknown placement position of x-axis!");
             break;
         }
-        return new Pair<Float, Float>(absXOffest, relWidth);
+        return new Triple<Float, Float, Boolean>(absXOffest, relWidth, absoluteLength);
     }
 
     private static final int TOP_TOP = KRenderingPackage.KTOP_POSITION * TOP_LEFT_OFFSET
@@ -676,9 +763,11 @@ public final class PlacementUtil {
     private static final int BOTTOM_TOP = KRenderingPackage.KBOTTOM_POSITION * TOP_LEFT_OFFSET
             + KRenderingPackage.KTOP_POSITION;
 
-    private static Pair<Float, Float> getVerticalSize(final KPosition tL, final KPosition bR) {
+    private static Triple<Float, Float, Boolean> getVerticalSize(final KPosition tL,
+            final KPosition bR) {
         float absYOffest = 0;
         float relHeight = 1f;
+        boolean absoluteLength = false;
 
         int position = bR.getY().eClass().getClassifierID() * TOP_LEFT_OFFSET
                 + tL.getY().eClass().getClassifierID();
@@ -701,15 +790,15 @@ public final class PlacementUtil {
         case BOTTOM_BOTTOM:
             // bottom right comes from bottom
             // top left comes from bottom
-            relHeight = 1f - tL.getY().getRelative() - bR.getY().getRelative();
-            absYOffest = bR.getY().getAbsolute() - tL.getY().getAbsolute();
+            relHeight = tL.getY().getRelative() - bR.getY().getRelative();
+            absYOffest = Math.min(bR.getY().getAbsolute(), tL.getY().getAbsolute());
             break;
 
         case TOP_TOP:
             // bottom right comes from top
             // top left comes from top
-            relHeight = 1f - bR.getY().getRelative() - tL.getY().getRelative();
-            absYOffest = tL.getY().getAbsolute() - bR.getY().getAbsolute();
+            relHeight = bR.getY().getRelative() - tL.getY().getRelative();
+            absYOffest = Math.min(tL.getY().getAbsolute(), bR.getY().getAbsolute());
             break;
 
         default:
@@ -718,7 +807,7 @@ public final class PlacementUtil {
             System.err.println("Found unknown placement position of y-axis!");
             break;
         }
-        return new Pair<Float, Float>(absYOffest, relHeight);
+        return new Triple<Float, Float, Boolean>(absYOffest, relHeight, absoluteLength);
     }
 
     private static final int SCALE_XY = 0;
@@ -726,6 +815,17 @@ public final class PlacementUtil {
     private static final int SCALE_Y = 2;
     private static final int SCALE_NONE = 3;
 
+    
+    /**
+     * This method manipulates direct placement configurations in order to scale figure parts
+     *  proportionally. It is currently unused as I'm not convinced of that idea. (chsch) 
+     * 
+     * @param container
+     * @param minBounds
+     * @param defBounds
+     * @return
+     */    
+    @SuppressWarnings("unused")
     private static Point scaleBounds(final KContainerRendering container, final Point minBounds,
             final Point defBounds) {
 

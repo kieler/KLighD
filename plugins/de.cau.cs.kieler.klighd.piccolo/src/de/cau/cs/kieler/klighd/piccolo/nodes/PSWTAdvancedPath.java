@@ -1,15 +1,31 @@
+// SUPPRESS CHECKSTYLE NEXT Header
 /*
- * KIELER - Kiel Integrated Environment for Layout Eclipse RichClient
+ * Copyright (c) 2008-2011, Piccolo2D project, http://piccolo2d.org
+ * Copyright (c) 1998-2008, University of Maryland
+ * All rights reserved.
  *
- * http://www.informatik.uni-kiel.de/rtsys/kieler/
- * 
- * Copyright 2011 by
- * + Christian-Albrechts-University of Kiel
- *   + Department of Computer Science
- *     + Real-Time and Embedded Systems Group
- * 
- * This code is provided under the terms of the Eclipse Public License (EPL).
- * See the file epl-v10.html for the license text.
+ * Redistribution and use in source and binary forms, with or without modification, are permitted
+ * provided that the following conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright notice, this list of conditions
+ * and the following disclaimer.
+ *
+ * Redistributions in binary form must reproduce the above copyright notice, this list of conditions
+ * and the following disclaimer in the documentation and/or other materials provided with the
+ * distribution.
+ *
+ * None of the name of the University of Maryland, the name of the Piccolo2D project, or the names of its
+ * contributors may be used to endorse or promote products derived from this software without specific
+ * prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED
+ * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
+ * PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
+ * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+ * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR
+ * TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+ * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 package de.cau.cs.kieler.klighd.piccolo.nodes;
 
@@ -46,9 +62,11 @@ import edu.umd.cs.piccolox.swt.SWTShapeManager;
 
 /**
  * The {@code PSWTAdvancedPath} is a refinement of the Piccolo {@code PSWTPath}. Provides the
- * possibility to adjust the line width and the line style and can represent polygons.<br />
- * <br />
- * Most of the implementation is copied from {@code PSWTPath}.
+ * possibility to adjust the line width and the line style and can represent polygons.
+ * <p>
+ * Most of the implementation is copied from {@code edu.umd.cs.piccolox.swt.PSWTPath},
+ * therefore the original copyright header is retained.
+ * </p>
  * 
  * @author mri
  */
@@ -209,7 +227,7 @@ public class PSWTAdvancedPath extends PNode {
     public static PSWTAdvancedPath createSpline(final Point2D[] points) {
         final PSWTAdvancedPath result = new PSWTAdvancedPath();
         result.setPathToSpline(points);
-        // chsch: do not set the paint of a line this will impair the
+        // chsch: do not set the paint of a line as this will impair the
         //  selection determination (using #intersects(), see below)
         // result.setPaint(Color.white);
         return result;
@@ -226,7 +244,7 @@ public class PSWTAdvancedPath extends PNode {
     public static PSWTAdvancedPath createPolyline(final Point2D[] points) {
         final PSWTAdvancedPath result = new PSWTAdvancedPath();
         result.setPathToPolyline(points);
-        // chsch: do not set the paint of a line this will impair the
+        // chsch: do not set the paint of a line as this will impair the
         //  selection determination (using #intersects(), see below)
         // result.setPaint(Color.white);
         return result;
@@ -246,7 +264,7 @@ public class PSWTAdvancedPath extends PNode {
             final float bendRadius) {
         final PSWTAdvancedPath result = new PSWTAdvancedPath();
         result.setPathToRoundedBendPolyline(points, bendRadius);
-        // chsch: do not set the paint of a line this will impair the
+        // chsch: do not set the paint of a line as this will impair the
         //  selection determination (using #intersects(), see below)
         // result.setPaint(Color.white);
         return result;
@@ -265,7 +283,7 @@ public class PSWTAdvancedPath extends PNode {
     public static PSWTAdvancedPath createPolyline(final float[] xp, final float[] yp) {
         final PSWTAdvancedPath result = new PSWTAdvancedPath();
         result.setPathToPolyline(xp, yp);
-        // chsch: do not set the paint of a line this will impair the
+        // chsch: do not set the paint of a line as this will impair the
         //  selection determination (using #intersects(), see below)
         // result.setPaint(Color.white);
         return result;

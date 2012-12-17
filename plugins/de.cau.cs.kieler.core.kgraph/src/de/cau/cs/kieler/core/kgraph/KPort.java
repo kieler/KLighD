@@ -24,7 +24,14 @@ import org.eclipse.emf.common.util.EList;
  *
  * <!-- begin-model-doc -->
  * Each port must be assigned a containing node. A port may contain incoming
- * edges as well as outgoing edges, independently of its type.
+ * edges as well as outgoing edges, but usually either one or the other kind is
+ * referenced. The list of edges is not opposite to the edges' source or target
+ * port reference. However, the list content is automatically updated when those
+ * references are set.
+ * <p>
+ * Since the information contained in this list is redundant, it is marked as transient,
+ * i.e. it is not serialized.
+ * </p>
  * <!-- end-model-doc -->
  *
  * <p>
@@ -75,15 +82,22 @@ public interface KPort extends KLabeledGraphElement {
      * The list contents are of type {@link de.cau.cs.kieler.core.kgraph.KEdge}.
      * <!-- begin-user-doc -->
      * This reference is not bidirectional, so adding edges to it does not
-     * affect the source or target port references of the edges.
+     * affect the source or target port references of the edges.<br/>
      * <!-- end-user-doc -->
      * <!-- begin-model-doc -->
      * Edges in this list may be incoming as well as outgoing with respect
-     * to the containing node.
+     * to the containing node. The list of edges is not opposite to the edges'
+     * source or target port reference. Just adding an edge to this list does
+     * not imply that the source or target port reference is set, since it is
+     * unclear which reference to pick. However, the list content is automatically
+     * updated when one of those references is set or unset.
+     * Therefore it is advisable not to modify this list directly, but to use
+     * {@link KEdge#setSourcePort(KPort)} or {@link KEdge#setTargetPort(KPort)}
+     * instead.
      * <!-- end-model-doc -->
      * @return the value of the '<em>Edges</em>' reference list.
      * @see de.cau.cs.kieler.core.kgraph.KGraphPackage#getKPort_Edges()
-     * @model
+     * @model transient="true"
      * @generated
      */
     EList<KEdge> getEdges();

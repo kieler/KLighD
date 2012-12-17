@@ -172,6 +172,11 @@ class KRenderingExtensions {
         ];      
 	}
 	
+    def <T extends KRendering> boolean getBackgroundVisibility(T rendering) {
+        // chsch: I'm currently not sure whether the first or the last will win...
+        return rendering.styles.filter(typeof(KBackgroundVisibility)).last?.visible?:true;
+    }
+    
 	def <T extends KRendering> T setBackgroundVisibility(T rendering, boolean visible) {
 		rendering.styles.removeAll(rendering.styles.filter(typeof(KBackgroundVisibility)).toList);
 		return rendering => [
@@ -182,15 +187,20 @@ class KRenderingExtensions {
 	}
 		
 	
-	def <T extends KRendering> T setForegroundVisibility(T rendering, boolean visible) {
+    def <T extends KRendering> boolean getForegroundVisibility(T rendering) {
+        // chsch: I'm currently not sure whether the first or the last will win...
+        return rendering.styles.filter(typeof(KForegroundVisibility)).last?.visible?:true;
+    }
+    
+    def <T extends KRendering> T setForegroundVisibility(T rendering, boolean visible) {
         rendering.styles.removeAll(rendering.styles.filter(typeof(KForegroundVisibility)).toList);
         return rendering => [
             it.styles += renderingFactory.createKForegroundVisibility => [
                 it.setVisible(visible);
             ];
         ];
-	}
-	
+    }
+    
 	def <T extends KRendering> T setFontBold(T rendering, boolean bold) {
         rendering.styles.removeAll(rendering.styles.filter(typeof(KFontBold)).toList);
 		return rendering => [

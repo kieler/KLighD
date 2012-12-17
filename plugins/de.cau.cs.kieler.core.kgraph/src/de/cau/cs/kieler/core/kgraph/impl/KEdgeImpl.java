@@ -225,14 +225,22 @@ public class KEdgeImpl extends KLabeledGraphElementImpl implements KEdge {
 
     /**
      * <!-- begin-user-doc -->
+     * The original generated code is extended so the {@link KPort#getEdges()} list is also updated.
      * <!-- end-user-doc -->
-     * @generated
+     * @generated NOT
      */
     public void setSourcePort(KPort newSourcePort) {
         KPort oldSourcePort = sourcePort;
         sourcePort = newSourcePort;
-        if (eNotificationRequired())
+        if (oldSourcePort != null) {
+            oldSourcePort.getEdges().remove(this);
+        }
+        if (newSourcePort != null && !newSourcePort.getEdges().contains(this)) {
+            newSourcePort.getEdges().add(this);
+        }
+        if (eNotificationRequired()) {
             eNotify(new ENotificationImpl(this, Notification.SET, KGraphPackage.KEDGE__SOURCE_PORT, oldSourcePort, sourcePort));
+        }
     }
 
     /**
@@ -263,14 +271,22 @@ public class KEdgeImpl extends KLabeledGraphElementImpl implements KEdge {
 
     /**
      * <!-- begin-user-doc -->
+     * The original generated code is extended so the {@link KPort#getEdges()} list is also updated.
      * <!-- end-user-doc -->
-     * @generated
+     * @generated NOT
      */
     public void setTargetPort(KPort newTargetPort) {
         KPort oldTargetPort = targetPort;
         targetPort = newTargetPort;
-        if (eNotificationRequired())
+        if (oldTargetPort != null) {
+            oldTargetPort.getEdges().remove(this);
+        }
+        if (newTargetPort != null && !newTargetPort.getEdges().contains(this)) {
+            newTargetPort.getEdges().add(this);
+        }
+        if (eNotificationRequired()) {
             eNotify(new ENotificationImpl(this, Notification.SET, KGraphPackage.KEDGE__TARGET_PORT, oldTargetPort, targetPort));
+        }
     }
 
     /**
@@ -278,11 +294,11 @@ public class KEdgeImpl extends KLabeledGraphElementImpl implements KEdge {
      * {@inheritDoc}
      * <!-- end-user-doc -->
      * @generated NOT
+     * @deprecated See {@link KEdge#connectSourcePort(KPort)}
      */
     public void connectSourcePort(KPort port) {
         setSource(port.getNode());
         setSourcePort(port);
-        port.getEdges().add(this);
     }
 
     /**
@@ -290,11 +306,11 @@ public class KEdgeImpl extends KLabeledGraphElementImpl implements KEdge {
      * {@inheritDoc}
      * <!-- end-user-doc -->
      * @generated NOT
+     * @deprecated See {@link KEdge#connectTargetPort(KPort)}
      */
     public void connectTargetPort(KPort port) {
         setTarget(port.getNode());
         setTargetPort(port);
-        port.getEdges().add(this);
     }
 
     /**
