@@ -241,6 +241,11 @@
     <eLiterals name="BOTTOM" value="2"/>
     <eLiterals name="EEnumLiteral0" value="3"/>
   </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="JointPointStyle">
+    <eLiterals name="HIDDEN"/>
+    <eLiterals name="BOX" value="1" literal=""/>
+    <eLiterals name="CIRCULAR" value="2" literal=""/>
+  </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="KVerticalAlignment" eSuperTypes="#//KStyle">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="verticalAlignment" lowerBound="1"
         eType="#//VerticalAlignment"/>
@@ -334,5 +339,25 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="angle" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EFloat"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="startColor" eType="#//KColor"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="endColor" eType="#//KColor"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="KBorderline" eSuperTypes="#//KStyle">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="isBorderLine" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="KExpansionHandle" eSuperTypes="#//KRendering">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="expandedFigure" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="collapsedFigure" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="KReferencePointPlacement" eSuperTypes="#//KPlacement">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="referencePoint" lowerBound="1"
+        eType="#//KPosition"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="VerticalReferencePointPosition"
+        lowerBound="1" eType="#//VerticalAlignment"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="HorizontalReferencePointPosition"
+        lowerBound="1" eType="#//HorizontalAlignment"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="KTextRenderingRef" eSuperTypes="#//KContainerRendering">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="TextRef" lowerBound="1"
+        eType="#//KText"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="overrideText" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
 </ecore:EPackage>
