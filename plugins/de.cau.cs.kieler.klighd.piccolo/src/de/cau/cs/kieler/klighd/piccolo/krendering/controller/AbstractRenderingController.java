@@ -20,14 +20,20 @@ import java.awt.Color;
 import java.awt.geom.Point2D;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Platform;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.impl.AdapterImpl;
 import org.eclipse.emf.ecore.EStructuralFeature;
-import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.statushandlers.StatusManager;
+import org.osgi.framework.Bundle;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -70,11 +76,12 @@ import de.cau.cs.kieler.core.krendering.KStyle;
 import de.cau.cs.kieler.core.krendering.KText;
 import de.cau.cs.kieler.core.krendering.KVerticalAlignment;
 import de.cau.cs.kieler.core.krendering.util.KRenderingSwitch;
-import de.cau.cs.kieler.core.model.notify.CrossDocumentContentAdapter;
 import de.cau.cs.kieler.core.properties.IProperty;
 import de.cau.cs.kieler.core.properties.IPropertyHolder;
 import de.cau.cs.kieler.core.properties.Property;
 import de.cau.cs.kieler.core.util.Pair;
+import de.cau.cs.kieler.klighd.KlighdPlugin;
+import de.cau.cs.kieler.klighd.krendering.KCustomRenderingWrapperFactory;
 import de.cau.cs.kieler.klighd.piccolo.krendering.util.PlacementUtil;
 import de.cau.cs.kieler.klighd.piccolo.krendering.util.PlacementUtil.Decoration;
 import de.cau.cs.kieler.klighd.piccolo.krendering.util.PlacementUtil.GridPlacer;
@@ -86,9 +93,12 @@ import de.cau.cs.kieler.klighd.piccolo.nodes.PSWTAdvancedPath;
 import de.cau.cs.kieler.klighd.piccolo.nodes.PSWTAdvancedPath.LineStyle;
 import de.cau.cs.kieler.klighd.piccolo.nodes.PSWTTracingText;
 import de.cau.cs.kieler.klighd.piccolo.util.NodeUtil;
+import de.cau.cs.kieler.klighd.util.CrossDocumentContentAdapter;
 import edu.umd.cs.piccolo.PNode;
 import edu.umd.cs.piccolo.nodes.PPath;
 import edu.umd.cs.piccolo.util.PBounds;
+import edu.umd.cs.piccolox.swt.PSWTCanvas;
+import edu.umd.cs.piccolox.swt.PSWTImage;
 import edu.umd.cs.piccolox.swt.PSWTText;
 
 /**
@@ -326,12 +336,12 @@ public abstract class AbstractRenderingController<S extends KGraphElement, T ext
                         final KRendering rendering = element.getData(KRendering.class);
                         if (rendering != currentRendering) {
                             // a rendering has been added or removed
-                            PlatformUI.getWorkbench().getDisplay().syncExec(new Runnable() {
-                                public void run() {
+                            // PlatformUI.getWorkbench().getDisplay().syncExec(new Runnable() {
+                                // public void run() {
                                     // update the rendering
                                     updateRendering();
-                                }
-                            });
+                                // }
+                            // });
                         }
                         break;
                     default:
@@ -768,8 +778,9 @@ public abstract class AbstractRenderingController<S extends KGraphElement, T ext
             }
 
             // Custom Rendering
-            public PNodeController<?> caseKCustomRendering(final KCustomRendering object) {
-                return null;
+            public PNodeController<?> caseKCustomRendering(final KCustomRendering rendering) {
+                return createCustomRendering(rendering, styles, childPropagatedStyles,
+                        parent, initialBounds, key);
             }
 
             // Child Area
@@ -1202,45 +1213,49 @@ public abstract class AbstractRenderingController<S extends KGraphElement, T ext
     protected PNodeController<?> createRenderingReference(final KRenderingRef renderingReference,
             final Styles styles, final List<KStyle> propagatedStyles, final PNode parent,
             final PBounds initialBounds, final Object key) {
+        
         KRendering rendering = renderingReference.getRendering();
-        if (rendering != null) {
-            List<KStyle> renderingStyles = rendering.getStyles();
-
-            // determine the styles for this rendering
-            final Styles refStyles = deriveStyles(styles, renderingStyles);
-
-            // determine the styles for propagation to child nodes
-            final List<KStyle> childPropagatedStyles = determinePropagationStyles(renderingStyles,
-                    propagatedStyles);
-
-            // create a key for this reference
-            Object refKey = new Object();
-            setMappedProperty(renderingReference, KEY, key, refKey);
-
-            // dispatch the rendering
-            final PNodeController<?> controller = createRendering(rendering, refStyles,
-                    childPropagatedStyles, parent, initialBounds, refKey);
-
-            // set the styles for the created rendering node using the controller
-            applyStyles(controller, refStyles);
-
-            // remember the controller in the rendering
-            setMappedProperty(rendering, CONTROLLER, refKey, controller);
-
-            // return a controller for the reference which sets the bounds of the referenced node
-            return new PNodeController<PNode>(controller.getNode()) {
-                public void setBounds(final PBounds bounds) {
-                    controller.setBounds(bounds);
-                }
-            };
-        } else {
+        if (rendering == null) {
             // create a dummy node
             return createDummy(parent, initialBounds);
         }
+
+        List<KStyle> renderingStyles = rendering.getStyles();
+
+        // determine the styles for this rendering
+        final Styles refStyles = deriveStyles(styles, renderingStyles);
+
+        // determine the styles for propagation to child nodes
+        final List<KStyle> childPropagatedStyles = determinePropagationStyles(renderingStyles,
+                propagatedStyles);
+
+        // create a key for this reference
+        Object refKey = new Object();
+        setMappedProperty(renderingReference, KEY, key, refKey);
+
+        // dispatch the rendering
+        final PNodeController<?> controller = createRendering(rendering, refStyles,
+                childPropagatedStyles, parent, initialBounds, refKey);
+
+        // set the styles for the created rendering node using the controller
+        applyStyles(controller, refStyles);
+
+        // remember the controller in the rendering
+        setMappedProperty(rendering, CONTROLLER, refKey, controller);
+
+        // return a controller for the reference which sets the bounds of the referenced node
+        return new PNodeController<PNode>(controller.getNode()) {
+            public void setBounds(final PBounds bounds) {
+                // apply the bounds
+                controller.setBounds(bounds);
+            }
+        };
     }
 
     /**
      * Creates a representation for the {@code KImage}.
+     * 
+     * @author uru, chsch
      * 
      * @param image
      *            the image rendering
@@ -1259,8 +1274,48 @@ public abstract class AbstractRenderingController<S extends KGraphElement, T ext
     protected PNodeController<?> createImage(final KImage image, final Styles styles,
             final List<KStyle> propagatedStyles, final PNode parent, final PBounds initialBounds,
             final Object key) {
-        // TODO implement this and return a real node controller
-        return createDummy(parent, initialBounds);
+
+        // get the bundle and actual image, trim the leading and trailing quotation marks
+        Bundle bundle = Platform.getBundle(image.getBundleName().replace("\"", ""));
+        if (bundle == null) {
+            return createDummy(parent, initialBounds);
+        }
+        
+        URL entry = bundle.getEntry(image.getImagePath().replace("\"", ""));
+
+        PSWTImage pImage = null;
+        try {
+            // create the image
+            //  the bounds of pImage are set within the PSWTImage implementation
+            pImage = new PSWTImage(PSWTCanvas.CURRENT_CANVAS, entry.openStream());
+        } catch (IOException e) {
+            final String msg = "KLighD: Error occurred while loading the image "
+                    + image.getImagePath() + " in bundle " + image.getBundleName(); 
+            StatusManager.getManager().handle(
+                    new Status(IStatus.ERROR, KlighdPlugin.PLUGIN_ID, msg, e),
+                    StatusManager.LOG);
+            return createDummy(parent, initialBounds);
+        }
+
+        // initialize the node
+        initializeRenderingNode(pImage);
+        pImage.translate(initialBounds.x, initialBounds.y);
+        parent.addChild(pImage);
+
+        // handle children
+        if (image.getChildren().size() > 0) {
+            handleChildren(image.getChildren(), image.getChildPlacement(), propagatedStyles,
+                    pImage, key);
+        }
+
+        // create a standard default node controller
+        return new PNodeController<PNode>(pImage) {
+            public void setBounds(final PBounds bounds) {
+                // apply the bounds
+                NodeUtil.applyTranslation(getNode(), (float) bounds.x, (float) bounds.y);
+            }
+        };
+
     }
 
     /**
@@ -1283,8 +1338,36 @@ public abstract class AbstractRenderingController<S extends KGraphElement, T ext
     protected PNodeController<?> createCustomRendering(final KCustomRendering customRendering,
             final Styles styles, final List<KStyle> propagatedStyles, final PNode parent,
             final PBounds initialBounds, final Object key) {
-        // TODO implement this and return a real node controller
-        return createDummy(parent, initialBounds);
+
+        // get a wrapping PNode containing the actual figure
+        //  by means of the KCustomRenderingWrapperFactory
+        PNode node = KCustomRenderingWrapperFactory.getInstance().getWrapperInstance(
+                customRendering.getBundleName(), customRendering.getClassName(), PNode.class);
+        if (node == null) {
+            return createDummy(parent, initialBounds);
+        }
+        // initialize the bounds of the node
+        node.setBounds(0, 0, initialBounds.width, initialBounds.height);
+        
+        // initialize the node
+        initializeRenderingNode(node);
+        node.translate(initialBounds.x, initialBounds.y);
+        parent.addChild(node);
+        
+        // handle children
+        if (customRendering.getChildren().size() > 0) {
+            handleChildren(customRendering.getChildren(), customRendering.getChildPlacement(),
+                    propagatedStyles, node, key);
+        }
+
+        // create a standard default node controller
+        return new PNodeController<PNode>(node) {
+            public void setBounds(final PBounds bounds) {
+                // apply the bounds
+                getNode().setBounds(0, 0, bounds.width, bounds.height);
+                NodeUtil.applyTranslation(getNode(), (float) bounds.x, (float) bounds.y);
+            }
+        };    
     }
 
     /**
