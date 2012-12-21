@@ -4,6 +4,7 @@
    <extension-point id="viewerProviders" name="ViewerProviders" schema="schema/viewerProviders.exsd"/>
    <extension-point id="modelTransformations" name="ModelTransformations" schema="schema/modelTransformations.exsd"/>
    <extension-point id="updateStrategies" name="UpdateStrategies" schema="schema/updateStrategies.exsd"/>
+   <extension-point id="customFigureWrapper" name="CustomFigureWrapper" schema="schema/customFigureWrapper.exsd"/>
    <extension
          point="org.eclipse.ui.views">
       <view
@@ -15,6 +16,23 @@
             name="Light Diagram"
             restorable="true">
       </view>
+   </extension>
+   <extension
+         point="de.cau.cs.kieler.kiml.ui.layoutManagers">
+      <manager
+            class="de.cau.cs.kieler.klighd.krendering.DiagramLayoutManager">
+      </manager>
+   </extension>
+   <extension
+         point="de.cau.cs.kieler.klighd.updateStrategies">
+      <!-- updateStrategy
+            class="de.cau.cs.kieler.klighd.krendering.UpdateStrategy"
+            id="de.cau.cs.kieler.klighd.krendering.UpdateStrategy">
+      </updateStrategy -->
+      <updateStrategy
+            class="de.cau.cs.kieler.klighd.krendering.SimpleUpdateStrategy"
+            id="de.cau.cs.kieler.klighd.krendering.SimpleUpdateStrategy">
+      </updateStrategy>
    </extension>
    <extension
          point="de.cau.cs.kieler.core.kivi.combinations">
@@ -46,23 +64,6 @@
             class="de.cau.cs.kieler.klighd.combinations.KlighdCropDiagramCombination"
             name="Crop KLighD diagram by a box-based selection">
       </combination>
-   </extension>
-   <extension
-         point="de.cau.cs.kieler.kiml.ui.layoutManagers">
-      <manager
-            class="de.cau.cs.kieler.klighd.krendering.DiagramLayoutManager">
-      </manager>
-   </extension>
-   <extension
-         point="de.cau.cs.kieler.klighd.updateStrategies">
-      <!-- updateStrategy
-            class="de.cau.cs.kieler.klighd.krendering.UpdateStrategy"
-            id="de.cau.cs.kieler.klighd.krendering.UpdateStrategy">
-      </updateStrategy -->
-      <updateStrategy
-            class="de.cau.cs.kieler.klighd.krendering.SimpleUpdateStrategy"
-            id="de.cau.cs.kieler.klighd.krendering.SimpleUpdateStrategy">
-      </updateStrategy>
    </extension>
 
 </plugin>
