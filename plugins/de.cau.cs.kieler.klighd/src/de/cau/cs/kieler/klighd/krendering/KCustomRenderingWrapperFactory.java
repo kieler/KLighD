@@ -27,6 +27,7 @@ import org.eclipse.ui.statushandlers.StatusManager;
 import org.osgi.framework.Bundle;
 
 import com.google.common.base.Predicate;
+import com.google.common.base.Strings;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Maps;
@@ -38,7 +39,10 @@ import de.cau.cs.kieler.klighd.KlighdPlugin;
  * viewing frameworks while explicit dependencies to those frameworks are outsourced. For example,
  * the Draw2dNode, which is a special PNode (Piccolo2d) wrapping Draw2d figures is registered
  * via this factory. Thus the klighd.piccolo bundle doesn't need a dependency to draw2d, only the
- * contributing bundle or fragment of Draw2dNode does.  
+ * contributing bundle or fragment of Draw2dNode does.<br>
+ * <br>
+ * Note: The wrapper type wraps another type, if it provides a constructor with one parameter whose
+ * type is compatible to the other type.
  * 
  * @author chsch
  * @kieler.design proposed by chsch
@@ -75,6 +79,9 @@ public final class KCustomRenderingWrapperFactory {
         }
         return instance;
     }
+    
+    
+    // ------------ Initialization part ------------ //
     
     /**
      * Hidden default constructor: examines the 'customFigureWrapper' extension point.
@@ -148,65 +155,15 @@ public final class KCustomRenderingWrapperFactory {
         this.typeWrapperMap.put(renderingType, (Class<?>) wrapperType);
     }
     
-    /**
-     * Provides an instance of the wrapping figure type for the given 'renderingType'
-     * initialized with a new instance of 'renderingType'.
-     * 
-     * @param <T>
-     *            the expected type to be returned while calling this method, avoids a cast at the
-     *            calling position
-     * @param renderingType
-     *            the required figure type
-     * @param frameworkType
-     *            the figure type required by the rendering framework
-     * @return an instance of a wrapping {@link PNode} type.
-     */
-    @SuppressWarnings("unchecked")
-    public <T> T getWrapperInstance(final Class<?> renderingType, final Class<T> frameworkType) {
-        // if the custom figure can be handled by the rendering framework without wrapping...
-        if (frameworkType.isAssignableFrom(renderingType)) {
-            try {
-                // ... create an instance and return it
-                return (T) renderingType.newInstance();
-            } catch (Exception e) {
-                final String msg = "KLighD: An error occured while instantiating the custom figure "
-                        + "type " + renderingType.getName();
-                StatusManager.getManager().handle(
-                        new Status(IStatus.ERROR, KlighdPlugin.PLUGIN_ID, msg, e),
-                        StatusManager.LOG);
-                return null;
-            }
-        }
-        
-        // otherwise look in the map for fitting wrapper   
-        Map.Entry<Class<?>, Class<?>> entry = Iterables.getFirst(
-                Maps.filterEntries(this.typeWrapperMap, new Predicate<Entry<Class<?>, Class<?>>>() {
-                    public boolean apply(final Entry<Class<?>, Class<?>> entry) {
-                        return entry.getKey().isAssignableFrom(renderingType)
-                                && frameworkType.isAssignableFrom(entry.getValue());
-                    }
-                }).entrySet(), null);
-        
-        if (entry != null) {
-            try {
-                // due to the 2nd part of the filter condition
-                //  the cast in the next line is generally valid  
-                return (T) entry.getValue().getConstructor(entry.getKey())
-                        .newInstance(renderingType.newInstance());
-            } catch (Exception e) {
-                final String msg = "An error occured while instantiating the requested wrapper "
-                        + "figure for the given figure type " + renderingType.getName();
-                StatusManager.getManager().handle(
-                        new Status(IStatus.ERROR, KlighdPlugin.PLUGIN_ID, msg, e),
-                        StatusManager.LOG);
-            }
-        }
-        return null;
-    }
+    
+    // ------------ Service part ------------ //
     
     /**
-     * Provides an instance of the wrapping figure type for the given 'renderingTypeName'
-     * initialized with a new instance of rendering type.
+     * Provides an instance of the wrapping figure type 'T' for the given 'renderingTypeName'
+     * initialized with a new instance of rendering type. The class 'renderingType' must provide a
+     * default constructor, the class 'frameworkType' must provide a constructor with one parameter
+     * of type 'renderingTypeName'.<br>
+     * <br>
      * Delegates to {@link #getWrapperInstance(Class, Class)}.
      * 
      * @param <T>
@@ -215,18 +172,30 @@ public final class KCustomRenderingWrapperFactory {
      * @param bundleName
      *            the bundle's name to load the figure class from
      * @param renderingTypeName
-     *            the required figure type's name
+     *            the required figure type's name, must provide a default constructor
      * @param frameworkType
      *            the figure type required by the rendering framework
-     * @return an instance of a wrapping {@link PNode} type.
+     * @return an instance of the wrapping frameworkType.
      */
     public <T> T getWrapperInstance(final String bundleName, final String renderingTypeName,
             final Class<T> frameworkType) {
-
-        // get the bundle, trim the leading and ending quotation marks
-        Bundle bundle = Platform.getBundle(bundleName.replace("\"", ""));
-        if (bundle == null) {
-            return null;
+        
+        Bundle bundle;
+        // first get the denoted bundle by ... 
+        if (!Strings.isNullOrEmpty(bundleName)) {
+        
+            // ... trimming the leading and trailing quotation marks and asking the platform or ...
+            bundle = Platform.getBundle(bundleName.replace("\"", ""));
+            if (bundle == null) {
+                final String msg = "KLighD custom rendering wrapper factory: Bundle named "
+                        + bundleName + " was not found.";
+                StatusManager.getManager().handle(
+                        new Status(IStatus.ERROR, KlighdPlugin.PLUGIN_ID, msg), StatusManager.LOG);
+                return null;
+            }
+        } else {
+            // ... by taking the KLighD bundle of none is given
+            bundle = KlighdPlugin.getDefault().getBundle();
         }
         
         Class<?> clazz = null;
@@ -234,8 +203,9 @@ public final class KCustomRenderingWrapperFactory {
             // load the figure class 
             clazz = bundle.loadClass(renderingTypeName);
         } catch (ClassNotFoundException e) {
-            final String msg = "KLighD: Error occurred while loading the custom rendering class "
-                    + renderingTypeName + " in bundle " + bundleName; 
+            final String msg = "KLighD custom rendering wrapper factory: Error occurred while"
+                    + "loading the custom rendering class " + renderingTypeName
+                    + ((bundle != null) ? (" in bundle " + bundleName) : "") + ".";
             StatusManager.getManager().handle(
                     new Status(IStatus.ERROR, KlighdPlugin.PLUGIN_ID, msg, e),
                     StatusManager.LOG);
@@ -243,5 +213,139 @@ public final class KCustomRenderingWrapperFactory {
         }
         
         return this.getWrapperInstance(clazz, frameworkType);
+    }
+
+
+    /**
+     * Provides an instance of the wrapping figure type for the given 'renderingType' initialized
+     * with a new instance of 'renderingType'. The class 'renderingType' must provide a default
+     * constructor, the class 'frameworkType' must provide a constructor with one parameter of type
+     * 'renderingTypeName'.<br>
+     * <br>
+     * Delegates to {@link #getWrapperInstance(Class, Object, Class)}.
+     * 
+     * @param <S>
+     *            the expected type to be returned while calling this method, avoids a cast at the
+     *            calling position
+     * @param <T>
+     *            the expected type to be returned while calling this method, avoids a cast at the
+     *            calling position
+     * @param renderingType
+     *            the required figure type, must provide a default constructor
+     * @param frameworkType
+     *            the figure type required by the rendering framework
+     * @return an instance of the wrapping frameworkType.
+     */
+    public <S, T> T getWrapperInstance(final Class<S> renderingType, final Class<T> frameworkType) {
+        S figure = null;
+        try {
+            figure = renderingType.newInstance();
+        } catch (Exception e) {
+            final String msg = "KLighD custom rendering wrapper factory: An error occured while "
+                    + "instantiating the requested custom figure type " + renderingType.getName() + ".";
+            StatusManager.getManager().handle(
+                    new Status(IStatus.ERROR, KlighdPlugin.PLUGIN_ID, msg, e), StatusManager.LOG);
+            return null;
+        }
+        return this.getWrapperInstance(renderingType, figure, frameworkType);
+    }
+    
+    
+    /**
+     * Provides an instance of the wrapping figure type 'T' for the given 'figure' object. The class
+     * 'frameworkType' must provide a constructor with one parameter of type 'S'.<br>
+     * <br>
+     * Delegates to {@link #getWrapperInstance(Class, Object, Class)}.
+     * 
+     * @param <S>
+     *            The type of the given figure object
+     * @param <T>
+     *            The type of the required wrapping figure (framework type)
+     * 
+     * @param figure
+     *            The concrete figure instance to be wrapped
+     * @param frameworkType
+     *            The type of the required wrapping figure (framework type)
+     * @return an instance of the wrapping figure of frameworkType containing 'figure'.
+     */
+    @SuppressWarnings("unchecked")
+    public <S, T> T getWrapperInstance(final S figure, final Class<T> frameworkType) {
+        return this.getWrapperInstance((Class<S>) figure.getClass(), figure, frameworkType);
+    }
+    
+
+    /**
+     * Checks whether a wrapping figure instance is required and instantiates a fitting one if
+     * needed. The class 'renderingType' must provide a default constructor, the class
+     * 'frameworkType' must provide a constructor with one parameter of type 'renderingTypeName'.<br>
+     * <br>
+     * Method assumes, that {code figure} is an instance of {@code renderingType} and not
+     * {@code null}. In case a wrapping figure is not needed, i.e. {@code renderingType} is a sub
+     * type of {@code frameworkType}, the above assumption is verified.
+     * 
+     * @param <S>
+     *            the expected type to be returned while calling this method, avoids a cast at the
+     *            calling position
+     * @param <T>
+     *            the expected type to be returned while calling this method, avoids a cast at the
+     *            calling position
+     * @param renderingType
+     *            the required figure type, must provide a default constructor
+     * @param figure
+     *            the requested custom figure, must not be {@code null}
+     * @param frameworkType
+     *            the figure type required by the rendering framework
+     * @return an instance of the wrapping frameworkType.
+     */
+    @SuppressWarnings("unchecked")
+    private <S, T> T getWrapperInstance(final Class<S> renderingType, final S figure,
+            final Class<T> frameworkType) {
+        
+        // if the custom figure can be handled by the rendering framework without wrapping...
+        if (frameworkType.isAssignableFrom(renderingType)) {
+        
+            // ... and is already instantiated just return it,
+            if (renderingType.isInstance(figure)) {
+                return (T) figure;
+            }
+
+            try {
+                // ... create an instance, otherwise, and return that one
+                return (T) renderingType.newInstance();
+            } catch (Exception e) {
+                final String msg = "KLighD custom rendering wrapper factory: An error occured while "
+                        + "instantiating the requested custom figure type "
+                        + renderingType.getName() + ".";
+                StatusManager.getManager().handle(
+                        new Status(IStatus.ERROR, KlighdPlugin.PLUGIN_ID, msg, e),
+                        StatusManager.LOG);
+                return null;
+            }
+        }
+
+        // otherwise look into the map for a fitting wrapper
+        Map.Entry<Class<?>, Class<?>> entry = Iterables.getFirst(
+                Maps.filterEntries(this.typeWrapperMap, new Predicate<Entry<Class<?>, Class<?>>>() {
+                    public boolean apply(final Entry<Class<?>, Class<?>> entry) {
+                        return entry.getKey().isAssignableFrom(renderingType)
+                                && frameworkType.isAssignableFrom(entry.getValue());
+                    }
+                }).entrySet(), null);
+
+        if (entry != null) {
+            try {
+                // due to the 2nd part of the filter condition
+                // the cast in the next line is generally valid
+                return (T) entry.getValue().getConstructor(entry.getKey()).newInstance(figure);
+            } catch (Exception e) {
+                final String msg = "KLighD custom rendering wrapper factory: An error occured while "
+                        + "instantiating the required wrapper figure for the requested figure type "
+                        + renderingType.getName() + ".";
+                StatusManager.getManager().handle(
+                        new Status(IStatus.ERROR, KlighdPlugin.PLUGIN_ID, msg, e),
+                        StatusManager.LOG);
+            }
+        }
+        return null;
     }
 }
