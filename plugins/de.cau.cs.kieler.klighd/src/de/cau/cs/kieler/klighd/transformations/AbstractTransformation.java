@@ -44,7 +44,7 @@ import de.cau.cs.kieler.klighd.TransformationOption;
  * time calling {@link com.google.inject.Provider#get() get()} on this provider a new instance will
  * be obtained as long as the provided class is <b>not</b> declared as singleton (via &#64;Singleton).
  * 
- * @author mri
+ * @author mri, chsch
  * 
  * @param <S>
  *            the type of the source model
@@ -100,7 +100,7 @@ public abstract class AbstractTransformation<S, T> implements ITransformation<S,
             throw new IllegalArgumentException("KLighD transformation option handling: "
                     + "The transformation " + this
                     + " attempted to evaluate the non-Boolean valued transformation option "
-                    + option.getName() + "expecting a Boolean value.");
+                    + option.getName() + " expecting a Boolean value.");
         }
     }
     
