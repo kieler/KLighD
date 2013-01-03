@@ -382,8 +382,7 @@ public class GraphicsAdapter extends Graphics {
     @Override
     public org.eclipse.draw2d.geometry.Rectangle getClip(
             final org.eclipse.draw2d.geometry.Rectangle rect) {
-        org.eclipse.draw2d.geometry.Rectangle clip = toRectangle(pg.getClip());
-        return rect.intersect(clip);
+        return rect.setBounds(toRectangle(pg.getClip()));
     }
 
     /**
