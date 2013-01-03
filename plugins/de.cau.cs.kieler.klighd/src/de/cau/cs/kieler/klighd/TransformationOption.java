@@ -16,17 +16,24 @@ package de.cau.cs.kieler.klighd;
 import java.util.List;
 
 /**
- * Represents a view synthesis option provided a view synthesis transformation.
- * By means of such transformations the tool user can customize the diagram.
- * It provides a type (on/off, choice of settings) and a set of option values,
- * if necessary. 
+ * Represents a view synthesis option provided a view synthesis transformation. By means of such
+ * transformations the tool user can customize the diagram. It provides a type (on/off, choice of
+ * settings) and a set of option values, if necessary.<br>
+ * <br>
+ * Hint: Declare {@link TransformationOption TransformationOptions} by means of static fields if the
+ * transformation is a re-initialized one (determined in the registration).
  * 
  * @author chsch
+ * @kieler.design proposed by chsch
+ * @kieler.rating proposed yellow by chsch
  */
 public final class TransformationOption {
     
     /**
-     * Static factory method providing an 'OnOff' {@link TransformationOption}.
+     * Static factory method providing an 'OnOff' {@link TransformationOption}.<br>
+     * <br>
+     * Hint: Declare {@link TransformationOption TransformationOptions} by means of static
+     * fields if the transformation is a re-initialized one (determined in the registration). 
      *
      * @param name the name of the option
      * @param initiallyChecked true is the option shall be set initially.
@@ -38,7 +45,10 @@ public final class TransformationOption {
     }
     
     /**
-     * Static factory method providing an 'Choice' {@link TransformationOption}.
+     * Static factory method providing an 'Choice' {@link TransformationOption}.<br>
+     * <br>
+     * Hint: Declare {@link TransformationOption TransformationOptions} by means of static
+     * fields if the transformation is a re-initialized one (determined in the registration). 
      *
      * @param name the name of the option
      * @return an 'Choice' {@link TransformationOption}
@@ -48,7 +58,10 @@ public final class TransformationOption {
     }    
 
     /**
-     * Static factory method providing an 'Choice' {@link TransformationOption}.
+     * Static factory method providing an 'Choice' {@link TransformationOption}.<br>
+     * <br>
+     * Hint: Declare {@link TransformationOption TransformationOptions} by means of static
+     * fields if the transformation is a re-initialized one (determined in the registration). 
      * 
      * @param name the name of the option
      * @param values the available option values.
