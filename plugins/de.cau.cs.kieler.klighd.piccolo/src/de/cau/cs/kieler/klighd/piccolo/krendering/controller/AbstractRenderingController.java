@@ -32,6 +32,7 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.impl.AdapterImpl;
 import org.eclipse.emf.ecore.EStructuralFeature;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.statushandlers.StatusManager;
 import org.osgi.framework.Bundle;
 
@@ -1253,7 +1254,7 @@ public abstract class AbstractRenderingController<S extends KGraphElement, T ext
     }
 
     /**
-     * Creates a representation for the {@code KImage}.
+     * Creates a representation for the {@link KImage}.
      * 
      * @author uru, chsch
      * 
@@ -1274,27 +1275,35 @@ public abstract class AbstractRenderingController<S extends KGraphElement, T ext
     protected PNodeController<?> createImage(final KImage image, final Styles styles,
             final List<KStyle> propagatedStyles, final PNode parent, final PBounds initialBounds,
             final Object key) {
-
-        // get the bundle and actual image, trim the leading and trailing quotation marks
-        Bundle bundle = Platform.getBundle(image.getBundleName().replace("\"", ""));
-        if (bundle == null) {
-            return createDummy(parent, initialBounds);
-        }
         
-        URL entry = bundle.getEntry(image.getImagePath().replace("\"", ""));
-
         PSWTImage pImage = null;
-        try {
-            // create the image
-            //  the bounds of pImage are set within the PSWTImage implementation
-            pImage = new PSWTImage(PSWTCanvas.CURRENT_CANVAS, entry.openStream());
-        } catch (IOException e) {
-            final String msg = "KLighD: Error occurred while loading the image "
-                    + image.getImagePath() + " in bundle " + image.getBundleName(); 
-            StatusManager.getManager().handle(
-                    new Status(IStatus.ERROR, KlighdPlugin.PLUGIN_ID, msg, e),
-                    StatusManager.LOG);
-            return createDummy(parent, initialBounds);
+
+        if (image.getImageObject() instanceof Image) {
+
+            pImage = new PSWTImage(PSWTCanvas.CURRENT_CANVAS, (Image) image.getImageObject());
+
+        } else {
+            
+            // get the bundle and actual image, trim the leading and trailing quotation marks
+            Bundle bundle = Platform.getBundle(image.getBundleName().replace("\"", ""));
+            if (bundle == null) {
+                return createDummy(parent, initialBounds);
+            }
+
+            URL entry = bundle.getEntry(image.getImagePath().replace("\"", ""));
+
+            try {
+                // create the image
+                // the bounds of pImage are set within the PSWTImage implementation
+                pImage = new PSWTImage(PSWTCanvas.CURRENT_CANVAS, entry.openStream());
+            } catch (IOException e) {
+                final String msg = "KLighD: Error occurred while loading the image "
+                        + image.getImagePath() + " in bundle " + image.getBundleName();
+                StatusManager.getManager().handle(
+                        new Status(IStatus.ERROR, KlighdPlugin.PLUGIN_ID, msg, e),
+                        StatusManager.LOG);
+                return createDummy(parent, initialBounds);
+            }
         }
 
         // initialize the node
@@ -1341,8 +1350,14 @@ public abstract class AbstractRenderingController<S extends KGraphElement, T ext
 
         // get a wrapping PNode containing the actual figure
         //  by means of the KCustomRenderingWrapperFactory
-        PNode node = KCustomRenderingWrapperFactory.getInstance().getWrapperInstance(
-                customRendering.getBundleName(), customRendering.getClassName(), PNode.class);
+        PNode node;
+        if (customRendering.getFigureObject() != null) {
+            node = KCustomRenderingWrapperFactory.getInstance().getWrapperInstance(
+                    customRendering.getFigureObject(), PNode.class);
+        } else {
+            node = KCustomRenderingWrapperFactory.getInstance().getWrapperInstance(
+                    customRendering.getBundleName(), customRendering.getClassName(), PNode.class);
+        }
         if (node == null) {
             return createDummy(parent, initialBounds);
         }
