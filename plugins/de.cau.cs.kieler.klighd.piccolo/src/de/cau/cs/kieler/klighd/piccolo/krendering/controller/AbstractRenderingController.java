@@ -83,6 +83,8 @@ import de.cau.cs.kieler.core.properties.Property;
 import de.cau.cs.kieler.core.util.Pair;
 import de.cau.cs.kieler.klighd.KlighdPlugin;
 import de.cau.cs.kieler.klighd.krendering.KCustomRenderingWrapperFactory;
+import de.cau.cs.kieler.klighd.piccolo.krendering.KCustomConnectionFigureNode;
+import de.cau.cs.kieler.klighd.piccolo.krendering.KEdgeNode;
 import de.cau.cs.kieler.klighd.piccolo.krendering.util.PlacementUtil;
 import de.cau.cs.kieler.klighd.piccolo.krendering.util.PlacementUtil.Decoration;
 import de.cau.cs.kieler.klighd.piccolo.krendering.util.PlacementUtil.GridPlacer;
@@ -1352,11 +1354,24 @@ public abstract class AbstractRenderingController<S extends KGraphElement, T ext
         //  by means of the KCustomRenderingWrapperFactory
         PNode node;
         if (customRendering.getFigureObject() != null) {
-            node = KCustomRenderingWrapperFactory.getInstance().getWrapperInstance(
-                    customRendering.getFigureObject(), PNode.class);
+            if (parent instanceof KEdgeNode) {
+                node = KCustomRenderingWrapperFactory.getInstance().getWrapperInstance(
+                        customRendering.getFigureObject(), KCustomConnectionFigureNode.class);
+            } else {
+                node = KCustomRenderingWrapperFactory.getInstance().getWrapperInstance(
+                        customRendering.getFigureObject(), PNode.class);
+            }
+            
         } else {
-            node = KCustomRenderingWrapperFactory.getInstance().getWrapperInstance(
-                    customRendering.getBundleName(), customRendering.getClassName(), PNode.class);
+            if (parent instanceof KEdgeNode) {
+                node = KCustomRenderingWrapperFactory.getInstance().getWrapperInstance(
+                        customRendering.getBundleName(), customRendering.getClassName(),
+                        KCustomConnectionFigureNode.class);
+            } else {
+                node = KCustomRenderingWrapperFactory.getInstance().getWrapperInstance(
+                        customRendering.getBundleName(), customRendering.getClassName(),
+                        PNode.class);
+            }
         }
         if (node == null) {
             return createDummy(parent, initialBounds);
