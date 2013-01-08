@@ -44,7 +44,6 @@ import java.awt.geom.RoundRectangle2D;
 import java.util.ArrayList;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.GC;
 
 import de.cau.cs.kieler.core.math.KVector;
 import de.cau.cs.kieler.core.math.KVectorChain;
@@ -68,7 +67,7 @@ import edu.umd.cs.piccolox.swt.SWTShapeManager;
  * therefore the original copyright header is retained.
  * </p>
  * 
- * @author mri
+ * @author mri, chsch
  */
 public class PSWTAdvancedPath extends PNode {
 
@@ -110,6 +109,8 @@ public class PSWTAdvancedPath extends PNode {
     private double lineWidth = 1.0;
     /** the line style for this path. */
     private int lineStyle = SWT.LINE_SOLID;
+    /** the line cap style for this path. */
+    private int lineCap = SWT.CAP_FLAT;
 
     private boolean updatingBoundsFromPath;
     private Shape origShape;
@@ -451,9 +452,8 @@ public class PSWTAdvancedPath extends PNode {
         SWTGraphics2D g2 = (SWTGraphics2D) paintContext.getGraphics();
         Paint p = getPaint();
         g2.setLineWidth(lineWidth);
-        GC graphicsContext = g2.getGraphicsContext();
-        int oldLineStyle = graphicsContext.getLineStyle();
-        graphicsContext.setLineStyle(lineStyle);
+        g2.setLineStyle(lineStyle);
+        g2.setLineCap(lineCap);
 
         if (internalXForm != null) {
             g2.transform(internalXForm);
@@ -472,12 +472,14 @@ public class PSWTAdvancedPath extends PNode {
         if (inverseXForm != null) {
             g2.transform(inverseXForm);
         }
-        graphicsContext.setLineStyle(oldLineStyle);
         g2.setLineWidth(1.0);
+        g2.setLineStyle(SWT.LINE_SOLID);
+        g2.setLineCap(SWT.CAP_FLAT);
     }
 
     // CHECKSTYLEOFF MagicNumber
 
+    @SuppressWarnings("deprecation")
     private void drawShape(final SWTGraphics2D g2) {
         final double lw = g2.getLineWidth();
         if (shape instanceof Rectangle2D) {
@@ -492,11 +494,19 @@ public class PSWTAdvancedPath extends PNode {
         } else if (shape instanceof RoundRectangle2D) {
             g2.drawRoundRect(shapePts[0] + lw / 2, shapePts[1] + lw / 2, shapePts[2] - lw,
                     shapePts[3] - lw, shapePts[4], shapePts[5]);
+        } else if (isPolygon) {
+            g2.drawPolygon(shapePts);
         } else {
+            // chsch: executing this branch should be avoided under all circumstances
+            //  as it most likely results in calling SWTGraphics2D#drawPath(Path)
+            //  that in turn is a kind of fall back method, which doesn't correctly handle
+            //  the floating point 2 integer (awtToSwt) conversion! 
             g2.draw(shape);
         }
+        
     }
 
+    @SuppressWarnings("deprecation")
     private void fillShape(final SWTGraphics2D g2) {
         final double lw = g2.getLineWidth();
         if (shape instanceof Rectangle2D) {
@@ -511,12 +521,14 @@ public class PSWTAdvancedPath extends PNode {
         } else if (shape instanceof RoundRectangle2D) {
             g2.fillRoundRect(shapePts[0] + lw / 2, shapePts[1] + lw / 2, shapePts[2] - lw,
                     shapePts[3] - lw, shapePts[4], shapePts[5]);
+        } else if (isPolygon) {
+            g2.fillPolygon(shapePts);
         } else {
-            if (isPolygon) {
-                g2.fillPolygon(shapePts);
-            } else {
-                g2.fill(shape);
-            }
+            // chsch: executing this branch should be avoided under all circumstances
+            //  as it most likely results in calling SWTGraphics2D#fillPath(Path)
+            //  that in turn is a kind of fall back method, which doesn't correctly handle
+            //  the floating point 2 integer (awtToSwt) conversion! 
+            g2.fill(shape);
         }
     }
 
