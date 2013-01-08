@@ -31,6 +31,7 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  * <ul>
  *   <li>{@link de.cau.cs.kieler.core.krendering.impl.KCustomRenderingImpl#getClassName <em>Class Name</em>}</li>
  *   <li>{@link de.cau.cs.kieler.core.krendering.impl.KCustomRenderingImpl#getBundleName <em>Bundle Name</em>}</li>
+ *   <li>{@link de.cau.cs.kieler.core.krendering.impl.KCustomRenderingImpl#getFigureObject <em>Figure Object</em>}</li>
  * </ul>
  * </p>
  *
@@ -78,6 +79,26 @@ public class KCustomRenderingImpl extends KContainerRenderingImpl implements KCu
     protected String bundleName = BUNDLE_NAME_EDEFAULT;
 
     /**
+     * The default value of the '{@link #getFigureObject() <em>Figure Object</em>}' attribute.
+     * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+     * @see #getFigureObject()
+     * @generated
+     * @ordered
+     */
+	protected static final Object FIGURE_OBJECT_EDEFAULT = null;
+
+				/**
+     * The cached value of the '{@link #getFigureObject() <em>Figure Object</em>}' attribute.
+     * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+     * @see #getFigureObject()
+     * @generated
+     * @ordered
+     */
+	protected Object figureObject = FIGURE_OBJECT_EDEFAULT;
+
+				/**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
@@ -140,6 +161,27 @@ public class KCustomRenderingImpl extends KContainerRenderingImpl implements KCu
 
     /**
      * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+     * @generated
+     */
+	public Object getFigureObject() {
+        return figureObject;
+    }
+
+				/**
+     * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+     * @generated
+     */
+	public void setFigureObject(Object newFigureObject) {
+        Object oldFigureObject = figureObject;
+        figureObject = newFigureObject;
+        if (eNotificationRequired())
+            eNotify(new ENotificationImpl(this, Notification.SET, KRenderingPackage.KCUSTOM_RENDERING__FIGURE_OBJECT, oldFigureObject, figureObject));
+    }
+
+				/**
+     * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      */
@@ -150,6 +192,8 @@ public class KCustomRenderingImpl extends KContainerRenderingImpl implements KCu
                 return getClassName();
             case KRenderingPackage.KCUSTOM_RENDERING__BUNDLE_NAME:
                 return getBundleName();
+            case KRenderingPackage.KCUSTOM_RENDERING__FIGURE_OBJECT:
+                return getFigureObject();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -167,6 +211,9 @@ public class KCustomRenderingImpl extends KContainerRenderingImpl implements KCu
                 return;
             case KRenderingPackage.KCUSTOM_RENDERING__BUNDLE_NAME:
                 setBundleName((String)newValue);
+                return;
+            case KRenderingPackage.KCUSTOM_RENDERING__FIGURE_OBJECT:
+                setFigureObject(newValue);
                 return;
         }
         super.eSet(featureID, newValue);
@@ -186,6 +233,9 @@ public class KCustomRenderingImpl extends KContainerRenderingImpl implements KCu
             case KRenderingPackage.KCUSTOM_RENDERING__BUNDLE_NAME:
                 setBundleName(BUNDLE_NAME_EDEFAULT);
                 return;
+            case KRenderingPackage.KCUSTOM_RENDERING__FIGURE_OBJECT:
+                setFigureObject(FIGURE_OBJECT_EDEFAULT);
+                return;
         }
         super.eUnset(featureID);
     }
@@ -202,6 +252,8 @@ public class KCustomRenderingImpl extends KContainerRenderingImpl implements KCu
                 return CLASS_NAME_EDEFAULT == null ? className != null : !CLASS_NAME_EDEFAULT.equals(className);
             case KRenderingPackage.KCUSTOM_RENDERING__BUNDLE_NAME:
                 return BUNDLE_NAME_EDEFAULT == null ? bundleName != null : !BUNDLE_NAME_EDEFAULT.equals(bundleName);
+            case KRenderingPackage.KCUSTOM_RENDERING__FIGURE_OBJECT:
+                return FIGURE_OBJECT_EDEFAULT == null ? figureObject != null : !FIGURE_OBJECT_EDEFAULT.equals(figureObject);
         }
         return super.eIsSet(featureID);
     }
@@ -220,6 +272,8 @@ public class KCustomRenderingImpl extends KContainerRenderingImpl implements KCu
         result.append(className);
         result.append(", bundleName: ");
         result.append(bundleName);
+        result.append(", figureObject: ");
+        result.append(figureObject);
         result.append(')');
         return result.toString();
     }

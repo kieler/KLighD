@@ -1128,6 +1128,15 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
 
     /**
      * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+     * @generated
+     */
+	public EAttribute getKCustomRendering_FigureObject() {
+        return (EAttribute)kCustomRenderingEClass.getEStructuralFeatures().get(2);
+    }
+
+				/**
+     * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      */
@@ -1643,6 +1652,7 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
         kCustomRenderingEClass = createEClass(KCUSTOM_RENDERING);
         createEAttribute(kCustomRenderingEClass, KCUSTOM_RENDERING__CLASS_NAME);
         createEAttribute(kCustomRenderingEClass, KCUSTOM_RENDERING__BUNDLE_NAME);
+        createEAttribute(kCustomRenderingEClass, KCUSTOM_RENDERING__FIGURE_OBJECT);
 
         kForegroundColorEClass = createEClass(KFOREGROUND_COLOR);
 
@@ -1882,6 +1892,7 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
         initEClass(kCustomRenderingEClass, KCustomRendering.class, "KCustomRendering", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         initEAttribute(getKCustomRendering_ClassName(), ecorePackage.getEString(), "className", null, 1, 1, KCustomRendering.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEAttribute(getKCustomRendering_BundleName(), ecorePackage.getEString(), "bundleName", null, 1, 1, KCustomRendering.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEAttribute(getKCustomRendering_FigureObject(), ecorePackage.getEJavaObject(), "figureObject", null, 0, 1, KCustomRendering.class, IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         initEClass(kForegroundColorEClass, KForegroundColor.class, "KForegroundColor", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 

@@ -134,6 +134,11 @@ class KRenderingExtensions {
         return rendering.styles.filter(typeof(KBackgroundColor)).last?:renderingFactory.createKBackgroundColor;
     }
  
+    def KBackgroundColor getBackgroundColor(KRendering rendering) {
+        // chsch: I'm currently not sure whether the first or the last will win...
+        return rendering.styles.filter(typeof(KBackgroundColor)).last?:renderingFactory.createKBackgroundColor;
+    }
+ 
 	def <T extends KRendering> T setBackgroundColor(T rendering, int red, int green, int blue) {
 		rendering.styles.removeAll(rendering.styles.filter(typeof(KBackgroundColor)).toList);
 		return rendering => [
@@ -144,8 +149,13 @@ class KRenderingExtensions {
 		    ]; 
 		];		
 	}
-    
+        
     def KForegroundColor getFGColor(KRendering rendering) {
+        // chsch: I'm currently not sure whether the first or the last will win...
+        return rendering.styles.filter(typeof(KForegroundColor)).last?:renderingFactory.createKForegroundColor;
+    }
+
+    def KForegroundColor getForegroundColor(KRendering rendering) {
         // chsch: I'm currently not sure whether the first or the last will win...
         return rendering.styles.filter(typeof(KForegroundColor)).last?:renderingFactory.createKForegroundColor;
     }

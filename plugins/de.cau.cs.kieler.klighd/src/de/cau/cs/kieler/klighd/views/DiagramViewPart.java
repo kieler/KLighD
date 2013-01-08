@@ -253,14 +253,15 @@ public class DiagramViewPart extends ViewPart {
         sash.addPaintListener(new LinePainter());
         sash.addListener(SWT.Selection, new Listener() {
             public void handleEvent(final Event event) {
-                if (event.detail == SWT.DRAG) {
+                // the following filter doesn't work on OSX, event.detail is always zero
+                // if (event.detail == SWT.DRAG) {
                     // FIXME the "30" in the next line was determined experimentally
                     int newWidth = parent.getClientArea().width - (event.x + 30);
                     if (event.x > MIN_WIDTH && newWidth > MIN_WIDTH) {
                         formLayoutData.widthHint = newWidth;
                         parent.layout();
                     }
-                }
+                // }
             }
         });
         

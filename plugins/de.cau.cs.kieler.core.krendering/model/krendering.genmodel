@@ -111,6 +111,7 @@
     <genClasses ecoreClass="krendering.ecore#//KCustomRendering">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute krendering.ecore#//KCustomRendering/className"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute krendering.ecore#//KCustomRendering/bundleName"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute krendering.ecore#//KCustomRendering/figureObject"/>
     </genClasses>
     <genClasses ecoreClass="krendering.ecore#//KForegroundColor"/>
     <genClasses image="false" ecoreClass="krendering.ecore#//KColor">

@@ -1778,13 +1778,22 @@ public interface KRenderingPackage extends EPackage {
     int KCUSTOM_RENDERING__BUNDLE_NAME = KCONTAINER_RENDERING_FEATURE_COUNT + 1;
 
     /**
+     * The feature id for the '<em><b>Figure Object</b></em>' attribute.
+     * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+	int KCUSTOM_RENDERING__FIGURE_OBJECT = KCONTAINER_RENDERING_FEATURE_COUNT + 2;
+
+				/**
      * The number of structural features of the '<em>KCustom Rendering</em>' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int KCUSTOM_RENDERING_FEATURE_COUNT = KCONTAINER_RENDERING_FEATURE_COUNT + 2;
+    int KCUSTOM_RENDERING_FEATURE_COUNT = KCONTAINER_RENDERING_FEATURE_COUNT + 3;
 
     /**
      * The meta object id for the '{@link de.cau.cs.kieler.core.krendering.impl.KColorImpl <em>KColor</em>}' class.
@@ -3709,6 +3718,17 @@ public interface KRenderingPackage extends EPackage {
     EAttribute getKCustomRendering_BundleName();
 
     /**
+     * Returns the meta object for the attribute '{@link de.cau.cs.kieler.core.krendering.KCustomRendering#getFigureObject <em>Figure Object</em>}'.
+     * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+     * @return the meta object for the attribute '<em>Figure Object</em>'.
+     * @see de.cau.cs.kieler.core.krendering.KCustomRendering#getFigureObject()
+     * @see #getKCustomRendering()
+     * @generated
+     */
+	EAttribute getKCustomRendering_FigureObject();
+
+				/**
      * Returns the meta object for class '{@link de.cau.cs.kieler.core.krendering.KForegroundColor <em>KForeground Color</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -4791,6 +4811,14 @@ public interface KRenderingPackage extends EPackage {
         EAttribute KCUSTOM_RENDERING__BUNDLE_NAME = eINSTANCE.getKCustomRendering_BundleName();
 
         /**
+         * The meta object literal for the '<em><b>Figure Object</b></em>' attribute feature.
+         * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+         * @generated
+         */
+		EAttribute KCUSTOM_RENDERING__FIGURE_OBJECT = eINSTANCE.getKCustomRendering_FigureObject();
+
+								/**
          * The meta object literal for the '{@link de.cau.cs.kieler.core.krendering.impl.KForegroundColorImpl <em>KForeground Color</em>}' class.
          * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
