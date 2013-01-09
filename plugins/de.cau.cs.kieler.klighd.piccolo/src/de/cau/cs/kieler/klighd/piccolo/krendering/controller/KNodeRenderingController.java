@@ -29,7 +29,6 @@ import de.cau.cs.kieler.klighd.piccolo.krendering.util.PlacementUtil;
 import de.cau.cs.kieler.klighd.piccolo.util.NodeUtil;
 import edu.umd.cs.piccolo.PNode;
 import edu.umd.cs.piccolo.util.PBounds;
-import edu.umd.cs.piccolox.swt.PSWTCanvas;
 
 /**
  * An {@link AbstractRenderingController} for KNodes generating the rendering PNodes
@@ -48,14 +47,11 @@ public class KNodeRenderingController extends AbstractRenderingController<KNode,
      * 
      * @param node
      *            the Piccolo node representing a node
-     * @param canvas
-     *            the PSWTCanvas this node is drawn on. Necessary to display images.
      */
-    public KNodeRenderingController(final KNodeNode node, final PSWTCanvas canvas) {
+    public KNodeRenderingController(final KNodeNode node) {
         super(node.getGraphElement(), node);
         this.childAreaNode = new KChildAreaNode(node);
         initializeRenderingNode(childAreaNode);
-        this.canvas = canvas;
     }
     
     /**

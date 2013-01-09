@@ -23,7 +23,6 @@ import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.impl.AdapterImpl;
 import org.eclipse.emf.ecore.util.EContentAdapter;
-import org.eclipse.ui.PlatformUI;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -67,7 +66,7 @@ import edu.umd.cs.piccolo.PNode;
 import edu.umd.cs.piccolo.activities.PInterpolatingActivity;
 import edu.umd.cs.piccolo.util.PAffineTransform;
 import edu.umd.cs.piccolo.util.PBounds;
-import edu.umd.cs.piccolox.swt.PSWTCanvas;
+//import org.eclipse.ui.PlatformUI;
 
 /**
  * The class which controls the transformation of a KGraph with attached KRendering data to Piccolo
@@ -92,8 +91,6 @@ public class GraphController {
 
     /** the property for the Piccolo representation of a node. */
     public static final IProperty<PNode> REP = new Property<PNode>("klighd.piccolo.prepresentation");
-
-    private PSWTCanvas canvas = null;
     
     
     /**
@@ -106,12 +103,9 @@ public class GraphController {
      * the property for identifying whether a node is currently active. If a node is active, it is
      * visible.
      */
-    // Review:
-    // activate the subgraph
-    // this is probably crucial in case the structure
-    // has been changed during an incremental update
-    // the activity flag is also important
-    // in case of inter level edges in combination with
+    // Review: activate the subgraph:
+    // this is probably crucial in case the structure has been changed during an incremental update;
+    // the activity flag is also important in case of inter-level edges in combination with
     // lazy loading/collapsing+expanding
     private static final IProperty<Boolean> ACTIVE = new Property<Boolean>("klighd.active", false);
     /** the property for remembering the edge sync adapter on a node. */
@@ -151,11 +145,8 @@ public class GraphController {
      *            true if the visualization should be synchronized with the graph; false else
      * 
      *            review hint: setting to false will prevent the application of automatic layout
-     *  @param canvas
-     *            the canvas this graph is drawn on.
      */
-    public GraphController(final KNode graph, final PNode parent, final boolean sync, 
-            final PSWTCanvas canvas) {
+    public GraphController(final KNode graph, final PNode parent, final boolean sync) {
         // Review: kgraph nodes maintain context information,
         // these information is removed by this statement,
         // mainly needed if textual kgraph editor is used
@@ -164,7 +155,6 @@ public class GraphController {
         this.topNode = new KNodeTopNode(graph);
         parent.addChild(topNode);
         this.sync = sync;
-        this.canvas = canvas;
     }
 
     /**
@@ -810,7 +800,7 @@ public class GraphController {
         KNodeRenderingController renderingController = (KNodeRenderingController) nodeRep
                 .getAttribute(RENDERING_KEY);
         if (renderingController == null) {
-            renderingController = new KNodeRenderingController(nodeRep, canvas);
+            renderingController = new KNodeRenderingController(nodeRep);
             nodeRep.setChildArea(renderingController.getChildAreaNode());
             nodeRep.addAttribute(RENDERING_KEY, renderingController);
             renderingController.initialize(sync);
@@ -1117,44 +1107,44 @@ public class GraphController {
                     switch (notification.getEventType()) {
                     case Notification.ADD: {
                         final KNode addedNode = (KNode) notification.getNewValue();
-                        PlatformUI.getWorkbench().getDisplay().syncExec(new Runnable() {
-                            public void run() {
+                        // PlatformUI.getWorkbench().getDisplay().syncExec(new Runnable() {
+                            //public void run() {
                                 addNode(nodeRep, addedNode);
-                            }
-                        });
+                            // }
+                        // });
                         break;
                     }
                     case Notification.ADD_MANY: {
                         @SuppressWarnings("unchecked")
                         final List<KNode> addedNodes = (List<KNode>) notification.getNewValue();
-                        PlatformUI.getWorkbench().getDisplay().syncExec(new Runnable() {
-                            public void run() {
+                        // PlatformUI.getWorkbench().getDisplay().syncExec(new Runnable() {
+                            // public void run() {
                                 for (KNode addedNode : addedNodes) {
                                     addNode(nodeRep, addedNode);
                                 }
-                            }
-                        });
+                            // }
+                        // });
                         break;
                     }
                     case Notification.REMOVE: {
                         final KNode removedNode = (KNode) notification.getOldValue();
-                        PlatformUI.getWorkbench().getDisplay().syncExec(new Runnable() {
-                            public void run() {
+                        // PlatformUI.getWorkbench().getDisplay().syncExec(new Runnable() {
+                            // public void run() {
                                 removeNode(removedNode);
-                            }
-                        });
+                            // }
+                        // });
                         break;
                     }
                     case Notification.REMOVE_MANY: {
                         @SuppressWarnings("unchecked")
                         final List<KNode> removedNodes = (List<KNode>) notification.getOldValue();
-                        PlatformUI.getWorkbench().getDisplay().syncExec(new Runnable() {
-                            public void run() {
+                        // PlatformUI.getWorkbench().getDisplay().syncExec(new Runnable() {
+                            // public void run() {
                                 for (KNode removedNode : removedNodes) {
                                     removeNode(removedNode);
                                 }
-                            }
-                        });
+                            // }
+                        // });
                         break;
                     }
                     default:
@@ -1190,44 +1180,44 @@ public class GraphController {
                     switch (notification.getEventType()) {
                     case Notification.ADD: {
                         final KEdge addedEdge = (KEdge) notification.getNewValue();
-                        PlatformUI.getWorkbench().getDisplay().syncExec(new Runnable() {
-                            public void run() {
+                        // PlatformUI.getWorkbench().getDisplay().syncExec(new Runnable() {
+                            // public void run() {
                                 addEdge(addedEdge);
-                            }
-                        });
+                            // }
+                        // });
                         break;
                     }
                     case Notification.ADD_MANY: {
                         @SuppressWarnings("unchecked")
                         final List<KEdge> addedEdges = (List<KEdge>) notification.getNewValue();
-                        PlatformUI.getWorkbench().getDisplay().syncExec(new Runnable() {
-                            public void run() {
+                        // PlatformUI.getWorkbench().getDisplay().syncExec(new Runnable() {
+                            // public void run() {
                                 for (KEdge addedEdge : addedEdges) {
                                     addEdge(addedEdge);
                                 }
-                            }
-                        });
+                            // }
+                        // });
                         break;
                     }
                     case Notification.REMOVE: {
                         final KEdge removedEdge = (KEdge) notification.getOldValue();
-                        PlatformUI.getWorkbench().getDisplay().syncExec(new Runnable() {
-                            public void run() {
+                        // PlatformUI.getWorkbench().getDisplay().syncExec(new Runnable() {
+                            // public void run() {
                                 removeEdge(removedEdge);
-                            }
-                        });
+                            // }
+                        // });
                         break;
                     }
                     case Notification.REMOVE_MANY: {
                         @SuppressWarnings("unchecked")
                         final List<KEdge> removedEdges = (List<KEdge>) notification.getOldValue();
-                        PlatformUI.getWorkbench().getDisplay().syncExec(new Runnable() {
-                            public void run() {
+                        // PlatformUI.getWorkbench().getDisplay().syncExec(new Runnable() {
+                            // public void run() {
                                 for (KEdge removedEdge : removedEdges) {
                                     removeEdge(removedEdge);
                                 }
-                            }
-                        });
+                            // }
+                        // });
                         break;
                     }
                     default:
@@ -1273,44 +1263,44 @@ public class GraphController {
                     switch (notification.getEventType()) {
                     case Notification.ADD: {
                         final KPort addedPort = (KPort) notification.getNewValue();
-                        PlatformUI.getWorkbench().getDisplay().syncExec(new Runnable() {
-                            public void run() {
+                        // PlatformUI.getWorkbench().getDisplay().syncExec(new Runnable() {
+                            // public void run() {
                                 addPort(nodeRep, addedPort);
-                            }
-                        });
+                            // }
+                        // });
                         break;
                     }
                     case Notification.ADD_MANY: {
                         @SuppressWarnings("unchecked")
                         final List<KPort> addedPorts = (List<KPort>) notification.getNewValue();
-                        PlatformUI.getWorkbench().getDisplay().syncExec(new Runnable() {
-                            public void run() {
+                        // PlatformUI.getWorkbench().getDisplay().syncExec(new Runnable() {
+                            // public void run() {
                                 for (KPort addedPort : addedPorts) {
                                     addPort(nodeRep, addedPort);
                                 }
-                            }
-                        });
+                            // }
+                        // });
                         break;
                     }
                     case Notification.REMOVE: {
                         final KPort removedPort = (KPort) notification.getOldValue();
-                        PlatformUI.getWorkbench().getDisplay().syncExec(new Runnable() {
-                            public void run() {
+                        // PlatformUI.getWorkbench().getDisplay().syncExec(new Runnable() {
+                            // public void run() {
                                 removePort(removedPort);
-                            }
-                        });
+                            // }
+                        // });
                         break;
                     }
                     case Notification.REMOVE_MANY: {
                         @SuppressWarnings("unchecked")
                         final List<KPort> removedPorts = (List<KPort>) notification.getOldValue();
-                        PlatformUI.getWorkbench().getDisplay().syncExec(new Runnable() {
-                            public void run() {
+                        // PlatformUI.getWorkbench().getDisplay().syncExec(new Runnable() {
+                            // public void run() {
                                 for (KPort removedPort : removedPorts) {
                                     removePort(removedPort);
                                 }
-                            }
-                        });
+                            // }
+                        // });
                         break;
                     }
                     default:
@@ -1340,45 +1330,45 @@ public class GraphController {
                     switch (notification.getEventType()) {
                     case Notification.ADD: {
                         final KLabel addedLabel = (KLabel) notification.getNewValue();
-                        PlatformUI.getWorkbench().getDisplay().syncExec(new Runnable() {
-                            public void run() {
+                        // PlatformUI.getWorkbench().getDisplay().syncExec(new Runnable() {
+                            // public void run() {
                                 addLabel(labeledNode, addedLabel);
-                            }
-                        });
+                            // }
+                        // });
                         break;
                     }
                     case Notification.ADD_MANY: {
                         @SuppressWarnings("unchecked")
                         final List<KLabel> addedLabels = (List<KLabel>) notification.getNewValue();
-                        PlatformUI.getWorkbench().getDisplay().syncExec(new Runnable() {
-                            public void run() {
+                        // PlatformUI.getWorkbench().getDisplay().syncExec(new Runnable() {
+                            // public void run() {
                                 for (KLabel addedLabel : addedLabels) {
                                     addLabel(labeledNode, addedLabel);
                                 }
-                            }
-                        });
+                            // }
+                        // });
                         break;
                     }
                     case Notification.REMOVE: {
                         final KLabel removedLabel = (KLabel) notification.getOldValue();
-                        PlatformUI.getWorkbench().getDisplay().syncExec(new Runnable() {
-                            public void run() {
+                        // PlatformUI.getWorkbench().getDisplay().syncExec(new Runnable() {
+                            // public void run() {
                                 removeLabel(removedLabel);
-                            }
-                        });
+                            // }
+                        // });
                         break;
                     }
                     case Notification.REMOVE_MANY: {
                         @SuppressWarnings("unchecked")
                         final List<KLabel> removedLabels = (List<KLabel>) notification
                                 .getOldValue();
-                        PlatformUI.getWorkbench().getDisplay().syncExec(new Runnable() {
-                            public void run() {
+                        // PlatformUI.getWorkbench().getDisplay().syncExec(new Runnable() {
+                            // public void run() {
                                 for (KLabel removedLabel : removedLabels) {
                                     removeLabel(removedLabel);
                                 }
-                            }
-                        });
+                            // }
+                        // });
                         break;
                     }
                     default:
@@ -1404,11 +1394,11 @@ public class GraphController {
                 if (notification.getFeatureID(KLabel.class) == KGraphPackage.KLABEL__TEXT) {
                     switch (notification.getEventType()) {
                     case Notification.SET:
-                        PlatformUI.getWorkbench().getDisplay().syncExec(new Runnable() {
-                            public void run() {
+                        // PlatformUI.getWorkbench().getDisplay().syncExec(new Runnable() {
+                            // public void run() {
                                 labelRep.setText(node.getText());
-                            }
-                        });
+                            // }
+                        // });
                         break;
                     default:
                         break;

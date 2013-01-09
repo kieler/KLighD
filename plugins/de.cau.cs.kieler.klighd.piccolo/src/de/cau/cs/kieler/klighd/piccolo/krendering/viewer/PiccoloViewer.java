@@ -160,7 +160,7 @@ public class PiccoloViewer extends AbstractViewer<KNode> implements INodeSelecti
         resizeAndResetLayers(2);
 
         // create a controller for the graph
-        controller = new GraphController(model, camera.getLayer(0), sync, canvas);
+        controller = new GraphController(model, camera.getLayer(0), sync);
         controller.initialize();
 
         // add a node for the marquee

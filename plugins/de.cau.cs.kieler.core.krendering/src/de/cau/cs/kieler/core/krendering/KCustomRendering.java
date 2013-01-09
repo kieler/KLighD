@@ -24,6 +24,7 @@ package de.cau.cs.kieler.core.krendering;
  * <ul>
  *   <li>{@link de.cau.cs.kieler.core.krendering.KCustomRendering#getClassName <em>Class Name</em>}</li>
  *   <li>{@link de.cau.cs.kieler.core.krendering.KCustomRendering#getBundleName <em>Bundle Name</em>}</li>
+ *   <li>{@link de.cau.cs.kieler.core.krendering.KCustomRendering#getFigureObject <em>Figure Object</em>}</li>
  * </ul>
  * </p>
  *
@@ -83,5 +84,31 @@ public interface KCustomRendering extends KContainerRendering {
      * @generated
      */
     void setBundleName(String value);
+
+    /**
+     * Returns the value of the '<em><b>Figure Object</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <p>
+     * If the meaning of the '<em>Figure Object</em>' attribute isn't clear,
+     * there really should be more of a description here...
+     * </p>
+     * <!-- end-user-doc -->
+     * @return the value of the '<em>Figure Object</em>' attribute.
+     * @see #setFigureObject(Object)
+     * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKCustomRendering_FigureObject()
+     * @model transient="true"
+     * @generated
+     */
+    Object getFigureObject();
+
+    /**
+     * Sets the value of the '{@link de.cau.cs.kieler.core.krendering.KCustomRendering#getFigureObject <em>Figure Object</em>}' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @param value the new value of the '<em>Figure Object</em>' attribute.
+     * @see #getFigureObject()
+     * @generated
+     */
+    void setFigureObject(Object value);
 
 } // KCustomRendering
