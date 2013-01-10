@@ -20,7 +20,7 @@ package de.cau.cs.kieler.core.krendering;
  * <!-- end-user-doc -->
  *
  * <!-- begin-model-doc -->
- * specifies a lineWidth for any rendering. Negative values change the size of the rendering.
+ * specifies a lineWidth for a rendering. 
  * <!-- end-model-doc -->
  *
  * <p>
@@ -43,6 +43,9 @@ public interface KLineWidth extends KStyle {
      * there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
+     * <!-- begin-model-doc -->
+     * the line width of the element
+     * <!-- end-model-doc -->
      * @return the value of the '<em>Line Width</em>' attribute.
      * @see #setLineWidth(int)
      * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKLineWidth_LineWidth()

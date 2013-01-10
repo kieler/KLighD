@@ -45,6 +45,9 @@ public interface KColor extends KStyle {
      * there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
+     * <!-- begin-model-doc -->
+     * the red component of a color
+     * <!-- end-model-doc -->
      * @return the value of the '<em>Red</em>' attribute.
      * @see #setRed(int)
      * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKColor_Red()
@@ -71,6 +74,9 @@ public interface KColor extends KStyle {
      * there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
+     * <!-- begin-model-doc -->
+     * the green component of a color
+     * <!-- end-model-doc -->
      * @return the value of the '<em>Green</em>' attribute.
      * @see #setGreen(int)
      * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKColor_Green()
@@ -97,6 +103,9 @@ public interface KColor extends KStyle {
      * there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
+     * <!-- begin-model-doc -->
+     * the blue component of a color
+     * <!-- end-model-doc -->
      * @return the value of the '<em>Blue</em>' attribute.
      * @see #setBlue(int)
      * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKColor_Blue()

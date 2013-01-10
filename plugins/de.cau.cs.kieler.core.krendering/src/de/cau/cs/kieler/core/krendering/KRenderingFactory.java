@@ -168,13 +168,13 @@ public interface KRenderingFactory extends EFactory {
     KGridPlacementData createKGridPlacementData();
 
     /**
-     * Returns a new object of class '<em>KDirect Placement Data</em>'.
+     * Returns a new object of class '<em>KArea Placement Data</em>'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return a new object of class '<em>KDirect Placement Data</em>'.
+     * @return a new object of class '<em>KArea Placement Data</em>'.
      * @generated
      */
-    KDirectPlacementData createKDirectPlacementData();
+    KAreaPlacementData createKAreaPlacementData();
 
     /**
      * Returns a new object of class '<em>KCustom Rendering</em>'.
@@ -364,6 +364,60 @@ public interface KRenderingFactory extends EFactory {
      * @generated
      */
     KGradientStyle createKGradientStyle();
+
+    /**
+     * Returns a new object of class '<em>KLine Cap Style</em>'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return a new object of class '<em>KLine Cap Style</em>'.
+     * @generated
+     */
+    KLineCapStyle createKLineCapStyle();
+
+    /**
+     * Returns a new object of class '<em>KPoint Placement</em>'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return a new object of class '<em>KPoint Placement</em>'.
+     * @generated
+     */
+    KPointPlacement createKPointPlacement();
+
+    /**
+     * Returns a new object of class '<em>KText Rendering Ref</em>'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return a new object of class '<em>KText Rendering Ref</em>'.
+     * @generated
+     */
+    KTextRenderingRef createKTextRenderingRef();
+
+    /**
+     * Returns a new object of class '<em>KSelect Action</em>'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return a new object of class '<em>KSelect Action</em>'.
+     * @generated
+     */
+    KSelectAction createKSelectAction();
+
+    /**
+     * Returns a new object of class '<em>KExpand Collapse Action</em>'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return a new object of class '<em>KExpand Collapse Action</em>'.
+     * @generated
+     */
+    KExpandCollapseAction createKExpandCollapseAction();
+
+    /**
+     * Returns a new object of class '<em>KStyle Container</em>'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return a new object of class '<em>KStyle Container</em>'.
+     * @generated
+     */
+    KStyleContainer createKStyleContainer();
 
     /**
      * Returns the package supported by this factory.

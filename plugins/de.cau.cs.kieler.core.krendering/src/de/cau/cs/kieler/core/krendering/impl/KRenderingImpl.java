@@ -15,6 +15,7 @@ package de.cau.cs.kieler.core.krendering.impl;
 
 import de.cau.cs.kieler.core.kgraph.impl.KGraphDataImpl;
 
+import de.cau.cs.kieler.core.krendering.KAction;
 import de.cau.cs.kieler.core.krendering.KContainerRendering;
 import de.cau.cs.kieler.core.krendering.KPlacementData;
 import de.cau.cs.kieler.core.krendering.KRendering;
@@ -22,6 +23,7 @@ import de.cau.cs.kieler.core.krendering.KRenderingPackage;
 import de.cau.cs.kieler.core.krendering.KRenderingRef;
 import de.cau.cs.kieler.core.krendering.KStyle;
 
+import de.cau.cs.kieler.core.krendering.KStyleContainer;
 import java.util.Collection;
 
 import org.eclipse.emf.common.notify.Notification;
@@ -34,6 +36,8 @@ import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
+import org.eclipse.emf.ecore.util.EObjectContainmentEList;
+import org.eclipse.emf.ecore.util.EObjectResolvingEList;
 import org.eclipse.emf.ecore.util.EObjectContainmentWithInverseEList;
 import org.eclipse.emf.ecore.util.EObjectWithInverseResolvingEList;
 import org.eclipse.emf.ecore.util.EcoreUtil;
@@ -46,16 +50,27 @@ import org.eclipse.emf.ecore.util.InternalEList;
  * <p>
  * The following features are implemented:
  * <ul>
+ *   <li>{@link de.cau.cs.kieler.core.krendering.impl.KRenderingImpl#getStyles <em>Styles</em>}</li>
  *   <li>{@link de.cau.cs.kieler.core.krendering.impl.KRenderingImpl#getParent <em>Parent</em>}</li>
  *   <li>{@link de.cau.cs.kieler.core.krendering.impl.KRenderingImpl#getReferences <em>References</em>}</li>
  *   <li>{@link de.cau.cs.kieler.core.krendering.impl.KRenderingImpl#getPlacementData <em>Placement Data</em>}</li>
- *   <li>{@link de.cau.cs.kieler.core.krendering.impl.KRenderingImpl#getStyles <em>Styles</em>}</li>
+ *   <li>{@link de.cau.cs.kieler.core.krendering.impl.KRenderingImpl#getActions <em>Actions</em>}</li>
  * </ul>
  * </p>
  *
  * @generated
  */
 public abstract class KRenderingImpl extends KGraphDataImpl implements KRendering {
+    /**
+     * The cached value of the '{@link #getStyles() <em>Styles</em>}' containment reference list.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see #getStyles()
+     * @generated
+     * @ordered
+     */
+    protected EList<KStyle> styles;
+
     /**
      * The cached value of the '{@link #getReferences() <em>References</em>}' reference list.
      * <!-- begin-user-doc -->
@@ -77,14 +92,14 @@ public abstract class KRenderingImpl extends KGraphDataImpl implements KRenderin
     protected KPlacementData placementData;
 
     /**
-     * The cached value of the '{@link #getStyles() <em>Styles</em>}' containment reference list.
+     * The cached value of the '{@link #getActions() <em>Actions</em>}' reference list.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see #getStyles()
+     * @see #getActions()
      * @generated
      * @ordered
      */
-    protected EList<KStyle> styles;
+    protected EList<KAction> actions;
 
     /**
      * <!-- begin-user-doc -->
@@ -206,9 +221,21 @@ public abstract class KRenderingImpl extends KGraphDataImpl implements KRenderin
      * <!-- end-user-doc -->
      * @generated
      */
+    public EList<KAction> getActions() {
+        if (actions == null) {
+            actions = new EObjectResolvingEList<KAction>(KAction.class, this, KRenderingPackage.KRENDERING__ACTIONS);
+        }
+        return actions;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
     public EList<KStyle> getStyles() {
         if (styles == null) {
-            styles = new EObjectContainmentWithInverseEList<KStyle>(KStyle.class, this, KRenderingPackage.KRENDERING__STYLES, KRenderingPackage.KSTYLE__RENDERING);
+            styles = new EObjectContainmentEList<KStyle>(KStyle.class, this, KRenderingPackage.KRENDERING__STYLES);
         }
         return styles;
     }
@@ -228,8 +255,6 @@ public abstract class KRenderingImpl extends KGraphDataImpl implements KRenderin
                 return basicSetParent((KContainerRendering)otherEnd, msgs);
             case KRenderingPackage.KRENDERING__REFERENCES:
                 return ((InternalEList<InternalEObject>)(InternalEList<?>)getReferences()).basicAdd(otherEnd, msgs);
-            case KRenderingPackage.KRENDERING__STYLES:
-                return ((InternalEList<InternalEObject>)(InternalEList<?>)getStyles()).basicAdd(otherEnd, msgs);
         }
         return super.eInverseAdd(otherEnd, featureID, msgs);
     }
@@ -242,14 +267,14 @@ public abstract class KRenderingImpl extends KGraphDataImpl implements KRenderin
     @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
         switch (featureID) {
+            case KRenderingPackage.KRENDERING__STYLES:
+                return ((InternalEList<?>)getStyles()).basicRemove(otherEnd, msgs);
             case KRenderingPackage.KRENDERING__PARENT:
                 return basicSetParent(null, msgs);
             case KRenderingPackage.KRENDERING__REFERENCES:
                 return ((InternalEList<?>)getReferences()).basicRemove(otherEnd, msgs);
             case KRenderingPackage.KRENDERING__PLACEMENT_DATA:
                 return basicSetPlacementData(null, msgs);
-            case KRenderingPackage.KRENDERING__STYLES:
-                return ((InternalEList<?>)getStyles()).basicRemove(otherEnd, msgs);
         }
         return super.eInverseRemove(otherEnd, featureID, msgs);
     }
@@ -276,14 +301,16 @@ public abstract class KRenderingImpl extends KGraphDataImpl implements KRenderin
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
+            case KRenderingPackage.KRENDERING__STYLES:
+                return getStyles();
             case KRenderingPackage.KRENDERING__PARENT:
                 return getParent();
             case KRenderingPackage.KRENDERING__REFERENCES:
                 return getReferences();
             case KRenderingPackage.KRENDERING__PLACEMENT_DATA:
                 return getPlacementData();
-            case KRenderingPackage.KRENDERING__STYLES:
-                return getStyles();
+            case KRenderingPackage.KRENDERING__ACTIONS:
+                return getActions();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -297,6 +324,10 @@ public abstract class KRenderingImpl extends KGraphDataImpl implements KRenderin
     @Override
     public void eSet(int featureID, Object newValue) {
         switch (featureID) {
+            case KRenderingPackage.KRENDERING__STYLES:
+                getStyles().clear();
+                getStyles().addAll((Collection<? extends KStyle>)newValue);
+                return;
             case KRenderingPackage.KRENDERING__PARENT:
                 setParent((KContainerRendering)newValue);
                 return;
@@ -307,9 +338,9 @@ public abstract class KRenderingImpl extends KGraphDataImpl implements KRenderin
             case KRenderingPackage.KRENDERING__PLACEMENT_DATA:
                 setPlacementData((KPlacementData)newValue);
                 return;
-            case KRenderingPackage.KRENDERING__STYLES:
-                getStyles().clear();
-                getStyles().addAll((Collection<? extends KStyle>)newValue);
+            case KRenderingPackage.KRENDERING__ACTIONS:
+                getActions().clear();
+                getActions().addAll((Collection<? extends KAction>)newValue);
                 return;
         }
         super.eSet(featureID, newValue);
@@ -323,6 +354,9 @@ public abstract class KRenderingImpl extends KGraphDataImpl implements KRenderin
     @Override
     public void eUnset(int featureID) {
         switch (featureID) {
+            case KRenderingPackage.KRENDERING__STYLES:
+                getStyles().clear();
+                return;
             case KRenderingPackage.KRENDERING__PARENT:
                 setParent((KContainerRendering)null);
                 return;
@@ -332,8 +366,8 @@ public abstract class KRenderingImpl extends KGraphDataImpl implements KRenderin
             case KRenderingPackage.KRENDERING__PLACEMENT_DATA:
                 setPlacementData((KPlacementData)null);
                 return;
-            case KRenderingPackage.KRENDERING__STYLES:
-                getStyles().clear();
+            case KRenderingPackage.KRENDERING__ACTIONS:
+                getActions().clear();
                 return;
         }
         super.eUnset(featureID);
@@ -347,16 +381,50 @@ public abstract class KRenderingImpl extends KGraphDataImpl implements KRenderin
     @Override
     public boolean eIsSet(int featureID) {
         switch (featureID) {
+            case KRenderingPackage.KRENDERING__STYLES:
+                return styles != null && !styles.isEmpty();
             case KRenderingPackage.KRENDERING__PARENT:
                 return getParent() != null;
             case KRenderingPackage.KRENDERING__REFERENCES:
                 return references != null && !references.isEmpty();
             case KRenderingPackage.KRENDERING__PLACEMENT_DATA:
                 return placementData != null;
-            case KRenderingPackage.KRENDERING__STYLES:
-                return styles != null && !styles.isEmpty();
+            case KRenderingPackage.KRENDERING__ACTIONS:
+                return actions != null && !actions.isEmpty();
         }
         return super.eIsSet(featureID);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    @Override
+    public int eBaseStructuralFeatureID(int derivedFeatureID, Class<?> baseClass) {
+        if (baseClass == KStyleContainer.class) {
+            switch (derivedFeatureID) {
+                case KRenderingPackage.KRENDERING__STYLES: return KRenderingPackage.KSTYLE_CONTAINER__STYLES;
+                default: return -1;
+            }
+        }
+        return super.eBaseStructuralFeatureID(derivedFeatureID, baseClass);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    @Override
+    public int eDerivedStructuralFeatureID(int baseFeatureID, Class<?> baseClass) {
+        if (baseClass == KStyleContainer.class) {
+            switch (baseFeatureID) {
+                case KRenderingPackage.KSTYLE_CONTAINER__STYLES: return KRenderingPackage.KRENDERING__STYLES;
+                default: return -1;
+            }
+        }
+        return super.eDerivedStructuralFeatureID(baseFeatureID, baseClass);
     }
 
 } //KRenderingImpl

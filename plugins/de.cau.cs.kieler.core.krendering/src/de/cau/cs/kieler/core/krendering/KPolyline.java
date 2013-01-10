@@ -45,6 +45,9 @@ public interface KPolyline extends KContainerRendering {
      * there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
+     * <!-- begin-model-doc -->
+     * points that are visited by the polyline in order of definition
+     * <!-- end-model-doc -->
      * @return the value of the '<em>Points</em>' containment reference list.
      * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKPolyline_Points()
      * @model containment="true" required="true"

@@ -21,7 +21,7 @@ package de.cau.cs.kieler.core.krendering;
  *
  * <!-- begin-model-doc -->
  * defines a position starting at the leftmost point of the parent rendering.
- * pos = (L+absolute) + (R-L-absolute)*relative
+ * pos = (L+absolute) + (R-L)*relative = (R-absolute) - widthOfParent*relative
  * <!-- end-model-doc -->
  *
  *

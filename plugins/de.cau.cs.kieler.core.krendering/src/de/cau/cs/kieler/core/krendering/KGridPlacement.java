@@ -21,7 +21,7 @@ package de.cau.cs.kieler.core.krendering;
  *
  * <!-- begin-model-doc -->
  * Creates a grid with <numColumns> inside the area defined by <topLeft> and <bottomRight>.
- * the grids number of rows depends on the numer of child elements to be placed. Each child is set to the first free column inside the grid. If no column is left in a row, the next childElement is placed in the first column of a new row.
+ * the grids number of rows depends on the numer of child elements to be placed. Each child is set to the first free column inside the grid. If no column is left, the next childElement is placed in the first column of a new row.
  * <!-- end-model-doc -->
  *
  * <p>
@@ -46,6 +46,10 @@ public interface KGridPlacement extends KPlacement {
      * there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
+     * <!-- begin-model-doc -->
+     * The number of columns the grid should have
+     * if set to -1, all elements are placed in a single row
+     * <!-- end-model-doc -->
      * @return the value of the '<em>Num Columns</em>' attribute.
      * @see #setNumColumns(int)
      * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKGridPlacement_NumColumns()
@@ -72,6 +76,9 @@ public interface KGridPlacement extends KPlacement {
      * there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
+     * <!-- begin-model-doc -->
+     * the top left position of the grid
+     * <!-- end-model-doc -->
      * @return the value of the '<em>Top Left</em>' reference.
      * @see #setTopLeft(KPosition)
      * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKGridPlacement_TopLeft()
@@ -98,6 +105,9 @@ public interface KGridPlacement extends KPlacement {
      * there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
+     * <!-- begin-model-doc -->
+     * the bottom right position of the grid
+     * <!-- end-model-doc -->
      * @return the value of the '<em>Bottom Right</em>' reference.
      * @see #setBottomRight(KPosition)
      * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKGridPlacement_BottomRight()

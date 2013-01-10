@@ -20,9 +20,9 @@ package de.cau.cs.kieler.core.krendering;
  * <!-- end-user-doc -->
  *
  * <!-- begin-model-doc -->
- * defines a position starting at the lowest point L of the parent rendering. 
- * pos = (L-absolute) - (L-H-absolute)*relative
- * pos = (L-absolute) - heightOfParent*relative
+ * defines a position starting at the bottom point B of the parent rendering. 
+ * pos = (B-absolute) - (B-H-absolute)*relative
+ * pos = (B-absolute) - heightOfParent*relative
  * <!-- end-model-doc -->
  *
  *

@@ -38,7 +38,7 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  *
  * @generated
  */
-public class KGridPlacementDataImpl extends KDirectPlacementDataImpl implements KGridPlacementData {
+public class KGridPlacementDataImpl extends KAreaPlacementDataImpl implements KGridPlacementData {
     /**
      * The default value of the '{@link #getMinCellWidth() <em>Min Cell Width</em>}' attribute.
      * <!-- begin-user-doc -->

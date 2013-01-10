@@ -19,6 +19,7 @@ import de.cau.cs.kieler.core.krendering.KRendering;
 import de.cau.cs.kieler.core.krendering.KRenderingLibrary;
 import de.cau.cs.kieler.core.krendering.KRenderingPackage;
 
+import de.cau.cs.kieler.core.krendering.KStyleContainer;
 import java.util.Collection;
 
 import org.eclipse.emf.common.notify.NotificationChain;
@@ -53,7 +54,7 @@ public class KRenderingLibraryImpl extends KGraphDataImpl implements KRenderingL
      * @generated
      * @ordered
      */
-    protected EList<KRendering> renderings;
+    protected EList<KStyleContainer> renderings;
 
     /**
      * <!-- begin-user-doc -->
@@ -79,9 +80,9 @@ public class KRenderingLibraryImpl extends KGraphDataImpl implements KRenderingL
      * <!-- end-user-doc -->
      * @generated
      */
-    public EList<KRendering> getRenderings() {
+    public EList<KStyleContainer> getRenderings() {
         if (renderings == null) {
-            renderings = new EObjectContainmentEList<KRendering>(KRendering.class, this, KRenderingPackage.KRENDERING_LIBRARY__RENDERINGS);
+            renderings = new EObjectContainmentEList<KStyleContainer>(KStyleContainer.class, this, KRenderingPackage.KRENDERING_LIBRARY__RENDERINGS);
         }
         return renderings;
     }
@@ -125,7 +126,7 @@ public class KRenderingLibraryImpl extends KGraphDataImpl implements KRenderingL
         switch (featureID) {
             case KRenderingPackage.KRENDERING_LIBRARY__RENDERINGS:
                 getRenderings().clear();
-                getRenderings().addAll((Collection<? extends KRendering>)newValue);
+                getRenderings().addAll((Collection<? extends KStyleContainer>)newValue);
                 return;
         }
         super.eSet(featureID, newValue);

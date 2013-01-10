@@ -40,7 +40,7 @@ import org.eclipse.emf.common.util.EList;
 public interface KRenderingLibrary extends KGraphData {
     /**
      * Returns the value of the '<em><b>Renderings</b></em>' containment reference list.
-     * The list contents are of type {@link de.cau.cs.kieler.core.krendering.KRendering}.
+     * The list contents are of type {@link de.cau.cs.kieler.core.krendering.KStyleContainer}.
      * <!-- begin-user-doc -->
      * <p>
      * If the meaning of the '<em>Renderings</em>' containment reference list isn't clear,
@@ -52,6 +52,6 @@ public interface KRenderingLibrary extends KGraphData {
      * @model containment="true"
      * @generated
      */
-    EList<KRendering> getRenderings();
+    EList<KStyleContainer> getRenderings();
 
 } // KRenderingLibrary

@@ -20,7 +20,7 @@ package de.cau.cs.kieler.core.krendering;
  * <!-- end-user-doc -->
  *
  * <!-- begin-model-doc -->
- * define a child area inside of a rendering to stop children being placed anywhere but in the defined area
+ * define a child area inside of a rendering to force children being placed inside the defined area
  * <!-- end-model-doc -->
  *
  *

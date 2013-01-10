@@ -47,6 +47,9 @@ public interface KYPosition extends EObject {
      * there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
+     * <!-- begin-model-doc -->
+     * define absolute position in pixels
+     * <!-- end-model-doc -->
      * @return the value of the '<em>Absolute</em>' attribute.
      * @see #setAbsolute(float)
      * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKYPosition_Absolute()
@@ -73,6 +76,9 @@ public interface KYPosition extends EObject {
      * there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
+     * <!-- begin-model-doc -->
+     * define relative position based on parent size
+     * <!-- end-model-doc -->
      * @return the value of the '<em>Relative</em>' attribute.
      * @see #setRelative(float)
      * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKYPosition_Relative()

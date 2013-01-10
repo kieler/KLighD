@@ -45,6 +45,9 @@ public interface KText extends KContainerRendering {
      * there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
+     * <!-- begin-model-doc -->
+     * the text to be displayed
+     * <!-- end-model-doc -->
      * @return the value of the '<em>Text</em>' attribute.
      * @see #setText(String)
      * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKText_Text()
@@ -71,6 +74,10 @@ public interface KText extends KContainerRendering {
      * there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
+     * <!-- begin-model-doc -->
+     * whether the text should be clipped if not enough space is available to display all of it
+     * if set to false this forces the parent node to increase its size when necessary
+     * <!-- end-model-doc -->
      * @return the value of the '<em>Clip</em>' attribute.
      * @see #setClip(boolean)
      * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKText_Clip()

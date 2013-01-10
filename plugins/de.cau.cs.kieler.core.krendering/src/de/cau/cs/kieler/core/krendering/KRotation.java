@@ -20,7 +20,7 @@ package de.cau.cs.kieler.core.krendering;
  * <!-- end-user-doc -->
  *
  * <!-- begin-model-doc -->
- * rotates element clockwise around the top left point of a parent element
+ * rotates element clockwise around the top left point of a parent rendering
  * <!-- end-model-doc -->
  *
  * <p>

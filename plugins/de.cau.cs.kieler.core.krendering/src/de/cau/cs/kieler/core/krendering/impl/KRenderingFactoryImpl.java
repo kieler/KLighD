@@ -83,7 +83,7 @@ public class KRenderingFactoryImpl extends EFactoryImpl implements KRenderingFac
             case KRenderingPackage.KTEXT: return createKText();
             case KRenderingPackage.KGRID_PLACEMENT: return createKGridPlacement();
             case KRenderingPackage.KGRID_PLACEMENT_DATA: return createKGridPlacementData();
-            case KRenderingPackage.KDIRECT_PLACEMENT_DATA: return createKDirectPlacementData();
+            case KRenderingPackage.KAREA_PLACEMENT_DATA: return createKAreaPlacementData();
             case KRenderingPackage.KCUSTOM_RENDERING: return createKCustomRendering();
             case KRenderingPackage.KFOREGROUND_COLOR: return createKForegroundColor();
             case KRenderingPackage.KBACKGROUND_COLOR: return createKBackgroundColor();
@@ -105,6 +105,12 @@ public class KRenderingFactoryImpl extends EFactoryImpl implements KRenderingFac
             case KRenderingPackage.KROUNDED_BENDS_POLYLINE: return createKRoundedBendsPolyline();
             case KRenderingPackage.KROTATION: return createKRotation();
             case KRenderingPackage.KGRADIENT_STYLE: return createKGradientStyle();
+            case KRenderingPackage.KLINE_CAP_STYLE: return createKLineCapStyle();
+            case KRenderingPackage.KPOINT_PLACEMENT: return createKPointPlacement();
+            case KRenderingPackage.KTEXT_RENDERING_REF: return createKTextRenderingRef();
+            case KRenderingPackage.KSELECT_ACTION: return createKSelectAction();
+            case KRenderingPackage.KEXPAND_COLLAPSE_ACTION: return createKExpandCollapseAction();
+            case KRenderingPackage.KSTYLE_CONTAINER: return createKStyleContainer();
             default:
                 throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
         }
@@ -124,6 +130,10 @@ public class KRenderingFactoryImpl extends EFactoryImpl implements KRenderingFac
                 return createHorizontalAlignmentFromString(eDataType, initialValue);
             case KRenderingPackage.VERTICAL_ALIGNMENT:
                 return createVerticalAlignmentFromString(eDataType, initialValue);
+            case KRenderingPackage.JOINT_POINT_STYLE:
+                return createJointPointStyleFromString(eDataType, initialValue);
+            case KRenderingPackage.KTRIGGER:
+                return createKTriggerFromString(eDataType, initialValue);
             default:
                 throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
         }
@@ -143,6 +153,10 @@ public class KRenderingFactoryImpl extends EFactoryImpl implements KRenderingFac
                 return convertHorizontalAlignmentToString(eDataType, instanceValue);
             case KRenderingPackage.VERTICAL_ALIGNMENT:
                 return convertVerticalAlignmentToString(eDataType, instanceValue);
+            case KRenderingPackage.JOINT_POINT_STYLE:
+                return convertJointPointStyleToString(eDataType, instanceValue);
+            case KRenderingPackage.KTRIGGER:
+                return convertKTriggerToString(eDataType, instanceValue);
             default:
                 throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
         }
@@ -303,9 +317,9 @@ public class KRenderingFactoryImpl extends EFactoryImpl implements KRenderingFac
      * <!-- end-user-doc -->
      * @generated
      */
-    public KDirectPlacementData createKDirectPlacementData() {
-        KDirectPlacementDataImpl kDirectPlacementData = new KDirectPlacementDataImpl();
-        return kDirectPlacementData;
+    public KAreaPlacementData createKAreaPlacementData() {
+        KAreaPlacementDataImpl kAreaPlacementData = new KAreaPlacementDataImpl();
+        return kAreaPlacementData;
     }
 
     /**
@@ -523,6 +537,66 @@ public class KRenderingFactoryImpl extends EFactoryImpl implements KRenderingFac
      * <!-- end-user-doc -->
      * @generated
      */
+    public KLineCapStyle createKLineCapStyle() {
+        KLineCapStyleImpl kLineCapStyle = new KLineCapStyleImpl();
+        return kLineCapStyle;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public KPointPlacement createKPointPlacement() {
+        KPointPlacementImpl kPointPlacement = new KPointPlacementImpl();
+        return kPointPlacement;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public KTextRenderingRef createKTextRenderingRef() {
+        KTextRenderingRefImpl kTextRenderingRef = new KTextRenderingRefImpl();
+        return kTextRenderingRef;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public KSelectAction createKSelectAction() {
+        KSelectActionImpl kSelectAction = new KSelectActionImpl();
+        return kSelectAction;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public KExpandCollapseAction createKExpandCollapseAction() {
+        KExpandCollapseActionImpl kExpandCollapseAction = new KExpandCollapseActionImpl();
+        return kExpandCollapseAction;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public KStyleContainer createKStyleContainer() {
+        KStyleContainerImpl kStyleContainer = new KStyleContainerImpl();
+        return kStyleContainer;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
     public LineStyle createLineStyleFromString(EDataType eDataType, String initialValue) {
         LineStyle result = LineStyle.get(initialValue);
         if (result == null) throw new IllegalArgumentException("The value '" + initialValue + "' is not a valid enumerator of '" + eDataType.getName() + "'");
@@ -575,6 +649,46 @@ public class KRenderingFactoryImpl extends EFactoryImpl implements KRenderingFac
      * @generated
      */
     public String convertVerticalAlignmentToString(EDataType eDataType, Object instanceValue) {
+        return instanceValue == null ? null : instanceValue.toString();
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public JointPointStyle createJointPointStyleFromString(EDataType eDataType, String initialValue) {
+        JointPointStyle result = JointPointStyle.get(initialValue);
+        if (result == null) throw new IllegalArgumentException("The value '" + initialValue + "' is not a valid enumerator of '" + eDataType.getName() + "'");
+        return result;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public String convertJointPointStyleToString(EDataType eDataType, Object instanceValue) {
+        return instanceValue == null ? null : instanceValue.toString();
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public KTrigger createKTriggerFromString(EDataType eDataType, String initialValue) {
+        KTrigger result = KTrigger.get(initialValue);
+        if (result == null) throw new IllegalArgumentException("The value '" + initialValue + "' is not a valid enumerator of '" + eDataType.getName() + "'");
+        return result;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public String convertKTriggerToString(EDataType eDataType, Object instanceValue) {
         return instanceValue == null ? null : instanceValue.toString();
     }
 

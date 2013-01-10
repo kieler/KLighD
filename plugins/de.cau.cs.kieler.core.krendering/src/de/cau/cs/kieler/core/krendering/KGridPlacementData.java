@@ -20,8 +20,7 @@ package de.cau.cs.kieler.core.krendering;
  * <!-- end-user-doc -->
  *
  * <!-- begin-model-doc -->
- * Gives an element in a gridPlacement a sizeHint
- * (currently the content is clipped when it overlaps the specified size)
+ * Define the placement of elements in a gridPlacement
  * <!-- end-model-doc -->
  *
  * <p>
@@ -38,7 +37,7 @@ package de.cau.cs.kieler.core.krendering;
  * @model
  * @generated
  */
-public interface KGridPlacementData extends KDirectPlacementData {
+public interface KGridPlacementData extends KAreaPlacementData {
 
     /**
      * Returns the value of the '<em><b>Min Cell Width</b></em>' attribute.
@@ -48,6 +47,9 @@ public interface KGridPlacementData extends KDirectPlacementData {
      * there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
+     * <!-- begin-model-doc -->
+     * force layout to make the column that contains the element this placementdata is assigned to as wide as defined here. If another element in that column has a maxCellWidth that is less than this minWidth, the maxWidth is ignored.
+     * <!-- end-model-doc -->
      * @return the value of the '<em>Min Cell Width</em>' attribute.
      * @see #setMinCellWidth(float)
      * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKGridPlacementData_MinCellWidth()
@@ -74,6 +76,11 @@ public interface KGridPlacementData extends KDirectPlacementData {
      * there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
+     * <!-- begin-model-doc -->
+     * hint layout to keep the width of the column the element is assigned to less than defined here. 
+     * If another element in this column has a minCellWidth that is higher than this maxWidth, 
+     * the maxWidth is ignored.
+     * <!-- end-model-doc -->
      * @return the value of the '<em>Max Cell Width</em>' attribute.
      * @see #setMaxCellWidth(float)
      * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKGridPlacementData_MaxCellWidth()
@@ -100,6 +107,9 @@ public interface KGridPlacementData extends KDirectPlacementData {
      * there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
+     * <!-- begin-model-doc -->
+     * force layout to make the row that contains the element this placementdata is assigned to as high as defined here. If another element in that column has a maxCellHeight that is less than this minHeight, the maxHeight is ignored.
+     * <!-- end-model-doc -->
      * @return the value of the '<em>Min Cell Height</em>' attribute.
      * @see #setMinCellHeight(float)
      * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKGridPlacementData_MinCellHeight()
@@ -126,6 +136,11 @@ public interface KGridPlacementData extends KDirectPlacementData {
      * there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
+     * <!-- begin-model-doc -->
+     * hint layout to keep the height of the column the element is assigned to less than defined here. 
+     * If another element in this column has a minCellHeight that is higher than this maxHeight, 
+     * the maxHeight is ignored.
+     * <!-- end-model-doc -->
      * @return the value of the '<em>Max Cell Height</em>' attribute.
      * @see #setMaxCellHeight(float)
      * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKGridPlacementData_MaxCellHeight()

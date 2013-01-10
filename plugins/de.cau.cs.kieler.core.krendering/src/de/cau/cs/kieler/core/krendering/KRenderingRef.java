@@ -44,6 +44,9 @@ public interface KRenderingRef extends KRendering {
      * there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
+     * <!-- begin-model-doc -->
+     * the referenced rendering
+     * <!-- end-model-doc -->
      * @return the value of the '<em>Rendering</em>' reference.
      * @see #setRendering(KRendering)
      * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKRenderingRef_Rendering()

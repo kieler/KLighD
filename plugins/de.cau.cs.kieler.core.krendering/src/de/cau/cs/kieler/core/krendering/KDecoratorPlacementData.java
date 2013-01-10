@@ -20,7 +20,7 @@ package de.cau.cs.kieler.core.krendering;
  * <!-- end-user-doc -->
  *
  * <!-- begin-model-doc -->
- * can be used to decorate a rendering
+ * defines appearance and position of decorators
  * <!-- end-model-doc -->
  *
  * <p>
@@ -122,7 +122,7 @@ public interface KDecoratorPlacementData extends KPlacementData {
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * <!-- begin-model-doc -->
-     * define wether the decorator should rotate, when the line is rotated. If set to false, an arrow will always point in the same direction, regardless of the direction the line is pointing in
+     * define whether the decorator should rotate, when the line is rotated. If set to false, an arrow will always point in the same direction, regardless of the direction the line is pointing in
      * <!-- end-model-doc -->
      * @return the value of the '<em>Rotate With Line</em>' attribute.
      * @see #setRotateWithLine(boolean)
@@ -150,6 +150,9 @@ public interface KDecoratorPlacementData extends KPlacementData {
      * there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
+     * <!-- begin-model-doc -->
+     * width of the decorator
+     * <!-- end-model-doc -->
      * @return the value of the '<em>Width</em>' attribute.
      * @see #setWidth(float)
      * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKDecoratorPlacementData_Width()
@@ -176,6 +179,9 @@ public interface KDecoratorPlacementData extends KPlacementData {
      * there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
+     * <!-- begin-model-doc -->
+     * height of the decorator
+     * <!-- end-model-doc -->
      * @return the value of the '<em>Height</em>' attribute.
      * @see #setHeight(float)
      * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKDecoratorPlacementData_Height()
@@ -202,6 +208,9 @@ public interface KDecoratorPlacementData extends KPlacementData {
      * there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
+     * <!-- begin-model-doc -->
+     * relative position based on the size of the decorated object
+     * <!-- end-model-doc -->
      * @return the value of the '<em>Relative</em>' attribute.
      * @see #setRelative(float)
      * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKDecoratorPlacementData_Relative()

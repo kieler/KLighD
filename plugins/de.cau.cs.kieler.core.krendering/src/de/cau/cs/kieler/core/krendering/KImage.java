@@ -19,6 +19,10 @@ package de.cau.cs.kieler.core.krendering;
  * A representation of the model object '<em><b>KImage</b></em>'.
  * <!-- end-user-doc -->
  *
+ * <!-- begin-model-doc -->
+ * Use an image instead of defining the renderings completely by yourself
+ * <!-- end-model-doc -->
+ *
  * <p>
  * The following features are supported:
  * <ul>
@@ -67,6 +71,9 @@ public interface KImage extends KContainerRendering {
      * there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
+     * <!-- begin-model-doc -->
+     * the path to the image on the filesystem
+     * <!-- end-model-doc -->
      * @return the value of the '<em>Image Path</em>' attribute.
      * @see #setImagePath(String)
      * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKImage_ImagePath()
@@ -93,6 +100,9 @@ public interface KImage extends KContainerRendering {
      * there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
+     * <!-- begin-model-doc -->
+     * the image to be used as JavaObject
+     * <!-- end-model-doc -->
      * @return the value of the '<em>Image Object</em>' attribute.
      * @see #setImageObject(Object)
      * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKImage_ImageObject()

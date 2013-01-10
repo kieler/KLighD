@@ -195,8 +195,7 @@
     <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
       <details key="documentation" value="Adds additional StyleInformation to a rendering.&#xA;can be set to propagate to children to make redefinining styles unneccessary"/>
     </eAnnotations>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="rendering" eType="#//KRendering"
-        eOpposite="#//KStyleContainer/styles">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="rendering" eType="#//KRendering">
       <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
         <details key="documentation" value="the rendering the style is attached to"/>
       </eAnnotations>
@@ -402,8 +401,8 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EEnum" name="JointPointStyle">
     <eLiterals name="HIDDEN"/>
-    <eLiterals name="BOX" value="1" literal=""/>
-    <eLiterals name="CIRCULAR" value="2" literal=""/>
+    <eLiterals name="BOX" value="1" literal="BOX"/>
+    <eLiterals name="CIRCULAR" value="2" literal="CIRCULAR"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="KVerticalAlignment" eSuperTypes="#//KStyle">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="verticalAlignment" lowerBound="1"
@@ -576,7 +575,7 @@
     </eStructuralFeatures>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EEnum" name="KTrigger">
-    <eLiterals name="SINGLECLICK" literal="DOUBLECLICK"/>
+    <eLiterals name="SINGLECLICK" literal="SINGLECLICK"/>
     <eLiterals name="DOUBLECLICK" value="1"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="KSelectAction" eSuperTypes="#//KAction"/>
@@ -586,6 +585,6 @@
       <details key="documentation" value="Element to define styles without attaching them to a specific rendering"/>
     </eAnnotations>
     <eStructuralFeatures xsi:type="ecore:EReference" name="styles" upperBound="-1"
-        eType="#//KStyle" containment="true" eOpposite="#//KStyle/rendering"/>
+        eType="#//KStyle" containment="true"/>
   </eClassifiers>
 </ecore:EPackage>

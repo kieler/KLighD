@@ -26,16 +26,16 @@ package de.cau.cs.kieler.core.krendering;
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link de.cau.cs.kieler.core.krendering.KDirectPlacementData#getTopLeft <em>Top Left</em>}</li>
- *   <li>{@link de.cau.cs.kieler.core.krendering.KDirectPlacementData#getBottomRight <em>Bottom Right</em>}</li>
+ *   <li>{@link de.cau.cs.kieler.core.krendering.KAreaPlacementData#getTopLeft <em>Top Left</em>}</li>
+ *   <li>{@link de.cau.cs.kieler.core.krendering.KAreaPlacementData#getBottomRight <em>Bottom Right</em>}</li>
  * </ul>
  * </p>
  *
- * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKDirectPlacementData()
+ * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKAreaPlacementData()
  * @model
  * @generated
  */
-public interface KDirectPlacementData extends KPlacementData {
+public interface KAreaPlacementData extends KPlacementData {
     /**
      * Returns the value of the '<em><b>Top Left</b></em>' containment reference.
      * <!-- begin-user-doc -->
@@ -44,16 +44,19 @@ public interface KDirectPlacementData extends KPlacementData {
      * there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
+     * <!-- begin-model-doc -->
+     * top left corner of the area used by the element the placement is attached to
+     * <!-- end-model-doc -->
      * @return the value of the '<em>Top Left</em>' containment reference.
      * @see #setTopLeft(KPosition)
-     * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKDirectPlacementData_TopLeft()
+     * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKAreaPlacementData_TopLeft()
      * @model containment="true" required="true"
      * @generated
      */
     KPosition getTopLeft();
 
     /**
-     * Sets the value of the '{@link de.cau.cs.kieler.core.krendering.KDirectPlacementData#getTopLeft <em>Top Left</em>}' containment reference.
+     * Sets the value of the '{@link de.cau.cs.kieler.core.krendering.KAreaPlacementData#getTopLeft <em>Top Left</em>}' containment reference.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @param value the new value of the '<em>Top Left</em>' containment reference.
@@ -70,16 +73,19 @@ public interface KDirectPlacementData extends KPlacementData {
      * there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
+     * <!-- begin-model-doc -->
+     * bottom right corner of the area used by the element the placement is attached to
+     * <!-- end-model-doc -->
      * @return the value of the '<em>Bottom Right</em>' containment reference.
      * @see #setBottomRight(KPosition)
-     * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKDirectPlacementData_BottomRight()
+     * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKAreaPlacementData_BottomRight()
      * @model containment="true" required="true"
      * @generated
      */
     KPosition getBottomRight();
 
     /**
-     * Sets the value of the '{@link de.cau.cs.kieler.core.krendering.KDirectPlacementData#getBottomRight <em>Bottom Right</em>}' containment reference.
+     * Sets the value of the '{@link de.cau.cs.kieler.core.krendering.KAreaPlacementData#getBottomRight <em>Bottom Right</em>}' containment reference.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @param value the new value of the '<em>Bottom Right</em>' containment reference.
