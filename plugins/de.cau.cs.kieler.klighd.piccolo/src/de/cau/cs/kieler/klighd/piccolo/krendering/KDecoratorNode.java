@@ -18,7 +18,7 @@ import de.cau.cs.kieler.klighd.piccolo.nodes.PChildRepresentedNode;
 import edu.umd.cs.piccolo.util.PPickPath;
 
 /**
- * The Piccolo node for representing a {@code KRendering} being treated as a edge decorator.
+ * The Piccolo node for representing a {@code KRendering} being treated as an edge decorator.
  * 
  * @author chsch
  */
