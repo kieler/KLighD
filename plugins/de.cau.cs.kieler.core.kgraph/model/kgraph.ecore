@@ -108,6 +108,12 @@
         <details key="documentation" value="This reference is optional, as a node may have no ports.&#xA;The reference is not opposite to the list of edges stored by ports,&#xA;but setting it automatically updates that list."/>
       </eAnnotations>
     </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="jointPointStyle" eType="ecore:EEnum ../../de.cau.cs.kieler.core.krendering/model/krendering.ecore#//JointPointStyle"
+        defaultValueLiteral="HIDDEN = 0">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="simple"/>
+      </eAnnotations>
+    </eStructuralFeatures>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="KPort" eSuperTypes="#//KLabeledGraphElement">
     <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
