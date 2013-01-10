@@ -282,7 +282,7 @@ class KPortExtensions {
                         if (inlyingPortLabels) HorizontalAlignment::LEFT else HorizontalAlignment::RIGHT
                     );
                     it.setVerticalAlignment(VerticalAlignment::CENTER)
-                    it.placementData = renderingFactory.createKDirectPlacementData() => [
+                    it.placementData = renderingFactory.createKAreaPlacementData() => [
                         if (inlyingPortLabels) {
                             topLeft = renderingFactory.createKPosition() => [
                                 it.x = renderingFactory.createKRightPosition() => [
@@ -335,7 +335,7 @@ class KPortExtensions {
                         if (inlyingPortLabels) HorizontalAlignment::RIGHT else HorizontalAlignment::LEFT
                     );
                     it.setVerticalAlignment(VerticalAlignment::CENTER)
-                    it.placementData = renderingFactory.createKDirectPlacementData() => [
+                    it.placementData = renderingFactory.createKAreaPlacementData() => [
                         if (inlyingPortLabels) {
                             topLeft = renderingFactory.createKPosition() => [
                                 it.x = renderingFactory.createKLeftPosition() => [

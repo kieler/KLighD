@@ -21,7 +21,6 @@ import de.cau.cs.kieler.core.krendering.KStyle
 import de.cau.cs.kieler.core.krendering.KPlacementData
 import de.cau.cs.kieler.core.krendering.KColor
 import de.cau.cs.kieler.core.krendering.KRoundedRectangle
-
 import org.eclipse.emf.ecore.util.EcoreUtil
 import de.cau.cs.kieler.core.kgraph.KGraphElement
 import de.cau.cs.kieler.core.krendering.LineStyle
@@ -318,7 +317,7 @@ class KRenderingExtensions {
 	
 	def <T extends KRendering> T setDirectPlacementData(T rendering, KPosition topLeft, KPosition bottomRight){
         return rendering => [
-            rendering.placementData = renderingFactory.createKDirectPlacementData => [
+            rendering.placementData = renderingFactory.createKAreaPlacementData => [
                 it.setTopLeft(topLeft);
                 it.setBottomRight(bottomRight);
             ];
