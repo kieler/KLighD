@@ -24,6 +24,7 @@ import java.util.List;
  * @author msp
  * @deprecated use {@code com.google.common.base.Predicates.and(...)} instead (contained in Guava)
  */
+@Deprecated
 public class CompoundCondition<T> implements ICondition<T> {
 
     private List<ICondition<T>> conditions;

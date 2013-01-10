@@ -31,7 +31,7 @@ public class MapPropertyHolder implements IPropertyHolder, Serializable {
     private static final long serialVersionUID = 4507851447415709893L;
     
     /** map of property identifiers to their values. */
-    private Map<IProperty<?>, Object> propertyMap = null;
+    private HashMap<IProperty<?>, Object> propertyMap;
     
     /**
      * {@inheritDoc}

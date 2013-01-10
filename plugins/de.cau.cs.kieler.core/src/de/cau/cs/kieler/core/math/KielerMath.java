@@ -146,7 +146,8 @@ public final class KielerMath {
      * @return a to the power of b
      */
     public static double pow(final double a, final int b) {
-        double result = 1.0, base = a;
+        double result = 1.0;
+        double base = a;
         int exp = (b >= 0 ? b : -b);
         while (exp > 0) {
             if (exp % 2 == 0) {
@@ -174,7 +175,8 @@ public final class KielerMath {
      * @return a to the power of b
      */
     public static float pow(final float a, final int b) {
-        float result = 1.0f, base = a;
+        float result = 1.0f;
+        float base = a;
         int exp = (b >= 0 ? b : -b);
         while (exp > 0) {
             if (exp % 2 == 0) {
@@ -209,17 +211,18 @@ public final class KielerMath {
         }
         KVector[] result = new KVector[resultSize];
         int n = controlPoints.size() - 1;
-        double dt = (1.0 / resultSize), t = 0;
+        double dt = (1.0 / resultSize);
+        double t = 0;
         for (int i = 0; i < resultSize; i++) {
             t += dt;
-            double x = 0, y = 0;
+            KVector v = new KVector();
             for (int j = 0; j <= n; j++) {
                 KVector p = controlPoints.get(j);
                 double factor = binomiald(n, j) * pow(1 - t, n - j) * pow(t, j);
-                x += p.x * factor;
-                y += p.y * factor;
+                v.x += p.x * factor;
+                v.y += p.y * factor;
             }
-            result[i] = new KVector(x, y);
+            result[i] = v;
         }
         return result;
     }
@@ -241,17 +244,18 @@ public final class KielerMath {
         }
         KVector[] result = new KVector[resultSize];
         int n = controlPoints.length - 1;
-        double dt = (1.0 / resultSize), t = 0;
+        double dt = (1.0 / resultSize);
+        double t = 0;
         for (int i = 0; i < resultSize; i++) {
             t += dt;
-            double x = 0, y = 0;
+            KVector v = new KVector();
             for (int j = 0; j <= n; j++) {
                 KVector p = controlPoints[j];
                 double factor = binomiald(n, j) * pow(1 - t, n - j) * pow(t, j);
-                x += p.x * factor;
-                y += p.y * factor;
+                v.x += p.x * factor;
+                v.y += p.y * factor;
             }
-            result[i] = new KVector(x, y);
+            result[i] = v;
         }
         return result;
     }
