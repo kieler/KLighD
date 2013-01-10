@@ -17,15 +17,22 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.ui.statushandlers.StatusManager;
+
 import de.cau.cs.kieler.core.kgraph.KEdge;
+import de.cau.cs.kieler.core.krendering.KCustomRendering;
 import de.cau.cs.kieler.core.krendering.KForegroundColor;
-import de.cau.cs.kieler.core.krendering.KPolygon;
 import de.cau.cs.kieler.core.krendering.KPolyline;
 import de.cau.cs.kieler.core.krendering.KRendering;
 import de.cau.cs.kieler.core.krendering.KRenderingFactory;
+import de.cau.cs.kieler.core.krendering.KRenderingPackage;
 import de.cau.cs.kieler.core.krendering.KRoundedBendsPolyline;
 import de.cau.cs.kieler.core.krendering.KSpline;
 import de.cau.cs.kieler.core.krendering.KStyle;
+import de.cau.cs.kieler.klighd.piccolo.KlighdPiccoloPlugin;
+import de.cau.cs.kieler.klighd.piccolo.krendering.KCustomConnectionFigureNode;
 import de.cau.cs.kieler.klighd.piccolo.krendering.KEdgeNode;
 import de.cau.cs.kieler.klighd.piccolo.nodes.PSWTAdvancedPath;
 import edu.umd.cs.piccolo.PNode;
@@ -55,13 +62,34 @@ public class KEdgeRenderingController extends AbstractRenderingController<KEdge,
 
         // evaluate the rendering data
         KRendering currentRendering = getCurrentRendering();
+        if (currentRendering == null) {
+            return handleEdgeRendering(createDefaultEdgeRendering(), (KEdgeNode) repNode);
+        } 
         PNode renderingNode;
-        if (currentRendering != null) {
-            renderingNode = handleEdgeRendering(currentRendering, (KEdgeNode) repNode);
-        } else {
-            renderingNode =
-                    handleEdgeRendering(createDefaultEdgeRendering(), (KEdgeNode) repNode);
+        
+        switch (currentRendering.eClass().getClassifierID()) {
+        case KRenderingPackage.KPOLYLINE:
+        case KRenderingPackage.KROUNDED_BENDS_POLYLINE:
+        case KRenderingPackage.KSPLINE:
+            renderingNode = handleEdgeRendering((KPolyline) currentRendering, (KEdgeNode) repNode);
+            break;
+        case KRenderingPackage.KCUSTOM_RENDERING:
+            final KCustomRendering customRendering = (KCustomRendering) currentRendering;
+            if (customRendering.getFigureObject() instanceof KCustomConnectionFigureNode) {
+                renderingNode = handleEdgeRendering(customRendering, (KEdgeNode) repNode);
+                break;
+            } else {
+                final String msg = " ";
+                StatusManager.getManager().handle(
+                        new Status(IStatus.ERROR, KlighdPiccoloPlugin.PLUGIN_ID, msg),
+                        StatusManager.LOG);
+                return null;
+            }
+        default:
+            throw new RuntimeException("Non-polyline rendering attached to graph edge: "
+                    + getGraphElement());
         }
+
         
         return renderingNode;
     }
@@ -77,14 +105,10 @@ public class KEdgeRenderingController extends AbstractRenderingController<KEdge,
      *            the parent Piccolo edge node
      * @return the Piccolo node representing the rendering
      */
-    private PNode handleEdgeRendering(final KRendering rendering, final KEdgeNode parent) {
-        // the rendering of an edge has to be a polyline or spline
+    private PNode handleEdgeRendering(final KPolyline rendering, final KEdgeNode parent) {
+        // the rendering of an edge has to be a KPolyline or a sub type of KPolyline except KPolygon 
         //  hence, throw an exception if a non-KPolyline rendering or a KPolygon is served,
         //  since KPolygon is a special KPolyline
-        if (!(rendering instanceof KPolyline) || rendering instanceof KPolygon) {
-            throw new RuntimeException("Non-polyline rendering attached to graph edge: "
-                    + getGraphElement());
-        }
 
         // create the rendering
         @SuppressWarnings("unchecked")
@@ -121,11 +145,45 @@ public class KEdgeRenderingController extends AbstractRenderingController<KEdge,
     }
     
     /**
+     * Creates the Piccolo node for a rendering of a {@code KEdge} inside a parent Piccolo node.<br>
+     * <br>
+     * The rendering has to be a {@code KPolyline} or the method fails.
+     * 
+     * @param rendering
+     *            the rendering
+     * @param parent
+     *            the parent Piccolo edge node
+     * @return the Piccolo node representing the rendering
+     */
+    private PNode handleEdgeRendering(final KCustomRendering rendering, final KEdgeNode parent) {
+
+        // create the rendering
+        @SuppressWarnings("unchecked")
+        final PNodeController<KCustomConnectionFigureNode> controller =
+                (PNodeController<KCustomConnectionFigureNode>) createRendering(rendering,
+                        new ArrayList<KStyle>(0), parent, new PBounds(0, 0, 1, 1),
+                        getRepresentation());
+        controller.getNode().setPoints(parent.getBendPoints());
+
+        parent.setRepresentationNode(controller.getNode());
+
+        // add a listener on the parent's bend points
+        addListener(KEdgeNode.PROPERTY_BEND_POINTS, parent, controller.getNode(),
+                new PropertyChangeListener() {
+                    public void propertyChange(final PropertyChangeEvent e) {
+                        controller.getNode().setPoints(parent.getBendPoints());
+                    }
+                });
+
+        return controller.getNode();
+    }
+    
+    /**
      * Creates a default rendering for edges without attached rendering data.
      * 
      * @return the rendering
      */
-    private static KRendering createDefaultEdgeRendering() {
+    private static KPolyline createDefaultEdgeRendering() {
         // create the default rendering model
         KRenderingFactory factory = KRenderingFactory.eINSTANCE;
         KPolyline polyline = factory.createKPolyline();

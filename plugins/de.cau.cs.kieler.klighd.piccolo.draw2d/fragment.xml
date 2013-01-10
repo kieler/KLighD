@@ -7,5 +7,9 @@
             figureClass="org.eclipse.draw2d.Figure"
             wrapperClass="de.cau.cs.kieler.klighd.piccolo.draw2d.Draw2DNode">
       </wrapper>
+      <wrapper
+            figureClass="org.eclipse.draw2d.Connection"
+            wrapperClass="de.cau.cs.kieler.klighd.piccolo.draw2d.Draw2DConnectionNode">
+      </wrapper>
    </extension>
 </fragment>

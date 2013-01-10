@@ -15,18 +15,22 @@ package de.cau.cs.kieler.klighd.piccolo.draw2d;
 
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.draw2d.DeferredUpdateManager;
 import org.eclipse.draw2d.Figure;
+import org.eclipse.draw2d.StackLayout;
+import org.eclipse.draw2d.UpdateManager;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.ui.statushandlers.StatusManager;
 
 import de.cau.cs.kieler.klighd.KlighdPlugin;
-
 import edu.umd.cs.piccolo.PNode;
 import edu.umd.cs.piccolo.util.PPaintContext;
 import edu.umd.cs.piccolox.swt.SWTGraphics2D;
 
 /**
- * A Piccolo node implementation wrapping a Draw2D figure.
+ * A Piccolo node implementation wrapping a Draw2d figure.
+ * 
+ * TODO: Implement the {@link WrappingUpdateManager}.
  *
  * @author msp, chsch
  */
@@ -38,16 +42,32 @@ public class Draw2DNode extends PNode {
     /** The figure that is displayed by this node. */
     private Figure figure;
     
+    /**
+     * This update manager is in charge of propagating repaint requests the Piccolo nodes if
+     * necessary.
+     */
+    private UpdateManager updateManager;
+    
     /** The required GraphicsAdapter providing the necessary "drawing" API. */
-    private GraphicsAdapter graphics = new GraphicsAdapter();
+    private GraphicsAdapter graphics;
     
     /**
      * Create a Draw2D node with the given figure.
      * 
-     * @param figure a Draw2D figure
+     * @param theFigure a Draw2D figure
      */
-    public Draw2DNode(final Figure figure) {
-        this.figure = figure;
+    public Draw2DNode(final Figure theFigure) {
+        this.graphics = new GraphicsAdapter();
+        this.updateManager = new WrappingUpdateManager();        
+        this.figure = new Figure() {
+            
+            @Override
+            public UpdateManager getUpdateManager() {
+                return Draw2DNode.this.updateManager;
+            }
+        };
+        this.figure.setLayoutManager(new StackLayout());
+        this.figure.add(theFigure);
     }
     
     /**
@@ -66,8 +86,6 @@ public class Draw2DNode extends PNode {
      */
     @Override
     protected void paint(final PPaintContext paintContext) {
-        // GraphicsAdapter graphics = new GraphicsAdapter((SWTGraphics2D) paintContext.getGraphics());
-        // safe some object creations by re-using the GraphicsAdapter
         this.graphics.setSWTGraphics2D((SWTGraphics2D) paintContext.getGraphics());
         try {
             figure.paint(this.graphics);
@@ -81,9 +99,13 @@ public class Draw2DNode extends PNode {
     }
 
     /**
-     * {@inheritDoc}
+     * A custom {@link UpdateManager} realizing the escalating of repainting requests to the
+     * Piccolo nodes.
+     * 
+     * TODO to be implemented
+     * 
+     * @author chsch
      */
-    public void fullPaint(final PPaintContext paintContext) {
-        super.fullPaint(paintContext);
+    static class WrappingUpdateManager extends DeferredUpdateManager {
     }
 }
