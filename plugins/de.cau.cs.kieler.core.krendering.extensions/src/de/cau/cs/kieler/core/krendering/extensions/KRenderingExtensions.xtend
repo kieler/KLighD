@@ -100,6 +100,13 @@ class KRenderingExtensions {
         ];
     }
     
+    def KLineStyle getLineStyle(KRendering rendering) {
+        // chsch: I'm currently not sure whether the first or the last will win...
+        return rendering.styles.filter(typeof(KLineStyle)).last?:(renderingFactory.createKLineStyle => [
+            lineStyle = LineStyle::SOLID;
+        ]);
+    }
+ 
     def <T extends KRendering> T setLineStyle(T rendering, LineStyle style) {
         rendering.styles.removeAll(rendering.styles.filter(typeof(KLineStyle)).toList);
         return rendering => [
@@ -109,22 +116,16 @@ class KRenderingExtensions {
         ];
     }
     
+    def KRotation getRotation(KRendering rendering) {
+        // chsch: I'm currently not sure whether the first or the last will win...
+        return rendering.styles.filter(typeof(KRotation)).last?:renderingFactory.createKRotation;
+    }
+ 
     def <T extends KRendering> T setRotation(T rendering, Float rotation) {
         rendering.styles.removeAll(rendering.styles.filter(typeof(KRotation)).toList);
         return rendering => [
             it.styles += renderingFactory.createKRotation => [
                 it.setRotation(rotation);
-            ];
-        ];
-    }
-    
-    def <T extends KRendering> T setBackgroundColor(T rendering, KColor color) {
-        rendering.styles.removeAll(rendering.styles.filter(typeof(KBackgroundColor)).toList);        
-        return rendering => [
-            it.styles += renderingFactory.createKBackgroundColor => [
-                it.red = color.red;
-                it.green = color.green;
-                it.blue = color.blue;
             ];
         ];
     }
@@ -139,6 +140,17 @@ class KRenderingExtensions {
         return rendering.styles.filter(typeof(KBackgroundColor)).last?:renderingFactory.createKBackgroundColor;
     }
  
+    def <T extends KRendering> T setBackgroundColor(T rendering, KColor color) {
+        rendering.styles.removeAll(rendering.styles.filter(typeof(KBackgroundColor)).toList);        
+        return rendering => [
+            it.styles += renderingFactory.createKBackgroundColor => [
+                it.red = color.red;
+                it.green = color.green;
+                it.blue = color.blue;
+            ];
+        ];
+    }
+    
 	def <T extends KRendering> T setBackgroundColor(T rendering, int red, int green, int blue) {
 		rendering.styles.removeAll(rendering.styles.filter(typeof(KBackgroundColor)).toList);
 		return rendering => [

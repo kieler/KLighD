@@ -46,6 +46,8 @@ public class GraphicsAdapter extends Graphics {
         private org.eclipse.swt.graphics.Color background;
         private Font font;
         private double lineWidth;
+        private int lineStyle;
+        private int lineCap;
         
         /**
          * Stores the state data of the given graphics into a new state.
@@ -59,6 +61,8 @@ public class GraphicsAdapter extends Graphics {
             this.background = g.getGraphicsContext().getBackground();
             this.font = g.getSWTFont();
             this.lineWidth = g.getLineWidth();
+            this.lineStyle = g.getLineStyle();
+            this.lineCap = g.getLineCap();
         }
     }
     
@@ -103,9 +107,10 @@ public class GraphicsAdapter extends Graphics {
      * Transform the given Draw2D point list into an array of coordinates.
      * 
      * @param pl a Draw2D point list
+     * @param lineWidth the line width to be used
      * @return a double precision array
      */
-    public static double[] toArray(final PointList pl) {
+    public static double[] toArray(final PointList pl, final double lineWidth) {
         int[] points = pl.toIntArray();
         double[] result = new double[points.length];
         for (int i = 0; i < points.length; i++) {
@@ -167,10 +172,10 @@ public class GraphicsAdapter extends Graphics {
      * 
      * @author chsch
      * 
-     * @param pg the pg to set
+     * @param thePg the pg to set
      */
-    void setSWTGraphics2D(SWTGraphics2D pg) {
-        this.pg = pg;
+    void setSWTGraphics2D(final SWTGraphics2D thePg) {
+        this.pg = thePg;
     }
     
 
@@ -205,6 +210,7 @@ public class GraphicsAdapter extends Graphics {
     @Override
     public void drawImage(final Image srcImage, final int x1, final int y1, final int w1, final int h1,
             final int x2, final int y2, final int w2, final int h2) {
+        // SUPPRESS CHECKSTYLE PREVIOUS 2 Parameter: This is API!
         pg.drawImage(srcImage, x1, y1, w1, h1, x2, y2, w2, h2);
     }
 
@@ -227,6 +233,7 @@ public class GraphicsAdapter extends Graphics {
     /**
      * {@inheritDoc}
      */
+    @SuppressWarnings("deprecation")
     @Override
     public void drawPath(final Path path) {
         pg.drawPath(path);
@@ -237,7 +244,7 @@ public class GraphicsAdapter extends Graphics {
      */
     @Override
     public void drawPolygon(final PointList points) {
-        pg.drawPolygon(toPolygon(points));
+        pg.drawPolygon(toArray(points, pg.getLineWidth()));
     }
 
     /**
@@ -245,7 +252,7 @@ public class GraphicsAdapter extends Graphics {
      */
     @Override
     public void drawPolyline(final PointList points) {
-        pg.drawPolyline(toArray(points));
+        pg.drawPolyline(toArray(points, pg.getLineWidth()));
     }
 
     /**
@@ -318,6 +325,7 @@ public class GraphicsAdapter extends Graphics {
     /**
      * {@inheritDoc}
      */
+    @SuppressWarnings("deprecation")
     @Override
     public void fillPath(final Path path) {
         pg.fillPath(path);
@@ -328,7 +336,7 @@ public class GraphicsAdapter extends Graphics {
      */
     @Override
     public void fillPolygon(final PointList points) {
-        pg.fillPolygon(toPolygon(points));
+        pg.fillPolygon(toArray(points, pg.getLineWidth()));
     }
 
     /**
@@ -486,7 +494,10 @@ public class GraphicsAdapter extends Graphics {
      */
     @Override
     public void setLineAttributes(final LineAttributes attributes) {
-        pg.setStroke(toStroke(attributes));
+        pg.setLineWidth(attributes.width);
+        pg.setLineStyle(attributes.style);
+        pg.setLineCap(attributes.cap);
+        pg.updateClip();
     }
 
     /**
@@ -495,6 +506,7 @@ public class GraphicsAdapter extends Graphics {
     @Override
     public void setLineWidth(final int width) {
         pg.setLineWidth(width);
+        pg.updateClip();
     }
 
     /**
@@ -503,6 +515,7 @@ public class GraphicsAdapter extends Graphics {
     @Override
     public void setLineWidthFloat(final float width) {
         pg.setLineWidth(width);
+        pg.updateClip();
     }
 
     /**
@@ -576,8 +589,7 @@ public class GraphicsAdapter extends Graphics {
      */
     @Override
     public int getLineStyle() {
-        // TODO not yet implemented
-        return SWT.LINE_SOLID;
+        return pg.getLineStyle();
     }
 
     /**
@@ -585,9 +597,23 @@ public class GraphicsAdapter extends Graphics {
      */
     @Override
     public void setLineStyle(final int style) {
-        // TODO not yet implemented
+        pg.setLineStyle(style);
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    public int getLineCap() {
+        return pg.getLineCap();
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public void setLineCap(final int cap) {
+        pg.setLineCap(cap);
+    }
+    
     /**
      * {@inheritDoc}
      */
@@ -628,6 +654,8 @@ public class GraphicsAdapter extends Graphics {
             pg.setBackground(lastState.background);
             pg.setFont(lastState.font);
             pg.setLineWidth(lastState.lineWidth);
+            pg.setLineStyle(lastState.lineStyle);
+            pg.setLineCap(lastState.lineCap);
         }
     }
 
