@@ -65,8 +65,8 @@ public class KGraphFormatter extends AbstractDeclarativeFormatter {
         }
         
         // suppress the line wrap after 'topLeft' and 'bottomRight' of directPlacementData 
-        c.setNoLinewrap().after(f.getKDirectPlacementDataAccess().getTopLeftKeyword_2());
-        c.setNoLinewrap().after(f.getKDirectPlacementDataAccess().getBottomRightKeyword_5());
+        c.setNoLinewrap().after(f.getKAreaPlacementDataAccess().getTopLeftKeyword_2());
+        c.setNoLinewrap().after(f.getKAreaPlacementDataAccess().getBottomRightKeyword_5());
 
         // some custom formatting of coordinate numbers 
         c.setNoLinewrap().after(

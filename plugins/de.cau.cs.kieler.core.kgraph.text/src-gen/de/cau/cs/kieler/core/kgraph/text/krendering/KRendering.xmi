@@ -413,6 +413,17 @@
         </elements>
         <elements xsi:type="xtext:Group" cardinality="?">
           <elements xsi:type="xtext:Keyword" value="{"/>
+          <elements xsi:type="xtext:Keyword" value="points"/>
+          <elements xsi:type="xtext:Keyword" cardinality="?" value=":"/>
+          <elements xsi:type="xtext:Assignment" feature="points" operator="+=">
+            <terminal xsi:type="xtext:RuleCall" rule="/0/@rules.23"/>
+          </elements>
+          <elements xsi:type="xtext:Group" cardinality="*">
+            <elements xsi:type="xtext:Keyword" cardinality="?" value=","/>
+            <elements xsi:type="xtext:Assignment" feature="points" operator="+=">
+              <terminal xsi:type="xtext:RuleCall" rule="/0/@rules.23"/>
+            </elements>
+          </elements>
           <elements xsi:type="xtext:Group" cardinality="?">
             <elements xsi:type="xtext:Keyword" value="styles"/>
             <elements xsi:type="xtext:Keyword" cardinality="?" value=":"/>
@@ -977,9 +988,9 @@
         <elements xsi:type="xtext:Keyword" value="}"/>
       </alternatives>
     </rules>
-    <rules xsi:type="xtext:ParserRule" name="KDirectPlacementData">
+    <rules xsi:type="xtext:ParserRule" name="KAreaPlacementData">
       <type metamodel="/0/@metamodelDeclarations.0">
-        <classifier xsi:type="ecore:EClass" href="http://kieler.cs.cau.de/KRendering#//KDirectPlacementData"/>
+        <classifier xsi:type="ecore:EClass" href="http://kieler.cs.cau.de/KRendering#//KAreaPlacementData"/>
       </type>
       <alternatives xsi:type="xtext:Group">
         <elements xsi:type="xtext:Keyword" value="DirectPlacementData"/>

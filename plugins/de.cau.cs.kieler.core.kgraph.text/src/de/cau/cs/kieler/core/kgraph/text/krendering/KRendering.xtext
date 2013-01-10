@@ -28,7 +28,7 @@ KRendering returns KRendering:
     KEllipse | KRectangle | KRoundedRectangle | KPolyline_Impl | KPolygon | KImage | KArc | KRenderingRef | KChildArea | KText | KCustomRendering | KSpline | KRoundedBendsPolyline;
 
 KPlacementData returns KPlacementData:
-    KDecoratorPlacementData | KGridPlacementData | KDirectPlacementData;
+    KDecoratorPlacementData | KGridPlacementData | KAreaPlacementData;
 
 KStyle returns KStyle:
     KForegroundColor | KBackgroundColor | KLineWidth | KAlpha | KLineStyle | KRotation | KFontBold | KFontItalic | KFontName | KFontSize | KVerticalAlignment | KHorizontalAlignment; //| KGradient;
@@ -95,6 +95,7 @@ KRoundedBendsPolyline returns KRoundedBendsPolyline:
     {KRoundedBendsPolyline}
     'RoundedBendsPolyline' bendRadius=EFloat
     ('{'
+        'points' ':'? points+=KPosition ( ","? points+=KPosition)* 
         ('styles' ':'? styles+=KStyle ( ","? styles+=KStyle)*)?
         ('placementData' ':'? placementData=KPlacementData)?
         ('childPlacement' ':'? childPlacement=KPlacement)?
@@ -200,7 +201,7 @@ KGridPlacementData returns KGridPlacementData:
         ('bottomRight' bottomRight=KPosition)?
      '}';
 
-KDirectPlacementData returns KDirectPlacementData:
+KAreaPlacementData returns KAreaPlacementData:
     'DirectPlacementData'
     '{'
         'topLeft' topLeft=KPosition ","?

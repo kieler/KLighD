@@ -996,7 +996,7 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//KPlacementData:
-	//	KDecoratorPlacementData | KGridPlacementData | KDirectPlacementData;
+	//	KDecoratorPlacementData | KGridPlacementData | KAreaPlacementData;
 	public KRenderingGrammarAccess.KPlacementDataElements getKPlacementDataAccess() {
 		return gaKRendering.getKPlacementDataAccess();
 	}
@@ -1107,9 +1107,10 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//KRoundedBendsPolyline:
-	//	{KRoundedBendsPolyline} "RoundedBendsPolyline" bendRadius=EFloat ("{" ("styles" ":"? styles+=KStyle (","?
-	//	styles+=KStyle)*)? ("placementData" ":"? placementData=KPlacementData)? ("childPlacement" ":"?
-	//	childPlacement=KPlacement)? ("children" ":"? children+=KRendering (","? children+=KRendering)*)? "}")?;
+	//	{KRoundedBendsPolyline} "RoundedBendsPolyline" bendRadius=EFloat ("{" "points" ":"? points+=KPosition (","?
+	//	points+=KPosition)* ("styles" ":"? styles+=KStyle (","? styles+=KStyle)*)? ("placementData" ":"?
+	//	placementData=KPlacementData)? ("childPlacement" ":"? childPlacement=KPlacement)? ("children" ":"?
+	//	children+=KRendering (","? children+=KRendering)*)? "}")?;
 	public KRenderingGrammarAccess.KRoundedBendsPolylineElements getKRoundedBendsPolylineAccess() {
 		return gaKRendering.getKRoundedBendsPolylineAccess();
 	}
@@ -1228,14 +1229,14 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 		return getKGridPlacementDataAccess().getRule();
 	}
 
-	//KDirectPlacementData:
+	//KAreaPlacementData:
 	//	"DirectPlacementData" "{" "topLeft" topLeft=KPosition ","? "bottomRight" bottomRight=KPosition "}";
-	public KRenderingGrammarAccess.KDirectPlacementDataElements getKDirectPlacementDataAccess() {
-		return gaKRendering.getKDirectPlacementDataAccess();
+	public KRenderingGrammarAccess.KAreaPlacementDataElements getKAreaPlacementDataAccess() {
+		return gaKRendering.getKAreaPlacementDataAccess();
 	}
 	
-	public ParserRule getKDirectPlacementDataRule() {
-		return getKDirectPlacementDataAccess().getRule();
+	public ParserRule getKAreaPlacementDataRule() {
+		return getKAreaPlacementDataAccess().getRule();
 	}
 
 	//KPosition:

@@ -12,13 +12,13 @@ import de.cau.cs.kieler.core.kgraph.PersistentEntry;
 import de.cau.cs.kieler.core.kgraph.text.krendering.serializer.KRenderingSemanticSequencer;
 import de.cau.cs.kieler.core.kgraph.text.services.KGraphGrammarAccess;
 import de.cau.cs.kieler.core.krendering.KArc;
+import de.cau.cs.kieler.core.krendering.KAreaPlacementData;
 import de.cau.cs.kieler.core.krendering.KBackgroundAlpha;
 import de.cau.cs.kieler.core.krendering.KBackgroundColor;
 import de.cau.cs.kieler.core.krendering.KBottomPosition;
 import de.cau.cs.kieler.core.krendering.KChildArea;
 import de.cau.cs.kieler.core.krendering.KCustomRendering;
 import de.cau.cs.kieler.core.krendering.KDecoratorPlacementData;
-import de.cau.cs.kieler.core.krendering.KDirectPlacementData;
 import de.cau.cs.kieler.core.krendering.KEllipse;
 import de.cau.cs.kieler.core.krendering.KFontBold;
 import de.cau.cs.kieler.core.krendering.KFontItalic;
@@ -144,6 +144,13 @@ public class KGraphSemanticSequencer extends KRenderingSemanticSequencer {
 					return; 
 				}
 				else break;
+			case KRenderingPackage.KAREA_PLACEMENT_DATA:
+				if(context == grammarAccess.getKAreaPlacementDataRule() ||
+				   context == grammarAccess.getKPlacementDataRule()) {
+					sequence_KAreaPlacementData(context, (KAreaPlacementData) semanticObject); 
+					return; 
+				}
+				else break;
 			case KRenderingPackage.KBACKGROUND_ALPHA:
 				if(context == grammarAccess.getKAlphaRule() ||
 				   context == grammarAccess.getKBackgroundAlphaRule() ||
@@ -186,13 +193,6 @@ public class KGraphSemanticSequencer extends KRenderingSemanticSequencer {
 				if(context == grammarAccess.getKDecoratorPlacementDataRule() ||
 				   context == grammarAccess.getKPlacementDataRule()) {
 					sequence_KDecoratorPlacementData(context, (KDecoratorPlacementData) semanticObject); 
-					return; 
-				}
-				else break;
-			case KRenderingPackage.KDIRECT_PLACEMENT_DATA:
-				if(context == grammarAccess.getKDirectPlacementDataRule() ||
-				   context == grammarAccess.getKPlacementDataRule()) {
-					sequence_KDirectPlacementData(context, (KDirectPlacementData) semanticObject); 
 					return; 
 				}
 				else break;
