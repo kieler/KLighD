@@ -17,7 +17,7 @@ import java.awt.geom.Point2D;
 
 import de.cau.cs.kieler.core.krendering.KBottomPosition;
 import de.cau.cs.kieler.core.krendering.KDecoratorPlacementData;
-import de.cau.cs.kieler.core.krendering.KDirectPlacementData;
+import de.cau.cs.kieler.core.krendering.KAreaPlacementData;
 import de.cau.cs.kieler.core.krendering.KLeftPosition;
 import de.cau.cs.kieler.core.krendering.KPlacementData;
 import de.cau.cs.kieler.core.krendering.KPolyline;
@@ -54,7 +54,7 @@ public final class PiccoloPlacementUtil {
      *            the parent bounds
      * @return the bounds
      */
-    public static PBounds evaluateDirectPlacement(final KDirectPlacementData dpd,
+    public static PBounds evaluateDirectPlacement(final KAreaPlacementData dpd,
             final PBounds parentBounds) {
         if (dpd == null) {
             return new PBounds(0, 0, parentBounds.width, parentBounds.height);
@@ -184,9 +184,9 @@ public final class PiccoloPlacementUtil {
      *            the placement data
      * @return the direct placement data or null if the placement data is no direct placement data
      */
-    public static KDirectPlacementData asDirectPlacementData(final KPlacementData data) {
-        if (data instanceof KDirectPlacementData) {
-            return (KDirectPlacementData) data;
+    public static KAreaPlacementData asDirectPlacementData(final KPlacementData data) {
+        if (data instanceof KAreaPlacementData) {
+            return (KAreaPlacementData) data;
         }
         return null;
     }

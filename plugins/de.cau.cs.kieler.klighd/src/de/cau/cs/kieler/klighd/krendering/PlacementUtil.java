@@ -34,7 +34,7 @@ import de.cau.cs.kieler.core.kgraph.KLabel;
 import de.cau.cs.kieler.core.kgraph.KNode;
 import de.cau.cs.kieler.core.krendering.KChildArea;
 import de.cau.cs.kieler.core.krendering.KContainerRendering;
-import de.cau.cs.kieler.core.krendering.KDirectPlacementData;
+import de.cau.cs.kieler.core.krendering.KAreaPlacementData;
 import de.cau.cs.kieler.core.krendering.KFontBold;
 import de.cau.cs.kieler.core.krendering.KFontItalic;
 import de.cau.cs.kieler.core.krendering.KFontName;
@@ -735,10 +735,20 @@ public final class PlacementUtil {
             float relWidth = 1f;
             float absYOffest = 0;
             float relHeight = 1f;
-            
-            KPlacementData plcData = rendering.getPlacementData();
-            if (plcData instanceof KDirectPlacementData) {
-                KDirectPlacementData dpd = (KDirectPlacementData) plcData;
+            if (plcData instanceof KAreaPlacementData) {
+                KAreaPlacementData dpd = (KAreaPlacementData) plcData;
+                KPosition tL = dpd.getTopLeft();
+                KPosition bR = dpd.getBottomRight();
+
+                Pair<Float, Float> horSize = getHorizontalSize(tL, bR);
+                absXOffest = horSize.getFirst();
+                relWidth = horSize.getSecond();
+
+                Pair<Float, Float> verSize = getVerticalSize(tL, bR);
+                absYOffest = verSize.getFirst();
+                relHeight = verSize.getSecond();
+
+                final Bounds bounds = evaluateDirectPlacement(dpd, new Bounds(defBounds));
 
                 // determine minimal needed size of the child
                 final Bounds childMinSize = estimateSize(rendering, givenBounds);
@@ -946,17 +956,17 @@ public final class PlacementUtil {
             // scale the x and y offset
             for (KRendering rendering : container.getChildren()) {
                 KPlacementData plcData = rendering.getPlacementData();
-                if (plcData instanceof KDirectPlacementData) {
-                    KPosition bR = ((KDirectPlacementData) plcData).getBottomRight();
-                    KPosition tL = ((KDirectPlacementData) plcData).getTopLeft();
+                if (plcData instanceof KAreaPlacementData) {
+                    KPosition bR = ((KAreaPlacementData) plcData).getBottomRight();
+                    KPosition tL = ((KAreaPlacementData) plcData).getTopLeft();
 
                     bR.getX().setAbsolute(bR.getX().getAbsolute() * xScaling);
                     tL.getX().setAbsolute(tL.getX().getAbsolute() * xScaling);
                     bR.getY().setAbsolute(bR.getY().getAbsolute() * yScaling);
                     tL.getY().setAbsolute(tL.getY().getAbsolute() * yScaling);
 
-                    ((KDirectPlacementData) plcData).setBottomRight(bR);
-                    ((KDirectPlacementData) plcData).setTopLeft(tL);
+                    ((KAreaPlacementData) plcData).setBottomRight(bR);
+                    ((KAreaPlacementData) plcData).setTopLeft(tL);
                     rendering.setPlacementData(plcData);
                 }
             }
@@ -966,15 +976,15 @@ public final class PlacementUtil {
             // scale just the x offset
             for (KRendering rendering : container.getChildren()) {
                 KPlacementData plcData = rendering.getPlacementData();
-                if (plcData instanceof KDirectPlacementData) {
-                    KPosition bR = ((KDirectPlacementData) plcData).getBottomRight();
-                    KPosition tL = ((KDirectPlacementData) plcData).getTopLeft();
+                if (plcData instanceof KAreaPlacementData) {
+                    KPosition bR = ((KAreaPlacementData) plcData).getBottomRight();
+                    KPosition tL = ((KAreaPlacementData) plcData).getTopLeft();
 
                     bR.getX().setAbsolute(bR.getX().getAbsolute() * xScaling);
                     tL.getX().setAbsolute(tL.getX().getAbsolute() * xScaling);
 
-                    ((KDirectPlacementData) plcData).setBottomRight(bR);
-                    ((KDirectPlacementData) plcData).setTopLeft(tL);
+                    ((KAreaPlacementData) plcData).setBottomRight(bR);
+                    ((KAreaPlacementData) plcData).setTopLeft(tL);
                     rendering.setPlacementData(plcData);
                 }
             }
@@ -984,15 +994,15 @@ public final class PlacementUtil {
             // scale just the y offset
             for (KRendering rendering : container.getChildren()) {
                 KPlacementData plcData = rendering.getPlacementData();
-                if (plcData instanceof KDirectPlacementData) {
-                    KPosition bR = ((KDirectPlacementData) plcData).getBottomRight();
-                    KPosition tL = ((KDirectPlacementData) plcData).getTopLeft();
+                if (plcData instanceof KAreaPlacementData) {
+                    KPosition bR = ((KAreaPlacementData) plcData).getBottomRight();
+                    KPosition tL = ((KAreaPlacementData) plcData).getTopLeft();
 
                     bR.getY().setAbsolute(bR.getY().getAbsolute() * yScaling);
                     tL.getY().setAbsolute(tL.getY().getAbsolute() * yScaling);
 
-                    ((KDirectPlacementData) plcData).setBottomRight(bR);
-                    ((KDirectPlacementData) plcData).setTopLeft(tL);
+                    ((KAreaPlacementData) plcData).setBottomRight(bR);
+                    ((KAreaPlacementData) plcData).setTopLeft(tL);
                     rendering.setPlacementData(plcData);
                 }
             }
@@ -1141,7 +1151,7 @@ public final class PlacementUtil {
      *            the parent bounds
      * @return the bounds
      */
-    public static Bounds evaluateDirectPlacement(final KDirectPlacementData dpd,
+    public static Bounds evaluateDirectPlacement(final KAreaPlacementData dpd,
             final Bounds parentBounds) {
         if (dpd == null) {
             return new Bounds(0, 0, parentBounds.width, parentBounds.height);
@@ -1558,9 +1568,9 @@ public final class PlacementUtil {
      *            the placement data
      * @return the direct placement data or null if the placement data is no direct placement data
      */
-    public static KDirectPlacementData asDirectPlacementData(final KPlacementData data) {
-        if (data instanceof KDirectPlacementData) {
-            return (KDirectPlacementData) data;
+    public static KAreaPlacementData asDirectPlacementData(final KPlacementData data) {
+        if (data instanceof KAreaPlacementData) {
+            return (KAreaPlacementData) data;
         }
         return null;
     }
