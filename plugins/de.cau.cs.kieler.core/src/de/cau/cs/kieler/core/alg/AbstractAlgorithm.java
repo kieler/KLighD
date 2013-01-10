@@ -23,7 +23,7 @@ package de.cau.cs.kieler.core.alg;
 public abstract class AbstractAlgorithm implements IAlgorithm {
 
     /** the associated progress monitor. */
-    private IKielerProgressMonitor progressMonitor = null;
+    private IKielerProgressMonitor progressMonitor;
 
     /**
      * Removes the associated progress monitor. Any subclass that overrides this
