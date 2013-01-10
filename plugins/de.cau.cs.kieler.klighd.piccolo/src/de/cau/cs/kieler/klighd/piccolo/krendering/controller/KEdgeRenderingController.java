@@ -67,27 +67,39 @@ public class KEdgeRenderingController extends AbstractRenderingController<KEdge,
         } 
         PNode renderingNode;
         
+        // the rendering of an edge has to be a KPolyline or a sub type of KPolyline except KPolygon,
+        //  or a KCustomRendering providing a KCustomConnectionFigureNode
         switch (currentRendering.eClass().getClassifierID()) {
         case KRenderingPackage.KPOLYLINE:
         case KRenderingPackage.KROUNDED_BENDS_POLYLINE:
         case KRenderingPackage.KSPLINE:
             renderingNode = handleEdgeRendering((KPolyline) currentRendering, (KEdgeNode) repNode);
             break;
+            
         case KRenderingPackage.KCUSTOM_RENDERING:
             final KCustomRendering customRendering = (KCustomRendering) currentRendering;
-            if (customRendering.getFigureObject() instanceof KCustomConnectionFigureNode) {
+            if (customRendering.getFigureObject()  == null 
+                    || customRendering.getFigureObject() instanceof KCustomConnectionFigureNode) {
                 renderingNode = handleEdgeRendering(customRendering, (KEdgeNode) repNode);
                 break;
             } else {
-                final String msg = " ";
+                final String msg = "KLighD: KCustomRendering attached to edge "
+                        + currentRendering.eContainer()
+                        + " must provide a figure object of type KCustomConnectionFigureNode"
+                        + " allowing to set the start, end, and bend points, or 'null' letting KLighD"
+                        + " trying to load the class provided by its name.";
                 StatusManager.getManager().handle(
                         new Status(IStatus.ERROR, KlighdPiccoloPlugin.PLUGIN_ID, msg),
                         StatusManager.LOG);
                 return null;
             }
+            
         default:
-            throw new RuntimeException("Non-polyline rendering attached to graph edge: "
-                    + getGraphElement());
+            // hence, throw an exception if something different is provided
+            final String msg = "KLighD: Illegal KRendering is attached to graph edge: "
+                    + getGraphElement()
+                    + ", must be a KPolyline, KRoundedBendsPolyline, KSpline, or KCustomRendering!";
+            throw new RuntimeException(msg);
         }
 
         
@@ -106,10 +118,6 @@ public class KEdgeRenderingController extends AbstractRenderingController<KEdge,
      * @return the Piccolo node representing the rendering
      */
     private PNode handleEdgeRendering(final KPolyline rendering, final KEdgeNode parent) {
-        // the rendering of an edge has to be a KPolyline or a sub type of KPolyline except KPolygon 
-        //  hence, throw an exception if a non-KPolyline rendering or a KPolygon is served,
-        //  since KPolygon is a special KPolyline
-
         // create the rendering
         @SuppressWarnings("unchecked")
         final PNodeController<PSWTAdvancedPath> controller =
