@@ -147,12 +147,13 @@ public class KRenderingGrammarAccess extends AbstractGrammarElementFinder {
 		private final RuleCall cKDecoratorPlacementDataParserRuleCall_0 = (RuleCall)cAlternatives.eContents().get(0);
 		private final RuleCall cKGridPlacementDataParserRuleCall_1 = (RuleCall)cAlternatives.eContents().get(1);
 		private final RuleCall cKAreaPlacementDataParserRuleCall_2 = (RuleCall)cAlternatives.eContents().get(2);
+		private final RuleCall cKPointPlacementDataParserRuleCall_3 = (RuleCall)cAlternatives.eContents().get(3);
 		
 		//KPlacementData:
-		//	KDecoratorPlacementData | KGridPlacementData | KAreaPlacementData;
+		//	KDecoratorPlacementData | KGridPlacementData | KAreaPlacementData | KPointPlacementData;
 		public ParserRule getRule() { return rule; }
 
-		//KDecoratorPlacementData | KGridPlacementData | KAreaPlacementData
+		//KDecoratorPlacementData | KGridPlacementData | KAreaPlacementData | KPointPlacementData
 		public Alternatives getAlternatives() { return cAlternatives; }
 
 		//KDecoratorPlacementData
@@ -163,6 +164,9 @@ public class KRenderingGrammarAccess extends AbstractGrammarElementFinder {
 
 		//KAreaPlacementData
 		public RuleCall getKAreaPlacementDataParserRuleCall_2() { return cKAreaPlacementDataParserRuleCall_2; }
+
+		//KPointPlacementData
+		public RuleCall getKPointPlacementDataParserRuleCall_3() { return cKPointPlacementDataParserRuleCall_3; }
 	}
 
 	public class KStyleElements extends AbstractParserRuleElementFinder {
@@ -2652,6 +2656,80 @@ public class KRenderingGrammarAccess extends AbstractGrammarElementFinder {
 		public Keyword getRightCurlyBracketKeyword_7() { return cRightCurlyBracketKeyword_7; }
 	}
 
+	public class KPointPlacementDataElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "KPointPlacementData");
+		private final Group cGroup = (Group)rule.eContents().get(1);
+		private final Keyword cPointPlacementDataKeyword_0 = (Keyword)cGroup.eContents().get(0);
+		private final Keyword cLeftCurlyBracketKeyword_1 = (Keyword)cGroup.eContents().get(1);
+		private final Keyword cReferencePointKeyword_2 = (Keyword)cGroup.eContents().get(2);
+		private final Assignment cReferencePointAssignment_3 = (Assignment)cGroup.eContents().get(3);
+		private final RuleCall cReferencePointKPositionParserRuleCall_3_0 = (RuleCall)cReferencePointAssignment_3.eContents().get(0);
+		private final Keyword cCommaKeyword_4 = (Keyword)cGroup.eContents().get(4);
+		private final Keyword cVerticalAlignmentKeyword_5 = (Keyword)cGroup.eContents().get(5);
+		private final Assignment cVerticalAlignmentAssignment_6 = (Assignment)cGroup.eContents().get(6);
+		private final RuleCall cVerticalAlignmentVerticalAlignmentEnumRuleCall_6_0 = (RuleCall)cVerticalAlignmentAssignment_6.eContents().get(0);
+		private final Keyword cCommaKeyword_7 = (Keyword)cGroup.eContents().get(7);
+		private final Keyword cHorizontalAlignmentKeyword_8 = (Keyword)cGroup.eContents().get(8);
+		private final Assignment cHorizontalAlignmentAssignment_9 = (Assignment)cGroup.eContents().get(9);
+		private final RuleCall cHorizontalAlignmentHorizontalAlignmentEnumRuleCall_9_0 = (RuleCall)cHorizontalAlignmentAssignment_9.eContents().get(0);
+		private final Keyword cCommaKeyword_10 = (Keyword)cGroup.eContents().get(10);
+		private final Keyword cRightCurlyBracketKeyword_11 = (Keyword)cGroup.eContents().get(11);
+		
+		//KPointPlacementData:
+		//	"PointPlacementData" "{" "referencePoint" referencePoint=KPosition ","? "verticalAlignment"
+		//	verticalAlignment=VerticalAlignment ","? "horizontalAlignment" horizontalAlignment=HorizontalAlignment ","? "}";
+		public ParserRule getRule() { return rule; }
+
+		//"PointPlacementData" "{" "referencePoint" referencePoint=KPosition ","? "verticalAlignment"
+		//verticalAlignment=VerticalAlignment ","? "horizontalAlignment" horizontalAlignment=HorizontalAlignment ","? "}"
+		public Group getGroup() { return cGroup; }
+
+		//"PointPlacementData"
+		public Keyword getPointPlacementDataKeyword_0() { return cPointPlacementDataKeyword_0; }
+
+		//"{"
+		public Keyword getLeftCurlyBracketKeyword_1() { return cLeftCurlyBracketKeyword_1; }
+
+		//"referencePoint"
+		public Keyword getReferencePointKeyword_2() { return cReferencePointKeyword_2; }
+
+		//referencePoint=KPosition
+		public Assignment getReferencePointAssignment_3() { return cReferencePointAssignment_3; }
+
+		//KPosition
+		public RuleCall getReferencePointKPositionParserRuleCall_3_0() { return cReferencePointKPositionParserRuleCall_3_0; }
+
+		//","?
+		public Keyword getCommaKeyword_4() { return cCommaKeyword_4; }
+
+		//"verticalAlignment"
+		public Keyword getVerticalAlignmentKeyword_5() { return cVerticalAlignmentKeyword_5; }
+
+		//verticalAlignment=VerticalAlignment
+		public Assignment getVerticalAlignmentAssignment_6() { return cVerticalAlignmentAssignment_6; }
+
+		//VerticalAlignment
+		public RuleCall getVerticalAlignmentVerticalAlignmentEnumRuleCall_6_0() { return cVerticalAlignmentVerticalAlignmentEnumRuleCall_6_0; }
+
+		//","?
+		public Keyword getCommaKeyword_7() { return cCommaKeyword_7; }
+
+		//"horizontalAlignment"
+		public Keyword getHorizontalAlignmentKeyword_8() { return cHorizontalAlignmentKeyword_8; }
+
+		//horizontalAlignment=HorizontalAlignment
+		public Assignment getHorizontalAlignmentAssignment_9() { return cHorizontalAlignmentAssignment_9; }
+
+		//HorizontalAlignment
+		public RuleCall getHorizontalAlignmentHorizontalAlignmentEnumRuleCall_9_0() { return cHorizontalAlignmentHorizontalAlignmentEnumRuleCall_9_0; }
+
+		//","?
+		public Keyword getCommaKeyword_10() { return cCommaKeyword_10; }
+
+		//"}"
+		public Keyword getRightCurlyBracketKeyword_11() { return cRightCurlyBracketKeyword_11; }
+	}
+
 	public class KPositionElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "KPosition");
 		private final Group cGroup = (Group)rule.eContents().get(1);
@@ -3606,6 +3684,7 @@ public class KRenderingGrammarAccess extends AbstractGrammarElementFinder {
 	private KDecoratorPlacementDataElements pKDecoratorPlacementData;
 	private KGridPlacementDataElements pKGridPlacementData;
 	private KAreaPlacementDataElements pKAreaPlacementData;
+	private KPointPlacementDataElements pKPointPlacementData;
 	private KPositionElements pKPosition;
 	private KLeftPositionElements pKLeftPosition;
 	private KRightPositionElements pKRightPosition;
@@ -3693,7 +3772,7 @@ public class KRenderingGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//KPlacementData:
-	//	KDecoratorPlacementData | KGridPlacementData | KAreaPlacementData;
+	//	KDecoratorPlacementData | KGridPlacementData | KAreaPlacementData | KPointPlacementData;
 	public KPlacementDataElements getKPlacementDataAccess() {
 		return (pKPlacementData != null) ? pKPlacementData : (pKPlacementData = new KPlacementDataElements());
 	}
@@ -3934,6 +4013,17 @@ public class KRenderingGrammarAccess extends AbstractGrammarElementFinder {
 	
 	public ParserRule getKAreaPlacementDataRule() {
 		return getKAreaPlacementDataAccess().getRule();
+	}
+
+	//KPointPlacementData:
+	//	"PointPlacementData" "{" "referencePoint" referencePoint=KPosition ","? "verticalAlignment"
+	//	verticalAlignment=VerticalAlignment ","? "horizontalAlignment" horizontalAlignment=HorizontalAlignment ","? "}";
+	public KPointPlacementDataElements getKPointPlacementDataAccess() {
+		return (pKPointPlacementData != null) ? pKPointPlacementData : (pKPointPlacementData = new KPointPlacementDataElements());
+	}
+	
+	public ParserRule getKPointPlacementDataRule() {
+		return getKPointPlacementDataAccess().getRule();
 	}
 
 	//KPosition:

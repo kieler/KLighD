@@ -996,7 +996,7 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//KPlacementData:
-	//	KDecoratorPlacementData | KGridPlacementData | KAreaPlacementData;
+	//	KDecoratorPlacementData | KGridPlacementData | KAreaPlacementData | KPointPlacementData;
 	public KRenderingGrammarAccess.KPlacementDataElements getKPlacementDataAccess() {
 		return gaKRendering.getKPlacementDataAccess();
 	}
@@ -1237,6 +1237,17 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	
 	public ParserRule getKAreaPlacementDataRule() {
 		return getKAreaPlacementDataAccess().getRule();
+	}
+
+	//KPointPlacementData:
+	//	"PointPlacementData" "{" "referencePoint" referencePoint=KPosition ","? "verticalAlignment"
+	//	verticalAlignment=VerticalAlignment ","? "horizontalAlignment" horizontalAlignment=HorizontalAlignment ","? "}";
+	public KRenderingGrammarAccess.KPointPlacementDataElements getKPointPlacementDataAccess() {
+		return gaKRendering.getKPointPlacementDataAccess();
+	}
+	
+	public ParserRule getKPointPlacementDataRule() {
+		return getKPointPlacementDataAccess().getRule();
 	}
 
 	//KPosition:

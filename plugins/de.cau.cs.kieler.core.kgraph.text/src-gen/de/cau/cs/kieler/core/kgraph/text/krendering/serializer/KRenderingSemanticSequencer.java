@@ -28,6 +28,7 @@ import de.cau.cs.kieler.core.krendering.KImage;
 import de.cau.cs.kieler.core.krendering.KLeftPosition;
 import de.cau.cs.kieler.core.krendering.KLineStyle;
 import de.cau.cs.kieler.core.krendering.KLineWidth;
+import de.cau.cs.kieler.core.krendering.KPointPlacementData;
 import de.cau.cs.kieler.core.krendering.KPolygon;
 import de.cau.cs.kieler.core.krendering.KPolyline;
 import de.cau.cs.kieler.core.krendering.KPosition;
@@ -254,6 +255,13 @@ public class KRenderingSemanticSequencer extends KLayoutDataSemanticSequencer {
 				if(context == grammarAccess.getKLineWidthRule() ||
 				   context == grammarAccess.getKStyleRule()) {
 					sequence_KLineWidth(context, (KLineWidth) semanticObject); 
+					return; 
+				}
+				else break;
+			case KRenderingPackage.KPOINT_PLACEMENT_DATA:
+				if(context == grammarAccess.getKPlacementDataRule() ||
+				   context == grammarAccess.getKPointPlacementDataRule()) {
+					sequence_KPointPlacementData(context, (KPointPlacementData) semanticObject); 
 					return; 
 				}
 				else break;
@@ -614,6 +622,28 @@ public class KRenderingSemanticSequencer extends KLayoutDataSemanticSequencer {
 	 */
 	protected void sequence_KLineWidth(EObject context, KLineWidth semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
+	}
+	
+	
+	/**
+	 * Constraint:
+	 *     (referencePoint=KPosition verticalAlignment=VerticalAlignment horizontalAlignment=HorizontalAlignment)
+	 */
+	protected void sequence_KPointPlacementData(EObject context, KPointPlacementData semanticObject) {
+		if(errorAcceptor != null) {
+			if(transientValues.isValueTransient(semanticObject, KRenderingPackage.Literals.KPOINT_PLACEMENT_DATA__REFERENCE_POINT) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, KRenderingPackage.Literals.KPOINT_PLACEMENT_DATA__REFERENCE_POINT));
+			if(transientValues.isValueTransient(semanticObject, KRenderingPackage.Literals.KPOINT_PLACEMENT_DATA__VERTICAL_ALIGNMENT) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, KRenderingPackage.Literals.KPOINT_PLACEMENT_DATA__VERTICAL_ALIGNMENT));
+			if(transientValues.isValueTransient(semanticObject, KRenderingPackage.Literals.KPOINT_PLACEMENT_DATA__HORIZONTAL_ALIGNMENT) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, KRenderingPackage.Literals.KPOINT_PLACEMENT_DATA__HORIZONTAL_ALIGNMENT));
+		}
+		INodesForEObjectProvider nodes = createNodeProvider(semanticObject);
+		SequenceFeeder feeder = createSequencerFeeder(semanticObject, nodes);
+		feeder.accept(grammarAccess.getKPointPlacementDataAccess().getReferencePointKPositionParserRuleCall_3_0(), semanticObject.getReferencePoint());
+		feeder.accept(grammarAccess.getKPointPlacementDataAccess().getVerticalAlignmentVerticalAlignmentEnumRuleCall_6_0(), semanticObject.getVerticalAlignment());
+		feeder.accept(grammarAccess.getKPointPlacementDataAccess().getHorizontalAlignmentHorizontalAlignmentEnumRuleCall_9_0(), semanticObject.getHorizontalAlignment());
+		feeder.finish();
 	}
 	
 	

@@ -57,6 +57,9 @@ public class KRenderingSyntacticSequencer extends AbstractSyntacticSequencer {
 	protected AbstractElementAlias match_KImage_CommaKeyword_4_1_3_0_q;
 	protected AbstractElementAlias match_KImage_CommaKeyword_4_4_3_0_q;
 	protected AbstractElementAlias match_KImage___LeftCurlyBracketKeyword_4_0_RightCurlyBracketKeyword_4_5__q;
+	protected AbstractElementAlias match_KPointPlacementData_CommaKeyword_10_q;
+	protected AbstractElementAlias match_KPointPlacementData_CommaKeyword_4_q;
+	protected AbstractElementAlias match_KPointPlacementData_CommaKeyword_7_q;
 	protected AbstractElementAlias match_KPolygon_ColonKeyword_2_1_1_q;
 	protected AbstractElementAlias match_KPolygon_ColonKeyword_2_2_1_q;
 	protected AbstractElementAlias match_KPolygon_ColonKeyword_2_3_1_q;
@@ -161,6 +164,9 @@ public class KRenderingSyntacticSequencer extends AbstractSyntacticSequencer {
 		match_KImage_CommaKeyword_4_1_3_0_q = new TokenAlias(false, true, grammarAccess.getKImageAccess().getCommaKeyword_4_1_3_0());
 		match_KImage_CommaKeyword_4_4_3_0_q = new TokenAlias(false, true, grammarAccess.getKImageAccess().getCommaKeyword_4_4_3_0());
 		match_KImage___LeftCurlyBracketKeyword_4_0_RightCurlyBracketKeyword_4_5__q = new GroupAlias(false, true, new TokenAlias(false, false, grammarAccess.getKImageAccess().getLeftCurlyBracketKeyword_4_0()), new TokenAlias(false, false, grammarAccess.getKImageAccess().getRightCurlyBracketKeyword_4_5()));
+		match_KPointPlacementData_CommaKeyword_10_q = new TokenAlias(false, true, grammarAccess.getKPointPlacementDataAccess().getCommaKeyword_10());
+		match_KPointPlacementData_CommaKeyword_4_q = new TokenAlias(false, true, grammarAccess.getKPointPlacementDataAccess().getCommaKeyword_4());
+		match_KPointPlacementData_CommaKeyword_7_q = new TokenAlias(false, true, grammarAccess.getKPointPlacementDataAccess().getCommaKeyword_7());
 		match_KPolygon_ColonKeyword_2_1_1_q = new TokenAlias(false, true, grammarAccess.getKPolygonAccess().getColonKeyword_2_1_1());
 		match_KPolygon_ColonKeyword_2_2_1_q = new TokenAlias(false, true, grammarAccess.getKPolygonAccess().getColonKeyword_2_2_1());
 		match_KPolygon_ColonKeyword_2_3_1_q = new TokenAlias(false, true, grammarAccess.getKPolygonAccess().getColonKeyword_2_3_1());
@@ -314,6 +320,12 @@ public class KRenderingSyntacticSequencer extends AbstractSyntacticSequencer {
 				emit_KImage_CommaKeyword_4_4_3_0_q(semanticObject, getLastNavigableState(), syntaxNodes);
 			else if(match_KImage___LeftCurlyBracketKeyword_4_0_RightCurlyBracketKeyword_4_5__q.equals(syntax))
 				emit_KImage___LeftCurlyBracketKeyword_4_0_RightCurlyBracketKeyword_4_5__q(semanticObject, getLastNavigableState(), syntaxNodes);
+			else if(match_KPointPlacementData_CommaKeyword_10_q.equals(syntax))
+				emit_KPointPlacementData_CommaKeyword_10_q(semanticObject, getLastNavigableState(), syntaxNodes);
+			else if(match_KPointPlacementData_CommaKeyword_4_q.equals(syntax))
+				emit_KPointPlacementData_CommaKeyword_4_q(semanticObject, getLastNavigableState(), syntaxNodes);
+			else if(match_KPointPlacementData_CommaKeyword_7_q.equals(syntax))
+				emit_KPointPlacementData_CommaKeyword_7_q(semanticObject, getLastNavigableState(), syntaxNodes);
 			else if(match_KPolygon_ColonKeyword_2_1_1_q.equals(syntax))
 				emit_KPolygon_ColonKeyword_2_1_1_q(semanticObject, getLastNavigableState(), syntaxNodes);
 			else if(match_KPolygon_ColonKeyword_2_2_1_q.equals(syntax))
@@ -749,6 +761,30 @@ public class KRenderingSyntacticSequencer extends AbstractSyntacticSequencer {
 	 *     ('{' '}')?
 	 */
 	protected void emit_KImage___LeftCurlyBracketKeyword_4_0_RightCurlyBracketKeyword_4_5__q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
+		acceptNodes(transition, nodes);
+	}
+	
+	/**
+	 * Syntax:
+	 *     ','?
+	 */
+	protected void emit_KPointPlacementData_CommaKeyword_10_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
+		acceptNodes(transition, nodes);
+	}
+	
+	/**
+	 * Syntax:
+	 *     ','?
+	 */
+	protected void emit_KPointPlacementData_CommaKeyword_4_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
+		acceptNodes(transition, nodes);
+	}
+	
+	/**
+	 * Syntax:
+	 *     ','?
+	 */
+	protected void emit_KPointPlacementData_CommaKeyword_7_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
 		acceptNodes(transition, nodes);
 	}
 	
