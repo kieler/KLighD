@@ -3349,23 +3349,23 @@ public interface KRenderingPackage extends EPackage {
     int KACTION_FEATURE_COUNT = 2;
 
     /**
-     * The meta object id for the '{@link de.cau.cs.kieler.core.krendering.impl.KPointPlacementImpl <em>KPoint Placement</em>}' class.
+     * The meta object id for the '{@link de.cau.cs.kieler.core.krendering.impl.KPointPlacementDataImpl <em>KPoint Placement Data</em>}' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see de.cau.cs.kieler.core.krendering.impl.KPointPlacementImpl
-     * @see de.cau.cs.kieler.core.krendering.impl.KRenderingPackageImpl#getKPointPlacement()
+     * @see de.cau.cs.kieler.core.krendering.impl.KPointPlacementDataImpl
+     * @see de.cau.cs.kieler.core.krendering.impl.KRenderingPackageImpl#getKPointPlacementData()
      * @generated
      */
-    int KPOINT_PLACEMENT = 48;
+    int KPOINT_PLACEMENT_DATA = 48;
 
     /**
-     * The feature id for the '<em><b>Reference Point</b></em>' reference.
+     * The feature id for the '<em><b>Reference Point</b></em>' containment reference.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int KPOINT_PLACEMENT__REFERENCE_POINT = KPLACEMENT_FEATURE_COUNT + 0;
+    int KPOINT_PLACEMENT_DATA__REFERENCE_POINT = KPLACEMENT_DATA_FEATURE_COUNT + 0;
 
     /**
      * The feature id for the '<em><b>Vertical Alignment</b></em>' attribute.
@@ -3374,7 +3374,7 @@ public interface KRenderingPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int KPOINT_PLACEMENT__VERTICAL_ALIGNMENT = KPLACEMENT_FEATURE_COUNT + 1;
+    int KPOINT_PLACEMENT_DATA__VERTICAL_ALIGNMENT = KPLACEMENT_DATA_FEATURE_COUNT + 1;
 
     /**
      * The feature id for the '<em><b>Horizontal Alignment</b></em>' attribute.
@@ -3383,16 +3383,16 @@ public interface KRenderingPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int KPOINT_PLACEMENT__HORIZONTAL_ALIGNMENT = KPLACEMENT_FEATURE_COUNT + 2;
+    int KPOINT_PLACEMENT_DATA__HORIZONTAL_ALIGNMENT = KPLACEMENT_DATA_FEATURE_COUNT + 2;
 
     /**
-     * The number of structural features of the '<em>KPoint Placement</em>' class.
+     * The number of structural features of the '<em>KPoint Placement Data</em>' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int KPOINT_PLACEMENT_FEATURE_COUNT = KPLACEMENT_FEATURE_COUNT + 3;
+    int KPOINT_PLACEMENT_DATA_FEATURE_COUNT = KPLACEMENT_DATA_FEATURE_COUNT + 3;
 
     /**
      * The meta object id for the '{@link de.cau.cs.kieler.core.krendering.impl.KTextRenderingRefImpl <em>KText Rendering Ref</em>}' class.
@@ -4873,47 +4873,47 @@ public interface KRenderingPackage extends EPackage {
     EAttribute getKAction_Trigger();
 
     /**
-     * Returns the meta object for class '{@link de.cau.cs.kieler.core.krendering.KPointPlacement <em>KPoint Placement</em>}'.
+     * Returns the meta object for class '{@link de.cau.cs.kieler.core.krendering.KPointPlacementData <em>KPoint Placement Data</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for class '<em>KPoint Placement</em>'.
-     * @see de.cau.cs.kieler.core.krendering.KPointPlacement
+     * @return the meta object for class '<em>KPoint Placement Data</em>'.
+     * @see de.cau.cs.kieler.core.krendering.KPointPlacementData
      * @generated
      */
-    EClass getKPointPlacement();
+    EClass getKPointPlacementData();
 
     /**
-     * Returns the meta object for the reference '{@link de.cau.cs.kieler.core.krendering.KPointPlacement#getReferencePoint <em>Reference Point</em>}'.
+     * Returns the meta object for the containment reference '{@link de.cau.cs.kieler.core.krendering.KPointPlacementData#getReferencePoint <em>Reference Point</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for the reference '<em>Reference Point</em>'.
-     * @see de.cau.cs.kieler.core.krendering.KPointPlacement#getReferencePoint()
-     * @see #getKPointPlacement()
+     * @return the meta object for the containment reference '<em>Reference Point</em>'.
+     * @see de.cau.cs.kieler.core.krendering.KPointPlacementData#getReferencePoint()
+     * @see #getKPointPlacementData()
      * @generated
      */
-    EReference getKPointPlacement_ReferencePoint();
+    EReference getKPointPlacementData_ReferencePoint();
 
     /**
-     * Returns the meta object for the attribute '{@link de.cau.cs.kieler.core.krendering.KPointPlacement#getVerticalAlignment <em>Vertical Alignment</em>}'.
+     * Returns the meta object for the attribute '{@link de.cau.cs.kieler.core.krendering.KPointPlacementData#getVerticalAlignment <em>Vertical Alignment</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @return the meta object for the attribute '<em>Vertical Alignment</em>'.
-     * @see de.cau.cs.kieler.core.krendering.KPointPlacement#getVerticalAlignment()
-     * @see #getKPointPlacement()
+     * @see de.cau.cs.kieler.core.krendering.KPointPlacementData#getVerticalAlignment()
+     * @see #getKPointPlacementData()
      * @generated
      */
-    EAttribute getKPointPlacement_VerticalAlignment();
+    EAttribute getKPointPlacementData_VerticalAlignment();
 
     /**
-     * Returns the meta object for the attribute '{@link de.cau.cs.kieler.core.krendering.KPointPlacement#getHorizontalAlignment <em>Horizontal Alignment</em>}'.
+     * Returns the meta object for the attribute '{@link de.cau.cs.kieler.core.krendering.KPointPlacementData#getHorizontalAlignment <em>Horizontal Alignment</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @return the meta object for the attribute '<em>Horizontal Alignment</em>'.
-     * @see de.cau.cs.kieler.core.krendering.KPointPlacement#getHorizontalAlignment()
-     * @see #getKPointPlacement()
+     * @see de.cau.cs.kieler.core.krendering.KPointPlacementData#getHorizontalAlignment()
+     * @see #getKPointPlacementData()
      * @generated
      */
-    EAttribute getKPointPlacement_HorizontalAlignment();
+    EAttribute getKPointPlacementData_HorizontalAlignment();
 
     /**
      * Returns the meta object for class '{@link de.cau.cs.kieler.core.krendering.KTextRenderingRef <em>KText Rendering Ref</em>}'.
@@ -6069,22 +6069,22 @@ public interface KRenderingPackage extends EPackage {
         EAttribute KACTION__TRIGGER = eINSTANCE.getKAction_Trigger();
 
         /**
-         * The meta object literal for the '{@link de.cau.cs.kieler.core.krendering.impl.KPointPlacementImpl <em>KPoint Placement</em>}' class.
+         * The meta object literal for the '{@link de.cau.cs.kieler.core.krendering.impl.KPointPlacementDataImpl <em>KPoint Placement Data</em>}' class.
          * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-         * @see de.cau.cs.kieler.core.krendering.impl.KPointPlacementImpl
-         * @see de.cau.cs.kieler.core.krendering.impl.KRenderingPackageImpl#getKPointPlacement()
+         * @see de.cau.cs.kieler.core.krendering.impl.KPointPlacementDataImpl
+         * @see de.cau.cs.kieler.core.krendering.impl.KRenderingPackageImpl#getKPointPlacementData()
          * @generated
          */
-        EClass KPOINT_PLACEMENT = eINSTANCE.getKPointPlacement();
+        EClass KPOINT_PLACEMENT_DATA = eINSTANCE.getKPointPlacementData();
 
         /**
-         * The meta object literal for the '<em><b>Reference Point</b></em>' reference feature.
+         * The meta object literal for the '<em><b>Reference Point</b></em>' containment reference feature.
          * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
          * @generated
          */
-        EReference KPOINT_PLACEMENT__REFERENCE_POINT = eINSTANCE.getKPointPlacement_ReferencePoint();
+        EReference KPOINT_PLACEMENT_DATA__REFERENCE_POINT = eINSTANCE.getKPointPlacementData_ReferencePoint();
 
         /**
          * The meta object literal for the '<em><b>Vertical Alignment</b></em>' attribute feature.
@@ -6092,7 +6092,7 @@ public interface KRenderingPackage extends EPackage {
          * <!-- end-user-doc -->
          * @generated
          */
-        EAttribute KPOINT_PLACEMENT__VERTICAL_ALIGNMENT = eINSTANCE.getKPointPlacement_VerticalAlignment();
+        EAttribute KPOINT_PLACEMENT_DATA__VERTICAL_ALIGNMENT = eINSTANCE.getKPointPlacementData_VerticalAlignment();
 
         /**
          * The meta object literal for the '<em><b>Horizontal Alignment</b></em>' attribute feature.
@@ -6100,7 +6100,7 @@ public interface KRenderingPackage extends EPackage {
          * <!-- end-user-doc -->
          * @generated
          */
-        EAttribute KPOINT_PLACEMENT__HORIZONTAL_ALIGNMENT = eINSTANCE.getKPointPlacement_HorizontalAlignment();
+        EAttribute KPOINT_PLACEMENT_DATA__HORIZONTAL_ALIGNMENT = eINSTANCE.getKPointPlacementData_HorizontalAlignment();
 
         /**
          * The meta object literal for the '{@link de.cau.cs.kieler.core.krendering.impl.KTextRenderingRefImpl <em>KText Rendering Ref</em>}' class.

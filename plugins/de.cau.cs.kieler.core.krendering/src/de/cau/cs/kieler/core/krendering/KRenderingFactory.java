@@ -375,13 +375,13 @@ public interface KRenderingFactory extends EFactory {
     KLineCapStyle createKLineCapStyle();
 
     /**
-     * Returns a new object of class '<em>KPoint Placement</em>'.
+     * Returns a new object of class '<em>KPoint Placement Data</em>'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return a new object of class '<em>KPoint Placement</em>'.
+     * @return a new object of class '<em>KPoint Placement Data</em>'.
      * @generated
      */
-    KPointPlacement createKPointPlacement();
+    KPointPlacementData createKPointPlacementData();
 
     /**
      * Returns a new object of class '<em>KText Rendering Ref</em>'.

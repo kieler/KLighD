@@ -48,6 +48,7 @@ import de.cau.cs.kieler.core.krendering.KLineStyle;
 import de.cau.cs.kieler.core.krendering.KLineWidth;
 import de.cau.cs.kieler.core.krendering.KPlacement;
 import de.cau.cs.kieler.core.krendering.KPlacementData;
+import de.cau.cs.kieler.core.krendering.KPointPlacementData;
 import de.cau.cs.kieler.core.krendering.KPointPlacement;
 import de.cau.cs.kieler.core.krendering.KPolygon;
 import de.cau.cs.kieler.core.krendering.KPolyline;
@@ -432,7 +433,7 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
      * <!-- end-user-doc -->
      * @generated
      */
-    private EClass kPointPlacementEClass = null;
+    private EClass kPointPlacementDataEClass = null;
 
     /**
      * <!-- begin-user-doc -->
@@ -1592,8 +1593,8 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
      * <!-- end-user-doc -->
      * @generated
      */
-    public EClass getKPointPlacement() {
-        return kPointPlacementEClass;
+    public EClass getKPointPlacementData() {
+        return kPointPlacementDataEClass;
     }
 
     /**
@@ -1601,8 +1602,8 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
      * <!-- end-user-doc -->
      * @generated
      */
-    public EReference getKPointPlacement_ReferencePoint() {
-        return (EReference)kPointPlacementEClass.getEStructuralFeatures().get(0);
+    public EReference getKPointPlacementData_ReferencePoint() {
+        return (EReference)kPointPlacementDataEClass.getEStructuralFeatures().get(0);
     }
 
     /**
@@ -1610,8 +1611,8 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
      * <!-- end-user-doc -->
      * @generated
      */
-    public EAttribute getKPointPlacement_VerticalAlignment() {
-        return (EAttribute)kPointPlacementEClass.getEStructuralFeatures().get(1);
+    public EAttribute getKPointPlacementData_VerticalAlignment() {
+        return (EAttribute)kPointPlacementDataEClass.getEStructuralFeatures().get(1);
     }
 
     /**
@@ -1619,8 +1620,8 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
      * <!-- end-user-doc -->
      * @generated
      */
-    public EAttribute getKPointPlacement_HorizontalAlignment() {
-        return (EAttribute)kPointPlacementEClass.getEStructuralFeatures().get(2);
+    public EAttribute getKPointPlacementData_HorizontalAlignment() {
+        return (EAttribute)kPointPlacementDataEClass.getEStructuralFeatures().get(2);
     }
 
     /**
@@ -1921,10 +1922,10 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
         createEAttribute(kActionEClass, KACTION__ID);
         createEAttribute(kActionEClass, KACTION__TRIGGER);
 
-        kPointPlacementEClass = createEClass(KPOINT_PLACEMENT);
-        createEReference(kPointPlacementEClass, KPOINT_PLACEMENT__REFERENCE_POINT);
-        createEAttribute(kPointPlacementEClass, KPOINT_PLACEMENT__VERTICAL_ALIGNMENT);
-        createEAttribute(kPointPlacementEClass, KPOINT_PLACEMENT__HORIZONTAL_ALIGNMENT);
+        kPointPlacementDataEClass = createEClass(KPOINT_PLACEMENT_DATA);
+        createEReference(kPointPlacementDataEClass, KPOINT_PLACEMENT_DATA__REFERENCE_POINT);
+        createEAttribute(kPointPlacementDataEClass, KPOINT_PLACEMENT_DATA__VERTICAL_ALIGNMENT);
+        createEAttribute(kPointPlacementDataEClass, KPOINT_PLACEMENT_DATA__HORIZONTAL_ALIGNMENT);
 
         kTextRenderingRefEClass = createEClass(KTEXT_RENDERING_REF);
         createEReference(kTextRenderingRefEClass, KTEXT_RENDERING_REF__TEXT_REF);
@@ -2018,7 +2019,7 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
         kRotationEClass.getESuperTypes().add(this.getKStyle());
         kGradientStyleEClass.getESuperTypes().add(this.getKStyle());
         kLineCapStyleEClass.getESuperTypes().add(this.getKStyle());
-        kPointPlacementEClass.getESuperTypes().add(this.getKPlacement());
+        kPointPlacementDataEClass.getESuperTypes().add(this.getKPlacementData());
         kTextRenderingRefEClass.getESuperTypes().add(this.getKContainerRendering());
         kSelectActionEClass.getESuperTypes().add(this.getKAction());
         kExpandCollapseActionEClass.getESuperTypes().add(this.getKAction());
@@ -2186,10 +2187,10 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
         initEAttribute(getKAction_Id(), ecorePackage.getEString(), "id", null, 1, 1, KAction.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEAttribute(getKAction_Trigger(), this.getKTrigger(), "trigger", null, 1, 1, KAction.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-        initEClass(kPointPlacementEClass, KPointPlacement.class, "KPointPlacement", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-        initEReference(getKPointPlacement_ReferencePoint(), this.getKPosition(), null, "referencePoint", null, 1, 1, KPointPlacement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        initEAttribute(getKPointPlacement_VerticalAlignment(), this.getVerticalAlignment(), "verticalAlignment", null, 1, 1, KPointPlacement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        initEAttribute(getKPointPlacement_HorizontalAlignment(), this.getHorizontalAlignment(), "horizontalAlignment", null, 1, 1, KPointPlacement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEClass(kPointPlacementDataEClass, KPointPlacementData.class, "KPointPlacementData", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        initEReference(getKPointPlacementData_ReferencePoint(), this.getKPosition(), null, "referencePoint", null, 1, 1, KPointPlacementData.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEAttribute(getKPointPlacementData_VerticalAlignment(), this.getVerticalAlignment(), "verticalAlignment", null, 1, 1, KPointPlacementData.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEAttribute(getKPointPlacementData_HorizontalAlignment(), this.getHorizontalAlignment(), "horizontalAlignment", null, 1, 1, KPointPlacementData.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         initEClass(kTextRenderingRefEClass, KTextRenderingRef.class, "KTextRenderingRef", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         initEReference(getKTextRenderingRef_TextRef(), this.getKText(), null, "TextRef", null, 1, 1, KTextRenderingRef.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);

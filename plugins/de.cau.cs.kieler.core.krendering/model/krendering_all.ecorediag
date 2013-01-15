@@ -909,7 +909,7 @@
       <styles xmi:type="notation:FilteringStyle" xmi:id="_3YGWAlo1EeKBLvIoaIHBWg"/>
     </children>
     <styles xmi:type="notation:ShapeStyle" xmi:id="_3X4TkFo1EeKBLvIoaIHBWg" fontColor="4210752" fontName="Sans" fontHeight="10" fillColor="13761016" lineColor="8421504"/>
-    <element xmi:type="ecore:EClass" href="krendering.ecore#//KPointPlacement"/>
+    <element xmi:type="ecore:EClass" href="krendering.ecore#//KPointPlacementData"/>
     <layoutConstraint xmi:type="notation:Bounds" xmi:id="_3X4TkVo1EeKBLvIoaIHBWg" x="2265" y="15" width="132" height="43"/>
   </children>
   <children xmi:type="notation:Node" xmi:id="_Q_iDMFo2EeKBLvIoaIHBWg" type="1001">
@@ -1549,14 +1549,6 @@
     <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_5motE0nBEeK1k-UiK9R-uA" points="[0, 0, -420, -91]$[0, 50, -420, -41]$[420, 50, 0, -41]$[420, 91, 0, 0]"/>
     <sourceAnchor xmi:type="notation:IdentityAnchor" xmi:id="_5nAggEnBEeK1k-UiK9R-uA" id="(0.4937069163602941,1.0)"/>
     <targetAnchor xmi:type="notation:IdentityAnchor" xmi:id="_5nAggUnBEeK1k-UiK9R-uA" id="(0.4933946397569444,0.0)"/>
-  </edges>
-  <edges xmi:type="notation:Edge" xmi:id="_3YkQEFo1EeKBLvIoaIHBWg" type="3003" source="_3X3sgFo1EeKBLvIoaIHBWg" target="_qfHCMG3kEeGY3LLtCxEb1Q">
-    <styles xmi:type="notation:ConnectorStyle" xmi:id="_3Yk3IFo1EeKBLvIoaIHBWg" lineColor="4210752"/>
-    <styles xmi:type="notation:FontStyle" xmi:id="_3Yk3IVo1EeKBLvIoaIHBWg" fontName="Sans"/>
-    <element xsi:nil="true"/>
-    <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_3Yk3Ilo1EeKBLvIoaIHBWg" points="[0, 0, -1870, -88]$[41, 0, -1829, -88]$[41, 88, -1829, 0]$[1870, 88, 0, 0]"/>
-    <sourceAnchor xmi:type="notation:IdentityAnchor" xmi:id="_3ZLUEFo1EeKBLvIoaIHBWg" id="(1.0,0.5)"/>
-    <targetAnchor xmi:type="notation:IdentityAnchor" xmi:id="_3ZL7IFo1EeKBLvIoaIHBWg" id="(0.0,0.5)"/>
   </edges>
   <edges xmi:type="notation:Edge" xmi:id="_Q_6dsFo2EeKBLvIoaIHBWg" type="3003" source="_Q_iDMFo2EeKBLvIoaIHBWg" target="_qe_GYG3kEeGY3LLtCxEb1Q">
     <styles xmi:type="notation:ConnectorStyle" xmi:id="_Q_6dsVo2EeKBLvIoaIHBWg" lineColor="4210752"/>

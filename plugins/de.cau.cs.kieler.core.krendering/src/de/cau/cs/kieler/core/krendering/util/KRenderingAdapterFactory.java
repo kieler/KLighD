@@ -276,8 +276,8 @@ public class KRenderingAdapterFactory extends AdapterFactoryImpl {
                 return createKActionAdapter();
             }
             @Override
-            public Adapter caseKPointPlacement(KPointPlacement object) {
-                return createKPointPlacementAdapter();
+            public Adapter caseKPointPlacementData(KPointPlacementData object) {
+                return createKPointPlacementDataAdapter();
             }
             @Override
             public Adapter caseKTextRenderingRef(KTextRenderingRef object) {
@@ -1000,16 +1000,16 @@ public class KRenderingAdapterFactory extends AdapterFactoryImpl {
     }
 
     /**
-     * Creates a new adapter for an object of class '{@link de.cau.cs.kieler.core.krendering.KPointPlacement <em>KPoint Placement</em>}'.
+     * Creates a new adapter for an object of class '{@link de.cau.cs.kieler.core.krendering.KPointPlacementData <em>KPoint Placement Data</em>}'.
      * <!-- begin-user-doc -->
      * This default implementation returns null so that we can easily ignore cases;
      * it's useful to ignore a case when inheritance will catch all the cases anyway.
      * <!-- end-user-doc -->
      * @return the new adapter.
-     * @see de.cau.cs.kieler.core.krendering.KPointPlacement
+     * @see de.cau.cs.kieler.core.krendering.KPointPlacementData
      * @generated
      */
-    public Adapter createKPointPlacementAdapter() {
+    public Adapter createKPointPlacementDataAdapter() {
         return null;
     }
 

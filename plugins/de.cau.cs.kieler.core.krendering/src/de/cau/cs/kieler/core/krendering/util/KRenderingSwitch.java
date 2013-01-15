@@ -491,10 +491,10 @@ public class KRenderingSwitch<T> extends Switch<T> {
                 if (result == null) result = defaultCase(theEObject);
                 return result;
             }
-            case KRenderingPackage.KPOINT_PLACEMENT: {
-                KPointPlacement kPointPlacement = (KPointPlacement)theEObject;
-                T result = caseKPointPlacement(kPointPlacement);
-                if (result == null) result = caseKPlacement(kPointPlacement);
+            case KRenderingPackage.KPOINT_PLACEMENT_DATA: {
+                KPointPlacementData kPointPlacementData = (KPointPlacementData)theEObject;
+                T result = caseKPointPlacementData(kPointPlacementData);
+                if (result == null) result = caseKPlacementData(kPointPlacementData);
                 if (result == null) result = defaultCase(theEObject);
                 return result;
             }
@@ -1255,17 +1255,17 @@ public class KRenderingSwitch<T> extends Switch<T> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>KPoint Placement</em>'.
+     * Returns the result of interpreting the object as an instance of '<em>KPoint Placement Data</em>'.
      * <!-- begin-user-doc -->
      * This implementation returns null;
      * returning a non-null result will terminate the switch.
      * <!-- end-user-doc -->
      * @param object the target of the switch.
-     * @return the result of interpreting the object as an instance of '<em>KPoint Placement</em>'.
+     * @return the result of interpreting the object as an instance of '<em>KPoint Placement Data</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
      */
-    public T caseKPointPlacement(KPointPlacement object) {
+    public T caseKPointPlacementData(KPointPlacementData object) {
         return null;
     }
 

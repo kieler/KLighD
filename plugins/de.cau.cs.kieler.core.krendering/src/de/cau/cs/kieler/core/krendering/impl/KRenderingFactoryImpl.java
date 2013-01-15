@@ -106,7 +106,7 @@ public class KRenderingFactoryImpl extends EFactoryImpl implements KRenderingFac
             case KRenderingPackage.KROTATION: return createKRotation();
             case KRenderingPackage.KGRADIENT_STYLE: return createKGradientStyle();
             case KRenderingPackage.KLINE_CAP_STYLE: return createKLineCapStyle();
-            case KRenderingPackage.KPOINT_PLACEMENT: return createKPointPlacement();
+            case KRenderingPackage.KPOINT_PLACEMENT_DATA: return createKPointPlacementData();
             case KRenderingPackage.KTEXT_RENDERING_REF: return createKTextRenderingRef();
             case KRenderingPackage.KSELECT_ACTION: return createKSelectAction();
             case KRenderingPackage.KEXPAND_COLLAPSE_ACTION: return createKExpandCollapseAction();
@@ -547,9 +547,9 @@ public class KRenderingFactoryImpl extends EFactoryImpl implements KRenderingFac
      * <!-- end-user-doc -->
      * @generated
      */
-    public KPointPlacement createKPointPlacement() {
-        KPointPlacementImpl kPointPlacement = new KPointPlacementImpl();
-        return kPointPlacement;
+    public KPointPlacementData createKPointPlacementData() {
+        KPointPlacementDataImpl kPointPlacementData = new KPointPlacementDataImpl();
+        return kPointPlacementData;
     }
 
     /**
