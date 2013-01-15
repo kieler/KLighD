@@ -54,7 +54,7 @@ public final class PiccoloPlacementUtil {
      *            the parent bounds
      * @return the bounds
      */
-    public static PBounds evaluateDirectPlacement(final KAreaPlacementData dpd,
+    public static PBounds evaluateAreaPlacement(final KAreaPlacementData dpd,
             final PBounds parentBounds) {
         if (dpd == null) {
             return new PBounds(0, 0, parentBounds.width, parentBounds.height);
@@ -177,21 +177,7 @@ public final class PiccoloPlacementUtil {
         return point;
     }
 
-    /**
-     * Returns the given placement data as direct placement data.
-     * 
-     * @param data
-     *            the placement data
-     * @return the direct placement data or null if the placement data is no direct placement data
-     */
-    public static KAreaPlacementData asDirectPlacementData(final KPlacementData data) {
-        if (data instanceof KAreaPlacementData) {
-            return (KAreaPlacementData) data;
-        }
-        return null;
-    }
-
-    /**
+       /**
      * Returns the given placement data as decorator placement data.
      * 
      * @param data

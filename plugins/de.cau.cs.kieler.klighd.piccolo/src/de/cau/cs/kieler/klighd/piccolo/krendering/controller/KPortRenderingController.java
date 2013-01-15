@@ -52,11 +52,11 @@ public class KPortRenderingController extends AbstractRenderingController<KPort,
         PNode renderingNode;
         if (currentRendering != null) {
                 renderingNode =
-                        handleDirectPlacementRendering(currentRendering, new ArrayList<KStyle>(0),
+                        handleAreaPlacementRendering(currentRendering, new ArrayList<KStyle>(0),
                                 repNode, repNode);
         } else {
                 renderingNode =
-                        handleDirectPlacementRendering(createDefaultPortRendering(),
+                        handleAreaPlacementRendering(createDefaultPortRendering(),
                                 new ArrayList<KStyle>(0), repNode, repNode);
         }
         

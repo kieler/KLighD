@@ -439,7 +439,7 @@ public abstract class AbstractRenderingController<S extends KGraphElement, T ext
         if (placement == null) {
             // Direct Placement
             for (final KRendering rendering : children) {
-                handleDirectPlacementRendering(rendering, styles, parent, key);
+                handleAreaPlacementRendering(rendering, styles, parent, key);
             }
         } else {
             new KRenderingSwitch<Boolean>() {
@@ -465,11 +465,11 @@ public abstract class AbstractRenderingController<S extends KGraphElement, T ext
      *            the key used to identify the current reference hierarchy
      * @return the Piccolo node representing the rendering
      */
-    protected PNode handleDirectPlacementRendering(final KRendering rendering,
+    protected PNode handleAreaPlacementRendering(final KRendering rendering,
             final List<KStyle> styles, final PNode parent, final Object key) {
         // determine the initial bounds
-        final PBounds bounds = PiccoloPlacementUtil.evaluateDirectPlacement(
-                PiccoloPlacementUtil.asDirectPlacementData(rendering.getPlacementData()),
+        final PBounds bounds = PiccoloPlacementUtil.evaluateAreaPlacement(
+                PlacementUtil.asAreaPlacementData(rendering.getPlacementData()),
                 parent.getBoundsReference());
 
         // create the rendering and receive its controller
@@ -481,8 +481,8 @@ public abstract class AbstractRenderingController<S extends KGraphElement, T ext
                 new PropertyChangeListener() {
                     public void propertyChange(final PropertyChangeEvent e) {
                         // calculate the new bounds of the rendering
-                        PBounds bounds = PiccoloPlacementUtil.evaluateDirectPlacement(
-                                PiccoloPlacementUtil.asDirectPlacementData(rendering
+                        PBounds bounds = PiccoloPlacementUtil.evaluateAreaPlacement(
+                                PlacementUtil.asAreaPlacementData(rendering
                                         .getPlacementData()), parent.getBoundsReference());
                         // use the controller to apply the new bounds
                         controller.setBounds(bounds);

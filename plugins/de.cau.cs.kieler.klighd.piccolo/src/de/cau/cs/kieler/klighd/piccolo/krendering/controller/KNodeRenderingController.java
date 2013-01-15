@@ -79,10 +79,10 @@ public class KNodeRenderingController extends AbstractRenderingController<KNode,
         PNode renderingNode;
         // KPlacementData pd;
         if (currentRendering != null) {
-            renderingNode = handleDirectPlacementRendering(currentRendering, new ArrayList<KStyle>(
+            renderingNode = handleAreaPlacementRendering(currentRendering, new ArrayList<KStyle>(
                     0), repNode, repNode);
         } else {
-            renderingNode = handleDirectPlacementRendering(createDefaultNodeRendering(),
+            renderingNode = handleAreaPlacementRendering(createDefaultNodeRendering(),
                     new ArrayList<KStyle>(0), repNode, repNode);
         }
 
@@ -127,7 +127,7 @@ public class KNodeRenderingController extends AbstractRenderingController<KNode,
      */
     private void createDefaultChildArea(final PNode parent) {
         // determine the initial bounds
-        PBounds bounds = PiccoloPlacementUtil.evaluateDirectPlacement(null,
+        PBounds bounds = PiccoloPlacementUtil.evaluateAreaPlacement(null,
                 parent.getBoundsReference());
 
         // configure the child area
@@ -138,7 +138,7 @@ public class KNodeRenderingController extends AbstractRenderingController<KNode,
                 new PropertyChangeListener() {
                     public void propertyChange(final PropertyChangeEvent e) {
                         // calculate the new bounds of the rendering
-                        PBounds bounds = PiccoloPlacementUtil.evaluateDirectPlacement(null,
+                        PBounds bounds = PiccoloPlacementUtil.evaluateAreaPlacement(null,
                                 parent.getBoundsReference());
                         // use the controller to apply the new bounds
                         controller.setBounds(bounds);
