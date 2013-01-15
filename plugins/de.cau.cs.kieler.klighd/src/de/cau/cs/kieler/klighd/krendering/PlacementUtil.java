@@ -390,7 +390,7 @@ public final class PlacementUtil {
                 placementBounds = estimateGridSize(container, defBounds);
                 break;
             default:
-                // in case of a DirectPlacement
+                // in case of a AreaPlacement
                 // calculate the offsets of each rendering and find the biggest rendering in width
                 // and height
                 placementBounds = estimateDirectSize(container, defBounds);
@@ -748,7 +748,7 @@ public final class PlacementUtil {
                 absYOffest = verSize.getFirst();
                 relHeight = verSize.getSecond();
 
-                final Bounds bounds = evaluateDirectPlacement(dpd, new Bounds(defBounds));
+                final Bounds bounds = evaluateAreaPlacement(dpd, new Bounds(defBounds));
 
                 // determine minimal needed size of the child
                 final Bounds childMinSize = estimateSize(rendering, givenBounds);
@@ -1115,8 +1115,8 @@ public final class PlacementUtil {
             final List<KRendering> children, final KRendering child) {
         Bounds bounds = null;
         if (placement == null) {
-            bounds = PlacementUtil.evaluateDirectPlacement(
-                    asDirectPlacementData(child.getPlacementData()), parentBounds);
+            bounds = PlacementUtil.evaluateAreaPlacement(
+                    asAreaPlacementData(child.getPlacementData()), parentBounds);
         } else {
             bounds = new KRenderingSwitch<Bounds>() {
                 public Bounds caseKGridPlacement(final KGridPlacement gridPlacement) {
@@ -1151,7 +1151,7 @@ public final class PlacementUtil {
      *            the parent bounds
      * @return the bounds
      */
-    public static Bounds evaluateDirectPlacement(final KAreaPlacementData dpd,
+    public static Bounds evaluateAreaPlacement(final KAreaPlacementData dpd,
             final Bounds parentBounds) {
         if (dpd == null) {
             return new Bounds(0, 0, parentBounds.width, parentBounds.height);
@@ -1568,7 +1568,7 @@ public final class PlacementUtil {
      *            the placement data
      * @return the direct placement data or null if the placement data is no direct placement data
      */
-    public static KAreaPlacementData asDirectPlacementData(final KPlacementData data) {
+    public static KAreaPlacementData asAreaPlacementData(final KPlacementData data) {
         if (data instanceof KAreaPlacementData) {
             return (KAreaPlacementData) data;
         }
