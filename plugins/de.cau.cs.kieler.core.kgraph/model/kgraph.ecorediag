@@ -231,20 +231,6 @@
     <element xmi:type="ecore:EClass" href="kgraph.ecore#//PersistentEntry"/>
     <layoutConstraint xmi:type="notation:Bounds" xmi:id="_FewvBBaPEeG_4Y-5r2OFrg" x="534" y="530" width="125" height="68"/>
   </children>
-  <children xmi:type="notation:Node" xmi:id="_Ty2dYFpMEeKRKJxJO27JpQ" type="1005">
-    <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_TzGVAFpMEeKRKJxJO27JpQ" source="Shortcut">
-      <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_TzGVAVpMEeKRKJxJO27JpQ" key="modelID" value="EcoreTools"/>
-    </eAnnotations>
-    <children xmi:type="notation:Node" xmi:id="_Ty3rgFpMEeKRKJxJO27JpQ" type="4010"/>
-    <children xmi:type="notation:Node" xmi:id="_Ty3rgVpMEeKRKJxJO27JpQ" type="5008">
-      <styles xmi:type="notation:DrawerStyle" xmi:id="_Ty3rglpMEeKRKJxJO27JpQ"/>
-      <styles xmi:type="notation:SortingStyle" xmi:id="_Ty4SkFpMEeKRKJxJO27JpQ"/>
-      <styles xmi:type="notation:FilteringStyle" xmi:id="_Ty4SkVpMEeKRKJxJO27JpQ"/>
-    </children>
-    <styles xmi:type="notation:ShapeStyle" xmi:id="_Ty2dYVpMEeKRKJxJO27JpQ" fontColor="4210752" fontName="Sans" fontHeight="10" fillColor="13761016" lineColor="8421504"/>
-    <element xmi:type="ecore:EEnum" href="platform:/resource/de.cau.cs.kieler.core.krendering/model/krendering.ecore#//JointPointStyle"/>
-    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_Ty2dYlpMEeKRKJxJO27JpQ" x="441" y="735"/>
-  </children>
   <styles xmi:type="notation:DiagramStyle" xmi:id="_FdPFAhaPEeG_4Y-5r2OFrg"/>
   <styles xmi:type="notation:StringValueStyle" xmi:id="_ZQEWUBaPEeG40cUwHslqsA" name="layout:de.cau.cs.kieler.spacing" stringValue="50.0"/>
   <element xmi:type="ecore:EPackage" href="kgraph.ecore#/"/>

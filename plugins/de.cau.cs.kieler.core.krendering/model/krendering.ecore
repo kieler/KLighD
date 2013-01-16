@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="krendering" nsURI="http://kieler.cs.cau.de/KRendering" nsPrefix="krendering">
+  <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+    <details key="documentation" value="define if this text is increased in size to be able to read it when zooming out.&#xA;Text will only grow until the node space is "/>
+  </eAnnotations>
   <eClassifiers xsi:type="ecore:EClass" name="KPosition">
     <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
       <details key="documentation" value="Used to set an absolute Position of a single point by defining x and y coordinates of this point relative to the parent. The position can be set with absolute values or relative to the parent dimensions"/>
@@ -29,7 +32,7 @@
       </eAnnotations>
     </eStructuralFeatures>
     <eStructuralFeatures xsi:type="ecore:EReference" name="references" upperBound="-1"
-        eType="#//KRenderingRef" eOpposite="#//KRenderingRef/rendering">
+        eType="#//KRenderingRef">
       <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
         <details key="documentation" value="reference an existing KRendering ref instead of re-defining everything"/>
       </eAnnotations>
@@ -224,7 +227,7 @@
       <details key="documentation" value="references an already defined rendering to make redefining unneccessary."/>
     </eAnnotations>
     <eStructuralFeatures xsi:type="ecore:EReference" name="rendering" lowerBound="1"
-        eType="#//KRendering" eOpposite="#//KRendering/references">
+        eType="#//KRendering">
       <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
         <details key="documentation" value="the referenced rendering"/>
       </eAnnotations>
@@ -249,7 +252,6 @@
         <details key="documentation" value="whether the text should be clipped if not enough space is available to display all of it&#xA;if set to false this forces the parent node to increase its size when necessary"/>
       </eAnnotations>
     </eStructuralFeatures>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="scaling" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="KPlacement" abstract="true" interface="true">
     <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
@@ -332,11 +334,6 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="figureObject" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"
         transient="true"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="KForegroundColor" eSuperTypes="#//KColor">
-    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-      <details key="documentation" value="Specifies the ForegroundColor of an element"/>
-    </eAnnotations>
-  </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="KColor" abstract="true" eSuperTypes="#//KStyle">
     <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
       <details key="documentation" value="Specifies an RGB color. "/>
@@ -356,11 +353,6 @@
         <details key="documentation" value="the blue component of a color"/>
       </eAnnotations>
     </eStructuralFeatures>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="KBackgroundColor" eSuperTypes="#//KColor">
-    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-      <details key="documentation" value="specifies a background color for an element"/>
-    </eAnnotations>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="KLineWidth" eSuperTypes="#//KStyle">
     <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
@@ -467,18 +459,22 @@
       <details key="documentation" value="creates a rounded edge"/>
     </eAnnotations>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="KForegroundAlpha" eSuperTypes="#//KAlpha">
+  <eClassifiers xsi:type="ecore:EClass" name="KForegroundStyle" eSuperTypes="#//KGroundStyle">
     <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
       <details key="documentation" value="Defines the alphaChannel of a foregroudRendering"/>
     </eAnnotations>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="KAlpha" abstract="true" eSuperTypes="#//KStyle">
+  <eClassifiers xsi:type="ecore:EClass" name="KGroundStyle" abstract="true" eSuperTypes="#//KStyle">
     <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
       <details key="documentation" value="Defines the alphaChannel of an Object"/>
     </eAnnotations>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="alpha" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EFloat"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="alpha" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="targetAlpha" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="color" lowerBound="1" eType="#//KColor"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="targetColor" eType="#//KColor"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="gradientAngle" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EFloat"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="KBackgroundAlpha" eSuperTypes="#//KAlpha">
+  <eClassifiers xsi:type="ecore:EClass" name="KBackgroundStyle" eSuperTypes="#//KGroundStyle">
     <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
       <details key="documentation" value="Defines the alphaChannel of a background of a rendering"/>
     </eAnnotations>
@@ -495,6 +491,8 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="KFontSize" eSuperTypes="#//KStyle">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="size" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="scaleWithZoom" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"
+        defaultValueLiteral="false"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="KRoundedBendsPolyline" eSuperTypes="#//KPolyline">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="bendRadius" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EFloat"/>
@@ -506,18 +504,12 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="rotation" lowerBound="1"
         eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EFloat"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="KGradientStyle" eSuperTypes="#//KStyle">
-    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-      <details key="documentation" value="Creates a colorgradient with startColor and endColor and according angle"/>
-    </eAnnotations>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="angle" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EFloat"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="startColor" eType="#//KColor"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="endColor" eType="#//KColor"/>
-  </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="KLineCapStyle" eSuperTypes="#//KStyle">
     <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
       <details key="documentation" value="implements different line ending styles"/>
     </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="lineCapStyle" lowerBound="1"
+        eType="#//LineCapStyle"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="KAction" abstract="true">
     <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
@@ -586,5 +578,26 @@
     </eAnnotations>
     <eStructuralFeatures xsi:type="ecore:EReference" name="styles" upperBound="-1"
         eType="#//KStyle" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="LineCapStyle">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="LineCapStyles analog to SWT LineCapStyles"/>
+    </eAnnotations>
+    <eLiterals name="CAP_FLAT" value="1" literal=""/>
+    <eLiterals name="CAP_ROUND" value="2"/>
+    <eLiterals name="CAP_SQUARE" value="3"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="KVisibility" eSuperTypes="#//KStyle">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="defines whether an object is visible or not"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="isVisible" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean" defaultValueLiteral="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="KShadow" eSuperTypes="#//KStyle">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="xOffset" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EFloat"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="yOffset" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EFloat"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="blur" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EFloat"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="color" eType="#//KColor"/>
   </eClassifiers>
 </ecore:EPackage>

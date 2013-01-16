@@ -74,6 +74,7 @@ import de.cau.cs.kieler.core.krendering.KTrigger;
 import de.cau.cs.kieler.core.krendering.KVerticalAlignment;
 import de.cau.cs.kieler.core.krendering.KXPosition;
 import de.cau.cs.kieler.core.krendering.KYPosition;
+import de.cau.cs.kieler.core.krendering.LineCapStyle;
 import de.cau.cs.kieler.core.krendering.LineStyle;
 import de.cau.cs.kieler.core.krendering.VerticalAlignment;
 
@@ -497,6 +498,13 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
      * @generated
      */
     private EEnum kTriggerEEnum = null;
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    private EEnum lineCapStyleEEnum = null;
 
     /**
      * Creates an instance of the model <b>Package</b>, registered with
@@ -1566,6 +1574,15 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
      * <!-- end-user-doc -->
      * @generated
      */
+    public EAttribute getKLineCapStyle_LineCapStyle() {
+        return (EAttribute)kLineCapStyleEClass.getEStructuralFeatures().get(0);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
     public EClass getKAction() {
         return kActionEClass;
     }
@@ -1730,6 +1747,15 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
      */
     public EEnum getKTrigger() {
         return kTriggerEEnum;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EEnum getLineCapStyle() {
+        return lineCapStyleEEnum;
     }
 
     /**
@@ -1917,6 +1943,7 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
         createEReference(kGradientStyleEClass, KGRADIENT_STYLE__END_COLOR);
 
         kLineCapStyleEClass = createEClass(KLINE_CAP_STYLE);
+        createEAttribute(kLineCapStyleEClass, KLINE_CAP_STYLE__LINE_CAP_STYLE);
 
         kActionEClass = createEClass(KACTION);
         createEAttribute(kActionEClass, KACTION__ID);
@@ -1944,6 +1971,7 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
         verticalAlignmentEEnum = createEEnum(VERTICAL_ALIGNMENT);
         jointPointStyleEEnum = createEEnum(JOINT_POINT_STYLE);
         kTriggerEEnum = createEEnum(KTRIGGER);
+        lineCapStyleEEnum = createEEnum(LINE_CAP_STYLE);
     }
 
     /**
@@ -2182,6 +2210,7 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
         initEReference(getKGradientStyle_EndColor(), this.getKColor(), null, "endColor", null, 0, 1, KGradientStyle.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         initEClass(kLineCapStyleEClass, KLineCapStyle.class, "KLineCapStyle", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        initEAttribute(getKLineCapStyle_LineCapStyle(), this.getLineCapStyle(), "lineCapStyle", null, 1, 1, KLineCapStyle.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         initEClass(kActionEClass, KAction.class, "KAction", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         initEAttribute(getKAction_Id(), ecorePackage.getEString(), "id", null, 1, 1, KAction.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -2231,6 +2260,11 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
         initEEnum(kTriggerEEnum, KTrigger.class, "KTrigger");
         addEEnumLiteral(kTriggerEEnum, KTrigger.SINGLECLICK);
         addEEnumLiteral(kTriggerEEnum, KTrigger.DOUBLECLICK);
+
+        initEEnum(lineCapStyleEEnum, LineCapStyle.class, "LineCapStyle");
+        addEEnumLiteral(lineCapStyleEEnum, LineCapStyle.CAP_FLAT);
+        addEEnumLiteral(lineCapStyleEEnum, LineCapStyle.CAP_ROUND);
+        addEEnumLiteral(lineCapStyleEEnum, LineCapStyle.CAP_SQUARE);
 
         // Create resource
         createResource(eNS_URI);

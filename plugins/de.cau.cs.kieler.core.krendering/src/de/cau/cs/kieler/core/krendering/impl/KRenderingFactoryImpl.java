@@ -134,6 +134,8 @@ public class KRenderingFactoryImpl extends EFactoryImpl implements KRenderingFac
                 return createJointPointStyleFromString(eDataType, initialValue);
             case KRenderingPackage.KTRIGGER:
                 return createKTriggerFromString(eDataType, initialValue);
+            case KRenderingPackage.LINE_CAP_STYLE:
+                return createLineCapStyleFromString(eDataType, initialValue);
             default:
                 throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
         }
@@ -157,6 +159,8 @@ public class KRenderingFactoryImpl extends EFactoryImpl implements KRenderingFac
                 return convertJointPointStyleToString(eDataType, instanceValue);
             case KRenderingPackage.KTRIGGER:
                 return convertKTriggerToString(eDataType, instanceValue);
+            case KRenderingPackage.LINE_CAP_STYLE:
+                return convertLineCapStyleToString(eDataType, instanceValue);
             default:
                 throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
         }
@@ -689,6 +693,26 @@ public class KRenderingFactoryImpl extends EFactoryImpl implements KRenderingFac
      * @generated
      */
     public String convertKTriggerToString(EDataType eDataType, Object instanceValue) {
+        return instanceValue == null ? null : instanceValue.toString();
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public LineCapStyle createLineCapStyleFromString(EDataType eDataType, String initialValue) {
+        LineCapStyle result = LineCapStyle.get(initialValue);
+        if (result == null) throw new IllegalArgumentException("The value '" + initialValue + "' is not a valid enumerator of '" + eDataType.getName() + "'");
+        return result;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public String convertLineCapStyleToString(EDataType eDataType, Object instanceValue) {
         return instanceValue == null ? null : instanceValue.toString();
     }
 
