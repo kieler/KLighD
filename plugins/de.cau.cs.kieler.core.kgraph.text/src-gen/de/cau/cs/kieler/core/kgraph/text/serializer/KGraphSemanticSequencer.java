@@ -31,6 +31,7 @@ import de.cau.cs.kieler.core.krendering.KGridPlacementData;
 import de.cau.cs.kieler.core.krendering.KHorizontalAlignment;
 import de.cau.cs.kieler.core.krendering.KImage;
 import de.cau.cs.kieler.core.krendering.KLeftPosition;
+import de.cau.cs.kieler.core.krendering.KLineCapStyle;
 import de.cau.cs.kieler.core.krendering.KLineStyle;
 import de.cau.cs.kieler.core.krendering.KLineWidth;
 import de.cau.cs.kieler.core.krendering.KPointPlacementData;
@@ -281,6 +282,13 @@ public class KGraphSemanticSequencer extends KRenderingSemanticSequencer {
 				if(context == grammarAccess.getKLeftPositionRule() ||
 				   context == grammarAccess.getKXPositionRule()) {
 					sequence_KLeftPosition(context, (KLeftPosition) semanticObject); 
+					return; 
+				}
+				else break;
+			case KRenderingPackage.KLINE_CAP_STYLE:
+				if(context == grammarAccess.getKLineCapStyleRule() ||
+				   context == grammarAccess.getKStyleRule()) {
+					sequence_KLineCapStyle(context, (KLineCapStyle) semanticObject); 
 					return; 
 				}
 				else break;

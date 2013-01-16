@@ -1313,71 +1313,81 @@ ruleKStyle returns [EObject current=null]
 
     |
     { 
-        newCompositeNode(grammarAccess.getKStyleAccess().getKRotationParserRuleCall_5()); 
+        newCompositeNode(grammarAccess.getKStyleAccess().getKLineCapStyleParserRuleCall_5()); 
     }
-    this_KRotation_5=ruleKRotation
+    this_KLineCapStyle_5=ruleKLineCapStyle
     { 
-        $current = $this_KRotation_5.current; 
+        $current = $this_KLineCapStyle_5.current; 
         afterParserOrEnumRuleCall();
     }
 
     |
     { 
-        newCompositeNode(grammarAccess.getKStyleAccess().getKFontBoldParserRuleCall_6()); 
+        newCompositeNode(grammarAccess.getKStyleAccess().getKRotationParserRuleCall_6()); 
     }
-    this_KFontBold_6=ruleKFontBold
+    this_KRotation_6=ruleKRotation
     { 
-        $current = $this_KFontBold_6.current; 
+        $current = $this_KRotation_6.current; 
         afterParserOrEnumRuleCall();
     }
 
     |
     { 
-        newCompositeNode(grammarAccess.getKStyleAccess().getKFontItalicParserRuleCall_7()); 
+        newCompositeNode(grammarAccess.getKStyleAccess().getKFontBoldParserRuleCall_7()); 
     }
-    this_KFontItalic_7=ruleKFontItalic
+    this_KFontBold_7=ruleKFontBold
     { 
-        $current = $this_KFontItalic_7.current; 
+        $current = $this_KFontBold_7.current; 
         afterParserOrEnumRuleCall();
     }
 
     |
     { 
-        newCompositeNode(grammarAccess.getKStyleAccess().getKFontNameParserRuleCall_8()); 
+        newCompositeNode(grammarAccess.getKStyleAccess().getKFontItalicParserRuleCall_8()); 
     }
-    this_KFontName_8=ruleKFontName
+    this_KFontItalic_8=ruleKFontItalic
     { 
-        $current = $this_KFontName_8.current; 
+        $current = $this_KFontItalic_8.current; 
         afterParserOrEnumRuleCall();
     }
 
     |
     { 
-        newCompositeNode(grammarAccess.getKStyleAccess().getKFontSizeParserRuleCall_9()); 
+        newCompositeNode(grammarAccess.getKStyleAccess().getKFontNameParserRuleCall_9()); 
     }
-    this_KFontSize_9=ruleKFontSize
+    this_KFontName_9=ruleKFontName
     { 
-        $current = $this_KFontSize_9.current; 
+        $current = $this_KFontName_9.current; 
         afterParserOrEnumRuleCall();
     }
 
     |
     { 
-        newCompositeNode(grammarAccess.getKStyleAccess().getKVerticalAlignmentParserRuleCall_10()); 
+        newCompositeNode(grammarAccess.getKStyleAccess().getKFontSizeParserRuleCall_10()); 
     }
-    this_KVerticalAlignment_10=ruleKVerticalAlignment
+    this_KFontSize_10=ruleKFontSize
     { 
-        $current = $this_KVerticalAlignment_10.current; 
+        $current = $this_KFontSize_10.current; 
         afterParserOrEnumRuleCall();
     }
 
     |
     { 
-        newCompositeNode(grammarAccess.getKStyleAccess().getKHorizontalAlignmentParserRuleCall_11()); 
+        newCompositeNode(grammarAccess.getKStyleAccess().getKVerticalAlignmentParserRuleCall_11()); 
     }
-    this_KHorizontalAlignment_11=ruleKHorizontalAlignment
+    this_KVerticalAlignment_11=ruleKVerticalAlignment
     { 
-        $current = $this_KHorizontalAlignment_11.current; 
+        $current = $this_KVerticalAlignment_11.current; 
+        afterParserOrEnumRuleCall();
+    }
+
+    |
+    { 
+        newCompositeNode(grammarAccess.getKStyleAccess().getKHorizontalAlignmentParserRuleCall_12()); 
+    }
+    this_KHorizontalAlignment_12=ruleKHorizontalAlignment
+    { 
+        $current = $this_KHorizontalAlignment_12.current; 
         afterParserOrEnumRuleCall();
     }
 )
@@ -5517,6 +5527,55 @@ ruleKLineStyle returns [EObject current=null]
 
 
 
+// Entry rule entryRuleKLineCapStyle
+entryRuleKLineCapStyle returns [EObject current=null] 
+	:
+	{ newCompositeNode(grammarAccess.getKLineCapStyleRule()); }
+	 iv_ruleKLineCapStyle=ruleKLineCapStyle 
+	 { $current=$iv_ruleKLineCapStyle.current; } 
+	 EOF 
+;
+
+// Rule KLineCapStyle
+ruleKLineCapStyle returns [EObject current=null] 
+    @init { enterRule(); 
+    }
+    @after { leaveRule(); }:
+((
+    {
+        $current = forceCreateModelElement(
+            grammarAccess.getKLineCapStyleAccess().getKLineCapStyleAction_0(),
+            $current);
+    }
+)	otherlv_1='lineCapStyle' 
+    {
+    	newLeafNode(otherlv_1, grammarAccess.getKLineCapStyleAccess().getLineCapStyleKeyword_1());
+    }
+(
+(
+		{ 
+	        newCompositeNode(grammarAccess.getKLineCapStyleAccess().getLineCapStyleLineCapStyleEnumRuleCall_2_0()); 
+	    }
+		lv_lineCapStyle_2_0=ruleLineCapStyle		{
+	        if ($current==null) {
+	            $current = createModelElementForParent(grammarAccess.getKLineCapStyleRule());
+	        }
+       		set(
+       			$current, 
+       			"lineCapStyle",
+        		lv_lineCapStyle_2_0, 
+        		"LineCapStyle");
+	        afterParserOrEnumRuleCall();
+	    }
+
+)
+))
+;
+
+
+
+
+
 // Entry rule entryRuleKRotation
 entryRuleKRotation returns [EObject current=null] 
 	:
@@ -6812,6 +6871,31 @@ ruleLineStyle returns [Enumerator current=null]
 	{
         $current = grammarAccess.getLineStyleAccess().getDASHDOTDOTEnumLiteralDeclaration_4().getEnumLiteral().getInstance();
         newLeafNode(enumLiteral_4, grammarAccess.getLineStyleAccess().getDASHDOTDOTEnumLiteralDeclaration_4()); 
+    }
+));
+
+
+
+// Rule LineCapStyle
+ruleLineCapStyle returns [Enumerator current=null] 
+    @init { enterRule(); }
+    @after { leaveRule(); }:
+((	enumLiteral_0='CAP_FLAT' 
+	{
+        $current = grammarAccess.getLineCapStyleAccess().getCAP_FLATEnumLiteralDeclaration_0().getEnumLiteral().getInstance();
+        newLeafNode(enumLiteral_0, grammarAccess.getLineCapStyleAccess().getCAP_FLATEnumLiteralDeclaration_0()); 
+    }
+)
+    |(	enumLiteral_1='CAP_ROUND' 
+	{
+        $current = grammarAccess.getLineCapStyleAccess().getCAP_ROUNDEnumLiteralDeclaration_1().getEnumLiteral().getInstance();
+        newLeafNode(enumLiteral_1, grammarAccess.getLineCapStyleAccess().getCAP_ROUNDEnumLiteralDeclaration_1()); 
+    }
+)
+    |(	enumLiteral_2='CAP_SQUARE' 
+	{
+        $current = grammarAccess.getLineCapStyleAccess().getCAP_SQUAREEnumLiteralDeclaration_2().getEnumLiteral().getInstance();
+        newLeafNode(enumLiteral_2, grammarAccess.getLineCapStyleAccess().getCAP_SQUAREEnumLiteralDeclaration_2()); 
     }
 ));
 

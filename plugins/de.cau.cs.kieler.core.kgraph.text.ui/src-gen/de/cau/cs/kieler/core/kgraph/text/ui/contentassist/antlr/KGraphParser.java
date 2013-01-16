@@ -49,6 +49,7 @@ public class KGraphParser extends AbstractContentAssistParser {
 					put(grammarAccess.getEBooleanAccess().getAlternatives(), "rule__EBoolean__Alternatives");
 					put(grammarAccess.getEStringAccess().getAlternatives(), "rule__EString__Alternatives");
 					put(grammarAccess.getLineStyleAccess().getAlternatives(), "rule__LineStyle__Alternatives");
+					put(grammarAccess.getLineCapStyleAccess().getAlternatives(), "rule__LineCapStyle__Alternatives");
 					put(grammarAccess.getVerticalAlignmentAccess().getAlternatives(), "rule__VerticalAlignment__Alternatives");
 					put(grammarAccess.getHorizontalAlignmentAccess().getAlternatives(), "rule__HorizontalAlignment__Alternatives");
 					put(grammarAccess.getKNodeAccess().getGroup(), "rule__KNode__Group__0");
@@ -201,6 +202,7 @@ public class KGraphParser extends AbstractContentAssistParser {
 					put(grammarAccess.getKGridPlacementDataAccess().getGroup_7(), "rule__KGridPlacementData__Group_7__0");
 					put(grammarAccess.getKGridPlacementDataAccess().getGroup_8(), "rule__KGridPlacementData__Group_8__0");
 					put(grammarAccess.getKAreaPlacementDataAccess().getGroup(), "rule__KAreaPlacementData__Group__0");
+					put(grammarAccess.getKPointPlacementDataAccess().getGroup(), "rule__KPointPlacementData__Group__0");
 					put(grammarAccess.getKPositionAccess().getGroup(), "rule__KPosition__Group__0");
 					put(grammarAccess.getKLeftPositionAccess().getGroup(), "rule__KLeftPosition__Group__0");
 					put(grammarAccess.getKRightPositionAccess().getGroup(), "rule__KRightPosition__Group__0");
@@ -212,6 +214,7 @@ public class KGraphParser extends AbstractContentAssistParser {
 					put(grammarAccess.getKForegroundAlphaAccess().getGroup(), "rule__KForegroundAlpha__Group__0");
 					put(grammarAccess.getKBackgroundAlphaAccess().getGroup(), "rule__KBackgroundAlpha__Group__0");
 					put(grammarAccess.getKLineStyleAccess().getGroup(), "rule__KLineStyle__Group__0");
+					put(grammarAccess.getKLineCapStyleAccess().getGroup(), "rule__KLineCapStyle__Group__0");
 					put(grammarAccess.getKRotationAccess().getGroup(), "rule__KRotation__Group__0");
 					put(grammarAccess.getKFontBoldAccess().getGroup(), "rule__KFontBold__Group__0");
 					put(grammarAccess.getKFontItalicAccess().getGroup(), "rule__KFontItalic__Group__0");
@@ -384,6 +387,9 @@ public class KGraphParser extends AbstractContentAssistParser {
 					put(grammarAccess.getKGridPlacementDataAccess().getBottomRightAssignment_8_1(), "rule__KGridPlacementData__BottomRightAssignment_8_1");
 					put(grammarAccess.getKAreaPlacementDataAccess().getTopLeftAssignment_3(), "rule__KAreaPlacementData__TopLeftAssignment_3");
 					put(grammarAccess.getKAreaPlacementDataAccess().getBottomRightAssignment_6(), "rule__KAreaPlacementData__BottomRightAssignment_6");
+					put(grammarAccess.getKPointPlacementDataAccess().getReferencePointAssignment_3(), "rule__KPointPlacementData__ReferencePointAssignment_3");
+					put(grammarAccess.getKPointPlacementDataAccess().getVerticalAlignmentAssignment_6(), "rule__KPointPlacementData__VerticalAlignmentAssignment_6");
+					put(grammarAccess.getKPointPlacementDataAccess().getHorizontalAlignmentAssignment_9(), "rule__KPointPlacementData__HorizontalAlignmentAssignment_9");
 					put(grammarAccess.getKPositionAccess().getXAssignment_0(), "rule__KPosition__XAssignment_0");
 					put(grammarAccess.getKPositionAccess().getYAssignment_2(), "rule__KPosition__YAssignment_2");
 					put(grammarAccess.getKLeftPositionAccess().getAbsoluteAssignment_2(), "rule__KLeftPosition__AbsoluteAssignment_2");
@@ -410,6 +416,7 @@ public class KGraphParser extends AbstractContentAssistParser {
 					put(grammarAccess.getKBackgroundAlphaAccess().getPropagateToChildrenAssignment_3(), "rule__KBackgroundAlpha__PropagateToChildrenAssignment_3");
 					put(grammarAccess.getKLineStyleAccess().getLineStyleAssignment_2(), "rule__KLineStyle__LineStyleAssignment_2");
 					put(grammarAccess.getKLineStyleAccess().getPropagateToChildrenAssignment_3(), "rule__KLineStyle__PropagateToChildrenAssignment_3");
+					put(grammarAccess.getKLineCapStyleAccess().getLineCapStyleAssignment_2(), "rule__KLineCapStyle__LineCapStyleAssignment_2");
 					put(grammarAccess.getKRotationAccess().getRotationAssignment_2(), "rule__KRotation__RotationAssignment_2");
 					put(grammarAccess.getKRotationAccess().getPropagateToChildrenAssignment_3(), "rule__KRotation__PropagateToChildrenAssignment_3");
 					put(grammarAccess.getKFontBoldAccess().getBoldAssignment_1(), "rule__KFontBold__BoldAssignment_1");

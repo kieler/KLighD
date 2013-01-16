@@ -31,7 +31,7 @@ KPlacementData returns KPlacementData:
     KDecoratorPlacementData | KGridPlacementData | KAreaPlacementData | KPointPlacementData;
 
 KStyle returns KStyle:
-    KForegroundColor | KBackgroundColor | KLineWidth | KAlpha | KLineStyle | KRotation | KFontBold | KFontItalic | KFontName | KFontSize | KVerticalAlignment | KHorizontalAlignment; //| KGradient;
+    KForegroundColor | KBackgroundColor | KLineWidth | KAlpha | KLineStyle | KLineCapStyle | KRotation | KFontBold | KFontItalic | KFontName | KFontSize | KVerticalAlignment | KHorizontalAlignment; //| KGradient;
 
 KPlacement returns KPlacement:
     KGridPlacement;
@@ -263,6 +263,10 @@ KBackgroundAlpha returns KBackgroundAlpha:
 KLineStyle returns KLineStyle:
     {KLineStyle}
     'lineStyle' lineStyle=LineStyle propagateToChildren?='!'?;
+
+KLineCapStyle returns KLineCapStyle:
+     {KLineCapStyle}
+     'lineCapStyle' lineCapStyle=LineCapStyle;
     
 KRotation returns KRotation:
     {KRotation}
@@ -304,6 +308,9 @@ KGridPlacement returns KGridPlacement:
 
 enum LineStyle returns LineStyle:
     SOLID = 'SOLID' | DASH = 'DASH' | DOT = 'DOT' | DASHDOT = 'DASHDOT' | DASHDOTDOT = 'DASHDOTDOT';
+
+enum LineCapStyle returns LineCapStyle:
+    CAP_FLAT = 'CAP_FLAT' | CAP_ROUND = 'CAP_ROUND' | CAP_SQUARE = 'CAP_SQUARE';
 
 enum VerticalAlignment returns VerticalAlignment:
     TOP = 'TOP' | CENTER = 'CENTER' | BOTTOM = 'BOTTOM';

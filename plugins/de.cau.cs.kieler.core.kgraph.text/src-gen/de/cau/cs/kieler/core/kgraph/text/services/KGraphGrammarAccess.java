@@ -1007,8 +1007,8 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 
 	////| KGradient;
 	//KStyle:
-	//	KForegroundColor | KBackgroundColor | KLineWidth | KAlpha | KLineStyle | KRotation | KFontBold | KFontItalic |
-	//	KFontName | KFontSize | KVerticalAlignment | KHorizontalAlignment;
+	//	KForegroundColor | KBackgroundColor | KLineWidth | KAlpha | KLineStyle | KLineCapStyle | KRotation | KFontBold |
+	//	KFontItalic | KFontName | KFontSize | KVerticalAlignment | KHorizontalAlignment;
 	public KRenderingGrammarAccess.KStyleElements getKStyleAccess() {
 		return gaKRendering.getKStyleAccess();
 	}
@@ -1370,6 +1370,16 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 		return getKLineStyleAccess().getRule();
 	}
 
+	//KLineCapStyle:
+	//	{KLineCapStyle} "lineCapStyle" lineCapStyle=LineCapStyle;
+	public KRenderingGrammarAccess.KLineCapStyleElements getKLineCapStyleAccess() {
+		return gaKRendering.getKLineCapStyleAccess();
+	}
+	
+	public ParserRule getKLineCapStyleRule() {
+		return getKLineCapStyleAccess().getRule();
+	}
+
 	//KRotation:
 	//	{KRotation} "rotation" rotation=EFloat propagateToChildren?="!"?;
 	public KRenderingGrammarAccess.KRotationElements getKRotationAccess() {
@@ -1464,6 +1474,16 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	
 	public EnumRule getLineStyleRule() {
 		return getLineStyleAccess().getRule();
+	}
+
+	//enum LineCapStyle:
+	//	CAP_FLAT | CAP_ROUND | CAP_SQUARE;
+	public KRenderingGrammarAccess.LineCapStyleElements getLineCapStyleAccess() {
+		return gaKRendering.getLineCapStyleAccess();
+	}
+	
+	public EnumRule getLineCapStyleRule() {
+		return getLineCapStyleAccess().getRule();
 	}
 
 	//enum VerticalAlignment:

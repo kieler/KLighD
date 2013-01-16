@@ -26,6 +26,7 @@ import de.cau.cs.kieler.core.krendering.KGridPlacementData;
 import de.cau.cs.kieler.core.krendering.KHorizontalAlignment;
 import de.cau.cs.kieler.core.krendering.KImage;
 import de.cau.cs.kieler.core.krendering.KLeftPosition;
+import de.cau.cs.kieler.core.krendering.KLineCapStyle;
 import de.cau.cs.kieler.core.krendering.KLineStyle;
 import de.cau.cs.kieler.core.krendering.KLineWidth;
 import de.cau.cs.kieler.core.krendering.KPointPlacementData;
@@ -241,6 +242,13 @@ public class KRenderingSemanticSequencer extends KLayoutDataSemanticSequencer {
 				if(context == grammarAccess.getKLeftPositionRule() ||
 				   context == grammarAccess.getKXPositionRule()) {
 					sequence_KLeftPosition(context, (KLeftPosition) semanticObject); 
+					return; 
+				}
+				else break;
+			case KRenderingPackage.KLINE_CAP_STYLE:
+				if(context == grammarAccess.getKLineCapStyleRule() ||
+				   context == grammarAccess.getKStyleRule()) {
+					sequence_KLineCapStyle(context, (KLineCapStyle) semanticObject); 
 					return; 
 				}
 				else break;
@@ -604,6 +612,15 @@ public class KRenderingSemanticSequencer extends KLayoutDataSemanticSequencer {
 		feeder.accept(grammarAccess.getKLeftPositionAccess().getAbsoluteEFloatParserRuleCall_2_0(), semanticObject.getAbsolute());
 		feeder.accept(grammarAccess.getKLeftPositionAccess().getRelativeEFloatParserRuleCall_3_0(), semanticObject.getRelative());
 		feeder.finish();
+	}
+	
+	
+	/**
+	 * Constraint:
+	 *     lineCapStyle=LineCapStyle
+	 */
+	protected void sequence_KLineCapStyle(EObject context, KLineCapStyle semanticObject) {
+		genericSequencer.createSequence(context, semanticObject);
 	}
 	
 	
