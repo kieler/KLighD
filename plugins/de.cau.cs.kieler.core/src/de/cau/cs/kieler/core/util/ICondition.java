@@ -21,6 +21,7 @@ package de.cau.cs.kieler.core.util;
  * @author msp
  * @deprecated use {@code com.google.common.base.Predicate} instead (contained in Guava)
  */
+@Deprecated
 public interface ICondition<T> {
 
     /**

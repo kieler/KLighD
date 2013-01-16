@@ -84,6 +84,7 @@ import de.cau.cs.kieler.core.util.Pair;
 import de.cau.cs.kieler.klighd.KlighdPlugin;
 import de.cau.cs.kieler.klighd.krendering.KCustomRenderingWrapperFactory;
 import de.cau.cs.kieler.klighd.piccolo.krendering.KCustomConnectionFigureNode;
+import de.cau.cs.kieler.klighd.piccolo.krendering.KDecoratorNode;
 import de.cau.cs.kieler.klighd.piccolo.krendering.KEdgeNode;
 import de.cau.cs.kieler.klighd.piccolo.krendering.util.PlacementUtil;
 import de.cau.cs.kieler.klighd.piccolo.krendering.util.PlacementUtil.Decoration;
@@ -615,7 +616,7 @@ public abstract class AbstractRenderingController<S extends KGraphElement, T ext
                 PlacementUtil.asDecoratorPlacementData(rendering.getPlacementData()), parent);
 
         // create an empty node for the decorator
-        final PEmptyNode decorator = new PEmptyNode();
+        final KDecoratorNode decorator = new KDecoratorNode(rendering);
 
         // NodeUtil.applyTranslation(decorator, decoration.getOrigin());
         parent.addChild(decorator);
@@ -623,9 +624,13 @@ public abstract class AbstractRenderingController<S extends KGraphElement, T ext
         // create the rendering and receive its controller
         final PNodeController<?> controller = createRendering(rendering, styles, decorator,
                 decoration.getBounds(), key);
+        decorator.setRepresentationNode(controller.getNode());
 
         // apply the initial rotation
         decorator.setRotation(decoration.getRotation());
+        
+        // let the decorator be pickable
+        decorator.setPickable(true);
 
         // add a listener on the parent's path
         addListener(PPath.PROPERTY_PATH, parent, controller.getNode(),
