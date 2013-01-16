@@ -85,6 +85,18 @@ public class PSWTAdvancedPath extends PNode {
         DASHDOT,
         /** dash followed by two dots. */
         DASHDOTDOT
+    }  
+    
+    /**
+     * The possible line cap styles for an advanced path.
+     */
+    public enum LineCapStyle {
+        /** flat. */
+        CAP_FLAT,
+        /** round. */
+        CAP_ROUND,
+        /** square. */
+        CAP_SQUARE
     }
     
     /**
@@ -109,8 +121,8 @@ public class PSWTAdvancedPath extends PNode {
     private double lineWidth = 1.0;
     /** the line style for this path. */
     private int lineStyle = SWT.LINE_SOLID;
-    /** the line cap style for this path. */
-    private int lineCap = SWT.CAP_FLAT;
+    /** the line cap style for this path*/
+    private int lineCapStyle = SWT.CAP_FLAT;
 
     private boolean updatingBoundsFromPath;
     private Shape origShape;
@@ -453,7 +465,7 @@ public class PSWTAdvancedPath extends PNode {
         Paint p = getPaint();
         g2.setLineWidth(lineWidth);
         g2.setLineStyle(lineStyle);
-        g2.setLineCap(lineCap);
+        g2.setLineCap(lineCapStyle);
 
         if (internalXForm != null) {
             g2.transform(internalXForm);
@@ -967,6 +979,43 @@ public class PSWTAdvancedPath extends PNode {
         case SWT.LINE_SOLID:
         default:
             return LineStyle.SOLID;
+        }
+    }
+    
+    /**
+     * Sets the line cap style for this path.
+     * 
+     * @param newLineCapStyle
+     *            the line cap style
+     */
+    public void setLineCapStyle(final LineCapStyle newLineCapStyle) {
+        switch (newLineCapStyle) {
+        case CAP_FLAT:
+            lineCapStyle = SWT.CAP_FLAT;
+            break;
+        case CAP_ROUND:
+            lineCapStyle = SWT.CAP_ROUND;
+            break;
+        case CAP_SQUARE:
+            lineCapStyle = SWT.CAP_SQUARE;
+            break;
+        }
+    }
+
+    /**
+     * Returns the line style of the path.
+     * 
+     * @return the line style
+     */
+    public LineCapStyle getLineCapStyle() {
+        switch (lineCapStyle) {
+        case SWT.CAP_ROUND:
+            return LineCapStyle.CAP_ROUND;
+        case SWT.CAP_SQUARE:
+            return LineCapStyle.CAP_SQUARE;
+        case SWT.CAP_FLAT:
+        default:
+            return LineCapStyle.CAP_FLAT;
         }
     }
 

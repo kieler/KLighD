@@ -94,6 +94,7 @@ public class PSWTSimpleSelectionHandle extends PNode {
         line.setPickable(false);
         line.setLineWidth(LINE_W);
         line.setLineStyle(PSWTAdvancedPath.LineStyle.DOT);
+        line.setLineCapStyle(PSWTAdvancedPath.LineCapStyle.CAP_FLAT);
         line.setStrokeColor(Color.black);
         return line;
     }

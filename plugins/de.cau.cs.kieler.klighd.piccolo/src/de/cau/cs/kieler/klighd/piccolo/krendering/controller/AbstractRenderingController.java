@@ -60,6 +60,7 @@ import de.cau.cs.kieler.core.krendering.KGridPlacementData;
 import de.cau.cs.kieler.core.krendering.KHorizontalAlignment;
 import de.cau.cs.kieler.core.krendering.KImage;
 import de.cau.cs.kieler.core.krendering.KLineStyle;
+import de.cau.cs.kieler.core.krendering.KLineCapStyle;
 import de.cau.cs.kieler.core.krendering.KLineWidth;
 import de.cau.cs.kieler.core.krendering.KPlacement;
 import de.cau.cs.kieler.core.krendering.KPolygon;
@@ -96,6 +97,7 @@ import de.cau.cs.kieler.klighd.piccolo.nodes.PAlignmentNode.VAlignment;
 import de.cau.cs.kieler.klighd.piccolo.nodes.PEmptyNode;
 import de.cau.cs.kieler.klighd.piccolo.nodes.PSWTAdvancedPath;
 import de.cau.cs.kieler.klighd.piccolo.nodes.PSWTAdvancedPath.LineStyle;
+import de.cau.cs.kieler.klighd.piccolo.nodes.PSWTAdvancedPath.LineCapStyle;
 import de.cau.cs.kieler.klighd.piccolo.nodes.PSWTTracingText;
 import de.cau.cs.kieler.klighd.piccolo.util.NodeUtil;
 import de.cau.cs.kieler.klighd.util.CrossDocumentContentAdapter;
@@ -1562,6 +1564,14 @@ public abstract class AbstractRenderingController<S extends KGraphElement, T ext
                     }
                     return true;
                 }
+                
+                // line cap style
+                public Boolean caseKLineCapStyle(final KLineCapStyle lcs) {
+                    if (theStyles.lineCapStyle == null) {
+                        theStyles.lineCapStyle = lcs;
+                    }
+                    return true;
+                }
 
                 // rotation
                 public Boolean caseKRotation(final KRotation r) {
@@ -1663,7 +1673,7 @@ public abstract class AbstractRenderingController<S extends KGraphElement, T ext
             controller.setAlpha(backgroundAlpha.getAlpha());
         }
 
-        // apply line style
+     // apply line style
         if (styles.lineStyle != null) {
             switch (styles.lineStyle.getLineStyle()) {
             case DASH:
@@ -1685,6 +1695,24 @@ public abstract class AbstractRenderingController<S extends KGraphElement, T ext
             }
         } else {
             controller.setLineStyle(LineStyle.SOLID);
+        }
+        
+     // apply line cap style
+        if (styles.lineCapStyle != null) {
+            switch (styles.lineCapStyle.getLineCapStyle()) {
+            case CAP_ROUND:
+                controller.setLineCapStyle(LineCapStyle.CAP_ROUND);
+                break;
+            case CAP_SQUARE:
+                controller.setLineCapStyle(LineCapStyle.CAP_SQUARE);
+                break;
+            case CAP_FLAT:
+            default:
+                controller.setLineCapStyle(LineCapStyle.CAP_FLAT);
+                break;
+            }
+        } else {
+            controller.setLineCapStyle(LineCapStyle.CAP_FLAT);
         }
 
         // apply rotation
@@ -1863,6 +1891,8 @@ public abstract class AbstractRenderingController<S extends KGraphElement, T ext
         private KBackgroundAlpha backgroundAlpha = null;
         /** the line style. */
         private KLineStyle lineStyle = null;
+        /** the line style. */
+        private KLineCapStyle lineCapStyle = null;
         /** the horizontal alignment. */
         private KRotation rotation = null;
         /** the horizontal alignment. */

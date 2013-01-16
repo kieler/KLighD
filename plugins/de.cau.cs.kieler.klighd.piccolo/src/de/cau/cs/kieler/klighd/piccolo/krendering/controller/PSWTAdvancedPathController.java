@@ -20,6 +20,8 @@ import java.awt.Color;
 
 import de.cau.cs.kieler.klighd.piccolo.nodes.PSWTAdvancedPath;
 import de.cau.cs.kieler.klighd.piccolo.nodes.PSWTAdvancedPath.LineStyle;
+import de.cau.cs.kieler.klighd.piccolo.nodes.PSWTAdvancedPath.LineCapStyle;
+
 
 /**
  * A node controller for the {@code PSWTAdvancedPath}.
@@ -88,6 +90,14 @@ public abstract class PSWTAdvancedPathController extends PNodeController<PSWTAdv
     @Override
     public void setLineStyle(final LineStyle lineStyle) {
         getNode().setLineStyle(lineStyle);
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setLineCapStyle(final LineCapStyle lineCapStyle) {
+        getNode().setLineCapStyle(lineCapStyle);
     }
 
     /**

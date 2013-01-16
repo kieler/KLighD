@@ -309,6 +309,7 @@ public class PSWTSimpleSelectionEventHandler extends PDragSequenceEventHandler {
         marquee =
                 PSWTAdvancedPath.createRectangle((float) point.getX(), (float) point.getY(), 0, 0);
         marquee.setLineStyle(PSWTAdvancedPath.LineStyle.DASH);
+        marquee.setLineCapStyle(PSWTAdvancedPath.LineCapStyle.CAP_FLAT);
         marquee.setStrokeColor(Color.black);
         marquee.setPaint(null);
         marquee.setPickable(false);

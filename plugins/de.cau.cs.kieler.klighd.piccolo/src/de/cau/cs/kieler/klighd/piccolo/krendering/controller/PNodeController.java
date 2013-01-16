@@ -21,6 +21,7 @@ import java.awt.Color;
 import de.cau.cs.kieler.klighd.piccolo.nodes.PAlignmentNode.HAlignment;
 import de.cau.cs.kieler.klighd.piccolo.nodes.PAlignmentNode.VAlignment;
 import de.cau.cs.kieler.klighd.piccolo.nodes.PSWTAdvancedPath.LineStyle;
+import de.cau.cs.kieler.klighd.piccolo.nodes.PSWTAdvancedPath.LineCapStyle;
 import edu.umd.cs.piccolo.PNode;
 import edu.umd.cs.piccolo.util.PBounds;
 
@@ -115,6 +116,16 @@ public abstract class PNodeController<T extends PNode> {
      *            the line style
      */
     public void setLineStyle(final LineStyle lineStyle) {
+        // do nothing
+    }
+    
+    /**
+     * Sets the line cap style of the associated node.
+     * 
+     * @param lineCapStyle
+     *            the line cap style
+     */
+    public void setLineCapStyle(final LineCapStyle lineCapStyle) {
         // do nothing
     }
 
