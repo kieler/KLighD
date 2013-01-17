@@ -544,7 +544,10 @@ public final class PlacementUtil {
         List<KRendering> childRenderings = container.getChildren();
 
         int numRows;
-        if (numColumns < 2) {
+        if (numColumns == -1){
+            numColumns = childRenderings.size();
+            numRows = 1;
+        } else if (numColumns < 2) {
             // if the number of columns is not set or is 1 then in each row is one rendering,
             // so numRows = number of elements to place
             numColumns = 1;
@@ -651,49 +654,6 @@ public final class PlacementUtil {
         minBounds.width = Math.max(minBounds.width, childBounds.width);
         minBounds.height = Math.max(minBounds.height, childBounds.height);
 
-        // update placement data of parent childArea gridPlacement if child grows
-        // search for the childArea
-        //KOCH
-//        KContainerRendering parent = container.getParent();
-//        if (parent != null) {
-//            List<KRendering> siblings = parent.getChildren();
-//            for (int i = 0; i < siblings.size(); i++) {
-//                KRendering currentSibling = siblings.get(i);
-//                if (currentSibling instanceof KChildArea) {
-//                    System.out.println("has");
-//                }
-//                else {
-//                    System.out.println("hasnt");
-//                }
-//            }
-//        } else {
-//            System.out.println("null");
-//        }
-
-        return minBounds;
-    }
-
-    /**
-     * 
-     * @param container
-     *            b
-     * @param minBounds
-     *            c
-     * @return d
-     */
-    public static Bounds estimateStackSize(final KContainerRendering container,
-            final Bounds minBounds) {
-
-        for (KRendering rendering : container.getChildren()) {
-
-            float insetWidth = 0;
-            float insetHeight = 0;
-            Bounds childBounds = estimateSize(rendering, new Bounds(minBounds.width - insetWidth,
-                    minBounds.height - insetHeight));
-
-            minBounds.width = Math.max(minBounds.width, childBounds.width + insetWidth);
-            minBounds.height = Math.max(minBounds.height, childBounds.height + insetHeight);
-        }
         return minBounds;
     }
 
@@ -1206,7 +1166,8 @@ public final class PlacementUtil {
         // the following prepares the placer
 
         // determine the required number of columns and rows
-        placer.numColumns = gridPlacement.getNumColumns() < 1 ? 1 : gridPlacement.getNumColumns();
+        int setColumns = gridPlacement.getNumColumns();
+        placer.numColumns = setColumns ==  -1 ? gpds.length : setColumns < 1 ? 1 : gridPlacement.getNumColumns();
         placer.numRows = (gpds.length - 1) / placer.numColumns + 1;
 
         // determine the column widths and row heights
@@ -1338,8 +1299,7 @@ public final class PlacementUtil {
             Bounds[] bounds = new Bounds[gpds.length];
             float availableParentWidth = (float) parentBounds.width;
             float availableParentHeight = (float) parentBounds.height;
-            // System.out.println(parentBounds.width+" "+parentBounds.height);
-
+            
             // calculate scaling and variable width/height per column/row
             float widthScale = 1;
             // determine the width of columns
@@ -1376,7 +1336,17 @@ public final class PlacementUtil {
                                 calculatedColumnWidth[i] += distribute;
                             }
                         }
-                    } // else we could do fixpoint-iteration to distribute it to other elements
+                    } else {
+                        // we could do fixpoint-iteration here to distribute it to other elements, but for now a single iteration has to be enough
+                        distribute = parentWidthToSpend / numColumns;
+                        for (int i = 0; i<numColumns; i++){
+                            if (calculatedColumnWidth[i]+distribute <= columnMinMaxWidth[i]){
+                                calculatedColumnWidth[i] += distribute;
+                            } else {
+                                calculatedColumnWidth[i] = columnMinMaxWidth[i];
+                            }
+                        }
+                    }
                 }
             }
 
@@ -1416,8 +1386,17 @@ public final class PlacementUtil {
                                 calculatedRowHeight[i] += distribute;
                             }
                         }
-                    } // else we could do fixpoint-iteration to distribute it to other elements
-                }
+                    } else {
+                        // we could do fixpoint-iteration here to distribute it to other elements, but for now a single iteration has to be enough
+                        distribute = parentHeightToSpend / numRows;
+                        for (int i = 0; i<numRows; i++){
+                            if (calculatedRowHeight[i]+distribute <= rowMinMaxHeight[i]){
+                                calculatedRowHeight[i] += distribute;
+                            } else {
+                                calculatedRowHeight[i] = rowMinMaxHeight[i];
+                            }
+                        }
+                    }}
             }
 
             // create the bounds
