@@ -23,6 +23,7 @@ import java.util.Set;
 
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;
+import org.eclipse.jface.action.IContributionItem;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.viewers.ISelection;
@@ -153,10 +154,17 @@ public class ContextViewer extends AbstractViewer<Object> implements IViewerEven
         }
 
         IMenuManager mm = viewPart.getViewSite().getActionBars().getMenuManager();
-        mm.removeAll();
+        for (IContributionItem item : mm.getItems()) {
+            // remove all contribution items that do not start with the prefix for permanent actions
+            if (item.getId() == null
+                    || !item.getId().startsWith(DiagramViewPart.PERMANENT_ACTION_PREFIX)) {
+                mm.remove(item);
+            }
+        }
 
         for (final Map.Entry<TransformationContext<?, ?>, Set<TransformationOption>> entry : context
                 .getTransformationOptions().entrySet()) {
+            mm.add(new Separator());
             
             for (final TransformationOption option : entry.getValue()) {
                 
@@ -189,7 +197,6 @@ public class ContextViewer extends AbstractViewer<Object> implements IViewerEven
                     }
                 }
             }
-            mm.add(new Separator());
         }
         viewPart.getViewSite().getActionBars().updateActionBars();
     }
