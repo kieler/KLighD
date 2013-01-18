@@ -52,7 +52,6 @@ import de.cau.cs.kieler.klighd.piccolo.krendering.ITracingElement;
 import de.cau.cs.kieler.klighd.piccolo.krendering.controller.GraphController;
 import de.cau.cs.kieler.klighd.piccolo.krendering.controller.RenderingContextData;
 import de.cau.cs.kieler.klighd.piccolo.nodes.PEmptyNode;
-import de.cau.cs.kieler.klighd.piccolo.ui.ExportKGraphAction;
 import de.cau.cs.kieler.klighd.piccolo.ui.SaveAsImageAction;
 import de.cau.cs.kieler.klighd.viewers.AbstractViewer;
 import edu.umd.cs.piccolo.PCamera;
@@ -126,11 +125,6 @@ public class PiccoloViewer extends AbstractViewer<KNode> implements INodeSelecti
         Action saveAsImageAction =
                 new SaveAsImageAction(this, Messages.PiccoloViewer_save_as_image_text);
         menuManager.add(saveAsImageAction);
-
-        // add the 'export-kgraph' action
-        Action exportKGraphAction =
-                new ExportKGraphAction(this, Messages.PiccoloViewer_export_kgraph_text);
-        menuManager.add(exportKGraphAction);
 
         // create the context menu
         Menu menu = menuManager.createContextMenu(composite);

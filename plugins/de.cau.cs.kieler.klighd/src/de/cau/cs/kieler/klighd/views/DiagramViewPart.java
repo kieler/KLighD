@@ -22,6 +22,7 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.action.Action;
+import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.dnd.DND;
@@ -82,6 +83,8 @@ public class DiagramViewPart extends ViewPart {
 
     /** the default name for this view. */
     public static final String DEFAULT_NAME = "Light Diagram";
+    /** the action identifier prefix for permanent menu contributions. */
+    public static final String PERMANENT_ACTION_PREFIX = "klighd.action";
     
     /** the viewer for this view part. */
     private ContextViewer viewer;
@@ -115,12 +118,26 @@ public class DiagramViewPart extends ViewPart {
         // create the options pane
         createOptionsContainer(parent);
         
+        // put some default actions into the view menu
+        fillViewMenu(getViewSite().getActionBars().getMenuManager());
+        
         // install a drop handler for the view (XXX this could be omitted)
         installDropHandler(diagramContainer);
         viewer.setModel("No model selected.", false);
         
         // register the context viewer as selection provider on the workbench
         getSite().setSelectionProvider(viewer);
+    }
+    
+    /**
+     * Fill the view menu with some contributions.
+     * 
+     * @param menuManager the menu manager
+     */
+    private void fillViewMenu(final IMenuManager menuManager) {
+        Action exportAction = new ExportAction(this);
+        exportAction.setId(PERMANENT_ACTION_PREFIX + ".export");
+        menuManager.add(exportAction);
     }
     
     /**

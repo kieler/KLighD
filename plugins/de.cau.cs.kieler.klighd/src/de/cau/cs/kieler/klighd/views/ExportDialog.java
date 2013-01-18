@@ -1,9 +1,9 @@
 /*
- * KIELER - Kiel Integrated Environment for Layout Eclipse Rich Client
+ * KIELER - Kiel Integrated Environment for Layout Eclipse RichClient
  *
  * http://www.informatik.uni-kiel.de/rtsys/kieler/
  * 
- * Copyright 2011 by
+ * Copyright 2010 by
  * + Christian-Albrechts-University of Kiel
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
@@ -11,9 +11,10 @@
  * This code is provided under the terms of the Eclipse Public License (EPL).
  * See the file epl-v10.html for the license text.
  */
-package de.cau.cs.kieler.klighd.piccolo.ui;
+package de.cau.cs.kieler.klighd.views;
 
 import java.io.File;
+import java.util.Collection;
 
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IResource;
@@ -25,12 +26,11 @@ import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.resource.JFaceResources;
-import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.graphics.Point;
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -43,68 +43,54 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.dialogs.SaveAsDialog;
 
-import de.cau.cs.kieler.klighd.piccolo.KlighdPiccoloPlugin;
+import de.cau.cs.kieler.kiml.service.TransformationService;
+import de.cau.cs.kieler.kiml.service.formats.GraphFormatData;
+import de.cau.cs.kieler.klighd.KlighdPlugin;
 
 /**
- * The 'export-kgraph' dialog for Piccolo.
- * Copied+modified from {@link de.cau.cs.kieler.klighd.piccolo.ui.SaveAsImageDialog}.
+ * The dialog that lets the user select a graph file format and a file to export a graph into.
  * 
- * @author chsch
+ * @author mri
+ * @author msp
  */
-public class ExportKGraphDialog extends Dialog {
-
-    /** the default dialog width. */
-    private static final int DEFAULT_WIDTH = 500;
-    /** the default dialog height. */
-    private static final int DEFAULT_HEIGHT = 270;
+public class ExportDialog extends Dialog {
 
     /** the preference key for the file path. */
-    private static final String PREFERENCE_FILE_PATH
-        = "exportKGraphDialog.filePath"; //$NON-NLS-1$
+    private static final String PREFERENCE_FILE_PATH = "exportDialog.filePath"; //$NON-NLS-1$
     /** the preference key for the workspace path. */
-    private static final String PREFERENCE_WORKSPACE_PATH
-        = "exportKGraphDialog.workspacePath"; //$NON-NLS-1$
-    /** the preference key for the image format. */
-    private static final String PREFERENCE_EXPORT_FORMAT
-        = "exportKGraphDialog.exportFormat"; //$NON-NLS-1$
-
-    /** the available image formats. */
-    private static final String[] EXPORT_FORMATS
-        = { "KGraph" }; //$NON-NLS-1$
+    private static final String PREFERENCE_WORKSPACE_PATH = "exportDialog.workspacePath"; //$NON-NLS-1$
+    /** the preference key for the selected exporter. */
+    private static final String PREFERENCE_EXPORTER = "exportDialog.exporter"; //$NON-NLS-1$
 
     /** the preference store. */
-    private IPreferenceStore preferenceStore = null;
-
+    private IPreferenceStore preferenceStore;
     /** the file text. */
     private Text fileText;
     /** the workspace path checkbox. */
     private Button workspacePathCheckbox;
     /** the file format combo. */
-    private Combo exportFormatCombo;
+    private Combo fileFormatCombo;
     /** the message image. */
     private Label messageImageLabel;
     /** the message label. */
     private Label messageLabel;
-
-    /** the selected path. */
-    private IPath path;
-    /** whether the selected path is workspace relative. */
-    private boolean workspacePath;
-    /** the selected SWT image format. */
-    private int swtImageFormat;
-    /** whether to render through the camera viewport. */
-    private boolean cameraViewport;
+    /** the last selected graph format data. */
+    private GraphFormatData lastFormat;
+    /** the export file path. */
+    private String exportFile;
+    /** is the selected path relative to the workspace? */
+    private boolean exportWorkspacePath;
 
     /**
-     * Constructs the dialog for saving a Piccolo scene graph as an image.
+     * Constructs an export dialog.
      * 
-     * @param parentShell
+     * @param parent
      *            the parent shell
      */
-    public ExportKGraphDialog(final Shell parentShell) {
-        super(parentShell);
+    public ExportDialog(final Shell parent) {
+        super(parent);
         // receive the preference store
-        preferenceStore = KlighdPiccoloPlugin.getDefault().getPreferenceStore();
+        preferenceStore = KlighdPlugin.getDefault().getPreferenceStore();
     }
 
     /**
@@ -124,9 +110,8 @@ public class ExportKGraphDialog extends Dialog {
     protected Control createDialogArea(final Composite parent) {
         Composite composite = (Composite) super.createDialogArea(parent);
         createFileGroup(composite);
-        createExportFormatGroup(composite);
+        createExportTypeGroup(composite);
         createMessageGroup(composite);
-
         return composite;
     }
 
@@ -134,17 +119,21 @@ public class ExportKGraphDialog extends Dialog {
     private static final int FILE_TEXT_WIDTH_HINT = 300;
     private static final int BROWSE_WIDTH_HINT = 150;
 
+    /**
+     * Create group for file selection.
+     * 
+     * @param parent the parent composite
+     */
     private void createFileGroup(final Composite parent) {
         Composite composite = createComposite(parent, FILE_GROUP_COLUMNS);
-
-        // label
+        // file label
         Label label = new Label(composite, SWT.NONE);
-        label.setText(Messages.ExportKGraphDialog_file_caption);
-
+        label.setText("&File:");
         // file path text
         fileText = new Text(composite, SWT.BORDER);
         // load path from preference store
-        fileText.setText(preferenceStore.getString(PREFERENCE_FILE_PATH));
+        String path = preferenceStore.getString(PREFERENCE_FILE_PATH);
+        fileText.setText(path);
         fileText.addModifyListener(new ModifyListener() {
             public void modifyText(final ModifyEvent e) {
                 validateFileText();
@@ -153,10 +142,9 @@ public class ExportKGraphDialog extends Dialog {
         GridData gridData = new GridData(SWT.FILL, SWT.NONE, true, false);
         gridData.widthHint = FILE_TEXT_WIDTH_HINT;
         fileText.setLayoutData(gridData);
-
         // browse workspace button
         Button button = new Button(composite, SWT.PUSH);
-        button.setText(Messages.ExportKGraphDialog_browse_workspace_caption);
+        button.setText("&Workspace...");
         gridData = new GridData(SWT.RIGHT, SWT.NONE, true, false);
         gridData.widthHint = BROWSE_WIDTH_HINT;
         button.setLayoutData(gridData);
@@ -165,24 +153,23 @@ public class ExportKGraphDialog extends Dialog {
                 handleWorkspaceBrowse();
             }
         });
-
         // is workspace path checkbox
         workspacePathCheckbox = new Button(composite, SWT.CHECK | SWT.LEFT);
-        workspacePathCheckbox.setText(Messages.ExportKGraphDialog_is_workspace_path_caption);
+        workspacePathCheckbox.setText("Is a workspace &path");
         gridData = new GridData(SWT.FILL, SWT.NONE, true, false);
         gridData.horizontalSpan = 2;
         workspacePathCheckbox.setLayoutData(gridData);
         // load option from preference store
-        workspacePathCheckbox.setSelection(preferenceStore.getBoolean(PREFERENCE_WORKSPACE_PATH));
+        boolean workspacePath = preferenceStore.getBoolean(PREFERENCE_WORKSPACE_PATH);
+        workspacePathCheckbox.setSelection(workspacePath);
         workspacePathCheckbox.addSelectionListener(new SelectionAdapter() {
             public void widgetSelected(final SelectionEvent event) {
                 validateFileText();
             }
         });
-
         // browse file system button
         button = new Button(composite, SWT.PUSH);
-        button.setText(Messages.ExportKGraphDialog_browse_file_system_caption);
+        button.setText("File &system...");
         gridData = new GridData(SWT.RIGHT, SWT.NONE, true, false);
         gridData.widthHint = BROWSE_WIDTH_HINT;
         button.setLayoutData(gridData);
@@ -193,35 +180,58 @@ public class ExportKGraphDialog extends Dialog {
         });
     }
 
-    private static final int IMAGE_FORMAT_COMBO_WIDTH_HINT = 210;
+    private static final int EXPORT_TYPE_COMBO_WIDTH_HINT = 210;
 
-    private void createExportFormatGroup(final Composite parent) {
+    /**
+     * Create group for export file format selection.
+     * 
+     * @param parent the parent composite
+     */
+    private void createExportTypeGroup(final Composite parent) {
         Composite composite = createComposite(parent, 2);
-
         // label
         Label label = new Label(composite, SWT.NONE);
-        label.setText(Messages.ExportKGraphDialog_export_format_caption);
-
-        // image formats
-        exportFormatCombo = new Combo(composite, SWT.DROP_DOWN | SWT.READ_ONLY);
-        exportFormatCombo.setItems(EXPORT_FORMATS);
-        // load image format index from preference store
-        int index = preferenceStore.getInt(PREFERENCE_EXPORT_FORMAT);
-        index = index < 0 || index >= EXPORT_FORMATS.length ? 0 : index;
-        exportFormatCombo.setText(EXPORT_FORMATS[index]);
-        exportFormatCombo.addSelectionListener(new SelectionAdapter() {
+        label.setText("File f&ormat:");
+        fileFormatCombo = new Combo(composite, SWT.DROP_DOWN | SWT.READ_ONLY);
+        Collection<GraphFormatData> formatData = TransformationService.getInstance().getFormatData();
+        String[] formatNames = new String[formatData.size()];
+        if (formatNames.length > 0) {
+            int i = 0;
+            for (GraphFormatData gfd : formatData) {
+                formatNames[i++] = gfd.getName();
+            }
+            fileFormatCombo.setItems(formatNames);
+            // get last exporter from preference store
+            String lastFormatName = preferenceStore.getString(PREFERENCE_EXPORTER);
+            if (lastFormatName.length() > 0) {
+                fileFormatCombo.setText(lastFormatName);
+            } else {
+                fileFormatCombo.setText(formatNames[0]);
+            }
+            updateFormat();
+        } else {
+            fileFormatCombo.setEnabled(false);
+        }
+        fileFormatCombo.addSelectionListener(new SelectionAdapter() {
             public void widgetSelected(final SelectionEvent e) {
+                // this order is vital for the functionality of this dialog
+                updateFormat();
                 updateFileText();
                 validateFileText();
             }
         });
         GridData gridData = new GridData(SWT.NONE);
-        gridData.widthHint = IMAGE_FORMAT_COMBO_WIDTH_HINT;
-        exportFormatCombo.setLayoutData(gridData);
+        gridData.widthHint = EXPORT_TYPE_COMBO_WIDTH_HINT;
+        fileFormatCombo.setLayoutData(gridData);
     }
 
     private static final int MESSAGE_LABEL_WIDTH_HINT = 300;
 
+    /**
+     * Create group for message display.
+     * 
+     * @param parent the parent composite
+     */
     private void createMessageGroup(final Composite parent) {
         Composite composite = createComposite(parent, 2);
         messageImageLabel = new Label(composite, SWT.NONE);
@@ -234,125 +244,13 @@ public class ExportKGraphDialog extends Dialog {
         messageLabel.setVisible(false);
     }
 
-    private void validateFileText() {
-        if (fileText.getText().length() > 0 && Path.ROOT.isValidPath(fileText.getText())) {
-            IPath filePath = new Path(fileText.getText());
-            IPath containerPath = filePath.removeLastSegments(1);
-            if (filePath.hasTrailingSeparator()) {
-                // file describes a folder
-                setErrorStatus(Messages.ExportKGraphDialog_path_is_not_valid_error);
-                return;
-            }
-            if (workspacePathCheckbox.getSelection()) {
-                // workspace path
-                if (containerPath.segmentCount() == 0) {
-                    // file path describes file outside a project
-                    setErrorStatus(Messages.ExportKGraphDialog_file_outside_project_error);
-                    return;
-                }
-                IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
-                IResource resource = root.findMember(filePath);
-                if (resource != null && resource.exists() && resource instanceof IContainer) {
-                    // file path exists but describes a folder
-                    setErrorStatus(Messages.ExportKGraphDialog_path_is_not_valid_error);
-                    return;
-                }
-                resource = root.findMember(containerPath);
-                if (resource == null || !resource.exists() || !(resource instanceof IContainer)) {
-                    // container does not exist
-                    setErrorStatus(Messages.ExportKGraphDialog_container_not_exist_error);
-                    return;
-                }
-            } else {
-                File file = new File(filePath.toString());
-                if (file.isDirectory()) {
-                    // file path exists but describes a folder
-                    setErrorStatus(Messages.ExportKGraphDialog_path_is_not_valid_error);
-                    return;
-                }
-                File container = new File(containerPath.toString());
-                if (!container.exists()) {
-                    // container does not exist
-                    setErrorStatus(Messages.ExportKGraphDialog_container_not_exist_error);
-                    return;
-                }
-            }
-        } else {
-            setErrorStatus(Messages.ExportKGraphDialog_path_is_not_valid_error);
-            return;
-        }
-        setOKStatus();
-    }
-
-    private void handleFileSystemBrowse() {
-        FileDialog fileDialog = new FileDialog(getShell(), SWT.SAVE);
-        // FIXME this does not always work ... if the dialog concats the
-        // extension it does not check if that file exists
-        fileDialog.setOverwrite(true);
-        // extensions passed to the dialog have to include the '.'
-        String[] extensions = { "." + exportFormatCombo.getText().toLowerCase() }; //$NON-NLS-1$
-        fileDialog.setFilterExtensions(extensions);
-        fileDialog.setText(Messages.ExportKGraphDialog_save_as_caption);
-        // open the dialog
-        String selectedFile = fileDialog.open();
-        // dialog has not been canceled
-        if (selectedFile != null) {
-            workspacePathCheckbox.setSelection(false);
-            fileText.setText(selectedFile);
-        }
-    }
-
-    private void handleWorkspaceBrowse() {
-        // TODO a better workspace selection dialog would be good, but it seems
-        // such a thing does not exist in Eclipse for some reason
-        SaveAsDialog fileDialog = new SaveAsDialog(getShell());
-        int status = fileDialog.open();
-        if (status == SaveAsDialog.OK) {
-            IPath filePath = fileDialog.getResult();
-            String ext = filePath.getFileExtension();
-            workspacePathCheckbox.setSelection(true);
-            if (ext != null && ext.length() > 0) {
-                fileText.setText(filePath.toString());
-            } else {
-                // if no file extension was specified take the default one
-                fileText.setText(filePath.toString() + "." //$NON-NLS-1$
-                        + exportFormatCombo.getText().toLowerCase());
-            }
-        }
-    }
-
-    private void updateFileText() {
-        if (fileText.getText().length() > 0 && Path.ROOT.isValidPath(fileText.getText())) {
-            IPath filePath = new Path(fileText.getText());
-            String ext = exportFormatCombo.getText().toLowerCase();
-            if (filePath.getFileExtension() != null) {
-                if (!filePath.getFileExtension().equals(ext)) {
-                    fileText.setText(filePath.removeFileExtension().addFileExtension(ext)
-                            .toString());
-                }
-            } else {
-                fileText.setText(filePath.addFileExtension(ext).toString());
-            }
-        }
-    }
-
-    private void setErrorStatus(final String message) {
-        messageLabel.setText(message);
-        messageImageLabel.setVisible(true);
-        messageLabel.setVisible(true);
-        getButton(IDialogConstants.OK_ID).setEnabled(false);
-        getButton(IDialogConstants.CANCEL_ID).getShell().setDefaultButton(
-                getButton(IDialogConstants.CANCEL_ID));
-    }
-
-    private void setOKStatus() {
-        messageImageLabel.setVisible(false);
-        messageLabel.setVisible(false);
-        getButton(IDialogConstants.OK_ID).setEnabled(true);
-        getButton(IDialogConstants.OK_ID).getShell().setDefaultButton(
-                getButton(IDialogConstants.OK_ID));
-    }
-
+    /**
+     * Create and configure a composite with grid layout.
+     * 
+     * @param parent the parent composite
+     * @param columns the number of columns
+     * @return a new composite
+     */
     private Composite createComposite(final Composite parent, final int columns) {
         Composite composite = new Composite(parent, SWT.NONE);
         GridLayout gridLayout = new GridLayout();
@@ -367,57 +265,195 @@ public class ExportKGraphDialog extends Dialog {
     }
 
     /**
+     * Validate the path given in the file selection text.
+     */
+    private void validateFileText() {
+        if (fileText.getText().length() > 0 && Path.ROOT.isValidPath(fileText.getText())) {
+            IPath filePath = new Path(fileText.getText());
+            IPath containerPath = filePath.removeLastSegments(1);
+            if (filePath.hasTrailingSeparator()) {
+                // file describes a folder
+                setErrorStatus("The specified file path is invalid.");
+                return;
+            }
+            if (workspacePathCheckbox.getSelection()) {
+                // workspace path
+                if (containerPath.segmentCount() == 0) {
+                    // file path describes file outside a project
+                    setErrorStatus("The file has to be located inside a project.");
+                    return;
+                }
+                IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
+                IResource resource = root.findMember(filePath);
+                if (resource != null && resource.exists() && resource instanceof IContainer) {
+                    // file path exists but describes a folder
+                    setErrorStatus("The specified file path is invalid.");
+                    return;
+                }
+                resource = root.findMember(containerPath);
+                if (resource == null || !resource.exists() || !(resource instanceof IContainer)) {
+                    // container does not exist
+                    setErrorStatus("The specified container does not exist.");
+                    return;
+                }
+            } else {
+                File file = new File(filePath.toString());
+                if (file.isDirectory()) {
+                    // file path exists but describes a folder
+                    setErrorStatus("The specified file path is invalid.");
+                    return;
+                }
+                File container = new File(containerPath.toString());
+                if (!container.exists()) {
+                    // container does not exist
+                    setErrorStatus("The specified container does not exist.");
+                    return;
+                }
+            }
+        } else {
+            setErrorStatus("The specified file path is invalid.");
+            return;
+        }
+        setOKStatus();
+    }
+
+    /**
+     * Open a file dialog for selection in the file system.
+     */
+    private void handleFileSystemBrowse() {
+        FileDialog fileDialog = new FileDialog(getShell(), SWT.SAVE);
+        // FIXME this does not always work ... if the dialog concatenates the extension
+        // it does not check whether that file exists
+        fileDialog.setOverwrite(true);
+        // extensions passed to the dialog have to include the '.'
+        String[] extensions = lastFormat.getExtensions().clone();
+        for (int i = 0; i < extensions.length; ++i) {
+            extensions[i] = "." + extensions[i]; //$NON-NLS-1$
+        }
+        fileDialog.setFilterExtensions(extensions);
+        fileDialog.setText("Save As");
+        // open the dialog
+        String selectedFile = fileDialog.open();
+        // dialog has not been canceled
+        if (selectedFile != null) {
+            workspacePathCheckbox.setSelection(false);
+            fileText.setText(selectedFile);
+        }
+    }
+
+    /**
+     * Open a file dialog for selection in the workspace.
+     */
+    private void handleWorkspaceBrowse() {
+        // TODO a better workspace selection dialog would be good, but it seems
+        // such a thing does not exist in eclipse for some reason
+        SaveAsDialog fileDialog = new SaveAsDialog(getShell());
+        int status = fileDialog.open();
+        if (status == SaveAsDialog.OK) {
+            IPath filePath = fileDialog.getResult();
+            String ext = filePath.getFileExtension();
+            workspacePathCheckbox.setSelection(true);
+            if (ext != null && ext.length() > 0) {
+                fileText.setText(filePath.toString());
+            } else {
+                // if no file extension was specified take the default one
+                fileText.setText(filePath.toString() + "." //$NON-NLS-1$
+                        + lastFormat.getExtensions()[0]);
+            }
+        }
+    }
+    
+    /**
+     * Update the graph format from the combo selection.
+     */
+    private void updateFormat() {
+        String formatName = fileFormatCombo.getItem(fileFormatCombo.getSelectionIndex());
+        Collection<GraphFormatData> formatData = TransformationService.getInstance().getFormatData();
+        for (GraphFormatData gfd : formatData) {
+            if (gfd.getName().equals(formatName)) {
+                lastFormat = gfd;
+                break;
+            }
+        }
+    }
+
+    /**
+     * Update the file text from the selected file format (adapt extension).
+     */
+    private void updateFileText() {
+        if (fileText.getText().length() > 0 && Path.ROOT.isValidPath(fileText.getText())) {
+            IPath filePath = new Path(fileText.getText());
+            if (filePath.getFileExtension() != null) {
+                if (!filePath.getFileExtension().equals(lastFormat.getExtensions()[0])) {
+                    fileText.setText(filePath.removeFileExtension()
+                            .addFileExtension(lastFormat.getExtensions()[0]).toString());
+                }
+            } else {
+                fileText.setText(filePath.addFileExtension(lastFormat.getExtensions()[0])
+                        .toString());
+            }
+        }
+    }
+
+    /**
+     * Set an error status in the message label.
+     * 
+     * @param message the new message
+     */
+    private void setErrorStatus(final String message) {
+        messageLabel.setText(message);
+        messageImageLabel.setVisible(true);
+        messageLabel.setVisible(true);
+        getButton(IDialogConstants.OK_ID).setEnabled(false);
+        getButton(IDialogConstants.CANCEL_ID).getShell().setDefaultButton(
+                getButton(IDialogConstants.CANCEL_ID));
+    }
+
+    /**
+     * Set an ok status in the message label.
+     */
+    private void setOKStatus() {
+        messageImageLabel.setVisible(false);
+        messageLabel.setVisible(false);
+        getButton(IDialogConstants.OK_ID).setEnabled(true);
+        getButton(IDialogConstants.OK_ID).getShell().setDefaultButton(
+                getButton(IDialogConstants.OK_ID));
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
     protected void configureShell(final Shell shell) {
         super.configureShell(shell);
-        shell.setText(Messages.ExportKGraphDialog_title);
+        shell.setText("Export Graph");
     }
 
     /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected Point getInitialSize() {
-        return new Point(DEFAULT_WIDTH, DEFAULT_HEIGHT);
-    }
-
-    /**
-     * Returns the selected path.
+     * Returns the selected exporter.
      * 
-     * @return the path
+     * @return the selected exporter
      */
-    public IPath getFilePath() {
-        return path;
+    public GraphFormatData getFormat() {
+        return lastFormat;
     }
 
     /**
-     * Returns whether the selected path is workspace relative.
+     * Returns the selected export file path.
      * 
-     * @return true if the selected path is workspace relative; false else
+     * @return the selected path or null if the dialog has not successfully finished
      */
-    public boolean isWorkspacePath() {
-        return workspacePath;
+    public String getExportFile() {
+        return exportFile;
     }
 
     /**
-     * Returns the SWT code for the selected image format.
+     * Returns whether the selected export file path is relative to the workspace.
      * 
-     * @return the SWT image format code
+     * @return true if the selected export file path is relative to the workspace
      */
-    public int getSWTImageFormat() {
-        return swtImageFormat;
-    }
-
-    /**
-     * Returns whether to render the image through the camera viewport.
-     * 
-     * @return true to render the image through the camera viewport; false to render the whole scene
-     *         graph without any view transformation
-     */
-    public boolean isCameraViewport() {
-        return cameraViewport;
+    public boolean isExportWorkspacePath() {
+        return exportWorkspacePath;
     }
 
     /**
@@ -428,6 +464,8 @@ public class ExportKGraphDialog extends Dialog {
         // save settings to preference store
         preferenceStore.setValue(PREFERENCE_FILE_PATH, fileText.getText());
         preferenceStore.setValue(PREFERENCE_WORKSPACE_PATH, workspacePathCheckbox.getSelection());
+        String formatName = fileFormatCombo.getItem(fileFormatCombo.getSelectionIndex());
+        preferenceStore.setValue(PREFERENCE_EXPORTER, formatName);
         return super.close();
     }
 
@@ -436,9 +474,9 @@ public class ExportKGraphDialog extends Dialog {
      */
     @Override
     protected void okPressed() {
-        // remember the dialog results
-        path = new Path(fileText.getText());
-        workspacePath = workspacePathCheckbox.getSelection();
+        // create export configuration
+        exportFile = fileText.getText();
+        exportWorkspacePath = workspacePathCheckbox.getSelection();
         // has to be last because it disposes the dialog
         super.okPressed();
     }
