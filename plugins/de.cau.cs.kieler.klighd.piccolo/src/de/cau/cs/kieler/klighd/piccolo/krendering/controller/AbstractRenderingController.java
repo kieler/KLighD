@@ -41,9 +41,9 @@ import com.google.common.collect.Maps;
 
 import de.cau.cs.kieler.core.kgraph.KGraphElement;
 import de.cau.cs.kieler.core.kgraph.KGraphPackage;
+import de.cau.cs.kieler.core.krendering.KAlpha;
 import de.cau.cs.kieler.core.krendering.KArc;
-import de.cau.cs.kieler.core.krendering.KBackgroundColor;
-import de.cau.cs.kieler.core.krendering.KBackgroundAlpha;
+import de.cau.cs.kieler.core.krendering.KBackground;
 import de.cau.cs.kieler.core.krendering.KChildArea;
 import de.cau.cs.kieler.core.krendering.KColor;
 import de.cau.cs.kieler.core.krendering.KContainerRendering;
@@ -53,8 +53,7 @@ import de.cau.cs.kieler.core.krendering.KFontBold;
 import de.cau.cs.kieler.core.krendering.KFontItalic;
 import de.cau.cs.kieler.core.krendering.KFontName;
 import de.cau.cs.kieler.core.krendering.KFontSize;
-import de.cau.cs.kieler.core.krendering.KForegroundColor;
-import de.cau.cs.kieler.core.krendering.KForegroundAlpha;
+import de.cau.cs.kieler.core.krendering.KForeground;
 import de.cau.cs.kieler.core.krendering.KGridPlacement;
 import de.cau.cs.kieler.core.krendering.KGridPlacementData;
 import de.cau.cs.kieler.core.krendering.KHorizontalAlignment;
@@ -439,7 +438,7 @@ public abstract class AbstractRenderingController<S extends KGraphElement, T ext
     protected void handleChildren(final List<KRendering> children, final KPlacement placement,
             final List<KStyle> styles, final PNode parent, final Object key) {
         if (placement == null) {
-            // Direct Placement
+            // Area Placement
             for (final KRendering rendering : children) {
                 handleAreaPlacementRendering(rendering, styles, parent, key);
             }
@@ -1517,42 +1516,25 @@ public abstract class AbstractRenderingController<S extends KGraphElement, T ext
         }
         for (KStyle style : styleList) {
             new KRenderingSwitch<Boolean>() {
-                // foreground color
-                public Boolean caseKForegroundColor(final KForegroundColor fc) {
-                    if (theStyles.foregroundColor == null) {
-                        theStyles.foregroundColor = fc;
+                //foreground 
+                public Boolean caseKForeground(final KForeground f){
+                    if (theStyles.foreground == null) {
+                        theStyles.foreground = f;
                     }
                     return true;
                 }
-
-                // background color
-                public Boolean caseKBackgroundColor(final KBackgroundColor bc) {
-                    if (theStyles.backgroundColor == null) {
-                        theStyles.backgroundColor = bc;
+                //background
+                public Boolean caseKBackground(final KBackground b){
+                    if (theStyles.background == null){
+                        theStyles.background = b;
                     }
                     return true;
                 }
-
+                
                 // line width
                 public Boolean caseKLineWidth(final KLineWidth lw) {
                     if (theStyles.lineWidth == null) {
                         theStyles.lineWidth = lw;
-                    }
-                    return true;
-                }
-
-                // foreground visibility
-                public Boolean caseKForegroundAlpha(final KForegroundAlpha foregorundAlpha) {
-                    if (theStyles.foregroundAlpha == null) {
-                        theStyles.foregroundAlpha = foregorundAlpha;
-                    }
-                    return true;
-                }
-
-                // background visibility
-                public Boolean caseKBackgroundAlpha(final KBackgroundAlpha backgroundAlpha) {
-                    if (theStyles.backgroundAlpha == null) {
-                        theStyles.backgroundAlpha = backgroundAlpha;
                     }
                     return true;
                 }
@@ -1642,38 +1624,30 @@ public abstract class AbstractRenderingController<S extends KGraphElement, T ext
      *            the styles
      */
     protected void applyStyles(final PNodeController<?> controller, final Styles styles) {
-        // apply foreground color
-        if (styles.foregroundColor != null) {
-            KColor color = styles.foregroundColor;
+        // apply foreground styles
+        if (styles.foreground != null) {
+            KColor color = styles.foreground.getColor();
             controller.setForegroundColor(new Color(color.getRed(), color.getGreen(), color
                     .getBlue()));
+            int alphaValue = styles.foreground.getAlpha();
+            controller.setLineAlpha(alphaValue);
         }
 
         // apply background color
-        if (styles.backgroundColor != null) {
-            KColor color = styles.backgroundColor;
+        if (styles.background != null) {
+            KColor color = styles.background.getColor();
             controller.setBackgroundColor(new Color(color.getRed(), color.getGreen(), color
                     .getBlue()));
+            int alphaValue = styles.background.getAlpha();
+            controller.setBackgroundAlpha(alphaValue);
         }
-
+        
         // apply line width
         if (styles.lineWidth != null) {
             controller.setLineWidth(styles.lineWidth.getLineWidth());
         }
 
-        // apply foreground alpha
-        if (styles.foregroundAlpha != null) {
-            KForegroundAlpha foregroundAlpha = styles.foregroundAlpha;
-            controller.setLineAlpha(foregroundAlpha.getAlpha());
-        }
-
-        // apply background alpha
-        if (styles.backgroundAlpha != null) {
-            KBackgroundAlpha backgroundAlpha = styles.backgroundAlpha;
-            controller.setAlpha(backgroundAlpha.getAlpha());
-        }
-
-     // apply line style
+        // apply line style
         if (styles.lineStyle != null) {
             switch (styles.lineStyle.getLineStyle()) {
             case DASH:
@@ -1879,17 +1853,13 @@ public abstract class AbstractRenderingController<S extends KGraphElement, T ext
      */
     protected class Styles {
 
-        /** the foreground color. */
-        private KColor foregroundColor = null;
-        /** the background color. */
-        private KColor backgroundColor = null;
-        /** the line width. */
+       /** the line width. */
         private KLineWidth lineWidth = null;
-        /** the foreground visibility. */
-        private KForegroundAlpha foregroundAlpha = null;
-        /** the background visibility. */
-        private KBackgroundAlpha backgroundAlpha = null;
-        /** the line style. */
+        /** the foreground. */
+        private KForeground foreground =  null;
+        /** the background. */
+        private KBackground background = null;
+      /** the line style. */
         private KLineStyle lineStyle = null;
         /** the line style. */
         private KLineCapStyle lineCapStyle = null;

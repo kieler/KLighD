@@ -35,8 +35,8 @@ import com.google.common.collect.Maps;
 import de.cau.cs.kieler.core.kgraph.KGraphElement;
 import de.cau.cs.kieler.core.kgraph.KGraphPackage;
 import de.cau.cs.kieler.core.kgraph.KNode;
-import de.cau.cs.kieler.core.krendering.KBackgroundColor;
-import de.cau.cs.kieler.core.krendering.KBackgroundAlpha;
+import de.cau.cs.kieler.core.krendering.KBackground;
+import de.cau.cs.kieler.core.krendering.KColor;
 import de.cau.cs.kieler.core.krendering.KLineStyle;
 import de.cau.cs.kieler.core.krendering.KRendering;
 import de.cau.cs.kieler.core.krendering.KRenderingFactory;
@@ -426,16 +426,16 @@ public class PiccoloViewer extends AbstractViewer<KNode> implements INodeSelecti
                     selectionHighlighting.put(element, Lists.newArrayList(style));
                 }
             } else if (KRenderingPackage.eINSTANCE.getKText().isInstance(element)) {
-                final KBackgroundAlpha bgv = KRenderingFactory.eINSTANCE
-                        .createKBackgroundAlpha();
-                bgv.setAlpha(255f);  // SUPPRESS CHECKSTYLE MagicNumber // TODO: create constant!
-                final KBackgroundColor bgc = KRenderingFactory.eINSTANCE.createKBackgroundColor();
+                final KBackground bg = KRenderingFactory.eINSTANCE.createKBackground();
+                bg.setAlpha(255); // SUPPRESS CHECKSTYLE MagicNumber // TODO: create constant!
+                final KColor bgColor = KRenderingFactory.eINSTANCE.createKColor();
                 // the color values of 'DimGray'   // SUPPRESS CHECKSTYLE NEXT 3 MagicNumber
-                bgc.setRed(190);
-                bgc.setGreen(190);
-                bgc.setBlue(190);
-                ((KText) element).getStyles().addAll(Lists.newArrayList(bgv, bgc));
-                selectionHighlighting.put(element, Lists.newArrayList(bgv, bgc));
+                bgColor.setRed(190);
+                bgColor.setGreen(190);
+                bgColor.setBlue(190);
+                bg.setColor(bgColor);
+                ((KText) element).getStyles().add(bg);
+                selectionHighlighting.put(element, Lists.newArrayList(bg));
             }
         }
         // end of selection highlighting stuff

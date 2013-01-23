@@ -18,7 +18,7 @@ import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 
 import de.cau.cs.kieler.core.kgraph.KLabel;
-import de.cau.cs.kieler.core.krendering.KForegroundColor;
+import de.cau.cs.kieler.core.krendering.KForeground;
 import de.cau.cs.kieler.core.krendering.KRendering;
 import de.cau.cs.kieler.core.krendering.KRenderingFactory;
 import de.cau.cs.kieler.core.krendering.KStyle;
@@ -125,11 +125,8 @@ public class KLabelRenderingController extends AbstractRenderingController<KLabe
         // create the default rendering model
         KRenderingFactory factory = KRenderingFactory.eINSTANCE;
         KText text = factory.createKText();
-        KForegroundColor color = factory.createKForegroundColor();
-        color.setRed(0);
-        color.setGreen(0);
-        color.setBlue(0);
-        text.getStyles().add(color);
+        KForeground foreground = factory.createKForeground();
+        text.getStyles().add(foreground);
         return text;
     }
 

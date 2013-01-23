@@ -18,7 +18,8 @@ import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 
 import de.cau.cs.kieler.core.kgraph.KNode;
-import de.cau.cs.kieler.core.krendering.KForegroundColor;
+import de.cau.cs.kieler.core.krendering.KColor;
+import de.cau.cs.kieler.core.krendering.KForeground;
 import de.cau.cs.kieler.core.krendering.KPlacementData;
 import de.cau.cs.kieler.core.krendering.KRectangle;
 import de.cau.cs.kieler.core.krendering.KRendering;
@@ -155,11 +156,13 @@ public class KNodeRenderingController extends AbstractRenderingController<KNode,
         // create the default rendering model
         KRenderingFactory factory = KRenderingFactory.eINSTANCE;
         KRectangle rect = factory.createKRectangle();
-        KForegroundColor color = factory.createKForegroundColor();
+        KForeground foreground = factory.createKForeground();
+        KColor color = factory.createKColor();
         color.setRed(0);
         color.setGreen(0);
         color.setBlue(0);
-        rect.getStyles().add(color);
+        foreground.setColor(color);
+        rect.getStyles().add(foreground);
         return rect;
     }
 

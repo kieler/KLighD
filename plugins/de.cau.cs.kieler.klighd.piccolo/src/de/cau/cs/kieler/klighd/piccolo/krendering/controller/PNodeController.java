@@ -59,6 +59,7 @@ public abstract class PNodeController<T extends PNode> {
      */
     public abstract void setBounds(final PBounds bounds);
 
+    
     /**
      * Sets the foreground color of the associated node.
      * 
@@ -95,7 +96,7 @@ public abstract class PNodeController<T extends PNode> {
      * @param lineVisible
      *            the line visibility
      */
-    public void setLineAlpha(final float lineAlpha) {
+    public void setLineAlpha(final int lineAlpha) {
         // do nothing
     }
 
@@ -105,7 +106,7 @@ public abstract class PNodeController<T extends PNode> {
      * @param filled
      *            the filled status
      */
-    public void setAlpha(final float backgroundAlpha) {
+    public void setBackgroundAlpha(final int backgroundAlpha) {
         // do nothing
     }
 

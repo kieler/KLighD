@@ -17,7 +17,9 @@ import java.util.ArrayList;
 
 import de.cau.cs.kieler.core.kgraph.KPort;
 import de.cau.cs.kieler.core.krendering.KAlpha;
-import de.cau.cs.kieler.core.krendering.KForegroundColor;
+import de.cau.cs.kieler.core.krendering.KBackground;
+import de.cau.cs.kieler.core.krendering.KColor;
+import de.cau.cs.kieler.core.krendering.KForeground;
 import de.cau.cs.kieler.core.krendering.KRectangle;
 import de.cau.cs.kieler.core.krendering.KRendering;
 import de.cau.cs.kieler.core.krendering.KRenderingFactory;
@@ -72,18 +74,18 @@ public class KPortRenderingController extends AbstractRenderingController<KPort,
         // create the default rendering model
         KRenderingFactory factory = KRenderingFactory.eINSTANCE;
         KRectangle rect = factory.createKRectangle();
-        KForegroundColor color = factory.createKForegroundColor();
+        
+        KForeground foreground = factory.createKForeground();
+        KColor color = factory.createKColor();
         color.setRed(0);
         color.setGreen(0);
         color.setBlue(0);
-        rect.getStyles().add(color);
-        // added by chsch:
-        KAlpha alpha = factory.createKForegroundAlpha();
-        alpha.setAlpha(0.0f);
-        rect.getStyles().add(alpha);
-        alpha = factory.createKBackgroundAlpha();
-        alpha.setAlpha(0.0f);
-        rect.getStyles().add(alpha);
+        foreground.setColor(color);
+        foreground.setAlpha(0);
+        KBackground background = factory.createKBackground();
+        background.setAlpha(0);
+        rect.getStyles().add(foreground);
+        rect.getStyles().add(background);
         return rect;
     }
     
