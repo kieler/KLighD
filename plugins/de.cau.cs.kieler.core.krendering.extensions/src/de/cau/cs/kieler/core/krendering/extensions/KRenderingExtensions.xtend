@@ -15,7 +15,6 @@ import de.cau.cs.kieler.core.krendering.VerticalAlignment
 import de.cau.cs.kieler.core.krendering.KContainerRendering
 import de.cau.cs.kieler.core.krendering.KStyle
 import de.cau.cs.kieler.core.krendering.KPlacementData
-import de.cau.cs.kieler.core.krendering.KColor
 import de.cau.cs.kieler.core.krendering.KRoundedRectangle
 import org.eclipse.emf.ecore.util.EcoreUtil
 import de.cau.cs.kieler.core.kgraph.KGraphElement
@@ -25,8 +24,7 @@ import de.cau.cs.kieler.core.krendering.KFontName
 import de.cau.cs.kieler.core.krendering.KRotation
 import de.cau.cs.kieler.core.krendering.KForeground
 import de.cau.cs.kieler.core.krendering.KBackground
-import de.cau.cs.kieler.core.krendering.KBackground
-import de.cau.cs.kieler.core.krendering.KGround
+import de.cau.cs.kieler.core.krendering.KColoring
 
 /**
  * This utility class contains various methods that are convenient while composing KRendering data.
@@ -129,18 +127,17 @@ class KRenderingExtensions {
         ];
     }
     
- 
-    def <T extends KRendering>  T setBackground(T rendering, KGround ground){
+    def <T extends KRendering>  T setBackground(T rendering, KColoring coloring){
         rendering.styles.removeAll(rendering.styles.filter(typeof(KBackground)).toList);
         return rendering => [
             it.styles += renderingFactory.createKBackground => [
-                it.alpha = ground.alpha;
-                it.color = ground.color;
-                it.targetAlpha = ground.targetAlpha;
-                it.targetColor = ground.targetColor;
-                it.gradientAngle = ground.gradientAngle;
-                it.functionId = ground.functionId;
-                it.propagateToChildren = ground.propagateToChildren;
+                it.alpha = coloring.alpha;
+                it.color = coloring.color;
+                it.targetAlpha = coloring.targetAlpha;
+                it.targetColor = coloring.targetColor;
+                it.gradientAngle = coloring.gradientAngle;
+                it.functionId = coloring.functionId;
+                it.propagateToChildren = coloring.propagateToChildren;
             ];
         ];
     }
@@ -149,17 +146,17 @@ class KRenderingExtensions {
         return rendering.styles?.filter(typeof(KBackground)).last?:renderingFactory.createKBackground();
     }
     
-    def <T extends KRendering>  T setForeground(T rendering, KGround ground){
+    def <T extends KRendering>  T setForeground(T rendering, KColoring coloring){
         rendering.styles.removeAll(rendering.styles.filter(typeof(KForeground)).toList);
         return rendering => [
             it.styles += renderingFactory.createKBackground => [
-                it.alpha = ground.alpha;
-                it.color = ground.color;
-                it.targetAlpha = ground.targetAlpha;
-                it.targetColor = ground.targetColor;
-                it.gradientAngle = ground.gradientAngle;
-                it.functionId = ground.functionId;
-                it.propagateToChildren = ground.propagateToChildren;
+                it.alpha = coloring.alpha;
+                it.color = coloring.color;
+                it.targetAlpha = coloring.targetAlpha;
+                it.targetColor = coloring.targetColor;
+                it.gradientAngle = coloring.gradientAngle;
+                it.functionId = coloring.functionId;
+                it.propagateToChildren = coloring.propagateToChildren;
             ];
         ];
     }
