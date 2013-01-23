@@ -25,6 +25,8 @@ import de.cau.cs.kieler.kiml.options.EdgeLabelPlacement
 import de.cau.cs.kieler.kiml.util.KimlUtil
 import de.cau.cs.kieler.core.krendering.KRendering
 import de.cau.cs.kieler.core.krendering.KText
+import de.cau.cs.kieler.kiml.options.NodeLabelPlacement
+import de.cau.cs.kieler.kiml.options.PortLabelPlacement
 
 /**
  * @author chsch
@@ -56,6 +58,9 @@ class KLabelExtensions {
         return o.getLabel(labeledElement)
     }
     
+    /**
+     * Configures a central (main) edge label, e.g. a state transition guard/effect label!
+     */
     def KLabel configureCenteralLabel(KLabel label, String labelText, int fontSize, String fontName) {
         return label => [
             it.text = labelText;
@@ -66,6 +71,45 @@ class KLabelExtensions {
         ];
     }
     
+    /**
+     * Configures a central node label!
+     */
+    def KLabel configureOutsideCenteralBottomNodeLabel(KLabel label, String labelText, int fontSize, String fontName) {
+        return label => [
+            it.text = labelText;
+            it.data += renderingFactory.createKText().setFontName(fontName).setFontSize(fontSize);
+            it.addLayoutParam(LayoutOptions::NODE_LABEL_PLACEMENT, NodeLabelPlacement::outsideBottomCenter);
+            it.addLayoutParam(LayoutOptions::FONT_NAME, fontName);
+            it.addLayoutParam(LayoutOptions::FONT_SIZE, fontSize);
+        ];
+    }
+
+    /**
+     * Configures an inside port label!
+     */
+    def KLabel configureInsidePortLabel(KLabel label, String labelText, int fontSize, String fontName) {
+        return label => [
+            it.text = labelText;
+            it.data += renderingFactory.createKText().setFontName(fontName).setFontSize(fontSize);
+            it.addLayoutParam(LayoutOptions::PORT_LABEL_PLACEMENT, PortLabelPlacement::INSIDE);
+            it.addLayoutParam(LayoutOptions::FONT_NAME, fontName);
+            it.addLayoutParam(LayoutOptions::FONT_SIZE, fontSize);
+        ];
+    }
+
+    /**
+     * Configures a outside port label!
+     */
+    def KLabel configureOutsidePortLabel(KLabel label, String labelText, int fontSize, String fontName) {
+        return label => [
+            it.text = labelText;
+            it.data += renderingFactory.createKText().setFontName(fontName).setFontSize(fontSize);
+            it.addLayoutParam(LayoutOptions::PORT_LABEL_PLACEMENT, PortLabelPlacement::OUTSIDE);
+            it.addLayoutParam(LayoutOptions::FONT_NAME, fontName);
+            it.addLayoutParam(LayoutOptions::FONT_SIZE, fontSize);
+        ];
+    }
+
     def KLabel setLabelSize(KLabel label, float width, float height) {
         return label => [
             getData(typeof(KShapeLayout)).setSize(width, height)

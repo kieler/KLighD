@@ -7,13 +7,17 @@
    <extension-point id="customFigureWrapper" name="CustomFigureWrapper" schema="schema/customFigureWrapper.exsd"/>
    <extension
          point="org.eclipse.ui.views">
+      <category
+            id="de.cau.cs.kieler.klighd"
+            name="KIELER Light-weight Diagrams">
+      </category>
       <view
             allowMultiple="true"
-            category="de.cau.cs.kieler"
+            category="de.cau.cs.kieler.klighd"
             class="de.cau.cs.kieler.klighd.views.DiagramViewPart"
             icon="icons/klighd.gif"
             id="de.cau.cs.kieler.klighd.lightDiagramView"
-            name="Light Diagram"
+            name="Light-weight Diagram"
             restorable="true">
       </view>
    </extension>

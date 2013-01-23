@@ -17,6 +17,9 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.draw2d.DeferredUpdateManager;
 import org.eclipse.draw2d.Figure;
+import org.eclipse.draw2d.Graphics;
+import org.eclipse.draw2d.IClippingStrategy;
+import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.StackLayout;
 import org.eclipse.draw2d.UpdateManager;
 import org.eclipse.draw2d.geometry.Rectangle;
@@ -58,8 +61,28 @@ public class Draw2DNode extends PNode {
      */
     public Draw2DNode(final Figure theFigure) {
         this.graphics = new GraphicsAdapter();
-        this.updateManager = new WrappingUpdateManager();        
+        this.updateManager = new WrappingUpdateManager();   
         this.figure = new Figure() {
+            {
+                this.setClippingStrategy(new IClippingStrategy() {
+                    public Rectangle[] getClip(final IFigure childFigure) {
+                        Rectangle bounds = childFigure.getBounds();
+                        // some experimental extension of the clip area in
+                        //  order to avoid artifacts of partially clipped
+                        //  polylines and polygones of the childFigure
+                        //  (the actual figure to be depicted)
+                        // SUPPRESS CHECKSTYLE NEXT 2 MagicNumber
+                        Rectangle extBounds = new Rectangle(bounds.x - 20, bounds.y - 20,
+                                bounds.width + 40, bounds.height + 40);
+                        return new Rectangle[] { extBounds };
+                    }
+                });
+            }
+            
+            @Override
+            public void revalidate() {
+                super.revalidate();
+            }
             
             @Override
             public UpdateManager getUpdateManager() {
@@ -106,6 +129,18 @@ public class Draw2DNode extends PNode {
      * 
      * @author chsch
      */
-    static class WrappingUpdateManager extends DeferredUpdateManager {
+    static final class WrappingUpdateManager extends DeferredUpdateManager {
+        
+        WrappingUpdateManager() {
+            super();
+        }
+        
+        @Override
+        protected Graphics getGraphics(final Rectangle region) {
+            // We do not allow the update manager to directly access the
+            //  graphics object, redraw requests shall be somehow escalated
+            //  to the Piccolo node in future (TODO).
+            return null;
+        }
     }
 }
