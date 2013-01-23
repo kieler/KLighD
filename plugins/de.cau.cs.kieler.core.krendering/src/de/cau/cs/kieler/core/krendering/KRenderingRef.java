@@ -37,7 +37,6 @@ package de.cau.cs.kieler.core.krendering;
 public interface KRenderingRef extends KRendering {
     /**
      * Returns the value of the '<em><b>Rendering</b></em>' reference.
-     * It is bidirectional and its opposite is '{@link de.cau.cs.kieler.core.krendering.KRendering#getReferences <em>References</em>}'.
      * <!-- begin-user-doc -->
      * <p>
      * If the meaning of the '<em>Rendering</em>' reference isn't clear,
@@ -50,8 +49,7 @@ public interface KRenderingRef extends KRendering {
      * @return the value of the '<em>Rendering</em>' reference.
      * @see #setRendering(KRendering)
      * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKRenderingRef_Rendering()
-     * @see de.cau.cs.kieler.core.krendering.KRendering#getReferences
-     * @model opposite="references" required="true"
+     * @model required="true"
      * @generated
      */
     KRendering getRendering();

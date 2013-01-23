@@ -45,6 +45,9 @@ public interface KImage extends KContainerRendering {
      * there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
+     * <!-- begin-model-doc -->
+     * Name of the bundle where the image can be found. Note that the imagePath is relative to this bundle. 
+     * <!-- end-model-doc -->
      * @return the value of the '<em>Bundle Name</em>' attribute.
      * @see #setBundleName(String)
      * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKImage_BundleName()
@@ -72,7 +75,7 @@ public interface KImage extends KContainerRendering {
      * </p>
      * <!-- end-user-doc -->
      * <!-- begin-model-doc -->
-     * the path to the image on the filesystem
+     * the path to the image on the filesystem relative to the bundleName (and its according position)
      * <!-- end-model-doc -->
      * @return the value of the '<em>Image Path</em>' attribute.
      * @see #setImagePath(String)

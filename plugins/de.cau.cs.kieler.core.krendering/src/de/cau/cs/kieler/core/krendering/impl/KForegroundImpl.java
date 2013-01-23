@@ -13,27 +13,27 @@
  */
 package de.cau.cs.kieler.core.krendering.impl;
 
-import de.cau.cs.kieler.core.krendering.KForegroundAlpha;
+import de.cau.cs.kieler.core.krendering.KForeground;
 import de.cau.cs.kieler.core.krendering.KRenderingPackage;
 
 import org.eclipse.emf.ecore.EClass;
 
 /**
  * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>KForeground Alpha</b></em>'.
+ * An implementation of the model object '<em><b>KForeground</b></em>'.
  * <!-- end-user-doc -->
  * <p>
  * </p>
  *
  * @generated
  */
-public class KForegroundAlphaImpl extends KAlphaImpl implements KForegroundAlpha {
+public class KForegroundImpl extends KColoringImpl implements KForeground {
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      */
-    protected KForegroundAlphaImpl() {
+    protected KForegroundImpl() {
         super();
     }
 
@@ -44,7 +44,7 @@ public class KForegroundAlphaImpl extends KAlphaImpl implements KForegroundAlpha
      */
     @Override
     protected EClass eStaticClass() {
-        return KRenderingPackage.Literals.KFOREGROUND_ALPHA;
+        return KRenderingPackage.Literals.KFOREGROUND;
     }
 
-} //KForegroundAlphaImpl
+} //KForegroundImpl

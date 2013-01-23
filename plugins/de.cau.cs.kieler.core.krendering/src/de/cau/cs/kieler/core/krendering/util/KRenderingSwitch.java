@@ -296,26 +296,10 @@ public class KRenderingSwitch<T> extends Switch<T> {
                 if (result == null) result = defaultCase(theEObject);
                 return result;
             }
-            case KRenderingPackage.KFOREGROUND_COLOR: {
-                KForegroundColor kForegroundColor = (KForegroundColor)theEObject;
-                T result = caseKForegroundColor(kForegroundColor);
-                if (result == null) result = caseKColor(kForegroundColor);
-                if (result == null) result = caseKStyle(kForegroundColor);
-                if (result == null) result = defaultCase(theEObject);
-                return result;
-            }
             case KRenderingPackage.KCOLOR: {
                 KColor kColor = (KColor)theEObject;
                 T result = caseKColor(kColor);
                 if (result == null) result = caseKStyle(kColor);
-                if (result == null) result = defaultCase(theEObject);
-                return result;
-            }
-            case KRenderingPackage.KBACKGROUND_COLOR: {
-                KBackgroundColor kBackgroundColor = (KBackgroundColor)theEObject;
-                T result = caseKBackgroundColor(kBackgroundColor);
-                if (result == null) result = caseKColor(kBackgroundColor);
-                if (result == null) result = caseKStyle(kBackgroundColor);
                 if (result == null) result = defaultCase(theEObject);
                 return result;
             }
@@ -400,26 +384,26 @@ public class KRenderingSwitch<T> extends Switch<T> {
                 if (result == null) result = defaultCase(theEObject);
                 return result;
             }
-            case KRenderingPackage.KFOREGROUND_ALPHA: {
-                KForegroundAlpha kForegroundAlpha = (KForegroundAlpha)theEObject;
-                T result = caseKForegroundAlpha(kForegroundAlpha);
-                if (result == null) result = caseKAlpha(kForegroundAlpha);
-                if (result == null) result = caseKStyle(kForegroundAlpha);
+            case KRenderingPackage.KFOREGROUND: {
+                KForeground kForeground = (KForeground)theEObject;
+                T result = caseKForeground(kForeground);
+                if (result == null) result = caseKColoring(kForeground);
+                if (result == null) result = caseKStyle(kForeground);
                 if (result == null) result = defaultCase(theEObject);
                 return result;
             }
-            case KRenderingPackage.KALPHA: {
-                KAlpha kAlpha = (KAlpha)theEObject;
-                T result = caseKAlpha(kAlpha);
-                if (result == null) result = caseKStyle(kAlpha);
+            case KRenderingPackage.KCOLORING: {
+                KColoring kColoring = (KColoring)theEObject;
+                T result = caseKColoring(kColoring);
+                if (result == null) result = caseKStyle(kColoring);
                 if (result == null) result = defaultCase(theEObject);
                 return result;
             }
-            case KRenderingPackage.KBACKGROUND_ALPHA: {
-                KBackgroundAlpha kBackgroundAlpha = (KBackgroundAlpha)theEObject;
-                T result = caseKBackgroundAlpha(kBackgroundAlpha);
-                if (result == null) result = caseKAlpha(kBackgroundAlpha);
-                if (result == null) result = caseKStyle(kBackgroundAlpha);
+            case KRenderingPackage.KBACKGROUND: {
+                KBackground kBackground = (KBackground)theEObject;
+                T result = caseKBackground(kBackground);
+                if (result == null) result = caseKColoring(kBackground);
+                if (result == null) result = caseKStyle(kBackground);
                 if (result == null) result = defaultCase(theEObject);
                 return result;
             }
@@ -468,13 +452,6 @@ public class KRenderingSwitch<T> extends Switch<T> {
                 KRotation kRotation = (KRotation)theEObject;
                 T result = caseKRotation(kRotation);
                 if (result == null) result = caseKStyle(kRotation);
-                if (result == null) result = defaultCase(theEObject);
-                return result;
-            }
-            case KRenderingPackage.KGRADIENT_STYLE: {
-                KGradientStyle kGradientStyle = (KGradientStyle)theEObject;
-                T result = caseKGradientStyle(kGradientStyle);
-                if (result == null) result = caseKStyle(kGradientStyle);
                 if (result == null) result = defaultCase(theEObject);
                 return result;
             }
@@ -527,6 +504,27 @@ public class KRenderingSwitch<T> extends Switch<T> {
             case KRenderingPackage.KSTYLE_CONTAINER: {
                 KStyleContainer kStyleContainer = (KStyleContainer)theEObject;
                 T result = caseKStyleContainer(kStyleContainer);
+                if (result == null) result = defaultCase(theEObject);
+                return result;
+            }
+            case KRenderingPackage.KVISIBILITY: {
+                KVisibility kVisibility = (KVisibility)theEObject;
+                T result = caseKVisibility(kVisibility);
+                if (result == null) result = caseKStyle(kVisibility);
+                if (result == null) result = defaultCase(theEObject);
+                return result;
+            }
+            case KRenderingPackage.KSHADOW: {
+                KShadow kShadow = (KShadow)theEObject;
+                T result = caseKShadow(kShadow);
+                if (result == null) result = caseKStyle(kShadow);
+                if (result == null) result = defaultCase(theEObject);
+                return result;
+            }
+            case KRenderingPackage.KFONT_UNDERLINED: {
+                KFontUnderlined kFontUnderlined = (KFontUnderlined)theEObject;
+                T result = caseKFontUnderlined(kFontUnderlined);
+                if (result == null) result = caseKStyle(kFontUnderlined);
                 if (result == null) result = defaultCase(theEObject);
                 return result;
             }
@@ -865,21 +863,6 @@ public class KRenderingSwitch<T> extends Switch<T> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>KForeground Color</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
-     * @return the result of interpreting the object as an instance of '<em>KForeground Color</em>'.
-     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-     * @generated
-     */
-    public T caseKForegroundColor(KForegroundColor object) {
-        return null;
-    }
-
-    /**
      * Returns the result of interpreting the object as an instance of '<em>KColor</em>'.
      * <!-- begin-user-doc -->
      * This implementation returns null;
@@ -891,21 +874,6 @@ public class KRenderingSwitch<T> extends Switch<T> {
      * @generated
      */
     public T caseKColor(KColor object) {
-        return null;
-    }
-
-    /**
-     * Returns the result of interpreting the object as an instance of '<em>KBackground Color</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
-     * @return the result of interpreting the object as an instance of '<em>KBackground Color</em>'.
-     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-     * @generated
-     */
-    public T caseKBackgroundColor(KBackgroundColor object) {
         return null;
     }
 
@@ -1075,47 +1043,47 @@ public class KRenderingSwitch<T> extends Switch<T> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>KForeground Alpha</em>'.
+     * Returns the result of interpreting the object as an instance of '<em>KForeground</em>'.
      * <!-- begin-user-doc -->
      * This implementation returns null;
      * returning a non-null result will terminate the switch.
      * <!-- end-user-doc -->
      * @param object the target of the switch.
-     * @return the result of interpreting the object as an instance of '<em>KForeground Alpha</em>'.
+     * @return the result of interpreting the object as an instance of '<em>KForeground</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
      */
-    public T caseKForegroundAlpha(KForegroundAlpha object) {
+    public T caseKForeground(KForeground object) {
         return null;
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>KAlpha</em>'.
+     * Returns the result of interpreting the object as an instance of '<em>KColoring</em>'.
      * <!-- begin-user-doc -->
      * This implementation returns null;
      * returning a non-null result will terminate the switch.
      * <!-- end-user-doc -->
      * @param object the target of the switch.
-     * @return the result of interpreting the object as an instance of '<em>KAlpha</em>'.
+     * @return the result of interpreting the object as an instance of '<em>KColoring</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
      */
-    public T caseKAlpha(KAlpha object) {
+    public T caseKColoring(KColoring object) {
         return null;
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>KBackground Alpha</em>'.
+     * Returns the result of interpreting the object as an instance of '<em>KBackground</em>'.
      * <!-- begin-user-doc -->
      * This implementation returns null;
      * returning a non-null result will terminate the switch.
      * <!-- end-user-doc -->
      * @param object the target of the switch.
-     * @return the result of interpreting the object as an instance of '<em>KBackground Alpha</em>'.
+     * @return the result of interpreting the object as an instance of '<em>KBackground</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
      */
-    public T caseKBackgroundAlpha(KBackgroundAlpha object) {
+    public T caseKBackground(KBackground object) {
         return null;
     }
 
@@ -1206,21 +1174,6 @@ public class KRenderingSwitch<T> extends Switch<T> {
      * @generated
      */
     public T caseKRotation(KRotation object) {
-        return null;
-    }
-
-    /**
-     * Returns the result of interpreting the object as an instance of '<em>KGradient Style</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
-     * @return the result of interpreting the object as an instance of '<em>KGradient Style</em>'.
-     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-     * @generated
-     */
-    public T caseKGradientStyle(KGradientStyle object) {
         return null;
     }
 
@@ -1326,6 +1279,51 @@ public class KRenderingSwitch<T> extends Switch<T> {
      * @generated
      */
     public T caseKStyleContainer(KStyleContainer object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>KVisibility</em>'.
+     * <!-- begin-user-doc -->
+     * This implementation returns null;
+     * returning a non-null result will terminate the switch.
+     * <!-- end-user-doc -->
+     * @param object the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>KVisibility</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseKVisibility(KVisibility object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>KShadow</em>'.
+     * <!-- begin-user-doc -->
+     * This implementation returns null;
+     * returning a non-null result will terminate the switch.
+     * <!-- end-user-doc -->
+     * @param object the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>KShadow</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseKShadow(KShadow object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>KFont Underlined</em>'.
+     * <!-- begin-user-doc -->
+     * This implementation returns null;
+     * returning a non-null result will terminate the switch.
+     * <!-- end-user-doc -->
+     * @param object the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>KFont Underlined</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseKFontUnderlined(KFontUnderlined object) {
         return null;
     }
 

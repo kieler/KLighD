@@ -79,7 +79,6 @@ public interface KRendering extends KGraphData, KStyleContainer {
     /**
      * Returns the value of the '<em><b>References</b></em>' reference list.
      * The list contents are of type {@link de.cau.cs.kieler.core.krendering.KRenderingRef}.
-     * It is bidirectional and its opposite is '{@link de.cau.cs.kieler.core.krendering.KRenderingRef#getRendering <em>Rendering</em>}'.
      * <!-- begin-user-doc -->
      * <p>
      * If the meaning of the '<em>References</em>' reference list isn't clear,
@@ -91,8 +90,7 @@ public interface KRendering extends KGraphData, KStyleContainer {
      * <!-- end-model-doc -->
      * @return the value of the '<em>References</em>' reference list.
      * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKRendering_References()
-     * @see de.cau.cs.kieler.core.krendering.KRenderingRef#getRendering
-     * @model opposite="rendering"
+     * @model
      * @generated
      */
     EList<KRenderingRef> getReferences();

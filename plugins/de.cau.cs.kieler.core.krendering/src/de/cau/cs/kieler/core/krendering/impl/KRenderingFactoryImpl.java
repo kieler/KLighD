@@ -85,8 +85,7 @@ public class KRenderingFactoryImpl extends EFactoryImpl implements KRenderingFac
             case KRenderingPackage.KGRID_PLACEMENT_DATA: return createKGridPlacementData();
             case KRenderingPackage.KAREA_PLACEMENT_DATA: return createKAreaPlacementData();
             case KRenderingPackage.KCUSTOM_RENDERING: return createKCustomRendering();
-            case KRenderingPackage.KFOREGROUND_COLOR: return createKForegroundColor();
-            case KRenderingPackage.KBACKGROUND_COLOR: return createKBackgroundColor();
+            case KRenderingPackage.KCOLOR: return createKColor();
             case KRenderingPackage.KLINE_WIDTH: return createKLineWidth();
             case KRenderingPackage.KLINE_STYLE: return createKLineStyle();
             case KRenderingPackage.KVERTICAL_ALIGNMENT: return createKVerticalAlignment();
@@ -96,21 +95,23 @@ public class KRenderingFactoryImpl extends EFactoryImpl implements KRenderingFac
             case KRenderingPackage.KTOP_POSITION: return createKTopPosition();
             case KRenderingPackage.KBOTTOM_POSITION: return createKBottomPosition();
             case KRenderingPackage.KSPLINE: return createKSpline();
-            case KRenderingPackage.KFOREGROUND_ALPHA: return createKForegroundAlpha();
-            case KRenderingPackage.KBACKGROUND_ALPHA: return createKBackgroundAlpha();
+            case KRenderingPackage.KFOREGROUND: return createKForeground();
+            case KRenderingPackage.KBACKGROUND: return createKBackground();
             case KRenderingPackage.KFONT_BOLD: return createKFontBold();
             case KRenderingPackage.KFONT_ITALIC: return createKFontItalic();
             case KRenderingPackage.KFONT_NAME: return createKFontName();
             case KRenderingPackage.KFONT_SIZE: return createKFontSize();
             case KRenderingPackage.KROUNDED_BENDS_POLYLINE: return createKRoundedBendsPolyline();
             case KRenderingPackage.KROTATION: return createKRotation();
-            case KRenderingPackage.KGRADIENT_STYLE: return createKGradientStyle();
             case KRenderingPackage.KLINE_CAP_STYLE: return createKLineCapStyle();
             case KRenderingPackage.KPOINT_PLACEMENT_DATA: return createKPointPlacementData();
             case KRenderingPackage.KTEXT_RENDERING_REF: return createKTextRenderingRef();
             case KRenderingPackage.KSELECT_ACTION: return createKSelectAction();
             case KRenderingPackage.KEXPAND_COLLAPSE_ACTION: return createKExpandCollapseAction();
             case KRenderingPackage.KSTYLE_CONTAINER: return createKStyleContainer();
+            case KRenderingPackage.KVISIBILITY: return createKVisibility();
+            case KRenderingPackage.KSHADOW: return createKShadow();
+            case KRenderingPackage.KFONT_UNDERLINED: return createKFontUnderlined();
             default:
                 throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
         }
@@ -136,6 +137,8 @@ public class KRenderingFactoryImpl extends EFactoryImpl implements KRenderingFac
                 return createKTriggerFromString(eDataType, initialValue);
             case KRenderingPackage.LINE_CAP_STYLE:
                 return createLineCapStyleFromString(eDataType, initialValue);
+            case KRenderingPackage.UNDERLINE_STYLE:
+                return createUnderlineStyleFromString(eDataType, initialValue);
             default:
                 throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
         }
@@ -161,6 +164,8 @@ public class KRenderingFactoryImpl extends EFactoryImpl implements KRenderingFac
                 return convertKTriggerToString(eDataType, instanceValue);
             case KRenderingPackage.LINE_CAP_STYLE:
                 return convertLineCapStyleToString(eDataType, instanceValue);
+            case KRenderingPackage.UNDERLINE_STYLE:
+                return convertUnderlineStyleToString(eDataType, instanceValue);
             default:
                 throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
         }
@@ -341,19 +346,9 @@ public class KRenderingFactoryImpl extends EFactoryImpl implements KRenderingFac
      * <!-- end-user-doc -->
      * @generated
      */
-    public KForegroundColor createKForegroundColor() {
-        KForegroundColorImpl kForegroundColor = new KForegroundColorImpl();
-        return kForegroundColor;
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    public KBackgroundColor createKBackgroundColor() {
-        KBackgroundColorImpl kBackgroundColor = new KBackgroundColorImpl();
-        return kBackgroundColor;
+    public KColor createKColor() {
+        KColorImpl kColor = new KColorImpl();
+        return kColor;
     }
 
     /**
@@ -451,9 +446,9 @@ public class KRenderingFactoryImpl extends EFactoryImpl implements KRenderingFac
      * <!-- end-user-doc -->
      * @generated
      */
-    public KForegroundAlpha createKForegroundAlpha() {
-        KForegroundAlphaImpl kForegroundAlpha = new KForegroundAlphaImpl();
-        return kForegroundAlpha;
+    public KForeground createKForeground() {
+        KForegroundImpl kForeground = new KForegroundImpl();
+        return kForeground;
     }
 
     /**
@@ -461,9 +456,9 @@ public class KRenderingFactoryImpl extends EFactoryImpl implements KRenderingFac
      * <!-- end-user-doc -->
      * @generated
      */
-    public KBackgroundAlpha createKBackgroundAlpha() {
-        KBackgroundAlphaImpl kBackgroundAlpha = new KBackgroundAlphaImpl();
-        return kBackgroundAlpha;
+    public KBackground createKBackground() {
+        KBackgroundImpl kBackground = new KBackgroundImpl();
+        return kBackground;
     }
 
     /**
@@ -531,16 +526,6 @@ public class KRenderingFactoryImpl extends EFactoryImpl implements KRenderingFac
      * <!-- end-user-doc -->
      * @generated
      */
-    public KGradientStyle createKGradientStyle() {
-        KGradientStyleImpl kGradientStyle = new KGradientStyleImpl();
-        return kGradientStyle;
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
     public KLineCapStyle createKLineCapStyle() {
         KLineCapStyleImpl kLineCapStyle = new KLineCapStyleImpl();
         return kLineCapStyle;
@@ -594,6 +579,36 @@ public class KRenderingFactoryImpl extends EFactoryImpl implements KRenderingFac
     public KStyleContainer createKStyleContainer() {
         KStyleContainerImpl kStyleContainer = new KStyleContainerImpl();
         return kStyleContainer;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public KVisibility createKVisibility() {
+        KVisibilityImpl kVisibility = new KVisibilityImpl();
+        return kVisibility;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public KShadow createKShadow() {
+        KShadowImpl kShadow = new KShadowImpl();
+        return kShadow;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public KFontUnderlined createKFontUnderlined() {
+        KFontUnderlinedImpl kFontUnderlined = new KFontUnderlinedImpl();
+        return kFontUnderlined;
     }
 
     /**
@@ -713,6 +728,26 @@ public class KRenderingFactoryImpl extends EFactoryImpl implements KRenderingFac
      * @generated
      */
     public String convertLineCapStyleToString(EDataType eDataType, Object instanceValue) {
+        return instanceValue == null ? null : instanceValue.toString();
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public UnderlineStyle createUnderlineStyleFromString(EDataType eDataType, String initialValue) {
+        UnderlineStyle result = UnderlineStyle.get(initialValue);
+        if (result == null) throw new IllegalArgumentException("The value '" + initialValue + "' is not a valid enumerator of '" + eDataType.getName() + "'");
+        return result;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public String convertUnderlineStyleToString(EDataType eDataType, Object instanceValue) {
         return instanceValue == null ? null : instanceValue.toString();
     }
 

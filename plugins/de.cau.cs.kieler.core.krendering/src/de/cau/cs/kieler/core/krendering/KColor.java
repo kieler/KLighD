@@ -33,7 +33,7 @@ package de.cau.cs.kieler.core.krendering;
  * </p>
  *
  * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKColor()
- * @model abstract="true"
+ * @model
  * @generated
  */
 public interface KColor extends KStyle {

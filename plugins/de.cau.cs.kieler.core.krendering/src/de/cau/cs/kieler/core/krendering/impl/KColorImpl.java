@@ -37,7 +37,7 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  *
  * @generated
  */
-public abstract class KColorImpl extends KStyleImpl implements KColor {
+public class KColorImpl extends KStyleImpl implements KColor {
     /**
      * The default value of the '{@link #getRed() <em>Red</em>}' attribute.
      * <!-- begin-user-doc -->

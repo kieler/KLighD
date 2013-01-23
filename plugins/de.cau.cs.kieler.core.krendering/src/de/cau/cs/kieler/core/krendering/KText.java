@@ -28,7 +28,6 @@ package de.cau.cs.kieler.core.krendering;
  * <ul>
  *   <li>{@link de.cau.cs.kieler.core.krendering.KText#getText <em>Text</em>}</li>
  *   <li>{@link de.cau.cs.kieler.core.krendering.KText#isClip <em>Clip</em>}</li>
- *   <li>{@link de.cau.cs.kieler.core.krendering.KText#isScaling <em>Scaling</em>}</li>
  * </ul>
  * </p>
  *
@@ -95,31 +94,5 @@ public interface KText extends KContainerRendering {
      * @generated
      */
     void setClip(boolean value);
-
-    /**
-     * Returns the value of the '<em><b>Scaling</b></em>' attribute.
-     * <!-- begin-user-doc -->
-     * <p>
-     * If the meaning of the '<em>Scaling</em>' attribute isn't clear,
-     * there really should be more of a description here...
-     * </p>
-     * <!-- end-user-doc -->
-     * @return the value of the '<em>Scaling</em>' attribute.
-     * @see #setScaling(boolean)
-     * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKText_Scaling()
-     * @model
-     * @generated
-     */
-    boolean isScaling();
-
-    /**
-     * Sets the value of the '{@link de.cau.cs.kieler.core.krendering.KText#isScaling <em>Scaling</em>}' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @param value the new value of the '<em>Scaling</em>' attribute.
-     * @see #isScaling()
-     * @generated
-     */
-    void setScaling(boolean value);
 
 } // KText

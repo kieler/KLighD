@@ -32,6 +32,10 @@ import org.eclipse.emf.ecore.EReference;
  *   <li>and each data type</li>
  * </ul>
  * <!-- end-user-doc -->
+ * <!-- begin-model-doc -->
+ * define if this text is increased in size to be able to read it when zooming out.
+ * Text will only grow until the node space is 
+ * <!-- end-model-doc -->
  * @see de.cau.cs.kieler.core.krendering.KRenderingFactory
  * @model kind="package"
  * @generated
@@ -1545,22 +1549,13 @@ public interface KRenderingPackage extends EPackage {
     int KTEXT__CLIP = KCONTAINER_RENDERING_FEATURE_COUNT + 1;
 
     /**
-     * The feature id for the '<em><b>Scaling</b></em>' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int KTEXT__SCALING = KCONTAINER_RENDERING_FEATURE_COUNT + 2;
-
-    /**
      * The number of structural features of the '<em>KText</em>' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int KTEXT_FEATURE_COUNT = KCONTAINER_RENDERING_FEATURE_COUNT + 3;
+    int KTEXT_FEATURE_COUNT = KCONTAINER_RENDERING_FEATURE_COUNT + 2;
 
     /**
      * The meta object id for the '{@link de.cau.cs.kieler.core.krendering.KPlacement <em>KPlacement</em>}' class.
@@ -1872,7 +1867,7 @@ public interface KRenderingPackage extends EPackage {
      * @see de.cau.cs.kieler.core.krendering.impl.KRenderingPackageImpl#getKColor()
      * @generated
      */
-    int KCOLOR = 23;
+    int KCOLOR = 22;
 
     /**
      * The feature id for the '<em><b>Rendering</b></em>' reference.
@@ -1938,152 +1933,6 @@ public interface KRenderingPackage extends EPackage {
     int KCOLOR_FEATURE_COUNT = KSTYLE_FEATURE_COUNT + 3;
 
     /**
-     * The meta object id for the '{@link de.cau.cs.kieler.core.krendering.impl.KForegroundColorImpl <em>KForeground Color</em>}' class.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @see de.cau.cs.kieler.core.krendering.impl.KForegroundColorImpl
-     * @see de.cau.cs.kieler.core.krendering.impl.KRenderingPackageImpl#getKForegroundColor()
-     * @generated
-     */
-    int KFOREGROUND_COLOR = 22;
-
-    /**
-     * The feature id for the '<em><b>Rendering</b></em>' reference.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int KFOREGROUND_COLOR__RENDERING = KCOLOR__RENDERING;
-
-    /**
-     * The feature id for the '<em><b>Propagate To Children</b></em>' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int KFOREGROUND_COLOR__PROPAGATE_TO_CHILDREN = KCOLOR__PROPAGATE_TO_CHILDREN;
-
-    /**
-     * The feature id for the '<em><b>Function Id</b></em>' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int KFOREGROUND_COLOR__FUNCTION_ID = KCOLOR__FUNCTION_ID;
-
-    /**
-     * The feature id for the '<em><b>Red</b></em>' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int KFOREGROUND_COLOR__RED = KCOLOR__RED;
-
-    /**
-     * The feature id for the '<em><b>Green</b></em>' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int KFOREGROUND_COLOR__GREEN = KCOLOR__GREEN;
-
-    /**
-     * The feature id for the '<em><b>Blue</b></em>' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int KFOREGROUND_COLOR__BLUE = KCOLOR__BLUE;
-
-    /**
-     * The number of structural features of the '<em>KForeground Color</em>' class.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int KFOREGROUND_COLOR_FEATURE_COUNT = KCOLOR_FEATURE_COUNT + 0;
-
-    /**
-     * The meta object id for the '{@link de.cau.cs.kieler.core.krendering.impl.KBackgroundColorImpl <em>KBackground Color</em>}' class.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @see de.cau.cs.kieler.core.krendering.impl.KBackgroundColorImpl
-     * @see de.cau.cs.kieler.core.krendering.impl.KRenderingPackageImpl#getKBackgroundColor()
-     * @generated
-     */
-    int KBACKGROUND_COLOR = 24;
-
-    /**
-     * The feature id for the '<em><b>Rendering</b></em>' reference.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int KBACKGROUND_COLOR__RENDERING = KCOLOR__RENDERING;
-
-    /**
-     * The feature id for the '<em><b>Propagate To Children</b></em>' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int KBACKGROUND_COLOR__PROPAGATE_TO_CHILDREN = KCOLOR__PROPAGATE_TO_CHILDREN;
-
-    /**
-     * The feature id for the '<em><b>Function Id</b></em>' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int KBACKGROUND_COLOR__FUNCTION_ID = KCOLOR__FUNCTION_ID;
-
-    /**
-     * The feature id for the '<em><b>Red</b></em>' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int KBACKGROUND_COLOR__RED = KCOLOR__RED;
-
-    /**
-     * The feature id for the '<em><b>Green</b></em>' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int KBACKGROUND_COLOR__GREEN = KCOLOR__GREEN;
-
-    /**
-     * The feature id for the '<em><b>Blue</b></em>' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int KBACKGROUND_COLOR__BLUE = KCOLOR__BLUE;
-
-    /**
-     * The number of structural features of the '<em>KBackground Color</em>' class.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int KBACKGROUND_COLOR_FEATURE_COUNT = KCOLOR_FEATURE_COUNT + 0;
-
-    /**
      * The meta object id for the '{@link de.cau.cs.kieler.core.krendering.impl.KLineWidthImpl <em>KLine Width</em>}' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -2091,7 +1940,7 @@ public interface KRenderingPackage extends EPackage {
      * @see de.cau.cs.kieler.core.krendering.impl.KRenderingPackageImpl#getKLineWidth()
      * @generated
      */
-    int KLINE_WIDTH = 25;
+    int KLINE_WIDTH = 23;
 
     /**
      * The feature id for the '<em><b>Rendering</b></em>' reference.
@@ -2146,7 +1995,7 @@ public interface KRenderingPackage extends EPackage {
      * @see de.cau.cs.kieler.core.krendering.impl.KRenderingPackageImpl#getKLineStyle()
      * @generated
      */
-    int KLINE_STYLE = 26;
+    int KLINE_STYLE = 24;
 
     /**
      * The feature id for the '<em><b>Rendering</b></em>' reference.
@@ -2201,7 +2050,7 @@ public interface KRenderingPackage extends EPackage {
      * @see de.cau.cs.kieler.core.krendering.impl.KRenderingPackageImpl#getKVerticalAlignment()
      * @generated
      */
-    int KVERTICAL_ALIGNMENT = 27;
+    int KVERTICAL_ALIGNMENT = 25;
 
     /**
      * The feature id for the '<em><b>Rendering</b></em>' reference.
@@ -2256,7 +2105,7 @@ public interface KRenderingPackage extends EPackage {
      * @see de.cau.cs.kieler.core.krendering.impl.KRenderingPackageImpl#getKHorizontalAlignment()
      * @generated
      */
-    int KHORIZONTAL_ALIGNMENT = 28;
+    int KHORIZONTAL_ALIGNMENT = 26;
 
     /**
      * The feature id for the '<em><b>Rendering</b></em>' reference.
@@ -2311,7 +2160,7 @@ public interface KRenderingPackage extends EPackage {
      * @see de.cau.cs.kieler.core.krendering.impl.KRenderingPackageImpl#getKXPosition()
      * @generated
      */
-    int KX_POSITION = 29;
+    int KX_POSITION = 27;
 
     /**
      * The feature id for the '<em><b>Absolute</b></em>' attribute.
@@ -2348,7 +2197,7 @@ public interface KRenderingPackage extends EPackage {
      * @see de.cau.cs.kieler.core.krendering.impl.KRenderingPackageImpl#getKYPosition()
      * @generated
      */
-    int KY_POSITION = 30;
+    int KY_POSITION = 28;
 
     /**
      * The feature id for the '<em><b>Absolute</b></em>' attribute.
@@ -2385,7 +2234,7 @@ public interface KRenderingPackage extends EPackage {
      * @see de.cau.cs.kieler.core.krendering.impl.KRenderingPackageImpl#getKLeftPosition()
      * @generated
      */
-    int KLEFT_POSITION = 31;
+    int KLEFT_POSITION = 29;
 
     /**
      * The feature id for the '<em><b>Absolute</b></em>' attribute.
@@ -2422,7 +2271,7 @@ public interface KRenderingPackage extends EPackage {
      * @see de.cau.cs.kieler.core.krendering.impl.KRenderingPackageImpl#getKRightPosition()
      * @generated
      */
-    int KRIGHT_POSITION = 32;
+    int KRIGHT_POSITION = 30;
 
     /**
      * The feature id for the '<em><b>Absolute</b></em>' attribute.
@@ -2459,7 +2308,7 @@ public interface KRenderingPackage extends EPackage {
      * @see de.cau.cs.kieler.core.krendering.impl.KRenderingPackageImpl#getKTopPosition()
      * @generated
      */
-    int KTOP_POSITION = 33;
+    int KTOP_POSITION = 31;
 
     /**
      * The feature id for the '<em><b>Absolute</b></em>' attribute.
@@ -2496,7 +2345,7 @@ public interface KRenderingPackage extends EPackage {
      * @see de.cau.cs.kieler.core.krendering.impl.KRenderingPackageImpl#getKBottomPosition()
      * @generated
      */
-    int KBOTTOM_POSITION = 34;
+    int KBOTTOM_POSITION = 32;
 
     /**
      * The feature id for the '<em><b>Absolute</b></em>' attribute.
@@ -2533,7 +2382,7 @@ public interface KRenderingPackage extends EPackage {
      * @see de.cau.cs.kieler.core.krendering.impl.KRenderingPackageImpl#getKSpline()
      * @generated
      */
-    int KSPLINE = 35;
+    int KSPLINE = 33;
 
     /**
      * The feature id for the '<em><b>Properties</b></em>' map.
@@ -2635,14 +2484,14 @@ public interface KRenderingPackage extends EPackage {
     int KSPLINE_FEATURE_COUNT = KPOLYLINE_FEATURE_COUNT + 0;
 
     /**
-     * The meta object id for the '{@link de.cau.cs.kieler.core.krendering.impl.KAlphaImpl <em>KAlpha</em>}' class.
+     * The meta object id for the '{@link de.cau.cs.kieler.core.krendering.impl.KColoringImpl <em>KColoring</em>}' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see de.cau.cs.kieler.core.krendering.impl.KAlphaImpl
-     * @see de.cau.cs.kieler.core.krendering.impl.KRenderingPackageImpl#getKAlpha()
+     * @see de.cau.cs.kieler.core.krendering.impl.KColoringImpl
+     * @see de.cau.cs.kieler.core.krendering.impl.KRenderingPackageImpl#getKColoring()
      * @generated
      */
-    int KALPHA = 37;
+    int KCOLORING = 35;
 
     /**
      * The feature id for the '<em><b>Rendering</b></em>' reference.
@@ -2651,7 +2500,7 @@ public interface KRenderingPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int KALPHA__RENDERING = KSTYLE__RENDERING;
+    int KCOLORING__RENDERING = KSTYLE__RENDERING;
 
     /**
      * The feature id for the '<em><b>Propagate To Children</b></em>' attribute.
@@ -2660,7 +2509,7 @@ public interface KRenderingPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int KALPHA__PROPAGATE_TO_CHILDREN = KSTYLE__PROPAGATE_TO_CHILDREN;
+    int KCOLORING__PROPAGATE_TO_CHILDREN = KSTYLE__PROPAGATE_TO_CHILDREN;
 
     /**
      * The feature id for the '<em><b>Function Id</b></em>' attribute.
@@ -2669,7 +2518,7 @@ public interface KRenderingPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int KALPHA__FUNCTION_ID = KSTYLE__FUNCTION_ID;
+    int KCOLORING__FUNCTION_ID = KSTYLE__FUNCTION_ID;
 
     /**
      * The feature id for the '<em><b>Alpha</b></em>' attribute.
@@ -2678,26 +2527,62 @@ public interface KRenderingPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int KALPHA__ALPHA = KSTYLE_FEATURE_COUNT + 0;
+    int KCOLORING__ALPHA = KSTYLE_FEATURE_COUNT + 0;
 
     /**
-     * The number of structural features of the '<em>KAlpha</em>' class.
+     * The feature id for the '<em><b>Color</b></em>' containment reference.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int KALPHA_FEATURE_COUNT = KSTYLE_FEATURE_COUNT + 1;
+    int KCOLORING__COLOR = KSTYLE_FEATURE_COUNT + 1;
 
     /**
-     * The meta object id for the '{@link de.cau.cs.kieler.core.krendering.impl.KForegroundAlphaImpl <em>KForeground Alpha</em>}' class.
+     * The feature id for the '<em><b>Target Color</b></em>' containment reference.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see de.cau.cs.kieler.core.krendering.impl.KForegroundAlphaImpl
-     * @see de.cau.cs.kieler.core.krendering.impl.KRenderingPackageImpl#getKForegroundAlpha()
+     * @generated
+     * @ordered
+     */
+    int KCOLORING__TARGET_COLOR = KSTYLE_FEATURE_COUNT + 2;
+
+    /**
+     * The feature id for the '<em><b>Target Alpha</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KCOLORING__TARGET_ALPHA = KSTYLE_FEATURE_COUNT + 3;
+
+    /**
+     * The feature id for the '<em><b>Gradient Angle</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KCOLORING__GRADIENT_ANGLE = KSTYLE_FEATURE_COUNT + 4;
+
+    /**
+     * The number of structural features of the '<em>KColoring</em>' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KCOLORING_FEATURE_COUNT = KSTYLE_FEATURE_COUNT + 5;
+
+    /**
+     * The meta object id for the '{@link de.cau.cs.kieler.core.krendering.impl.KForegroundImpl <em>KForeground</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see de.cau.cs.kieler.core.krendering.impl.KForegroundImpl
+     * @see de.cau.cs.kieler.core.krendering.impl.KRenderingPackageImpl#getKForeground()
      * @generated
      */
-    int KFOREGROUND_ALPHA = 36;
+    int KFOREGROUND = 34;
 
     /**
      * The feature id for the '<em><b>Rendering</b></em>' reference.
@@ -2706,7 +2591,7 @@ public interface KRenderingPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int KFOREGROUND_ALPHA__RENDERING = KALPHA__RENDERING;
+    int KFOREGROUND__RENDERING = KCOLORING__RENDERING;
 
     /**
      * The feature id for the '<em><b>Propagate To Children</b></em>' attribute.
@@ -2715,7 +2600,7 @@ public interface KRenderingPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int KFOREGROUND_ALPHA__PROPAGATE_TO_CHILDREN = KALPHA__PROPAGATE_TO_CHILDREN;
+    int KFOREGROUND__PROPAGATE_TO_CHILDREN = KCOLORING__PROPAGATE_TO_CHILDREN;
 
     /**
      * The feature id for the '<em><b>Function Id</b></em>' attribute.
@@ -2724,7 +2609,7 @@ public interface KRenderingPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int KFOREGROUND_ALPHA__FUNCTION_ID = KALPHA__FUNCTION_ID;
+    int KFOREGROUND__FUNCTION_ID = KCOLORING__FUNCTION_ID;
 
     /**
      * The feature id for the '<em><b>Alpha</b></em>' attribute.
@@ -2733,26 +2618,62 @@ public interface KRenderingPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int KFOREGROUND_ALPHA__ALPHA = KALPHA__ALPHA;
+    int KFOREGROUND__ALPHA = KCOLORING__ALPHA;
 
     /**
-     * The number of structural features of the '<em>KForeground Alpha</em>' class.
+     * The feature id for the '<em><b>Color</b></em>' containment reference.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int KFOREGROUND_ALPHA_FEATURE_COUNT = KALPHA_FEATURE_COUNT + 0;
+    int KFOREGROUND__COLOR = KCOLORING__COLOR;
 
     /**
-     * The meta object id for the '{@link de.cau.cs.kieler.core.krendering.impl.KBackgroundAlphaImpl <em>KBackground Alpha</em>}' class.
+     * The feature id for the '<em><b>Target Color</b></em>' containment reference.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see de.cau.cs.kieler.core.krendering.impl.KBackgroundAlphaImpl
-     * @see de.cau.cs.kieler.core.krendering.impl.KRenderingPackageImpl#getKBackgroundAlpha()
+     * @generated
+     * @ordered
+     */
+    int KFOREGROUND__TARGET_COLOR = KCOLORING__TARGET_COLOR;
+
+    /**
+     * The feature id for the '<em><b>Target Alpha</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KFOREGROUND__TARGET_ALPHA = KCOLORING__TARGET_ALPHA;
+
+    /**
+     * The feature id for the '<em><b>Gradient Angle</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KFOREGROUND__GRADIENT_ANGLE = KCOLORING__GRADIENT_ANGLE;
+
+    /**
+     * The number of structural features of the '<em>KForeground</em>' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KFOREGROUND_FEATURE_COUNT = KCOLORING_FEATURE_COUNT + 0;
+
+    /**
+     * The meta object id for the '{@link de.cau.cs.kieler.core.krendering.impl.KBackgroundImpl <em>KBackground</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see de.cau.cs.kieler.core.krendering.impl.KBackgroundImpl
+     * @see de.cau.cs.kieler.core.krendering.impl.KRenderingPackageImpl#getKBackground()
      * @generated
      */
-    int KBACKGROUND_ALPHA = 38;
+    int KBACKGROUND = 36;
 
     /**
      * The feature id for the '<em><b>Rendering</b></em>' reference.
@@ -2761,7 +2682,7 @@ public interface KRenderingPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int KBACKGROUND_ALPHA__RENDERING = KALPHA__RENDERING;
+    int KBACKGROUND__RENDERING = KCOLORING__RENDERING;
 
     /**
      * The feature id for the '<em><b>Propagate To Children</b></em>' attribute.
@@ -2770,7 +2691,7 @@ public interface KRenderingPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int KBACKGROUND_ALPHA__PROPAGATE_TO_CHILDREN = KALPHA__PROPAGATE_TO_CHILDREN;
+    int KBACKGROUND__PROPAGATE_TO_CHILDREN = KCOLORING__PROPAGATE_TO_CHILDREN;
 
     /**
      * The feature id for the '<em><b>Function Id</b></em>' attribute.
@@ -2779,7 +2700,7 @@ public interface KRenderingPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int KBACKGROUND_ALPHA__FUNCTION_ID = KALPHA__FUNCTION_ID;
+    int KBACKGROUND__FUNCTION_ID = KCOLORING__FUNCTION_ID;
 
     /**
      * The feature id for the '<em><b>Alpha</b></em>' attribute.
@@ -2788,16 +2709,52 @@ public interface KRenderingPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int KBACKGROUND_ALPHA__ALPHA = KALPHA__ALPHA;
+    int KBACKGROUND__ALPHA = KCOLORING__ALPHA;
 
     /**
-     * The number of structural features of the '<em>KBackground Alpha</em>' class.
+     * The feature id for the '<em><b>Color</b></em>' containment reference.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int KBACKGROUND_ALPHA_FEATURE_COUNT = KALPHA_FEATURE_COUNT + 0;
+    int KBACKGROUND__COLOR = KCOLORING__COLOR;
+
+    /**
+     * The feature id for the '<em><b>Target Color</b></em>' containment reference.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KBACKGROUND__TARGET_COLOR = KCOLORING__TARGET_COLOR;
+
+    /**
+     * The feature id for the '<em><b>Target Alpha</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KBACKGROUND__TARGET_ALPHA = KCOLORING__TARGET_ALPHA;
+
+    /**
+     * The feature id for the '<em><b>Gradient Angle</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KBACKGROUND__GRADIENT_ANGLE = KCOLORING__GRADIENT_ANGLE;
+
+    /**
+     * The number of structural features of the '<em>KBackground</em>' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KBACKGROUND_FEATURE_COUNT = KCOLORING_FEATURE_COUNT + 0;
 
     /**
      * The meta object id for the '{@link de.cau.cs.kieler.core.krendering.impl.KFontBoldImpl <em>KFont Bold</em>}' class.
@@ -2807,7 +2764,7 @@ public interface KRenderingPackage extends EPackage {
      * @see de.cau.cs.kieler.core.krendering.impl.KRenderingPackageImpl#getKFontBold()
      * @generated
      */
-    int KFONT_BOLD = 39;
+    int KFONT_BOLD = 37;
 
     /**
      * The feature id for the '<em><b>Rendering</b></em>' reference.
@@ -2862,7 +2819,7 @@ public interface KRenderingPackage extends EPackage {
      * @see de.cau.cs.kieler.core.krendering.impl.KRenderingPackageImpl#getKFontItalic()
      * @generated
      */
-    int KFONT_ITALIC = 40;
+    int KFONT_ITALIC = 38;
 
     /**
      * The feature id for the '<em><b>Rendering</b></em>' reference.
@@ -2917,7 +2874,7 @@ public interface KRenderingPackage extends EPackage {
      * @see de.cau.cs.kieler.core.krendering.impl.KRenderingPackageImpl#getKFontName()
      * @generated
      */
-    int KFONT_NAME = 41;
+    int KFONT_NAME = 39;
 
     /**
      * The feature id for the '<em><b>Rendering</b></em>' reference.
@@ -2972,7 +2929,7 @@ public interface KRenderingPackage extends EPackage {
      * @see de.cau.cs.kieler.core.krendering.impl.KRenderingPackageImpl#getKFontSize()
      * @generated
      */
-    int KFONT_SIZE = 42;
+    int KFONT_SIZE = 40;
 
     /**
      * The feature id for the '<em><b>Rendering</b></em>' reference.
@@ -3011,13 +2968,22 @@ public interface KRenderingPackage extends EPackage {
     int KFONT_SIZE__SIZE = KSTYLE_FEATURE_COUNT + 0;
 
     /**
+     * The feature id for the '<em><b>Scale With Zoom</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KFONT_SIZE__SCALE_WITH_ZOOM = KSTYLE_FEATURE_COUNT + 1;
+
+    /**
      * The number of structural features of the '<em>KFont Size</em>' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int KFONT_SIZE_FEATURE_COUNT = KSTYLE_FEATURE_COUNT + 1;
+    int KFONT_SIZE_FEATURE_COUNT = KSTYLE_FEATURE_COUNT + 2;
 
     /**
      * The meta object id for the '{@link de.cau.cs.kieler.core.krendering.impl.KRoundedBendsPolylineImpl <em>KRounded Bends Polyline</em>}' class.
@@ -3027,7 +2993,7 @@ public interface KRenderingPackage extends EPackage {
      * @see de.cau.cs.kieler.core.krendering.impl.KRenderingPackageImpl#getKRoundedBendsPolyline()
      * @generated
      */
-    int KROUNDED_BENDS_POLYLINE = 43;
+    int KROUNDED_BENDS_POLYLINE = 41;
 
     /**
      * The feature id for the '<em><b>Properties</b></em>' map.
@@ -3145,7 +3111,7 @@ public interface KRenderingPackage extends EPackage {
      * @see de.cau.cs.kieler.core.krendering.impl.KRenderingPackageImpl#getKRotation()
      * @generated
      */
-    int KROTATION = 44;
+    int KROTATION = 42;
 
     /**
      * The feature id for the '<em><b>Rendering</b></em>' reference.
@@ -3193,79 +3159,6 @@ public interface KRenderingPackage extends EPackage {
     int KROTATION_FEATURE_COUNT = KSTYLE_FEATURE_COUNT + 1;
 
     /**
-     * The meta object id for the '{@link de.cau.cs.kieler.core.krendering.impl.KGradientStyleImpl <em>KGradient Style</em>}' class.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @see de.cau.cs.kieler.core.krendering.impl.KGradientStyleImpl
-     * @see de.cau.cs.kieler.core.krendering.impl.KRenderingPackageImpl#getKGradientStyle()
-     * @generated
-     */
-    int KGRADIENT_STYLE = 45;
-
-    /**
-     * The feature id for the '<em><b>Rendering</b></em>' reference.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int KGRADIENT_STYLE__RENDERING = KSTYLE__RENDERING;
-
-    /**
-     * The feature id for the '<em><b>Propagate To Children</b></em>' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int KGRADIENT_STYLE__PROPAGATE_TO_CHILDREN = KSTYLE__PROPAGATE_TO_CHILDREN;
-
-    /**
-     * The feature id for the '<em><b>Function Id</b></em>' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int KGRADIENT_STYLE__FUNCTION_ID = KSTYLE__FUNCTION_ID;
-
-    /**
-     * The feature id for the '<em><b>Angle</b></em>' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int KGRADIENT_STYLE__ANGLE = KSTYLE_FEATURE_COUNT + 0;
-
-    /**
-     * The feature id for the '<em><b>Start Color</b></em>' reference.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int KGRADIENT_STYLE__START_COLOR = KSTYLE_FEATURE_COUNT + 1;
-
-    /**
-     * The feature id for the '<em><b>End Color</b></em>' reference.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int KGRADIENT_STYLE__END_COLOR = KSTYLE_FEATURE_COUNT + 2;
-
-    /**
-     * The number of structural features of the '<em>KGradient Style</em>' class.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int KGRADIENT_STYLE_FEATURE_COUNT = KSTYLE_FEATURE_COUNT + 3;
-
-    /**
      * The meta object id for the '{@link de.cau.cs.kieler.core.krendering.impl.KLineCapStyleImpl <em>KLine Cap Style</em>}' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -3273,7 +3166,7 @@ public interface KRenderingPackage extends EPackage {
      * @see de.cau.cs.kieler.core.krendering.impl.KRenderingPackageImpl#getKLineCapStyle()
      * @generated
      */
-    int KLINE_CAP_STYLE = 46;
+    int KLINE_CAP_STYLE = 43;
 
     /**
      * The feature id for the '<em><b>Rendering</b></em>' reference.
@@ -3328,7 +3221,7 @@ public interface KRenderingPackage extends EPackage {
      * @see de.cau.cs.kieler.core.krendering.impl.KRenderingPackageImpl#getKAction()
      * @generated
      */
-    int KACTION = 47;
+    int KACTION = 44;
 
     /**
      * The feature id for the '<em><b>Id</b></em>' attribute.
@@ -3365,7 +3258,7 @@ public interface KRenderingPackage extends EPackage {
      * @see de.cau.cs.kieler.core.krendering.impl.KRenderingPackageImpl#getKPointPlacementData()
      * @generated
      */
-    int KPOINT_PLACEMENT_DATA = 48;
+    int KPOINT_PLACEMENT_DATA = 45;
 
     /**
      * The feature id for the '<em><b>Reference Point</b></em>' containment reference.
@@ -3411,7 +3304,7 @@ public interface KRenderingPackage extends EPackage {
      * @see de.cau.cs.kieler.core.krendering.impl.KRenderingPackageImpl#getKTextRenderingRef()
      * @generated
      */
-    int KTEXT_RENDERING_REF = 49;
+    int KTEXT_RENDERING_REF = 46;
 
     /**
      * The feature id for the '<em><b>Properties</b></em>' map.
@@ -3529,7 +3422,7 @@ public interface KRenderingPackage extends EPackage {
      * @see de.cau.cs.kieler.core.krendering.impl.KRenderingPackageImpl#getKSelectAction()
      * @generated
      */
-    int KSELECT_ACTION = 50;
+    int KSELECT_ACTION = 47;
 
     /**
      * The feature id for the '<em><b>Id</b></em>' attribute.
@@ -3566,7 +3459,7 @@ public interface KRenderingPackage extends EPackage {
      * @see de.cau.cs.kieler.core.krendering.impl.KRenderingPackageImpl#getKExpandCollapseAction()
      * @generated
      */
-    int KEXPAND_COLLAPSE_ACTION = 51;
+    int KEXPAND_COLLAPSE_ACTION = 48;
 
     /**
      * The feature id for the '<em><b>Id</b></em>' attribute.
@@ -3603,7 +3496,7 @@ public interface KRenderingPackage extends EPackage {
      * @see de.cau.cs.kieler.core.krendering.impl.KRenderingPackageImpl#getKStyleContainer()
      * @generated
      */
-    int KSTYLE_CONTAINER = 52;
+    int KSTYLE_CONTAINER = 49;
 
     /**
      * The feature id for the '<em><b>Styles</b></em>' containment reference list.
@@ -3622,6 +3515,198 @@ public interface KRenderingPackage extends EPackage {
      * @ordered
      */
     int KSTYLE_CONTAINER_FEATURE_COUNT = 1;
+
+    /**
+     * The meta object id for the '{@link de.cau.cs.kieler.core.krendering.impl.KVisibilityImpl <em>KVisibility</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see de.cau.cs.kieler.core.krendering.impl.KVisibilityImpl
+     * @see de.cau.cs.kieler.core.krendering.impl.KRenderingPackageImpl#getKVisibility()
+     * @generated
+     */
+    int KVISIBILITY = 50;
+
+    /**
+     * The feature id for the '<em><b>Rendering</b></em>' reference.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KVISIBILITY__RENDERING = KSTYLE__RENDERING;
+
+    /**
+     * The feature id for the '<em><b>Propagate To Children</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KVISIBILITY__PROPAGATE_TO_CHILDREN = KSTYLE__PROPAGATE_TO_CHILDREN;
+
+    /**
+     * The feature id for the '<em><b>Function Id</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KVISIBILITY__FUNCTION_ID = KSTYLE__FUNCTION_ID;
+
+    /**
+     * The feature id for the '<em><b>Is Visible</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KVISIBILITY__IS_VISIBLE = KSTYLE_FEATURE_COUNT + 0;
+
+    /**
+     * The number of structural features of the '<em>KVisibility</em>' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KVISIBILITY_FEATURE_COUNT = KSTYLE_FEATURE_COUNT + 1;
+
+    /**
+     * The meta object id for the '{@link de.cau.cs.kieler.core.krendering.impl.KShadowImpl <em>KShadow</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see de.cau.cs.kieler.core.krendering.impl.KShadowImpl
+     * @see de.cau.cs.kieler.core.krendering.impl.KRenderingPackageImpl#getKShadow()
+     * @generated
+     */
+    int KSHADOW = 51;
+
+    /**
+     * The feature id for the '<em><b>Rendering</b></em>' reference.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KSHADOW__RENDERING = KSTYLE__RENDERING;
+
+    /**
+     * The feature id for the '<em><b>Propagate To Children</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KSHADOW__PROPAGATE_TO_CHILDREN = KSTYLE__PROPAGATE_TO_CHILDREN;
+
+    /**
+     * The feature id for the '<em><b>Function Id</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KSHADOW__FUNCTION_ID = KSTYLE__FUNCTION_ID;
+
+    /**
+     * The feature id for the '<em><b>XOffset</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KSHADOW__XOFFSET = KSTYLE_FEATURE_COUNT + 0;
+
+    /**
+     * The feature id for the '<em><b>YOffset</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KSHADOW__YOFFSET = KSTYLE_FEATURE_COUNT + 1;
+
+    /**
+     * The feature id for the '<em><b>Blur</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KSHADOW__BLUR = KSTYLE_FEATURE_COUNT + 2;
+
+    /**
+     * The feature id for the '<em><b>Color</b></em>' reference.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KSHADOW__COLOR = KSTYLE_FEATURE_COUNT + 3;
+
+    /**
+     * The number of structural features of the '<em>KShadow</em>' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KSHADOW_FEATURE_COUNT = KSTYLE_FEATURE_COUNT + 4;
+
+    /**
+     * The meta object id for the '{@link de.cau.cs.kieler.core.krendering.impl.KFontUnderlinedImpl <em>KFont Underlined</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see de.cau.cs.kieler.core.krendering.impl.KFontUnderlinedImpl
+     * @see de.cau.cs.kieler.core.krendering.impl.KRenderingPackageImpl#getKFontUnderlined()
+     * @generated
+     */
+    int KFONT_UNDERLINED = 52;
+
+    /**
+     * The feature id for the '<em><b>Rendering</b></em>' reference.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KFONT_UNDERLINED__RENDERING = KSTYLE__RENDERING;
+
+    /**
+     * The feature id for the '<em><b>Propagate To Children</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KFONT_UNDERLINED__PROPAGATE_TO_CHILDREN = KSTYLE__PROPAGATE_TO_CHILDREN;
+
+    /**
+     * The feature id for the '<em><b>Function Id</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KFONT_UNDERLINED__FUNCTION_ID = KSTYLE__FUNCTION_ID;
+
+    /**
+     * The feature id for the '<em><b>Underline Style</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KFONT_UNDERLINED__UNDERLINE_STYLE = KSTYLE_FEATURE_COUNT + 0;
+
+    /**
+     * The number of structural features of the '<em>KFont Underlined</em>' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KFONT_UNDERLINED_FEATURE_COUNT = KSTYLE_FEATURE_COUNT + 1;
 
     /**
      * The meta object id for the '{@link de.cau.cs.kieler.core.krendering.LineStyle <em>Line Style</em>}' enum.
@@ -3684,6 +3769,17 @@ public interface KRenderingPackage extends EPackage {
      * @generated
      */
     int LINE_CAP_STYLE = 58;
+
+
+    /**
+     * The meta object id for the '{@link de.cau.cs.kieler.core.krendering.UnderlineStyle <em>Underline Style</em>}' enum.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see de.cau.cs.kieler.core.krendering.UnderlineStyle
+     * @see de.cau.cs.kieler.core.krendering.impl.KRenderingPackageImpl#getUnderlineStyle()
+     * @generated
+     */
+    int UNDERLINE_STYLE = 59;
 
 
     /**
@@ -4177,17 +4273,6 @@ public interface KRenderingPackage extends EPackage {
     EAttribute getKText_Clip();
 
     /**
-     * Returns the meta object for the attribute '{@link de.cau.cs.kieler.core.krendering.KText#isScaling <em>Scaling</em>}'.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @return the meta object for the attribute '<em>Scaling</em>'.
-     * @see de.cau.cs.kieler.core.krendering.KText#isScaling()
-     * @see #getKText()
-     * @generated
-     */
-    EAttribute getKText_Scaling();
-
-    /**
      * Returns the meta object for class '{@link de.cau.cs.kieler.core.krendering.KPlacement <em>KPlacement</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -4379,16 +4464,6 @@ public interface KRenderingPackage extends EPackage {
      */
 	EAttribute getKCustomRendering_FigureObject();
 
-				/**
-     * Returns the meta object for class '{@link de.cau.cs.kieler.core.krendering.KForegroundColor <em>KForeground Color</em>}'.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @return the meta object for class '<em>KForeground Color</em>'.
-     * @see de.cau.cs.kieler.core.krendering.KForegroundColor
-     * @generated
-     */
-    EClass getKForegroundColor();
-
     /**
      * Returns the meta object for class '{@link de.cau.cs.kieler.core.krendering.KColor <em>KColor</em>}'.
      * <!-- begin-user-doc -->
@@ -4431,16 +4506,6 @@ public interface KRenderingPackage extends EPackage {
      * @generated
      */
     EAttribute getKColor_Blue();
-
-    /**
-     * Returns the meta object for class '{@link de.cau.cs.kieler.core.krendering.KBackgroundColor <em>KBackground Color</em>}'.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @return the meta object for class '<em>KBackground Color</em>'.
-     * @see de.cau.cs.kieler.core.krendering.KBackgroundColor
-     * @generated
-     */
-    EClass getKBackgroundColor();
 
     /**
      * Returns the meta object for class '{@link de.cau.cs.kieler.core.krendering.KLineWidth <em>KLine Width</em>}'.
@@ -4641,45 +4706,89 @@ public interface KRenderingPackage extends EPackage {
     EClass getKSpline();
 
     /**
-     * Returns the meta object for class '{@link de.cau.cs.kieler.core.krendering.KForegroundAlpha <em>KForeground Alpha</em>}'.
+     * Returns the meta object for class '{@link de.cau.cs.kieler.core.krendering.KForeground <em>KForeground</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for class '<em>KForeground Alpha</em>'.
-     * @see de.cau.cs.kieler.core.krendering.KForegroundAlpha
+     * @return the meta object for class '<em>KForeground</em>'.
+     * @see de.cau.cs.kieler.core.krendering.KForeground
      * @generated
      */
-    EClass getKForegroundAlpha();
+    EClass getKForeground();
 
     /**
-     * Returns the meta object for class '{@link de.cau.cs.kieler.core.krendering.KAlpha <em>KAlpha</em>}'.
+     * Returns the meta object for class '{@link de.cau.cs.kieler.core.krendering.KColoring <em>KColoring</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for class '<em>KAlpha</em>'.
-     * @see de.cau.cs.kieler.core.krendering.KAlpha
+     * @return the meta object for class '<em>KColoring</em>'.
+     * @see de.cau.cs.kieler.core.krendering.KColoring
      * @generated
      */
-    EClass getKAlpha();
+    EClass getKColoring();
 
     /**
-     * Returns the meta object for the attribute '{@link de.cau.cs.kieler.core.krendering.KAlpha#getAlpha <em>Alpha</em>}'.
+     * Returns the meta object for the attribute '{@link de.cau.cs.kieler.core.krendering.KColoring#getAlpha <em>Alpha</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @return the meta object for the attribute '<em>Alpha</em>'.
-     * @see de.cau.cs.kieler.core.krendering.KAlpha#getAlpha()
-     * @see #getKAlpha()
+     * @see de.cau.cs.kieler.core.krendering.KColoring#getAlpha()
+     * @see #getKColoring()
      * @generated
      */
-    EAttribute getKAlpha_Alpha();
+    EAttribute getKColoring_Alpha();
 
     /**
-     * Returns the meta object for class '{@link de.cau.cs.kieler.core.krendering.KBackgroundAlpha <em>KBackground Alpha</em>}'.
+     * Returns the meta object for the containment reference '{@link de.cau.cs.kieler.core.krendering.KColoring#getColor <em>Color</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for class '<em>KBackground Alpha</em>'.
-     * @see de.cau.cs.kieler.core.krendering.KBackgroundAlpha
+     * @return the meta object for the containment reference '<em>Color</em>'.
+     * @see de.cau.cs.kieler.core.krendering.KColoring#getColor()
+     * @see #getKColoring()
      * @generated
      */
-    EClass getKBackgroundAlpha();
+    EReference getKColoring_Color();
+
+    /**
+     * Returns the meta object for the containment reference '{@link de.cau.cs.kieler.core.krendering.KColoring#getTargetColor <em>Target Color</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the containment reference '<em>Target Color</em>'.
+     * @see de.cau.cs.kieler.core.krendering.KColoring#getTargetColor()
+     * @see #getKColoring()
+     * @generated
+     */
+    EReference getKColoring_TargetColor();
+
+    /**
+     * Returns the meta object for the attribute '{@link de.cau.cs.kieler.core.krendering.KColoring#getTargetAlpha <em>Target Alpha</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the attribute '<em>Target Alpha</em>'.
+     * @see de.cau.cs.kieler.core.krendering.KColoring#getTargetAlpha()
+     * @see #getKColoring()
+     * @generated
+     */
+    EAttribute getKColoring_TargetAlpha();
+
+    /**
+     * Returns the meta object for the attribute '{@link de.cau.cs.kieler.core.krendering.KColoring#getGradientAngle <em>Gradient Angle</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the attribute '<em>Gradient Angle</em>'.
+     * @see de.cau.cs.kieler.core.krendering.KColoring#getGradientAngle()
+     * @see #getKColoring()
+     * @generated
+     */
+    EAttribute getKColoring_GradientAngle();
+
+    /**
+     * Returns the meta object for class '{@link de.cau.cs.kieler.core.krendering.KBackground <em>KBackground</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for class '<em>KBackground</em>'.
+     * @see de.cau.cs.kieler.core.krendering.KBackground
+     * @generated
+     */
+    EClass getKBackground();
 
     /**
      * Returns the meta object for class '{@link de.cau.cs.kieler.core.krendering.KFontBold <em>KFont Bold</em>}'.
@@ -4766,6 +4875,17 @@ public interface KRenderingPackage extends EPackage {
     EAttribute getKFontSize_Size();
 
     /**
+     * Returns the meta object for the attribute '{@link de.cau.cs.kieler.core.krendering.KFontSize#isScaleWithZoom <em>Scale With Zoom</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the attribute '<em>Scale With Zoom</em>'.
+     * @see de.cau.cs.kieler.core.krendering.KFontSize#isScaleWithZoom()
+     * @see #getKFontSize()
+     * @generated
+     */
+    EAttribute getKFontSize_ScaleWithZoom();
+
+    /**
      * Returns the meta object for class '{@link de.cau.cs.kieler.core.krendering.KRoundedBendsPolyline <em>KRounded Bends Polyline</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -4806,49 +4926,6 @@ public interface KRenderingPackage extends EPackage {
      * @generated
      */
     EAttribute getKRotation_Rotation();
-
-    /**
-     * Returns the meta object for class '{@link de.cau.cs.kieler.core.krendering.KGradientStyle <em>KGradient Style</em>}'.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @return the meta object for class '<em>KGradient Style</em>'.
-     * @see de.cau.cs.kieler.core.krendering.KGradientStyle
-     * @generated
-     */
-    EClass getKGradientStyle();
-
-    /**
-     * Returns the meta object for the attribute '{@link de.cau.cs.kieler.core.krendering.KGradientStyle#getAngle <em>Angle</em>}'.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @return the meta object for the attribute '<em>Angle</em>'.
-     * @see de.cau.cs.kieler.core.krendering.KGradientStyle#getAngle()
-     * @see #getKGradientStyle()
-     * @generated
-     */
-    EAttribute getKGradientStyle_Angle();
-
-    /**
-     * Returns the meta object for the reference '{@link de.cau.cs.kieler.core.krendering.KGradientStyle#getStartColor <em>Start Color</em>}'.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @return the meta object for the reference '<em>Start Color</em>'.
-     * @see de.cau.cs.kieler.core.krendering.KGradientStyle#getStartColor()
-     * @see #getKGradientStyle()
-     * @generated
-     */
-    EReference getKGradientStyle_StartColor();
-
-    /**
-     * Returns the meta object for the reference '{@link de.cau.cs.kieler.core.krendering.KGradientStyle#getEndColor <em>End Color</em>}'.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @return the meta object for the reference '<em>End Color</em>'.
-     * @see de.cau.cs.kieler.core.krendering.KGradientStyle#getEndColor()
-     * @see #getKGradientStyle()
-     * @generated
-     */
-    EReference getKGradientStyle_EndColor();
 
     /**
      * Returns the meta object for class '{@link de.cau.cs.kieler.core.krendering.KLineCapStyle <em>KLine Cap Style</em>}'.
@@ -5020,6 +5097,102 @@ public interface KRenderingPackage extends EPackage {
     EReference getKStyleContainer_Styles();
 
     /**
+     * Returns the meta object for class '{@link de.cau.cs.kieler.core.krendering.KVisibility <em>KVisibility</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for class '<em>KVisibility</em>'.
+     * @see de.cau.cs.kieler.core.krendering.KVisibility
+     * @generated
+     */
+    EClass getKVisibility();
+
+    /**
+     * Returns the meta object for the attribute '{@link de.cau.cs.kieler.core.krendering.KVisibility#isIsVisible <em>Is Visible</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the attribute '<em>Is Visible</em>'.
+     * @see de.cau.cs.kieler.core.krendering.KVisibility#isIsVisible()
+     * @see #getKVisibility()
+     * @generated
+     */
+    EAttribute getKVisibility_IsVisible();
+
+    /**
+     * Returns the meta object for class '{@link de.cau.cs.kieler.core.krendering.KShadow <em>KShadow</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for class '<em>KShadow</em>'.
+     * @see de.cau.cs.kieler.core.krendering.KShadow
+     * @generated
+     */
+    EClass getKShadow();
+
+    /**
+     * Returns the meta object for the attribute '{@link de.cau.cs.kieler.core.krendering.KShadow#getXOffset <em>XOffset</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the attribute '<em>XOffset</em>'.
+     * @see de.cau.cs.kieler.core.krendering.KShadow#getXOffset()
+     * @see #getKShadow()
+     * @generated
+     */
+    EAttribute getKShadow_XOffset();
+
+    /**
+     * Returns the meta object for the attribute '{@link de.cau.cs.kieler.core.krendering.KShadow#getYOffset <em>YOffset</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the attribute '<em>YOffset</em>'.
+     * @see de.cau.cs.kieler.core.krendering.KShadow#getYOffset()
+     * @see #getKShadow()
+     * @generated
+     */
+    EAttribute getKShadow_YOffset();
+
+    /**
+     * Returns the meta object for the attribute '{@link de.cau.cs.kieler.core.krendering.KShadow#getBlur <em>Blur</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the attribute '<em>Blur</em>'.
+     * @see de.cau.cs.kieler.core.krendering.KShadow#getBlur()
+     * @see #getKShadow()
+     * @generated
+     */
+    EAttribute getKShadow_Blur();
+
+    /**
+     * Returns the meta object for the reference '{@link de.cau.cs.kieler.core.krendering.KShadow#getColor <em>Color</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the reference '<em>Color</em>'.
+     * @see de.cau.cs.kieler.core.krendering.KShadow#getColor()
+     * @see #getKShadow()
+     * @generated
+     */
+    EReference getKShadow_Color();
+
+    /**
+     * Returns the meta object for class '{@link de.cau.cs.kieler.core.krendering.KFontUnderlined <em>KFont Underlined</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for class '<em>KFont Underlined</em>'.
+     * @see de.cau.cs.kieler.core.krendering.KFontUnderlined
+     * @generated
+     */
+    EClass getKFontUnderlined();
+
+    /**
+     * Returns the meta object for the attribute '{@link de.cau.cs.kieler.core.krendering.KFontUnderlined#getUnderlineStyle <em>Underline Style</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the attribute '<em>Underline Style</em>'.
+     * @see de.cau.cs.kieler.core.krendering.KFontUnderlined#getUnderlineStyle()
+     * @see #getKFontUnderlined()
+     * @generated
+     */
+    EAttribute getKFontUnderlined_UnderlineStyle();
+
+    /**
      * Returns the meta object for enum '{@link de.cau.cs.kieler.core.krendering.LineStyle <em>Line Style</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -5078,6 +5251,16 @@ public interface KRenderingPackage extends EPackage {
      * @generated
      */
     EEnum getLineCapStyle();
+
+    /**
+     * Returns the meta object for enum '{@link de.cau.cs.kieler.core.krendering.UnderlineStyle <em>Underline Style</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for enum '<em>Underline Style</em>'.
+     * @see de.cau.cs.kieler.core.krendering.UnderlineStyle
+     * @generated
+     */
+    EEnum getUnderlineStyle();
 
     /**
      * Returns the factory that creates the instances of the model.
@@ -5502,14 +5685,6 @@ public interface KRenderingPackage extends EPackage {
         EAttribute KTEXT__CLIP = eINSTANCE.getKText_Clip();
 
         /**
-         * The meta object literal for the '<em><b>Scaling</b></em>' attribute feature.
-         * <!-- begin-user-doc -->
-         * <!-- end-user-doc -->
-         * @generated
-         */
-        EAttribute KTEXT__SCALING = eINSTANCE.getKText_Scaling();
-
-        /**
          * The meta object literal for the '{@link de.cau.cs.kieler.core.krendering.KPlacement <em>KPlacement</em>}' class.
          * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
@@ -5663,17 +5838,7 @@ public interface KRenderingPackage extends EPackage {
 		 * <!-- end-user-doc -->
          * @generated
          */
-		EAttribute KCUSTOM_RENDERING__FIGURE_OBJECT = eINSTANCE.getKCustomRendering_FigureObject();
-
-								/**
-         * The meta object literal for the '{@link de.cau.cs.kieler.core.krendering.impl.KForegroundColorImpl <em>KForeground Color</em>}' class.
-         * <!-- begin-user-doc -->
-         * <!-- end-user-doc -->
-         * @see de.cau.cs.kieler.core.krendering.impl.KForegroundColorImpl
-         * @see de.cau.cs.kieler.core.krendering.impl.KRenderingPackageImpl#getKForegroundColor()
-         * @generated
-         */
-        EClass KFOREGROUND_COLOR = eINSTANCE.getKForegroundColor();
+	EAttribute KCUSTOM_RENDERING__FIGURE_OBJECT = eINSTANCE.getKCustomRendering_FigureObject();
 
         /**
          * The meta object literal for the '{@link de.cau.cs.kieler.core.krendering.impl.KColorImpl <em>KColor</em>}' class.
@@ -5708,16 +5873,6 @@ public interface KRenderingPackage extends EPackage {
          * @generated
          */
         EAttribute KCOLOR__BLUE = eINSTANCE.getKColor_Blue();
-
-        /**
-         * The meta object literal for the '{@link de.cau.cs.kieler.core.krendering.impl.KBackgroundColorImpl <em>KBackground Color</em>}' class.
-         * <!-- begin-user-doc -->
-         * <!-- end-user-doc -->
-         * @see de.cau.cs.kieler.core.krendering.impl.KBackgroundColorImpl
-         * @see de.cau.cs.kieler.core.krendering.impl.KRenderingPackageImpl#getKBackgroundColor()
-         * @generated
-         */
-        EClass KBACKGROUND_COLOR = eINSTANCE.getKBackgroundColor();
 
         /**
          * The meta object literal for the '{@link de.cau.cs.kieler.core.krendering.impl.KLineWidthImpl <em>KLine Width</em>}' class.
@@ -5894,24 +6049,24 @@ public interface KRenderingPackage extends EPackage {
         EClass KSPLINE = eINSTANCE.getKSpline();
 
         /**
-         * The meta object literal for the '{@link de.cau.cs.kieler.core.krendering.impl.KForegroundAlphaImpl <em>KForeground Alpha</em>}' class.
+         * The meta object literal for the '{@link de.cau.cs.kieler.core.krendering.impl.KForegroundImpl <em>KForeground</em>}' class.
          * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-         * @see de.cau.cs.kieler.core.krendering.impl.KForegroundAlphaImpl
-         * @see de.cau.cs.kieler.core.krendering.impl.KRenderingPackageImpl#getKForegroundAlpha()
+         * @see de.cau.cs.kieler.core.krendering.impl.KForegroundImpl
+         * @see de.cau.cs.kieler.core.krendering.impl.KRenderingPackageImpl#getKForeground()
          * @generated
          */
-        EClass KFOREGROUND_ALPHA = eINSTANCE.getKForegroundAlpha();
+        EClass KFOREGROUND = eINSTANCE.getKForeground();
 
         /**
-         * The meta object literal for the '{@link de.cau.cs.kieler.core.krendering.impl.KAlphaImpl <em>KAlpha</em>}' class.
+         * The meta object literal for the '{@link de.cau.cs.kieler.core.krendering.impl.KColoringImpl <em>KColoring</em>}' class.
          * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-         * @see de.cau.cs.kieler.core.krendering.impl.KAlphaImpl
-         * @see de.cau.cs.kieler.core.krendering.impl.KRenderingPackageImpl#getKAlpha()
+         * @see de.cau.cs.kieler.core.krendering.impl.KColoringImpl
+         * @see de.cau.cs.kieler.core.krendering.impl.KRenderingPackageImpl#getKColoring()
          * @generated
          */
-        EClass KALPHA = eINSTANCE.getKAlpha();
+        EClass KCOLORING = eINSTANCE.getKColoring();
 
         /**
          * The meta object literal for the '<em><b>Alpha</b></em>' attribute feature.
@@ -5919,17 +6074,49 @@ public interface KRenderingPackage extends EPackage {
          * <!-- end-user-doc -->
          * @generated
          */
-        EAttribute KALPHA__ALPHA = eINSTANCE.getKAlpha_Alpha();
+        EAttribute KCOLORING__ALPHA = eINSTANCE.getKColoring_Alpha();
 
         /**
-         * The meta object literal for the '{@link de.cau.cs.kieler.core.krendering.impl.KBackgroundAlphaImpl <em>KBackground Alpha</em>}' class.
+         * The meta object literal for the '<em><b>Color</b></em>' containment reference feature.
          * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-         * @see de.cau.cs.kieler.core.krendering.impl.KBackgroundAlphaImpl
-         * @see de.cau.cs.kieler.core.krendering.impl.KRenderingPackageImpl#getKBackgroundAlpha()
          * @generated
          */
-        EClass KBACKGROUND_ALPHA = eINSTANCE.getKBackgroundAlpha();
+        EReference KCOLORING__COLOR = eINSTANCE.getKColoring_Color();
+
+        /**
+         * The meta object literal for the '<em><b>Target Color</b></em>' containment reference feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EReference KCOLORING__TARGET_COLOR = eINSTANCE.getKColoring_TargetColor();
+
+        /**
+         * The meta object literal for the '<em><b>Target Alpha</b></em>' attribute feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EAttribute KCOLORING__TARGET_ALPHA = eINSTANCE.getKColoring_TargetAlpha();
+
+        /**
+         * The meta object literal for the '<em><b>Gradient Angle</b></em>' attribute feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EAttribute KCOLORING__GRADIENT_ANGLE = eINSTANCE.getKColoring_GradientAngle();
+
+        /**
+         * The meta object literal for the '{@link de.cau.cs.kieler.core.krendering.impl.KBackgroundImpl <em>KBackground</em>}' class.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @see de.cau.cs.kieler.core.krendering.impl.KBackgroundImpl
+         * @see de.cau.cs.kieler.core.krendering.impl.KRenderingPackageImpl#getKBackground()
+         * @generated
+         */
+        EClass KBACKGROUND = eINSTANCE.getKBackground();
 
         /**
          * The meta object literal for the '{@link de.cau.cs.kieler.core.krendering.impl.KFontBoldImpl <em>KFont Bold</em>}' class.
@@ -6004,6 +6191,14 @@ public interface KRenderingPackage extends EPackage {
         EAttribute KFONT_SIZE__SIZE = eINSTANCE.getKFontSize_Size();
 
         /**
+         * The meta object literal for the '<em><b>Scale With Zoom</b></em>' attribute feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EAttribute KFONT_SIZE__SCALE_WITH_ZOOM = eINSTANCE.getKFontSize_ScaleWithZoom();
+
+        /**
          * The meta object literal for the '{@link de.cau.cs.kieler.core.krendering.impl.KRoundedBendsPolylineImpl <em>KRounded Bends Polyline</em>}' class.
          * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
@@ -6038,40 +6233,6 @@ public interface KRenderingPackage extends EPackage {
          * @generated
          */
         EAttribute KROTATION__ROTATION = eINSTANCE.getKRotation_Rotation();
-
-        /**
-         * The meta object literal for the '{@link de.cau.cs.kieler.core.krendering.impl.KGradientStyleImpl <em>KGradient Style</em>}' class.
-         * <!-- begin-user-doc -->
-         * <!-- end-user-doc -->
-         * @see de.cau.cs.kieler.core.krendering.impl.KGradientStyleImpl
-         * @see de.cau.cs.kieler.core.krendering.impl.KRenderingPackageImpl#getKGradientStyle()
-         * @generated
-         */
-        EClass KGRADIENT_STYLE = eINSTANCE.getKGradientStyle();
-
-        /**
-         * The meta object literal for the '<em><b>Angle</b></em>' attribute feature.
-         * <!-- begin-user-doc -->
-         * <!-- end-user-doc -->
-         * @generated
-         */
-        EAttribute KGRADIENT_STYLE__ANGLE = eINSTANCE.getKGradientStyle_Angle();
-
-        /**
-         * The meta object literal for the '<em><b>Start Color</b></em>' reference feature.
-         * <!-- begin-user-doc -->
-         * <!-- end-user-doc -->
-         * @generated
-         */
-        EReference KGRADIENT_STYLE__START_COLOR = eINSTANCE.getKGradientStyle_StartColor();
-
-        /**
-         * The meta object literal for the '<em><b>End Color</b></em>' reference feature.
-         * <!-- begin-user-doc -->
-         * <!-- end-user-doc -->
-         * @generated
-         */
-        EReference KGRADIENT_STYLE__END_COLOR = eINSTANCE.getKGradientStyle_EndColor();
 
         /**
          * The meta object literal for the '{@link de.cau.cs.kieler.core.krendering.impl.KLineCapStyleImpl <em>KLine Cap Style</em>}' class.
@@ -6216,6 +6377,84 @@ public interface KRenderingPackage extends EPackage {
         EReference KSTYLE_CONTAINER__STYLES = eINSTANCE.getKStyleContainer_Styles();
 
         /**
+         * The meta object literal for the '{@link de.cau.cs.kieler.core.krendering.impl.KVisibilityImpl <em>KVisibility</em>}' class.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @see de.cau.cs.kieler.core.krendering.impl.KVisibilityImpl
+         * @see de.cau.cs.kieler.core.krendering.impl.KRenderingPackageImpl#getKVisibility()
+         * @generated
+         */
+        EClass KVISIBILITY = eINSTANCE.getKVisibility();
+
+        /**
+         * The meta object literal for the '<em><b>Is Visible</b></em>' attribute feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EAttribute KVISIBILITY__IS_VISIBLE = eINSTANCE.getKVisibility_IsVisible();
+
+        /**
+         * The meta object literal for the '{@link de.cau.cs.kieler.core.krendering.impl.KShadowImpl <em>KShadow</em>}' class.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @see de.cau.cs.kieler.core.krendering.impl.KShadowImpl
+         * @see de.cau.cs.kieler.core.krendering.impl.KRenderingPackageImpl#getKShadow()
+         * @generated
+         */
+        EClass KSHADOW = eINSTANCE.getKShadow();
+
+        /**
+         * The meta object literal for the '<em><b>XOffset</b></em>' attribute feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EAttribute KSHADOW__XOFFSET = eINSTANCE.getKShadow_XOffset();
+
+        /**
+         * The meta object literal for the '<em><b>YOffset</b></em>' attribute feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EAttribute KSHADOW__YOFFSET = eINSTANCE.getKShadow_YOffset();
+
+        /**
+         * The meta object literal for the '<em><b>Blur</b></em>' attribute feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EAttribute KSHADOW__BLUR = eINSTANCE.getKShadow_Blur();
+
+        /**
+         * The meta object literal for the '<em><b>Color</b></em>' reference feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EReference KSHADOW__COLOR = eINSTANCE.getKShadow_Color();
+
+        /**
+         * The meta object literal for the '{@link de.cau.cs.kieler.core.krendering.impl.KFontUnderlinedImpl <em>KFont Underlined</em>}' class.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @see de.cau.cs.kieler.core.krendering.impl.KFontUnderlinedImpl
+         * @see de.cau.cs.kieler.core.krendering.impl.KRenderingPackageImpl#getKFontUnderlined()
+         * @generated
+         */
+        EClass KFONT_UNDERLINED = eINSTANCE.getKFontUnderlined();
+
+        /**
+         * The meta object literal for the '<em><b>Underline Style</b></em>' attribute feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EAttribute KFONT_UNDERLINED__UNDERLINE_STYLE = eINSTANCE.getKFontUnderlined_UnderlineStyle();
+
+        /**
          * The meta object literal for the '{@link de.cau.cs.kieler.core.krendering.LineStyle <em>Line Style</em>}' enum.
          * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
@@ -6274,6 +6513,16 @@ public interface KRenderingPackage extends EPackage {
          * @generated
          */
         EEnum LINE_CAP_STYLE = eINSTANCE.getLineCapStyle();
+
+        /**
+         * The meta object literal for the '{@link de.cau.cs.kieler.core.krendering.UnderlineStyle <em>Underline Style</em>}' enum.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @see de.cau.cs.kieler.core.krendering.UnderlineStyle
+         * @see de.cau.cs.kieler.core.krendering.impl.KRenderingPackageImpl#getUnderlineStyle()
+         * @generated
+         */
+        EEnum UNDERLINE_STYLE = eINSTANCE.getUnderlineStyle();
 
     }
 

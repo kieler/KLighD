@@ -186,22 +186,13 @@ public interface KRenderingFactory extends EFactory {
     KCustomRendering createKCustomRendering();
 
     /**
-     * Returns a new object of class '<em>KForeground Color</em>'.
+     * Returns a new object of class '<em>KColor</em>'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return a new object of class '<em>KForeground Color</em>'.
+     * @return a new object of class '<em>KColor</em>'.
      * @generated
      */
-    KForegroundColor createKForegroundColor();
-
-    /**
-     * Returns a new object of class '<em>KBackground Color</em>'.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @return a new object of class '<em>KBackground Color</em>'.
-     * @generated
-     */
-    KBackgroundColor createKBackgroundColor();
+    KColor createKColor();
 
     /**
      * Returns a new object of class '<em>KLine Width</em>'.
@@ -285,22 +276,22 @@ public interface KRenderingFactory extends EFactory {
     KSpline createKSpline();
 
     /**
-     * Returns a new object of class '<em>KForeground Alpha</em>'.
+     * Returns a new object of class '<em>KForeground</em>'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return a new object of class '<em>KForeground Alpha</em>'.
+     * @return a new object of class '<em>KForeground</em>'.
      * @generated
      */
-    KForegroundAlpha createKForegroundAlpha();
+    KForeground createKForeground();
 
     /**
-     * Returns a new object of class '<em>KBackground Alpha</em>'.
+     * Returns a new object of class '<em>KBackground</em>'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return a new object of class '<em>KBackground Alpha</em>'.
+     * @return a new object of class '<em>KBackground</em>'.
      * @generated
      */
-    KBackgroundAlpha createKBackgroundAlpha();
+    KBackground createKBackground();
 
     /**
      * Returns a new object of class '<em>KFont Bold</em>'.
@@ -357,15 +348,6 @@ public interface KRenderingFactory extends EFactory {
     KRotation createKRotation();
 
     /**
-     * Returns a new object of class '<em>KGradient Style</em>'.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @return a new object of class '<em>KGradient Style</em>'.
-     * @generated
-     */
-    KGradientStyle createKGradientStyle();
-
-    /**
      * Returns a new object of class '<em>KLine Cap Style</em>'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -418,6 +400,33 @@ public interface KRenderingFactory extends EFactory {
      * @generated
      */
     KStyleContainer createKStyleContainer();
+
+    /**
+     * Returns a new object of class '<em>KVisibility</em>'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return a new object of class '<em>KVisibility</em>'.
+     * @generated
+     */
+    KVisibility createKVisibility();
+
+    /**
+     * Returns a new object of class '<em>KShadow</em>'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return a new object of class '<em>KShadow</em>'.
+     * @generated
+     */
+    KShadow createKShadow();
+
+    /**
+     * Returns a new object of class '<em>KFont Underlined</em>'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return a new object of class '<em>KFont Underlined</em>'.
+     * @generated
+     */
+    KFontUnderlined createKFontUnderlined();
 
     /**
      * Returns the package supported by this factory.

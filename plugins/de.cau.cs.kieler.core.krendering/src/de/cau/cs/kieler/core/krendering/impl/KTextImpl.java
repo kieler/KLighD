@@ -31,7 +31,6 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  * <ul>
  *   <li>{@link de.cau.cs.kieler.core.krendering.impl.KTextImpl#getText <em>Text</em>}</li>
  *   <li>{@link de.cau.cs.kieler.core.krendering.impl.KTextImpl#isClip <em>Clip</em>}</li>
- *   <li>{@link de.cau.cs.kieler.core.krendering.impl.KTextImpl#isScaling <em>Scaling</em>}</li>
  * </ul>
  * </p>
  *
@@ -77,26 +76,6 @@ public class KTextImpl extends KContainerRenderingImpl implements KText {
      * @ordered
      */
     protected boolean clip = CLIP_EDEFAULT;
-
-    /**
-     * The default value of the '{@link #isScaling() <em>Scaling</em>}' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @see #isScaling()
-     * @generated
-     * @ordered
-     */
-    protected static final boolean SCALING_EDEFAULT = false;
-
-    /**
-     * The cached value of the '{@link #isScaling() <em>Scaling</em>}' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @see #isScaling()
-     * @generated
-     * @ordered
-     */
-    protected boolean scaling = SCALING_EDEFAULT;
 
     /**
      * <!-- begin-user-doc -->
@@ -164,27 +143,6 @@ public class KTextImpl extends KContainerRenderingImpl implements KText {
      * <!-- end-user-doc -->
      * @generated
      */
-    public boolean isScaling() {
-        return scaling;
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    public void setScaling(boolean newScaling) {
-        boolean oldScaling = scaling;
-        scaling = newScaling;
-        if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, KRenderingPackage.KTEXT__SCALING, oldScaling, scaling));
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
@@ -192,8 +150,6 @@ public class KTextImpl extends KContainerRenderingImpl implements KText {
                 return getText();
             case KRenderingPackage.KTEXT__CLIP:
                 return isClip();
-            case KRenderingPackage.KTEXT__SCALING:
-                return isScaling();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -211,9 +167,6 @@ public class KTextImpl extends KContainerRenderingImpl implements KText {
                 return;
             case KRenderingPackage.KTEXT__CLIP:
                 setClip((Boolean)newValue);
-                return;
-            case KRenderingPackage.KTEXT__SCALING:
-                setScaling((Boolean)newValue);
                 return;
         }
         super.eSet(featureID, newValue);
@@ -233,9 +186,6 @@ public class KTextImpl extends KContainerRenderingImpl implements KText {
             case KRenderingPackage.KTEXT__CLIP:
                 setClip(CLIP_EDEFAULT);
                 return;
-            case KRenderingPackage.KTEXT__SCALING:
-                setScaling(SCALING_EDEFAULT);
-                return;
         }
         super.eUnset(featureID);
     }
@@ -252,8 +202,6 @@ public class KTextImpl extends KContainerRenderingImpl implements KText {
                 return TEXT_EDEFAULT == null ? text != null : !TEXT_EDEFAULT.equals(text);
             case KRenderingPackage.KTEXT__CLIP:
                 return clip != CLIP_EDEFAULT;
-            case KRenderingPackage.KTEXT__SCALING:
-                return scaling != SCALING_EDEFAULT;
         }
         return super.eIsSet(featureID);
     }
@@ -272,8 +220,6 @@ public class KTextImpl extends KContainerRenderingImpl implements KText {
         result.append(text);
         result.append(", clip: ");
         result.append(clip);
-        result.append(", scaling: ");
-        result.append(scaling);
         result.append(')');
         return result.toString();
     }

@@ -168,7 +168,7 @@ public abstract class KRenderingImpl extends KGraphDataImpl implements KRenderin
      */
     public EList<KRenderingRef> getReferences() {
         if (references == null) {
-            references = new EObjectWithInverseResolvingEList<KRenderingRef>(KRenderingRef.class, this, KRenderingPackage.KRENDERING__REFERENCES, KRenderingPackage.KRENDERING_REF__RENDERING);
+            references = new EObjectResolvingEList<KRenderingRef>(KRenderingRef.class, this, KRenderingPackage.KRENDERING__REFERENCES);
         }
         return references;
     }
@@ -253,8 +253,6 @@ public abstract class KRenderingImpl extends KGraphDataImpl implements KRenderin
                 if (eInternalContainer() != null)
                     msgs = eBasicRemoveFromContainer(msgs);
                 return basicSetParent((KContainerRendering)otherEnd, msgs);
-            case KRenderingPackage.KRENDERING__REFERENCES:
-                return ((InternalEList<InternalEObject>)(InternalEList<?>)getReferences()).basicAdd(otherEnd, msgs);
         }
         return super.eInverseAdd(otherEnd, featureID, msgs);
     }
@@ -271,8 +269,6 @@ public abstract class KRenderingImpl extends KGraphDataImpl implements KRenderin
                 return ((InternalEList<?>)getStyles()).basicRemove(otherEnd, msgs);
             case KRenderingPackage.KRENDERING__PARENT:
                 return basicSetParent(null, msgs);
-            case KRenderingPackage.KRENDERING__REFERENCES:
-                return ((InternalEList<?>)getReferences()).basicRemove(otherEnd, msgs);
             case KRenderingPackage.KRENDERING__PLACEMENT_DATA:
                 return basicSetPlacementData(null, msgs);
         }

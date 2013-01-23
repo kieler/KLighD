@@ -20,11 +20,11 @@ import de.cau.cs.kieler.core.krendering.JointPointStyle;
 import de.cau.cs.kieler.core.krendering.KAction;
 import de.cau.cs.kieler.core.krendering.KAlpha;
 import de.cau.cs.kieler.core.krendering.KArc;
-import de.cau.cs.kieler.core.krendering.KBackgroundAlpha;
-import de.cau.cs.kieler.core.krendering.KBackgroundColor;
+import de.cau.cs.kieler.core.krendering.KBackground;
 import de.cau.cs.kieler.core.krendering.KBottomPosition;
 import de.cau.cs.kieler.core.krendering.KChildArea;
 import de.cau.cs.kieler.core.krendering.KColor;
+import de.cau.cs.kieler.core.krendering.KColoring;
 import de.cau.cs.kieler.core.krendering.KContainerRendering;
 import de.cau.cs.kieler.core.krendering.KCustomRendering;
 import de.cau.cs.kieler.core.krendering.KDecoratorPlacementData;
@@ -35,11 +35,11 @@ import de.cau.cs.kieler.core.krendering.KFontBold;
 import de.cau.cs.kieler.core.krendering.KFontItalic;
 import de.cau.cs.kieler.core.krendering.KFontName;
 import de.cau.cs.kieler.core.krendering.KFontSize;
-import de.cau.cs.kieler.core.krendering.KForegroundAlpha;
-import de.cau.cs.kieler.core.krendering.KForegroundColor;
-import de.cau.cs.kieler.core.krendering.KGradientStyle;
+import de.cau.cs.kieler.core.krendering.KFontUnderlined;
+import de.cau.cs.kieler.core.krendering.KForeground;
 import de.cau.cs.kieler.core.krendering.KGridPlacement;
 import de.cau.cs.kieler.core.krendering.KGridPlacementData;
+import de.cau.cs.kieler.core.krendering.KGround;
 import de.cau.cs.kieler.core.krendering.KHorizontalAlignment;
 import de.cau.cs.kieler.core.krendering.KImage;
 import de.cau.cs.kieler.core.krendering.KLeftPosition;
@@ -64,6 +64,7 @@ import de.cau.cs.kieler.core.krendering.KRotation;
 import de.cau.cs.kieler.core.krendering.KRoundedBendsPolyline;
 import de.cau.cs.kieler.core.krendering.KRoundedRectangle;
 import de.cau.cs.kieler.core.krendering.KSelectAction;
+import de.cau.cs.kieler.core.krendering.KShadow;
 import de.cau.cs.kieler.core.krendering.KSpline;
 import de.cau.cs.kieler.core.krendering.KStyle;
 import de.cau.cs.kieler.core.krendering.KStyleContainer;
@@ -72,10 +73,12 @@ import de.cau.cs.kieler.core.krendering.KTextRenderingRef;
 import de.cau.cs.kieler.core.krendering.KTopPosition;
 import de.cau.cs.kieler.core.krendering.KTrigger;
 import de.cau.cs.kieler.core.krendering.KVerticalAlignment;
+import de.cau.cs.kieler.core.krendering.KVisibility;
 import de.cau.cs.kieler.core.krendering.KXPosition;
 import de.cau.cs.kieler.core.krendering.KYPosition;
 import de.cau.cs.kieler.core.krendering.LineCapStyle;
 import de.cau.cs.kieler.core.krendering.LineStyle;
+import de.cau.cs.kieler.core.krendering.UnderlineStyle;
 import de.cau.cs.kieler.core.krendering.VerticalAlignment;
 
 import org.eclipse.emf.ecore.EAttribute;
@@ -252,21 +255,7 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
      * <!-- end-user-doc -->
      * @generated
      */
-    private EClass kForegroundColorEClass = null;
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
     private EClass kColorEClass = null;
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    private EClass kBackgroundColorEClass = null;
 
     /**
      * <!-- begin-user-doc -->
@@ -350,21 +339,21 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
      * <!-- end-user-doc -->
      * @generated
      */
-    private EClass kForegroundAlphaEClass = null;
+    private EClass kForegroundEClass = null;
 
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      */
-    private EClass kAlphaEClass = null;
+    private EClass kColoringEClass = null;
 
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      */
-    private EClass kBackgroundAlphaEClass = null;
+    private EClass kBackgroundEClass = null;
 
     /**
      * <!-- begin-user-doc -->
@@ -407,13 +396,6 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
      * @generated
      */
     private EClass kRotationEClass = null;
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    private EClass kGradientStyleEClass = null;
 
     /**
      * <!-- begin-user-doc -->
@@ -469,6 +451,27 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
      * <!-- end-user-doc -->
      * @generated
      */
+    private EClass kVisibilityEClass = null;
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    private EClass kShadowEClass = null;
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    private EClass kFontUnderlinedEClass = null;
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
     private EEnum lineStyleEEnum = null;
 
     /**
@@ -505,6 +508,13 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
      * @generated
      */
     private EEnum lineCapStyleEEnum = null;
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    private EEnum underlineStyleEEnum = null;
 
     /**
      * Creates an instance of the model <b>Package</b>, registered with
@@ -989,15 +999,6 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
      * <!-- end-user-doc -->
      * @generated
      */
-    public EAttribute getKText_Scaling() {
-        return (EAttribute)kTextEClass.getEStructuralFeatures().get(2);
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
     public EClass getKPlacement() {
         return kPlacementEClass;
     }
@@ -1160,15 +1161,6 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
      * <!-- end-user-doc -->
      * @generated
      */
-    public EClass getKForegroundColor() {
-        return kForegroundColorEClass;
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
     public EClass getKColor() {
         return kColorEClass;
     }
@@ -1198,15 +1190,6 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
      */
     public EAttribute getKColor_Blue() {
         return (EAttribute)kColorEClass.getEStructuralFeatures().get(2);
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    public EClass getKBackgroundColor() {
-        return kBackgroundColorEClass;
     }
 
     /**
@@ -1385,8 +1368,8 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
      * <!-- end-user-doc -->
      * @generated
      */
-    public EClass getKForegroundAlpha() {
-        return kForegroundAlphaEClass;
+    public EClass getKForeground() {
+        return kForegroundEClass;
     }
 
     /**
@@ -1394,8 +1377,8 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
      * <!-- end-user-doc -->
      * @generated
      */
-    public EClass getKAlpha() {
-        return kAlphaEClass;
+    public EClass getKColoring() {
+        return kColoringEClass;
     }
 
     /**
@@ -1403,8 +1386,8 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
      * <!-- end-user-doc -->
      * @generated
      */
-    public EAttribute getKAlpha_Alpha() {
-        return (EAttribute)kAlphaEClass.getEStructuralFeatures().get(0);
+    public EAttribute getKColoring_Alpha() {
+        return (EAttribute)kColoringEClass.getEStructuralFeatures().get(0);
     }
 
     /**
@@ -1412,8 +1395,44 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
      * <!-- end-user-doc -->
      * @generated
      */
-    public EClass getKBackgroundAlpha() {
-        return kBackgroundAlphaEClass;
+    public EReference getKColoring_Color() {
+        return (EReference)kColoringEClass.getEStructuralFeatures().get(1);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EReference getKColoring_TargetColor() {
+        return (EReference)kColoringEClass.getEStructuralFeatures().get(2);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EAttribute getKColoring_TargetAlpha() {
+        return (EAttribute)kColoringEClass.getEStructuralFeatures().get(3);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EAttribute getKColoring_GradientAngle() {
+        return (EAttribute)kColoringEClass.getEStructuralFeatures().get(4);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EClass getKBackground() {
+        return kBackgroundEClass;
     }
 
     /**
@@ -1493,6 +1512,15 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
      * <!-- end-user-doc -->
      * @generated
      */
+    public EAttribute getKFontSize_ScaleWithZoom() {
+        return (EAttribute)kFontSizeEClass.getEStructuralFeatures().get(1);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
     public EClass getKRoundedBendsPolyline() {
         return kRoundedBendsPolylineEClass;
     }
@@ -1522,42 +1550,6 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
      */
     public EAttribute getKRotation_Rotation() {
         return (EAttribute)kRotationEClass.getEStructuralFeatures().get(0);
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    public EClass getKGradientStyle() {
-        return kGradientStyleEClass;
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    public EAttribute getKGradientStyle_Angle() {
-        return (EAttribute)kGradientStyleEClass.getEStructuralFeatures().get(0);
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    public EReference getKGradientStyle_StartColor() {
-        return (EReference)kGradientStyleEClass.getEStructuralFeatures().get(1);
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    public EReference getKGradientStyle_EndColor() {
-        return (EReference)kGradientStyleEClass.getEStructuralFeatures().get(2);
     }
 
     /**
@@ -1709,6 +1701,87 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
      * <!-- end-user-doc -->
      * @generated
      */
+    public EClass getKVisibility() {
+        return kVisibilityEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EAttribute getKVisibility_IsVisible() {
+        return (EAttribute)kVisibilityEClass.getEStructuralFeatures().get(0);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EClass getKShadow() {
+        return kShadowEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EAttribute getKShadow_XOffset() {
+        return (EAttribute)kShadowEClass.getEStructuralFeatures().get(0);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EAttribute getKShadow_YOffset() {
+        return (EAttribute)kShadowEClass.getEStructuralFeatures().get(1);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EAttribute getKShadow_Blur() {
+        return (EAttribute)kShadowEClass.getEStructuralFeatures().get(2);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EReference getKShadow_Color() {
+        return (EReference)kShadowEClass.getEStructuralFeatures().get(3);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EClass getKFontUnderlined() {
+        return kFontUnderlinedEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EAttribute getKFontUnderlined_UnderlineStyle() {
+        return (EAttribute)kFontUnderlinedEClass.getEStructuralFeatures().get(0);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
     public EEnum getLineStyle() {
         return lineStyleEEnum;
     }
@@ -1756,6 +1829,15 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
      */
     public EEnum getLineCapStyle() {
         return lineCapStyleEEnum;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EEnum getUnderlineStyle() {
+        return underlineStyleEEnum;
     }
 
     /**
@@ -1847,7 +1929,6 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
         kTextEClass = createEClass(KTEXT);
         createEAttribute(kTextEClass, KTEXT__TEXT);
         createEAttribute(kTextEClass, KTEXT__CLIP);
-        createEAttribute(kTextEClass, KTEXT__SCALING);
 
         kPlacementEClass = createEClass(KPLACEMENT);
 
@@ -1873,14 +1954,10 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
         createEAttribute(kCustomRenderingEClass, KCUSTOM_RENDERING__BUNDLE_NAME);
         createEAttribute(kCustomRenderingEClass, KCUSTOM_RENDERING__FIGURE_OBJECT);
 
-        kForegroundColorEClass = createEClass(KFOREGROUND_COLOR);
-
         kColorEClass = createEClass(KCOLOR);
         createEAttribute(kColorEClass, KCOLOR__RED);
         createEAttribute(kColorEClass, KCOLOR__GREEN);
         createEAttribute(kColorEClass, KCOLOR__BLUE);
-
-        kBackgroundColorEClass = createEClass(KBACKGROUND_COLOR);
 
         kLineWidthEClass = createEClass(KLINE_WIDTH);
         createEAttribute(kLineWidthEClass, KLINE_WIDTH__LINE_WIDTH);
@@ -1912,12 +1989,16 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
 
         kSplineEClass = createEClass(KSPLINE);
 
-        kForegroundAlphaEClass = createEClass(KFOREGROUND_ALPHA);
+        kForegroundEClass = createEClass(KFOREGROUND);
 
-        kAlphaEClass = createEClass(KALPHA);
-        createEAttribute(kAlphaEClass, KALPHA__ALPHA);
+        kColoringEClass = createEClass(KCOLORING);
+        createEAttribute(kColoringEClass, KCOLORING__ALPHA);
+        createEReference(kColoringEClass, KCOLORING__COLOR);
+        createEReference(kColoringEClass, KCOLORING__TARGET_COLOR);
+        createEAttribute(kColoringEClass, KCOLORING__TARGET_ALPHA);
+        createEAttribute(kColoringEClass, KCOLORING__GRADIENT_ANGLE);
 
-        kBackgroundAlphaEClass = createEClass(KBACKGROUND_ALPHA);
+        kBackgroundEClass = createEClass(KBACKGROUND);
 
         kFontBoldEClass = createEClass(KFONT_BOLD);
         createEAttribute(kFontBoldEClass, KFONT_BOLD__BOLD);
@@ -1930,17 +2011,13 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
 
         kFontSizeEClass = createEClass(KFONT_SIZE);
         createEAttribute(kFontSizeEClass, KFONT_SIZE__SIZE);
+        createEAttribute(kFontSizeEClass, KFONT_SIZE__SCALE_WITH_ZOOM);
 
         kRoundedBendsPolylineEClass = createEClass(KROUNDED_BENDS_POLYLINE);
         createEAttribute(kRoundedBendsPolylineEClass, KROUNDED_BENDS_POLYLINE__BEND_RADIUS);
 
         kRotationEClass = createEClass(KROTATION);
         createEAttribute(kRotationEClass, KROTATION__ROTATION);
-
-        kGradientStyleEClass = createEClass(KGRADIENT_STYLE);
-        createEAttribute(kGradientStyleEClass, KGRADIENT_STYLE__ANGLE);
-        createEReference(kGradientStyleEClass, KGRADIENT_STYLE__START_COLOR);
-        createEReference(kGradientStyleEClass, KGRADIENT_STYLE__END_COLOR);
 
         kLineCapStyleEClass = createEClass(KLINE_CAP_STYLE);
         createEAttribute(kLineCapStyleEClass, KLINE_CAP_STYLE__LINE_CAP_STYLE);
@@ -1965,6 +2042,18 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
         kStyleContainerEClass = createEClass(KSTYLE_CONTAINER);
         createEReference(kStyleContainerEClass, KSTYLE_CONTAINER__STYLES);
 
+        kVisibilityEClass = createEClass(KVISIBILITY);
+        createEAttribute(kVisibilityEClass, KVISIBILITY__IS_VISIBLE);
+
+        kShadowEClass = createEClass(KSHADOW);
+        createEAttribute(kShadowEClass, KSHADOW__XOFFSET);
+        createEAttribute(kShadowEClass, KSHADOW__YOFFSET);
+        createEAttribute(kShadowEClass, KSHADOW__BLUR);
+        createEReference(kShadowEClass, KSHADOW__COLOR);
+
+        kFontUnderlinedEClass = createEClass(KFONT_UNDERLINED);
+        createEAttribute(kFontUnderlinedEClass, KFONT_UNDERLINED__UNDERLINE_STYLE);
+
         // Create enums
         lineStyleEEnum = createEEnum(LINE_STYLE);
         horizontalAlignmentEEnum = createEEnum(HORIZONTAL_ALIGNMENT);
@@ -1972,6 +2061,7 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
         jointPointStyleEEnum = createEEnum(JOINT_POINT_STYLE);
         kTriggerEEnum = createEEnum(KTRIGGER);
         lineCapStyleEEnum = createEEnum(LINE_CAP_STYLE);
+        underlineStyleEEnum = createEEnum(UNDERLINE_STYLE);
     }
 
     /**
@@ -2024,9 +2114,7 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
         kGridPlacementDataEClass.getESuperTypes().add(this.getKAreaPlacementData());
         kAreaPlacementDataEClass.getESuperTypes().add(this.getKPlacementData());
         kCustomRenderingEClass.getESuperTypes().add(this.getKContainerRendering());
-        kForegroundColorEClass.getESuperTypes().add(this.getKColor());
         kColorEClass.getESuperTypes().add(this.getKStyle());
-        kBackgroundColorEClass.getESuperTypes().add(this.getKColor());
         kLineWidthEClass.getESuperTypes().add(this.getKStyle());
         kLineStyleEClass.getESuperTypes().add(this.getKStyle());
         kVerticalAlignmentEClass.getESuperTypes().add(this.getKStyle());
@@ -2036,21 +2124,23 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
         kTopPositionEClass.getESuperTypes().add(this.getKYPosition());
         kBottomPositionEClass.getESuperTypes().add(this.getKYPosition());
         kSplineEClass.getESuperTypes().add(this.getKPolyline());
-        kForegroundAlphaEClass.getESuperTypes().add(this.getKAlpha());
-        kAlphaEClass.getESuperTypes().add(this.getKStyle());
-        kBackgroundAlphaEClass.getESuperTypes().add(this.getKAlpha());
+        kForegroundEClass.getESuperTypes().add(this.getKColoring());
+        kColoringEClass.getESuperTypes().add(this.getKStyle());
+        kBackgroundEClass.getESuperTypes().add(this.getKColoring());
         kFontBoldEClass.getESuperTypes().add(this.getKStyle());
         kFontItalicEClass.getESuperTypes().add(this.getKStyle());
         kFontNameEClass.getESuperTypes().add(this.getKStyle());
         kFontSizeEClass.getESuperTypes().add(this.getKStyle());
         kRoundedBendsPolylineEClass.getESuperTypes().add(this.getKPolyline());
         kRotationEClass.getESuperTypes().add(this.getKStyle());
-        kGradientStyleEClass.getESuperTypes().add(this.getKStyle());
         kLineCapStyleEClass.getESuperTypes().add(this.getKStyle());
         kPointPlacementDataEClass.getESuperTypes().add(this.getKPlacementData());
         kTextRenderingRefEClass.getESuperTypes().add(this.getKContainerRendering());
         kSelectActionEClass.getESuperTypes().add(this.getKAction());
         kExpandCollapseActionEClass.getESuperTypes().add(this.getKAction());
+        kVisibilityEClass.getESuperTypes().add(this.getKStyle());
+        kShadowEClass.getESuperTypes().add(this.getKStyle());
+        kFontUnderlinedEClass.getESuperTypes().add(this.getKStyle());
 
         // Initialize classes and features; add operations and parameters
         initEClass(kPositionEClass, KPosition.class, "KPosition", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -2059,7 +2149,7 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
 
         initEClass(kRenderingEClass, KRendering.class, "KRendering", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         initEReference(getKRendering_Parent(), this.getKContainerRendering(), this.getKContainerRendering_Children(), "parent", null, 0, 1, KRendering.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        initEReference(getKRendering_References(), this.getKRenderingRef(), this.getKRenderingRef_Rendering(), "references", null, 0, -1, KRendering.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEReference(getKRendering_References(), this.getKRenderingRef(), null, "references", null, 0, -1, KRendering.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEReference(getKRendering_PlacementData(), this.getKPlacementData(), null, "placementData", null, 0, 1, KRendering.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEReference(getKRendering_Actions(), this.getKAction(), null, "actions", null, 0, -1, KRendering.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
@@ -2107,14 +2197,13 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
         initEReference(getKRenderingLibrary_Renderings(), this.getKStyleContainer(), null, "renderings", null, 0, -1, KRenderingLibrary.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         initEClass(kRenderingRefEClass, KRenderingRef.class, "KRenderingRef", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-        initEReference(getKRenderingRef_Rendering(), this.getKRendering(), this.getKRendering_References(), "rendering", null, 1, 1, KRenderingRef.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEReference(getKRenderingRef_Rendering(), this.getKRendering(), null, "rendering", null, 1, 1, KRenderingRef.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         initEClass(kChildAreaEClass, KChildArea.class, "KChildArea", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
         initEClass(kTextEClass, KText.class, "KText", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         initEAttribute(getKText_Text(), ecorePackage.getEString(), "text", null, 0, 1, KText.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEAttribute(getKText_Clip(), ecorePackage.getEBoolean(), "clip", null, 1, 1, KText.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        initEAttribute(getKText_Scaling(), ecorePackage.getEBoolean(), "scaling", null, 0, 1, KText.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         initEClass(kPlacementEClass, KPlacement.class, "KPlacement", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
@@ -2140,14 +2229,10 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
         initEAttribute(getKCustomRendering_BundleName(), ecorePackage.getEString(), "bundleName", null, 1, 1, KCustomRendering.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEAttribute(getKCustomRendering_FigureObject(), ecorePackage.getEJavaObject(), "figureObject", null, 0, 1, KCustomRendering.class, IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-        initEClass(kForegroundColorEClass, KForegroundColor.class, "KForegroundColor", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-
-        initEClass(kColorEClass, KColor.class, "KColor", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        initEClass(kColorEClass, KColor.class, "KColor", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         initEAttribute(getKColor_Red(), ecorePackage.getEInt(), "red", null, 1, 1, KColor.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEAttribute(getKColor_Green(), ecorePackage.getEInt(), "green", null, 1, 1, KColor.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEAttribute(getKColor_Blue(), ecorePackage.getEInt(), "blue", null, 1, 1, KColor.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-
-        initEClass(kBackgroundColorEClass, KBackgroundColor.class, "KBackgroundColor", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
         initEClass(kLineWidthEClass, KLineWidth.class, "KLineWidth", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         initEAttribute(getKLineWidth_LineWidth(), ecorePackage.getEInt(), "lineWidth", null, 1, 1, KLineWidth.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -2179,12 +2264,16 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
 
         initEClass(kSplineEClass, KSpline.class, "KSpline", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
-        initEClass(kForegroundAlphaEClass, KForegroundAlpha.class, "KForegroundAlpha", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        initEClass(kForegroundEClass, KForeground.class, "KForeground", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
-        initEClass(kAlphaEClass, KAlpha.class, "KAlpha", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-        initEAttribute(getKAlpha_Alpha(), ecorePackage.getEFloat(), "alpha", null, 1, 1, KAlpha.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEClass(kColoringEClass, KColoring.class, "KColoring", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        initEAttribute(getKColoring_Alpha(), ecorePackage.getEInt(), "alpha", null, 1, 1, KColoring.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEReference(getKColoring_Color(), this.getKColor(), null, "color", null, 1, 1, KColoring.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEReference(getKColoring_TargetColor(), this.getKColor(), null, "targetColor", null, 0, 1, KColoring.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEAttribute(getKColoring_TargetAlpha(), ecorePackage.getEInt(), "targetAlpha", null, 0, 1, KColoring.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEAttribute(getKColoring_GradientAngle(), ecorePackage.getEFloat(), "gradientAngle", null, 0, 1, KColoring.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-        initEClass(kBackgroundAlphaEClass, KBackgroundAlpha.class, "KBackgroundAlpha", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        initEClass(kBackgroundEClass, KBackground.class, "KBackground", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
         initEClass(kFontBoldEClass, KFontBold.class, "KFontBold", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         initEAttribute(getKFontBold_Bold(), ecorePackage.getEBoolean(), "bold", null, 1, 1, KFontBold.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -2197,17 +2286,13 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
 
         initEClass(kFontSizeEClass, KFontSize.class, "KFontSize", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         initEAttribute(getKFontSize_Size(), ecorePackage.getEInt(), "size", null, 1, 1, KFontSize.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEAttribute(getKFontSize_ScaleWithZoom(), ecorePackage.getEBoolean(), "scaleWithZoom", "false", 0, 1, KFontSize.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         initEClass(kRoundedBendsPolylineEClass, KRoundedBendsPolyline.class, "KRoundedBendsPolyline", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         initEAttribute(getKRoundedBendsPolyline_BendRadius(), ecorePackage.getEFloat(), "bendRadius", null, 0, 1, KRoundedBendsPolyline.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         initEClass(kRotationEClass, KRotation.class, "KRotation", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         initEAttribute(getKRotation_Rotation(), ecorePackage.getEFloat(), "rotation", null, 1, 1, KRotation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-
-        initEClass(kGradientStyleEClass, KGradientStyle.class, "KGradientStyle", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-        initEAttribute(getKGradientStyle_Angle(), ecorePackage.getEFloat(), "angle", null, 0, 1, KGradientStyle.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        initEReference(getKGradientStyle_StartColor(), this.getKColor(), null, "startColor", null, 0, 1, KGradientStyle.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        initEReference(getKGradientStyle_EndColor(), this.getKColor(), null, "endColor", null, 0, 1, KGradientStyle.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         initEClass(kLineCapStyleEClass, KLineCapStyle.class, "KLineCapStyle", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         initEAttribute(getKLineCapStyle_LineCapStyle(), this.getLineCapStyle(), "lineCapStyle", null, 1, 1, KLineCapStyle.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -2231,6 +2316,18 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
 
         initEClass(kStyleContainerEClass, KStyleContainer.class, "KStyleContainer", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         initEReference(getKStyleContainer_Styles(), this.getKStyle(), null, "styles", null, 0, -1, KStyleContainer.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+        initEClass(kVisibilityEClass, KVisibility.class, "KVisibility", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        initEAttribute(getKVisibility_IsVisible(), ecorePackage.getEBoolean(), "isVisible", "true", 1, 1, KVisibility.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+        initEClass(kShadowEClass, KShadow.class, "KShadow", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        initEAttribute(getKShadow_XOffset(), ecorePackage.getEFloat(), "xOffset", null, 0, 1, KShadow.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEAttribute(getKShadow_YOffset(), ecorePackage.getEFloat(), "yOffset", null, 0, 1, KShadow.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEAttribute(getKShadow_Blur(), ecorePackage.getEFloat(), "blur", null, 0, 1, KShadow.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEReference(getKShadow_Color(), this.getKColor(), null, "color", null, 0, 1, KShadow.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+        initEClass(kFontUnderlinedEClass, KFontUnderlined.class, "KFontUnderlined", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        initEAttribute(getKFontUnderlined_UnderlineStyle(), this.getUnderlineStyle(), "underlineStyle", null, 1, 1, KFontUnderlined.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         // Initialize enums and add enum literals
         initEEnum(lineStyleEEnum, LineStyle.class, "LineStyle");
@@ -2265,6 +2362,9 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
         addEEnumLiteral(lineCapStyleEEnum, LineCapStyle.CAP_FLAT);
         addEEnumLiteral(lineCapStyleEEnum, LineCapStyle.CAP_ROUND);
         addEEnumLiteral(lineCapStyleEEnum, LineCapStyle.CAP_SQUARE);
+
+        initEEnum(underlineStyleEEnum, UnderlineStyle.class, "UnderlineStyle");
+        addEEnumLiteral(underlineStyleEEnum, UnderlineStyle.UNDERLINE_ON);
 
         // Create resource
         createResource(eNS_URI);

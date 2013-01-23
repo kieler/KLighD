@@ -99,63 +99,11 @@ public class KRenderingRefImpl extends KRenderingImpl implements KRenderingRef {
      * <!-- end-user-doc -->
      * @generated
      */
-    public NotificationChain basicSetRendering(KRendering newRendering, NotificationChain msgs) {
+    public void setRendering(KRendering newRendering) {
         KRendering oldRendering = rendering;
         rendering = newRendering;
-        if (eNotificationRequired()) {
-            ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, KRenderingPackage.KRENDERING_REF__RENDERING, oldRendering, newRendering);
-            if (msgs == null) msgs = notification; else msgs.add(notification);
-        }
-        return msgs;
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    public void setRendering(KRendering newRendering) {
-        if (newRendering != rendering) {
-            NotificationChain msgs = null;
-            if (rendering != null)
-                msgs = ((InternalEObject)rendering).eInverseRemove(this, KRenderingPackage.KRENDERING__REFERENCES, KRendering.class, msgs);
-            if (newRendering != null)
-                msgs = ((InternalEObject)newRendering).eInverseAdd(this, KRenderingPackage.KRENDERING__REFERENCES, KRendering.class, msgs);
-            msgs = basicSetRendering(newRendering, msgs);
-            if (msgs != null) msgs.dispatch();
-        }
-        else if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, KRenderingPackage.KRENDERING_REF__RENDERING, newRendering, newRendering));
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    @Override
-    public NotificationChain eInverseAdd(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
-        switch (featureID) {
-            case KRenderingPackage.KRENDERING_REF__RENDERING:
-                if (rendering != null)
-                    msgs = ((InternalEObject)rendering).eInverseRemove(this, KRenderingPackage.KRENDERING__REFERENCES, KRendering.class, msgs);
-                return basicSetRendering((KRendering)otherEnd, msgs);
-        }
-        return super.eInverseAdd(otherEnd, featureID, msgs);
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    @Override
-    public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
-        switch (featureID) {
-            case KRenderingPackage.KRENDERING_REF__RENDERING:
-                return basicSetRendering(null, msgs);
-        }
-        return super.eInverseRemove(otherEnd, featureID, msgs);
+        if (eNotificationRequired())
+            eNotify(new ENotificationImpl(this, Notification.SET, KRenderingPackage.KRENDERING_REF__RENDERING, oldRendering, rendering));
     }
 
     /**

@@ -30,6 +30,7 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  * The following features are implemented:
  * <ul>
  *   <li>{@link de.cau.cs.kieler.core.krendering.impl.KFontSizeImpl#getSize <em>Size</em>}</li>
+ *   <li>{@link de.cau.cs.kieler.core.krendering.impl.KFontSizeImpl#isScaleWithZoom <em>Scale With Zoom</em>}</li>
  * </ul>
  * </p>
  *
@@ -55,6 +56,26 @@ public class KFontSizeImpl extends KStyleImpl implements KFontSize {
      * @ordered
      */
     protected int size = SIZE_EDEFAULT;
+
+    /**
+     * The default value of the '{@link #isScaleWithZoom() <em>Scale With Zoom</em>}' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see #isScaleWithZoom()
+     * @generated
+     * @ordered
+     */
+    protected static final boolean SCALE_WITH_ZOOM_EDEFAULT = false;
+
+    /**
+     * The cached value of the '{@link #isScaleWithZoom() <em>Scale With Zoom</em>}' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see #isScaleWithZoom()
+     * @generated
+     * @ordered
+     */
+    protected boolean scaleWithZoom = SCALE_WITH_ZOOM_EDEFAULT;
 
     /**
      * <!-- begin-user-doc -->
@@ -101,11 +122,34 @@ public class KFontSizeImpl extends KStyleImpl implements KFontSize {
      * <!-- end-user-doc -->
      * @generated
      */
+    public boolean isScaleWithZoom() {
+        return scaleWithZoom;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public void setScaleWithZoom(boolean newScaleWithZoom) {
+        boolean oldScaleWithZoom = scaleWithZoom;
+        scaleWithZoom = newScaleWithZoom;
+        if (eNotificationRequired())
+            eNotify(new ENotificationImpl(this, Notification.SET, KRenderingPackage.KFONT_SIZE__SCALE_WITH_ZOOM, oldScaleWithZoom, scaleWithZoom));
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
             case KRenderingPackage.KFONT_SIZE__SIZE:
                 return getSize();
+            case KRenderingPackage.KFONT_SIZE__SCALE_WITH_ZOOM:
+                return isScaleWithZoom();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -120,6 +164,9 @@ public class KFontSizeImpl extends KStyleImpl implements KFontSize {
         switch (featureID) {
             case KRenderingPackage.KFONT_SIZE__SIZE:
                 setSize((Integer)newValue);
+                return;
+            case KRenderingPackage.KFONT_SIZE__SCALE_WITH_ZOOM:
+                setScaleWithZoom((Boolean)newValue);
                 return;
         }
         super.eSet(featureID, newValue);
@@ -136,6 +183,9 @@ public class KFontSizeImpl extends KStyleImpl implements KFontSize {
             case KRenderingPackage.KFONT_SIZE__SIZE:
                 setSize(SIZE_EDEFAULT);
                 return;
+            case KRenderingPackage.KFONT_SIZE__SCALE_WITH_ZOOM:
+                setScaleWithZoom(SCALE_WITH_ZOOM_EDEFAULT);
+                return;
         }
         super.eUnset(featureID);
     }
@@ -150,6 +200,8 @@ public class KFontSizeImpl extends KStyleImpl implements KFontSize {
         switch (featureID) {
             case KRenderingPackage.KFONT_SIZE__SIZE:
                 return size != SIZE_EDEFAULT;
+            case KRenderingPackage.KFONT_SIZE__SCALE_WITH_ZOOM:
+                return scaleWithZoom != SCALE_WITH_ZOOM_EDEFAULT;
         }
         return super.eIsSet(featureID);
     }
@@ -166,6 +218,8 @@ public class KFontSizeImpl extends KStyleImpl implements KFontSize {
         StringBuffer result = new StringBuffer(super.toString());
         result.append(" (size: ");
         result.append(size);
+        result.append(", scaleWithZoom: ");
+        result.append(scaleWithZoom);
         result.append(')');
         return result.toString();
     }
