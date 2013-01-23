@@ -2,13 +2,9 @@ package de.cau.cs.kieler.core.krendering.extensions
 
 import de.cau.cs.kieler.core.kgraph.KNode
 import de.cau.cs.kieler.core.krendering.HorizontalAlignment
-import de.cau.cs.kieler.core.krendering.KBackgroundColor
-import de.cau.cs.kieler.core.krendering.KBackgroundAlpha
 import de.cau.cs.kieler.core.krendering.KFontBold
 import de.cau.cs.kieler.core.krendering.KFontItalic
 import de.cau.cs.kieler.core.krendering.KFontSize
-import de.cau.cs.kieler.core.krendering.KForegroundColor
-import de.cau.cs.kieler.core.krendering.KForegroundAlpha
 import de.cau.cs.kieler.core.krendering.KHorizontalAlignment
 import de.cau.cs.kieler.core.krendering.KLineWidth
 import de.cau.cs.kieler.core.krendering.KPosition
@@ -27,6 +23,10 @@ import de.cau.cs.kieler.core.krendering.LineStyle
 import de.cau.cs.kieler.core.krendering.KLineStyle
 import de.cau.cs.kieler.core.krendering.KFontName
 import de.cau.cs.kieler.core.krendering.KRotation
+import de.cau.cs.kieler.core.krendering.KForeground
+import de.cau.cs.kieler.core.krendering.KBackground
+import de.cau.cs.kieler.core.krendering.KBackground
+import de.cau.cs.kieler.core.krendering.KGround
 
 /**
  * This utility class contains various methods that are convenient while composing KRendering data.
@@ -129,89 +129,49 @@ class KRenderingExtensions {
         ];
     }
     
-    def KBackgroundColor getBGColor(KRendering rendering) {
-        // chsch: I'm currently not sure whether the first or the last will win...
-        return rendering.styles.filter(typeof(KBackgroundColor)).last?:renderingFactory.createKBackgroundColor;
-    }
  
-    def KBackgroundColor getBackgroundColor(KRendering rendering) {
-        // chsch: I'm currently not sure whether the first or the last will win...
-        return rendering.styles.filter(typeof(KBackgroundColor)).last?:renderingFactory.createKBackgroundColor;
-    }
- 
-    def <T extends KRendering> T setBackgroundColor(T rendering, KColor color) {
-        rendering.styles.removeAll(rendering.styles.filter(typeof(KBackgroundColor)).toList);        
+    def <T extends KRendering>  T setBackground(T rendering, KGround ground){
+        rendering.styles.removeAll(rendering.styles.filter(typeof(KBackground)).toList);
         return rendering => [
-            it.styles += renderingFactory.createKBackgroundColor => [
-                it.red = color.red;
-                it.green = color.green;
-                it.blue = color.blue;
+            it.styles += renderingFactory.createKBackground => [
+                it.alpha = ground.alpha;
+                it.color = ground.color;
+                it.targetAlpha = ground.targetAlpha;
+                it.targetColor = ground.targetColor;
+                it.gradientAngle = ground.gradientAngle;
+                it.functionId = ground.functionId;
+                it.propagateToChildren = ground.propagateToChildren;
             ];
         ];
     }
     
-	def <T extends KRendering> T setBackgroundColor(T rendering, int red, int green, int blue) {
-		rendering.styles.removeAll(rendering.styles.filter(typeof(KBackgroundColor)).toList);
-		return rendering => [
-		    it.styles += renderingFactory.createKBackgroundColor => [
-    		    it.setRed(red);
-                it.setGreen(green);
-                it.setBlue(blue);
-		    ]; 
-		];		
-	}
-        
-    def KForegroundColor getFGColor(KRendering rendering) {
-        // chsch: I'm currently not sure whether the first or the last will win...
-        return rendering.styles.filter(typeof(KForegroundColor)).last?:renderingFactory.createKForegroundColor;
+    def KBackground getBackground(KRendering rendering){
+        return rendering.styles?.filter(typeof(KBackground)).last?:renderingFactory.createKBackground();
+    }
+    
+    def <T extends KRendering>  T setForeground(T rendering, KGround ground){
+        rendering.styles.removeAll(rendering.styles.filter(typeof(KForeground)).toList);
+        return rendering => [
+            it.styles += renderingFactory.createKBackground => [
+                it.alpha = ground.alpha;
+                it.color = ground.color;
+                it.targetAlpha = ground.targetAlpha;
+                it.targetColor = ground.targetColor;
+                it.gradientAngle = ground.gradientAngle;
+                it.functionId = ground.functionId;
+                it.propagateToChildren = ground.propagateToChildren;
+            ];
+        ];
+    }
+    
+    def KForeground getForeground(KRendering rendering){
+        return rendering.styles.filter(typeof(KForeground)).last?:renderingFactory.createKForeground();
     }
 
-    def KForegroundColor getForegroundColor(KRendering rendering) {
-        // chsch: I'm currently not sure whether the first or the last will win...
-        return rendering.styles.filter(typeof(KForegroundColor)).last?:renderingFactory.createKForegroundColor;
-    }
- 
-    def <T extends KRendering> T setForegroundColor(T rendering, KColor color) {
-        rendering.styles.removeAll(rendering.styles.filter(typeof(KForegroundColor)).toList);        
-        return rendering => [
-            it.styles += renderingFactory.createKForegroundColor => [
-                it.red = color.red;
-                it.green = color.green;
-                it.blue = color.blue;
-            ]; 
-        ];      
-    }
+//TODO: maybe add setters/getters for single components of KForeground/KBackground or simply a method 
+//that allows sticking additional Foreground/Background information to the list without removing 
+//already defined styles first        
 	
-	def <T extends KRendering> T setForegroundColor(T rendering, int red, int green, int blue) {
-        rendering.styles.removeAll(rendering.styles.filter(typeof(KForegroundColor)).toList);        
-        return rendering => [
-            it.styles += renderingFactory.createKForegroundColor => [
-                it.setRed(red);
-                it.setGreen(green);
-                it.setBlue(blue);
-            ]; 
-        ];      
-	}
-	
-	def <T extends KRendering> T setBackgroundAlpha(T rendering, float alphaValue) {
-		rendering.styles.removeAll(rendering.styles.filter(typeof(KBackgroundAlpha)).toList);
-		return rendering => [
-            it.styles += renderingFactory.createKBackgroundAlpha => [
-		        it.setAlpha(alphaValue);
-		    ];
-		];
-	}
-		
-	
-	def <T extends KRendering> T setForegroundAlpha(T rendering, float alphaValue) {
-        rendering.styles.removeAll(rendering.styles.filter(typeof(KForegroundAlpha)).toList);
-        return rendering => [
-            it.styles += renderingFactory.createKForegroundAlpha => [
-                it.setAlpha(alphaValue);
-            ];
-        ];
-    }
-    
 	def <T extends KRendering> T setFontBold(T rendering, boolean bold) {
         rendering.styles.removeAll(rendering.styles.filter(typeof(KFontBold)).toList);
 		return rendering => [
@@ -350,5 +310,4 @@ class KRenderingExtensions {
             ];
         ];
     }
-    
 }

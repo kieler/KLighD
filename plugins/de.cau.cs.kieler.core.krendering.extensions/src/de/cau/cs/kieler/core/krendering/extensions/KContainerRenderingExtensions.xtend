@@ -50,8 +50,12 @@ class KContainerRenderingExtensions {
 	    KPosition topLeft, KPosition bottomRight){
 		return renderingFactory.createKRectangle => [
 		    cr.children.add(it);
-            it.setBackgroundAlpha(0.0f);
-            it.setForegroundAlpha(0.0f);
+		    it.setBackground(renderingFactory.createKBackground()=>[
+		        it.alpha=0;
+		    ]);
+		    it.setForeground(renderingFactory.createKForeground()=>[
+                it.alpha=0;
+            ]);
             it.setGridPlacementData(widthHint, heightHint, topLeft, bottomRight);
 		];
 	}
@@ -93,8 +97,8 @@ class KContainerRenderingExtensions {
 	
 	def KPolygon drawArrow(KContainerRendering cr){
         return renderingFactory.createKPolygon => [
-            cr.addChild(it).withCopyOf(cr.lineWidth).withCopyOf(cr.FGColor);
-            it.setBackgroundColor(cr.FGColor);
+            cr.addChild(it).withCopyOf(cr.lineWidth).withCopyOf(cr.foreground);
+            it.setBackground(cr.foreground);
             it.points.add(createKPosition(PositionReferenceX::LEFT, 0, 0, PositionReferenceY::TOP, 0, 0))
             it.points.add(createKPosition(PositionReferenceX::LEFT, 0, 0.4f, PositionReferenceY::TOP, 0, 0.5f))
             it.points.add(createKPosition(PositionReferenceX::LEFT, 0, 0, PositionReferenceY::BOTTOM, 0, 0))
@@ -104,12 +108,11 @@ class KContainerRenderingExtensions {
 	
 	def KPolygon drawTriangle(KContainerRendering cr){
         return renderingFactory.createKPolygon => [
-            cr.addChild(it).withCopyOf(cr.lineWidth).withCopyOf(cr.FGColor);
+            cr.addChild(it).withCopyOf(cr.lineWidth).withCopyOf(cr.foreground);
             it.points.add(createKPosition(PositionReferenceX::LEFT, 0, 0, PositionReferenceY::TOP, 0, 0))
             // ppd.points.add(createKPosition(PositionReferenceX::LEFT, 0, "0.5".f, PositionReferenceY::TOP, 0, 0.5f))
             it.points.add(createKPosition(PositionReferenceX::LEFT, 0, 0, PositionReferenceY::BOTTOM, 0, 0))
             it.points.add(createKPosition(PositionReferenceX::RIGHT, 0, 0, PositionReferenceY::BOTTOM, 0, 0.5f))
         ];
     }
-
 }

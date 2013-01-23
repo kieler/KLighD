@@ -272,108 +272,118 @@ class KPortExtensions {
     
     def private KRendering createWPortRendering(String label) {
         return renderingFactory.createKRectangle => [
-                it.setForegroundAlpha(255.0f);
-                it.setForegroundColor(0,0,0)
-                it.setBackgroundAlpha(255.0f)
-                it.setBackgroundColor(0,0,0)
-                it.children += renderingFactory.createKText.withCopyOf(portLabelFontSize()) => [
-                    it.text = label;
-                    it.setHorizontalAlignment(
-                        if (inlyingPortLabels) HorizontalAlignment::LEFT else HorizontalAlignment::RIGHT
-                    );
-                    it.setVerticalAlignment(VerticalAlignment::CENTER)
-                    it.placementData = renderingFactory.createKAreaPlacementData() => [
-                        if (inlyingPortLabels) {
-                            topLeft = renderingFactory.createKPosition() => [
-                                it.x = renderingFactory.createKRightPosition() => [
-                                    it.absolute = -2
-                                ];
-                                it.y = renderingFactory.createKTopPosition() => [
-                                    it.absolute = portEdgeLength/2;
-                                ];
-                            ]
-                            bottomRight = renderingFactory.createKPosition() => [
-                                it.x = renderingFactory.createKRightPosition() => [
-                                    it.absolute = -2
-                                ];
-                                it.y = renderingFactory.createKTopPosition() => [
-                                    it.absolute = portEdgeLength/2;
-                                ];
+            it.setForeground(
+                renderingFactory.createKForeground=>[
+                it.setAlpha(255);
+                it.setColor(renderingFactory.createKColor=>[
+                    it.setRed(0);
+                    it.setGreen(0);
+                    it.setBlue(0);
+                ]);
+            ]);
+            it.children += renderingFactory.createKText.withCopyOf(portLabelFontSize()) => [
+                it.text = label;
+                it.setHorizontalAlignment(
+                    if (inlyingPortLabels) HorizontalAlignment::LEFT else HorizontalAlignment::RIGHT
+                );
+                it.setVerticalAlignment(VerticalAlignment::CENTER)
+                it.placementData = renderingFactory.createKAreaPlacementData() => [
+                    if (inlyingPortLabels) {
+                        topLeft = renderingFactory.createKPosition() => [
+                            it.x = renderingFactory.createKRightPosition() => [
+                                it.absolute = -2
                             ];
-                        } else {
-                            topLeft = renderingFactory.createKPosition() => [
-                                it.x = renderingFactory.createKLeftPosition() => [
-                                    it.absolute = -2
-                                ];
-                                it.y = renderingFactory.createKTopPosition() => [
-                                    it.absolute = portEdgeLength/2;
-                                ];
+                            it.y = renderingFactory.createKTopPosition() => [
+                                it.absolute = portEdgeLength/2;
                             ];
-                            bottomRight = renderingFactory.createKPosition() => [
-                                it.x = renderingFactory.createKLeftPosition() => [
-                                    it.absolute = -2
-                                ];
-                                it.y = renderingFactory.createKTopPosition() => [
-                                    it.absolute = portEdgeLength/2;
-                                ];
+                        ]
+                        bottomRight = renderingFactory.createKPosition() => [
+                            it.x = renderingFactory.createKRightPosition() => [
+                                it.absolute = -2
                             ];
-                        }
-                    ];
+                            it.y = renderingFactory.createKTopPosition() => [
+                                it.absolute = portEdgeLength/2;
+                            ];
+                        ];
+                    } else {
+                        topLeft = renderingFactory.createKPosition() => [
+                            it.x = renderingFactory.createKLeftPosition() => [
+                                it.absolute = -2
+                            ];
+                            it.y = renderingFactory.createKTopPosition() => [
+                                it.absolute = portEdgeLength/2;
+                            ];
+                        ];
+                        bottomRight = renderingFactory.createKPosition() => [
+                            it.x = renderingFactory.createKLeftPosition() => [
+                                it.absolute = -2
+                            ];
+                            it.y = renderingFactory.createKTopPosition() => [
+                                it.absolute = portEdgeLength/2;
+                            ];
+                        ];
+                    }
                 ];
             ];
+        ];
     }
     
     def private KRendering createEPortRendering(String label) {
         return renderingFactory.createKRectangle => [
-                it.setForegroundAlpha(255.0f);
-                it.setForegroundColor(0,0,0)
-                it.setBackgroundAlpha(255.0f)
-                it.setBackgroundColor(0,0,0)
-                it.children += renderingFactory.createKText.withCopyOf(portLabelFontSize()) => [
-                    it.text = label;
-                    it.setHorizontalAlignment(
-                        if (inlyingPortLabels) HorizontalAlignment::RIGHT else HorizontalAlignment::LEFT
-                    );
-                    it.setVerticalAlignment(VerticalAlignment::CENTER)
-                    it.placementData = renderingFactory.createKAreaPlacementData() => [
-                        if (inlyingPortLabels) {
-                            topLeft = renderingFactory.createKPosition() => [
-                                it.x = renderingFactory.createKLeftPosition() => [
-                                    it.absolute = -2
-                                ];
-                                it.y = renderingFactory.createKTopPosition() => [
-                                    it.absolute = portEdgeLength/2;
-                                ];
+            it.setForeground(
+                renderingFactory.createKForeground=>[
+                it.setAlpha(255);
+                it.setColor(renderingFactory.createKColor=>[
+                    it.setRed(0);
+                    it.setGreen(0);
+                    it.setBlue(0);
+                ]);
+            ]);
+            it.children += renderingFactory.createKText.withCopyOf(portLabelFontSize()) => [
+                it.text = label;
+                it.setHorizontalAlignment(
+                    if (inlyingPortLabels) HorizontalAlignment::RIGHT else HorizontalAlignment::LEFT
+                );
+                it.setVerticalAlignment(VerticalAlignment::CENTER)
+                it.placementData = renderingFactory.createKAreaPlacementData() => [
+                    if (inlyingPortLabels) {
+                        topLeft = renderingFactory.createKPosition() => [
+                            it.x = renderingFactory.createKLeftPosition() => [
+                                it.absolute = -2
                             ];
-                            bottomRight = renderingFactory.createKPosition() => [
-                                it.x = renderingFactory.createKLeftPosition() => [
-                                    it.absolute = -2
-                                ];
-                                it.y = renderingFactory.createKTopPosition() => [
-                                    it.absolute = portEdgeLength/2;
-                                ];
+                            it.y = renderingFactory.createKTopPosition() => [
+                                it.absolute = portEdgeLength/2;
                             ];
-                        } else {
-                            topLeft = renderingFactory.createKPosition() => [
-                                it.x = renderingFactory.createKRightPosition() => [
-                                    it.absolute = -2
-                                ];
-                                it.y = renderingFactory.createKTopPosition() => [
-                                    it.absolute = portEdgeLength/2;
-                                ];
-                            ]
-                            bottomRight = renderingFactory.createKPosition() => [
-                                it.x = renderingFactory.createKRightPosition() => [
-                                    it.absolute = -2
-                                ];
-                                it.y = renderingFactory.createKTopPosition() => [
-                                    it.absolute = portEdgeLength/2;
-                                ];
+                        ];
+                        bottomRight = renderingFactory.createKPosition() => [
+                            it.x = renderingFactory.createKLeftPosition() => [
+                                it.absolute = -2
                             ];
-                        }
-                    ];
+                            it.y = renderingFactory.createKTopPosition() => [
+                                it.absolute = portEdgeLength/2;
+                            ];
+                        ];
+                    } else {
+                        topLeft = renderingFactory.createKPosition() => [
+                            it.x = renderingFactory.createKRightPosition() => [
+                                it.absolute = -2
+                            ];
+                            it.y = renderingFactory.createKTopPosition() => [
+                                it.absolute = portEdgeLength/2;
+                            ];
+                        ]
+                        bottomRight = renderingFactory.createKPosition() => [
+                            it.x = renderingFactory.createKRightPosition() => [
+                                it.absolute = -2
+                            ];
+                            it.y = renderingFactory.createKTopPosition() => [
+                                it.absolute = portEdgeLength/2;
+                            ];
+                        ];
+                    }
                 ];
             ];
+        ];
     }
 
     /**
