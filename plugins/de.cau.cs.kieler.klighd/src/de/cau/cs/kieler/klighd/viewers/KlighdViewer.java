@@ -42,9 +42,8 @@ public class KlighdViewer extends AbstractViewer<Object> {
     }
     
     /**
-     * {@inheritDoc}
+     * Release all resources that were allocated for this viewer.
      */
-    @Override
     public void dispose() {
         contextViewer.dispose();
     }
