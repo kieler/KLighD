@@ -89,7 +89,8 @@ public class ContextViewer extends AbstractViewer<Object> implements IViewerEven
      * @param viewId
      *            the id of the view this viewer belongs to
      * @param viewPart
-     *            the viewPart this view is attached to
+     *            the viewPart this view is attached to, or {@code null} if no view part is
+     *            associated with this context
      */
     public ContextViewer(final Composite parent, final String viewId, final DiagramViewPart viewPart) {
         this.parent = parent;

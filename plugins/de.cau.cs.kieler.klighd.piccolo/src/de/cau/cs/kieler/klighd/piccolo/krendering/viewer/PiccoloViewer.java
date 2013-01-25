@@ -402,8 +402,11 @@ public class PiccoloViewer extends AbstractViewer<KNode> implements INodeSelecti
             KLineStyle style = KRenderingFactory.eINSTANCE.createKLineStyle();
             style.setLineStyle(LineStyle.DASH);
             if (KGraphPackage.eINSTANCE.getKGraphElement().isInstance(element)) {
-                ((KGraphElement) element).getData(KRendering.class).getStyles().add(0, style);
-                selectionHighlighting.put(element, Lists.newArrayList(style));
+                KRendering rendering = ((KGraphElement) element).getData(KRendering.class);
+                if (rendering != null) {
+                    rendering.getStyles().add(0, style);
+                    selectionHighlighting.put(element, Lists.newArrayList(style));
+                }
             } else if (KRenderingPackage.eINSTANCE.getKText().isInstance(element)) {
                 final KBackgroundVisibility bgv = KRenderingFactory.eINSTANCE
                         .createKBackgroundVisibility();

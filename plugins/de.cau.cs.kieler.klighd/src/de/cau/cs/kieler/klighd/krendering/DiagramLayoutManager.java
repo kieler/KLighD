@@ -49,6 +49,7 @@ import de.cau.cs.kieler.klighd.ViewContext;
 import de.cau.cs.kieler.klighd.krendering.PlacementUtil.Bounds;
 import de.cau.cs.kieler.klighd.viewers.ContextViewer;
 import de.cau.cs.kieler.klighd.viewers.KlighdViewer;
+import de.cau.cs.kieler.klighd.views.DiagramEditorPart;
 import de.cau.cs.kieler.klighd.views.DiagramViewPart;
 
 /**
@@ -87,6 +88,9 @@ public class DiagramLayoutManager implements IDiagramLayoutManager<KGraphElement
         if (object instanceof DiagramViewPart) {
             DiagramViewPart view = (DiagramViewPart) object;
             viewContext = view.getContextViewer().getCurrentViewContext();
+        } else if (object instanceof DiagramEditorPart) {
+            DiagramEditorPart editor = (DiagramEditorPart) object;
+            viewContext = editor.getContextViewer().getCurrentViewContext();
         } else if (object instanceof ContextViewer) {
             ContextViewer contextViewer = (ContextViewer) object;
             viewContext = contextViewer.getCurrentViewContext();
@@ -144,6 +148,9 @@ public class DiagramLayoutManager implements IDiagramLayoutManager<KGraphElement
             if (workbenchPart instanceof DiagramViewPart) {
                 DiagramViewPart view = (DiagramViewPart) workbenchPart;
                 viewer = view.getContextViewer().getActiveViewer();
+            } else if (workbenchPart instanceof DiagramEditorPart) {
+                DiagramEditorPart editor = (DiagramEditorPart) workbenchPart;
+                viewer = editor.getContextViewer().getActiveViewer();
             } else if (diagramPart instanceof ContextViewer) {
                 ContextViewer contextViewer = (ContextViewer) diagramPart;
                 viewer = contextViewer.getActiveViewer();

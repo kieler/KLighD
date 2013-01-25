@@ -22,6 +22,16 @@
       </view>
    </extension>
    <extension
+         point="org.eclipse.ui.editors">
+      <editor
+            class="de.cau.cs.kieler.klighd.views.DiagramEditorPart"
+            default="false"
+            icon="icons/klighd.gif"
+            id="de.cau.cs.kieler.klighd.lightDiagramEditor"
+            name="Light-weight Diagram">
+      </editor>
+   </extension>
+   <extension
          point="de.cau.cs.kieler.kiml.ui.layoutManagers">
       <manager
             class="de.cau.cs.kieler.klighd.krendering.DiagramLayoutManager">
