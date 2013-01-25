@@ -76,7 +76,7 @@ public class DiagramEditorPart extends EditorPart {
         setPartName(getEditorInput().getName());
         
         // create a context viewer
-        viewer = new ContextViewer(parent, getEditorInput().getName(), null);
+        viewer = new ContextViewer(parent, getEditorInput().getName(), this);
         
         // create a view context for the viewer
         ViewContext viewContext = LightDiagramServices.getInstance().createViewContext(model);
@@ -90,6 +90,15 @@ public class DiagramEditorPart extends EditorPart {
         
         // register the context viewer as selection provider on the workbench
         getSite().setSelectionProvider(viewer);
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void dispose() {
+        super.dispose();
+        viewer.dispose();
     }
 
     /**

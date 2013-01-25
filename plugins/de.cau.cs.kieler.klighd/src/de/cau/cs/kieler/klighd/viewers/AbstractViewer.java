@@ -35,6 +35,11 @@ public abstract class AbstractViewer<T> implements IViewer<T> {
     private Set<IViewerEventListener> listeners = new LinkedHashSet<IViewerEventListener>();
     
     /**
+     * Release all resources created for this viewer.
+     */
+    public abstract void dispose();
+    
+    /**
      * {@inheritDoc}
      */
     public void setModel(final T model) {

@@ -277,7 +277,7 @@ public final class DiagramViewManager implements IPartListener {
                 
                 // fill the options pane according to the the incorporated transformations
                 // TODO implement this (the following line is a placeholder)
-//                diagramView.updateOptions();
+//                diagramView.getContextViewer().updateOptions();
 
                 // make the view visible without giving it the focus
                 page.bringToTop(diagramView);

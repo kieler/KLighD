@@ -13,9 +13,7 @@
  */
 package de.cau.cs.kieler.klighd.views;
 
-import java.util.Collection;
 import java.util.EnumSet;
-import java.util.LinkedList;
 import java.util.List;
 
 import org.eclipse.core.resources.IResource;
@@ -30,25 +28,11 @@ import org.eclipse.swt.dnd.DropTarget;
 import org.eclipse.swt.dnd.DropTargetEvent;
 import org.eclipse.swt.dnd.DropTargetListener;
 import org.eclipse.swt.dnd.Transfer;
-import org.eclipse.swt.events.MouseAdapter;
-import org.eclipse.swt.events.MouseEvent;
-import org.eclipse.swt.events.PaintEvent;
-import org.eclipse.swt.events.PaintListener;
-import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Resource;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
-import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Listener;
-import org.eclipse.swt.widgets.Sash;
-import org.eclipse.ui.forms.widgets.FormToolkit;
-import org.eclipse.ui.forms.widgets.ScrolledForm;
 import org.eclipse.ui.part.ResourceTransfer;
 import org.eclipse.ui.part.ViewPart;
 import org.eclipse.ui.statushandlers.StatusManager;
@@ -68,7 +52,6 @@ import de.cau.cs.kieler.kiml.options.LayoutOptions;
 import de.cau.cs.kieler.kiml.ui.KimlUiPlugin;
 import de.cau.cs.kieler.kiml.ui.diagram.DiagramLayoutEngine;
 import de.cau.cs.kieler.klighd.KlighdPlugin;
-import de.cau.cs.kieler.klighd.options.OptionControlFactory;
 import de.cau.cs.kieler.klighd.triggers.KlighdResourceDropTrigger;
 import de.cau.cs.kieler.klighd.triggers.KlighdResourceDropTrigger.KlighdResourceDropState;
 import de.cau.cs.kieler.klighd.viewers.ContextViewer;
@@ -88,16 +71,6 @@ public class DiagramViewPart extends ViewPart {
     
     /** the viewer for this view part. */
     private ContextViewer viewer;
-    /** the factory for option controls. */
-    private OptionControlFactory optionControlFactory;
-    /** controller for the expanded options pane. */
-    private final PaneController expandedController = new PaneController();
-    /** controller for the collapsed options pane. */
-    private final PaneController collapsedController = new PaneController();
-    /** the form toolkit. */
-    private FormToolkit formToolkit;
-    /** the set of resources to be disposed when the view is closed. */
-    private final Collection<Resource> resources = new LinkedList<Resource>();
 
     /**
      * {@inheritDoc}
@@ -108,25 +81,26 @@ public class DiagramViewPart extends ViewPart {
         addButtons();
         
         // create the context viewer
-        Composite diagramContainer = new Composite(parent, SWT.NONE);
-        viewer = new ContextViewer(diagramContainer, getViewSite().getSecondaryId(), this);
-        GridData gridData = new GridData(SWT.FILL, SWT.FILL, true, true);
-        gridData.verticalSpan = 2;
-        diagramContainer.setLayoutData(gridData);
-        diagramContainer.setLayout(new FillLayout());
-        
-        // create the options pane
-        createOptionsContainer(parent);
+        viewer = new ContextViewer(parent, getViewSite().getSecondaryId(), this);
         
         // put some default actions into the view menu
         fillViewMenu(getViewSite().getActionBars().getMenuManager());
         
         // install a drop handler for the view (XXX this could be omitted)
-        installDropHandler(diagramContainer);
+        installDropHandler(parent);
         viewer.setModel("No model selected.", false);
         
         // register the context viewer as selection provider on the workbench
         getSite().setSelectionProvider(viewer);
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void dispose() {
+        super.dispose();
+        viewer.dispose();
     }
     
     /**
@@ -138,44 +112,6 @@ public class DiagramViewPart extends ViewPart {
         Action exportAction = new ExportAction(this);
         exportAction.setId(PERMANENT_ACTION_PREFIX + ".export");
         menuManager.add(exportAction);
-    }
-    
-    /**
-     * Update the options to be displayed in the options pane.
-     * TODO make the selection of options configurable through method arguments
-     */
-    public void updateOptions() {
-        // remove any option controls that have been created before
-        optionControlFactory.clear();
-        // initialize a layout configuration for retrieving default values
-        optionControlFactory.initialize();
-        
-        // TODO implement a generic interface for selecting layout options
-        optionControlFactory.createControl(LayoutOptions.ALGORITHM.getId());
-        optionControlFactory.createControl(LayoutOptions.SPACING.getId(), 3f, 200f);
-        optionControlFactory.createControl(LayoutOptions.RANDOM_SEED.getId(), 1f, 100f);
-        optionControlFactory.createControl(LayoutOptions.DIRECTION.getId(),
-                EnumSet.of(Direction.LEFT, Direction.RIGHT, Direction.UP, Direction.DOWN));
-        
-        // TODO make this configurable, too
-        collapsedController.setVisible(false);
-        expandedController.setVisible(true);
-    }
-    
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void dispose() {
-        super.dispose();
-        if (formToolkit != null) {
-            formToolkit.dispose();
-            formToolkit = null;
-        }
-        for (Resource res : resources) {
-            res.dispose();
-        }
-        resources.clear();
     }
 
     /**
@@ -203,156 +139,6 @@ public class DiagramViewPart extends ViewPart {
      */
     public void setName(final String name) {
         setPartName(name);
-    }
-    
-    /**
-     * A simple paint listener that draws a vertical line.
-     */
-    private final class LinePainter implements PaintListener {
-        public void paintControl(final PaintEvent event) {
-            Point size = ((Control) event.widget).getSize();
-            event.gc.setForeground(Display.getCurrent().getSystemColor(
-                    SWT.COLOR_WIDGET_NORMAL_SHADOW));
-            event.gc.drawLine(1, 0, 1, size.y);
-        }
-    }
-    
-    /**
-     * The initial width of the option pane.
-     */
-    private static final int DEFAULT_PALETTE_WIDTH = 150;
-    /**
-     * The minimal width of the option pane and the diagram viewer.
-     */
-    private static final int MIN_WIDTH = 60;
-    
-    /**
-     * Create the container for layout options, including controls for collapsing and expanding.
-     * 
-     * @param parent the parent composite into which controls are created
-     */
-    private void createOptionsContainer(final Composite parent) {
-        // create the right arrow for collapsing the options pane
-        Label rightArrowLabel = new Label(parent, SWT.NONE);
-        GridData rightArrowLayoutData = new GridData(SWT.CENTER, SWT.TOP, false, false);
-        rightArrowLabel.setLayoutData(rightArrowLayoutData);
-        Image rightArrow = KlighdPlugin.getImageDescriptor("icons/arrow-right.gif").createImage();
-        resources.add(rightArrow);
-        rightArrowLabel.setImage(rightArrow);
-        
-        // create container for options
-        formToolkit = new FormToolkit(parent.getDisplay());
-        ScrolledForm form = formToolkit.createScrolledForm(parent);
-        form.setText("Options");
-        final GridData formLayoutData = new GridData(SWT.FILL, SWT.FILL, false, true);
-        formLayoutData.widthHint = DEFAULT_PALETTE_WIDTH;
-        formLayoutData.verticalSpan = 2;
-        form.setLayoutData(formLayoutData);
-        Composite optionsContainer = form.getBody();
-        optionsContainer.setLayout(new GridLayout(2, false));
-        
-        // create the factory for option controls to fill the options container
-        optionControlFactory = new OptionControlFactory(optionsContainer, this, formToolkit);
-        
-        // create the left arrow for expanding the options pane
-        Label leftArrowLabel = new Label(parent, SWT.NONE);
-        GridData leftArrowLayoutData = new GridData(SWT.CENTER, SWT.TOP, false, false);
-        leftArrowLayoutData.horizontalSpan = 2;
-        leftArrowLabel.setLayoutData(leftArrowLayoutData);
-        Image leftArrow = KlighdPlugin.getImageDescriptor("icons/arrow-left.gif").createImage();
-        resources.add(leftArrow);
-        leftArrowLabel.setImage(leftArrow);
-        
-        // create the sash for resizing the options pane
-        Sash sash = new Sash(parent, SWT.VERTICAL);
-        GridData sashLayoutData = new GridData(SWT.CENTER, SWT.FILL, false, true);
-        sash.setLayoutData(sashLayoutData);
-        sash.addPaintListener(new LinePainter());
-        sash.addListener(SWT.Selection, new Listener() {
-            public void handleEvent(final Event event) {
-                // the following filter doesn't work on OSX, event.detail is always zero
-                // if (event.detail == SWT.DRAG) {
-                    // FIXME the "30" in the next line was determined experimentally
-                    int newWidth = parent.getClientArea().width - (event.x + 30);
-                    if (event.x > MIN_WIDTH && newWidth > MIN_WIDTH) {
-                        formLayoutData.widthHint = newWidth;
-                        parent.layout();
-                    }
-                // }
-            }
-        });
-        
-        // create a line below the expansion arrow
-        Composite dummyLine = new Composite(parent, SWT.NONE);
-        GridData dummyLineLayoutData = new GridData(SWT.CENTER, SWT.FILL, false, true);
-        dummyLineLayoutData.widthHint = 3;  // SUPPRESS CHECKSTYLE MagicNumber
-        dummyLineLayoutData.horizontalSpan = 2;
-        dummyLine.setLayoutData(dummyLineLayoutData);
-        dummyLine.addPaintListener(new LinePainter());
-        
-        // create controllers for collapsing and expanding
-        expandedController.controls = new Control[] {
-                rightArrowLabel, sash, form
-        };
-        expandedController.layoutData = new GridData[] {
-                rightArrowLayoutData, sashLayoutData, formLayoutData
-        };
-        expandedController.setVisible(false);
-        collapsedController.controls = new Control[] {
-                leftArrowLabel, dummyLine
-        };
-        collapsedController.layoutData = new GridData[] {
-                leftArrowLayoutData, dummyLineLayoutData
-        };
-        collapsedController.setVisible(false);
-        
-        // register actions for the collapse / expand labels
-        rightArrowLabel.addMouseListener(new MouseAdapter() {
-            public void mouseUp(final MouseEvent event) {
-                expandedController.setVisible(false);
-                collapsedController.setVisible(true);
-                parent.layout();
-            }
-        });
-        leftArrowLabel.addMouseListener(new MouseAdapter() {
-            public void mouseUp(final MouseEvent event) {
-                collapsedController.setVisible(false);
-                expandedController.setVisible(true);
-                parent.layout();
-            }
-        });
-        
-        // set the grid layout of the parent container
-        GridLayout gridLayout = new GridLayout(3, false); // SUPPRESS CHECKSTYLE MagicNumber
-        gridLayout.marginWidth = 0;
-        gridLayout.marginHeight = 0;
-        parent.setLayout(gridLayout);
-    }
-    
-    /**
-     * A controller class for easy collapsing and expanding.
-     */
-    private class PaneController {
-        
-        /** the controls that are made visible or invisible. */
-        private Control[] controls;
-        /** the layout data of the controls, used to exclude the controls from the grid. */
-        private GridData[] layoutData;
-        
-        /**
-         * Make the contained controls visible or invisible.
-         * 
-         * @param visible {@code true} to make all controls visible, or {@code false} to make
-         *              them all invisible
-         */
-        void setVisible(final boolean visible) {
-            for (Control c : controls) {
-                c.setVisible(visible);
-            }
-            for (GridData ld : layoutData) {
-                ld.exclude = !visible;
-            }
-        }
     }
 
     /**
