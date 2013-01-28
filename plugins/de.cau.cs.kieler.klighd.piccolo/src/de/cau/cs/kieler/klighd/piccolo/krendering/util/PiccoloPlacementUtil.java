@@ -20,6 +20,7 @@ import de.cau.cs.kieler.core.krendering.KDecoratorPlacementData;
 import de.cau.cs.kieler.core.krendering.KAreaPlacementData;
 import de.cau.cs.kieler.core.krendering.KLeftPosition;
 import de.cau.cs.kieler.core.krendering.KPlacementData;
+import de.cau.cs.kieler.core.krendering.KPointPlacementData;
 import de.cau.cs.kieler.core.krendering.KPolyline;
 import de.cau.cs.kieler.core.krendering.KPosition;
 import de.cau.cs.kieler.core.krendering.KRightPosition;
@@ -27,6 +28,8 @@ import de.cau.cs.kieler.core.krendering.KTopPosition;
 import de.cau.cs.kieler.core.krendering.KXPosition;
 import de.cau.cs.kieler.core.krendering.KYPosition;
 import de.cau.cs.kieler.core.util.Pair;
+import de.cau.cs.kieler.klighd.krendering.PlacementUtil;
+import de.cau.cs.kieler.klighd.krendering.PlacementUtil.Bounds;
 import de.cau.cs.kieler.klighd.piccolo.nodes.PSWTAdvancedPath;
 import de.cau.cs.kieler.klighd.piccolo.util.MathUtil;
 import edu.umd.cs.piccolo.util.PBounds;
@@ -72,6 +75,65 @@ public final class PiccoloPlacementUtil {
                 - topLeftPoint.getX(), bottomRightPoint.getY() - topLeftPoint.getY());
     }
 
+    /**
+     * Returns the bounds for a point placement data in given parent bounds.
+     * 
+     * @param ppd
+     *            the point placement data
+     * @param ownBounds
+     *            the size of the object to be placed
+     * @param parentBounds
+     *            the parent bounds
+     * @return the bounds
+     */
+    public static PBounds evaluatePointPlacement(final KPointPlacementData ppd, final Bounds ownBounds,
+            final PBounds parentBounds) {
+        if (ppd == null) {
+            return new PBounds(0, 0, parentBounds.width, parentBounds.height);
+        }
+
+        KPosition ref = ppd.getReferencePoint();
+        Point2D refPoint = evaluateDirectPosition(ref, parentBounds);
+
+        Double x0, y0;
+
+        switch (ppd.getHorizontalAlignment()) {
+        case CENTER:
+            x0 = refPoint.getX() - ownBounds.getWidth() / 2;
+            break;
+        case RIGHT:
+            x0 = refPoint.getX() - ownBounds.getWidth();
+            break;
+        default:
+        case LEFT:
+            x0 = refPoint.getX();
+        }
+        
+        switch (ppd.getVerticalAlignment()) {
+        case BOTTOM:
+            y0 = refPoint.getY() - ownBounds.getHeight();
+            break;
+        case CENTER:
+            y0 = refPoint.getY() - ownBounds.getHeight() / 2;
+            break;
+        default:
+        case TOP:
+            y0 = refPoint.getY();
+        }
+
+        if (x0 < 0.0f) {
+            // the box would be running out of the parent, so move it to right
+            x0 = 0.0d;
+        }
+
+        if (y0 < 0.0f) {
+            //the box would be running out of the parent, so move it down
+            y0 = 0.0d;
+        }
+        
+        return new PBounds(x0, y0, ownBounds.getWidth(), ownBounds.getHeight());
+    }
+    
 
     /**
      * Returns the points for a polyline placement data in given parent bounds.

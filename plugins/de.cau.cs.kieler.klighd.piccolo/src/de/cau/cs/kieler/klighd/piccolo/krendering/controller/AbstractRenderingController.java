@@ -41,7 +41,6 @@ import com.google.common.collect.Maps;
 
 import de.cau.cs.kieler.core.kgraph.KGraphElement;
 import de.cau.cs.kieler.core.kgraph.KGraphPackage;
-import de.cau.cs.kieler.core.krendering.KAlpha;
 import de.cau.cs.kieler.core.krendering.KArc;
 import de.cau.cs.kieler.core.krendering.KBackground;
 import de.cau.cs.kieler.core.krendering.KChildArea;
@@ -62,6 +61,8 @@ import de.cau.cs.kieler.core.krendering.KLineStyle;
 import de.cau.cs.kieler.core.krendering.KLineCapStyle;
 import de.cau.cs.kieler.core.krendering.KLineWidth;
 import de.cau.cs.kieler.core.krendering.KPlacement;
+import de.cau.cs.kieler.core.krendering.KPlacementData;
+import de.cau.cs.kieler.core.krendering.KPointPlacementData;
 import de.cau.cs.kieler.core.krendering.KPolygon;
 import de.cau.cs.kieler.core.krendering.KPolyline;
 import de.cau.cs.kieler.core.krendering.KRectangle;
@@ -468,27 +469,53 @@ public abstract class AbstractRenderingController<S extends KGraphElement, T ext
      */
     protected PNode handleAreaPlacementRendering(final KRendering rendering,
             final List<KStyle> styles, final PNode parent, final Object key) {
-        // determine the initial bounds
-        final PBounds bounds = PiccoloPlacementUtil.evaluateAreaPlacement(
-                PlacementUtil.asAreaPlacementData(rendering.getPlacementData()),
-                parent.getBoundsReference());
-
+        final KPlacementData pcd = rendering.getPlacementData();
+        PBounds bounds = null;
+        if (pcd instanceof KPointPlacementData) {
+            bounds = PiccoloPlacementUtil.evaluatePointPlacement(
+                    (KPointPlacementData) pcd,
+                    PlacementUtil.estimateSize(rendering, new PlacementUtil.Bounds(0.0f, 0.0f)),
+                    parent.getBoundsReference());
+        } else {
+            // determine the initial bounds
+            bounds = PiccoloPlacementUtil.evaluateAreaPlacement(
+                    PlacementUtil.asAreaPlacementData(rendering.getPlacementData()),
+                    parent.getBoundsReference());
+        }
         // create the rendering and receive its controller
         final PNodeController<?> controller = createRendering(rendering, styles, parent, bounds,
                 key);
 
+        if (pcd instanceof KPointPlacementData) {
+            addListener(PNode.PROPERTY_BOUNDS, parent, controller.getNode(),
+                    new PropertyChangeListener() {
+                        public void propertyChange(final PropertyChangeEvent e) {
+                            PBounds bounds = null;
+                            bounds = PiccoloPlacementUtil.evaluatePointPlacement(
+                                    (KPointPlacementData) pcd, PlacementUtil.estimateSize(
+                                            rendering, new PlacementUtil.Bounds(0.0f, 0.0f)),
+                                    parent.getBoundsReference());
+                            // use the controller to apply the new bounds
+                            controller.setBounds(bounds);
+                        }
+                    });
+        } else {
+            addListener(PNode.PROPERTY_BOUNDS, parent, controller.getNode(),
+                    new PropertyChangeListener() {
+                        public void propertyChange(final PropertyChangeEvent e) {
+                            PBounds bounds = null;
+                            // calculate the new bounds of the rendering
+                            bounds = PiccoloPlacementUtil.evaluateAreaPlacement(
+                                    PlacementUtil.asAreaPlacementData(rendering.getPlacementData()),
+                                    parent.getBoundsReference());
+                            // use the controller to apply the new bounds
+                            controller.setBounds(bounds);
+                        }
+                    });
+        }
+        
         // add a listener on the parent's bounds
-        addListener(PNode.PROPERTY_BOUNDS, parent, controller.getNode(),
-                new PropertyChangeListener() {
-                    public void propertyChange(final PropertyChangeEvent e) {
-                        // calculate the new bounds of the rendering
-                        PBounds bounds = PiccoloPlacementUtil.evaluateAreaPlacement(
-                                PlacementUtil.asAreaPlacementData(rendering
-                                        .getPlacementData()), parent.getBoundsReference());
-                        // use the controller to apply the new bounds
-                        controller.setBounds(bounds);
-                    }
-                });
+        
 
         return controller.getNode();
     }
