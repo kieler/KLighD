@@ -46,6 +46,7 @@ import de.cau.cs.kieler.core.properties.IProperty;
 import de.cau.cs.kieler.core.properties.Property;
 import de.cau.cs.kieler.kiml.klayoutdata.KEdgeLayout;
 import de.cau.cs.kieler.kiml.klayoutdata.KLayoutDataPackage;
+import de.cau.cs.kieler.kiml.klayoutdata.KPoint;
 import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout;
 import de.cau.cs.kieler.kiml.options.EdgeRouting;
 import de.cau.cs.kieler.kiml.options.LayoutOptions;
@@ -1075,7 +1076,10 @@ public class GraphController {
                     if (notifier instanceof KEdgeLayout
                             && (featureId == KLayoutDataPackage.KEDGE_LAYOUT__BEND_POINTS
                                     || featureId == KLayoutDataPackage.KEDGE_LAYOUT__SOURCE_POINT
-                                    || featureId == KLayoutDataPackage.KEDGE_LAYOUT__TARGET_POINT)) {
+                                    || featureId == KLayoutDataPackage.KEDGE_LAYOUT__TARGET_POINT)
+                            || notifier instanceof KPoint
+                            && (featureId == KLayoutDataPackage.KPOINT__X
+                                    || featureId == KLayoutDataPackage.KPOINT__Y)) {
 
                         if (record) {
                             recordedChanges.put(edgeRep, getBendPoints(edgeLayout, renderedAsPolyline));

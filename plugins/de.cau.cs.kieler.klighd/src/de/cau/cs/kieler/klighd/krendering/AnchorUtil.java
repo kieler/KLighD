@@ -14,6 +14,8 @@
 package de.cau.cs.kieler.klighd.krendering;
 
 import de.cau.cs.kieler.core.krendering.KRendering;
+import de.cau.cs.kieler.core.krendering.KRenderingPackage;
+import de.cau.cs.kieler.core.krendering.KRoundedRectangle;
 import de.cau.cs.kieler.core.math.KVector;
 
 /**
@@ -29,6 +31,18 @@ public final class AnchorUtil {
     private AnchorUtil() {
     }
     
+    /**
+     * Correct the given anchor point.
+     * The point must be transformed to the local coordinates of the corresponding node
+     * (or port, if applicable) before this method is called.
+     * This means that the point (0,0) marks the upper left corner of the node or port,
+     * while (width,height) marks the bottom right corner.
+     * 
+     * @param point an anchor point of an edge
+     * @param width the width of the corresponding node or port
+     * @param height the height of the corresponding node or port
+     * @param rendering the rendering associated with the node or port, or {@code null} if none
+     */
     public static void anchorPoint(final KVector point, final double width, final double height,
             final KRendering rendering) {
         if (rendering == null) {
@@ -36,13 +50,28 @@ public final class AnchorUtil {
             anchorPointRectangle(point, width, height);
         } else {
             switch (rendering.eClass().getClassifierID()) {
-            
+            case KRenderingPackage.KROUNDED_RECTANGLE:
+                KRoundedRectangle roundedRectangle = (KRoundedRectangle) rendering;
+                anchorPointRoundedRectangle(point, width, height, roundedRectangle.getCornerWidth(),
+                        roundedRectangle.getCornerHeight());
+                break;
             default:
                 anchorPointRectangle(point, width, height);
             }
         }
     }
     
+    /**
+     * Correct the given anchor point for rectangle rendering.
+     * The point must be transformed to the local coordinates of the corresponding node
+     * (or port, if applicable) before this method is called.
+     * This means that the point (0,0) marks the upper left corner of the node or port,
+     * while (width,height) marks the bottom right corner.
+     * 
+     * @param point an anchor point of an edge
+     * @param width the width of the corresponding node or port
+     * @param height the height of the corresponding node or port
+     */
     public static void anchorPointRectangle(final KVector point, final double width,
             final double height) {
         if (point.x < 0) {
@@ -56,6 +85,26 @@ public final class AnchorUtil {
         } else if (point.y > height) {
             point.y = height;
         }
+    }
+    
+
+    
+    /**
+     * Correct the given anchor point for rounded rectangle rendering.
+     * The point must be transformed to the local coordinates of the corresponding node
+     * (or port, if applicable) before this method is called.
+     * This means that the point (0,0) marks the upper left corner of the node or port,
+     * while (width,height) marks the bottom right corner.
+     * 
+     * @param point an anchor point of an edge
+     * @param rectWidth the width of the corresponding node or port
+     * @param rectHeight the height of the corresponding node or port
+     * @param cornerWidth the corner width
+     * @param cornerHeight the corner height
+     */
+    public static void anchorPointRoundedRectangle(final KVector point, final double rectWidth,
+            final double rectHeight, final double cornerWidth, final double cornerHeight) {
+        // TODO
     }
 
 }
