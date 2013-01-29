@@ -19,6 +19,7 @@ import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 
 import de.cau.cs.kieler.klighd.IViewer;
 import de.cau.cs.kieler.klighd.IViewerEventListener;
@@ -87,6 +88,14 @@ public class StringViewer implements IViewer<String> {
         // synchronized (message) {
             message = model;
         // }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public IContentOutlinePage getOutlinePage() {
+        // no outline required
+        return null;
     }
     
     /**

@@ -33,6 +33,7 @@ import org.eclipse.ui.IStorageEditorInput;
 import org.eclipse.ui.IURIEditorInput;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.part.EditorPart;
+import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 
 import de.cau.cs.kieler.klighd.LightDiagramServices;
 import de.cau.cs.kieler.klighd.ViewContext;
@@ -99,6 +100,20 @@ public class DiagramEditorPart extends EditorPart {
     public void dispose() {
         super.dispose();
         viewer.dispose();
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @SuppressWarnings("rawtypes")
+    public Object getAdapter(final Class type) {
+        if (type == IContentOutlinePage.class) {
+            IContentOutlinePage outlinePage = viewer.getOutlinePage();
+            if (outlinePage != null) {
+                return outlinePage;
+            }
+        }
+        return super.getAdapter(type);
     }
 
     /**

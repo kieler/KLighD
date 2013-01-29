@@ -14,6 +14,7 @@
 package de.cau.cs.kieler.klighd;
 
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 
 /**
  * The interface for viewers on incrementally updated models.<br>
@@ -62,6 +63,13 @@ public interface IViewer<T> {
      * @return the input model or null if no input model is set
      */
     T getModel();
+    
+    /**
+     * Returns a content outline page for this viewer.
+     * 
+     * @return a content outline page
+     */
+    IContentOutlinePage getOutlinePage();
 
     /**
      * Sets whether to record layout changes in the model instead of instantly applying them to the

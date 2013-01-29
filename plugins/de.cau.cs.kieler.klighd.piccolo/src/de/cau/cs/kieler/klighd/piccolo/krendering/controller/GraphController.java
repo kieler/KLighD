@@ -158,12 +158,12 @@ public class GraphController {
     }
 
     /**
-     * Returns the root of the represented (KNode) graph.
+     * Returns the root of the represented graph.
      * 
-     * @return the graph
+     * @return the root node
      */
-    public KNode getGraph() {
-        return topNode.getGraphElement();
+    public KNodeTopNode getNode() {
+        return topNode;
     }
 
     /**

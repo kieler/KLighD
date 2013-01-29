@@ -15,6 +15,7 @@ package de.cau.cs.kieler.klighd.viewers;
 
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 
 import de.cau.cs.kieler.klighd.LightDiagramServices;
 import de.cau.cs.kieler.klighd.ViewContext;
@@ -23,6 +24,8 @@ import de.cau.cs.kieler.klighd.ViewContext;
  * The KLighD viewer can be embedded into a SWT component and is able to accept any type of input
  * model. When a model is set as input it tries to find a visualization using the light diagram
  * services.
+ * 
+ * XXX what is this used for? seems just like a dumb wrapper for ContextViewer
  * 
  * @author mri
  */
@@ -82,6 +85,13 @@ public class KlighdViewer extends AbstractViewer<Object> {
      */
     public Object getModel() {
         return contextViewer.getModel();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public IContentOutlinePage getOutlinePage() {
+        return contextViewer.getOutlinePage();
     }
 
     /**

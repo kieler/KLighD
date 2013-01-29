@@ -26,6 +26,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Menu;
+import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
@@ -60,7 +61,6 @@ import edu.umd.cs.piccolo.PNode;
 import edu.umd.cs.piccolo.PRoot;
 import edu.umd.cs.piccolo.event.PInputEventFilter;
 import edu.umd.cs.piccolox.swt.PSWTCanvas;
-//import de.cau.cs.kieler.klighd.piccolo.krendering.IGraphElement;
 
 /**
  * A viewer for Piccolo diagram contexts.
@@ -75,6 +75,8 @@ public class PiccoloViewer extends AbstractViewer<KNode> implements INodeSelecti
     private PSWTSimpleSelectionEventHandler selectionHandler = null;
     /** a map used track highlighting style attached to selected elements. */
     private Map<EObject, Iterable<? extends KStyle>> selectionHighlighting = Maps.newHashMap();
+    /** the content outline page. */
+    private PiccoloOutlinePage outlinePage;
     
     /** the graph controller. */
     private GraphController controller;
@@ -156,6 +158,11 @@ public class PiccoloViewer extends AbstractViewer<KNode> implements INodeSelecti
         // create a controller for the graph
         controller = new GraphController(model, camera.getLayer(0), sync);
         controller.initialize();
+        
+        // update the outline page
+        if (outlinePage != null) {
+            outlinePage.setContent(camera.getLayer(0));
+        }
 
         // add a node for the marquee
         PEmptyNode marqueeParent = new PEmptyNode();
@@ -178,9 +185,20 @@ public class PiccoloViewer extends AbstractViewer<KNode> implements INodeSelecti
      */
     public KNode getModel() {
         if (controller != null) {
-            return controller.getGraph();
+            return controller.getNode().getGraphElement();
         }
         return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public IContentOutlinePage getOutlinePage() {
+        if (outlinePage == null) {
+            outlinePage = new PiccoloOutlinePage();
+            outlinePage.setContent(canvas.getCamera().getLayer(0));
+        }
+        return outlinePage;
     }
 
     /**

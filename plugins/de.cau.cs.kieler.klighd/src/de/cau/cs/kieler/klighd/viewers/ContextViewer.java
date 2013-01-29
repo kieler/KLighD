@@ -53,6 +53,7 @@ import org.eclipse.swt.widgets.Sash;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.ScrolledForm;
+import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 
 import com.google.common.collect.Lists;
 
@@ -487,6 +488,16 @@ public class ContextViewer extends AbstractViewer<Object> implements IViewerEven
             currentViewer = null;
             currentViewContext = null;
         }
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public IContentOutlinePage getOutlinePage() {
+        if (currentViewer != null) {
+            return currentViewer.getOutlinePage();
+        }
+        return null;
     }
     
     /**
