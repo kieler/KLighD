@@ -13,16 +13,28 @@
  */
 package de.cau.cs.kieler.klighd.piccolo.krendering.viewer;
 
+import java.awt.geom.Rectangle2D;
+
+import org.eclipse.emf.common.notify.Adapter;
+import org.eclipse.emf.common.notify.Notification;
+import org.eclipse.emf.common.notify.impl.AdapterImpl;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.ControlEvent;
+import org.eclipse.swt.events.ControlListener;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.IActionBars;
 import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 
+import de.cau.cs.kieler.kiml.klayoutdata.KLayoutDataPackage;
+import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout;
+import de.cau.cs.kieler.klighd.piccolo.krendering.KNodeTopNode;
+
 import edu.umd.cs.piccolo.PCamera;
 import edu.umd.cs.piccolo.PLayer;
+import edu.umd.cs.piccolo.PNode;
 import edu.umd.cs.piccolox.swt.PSWTCanvas;
 
 /**
@@ -36,6 +48,12 @@ public class PiccoloOutlinePage implements IContentOutlinePage {
     private PSWTCanvas canvas;
     /** the graph layer to display. */
     private PLayer graphLayer;
+    /** the layout data of the observed parent node. */
+    private KShapeLayout graphLayout;
+    /** the adapter listening to layout changes. */
+    private Adapter graphLayoutAdapter;
+    /** the control listener reacting to canvas resizing. */
+    private ControlListener canvasResizeListener;
 
     /**
      * {@inheritDoc}
@@ -71,12 +89,65 @@ public class PiccoloOutlinePage implements IContentOutlinePage {
                 this.graphLayer.getRoot().removeChild(canvas.getCamera());
                 this.graphLayer.removeCamera(canvas.getCamera());
             }
-            PCamera camera = new PCamera();
+            if (graphLayout != null) {
+                graphLayout.eAdapters().remove(graphLayoutAdapter);
+                graphLayout = null;
+            }
+            if (canvasResizeListener != null) {
+                canvas.removeControlListener(canvasResizeListener);
+                canvasResizeListener = null;
+            }
+            
+            // install a new camera into the given layer
+            final PCamera camera = new PCamera();
             newLayer.getRoot().addChild(camera);
             camera.addLayer(newLayer);
             canvas.setCamera(camera);
+            
+            // add listeners to layout changes and canvas resizing
+            PNode childNode = newLayer.getChild(0);
+            if (childNode instanceof KNodeTopNode) {
+                graphLayout = ((KNodeTopNode) childNode).getGraphElement().getData(KShapeLayout.class);
+                adjustCamera(camera);
+                graphLayoutAdapter = new AdapterImpl() {
+                    public void notifyChanged(final Notification notification) {
+                        int featureId = notification.getFeatureID(KShapeLayout.class);
+                        if (featureId == KLayoutDataPackage.KSHAPE_LAYOUT__WIDTH
+                                || featureId == KLayoutDataPackage.KSHAPE_LAYOUT__HEIGHT
+                                || featureId == KLayoutDataPackage.KSHAPE_LAYOUT__XPOS
+                                || featureId == KLayoutDataPackage.KSHAPE_LAYOUT__YPOS) {
+                            adjustCamera(camera);
+                        }
+                    }
+                };
+                graphLayout.eAdapters().add(graphLayoutAdapter);
+                canvasResizeListener = new ControlListener() {
+                    public void controlMoved(final ControlEvent e) {
+                        adjustCamera(camera);
+                    }
+                    public void controlResized(final ControlEvent e) {
+                        adjustCamera(camera);
+                    }
+                };
+                canvas.addControlListener(canvasResizeListener);
+            }
         }
         this.graphLayer = newLayer;
+    }
+    
+    /** the minimal size of the view. */
+    private static final float MIN_SIZE = 10.0f;
+    
+    /**
+     * Adjust the given camera to the bounds of the currently tracked graph layout.
+     * 
+     * @param camera a camera
+     */
+    private void adjustCamera(final PCamera camera) {
+        float width = Math.max(graphLayout.getWidth(), MIN_SIZE);
+        float height = Math.max(graphLayout.getHeight(), MIN_SIZE);
+        camera.setViewBounds(new Rectangle2D.Double(graphLayout.getXpos(), graphLayout.getYpos(),
+                width, height));
     }
 
     /**

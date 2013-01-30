@@ -17,10 +17,19 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Collections;
 
+import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IResource;
+import org.eclipse.core.resources.IResourceChangeEvent;
+import org.eclipse.core.resources.IResourceChangeListener;
+import org.eclipse.core.resources.IResourceDelta;
+import org.eclipse.core.resources.IResourceDeltaVisitor;
 import org.eclipse.core.resources.IStorage;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
@@ -28,13 +37,16 @@ import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorSite;
+import org.eclipse.ui.IFileEditorInput;
 import org.eclipse.ui.IPathEditorInput;
 import org.eclipse.ui.IStorageEditorInput;
 import org.eclipse.ui.IURIEditorInput;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.part.EditorPart;
+import org.eclipse.ui.statushandlers.StatusManager;
 import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 
+import de.cau.cs.kieler.klighd.KlighdPlugin;
 import de.cau.cs.kieler.klighd.LightDiagramServices;
 import de.cau.cs.kieler.klighd.ViewContext;
 import de.cau.cs.kieler.klighd.viewers.ContextViewer;
@@ -46,6 +58,8 @@ import de.cau.cs.kieler.klighd.viewers.ContextViewer;
  */
 public class DiagramEditorPart extends EditorPart {
     
+    /** the resource set managed by this editor part. */
+    private ResourceSet resourceSet;
     /** the model represented by this editor part. */
     private Object model;
     /** the viewer for this editor part. */
@@ -66,6 +80,8 @@ public class DiagramEditorPart extends EditorPart {
         setSite(site);
         setInput(input);
         loadModel();
+        ResourcesPlugin.getWorkspace().addResourceChangeListener(resourceChangeListener,
+                IResourceChangeEvent.POST_CHANGE);
     }
 
     /**
@@ -98,8 +114,9 @@ public class DiagramEditorPart extends EditorPart {
      */
     @Override
     public void dispose() {
-        super.dispose();
+        ResourcesPlugin.getWorkspace().removeResourceChangeListener(resourceChangeListener);
         viewer.dispose();
+        super.dispose();
     }
     
     /**
@@ -176,7 +193,10 @@ public class DiagramEditorPart extends EditorPart {
         URI uri = null;
         InputStream inputStream = null;
         IEditorInput input = getEditorInput();
-        if (input instanceof IURIEditorInput) {
+        if (input instanceof IFileEditorInput) {
+            IFile file = ((IFileEditorInput) input).getFile();
+            uri = URI.createPlatformResourceURI(file.getFullPath().toString(), false);
+        } else if (input instanceof IURIEditorInput) {
             java.net.URI inputUri = ((IURIEditorInput) input).getURI();
             uri = URI.createURI(inputUri.toString());
         } else if (input instanceof IPathEditorInput) {
@@ -196,7 +216,7 @@ public class DiagramEditorPart extends EditorPart {
         
         Resource resource;
         try {
-            ResourceSet resourceSet = new ResourceSetImpl();
+            resourceSet = new ResourceSetImpl();
             if (inputStream != null) {
                 // load a stream-based resource
                 uri = URI.createFileURI("temp.xmi");
@@ -217,5 +237,70 @@ public class DiagramEditorPart extends EditorPart {
         // default behavior: get the first element in the resource
         model = resource.getContents().get(0);
     }
+    
+    /**
+     * Update the viewed model using the given resource.
+     * 
+     * @param resource a resource
+     */
+    private void updateModel(final Resource resource) {
+        if (resource.isLoaded()) {
+            resource.unload();
+            try {
+                resource.load(Collections.EMPTY_MAP);
 
+                // default behavior: get the first element in the resource
+                model = resource.getContents().get(0);
+                
+                ViewContext viewContext = viewer.getCurrentViewContext();
+                LightDiagramServices.getInstance().updateViewContext(viewContext, model);
+            } catch (IOException exception) {
+                IStatus status = new Status(IStatus.ERROR, KlighdPlugin.PLUGIN_ID,
+                        "Failed to update " + resource.getURI().toString(), exception);
+                StatusManager.getManager().handle(status);
+            }
+        }
+    }
+    
+    /**
+     * A resource change listener that updates the editor when resources are removed or changed.
+     */
+    private IResourceChangeListener resourceChangeListener = new IResourceChangeListener() {
+        public void resourceChanged(final IResourceChangeEvent event) {
+            try {
+                event.getDelta().accept(new IResourceDeltaVisitor() {
+                    public boolean visit(final IResourceDelta delta) {
+                        if (delta.getResource().getType() == IResource.FILE) {
+                            if (delta.getKind() == IResourceDelta.REMOVED
+                                    || delta.getKind() == IResourceDelta.CHANGED
+                                    && delta.getFlags() != IResourceDelta.MARKERS) {
+                                // this won't work if the resource was loaded from an absolute path
+                                final Resource resource = resourceSet.getResource(
+                                        URI.createPlatformResourceURI(
+                                        delta.getFullPath().toString(), true), false);
+                                if (resource != null) {
+                                    getSite().getShell().getDisplay().asyncExec(new Runnable() {
+                                        public void run() {
+                                            if (delta.getKind() == IResourceDelta.REMOVED) {
+                                                // a required resource was removed, so close the editor
+                                                getSite().getPage().closeEditor(
+                                                        DiagramEditorPart.this, false);
+                                            } else {
+                                                updateModel(resource);
+                                            }
+                                        }
+                                    });
+                                }
+                            }
+                        }
+    
+                        return true;
+                    }
+                });
+            } catch (CoreException exception) {
+                StatusManager.getManager().handle(exception, KlighdPlugin.PLUGIN_ID);
+            }
+        }
+    };
+            
 }
