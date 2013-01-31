@@ -26,7 +26,7 @@ package de.cau.cs.kieler.core.krendering;
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link de.cau.cs.kieler.core.krendering.KInvisibility#isIsVisible <em>Is Visible</em>}</li>
+ *   <li>{@link de.cau.cs.kieler.core.krendering.KInvisibility#isInvisible <em>Invisible</em>}</li>
  * </ul>
  * </p>
  *
@@ -36,30 +36,30 @@ package de.cau.cs.kieler.core.krendering;
  */
 public interface KInvisibility extends KStyle {
     /**
-     * Returns the value of the '<em><b>Is Visible</b></em>' attribute.
-     * The default value is <code>"true"</code>.
+     * Returns the value of the '<em><b>Invisible</b></em>' attribute.
+     * The default value is <code>"false"</code>.
      * <!-- begin-user-doc -->
      * <p>
-     * If the meaning of the '<em>Is Visible</em>' attribute isn't clear,
+     * If the meaning of the '<em>Invisible</em>' attribute isn't clear,
      * there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
-     * @return the value of the '<em>Is Visible</em>' attribute.
-     * @see #setIsVisible(boolean)
-     * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKInvisibility_IsVisible()
-     * @model default="true" required="true"
+     * @return the value of the '<em>Invisible</em>' attribute.
+     * @see #setInvisible(boolean)
+     * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKInvisibility_Invisible()
+     * @model default="false" required="true"
      * @generated
      */
-    boolean isIsVisible();
+    boolean isInvisible();
 
     /**
-     * Sets the value of the '{@link de.cau.cs.kieler.core.krendering.KInvisibility#isIsVisible <em>Is Visible</em>}' attribute.
+     * Sets the value of the '{@link de.cau.cs.kieler.core.krendering.KInvisibility#isInvisible <em>Invisible</em>}' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @param value the new value of the '<em>Is Visible</em>' attribute.
-     * @see #isIsVisible()
+     * @param value the new value of the '<em>Invisible</em>' attribute.
+     * @see #isInvisible()
      * @generated
      */
-    void setIsVisible(boolean value);
+    void setInvisible(boolean value);
 
 } // KInvisibility

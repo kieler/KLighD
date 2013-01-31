@@ -29,7 +29,7 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link de.cau.cs.kieler.core.krendering.impl.KInvisibilityImpl#isIsVisible <em>Is Visible</em>}</li>
+ *   <li>{@link de.cau.cs.kieler.core.krendering.impl.KInvisibilityImpl#isInvisible <em>Invisible</em>}</li>
  * </ul>
  * </p>
  *
@@ -37,24 +37,24 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  */
 public class KInvisibilityImpl extends KStyleImpl implements KInvisibility {
     /**
-     * The default value of the '{@link #isIsVisible() <em>Is Visible</em>}' attribute.
+     * The default value of the '{@link #isInvisible() <em>Invisible</em>}' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see #isIsVisible()
+     * @see #isInvisible()
      * @generated
      * @ordered
      */
-    protected static final boolean IS_VISIBLE_EDEFAULT = true;
+    protected static final boolean INVISIBLE_EDEFAULT = false;
 
     /**
-     * The cached value of the '{@link #isIsVisible() <em>Is Visible</em>}' attribute.
+     * The cached value of the '{@link #isInvisible() <em>Invisible</em>}' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see #isIsVisible()
+     * @see #isInvisible()
      * @generated
      * @ordered
      */
-    protected boolean isVisible = IS_VISIBLE_EDEFAULT;
+    protected boolean invisible = INVISIBLE_EDEFAULT;
 
     /**
      * <!-- begin-user-doc -->
@@ -80,8 +80,8 @@ public class KInvisibilityImpl extends KStyleImpl implements KInvisibility {
      * <!-- end-user-doc -->
      * @generated
      */
-    public boolean isIsVisible() {
-        return isVisible;
+    public boolean isInvisible() {
+        return invisible;
     }
 
     /**
@@ -89,11 +89,11 @@ public class KInvisibilityImpl extends KStyleImpl implements KInvisibility {
      * <!-- end-user-doc -->
      * @generated
      */
-    public void setIsVisible(boolean newIsVisible) {
-        boolean oldIsVisible = isVisible;
-        isVisible = newIsVisible;
+    public void setInvisible(boolean newInvisible) {
+        boolean oldInvisible = invisible;
+        invisible = newInvisible;
         if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, KRenderingPackage.KINVISIBILITY__IS_VISIBLE, oldIsVisible, isVisible));
+            eNotify(new ENotificationImpl(this, Notification.SET, KRenderingPackage.KINVISIBILITY__INVISIBLE, oldInvisible, invisible));
     }
 
     /**
@@ -104,8 +104,8 @@ public class KInvisibilityImpl extends KStyleImpl implements KInvisibility {
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
-            case KRenderingPackage.KINVISIBILITY__IS_VISIBLE:
-                return isIsVisible();
+            case KRenderingPackage.KINVISIBILITY__INVISIBLE:
+                return isInvisible();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -118,8 +118,8 @@ public class KInvisibilityImpl extends KStyleImpl implements KInvisibility {
     @Override
     public void eSet(int featureID, Object newValue) {
         switch (featureID) {
-            case KRenderingPackage.KINVISIBILITY__IS_VISIBLE:
-                setIsVisible((Boolean)newValue);
+            case KRenderingPackage.KINVISIBILITY__INVISIBLE:
+                setInvisible((Boolean)newValue);
                 return;
         }
         super.eSet(featureID, newValue);
@@ -133,8 +133,8 @@ public class KInvisibilityImpl extends KStyleImpl implements KInvisibility {
     @Override
     public void eUnset(int featureID) {
         switch (featureID) {
-            case KRenderingPackage.KINVISIBILITY__IS_VISIBLE:
-                setIsVisible(IS_VISIBLE_EDEFAULT);
+            case KRenderingPackage.KINVISIBILITY__INVISIBLE:
+                setInvisible(INVISIBLE_EDEFAULT);
                 return;
         }
         super.eUnset(featureID);
@@ -148,8 +148,8 @@ public class KInvisibilityImpl extends KStyleImpl implements KInvisibility {
     @Override
     public boolean eIsSet(int featureID) {
         switch (featureID) {
-            case KRenderingPackage.KINVISIBILITY__IS_VISIBLE:
-                return isVisible != IS_VISIBLE_EDEFAULT;
+            case KRenderingPackage.KINVISIBILITY__INVISIBLE:
+                return invisible != INVISIBLE_EDEFAULT;
         }
         return super.eIsSet(featureID);
     }
@@ -164,8 +164,8 @@ public class KInvisibilityImpl extends KStyleImpl implements KInvisibility {
         if (eIsProxy()) return super.toString();
 
         StringBuffer result = new StringBuffer(super.toString());
-        result.append(" (isVisible: ");
-        result.append(isVisible);
+        result.append(" (invisible: ");
+        result.append(invisible);
         result.append(')');
         return result.toString();
     }

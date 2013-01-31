@@ -1709,7 +1709,7 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
      * <!-- end-user-doc -->
      * @generated
      */
-    public EAttribute getKInvisibility_IsVisible() {
+    public EAttribute getKInvisibility_Invisible() {
         return (EAttribute)kInvisibilityEClass.getEStructuralFeatures().get(0);
     }
 
@@ -2042,7 +2042,7 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
         createEReference(kStyleContainerEClass, KSTYLE_CONTAINER__STYLES);
 
         kInvisibilityEClass = createEClass(KINVISIBILITY);
-        createEAttribute(kInvisibilityEClass, KINVISIBILITY__IS_VISIBLE);
+        createEAttribute(kInvisibilityEClass, KINVISIBILITY__INVISIBLE);
 
         kShadowEClass = createEClass(KSHADOW);
         createEAttribute(kShadowEClass, KSHADOW__XOFFSET);
@@ -2317,7 +2317,7 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
         initEReference(getKStyleContainer_Styles(), this.getKStyle(), null, "styles", null, 0, -1, KStyleContainer.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         initEClass(kInvisibilityEClass, KInvisibility.class, "KInvisibility", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-        initEAttribute(getKInvisibility_IsVisible(), ecorePackage.getEBoolean(), "isVisible", "true", 1, 1, KInvisibility.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEAttribute(getKInvisibility_Invisible(), ecorePackage.getEBoolean(), "invisible", "false", 1, 1, KInvisibility.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         initEClass(kShadowEClass, KShadow.class, "KShadow", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         initEAttribute(getKShadow_XOffset(), ecorePackage.getEFloat(), "xOffset", null, 0, 1, KShadow.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);

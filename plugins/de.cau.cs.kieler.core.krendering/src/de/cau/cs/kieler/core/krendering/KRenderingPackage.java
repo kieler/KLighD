@@ -3554,13 +3554,13 @@ public interface KRenderingPackage extends EPackage {
     int KINVISIBILITY__FUNCTION_ID = KSTYLE__FUNCTION_ID;
 
     /**
-     * The feature id for the '<em><b>Is Visible</b></em>' attribute.
+     * The feature id for the '<em><b>Invisible</b></em>' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int KINVISIBILITY__IS_VISIBLE = KSTYLE_FEATURE_COUNT + 0;
+    int KINVISIBILITY__INVISIBLE = KSTYLE_FEATURE_COUNT + 0;
 
     /**
      * The number of structural features of the '<em>KInvisibility</em>' class.
@@ -5107,15 +5107,15 @@ public interface KRenderingPackage extends EPackage {
     EClass getKInvisibility();
 
     /**
-     * Returns the meta object for the attribute '{@link de.cau.cs.kieler.core.krendering.KInvisibility#isIsVisible <em>Is Visible</em>}'.
+     * Returns the meta object for the attribute '{@link de.cau.cs.kieler.core.krendering.KInvisibility#isInvisible <em>Invisible</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for the attribute '<em>Is Visible</em>'.
-     * @see de.cau.cs.kieler.core.krendering.KInvisibility#isIsVisible()
+     * @return the meta object for the attribute '<em>Invisible</em>'.
+     * @see de.cau.cs.kieler.core.krendering.KInvisibility#isInvisible()
      * @see #getKInvisibility()
      * @generated
      */
-    EAttribute getKInvisibility_IsVisible();
+    EAttribute getKInvisibility_Invisible();
 
     /**
      * Returns the meta object for class '{@link de.cau.cs.kieler.core.krendering.KShadow <em>KShadow</em>}'.
@@ -6387,12 +6387,12 @@ public interface KRenderingPackage extends EPackage {
         EClass KINVISIBILITY = eINSTANCE.getKInvisibility();
 
         /**
-         * The meta object literal for the '<em><b>Is Visible</b></em>' attribute feature.
+         * The meta object literal for the '<em><b>Invisible</b></em>' attribute feature.
          * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
          * @generated
          */
-        EAttribute KINVISIBILITY__IS_VISIBLE = eINSTANCE.getKInvisibility_IsVisible();
+        EAttribute KINVISIBILITY__INVISIBLE = eINSTANCE.getKInvisibility_Invisible();
 
         /**
          * The meta object literal for the '{@link de.cau.cs.kieler.core.krendering.impl.KShadowImpl <em>KShadow</em>}' class.
