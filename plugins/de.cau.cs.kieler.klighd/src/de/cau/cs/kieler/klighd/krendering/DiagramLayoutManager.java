@@ -20,16 +20,6 @@ import java.util.Map.Entry;
 import java.util.Set;
 
 import org.eclipse.core.runtime.IAdaptable;
-import org.eclipse.emf.common.notify.Adapter;
-import org.eclipse.emf.common.notify.Notification;
-import org.eclipse.emf.common.util.EList;
-import org.eclipse.emf.common.util.TreeIterator;
-import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.EOperation;
-import org.eclipse.emf.ecore.EReference;
-import org.eclipse.emf.ecore.EStructuralFeature;
-import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.ui.IWorkbenchPart;
 
 import com.google.common.collect.BiMap;
@@ -308,7 +298,6 @@ public class DiagramLayoutManager implements IDiagramLayoutManager<KGraphElement
         PlacementUtil.calculateInsets(node, layoutInsets);
 
         layoutParent.getChildren().add(layoutNode);
-        BiMap<KGraphElement, KGraphElement> map = mapping.getGraphMap();
         mapping.getGraphMap().put(layoutNode, node);
 
         // process ports

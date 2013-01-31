@@ -13,21 +13,10 @@
  */
 package de.cau.cs.kieler.klighd.krendering;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.eclipse.emf.common.notify.Adapter;
-import org.eclipse.emf.common.notify.Notification;
-import org.eclipse.emf.common.util.EList;
-import org.eclipse.emf.common.util.TreeIterator;
-import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.EOperation;
-import org.eclipse.emf.ecore.EReference;
-import org.eclipse.emf.ecore.EStructuralFeature;
-import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.FontMetrics;
@@ -41,10 +30,9 @@ import com.google.common.collect.Lists;
 
 import de.cau.cs.kieler.core.kgraph.KLabel;
 import de.cau.cs.kieler.core.kgraph.KNode;
-import de.cau.cs.kieler.core.krendering.HorizontalAlignment;
+import de.cau.cs.kieler.core.krendering.KAreaPlacementData;
 import de.cau.cs.kieler.core.krendering.KChildArea;
 import de.cau.cs.kieler.core.krendering.KContainerRendering;
-import de.cau.cs.kieler.core.krendering.KAreaPlacementData;
 import de.cau.cs.kieler.core.krendering.KFontBold;
 import de.cau.cs.kieler.core.krendering.KFontItalic;
 import de.cau.cs.kieler.core.krendering.KFontName;
@@ -60,7 +48,6 @@ import de.cau.cs.kieler.core.krendering.KPosition;
 import de.cau.cs.kieler.core.krendering.KRendering;
 import de.cau.cs.kieler.core.krendering.KRenderingPackage;
 import de.cau.cs.kieler.core.krendering.KRenderingRef;
-import de.cau.cs.kieler.core.krendering.KRightPosition;
 import de.cau.cs.kieler.core.krendering.KText;
 import de.cau.cs.kieler.core.krendering.KTopPosition;
 import de.cau.cs.kieler.core.krendering.KXPosition;
@@ -150,7 +137,7 @@ public final class PlacementUtil {
         float height;
         /**
          * the insets used to transport the position of a ChildAreaCell from estimateGridSize to
-         * calculateInsets-method
+         * calculateInsets method.
          */
         private KInsets insets = null;
 
@@ -231,7 +218,7 @@ public final class PlacementUtil {
         }
 
         /**
-         * Getter for X
+         * Getter for X coordinate.
          * 
          * @return height
          */
@@ -240,7 +227,7 @@ public final class PlacementUtil {
         }
 
         /**
-         * Getter for Y-coordinate.
+         * Getter for Y coordinate.
          * 
          * @return width
          */
@@ -276,12 +263,12 @@ public final class PlacementUtil {
         }
 
         /**
-         * Setter for the Insets of this Bound
+         * Setter for the Insets of this bounds object.
          * 
          * @param insets
          *            the insets to be set
          */
-        public void setInsets(KInsets insets) {
+        public void setInsets(final KInsets insets) {
             this.insets = insets;
         }
     }
@@ -383,8 +370,8 @@ public final class PlacementUtil {
         }
 
         // look at attached placementData
-        int id = (KRENDERING_PACKAGE.getKContainerRendering().isInstance(rendering) ? KRenderingPackage.KCONTAINER_RENDERING
-                : KRenderingPackage.KRENDERING);
+        int id = (KRENDERING_PACKAGE.getKContainerRendering().isInstance(rendering)
+                ? KRenderingPackage.KCONTAINER_RENDERING : KRenderingPackage.KRENDERING);
         switch (id) {
         case KRenderingPackage.KCONTAINER_RENDERING:
             KContainerRendering container = (KContainerRendering) rendering;
@@ -558,7 +545,7 @@ public final class PlacementUtil {
         List<KRendering> childRenderings = container.getChildren();
 
         int numRows;
-        if (numColumns == -1){
+        if (numColumns == -1) {
             numColumns = childRenderings.size();
             numRows = 1;
         } else if (numColumns < 2) {
@@ -609,10 +596,8 @@ public final class PlacementUtil {
 
                 if (KRENDERING_PACKAGE.getKText().isInstance(childRenderings.get(k))) {
                     // update Text with minimum needed space if already set value is less than that
-                    // to make it possible for the gridPlacer to give that space to the text
-                    // (otherwise
-                    // the grid placer would not know the size needed and just give the text the
-                    // space
+                    // to make it possible for the gridPlacer to give that space to the text (otherwise
+                    // the grid placer would not know the size needed and just give the text the space
                     // defined in the placementData
                     gridData.setMinCellHeight(Math.max(elementHeight, gridData.getMinCellHeight()));
                     gridData.setMinCellWidth(Math.max(elementWidth, gridData.getMinCellWidth()));
@@ -622,8 +607,7 @@ public final class PlacementUtil {
                 elementWidth = Math.max(gridData.getMinCellWidth(), elementWidth);
             }
             // compare the width and height of the current rendering with the biggest width
-            // and height of the corresponding row and column and update the values with the
-            // maximum
+            // and height of the corresponding row and column and update the values with the maximum
             minRowHeights[row] = Math.max(minRowHeights[row], elementHeight);
             minColumnWidths[col] = Math.max(minColumnWidths[col], elementWidth);
         }
@@ -758,140 +742,135 @@ public final class PlacementUtil {
                     minBounds.height = Math.max(minBounds.height, childMinSize.height / relHeight
                             + Math.abs(absYOffest));
                 }
-            } else if (plcData instanceof KPointPlacementData){
+            } else if (plcData instanceof KPointPlacementData) {
                 KPointPlacementData ppd = (KPointPlacementData) plcData;
                 KPosition referencePoint = ppd.getReferencePoint();
-                
+
                 Bounds selfBounds = estimateSize(rendering, minBounds);
-                
-                if (selfBounds.getHeight() <= minBounds.getHeight() 
-                        && selfBounds.getWidth() <= minBounds.getWidth()){
-                    //prevent infinite growing if node is big enough
+
+                if (selfBounds.getHeight() <= minBounds.getHeight()
+                        && selfBounds.getWidth() <= minBounds.getWidth()) {
+                    // prevent infinite growing if node is big enough
                     return minBounds;
                 }
 
                 float calculatedWidth = 0f;
                 float calculatedHeight = 0f;
-                
+
                 float abs = referencePoint.getX().getAbsolute();
                 float rel = referencePoint.getX().getRelative();
-                
-                if (referencePoint.getX() instanceof KLeftPosition){
-                    switch(ppd.getHorizontalAlignment()){
+
+                if (referencePoint.getX() instanceof KLeftPosition) {
+                    switch (ppd.getHorizontalAlignment()) {
                     case LEFT:
-                        if (rel == 1f){
-                            //child is outside of the parent and does not influence its width
+                        if (rel == 1f) {
+                            // child is outside of the parent and does not influence its width
                             calculatedWidth = minBounds.getWidth();
                         } else {
-                            calculatedWidth = (selfBounds.getWidth()+abs) / (1-rel);
+                            calculatedWidth = (selfBounds.getWidth() + abs) / (1 - rel);
                         }
                         break;
                     case CENTER:
-                        if (rel!=1f){
-                            calculatedWidth = (selfBounds.getWidth()/2 + abs) / (1-rel);
-                        } 
-                        if (rel!=0f){
+                        if (rel != 1f) {
+                            calculatedWidth = (selfBounds.getWidth() / 2 + abs) / (1 - rel);
+                        }
+                        if (rel != 0f) {
                             calculatedWidth = Math.max(calculatedWidth,
-                                            (abs - selfBounds.getWidth()/2) / (-rel)
-                                            );
-                        } 
+                                    (abs - selfBounds.getWidth() / 2) / (-rel));
+                        }
                         break;
                     case RIGHT:
-                        if (rel == 0f){
+                        if (rel == 0f) {
                             calculatedWidth = Math.max(minBounds.getWidth(), abs);
                         } else {
-                            calculatedWidth = (selfBounds.getWidth()-abs) / rel;
+                            calculatedWidth = (selfBounds.getWidth() - abs) / rel;
                         }
                         break;
                     }
                 } else {
-                    //reference Point measured from right
-                    switch (ppd.getHorizontalAlignment()){
+                    // reference Point measured from right
+                    switch (ppd.getHorizontalAlignment()) {
                     case LEFT:
-                        if (rel==0){
+                        if (rel == 0) {
                             calculatedWidth = Math.max(minBounds.getWidth(), abs);
                         } else {
-                            calculatedWidth = (selfBounds.getWidth()-abs)/rel;
+                            calculatedWidth = (selfBounds.getWidth() - abs) / rel;
                         }
                         break;
                     case CENTER:
-                        if (rel!=0f){
-                            calculatedWidth = (selfBounds.getWidth()/2 - abs)/rel;
+                        if (rel != 0f) {
+                            calculatedWidth = (selfBounds.getWidth() / 2 - abs) / rel;
                         }
-                        if (rel!=1f){
-                            calculatedWidth = Math.max(calculatedWidth, 
-                                    (abs+selfBounds.getWidth()/2)/(1-rel));
+                        if (rel != 1f) {
+                            calculatedWidth = Math.max(calculatedWidth,
+                                    (abs + selfBounds.getWidth() / 2) / (1 - rel));
                         }
                         break;
                     case RIGHT:
-                        if (rel==1f){
+                        if (rel == 1f) {
                             calculatedWidth = Math.max(minBounds.getWidth(), abs);
                         } else {
-                            calculatedWidth = (abs + selfBounds.getWidth()) / (1-rel);
+                            calculatedWidth = (abs + selfBounds.getWidth()) / (1 - rel);
                         }
                     }
                 }
-                
-                
-                if (referencePoint.getY() instanceof KTopPosition){
-                    switch(ppd.getVerticalAlignment()){
+
+                if (referencePoint.getY() instanceof KTopPosition) {
+                    switch (ppd.getVerticalAlignment()) {
                     case TOP:
-                        if (rel == 1f){
-                            //child is outside of the parent and does not influence its width
+                        if (rel == 1f) {
+                            // child is outside of the parent and does not influence its width
                             calculatedHeight = minBounds.getHeight();
                         } else {
-                            calculatedHeight = (selfBounds.getHeight()+abs) / (1-rel);
+                            calculatedHeight = (selfBounds.getHeight() + abs) / (1 - rel);
                         }
                         break;
                     case CENTER:
-                        if (rel!=1f){
-                            calculatedHeight = (selfBounds.getHeight()/2 + abs) / (1-rel);
-                        } 
-                        if (rel!=0f){
+                        if (rel != 1f) {
+                            calculatedHeight = (selfBounds.getHeight() / 2 + abs) / (1 - rel);
+                        }
+                        if (rel != 0f) {
                             calculatedHeight = Math.max(calculatedHeight,
-                                            (abs - selfBounds.getHeight()/2) / (-rel)
-                                            );
-                        } 
+                                    (abs - selfBounds.getHeight() / 2) / (-rel));
+                        }
                         break;
                     case BOTTOM:
-                        if (rel == 0f){
+                        if (rel == 0f) {
                             calculatedHeight = Math.max(minBounds.getHeight(), abs);
                         } else {
-                            calculatedHeight = (selfBounds.getHeight()-abs) / rel;
+                            calculatedHeight = (selfBounds.getHeight() - abs) / rel;
                         }
                         break;
                     }
                 } else {
-                    //reference Point measured from right
-                    switch (ppd.getVerticalAlignment()){
+                    // reference Point measured from right
+                    switch (ppd.getVerticalAlignment()) {
                     case TOP:
-                        if (rel==0){
+                        if (rel == 0) {
                             calculatedHeight = Math.max(minBounds.getHeight(), abs);
                         } else {
-                            calculatedHeight = (selfBounds.getHeight()-abs)/rel;
+                            calculatedHeight = (selfBounds.getHeight() - abs) / rel;
                         }
                         break;
                     case CENTER:
-                        if (rel!=0f){
-                            calculatedHeight = (selfBounds.getHeight()/2 - abs)/rel;
+                        if (rel != 0f) {
+                            calculatedHeight = (selfBounds.getHeight() / 2 - abs) / rel;
                         }
-                        if (rel!=1f){
-                            calculatedHeight = Math.max(calculatedHeight, 
-                                    (abs+selfBounds.getWidth()/2)/(1-rel));
+                        if (rel != 1f) {
+                            calculatedHeight = Math.max(calculatedHeight,
+                                    (abs + selfBounds.getWidth() / 2) / (1 - rel));
                         }
                         break;
                     case BOTTOM:
-                        if (rel==1f){
+                        if (rel == 1f) {
                             calculatedHeight = Math.max(minBounds.getHeight(), abs);
                         } else {
-                            calculatedHeight = (abs + selfBounds.getHeight()) / (1-rel);
+                            calculatedHeight = (abs + selfBounds.getHeight()) / (1 - rel);
                         }
                     }
                 }
-                //self bounds have to grow based on the referencePoint
-                minBounds.setBounds(new Bounds(0f, 0f, 
-                        calculatedWidth, 
-                        calculatedHeight));
+                // self bounds have to grow based on the referencePoint
+                minBounds.setBounds(new Bounds(0f, 0f, calculatedWidth, calculatedHeight));
             } else {
                 // if there is no placement data then we can compare the child bounds
                 // directly with the maximal needed bounds
@@ -1191,6 +1170,8 @@ public final class PlacementUtil {
 
             // if the rendering is a container rendering set the new current parent
             if (currentRendering instanceof KContainerRendering) {
+                // TODO: we don't know the exact reason for deactivating the following line
+                //   check it!!
                 // currentParent = (KContainerRendering) currentRendering;
                 // currentBounds = bounds;
             }
@@ -1237,7 +1218,8 @@ public final class PlacementUtil {
                     return evaluateGridPlacement(gridPlacement, gpds, parentBounds)[children
                             .lastIndexOf(child)];
                 }
-            }.doSwitch(placement);
+            }
+            .doSwitch(placement);
         }
 
         if (child instanceof KPolyline) {
@@ -1277,7 +1259,9 @@ public final class PlacementUtil {
     /**
      * Returns the bounds for a gridPlacement data in given parent bounds.
      * 
-     * @param dpd
+     * @param gridPlacement
+     *            the definition of the parent gridPlacement defining the column number
+     * @param gpds
      *            the grid placement data
      * @param parentBounds
      *            the parent bounds
@@ -1290,20 +1274,16 @@ public final class PlacementUtil {
     }
 
     /**
-     * returns a gridPlacer to calculate bounds of single elements inside the grid
+     * returns a gridPlacer to calculate bounds of single elements inside the grid.
      * 
      * @param gridPlacement
      *            the grid data
      * @param gpds
      *            the placement data of elements inside the grid
-     * @param parentBounds
-     *            the bounds to consider
      * @return the gridPlacer
      */
     public static GridPlacer getGridPlacementObject(final KGridPlacement gridPlacement,
             final KGridPlacementData[] gpds) {
-        // public static Bounds evaluateGridPlacement(final KGridPlacementData gpds, final Bounds
-        // parentBounds){
         GridPlacer placer = new GridPlacer();
         placer.gpds = gpds;
 
@@ -1316,7 +1296,8 @@ public final class PlacementUtil {
 
         // determine the required number of columns and rows
         int setColumns = gridPlacement.getNumColumns();
-        placer.numColumns = setColumns ==  -1 ? gpds.length : setColumns < 1 ? 1 : gridPlacement.getNumColumns();
+        placer.numColumns = setColumns == -1 ? gpds.length : setColumns < 1 ? 1 : gridPlacement
+                .getNumColumns();
         placer.numRows = (gpds.length - 1) / placer.numColumns + 1;
 
         // determine the column widths and row heights
@@ -1440,6 +1421,7 @@ public final class PlacementUtil {
          *            the parent bounds
          * @return the bounds for the placed elements
          */
+        // SUPPRESS CHECKSTYLE NEXT Length
         public Bounds[] evaluate(final Bounds parentBounds) {
             if (gpds.length == 0) {
                 return new Bounds[0];
@@ -1486,10 +1468,11 @@ public final class PlacementUtil {
                             }
                         }
                     } else {
-                        // we could do fixpoint-iteration here to distribute it to other elements, but for now a single iteration has to be enough
+                        // we could do fixpoint-iteration here to distribute it to other elements, 
+                        // but for now a single iteration has to be enough
                         distribute = parentWidthToSpend / numColumns;
-                        for (int i = 0; i<numColumns; i++){
-                            if (calculatedColumnWidth[i]+distribute <= columnMinMaxWidth[i]){
+                        for (int i = 0; i < numColumns; i++) {
+                            if (calculatedColumnWidth[i] + distribute <= columnMinMaxWidth[i]) {
                                 calculatedColumnWidth[i] += distribute;
                             } else {
                                 calculatedColumnWidth[i] = columnMinMaxWidth[i];
@@ -1536,16 +1519,18 @@ public final class PlacementUtil {
                             }
                         }
                     } else {
-                        // we could do fixpoint-iteration here to distribute it to other elements, but for now a single iteration has to be enough
+                        // we could do fixpoint-iteration here to distribute it to other elements,
+                        // but for now a single iteration has to be enough
                         distribute = parentHeightToSpend / numRows;
-                        for (int i = 0; i<numRows; i++){
-                            if (calculatedRowHeight[i]+distribute <= rowMinMaxHeight[i]){
+                        for (int i = 0; i < numRows; i++) {
+                            if (calculatedRowHeight[i] + distribute <= rowMinMaxHeight[i]) {
                                 calculatedRowHeight[i] += distribute;
                             } else {
                                 calculatedRowHeight[i] = rowMinMaxHeight[i];
                             }
                         }
-                    }}
+                    }
+                }
             }
 
             // create the bounds
@@ -1565,34 +1550,40 @@ public final class PlacementUtil {
                 float insetTop = 0;
                 float insetBottom = 0;
                 if (gpd != null) {
-                    insetLeft = gpd.getTopLeft().getX().eClass().getClassifierID() == KRenderingPackage.KLEFT_POSITION ?
+                    insetLeft = gpd.getTopLeft().getX().eClass().getClassifierID() == KRenderingPackage
+                            .KLEFT_POSITION
                     // left indent measured from left so just take it
-                    gpd.getTopLeft().getX().getAbsolute()
+                    ? gpd.getTopLeft().getX().getAbsolute()
                             + (gpd.getTopLeft().getX().getRelative() * cellWidth)
-                            : // left indent measured from right, so calculate based on cellWidth
-                            cellWidth - gpd.getTopLeft().getX().getAbsolute()
+                            // left indent measured from right, so calculate based on cellWidth
+                            : cellWidth - gpd.getTopLeft().getX().getAbsolute()
                                     - (gpd.getTopLeft().getX().getRelative() * cellWidth);
-                    insetRight = gpd.getBottomRight().getX().eClass().getClassifierID() == KRenderingPackage.KRIGHT_POSITION ?
+                    insetRight = gpd.getBottomRight().getX().eClass().getClassifierID() 
+                            == KRenderingPackage.KRIGHT_POSITION
                     // right indent measured from right so just take it
-                    gpd.getBottomRight().getX().getAbsolute()
+                    ? gpd.getBottomRight().getX().getAbsolute()
                             + (gpd.getBottomRight().getX().getRelative() * cellWidth)
-                            : // right indent measured from left, so calculate based on cellWidth
-                            cellWidth - gpd.getBottomRight().getX().getAbsolute()
+                            // right indent measured from left, so calculate based on cellWidth
+                            : cellWidth - gpd.getBottomRight().getX().getAbsolute()
                                     - (gpd.getBottomRight().getX().getRelative() * cellWidth);
-                    insetTop = gpd.getTopLeft().getY().eClass().getClassifierID() == KRenderingPackage.KTOP_POSITION ?
+                    
+                            
+                    insetTop = gpd.getTopLeft().getY().eClass().getClassifierID() == KRenderingPackage
+                            .KTOP_POSITION
                     // top indent measured from top so just take it
-                    gpd.getTopLeft().getY().getAbsolute()
-
-                    + (gpd.getTopLeft().getY().getRelative() * cellHeight)
-                            : // top indent measured from bottom so calculate based on cellHeight
-                            cellHeight - gpd.getTopLeft().getY().getAbsolute()
+                    ? gpd.getTopLeft().getY().getAbsolute()
+                            + (gpd.getTopLeft().getY().getRelative() * cellHeight)
+                            // top indent measured from bottom so calculate based on cellHeight
+                            : cellHeight - gpd.getTopLeft().getY().getAbsolute()
                                     - (gpd.getTopLeft().getY().getRelative() * cellHeight);
-                    insetBottom = gpd.getBottomRight().getY().eClass().getClassifierID() == KRenderingPackage.KBOTTOM_POSITION ?
+                            
+                    insetBottom = gpd.getBottomRight().getY().eClass().getClassifierID()
+                            == KRenderingPackage.KBOTTOM_POSITION
                     // bottom indent measured from bottom so just take it
-                    gpd.getBottomRight().getY().getAbsolute()
+                    ? gpd.getBottomRight().getY().getAbsolute()
                             + (gpd.getBottomRight().getY().getRelative() * cellHeight)
-                            : // bottom indent measured from top so calculate based on cellHeight
-                            cellHeight - gpd.getBottomRight().getY().getAbsolute()
+                            // bottom indent measured from top so calculate based on cellHeight
+                            : cellHeight - gpd.getBottomRight().getY().getAbsolute()
                                     - (gpd.getBottomRight().getY().getRelative() * cellHeight);
                 }
 
@@ -1622,8 +1613,8 @@ public final class PlacementUtil {
     /**
      * Returns the bounds for a polyline placement data in given parent bounds.
      * 
-     * @param ppd
-     *            the polyline placement data
+     * @param line
+     *            the polyline with its points
      * @param parentBounds
      *            the parent bounds
      * @return the bounds
