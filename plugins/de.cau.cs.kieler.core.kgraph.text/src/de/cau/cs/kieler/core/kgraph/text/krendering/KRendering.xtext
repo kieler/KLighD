@@ -31,7 +31,7 @@ KPlacementData returns KPlacementData:
     KDecoratorPlacementData | KGridPlacementData | KAreaPlacementData | KPointPlacementData;
 
 KStyle returns KStyle:
-    KLineWidth | KForeground | KBackground | KVisibility | KLineStyle | KLineCapStyle | KRotation | KFontBold | KFontItalic | KFontName | KFontSize | KVerticalAlignment | KHorizontalAlignment; //| KGradient;
+    KLineWidth | KForeground | KBackground | KVisibility | KLineStyle | KLineCapStyle | KRotation | KFontBold | KFontItalic | KFontName | KFontSize | KVerticalAlignment | KHorizontalAlignment;
 
 KPlacement returns KPlacement:
     KGridPlacement;
@@ -258,9 +258,9 @@ KForeground returns KForeground:
         'gradientAngle'? gradientAngle=EFloat
     '}';
     
-KVisibility returns KVisibility:
-    {KVisibility}
-    'invisible' | isVisible?='visible';
+KVisibility returns KInvisibility:
+    {KInvisibility}
+    invisible?='invisible';
     
 KLineWidth returns KLineWidth:
     'lineWidth' lineWidth=EInt (propagateToChildren?='!')? 

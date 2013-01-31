@@ -5437,29 +5437,24 @@ ruleKVisibility returns [EObject current=null]
     @init { enterRule(); 
     }
     @after { leaveRule(); }:
-(((
+((
     {
         $current = forceCreateModelElement(
-            grammarAccess.getKVisibilityAccess().getKVisibilityAction_0_0(),
+            grammarAccess.getKVisibilityAccess().getKInvisibilityAction_0(),
             $current);
     }
-)	otherlv_1='invisible' 
-    {
-    	newLeafNode(otherlv_1, grammarAccess.getKVisibilityAccess().getInvisibleKeyword_0_1());
-    }
-)
-    |(
+)(
 (
-		lv_isVisible_2_0=	'visible' 
+		lv_invisible_1_0=	'invisible' 
     {
-        newLeafNode(lv_isVisible_2_0, grammarAccess.getKVisibilityAccess().getIsVisibleVisibleKeyword_1_0());
+        newLeafNode(lv_invisible_1_0, grammarAccess.getKVisibilityAccess().getInvisibleInvisibleKeyword_1_0());
     }
  
 	    {
 	        if ($current==null) {
 	            $current = createModelElement(grammarAccess.getKVisibilityRule());
 	        }
-       		setWithLastConsumed($current, "isVisible", true, "visible");
+       		setWithLastConsumed($current, "invisible", true, "invisible");
 	    }
 
 )

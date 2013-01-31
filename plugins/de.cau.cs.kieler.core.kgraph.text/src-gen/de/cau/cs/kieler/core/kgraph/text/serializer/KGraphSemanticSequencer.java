@@ -29,6 +29,7 @@ import de.cau.cs.kieler.core.krendering.KGridPlacement;
 import de.cau.cs.kieler.core.krendering.KGridPlacementData;
 import de.cau.cs.kieler.core.krendering.KHorizontalAlignment;
 import de.cau.cs.kieler.core.krendering.KImage;
+import de.cau.cs.kieler.core.krendering.KInvisibility;
 import de.cau.cs.kieler.core.krendering.KLeftPosition;
 import de.cau.cs.kieler.core.krendering.KLineCapStyle;
 import de.cau.cs.kieler.core.krendering.KLineStyle;
@@ -49,7 +50,6 @@ import de.cau.cs.kieler.core.krendering.KSpline;
 import de.cau.cs.kieler.core.krendering.KText;
 import de.cau.cs.kieler.core.krendering.KTopPosition;
 import de.cau.cs.kieler.core.krendering.KVerticalAlignment;
-import de.cau.cs.kieler.core.krendering.KVisibility;
 import de.cau.cs.kieler.kiml.klayoutdata.KEdgeLayout;
 import de.cau.cs.kieler.kiml.klayoutdata.KInsets;
 import de.cau.cs.kieler.kiml.klayoutdata.KLayoutDataPackage;
@@ -268,6 +268,13 @@ public class KGraphSemanticSequencer extends KRenderingSemanticSequencer {
 					return; 
 				}
 				else break;
+			case KRenderingPackage.KINVISIBILITY:
+				if(context == grammarAccess.getKStyleRule() ||
+				   context == grammarAccess.getKVisibilityRule()) {
+					sequence_KVisibility(context, (KInvisibility) semanticObject); 
+					return; 
+				}
+				else break;
 			case KRenderingPackage.KLEFT_POSITION:
 				if(context == grammarAccess.getKLeftPositionRule() ||
 				   context == grammarAccess.getKXPositionRule()) {
@@ -405,13 +412,6 @@ public class KGraphSemanticSequencer extends KRenderingSemanticSequencer {
 				if(context == grammarAccess.getKStyleRule() ||
 				   context == grammarAccess.getKVerticalAlignmentRule()) {
 					sequence_KVerticalAlignment(context, (KVerticalAlignment) semanticObject); 
-					return; 
-				}
-				else break;
-			case KRenderingPackage.KVISIBILITY:
-				if(context == grammarAccess.getKStyleRule() ||
-				   context == grammarAccess.getKVisibilityRule()) {
-					sequence_KVisibility(context, (KVisibility) semanticObject); 
 					return; 
 				}
 				else break;

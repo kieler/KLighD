@@ -1005,7 +1005,6 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 		return getKPlacementDataAccess().getRule();
 	}
 
-	////| KGradient;
 	//KStyle:
 	//	KLineWidth | KForeground | KBackground | KVisibility | KLineStyle | KLineCapStyle | KRotation | KFontBold |
 	//	KFontItalic | KFontName | KFontSize | KVerticalAlignment | KHorizontalAlignment;
@@ -1332,8 +1331,8 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 		return getKForegroundAccess().getRule();
 	}
 
-	//KVisibility:
-	//	{KVisibility} "invisible" | isVisible?="visible";
+	//KVisibility returns KInvisibility:
+	//	{KInvisibility} invisible?="invisible";
 	public KRenderingGrammarAccess.KVisibilityElements getKVisibilityAccess() {
 		return gaKRendering.getKVisibilityAccess();
 	}
@@ -1442,12 +1441,6 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 		return getKHorizontalAlignmentAccess().getRule();
 	}
 
-	////KGradient returns KGradient:
-	////    {KGradient}
-	////    'angle' angle=EFloat
-	////    'startColor' red=EInt green=EInt blue=EInt
-	////    'endColor' red=EInt green=EInt blue=EInt
-	////;
 	//KGridPlacement:
 	//	{KGridPlacement} "gridPlacement" numColumns=EInt;
 	public KRenderingGrammarAccess.KGridPlacementElements getKGridPlacementAccess() {

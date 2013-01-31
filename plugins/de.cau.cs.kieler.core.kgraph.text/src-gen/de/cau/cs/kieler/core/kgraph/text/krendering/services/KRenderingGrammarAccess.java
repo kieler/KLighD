@@ -186,7 +186,6 @@ public class KRenderingGrammarAccess extends AbstractGrammarElementFinder {
 		private final RuleCall cKVerticalAlignmentParserRuleCall_11 = (RuleCall)cAlternatives.eContents().get(11);
 		private final RuleCall cKHorizontalAlignmentParserRuleCall_12 = (RuleCall)cAlternatives.eContents().get(12);
 		
-		////| KGradient;
 		//KStyle:
 		//	KLineWidth | KForeground | KBackground | KVisibility | KLineStyle | KLineCapStyle | KRotation | KFontBold |
 		//	KFontItalic | KFontName | KFontSize | KVerticalAlignment | KHorizontalAlignment;
@@ -3136,34 +3135,26 @@ public class KRenderingGrammarAccess extends AbstractGrammarElementFinder {
 
 	public class KVisibilityElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "KVisibility");
-		private final Alternatives cAlternatives = (Alternatives)rule.eContents().get(1);
-		private final Group cGroup_0 = (Group)cAlternatives.eContents().get(0);
-		private final Action cKVisibilityAction_0_0 = (Action)cGroup_0.eContents().get(0);
-		private final Keyword cInvisibleKeyword_0_1 = (Keyword)cGroup_0.eContents().get(1);
-		private final Assignment cIsVisibleAssignment_1 = (Assignment)cAlternatives.eContents().get(1);
-		private final Keyword cIsVisibleVisibleKeyword_1_0 = (Keyword)cIsVisibleAssignment_1.eContents().get(0);
+		private final Group cGroup = (Group)rule.eContents().get(1);
+		private final Action cKInvisibilityAction_0 = (Action)cGroup.eContents().get(0);
+		private final Assignment cInvisibleAssignment_1 = (Assignment)cGroup.eContents().get(1);
+		private final Keyword cInvisibleInvisibleKeyword_1_0 = (Keyword)cInvisibleAssignment_1.eContents().get(0);
 		
-		//KVisibility:
-		//	{KVisibility} "invisible" | isVisible?="visible";
+		//KVisibility returns KInvisibility:
+		//	{KInvisibility} invisible?="invisible";
 		public ParserRule getRule() { return rule; }
 
-		//{KVisibility} "invisible" | isVisible?="visible"
-		public Alternatives getAlternatives() { return cAlternatives; }
+		//{KInvisibility} invisible?="invisible"
+		public Group getGroup() { return cGroup; }
 
-		//{KVisibility} "invisible"
-		public Group getGroup_0() { return cGroup_0; }
+		//{KInvisibility}
+		public Action getKInvisibilityAction_0() { return cKInvisibilityAction_0; }
 
-		//{KVisibility}
-		public Action getKVisibilityAction_0_0() { return cKVisibilityAction_0_0; }
+		//invisible?="invisible"
+		public Assignment getInvisibleAssignment_1() { return cInvisibleAssignment_1; }
 
 		//"invisible"
-		public Keyword getInvisibleKeyword_0_1() { return cInvisibleKeyword_0_1; }
-
-		//isVisible?="visible"
-		public Assignment getIsVisibleAssignment_1() { return cIsVisibleAssignment_1; }
-
-		//"visible"
-		public Keyword getIsVisibleVisibleKeyword_1_0() { return cIsVisibleVisibleKeyword_1_0; }
+		public Keyword getInvisibleInvisibleKeyword_1_0() { return cInvisibleInvisibleKeyword_1_0; }
 	}
 
 	public class KLineWidthElements extends AbstractParserRuleElementFinder {
@@ -3522,12 +3513,6 @@ public class KRenderingGrammarAccess extends AbstractGrammarElementFinder {
 		private final Assignment cNumColumnsAssignment_2 = (Assignment)cGroup.eContents().get(2);
 		private final RuleCall cNumColumnsEIntParserRuleCall_2_0 = (RuleCall)cNumColumnsAssignment_2.eContents().get(0);
 		
-		////KGradient returns KGradient:
-		////    {KGradient}
-		////    'angle' angle=EFloat
-		////    'startColor' red=EInt green=EInt blue=EInt
-		////    'endColor' red=EInt green=EInt blue=EInt
-		////;
 		//KGridPlacement:
 		//	{KGridPlacement} "gridPlacement" numColumns=EInt;
 		public ParserRule getRule() { return rule; }
@@ -3926,7 +3911,6 @@ public class KRenderingGrammarAccess extends AbstractGrammarElementFinder {
 		return getKPlacementDataAccess().getRule();
 	}
 
-	////| KGradient;
 	//KStyle:
 	//	KLineWidth | KForeground | KBackground | KVisibility | KLineStyle | KLineCapStyle | KRotation | KFontBold |
 	//	KFontItalic | KFontName | KFontSize | KVerticalAlignment | KHorizontalAlignment;
@@ -4253,8 +4237,8 @@ public class KRenderingGrammarAccess extends AbstractGrammarElementFinder {
 		return getKForegroundAccess().getRule();
 	}
 
-	//KVisibility:
-	//	{KVisibility} "invisible" | isVisible?="visible";
+	//KVisibility returns KInvisibility:
+	//	{KInvisibility} invisible?="invisible";
 	public KVisibilityElements getKVisibilityAccess() {
 		return (pKVisibility != null) ? pKVisibility : (pKVisibility = new KVisibilityElements());
 	}
@@ -4363,12 +4347,6 @@ public class KRenderingGrammarAccess extends AbstractGrammarElementFinder {
 		return getKHorizontalAlignmentAccess().getRule();
 	}
 
-	////KGradient returns KGradient:
-	////    {KGradient}
-	////    'angle' angle=EFloat
-	////    'startColor' red=EInt green=EInt blue=EInt
-	////    'endColor' red=EInt green=EInt blue=EInt
-	////;
 	//KGridPlacement:
 	//	{KGridPlacement} "gridPlacement" numColumns=EInt;
 	public KGridPlacementElements getKGridPlacementAccess() {

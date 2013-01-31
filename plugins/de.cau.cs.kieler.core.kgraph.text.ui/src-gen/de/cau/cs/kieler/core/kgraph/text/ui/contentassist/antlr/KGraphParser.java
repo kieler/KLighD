@@ -44,7 +44,6 @@ public class KGraphParser extends AbstractContentAssistParser {
 					put(grammarAccess.getKXPositionAccess().getAlternatives(), "rule__KXPosition__Alternatives");
 					put(grammarAccess.getKYPositionAccess().getAlternatives(), "rule__KYPosition__Alternatives");
 					put(grammarAccess.getKImageAccess().getAlternatives_2(), "rule__KImage__Alternatives_2");
-					put(grammarAccess.getKVisibilityAccess().getAlternatives(), "rule__KVisibility__Alternatives");
 					put(grammarAccess.getEFloatAccess().getAlternatives_2_2_0(), "rule__EFloat__Alternatives_2_2_0");
 					put(grammarAccess.getEBooleanAccess().getAlternatives(), "rule__EBoolean__Alternatives");
 					put(grammarAccess.getEStringAccess().getAlternatives(), "rule__EString__Alternatives");
@@ -211,7 +210,7 @@ public class KGraphParser extends AbstractContentAssistParser {
 					put(grammarAccess.getKColorAccess().getGroup(), "rule__KColor__Group__0");
 					put(grammarAccess.getKBackgroundAccess().getGroup(), "rule__KBackground__Group__0");
 					put(grammarAccess.getKForegroundAccess().getGroup(), "rule__KForeground__Group__0");
-					put(grammarAccess.getKVisibilityAccess().getGroup_0(), "rule__KVisibility__Group_0__0");
+					put(grammarAccess.getKVisibilityAccess().getGroup(), "rule__KVisibility__Group__0");
 					put(grammarAccess.getKLineWidthAccess().getGroup(), "rule__KLineWidth__Group__0");
 					put(grammarAccess.getKLineStyleAccess().getGroup(), "rule__KLineStyle__Group__0");
 					put(grammarAccess.getKLineCapStyleAccess().getGroup(), "rule__KLineCapStyle__Group__0");
@@ -414,7 +413,7 @@ public class KGraphParser extends AbstractContentAssistParser {
 					put(grammarAccess.getKForegroundAccess().getAlphaAssignment_7(), "rule__KForeground__AlphaAssignment_7");
 					put(grammarAccess.getKForegroundAccess().getTargetAlphaAssignment_9(), "rule__KForeground__TargetAlphaAssignment_9");
 					put(grammarAccess.getKForegroundAccess().getGradientAngleAssignment_11(), "rule__KForeground__GradientAngleAssignment_11");
-					put(grammarAccess.getKVisibilityAccess().getIsVisibleAssignment_1(), "rule__KVisibility__IsVisibleAssignment_1");
+					put(grammarAccess.getKVisibilityAccess().getInvisibleAssignment_1(), "rule__KVisibility__InvisibleAssignment_1");
 					put(grammarAccess.getKLineWidthAccess().getLineWidthAssignment_1(), "rule__KLineWidth__LineWidthAssignment_1");
 					put(grammarAccess.getKLineWidthAccess().getPropagateToChildrenAssignment_2(), "rule__KLineWidth__PropagateToChildrenAssignment_2");
 					put(grammarAccess.getKLineWidthAccess().getFunctionIdAssignment_5(), "rule__KLineWidth__FunctionIdAssignment_5");
