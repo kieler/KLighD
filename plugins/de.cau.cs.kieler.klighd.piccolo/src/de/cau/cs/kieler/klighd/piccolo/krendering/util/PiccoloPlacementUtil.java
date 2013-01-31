@@ -123,12 +123,12 @@ public final class PiccoloPlacementUtil {
 
         if (x0 < 0.0f) {
             // the box would be running out of the parent, so move it to right
-            x0 = 0.0d;
+//            x0 = 0.0d;
         }
 
         if (y0 < 0.0f) {
             //the box would be running out of the parent, so move it down
-            y0 = 0.0d;
+//            y0 = 0.0d;
         }
         
         return new PBounds(x0, y0, ownBounds.getWidth(), ownBounds.getHeight());

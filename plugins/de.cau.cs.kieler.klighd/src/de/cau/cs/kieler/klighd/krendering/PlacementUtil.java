@@ -13,10 +13,21 @@
  */
 package de.cau.cs.kieler.klighd.krendering;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.eclipse.emf.common.notify.Adapter;
+import org.eclipse.emf.common.notify.Notification;
+import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.common.util.TreeIterator;
+import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EOperation;
+import org.eclipse.emf.ecore.EReference;
+import org.eclipse.emf.ecore.EStructuralFeature;
+import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.FontMetrics;
@@ -30,6 +41,7 @@ import com.google.common.collect.Lists;
 
 import de.cau.cs.kieler.core.kgraph.KLabel;
 import de.cau.cs.kieler.core.kgraph.KNode;
+import de.cau.cs.kieler.core.krendering.HorizontalAlignment;
 import de.cau.cs.kieler.core.krendering.KChildArea;
 import de.cau.cs.kieler.core.krendering.KContainerRendering;
 import de.cau.cs.kieler.core.krendering.KAreaPlacementData;
@@ -42,11 +54,13 @@ import de.cau.cs.kieler.core.krendering.KGridPlacementData;
 import de.cau.cs.kieler.core.krendering.KLeftPosition;
 import de.cau.cs.kieler.core.krendering.KPlacement;
 import de.cau.cs.kieler.core.krendering.KPlacementData;
+import de.cau.cs.kieler.core.krendering.KPointPlacementData;
 import de.cau.cs.kieler.core.krendering.KPolyline;
 import de.cau.cs.kieler.core.krendering.KPosition;
 import de.cau.cs.kieler.core.krendering.KRendering;
 import de.cau.cs.kieler.core.krendering.KRenderingPackage;
 import de.cau.cs.kieler.core.krendering.KRenderingRef;
+import de.cau.cs.kieler.core.krendering.KRightPosition;
 import de.cau.cs.kieler.core.krendering.KText;
 import de.cau.cs.kieler.core.krendering.KTopPosition;
 import de.cau.cs.kieler.core.krendering.KXPosition;
@@ -389,7 +403,7 @@ public final class PlacementUtil {
                 // in case of a AreaPlacement
                 // calculate the offsets of each rendering and find the biggest rendering in width
                 // and height
-                placementBounds = estimateDirectSize(container, defBounds);
+                placementBounds = estimateAreaSize(container, defBounds);
                 break;
             }
             break;
@@ -665,9 +679,9 @@ public final class PlacementUtil {
      *            a
      * @return d
      */
-    public static Bounds estimateDirectSize(final KContainerRendering container,
-            final Bounds givenBounds) {
-        final Bounds minBounds = new Bounds(givenBounds);        
+    public static Bounds estimateAreaSize(final KContainerRendering container,
+            final Bounds defBounds) {
+        final Bounds minBounds = new Bounds(defBounds);
         for (KRendering rendering : container.getChildren()) {
             estimateDirectlyPlacedChildSize(
                     rendering, minBounds,
@@ -744,9 +758,144 @@ public final class PlacementUtil {
                     minBounds.height = Math.max(minBounds.height, childMinSize.height / relHeight
                             + Math.abs(absYOffest));
                 }
+            } else if (plcData instanceof KPointPlacementData){
+                KPointPlacementData ppd = (KPointPlacementData) plcData;
+                KPosition referencePoint = ppd.getReferencePoint();
+                
+                Bounds selfBounds = estimateSize(rendering, minBounds);
+                
+                if (selfBounds.getHeight() <= minBounds.getHeight() 
+                        && selfBounds.getWidth() <= minBounds.getWidth()){
+                    //prevent infinite growing if node is big enough
+                    return minBounds;
+                }
+
+                float calculatedWidth = 0f;
+                float calculatedHeight = 0f;
+                
+                float abs = referencePoint.getX().getAbsolute();
+                float rel = referencePoint.getX().getRelative();
+                
+                if (referencePoint.getX() instanceof KLeftPosition){
+                    switch(ppd.getHorizontalAlignment()){
+                    case LEFT:
+                        if (rel == 1f){
+                            //child is outside of the parent and does not influence its width
+                            calculatedWidth = minBounds.getWidth();
+                        } else {
+                            calculatedWidth = (selfBounds.getWidth()+abs) / (1-rel);
+                        }
+                        break;
+                    case CENTER:
+                        if (rel!=1f){
+                            calculatedWidth = (selfBounds.getWidth()/2 + abs) / (1-rel);
+                        } 
+                        if (rel!=0f){
+                            calculatedWidth = Math.max(calculatedWidth,
+                                            (abs - selfBounds.getWidth()/2) / (-rel)
+                                            );
+                        } 
+                        break;
+                    case RIGHT:
+                        if (rel == 0f){
+                            calculatedWidth = Math.max(minBounds.getWidth(), abs);
+                        } else {
+                            calculatedWidth = (selfBounds.getWidth()-abs) / rel;
+                        }
+                        break;
+                    }
+                } else {
+                    //reference Point measured from right
+                    switch (ppd.getHorizontalAlignment()){
+                    case LEFT:
+                        if (rel==0){
+                            calculatedWidth = Math.max(minBounds.getWidth(), abs);
+                        } else {
+                            calculatedWidth = (selfBounds.getWidth()-abs)/rel;
+                        }
+                        break;
+                    case CENTER:
+                        if (rel!=0f){
+                            calculatedWidth = (selfBounds.getWidth()/2 - abs)/rel;
+                        }
+                        if (rel!=1f){
+                            calculatedWidth = Math.max(calculatedWidth, 
+                                    (abs+selfBounds.getWidth()/2)/(1-rel));
+                        }
+                        break;
+                    case RIGHT:
+                        if (rel==1f){
+                            calculatedWidth = Math.max(minBounds.getWidth(), abs);
+                        } else {
+                            calculatedWidth = (abs + selfBounds.getWidth()) / (1-rel);
+                        }
+                    }
+                }
+                
+                
+                if (referencePoint.getY() instanceof KTopPosition){
+                    switch(ppd.getVerticalAlignment()){
+                    case TOP:
+                        if (rel == 1f){
+                            //child is outside of the parent and does not influence its width
+                            calculatedHeight = minBounds.getHeight();
+                        } else {
+                            calculatedHeight = (selfBounds.getHeight()+abs) / (1-rel);
+                        }
+                        break;
+                    case CENTER:
+                        if (rel!=1f){
+                            calculatedHeight = (selfBounds.getHeight()/2 + abs) / (1-rel);
+                        } 
+                        if (rel!=0f){
+                            calculatedHeight = Math.max(calculatedHeight,
+                                            (abs - selfBounds.getHeight()/2) / (-rel)
+                                            );
+                        } 
+                        break;
+                    case BOTTOM:
+                        if (rel == 0f){
+                            calculatedHeight = Math.max(minBounds.getHeight(), abs);
+                        } else {
+                            calculatedHeight = (selfBounds.getHeight()-abs) / rel;
+                        }
+                        break;
+                    }
+                } else {
+                    //reference Point measured from right
+                    switch (ppd.getVerticalAlignment()){
+                    case TOP:
+                        if (rel==0){
+                            calculatedHeight = Math.max(minBounds.getHeight(), abs);
+                        } else {
+                            calculatedHeight = (selfBounds.getHeight()-abs)/rel;
+                        }
+                        break;
+                    case CENTER:
+                        if (rel!=0f){
+                            calculatedHeight = (selfBounds.getHeight()/2 - abs)/rel;
+                        }
+                        if (rel!=1f){
+                            calculatedHeight = Math.max(calculatedHeight, 
+                                    (abs+selfBounds.getWidth()/2)/(1-rel));
+                        }
+                        break;
+                    case BOTTOM:
+                        if (rel==1f){
+                            calculatedHeight = Math.max(minBounds.getHeight(), abs);
+                        } else {
+                            calculatedHeight = (abs + selfBounds.getHeight()) / (1-rel);
+                        }
+                    }
+                }
+                //self bounds have to grow based on the referencePoint
+                minBounds.setBounds(new Bounds(0f, 0f, 
+                        calculatedWidth, 
+                        calculatedHeight));
             } else {
                 // if there is no placement data then we can compare the child bounds
                 // directly with the maximal needed bounds
+                
                 minBounds.setBounds(estimateSize(rendering, minBounds));
             }
         return minBounds; // scaleBounds(container, minBounds, defBounds);
