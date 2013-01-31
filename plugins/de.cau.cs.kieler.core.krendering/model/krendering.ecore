@@ -597,11 +597,11 @@
     <eLiterals name="CAP_ROUND" value="2"/>
     <eLiterals name="CAP_SQUARE" value="3"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="KVisibility" eSuperTypes="#//KStyle">
+  <eClassifiers xsi:type="ecore:EClass" name="KInvisibility" eSuperTypes="#//KStyle">
     <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
       <details key="documentation" value="defines whether an object is visible or not"/>
     </eAnnotations>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="isVisible" lowerBound="1"
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="invisible" lowerBound="1"
         eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean" defaultValueLiteral="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="KShadow" eSuperTypes="#//KStyle">

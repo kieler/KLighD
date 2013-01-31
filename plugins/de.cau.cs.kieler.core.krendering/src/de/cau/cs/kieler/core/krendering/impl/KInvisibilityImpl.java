@@ -13,8 +13,8 @@
  */
 package de.cau.cs.kieler.core.krendering.impl;
 
+import de.cau.cs.kieler.core.krendering.KInvisibility;
 import de.cau.cs.kieler.core.krendering.KRenderingPackage;
-import de.cau.cs.kieler.core.krendering.KVisibility;
 
 import org.eclipse.emf.common.notify.Notification;
 
@@ -24,18 +24,18 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
 /**
  * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>KVisibility</b></em>'.
+ * An implementation of the model object '<em><b>KInvisibility</b></em>'.
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link de.cau.cs.kieler.core.krendering.impl.KVisibilityImpl#isIsVisible <em>Is Visible</em>}</li>
+ *   <li>{@link de.cau.cs.kieler.core.krendering.impl.KInvisibilityImpl#isIsVisible <em>Is Visible</em>}</li>
  * </ul>
  * </p>
  *
  * @generated
  */
-public class KVisibilityImpl extends KStyleImpl implements KVisibility {
+public class KInvisibilityImpl extends KStyleImpl implements KInvisibility {
     /**
      * The default value of the '{@link #isIsVisible() <em>Is Visible</em>}' attribute.
      * <!-- begin-user-doc -->
@@ -61,7 +61,7 @@ public class KVisibilityImpl extends KStyleImpl implements KVisibility {
      * <!-- end-user-doc -->
      * @generated
      */
-    protected KVisibilityImpl() {
+    protected KInvisibilityImpl() {
         super();
     }
 
@@ -72,7 +72,7 @@ public class KVisibilityImpl extends KStyleImpl implements KVisibility {
      */
     @Override
     protected EClass eStaticClass() {
-        return KRenderingPackage.Literals.KVISIBILITY;
+        return KRenderingPackage.Literals.KINVISIBILITY;
     }
 
     /**
@@ -93,7 +93,7 @@ public class KVisibilityImpl extends KStyleImpl implements KVisibility {
         boolean oldIsVisible = isVisible;
         isVisible = newIsVisible;
         if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, KRenderingPackage.KVISIBILITY__IS_VISIBLE, oldIsVisible, isVisible));
+            eNotify(new ENotificationImpl(this, Notification.SET, KRenderingPackage.KINVISIBILITY__IS_VISIBLE, oldIsVisible, isVisible));
     }
 
     /**
@@ -104,7 +104,7 @@ public class KVisibilityImpl extends KStyleImpl implements KVisibility {
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
-            case KRenderingPackage.KVISIBILITY__IS_VISIBLE:
+            case KRenderingPackage.KINVISIBILITY__IS_VISIBLE:
                 return isIsVisible();
         }
         return super.eGet(featureID, resolve, coreType);
@@ -118,7 +118,7 @@ public class KVisibilityImpl extends KStyleImpl implements KVisibility {
     @Override
     public void eSet(int featureID, Object newValue) {
         switch (featureID) {
-            case KRenderingPackage.KVISIBILITY__IS_VISIBLE:
+            case KRenderingPackage.KINVISIBILITY__IS_VISIBLE:
                 setIsVisible((Boolean)newValue);
                 return;
         }
@@ -133,7 +133,7 @@ public class KVisibilityImpl extends KStyleImpl implements KVisibility {
     @Override
     public void eUnset(int featureID) {
         switch (featureID) {
-            case KRenderingPackage.KVISIBILITY__IS_VISIBLE:
+            case KRenderingPackage.KINVISIBILITY__IS_VISIBLE:
                 setIsVisible(IS_VISIBLE_EDEFAULT);
                 return;
         }
@@ -148,7 +148,7 @@ public class KVisibilityImpl extends KStyleImpl implements KVisibility {
     @Override
     public boolean eIsSet(int featureID) {
         switch (featureID) {
-            case KRenderingPackage.KVISIBILITY__IS_VISIBLE:
+            case KRenderingPackage.KINVISIBILITY__IS_VISIBLE:
                 return isVisible != IS_VISIBLE_EDEFAULT;
         }
         return super.eIsSet(featureID);
@@ -170,4 +170,4 @@ public class KVisibilityImpl extends KStyleImpl implements KVisibility {
         return result.toString();
     }
 
-} //KVisibilityImpl
+} //KInvisibilityImpl

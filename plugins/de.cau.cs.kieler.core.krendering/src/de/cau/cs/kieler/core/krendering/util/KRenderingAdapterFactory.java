@@ -284,8 +284,8 @@ public class KRenderingAdapterFactory extends AdapterFactoryImpl {
                 return createKStyleContainerAdapter();
             }
             @Override
-            public Adapter caseKVisibility(KVisibility object) {
-                return createKVisibilityAdapter();
+            public Adapter caseKInvisibility(KInvisibility object) {
+                return createKInvisibilityAdapter();
             }
             @Override
             public Adapter caseKShadow(KShadow object) {
@@ -1028,16 +1028,16 @@ public class KRenderingAdapterFactory extends AdapterFactoryImpl {
     }
 
     /**
-     * Creates a new adapter for an object of class '{@link de.cau.cs.kieler.core.krendering.KVisibility <em>KVisibility</em>}'.
+     * Creates a new adapter for an object of class '{@link de.cau.cs.kieler.core.krendering.KInvisibility <em>KInvisibility</em>}'.
      * <!-- begin-user-doc -->
      * This default implementation returns null so that we can easily ignore cases;
      * it's useful to ignore a case when inheritance will catch all the cases anyway.
      * <!-- end-user-doc -->
      * @return the new adapter.
-     * @see de.cau.cs.kieler.core.krendering.KVisibility
+     * @see de.cau.cs.kieler.core.krendering.KInvisibility
      * @generated
      */
-    public Adapter createKVisibilityAdapter() {
+    public Adapter createKInvisibilityAdapter() {
         return null;
     }
 

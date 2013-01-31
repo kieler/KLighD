@@ -3517,14 +3517,14 @@ public interface KRenderingPackage extends EPackage {
     int KSTYLE_CONTAINER_FEATURE_COUNT = 1;
 
     /**
-     * The meta object id for the '{@link de.cau.cs.kieler.core.krendering.impl.KVisibilityImpl <em>KVisibility</em>}' class.
+     * The meta object id for the '{@link de.cau.cs.kieler.core.krendering.impl.KInvisibilityImpl <em>KInvisibility</em>}' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see de.cau.cs.kieler.core.krendering.impl.KVisibilityImpl
-     * @see de.cau.cs.kieler.core.krendering.impl.KRenderingPackageImpl#getKVisibility()
+     * @see de.cau.cs.kieler.core.krendering.impl.KInvisibilityImpl
+     * @see de.cau.cs.kieler.core.krendering.impl.KRenderingPackageImpl#getKInvisibility()
      * @generated
      */
-    int KVISIBILITY = 50;
+    int KINVISIBILITY = 50;
 
     /**
      * The feature id for the '<em><b>Rendering</b></em>' reference.
@@ -3533,7 +3533,7 @@ public interface KRenderingPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int KVISIBILITY__RENDERING = KSTYLE__RENDERING;
+    int KINVISIBILITY__RENDERING = KSTYLE__RENDERING;
 
     /**
      * The feature id for the '<em><b>Propagate To Children</b></em>' attribute.
@@ -3542,7 +3542,7 @@ public interface KRenderingPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int KVISIBILITY__PROPAGATE_TO_CHILDREN = KSTYLE__PROPAGATE_TO_CHILDREN;
+    int KINVISIBILITY__PROPAGATE_TO_CHILDREN = KSTYLE__PROPAGATE_TO_CHILDREN;
 
     /**
      * The feature id for the '<em><b>Function Id</b></em>' attribute.
@@ -3551,7 +3551,7 @@ public interface KRenderingPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int KVISIBILITY__FUNCTION_ID = KSTYLE__FUNCTION_ID;
+    int KINVISIBILITY__FUNCTION_ID = KSTYLE__FUNCTION_ID;
 
     /**
      * The feature id for the '<em><b>Is Visible</b></em>' attribute.
@@ -3560,16 +3560,16 @@ public interface KRenderingPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int KVISIBILITY__IS_VISIBLE = KSTYLE_FEATURE_COUNT + 0;
+    int KINVISIBILITY__IS_VISIBLE = KSTYLE_FEATURE_COUNT + 0;
 
     /**
-     * The number of structural features of the '<em>KVisibility</em>' class.
+     * The number of structural features of the '<em>KInvisibility</em>' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int KVISIBILITY_FEATURE_COUNT = KSTYLE_FEATURE_COUNT + 1;
+    int KINVISIBILITY_FEATURE_COUNT = KSTYLE_FEATURE_COUNT + 1;
 
     /**
      * The meta object id for the '{@link de.cau.cs.kieler.core.krendering.impl.KShadowImpl <em>KShadow</em>}' class.
@@ -5097,25 +5097,25 @@ public interface KRenderingPackage extends EPackage {
     EReference getKStyleContainer_Styles();
 
     /**
-     * Returns the meta object for class '{@link de.cau.cs.kieler.core.krendering.KVisibility <em>KVisibility</em>}'.
+     * Returns the meta object for class '{@link de.cau.cs.kieler.core.krendering.KInvisibility <em>KInvisibility</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for class '<em>KVisibility</em>'.
-     * @see de.cau.cs.kieler.core.krendering.KVisibility
+     * @return the meta object for class '<em>KInvisibility</em>'.
+     * @see de.cau.cs.kieler.core.krendering.KInvisibility
      * @generated
      */
-    EClass getKVisibility();
+    EClass getKInvisibility();
 
     /**
-     * Returns the meta object for the attribute '{@link de.cau.cs.kieler.core.krendering.KVisibility#isIsVisible <em>Is Visible</em>}'.
+     * Returns the meta object for the attribute '{@link de.cau.cs.kieler.core.krendering.KInvisibility#isIsVisible <em>Is Visible</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @return the meta object for the attribute '<em>Is Visible</em>'.
-     * @see de.cau.cs.kieler.core.krendering.KVisibility#isIsVisible()
-     * @see #getKVisibility()
+     * @see de.cau.cs.kieler.core.krendering.KInvisibility#isIsVisible()
+     * @see #getKInvisibility()
      * @generated
      */
-    EAttribute getKVisibility_IsVisible();
+    EAttribute getKInvisibility_IsVisible();
 
     /**
      * Returns the meta object for class '{@link de.cau.cs.kieler.core.krendering.KShadow <em>KShadow</em>}'.
@@ -6377,14 +6377,14 @@ public interface KRenderingPackage extends EPackage {
         EReference KSTYLE_CONTAINER__STYLES = eINSTANCE.getKStyleContainer_Styles();
 
         /**
-         * The meta object literal for the '{@link de.cau.cs.kieler.core.krendering.impl.KVisibilityImpl <em>KVisibility</em>}' class.
+         * The meta object literal for the '{@link de.cau.cs.kieler.core.krendering.impl.KInvisibilityImpl <em>KInvisibility</em>}' class.
          * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-         * @see de.cau.cs.kieler.core.krendering.impl.KVisibilityImpl
-         * @see de.cau.cs.kieler.core.krendering.impl.KRenderingPackageImpl#getKVisibility()
+         * @see de.cau.cs.kieler.core.krendering.impl.KInvisibilityImpl
+         * @see de.cau.cs.kieler.core.krendering.impl.KRenderingPackageImpl#getKInvisibility()
          * @generated
          */
-        EClass KVISIBILITY = eINSTANCE.getKVisibility();
+        EClass KINVISIBILITY = eINSTANCE.getKInvisibility();
 
         /**
          * The meta object literal for the '<em><b>Is Visible</b></em>' attribute feature.
@@ -6392,7 +6392,7 @@ public interface KRenderingPackage extends EPackage {
          * <!-- end-user-doc -->
          * @generated
          */
-        EAttribute KVISIBILITY__IS_VISIBLE = eINSTANCE.getKVisibility_IsVisible();
+        EAttribute KINVISIBILITY__IS_VISIBLE = eINSTANCE.getKInvisibility_IsVisible();
 
         /**
          * The meta object literal for the '{@link de.cau.cs.kieler.core.krendering.impl.KShadowImpl <em>KShadow</em>}' class.

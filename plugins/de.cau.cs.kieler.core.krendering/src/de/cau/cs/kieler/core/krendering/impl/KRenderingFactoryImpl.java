@@ -109,7 +109,7 @@ public class KRenderingFactoryImpl extends EFactoryImpl implements KRenderingFac
             case KRenderingPackage.KSELECT_ACTION: return createKSelectAction();
             case KRenderingPackage.KEXPAND_COLLAPSE_ACTION: return createKExpandCollapseAction();
             case KRenderingPackage.KSTYLE_CONTAINER: return createKStyleContainer();
-            case KRenderingPackage.KVISIBILITY: return createKVisibility();
+            case KRenderingPackage.KINVISIBILITY: return createKInvisibility();
             case KRenderingPackage.KSHADOW: return createKShadow();
             case KRenderingPackage.KFONT_UNDERLINED: return createKFontUnderlined();
             default:
@@ -586,9 +586,9 @@ public class KRenderingFactoryImpl extends EFactoryImpl implements KRenderingFac
      * <!-- end-user-doc -->
      * @generated
      */
-    public KVisibility createKVisibility() {
-        KVisibilityImpl kVisibility = new KVisibilityImpl();
-        return kVisibility;
+    public KInvisibility createKInvisibility() {
+        KInvisibilityImpl kInvisibility = new KInvisibilityImpl();
+        return kInvisibility;
     }
 
     /**

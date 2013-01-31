@@ -41,6 +41,7 @@ import de.cau.cs.kieler.core.krendering.KGridPlacement;
 import de.cau.cs.kieler.core.krendering.KGridPlacementData;
 import de.cau.cs.kieler.core.krendering.KHorizontalAlignment;
 import de.cau.cs.kieler.core.krendering.KImage;
+import de.cau.cs.kieler.core.krendering.KInvisibility;
 import de.cau.cs.kieler.core.krendering.KLeftPosition;
 import de.cau.cs.kieler.core.krendering.KLineCapStyle;
 import de.cau.cs.kieler.core.krendering.KLineStyle;
@@ -449,7 +450,7 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
      * <!-- end-user-doc -->
      * @generated
      */
-    private EClass kVisibilityEClass = null;
+    private EClass kInvisibilityEClass = null;
 
     /**
      * <!-- begin-user-doc -->
@@ -1699,8 +1700,8 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
      * <!-- end-user-doc -->
      * @generated
      */
-    public EClass getKVisibility() {
-        return kVisibilityEClass;
+    public EClass getKInvisibility() {
+        return kInvisibilityEClass;
     }
 
     /**
@@ -1708,8 +1709,8 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
      * <!-- end-user-doc -->
      * @generated
      */
-    public EAttribute getKVisibility_IsVisible() {
-        return (EAttribute)kVisibilityEClass.getEStructuralFeatures().get(0);
+    public EAttribute getKInvisibility_IsVisible() {
+        return (EAttribute)kInvisibilityEClass.getEStructuralFeatures().get(0);
     }
 
     /**
@@ -2040,8 +2041,8 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
         kStyleContainerEClass = createEClass(KSTYLE_CONTAINER);
         createEReference(kStyleContainerEClass, KSTYLE_CONTAINER__STYLES);
 
-        kVisibilityEClass = createEClass(KVISIBILITY);
-        createEAttribute(kVisibilityEClass, KVISIBILITY__IS_VISIBLE);
+        kInvisibilityEClass = createEClass(KINVISIBILITY);
+        createEAttribute(kInvisibilityEClass, KINVISIBILITY__IS_VISIBLE);
 
         kShadowEClass = createEClass(KSHADOW);
         createEAttribute(kShadowEClass, KSHADOW__XOFFSET);
@@ -2136,7 +2137,7 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
         kTextRenderingRefEClass.getESuperTypes().add(this.getKContainerRendering());
         kSelectActionEClass.getESuperTypes().add(this.getKAction());
         kExpandCollapseActionEClass.getESuperTypes().add(this.getKAction());
-        kVisibilityEClass.getESuperTypes().add(this.getKStyle());
+        kInvisibilityEClass.getESuperTypes().add(this.getKStyle());
         kShadowEClass.getESuperTypes().add(this.getKStyle());
         kFontUnderlinedEClass.getESuperTypes().add(this.getKStyle());
 
@@ -2315,8 +2316,8 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
         initEClass(kStyleContainerEClass, KStyleContainer.class, "KStyleContainer", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         initEReference(getKStyleContainer_Styles(), this.getKStyle(), null, "styles", null, 0, -1, KStyleContainer.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-        initEClass(kVisibilityEClass, KVisibility.class, "KVisibility", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-        initEAttribute(getKVisibility_IsVisible(), ecorePackage.getEBoolean(), "isVisible", "true", 1, 1, KVisibility.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEClass(kInvisibilityEClass, KInvisibility.class, "KInvisibility", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        initEAttribute(getKInvisibility_IsVisible(), ecorePackage.getEBoolean(), "isVisible", "true", 1, 1, KInvisibility.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         initEClass(kShadowEClass, KShadow.class, "KShadow", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         initEAttribute(getKShadow_XOffset(), ecorePackage.getEFloat(), "xOffset", null, 0, 1, KShadow.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);

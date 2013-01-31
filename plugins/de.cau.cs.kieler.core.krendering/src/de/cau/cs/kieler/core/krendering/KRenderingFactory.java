@@ -402,13 +402,13 @@ public interface KRenderingFactory extends EFactory {
     KStyleContainer createKStyleContainer();
 
     /**
-     * Returns a new object of class '<em>KVisibility</em>'.
+     * Returns a new object of class '<em>KInvisibility</em>'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return a new object of class '<em>KVisibility</em>'.
+     * @return a new object of class '<em>KInvisibility</em>'.
      * @generated
      */
-    KVisibility createKVisibility();
+    KInvisibility createKInvisibility();
 
     /**
      * Returns a new object of class '<em>KShadow</em>'.
