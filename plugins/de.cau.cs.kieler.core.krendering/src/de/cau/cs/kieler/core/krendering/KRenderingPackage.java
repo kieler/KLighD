@@ -1558,22 +1558,13 @@ public interface KRenderingPackage extends EPackage {
     int KTEXT__TEXT = KCONTAINER_RENDERING_FEATURE_COUNT + 0;
 
     /**
-     * The feature id for the '<em><b>Clip</b></em>' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int KTEXT__CLIP = KCONTAINER_RENDERING_FEATURE_COUNT + 1;
-
-    /**
      * The number of structural features of the '<em>KText</em>' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int KTEXT_FEATURE_COUNT = KCONTAINER_RENDERING_FEATURE_COUNT + 2;
+    int KTEXT_FEATURE_COUNT = KCONTAINER_RENDERING_FEATURE_COUNT + 1;
 
     /**
      * The meta object id for the '{@link de.cau.cs.kieler.core.krendering.KPlacement <em>KPlacement</em>}' class.
@@ -3333,124 +3324,6 @@ public interface KRenderingPackage extends EPackage {
     int KPOINT_PLACEMENT_DATA_FEATURE_COUNT = KPLACEMENT_DATA_FEATURE_COUNT + 3;
 
     /**
-     * The meta object id for the '{@link de.cau.cs.kieler.core.krendering.impl.KTextRenderingRefImpl <em>KText Rendering Ref</em>}' class.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @see de.cau.cs.kieler.core.krendering.impl.KTextRenderingRefImpl
-     * @see de.cau.cs.kieler.core.krendering.impl.KRenderingPackageImpl#getKTextRenderingRef()
-     * @generated
-     */
-    int KTEXT_RENDERING_REF = 46;
-
-    /**
-     * The feature id for the '<em><b>Properties</b></em>' map.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int KTEXT_RENDERING_REF__PROPERTIES = KCONTAINER_RENDERING__PROPERTIES;
-
-    /**
-     * The feature id for the '<em><b>Persistent Entries</b></em>' containment reference list.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int KTEXT_RENDERING_REF__PERSISTENT_ENTRIES = KCONTAINER_RENDERING__PERSISTENT_ENTRIES;
-
-    /**
-     * The feature id for the '<em><b>Styles</b></em>' containment reference list.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int KTEXT_RENDERING_REF__STYLES = KCONTAINER_RENDERING__STYLES;
-
-    /**
-     * The feature id for the '<em><b>Parent</b></em>' container reference.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int KTEXT_RENDERING_REF__PARENT = KCONTAINER_RENDERING__PARENT;
-
-    /**
-     * The feature id for the '<em><b>References</b></em>' reference list.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int KTEXT_RENDERING_REF__REFERENCES = KCONTAINER_RENDERING__REFERENCES;
-
-    /**
-     * The feature id for the '<em><b>Placement Data</b></em>' containment reference.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int KTEXT_RENDERING_REF__PLACEMENT_DATA = KCONTAINER_RENDERING__PLACEMENT_DATA;
-
-    /**
-     * The feature id for the '<em><b>Actions</b></em>' reference list.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int KTEXT_RENDERING_REF__ACTIONS = KCONTAINER_RENDERING__ACTIONS;
-
-    /**
-     * The feature id for the '<em><b>Children</b></em>' containment reference list.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int KTEXT_RENDERING_REF__CHILDREN = KCONTAINER_RENDERING__CHILDREN;
-
-    /**
-     * The feature id for the '<em><b>Child Placement</b></em>' containment reference.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int KTEXT_RENDERING_REF__CHILD_PLACEMENT = KCONTAINER_RENDERING__CHILD_PLACEMENT;
-
-    /**
-     * The feature id for the '<em><b>Text Ref</b></em>' reference.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int KTEXT_RENDERING_REF__TEXT_REF = KCONTAINER_RENDERING_FEATURE_COUNT + 0;
-
-    /**
-     * The feature id for the '<em><b>Override Text</b></em>' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int KTEXT_RENDERING_REF__OVERRIDE_TEXT = KCONTAINER_RENDERING_FEATURE_COUNT + 1;
-
-    /**
-     * The number of structural features of the '<em>KText Rendering Ref</em>' class.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int KTEXT_RENDERING_REF_FEATURE_COUNT = KCONTAINER_RENDERING_FEATURE_COUNT + 2;
-
-    /**
      * The meta object id for the '{@link de.cau.cs.kieler.core.krendering.impl.KSelectActionImpl <em>KSelect Action</em>}' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -3458,7 +3331,7 @@ public interface KRenderingPackage extends EPackage {
      * @see de.cau.cs.kieler.core.krendering.impl.KRenderingPackageImpl#getKSelectAction()
      * @generated
      */
-    int KSELECT_ACTION = 47;
+    int KSELECT_ACTION = 46;
 
     /**
      * The feature id for the '<em><b>Id</b></em>' attribute.
@@ -3495,7 +3368,7 @@ public interface KRenderingPackage extends EPackage {
      * @see de.cau.cs.kieler.core.krendering.impl.KRenderingPackageImpl#getKExpandAction()
      * @generated
      */
-    int KEXPAND_ACTION = 48;
+    int KEXPAND_ACTION = 47;
 
     /**
      * The feature id for the '<em><b>Id</b></em>' attribute.
@@ -3525,14 +3398,14 @@ public interface KRenderingPackage extends EPackage {
     int KEXPAND_ACTION_FEATURE_COUNT = KACTION_FEATURE_COUNT + 0;
 
     /**
-     * The meta object id for the '{@link de.cau.cs.kieler.core.krendering.impl.KStyleContainerImpl <em>KStyle Container</em>}' class.
+     * The meta object id for the '{@link de.cau.cs.kieler.core.krendering.impl.KStyleHolderImpl <em>KStyle Holder</em>}' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see de.cau.cs.kieler.core.krendering.impl.KStyleContainerImpl
-     * @see de.cau.cs.kieler.core.krendering.impl.KRenderingPackageImpl#getKStyleContainer()
+     * @see de.cau.cs.kieler.core.krendering.impl.KStyleHolderImpl
+     * @see de.cau.cs.kieler.core.krendering.impl.KRenderingPackageImpl#getKStyleHolder()
      * @generated
      */
-    int KSTYLE_CONTAINER = 49;
+    int KSTYLE_HOLDER = 48;
 
     /**
      * The feature id for the '<em><b>Styles</b></em>' containment reference list.
@@ -3541,16 +3414,16 @@ public interface KRenderingPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int KSTYLE_CONTAINER__STYLES = 0;
+    int KSTYLE_HOLDER__STYLES = 0;
 
     /**
-     * The number of structural features of the '<em>KStyle Container</em>' class.
+     * The number of structural features of the '<em>KStyle Holder</em>' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int KSTYLE_CONTAINER_FEATURE_COUNT = 1;
+    int KSTYLE_HOLDER_FEATURE_COUNT = 1;
 
     /**
      * The meta object id for the '{@link de.cau.cs.kieler.core.krendering.impl.KInvisibilityImpl <em>KInvisibility</em>}' class.
@@ -3560,7 +3433,7 @@ public interface KRenderingPackage extends EPackage {
      * @see de.cau.cs.kieler.core.krendering.impl.KRenderingPackageImpl#getKInvisibility()
      * @generated
      */
-    int KINVISIBILITY = 50;
+    int KINVISIBILITY = 49;
 
     /**
      * The feature id for the '<em><b>Rendering</b></em>' reference.
@@ -3615,7 +3488,7 @@ public interface KRenderingPackage extends EPackage {
      * @see de.cau.cs.kieler.core.krendering.impl.KRenderingPackageImpl#getKShadow()
      * @generated
      */
-    int KSHADOW = 51;
+    int KSHADOW = 50;
 
     /**
      * The feature id for the '<em><b>Rendering</b></em>' reference.
@@ -3697,7 +3570,7 @@ public interface KRenderingPackage extends EPackage {
      * @see de.cau.cs.kieler.core.krendering.impl.KRenderingPackageImpl#getKFontUnderlined()
      * @generated
      */
-    int KFONT_UNDERLINED = 52;
+    int KFONT_UNDERLINED = 51;
 
     /**
      * The feature id for the '<em><b>Rendering</b></em>' reference.
@@ -3752,7 +3625,7 @@ public interface KRenderingPackage extends EPackage {
      * @see de.cau.cs.kieler.core.krendering.impl.KRenderingPackageImpl#getKCollapseAction()
      * @generated
      */
-    int KCOLLAPSE_ACTION = 53;
+    int KCOLLAPSE_ACTION = 52;
 
     /**
      * The feature id for the '<em><b>Id</b></em>' attribute.
@@ -3780,6 +3653,61 @@ public interface KRenderingPackage extends EPackage {
      * @ordered
      */
     int KCOLLAPSE_ACTION_FEATURE_COUNT = KACTION_FEATURE_COUNT + 0;
+
+    /**
+     * The meta object id for the '{@link de.cau.cs.kieler.core.krendering.impl.KStyleRefImpl <em>KStyle Ref</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see de.cau.cs.kieler.core.krendering.impl.KStyleRefImpl
+     * @see de.cau.cs.kieler.core.krendering.impl.KRenderingPackageImpl#getKStyleRef()
+     * @generated
+     */
+    int KSTYLE_REF = 53;
+
+    /**
+     * The feature id for the '<em><b>Rendering</b></em>' reference.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KSTYLE_REF__RENDERING = KSTYLE__RENDERING;
+
+    /**
+     * The feature id for the '<em><b>Propagate To Children</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KSTYLE_REF__PROPAGATE_TO_CHILDREN = KSTYLE__PROPAGATE_TO_CHILDREN;
+
+    /**
+     * The feature id for the '<em><b>Function Id</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KSTYLE_REF__FUNCTION_ID = KSTYLE__FUNCTION_ID;
+
+    /**
+     * The feature id for the '<em><b>EReference0</b></em>' reference.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KSTYLE_REF__EREFERENCE0 = KSTYLE_FEATURE_COUNT + 0;
+
+    /**
+     * The number of structural features of the '<em>KStyle Ref</em>' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KSTYLE_REF_FEATURE_COUNT = KSTYLE_FEATURE_COUNT + 1;
 
     /**
      * The meta object id for the '{@link de.cau.cs.kieler.core.krendering.LineStyle <em>Line Style</em>}' enum.
@@ -4334,17 +4262,6 @@ public interface KRenderingPackage extends EPackage {
      * @generated
      */
     EAttribute getKText_Text();
-
-    /**
-     * Returns the meta object for the attribute '{@link de.cau.cs.kieler.core.krendering.KText#isClip <em>Clip</em>}'.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @return the meta object for the attribute '<em>Clip</em>'.
-     * @see de.cau.cs.kieler.core.krendering.KText#isClip()
-     * @see #getKText()
-     * @generated
-     */
-    EAttribute getKText_Clip();
 
     /**
      * Returns the meta object for class '{@link de.cau.cs.kieler.core.krendering.KPlacement <em>KPlacement</em>}'.
@@ -5098,38 +5015,6 @@ public interface KRenderingPackage extends EPackage {
     EAttribute getKPointPlacementData_HorizontalAlignment();
 
     /**
-     * Returns the meta object for class '{@link de.cau.cs.kieler.core.krendering.KTextRenderingRef <em>KText Rendering Ref</em>}'.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @return the meta object for class '<em>KText Rendering Ref</em>'.
-     * @see de.cau.cs.kieler.core.krendering.KTextRenderingRef
-     * @generated
-     */
-    EClass getKTextRenderingRef();
-
-    /**
-     * Returns the meta object for the reference '{@link de.cau.cs.kieler.core.krendering.KTextRenderingRef#getTextRef <em>Text Ref</em>}'.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @return the meta object for the reference '<em>Text Ref</em>'.
-     * @see de.cau.cs.kieler.core.krendering.KTextRenderingRef#getTextRef()
-     * @see #getKTextRenderingRef()
-     * @generated
-     */
-    EReference getKTextRenderingRef_TextRef();
-
-    /**
-     * Returns the meta object for the attribute '{@link de.cau.cs.kieler.core.krendering.KTextRenderingRef#getOverrideText <em>Override Text</em>}'.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @return the meta object for the attribute '<em>Override Text</em>'.
-     * @see de.cau.cs.kieler.core.krendering.KTextRenderingRef#getOverrideText()
-     * @see #getKTextRenderingRef()
-     * @generated
-     */
-    EAttribute getKTextRenderingRef_OverrideText();
-
-    /**
      * Returns the meta object for class '{@link de.cau.cs.kieler.core.krendering.KSelectAction <em>KSelect Action</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -5150,25 +5035,25 @@ public interface KRenderingPackage extends EPackage {
     EClass getKExpandAction();
 
     /**
-     * Returns the meta object for class '{@link de.cau.cs.kieler.core.krendering.KStyleContainer <em>KStyle Container</em>}'.
+     * Returns the meta object for class '{@link de.cau.cs.kieler.core.krendering.KStyleHolder <em>KStyle Holder</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for class '<em>KStyle Container</em>'.
-     * @see de.cau.cs.kieler.core.krendering.KStyleContainer
+     * @return the meta object for class '<em>KStyle Holder</em>'.
+     * @see de.cau.cs.kieler.core.krendering.KStyleHolder
      * @generated
      */
-    EClass getKStyleContainer();
+    EClass getKStyleHolder();
 
     /**
-     * Returns the meta object for the containment reference list '{@link de.cau.cs.kieler.core.krendering.KStyleContainer#getStyles <em>Styles</em>}'.
+     * Returns the meta object for the containment reference list '{@link de.cau.cs.kieler.core.krendering.KStyleHolder#getStyles <em>Styles</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @return the meta object for the containment reference list '<em>Styles</em>'.
-     * @see de.cau.cs.kieler.core.krendering.KStyleContainer#getStyles()
-     * @see #getKStyleContainer()
+     * @see de.cau.cs.kieler.core.krendering.KStyleHolder#getStyles()
+     * @see #getKStyleHolder()
      * @generated
      */
-    EReference getKStyleContainer_Styles();
+    EReference getKStyleHolder_Styles();
 
     /**
      * Returns the meta object for class '{@link de.cau.cs.kieler.core.krendering.KInvisibility <em>KInvisibility</em>}'.
@@ -5275,6 +5160,27 @@ public interface KRenderingPackage extends EPackage {
      * @generated
      */
     EClass getKCollapseAction();
+
+    /**
+     * Returns the meta object for class '{@link de.cau.cs.kieler.core.krendering.KStyleRef <em>KStyle Ref</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for class '<em>KStyle Ref</em>'.
+     * @see de.cau.cs.kieler.core.krendering.KStyleRef
+     * @generated
+     */
+    EClass getKStyleRef();
+
+    /**
+     * Returns the meta object for the reference '{@link de.cau.cs.kieler.core.krendering.KStyleRef#getEReference0 <em>EReference0</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the reference '<em>EReference0</em>'.
+     * @see de.cau.cs.kieler.core.krendering.KStyleRef#getEReference0()
+     * @see #getKStyleRef()
+     * @generated
+     */
+    EReference getKStyleRef_EReference0();
 
     /**
      * Returns the meta object for enum '{@link de.cau.cs.kieler.core.krendering.LineStyle <em>Line Style</em>}'.
@@ -5757,14 +5663,6 @@ public interface KRenderingPackage extends EPackage {
          * @generated
          */
         EAttribute KTEXT__TEXT = eINSTANCE.getKText_Text();
-
-        /**
-         * The meta object literal for the '<em><b>Clip</b></em>' attribute feature.
-         * <!-- begin-user-doc -->
-         * <!-- end-user-doc -->
-         * @generated
-         */
-        EAttribute KTEXT__CLIP = eINSTANCE.getKText_Clip();
 
         /**
          * The meta object literal for the '{@link de.cau.cs.kieler.core.krendering.KPlacement <em>KPlacement</em>}' class.
@@ -6395,32 +6293,6 @@ public interface KRenderingPackage extends EPackage {
         EAttribute KPOINT_PLACEMENT_DATA__HORIZONTAL_ALIGNMENT = eINSTANCE.getKPointPlacementData_HorizontalAlignment();
 
         /**
-         * The meta object literal for the '{@link de.cau.cs.kieler.core.krendering.impl.KTextRenderingRefImpl <em>KText Rendering Ref</em>}' class.
-         * <!-- begin-user-doc -->
-         * <!-- end-user-doc -->
-         * @see de.cau.cs.kieler.core.krendering.impl.KTextRenderingRefImpl
-         * @see de.cau.cs.kieler.core.krendering.impl.KRenderingPackageImpl#getKTextRenderingRef()
-         * @generated
-         */
-        EClass KTEXT_RENDERING_REF = eINSTANCE.getKTextRenderingRef();
-
-        /**
-         * The meta object literal for the '<em><b>Text Ref</b></em>' reference feature.
-         * <!-- begin-user-doc -->
-         * <!-- end-user-doc -->
-         * @generated
-         */
-        EReference KTEXT_RENDERING_REF__TEXT_REF = eINSTANCE.getKTextRenderingRef_TextRef();
-
-        /**
-         * The meta object literal for the '<em><b>Override Text</b></em>' attribute feature.
-         * <!-- begin-user-doc -->
-         * <!-- end-user-doc -->
-         * @generated
-         */
-        EAttribute KTEXT_RENDERING_REF__OVERRIDE_TEXT = eINSTANCE.getKTextRenderingRef_OverrideText();
-
-        /**
          * The meta object literal for the '{@link de.cau.cs.kieler.core.krendering.impl.KSelectActionImpl <em>KSelect Action</em>}' class.
          * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
@@ -6441,14 +6313,14 @@ public interface KRenderingPackage extends EPackage {
         EClass KEXPAND_ACTION = eINSTANCE.getKExpandAction();
 
         /**
-         * The meta object literal for the '{@link de.cau.cs.kieler.core.krendering.impl.KStyleContainerImpl <em>KStyle Container</em>}' class.
+         * The meta object literal for the '{@link de.cau.cs.kieler.core.krendering.impl.KStyleHolderImpl <em>KStyle Holder</em>}' class.
          * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-         * @see de.cau.cs.kieler.core.krendering.impl.KStyleContainerImpl
-         * @see de.cau.cs.kieler.core.krendering.impl.KRenderingPackageImpl#getKStyleContainer()
+         * @see de.cau.cs.kieler.core.krendering.impl.KStyleHolderImpl
+         * @see de.cau.cs.kieler.core.krendering.impl.KRenderingPackageImpl#getKStyleHolder()
          * @generated
          */
-        EClass KSTYLE_CONTAINER = eINSTANCE.getKStyleContainer();
+        EClass KSTYLE_HOLDER = eINSTANCE.getKStyleHolder();
 
         /**
          * The meta object literal for the '<em><b>Styles</b></em>' containment reference list feature.
@@ -6456,7 +6328,7 @@ public interface KRenderingPackage extends EPackage {
          * <!-- end-user-doc -->
          * @generated
          */
-        EReference KSTYLE_CONTAINER__STYLES = eINSTANCE.getKStyleContainer_Styles();
+        EReference KSTYLE_HOLDER__STYLES = eINSTANCE.getKStyleHolder_Styles();
 
         /**
          * The meta object literal for the '{@link de.cau.cs.kieler.core.krendering.impl.KInvisibilityImpl <em>KInvisibility</em>}' class.
@@ -6545,6 +6417,24 @@ public interface KRenderingPackage extends EPackage {
          * @generated
          */
         EClass KCOLLAPSE_ACTION = eINSTANCE.getKCollapseAction();
+
+        /**
+         * The meta object literal for the '{@link de.cau.cs.kieler.core.krendering.impl.KStyleRefImpl <em>KStyle Ref</em>}' class.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @see de.cau.cs.kieler.core.krendering.impl.KStyleRefImpl
+         * @see de.cau.cs.kieler.core.krendering.impl.KRenderingPackageImpl#getKStyleRef()
+         * @generated
+         */
+        EClass KSTYLE_REF = eINSTANCE.getKStyleRef();
+
+        /**
+         * The meta object literal for the '<em><b>EReference0</b></em>' reference feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EReference KSTYLE_REF__EREFERENCE0 = eINSTANCE.getKStyleRef_EReference0();
 
         /**
          * The meta object literal for the '{@link de.cau.cs.kieler.core.krendering.LineStyle <em>Line Style</em>}' enum.

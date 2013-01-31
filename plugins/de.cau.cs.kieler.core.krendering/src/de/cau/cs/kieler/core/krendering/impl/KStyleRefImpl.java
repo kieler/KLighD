@@ -14,53 +14,46 @@
 package de.cau.cs.kieler.core.krendering.impl;
 
 import de.cau.cs.kieler.core.krendering.KRenderingPackage;
-import de.cau.cs.kieler.core.krendering.KStyle;
-import de.cau.cs.kieler.core.krendering.KStyleContainer;
+import de.cau.cs.kieler.core.krendering.KStyleHolder;
+import de.cau.cs.kieler.core.krendering.KStyleRef;
 
-import java.util.Collection;
-
-import org.eclipse.emf.common.notify.NotificationChain;
-
-import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.common.notify.Notification;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 
-import org.eclipse.emf.ecore.impl.EObjectImpl;
-
-import org.eclipse.emf.ecore.util.EObjectContainmentEList;
-import org.eclipse.emf.ecore.util.InternalEList;
+import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
 /**
  * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>KStyle Container</b></em>'.
+ * An implementation of the model object '<em><b>KStyle Ref</b></em>'.
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link de.cau.cs.kieler.core.krendering.impl.KStyleContainerImpl#getStyles <em>Styles</em>}</li>
+ *   <li>{@link de.cau.cs.kieler.core.krendering.impl.KStyleRefImpl#getEReference0 <em>EReference0</em>}</li>
  * </ul>
  * </p>
  *
  * @generated
  */
-public class KStyleContainerImpl extends EObjectImpl implements KStyleContainer {
+public class KStyleRefImpl extends KStyleImpl implements KStyleRef {
     /**
-     * The cached value of the '{@link #getStyles() <em>Styles</em>}' containment reference list.
+     * The cached value of the '{@link #getEReference0() <em>EReference0</em>}' reference.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see #getStyles()
+     * @see #getEReference0()
      * @generated
      * @ordered
      */
-    protected EList<KStyle> styles;
+    protected KStyleHolder eReference0;
 
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      */
-    protected KStyleContainerImpl() {
+    protected KStyleRefImpl() {
         super();
     }
 
@@ -71,7 +64,7 @@ public class KStyleContainerImpl extends EObjectImpl implements KStyleContainer 
      */
     @Override
     protected EClass eStaticClass() {
-        return KRenderingPackage.Literals.KSTYLE_CONTAINER;
+        return KRenderingPackage.Literals.KSTYLE_REF;
     }
 
     /**
@@ -79,11 +72,16 @@ public class KStyleContainerImpl extends EObjectImpl implements KStyleContainer 
      * <!-- end-user-doc -->
      * @generated
      */
-    public EList<KStyle> getStyles() {
-        if (styles == null) {
-            styles = new EObjectContainmentEList<KStyle>(KStyle.class, this, KRenderingPackage.KSTYLE_CONTAINER__STYLES);
+    public KStyleHolder getEReference0() {
+        if (eReference0 != null && eReference0.eIsProxy()) {
+            InternalEObject oldEReference0 = (InternalEObject)eReference0;
+            eReference0 = (KStyleHolder)eResolveProxy(oldEReference0);
+            if (eReference0 != oldEReference0) {
+                if (eNotificationRequired())
+                    eNotify(new ENotificationImpl(this, Notification.RESOLVE, KRenderingPackage.KSTYLE_REF__EREFERENCE0, oldEReference0, eReference0));
+            }
         }
-        return styles;
+        return eReference0;
     }
 
     /**
@@ -91,13 +89,20 @@ public class KStyleContainerImpl extends EObjectImpl implements KStyleContainer 
      * <!-- end-user-doc -->
      * @generated
      */
-    @Override
-    public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
-        switch (featureID) {
-            case KRenderingPackage.KSTYLE_CONTAINER__STYLES:
-                return ((InternalEList<?>)getStyles()).basicRemove(otherEnd, msgs);
-        }
-        return super.eInverseRemove(otherEnd, featureID, msgs);
+    public KStyleHolder basicGetEReference0() {
+        return eReference0;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public void setEReference0(KStyleHolder newEReference0) {
+        KStyleHolder oldEReference0 = eReference0;
+        eReference0 = newEReference0;
+        if (eNotificationRequired())
+            eNotify(new ENotificationImpl(this, Notification.SET, KRenderingPackage.KSTYLE_REF__EREFERENCE0, oldEReference0, eReference0));
     }
 
     /**
@@ -108,8 +113,9 @@ public class KStyleContainerImpl extends EObjectImpl implements KStyleContainer 
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
-            case KRenderingPackage.KSTYLE_CONTAINER__STYLES:
-                return getStyles();
+            case KRenderingPackage.KSTYLE_REF__EREFERENCE0:
+                if (resolve) return getEReference0();
+                return basicGetEReference0();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -119,13 +125,11 @@ public class KStyleContainerImpl extends EObjectImpl implements KStyleContainer 
      * <!-- end-user-doc -->
      * @generated
      */
-    @SuppressWarnings("unchecked")
     @Override
     public void eSet(int featureID, Object newValue) {
         switch (featureID) {
-            case KRenderingPackage.KSTYLE_CONTAINER__STYLES:
-                getStyles().clear();
-                getStyles().addAll((Collection<? extends KStyle>)newValue);
+            case KRenderingPackage.KSTYLE_REF__EREFERENCE0:
+                setEReference0((KStyleHolder)newValue);
                 return;
         }
         super.eSet(featureID, newValue);
@@ -139,8 +143,8 @@ public class KStyleContainerImpl extends EObjectImpl implements KStyleContainer 
     @Override
     public void eUnset(int featureID) {
         switch (featureID) {
-            case KRenderingPackage.KSTYLE_CONTAINER__STYLES:
-                getStyles().clear();
+            case KRenderingPackage.KSTYLE_REF__EREFERENCE0:
+                setEReference0((KStyleHolder)null);
                 return;
         }
         super.eUnset(featureID);
@@ -154,10 +158,10 @@ public class KStyleContainerImpl extends EObjectImpl implements KStyleContainer 
     @Override
     public boolean eIsSet(int featureID) {
         switch (featureID) {
-            case KRenderingPackage.KSTYLE_CONTAINER__STYLES:
-                return styles != null && !styles.isEmpty();
+            case KRenderingPackage.KSTYLE_REF__EREFERENCE0:
+                return eReference0 != null;
         }
         return super.eIsSet(featureID);
     }
 
-} //KStyleContainerImpl
+} //KStyleRefImpl

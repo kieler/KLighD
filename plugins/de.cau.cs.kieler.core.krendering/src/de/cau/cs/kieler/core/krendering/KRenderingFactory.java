@@ -366,15 +366,6 @@ public interface KRenderingFactory extends EFactory {
     KPointPlacementData createKPointPlacementData();
 
     /**
-     * Returns a new object of class '<em>KText Rendering Ref</em>'.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @return a new object of class '<em>KText Rendering Ref</em>'.
-     * @generated
-     */
-    KTextRenderingRef createKTextRenderingRef();
-
-    /**
      * Returns a new object of class '<em>KSelect Action</em>'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -393,13 +384,13 @@ public interface KRenderingFactory extends EFactory {
     KExpandAction createKExpandAction();
 
     /**
-     * Returns a new object of class '<em>KStyle Container</em>'.
+     * Returns a new object of class '<em>KStyle Holder</em>'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return a new object of class '<em>KStyle Container</em>'.
+     * @return a new object of class '<em>KStyle Holder</em>'.
      * @generated
      */
-    KStyleContainer createKStyleContainer();
+    KStyleHolder createKStyleHolder();
 
     /**
      * Returns a new object of class '<em>KInvisibility</em>'.
@@ -436,6 +427,15 @@ public interface KRenderingFactory extends EFactory {
      * @generated
      */
     KCollapseAction createKCollapseAction();
+
+    /**
+     * Returns a new object of class '<em>KStyle Ref</em>'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return a new object of class '<em>KStyle Ref</em>'.
+     * @generated
+     */
+    KStyleRef createKStyleRef();
 
     /**
      * Returns the package supported by this factory.

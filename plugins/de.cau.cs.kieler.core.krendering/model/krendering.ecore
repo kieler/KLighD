@@ -21,7 +21,7 @@
       </eAnnotations>
     </eStructuralFeatures>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="KRendering" abstract="true" eSuperTypes="../../de.cau.cs.kieler.core.kgraph/model/kgraph.ecore#//KGraphData #//KStyleContainer">
+  <eClassifiers xsi:type="ecore:EClass" name="KRendering" abstract="true" eSuperTypes="../../de.cau.cs.kieler.core.kgraph/model/kgraph.ecore#//KGraphData #//KStyleHolder">
     <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
       <details key="documentation" value="Abstract class to define members of a shapeType.&#xA;Is placed inside a parent Container&#xA;can reference another Rendering instead of redefining it&#xA;A rendering can contain placementData to define the size of a derived object&#xA;"/>
     </eAnnotations>
@@ -230,7 +230,7 @@
       <details key="documentation" value="contains all the renderings "/>
     </eAnnotations>
     <eStructuralFeatures xsi:type="ecore:EReference" name="renderings" upperBound="-1"
-        eType="#//KStyleContainer" containment="true"/>
+        eType="#//KStyleHolder" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="KRenderingRef" eSuperTypes="#//KRendering">
     <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
@@ -255,11 +255,6 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="text" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">
       <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
         <details key="documentation" value="the text to be displayed"/>
-      </eAnnotations>
-    </eStructuralFeatures>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="clip" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
-      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-        <details key="documentation" value="whether the text should be clipped if not enough space is available to display all of it&#xA;if set to false this forces the parent node to increase its size when necessary"/>
       </eAnnotations>
     </eStructuralFeatures>
   </eClassifiers>
@@ -564,29 +559,13 @@
       </eAnnotations>
     </eStructuralFeatures>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="KTextRenderingRef" eSuperTypes="#//KContainerRendering">
-    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-      <details key="documentation" value="Reference Text to copy formatting but still be able to reset the text"/>
-    </eAnnotations>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="TextRef" lowerBound="1"
-        eType="#//KText">
-      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-        <details key="documentation" value="the text to be referenced"/>
-      </eAnnotations>
-    </eStructuralFeatures>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="overrideText" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">
-      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-        <details key="documentation" value="the text to be displayed instead of the text defined by the referenced text"/>
-      </eAnnotations>
-    </eStructuralFeatures>
-  </eClassifiers>
   <eClassifiers xsi:type="ecore:EEnum" name="KTrigger">
     <eLiterals name="SINGLECLICK" literal="SINGLECLICK"/>
     <eLiterals name="DOUBLECLICK" value="1"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="KSelectAction" eSuperTypes="#//KAction"/>
   <eClassifiers xsi:type="ecore:EClass" name="KExpandAction" eSuperTypes="#//KAction"/>
-  <eClassifiers xsi:type="ecore:EClass" name="KStyleContainer">
+  <eClassifiers xsi:type="ecore:EClass" name="KStyleHolder">
     <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
       <details key="documentation" value="Element to define styles without attaching them to a specific rendering"/>
     </eAnnotations>
@@ -622,4 +601,8 @@
     <eLiterals name="UNDERLINE_ON"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="KCollapseAction" eSuperTypes="#//KAction"/>
+  <eClassifiers xsi:type="ecore:EClass" name="KStyleRef" eSuperTypes="#//KStyle">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="EReference0" lowerBound="1"
+        eType="#//KStyleHolder"/>
+  </eClassifiers>
 </ecore:EPackage>

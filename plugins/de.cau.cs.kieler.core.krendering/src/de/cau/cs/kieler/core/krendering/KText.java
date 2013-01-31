@@ -27,7 +27,6 @@ package de.cau.cs.kieler.core.krendering;
  * The following features are supported:
  * <ul>
  *   <li>{@link de.cau.cs.kieler.core.krendering.KText#getText <em>Text</em>}</li>
- *   <li>{@link de.cau.cs.kieler.core.krendering.KText#isClip <em>Clip</em>}</li>
  * </ul>
  * </p>
  *
@@ -64,35 +63,5 @@ public interface KText extends KContainerRendering {
      * @generated
      */
     void setText(String value);
-
-    /**
-     * Returns the value of the '<em><b>Clip</b></em>' attribute.
-     * <!-- begin-user-doc -->
-     * <p>
-     * If the meaning of the '<em>Clip</em>' attribute isn't clear,
-     * there really should be more of a description here...
-     * </p>
-     * <!-- end-user-doc -->
-     * <!-- begin-model-doc -->
-     * whether the text should be clipped if not enough space is available to display all of it
-     * if set to false this forces the parent node to increase its size when necessary
-     * <!-- end-model-doc -->
-     * @return the value of the '<em>Clip</em>' attribute.
-     * @see #setClip(boolean)
-     * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKText_Clip()
-     * @model required="true"
-     * @generated
-     */
-    boolean isClip();
-
-    /**
-     * Sets the value of the '{@link de.cau.cs.kieler.core.krendering.KText#isClip <em>Clip</em>}' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @param value the new value of the '<em>Clip</em>' attribute.
-     * @see #isClip()
-     * @generated
-     */
-    void setClip(boolean value);
 
 } // KText

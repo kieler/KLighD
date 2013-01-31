@@ -65,9 +65,9 @@ import de.cau.cs.kieler.core.krendering.KSelectAction;
 import de.cau.cs.kieler.core.krendering.KShadow;
 import de.cau.cs.kieler.core.krendering.KSpline;
 import de.cau.cs.kieler.core.krendering.KStyle;
-import de.cau.cs.kieler.core.krendering.KStyleContainer;
+import de.cau.cs.kieler.core.krendering.KStyleHolder;
+import de.cau.cs.kieler.core.krendering.KStyleRef;
 import de.cau.cs.kieler.core.krendering.KText;
-import de.cau.cs.kieler.core.krendering.KTextRenderingRef;
 import de.cau.cs.kieler.core.krendering.KTopPosition;
 import de.cau.cs.kieler.core.krendering.KTrigger;
 import de.cau.cs.kieler.core.krendering.KVerticalAlignment;
@@ -420,13 +420,6 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
      * <!-- end-user-doc -->
      * @generated
      */
-    private EClass kTextRenderingRefEClass = null;
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
     private EClass kSelectActionEClass = null;
 
     /**
@@ -441,7 +434,7 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
      * <!-- end-user-doc -->
      * @generated
      */
-    private EClass kStyleContainerEClass = null;
+    private EClass kStyleHolderEClass = null;
 
     /**
      * <!-- begin-user-doc -->
@@ -470,6 +463,13 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
      * @generated
      */
     private EClass kCollapseActionEClass = null;
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    private EClass kStyleRefEClass = null;
 
     /**
      * <!-- begin-user-doc -->
@@ -989,15 +989,6 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
      */
     public EAttribute getKText_Text() {
         return (EAttribute)kTextEClass.getEStructuralFeatures().get(0);
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    public EAttribute getKText_Clip() {
-        return (EAttribute)kTextEClass.getEStructuralFeatures().get(1);
     }
 
     /**
@@ -1644,33 +1635,6 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
      * <!-- end-user-doc -->
      * @generated
      */
-    public EClass getKTextRenderingRef() {
-        return kTextRenderingRefEClass;
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    public EReference getKTextRenderingRef_TextRef() {
-        return (EReference)kTextRenderingRefEClass.getEStructuralFeatures().get(0);
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    public EAttribute getKTextRenderingRef_OverrideText() {
-        return (EAttribute)kTextRenderingRefEClass.getEStructuralFeatures().get(1);
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
     public EClass getKSelectAction() {
         return kSelectActionEClass;
     }
@@ -1689,8 +1653,8 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
      * <!-- end-user-doc -->
      * @generated
      */
-    public EClass getKStyleContainer() {
-        return kStyleContainerEClass;
+    public EClass getKStyleHolder() {
+        return kStyleHolderEClass;
     }
 
     /**
@@ -1698,8 +1662,8 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
      * <!-- end-user-doc -->
      * @generated
      */
-    public EReference getKStyleContainer_Styles() {
-        return (EReference)kStyleContainerEClass.getEStructuralFeatures().get(0);
+    public EReference getKStyleHolder_Styles() {
+        return (EReference)kStyleHolderEClass.getEStructuralFeatures().get(0);
     }
 
     /**
@@ -1790,6 +1754,24 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
      */
     public EClass getKCollapseAction() {
         return kCollapseActionEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EClass getKStyleRef() {
+        return kStyleRefEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EReference getKStyleRef_EReference0() {
+        return (EReference)kStyleRefEClass.getEStructuralFeatures().get(0);
     }
 
     /**
@@ -1935,7 +1917,6 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
 
         kTextEClass = createEClass(KTEXT);
         createEAttribute(kTextEClass, KTEXT__TEXT);
-        createEAttribute(kTextEClass, KTEXT__CLIP);
 
         kPlacementEClass = createEClass(KPLACEMENT);
 
@@ -2038,16 +2019,12 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
         createEAttribute(kPointPlacementDataEClass, KPOINT_PLACEMENT_DATA__VERTICAL_ALIGNMENT);
         createEAttribute(kPointPlacementDataEClass, KPOINT_PLACEMENT_DATA__HORIZONTAL_ALIGNMENT);
 
-        kTextRenderingRefEClass = createEClass(KTEXT_RENDERING_REF);
-        createEReference(kTextRenderingRefEClass, KTEXT_RENDERING_REF__TEXT_REF);
-        createEAttribute(kTextRenderingRefEClass, KTEXT_RENDERING_REF__OVERRIDE_TEXT);
-
         kSelectActionEClass = createEClass(KSELECT_ACTION);
 
         kExpandActionEClass = createEClass(KEXPAND_ACTION);
 
-        kStyleContainerEClass = createEClass(KSTYLE_CONTAINER);
-        createEReference(kStyleContainerEClass, KSTYLE_CONTAINER__STYLES);
+        kStyleHolderEClass = createEClass(KSTYLE_HOLDER);
+        createEReference(kStyleHolderEClass, KSTYLE_HOLDER__STYLES);
 
         kInvisibilityEClass = createEClass(KINVISIBILITY);
         createEAttribute(kInvisibilityEClass, KINVISIBILITY__INVISIBLE);
@@ -2062,6 +2039,9 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
         createEAttribute(kFontUnderlinedEClass, KFONT_UNDERLINED__UNDERLINE_STYLE);
 
         kCollapseActionEClass = createEClass(KCOLLAPSE_ACTION);
+
+        kStyleRefEClass = createEClass(KSTYLE_REF);
+        createEReference(kStyleRefEClass, KSTYLE_REF__EREFERENCE0);
 
         // Create enums
         lineStyleEEnum = createEEnum(LINE_STYLE);
@@ -2104,7 +2084,7 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
 
         // Add supertypes to classes
         kRenderingEClass.getESuperTypes().add(theKGraphPackage.getKGraphData());
-        kRenderingEClass.getESuperTypes().add(this.getKStyleContainer());
+        kRenderingEClass.getESuperTypes().add(this.getKStyleHolder());
         kEllipseEClass.getESuperTypes().add(this.getKContainerRendering());
         kRectangleEClass.getESuperTypes().add(this.getKContainerRendering());
         kRoundedRectangleEClass.getESuperTypes().add(this.getKContainerRendering());
@@ -2143,13 +2123,13 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
         kRotationEClass.getESuperTypes().add(this.getKStyle());
         kLineCapStyleEClass.getESuperTypes().add(this.getKStyle());
         kPointPlacementDataEClass.getESuperTypes().add(this.getKPlacementData());
-        kTextRenderingRefEClass.getESuperTypes().add(this.getKContainerRendering());
         kSelectActionEClass.getESuperTypes().add(this.getKAction());
         kExpandActionEClass.getESuperTypes().add(this.getKAction());
         kInvisibilityEClass.getESuperTypes().add(this.getKStyle());
         kShadowEClass.getESuperTypes().add(this.getKStyle());
         kFontUnderlinedEClass.getESuperTypes().add(this.getKStyle());
         kCollapseActionEClass.getESuperTypes().add(this.getKAction());
+        kStyleRefEClass.getESuperTypes().add(this.getKStyle());
 
         // Initialize classes and features; add operations and parameters
         initEClass(kPositionEClass, KPosition.class, "KPosition", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -2204,7 +2184,7 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
         initEAttribute(getKStyle_FunctionId(), ecorePackage.getEString(), "functionId", null, 0, 1, KStyle.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         initEClass(kRenderingLibraryEClass, KRenderingLibrary.class, "KRenderingLibrary", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-        initEReference(getKRenderingLibrary_Renderings(), this.getKStyleContainer(), null, "renderings", null, 0, -1, KRenderingLibrary.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEReference(getKRenderingLibrary_Renderings(), this.getKStyleHolder(), null, "renderings", null, 0, -1, KRenderingLibrary.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         initEClass(kRenderingRefEClass, KRenderingRef.class, "KRenderingRef", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         initEReference(getKRenderingRef_Rendering(), this.getKRendering(), null, "rendering", null, 1, 1, KRenderingRef.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -2213,7 +2193,6 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
 
         initEClass(kTextEClass, KText.class, "KText", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         initEAttribute(getKText_Text(), ecorePackage.getEString(), "text", null, 0, 1, KText.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        initEAttribute(getKText_Clip(), ecorePackage.getEBoolean(), "clip", null, 1, 1, KText.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         initEClass(kPlacementEClass, KPlacement.class, "KPlacement", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
@@ -2316,16 +2295,12 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
         initEAttribute(getKPointPlacementData_VerticalAlignment(), this.getVerticalAlignment(), "verticalAlignment", null, 1, 1, KPointPlacementData.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEAttribute(getKPointPlacementData_HorizontalAlignment(), this.getHorizontalAlignment(), "horizontalAlignment", null, 1, 1, KPointPlacementData.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-        initEClass(kTextRenderingRefEClass, KTextRenderingRef.class, "KTextRenderingRef", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-        initEReference(getKTextRenderingRef_TextRef(), this.getKText(), null, "TextRef", null, 1, 1, KTextRenderingRef.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        initEAttribute(getKTextRenderingRef_OverrideText(), ecorePackage.getEString(), "overrideText", null, 0, 1, KTextRenderingRef.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-
         initEClass(kSelectActionEClass, KSelectAction.class, "KSelectAction", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
         initEClass(kExpandActionEClass, KExpandAction.class, "KExpandAction", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
-        initEClass(kStyleContainerEClass, KStyleContainer.class, "KStyleContainer", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-        initEReference(getKStyleContainer_Styles(), this.getKStyle(), null, "styles", null, 0, -1, KStyleContainer.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEClass(kStyleHolderEClass, KStyleHolder.class, "KStyleHolder", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        initEReference(getKStyleHolder_Styles(), this.getKStyle(), null, "styles", null, 0, -1, KStyleHolder.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         initEClass(kInvisibilityEClass, KInvisibility.class, "KInvisibility", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         initEAttribute(getKInvisibility_Invisible(), ecorePackage.getEBoolean(), "invisible", "true", 1, 1, KInvisibility.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -2340,6 +2315,9 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
         initEAttribute(getKFontUnderlined_UnderlineStyle(), this.getUnderlineStyle(), "underlineStyle", null, 1, 1, KFontUnderlined.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         initEClass(kCollapseActionEClass, KCollapseAction.class, "KCollapseAction", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+        initEClass(kStyleRefEClass, KStyleRef.class, "KStyleRef", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        initEReference(getKStyleRef_EReference0(), this.getKStyleHolder(), null, "EReference0", null, 1, 1, KStyleRef.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         // Initialize enums and add enum literals
         initEEnum(lineStyleEEnum, LineStyle.class, "LineStyle");

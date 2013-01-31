@@ -19,7 +19,7 @@ import org.eclipse.emf.ecore.EObject;
 
 /**
  * <!-- begin-user-doc -->
- * A representation of the model object '<em><b>KStyle Container</b></em>'.
+ * A representation of the model object '<em><b>KStyle Holder</b></em>'.
  * <!-- end-user-doc -->
  *
  * <!-- begin-model-doc -->
@@ -29,15 +29,15 @@ import org.eclipse.emf.ecore.EObject;
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link de.cau.cs.kieler.core.krendering.KStyleContainer#getStyles <em>Styles</em>}</li>
+ *   <li>{@link de.cau.cs.kieler.core.krendering.KStyleHolder#getStyles <em>Styles</em>}</li>
  * </ul>
  * </p>
  *
- * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKStyleContainer()
+ * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKStyleHolder()
  * @model
  * @generated
  */
-public interface KStyleContainer extends EObject {
+public interface KStyleHolder extends EObject {
     /**
      * Returns the value of the '<em><b>Styles</b></em>' containment reference list.
      * The list contents are of type {@link de.cau.cs.kieler.core.krendering.KStyle}.
@@ -48,10 +48,10 @@ public interface KStyleContainer extends EObject {
      * </p>
      * <!-- end-user-doc -->
      * @return the value of the '<em>Styles</em>' containment reference list.
-     * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKStyleContainer_Styles()
+     * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKStyleHolder_Styles()
      * @model containment="true"
      * @generated
      */
     EList<KStyle> getStyles();
 
-} // KStyleContainer
+} // KStyleHolder

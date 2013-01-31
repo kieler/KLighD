@@ -268,10 +268,6 @@ public class KRenderingAdapterFactory extends AdapterFactoryImpl {
                 return createKPointPlacementDataAdapter();
             }
             @Override
-            public Adapter caseKTextRenderingRef(KTextRenderingRef object) {
-                return createKTextRenderingRefAdapter();
-            }
-            @Override
             public Adapter caseKSelectAction(KSelectAction object) {
                 return createKSelectActionAdapter();
             }
@@ -280,8 +276,8 @@ public class KRenderingAdapterFactory extends AdapterFactoryImpl {
                 return createKExpandActionAdapter();
             }
             @Override
-            public Adapter caseKStyleContainer(KStyleContainer object) {
-                return createKStyleContainerAdapter();
+            public Adapter caseKStyleHolder(KStyleHolder object) {
+                return createKStyleHolderAdapter();
             }
             @Override
             public Adapter caseKInvisibility(KInvisibility object) {
@@ -298,6 +294,10 @@ public class KRenderingAdapterFactory extends AdapterFactoryImpl {
             @Override
             public Adapter caseKCollapseAction(KCollapseAction object) {
                 return createKCollapseActionAdapter();
+            }
+            @Override
+            public Adapter caseKStyleRef(KStyleRef object) {
+                return createKStyleRefAdapter();
             }
             @Override
             public Adapter caseIPropertyHolder(IPropertyHolder object) {
@@ -976,20 +976,6 @@ public class KRenderingAdapterFactory extends AdapterFactoryImpl {
     }
 
     /**
-     * Creates a new adapter for an object of class '{@link de.cau.cs.kieler.core.krendering.KTextRenderingRef <em>KText Rendering Ref</em>}'.
-     * <!-- begin-user-doc -->
-     * This default implementation returns null so that we can easily ignore cases;
-     * it's useful to ignore a case when inheritance will catch all the cases anyway.
-     * <!-- end-user-doc -->
-     * @return the new adapter.
-     * @see de.cau.cs.kieler.core.krendering.KTextRenderingRef
-     * @generated
-     */
-    public Adapter createKTextRenderingRefAdapter() {
-        return null;
-    }
-
-    /**
      * Creates a new adapter for an object of class '{@link de.cau.cs.kieler.core.krendering.KSelectAction <em>KSelect Action</em>}'.
      * <!-- begin-user-doc -->
      * This default implementation returns null so that we can easily ignore cases;
@@ -1018,16 +1004,16 @@ public class KRenderingAdapterFactory extends AdapterFactoryImpl {
     }
 
     /**
-     * Creates a new adapter for an object of class '{@link de.cau.cs.kieler.core.krendering.KStyleContainer <em>KStyle Container</em>}'.
+     * Creates a new adapter for an object of class '{@link de.cau.cs.kieler.core.krendering.KStyleHolder <em>KStyle Holder</em>}'.
      * <!-- begin-user-doc -->
      * This default implementation returns null so that we can easily ignore cases;
      * it's useful to ignore a case when inheritance will catch all the cases anyway.
      * <!-- end-user-doc -->
      * @return the new adapter.
-     * @see de.cau.cs.kieler.core.krendering.KStyleContainer
+     * @see de.cau.cs.kieler.core.krendering.KStyleHolder
      * @generated
      */
-    public Adapter createKStyleContainerAdapter() {
+    public Adapter createKStyleHolderAdapter() {
         return null;
     }
 
@@ -1084,6 +1070,20 @@ public class KRenderingAdapterFactory extends AdapterFactoryImpl {
      * @generated
      */
     public Adapter createKCollapseActionAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class '{@link de.cau.cs.kieler.core.krendering.KStyleRef <em>KStyle Ref</em>}'.
+     * <!-- begin-user-doc -->
+     * This default implementation returns null so that we can easily ignore cases;
+     * it's useful to ignore a case when inheritance will catch all the cases anyway.
+     * <!-- end-user-doc -->
+     * @return the new adapter.
+     * @see de.cau.cs.kieler.core.krendering.KStyleRef
+     * @generated
+     */
+    public Adapter createKStyleRefAdapter() {
         return null;
     }
 

@@ -23,7 +23,7 @@ import de.cau.cs.kieler.core.krendering.KRenderingPackage;
 import de.cau.cs.kieler.core.krendering.KRenderingRef;
 import de.cau.cs.kieler.core.krendering.KStyle;
 
-import de.cau.cs.kieler.core.krendering.KStyleContainer;
+import de.cau.cs.kieler.core.krendering.KStyleHolder;
 import java.util.Collection;
 
 import org.eclipse.emf.common.notify.Notification;
@@ -395,9 +395,9 @@ public abstract class KRenderingImpl extends KGraphDataImpl implements KRenderin
      */
     @Override
     public int eBaseStructuralFeatureID(int derivedFeatureID, Class<?> baseClass) {
-        if (baseClass == KStyleContainer.class) {
+        if (baseClass == KStyleHolder.class) {
             switch (derivedFeatureID) {
-                case KRenderingPackage.KRENDERING__STYLES: return KRenderingPackage.KSTYLE_CONTAINER__STYLES;
+                case KRenderingPackage.KRENDERING__STYLES: return KRenderingPackage.KSTYLE_HOLDER__STYLES;
                 default: return -1;
             }
         }
@@ -411,9 +411,9 @@ public abstract class KRenderingImpl extends KGraphDataImpl implements KRenderin
      */
     @Override
     public int eDerivedStructuralFeatureID(int baseFeatureID, Class<?> baseClass) {
-        if (baseClass == KStyleContainer.class) {
+        if (baseClass == KStyleHolder.class) {
             switch (baseFeatureID) {
-                case KRenderingPackage.KSTYLE_CONTAINER__STYLES: return KRenderingPackage.KRENDERING__STYLES;
+                case KRenderingPackage.KSTYLE_HOLDER__STYLES: return KRenderingPackage.KRENDERING__STYLES;
                 default: return -1;
             }
         }

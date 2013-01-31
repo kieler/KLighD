@@ -105,14 +105,14 @@ public class KRenderingFactoryImpl extends EFactoryImpl implements KRenderingFac
             case KRenderingPackage.KROTATION: return createKRotation();
             case KRenderingPackage.KLINE_CAP_STYLE: return createKLineCapStyle();
             case KRenderingPackage.KPOINT_PLACEMENT_DATA: return createKPointPlacementData();
-            case KRenderingPackage.KTEXT_RENDERING_REF: return createKTextRenderingRef();
             case KRenderingPackage.KSELECT_ACTION: return createKSelectAction();
             case KRenderingPackage.KEXPAND_ACTION: return createKExpandAction();
-            case KRenderingPackage.KSTYLE_CONTAINER: return createKStyleContainer();
+            case KRenderingPackage.KSTYLE_HOLDER: return createKStyleHolder();
             case KRenderingPackage.KINVISIBILITY: return createKInvisibility();
             case KRenderingPackage.KSHADOW: return createKShadow();
             case KRenderingPackage.KFONT_UNDERLINED: return createKFontUnderlined();
             case KRenderingPackage.KCOLLAPSE_ACTION: return createKCollapseAction();
+            case KRenderingPackage.KSTYLE_REF: return createKStyleRef();
             default:
                 throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
         }
@@ -543,16 +543,6 @@ public class KRenderingFactoryImpl extends EFactoryImpl implements KRenderingFac
      * <!-- end-user-doc -->
      * @generated
      */
-    public KTextRenderingRef createKTextRenderingRef() {
-        KTextRenderingRefImpl kTextRenderingRef = new KTextRenderingRefImpl();
-        return kTextRenderingRef;
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
     public KSelectAction createKSelectAction() {
         KSelectActionImpl kSelectAction = new KSelectActionImpl();
         return kSelectAction;
@@ -573,9 +563,9 @@ public class KRenderingFactoryImpl extends EFactoryImpl implements KRenderingFac
      * <!-- end-user-doc -->
      * @generated
      */
-    public KStyleContainer createKStyleContainer() {
-        KStyleContainerImpl kStyleContainer = new KStyleContainerImpl();
-        return kStyleContainer;
+    public KStyleHolder createKStyleHolder() {
+        KStyleHolderImpl kStyleHolder = new KStyleHolderImpl();
+        return kStyleHolder;
     }
 
     /**
@@ -616,6 +606,16 @@ public class KRenderingFactoryImpl extends EFactoryImpl implements KRenderingFac
     public KCollapseAction createKCollapseAction() {
         KCollapseActionImpl kCollapseAction = new KCollapseActionImpl();
         return kCollapseAction;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public KStyleRef createKStyleRef() {
+        KStyleRefImpl kStyleRef = new KStyleRefImpl();
+        return kStyleRef;
     }
 
     /**
