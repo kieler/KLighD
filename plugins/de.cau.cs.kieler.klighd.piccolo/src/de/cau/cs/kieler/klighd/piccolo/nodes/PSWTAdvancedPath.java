@@ -121,7 +121,7 @@ public class PSWTAdvancedPath extends PNode {
     private double lineWidth = 1.0;
     /** the line style for this path. */
     private int lineStyle = SWT.LINE_SOLID;
-    /** the line cap style for this path*/
+    /** the line cap style for this path. */
     private int lineCapStyle = SWT.CAP_FLAT;
 
     private boolean updatingBoundsFromPath;
@@ -808,7 +808,7 @@ public class PSWTAdvancedPath extends PNode {
      *            points to that lie along the generated path
      */
     public void setPathToPolyline(final Point2D[] points) {
-        if (points.length == 0){
+        if (points.length == 0) {
             return;
         }
         

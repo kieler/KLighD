@@ -57,6 +57,7 @@ import de.cau.cs.kieler.core.krendering.KGridPlacement;
 import de.cau.cs.kieler.core.krendering.KGridPlacementData;
 import de.cau.cs.kieler.core.krendering.KHorizontalAlignment;
 import de.cau.cs.kieler.core.krendering.KImage;
+import de.cau.cs.kieler.core.krendering.KInvisibility;
 import de.cau.cs.kieler.core.krendering.KLineStyle;
 import de.cau.cs.kieler.core.krendering.KLineCapStyle;
 import de.cau.cs.kieler.core.krendering.KLineWidth;
@@ -122,11 +123,11 @@ import edu.umd.cs.piccolox.swt.PSWTText;
 public abstract class AbstractRenderingController<S extends KGraphElement, T extends PNode> {
 
     /** the property for a rendering node's controller. */
-    private static final IProperty<Map<Object, PNodeController<?>>> CONTROLLER = new Property<Map<Object, PNodeController<?>>>(
-            "de.cau.cs.kieler.klighd.piccolo.controller");
+    private static final IProperty<Map<Object, PNodeController<?>>> CONTROLLER = 
+            new Property<Map<Object, PNodeController<?>>>("de.cau.cs.kieler.klighd.piccolo.controller");
     /** the property for a rendering reference key. */
-    private static final IProperty<Map<Object, Object>> KEY = new Property<Map<Object, Object>>(
-            "de.cau.cs.kieler.klighd.piccolo.key");
+    private static final IProperty<Map<Object, Object>> KEY = 
+            new Property<Map<Object, Object>>("de.cau.cs.kieler.klighd.piccolo.key");
 
     /** the graph element which rendering is controlled by this controller. */
     private S element;
@@ -291,7 +292,8 @@ public abstract class AbstractRenderingController<S extends KGraphElement, T ext
 
                     // handle new, moved and removed styles
                     if (msg.getNotifier() instanceof KRendering
-                            && msg.getFeatureID(KRendering.class) == KRenderingPackage.KRENDERING__STYLES) {
+                            && msg.getFeatureID(KRendering.class) 
+                               == KRenderingPackage.KRENDERING__STYLES) {
                         // PlatformUI.getWorkbench().getDisplay().syncExec(new Runnable() {
                         // public void run() {
                         // update the styles
@@ -557,7 +559,7 @@ public abstract class AbstractRenderingController<S extends KGraphElement, T ext
                 (float) parent.getBoundsReference().getWidth(),
                 (float) parent.getBoundsReference().getHeight());
         final GridPlacer gridPlacer = PlacementUtil.getGridPlacementObject(gridPlacement, gpds);
-        Bounds elementBounds[] = gridPlacer.evaluate(parentBounds);
+        Bounds[] elementBounds = gridPlacer.evaluate(parentBounds);
         // create the renderings and collect the controllers
         Bounds currentBounds;
         final PNodeController<?>[] controllers = new PNodeController<?>[renderings.size()];
@@ -1078,7 +1080,8 @@ public abstract class AbstractRenderingController<S extends KGraphElement, T ext
         if (line.getChildren().size() > 0) {
             List<KRendering> restChildren = Lists.newLinkedList();
             for (final KRendering rendering : line.getChildren()) {
-                if (PiccoloPlacementUtil.asDecoratorPlacementData(rendering.getPlacementData()) != null) {
+                if (PiccoloPlacementUtil.asDecoratorPlacementData(
+                        rendering.getPlacementData()) != null) {
                     handleDecoratorPlacementRendering(rendering, propagatedStyles, path, key);
                 } else {
                     restChildren.add(rendering);
@@ -1157,7 +1160,8 @@ public abstract class AbstractRenderingController<S extends KGraphElement, T ext
         if (polygon.getChildren().size() > 0) {
             List<KRendering> restChildren = Lists.newLinkedList();
             for (final KRendering rendering : polygon.getChildren()) {
-                if (PiccoloPlacementUtil.asDecoratorPlacementData(rendering.getPlacementData()) != null) {
+                if (PiccoloPlacementUtil.asDecoratorPlacementData(
+                        rendering.getPlacementData()) != null) {
                     handleDecoratorPlacementRendering(rendering, propagatedStyles, path, key);
                 } else {
                     restChildren.add(rendering);
@@ -1459,8 +1463,8 @@ public abstract class AbstractRenderingController<S extends KGraphElement, T ext
             final PropertyChangeListener listener) {
         parent.addPropertyChangeListener(property, listener);
         @SuppressWarnings("unchecked")
-        List<Pair<String, PropertyChangeListener>> listeners = (List<Pair<String, PropertyChangeListener>>) node
-                .getAttribute(PROPERTY_LISTENER_KEY);
+        List<Pair<String, PropertyChangeListener>> listeners =
+            (List<Pair<String, PropertyChangeListener>>) node.getAttribute(PROPERTY_LISTENER_KEY);
         if (listeners == null) {
             listeners = Lists.newLinkedList();
             node.addAttribute(PROPERTY_LISTENER_KEY, listeners);
@@ -1476,8 +1480,8 @@ public abstract class AbstractRenderingController<S extends KGraphElement, T ext
      */
     protected void removeListeners(final PNode node) {
         @SuppressWarnings("unchecked")
-        List<Pair<String, PropertyChangeListener>> listeners = (List<Pair<String, PropertyChangeListener>>) node
-                .getAttribute(PROPERTY_LISTENER_KEY);
+        List<Pair<String, PropertyChangeListener>> listeners = 
+            (List<Pair<String, PropertyChangeListener>>) node.getAttribute(PROPERTY_LISTENER_KEY);
         if (listeners != null && node.getParent() != null) {
             for (Pair<String, PropertyChangeListener> pair : listeners) {
                 node.getParent().removePropertyChangeListener(pair.getFirst(), pair.getSecond());
@@ -1543,21 +1547,30 @@ public abstract class AbstractRenderingController<S extends KGraphElement, T ext
         }
         for (KStyle style : styleList) {
             new KRenderingSwitch<Boolean>() {
-                //foreground 
-                public Boolean caseKForeground(final KForeground f){
+                // foreground
+                public Boolean caseKForeground(final KForeground f) {
                     if (theStyles.foreground == null) {
                         theStyles.foreground = f;
                     }
                     return true;
                 }
-                //background
-                public Boolean caseKBackground(final KBackground b){
-                    if (theStyles.background == null){
+
+                // background
+                public Boolean caseKBackground(final KBackground b) {
+                    if (theStyles.background == null) {
                         theStyles.background = b;
                     }
                     return true;
                 }
-                
+
+                // weather the foreground is invisible or not
+                public Boolean caseKInvisibility(final KInvisibility i) {
+                    if (theStyles.invisibility == null) {
+                        theStyles.invisibility = i;
+                    }
+                    return true;
+                }
+
                 // line width
                 public Boolean caseKLineWidth(final KLineWidth lw) {
                     if (theStyles.lineWidth == null) {
@@ -1573,7 +1586,7 @@ public abstract class AbstractRenderingController<S extends KGraphElement, T ext
                     }
                     return true;
                 }
-                
+
                 // line cap style
                 public Boolean caseKLineCapStyle(final KLineCapStyle lcs) {
                     if (theStyles.lineCapStyle == null) {
@@ -1653,19 +1666,34 @@ public abstract class AbstractRenderingController<S extends KGraphElement, T ext
     protected void applyStyles(final PNodeController<?> controller, final Styles styles) {
         // apply foreground styles
         if (styles.foreground != null) {
-            KColor color = styles.foreground.getColor();
-            controller.setForegroundColor(new Color(color.getRed(), color.getGreen(), color
-                    .getBlue()));
             int alphaValue = styles.foreground.getAlpha();
-            controller.setLineAlpha(alphaValue);
+            KColor color = styles.foreground.getColor();
+            controller.setForegroundColor(
+                    new Color(
+                            color.getRed(), 
+                            color.getGreen(), 
+                            color.getBlue(),
+                            alphaValue)
+                    );
+            
+//            controller.setForegroundColor(new GradientPaint(5, 5, Color.red, 200, 5,
+//                    Color.blue));
+            if (styles.invisibility == null) {
+                controller.setLineAlpha(alphaValue);
+            } else {
+                controller.setLineAlpha(0);
+            }
         }
 
         // apply background color
         if (styles.background != null) {
             KColor color = styles.background.getColor();
-            controller.setBackgroundColor(new Color(color.getRed(), color.getGreen(), color
-                    .getBlue()));
             int alphaValue = styles.background.getAlpha();
+            controller.setBackgroundColor(new Color(
+                        color.getRed(), 
+                        color.getGreen(), 
+                        color.getBlue(),
+                        alphaValue));
             controller.setBackgroundAlpha(alphaValue);
         }
         
@@ -1886,7 +1914,9 @@ public abstract class AbstractRenderingController<S extends KGraphElement, T ext
         private KForeground foreground =  null;
         /** the background. */
         private KBackground background = null;
-      /** the line style. */
+        /** whether the foreground should be invisible or not. */
+        private KInvisibility invisibility = null;
+        /** the line style. */
         private KLineStyle lineStyle = null;
         /** the line style. */
         private KLineCapStyle lineCapStyle = null;

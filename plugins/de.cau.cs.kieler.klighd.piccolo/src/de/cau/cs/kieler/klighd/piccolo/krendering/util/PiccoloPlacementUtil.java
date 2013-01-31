@@ -28,7 +28,6 @@ import de.cau.cs.kieler.core.krendering.KTopPosition;
 import de.cau.cs.kieler.core.krendering.KXPosition;
 import de.cau.cs.kieler.core.krendering.KYPosition;
 import de.cau.cs.kieler.core.util.Pair;
-import de.cau.cs.kieler.klighd.krendering.PlacementUtil;
 import de.cau.cs.kieler.klighd.krendering.PlacementUtil.Bounds;
 import de.cau.cs.kieler.klighd.piccolo.nodes.PSWTAdvancedPath;
 import de.cau.cs.kieler.klighd.piccolo.util.MathUtil;
@@ -121,16 +120,6 @@ public final class PiccoloPlacementUtil {
             y0 = refPoint.getY();
         }
 
-        if (x0 < 0.0f) {
-            // the box would be running out of the parent, so move it to right
-//            x0 = 0.0d;
-        }
-
-        if (y0 < 0.0f) {
-            //the box would be running out of the parent, so move it down
-//            y0 = 0.0d;
-        }
-        
         return new PBounds(x0, y0, ownBounds.getWidth(), ownBounds.getHeight());
     }
     
@@ -138,8 +127,8 @@ public final class PiccoloPlacementUtil {
     /**
      * Returns the points for a polyline placement data in given parent bounds.
      * 
-     * @param ppd
-     *            the polyline placement data
+     * @param line
+     *            the polyline with its points
      * @param parentBounds
      *            the parent bounds
      * @return the points
