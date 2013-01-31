@@ -15,7 +15,6 @@ package de.cau.cs.kieler.core.krendering.impl;
 
 import de.cau.cs.kieler.core.kgraph.impl.KGraphDataImpl;
 
-import de.cau.cs.kieler.core.krendering.KRendering;
 import de.cau.cs.kieler.core.krendering.KRenderingLibrary;
 import de.cau.cs.kieler.core.krendering.KRenderingPackage;
 

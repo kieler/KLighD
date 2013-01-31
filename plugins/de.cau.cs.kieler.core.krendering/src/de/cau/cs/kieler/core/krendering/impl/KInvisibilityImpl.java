@@ -44,7 +44,7 @@ public class KInvisibilityImpl extends KStyleImpl implements KInvisibility {
      * @generated
      * @ordered
      */
-    protected static final boolean INVISIBLE_EDEFAULT = false;
+    protected static final boolean INVISIBLE_EDEFAULT = true;
 
     /**
      * The cached value of the '{@link #isInvisible() <em>Invisible</em>}' attribute.

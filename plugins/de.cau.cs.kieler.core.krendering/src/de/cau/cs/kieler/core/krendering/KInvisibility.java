@@ -37,7 +37,7 @@ package de.cau.cs.kieler.core.krendering;
 public interface KInvisibility extends KStyle {
     /**
      * Returns the value of the '<em><b>Invisible</b></em>' attribute.
-     * The default value is <code>"false"</code>.
+     * The default value is <code>"true"</code>.
      * <!-- begin-user-doc -->
      * <p>
      * If the meaning of the '<em>Invisible</em>' attribute isn't clear,
@@ -47,7 +47,7 @@ public interface KInvisibility extends KStyle {
      * @return the value of the '<em>Invisible</em>' attribute.
      * @see #setInvisible(boolean)
      * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKInvisibility_Invisible()
-     * @model default="false" required="true"
+     * @model default="true" required="true"
      * @generated
      */
     boolean isInvisible();

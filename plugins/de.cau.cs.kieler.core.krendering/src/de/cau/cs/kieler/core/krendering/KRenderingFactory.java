@@ -384,13 +384,13 @@ public interface KRenderingFactory extends EFactory {
     KSelectAction createKSelectAction();
 
     /**
-     * Returns a new object of class '<em>KExpand Collapse Action</em>'.
+     * Returns a new object of class '<em>KExpand Action</em>'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return a new object of class '<em>KExpand Collapse Action</em>'.
+     * @return a new object of class '<em>KExpand Action</em>'.
      * @generated
      */
-    KExpandCollapseAction createKExpandCollapseAction();
+    KExpandAction createKExpandAction();
 
     /**
      * Returns a new object of class '<em>KStyle Container</em>'.
@@ -427,6 +427,15 @@ public interface KRenderingFactory extends EFactory {
      * @generated
      */
     KFontUnderlined createKFontUnderlined();
+
+    /**
+     * Returns a new object of class '<em>KCollapse Action</em>'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return a new object of class '<em>KCollapse Action</em>'.
+     * @generated
+     */
+    KCollapseAction createKCollapseAction();
 
     /**
      * Returns the package supported by this factory.

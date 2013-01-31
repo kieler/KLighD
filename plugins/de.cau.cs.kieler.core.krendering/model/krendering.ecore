@@ -87,10 +87,16 @@
     <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
       <details key="documentation" value="Creates a polyline between two or more points"/>
     </eAnnotations>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="points" lowerBound="1"
-        upperBound="-1" eType="#//KPosition" containment="true">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="points" upperBound="-1"
+        eType="#//KPosition" containment="true">
       <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
         <details key="documentation" value="points that are visited by the polyline in order of definition"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="jointPointRendering" eType="#//KRendering"
+        containment="true">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="Optional rendering defining the look of join point figures that are attached to the diagram for each edge join point computed by the automatic (macro) layout.&#xA;Setting is evaluated for KEdge renderings only, ignored for simple polylines being part of a complex rendering."/>
       </eAnnotations>
     </eStructuralFeatures>
   </eClassifiers>
@@ -395,11 +401,6 @@
     <eLiterals name="BOTTOM" value="2"/>
     <eLiterals name="EEnumLiteral0" value="3"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EEnum" name="JointPointStyle">
-    <eLiterals name="HIDDEN"/>
-    <eLiterals name="BOX" value="1" literal="BOX"/>
-    <eLiterals name="CIRCULAR" value="2" literal="CIRCULAR"/>
-  </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="KVerticalAlignment" eSuperTypes="#//KStyle">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="verticalAlignment" lowerBound="1"
         eType="#//VerticalAlignment"/>
@@ -472,13 +473,16 @@
     <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
       <details key="documentation" value="Defines the alphaChannel of an Object"/>
     </eAnnotations>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="alpha" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="alpha" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"
+        defaultValueLiteral="255"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="color" lowerBound="1" eType="#//KColor"
         containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="targetColor" eType="#//KColor"
         containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="targetAlpha" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="gradientAngle" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EFloat"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="targetAlpha" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"
+        defaultValueLiteral="255"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="gradientAngle" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EFloat"
+        defaultValueLiteral="0"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="KBackground" eSuperTypes="#//KColoring">
     <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
@@ -581,7 +585,7 @@
     <eLiterals name="DOUBLECLICK" value="1"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="KSelectAction" eSuperTypes="#//KAction"/>
-  <eClassifiers xsi:type="ecore:EClass" name="KExpandCollapseAction" eSuperTypes="#//KAction"/>
+  <eClassifiers xsi:type="ecore:EClass" name="KExpandAction" eSuperTypes="#//KAction"/>
   <eClassifiers xsi:type="ecore:EClass" name="KStyleContainer">
     <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
       <details key="documentation" value="Element to define styles without attaching them to a specific rendering"/>
@@ -602,7 +606,7 @@
       <details key="documentation" value="defines whether an object is visible or not"/>
     </eAnnotations>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="invisible" lowerBound="1"
-        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean" defaultValueLiteral="false"/>
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean" defaultValueLiteral="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="KShadow" eSuperTypes="#//KStyle">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="xOffset" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EFloat"/>
@@ -617,4 +621,5 @@
   <eClassifiers xsi:type="ecore:EEnum" name="UnderlineStyle">
     <eLiterals name="UNDERLINE_ON"/>
   </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="KCollapseAction" eSuperTypes="#//KAction"/>
 </ecore:EPackage>

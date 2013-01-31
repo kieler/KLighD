@@ -28,6 +28,7 @@ import org.eclipse.emf.common.util.EList;
  * The following features are supported:
  * <ul>
  *   <li>{@link de.cau.cs.kieler.core.krendering.KPolyline#getPoints <em>Points</em>}</li>
+ *   <li>{@link de.cau.cs.kieler.core.krendering.KPolyline#getJointPointRendering <em>Joint Point Rendering</em>}</li>
  * </ul>
  * </p>
  *
@@ -50,9 +51,35 @@ public interface KPolyline extends KContainerRendering {
      * <!-- end-model-doc -->
      * @return the value of the '<em>Points</em>' containment reference list.
      * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKPolyline_Points()
-     * @model containment="true" required="true"
+     * @model containment="true"
      * @generated
      */
     EList<KPosition> getPoints();
+
+    /**
+     * Returns the value of the '<em><b>Joint Point Rendering</b></em>' containment reference.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * <!-- begin-model-doc -->
+     * Optional rendering defining the look of join point figures that are attached to the diagram for each edge join point computed by the automatic (macro) layout.
+     * Setting is evaluated for KEdge renderings only, ignored for simple polylines being part of a complex rendering.
+     * <!-- end-model-doc -->
+     * @return the value of the '<em>Joint Point Rendering</em>' containment reference.
+     * @see #setJointPointRendering(KRendering)
+     * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKPolyline_JointPointRendering()
+     * @model containment="true"
+     * @generated
+     */
+    KRendering getJointPointRendering();
+
+    /**
+     * Sets the value of the '{@link de.cau.cs.kieler.core.krendering.KPolyline#getJointPointRendering <em>Joint Point Rendering</em>}' containment reference.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @param value the new value of the '<em>Joint Point Rendering</em>' containment reference.
+     * @see #getJointPointRendering()
+     * @generated
+     */
+    void setJointPointRendering(KRendering value);
 
 } // KPolyline

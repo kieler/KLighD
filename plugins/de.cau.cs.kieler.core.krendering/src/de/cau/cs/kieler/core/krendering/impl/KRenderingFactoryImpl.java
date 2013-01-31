@@ -107,11 +107,12 @@ public class KRenderingFactoryImpl extends EFactoryImpl implements KRenderingFac
             case KRenderingPackage.KPOINT_PLACEMENT_DATA: return createKPointPlacementData();
             case KRenderingPackage.KTEXT_RENDERING_REF: return createKTextRenderingRef();
             case KRenderingPackage.KSELECT_ACTION: return createKSelectAction();
-            case KRenderingPackage.KEXPAND_COLLAPSE_ACTION: return createKExpandCollapseAction();
+            case KRenderingPackage.KEXPAND_ACTION: return createKExpandAction();
             case KRenderingPackage.KSTYLE_CONTAINER: return createKStyleContainer();
             case KRenderingPackage.KINVISIBILITY: return createKInvisibility();
             case KRenderingPackage.KSHADOW: return createKShadow();
             case KRenderingPackage.KFONT_UNDERLINED: return createKFontUnderlined();
+            case KRenderingPackage.KCOLLAPSE_ACTION: return createKCollapseAction();
             default:
                 throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
         }
@@ -131,8 +132,6 @@ public class KRenderingFactoryImpl extends EFactoryImpl implements KRenderingFac
                 return createHorizontalAlignmentFromString(eDataType, initialValue);
             case KRenderingPackage.VERTICAL_ALIGNMENT:
                 return createVerticalAlignmentFromString(eDataType, initialValue);
-            case KRenderingPackage.JOINT_POINT_STYLE:
-                return createJointPointStyleFromString(eDataType, initialValue);
             case KRenderingPackage.KTRIGGER:
                 return createKTriggerFromString(eDataType, initialValue);
             case KRenderingPackage.LINE_CAP_STYLE:
@@ -158,8 +157,6 @@ public class KRenderingFactoryImpl extends EFactoryImpl implements KRenderingFac
                 return convertHorizontalAlignmentToString(eDataType, instanceValue);
             case KRenderingPackage.VERTICAL_ALIGNMENT:
                 return convertVerticalAlignmentToString(eDataType, instanceValue);
-            case KRenderingPackage.JOINT_POINT_STYLE:
-                return convertJointPointStyleToString(eDataType, instanceValue);
             case KRenderingPackage.KTRIGGER:
                 return convertKTriggerToString(eDataType, instanceValue);
             case KRenderingPackage.LINE_CAP_STYLE:
@@ -566,9 +563,9 @@ public class KRenderingFactoryImpl extends EFactoryImpl implements KRenderingFac
      * <!-- end-user-doc -->
      * @generated
      */
-    public KExpandCollapseAction createKExpandCollapseAction() {
-        KExpandCollapseActionImpl kExpandCollapseAction = new KExpandCollapseActionImpl();
-        return kExpandCollapseAction;
+    public KExpandAction createKExpandAction() {
+        KExpandActionImpl kExpandAction = new KExpandActionImpl();
+        return kExpandAction;
     }
 
     /**
@@ -609,6 +606,16 @@ public class KRenderingFactoryImpl extends EFactoryImpl implements KRenderingFac
     public KFontUnderlined createKFontUnderlined() {
         KFontUnderlinedImpl kFontUnderlined = new KFontUnderlinedImpl();
         return kFontUnderlined;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public KCollapseAction createKCollapseAction() {
+        KCollapseActionImpl kCollapseAction = new KCollapseActionImpl();
+        return kCollapseAction;
     }
 
     /**
@@ -668,26 +675,6 @@ public class KRenderingFactoryImpl extends EFactoryImpl implements KRenderingFac
      * @generated
      */
     public String convertVerticalAlignmentToString(EDataType eDataType, Object instanceValue) {
-        return instanceValue == null ? null : instanceValue.toString();
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    public JointPointStyle createJointPointStyleFromString(EDataType eDataType, String initialValue) {
-        JointPointStyle result = JointPointStyle.get(initialValue);
-        if (result == null) throw new IllegalArgumentException("The value '" + initialValue + "' is not a valid enumerator of '" + eDataType.getName() + "'");
-        return result;
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    public String convertJointPointStyleToString(EDataType eDataType, Object instanceValue) {
         return instanceValue == null ? null : instanceValue.toString();
     }
 

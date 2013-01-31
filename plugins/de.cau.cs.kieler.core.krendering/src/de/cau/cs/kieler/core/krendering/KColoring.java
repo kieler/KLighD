@@ -41,6 +41,7 @@ package de.cau.cs.kieler.core.krendering;
 public interface KColoring extends KStyle {
     /**
      * Returns the value of the '<em><b>Alpha</b></em>' attribute.
+     * The default value is <code>"255"</code>.
      * <!-- begin-user-doc -->
      * <p>
      * If the meaning of the '<em>Alpha</em>' attribute isn't clear,
@@ -50,7 +51,7 @@ public interface KColoring extends KStyle {
      * @return the value of the '<em>Alpha</em>' attribute.
      * @see #setAlpha(int)
      * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKColoring_Alpha()
-     * @model required="true"
+     * @model default="255" required="true"
      * @generated
      */
     int getAlpha();
@@ -119,6 +120,7 @@ public interface KColoring extends KStyle {
 
     /**
      * Returns the value of the '<em><b>Target Alpha</b></em>' attribute.
+     * The default value is <code>"255"</code>.
      * <!-- begin-user-doc -->
      * <p>
      * If the meaning of the '<em>Target Alpha</em>' attribute isn't clear,
@@ -128,7 +130,7 @@ public interface KColoring extends KStyle {
      * @return the value of the '<em>Target Alpha</em>' attribute.
      * @see #setTargetAlpha(int)
      * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKColoring_TargetAlpha()
-     * @model
+     * @model default="255"
      * @generated
      */
     int getTargetAlpha();
@@ -145,6 +147,7 @@ public interface KColoring extends KStyle {
 
     /**
      * Returns the value of the '<em><b>Gradient Angle</b></em>' attribute.
+     * The default value is <code>"0"</code>.
      * <!-- begin-user-doc -->
      * <p>
      * If the meaning of the '<em>Gradient Angle</em>' attribute isn't clear,
@@ -154,7 +157,7 @@ public interface KColoring extends KStyle {
      * @return the value of the '<em>Gradient Angle</em>' attribute.
      * @see #setGradientAngle(float)
      * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKColoring_GradientAngle()
-     * @model
+     * @model default="0"
      * @generated
      */
     float getGradientAngle();

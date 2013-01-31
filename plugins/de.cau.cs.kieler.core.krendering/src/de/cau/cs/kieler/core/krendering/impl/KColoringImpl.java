@@ -51,7 +51,7 @@ public abstract class KColoringImpl extends KStyleImpl implements KColoring {
      * @generated
      * @ordered
      */
-    protected static final int ALPHA_EDEFAULT = 0;
+    protected static final int ALPHA_EDEFAULT = 255;
 
     /**
      * The cached value of the '{@link #getAlpha() <em>Alpha</em>}' attribute.
@@ -91,7 +91,7 @@ public abstract class KColoringImpl extends KStyleImpl implements KColoring {
      * @generated
      * @ordered
      */
-    protected static final int TARGET_ALPHA_EDEFAULT = 0;
+    protected static final int TARGET_ALPHA_EDEFAULT = 255;
 
     /**
      * The cached value of the '{@link #getTargetAlpha() <em>Target Alpha</em>}' attribute.

@@ -711,13 +711,22 @@ public interface KRenderingPackage extends EPackage {
     int KPOLYLINE__POINTS = KCONTAINER_RENDERING_FEATURE_COUNT + 0;
 
     /**
+     * The feature id for the '<em><b>Joint Point Rendering</b></em>' containment reference.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KPOLYLINE__JOINT_POINT_RENDERING = KCONTAINER_RENDERING_FEATURE_COUNT + 1;
+
+    /**
      * The number of structural features of the '<em>KPolyline</em>' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int KPOLYLINE_FEATURE_COUNT = KCONTAINER_RENDERING_FEATURE_COUNT + 1;
+    int KPOLYLINE_FEATURE_COUNT = KCONTAINER_RENDERING_FEATURE_COUNT + 2;
 
     /**
      * The meta object id for the '{@link de.cau.cs.kieler.core.krendering.impl.KPolygonImpl <em>KPolygon</em>}' class.
@@ -818,6 +827,15 @@ public interface KRenderingPackage extends EPackage {
      * @ordered
      */
     int KPOLYGON__POINTS = KPOLYLINE__POINTS;
+
+    /**
+     * The feature id for the '<em><b>Joint Point Rendering</b></em>' containment reference.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KPOLYGON__JOINT_POINT_RENDERING = KPOLYLINE__JOINT_POINT_RENDERING;
 
     /**
      * The number of structural features of the '<em>KPolygon</em>' class.
@@ -2475,6 +2493,15 @@ public interface KRenderingPackage extends EPackage {
     int KSPLINE__POINTS = KPOLYLINE__POINTS;
 
     /**
+     * The feature id for the '<em><b>Joint Point Rendering</b></em>' containment reference.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KSPLINE__JOINT_POINT_RENDERING = KPOLYLINE__JOINT_POINT_RENDERING;
+
+    /**
      * The number of structural features of the '<em>KSpline</em>' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -3086,6 +3113,15 @@ public interface KRenderingPackage extends EPackage {
     int KROUNDED_BENDS_POLYLINE__POINTS = KPOLYLINE__POINTS;
 
     /**
+     * The feature id for the '<em><b>Joint Point Rendering</b></em>' containment reference.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KROUNDED_BENDS_POLYLINE__JOINT_POINT_RENDERING = KPOLYLINE__JOINT_POINT_RENDERING;
+
+    /**
      * The feature id for the '<em><b>Bend Radius</b></em>' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -3452,14 +3488,14 @@ public interface KRenderingPackage extends EPackage {
     int KSELECT_ACTION_FEATURE_COUNT = KACTION_FEATURE_COUNT + 0;
 
     /**
-     * The meta object id for the '{@link de.cau.cs.kieler.core.krendering.impl.KExpandCollapseActionImpl <em>KExpand Collapse Action</em>}' class.
+     * The meta object id for the '{@link de.cau.cs.kieler.core.krendering.impl.KExpandActionImpl <em>KExpand Action</em>}' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see de.cau.cs.kieler.core.krendering.impl.KExpandCollapseActionImpl
-     * @see de.cau.cs.kieler.core.krendering.impl.KRenderingPackageImpl#getKExpandCollapseAction()
+     * @see de.cau.cs.kieler.core.krendering.impl.KExpandActionImpl
+     * @see de.cau.cs.kieler.core.krendering.impl.KRenderingPackageImpl#getKExpandAction()
      * @generated
      */
-    int KEXPAND_COLLAPSE_ACTION = 48;
+    int KEXPAND_ACTION = 48;
 
     /**
      * The feature id for the '<em><b>Id</b></em>' attribute.
@@ -3468,7 +3504,7 @@ public interface KRenderingPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int KEXPAND_COLLAPSE_ACTION__ID = KACTION__ID;
+    int KEXPAND_ACTION__ID = KACTION__ID;
 
     /**
      * The feature id for the '<em><b>Trigger</b></em>' attribute.
@@ -3477,16 +3513,16 @@ public interface KRenderingPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int KEXPAND_COLLAPSE_ACTION__TRIGGER = KACTION__TRIGGER;
+    int KEXPAND_ACTION__TRIGGER = KACTION__TRIGGER;
 
     /**
-     * The number of structural features of the '<em>KExpand Collapse Action</em>' class.
+     * The number of structural features of the '<em>KExpand Action</em>' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int KEXPAND_COLLAPSE_ACTION_FEATURE_COUNT = KACTION_FEATURE_COUNT + 0;
+    int KEXPAND_ACTION_FEATURE_COUNT = KACTION_FEATURE_COUNT + 0;
 
     /**
      * The meta object id for the '{@link de.cau.cs.kieler.core.krendering.impl.KStyleContainerImpl <em>KStyle Container</em>}' class.
@@ -3709,6 +3745,43 @@ public interface KRenderingPackage extends EPackage {
     int KFONT_UNDERLINED_FEATURE_COUNT = KSTYLE_FEATURE_COUNT + 1;
 
     /**
+     * The meta object id for the '{@link de.cau.cs.kieler.core.krendering.impl.KCollapseActionImpl <em>KCollapse Action</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see de.cau.cs.kieler.core.krendering.impl.KCollapseActionImpl
+     * @see de.cau.cs.kieler.core.krendering.impl.KRenderingPackageImpl#getKCollapseAction()
+     * @generated
+     */
+    int KCOLLAPSE_ACTION = 53;
+
+    /**
+     * The feature id for the '<em><b>Id</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KCOLLAPSE_ACTION__ID = KACTION__ID;
+
+    /**
+     * The feature id for the '<em><b>Trigger</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KCOLLAPSE_ACTION__TRIGGER = KACTION__TRIGGER;
+
+    /**
+     * The number of structural features of the '<em>KCollapse Action</em>' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KCOLLAPSE_ACTION_FEATURE_COUNT = KACTION_FEATURE_COUNT + 0;
+
+    /**
      * The meta object id for the '{@link de.cau.cs.kieler.core.krendering.LineStyle <em>Line Style</em>}' enum.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -3716,7 +3789,7 @@ public interface KRenderingPackage extends EPackage {
      * @see de.cau.cs.kieler.core.krendering.impl.KRenderingPackageImpl#getLineStyle()
      * @generated
      */
-    int LINE_STYLE = 53;
+    int LINE_STYLE = 54;
 
     /**
      * The meta object id for the '{@link de.cau.cs.kieler.core.krendering.HorizontalAlignment <em>Horizontal Alignment</em>}' enum.
@@ -3726,7 +3799,7 @@ public interface KRenderingPackage extends EPackage {
      * @see de.cau.cs.kieler.core.krendering.impl.KRenderingPackageImpl#getHorizontalAlignment()
      * @generated
      */
-    int HORIZONTAL_ALIGNMENT = 54;
+    int HORIZONTAL_ALIGNMENT = 55;
 
     /**
      * The meta object id for the '{@link de.cau.cs.kieler.core.krendering.VerticalAlignment <em>Vertical Alignment</em>}' enum.
@@ -3736,18 +3809,8 @@ public interface KRenderingPackage extends EPackage {
      * @see de.cau.cs.kieler.core.krendering.impl.KRenderingPackageImpl#getVerticalAlignment()
      * @generated
      */
-    int VERTICAL_ALIGNMENT = 55;
+    int VERTICAL_ALIGNMENT = 56;
 
-
-    /**
-     * The meta object id for the '{@link de.cau.cs.kieler.core.krendering.JointPointStyle <em>Joint Point Style</em>}' enum.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @see de.cau.cs.kieler.core.krendering.JointPointStyle
-     * @see de.cau.cs.kieler.core.krendering.impl.KRenderingPackageImpl#getJointPointStyle()
-     * @generated
-     */
-    int JOINT_POINT_STYLE = 56;
 
     /**
      * The meta object id for the '{@link de.cau.cs.kieler.core.krendering.KTrigger <em>KTrigger</em>}' enum.
@@ -3940,6 +4003,17 @@ public interface KRenderingPackage extends EPackage {
      * @generated
      */
     EReference getKPolyline_Points();
+
+    /**
+     * Returns the meta object for the containment reference '{@link de.cau.cs.kieler.core.krendering.KPolyline#getJointPointRendering <em>Joint Point Rendering</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the containment reference '<em>Joint Point Rendering</em>'.
+     * @see de.cau.cs.kieler.core.krendering.KPolyline#getJointPointRendering()
+     * @see #getKPolyline()
+     * @generated
+     */
+    EReference getKPolyline_JointPointRendering();
 
     /**
      * Returns the meta object for class '{@link de.cau.cs.kieler.core.krendering.KPolygon <em>KPolygon</em>}'.
@@ -5066,14 +5140,14 @@ public interface KRenderingPackage extends EPackage {
     EClass getKSelectAction();
 
     /**
-     * Returns the meta object for class '{@link de.cau.cs.kieler.core.krendering.KExpandCollapseAction <em>KExpand Collapse Action</em>}'.
+     * Returns the meta object for class '{@link de.cau.cs.kieler.core.krendering.KExpandAction <em>KExpand Action</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for class '<em>KExpand Collapse Action</em>'.
-     * @see de.cau.cs.kieler.core.krendering.KExpandCollapseAction
+     * @return the meta object for class '<em>KExpand Action</em>'.
+     * @see de.cau.cs.kieler.core.krendering.KExpandAction
      * @generated
      */
-    EClass getKExpandCollapseAction();
+    EClass getKExpandAction();
 
     /**
      * Returns the meta object for class '{@link de.cau.cs.kieler.core.krendering.KStyleContainer <em>KStyle Container</em>}'.
@@ -5193,6 +5267,16 @@ public interface KRenderingPackage extends EPackage {
     EAttribute getKFontUnderlined_UnderlineStyle();
 
     /**
+     * Returns the meta object for class '{@link de.cau.cs.kieler.core.krendering.KCollapseAction <em>KCollapse Action</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for class '<em>KCollapse Action</em>'.
+     * @see de.cau.cs.kieler.core.krendering.KCollapseAction
+     * @generated
+     */
+    EClass getKCollapseAction();
+
+    /**
      * Returns the meta object for enum '{@link de.cau.cs.kieler.core.krendering.LineStyle <em>Line Style</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -5221,16 +5305,6 @@ public interface KRenderingPackage extends EPackage {
      * @generated
      */
     EEnum getVerticalAlignment();
-
-    /**
-     * Returns the meta object for enum '{@link de.cau.cs.kieler.core.krendering.JointPointStyle <em>Joint Point Style</em>}'.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @return the meta object for enum '<em>Joint Point Style</em>'.
-     * @see de.cau.cs.kieler.core.krendering.JointPointStyle
-     * @generated
-     */
-    EEnum getJointPointStyle();
 
     /**
      * Returns the meta object for enum '{@link de.cau.cs.kieler.core.krendering.KTrigger <em>KTrigger</em>}'.
@@ -5415,6 +5489,14 @@ public interface KRenderingPackage extends EPackage {
          * @generated
          */
         EReference KPOLYLINE__POINTS = eINSTANCE.getKPolyline_Points();
+
+        /**
+         * The meta object literal for the '<em><b>Joint Point Rendering</b></em>' containment reference feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EReference KPOLYLINE__JOINT_POINT_RENDERING = eINSTANCE.getKPolyline_JointPointRendering();
 
         /**
          * The meta object literal for the '{@link de.cau.cs.kieler.core.krendering.impl.KPolygonImpl <em>KPolygon</em>}' class.
@@ -6349,14 +6431,14 @@ public interface KRenderingPackage extends EPackage {
         EClass KSELECT_ACTION = eINSTANCE.getKSelectAction();
 
         /**
-         * The meta object literal for the '{@link de.cau.cs.kieler.core.krendering.impl.KExpandCollapseActionImpl <em>KExpand Collapse Action</em>}' class.
+         * The meta object literal for the '{@link de.cau.cs.kieler.core.krendering.impl.KExpandActionImpl <em>KExpand Action</em>}' class.
          * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-         * @see de.cau.cs.kieler.core.krendering.impl.KExpandCollapseActionImpl
-         * @see de.cau.cs.kieler.core.krendering.impl.KRenderingPackageImpl#getKExpandCollapseAction()
+         * @see de.cau.cs.kieler.core.krendering.impl.KExpandActionImpl
+         * @see de.cau.cs.kieler.core.krendering.impl.KRenderingPackageImpl#getKExpandAction()
          * @generated
          */
-        EClass KEXPAND_COLLAPSE_ACTION = eINSTANCE.getKExpandCollapseAction();
+        EClass KEXPAND_ACTION = eINSTANCE.getKExpandAction();
 
         /**
          * The meta object literal for the '{@link de.cau.cs.kieler.core.krendering.impl.KStyleContainerImpl <em>KStyle Container</em>}' class.
@@ -6455,6 +6537,16 @@ public interface KRenderingPackage extends EPackage {
         EAttribute KFONT_UNDERLINED__UNDERLINE_STYLE = eINSTANCE.getKFontUnderlined_UnderlineStyle();
 
         /**
+         * The meta object literal for the '{@link de.cau.cs.kieler.core.krendering.impl.KCollapseActionImpl <em>KCollapse Action</em>}' class.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @see de.cau.cs.kieler.core.krendering.impl.KCollapseActionImpl
+         * @see de.cau.cs.kieler.core.krendering.impl.KRenderingPackageImpl#getKCollapseAction()
+         * @generated
+         */
+        EClass KCOLLAPSE_ACTION = eINSTANCE.getKCollapseAction();
+
+        /**
          * The meta object literal for the '{@link de.cau.cs.kieler.core.krendering.LineStyle <em>Line Style</em>}' enum.
          * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
@@ -6483,16 +6575,6 @@ public interface KRenderingPackage extends EPackage {
          * @generated
          */
         EEnum VERTICAL_ALIGNMENT = eINSTANCE.getVerticalAlignment();
-
-        /**
-         * The meta object literal for the '{@link de.cau.cs.kieler.core.krendering.JointPointStyle <em>Joint Point Style</em>}' enum.
-         * <!-- begin-user-doc -->
-         * <!-- end-user-doc -->
-         * @see de.cau.cs.kieler.core.krendering.JointPointStyle
-         * @see de.cau.cs.kieler.core.krendering.impl.KRenderingPackageImpl#getJointPointStyle()
-         * @generated
-         */
-        EEnum JOINT_POINT_STYLE = eINSTANCE.getJointPointStyle();
 
         /**
          * The meta object literal for the '{@link de.cau.cs.kieler.core.krendering.KTrigger <em>KTrigger</em>}' enum.

@@ -15,18 +15,20 @@ package de.cau.cs.kieler.core.krendering.impl;
 
 import de.cau.cs.kieler.core.krendering.KPolyline;
 import de.cau.cs.kieler.core.krendering.KPosition;
+import de.cau.cs.kieler.core.krendering.KRendering;
 import de.cau.cs.kieler.core.krendering.KRenderingPackage;
 
 import java.util.Collection;
 
+import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
 
 import org.eclipse.emf.common.util.EList;
 
 import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.util.EObjectResolvingEList;
 import org.eclipse.emf.ecore.InternalEObject;
 
+import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 
@@ -38,6 +40,7 @@ import org.eclipse.emf.ecore.util.InternalEList;
  * The following features are implemented:
  * <ul>
  *   <li>{@link de.cau.cs.kieler.core.krendering.impl.KPolylineImpl#getPoints <em>Points</em>}</li>
+ *   <li>{@link de.cau.cs.kieler.core.krendering.impl.KPolylineImpl#getJointPointRendering <em>Joint Point Rendering</em>}</li>
  * </ul>
  * </p>
  *
@@ -53,6 +56,16 @@ public class KPolylineImpl extends KContainerRenderingImpl implements KPolyline 
      * @ordered
      */
     protected EList<KPosition> points;
+
+    /**
+     * The cached value of the '{@link #getJointPointRendering() <em>Joint Point Rendering</em>}' containment reference.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see #getJointPointRendering()
+     * @generated
+     * @ordered
+     */
+    protected KRendering jointPointRendering;
 
     /**
      * <!-- begin-user-doc -->
@@ -90,11 +103,56 @@ public class KPolylineImpl extends KContainerRenderingImpl implements KPolyline 
      * <!-- end-user-doc -->
      * @generated
      */
+    public KRendering getJointPointRendering() {
+        return jointPointRendering;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public NotificationChain basicSetJointPointRendering(KRendering newJointPointRendering, NotificationChain msgs) {
+        KRendering oldJointPointRendering = jointPointRendering;
+        jointPointRendering = newJointPointRendering;
+        if (eNotificationRequired()) {
+            ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, KRenderingPackage.KPOLYLINE__JOINT_POINT_RENDERING, oldJointPointRendering, newJointPointRendering);
+            if (msgs == null) msgs = notification; else msgs.add(notification);
+        }
+        return msgs;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public void setJointPointRendering(KRendering newJointPointRendering) {
+        if (newJointPointRendering != jointPointRendering) {
+            NotificationChain msgs = null;
+            if (jointPointRendering != null)
+                msgs = ((InternalEObject)jointPointRendering).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - KRenderingPackage.KPOLYLINE__JOINT_POINT_RENDERING, null, msgs);
+            if (newJointPointRendering != null)
+                msgs = ((InternalEObject)newJointPointRendering).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - KRenderingPackage.KPOLYLINE__JOINT_POINT_RENDERING, null, msgs);
+            msgs = basicSetJointPointRendering(newJointPointRendering, msgs);
+            if (msgs != null) msgs.dispatch();
+        }
+        else if (eNotificationRequired())
+            eNotify(new ENotificationImpl(this, Notification.SET, KRenderingPackage.KPOLYLINE__JOINT_POINT_RENDERING, newJointPointRendering, newJointPointRendering));
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
     @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
         switch (featureID) {
             case KRenderingPackage.KPOLYLINE__POINTS:
                 return ((InternalEList<?>)getPoints()).basicRemove(otherEnd, msgs);
+            case KRenderingPackage.KPOLYLINE__JOINT_POINT_RENDERING:
+                return basicSetJointPointRendering(null, msgs);
         }
         return super.eInverseRemove(otherEnd, featureID, msgs);
     }
@@ -109,6 +167,8 @@ public class KPolylineImpl extends KContainerRenderingImpl implements KPolyline 
         switch (featureID) {
             case KRenderingPackage.KPOLYLINE__POINTS:
                 return getPoints();
+            case KRenderingPackage.KPOLYLINE__JOINT_POINT_RENDERING:
+                return getJointPointRendering();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -126,6 +186,9 @@ public class KPolylineImpl extends KContainerRenderingImpl implements KPolyline 
                 getPoints().clear();
                 getPoints().addAll((Collection<? extends KPosition>)newValue);
                 return;
+            case KRenderingPackage.KPOLYLINE__JOINT_POINT_RENDERING:
+                setJointPointRendering((KRendering)newValue);
+                return;
         }
         super.eSet(featureID, newValue);
     }
@@ -141,6 +204,9 @@ public class KPolylineImpl extends KContainerRenderingImpl implements KPolyline 
             case KRenderingPackage.KPOLYLINE__POINTS:
                 getPoints().clear();
                 return;
+            case KRenderingPackage.KPOLYLINE__JOINT_POINT_RENDERING:
+                setJointPointRendering((KRendering)null);
+                return;
         }
         super.eUnset(featureID);
     }
@@ -155,6 +221,8 @@ public class KPolylineImpl extends KContainerRenderingImpl implements KPolyline 
         switch (featureID) {
             case KRenderingPackage.KPOLYLINE__POINTS:
                 return points != null && !points.isEmpty();
+            case KRenderingPackage.KPOLYLINE__JOINT_POINT_RENDERING:
+                return jointPointRendering != null;
         }
         return super.eIsSet(featureID);
     }

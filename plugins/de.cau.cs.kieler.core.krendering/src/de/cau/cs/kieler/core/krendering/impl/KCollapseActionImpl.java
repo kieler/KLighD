@@ -13,27 +13,27 @@
  */
 package de.cau.cs.kieler.core.krendering.impl;
 
-import de.cau.cs.kieler.core.krendering.KExpandCollapseAction;
+import de.cau.cs.kieler.core.krendering.KCollapseAction;
 import de.cau.cs.kieler.core.krendering.KRenderingPackage;
 
 import org.eclipse.emf.ecore.EClass;
 
 /**
  * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>KExpand Collapse Action</b></em>'.
+ * An implementation of the model object '<em><b>KCollapse Action</b></em>'.
  * <!-- end-user-doc -->
  * <p>
  * </p>
  *
  * @generated
  */
-public class KExpandCollapseActionImpl extends KActionImpl implements KExpandCollapseAction {
+public class KCollapseActionImpl extends KActionImpl implements KCollapseAction {
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      */
-    protected KExpandCollapseActionImpl() {
+    protected KCollapseActionImpl() {
         super();
     }
 
@@ -44,7 +44,7 @@ public class KExpandCollapseActionImpl extends KActionImpl implements KExpandCol
      */
     @Override
     protected EClass eStaticClass() {
-        return KRenderingPackage.Literals.KEXPAND_COLLAPSE_ACTION;
+        return KRenderingPackage.Literals.KCOLLAPSE_ACTION;
     }
 
-} //KExpandCollapseActionImpl
+} //KCollapseActionImpl
