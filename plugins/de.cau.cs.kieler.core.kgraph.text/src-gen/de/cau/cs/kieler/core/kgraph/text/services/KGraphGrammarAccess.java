@@ -1007,7 +1007,7 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 
 	////| KGradient;
 	//KStyle:
-	//	KForegroundColor | KBackgroundColor | KLineWidth | KAlpha | KLineStyle | KLineCapStyle | KRotation | KFontBold |
+	//	KLineWidth | KForeground | KBackground | KVisibility | KLineStyle | KLineCapStyle | KRotation | KFontBold |
 	//	KFontItalic | KFontName | KFontSize | KVerticalAlignment | KHorizontalAlignment;
 	public KRenderingGrammarAccess.KStyleElements getKStyleAccess() {
 		return gaKRendering.getKStyleAccess();
@@ -1230,7 +1230,7 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//KAreaPlacementData:
-	//	"DirectPlacementData" "{" "topLeft" topLeft=KPosition ","? "bottomRight" bottomRight=KPosition "}";
+	//	"AreaPlacementData" "{" "topLeft" topLeft=KPosition ","? "bottomRight" bottomRight=KPosition "}";
 	public KRenderingGrammarAccess.KAreaPlacementDataElements getKAreaPlacementDataAccess() {
 		return gaKRendering.getKAreaPlacementDataAccess();
 	}
@@ -1300,64 +1300,56 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 		return getKBottomPositionAccess().getRule();
 	}
 
-	//KForegroundColor:
-	//	{KForegroundColor} "foregroundColor" red=EInt green=EInt blue=EInt propagateToChildren?="!"?;
-	public KRenderingGrammarAccess.KForegroundColorElements getKForegroundColorAccess() {
-		return gaKRendering.getKForegroundColorAccess();
+	//KColor:
+	//	{KColor} "color" red=EInt green=EInt blue=EInt propagateToChildren?="!"?;
+	public KRenderingGrammarAccess.KColorElements getKColorAccess() {
+		return gaKRendering.getKColorAccess();
 	}
 	
-	public ParserRule getKForegroundColorRule() {
-		return getKForegroundColorAccess().getRule();
+	public ParserRule getKColorRule() {
+		return getKColorAccess().getRule();
 	}
 
-	//KBackgroundColor:
-	//	{KBackgroundColor} "backgroundColor" red=EInt green=EInt blue=EInt propagateToChildren?="!"?;
-	public KRenderingGrammarAccess.KBackgroundColorElements getKBackgroundColorAccess() {
-		return gaKRendering.getKBackgroundColorAccess();
+	//KBackground:
+	//	"KBackground" "{" "color"? color=KColor "targetColor"? targetColor=KColor "alpha"? alpha=EInt "targetAlpha"?
+	//	targetAlpha=EInt "gradientAngle"? gradientAngle=EFloat "}";
+	public KRenderingGrammarAccess.KBackgroundElements getKBackgroundAccess() {
+		return gaKRendering.getKBackgroundAccess();
 	}
 	
-	public ParserRule getKBackgroundColorRule() {
-		return getKBackgroundColorAccess().getRule();
+	public ParserRule getKBackgroundRule() {
+		return getKBackgroundAccess().getRule();
+	}
+
+	//KForeground:
+	//	"KForeground" "{" "color"? color=KColor "targetColor"? targetColor=KColor "alpha"? alpha=EInt "targetAlpha"?
+	//	targetAlpha=EInt "gradientAngle"? gradientAngle=EFloat "}";
+	public KRenderingGrammarAccess.KForegroundElements getKForegroundAccess() {
+		return gaKRendering.getKForegroundAccess();
+	}
+	
+	public ParserRule getKForegroundRule() {
+		return getKForegroundAccess().getRule();
+	}
+
+	//KVisibility:
+	//	{KVisibility} "invisible" | isVisible?="visible";
+	public KRenderingGrammarAccess.KVisibilityElements getKVisibilityAccess() {
+		return gaKRendering.getKVisibilityAccess();
+	}
+	
+	public ParserRule getKVisibilityRule() {
+		return getKVisibilityAccess().getRule();
 	}
 
 	//KLineWidth:
-	//	"lineWidth" lineWidth=EInt propagateToChildren?="!"?;
+	//	"lineWidth" lineWidth=EInt propagateToChildren?="!"? "modifier"? "="? functionId=EString?;
 	public KRenderingGrammarAccess.KLineWidthElements getKLineWidthAccess() {
 		return gaKRendering.getKLineWidthAccess();
 	}
 	
 	public ParserRule getKLineWidthRule() {
 		return getKLineWidthAccess().getRule();
-	}
-
-	//KAlpha:
-	//	KForegroundAlpha | KBackgroundAlpha;
-	public KRenderingGrammarAccess.KAlphaElements getKAlphaAccess() {
-		return gaKRendering.getKAlphaAccess();
-	}
-	
-	public ParserRule getKAlphaRule() {
-		return getKAlphaAccess().getRule();
-	}
-
-	//KForegroundAlpha:
-	//	{KForegroundAlpha} "foregroundAlpha" alpha=EFloat propagateToChildren?="!"?;
-	public KRenderingGrammarAccess.KForegroundAlphaElements getKForegroundAlphaAccess() {
-		return gaKRendering.getKForegroundAlphaAccess();
-	}
-	
-	public ParserRule getKForegroundAlphaRule() {
-		return getKForegroundAlphaAccess().getRule();
-	}
-
-	//KBackgroundAlpha:
-	//	{KBackgroundAlpha} "backgroundAlpha" alpha=EFloat propagateToChildren?="!"?;
-	public KRenderingGrammarAccess.KBackgroundAlphaElements getKBackgroundAlphaAccess() {
-		return gaKRendering.getKBackgroundAlphaAccess();
-	}
-	
-	public ParserRule getKBackgroundAlphaRule() {
-		return getKBackgroundAlphaAccess().getRule();
 	}
 
 	//KLineStyle:

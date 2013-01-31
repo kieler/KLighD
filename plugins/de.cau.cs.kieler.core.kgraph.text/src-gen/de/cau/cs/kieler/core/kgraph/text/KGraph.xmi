@@ -350,10 +350,11 @@
         <classifier xsi:type="ecore:EClass" href="http://kieler.cs.cau.de/KRendering#//KStyle"/>
       </type>
       <alternatives xsi:type="xtext:Alternatives">
-        <elements xsi:type="xtext:RuleCall" rule="/1/@rules.29"/>
-        <elements xsi:type="xtext:RuleCall" rule="/1/@rules.30"/>
+        <elements xsi:type="xtext:RuleCall" rule="/1/@rules.33"/>
         <elements xsi:type="xtext:RuleCall" rule="/1/@rules.31"/>
+        <elements xsi:type="xtext:RuleCall" rule="/1/@rules.30"/>
         <elements xsi:type="xtext:RuleCall" rule="/1/@rules.32"/>
+        <elements xsi:type="xtext:RuleCall" rule="/1/@rules.34"/>
         <elements xsi:type="xtext:RuleCall" rule="/1/@rules.35"/>
         <elements xsi:type="xtext:RuleCall" rule="/1/@rules.36"/>
         <elements xsi:type="xtext:RuleCall" rule="/1/@rules.37"/>
@@ -362,14 +363,13 @@
         <elements xsi:type="xtext:RuleCall" rule="/1/@rules.40"/>
         <elements xsi:type="xtext:RuleCall" rule="/1/@rules.41"/>
         <elements xsi:type="xtext:RuleCall" rule="/1/@rules.42"/>
-        <elements xsi:type="xtext:RuleCall" rule="/1/@rules.43"/>
       </alternatives>
     </rules>
     <rules xsi:type="xtext:ParserRule" name="KPlacement">
       <type metamodel="/1/@metamodelDeclarations.0">
         <classifier xsi:type="ecore:EClass" href="http://kieler.cs.cau.de/KRendering#//KPlacement"/>
       </type>
-      <alternatives xsi:type="xtext:RuleCall" rule="/1/@rules.44"/>
+      <alternatives xsi:type="xtext:RuleCall" rule="/1/@rules.43"/>
     </rules>
     <rules xsi:type="xtext:ParserRule" name="KXPosition">
       <type metamodel="/1/@metamodelDeclarations.0">
@@ -560,11 +560,11 @@
         </elements>
         <elements xsi:type="xtext:Keyword" value="RoundedRectangle"/>
         <elements xsi:type="xtext:Assignment" feature="cornerWidth" operator="=">
-          <terminal xsi:type="xtext:RuleCall" rule="/1/@rules.49"/>
+          <terminal xsi:type="xtext:RuleCall" rule="/1/@rules.48"/>
         </elements>
         <elements xsi:type="xtext:Keyword" cardinality="?" value=","/>
         <elements xsi:type="xtext:Assignment" feature="cornerHeight" operator="=">
-          <terminal xsi:type="xtext:RuleCall" rule="/1/@rules.49"/>
+          <terminal xsi:type="xtext:RuleCall" rule="/1/@rules.48"/>
         </elements>
         <elements xsi:type="xtext:Group" cardinality="?">
           <elements xsi:type="xtext:Keyword" value="{"/>
@@ -692,7 +692,7 @@
         </elements>
         <elements xsi:type="xtext:Keyword" value="RoundedBendsPolyline"/>
         <elements xsi:type="xtext:Assignment" feature="bendRadius" operator="=">
-          <terminal xsi:type="xtext:RuleCall" rule="/1/@rules.49"/>
+          <terminal xsi:type="xtext:RuleCall" rule="/1/@rules.48"/>
         </elements>
         <elements xsi:type="xtext:Group" cardinality="?">
           <elements xsi:type="xtext:Keyword" value="{"/>
@@ -886,11 +886,11 @@
         </elements>
         <elements xsi:type="xtext:Keyword" value="Arc"/>
         <elements xsi:type="xtext:Assignment" feature="startAngle" operator="=">
-          <terminal xsi:type="xtext:RuleCall" rule="/1/@rules.49"/>
+          <terminal xsi:type="xtext:RuleCall" rule="/1/@rules.48"/>
         </elements>
         <elements xsi:type="xtext:Keyword" cardinality="?" value=","/>
         <elements xsi:type="xtext:Assignment" feature="arcAngle" operator="=">
-          <terminal xsi:type="xtext:RuleCall" rule="/1/@rules.49"/>
+          <terminal xsi:type="xtext:RuleCall" rule="/1/@rules.48"/>
         </elements>
         <elements xsi:type="xtext:Group" cardinality="?">
           <elements xsi:type="xtext:Keyword" value="{"/>
@@ -1185,36 +1185,36 @@
         </elements>
         <elements xsi:type="xtext:Keyword" value="absolute"/>
         <elements xsi:type="xtext:Assignment" feature="absolute" operator="=">
-          <terminal xsi:type="xtext:RuleCall" rule="/1/@rules.49"/>
+          <terminal xsi:type="xtext:RuleCall" rule="/1/@rules.48"/>
         </elements>
         <elements xsi:type="xtext:Group" cardinality="?">
           <elements xsi:type="xtext:Keyword" value="relative"/>
           <elements xsi:type="xtext:Assignment" feature="relative" operator="=">
-            <terminal xsi:type="xtext:RuleCall" rule="/1/@rules.49"/>
+            <terminal xsi:type="xtext:RuleCall" rule="/1/@rules.48"/>
           </elements>
         </elements>
         <elements xsi:type="xtext:Group" cardinality="?">
           <elements xsi:type="xtext:Keyword" value="xOffset"/>
           <elements xsi:type="xtext:Assignment" feature="xOffset" operator="=">
-            <terminal xsi:type="xtext:RuleCall" rule="/1/@rules.49"/>
+            <terminal xsi:type="xtext:RuleCall" rule="/1/@rules.48"/>
           </elements>
         </elements>
         <elements xsi:type="xtext:Group" cardinality="?">
           <elements xsi:type="xtext:Keyword" value="yOffset"/>
           <elements xsi:type="xtext:Assignment" feature="yOffset" operator="=">
-            <terminal xsi:type="xtext:RuleCall" rule="/1/@rules.49"/>
+            <terminal xsi:type="xtext:RuleCall" rule="/1/@rules.48"/>
           </elements>
         </elements>
         <elements xsi:type="xtext:Group" cardinality="?">
           <elements xsi:type="xtext:Keyword" value="width"/>
           <elements xsi:type="xtext:Assignment" feature="width" operator="=">
-            <terminal xsi:type="xtext:RuleCall" rule="/1/@rules.49"/>
+            <terminal xsi:type="xtext:RuleCall" rule="/1/@rules.48"/>
           </elements>
         </elements>
         <elements xsi:type="xtext:Group" cardinality="?">
           <elements xsi:type="xtext:Keyword" value="height"/>
           <elements xsi:type="xtext:Assignment" feature="height" operator="=">
-            <terminal xsi:type="xtext:RuleCall" rule="/1/@rules.49"/>
+            <terminal xsi:type="xtext:RuleCall" rule="/1/@rules.48"/>
           </elements>
         </elements>
         <elements xsi:type="xtext:Keyword" value="}"/>
@@ -1235,25 +1235,25 @@
         <elements xsi:type="xtext:Group" cardinality="?">
           <elements xsi:type="xtext:Keyword" value="minCellWidth"/>
           <elements xsi:type="xtext:Assignment" feature="minCellWidth" operator="=">
-            <terminal xsi:type="xtext:RuleCall" rule="/1/@rules.49"/>
+            <terminal xsi:type="xtext:RuleCall" rule="/1/@rules.48"/>
           </elements>
         </elements>
         <elements xsi:type="xtext:Group" cardinality="?">
           <elements xsi:type="xtext:Keyword" value="minCellHeight"/>
           <elements xsi:type="xtext:Assignment" feature="minCellHeight" operator="=">
-            <terminal xsi:type="xtext:RuleCall" rule="/1/@rules.49"/>
+            <terminal xsi:type="xtext:RuleCall" rule="/1/@rules.48"/>
           </elements>
         </elements>
         <elements xsi:type="xtext:Group" cardinality="?">
           <elements xsi:type="xtext:Keyword" value="maxCellWidth"/>
           <elements xsi:type="xtext:Assignment" feature="maxCellWidth" operator="=">
-            <terminal xsi:type="xtext:RuleCall" rule="/1/@rules.49"/>
+            <terminal xsi:type="xtext:RuleCall" rule="/1/@rules.48"/>
           </elements>
         </elements>
         <elements xsi:type="xtext:Group" cardinality="?">
           <elements xsi:type="xtext:Keyword" value="maxCellHeight"/>
           <elements xsi:type="xtext:Assignment" feature="maxCellHeight" operator="=">
-            <terminal xsi:type="xtext:RuleCall" rule="/1/@rules.49"/>
+            <terminal xsi:type="xtext:RuleCall" rule="/1/@rules.48"/>
           </elements>
         </elements>
         <elements xsi:type="xtext:Group" cardinality="?">
@@ -1276,7 +1276,7 @@
         <classifier xsi:type="ecore:EClass" href="http://kieler.cs.cau.de/KRendering#//KAreaPlacementData"/>
       </type>
       <alternatives xsi:type="xtext:Group">
-        <elements xsi:type="xtext:Keyword" value="DirectPlacementData"/>
+        <elements xsi:type="xtext:Keyword" value="AreaPlacementData"/>
         <elements xsi:type="xtext:Keyword" value="{"/>
         <elements xsi:type="xtext:Keyword" value="topLeft"/>
         <elements xsi:type="xtext:Assignment" feature="topLeft" operator="=">
@@ -1304,12 +1304,12 @@
         <elements xsi:type="xtext:Keyword" cardinality="?" value=","/>
         <elements xsi:type="xtext:Keyword" value="verticalAlignment"/>
         <elements xsi:type="xtext:Assignment" feature="verticalAlignment" operator="=">
-          <terminal xsi:type="xtext:RuleCall" rule="/1/@rules.47"/>
+          <terminal xsi:type="xtext:RuleCall" rule="/1/@rules.46"/>
         </elements>
         <elements xsi:type="xtext:Keyword" cardinality="?" value=","/>
         <elements xsi:type="xtext:Keyword" value="horizontalAlignment"/>
         <elements xsi:type="xtext:Assignment" feature="horizontalAlignment" operator="=">
-          <terminal xsi:type="xtext:RuleCall" rule="/1/@rules.48"/>
+          <terminal xsi:type="xtext:RuleCall" rule="/1/@rules.47"/>
         </elements>
         <elements xsi:type="xtext:Keyword" cardinality="?" value=","/>
         <elements xsi:type="xtext:Keyword" value="}"/>
@@ -1341,10 +1341,10 @@
         </elements>
         <elements xsi:type="xtext:Keyword" value="left"/>
         <elements xsi:type="xtext:Assignment" feature="absolute" operator="=">
-          <terminal xsi:type="xtext:RuleCall" rule="/1/@rules.49"/>
+          <terminal xsi:type="xtext:RuleCall" rule="/1/@rules.48"/>
         </elements>
         <elements xsi:type="xtext:Assignment" feature="relative" operator="=">
-          <terminal xsi:type="xtext:RuleCall" rule="/1/@rules.49"/>
+          <terminal xsi:type="xtext:RuleCall" rule="/1/@rules.48"/>
         </elements>
       </alternatives>
     </rules>
@@ -1360,10 +1360,10 @@
         </elements>
         <elements xsi:type="xtext:Keyword" value="right"/>
         <elements xsi:type="xtext:Assignment" feature="absolute" operator="=">
-          <terminal xsi:type="xtext:RuleCall" rule="/1/@rules.49"/>
+          <terminal xsi:type="xtext:RuleCall" rule="/1/@rules.48"/>
         </elements>
         <elements xsi:type="xtext:Assignment" feature="relative" operator="=">
-          <terminal xsi:type="xtext:RuleCall" rule="/1/@rules.49"/>
+          <terminal xsi:type="xtext:RuleCall" rule="/1/@rules.48"/>
         </elements>
       </alternatives>
     </rules>
@@ -1379,10 +1379,10 @@
         </elements>
         <elements xsi:type="xtext:Keyword" value="top"/>
         <elements xsi:type="xtext:Assignment" feature="absolute" operator="=">
-          <terminal xsi:type="xtext:RuleCall" rule="/1/@rules.49"/>
+          <terminal xsi:type="xtext:RuleCall" rule="/1/@rules.48"/>
         </elements>
         <elements xsi:type="xtext:Assignment" feature="relative" operator="=">
-          <terminal xsi:type="xtext:RuleCall" rule="/1/@rules.49"/>
+          <terminal xsi:type="xtext:RuleCall" rule="/1/@rules.48"/>
         </elements>
       </alternatives>
     </rules>
@@ -1398,60 +1398,113 @@
         </elements>
         <elements xsi:type="xtext:Keyword" value="bottom"/>
         <elements xsi:type="xtext:Assignment" feature="absolute" operator="=">
-          <terminal xsi:type="xtext:RuleCall" rule="/1/@rules.49"/>
+          <terminal xsi:type="xtext:RuleCall" rule="/1/@rules.48"/>
         </elements>
         <elements xsi:type="xtext:Assignment" feature="relative" operator="=">
-          <terminal xsi:type="xtext:RuleCall" rule="/1/@rules.49"/>
+          <terminal xsi:type="xtext:RuleCall" rule="/1/@rules.48"/>
         </elements>
       </alternatives>
     </rules>
-    <rules xsi:type="xtext:ParserRule" name="KForegroundColor">
+    <rules xsi:type="xtext:ParserRule" name="KColor">
       <type metamodel="/1/@metamodelDeclarations.0">
-        <classifier xsi:type="ecore:EClass" href="http://kieler.cs.cau.de/KRendering#//KForegroundColor"/>
+        <classifier xsi:type="ecore:EClass" href="http://kieler.cs.cau.de/KRendering#//KColor"/>
       </type>
       <alternatives xsi:type="xtext:Group">
         <elements xsi:type="xtext:Action">
           <type metamodel="/1/@metamodelDeclarations.0">
-            <classifier xsi:type="ecore:EClass" href="http://kieler.cs.cau.de/KRendering#//KForegroundColor"/>
+            <classifier xsi:type="ecore:EClass" href="http://kieler.cs.cau.de/KRendering#//KColor"/>
           </type>
         </elements>
-        <elements xsi:type="xtext:Keyword" value="foregroundColor"/>
+        <elements xsi:type="xtext:Keyword" value="color"/>
         <elements xsi:type="xtext:Assignment" feature="red" operator="=">
-          <terminal xsi:type="xtext:RuleCall" rule="/1/@rules.51"/>
+          <terminal xsi:type="xtext:RuleCall" rule="/1/@rules.50"/>
         </elements>
         <elements xsi:type="xtext:Assignment" feature="green" operator="=">
-          <terminal xsi:type="xtext:RuleCall" rule="/1/@rules.51"/>
+          <terminal xsi:type="xtext:RuleCall" rule="/1/@rules.50"/>
         </elements>
         <elements xsi:type="xtext:Assignment" feature="blue" operator="=">
-          <terminal xsi:type="xtext:RuleCall" rule="/1/@rules.51"/>
+          <terminal xsi:type="xtext:RuleCall" rule="/1/@rules.50"/>
         </elements>
         <elements xsi:type="xtext:Assignment" cardinality="?" feature="propagateToChildren" operator="?=">
           <terminal xsi:type="xtext:Keyword" value="!"/>
         </elements>
       </alternatives>
     </rules>
-    <rules xsi:type="xtext:ParserRule" name="KBackgroundColor">
+    <rules xsi:type="xtext:ParserRule" name="KBackground">
       <type metamodel="/1/@metamodelDeclarations.0">
-        <classifier xsi:type="ecore:EClass" href="http://kieler.cs.cau.de/KRendering#//KBackgroundColor"/>
+        <classifier xsi:type="ecore:EClass" href="http://kieler.cs.cau.de/KRendering#//KBackground"/>
       </type>
       <alternatives xsi:type="xtext:Group">
-        <elements xsi:type="xtext:Action">
-          <type metamodel="/1/@metamodelDeclarations.0">
-            <classifier xsi:type="ecore:EClass" href="http://kieler.cs.cau.de/KRendering#//KBackgroundColor"/>
-          </type>
+        <elements xsi:type="xtext:Keyword" value="KBackground"/>
+        <elements xsi:type="xtext:Keyword" value="{"/>
+        <elements xsi:type="xtext:Keyword" cardinality="?" value="color"/>
+        <elements xsi:type="xtext:Assignment" feature="color" operator="=">
+          <terminal xsi:type="xtext:RuleCall" rule="/1/@rules.29"/>
         </elements>
-        <elements xsi:type="xtext:Keyword" value="backgroundColor"/>
-        <elements xsi:type="xtext:Assignment" feature="red" operator="=">
-          <terminal xsi:type="xtext:RuleCall" rule="/1/@rules.51"/>
+        <elements xsi:type="xtext:Keyword" cardinality="?" value="targetColor"/>
+        <elements xsi:type="xtext:Assignment" feature="targetColor" operator="=">
+          <terminal xsi:type="xtext:RuleCall" rule="/1/@rules.29"/>
         </elements>
-        <elements xsi:type="xtext:Assignment" feature="green" operator="=">
-          <terminal xsi:type="xtext:RuleCall" rule="/1/@rules.51"/>
+        <elements xsi:type="xtext:Keyword" cardinality="?" value="alpha"/>
+        <elements xsi:type="xtext:Assignment" feature="alpha" operator="=">
+          <terminal xsi:type="xtext:RuleCall" rule="/1/@rules.50"/>
         </elements>
-        <elements xsi:type="xtext:Assignment" feature="blue" operator="=">
-          <terminal xsi:type="xtext:RuleCall" rule="/1/@rules.51"/>
+        <elements xsi:type="xtext:Keyword" cardinality="?" value="targetAlpha"/>
+        <elements xsi:type="xtext:Assignment" feature="targetAlpha" operator="=">
+          <terminal xsi:type="xtext:RuleCall" rule="/1/@rules.50"/>
         </elements>
-        <elements xsi:type="xtext:Assignment" cardinality="?" feature="propagateToChildren" operator="?=">
-          <terminal xsi:type="xtext:Keyword" value="!"/>
+        <elements xsi:type="xtext:Keyword" cardinality="?" value="gradientAngle"/>
+        <elements xsi:type="xtext:Assignment" feature="gradientAngle" operator="=">
+          <terminal xsi:type="xtext:RuleCall" rule="/1/@rules.48"/>
+        </elements>
+        <elements xsi:type="xtext:Keyword" value="}"/>
+      </alternatives>
+    </rules>
+    <rules xsi:type="xtext:ParserRule" name="KForeground">
+      <type metamodel="/1/@metamodelDeclarations.0">
+        <classifier xsi:type="ecore:EClass" href="http://kieler.cs.cau.de/KRendering#//KForeground"/>
+      </type>
+      <alternatives xsi:type="xtext:Group">
+        <elements xsi:type="xtext:Keyword" value="KForeground"/>
+        <elements xsi:type="xtext:Keyword" value="{"/>
+        <elements xsi:type="xtext:Keyword" cardinality="?" value="color"/>
+        <elements xsi:type="xtext:Assignment" feature="color" operator="=">
+          <terminal xsi:type="xtext:RuleCall" rule="/1/@rules.29"/>
+        </elements>
+        <elements xsi:type="xtext:Keyword" cardinality="?" value="targetColor"/>
+        <elements xsi:type="xtext:Assignment" feature="targetColor" operator="=">
+          <terminal xsi:type="xtext:RuleCall" rule="/1/@rules.29"/>
+        </elements>
+        <elements xsi:type="xtext:Keyword" cardinality="?" value="alpha"/>
+        <elements xsi:type="xtext:Assignment" feature="alpha" operator="=">
+          <terminal xsi:type="xtext:RuleCall" rule="/1/@rules.50"/>
+        </elements>
+        <elements xsi:type="xtext:Keyword" cardinality="?" value="targetAlpha"/>
+        <elements xsi:type="xtext:Assignment" feature="targetAlpha" operator="=">
+          <terminal xsi:type="xtext:RuleCall" rule="/1/@rules.50"/>
+        </elements>
+        <elements xsi:type="xtext:Keyword" cardinality="?" value="gradientAngle"/>
+        <elements xsi:type="xtext:Assignment" feature="gradientAngle" operator="=">
+          <terminal xsi:type="xtext:RuleCall" rule="/1/@rules.48"/>
+        </elements>
+        <elements xsi:type="xtext:Keyword" value="}"/>
+      </alternatives>
+    </rules>
+    <rules xsi:type="xtext:ParserRule" name="KVisibility">
+      <type metamodel="/1/@metamodelDeclarations.0">
+        <classifier xsi:type="ecore:EClass" href="http://kieler.cs.cau.de/KRendering#//KVisibility"/>
+      </type>
+      <alternatives xsi:type="xtext:Alternatives">
+        <elements xsi:type="xtext:Group">
+          <elements xsi:type="xtext:Action">
+            <type metamodel="/1/@metamodelDeclarations.0">
+              <classifier xsi:type="ecore:EClass" href="http://kieler.cs.cau.de/KRendering#//KVisibility"/>
+            </type>
+          </elements>
+          <elements xsi:type="xtext:Keyword" value="invisible"/>
+        </elements>
+        <elements xsi:type="xtext:Assignment" feature="isVisible" operator="?=">
+          <terminal xsi:type="xtext:Keyword" value="visible"/>
         </elements>
       </alternatives>
     </rules>
@@ -1462,57 +1515,15 @@
       <alternatives xsi:type="xtext:Group">
         <elements xsi:type="xtext:Keyword" value="lineWidth"/>
         <elements xsi:type="xtext:Assignment" feature="lineWidth" operator="=">
-          <terminal xsi:type="xtext:RuleCall" rule="/1/@rules.51"/>
+          <terminal xsi:type="xtext:RuleCall" rule="/1/@rules.50"/>
         </elements>
         <elements xsi:type="xtext:Assignment" cardinality="?" feature="propagateToChildren" operator="?=">
           <terminal xsi:type="xtext:Keyword" value="!"/>
         </elements>
-      </alternatives>
-    </rules>
-    <rules xsi:type="xtext:ParserRule" name="KAlpha">
-      <type metamodel="/1/@metamodelDeclarations.0">
-        <classifier xsi:type="ecore:EClass" href="http://kieler.cs.cau.de/KRendering#//KAlpha"/>
-      </type>
-      <alternatives xsi:type="xtext:Alternatives">
-        <elements xsi:type="xtext:RuleCall" rule="/1/@rules.33"/>
-        <elements xsi:type="xtext:RuleCall" rule="/1/@rules.34"/>
-      </alternatives>
-    </rules>
-    <rules xsi:type="xtext:ParserRule" name="KForegroundAlpha">
-      <type metamodel="/1/@metamodelDeclarations.0">
-        <classifier xsi:type="ecore:EClass" href="http://kieler.cs.cau.de/KRendering#//KForegroundAlpha"/>
-      </type>
-      <alternatives xsi:type="xtext:Group">
-        <elements xsi:type="xtext:Action">
-          <type metamodel="/1/@metamodelDeclarations.0">
-            <classifier xsi:type="ecore:EClass" href="http://kieler.cs.cau.de/KRendering#//KForegroundAlpha"/>
-          </type>
-        </elements>
-        <elements xsi:type="xtext:Keyword" value="foregroundAlpha"/>
-        <elements xsi:type="xtext:Assignment" feature="alpha" operator="=">
-          <terminal xsi:type="xtext:RuleCall" rule="/1/@rules.49"/>
-        </elements>
-        <elements xsi:type="xtext:Assignment" cardinality="?" feature="propagateToChildren" operator="?=">
-          <terminal xsi:type="xtext:Keyword" value="!"/>
-        </elements>
-      </alternatives>
-    </rules>
-    <rules xsi:type="xtext:ParserRule" name="KBackgroundAlpha">
-      <type metamodel="/1/@metamodelDeclarations.0">
-        <classifier xsi:type="ecore:EClass" href="http://kieler.cs.cau.de/KRendering#//KBackgroundAlpha"/>
-      </type>
-      <alternatives xsi:type="xtext:Group">
-        <elements xsi:type="xtext:Action">
-          <type metamodel="/1/@metamodelDeclarations.0">
-            <classifier xsi:type="ecore:EClass" href="http://kieler.cs.cau.de/KRendering#//KBackgroundAlpha"/>
-          </type>
-        </elements>
-        <elements xsi:type="xtext:Keyword" value="backgroundAlpha"/>
-        <elements xsi:type="xtext:Assignment" feature="alpha" operator="=">
-          <terminal xsi:type="xtext:RuleCall" rule="/1/@rules.49"/>
-        </elements>
-        <elements xsi:type="xtext:Assignment" cardinality="?" feature="propagateToChildren" operator="?=">
-          <terminal xsi:type="xtext:Keyword" value="!"/>
+        <elements xsi:type="xtext:Keyword" cardinality="?" value="modifier"/>
+        <elements xsi:type="xtext:Keyword" cardinality="?" value="="/>
+        <elements xsi:type="xtext:Assignment" cardinality="?" feature="functionId" operator="=">
+          <terminal xsi:type="xtext:RuleCall" rule="/2/@rules.5"/>
         </elements>
       </alternatives>
     </rules>
@@ -1528,7 +1539,7 @@
         </elements>
         <elements xsi:type="xtext:Keyword" value="lineStyle"/>
         <elements xsi:type="xtext:Assignment" feature="lineStyle" operator="=">
-          <terminal xsi:type="xtext:RuleCall" rule="/1/@rules.45"/>
+          <terminal xsi:type="xtext:RuleCall" rule="/1/@rules.44"/>
         </elements>
         <elements xsi:type="xtext:Assignment" cardinality="?" feature="propagateToChildren" operator="?=">
           <terminal xsi:type="xtext:Keyword" value="!"/>
@@ -1547,7 +1558,7 @@
         </elements>
         <elements xsi:type="xtext:Keyword" value="lineCapStyle"/>
         <elements xsi:type="xtext:Assignment" feature="lineCapStyle" operator="=">
-          <terminal xsi:type="xtext:RuleCall" rule="/1/@rules.46"/>
+          <terminal xsi:type="xtext:RuleCall" rule="/1/@rules.45"/>
         </elements>
       </alternatives>
     </rules>
@@ -1563,7 +1574,7 @@
         </elements>
         <elements xsi:type="xtext:Keyword" value="rotation"/>
         <elements xsi:type="xtext:Assignment" feature="rotation" operator="=">
-          <terminal xsi:type="xtext:RuleCall" rule="/1/@rules.49"/>
+          <terminal xsi:type="xtext:RuleCall" rule="/1/@rules.48"/>
         </elements>
         <elements xsi:type="xtext:Assignment" cardinality="?" feature="propagateToChildren" operator="?=">
           <terminal xsi:type="xtext:Keyword" value="!"/>
@@ -1627,7 +1638,7 @@
       <alternatives xsi:type="xtext:Group">
         <elements xsi:type="xtext:Keyword" value="fontSize"/>
         <elements xsi:type="xtext:Assignment" feature="size" operator="=">
-          <terminal xsi:type="xtext:RuleCall" rule="/1/@rules.51"/>
+          <terminal xsi:type="xtext:RuleCall" rule="/1/@rules.50"/>
         </elements>
         <elements xsi:type="xtext:Assignment" cardinality="?" feature="propagateToChildren" operator="?=">
           <terminal xsi:type="xtext:Keyword" value="!"/>
@@ -1646,7 +1657,7 @@
         </elements>
         <elements xsi:type="xtext:Keyword" value="verticalAlignment"/>
         <elements xsi:type="xtext:Assignment" feature="verticalAlignment" operator="=">
-          <terminal xsi:type="xtext:RuleCall" rule="/1/@rules.47"/>
+          <terminal xsi:type="xtext:RuleCall" rule="/1/@rules.46"/>
         </elements>
         <elements xsi:type="xtext:Assignment" cardinality="?" feature="propagateToChildren" operator="?=">
           <terminal xsi:type="xtext:Keyword" value="!"/>
@@ -1665,7 +1676,7 @@
         </elements>
         <elements xsi:type="xtext:Keyword" value="horizontalAlignment"/>
         <elements xsi:type="xtext:Assignment" feature="horizontalAlignment" operator="=">
-          <terminal xsi:type="xtext:RuleCall" rule="/1/@rules.48"/>
+          <terminal xsi:type="xtext:RuleCall" rule="/1/@rules.47"/>
         </elements>
         <elements xsi:type="xtext:Assignment" cardinality="?" feature="propagateToChildren" operator="?=">
           <terminal xsi:type="xtext:Keyword" value="!"/>
@@ -1684,7 +1695,7 @@
         </elements>
         <elements xsi:type="xtext:Keyword" value="gridPlacement"/>
         <elements xsi:type="xtext:Assignment" feature="numColumns" operator="=">
-          <terminal xsi:type="xtext:RuleCall" rule="/1/@rules.51"/>
+          <terminal xsi:type="xtext:RuleCall" rule="/1/@rules.50"/>
         </elements>
       </alternatives>
     </rules>
@@ -1837,25 +1848,25 @@
         <elements xsi:type="xtext:Group" cardinality="?">
           <elements xsi:type="xtext:Keyword" value="xpos"/>
           <elements xsi:type="xtext:Assignment" feature="xpos" operator="=">
-            <terminal xsi:type="xtext:RuleCall" rule="/1/@rules.49"/>
+            <terminal xsi:type="xtext:RuleCall" rule="/1/@rules.48"/>
           </elements>
         </elements>
         <elements xsi:type="xtext:Group" cardinality="?">
           <elements xsi:type="xtext:Keyword" value="ypos"/>
           <elements xsi:type="xtext:Assignment" feature="ypos" operator="=">
-            <terminal xsi:type="xtext:RuleCall" rule="/1/@rules.49"/>
+            <terminal xsi:type="xtext:RuleCall" rule="/1/@rules.48"/>
           </elements>
         </elements>
         <elements xsi:type="xtext:Group" cardinality="?">
           <elements xsi:type="xtext:Keyword" value="width"/>
           <elements xsi:type="xtext:Assignment" feature="width" operator="=">
-            <terminal xsi:type="xtext:RuleCall" rule="/1/@rules.49"/>
+            <terminal xsi:type="xtext:RuleCall" rule="/1/@rules.48"/>
           </elements>
         </elements>
         <elements xsi:type="xtext:Group" cardinality="?">
           <elements xsi:type="xtext:Keyword" value="height"/>
           <elements xsi:type="xtext:Assignment" feature="height" operator="=">
-            <terminal xsi:type="xtext:RuleCall" rule="/1/@rules.49"/>
+            <terminal xsi:type="xtext:RuleCall" rule="/1/@rules.48"/>
           </elements>
         </elements>
         <elements xsi:type="xtext:Group" cardinality="?">
@@ -1895,25 +1906,25 @@
         <elements xsi:type="xtext:Group" cardinality="?">
           <elements xsi:type="xtext:Keyword" value="top"/>
           <elements xsi:type="xtext:Assignment" feature="top" operator="=">
-            <terminal xsi:type="xtext:RuleCall" rule="/1/@rules.49"/>
+            <terminal xsi:type="xtext:RuleCall" rule="/1/@rules.48"/>
           </elements>
         </elements>
         <elements xsi:type="xtext:Group" cardinality="?">
           <elements xsi:type="xtext:Keyword" value="bottom"/>
           <elements xsi:type="xtext:Assignment" feature="bottom" operator="=">
-            <terminal xsi:type="xtext:RuleCall" rule="/1/@rules.49"/>
+            <terminal xsi:type="xtext:RuleCall" rule="/1/@rules.48"/>
           </elements>
         </elements>
         <elements xsi:type="xtext:Group" cardinality="?">
           <elements xsi:type="xtext:Keyword" value="left"/>
           <elements xsi:type="xtext:Assignment" feature="left" operator="=">
-            <terminal xsi:type="xtext:RuleCall" rule="/1/@rules.49"/>
+            <terminal xsi:type="xtext:RuleCall" rule="/1/@rules.48"/>
           </elements>
         </elements>
         <elements xsi:type="xtext:Group" cardinality="?">
           <elements xsi:type="xtext:Keyword" value="right"/>
           <elements xsi:type="xtext:Assignment" feature="right" operator="=">
-            <terminal xsi:type="xtext:RuleCall" rule="/1/@rules.49"/>
+            <terminal xsi:type="xtext:RuleCall" rule="/1/@rules.48"/>
           </elements>
         </elements>
         <elements xsi:type="xtext:Keyword" value="}"/>
@@ -1988,13 +1999,13 @@
         <elements xsi:type="xtext:Group">
           <elements xsi:type="xtext:Keyword" value="x"/>
           <elements xsi:type="xtext:Assignment" feature="x" operator="=">
-            <terminal xsi:type="xtext:RuleCall" rule="/1/@rules.49"/>
+            <terminal xsi:type="xtext:RuleCall" rule="/1/@rules.48"/>
           </elements>
         </elements>
         <elements xsi:type="xtext:Group">
           <elements xsi:type="xtext:Keyword" value="y"/>
           <elements xsi:type="xtext:Assignment" feature="y" operator="=">
-            <terminal xsi:type="xtext:RuleCall" rule="/1/@rules.49"/>
+            <terminal xsi:type="xtext:RuleCall" rule="/1/@rules.48"/>
           </elements>
         </elements>
       </alternatives>

@@ -369,41 +369,41 @@ ruleKStyle returns [EObject current=null]
     @after { leaveRule(); }:
 (
     { 
-        newCompositeNode(grammarAccess.getKStyleAccess().getKForegroundColorParserRuleCall_0()); 
+        newCompositeNode(grammarAccess.getKStyleAccess().getKLineWidthParserRuleCall_0()); 
     }
-    this_KForegroundColor_0=ruleKForegroundColor
+    this_KLineWidth_0=ruleKLineWidth
     { 
-        $current = $this_KForegroundColor_0.current; 
+        $current = $this_KLineWidth_0.current; 
         afterParserOrEnumRuleCall();
     }
 
     |
     { 
-        newCompositeNode(grammarAccess.getKStyleAccess().getKBackgroundColorParserRuleCall_1()); 
+        newCompositeNode(grammarAccess.getKStyleAccess().getKForegroundParserRuleCall_1()); 
     }
-    this_KBackgroundColor_1=ruleKBackgroundColor
+    this_KForeground_1=ruleKForeground
     { 
-        $current = $this_KBackgroundColor_1.current; 
+        $current = $this_KForeground_1.current; 
         afterParserOrEnumRuleCall();
     }
 
     |
     { 
-        newCompositeNode(grammarAccess.getKStyleAccess().getKLineWidthParserRuleCall_2()); 
+        newCompositeNode(grammarAccess.getKStyleAccess().getKBackgroundParserRuleCall_2()); 
     }
-    this_KLineWidth_2=ruleKLineWidth
+    this_KBackground_2=ruleKBackground
     { 
-        $current = $this_KLineWidth_2.current; 
+        $current = $this_KBackground_2.current; 
         afterParserOrEnumRuleCall();
     }
 
     |
     { 
-        newCompositeNode(grammarAccess.getKStyleAccess().getKAlphaParserRuleCall_3()); 
+        newCompositeNode(grammarAccess.getKStyleAccess().getKVisibilityParserRuleCall_3()); 
     }
-    this_KAlpha_3=ruleKAlpha
+    this_KVisibility_3=ruleKVisibility
     { 
-        $current = $this_KAlpha_3.current; 
+        $current = $this_KVisibility_3.current; 
         afterParserOrEnumRuleCall();
     }
 
@@ -3636,9 +3636,9 @@ ruleKAreaPlacementData returns [EObject current=null]
     @init { enterRule(); 
     }
     @after { leaveRule(); }:
-(	otherlv_0='DirectPlacementData' 
+(	otherlv_0='AreaPlacementData' 
     {
-    	newLeafNode(otherlv_0, grammarAccess.getKAreaPlacementDataAccess().getDirectPlacementDataKeyword_0());
+    	newLeafNode(otherlv_0, grammarAccess.getKAreaPlacementDataAccess().getAreaPlacementDataKeyword_0());
     }
 	otherlv_1='{' 
     {
@@ -4143,38 +4143,38 @@ ruleKBottomPosition returns [EObject current=null]
 
 
 
-// Entry rule entryRuleKForegroundColor
-entryRuleKForegroundColor returns [EObject current=null] 
+// Entry rule entryRuleKColor
+entryRuleKColor returns [EObject current=null] 
 	:
-	{ newCompositeNode(grammarAccess.getKForegroundColorRule()); }
-	 iv_ruleKForegroundColor=ruleKForegroundColor 
-	 { $current=$iv_ruleKForegroundColor.current; } 
+	{ newCompositeNode(grammarAccess.getKColorRule()); }
+	 iv_ruleKColor=ruleKColor 
+	 { $current=$iv_ruleKColor.current; } 
 	 EOF 
 ;
 
-// Rule KForegroundColor
-ruleKForegroundColor returns [EObject current=null] 
+// Rule KColor
+ruleKColor returns [EObject current=null] 
     @init { enterRule(); 
     }
     @after { leaveRule(); }:
 ((
     {
         $current = forceCreateModelElement(
-            grammarAccess.getKForegroundColorAccess().getKForegroundColorAction_0(),
+            grammarAccess.getKColorAccess().getKColorAction_0(),
             $current);
     }
-)	otherlv_1='foregroundColor' 
+)	otherlv_1='color' 
     {
-    	newLeafNode(otherlv_1, grammarAccess.getKForegroundColorAccess().getForegroundColorKeyword_1());
+    	newLeafNode(otherlv_1, grammarAccess.getKColorAccess().getColorKeyword_1());
     }
 (
 (
 		{ 
-	        newCompositeNode(grammarAccess.getKForegroundColorAccess().getRedEIntParserRuleCall_2_0()); 
+	        newCompositeNode(grammarAccess.getKColorAccess().getRedEIntParserRuleCall_2_0()); 
 	    }
 		lv_red_2_0=ruleEInt		{
 	        if ($current==null) {
-	            $current = createModelElementForParent(grammarAccess.getKForegroundColorRule());
+	            $current = createModelElementForParent(grammarAccess.getKColorRule());
 	        }
        		set(
        			$current, 
@@ -4188,11 +4188,11 @@ ruleKForegroundColor returns [EObject current=null]
 )(
 (
 		{ 
-	        newCompositeNode(grammarAccess.getKForegroundColorAccess().getGreenEIntParserRuleCall_3_0()); 
+	        newCompositeNode(grammarAccess.getKColorAccess().getGreenEIntParserRuleCall_3_0()); 
 	    }
 		lv_green_3_0=ruleEInt		{
 	        if ($current==null) {
-	            $current = createModelElementForParent(grammarAccess.getKForegroundColorRule());
+	            $current = createModelElementForParent(grammarAccess.getKColorRule());
 	        }
        		set(
        			$current, 
@@ -4206,11 +4206,11 @@ ruleKForegroundColor returns [EObject current=null]
 )(
 (
 		{ 
-	        newCompositeNode(grammarAccess.getKForegroundColorAccess().getBlueEIntParserRuleCall_4_0()); 
+	        newCompositeNode(grammarAccess.getKColorAccess().getBlueEIntParserRuleCall_4_0()); 
 	    }
 		lv_blue_4_0=ruleEInt		{
 	        if ($current==null) {
-	            $current = createModelElementForParent(grammarAccess.getKForegroundColorRule());
+	            $current = createModelElementForParent(grammarAccess.getKColorRule());
 	        }
        		set(
        			$current, 
@@ -4225,12 +4225,12 @@ ruleKForegroundColor returns [EObject current=null]
 (
 		lv_propagateToChildren_5_0=	'!' 
     {
-        newLeafNode(lv_propagateToChildren_5_0, grammarAccess.getKForegroundColorAccess().getPropagateToChildrenExclamationMarkKeyword_5_0());
+        newLeafNode(lv_propagateToChildren_5_0, grammarAccess.getKColorAccess().getPropagateToChildrenExclamationMarkKeyword_5_0());
     }
  
 	    {
 	        if ($current==null) {
-	            $current = createModelElement(grammarAccess.getKForegroundColorRule());
+	            $current = createModelElement(grammarAccess.getKColorRule());
 	        }
        		setWithLastConsumed($current, "propagateToChildren", true, "!");
 	    }
@@ -4243,100 +4243,333 @@ ruleKForegroundColor returns [EObject current=null]
 
 
 
-// Entry rule entryRuleKBackgroundColor
-entryRuleKBackgroundColor returns [EObject current=null] 
+// Entry rule entryRuleKBackground
+entryRuleKBackground returns [EObject current=null] 
 	:
-	{ newCompositeNode(grammarAccess.getKBackgroundColorRule()); }
-	 iv_ruleKBackgroundColor=ruleKBackgroundColor 
-	 { $current=$iv_ruleKBackgroundColor.current; } 
+	{ newCompositeNode(grammarAccess.getKBackgroundRule()); }
+	 iv_ruleKBackground=ruleKBackground 
+	 { $current=$iv_ruleKBackground.current; } 
 	 EOF 
 ;
 
-// Rule KBackgroundColor
-ruleKBackgroundColor returns [EObject current=null] 
+// Rule KBackground
+ruleKBackground returns [EObject current=null] 
     @init { enterRule(); 
     }
     @after { leaveRule(); }:
-((
+(	otherlv_0='KBackground' 
+    {
+    	newLeafNode(otherlv_0, grammarAccess.getKBackgroundAccess().getKBackgroundKeyword_0());
+    }
+	otherlv_1='{' 
+    {
+    	newLeafNode(otherlv_1, grammarAccess.getKBackgroundAccess().getLeftCurlyBracketKeyword_1());
+    }
+(	otherlv_2='color' 
+    {
+    	newLeafNode(otherlv_2, grammarAccess.getKBackgroundAccess().getColorKeyword_2());
+    }
+)?(
+(
+		{ 
+	        newCompositeNode(grammarAccess.getKBackgroundAccess().getColorKColorParserRuleCall_3_0()); 
+	    }
+		lv_color_3_0=ruleKColor		{
+	        if ($current==null) {
+	            $current = createModelElementForParent(grammarAccess.getKBackgroundRule());
+	        }
+       		set(
+       			$current, 
+       			"color",
+        		lv_color_3_0, 
+        		"KColor");
+	        afterParserOrEnumRuleCall();
+	    }
+
+)
+)(	otherlv_4='targetColor' 
+    {
+    	newLeafNode(otherlv_4, grammarAccess.getKBackgroundAccess().getTargetColorKeyword_4());
+    }
+)?(
+(
+		{ 
+	        newCompositeNode(grammarAccess.getKBackgroundAccess().getTargetColorKColorParserRuleCall_5_0()); 
+	    }
+		lv_targetColor_5_0=ruleKColor		{
+	        if ($current==null) {
+	            $current = createModelElementForParent(grammarAccess.getKBackgroundRule());
+	        }
+       		set(
+       			$current, 
+       			"targetColor",
+        		lv_targetColor_5_0, 
+        		"KColor");
+	        afterParserOrEnumRuleCall();
+	    }
+
+)
+)(	otherlv_6='alpha' 
+    {
+    	newLeafNode(otherlv_6, grammarAccess.getKBackgroundAccess().getAlphaKeyword_6());
+    }
+)?(
+(
+		{ 
+	        newCompositeNode(grammarAccess.getKBackgroundAccess().getAlphaEIntParserRuleCall_7_0()); 
+	    }
+		lv_alpha_7_0=ruleEInt		{
+	        if ($current==null) {
+	            $current = createModelElementForParent(grammarAccess.getKBackgroundRule());
+	        }
+       		set(
+       			$current, 
+       			"alpha",
+        		lv_alpha_7_0, 
+        		"EInt");
+	        afterParserOrEnumRuleCall();
+	    }
+
+)
+)(	otherlv_8='targetAlpha' 
+    {
+    	newLeafNode(otherlv_8, grammarAccess.getKBackgroundAccess().getTargetAlphaKeyword_8());
+    }
+)?(
+(
+		{ 
+	        newCompositeNode(grammarAccess.getKBackgroundAccess().getTargetAlphaEIntParserRuleCall_9_0()); 
+	    }
+		lv_targetAlpha_9_0=ruleEInt		{
+	        if ($current==null) {
+	            $current = createModelElementForParent(grammarAccess.getKBackgroundRule());
+	        }
+       		set(
+       			$current, 
+       			"targetAlpha",
+        		lv_targetAlpha_9_0, 
+        		"EInt");
+	        afterParserOrEnumRuleCall();
+	    }
+
+)
+)(	otherlv_10='gradientAngle' 
+    {
+    	newLeafNode(otherlv_10, grammarAccess.getKBackgroundAccess().getGradientAngleKeyword_10());
+    }
+)?(
+(
+		{ 
+	        newCompositeNode(grammarAccess.getKBackgroundAccess().getGradientAngleEFloatParserRuleCall_11_0()); 
+	    }
+		lv_gradientAngle_11_0=ruleEFloat		{
+	        if ($current==null) {
+	            $current = createModelElementForParent(grammarAccess.getKBackgroundRule());
+	        }
+       		set(
+       			$current, 
+       			"gradientAngle",
+        		lv_gradientAngle_11_0, 
+        		"EFloat");
+	        afterParserOrEnumRuleCall();
+	    }
+
+)
+)	otherlv_12='}' 
+    {
+    	newLeafNode(otherlv_12, grammarAccess.getKBackgroundAccess().getRightCurlyBracketKeyword_12());
+    }
+)
+;
+
+
+
+
+
+// Entry rule entryRuleKForeground
+entryRuleKForeground returns [EObject current=null] 
+	:
+	{ newCompositeNode(grammarAccess.getKForegroundRule()); }
+	 iv_ruleKForeground=ruleKForeground 
+	 { $current=$iv_ruleKForeground.current; } 
+	 EOF 
+;
+
+// Rule KForeground
+ruleKForeground returns [EObject current=null] 
+    @init { enterRule(); 
+    }
+    @after { leaveRule(); }:
+(	otherlv_0='KForeground' 
+    {
+    	newLeafNode(otherlv_0, grammarAccess.getKForegroundAccess().getKForegroundKeyword_0());
+    }
+	otherlv_1='{' 
+    {
+    	newLeafNode(otherlv_1, grammarAccess.getKForegroundAccess().getLeftCurlyBracketKeyword_1());
+    }
+(	otherlv_2='color' 
+    {
+    	newLeafNode(otherlv_2, grammarAccess.getKForegroundAccess().getColorKeyword_2());
+    }
+)?(
+(
+		{ 
+	        newCompositeNode(grammarAccess.getKForegroundAccess().getColorKColorParserRuleCall_3_0()); 
+	    }
+		lv_color_3_0=ruleKColor		{
+	        if ($current==null) {
+	            $current = createModelElementForParent(grammarAccess.getKForegroundRule());
+	        }
+       		set(
+       			$current, 
+       			"color",
+        		lv_color_3_0, 
+        		"KColor");
+	        afterParserOrEnumRuleCall();
+	    }
+
+)
+)(	otherlv_4='targetColor' 
+    {
+    	newLeafNode(otherlv_4, grammarAccess.getKForegroundAccess().getTargetColorKeyword_4());
+    }
+)?(
+(
+		{ 
+	        newCompositeNode(grammarAccess.getKForegroundAccess().getTargetColorKColorParserRuleCall_5_0()); 
+	    }
+		lv_targetColor_5_0=ruleKColor		{
+	        if ($current==null) {
+	            $current = createModelElementForParent(grammarAccess.getKForegroundRule());
+	        }
+       		set(
+       			$current, 
+       			"targetColor",
+        		lv_targetColor_5_0, 
+        		"KColor");
+	        afterParserOrEnumRuleCall();
+	    }
+
+)
+)(	otherlv_6='alpha' 
+    {
+    	newLeafNode(otherlv_6, grammarAccess.getKForegroundAccess().getAlphaKeyword_6());
+    }
+)?(
+(
+		{ 
+	        newCompositeNode(grammarAccess.getKForegroundAccess().getAlphaEIntParserRuleCall_7_0()); 
+	    }
+		lv_alpha_7_0=ruleEInt		{
+	        if ($current==null) {
+	            $current = createModelElementForParent(grammarAccess.getKForegroundRule());
+	        }
+       		set(
+       			$current, 
+       			"alpha",
+        		lv_alpha_7_0, 
+        		"EInt");
+	        afterParserOrEnumRuleCall();
+	    }
+
+)
+)(	otherlv_8='targetAlpha' 
+    {
+    	newLeafNode(otherlv_8, grammarAccess.getKForegroundAccess().getTargetAlphaKeyword_8());
+    }
+)?(
+(
+		{ 
+	        newCompositeNode(grammarAccess.getKForegroundAccess().getTargetAlphaEIntParserRuleCall_9_0()); 
+	    }
+		lv_targetAlpha_9_0=ruleEInt		{
+	        if ($current==null) {
+	            $current = createModelElementForParent(grammarAccess.getKForegroundRule());
+	        }
+       		set(
+       			$current, 
+       			"targetAlpha",
+        		lv_targetAlpha_9_0, 
+        		"EInt");
+	        afterParserOrEnumRuleCall();
+	    }
+
+)
+)(	otherlv_10='gradientAngle' 
+    {
+    	newLeafNode(otherlv_10, grammarAccess.getKForegroundAccess().getGradientAngleKeyword_10());
+    }
+)?(
+(
+		{ 
+	        newCompositeNode(grammarAccess.getKForegroundAccess().getGradientAngleEFloatParserRuleCall_11_0()); 
+	    }
+		lv_gradientAngle_11_0=ruleEFloat		{
+	        if ($current==null) {
+	            $current = createModelElementForParent(grammarAccess.getKForegroundRule());
+	        }
+       		set(
+       			$current, 
+       			"gradientAngle",
+        		lv_gradientAngle_11_0, 
+        		"EFloat");
+	        afterParserOrEnumRuleCall();
+	    }
+
+)
+)	otherlv_12='}' 
+    {
+    	newLeafNode(otherlv_12, grammarAccess.getKForegroundAccess().getRightCurlyBracketKeyword_12());
+    }
+)
+;
+
+
+
+
+
+// Entry rule entryRuleKVisibility
+entryRuleKVisibility returns [EObject current=null] 
+	:
+	{ newCompositeNode(grammarAccess.getKVisibilityRule()); }
+	 iv_ruleKVisibility=ruleKVisibility 
+	 { $current=$iv_ruleKVisibility.current; } 
+	 EOF 
+;
+
+// Rule KVisibility
+ruleKVisibility returns [EObject current=null] 
+    @init { enterRule(); 
+    }
+    @after { leaveRule(); }:
+(((
     {
         $current = forceCreateModelElement(
-            grammarAccess.getKBackgroundColorAccess().getKBackgroundColorAction_0(),
+            grammarAccess.getKVisibilityAccess().getKVisibilityAction_0_0(),
             $current);
     }
-)	otherlv_1='backgroundColor' 
+)	otherlv_1='invisible' 
     {
-    	newLeafNode(otherlv_1, grammarAccess.getKBackgroundColorAccess().getBackgroundColorKeyword_1());
+    	newLeafNode(otherlv_1, grammarAccess.getKVisibilityAccess().getInvisibleKeyword_0_1());
     }
-(
-(
-		{ 
-	        newCompositeNode(grammarAccess.getKBackgroundColorAccess().getRedEIntParserRuleCall_2_0()); 
-	    }
-		lv_red_2_0=ruleEInt		{
-	        if ($current==null) {
-	            $current = createModelElementForParent(grammarAccess.getKBackgroundColorRule());
-	        }
-       		set(
-       			$current, 
-       			"red",
-        		lv_red_2_0, 
-        		"EInt");
-	        afterParserOrEnumRuleCall();
-	    }
-
 )
-)(
+    |(
 (
-		{ 
-	        newCompositeNode(grammarAccess.getKBackgroundColorAccess().getGreenEIntParserRuleCall_3_0()); 
-	    }
-		lv_green_3_0=ruleEInt		{
-	        if ($current==null) {
-	            $current = createModelElementForParent(grammarAccess.getKBackgroundColorRule());
-	        }
-       		set(
-       			$current, 
-       			"green",
-        		lv_green_3_0, 
-        		"EInt");
-	        afterParserOrEnumRuleCall();
-	    }
-
-)
-)(
-(
-		{ 
-	        newCompositeNode(grammarAccess.getKBackgroundColorAccess().getBlueEIntParserRuleCall_4_0()); 
-	    }
-		lv_blue_4_0=ruleEInt		{
-	        if ($current==null) {
-	            $current = createModelElementForParent(grammarAccess.getKBackgroundColorRule());
-	        }
-       		set(
-       			$current, 
-       			"blue",
-        		lv_blue_4_0, 
-        		"EInt");
-	        afterParserOrEnumRuleCall();
-	    }
-
-)
-)(
-(
-		lv_propagateToChildren_5_0=	'!' 
+		lv_isVisible_2_0=	'visible' 
     {
-        newLeafNode(lv_propagateToChildren_5_0, grammarAccess.getKBackgroundColorAccess().getPropagateToChildrenExclamationMarkKeyword_5_0());
+        newLeafNode(lv_isVisible_2_0, grammarAccess.getKVisibilityAccess().getIsVisibleVisibleKeyword_1_0());
     }
  
 	    {
 	        if ($current==null) {
-	            $current = createModelElement(grammarAccess.getKBackgroundColorRule());
+	            $current = createModelElement(grammarAccess.getKVisibilityRule());
 	        }
-       		setWithLastConsumed($current, "propagateToChildren", true, "!");
+       		setWithLastConsumed($current, "isVisible", true, "visible");
 	    }
 
 )
-)?)
+))
 ;
 
 
@@ -4394,171 +4627,29 @@ ruleKLineWidth returns [EObject current=null]
 	    }
 
 )
-)?)
-;
-
-
-
-
-
-// Entry rule entryRuleKAlpha
-entryRuleKAlpha returns [EObject current=null] 
-	:
-	{ newCompositeNode(grammarAccess.getKAlphaRule()); }
-	 iv_ruleKAlpha=ruleKAlpha 
-	 { $current=$iv_ruleKAlpha.current; } 
-	 EOF 
-;
-
-// Rule KAlpha
-ruleKAlpha returns [EObject current=null] 
-    @init { enterRule(); 
-    }
-    @after { leaveRule(); }:
-(
-    { 
-        newCompositeNode(grammarAccess.getKAlphaAccess().getKForegroundAlphaParserRuleCall_0()); 
-    }
-    this_KForegroundAlpha_0=ruleKForegroundAlpha
-    { 
-        $current = $this_KForegroundAlpha_0.current; 
-        afterParserOrEnumRuleCall();
-    }
-
-    |
-    { 
-        newCompositeNode(grammarAccess.getKAlphaAccess().getKBackgroundAlphaParserRuleCall_1()); 
-    }
-    this_KBackgroundAlpha_1=ruleKBackgroundAlpha
-    { 
-        $current = $this_KBackgroundAlpha_1.current; 
-        afterParserOrEnumRuleCall();
-    }
-)
-;
-
-
-
-
-
-// Entry rule entryRuleKForegroundAlpha
-entryRuleKForegroundAlpha returns [EObject current=null] 
-	:
-	{ newCompositeNode(grammarAccess.getKForegroundAlphaRule()); }
-	 iv_ruleKForegroundAlpha=ruleKForegroundAlpha 
-	 { $current=$iv_ruleKForegroundAlpha.current; } 
-	 EOF 
-;
-
-// Rule KForegroundAlpha
-ruleKForegroundAlpha returns [EObject current=null] 
-    @init { enterRule(); 
-    }
-    @after { leaveRule(); }:
-((
+)?(	otherlv_3='modifier' 
     {
-        $current = forceCreateModelElement(
-            grammarAccess.getKForegroundAlphaAccess().getKForegroundAlphaAction_0(),
-            $current);
+    	newLeafNode(otherlv_3, grammarAccess.getKLineWidthAccess().getModifierKeyword_3());
     }
-)	otherlv_1='foregroundAlpha' 
+)?(	otherlv_4='=' 
     {
-    	newLeafNode(otherlv_1, grammarAccess.getKForegroundAlphaAccess().getForegroundAlphaKeyword_1());
+    	newLeafNode(otherlv_4, grammarAccess.getKLineWidthAccess().getEqualsSignKeyword_4());
     }
-(
+)?(
 (
 		{ 
-	        newCompositeNode(grammarAccess.getKForegroundAlphaAccess().getAlphaEFloatParserRuleCall_2_0()); 
+	        newCompositeNode(grammarAccess.getKLineWidthAccess().getFunctionIdEStringParserRuleCall_5_0()); 
 	    }
-		lv_alpha_2_0=ruleEFloat		{
+		lv_functionId_5_0=ruleEString		{
 	        if ($current==null) {
-	            $current = createModelElementForParent(grammarAccess.getKForegroundAlphaRule());
+	            $current = createModelElementForParent(grammarAccess.getKLineWidthRule());
 	        }
        		set(
        			$current, 
-       			"alpha",
-        		lv_alpha_2_0, 
-        		"EFloat");
+       			"functionId",
+        		lv_functionId_5_0, 
+        		"EString");
 	        afterParserOrEnumRuleCall();
-	    }
-
-)
-)(
-(
-		lv_propagateToChildren_3_0=	'!' 
-    {
-        newLeafNode(lv_propagateToChildren_3_0, grammarAccess.getKForegroundAlphaAccess().getPropagateToChildrenExclamationMarkKeyword_3_0());
-    }
- 
-	    {
-	        if ($current==null) {
-	            $current = createModelElement(grammarAccess.getKForegroundAlphaRule());
-	        }
-       		setWithLastConsumed($current, "propagateToChildren", true, "!");
-	    }
-
-)
-)?)
-;
-
-
-
-
-
-// Entry rule entryRuleKBackgroundAlpha
-entryRuleKBackgroundAlpha returns [EObject current=null] 
-	:
-	{ newCompositeNode(grammarAccess.getKBackgroundAlphaRule()); }
-	 iv_ruleKBackgroundAlpha=ruleKBackgroundAlpha 
-	 { $current=$iv_ruleKBackgroundAlpha.current; } 
-	 EOF 
-;
-
-// Rule KBackgroundAlpha
-ruleKBackgroundAlpha returns [EObject current=null] 
-    @init { enterRule(); 
-    }
-    @after { leaveRule(); }:
-((
-    {
-        $current = forceCreateModelElement(
-            grammarAccess.getKBackgroundAlphaAccess().getKBackgroundAlphaAction_0(),
-            $current);
-    }
-)	otherlv_1='backgroundAlpha' 
-    {
-    	newLeafNode(otherlv_1, grammarAccess.getKBackgroundAlphaAccess().getBackgroundAlphaKeyword_1());
-    }
-(
-(
-		{ 
-	        newCompositeNode(grammarAccess.getKBackgroundAlphaAccess().getAlphaEFloatParserRuleCall_2_0()); 
-	    }
-		lv_alpha_2_0=ruleEFloat		{
-	        if ($current==null) {
-	            $current = createModelElementForParent(grammarAccess.getKBackgroundAlphaRule());
-	        }
-       		set(
-       			$current, 
-       			"alpha",
-        		lv_alpha_2_0, 
-        		"EFloat");
-	        afterParserOrEnumRuleCall();
-	    }
-
-)
-)(
-(
-		lv_propagateToChildren_3_0=	'!' 
-    {
-        newLeafNode(lv_propagateToChildren_3_0, grammarAccess.getKBackgroundAlphaAccess().getPropagateToChildrenExclamationMarkKeyword_3_0());
-    }
- 
-	    {
-	        if ($current==null) {
-	            $current = createModelElement(grammarAccess.getKBackgroundAlphaRule());
-	        }
-       		setWithLastConsumed($current, "propagateToChildren", true, "!");
 	    }
 
 )

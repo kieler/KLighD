@@ -8,10 +8,10 @@ import de.cau.cs.kieler.core.kgraph.text.klayoutdata.serializer.KLayoutDataSeman
 import de.cau.cs.kieler.core.kgraph.text.krendering.services.KRenderingGrammarAccess;
 import de.cau.cs.kieler.core.krendering.KArc;
 import de.cau.cs.kieler.core.krendering.KAreaPlacementData;
-import de.cau.cs.kieler.core.krendering.KBackgroundAlpha;
-import de.cau.cs.kieler.core.krendering.KBackgroundColor;
+import de.cau.cs.kieler.core.krendering.KBackground;
 import de.cau.cs.kieler.core.krendering.KBottomPosition;
 import de.cau.cs.kieler.core.krendering.KChildArea;
+import de.cau.cs.kieler.core.krendering.KColor;
 import de.cau.cs.kieler.core.krendering.KCustomRendering;
 import de.cau.cs.kieler.core.krendering.KDecoratorPlacementData;
 import de.cau.cs.kieler.core.krendering.KEllipse;
@@ -19,8 +19,7 @@ import de.cau.cs.kieler.core.krendering.KFontBold;
 import de.cau.cs.kieler.core.krendering.KFontItalic;
 import de.cau.cs.kieler.core.krendering.KFontName;
 import de.cau.cs.kieler.core.krendering.KFontSize;
-import de.cau.cs.kieler.core.krendering.KForegroundAlpha;
-import de.cau.cs.kieler.core.krendering.KForegroundColor;
+import de.cau.cs.kieler.core.krendering.KForeground;
 import de.cau.cs.kieler.core.krendering.KGridPlacement;
 import de.cau.cs.kieler.core.krendering.KGridPlacementData;
 import de.cau.cs.kieler.core.krendering.KHorizontalAlignment;
@@ -45,6 +44,7 @@ import de.cau.cs.kieler.core.krendering.KSpline;
 import de.cau.cs.kieler.core.krendering.KText;
 import de.cau.cs.kieler.core.krendering.KTopPosition;
 import de.cau.cs.kieler.core.krendering.KVerticalAlignment;
+import de.cau.cs.kieler.core.krendering.KVisibility;
 import de.cau.cs.kieler.kiml.klayoutdata.KEdgeLayout;
 import de.cau.cs.kieler.kiml.klayoutdata.KInsets;
 import de.cau.cs.kieler.kiml.klayoutdata.KLayoutDataPackage;
@@ -117,18 +117,10 @@ public class KRenderingSemanticSequencer extends KLayoutDataSemanticSequencer {
 					return; 
 				}
 				else break;
-			case KRenderingPackage.KBACKGROUND_ALPHA:
-				if(context == grammarAccess.getKAlphaRule() ||
-				   context == grammarAccess.getKBackgroundAlphaRule() ||
+			case KRenderingPackage.KBACKGROUND:
+				if(context == grammarAccess.getKBackgroundRule() ||
 				   context == grammarAccess.getKStyleRule()) {
-					sequence_KBackgroundAlpha(context, (KBackgroundAlpha) semanticObject); 
-					return; 
-				}
-				else break;
-			case KRenderingPackage.KBACKGROUND_COLOR:
-				if(context == grammarAccess.getKBackgroundColorRule() ||
-				   context == grammarAccess.getKStyleRule()) {
-					sequence_KBackgroundColor(context, (KBackgroundColor) semanticObject); 
+					sequence_KBackground(context, (KBackground) semanticObject); 
 					return; 
 				}
 				else break;
@@ -143,6 +135,12 @@ public class KRenderingSemanticSequencer extends KLayoutDataSemanticSequencer {
 				if(context == grammarAccess.getKChildAreaRule() ||
 				   context == grammarAccess.getKRenderingRule()) {
 					sequence_KChildArea(context, (KChildArea) semanticObject); 
+					return; 
+				}
+				else break;
+			case KRenderingPackage.KCOLOR:
+				if(context == grammarAccess.getKColorRule()) {
+					sequence_KColor(context, (KColor) semanticObject); 
 					return; 
 				}
 				else break;
@@ -195,18 +193,10 @@ public class KRenderingSemanticSequencer extends KLayoutDataSemanticSequencer {
 					return; 
 				}
 				else break;
-			case KRenderingPackage.KFOREGROUND_ALPHA:
-				if(context == grammarAccess.getKAlphaRule() ||
-				   context == grammarAccess.getKForegroundAlphaRule() ||
+			case KRenderingPackage.KFOREGROUND:
+				if(context == grammarAccess.getKForegroundRule() ||
 				   context == grammarAccess.getKStyleRule()) {
-					sequence_KForegroundAlpha(context, (KForegroundAlpha) semanticObject); 
-					return; 
-				}
-				else break;
-			case KRenderingPackage.KFOREGROUND_COLOR:
-				if(context == grammarAccess.getKForegroundColorRule() ||
-				   context == grammarAccess.getKStyleRule()) {
-					sequence_KForegroundColor(context, (KForegroundColor) semanticObject); 
+					sequence_KForeground(context, (KForeground) semanticObject); 
 					return; 
 				}
 				else break;
@@ -369,6 +359,13 @@ public class KRenderingSemanticSequencer extends KLayoutDataSemanticSequencer {
 					return; 
 				}
 				else break;
+			case KRenderingPackage.KVISIBILITY:
+				if(context == grammarAccess.getKStyleRule() ||
+				   context == grammarAccess.getKVisibilityRule()) {
+					sequence_KVisibility(context, (KVisibility) semanticObject); 
+					return; 
+				}
+				else break;
 			}
 		if (errorAcceptor != null) errorAcceptor.accept(diagnosticProvider.createInvalidContextOrTypeDiagnostic(semanticObject, context));
 	}
@@ -407,18 +404,9 @@ public class KRenderingSemanticSequencer extends KLayoutDataSemanticSequencer {
 	
 	/**
 	 * Constraint:
-	 *     (alpha=EFloat propagateToChildren?='!'?)
+	 *     (color=KColor targetColor=KColor alpha=EInt targetAlpha=EInt gradientAngle=EFloat)
 	 */
-	protected void sequence_KBackgroundAlpha(EObject context, KBackgroundAlpha semanticObject) {
-		genericSequencer.createSequence(context, semanticObject);
-	}
-	
-	
-	/**
-	 * Constraint:
-	 *     (red=EInt green=EInt blue=EInt propagateToChildren?='!'?)
-	 */
-	protected void sequence_KBackgroundColor(EObject context, KBackgroundColor semanticObject) {
+	protected void sequence_KBackground(EObject context, KBackground semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
 	}
 	
@@ -447,6 +435,15 @@ public class KRenderingSemanticSequencer extends KLayoutDataSemanticSequencer {
 	 *     (((styles+=KStyle styles+=KStyle*)? placementData=KPlacementData?)?)
 	 */
 	protected void sequence_KChildArea(EObject context, KChildArea semanticObject) {
+		genericSequencer.createSequence(context, semanticObject);
+	}
+	
+	
+	/**
+	 * Constraint:
+	 *     (red=EInt green=EInt blue=EInt propagateToChildren?='!'?)
+	 */
+	protected void sequence_KColor(EObject context, KColor semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
 	}
 	
@@ -533,18 +530,9 @@ public class KRenderingSemanticSequencer extends KLayoutDataSemanticSequencer {
 	
 	/**
 	 * Constraint:
-	 *     (alpha=EFloat propagateToChildren?='!'?)
+	 *     (color=KColor targetColor=KColor alpha=EInt targetAlpha=EInt gradientAngle=EFloat)
 	 */
-	protected void sequence_KForegroundAlpha(EObject context, KForegroundAlpha semanticObject) {
-		genericSequencer.createSequence(context, semanticObject);
-	}
-	
-	
-	/**
-	 * Constraint:
-	 *     (red=EInt green=EInt blue=EInt propagateToChildren?='!'?)
-	 */
-	protected void sequence_KForegroundColor(EObject context, KForegroundColor semanticObject) {
+	protected void sequence_KForeground(EObject context, KForeground semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
 	}
 	
@@ -635,7 +623,7 @@ public class KRenderingSemanticSequencer extends KLayoutDataSemanticSequencer {
 	
 	/**
 	 * Constraint:
-	 *     (lineWidth=EInt propagateToChildren?='!'?)
+	 *     (lineWidth=EInt propagateToChildren?='!'? functionId=EString?)
 	 */
 	protected void sequence_KLineWidth(EObject context, KLineWidth semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
@@ -849,6 +837,15 @@ public class KRenderingSemanticSequencer extends KLayoutDataSemanticSequencer {
 	 *     (verticalAlignment=VerticalAlignment propagateToChildren?='!'?)
 	 */
 	protected void sequence_KVerticalAlignment(EObject context, KVerticalAlignment semanticObject) {
+		genericSequencer.createSequence(context, semanticObject);
+	}
+	
+	
+	/**
+	 * Constraint:
+	 *     {KVisibility}
+	 */
+	protected void sequence_KVisibility(EObject context, KVisibility semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
 	}
 }
