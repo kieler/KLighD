@@ -26,7 +26,7 @@ import de.cau.cs.kieler.core.krendering.KForeground
 import de.cau.cs.kieler.core.krendering.KBackground
 import de.cau.cs.kieler.core.krendering.KColoring
 import de.cau.cs.kieler.core.krendering.KColor
-import de.cau.cs.kieler.core.krendering.KLineStyle
+import de.cau.cs.kieler.core.krendering.KInvisibility
 
 /**
  * This utility class contains various methods that are convenient while composing KRendering data.
@@ -83,6 +83,20 @@ class KRenderingExtensions {
         ];
     }
  
+    def KInvisibility getInvisible(KRendering rendering) {
+        // chsch: I'm currently not sure whether the first or the last will win...
+        return rendering.styles.filter(typeof(KInvisibility)).last?:(renderingFactory.createKInvisibility());
+    }
+ 
+    def <T extends KRendering> T setInvisible(T rendering, boolean invisible) {
+        rendering.styles.removeAll(rendering.styles.filter(typeof(KInvisibility)).toList);
+        return rendering => [
+            it.styles += renderingFactory.createKInvisibility() => [
+                it.setInvisible(invisible);
+            ]
+        ];
+    }
+    
     def KLineWidth getLineWidth(KRendering rendering) {
         // chsch: I'm currently not sure whether the first or the last will win...
         return rendering.styles.filter(typeof(KLineWidth)).last?:(renderingFactory.createKLineWidth => [
@@ -154,7 +168,9 @@ class KRenderingExtensions {
     }
     
     def KBackground getBackground(KRendering rendering){
-        return rendering.styles?.filter(typeof(KBackground)).last?:renderingFactory.createKBackground();
+        return rendering.styles?.filter(typeof(KBackground)).last?:renderingFactory.createKBackground() => [
+            it.color = renderingFactory.createKColor();
+        ];
     }
     
     def <T extends KRendering>  T setForeground(T rendering, KColoring coloring){
@@ -182,7 +198,9 @@ class KRenderingExtensions {
     }
     
     def KForeground getForeground(KRendering rendering){
-        return rendering.styles.filter(typeof(KForeground)).last?:renderingFactory.createKForeground();
+        return rendering.styles.filter(typeof(KForeground)).last?:renderingFactory.createKForeground() => [
+            it.color = renderingFactory.createKColor();
+        ];
     }
 
 //TODO: maybe add setters/getters for single components of KForeground/KBackground or simply a method 
