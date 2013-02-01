@@ -25,14 +25,16 @@ import de.cau.cs.kieler.core.krendering.KRotation
 import de.cau.cs.kieler.core.krendering.KForeground
 import de.cau.cs.kieler.core.krendering.KBackground
 import de.cau.cs.kieler.core.krendering.KColoring
+import de.cau.cs.kieler.core.krendering.KColor
+import de.cau.cs.kieler.core.krendering.KLineStyle
 
 /**
  * This utility class contains various methods that are convenient while composing KRendering data.
  * It does not claim to be complete ;-).
  */
 class KRenderingExtensions {
-	
-	private static val KRenderingFactory renderingFactory = KRenderingFactory::eINSTANCE
+
+    private static val KRenderingFactory renderingFactory = KRenderingFactory::eINSTANCE
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////
     ////////////////////////					KRenderingExtensions
@@ -142,6 +144,15 @@ class KRenderingExtensions {
         ];
     }
     
+    def <T extends KRendering>  T setBackground(T rendering, KColor color){
+        rendering.styles.removeAll(rendering.styles.filter(typeof(KBackground)).toList);
+        return rendering => [
+            it.styles += renderingFactory.createKBackground => [
+                it.color = color;
+            ];
+        ];
+    }
+    
     def KBackground getBackground(KRendering rendering){
         return rendering.styles?.filter(typeof(KBackground)).last?:renderingFactory.createKBackground();
     }
@@ -149,7 +160,7 @@ class KRenderingExtensions {
     def <T extends KRendering>  T setForeground(T rendering, KColoring coloring){
         rendering.styles.removeAll(rendering.styles.filter(typeof(KForeground)).toList);
         return rendering => [
-            it.styles += renderingFactory.createKBackground => [
+            it.styles += renderingFactory.createKForeground => [
                 it.alpha = coloring.alpha;
                 it.color = coloring.color;
                 it.targetAlpha = coloring.targetAlpha;
@@ -157,6 +168,15 @@ class KRenderingExtensions {
                 it.gradientAngle = coloring.gradientAngle;
                 it.functionId = coloring.functionId;
                 it.propagateToChildren = coloring.propagateToChildren;
+            ];
+        ];
+    }
+    
+    def <T extends KRendering>  T setForeground(T rendering, KColor color){
+        rendering.styles.removeAll(rendering.styles.filter(typeof(KForeground)).toList);
+        return rendering => [
+            it.styles += renderingFactory.createKForeground => [
+                it.color = color;
             ];
         ];
     }

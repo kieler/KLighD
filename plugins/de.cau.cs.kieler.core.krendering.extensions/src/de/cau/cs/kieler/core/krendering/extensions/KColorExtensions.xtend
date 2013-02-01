@@ -21,9 +21,9 @@ class KColorExtensions {
     private static val KRenderingFactory renderingFactory = KRenderingFactory::eINSTANCE
 
     def KColor getColor(String name) {
-            return renderingFactory.createKColor() =>[
-                it.setColor(name);
-            ]
+        return renderingFactory.createKColor() =>[
+            it.setColor(name);
+        ];
     }
 
     /**
