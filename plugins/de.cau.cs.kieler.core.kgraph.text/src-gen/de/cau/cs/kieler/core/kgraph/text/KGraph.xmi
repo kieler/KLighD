@@ -991,9 +991,6 @@
         </elements>
         <elements xsi:type="xtext:Group" cardinality="?">
           <elements xsi:type="xtext:Keyword" value="{"/>
-          <elements xsi:type="xtext:Assignment" cardinality="?" feature="clip" operator="?=">
-            <terminal xsi:type="xtext:Keyword" value="clip"/>
-          </elements>
           <elements xsi:type="xtext:Group" cardinality="?">
             <elements xsi:type="xtext:Keyword" value="styles"/>
             <elements xsi:type="xtext:Keyword" cardinality="?" value=":"/>
@@ -1437,25 +1434,35 @@
       <alternatives xsi:type="xtext:Group">
         <elements xsi:type="xtext:Keyword" value="KBackground"/>
         <elements xsi:type="xtext:Keyword" value="{"/>
-        <elements xsi:type="xtext:Keyword" cardinality="?" value="color"/>
-        <elements xsi:type="xtext:Assignment" feature="color" operator="=">
-          <terminal xsi:type="xtext:RuleCall" rule="/1/@rules.29"/>
+        <elements xsi:type="xtext:Group" cardinality="?">
+          <elements xsi:type="xtext:Keyword" value="color"/>
+          <elements xsi:type="xtext:Assignment" feature="color" operator="=">
+            <terminal xsi:type="xtext:RuleCall" rule="/1/@rules.29"/>
+          </elements>
         </elements>
-        <elements xsi:type="xtext:Keyword" cardinality="?" value="targetColor"/>
-        <elements xsi:type="xtext:Assignment" feature="targetColor" operator="=">
-          <terminal xsi:type="xtext:RuleCall" rule="/1/@rules.29"/>
+        <elements xsi:type="xtext:Group" cardinality="?">
+          <elements xsi:type="xtext:Keyword" value="targetColor"/>
+          <elements xsi:type="xtext:Assignment" feature="targetColor" operator="=">
+            <terminal xsi:type="xtext:RuleCall" rule="/1/@rules.29"/>
+          </elements>
         </elements>
-        <elements xsi:type="xtext:Keyword" cardinality="?" value="alpha"/>
-        <elements xsi:type="xtext:Assignment" feature="alpha" operator="=">
-          <terminal xsi:type="xtext:RuleCall" rule="/1/@rules.50"/>
+        <elements xsi:type="xtext:Group" cardinality="?">
+          <elements xsi:type="xtext:Keyword" value="alpha"/>
+          <elements xsi:type="xtext:Assignment" feature="alpha" operator="=">
+            <terminal xsi:type="xtext:RuleCall" rule="/1/@rules.50"/>
+          </elements>
         </elements>
-        <elements xsi:type="xtext:Keyword" cardinality="?" value="targetAlpha"/>
-        <elements xsi:type="xtext:Assignment" feature="targetAlpha" operator="=">
-          <terminal xsi:type="xtext:RuleCall" rule="/1/@rules.50"/>
+        <elements xsi:type="xtext:Group" cardinality="?">
+          <elements xsi:type="xtext:Keyword" value="targetAlpha"/>
+          <elements xsi:type="xtext:Assignment" feature="targetAlpha" operator="=">
+            <terminal xsi:type="xtext:RuleCall" rule="/1/@rules.50"/>
+          </elements>
         </elements>
-        <elements xsi:type="xtext:Keyword" cardinality="?" value="gradientAngle"/>
-        <elements xsi:type="xtext:Assignment" feature="gradientAngle" operator="=">
-          <terminal xsi:type="xtext:RuleCall" rule="/1/@rules.48"/>
+        <elements xsi:type="xtext:Group" cardinality="?">
+          <elements xsi:type="xtext:Keyword" value="gradientAngle"/>
+          <elements xsi:type="xtext:Assignment" feature="gradientAngle" operator="=">
+            <terminal xsi:type="xtext:RuleCall" rule="/1/@rules.48"/>
+          </elements>
         </elements>
         <elements xsi:type="xtext:Keyword" value="}"/>
       </alternatives>
@@ -1467,25 +1474,35 @@
       <alternatives xsi:type="xtext:Group">
         <elements xsi:type="xtext:Keyword" value="KForeground"/>
         <elements xsi:type="xtext:Keyword" value="{"/>
-        <elements xsi:type="xtext:Keyword" cardinality="?" value="color"/>
-        <elements xsi:type="xtext:Assignment" feature="color" operator="=">
-          <terminal xsi:type="xtext:RuleCall" rule="/1/@rules.29"/>
+        <elements xsi:type="xtext:Group" cardinality="?">
+          <elements xsi:type="xtext:Keyword" value="color"/>
+          <elements xsi:type="xtext:Assignment" feature="color" operator="=">
+            <terminal xsi:type="xtext:RuleCall" rule="/1/@rules.29"/>
+          </elements>
         </elements>
-        <elements xsi:type="xtext:Keyword" cardinality="?" value="targetColor"/>
-        <elements xsi:type="xtext:Assignment" feature="targetColor" operator="=">
-          <terminal xsi:type="xtext:RuleCall" rule="/1/@rules.29"/>
+        <elements xsi:type="xtext:Group" cardinality="?">
+          <elements xsi:type="xtext:Keyword" value="targetColor"/>
+          <elements xsi:type="xtext:Assignment" feature="targetColor" operator="=">
+            <terminal xsi:type="xtext:RuleCall" rule="/1/@rules.29"/>
+          </elements>
         </elements>
-        <elements xsi:type="xtext:Keyword" cardinality="?" value="alpha"/>
-        <elements xsi:type="xtext:Assignment" feature="alpha" operator="=">
-          <terminal xsi:type="xtext:RuleCall" rule="/1/@rules.50"/>
+        <elements xsi:type="xtext:Group" cardinality="?">
+          <elements xsi:type="xtext:Keyword" value="alpha"/>
+          <elements xsi:type="xtext:Assignment" feature="alpha" operator="=">
+            <terminal xsi:type="xtext:RuleCall" rule="/1/@rules.50"/>
+          </elements>
         </elements>
-        <elements xsi:type="xtext:Keyword" cardinality="?" value="targetAlpha"/>
-        <elements xsi:type="xtext:Assignment" feature="targetAlpha" operator="=">
-          <terminal xsi:type="xtext:RuleCall" rule="/1/@rules.50"/>
+        <elements xsi:type="xtext:Group" cardinality="?">
+          <elements xsi:type="xtext:Keyword" value="targetAlpha"/>
+          <elements xsi:type="xtext:Assignment" feature="targetAlpha" operator="=">
+            <terminal xsi:type="xtext:RuleCall" rule="/1/@rules.50"/>
+          </elements>
         </elements>
-        <elements xsi:type="xtext:Keyword" cardinality="?" value="gradientAngle"/>
-        <elements xsi:type="xtext:Assignment" feature="gradientAngle" operator="=">
-          <terminal xsi:type="xtext:RuleCall" rule="/1/@rules.48"/>
+        <elements xsi:type="xtext:Group" cardinality="?">
+          <elements xsi:type="xtext:Keyword" value="gradientAngle"/>
+          <elements xsi:type="xtext:Assignment" feature="gradientAngle" operator="=">
+            <terminal xsi:type="xtext:RuleCall" rule="/1/@rules.48"/>
+          </elements>
         </elements>
         <elements xsi:type="xtext:Keyword" value="}"/>
       </alternatives>
@@ -1517,10 +1534,12 @@
         <elements xsi:type="xtext:Assignment" cardinality="?" feature="propagateToChildren" operator="?=">
           <terminal xsi:type="xtext:Keyword" value="!"/>
         </elements>
-        <elements xsi:type="xtext:Keyword" cardinality="?" value="modifier"/>
-        <elements xsi:type="xtext:Keyword" cardinality="?" value="="/>
-        <elements xsi:type="xtext:Assignment" cardinality="?" feature="functionId" operator="=">
-          <terminal xsi:type="xtext:RuleCall" rule="/2/@rules.5"/>
+        <elements xsi:type="xtext:Group" cardinality="?">
+          <elements xsi:type="xtext:Keyword" value="modifier"/>
+          <elements xsi:type="xtext:Keyword" value="="/>
+          <elements xsi:type="xtext:Assignment" feature="functionId" operator="=">
+            <terminal xsi:type="xtext:RuleCall" rule="/2/@rules.5"/>
+          </elements>
         </elements>
       </alternatives>
     </rules>

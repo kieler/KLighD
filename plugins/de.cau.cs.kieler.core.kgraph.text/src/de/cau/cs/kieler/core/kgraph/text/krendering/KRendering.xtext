@@ -144,7 +144,6 @@ KText returns KText:
     {KText}
     'Text' (text=EString)?
     ('{'
-        (clip?='clip')?
         ('styles' ':'? styles+=KStyle ( ","? styles+=KStyle)*)?
         ('placementData' ':'? placementData=KPlacementData)?
         ('childPlacement' ':'? childPlacement=KPlacement)?
@@ -241,21 +240,21 @@ KColor returns KColor:
 KBackground returns KBackground:
     'KBackground'
     '{'
-        'color'? color=KColor
-        'targetColor'? targetColor=KColor
-        'alpha'? alpha=EInt
-        'targetAlpha'? targetAlpha=EInt
-        'gradientAngle'? gradientAngle=EFloat
+        ('color' color=KColor)?
+        ('targetColor' targetColor=KColor)?
+        ('alpha' alpha=EInt)?
+        ('targetAlpha' targetAlpha=EInt)?
+        ('gradientAngle' gradientAngle=EFloat)?
     '}';
 
 KForeground returns KForeground:
    'KForeground'
     '{'
-        'color'? color=KColor
-        'targetColor'? targetColor=KColor
-        'alpha'? alpha=EInt
-        'targetAlpha'? targetAlpha=EInt
-        'gradientAngle'? gradientAngle=EFloat
+        ('color' color=KColor)?
+        ('targetColor' targetColor=KColor)?
+        ('alpha' alpha=EInt)?
+        ('targetAlpha' targetAlpha=EInt)?
+        ('gradientAngle' gradientAngle=EFloat)?
     '}';
     
 KVisibility returns KInvisibility:
@@ -264,7 +263,7 @@ KVisibility returns KInvisibility:
     
 KLineWidth returns KLineWidth:
     'lineWidth' lineWidth=EInt (propagateToChildren?='!')? 
-    'modifier'? '='? (functionId=EString)?;
+    ('modifier' '=' functionId=EString)?;
 
 KLineStyle returns KLineStyle:
     {KLineStyle}

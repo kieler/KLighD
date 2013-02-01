@@ -1166,9 +1166,9 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//KText:
-	//	{KText} "Text" text=EString? ("{" clip?="clip"? ("styles" ":"? styles+=KStyle (","? styles+=KStyle)*)?
-	//	("placementData" ":"? placementData=KPlacementData)? ("childPlacement" ":"? childPlacement=KPlacement)? ("children"
-	//	":"? children+=KRendering (","? children+=KRendering)*)? // allow mapProperties in order to specify size for size estimation tests
+	//	{KText} "Text" text=EString? ("{" ("styles" ":"? styles+=KStyle (","? styles+=KStyle)*)? ("placementData" ":"?
+	//	placementData=KPlacementData)? ("childPlacement" ":"? childPlacement=KPlacement)? ("children" ":"?
+	//	children+=KRendering (","? children+=KRendering)*)? // allow mapProperties in order to specify size for size estimation tests
 	//	// (I don't trust in the different SWT implementations to
 	//	// provide the same size of a text on different platforms)
 	//	("mapProperties" ":"? persistentEntries+=PersistentEntry (","? persistentEntries+=PersistentEntry)*)? "}")?;
@@ -1310,8 +1310,8 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//KBackground:
-	//	"KBackground" "{" "color"? color=KColor "targetColor"? targetColor=KColor "alpha"? alpha=EInt "targetAlpha"?
-	//	targetAlpha=EInt "gradientAngle"? gradientAngle=EFloat "}";
+	//	"KBackground" "{" ("color" color=KColor)? ("targetColor" targetColor=KColor)? ("alpha" alpha=EInt)? ("targetAlpha"
+	//	targetAlpha=EInt)? ("gradientAngle" gradientAngle=EFloat)? "}";
 	public KRenderingGrammarAccess.KBackgroundElements getKBackgroundAccess() {
 		return gaKRendering.getKBackgroundAccess();
 	}
@@ -1321,8 +1321,8 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//KForeground:
-	//	"KForeground" "{" "color"? color=KColor "targetColor"? targetColor=KColor "alpha"? alpha=EInt "targetAlpha"?
-	//	targetAlpha=EInt "gradientAngle"? gradientAngle=EFloat "}";
+	//	"KForeground" "{" ("color" color=KColor)? ("targetColor" targetColor=KColor)? ("alpha" alpha=EInt)? ("targetAlpha"
+	//	targetAlpha=EInt)? ("gradientAngle" gradientAngle=EFloat)? "}";
 	public KRenderingGrammarAccess.KForegroundElements getKForegroundAccess() {
 		return gaKRendering.getKForegroundAccess();
 	}
@@ -1342,7 +1342,7 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//KLineWidth:
-	//	"lineWidth" lineWidth=EInt propagateToChildren?="!"? "modifier"? "="? functionId=EString?;
+	//	"lineWidth" lineWidth=EInt propagateToChildren?="!"? ("modifier" "=" functionId=EString)?;
 	public KRenderingGrammarAccess.KLineWidthElements getKLineWidthAccess() {
 		return gaKRendering.getKLineWidthAccess();
 	}

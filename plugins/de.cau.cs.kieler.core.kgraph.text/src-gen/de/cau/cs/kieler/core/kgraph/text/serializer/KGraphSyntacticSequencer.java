@@ -27,11 +27,6 @@ public class KGraphSyntacticSequencer extends AbstractSyntacticSequencer {
 	protected AbstractElementAlias match_KArc_CommaKeyword_5_4_3_0_q;
 	protected AbstractElementAlias match_KArc___LeftCurlyBracketKeyword_5_0_RightCurlyBracketKeyword_5_5__q;
 	protected AbstractElementAlias match_KAreaPlacementData_CommaKeyword_4_q;
-	protected AbstractElementAlias match_KBackground_AlphaKeyword_6_q;
-	protected AbstractElementAlias match_KBackground_ColorKeyword_2_q;
-	protected AbstractElementAlias match_KBackground_GradientAngleKeyword_10_q;
-	protected AbstractElementAlias match_KBackground_TargetAlphaKeyword_8_q;
-	protected AbstractElementAlias match_KBackground_TargetColorKeyword_4_q;
 	protected AbstractElementAlias match_KChildArea_ColonKeyword_2_1_1_q;
 	protected AbstractElementAlias match_KChildArea_ColonKeyword_2_2_1_q;
 	protected AbstractElementAlias match_KChildArea_CommaKeyword_2_1_3_0_q;
@@ -59,11 +54,6 @@ public class KGraphSyntacticSequencer extends AbstractSyntacticSequencer {
 	protected AbstractElementAlias match_KEllipse_CommaKeyword_2_1_3_0_q;
 	protected AbstractElementAlias match_KEllipse_CommaKeyword_2_4_3_0_q;
 	protected AbstractElementAlias match_KEllipse___LeftCurlyBracketKeyword_2_0_RightCurlyBracketKeyword_2_5__q;
-	protected AbstractElementAlias match_KForeground_AlphaKeyword_6_q;
-	protected AbstractElementAlias match_KForeground_ColorKeyword_2_q;
-	protected AbstractElementAlias match_KForeground_GradientAngleKeyword_10_q;
-	protected AbstractElementAlias match_KForeground_TargetAlphaKeyword_8_q;
-	protected AbstractElementAlias match_KForeground_TargetColorKeyword_4_q;
 	protected AbstractElementAlias match_KGraphDataImpl_ColonKeyword_3_1_q;
 	protected AbstractElementAlias match_KImage_ColonKeyword_4_1_1_q;
 	protected AbstractElementAlias match_KImage_ColonKeyword_4_2_1_q;
@@ -74,8 +64,6 @@ public class KGraphSyntacticSequencer extends AbstractSyntacticSequencer {
 	protected AbstractElementAlias match_KImage___LeftCurlyBracketKeyword_4_0_RightCurlyBracketKeyword_4_5__q;
 	protected AbstractElementAlias match_KLabel_ColonKeyword_3_1_q;
 	protected AbstractElementAlias match_KLabel_CommaKeyword_3_3_0_q;
-	protected AbstractElementAlias match_KLineWidth_EqualsSignKeyword_4_q;
-	protected AbstractElementAlias match_KLineWidth_ModifierKeyword_3_q;
 	protected AbstractElementAlias match_KNode_ColonKeyword_3_1_q;
 	protected AbstractElementAlias match_KNode_ColonKeyword_4_1_q;
 	protected AbstractElementAlias match_KNode_ColonKeyword_5_1_q;
@@ -146,15 +134,15 @@ public class KGraphSyntacticSequencer extends AbstractSyntacticSequencer {
 	protected AbstractElementAlias match_KSpline_CommaKeyword_2_1_3_0_q;
 	protected AbstractElementAlias match_KSpline_CommaKeyword_2_4_3_0_q;
 	protected AbstractElementAlias match_KSpline___LeftCurlyBracketKeyword_2_0_RightCurlyBracketKeyword_2_5__q;
+	protected AbstractElementAlias match_KText_ColonKeyword_3_1_1_q;
 	protected AbstractElementAlias match_KText_ColonKeyword_3_2_1_q;
 	protected AbstractElementAlias match_KText_ColonKeyword_3_3_1_q;
 	protected AbstractElementAlias match_KText_ColonKeyword_3_4_1_q;
 	protected AbstractElementAlias match_KText_ColonKeyword_3_5_1_q;
-	protected AbstractElementAlias match_KText_ColonKeyword_3_6_1_q;
-	protected AbstractElementAlias match_KText_CommaKeyword_3_2_3_0_q;
+	protected AbstractElementAlias match_KText_CommaKeyword_3_1_3_0_q;
+	protected AbstractElementAlias match_KText_CommaKeyword_3_4_3_0_q;
 	protected AbstractElementAlias match_KText_CommaKeyword_3_5_3_0_q;
-	protected AbstractElementAlias match_KText_CommaKeyword_3_6_3_0_q;
-	protected AbstractElementAlias match_KText___LeftCurlyBracketKeyword_3_0_RightCurlyBracketKeyword_3_7__q;
+	protected AbstractElementAlias match_KText___LeftCurlyBracketKeyword_3_0_RightCurlyBracketKeyword_3_6__q;
 	
 	@Inject
 	protected void init(IGrammarAccess access) {
@@ -168,11 +156,6 @@ public class KGraphSyntacticSequencer extends AbstractSyntacticSequencer {
 		match_KArc_CommaKeyword_5_4_3_0_q = new TokenAlias(false, true, grammarAccess.getKArcAccess().getCommaKeyword_5_4_3_0());
 		match_KArc___LeftCurlyBracketKeyword_5_0_RightCurlyBracketKeyword_5_5__q = new GroupAlias(false, true, new TokenAlias(false, false, grammarAccess.getKArcAccess().getLeftCurlyBracketKeyword_5_0()), new TokenAlias(false, false, grammarAccess.getKArcAccess().getRightCurlyBracketKeyword_5_5()));
 		match_KAreaPlacementData_CommaKeyword_4_q = new TokenAlias(false, true, grammarAccess.getKAreaPlacementDataAccess().getCommaKeyword_4());
-		match_KBackground_AlphaKeyword_6_q = new TokenAlias(false, true, grammarAccess.getKBackgroundAccess().getAlphaKeyword_6());
-		match_KBackground_ColorKeyword_2_q = new TokenAlias(false, true, grammarAccess.getKBackgroundAccess().getColorKeyword_2());
-		match_KBackground_GradientAngleKeyword_10_q = new TokenAlias(false, true, grammarAccess.getKBackgroundAccess().getGradientAngleKeyword_10());
-		match_KBackground_TargetAlphaKeyword_8_q = new TokenAlias(false, true, grammarAccess.getKBackgroundAccess().getTargetAlphaKeyword_8());
-		match_KBackground_TargetColorKeyword_4_q = new TokenAlias(false, true, grammarAccess.getKBackgroundAccess().getTargetColorKeyword_4());
 		match_KChildArea_ColonKeyword_2_1_1_q = new TokenAlias(false, true, grammarAccess.getKChildAreaAccess().getColonKeyword_2_1_1());
 		match_KChildArea_ColonKeyword_2_2_1_q = new TokenAlias(false, true, grammarAccess.getKChildAreaAccess().getColonKeyword_2_2_1());
 		match_KChildArea_CommaKeyword_2_1_3_0_q = new TokenAlias(false, true, grammarAccess.getKChildAreaAccess().getCommaKeyword_2_1_3_0());
@@ -200,11 +183,6 @@ public class KGraphSyntacticSequencer extends AbstractSyntacticSequencer {
 		match_KEllipse_CommaKeyword_2_1_3_0_q = new TokenAlias(false, true, grammarAccess.getKEllipseAccess().getCommaKeyword_2_1_3_0());
 		match_KEllipse_CommaKeyword_2_4_3_0_q = new TokenAlias(false, true, grammarAccess.getKEllipseAccess().getCommaKeyword_2_4_3_0());
 		match_KEllipse___LeftCurlyBracketKeyword_2_0_RightCurlyBracketKeyword_2_5__q = new GroupAlias(false, true, new TokenAlias(false, false, grammarAccess.getKEllipseAccess().getLeftCurlyBracketKeyword_2_0()), new TokenAlias(false, false, grammarAccess.getKEllipseAccess().getRightCurlyBracketKeyword_2_5()));
-		match_KForeground_AlphaKeyword_6_q = new TokenAlias(false, true, grammarAccess.getKForegroundAccess().getAlphaKeyword_6());
-		match_KForeground_ColorKeyword_2_q = new TokenAlias(false, true, grammarAccess.getKForegroundAccess().getColorKeyword_2());
-		match_KForeground_GradientAngleKeyword_10_q = new TokenAlias(false, true, grammarAccess.getKForegroundAccess().getGradientAngleKeyword_10());
-		match_KForeground_TargetAlphaKeyword_8_q = new TokenAlias(false, true, grammarAccess.getKForegroundAccess().getTargetAlphaKeyword_8());
-		match_KForeground_TargetColorKeyword_4_q = new TokenAlias(false, true, grammarAccess.getKForegroundAccess().getTargetColorKeyword_4());
 		match_KGraphDataImpl_ColonKeyword_3_1_q = new TokenAlias(false, true, grammarAccess.getKGraphDataImplAccess().getColonKeyword_3_1());
 		match_KImage_ColonKeyword_4_1_1_q = new TokenAlias(false, true, grammarAccess.getKImageAccess().getColonKeyword_4_1_1());
 		match_KImage_ColonKeyword_4_2_1_q = new TokenAlias(false, true, grammarAccess.getKImageAccess().getColonKeyword_4_2_1());
@@ -215,8 +193,6 @@ public class KGraphSyntacticSequencer extends AbstractSyntacticSequencer {
 		match_KImage___LeftCurlyBracketKeyword_4_0_RightCurlyBracketKeyword_4_5__q = new GroupAlias(false, true, new TokenAlias(false, false, grammarAccess.getKImageAccess().getLeftCurlyBracketKeyword_4_0()), new TokenAlias(false, false, grammarAccess.getKImageAccess().getRightCurlyBracketKeyword_4_5()));
 		match_KLabel_ColonKeyword_3_1_q = new TokenAlias(false, true, grammarAccess.getKLabelAccess().getColonKeyword_3_1());
 		match_KLabel_CommaKeyword_3_3_0_q = new TokenAlias(false, true, grammarAccess.getKLabelAccess().getCommaKeyword_3_3_0());
-		match_KLineWidth_EqualsSignKeyword_4_q = new TokenAlias(false, true, grammarAccess.getKLineWidthAccess().getEqualsSignKeyword_4());
-		match_KLineWidth_ModifierKeyword_3_q = new TokenAlias(false, true, grammarAccess.getKLineWidthAccess().getModifierKeyword_3());
 		match_KNode_ColonKeyword_3_1_q = new TokenAlias(false, true, grammarAccess.getKNodeAccess().getColonKeyword_3_1());
 		match_KNode_ColonKeyword_4_1_q = new TokenAlias(false, true, grammarAccess.getKNodeAccess().getColonKeyword_4_1());
 		match_KNode_ColonKeyword_5_1_q = new TokenAlias(false, true, grammarAccess.getKNodeAccess().getColonKeyword_5_1());
@@ -287,15 +263,15 @@ public class KGraphSyntacticSequencer extends AbstractSyntacticSequencer {
 		match_KSpline_CommaKeyword_2_1_3_0_q = new TokenAlias(false, true, grammarAccess.getKSplineAccess().getCommaKeyword_2_1_3_0());
 		match_KSpline_CommaKeyword_2_4_3_0_q = new TokenAlias(false, true, grammarAccess.getKSplineAccess().getCommaKeyword_2_4_3_0());
 		match_KSpline___LeftCurlyBracketKeyword_2_0_RightCurlyBracketKeyword_2_5__q = new GroupAlias(false, true, new TokenAlias(false, false, grammarAccess.getKSplineAccess().getLeftCurlyBracketKeyword_2_0()), new TokenAlias(false, false, grammarAccess.getKSplineAccess().getRightCurlyBracketKeyword_2_5()));
+		match_KText_ColonKeyword_3_1_1_q = new TokenAlias(false, true, grammarAccess.getKTextAccess().getColonKeyword_3_1_1());
 		match_KText_ColonKeyword_3_2_1_q = new TokenAlias(false, true, grammarAccess.getKTextAccess().getColonKeyword_3_2_1());
 		match_KText_ColonKeyword_3_3_1_q = new TokenAlias(false, true, grammarAccess.getKTextAccess().getColonKeyword_3_3_1());
 		match_KText_ColonKeyword_3_4_1_q = new TokenAlias(false, true, grammarAccess.getKTextAccess().getColonKeyword_3_4_1());
 		match_KText_ColonKeyword_3_5_1_q = new TokenAlias(false, true, grammarAccess.getKTextAccess().getColonKeyword_3_5_1());
-		match_KText_ColonKeyword_3_6_1_q = new TokenAlias(false, true, grammarAccess.getKTextAccess().getColonKeyword_3_6_1());
-		match_KText_CommaKeyword_3_2_3_0_q = new TokenAlias(false, true, grammarAccess.getKTextAccess().getCommaKeyword_3_2_3_0());
+		match_KText_CommaKeyword_3_1_3_0_q = new TokenAlias(false, true, grammarAccess.getKTextAccess().getCommaKeyword_3_1_3_0());
+		match_KText_CommaKeyword_3_4_3_0_q = new TokenAlias(false, true, grammarAccess.getKTextAccess().getCommaKeyword_3_4_3_0());
 		match_KText_CommaKeyword_3_5_3_0_q = new TokenAlias(false, true, grammarAccess.getKTextAccess().getCommaKeyword_3_5_3_0());
-		match_KText_CommaKeyword_3_6_3_0_q = new TokenAlias(false, true, grammarAccess.getKTextAccess().getCommaKeyword_3_6_3_0());
-		match_KText___LeftCurlyBracketKeyword_3_0_RightCurlyBracketKeyword_3_7__q = new GroupAlias(false, true, new TokenAlias(false, false, grammarAccess.getKTextAccess().getLeftCurlyBracketKeyword_3_0()), new TokenAlias(false, false, grammarAccess.getKTextAccess().getRightCurlyBracketKeyword_3_7()));
+		match_KText___LeftCurlyBracketKeyword_3_0_RightCurlyBracketKeyword_3_6__q = new GroupAlias(false, true, new TokenAlias(false, false, grammarAccess.getKTextAccess().getLeftCurlyBracketKeyword_3_0()), new TokenAlias(false, false, grammarAccess.getKTextAccess().getRightCurlyBracketKeyword_3_6()));
 	}
 	
 	@Override
@@ -328,16 +304,6 @@ public class KGraphSyntacticSequencer extends AbstractSyntacticSequencer {
 				emit_KArc___LeftCurlyBracketKeyword_5_0_RightCurlyBracketKeyword_5_5__q(semanticObject, getLastNavigableState(), syntaxNodes);
 			else if(match_KAreaPlacementData_CommaKeyword_4_q.equals(syntax))
 				emit_KAreaPlacementData_CommaKeyword_4_q(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if(match_KBackground_AlphaKeyword_6_q.equals(syntax))
-				emit_KBackground_AlphaKeyword_6_q(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if(match_KBackground_ColorKeyword_2_q.equals(syntax))
-				emit_KBackground_ColorKeyword_2_q(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if(match_KBackground_GradientAngleKeyword_10_q.equals(syntax))
-				emit_KBackground_GradientAngleKeyword_10_q(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if(match_KBackground_TargetAlphaKeyword_8_q.equals(syntax))
-				emit_KBackground_TargetAlphaKeyword_8_q(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if(match_KBackground_TargetColorKeyword_4_q.equals(syntax))
-				emit_KBackground_TargetColorKeyword_4_q(semanticObject, getLastNavigableState(), syntaxNodes);
 			else if(match_KChildArea_ColonKeyword_2_1_1_q.equals(syntax))
 				emit_KChildArea_ColonKeyword_2_1_1_q(semanticObject, getLastNavigableState(), syntaxNodes);
 			else if(match_KChildArea_ColonKeyword_2_2_1_q.equals(syntax))
@@ -392,16 +358,6 @@ public class KGraphSyntacticSequencer extends AbstractSyntacticSequencer {
 				emit_KEllipse_CommaKeyword_2_4_3_0_q(semanticObject, getLastNavigableState(), syntaxNodes);
 			else if(match_KEllipse___LeftCurlyBracketKeyword_2_0_RightCurlyBracketKeyword_2_5__q.equals(syntax))
 				emit_KEllipse___LeftCurlyBracketKeyword_2_0_RightCurlyBracketKeyword_2_5__q(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if(match_KForeground_AlphaKeyword_6_q.equals(syntax))
-				emit_KForeground_AlphaKeyword_6_q(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if(match_KForeground_ColorKeyword_2_q.equals(syntax))
-				emit_KForeground_ColorKeyword_2_q(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if(match_KForeground_GradientAngleKeyword_10_q.equals(syntax))
-				emit_KForeground_GradientAngleKeyword_10_q(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if(match_KForeground_TargetAlphaKeyword_8_q.equals(syntax))
-				emit_KForeground_TargetAlphaKeyword_8_q(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if(match_KForeground_TargetColorKeyword_4_q.equals(syntax))
-				emit_KForeground_TargetColorKeyword_4_q(semanticObject, getLastNavigableState(), syntaxNodes);
 			else if(match_KGraphDataImpl_ColonKeyword_3_1_q.equals(syntax))
 				emit_KGraphDataImpl_ColonKeyword_3_1_q(semanticObject, getLastNavigableState(), syntaxNodes);
 			else if(match_KImage_ColonKeyword_4_1_1_q.equals(syntax))
@@ -422,10 +378,6 @@ public class KGraphSyntacticSequencer extends AbstractSyntacticSequencer {
 				emit_KLabel_ColonKeyword_3_1_q(semanticObject, getLastNavigableState(), syntaxNodes);
 			else if(match_KLabel_CommaKeyword_3_3_0_q.equals(syntax))
 				emit_KLabel_CommaKeyword_3_3_0_q(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if(match_KLineWidth_EqualsSignKeyword_4_q.equals(syntax))
-				emit_KLineWidth_EqualsSignKeyword_4_q(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if(match_KLineWidth_ModifierKeyword_3_q.equals(syntax))
-				emit_KLineWidth_ModifierKeyword_3_q(semanticObject, getLastNavigableState(), syntaxNodes);
 			else if(match_KNode_ColonKeyword_3_1_q.equals(syntax))
 				emit_KNode_ColonKeyword_3_1_q(semanticObject, getLastNavigableState(), syntaxNodes);
 			else if(match_KNode_ColonKeyword_4_1_q.equals(syntax))
@@ -566,6 +518,8 @@ public class KGraphSyntacticSequencer extends AbstractSyntacticSequencer {
 				emit_KSpline_CommaKeyword_2_4_3_0_q(semanticObject, getLastNavigableState(), syntaxNodes);
 			else if(match_KSpline___LeftCurlyBracketKeyword_2_0_RightCurlyBracketKeyword_2_5__q.equals(syntax))
 				emit_KSpline___LeftCurlyBracketKeyword_2_0_RightCurlyBracketKeyword_2_5__q(semanticObject, getLastNavigableState(), syntaxNodes);
+			else if(match_KText_ColonKeyword_3_1_1_q.equals(syntax))
+				emit_KText_ColonKeyword_3_1_1_q(semanticObject, getLastNavigableState(), syntaxNodes);
 			else if(match_KText_ColonKeyword_3_2_1_q.equals(syntax))
 				emit_KText_ColonKeyword_3_2_1_q(semanticObject, getLastNavigableState(), syntaxNodes);
 			else if(match_KText_ColonKeyword_3_3_1_q.equals(syntax))
@@ -574,16 +528,14 @@ public class KGraphSyntacticSequencer extends AbstractSyntacticSequencer {
 				emit_KText_ColonKeyword_3_4_1_q(semanticObject, getLastNavigableState(), syntaxNodes);
 			else if(match_KText_ColonKeyword_3_5_1_q.equals(syntax))
 				emit_KText_ColonKeyword_3_5_1_q(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if(match_KText_ColonKeyword_3_6_1_q.equals(syntax))
-				emit_KText_ColonKeyword_3_6_1_q(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if(match_KText_CommaKeyword_3_2_3_0_q.equals(syntax))
-				emit_KText_CommaKeyword_3_2_3_0_q(semanticObject, getLastNavigableState(), syntaxNodes);
+			else if(match_KText_CommaKeyword_3_1_3_0_q.equals(syntax))
+				emit_KText_CommaKeyword_3_1_3_0_q(semanticObject, getLastNavigableState(), syntaxNodes);
+			else if(match_KText_CommaKeyword_3_4_3_0_q.equals(syntax))
+				emit_KText_CommaKeyword_3_4_3_0_q(semanticObject, getLastNavigableState(), syntaxNodes);
 			else if(match_KText_CommaKeyword_3_5_3_0_q.equals(syntax))
 				emit_KText_CommaKeyword_3_5_3_0_q(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if(match_KText_CommaKeyword_3_6_3_0_q.equals(syntax))
-				emit_KText_CommaKeyword_3_6_3_0_q(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if(match_KText___LeftCurlyBracketKeyword_3_0_RightCurlyBracketKeyword_3_7__q.equals(syntax))
-				emit_KText___LeftCurlyBracketKeyword_3_0_RightCurlyBracketKeyword_3_7__q(semanticObject, getLastNavigableState(), syntaxNodes);
+			else if(match_KText___LeftCurlyBracketKeyword_3_0_RightCurlyBracketKeyword_3_6__q.equals(syntax))
+				emit_KText___LeftCurlyBracketKeyword_3_0_RightCurlyBracketKeyword_3_6__q(semanticObject, getLastNavigableState(), syntaxNodes);
 			else acceptNodes(getLastNavigableState(), syntaxNodes);
 		}
 	}
@@ -657,46 +609,6 @@ public class KGraphSyntacticSequencer extends AbstractSyntacticSequencer {
 	 *     ','?
 	 */
 	protected void emit_KAreaPlacementData_CommaKeyword_4_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
-		acceptNodes(transition, nodes);
-	}
-	
-	/**
-	 * Syntax:
-	 *     'alpha'?
-	 */
-	protected void emit_KBackground_AlphaKeyword_6_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
-		acceptNodes(transition, nodes);
-	}
-	
-	/**
-	 * Syntax:
-	 *     'color'?
-	 */
-	protected void emit_KBackground_ColorKeyword_2_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
-		acceptNodes(transition, nodes);
-	}
-	
-	/**
-	 * Syntax:
-	 *     'gradientAngle'?
-	 */
-	protected void emit_KBackground_GradientAngleKeyword_10_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
-		acceptNodes(transition, nodes);
-	}
-	
-	/**
-	 * Syntax:
-	 *     'targetAlpha'?
-	 */
-	protected void emit_KBackground_TargetAlphaKeyword_8_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
-		acceptNodes(transition, nodes);
-	}
-	
-	/**
-	 * Syntax:
-	 *     'targetColor'?
-	 */
-	protected void emit_KBackground_TargetColorKeyword_4_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
 		acceptNodes(transition, nodes);
 	}
 	
@@ -918,46 +830,6 @@ public class KGraphSyntacticSequencer extends AbstractSyntacticSequencer {
 	
 	/**
 	 * Syntax:
-	 *     'alpha'?
-	 */
-	protected void emit_KForeground_AlphaKeyword_6_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
-		acceptNodes(transition, nodes);
-	}
-	
-	/**
-	 * Syntax:
-	 *     'color'?
-	 */
-	protected void emit_KForeground_ColorKeyword_2_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
-		acceptNodes(transition, nodes);
-	}
-	
-	/**
-	 * Syntax:
-	 *     'gradientAngle'?
-	 */
-	protected void emit_KForeground_GradientAngleKeyword_10_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
-		acceptNodes(transition, nodes);
-	}
-	
-	/**
-	 * Syntax:
-	 *     'targetAlpha'?
-	 */
-	protected void emit_KForeground_TargetAlphaKeyword_8_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
-		acceptNodes(transition, nodes);
-	}
-	
-	/**
-	 * Syntax:
-	 *     'targetColor'?
-	 */
-	protected void emit_KForeground_TargetColorKeyword_4_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
-		acceptNodes(transition, nodes);
-	}
-	
-	/**
-	 * Syntax:
 	 *     ':'?
 	 */
 	protected void emit_KGraphDataImpl_ColonKeyword_3_1_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
@@ -1033,22 +905,6 @@ public class KGraphSyntacticSequencer extends AbstractSyntacticSequencer {
 	 *     ','?
 	 */
 	protected void emit_KLabel_CommaKeyword_3_3_0_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
-		acceptNodes(transition, nodes);
-	}
-	
-	/**
-	 * Syntax:
-	 *     '='?
-	 */
-	protected void emit_KLineWidth_EqualsSignKeyword_4_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
-		acceptNodes(transition, nodes);
-	}
-	
-	/**
-	 * Syntax:
-	 *     'modifier'?
-	 */
-	protected void emit_KLineWidth_ModifierKeyword_3_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
 		acceptNodes(transition, nodes);
 	}
 	
@@ -1616,6 +1472,14 @@ public class KGraphSyntacticSequencer extends AbstractSyntacticSequencer {
 	 * Syntax:
 	 *     ':'?
 	 */
+	protected void emit_KText_ColonKeyword_3_1_1_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
+		acceptNodes(transition, nodes);
+	}
+	
+	/**
+	 * Syntax:
+	 *     ':'?
+	 */
 	protected void emit_KText_ColonKeyword_3_2_1_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
 		acceptNodes(transition, nodes);
 	}
@@ -1646,9 +1510,9 @@ public class KGraphSyntacticSequencer extends AbstractSyntacticSequencer {
 	
 	/**
 	 * Syntax:
-	 *     ':'?
+	 *     ','?
 	 */
-	protected void emit_KText_ColonKeyword_3_6_1_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
+	protected void emit_KText_CommaKeyword_3_1_3_0_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
 		acceptNodes(transition, nodes);
 	}
 	
@@ -1656,7 +1520,7 @@ public class KGraphSyntacticSequencer extends AbstractSyntacticSequencer {
 	 * Syntax:
 	 *     ','?
 	 */
-	protected void emit_KText_CommaKeyword_3_2_3_0_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
+	protected void emit_KText_CommaKeyword_3_4_3_0_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
 		acceptNodes(transition, nodes);
 	}
 	
@@ -1670,17 +1534,9 @@ public class KGraphSyntacticSequencer extends AbstractSyntacticSequencer {
 	
 	/**
 	 * Syntax:
-	 *     ','?
-	 */
-	protected void emit_KText_CommaKeyword_3_6_3_0_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
-		acceptNodes(transition, nodes);
-	}
-	
-	/**
-	 * Syntax:
 	 *     ('{' '}')?
 	 */
-	protected void emit_KText___LeftCurlyBracketKeyword_3_0_RightCurlyBracketKeyword_3_7__q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
+	protected void emit_KText___LeftCurlyBracketKeyword_3_0_RightCurlyBracketKeyword_3_6__q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
 		acceptNodes(transition, nodes);
 	}
 	
