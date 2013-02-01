@@ -50,7 +50,7 @@ public interface KAreaPlacementData extends KPlacementData {
      * @return the value of the '<em>Top Left</em>' containment reference.
      * @see #setTopLeft(KPosition)
      * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKAreaPlacementData_TopLeft()
-     * @model containment="true" required="true"
+     * @model containment="true"
      * @generated
      */
     KPosition getTopLeft();
@@ -79,7 +79,7 @@ public interface KAreaPlacementData extends KPlacementData {
      * @return the value of the '<em>Bottom Right</em>' containment reference.
      * @see #setBottomRight(KPosition)
      * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKAreaPlacementData_BottomRight()
-     * @model containment="true" required="true"
+     * @model containment="true"
      * @generated
      */
     KPosition getBottomRight();

@@ -66,7 +66,7 @@ public class KGridPlacementDataImpl extends KAreaPlacementDataImpl implements KG
      * @generated
      * @ordered
      */
-    protected static final float MAX_CELL_WIDTH_EDEFAULT = 0.0F;
+    protected static final float MAX_CELL_WIDTH_EDEFAULT = -1.0F;
     /**
      * The cached value of the '{@link #getMaxCellWidth() <em>Max Cell Width</em>}' attribute.
      * <!-- begin-user-doc -->
@@ -102,7 +102,7 @@ public class KGridPlacementDataImpl extends KAreaPlacementDataImpl implements KG
      * @generated
      * @ordered
      */
-    protected static final float MAX_CELL_HEIGHT_EDEFAULT = 0.0F;
+    protected static final float MAX_CELL_HEIGHT_EDEFAULT = -1.0F;
     /**
      * The cached value of the '{@link #getMaxCellHeight() <em>Max Cell Height</em>}' attribute.
      * <!-- begin-user-doc -->

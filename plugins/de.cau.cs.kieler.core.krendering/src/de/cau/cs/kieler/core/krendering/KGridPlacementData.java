@@ -41,6 +41,7 @@ public interface KGridPlacementData extends KAreaPlacementData {
 
     /**
      * Returns the value of the '<em><b>Min Cell Width</b></em>' attribute.
+     * The default value is <code>"0"</code>.
      * <!-- begin-user-doc -->
      * <p>
      * If the meaning of the '<em>Min Cell Width</em>' attribute isn't clear,
@@ -53,7 +54,7 @@ public interface KGridPlacementData extends KAreaPlacementData {
      * @return the value of the '<em>Min Cell Width</em>' attribute.
      * @see #setMinCellWidth(float)
      * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKGridPlacementData_MinCellWidth()
-     * @model
+     * @model default="0"
      * @generated
      */
     float getMinCellWidth();
@@ -70,6 +71,7 @@ public interface KGridPlacementData extends KAreaPlacementData {
 
     /**
      * Returns the value of the '<em><b>Max Cell Width</b></em>' attribute.
+     * The default value is <code>"-1"</code>.
      * <!-- begin-user-doc -->
      * <p>
      * If the meaning of the '<em>Max Cell Width</em>' attribute isn't clear,
@@ -84,7 +86,7 @@ public interface KGridPlacementData extends KAreaPlacementData {
      * @return the value of the '<em>Max Cell Width</em>' attribute.
      * @see #setMaxCellWidth(float)
      * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKGridPlacementData_MaxCellWidth()
-     * @model
+     * @model default="-1"
      * @generated
      */
     float getMaxCellWidth();
@@ -101,6 +103,7 @@ public interface KGridPlacementData extends KAreaPlacementData {
 
     /**
      * Returns the value of the '<em><b>Min Cell Height</b></em>' attribute.
+     * The default value is <code>"0"</code>.
      * <!-- begin-user-doc -->
      * <p>
      * If the meaning of the '<em>Min Cell Height</em>' attribute isn't clear,
@@ -113,7 +116,7 @@ public interface KGridPlacementData extends KAreaPlacementData {
      * @return the value of the '<em>Min Cell Height</em>' attribute.
      * @see #setMinCellHeight(float)
      * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKGridPlacementData_MinCellHeight()
-     * @model
+     * @model default="0"
      * @generated
      */
     float getMinCellHeight();
@@ -130,6 +133,7 @@ public interface KGridPlacementData extends KAreaPlacementData {
 
     /**
      * Returns the value of the '<em><b>Max Cell Height</b></em>' attribute.
+     * The default value is <code>"-1"</code>.
      * <!-- begin-user-doc -->
      * <p>
      * If the meaning of the '<em>Max Cell Height</em>' attribute isn't clear,
@@ -144,7 +148,7 @@ public interface KGridPlacementData extends KAreaPlacementData {
      * @return the value of the '<em>Max Cell Height</em>' attribute.
      * @see #setMaxCellHeight(float)
      * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKGridPlacementData_MaxCellHeight()
-     * @model
+     * @model default="-1"
      * @generated
      */
     float getMaxCellHeight();
