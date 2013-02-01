@@ -1664,25 +1664,29 @@ public abstract class AbstractRenderingController<S extends KGraphElement, T ext
      *            the styles
      */
     protected void applyStyles(final PNodeController<?> controller, final Styles styles) {
+        // check whether node is visible and apply invisibility
+        if (styles.invisibility != null) {
+            controller.getNode().setOccluded(styles.invisibility.isInvisible());
+            // remark: the 'occluded' flag is examined in PNode#fullPaint();
+            
+            //question: is this the correct place to do this when propagateToChildren is set?
+            // controller.getNode().setVisible(!styles.invisibility.isInvisible());
+            
+            if (styles.invisibility.isInvisible()) {
+                //if node is invisible, no other styles need to be evaluated
+                return;
+            }
+        }        
+        
         // apply foreground styles
         if (styles.foreground != null) {
             int alphaValue = styles.foreground.getAlpha();
             KColor color = styles.foreground.getColor();
-            controller.setForegroundColor(
-                    new Color(
-                            color.getRed(), 
-                            color.getGreen(), 
-                            color.getBlue(),
-                            alphaValue)
-                    );
-            
-//            controller.setForegroundColor(new GradientPaint(5, 5, Color.red, 200, 5,
-//                    Color.blue));
-            if (styles.invisibility == null) {
-                controller.setLineAlpha(alphaValue);
-            } else {
-                controller.setLineAlpha(0);
+            if (color != null) {
+                controller.setForegroundColor(new Color(color.getRed(), color.getGreen(), color
+                        .getBlue(), alphaValue));
             }
+            controller.setLineAlpha(alphaValue);
         }
 
         // apply background color

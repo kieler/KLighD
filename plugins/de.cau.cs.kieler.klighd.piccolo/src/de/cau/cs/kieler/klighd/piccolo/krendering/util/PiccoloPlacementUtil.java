@@ -162,9 +162,19 @@ public final class PiccoloPlacementUtil {
             final PSWTAdvancedPath path) {
         Decoration decoration = new Decoration();
 
-        Point2D[] points = ((PSWTAdvancedPath) path
-                .getAttribute(PSWTAdvancedPath.APPROXIMATED_PATH)).getShapePoints();
-
+        PSWTAdvancedPath approxPath = (PSWTAdvancedPath) path
+                .getAttribute(PSWTAdvancedPath.APPROXIMATED_PATH);
+        
+        Point2D[] points; 
+        if (approxPath != null) {
+            points = approxPath.getShapePoints();
+        } else {
+            points = new Point2D[] {
+                new Point2D.Double(0, 0),
+                new Point2D.Double(0, 0)
+            };
+        }
+        
         // default case
         if (dpd == null) {
             decoration.origin = (Point2D) points[0].clone();
