@@ -382,7 +382,7 @@ public final class PlacementUtil {
             switch (placementId) {
             case KRenderingPackage.KGRID_PLACEMENT:
                 // in case of a GridPlacement
-                // calculate the number of columns and rows of the grid to the bounds of a inner
+                // calculate the number of columns and rows of the grid to the bounds of an inner
                 // rendering
                 placementBounds = estimateGridSize(container, defBounds);
                 break;
@@ -553,8 +553,6 @@ public final class PlacementUtil {
             // so numRows = number of elements to place
             numColumns = 1;
             numRows = childRenderings.size();
-            // Chsch: This is OK for the moment. In future, however, the semantics of a value less
-            // than 1 (or 0) might change
         } else {
             // else calculate number of rows based on number of child elements and columns
             numRows = (childRenderings.size() + numColumns - 1) / numColumns;
@@ -593,6 +591,29 @@ public final class PlacementUtil {
 
             if (plcData instanceof KGridPlacementData) {
                 gridData = (KGridPlacementData) plcData;
+                
+                
+                if (gridData.getTopLeft() != null) {
+                    elementWidth += additionalSizeNeeded(elementWidth, 
+                            gridData.getTopLeft().getX().getAbsolute(), 
+                            gridData.getTopLeft().getX().getRelative(),
+                            gridData.getTopLeft().getX().eClass().getClassifierID());
+                    elementHeight += additionalSizeNeeded(elementHeight, 
+                            gridData.getTopLeft().getY().getAbsolute(), 
+                            gridData.getTopLeft().getY().getRelative(),
+                            gridData.getTopLeft().getY().eClass().getClassifierID());
+                }
+                if (gridData.getBottomRight() != null) {
+                    elementWidth += additionalSizeNeeded(elementWidth, 
+                            gridData.getBottomRight().getX().getAbsolute(), 
+                            gridData.getBottomRight().getX().getRelative(),
+                            gridData.getBottomRight().getX().eClass().getClassifierID());
+                    elementHeight += additionalSizeNeeded(elementHeight, 
+                            gridData.getBottomRight().getY().getAbsolute(), 
+                            gridData.getBottomRight().getY().getRelative(),
+                            gridData.getBottomRight().getY().eClass().getClassifierID());
+                }
+
 
                 if (KRENDERING_PACKAGE.getKText().isInstance(childRenderings.get(k))) {
                     // update Text with minimum needed space if already set value is less than that
@@ -601,7 +622,6 @@ public final class PlacementUtil {
                     // defined in the placementData
                     gridData.setMinCellHeight(Math.max(elementHeight, gridData.getMinCellHeight()));
                     gridData.setMinCellWidth(Math.max(elementWidth, gridData.getMinCellWidth()));
-                    childRenderings.get(k).setPlacementData(gridData);
                 }
                 elementHeight = Math.max(gridData.getMinCellHeight(), elementHeight);
                 elementWidth = Math.max(gridData.getMinCellWidth(), elementWidth);
@@ -653,6 +673,38 @@ public final class PlacementUtil {
         minBounds.height = Math.max(minBounds.height, childBounds.height);
 
         return minBounds;
+    }
+    
+    
+    /**
+     * Determine the additional size needed to place an element with its according insets.
+     * @param elementSize the size of the element itself
+     * @param absValue the absolute value of given insets
+     * @param relValue the relative value of given insets
+     * @param classifierId the classifier to identify how these insets are measured
+     * @return the additional size needed for the rendering
+     */
+    public static float additionalSizeNeeded(final float elementSize, 
+            final float absValue, final float relValue, final int classifierId) {
+        float temp;
+        float localRelValue = relValue;
+        switch (classifierId){
+        case KRenderingPackage.KBOTTOM_POSITION:
+        case KRenderingPackage.KRIGHT_POSITION:  
+            //emulate left/topPosition by simply inverting the relValue
+            localRelValue = 1 - relValue;
+            //fallThrough
+        case KRenderingPackage.KTOP_POSITION:
+        case KRenderingPackage.KLEFT_POSITION:
+            temp = elementSize + absValue;
+            if (localRelValue != 1) {
+                temp = temp / (1 - localRelValue);
+            } //else error in model: object placed outside of the parent, so ignore relValue.
+            return temp - elementSize;
+        default: 
+            //could not determine how the insets were measured so don't change anything.
+            return 0f;
+        }
     }
 
     /**
@@ -1272,6 +1324,18 @@ public final class PlacementUtil {
         GridPlacer placer = getGridPlacementObject(gridPlacement, gpds);
         return placer.evaluate(parentBounds);
     }
+    
+    // if the related grid placement data fields contain the following default definitions
+    //  (obtained from the meta model)
+    //  the given fields are interpreted as unspecified (absent) 
+    private static final float DEFAULT_MAX_CELL_WIDTH = (Float) KRenderingPackage.eINSTANCE
+            .getKGridPlacementData_MaxCellWidth().getDefaultValue();
+    private static final float DEFAULT_MIN_CELL_WIDTH = (Float) KRenderingPackage.eINSTANCE
+            .getKGridPlacementData_MinCellWidth().getDefaultValue();
+    private static final float DEFAULT_MIN_CELL_HEIGHT = (Float) KRenderingPackage.eINSTANCE
+            .getKGridPlacementData_MinCellHeight().getDefaultValue();   
+    private static final float DEFAULT_MAX_CELL_HEIGHT = (Float) KRenderingPackage.eINSTANCE
+            .getKGridPlacementData_MaxCellHeight().getDefaultValue();
 
     /**
      * returns a gridPlacer to calculate bounds of single elements inside the grid.
@@ -1336,23 +1400,23 @@ public final class PlacementUtil {
                     gpd.getMinCellWidth());
             placer.rowMaxMinHeight[row] = Math.max(placer.rowMaxMinHeight[row],
                     gpd.getMinCellHeight());
-
-            if (gpd.getMaxCellWidth() > placer.columnMaxMinWidth[column]) {
-                // take it, if it is smaller than the current Maximum Size
+            if (gpd.getMaxCellWidth() >= placer.columnMaxMinWidth[column]) {
+                // We defined the "min width" to be stronger than the "max width" so  take the given max
+                //  width only, if it is bigger than the current maximal "min width" in the same column
                 placer.columnMinMaxWidth[column] = Math.min(placer.columnMinMaxWidth[column],
                         gpd.getMaxCellWidth());
                 placer.columnHasMaxWidth[column] = true;
             }
-            if (gpd.getMaxCellHeight() > placer.rowMaxMinHeight[row]) {
+            if (gpd.getMaxCellHeight() >= placer.rowMaxMinHeight[row]) {
                 placer.rowMinMaxHeight[row] = Math.min(placer.rowMinMaxHeight[row],
                         gpd.getMaxCellHeight());
                 placer.rowHasMaxHeight[row] = true;
             }
 
-            if (gpd.getMinCellWidth() > 0) {
+            if (gpd.getMinCellWidth() > DEFAULT_MIN_CELL_WIDTH) {
                 placer.columnHasMinWidth[column] = true;
             }
-            if (gpd.getMinCellHeight() > 0) {
+            if (gpd.getMinCellHeight() > DEFAULT_MIN_CELL_HEIGHT) {
                 placer.rowHasMinHeight[row] = true;
             }
         }
@@ -1549,42 +1613,49 @@ public final class PlacementUtil {
                 float insetRight = 0;
                 float insetTop = 0;
                 float insetBottom = 0;
+                
                 if (gpd != null) {
-                    insetLeft = gpd.getTopLeft().getX().eClass().getClassifierID() == KRenderingPackage
-                            .KLEFT_POSITION
-                    // left indent measured from left so just take it
-                    ? gpd.getTopLeft().getX().getAbsolute()
-                            + (gpd.getTopLeft().getX().getRelative() * cellWidth)
-                            // left indent measured from right, so calculate based on cellWidth
-                            : cellWidth - gpd.getTopLeft().getX().getAbsolute()
-                                    - (gpd.getTopLeft().getX().getRelative() * cellWidth);
-                    insetRight = gpd.getBottomRight().getX().eClass().getClassifierID() 
-                            == KRenderingPackage.KRIGHT_POSITION
-                    // right indent measured from right so just take it
-                    ? gpd.getBottomRight().getX().getAbsolute()
-                            + (gpd.getBottomRight().getX().getRelative() * cellWidth)
-                            // right indent measured from left, so calculate based on cellWidth
-                            : cellWidth - gpd.getBottomRight().getX().getAbsolute()
-                                    - (gpd.getBottomRight().getX().getRelative() * cellWidth);
                     
-                            
-                    insetTop = gpd.getTopLeft().getY().eClass().getClassifierID() == KRenderingPackage
-                            .KTOP_POSITION
-                    // top indent measured from top so just take it
-                    ? gpd.getTopLeft().getY().getAbsolute()
-                            + (gpd.getTopLeft().getY().getRelative() * cellHeight)
-                            // top indent measured from bottom so calculate based on cellHeight
-                            : cellHeight - gpd.getTopLeft().getY().getAbsolute()
-                                    - (gpd.getTopLeft().getY().getRelative() * cellHeight);
-                            
-                    insetBottom = gpd.getBottomRight().getY().eClass().getClassifierID()
-                            == KRenderingPackage.KBOTTOM_POSITION
-                    // bottom indent measured from bottom so just take it
-                    ? gpd.getBottomRight().getY().getAbsolute()
-                            + (gpd.getBottomRight().getY().getRelative() * cellHeight)
-                            // bottom indent measured from top so calculate based on cellHeight
-                            : cellHeight - gpd.getBottomRight().getY().getAbsolute()
-                                    - (gpd.getBottomRight().getY().getRelative() * cellHeight);
+                    if (gpd.getTopLeft() != null) {
+                        insetLeft = gpd.getTopLeft().getX().eClass().getClassifierID() == KRenderingPackage
+                                .KLEFT_POSITION
+                                // left indent measured from left so just take it
+                                ? gpd.getTopLeft().getX().getAbsolute()
+                                        + (gpd.getTopLeft().getX().getRelative() * cellWidth)
+                                        // left indent measured from right, so calculate based on cellWidth
+                                        : cellWidth - gpd.getTopLeft().getX().getAbsolute()
+                                        - (gpd.getTopLeft().getX().getRelative() * cellWidth);
+
+                    
+                        insetTop = gpd.getTopLeft().getY().eClass().getClassifierID() == KRenderingPackage
+                                .KTOP_POSITION
+                                // top indent measured from top so just take it
+                                ? gpd.getTopLeft().getY().getAbsolute()
+                                        + (gpd.getTopLeft().getY().getRelative() * cellHeight)
+                                        // top indent measured from bottom so calculate based on cellHeight
+                                        : cellHeight - gpd.getTopLeft().getY().getAbsolute()
+                                        - (gpd.getTopLeft().getY().getRelative() * cellHeight);
+                    }
+                    
+                    if (gpd.getBottomRight() != null) {
+                        insetRight = gpd.getBottomRight().getX().eClass().getClassifierID() 
+                                == KRenderingPackage.KRIGHT_POSITION
+                        // right indent measured from right so just take it
+                        ? gpd.getBottomRight().getX().getAbsolute()
+                                + (gpd.getBottomRight().getX().getRelative() * cellWidth)
+                                // right indent measured from left, so calculate based on cellWidth
+                                : cellWidth - gpd.getBottomRight().getX().getAbsolute()
+                                        - (gpd.getBottomRight().getX().getRelative() * cellWidth);
+                                
+                        insetBottom = gpd.getBottomRight().getY().eClass().getClassifierID()
+                                == KRenderingPackage.KBOTTOM_POSITION
+                        // bottom indent measured from bottom so just take it
+                        ? gpd.getBottomRight().getY().getAbsolute()
+                                + (gpd.getBottomRight().getY().getRelative() * cellHeight)
+                                // bottom indent measured from top so calculate based on cellHeight
+                                : cellHeight - gpd.getBottomRight().getY().getAbsolute()
+                                        - (gpd.getBottomRight().getY().getRelative() * cellHeight);
+                    }
                 }
 
                 // determine the elements bounds

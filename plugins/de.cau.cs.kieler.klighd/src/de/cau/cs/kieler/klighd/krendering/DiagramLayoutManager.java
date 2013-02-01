@@ -285,7 +285,7 @@ public class DiagramLayoutManager implements IDiagramLayoutManager<KGraphElement
                     nodeLayout.setProperty(LayoutOptions.MIN_WIDTH, minSize.width);
                 }
                 if (minSize.height > useLayout.getHeight()) {
-                    useLayout.setHeight(useLayout.getHeight());
+                    useLayout.setHeight(minSize.height);
                     // see comment above
                     nodeLayout.setProperty(LayoutOptions.MIN_HEIGHT, minSize.height);
                 }
