@@ -235,7 +235,7 @@ KBottomPosition returns KBottomPosition:
 
 KColor returns KColor:
     {KColor}
-    'color' red=EInt  green=EInt blue=EInt (propagateToChildren?='!')?;
+    red=EInt  green=EInt blue=EInt (propagateToChildren?='!')?;
     
 KBackground returns KBackground:
     'KBackground'
@@ -259,7 +259,9 @@ KForeground returns KForeground:
     
 KVisibility returns KInvisibility:
     {KInvisibility}
-    invisible?='invisible';
+    invisible?='invisible'
+    ('modifier' '=' functionId=EString)?;
+    
     
 KLineWidth returns KLineWidth:
     'lineWidth' lineWidth=EInt (propagateToChildren?='!')? 

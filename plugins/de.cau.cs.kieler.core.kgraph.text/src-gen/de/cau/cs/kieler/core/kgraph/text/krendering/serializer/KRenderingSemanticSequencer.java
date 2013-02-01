@@ -842,7 +842,7 @@ public class KRenderingSemanticSequencer extends KLayoutDataSemanticSequencer {
 	
 	/**
 	 * Constraint:
-	 *     invisible?='invisible'
+	 *     (invisible?='invisible' functionId=EString?)
 	 */
 	protected void sequence_KVisibility(EObject context, KInvisibility semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);

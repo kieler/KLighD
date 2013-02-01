@@ -1131,7 +1131,6 @@
             <classifier xsi:type="ecore:EClass" href="http://kieler.cs.cau.de/KRendering#//KColor"/>
           </type>
         </elements>
-        <elements xsi:type="xtext:Keyword" value="color"/>
         <elements xsi:type="xtext:Assignment" feature="red" operator="=">
           <terminal xsi:type="xtext:RuleCall" rule="/0/@rules.50"/>
         </elements>
@@ -1238,6 +1237,13 @@
         </elements>
         <elements xsi:type="xtext:Assignment" feature="invisible" operator="?=">
           <terminal xsi:type="xtext:Keyword" value="invisible"/>
+        </elements>
+        <elements xsi:type="xtext:Group" cardinality="?">
+          <elements xsi:type="xtext:Keyword" value="modifier"/>
+          <elements xsi:type="xtext:Keyword" value="="/>
+          <elements xsi:type="xtext:Assignment" feature="functionId" operator="=">
+            <terminal xsi:type="xtext:RuleCall" rule="/1/@rules.5"/>
+          </elements>
         </elements>
       </alternatives>
     </rules>

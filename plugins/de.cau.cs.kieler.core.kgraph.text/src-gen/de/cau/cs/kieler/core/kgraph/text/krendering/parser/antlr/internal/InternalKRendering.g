@@ -4148,23 +4148,19 @@ ruleKColor returns [EObject current=null]
             grammarAccess.getKColorAccess().getKColorAction_0(),
             $current);
     }
-)	otherlv_1='color' 
-    {
-    	newLeafNode(otherlv_1, grammarAccess.getKColorAccess().getColorKeyword_1());
-    }
-(
+)(
 (
 		{ 
-	        newCompositeNode(grammarAccess.getKColorAccess().getRedEIntParserRuleCall_2_0()); 
+	        newCompositeNode(grammarAccess.getKColorAccess().getRedEIntParserRuleCall_1_0()); 
 	    }
-		lv_red_2_0=ruleEInt		{
+		lv_red_1_0=ruleEInt		{
 	        if ($current==null) {
 	            $current = createModelElementForParent(grammarAccess.getKColorRule());
 	        }
        		set(
        			$current, 
        			"red",
-        		lv_red_2_0, 
+        		lv_red_1_0, 
         		"EInt");
 	        afterParserOrEnumRuleCall();
 	    }
@@ -4173,16 +4169,16 @@ ruleKColor returns [EObject current=null]
 )(
 (
 		{ 
-	        newCompositeNode(grammarAccess.getKColorAccess().getGreenEIntParserRuleCall_3_0()); 
+	        newCompositeNode(grammarAccess.getKColorAccess().getGreenEIntParserRuleCall_2_0()); 
 	    }
-		lv_green_3_0=ruleEInt		{
+		lv_green_2_0=ruleEInt		{
 	        if ($current==null) {
 	            $current = createModelElementForParent(grammarAccess.getKColorRule());
 	        }
        		set(
        			$current, 
        			"green",
-        		lv_green_3_0, 
+        		lv_green_2_0, 
         		"EInt");
 	        afterParserOrEnumRuleCall();
 	    }
@@ -4191,16 +4187,16 @@ ruleKColor returns [EObject current=null]
 )(
 (
 		{ 
-	        newCompositeNode(grammarAccess.getKColorAccess().getBlueEIntParserRuleCall_4_0()); 
+	        newCompositeNode(grammarAccess.getKColorAccess().getBlueEIntParserRuleCall_3_0()); 
 	    }
-		lv_blue_4_0=ruleEInt		{
+		lv_blue_3_0=ruleEInt		{
 	        if ($current==null) {
 	            $current = createModelElementForParent(grammarAccess.getKColorRule());
 	        }
        		set(
        			$current, 
        			"blue",
-        		lv_blue_4_0, 
+        		lv_blue_3_0, 
         		"EInt");
 	        afterParserOrEnumRuleCall();
 	    }
@@ -4208,9 +4204,9 @@ ruleKColor returns [EObject current=null]
 )
 )(
 (
-		lv_propagateToChildren_5_0=	'!' 
+		lv_propagateToChildren_4_0=	'!' 
     {
-        newLeafNode(lv_propagateToChildren_5_0, grammarAccess.getKColorAccess().getPropagateToChildrenExclamationMarkKeyword_5_0());
+        newLeafNode(lv_propagateToChildren_4_0, grammarAccess.getKColorAccess().getPropagateToChildrenExclamationMarkKeyword_4_0());
     }
  
 	    {
@@ -4549,7 +4545,33 @@ ruleKVisibility returns [EObject current=null]
 	    }
 
 )
-))
+)(	otherlv_2='modifier' 
+    {
+    	newLeafNode(otherlv_2, grammarAccess.getKVisibilityAccess().getModifierKeyword_2_0());
+    }
+	otherlv_3='=' 
+    {
+    	newLeafNode(otherlv_3, grammarAccess.getKVisibilityAccess().getEqualsSignKeyword_2_1());
+    }
+(
+(
+		{ 
+	        newCompositeNode(grammarAccess.getKVisibilityAccess().getFunctionIdEStringParserRuleCall_2_2_0()); 
+	    }
+		lv_functionId_4_0=ruleEString		{
+	        if ($current==null) {
+	            $current = createModelElementForParent(grammarAccess.getKVisibilityRule());
+	        }
+       		set(
+       			$current, 
+       			"functionId",
+        		lv_functionId_4_0, 
+        		"EString");
+	        afterParserOrEnumRuleCall();
+	    }
+
+)
+))?)
 ;
 
 

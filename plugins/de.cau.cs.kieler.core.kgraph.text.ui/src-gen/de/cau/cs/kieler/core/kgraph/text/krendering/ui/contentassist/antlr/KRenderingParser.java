@@ -189,6 +189,7 @@ public class KRenderingParser extends AbstractContentAssistParser {
 					put(grammarAccess.getKForegroundAccess().getGroup_5(), "rule__KForeground__Group_5__0");
 					put(grammarAccess.getKForegroundAccess().getGroup_6(), "rule__KForeground__Group_6__0");
 					put(grammarAccess.getKVisibilityAccess().getGroup(), "rule__KVisibility__Group__0");
+					put(grammarAccess.getKVisibilityAccess().getGroup_2(), "rule__KVisibility__Group_2__0");
 					put(grammarAccess.getKLineWidthAccess().getGroup(), "rule__KLineWidth__Group__0");
 					put(grammarAccess.getKLineWidthAccess().getGroup_3(), "rule__KLineWidth__Group_3__0");
 					put(grammarAccess.getKLineStyleAccess().getGroup(), "rule__KLineStyle__Group__0");
@@ -349,10 +350,10 @@ public class KRenderingParser extends AbstractContentAssistParser {
 					put(grammarAccess.getKTopPositionAccess().getRelativeAssignment_3(), "rule__KTopPosition__RelativeAssignment_3");
 					put(grammarAccess.getKBottomPositionAccess().getAbsoluteAssignment_2(), "rule__KBottomPosition__AbsoluteAssignment_2");
 					put(grammarAccess.getKBottomPositionAccess().getRelativeAssignment_3(), "rule__KBottomPosition__RelativeAssignment_3");
-					put(grammarAccess.getKColorAccess().getRedAssignment_2(), "rule__KColor__RedAssignment_2");
-					put(grammarAccess.getKColorAccess().getGreenAssignment_3(), "rule__KColor__GreenAssignment_3");
-					put(grammarAccess.getKColorAccess().getBlueAssignment_4(), "rule__KColor__BlueAssignment_4");
-					put(grammarAccess.getKColorAccess().getPropagateToChildrenAssignment_5(), "rule__KColor__PropagateToChildrenAssignment_5");
+					put(grammarAccess.getKColorAccess().getRedAssignment_1(), "rule__KColor__RedAssignment_1");
+					put(grammarAccess.getKColorAccess().getGreenAssignment_2(), "rule__KColor__GreenAssignment_2");
+					put(grammarAccess.getKColorAccess().getBlueAssignment_3(), "rule__KColor__BlueAssignment_3");
+					put(grammarAccess.getKColorAccess().getPropagateToChildrenAssignment_4(), "rule__KColor__PropagateToChildrenAssignment_4");
 					put(grammarAccess.getKBackgroundAccess().getColorAssignment_2_1(), "rule__KBackground__ColorAssignment_2_1");
 					put(grammarAccess.getKBackgroundAccess().getTargetColorAssignment_3_1(), "rule__KBackground__TargetColorAssignment_3_1");
 					put(grammarAccess.getKBackgroundAccess().getAlphaAssignment_4_1(), "rule__KBackground__AlphaAssignment_4_1");
@@ -364,6 +365,7 @@ public class KRenderingParser extends AbstractContentAssistParser {
 					put(grammarAccess.getKForegroundAccess().getTargetAlphaAssignment_5_1(), "rule__KForeground__TargetAlphaAssignment_5_1");
 					put(grammarAccess.getKForegroundAccess().getGradientAngleAssignment_6_1(), "rule__KForeground__GradientAngleAssignment_6_1");
 					put(grammarAccess.getKVisibilityAccess().getInvisibleAssignment_1(), "rule__KVisibility__InvisibleAssignment_1");
+					put(grammarAccess.getKVisibilityAccess().getFunctionIdAssignment_2_2(), "rule__KVisibility__FunctionIdAssignment_2_2");
 					put(grammarAccess.getKLineWidthAccess().getLineWidthAssignment_1(), "rule__KLineWidth__LineWidthAssignment_1");
 					put(grammarAccess.getKLineWidthAccess().getPropagateToChildrenAssignment_2(), "rule__KLineWidth__PropagateToChildrenAssignment_2");
 					put(grammarAccess.getKLineWidthAccess().getFunctionIdAssignment_3_2(), "rule__KLineWidth__FunctionIdAssignment_3_2");

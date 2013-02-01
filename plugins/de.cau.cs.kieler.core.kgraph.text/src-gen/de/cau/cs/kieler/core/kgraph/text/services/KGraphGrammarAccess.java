@@ -1300,7 +1300,7 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//KColor:
-	//	{KColor} "color" red=EInt green=EInt blue=EInt propagateToChildren?="!"?;
+	//	{KColor} red=EInt green=EInt blue=EInt propagateToChildren?="!"?;
 	public KRenderingGrammarAccess.KColorElements getKColorAccess() {
 		return gaKRendering.getKColorAccess();
 	}
@@ -1332,7 +1332,7 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//KVisibility returns KInvisibility:
-	//	{KInvisibility} invisible?="invisible";
+	//	{KInvisibility} invisible?="invisible" ("modifier" "=" functionId=EString)?;
 	public KRenderingGrammarAccess.KVisibilityElements getKVisibilityAccess() {
 		return gaKRendering.getKVisibilityAccess();
 	}
