@@ -272,15 +272,14 @@ class KPortExtensions {
     
     def private KRendering createWPortRendering(String label) {
         return renderingFactory.createKRectangle => [
-            it.setForeground(
-                renderingFactory.createKForeground=>[
-                it.setAlpha(255);
-                it.setColor(renderingFactory.createKColor=>[
-                    it.setRed(0);
-                    it.setGreen(0);
-                    it.setBlue(0);
-                ]);
-            ]);
+            it.foreground = renderingFactory.createKForeground() => [
+                it.alpha = 255; // is also the default in the meta model
+                it.color = renderingFactory.createKColor();
+            ];
+            it.background = renderingFactory.createKBackground() => [
+                it.alpha = 255; // is also the default in the meta model
+                it.color = renderingFactory.createKColor();
+            ];
             it.children += renderingFactory.createKText.withCopyOf(portLabelFontSize()) => [
                 it.text = label;
                 it.setHorizontalAlignment(
@@ -329,16 +328,15 @@ class KPortExtensions {
     }
     
     def private KRendering createEPortRendering(String label) {
-        return renderingFactory.createKRectangle => [
-            it.setForeground(
-                renderingFactory.createKForeground=>[
-                it.setAlpha(255);
-                it.setColor(renderingFactory.createKColor=>[
-                    it.setRed(0);
-                    it.setGreen(0);
-                    it.setBlue(0);
-                ]);
-            ]);
+        return renderingFactory.createKRectangle() => [
+            it.foreground = renderingFactory.createKForeground() => [
+                it.alpha = 255; // is also the default in the meta model
+                it.color = renderingFactory.createKColor();
+            ];
+            it.background = renderingFactory.createKBackground() => [
+                it.alpha = 255; // is also the default in the meta model
+                it.color = renderingFactory.createKColor();
+            ];
             it.children += renderingFactory.createKText.withCopyOf(portLabelFontSize()) => [
                 it.text = label;
                 it.setHorizontalAlignment(

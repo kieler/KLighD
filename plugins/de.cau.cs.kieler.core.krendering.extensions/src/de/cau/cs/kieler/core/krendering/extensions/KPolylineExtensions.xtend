@@ -27,7 +27,7 @@ class KPolylineExtensions {
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	
 	def KRendering addArrowDecorator(KPolyline pl) {
-		return pl.drawTriangle() => [
+		return pl.drawArrow() => [
 		    it.placementData = renderingFactory.createKDecoratorPlacementData => [
                 it.setRotateWithLine(true);
                 it.setAbsolute(1)
@@ -54,11 +54,11 @@ class KPolylineExtensions {
         ];
     }
 	
-	def KPosition addKPosition(KPolyline ppd, KXPosition xPos, KYPosition yPos) {
+	def KPosition addKPosition(KPolyline pl, KXPosition xPos, KYPosition yPos) {
 		renderingFactory.createKPosition => [
 	        it.setX(xPos);
 		    it.setY(yPos);
-		    ppd.points.add(it);
+		    pl.points.add(it);
 		];		
 	}
 	
