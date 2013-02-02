@@ -26,7 +26,7 @@ import de.cau.cs.kieler.core.krendering.KHorizontalAlignment;
 import de.cau.cs.kieler.core.krendering.KImage;
 import de.cau.cs.kieler.core.krendering.KInvisibility;
 import de.cau.cs.kieler.core.krendering.KLeftPosition;
-import de.cau.cs.kieler.core.krendering.KLineCapStyle;
+import de.cau.cs.kieler.core.krendering.KLineCap;
 import de.cau.cs.kieler.core.krendering.KLineStyle;
 import de.cau.cs.kieler.core.krendering.KLineWidth;
 import de.cau.cs.kieler.core.krendering.KPointPlacementData;
@@ -242,10 +242,10 @@ public class KRenderingSemanticSequencer extends KLayoutDataSemanticSequencer {
 					return; 
 				}
 				else break;
-			case KRenderingPackage.KLINE_CAP_STYLE:
-				if(context == grammarAccess.getKLineCapStyleRule() ||
+			case KRenderingPackage.KLINE_CAP:
+				if(context == grammarAccess.getKLineCapRule() ||
 				   context == grammarAccess.getKStyleRule()) {
-					sequence_KLineCapStyle(context, (KLineCapStyle) semanticObject); 
+					sequence_KLineCap(context, (KLineCap) semanticObject); 
 					return; 
 				}
 				else break;
@@ -605,9 +605,9 @@ public class KRenderingSemanticSequencer extends KLayoutDataSemanticSequencer {
 	
 	/**
 	 * Constraint:
-	 *     lineCapStyle=LineCapStyle
+	 *     lineCap=LineCap
 	 */
-	protected void sequence_KLineCapStyle(EObject context, KLineCapStyle semanticObject) {
+	protected void sequence_KLineCap(EObject context, KLineCap semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
 	}
 	
@@ -654,7 +654,15 @@ public class KRenderingSemanticSequencer extends KLayoutDataSemanticSequencer {
 	
 	/**
 	 * Constraint:
-	 *     (((styles+=KStyle styles+=KStyle*)? placementData=KPlacementData? childPlacement=KPlacement? (children+=KRendering children+=KRendering*)?)?)
+	 *     (
+	 *         (
+	 *             (points+=KPosition points+=KPosition*)? 
+	 *             (styles+=KStyle styles+=KStyle*)? 
+	 *             placementData=KPlacementData? 
+	 *             childPlacement=KPlacement? 
+	 *             (children+=KRendering children+=KRendering*)?
+	 *         )?
+	 *     )
 	 */
 	protected void sequence_KPolygon(EObject context, KPolygon semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
@@ -665,8 +673,7 @@ public class KRenderingSemanticSequencer extends KLayoutDataSemanticSequencer {
 	 * Constraint:
 	 *     (
 	 *         (
-	 *             points+=KPosition 
-	 *             points+=KPosition* 
+	 *             (points+=KPosition points+=KPosition*)? 
 	 *             (styles+=KStyle styles+=KStyle*)? 
 	 *             placementData=KPlacementData? 
 	 *             childPlacement=KPlacement? 
@@ -758,8 +765,7 @@ public class KRenderingSemanticSequencer extends KLayoutDataSemanticSequencer {
 	 *     (
 	 *         bendRadius=EFloat 
 	 *         (
-	 *             points+=KPosition 
-	 *             points+=KPosition* 
+	 *             (points+=KPosition points+=KPosition*)? 
 	 *             (styles+=KStyle styles+=KStyle*)? 
 	 *             placementData=KPlacementData? 
 	 *             childPlacement=KPlacement? 

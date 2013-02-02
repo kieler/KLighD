@@ -13,9 +13,8 @@
  */
 grammar de.cau.cs.kieler.core.kgraph.text.krendering.KRendering with de.cau.cs.kieler.core.kgraph.text.klayoutdata.KLayoutData
 
-import "platform:/resource/de.cau.cs.kieler.core.krendering/model/krendering.ecore" 
-
 import "http://www.eclipse.org/emf/2002/Ecore" as ecore
+import "http://kieler.cs.cau.de/KRendering"
 
 KRenderingLibrary returns KRenderingLibrary:
     {KRenderingLibrary}
@@ -31,7 +30,7 @@ KPlacementData returns KPlacementData:
     KDecoratorPlacementData | KGridPlacementData | KAreaPlacementData | KPointPlacementData;
 
 KStyle returns KStyle:
-    KLineWidth | KForeground | KBackground | KVisibility | KLineStyle | KLineCapStyle | KRotation | KFontBold | KFontItalic | KFontName | KFontSize | KVerticalAlignment | KHorizontalAlignment;
+    KLineWidth | KForeground | KBackground | KVisibility | KLineStyle | KLineCap | KRotation | KFontBold | KFontItalic | KFontName | KFontSize | KVerticalAlignment | KHorizontalAlignment;
 
 KPlacement returns KPlacement:
     KGridPlacement;
@@ -84,7 +83,7 @@ KPolyline_Impl returns KPolyline:
     {KPolyline}
     'Polyline'
     ('{'
-        'points' ':'? points+=KPosition ( ","? points+=KPosition)* 
+        ('points' ':'? points+=KPosition ( ","? points+=KPosition)*)? 
         ('styles' ':'? styles+=KStyle ( ","? styles+=KStyle)*)?
         ('placementData' ':'? placementData=KPlacementData)?
         ('childPlacement' ':'? childPlacement=KPlacement)?
@@ -95,7 +94,7 @@ KRoundedBendsPolyline returns KRoundedBendsPolyline:
     {KRoundedBendsPolyline}
     'RoundedBendsPolyline' bendRadius=EFloat
     ('{'
-        'points' ':'? points+=KPosition ( ","? points+=KPosition)* 
+        ('points' ':'? points+=KPosition ( ","? points+=KPosition)*)? 
         ('styles' ':'? styles+=KStyle ( ","? styles+=KStyle)*)?
         ('placementData' ':'? placementData=KPlacementData)?
         ('childPlacement' ':'? childPlacement=KPlacement)?
@@ -106,6 +105,7 @@ KPolygon returns KPolygon:
     {KPolygon}
     'Polygon'
     ('{'
+        ('points' ':'? points+=KPosition ( ","? points+=KPosition)*)? 
         ('styles' ':'? styles+=KStyle ( ","? styles+=KStyle)*)?
         ('placementData' ':'? placementData=KPlacementData)?
         ('childPlacement' ':'? childPlacement=KPlacement)?
@@ -238,6 +238,7 @@ KColor returns KColor:
     red=EInt  green=EInt blue=EInt (propagateToChildren?='!')?;
     
 KBackground returns KBackground:
+    {KBackground}
     'KBackground'
     '{'
         ('color' color=KColor)?
@@ -248,6 +249,7 @@ KBackground returns KBackground:
     '}';
 
 KForeground returns KForeground:
+    {KForeground}
    'KForeground'
     '{'
         ('color' color=KColor)?
@@ -271,9 +273,9 @@ KLineStyle returns KLineStyle:
     {KLineStyle}
     'lineStyle' lineStyle=LineStyle propagateToChildren?='!'?;
 
-KLineCapStyle returns KLineCapStyle:
-     {KLineCapStyle}
-     'lineCapStyle' lineCapStyle=LineCapStyle;
+KLineCap returns KLineCap:
+     {KLineCap}
+     'lineCap' lineCap=LineCap;
     
 KRotation returns KRotation:
     {KRotation}
@@ -309,7 +311,7 @@ KGridPlacement returns KGridPlacement:
 enum LineStyle returns LineStyle:
     SOLID = 'SOLID' | DASH = 'DASH' | DOT = 'DOT' | DASHDOT = 'DASHDOT' | DASHDOTDOT = 'DASHDOTDOT';
 
-enum LineCapStyle returns LineCapStyle:
+enum LineCap returns LineCap:
     CAP_FLAT = 'CAP_FLAT' | CAP_ROUND = 'CAP_ROUND' | CAP_SQUARE = 'CAP_SQUARE';
 
 enum VerticalAlignment returns VerticalAlignment:

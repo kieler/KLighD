@@ -1006,8 +1006,8 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//KStyle:
-	//	KLineWidth | KForeground | KBackground | KVisibility | KLineStyle | KLineCapStyle | KRotation | KFontBold |
-	//	KFontItalic | KFontName | KFontSize | KVerticalAlignment | KHorizontalAlignment;
+	//	KLineWidth | KForeground | KBackground | KVisibility | KLineStyle | KLineCap | KRotation | KFontBold | KFontItalic |
+	//	KFontName | KFontSize | KVerticalAlignment | KHorizontalAlignment;
 	public KRenderingGrammarAccess.KStyleElements getKStyleAccess() {
 		return gaKRendering.getKStyleAccess();
 	}
@@ -1094,7 +1094,7 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//KPolyline_Impl returns KPolyline:
-	//	{KPolyline} "Polyline" ("{" "points" ":"? points+=KPosition (","? points+=KPosition)* ("styles" ":"? styles+=KStyle
+	//	{KPolyline} "Polyline" ("{" ("points" ":"? points+=KPosition (","? points+=KPosition)*)? ("styles" ":"? styles+=KStyle
 	//	(","? styles+=KStyle)*)? ("placementData" ":"? placementData=KPlacementData)? ("childPlacement" ":"?
 	//	childPlacement=KPlacement)? ("children" ":"? children+=KRendering (","? children+=KRendering)*)? "}")?;
 	public KRenderingGrammarAccess.KPolyline_ImplElements getKPolyline_ImplAccess() {
@@ -1106,8 +1106,8 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//KRoundedBendsPolyline:
-	//	{KRoundedBendsPolyline} "RoundedBendsPolyline" bendRadius=EFloat ("{" "points" ":"? points+=KPosition (","?
-	//	points+=KPosition)* ("styles" ":"? styles+=KStyle (","? styles+=KStyle)*)? ("placementData" ":"?
+	//	{KRoundedBendsPolyline} "RoundedBendsPolyline" bendRadius=EFloat ("{" ("points" ":"? points+=KPosition (","?
+	//	points+=KPosition)*)? ("styles" ":"? styles+=KStyle (","? styles+=KStyle)*)? ("placementData" ":"?
 	//	placementData=KPlacementData)? ("childPlacement" ":"? childPlacement=KPlacement)? ("children" ":"?
 	//	children+=KRendering (","? children+=KRendering)*)? "}")?;
 	public KRenderingGrammarAccess.KRoundedBendsPolylineElements getKRoundedBendsPolylineAccess() {
@@ -1119,9 +1119,9 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//KPolygon:
-	//	{KPolygon} "Polygon" ("{" ("styles" ":"? styles+=KStyle (","? styles+=KStyle)*)? ("placementData" ":"?
-	//	placementData=KPlacementData)? ("childPlacement" ":"? childPlacement=KPlacement)? ("children" ":"?
-	//	children+=KRendering (","? children+=KRendering)*)? "}")?;
+	//	{KPolygon} "Polygon" ("{" ("points" ":"? points+=KPosition (","? points+=KPosition)*)? ("styles" ":"? styles+=KStyle
+	//	(","? styles+=KStyle)*)? ("placementData" ":"? placementData=KPlacementData)? ("childPlacement" ":"?
+	//	childPlacement=KPlacement)? ("children" ":"? children+=KRendering (","? children+=KRendering)*)? "}")?;
 	public KRenderingGrammarAccess.KPolygonElements getKPolygonAccess() {
 		return gaKRendering.getKPolygonAccess();
 	}
@@ -1310,8 +1310,8 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//KBackground:
-	//	"KBackground" "{" ("color" color=KColor)? ("targetColor" targetColor=KColor)? ("alpha" alpha=EInt)? ("targetAlpha"
-	//	targetAlpha=EInt)? ("gradientAngle" gradientAngle=EFloat)? "}";
+	//	{KBackground} "KBackground" "{" ("color" color=KColor)? ("targetColor" targetColor=KColor)? ("alpha" alpha=EInt)?
+	//	("targetAlpha" targetAlpha=EInt)? ("gradientAngle" gradientAngle=EFloat)? "}";
 	public KRenderingGrammarAccess.KBackgroundElements getKBackgroundAccess() {
 		return gaKRendering.getKBackgroundAccess();
 	}
@@ -1321,8 +1321,8 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//KForeground:
-	//	"KForeground" "{" ("color" color=KColor)? ("targetColor" targetColor=KColor)? ("alpha" alpha=EInt)? ("targetAlpha"
-	//	targetAlpha=EInt)? ("gradientAngle" gradientAngle=EFloat)? "}";
+	//	{KForeground} "KForeground" "{" ("color" color=KColor)? ("targetColor" targetColor=KColor)? ("alpha" alpha=EInt)?
+	//	("targetAlpha" targetAlpha=EInt)? ("gradientAngle" gradientAngle=EFloat)? "}";
 	public KRenderingGrammarAccess.KForegroundElements getKForegroundAccess() {
 		return gaKRendering.getKForegroundAccess();
 	}
@@ -1361,14 +1361,14 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 		return getKLineStyleAccess().getRule();
 	}
 
-	//KLineCapStyle:
-	//	{KLineCapStyle} "lineCapStyle" lineCapStyle=LineCapStyle;
-	public KRenderingGrammarAccess.KLineCapStyleElements getKLineCapStyleAccess() {
-		return gaKRendering.getKLineCapStyleAccess();
+	//KLineCap:
+	//	{KLineCap} "lineCap" lineCap=LineCap;
+	public KRenderingGrammarAccess.KLineCapElements getKLineCapAccess() {
+		return gaKRendering.getKLineCapAccess();
 	}
 	
-	public ParserRule getKLineCapStyleRule() {
-		return getKLineCapStyleAccess().getRule();
+	public ParserRule getKLineCapRule() {
+		return getKLineCapAccess().getRule();
 	}
 
 	//KRotation:
@@ -1461,14 +1461,14 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 		return getLineStyleAccess().getRule();
 	}
 
-	//enum LineCapStyle:
+	//enum LineCap:
 	//	CAP_FLAT | CAP_ROUND | CAP_SQUARE;
-	public KRenderingGrammarAccess.LineCapStyleElements getLineCapStyleAccess() {
-		return gaKRendering.getLineCapStyleAccess();
+	public KRenderingGrammarAccess.LineCapElements getLineCapAccess() {
+		return gaKRendering.getLineCapAccess();
 	}
 	
-	public EnumRule getLineCapStyleRule() {
-		return getLineCapStyleAccess().getRule();
+	public EnumRule getLineCapRule() {
+		return getLineCapAccess().getRule();
 	}
 
 	//enum VerticalAlignment:

@@ -282,19 +282,19 @@
     </rules>
   </xtext:Grammar>
   <xtext:Grammar name="de.cau.cs.kieler.core.kgraph.text.krendering.KRendering" usedGrammars="/2">
-    <metamodelDeclarations xsi:type="xtext:ReferencedMetamodel">
-      <ePackage href="http://kieler.cs.cau.de/KRendering#/"/>
-    </metamodelDeclarations>
     <metamodelDeclarations xsi:type="xtext:ReferencedMetamodel" alias="ecore">
       <ePackage href="http://www.eclipse.org/emf/2002/Ecore#/"/>
     </metamodelDeclarations>
+    <metamodelDeclarations xsi:type="xtext:ReferencedMetamodel">
+      <ePackage href="http://kieler.cs.cau.de/KRendering#/"/>
+    </metamodelDeclarations>
     <rules xsi:type="xtext:ParserRule" name="KRenderingLibrary">
-      <type metamodel="/1/@metamodelDeclarations.0">
+      <type metamodel="/1/@metamodelDeclarations.1">
         <classifier xsi:type="ecore:EClass" href="http://kieler.cs.cau.de/KRendering#//KRenderingLibrary"/>
       </type>
       <alternatives xsi:type="xtext:Group">
         <elements xsi:type="xtext:Action">
-          <type metamodel="/1/@metamodelDeclarations.0">
+          <type metamodel="/1/@metamodelDeclarations.1">
             <classifier xsi:type="ecore:EClass" href="http://kieler.cs.cau.de/KRendering#//KRenderingLibrary"/>
           </type>
         </elements>
@@ -315,7 +315,7 @@
       </alternatives>
     </rules>
     <rules xsi:type="xtext:ParserRule" name="KRendering">
-      <type metamodel="/1/@metamodelDeclarations.0">
+      <type metamodel="/1/@metamodelDeclarations.1">
         <classifier xsi:type="ecore:EClass" href="http://kieler.cs.cau.de/KRendering#//KRendering"/>
       </type>
       <alternatives xsi:type="xtext:Alternatives">
@@ -335,7 +335,7 @@
       </alternatives>
     </rules>
     <rules xsi:type="xtext:ParserRule" name="KPlacementData">
-      <type metamodel="/1/@metamodelDeclarations.0">
+      <type metamodel="/1/@metamodelDeclarations.1">
         <classifier xsi:type="ecore:EClass" href="http://kieler.cs.cau.de/KRendering#//KPlacementData"/>
       </type>
       <alternatives xsi:type="xtext:Alternatives">
@@ -346,7 +346,7 @@
       </alternatives>
     </rules>
     <rules xsi:type="xtext:ParserRule" name="KStyle">
-      <type metamodel="/1/@metamodelDeclarations.0">
+      <type metamodel="/1/@metamodelDeclarations.1">
         <classifier xsi:type="ecore:EClass" href="http://kieler.cs.cau.de/KRendering#//KStyle"/>
       </type>
       <alternatives xsi:type="xtext:Alternatives">
@@ -366,13 +366,13 @@
       </alternatives>
     </rules>
     <rules xsi:type="xtext:ParserRule" name="KPlacement">
-      <type metamodel="/1/@metamodelDeclarations.0">
+      <type metamodel="/1/@metamodelDeclarations.1">
         <classifier xsi:type="ecore:EClass" href="http://kieler.cs.cau.de/KRendering#//KPlacement"/>
       </type>
       <alternatives xsi:type="xtext:RuleCall" rule="/1/@rules.43"/>
     </rules>
     <rules xsi:type="xtext:ParserRule" name="KXPosition">
-      <type metamodel="/1/@metamodelDeclarations.0">
+      <type metamodel="/1/@metamodelDeclarations.1">
         <classifier xsi:type="ecore:EClass" href="http://kieler.cs.cau.de/KRendering#//KXPosition"/>
       </type>
       <alternatives xsi:type="xtext:Alternatives">
@@ -381,7 +381,7 @@
       </alternatives>
     </rules>
     <rules xsi:type="xtext:ParserRule" name="KYPosition">
-      <type metamodel="/1/@metamodelDeclarations.0">
+      <type metamodel="/1/@metamodelDeclarations.1">
         <classifier xsi:type="ecore:EClass" href="http://kieler.cs.cau.de/KRendering#//KYPosition"/>
       </type>
       <alternatives xsi:type="xtext:Alternatives">
@@ -390,19 +390,19 @@
       </alternatives>
     </rules>
     <rules xsi:type="xtext:ParserRule" name="KRenderingRef">
-      <type metamodel="/1/@metamodelDeclarations.0">
+      <type metamodel="/1/@metamodelDeclarations.1">
         <classifier xsi:type="ecore:EClass" href="http://kieler.cs.cau.de/KRendering#//KRenderingRef"/>
       </type>
       <alternatives xsi:type="xtext:Group">
         <elements xsi:type="xtext:Action">
-          <type metamodel="/1/@metamodelDeclarations.0">
+          <type metamodel="/1/@metamodelDeclarations.1">
             <classifier xsi:type="ecore:EClass" href="http://kieler.cs.cau.de/KRendering#//KRenderingRef"/>
           </type>
         </elements>
         <elements xsi:type="xtext:Keyword" value="RenderingRef"/>
         <elements xsi:type="xtext:Assignment" feature="rendering" operator="=">
           <terminal xsi:type="xtext:CrossReference">
-            <type metamodel="/1/@metamodelDeclarations.0">
+            <type metamodel="/1/@metamodelDeclarations.1">
               <classifier xsi:type="ecore:EClass" href="http://kieler.cs.cau.de/KRendering#//KRendering"/>
             </type>
             <terminal xsi:type="xtext:RuleCall" rule="/2/@rules.5"/>
@@ -435,12 +435,12 @@
       </alternatives>
     </rules>
     <rules xsi:type="xtext:ParserRule" name="KEllipse">
-      <type metamodel="/1/@metamodelDeclarations.0">
+      <type metamodel="/1/@metamodelDeclarations.1">
         <classifier xsi:type="ecore:EClass" href="http://kieler.cs.cau.de/KRendering#//KEllipse"/>
       </type>
       <alternatives xsi:type="xtext:Group">
         <elements xsi:type="xtext:Action">
-          <type metamodel="/1/@metamodelDeclarations.0">
+          <type metamodel="/1/@metamodelDeclarations.1">
             <classifier xsi:type="ecore:EClass" href="http://kieler.cs.cau.de/KRendering#//KEllipse"/>
           </type>
         </elements>
@@ -492,12 +492,12 @@
       </alternatives>
     </rules>
     <rules xsi:type="xtext:ParserRule" name="KRectangle">
-      <type metamodel="/1/@metamodelDeclarations.0">
+      <type metamodel="/1/@metamodelDeclarations.1">
         <classifier xsi:type="ecore:EClass" href="http://kieler.cs.cau.de/KRendering#//KRectangle"/>
       </type>
       <alternatives xsi:type="xtext:Group">
         <elements xsi:type="xtext:Action">
-          <type metamodel="/1/@metamodelDeclarations.0">
+          <type metamodel="/1/@metamodelDeclarations.1">
             <classifier xsi:type="ecore:EClass" href="http://kieler.cs.cau.de/KRendering#//KRectangle"/>
           </type>
         </elements>
@@ -549,12 +549,12 @@
       </alternatives>
     </rules>
     <rules xsi:type="xtext:ParserRule" name="KRoundedRectangle">
-      <type metamodel="/1/@metamodelDeclarations.0">
+      <type metamodel="/1/@metamodelDeclarations.1">
         <classifier xsi:type="ecore:EClass" href="http://kieler.cs.cau.de/KRendering#//KRoundedRectangle"/>
       </type>
       <alternatives xsi:type="xtext:Group">
         <elements xsi:type="xtext:Action">
-          <type metamodel="/1/@metamodelDeclarations.0">
+          <type metamodel="/1/@metamodelDeclarations.1">
             <classifier xsi:type="ecore:EClass" href="http://kieler.cs.cau.de/KRendering#//KRoundedRectangle"/>
           </type>
         </elements>
@@ -613,27 +613,29 @@
       </alternatives>
     </rules>
     <rules xsi:type="xtext:ParserRule" name="KPolyline_Impl">
-      <type metamodel="/1/@metamodelDeclarations.0">
+      <type metamodel="/1/@metamodelDeclarations.1">
         <classifier xsi:type="ecore:EClass" href="http://kieler.cs.cau.de/KRendering#//KPolyline"/>
       </type>
       <alternatives xsi:type="xtext:Group">
         <elements xsi:type="xtext:Action">
-          <type metamodel="/1/@metamodelDeclarations.0">
+          <type metamodel="/1/@metamodelDeclarations.1">
             <classifier xsi:type="ecore:EClass" href="http://kieler.cs.cau.de/KRendering#//KPolyline"/>
           </type>
         </elements>
         <elements xsi:type="xtext:Keyword" value="Polyline"/>
         <elements xsi:type="xtext:Group" cardinality="?">
           <elements xsi:type="xtext:Keyword" value="{"/>
-          <elements xsi:type="xtext:Keyword" value="points"/>
-          <elements xsi:type="xtext:Keyword" cardinality="?" value=":"/>
-          <elements xsi:type="xtext:Assignment" feature="points" operator="+=">
-            <terminal xsi:type="xtext:RuleCall" rule="/1/@rules.24"/>
-          </elements>
-          <elements xsi:type="xtext:Group" cardinality="*">
-            <elements xsi:type="xtext:Keyword" cardinality="?" value=","/>
+          <elements xsi:type="xtext:Group" cardinality="?">
+            <elements xsi:type="xtext:Keyword" value="points"/>
+            <elements xsi:type="xtext:Keyword" cardinality="?" value=":"/>
             <elements xsi:type="xtext:Assignment" feature="points" operator="+=">
               <terminal xsi:type="xtext:RuleCall" rule="/1/@rules.24"/>
+            </elements>
+            <elements xsi:type="xtext:Group" cardinality="*">
+              <elements xsi:type="xtext:Keyword" cardinality="?" value=","/>
+              <elements xsi:type="xtext:Assignment" feature="points" operator="+=">
+                <terminal xsi:type="xtext:RuleCall" rule="/1/@rules.24"/>
+              </elements>
             </elements>
           </elements>
           <elements xsi:type="xtext:Group" cardinality="?">
@@ -681,12 +683,12 @@
       </alternatives>
     </rules>
     <rules xsi:type="xtext:ParserRule" name="KRoundedBendsPolyline">
-      <type metamodel="/1/@metamodelDeclarations.0">
+      <type metamodel="/1/@metamodelDeclarations.1">
         <classifier xsi:type="ecore:EClass" href="http://kieler.cs.cau.de/KRendering#//KRoundedBendsPolyline"/>
       </type>
       <alternatives xsi:type="xtext:Group">
         <elements xsi:type="xtext:Action">
-          <type metamodel="/1/@metamodelDeclarations.0">
+          <type metamodel="/1/@metamodelDeclarations.1">
             <classifier xsi:type="ecore:EClass" href="http://kieler.cs.cau.de/KRendering#//KRoundedBendsPolyline"/>
           </type>
         </elements>
@@ -696,15 +698,17 @@
         </elements>
         <elements xsi:type="xtext:Group" cardinality="?">
           <elements xsi:type="xtext:Keyword" value="{"/>
-          <elements xsi:type="xtext:Keyword" value="points"/>
-          <elements xsi:type="xtext:Keyword" cardinality="?" value=":"/>
-          <elements xsi:type="xtext:Assignment" feature="points" operator="+=">
-            <terminal xsi:type="xtext:RuleCall" rule="/1/@rules.24"/>
-          </elements>
-          <elements xsi:type="xtext:Group" cardinality="*">
-            <elements xsi:type="xtext:Keyword" cardinality="?" value=","/>
+          <elements xsi:type="xtext:Group" cardinality="?">
+            <elements xsi:type="xtext:Keyword" value="points"/>
+            <elements xsi:type="xtext:Keyword" cardinality="?" value=":"/>
             <elements xsi:type="xtext:Assignment" feature="points" operator="+=">
               <terminal xsi:type="xtext:RuleCall" rule="/1/@rules.24"/>
+            </elements>
+            <elements xsi:type="xtext:Group" cardinality="*">
+              <elements xsi:type="xtext:Keyword" cardinality="?" value=","/>
+              <elements xsi:type="xtext:Assignment" feature="points" operator="+=">
+                <terminal xsi:type="xtext:RuleCall" rule="/1/@rules.24"/>
+              </elements>
             </elements>
           </elements>
           <elements xsi:type="xtext:Group" cardinality="?">
@@ -752,18 +756,31 @@
       </alternatives>
     </rules>
     <rules xsi:type="xtext:ParserRule" name="KPolygon">
-      <type metamodel="/1/@metamodelDeclarations.0">
+      <type metamodel="/1/@metamodelDeclarations.1">
         <classifier xsi:type="ecore:EClass" href="http://kieler.cs.cau.de/KRendering#//KPolygon"/>
       </type>
       <alternatives xsi:type="xtext:Group">
         <elements xsi:type="xtext:Action">
-          <type metamodel="/1/@metamodelDeclarations.0">
+          <type metamodel="/1/@metamodelDeclarations.1">
             <classifier xsi:type="ecore:EClass" href="http://kieler.cs.cau.de/KRendering#//KPolygon"/>
           </type>
         </elements>
         <elements xsi:type="xtext:Keyword" value="Polygon"/>
         <elements xsi:type="xtext:Group" cardinality="?">
           <elements xsi:type="xtext:Keyword" value="{"/>
+          <elements xsi:type="xtext:Group" cardinality="?">
+            <elements xsi:type="xtext:Keyword" value="points"/>
+            <elements xsi:type="xtext:Keyword" cardinality="?" value=":"/>
+            <elements xsi:type="xtext:Assignment" feature="points" operator="+=">
+              <terminal xsi:type="xtext:RuleCall" rule="/1/@rules.24"/>
+            </elements>
+            <elements xsi:type="xtext:Group" cardinality="*">
+              <elements xsi:type="xtext:Keyword" cardinality="?" value=","/>
+              <elements xsi:type="xtext:Assignment" feature="points" operator="+=">
+                <terminal xsi:type="xtext:RuleCall" rule="/1/@rules.24"/>
+              </elements>
+            </elements>
+          </elements>
           <elements xsi:type="xtext:Group" cardinality="?">
             <elements xsi:type="xtext:Keyword" value="styles"/>
             <elements xsi:type="xtext:Keyword" cardinality="?" value=":"/>
@@ -809,12 +826,12 @@
       </alternatives>
     </rules>
     <rules xsi:type="xtext:ParserRule" name="KImage">
-      <type metamodel="/1/@metamodelDeclarations.0">
+      <type metamodel="/1/@metamodelDeclarations.1">
         <classifier xsi:type="ecore:EClass" href="http://kieler.cs.cau.de/KRendering#//KImage"/>
       </type>
       <alternatives xsi:type="xtext:Group">
         <elements xsi:type="xtext:Action">
-          <type metamodel="/1/@metamodelDeclarations.0">
+          <type metamodel="/1/@metamodelDeclarations.1">
             <classifier xsi:type="ecore:EClass" href="http://kieler.cs.cau.de/KRendering#//KImage"/>
           </type>
         </elements>
@@ -875,12 +892,12 @@
       </alternatives>
     </rules>
     <rules xsi:type="xtext:ParserRule" name="KArc">
-      <type metamodel="/1/@metamodelDeclarations.0">
+      <type metamodel="/1/@metamodelDeclarations.1">
         <classifier xsi:type="ecore:EClass" href="http://kieler.cs.cau.de/KRendering#//KArc"/>
       </type>
       <alternatives xsi:type="xtext:Group">
         <elements xsi:type="xtext:Action">
-          <type metamodel="/1/@metamodelDeclarations.0">
+          <type metamodel="/1/@metamodelDeclarations.1">
             <classifier xsi:type="ecore:EClass" href="http://kieler.cs.cau.de/KRendering#//KArc"/>
           </type>
         </elements>
@@ -939,12 +956,12 @@
       </alternatives>
     </rules>
     <rules xsi:type="xtext:ParserRule" name="KChildArea">
-      <type metamodel="/1/@metamodelDeclarations.0">
+      <type metamodel="/1/@metamodelDeclarations.1">
         <classifier xsi:type="ecore:EClass" href="http://kieler.cs.cau.de/KRendering#//KChildArea"/>
       </type>
       <alternatives xsi:type="xtext:Group">
         <elements xsi:type="xtext:Action">
-          <type metamodel="/1/@metamodelDeclarations.0">
+          <type metamodel="/1/@metamodelDeclarations.1">
             <classifier xsi:type="ecore:EClass" href="http://kieler.cs.cau.de/KRendering#//KChildArea"/>
           </type>
         </elements>
@@ -976,12 +993,12 @@
       </alternatives>
     </rules>
     <rules xsi:type="xtext:ParserRule" name="KText">
-      <type metamodel="/1/@metamodelDeclarations.0">
+      <type metamodel="/1/@metamodelDeclarations.1">
         <classifier xsi:type="ecore:EClass" href="http://kieler.cs.cau.de/KRendering#//KText"/>
       </type>
       <alternatives xsi:type="xtext:Group">
         <elements xsi:type="xtext:Action">
-          <type metamodel="/1/@metamodelDeclarations.0">
+          <type metamodel="/1/@metamodelDeclarations.1">
             <classifier xsi:type="ecore:EClass" href="http://kieler.cs.cau.de/KRendering#//KText"/>
           </type>
         </elements>
@@ -1049,12 +1066,12 @@
       </alternatives>
     </rules>
     <rules xsi:type="xtext:ParserRule" name="KCustomRendering">
-      <type metamodel="/1/@metamodelDeclarations.0">
+      <type metamodel="/1/@metamodelDeclarations.1">
         <classifier xsi:type="ecore:EClass" href="http://kieler.cs.cau.de/KRendering#//KCustomRendering"/>
       </type>
       <alternatives xsi:type="xtext:Group">
         <elements xsi:type="xtext:Action">
-          <type metamodel="/1/@metamodelDeclarations.0">
+          <type metamodel="/1/@metamodelDeclarations.1">
             <classifier xsi:type="ecore:EClass" href="http://kieler.cs.cau.de/KRendering#//KCustomRendering"/>
           </type>
         </elements>
@@ -1114,12 +1131,12 @@
       </alternatives>
     </rules>
     <rules xsi:type="xtext:ParserRule" name="KSpline">
-      <type metamodel="/1/@metamodelDeclarations.0">
+      <type metamodel="/1/@metamodelDeclarations.1">
         <classifier xsi:type="ecore:EClass" href="http://kieler.cs.cau.de/KRendering#//KSpline"/>
       </type>
       <alternatives xsi:type="xtext:Group">
         <elements xsi:type="xtext:Action">
-          <type metamodel="/1/@metamodelDeclarations.0">
+          <type metamodel="/1/@metamodelDeclarations.1">
             <classifier xsi:type="ecore:EClass" href="http://kieler.cs.cau.de/KRendering#//KSpline"/>
           </type>
         </elements>
@@ -1171,7 +1188,7 @@
       </alternatives>
     </rules>
     <rules xsi:type="xtext:ParserRule" name="KDecoratorPlacementData">
-      <type metamodel="/1/@metamodelDeclarations.0">
+      <type metamodel="/1/@metamodelDeclarations.1">
         <classifier xsi:type="ecore:EClass" href="http://kieler.cs.cau.de/KRendering#//KDecoratorPlacementData"/>
       </type>
       <alternatives xsi:type="xtext:Group">
@@ -1218,12 +1235,12 @@
       </alternatives>
     </rules>
     <rules xsi:type="xtext:ParserRule" name="KGridPlacementData">
-      <type metamodel="/1/@metamodelDeclarations.0">
+      <type metamodel="/1/@metamodelDeclarations.1">
         <classifier xsi:type="ecore:EClass" href="http://kieler.cs.cau.de/KRendering#//KGridPlacementData"/>
       </type>
       <alternatives xsi:type="xtext:Group">
         <elements xsi:type="xtext:Action">
-          <type metamodel="/1/@metamodelDeclarations.0">
+          <type metamodel="/1/@metamodelDeclarations.1">
             <classifier xsi:type="ecore:EClass" href="http://kieler.cs.cau.de/KRendering#//KGridPlacementData"/>
           </type>
         </elements>
@@ -1269,7 +1286,7 @@
       </alternatives>
     </rules>
     <rules xsi:type="xtext:ParserRule" name="KAreaPlacementData">
-      <type metamodel="/1/@metamodelDeclarations.0">
+      <type metamodel="/1/@metamodelDeclarations.1">
         <classifier xsi:type="ecore:EClass" href="http://kieler.cs.cau.de/KRendering#//KAreaPlacementData"/>
       </type>
       <alternatives xsi:type="xtext:Group">
@@ -1288,7 +1305,7 @@
       </alternatives>
     </rules>
     <rules xsi:type="xtext:ParserRule" name="KPointPlacementData">
-      <type metamodel="/1/@metamodelDeclarations.0">
+      <type metamodel="/1/@metamodelDeclarations.1">
         <classifier xsi:type="ecore:EClass" href="http://kieler.cs.cau.de/KRendering#//KPointPlacementData"/>
       </type>
       <alternatives xsi:type="xtext:Group">
@@ -1313,7 +1330,7 @@
       </alternatives>
     </rules>
     <rules xsi:type="xtext:ParserRule" name="KPosition">
-      <type metamodel="/1/@metamodelDeclarations.0">
+      <type metamodel="/1/@metamodelDeclarations.1">
         <classifier xsi:type="ecore:EClass" href="http://kieler.cs.cau.de/KRendering#//KPosition"/>
       </type>
       <alternatives xsi:type="xtext:Group">
@@ -1327,12 +1344,12 @@
       </alternatives>
     </rules>
     <rules xsi:type="xtext:ParserRule" name="KLeftPosition">
-      <type metamodel="/1/@metamodelDeclarations.0">
+      <type metamodel="/1/@metamodelDeclarations.1">
         <classifier xsi:type="ecore:EClass" href="http://kieler.cs.cau.de/KRendering#//KLeftPosition"/>
       </type>
       <alternatives xsi:type="xtext:Group">
         <elements xsi:type="xtext:Action">
-          <type metamodel="/1/@metamodelDeclarations.0">
+          <type metamodel="/1/@metamodelDeclarations.1">
             <classifier xsi:type="ecore:EClass" href="http://kieler.cs.cau.de/KRendering#//KLeftPosition"/>
           </type>
         </elements>
@@ -1346,12 +1363,12 @@
       </alternatives>
     </rules>
     <rules xsi:type="xtext:ParserRule" name="KRightPosition">
-      <type metamodel="/1/@metamodelDeclarations.0">
+      <type metamodel="/1/@metamodelDeclarations.1">
         <classifier xsi:type="ecore:EClass" href="http://kieler.cs.cau.de/KRendering#//KRightPosition"/>
       </type>
       <alternatives xsi:type="xtext:Group">
         <elements xsi:type="xtext:Action">
-          <type metamodel="/1/@metamodelDeclarations.0">
+          <type metamodel="/1/@metamodelDeclarations.1">
             <classifier xsi:type="ecore:EClass" href="http://kieler.cs.cau.de/KRendering#//KRightPosition"/>
           </type>
         </elements>
@@ -1365,12 +1382,12 @@
       </alternatives>
     </rules>
     <rules xsi:type="xtext:ParserRule" name="KTopPosition">
-      <type metamodel="/1/@metamodelDeclarations.0">
+      <type metamodel="/1/@metamodelDeclarations.1">
         <classifier xsi:type="ecore:EClass" href="http://kieler.cs.cau.de/KRendering#//KTopPosition"/>
       </type>
       <alternatives xsi:type="xtext:Group">
         <elements xsi:type="xtext:Action">
-          <type metamodel="/1/@metamodelDeclarations.0">
+          <type metamodel="/1/@metamodelDeclarations.1">
             <classifier xsi:type="ecore:EClass" href="http://kieler.cs.cau.de/KRendering#//KTopPosition"/>
           </type>
         </elements>
@@ -1384,12 +1401,12 @@
       </alternatives>
     </rules>
     <rules xsi:type="xtext:ParserRule" name="KBottomPosition">
-      <type metamodel="/1/@metamodelDeclarations.0">
+      <type metamodel="/1/@metamodelDeclarations.1">
         <classifier xsi:type="ecore:EClass" href="http://kieler.cs.cau.de/KRendering#//KBottomPosition"/>
       </type>
       <alternatives xsi:type="xtext:Group">
         <elements xsi:type="xtext:Action">
-          <type metamodel="/1/@metamodelDeclarations.0">
+          <type metamodel="/1/@metamodelDeclarations.1">
             <classifier xsi:type="ecore:EClass" href="http://kieler.cs.cau.de/KRendering#//KBottomPosition"/>
           </type>
         </elements>
@@ -1403,12 +1420,12 @@
       </alternatives>
     </rules>
     <rules xsi:type="xtext:ParserRule" name="KColor">
-      <type metamodel="/1/@metamodelDeclarations.0">
+      <type metamodel="/1/@metamodelDeclarations.1">
         <classifier xsi:type="ecore:EClass" href="http://kieler.cs.cau.de/KRendering#//KColor"/>
       </type>
       <alternatives xsi:type="xtext:Group">
         <elements xsi:type="xtext:Action">
-          <type metamodel="/1/@metamodelDeclarations.0">
+          <type metamodel="/1/@metamodelDeclarations.1">
             <classifier xsi:type="ecore:EClass" href="http://kieler.cs.cau.de/KRendering#//KColor"/>
           </type>
         </elements>
@@ -1427,10 +1444,15 @@
       </alternatives>
     </rules>
     <rules xsi:type="xtext:ParserRule" name="KBackground">
-      <type metamodel="/1/@metamodelDeclarations.0">
+      <type metamodel="/1/@metamodelDeclarations.1">
         <classifier xsi:type="ecore:EClass" href="http://kieler.cs.cau.de/KRendering#//KBackground"/>
       </type>
       <alternatives xsi:type="xtext:Group">
+        <elements xsi:type="xtext:Action">
+          <type metamodel="/1/@metamodelDeclarations.1">
+            <classifier xsi:type="ecore:EClass" href="http://kieler.cs.cau.de/KRendering#//KBackground"/>
+          </type>
+        </elements>
         <elements xsi:type="xtext:Keyword" value="KBackground"/>
         <elements xsi:type="xtext:Keyword" value="{"/>
         <elements xsi:type="xtext:Group" cardinality="?">
@@ -1467,10 +1489,15 @@
       </alternatives>
     </rules>
     <rules xsi:type="xtext:ParserRule" name="KForeground">
-      <type metamodel="/1/@metamodelDeclarations.0">
+      <type metamodel="/1/@metamodelDeclarations.1">
         <classifier xsi:type="ecore:EClass" href="http://kieler.cs.cau.de/KRendering#//KForeground"/>
       </type>
       <alternatives xsi:type="xtext:Group">
+        <elements xsi:type="xtext:Action">
+          <type metamodel="/1/@metamodelDeclarations.1">
+            <classifier xsi:type="ecore:EClass" href="http://kieler.cs.cau.de/KRendering#//KForeground"/>
+          </type>
+        </elements>
         <elements xsi:type="xtext:Keyword" value="KForeground"/>
         <elements xsi:type="xtext:Keyword" value="{"/>
         <elements xsi:type="xtext:Group" cardinality="?">
@@ -1507,12 +1534,12 @@
       </alternatives>
     </rules>
     <rules xsi:type="xtext:ParserRule" name="KVisibility">
-      <type metamodel="/1/@metamodelDeclarations.0">
+      <type metamodel="/1/@metamodelDeclarations.1">
         <classifier xsi:type="ecore:EClass" href="http://kieler.cs.cau.de/KRendering#//KInvisibility"/>
       </type>
       <alternatives xsi:type="xtext:Group">
         <elements xsi:type="xtext:Action">
-          <type metamodel="/1/@metamodelDeclarations.0">
+          <type metamodel="/1/@metamodelDeclarations.1">
             <classifier xsi:type="ecore:EClass" href="http://kieler.cs.cau.de/KRendering#//KInvisibility"/>
           </type>
         </elements>
@@ -1529,7 +1556,7 @@
       </alternatives>
     </rules>
     <rules xsi:type="xtext:ParserRule" name="KLineWidth">
-      <type metamodel="/1/@metamodelDeclarations.0">
+      <type metamodel="/1/@metamodelDeclarations.1">
         <classifier xsi:type="ecore:EClass" href="http://kieler.cs.cau.de/KRendering#//KLineWidth"/>
       </type>
       <alternatives xsi:type="xtext:Group">
@@ -1550,12 +1577,12 @@
       </alternatives>
     </rules>
     <rules xsi:type="xtext:ParserRule" name="KLineStyle">
-      <type metamodel="/1/@metamodelDeclarations.0">
+      <type metamodel="/1/@metamodelDeclarations.1">
         <classifier xsi:type="ecore:EClass" href="http://kieler.cs.cau.de/KRendering#//KLineStyle"/>
       </type>
       <alternatives xsi:type="xtext:Group">
         <elements xsi:type="xtext:Action">
-          <type metamodel="/1/@metamodelDeclarations.0">
+          <type metamodel="/1/@metamodelDeclarations.1">
             <classifier xsi:type="ecore:EClass" href="http://kieler.cs.cau.de/KRendering#//KLineStyle"/>
           </type>
         </elements>
@@ -1568,29 +1595,29 @@
         </elements>
       </alternatives>
     </rules>
-    <rules xsi:type="xtext:ParserRule" name="KLineCapStyle">
-      <type metamodel="/1/@metamodelDeclarations.0">
-        <classifier xsi:type="ecore:EClass" href="http://kieler.cs.cau.de/KRendering#//KLineCapStyle"/>
+    <rules xsi:type="xtext:ParserRule" name="KLineCap">
+      <type metamodel="/1/@metamodelDeclarations.1">
+        <classifier xsi:type="ecore:EClass" href="http://kieler.cs.cau.de/KRendering#//KLineCap"/>
       </type>
       <alternatives xsi:type="xtext:Group">
         <elements xsi:type="xtext:Action">
-          <type metamodel="/1/@metamodelDeclarations.0">
-            <classifier xsi:type="ecore:EClass" href="http://kieler.cs.cau.de/KRendering#//KLineCapStyle"/>
+          <type metamodel="/1/@metamodelDeclarations.1">
+            <classifier xsi:type="ecore:EClass" href="http://kieler.cs.cau.de/KRendering#//KLineCap"/>
           </type>
         </elements>
-        <elements xsi:type="xtext:Keyword" value="lineCapStyle"/>
-        <elements xsi:type="xtext:Assignment" feature="lineCapStyle" operator="=">
+        <elements xsi:type="xtext:Keyword" value="lineCap"/>
+        <elements xsi:type="xtext:Assignment" feature="lineCap" operator="=">
           <terminal xsi:type="xtext:RuleCall" rule="/1/@rules.45"/>
         </elements>
       </alternatives>
     </rules>
     <rules xsi:type="xtext:ParserRule" name="KRotation">
-      <type metamodel="/1/@metamodelDeclarations.0">
+      <type metamodel="/1/@metamodelDeclarations.1">
         <classifier xsi:type="ecore:EClass" href="http://kieler.cs.cau.de/KRendering#//KRotation"/>
       </type>
       <alternatives xsi:type="xtext:Group">
         <elements xsi:type="xtext:Action">
-          <type metamodel="/1/@metamodelDeclarations.0">
+          <type metamodel="/1/@metamodelDeclarations.1">
             <classifier xsi:type="ecore:EClass" href="http://kieler.cs.cau.de/KRendering#//KRotation"/>
           </type>
         </elements>
@@ -1604,12 +1631,12 @@
       </alternatives>
     </rules>
     <rules xsi:type="xtext:ParserRule" name="KFontBold">
-      <type metamodel="/1/@metamodelDeclarations.0">
+      <type metamodel="/1/@metamodelDeclarations.1">
         <classifier xsi:type="ecore:EClass" href="http://kieler.cs.cau.de/KRendering#//KFontBold"/>
       </type>
       <alternatives xsi:type="xtext:Group">
         <elements xsi:type="xtext:Action">
-          <type metamodel="/1/@metamodelDeclarations.0">
+          <type metamodel="/1/@metamodelDeclarations.1">
             <classifier xsi:type="ecore:EClass" href="http://kieler.cs.cau.de/KRendering#//KFontBold"/>
           </type>
         </elements>
@@ -1622,12 +1649,12 @@
       </alternatives>
     </rules>
     <rules xsi:type="xtext:ParserRule" name="KFontItalic">
-      <type metamodel="/1/@metamodelDeclarations.0">
+      <type metamodel="/1/@metamodelDeclarations.1">
         <classifier xsi:type="ecore:EClass" href="http://kieler.cs.cau.de/KRendering#//KFontItalic"/>
       </type>
       <alternatives xsi:type="xtext:Group">
         <elements xsi:type="xtext:Action">
-          <type metamodel="/1/@metamodelDeclarations.0">
+          <type metamodel="/1/@metamodelDeclarations.1">
             <classifier xsi:type="ecore:EClass" href="http://kieler.cs.cau.de/KRendering#//KFontItalic"/>
           </type>
         </elements>
@@ -1640,7 +1667,7 @@
       </alternatives>
     </rules>
     <rules xsi:type="xtext:ParserRule" name="KFontName">
-      <type metamodel="/1/@metamodelDeclarations.0">
+      <type metamodel="/1/@metamodelDeclarations.1">
         <classifier xsi:type="ecore:EClass" href="http://kieler.cs.cau.de/KRendering#//KFontName"/>
       </type>
       <alternatives xsi:type="xtext:Group">
@@ -1654,7 +1681,7 @@
       </alternatives>
     </rules>
     <rules xsi:type="xtext:ParserRule" name="KFontSize">
-      <type metamodel="/1/@metamodelDeclarations.0">
+      <type metamodel="/1/@metamodelDeclarations.1">
         <classifier xsi:type="ecore:EClass" href="http://kieler.cs.cau.de/KRendering#//KFontSize"/>
       </type>
       <alternatives xsi:type="xtext:Group">
@@ -1668,12 +1695,12 @@
       </alternatives>
     </rules>
     <rules xsi:type="xtext:ParserRule" name="KVerticalAlignment">
-      <type metamodel="/1/@metamodelDeclarations.0">
+      <type metamodel="/1/@metamodelDeclarations.1">
         <classifier xsi:type="ecore:EClass" href="http://kieler.cs.cau.de/KRendering#//KVerticalAlignment"/>
       </type>
       <alternatives xsi:type="xtext:Group">
         <elements xsi:type="xtext:Action">
-          <type metamodel="/1/@metamodelDeclarations.0">
+          <type metamodel="/1/@metamodelDeclarations.1">
             <classifier xsi:type="ecore:EClass" href="http://kieler.cs.cau.de/KRendering#//KVerticalAlignment"/>
           </type>
         </elements>
@@ -1687,12 +1714,12 @@
       </alternatives>
     </rules>
     <rules xsi:type="xtext:ParserRule" name="KHorizontalAlignment">
-      <type metamodel="/1/@metamodelDeclarations.0">
+      <type metamodel="/1/@metamodelDeclarations.1">
         <classifier xsi:type="ecore:EClass" href="http://kieler.cs.cau.de/KRendering#//KHorizontalAlignment"/>
       </type>
       <alternatives xsi:type="xtext:Group">
         <elements xsi:type="xtext:Action">
-          <type metamodel="/1/@metamodelDeclarations.0">
+          <type metamodel="/1/@metamodelDeclarations.1">
             <classifier xsi:type="ecore:EClass" href="http://kieler.cs.cau.de/KRendering#//KHorizontalAlignment"/>
           </type>
         </elements>
@@ -1706,12 +1733,12 @@
       </alternatives>
     </rules>
     <rules xsi:type="xtext:ParserRule" name="KGridPlacement">
-      <type metamodel="/1/@metamodelDeclarations.0">
+      <type metamodel="/1/@metamodelDeclarations.1">
         <classifier xsi:type="ecore:EClass" href="http://kieler.cs.cau.de/KRendering#//KGridPlacement"/>
       </type>
       <alternatives xsi:type="xtext:Group">
         <elements xsi:type="xtext:Action">
-          <type metamodel="/1/@metamodelDeclarations.0">
+          <type metamodel="/1/@metamodelDeclarations.1">
             <classifier xsi:type="ecore:EClass" href="http://kieler.cs.cau.de/KRendering#//KGridPlacement"/>
           </type>
         </elements>
@@ -1722,7 +1749,7 @@
       </alternatives>
     </rules>
     <rules xsi:type="xtext:EnumRule" name="LineStyle">
-      <type metamodel="/1/@metamodelDeclarations.0">
+      <type metamodel="/1/@metamodelDeclarations.1">
         <classifier xsi:type="ecore:EEnum" href="http://kieler.cs.cau.de/KRendering#//LineStyle"/>
       </type>
       <alternatives xsi:type="xtext:Alternatives">
@@ -1748,27 +1775,27 @@
         </elements>
       </alternatives>
     </rules>
-    <rules xsi:type="xtext:EnumRule" name="LineCapStyle">
-      <type metamodel="/1/@metamodelDeclarations.0">
-        <classifier xsi:type="ecore:EEnum" href="http://kieler.cs.cau.de/KRendering#//LineCapStyle"/>
+    <rules xsi:type="xtext:EnumRule" name="LineCap">
+      <type metamodel="/1/@metamodelDeclarations.1">
+        <classifier xsi:type="ecore:EEnum" href="http://kieler.cs.cau.de/KRendering#//LineCap"/>
       </type>
       <alternatives xsi:type="xtext:Alternatives">
         <elements xsi:type="xtext:EnumLiteralDeclaration">
-          <enumLiteral href="http://kieler.cs.cau.de/KRendering#//LineCapStyle/CAP_FLAT"/>
+          <enumLiteral href="http://kieler.cs.cau.de/KRendering#//LineCap/CAP_FLAT"/>
           <literal value="CAP_FLAT"/>
         </elements>
         <elements xsi:type="xtext:EnumLiteralDeclaration">
-          <enumLiteral href="http://kieler.cs.cau.de/KRendering#//LineCapStyle/CAP_ROUND"/>
+          <enumLiteral href="http://kieler.cs.cau.de/KRendering#//LineCap/CAP_ROUND"/>
           <literal value="CAP_ROUND"/>
         </elements>
         <elements xsi:type="xtext:EnumLiteralDeclaration">
-          <enumLiteral href="http://kieler.cs.cau.de/KRendering#//LineCapStyle/CAP_SQUARE"/>
+          <enumLiteral href="http://kieler.cs.cau.de/KRendering#//LineCap/CAP_SQUARE"/>
           <literal value="CAP_SQUARE"/>
         </elements>
       </alternatives>
     </rules>
     <rules xsi:type="xtext:EnumRule" name="VerticalAlignment">
-      <type metamodel="/1/@metamodelDeclarations.0">
+      <type metamodel="/1/@metamodelDeclarations.1">
         <classifier xsi:type="ecore:EEnum" href="http://kieler.cs.cau.de/KRendering#//VerticalAlignment"/>
       </type>
       <alternatives xsi:type="xtext:Alternatives">
@@ -1787,7 +1814,7 @@
       </alternatives>
     </rules>
     <rules xsi:type="xtext:EnumRule" name="HorizontalAlignment">
-      <type metamodel="/1/@metamodelDeclarations.0">
+      <type metamodel="/1/@metamodelDeclarations.1">
         <classifier xsi:type="ecore:EEnum" href="http://kieler.cs.cau.de/KRendering#//HorizontalAlignment"/>
       </type>
       <alternatives xsi:type="xtext:Alternatives">
@@ -1806,7 +1833,7 @@
       </alternatives>
     </rules>
     <rules xsi:type="xtext:ParserRule" name="EFloat">
-      <type metamodel="/1/@metamodelDeclarations.1">
+      <type metamodel="/1/@metamodelDeclarations.0">
         <classifier xsi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EFloat"/>
       </type>
       <alternatives xsi:type="xtext:Group">
@@ -1827,7 +1854,7 @@
       </alternatives>
     </rules>
     <rules xsi:type="xtext:ParserRule" name="EBoolean">
-      <type metamodel="/1/@metamodelDeclarations.1">
+      <type metamodel="/1/@metamodelDeclarations.0">
         <classifier xsi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
       </type>
       <alternatives xsi:type="xtext:Alternatives">
@@ -1836,7 +1863,7 @@
       </alternatives>
     </rules>
     <rules xsi:type="xtext:ParserRule" name="EInt">
-      <type metamodel="/1/@metamodelDeclarations.1">
+      <type metamodel="/1/@metamodelDeclarations.0">
         <classifier xsi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
       </type>
       <alternatives xsi:type="xtext:Group">
@@ -1846,22 +1873,22 @@
     </rules>
   </xtext:Grammar>
   <xtext:Grammar name="de.cau.cs.kieler.core.kgraph.text.klayoutdata.KLayoutData" usedGrammars="/3">
-    <metamodelDeclarations xsi:type="xtext:ReferencedMetamodel">
-      <ePackage href="http://kieler.cs.cau.de/KLayoutData#/"/>
+    <metamodelDeclarations xsi:type="xtext:ReferencedMetamodel" alias="ecore">
+      <ePackage href="http://www.eclipse.org/emf/2002/Ecore#/"/>
     </metamodelDeclarations>
     <metamodelDeclarations xsi:type="xtext:ReferencedMetamodel" alias="kgraph">
       <ePackage href="http://kieler.cs.cau.de/KGraph#/"/>
     </metamodelDeclarations>
-    <metamodelDeclarations xsi:type="xtext:ReferencedMetamodel" alias="ecore">
-      <ePackage href="http://www.eclipse.org/emf/2002/Ecore#/"/>
+    <metamodelDeclarations xsi:type="xtext:ReferencedMetamodel">
+      <ePackage href="http://kieler.cs.cau.de/KLayoutData#/"/>
     </metamodelDeclarations>
     <rules xsi:type="xtext:ParserRule" name="KShapeLayout">
-      <type metamodel="/2/@metamodelDeclarations.0">
+      <type metamodel="/2/@metamodelDeclarations.2">
         <classifier xsi:type="ecore:EClass" href="http://kieler.cs.cau.de/KLayoutData#//KShapeLayout"/>
       </type>
       <alternatives xsi:type="xtext:Group">
         <elements xsi:type="xtext:Action">
-          <type metamodel="/2/@metamodelDeclarations.0">
+          <type metamodel="/2/@metamodelDeclarations.2">
             <classifier xsi:type="ecore:EClass" href="http://kieler.cs.cau.de/KLayoutData#//KShapeLayout"/>
           </type>
         </elements>
@@ -1914,12 +1941,12 @@
       </alternatives>
     </rules>
     <rules xsi:type="xtext:ParserRule" name="KInsets">
-      <type metamodel="/2/@metamodelDeclarations.0">
+      <type metamodel="/2/@metamodelDeclarations.2">
         <classifier xsi:type="ecore:EClass" href="http://kieler.cs.cau.de/KLayoutData#//KInsets"/>
       </type>
       <alternatives xsi:type="xtext:Group">
         <elements xsi:type="xtext:Action">
-          <type metamodel="/2/@metamodelDeclarations.0">
+          <type metamodel="/2/@metamodelDeclarations.2">
             <classifier xsi:type="ecore:EClass" href="http://kieler.cs.cau.de/KLayoutData#//KInsets"/>
           </type>
         </elements>
@@ -1953,12 +1980,12 @@
       </alternatives>
     </rules>
     <rules xsi:type="xtext:ParserRule" name="KEdgeLayout">
-      <type metamodel="/2/@metamodelDeclarations.0">
+      <type metamodel="/2/@metamodelDeclarations.2">
         <classifier xsi:type="ecore:EClass" href="http://kieler.cs.cau.de/KLayoutData#//KEdgeLayout"/>
       </type>
       <alternatives xsi:type="xtext:Group">
         <elements xsi:type="xtext:Action">
-          <type metamodel="/2/@metamodelDeclarations.0">
+          <type metamodel="/2/@metamodelDeclarations.2">
             <classifier xsi:type="ecore:EClass" href="http://kieler.cs.cau.de/KLayoutData#//KEdgeLayout"/>
           </type>
         </elements>
@@ -2008,12 +2035,12 @@
       </alternatives>
     </rules>
     <rules xsi:type="xtext:ParserRule" name="KPoint">
-      <type metamodel="/2/@metamodelDeclarations.0">
+      <type metamodel="/2/@metamodelDeclarations.2">
         <classifier xsi:type="ecore:EClass" href="http://kieler.cs.cau.de/KLayoutData#//KPoint"/>
       </type>
       <alternatives xsi:type="xtext:Group">
         <elements xsi:type="xtext:Action">
-          <type metamodel="/2/@metamodelDeclarations.0">
+          <type metamodel="/2/@metamodelDeclarations.2">
             <classifier xsi:type="ecore:EClass" href="http://kieler.cs.cau.de/KLayoutData#//KPoint"/>
           </type>
         </elements>
@@ -2049,7 +2076,7 @@
       </alternatives>
     </rules>
     <rules xsi:type="xtext:ParserRule" name="EString">
-      <type metamodel="/2/@metamodelDeclarations.2">
+      <type metamodel="/2/@metamodelDeclarations.0">
         <classifier xsi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EString"/>
       </type>
       <alternatives xsi:type="xtext:Alternatives">
@@ -2058,7 +2085,7 @@
       </alternatives>
     </rules>
     <rules xsi:type="xtext:ParserRule" name="EFloat">
-      <type metamodel="/2/@metamodelDeclarations.2">
+      <type metamodel="/2/@metamodelDeclarations.0">
         <classifier xsi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EFloat"/>
       </type>
       <alternatives xsi:type="xtext:Group">
