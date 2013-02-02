@@ -53,6 +53,7 @@ import de.cau.cs.kieler.core.krendering.KTopPosition;
 import de.cau.cs.kieler.core.krendering.KXPosition;
 import de.cau.cs.kieler.core.krendering.KYPosition;
 import de.cau.cs.kieler.core.krendering.util.KRenderingSwitch;
+import de.cau.cs.kieler.core.util.Pair;
 import de.cau.cs.kieler.kiml.klayoutdata.KInsets;
 import de.cau.cs.kieler.kiml.klayoutdata.KLayoutDataFactory;
 import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout;
@@ -61,7 +62,7 @@ import de.cau.cs.kieler.klighd.KlighdConstants;
 /**
  * A utility class for evaluating the placement of KRenderings.
  * 
- * @author sgu, chsch
+ * @author chsch, sgu, akoc
  */
 public final class PlacementUtil {
 
@@ -384,13 +385,13 @@ public final class PlacementUtil {
                 // in case of a GridPlacement
                 // calculate the number of columns and rows of the grid to the bounds of an inner
                 // rendering
-                placementBounds = estimateGridSize(container, defBounds);
+                placementBounds = estimateGridSize(container, givenBounds);
                 break;
             default:
                 // in case of a AreaPlacement
                 // calculate the offsets of each rendering and find the biggest rendering in width
                 // and height
-                placementBounds = estimateAreaSize(container, defBounds);
+                placementBounds = estimateAreaSize(container, givenBounds);
                 break;
             }
             break;
@@ -678,31 +679,36 @@ public final class PlacementUtil {
     
     /**
      * Determine the additional size needed to place an element with its according insets.
-     * @param elementSize the size of the element itself
-     * @param absValue the absolute value of given insets
-     * @param relValue the relative value of given insets
-     * @param classifierId the classifier to identify how these insets are measured
+     * 
+     * @param elementSize
+     *            the size of the element itself
+     * @param absValue
+     *            the absolute value of given insets
+     * @param relValue
+     *            the relative value of given insets
+     * @param classifierId
+     *            the classifier to identify how these insets are measured
      * @return the additional size needed for the rendering
      */
-    public static float additionalSizeNeeded(final float elementSize, 
-            final float absValue, final float relValue, final int classifierId) {
+    private static float additionalSizeNeeded(final float elementSize, final float absValue,
+            final float relValue, final int classifierId) {
         float temp;
         float localRelValue = relValue;
-        switch (classifierId){
+        switch (classifierId) {
         case KRenderingPackage.KBOTTOM_POSITION:
-        case KRenderingPackage.KRIGHT_POSITION:  
-            //emulate left/topPosition by simply inverting the relValue
+        case KRenderingPackage.KRIGHT_POSITION:
+            // emulate left/topPosition by simply inverting the relValue
             localRelValue = 1 - relValue;
-            //fallThrough
+            // fallThrough
         case KRenderingPackage.KTOP_POSITION:
         case KRenderingPackage.KLEFT_POSITION:
             temp = elementSize + absValue;
             if (localRelValue != 1) {
                 temp = temp / (1 - localRelValue);
-            } //else error in model: object placed outside of the parent, so ignore relValue.
+            } // else error in model: object placed outside of the parent, so ignore relValue.
             return temp - elementSize;
-        default: 
-            //could not determine how the insets were measured so don't change anything.
+        default:
+            // could not determine how the insets were measured so don't change anything.
             return 0f;
         }
     }
@@ -715,28 +721,12 @@ public final class PlacementUtil {
      *            a
      * @return d
      */
+    // SUPPRESS CHECKSTYLE NEXT Length
     public static Bounds estimateAreaSize(final KContainerRendering container,
-            final Bounds defBounds) {
-        final Bounds minBounds = new Bounds(defBounds);
+            final Bounds givenBounds) {
+        final Bounds minBounds = new Bounds(givenBounds);
         for (KRendering rendering : container.getChildren()) {
-            estimateDirectlyPlacedChildSize(
-                    rendering, minBounds,
-                    evaluateDirectPlacement(asDirectPlacementData(rendering.getPlacementData()),
-                            givenBounds));
-        }
-        return minBounds;
-    }
-    
-    /**
-     * 
-     * @param rendering a
-     * @param minBounds c
-     * @param givenBounds b
-     * @return d
-     */
-    public static Bounds estimateDirectlyPlacedChildSize(final KRendering rendering,
-            final Bounds minBounds, final Bounds givenBounds) {
-            
+            KPlacementData plcData = rendering.getPlacementData();
             float absXOffest = 0;
             float relWidth = 1f;
             float absYOffest = 0;
@@ -754,13 +744,12 @@ public final class PlacementUtil {
                 absYOffest = verSize.getFirst();
                 relHeight = verSize.getSecond();
 
-                final Bounds bounds = evaluateAreaPlacement(dpd, new Bounds(defBounds));
+                final Bounds bounds = evaluateAreaPlacement(dpd, new Bounds(givenBounds));
 
                 // determine minimal needed size of the child
                 final Bounds childMinSize = estimateSize(rendering, givenBounds);
-                // determine the being assigned wrt. the 
-                final Bounds bounds = evaluateDirectPlacement(dpd, givenBounds);
 
+                // TODO chsch: I need to document the minds that let once introduce the following cases
                 if ((bounds.width < childMinSize.width)
                         || (bounds.height < childMinSize.height)
                         || (givenBounds.width < childMinSize.width)
@@ -769,30 +758,18 @@ public final class PlacementUtil {
                         || (givenBounds.height < bounds.height)
                         ) {
 
-                    KPosition tL = dpd.getTopLeft();
-                    KPosition bR = dpd.getBottomRight();
-
-                    Triple<Float, Float, Boolean> horSize = getHorizontalSize(tL, bR);
-                    absXOffest = horSize.getA();
-                    relWidth = horSize.getB() != 0f ? horSize.getB() : 1f;
-                    @SuppressWarnings("unused")
-                    boolean absoluteWidth = horSize.getC();
-                    // the idea of that variable is to provide an information whether the size of
-                    //  figure is influenced by the size of the parent or whether it's fully determined
-                    //  by the absolute positioning components; need thinking on that further
-                    
-                    Triple<Float, Float, Boolean> verSize = getVerticalSize(tL, bR);
-                    absYOffest = verSize.getA();
-                    relHeight = verSize.getB() != 0f ? verSize.getB() : 1f;
-                    
                     // compare the minimal need size with the maximal yet found size ad
                     // update the minimal size accordingly
                     // relWidth and relHeight are now the total relative size of the
                     // childBounds according to the maximal yet found size
-                    minBounds.width = Math.max(minBounds.width, childMinSize.width / relWidth
-                            + Math.abs(absXOffest));
-                    minBounds.height = Math.max(minBounds.height, childMinSize.height / relHeight
-                            + Math.abs(absYOffest));
+                    minBounds.width = Math.max(
+                            minBounds.width,
+                            (relWidth != 0f ? childMinSize.width / relWidth : 0f)
+                                    + Math.abs(absXOffest));
+                    minBounds.height = Math.max(
+                            minBounds.height,
+                            (relHeight != 0f ? childMinSize.height / relHeight : 0f)
+                                    + Math.abs(absYOffest));
                 }
             } else if (plcData instanceof KPointPlacementData) {
                 KPointPlacementData ppd = (KPointPlacementData) plcData;
@@ -929,6 +906,7 @@ public final class PlacementUtil {
                 
                 minBounds.setBounds(estimateSize(rendering, minBounds));
             }
+        }
         return minBounds; // scaleBounds(container, minBounds, defBounds);
     }
 
@@ -946,14 +924,14 @@ public final class PlacementUtil {
     private static final int RIGHT_LEFT = KRenderingPackage.KRIGHT_POSITION * TOP_LEFT_OFFSET
             + KRenderingPackage.KLEFT_POSITION;
 
-    private static Triple<Float, Float, Boolean> getHorizontalSize(final KPosition tL,
-            final KPosition bR) {
-        float absXOffest = 0;
+    private static Pair<Float, Float> getHorizontalSize(final KPosition tL, final KPosition bR) {
+        float absXOffset = 0;
         float relWidth = 1f;
-        boolean absoluteLength = false;
-         // the idea of that variable is to provide an information whether the size of
-         //  figure is influenced by the size of the parent or whether it's fully determined
-         //  by the absolute positioning components; need thinking on that further
+        
+        // boolean absoluteLength = false;
+        // the idea of that variable is to provide an information whether the size of
+        //  figure is influenced by the size of the parent or whether it's fully determined
+        //  by the absolute positioning components; need thinking on that further
 
         int position = bR.getX().eClass().getClassifierID() * TOP_LEFT_OFFSET
                 + tL.getX().eClass().getClassifierID();
@@ -977,14 +955,14 @@ public final class PlacementUtil {
             // bottom right comes from right
             // top left comes from right
             relWidth = tL.getX().getRelative() - bR.getX().getRelative();
-            absXOffest = Math.min(bR.getX().getAbsolute(), tL.getX().getAbsolute());
+            absXOffset = Math.min(bR.getX().getAbsolute(), tL.getX().getAbsolute());
             break;
 
         case LEFT_LEFT:
             // bottom right comes from left
             // top left comes from left
             relWidth = bR.getX().getRelative() - tL.getX().getRelative();
-            absXOffest = Math.min(tL.getX().getAbsolute(), bR.getX().getAbsolute());
+            absXOffset = Math.min(tL.getX().getAbsolute(), bR.getX().getAbsolute());
             break;
 
         default:
@@ -993,7 +971,8 @@ public final class PlacementUtil {
             System.err.println("Found unknown placement position of x-axis!");
             break;
         }
-        return new Triple<Float, Float, Boolean>(absXOffest, relWidth, absoluteLength);
+        return new Pair<Float, Float>(absXOffset, relWidth);
+        // return new Triple<Float, Float, Boolean>(absXOffest, relWidth, absoluteLength);
     }
 
     private static final int TOP_TOP = KRenderingPackage.KTOP_POSITION * TOP_LEFT_OFFSET
@@ -1008,12 +987,13 @@ public final class PlacementUtil {
     private static final int BOTTOM_TOP = KRenderingPackage.KBOTTOM_POSITION * TOP_LEFT_OFFSET
             + KRenderingPackage.KTOP_POSITION;
 
-    private static Triple<Float, Float, Boolean> getVerticalSize(final KPosition tL,
-            final KPosition bR) {
-        float absYOffest = 0;
+    private static Pair<Float, Float> getVerticalSize(final KPosition tL, final KPosition bR) {
+        float absYOffset = 0;
         float relHeight = 1f;
-        boolean absoluteLength = false;
-
+        
+        // boolean absoluteLength = false;
+        //  see above
+        
         int position = bR.getY().eClass().getClassifierID() * TOP_LEFT_OFFSET
                 + tL.getY().eClass().getClassifierID();
 
@@ -1022,28 +1002,28 @@ public final class PlacementUtil {
             // bottom right comes from bottom
             // top left comes from top
             relHeight = 1f - bR.getY().getRelative() - tL.getY().getRelative();
-            absYOffest = bR.getY().getAbsolute() + tL.getY().getAbsolute();
+            absYOffset = bR.getY().getAbsolute() + tL.getY().getAbsolute();
             break;
 
         case TOP_BOTTOM:
             // bottom right comes from top
             // top left comes from bottom
             relHeight = bR.getY().getRelative() + tL.getY().getRelative() - 1f;
-            absYOffest = -bR.getY().getAbsolute() - tL.getY().getAbsolute();
+            absYOffset = -bR.getY().getAbsolute() - tL.getY().getAbsolute();
             break;
 
         case BOTTOM_BOTTOM:
             // bottom right comes from bottom
             // top left comes from bottom
             relHeight = tL.getY().getRelative() - bR.getY().getRelative();
-            absYOffest = Math.min(bR.getY().getAbsolute(), tL.getY().getAbsolute());
+            absYOffset = Math.min(bR.getY().getAbsolute(), tL.getY().getAbsolute());
             break;
 
         case TOP_TOP:
             // bottom right comes from top
             // top left comes from top
             relHeight = bR.getY().getRelative() - tL.getY().getRelative();
-            absYOffest = Math.min(tL.getY().getAbsolute(), bR.getY().getAbsolute());
+            absYOffset = Math.min(tL.getY().getAbsolute(), bR.getY().getAbsolute());
             break;
 
         default:
@@ -1052,7 +1032,8 @@ public final class PlacementUtil {
             System.err.println("Found unknown placement position of y-axis!");
             break;
         }
-        return new Triple<Float, Float, Boolean>(absYOffest, relHeight, absoluteLength);
+        return new Pair<Float, Float>(absYOffset, relHeight);
+        // return new Triple<Float, Float, Boolean>(absYOffest, relHeight, absoluteLength);
     }
 
     private static final int SCALE_XY = 0;
@@ -1060,7 +1041,6 @@ public final class PlacementUtil {
     private static final int SCALE_Y = 2;
     private static final int SCALE_NONE = 3;
 
-    
     /**
      * This method manipulates direct placement configurations in order to scale figure parts
      *  proportionally. It is currently unused as I'm not convinced of that idea. (chsch) 
@@ -1069,7 +1049,7 @@ public final class PlacementUtil {
      * @param minBounds
      * @param defBounds
      * @return
-     */    
+     */
     @SuppressWarnings("unused")
     private static Point scaleBounds(final KContainerRendering container, final Point minBounds,
             final Point defBounds) {
@@ -1328,14 +1308,14 @@ public final class PlacementUtil {
     // if the related grid placement data fields contain the following default definitions
     //  (obtained from the meta model)
     //  the given fields are interpreted as unspecified (absent) 
-    private static final float DEFAULT_MAX_CELL_WIDTH = (Float) KRenderingPackage.eINSTANCE
-            .getKGridPlacementData_MaxCellWidth().getDefaultValue();
     private static final float DEFAULT_MIN_CELL_WIDTH = (Float) KRenderingPackage.eINSTANCE
             .getKGridPlacementData_MinCellWidth().getDefaultValue();
     private static final float DEFAULT_MIN_CELL_HEIGHT = (Float) KRenderingPackage.eINSTANCE
-            .getKGridPlacementData_MinCellHeight().getDefaultValue();   
-    private static final float DEFAULT_MAX_CELL_HEIGHT = (Float) KRenderingPackage.eINSTANCE
-            .getKGridPlacementData_MaxCellHeight().getDefaultValue();
+            .getKGridPlacementData_MinCellHeight().getDefaultValue();
+    // private static final float DEFAULT_MAX_CELL_WIDTH = (Float) KRenderingPackage.eINSTANCE
+    //        .getKGridPlacementData_MaxCellWidth().getDefaultValue();
+    // private static final float DEFAULT_MAX_CELL_HEIGHT = (Float) KRenderingPackage.eINSTANCE
+    //        .getKGridPlacementData_MaxCellHeight().getDefaultValue();
 
     /**
      * returns a gridPlacer to calculate bounds of single elements inside the grid.
@@ -1615,25 +1595,23 @@ public final class PlacementUtil {
                 float insetBottom = 0;
                 
                 if (gpd != null) {
-                    
                     if (gpd.getTopLeft() != null) {
-                        insetLeft = gpd.getTopLeft().getX().eClass().getClassifierID() == KRenderingPackage
-                                .KLEFT_POSITION
-                                // left indent measured from left so just take it
-                                ? gpd.getTopLeft().getX().getAbsolute()
-                                        + (gpd.getTopLeft().getX().getRelative() * cellWidth)
-                                        // left indent measured from right, so calculate based on cellWidth
-                                        : cellWidth - gpd.getTopLeft().getX().getAbsolute()
+                        insetLeft = gpd.getTopLeft().getX().eClass().getClassifierID()
+                                == KRenderingPackage.KLEFT_POSITION
+                        // left indent measured from left so just take it
+                        ? gpd.getTopLeft().getX().getAbsolute()
+                                + (gpd.getTopLeft().getX().getRelative() * cellWidth)
+                                // left indent measured from right, so calculate based on cellWidth
+                                : cellWidth - gpd.getTopLeft().getX().getAbsolute()
                                         - (gpd.getTopLeft().getX().getRelative() * cellWidth);
 
-                    
-                        insetTop = gpd.getTopLeft().getY().eClass().getClassifierID() == KRenderingPackage
-                                .KTOP_POSITION
-                                // top indent measured from top so just take it
-                                ? gpd.getTopLeft().getY().getAbsolute()
-                                        + (gpd.getTopLeft().getY().getRelative() * cellHeight)
-                                        // top indent measured from bottom so calculate based on cellHeight
-                                        : cellHeight - gpd.getTopLeft().getY().getAbsolute()
+                        insetTop = gpd.getTopLeft().getY().eClass().getClassifierID()
+                                == KRenderingPackage.KTOP_POSITION
+                        // top indent measured from top so just take it
+                        ? gpd.getTopLeft().getY().getAbsolute()
+                                + (gpd.getTopLeft().getY().getRelative() * cellHeight)
+                                // top indent measured from bottom so calculate based on cellHeight
+                                : cellHeight - gpd.getTopLeft().getY().getAbsolute()
                                         - (gpd.getTopLeft().getY().getRelative() * cellHeight);
                     }
                     
