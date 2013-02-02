@@ -21,17 +21,17 @@ import org.eclipse.emf.common.util.Enumerator;
 
 /**
  * <!-- begin-user-doc -->
- * A representation of the literals of the enumeration '<em><b>Line Cap Style</b></em>',
+ * A representation of the literals of the enumeration '<em><b>Line Cap</b></em>',
  * and utility methods for working with them.
  * <!-- end-user-doc -->
  * <!-- begin-model-doc -->
  * LineCapStyles analog to SWT LineCapStyles
  * <!-- end-model-doc -->
- * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getLineCapStyle()
+ * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getLineCap()
  * @model
  * @generated
  */
-public enum LineCapStyle implements Enumerator {
+public enum LineCap implements Enumerator {
     /**
      * The '<em><b>CAP FLAT</b></em>' literal object.
      * <!-- begin-user-doc -->
@@ -108,35 +108,35 @@ public enum LineCapStyle implements Enumerator {
     public static final int CAP_SQUARE_VALUE = 3;
 
     /**
-     * An array of all the '<em><b>Line Cap Style</b></em>' enumerators.
+     * An array of all the '<em><b>Line Cap</b></em>' enumerators.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      */
-    private static final LineCapStyle[] VALUES_ARRAY =
-        new LineCapStyle[] {
+    private static final LineCap[] VALUES_ARRAY =
+        new LineCap[] {
             CAP_FLAT,
             CAP_ROUND,
             CAP_SQUARE,
         };
 
     /**
-     * A public read-only list of all the '<em><b>Line Cap Style</b></em>' enumerators.
+     * A public read-only list of all the '<em><b>Line Cap</b></em>' enumerators.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      */
-    public static final List<LineCapStyle> VALUES = Collections.unmodifiableList(Arrays.asList(VALUES_ARRAY));
+    public static final List<LineCap> VALUES = Collections.unmodifiableList(Arrays.asList(VALUES_ARRAY));
 
     /**
-     * Returns the '<em><b>Line Cap Style</b></em>' literal with the specified literal value.
+     * Returns the '<em><b>Line Cap</b></em>' literal with the specified literal value.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      */
-    public static LineCapStyle get(String literal) {
+    public static LineCap get(String literal) {
         for (int i = 0; i < VALUES_ARRAY.length; ++i) {
-            LineCapStyle result = VALUES_ARRAY[i];
+            LineCap result = VALUES_ARRAY[i];
             if (result.toString().equals(literal)) {
                 return result;
             }
@@ -145,14 +145,14 @@ public enum LineCapStyle implements Enumerator {
     }
 
     /**
-     * Returns the '<em><b>Line Cap Style</b></em>' literal with the specified name.
+     * Returns the '<em><b>Line Cap</b></em>' literal with the specified name.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      */
-    public static LineCapStyle getByName(String name) {
+    public static LineCap getByName(String name) {
         for (int i = 0; i < VALUES_ARRAY.length; ++i) {
-            LineCapStyle result = VALUES_ARRAY[i];
+            LineCap result = VALUES_ARRAY[i];
             if (result.getName().equals(name)) {
                 return result;
             }
@@ -161,12 +161,12 @@ public enum LineCapStyle implements Enumerator {
     }
 
     /**
-     * Returns the '<em><b>Line Cap Style</b></em>' literal with the specified integer value.
+     * Returns the '<em><b>Line Cap</b></em>' literal with the specified integer value.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      */
-    public static LineCapStyle get(int value) {
+    public static LineCap get(int value) {
         switch (value) {
             case CAP_FLAT_VALUE: return CAP_FLAT;
             case CAP_ROUND_VALUE: return CAP_ROUND;
@@ -202,7 +202,7 @@ public enum LineCapStyle implements Enumerator {
      * <!-- end-user-doc -->
      * @generated
      */
-    private LineCapStyle(int value, String name, String literal) {
+    private LineCap(int value, String name, String literal) {
         this.value = value;
         this.name = name;
         this.literal = literal;
@@ -246,4 +246,4 @@ public enum LineCapStyle implements Enumerator {
         return literal;
     }
     
-} //LineCapStyle
+} //LineCap

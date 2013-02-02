@@ -13,53 +13,56 @@
  */
 package de.cau.cs.kieler.core.krendering.impl;
 
-import de.cau.cs.kieler.core.krendering.KLineCapStyle;
+import de.cau.cs.kieler.core.krendering.KLineCap;
 import de.cau.cs.kieler.core.krendering.KRenderingPackage;
+import de.cau.cs.kieler.core.krendering.LineCap;
 
-import de.cau.cs.kieler.core.krendering.LineCapStyle;
 import org.eclipse.emf.common.notify.Notification;
+
 import org.eclipse.emf.ecore.EClass;
+
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
 /**
  * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>KLine Cap Style</b></em>'.
+ * An implementation of the model object '<em><b>KLine Cap</b></em>'.
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link de.cau.cs.kieler.core.krendering.impl.KLineCapStyleImpl#getLineCapStyle <em>Line Cap Style</em>}</li>
+ *   <li>{@link de.cau.cs.kieler.core.krendering.impl.KLineCapImpl#getLineCap <em>Line Cap</em>}</li>
  * </ul>
  * </p>
  *
  * @generated
  */
-public class KLineCapStyleImpl extends KStyleImpl implements KLineCapStyle {
+public class KLineCapImpl extends KStyleImpl implements KLineCap {
     /**
-     * The default value of the '{@link #getLineCapStyle() <em>Line Cap Style</em>}' attribute.
+     * The default value of the '{@link #getLineCap() <em>Line Cap</em>}' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see #getLineCapStyle()
+     * @see #getLineCap()
      * @generated
      * @ordered
      */
-    protected static final LineCapStyle LINE_CAP_STYLE_EDEFAULT = LineCapStyle.CAP_FLAT;
+    protected static final LineCap LINE_CAP_EDEFAULT = LineCap.CAP_FLAT;
+
     /**
-     * The cached value of the '{@link #getLineCapStyle() <em>Line Cap Style</em>}' attribute.
+     * The cached value of the '{@link #getLineCap() <em>Line Cap</em>}' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see #getLineCapStyle()
+     * @see #getLineCap()
      * @generated
      * @ordered
      */
-    protected LineCapStyle lineCapStyle = LINE_CAP_STYLE_EDEFAULT;
+    protected LineCap lineCap = LINE_CAP_EDEFAULT;
 
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      */
-    protected KLineCapStyleImpl() {
+    protected KLineCapImpl() {
         super();
     }
 
@@ -70,7 +73,7 @@ public class KLineCapStyleImpl extends KStyleImpl implements KLineCapStyle {
      */
     @Override
     protected EClass eStaticClass() {
-        return KRenderingPackage.Literals.KLINE_CAP_STYLE;
+        return KRenderingPackage.Literals.KLINE_CAP;
     }
 
     /**
@@ -78,8 +81,8 @@ public class KLineCapStyleImpl extends KStyleImpl implements KLineCapStyle {
      * <!-- end-user-doc -->
      * @generated
      */
-    public LineCapStyle getLineCapStyle() {
-        return lineCapStyle;
+    public LineCap getLineCap() {
+        return lineCap;
     }
 
     /**
@@ -87,11 +90,11 @@ public class KLineCapStyleImpl extends KStyleImpl implements KLineCapStyle {
      * <!-- end-user-doc -->
      * @generated
      */
-    public void setLineCapStyle(LineCapStyle newLineCapStyle) {
-        LineCapStyle oldLineCapStyle = lineCapStyle;
-        lineCapStyle = newLineCapStyle == null ? LINE_CAP_STYLE_EDEFAULT : newLineCapStyle;
+    public void setLineCap(LineCap newLineCap) {
+        LineCap oldLineCap = lineCap;
+        lineCap = newLineCap == null ? LINE_CAP_EDEFAULT : newLineCap;
         if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, KRenderingPackage.KLINE_CAP_STYLE__LINE_CAP_STYLE, oldLineCapStyle, lineCapStyle));
+            eNotify(new ENotificationImpl(this, Notification.SET, KRenderingPackage.KLINE_CAP__LINE_CAP, oldLineCap, lineCap));
     }
 
     /**
@@ -102,8 +105,8 @@ public class KLineCapStyleImpl extends KStyleImpl implements KLineCapStyle {
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
-            case KRenderingPackage.KLINE_CAP_STYLE__LINE_CAP_STYLE:
-                return getLineCapStyle();
+            case KRenderingPackage.KLINE_CAP__LINE_CAP:
+                return getLineCap();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -116,8 +119,8 @@ public class KLineCapStyleImpl extends KStyleImpl implements KLineCapStyle {
     @Override
     public void eSet(int featureID, Object newValue) {
         switch (featureID) {
-            case KRenderingPackage.KLINE_CAP_STYLE__LINE_CAP_STYLE:
-                setLineCapStyle((LineCapStyle)newValue);
+            case KRenderingPackage.KLINE_CAP__LINE_CAP:
+                setLineCap((LineCap)newValue);
                 return;
         }
         super.eSet(featureID, newValue);
@@ -131,8 +134,8 @@ public class KLineCapStyleImpl extends KStyleImpl implements KLineCapStyle {
     @Override
     public void eUnset(int featureID) {
         switch (featureID) {
-            case KRenderingPackage.KLINE_CAP_STYLE__LINE_CAP_STYLE:
-                setLineCapStyle(LINE_CAP_STYLE_EDEFAULT);
+            case KRenderingPackage.KLINE_CAP__LINE_CAP:
+                setLineCap(LINE_CAP_EDEFAULT);
                 return;
         }
         super.eUnset(featureID);
@@ -146,8 +149,8 @@ public class KLineCapStyleImpl extends KStyleImpl implements KLineCapStyle {
     @Override
     public boolean eIsSet(int featureID) {
         switch (featureID) {
-            case KRenderingPackage.KLINE_CAP_STYLE__LINE_CAP_STYLE:
-                return lineCapStyle != LINE_CAP_STYLE_EDEFAULT;
+            case KRenderingPackage.KLINE_CAP__LINE_CAP:
+                return lineCap != LINE_CAP_EDEFAULT;
         }
         return super.eIsSet(featureID);
     }
@@ -162,10 +165,10 @@ public class KLineCapStyleImpl extends KStyleImpl implements KLineCapStyle {
         if (eIsProxy()) return super.toString();
 
         StringBuffer result = new StringBuffer(super.toString());
-        result.append(" (lineCapStyle: ");
-        result.append(lineCapStyle);
+        result.append(" (lineCap: ");
+        result.append(lineCap);
         result.append(')');
         return result.toString();
     }
 
-} //KLineCapStyleImpl
+} //KLineCapImpl

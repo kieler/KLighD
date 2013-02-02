@@ -42,7 +42,7 @@ import de.cau.cs.kieler.core.krendering.KHorizontalAlignment;
 import de.cau.cs.kieler.core.krendering.KImage;
 import de.cau.cs.kieler.core.krendering.KInvisibility;
 import de.cau.cs.kieler.core.krendering.KLeftPosition;
-import de.cau.cs.kieler.core.krendering.KLineCapStyle;
+import de.cau.cs.kieler.core.krendering.KLineCap;
 import de.cau.cs.kieler.core.krendering.KLineStyle;
 import de.cau.cs.kieler.core.krendering.KLineWidth;
 import de.cau.cs.kieler.core.krendering.KPlacement;
@@ -73,7 +73,7 @@ import de.cau.cs.kieler.core.krendering.KTrigger;
 import de.cau.cs.kieler.core.krendering.KVerticalAlignment;
 import de.cau.cs.kieler.core.krendering.KXPosition;
 import de.cau.cs.kieler.core.krendering.KYPosition;
-import de.cau.cs.kieler.core.krendering.LineCapStyle;
+import de.cau.cs.kieler.core.krendering.LineCap;
 import de.cau.cs.kieler.core.krendering.LineStyle;
 import de.cau.cs.kieler.core.krendering.UnderlineStyle;
 import de.cau.cs.kieler.core.krendering.VerticalAlignment;
@@ -84,6 +84,7 @@ import org.eclipse.emf.ecore.EEnum;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
 
+import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.impl.EPackageImpl;
 
 /**
@@ -399,7 +400,7 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
      * <!-- end-user-doc -->
      * @generated
      */
-    private EClass kLineCapStyleEClass = null;
+    private EClass kLineCapEClass = null;
 
     /**
      * <!-- begin-user-doc -->
@@ -504,7 +505,7 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
      * <!-- end-user-doc -->
      * @generated
      */
-    private EEnum lineCapStyleEEnum = null;
+    private EEnum lineCapEEnum = null;
 
     /**
      * <!-- begin-user-doc -->
@@ -560,6 +561,7 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
         isInited = true;
 
         // Initialize simple dependencies
+        EcorePackage.eINSTANCE.eClass();
         KGraphPackage.eINSTANCE.eClass();
 
         // Create package meta-data objects
@@ -1554,8 +1556,8 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
      * <!-- end-user-doc -->
      * @generated
      */
-    public EClass getKLineCapStyle() {
-        return kLineCapStyleEClass;
+    public EClass getKLineCap() {
+        return kLineCapEClass;
     }
 
     /**
@@ -1563,8 +1565,8 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
      * <!-- end-user-doc -->
      * @generated
      */
-    public EAttribute getKLineCapStyle_LineCapStyle() {
-        return (EAttribute)kLineCapStyleEClass.getEStructuralFeatures().get(0);
+    public EAttribute getKLineCap_LineCap() {
+        return (EAttribute)kLineCapEClass.getEStructuralFeatures().get(0);
     }
 
     /**
@@ -1815,8 +1817,8 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
      * <!-- end-user-doc -->
      * @generated
      */
-    public EEnum getLineCapStyle() {
-        return lineCapStyleEEnum;
+    public EEnum getLineCap() {
+        return lineCapEEnum;
     }
 
     /**
@@ -2007,8 +2009,8 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
         kRotationEClass = createEClass(KROTATION);
         createEAttribute(kRotationEClass, KROTATION__ROTATION);
 
-        kLineCapStyleEClass = createEClass(KLINE_CAP_STYLE);
-        createEAttribute(kLineCapStyleEClass, KLINE_CAP_STYLE__LINE_CAP_STYLE);
+        kLineCapEClass = createEClass(KLINE_CAP);
+        createEAttribute(kLineCapEClass, KLINE_CAP__LINE_CAP);
 
         kActionEClass = createEClass(KACTION);
         createEAttribute(kActionEClass, KACTION__ID);
@@ -2048,7 +2050,7 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
         horizontalAlignmentEEnum = createEEnum(HORIZONTAL_ALIGNMENT);
         verticalAlignmentEEnum = createEEnum(VERTICAL_ALIGNMENT);
         kTriggerEEnum = createEEnum(KTRIGGER);
-        lineCapStyleEEnum = createEEnum(LINE_CAP_STYLE);
+        lineCapEEnum = createEEnum(LINE_CAP);
         underlineStyleEEnum = createEEnum(UNDERLINE_STYLE);
     }
 
@@ -2121,7 +2123,7 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
         kFontSizeEClass.getESuperTypes().add(this.getKStyle());
         kRoundedBendsPolylineEClass.getESuperTypes().add(this.getKPolyline());
         kRotationEClass.getESuperTypes().add(this.getKStyle());
-        kLineCapStyleEClass.getESuperTypes().add(this.getKStyle());
+        kLineCapEClass.getESuperTypes().add(this.getKStyle());
         kPointPlacementDataEClass.getESuperTypes().add(this.getKPlacementData());
         kSelectActionEClass.getESuperTypes().add(this.getKAction());
         kExpandActionEClass.getESuperTypes().add(this.getKAction());
@@ -2283,8 +2285,8 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
         initEClass(kRotationEClass, KRotation.class, "KRotation", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         initEAttribute(getKRotation_Rotation(), ecorePackage.getEFloat(), "rotation", null, 1, 1, KRotation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-        initEClass(kLineCapStyleEClass, KLineCapStyle.class, "KLineCapStyle", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-        initEAttribute(getKLineCapStyle_LineCapStyle(), this.getLineCapStyle(), "lineCapStyle", null, 1, 1, KLineCapStyle.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEClass(kLineCapEClass, KLineCap.class, "KLineCap", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        initEAttribute(getKLineCap_LineCap(), this.getLineCap(), "lineCap", null, 1, 1, KLineCap.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         initEClass(kActionEClass, KAction.class, "KAction", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         initEAttribute(getKAction_Id(), ecorePackage.getEString(), "id", null, 1, 1, KAction.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -2331,22 +2333,20 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
         addEEnumLiteral(horizontalAlignmentEEnum, HorizontalAlignment.LEFT);
         addEEnumLiteral(horizontalAlignmentEEnum, HorizontalAlignment.CENTER);
         addEEnumLiteral(horizontalAlignmentEEnum, HorizontalAlignment.RIGHT);
-        addEEnumLiteral(horizontalAlignmentEEnum, HorizontalAlignment.EENUM_LITERAL0);
 
         initEEnum(verticalAlignmentEEnum, VerticalAlignment.class, "VerticalAlignment");
         addEEnumLiteral(verticalAlignmentEEnum, VerticalAlignment.TOP);
         addEEnumLiteral(verticalAlignmentEEnum, VerticalAlignment.CENTER);
         addEEnumLiteral(verticalAlignmentEEnum, VerticalAlignment.BOTTOM);
-        addEEnumLiteral(verticalAlignmentEEnum, VerticalAlignment.EENUM_LITERAL0);
 
         initEEnum(kTriggerEEnum, KTrigger.class, "KTrigger");
         addEEnumLiteral(kTriggerEEnum, KTrigger.SINGLECLICK);
         addEEnumLiteral(kTriggerEEnum, KTrigger.DOUBLECLICK);
 
-        initEEnum(lineCapStyleEEnum, LineCapStyle.class, "LineCapStyle");
-        addEEnumLiteral(lineCapStyleEEnum, LineCapStyle.CAP_FLAT);
-        addEEnumLiteral(lineCapStyleEEnum, LineCapStyle.CAP_ROUND);
-        addEEnumLiteral(lineCapStyleEEnum, LineCapStyle.CAP_SQUARE);
+        initEEnum(lineCapEEnum, LineCap.class, "LineCap");
+        addEEnumLiteral(lineCapEEnum, LineCap.CAP_FLAT);
+        addEEnumLiteral(lineCapEEnum, LineCap.CAP_ROUND);
+        addEEnumLiteral(lineCapEEnum, LineCap.CAP_SQUARE);
 
         initEEnum(underlineStyleEEnum, UnderlineStyle.class, "UnderlineStyle");
         addEEnumLiteral(underlineStyleEEnum, UnderlineStyle.UNDERLINE_ON);

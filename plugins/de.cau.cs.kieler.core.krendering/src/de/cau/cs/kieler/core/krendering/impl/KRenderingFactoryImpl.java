@@ -103,7 +103,7 @@ public class KRenderingFactoryImpl extends EFactoryImpl implements KRenderingFac
             case KRenderingPackage.KFONT_SIZE: return createKFontSize();
             case KRenderingPackage.KROUNDED_BENDS_POLYLINE: return createKRoundedBendsPolyline();
             case KRenderingPackage.KROTATION: return createKRotation();
-            case KRenderingPackage.KLINE_CAP_STYLE: return createKLineCapStyle();
+            case KRenderingPackage.KLINE_CAP: return createKLineCap();
             case KRenderingPackage.KPOINT_PLACEMENT_DATA: return createKPointPlacementData();
             case KRenderingPackage.KSELECT_ACTION: return createKSelectAction();
             case KRenderingPackage.KEXPAND_ACTION: return createKExpandAction();
@@ -134,8 +134,8 @@ public class KRenderingFactoryImpl extends EFactoryImpl implements KRenderingFac
                 return createVerticalAlignmentFromString(eDataType, initialValue);
             case KRenderingPackage.KTRIGGER:
                 return createKTriggerFromString(eDataType, initialValue);
-            case KRenderingPackage.LINE_CAP_STYLE:
-                return createLineCapStyleFromString(eDataType, initialValue);
+            case KRenderingPackage.LINE_CAP:
+                return createLineCapFromString(eDataType, initialValue);
             case KRenderingPackage.UNDERLINE_STYLE:
                 return createUnderlineStyleFromString(eDataType, initialValue);
             default:
@@ -159,8 +159,8 @@ public class KRenderingFactoryImpl extends EFactoryImpl implements KRenderingFac
                 return convertVerticalAlignmentToString(eDataType, instanceValue);
             case KRenderingPackage.KTRIGGER:
                 return convertKTriggerToString(eDataType, instanceValue);
-            case KRenderingPackage.LINE_CAP_STYLE:
-                return convertLineCapStyleToString(eDataType, instanceValue);
+            case KRenderingPackage.LINE_CAP:
+                return convertLineCapToString(eDataType, instanceValue);
             case KRenderingPackage.UNDERLINE_STYLE:
                 return convertUnderlineStyleToString(eDataType, instanceValue);
             default:
@@ -523,9 +523,9 @@ public class KRenderingFactoryImpl extends EFactoryImpl implements KRenderingFac
      * <!-- end-user-doc -->
      * @generated
      */
-    public KLineCapStyle createKLineCapStyle() {
-        KLineCapStyleImpl kLineCapStyle = new KLineCapStyleImpl();
-        return kLineCapStyle;
+    public KLineCap createKLineCap() {
+        KLineCapImpl kLineCap = new KLineCapImpl();
+        return kLineCap;
     }
 
     /**
@@ -703,8 +703,8 @@ public class KRenderingFactoryImpl extends EFactoryImpl implements KRenderingFac
      * <!-- end-user-doc -->
      * @generated
      */
-    public LineCapStyle createLineCapStyleFromString(EDataType eDataType, String initialValue) {
-        LineCapStyle result = LineCapStyle.get(initialValue);
+    public LineCap createLineCapFromString(EDataType eDataType, String initialValue) {
+        LineCap result = LineCap.get(initialValue);
         if (result == null) throw new IllegalArgumentException("The value '" + initialValue + "' is not a valid enumerator of '" + eDataType.getName() + "'");
         return result;
     }
@@ -714,7 +714,7 @@ public class KRenderingFactoryImpl extends EFactoryImpl implements KRenderingFac
      * <!-- end-user-doc -->
      * @generated
      */
-    public String convertLineCapStyleToString(EDataType eDataType, Object instanceValue) {
+    public String convertLineCapToString(EDataType eDataType, Object instanceValue) {
         return instanceValue == null ? null : instanceValue.toString();
     }
 

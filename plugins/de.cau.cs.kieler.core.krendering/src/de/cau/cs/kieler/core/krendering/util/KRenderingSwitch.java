@@ -455,10 +455,10 @@ public class KRenderingSwitch<T> extends Switch<T> {
                 if (result == null) result = defaultCase(theEObject);
                 return result;
             }
-            case KRenderingPackage.KLINE_CAP_STYLE: {
-                KLineCapStyle kLineCapStyle = (KLineCapStyle)theEObject;
-                T result = caseKLineCapStyle(kLineCapStyle);
-                if (result == null) result = caseKStyle(kLineCapStyle);
+            case KRenderingPackage.KLINE_CAP: {
+                KLineCap kLineCap = (KLineCap)theEObject;
+                T result = caseKLineCap(kLineCap);
+                if (result == null) result = caseKStyle(kLineCap);
                 if (result == null) result = defaultCase(theEObject);
                 return result;
             }
@@ -1180,17 +1180,17 @@ public class KRenderingSwitch<T> extends Switch<T> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>KLine Cap Style</em>'.
+     * Returns the result of interpreting the object as an instance of '<em>KLine Cap</em>'.
      * <!-- begin-user-doc -->
      * This implementation returns null;
      * returning a non-null result will terminate the switch.
      * <!-- end-user-doc -->
      * @param object the target of the switch.
-     * @return the result of interpreting the object as an instance of '<em>KLine Cap Style</em>'.
+     * @return the result of interpreting the object as an instance of '<em>KLine Cap</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
      */
-    public T caseKLineCapStyle(KLineCapStyle object) {
+    public T caseKLineCap(KLineCap object) {
         return null;
     }
 

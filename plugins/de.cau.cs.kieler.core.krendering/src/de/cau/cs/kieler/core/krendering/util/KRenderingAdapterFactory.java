@@ -256,8 +256,8 @@ public class KRenderingAdapterFactory extends AdapterFactoryImpl {
                 return createKRotationAdapter();
             }
             @Override
-            public Adapter caseKLineCapStyle(KLineCapStyle object) {
-                return createKLineCapStyleAdapter();
+            public Adapter caseKLineCap(KLineCap object) {
+                return createKLineCapAdapter();
             }
             @Override
             public Adapter caseKAction(KAction object) {
@@ -934,16 +934,16 @@ public class KRenderingAdapterFactory extends AdapterFactoryImpl {
     }
 
     /**
-     * Creates a new adapter for an object of class '{@link de.cau.cs.kieler.core.krendering.KLineCapStyle <em>KLine Cap Style</em>}'.
+     * Creates a new adapter for an object of class '{@link de.cau.cs.kieler.core.krendering.KLineCap <em>KLine Cap</em>}'.
      * <!-- begin-user-doc -->
      * This default implementation returns null so that we can easily ignore cases;
      * it's useful to ignore a case when inheritance will catch all the cases anyway.
      * <!-- end-user-doc -->
      * @return the new adapter.
-     * @see de.cau.cs.kieler.core.krendering.KLineCapStyle
+     * @see de.cau.cs.kieler.core.krendering.KLineCap
      * @generated
      */
-    public Adapter createKLineCapStyleAdapter() {
+    public Adapter createKLineCapAdapter() {
         return null;
     }
 

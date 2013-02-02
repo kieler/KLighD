@@ -348,13 +348,13 @@ public interface KRenderingFactory extends EFactory {
     KRotation createKRotation();
 
     /**
-     * Returns a new object of class '<em>KLine Cap Style</em>'.
+     * Returns a new object of class '<em>KLine Cap</em>'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return a new object of class '<em>KLine Cap Style</em>'.
+     * @return a new object of class '<em>KLine Cap</em>'.
      * @generated
      */
-    KLineCapStyle createKLineCapStyle();
+    KLineCap createKLineCap();
 
     /**
      * Returns a new object of class '<em>KPoint Placement Data</em>'.

@@ -3186,14 +3186,14 @@ public interface KRenderingPackage extends EPackage {
     int KROTATION_FEATURE_COUNT = KSTYLE_FEATURE_COUNT + 1;
 
     /**
-     * The meta object id for the '{@link de.cau.cs.kieler.core.krendering.impl.KLineCapStyleImpl <em>KLine Cap Style</em>}' class.
+     * The meta object id for the '{@link de.cau.cs.kieler.core.krendering.impl.KLineCapImpl <em>KLine Cap</em>}' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see de.cau.cs.kieler.core.krendering.impl.KLineCapStyleImpl
-     * @see de.cau.cs.kieler.core.krendering.impl.KRenderingPackageImpl#getKLineCapStyle()
+     * @see de.cau.cs.kieler.core.krendering.impl.KLineCapImpl
+     * @see de.cau.cs.kieler.core.krendering.impl.KRenderingPackageImpl#getKLineCap()
      * @generated
      */
-    int KLINE_CAP_STYLE = 43;
+    int KLINE_CAP = 43;
 
     /**
      * The feature id for the '<em><b>Rendering</b></em>' reference.
@@ -3202,7 +3202,7 @@ public interface KRenderingPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int KLINE_CAP_STYLE__RENDERING = KSTYLE__RENDERING;
+    int KLINE_CAP__RENDERING = KSTYLE__RENDERING;
 
     /**
      * The feature id for the '<em><b>Propagate To Children</b></em>' attribute.
@@ -3211,7 +3211,7 @@ public interface KRenderingPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int KLINE_CAP_STYLE__PROPAGATE_TO_CHILDREN = KSTYLE__PROPAGATE_TO_CHILDREN;
+    int KLINE_CAP__PROPAGATE_TO_CHILDREN = KSTYLE__PROPAGATE_TO_CHILDREN;
 
     /**
      * The feature id for the '<em><b>Function Id</b></em>' attribute.
@@ -3220,25 +3220,25 @@ public interface KRenderingPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int KLINE_CAP_STYLE__FUNCTION_ID = KSTYLE__FUNCTION_ID;
+    int KLINE_CAP__FUNCTION_ID = KSTYLE__FUNCTION_ID;
 
     /**
-     * The feature id for the '<em><b>Line Cap Style</b></em>' attribute.
+     * The feature id for the '<em><b>Line Cap</b></em>' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int KLINE_CAP_STYLE__LINE_CAP_STYLE = KSTYLE_FEATURE_COUNT + 0;
+    int KLINE_CAP__LINE_CAP = KSTYLE_FEATURE_COUNT + 0;
 
     /**
-     * The number of structural features of the '<em>KLine Cap Style</em>' class.
+     * The number of structural features of the '<em>KLine Cap</em>' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int KLINE_CAP_STYLE_FEATURE_COUNT = KSTYLE_FEATURE_COUNT + 1;
+    int KLINE_CAP_FEATURE_COUNT = KSTYLE_FEATURE_COUNT + 1;
 
     /**
      * The meta object id for the '{@link de.cau.cs.kieler.core.krendering.impl.KActionImpl <em>KAction</em>}' class.
@@ -3752,15 +3752,14 @@ public interface KRenderingPackage extends EPackage {
 
 
     /**
-     * The meta object id for the '{@link de.cau.cs.kieler.core.krendering.LineCapStyle <em>Line Cap Style</em>}' enum.
+     * The meta object id for the '{@link de.cau.cs.kieler.core.krendering.LineCap <em>Line Cap</em>}' enum.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see de.cau.cs.kieler.core.krendering.LineCapStyle
-     * @see de.cau.cs.kieler.core.krendering.impl.KRenderingPackageImpl#getLineCapStyle()
+     * @see de.cau.cs.kieler.core.krendering.LineCap
+     * @see de.cau.cs.kieler.core.krendering.impl.KRenderingPackageImpl#getLineCap()
      * @generated
      */
-    int LINE_CAP_STYLE = 58;
-
+    int LINE_CAP = 58;
 
     /**
      * The meta object id for the '{@link de.cau.cs.kieler.core.krendering.UnderlineStyle <em>Underline Style</em>}' enum.
@@ -4919,25 +4918,25 @@ public interface KRenderingPackage extends EPackage {
     EAttribute getKRotation_Rotation();
 
     /**
-     * Returns the meta object for class '{@link de.cau.cs.kieler.core.krendering.KLineCapStyle <em>KLine Cap Style</em>}'.
+     * Returns the meta object for class '{@link de.cau.cs.kieler.core.krendering.KLineCap <em>KLine Cap</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for class '<em>KLine Cap Style</em>'.
-     * @see de.cau.cs.kieler.core.krendering.KLineCapStyle
+     * @return the meta object for class '<em>KLine Cap</em>'.
+     * @see de.cau.cs.kieler.core.krendering.KLineCap
      * @generated
      */
-    EClass getKLineCapStyle();
+    EClass getKLineCap();
 
     /**
-     * Returns the meta object for the attribute '{@link de.cau.cs.kieler.core.krendering.KLineCapStyle#getLineCapStyle <em>Line Cap Style</em>}'.
+     * Returns the meta object for the attribute '{@link de.cau.cs.kieler.core.krendering.KLineCap#getLineCap <em>Line Cap</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for the attribute '<em>Line Cap Style</em>'.
-     * @see de.cau.cs.kieler.core.krendering.KLineCapStyle#getLineCapStyle()
-     * @see #getKLineCapStyle()
+     * @return the meta object for the attribute '<em>Line Cap</em>'.
+     * @see de.cau.cs.kieler.core.krendering.KLineCap#getLineCap()
+     * @see #getKLineCap()
      * @generated
      */
-    EAttribute getKLineCapStyle_LineCapStyle();
+    EAttribute getKLineCap_LineCap();
 
     /**
      * Returns the meta object for class '{@link de.cau.cs.kieler.core.krendering.KAction <em>KAction</em>}'.
@@ -5223,14 +5222,14 @@ public interface KRenderingPackage extends EPackage {
     EEnum getKTrigger();
 
     /**
-     * Returns the meta object for enum '{@link de.cau.cs.kieler.core.krendering.LineCapStyle <em>Line Cap Style</em>}'.
+     * Returns the meta object for enum '{@link de.cau.cs.kieler.core.krendering.LineCap <em>Line Cap</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for enum '<em>Line Cap Style</em>'.
-     * @see de.cau.cs.kieler.core.krendering.LineCapStyle
+     * @return the meta object for enum '<em>Line Cap</em>'.
+     * @see de.cau.cs.kieler.core.krendering.LineCap
      * @generated
      */
-    EEnum getLineCapStyle();
+    EEnum getLineCap();
 
     /**
      * Returns the meta object for enum '{@link de.cau.cs.kieler.core.krendering.UnderlineStyle <em>Underline Style</em>}'.
@@ -6215,22 +6214,22 @@ public interface KRenderingPackage extends EPackage {
         EAttribute KROTATION__ROTATION = eINSTANCE.getKRotation_Rotation();
 
         /**
-         * The meta object literal for the '{@link de.cau.cs.kieler.core.krendering.impl.KLineCapStyleImpl <em>KLine Cap Style</em>}' class.
+         * The meta object literal for the '{@link de.cau.cs.kieler.core.krendering.impl.KLineCapImpl <em>KLine Cap</em>}' class.
          * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-         * @see de.cau.cs.kieler.core.krendering.impl.KLineCapStyleImpl
-         * @see de.cau.cs.kieler.core.krendering.impl.KRenderingPackageImpl#getKLineCapStyle()
+         * @see de.cau.cs.kieler.core.krendering.impl.KLineCapImpl
+         * @see de.cau.cs.kieler.core.krendering.impl.KRenderingPackageImpl#getKLineCap()
          * @generated
          */
-        EClass KLINE_CAP_STYLE = eINSTANCE.getKLineCapStyle();
+        EClass KLINE_CAP = eINSTANCE.getKLineCap();
 
         /**
-         * The meta object literal for the '<em><b>Line Cap Style</b></em>' attribute feature.
+         * The meta object literal for the '<em><b>Line Cap</b></em>' attribute feature.
          * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
          * @generated
          */
-        EAttribute KLINE_CAP_STYLE__LINE_CAP_STYLE = eINSTANCE.getKLineCapStyle_LineCapStyle();
+        EAttribute KLINE_CAP__LINE_CAP = eINSTANCE.getKLineCap_LineCap();
 
         /**
          * The meta object literal for the '{@link de.cau.cs.kieler.core.krendering.impl.KActionImpl <em>KAction</em>}' class.
@@ -6477,14 +6476,14 @@ public interface KRenderingPackage extends EPackage {
         EEnum KTRIGGER = eINSTANCE.getKTrigger();
 
         /**
-         * The meta object literal for the '{@link de.cau.cs.kieler.core.krendering.LineCapStyle <em>Line Cap Style</em>}' enum.
+         * The meta object literal for the '{@link de.cau.cs.kieler.core.krendering.LineCap <em>Line Cap</em>}' enum.
          * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-         * @see de.cau.cs.kieler.core.krendering.LineCapStyle
-         * @see de.cau.cs.kieler.core.krendering.impl.KRenderingPackageImpl#getLineCapStyle()
+         * @see de.cau.cs.kieler.core.krendering.LineCap
+         * @see de.cau.cs.kieler.core.krendering.impl.KRenderingPackageImpl#getLineCap()
          * @generated
          */
-        EEnum LINE_CAP_STYLE = eINSTANCE.getLineCapStyle();
+        EEnum LINE_CAP = eINSTANCE.getLineCap();
 
         /**
          * The meta object literal for the '{@link de.cau.cs.kieler.core.krendering.UnderlineStyle <em>Underline Style</em>}' enum.
