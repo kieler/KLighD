@@ -135,7 +135,7 @@ public final class PiccoloPlacementUtil {
      */
     public static Point2D[] evaluatePolylinePlacement(final KPolyline line,
             final PBounds parentBounds) {
-        if (line == null) {
+        if (line.getPoints() == null || line.getPoints().isEmpty()) {
             return new Point2D[] { new Point2D.Float(0, 0) };
         }
 
