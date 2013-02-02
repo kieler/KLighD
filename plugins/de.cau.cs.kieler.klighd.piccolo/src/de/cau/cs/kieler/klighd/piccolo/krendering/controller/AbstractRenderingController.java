@@ -59,7 +59,7 @@ import de.cau.cs.kieler.core.krendering.KHorizontalAlignment;
 import de.cau.cs.kieler.core.krendering.KImage;
 import de.cau.cs.kieler.core.krendering.KInvisibility;
 import de.cau.cs.kieler.core.krendering.KLineStyle;
-import de.cau.cs.kieler.core.krendering.KLineCapStyle;
+import de.cau.cs.kieler.core.krendering.KLineCap;
 import de.cau.cs.kieler.core.krendering.KLineWidth;
 import de.cau.cs.kieler.core.krendering.KPlacement;
 import de.cau.cs.kieler.core.krendering.KPlacementData;
@@ -1588,9 +1588,9 @@ public abstract class AbstractRenderingController<S extends KGraphElement, T ext
                 }
 
                 // line cap style
-                public Boolean caseKLineCapStyle(final KLineCapStyle lcs) {
-                    if (theStyles.lineCapStyle == null) {
-                        theStyles.lineCapStyle = lcs;
+                public Boolean caseKLineCap(final KLineCap lcs) {
+                    if (theStyles.lineCap == null) {
+                        theStyles.lineCap = lcs;
                     }
                     return true;
                 }
@@ -1731,8 +1731,8 @@ public abstract class AbstractRenderingController<S extends KGraphElement, T ext
         }
         
      // apply line cap style
-        if (styles.lineCapStyle != null) {
-            switch (styles.lineCapStyle.getLineCapStyle()) {
+        if (styles.lineCap != null) {
+            switch (styles.lineCap.getLineCap()) {
             case CAP_ROUND:
                 controller.setLineCapStyle(LineCapStyle.CAP_ROUND);
                 break;
@@ -1923,7 +1923,7 @@ public abstract class AbstractRenderingController<S extends KGraphElement, T ext
         /** the line style. */
         private KLineStyle lineStyle = null;
         /** the line style. */
-        private KLineCapStyle lineCapStyle = null;
+        private KLineCap lineCap = null;
         /** the horizontal alignment. */
         private KRotation rotation = null;
         /** the horizontal alignment. */

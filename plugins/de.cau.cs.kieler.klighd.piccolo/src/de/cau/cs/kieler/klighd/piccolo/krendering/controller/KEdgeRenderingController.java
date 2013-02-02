@@ -23,10 +23,7 @@ import org.eclipse.ui.statushandlers.StatusManager;
 
 import de.cau.cs.kieler.core.kgraph.KEdge;
 import de.cau.cs.kieler.core.krendering.KCustomRendering;
-import de.cau.cs.kieler.core.krendering.KForegroundColor;
-import de.cau.cs.kieler.core.krendering.KColor;
 import de.cau.cs.kieler.core.krendering.KForeground;
-import de.cau.cs.kieler.core.krendering.KPolygon;
 import de.cau.cs.kieler.core.krendering.KPolyline;
 import de.cau.cs.kieler.core.krendering.KRendering;
 import de.cau.cs.kieler.core.krendering.KRenderingFactory;
@@ -199,12 +196,10 @@ public class KEdgeRenderingController extends AbstractRenderingController<KEdge,
         // create the default rendering model
         KRenderingFactory factory = KRenderingFactory.eINSTANCE;
         KPolyline polyline = factory.createKPolyline();
+
         KForeground foreground = factory.createKForeground();
-        KColor color = factory.createKColor();
-        color.setRed(0);
-        color.setGreen(0);
-        color.setBlue(0);
-        foreground.setColor(color);
+        foreground.setColor(factory.createKColor());
+        
         polyline.getStyles().add(foreground);
         return polyline;
     }

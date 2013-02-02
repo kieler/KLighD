@@ -17,7 +17,6 @@ import java.util.ArrayList;
 
 import de.cau.cs.kieler.core.kgraph.KPort;
 import de.cau.cs.kieler.core.krendering.KBackground;
-import de.cau.cs.kieler.core.krendering.KColor;
 import de.cau.cs.kieler.core.krendering.KForeground;
 import de.cau.cs.kieler.core.krendering.KRectangle;
 import de.cau.cs.kieler.core.krendering.KRendering;
@@ -75,14 +74,10 @@ public class KPortRenderingController extends AbstractRenderingController<KPort,
         KRectangle rect = factory.createKRectangle();
         
         KForeground foreground = factory.createKForeground();
-        KColor color = factory.createKColor();
-        color.setRed(0);
-        color.setGreen(0);
-        color.setBlue(0);
-        foreground.setColor(color);
-        foreground.setAlpha(0);
+        foreground.setColor(factory.createKColor());
         KBackground background = factory.createKBackground();
-        background.setAlpha(0);
+        background.setColor(factory.createKColor());
+
         rect.getStyles().add(foreground);
         rect.getStyles().add(background);
         return rect;

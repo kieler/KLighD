@@ -125,7 +125,10 @@ public class KLabelRenderingController extends AbstractRenderingController<KLabe
         // create the default rendering model
         KRenderingFactory factory = KRenderingFactory.eINSTANCE;
         KText text = factory.createKText();
+
         KForeground foreground = factory.createKForeground();
+        foreground.setColor(factory.createKColor());
+        
         text.getStyles().add(foreground);
         return text;
     }
