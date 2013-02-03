@@ -448,10 +448,23 @@ public class KRenderingSemanticSequencer extends KLayoutDataSemanticSequencer {
 	
 	/**
 	 * Constraint:
-	 *     (red=EInt green=EInt blue=EInt propagateToChildren?='!'?)
+	 *     (red=EInt green=EInt blue=EInt)
 	 */
 	protected void sequence_KColor(EObject context, KColor semanticObject) {
-		genericSequencer.createSequence(context, semanticObject);
+		if(errorAcceptor != null) {
+			if(transientValues.isValueTransient(semanticObject, KRenderingPackage.Literals.KCOLOR__RED) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, KRenderingPackage.Literals.KCOLOR__RED));
+			if(transientValues.isValueTransient(semanticObject, KRenderingPackage.Literals.KCOLOR__GREEN) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, KRenderingPackage.Literals.KCOLOR__GREEN));
+			if(transientValues.isValueTransient(semanticObject, KRenderingPackage.Literals.KCOLOR__BLUE) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, KRenderingPackage.Literals.KCOLOR__BLUE));
+		}
+		INodesForEObjectProvider nodes = createNodeProvider(semanticObject);
+		SequenceFeeder feeder = createSequencerFeeder(semanticObject, nodes);
+		feeder.accept(grammarAccess.getKColorAccess().getRedEIntParserRuleCall_1_0(), semanticObject.getRed());
+		feeder.accept(grammarAccess.getKColorAccess().getGreenEIntParserRuleCall_2_0(), semanticObject.getGreen());
+		feeder.accept(grammarAccess.getKColorAccess().getBlueEIntParserRuleCall_3_0(), semanticObject.getBlue());
+		feeder.finish();
 	}
 	
 	

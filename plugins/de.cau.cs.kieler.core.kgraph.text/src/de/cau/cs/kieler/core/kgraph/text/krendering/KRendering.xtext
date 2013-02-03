@@ -235,7 +235,7 @@ KBottomPosition returns KBottomPosition:
 
 KColor returns KColor:
     {KColor}
-    red=EInt  green=EInt blue=EInt (propagateToChildren?='!')?;
+    red=EInt  green=EInt blue=EInt;
     
 KBackground returns KBackground:
     {KBackground}

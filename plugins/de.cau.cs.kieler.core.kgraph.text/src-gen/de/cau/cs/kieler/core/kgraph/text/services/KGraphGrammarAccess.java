@@ -1300,7 +1300,7 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//KColor:
-	//	{KColor} red=EInt green=EInt blue=EInt propagateToChildren?="!"?;
+	//	{KColor} red=EInt green=EInt blue=EInt;
 	public KRenderingGrammarAccess.KColorElements getKColorAccess() {
 		return gaKRendering.getKColorAccess();
 	}

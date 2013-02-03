@@ -5144,22 +5144,7 @@ ruleKColor returns [EObject current=null]
 	    }
 
 )
-)(
-(
-		lv_propagateToChildren_4_0=	'!' 
-    {
-        newLeafNode(lv_propagateToChildren_4_0, grammarAccess.getKColorAccess().getPropagateToChildrenExclamationMarkKeyword_4_0());
-    }
- 
-	    {
-	        if ($current==null) {
-	            $current = createModelElement(grammarAccess.getKColorRule());
-	        }
-       		setWithLastConsumed($current, "propagateToChildren", true, "!");
-	    }
-
-)
-)?)
+))
 ;
 
 

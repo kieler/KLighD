@@ -359,7 +359,6 @@ public class KRenderingParser extends AbstractContentAssistParser {
 					put(grammarAccess.getKColorAccess().getRedAssignment_1(), "rule__KColor__RedAssignment_1");
 					put(grammarAccess.getKColorAccess().getGreenAssignment_2(), "rule__KColor__GreenAssignment_2");
 					put(grammarAccess.getKColorAccess().getBlueAssignment_3(), "rule__KColor__BlueAssignment_3");
-					put(grammarAccess.getKColorAccess().getPropagateToChildrenAssignment_4(), "rule__KColor__PropagateToChildrenAssignment_4");
 					put(grammarAccess.getKBackgroundAccess().getColorAssignment_3_1(), "rule__KBackground__ColorAssignment_3_1");
 					put(grammarAccess.getKBackgroundAccess().getTargetColorAssignment_4_1(), "rule__KBackground__TargetColorAssignment_4_1");
 					put(grammarAccess.getKBackgroundAccess().getAlphaAssignment_5_1(), "rule__KBackground__AlphaAssignment_5_1");

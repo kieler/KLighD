@@ -2954,14 +2954,12 @@ public class KRenderingGrammarAccess extends AbstractGrammarElementFinder {
 		private final RuleCall cGreenEIntParserRuleCall_2_0 = (RuleCall)cGreenAssignment_2.eContents().get(0);
 		private final Assignment cBlueAssignment_3 = (Assignment)cGroup.eContents().get(3);
 		private final RuleCall cBlueEIntParserRuleCall_3_0 = (RuleCall)cBlueAssignment_3.eContents().get(0);
-		private final Assignment cPropagateToChildrenAssignment_4 = (Assignment)cGroup.eContents().get(4);
-		private final Keyword cPropagateToChildrenExclamationMarkKeyword_4_0 = (Keyword)cPropagateToChildrenAssignment_4.eContents().get(0);
 		
 		//KColor:
-		//	{KColor} red=EInt green=EInt blue=EInt propagateToChildren?="!"?;
+		//	{KColor} red=EInt green=EInt blue=EInt;
 		public ParserRule getRule() { return rule; }
 
-		//{KColor} red=EInt green=EInt blue=EInt propagateToChildren?="!"?
+		//{KColor} red=EInt green=EInt blue=EInt
 		public Group getGroup() { return cGroup; }
 
 		//{KColor}
@@ -2984,12 +2982,6 @@ public class KRenderingGrammarAccess extends AbstractGrammarElementFinder {
 
 		//EInt
 		public RuleCall getBlueEIntParserRuleCall_3_0() { return cBlueEIntParserRuleCall_3_0; }
-
-		//propagateToChildren?="!"?
-		public Assignment getPropagateToChildrenAssignment_4() { return cPropagateToChildrenAssignment_4; }
-
-		//"!"
-		public Keyword getPropagateToChildrenExclamationMarkKeyword_4_0() { return cPropagateToChildrenExclamationMarkKeyword_4_0; }
 	}
 
 	public class KBackgroundElements extends AbstractParserRuleElementFinder {
@@ -4325,7 +4317,7 @@ public class KRenderingGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//KColor:
-	//	{KColor} red=EInt green=EInt blue=EInt propagateToChildren?="!"?;
+	//	{KColor} red=EInt green=EInt blue=EInt;
 	public KColorElements getKColorAccess() {
 		return (pKColor != null) ? pKColor : (pKColor = new KColorElements());
 	}

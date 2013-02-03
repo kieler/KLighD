@@ -16797,7 +16797,6 @@ rule__KColor__Group__3
     }
 :
 	rule__KColor__Group__3__Impl
-	rule__KColor__Group__4
 ;
 finally {
 	restoreStackSize(stackSize);
@@ -16818,36 +16817,6 @@ rule__KColor__Group__3__Impl
 finally {
 	restoreStackSize(stackSize);
 }
-
-
-rule__KColor__Group__4
-    @init {
-		int stackSize = keepStackSize();
-    }
-:
-	rule__KColor__Group__4__Impl
-;
-finally {
-	restoreStackSize(stackSize);
-}
-
-rule__KColor__Group__4__Impl
-    @init {
-		int stackSize = keepStackSize();
-    }
-:
-(
-{ before(grammarAccess.getKColorAccess().getPropagateToChildrenAssignment_4()); }
-(rule__KColor__PropagateToChildrenAssignment_4)?
-{ after(grammarAccess.getKColorAccess().getPropagateToChildrenAssignment_4()); }
-)
-
-;
-finally {
-	restoreStackSize(stackSize);
-}
-
-
 
 
 
@@ -22719,29 +22688,6 @@ rule__KColor__BlueAssignment_3
 (
 { before(grammarAccess.getKColorAccess().getBlueEIntParserRuleCall_3_0()); }
 	ruleEInt{ after(grammarAccess.getKColorAccess().getBlueEIntParserRuleCall_3_0()); }
-)
-
-;
-finally {
-	restoreStackSize(stackSize);
-}
-
-rule__KColor__PropagateToChildrenAssignment_4
-    @init {
-		int stackSize = keepStackSize();
-    }
-:
-(
-{ before(grammarAccess.getKColorAccess().getPropagateToChildrenExclamationMarkKeyword_4_0()); }
-(
-{ before(grammarAccess.getKColorAccess().getPropagateToChildrenExclamationMarkKeyword_4_0()); }
-
-	'!' 
-
-{ after(grammarAccess.getKColorAccess().getPropagateToChildrenExclamationMarkKeyword_4_0()); }
-)
-
-{ after(grammarAccess.getKColorAccess().getPropagateToChildrenExclamationMarkKeyword_4_0()); }
 )
 
 ;
