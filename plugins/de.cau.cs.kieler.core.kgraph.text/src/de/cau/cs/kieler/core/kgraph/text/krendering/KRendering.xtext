@@ -239,25 +239,25 @@ KColor returns KColor:
     
 KBackground returns KBackground:
     {KBackground}
-    'KBackground'
+    'background'
     '{'
         ('color' color=KColor)?
         ('targetColor' targetColor=KColor)?
         ('alpha' alpha=EInt)?
         ('targetAlpha' targetAlpha=EInt)?
         ('gradientAngle' gradientAngle=EFloat)?
-    '}';
+    '}' (propagateToChildren?='!')?;
 
 KForeground returns KForeground:
     {KForeground}
-   'KForeground'
+   'foreground'
     '{'
         ('color' color=KColor)?
         ('targetColor' targetColor=KColor)?
         ('alpha' alpha=EInt)?
         ('targetAlpha' targetAlpha=EInt)?
         ('gradientAngle' gradientAngle=EFloat)?
-    '}';
+    '}' (propagateToChildren?='!')?;
     
 KVisibility returns KInvisibility:
     {KInvisibility}

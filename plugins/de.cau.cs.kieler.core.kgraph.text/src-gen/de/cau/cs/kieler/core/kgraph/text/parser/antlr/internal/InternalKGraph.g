@@ -5186,9 +5186,9 @@ ruleKBackground returns [EObject current=null]
             grammarAccess.getKBackgroundAccess().getKBackgroundAction_0(),
             $current);
     }
-)	otherlv_1='KBackground' 
+)	otherlv_1='background' 
     {
-    	newLeafNode(otherlv_1, grammarAccess.getKBackgroundAccess().getKBackgroundKeyword_1());
+    	newLeafNode(otherlv_1, grammarAccess.getKBackgroundAccess().getBackgroundKeyword_1());
     }
 	otherlv_2='{' 
     {
@@ -5308,7 +5308,22 @@ ruleKBackground returns [EObject current=null]
     {
     	newLeafNode(otherlv_13, grammarAccess.getKBackgroundAccess().getRightCurlyBracketKeyword_8());
     }
+(
+(
+		lv_propagateToChildren_14_0=	'!' 
+    {
+        newLeafNode(lv_propagateToChildren_14_0, grammarAccess.getKBackgroundAccess().getPropagateToChildrenExclamationMarkKeyword_9_0());
+    }
+ 
+	    {
+	        if ($current==null) {
+	            $current = createModelElement(grammarAccess.getKBackgroundRule());
+	        }
+       		setWithLastConsumed($current, "propagateToChildren", true, "!");
+	    }
+
 )
+)?)
 ;
 
 
@@ -5335,9 +5350,9 @@ ruleKForeground returns [EObject current=null]
             grammarAccess.getKForegroundAccess().getKForegroundAction_0(),
             $current);
     }
-)	otherlv_1='KForeground' 
+)	otherlv_1='foreground' 
     {
-    	newLeafNode(otherlv_1, grammarAccess.getKForegroundAccess().getKForegroundKeyword_1());
+    	newLeafNode(otherlv_1, grammarAccess.getKForegroundAccess().getForegroundKeyword_1());
     }
 	otherlv_2='{' 
     {
@@ -5457,7 +5472,22 @@ ruleKForeground returns [EObject current=null]
     {
     	newLeafNode(otherlv_13, grammarAccess.getKForegroundAccess().getRightCurlyBracketKeyword_8());
     }
+(
+(
+		lv_propagateToChildren_14_0=	'!' 
+    {
+        newLeafNode(lv_propagateToChildren_14_0, grammarAccess.getKForegroundAccess().getPropagateToChildrenExclamationMarkKeyword_9_0());
+    }
+ 
+	    {
+	        if ($current==null) {
+	            $current = createModelElement(grammarAccess.getKForegroundRule());
+	        }
+       		setWithLastConsumed($current, "propagateToChildren", true, "!");
+	    }
+
 )
+)?)
 ;
 
 

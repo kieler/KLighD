@@ -1310,8 +1310,8 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//KBackground:
-	//	{KBackground} "KBackground" "{" ("color" color=KColor)? ("targetColor" targetColor=KColor)? ("alpha" alpha=EInt)?
-	//	("targetAlpha" targetAlpha=EInt)? ("gradientAngle" gradientAngle=EFloat)? "}";
+	//	{KBackground} "background" "{" ("color" color=KColor)? ("targetColor" targetColor=KColor)? ("alpha" alpha=EInt)?
+	//	("targetAlpha" targetAlpha=EInt)? ("gradientAngle" gradientAngle=EFloat)? "}" propagateToChildren?="!"?;
 	public KRenderingGrammarAccess.KBackgroundElements getKBackgroundAccess() {
 		return gaKRendering.getKBackgroundAccess();
 	}
@@ -1321,8 +1321,8 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//KForeground:
-	//	{KForeground} "KForeground" "{" ("color" color=KColor)? ("targetColor" targetColor=KColor)? ("alpha" alpha=EInt)?
-	//	("targetAlpha" targetAlpha=EInt)? ("gradientAngle" gradientAngle=EFloat)? "}";
+	//	{KForeground} "foreground" "{" ("color" color=KColor)? ("targetColor" targetColor=KColor)? ("alpha" alpha=EInt)?
+	//	("targetAlpha" targetAlpha=EInt)? ("gradientAngle" gradientAngle=EFloat)? "}" propagateToChildren?="!"?;
 	public KRenderingGrammarAccess.KForegroundElements getKForegroundAccess() {
 		return gaKRendering.getKForegroundAccess();
 	}

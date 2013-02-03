@@ -365,11 +365,13 @@ public class KRenderingParser extends AbstractContentAssistParser {
 					put(grammarAccess.getKBackgroundAccess().getAlphaAssignment_5_1(), "rule__KBackground__AlphaAssignment_5_1");
 					put(grammarAccess.getKBackgroundAccess().getTargetAlphaAssignment_6_1(), "rule__KBackground__TargetAlphaAssignment_6_1");
 					put(grammarAccess.getKBackgroundAccess().getGradientAngleAssignment_7_1(), "rule__KBackground__GradientAngleAssignment_7_1");
+					put(grammarAccess.getKBackgroundAccess().getPropagateToChildrenAssignment_9(), "rule__KBackground__PropagateToChildrenAssignment_9");
 					put(grammarAccess.getKForegroundAccess().getColorAssignment_3_1(), "rule__KForeground__ColorAssignment_3_1");
 					put(grammarAccess.getKForegroundAccess().getTargetColorAssignment_4_1(), "rule__KForeground__TargetColorAssignment_4_1");
 					put(grammarAccess.getKForegroundAccess().getAlphaAssignment_5_1(), "rule__KForeground__AlphaAssignment_5_1");
 					put(grammarAccess.getKForegroundAccess().getTargetAlphaAssignment_6_1(), "rule__KForeground__TargetAlphaAssignment_6_1");
 					put(grammarAccess.getKForegroundAccess().getGradientAngleAssignment_7_1(), "rule__KForeground__GradientAngleAssignment_7_1");
+					put(grammarAccess.getKForegroundAccess().getPropagateToChildrenAssignment_9(), "rule__KForeground__PropagateToChildrenAssignment_9");
 					put(grammarAccess.getKVisibilityAccess().getInvisibleAssignment_1(), "rule__KVisibility__InvisibleAssignment_1");
 					put(grammarAccess.getKVisibilityAccess().getFunctionIdAssignment_2_2(), "rule__KVisibility__FunctionIdAssignment_2_2");
 					put(grammarAccess.getKLineWidthAccess().getLineWidthAssignment_1(), "rule__KLineWidth__LineWidthAssignment_1");

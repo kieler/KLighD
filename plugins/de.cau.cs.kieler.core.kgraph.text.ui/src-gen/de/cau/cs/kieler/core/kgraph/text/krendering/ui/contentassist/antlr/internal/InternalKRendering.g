@@ -16907,11 +16907,11 @@ rule__KBackground__Group__1__Impl
     }
 :
 (
-{ before(grammarAccess.getKBackgroundAccess().getKBackgroundKeyword_1()); }
+{ before(grammarAccess.getKBackgroundAccess().getBackgroundKeyword_1()); }
 
-	'KBackground' 
+	'background' 
 
-{ after(grammarAccess.getKBackgroundAccess().getKBackgroundKeyword_1()); }
+{ after(grammarAccess.getKBackgroundAccess().getBackgroundKeyword_1()); }
 )
 
 ;
@@ -17102,6 +17102,7 @@ rule__KBackground__Group__8
     }
 :
 	rule__KBackground__Group__8__Impl
+	rule__KBackground__Group__9
 ;
 finally {
 	restoreStackSize(stackSize);
@@ -17124,6 +17125,36 @@ rule__KBackground__Group__8__Impl
 finally {
 	restoreStackSize(stackSize);
 }
+
+
+rule__KBackground__Group__9
+    @init {
+		int stackSize = keepStackSize();
+    }
+:
+	rule__KBackground__Group__9__Impl
+;
+finally {
+	restoreStackSize(stackSize);
+}
+
+rule__KBackground__Group__9__Impl
+    @init {
+		int stackSize = keepStackSize();
+    }
+:
+(
+{ before(grammarAccess.getKBackgroundAccess().getPropagateToChildrenAssignment_9()); }
+(rule__KBackground__PropagateToChildrenAssignment_9)?
+{ after(grammarAccess.getKBackgroundAccess().getPropagateToChildrenAssignment_9()); }
+)
+
+;
+finally {
+	restoreStackSize(stackSize);
+}
+
+
 
 
 
@@ -17508,11 +17539,11 @@ rule__KForeground__Group__1__Impl
     }
 :
 (
-{ before(grammarAccess.getKForegroundAccess().getKForegroundKeyword_1()); }
+{ before(grammarAccess.getKForegroundAccess().getForegroundKeyword_1()); }
 
-	'KForeground' 
+	'foreground' 
 
-{ after(grammarAccess.getKForegroundAccess().getKForegroundKeyword_1()); }
+{ after(grammarAccess.getKForegroundAccess().getForegroundKeyword_1()); }
 )
 
 ;
@@ -17703,6 +17734,7 @@ rule__KForeground__Group__8
     }
 :
 	rule__KForeground__Group__8__Impl
+	rule__KForeground__Group__9
 ;
 finally {
 	restoreStackSize(stackSize);
@@ -17725,6 +17757,36 @@ rule__KForeground__Group__8__Impl
 finally {
 	restoreStackSize(stackSize);
 }
+
+
+rule__KForeground__Group__9
+    @init {
+		int stackSize = keepStackSize();
+    }
+:
+	rule__KForeground__Group__9__Impl
+;
+finally {
+	restoreStackSize(stackSize);
+}
+
+rule__KForeground__Group__9__Impl
+    @init {
+		int stackSize = keepStackSize();
+    }
+:
+(
+{ before(grammarAccess.getKForegroundAccess().getPropagateToChildrenAssignment_9()); }
+(rule__KForeground__PropagateToChildrenAssignment_9)?
+{ after(grammarAccess.getKForegroundAccess().getPropagateToChildrenAssignment_9()); }
+)
+
+;
+finally {
+	restoreStackSize(stackSize);
+}
+
+
 
 
 
@@ -22762,6 +22824,29 @@ finally {
 	restoreStackSize(stackSize);
 }
 
+rule__KBackground__PropagateToChildrenAssignment_9
+    @init {
+		int stackSize = keepStackSize();
+    }
+:
+(
+{ before(grammarAccess.getKBackgroundAccess().getPropagateToChildrenExclamationMarkKeyword_9_0()); }
+(
+{ before(grammarAccess.getKBackgroundAccess().getPropagateToChildrenExclamationMarkKeyword_9_0()); }
+
+	'!' 
+
+{ after(grammarAccess.getKBackgroundAccess().getPropagateToChildrenExclamationMarkKeyword_9_0()); }
+)
+
+{ after(grammarAccess.getKBackgroundAccess().getPropagateToChildrenExclamationMarkKeyword_9_0()); }
+)
+
+;
+finally {
+	restoreStackSize(stackSize);
+}
+
 rule__KForeground__ColorAssignment_3_1
     @init {
 		int stackSize = keepStackSize();
@@ -22830,6 +22915,29 @@ rule__KForeground__GradientAngleAssignment_7_1
 (
 { before(grammarAccess.getKForegroundAccess().getGradientAngleEFloatParserRuleCall_7_1_0()); }
 	ruleEFloat{ after(grammarAccess.getKForegroundAccess().getGradientAngleEFloatParserRuleCall_7_1_0()); }
+)
+
+;
+finally {
+	restoreStackSize(stackSize);
+}
+
+rule__KForeground__PropagateToChildrenAssignment_9
+    @init {
+		int stackSize = keepStackSize();
+    }
+:
+(
+{ before(grammarAccess.getKForegroundAccess().getPropagateToChildrenExclamationMarkKeyword_9_0()); }
+(
+{ before(grammarAccess.getKForegroundAccess().getPropagateToChildrenExclamationMarkKeyword_9_0()); }
+
+	'!' 
+
+{ after(grammarAccess.getKForegroundAccess().getPropagateToChildrenExclamationMarkKeyword_9_0()); }
+)
+
+{ after(grammarAccess.getKForegroundAccess().getPropagateToChildrenExclamationMarkKeyword_9_0()); }
 )
 
 ;

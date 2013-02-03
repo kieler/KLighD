@@ -19,7 +19,9 @@ import org.eclipse.emf.ecore.EStructuralFeature;
 import de.cau.cs.kieler.core.kgraph.KGraphPackage;
 import de.cau.cs.kieler.core.kgraph.text.krendering.KRenderingTransientValueService;
 import de.cau.cs.kieler.core.krendering.KRenderingPackage;
+import de.cau.cs.kieler.kiml.klayoutdata.KInsets;
 import de.cau.cs.kieler.kiml.klayoutdata.KLayoutDataPackage;
+import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout;
 
 /**
  * A KGraph specific {@link org.eclipse.xtext.serializer.sequencer.ITransientValueService}.
@@ -59,13 +61,19 @@ public class KGraphTransientValueService extends KRenderingTransientValueService
 
     @Override
     public boolean isValueInListTransient(final EObject semanticObject, final int index,
-            final EStructuralFeature feature) {
+            final EStructuralFeature feature) {        
         return super.isValueInListTransient(semanticObject, index, feature);
     }
 
     @Override
     public ValueTransient isValueTransient(final EObject semanticObject,
             final EStructuralFeature feature) {
+        // suppress the serialization of empty KInsets objects
+        if (feature == KLayoutDataPackage.eINSTANCE.getKShapeLayout_Insets()) {
+            KInsets insets = ((KShapeLayout) semanticObject).getInsets();
+            return insets.getLeft() == 0 && insets.getRight() == 0 && insets.getTop() == 0
+                    && insets.getBottom() == 0 ? ValueTransient.YES : ValueTransient.NO;
+        }
         return super.isValueTransient(semanticObject, feature);
     }
 }

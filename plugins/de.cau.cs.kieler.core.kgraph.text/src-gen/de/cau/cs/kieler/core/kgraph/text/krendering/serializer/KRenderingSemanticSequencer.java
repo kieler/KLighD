@@ -404,7 +404,14 @@ public class KRenderingSemanticSequencer extends KLayoutDataSemanticSequencer {
 	
 	/**
 	 * Constraint:
-	 *     (color=KColor? targetColor=KColor? alpha=EInt? targetAlpha=EInt? gradientAngle=EFloat?)
+	 *     (
+	 *         color=KColor? 
+	 *         targetColor=KColor? 
+	 *         alpha=EInt? 
+	 *         targetAlpha=EInt? 
+	 *         gradientAngle=EFloat? 
+	 *         propagateToChildren?='!'?
+	 *     )
 	 */
 	protected void sequence_KBackground(EObject context, KBackground semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
@@ -530,7 +537,14 @@ public class KRenderingSemanticSequencer extends KLayoutDataSemanticSequencer {
 	
 	/**
 	 * Constraint:
-	 *     (color=KColor? targetColor=KColor? alpha=EInt? targetAlpha=EInt? gradientAngle=EFloat?)
+	 *     (
+	 *         color=KColor? 
+	 *         targetColor=KColor? 
+	 *         alpha=EInt? 
+	 *         targetAlpha=EInt? 
+	 *         gradientAngle=EFloat? 
+	 *         propagateToChildren?='!'?
+	 *     )
 	 */
 	protected void sequence_KForeground(EObject context, KForeground semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
