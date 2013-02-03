@@ -5,58 +5,61 @@ KNode {
 		RoundedRectangle 30.0 30.0 {
 			children:
 			Polyline {
-				placementData:
-				PolylinePlacementData {
-					points
-					left 0.0 0.0 / top 20.0 0.0,
-					right 0.0 0.0 / top 20.0 0.0
-				}
+				points:
+				left 0.0 0.0 / top 20.0 0.0,
+				right 0.0 0.0 / top 20.0 0.0
 			}
 			Rectangle {
+				styles:
+				foreground {
+					color 0 255 0
+				}
+				!
 				placementData:
-				DirectPlacementData {
-					topLeft
-					left 0.0 0.1 / top 20.0 0.1,
-					bottomRight
-					right 0.0 0.1 / bottom 0.0 0.1
+				AreaPlacementData {
+					topLeft left 0.0 0.1 / top 10.0 0.0,
+					bottomRight right 0.0 0.1 / bottom 0.0 0.1
 				}
 				children:
-				Text "Hallo Du\n daf!!" {
+				Text "Hallo Du\n da !!" {
 					styles:
 					font "Lucida Handwriting"
 					fontSize 10
 					bold
 					mapProperties:
-					"klighd.testing.height" = "48.0"
-					"klighd.testing.width" = "72.0"
+					"klighd.testing.height" = "28.0"
+					"klighd.testing.width" = "52.0"
 				}
 			}
 			RoundedRectangle 20.0 20.0 {
-				styles
-				backgroundVisibility false
-				placementData DirectPlacementData {
-					topLeft
-					left 0.0 0.1 / top 0.0 0.3,
-					bottomRight
-					right 0.0 0.2 / bottom 0.0 0.2
+				styles:
+				foreground {
+					color 255 0 0
 				}
-				children Text "Hallo Du da!" {
+				! background {
+					color 0 0 0 alpha 0
+				}
+				placementData:
+				AreaPlacementData {
+					topLeft left 0.0 0.1 / top 0.0 0.5,
+					bottomRight right 0.0 0.2 / bottom 0.0 0.2
+				}
+				children:
+				Text "Hallo Du da!" {
 					styles:
 					font "Lucida Grande"
 					fontSize 20
 					bold
 					mapProperties:
-					"klighd.testing.height" = "43.0"
-					"klighd.testing.width" = "147.0"
+					"klighd.testing.height" = "23.0"
+					"klighd.testing.width" = "127.0"
 				}
 			}
 		}
 		KShapeLayout {
-			insets KInsets {
-			}
 			mapProperties:
-			"klighd.testing.expected.height" = "86.0"
-			"klighd.testing.expected.width" = "210.0"
+			"klighd.testing.expected.height" = "76.666664"
+			"klighd.testing.expected.width" = "181.42857"
 		}
 	}
 }

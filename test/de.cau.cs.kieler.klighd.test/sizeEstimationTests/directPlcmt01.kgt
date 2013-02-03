@@ -1,20 +1,24 @@
+
 KNode {
-	children:KNode {
-	data:
-	Rectangle {
-		children:
-		Text Helloadf {
+	children:
+	KNode {
+		data:
+		Rectangle {
+			styles:
+			foreground {
+				color 255 0 0
+			}
+			children:
+			Text Hello {
+				mapProperties:
+				"klighd.testing.height" = "11.0"
+				"klighd.testing.width" = "23.0"
+			}
+		}
+		KShapeLayout {
 			mapProperties:
-			"klighd.testing.height" = "31.0"
-			"klighd.testing.width" = "58.0"
+			"klighd.testing.expected.height" = "11.0"
+			"klighd.testing.expected.width" = "23.0"
 		}
 	}
-	KShapeLayout {
-		insets KInsets {
-		}
-		mapProperties:
-		"klighd.testing.expected.height" = "31.0"
-		"klighd.testing.expected.width" = "58.0"
-	}
-}
 }
