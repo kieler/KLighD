@@ -299,7 +299,6 @@ public class KRenderingSwitch<T> extends Switch<T> {
             case KRenderingPackage.KCOLOR: {
                 KColor kColor = (KColor)theEObject;
                 T result = caseKColor(kColor);
-                if (result == null) result = caseKStyle(kColor);
                 if (result == null) result = defaultCase(theEObject);
                 return result;
             }

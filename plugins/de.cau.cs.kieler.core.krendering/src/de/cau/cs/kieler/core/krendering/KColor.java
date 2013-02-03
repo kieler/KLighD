@@ -13,6 +13,8 @@
  */
 package de.cau.cs.kieler.core.krendering;
 
+import org.eclipse.emf.ecore.EObject;
+
 
 /**
  * <!-- begin-user-doc -->
@@ -36,7 +38,7 @@ package de.cau.cs.kieler.core.krendering;
  * @model
  * @generated
  */
-public interface KColor extends KStyle {
+public interface KColor extends EObject {
     /**
      * Returns the value of the '<em><b>Red</b></em>' attribute.
      * <!-- begin-user-doc -->

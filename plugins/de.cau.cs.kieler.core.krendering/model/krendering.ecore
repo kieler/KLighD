@@ -343,7 +343,7 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="figureObject" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"
         transient="true"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="KColor" eSuperTypes="#//KStyle">
+  <eClassifiers xsi:type="ecore:EClass" name="KColor">
     <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
       <details key="documentation" value="Specifies an RGB color. "/>
     </eAnnotations>

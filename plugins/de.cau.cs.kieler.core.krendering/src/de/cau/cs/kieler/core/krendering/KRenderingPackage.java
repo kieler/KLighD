@@ -1879,40 +1879,13 @@ public interface KRenderingPackage extends EPackage {
     int KCOLOR = 22;
 
     /**
-     * The feature id for the '<em><b>Rendering</b></em>' reference.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int KCOLOR__RENDERING = KSTYLE__RENDERING;
-
-    /**
-     * The feature id for the '<em><b>Propagate To Children</b></em>' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int KCOLOR__PROPAGATE_TO_CHILDREN = KSTYLE__PROPAGATE_TO_CHILDREN;
-
-    /**
-     * The feature id for the '<em><b>Function Id</b></em>' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int KCOLOR__FUNCTION_ID = KSTYLE__FUNCTION_ID;
-
-    /**
      * The feature id for the '<em><b>Red</b></em>' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int KCOLOR__RED = KSTYLE_FEATURE_COUNT + 0;
+    int KCOLOR__RED = 0;
 
     /**
      * The feature id for the '<em><b>Green</b></em>' attribute.
@@ -1921,7 +1894,7 @@ public interface KRenderingPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int KCOLOR__GREEN = KSTYLE_FEATURE_COUNT + 1;
+    int KCOLOR__GREEN = 1;
 
     /**
      * The feature id for the '<em><b>Blue</b></em>' attribute.
@@ -1930,7 +1903,7 @@ public interface KRenderingPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int KCOLOR__BLUE = KSTYLE_FEATURE_COUNT + 2;
+    int KCOLOR__BLUE = 2;
 
     /**
      * The number of structural features of the '<em>KColor</em>' class.
@@ -1939,7 +1912,7 @@ public interface KRenderingPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int KCOLOR_FEATURE_COUNT = KSTYLE_FEATURE_COUNT + 3;
+    int KCOLOR_FEATURE_COUNT = 3;
 
     /**
      * The meta object id for the '{@link de.cau.cs.kieler.core.krendering.impl.KLineWidthImpl <em>KLine Width</em>}' class.

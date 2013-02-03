@@ -84,7 +84,6 @@ import org.eclipse.emf.ecore.EEnum;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
 
-import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.impl.EPackageImpl;
 
 /**
@@ -561,7 +560,6 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
         isInited = true;
 
         // Initialize simple dependencies
-        EcorePackage.eINSTANCE.eClass();
         KGraphPackage.eINSTANCE.eClass();
 
         // Create package meta-data objects
@@ -2104,7 +2102,6 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
         kGridPlacementDataEClass.getESuperTypes().add(this.getKAreaPlacementData());
         kAreaPlacementDataEClass.getESuperTypes().add(this.getKPlacementData());
         kCustomRenderingEClass.getESuperTypes().add(this.getKContainerRendering());
-        kColorEClass.getESuperTypes().add(this.getKStyle());
         kLineWidthEClass.getESuperTypes().add(this.getKStyle());
         kLineStyleEClass.getESuperTypes().add(this.getKStyle());
         kVerticalAlignmentEClass.getESuperTypes().add(this.getKStyle());
