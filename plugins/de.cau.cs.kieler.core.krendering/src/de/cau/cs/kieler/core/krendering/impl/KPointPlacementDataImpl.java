@@ -36,8 +36,10 @@ import org.eclipse.emf.ecore.impl.EObjectImpl;
  * The following features are implemented:
  * <ul>
  *   <li>{@link de.cau.cs.kieler.core.krendering.impl.KPointPlacementDataImpl#getReferencePoint <em>Reference Point</em>}</li>
- *   <li>{@link de.cau.cs.kieler.core.krendering.impl.KPointPlacementDataImpl#getVerticalAlignment <em>Vertical Alignment</em>}</li>
  *   <li>{@link de.cau.cs.kieler.core.krendering.impl.KPointPlacementDataImpl#getHorizontalAlignment <em>Horizontal Alignment</em>}</li>
+ *   <li>{@link de.cau.cs.kieler.core.krendering.impl.KPointPlacementDataImpl#getVerticalAlignment <em>Vertical Alignment</em>}</li>
+ *   <li>{@link de.cau.cs.kieler.core.krendering.impl.KPointPlacementDataImpl#getHorizontalMargin <em>Horizontal Margin</em>}</li>
+ *   <li>{@link de.cau.cs.kieler.core.krendering.impl.KPointPlacementDataImpl#getVerticalMargin <em>Vertical Margin</em>}</li>
  * </ul>
  * </p>
  *
@@ -53,6 +55,26 @@ public class KPointPlacementDataImpl extends EObjectImpl implements KPointPlacem
      * @ordered
      */
     protected KPosition referencePoint;
+
+    /**
+     * The default value of the '{@link #getHorizontalAlignment() <em>Horizontal Alignment</em>}' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see #getHorizontalAlignment()
+     * @generated
+     * @ordered
+     */
+    protected static final HorizontalAlignment HORIZONTAL_ALIGNMENT_EDEFAULT = HorizontalAlignment.LEFT;
+
+    /**
+     * The cached value of the '{@link #getHorizontalAlignment() <em>Horizontal Alignment</em>}' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see #getHorizontalAlignment()
+     * @generated
+     * @ordered
+     */
+    protected HorizontalAlignment horizontalAlignment = HORIZONTAL_ALIGNMENT_EDEFAULT;
 
     /**
      * The default value of the '{@link #getVerticalAlignment() <em>Vertical Alignment</em>}' attribute.
@@ -75,24 +97,44 @@ public class KPointPlacementDataImpl extends EObjectImpl implements KPointPlacem
     protected VerticalAlignment verticalAlignment = VERTICAL_ALIGNMENT_EDEFAULT;
 
     /**
-     * The default value of the '{@link #getHorizontalAlignment() <em>Horizontal Alignment</em>}' attribute.
+     * The default value of the '{@link #getHorizontalMargin() <em>Horizontal Margin</em>}' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see #getHorizontalAlignment()
+     * @see #getHorizontalMargin()
      * @generated
      * @ordered
      */
-    protected static final HorizontalAlignment HORIZONTAL_ALIGNMENT_EDEFAULT = HorizontalAlignment.LEFT;
+    protected static final float HORIZONTAL_MARGIN_EDEFAULT = 0.0F;
 
     /**
-     * The cached value of the '{@link #getHorizontalAlignment() <em>Horizontal Alignment</em>}' attribute.
+     * The cached value of the '{@link #getHorizontalMargin() <em>Horizontal Margin</em>}' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see #getHorizontalAlignment()
+     * @see #getHorizontalMargin()
      * @generated
      * @ordered
      */
-    protected HorizontalAlignment horizontalAlignment = HORIZONTAL_ALIGNMENT_EDEFAULT;
+    protected float horizontalMargin = HORIZONTAL_MARGIN_EDEFAULT;
+
+    /**
+     * The default value of the '{@link #getVerticalMargin() <em>Vertical Margin</em>}' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see #getVerticalMargin()
+     * @generated
+     * @ordered
+     */
+    protected static final float VERTICAL_MARGIN_EDEFAULT = 0.0F;
+
+    /**
+     * The cached value of the '{@link #getVerticalMargin() <em>Vertical Margin</em>}' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see #getVerticalMargin()
+     * @generated
+     * @ordered
+     */
+    protected float verticalMargin = VERTICAL_MARGIN_EDEFAULT;
 
     /**
      * <!-- begin-user-doc -->
@@ -182,6 +224,48 @@ public class KPointPlacementDataImpl extends EObjectImpl implements KPointPlacem
      * <!-- end-user-doc -->
      * @generated
      */
+    public float getHorizontalMargin() {
+        return horizontalMargin;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public void setHorizontalMargin(float newHorizontalMargin) {
+        float oldHorizontalMargin = horizontalMargin;
+        horizontalMargin = newHorizontalMargin;
+        if (eNotificationRequired())
+            eNotify(new ENotificationImpl(this, Notification.SET, KRenderingPackage.KPOINT_PLACEMENT_DATA__HORIZONTAL_MARGIN, oldHorizontalMargin, horizontalMargin));
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public float getVerticalMargin() {
+        return verticalMargin;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public void setVerticalMargin(float newVerticalMargin) {
+        float oldVerticalMargin = verticalMargin;
+        verticalMargin = newVerticalMargin;
+        if (eNotificationRequired())
+            eNotify(new ENotificationImpl(this, Notification.SET, KRenderingPackage.KPOINT_PLACEMENT_DATA__VERTICAL_MARGIN, oldVerticalMargin, verticalMargin));
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
     public HorizontalAlignment getHorizontalAlignment() {
         return horizontalAlignment;
     }
@@ -222,10 +306,14 @@ public class KPointPlacementDataImpl extends EObjectImpl implements KPointPlacem
         switch (featureID) {
             case KRenderingPackage.KPOINT_PLACEMENT_DATA__REFERENCE_POINT:
                 return getReferencePoint();
-            case KRenderingPackage.KPOINT_PLACEMENT_DATA__VERTICAL_ALIGNMENT:
-                return getVerticalAlignment();
             case KRenderingPackage.KPOINT_PLACEMENT_DATA__HORIZONTAL_ALIGNMENT:
                 return getHorizontalAlignment();
+            case KRenderingPackage.KPOINT_PLACEMENT_DATA__VERTICAL_ALIGNMENT:
+                return getVerticalAlignment();
+            case KRenderingPackage.KPOINT_PLACEMENT_DATA__HORIZONTAL_MARGIN:
+                return getHorizontalMargin();
+            case KRenderingPackage.KPOINT_PLACEMENT_DATA__VERTICAL_MARGIN:
+                return getVerticalMargin();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -241,11 +329,17 @@ public class KPointPlacementDataImpl extends EObjectImpl implements KPointPlacem
             case KRenderingPackage.KPOINT_PLACEMENT_DATA__REFERENCE_POINT:
                 setReferencePoint((KPosition)newValue);
                 return;
+            case KRenderingPackage.KPOINT_PLACEMENT_DATA__HORIZONTAL_ALIGNMENT:
+                setHorizontalAlignment((HorizontalAlignment)newValue);
+                return;
             case KRenderingPackage.KPOINT_PLACEMENT_DATA__VERTICAL_ALIGNMENT:
                 setVerticalAlignment((VerticalAlignment)newValue);
                 return;
-            case KRenderingPackage.KPOINT_PLACEMENT_DATA__HORIZONTAL_ALIGNMENT:
-                setHorizontalAlignment((HorizontalAlignment)newValue);
+            case KRenderingPackage.KPOINT_PLACEMENT_DATA__HORIZONTAL_MARGIN:
+                setHorizontalMargin((Float)newValue);
+                return;
+            case KRenderingPackage.KPOINT_PLACEMENT_DATA__VERTICAL_MARGIN:
+                setVerticalMargin((Float)newValue);
                 return;
         }
         super.eSet(featureID, newValue);
@@ -262,11 +356,17 @@ public class KPointPlacementDataImpl extends EObjectImpl implements KPointPlacem
             case KRenderingPackage.KPOINT_PLACEMENT_DATA__REFERENCE_POINT:
                 setReferencePoint((KPosition)null);
                 return;
+            case KRenderingPackage.KPOINT_PLACEMENT_DATA__HORIZONTAL_ALIGNMENT:
+                setHorizontalAlignment(HORIZONTAL_ALIGNMENT_EDEFAULT);
+                return;
             case KRenderingPackage.KPOINT_PLACEMENT_DATA__VERTICAL_ALIGNMENT:
                 setVerticalAlignment(VERTICAL_ALIGNMENT_EDEFAULT);
                 return;
-            case KRenderingPackage.KPOINT_PLACEMENT_DATA__HORIZONTAL_ALIGNMENT:
-                setHorizontalAlignment(HORIZONTAL_ALIGNMENT_EDEFAULT);
+            case KRenderingPackage.KPOINT_PLACEMENT_DATA__HORIZONTAL_MARGIN:
+                setHorizontalMargin(HORIZONTAL_MARGIN_EDEFAULT);
+                return;
+            case KRenderingPackage.KPOINT_PLACEMENT_DATA__VERTICAL_MARGIN:
+                setVerticalMargin(VERTICAL_MARGIN_EDEFAULT);
                 return;
         }
         super.eUnset(featureID);
@@ -282,10 +382,14 @@ public class KPointPlacementDataImpl extends EObjectImpl implements KPointPlacem
         switch (featureID) {
             case KRenderingPackage.KPOINT_PLACEMENT_DATA__REFERENCE_POINT:
                 return referencePoint != null;
-            case KRenderingPackage.KPOINT_PLACEMENT_DATA__VERTICAL_ALIGNMENT:
-                return verticalAlignment != VERTICAL_ALIGNMENT_EDEFAULT;
             case KRenderingPackage.KPOINT_PLACEMENT_DATA__HORIZONTAL_ALIGNMENT:
                 return horizontalAlignment != HORIZONTAL_ALIGNMENT_EDEFAULT;
+            case KRenderingPackage.KPOINT_PLACEMENT_DATA__VERTICAL_ALIGNMENT:
+                return verticalAlignment != VERTICAL_ALIGNMENT_EDEFAULT;
+            case KRenderingPackage.KPOINT_PLACEMENT_DATA__HORIZONTAL_MARGIN:
+                return horizontalMargin != HORIZONTAL_MARGIN_EDEFAULT;
+            case KRenderingPackage.KPOINT_PLACEMENT_DATA__VERTICAL_MARGIN:
+                return verticalMargin != VERTICAL_MARGIN_EDEFAULT;
         }
         return super.eIsSet(featureID);
     }
@@ -300,10 +404,14 @@ public class KPointPlacementDataImpl extends EObjectImpl implements KPointPlacem
         if (eIsProxy()) return super.toString();
 
         StringBuffer result = new StringBuffer(super.toString());
-        result.append(" (verticalAlignment: ");
-        result.append(verticalAlignment);
-        result.append(", horizontalAlignment: ");
+        result.append(" (horizontalAlignment: ");
         result.append(horizontalAlignment);
+        result.append(", verticalAlignment: ");
+        result.append(verticalAlignment);
+        result.append(", horizontalMargin: ");
+        result.append(horizontalMargin);
+        result.append(", verticalMargin: ");
+        result.append(verticalMargin);
         result.append(')');
         return result.toString();
     }

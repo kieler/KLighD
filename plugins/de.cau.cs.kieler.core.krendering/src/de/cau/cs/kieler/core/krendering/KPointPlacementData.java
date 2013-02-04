@@ -27,8 +27,10 @@ package de.cau.cs.kieler.core.krendering;
  * The following features are supported:
  * <ul>
  *   <li>{@link de.cau.cs.kieler.core.krendering.KPointPlacementData#getReferencePoint <em>Reference Point</em>}</li>
- *   <li>{@link de.cau.cs.kieler.core.krendering.KPointPlacementData#getVerticalAlignment <em>Vertical Alignment</em>}</li>
  *   <li>{@link de.cau.cs.kieler.core.krendering.KPointPlacementData#getHorizontalAlignment <em>Horizontal Alignment</em>}</li>
+ *   <li>{@link de.cau.cs.kieler.core.krendering.KPointPlacementData#getVerticalAlignment <em>Vertical Alignment</em>}</li>
+ *   <li>{@link de.cau.cs.kieler.core.krendering.KPointPlacementData#getHorizontalMargin <em>Horizontal Margin</em>}</li>
+ *   <li>{@link de.cau.cs.kieler.core.krendering.KPointPlacementData#getVerticalMargin <em>Vertical Margin</em>}</li>
  * </ul>
  * </p>
  *
@@ -68,7 +70,7 @@ public interface KPointPlacementData extends KPlacementData {
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * <!-- begin-model-doc -->
-     * the position the point has on the vertical axis of the element to be placed
+     * Vertical alignment of the child w.r.t. to the reference point that is based on the parent's bounds.
      * <!-- end-model-doc -->
      * @return the value of the '<em>Vertical Alignment</em>' attribute.
      * @see de.cau.cs.kieler.core.krendering.VerticalAlignment
@@ -91,12 +93,62 @@ public interface KPointPlacementData extends KPlacementData {
     void setVerticalAlignment(VerticalAlignment value);
 
     /**
+     * Returns the value of the '<em><b>Horizontal Margin</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * <!-- begin-model-doc -->
+     * Some horizontal margin that will be added on the right (left) for a LEFT (RIGHT) aligned child and to both left and right sides in case of a centrically aligned child.
+     * <!-- end-model-doc -->
+     * @return the value of the '<em>Horizontal Margin</em>' attribute.
+     * @see #setHorizontalMargin(float)
+     * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKPointPlacementData_HorizontalMargin()
+     * @model
+     * @generated
+     */
+    float getHorizontalMargin();
+
+    /**
+     * Sets the value of the '{@link de.cau.cs.kieler.core.krendering.KPointPlacementData#getHorizontalMargin <em>Horizontal Margin</em>}' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @param value the new value of the '<em>Horizontal Margin</em>' attribute.
+     * @see #getHorizontalMargin()
+     * @generated
+     */
+    void setHorizontalMargin(float value);
+
+    /**
+     * Returns the value of the '<em><b>Vertical Margin</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * <!-- begin-model-doc -->
+     * Some vertical margin that will be added on the bottom (top) for a TOP (BOTTOM) aligned child and to both top and bottom sides in case of a centrically aligned child.
+     * <!-- end-model-doc -->
+     * @return the value of the '<em>Vertical Margin</em>' attribute.
+     * @see #setVerticalMargin(float)
+     * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKPointPlacementData_VerticalMargin()
+     * @model
+     * @generated
+     */
+    float getVerticalMargin();
+
+    /**
+     * Sets the value of the '{@link de.cau.cs.kieler.core.krendering.KPointPlacementData#getVerticalMargin <em>Vertical Margin</em>}' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @param value the new value of the '<em>Vertical Margin</em>' attribute.
+     * @see #getVerticalMargin()
+     * @generated
+     */
+    void setVerticalMargin(float value);
+
+    /**
      * Returns the value of the '<em><b>Horizontal Alignment</b></em>' attribute.
      * The literals are from the enumeration {@link de.cau.cs.kieler.core.krendering.HorizontalAlignment}.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * <!-- begin-model-doc -->
-     * the position the point has on the horizontal axis of the element to be placed
+     * Horizontal alignment of the child w.r.t. to the reference point that is based on the parent's bounds.
      * <!-- end-model-doc -->
      * @return the value of the '<em>Horizontal Alignment</em>' attribute.
      * @see de.cau.cs.kieler.core.krendering.HorizontalAlignment

@@ -3252,22 +3252,40 @@ public interface KRenderingPackage extends EPackage {
     int KPOINT_PLACEMENT_DATA__REFERENCE_POINT = KPLACEMENT_DATA_FEATURE_COUNT + 0;
 
     /**
-     * The feature id for the '<em><b>Vertical Alignment</b></em>' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int KPOINT_PLACEMENT_DATA__VERTICAL_ALIGNMENT = KPLACEMENT_DATA_FEATURE_COUNT + 1;
-
-    /**
      * The feature id for the '<em><b>Horizontal Alignment</b></em>' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int KPOINT_PLACEMENT_DATA__HORIZONTAL_ALIGNMENT = KPLACEMENT_DATA_FEATURE_COUNT + 2;
+    int KPOINT_PLACEMENT_DATA__HORIZONTAL_ALIGNMENT = KPLACEMENT_DATA_FEATURE_COUNT + 1;
+
+    /**
+     * The feature id for the '<em><b>Vertical Alignment</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KPOINT_PLACEMENT_DATA__VERTICAL_ALIGNMENT = KPLACEMENT_DATA_FEATURE_COUNT + 2;
+
+    /**
+     * The feature id for the '<em><b>Horizontal Margin</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KPOINT_PLACEMENT_DATA__HORIZONTAL_MARGIN = KPLACEMENT_DATA_FEATURE_COUNT + 3;
+
+    /**
+     * The feature id for the '<em><b>Vertical Margin</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KPOINT_PLACEMENT_DATA__VERTICAL_MARGIN = KPLACEMENT_DATA_FEATURE_COUNT + 4;
 
     /**
      * The number of structural features of the '<em>KPoint Placement Data</em>' class.
@@ -3276,7 +3294,7 @@ public interface KRenderingPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int KPOINT_PLACEMENT_DATA_FEATURE_COUNT = KPLACEMENT_DATA_FEATURE_COUNT + 3;
+    int KPOINT_PLACEMENT_DATA_FEATURE_COUNT = KPLACEMENT_DATA_FEATURE_COUNT + 5;
 
     /**
      * The meta object id for the '{@link de.cau.cs.kieler.core.krendering.impl.KSelectActionImpl <em>KSelect Action</em>}' class.
@@ -4958,6 +4976,28 @@ public interface KRenderingPackage extends EPackage {
     EAttribute getKPointPlacementData_VerticalAlignment();
 
     /**
+     * Returns the meta object for the attribute '{@link de.cau.cs.kieler.core.krendering.KPointPlacementData#getHorizontalMargin <em>Horizontal Margin</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the attribute '<em>Horizontal Margin</em>'.
+     * @see de.cau.cs.kieler.core.krendering.KPointPlacementData#getHorizontalMargin()
+     * @see #getKPointPlacementData()
+     * @generated
+     */
+    EAttribute getKPointPlacementData_HorizontalMargin();
+
+    /**
+     * Returns the meta object for the attribute '{@link de.cau.cs.kieler.core.krendering.KPointPlacementData#getVerticalMargin <em>Vertical Margin</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the attribute '<em>Vertical Margin</em>'.
+     * @see de.cau.cs.kieler.core.krendering.KPointPlacementData#getVerticalMargin()
+     * @see #getKPointPlacementData()
+     * @generated
+     */
+    EAttribute getKPointPlacementData_VerticalMargin();
+
+    /**
      * Returns the meta object for the attribute '{@link de.cau.cs.kieler.core.krendering.KPointPlacementData#getHorizontalAlignment <em>Horizontal Alignment</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -6237,6 +6277,22 @@ public interface KRenderingPackage extends EPackage {
          * @generated
          */
         EAttribute KPOINT_PLACEMENT_DATA__VERTICAL_ALIGNMENT = eINSTANCE.getKPointPlacementData_VerticalAlignment();
+
+        /**
+         * The meta object literal for the '<em><b>Horizontal Margin</b></em>' attribute feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EAttribute KPOINT_PLACEMENT_DATA__HORIZONTAL_MARGIN = eINSTANCE.getKPointPlacementData_HorizontalMargin();
+
+        /**
+         * The meta object literal for the '<em><b>Vertical Margin</b></em>' attribute feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EAttribute KPOINT_PLACEMENT_DATA__VERTICAL_MARGIN = eINSTANCE.getKPointPlacementData_VerticalMargin();
 
         /**
          * The meta object literal for the '<em><b>Horizontal Alignment</b></em>' attribute feature.

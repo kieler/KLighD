@@ -548,16 +548,26 @@
         <details key="documentation" value="the point within the parent to use as reference to place element"/>
       </eAnnotations>
     </eStructuralFeatures>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="verticalAlignment" lowerBound="1"
-        eType="#//VerticalAlignment">
-      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-        <details key="documentation" value="the position the point has on the vertical axis of the element to be placed"/>
-      </eAnnotations>
-    </eStructuralFeatures>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="horizontalAlignment" lowerBound="1"
         eType="#//HorizontalAlignment">
       <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-        <details key="documentation" value="the position the point has on the horizontal axis of the element to be placed"/>
+        <details key="documentation" value="Horizontal alignment of the child w.r.t. to the reference point that is based on the parent's bounds."/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="verticalAlignment" lowerBound="1"
+        eType="#//VerticalAlignment">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="Vertical alignment of the child w.r.t. to the reference point that is based on the parent's bounds."/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="horizontalMargin" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EFloat">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="Some horizontal margin that will be added on the right (left) for a LEFT (RIGHT) aligned child and to both left and right sides in case of a centrically aligned child."/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="verticalMargin" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EFloat">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="Some vertical margin that will be added on the bottom (top) for a TOP (BOTTOM) aligned child and to both top and bottom sides in case of a centrically aligned child."/>
       </eAnnotations>
     </eStructuralFeatures>
   </eClassifiers>
