@@ -71,8 +71,9 @@ public class KGraphTransientValueService extends KRenderingTransientValueService
         // suppress the serialization of empty KInsets objects
         if (feature == KLayoutDataPackage.eINSTANCE.getKShapeLayout_Insets()) {
             KInsets insets = ((KShapeLayout) semanticObject).getInsets();
-            return insets.getLeft() == 0 && insets.getRight() == 0 && insets.getTop() == 0
-                    && insets.getBottom() == 0 ? ValueTransient.YES : ValueTransient.NO;
+            return insets == null
+                    || (insets.getLeft() == 0 && insets.getRight() == 0 && insets.getTop() == 0 && insets
+                            .getBottom() == 0) ? ValueTransient.YES : ValueTransient.NO;
         }
         return super.isValueTransient(semanticObject, feature);
     }
