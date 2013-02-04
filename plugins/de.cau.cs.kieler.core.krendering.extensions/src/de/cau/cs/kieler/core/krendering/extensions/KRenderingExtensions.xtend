@@ -1,5 +1,6 @@
 package de.cau.cs.kieler.core.krendering.extensions
 
+import de.cau.cs.kieler.core.kgraph.KGraphElement
 import de.cau.cs.kieler.core.kgraph.KNode
 import de.cau.cs.kieler.core.krendering.HorizontalAlignment
 import de.cau.cs.kieler.core.krendering.KFontBold
@@ -16,7 +17,6 @@ import de.cau.cs.kieler.core.krendering.KContainerRendering
 import de.cau.cs.kieler.core.krendering.KStyle
 import de.cau.cs.kieler.core.krendering.KPlacementData
 import de.cau.cs.kieler.core.krendering.KRoundedRectangle
-import de.cau.cs.kieler.core.kgraph.KGraphElement
 import de.cau.cs.kieler.core.krendering.LineStyle
 import de.cau.cs.kieler.core.krendering.KLineStyle
 import de.cau.cs.kieler.core.krendering.KFontName
@@ -192,6 +192,17 @@ class KRenderingExtensions {
         ];
     }
     
+    def <T extends KRendering>  T setBackgroundInvisible(T rendering, boolean invisible){
+        return rendering => [
+            it.styles?.filter(typeof(KBackground)).last?:(renderingFactory.createKBackground() => [
+                it.color = renderingFactory.createKColor();
+            ]) => [
+                it.alpha = if (invisible) 0
+                    else renderingFactory.KRenderingPackage.KColoring_Alpha.defaultValue as Integer;
+            ];
+        ];
+    }
+    
     def <T extends KRendering>  T setBackgroundColor(T rendering, int red, int green, int blue){
         rendering.styles.removeAll(rendering.styles.filter(typeof(KBackground)).toList);
         return rendering => [
@@ -229,26 +240,29 @@ class KRenderingExtensions {
     def <T extends KRendering>  T setForeground(T rendering, KColor color){
         rendering.styles.removeAll(rendering.styles.filter(typeof(KForeground)).toList);
         return rendering => [
-            it.styles += renderingFactory.createKForeground => [
+            it.styles += renderingFactory.createKForeground() => [
                 it.color = color;
             ];
         ];
     }
     
-    def <T extends KRendering>  T setForegroundInvisible(T rendering){
-        rendering.styles.removeAll(rendering.styles.filter(typeof(KForeground)).toList);
+    def <T extends KRendering>  T setForegroundInvisible(T rendering, boolean invisible){
         return rendering => [
-            it.styles += renderingFactory.createKForeground => [
-                it.alpha = 0;
+            it.styles?.filter(typeof(KForeground)).last?:(renderingFactory.createKForeground() => [
+                it.color = renderingFactory.createKColor();
+            ]) => [
+                it.alpha = if (invisible) 0
+                    else renderingFactory.KRenderingPackage.KColoring_Alpha.defaultValue as Integer;
             ];
         ];
     }
     
+    
     def <T extends KRendering>  T setForegroundColor(T rendering, int red, int green, int blue){
         rendering.styles.removeAll(rendering.styles.filter(typeof(KForeground)).toList);
         return rendering => [
-            it.styles += renderingFactory.createKForeground => [
-                it.color = renderingFactory.createKColor => [
+            it.styles += renderingFactory.createKForeground() => [
+                it.color = renderingFactory.createKColor() => [
                     it.red = red;
                     it.green = green;
                     it.blue = blue;
