@@ -52,45 +52,16 @@ import de.cau.cs.kieler.klighd.krendering.PlacementUtil.Bounds;
  * 
  * While the first implemented test ({@link #sizeDataPresentTest(KNode)}) acts as a precondition
  * test (presence of the properties, ...), the second one ({@link #sizeEstimationTest(KNode)})
- * actually tests the calculation logic.
+ * actually tests the calculation logic, the third one ({@link #sizeEstimationTest2nd(KNode)})
+ * re-runs the second one for checking the stability of the estimation result.
  * 
  * @author chsch
  */
 @RunWith(ModelCollectionTestRunner.class)
+@BundleId("de.cau.cs.kieler.klighd.test")
+@ModelPath("sizeEstimationTests/")
+@ModelFilter("*.kgt")
 public class SizeEstimationTest {
-    
-    
-    /**
-     * Provides the id of the bundle containing the test models.
-     * 
-     * @return the bundle id
-     */
-    @BundleId
-    public static String getBundleId() {
-        return "de.cau.cs.kieler.klighd.test";
-    }
-    
-    /**
-     * Provides the path to the models within the bundle indicated in {@link #getBundleId()}.
-     * 
-     * @return the model path
-     */
-    @ModelPath
-    public static String getModelPath() {
-        return "sizeEstimationTests/";
-    }
-    
-    /**
-     * Provides a file pattern to filter the test models. See
-     * {@link org.osgi.framework.Bundle#findEntries(String, String, boolean)} for details on valid
-     * patters.
-     * 
-     * @return the model filter pattern
-     */
-    @ModelFilter
-    public static String getModelFilter() {
-        return "*.kgt";
-    }
     
     /**
      * Provides a {@link ResourceSet} in order to load the models properly.
@@ -162,6 +133,16 @@ public class SizeEstimationTest {
         }
     }
     
+    /**
+     * This test checks the stability of the result by simply running the estimation a second time.
+     * 
+     * @param node the test input model
+     */
+    @Test
+    public void sizeEstimationTest2nd(final KNode node) {
+        sizeEstimationTest(node);
+    }
+    
     private void performSizeEstimationTest(final KNode node) {
         if (node.getData(KRendering.class) == null) {
             // if no rendering is attached, there is nothing to test
@@ -175,6 +156,10 @@ public class SizeEstimationTest {
                 .get(KLIGHD_TESTING_EXPECTED_WIDTH).toString());
         
         Bounds size = PlacementUtil.estimateSize(node);
+        
+        // put the estimated size into the node layout for testing the stability
+        //  in the second run (second test; statement is useless in 2nd run)
+        sl.setSize(size.getWidth(), size.getHeight());
         
         if (size.getHeight() != expectedHeight && size.getWidth() != expectedWidth) {
             throw new RuntimeException("Expected node height of " + expectedHeight
