@@ -195,6 +195,7 @@ class KRenderingExtensions {
     def <T extends KRendering>  T setBackgroundInvisible(T rendering, boolean invisible){
         return rendering => [
             it.styles?.filter(typeof(KBackground)).last?:(renderingFactory.createKBackground() => [
+                rendering.styles += it; 
                 it.color = renderingFactory.createKColor();
             ]) => [
                 it.alpha = if (invisible) 0
@@ -249,6 +250,7 @@ class KRenderingExtensions {
     def <T extends KRendering>  T setForegroundInvisible(T rendering, boolean invisible){
         return rendering => [
             it.styles?.filter(typeof(KForeground)).last?:(renderingFactory.createKForeground() => [
+                rendering.styles += it; 
                 it.color = renderingFactory.createKColor();
             ]) => [
                 it.alpha = if (invisible) 0
@@ -388,12 +390,15 @@ class KRenderingExtensions {
 	}
 	
     def <T extends KRendering> T setPointPlacementData(T rendering, KPosition referencePoint,
-        HorizontalAlignment horizontalAlignment, VerticalAlignment verticalAlignment){
+        HorizontalAlignment horizontalAlignment, VerticalAlignment verticalAlignment,
+        float horizontalMargin, float verticalMargin) {
         return rendering => [
             rendering.placementData = renderingFactory.createKPointPlacementData => [
                 it.referencePoint = referencePoint;
                 it.horizontalAlignment = horizontalAlignment;
                 it.verticalAlignment = verticalAlignment;
+                it.horizontalMargin = horizontalMargin;
+                it.verticalMargin = verticalMargin;
             ];
         ];
     }
