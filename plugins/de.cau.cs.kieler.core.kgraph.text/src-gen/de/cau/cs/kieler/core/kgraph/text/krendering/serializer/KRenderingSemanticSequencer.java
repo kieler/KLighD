@@ -659,23 +659,16 @@ public class KRenderingSemanticSequencer extends KLayoutDataSemanticSequencer {
 	
 	/**
 	 * Constraint:
-	 *     (referencePoint=KPosition verticalAlignment=VerticalAlignment horizontalAlignment=HorizontalAlignment)
+	 *     (
+	 *         referencePoint=KPosition 
+	 *         verticalAlignment=VerticalAlignment? 
+	 *         horizontalAlignment=HorizontalAlignment? 
+	 *         horizontalMargin=EFloat? 
+	 *         verticalMargin=EFloat?
+	 *     )
 	 */
 	protected void sequence_KPointPlacementData(EObject context, KPointPlacementData semanticObject) {
-		if(errorAcceptor != null) {
-			if(transientValues.isValueTransient(semanticObject, KRenderingPackage.Literals.KPOINT_PLACEMENT_DATA__REFERENCE_POINT) == ValueTransient.YES)
-				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, KRenderingPackage.Literals.KPOINT_PLACEMENT_DATA__REFERENCE_POINT));
-			if(transientValues.isValueTransient(semanticObject, KRenderingPackage.Literals.KPOINT_PLACEMENT_DATA__VERTICAL_ALIGNMENT) == ValueTransient.YES)
-				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, KRenderingPackage.Literals.KPOINT_PLACEMENT_DATA__VERTICAL_ALIGNMENT));
-			if(transientValues.isValueTransient(semanticObject, KRenderingPackage.Literals.KPOINT_PLACEMENT_DATA__HORIZONTAL_ALIGNMENT) == ValueTransient.YES)
-				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, KRenderingPackage.Literals.KPOINT_PLACEMENT_DATA__HORIZONTAL_ALIGNMENT));
-		}
-		INodesForEObjectProvider nodes = createNodeProvider(semanticObject);
-		SequenceFeeder feeder = createSequencerFeeder(semanticObject, nodes);
-		feeder.accept(grammarAccess.getKPointPlacementDataAccess().getReferencePointKPositionParserRuleCall_3_0(), semanticObject.getReferencePoint());
-		feeder.accept(grammarAccess.getKPointPlacementDataAccess().getVerticalAlignmentVerticalAlignmentEnumRuleCall_6_0(), semanticObject.getVerticalAlignment());
-		feeder.accept(grammarAccess.getKPointPlacementDataAccess().getHorizontalAlignmentHorizontalAlignmentEnumRuleCall_9_0(), semanticObject.getHorizontalAlignment());
-		feeder.finish();
+		genericSequencer.createSequence(context, semanticObject);
 	}
 	
 	

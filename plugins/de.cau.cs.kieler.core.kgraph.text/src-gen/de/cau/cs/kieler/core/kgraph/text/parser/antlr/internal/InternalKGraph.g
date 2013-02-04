@@ -4600,65 +4600,97 @@ ruleKPointPlacementData returns [EObject current=null]
 	    }
 
 )
-)(	otherlv_4=',' 
+)(	otherlv_4='verticalAlignment' 
     {
-    	newLeafNode(otherlv_4, grammarAccess.getKPointPlacementDataAccess().getCommaKeyword_4());
-    }
-)?	otherlv_5='verticalAlignment' 
-    {
-    	newLeafNode(otherlv_5, grammarAccess.getKPointPlacementDataAccess().getVerticalAlignmentKeyword_5());
+    	newLeafNode(otherlv_4, grammarAccess.getKPointPlacementDataAccess().getVerticalAlignmentKeyword_4_0());
     }
 (
 (
 		{ 
-	        newCompositeNode(grammarAccess.getKPointPlacementDataAccess().getVerticalAlignmentVerticalAlignmentEnumRuleCall_6_0()); 
+	        newCompositeNode(grammarAccess.getKPointPlacementDataAccess().getVerticalAlignmentVerticalAlignmentEnumRuleCall_4_1_0()); 
 	    }
-		lv_verticalAlignment_6_0=ruleVerticalAlignment		{
+		lv_verticalAlignment_5_0=ruleVerticalAlignment		{
 	        if ($current==null) {
 	            $current = createModelElementForParent(grammarAccess.getKPointPlacementDataRule());
 	        }
        		set(
        			$current, 
        			"verticalAlignment",
-        		lv_verticalAlignment_6_0, 
+        		lv_verticalAlignment_5_0, 
         		"VerticalAlignment");
 	        afterParserOrEnumRuleCall();
 	    }
 
 )
-)(	otherlv_7=',' 
+))?(	otherlv_6='horizontalAlignment' 
     {
-    	newLeafNode(otherlv_7, grammarAccess.getKPointPlacementDataAccess().getCommaKeyword_7());
-    }
-)?	otherlv_8='horizontalAlignment' 
-    {
-    	newLeafNode(otherlv_8, grammarAccess.getKPointPlacementDataAccess().getHorizontalAlignmentKeyword_8());
+    	newLeafNode(otherlv_6, grammarAccess.getKPointPlacementDataAccess().getHorizontalAlignmentKeyword_5_0());
     }
 (
 (
 		{ 
-	        newCompositeNode(grammarAccess.getKPointPlacementDataAccess().getHorizontalAlignmentHorizontalAlignmentEnumRuleCall_9_0()); 
+	        newCompositeNode(grammarAccess.getKPointPlacementDataAccess().getHorizontalAlignmentHorizontalAlignmentEnumRuleCall_5_1_0()); 
 	    }
-		lv_horizontalAlignment_9_0=ruleHorizontalAlignment		{
+		lv_horizontalAlignment_7_0=ruleHorizontalAlignment		{
 	        if ($current==null) {
 	            $current = createModelElementForParent(grammarAccess.getKPointPlacementDataRule());
 	        }
        		set(
        			$current, 
        			"horizontalAlignment",
-        		lv_horizontalAlignment_9_0, 
+        		lv_horizontalAlignment_7_0, 
         		"HorizontalAlignment");
 	        afterParserOrEnumRuleCall();
 	    }
 
 )
-)(	otherlv_10=',' 
+))?(	otherlv_8='horizontalMargin' 
     {
-    	newLeafNode(otherlv_10, grammarAccess.getKPointPlacementDataAccess().getCommaKeyword_10());
+    	newLeafNode(otherlv_8, grammarAccess.getKPointPlacementDataAccess().getHorizontalMarginKeyword_6_0());
     }
-)?	otherlv_11='}' 
+(
+(
+		{ 
+	        newCompositeNode(grammarAccess.getKPointPlacementDataAccess().getHorizontalMarginEFloatParserRuleCall_6_1_0()); 
+	    }
+		lv_horizontalMargin_9_0=ruleEFloat		{
+	        if ($current==null) {
+	            $current = createModelElementForParent(grammarAccess.getKPointPlacementDataRule());
+	        }
+       		set(
+       			$current, 
+       			"horizontalMargin",
+        		lv_horizontalMargin_9_0, 
+        		"EFloat");
+	        afterParserOrEnumRuleCall();
+	    }
+
+)
+))?(	otherlv_10='verticalMargin' 
     {
-    	newLeafNode(otherlv_11, grammarAccess.getKPointPlacementDataAccess().getRightCurlyBracketKeyword_11());
+    	newLeafNode(otherlv_10, grammarAccess.getKPointPlacementDataAccess().getVerticalMarginKeyword_7_0());
+    }
+(
+(
+		{ 
+	        newCompositeNode(grammarAccess.getKPointPlacementDataAccess().getVerticalMarginEFloatParserRuleCall_7_1_0()); 
+	    }
+		lv_verticalMargin_11_0=ruleEFloat		{
+	        if ($current==null) {
+	            $current = createModelElementForParent(grammarAccess.getKPointPlacementDataRule());
+	        }
+       		set(
+       			$current, 
+       			"verticalMargin",
+        		lv_verticalMargin_11_0, 
+        		"EFloat");
+	        afterParserOrEnumRuleCall();
+	    }
+
+)
+))?	otherlv_12='}' 
+    {
+    	newLeafNode(otherlv_12, grammarAccess.getKPointPlacementDataAccess().getRightCurlyBracketKeyword_8());
     }
 )
 ;

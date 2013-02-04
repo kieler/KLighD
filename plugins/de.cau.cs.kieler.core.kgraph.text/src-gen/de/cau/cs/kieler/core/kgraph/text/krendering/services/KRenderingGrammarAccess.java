@@ -2643,24 +2643,33 @@ public class KRenderingGrammarAccess extends AbstractGrammarElementFinder {
 		private final Keyword cReferencePointKeyword_2 = (Keyword)cGroup.eContents().get(2);
 		private final Assignment cReferencePointAssignment_3 = (Assignment)cGroup.eContents().get(3);
 		private final RuleCall cReferencePointKPositionParserRuleCall_3_0 = (RuleCall)cReferencePointAssignment_3.eContents().get(0);
-		private final Keyword cCommaKeyword_4 = (Keyword)cGroup.eContents().get(4);
-		private final Keyword cVerticalAlignmentKeyword_5 = (Keyword)cGroup.eContents().get(5);
-		private final Assignment cVerticalAlignmentAssignment_6 = (Assignment)cGroup.eContents().get(6);
-		private final RuleCall cVerticalAlignmentVerticalAlignmentEnumRuleCall_6_0 = (RuleCall)cVerticalAlignmentAssignment_6.eContents().get(0);
-		private final Keyword cCommaKeyword_7 = (Keyword)cGroup.eContents().get(7);
-		private final Keyword cHorizontalAlignmentKeyword_8 = (Keyword)cGroup.eContents().get(8);
-		private final Assignment cHorizontalAlignmentAssignment_9 = (Assignment)cGroup.eContents().get(9);
-		private final RuleCall cHorizontalAlignmentHorizontalAlignmentEnumRuleCall_9_0 = (RuleCall)cHorizontalAlignmentAssignment_9.eContents().get(0);
-		private final Keyword cCommaKeyword_10 = (Keyword)cGroup.eContents().get(10);
-		private final Keyword cRightCurlyBracketKeyword_11 = (Keyword)cGroup.eContents().get(11);
+		private final Group cGroup_4 = (Group)cGroup.eContents().get(4);
+		private final Keyword cVerticalAlignmentKeyword_4_0 = (Keyword)cGroup_4.eContents().get(0);
+		private final Assignment cVerticalAlignmentAssignment_4_1 = (Assignment)cGroup_4.eContents().get(1);
+		private final RuleCall cVerticalAlignmentVerticalAlignmentEnumRuleCall_4_1_0 = (RuleCall)cVerticalAlignmentAssignment_4_1.eContents().get(0);
+		private final Group cGroup_5 = (Group)cGroup.eContents().get(5);
+		private final Keyword cHorizontalAlignmentKeyword_5_0 = (Keyword)cGroup_5.eContents().get(0);
+		private final Assignment cHorizontalAlignmentAssignment_5_1 = (Assignment)cGroup_5.eContents().get(1);
+		private final RuleCall cHorizontalAlignmentHorizontalAlignmentEnumRuleCall_5_1_0 = (RuleCall)cHorizontalAlignmentAssignment_5_1.eContents().get(0);
+		private final Group cGroup_6 = (Group)cGroup.eContents().get(6);
+		private final Keyword cHorizontalMarginKeyword_6_0 = (Keyword)cGroup_6.eContents().get(0);
+		private final Assignment cHorizontalMarginAssignment_6_1 = (Assignment)cGroup_6.eContents().get(1);
+		private final RuleCall cHorizontalMarginEFloatParserRuleCall_6_1_0 = (RuleCall)cHorizontalMarginAssignment_6_1.eContents().get(0);
+		private final Group cGroup_7 = (Group)cGroup.eContents().get(7);
+		private final Keyword cVerticalMarginKeyword_7_0 = (Keyword)cGroup_7.eContents().get(0);
+		private final Assignment cVerticalMarginAssignment_7_1 = (Assignment)cGroup_7.eContents().get(1);
+		private final RuleCall cVerticalMarginEFloatParserRuleCall_7_1_0 = (RuleCall)cVerticalMarginAssignment_7_1.eContents().get(0);
+		private final Keyword cRightCurlyBracketKeyword_8 = (Keyword)cGroup.eContents().get(8);
 		
 		//KPointPlacementData:
-		//	"PointPlacementData" "{" "referencePoint" referencePoint=KPosition ","? "verticalAlignment"
-		//	verticalAlignment=VerticalAlignment ","? "horizontalAlignment" horizontalAlignment=HorizontalAlignment ","? "}";
+		//	"PointPlacementData" "{" "referencePoint" referencePoint=KPosition ("verticalAlignment"
+		//	verticalAlignment=VerticalAlignment)? ("horizontalAlignment" horizontalAlignment=HorizontalAlignment)?
+		//	("horizontalMargin" horizontalMargin=EFloat)? ("verticalMargin" verticalMargin=EFloat)? "}";
 		public ParserRule getRule() { return rule; }
 
-		//"PointPlacementData" "{" "referencePoint" referencePoint=KPosition ","? "verticalAlignment"
-		//verticalAlignment=VerticalAlignment ","? "horizontalAlignment" horizontalAlignment=HorizontalAlignment ","? "}"
+		//"PointPlacementData" "{" "referencePoint" referencePoint=KPosition ("verticalAlignment"
+		//verticalAlignment=VerticalAlignment)? ("horizontalAlignment" horizontalAlignment=HorizontalAlignment)?
+		//("horizontalMargin" horizontalMargin=EFloat)? ("verticalMargin" verticalMargin=EFloat)? "}"
 		public Group getGroup() { return cGroup; }
 
 		//"PointPlacementData"
@@ -2678,35 +2687,56 @@ public class KRenderingGrammarAccess extends AbstractGrammarElementFinder {
 		//KPosition
 		public RuleCall getReferencePointKPositionParserRuleCall_3_0() { return cReferencePointKPositionParserRuleCall_3_0; }
 
-		//","?
-		public Keyword getCommaKeyword_4() { return cCommaKeyword_4; }
+		//("verticalAlignment" verticalAlignment=VerticalAlignment)?
+		public Group getGroup_4() { return cGroup_4; }
 
 		//"verticalAlignment"
-		public Keyword getVerticalAlignmentKeyword_5() { return cVerticalAlignmentKeyword_5; }
+		public Keyword getVerticalAlignmentKeyword_4_0() { return cVerticalAlignmentKeyword_4_0; }
 
 		//verticalAlignment=VerticalAlignment
-		public Assignment getVerticalAlignmentAssignment_6() { return cVerticalAlignmentAssignment_6; }
+		public Assignment getVerticalAlignmentAssignment_4_1() { return cVerticalAlignmentAssignment_4_1; }
 
 		//VerticalAlignment
-		public RuleCall getVerticalAlignmentVerticalAlignmentEnumRuleCall_6_0() { return cVerticalAlignmentVerticalAlignmentEnumRuleCall_6_0; }
+		public RuleCall getVerticalAlignmentVerticalAlignmentEnumRuleCall_4_1_0() { return cVerticalAlignmentVerticalAlignmentEnumRuleCall_4_1_0; }
 
-		//","?
-		public Keyword getCommaKeyword_7() { return cCommaKeyword_7; }
+		//("horizontalAlignment" horizontalAlignment=HorizontalAlignment)?
+		public Group getGroup_5() { return cGroup_5; }
 
 		//"horizontalAlignment"
-		public Keyword getHorizontalAlignmentKeyword_8() { return cHorizontalAlignmentKeyword_8; }
+		public Keyword getHorizontalAlignmentKeyword_5_0() { return cHorizontalAlignmentKeyword_5_0; }
 
 		//horizontalAlignment=HorizontalAlignment
-		public Assignment getHorizontalAlignmentAssignment_9() { return cHorizontalAlignmentAssignment_9; }
+		public Assignment getHorizontalAlignmentAssignment_5_1() { return cHorizontalAlignmentAssignment_5_1; }
 
 		//HorizontalAlignment
-		public RuleCall getHorizontalAlignmentHorizontalAlignmentEnumRuleCall_9_0() { return cHorizontalAlignmentHorizontalAlignmentEnumRuleCall_9_0; }
+		public RuleCall getHorizontalAlignmentHorizontalAlignmentEnumRuleCall_5_1_0() { return cHorizontalAlignmentHorizontalAlignmentEnumRuleCall_5_1_0; }
 
-		//","?
-		public Keyword getCommaKeyword_10() { return cCommaKeyword_10; }
+		//("horizontalMargin" horizontalMargin=EFloat)?
+		public Group getGroup_6() { return cGroup_6; }
+
+		//"horizontalMargin"
+		public Keyword getHorizontalMarginKeyword_6_0() { return cHorizontalMarginKeyword_6_0; }
+
+		//horizontalMargin=EFloat
+		public Assignment getHorizontalMarginAssignment_6_1() { return cHorizontalMarginAssignment_6_1; }
+
+		//EFloat
+		public RuleCall getHorizontalMarginEFloatParserRuleCall_6_1_0() { return cHorizontalMarginEFloatParserRuleCall_6_1_0; }
+
+		//("verticalMargin" verticalMargin=EFloat)?
+		public Group getGroup_7() { return cGroup_7; }
+
+		//"verticalMargin"
+		public Keyword getVerticalMarginKeyword_7_0() { return cVerticalMarginKeyword_7_0; }
+
+		//verticalMargin=EFloat
+		public Assignment getVerticalMarginAssignment_7_1() { return cVerticalMarginAssignment_7_1; }
+
+		//EFloat
+		public RuleCall getVerticalMarginEFloatParserRuleCall_7_1_0() { return cVerticalMarginEFloatParserRuleCall_7_1_0; }
 
 		//"}"
-		public Keyword getRightCurlyBracketKeyword_11() { return cRightCurlyBracketKeyword_11; }
+		public Keyword getRightCurlyBracketKeyword_8() { return cRightCurlyBracketKeyword_8; }
 	}
 
 	public class KPositionElements extends AbstractParserRuleElementFinder {
@@ -4196,8 +4226,9 @@ public class KRenderingGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//KPointPlacementData:
-	//	"PointPlacementData" "{" "referencePoint" referencePoint=KPosition ","? "verticalAlignment"
-	//	verticalAlignment=VerticalAlignment ","? "horizontalAlignment" horizontalAlignment=HorizontalAlignment ","? "}";
+	//	"PointPlacementData" "{" "referencePoint" referencePoint=KPosition ("verticalAlignment"
+	//	verticalAlignment=VerticalAlignment)? ("horizontalAlignment" horizontalAlignment=HorizontalAlignment)?
+	//	("horizontalMargin" horizontalMargin=EFloat)? ("verticalMargin" verticalMargin=EFloat)? "}";
 	public KPointPlacementDataElements getKPointPlacementDataAccess() {
 		return (pKPointPlacementData != null) ? pKPointPlacementData : (pKPointPlacementData = new KPointPlacementDataElements());
 	}

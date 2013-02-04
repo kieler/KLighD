@@ -207,9 +207,11 @@ KAreaPlacementData returns KAreaPlacementData:
 KPointPlacementData returns KPointPlacementData:
     'PointPlacementData'
     '{'
-        'referencePoint' referencePoint=KPosition ","?
-        'verticalAlignment' verticalAlignment=VerticalAlignment ","?
-        'horizontalAlignment' horizontalAlignment=HorizontalAlignment ","?
+        'referencePoint' referencePoint=KPosition
+        ('verticalAlignment' verticalAlignment=VerticalAlignment)?
+        ('horizontalAlignment' horizontalAlignment=HorizontalAlignment)?
+        ('horizontalMargin' horizontalMargin=EFloat)?
+        ('verticalMargin' verticalMargin=EFloat)?
     '}';
 
 KPosition returns KPosition:
