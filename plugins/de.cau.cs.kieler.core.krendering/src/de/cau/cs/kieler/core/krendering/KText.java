@@ -34,7 +34,7 @@ package de.cau.cs.kieler.core.krendering;
  * @model
  * @generated
  */
-public interface KText extends KContainerRendering {
+public interface KText extends KRendering {
     /**
      * Returns the value of the '<em><b>Text</b></em>' attribute.
      * <!-- begin-user-doc -->

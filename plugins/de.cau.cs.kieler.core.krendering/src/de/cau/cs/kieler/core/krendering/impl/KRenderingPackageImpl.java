@@ -2097,7 +2097,7 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
         kRenderingLibraryEClass.getESuperTypes().add(theKGraphPackage.getKGraphData());
         kRenderingRefEClass.getESuperTypes().add(this.getKRendering());
         kChildAreaEClass.getESuperTypes().add(this.getKRendering());
-        kTextEClass.getESuperTypes().add(this.getKContainerRendering());
+        kTextEClass.getESuperTypes().add(this.getKRendering());
         kGridPlacementEClass.getESuperTypes().add(this.getKPlacement());
         kGridPlacementDataEClass.getESuperTypes().add(this.getKAreaPlacementData());
         kAreaPlacementDataEClass.getESuperTypes().add(this.getKPlacementData());

@@ -248,7 +248,7 @@
       <details key="documentation" value="define a child area inside of a rendering to force children being placed inside the defined area"/>
     </eAnnotations>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="KText" eSuperTypes="#//KContainerRendering">
+  <eClassifiers xsi:type="ecore:EClass" name="KText" eSuperTypes="#//KRendering">
     <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
       <details key="documentation" value="display text. Text can be positioned by adding Horizontal or VerticalAlignment and can be clipped if there is not enough space to display all of it without overlapping other elements"/>
     </eAnnotations>

@@ -139,10 +139,7 @@ public class KRenderingParser extends AbstractContentAssistParser {
 					put(grammarAccess.getKTextAccess().getGroup_3_1_3(), "rule__KText__Group_3_1_3__0");
 					put(grammarAccess.getKTextAccess().getGroup_3_2(), "rule__KText__Group_3_2__0");
 					put(grammarAccess.getKTextAccess().getGroup_3_3(), "rule__KText__Group_3_3__0");
-					put(grammarAccess.getKTextAccess().getGroup_3_4(), "rule__KText__Group_3_4__0");
-					put(grammarAccess.getKTextAccess().getGroup_3_4_3(), "rule__KText__Group_3_4_3__0");
-					put(grammarAccess.getKTextAccess().getGroup_3_5(), "rule__KText__Group_3_5__0");
-					put(grammarAccess.getKTextAccess().getGroup_3_5_3(), "rule__KText__Group_3_5_3__0");
+					put(grammarAccess.getKTextAccess().getGroup_3_3_3(), "rule__KText__Group_3_3_3__0");
 					put(grammarAccess.getKCustomRenderingAccess().getGroup(), "rule__KCustomRendering__Group__0");
 					put(grammarAccess.getKCustomRenderingAccess().getGroup_2(), "rule__KCustomRendering__Group_2__0");
 					put(grammarAccess.getKCustomRenderingAccess().getGroup_2_5(), "rule__KCustomRendering__Group_2_5__0");
@@ -309,11 +306,8 @@ public class KRenderingParser extends AbstractContentAssistParser {
 					put(grammarAccess.getKTextAccess().getStylesAssignment_3_1_2(), "rule__KText__StylesAssignment_3_1_2");
 					put(grammarAccess.getKTextAccess().getStylesAssignment_3_1_3_1(), "rule__KText__StylesAssignment_3_1_3_1");
 					put(grammarAccess.getKTextAccess().getPlacementDataAssignment_3_2_2(), "rule__KText__PlacementDataAssignment_3_2_2");
-					put(grammarAccess.getKTextAccess().getChildPlacementAssignment_3_3_2(), "rule__KText__ChildPlacementAssignment_3_3_2");
-					put(grammarAccess.getKTextAccess().getChildrenAssignment_3_4_2(), "rule__KText__ChildrenAssignment_3_4_2");
-					put(grammarAccess.getKTextAccess().getChildrenAssignment_3_4_3_1(), "rule__KText__ChildrenAssignment_3_4_3_1");
-					put(grammarAccess.getKTextAccess().getPersistentEntriesAssignment_3_5_2(), "rule__KText__PersistentEntriesAssignment_3_5_2");
-					put(grammarAccess.getKTextAccess().getPersistentEntriesAssignment_3_5_3_1(), "rule__KText__PersistentEntriesAssignment_3_5_3_1");
+					put(grammarAccess.getKTextAccess().getPersistentEntriesAssignment_3_3_2(), "rule__KText__PersistentEntriesAssignment_3_3_2");
+					put(grammarAccess.getKTextAccess().getPersistentEntriesAssignment_3_3_3_1(), "rule__KText__PersistentEntriesAssignment_3_3_3_1");
 					put(grammarAccess.getKCustomRenderingAccess().getClassNameAssignment_2_2(), "rule__KCustomRendering__ClassNameAssignment_2_2");
 					put(grammarAccess.getKCustomRenderingAccess().getBundleNameAssignment_2_4(), "rule__KCustomRendering__BundleNameAssignment_2_4");
 					put(grammarAccess.getKCustomRenderingAccess().getStylesAssignment_2_5_2(), "rule__KCustomRendering__StylesAssignment_2_5_2");

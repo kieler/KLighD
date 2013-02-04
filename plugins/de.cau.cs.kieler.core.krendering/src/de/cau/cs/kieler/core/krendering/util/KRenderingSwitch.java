@@ -241,7 +241,6 @@ public class KRenderingSwitch<T> extends Switch<T> {
             case KRenderingPackage.KTEXT: {
                 KText kText = (KText)theEObject;
                 T result = caseKText(kText);
-                if (result == null) result = caseKContainerRendering(kText);
                 if (result == null) result = caseKRendering(kText);
                 if (result == null) result = caseKGraphData(kText);
                 if (result == null) result = caseKStyleHolder(kText);

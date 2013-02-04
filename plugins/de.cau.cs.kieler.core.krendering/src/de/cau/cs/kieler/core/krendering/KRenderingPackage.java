@@ -1474,7 +1474,7 @@ public interface KRenderingPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int KTEXT__PROPERTIES = KCONTAINER_RENDERING__PROPERTIES;
+    int KTEXT__PROPERTIES = KRENDERING__PROPERTIES;
 
     /**
      * The feature id for the '<em><b>Persistent Entries</b></em>' containment reference list.
@@ -1483,7 +1483,7 @@ public interface KRenderingPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int KTEXT__PERSISTENT_ENTRIES = KCONTAINER_RENDERING__PERSISTENT_ENTRIES;
+    int KTEXT__PERSISTENT_ENTRIES = KRENDERING__PERSISTENT_ENTRIES;
 
     /**
      * The feature id for the '<em><b>Styles</b></em>' containment reference list.
@@ -1492,7 +1492,7 @@ public interface KRenderingPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int KTEXT__STYLES = KCONTAINER_RENDERING__STYLES;
+    int KTEXT__STYLES = KRENDERING__STYLES;
 
     /**
      * The feature id for the '<em><b>Parent</b></em>' container reference.
@@ -1501,7 +1501,7 @@ public interface KRenderingPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int KTEXT__PARENT = KCONTAINER_RENDERING__PARENT;
+    int KTEXT__PARENT = KRENDERING__PARENT;
 
     /**
      * The feature id for the '<em><b>References</b></em>' reference list.
@@ -1510,7 +1510,7 @@ public interface KRenderingPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int KTEXT__REFERENCES = KCONTAINER_RENDERING__REFERENCES;
+    int KTEXT__REFERENCES = KRENDERING__REFERENCES;
 
     /**
      * The feature id for the '<em><b>Placement Data</b></em>' containment reference.
@@ -1519,7 +1519,7 @@ public interface KRenderingPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int KTEXT__PLACEMENT_DATA = KCONTAINER_RENDERING__PLACEMENT_DATA;
+    int KTEXT__PLACEMENT_DATA = KRENDERING__PLACEMENT_DATA;
 
     /**
      * The feature id for the '<em><b>Actions</b></em>' reference list.
@@ -1528,25 +1528,7 @@ public interface KRenderingPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int KTEXT__ACTIONS = KCONTAINER_RENDERING__ACTIONS;
-
-    /**
-     * The feature id for the '<em><b>Children</b></em>' containment reference list.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int KTEXT__CHILDREN = KCONTAINER_RENDERING__CHILDREN;
-
-    /**
-     * The feature id for the '<em><b>Child Placement</b></em>' containment reference.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int KTEXT__CHILD_PLACEMENT = KCONTAINER_RENDERING__CHILD_PLACEMENT;
+    int KTEXT__ACTIONS = KRENDERING__ACTIONS;
 
     /**
      * The feature id for the '<em><b>Text</b></em>' attribute.
@@ -1555,7 +1537,7 @@ public interface KRenderingPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int KTEXT__TEXT = KCONTAINER_RENDERING_FEATURE_COUNT + 0;
+    int KTEXT__TEXT = KRENDERING_FEATURE_COUNT + 0;
 
     /**
      * The number of structural features of the '<em>KText</em>' class.
@@ -1564,7 +1546,7 @@ public interface KRenderingPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int KTEXT_FEATURE_COUNT = KCONTAINER_RENDERING_FEATURE_COUNT + 1;
+    int KTEXT_FEATURE_COUNT = KRENDERING_FEATURE_COUNT + 1;
 
     /**
      * The meta object id for the '{@link de.cau.cs.kieler.core.krendering.KPlacement <em>KPlacement</em>}' class.

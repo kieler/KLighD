@@ -831,13 +831,7 @@ public class KRenderingSemanticSequencer extends KLayoutDataSemanticSequencer {
 	 * Constraint:
 	 *     (
 	 *         text=EString? 
-	 *         (
-	 *             (styles+=KStyle styles+=KStyle*)? 
-	 *             placementData=KPlacementData? 
-	 *             childPlacement=KPlacement? 
-	 *             (children+=KRendering children+=KRendering*)? 
-	 *             (persistentEntries+=PersistentEntry persistentEntries+=PersistentEntry*)?
-	 *         )?
+	 *         ((styles+=KStyle styles+=KStyle*)? placementData=KPlacementData? (persistentEntries+=PersistentEntry persistentEntries+=PersistentEntry*)?)?
 	 *     )
 	 */
 	protected void sequence_KText(EObject context, KText semanticObject) {

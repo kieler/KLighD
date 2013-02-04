@@ -82,7 +82,7 @@ public class KGraphFormatter extends AbstractDeclarativeFormatter {
                 f.getPersistentEntryAccess().getKeyEStringParserRuleCall_0_0());
         c.setLinewrap().between(f.getKShapeLayoutAccess().getMapPropertiesKeyword_8_0(),
                 f.getPersistentEntryAccess().getKeyEStringParserRuleCall_0_0());
-        c.setLinewrap().between(f.getKTextAccess().getMapPropertiesKeyword_3_5_0(),
+        c.setLinewrap().between(f.getKTextAccess().getMapPropertiesKeyword_3_3_0(),
                 f.getPersistentEntryAccess().getKeyEStringParserRuleCall_0_0());
         
         // standard rules targeting comments

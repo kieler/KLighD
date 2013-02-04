@@ -35,7 +35,7 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  *
  * @generated
  */
-public class KTextImpl extends KContainerRenderingImpl implements KText {
+public class KTextImpl extends KRenderingImpl implements KText {
     /**
      * The default value of the '{@link #getText() <em>Text</em>}' attribute.
      * <!-- begin-user-doc -->

@@ -1013,12 +1013,6 @@ public abstract class AbstractRenderingController<S extends KGraphElement, T ext
         alignmentNode.setVerticalAlignment(textNode, VAlignment.CENTER);
         parent.addChild(alignmentNode);
 
-        // handle children
-        if (text.getChildren().size() > 0) {
-            handleChildren(text.getChildren(), text.getChildPlacement(), propagatedStyles,
-                    textNode, key);
-        }
-
         // create a controller for the text and return it
         return new PSWTTextController(textNode) {
             public void setBounds(final PBounds bounds) {

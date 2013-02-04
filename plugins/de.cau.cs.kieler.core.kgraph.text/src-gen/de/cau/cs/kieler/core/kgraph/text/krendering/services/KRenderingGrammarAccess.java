@@ -1885,42 +1885,26 @@ public class KRenderingGrammarAccess extends AbstractGrammarElementFinder {
 		private final Assignment cPlacementDataAssignment_3_2_2 = (Assignment)cGroup_3_2.eContents().get(2);
 		private final RuleCall cPlacementDataKPlacementDataParserRuleCall_3_2_2_0 = (RuleCall)cPlacementDataAssignment_3_2_2.eContents().get(0);
 		private final Group cGroup_3_3 = (Group)cGroup_3.eContents().get(3);
-		private final Keyword cChildPlacementKeyword_3_3_0 = (Keyword)cGroup_3_3.eContents().get(0);
+		private final Keyword cMapPropertiesKeyword_3_3_0 = (Keyword)cGroup_3_3.eContents().get(0);
 		private final Keyword cColonKeyword_3_3_1 = (Keyword)cGroup_3_3.eContents().get(1);
-		private final Assignment cChildPlacementAssignment_3_3_2 = (Assignment)cGroup_3_3.eContents().get(2);
-		private final RuleCall cChildPlacementKPlacementParserRuleCall_3_3_2_0 = (RuleCall)cChildPlacementAssignment_3_3_2.eContents().get(0);
-		private final Group cGroup_3_4 = (Group)cGroup_3.eContents().get(4);
-		private final Keyword cChildrenKeyword_3_4_0 = (Keyword)cGroup_3_4.eContents().get(0);
-		private final Keyword cColonKeyword_3_4_1 = (Keyword)cGroup_3_4.eContents().get(1);
-		private final Assignment cChildrenAssignment_3_4_2 = (Assignment)cGroup_3_4.eContents().get(2);
-		private final RuleCall cChildrenKRenderingParserRuleCall_3_4_2_0 = (RuleCall)cChildrenAssignment_3_4_2.eContents().get(0);
-		private final Group cGroup_3_4_3 = (Group)cGroup_3_4.eContents().get(3);
-		private final Keyword cCommaKeyword_3_4_3_0 = (Keyword)cGroup_3_4_3.eContents().get(0);
-		private final Assignment cChildrenAssignment_3_4_3_1 = (Assignment)cGroup_3_4_3.eContents().get(1);
-		private final RuleCall cChildrenKRenderingParserRuleCall_3_4_3_1_0 = (RuleCall)cChildrenAssignment_3_4_3_1.eContents().get(0);
-		private final Group cGroup_3_5 = (Group)cGroup_3.eContents().get(5);
-		private final Keyword cMapPropertiesKeyword_3_5_0 = (Keyword)cGroup_3_5.eContents().get(0);
-		private final Keyword cColonKeyword_3_5_1 = (Keyword)cGroup_3_5.eContents().get(1);
-		private final Assignment cPersistentEntriesAssignment_3_5_2 = (Assignment)cGroup_3_5.eContents().get(2);
-		private final RuleCall cPersistentEntriesPersistentEntryParserRuleCall_3_5_2_0 = (RuleCall)cPersistentEntriesAssignment_3_5_2.eContents().get(0);
-		private final Group cGroup_3_5_3 = (Group)cGroup_3_5.eContents().get(3);
-		private final Keyword cCommaKeyword_3_5_3_0 = (Keyword)cGroup_3_5_3.eContents().get(0);
-		private final Assignment cPersistentEntriesAssignment_3_5_3_1 = (Assignment)cGroup_3_5_3.eContents().get(1);
-		private final RuleCall cPersistentEntriesPersistentEntryParserRuleCall_3_5_3_1_0 = (RuleCall)cPersistentEntriesAssignment_3_5_3_1.eContents().get(0);
-		private final Keyword cRightCurlyBracketKeyword_3_6 = (Keyword)cGroup_3.eContents().get(6);
+		private final Assignment cPersistentEntriesAssignment_3_3_2 = (Assignment)cGroup_3_3.eContents().get(2);
+		private final RuleCall cPersistentEntriesPersistentEntryParserRuleCall_3_3_2_0 = (RuleCall)cPersistentEntriesAssignment_3_3_2.eContents().get(0);
+		private final Group cGroup_3_3_3 = (Group)cGroup_3_3.eContents().get(3);
+		private final Keyword cCommaKeyword_3_3_3_0 = (Keyword)cGroup_3_3_3.eContents().get(0);
+		private final Assignment cPersistentEntriesAssignment_3_3_3_1 = (Assignment)cGroup_3_3_3.eContents().get(1);
+		private final RuleCall cPersistentEntriesPersistentEntryParserRuleCall_3_3_3_1_0 = (RuleCall)cPersistentEntriesAssignment_3_3_3_1.eContents().get(0);
+		private final Keyword cRightCurlyBracketKeyword_3_4 = (Keyword)cGroup_3.eContents().get(4);
 		
 		//KText:
 		//	{KText} "Text" text=EString? ("{" ("styles" ":"? styles+=KStyle (","? styles+=KStyle)*)? ("placementData" ":"?
-		//	placementData=KPlacementData)? ("childPlacement" ":"? childPlacement=KPlacement)? ("children" ":"?
-		//	children+=KRendering (","? children+=KRendering)*)? // allow mapProperties in order to specify size for size estimation tests
+		//	placementData=KPlacementData)? // allow mapProperties in order to specify size for size estimation tests
 		//	// (I don't trust in the different SWT implementations to
 		//	// provide the same size of a text on different platforms)
 		//	("mapProperties" ":"? persistentEntries+=PersistentEntry (","? persistentEntries+=PersistentEntry)*)? "}")?;
 		public ParserRule getRule() { return rule; }
 
 		//{KText} "Text" text=EString? ("{" ("styles" ":"? styles+=KStyle (","? styles+=KStyle)*)? ("placementData" ":"?
-		//placementData=KPlacementData)? ("childPlacement" ":"? childPlacement=KPlacement)? ("children" ":"? children+=KRendering
-		//(","? children+=KRendering)*)? // allow mapProperties in order to specify size for size estimation tests
+		//placementData=KPlacementData)? // allow mapProperties in order to specify size for size estimation tests
 		//// (I don't trust in the different SWT implementations to
 		//// provide the same size of a text on different platforms)
 		//("mapProperties" ":"? persistentEntries+=PersistentEntry (","? persistentEntries+=PersistentEntry)*)? "}")?
@@ -1938,8 +1922,7 @@ public class KRenderingGrammarAccess extends AbstractGrammarElementFinder {
 		//EString
 		public RuleCall getTextEStringParserRuleCall_2_0() { return cTextEStringParserRuleCall_2_0; }
 
-		//("{" ("styles" ":"? styles+=KStyle (","? styles+=KStyle)*)? ("placementData" ":"? placementData=KPlacementData)?
-		//("childPlacement" ":"? childPlacement=KPlacement)? ("children" ":"? children+=KRendering (","? children+=KRendering)*)? // allow mapProperties in order to specify size for size estimation tests
+		//("{" ("styles" ":"? styles+=KStyle (","? styles+=KStyle)*)? ("placementData" ":"? placementData=KPlacementData)? // allow mapProperties in order to specify size for size estimation tests
 		//// (I don't trust in the different SWT implementations to
 		//// provide the same size of a text on different platforms)
 		//("mapProperties" ":"? persistentEntries+=PersistentEntry (","? persistentEntries+=PersistentEntry)*)? "}")?
@@ -1990,77 +1973,35 @@ public class KRenderingGrammarAccess extends AbstractGrammarElementFinder {
 		//KPlacementData
 		public RuleCall getPlacementDataKPlacementDataParserRuleCall_3_2_2_0() { return cPlacementDataKPlacementDataParserRuleCall_3_2_2_0; }
 
-		//("childPlacement" ":"? childPlacement=KPlacement)?
+		//("mapProperties" ":"? persistentEntries+=PersistentEntry (","? persistentEntries+=PersistentEntry)*)?
 		public Group getGroup_3_3() { return cGroup_3_3; }
 
-		//"childPlacement"
-		public Keyword getChildPlacementKeyword_3_3_0() { return cChildPlacementKeyword_3_3_0; }
+		//"mapProperties"
+		public Keyword getMapPropertiesKeyword_3_3_0() { return cMapPropertiesKeyword_3_3_0; }
 
 		//":"?
 		public Keyword getColonKeyword_3_3_1() { return cColonKeyword_3_3_1; }
 
-		//childPlacement=KPlacement
-		public Assignment getChildPlacementAssignment_3_3_2() { return cChildPlacementAssignment_3_3_2; }
-
-		//KPlacement
-		public RuleCall getChildPlacementKPlacementParserRuleCall_3_3_2_0() { return cChildPlacementKPlacementParserRuleCall_3_3_2_0; }
-
-		//("children" ":"? children+=KRendering (","? children+=KRendering)*)?
-		public Group getGroup_3_4() { return cGroup_3_4; }
-
-		//"children"
-		public Keyword getChildrenKeyword_3_4_0() { return cChildrenKeyword_3_4_0; }
-
-		//":"?
-		public Keyword getColonKeyword_3_4_1() { return cColonKeyword_3_4_1; }
-
-		//children+=KRendering
-		public Assignment getChildrenAssignment_3_4_2() { return cChildrenAssignment_3_4_2; }
-
-		//KRendering
-		public RuleCall getChildrenKRenderingParserRuleCall_3_4_2_0() { return cChildrenKRenderingParserRuleCall_3_4_2_0; }
-
-		//(","? children+=KRendering)*
-		public Group getGroup_3_4_3() { return cGroup_3_4_3; }
-
-		//","?
-		public Keyword getCommaKeyword_3_4_3_0() { return cCommaKeyword_3_4_3_0; }
-
-		//children+=KRendering
-		public Assignment getChildrenAssignment_3_4_3_1() { return cChildrenAssignment_3_4_3_1; }
-
-		//KRendering
-		public RuleCall getChildrenKRenderingParserRuleCall_3_4_3_1_0() { return cChildrenKRenderingParserRuleCall_3_4_3_1_0; }
-
-		//("mapProperties" ":"? persistentEntries+=PersistentEntry (","? persistentEntries+=PersistentEntry)*)?
-		public Group getGroup_3_5() { return cGroup_3_5; }
-
-		//"mapProperties"
-		public Keyword getMapPropertiesKeyword_3_5_0() { return cMapPropertiesKeyword_3_5_0; }
-
-		//":"?
-		public Keyword getColonKeyword_3_5_1() { return cColonKeyword_3_5_1; }
-
 		//persistentEntries+=PersistentEntry
-		public Assignment getPersistentEntriesAssignment_3_5_2() { return cPersistentEntriesAssignment_3_5_2; }
+		public Assignment getPersistentEntriesAssignment_3_3_2() { return cPersistentEntriesAssignment_3_3_2; }
 
 		//PersistentEntry
-		public RuleCall getPersistentEntriesPersistentEntryParserRuleCall_3_5_2_0() { return cPersistentEntriesPersistentEntryParserRuleCall_3_5_2_0; }
+		public RuleCall getPersistentEntriesPersistentEntryParserRuleCall_3_3_2_0() { return cPersistentEntriesPersistentEntryParserRuleCall_3_3_2_0; }
 
 		//(","? persistentEntries+=PersistentEntry)*
-		public Group getGroup_3_5_3() { return cGroup_3_5_3; }
+		public Group getGroup_3_3_3() { return cGroup_3_3_3; }
 
 		//","?
-		public Keyword getCommaKeyword_3_5_3_0() { return cCommaKeyword_3_5_3_0; }
+		public Keyword getCommaKeyword_3_3_3_0() { return cCommaKeyword_3_3_3_0; }
 
 		//persistentEntries+=PersistentEntry
-		public Assignment getPersistentEntriesAssignment_3_5_3_1() { return cPersistentEntriesAssignment_3_5_3_1; }
+		public Assignment getPersistentEntriesAssignment_3_3_3_1() { return cPersistentEntriesAssignment_3_3_3_1; }
 
 		//PersistentEntry
-		public RuleCall getPersistentEntriesPersistentEntryParserRuleCall_3_5_3_1_0() { return cPersistentEntriesPersistentEntryParserRuleCall_3_5_3_1_0; }
+		public RuleCall getPersistentEntriesPersistentEntryParserRuleCall_3_3_3_1_0() { return cPersistentEntriesPersistentEntryParserRuleCall_3_3_3_1_0; }
 
 		//"}"
-		public Keyword getRightCurlyBracketKeyword_3_6() { return cRightCurlyBracketKeyword_3_6; }
+		public Keyword getRightCurlyBracketKeyword_3_4() { return cRightCurlyBracketKeyword_3_4; }
 	}
 
 	public class KCustomRenderingElements extends AbstractParserRuleElementFinder {
@@ -4184,8 +4125,7 @@ public class KRenderingGrammarAccess extends AbstractGrammarElementFinder {
 
 	//KText:
 	//	{KText} "Text" text=EString? ("{" ("styles" ":"? styles+=KStyle (","? styles+=KStyle)*)? ("placementData" ":"?
-	//	placementData=KPlacementData)? ("childPlacement" ":"? childPlacement=KPlacement)? ("children" ":"?
-	//	children+=KRendering (","? children+=KRendering)*)? // allow mapProperties in order to specify size for size estimation tests
+	//	placementData=KPlacementData)? // allow mapProperties in order to specify size for size estimation tests
 	//	// (I don't trust in the different SWT implementations to
 	//	// provide the same size of a text on different platforms)
 	//	("mapProperties" ":"? persistentEntries+=PersistentEntry (","? persistentEntries+=PersistentEntry)*)? "}")?;

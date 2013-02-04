@@ -1167,8 +1167,7 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 
 	//KText:
 	//	{KText} "Text" text=EString? ("{" ("styles" ":"? styles+=KStyle (","? styles+=KStyle)*)? ("placementData" ":"?
-	//	placementData=KPlacementData)? ("childPlacement" ":"? childPlacement=KPlacement)? ("children" ":"?
-	//	children+=KRendering (","? children+=KRendering)*)? // allow mapProperties in order to specify size for size estimation tests
+	//	placementData=KPlacementData)? // allow mapProperties in order to specify size for size estimation tests
 	//	// (I don't trust in the different SWT implementations to
 	//	// provide the same size of a text on different platforms)
 	//	("mapProperties" ":"? persistentEntries+=PersistentEntry (","? persistentEntries+=PersistentEntry)*)? "}")?;
