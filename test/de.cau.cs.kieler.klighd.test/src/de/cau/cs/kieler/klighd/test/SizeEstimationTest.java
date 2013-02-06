@@ -35,6 +35,7 @@ import de.cau.cs.kieler.core.test.runners.ModelCollectionTestRunner;
 import de.cau.cs.kieler.core.test.runners.ModelCollectionTestRunner.BundleId;
 import de.cau.cs.kieler.core.test.runners.ModelCollectionTestRunner.ModelFilter;
 import de.cau.cs.kieler.core.test.runners.ModelCollectionTestRunner.ModelPath;
+import de.cau.cs.kieler.core.test.runners.ModelCollectionTestRunner.StopOnFailure;
 import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout;
 import de.cau.cs.kieler.klighd.krendering.PlacementUtil;
 import de.cau.cs.kieler.klighd.krendering.PlacementUtil.Bounds;
@@ -81,6 +82,7 @@ public class SizeEstimationTest {
      * @param node the test input model
      */
     @Test
+    @StopOnFailure
     public void sizeDataPresentTest(final KNode node) {
         for (Iterator<KNode> it = Iterators.filter(node.eAllContents(), KNode.class); it.hasNext();) {
             performSizeDataPresentTest(it.next());

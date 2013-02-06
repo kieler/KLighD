@@ -1,0 +1,10 @@
+KNode {
+	children
+	KNode {
+		data
+		RenderingRef "//@children.0/@data.1"
+		Rectangle {
+			children Text text
+		}
+	}
+}
