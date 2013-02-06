@@ -37,13 +37,15 @@ public final class MathUtil {
      * 
      * @param points
      *            the list of points
-     * @param location
-     *            the relative location
+     * @param locationAbsolute
+     *            the absolute location offset
+     * @param locationRelative
+     *            the relative location ranging from 0 to 1
      * @return a pair of the index of the start segment and the concrete point for the relative
      *         location
      */
     public static Pair<Integer, Point2D> getSegmentStartIndexAndPoint(final Point2D[] points,
-            final double location) {
+            final double locationAbsolute, final double locationRelative) {
         // handle special cases
         if (points.length == 0) {
             return new Pair<Integer, Point2D>(-1, new Point2D.Double(0, 0));
@@ -61,7 +63,7 @@ public final class MathUtil {
         
         // find the segment and point for the location
         int k = -1;
-        double searchDistance = location * totalDistance;
+        double searchDistance = locationRelative * totalDistance + locationAbsolute;
         double currentDistance = 0;
         for (int i = 0; i < points.length - 1; ++i) {
             double d = points[i].distance(points[i + 1]);
@@ -74,17 +76,22 @@ public final class MathUtil {
                 k = i;
                 // compute the actual point on the polyline
                 double rD = searchDistance - currentDistance;
-                point.setLocation(points[i].getX() + rD * (points[i + 1].getX() - points[i].getX())
-                        / d, points[i].getY() + rD * (points[i + 1].getY() - points[i].getY()) / d);
+                point.setLocation(
+                        points[i].getX() + rD * (points[i + 1].getX() - points[i].getX()) / d,
+                        points[i].getY() + rD * (points[i + 1].getY() - points[i].getY()) / d
+                );
                 break;
             } else {
                 currentDistance += d;
             }
         }
-        // take first or last segment by default
+        
+        // if no segment has been found yet take first or last segment by default;
+        //  Will the branch be taken if 'points' contains point != (0,0) ??
+        //  (i.e. may it be removed or must locationAbsoluted be incorporated here, too?
         if (k < 0) {
             // CHECKSTYLEOFF MagicNumber
-            if (location < 0.5) {
+            if (locationRelative < 0.5) {
                 k = 0;
                 point.setLocation(points[0]);
             } else {
@@ -102,12 +109,12 @@ public final class MathUtil {
      * 
      * @param points
      *            the list of points
-     * @param location
-     *            the relative location
+     * @param locationRelative
+     *            the relative location ranging from 0 to 1
      * @return the concrete point for the relative location
      */
-    public static Point2D getPoint(final Point2D[] points, final double location) {
-        return getSegmentStartIndexAndPoint(points, location).getSecond();
+    public static Point2D getPoint(final Point2D[] points, final double locationRelative) {
+        return getSegmentStartIndexAndPoint(points, 0, locationRelative).getSecond();
     }
 
     /**

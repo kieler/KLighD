@@ -185,7 +185,7 @@ public final class PiccoloPlacementUtil {
 
         // get the segment and concrete point the location specifies on the path
         Pair<Integer, Point2D> result = MathUtil.getSegmentStartIndexAndPoint(points,
-                dpd.getAbsolute());
+                dpd.getAbsolute(), dpd.getRelative());
         decoration.origin = result.getSecond();
 
         // calculate the decorator bounds
