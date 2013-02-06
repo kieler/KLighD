@@ -352,14 +352,18 @@ public final class PlacementUtil {
      * @return the minimal size
      */
     public static Bounds estimateSize(final KRendering rendering, final Bounds givenBounds) {
-
+        //determine the type of the rendering
         int id = KRENDERING_PACKAGE.getKText().isInstance(rendering) ? KRenderingPackage.KTEXT
-                : (KRENDERING_PACKAGE.getKContainerRendering().isInstance(rendering)
+                : (KRENDERING_PACKAGE.getKContainerRendering().isInstance(rendering) 
                         ? KRenderingPackage.KCONTAINER_RENDERING
-                                : KRENDERING_PACKAGE.getKChildArea().isInstance(rendering)
-                                        ? KRenderingPackage.KCHILD_AREA : KRenderingPackage.KRENDERING);
+                        : KRENDERING_PACKAGE.getKChildArea().isInstance(rendering) 
+                        ? KRenderingPackage.KCHILD_AREA
+                                : KRENDERING_PACKAGE.getKRenderingRef().isInstance(rendering) 
+                                ? KRenderingPackage.KRENDERING_REF
+                                        : KRenderingPackage.KRENDERING);
 
-        switch (id) {
+        //calculate size based on type
+        switch (id){
         case KRenderingPackage.KTEXT:
             // for a text rendering just calculate the bounds of the text
             // and put the minimal size into 'minBounds'
@@ -367,7 +371,9 @@ public final class PlacementUtil {
         case KRenderingPackage.KCHILD_AREA:
             // KChildAreas do not cover any space that is not gathered by the (macro) layout
             return new Bounds(0, 0);
-
+        case KRenderingPackage.KRENDERING_REF:
+            // calculate the size of the referenced Rendering instead
+            return estimateSize(((KRenderingRef) rendering).getRendering(), givenBounds);
         case KRenderingPackage.KCONTAINER_RENDERING:
             KContainerRendering container = (KContainerRendering) rendering;
 
