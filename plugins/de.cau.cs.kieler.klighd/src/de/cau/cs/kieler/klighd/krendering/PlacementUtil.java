@@ -45,6 +45,7 @@ import de.cau.cs.kieler.core.krendering.KPointPlacementData;
 import de.cau.cs.kieler.core.krendering.KPolyline;
 import de.cau.cs.kieler.core.krendering.KPosition;
 import de.cau.cs.kieler.core.krendering.KRendering;
+import de.cau.cs.kieler.core.krendering.KRenderingFactory;
 import de.cau.cs.kieler.core.krendering.KRenderingPackage;
 import de.cau.cs.kieler.core.krendering.KRenderingRef;
 import de.cau.cs.kieler.core.krendering.KText;
@@ -363,7 +364,7 @@ public final class PlacementUtil {
                                         : KRenderingPackage.KRENDERING);
 
         //calculate size based on type
-        switch (id){
+        switch (id) {
         case KRenderingPackage.KTEXT:
             // for a text rendering just calculate the bounds of the text
             // and put the minimal size into 'minBounds'
@@ -514,7 +515,7 @@ public final class PlacementUtil {
     }
 
     /**
-     * Returns the minimal size of a {@link KContainerRendering} width
+     * Returns the minimal size of a {@link KContainerRendering} with
      * <code>childPlacement instanceof KGridPlacement</code> and updates the placement data of
      * internal KRenderings if necessary.<br>
      * <br>
@@ -1359,16 +1360,9 @@ public final class PlacementUtil {
         } else {
             bounds = new KRenderingSwitch<Bounds>() {
                 public Bounds caseKGridPlacement(final KGridPlacement gridPlacement) {
-
-                    // collect the grid placement data from the children
-                    final KGridPlacementData[] gpds = new KGridPlacementData[children.size()];
-                    int i = 0;
-                    for (KRendering rendering : children) {
-                        gpds[i++] = asGridPlacementData(rendering.getPlacementData());
-                    }
-
-                    // evaluate grid based on that data and print placement for current child
-                    return evaluateGridPlacement(gridPlacement, gpds, parentBounds)[children
+                    // evaluate grid based on the children, their placementData and size 
+                    //  and get placement for current child
+                    return evaluateGridPlacement(gridPlacement, children, parentBounds)[children
                             .lastIndexOf(child)];
                 }
             }
@@ -1414,15 +1408,15 @@ public final class PlacementUtil {
      * 
      * @param gridPlacement
      *            the definition of the parent gridPlacement defining the column number
-     * @param gpds
-     *            the grid placement data
+     * @param children
+     *            the children to be placed inside the grid with their placement data
      * @param parentBounds
      *            the parent bounds
      * @return the bounds
      */
     public static Bounds[] evaluateGridPlacement(final KGridPlacement gridPlacement,
-            final KGridPlacementData[] gpds, final Bounds parentBounds) {
-        GridPlacer placer = getGridPlacementObject(gridPlacement, gpds);
+            final List<KRendering> children, final Bounds parentBounds) {
+        GridPlacer placer = getGridPlacementObject(gridPlacement, children);
         return placer.evaluate(parentBounds);
     }
     
@@ -1443,16 +1437,16 @@ public final class PlacementUtil {
      * 
      * @param gridPlacement
      *            the grid data
-     * @param gpds
-     *            the placement data of elements inside the grid
+     * @param children
+     *            the children to be placed inside the grid with their placementData
      * @return the gridPlacer
      */
     public static GridPlacer getGridPlacementObject(final KGridPlacement gridPlacement,
-            final KGridPlacementData[] gpds) {
+            final List<KRendering> children) {
         GridPlacer placer = new GridPlacer();
-        placer.gpds = gpds;
+        placer.children = children;
 
-        if (gpds.length == 0) {
+        if (children.size() == 0) {
             // no elements to place
             return placer;
         }
@@ -1461,9 +1455,9 @@ public final class PlacementUtil {
 
         // determine the required number of columns and rows
         int setColumns = gridPlacement.getNumColumns();
-        placer.numColumns = setColumns == -1 ? gpds.length : setColumns < 1 ? 1 : gridPlacement
+        placer.numColumns = setColumns == -1 ? children.size() : setColumns < 1 ? 1 : gridPlacement
                 .getNumColumns();
-        placer.numRows = (gpds.length - 1) / placer.numColumns + 1;
+        placer.numRows = (children.size() - 1) / placer.numColumns + 1;
 
         // determine the column widths and row heights
         // based on the minimum widths/height of cells in that column/row
@@ -1486,10 +1480,18 @@ public final class PlacementUtil {
         Arrays.fill(placer.columnMinMaxWidth, Float.MAX_VALUE);
         Arrays.fill(placer.rowMinMaxHeight, Float.MAX_VALUE);
 
-        for (int i = 0; i < gpds.length; i++) {
-            KGridPlacementData gpd = gpds[i];
+        for (int i = 0; i < children.size(); i++) {
+            KRendering r = children.get(i);
+            KGridPlacementData gpd = asGridPlacementData(r.getPlacementData());
+            
+            //determine size of the rendering to be able to size the colum/row accordingly
+            
+            final Bounds childMinSize = estimateSize(r, new Bounds(0, 0));
+            
             if (gpd == null) {
-                continue;
+                //no grid placement data present, create dummy to prevent null pointer exceptions
+                gpd = (KGridPlacementData) KRenderingFactory.eINSTANCE.create(
+                        KRenderingPackage.eINSTANCE.getKGridPlacementData());
             }
 
             int column = i % placer.numColumns;
@@ -1497,9 +1499,12 @@ public final class PlacementUtil {
 
             // determine the maximum of the minimum column widths and row heights
             // e.g. how big must a column be to fit all the minSizes
-            placer.columnMaxMinWidth[column] = Math.max(placer.columnMaxMinWidth[column],
+            placer.columnMaxMinWidth[column] = Math.max(
+                    //size for this element is size of child elements or minSize
+                    Math.max(childMinSize.width, placer.columnMaxMinWidth[column]),
                     gpd.getMinCellWidth());
-            placer.rowMaxMinHeight[row] = Math.max(placer.rowMaxMinHeight[row],
+            placer.rowMaxMinHeight[row] = Math.max(
+                    Math.max(childMinSize.height, placer.rowMaxMinHeight[row]),
                     gpd.getMinCellHeight());
             if (gpd.getMaxCellWidth() >= placer.columnMaxMinWidth[column]) {
                 // We defined the "min width" to be stronger than the "max width" so  take the given max
@@ -1542,7 +1547,7 @@ public final class PlacementUtil {
     public static class GridPlacer {
 
         /** the associated grid placement data. */
-        private KGridPlacementData[] gpds;
+        private List<KRendering> children;
         /** the number of columns. */
         private int numColumns;
         /** the number of rows. */
@@ -1588,11 +1593,11 @@ public final class PlacementUtil {
          */
         // SUPPRESS CHECKSTYLE NEXT Length
         public Bounds[] evaluate(final Bounds parentBounds) {
-            if (gpds.length == 0) {
+            if (children.size() == 0) {
                 return new Bounds[0];
             }
 
-            Bounds[] bounds = new Bounds[gpds.length];
+            Bounds[] bounds = new Bounds[children.size()];
             float availableParentWidth = (float) parentBounds.width;
             float availableParentHeight = (float) parentBounds.height;
             
@@ -1701,8 +1706,8 @@ public final class PlacementUtil {
             // create the bounds
             float currentX = 0;
             float currentY = 0;
-            for (int i = 0; i < gpds.length; i++) {
-                KGridPlacementData gpd = gpds[i];
+            for (int i = 0; i < children.size(); i++) {
+                KGridPlacementData gpd = asGridPlacementData(children.get(i).getPlacementData());
                 int column = i % numColumns;
                 int row = i / numColumns;
 
