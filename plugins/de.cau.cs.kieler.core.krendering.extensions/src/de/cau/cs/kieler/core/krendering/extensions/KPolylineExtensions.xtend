@@ -30,11 +30,14 @@ class KPolylineExtensions {
 		return pl.drawArrow() => [
 		    it.placementData = renderingFactory.createKDecoratorPlacementData => [
                 it.setRotateWithLine(true);
-                it.setAbsolute(1)
-                it.setXOffset(-8)
-                it.setYOffset(-3)
-                it.setWidth(7)
-                it.setHeight(5)
+                it.setAbsolute(-3f);
+                it.setRelative(1f);
+                it.setXOffset(-5f);
+                // chsch: What is the reason of the following vertical offset
+                //  that appears to work for arbitrary lineWidths??
+                it.setYOffset(-2.5f);
+                it.setWidth(7);
+                it.setHeight(5);
             ];
         ];
 	}
@@ -60,73 +63,5 @@ class KPolylineExtensions {
 		    it.setY(yPos);
 		    pl.points.add(it);
 		];		
-	}
-	
-// alternative realization:
-//    def KPolyline addConnectionArrow(KPolyline line, float scale, boolean toHead) {
-//        return line => [
-//            // add a polyline forming the arrow with color and line width of the parent line 
-//            it.children += renderingFactory.createKPolyline().withCopyOf(line.FGColor).withCopyOf(line.lineWidth) => [
-//                it.placementData = renderingFactory.createKPolylinePlacementData() => [
-//                    if (toHead) {
-//                        it.points += newArrayList(
-//                            createPoint(createLeftPos(0f,0f), createTopPos(0f,0f)),
-//                            createPoint(createRightPos(0f,0f), createTopPos(0f,0.5f)),
-//                            createPoint(createLeftPos(0f,0f), createBottomPos(0f,0f))
-//                         );
-//                    } else {
-//                        it.points += newArrayList(
-//                            createPoint(createRightPos(0f,0f), createTopPos(0f,0f)),
-//                            createPoint(createLeftPos(0f,0f), createTopPos(0f,0.5f)),
-//                            createPoint(createRightPos(0f,0f), createBottomPos(0f,0f))
-//                         );
-//                    }
-//                    it.detailPlacementData = renderingFactory.createKDecoratorPlacementData() => [
-//                        val float actualScale = Math::sqrt(3*scale).floatValue;
-//                        it.height = 10 * actualScale;
-//                        it.width = 15 * actualScale;
-//                        it.XOffset = -15 * actualScale;
-//                        it.YOffset = (it.height+scale/2f) / -2f;
-//                        it.relative = true; // this directs klighd to rotate the decorator accordingly!!
-//                        it.location = if (toHead) 1f else 0;
-//                    ];
-//                ];
-//            ];
-//        ];
-//    }
-//    
-//    def KPosition createPoint(KXPosition x, KYPosition y) {
-//        return renderingFactory.createKPosition => [
-//            it.x = x;
-//            it.y = y;
-//        ];
-//    }
-//    
-//    def KXPosition createLeftPos(Float abs, Float rel) {
-//        return renderingFactory.createKLeftPosition => [
-//            it.absolute = abs;
-//            it.relative = rel;
-//        ];
-//    }
-//    
-//    def KXPosition createRightPos(Float abs, Float rel) {
-//        return renderingFactory.createKRightPosition => [
-//            it.absolute = abs;
-//            it.relative = rel;
-//        ];
-//    }
-//
-//    def KYPosition createBottomPos(Float abs, Float rel) {
-//        return renderingFactory.createKBottomPosition => [
-//            it.absolute = abs;
-//            it.relative = rel;
-//        ];
-//    }
-//
-//    def KYPosition createTopPos(Float abs, Float rel) {
-//        return renderingFactory.createKTopPosition => [
-//            it.absolute = abs;
-//            it.relative = rel;
-//        ];
-//    }
+	}	
 }
