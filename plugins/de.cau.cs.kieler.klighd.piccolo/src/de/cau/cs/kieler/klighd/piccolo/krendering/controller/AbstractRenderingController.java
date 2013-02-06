@@ -54,7 +54,6 @@ import de.cau.cs.kieler.core.krendering.KFontName;
 import de.cau.cs.kieler.core.krendering.KFontSize;
 import de.cau.cs.kieler.core.krendering.KForeground;
 import de.cau.cs.kieler.core.krendering.KGridPlacement;
-import de.cau.cs.kieler.core.krendering.KGridPlacementData;
 import de.cau.cs.kieler.core.krendering.KHorizontalAlignment;
 import de.cau.cs.kieler.core.krendering.KImage;
 import de.cau.cs.kieler.core.krendering.KInvisibility;
@@ -544,13 +543,6 @@ public abstract class AbstractRenderingController<S extends KGraphElement, T ext
             return;
         }
 
-        // collect the grid placement data
-        final KGridPlacementData[] gpds = new KGridPlacementData[renderings.size()];
-        int i = 0;
-        for (KRendering rendering : renderings) {
-            gpds[i++] = PlacementUtil.asGridPlacementData(rendering.getPlacementData());
-        }
-
         // calculate the bounds
         Bounds parentBounds = 
                 new Bounds(
@@ -558,12 +550,12 @@ public abstract class AbstractRenderingController<S extends KGraphElement, T ext
                 (float) parent.getBoundsReference().getY(), 
                 (float) parent.getBoundsReference().getWidth(),
                 (float) parent.getBoundsReference().getHeight());
-        final GridPlacer gridPlacer = PlacementUtil.getGridPlacementObject(gridPlacement, gpds);
+        final GridPlacer gridPlacer = PlacementUtil.getGridPlacementObject(gridPlacement, renderings);
         Bounds[] elementBounds = gridPlacer.evaluate(parentBounds);
         // create the renderings and collect the controllers
         Bounds currentBounds;
         final PNodeController<?>[] controllers = new PNodeController<?>[renderings.size()];
-        i = 0;
+        int i = 0;
         for (KRendering rendering : renderings) {
             currentBounds = elementBounds[renderings.lastIndexOf(rendering)];
             PBounds currentPBounds = new PBounds(currentBounds.getX(), currentBounds.getY(),
