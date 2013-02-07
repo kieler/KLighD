@@ -288,7 +288,7 @@ public abstract class AbstractRenderingController<S extends KGraphElement, T ext
                     // handle new, moved and removed styles
                     if (msg.getNotifier() instanceof KRendering
                             && msg.getFeatureID(KRendering.class) 
-                               == KRenderingPackage.KRENDERING__STYLES) {
+                               == KRenderingPackage.KSTYLE_HOLDER__STYLES) {
                         // PlatformUI.getWorkbench().getDisplay().syncExec(new Runnable() {
                         // public void run() {
                         // update the styles
