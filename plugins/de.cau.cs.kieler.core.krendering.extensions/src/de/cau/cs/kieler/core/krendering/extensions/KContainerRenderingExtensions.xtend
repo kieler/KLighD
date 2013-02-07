@@ -23,6 +23,8 @@ import de.cau.cs.kieler.core.krendering.KRenderingFactory
 import de.cau.cs.kieler.core.krendering.KPolygon
 import de.cau.cs.kieler.core.krendering.KGridPlacement
 import de.cau.cs.kieler.core.krendering.KPosition
+import de.cau.cs.kieler.core.krendering.KRoundedRectangle
+import de.cau.cs.kieler.core.krendering.KRendering
 
 /**
  * @author chsch, alb
@@ -37,6 +39,24 @@ class KContainerRenderingExtensions {
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	////////////////////////					KContainerRenderings
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    /**
+     * @returns the child! 
+     */
+    def <T extends KRendering> T addChild(KContainerRendering parent, T child) {
+        return child => [
+            parent.children.add(it);
+        ];
+    }
+    
+    def KRoundedRectangle addRoundedRectangle(KContainerRendering cr, float cWidth, float cHeight, int lineWidth){
+        return renderingFactory.createKRoundedRectangle => [
+            cr.children += it;
+            it.cornerWidth = cWidth;
+            it.cornerHeight = cHeight;
+            it.lineWidth = lineWidth;
+        ];
+    }
 
 	def KGridPlacement setGridPlacement(KContainerRendering cr, int cols){
 		return renderingFactory.createKGridPlacement => [
@@ -60,15 +80,22 @@ class KContainerRenderingExtensions {
 		];
 	}
 	
-	def KPolyline addHorizontalLine(KContainerRendering cr){
-		return renderingFactory.createKPolyline => [
-		   cr.addChild(it);
-		   it.setLineWidth(1);
-		   it.points.add(createKPosition(PositionReferenceX::LEFT, 0, 0, PositionReferenceY::BOTTOM, 0, 0));
-		   it.points.add(createKPosition(PositionReferenceX::RIGHT, 0, 0, PositionReferenceY::BOTTOM, 0, 0))
+    def KPolyline addHorizontalLine(KContainerRendering cr, PositionReferenceY y, float absIndent){
+        return cr.addChild(renderingFactory.createKPolyline())  as KPolyline => [
+           it.lineWidth = 1;
+           it.points += createKPosition(PositionReferenceX::LEFT, absIndent, 0, y, 0, 0);
+           it.points += createKPosition(PositionReferenceX::RIGHT, absIndent, 0, y, 0, 0);
         ];
-	}
-	
+    }
+    
+    def KPolyline addVerticalLine(KContainerRendering cr, PositionReferenceX x, float absIndent){
+        return cr.addChild(renderingFactory.createKPolyline()) => [
+           it.lineWidth = 1;
+           it.points += createKPosition(x, 0, 0, TOP, absIndent, 0);
+           it.points += createKPosition(x, 0, 0, BOTTOM, absIndent, 0);
+        ];
+    }
+    
 	def KPolyline addHorizontalSeperatorLine(KContainerRendering cr, int lineWidth, int spacing){
         return renderingFactory.createKPolyline => [
             cr.addChild(it);
@@ -78,14 +105,7 @@ class KContainerRenderingExtensions {
             it.placementData = renderingFactory.createKGridPlacementData => [
                 it.setMinCellHeight(lineWidth + spacing)
             ]; 
-//          TODO: check spacing  
-//            it.placementData = renderingFactory.createKPolylinePlacementData => [
-//                it.detailPlacementData = renderingFactory.createKGridPlacementData => [
-//                    it.setHeightHint(lineWidth + spacing)
-//                ]; 
-//            ];
         ];
-        
     }
 	
 	def KChildArea addChildArea(KContainerRendering cr){
