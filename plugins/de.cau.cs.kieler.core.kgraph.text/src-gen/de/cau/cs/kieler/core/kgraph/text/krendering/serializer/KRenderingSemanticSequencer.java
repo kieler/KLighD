@@ -658,7 +658,7 @@ public class KRenderingSemanticSequencer extends KLayoutDataSemanticSequencer {
 	
 	/**
 	 * Constraint:
-	 *     (lineWidth=EInt propagateToChildren?='!'? functionId=EString?)
+	 *     (lineWidth=EFloat propagateToChildren?='!'? functionId=EString?)
 	 */
 	protected void sequence_KLineWidth(EObject context, KLineWidth semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);

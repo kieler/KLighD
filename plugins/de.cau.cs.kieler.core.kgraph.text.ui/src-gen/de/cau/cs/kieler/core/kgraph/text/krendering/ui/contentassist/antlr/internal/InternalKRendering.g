@@ -23108,8 +23108,8 @@ rule__KLineWidth__LineWidthAssignment_1
     }
 :
 (
-{ before(grammarAccess.getKLineWidthAccess().getLineWidthEIntParserRuleCall_1_0()); }
-	ruleEInt{ after(grammarAccess.getKLineWidthAccess().getLineWidthEIntParserRuleCall_1_0()); }
+{ before(grammarAccess.getKLineWidthAccess().getLineWidthEFloatParserRuleCall_1_0()); }
+	ruleEFloat{ after(grammarAccess.getKLineWidthAccess().getLineWidthEFloatParserRuleCall_1_0()); }
 )
 
 ;

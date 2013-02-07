@@ -266,7 +266,7 @@ KVisibility returns KInvisibility:
     
     
 KLineWidth returns KLineWidth:
-    'lineWidth' lineWidth=EInt (propagateToChildren?='!')? 
+    'lineWidth' lineWidth=EFloat (propagateToChildren?='!')? 
     ('modifier' '=' functionId=EString)?;
 
 KLineStyle returns KLineStyle:

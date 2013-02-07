@@ -5536,9 +5536,9 @@ ruleKLineWidth returns [EObject current=null]
 (
 (
 		{ 
-	        newCompositeNode(grammarAccess.getKLineWidthAccess().getLineWidthEIntParserRuleCall_1_0()); 
+	        newCompositeNode(grammarAccess.getKLineWidthAccess().getLineWidthEFloatParserRuleCall_1_0()); 
 	    }
-		lv_lineWidth_1_0=ruleEInt		{
+		lv_lineWidth_1_0=ruleEFloat		{
 	        if ($current==null) {
 	            $current = createModelElementForParent(grammarAccess.getKLineWidthRule());
 	        }
@@ -5546,7 +5546,7 @@ ruleKLineWidth returns [EObject current=null]
        			$current, 
        			"lineWidth",
         		lv_lineWidth_1_0, 
-        		"EInt");
+        		"EFloat");
 	        afterParserOrEnumRuleCall();
 	    }
 

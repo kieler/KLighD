@@ -19,6 +19,7 @@ import de.cau.cs.kieler.core.krendering.KShadow;
 
 import org.eclipse.emf.common.notify.Notification;
 
+import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 
@@ -102,7 +103,7 @@ public class KShadowImpl extends KStyleImpl implements KShadow {
     protected float blur = BLUR_EDEFAULT;
 
     /**
-     * The cached value of the '{@link #getColor() <em>Color</em>}' reference.
+     * The cached value of the '{@link #getColor() <em>Color</em>}' containment reference.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @see #getColor()
@@ -199,14 +200,6 @@ public class KShadowImpl extends KStyleImpl implements KShadow {
      * @generated
      */
     public KColor getColor() {
-        if (color != null && color.eIsProxy()) {
-            InternalEObject oldColor = (InternalEObject)color;
-            color = (KColor)eResolveProxy(oldColor);
-            if (color != oldColor) {
-                if (eNotificationRequired())
-                    eNotify(new ENotificationImpl(this, Notification.RESOLVE, KRenderingPackage.KSHADOW__COLOR, oldColor, color));
-            }
-        }
         return color;
     }
 
@@ -215,8 +208,14 @@ public class KShadowImpl extends KStyleImpl implements KShadow {
      * <!-- end-user-doc -->
      * @generated
      */
-    public KColor basicGetColor() {
-        return color;
+    public NotificationChain basicSetColor(KColor newColor, NotificationChain msgs) {
+        KColor oldColor = color;
+        color = newColor;
+        if (eNotificationRequired()) {
+            ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, KRenderingPackage.KSHADOW__COLOR, oldColor, newColor);
+            if (msgs == null) msgs = notification; else msgs.add(notification);
+        }
+        return msgs;
     }
 
     /**
@@ -225,10 +224,31 @@ public class KShadowImpl extends KStyleImpl implements KShadow {
      * @generated
      */
     public void setColor(KColor newColor) {
-        KColor oldColor = color;
-        color = newColor;
-        if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, KRenderingPackage.KSHADOW__COLOR, oldColor, color));
+        if (newColor != color) {
+            NotificationChain msgs = null;
+            if (color != null)
+                msgs = ((InternalEObject)color).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - KRenderingPackage.KSHADOW__COLOR, null, msgs);
+            if (newColor != null)
+                msgs = ((InternalEObject)newColor).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - KRenderingPackage.KSHADOW__COLOR, null, msgs);
+            msgs = basicSetColor(newColor, msgs);
+            if (msgs != null) msgs.dispatch();
+        }
+        else if (eNotificationRequired())
+            eNotify(new ENotificationImpl(this, Notification.SET, KRenderingPackage.KSHADOW__COLOR, newColor, newColor));
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    @Override
+    public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
+        switch (featureID) {
+            case KRenderingPackage.KSHADOW__COLOR:
+                return basicSetColor(null, msgs);
+        }
+        return super.eInverseRemove(otherEnd, featureID, msgs);
     }
 
     /**
@@ -246,8 +266,7 @@ public class KShadowImpl extends KStyleImpl implements KShadow {
             case KRenderingPackage.KSHADOW__BLUR:
                 return getBlur();
             case KRenderingPackage.KSHADOW__COLOR:
-                if (resolve) return getColor();
-                return basicGetColor();
+                return getColor();
         }
         return super.eGet(featureID, resolve, coreType);
     }

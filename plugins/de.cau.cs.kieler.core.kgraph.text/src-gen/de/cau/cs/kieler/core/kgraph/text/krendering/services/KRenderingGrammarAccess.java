@@ -3244,7 +3244,7 @@ public class KRenderingGrammarAccess extends AbstractGrammarElementFinder {
 		private final Group cGroup = (Group)rule.eContents().get(1);
 		private final Keyword cLineWidthKeyword_0 = (Keyword)cGroup.eContents().get(0);
 		private final Assignment cLineWidthAssignment_1 = (Assignment)cGroup.eContents().get(1);
-		private final RuleCall cLineWidthEIntParserRuleCall_1_0 = (RuleCall)cLineWidthAssignment_1.eContents().get(0);
+		private final RuleCall cLineWidthEFloatParserRuleCall_1_0 = (RuleCall)cLineWidthAssignment_1.eContents().get(0);
 		private final Assignment cPropagateToChildrenAssignment_2 = (Assignment)cGroup.eContents().get(2);
 		private final Keyword cPropagateToChildrenExclamationMarkKeyword_2_0 = (Keyword)cPropagateToChildrenAssignment_2.eContents().get(0);
 		private final Group cGroup_3 = (Group)cGroup.eContents().get(3);
@@ -3254,20 +3254,20 @@ public class KRenderingGrammarAccess extends AbstractGrammarElementFinder {
 		private final RuleCall cFunctionIdEStringParserRuleCall_3_2_0 = (RuleCall)cFunctionIdAssignment_3_2.eContents().get(0);
 		
 		//KLineWidth:
-		//	"lineWidth" lineWidth=EInt propagateToChildren?="!"? ("modifier" "=" functionId=EString)?;
+		//	"lineWidth" lineWidth=EFloat propagateToChildren?="!"? ("modifier" "=" functionId=EString)?;
 		public ParserRule getRule() { return rule; }
 
-		//"lineWidth" lineWidth=EInt propagateToChildren?="!"? ("modifier" "=" functionId=EString)?
+		//"lineWidth" lineWidth=EFloat propagateToChildren?="!"? ("modifier" "=" functionId=EString)?
 		public Group getGroup() { return cGroup; }
 
 		//"lineWidth"
 		public Keyword getLineWidthKeyword_0() { return cLineWidthKeyword_0; }
 
-		//lineWidth=EInt
+		//lineWidth=EFloat
 		public Assignment getLineWidthAssignment_1() { return cLineWidthAssignment_1; }
 
-		//EInt
-		public RuleCall getLineWidthEIntParserRuleCall_1_0() { return cLineWidthEIntParserRuleCall_1_0; }
+		//EFloat
+		public RuleCall getLineWidthEFloatParserRuleCall_1_0() { return cLineWidthEFloatParserRuleCall_1_0; }
 
 		//propagateToChildren?="!"?
 		public Assignment getPropagateToChildrenAssignment_2() { return cPropagateToChildrenAssignment_2; }
@@ -4409,7 +4409,7 @@ public class KRenderingGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//KLineWidth:
-	//	"lineWidth" lineWidth=EInt propagateToChildren?="!"? ("modifier" "=" functionId=EString)?;
+	//	"lineWidth" lineWidth=EFloat propagateToChildren?="!"? ("modifier" "=" functionId=EString)?;
 	public KLineWidthElements getKLineWidthAccess() {
 		return (pKLineWidth != null) ? pKLineWidth : (pKLineWidth = new KLineWidthElements());
 	}

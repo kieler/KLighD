@@ -49,7 +49,7 @@ class KRenderingExtensions {
         return kge.getData(typeof(KRendering));
     }
 
-    def KRoundedRectangle addRoundedRectangle(KNode node, float cWidth, float cHeight, int lineWidth){
+    def KRoundedRectangle addRoundedRectangle(KNode node, float cWidth, float cHeight, float lineWidth){
         return renderingFactory.createKRoundedRectangle => [
             it.cornerWidth = cWidth;
             it.cornerHeight = cHeight;
@@ -100,22 +100,22 @@ class KRenderingExtensions {
     def KLineWidth getLineWidth(KRendering rendering) {
         // chsch: I'm currently not sure whether the first or the last will win...
         return rendering.styles.filter(typeof(KLineWidth)).last?:(renderingFactory.createKLineWidth => [
-            lineWidth = 1
+            lineWidth = 1f
         ]);
     }
  
-    def int getIntLineWidth(KRendering rendering) {
+    def float getLineWidthValue(KRendering rendering) {
         // chsch: I'm currently not sure whether the first or the last will win...
         return (rendering.styles.filter(typeof(KLineWidth)).last?:(renderingFactory.createKLineWidth => [
-            lineWidth = 1
+            lineWidth = 1f
         ])).lineWidth;
     }
  
-    def <T extends KRendering> T setLineWidth(T rendering, int with) {
+    def <T extends KRendering> T setLineWidth(T rendering, float width) {
         rendering.styles.removeAll(rendering.styles.filter(typeof(KLineWidth)).toList);
         return rendering => [
             it.styles += renderingFactory.createKLineWidth() => [
-                it.setLineWidth(with);
+                it.setLineWidth(width);
             ]
         ];
     }

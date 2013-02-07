@@ -113,26 +113,26 @@ public interface KShadow extends KStyle {
     void setBlur(float value);
 
     /**
-     * Returns the value of the '<em><b>Color</b></em>' reference.
+     * Returns the value of the '<em><b>Color</b></em>' containment reference.
      * <!-- begin-user-doc -->
      * <p>
      * If the meaning of the '<em>Color</em>' reference isn't clear,
      * there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
-     * @return the value of the '<em>Color</em>' reference.
+     * @return the value of the '<em>Color</em>' containment reference.
      * @see #setColor(KColor)
      * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKShadow_Color()
-     * @model
+     * @model containment="true"
      * @generated
      */
     KColor getColor();
 
     /**
-     * Sets the value of the '{@link de.cau.cs.kieler.core.krendering.KShadow#getColor <em>Color</em>}' reference.
+     * Sets the value of the '{@link de.cau.cs.kieler.core.krendering.KShadow#getColor <em>Color</em>}' containment reference.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @param value the new value of the '<em>Color</em>' reference.
+     * @param value the new value of the '<em>Color</em>' containment reference.
      * @see #getColor()
      * @generated
      */

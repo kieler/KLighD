@@ -77569,25 +77569,25 @@ public class InternalKGraphParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__KLineWidth__LineWidthAssignment_1"
-    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/kgraph/text/ui/contentassist/antlr/internal/InternalKGraph.g:28930:1: rule__KLineWidth__LineWidthAssignment_1 : ( ruleEInt ) ;
+    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/kgraph/text/ui/contentassist/antlr/internal/InternalKGraph.g:28930:1: rule__KLineWidth__LineWidthAssignment_1 : ( ruleEFloat ) ;
     public final void rule__KLineWidth__LineWidthAssignment_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/kgraph/text/ui/contentassist/antlr/internal/InternalKGraph.g:28934:1: ( ( ruleEInt ) )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/kgraph/text/ui/contentassist/antlr/internal/InternalKGraph.g:28935:1: ( ruleEInt )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/kgraph/text/ui/contentassist/antlr/internal/InternalKGraph.g:28934:1: ( ( ruleEFloat ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/kgraph/text/ui/contentassist/antlr/internal/InternalKGraph.g:28935:1: ( ruleEFloat )
             {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/kgraph/text/ui/contentassist/antlr/internal/InternalKGraph.g:28935:1: ( ruleEInt )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/kgraph/text/ui/contentassist/antlr/internal/InternalKGraph.g:28936:1: ruleEInt
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/kgraph/text/ui/contentassist/antlr/internal/InternalKGraph.g:28935:1: ( ruleEFloat )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/kgraph/text/ui/contentassist/antlr/internal/InternalKGraph.g:28936:1: ruleEFloat
             {
-             before(grammarAccess.getKLineWidthAccess().getLineWidthEIntParserRuleCall_1_0()); 
-            pushFollow(FollowSets002.FOLLOW_ruleEInt_in_rule__KLineWidth__LineWidthAssignment_157953);
-            ruleEInt();
+             before(grammarAccess.getKLineWidthAccess().getLineWidthEFloatParserRuleCall_1_0()); 
+            pushFollow(FollowSets002.FOLLOW_ruleEFloat_in_rule__KLineWidth__LineWidthAssignment_157953);
+            ruleEFloat();
 
             state._fsp--;
 
-             after(grammarAccess.getKLineWidthAccess().getLineWidthEIntParserRuleCall_1_0()); 
+             after(grammarAccess.getKLineWidthAccess().getLineWidthEFloatParserRuleCall_1_0()); 
 
             }
 
@@ -81905,7 +81905,7 @@ public class InternalKGraphParser extends AbstractInternalContentAssistParser {
         public static final BitSet FOLLOW_121_in_rule__KForeground__PropagateToChildrenAssignment_957839 = new BitSet(new long[]{0x0000000000000002L});
         public static final BitSet FOLLOW_122_in_rule__KVisibility__InvisibleAssignment_157883 = new BitSet(new long[]{0x0000000000000002L});
         public static final BitSet FOLLOW_ruleEString_in_rule__KVisibility__FunctionIdAssignment_2_257922 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_ruleEInt_in_rule__KLineWidth__LineWidthAssignment_157953 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleEFloat_in_rule__KLineWidth__LineWidthAssignment_157953 = new BitSet(new long[]{0x0000000000000002L});
         public static final BitSet FOLLOW_121_in_rule__KLineWidth__PropagateToChildrenAssignment_257989 = new BitSet(new long[]{0x0000000000000002L});
         public static final BitSet FOLLOW_ruleEString_in_rule__KLineWidth__FunctionIdAssignment_3_258028 = new BitSet(new long[]{0x0000000000000002L});
         public static final BitSet FOLLOW_ruleLineStyle_in_rule__KLineStyle__LineStyleAssignment_258059 = new BitSet(new long[]{0x0000000000000002L});

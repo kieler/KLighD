@@ -61806,25 +61806,25 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
 
 
     // $ANTLR start "rule__KLineWidth__LineWidthAssignment_1"
-    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/kgraph/text/krendering/ui/contentassist/antlr/internal/InternalKRendering.g:23105:1: rule__KLineWidth__LineWidthAssignment_1 : ( ruleEInt ) ;
+    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/kgraph/text/krendering/ui/contentassist/antlr/internal/InternalKRendering.g:23105:1: rule__KLineWidth__LineWidthAssignment_1 : ( ruleEFloat ) ;
     public final void rule__KLineWidth__LineWidthAssignment_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/kgraph/text/krendering/ui/contentassist/antlr/internal/InternalKRendering.g:23109:1: ( ( ruleEInt ) )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/kgraph/text/krendering/ui/contentassist/antlr/internal/InternalKRendering.g:23110:1: ( ruleEInt )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/kgraph/text/krendering/ui/contentassist/antlr/internal/InternalKRendering.g:23109:1: ( ( ruleEFloat ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/kgraph/text/krendering/ui/contentassist/antlr/internal/InternalKRendering.g:23110:1: ( ruleEFloat )
             {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/kgraph/text/krendering/ui/contentassist/antlr/internal/InternalKRendering.g:23110:1: ( ruleEInt )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/kgraph/text/krendering/ui/contentassist/antlr/internal/InternalKRendering.g:23111:1: ruleEInt
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/kgraph/text/krendering/ui/contentassist/antlr/internal/InternalKRendering.g:23110:1: ( ruleEFloat )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/kgraph/text/krendering/ui/contentassist/antlr/internal/InternalKRendering.g:23111:1: ruleEFloat
             {
-             before(grammarAccess.getKLineWidthAccess().getLineWidthEIntParserRuleCall_1_0()); 
-            pushFollow(FollowSets001.FOLLOW_ruleEInt_in_rule__KLineWidth__LineWidthAssignment_146290);
-            ruleEInt();
+             before(grammarAccess.getKLineWidthAccess().getLineWidthEFloatParserRuleCall_1_0()); 
+            pushFollow(FollowSets001.FOLLOW_ruleEFloat_in_rule__KLineWidth__LineWidthAssignment_146290);
+            ruleEFloat();
 
             state._fsp--;
 
-             after(grammarAccess.getKLineWidthAccess().getLineWidthEIntParserRuleCall_1_0()); 
+             after(grammarAccess.getKLineWidthAccess().getLineWidthEFloatParserRuleCall_1_0()); 
 
             }
 
@@ -65114,7 +65114,7 @@ public class InternalKRenderingParser extends AbstractInternalContentAssistParse
         public static final BitSet FOLLOW_102_in_rule__KForeground__PropagateToChildrenAssignment_946176 = new BitSet(new long[]{0x0000000000000002L});
         public static final BitSet FOLLOW_103_in_rule__KVisibility__InvisibleAssignment_146220 = new BitSet(new long[]{0x0000000000000002L});
         public static final BitSet FOLLOW_ruleEString_in_rule__KVisibility__FunctionIdAssignment_2_246259 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_ruleEInt_in_rule__KLineWidth__LineWidthAssignment_146290 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleEFloat_in_rule__KLineWidth__LineWidthAssignment_146290 = new BitSet(new long[]{0x0000000000000002L});
         public static final BitSet FOLLOW_102_in_rule__KLineWidth__PropagateToChildrenAssignment_246326 = new BitSet(new long[]{0x0000000000000002L});
         public static final BitSet FOLLOW_ruleEString_in_rule__KLineWidth__FunctionIdAssignment_3_246365 = new BitSet(new long[]{0x0000000000000002L});
         public static final BitSet FOLLOW_ruleLineStyle_in_rule__KLineStyle__LineStyleAssignment_246396 = new BitSet(new long[]{0x0000000000000002L});

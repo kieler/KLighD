@@ -3239,7 +3239,7 @@ public interface KRenderingPackage extends EPackage {
     int KSHADOW__BLUR = KSTYLE_FEATURE_COUNT + 2;
 
     /**
-     * The feature id for the '<em><b>Color</b></em>' reference.
+     * The feature id for the '<em><b>Color</b></em>' containment reference.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
@@ -4793,10 +4793,10 @@ public interface KRenderingPackage extends EPackage {
     EAttribute getKShadow_Blur();
 
     /**
-     * Returns the meta object for the reference '{@link de.cau.cs.kieler.core.krendering.KShadow#getColor <em>Color</em>}'.
+     * Returns the meta object for the containment reference '{@link de.cau.cs.kieler.core.krendering.KShadow#getColor <em>Color</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for the reference '<em>Color</em>'.
+     * @return the meta object for the containment reference '<em>Color</em>'.
      * @see de.cau.cs.kieler.core.krendering.KShadow#getColor()
      * @see #getKShadow()
      * @generated
@@ -6056,7 +6056,7 @@ public interface KRenderingPackage extends EPackage {
         EAttribute KSHADOW__BLUR = eINSTANCE.getKShadow_Blur();
 
         /**
-         * The meta object literal for the '<em><b>Color</b></em>' reference feature.
+         * The meta object literal for the '<em><b>Color</b></em>' containment reference feature.
          * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
          * @generated

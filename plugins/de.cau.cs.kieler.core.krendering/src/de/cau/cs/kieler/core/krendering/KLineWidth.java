@@ -47,12 +47,12 @@ public interface KLineWidth extends KStyle {
      * the line width of the element
      * <!-- end-model-doc -->
      * @return the value of the '<em>Line Width</em>' attribute.
-     * @see #setLineWidth(int)
+     * @see #setLineWidth(float)
      * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKLineWidth_LineWidth()
      * @model required="true"
      * @generated
      */
-    int getLineWidth();
+    float getLineWidth();
 
     /**
      * Sets the value of the '{@link de.cau.cs.kieler.core.krendering.KLineWidth#getLineWidth <em>Line Width</em>}' attribute.
@@ -62,6 +62,6 @@ public interface KLineWidth extends KStyle {
      * @see #getLineWidth()
      * @generated
      */
-    void setLineWidth(int value);
+    void setLineWidth(float value);
 
 } // KLineWidth

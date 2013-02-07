@@ -355,7 +355,7 @@
       <details key="documentation" value="specifies a lineWidth for a rendering. "/>
     </eAnnotations>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="lineWidth" lowerBound="1"
-        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt">
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EFloat">
       <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
         <details key="documentation" value="the line width of the element"/>
       </eAnnotations>

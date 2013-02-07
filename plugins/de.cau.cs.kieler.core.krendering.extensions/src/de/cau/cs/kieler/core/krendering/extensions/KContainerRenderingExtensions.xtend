@@ -49,7 +49,7 @@ class KContainerRenderingExtensions {
         ];
     }
     
-    def KRoundedRectangle addRoundedRectangle(KContainerRendering cr, float cWidth, float cHeight, int lineWidth){
+    def KRoundedRectangle addRoundedRectangle(KContainerRendering cr, float cWidth, float cHeight, float lineWidth){
         return renderingFactory.createKRoundedRectangle => [
             cr.children += it;
             it.cornerWidth = cWidth;
@@ -96,7 +96,7 @@ class KContainerRenderingExtensions {
         ];
     }
     
-	def KPolyline addHorizontalSeperatorLine(KContainerRendering cr, int lineWidth, int spacing){
+	def KPolyline addHorizontalSeperatorLine(KContainerRendering cr, float lineWidth, int spacing){
         return renderingFactory.createKPolyline => [
             cr.addChild(it);
             it.setLineWidth(lineWidth);
