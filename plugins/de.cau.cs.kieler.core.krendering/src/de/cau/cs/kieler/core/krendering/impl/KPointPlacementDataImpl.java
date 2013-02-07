@@ -20,8 +20,8 @@ import de.cau.cs.kieler.core.krendering.KRenderingPackage;
 import de.cau.cs.kieler.core.krendering.VerticalAlignment;
 
 import org.eclipse.emf.common.notify.Notification;
-
 import org.eclipse.emf.common.notify.NotificationChain;
+
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 
@@ -203,6 +203,27 @@ public class KPointPlacementDataImpl extends EObjectImpl implements KPointPlacem
      * <!-- end-user-doc -->
      * @generated
      */
+    public HorizontalAlignment getHorizontalAlignment() {
+        return horizontalAlignment;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public void setHorizontalAlignment(HorizontalAlignment newHorizontalAlignment) {
+        HorizontalAlignment oldHorizontalAlignment = horizontalAlignment;
+        horizontalAlignment = newHorizontalAlignment == null ? HORIZONTAL_ALIGNMENT_EDEFAULT : newHorizontalAlignment;
+        if (eNotificationRequired())
+            eNotify(new ENotificationImpl(this, Notification.SET, KRenderingPackage.KPOINT_PLACEMENT_DATA__HORIZONTAL_ALIGNMENT, oldHorizontalAlignment, horizontalAlignment));
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
     public VerticalAlignment getVerticalAlignment() {
         return verticalAlignment;
     }
@@ -259,27 +280,6 @@ public class KPointPlacementDataImpl extends EObjectImpl implements KPointPlacem
         verticalMargin = newVerticalMargin;
         if (eNotificationRequired())
             eNotify(new ENotificationImpl(this, Notification.SET, KRenderingPackage.KPOINT_PLACEMENT_DATA__VERTICAL_MARGIN, oldVerticalMargin, verticalMargin));
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    public HorizontalAlignment getHorizontalAlignment() {
-        return horizontalAlignment;
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    public void setHorizontalAlignment(HorizontalAlignment newHorizontalAlignment) {
-        HorizontalAlignment oldHorizontalAlignment = horizontalAlignment;
-        horizontalAlignment = newHorizontalAlignment == null ? HORIZONTAL_ALIGNMENT_EDEFAULT : newHorizontalAlignment;
-        if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, KRenderingPackage.KPOINT_PLACEMENT_DATA__HORIZONTAL_ALIGNMENT, oldHorizontalAlignment, horizontalAlignment));
     }
 
     /**

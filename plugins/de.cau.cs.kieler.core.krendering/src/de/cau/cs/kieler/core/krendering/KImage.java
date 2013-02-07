@@ -51,7 +51,7 @@ public interface KImage extends KContainerRendering {
      * @return the value of the '<em>Bundle Name</em>' attribute.
      * @see #setBundleName(String)
      * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKImage_BundleName()
-     * @model required="true"
+     * @model
      * @generated
      */
     String getBundleName();
@@ -80,7 +80,7 @@ public interface KImage extends KContainerRendering {
      * @return the value of the '<em>Image Path</em>' attribute.
      * @see #setImagePath(String)
      * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKImage_ImagePath()
-     * @model required="true"
+     * @model
      * @generated
      */
     String getImagePath();

@@ -47,6 +47,7 @@ public class KStyleRefImpl extends KStyleImpl implements KStyleRef {
      * @ordered
      */
     protected KStyleHolder styleHolder;
+
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->

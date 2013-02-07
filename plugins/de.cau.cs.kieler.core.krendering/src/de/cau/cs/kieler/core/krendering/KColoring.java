@@ -51,7 +51,7 @@ public interface KColoring extends KStyle {
      * @return the value of the '<em>Alpha</em>' attribute.
      * @see #setAlpha(int)
      * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKColoring_Alpha()
-     * @model default="255" required="true"
+     * @model default="255"
      * @generated
      */
     int getAlpha();
@@ -77,7 +77,7 @@ public interface KColoring extends KStyle {
      * @return the value of the '<em>Color</em>' containment reference.
      * @see #setColor(KColor)
      * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKColoring_Color()
-     * @model containment="true" required="true"
+     * @model containment="true"
      * @generated
      */
     KColor getColor();

@@ -17,8 +17,8 @@ import de.cau.cs.kieler.core.kgraph.impl.KGraphDataImpl;
 
 import de.cau.cs.kieler.core.krendering.KRenderingLibrary;
 import de.cau.cs.kieler.core.krendering.KRenderingPackage;
-
 import de.cau.cs.kieler.core.krendering.KStyleHolder;
+
 import java.util.Collection;
 
 import org.eclipse.emf.common.notify.NotificationChain;

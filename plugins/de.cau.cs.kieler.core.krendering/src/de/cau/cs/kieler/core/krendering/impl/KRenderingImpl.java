@@ -21,8 +21,8 @@ import de.cau.cs.kieler.core.krendering.KPlacementData;
 import de.cau.cs.kieler.core.krendering.KRendering;
 import de.cau.cs.kieler.core.krendering.KRenderingPackage;
 import de.cau.cs.kieler.core.krendering.KStyle;
-
 import de.cau.cs.kieler.core.krendering.KStyleHolder;
+
 import java.util.Collection;
 
 import org.eclipse.emf.common.notify.Notification;
@@ -103,6 +103,18 @@ public abstract class KRenderingImpl extends KGraphDataImpl implements KRenderin
     @Override
     protected EClass eStaticClass() {
         return KRenderingPackage.Literals.KRENDERING;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EList<KStyle> getStyles() {
+        if (styles == null) {
+            styles = new EObjectContainmentEList<KStyle>(KStyle.class, this, KRenderingPackage.KRENDERING__STYLES);
+        }
+        return styles;
     }
 
     /**
@@ -199,18 +211,6 @@ public abstract class KRenderingImpl extends KGraphDataImpl implements KRenderin
             actions = new EObjectContainmentEList<KAction>(KAction.class, this, KRenderingPackage.KRENDERING__ACTIONS);
         }
         return actions;
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    public EList<KStyle> getStyles() {
-        if (styles == null) {
-            styles = new EObjectContainmentEList<KStyle>(KStyle.class, this, KRenderingPackage.KRENDERING__STYLES);
-        }
-        return styles;
     }
 
     /**

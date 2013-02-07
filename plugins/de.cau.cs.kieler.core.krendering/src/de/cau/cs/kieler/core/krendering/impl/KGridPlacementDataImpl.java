@@ -48,6 +48,7 @@ public class KGridPlacementDataImpl extends KAreaPlacementDataImpl implements KG
      * @ordered
      */
     protected static final float MIN_CELL_WIDTH_EDEFAULT = 0.0F;
+
     /**
      * The cached value of the '{@link #getMinCellWidth() <em>Min Cell Width</em>}' attribute.
      * <!-- begin-user-doc -->
@@ -67,6 +68,7 @@ public class KGridPlacementDataImpl extends KAreaPlacementDataImpl implements KG
      * @ordered
      */
     protected static final float MAX_CELL_WIDTH_EDEFAULT = -1.0F;
+
     /**
      * The cached value of the '{@link #getMaxCellWidth() <em>Max Cell Width</em>}' attribute.
      * <!-- begin-user-doc -->
@@ -76,6 +78,7 @@ public class KGridPlacementDataImpl extends KAreaPlacementDataImpl implements KG
      * @ordered
      */
     protected float maxCellWidth = MAX_CELL_WIDTH_EDEFAULT;
+
     /**
      * The default value of the '{@link #getMinCellHeight() <em>Min Cell Height</em>}' attribute.
      * <!-- begin-user-doc -->
@@ -85,6 +88,7 @@ public class KGridPlacementDataImpl extends KAreaPlacementDataImpl implements KG
      * @ordered
      */
     protected static final float MIN_CELL_HEIGHT_EDEFAULT = 0.0F;
+
     /**
      * The cached value of the '{@link #getMinCellHeight() <em>Min Cell Height</em>}' attribute.
      * <!-- begin-user-doc -->
@@ -94,6 +98,7 @@ public class KGridPlacementDataImpl extends KAreaPlacementDataImpl implements KG
      * @ordered
      */
     protected float minCellHeight = MIN_CELL_HEIGHT_EDEFAULT;
+
     /**
      * The default value of the '{@link #getMaxCellHeight() <em>Max Cell Height</em>}' attribute.
      * <!-- begin-user-doc -->
@@ -103,6 +108,7 @@ public class KGridPlacementDataImpl extends KAreaPlacementDataImpl implements KG
      * @ordered
      */
     protected static final float MAX_CELL_HEIGHT_EDEFAULT = -1.0F;
+
     /**
      * The cached value of the '{@link #getMaxCellHeight() <em>Max Cell Height</em>}' attribute.
      * <!-- begin-user-doc -->

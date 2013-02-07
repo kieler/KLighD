@@ -44,7 +44,7 @@ public interface KCustomRendering extends KContainerRendering {
      * @return the value of the '<em>Class Name</em>' attribute.
      * @see #setClassName(String)
      * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKCustomRendering_ClassName()
-     * @model required="true"
+     * @model
      * @generated
      */
     String getClassName();
@@ -70,7 +70,7 @@ public interface KCustomRendering extends KContainerRendering {
      * @return the value of the '<em>Bundle Name</em>' attribute.
      * @see #setBundleName(String)
      * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKCustomRendering_BundleName()
-     * @model required="true"
+     * @model
      * @generated
      */
     String getBundleName();

@@ -1709,13 +1709,13 @@ public interface KRenderingPackage extends EPackage {
     /**
      * The feature id for the '<em><b>Figure Object</b></em>' attribute.
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-	int KCUSTOM_RENDERING__FIGURE_OBJECT = KCONTAINER_RENDERING_FEATURE_COUNT + 2;
+    int KCUSTOM_RENDERING__FIGURE_OBJECT = KCONTAINER_RENDERING_FEATURE_COUNT + 2;
 
-				/**
+    /**
      * The number of structural features of the '<em>KCustom Rendering</em>' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -3415,7 +3415,6 @@ public interface KRenderingPackage extends EPackage {
      */
     int VERTICAL_ALIGNMENT = 56;
 
-
     /**
      * The meta object id for the '{@link de.cau.cs.kieler.core.krendering.KTrigger <em>KTrigger</em>}' enum.
      * <!-- begin-user-doc -->
@@ -3425,7 +3424,6 @@ public interface KRenderingPackage extends EPackage {
      * @generated
      */
     int KTRIGGER = 57;
-
 
     /**
      * The meta object id for the '{@link de.cau.cs.kieler.core.krendering.LineCap <em>Line Cap</em>}' enum.
@@ -4100,13 +4098,13 @@ public interface KRenderingPackage extends EPackage {
     /**
      * Returns the meta object for the attribute '{@link de.cau.cs.kieler.core.krendering.KCustomRendering#getFigureObject <em>Figure Object</em>}'.
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @return the meta object for the attribute '<em>Figure Object</em>'.
      * @see de.cau.cs.kieler.core.krendering.KCustomRendering#getFigureObject()
      * @see #getKCustomRendering()
      * @generated
      */
-	EAttribute getKCustomRendering_FigureObject();
+    EAttribute getKCustomRendering_FigureObject();
 
     /**
      * Returns the meta object for class '{@link de.cau.cs.kieler.core.krendering.KColor <em>KColor</em>}'.
@@ -4646,6 +4644,17 @@ public interface KRenderingPackage extends EPackage {
     EReference getKPointPlacementData_ReferencePoint();
 
     /**
+     * Returns the meta object for the attribute '{@link de.cau.cs.kieler.core.krendering.KPointPlacementData#getHorizontalAlignment <em>Horizontal Alignment</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the attribute '<em>Horizontal Alignment</em>'.
+     * @see de.cau.cs.kieler.core.krendering.KPointPlacementData#getHorizontalAlignment()
+     * @see #getKPointPlacementData()
+     * @generated
+     */
+    EAttribute getKPointPlacementData_HorizontalAlignment();
+
+    /**
      * Returns the meta object for the attribute '{@link de.cau.cs.kieler.core.krendering.KPointPlacementData#getVerticalAlignment <em>Vertical Alignment</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -4677,17 +4686,6 @@ public interface KRenderingPackage extends EPackage {
      * @generated
      */
     EAttribute getKPointPlacementData_VerticalMargin();
-
-    /**
-     * Returns the meta object for the attribute '{@link de.cau.cs.kieler.core.krendering.KPointPlacementData#getHorizontalAlignment <em>Horizontal Alignment</em>}'.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @return the meta object for the attribute '<em>Horizontal Alignment</em>'.
-     * @see de.cau.cs.kieler.core.krendering.KPointPlacementData#getHorizontalAlignment()
-     * @see #getKPointPlacementData()
-     * @generated
-     */
-    EAttribute getKPointPlacementData_HorizontalAlignment();
 
     /**
      * Returns the meta object for class '{@link de.cau.cs.kieler.core.krendering.KSelectAction <em>KSelect Action</em>}'.
@@ -5474,10 +5472,10 @@ public interface KRenderingPackage extends EPackage {
         /**
          * The meta object literal for the '<em><b>Figure Object</b></em>' attribute feature.
          * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
+         * <!-- end-user-doc -->
          * @generated
          */
-	EAttribute KCUSTOM_RENDERING__FIGURE_OBJECT = eINSTANCE.getKCustomRendering_FigureObject();
+        EAttribute KCUSTOM_RENDERING__FIGURE_OBJECT = eINSTANCE.getKCustomRendering_FigureObject();
 
         /**
          * The meta object literal for the '{@link de.cau.cs.kieler.core.krendering.impl.KColorImpl <em>KColor</em>}' class.
@@ -5936,6 +5934,14 @@ public interface KRenderingPackage extends EPackage {
         EReference KPOINT_PLACEMENT_DATA__REFERENCE_POINT = eINSTANCE.getKPointPlacementData_ReferencePoint();
 
         /**
+         * The meta object literal for the '<em><b>Horizontal Alignment</b></em>' attribute feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EAttribute KPOINT_PLACEMENT_DATA__HORIZONTAL_ALIGNMENT = eINSTANCE.getKPointPlacementData_HorizontalAlignment();
+
+        /**
          * The meta object literal for the '<em><b>Vertical Alignment</b></em>' attribute feature.
          * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
@@ -5958,14 +5964,6 @@ public interface KRenderingPackage extends EPackage {
          * @generated
          */
         EAttribute KPOINT_PLACEMENT_DATA__VERTICAL_MARGIN = eINSTANCE.getKPointPlacementData_VerticalMargin();
-
-        /**
-         * The meta object literal for the '<em><b>Horizontal Alignment</b></em>' attribute feature.
-         * <!-- begin-user-doc -->
-         * <!-- end-user-doc -->
-         * @generated
-         */
-        EAttribute KPOINT_PLACEMENT_DATA__HORIZONTAL_ALIGNMENT = eINSTANCE.getKPointPlacementData_HorizontalAlignment();
 
         /**
          * The meta object literal for the '{@link de.cau.cs.kieler.core.krendering.impl.KSelectActionImpl <em>KSelect Action</em>}' class.
