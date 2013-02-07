@@ -73,6 +73,11 @@ public class KGraphFormatter extends AbstractDeclarativeFormatter {
                 f.getKRenderingGrammarAccess().getKLayoutDataGrammarAccess().getKPointAccess()
                         .getXEFloatParserRuleCall_2_1_0());
         
+        
+        // configures the line wrap after the reference string of KRenderingRefs
+        c.setLinewrap().after(
+                f.getKRenderingRefAccess().getRenderingKRenderingCrossReference_2_0());
+        
         // configures the line wrap after a valid map property tuple
         c.setLinewrap().after(
                 f.getPersistentEntryAccess().getValueEStringParserRuleCall_1_1_0());
