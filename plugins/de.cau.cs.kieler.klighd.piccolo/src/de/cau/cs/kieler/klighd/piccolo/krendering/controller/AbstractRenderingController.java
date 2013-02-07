@@ -277,10 +277,6 @@ public abstract class AbstractRenderingController<S extends KGraphElement, T ext
 
                     // handle style changes
                     if (msg.getNotifier() instanceof KStyle) {
-                        // exclude opposite relation
-                        if (msg.getFeatureID(KStyle.class) == KRenderingPackage.KSTYLE__RENDERING) {
-                            return;
-                        }
                         // PlatformUI.getWorkbench().getDisplay().syncExec(new Runnable() {
                         // public void run() {
                         // update the styles

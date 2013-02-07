@@ -28,7 +28,6 @@ import org.eclipse.emf.ecore.EObject;
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link de.cau.cs.kieler.core.krendering.KStyle#getRendering <em>Rendering</em>}</li>
  *   <li>{@link de.cau.cs.kieler.core.krendering.KStyle#isPropagateToChildren <em>Propagate To Children</em>}</li>
  *   <li>{@link de.cau.cs.kieler.core.krendering.KStyle#getFunctionId <em>Function Id</em>}</li>
  * </ul>
@@ -39,35 +38,6 @@ import org.eclipse.emf.ecore.EObject;
  * @generated
  */
 public interface KStyle extends EObject {
-    /**
-     * Returns the value of the '<em><b>Rendering</b></em>' reference.
-     * <!-- begin-user-doc -->
-     * <p>
-     * If the meaning of the '<em>Rendering</em>' container reference isn't clear,
-     * there really should be more of a description here...
-     * </p>
-     * <!-- end-user-doc -->
-     * <!-- begin-model-doc -->
-     * the rendering the style is attached to
-     * <!-- end-model-doc -->
-     * @return the value of the '<em>Rendering</em>' reference.
-     * @see #setRendering(KRendering)
-     * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKStyle_Rendering()
-     * @model
-     * @generated
-     */
-    KRendering getRendering();
-
-    /**
-     * Sets the value of the '{@link de.cau.cs.kieler.core.krendering.KStyle#getRendering <em>Rendering</em>}' reference.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @param value the new value of the '<em>Rendering</em>' reference.
-     * @see #getRendering()
-     * @generated
-     */
-    void setRendering(KRendering value);
-
     /**
      * Returns the value of the '<em><b>Propagate To Children</b></em>' attribute.
      * <!-- begin-user-doc -->

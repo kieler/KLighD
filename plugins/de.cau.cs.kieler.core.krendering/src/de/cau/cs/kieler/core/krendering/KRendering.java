@@ -34,7 +34,6 @@ import org.eclipse.emf.common.util.EList;
  * The following features are supported:
  * <ul>
  *   <li>{@link de.cau.cs.kieler.core.krendering.KRendering#getParent <em>Parent</em>}</li>
- *   <li>{@link de.cau.cs.kieler.core.krendering.KRendering#getReferences <em>References</em>}</li>
  *   <li>{@link de.cau.cs.kieler.core.krendering.KRendering#getPlacementData <em>Placement Data</em>}</li>
  *   <li>{@link de.cau.cs.kieler.core.krendering.KRendering#getActions <em>Actions</em>}</li>
  * </ul>
@@ -77,25 +76,6 @@ public interface KRendering extends KGraphData, KStyleHolder {
     void setParent(KContainerRendering value);
 
     /**
-     * Returns the value of the '<em><b>References</b></em>' reference list.
-     * The list contents are of type {@link de.cau.cs.kieler.core.krendering.KRenderingRef}.
-     * <!-- begin-user-doc -->
-     * <p>
-     * If the meaning of the '<em>References</em>' reference list isn't clear,
-     * there really should be more of a description here...
-     * </p>
-     * <!-- end-user-doc -->
-     * <!-- begin-model-doc -->
-     * reference an existing KRendering ref instead of re-defining everything
-     * <!-- end-model-doc -->
-     * @return the value of the '<em>References</em>' reference list.
-     * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKRendering_References()
-     * @model
-     * @generated
-     */
-    EList<KRenderingRef> getReferences();
-
-    /**
      * Returns the value of the '<em><b>Placement Data</b></em>' containment reference.
      * <!-- begin-user-doc -->
      * <p>
@@ -125,16 +105,16 @@ public interface KRendering extends KGraphData, KStyleHolder {
     void setPlacementData(KPlacementData value);
 
     /**
-     * Returns the value of the '<em><b>Actions</b></em>' reference list.
+     * Returns the value of the '<em><b>Actions</b></em>' containment reference list.
      * The list contents are of type {@link de.cau.cs.kieler.core.krendering.KAction}.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * <!-- begin-model-doc -->
      * actions that should be performed when 
      * <!-- end-model-doc -->
-     * @return the value of the '<em>Actions</em>' reference list.
+     * @return the value of the '<em>Actions</em>' containment reference list.
      * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKRendering_Actions()
-     * @model
+     * @model containment="true"
      * @generated
      */
     EList<KAction> getActions();

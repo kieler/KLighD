@@ -13,14 +13,12 @@
  */
 package de.cau.cs.kieler.core.krendering.impl;
 
-import de.cau.cs.kieler.core.krendering.KRendering;
 import de.cau.cs.kieler.core.krendering.KRenderingPackage;
 import de.cau.cs.kieler.core.krendering.KStyle;
 
 import org.eclipse.emf.common.notify.Notification;
 
 import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.EObjectImpl;
@@ -33,7 +31,6 @@ import org.eclipse.emf.ecore.impl.EObjectImpl;
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link de.cau.cs.kieler.core.krendering.impl.KStyleImpl#getRendering <em>Rendering</em>}</li>
  *   <li>{@link de.cau.cs.kieler.core.krendering.impl.KStyleImpl#isPropagateToChildren <em>Propagate To Children</em>}</li>
  *   <li>{@link de.cau.cs.kieler.core.krendering.impl.KStyleImpl#getFunctionId <em>Function Id</em>}</li>
  * </ul>
@@ -42,16 +39,6 @@ import org.eclipse.emf.ecore.impl.EObjectImpl;
  * @generated
  */
 public abstract class KStyleImpl extends EObjectImpl implements KStyle {
-    /**
-     * The cached value of the '{@link #getRendering() <em>Rendering</em>}' reference.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @see #getRendering()
-     * @generated
-     * @ordered
-     */
-    protected KRendering rendering;
-
     /**
      * The default value of the '{@link #isPropagateToChildren() <em>Propagate To Children</em>}' attribute.
      * <!-- begin-user-doc -->
@@ -116,44 +103,6 @@ public abstract class KStyleImpl extends EObjectImpl implements KStyle {
      * <!-- end-user-doc -->
      * @generated
      */
-    public KRendering getRendering() {
-        if (rendering != null && rendering.eIsProxy()) {
-            InternalEObject oldRendering = (InternalEObject)rendering;
-            rendering = (KRendering)eResolveProxy(oldRendering);
-            if (rendering != oldRendering) {
-                if (eNotificationRequired())
-                    eNotify(new ENotificationImpl(this, Notification.RESOLVE, KRenderingPackage.KSTYLE__RENDERING, oldRendering, rendering));
-            }
-        }
-        return rendering;
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    public KRendering basicGetRendering() {
-        return rendering;
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    public void setRendering(KRendering newRendering) {
-        KRendering oldRendering = rendering;
-        rendering = newRendering;
-        if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, KRenderingPackage.KSTYLE__RENDERING, oldRendering, rendering));
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
     public boolean isPropagateToChildren() {
         return propagateToChildren;
     }
@@ -199,9 +148,6 @@ public abstract class KStyleImpl extends EObjectImpl implements KStyle {
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
-            case KRenderingPackage.KSTYLE__RENDERING:
-                if (resolve) return getRendering();
-                return basicGetRendering();
             case KRenderingPackage.KSTYLE__PROPAGATE_TO_CHILDREN:
                 return isPropagateToChildren();
             case KRenderingPackage.KSTYLE__FUNCTION_ID:
@@ -218,9 +164,6 @@ public abstract class KStyleImpl extends EObjectImpl implements KStyle {
     @Override
     public void eSet(int featureID, Object newValue) {
         switch (featureID) {
-            case KRenderingPackage.KSTYLE__RENDERING:
-                setRendering((KRendering)newValue);
-                return;
             case KRenderingPackage.KSTYLE__PROPAGATE_TO_CHILDREN:
                 setPropagateToChildren((Boolean)newValue);
                 return;
@@ -239,9 +182,6 @@ public abstract class KStyleImpl extends EObjectImpl implements KStyle {
     @Override
     public void eUnset(int featureID) {
         switch (featureID) {
-            case KRenderingPackage.KSTYLE__RENDERING:
-                setRendering((KRendering)null);
-                return;
             case KRenderingPackage.KSTYLE__PROPAGATE_TO_CHILDREN:
                 setPropagateToChildren(PROPAGATE_TO_CHILDREN_EDEFAULT);
                 return;
@@ -260,8 +200,6 @@ public abstract class KStyleImpl extends EObjectImpl implements KStyle {
     @Override
     public boolean eIsSet(int featureID) {
         switch (featureID) {
-            case KRenderingPackage.KSTYLE__RENDERING:
-                return rendering != null;
             case KRenderingPackage.KSTYLE__PROPAGATE_TO_CHILDREN:
                 return propagateToChildren != PROPAGATE_TO_CHILDREN_EDEFAULT;
             case KRenderingPackage.KSTYLE__FUNCTION_ID:

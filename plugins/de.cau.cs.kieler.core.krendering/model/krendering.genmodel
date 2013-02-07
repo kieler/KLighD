@@ -42,7 +42,6 @@
     </genClasses>
     <genClasses image="false" ecoreClass="krendering.ecore#//KRendering">
       <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference krendering.ecore#//KRendering/parent"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference krendering.ecore#//KRendering/references"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference krendering.ecore#//KRendering/placementData"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference krendering.ecore#//KRendering/actions"/>
     </genClasses>
@@ -80,7 +79,6 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute krendering.ecore#//KArc/arcAngle"/>
     </genClasses>
     <genClasses ecoreClass="krendering.ecore#//KStyle">
-      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference krendering.ecore#//KStyle/rendering"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute krendering.ecore#//KStyle/propagateToChildren"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute krendering.ecore#//KStyle/functionId"/>
     </genClasses>
@@ -183,8 +181,10 @@
     </genClasses>
     <genClasses ecoreClass="krendering.ecore#//KPointPlacementData">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference krendering.ecore#//KPointPlacementData/referencePoint"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute krendering.ecore#//KPointPlacementData/verticalAlignment"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute krendering.ecore#//KPointPlacementData/horizontalAlignment"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute krendering.ecore#//KPointPlacementData/verticalAlignment"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute krendering.ecore#//KPointPlacementData/horizontalMargin"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute krendering.ecore#//KPointPlacementData/verticalMargin"/>
     </genClasses>
     <genClasses ecoreClass="krendering.ecore#//KSelectAction"/>
     <genClasses ecoreClass="krendering.ecore#//KExpandAction"/>

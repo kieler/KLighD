@@ -20,7 +20,6 @@ import de.cau.cs.kieler.core.krendering.KContainerRendering;
 import de.cau.cs.kieler.core.krendering.KPlacementData;
 import de.cau.cs.kieler.core.krendering.KRendering;
 import de.cau.cs.kieler.core.krendering.KRenderingPackage;
-import de.cau.cs.kieler.core.krendering.KRenderingRef;
 import de.cau.cs.kieler.core.krendering.KStyle;
 
 import de.cau.cs.kieler.core.krendering.KStyleHolder;
@@ -37,7 +36,6 @@ import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
-import org.eclipse.emf.ecore.util.EObjectResolvingEList;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.ecore.util.InternalEList;
 
@@ -50,7 +48,6 @@ import org.eclipse.emf.ecore.util.InternalEList;
  * <ul>
  *   <li>{@link de.cau.cs.kieler.core.krendering.impl.KRenderingImpl#getStyles <em>Styles</em>}</li>
  *   <li>{@link de.cau.cs.kieler.core.krendering.impl.KRenderingImpl#getParent <em>Parent</em>}</li>
- *   <li>{@link de.cau.cs.kieler.core.krendering.impl.KRenderingImpl#getReferences <em>References</em>}</li>
  *   <li>{@link de.cau.cs.kieler.core.krendering.impl.KRenderingImpl#getPlacementData <em>Placement Data</em>}</li>
  *   <li>{@link de.cau.cs.kieler.core.krendering.impl.KRenderingImpl#getActions <em>Actions</em>}</li>
  * </ul>
@@ -70,16 +67,6 @@ public abstract class KRenderingImpl extends KGraphDataImpl implements KRenderin
     protected EList<KStyle> styles;
 
     /**
-     * The cached value of the '{@link #getReferences() <em>References</em>}' reference list.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @see #getReferences()
-     * @generated
-     * @ordered
-     */
-    protected EList<KRenderingRef> references;
-
-    /**
      * The cached value of the '{@link #getPlacementData() <em>Placement Data</em>}' containment reference.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -90,7 +77,7 @@ public abstract class KRenderingImpl extends KGraphDataImpl implements KRenderin
     protected KPlacementData placementData;
 
     /**
-     * The cached value of the '{@link #getActions() <em>Actions</em>}' reference list.
+     * The cached value of the '{@link #getActions() <em>Actions</em>}' containment reference list.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @see #getActions()
@@ -164,18 +151,6 @@ public abstract class KRenderingImpl extends KGraphDataImpl implements KRenderin
      * <!-- end-user-doc -->
      * @generated
      */
-    public EList<KRenderingRef> getReferences() {
-        if (references == null) {
-            references = new EObjectResolvingEList<KRenderingRef>(KRenderingRef.class, this, KRenderingPackage.KRENDERING__REFERENCES);
-        }
-        return references;
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
     public KPlacementData getPlacementData() {
         return placementData;
     }
@@ -221,7 +196,7 @@ public abstract class KRenderingImpl extends KGraphDataImpl implements KRenderin
      */
     public EList<KAction> getActions() {
         if (actions == null) {
-            actions = new EObjectResolvingEList<KAction>(KAction.class, this, KRenderingPackage.KRENDERING__ACTIONS);
+            actions = new EObjectContainmentEList<KAction>(KAction.class, this, KRenderingPackage.KRENDERING__ACTIONS);
         }
         return actions;
     }
@@ -268,6 +243,8 @@ public abstract class KRenderingImpl extends KGraphDataImpl implements KRenderin
                 return basicSetParent(null, msgs);
             case KRenderingPackage.KRENDERING__PLACEMENT_DATA:
                 return basicSetPlacementData(null, msgs);
+            case KRenderingPackage.KRENDERING__ACTIONS:
+                return ((InternalEList<?>)getActions()).basicRemove(otherEnd, msgs);
         }
         return super.eInverseRemove(otherEnd, featureID, msgs);
     }
@@ -298,8 +275,6 @@ public abstract class KRenderingImpl extends KGraphDataImpl implements KRenderin
                 return getStyles();
             case KRenderingPackage.KRENDERING__PARENT:
                 return getParent();
-            case KRenderingPackage.KRENDERING__REFERENCES:
-                return getReferences();
             case KRenderingPackage.KRENDERING__PLACEMENT_DATA:
                 return getPlacementData();
             case KRenderingPackage.KRENDERING__ACTIONS:
@@ -323,10 +298,6 @@ public abstract class KRenderingImpl extends KGraphDataImpl implements KRenderin
                 return;
             case KRenderingPackage.KRENDERING__PARENT:
                 setParent((KContainerRendering)newValue);
-                return;
-            case KRenderingPackage.KRENDERING__REFERENCES:
-                getReferences().clear();
-                getReferences().addAll((Collection<? extends KRenderingRef>)newValue);
                 return;
             case KRenderingPackage.KRENDERING__PLACEMENT_DATA:
                 setPlacementData((KPlacementData)newValue);
@@ -353,9 +324,6 @@ public abstract class KRenderingImpl extends KGraphDataImpl implements KRenderin
             case KRenderingPackage.KRENDERING__PARENT:
                 setParent((KContainerRendering)null);
                 return;
-            case KRenderingPackage.KRENDERING__REFERENCES:
-                getReferences().clear();
-                return;
             case KRenderingPackage.KRENDERING__PLACEMENT_DATA:
                 setPlacementData((KPlacementData)null);
                 return;
@@ -378,8 +346,6 @@ public abstract class KRenderingImpl extends KGraphDataImpl implements KRenderin
                 return styles != null && !styles.isEmpty();
             case KRenderingPackage.KRENDERING__PARENT:
                 return getParent() != null;
-            case KRenderingPackage.KRENDERING__REFERENCES:
-                return references != null && !references.isEmpty();
             case KRenderingPackage.KRENDERING__PLACEMENT_DATA:
                 return placementData != null;
             case KRenderingPackage.KRENDERING__ACTIONS:
