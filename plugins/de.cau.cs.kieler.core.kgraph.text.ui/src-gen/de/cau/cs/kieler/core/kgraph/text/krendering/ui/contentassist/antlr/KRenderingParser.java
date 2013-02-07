@@ -208,6 +208,7 @@ public class KRenderingParser extends AbstractContentAssistParser {
 					put(grammarAccess.getKHorizontalAlignmentAccess().getGroup(), "rule__KHorizontalAlignment__Group__0");
 					put(grammarAccess.getKStyleRefAccess().getGroup(), "rule__KStyleRef__Group__0");
 					put(grammarAccess.getKGridPlacementAccess().getGroup(), "rule__KGridPlacement__Group__0");
+					put(grammarAccess.getKGridPlacementAccess().getGroup_3(), "rule__KGridPlacement__Group_3__0");
 					put(grammarAccess.getEFloatAccess().getGroup(), "rule__EFloat__Group__0");
 					put(grammarAccess.getEFloatAccess().getGroup_2(), "rule__EFloat__Group_2__0");
 					put(grammarAccess.getEFloatAccess().getGroup_2_2(), "rule__EFloat__Group_2_2__0");
@@ -396,6 +397,8 @@ public class KRenderingParser extends AbstractContentAssistParser {
 					put(grammarAccess.getKHorizontalAlignmentAccess().getPropagateToChildrenAssignment_3(), "rule__KHorizontalAlignment__PropagateToChildrenAssignment_3");
 					put(grammarAccess.getKStyleRefAccess().getStyleHolderAssignment_2(), "rule__KStyleRef__StyleHolderAssignment_2");
 					put(grammarAccess.getKGridPlacementAccess().getNumColumnsAssignment_2(), "rule__KGridPlacement__NumColumnsAssignment_2");
+					put(grammarAccess.getKGridPlacementAccess().getTopLeftAssignment_3_2(), "rule__KGridPlacement__TopLeftAssignment_3_2");
+					put(grammarAccess.getKGridPlacementAccess().getBottomRightAssignment_3_5(), "rule__KGridPlacement__BottomRightAssignment_3_5");
 					put(grammarAccess.getKShapeLayoutAccess().getXposAssignment_3_1(), "rule__KShapeLayout__XposAssignment_3_1");
 					put(grammarAccess.getKShapeLayoutAccess().getYposAssignment_4_1(), "rule__KShapeLayout__YposAssignment_4_1");
 					put(grammarAccess.getKShapeLayoutAccess().getWidthAssignment_5_1(), "rule__KShapeLayout__WidthAssignment_5_1");

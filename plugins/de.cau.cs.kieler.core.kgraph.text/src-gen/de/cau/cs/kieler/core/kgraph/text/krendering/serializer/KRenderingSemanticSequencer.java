@@ -590,7 +590,7 @@ public class KRenderingSemanticSequencer extends KLayoutDataSemanticSequencer {
 	
 	/**
 	 * Constraint:
-	 *     numColumns=EInt
+	 *     (numColumns=EInt (topLeft=KPosition bottomRight=KPosition)?)
 	 */
 	protected void sequence_KGridPlacement(EObject context, KGridPlacement semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);

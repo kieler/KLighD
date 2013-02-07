@@ -309,7 +309,12 @@ KStyleRef returns KStyleRef:
 
 KGridPlacement returns KGridPlacement:
     {KGridPlacement}
-    'gridPlacement' numColumns=EInt;
+    'gridPlacement' numColumns=EInt
+    ('{'
+        'topLeft' topLeft=KPosition ","?
+        'bottomRight' bottomRight=KPosition
+    '}')?
+    ;
     
 
 enum LineStyle returns LineStyle:

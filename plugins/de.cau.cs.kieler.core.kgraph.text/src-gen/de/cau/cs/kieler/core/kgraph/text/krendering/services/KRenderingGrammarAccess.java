@@ -3630,12 +3630,24 @@ public class KRenderingGrammarAccess extends AbstractGrammarElementFinder {
 		private final Keyword cGridPlacementKeyword_1 = (Keyword)cGroup.eContents().get(1);
 		private final Assignment cNumColumnsAssignment_2 = (Assignment)cGroup.eContents().get(2);
 		private final RuleCall cNumColumnsEIntParserRuleCall_2_0 = (RuleCall)cNumColumnsAssignment_2.eContents().get(0);
+		private final Group cGroup_3 = (Group)cGroup.eContents().get(3);
+		private final Keyword cLeftCurlyBracketKeyword_3_0 = (Keyword)cGroup_3.eContents().get(0);
+		private final Keyword cTopLeftKeyword_3_1 = (Keyword)cGroup_3.eContents().get(1);
+		private final Assignment cTopLeftAssignment_3_2 = (Assignment)cGroup_3.eContents().get(2);
+		private final RuleCall cTopLeftKPositionParserRuleCall_3_2_0 = (RuleCall)cTopLeftAssignment_3_2.eContents().get(0);
+		private final Keyword cCommaKeyword_3_3 = (Keyword)cGroup_3.eContents().get(3);
+		private final Keyword cBottomRightKeyword_3_4 = (Keyword)cGroup_3.eContents().get(4);
+		private final Assignment cBottomRightAssignment_3_5 = (Assignment)cGroup_3.eContents().get(5);
+		private final RuleCall cBottomRightKPositionParserRuleCall_3_5_0 = (RuleCall)cBottomRightAssignment_3_5.eContents().get(0);
+		private final Keyword cRightCurlyBracketKeyword_3_6 = (Keyword)cGroup_3.eContents().get(6);
 		
 		//KGridPlacement:
-		//	{KGridPlacement} "gridPlacement" numColumns=EInt;
+		//	{KGridPlacement} "gridPlacement" numColumns=EInt ("{" "topLeft" topLeft=KPosition ","? "bottomRight"
+		//	bottomRight=KPosition "}")?;
 		public ParserRule getRule() { return rule; }
 
-		//{KGridPlacement} "gridPlacement" numColumns=EInt
+		//{KGridPlacement} "gridPlacement" numColumns=EInt ("{" "topLeft" topLeft=KPosition ","? "bottomRight"
+		//bottomRight=KPosition "}")?
 		public Group getGroup() { return cGroup; }
 
 		//{KGridPlacement}
@@ -3649,6 +3661,36 @@ public class KRenderingGrammarAccess extends AbstractGrammarElementFinder {
 
 		//EInt
 		public RuleCall getNumColumnsEIntParserRuleCall_2_0() { return cNumColumnsEIntParserRuleCall_2_0; }
+
+		//("{" "topLeft" topLeft=KPosition ","? "bottomRight" bottomRight=KPosition "}")?
+		public Group getGroup_3() { return cGroup_3; }
+
+		//"{"
+		public Keyword getLeftCurlyBracketKeyword_3_0() { return cLeftCurlyBracketKeyword_3_0; }
+
+		//"topLeft"
+		public Keyword getTopLeftKeyword_3_1() { return cTopLeftKeyword_3_1; }
+
+		//topLeft=KPosition
+		public Assignment getTopLeftAssignment_3_2() { return cTopLeftAssignment_3_2; }
+
+		//KPosition
+		public RuleCall getTopLeftKPositionParserRuleCall_3_2_0() { return cTopLeftKPositionParserRuleCall_3_2_0; }
+
+		//","?
+		public Keyword getCommaKeyword_3_3() { return cCommaKeyword_3_3; }
+
+		//"bottomRight"
+		public Keyword getBottomRightKeyword_3_4() { return cBottomRightKeyword_3_4; }
+
+		//bottomRight=KPosition
+		public Assignment getBottomRightAssignment_3_5() { return cBottomRightAssignment_3_5; }
+
+		//KPosition
+		public RuleCall getBottomRightKPositionParserRuleCall_3_5_0() { return cBottomRightKPositionParserRuleCall_3_5_0; }
+
+		//"}"
+		public Keyword getRightCurlyBracketKeyword_3_6() { return cRightCurlyBracketKeyword_3_6; }
 	}
 
 	public class EFloatElements extends AbstractParserRuleElementFinder {
@@ -4477,7 +4519,8 @@ public class KRenderingGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//KGridPlacement:
-	//	{KGridPlacement} "gridPlacement" numColumns=EInt;
+	//	{KGridPlacement} "gridPlacement" numColumns=EInt ("{" "topLeft" topLeft=KPosition ","? "bottomRight"
+	//	bottomRight=KPosition "}")?;
 	public KGridPlacementElements getKGridPlacementAccess() {
 		return (pKGridPlacement != null) ? pKGridPlacement : (pKGridPlacement = new KGridPlacementElements());
 	}

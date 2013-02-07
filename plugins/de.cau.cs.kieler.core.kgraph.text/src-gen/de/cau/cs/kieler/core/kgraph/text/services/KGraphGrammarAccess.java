@@ -1452,7 +1452,8 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//KGridPlacement:
-	//	{KGridPlacement} "gridPlacement" numColumns=EInt;
+	//	{KGridPlacement} "gridPlacement" numColumns=EInt ("{" "topLeft" topLeft=KPosition ","? "bottomRight"
+	//	bottomRight=KPosition "}")?;
 	public KRenderingGrammarAccess.KGridPlacementElements getKGridPlacementAccess() {
 		return gaKRendering.getKGridPlacementAccess();
 	}

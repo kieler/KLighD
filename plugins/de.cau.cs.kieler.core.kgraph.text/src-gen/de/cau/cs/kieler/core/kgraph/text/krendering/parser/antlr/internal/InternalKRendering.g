@@ -5328,7 +5328,63 @@ ruleKGridPlacement returns [EObject current=null]
 	    }
 
 )
-))
+)(	otherlv_3='{' 
+    {
+    	newLeafNode(otherlv_3, grammarAccess.getKGridPlacementAccess().getLeftCurlyBracketKeyword_3_0());
+    }
+	otherlv_4='topLeft' 
+    {
+    	newLeafNode(otherlv_4, grammarAccess.getKGridPlacementAccess().getTopLeftKeyword_3_1());
+    }
+(
+(
+		{ 
+	        newCompositeNode(grammarAccess.getKGridPlacementAccess().getTopLeftKPositionParserRuleCall_3_2_0()); 
+	    }
+		lv_topLeft_5_0=ruleKPosition		{
+	        if ($current==null) {
+	            $current = createModelElementForParent(grammarAccess.getKGridPlacementRule());
+	        }
+       		set(
+       			$current, 
+       			"topLeft",
+        		lv_topLeft_5_0, 
+        		"KPosition");
+	        afterParserOrEnumRuleCall();
+	    }
+
+)
+)(	otherlv_6=',' 
+    {
+    	newLeafNode(otherlv_6, grammarAccess.getKGridPlacementAccess().getCommaKeyword_3_3());
+    }
+)?	otherlv_7='bottomRight' 
+    {
+    	newLeafNode(otherlv_7, grammarAccess.getKGridPlacementAccess().getBottomRightKeyword_3_4());
+    }
+(
+(
+		{ 
+	        newCompositeNode(grammarAccess.getKGridPlacementAccess().getBottomRightKPositionParserRuleCall_3_5_0()); 
+	    }
+		lv_bottomRight_8_0=ruleKPosition		{
+	        if ($current==null) {
+	            $current = createModelElementForParent(grammarAccess.getKGridPlacementRule());
+	        }
+       		set(
+       			$current, 
+       			"bottomRight",
+        		lv_bottomRight_8_0, 
+        		"KPosition");
+	        afterParserOrEnumRuleCall();
+	    }
+
+)
+)	otherlv_9='}' 
+    {
+    	newLeafNode(otherlv_9, grammarAccess.getKGridPlacementAccess().getRightCurlyBracketKeyword_3_6());
+    }
+)?)
 ;
 
 
