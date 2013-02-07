@@ -603,7 +603,7 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="KCollapseAction" eSuperTypes="#//KAction"/>
   <eClassifiers xsi:type="ecore:EClass" name="KStyleRef" eSuperTypes="#//KStyle">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="EReference0" lowerBound="1"
+    <eStructuralFeatures xsi:type="ecore:EReference" name="styleHolder" lowerBound="1"
         eType="#//KStyleHolder"/>
   </eClassifiers>
 </ecore:EPackage>

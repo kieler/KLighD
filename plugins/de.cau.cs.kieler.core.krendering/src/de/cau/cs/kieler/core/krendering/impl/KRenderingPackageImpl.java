@@ -1770,7 +1770,7 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
      * <!-- end-user-doc -->
      * @generated
      */
-    public EReference getKStyleRef_EReference0() {
+    public EReference getKStyleRef_StyleHolder() {
         return (EReference)kStyleRefEClass.getEStructuralFeatures().get(0);
     }
 
@@ -2041,7 +2041,7 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
         kCollapseActionEClass = createEClass(KCOLLAPSE_ACTION);
 
         kStyleRefEClass = createEClass(KSTYLE_REF);
-        createEReference(kStyleRefEClass, KSTYLE_REF__EREFERENCE0);
+        createEReference(kStyleRefEClass, KSTYLE_REF__STYLE_HOLDER);
 
         // Create enums
         lineStyleEEnum = createEEnum(LINE_STYLE);
@@ -2316,7 +2316,7 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
         initEClass(kCollapseActionEClass, KCollapseAction.class, "KCollapseAction", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
         initEClass(kStyleRefEClass, KStyleRef.class, "KStyleRef", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-        initEReference(getKStyleRef_EReference0(), this.getKStyleHolder(), null, "EReference0", null, 1, 1, KStyleRef.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEReference(getKStyleRef_StyleHolder(), this.getKStyleHolder(), null, "styleHolder", null, 1, 1, KStyleRef.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         // Initialize enums and add enum literals
         initEEnum(lineStyleEEnum, LineStyle.class, "LineStyle");

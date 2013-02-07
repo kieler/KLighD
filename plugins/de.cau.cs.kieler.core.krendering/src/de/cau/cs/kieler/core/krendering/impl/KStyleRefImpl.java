@@ -31,7 +31,7 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link de.cau.cs.kieler.core.krendering.impl.KStyleRefImpl#getEReference0 <em>EReference0</em>}</li>
+ *   <li>{@link de.cau.cs.kieler.core.krendering.impl.KStyleRefImpl#getStyleHolder <em>Style Holder</em>}</li>
  * </ul>
  * </p>
  *
@@ -39,15 +39,14 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  */
 public class KStyleRefImpl extends KStyleImpl implements KStyleRef {
     /**
-     * The cached value of the '{@link #getEReference0() <em>EReference0</em>}' reference.
+     * The cached value of the '{@link #getStyleHolder() <em>Style Holder</em>}' reference.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see #getEReference0()
+     * @see #getStyleHolder()
      * @generated
      * @ordered
      */
-    protected KStyleHolder eReference0;
-
+    protected KStyleHolder styleHolder;
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -72,16 +71,16 @@ public class KStyleRefImpl extends KStyleImpl implements KStyleRef {
      * <!-- end-user-doc -->
      * @generated
      */
-    public KStyleHolder getEReference0() {
-        if (eReference0 != null && eReference0.eIsProxy()) {
-            InternalEObject oldEReference0 = (InternalEObject)eReference0;
-            eReference0 = (KStyleHolder)eResolveProxy(oldEReference0);
-            if (eReference0 != oldEReference0) {
+    public KStyleHolder getStyleHolder() {
+        if (styleHolder != null && styleHolder.eIsProxy()) {
+            InternalEObject oldStyleHolder = (InternalEObject)styleHolder;
+            styleHolder = (KStyleHolder)eResolveProxy(oldStyleHolder);
+            if (styleHolder != oldStyleHolder) {
                 if (eNotificationRequired())
-                    eNotify(new ENotificationImpl(this, Notification.RESOLVE, KRenderingPackage.KSTYLE_REF__EREFERENCE0, oldEReference0, eReference0));
+                    eNotify(new ENotificationImpl(this, Notification.RESOLVE, KRenderingPackage.KSTYLE_REF__STYLE_HOLDER, oldStyleHolder, styleHolder));
             }
         }
-        return eReference0;
+        return styleHolder;
     }
 
     /**
@@ -89,8 +88,8 @@ public class KStyleRefImpl extends KStyleImpl implements KStyleRef {
      * <!-- end-user-doc -->
      * @generated
      */
-    public KStyleHolder basicGetEReference0() {
-        return eReference0;
+    public KStyleHolder basicGetStyleHolder() {
+        return styleHolder;
     }
 
     /**
@@ -98,11 +97,11 @@ public class KStyleRefImpl extends KStyleImpl implements KStyleRef {
      * <!-- end-user-doc -->
      * @generated
      */
-    public void setEReference0(KStyleHolder newEReference0) {
-        KStyleHolder oldEReference0 = eReference0;
-        eReference0 = newEReference0;
+    public void setStyleHolder(KStyleHolder newStyleHolder) {
+        KStyleHolder oldStyleHolder = styleHolder;
+        styleHolder = newStyleHolder;
         if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, KRenderingPackage.KSTYLE_REF__EREFERENCE0, oldEReference0, eReference0));
+            eNotify(new ENotificationImpl(this, Notification.SET, KRenderingPackage.KSTYLE_REF__STYLE_HOLDER, oldStyleHolder, styleHolder));
     }
 
     /**
@@ -113,9 +112,9 @@ public class KStyleRefImpl extends KStyleImpl implements KStyleRef {
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
-            case KRenderingPackage.KSTYLE_REF__EREFERENCE0:
-                if (resolve) return getEReference0();
-                return basicGetEReference0();
+            case KRenderingPackage.KSTYLE_REF__STYLE_HOLDER:
+                if (resolve) return getStyleHolder();
+                return basicGetStyleHolder();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -128,8 +127,8 @@ public class KStyleRefImpl extends KStyleImpl implements KStyleRef {
     @Override
     public void eSet(int featureID, Object newValue) {
         switch (featureID) {
-            case KRenderingPackage.KSTYLE_REF__EREFERENCE0:
-                setEReference0((KStyleHolder)newValue);
+            case KRenderingPackage.KSTYLE_REF__STYLE_HOLDER:
+                setStyleHolder((KStyleHolder)newValue);
                 return;
         }
         super.eSet(featureID, newValue);
@@ -143,8 +142,8 @@ public class KStyleRefImpl extends KStyleImpl implements KStyleRef {
     @Override
     public void eUnset(int featureID) {
         switch (featureID) {
-            case KRenderingPackage.KSTYLE_REF__EREFERENCE0:
-                setEReference0((KStyleHolder)null);
+            case KRenderingPackage.KSTYLE_REF__STYLE_HOLDER:
+                setStyleHolder((KStyleHolder)null);
                 return;
         }
         super.eUnset(featureID);
@@ -158,8 +157,8 @@ public class KStyleRefImpl extends KStyleImpl implements KStyleRef {
     @Override
     public boolean eIsSet(int featureID) {
         switch (featureID) {
-            case KRenderingPackage.KSTYLE_REF__EREFERENCE0:
-                return eReference0 != null;
+            case KRenderingPackage.KSTYLE_REF__STYLE_HOLDER:
+                return styleHolder != null;
         }
         return super.eIsSet(featureID);
     }

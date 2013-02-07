@@ -47,6 +47,7 @@ import de.cau.cs.kieler.core.krendering.KRotation;
 import de.cau.cs.kieler.core.krendering.KRoundedBendsPolyline;
 import de.cau.cs.kieler.core.krendering.KRoundedRectangle;
 import de.cau.cs.kieler.core.krendering.KSpline;
+import de.cau.cs.kieler.core.krendering.KStyleRef;
 import de.cau.cs.kieler.core.krendering.KText;
 import de.cau.cs.kieler.core.krendering.KTopPosition;
 import de.cau.cs.kieler.core.krendering.KVerticalAlignment;
@@ -390,6 +391,13 @@ public class KGraphSemanticSequencer extends KRenderingSemanticSequencer {
 				   context == grammarAccess.getKRenderingRule() ||
 				   context == grammarAccess.getKSplineRule()) {
 					sequence_KSpline(context, (KSpline) semanticObject); 
+					return; 
+				}
+				else break;
+			case KRenderingPackage.KSTYLE_REF:
+				if(context == grammarAccess.getKStyleRule() ||
+				   context == grammarAccess.getKStyleRefRule()) {
+					sequence_KStyleRef(context, (KStyleRef) semanticObject); 
 					return; 
 				}
 				else break;

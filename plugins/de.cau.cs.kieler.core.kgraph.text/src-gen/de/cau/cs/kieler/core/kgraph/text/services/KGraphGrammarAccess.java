@@ -1007,7 +1007,7 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 
 	//KStyle:
 	//	KLineWidth | KForeground | KBackground | KVisibility | KLineStyle | KLineCap | KRotation | KFontBold | KFontItalic |
-	//	KFontName | KFontSize | KVerticalAlignment | KHorizontalAlignment;
+	//	KFontName | KFontSize | KVerticalAlignment | KHorizontalAlignment | KStyleRef;
 	public KRenderingGrammarAccess.KStyleElements getKStyleAccess() {
 		return gaKRendering.getKStyleAccess();
 	}
@@ -1439,6 +1439,16 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	
 	public ParserRule getKHorizontalAlignmentRule() {
 		return getKHorizontalAlignmentAccess().getRule();
+	}
+
+	//KStyleRef:
+	//	{KStyleRef} "styleRef" styleHolder=[KStyleHolder|EString];
+	public KRenderingGrammarAccess.KStyleRefElements getKStyleRefAccess() {
+		return gaKRendering.getKStyleRefAccess();
+	}
+	
+	public ParserRule getKStyleRefRule() {
+		return getKStyleRefAccess().getRule();
 	}
 
 	//KGridPlacement:

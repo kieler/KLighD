@@ -30,7 +30,7 @@ KPlacementData returns KPlacementData:
     KDecoratorPlacementData | KGridPlacementData | KAreaPlacementData | KPointPlacementData;
 
 KStyle returns KStyle:
-    KLineWidth | KForeground | KBackground | KVisibility | KLineStyle | KLineCap | KRotation | KFontBold | KFontItalic | KFontName | KFontSize | KVerticalAlignment | KHorizontalAlignment;
+    KLineWidth | KForeground | KBackground | KVisibility | KLineStyle | KLineCap | KRotation | KFontBold | KFontItalic | KFontName | KFontSize | KVerticalAlignment | KHorizontalAlignment | KStyleRef;
 
 KPlacement returns KPlacement:
     KGridPlacement;
@@ -302,6 +302,10 @@ KVerticalAlignment returns KVerticalAlignment:
 KHorizontalAlignment returns KHorizontalAlignment:
     {KHorizontalAlignment}
     'horizontalAlignment' horizontalAlignment=HorizontalAlignment propagateToChildren?='!'?;
+
+KStyleRef returns KStyleRef:
+    {KStyleRef}
+    'styleRef' styleHolder=[KStyleHolder|EString];
 
 KGridPlacement returns KGridPlacement:
     {KGridPlacement}

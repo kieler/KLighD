@@ -22,7 +22,7 @@ package de.cau.cs.kieler.core.krendering;
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link de.cau.cs.kieler.core.krendering.KStyleRef#getEReference0 <em>EReference0</em>}</li>
+ *   <li>{@link de.cau.cs.kieler.core.krendering.KStyleRef#getStyleHolder <em>Style Holder</em>}</li>
  * </ul>
  * </p>
  *
@@ -32,29 +32,29 @@ package de.cau.cs.kieler.core.krendering;
  */
 public interface KStyleRef extends KStyle {
     /**
-     * Returns the value of the '<em><b>EReference0</b></em>' reference.
+     * Returns the value of the '<em><b>Style Holder</b></em>' reference.
      * <!-- begin-user-doc -->
      * <p>
-     * If the meaning of the '<em>EReference0</em>' reference isn't clear,
+     * If the meaning of the '<em>Style Holder</em>' reference isn't clear,
      * there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
-     * @return the value of the '<em>EReference0</em>' reference.
-     * @see #setEReference0(KStyleHolder)
-     * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKStyleRef_EReference0()
+     * @return the value of the '<em>Style Holder</em>' reference.
+     * @see #setStyleHolder(KStyleHolder)
+     * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKStyleRef_StyleHolder()
      * @model required="true"
      * @generated
      */
-    KStyleHolder getEReference0();
+    KStyleHolder getStyleHolder();
 
     /**
-     * Sets the value of the '{@link de.cau.cs.kieler.core.krendering.KStyleRef#getEReference0 <em>EReference0</em>}' reference.
+     * Sets the value of the '{@link de.cau.cs.kieler.core.krendering.KStyleRef#getStyleHolder <em>Style Holder</em>}' reference.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @param value the new value of the '<em>EReference0</em>' reference.
-     * @see #getEReference0()
+     * @param value the new value of the '<em>Style Holder</em>' reference.
+     * @see #getStyleHolder()
      * @generated
      */
-    void setEReference0(KStyleHolder value);
+    void setStyleHolder(KStyleHolder value);
 
 } // KStyleRef

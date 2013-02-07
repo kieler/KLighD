@@ -496,6 +496,16 @@ ruleKStyle returns [EObject current=null]
         $current = $this_KHorizontalAlignment_12.current; 
         afterParserOrEnumRuleCall();
     }
+
+    |
+    { 
+        newCompositeNode(grammarAccess.getKStyleAccess().getKStyleRefParserRuleCall_13()); 
+    }
+    this_KStyleRef_13=ruleKStyleRef
+    { 
+        $current = $this_KStyleRef_13.current; 
+        afterParserOrEnumRuleCall();
+    }
 )
 ;
 
@@ -5224,6 +5234,52 @@ ruleKHorizontalAlignment returns [EObject current=null]
 
 )
 )?)
+;
+
+
+
+
+
+// Entry rule entryRuleKStyleRef
+entryRuleKStyleRef returns [EObject current=null] 
+	:
+	{ newCompositeNode(grammarAccess.getKStyleRefRule()); }
+	 iv_ruleKStyleRef=ruleKStyleRef 
+	 { $current=$iv_ruleKStyleRef.current; } 
+	 EOF 
+;
+
+// Rule KStyleRef
+ruleKStyleRef returns [EObject current=null] 
+    @init { enterRule(); 
+    }
+    @after { leaveRule(); }:
+((
+    {
+        $current = forceCreateModelElement(
+            grammarAccess.getKStyleRefAccess().getKStyleRefAction_0(),
+            $current);
+    }
+)	otherlv_1='styleRef' 
+    {
+    	newLeafNode(otherlv_1, grammarAccess.getKStyleRefAccess().getStyleRefKeyword_1());
+    }
+(
+(
+		{
+			if ($current==null) {
+	            $current = createModelElement(grammarAccess.getKStyleRefRule());
+	        }
+        }
+		{ 
+	        newCompositeNode(grammarAccess.getKStyleRefAccess().getStyleHolderKStyleHolderCrossReference_2_0()); 
+	    }
+		ruleEString		{ 
+	        afterParserOrEnumRuleCall();
+	    }
+
+)
+))
 ;
 
 

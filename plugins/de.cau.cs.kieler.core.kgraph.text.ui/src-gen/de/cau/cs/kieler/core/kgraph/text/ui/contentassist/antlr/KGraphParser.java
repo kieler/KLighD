@@ -238,6 +238,7 @@ public class KGraphParser extends AbstractContentAssistParser {
 					put(grammarAccess.getKFontSizeAccess().getGroup(), "rule__KFontSize__Group__0");
 					put(grammarAccess.getKVerticalAlignmentAccess().getGroup(), "rule__KVerticalAlignment__Group__0");
 					put(grammarAccess.getKHorizontalAlignmentAccess().getGroup(), "rule__KHorizontalAlignment__Group__0");
+					put(grammarAccess.getKStyleRefAccess().getGroup(), "rule__KStyleRef__Group__0");
 					put(grammarAccess.getKGridPlacementAccess().getGroup(), "rule__KGridPlacement__Group__0");
 					put(grammarAccess.getEFloatAccess().getGroup(), "rule__EFloat__Group__0");
 					put(grammarAccess.getEFloatAccess().getGroup_2(), "rule__EFloat__Group_2__0");
@@ -453,6 +454,7 @@ public class KGraphParser extends AbstractContentAssistParser {
 					put(grammarAccess.getKVerticalAlignmentAccess().getPropagateToChildrenAssignment_3(), "rule__KVerticalAlignment__PropagateToChildrenAssignment_3");
 					put(grammarAccess.getKHorizontalAlignmentAccess().getHorizontalAlignmentAssignment_2(), "rule__KHorizontalAlignment__HorizontalAlignmentAssignment_2");
 					put(grammarAccess.getKHorizontalAlignmentAccess().getPropagateToChildrenAssignment_3(), "rule__KHorizontalAlignment__PropagateToChildrenAssignment_3");
+					put(grammarAccess.getKStyleRefAccess().getStyleHolderAssignment_2(), "rule__KStyleRef__StyleHolderAssignment_2");
 					put(grammarAccess.getKGridPlacementAccess().getNumColumnsAssignment_2(), "rule__KGridPlacement__NumColumnsAssignment_2");
 					put(grammarAccess.getKShapeLayoutAccess().getXposAssignment_3_1(), "rule__KShapeLayout__XposAssignment_3_1");
 					put(grammarAccess.getKShapeLayoutAccess().getYposAssignment_4_1(), "rule__KShapeLayout__YposAssignment_4_1");

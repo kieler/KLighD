@@ -74,6 +74,7 @@ import de.cau.cs.kieler.core.krendering.KRoundedBendsPolyline;
 import de.cau.cs.kieler.core.krendering.KRoundedRectangle;
 import de.cau.cs.kieler.core.krendering.KSpline;
 import de.cau.cs.kieler.core.krendering.KStyle;
+import de.cau.cs.kieler.core.krendering.KStyleRef;
 import de.cau.cs.kieler.core.krendering.KText;
 import de.cau.cs.kieler.core.krendering.KVerticalAlignment;
 import de.cau.cs.kieler.core.krendering.util.KRenderingSwitch;
@@ -1630,6 +1631,12 @@ public abstract class AbstractRenderingController<S extends KGraphElement, T ext
                     if (theStyles.bold == null) {
                         theStyles.bold = bold;
                     }
+                    return true;
+                }
+                
+                //styleRef
+                public Boolean caseKStyleRef(final KStyleRef style){
+                    deriveStyles(theStyles, style.getStyleHolder().getStyles());
                     return true;
                 }
             } /**/.doSwitch(style);

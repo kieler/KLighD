@@ -3368,13 +3368,13 @@ public interface KRenderingPackage extends EPackage {
     int KSTYLE_REF__FUNCTION_ID = KSTYLE__FUNCTION_ID;
 
     /**
-     * The feature id for the '<em><b>EReference0</b></em>' reference.
+     * The feature id for the '<em><b>Style Holder</b></em>' reference.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int KSTYLE_REF__EREFERENCE0 = KSTYLE_FEATURE_COUNT + 0;
+    int KSTYLE_REF__STYLE_HOLDER = KSTYLE_FEATURE_COUNT + 0;
 
     /**
      * The number of structural features of the '<em>KStyle Ref</em>' class.
@@ -4847,15 +4847,15 @@ public interface KRenderingPackage extends EPackage {
     EClass getKStyleRef();
 
     /**
-     * Returns the meta object for the reference '{@link de.cau.cs.kieler.core.krendering.KStyleRef#getEReference0 <em>EReference0</em>}'.
+     * Returns the meta object for the reference '{@link de.cau.cs.kieler.core.krendering.KStyleRef#getStyleHolder <em>Style Holder</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for the reference '<em>EReference0</em>'.
-     * @see de.cau.cs.kieler.core.krendering.KStyleRef#getEReference0()
+     * @return the meta object for the reference '<em>Style Holder</em>'.
+     * @see de.cau.cs.kieler.core.krendering.KStyleRef#getStyleHolder()
      * @see #getKStyleRef()
      * @generated
      */
-    EReference getKStyleRef_EReference0();
+    EReference getKStyleRef_StyleHolder();
 
     /**
      * Returns the meta object for enum '{@link de.cau.cs.kieler.core.krendering.LineStyle <em>Line Style</em>}'.
@@ -6104,12 +6104,12 @@ public interface KRenderingPackage extends EPackage {
         EClass KSTYLE_REF = eINSTANCE.getKStyleRef();
 
         /**
-         * The meta object literal for the '<em><b>EReference0</b></em>' reference feature.
+         * The meta object literal for the '<em><b>Style Holder</b></em>' reference feature.
          * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
          * @generated
          */
-        EReference KSTYLE_REF__EREFERENCE0 = eINSTANCE.getKStyleRef_EReference0();
+        EReference KSTYLE_REF__STYLE_HOLDER = eINSTANCE.getKStyleRef_StyleHolder();
 
         /**
          * The meta object literal for the '{@link de.cau.cs.kieler.core.krendering.LineStyle <em>Line Style</em>}' enum.
