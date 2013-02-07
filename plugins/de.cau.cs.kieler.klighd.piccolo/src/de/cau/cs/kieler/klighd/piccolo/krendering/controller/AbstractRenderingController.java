@@ -1532,110 +1532,84 @@ public abstract class AbstractRenderingController<S extends KGraphElement, T ext
             new KRenderingSwitch<Boolean>() {
                 // foreground
                 public Boolean caseKForeground(final KForeground f) {
-                    if (theStyles.foreground == null) {
-                        theStyles.foreground = f;
-                    }
+                    theStyles.foreground = f;
                     return true;
                 }
 
                 // background
                 public Boolean caseKBackground(final KBackground b) {
-                    if (theStyles.background == null) {
-                        theStyles.background = b;
-                    }
+                    theStyles.background = b;
                     return true;
                 }
 
-                // weather the foreground is invisible or not
+                // whether the foreground is invisible or not
                 public Boolean caseKInvisibility(final KInvisibility i) {
-                    if (theStyles.invisibility == null) {
-                        theStyles.invisibility = i;
-                    }
+                    theStyles.invisibility = i;
                     return true;
                 }
 
                 // line width
                 public Boolean caseKLineWidth(final KLineWidth lw) {
-                    if (theStyles.lineWidth == null) {
-                        theStyles.lineWidth = lw;
-                    }
+                    theStyles.lineWidth = lw;
                     return true;
                 }
 
                 // line style
                 public Boolean caseKLineStyle(final KLineStyle ls) {
-                    if (theStyles.lineStyle == null) {
-                        theStyles.lineStyle = ls;
-                    }
+                    theStyles.lineStyle = ls;
                     return true;
                 }
 
                 // line cap style
                 public Boolean caseKLineCap(final KLineCap lcs) {
-                    if (theStyles.lineCap == null) {
-                        theStyles.lineCap = lcs;
-                    }
+                    theStyles.lineCap = lcs;
                     return true;
                 }
 
                 // rotation
                 public Boolean caseKRotation(final KRotation r) {
-                    if (theStyles.rotation == null) {
-                        theStyles.rotation = r;
-                    }
+                    theStyles.rotation = r;
                     return true;
                 }
 
                 // horizontal alignment
                 public Boolean caseKHorizontalAlignment(final KHorizontalAlignment ha) {
-                    if (theStyles.horizontalAlignment == null) {
-                        theStyles.horizontalAlignment = ha;
-                    }
+                    theStyles.horizontalAlignment = ha;
                     return true;
                 }
 
                 // vertical alignment
                 public Boolean caseKVerticalAlignment(final KVerticalAlignment va) {
-                    if (theStyles.verticalAlignment == null) {
-                        theStyles.verticalAlignment = va;
-                    }
+                    theStyles.verticalAlignment = va;
                     return true;
                 }
 
                 // font name
                 public Boolean caseKFontName(final KFontName fontName) {
-                    if (theStyles.fontName == null) {
-                        theStyles.fontName = fontName;
-                    }
+                    theStyles.fontName = fontName;
                     return true;
                 }
 
                 // font size
                 public Boolean caseKFontSize(final KFontSize fontSize) {
-                    if (theStyles.fontSize == null) {
-                        theStyles.fontSize = fontSize;
-                    }
+                    theStyles.fontSize = fontSize;
                     return true;
                 }
 
                 // italic
                 public Boolean caseKFontItalic(final KFontItalic italic) {
-                    if (theStyles.italic == null) {
-                        theStyles.italic = italic;
-                    }
+                    theStyles.italic = italic;
                     return true;
                 }
 
                 // bold
                 public Boolean caseKFontBold(final KFontBold bold) {
-                    if (theStyles.bold == null) {
-                        theStyles.bold = bold;
-                    }
+                    theStyles.bold = bold;
                     return true;
                 }
-                
-                //styleRef
-                public Boolean caseKStyleRef(final KStyleRef style){
+
+                // styleRef
+                public Boolean caseKStyleRef(final KStyleRef style) {
                     deriveStyles(theStyles, style.getStyleHolder().getStyles());
                     return true;
                 }
