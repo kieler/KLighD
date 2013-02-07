@@ -52,6 +52,7 @@ import de.cau.cs.kieler.core.krendering.KText;
 import de.cau.cs.kieler.core.krendering.KTopPosition;
 import de.cau.cs.kieler.core.krendering.KXPosition;
 import de.cau.cs.kieler.core.krendering.KYPosition;
+import de.cau.cs.kieler.core.krendering.impl.KBottomPositionImpl;
 import de.cau.cs.kieler.core.krendering.util.KRenderingSwitch;
 import de.cau.cs.kieler.core.util.Pair;
 import de.cau.cs.kieler.kiml.klayoutdata.KInsets;
@@ -662,10 +663,67 @@ public final class PlacementUtil {
 
         minBounds.width = Math.max(minBounds.width, childBounds.width);
         minBounds.height = Math.max(minBounds.height, childBounds.height);
-
+        
+        //at last add any offset defined in topLeft and bottomRight of the placement definition
+        KPosition top = ((KGridPlacement) container.getChildPlacement()).getTopLeft();
+        KPosition bottom =  ((KGridPlacement) container.getChildPlacement()).getBottomRight();
+        
+        if (top != null) {
+            minBounds.width += additionalSizeNeeded(minBounds.width, 
+                    top.getX().getAbsolute(), 
+                    top.getX().getRelative(), 
+                    top.getX().eClass().getClassifierID());
+            minBounds.height += additionalSizeNeeded(minBounds.height, 
+                    top.getY().getAbsolute(), 
+                    top.getY().getRelative(), 
+                    top.getY().eClass().getClassifierID());
+        }
+        if (bottom != null) {
+            minBounds.width += additionalSizeNeeded(minBounds.width, 
+                    bottom.getX().getAbsolute(), 
+                    bottom.getX().getRelative(), 
+                    bottom.getX().eClass().getClassifierID());
+            minBounds.height += additionalSizeNeeded(minBounds.height, 
+                    bottom.getY().getAbsolute(), 
+                    bottom.getY().getRelative(), 
+                    bottom.getY().eClass().getClassifierID());
+        }
+        
         return minBounds;
     }
     
+    
+    /**
+     * determine how much of a parent size is available after considering defined topLeft and bottomRight
+     * parameters
+     * @param parentSize the size of the parent
+     * @param absValue the absolute value of the topLeft or bottomRight position
+     * @param relValue the relative value of the topLeft or bottomRight position
+     * @param classifierId the classifierId of the KPosition the measurements are taken from
+     * @return
+     */
+    private static float getSizeAvailable(final float parentSize, final float absValue, 
+            final float relValue, final int classifierId){
+        float temp;
+        float localRelValue = relValue;
+        switch (classifierId) {
+        case KRenderingPackage.KBOTTOM_POSITION:
+        case KRenderingPackage.KRIGHT_POSITION:
+            // emulate left/topPosition by simply inverting the relValue
+            localRelValue = 1 - relValue;
+            // fallThrough
+        case KRenderingPackage.KTOP_POSITION:
+        case KRenderingPackage.KLEFT_POSITION:
+            temp = parentSize - absValue;
+            if (localRelValue < 1) {
+                temp = temp * (1-localRelValue);
+            } // else error in model: object placed outside of the parent, so ignore relValue.
+            return temp;
+        default:
+            // could not determine how the insets were measured so assume the whole parent Width is available
+            return parentSize;
+        }
+    }
     
     /**
      * Determine the additional size needed to place an element with its according insets.
@@ -1455,6 +1513,8 @@ public final class PlacementUtil {
 
         // determine the required number of columns and rows
         int setColumns = gridPlacement.getNumColumns();
+        placer.topLeft = gridPlacement.getTopLeft();
+        placer.bottomRight = gridPlacement.getBottomRight();
         placer.numColumns = setColumns == -1 ? children.size() : setColumns < 1 ? 1 : gridPlacement
                 .getNumColumns();
         placer.numRows = (children.size() - 1) / placer.numColumns + 1;
@@ -1583,6 +1643,9 @@ public final class PlacementUtil {
 
         private int numVariableColumnMaxWidths = 0;
         private int numVariableRowMaxHeights = 0;
+        
+        private KPosition topLeft = null;
+        private KPosition bottomRight = null;
 
         /**
          * Evaluates the grid placement for the given parent bounds.
@@ -1600,6 +1663,37 @@ public final class PlacementUtil {
             Bounds[] bounds = new Bounds[children.size()];
             float availableParentWidth = (float) parentBounds.width;
             float availableParentHeight = (float) parentBounds.height;
+            
+            //variables that are later on used to define the bounds of single objects
+            float currentX = 0;
+            float currentY = 0;
+            
+            //take insets into consideration
+            if (topLeft != null){
+                availableParentWidth = getSizeAvailable(availableParentWidth,
+                        topLeft.getX().getAbsolute(), 
+                        topLeft.getX().getRelative(),
+                        topLeft.getX().eClass().getClassifierID());
+                availableParentHeight = getSizeAvailable(availableParentHeight,
+                        topLeft.getY().getAbsolute(), 
+                        topLeft.getY().getRelative(),
+                        topLeft.getY().eClass().getClassifierID());
+                
+                //take the offset into consideration to place the elements later
+                currentX = parentBounds.width - availableParentWidth;
+                currentY = parentBounds.height - availableParentHeight;
+            }
+            if (bottomRight != null){
+                availableParentWidth = getSizeAvailable(availableParentWidth,
+                        bottomRight.getX().getAbsolute(), 
+                        bottomRight.getX().getRelative(),
+                        bottomRight.getX().eClass().getClassifierID());
+                availableParentHeight = getSizeAvailable(availableParentHeight,
+                        bottomRight.getY().getAbsolute(), 
+                        bottomRight.getY().getRelative(),
+                        bottomRight.getY().eClass().getClassifierID());
+            }
+            
             
             // calculate scaling and variable width/height per column/row
             float widthScale = 1;
@@ -1703,9 +1797,7 @@ public final class PlacementUtil {
                 }
             }
 
-            // create the bounds
-            float currentX = 0;
-            float currentY = 0;
+
             for (int i = 0; i < children.size(); i++) {
                 KGridPlacementData gpd = asGridPlacementData(children.get(i).getPlacementData());
                 int column = i % numColumns;
@@ -1836,6 +1928,11 @@ public final class PlacementUtil {
         float width = (float) parentBounds.width;
         float height = (float) parentBounds.height;
         Point point = new Point(0.0f, 0.0f);
+        
+        if (position == null){
+            return point;
+        }
+        
         KXPosition xPos = position.getX();
         KYPosition yPos = position.getY();
         if (xPos instanceof KLeftPosition) {
