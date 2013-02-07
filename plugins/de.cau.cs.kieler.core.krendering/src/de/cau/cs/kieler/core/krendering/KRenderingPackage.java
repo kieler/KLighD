@@ -1470,7 +1470,7 @@ public interface KRenderingPackage extends EPackage {
     int KGRID_PLACEMENT__NUM_COLUMNS = KPLACEMENT_FEATURE_COUNT + 0;
 
     /**
-     * The feature id for the '<em><b>Top Left</b></em>' reference.
+     * The feature id for the '<em><b>Top Left</b></em>' containment reference.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
@@ -1479,7 +1479,7 @@ public interface KRenderingPackage extends EPackage {
     int KGRID_PLACEMENT__TOP_LEFT = KPLACEMENT_FEATURE_COUNT + 1;
 
     /**
-     * The feature id for the '<em><b>Bottom Right</b></em>' reference.
+     * The feature id for the '<em><b>Bottom Right</b></em>' containment reference.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
@@ -3946,10 +3946,10 @@ public interface KRenderingPackage extends EPackage {
     EAttribute getKGridPlacement_NumColumns();
 
     /**
-     * Returns the meta object for the reference '{@link de.cau.cs.kieler.core.krendering.KGridPlacement#getTopLeft <em>Top Left</em>}'.
+     * Returns the meta object for the containment reference '{@link de.cau.cs.kieler.core.krendering.KGridPlacement#getTopLeft <em>Top Left</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for the reference '<em>Top Left</em>'.
+     * @return the meta object for the containment reference '<em>Top Left</em>'.
      * @see de.cau.cs.kieler.core.krendering.KGridPlacement#getTopLeft()
      * @see #getKGridPlacement()
      * @generated
@@ -3957,10 +3957,10 @@ public interface KRenderingPackage extends EPackage {
     EReference getKGridPlacement_TopLeft();
 
     /**
-     * Returns the meta object for the reference '{@link de.cau.cs.kieler.core.krendering.KGridPlacement#getBottomRight <em>Bottom Right</em>}'.
+     * Returns the meta object for the containment reference '{@link de.cau.cs.kieler.core.krendering.KGridPlacement#getBottomRight <em>Bottom Right</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for the reference '<em>Bottom Right</em>'.
+     * @return the meta object for the containment reference '<em>Bottom Right</em>'.
      * @see de.cau.cs.kieler.core.krendering.KGridPlacement#getBottomRight()
      * @see #getKGridPlacement()
      * @generated
@@ -5350,7 +5350,7 @@ public interface KRenderingPackage extends EPackage {
         EAttribute KGRID_PLACEMENT__NUM_COLUMNS = eINSTANCE.getKGridPlacement_NumColumns();
 
         /**
-         * The meta object literal for the '<em><b>Top Left</b></em>' reference feature.
+         * The meta object literal for the '<em><b>Top Left</b></em>' containment reference feature.
          * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
          * @generated
@@ -5358,7 +5358,7 @@ public interface KRenderingPackage extends EPackage {
         EReference KGRID_PLACEMENT__TOP_LEFT = eINSTANCE.getKGridPlacement_TopLeft();
 
         /**
-         * The meta object literal for the '<em><b>Bottom Right</b></em>' reference feature.
+         * The meta object literal for the '<em><b>Bottom Right</b></em>' containment reference feature.
          * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
          * @generated

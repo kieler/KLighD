@@ -69,7 +69,7 @@ public interface KGridPlacement extends KPlacement {
     void setNumColumns(int value);
 
     /**
-     * Returns the value of the '<em><b>Top Left</b></em>' reference.
+     * Returns the value of the '<em><b>Top Left</b></em>' containment reference.
      * <!-- begin-user-doc -->
      * <p>
      * If the meaning of the '<em>Top Left</em>' reference isn't clear,
@@ -79,26 +79,26 @@ public interface KGridPlacement extends KPlacement {
      * <!-- begin-model-doc -->
      * the top left position of the grid
      * <!-- end-model-doc -->
-     * @return the value of the '<em>Top Left</em>' reference.
+     * @return the value of the '<em>Top Left</em>' containment reference.
      * @see #setTopLeft(KPosition)
      * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKGridPlacement_TopLeft()
-     * @model
+     * @model containment="true"
      * @generated
      */
     KPosition getTopLeft();
 
     /**
-     * Sets the value of the '{@link de.cau.cs.kieler.core.krendering.KGridPlacement#getTopLeft <em>Top Left</em>}' reference.
+     * Sets the value of the '{@link de.cau.cs.kieler.core.krendering.KGridPlacement#getTopLeft <em>Top Left</em>}' containment reference.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @param value the new value of the '<em>Top Left</em>' reference.
+     * @param value the new value of the '<em>Top Left</em>' containment reference.
      * @see #getTopLeft()
      * @generated
      */
     void setTopLeft(KPosition value);
 
     /**
-     * Returns the value of the '<em><b>Bottom Right</b></em>' reference.
+     * Returns the value of the '<em><b>Bottom Right</b></em>' containment reference.
      * <!-- begin-user-doc -->
      * <p>
      * If the meaning of the '<em>Bottom Right</em>' reference isn't clear,
@@ -108,19 +108,19 @@ public interface KGridPlacement extends KPlacement {
      * <!-- begin-model-doc -->
      * the bottom right position of the grid
      * <!-- end-model-doc -->
-     * @return the value of the '<em>Bottom Right</em>' reference.
+     * @return the value of the '<em>Bottom Right</em>' containment reference.
      * @see #setBottomRight(KPosition)
      * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKGridPlacement_BottomRight()
-     * @model
+     * @model containment="true"
      * @generated
      */
     KPosition getBottomRight();
 
     /**
-     * Sets the value of the '{@link de.cau.cs.kieler.core.krendering.KGridPlacement#getBottomRight <em>Bottom Right</em>}' reference.
+     * Sets the value of the '{@link de.cau.cs.kieler.core.krendering.KGridPlacement#getBottomRight <em>Bottom Right</em>}' containment reference.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @param value the new value of the '<em>Bottom Right</em>' reference.
+     * @param value the new value of the '<em>Bottom Right</em>' containment reference.
      * @see #getBottomRight()
      * @generated
      */

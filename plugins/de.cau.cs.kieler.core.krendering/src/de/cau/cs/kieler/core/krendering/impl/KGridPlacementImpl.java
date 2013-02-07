@@ -19,6 +19,7 @@ import de.cau.cs.kieler.core.krendering.KRenderingPackage;
 
 import org.eclipse.emf.common.notify.Notification;
 
+import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 
@@ -62,7 +63,7 @@ public class KGridPlacementImpl extends EObjectImpl implements KGridPlacement {
     protected int numColumns = NUM_COLUMNS_EDEFAULT;
 
     /**
-     * The cached value of the '{@link #getTopLeft() <em>Top Left</em>}' reference.
+     * The cached value of the '{@link #getTopLeft() <em>Top Left</em>}' containment reference.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @see #getTopLeft()
@@ -72,7 +73,7 @@ public class KGridPlacementImpl extends EObjectImpl implements KGridPlacement {
     protected KPosition topLeft;
 
     /**
-     * The cached value of the '{@link #getBottomRight() <em>Bottom Right</em>}' reference.
+     * The cached value of the '{@link #getBottomRight() <em>Bottom Right</em>}' containment reference.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @see #getBottomRight()
@@ -127,14 +128,6 @@ public class KGridPlacementImpl extends EObjectImpl implements KGridPlacement {
      * @generated
      */
     public KPosition getTopLeft() {
-        if (topLeft != null && topLeft.eIsProxy()) {
-            InternalEObject oldTopLeft = (InternalEObject)topLeft;
-            topLeft = (KPosition)eResolveProxy(oldTopLeft);
-            if (topLeft != oldTopLeft) {
-                if (eNotificationRequired())
-                    eNotify(new ENotificationImpl(this, Notification.RESOLVE, KRenderingPackage.KGRID_PLACEMENT__TOP_LEFT, oldTopLeft, topLeft));
-            }
-        }
         return topLeft;
     }
 
@@ -143,8 +136,14 @@ public class KGridPlacementImpl extends EObjectImpl implements KGridPlacement {
      * <!-- end-user-doc -->
      * @generated
      */
-    public KPosition basicGetTopLeft() {
-        return topLeft;
+    public NotificationChain basicSetTopLeft(KPosition newTopLeft, NotificationChain msgs) {
+        KPosition oldTopLeft = topLeft;
+        topLeft = newTopLeft;
+        if (eNotificationRequired()) {
+            ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, KRenderingPackage.KGRID_PLACEMENT__TOP_LEFT, oldTopLeft, newTopLeft);
+            if (msgs == null) msgs = notification; else msgs.add(notification);
+        }
+        return msgs;
     }
 
     /**
@@ -153,10 +152,17 @@ public class KGridPlacementImpl extends EObjectImpl implements KGridPlacement {
      * @generated
      */
     public void setTopLeft(KPosition newTopLeft) {
-        KPosition oldTopLeft = topLeft;
-        topLeft = newTopLeft;
-        if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, KRenderingPackage.KGRID_PLACEMENT__TOP_LEFT, oldTopLeft, topLeft));
+        if (newTopLeft != topLeft) {
+            NotificationChain msgs = null;
+            if (topLeft != null)
+                msgs = ((InternalEObject)topLeft).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - KRenderingPackage.KGRID_PLACEMENT__TOP_LEFT, null, msgs);
+            if (newTopLeft != null)
+                msgs = ((InternalEObject)newTopLeft).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - KRenderingPackage.KGRID_PLACEMENT__TOP_LEFT, null, msgs);
+            msgs = basicSetTopLeft(newTopLeft, msgs);
+            if (msgs != null) msgs.dispatch();
+        }
+        else if (eNotificationRequired())
+            eNotify(new ENotificationImpl(this, Notification.SET, KRenderingPackage.KGRID_PLACEMENT__TOP_LEFT, newTopLeft, newTopLeft));
     }
 
     /**
@@ -165,14 +171,6 @@ public class KGridPlacementImpl extends EObjectImpl implements KGridPlacement {
      * @generated
      */
     public KPosition getBottomRight() {
-        if (bottomRight != null && bottomRight.eIsProxy()) {
-            InternalEObject oldBottomRight = (InternalEObject)bottomRight;
-            bottomRight = (KPosition)eResolveProxy(oldBottomRight);
-            if (bottomRight != oldBottomRight) {
-                if (eNotificationRequired())
-                    eNotify(new ENotificationImpl(this, Notification.RESOLVE, KRenderingPackage.KGRID_PLACEMENT__BOTTOM_RIGHT, oldBottomRight, bottomRight));
-            }
-        }
         return bottomRight;
     }
 
@@ -181,8 +179,14 @@ public class KGridPlacementImpl extends EObjectImpl implements KGridPlacement {
      * <!-- end-user-doc -->
      * @generated
      */
-    public KPosition basicGetBottomRight() {
-        return bottomRight;
+    public NotificationChain basicSetBottomRight(KPosition newBottomRight, NotificationChain msgs) {
+        KPosition oldBottomRight = bottomRight;
+        bottomRight = newBottomRight;
+        if (eNotificationRequired()) {
+            ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, KRenderingPackage.KGRID_PLACEMENT__BOTTOM_RIGHT, oldBottomRight, newBottomRight);
+            if (msgs == null) msgs = notification; else msgs.add(notification);
+        }
+        return msgs;
     }
 
     /**
@@ -191,10 +195,33 @@ public class KGridPlacementImpl extends EObjectImpl implements KGridPlacement {
      * @generated
      */
     public void setBottomRight(KPosition newBottomRight) {
-        KPosition oldBottomRight = bottomRight;
-        bottomRight = newBottomRight;
-        if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, KRenderingPackage.KGRID_PLACEMENT__BOTTOM_RIGHT, oldBottomRight, bottomRight));
+        if (newBottomRight != bottomRight) {
+            NotificationChain msgs = null;
+            if (bottomRight != null)
+                msgs = ((InternalEObject)bottomRight).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - KRenderingPackage.KGRID_PLACEMENT__BOTTOM_RIGHT, null, msgs);
+            if (newBottomRight != null)
+                msgs = ((InternalEObject)newBottomRight).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - KRenderingPackage.KGRID_PLACEMENT__BOTTOM_RIGHT, null, msgs);
+            msgs = basicSetBottomRight(newBottomRight, msgs);
+            if (msgs != null) msgs.dispatch();
+        }
+        else if (eNotificationRequired())
+            eNotify(new ENotificationImpl(this, Notification.SET, KRenderingPackage.KGRID_PLACEMENT__BOTTOM_RIGHT, newBottomRight, newBottomRight));
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    @Override
+    public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
+        switch (featureID) {
+            case KRenderingPackage.KGRID_PLACEMENT__TOP_LEFT:
+                return basicSetTopLeft(null, msgs);
+            case KRenderingPackage.KGRID_PLACEMENT__BOTTOM_RIGHT:
+                return basicSetBottomRight(null, msgs);
+        }
+        return super.eInverseRemove(otherEnd, featureID, msgs);
     }
 
     /**
@@ -208,11 +235,9 @@ public class KGridPlacementImpl extends EObjectImpl implements KGridPlacement {
             case KRenderingPackage.KGRID_PLACEMENT__NUM_COLUMNS:
                 return getNumColumns();
             case KRenderingPackage.KGRID_PLACEMENT__TOP_LEFT:
-                if (resolve) return getTopLeft();
-                return basicGetTopLeft();
+                return getTopLeft();
             case KRenderingPackage.KGRID_PLACEMENT__BOTTOM_RIGHT:
-                if (resolve) return getBottomRight();
-                return basicGetBottomRight();
+                return getBottomRight();
         }
         return super.eGet(featureID, resolve, coreType);
     }
