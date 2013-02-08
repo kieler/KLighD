@@ -49,6 +49,14 @@ class KContainerRenderingExtensions {
         ];
     }
     
+    def KRoundedRectangle addRoundedRectangle(KContainerRendering cr, float cWidth, float cHeight){
+        return renderingFactory.createKRoundedRectangle => [
+            cr.children += it;
+            it.cornerWidth = cWidth;
+            it.cornerHeight = cHeight;
+        ];
+    }
+
     def KRoundedRectangle addRoundedRectangle(KContainerRendering cr, float cWidth, float cHeight, float lineWidth){
         return renderingFactory.createKRoundedRectangle => [
             cr.children += it;

@@ -29,6 +29,8 @@ import de.cau.cs.kieler.core.krendering.KLineCap
 import de.cau.cs.kieler.core.krendering.LineCap
 
 import static extension org.eclipse.emf.ecore.util.EcoreUtil.*
+import de.cau.cs.kieler.core.krendering.KStyleRef
+import de.cau.cs.kieler.core.krendering.KStyleHolder
 
 /**
  * This utility class contains various methods that are convenient while composing KRendering data.
@@ -73,6 +75,26 @@ class KRenderingExtensions {
     def <T extends KRendering> T withCopyOf(T rendering, KStyle style) {
         return rendering => [
             it.styles += style.copy;
+        ];
+    }
+    
+    // how might a getStyleRef look like?
+    //  In case we allow multiple that may refine each other the getter returns an iterator?
+    
+    def <T extends KRendering> T setStyleRef(T rendering, KStyleHolder styleHolder) {
+        rendering.styles.removeAll(rendering.styles.filter(typeof(KStyleRef)).toList);
+        return rendering => [
+            it.styles += renderingFactory.createKStyleRef() => [
+                it.styleHolder = styleHolder;
+            ];
+        ];
+    }
+ 
+    def <T extends KRendering> T addStyleRef(T rendering, KStyleHolder styleHolder) {
+        return rendering => [
+            it.styles += renderingFactory.createKStyleRef() => [
+                it.styleHolder = styleHolder;
+            ];
         ];
     }
  
