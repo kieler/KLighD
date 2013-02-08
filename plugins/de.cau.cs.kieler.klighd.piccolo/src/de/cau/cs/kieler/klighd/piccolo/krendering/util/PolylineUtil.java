@@ -13,9 +13,11 @@
  */
 package de.cau.cs.kieler.klighd.piccolo.krendering.util;
 
-import java.awt.Color;
 import java.awt.geom.GeneralPath;
 import java.awt.geom.Point2D;
+
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.Display;
 
 import de.cau.cs.kieler.klighd.piccolo.nodes.PSWTAdvancedPath;
 
@@ -245,19 +247,19 @@ public final class PolylineUtil {
         path.addChild(e);
         PSWTAdvancedPath a = PSWTAdvancedPath.createEllipse((float) cPoints[0], (float) cPoints[1],
                 2, 2);
-        a.setStrokeColor(Color.red);
+        a.setStrokeColor(Display.getDefault().getSystemColor(SWT.COLOR_RED).getRGB());
         path.addChild(a);
         PSWTAdvancedPath b = PSWTAdvancedPath.createEllipse((float) cPoints[2], (float) cPoints[3],
                 2, 2);
-        b.setStrokeColor(Color.green);
+        b.setStrokeColor(Display.getDefault().getSystemColor(SWT.COLOR_GREEN).getRGB());
         path.addChild(b);
         PSWTAdvancedPath c = PSWTAdvancedPath.createEllipse((float) cPoints[4], (float) cPoints[5],
                 2, 2);
-        c.setStrokeColor(Color.blue);
+        c.setStrokeColor(Display.getDefault().getSystemColor(SWT.COLOR_BLUE).getRGB());
         path.addChild(c);
         PSWTAdvancedPath d = PSWTAdvancedPath.createEllipse((float) cPoints[6], (float) cPoints[7],
                 2, 2);
-        d.setStrokeColor(Color.yellow);
+        d.setStrokeColor(Display.getDefault().getSystemColor(SWT.COLOR_YELLOW).getRGB());
         path.addChild(d);
     }
     
@@ -379,19 +381,19 @@ public final class PolylineUtil {
             final double[] cPoints) {
         PSWTAdvancedPath a = PSWTAdvancedPath.createEllipse((float) cPoints[0], (float) cPoints[1],
                 2, 2);
-        a.setStrokeColor(Color.red);
+        a.setStrokeColor(Display.getDefault().getSystemColor(SWT.COLOR_RED).getRGB());
         path.addChild(a);
         PSWTAdvancedPath b = PSWTAdvancedPath.createEllipse((float) cPoints[2], (float) cPoints[3],
                 2, 2);
-        b.setStrokeColor(Color.green);
+        b.setStrokeColor(Display.getDefault().getSystemColor(SWT.COLOR_GREEN).getRGB());
         path.addChild(b);
         PSWTAdvancedPath c = PSWTAdvancedPath.createEllipse((float) cPoints[4], (float) cPoints[5],
                 2, 2);
-        c.setStrokeColor(Color.blue);
+        c.setStrokeColor(Display.getDefault().getSystemColor(SWT.COLOR_BLUE).getRGB());
         path.addChild(c);
         PSWTAdvancedPath d = PSWTAdvancedPath.createEllipse((float) cPoints[6], (float) cPoints[7],
                 2, 2);
-        d.setStrokeColor(Color.yellow);
+        d.setStrokeColor(Display.getDefault().getSystemColor(SWT.COLOR_YELLOW).getRGB());
         path.addChild(d);
 
     }

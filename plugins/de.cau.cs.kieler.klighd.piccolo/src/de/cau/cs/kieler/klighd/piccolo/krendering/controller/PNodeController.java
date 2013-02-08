@@ -16,12 +16,15 @@
  */
 package de.cau.cs.kieler.klighd.piccolo.krendering.controller;
 
-import java.awt.Color;
+import org.eclipse.swt.graphics.RGB;
 
+import de.cau.cs.kieler.core.krendering.KColor;
+import de.cau.cs.kieler.core.krendering.KRotation;
+import de.cau.cs.kieler.core.krendering.LineCap;
+import de.cau.cs.kieler.core.krendering.LineStyle;
+import de.cau.cs.kieler.core.krendering.UnderlineStyle;
 import de.cau.cs.kieler.klighd.piccolo.nodes.PAlignmentNode.HAlignment;
 import de.cau.cs.kieler.klighd.piccolo.nodes.PAlignmentNode.VAlignment;
-import de.cau.cs.kieler.klighd.piccolo.nodes.PSWTAdvancedPath.LineStyle;
-import de.cau.cs.kieler.klighd.piccolo.nodes.PSWTAdvancedPath.LineCapStyle;
 import edu.umd.cs.piccolo.PNode;
 import edu.umd.cs.piccolo.util.PBounds;
 
@@ -52,6 +55,15 @@ public abstract class PNodeController<T extends PNode> {
     }
 
     /**
+     * Returns the associated node.
+     * 
+     * @return the node
+     */
+    public T getNode() {
+        return node;
+    }
+    
+    /**
      * Sets the bounds of the associated node.
      * 
      * @param bounds
@@ -66,17 +78,17 @@ public abstract class PNodeController<T extends PNode> {
      * @param color
      *            the foreground color
      */
-    public void setForegroundColor(final Color color) {
+    public void setForegroundColor(final RGB color) {
         // do nothing
     }
-
+    
     /**
      * Sets the background color of the associated node.
      * 
      * @param color
      *            the background color
      */
-    public void setBackgroundColor(final Color color) {
+    public void setBackgroundColor(final RGB color) {
         // do nothing
     }
 
@@ -123,10 +135,10 @@ public abstract class PNodeController<T extends PNode> {
     /**
      * Sets the line cap style of the associated node.
      * 
-     * @param lineCapStyle
+     * @param lineCap
      *            the line cap style
      */
-    public void setLineCapStyle(final LineCapStyle lineCapStyle) {
+    public void setLineCap(final LineCap lineCap) {
         // do nothing
     }
 
@@ -201,21 +213,140 @@ public abstract class PNodeController<T extends PNode> {
     }
     
     /**
+     * Sets the underlining property for the associated node (most likely some kind of text).
+     * 
+     * @param underline
+     *            the underline property
+     */
+    public void setUnderline(final UnderlineStyle underline) {
+        // do nothing
+    }
+    
+    /**
      * Applies changes to the associated node.<br>
      * <br>
      * This can be used to apply several style changes at once to prevent costly redundancy.
+     * 
+     * @param styles A compound {@link Styles} field to infer the data from. 
      */
-    public void applyChanges() {
-        // do nothing
+    public void applyChanges(final AbstractRenderingController<?, ?>.Styles styles) {
+        // apply foreground styles
+        if (styles.foreground != null) {
+            int alphaValue = styles.foreground.getAlpha();
+            KColor color = styles.foreground.getColor();
+            if (color != null) {
+                this.setForegroundColor(toRGB(color));
+            }
+            setLineAlpha(alphaValue);
+        }
+
+        // apply background color
+        if (styles.background != null) {
+            KColor color = styles.background.getColor();
+            int alphaValue = styles.background.getAlpha();
+            if (color != null) {
+                this.setBackgroundColor(toRGB(color));
+            }
+            this.setBackgroundAlpha(alphaValue);
+        }
+
+        // apply line width
+        if (styles.lineWidth != null) {
+            this.setLineWidth(styles.lineWidth.getLineWidth());
+        }
+
+        // apply line style
+        if (styles.lineStyle != null) {
+            this.setLineStyle(styles.lineStyle.getLineStyle());
+        } else {
+            this.setLineStyle(LineStyle.SOLID);
+        }
+        
+        // apply line cap style
+        if (styles.lineCap != null) {
+            this.setLineCap(styles.lineCap.getLineCap());
+        } else {
+            this.setLineCap(LineCap.CAP_FLAT);
+        }
+
+        // apply rotation
+        if (styles.rotation != null) {
+            KRotation rotation = styles.rotation;
+            this.setRotation(rotation.getRotation());
+        }
+
+        // apply horizontal alignment
+        if (styles.horizontalAlignment != null) {
+            switch (styles.horizontalAlignment.getHorizontalAlignment()) {
+            case LEFT:
+                this.setHorizontalAlignment(HAlignment.LEFT);
+                break;
+            case RIGHT:
+                this.setHorizontalAlignment(HAlignment.RIGHT);
+                break;
+            case CENTER:
+            default:
+                this.setHorizontalAlignment(HAlignment.CENTER);
+                break;
+            }
+        }
+
+        // apply vertical alignment
+        if (styles.verticalAlignment != null) {
+            switch (styles.verticalAlignment.getVerticalAlignment()) {
+            case TOP:
+                this.setVerticalAlignment(VAlignment.TOP);
+                break;
+            case BOTTOM:
+                this.setVerticalAlignment(VAlignment.BOTTOM);
+                break;
+            case CENTER:
+            default:
+                this.setVerticalAlignment(VAlignment.CENTER);
+                break;
+            }
+        }
+
+        // apply font name
+        if (styles.fontName != null) {
+            this.setFontName(styles.fontName.getName());
+        }
+
+        // apply font size
+        if (styles.fontSize != null) {
+            this.setFontSize(styles.fontSize.getSize());
+        }
+
+        // apply the italic property
+        if (styles.italic != null) {
+            this.setItalic(styles.italic.isItalic());
+        }
+
+        // apply the bold property
+        if (styles.bold != null) {
+            this.setBold(styles.bold.isBold());
+        }
+        
+        // apply the underlined property
+        if (styles.underlined != null) {
+            this.setUnderline(styles.underlined.getUnderlineStyle());
+        } else {
+            this.setUnderline(null); // for the moment!
+        }
+        
     }
 
     /**
-     * Returns the associated node.
+     * Convenience transformation converting a {@link KColor} into an {@link RGB}.
      * 
-     * @return the node
+     * TODO Install same caching in order to avoid unnecessary object creation.
+     * 
+     * @param color
+     *            the {@link KColor} to be converted
+     * @return the {@link RGB}
      */
-    public T getNode() {
-        return node;
+    public RGB toRGB(final KColor color) {
+        return new RGB(color.getRed(), color.getGreen(), color.getBlue());
     }
 
 }

@@ -17,6 +17,10 @@ import java.awt.Color;
 import java.util.LinkedList;
 import java.util.List;
 
+import de.cau.cs.kieler.core.krendering.LineCap;
+import de.cau.cs.kieler.core.krendering.LineStyle;
+import de.cau.cs.kieler.klighd.KlighdConstants;
+
 
 import edu.umd.cs.piccolo.PNode;
 import edu.umd.cs.piccolo.util.PBounds;
@@ -93,9 +97,9 @@ public class PSWTSimpleSelectionHandle extends PNode {
         PSWTAdvancedPath line = PSWTAdvancedPath.createPolyline(xps, yps);
         line.setPickable(false);
         line.setLineWidth(LINE_W);
-        line.setLineStyle(PSWTAdvancedPath.LineStyle.DOT);
-        line.setLineCapStyle(PSWTAdvancedPath.LineCapStyle.CAP_FLAT);
-        line.setStrokeColor(Color.black);
+        line.setLineStyle(LineStyle.DOT);
+        line.setLineCapStyle(LineCap.CAP_FLAT);
+        line.setStrokeColor(KlighdConstants.BLACK);
         return line;
     }
 
@@ -105,7 +109,7 @@ public class PSWTSimpleSelectionHandle extends PNode {
                         - SQUARE_WH / 2.0f, SQUARE_WH, SQUARE_WH);
         square.setPickable(false);
         square.setPaint(Color.black);
-        square.setStrokeColor(Color.black);
+        square.setStrokeColor(KlighdConstants.BLACK);
         return square;
     }
 

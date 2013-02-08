@@ -1,4 +1,3 @@
-// SUPPRESS CHECKSTYLE NEXT Header
 /*
  * Copyright (c) 2008-2011, Piccolo2D project, http://piccolo2d.org
  * Copyright (c) 1998-2008, University of Maryland
@@ -27,11 +26,11 @@
  * TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+// SUPPRESS CHECKSTYLE PREVIOUS 30 Header
 package de.cau.cs.kieler.klighd.piccolo.nodes;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
-import java.awt.Paint;
 import java.awt.Shape;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Arc2D;
@@ -42,9 +41,15 @@ import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
 import java.util.ArrayList;
+import java.util.Map;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.RGB;
 
+import com.google.common.collect.Maps;
+
+import de.cau.cs.kieler.core.krendering.LineCap;
+import de.cau.cs.kieler.core.krendering.LineStyle;
 import de.cau.cs.kieler.core.math.KVector;
 import de.cau.cs.kieler.core.math.KVectorChain;
 import de.cau.cs.kieler.core.math.KielerMath;
@@ -72,34 +77,6 @@ import edu.umd.cs.piccolox.swt.SWTShapeManager;
 public class PSWTAdvancedPath extends PNode {
 
     /**
-     * The possible line styles for an advanced path.
-     */
-    public enum LineStyle {
-        /** solid. */
-        SOLID,
-        /** dashes. */
-        DASH,
-        /** dots. */
-        DOT,
-        /** dashes and dots. */
-        DASHDOT,
-        /** dash followed by two dots. */
-        DASHDOTDOT
-    }  
-    
-    /**
-     * The possible line cap styles for an advanced path.
-     */
-    public enum LineCapStyle {
-        /** flat. */
-        CAP_FLAT,
-        /** round. */
-        CAP_ROUND,
-        /** square. */
-        CAP_SQUARE
-    }
-    
-    /**
      * A property identifier leading to the approximated path if the path is a Bézier curve or to
      * itself otherwise. This approximated path is needed while computing the decorator rotations.
      */
@@ -107,15 +84,19 @@ public class PSWTAdvancedPath extends PNode {
 
     private static final long serialVersionUID = 8034306769936734586L;
 
-    private static final Color DEFAULT_STROKE_PAINT = Color.black;
+    private static final RGB DEFAULT_STROKE_PAINT = new RGB(0, 0, 0);
 
     private static final Rectangle2D.Float TEMP_RECTANGLE = new Rectangle2D.Float();
     private static final RoundRectangle2D.Float TEMP_ROUNDRECTANGLE = new RoundRectangle2D.Float();
     private static final Ellipse2D.Float TEMP_ELLIPSE = new Ellipse2D.Float();
     private static final Arc2D.Float TEMP_ARC = new Arc2D.Float();
     private static final double BOUNDS_TOLERANCE = 0.01;
-    private Paint strokePaint = DEFAULT_STROKE_PAINT;
     private static final BasicStroke BASIC_STROKE = new BasicStroke();
+    
+    private static final Map<Color, RGB> RGB_CACHE = Maps.newConcurrentMap(); 
+
+    private RGB strokePaint = DEFAULT_STROKE_PAINT;
+    private RGB paint = null;
 
     /** the line width for this path. */
     private double lineWidth = 1.0;
@@ -362,7 +343,7 @@ public class PSWTAdvancedPath extends PNode {
      * 
      * @return path's stroke paint
      */
-    public Paint getStrokePaint() {
+    public RGB getStrokePaint() {
         return strokePaint;
     }
 
@@ -372,12 +353,51 @@ public class PSWTAdvancedPath extends PNode {
      * @param strokeColor
      *            new stroke color
      */
-    public void setStrokeColor(final Paint strokeColor) {
-        final Paint old = strokePaint;
+    public void setStrokeColor(final RGB strokeColor) {
+        final RGB old = strokePaint;
         strokePaint = strokeColor;
         invalidatePaint();
         firePropertyChange(PPath.PROPERTY_CODE_STROKE_PAINT, PPath.PROPERTY_STROKE_PAINT, old,
                 strokePaint);
+    }
+
+    /**
+     * Return the paint used while painting this node. This value may be null.
+     * 
+     * @return the paint used while painting this node.
+     */
+    public RGB getSWTPaint() {
+        return this.paint;
+    }
+
+    /**
+     * Set the paint used to paint this node, which may be null.
+     * 
+     * @param newPaint paint that this node should use when painting itself.
+     */
+    public void setPaint(final RGB newPaint) {
+        if (paint == newPaint) {
+            return;
+        }
+
+        final RGB oldPaint = paint;
+        paint = newPaint;
+        invalidatePaint();
+        firePropertyChange(PROPERTY_CODE_PAINT, PROPERTY_PAINT, oldPaint, paint);
+    }
+    
+    /**
+     * Set the paint used to paint this node, which may be null.
+     * 
+     * @param newPaint paint that this node should use when painting itself.
+     */
+    public void setPaint(final Color newPaint) {
+        RGB rgb = RGB_CACHE.get(newPaint);
+        if (rgb == null) {
+            rgb = new RGB(newPaint.getRed(), newPaint.getGreen(), newPaint.getBlue());
+            RGB_CACHE.put(newPaint, rgb);
+        }
+        this.setPaint(rgb);
     }
 
     /**
@@ -475,14 +495,14 @@ public class PSWTAdvancedPath extends PNode {
             g2.transform(internalXForm);
         }
 
-        Paint p = getPaint();
+        RGB p = getSWTPaint();
         if (p != null) {
-            g2.setBackground((Color) p);
+            g2.setBackground(p);
             fillShape(g2);
         }
 
         if (strokePaint != null) {
-            g2.setColor((Color) strokePaint);
+            g2.setColor(strokePaint);
             drawShape(g2);
         }
 
@@ -1003,7 +1023,7 @@ public class PSWTAdvancedPath extends PNode {
      * @param newLineCapStyle
      *            the line cap style
      */
-    public void setLineCapStyle(final LineCapStyle newLineCapStyle) {
+    public void setLineCapStyle(final LineCap newLineCapStyle) {
         switch (newLineCapStyle) {
         case CAP_FLAT:
             lineCapStyle = SWT.CAP_FLAT;
@@ -1022,15 +1042,15 @@ public class PSWTAdvancedPath extends PNode {
      * 
      * @return the line style
      */
-    public LineCapStyle getLineCapStyle() {
+    public LineCap getLineCapStyle() {
         switch (lineCapStyle) {
         case SWT.CAP_ROUND:
-            return LineCapStyle.CAP_ROUND;
+            return LineCap.CAP_ROUND;
         case SWT.CAP_SQUARE:
-            return LineCapStyle.CAP_SQUARE;
+            return LineCap.CAP_SQUARE;
         case SWT.CAP_FLAT:
         default:
-            return LineCapStyle.CAP_FLAT;
+            return LineCap.CAP_FLAT;
         }
     }
 

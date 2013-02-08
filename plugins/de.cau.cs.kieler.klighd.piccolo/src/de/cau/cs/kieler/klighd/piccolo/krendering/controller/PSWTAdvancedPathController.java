@@ -16,17 +16,17 @@
  */
 package de.cau.cs.kieler.klighd.piccolo.krendering.controller;
 
-import java.awt.Color;
+import org.eclipse.swt.graphics.RGB;
 
+import de.cau.cs.kieler.core.krendering.LineCap;
+import de.cau.cs.kieler.core.krendering.LineStyle;
 import de.cau.cs.kieler.klighd.piccolo.nodes.PSWTAdvancedPath;
-import de.cau.cs.kieler.klighd.piccolo.nodes.PSWTAdvancedPath.LineStyle;
-import de.cau.cs.kieler.klighd.piccolo.nodes.PSWTAdvancedPath.LineCapStyle;
 
 
 /**
  * A node controller for the {@code PSWTAdvancedPath}.
  * 
- * @author mri
+ * @author mri, chsch
  */
 public abstract class PSWTAdvancedPathController extends PNodeController<PSWTAdvancedPath> {
 
@@ -44,7 +44,7 @@ public abstract class PSWTAdvancedPathController extends PNodeController<PSWTAdv
      * {@inheritDoc}
      */
     @Override
-    public void setForegroundColor(final Color color) {
+    public void setForegroundColor(final RGB color) {
         getNode().setStrokeColor(color);
     }
 
@@ -52,7 +52,7 @@ public abstract class PSWTAdvancedPathController extends PNodeController<PSWTAdv
      * {@inheritDoc}
      */
     @Override
-    public void setBackgroundColor(final Color color) {
+    public void setBackgroundColor(final RGB color) {
         getNode().setPaint(color);
     }
 
@@ -80,7 +80,7 @@ public abstract class PSWTAdvancedPathController extends PNodeController<PSWTAdv
     @Override
     public void setBackgroundAlpha(final int backgroundAlpha) {
         if (backgroundAlpha == 0) {
-            getNode().setPaint(null);
+            getNode().setPaint((RGB) null);
         }
     }
 
@@ -96,7 +96,7 @@ public abstract class PSWTAdvancedPathController extends PNodeController<PSWTAdv
      * {@inheritDoc}
      */
     @Override
-    public void setLineCapStyle(final LineCapStyle lineCapStyle) {
+    public void setLineCap(final LineCap lineCapStyle) {
         getNode().setLineCapStyle(lineCapStyle);
     }
 
@@ -106,4 +106,5 @@ public abstract class PSWTAdvancedPathController extends PNodeController<PSWTAdv
     public void setRotation(final float rotation) {
         getNode().setRotation(Math.toRadians(rotation));
     }
+    
 }

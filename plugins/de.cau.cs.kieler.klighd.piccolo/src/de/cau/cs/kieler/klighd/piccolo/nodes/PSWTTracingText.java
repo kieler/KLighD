@@ -16,7 +16,6 @@ package de.cau.cs.kieler.klighd.piccolo.nodes;
 import de.cau.cs.kieler.core.krendering.KText;
 import de.cau.cs.kieler.klighd.krendering.KTextUtil;
 import de.cau.cs.kieler.klighd.piccolo.krendering.ITracingElement;
-import edu.umd.cs.piccolox.swt.PSWTText;
 
 /**
  * An extend variant of {@link PSWTText} preserving the information on its KText source definition.
@@ -24,7 +23,7 @@ import edu.umd.cs.piccolox.swt.PSWTText;
  * 
  * @author chsch
  */
-public class PSWTTracingText extends PSWTText implements ITracingElement<KText> {
+public class PSWTTracingText extends PSWTStyledText implements ITracingElement<KText> {
 
     /** The default serialVersionUID. */
     private static final long serialVersionUID = 1L;
