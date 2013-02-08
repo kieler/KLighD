@@ -16,6 +16,8 @@ package de.cau.cs.kieler.klighd;
 import java.awt.Font;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.FontData;
+import org.eclipse.swt.graphics.RGB;
 
 import de.cau.cs.kieler.core.properties.IProperty;
 import de.cau.cs.kieler.core.properties.Property;
@@ -27,6 +29,16 @@ import de.cau.cs.kieler.core.properties.Property;
  */
 public final class KlighdConstants {
     
+    /**
+     * Constant definition of the black {@link RGB} color constant.
+     */
+    public static final RGB BLACK = new RGB(0, 0, 0);
+    
+    /**
+     * Constant definition of the white {@link RGB} color constant.
+     */
+    public static final RGB WHITE = new RGB(255, 255, 255);
+
     /**
      * This font name is used for {@link de.cau.cs.kieler.core.krendering.KText KTexts}, if no related
      * {@link de.cau.cs.kieler.core.krendering.KFontName KFontName} style is attached.
@@ -53,11 +65,23 @@ public final class KlighdConstants {
      * {@link de.cau.cs.kieler.core.krendering.KFontBold KFontBold} and/or
      * {@link de.cau.cs.kieler.core.krendering.KFontItalic KFontItalic} style is attached.
      * 
-     * Note: SWT font style are composed by performing 'style |= SWT.BOLD' and/or 'style |= SWT.ITALIC'
+     * Note: SWT font styles are composed by performing 'style |= SWT.BOLD' and/or 'style |= SWT.ITALIC'
      *  while 'style' is the style integer. 
      */
     public static final int DEFAULT_FONT_STYLE_SWT = SWT.NORMAL;
     
+    /**
+     * This font configuration used for {@link de.cau.cs.kieler.core.krendering.KText KTexts}.
+     */
+    public static final FontData DEFAULT_FONT = new FontData(DEFAULT_FONT_NAME, DEFAULT_FONT_SIZE,
+            DEFAULT_FONT_STYLE_SWT);
+
+    /**
+     * This constant is used to express the non-underlining configuration as {@link SWT} doesn't
+     * provide a constant for this case as {@link org.eclipse.swt.graphics.TextStyle TextStyle} uses
+     * an extra boolean flag for that.
+     */
+    public static final int NO_FONT_UNDERLINING = -1;
     
     /**
      * This constant defines the standard margin size around a KText rendering, if it is not defined
