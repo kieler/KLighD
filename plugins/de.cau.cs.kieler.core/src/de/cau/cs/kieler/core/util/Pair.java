@@ -88,6 +88,19 @@ public class Pair<F, S> {
     }
     
     /**
+     * Constructs a pair of given elements.
+     * 
+     * @param <F> type of first contained object
+     * @param thefirst the first element
+     * @param <S> type of second contained object
+     * @param thesecond the second element
+     * @return the {@link Pair}
+     */
+    public static <F, S> Pair<F, S> of(final F thefirst, final S thesecond) {
+        return new Pair<F, S>(thefirst, thesecond);
+    }
+    
+    /**
      * Constructs a list of pairs from the entries of a map.
      * 
      * @param <G> type of the map keys
