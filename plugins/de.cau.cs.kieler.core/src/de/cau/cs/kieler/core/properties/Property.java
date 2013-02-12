@@ -13,8 +13,6 @@
  */
 package de.cau.cs.kieler.core.properties;
 
-import java.lang.reflect.Method;
-
 /**
  * A property that uses a string for identification.
  *
@@ -166,29 +164,12 @@ public class Property<T> implements IProperty<T>, Comparable<IProperty<?>> {
     }
     
     /**
-     * Returns the default value of this property. If the default value is {@link Cloneable} and has
-     * a public {@code clone()} method, a clone is returned. This ensures that modifying the returned
-     * value does not modify the default of a property.
+     * Returns the default value of this property.
      * 
-     * @return (if possible, a clone of) the default value.
+     * @return the default value.
      */
-    @SuppressWarnings("unchecked")
     public T getDefault() {
-        // We need to use reflection for this to work properly (classes implementing Clonable are
-        // not required to make their clone() method public, so we need to check if they have such
-        // a method and invoke it via reflection, which results in ugly and unchecked type casting)
-        
-        if (defaultValue instanceof Cloneable) {
-            try {
-                Method cloneMethod = defaultValue.getClass().getMethod("clone");
-                return (T) cloneMethod.invoke(defaultValue);
-            } catch (Exception e) {
-                // Give up cloning and return the default instance
-                return defaultValue;
-            }
-        } else {
-            return defaultValue;
-        }
+        return defaultValue;
     }
 
     /**
