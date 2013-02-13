@@ -27,6 +27,7 @@ import de.cau.cs.kieler.core.krendering.KRendering
 import de.cau.cs.kieler.core.krendering.KText
 import de.cau.cs.kieler.kiml.options.NodeLabelPlacement
 import de.cau.cs.kieler.kiml.options.PortLabelPlacement
+import java.util.List
 
 /**
  * @author chsch
@@ -46,16 +47,39 @@ class KLabelExtensions {
     /**
      * A convenient getter preserving the element image relation by a create extension.
      */ 
-    def KLabel create node: KimlUtil::createInitializedLabel(labeledElement) getLabel(Object o,
+    def private KLabel create node: KimlUtil::createInitializedLabel(labeledElement) getLabel(List<?> o,
             KLabeledGraphElement labeledElement) {
     }
     
     /**
-     * An alias of {@link #getLabel} allowing to express in business that the KLabel will
-     * be created at this place. It is just syntactic sugar.  
+     * A convenient getter preserving the element image relation by a create extension.
+     */
+    def KLabel getLabel(Object o, KLabeledGraphElement labeledElement) {
+        return newArrayList(o).getLabel(labeledElement)
+    }
+    
+    /**
+     * An alias of {@link #getLabel(Object, KLabeledGraphElement)} allowing to express in business
+     *  that the KLabel will be created at this place. It is just syntactic sugar.  
      */
     def KLabel createLabel(Object o, KLabeledGraphElement labeledElement) {
-        return o.getLabel(labeledElement)
+        return newArrayList(o).getLabel(labeledElement)
+    }
+    
+    /**
+     * A convenient getter associating the label with to elements
+     *  preserving the element image relation by a create extension.
+     */
+    def KLabel getLabel(Object o1, Object o2, KLabeledGraphElement labeledElement) {
+        return newArrayList(o1, o2).getLabel(labeledElement)
+    }
+    
+    /**
+     * An alias of {@link #getLabel(Object, Object, KLabeledGraphElement)} allowing to express in business
+     *  that the KLabel will be created at this place. It is just syntactic sugar.  
+     */
+    def KLabel createLabel(Object o1, Object o2, KLabeledGraphElement labeledElement) {
+        return newArrayList(o1, o2).getLabel(labeledElement)
     }
     
     /**
@@ -66,6 +90,32 @@ class KLabelExtensions {
             it.text = labelText;
             it.data += renderingFactory.createKText().setFontName(fontName).setFontSize(fontSize);
             it.addLayoutParam(LayoutOptions::EDGE_LABEL_PLACEMENT, EdgeLabelPlacement::CENTER);
+            it.addLayoutParam(LayoutOptions::FONT_NAME, fontName);
+            it.addLayoutParam(LayoutOptions::FONT_SIZE, fontSize-5);
+        ];
+    }
+    
+    /**
+     * Configures a central (main) edge label, e.g. a state transition guard/effect label!
+     */
+    def KLabel configureHeadLabel(KLabel label, String labelText, int fontSize, String fontName) {
+        return label => [
+            it.text = labelText;
+            it.data += renderingFactory.createKText().setFontName(fontName).setFontSize(fontSize);
+            it.addLayoutParam(LayoutOptions::EDGE_LABEL_PLACEMENT, EdgeLabelPlacement::HEAD);
+            it.addLayoutParam(LayoutOptions::FONT_NAME, fontName);
+            it.addLayoutParam(LayoutOptions::FONT_SIZE, fontSize+2);
+        ];
+    }
+    
+    /**
+     * Configures a central (main) edge label, e.g. a state transition guard/effect label!
+     */
+    def KLabel configureTailLabel(KLabel label, String labelText, int fontSize, String fontName) {
+        return label => [
+            it.text = labelText;
+            it.data += renderingFactory.createKText().setFontName(fontName).setFontSize(fontSize);
+            it.addLayoutParam(LayoutOptions::EDGE_LABEL_PLACEMENT, EdgeLabelPlacement::TAIL);
             it.addLayoutParam(LayoutOptions::FONT_NAME, fontName);
             it.addLayoutParam(LayoutOptions::FONT_SIZE, fontSize+2);
         ];

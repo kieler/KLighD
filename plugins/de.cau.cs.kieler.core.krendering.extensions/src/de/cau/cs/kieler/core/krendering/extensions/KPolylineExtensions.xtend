@@ -30,14 +30,12 @@ class KPolylineExtensions {
 		return pl.drawArrow() => [
 		    it.placementData = renderingFactory.createKDecoratorPlacementData => [
                 it.setRotateWithLine(true);
-                it.setAbsolute(-3f);
                 it.setRelative(1f);
-                it.setXOffset(-5f);
-                // chsch: What is the reason of the following vertical offset
-                //  that appears to work for arbitrary lineWidths??
-                it.setYOffset(-2.5f);
+                it.setAbsolute(-3f);
                 it.setWidth(7);
+                it.setXOffset(-5f);
                 it.setHeight(5);
+                it.setYOffset(-2.5f);
             ];
         ];
 	}

@@ -31,6 +31,8 @@ import de.cau.cs.kieler.core.krendering.LineCap
 import static extension org.eclipse.emf.ecore.util.EcoreUtil.*
 import de.cau.cs.kieler.core.krendering.KStyleRef
 import de.cau.cs.kieler.core.krendering.KStyleHolder
+import de.cau.cs.kieler.core.krendering.KAreaPlacementData
+import de.cau.cs.kieler.core.krendering.KGridPlacementData
 
 /**
  * This utility class contains various methods that are convenient while composing KRendering data.
@@ -51,13 +53,20 @@ class KRenderingExtensions {
         return kge.getData(typeof(KRendering));
     }
 
-    def KRoundedRectangle addRoundedRectangle(KNode node, float cWidth, float cHeight, float lineWidth){
+    def KRoundedRectangle addRoundedRectangle(KNode node, float cWidth, float cHeight, float lineWidth) {
         return renderingFactory.createKRoundedRectangle => [
             it.cornerWidth = cWidth;
             it.cornerHeight = cHeight;
             it.setLineWidth(lineWidth);
             node.data.add(it)
         ];
+    }
+    
+    def KRoundedRectangle setCornerSize(KRoundedRectangle rect, float cWidth, float cHeight) {
+        return rect => [
+            it.cornerWidth = cWidth;
+            it.cornerHeight = cHeight;
+        ]
     }
 
     def <T extends KRendering> T with(T rendering, KPlacementData pd) {
@@ -417,25 +426,78 @@ class KRenderingExtensions {
 	
     def <T extends KRendering> T setAreaPlacementData(T rendering, KPosition topLeft, KPosition bottomRight){
         return rendering => [
-            rendering.placementData = renderingFactory.createKAreaPlacementData => [
+            rendering.placementData = renderingFactory.createKAreaPlacementData() => [
                 it.setTopLeft(topLeft);
                 it.setBottomRight(bottomRight);
             ];
         ];
     }
     
-	def <T extends KRendering> T setGridPlacementData(T rendering, float minCellWidth,
-	        float minCellHeight, KPosition topLeft, KPosition bottomRight) {
-		return rendering => [
-		    rendering.placementData = renderingFactory.createKGridPlacementData => [
-                it.setMinCellWidth(minCellWidth);
-                it.setMinCellHeight(minCellHeight);
-                it.setTopLeft(topLeft);
-                it.setBottomRight(bottomRight);
-            ];
+    def KAreaPlacementData setAreaPlacementData(KRendering rendering) {
+        return renderingFactory.createKAreaPlacementData() => [
+            rendering.placementData = it;
+        ];
+    }
+    
+    def KAreaPlacementData from(KAreaPlacementData placementData, KPosition topLeft) {
+        return placementData => [
+            it.topLeft = topLeft; 
+        ];
+    }
+    
+    def KAreaPlacementData from(KAreaPlacementData placementData, 
+                    PositionReferenceX px, float absoluteLR, float relativeLR,
+                    PositionReferenceY py, float absoluteTB, float relativeTB) {
+        return placementData.from(createKPosition(
+            px, absoluteLR, relativeLR, py, absoluteTB, relativeTB
+        ));
+    }
+    
+    def KRendering to(KAreaPlacementData placementData, KPosition bottomRight) {
+        placementData.bottomRight = bottomRight; 
+        return placementData.eContainer() as KRendering;
+    }
+
+    def KRendering to(KAreaPlacementData placementData, 
+                    PositionReferenceX px, float absoluteLR, float relativeLR,
+                    PositionReferenceY py, float absoluteTB, float relativeTB) {
+        return placementData.to(createKPosition(
+            px, absoluteLR, relativeLR, py, absoluteTB, relativeTB
+        ));
+    }
+    
+    def KGridPlacementData setGridPlacementData(KRendering rendering, float minCellWidth,
+            float minCellHeight, KPosition topLeft, KPosition bottomRight) {
+		return renderingFactory.createKGridPlacementData() => [
+		    rendering.placementData = it;
+            it.setMinCellWidth(minCellWidth);
+            it.setMinCellHeight(minCellHeight);
+            it.setTopLeft(topLeft);
+            it.setBottomRight(bottomRight);
 		];
 	}
 	
+    def KGridPlacementData setGridPlacementData(KRendering rendering, float minCellWidth,
+            float minCellHeight) {
+        return renderingFactory.createKGridPlacementData() => [
+            rendering.placementData = it;
+            it.setMinCellWidth(minCellWidth);
+            it.setMinCellHeight(minCellHeight);
+        ];
+    }
+
+    def KGridPlacementData setGridPlacementData(KRendering rendering) {
+        return renderingFactory.createKGridPlacementData() => [
+            rendering.placementData = it;
+        ];
+    }
+    
+    def KGridPlacementData setMaxCellHeight(KGridPlacementData placementData, float maxCellHeight) {
+        return placementData => [
+            placementData.maxCellHeight = maxCellHeight;
+        ];
+    }
+
     def <T extends KRendering> T setPointPlacementData(T rendering, KPosition referencePoint,
         HorizontalAlignment horizontalAlignment, VerticalAlignment verticalAlignment,
         float horizontalMargin, float verticalMargin) {
@@ -459,7 +521,8 @@ class KRenderingExtensions {
                 it.absolute = posAbsolute;
                 it.relative = posRelative;
                 it.rotateWithLine = rotateWithLine;
-                it.YOffset = -4f;
+                it.XOffset = -width/2;
+                it.YOffset = -height/2;
             ];
         ];
     }
@@ -471,7 +534,7 @@ class KRenderingExtensions {
     public val PositionReferenceY BOTTOM = PositionReferenceY::BOTTOM;
     
     def KPosition createKPosition(PositionReferenceX px, float absoluteLR, float relativeLR,
-                                  PositionReferenceY py, float absoluteTB, float relativeTB){
+                                  PositionReferenceY py, float absoluteTB, float relativeTB) {
         return renderingFactory.createKPosition => [
             it.x = switch px {
                 case PositionReferenceX::LEFT: renderingFactory.createKLeftPosition

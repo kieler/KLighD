@@ -14,7 +14,6 @@
 package de.cau.cs.kieler.core.krendering.extensions
 
 import javax.inject.Inject
-
 import de.cau.cs.kieler.core.krendering.KChildArea
 import de.cau.cs.kieler.core.krendering.KContainerRendering
 import de.cau.cs.kieler.core.krendering.KPolyline
@@ -88,6 +87,14 @@ class KContainerRenderingExtensions {
 		];
 	}
 	
+    def KPolyline addHorizontalLine(KContainerRendering cr, float leftRightAbsIndent){
+        return cr.addChild(renderingFactory.createKPolyline())  as KPolyline => [
+           it.lineWidth = 1;
+           it.points += createKPosition(PositionReferenceX::LEFT, leftRightAbsIndent, 0, TOP, 0, 0.5f);
+           it.points += createKPosition(PositionReferenceX::RIGHT, leftRightAbsIndent, 0, TOP, 0, 0.5f);
+        ];
+    }
+    
     def KPolyline addHorizontalLine(KContainerRendering cr, PositionReferenceY y, float absIndent){
         return cr.addChild(renderingFactory.createKPolyline())  as KPolyline => [
            it.lineWidth = 1;
