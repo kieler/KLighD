@@ -178,15 +178,15 @@ public class PAlignmentNode extends PEmptyNode implements PropertyChangeListener
         // horizontal
         switch (alignment.halignment) {
         case LEFT:
-            child.translate(-transform.getTranslateX(), 0);
+            child.setOffset(0, transform.getTranslateY());
             break;
         case CENTER:
             double dX = thisBounds.width - childBounds.width;
-            child.translate(dX / 2 - transform.getTranslateX(), 0);
+            child.setOffset(dX / 2, transform.getTranslateY());
             break;
         case RIGHT:
             dX = thisBounds.width - childBounds.width;
-            child.translate(dX - transform.getTranslateX(), 0);
+            child.setOffset(dX, transform.getTranslateY());
             break;
         }
     }
@@ -209,15 +209,15 @@ public class PAlignmentNode extends PEmptyNode implements PropertyChangeListener
         // vertical
         switch (alignment.valignment) {
         case TOP:
-            child.translate(0, -transform.getTranslateY());
+            child.setOffset(transform.getTranslateX(), 0);
             break;
         case CENTER:
             double dY = thisBounds.height - childBounds.height;
-            child.translate(0, dY / 2 - transform.getTranslateY());
+            child.setOffset(transform.getTranslateX(), dY / 2);
             break;
         case BOTTOM:
             dY = thisBounds.height - childBounds.height;
-            child.translate(0, dY - transform.getTranslateY());
+            child.setOffset(transform.getTranslateX(), dY);
             break;
         }
     }
