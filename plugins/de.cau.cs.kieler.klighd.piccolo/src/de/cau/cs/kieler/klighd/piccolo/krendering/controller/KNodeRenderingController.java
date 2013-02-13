@@ -106,10 +106,14 @@ public class KNodeRenderingController extends AbstractRenderingController<KNode,
                     + getGraphElement());
         }
 
+        parent.addChild(childAreaNode);
+
         // configure the child area
+        //  Caution: Changing the bounds of a childArea must not happen if the childArea is
+        //  not contained in any other PNode as this will influence the positioning of KEdgeNodes,
+        //  which synchronize on the container childAreas and their parents 
         NodeUtil.applySmartBounds(childAreaNode, initialBounds);
 
-        parent.addChild(childAreaNode);
         // create a controller for the child area and return it
         return new PNodeController<PNode>(childAreaNode) {
             public void setBounds(final PBounds bounds) {

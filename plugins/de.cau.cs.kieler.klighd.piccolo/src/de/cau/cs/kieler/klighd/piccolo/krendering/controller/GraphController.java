@@ -1502,9 +1502,19 @@ public class GraphController {
                     .getProperty(INode.NODE_REP);
             final KChildAreaNode relativeChildArea = sourceParentNode.getChildArea();
 
-            // the listener that updates the offset
+            // chsch: The following listener updates the offset of the edge depending the parent nodes.
+            // It is attached to all parent nodes that are part of the containment hierarchy,
+            //  i.e. PSWTAdvancedPaths, KChildAreas, KNodeNodes, ...!
+            //  The listener is sensitive to changes to the 'transform' of those elements.
+            // It is important, in case of the change of a parent KNode's rendering,
+            //  that its related KChildAreaNode is contained in any other PNode!
             PropertyChangeListener listener = new PropertyChangeListener() {
-                public void propertyChange(final PropertyChangeEvent arg0) {
+
+                // assumption: KChildAreaNodes in the containment hierarchy  do not have an empty
+                //  'parent' reference, otherwise an offset change has been performed on a non-contained
+                //  child area. This must be avoided under all circumstances!
+                public void propertyChange(final PropertyChangeEvent event) {
+
                     // calculate the offset
                     Point2D offset = new Point2D.Double(0, 0);
                     PNode currentNode = relativeChildArea;
@@ -1517,6 +1527,7 @@ public class GraphController {
                     NodeUtil.applyTranslation(edgeNode, offset);
                 }
             };
+
             // remember the listener
             edgeNode.addAttribute(EDGE_OFFSET_LISTENER_KEY, listener);
 
