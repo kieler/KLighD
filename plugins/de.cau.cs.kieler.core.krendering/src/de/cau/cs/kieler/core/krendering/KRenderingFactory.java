@@ -411,13 +411,13 @@ public interface KRenderingFactory extends EFactory {
     KShadow createKShadow();
 
     /**
-     * Returns a new object of class '<em>KFont Underlined</em>'.
+     * Returns a new object of class '<em>KText Underline</em>'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return a new object of class '<em>KFont Underlined</em>'.
+     * @return a new object of class '<em>KText Underline</em>'.
      * @generated
      */
-    KFontUnderlined createKFontUnderlined();
+    KTextUnderline createKTextUnderline();
 
     /**
      * Returns a new object of class '<em>KCollapse Action</em>'.
@@ -436,6 +436,15 @@ public interface KRenderingFactory extends EFactory {
      * @generated
      */
     KStyleRef createKStyleRef();
+
+    /**
+     * Returns a new object of class '<em>KText Strikeout</em>'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return a new object of class '<em>KText Strikeout</em>'.
+     * @generated
+     */
+    KTextStrikeout createKTextStrikeout();
 
     /**
      * Returns the package supported by this factory.

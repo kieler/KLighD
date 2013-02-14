@@ -40,7 +40,7 @@ public enum LineCap implements Enumerator {
      * @generated
      * @ordered
      */
-    CAP_FLAT(1, "CAP_FLAT", ""),
+    CAP_FLAT(0, "CAP_FLAT", "CAP_FLAT"),
 
     /**
      * The '<em><b>CAP ROUND</b></em>' literal object.
@@ -50,7 +50,7 @@ public enum LineCap implements Enumerator {
      * @generated
      * @ordered
      */
-    CAP_ROUND(2, "CAP_ROUND", "CAP_ROUND"),
+    CAP_ROUND(1, "CAP_ROUND", "CAP_ROUND"),
 
     /**
      * The '<em><b>CAP SQUARE</b></em>' literal object.
@@ -60,7 +60,7 @@ public enum LineCap implements Enumerator {
      * @generated
      * @ordered
      */
-    CAP_SQUARE(3, "CAP_SQUARE", "CAP_SQUARE");
+    CAP_SQUARE(2, "CAP_SQUARE", "CAP_SQUARE");
 
     /**
      * The '<em><b>CAP FLAT</b></em>' literal value.
@@ -71,11 +71,11 @@ public enum LineCap implements Enumerator {
      * </p>
      * <!-- end-user-doc -->
      * @see #CAP_FLAT
-     * @model literal=""
+     * @model
      * @generated
      * @ordered
      */
-    public static final int CAP_FLAT_VALUE = 1;
+    public static final int CAP_FLAT_VALUE = 0;
 
     /**
      * The '<em><b>CAP ROUND</b></em>' literal value.
@@ -90,7 +90,7 @@ public enum LineCap implements Enumerator {
      * @generated
      * @ordered
      */
-    public static final int CAP_ROUND_VALUE = 2;
+    public static final int CAP_ROUND_VALUE = 1;
 
     /**
      * The '<em><b>CAP SQUARE</b></em>' literal value.
@@ -105,7 +105,7 @@ public enum LineCap implements Enumerator {
      * @generated
      * @ordered
      */
-    public static final int CAP_SQUARE_VALUE = 3;
+    public static final int CAP_SQUARE_VALUE = 2;
 
     /**
      * An array of all the '<em><b>Line Cap</b></em>' enumerators.

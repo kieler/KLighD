@@ -34,7 +34,6 @@ import de.cau.cs.kieler.core.krendering.KFontBold;
 import de.cau.cs.kieler.core.krendering.KFontItalic;
 import de.cau.cs.kieler.core.krendering.KFontName;
 import de.cau.cs.kieler.core.krendering.KFontSize;
-import de.cau.cs.kieler.core.krendering.KFontUnderlined;
 import de.cau.cs.kieler.core.krendering.KForeground;
 import de.cau.cs.kieler.core.krendering.KGridPlacement;
 import de.cau.cs.kieler.core.krendering.KGridPlacementData;
@@ -68,6 +67,8 @@ import de.cau.cs.kieler.core.krendering.KStyle;
 import de.cau.cs.kieler.core.krendering.KStyleHolder;
 import de.cau.cs.kieler.core.krendering.KStyleRef;
 import de.cau.cs.kieler.core.krendering.KText;
+import de.cau.cs.kieler.core.krendering.KTextStrikeout;
+import de.cau.cs.kieler.core.krendering.KTextUnderline;
 import de.cau.cs.kieler.core.krendering.KTopPosition;
 import de.cau.cs.kieler.core.krendering.KTrigger;
 import de.cau.cs.kieler.core.krendering.KVerticalAlignment;
@@ -75,7 +76,7 @@ import de.cau.cs.kieler.core.krendering.KXPosition;
 import de.cau.cs.kieler.core.krendering.KYPosition;
 import de.cau.cs.kieler.core.krendering.LineCap;
 import de.cau.cs.kieler.core.krendering.LineStyle;
-import de.cau.cs.kieler.core.krendering.UnderlineStyle;
+import de.cau.cs.kieler.core.krendering.Underline;
 import de.cau.cs.kieler.core.krendering.VerticalAlignment;
 
 import org.eclipse.emf.ecore.EAttribute;
@@ -455,7 +456,7 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
      * <!-- end-user-doc -->
      * @generated
      */
-    private EClass kFontUnderlinedEClass = null;
+    private EClass kTextUnderlineEClass = null;
 
     /**
      * <!-- begin-user-doc -->
@@ -470,6 +471,13 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
      * @generated
      */
     private EClass kStyleRefEClass = null;
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    private EClass kTextStrikeoutEClass = null;
 
     /**
      * <!-- begin-user-doc -->
@@ -511,7 +519,7 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
      * <!-- end-user-doc -->
      * @generated
      */
-    private EEnum underlineStyleEEnum = null;
+    private EEnum underlineEEnum = null;
 
     /**
      * Creates an instance of the model <b>Package</b>, registered with
@@ -1734,8 +1742,8 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
      * <!-- end-user-doc -->
      * @generated
      */
-    public EClass getKFontUnderlined() {
-        return kFontUnderlinedEClass;
+    public EClass getKTextUnderline() {
+        return kTextUnderlineEClass;
     }
 
     /**
@@ -1743,8 +1751,17 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
      * <!-- end-user-doc -->
      * @generated
      */
-    public EAttribute getKFontUnderlined_UnderlineStyle() {
-        return (EAttribute)kFontUnderlinedEClass.getEStructuralFeatures().get(0);
+    public EAttribute getKTextUnderline_Underline() {
+        return (EAttribute)kTextUnderlineEClass.getEStructuralFeatures().get(0);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EReference getKTextUnderline_Color() {
+        return (EReference)kTextUnderlineEClass.getEStructuralFeatures().get(1);
     }
 
     /**
@@ -1772,6 +1789,33 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
      */
     public EReference getKStyleRef_StyleHolder() {
         return (EReference)kStyleRefEClass.getEStructuralFeatures().get(0);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EClass getKTextStrikeout() {
+        return kTextStrikeoutEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EAttribute getKTextStrikeout_StruckOut() {
+        return (EAttribute)kTextStrikeoutEClass.getEStructuralFeatures().get(0);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EReference getKTextStrikeout_Color() {
+        return (EReference)kTextStrikeoutEClass.getEStructuralFeatures().get(1);
     }
 
     /**
@@ -1824,8 +1868,8 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
      * <!-- end-user-doc -->
      * @generated
      */
-    public EEnum getUnderlineStyle() {
-        return underlineStyleEEnum;
+    public EEnum getUnderline() {
+        return underlineEEnum;
     }
 
     /**
@@ -2035,13 +2079,18 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
         createEAttribute(kShadowEClass, KSHADOW__BLUR);
         createEReference(kShadowEClass, KSHADOW__COLOR);
 
-        kFontUnderlinedEClass = createEClass(KFONT_UNDERLINED);
-        createEAttribute(kFontUnderlinedEClass, KFONT_UNDERLINED__UNDERLINE_STYLE);
+        kTextUnderlineEClass = createEClass(KTEXT_UNDERLINE);
+        createEAttribute(kTextUnderlineEClass, KTEXT_UNDERLINE__UNDERLINE);
+        createEReference(kTextUnderlineEClass, KTEXT_UNDERLINE__COLOR);
 
         kCollapseActionEClass = createEClass(KCOLLAPSE_ACTION);
 
         kStyleRefEClass = createEClass(KSTYLE_REF);
         createEReference(kStyleRefEClass, KSTYLE_REF__STYLE_HOLDER);
+
+        kTextStrikeoutEClass = createEClass(KTEXT_STRIKEOUT);
+        createEAttribute(kTextStrikeoutEClass, KTEXT_STRIKEOUT__STRUCK_OUT);
+        createEReference(kTextStrikeoutEClass, KTEXT_STRIKEOUT__COLOR);
 
         // Create enums
         lineStyleEEnum = createEEnum(LINE_STYLE);
@@ -2049,7 +2098,7 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
         verticalAlignmentEEnum = createEEnum(VERTICAL_ALIGNMENT);
         kTriggerEEnum = createEEnum(KTRIGGER);
         lineCapEEnum = createEEnum(LINE_CAP);
-        underlineStyleEEnum = createEEnum(UNDERLINE_STYLE);
+        underlineEEnum = createEEnum(UNDERLINE);
     }
 
     /**
@@ -2126,9 +2175,10 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
         kExpandActionEClass.getESuperTypes().add(this.getKAction());
         kInvisibilityEClass.getESuperTypes().add(this.getKStyle());
         kShadowEClass.getESuperTypes().add(this.getKStyle());
-        kFontUnderlinedEClass.getESuperTypes().add(this.getKStyle());
+        kTextUnderlineEClass.getESuperTypes().add(this.getKStyle());
         kCollapseActionEClass.getESuperTypes().add(this.getKAction());
         kStyleRefEClass.getESuperTypes().add(this.getKStyle());
+        kTextStrikeoutEClass.getESuperTypes().add(this.getKStyle());
 
         // Initialize classes and features; add operations and parameters
         initEClass(kPositionEClass, KPosition.class, "KPosition", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -2310,13 +2360,18 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
         initEAttribute(getKShadow_Blur(), ecorePackage.getEFloat(), "blur", null, 0, 1, KShadow.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEReference(getKShadow_Color(), this.getKColor(), null, "color", null, 0, 1, KShadow.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-        initEClass(kFontUnderlinedEClass, KFontUnderlined.class, "KFontUnderlined", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-        initEAttribute(getKFontUnderlined_UnderlineStyle(), this.getUnderlineStyle(), "underlineStyle", null, 1, 1, KFontUnderlined.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEClass(kTextUnderlineEClass, KTextUnderline.class, "KTextUnderline", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        initEAttribute(getKTextUnderline_Underline(), this.getUnderline(), "underline", null, 1, 1, KTextUnderline.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEReference(getKTextUnderline_Color(), this.getKColor(), null, "color", null, 0, 1, KTextUnderline.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         initEClass(kCollapseActionEClass, KCollapseAction.class, "KCollapseAction", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
         initEClass(kStyleRefEClass, KStyleRef.class, "KStyleRef", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         initEReference(getKStyleRef_StyleHolder(), this.getKStyleHolder(), null, "styleHolder", null, 1, 1, KStyleRef.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+        initEClass(kTextStrikeoutEClass, KTextStrikeout.class, "KTextStrikeout", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        initEAttribute(getKTextStrikeout_StruckOut(), ecorePackage.getEBooleanObject(), "struckOut", "true", 1, 1, KTextStrikeout.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEReference(getKTextStrikeout_Color(), this.getKColor(), null, "color", null, 0, 1, KTextStrikeout.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         // Initialize enums and add enum literals
         initEEnum(lineStyleEEnum, LineStyle.class, "LineStyle");
@@ -2345,8 +2400,13 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
         addEEnumLiteral(lineCapEEnum, LineCap.CAP_ROUND);
         addEEnumLiteral(lineCapEEnum, LineCap.CAP_SQUARE);
 
-        initEEnum(underlineStyleEEnum, UnderlineStyle.class, "UnderlineStyle");
-        addEEnumLiteral(underlineStyleEEnum, UnderlineStyle.UNDERLINE_ON);
+        initEEnum(underlineEEnum, Underline.class, "Underline");
+        addEEnumLiteral(underlineEEnum, Underline.NONE);
+        addEEnumLiteral(underlineEEnum, Underline.SINGLE);
+        addEEnumLiteral(underlineEEnum, Underline.DOUBLE);
+        addEEnumLiteral(underlineEEnum, Underline.ERROR);
+        addEEnumLiteral(underlineEEnum, Underline.SQUIGGLE);
+        addEEnumLiteral(underlineEEnum, Underline.LINK);
 
         // Create resource
         createResource(eNS_URI);

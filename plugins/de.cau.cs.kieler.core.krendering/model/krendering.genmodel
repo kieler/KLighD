@@ -33,8 +33,13 @@
       <genEnumLiterals ecoreEnumLiteral="krendering.ecore#//LineCap/CAP_ROUND"/>
       <genEnumLiterals ecoreEnumLiteral="krendering.ecore#//LineCap/CAP_SQUARE"/>
     </genEnums>
-    <genEnums typeSafeEnumCompatible="false" ecoreEnum="krendering.ecore#//UnderlineStyle">
-      <genEnumLiterals ecoreEnumLiteral="krendering.ecore#//UnderlineStyle/UNDERLINE_ON"/>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="krendering.ecore#//Underline">
+      <genEnumLiterals ecoreEnumLiteral="krendering.ecore#//Underline/NONE"/>
+      <genEnumLiterals ecoreEnumLiteral="krendering.ecore#//Underline/SINGLE"/>
+      <genEnumLiterals ecoreEnumLiteral="krendering.ecore#//Underline/DOUBLE"/>
+      <genEnumLiterals ecoreEnumLiteral="krendering.ecore#//Underline/ERROR"/>
+      <genEnumLiterals ecoreEnumLiteral="krendering.ecore#//Underline/SQUIGGLE"/>
+      <genEnumLiterals ecoreEnumLiteral="krendering.ecore#//Underline/LINK"/>
     </genEnums>
     <genClasses image="false" ecoreClass="krendering.ecore#//KPosition">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference krendering.ecore#//KPosition/x"/>
@@ -200,12 +205,17 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute krendering.ecore#//KShadow/blur"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference krendering.ecore#//KShadow/color"/>
     </genClasses>
-    <genClasses ecoreClass="krendering.ecore#//KFontUnderlined">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute krendering.ecore#//KFontUnderlined/underlineStyle"/>
+    <genClasses ecoreClass="krendering.ecore#//KTextUnderline">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute krendering.ecore#//KTextUnderline/underline"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference krendering.ecore#//KTextUnderline/color"/>
     </genClasses>
     <genClasses ecoreClass="krendering.ecore#//KCollapseAction"/>
     <genClasses ecoreClass="krendering.ecore#//KStyleRef">
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference krendering.ecore#//KStyleRef/EReference0"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference krendering.ecore#//KStyleRef/styleHolder"/>
+    </genClasses>
+    <genClasses ecoreClass="krendering.ecore#//KTextStrikeout">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute krendering.ecore#//KTextStrikeout/struckOut"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference krendering.ecore#//KTextStrikeout/color"/>
     </genClasses>
   </genPackages>
 </genmodel:GenModel>

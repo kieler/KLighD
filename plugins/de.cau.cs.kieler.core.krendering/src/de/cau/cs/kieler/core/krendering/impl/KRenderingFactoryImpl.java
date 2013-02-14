@@ -110,9 +110,10 @@ public class KRenderingFactoryImpl extends EFactoryImpl implements KRenderingFac
             case KRenderingPackage.KSTYLE_HOLDER: return createKStyleHolder();
             case KRenderingPackage.KINVISIBILITY: return createKInvisibility();
             case KRenderingPackage.KSHADOW: return createKShadow();
-            case KRenderingPackage.KFONT_UNDERLINED: return createKFontUnderlined();
+            case KRenderingPackage.KTEXT_UNDERLINE: return createKTextUnderline();
             case KRenderingPackage.KCOLLAPSE_ACTION: return createKCollapseAction();
             case KRenderingPackage.KSTYLE_REF: return createKStyleRef();
+            case KRenderingPackage.KTEXT_STRIKEOUT: return createKTextStrikeout();
             default:
                 throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
         }
@@ -136,8 +137,8 @@ public class KRenderingFactoryImpl extends EFactoryImpl implements KRenderingFac
                 return createKTriggerFromString(eDataType, initialValue);
             case KRenderingPackage.LINE_CAP:
                 return createLineCapFromString(eDataType, initialValue);
-            case KRenderingPackage.UNDERLINE_STYLE:
-                return createUnderlineStyleFromString(eDataType, initialValue);
+            case KRenderingPackage.UNDERLINE:
+                return createUnderlineFromString(eDataType, initialValue);
             default:
                 throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
         }
@@ -161,8 +162,8 @@ public class KRenderingFactoryImpl extends EFactoryImpl implements KRenderingFac
                 return convertKTriggerToString(eDataType, instanceValue);
             case KRenderingPackage.LINE_CAP:
                 return convertLineCapToString(eDataType, instanceValue);
-            case KRenderingPackage.UNDERLINE_STYLE:
-                return convertUnderlineStyleToString(eDataType, instanceValue);
+            case KRenderingPackage.UNDERLINE:
+                return convertUnderlineToString(eDataType, instanceValue);
             default:
                 throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
         }
@@ -593,9 +594,9 @@ public class KRenderingFactoryImpl extends EFactoryImpl implements KRenderingFac
      * <!-- end-user-doc -->
      * @generated
      */
-    public KFontUnderlined createKFontUnderlined() {
-        KFontUnderlinedImpl kFontUnderlined = new KFontUnderlinedImpl();
-        return kFontUnderlined;
+    public KTextUnderline createKTextUnderline() {
+        KTextUnderlineImpl kTextUnderline = new KTextUnderlineImpl();
+        return kTextUnderline;
     }
 
     /**
@@ -616,6 +617,16 @@ public class KRenderingFactoryImpl extends EFactoryImpl implements KRenderingFac
     public KStyleRef createKStyleRef() {
         KStyleRefImpl kStyleRef = new KStyleRefImpl();
         return kStyleRef;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public KTextStrikeout createKTextStrikeout() {
+        KTextStrikeoutImpl kTextStrikeout = new KTextStrikeoutImpl();
+        return kTextStrikeout;
     }
 
     /**
@@ -723,8 +734,8 @@ public class KRenderingFactoryImpl extends EFactoryImpl implements KRenderingFac
      * <!-- end-user-doc -->
      * @generated
      */
-    public UnderlineStyle createUnderlineStyleFromString(EDataType eDataType, String initialValue) {
-        UnderlineStyle result = UnderlineStyle.get(initialValue);
+    public Underline createUnderlineFromString(EDataType eDataType, String initialValue) {
+        Underline result = Underline.get(initialValue);
         if (result == null) throw new IllegalArgumentException("The value '" + initialValue + "' is not a valid enumerator of '" + eDataType.getName() + "'");
         return result;
     }
@@ -734,7 +745,7 @@ public class KRenderingFactoryImpl extends EFactoryImpl implements KRenderingFac
      * <!-- end-user-doc -->
      * @generated
      */
-    public String convertUnderlineStyleToString(EDataType eDataType, Object instanceValue) {
+    public String convertUnderlineToString(EDataType eDataType, Object instanceValue) {
         return instanceValue == null ? null : instanceValue.toString();
     }
 

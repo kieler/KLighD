@@ -288,8 +288,8 @@ public class KRenderingAdapterFactory extends AdapterFactoryImpl {
                 return createKShadowAdapter();
             }
             @Override
-            public Adapter caseKFontUnderlined(KFontUnderlined object) {
-                return createKFontUnderlinedAdapter();
+            public Adapter caseKTextUnderline(KTextUnderline object) {
+                return createKTextUnderlineAdapter();
             }
             @Override
             public Adapter caseKCollapseAction(KCollapseAction object) {
@@ -298,6 +298,10 @@ public class KRenderingAdapterFactory extends AdapterFactoryImpl {
             @Override
             public Adapter caseKStyleRef(KStyleRef object) {
                 return createKStyleRefAdapter();
+            }
+            @Override
+            public Adapter caseKTextStrikeout(KTextStrikeout object) {
+                return createKTextStrikeoutAdapter();
             }
             @Override
             public Adapter caseIPropertyHolder(IPropertyHolder object) {
@@ -1046,16 +1050,16 @@ public class KRenderingAdapterFactory extends AdapterFactoryImpl {
     }
 
     /**
-     * Creates a new adapter for an object of class '{@link de.cau.cs.kieler.core.krendering.KFontUnderlined <em>KFont Underlined</em>}'.
+     * Creates a new adapter for an object of class '{@link de.cau.cs.kieler.core.krendering.KTextUnderline <em>KText Underline</em>}'.
      * <!-- begin-user-doc -->
      * This default implementation returns null so that we can easily ignore cases;
      * it's useful to ignore a case when inheritance will catch all the cases anyway.
      * <!-- end-user-doc -->
      * @return the new adapter.
-     * @see de.cau.cs.kieler.core.krendering.KFontUnderlined
+     * @see de.cau.cs.kieler.core.krendering.KTextUnderline
      * @generated
      */
-    public Adapter createKFontUnderlinedAdapter() {
+    public Adapter createKTextUnderlineAdapter() {
         return null;
     }
 
@@ -1084,6 +1088,20 @@ public class KRenderingAdapterFactory extends AdapterFactoryImpl {
      * @generated
      */
     public Adapter createKStyleRefAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class '{@link de.cau.cs.kieler.core.krendering.KTextStrikeout <em>KText Strikeout</em>}'.
+     * <!-- begin-user-doc -->
+     * This default implementation returns null so that we can easily ignore cases;
+     * it's useful to ignore a case when inheritance will catch all the cases anyway.
+     * <!-- end-user-doc -->
+     * @return the new adapter.
+     * @see de.cau.cs.kieler.core.krendering.KTextStrikeout
+     * @generated
+     */
+    public Adapter createKTextStrikeoutAdapter() {
         return null;
     }
 

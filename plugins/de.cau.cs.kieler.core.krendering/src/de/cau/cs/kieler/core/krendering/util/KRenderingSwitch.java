@@ -507,10 +507,10 @@ public class KRenderingSwitch<T> extends Switch<T> {
                 if (result == null) result = defaultCase(theEObject);
                 return result;
             }
-            case KRenderingPackage.KFONT_UNDERLINED: {
-                KFontUnderlined kFontUnderlined = (KFontUnderlined)theEObject;
-                T result = caseKFontUnderlined(kFontUnderlined);
-                if (result == null) result = caseKStyle(kFontUnderlined);
+            case KRenderingPackage.KTEXT_UNDERLINE: {
+                KTextUnderline kTextUnderline = (KTextUnderline)theEObject;
+                T result = caseKTextUnderline(kTextUnderline);
+                if (result == null) result = caseKStyle(kTextUnderline);
                 if (result == null) result = defaultCase(theEObject);
                 return result;
             }
@@ -525,6 +525,13 @@ public class KRenderingSwitch<T> extends Switch<T> {
                 KStyleRef kStyleRef = (KStyleRef)theEObject;
                 T result = caseKStyleRef(kStyleRef);
                 if (result == null) result = caseKStyle(kStyleRef);
+                if (result == null) result = defaultCase(theEObject);
+                return result;
+            }
+            case KRenderingPackage.KTEXT_STRIKEOUT: {
+                KTextStrikeout kTextStrikeout = (KTextStrikeout)theEObject;
+                T result = caseKTextStrikeout(kTextStrikeout);
+                if (result == null) result = caseKStyle(kTextStrikeout);
                 if (result == null) result = defaultCase(theEObject);
                 return result;
             }
@@ -1298,17 +1305,17 @@ public class KRenderingSwitch<T> extends Switch<T> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>KFont Underlined</em>'.
+     * Returns the result of interpreting the object as an instance of '<em>KText Underline</em>'.
      * <!-- begin-user-doc -->
      * This implementation returns null;
      * returning a non-null result will terminate the switch.
      * <!-- end-user-doc -->
      * @param object the target of the switch.
-     * @return the result of interpreting the object as an instance of '<em>KFont Underlined</em>'.
+     * @return the result of interpreting the object as an instance of '<em>KText Underline</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
      */
-    public T caseKFontUnderlined(KFontUnderlined object) {
+    public T caseKTextUnderline(KTextUnderline object) {
         return null;
     }
 
@@ -1339,6 +1346,21 @@ public class KRenderingSwitch<T> extends Switch<T> {
      * @generated
      */
     public T caseKStyleRef(KStyleRef object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>KText Strikeout</em>'.
+     * <!-- begin-user-doc -->
+     * This implementation returns null;
+     * returning a non-null result will terminate the switch.
+     * <!-- end-user-doc -->
+     * @param object the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>KText Strikeout</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseKTextStrikeout(KTextStrikeout object) {
         return null;
     }
 

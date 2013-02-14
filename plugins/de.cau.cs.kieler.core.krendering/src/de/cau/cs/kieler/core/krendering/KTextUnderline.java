@@ -1,0 +1,90 @@
+/**
+ * KIELER - Kiel Integrated Environment for Layout Eclipse RichClient
+ * 
+ * http://www.informatik.uni-kiel.de/rtsys/kieler/
+ * 
+ * Copyright 2012 by
+ * + Christian-Albrechts-University of Kiel
+ *   + Department of Computer Science
+ *     + Real-Time and Embedded Systems Group
+ * 
+ * This code is provided under the terms of the Eclipse Public License (EPL).
+ * See the file epl-v10.html for the license text.
+ */
+package de.cau.cs.kieler.core.krendering;
+
+
+/**
+ * <!-- begin-user-doc -->
+ * A representation of the model object '<em><b>KText Underline</b></em>'.
+ * <!-- end-user-doc -->
+ *
+ * <p>
+ * The following features are supported:
+ * <ul>
+ *   <li>{@link de.cau.cs.kieler.core.krendering.KTextUnderline#getUnderline <em>Underline</em>}</li>
+ *   <li>{@link de.cau.cs.kieler.core.krendering.KTextUnderline#getColor <em>Color</em>}</li>
+ * </ul>
+ * </p>
+ *
+ * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKTextUnderline()
+ * @model
+ * @generated
+ */
+public interface KTextUnderline extends KStyle {
+    /**
+     * Returns the value of the '<em><b>Underline</b></em>' attribute.
+     * The literals are from the enumeration {@link de.cau.cs.kieler.core.krendering.Underline}.
+     * <!-- begin-user-doc -->
+     * <p>
+     * If the meaning of the '<em>Underline</em>' attribute isn't clear,
+     * there really should be more of a description here...
+     * </p>
+     * <!-- end-user-doc -->
+     * @return the value of the '<em>Underline</em>' attribute.
+     * @see de.cau.cs.kieler.core.krendering.Underline
+     * @see #setUnderline(Underline)
+     * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKTextUnderline_Underline()
+     * @model required="true"
+     * @generated
+     */
+    Underline getUnderline();
+
+    /**
+     * Sets the value of the '{@link de.cau.cs.kieler.core.krendering.KTextUnderline#getUnderline <em>Underline</em>}' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @param value the new value of the '<em>Underline</em>' attribute.
+     * @see de.cau.cs.kieler.core.krendering.Underline
+     * @see #getUnderline()
+     * @generated
+     */
+    void setUnderline(Underline value);
+
+    /**
+     * Returns the value of the '<em><b>Color</b></em>' containment reference.
+     * <!-- begin-user-doc -->
+     * <p>
+     * If the meaning of the '<em>Color</em>' containment reference isn't clear,
+     * there really should be more of a description here...
+     * </p>
+     * <!-- end-user-doc -->
+     * @return the value of the '<em>Color</em>' containment reference.
+     * @see #setColor(KColor)
+     * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKTextUnderline_Color()
+     * @model containment="true"
+     * @generated
+     */
+    KColor getColor();
+
+    /**
+     * Sets the value of the '{@link de.cau.cs.kieler.core.krendering.KTextUnderline#getColor <em>Color</em>}' containment reference.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @param value the new value of the '<em>Color</em>' containment reference.
+     * @see #getColor()
+     * @generated
+     */
+    void setColor(KColor value);
+
+} // KTextUnderline

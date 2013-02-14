@@ -3257,14 +3257,14 @@ public interface KRenderingPackage extends EPackage {
     int KSHADOW_FEATURE_COUNT = KSTYLE_FEATURE_COUNT + 4;
 
     /**
-     * The meta object id for the '{@link de.cau.cs.kieler.core.krendering.impl.KFontUnderlinedImpl <em>KFont Underlined</em>}' class.
+     * The meta object id for the '{@link de.cau.cs.kieler.core.krendering.impl.KTextUnderlineImpl <em>KText Underline</em>}' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see de.cau.cs.kieler.core.krendering.impl.KFontUnderlinedImpl
-     * @see de.cau.cs.kieler.core.krendering.impl.KRenderingPackageImpl#getKFontUnderlined()
+     * @see de.cau.cs.kieler.core.krendering.impl.KTextUnderlineImpl
+     * @see de.cau.cs.kieler.core.krendering.impl.KRenderingPackageImpl#getKTextUnderline()
      * @generated
      */
-    int KFONT_UNDERLINED = 51;
+    int KTEXT_UNDERLINE = 51;
 
     /**
      * The feature id for the '<em><b>Propagate To Children</b></em>' attribute.
@@ -3273,7 +3273,7 @@ public interface KRenderingPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int KFONT_UNDERLINED__PROPAGATE_TO_CHILDREN = KSTYLE__PROPAGATE_TO_CHILDREN;
+    int KTEXT_UNDERLINE__PROPAGATE_TO_CHILDREN = KSTYLE__PROPAGATE_TO_CHILDREN;
 
     /**
      * The feature id for the '<em><b>Function Id</b></em>' attribute.
@@ -3282,25 +3282,34 @@ public interface KRenderingPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int KFONT_UNDERLINED__FUNCTION_ID = KSTYLE__FUNCTION_ID;
+    int KTEXT_UNDERLINE__FUNCTION_ID = KSTYLE__FUNCTION_ID;
 
     /**
-     * The feature id for the '<em><b>Underline Style</b></em>' attribute.
+     * The feature id for the '<em><b>Underline</b></em>' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int KFONT_UNDERLINED__UNDERLINE_STYLE = KSTYLE_FEATURE_COUNT + 0;
+    int KTEXT_UNDERLINE__UNDERLINE = KSTYLE_FEATURE_COUNT + 0;
 
     /**
-     * The number of structural features of the '<em>KFont Underlined</em>' class.
+     * The feature id for the '<em><b>Color</b></em>' containment reference.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int KFONT_UNDERLINED_FEATURE_COUNT = KSTYLE_FEATURE_COUNT + 1;
+    int KTEXT_UNDERLINE__COLOR = KSTYLE_FEATURE_COUNT + 1;
+
+    /**
+     * The number of structural features of the '<em>KText Underline</em>' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KTEXT_UNDERLINE_FEATURE_COUNT = KSTYLE_FEATURE_COUNT + 2;
 
     /**
      * The meta object id for the '{@link de.cau.cs.kieler.core.krendering.impl.KCollapseActionImpl <em>KCollapse Action</em>}' class.
@@ -3386,6 +3395,61 @@ public interface KRenderingPackage extends EPackage {
     int KSTYLE_REF_FEATURE_COUNT = KSTYLE_FEATURE_COUNT + 1;
 
     /**
+     * The meta object id for the '{@link de.cau.cs.kieler.core.krendering.impl.KTextStrikeoutImpl <em>KText Strikeout</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see de.cau.cs.kieler.core.krendering.impl.KTextStrikeoutImpl
+     * @see de.cau.cs.kieler.core.krendering.impl.KRenderingPackageImpl#getKTextStrikeout()
+     * @generated
+     */
+    int KTEXT_STRIKEOUT = 54;
+
+    /**
+     * The feature id for the '<em><b>Propagate To Children</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KTEXT_STRIKEOUT__PROPAGATE_TO_CHILDREN = KSTYLE__PROPAGATE_TO_CHILDREN;
+
+    /**
+     * The feature id for the '<em><b>Function Id</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KTEXT_STRIKEOUT__FUNCTION_ID = KSTYLE__FUNCTION_ID;
+
+    /**
+     * The feature id for the '<em><b>Struck Out</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KTEXT_STRIKEOUT__STRUCK_OUT = KSTYLE_FEATURE_COUNT + 0;
+
+    /**
+     * The feature id for the '<em><b>Color</b></em>' containment reference.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KTEXT_STRIKEOUT__COLOR = KSTYLE_FEATURE_COUNT + 1;
+
+    /**
+     * The number of structural features of the '<em>KText Strikeout</em>' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KTEXT_STRIKEOUT_FEATURE_COUNT = KSTYLE_FEATURE_COUNT + 2;
+
+    /**
      * The meta object id for the '{@link de.cau.cs.kieler.core.krendering.LineStyle <em>Line Style</em>}' enum.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -3393,7 +3457,7 @@ public interface KRenderingPackage extends EPackage {
      * @see de.cau.cs.kieler.core.krendering.impl.KRenderingPackageImpl#getLineStyle()
      * @generated
      */
-    int LINE_STYLE = 54;
+    int LINE_STYLE = 55;
 
     /**
      * The meta object id for the '{@link de.cau.cs.kieler.core.krendering.HorizontalAlignment <em>Horizontal Alignment</em>}' enum.
@@ -3403,7 +3467,7 @@ public interface KRenderingPackage extends EPackage {
      * @see de.cau.cs.kieler.core.krendering.impl.KRenderingPackageImpl#getHorizontalAlignment()
      * @generated
      */
-    int HORIZONTAL_ALIGNMENT = 55;
+    int HORIZONTAL_ALIGNMENT = 56;
 
     /**
      * The meta object id for the '{@link de.cau.cs.kieler.core.krendering.VerticalAlignment <em>Vertical Alignment</em>}' enum.
@@ -3413,7 +3477,7 @@ public interface KRenderingPackage extends EPackage {
      * @see de.cau.cs.kieler.core.krendering.impl.KRenderingPackageImpl#getVerticalAlignment()
      * @generated
      */
-    int VERTICAL_ALIGNMENT = 56;
+    int VERTICAL_ALIGNMENT = 57;
 
     /**
      * The meta object id for the '{@link de.cau.cs.kieler.core.krendering.KTrigger <em>KTrigger</em>}' enum.
@@ -3423,7 +3487,7 @@ public interface KRenderingPackage extends EPackage {
      * @see de.cau.cs.kieler.core.krendering.impl.KRenderingPackageImpl#getKTrigger()
      * @generated
      */
-    int KTRIGGER = 57;
+    int KTRIGGER = 58;
 
     /**
      * The meta object id for the '{@link de.cau.cs.kieler.core.krendering.LineCap <em>Line Cap</em>}' enum.
@@ -3433,18 +3497,17 @@ public interface KRenderingPackage extends EPackage {
      * @see de.cau.cs.kieler.core.krendering.impl.KRenderingPackageImpl#getLineCap()
      * @generated
      */
-    int LINE_CAP = 58;
+    int LINE_CAP = 59;
 
     /**
-     * The meta object id for the '{@link de.cau.cs.kieler.core.krendering.UnderlineStyle <em>Underline Style</em>}' enum.
+     * The meta object id for the '{@link de.cau.cs.kieler.core.krendering.Underline <em>Underline</em>}' enum.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see de.cau.cs.kieler.core.krendering.UnderlineStyle
-     * @see de.cau.cs.kieler.core.krendering.impl.KRenderingPackageImpl#getUnderlineStyle()
+     * @see de.cau.cs.kieler.core.krendering.Underline
+     * @see de.cau.cs.kieler.core.krendering.impl.KRenderingPackageImpl#getUnderline()
      * @generated
      */
-    int UNDERLINE_STYLE = 59;
-
+    int UNDERLINE = 60;
 
     /**
      * Returns the meta object for class '{@link de.cau.cs.kieler.core.krendering.KPosition <em>KPosition</em>}'.
@@ -4804,25 +4867,36 @@ public interface KRenderingPackage extends EPackage {
     EReference getKShadow_Color();
 
     /**
-     * Returns the meta object for class '{@link de.cau.cs.kieler.core.krendering.KFontUnderlined <em>KFont Underlined</em>}'.
+     * Returns the meta object for class '{@link de.cau.cs.kieler.core.krendering.KTextUnderline <em>KText Underline</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for class '<em>KFont Underlined</em>'.
-     * @see de.cau.cs.kieler.core.krendering.KFontUnderlined
+     * @return the meta object for class '<em>KText Underline</em>'.
+     * @see de.cau.cs.kieler.core.krendering.KTextUnderline
      * @generated
      */
-    EClass getKFontUnderlined();
+    EClass getKTextUnderline();
 
     /**
-     * Returns the meta object for the attribute '{@link de.cau.cs.kieler.core.krendering.KFontUnderlined#getUnderlineStyle <em>Underline Style</em>}'.
+     * Returns the meta object for the attribute '{@link de.cau.cs.kieler.core.krendering.KTextUnderline#getUnderline <em>Underline</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for the attribute '<em>Underline Style</em>'.
-     * @see de.cau.cs.kieler.core.krendering.KFontUnderlined#getUnderlineStyle()
-     * @see #getKFontUnderlined()
+     * @return the meta object for the attribute '<em>Underline</em>'.
+     * @see de.cau.cs.kieler.core.krendering.KTextUnderline#getUnderline()
+     * @see #getKTextUnderline()
      * @generated
      */
-    EAttribute getKFontUnderlined_UnderlineStyle();
+    EAttribute getKTextUnderline_Underline();
+
+    /**
+     * Returns the meta object for the containment reference '{@link de.cau.cs.kieler.core.krendering.KTextUnderline#getColor <em>Color</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the containment reference '<em>Color</em>'.
+     * @see de.cau.cs.kieler.core.krendering.KTextUnderline#getColor()
+     * @see #getKTextUnderline()
+     * @generated
+     */
+    EReference getKTextUnderline_Color();
 
     /**
      * Returns the meta object for class '{@link de.cau.cs.kieler.core.krendering.KCollapseAction <em>KCollapse Action</em>}'.
@@ -4854,6 +4928,38 @@ public interface KRenderingPackage extends EPackage {
      * @generated
      */
     EReference getKStyleRef_StyleHolder();
+
+    /**
+     * Returns the meta object for class '{@link de.cau.cs.kieler.core.krendering.KTextStrikeout <em>KText Strikeout</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for class '<em>KText Strikeout</em>'.
+     * @see de.cau.cs.kieler.core.krendering.KTextStrikeout
+     * @generated
+     */
+    EClass getKTextStrikeout();
+
+    /**
+     * Returns the meta object for the attribute '{@link de.cau.cs.kieler.core.krendering.KTextStrikeout#getStruckOut <em>Struck Out</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the attribute '<em>Struck Out</em>'.
+     * @see de.cau.cs.kieler.core.krendering.KTextStrikeout#getStruckOut()
+     * @see #getKTextStrikeout()
+     * @generated
+     */
+    EAttribute getKTextStrikeout_StruckOut();
+
+    /**
+     * Returns the meta object for the containment reference '{@link de.cau.cs.kieler.core.krendering.KTextStrikeout#getColor <em>Color</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the containment reference '<em>Color</em>'.
+     * @see de.cau.cs.kieler.core.krendering.KTextStrikeout#getColor()
+     * @see #getKTextStrikeout()
+     * @generated
+     */
+    EReference getKTextStrikeout_Color();
 
     /**
      * Returns the meta object for enum '{@link de.cau.cs.kieler.core.krendering.LineStyle <em>Line Style</em>}'.
@@ -4906,14 +5012,14 @@ public interface KRenderingPackage extends EPackage {
     EEnum getLineCap();
 
     /**
-     * Returns the meta object for enum '{@link de.cau.cs.kieler.core.krendering.UnderlineStyle <em>Underline Style</em>}'.
+     * Returns the meta object for enum '{@link de.cau.cs.kieler.core.krendering.Underline <em>Underline</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for enum '<em>Underline Style</em>'.
-     * @see de.cau.cs.kieler.core.krendering.UnderlineStyle
+     * @return the meta object for enum '<em>Underline</em>'.
+     * @see de.cau.cs.kieler.core.krendering.Underline
      * @generated
      */
-    EEnum getUnderlineStyle();
+    EEnum getUnderline();
 
     /**
      * Returns the factory that creates the instances of the model.
@@ -6064,22 +6170,30 @@ public interface KRenderingPackage extends EPackage {
         EReference KSHADOW__COLOR = eINSTANCE.getKShadow_Color();
 
         /**
-         * The meta object literal for the '{@link de.cau.cs.kieler.core.krendering.impl.KFontUnderlinedImpl <em>KFont Underlined</em>}' class.
+         * The meta object literal for the '{@link de.cau.cs.kieler.core.krendering.impl.KTextUnderlineImpl <em>KText Underline</em>}' class.
          * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-         * @see de.cau.cs.kieler.core.krendering.impl.KFontUnderlinedImpl
-         * @see de.cau.cs.kieler.core.krendering.impl.KRenderingPackageImpl#getKFontUnderlined()
+         * @see de.cau.cs.kieler.core.krendering.impl.KTextUnderlineImpl
+         * @see de.cau.cs.kieler.core.krendering.impl.KRenderingPackageImpl#getKTextUnderline()
          * @generated
          */
-        EClass KFONT_UNDERLINED = eINSTANCE.getKFontUnderlined();
+        EClass KTEXT_UNDERLINE = eINSTANCE.getKTextUnderline();
 
         /**
-         * The meta object literal for the '<em><b>Underline Style</b></em>' attribute feature.
+         * The meta object literal for the '<em><b>Underline</b></em>' attribute feature.
          * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
          * @generated
          */
-        EAttribute KFONT_UNDERLINED__UNDERLINE_STYLE = eINSTANCE.getKFontUnderlined_UnderlineStyle();
+        EAttribute KTEXT_UNDERLINE__UNDERLINE = eINSTANCE.getKTextUnderline_Underline();
+
+        /**
+         * The meta object literal for the '<em><b>Color</b></em>' containment reference feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EReference KTEXT_UNDERLINE__COLOR = eINSTANCE.getKTextUnderline_Color();
 
         /**
          * The meta object literal for the '{@link de.cau.cs.kieler.core.krendering.impl.KCollapseActionImpl <em>KCollapse Action</em>}' class.
@@ -6108,6 +6222,32 @@ public interface KRenderingPackage extends EPackage {
          * @generated
          */
         EReference KSTYLE_REF__STYLE_HOLDER = eINSTANCE.getKStyleRef_StyleHolder();
+
+        /**
+         * The meta object literal for the '{@link de.cau.cs.kieler.core.krendering.impl.KTextStrikeoutImpl <em>KText Strikeout</em>}' class.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @see de.cau.cs.kieler.core.krendering.impl.KTextStrikeoutImpl
+         * @see de.cau.cs.kieler.core.krendering.impl.KRenderingPackageImpl#getKTextStrikeout()
+         * @generated
+         */
+        EClass KTEXT_STRIKEOUT = eINSTANCE.getKTextStrikeout();
+
+        /**
+         * The meta object literal for the '<em><b>Struck Out</b></em>' attribute feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EAttribute KTEXT_STRIKEOUT__STRUCK_OUT = eINSTANCE.getKTextStrikeout_StruckOut();
+
+        /**
+         * The meta object literal for the '<em><b>Color</b></em>' containment reference feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EReference KTEXT_STRIKEOUT__COLOR = eINSTANCE.getKTextStrikeout_Color();
 
         /**
          * The meta object literal for the '{@link de.cau.cs.kieler.core.krendering.LineStyle <em>Line Style</em>}' enum.
@@ -6160,14 +6300,14 @@ public interface KRenderingPackage extends EPackage {
         EEnum LINE_CAP = eINSTANCE.getLineCap();
 
         /**
-         * The meta object literal for the '{@link de.cau.cs.kieler.core.krendering.UnderlineStyle <em>Underline Style</em>}' enum.
+         * The meta object literal for the '{@link de.cau.cs.kieler.core.krendering.Underline <em>Underline</em>}' enum.
          * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-         * @see de.cau.cs.kieler.core.krendering.UnderlineStyle
-         * @see de.cau.cs.kieler.core.krendering.impl.KRenderingPackageImpl#getUnderlineStyle()
+         * @see de.cau.cs.kieler.core.krendering.Underline
+         * @see de.cau.cs.kieler.core.krendering.impl.KRenderingPackageImpl#getUnderline()
          * @generated
          */
-        EEnum UNDERLINE_STYLE = eINSTANCE.getUnderlineStyle();
+        EEnum UNDERLINE = eINSTANCE.getUnderline();
 
     }
 

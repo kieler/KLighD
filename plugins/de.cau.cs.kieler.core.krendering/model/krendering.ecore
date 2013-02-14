@@ -575,9 +575,9 @@
     <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
       <details key="documentation" value="LineCapStyles analog to SWT LineCapStyles"/>
     </eAnnotations>
-    <eLiterals name="CAP_FLAT" value="1" literal=""/>
-    <eLiterals name="CAP_ROUND" value="2"/>
-    <eLiterals name="CAP_SQUARE" value="3"/>
+    <eLiterals name="CAP_FLAT" literal="CAP_FLAT"/>
+    <eLiterals name="CAP_ROUND" value="1"/>
+    <eLiterals name="CAP_SQUARE" value="2"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="KInvisibility" eSuperTypes="#//KStyle">
     <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
@@ -593,16 +593,30 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="color" eType="#//KColor"
         containment="true"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="KFontUnderlined" eSuperTypes="#//KStyle">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="underlineStyle" lowerBound="1"
-        eType="#//UnderlineStyle"/>
+  <eClassifiers xsi:type="ecore:EClass" name="KTextUnderline" eSuperTypes="#//KStyle">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="underline" lowerBound="1"
+        eType="#//Underline"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="color" eType="#//KColor"
+        containment="true"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EEnum" name="UnderlineStyle">
-    <eLiterals name="UNDERLINE_ON"/>
+  <eClassifiers xsi:type="ecore:EEnum" name="Underline">
+    <eLiterals name="NONE" literal="NONE"/>
+    <eLiterals name="SINGLE" value="1" literal="SINGLE"/>
+    <eLiterals name="DOUBLE" value="2" literal="DOUBLE"/>
+    <eLiterals name="ERROR" value="3"/>
+    <eLiterals name="SQUIGGLE" value="4"/>
+    <eLiterals name="LINK" value="5"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="KCollapseAction" eSuperTypes="#//KAction"/>
   <eClassifiers xsi:type="ecore:EClass" name="KStyleRef" eSuperTypes="#//KStyle">
     <eStructuralFeatures xsi:type="ecore:EReference" name="styleHolder" lowerBound="1"
         eType="#//KStyleHolder"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="KTextStrikeout" eSuperTypes="#//KStyle">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="struckOut" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBooleanObject"
+        defaultValueLiteral="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="color" eType="#//KColor"
+        containment="true"/>
   </eClassifiers>
 </ecore:EPackage>
