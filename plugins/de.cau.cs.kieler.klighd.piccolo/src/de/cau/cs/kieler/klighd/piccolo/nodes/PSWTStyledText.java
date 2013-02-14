@@ -68,7 +68,9 @@ public class PSWTStyledText extends PSWTText {
      *            The SWT font configuration for this text component.
      */
     public PSWTStyledText(final List<String> theLines, final FontData theFont) {
-        super(theLines, new SWTFontWrappingFont(theFont));
+        super(theLines, new SWTFontWrappingFont(theFont != null ? theFont
+                : KlighdConstants.DEFAULT_FONT));
+        this.fontData = theFont != null ? theFont : KlighdConstants.DEFAULT_FONT;
     }
 
     /**
@@ -115,7 +117,7 @@ public class PSWTStyledText extends PSWTText {
      * Configures the text node width a {@link Font}.
      * 
      * @param theFont
-     *            the desired {@link Font}
+     *            the desired {@link Font}, must not be <code>null<code>
      */
     public void setFont(final FontData theFont) {
         this.fontData = theFont;
@@ -133,43 +135,31 @@ public class PSWTStyledText extends PSWTText {
     }
 
     /**
-     * Augments the text node width an underline.
+     * Augments the text node with an underline of the given type and color.
      * 
      * @param theUnderlining
      *            the related constant from {@link KlighdConstants} and {@link org.eclipse.swt.SWT SWT}
-     */
-    public void setUnderline(final int theUnderlining) {
-        this.underlining = theUnderlining;
-    }
-
-    /**
-     * Sets the current underline color.
-     * 
      * @param color
-     *            use this color.
+     *            the used color, maybe <code>null<code> (penColor is used in that case)
      */
-    public void setUnderlineColor(final RGB color) {
-        this.underlineColor = color;
+    public void setUnderline(final int theUnderlining, final RGB color) {
+        this.underlining = theUnderlining;
+        this.underlineColor = color != null ? color : this.penColor;
+        repaint();
     }
 
     /**
-     * Augments the text node width a strikeout.
+     * Augments the text node with a strikeout of the given color.
      * 
      * @param theStrikeout
      *            whether to strike out
-     */
-    public void setStrikeout(final boolean theStrikeout) {
-        this.strikeout = theStrikeout;
-    }
-
-    /**
-     * Sets the current strikeout color.
-     * 
      * @param color
-     *            use this color.
+     *            the used color, maybe <code>null<code> (penColor is used in that case)
      */
-    public void setStrikeoutColor(final RGB color) {
-        this.strikeoutColor = color;
+    public void setStrikeout(final boolean theStrikeout, final RGB color) {
+        this.strikeout = theStrikeout;
+        this.strikeoutColor = color != null ? color : this.penColor;
+        repaint();
     }
 
     @Override

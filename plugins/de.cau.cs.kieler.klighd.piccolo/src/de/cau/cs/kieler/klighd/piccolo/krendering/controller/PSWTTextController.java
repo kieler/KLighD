@@ -135,53 +135,39 @@ public abstract class PSWTTextController extends PNodeController<PSWTStyledText>
     /**
      * {@inheritDoc}
      */
-    public void setUnderline(final Underline underline) {
+    public void setUnderline(final Underline underline, final RGB color) {
         if (underline != null) {
             switch (underline) {
             case SINGLE:
-                getNode().setUnderline(SWT.UNDERLINE_SINGLE);
+                getNode().setUnderline(SWT.UNDERLINE_SINGLE, color);
                 break;
             case DOUBLE:
-                getNode().setUnderline(SWT.UNDERLINE_DOUBLE);
+                getNode().setUnderline(SWT.UNDERLINE_DOUBLE, color);
                 break;
             case ERROR:
-                getNode().setUnderline(SWT.UNDERLINE_ERROR);
+                getNode().setUnderline(SWT.UNDERLINE_ERROR, color);
                 break;
             case SQUIGGLE:
-                getNode().setUnderline(SWT.UNDERLINE_SQUIGGLE);
+                getNode().setUnderline(SWT.UNDERLINE_SQUIGGLE, color);
                 break;
             case LINK:
-                getNode().setUnderline(SWT.UNDERLINE_LINK);
+                getNode().setUnderline(SWT.UNDERLINE_LINK, color);
                 break;
             case NONE:
             default:
-                getNode().setUnderline(KlighdConstants.NO_FONT_UNDERLINING);
+                getNode().setUnderline(KlighdConstants.NO_FONT_UNDERLINING, color);
             }
         } else {
-            getNode().setUnderline(KlighdConstants.NO_FONT_UNDERLINING);
+            getNode().setUnderline(KlighdConstants.NO_FONT_UNDERLINING, KlighdConstants.BLACK);
         }
     }
 
     /**
      * {@inheritDoc}
      */
-    public void setUnderlineColor(final RGB color) {
-        getNode().setUnderlineColor(color);
-    }
-    
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public void setStrikeout(final boolean strikeout) {
-        getNode().setStrikeout(strikeout);
-    }
-    
-    /**
-     * {@inheritDoc}
-     */
-    public void setStrikeoutColor(final RGB color) {
-        getNode().setStrikeoutColor(color);
+    public void setStrikeout(final boolean strikeout, final RGB color) {
+        getNode().setStrikeout(strikeout, color);
     }
     
     /**

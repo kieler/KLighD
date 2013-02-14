@@ -220,18 +220,10 @@ public abstract class PNodeController<T extends PNode> {
      * 
      * @param underline
      *            the underline property
-     */
-    public void setUnderline(final Underline underline) {
-        // do nothing
-    }
-    
-    /**
-     * Sets the underlining color for the associated node (most likely some kind of text).
-     * 
      * @param color
      *            the underline color
      */
-    public void setUnderlineColor(final RGB color) {
+    public void setUnderline(final Underline underline, final RGB color) {
         // do nothing
     }
     
@@ -240,18 +232,10 @@ public abstract class PNodeController<T extends PNode> {
      * 
      * @param strikeout
      *            the underline property
-     */
-    public void setStrikeout(final boolean strikeout) {
-        // do nothing
-    }
-    
-    /**
-     * Sets the strikeout color for the associated node (most likely some kind of text).
-     * 
      * @param color
      *            the strikeout color
      */
-    public void setStrikeoutColor(final RGB color) {
+    public void setStrikeout(final boolean strikeout, final RGB color) {
         // do nothing
     }
     
@@ -368,18 +352,16 @@ public abstract class PNodeController<T extends PNode> {
         
         // apply the underlined property
         if (styles.underline != null) {
-            this.setUnderline(styles.underline.getUnderline());
-            this.setUnderlineColor(toRGB(styles.underline.getColor()));
+            this.setUnderline(styles.underline.getUnderline(), toRGB(styles.underline.getColor()));
         } else {
-            this.setUnderline(null); // for the moment!
+            this.setUnderline(null, KlighdConstants.BLACK);
         }
         
         // apply the strikeout property
         if (styles.strikeout != null) {
-            this.setStrikeout(styles.strikeout.getStruckOut());
-            this.setStrikeoutColor(toRGB(styles.strikeout.getColor()));
+            this.setStrikeout(styles.strikeout.getStruckOut(), toRGB(styles.strikeout.getColor()));
         } else {
-            this.setStrikeout(false);
+            this.setStrikeout(false, KlighdConstants.BLACK);
         }
         
     }
@@ -391,9 +373,9 @@ public abstract class PNodeController<T extends PNode> {
      * 
      * @param color
      *            the {@link KColor} to be converted
-     * @return the {@link RGB}
+     * @return null if<code>color = null<code>, the related {@link RGB} otherwise
      */
     public RGB toRGB(final KColor color) {
-        return new RGB(color.getRed(), color.getGreen(), color.getBlue());
+        return color == null ? null : new RGB(color.getRed(), color.getGreen(), color.getBlue());
     }
 }
