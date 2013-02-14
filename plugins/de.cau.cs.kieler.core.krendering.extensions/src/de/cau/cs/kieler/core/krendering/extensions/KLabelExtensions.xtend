@@ -104,7 +104,7 @@ class KLabelExtensions {
             it.data += renderingFactory.createKText().setFontName(fontName).setFontSize(fontSize);
             it.addLayoutParam(LayoutOptions::EDGE_LABEL_PLACEMENT, EdgeLabelPlacement::HEAD);
             it.addLayoutParam(LayoutOptions::FONT_NAME, fontName);
-            it.addLayoutParam(LayoutOptions::FONT_SIZE, fontSize+2);
+            it.addLayoutParam(LayoutOptions::FONT_SIZE, fontSize);
         ];
     }
     
@@ -117,7 +117,7 @@ class KLabelExtensions {
             it.data += renderingFactory.createKText().setFontName(fontName).setFontSize(fontSize);
             it.addLayoutParam(LayoutOptions::EDGE_LABEL_PLACEMENT, EdgeLabelPlacement::TAIL);
             it.addLayoutParam(LayoutOptions::FONT_NAME, fontName);
-            it.addLayoutParam(LayoutOptions::FONT_SIZE, fontSize+2);
+            it.addLayoutParam(LayoutOptions::FONT_SIZE, fontSize);
         ];
     }
     

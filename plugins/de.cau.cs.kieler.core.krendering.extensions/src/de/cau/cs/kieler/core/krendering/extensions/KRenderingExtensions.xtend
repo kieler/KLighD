@@ -33,6 +33,9 @@ import de.cau.cs.kieler.core.krendering.KStyleRef
 import de.cau.cs.kieler.core.krendering.KStyleHolder
 import de.cau.cs.kieler.core.krendering.KAreaPlacementData
 import de.cau.cs.kieler.core.krendering.KGridPlacementData
+import de.cau.cs.kieler.core.krendering.Underline
+import de.cau.cs.kieler.core.krendering.KTextUnderline
+import de.cau.cs.kieler.core.krendering.KTextStrikeout
 
 /**
  * This utility class contains various methods that are convenient while composing KRendering data.
@@ -342,15 +345,49 @@ class KRenderingExtensions {
 		];		
 	}
 	
-	def <T extends KRendering> T setFontItalic(T rendering, boolean italic) {
+    def <T extends KRendering> T setFontItalic(T rendering, boolean italic) {
         rendering.styles.removeAll(rendering.styles.filter(typeof(KFontItalic)).toList);
         return rendering => [
             it.styles += renderingFactory.createKFontItalic => [
-    		    it.setItalic(italic);
-		    ];
+                it.setItalic(italic);
+            ];
         ];
-	}
-	
+    }
+    
+    def <T extends KRendering> T setTextUnderline(T rendering, Underline underline) {
+        rendering.styles.removeAll(rendering.styles.filter(typeof(KTextUnderline)).toList);
+        return rendering => [
+            it.styles += renderingFactory.createKTextUnderline() => [
+                it.underline = underline;
+            ];
+        ];
+    }
+    
+    def <T extends KRendering> T setTextUnderlineColor(T rendering, KColor color) {
+        return rendering => [
+            (rendering.styles.filter(typeof(KTextUnderline)).last?:renderingFactory.createKTextUnderline()) => [
+                it.color = color;
+            ];
+        ];
+    }
+    
+    def <T extends KRendering> T setTextStrikeout(T rendering, boolean struckOut) {
+        rendering.styles.removeAll(rendering.styles.filter(typeof(KTextStrikeout)).toList);
+        return rendering => [
+            it.styles += renderingFactory.createKTextStrikeout() => [
+                it.struckOut = struckOut;
+            ];
+        ];
+    }
+    
+    def <T extends KRendering> T setTextStrikeoutColor(T rendering, KColor color) {
+        return rendering => [
+            (rendering.styles.filter(typeof(KTextStrikeout)).last?:renderingFactory.createKTextStrikeout()) => [
+                it.color = color;
+            ];
+        ];
+    }
+    
     def KFontSize getFontSize(KRendering rendering) {
         // chsch: I'm currently not sure whether the first or the last will win...
         return rendering.styles.filter(typeof(KFontSize)).last?:(renderingFactory.createKFontSize => [
