@@ -422,12 +422,11 @@ public class PiccoloViewer extends AbstractViewer<KNode> implements INodeSelecti
             if (KGraphPackage.eINSTANCE.getKGraphElement().isInstance(element)) {
                 KRendering rendering = ((KGraphElement) element).getData(KRendering.class);
                 if (rendering != null) {
-                    rendering.getStyles().add(style);
+                    rendering.getStyles().add(0, style);
                     selectionHighlighting.put(element, Lists.newArrayList(style));
                 }
             } else if (KRenderingPackage.eINSTANCE.getKText().isInstance(element)) {
                 final KBackground bg = KRenderingFactory.eINSTANCE.createKBackground();
-                bg.setAlpha(255); // SUPPRESS CHECKSTYLE MagicNumber // TODO: create constant!
                 final KColor bgColor = KRenderingFactory.eINSTANCE.createKColor();
                 // the color values of 'DimGray'   // SUPPRESS CHECKSTYLE NEXT 3 MagicNumber
                 bgColor.setRed(190);

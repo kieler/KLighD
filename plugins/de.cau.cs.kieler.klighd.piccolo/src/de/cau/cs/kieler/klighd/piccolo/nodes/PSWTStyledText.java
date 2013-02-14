@@ -44,8 +44,10 @@ public class PSWTStyledText extends PSWTText {
     private FontData fontData = null;
     private RGB penColor = KlighdConstants.BLACK;
     private RGB penPaint = null;
-    private RGB underlineColor = KlighdConstants.BLACK;
     private int underlining = KlighdConstants.NO_FONT_UNDERLINING;
+    private RGB underlineColor = KlighdConstants.BLACK;
+    private boolean strikeout = false;
+    private RGB strikeoutColor = KlighdConstants.BLACK;
 
     /**
      * PSWTStyledText constructor taking the initial text lines.
@@ -131,13 +133,43 @@ public class PSWTStyledText extends PSWTText {
     }
 
     /**
-     * Configures the text node width a {@link Font}.
+     * Augments the text node width an underline.
      * 
      * @param theUnderlining
      *            the related constant from {@link KlighdConstants} and {@link org.eclipse.swt.SWT SWT}
      */
-    public void setUnderlining(final int theUnderlining) {
+    public void setUnderline(final int theUnderlining) {
         this.underlining = theUnderlining;
+    }
+
+    /**
+     * Sets the current underline color.
+     * 
+     * @param color
+     *            use this color.
+     */
+    public void setUnderlineColor(final RGB color) {
+        this.underlineColor = color;
+    }
+
+    /**
+     * Augments the text node width a strikeout.
+     * 
+     * @param theStrikeout
+     *            whether to strike out
+     */
+    public void setStrikeout(final boolean theStrikeout) {
+        this.strikeout = theStrikeout;
+    }
+
+    /**
+     * Sets the current strikeout color.
+     * 
+     * @param color
+     *            use this color.
+     */
+    public void setStrikeoutColor(final RGB color) {
+        this.strikeoutColor = color;
     }
 
     @Override
@@ -178,7 +210,8 @@ public class PSWTStyledText extends PSWTText {
         }
 
         sg2.translate(padding, padding);
-        sg2.setUnderlining(underlining, underlineColor);
+        sg2.setUnderline(underlining, underlineColor);
+        sg2.setStrikeout(strikeout, strikeoutColor);
         
         if (penColor != null) {
             sg2.setColor(penColor);
