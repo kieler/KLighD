@@ -218,7 +218,8 @@ public interface IViewer<T> {
     void toggleExpansion(Object semanticElement);
     
     /**
-     * Expands the given representation element.
+     * Toggles the expansion state of the given representation element.
+     * If it is expanded, it gets collapsed, and vice versa.
      * 
      * @param diagramElement the diagram element to be expanded
      */
