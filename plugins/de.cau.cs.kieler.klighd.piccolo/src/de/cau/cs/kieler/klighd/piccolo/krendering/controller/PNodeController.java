@@ -76,6 +76,22 @@ public abstract class PNodeController<T extends PNode> {
 
     
     /**
+     * Sets the invisibility of the associated node.
+     * 
+     * @param invisible
+     *            the invisibility state
+     */
+    public void setInvisible(final boolean invisible) {
+        getNode().setOccluded(invisible);
+        // need the following call in order to get newly invisible figures away
+        //  (PNode does not do it)
+        getNode().invalidatePaint();
+
+        //question: is it correct to do the following when propagateToChildren is set?
+        // controller.getNode().setVisible(!styles.invisibility.isInvisible());
+    }
+    
+    /**
      * Sets the foreground color of the associated node.
      * 
      * @param color
@@ -247,7 +263,16 @@ public abstract class PNodeController<T extends PNode> {
      * @param styles A compound {@link Styles} field to infer the data from. 
      */
     public void applyChanges(final Styles styles) {
-        // apply foreground styles
+        // apply invisibility
+        if (styles.invisibility != null) {
+            this.setInvisible(styles.invisibility.isInvisible());
+            if (styles.invisibility.isInvisible()) {
+                // in case the node is invisible, we can skip the remaining definitions
+                return;
+            }
+        }
+        
+        // apply foreground coloring
         if (styles.foreground != null) {
             int alphaValue = styles.foreground.getAlpha();
             KColor color = styles.foreground.getColor();
@@ -261,7 +286,7 @@ public abstract class PNodeController<T extends PNode> {
                 (Integer) KRenderingPackage.eINSTANCE.getKColoring_Alpha().getDefaultValue());
         }
 
-        // apply background color
+        // apply background coloring
         if (styles.background != null) {
             KColor color = styles.background.getColor();
             int alphaValue = styles.background.getAlpha();
