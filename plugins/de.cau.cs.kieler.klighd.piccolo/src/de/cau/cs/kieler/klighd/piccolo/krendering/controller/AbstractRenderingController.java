@@ -33,6 +33,8 @@ import org.eclipse.emf.common.notify.impl.AdapterImpl;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.RGB;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.statushandlers.StatusManager;
 import org.osgi.framework.Bundle;
 
@@ -113,6 +115,12 @@ public abstract class AbstractRenderingController<S extends KGraphElement, T ext
     /** the property for a rendering reference key. */
     private static final IProperty<Map<Object, Object>> KEY = 
             new Property<Map<Object, Object>>("de.cau.cs.kieler.klighd.piccolo.key");
+    
+    /**
+     * This attribute key is used to let the PNodes be aware of their related KRenderings in their
+     * attributes list.
+     */
+    public static final Object ATTR_KRENDERING = new Object();
 
     /** the graph element which rendering is controlled by this controller. */
     private S element;
@@ -263,11 +271,7 @@ public abstract class AbstractRenderingController<S extends KGraphElement, T ext
 
                     // handle style changes
                     if (msg.getNotifier() instanceof KStyle) {
-                        // PlatformUI.getWorkbench().getDisplay().syncExec(new Runnable() {
-                        // public void run() {
-                        // update the styles
-                        updateStyles();
-                        // });
+                        updateStylesInUi();
                         return;
                     }
 
@@ -275,24 +279,14 @@ public abstract class AbstractRenderingController<S extends KGraphElement, T ext
                     // Caution: Due to multi-inheritance of the KRendering class (interface)
                     //  KRenderingPackage.KRENDERING__STYLES differs from
                     //  KRenderingPackage.KSTYLE_HOLDER__STYLES !!
-                    if (msg.getNotifier() instanceof KRendering
-                            && msg.getFeatureID(KRendering.class)
-                               == KRenderingPackage.KRENDERING__STYLES) {
-                        // PlatformUI.getWorkbench().getDisplay().syncExec(new Runnable() {
-                        // public void run() {
-                        // update the styles
-                        updateStyles();
-                        // });
+                    if (msg.getNotifier() instanceof KRendering && msg.getFeatureID(KRendering.class)
+                            == KRenderingPackage.KRENDERING__STYLES) {
+                        updateStylesInUi();
                         return;
                     }
 
                     // handle other changes by reevaluating the rendering
-                    // PlatformUI.getWorkbench().getDisplay().syncExec(new Runnable() {
-                    // public void run() {
-                    // update the rendering
-                    updateRendering();
-                    // }
-                    // });
+                    updateRenderingInUi();
                     break;
                 default:
                     break;
@@ -329,12 +323,7 @@ public abstract class AbstractRenderingController<S extends KGraphElement, T ext
                         final KRendering rendering = element.getData(KRendering.class);
                         if (rendering != currentRendering) {
                             // a rendering has been added or removed
-                            // PlatformUI.getWorkbench().getDisplay().syncExec(new Runnable() {
-                                // public void run() {
-                                    // update the rendering
-                                    updateRendering();
-                                // }
-                            // });
+                            updateRenderingInUi();
                         }
                         break;
                     default:
@@ -355,6 +344,40 @@ public abstract class AbstractRenderingController<S extends KGraphElement, T ext
             elementAdapter = null;
         }
     }
+    
+    /**
+     * A little help to reduce the syncExec calls if possible.
+     * 
+     * @param r the runnable to be performed in the UI context.
+     */
+    private static void runInUI(final Runnable r) {
+        if (Display.getCurrent() != null) {
+            r.run();
+        } else {
+            PlatformUI.getWorkbench().getDisplay().syncExec(r);
+        }
+    }
+    
+    private Runnable updateRenderingRunnable = new Runnable() {
+        public void run() {
+            updateRendering();
+        }
+    }; 
+    
+    private void updateRenderingInUi() {
+        runInUI(this.updateRenderingRunnable);
+    }
+    
+    private Runnable updateStylesRunnable = new Runnable() {
+        public void run() {
+            updateStyles();
+        }
+    };
+    
+    private void updateStylesInUi() {
+        runInUI(this.updateStylesRunnable);
+    }
+    
 
     /**
      * Updates the styles of the current rendering.
@@ -672,6 +695,8 @@ public abstract class AbstractRenderingController<S extends KGraphElement, T ext
 
         // remember the controller in the related KRendering rendering
         setMappedProperty(rendering, CONTROLLER, key, controller);
+        
+        controller.getNode().addAttribute(ATTR_KRENDERING, rendering);
 
         return controller;
     }
@@ -1511,19 +1536,7 @@ public abstract class AbstractRenderingController<S extends KGraphElement, T ext
      *            the styles
      */
     protected void applyStyles(final PNodeController<?> controller, final Styles styles) {
-        // check whether node is visible and apply invisibility
-        if (styles.invisibility != null) {
-            controller.getNode().setOccluded(styles.invisibility.isInvisible());
-            // remark: the 'occluded' flag is examined in PNode#fullPaint();
-            
-            //question: is this the correct place to do this when propagateToChildren is set?
-            // controller.getNode().setVisible(!styles.invisibility.isInvisible());
-            
-            if (styles.invisibility.isInvisible()) {
-                //if node is invisible, no other styles need to be evaluated
-                return;
-            }
-        }        
+       
         controller.applyChanges(styles);
     }
 
