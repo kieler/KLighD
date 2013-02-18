@@ -51,14 +51,14 @@ public final class StyleUtil {
         
         // CHECKSTYLEOFF Visibility
 
-       /** the line width. */
+        /** the invisibility. */
+        public KInvisibility invisibility = null;
+        /** the line width. */
         public KLineWidth lineWidth = null;
         /** the foreground. */
         public KForeground foreground =  null;
         /** the background. */
         public KBackground background = null;
-        /** whether the foreground should be invisible or not. */
-        public KInvisibility invisibility = null;
         /** the line style. */
         public KLineStyle lineStyle = null;
         /** the line style. */
