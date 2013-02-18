@@ -14,16 +14,16 @@
 /**
  * 
  */
-package de.cau.cs.kieler.klighd.piccolo.krendering.controller;
+package de.cau.cs.kieler.klighd.util;
 
 import de.cau.cs.kieler.core.kgraph.KGraphElement;
 import de.cau.cs.kieler.core.kgraph.impl.KGraphDataImpl;
 
 /**
- * A graph data implementation for storing context information about elements in a Piccolo
+ * A graph data implementation for storing context information about elements in a
  * visualization of a KGraph with attached KRendering data.
  * 
- * @author mri
+ * @author mri, chsch (moved it here from klighd.piccolo to be referenced in layout and compare stuff)
  */
 public class RenderingContextData extends KGraphDataImpl {
 
