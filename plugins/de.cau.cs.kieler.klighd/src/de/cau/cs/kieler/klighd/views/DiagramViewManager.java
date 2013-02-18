@@ -97,7 +97,7 @@ public final class DiagramViewManager implements IPartListener {
      */
     public DiagramViewPart getView(final String id) {
         DiagramViewPart view = idPartMapping.get(id);
-        if (view.isDisposed()) {
+        if (view != null && view.isDisposed()) {
             // actually this branch should not be taken due to DiagramViewPart#dispose();
             // however, there're still those ugly exceptions after a view is closed and
             //  tried to be re-opened...
