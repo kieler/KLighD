@@ -18,6 +18,7 @@ import org.eclipse.swt.widgets.Composite;
 import de.cau.cs.kieler.core.kgraph.KNode;
 import de.cau.cs.kieler.klighd.IViewer;
 import de.cau.cs.kieler.klighd.IViewerProvider;
+import de.cau.cs.kieler.klighd.viewers.ContextViewer;
 
 /**
  * A viewer provider for the Piccolo viewer for KGraphs with attached KRendering data.
@@ -32,8 +33,8 @@ public class PiccoloViewerProvider implements IViewerProvider<KNode> {
     /**
      * {@inheritDoc}
      */
-    public IViewer<KNode> createViewer(final Composite parent) {
-        return new PiccoloViewer(parent);
+    public IViewer<KNode> createViewer(final ContextViewer parentViewer, final Composite parent) {
+        return new PiccoloViewer(parentViewer, parent);
     }
 
     /**
