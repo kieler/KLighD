@@ -234,13 +234,6 @@ public final class DiagramViewManager implements IPartListener {
                                 page.showView(PRIMARY_VIEW_ID, id, IWorkbenchPage.VIEW_VISIBLE);
                         if (view instanceof DiagramViewPart) {
                             diagramView = (DiagramViewPart) view;
-                            if (diagramView.isDisposed()) {
-                                // this is some long term debugging stuff
-                                //  (see also getView(...)
-                                StatusManager.getManager().handle(
-                                        new Status(IStatus.ERROR, KlighdPlugin.PLUGIN_ID, "hier"),
-                                        StatusManager.SHOW);
-                            }
                         } else {
                             throw new PartInitException(
                                     "KLighD: Creation of a KLighD DiagramViewPart failed.\n"
