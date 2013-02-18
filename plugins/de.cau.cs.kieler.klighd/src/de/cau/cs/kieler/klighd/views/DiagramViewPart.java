@@ -13,7 +13,6 @@
  */
 package de.cau.cs.kieler.klighd.views;
 
-import java.util.EnumSet;
 import java.util.List;
 
 import org.eclipse.core.resources.IResource;
@@ -22,15 +21,11 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.swt.SWT;
 import org.eclipse.swt.dnd.DND;
 import org.eclipse.swt.dnd.DropTarget;
 import org.eclipse.swt.dnd.DropTargetEvent;
 import org.eclipse.swt.dnd.DropTargetListener;
 import org.eclipse.swt.dnd.Transfer;
-import org.eclipse.swt.graphics.Resource;
-import org.eclipse.swt.layout.FillLayout;
-import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.ui.part.ResourceTransfer;
@@ -59,7 +54,7 @@ import de.cau.cs.kieler.klighd.viewers.ContextViewer;
 /**
  * A view which is able to display models in light-weight diagrams.
  * 
- * @author mri
+ * @author mri, chsch
  * @author msp
  */
 public class DiagramViewPart extends ViewPart {
@@ -71,6 +66,12 @@ public class DiagramViewPart extends ViewPart {
     
     /** the viewer for this view part. */
     private ContextViewer viewer;
+    
+    /**
+     * Tracks whether this {@link ViewPart} is disposed. Since the {@link DiagramViewManager} tracks
+     * created views it needs to test whether those views are still alive.
+     */
+    private boolean disposed = false;
 
     /**
      * {@inheritDoc}
@@ -101,6 +102,18 @@ public class DiagramViewPart extends ViewPart {
     public void dispose() {
         super.dispose();
         viewer.dispose();
+        disposed = true;
+        DiagramViewManager.getInstance().unregisterViewContexts(this);
+    }
+    
+    /**
+     * Returns true if this {@link ViewPart} is disposed. Since the {@link DiagramViewManager}
+     * tracks created views it needs to test whether those views are still alive.
+     * 
+     * @return whether {@link #dispose()} has been called on this {@link ViewPart}
+     */
+    public boolean isDisposed() {
+        return disposed;
     }
     
     /**
