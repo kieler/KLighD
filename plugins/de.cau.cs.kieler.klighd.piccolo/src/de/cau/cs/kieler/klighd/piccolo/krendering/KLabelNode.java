@@ -16,7 +16,7 @@ package de.cau.cs.kieler.klighd.piccolo.krendering;
 import de.cau.cs.kieler.core.kgraph.KLabel;
 import de.cau.cs.kieler.core.properties.IProperty;
 import de.cau.cs.kieler.core.properties.Property;
-import de.cau.cs.kieler.klighd.piccolo.krendering.controller.RenderingContextData;
+import de.cau.cs.kieler.klighd.util.RenderingContextData;
 import de.cau.cs.kieler.klighd.piccolo.nodes.PEmptyNode;
 import edu.umd.cs.piccolo.util.PPickPath;
 

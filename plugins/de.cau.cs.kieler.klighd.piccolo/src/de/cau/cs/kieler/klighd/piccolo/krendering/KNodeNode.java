@@ -16,7 +16,7 @@ package de.cau.cs.kieler.klighd.piccolo.krendering;
 import de.cau.cs.kieler.core.kgraph.KNode;
 import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout;
 import de.cau.cs.kieler.klighd.KlighdConstants;
-import de.cau.cs.kieler.klighd.piccolo.krendering.controller.RenderingContextData;
+import de.cau.cs.kieler.klighd.util.RenderingContextData;
 import de.cau.cs.kieler.klighd.piccolo.nodes.PZIndexNode;
 
 /**
