@@ -62,6 +62,7 @@ import edu.umd.cs.piccolo.PLayer;
 import edu.umd.cs.piccolo.PNode;
 import edu.umd.cs.piccolo.PRoot;
 import edu.umd.cs.piccolo.event.PInputEventFilter;
+import edu.umd.cs.piccolo.util.PBounds;
 import edu.umd.cs.piccolox.swt.PSWTCanvas;
 
 /**
@@ -109,10 +110,13 @@ public class PiccoloViewer extends AbstractViewer<KNode> implements INodeSelecti
      */
     public PiccoloViewer(final ContextViewer theParentViewer, final Composite parent,
             final int style) {
+        if (parent.isDisposed()) {
+            throw new UnsupportedOperationException("So geht das nicht!");
+        }
         this.parentViewer = theParentViewer;
         this.canvas = new PSWTCanvas(parent, style) {
             
-            // with this sub implementation I register
+            // with this specialized implementation I register
             //  customized event listeners that do not translate SWT events into AWT ones.
             protected void installInputSources() {
                 // TODO for the moment we need the original ones, too, as long as the the 
@@ -126,8 +130,20 @@ public class PiccoloViewer extends AbstractViewer<KNode> implements INodeSelecti
                 this.addMouseTrackListener(mouseListener);
                 this.addMouseWheelListener(mouseListener);
             }
-            
+
+            /**
+             * {@inheritDoc}.<br>
+             * <br>
+             * This specialized method checks the validity of the canvas
+             * before something is painted in order to avoid the 'Widget is disposed' errors.
+             */
+            public void repaint(final PBounds bounds) {
+                if (!this.isDisposed()) {
+                    super.repaint(bounds);
+                }
+            }
         };
+        
         // this reduces flickering drastically
         canvas.setDoubleBuffered(true);
         // canvas.setDefaultRenderQuality(PPaintContext.LOW_QUALITY_RENDERING);
@@ -183,7 +199,7 @@ public class PiccoloViewer extends AbstractViewer<KNode> implements INodeSelecti
             canvas.removeInputEventListener(selectionHandler);
             selectionHandler = null;
         }
-
+        
         // prepare the camera
         PCamera camera = canvas.getCamera();
         // resetCamera(camera);
