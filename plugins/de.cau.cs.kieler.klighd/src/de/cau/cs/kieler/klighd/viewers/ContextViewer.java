@@ -57,6 +57,7 @@ import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 
 import com.google.common.collect.Lists;
 
+import de.cau.cs.kieler.core.kgraph.KNode;
 import de.cau.cs.kieler.kiml.options.Direction;
 import de.cau.cs.kieler.kiml.options.LayoutOptions;
 import de.cau.cs.kieler.klighd.IViewer;
@@ -167,6 +168,14 @@ public class ContextViewer extends AbstractViewer<Object> implements IViewerEven
     }
     
     /**
+     * {@inheritDoc}
+     */
+    public ContextViewer getContextViewer() {
+        return this;
+    }
+
+
+    /**
      * Update the options to be displayed in the options pane.
      * TODO make the selection of options configurable through method arguments
      */
@@ -177,6 +186,7 @@ public class ContextViewer extends AbstractViewer<Object> implements IViewerEven
         optionControlFactory.initialize();
         
         // TODO implement a generic interface for selecting layout options
+        // SUPPRESS CHECKSTYLE NEXT 5 MagicNumber 
         optionControlFactory.createControl(LayoutOptions.ALGORITHM.getId());
         optionControlFactory.createControl(LayoutOptions.SPACING.getId(), 3f, 200f);
         optionControlFactory.createControl(LayoutOptions.RANDOM_SEED.getId(), 1f, 100f);
@@ -318,6 +328,7 @@ public class ContextViewer extends AbstractViewer<Object> implements IViewerEven
                 // the following filter doesn't work on OSX, event.detail is always zero
                 // if (event.detail == SWT.DRAG) {
                     // FIXME the "30" in the next line was determined experimentally
+                    // SUPPRESS CHECKSTYLE NEXT MagicNumber
                     int newWidth = optParent.getClientArea().width - (event.x + 30);
                     if (event.x > MIN_WIDTH && newWidth > MIN_WIDTH) {
                         formLayoutData.widthHint = newWidth;
@@ -413,7 +424,7 @@ public class ContextViewer extends AbstractViewer<Object> implements IViewerEven
 
             // create the new viewer
             IViewer<?> viewer =
-                    LightDiagramServices.getInstance().createViewer(viewContext, parent);
+                    LightDiagramServices.getInstance().createViewer(this, viewContext, parent);
 
             // add the new viewer
             addViewer(viewer);
@@ -596,6 +607,57 @@ public class ContextViewer extends AbstractViewer<Object> implements IViewerEven
      */
     public void setZoomToFit(final boolean zoomToFit) {
         currentViewer.setZoomToFit(zoomToFit);
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public void collapse(final Object semanticElement) {
+        Object diagramNode = getCurrentViewContext().getTargetElement(semanticElement);
+        if (diagramNode instanceof KNode) {
+            currentViewer.collapse((KNode) diagramNode);
+        }
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public void collapse(final KNode diagramElement) {
+        currentViewer.collapse(diagramElement);
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public void expand(final Object semanticElement) {
+        Object diagramNode = getCurrentViewContext().getTargetElement(semanticElement);
+        if (diagramNode instanceof KNode) {
+            currentViewer.expand((KNode) diagramNode);
+        }
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public void expand(final KNode diagramElement) {
+        currentViewer.expand(diagramElement);
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public void toggleExpansion(final Object semanticElement) {
+        Object diagramNode = getCurrentViewContext().getTargetElement(semanticElement);
+        if (diagramNode instanceof KNode) {
+            currentViewer.toggleExpansion((KNode) diagramNode);
+        }
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public void toggleExpansion(final KNode diagramElement) {
+        currentViewer.toggleExpansion(diagramElement);
     }
     
     /**
