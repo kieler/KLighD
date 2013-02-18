@@ -16,6 +16,9 @@ package de.cau.cs.kieler.klighd;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 
+import de.cau.cs.kieler.core.kgraph.KNode;
+import de.cau.cs.kieler.klighd.viewers.ContextViewer;
+
 /**
  * The interface for viewers on incrementally updated models.<br>
  * <br>
@@ -35,6 +38,13 @@ public interface IViewer<T> {
      */
     Control getControl();
 
+    /**
+     * Returns the {@link ContextViewer} containing this viewer.
+     * 
+     * @return the {@link ContextViewer}
+     */
+    ContextViewer getContextViewer();
+    
     /**
      * Sets the input model for this viewer.
      * 
@@ -151,12 +161,68 @@ public interface IViewer<T> {
     void zoom(float zoomLevel, int duration);
 
     /**
-     * Peforms a zoom-to-fit over the specified duration.
+     * Performs a zoom-to-fit over the specified duration.
      * 
      * @param duration
      *            the duration
      */
     void zoomToFit(int duration);
+
+    /**
+     * Collapses the representation of the given element. Note that there must exist related element
+     * <-> diagram element tracking information in the {@link TransformationContexts}.
+     * 
+     * @author chsch
+     * 
+     * @param semanticElement
+     *            the semantic element to be expanded
+     */
+    void collapse(Object semanticElement);
+    
+    /**
+     * Expands the given representation element.
+     * 
+     * @param diagramElement the diagram element to be expanded
+     */
+    void collapse(KNode diagramElement);
+
+    /**
+     * Expands the representation of the given element, i.e. populates it with children and changes
+     * its rendering if necessary. Note that there must exist related element <-> diagram element
+     * tracking information in the {@link TransformationContexts}.
+     * 
+     * @author chsch
+     * 
+     * @param semanticElement
+     *            the semantic element to be expanded
+     */
+    void expand(Object semanticElement);
+    
+    /**
+     * Expands the given representation element.
+     * 
+     * @param diagramElement the diagram element to be expanded
+     */
+    void expand(KNode diagramElement);
+
+    /**
+     * Expands the representation of the given element if collapsed and vice versa. Note that there
+     * must exist related element <-> diagram element tracking information in the
+     * {@link TransformationContexts}.
+     * 
+     * @author chsch
+     * 
+     * @param semanticElement
+     *            the semantic element to be expanded
+     */
+    void toggleExpansion(Object semanticElement);
+    
+    /**
+     * Expands the given representation element.
+     * 
+     * @param diagramElement the diagram element to be expanded
+     */
+    void toggleExpansion(KNode diagramElement);
 
     /**
      * Adds an event listener to the viewer.

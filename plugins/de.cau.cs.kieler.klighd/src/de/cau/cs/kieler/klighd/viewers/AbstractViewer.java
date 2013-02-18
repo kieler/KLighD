@@ -17,6 +17,7 @@ import java.util.Collection;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
+import de.cau.cs.kieler.core.kgraph.KNode;
 import de.cau.cs.kieler.klighd.IViewer;
 import de.cau.cs.kieler.klighd.IViewerEventListener;
 
@@ -94,6 +95,48 @@ public abstract class AbstractViewer<T> implements IViewer<T> {
      * {@inheritDoc}
      */
     public void centerOn(final Object diagramObject, final int duration) {
+        // do nothing
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void collapse(final KNode diagramElement) {
+        // do nothing
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void collapse(final Object semanticElement) {
+        // do nothing
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void expand(final Object semanticElement) {
+        // do nothing
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public void expand(final KNode diagramElement) {
+        // do nothing
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public void toggleExpansion(final KNode diagramElement) {
+        // do nothing
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void toggleExpansion(final Object semanticElement) {
         // do nothing
     }
 
