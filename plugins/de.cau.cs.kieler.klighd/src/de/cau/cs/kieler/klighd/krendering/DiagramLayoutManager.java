@@ -47,8 +47,10 @@ import de.cau.cs.kieler.kiml.ui.diagram.LayoutMapping;
 import de.cau.cs.kieler.kiml.ui.service.EclipseLayoutConfig;
 import de.cau.cs.kieler.kiml.util.KimlUtil;
 import de.cau.cs.kieler.klighd.IViewer;
+import de.cau.cs.kieler.klighd.KlighdConstants;
 import de.cau.cs.kieler.klighd.ViewContext;
 import de.cau.cs.kieler.klighd.krendering.PlacementUtil.Bounds;
+import de.cau.cs.kieler.klighd.util.RenderingContextData;
 import de.cau.cs.kieler.klighd.viewers.ContextViewer;
 import de.cau.cs.kieler.klighd.viewers.KlighdViewer;
 import de.cau.cs.kieler.klighd.views.DiagramEditorPart;
@@ -236,9 +238,15 @@ public class DiagramLayoutManager implements IDiagramLayoutManager<KGraphElement
      */
     private static void processNodes(final LayoutMapping<KGraphElement> mapping,
             final KNode parent, final KNode layoutParent) {
-        // iterate through the children of the node
-        for (KNode node : parent.getChildren()) {
-            createNode(mapping, node, layoutParent);
+        // if the node is active, i.e. if its children are displayed in the diagram ...
+        if (RenderingContextData.get(parent).getProperty(KlighdConstants.ACTIVE)) {
+            // ... iterate through its children and put copies in the layout graph
+            for (KNode node : parent.getChildren()) {
+                createNode(mapping, node, layoutParent);
+            }
+        } else {
+            // experimental...
+            layoutParent.getData(KShapeLayout.class).setSize(0, 0);
         }
     }
 
@@ -257,13 +265,13 @@ public class DiagramLayoutManager implements IDiagramLayoutManager<KGraphElement
         KNode layoutNode = KimlUtil.createInitializedNode();
         // set the node layout
         // initialize with defaultLayout and try to get specific layout attached to the node
-        KShapeLayout useLayout = layoutNode.getData(KShapeLayout.class);
+        KShapeLayout layoutLayout = layoutNode.getData(KShapeLayout.class);
         KShapeLayout nodeLayout = node.getData(KShapeLayout.class);
         Bounds minSize;
         if (nodeLayout != null) {
             // there is layoutData attached to the node,
             // so take that as node layout instead of the default-layout
-            transferShapeLayout(nodeLayout, useLayout);
+            transferShapeLayout(nodeLayout, layoutLayout);
 
             // integrate the minimal estimated node size based on the updated useLayout
             // - manipulating the nodeLayout may cause immediate glitches in the diagram
@@ -272,10 +280,11 @@ public class DiagramLayoutManager implements IDiagramLayoutManager<KGraphElement
             if (rootRendering != null) {
                 // calculate the minimal size need for the rendering ...
                 minSize = PlacementUtil.estimateSize(rootRendering, new Bounds(
-                        useLayout.getWidth(), useLayout.getHeight()));
+                        layoutLayout.getWidth(), layoutLayout.getHeight()));
                 // ... and update the node size if it exceeds its size
-                if (minSize.width > useLayout.getWidth()) {
-                    useLayout.setWidth(minSize.width);
+                if (minSize.width > layoutLayout.getWidth()) {
+                    nodeLayout.setWidth(minSize.width);
+                    layoutLayout.setWidth(minSize.width);
 
                     // In order to instruct KIML to not shrink the node beyond the minimal size,
                     //  e.g. due to less space required by child nodes,
@@ -284,17 +293,18 @@ public class DiagramLayoutManager implements IDiagramLayoutManager<KGraphElement
                     //  transfered by the {@link KGraphPropertyLayoutConfig}.
                     nodeLayout.setProperty(LayoutOptions.MIN_WIDTH, minSize.width);
                 }
-                if (minSize.height > useLayout.getHeight()) {
-                    useLayout.setHeight(minSize.height);
+                if (minSize.height > layoutLayout.getHeight()) {
+                    nodeLayout.setHeight(minSize.height);
+                    layoutLayout.setHeight(minSize.height);
                     // see comment above
                     nodeLayout.setProperty(LayoutOptions.MIN_HEIGHT, minSize.height);
                 }
-                useLayout.setInsets(minSize.getInsets());
+                layoutLayout.setInsets(minSize.getInsets());
             }
         }
         
         // set insets if available
-        KInsets layoutInsets = useLayout.getInsets();
+        KInsets layoutInsets = layoutLayout.getInsets();
         PlacementUtil.calculateInsets(node, layoutInsets);
 
         layoutParent.getChildren().add(layoutNode);
