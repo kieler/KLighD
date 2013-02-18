@@ -95,6 +95,44 @@ public final class KlighdConstants {
      */
     public static final int DEFAULT_TEXT_PADDING = 0;
 
+
+    /**
+     * Identifier of the built-in collapse expand action to be mentioned in instances of
+     * {@link de.cau.cs.kieler.core.krendering.KAction KAction}.
+     */
+    public static final String ACTION_COLLAPSE_EXPAND = "klighd.collapse.expand";
+
+    /**
+     * Property indicating the auto expansion of a node if the value is true.<br>
+     * This is property is currently to be attached to the nodes shape layout data during the view
+     * synthesis process. If it is absent the node gets expanded, anyway.
+     */
+    public static final IProperty<Boolean> EXPAND = new Property<Boolean>("klighd.expand", true);
+
+
+    /**
+     * A property for identifying whether a node has been populated. If a node is populated, child
+     * nodes have been created once, e.g. in case of lazy loading.<br>
+     * <br>
+     * <b>It is intended for KLighD internal use only!</b> 
+     * The property declaration has been moved here from klighd.piccolo's AbstractRenderingController.
+     */
+    public static final IProperty<Boolean> POPULATED = new Property<Boolean>("klighd.populated",
+            false);
+    /**
+     * A property for identifying whether a node is currently active. If a node is active, it is
+     * visible.<br>
+     * <br>
+     * <b>It is intended for KLighD internal use only!</b> The property declaration has been moved
+     * here from klighd.piccolo's AbstractRenderingController.
+     */
+    // Review with mri: activate the subgraph:
+    // this is probably crucial in case the structure has been changed during an incremental update;
+    // the activity flag is also important in case of inter-level edges in combination with
+    // lazy loading/collapsing+expanding
+    public static final IProperty<Boolean> ACTIVE = new Property<Boolean>("klighd.active", false);
+
+    
     /**
      * Property to be attached to the {@link de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout
      * KShapeLayout} of a view model's nodes in some regression tests.
