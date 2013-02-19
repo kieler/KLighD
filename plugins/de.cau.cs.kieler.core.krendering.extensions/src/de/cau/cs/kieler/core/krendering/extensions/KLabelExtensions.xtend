@@ -17,6 +17,7 @@ import javax.inject.Inject
 
 import de.cau.cs.kieler.core.kgraph.KLabel
 import de.cau.cs.kieler.core.kgraph.KLabeledGraphElement
+import de.cau.cs.kieler.core.kgraph.KNode
 import de.cau.cs.kieler.core.krendering.KRenderingFactory
 import de.cau.cs.kieler.core.properties.IProperty
 import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout
@@ -38,6 +39,9 @@ class KLabelExtensions {
     static KRenderingFactory renderingFactory = KRenderingFactory::eINSTANCE
     
     @Inject
+    extension KNodeExtensions
+
+    @Inject
     extension KRenderingExtensions
     
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -56,6 +60,14 @@ class KLabelExtensions {
      */
     def KLabel getLabel(Object o, KLabeledGraphElement labeledElement) {
         return newArrayList(o).getLabel(labeledElement)
+    }
+    
+    /**
+     * Convenience creator of KLabels that are not related to semantic elements.
+     * It is just syntactic sugar.  
+     */
+    def KLabel createLabel(KLabeledGraphElement labeledElement) {
+        return KimlUtil::createInitializedLabel(labeledElement)
     }
     
     /**
@@ -128,11 +140,20 @@ class KLabelExtensions {
         return label => [
             it.text = labelText;
             it.data += renderingFactory.createKText().setFontName(fontName).setFontSize(fontSize);
-            it.addLayoutParam(LayoutOptions::NODE_LABEL_PLACEMENT, NodeLabelPlacement::outsideBottomCenter);
             it.addLayoutParam(LayoutOptions::FONT_NAME, fontName);
             it.addLayoutParam(LayoutOptions::FONT_SIZE, fontSize);
+            (it.parent as KNode).addLayoutParam(LayoutOptions::NODE_LABEL_PLACEMENT,
+                        NodeLabelPlacement::outsideBottomCenter);
         ];
     }
+
+    /**
+     * Adds a central node label to KNode 'node'!
+     */
+    def KLabel addOutsideCenteralBottomNodeLabel(KNode node, String labelText, int fontSize, String fontName) {
+        return node.createLabel().configureOutsideCenteralBottomNodeLabel(labelText, fontSize, fontName);
+    }
+    
 
     /**
      * Configures an inside port label!
