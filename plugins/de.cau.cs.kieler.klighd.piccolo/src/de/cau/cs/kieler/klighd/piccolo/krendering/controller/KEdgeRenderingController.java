@@ -23,7 +23,7 @@ import org.eclipse.ui.statushandlers.StatusManager;
 
 import de.cau.cs.kieler.core.kgraph.KEdge;
 import de.cau.cs.kieler.core.krendering.KCustomRendering;
-import de.cau.cs.kieler.core.krendering.KForegroundColor;
+import de.cau.cs.kieler.core.krendering.KForeground;
 import de.cau.cs.kieler.core.krendering.KPolyline;
 import de.cau.cs.kieler.core.krendering.KRendering;
 import de.cau.cs.kieler.core.krendering.KRenderingFactory;
@@ -121,7 +121,8 @@ public class KEdgeRenderingController extends AbstractRenderingController<KEdge,
         // create the rendering
         @SuppressWarnings("unchecked")
         final PNodeController<PSWTAdvancedPath> controller =
-                (PNodeController<PSWTAdvancedPath>) createRendering(rendering,
+                (PNodeController<PSWTAdvancedPath>) 
+                createRendering(rendering,
                         new ArrayList<KStyle>(0), parent, new PBounds(0, 0, 1, 1),
                         getRepresentation());
         if (rendering instanceof KSpline) {
@@ -195,11 +196,11 @@ public class KEdgeRenderingController extends AbstractRenderingController<KEdge,
         // create the default rendering model
         KRenderingFactory factory = KRenderingFactory.eINSTANCE;
         KPolyline polyline = factory.createKPolyline();
-        KForegroundColor color = factory.createKForegroundColor();
-        color.setRed(0);
-        color.setGreen(0);
-        color.setBlue(0);
-        polyline.getStyles().add(color);
+
+        KForeground foreground = factory.createKForeground();
+        foreground.setColor(factory.createKColor());
+        
+        polyline.getStyles().add(foreground);
         return polyline;
     }
     

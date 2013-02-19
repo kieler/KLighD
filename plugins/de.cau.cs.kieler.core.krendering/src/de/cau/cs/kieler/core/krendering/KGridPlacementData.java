@@ -19,15 +19,17 @@ package de.cau.cs.kieler.core.krendering;
  * A representation of the model object '<em><b>KGrid Placement Data</b></em>'.
  * <!-- end-user-doc -->
  *
+ * <!-- begin-model-doc -->
+ * Define the placement of elements in a gridPlacement
+ * <!-- end-model-doc -->
+ *
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link de.cau.cs.kieler.core.krendering.KGridPlacementData#getWidthHint <em>Width Hint</em>}</li>
- *   <li>{@link de.cau.cs.kieler.core.krendering.KGridPlacementData#getHeightHint <em>Height Hint</em>}</li>
- *   <li>{@link de.cau.cs.kieler.core.krendering.KGridPlacementData#getInsetRight <em>Inset Right</em>}</li>
- *   <li>{@link de.cau.cs.kieler.core.krendering.KGridPlacementData#getInsetBottom <em>Inset Bottom</em>}</li>
- *   <li>{@link de.cau.cs.kieler.core.krendering.KGridPlacementData#getInsetLeft <em>Inset Left</em>}</li>
- *   <li>{@link de.cau.cs.kieler.core.krendering.KGridPlacementData#getInsetTop <em>Inset Top</em>}</li>
+ *   <li>{@link de.cau.cs.kieler.core.krendering.KGridPlacementData#getMinCellWidth <em>Min Cell Width</em>}</li>
+ *   <li>{@link de.cau.cs.kieler.core.krendering.KGridPlacementData#getMaxCellWidth <em>Max Cell Width</em>}</li>
+ *   <li>{@link de.cau.cs.kieler.core.krendering.KGridPlacementData#getMinCellHeight <em>Min Cell Height</em>}</li>
+ *   <li>{@link de.cau.cs.kieler.core.krendering.KGridPlacementData#getMaxCellHeight <em>Max Cell Height</em>}</li>
  * </ul>
  * </p>
  *
@@ -35,161 +37,130 @@ package de.cau.cs.kieler.core.krendering;
  * @model
  * @generated
  */
-public interface KGridPlacementData extends KPlacementData {
+public interface KGridPlacementData extends KAreaPlacementData {
+
     /**
-     * Returns the value of the '<em><b>Width Hint</b></em>' attribute.
+     * Returns the value of the '<em><b>Min Cell Width</b></em>' attribute.
+     * The default value is <code>"0"</code>.
      * <!-- begin-user-doc -->
      * <p>
-     * If the meaning of the '<em>Width Hint</em>' attribute isn't clear,
+     * If the meaning of the '<em>Min Cell Width</em>' attribute isn't clear,
      * there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
-     * @return the value of the '<em>Width Hint</em>' attribute.
-     * @see #setWidthHint(float)
-     * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKGridPlacementData_WidthHint()
-     * @model
+     * <!-- begin-model-doc -->
+     * force layout to make the column that contains the element this placementdata is assigned to as wide as defined here. If another element in that column has a maxCellWidth that is less than this minWidth, the maxWidth is ignored.
+     * <!-- end-model-doc -->
+     * @return the value of the '<em>Min Cell Width</em>' attribute.
+     * @see #setMinCellWidth(float)
+     * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKGridPlacementData_MinCellWidth()
+     * @model default="0"
      * @generated
      */
-    float getWidthHint();
+    float getMinCellWidth();
 
     /**
-     * Sets the value of the '{@link de.cau.cs.kieler.core.krendering.KGridPlacementData#getWidthHint <em>Width Hint</em>}' attribute.
+     * Sets the value of the '{@link de.cau.cs.kieler.core.krendering.KGridPlacementData#getMinCellWidth <em>Min Cell Width</em>}' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @param value the new value of the '<em>Width Hint</em>' attribute.
-     * @see #getWidthHint()
+     * @param value the new value of the '<em>Min Cell Width</em>' attribute.
+     * @see #getMinCellWidth()
      * @generated
      */
-    void setWidthHint(float value);
+    void setMinCellWidth(float value);
 
     /**
-     * Returns the value of the '<em><b>Height Hint</b></em>' attribute.
+     * Returns the value of the '<em><b>Max Cell Width</b></em>' attribute.
+     * The default value is <code>"-1"</code>.
      * <!-- begin-user-doc -->
      * <p>
-     * If the meaning of the '<em>Height Hint</em>' attribute isn't clear,
+     * If the meaning of the '<em>Max Cell Width</em>' attribute isn't clear,
      * there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
-     * @return the value of the '<em>Height Hint</em>' attribute.
-     * @see #setHeightHint(float)
-     * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKGridPlacementData_HeightHint()
-     * @model
+     * <!-- begin-model-doc -->
+     * hint layout to keep the width of the column the element is assigned to less than defined here. 
+     * If another element in this column has a minCellWidth that is higher than this maxWidth, 
+     * the maxWidth is ignored.
+     * <!-- end-model-doc -->
+     * @return the value of the '<em>Max Cell Width</em>' attribute.
+     * @see #setMaxCellWidth(float)
+     * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKGridPlacementData_MaxCellWidth()
+     * @model default="-1"
      * @generated
      */
-    float getHeightHint();
+    float getMaxCellWidth();
 
     /**
-     * Sets the value of the '{@link de.cau.cs.kieler.core.krendering.KGridPlacementData#getHeightHint <em>Height Hint</em>}' attribute.
+     * Sets the value of the '{@link de.cau.cs.kieler.core.krendering.KGridPlacementData#getMaxCellWidth <em>Max Cell Width</em>}' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @param value the new value of the '<em>Height Hint</em>' attribute.
-     * @see #getHeightHint()
+     * @param value the new value of the '<em>Max Cell Width</em>' attribute.
+     * @see #getMaxCellWidth()
      * @generated
      */
-    void setHeightHint(float value);
+    void setMaxCellWidth(float value);
 
     /**
-     * Returns the value of the '<em><b>Inset Right</b></em>' attribute.
+     * Returns the value of the '<em><b>Min Cell Height</b></em>' attribute.
+     * The default value is <code>"0"</code>.
      * <!-- begin-user-doc -->
      * <p>
-     * If the meaning of the '<em>Inset Right</em>' attribute isn't clear,
+     * If the meaning of the '<em>Min Cell Height</em>' attribute isn't clear,
      * there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
-     * @return the value of the '<em>Inset Right</em>' attribute.
-     * @see #setInsetRight(float)
-     * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKGridPlacementData_InsetRight()
-     * @model
+     * <!-- begin-model-doc -->
+     * force layout to make the row that contains the element this placementdata is assigned to as high as defined here. If another element in that column has a maxCellHeight that is less than this minHeight, the maxHeight is ignored.
+     * <!-- end-model-doc -->
+     * @return the value of the '<em>Min Cell Height</em>' attribute.
+     * @see #setMinCellHeight(float)
+     * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKGridPlacementData_MinCellHeight()
+     * @model default="0"
      * @generated
      */
-    float getInsetRight();
+    float getMinCellHeight();
 
     /**
-     * Sets the value of the '{@link de.cau.cs.kieler.core.krendering.KGridPlacementData#getInsetRight <em>Inset Right</em>}' attribute.
+     * Sets the value of the '{@link de.cau.cs.kieler.core.krendering.KGridPlacementData#getMinCellHeight <em>Min Cell Height</em>}' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @param value the new value of the '<em>Inset Right</em>' attribute.
-     * @see #getInsetRight()
+     * @param value the new value of the '<em>Min Cell Height</em>' attribute.
+     * @see #getMinCellHeight()
      * @generated
      */
-    void setInsetRight(float value);
+    void setMinCellHeight(float value);
 
     /**
-     * Returns the value of the '<em><b>Inset Bottom</b></em>' attribute.
+     * Returns the value of the '<em><b>Max Cell Height</b></em>' attribute.
+     * The default value is <code>"-1"</code>.
      * <!-- begin-user-doc -->
      * <p>
-     * If the meaning of the '<em>Inset Bottom</em>' attribute isn't clear,
+     * If the meaning of the '<em>Max Cell Height</em>' attribute isn't clear,
      * there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
-     * @return the value of the '<em>Inset Bottom</em>' attribute.
-     * @see #setInsetBottom(float)
-     * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKGridPlacementData_InsetBottom()
-     * @model
+     * <!-- begin-model-doc -->
+     * hint layout to keep the height of the column the element is assigned to less than defined here. 
+     * If another element in this column has a minCellHeight that is higher than this maxHeight, 
+     * the maxHeight is ignored.
+     * <!-- end-model-doc -->
+     * @return the value of the '<em>Max Cell Height</em>' attribute.
+     * @see #setMaxCellHeight(float)
+     * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKGridPlacementData_MaxCellHeight()
+     * @model default="-1"
      * @generated
      */
-    float getInsetBottom();
+    float getMaxCellHeight();
 
     /**
-     * Sets the value of the '{@link de.cau.cs.kieler.core.krendering.KGridPlacementData#getInsetBottom <em>Inset Bottom</em>}' attribute.
+     * Sets the value of the '{@link de.cau.cs.kieler.core.krendering.KGridPlacementData#getMaxCellHeight <em>Max Cell Height</em>}' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @param value the new value of the '<em>Inset Bottom</em>' attribute.
-     * @see #getInsetBottom()
+     * @param value the new value of the '<em>Max Cell Height</em>' attribute.
+     * @see #getMaxCellHeight()
      * @generated
      */
-    void setInsetBottom(float value);
-
-    /**
-     * Returns the value of the '<em><b>Inset Left</b></em>' attribute.
-     * <!-- begin-user-doc -->
-     * <p>
-     * If the meaning of the '<em>Inset Left</em>' attribute isn't clear,
-     * there really should be more of a description here...
-     * </p>
-     * <!-- end-user-doc -->
-     * @return the value of the '<em>Inset Left</em>' attribute.
-     * @see #setInsetLeft(float)
-     * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKGridPlacementData_InsetLeft()
-     * @model
-     * @generated
-     */
-    float getInsetLeft();
-
-    /**
-     * Sets the value of the '{@link de.cau.cs.kieler.core.krendering.KGridPlacementData#getInsetLeft <em>Inset Left</em>}' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @param value the new value of the '<em>Inset Left</em>' attribute.
-     * @see #getInsetLeft()
-     * @generated
-     */
-    void setInsetLeft(float value);
-
-    /**
-     * Returns the value of the '<em><b>Inset Top</b></em>' attribute.
-     * <!-- begin-user-doc -->
-     * <p>
-     * If the meaning of the '<em>Inset Top</em>' attribute isn't clear,
-     * there really should be more of a description here...
-     * </p>
-     * <!-- end-user-doc -->
-     * @return the value of the '<em>Inset Top</em>' attribute.
-     * @see #setInsetTop(float)
-     * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKGridPlacementData_InsetTop()
-     * @model
-     * @generated
-     */
-    float getInsetTop();
-
-    /**
-     * Sets the value of the '{@link de.cau.cs.kieler.core.krendering.KGridPlacementData#getInsetTop <em>Inset Top</em>}' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @param value the new value of the '<em>Inset Top</em>' attribute.
-     * @see #getInsetTop()
-     * @generated
-     */
-    void setInsetTop(float value);
+    void setMaxCellHeight(float value);
 
 } // KGridPlacementData

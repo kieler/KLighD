@@ -19,9 +19,7 @@ import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
-
-import de.cau.cs.kieler.klighd.IViewer;
-import de.cau.cs.kieler.klighd.IViewerEventListener;
+import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 
 /**
  * A viewer for string messages.
@@ -30,7 +28,7 @@ import de.cau.cs.kieler.klighd.IViewerEventListener;
  * 
  * @author mri
  */
-public class StringViewer implements IViewer<String> {
+public class StringViewer extends AbstractViewer<String> {
 
     /** the canvas used to display the message. */
     private Canvas canvas = null;
@@ -65,6 +63,14 @@ public class StringViewer implements IViewer<String> {
     /**
      * {@inheritDoc}
      */
+    public ContextViewer getContextViewer() {
+        // Doesn't track the parent viewer, yet.
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public void setModel(final String model) {
         setModel(model, false);
     }
@@ -88,6 +94,14 @@ public class StringViewer implements IViewer<String> {
             message = model;
         // }
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    public IContentOutlinePage getOutlinePage() {
+        // no outline required
+        return null;
+    }
     
     /**
      * {@inheritDoc}
@@ -103,74 +117,4 @@ public class StringViewer implements IViewer<String> {
         // do nothing
     }
     
-    /**
-     * {@inheritDoc}
-     */
-    public void setSelection(final Object[] diagramElements) {
-        // do nothing
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public void clearSelection() {
-        // do nothing
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public void select(final Object[] diagramElements) {
-        // do nothing
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public void unselect(final Object[] diagramElements) {
-        // do nothing
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public void zoom(final float zoomLevel, final int duration) {
-        // do nothing
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public void zoomToFit(final int duration) {
-        // do nothing
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public void reveal(final Object diagramElement, final int duration) {
-        // do nothing
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public void centerOn(final Object diagramElement, final int duration) {
-        // do nothing
-    }
-    
-    /**
-     * {@inheritDoc}
-     */
-    public void addEventListener(final IViewerEventListener listener) {
-        // do nothing
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public void removeEventListener(final IViewerEventListener listener) {
-        // do nothing
-    }
-
 }

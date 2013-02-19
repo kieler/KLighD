@@ -14,8 +14,6 @@
 package de.cau.cs.kieler.core.krendering.extensions
 
 import de.cau.cs.kieler.core.krendering.KColor
-import de.cau.cs.kieler.core.krendering.KForegroundColor
-import de.cau.cs.kieler.core.krendering.KBackgroundColor
 import de.cau.cs.kieler.core.krendering.KRenderingFactory
 
 class KColorExtensions {
@@ -23,22 +21,11 @@ class KColorExtensions {
     private static val KRenderingFactory renderingFactory = KRenderingFactory::eINSTANCE
 
     def KColor getColor(String name) {
-            // since KColor is abstract
-            return name.fgColor;
+        return renderingFactory.createKColor() =>[
+            it.setColor(name);
+        ];
     }
 
-    def KForegroundColor getFgColor(String name) {
-		return renderingFactory.createKForegroundColor() => [
-		    it.setColor(name);
-		];
-	}
-	
-	def KBackgroundColor getBgColor(String name) {
-		return renderingFactory.createKBackgroundColor() => [
-		    it.setColor(name);
-		];
-	}
-	
     /**
      * Creation of the color elements
      *  allows to refer to colors by name
@@ -85,6 +72,11 @@ class KColorExtensions {
                 color.setRed(248);
                 color.setGreen(179);
                 color.setBlue(0);
+            }
+            case "error" : {
+                color.setRed(249);
+                color.setGreen(0);
+                color.setBlue(112);
             }
             case "gold" : {
                 color.setRed(255);
@@ -135,6 +127,11 @@ class KColorExtensions {
                 color.red = 135;
                 color.green = 206;
                 color.blue = 235;
+            }
+            case "warning" : {
+                color.setRed(239);
+                color.setGreen(192);
+                color.setBlue(0);
             }
             case "white" : {
                 color.setRed(255);

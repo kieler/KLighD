@@ -19,42 +19,47 @@ package de.cau.cs.kieler.core.krendering;
  * A representation of the model object '<em><b>KVisibility</b></em>'.
  * <!-- end-user-doc -->
  *
+ * <!-- begin-model-doc -->
+ * defines whether an object is visible or not
+ * <!-- end-model-doc -->
+ *
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link de.cau.cs.kieler.core.krendering.KVisibility#isVisible <em>Visible</em>}</li>
+ *   <li>{@link de.cau.cs.kieler.core.krendering.KVisibility#isIsVisible <em>Is Visible</em>}</li>
  * </ul>
  * </p>
  *
  * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKVisibility()
- * @model abstract="true"
+ * @model
  * @generated
  */
 public interface KVisibility extends KStyle {
     /**
-     * Returns the value of the '<em><b>Visible</b></em>' attribute.
+     * Returns the value of the '<em><b>Is Visible</b></em>' attribute.
+     * The default value is <code>"true"</code>.
      * <!-- begin-user-doc -->
      * <p>
-     * If the meaning of the '<em>Visible</em>' attribute isn't clear,
+     * If the meaning of the '<em>Is Visible</em>' attribute isn't clear,
      * there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
-     * @return the value of the '<em>Visible</em>' attribute.
-     * @see #setVisible(boolean)
-     * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKVisibility_Visible()
-     * @model required="true"
+     * @return the value of the '<em>Is Visible</em>' attribute.
+     * @see #setIsVisible(boolean)
+     * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKVisibility_IsVisible()
+     * @model default="true" required="true"
      * @generated
      */
-    boolean isVisible();
+    boolean isIsVisible();
 
     /**
-     * Sets the value of the '{@link de.cau.cs.kieler.core.krendering.KVisibility#isVisible <em>Visible</em>}' attribute.
+     * Sets the value of the '{@link de.cau.cs.kieler.core.krendering.KVisibility#isIsVisible <em>Is Visible</em>}' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @param value the new value of the '<em>Visible</em>' attribute.
-     * @see #isVisible()
+     * @param value the new value of the '<em>Is Visible</em>' attribute.
+     * @see #isIsVisible()
      * @generated
      */
-    void setVisible(boolean value);
+    void setIsVisible(boolean value);
 
 } // KVisibility

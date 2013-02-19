@@ -65,13 +65,18 @@ public class KGraphFormatter extends AbstractDeclarativeFormatter {
         }
         
         // suppress the line wrap after 'topLeft' and 'bottomRight' of directPlacementData 
-        c.setNoLinewrap().after(f.getKDirectPlacementDataAccess().getTopLeftKeyword_2());
-        c.setNoLinewrap().after(f.getKDirectPlacementDataAccess().getBottomRightKeyword_5());
+        c.setNoLinewrap().after(f.getKAreaPlacementDataAccess().getTopLeftKeyword_2());
+        c.setNoLinewrap().after(f.getKAreaPlacementDataAccess().getBottomRightKeyword_5());
 
         // some custom formatting of coordinate numbers 
         c.setNoLinewrap().after(
                 f.getKRenderingGrammarAccess().getKLayoutDataGrammarAccess().getKPointAccess()
                         .getXEFloatParserRuleCall_2_1_0());
+        
+        
+        // configures the line wrap after the reference string of KRenderingRefs
+        c.setLinewrap().after(
+                f.getKRenderingRefAccess().getRenderingKRenderingCrossReference_2_0());
         
         // configures the line wrap after a valid map property tuple
         c.setLinewrap().after(
@@ -82,7 +87,7 @@ public class KGraphFormatter extends AbstractDeclarativeFormatter {
                 f.getPersistentEntryAccess().getKeyEStringParserRuleCall_0_0());
         c.setLinewrap().between(f.getKShapeLayoutAccess().getMapPropertiesKeyword_8_0(),
                 f.getPersistentEntryAccess().getKeyEStringParserRuleCall_0_0());
-        c.setLinewrap().between(f.getKTextAccess().getMapPropertiesKeyword_3_6_0(),
+        c.setLinewrap().between(f.getKTextAccess().getMapPropertiesKeyword_3_3_0(),
                 f.getPersistentEntryAccess().getKeyEStringParserRuleCall_0_0());
         
         // standard rules targeting comments

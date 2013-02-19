@@ -16,15 +16,17 @@
  */
 package de.cau.cs.kieler.klighd.piccolo.krendering.controller;
 
-import java.awt.Color;
+import org.eclipse.swt.graphics.RGB;
 
+import de.cau.cs.kieler.core.krendering.LineCap;
+import de.cau.cs.kieler.core.krendering.LineStyle;
 import de.cau.cs.kieler.klighd.piccolo.nodes.PSWTAdvancedPath;
-import de.cau.cs.kieler.klighd.piccolo.nodes.PSWTAdvancedPath.LineStyle;
+
 
 /**
  * A node controller for the {@code PSWTAdvancedPath}.
  * 
- * @author mri
+ * @author mri, chsch
  */
 public abstract class PSWTAdvancedPathController extends PNodeController<PSWTAdvancedPath> {
 
@@ -42,7 +44,7 @@ public abstract class PSWTAdvancedPathController extends PNodeController<PSWTAdv
      * {@inheritDoc}
      */
     @Override
-    public void setForegroundColor(final Color color) {
+    public void setForegroundColor(final RGB color) {
         getNode().setStrokeColor(color);
     }
 
@@ -50,7 +52,7 @@ public abstract class PSWTAdvancedPathController extends PNodeController<PSWTAdv
      * {@inheritDoc}
      */
     @Override
-    public void setBackgroundColor(final Color color) {
+    public void setBackgroundColor(final RGB color) {
         getNode().setPaint(color);
     }
 
@@ -66,8 +68,8 @@ public abstract class PSWTAdvancedPathController extends PNodeController<PSWTAdv
      * {@inheritDoc}
      */
     @Override
-    public void setLineVisible(final boolean lineVisible) {
-        if (!lineVisible) {
+    public void setLineAlpha(final int lineAlpha) {
+        if (lineAlpha == 0) {
             getNode().setStrokeColor(null);
         }
     }
@@ -76,9 +78,9 @@ public abstract class PSWTAdvancedPathController extends PNodeController<PSWTAdv
      * {@inheritDoc}
      */
     @Override
-    public void setFilled(final boolean filled) {
-        if (!filled) {
-            getNode().setPaint(null);
+    public void setBackgroundAlpha(final int backgroundAlpha) {
+        if (backgroundAlpha == 0) {
+            getNode().setPaint((RGB) null);
         }
     }
 
@@ -89,6 +91,14 @@ public abstract class PSWTAdvancedPathController extends PNodeController<PSWTAdv
     public void setLineStyle(final LineStyle lineStyle) {
         getNode().setLineStyle(lineStyle);
     }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setLineCap(final LineCap lineCapStyle) {
+        getNode().setLineCapStyle(lineCapStyle);
+    }
 
     /**
      * {@inheritDoc}
@@ -96,4 +106,5 @@ public abstract class PSWTAdvancedPathController extends PNodeController<PSWTAdv
     public void setRotation(final float rotation) {
         getNode().setRotation(Math.toRadians(rotation));
     }
+    
 }

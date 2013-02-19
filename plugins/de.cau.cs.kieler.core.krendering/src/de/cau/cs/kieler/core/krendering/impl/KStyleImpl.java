@@ -13,20 +13,15 @@
  */
 package de.cau.cs.kieler.core.krendering.impl;
 
-import de.cau.cs.kieler.core.krendering.KRendering;
 import de.cau.cs.kieler.core.krendering.KRenderingPackage;
 import de.cau.cs.kieler.core.krendering.KStyle;
 
 import org.eclipse.emf.common.notify.Notification;
-import org.eclipse.emf.common.notify.NotificationChain;
 
 import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.EObjectImpl;
-
-import org.eclipse.emf.ecore.util.EcoreUtil;
 
 /**
  * <!-- begin-user-doc -->
@@ -35,8 +30,8 @@ import org.eclipse.emf.ecore.util.EcoreUtil;
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link de.cau.cs.kieler.core.krendering.impl.KStyleImpl#getRendering <em>Rendering</em>}</li>
  *   <li>{@link de.cau.cs.kieler.core.krendering.impl.KStyleImpl#isPropagateToChildren <em>Propagate To Children</em>}</li>
+ *   <li>{@link de.cau.cs.kieler.core.krendering.impl.KStyleImpl#getFunctionId <em>Function Id</em>}</li>
  * </ul>
  * </p>
  *
@@ -64,6 +59,26 @@ public abstract class KStyleImpl extends EObjectImpl implements KStyle {
     protected boolean propagateToChildren = PROPAGATE_TO_CHILDREN_EDEFAULT;
 
     /**
+     * The default value of the '{@link #getFunctionId() <em>Function Id</em>}' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see #getFunctionId()
+     * @generated
+     * @ordered
+     */
+    protected static final String FUNCTION_ID_EDEFAULT = null;
+
+    /**
+     * The cached value of the '{@link #getFunctionId() <em>Function Id</em>}' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see #getFunctionId()
+     * @generated
+     * @ordered
+     */
+    protected String functionId = FUNCTION_ID_EDEFAULT;
+
+    /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
@@ -80,47 +95,6 @@ public abstract class KStyleImpl extends EObjectImpl implements KStyle {
     @Override
     protected EClass eStaticClass() {
         return KRenderingPackage.Literals.KSTYLE;
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    public KRendering getRendering() {
-        if (eContainerFeatureID() != KRenderingPackage.KSTYLE__RENDERING) return null;
-        return (KRendering)eContainer();
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    public NotificationChain basicSetRendering(KRendering newRendering, NotificationChain msgs) {
-        msgs = eBasicSetContainer((InternalEObject)newRendering, KRenderingPackage.KSTYLE__RENDERING, msgs);
-        return msgs;
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    public void setRendering(KRendering newRendering) {
-        if (newRendering != eInternalContainer() || (eContainerFeatureID() != KRenderingPackage.KSTYLE__RENDERING && newRendering != null)) {
-            if (EcoreUtil.isAncestor(this, newRendering))
-                throw new IllegalArgumentException("Recursive containment not allowed for " + toString());
-            NotificationChain msgs = null;
-            if (eInternalContainer() != null)
-                msgs = eBasicRemoveFromContainer(msgs);
-            if (newRendering != null)
-                msgs = ((InternalEObject)newRendering).eInverseAdd(this, KRenderingPackage.KRENDERING__STYLES, KRendering.class, msgs);
-            msgs = basicSetRendering(newRendering, msgs);
-            if (msgs != null) msgs.dispatch();
-        }
-        else if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, KRenderingPackage.KSTYLE__RENDERING, newRendering, newRendering));
     }
 
     /**
@@ -149,15 +123,8 @@ public abstract class KStyleImpl extends EObjectImpl implements KStyle {
      * <!-- end-user-doc -->
      * @generated
      */
-    @Override
-    public NotificationChain eInverseAdd(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
-        switch (featureID) {
-            case KRenderingPackage.KSTYLE__RENDERING:
-                if (eInternalContainer() != null)
-                    msgs = eBasicRemoveFromContainer(msgs);
-                return basicSetRendering((KRendering)otherEnd, msgs);
-        }
-        return super.eInverseAdd(otherEnd, featureID, msgs);
+    public String getFunctionId() {
+        return functionId;
     }
 
     /**
@@ -165,27 +132,11 @@ public abstract class KStyleImpl extends EObjectImpl implements KStyle {
      * <!-- end-user-doc -->
      * @generated
      */
-    @Override
-    public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
-        switch (featureID) {
-            case KRenderingPackage.KSTYLE__RENDERING:
-                return basicSetRendering(null, msgs);
-        }
-        return super.eInverseRemove(otherEnd, featureID, msgs);
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    @Override
-    public NotificationChain eBasicRemoveFromContainerFeature(NotificationChain msgs) {
-        switch (eContainerFeatureID()) {
-            case KRenderingPackage.KSTYLE__RENDERING:
-                return eInternalContainer().eInverseRemove(this, KRenderingPackage.KRENDERING__STYLES, KRendering.class, msgs);
-        }
-        return super.eBasicRemoveFromContainerFeature(msgs);
+    public void setFunctionId(String newFunctionId) {
+        String oldFunctionId = functionId;
+        functionId = newFunctionId;
+        if (eNotificationRequired())
+            eNotify(new ENotificationImpl(this, Notification.SET, KRenderingPackage.KSTYLE__FUNCTION_ID, oldFunctionId, functionId));
     }
 
     /**
@@ -196,10 +147,10 @@ public abstract class KStyleImpl extends EObjectImpl implements KStyle {
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
-            case KRenderingPackage.KSTYLE__RENDERING:
-                return getRendering();
             case KRenderingPackage.KSTYLE__PROPAGATE_TO_CHILDREN:
                 return isPropagateToChildren();
+            case KRenderingPackage.KSTYLE__FUNCTION_ID:
+                return getFunctionId();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -212,11 +163,11 @@ public abstract class KStyleImpl extends EObjectImpl implements KStyle {
     @Override
     public void eSet(int featureID, Object newValue) {
         switch (featureID) {
-            case KRenderingPackage.KSTYLE__RENDERING:
-                setRendering((KRendering)newValue);
-                return;
             case KRenderingPackage.KSTYLE__PROPAGATE_TO_CHILDREN:
                 setPropagateToChildren((Boolean)newValue);
+                return;
+            case KRenderingPackage.KSTYLE__FUNCTION_ID:
+                setFunctionId((String)newValue);
                 return;
         }
         super.eSet(featureID, newValue);
@@ -230,11 +181,11 @@ public abstract class KStyleImpl extends EObjectImpl implements KStyle {
     @Override
     public void eUnset(int featureID) {
         switch (featureID) {
-            case KRenderingPackage.KSTYLE__RENDERING:
-                setRendering((KRendering)null);
-                return;
             case KRenderingPackage.KSTYLE__PROPAGATE_TO_CHILDREN:
                 setPropagateToChildren(PROPAGATE_TO_CHILDREN_EDEFAULT);
+                return;
+            case KRenderingPackage.KSTYLE__FUNCTION_ID:
+                setFunctionId(FUNCTION_ID_EDEFAULT);
                 return;
         }
         super.eUnset(featureID);
@@ -248,10 +199,10 @@ public abstract class KStyleImpl extends EObjectImpl implements KStyle {
     @Override
     public boolean eIsSet(int featureID) {
         switch (featureID) {
-            case KRenderingPackage.KSTYLE__RENDERING:
-                return getRendering() != null;
             case KRenderingPackage.KSTYLE__PROPAGATE_TO_CHILDREN:
                 return propagateToChildren != PROPAGATE_TO_CHILDREN_EDEFAULT;
+            case KRenderingPackage.KSTYLE__FUNCTION_ID:
+                return FUNCTION_ID_EDEFAULT == null ? functionId != null : !FUNCTION_ID_EDEFAULT.equals(functionId);
         }
         return super.eIsSet(featureID);
     }
@@ -268,6 +219,8 @@ public abstract class KStyleImpl extends EObjectImpl implements KStyle {
         StringBuffer result = new StringBuffer(super.toString());
         result.append(" (propagateToChildren: ");
         result.append(propagateToChildren);
+        result.append(", functionId: ");
+        result.append(functionId);
         result.append(')');
         return result.toString();
     }

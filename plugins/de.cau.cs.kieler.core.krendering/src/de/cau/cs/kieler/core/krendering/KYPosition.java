@@ -20,6 +20,12 @@ import org.eclipse.emf.ecore.EObject;
  * A representation of the model object '<em><b>KY Position</b></em>'.
  * <!-- end-user-doc -->
  *
+ * <!-- begin-model-doc -->
+ * define an y-position by setting absolute and relative position respective to a parent rendering.
+ * Both parameters are always included in the calculation of the resulting position. See Subtypes for formula. 
+ * Can overlap the parent by setting negative values.
+ * <!-- end-model-doc -->
+ *
  * <p>
  * The following features are supported:
  * <ul>
@@ -41,6 +47,9 @@ public interface KYPosition extends EObject {
      * there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
+     * <!-- begin-model-doc -->
+     * define absolute position in pixels
+     * <!-- end-model-doc -->
      * @return the value of the '<em>Absolute</em>' attribute.
      * @see #setAbsolute(float)
      * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKYPosition_Absolute()
@@ -67,6 +76,9 @@ public interface KYPosition extends EObject {
      * there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
+     * <!-- begin-model-doc -->
+     * define relative position based on parent size
+     * <!-- end-model-doc -->
      * @return the value of the '<em>Relative</em>' attribute.
      * @see #setRelative(float)
      * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKYPosition_Relative()

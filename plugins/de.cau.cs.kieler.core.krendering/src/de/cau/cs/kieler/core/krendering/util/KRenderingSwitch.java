@@ -92,6 +92,7 @@ public class KRenderingSwitch<T> extends Switch<T> {
                 KRendering kRendering = (KRendering)theEObject;
                 T result = caseKRendering(kRendering);
                 if (result == null) result = caseKGraphData(kRendering);
+                if (result == null) result = caseKStyleHolder(kRendering);
                 if (result == null) result = caseEMapPropertyHolder(kRendering);
                 if (result == null) result = caseIPropertyHolder(kRendering);
                 if (result == null) result = defaultCase(theEObject);
@@ -103,6 +104,7 @@ public class KRenderingSwitch<T> extends Switch<T> {
                 if (result == null) result = caseKContainerRendering(kEllipse);
                 if (result == null) result = caseKRendering(kEllipse);
                 if (result == null) result = caseKGraphData(kEllipse);
+                if (result == null) result = caseKStyleHolder(kEllipse);
                 if (result == null) result = caseEMapPropertyHolder(kEllipse);
                 if (result == null) result = caseIPropertyHolder(kEllipse);
                 if (result == null) result = defaultCase(theEObject);
@@ -114,6 +116,7 @@ public class KRenderingSwitch<T> extends Switch<T> {
                 if (result == null) result = caseKContainerRendering(kRectangle);
                 if (result == null) result = caseKRendering(kRectangle);
                 if (result == null) result = caseKGraphData(kRectangle);
+                if (result == null) result = caseKStyleHolder(kRectangle);
                 if (result == null) result = caseEMapPropertyHolder(kRectangle);
                 if (result == null) result = caseIPropertyHolder(kRectangle);
                 if (result == null) result = defaultCase(theEObject);
@@ -125,6 +128,7 @@ public class KRenderingSwitch<T> extends Switch<T> {
                 if (result == null) result = caseKContainerRendering(kRoundedRectangle);
                 if (result == null) result = caseKRendering(kRoundedRectangle);
                 if (result == null) result = caseKGraphData(kRoundedRectangle);
+                if (result == null) result = caseKStyleHolder(kRoundedRectangle);
                 if (result == null) result = caseEMapPropertyHolder(kRoundedRectangle);
                 if (result == null) result = caseIPropertyHolder(kRoundedRectangle);
                 if (result == null) result = defaultCase(theEObject);
@@ -136,6 +140,7 @@ public class KRenderingSwitch<T> extends Switch<T> {
                 if (result == null) result = caseKContainerRendering(kPolyline);
                 if (result == null) result = caseKRendering(kPolyline);
                 if (result == null) result = caseKGraphData(kPolyline);
+                if (result == null) result = caseKStyleHolder(kPolyline);
                 if (result == null) result = caseEMapPropertyHolder(kPolyline);
                 if (result == null) result = caseIPropertyHolder(kPolyline);
                 if (result == null) result = defaultCase(theEObject);
@@ -148,6 +153,7 @@ public class KRenderingSwitch<T> extends Switch<T> {
                 if (result == null) result = caseKContainerRendering(kPolygon);
                 if (result == null) result = caseKRendering(kPolygon);
                 if (result == null) result = caseKGraphData(kPolygon);
+                if (result == null) result = caseKStyleHolder(kPolygon);
                 if (result == null) result = caseEMapPropertyHolder(kPolygon);
                 if (result == null) result = caseIPropertyHolder(kPolygon);
                 if (result == null) result = defaultCase(theEObject);
@@ -159,6 +165,7 @@ public class KRenderingSwitch<T> extends Switch<T> {
                 if (result == null) result = caseKContainerRendering(kImage);
                 if (result == null) result = caseKRendering(kImage);
                 if (result == null) result = caseKGraphData(kImage);
+                if (result == null) result = caseKStyleHolder(kImage);
                 if (result == null) result = caseEMapPropertyHolder(kImage);
                 if (result == null) result = caseIPropertyHolder(kImage);
                 if (result == null) result = defaultCase(theEObject);
@@ -176,6 +183,7 @@ public class KRenderingSwitch<T> extends Switch<T> {
                 T result = caseKContainerRendering(kContainerRendering);
                 if (result == null) result = caseKRendering(kContainerRendering);
                 if (result == null) result = caseKGraphData(kContainerRendering);
+                if (result == null) result = caseKStyleHolder(kContainerRendering);
                 if (result == null) result = caseEMapPropertyHolder(kContainerRendering);
                 if (result == null) result = caseIPropertyHolder(kContainerRendering);
                 if (result == null) result = defaultCase(theEObject);
@@ -187,6 +195,7 @@ public class KRenderingSwitch<T> extends Switch<T> {
                 if (result == null) result = caseKContainerRendering(kArc);
                 if (result == null) result = caseKRendering(kArc);
                 if (result == null) result = caseKGraphData(kArc);
+                if (result == null) result = caseKStyleHolder(kArc);
                 if (result == null) result = caseEMapPropertyHolder(kArc);
                 if (result == null) result = caseIPropertyHolder(kArc);
                 if (result == null) result = defaultCase(theEObject);
@@ -212,6 +221,7 @@ public class KRenderingSwitch<T> extends Switch<T> {
                 T result = caseKRenderingRef(kRenderingRef);
                 if (result == null) result = caseKRendering(kRenderingRef);
                 if (result == null) result = caseKGraphData(kRenderingRef);
+                if (result == null) result = caseKStyleHolder(kRenderingRef);
                 if (result == null) result = caseEMapPropertyHolder(kRenderingRef);
                 if (result == null) result = caseIPropertyHolder(kRenderingRef);
                 if (result == null) result = defaultCase(theEObject);
@@ -222,6 +232,7 @@ public class KRenderingSwitch<T> extends Switch<T> {
                 T result = caseKChildArea(kChildArea);
                 if (result == null) result = caseKRendering(kChildArea);
                 if (result == null) result = caseKGraphData(kChildArea);
+                if (result == null) result = caseKStyleHolder(kChildArea);
                 if (result == null) result = caseEMapPropertyHolder(kChildArea);
                 if (result == null) result = caseIPropertyHolder(kChildArea);
                 if (result == null) result = defaultCase(theEObject);
@@ -230,9 +241,9 @@ public class KRenderingSwitch<T> extends Switch<T> {
             case KRenderingPackage.KTEXT: {
                 KText kText = (KText)theEObject;
                 T result = caseKText(kText);
-                if (result == null) result = caseKContainerRendering(kText);
                 if (result == null) result = caseKRendering(kText);
                 if (result == null) result = caseKGraphData(kText);
+                if (result == null) result = caseKStyleHolder(kText);
                 if (result == null) result = caseEMapPropertyHolder(kText);
                 if (result == null) result = caseIPropertyHolder(kText);
                 if (result == null) result = defaultCase(theEObject);
@@ -251,13 +262,6 @@ public class KRenderingSwitch<T> extends Switch<T> {
                 if (result == null) result = defaultCase(theEObject);
                 return result;
             }
-            case KRenderingPackage.KSTACK_PLACEMENT: {
-                KStackPlacement kStackPlacement = (KStackPlacement)theEObject;
-                T result = caseKStackPlacement(kStackPlacement);
-                if (result == null) result = caseKPlacement(kStackPlacement);
-                if (result == null) result = defaultCase(theEObject);
-                return result;
-            }
             case KRenderingPackage.KPLACEMENT_DATA: {
                 KPlacementData kPlacementData = (KPlacementData)theEObject;
                 T result = caseKPlacementData(kPlacementData);
@@ -267,28 +271,15 @@ public class KRenderingSwitch<T> extends Switch<T> {
             case KRenderingPackage.KGRID_PLACEMENT_DATA: {
                 KGridPlacementData kGridPlacementData = (KGridPlacementData)theEObject;
                 T result = caseKGridPlacementData(kGridPlacementData);
+                if (result == null) result = caseKAreaPlacementData(kGridPlacementData);
                 if (result == null) result = caseKPlacementData(kGridPlacementData);
                 if (result == null) result = defaultCase(theEObject);
                 return result;
             }
-            case KRenderingPackage.KSTACK_PLACEMENT_DATA: {
-                KStackPlacementData kStackPlacementData = (KStackPlacementData)theEObject;
-                T result = caseKStackPlacementData(kStackPlacementData);
-                if (result == null) result = caseKPlacementData(kStackPlacementData);
-                if (result == null) result = defaultCase(theEObject);
-                return result;
-            }
-            case KRenderingPackage.KDIRECT_PLACEMENT_DATA: {
-                KDirectPlacementData kDirectPlacementData = (KDirectPlacementData)theEObject;
-                T result = caseKDirectPlacementData(kDirectPlacementData);
-                if (result == null) result = caseKPlacementData(kDirectPlacementData);
-                if (result == null) result = defaultCase(theEObject);
-                return result;
-            }
-            case KRenderingPackage.KPOLYLINE_PLACEMENT_DATA: {
-                KPolylinePlacementData kPolylinePlacementData = (KPolylinePlacementData)theEObject;
-                T result = caseKPolylinePlacementData(kPolylinePlacementData);
-                if (result == null) result = caseKPlacementData(kPolylinePlacementData);
+            case KRenderingPackage.KAREA_PLACEMENT_DATA: {
+                KAreaPlacementData kAreaPlacementData = (KAreaPlacementData)theEObject;
+                T result = caseKAreaPlacementData(kAreaPlacementData);
+                if (result == null) result = caseKPlacementData(kAreaPlacementData);
                 if (result == null) result = defaultCase(theEObject);
                 return result;
             }
@@ -298,31 +289,15 @@ public class KRenderingSwitch<T> extends Switch<T> {
                 if (result == null) result = caseKContainerRendering(kCustomRendering);
                 if (result == null) result = caseKRendering(kCustomRendering);
                 if (result == null) result = caseKGraphData(kCustomRendering);
+                if (result == null) result = caseKStyleHolder(kCustomRendering);
                 if (result == null) result = caseEMapPropertyHolder(kCustomRendering);
                 if (result == null) result = caseIPropertyHolder(kCustomRendering);
-                if (result == null) result = defaultCase(theEObject);
-                return result;
-            }
-            case KRenderingPackage.KFOREGROUND_COLOR: {
-                KForegroundColor kForegroundColor = (KForegroundColor)theEObject;
-                T result = caseKForegroundColor(kForegroundColor);
-                if (result == null) result = caseKColor(kForegroundColor);
-                if (result == null) result = caseKStyle(kForegroundColor);
                 if (result == null) result = defaultCase(theEObject);
                 return result;
             }
             case KRenderingPackage.KCOLOR: {
                 KColor kColor = (KColor)theEObject;
                 T result = caseKColor(kColor);
-                if (result == null) result = caseKStyle(kColor);
-                if (result == null) result = defaultCase(theEObject);
-                return result;
-            }
-            case KRenderingPackage.KBACKGROUND_COLOR: {
-                KBackgroundColor kBackgroundColor = (KBackgroundColor)theEObject;
-                T result = caseKBackgroundColor(kBackgroundColor);
-                if (result == null) result = caseKColor(kBackgroundColor);
-                if (result == null) result = caseKStyle(kBackgroundColor);
                 if (result == null) result = defaultCase(theEObject);
                 return result;
             }
@@ -401,31 +376,32 @@ public class KRenderingSwitch<T> extends Switch<T> {
                 if (result == null) result = caseKContainerRendering(kSpline);
                 if (result == null) result = caseKRendering(kSpline);
                 if (result == null) result = caseKGraphData(kSpline);
+                if (result == null) result = caseKStyleHolder(kSpline);
                 if (result == null) result = caseEMapPropertyHolder(kSpline);
                 if (result == null) result = caseIPropertyHolder(kSpline);
                 if (result == null) result = defaultCase(theEObject);
                 return result;
             }
-            case KRenderingPackage.KFOREGROUND_VISIBILITY: {
-                KForegroundVisibility kForegroundVisibility = (KForegroundVisibility)theEObject;
-                T result = caseKForegroundVisibility(kForegroundVisibility);
-                if (result == null) result = caseKVisibility(kForegroundVisibility);
-                if (result == null) result = caseKStyle(kForegroundVisibility);
+            case KRenderingPackage.KFOREGROUND: {
+                KForeground kForeground = (KForeground)theEObject;
+                T result = caseKForeground(kForeground);
+                if (result == null) result = caseKColoring(kForeground);
+                if (result == null) result = caseKStyle(kForeground);
                 if (result == null) result = defaultCase(theEObject);
                 return result;
             }
-            case KRenderingPackage.KVISIBILITY: {
-                KVisibility kVisibility = (KVisibility)theEObject;
-                T result = caseKVisibility(kVisibility);
-                if (result == null) result = caseKStyle(kVisibility);
+            case KRenderingPackage.KCOLORING: {
+                KColoring kColoring = (KColoring)theEObject;
+                T result = caseKColoring(kColoring);
+                if (result == null) result = caseKStyle(kColoring);
                 if (result == null) result = defaultCase(theEObject);
                 return result;
             }
-            case KRenderingPackage.KBACKGROUND_VISIBILITY: {
-                KBackgroundVisibility kBackgroundVisibility = (KBackgroundVisibility)theEObject;
-                T result = caseKBackgroundVisibility(kBackgroundVisibility);
-                if (result == null) result = caseKVisibility(kBackgroundVisibility);
-                if (result == null) result = caseKStyle(kBackgroundVisibility);
+            case KRenderingPackage.KBACKGROUND: {
+                KBackground kBackground = (KBackground)theEObject;
+                T result = caseKBackground(kBackground);
+                if (result == null) result = caseKColoring(kBackground);
+                if (result == null) result = caseKStyle(kBackground);
                 if (result == null) result = defaultCase(theEObject);
                 return result;
             }
@@ -464,6 +440,7 @@ public class KRenderingSwitch<T> extends Switch<T> {
                 if (result == null) result = caseKContainerRendering(kRoundedBendsPolyline);
                 if (result == null) result = caseKRendering(kRoundedBendsPolyline);
                 if (result == null) result = caseKGraphData(kRoundedBendsPolyline);
+                if (result == null) result = caseKStyleHolder(kRoundedBendsPolyline);
                 if (result == null) result = caseEMapPropertyHolder(kRoundedBendsPolyline);
                 if (result == null) result = caseIPropertyHolder(kRoundedBendsPolyline);
                 if (result == null) result = defaultCase(theEObject);
@@ -473,6 +450,88 @@ public class KRenderingSwitch<T> extends Switch<T> {
                 KRotation kRotation = (KRotation)theEObject;
                 T result = caseKRotation(kRotation);
                 if (result == null) result = caseKStyle(kRotation);
+                if (result == null) result = defaultCase(theEObject);
+                return result;
+            }
+            case KRenderingPackage.KLINE_CAP: {
+                KLineCap kLineCap = (KLineCap)theEObject;
+                T result = caseKLineCap(kLineCap);
+                if (result == null) result = caseKStyle(kLineCap);
+                if (result == null) result = defaultCase(theEObject);
+                return result;
+            }
+            case KRenderingPackage.KACTION: {
+                KAction kAction = (KAction)theEObject;
+                T result = caseKAction(kAction);
+                if (result == null) result = defaultCase(theEObject);
+                return result;
+            }
+            case KRenderingPackage.KPOINT_PLACEMENT_DATA: {
+                KPointPlacementData kPointPlacementData = (KPointPlacementData)theEObject;
+                T result = caseKPointPlacementData(kPointPlacementData);
+                if (result == null) result = caseKPlacementData(kPointPlacementData);
+                if (result == null) result = defaultCase(theEObject);
+                return result;
+            }
+            case KRenderingPackage.KSELECT_ACTION: {
+                KSelectAction kSelectAction = (KSelectAction)theEObject;
+                T result = caseKSelectAction(kSelectAction);
+                if (result == null) result = caseKAction(kSelectAction);
+                if (result == null) result = defaultCase(theEObject);
+                return result;
+            }
+            case KRenderingPackage.KEXPAND_ACTION: {
+                KExpandAction kExpandAction = (KExpandAction)theEObject;
+                T result = caseKExpandAction(kExpandAction);
+                if (result == null) result = caseKAction(kExpandAction);
+                if (result == null) result = defaultCase(theEObject);
+                return result;
+            }
+            case KRenderingPackage.KSTYLE_HOLDER: {
+                KStyleHolder kStyleHolder = (KStyleHolder)theEObject;
+                T result = caseKStyleHolder(kStyleHolder);
+                if (result == null) result = defaultCase(theEObject);
+                return result;
+            }
+            case KRenderingPackage.KINVISIBILITY: {
+                KInvisibility kInvisibility = (KInvisibility)theEObject;
+                T result = caseKInvisibility(kInvisibility);
+                if (result == null) result = caseKStyle(kInvisibility);
+                if (result == null) result = defaultCase(theEObject);
+                return result;
+            }
+            case KRenderingPackage.KSHADOW: {
+                KShadow kShadow = (KShadow)theEObject;
+                T result = caseKShadow(kShadow);
+                if (result == null) result = caseKStyle(kShadow);
+                if (result == null) result = defaultCase(theEObject);
+                return result;
+            }
+            case KRenderingPackage.KTEXT_UNDERLINE: {
+                KTextUnderline kTextUnderline = (KTextUnderline)theEObject;
+                T result = caseKTextUnderline(kTextUnderline);
+                if (result == null) result = caseKStyle(kTextUnderline);
+                if (result == null) result = defaultCase(theEObject);
+                return result;
+            }
+            case KRenderingPackage.KCOLLAPSE_ACTION: {
+                KCollapseAction kCollapseAction = (KCollapseAction)theEObject;
+                T result = caseKCollapseAction(kCollapseAction);
+                if (result == null) result = caseKAction(kCollapseAction);
+                if (result == null) result = defaultCase(theEObject);
+                return result;
+            }
+            case KRenderingPackage.KSTYLE_REF: {
+                KStyleRef kStyleRef = (KStyleRef)theEObject;
+                T result = caseKStyleRef(kStyleRef);
+                if (result == null) result = caseKStyle(kStyleRef);
+                if (result == null) result = defaultCase(theEObject);
+                return result;
+            }
+            case KRenderingPackage.KTEXT_STRIKEOUT: {
+                KTextStrikeout kTextStrikeout = (KTextStrikeout)theEObject;
+                T result = caseKTextStrikeout(kTextStrikeout);
+                if (result == null) result = caseKStyle(kTextStrikeout);
                 if (result == null) result = defaultCase(theEObject);
                 return result;
             }
@@ -751,21 +810,6 @@ public class KRenderingSwitch<T> extends Switch<T> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>KStack Placement</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
-     * @return the result of interpreting the object as an instance of '<em>KStack Placement</em>'.
-     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-     * @generated
-     */
-    public T caseKStackPlacement(KStackPlacement object) {
-        return null;
-    }
-
-    /**
      * Returns the result of interpreting the object as an instance of '<em>KPlacement Data</em>'.
      * <!-- begin-user-doc -->
      * This implementation returns null;
@@ -796,47 +840,17 @@ public class KRenderingSwitch<T> extends Switch<T> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>KStack Placement Data</em>'.
+     * Returns the result of interpreting the object as an instance of '<em>KArea Placement Data</em>'.
      * <!-- begin-user-doc -->
      * This implementation returns null;
      * returning a non-null result will terminate the switch.
      * <!-- end-user-doc -->
      * @param object the target of the switch.
-     * @return the result of interpreting the object as an instance of '<em>KStack Placement Data</em>'.
+     * @return the result of interpreting the object as an instance of '<em>KArea Placement Data</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
      */
-    public T caseKStackPlacementData(KStackPlacementData object) {
-        return null;
-    }
-
-    /**
-     * Returns the result of interpreting the object as an instance of '<em>KDirect Placement Data</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
-     * @return the result of interpreting the object as an instance of '<em>KDirect Placement Data</em>'.
-     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-     * @generated
-     */
-    public T caseKDirectPlacementData(KDirectPlacementData object) {
-        return null;
-    }
-
-    /**
-     * Returns the result of interpreting the object as an instance of '<em>KPolyline Placement Data</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
-     * @return the result of interpreting the object as an instance of '<em>KPolyline Placement Data</em>'.
-     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-     * @generated
-     */
-    public T caseKPolylinePlacementData(KPolylinePlacementData object) {
+    public T caseKAreaPlacementData(KAreaPlacementData object) {
         return null;
     }
 
@@ -856,21 +870,6 @@ public class KRenderingSwitch<T> extends Switch<T> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>KForeground Color</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
-     * @return the result of interpreting the object as an instance of '<em>KForeground Color</em>'.
-     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-     * @generated
-     */
-    public T caseKForegroundColor(KForegroundColor object) {
-        return null;
-    }
-
-    /**
      * Returns the result of interpreting the object as an instance of '<em>KColor</em>'.
      * <!-- begin-user-doc -->
      * This implementation returns null;
@@ -882,21 +881,6 @@ public class KRenderingSwitch<T> extends Switch<T> {
      * @generated
      */
     public T caseKColor(KColor object) {
-        return null;
-    }
-
-    /**
-     * Returns the result of interpreting the object as an instance of '<em>KBackground Color</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
-     * @return the result of interpreting the object as an instance of '<em>KBackground Color</em>'.
-     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-     * @generated
-     */
-    public T caseKBackgroundColor(KBackgroundColor object) {
         return null;
     }
 
@@ -1066,47 +1050,47 @@ public class KRenderingSwitch<T> extends Switch<T> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>KForeground Visibility</em>'.
+     * Returns the result of interpreting the object as an instance of '<em>KForeground</em>'.
      * <!-- begin-user-doc -->
      * This implementation returns null;
      * returning a non-null result will terminate the switch.
      * <!-- end-user-doc -->
      * @param object the target of the switch.
-     * @return the result of interpreting the object as an instance of '<em>KForeground Visibility</em>'.
+     * @return the result of interpreting the object as an instance of '<em>KForeground</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
      */
-    public T caseKForegroundVisibility(KForegroundVisibility object) {
+    public T caseKForeground(KForeground object) {
         return null;
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>KVisibility</em>'.
+     * Returns the result of interpreting the object as an instance of '<em>KColoring</em>'.
      * <!-- begin-user-doc -->
      * This implementation returns null;
      * returning a non-null result will terminate the switch.
      * <!-- end-user-doc -->
      * @param object the target of the switch.
-     * @return the result of interpreting the object as an instance of '<em>KVisibility</em>'.
+     * @return the result of interpreting the object as an instance of '<em>KColoring</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
      */
-    public T caseKVisibility(KVisibility object) {
+    public T caseKColoring(KColoring object) {
         return null;
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>KBackground Visibility</em>'.
+     * Returns the result of interpreting the object as an instance of '<em>KBackground</em>'.
      * <!-- begin-user-doc -->
      * This implementation returns null;
      * returning a non-null result will terminate the switch.
      * <!-- end-user-doc -->
      * @param object the target of the switch.
-     * @return the result of interpreting the object as an instance of '<em>KBackground Visibility</em>'.
+     * @return the result of interpreting the object as an instance of '<em>KBackground</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
      */
-    public T caseKBackgroundVisibility(KBackgroundVisibility object) {
+    public T caseKBackground(KBackground object) {
         return null;
     }
 
@@ -1197,6 +1181,186 @@ public class KRenderingSwitch<T> extends Switch<T> {
      * @generated
      */
     public T caseKRotation(KRotation object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>KLine Cap</em>'.
+     * <!-- begin-user-doc -->
+     * This implementation returns null;
+     * returning a non-null result will terminate the switch.
+     * <!-- end-user-doc -->
+     * @param object the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>KLine Cap</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseKLineCap(KLineCap object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>KAction</em>'.
+     * <!-- begin-user-doc -->
+     * This implementation returns null;
+     * returning a non-null result will terminate the switch.
+     * <!-- end-user-doc -->
+     * @param object the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>KAction</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseKAction(KAction object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>KPoint Placement Data</em>'.
+     * <!-- begin-user-doc -->
+     * This implementation returns null;
+     * returning a non-null result will terminate the switch.
+     * <!-- end-user-doc -->
+     * @param object the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>KPoint Placement Data</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseKPointPlacementData(KPointPlacementData object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>KSelect Action</em>'.
+     * <!-- begin-user-doc -->
+     * This implementation returns null;
+     * returning a non-null result will terminate the switch.
+     * <!-- end-user-doc -->
+     * @param object the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>KSelect Action</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseKSelectAction(KSelectAction object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>KExpand Action</em>'.
+     * <!-- begin-user-doc -->
+     * This implementation returns null;
+     * returning a non-null result will terminate the switch.
+     * <!-- end-user-doc -->
+     * @param object the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>KExpand Action</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseKExpandAction(KExpandAction object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>KStyle Holder</em>'.
+     * <!-- begin-user-doc -->
+     * This implementation returns null;
+     * returning a non-null result will terminate the switch.
+     * <!-- end-user-doc -->
+     * @param object the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>KStyle Holder</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseKStyleHolder(KStyleHolder object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>KInvisibility</em>'.
+     * <!-- begin-user-doc -->
+     * This implementation returns null;
+     * returning a non-null result will terminate the switch.
+     * <!-- end-user-doc -->
+     * @param object the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>KInvisibility</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseKInvisibility(KInvisibility object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>KShadow</em>'.
+     * <!-- begin-user-doc -->
+     * This implementation returns null;
+     * returning a non-null result will terminate the switch.
+     * <!-- end-user-doc -->
+     * @param object the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>KShadow</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseKShadow(KShadow object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>KText Underline</em>'.
+     * <!-- begin-user-doc -->
+     * This implementation returns null;
+     * returning a non-null result will terminate the switch.
+     * <!-- end-user-doc -->
+     * @param object the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>KText Underline</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseKTextUnderline(KTextUnderline object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>KCollapse Action</em>'.
+     * <!-- begin-user-doc -->
+     * This implementation returns null;
+     * returning a non-null result will terminate the switch.
+     * <!-- end-user-doc -->
+     * @param object the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>KCollapse Action</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseKCollapseAction(KCollapseAction object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>KStyle Ref</em>'.
+     * <!-- begin-user-doc -->
+     * This implementation returns null;
+     * returning a non-null result will terminate the switch.
+     * <!-- end-user-doc -->
+     * @param object the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>KStyle Ref</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseKStyleRef(KStyleRef object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>KText Strikeout</em>'.
+     * <!-- begin-user-doc -->
+     * This implementation returns null;
+     * returning a non-null result will terminate the switch.
+     * <!-- end-user-doc -->
+     * @param object the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>KText Strikeout</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseKTextStrikeout(KTextStrikeout object) {
         return null;
     }
 

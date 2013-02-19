@@ -5,6 +5,7 @@
    <extension-point id="modelTransformations" name="ModelTransformations" schema="schema/modelTransformations.exsd"/>
    <extension-point id="updateStrategies" name="UpdateStrategies" schema="schema/updateStrategies.exsd"/>
    <extension-point id="customFigureWrapper" name="CustomFigureWrapper" schema="schema/customFigureWrapper.exsd"/>
+   <extension-point id="layoutPostProcessors" name="LayoutPostProcessors" schema="schema/layoutPostProcessors.exsd"/>
    <extension
          point="org.eclipse.ui.views">
       <category
@@ -20,6 +21,16 @@
             name="Light-weight Diagram"
             restorable="true">
       </view>
+   </extension>
+   <extension
+         point="org.eclipse.ui.editors">
+      <editor
+            class="de.cau.cs.kieler.klighd.views.DiagramEditorPart"
+            default="false"
+            icon="icons/klighd.gif"
+            id="de.cau.cs.kieler.klighd.lightDiagramEditor"
+            name="Light-weight Diagram">
+      </editor>
    </extension>
    <extension
          point="de.cau.cs.kieler.kiml.ui.layoutManagers">
@@ -68,6 +79,19 @@
             class="de.cau.cs.kieler.klighd.combinations.KlighdCropDiagramCombination"
             name="Crop KLighD diagram by a box-based selection">
       </combination>
+   </extension>
+   <extension
+         point="de.cau.cs.kieler.kiml.ui.layoutManagers">
+      <manager
+            class="de.cau.cs.kieler.klighd.krendering.DiagramLayoutManager">
+      </manager>
+   </extension>
+   <extension
+         point="de.cau.cs.kieler.klighd.updateStrategies">
+      <updateStrategy
+            class="de.cau.cs.kieler.klighd.krendering.SimpleUpdateStrategy"
+            id="de.cau.cs.kieler.klighd.krendering.SimpleUpdateStrategy">
+      </updateStrategy>
    </extension>
 
 </plugin>

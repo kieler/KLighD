@@ -13,16 +13,73 @@
  */
 package de.cau.cs.kieler.core.krendering;
 
+import org.eclipse.emf.common.util.EList;
 
 /**
  * <!-- begin-user-doc -->
  * A representation of the model object '<em><b>KPolyline</b></em>'.
  * <!-- end-user-doc -->
  *
+ * <!-- begin-model-doc -->
+ * Creates a polyline between two or more points
+ * <!-- end-model-doc -->
+ *
+ * <p>
+ * The following features are supported:
+ * <ul>
+ *   <li>{@link de.cau.cs.kieler.core.krendering.KPolyline#getPoints <em>Points</em>}</li>
+ *   <li>{@link de.cau.cs.kieler.core.krendering.KPolyline#getJointPointRendering <em>Joint Point Rendering</em>}</li>
+ * </ul>
+ * </p>
  *
  * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKPolyline()
  * @model
  * @generated
  */
 public interface KPolyline extends KContainerRendering {
+    /**
+     * Returns the value of the '<em><b>Points</b></em>' containment reference list.
+     * The list contents are of type {@link de.cau.cs.kieler.core.krendering.KPosition}.
+     * <!-- begin-user-doc -->
+     * <p>
+     * If the meaning of the '<em>Points</em>' containment reference list isn't clear,
+     * there really should be more of a description here...
+     * </p>
+     * <!-- end-user-doc -->
+     * <!-- begin-model-doc -->
+     * points that are visited by the polyline in order of definition
+     * <!-- end-model-doc -->
+     * @return the value of the '<em>Points</em>' containment reference list.
+     * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKPolyline_Points()
+     * @model containment="true"
+     * @generated
+     */
+    EList<KPosition> getPoints();
+
+    /**
+     * Returns the value of the '<em><b>Joint Point Rendering</b></em>' containment reference.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * <!-- begin-model-doc -->
+     * Optional rendering defining the look of join point figures that are attached to the diagram for each edge join point computed by the automatic (macro) layout.
+     * Setting is evaluated for KEdge renderings only, ignored for simple polylines being part of a complex rendering.
+     * <!-- end-model-doc -->
+     * @return the value of the '<em>Joint Point Rendering</em>' containment reference.
+     * @see #setJointPointRendering(KRendering)
+     * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKPolyline_JointPointRendering()
+     * @model containment="true"
+     * @generated
+     */
+    KRendering getJointPointRendering();
+
+    /**
+     * Sets the value of the '{@link de.cau.cs.kieler.core.krendering.KPolyline#getJointPointRendering <em>Joint Point Rendering</em>}' containment reference.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @param value the new value of the '<em>Joint Point Rendering</em>' containment reference.
+     * @see #getJointPointRendering()
+     * @generated
+     */
+    void setJointPointRendering(KRendering value);
+
 } // KPolyline

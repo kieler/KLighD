@@ -18,14 +18,15 @@ import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 
 import de.cau.cs.kieler.core.kgraph.KLabel;
-import de.cau.cs.kieler.core.krendering.KForegroundColor;
+import de.cau.cs.kieler.core.krendering.KForeground;
 import de.cau.cs.kieler.core.krendering.KRendering;
 import de.cau.cs.kieler.core.krendering.KRenderingFactory;
 import de.cau.cs.kieler.core.krendering.KStyle;
 import de.cau.cs.kieler.core.krendering.KText;
 import de.cau.cs.kieler.klighd.krendering.KTextUtil;
+import de.cau.cs.kieler.klighd.krendering.PlacementUtil;
 import de.cau.cs.kieler.klighd.piccolo.krendering.KLabelNode;
-import de.cau.cs.kieler.klighd.piccolo.krendering.util.PlacementUtil;
+import de.cau.cs.kieler.klighd.piccolo.krendering.util.PiccoloPlacementUtil;
 import edu.umd.cs.piccolo.PNode;
 import edu.umd.cs.piccolo.util.PBounds;
 import edu.umd.cs.piccolox.swt.PSWTText;
@@ -104,8 +105,8 @@ public class KLabelRenderingController extends AbstractRenderingController<KLabe
                     public void propertyChange(final PropertyChangeEvent e) {
                         // calculate the new bounds of the rendering
                         PBounds bounds =
-                                PlacementUtil.evaluateDirectPlacement(PlacementUtil
-                                        .asDirectPlacementData(rendering.getPlacementData()),
+                                PiccoloPlacementUtil.evaluateAreaPlacement(PlacementUtil
+                                        .asAreaPlacementData(rendering.getPlacementData()),
                                         parent.getBoundsReference());
                         // use the controller to apply the new bounds
                         controller.setBounds(bounds);
@@ -124,11 +125,11 @@ public class KLabelRenderingController extends AbstractRenderingController<KLabe
         // create the default rendering model
         KRenderingFactory factory = KRenderingFactory.eINSTANCE;
         KText text = factory.createKText();
-        KForegroundColor color = factory.createKForegroundColor();
-        color.setRed(0);
-        color.setGreen(0);
-        color.setBlue(0);
-        text.getStyles().add(color);
+
+        KForeground foreground = factory.createKForeground();
+        foreground.setColor(factory.createKColor());
+        
+        text.getStyles().add(foreground);
         return text;
     }
 

@@ -41,7 +41,7 @@ public class KChildAreaNode extends PZIndexNode {
     private static final int EDGE_LAYER = 1;
 
     /** whether to clip nodes and edges. */
-    private boolean clip = true;
+    private boolean clip = false;
     
     /** whether the child area is expanded. */
     private boolean expanded = false;

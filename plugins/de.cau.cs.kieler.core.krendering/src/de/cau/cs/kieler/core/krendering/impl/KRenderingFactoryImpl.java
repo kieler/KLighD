@@ -82,14 +82,10 @@ public class KRenderingFactoryImpl extends EFactoryImpl implements KRenderingFac
             case KRenderingPackage.KCHILD_AREA: return createKChildArea();
             case KRenderingPackage.KTEXT: return createKText();
             case KRenderingPackage.KGRID_PLACEMENT: return createKGridPlacement();
-            case KRenderingPackage.KSTACK_PLACEMENT: return createKStackPlacement();
             case KRenderingPackage.KGRID_PLACEMENT_DATA: return createKGridPlacementData();
-            case KRenderingPackage.KSTACK_PLACEMENT_DATA: return createKStackPlacementData();
-            case KRenderingPackage.KDIRECT_PLACEMENT_DATA: return createKDirectPlacementData();
-            case KRenderingPackage.KPOLYLINE_PLACEMENT_DATA: return createKPolylinePlacementData();
+            case KRenderingPackage.KAREA_PLACEMENT_DATA: return createKAreaPlacementData();
             case KRenderingPackage.KCUSTOM_RENDERING: return createKCustomRendering();
-            case KRenderingPackage.KFOREGROUND_COLOR: return createKForegroundColor();
-            case KRenderingPackage.KBACKGROUND_COLOR: return createKBackgroundColor();
+            case KRenderingPackage.KCOLOR: return createKColor();
             case KRenderingPackage.KLINE_WIDTH: return createKLineWidth();
             case KRenderingPackage.KLINE_STYLE: return createKLineStyle();
             case KRenderingPackage.KVERTICAL_ALIGNMENT: return createKVerticalAlignment();
@@ -99,14 +95,25 @@ public class KRenderingFactoryImpl extends EFactoryImpl implements KRenderingFac
             case KRenderingPackage.KTOP_POSITION: return createKTopPosition();
             case KRenderingPackage.KBOTTOM_POSITION: return createKBottomPosition();
             case KRenderingPackage.KSPLINE: return createKSpline();
-            case KRenderingPackage.KFOREGROUND_VISIBILITY: return createKForegroundVisibility();
-            case KRenderingPackage.KBACKGROUND_VISIBILITY: return createKBackgroundVisibility();
+            case KRenderingPackage.KFOREGROUND: return createKForeground();
+            case KRenderingPackage.KBACKGROUND: return createKBackground();
             case KRenderingPackage.KFONT_BOLD: return createKFontBold();
             case KRenderingPackage.KFONT_ITALIC: return createKFontItalic();
             case KRenderingPackage.KFONT_NAME: return createKFontName();
             case KRenderingPackage.KFONT_SIZE: return createKFontSize();
             case KRenderingPackage.KROUNDED_BENDS_POLYLINE: return createKRoundedBendsPolyline();
             case KRenderingPackage.KROTATION: return createKRotation();
+            case KRenderingPackage.KLINE_CAP: return createKLineCap();
+            case KRenderingPackage.KPOINT_PLACEMENT_DATA: return createKPointPlacementData();
+            case KRenderingPackage.KSELECT_ACTION: return createKSelectAction();
+            case KRenderingPackage.KEXPAND_ACTION: return createKExpandAction();
+            case KRenderingPackage.KSTYLE_HOLDER: return createKStyleHolder();
+            case KRenderingPackage.KINVISIBILITY: return createKInvisibility();
+            case KRenderingPackage.KSHADOW: return createKShadow();
+            case KRenderingPackage.KTEXT_UNDERLINE: return createKTextUnderline();
+            case KRenderingPackage.KCOLLAPSE_ACTION: return createKCollapseAction();
+            case KRenderingPackage.KSTYLE_REF: return createKStyleRef();
+            case KRenderingPackage.KTEXT_STRIKEOUT: return createKTextStrikeout();
             default:
                 throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
         }
@@ -126,6 +133,12 @@ public class KRenderingFactoryImpl extends EFactoryImpl implements KRenderingFac
                 return createHorizontalAlignmentFromString(eDataType, initialValue);
             case KRenderingPackage.VERTICAL_ALIGNMENT:
                 return createVerticalAlignmentFromString(eDataType, initialValue);
+            case KRenderingPackage.KTRIGGER:
+                return createKTriggerFromString(eDataType, initialValue);
+            case KRenderingPackage.LINE_CAP:
+                return createLineCapFromString(eDataType, initialValue);
+            case KRenderingPackage.UNDERLINE:
+                return createUnderlineFromString(eDataType, initialValue);
             default:
                 throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
         }
@@ -145,6 +158,12 @@ public class KRenderingFactoryImpl extends EFactoryImpl implements KRenderingFac
                 return convertHorizontalAlignmentToString(eDataType, instanceValue);
             case KRenderingPackage.VERTICAL_ALIGNMENT:
                 return convertVerticalAlignmentToString(eDataType, instanceValue);
+            case KRenderingPackage.KTRIGGER:
+                return convertKTriggerToString(eDataType, instanceValue);
+            case KRenderingPackage.LINE_CAP:
+                return convertLineCapToString(eDataType, instanceValue);
+            case KRenderingPackage.UNDERLINE:
+                return convertUnderlineToString(eDataType, instanceValue);
             default:
                 throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
         }
@@ -295,16 +314,6 @@ public class KRenderingFactoryImpl extends EFactoryImpl implements KRenderingFac
      * <!-- end-user-doc -->
      * @generated
      */
-    public KStackPlacement createKStackPlacement() {
-        KStackPlacementImpl kStackPlacement = new KStackPlacementImpl();
-        return kStackPlacement;
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
     public KGridPlacementData createKGridPlacementData() {
         KGridPlacementDataImpl kGridPlacementData = new KGridPlacementDataImpl();
         return kGridPlacementData;
@@ -315,29 +324,9 @@ public class KRenderingFactoryImpl extends EFactoryImpl implements KRenderingFac
      * <!-- end-user-doc -->
      * @generated
      */
-    public KStackPlacementData createKStackPlacementData() {
-        KStackPlacementDataImpl kStackPlacementData = new KStackPlacementDataImpl();
-        return kStackPlacementData;
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    public KDirectPlacementData createKDirectPlacementData() {
-        KDirectPlacementDataImpl kDirectPlacementData = new KDirectPlacementDataImpl();
-        return kDirectPlacementData;
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    public KPolylinePlacementData createKPolylinePlacementData() {
-        KPolylinePlacementDataImpl kPolylinePlacementData = new KPolylinePlacementDataImpl();
-        return kPolylinePlacementData;
+    public KAreaPlacementData createKAreaPlacementData() {
+        KAreaPlacementDataImpl kAreaPlacementData = new KAreaPlacementDataImpl();
+        return kAreaPlacementData;
     }
 
     /**
@@ -355,19 +344,9 @@ public class KRenderingFactoryImpl extends EFactoryImpl implements KRenderingFac
      * <!-- end-user-doc -->
      * @generated
      */
-    public KForegroundColor createKForegroundColor() {
-        KForegroundColorImpl kForegroundColor = new KForegroundColorImpl();
-        return kForegroundColor;
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    public KBackgroundColor createKBackgroundColor() {
-        KBackgroundColorImpl kBackgroundColor = new KBackgroundColorImpl();
-        return kBackgroundColor;
+    public KColor createKColor() {
+        KColorImpl kColor = new KColorImpl();
+        return kColor;
     }
 
     /**
@@ -465,9 +444,9 @@ public class KRenderingFactoryImpl extends EFactoryImpl implements KRenderingFac
      * <!-- end-user-doc -->
      * @generated
      */
-    public KForegroundVisibility createKForegroundVisibility() {
-        KForegroundVisibilityImpl kForegroundVisibility = new KForegroundVisibilityImpl();
-        return kForegroundVisibility;
+    public KForeground createKForeground() {
+        KForegroundImpl kForeground = new KForegroundImpl();
+        return kForeground;
     }
 
     /**
@@ -475,9 +454,9 @@ public class KRenderingFactoryImpl extends EFactoryImpl implements KRenderingFac
      * <!-- end-user-doc -->
      * @generated
      */
-    public KBackgroundVisibility createKBackgroundVisibility() {
-        KBackgroundVisibilityImpl kBackgroundVisibility = new KBackgroundVisibilityImpl();
-        return kBackgroundVisibility;
+    public KBackground createKBackground() {
+        KBackgroundImpl kBackground = new KBackgroundImpl();
+        return kBackground;
     }
 
     /**
@@ -545,6 +524,116 @@ public class KRenderingFactoryImpl extends EFactoryImpl implements KRenderingFac
      * <!-- end-user-doc -->
      * @generated
      */
+    public KLineCap createKLineCap() {
+        KLineCapImpl kLineCap = new KLineCapImpl();
+        return kLineCap;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public KPointPlacementData createKPointPlacementData() {
+        KPointPlacementDataImpl kPointPlacementData = new KPointPlacementDataImpl();
+        return kPointPlacementData;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public KSelectAction createKSelectAction() {
+        KSelectActionImpl kSelectAction = new KSelectActionImpl();
+        return kSelectAction;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public KExpandAction createKExpandAction() {
+        KExpandActionImpl kExpandAction = new KExpandActionImpl();
+        return kExpandAction;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public KStyleHolder createKStyleHolder() {
+        KStyleHolderImpl kStyleHolder = new KStyleHolderImpl();
+        return kStyleHolder;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public KInvisibility createKInvisibility() {
+        KInvisibilityImpl kInvisibility = new KInvisibilityImpl();
+        return kInvisibility;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public KShadow createKShadow() {
+        KShadowImpl kShadow = new KShadowImpl();
+        return kShadow;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public KTextUnderline createKTextUnderline() {
+        KTextUnderlineImpl kTextUnderline = new KTextUnderlineImpl();
+        return kTextUnderline;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public KCollapseAction createKCollapseAction() {
+        KCollapseActionImpl kCollapseAction = new KCollapseActionImpl();
+        return kCollapseAction;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public KStyleRef createKStyleRef() {
+        KStyleRefImpl kStyleRef = new KStyleRefImpl();
+        return kStyleRef;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public KTextStrikeout createKTextStrikeout() {
+        KTextStrikeoutImpl kTextStrikeout = new KTextStrikeoutImpl();
+        return kTextStrikeout;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
     public LineStyle createLineStyleFromString(EDataType eDataType, String initialValue) {
         LineStyle result = LineStyle.get(initialValue);
         if (result == null) throw new IllegalArgumentException("The value '" + initialValue + "' is not a valid enumerator of '" + eDataType.getName() + "'");
@@ -597,6 +686,66 @@ public class KRenderingFactoryImpl extends EFactoryImpl implements KRenderingFac
      * @generated
      */
     public String convertVerticalAlignmentToString(EDataType eDataType, Object instanceValue) {
+        return instanceValue == null ? null : instanceValue.toString();
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public KTrigger createKTriggerFromString(EDataType eDataType, String initialValue) {
+        KTrigger result = KTrigger.get(initialValue);
+        if (result == null) throw new IllegalArgumentException("The value '" + initialValue + "' is not a valid enumerator of '" + eDataType.getName() + "'");
+        return result;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public String convertKTriggerToString(EDataType eDataType, Object instanceValue) {
+        return instanceValue == null ? null : instanceValue.toString();
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public LineCap createLineCapFromString(EDataType eDataType, String initialValue) {
+        LineCap result = LineCap.get(initialValue);
+        if (result == null) throw new IllegalArgumentException("The value '" + initialValue + "' is not a valid enumerator of '" + eDataType.getName() + "'");
+        return result;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public String convertLineCapToString(EDataType eDataType, Object instanceValue) {
+        return instanceValue == null ? null : instanceValue.toString();
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public Underline createUnderlineFromString(EDataType eDataType, String initialValue) {
+        Underline result = Underline.get(initialValue);
+        if (result == null) throw new IllegalArgumentException("The value '" + initialValue + "' is not a valid enumerator of '" + eDataType.getName() + "'");
+        return result;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public String convertUnderlineToString(EDataType eDataType, Object instanceValue) {
         return instanceValue == null ? null : instanceValue.toString();
     }
 

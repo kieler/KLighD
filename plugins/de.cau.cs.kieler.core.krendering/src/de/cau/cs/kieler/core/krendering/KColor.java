@@ -13,11 +13,17 @@
  */
 package de.cau.cs.kieler.core.krendering;
 
+import org.eclipse.emf.ecore.EObject;
+
 
 /**
  * <!-- begin-user-doc -->
  * A representation of the model object '<em><b>KColor</b></em>'.
  * <!-- end-user-doc -->
+ *
+ * <!-- begin-model-doc -->
+ * Specifies an RGB color. 
+ * <!-- end-model-doc -->
  *
  * <p>
  * The following features are supported:
@@ -29,10 +35,10 @@ package de.cau.cs.kieler.core.krendering;
  * </p>
  *
  * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKColor()
- * @model abstract="true"
+ * @model
  * @generated
  */
-public interface KColor extends KStyle {
+public interface KColor extends EObject {
     /**
      * Returns the value of the '<em><b>Red</b></em>' attribute.
      * <!-- begin-user-doc -->
@@ -41,6 +47,9 @@ public interface KColor extends KStyle {
      * there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
+     * <!-- begin-model-doc -->
+     * the red component of a color
+     * <!-- end-model-doc -->
      * @return the value of the '<em>Red</em>' attribute.
      * @see #setRed(int)
      * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKColor_Red()
@@ -67,6 +76,9 @@ public interface KColor extends KStyle {
      * there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
+     * <!-- begin-model-doc -->
+     * the green component of a color
+     * <!-- end-model-doc -->
      * @return the value of the '<em>Green</em>' attribute.
      * @see #setGreen(int)
      * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKColor_Green()
@@ -93,6 +105,9 @@ public interface KColor extends KStyle {
      * there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
+     * <!-- begin-model-doc -->
+     * the blue component of a color
+     * <!-- end-model-doc -->
      * @return the value of the '<em>Blue</em>' attribute.
      * @see #setBlue(int)
      * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKColor_Blue()

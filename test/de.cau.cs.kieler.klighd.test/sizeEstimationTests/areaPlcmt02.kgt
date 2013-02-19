@@ -1,0 +1,33 @@
+
+KNode {
+	children:
+	KNode {
+		data:
+		Rectangle {
+			styles:
+			foreground {
+				color 255 0 0
+			}
+			!
+			children:
+			Rectangle {
+				placementData:
+				AreaPlacementData {
+					topLeft left 10.0 0.0 / top 10.0 0.0,
+					bottomRight right 10.0 0.0 / bottom 10.0 0.0
+				}
+				children:
+				Text Hello {
+					mapProperties:
+					"klighd.testing.height" = "11.0"
+					"klighd.testing.width" = "23.0"
+				}
+			}
+		}
+		KShapeLayout {
+			mapProperties:
+			"klighd.testing.expected.height" = "31.0"
+			"klighd.testing.expected.width" = "43.0"
+		}
+	}
+}

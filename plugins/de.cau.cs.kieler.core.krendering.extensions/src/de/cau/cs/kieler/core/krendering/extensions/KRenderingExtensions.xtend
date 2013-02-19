@@ -1,14 +1,11 @@
 package de.cau.cs.kieler.core.krendering.extensions
 
+import de.cau.cs.kieler.core.kgraph.KGraphElement
 import de.cau.cs.kieler.core.kgraph.KNode
 import de.cau.cs.kieler.core.krendering.HorizontalAlignment
-import de.cau.cs.kieler.core.krendering.KBackgroundColor
-import de.cau.cs.kieler.core.krendering.KBackgroundVisibility
 import de.cau.cs.kieler.core.krendering.KFontBold
 import de.cau.cs.kieler.core.krendering.KFontItalic
 import de.cau.cs.kieler.core.krendering.KFontSize
-import de.cau.cs.kieler.core.krendering.KForegroundColor
-import de.cau.cs.kieler.core.krendering.KForegroundVisibility
 import de.cau.cs.kieler.core.krendering.KHorizontalAlignment
 import de.cau.cs.kieler.core.krendering.KLineWidth
 import de.cau.cs.kieler.core.krendering.KPosition
@@ -16,26 +13,37 @@ import de.cau.cs.kieler.core.krendering.KRendering
 import de.cau.cs.kieler.core.krendering.KRenderingFactory
 import de.cau.cs.kieler.core.krendering.KVerticalAlignment
 import de.cau.cs.kieler.core.krendering.VerticalAlignment
-import de.cau.cs.kieler.core.krendering.KContainerRendering
 import de.cau.cs.kieler.core.krendering.KStyle
 import de.cau.cs.kieler.core.krendering.KPlacementData
-import de.cau.cs.kieler.core.krendering.KColor
 import de.cau.cs.kieler.core.krendering.KRoundedRectangle
-
-import org.eclipse.emf.ecore.util.EcoreUtil
-import de.cau.cs.kieler.core.kgraph.KGraphElement
 import de.cau.cs.kieler.core.krendering.LineStyle
 import de.cau.cs.kieler.core.krendering.KLineStyle
 import de.cau.cs.kieler.core.krendering.KFontName
 import de.cau.cs.kieler.core.krendering.KRotation
+import de.cau.cs.kieler.core.krendering.KForeground
+import de.cau.cs.kieler.core.krendering.KBackground
+import de.cau.cs.kieler.core.krendering.KColoring
+import de.cau.cs.kieler.core.krendering.KColor
+import de.cau.cs.kieler.core.krendering.KInvisibility
+import de.cau.cs.kieler.core.krendering.KLineCap
+import de.cau.cs.kieler.core.krendering.LineCap
+
+import static extension org.eclipse.emf.ecore.util.EcoreUtil.*
+import de.cau.cs.kieler.core.krendering.KStyleRef
+import de.cau.cs.kieler.core.krendering.KStyleHolder
+import de.cau.cs.kieler.core.krendering.KAreaPlacementData
+import de.cau.cs.kieler.core.krendering.KGridPlacementData
+import de.cau.cs.kieler.core.krendering.Underline
+import de.cau.cs.kieler.core.krendering.KTextUnderline
+import de.cau.cs.kieler.core.krendering.KTextStrikeout
 
 /**
  * This utility class contains various methods that are convenient while composing KRendering data.
  * It does not claim to be complete ;-).
  */
 class KRenderingExtensions {
-	
-	private static val KRenderingFactory renderingFactory = KRenderingFactory::eINSTANCE
+
+    private static val KRenderingFactory renderingFactory = KRenderingFactory::eINSTANCE
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////
     ////////////////////////					KRenderingExtensions
@@ -48,22 +56,20 @@ class KRenderingExtensions {
         return kge.getData(typeof(KRendering));
     }
 
-    /**
-     * @returns the child! 
-     */
-    def <T extends KRendering> KRendering addChild(KContainerRendering parent, T child) {
-        return child => [
-            parent.children.add(it);
-        ];
-    }
-    
-    def KRoundedRectangle addRoundedRectangle(KNode node, float cWidth, float cHeight, int lineWidth){
+    def KRoundedRectangle addRoundedRectangle(KNode node, float cWidth, float cHeight, float lineWidth) {
         return renderingFactory.createKRoundedRectangle => [
             it.cornerWidth = cWidth;
             it.cornerHeight = cHeight;
             it.setLineWidth(lineWidth);
             node.data.add(it)
         ];
+    }
+    
+    def KRoundedRectangle setCornerSize(KRoundedRectangle rect, float cWidth, float cHeight) {
+        return rect => [
+            it.cornerWidth = cWidth;
+            it.cornerHeight = cHeight;
+        ]
     }
 
     def <T extends KRendering> T with(T rendering, KPlacementData pd) {
@@ -80,22 +86,70 @@ class KRenderingExtensions {
  
     def <T extends KRendering> T withCopyOf(T rendering, KStyle style) {
         return rendering => [
-            it.styles += EcoreUtil::copy(style);
+            it.styles += style.copy;
+        ];
+    }
+    
+    // how might a getStyleRef look like?
+    //  In case we allow multiple that may refine each other the getter returns an iterator?
+    
+    def <T extends KRendering> T setStyleRef(T rendering, KStyleHolder styleHolder) {
+        rendering.styles.removeAll(rendering.styles.filter(typeof(KStyleRef)).toList);
+        return rendering => [
+            it.styles += renderingFactory.createKStyleRef() => [
+                it.styleHolder = styleHolder;
+            ];
         ];
     }
  
+    def <T extends KRendering> T addStyleRef(T rendering, KStyleHolder styleHolder) {
+        return rendering => [
+            it.styles += renderingFactory.createKStyleRef() => [
+                it.styleHolder = styleHolder;
+            ];
+        ];
+    }
+ 
+    def KInvisibility getInvisible(KRendering rendering) {
+        // chsch: I'm currently not sure whether the first or the last will win...
+        return rendering.styles.filter(typeof(KInvisibility)).last?:(renderingFactory.createKInvisibility());
+    }
+ 
+    def boolean getBooleanInvisible(KRendering rendering) {
+        // chsch: I'm currently not sure whether the first or the last will win...
+        return (
+            rendering.styles.filter(typeof(KInvisibility)).last?:(renderingFactory.createKInvisibility())
+        ).invisible;
+    }
+ 
+    def <T extends KRendering> T setInvisible(T rendering, boolean invisible) {
+        rendering.styles.removeAll(rendering.styles.filter(typeof(KInvisibility)).toList);
+        return rendering => [
+            it.styles += renderingFactory.createKInvisibility() => [
+                it.setInvisible(invisible);
+            ]
+        ];
+    }
+    
     def KLineWidth getLineWidth(KRendering rendering) {
         // chsch: I'm currently not sure whether the first or the last will win...
         return rendering.styles.filter(typeof(KLineWidth)).last?:(renderingFactory.createKLineWidth => [
-            lineWidth = 1
+            lineWidth = 1f
         ]);
     }
  
-    def <T extends KRendering> T setLineWidth(T rendering, int with) {
+    def float getLineWidthValue(KRendering rendering) {
+        // chsch: I'm currently not sure whether the first or the last will win...
+        return (rendering.styles.filter(typeof(KLineWidth)).last?:(renderingFactory.createKLineWidth => [
+            lineWidth = 1f
+        ])).lineWidth;
+    }
+ 
+    def <T extends KRendering> T setLineWidth(T rendering, float width) {
         rendering.styles.removeAll(rendering.styles.filter(typeof(KLineWidth)).toList);
         return rendering => [
             it.styles += renderingFactory.createKLineWidth() => [
-                it.setLineWidth(with);
+                it.setLineWidth(width);
             ]
         ];
     }
@@ -107,6 +161,13 @@ class KRenderingExtensions {
         ]);
     }
  
+    def LineStyle getEnumLineStyle(KRendering rendering) {
+        // chsch: I'm currently not sure whether the first or the last will win...
+        return (rendering.styles.filter(typeof(KLineStyle)).last?:(renderingFactory.createKLineStyle => [
+            lineStyle = LineStyle::SOLID;
+        ])).lineStyle;
+    }
+ 
     def <T extends KRendering> T setLineStyle(T rendering, LineStyle style) {
         rendering.styles.removeAll(rendering.styles.filter(typeof(KLineStyle)).toList);
         return rendering => [
@@ -116,9 +177,39 @@ class KRenderingExtensions {
         ];
     }
     
+    def KLineCap getLineCap(KRendering rendering) {
+        // chsch: I'm currently not sure whether the first or the last will win...
+        return rendering.styles.filter(typeof(KLineCap)).last?:(renderingFactory.createKLineCap => [
+            lineCap = LineCap::CAP_FLAT;
+        ]);
+    }
+ 
+    def LineCap getEnumLineCap(KRendering rendering) {
+        // chsch: I'm currently not sure whether the first or the last will win...
+        return (rendering.styles.filter(typeof(KLineCap)).last?:(renderingFactory.createKLineCap => [
+            lineCap = LineCap::CAP_FLAT;
+        ])).lineCap;
+    }
+ 
+    def <T extends KRendering> T setLineCap(T rendering, LineCap style) {
+        rendering.styles.removeAll(rendering.styles.filter(typeof(KLineCap)).toList);
+        return rendering => [
+            it.styles += renderingFactory.createKLineCap => [
+                it.setLineCap(style);
+            ];
+        ];
+    }
+    
     def KRotation getRotation(KRendering rendering) {
         // chsch: I'm currently not sure whether the first or the last will win...
         return rendering.styles.filter(typeof(KRotation)).last?:renderingFactory.createKRotation;
+    }
+ 
+    def float getFloatRotation(KRendering rendering) {
+        // chsch: I'm currently not sure whether the first or the last will win...
+        return (
+            rendering.styles.filter(typeof(KRotation)).last?:renderingFactory.createKRotation
+        ).rotation;
     }
  
     def <T extends KRendering> T setRotation(T rendering, Float rotation) {
@@ -130,99 +221,121 @@ class KRenderingExtensions {
         ];
     }
     
-    def KBackgroundColor getBGColor(KRendering rendering) {
-        // chsch: I'm currently not sure whether the first or the last will win...
-        return rendering.styles.filter(typeof(KBackgroundColor)).last?:renderingFactory.createKBackgroundColor;
+    def KBackground getBackground(KRendering rendering){
+        return rendering.styles?.filter(typeof(KBackground)).last?:(renderingFactory.createKBackground() => [
+            it.color = renderingFactory.createKColor();
+        ]);
     }
- 
-    def KBackgroundColor getBackgroundColor(KRendering rendering) {
-        // chsch: I'm currently not sure whether the first or the last will win...
-        return rendering.styles.filter(typeof(KBackgroundColor)).last?:renderingFactory.createKBackgroundColor;
-    }
- 
-    def <T extends KRendering> T setBackgroundColor(T rendering, KColor color) {
-        rendering.styles.removeAll(rendering.styles.filter(typeof(KBackgroundColor)).toList);        
+    
+    def <T extends KRendering>  T setBackground(T rendering, KColoring coloring){
+        rendering.styles.removeAll(rendering.styles.filter(typeof(KBackground)).toList);
         return rendering => [
-            it.styles += renderingFactory.createKBackgroundColor => [
-                it.red = color.red;
-                it.green = color.green;
-                it.blue = color.blue;
+            it.styles += renderingFactory.createKBackground => [
+                it.alpha = coloring.alpha;
+                it.color = coloring.color.copy;
+                it.targetAlpha = coloring.targetAlpha;
+                it.targetColor = coloring.targetColor.copy;
+                it.gradientAngle = coloring.gradientAngle;
+                it.functionId = coloring.functionId;
+                it.propagateToChildren = coloring.propagateToChildren;
             ];
         ];
     }
     
-	def <T extends KRendering> T setBackgroundColor(T rendering, int red, int green, int blue) {
-		rendering.styles.removeAll(rendering.styles.filter(typeof(KBackgroundColor)).toList);
-		return rendering => [
-		    it.styles += renderingFactory.createKBackgroundColor => [
-    		    it.setRed(red);
-                it.setGreen(green);
-                it.setBlue(blue);
-		    ]; 
-		];		
-	}
-        
-    def KForegroundColor getFGColor(KRendering rendering) {
-        // chsch: I'm currently not sure whether the first or the last will win...
-        return rendering.styles.filter(typeof(KForegroundColor)).last?:renderingFactory.createKForegroundColor;
+    def <T extends KRendering>  T setBackground(T rendering, KColor color){
+        rendering.styles.removeAll(rendering.styles.filter(typeof(KBackground)).toList);
+        return rendering => [
+            it.styles += renderingFactory.createKBackground => [
+                it.color = color;
+            ];
+        ];
+    }
+    
+    def <T extends KRendering>  T setBackgroundInvisible(T rendering, boolean invisible){
+        return rendering => [
+            it.styles?.filter(typeof(KBackground)).last?:(renderingFactory.createKBackground() => [
+                rendering.styles += it; 
+                it.color = renderingFactory.createKColor();
+            ]) => [
+                it.alpha = if (invisible) 0
+                    else renderingFactory.KRenderingPackage.KColoring_Alpha.defaultValue as Integer;
+            ];
+        ];
+    }
+    
+    def <T extends KRendering>  T setBackgroundColor(T rendering, int red, int green, int blue){
+        rendering.styles.removeAll(rendering.styles.filter(typeof(KBackground)).toList);
+        return rendering => [
+            it.styles += renderingFactory.createKBackground => [
+                it.color = renderingFactory.createKColor => [
+                    it.red = red;
+                    it.green = green;
+                    it.blue = blue;
+                ];
+            ];
+        ];
+    }
+    
+    def KForeground getForeground(KRendering rendering){
+        return rendering.styles.filter(typeof(KForeground)).last?:(renderingFactory.createKForeground() => [
+            it.color = renderingFactory.createKColor();
+        ]);
     }
 
-    def KForegroundColor getForegroundColor(KRendering rendering) {
-        // chsch: I'm currently not sure whether the first or the last will win...
-        return rendering.styles.filter(typeof(KForegroundColor)).last?:renderingFactory.createKForegroundColor;
-    }
- 
-    def <T extends KRendering> T setForegroundColor(T rendering, KColor color) {
-        rendering.styles.removeAll(rendering.styles.filter(typeof(KForegroundColor)).toList);        
+    def <T extends KRendering>  T setForeground(T rendering, KColoring coloring){
+        rendering.styles.removeAll(rendering.styles.filter(typeof(KForeground)).toList);
         return rendering => [
-            it.styles += renderingFactory.createKForegroundColor => [
-                it.red = color.red;
-                it.green = color.green;
-                it.blue = color.blue;
-            ]; 
-        ];      
-    }
-	
-	def <T extends KRendering> T setForegroundColor(T rendering, int red, int green, int blue) {
-        rendering.styles.removeAll(rendering.styles.filter(typeof(KForegroundColor)).toList);        
-        return rendering => [
-            it.styles += renderingFactory.createKForegroundColor => [
-                it.setRed(red);
-                it.setGreen(green);
-                it.setBlue(blue);
-            ]; 
-        ];      
-	}
-	
-    def <T extends KRendering> boolean getBackgroundVisibility(T rendering) {
-        // chsch: I'm currently not sure whether the first or the last will win...
-        return rendering.styles.filter(typeof(KBackgroundVisibility)).last?.visible?:true;
-    }
-    
-	def <T extends KRendering> T setBackgroundVisibility(T rendering, boolean visible) {
-		rendering.styles.removeAll(rendering.styles.filter(typeof(KBackgroundVisibility)).toList);
-		return rendering => [
-            it.styles += renderingFactory.createKBackgroundVisibility => [
-		        it.setVisible(visible);
-		    ];
-		];
-	}
-		
-	
-    def <T extends KRendering> boolean getForegroundVisibility(T rendering) {
-        // chsch: I'm currently not sure whether the first or the last will win...
-        return rendering.styles.filter(typeof(KForegroundVisibility)).last?.visible?:true;
-    }
-    
-    def <T extends KRendering> T setForegroundVisibility(T rendering, boolean visible) {
-        rendering.styles.removeAll(rendering.styles.filter(typeof(KForegroundVisibility)).toList);
-        return rendering => [
-            it.styles += renderingFactory.createKForegroundVisibility => [
-                it.setVisible(visible);
+            it.styles += renderingFactory.createKForeground => [
+                it.alpha = coloring.alpha;
+                it.color = coloring.color.copy;
+                it.targetAlpha = coloring.targetAlpha;
+                it.targetColor = coloring.targetColor.copy;
+                it.gradientAngle = coloring.gradientAngle;
+                it.functionId = coloring.functionId;
+                it.propagateToChildren = coloring.propagateToChildren;
             ];
         ];
     }
     
+    def <T extends KRendering>  T setForeground(T rendering, KColor color){
+        rendering.styles.removeAll(rendering.styles.filter(typeof(KForeground)).toList);
+        return rendering => [
+            it.styles += renderingFactory.createKForeground() => [
+                it.color = color;
+            ];
+        ];
+    }
+    
+    def <T extends KRendering>  T setForegroundInvisible(T rendering, boolean invisible){
+        return rendering => [
+            it.styles?.filter(typeof(KForeground)).last?:(renderingFactory.createKForeground() => [
+                rendering.styles += it; 
+                it.color = renderingFactory.createKColor();
+            ]) => [
+                it.alpha = if (invisible) 0
+                    else renderingFactory.KRenderingPackage.KColoring_Alpha.defaultValue as Integer;
+            ];
+        ];
+    }
+    
+    
+    def <T extends KRendering>  T setForegroundColor(T rendering, int red, int green, int blue){
+        rendering.styles.removeAll(rendering.styles.filter(typeof(KForeground)).toList);
+        return rendering => [
+            it.styles += renderingFactory.createKForeground() => [
+                it.color = renderingFactory.createKColor() => [
+                    it.red = red;
+                    it.green = green;
+                    it.blue = blue;
+                ];
+            ];
+        ];
+    }    
+//TODO: maybe add setters/getters for single components of KForeground/KBackground or simply a method 
+//that allows sticking additional Foreground/Background information to the list without removing 
+//already defined styles first        
+	
+
 	def <T extends KRendering> T setFontBold(T rendering, boolean bold) {
         rendering.styles.removeAll(rendering.styles.filter(typeof(KFontBold)).toList);
 		return rendering => [
@@ -232,15 +345,49 @@ class KRenderingExtensions {
 		];		
 	}
 	
-	def <T extends KRendering> T setFontItalic(T rendering, boolean italic) {
+    def <T extends KRendering> T setFontItalic(T rendering, boolean italic) {
         rendering.styles.removeAll(rendering.styles.filter(typeof(KFontItalic)).toList);
         return rendering => [
             it.styles += renderingFactory.createKFontItalic => [
-    		    it.setItalic(italic);
-		    ];
+                it.setItalic(italic);
+            ];
         ];
-	}
-	
+    }
+    
+    def <T extends KRendering> T setTextUnderline(T rendering, Underline underline) {
+        rendering.styles.removeAll(rendering.styles.filter(typeof(KTextUnderline)).toList);
+        return rendering => [
+            it.styles += renderingFactory.createKTextUnderline() => [
+                it.underline = underline;
+            ];
+        ];
+    }
+    
+    def <T extends KRendering> T setTextUnderlineColor(T rendering, KColor color) {
+        return rendering => [
+            (rendering.styles.filter(typeof(KTextUnderline)).last?:renderingFactory.createKTextUnderline()) => [
+                it.color = color;
+            ];
+        ];
+    }
+    
+    def <T extends KRendering> T setTextStrikeout(T rendering, boolean struckOut) {
+        rendering.styles.removeAll(rendering.styles.filter(typeof(KTextStrikeout)).toList);
+        return rendering => [
+            it.styles += renderingFactory.createKTextStrikeout() => [
+                it.struckOut = struckOut;
+            ];
+        ];
+    }
+    
+    def <T extends KRendering> T setTextStrikeoutColor(T rendering, KColor color) {
+        return rendering => [
+            (rendering.styles.filter(typeof(KTextStrikeout)).last?:renderingFactory.createKTextStrikeout()) => [
+                it.color = color;
+            ];
+        ];
+    }
+    
     def KFontSize getFontSize(KRendering rendering) {
         // chsch: I'm currently not sure whether the first or the last will win...
         return rendering.styles.filter(typeof(KFontSize)).last?:(renderingFactory.createKFontSize => [
@@ -314,42 +461,109 @@ class KRenderingExtensions {
 	}
 	
 	
-	def <T extends KRendering> T setStackPlacementData(T rendering, float insetRight,
-            float insetBottom, float insetLeft, float insetTop) {
-		return rendering => [
-		    rendering.placementData = renderingFactory.createKStackPlacementData => [
-                it.insetRight = insetRight;
-                it.insetBottom = insetBottom;
-                it.insetLeft = insetLeft;
-                it.insetTop = insetTop;
-                rendering.setPlacementData(it);            
-           ]; 
-		];		
-	}
-	
-	def <T extends KRendering> T setGridPlacementData(T rendering, float widthHint,
-	        float heightHint, float insetLeft, float insetRight, float insetTop, float insetBottom) {
-		return rendering => [
-		    rendering.placementData = renderingFactory.createKGridPlacementData => [
-                it.setWidthHint(widthHint);
-                it.setHeightHint(heightHint);
-                it.setInsetRight(insetRight);
-                it.setInsetLeft(insetLeft);
-                it.setInsetTop(insetTop);
-                it.setInsetBottom(insetBottom);
-    		];
-		];
-	}
-	
-	def <T extends KRendering> T setDirectPlacementData(T rendering, KPosition topLeft, KPosition bottomRight){
+    def <T extends KRendering> T setAreaPlacementData(T rendering, KPosition topLeft, KPosition bottomRight){
         return rendering => [
-            rendering.placementData = renderingFactory.createKDirectPlacementData => [
+            rendering.placementData = renderingFactory.createKAreaPlacementData() => [
                 it.setTopLeft(topLeft);
                 it.setBottomRight(bottomRight);
             ];
         ];
+    }
+    
+    def KAreaPlacementData setAreaPlacementData(KRendering rendering) {
+        return renderingFactory.createKAreaPlacementData() => [
+            rendering.placementData = it;
+        ];
+    }
+    
+    def KAreaPlacementData from(KAreaPlacementData placementData, KPosition topLeft) {
+        return placementData => [
+            it.topLeft = topLeft; 
+        ];
+    }
+    
+    def KAreaPlacementData from(KAreaPlacementData placementData, 
+                    PositionReferenceX px, float absoluteLR, float relativeLR,
+                    PositionReferenceY py, float absoluteTB, float relativeTB) {
+        return placementData.from(createKPosition(
+            px, absoluteLR, relativeLR, py, absoluteTB, relativeTB
+        ));
+    }
+    
+    def KRendering to(KAreaPlacementData placementData, KPosition bottomRight) {
+        placementData.bottomRight = bottomRight; 
+        return placementData.eContainer() as KRendering;
+    }
+
+    def KRendering to(KAreaPlacementData placementData, 
+                    PositionReferenceX px, float absoluteLR, float relativeLR,
+                    PositionReferenceY py, float absoluteTB, float relativeTB) {
+        return placementData.to(createKPosition(
+            px, absoluteLR, relativeLR, py, absoluteTB, relativeTB
+        ));
+    }
+    
+    def KGridPlacementData setGridPlacementData(KRendering rendering, float minCellWidth,
+            float minCellHeight, KPosition topLeft, KPosition bottomRight) {
+		return renderingFactory.createKGridPlacementData() => [
+		    rendering.placementData = it;
+            it.setMinCellWidth(minCellWidth);
+            it.setMinCellHeight(minCellHeight);
+            it.setTopLeft(topLeft);
+            it.setBottomRight(bottomRight);
+		];
 	}
 	
+    def KGridPlacementData setGridPlacementData(KRendering rendering, float minCellWidth,
+            float minCellHeight) {
+        return renderingFactory.createKGridPlacementData() => [
+            rendering.placementData = it;
+            it.setMinCellWidth(minCellWidth);
+            it.setMinCellHeight(minCellHeight);
+        ];
+    }
+
+    def KGridPlacementData setGridPlacementData(KRendering rendering) {
+        return renderingFactory.createKGridPlacementData() => [
+            rendering.placementData = it;
+        ];
+    }
+    
+    def KGridPlacementData setMaxCellHeight(KGridPlacementData placementData, float maxCellHeight) {
+        return placementData => [
+            placementData.maxCellHeight = maxCellHeight;
+        ];
+    }
+
+    def <T extends KRendering> T setPointPlacementData(T rendering, KPosition referencePoint,
+        HorizontalAlignment horizontalAlignment, VerticalAlignment verticalAlignment,
+        float horizontalMargin, float verticalMargin) {
+        return rendering => [
+            rendering.placementData = renderingFactory.createKPointPlacementData => [
+                it.referencePoint = referencePoint;
+                it.horizontalAlignment = horizontalAlignment;
+                it.verticalAlignment = verticalAlignment;
+                it.horizontalMargin = horizontalMargin;
+                it.verticalMargin = verticalMargin;
+            ];
+        ];
+    }
+
+    def <T extends KRendering> T setDecoratorPlacementData(T rendering, float width,
+            float height, float posAbsolute, float posRelative, boolean rotateWithLine) {
+        return rendering => [
+            rendering.placementData = renderingFactory.createKDecoratorPlacementData() => [
+                it.width = width;
+                it.height = height;
+                it.absolute = posAbsolute;
+                it.relative = posRelative;
+                it.rotateWithLine = rotateWithLine;
+                it.XOffset = -width/2;
+                it.YOffset = -height/2;
+            ];
+        ];
+    }
+    
     public val PositionReferenceX LEFT = PositionReferenceX::LEFT;
     public val PositionReferenceX RIGHT = PositionReferenceX::RIGHT;
     
@@ -357,7 +571,7 @@ class KRenderingExtensions {
     public val PositionReferenceY BOTTOM = PositionReferenceY::BOTTOM;
     
     def KPosition createKPosition(PositionReferenceX px, float absoluteLR, float relativeLR,
-                                  PositionReferenceY py, float absoluteTB, float relativeTB){
+                                  PositionReferenceY py, float absoluteTB, float relativeTB) {
         return renderingFactory.createKPosition => [
             it.x = switch px {
                 case PositionReferenceX::LEFT: renderingFactory.createKLeftPosition
@@ -376,5 +590,4 @@ class KRenderingExtensions {
             ];
         ];
     }
-    
 }

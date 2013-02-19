@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="ASCII"?>
 <xmi:XMI xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:xtext="http://www.eclipse.org/2008/Xtext">
   <xtext:Grammar name="de.cau.cs.kieler.core.kgraph.text.klayoutdata.KLayoutData" usedGrammars="/1">
-    <metamodelDeclarations xsi:type="xtext:ReferencedMetamodel">
-      <ePackage href="http://kieler.cs.cau.de/KLayoutData#/"/>
+    <metamodelDeclarations xsi:type="xtext:ReferencedMetamodel" alias="ecore">
+      <ePackage href="http://www.eclipse.org/emf/2002/Ecore#/"/>
     </metamodelDeclarations>
     <metamodelDeclarations xsi:type="xtext:ReferencedMetamodel" alias="kgraph">
       <ePackage href="http://kieler.cs.cau.de/KGraph#/"/>
     </metamodelDeclarations>
-    <metamodelDeclarations xsi:type="xtext:ReferencedMetamodel" alias="ecore">
-      <ePackage href="http://www.eclipse.org/emf/2002/Ecore#/"/>
+    <metamodelDeclarations xsi:type="xtext:ReferencedMetamodel">
+      <ePackage href="http://kieler.cs.cau.de/KLayoutData#/"/>
     </metamodelDeclarations>
     <rules xsi:type="xtext:ParserRule" name="KShapeLayout">
-      <type metamodel="/0/@metamodelDeclarations.0">
+      <type metamodel="/0/@metamodelDeclarations.2">
         <classifier xsi:type="ecore:EClass" href="http://kieler.cs.cau.de/KLayoutData#//KShapeLayout"/>
       </type>
       <alternatives xsi:type="xtext:Group">
         <elements xsi:type="xtext:Action">
-          <type metamodel="/0/@metamodelDeclarations.0">
+          <type metamodel="/0/@metamodelDeclarations.2">
             <classifier xsi:type="ecore:EClass" href="http://kieler.cs.cau.de/KLayoutData#//KShapeLayout"/>
           </type>
         </elements>
@@ -69,12 +69,12 @@
       </alternatives>
     </rules>
     <rules xsi:type="xtext:ParserRule" name="KInsets">
-      <type metamodel="/0/@metamodelDeclarations.0">
+      <type metamodel="/0/@metamodelDeclarations.2">
         <classifier xsi:type="ecore:EClass" href="http://kieler.cs.cau.de/KLayoutData#//KInsets"/>
       </type>
       <alternatives xsi:type="xtext:Group">
         <elements xsi:type="xtext:Action">
-          <type metamodel="/0/@metamodelDeclarations.0">
+          <type metamodel="/0/@metamodelDeclarations.2">
             <classifier xsi:type="ecore:EClass" href="http://kieler.cs.cau.de/KLayoutData#//KInsets"/>
           </type>
         </elements>
@@ -108,12 +108,12 @@
       </alternatives>
     </rules>
     <rules xsi:type="xtext:ParserRule" name="KEdgeLayout">
-      <type metamodel="/0/@metamodelDeclarations.0">
+      <type metamodel="/0/@metamodelDeclarations.2">
         <classifier xsi:type="ecore:EClass" href="http://kieler.cs.cau.de/KLayoutData#//KEdgeLayout"/>
       </type>
       <alternatives xsi:type="xtext:Group">
         <elements xsi:type="xtext:Action">
-          <type metamodel="/0/@metamodelDeclarations.0">
+          <type metamodel="/0/@metamodelDeclarations.2">
             <classifier xsi:type="ecore:EClass" href="http://kieler.cs.cau.de/KLayoutData#//KEdgeLayout"/>
           </type>
         </elements>
@@ -163,12 +163,12 @@
       </alternatives>
     </rules>
     <rules xsi:type="xtext:ParserRule" name="KPoint">
-      <type metamodel="/0/@metamodelDeclarations.0">
+      <type metamodel="/0/@metamodelDeclarations.2">
         <classifier xsi:type="ecore:EClass" href="http://kieler.cs.cau.de/KLayoutData#//KPoint"/>
       </type>
       <alternatives xsi:type="xtext:Group">
         <elements xsi:type="xtext:Action">
-          <type metamodel="/0/@metamodelDeclarations.0">
+          <type metamodel="/0/@metamodelDeclarations.2">
             <classifier xsi:type="ecore:EClass" href="http://kieler.cs.cau.de/KLayoutData#//KPoint"/>
           </type>
         </elements>
@@ -204,7 +204,7 @@
       </alternatives>
     </rules>
     <rules xsi:type="xtext:ParserRule" name="EString">
-      <type metamodel="/0/@metamodelDeclarations.2">
+      <type metamodel="/0/@metamodelDeclarations.0">
         <classifier xsi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EString"/>
       </type>
       <alternatives xsi:type="xtext:Alternatives">
@@ -213,7 +213,7 @@
       </alternatives>
     </rules>
     <rules xsi:type="xtext:ParserRule" name="EFloat">
-      <type metamodel="/0/@metamodelDeclarations.2">
+      <type metamodel="/0/@metamodelDeclarations.0">
         <classifier xsi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EFloat"/>
       </type>
       <alternatives xsi:type="xtext:Group">

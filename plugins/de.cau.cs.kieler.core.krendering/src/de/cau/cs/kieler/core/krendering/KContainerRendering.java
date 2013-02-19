@@ -20,6 +20,10 @@ import org.eclipse.emf.common.util.EList;
  * A representation of the model object '<em><b>KContainer Rendering</b></em>'.
  * <!-- end-user-doc -->
  *
+ * <!-- begin-model-doc -->
+ * KRendering that can have Children.
+ * <!-- end-model-doc -->
+ *
  * <p>
  * The following features are supported:
  * <ul>
@@ -43,6 +47,9 @@ public interface KContainerRendering extends KRendering {
      * there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
+     * <!-- begin-model-doc -->
+     * the children of this rendering
+     * <!-- end-model-doc -->
      * @return the value of the '<em>Children</em>' containment reference list.
      * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKContainerRendering_Children()
      * @see de.cau.cs.kieler.core.krendering.KRendering#getParent
@@ -59,6 +66,9 @@ public interface KContainerRendering extends KRendering {
      * there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
+     * <!-- begin-model-doc -->
+     * the placement type to use for placeing the children
+     * <!-- end-model-doc -->
      * @return the value of the '<em>Child Placement</em>' containment reference.
      * @see #setChildPlacement(KPlacement)
      * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKContainerRendering_ChildPlacement()

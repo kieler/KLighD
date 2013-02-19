@@ -12,30 +12,31 @@ import de.cau.cs.kieler.core.kgraph.PersistentEntry;
 import de.cau.cs.kieler.core.kgraph.text.krendering.serializer.KRenderingSemanticSequencer;
 import de.cau.cs.kieler.core.kgraph.text.services.KGraphGrammarAccess;
 import de.cau.cs.kieler.core.krendering.KArc;
-import de.cau.cs.kieler.core.krendering.KBackgroundColor;
-import de.cau.cs.kieler.core.krendering.KBackgroundVisibility;
+import de.cau.cs.kieler.core.krendering.KAreaPlacementData;
+import de.cau.cs.kieler.core.krendering.KBackground;
 import de.cau.cs.kieler.core.krendering.KBottomPosition;
 import de.cau.cs.kieler.core.krendering.KChildArea;
+import de.cau.cs.kieler.core.krendering.KColor;
 import de.cau.cs.kieler.core.krendering.KCustomRendering;
 import de.cau.cs.kieler.core.krendering.KDecoratorPlacementData;
-import de.cau.cs.kieler.core.krendering.KDirectPlacementData;
 import de.cau.cs.kieler.core.krendering.KEllipse;
 import de.cau.cs.kieler.core.krendering.KFontBold;
 import de.cau.cs.kieler.core.krendering.KFontItalic;
 import de.cau.cs.kieler.core.krendering.KFontName;
 import de.cau.cs.kieler.core.krendering.KFontSize;
-import de.cau.cs.kieler.core.krendering.KForegroundColor;
-import de.cau.cs.kieler.core.krendering.KForegroundVisibility;
+import de.cau.cs.kieler.core.krendering.KForeground;
 import de.cau.cs.kieler.core.krendering.KGridPlacement;
 import de.cau.cs.kieler.core.krendering.KGridPlacementData;
 import de.cau.cs.kieler.core.krendering.KHorizontalAlignment;
 import de.cau.cs.kieler.core.krendering.KImage;
+import de.cau.cs.kieler.core.krendering.KInvisibility;
 import de.cau.cs.kieler.core.krendering.KLeftPosition;
+import de.cau.cs.kieler.core.krendering.KLineCap;
 import de.cau.cs.kieler.core.krendering.KLineStyle;
 import de.cau.cs.kieler.core.krendering.KLineWidth;
+import de.cau.cs.kieler.core.krendering.KPointPlacementData;
 import de.cau.cs.kieler.core.krendering.KPolygon;
 import de.cau.cs.kieler.core.krendering.KPolyline;
-import de.cau.cs.kieler.core.krendering.KPolylinePlacementData;
 import de.cau.cs.kieler.core.krendering.KPosition;
 import de.cau.cs.kieler.core.krendering.KRectangle;
 import de.cau.cs.kieler.core.krendering.KRenderingLibrary;
@@ -46,8 +47,7 @@ import de.cau.cs.kieler.core.krendering.KRotation;
 import de.cau.cs.kieler.core.krendering.KRoundedBendsPolyline;
 import de.cau.cs.kieler.core.krendering.KRoundedRectangle;
 import de.cau.cs.kieler.core.krendering.KSpline;
-import de.cau.cs.kieler.core.krendering.KStackPlacement;
-import de.cau.cs.kieler.core.krendering.KStackPlacementData;
+import de.cau.cs.kieler.core.krendering.KStyleRef;
 import de.cau.cs.kieler.core.krendering.KText;
 import de.cau.cs.kieler.core.krendering.KTopPosition;
 import de.cau.cs.kieler.core.krendering.KVerticalAlignment;
@@ -147,18 +147,17 @@ public class KGraphSemanticSequencer extends KRenderingSemanticSequencer {
 					return; 
 				}
 				else break;
-			case KRenderingPackage.KBACKGROUND_COLOR:
-				if(context == grammarAccess.getKBackgroundColorRule() ||
-				   context == grammarAccess.getKStyleRule()) {
-					sequence_KBackgroundColor(context, (KBackgroundColor) semanticObject); 
+			case KRenderingPackage.KAREA_PLACEMENT_DATA:
+				if(context == grammarAccess.getKAreaPlacementDataRule() ||
+				   context == grammarAccess.getKPlacementDataRule()) {
+					sequence_KAreaPlacementData(context, (KAreaPlacementData) semanticObject); 
 					return; 
 				}
 				else break;
-			case KRenderingPackage.KBACKGROUND_VISIBILITY:
-				if(context == grammarAccess.getKBackgroundVisibilityRule() ||
-				   context == grammarAccess.getKStyleRule() ||
-				   context == grammarAccess.getKVisibilityRule()) {
-					sequence_KBackgroundVisibility(context, (KBackgroundVisibility) semanticObject); 
+			case KRenderingPackage.KBACKGROUND:
+				if(context == grammarAccess.getKBackgroundRule() ||
+				   context == grammarAccess.getKStyleRule()) {
+					sequence_KBackground(context, (KBackground) semanticObject); 
 					return; 
 				}
 				else break;
@@ -177,6 +176,12 @@ public class KGraphSemanticSequencer extends KRenderingSemanticSequencer {
 					return; 
 				}
 				else break;
+			case KRenderingPackage.KCOLOR:
+				if(context == grammarAccess.getKColorRule()) {
+					sequence_KColor(context, (KColor) semanticObject); 
+					return; 
+				}
+				else break;
 			case KRenderingPackage.KCUSTOM_RENDERING:
 				if(context == grammarAccess.getKCustomRenderingRule() ||
 				   context == grammarAccess.getKGraphDataRule() ||
@@ -189,13 +194,6 @@ public class KGraphSemanticSequencer extends KRenderingSemanticSequencer {
 				if(context == grammarAccess.getKDecoratorPlacementDataRule() ||
 				   context == grammarAccess.getKPlacementDataRule()) {
 					sequence_KDecoratorPlacementData(context, (KDecoratorPlacementData) semanticObject); 
-					return; 
-				}
-				else break;
-			case KRenderingPackage.KDIRECT_PLACEMENT_DATA:
-				if(context == grammarAccess.getKDirectPlacementDataRule() ||
-				   context == grammarAccess.getKPlacementDataRule()) {
-					sequence_KDirectPlacementData(context, (KDirectPlacementData) semanticObject); 
 					return; 
 				}
 				else break;
@@ -235,18 +233,10 @@ public class KGraphSemanticSequencer extends KRenderingSemanticSequencer {
 					return; 
 				}
 				else break;
-			case KRenderingPackage.KFOREGROUND_COLOR:
-				if(context == grammarAccess.getKForegroundColorRule() ||
+			case KRenderingPackage.KFOREGROUND:
+				if(context == grammarAccess.getKForegroundRule() ||
 				   context == grammarAccess.getKStyleRule()) {
-					sequence_KForegroundColor(context, (KForegroundColor) semanticObject); 
-					return; 
-				}
-				else break;
-			case KRenderingPackage.KFOREGROUND_VISIBILITY:
-				if(context == grammarAccess.getKForegroundVisibilityRule() ||
-				   context == grammarAccess.getKStyleRule() ||
-				   context == grammarAccess.getKVisibilityRule()) {
-					sequence_KForegroundVisibility(context, (KForegroundVisibility) semanticObject); 
+					sequence_KForeground(context, (KForeground) semanticObject); 
 					return; 
 				}
 				else break;
@@ -279,10 +269,24 @@ public class KGraphSemanticSequencer extends KRenderingSemanticSequencer {
 					return; 
 				}
 				else break;
+			case KRenderingPackage.KINVISIBILITY:
+				if(context == grammarAccess.getKStyleRule() ||
+				   context == grammarAccess.getKVisibilityRule()) {
+					sequence_KVisibility(context, (KInvisibility) semanticObject); 
+					return; 
+				}
+				else break;
 			case KRenderingPackage.KLEFT_POSITION:
 				if(context == grammarAccess.getKLeftPositionRule() ||
 				   context == grammarAccess.getKXPositionRule()) {
 					sequence_KLeftPosition(context, (KLeftPosition) semanticObject); 
+					return; 
+				}
+				else break;
+			case KRenderingPackage.KLINE_CAP:
+				if(context == grammarAccess.getKLineCapRule() ||
+				   context == grammarAccess.getKStyleRule()) {
+					sequence_KLineCap(context, (KLineCap) semanticObject); 
 					return; 
 				}
 				else break;
@@ -300,6 +304,13 @@ public class KGraphSemanticSequencer extends KRenderingSemanticSequencer {
 					return; 
 				}
 				else break;
+			case KRenderingPackage.KPOINT_PLACEMENT_DATA:
+				if(context == grammarAccess.getKPlacementDataRule() ||
+				   context == grammarAccess.getKPointPlacementDataRule()) {
+					sequence_KPointPlacementData(context, (KPointPlacementData) semanticObject); 
+					return; 
+				}
+				else break;
 			case KRenderingPackage.KPOLYGON:
 				if(context == grammarAccess.getKGraphDataRule() ||
 				   context == grammarAccess.getKPolygonRule() ||
@@ -313,13 +324,6 @@ public class KGraphSemanticSequencer extends KRenderingSemanticSequencer {
 				   context == grammarAccess.getKPolyline_ImplRule() ||
 				   context == grammarAccess.getKRenderingRule()) {
 					sequence_KPolyline_Impl(context, (KPolyline) semanticObject); 
-					return; 
-				}
-				else break;
-			case KRenderingPackage.KPOLYLINE_PLACEMENT_DATA:
-				if(context == grammarAccess.getKPlacementDataRule() ||
-				   context == grammarAccess.getKPolylinePlacementDataRule()) {
-					sequence_KPolylinePlacementData(context, (KPolylinePlacementData) semanticObject); 
 					return; 
 				}
 				else break;
@@ -390,17 +394,10 @@ public class KGraphSemanticSequencer extends KRenderingSemanticSequencer {
 					return; 
 				}
 				else break;
-			case KRenderingPackage.KSTACK_PLACEMENT:
-				if(context == grammarAccess.getKPlacementRule() ||
-				   context == grammarAccess.getKStackPlacementRule()) {
-					sequence_KStackPlacement(context, (KStackPlacement) semanticObject); 
-					return; 
-				}
-				else break;
-			case KRenderingPackage.KSTACK_PLACEMENT_DATA:
-				if(context == grammarAccess.getKPlacementDataRule() ||
-				   context == grammarAccess.getKStackPlacementDataRule()) {
-					sequence_KStackPlacementData(context, (KStackPlacementData) semanticObject); 
+			case KRenderingPackage.KSTYLE_REF:
+				if(context == grammarAccess.getKStyleRule() ||
+				   context == grammarAccess.getKStyleRefRule()) {
+					sequence_KStyleRef(context, (KStyleRef) semanticObject); 
 					return; 
 				}
 				else break;

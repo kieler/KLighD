@@ -98,7 +98,7 @@ class EcoreDiagramSynthesis extends AbstractTransformation<EModelElementCollecti
                 depictedClasses.createElementFigures(it);
 
                 chosenClasses.forEach[
-                    it.node.KRendering.setBackgroundColor("lightPink".color)
+                    it.node.KRendering.background = "lightPink".color;
                 ];
                 
 	        } else {
@@ -109,7 +109,7 @@ class EcoreDiagramSynthesis extends AbstractTransformation<EModelElementCollecti
                 ];
 
                 chosenClasse.forEach[
-                    it.node.KRendering.setBackgroundColor("lightPink".color)
+                    it.node.KRendering.background = "lightPink".color;
                 ];
 	        }
 		
@@ -134,7 +134,7 @@ class EcoreDiagramSynthesis extends AbstractTransformation<EModelElementCollecti
                 it.setNodeSize(boxWidth, 80);
                 it.data += renderingFactory.createKRectangle() => [
                     it.setLineWidth(2);
-                    it.setBackgroundColor("lemon".color);
+                    it.background = "lemon".color;
                     it.children += renderingFactory.createKText().putToLookUpWith(clazz) => [
                         it.text = clazz.name;
                         it.setFontSize(20);

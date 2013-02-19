@@ -159,15 +159,6 @@ public interface KRenderingFactory extends EFactory {
     KGridPlacement createKGridPlacement();
 
     /**
-     * Returns a new object of class '<em>KStack Placement</em>'.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @return a new object of class '<em>KStack Placement</em>'.
-     * @generated
-     */
-    KStackPlacement createKStackPlacement();
-
-    /**
      * Returns a new object of class '<em>KGrid Placement Data</em>'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -177,31 +168,13 @@ public interface KRenderingFactory extends EFactory {
     KGridPlacementData createKGridPlacementData();
 
     /**
-     * Returns a new object of class '<em>KStack Placement Data</em>'.
+     * Returns a new object of class '<em>KArea Placement Data</em>'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return a new object of class '<em>KStack Placement Data</em>'.
+     * @return a new object of class '<em>KArea Placement Data</em>'.
      * @generated
      */
-    KStackPlacementData createKStackPlacementData();
-
-    /**
-     * Returns a new object of class '<em>KDirect Placement Data</em>'.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @return a new object of class '<em>KDirect Placement Data</em>'.
-     * @generated
-     */
-    KDirectPlacementData createKDirectPlacementData();
-
-    /**
-     * Returns a new object of class '<em>KPolyline Placement Data</em>'.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @return a new object of class '<em>KPolyline Placement Data</em>'.
-     * @generated
-     */
-    KPolylinePlacementData createKPolylinePlacementData();
+    KAreaPlacementData createKAreaPlacementData();
 
     /**
      * Returns a new object of class '<em>KCustom Rendering</em>'.
@@ -213,22 +186,13 @@ public interface KRenderingFactory extends EFactory {
     KCustomRendering createKCustomRendering();
 
     /**
-     * Returns a new object of class '<em>KForeground Color</em>'.
+     * Returns a new object of class '<em>KColor</em>'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return a new object of class '<em>KForeground Color</em>'.
+     * @return a new object of class '<em>KColor</em>'.
      * @generated
      */
-    KForegroundColor createKForegroundColor();
-
-    /**
-     * Returns a new object of class '<em>KBackground Color</em>'.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @return a new object of class '<em>KBackground Color</em>'.
-     * @generated
-     */
-    KBackgroundColor createKBackgroundColor();
+    KColor createKColor();
 
     /**
      * Returns a new object of class '<em>KLine Width</em>'.
@@ -312,22 +276,22 @@ public interface KRenderingFactory extends EFactory {
     KSpline createKSpline();
 
     /**
-     * Returns a new object of class '<em>KForeground Visibility</em>'.
+     * Returns a new object of class '<em>KForeground</em>'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return a new object of class '<em>KForeground Visibility</em>'.
+     * @return a new object of class '<em>KForeground</em>'.
      * @generated
      */
-    KForegroundVisibility createKForegroundVisibility();
+    KForeground createKForeground();
 
     /**
-     * Returns a new object of class '<em>KBackground Visibility</em>'.
+     * Returns a new object of class '<em>KBackground</em>'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return a new object of class '<em>KBackground Visibility</em>'.
+     * @return a new object of class '<em>KBackground</em>'.
      * @generated
      */
-    KBackgroundVisibility createKBackgroundVisibility();
+    KBackground createKBackground();
 
     /**
      * Returns a new object of class '<em>KFont Bold</em>'.
@@ -382,6 +346,105 @@ public interface KRenderingFactory extends EFactory {
      * @generated
      */
     KRotation createKRotation();
+
+    /**
+     * Returns a new object of class '<em>KLine Cap</em>'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return a new object of class '<em>KLine Cap</em>'.
+     * @generated
+     */
+    KLineCap createKLineCap();
+
+    /**
+     * Returns a new object of class '<em>KPoint Placement Data</em>'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return a new object of class '<em>KPoint Placement Data</em>'.
+     * @generated
+     */
+    KPointPlacementData createKPointPlacementData();
+
+    /**
+     * Returns a new object of class '<em>KSelect Action</em>'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return a new object of class '<em>KSelect Action</em>'.
+     * @generated
+     */
+    KSelectAction createKSelectAction();
+
+    /**
+     * Returns a new object of class '<em>KExpand Action</em>'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return a new object of class '<em>KExpand Action</em>'.
+     * @generated
+     */
+    KExpandAction createKExpandAction();
+
+    /**
+     * Returns a new object of class '<em>KStyle Holder</em>'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return a new object of class '<em>KStyle Holder</em>'.
+     * @generated
+     */
+    KStyleHolder createKStyleHolder();
+
+    /**
+     * Returns a new object of class '<em>KInvisibility</em>'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return a new object of class '<em>KInvisibility</em>'.
+     * @generated
+     */
+    KInvisibility createKInvisibility();
+
+    /**
+     * Returns a new object of class '<em>KShadow</em>'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return a new object of class '<em>KShadow</em>'.
+     * @generated
+     */
+    KShadow createKShadow();
+
+    /**
+     * Returns a new object of class '<em>KText Underline</em>'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return a new object of class '<em>KText Underline</em>'.
+     * @generated
+     */
+    KTextUnderline createKTextUnderline();
+
+    /**
+     * Returns a new object of class '<em>KCollapse Action</em>'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return a new object of class '<em>KCollapse Action</em>'.
+     * @generated
+     */
+    KCollapseAction createKCollapseAction();
+
+    /**
+     * Returns a new object of class '<em>KStyle Ref</em>'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return a new object of class '<em>KStyle Ref</em>'.
+     * @generated
+     */
+    KStyleRef createKStyleRef();
+
+    /**
+     * Returns a new object of class '<em>KText Strikeout</em>'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return a new object of class '<em>KText Strikeout</em>'.
+     * @generated
+     */
+    KTextStrikeout createKTextStrikeout();
 
     /**
      * Returns the package supported by this factory.

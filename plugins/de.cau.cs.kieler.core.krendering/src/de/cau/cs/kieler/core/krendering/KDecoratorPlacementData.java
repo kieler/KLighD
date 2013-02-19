@@ -19,15 +19,20 @@ package de.cau.cs.kieler.core.krendering;
  * A representation of the model object '<em><b>KDecorator Placement Data</b></em>'.
  * <!-- end-user-doc -->
  *
+ * <!-- begin-model-doc -->
+ * defines appearance and position of decorators
+ * <!-- end-model-doc -->
+ *
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link de.cau.cs.kieler.core.krendering.KDecoratorPlacementData#getLocation <em>Location</em>}</li>
+ *   <li>{@link de.cau.cs.kieler.core.krendering.KDecoratorPlacementData#getAbsolute <em>Absolute</em>}</li>
  *   <li>{@link de.cau.cs.kieler.core.krendering.KDecoratorPlacementData#getXOffset <em>XOffset</em>}</li>
  *   <li>{@link de.cau.cs.kieler.core.krendering.KDecoratorPlacementData#getYOffset <em>YOffset</em>}</li>
- *   <li>{@link de.cau.cs.kieler.core.krendering.KDecoratorPlacementData#isRelative <em>Relative</em>}</li>
+ *   <li>{@link de.cau.cs.kieler.core.krendering.KDecoratorPlacementData#isRotateWithLine <em>Rotate With Line</em>}</li>
  *   <li>{@link de.cau.cs.kieler.core.krendering.KDecoratorPlacementData#getWidth <em>Width</em>}</li>
  *   <li>{@link de.cau.cs.kieler.core.krendering.KDecoratorPlacementData#getHeight <em>Height</em>}</li>
+ *   <li>{@link de.cau.cs.kieler.core.krendering.KDecoratorPlacementData#getRelative <em>Relative</em>}</li>
  * </ul>
  * </p>
  *
@@ -37,39 +42,38 @@ package de.cau.cs.kieler.core.krendering;
  */
 public interface KDecoratorPlacementData extends KPlacementData {
     /**
-     * Returns the value of the '<em><b>Location</b></em>' attribute.
+     * Returns the value of the '<em><b>Absolute</b></em>' attribute.
      * <!-- begin-user-doc -->
-     * <p>
-     * If the meaning of the '<em>Location</em>' attribute isn't clear,
-     * there really should be more of a description here...
-     * </p>
      * <!-- end-user-doc -->
-     * @return the value of the '<em>Location</em>' attribute.
-     * @see #setLocation(float)
-     * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKDecoratorPlacementData_Location()
+     * <!-- begin-model-doc -->
+     * can be used to define an absolute indent of the decorator on the decorated object
+     * 
+     * <!-- end-model-doc -->
+     * @return the value of the '<em>Absolute</em>' attribute.
+     * @see #setAbsolute(float)
+     * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKDecoratorPlacementData_Absolute()
      * @model required="true"
      * @generated
      */
-    float getLocation();
+    float getAbsolute();
 
     /**
-     * Sets the value of the '{@link de.cau.cs.kieler.core.krendering.KDecoratorPlacementData#getLocation <em>Location</em>}' attribute.
+     * Sets the value of the '{@link de.cau.cs.kieler.core.krendering.KDecoratorPlacementData#getAbsolute <em>Absolute</em>}' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @param value the new value of the '<em>Location</em>' attribute.
-     * @see #getLocation()
+     * @param value the new value of the '<em>Absolute</em>' attribute.
+     * @see #getAbsolute()
      * @generated
      */
-    void setLocation(float value);
+    void setAbsolute(float value);
 
     /**
      * Returns the value of the '<em><b>XOffset</b></em>' attribute.
      * <!-- begin-user-doc -->
-     * <p>
-     * If the meaning of the '<em>XOffset</em>' attribute isn't clear,
-     * there really should be more of a description here...
-     * </p>
      * <!-- end-user-doc -->
+     * <!-- begin-model-doc -->
+     * place decorator n units in x-direction next to the decorated object
+     * <!-- end-model-doc -->
      * @return the value of the '<em>XOffset</em>' attribute.
      * @see #setXOffset(float)
      * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKDecoratorPlacementData_XOffset()
@@ -91,11 +95,10 @@ public interface KDecoratorPlacementData extends KPlacementData {
     /**
      * Returns the value of the '<em><b>YOffset</b></em>' attribute.
      * <!-- begin-user-doc -->
-     * <p>
-     * If the meaning of the '<em>YOffset</em>' attribute isn't clear,
-     * there really should be more of a description here...
-     * </p>
      * <!-- end-user-doc -->
+     * <!-- begin-model-doc -->
+     * place decorator n units in y-direction next to the decorated object
+     * <!-- end-model-doc -->
      * @return the value of the '<em>YOffset</em>' attribute.
      * @see #setYOffset(float)
      * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKDecoratorPlacementData_YOffset()
@@ -115,30 +118,29 @@ public interface KDecoratorPlacementData extends KPlacementData {
     void setYOffset(float value);
 
     /**
-     * Returns the value of the '<em><b>Relative</b></em>' attribute.
+     * Returns the value of the '<em><b>Rotate With Line</b></em>' attribute.
      * <!-- begin-user-doc -->
-     * <p>
-     * If the meaning of the '<em>Relative</em>' attribute isn't clear,
-     * there really should be more of a description here...
-     * </p>
      * <!-- end-user-doc -->
-     * @return the value of the '<em>Relative</em>' attribute.
-     * @see #setRelative(boolean)
-     * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKDecoratorPlacementData_Relative()
+     * <!-- begin-model-doc -->
+     * define whether the decorator should rotate, when the line is rotated. If set to false, an arrow will always point in the same direction, regardless of the direction the line is pointing in
+     * <!-- end-model-doc -->
+     * @return the value of the '<em>Rotate With Line</em>' attribute.
+     * @see #setRotateWithLine(boolean)
+     * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKDecoratorPlacementData_RotateWithLine()
      * @model required="true"
      * @generated
      */
-    boolean isRelative();
+    boolean isRotateWithLine();
 
     /**
-     * Sets the value of the '{@link de.cau.cs.kieler.core.krendering.KDecoratorPlacementData#isRelative <em>Relative</em>}' attribute.
+     * Sets the value of the '{@link de.cau.cs.kieler.core.krendering.KDecoratorPlacementData#isRotateWithLine <em>Rotate With Line</em>}' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @param value the new value of the '<em>Relative</em>' attribute.
-     * @see #isRelative()
+     * @param value the new value of the '<em>Rotate With Line</em>' attribute.
+     * @see #isRotateWithLine()
      * @generated
      */
-    void setRelative(boolean value);
+    void setRotateWithLine(boolean value);
 
     /**
      * Returns the value of the '<em><b>Width</b></em>' attribute.
@@ -148,6 +150,9 @@ public interface KDecoratorPlacementData extends KPlacementData {
      * there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
+     * <!-- begin-model-doc -->
+     * width of the decorator
+     * <!-- end-model-doc -->
      * @return the value of the '<em>Width</em>' attribute.
      * @see #setWidth(float)
      * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKDecoratorPlacementData_Width()
@@ -174,6 +179,9 @@ public interface KDecoratorPlacementData extends KPlacementData {
      * there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
+     * <!-- begin-model-doc -->
+     * height of the decorator
+     * <!-- end-model-doc -->
      * @return the value of the '<em>Height</em>' attribute.
      * @see #setHeight(float)
      * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKDecoratorPlacementData_Height()
@@ -191,5 +199,34 @@ public interface KDecoratorPlacementData extends KPlacementData {
      * @generated
      */
     void setHeight(float value);
+
+    /**
+     * Returns the value of the '<em><b>Relative</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <p>
+     * If the meaning of the '<em>Relative</em>' attribute isn't clear,
+     * there really should be more of a description here...
+     * </p>
+     * <!-- end-user-doc -->
+     * <!-- begin-model-doc -->
+     * relative position based on the size of the decorated object
+     * <!-- end-model-doc -->
+     * @return the value of the '<em>Relative</em>' attribute.
+     * @see #setRelative(float)
+     * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKDecoratorPlacementData_Relative()
+     * @model
+     * @generated
+     */
+    float getRelative();
+
+    /**
+     * Sets the value of the '{@link de.cau.cs.kieler.core.krendering.KDecoratorPlacementData#getRelative <em>Relative</em>}' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @param value the new value of the '<em>Relative</em>' attribute.
+     * @see #getRelative()
+     * @generated
+     */
+    void setRelative(float value);
 
 } // KDecoratorPlacementData

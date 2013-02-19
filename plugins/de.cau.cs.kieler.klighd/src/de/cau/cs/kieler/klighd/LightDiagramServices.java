@@ -25,6 +25,7 @@ import de.cau.cs.kieler.core.properties.IProperty;
 import de.cau.cs.kieler.core.properties.IPropertyHolder;
 import de.cau.cs.kieler.core.properties.Property;
 import de.cau.cs.kieler.klighd.transformations.ReinitializingTransformationProxy;
+import de.cau.cs.kieler.klighd.viewers.ContextViewer;
 
 /**
  * Singleton for accessing basic KLighD services.
@@ -229,19 +230,24 @@ public final class LightDiagramServices {
     /**
      * Creates a viewer instance with the viewer provider associated with the view context into the
      * given parent composite and sets the base model of the view context into that viewer if
-     * possible.
+     * possible.<br>
+     * <br>
+     * chsch: added parentViewer parameter as it is needed e.g. in the KlighdActionEventHandler
      * 
+     * @param parentViewer
+     *            the parent {@link ContextViewer}
      * @param viewContext
      *            the view context
      * @param parent
      *            the parent composite
      * @return the created viewer or null on failure
      */
-    public IViewer<?> createViewer(final ViewContext viewContext, final Composite parent) {
+    public IViewer<?> createViewer(final ContextViewer parentViewer, final ViewContext viewContext,
+            final Composite parent) {
         IViewerProvider<?> viewerProvider = viewContext.getViewerProvider();
         if (viewerProvider != null) {
             // create a new viewer
-            IViewer<?> viewer = viewerProvider.createViewer(parent);
+            IViewer<?> viewer = viewerProvider.createViewer(parentViewer, parent);
             // remember the created viewer in a property
             viewContext.setProperty(VIEWER, viewer);
             // set the base model if possible

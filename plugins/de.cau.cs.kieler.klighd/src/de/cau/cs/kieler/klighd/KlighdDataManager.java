@@ -27,9 +27,10 @@ import com.google.common.collect.Maps;
 import de.cau.cs.kieler.core.WrappedException;
 
 /**
- * Singleton for accessing transformations, viewers and update strategies registered with KLighD.
+ * Singleton for accessing transformations, viewers, update strategies and layout post processors
+ * registered with KLighD.
  * 
- * @author mri
+ * @author mri, chsch, akoc
  */
 public final class KlighdDataManager {
 
@@ -40,6 +41,9 @@ public final class KlighdDataManager {
             "de.cau.cs.kieler.klighd.modelTransformations";
     /** identifier of the extension point for update strategies. */
     public static final String EXTP_ID_UPDATE_STRATEGIES = "de.cau.cs.kieler.klighd.updateStrategies";
+    /** identifier of the extension point for layout post processors. */
+    public static final String EXTP_ID_LAYOUT_POST_PROCESSORS =
+            "de.cau.cs.kieler.klighd.layoutPostProcessors";
 
     /** name of the 'viewer' element. */
     public static final String ELEMENT_VIEWER = "viewer";
@@ -47,6 +51,8 @@ public final class KlighdDataManager {
     public static final String ELEMENT_TRANSFORMATION = "transformation";
     /** name of the 'updateStrategy' element. */
     public static final String ELEMENT_UPDATE_STRATEGY = "updateStrategy";
+    /** name of the 'styleModifier' element. */
+    public static final String ELEMENT_STYLE_MODIFIER = "styleModifier";
 
     /** name of the 'id' attribute in the extension points. */
     public static final String ATTRIBUTE_ID = "id";
@@ -69,6 +75,8 @@ public final class KlighdDataManager {
     private Map<String, IViewerProvider<?>> idViewerProviderMapping = Maps.newHashMap();
     /** the mapping of ids on the associated update strategies. */
     private Map<String, IUpdateStrategy<?>> idUpdateStrategyMapping = Maps.newHashMap();
+    /** the mapping of ids on the associated style modifiers. */
+    private Map<String, IStyleModifier> idStyleModifierMapping = Maps.newHashMap();
 
     /**
      * A private constructor to prevent instantiation.
@@ -92,6 +100,7 @@ public final class KlighdDataManager {
                             "KLighD: Failure while loading registered transformations.", e));
         }
         instance.loadUpdateStrategyExtension();
+        instance.loadLayoutPostProcessorExtension();
     }
 
     /**
@@ -224,6 +233,33 @@ public final class KlighdDataManager {
     }
     
     /**
+     * Loads and registers all layout post processors from the extension point.
+     */
+    private void loadLayoutPostProcessorExtension() {
+        IConfigurationElement[] extensions = Platform.getExtensionRegistry()
+                .getConfigurationElementsFor(EXTP_ID_LAYOUT_POST_PROCESSORS);
+        for (IConfigurationElement element : extensions) {
+            try {
+                if (ELEMENT_STYLE_MODIFIER.equals(element.getName())) {
+                    // initialize style modifier from the extension point
+                    IStyleModifier styleModifier = (IStyleModifier) element
+                            .createExecutableExtension(ATTRIBUTE_CLASS);
+                    if (styleModifier != null) {
+                        String id = element.getAttribute(ATTRIBUTE_ID);
+                        if (id == null || id.length() == 0) {
+                            reportError(EXTP_ID_LAYOUT_POST_PROCESSORS, element, ATTRIBUTE_ID, null);
+                        } else {
+                            idStyleModifierMapping.put(id, styleModifier);
+                        }
+                    }
+                }
+            } catch (CoreException exception) {
+                StatusManager.getManager().handle(exception, KlighdPlugin.PLUGIN_ID);
+            }
+        }
+    }
+    
+    /**
      * Returns the graph containing the registered transformations.
      * 
      * @return the transformations graph
@@ -269,6 +305,17 @@ public final class KlighdDataManager {
      */
     public IUpdateStrategy<?> getUpdateStrategyById(final String id) {
         return idUpdateStrategyMapping.get(id);
+    }
+    
+    /**
+     * Returns the style modifier with the given identifier.
+     * 
+     * @param id
+     *            the identifier
+     * @return the style modifier
+     */
+    public IStyleModifier getStyleModifierById(final String id) {
+        return idStyleModifierMapping.get(id);
     }
     
 }

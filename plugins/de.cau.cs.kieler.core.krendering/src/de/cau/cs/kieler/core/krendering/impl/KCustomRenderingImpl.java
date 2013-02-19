@@ -81,24 +81,24 @@ public class KCustomRenderingImpl extends KContainerRenderingImpl implements KCu
     /**
      * The default value of the '{@link #getFigureObject() <em>Figure Object</em>}' attribute.
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @see #getFigureObject()
      * @generated
      * @ordered
      */
-	protected static final Object FIGURE_OBJECT_EDEFAULT = null;
+    protected static final Object FIGURE_OBJECT_EDEFAULT = null;
 
-				/**
+    /**
      * The cached value of the '{@link #getFigureObject() <em>Figure Object</em>}' attribute.
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @see #getFigureObject()
      * @generated
      * @ordered
      */
-	protected Object figureObject = FIGURE_OBJECT_EDEFAULT;
+    protected Object figureObject = FIGURE_OBJECT_EDEFAULT;
 
-				/**
+    /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
@@ -161,26 +161,26 @@ public class KCustomRenderingImpl extends KContainerRenderingImpl implements KCu
 
     /**
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @generated
      */
-	public Object getFigureObject() {
+    public Object getFigureObject() {
         return figureObject;
     }
 
-				/**
+    /**
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @generated
      */
-	public void setFigureObject(Object newFigureObject) {
+    public void setFigureObject(Object newFigureObject) {
         Object oldFigureObject = figureObject;
         figureObject = newFigureObject;
         if (eNotificationRequired())
             eNotify(new ENotificationImpl(this, Notification.SET, KRenderingPackage.KCUSTOM_RENDERING__FIGURE_OBJECT, oldFigureObject, figureObject));
     }
 
-				/**
+    /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated

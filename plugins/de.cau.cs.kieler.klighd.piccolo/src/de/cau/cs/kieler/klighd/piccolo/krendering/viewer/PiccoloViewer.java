@@ -26,6 +26,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Menu;
+import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
@@ -34,8 +35,8 @@ import com.google.common.collect.Maps;
 import de.cau.cs.kieler.core.kgraph.KGraphElement;
 import de.cau.cs.kieler.core.kgraph.KGraphPackage;
 import de.cau.cs.kieler.core.kgraph.KNode;
-import de.cau.cs.kieler.core.krendering.KBackgroundColor;
-import de.cau.cs.kieler.core.krendering.KBackgroundVisibility;
+import de.cau.cs.kieler.core.krendering.KBackground;
+import de.cau.cs.kieler.core.krendering.KColor;
 import de.cau.cs.kieler.core.krendering.KLineStyle;
 import de.cau.cs.kieler.core.krendering.KRendering;
 import de.cau.cs.kieler.core.krendering.KRenderingFactory;
@@ -48,19 +49,21 @@ import de.cau.cs.kieler.klighd.piccolo.Messages;
 import de.cau.cs.kieler.klighd.piccolo.PMouseWheelZoomEventHandler;
 import de.cau.cs.kieler.klighd.piccolo.PSWTSimpleSelectionEventHandler;
 import de.cau.cs.kieler.klighd.piccolo.activities.ZoomActivity;
+import de.cau.cs.kieler.klighd.piccolo.events.KlighdActionEventHandler;
 import de.cau.cs.kieler.klighd.piccolo.krendering.ITracingElement;
 import de.cau.cs.kieler.klighd.piccolo.krendering.controller.GraphController;
-import de.cau.cs.kieler.klighd.piccolo.krendering.controller.RenderingContextData;
+import de.cau.cs.kieler.klighd.util.RenderingContextData;
 import de.cau.cs.kieler.klighd.piccolo.nodes.PEmptyNode;
 import de.cau.cs.kieler.klighd.piccolo.ui.SaveAsImageAction;
 import de.cau.cs.kieler.klighd.viewers.AbstractViewer;
+import de.cau.cs.kieler.klighd.viewers.ContextViewer;
 import edu.umd.cs.piccolo.PCamera;
 import edu.umd.cs.piccolo.PLayer;
 import edu.umd.cs.piccolo.PNode;
 import edu.umd.cs.piccolo.PRoot;
 import edu.umd.cs.piccolo.event.PInputEventFilter;
+import edu.umd.cs.piccolo.util.PBounds;
 import edu.umd.cs.piccolox.swt.PSWTCanvas;
-//import de.cau.cs.kieler.klighd.piccolo.krendering.IGraphElement;
 
 /**
  * A viewer for Piccolo diagram contexts.
@@ -75,30 +78,72 @@ public class PiccoloViewer extends AbstractViewer<KNode> implements INodeSelecti
     private PSWTSimpleSelectionEventHandler selectionHandler = null;
     /** a map used track highlighting style attached to selected elements. */
     private Map<EObject, Iterable<? extends KStyle>> selectionHighlighting = Maps.newHashMap();
+    /** the content outline page. */
+    private PiccoloOutlinePage outlinePage;
     
+    /** the parent viewer. */
+    private ContextViewer parentViewer;
     /** the graph controller. */
     private GraphController controller;
 
     /**
      * Creates a Piccolo viewer with default style.
      * 
+     * @param parentViewer
+     *            the parent {@link ContextViewer}
      * @param parent
      *            the parent composite
      */
-    public PiccoloViewer(final Composite parent) {
-        this(parent, SWT.NONE);
+    public PiccoloViewer(final ContextViewer parentViewer, final Composite parent) {
+        this(parentViewer, parent, SWT.NONE);
     }
 
     /**
      * Creates a Piccolo viewer with given style.
      * 
+     * @param theParentViewer
+     *            the parent {@link ContextViewer}
      * @param parent
      *            the parent composite
      * @param style
      *            the style attributes
      */
-    public PiccoloViewer(final Composite parent, final int style) {
-        canvas = new PSWTCanvas(parent, style);
+    public PiccoloViewer(final ContextViewer theParentViewer, final Composite parent,
+            final int style) {
+        if (parent.isDisposed()) {
+            throw new UnsupportedOperationException("So geht das nicht!");
+        }
+        this.parentViewer = theParentViewer;
+        this.canvas = new PSWTCanvas(parent, style) {
+            
+            // with this specialized implementation I register
+            //  customized event listeners that do not translate SWT events into AWT ones.
+            protected void installInputSources() {
+                // TODO for the moment we need the original ones, too, as long as the the 
+                //  PSWTSimpleSelectionEventHandler is not migrated to the custom listeners
+                super.installInputSources();
+                
+                this.addKeyListener(new KlighdKeyEventListener(this));
+                KlighdMouseEventListener mouseListener = new KlighdMouseEventListener(this);
+                this.addMouseListener(mouseListener);
+                this.addMouseMoveListener(mouseListener);
+                this.addMouseTrackListener(mouseListener);
+                this.addMouseWheelListener(mouseListener);
+            }
+
+            /**
+             * {@inheritDoc}.<br>
+             * <br>
+             * This specialized method checks the validity of the canvas
+             * before something is painted in order to avoid the 'Widget is disposed' errors.
+             */
+            public void repaint(final PBounds bounds) {
+                if (!this.isDisposed()) {
+                    super.repaint(bounds);
+                }
+            }
+        };
+        
         // this reduces flickering drastically
         canvas.setDoubleBuffered(true);
         // canvas.setDefaultRenderQuality(PPaintContext.LOW_QUALITY_RENDERING);
@@ -137,6 +182,13 @@ public class PiccoloViewer extends AbstractViewer<KNode> implements INodeSelecti
     public Control getControl() {
         return canvas;
     }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public ContextViewer getContextViewer() {
+        return this.parentViewer;
+    }
 
     /**
      * {@inheritDoc}
@@ -147,7 +199,7 @@ public class PiccoloViewer extends AbstractViewer<KNode> implements INodeSelecti
             canvas.removeInputEventListener(selectionHandler);
             selectionHandler = null;
         }
-
+        
         // prepare the camera
         PCamera camera = canvas.getCamera();
         // resetCamera(camera);
@@ -156,6 +208,11 @@ public class PiccoloViewer extends AbstractViewer<KNode> implements INodeSelecti
         // create a controller for the graph
         controller = new GraphController(model, camera.getLayer(0), sync);
         controller.initialize();
+        
+        // update the outline page
+        if (outlinePage != null) {
+            outlinePage.setContent(camera.getLayer(0));
+        }
 
         // add a node for the marquee
         PEmptyNode marqueeParent = new PEmptyNode();
@@ -164,6 +221,7 @@ public class PiccoloViewer extends AbstractViewer<KNode> implements INodeSelecti
         // add a selection handler
         selectionHandler = new PSWTSimpleSelectionEventHandler(camera, marqueeParent);
         canvas.addInputEventListener(selectionHandler);
+        canvas.addInputEventListener(new KlighdActionEventHandler(this));
 
         // forward the selection events
         selectionHandler.addSelectionListener(this);
@@ -178,9 +236,20 @@ public class PiccoloViewer extends AbstractViewer<KNode> implements INodeSelecti
      */
     public KNode getModel() {
         if (controller != null) {
-            return controller.getGraph();
+            return controller.getNode().getGraphElement();
         }
         return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public IContentOutlinePage getOutlinePage() {
+        if (outlinePage == null) {
+            outlinePage = new PiccoloOutlinePage();
+            outlinePage.setContent(canvas.getCamera().getLayer(0));
+        }
+        return outlinePage;
     }
 
     /**
@@ -325,6 +394,20 @@ public class PiccoloViewer extends AbstractViewer<KNode> implements INodeSelecti
     }
     
     /**
+     * {@inheritDoc}
+     */
+    public void expand(final KNode diagramElement) {
+        controller.expand(diagramElement);
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public void toggleExpansion(final KNode diagramElement) {
+        controller.toggleExpansion(diagramElement);
+    }
+    
+    /**
      * Returns the Piccolo representation for the given diagram element.
      * 
      * @param diagramElement
@@ -402,19 +485,21 @@ public class PiccoloViewer extends AbstractViewer<KNode> implements INodeSelecti
             KLineStyle style = KRenderingFactory.eINSTANCE.createKLineStyle();
             style.setLineStyle(LineStyle.DASH);
             if (KGraphPackage.eINSTANCE.getKGraphElement().isInstance(element)) {
-                ((KGraphElement) element).getData(KRendering.class).getStyles().add(0, style);
-                selectionHighlighting.put(element, Lists.newArrayList(style));
+                KRendering rendering = ((KGraphElement) element).getData(KRendering.class);
+                if (rendering != null) {
+                    rendering.getStyles().add(0, style);
+                    selectionHighlighting.put(element, Lists.newArrayList(style));
+                }
             } else if (KRenderingPackage.eINSTANCE.getKText().isInstance(element)) {
-                final KBackgroundVisibility bgv = KRenderingFactory.eINSTANCE
-                        .createKBackgroundVisibility();
-                bgv.setVisible(true);
-                final KBackgroundColor bgc = KRenderingFactory.eINSTANCE.createKBackgroundColor();
+                final KBackground bg = KRenderingFactory.eINSTANCE.createKBackground();
+                final KColor bgColor = KRenderingFactory.eINSTANCE.createKColor();
                 // the color values of 'DimGray'   // SUPPRESS CHECKSTYLE NEXT 3 MagicNumber
-                bgc.setRed(190);
-                bgc.setGreen(190);
-                bgc.setBlue(190);
-                ((KText) element).getStyles().addAll(Lists.newArrayList(bgv, bgc));
-                selectionHighlighting.put(element, Lists.newArrayList(bgv, bgc));
+                bgColor.setRed(190);
+                bgColor.setGreen(190);
+                bgColor.setBlue(190);
+                bg.setColor(bgColor);
+                ((KText) element).getStyles().add(bg);
+                selectionHighlighting.put(element, Lists.newArrayList(bg));
             }
         }
         // end of selection highlighting stuff

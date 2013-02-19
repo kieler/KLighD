@@ -13,8 +13,12 @@
  */
 package de.cau.cs.kieler.core.kgraph.text.validation;
 
+import java.util.Iterator;
+
 import org.eclipse.xtext.validation.Check;
 
+import com.google.common.base.Function;
+import com.google.common.collect.Iterables;
 import com.google.common.collect.Iterators;
 
 import de.cau.cs.kieler.core.kgraph.KGraphPackage;
@@ -41,9 +45,15 @@ public class KGraphJavaValidator extends AbstractKGraphJavaValidator {
     public void addTrainTest(final KNode node) {
         try {
             Class.forName("de.cau.cs.kieler.klighd.test.SizeEstimationTrainer");
-            KRendering rendering  = node.getData(KRendering.class);
-            boolean valid = rendering != null
-                    && Iterators.filter(rendering.eAllContents(), KText.class).hasNext();
+            Iterator<KRendering> renderings = Iterators.concat(Iterators.transform(
+                    Iterators.filter(node.getData().iterator(), KRendering.class),
+                    new Function<KRendering, Iterator<KRendering>>() {
+                        public Iterator<KRendering> apply(final KRendering r) {
+                            return Iterators.concat(Iterators.singletonIterator(r),
+                                    Iterators.filter(r.eAllContents(), KRendering.class));
+                        }
+                    }));
+            boolean valid = Iterators.filter(renderings, KText.class).hasNext();
             if (valid) {
                 info("'Train KNode' marker", KGraphPackage.eINSTANCE.getKNode_Parent(),
                         TRAIN_KNODE_INFO);

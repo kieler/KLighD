@@ -19,6 +19,10 @@ package de.cau.cs.kieler.core.krendering;
  * A representation of the model object '<em><b>KImage</b></em>'.
  * <!-- end-user-doc -->
  *
+ * <!-- begin-model-doc -->
+ * Use an image instead of defining the renderings completely by yourself
+ * <!-- end-model-doc -->
+ *
  * <p>
  * The following features are supported:
  * <ul>
@@ -41,10 +45,13 @@ public interface KImage extends KContainerRendering {
      * there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
+     * <!-- begin-model-doc -->
+     * Name of the bundle where the image can be found. Note that the imagePath is relative to this bundle. 
+     * <!-- end-model-doc -->
      * @return the value of the '<em>Bundle Name</em>' attribute.
      * @see #setBundleName(String)
      * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKImage_BundleName()
-     * @model required="true"
+     * @model
      * @generated
      */
     String getBundleName();
@@ -67,10 +74,13 @@ public interface KImage extends KContainerRendering {
      * there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
+     * <!-- begin-model-doc -->
+     * the path to the image on the filesystem relative to the bundleName (and its according position)
+     * <!-- end-model-doc -->
      * @return the value of the '<em>Image Path</em>' attribute.
      * @see #setImagePath(String)
      * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKImage_ImagePath()
-     * @model required="true"
+     * @model
      * @generated
      */
     String getImagePath();
@@ -93,6 +103,9 @@ public interface KImage extends KContainerRendering {
      * there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
+     * <!-- begin-model-doc -->
+     * the image to be used as JavaObject
+     * <!-- end-model-doc -->
      * @return the value of the '<em>Image Object</em>' attribute.
      * @see #setImageObject(Object)
      * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKImage_ImageObject()

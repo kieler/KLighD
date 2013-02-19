@@ -19,11 +19,14 @@ package de.cau.cs.kieler.core.krendering;
  * A representation of the model object '<em><b>KText</b></em>'.
  * <!-- end-user-doc -->
  *
+ * <!-- begin-model-doc -->
+ * display text. Text can be positioned by adding Horizontal or VerticalAlignment and can be clipped if there is not enough space to display all of it without overlapping other elements
+ * <!-- end-model-doc -->
+ *
  * <p>
  * The following features are supported:
  * <ul>
  *   <li>{@link de.cau.cs.kieler.core.krendering.KText#getText <em>Text</em>}</li>
- *   <li>{@link de.cau.cs.kieler.core.krendering.KText#isClip <em>Clip</em>}</li>
  * </ul>
  * </p>
  *
@@ -31,7 +34,7 @@ package de.cau.cs.kieler.core.krendering;
  * @model
  * @generated
  */
-public interface KText extends KContainerRendering {
+public interface KText extends KRendering {
     /**
      * Returns the value of the '<em><b>Text</b></em>' attribute.
      * <!-- begin-user-doc -->
@@ -40,6 +43,9 @@ public interface KText extends KContainerRendering {
      * there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
+     * <!-- begin-model-doc -->
+     * the text to be displayed
+     * <!-- end-model-doc -->
      * @return the value of the '<em>Text</em>' attribute.
      * @see #setText(String)
      * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKText_Text()
@@ -57,31 +63,5 @@ public interface KText extends KContainerRendering {
      * @generated
      */
     void setText(String value);
-
-    /**
-     * Returns the value of the '<em><b>Clip</b></em>' attribute.
-     * <!-- begin-user-doc -->
-     * <p>
-     * If the meaning of the '<em>Clip</em>' attribute isn't clear,
-     * there really should be more of a description here...
-     * </p>
-     * <!-- end-user-doc -->
-     * @return the value of the '<em>Clip</em>' attribute.
-     * @see #setClip(boolean)
-     * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKText_Clip()
-     * @model required="true"
-     * @generated
-     */
-    boolean isClip();
-
-    /**
-     * Sets the value of the '{@link de.cau.cs.kieler.core.krendering.KText#isClip <em>Clip</em>}' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @param value the new value of the '<em>Clip</em>' attribute.
-     * @see #isClip()
-     * @generated
-     */
-    void setClip(boolean value);
 
 } // KText

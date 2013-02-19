@@ -19,6 +19,12 @@ package de.cau.cs.kieler.core.krendering;
  * A representation of the model object '<em><b>KRounded Rectangle</b></em>'.
  * <!-- end-user-doc -->
  *
+ * <!-- begin-model-doc -->
+ * The rounded rectangle is used to create a rectangle with rounded corners. Corner width and height need to be passed in order to define the style of the corners.
+ * The shape fits inside the space defined (a) by the node it is attached to or (b) by the placementData that is attached to the rendering
+ * 
+ * <!-- end-model-doc -->
+ *
  * <p>
  * The following features are supported:
  * <ul>
@@ -40,6 +46,9 @@ public interface KRoundedRectangle extends KContainerRendering {
      * there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
+     * <!-- begin-model-doc -->
+     * width of a corner in pixels
+     * <!-- end-model-doc -->
      * @return the value of the '<em>Corner Width</em>' attribute.
      * @see #setCornerWidth(float)
      * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKRoundedRectangle_CornerWidth()
@@ -66,6 +75,9 @@ public interface KRoundedRectangle extends KContainerRendering {
      * there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
+     * <!-- begin-model-doc -->
+     * height of a corner in pixels
+     * <!-- end-model-doc -->
      * @return the value of the '<em>Corner Height</em>' attribute.
      * @see #setCornerHeight(float)
      * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKRoundedRectangle_CornerHeight()

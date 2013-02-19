@@ -96,7 +96,16 @@ public final class DiagramViewManager implements IPartListener {
      * @return the diagram view or null if no view with the given identifier exists
      */
     public DiagramViewPart getView(final String id) {
-        return idPartMapping.get(id);
+        DiagramViewPart view = idPartMapping.get(id);
+        if (view != null && view.isDisposed()) {
+            // actually this branch should not be taken due to DiagramViewPart#dispose();
+            // however, there're still those ugly exceptions after a view is closed and
+            //  tried to be re-opened...
+            this.unregisterViewContexts(view);
+            return null;
+        } else {
+            return view;
+        }
     }
 
     
@@ -260,7 +269,9 @@ public final class DiagramViewManager implements IPartListener {
                         return null;
                     }
                 } else {
-                    // unregister view contexts associated with the view
+                    // in case there is already a view with the given id
+                    //  clean that one up by unregistering view contexts currently associated with it
+                    //  as a new one will be registered below
                     unregisterViewContexts(diagramView);
                 }
 
@@ -277,7 +288,7 @@ public final class DiagramViewManager implements IPartListener {
                 
                 // fill the options pane according to the the incorporated transformations
                 // TODO implement this (the following line is a placeholder)
-//                diagramView.updateOptions();
+//                diagramView.getContextViewer().updateOptions();
 
                 // make the view visible without giving it the focus
                 page.bringToTop(diagramView);
@@ -310,7 +321,12 @@ public final class DiagramViewManager implements IPartListener {
         idContextMapping.put(id, context);
     }
 
-    private void unregisterViewContexts(final DiagramViewPart view) {
+    /**
+     * Is package protected in order to be callable from {@link DiagramViewPart#dispose()}.
+     * 
+     * @param view the view to close
+     */
+    void unregisterViewContexts(final DiagramViewPart view) {
         // unmap the id from the view
         List<ViewContext> viewContexts = partContextMapping.get(view);
         if (viewContexts != null) {
@@ -348,16 +364,23 @@ public final class DiagramViewManager implements IPartListener {
         }
         try {
             IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
-            IViewReference viewRef = page.findViewReference(PRIMARY_VIEW_ID, id);
 
-            if (viewRef != null) {
-                page.hideView(viewRef);
+            DiagramViewPart view = this.idPartMapping.get(id);
+            if (view != null) {
+                unregisterViewContexts(view);
+                view.getSite().getPage().hideView(view);
                 return true;
+            } else {
+                IViewReference viewRef = page.findViewReference(PRIMARY_VIEW_ID, id);
+                if (viewRef != null) {
+                    page.hideView(viewRef);
+                    return true;
+                }
             }
+            
         } catch (NullPointerException e) {
             /* do nothing */
         }
-
         return false;
     }
 

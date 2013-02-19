@@ -1,4 +1,3 @@
-// SUPPRESS CHECKSTYLE NEXT Header
 /*
  * Copyright (c) 2008-2011, Piccolo2D project, http://piccolo2d.org
  * Copyright (c) 1998-2008, University of Maryland
@@ -27,11 +26,11 @@
  * TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+// SUPPRESS CHECKSTYLE PREVIOUS 30 Header
 package de.cau.cs.kieler.klighd.piccolo.nodes;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
-import java.awt.Paint;
 import java.awt.Shape;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Arc2D;
@@ -42,9 +41,15 @@ import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
 import java.util.ArrayList;
+import java.util.Map;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.RGB;
 
+import com.google.common.collect.Maps;
+
+import de.cau.cs.kieler.core.krendering.LineCap;
+import de.cau.cs.kieler.core.krendering.LineStyle;
 import de.cau.cs.kieler.core.math.KVector;
 import de.cau.cs.kieler.core.math.KVectorChain;
 import de.cau.cs.kieler.core.math.KielerMath;
@@ -72,22 +77,6 @@ import edu.umd.cs.piccolox.swt.SWTShapeManager;
 public class PSWTAdvancedPath extends PNode {
 
     /**
-     * The possible line styles for an advanced path.
-     */
-    public enum LineStyle {
-        /** solid. */
-        SOLID,
-        /** dashes. */
-        DASH,
-        /** dots. */
-        DOT,
-        /** dashes and dots. */
-        DASHDOT,
-        /** dash followed by two dots. */
-        DASHDOTDOT
-    }
-    
-    /**
      * A property identifier leading to the approximated path if the path is a Bézier curve or to
      * itself otherwise. This approximated path is needed while computing the decorator rotations.
      */
@@ -95,22 +84,26 @@ public class PSWTAdvancedPath extends PNode {
 
     private static final long serialVersionUID = 8034306769936734586L;
 
-    private static final Color DEFAULT_STROKE_PAINT = Color.black;
+    private static final RGB DEFAULT_STROKE_PAINT = new RGB(0, 0, 0);
 
     private static final Rectangle2D.Float TEMP_RECTANGLE = new Rectangle2D.Float();
     private static final RoundRectangle2D.Float TEMP_ROUNDRECTANGLE = new RoundRectangle2D.Float();
     private static final Ellipse2D.Float TEMP_ELLIPSE = new Ellipse2D.Float();
     private static final Arc2D.Float TEMP_ARC = new Arc2D.Float();
     private static final double BOUNDS_TOLERANCE = 0.01;
-    private Paint strokePaint = DEFAULT_STROKE_PAINT;
     private static final BasicStroke BASIC_STROKE = new BasicStroke();
+    
+    private static final Map<Color, RGB> RGB_CACHE = Maps.newConcurrentMap(); 
+
+    private RGB strokePaint = DEFAULT_STROKE_PAINT;
+    private RGB paint = null;
 
     /** the line width for this path. */
     private double lineWidth = 1.0;
     /** the line style for this path. */
     private int lineStyle = SWT.LINE_SOLID;
     /** the line cap style for this path. */
-    private int lineCap = SWT.CAP_FLAT;
+    private int lineCapStyle = SWT.CAP_FLAT;
 
     private boolean updatingBoundsFromPath;
     private Shape origShape;
@@ -122,6 +115,9 @@ public class PSWTAdvancedPath extends PNode {
     private double[] shapePts;
 
     private boolean isPolygon = false;
+    private boolean isPolyline = false;
+    private boolean isRoundedBendsPolyline = false;
+    private boolean isSpline = false;
 
     /**
      * Creates a path representing the rectangle provided.
@@ -219,15 +215,37 @@ public class PSWTAdvancedPath extends PNode {
     /**
      * Creates a path for the spline for the given points.
      * 
+     * @author chsch
+     * 
      * @param points
      *            array of points for the point lines
      * @return created spline for the given points
-     * 
-     * @author sgu, chsch
      */
     public static PSWTAdvancedPath createSpline(final Point2D[] points) {
         final PSWTAdvancedPath result = new PSWTAdvancedPath();
         result.setPathToSpline(points);
+        // chsch: do not set the paint of a line as this will impair the
+        //  selection determination (using #intersects(), see below)
+        // result.setPaint(Color.white);
+        return result;
+    }
+
+    /**
+     * Creates a path for the poly-line with rounded bend points for the given points.
+     * 
+     * @author chsch
+     *
+     * @param points
+     *            array of points for the point lines
+     * @param bendRadius
+     *            the radius of the bend points
+     * 
+     * @return created polyline with rounded bend points for the given points
+     */
+    public static PSWTAdvancedPath createRoundedBendPolyline(final Point2D[] points,
+            final float bendRadius) {
+        final PSWTAdvancedPath result = new PSWTAdvancedPath();
+        result.setPathToRoundedBendPolyline(points, bendRadius);
         // chsch: do not set the paint of a line as this will impair the
         //  selection determination (using #intersects(), see below)
         // result.setPaint(Color.white);
@@ -240,31 +258,11 @@ public class PSWTAdvancedPath extends PNode {
      * @param points
      *            array of points for the point lines
      * 
-     * @return created poly-line for the given points
+     * @return created polyline for the given points
      */
     public static PSWTAdvancedPath createPolyline(final Point2D[] points) {
         final PSWTAdvancedPath result = new PSWTAdvancedPath();
         result.setPathToPolyline(points);
-        // chsch: do not set the paint of a line as this will impair the
-        //  selection determination (using #intersects(), see below)
-        // result.setPaint(Color.white);
-        return result;
-    }
-
-    /**
-     * Creates a path for the poly-line with rounded bend points for the given points.
-     * 
-     * @param points
-     *            array of points for the point lines
-     * @param bendRadius
-     *            the radius of the bend points
-     * 
-     * @return created poly-line with rounded bend points for the given points
-     */
-    public static PSWTAdvancedPath createRoundedBendPolyline(final Point2D[] points,
-            final float bendRadius) {
-        final PSWTAdvancedPath result = new PSWTAdvancedPath();
-        result.setPathToRoundedBendPolyline(points, bendRadius);
         // chsch: do not set the paint of a line as this will impair the
         //  selection determination (using #intersects(), see below)
         // result.setPaint(Color.white);
@@ -345,7 +343,7 @@ public class PSWTAdvancedPath extends PNode {
      * 
      * @return path's stroke paint
      */
-    public Paint getStrokePaint() {
+    public RGB getStrokePaint() {
         return strokePaint;
     }
 
@@ -355,12 +353,51 @@ public class PSWTAdvancedPath extends PNode {
      * @param strokeColor
      *            new stroke color
      */
-    public void setStrokeColor(final Paint strokeColor) {
-        final Paint old = strokePaint;
+    public void setStrokeColor(final RGB strokeColor) {
+        final RGB old = strokePaint;
         strokePaint = strokeColor;
         invalidatePaint();
         firePropertyChange(PPath.PROPERTY_CODE_STROKE_PAINT, PPath.PROPERTY_STROKE_PAINT, old,
                 strokePaint);
+    }
+
+    /**
+     * Return the paint used while painting this node. This value may be null.
+     * 
+     * @return the paint used while painting this node.
+     */
+    public RGB getSWTPaint() {
+        return this.paint;
+    }
+
+    /**
+     * Set the paint used to paint this node, which may be null.
+     * 
+     * @param newPaint paint that this node should use when painting itself.
+     */
+    public void setPaint(final RGB newPaint) {
+        if (paint == newPaint) {
+            return;
+        }
+
+        final RGB oldPaint = paint;
+        paint = newPaint;
+        invalidatePaint();
+        firePropertyChange(PROPERTY_CODE_PAINT, PROPERTY_PAINT, oldPaint, paint);
+    }
+    
+    /**
+     * Set the paint used to paint this node, which may be null.
+     * 
+     * @param newPaint paint that this node should use when painting itself.
+     */
+    public void setPaint(final Color newPaint) {
+        RGB rgb = RGB_CACHE.get(newPaint);
+        if (rgb == null) {
+            rgb = new RGB(newPaint.getRed(), newPaint.getGreen(), newPaint.getBlue());
+            RGB_CACHE.put(newPaint, rgb);
+        }
+        this.setPaint(rgb);
     }
 
     /**
@@ -450,22 +487,22 @@ public class PSWTAdvancedPath extends PNode {
     @Override
     protected void paint(final PPaintContext paintContext) {
         SWTGraphics2D g2 = (SWTGraphics2D) paintContext.getGraphics();
-        Paint p = getPaint();
         g2.setLineWidth(lineWidth);
         g2.setLineStyle(lineStyle);
-        g2.setLineCap(lineCap);
+        g2.setLineCap(lineCapStyle);
 
         if (internalXForm != null) {
             g2.transform(internalXForm);
         }
 
+        RGB p = getSWTPaint();
         if (p != null) {
-            g2.setBackground((Color) p);
+            g2.setBackground(p);
             fillShape(g2);
         }
 
         if (strokePaint != null) {
-            g2.setColor((Color) strokePaint);
+            g2.setColor(strokePaint);
             drawShape(g2);
         }
 
@@ -494,8 +531,14 @@ public class PSWTAdvancedPath extends PNode {
         } else if (shape instanceof RoundRectangle2D) {
             g2.drawRoundRect(shapePts[0] + lw / 2, shapePts[1] + lw / 2, shapePts[2] - lw,
                     shapePts[3] - lw, shapePts[4], shapePts[5]);
-        } else if (isPolygon) {
-            g2.drawPolygon(shapePts);
+        } else if (shape instanceof GeneralPath) {
+            if (isPolygon) {
+                g2.drawPolygon(shapePts);
+            } else if (isPolyline) {
+                g2.drawPolyline(shapePts);
+            } else if (isRoundedBendsPolyline || isSpline) {
+                g2.drawGeneralPath((GeneralPath) shape);
+            }
         } else {
             // chsch: executing this branch should be avoided under all circumstances
             //  as it most likely results in calling SWTGraphics2D#drawPath(Path)
@@ -521,7 +564,7 @@ public class PSWTAdvancedPath extends PNode {
         } else if (shape instanceof RoundRectangle2D) {
             g2.fillRoundRect(shapePts[0] + lw / 2, shapePts[1] + lw / 2, shapePts[2] - lw,
                     shapePts[3] - lw, shapePts[4], shapePts[5]);
-        } else if (isPolygon) {
+        } else if (isPolygon) { // shape instanceof GeneralPath will be satisfied!
             g2.fillPolygon(shapePts);
         } else {
             // chsch: executing this branch should be avoided under all circumstances
@@ -771,6 +814,7 @@ public class PSWTAdvancedPath extends PNode {
             // this should not happen
             break;
         }
+        
         // supplement (chsch):
         PSWTAdvancedPath approxPath = new PSWTAdvancedPath();
         KVectorChain chain = new KVectorChain();
@@ -785,33 +829,11 @@ public class PSWTAdvancedPath extends PNode {
         approxPath.setPathToPolyline(approxPoints.toArray(new Point2D.Double[points.length]));
         this.addAttribute(APPROXIMATED_PATH, approxPath);
 
-        // this operation finally integrates the path fires the change listeners
+        // this operation finally integrates the path and fires the change listeners
         setShape(path);
+        isSpline = true;
     }
 
-    /**
-     * Sets the path to a sequence of segments described by the points.
-     * 
-     * @param points
-     *            points to that lie along the generated path
-     */
-    public void setPathToPolyline(final Point2D[] points) {
-        final GeneralPath path = new GeneralPath();
-        path.reset();
-        path.moveTo((float) points[0].getX(), (float) points[0].getY());
-        for (int i = 1; i < points.length; i++) {
-            path.lineTo((float) points[i].getX(), (float) points[i].getY());
-        }
-
-        // supplement (chsch):
-        this.addAttribute(APPROXIMATED_PATH, this);
-
-        // this operation finally integrates the path fires the change listeners
-        setShape(path);
-    }
-
-    // CHECKSTYLEOFF MagicNumber
-    
     /**
      * Sets the path to a sequence of segments described by the points.
      * 
@@ -829,11 +851,39 @@ public class PSWTAdvancedPath extends PNode {
         // supplement (chsch):
         this.addAttribute(APPROXIMATED_PATH, this);
 
-        // this operation finally integrates the path fires the change listeners
+        // this operation finally integrates the path and fires the change listeners
         setShape(path);
+        isRoundedBendsPolyline = true;
     }
 
+    /**
+     * Sets the path to a sequence of segments described by the points.
+     * 
+     * @param points
+     *            points to that lie along the generated path
+     */
+    public void setPathToPolyline(final Point2D[] points) {
+        if (points.length == 0) {
+            return;
+        }
+        
+        final GeneralPath path = new GeneralPath();
+        path.reset();
+        path.moveTo((float) points[0].getX(), (float) points[0].getY());
+        for (int i = 1; i < points.length; i++) {
+            path.lineTo((float) points[i].getX(), (float) points[i].getY());
+        }
 
+        // supplement (chsch):
+        this.addAttribute(APPROXIMATED_PATH, this);
+
+        // this operation finally integrates the path and fires the change listeners
+        setShape(path);
+        isPolyline = true;
+    }
+
+    // CHECKSTYLEOFF MagicNumber
+    
     /**
      * Sets the path to a sequence of segments described by the point components provided.
      * 
@@ -850,6 +900,7 @@ public class PSWTAdvancedPath extends PNode {
             path.lineTo(xp[i], yp[i]);
         }
         setShape(path);
+        isPolyline = true;
     }
 
     /**
@@ -963,6 +1014,43 @@ public class PSWTAdvancedPath extends PNode {
         case SWT.LINE_SOLID:
         default:
             return LineStyle.SOLID;
+        }
+    }
+    
+    /**
+     * Sets the line cap style for this path.
+     * 
+     * @param newLineCapStyle
+     *            the line cap style
+     */
+    public void setLineCapStyle(final LineCap newLineCapStyle) {
+        switch (newLineCapStyle) {
+        case CAP_FLAT:
+            lineCapStyle = SWT.CAP_FLAT;
+            break;
+        case CAP_ROUND:
+            lineCapStyle = SWT.CAP_ROUND;
+            break;
+        case CAP_SQUARE:
+            lineCapStyle = SWT.CAP_SQUARE;
+            break;
+        }
+    }
+
+    /**
+     * Returns the line style of the path.
+     * 
+     * @return the line style
+     */
+    public LineCap getLineCapStyle() {
+        switch (lineCapStyle) {
+        case SWT.CAP_ROUND:
+            return LineCap.CAP_ROUND;
+        case SWT.CAP_SQUARE:
+            return LineCap.CAP_SQUARE;
+        case SWT.CAP_FLAT:
+        default:
+            return LineCap.CAP_FLAT;
         }
     }
 

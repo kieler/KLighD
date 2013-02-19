@@ -22,6 +22,10 @@ import org.eclipse.emf.common.util.EList;
  * A representation of the model object '<em><b>Library</b></em>'.
  * <!-- end-user-doc -->
  *
+ * <!-- begin-model-doc -->
+ * contains all the renderings 
+ * <!-- end-model-doc -->
+ *
  * <p>
  * The following features are supported:
  * <ul>
@@ -36,7 +40,7 @@ import org.eclipse.emf.common.util.EList;
 public interface KRenderingLibrary extends KGraphData {
     /**
      * Returns the value of the '<em><b>Renderings</b></em>' containment reference list.
-     * The list contents are of type {@link de.cau.cs.kieler.core.krendering.KRendering}.
+     * The list contents are of type {@link de.cau.cs.kieler.core.krendering.KStyleHolder}.
      * <!-- begin-user-doc -->
      * <p>
      * If the meaning of the '<em>Renderings</em>' containment reference list isn't clear,
@@ -48,6 +52,6 @@ public interface KRenderingLibrary extends KGraphData {
      * @model containment="true"
      * @generated
      */
-    EList<KRendering> getRenderings();
+    EList<KStyleHolder> getRenderings();
 
 } // KRenderingLibrary

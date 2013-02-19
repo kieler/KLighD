@@ -13,7 +13,6 @@
  */
 package de.cau.cs.kieler.klighd.piccolo;
 
-import java.awt.Color;
 import java.awt.event.InputEvent;
 import java.awt.geom.Point2D;
 import java.util.Collection;
@@ -23,8 +22,13 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
+import org.eclipse.swt.graphics.RGB;
+
 import com.google.common.collect.Sets;
 
+import de.cau.cs.kieler.core.krendering.LineCap;
+import de.cau.cs.kieler.core.krendering.LineStyle;
+import de.cau.cs.kieler.klighd.KlighdConstants;
 import de.cau.cs.kieler.klighd.piccolo.nodes.PSWTAdvancedPath;
 
 import edu.umd.cs.piccolo.PCamera;
@@ -308,9 +312,10 @@ public class PSWTSimpleSelectionEventHandler extends PDragSequenceEventHandler {
     private void initializeMarquee(final PInputEvent event) {
         marquee =
                 PSWTAdvancedPath.createRectangle((float) point.getX(), (float) point.getY(), 0, 0);
-        marquee.setLineStyle(PSWTAdvancedPath.LineStyle.DASH);
-        marquee.setStrokeColor(Color.black);
-        marquee.setPaint(null);
+        marquee.setLineStyle(LineStyle.DASH);
+        marquee.setLineCapStyle(LineCap.CAP_FLAT);
+        marquee.setStrokeColor(KlighdConstants.BLACK);
+        marquee.setPaint((RGB) null);
         marquee.setPickable(false);
         marqueeParent.addChild(marquee);
         marqueeBounds.reset();

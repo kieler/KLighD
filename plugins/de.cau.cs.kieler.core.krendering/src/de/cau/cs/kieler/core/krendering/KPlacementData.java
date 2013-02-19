@@ -20,6 +20,10 @@ import org.eclipse.emf.ecore.EObject;
  * A representation of the model object '<em><b>KPlacement Data</b></em>'.
  * <!-- end-user-doc -->
  *
+ * <!-- begin-model-doc -->
+ * (abstract interface) Defines the placement for an element. Depending of the childPlacement of the parent not all placementData may be evaluated.
+ * <!-- end-model-doc -->
+ *
  *
  * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKPlacementData()
  * @model interface="true" abstract="true"

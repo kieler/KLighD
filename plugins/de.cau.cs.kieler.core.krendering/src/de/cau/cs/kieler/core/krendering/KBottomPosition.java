@@ -19,6 +19,12 @@ package de.cau.cs.kieler.core.krendering;
  * A representation of the model object '<em><b>KBottom Position</b></em>'.
  * <!-- end-user-doc -->
  *
+ * <!-- begin-model-doc -->
+ * defines a position starting at the bottom point B of the parent rendering. 
+ * pos = (B-absolute) - (B-H-absolute)*relative
+ * pos = (B-absolute) - heightOfParent*relative
+ * <!-- end-model-doc -->
+ *
  *
  * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKBottomPosition()
  * @model

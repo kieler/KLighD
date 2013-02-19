@@ -15,6 +15,8 @@ package de.cau.cs.kieler.klighd;
 
 import org.eclipse.swt.widgets.Composite;
 
+import de.cau.cs.kieler.klighd.viewers.ContextViewer;
+
 /**
  * The interface for classes which provide a viewer for a model class.
  * 
@@ -28,11 +30,13 @@ public interface IViewerProvider<T> {
     /**
      * Returns a viewer for models of the provided model class attached to the given composite.
      * 
+     * @param parentViewer
+     *            the parent {@link ContextViewer}
      * @param parent
      *            the parent composite
      * @return a viewer for the supported model types
      */
-    IViewer<T> createViewer(Composite parent);
+    IViewer<T> createViewer(ContextViewer parentViewer, Composite parent);
 
     /**
      * Returns the class of the models supported by the viewer provided by this viewer provider.

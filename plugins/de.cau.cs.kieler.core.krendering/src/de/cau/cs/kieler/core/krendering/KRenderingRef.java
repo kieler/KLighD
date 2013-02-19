@@ -19,6 +19,10 @@ package de.cau.cs.kieler.core.krendering;
  * A representation of the model object '<em><b>Ref</b></em>'.
  * <!-- end-user-doc -->
  *
+ * <!-- begin-model-doc -->
+ * references an already defined rendering to make redefining unneccessary.
+ * <!-- end-model-doc -->
+ *
  * <p>
  * The following features are supported:
  * <ul>
@@ -33,18 +37,19 @@ package de.cau.cs.kieler.core.krendering;
 public interface KRenderingRef extends KRendering {
     /**
      * Returns the value of the '<em><b>Rendering</b></em>' reference.
-     * It is bidirectional and its opposite is '{@link de.cau.cs.kieler.core.krendering.KRendering#getReferences <em>References</em>}'.
      * <!-- begin-user-doc -->
      * <p>
      * If the meaning of the '<em>Rendering</em>' reference isn't clear,
      * there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
+     * <!-- begin-model-doc -->
+     * the referenced rendering
+     * <!-- end-model-doc -->
      * @return the value of the '<em>Rendering</em>' reference.
      * @see #setRendering(KRendering)
      * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKRenderingRef_Rendering()
-     * @see de.cau.cs.kieler.core.krendering.KRendering#getReferences
-     * @model opposite="references" required="true"
+     * @model required="true"
      * @generated
      */
     KRendering getRendering();

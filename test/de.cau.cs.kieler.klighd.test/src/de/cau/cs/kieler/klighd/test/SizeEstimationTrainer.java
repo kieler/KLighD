@@ -62,7 +62,9 @@ public final class SizeEstimationTrainer {
                 return Iterators.concat(Iterators.transform(node.getData().iterator(),
                         new Function<KGraphData, Iterator<KText>>() {
                             public Iterator<KText> apply(final KGraphData data) {
-                                return Iterators.filter(data.eAllContents(), KText.class);
+                                return Iterators.filter(
+                                        Iterators.concat(Iterators.singletonIterator(data),
+                                                data.eAllContents()), KText.class);
                             }
                         }));
             }

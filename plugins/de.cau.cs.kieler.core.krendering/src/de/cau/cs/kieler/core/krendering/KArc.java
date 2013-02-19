@@ -19,6 +19,10 @@ package de.cau.cs.kieler.core.krendering;
  * A representation of the model object '<em><b>KArc</b></em>'.
  * <!-- end-user-doc -->
  *
+ * <!-- begin-model-doc -->
+ * Draws an arc. Needs the startingAngle of the arc (0° = rightmost vertical line) on an ellipse and the angle the arc should cover (counterclockwise on the same ellipse)
+ * <!-- end-model-doc -->
+ *
  * <p>
  * The following features are supported:
  * <ul>
@@ -40,6 +44,9 @@ public interface KArc extends KContainerRendering {
      * there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
+     * <!-- begin-model-doc -->
+     * startingAngle of the arc (0° = rightmost vertical line) on an ellipse
+     * <!-- end-model-doc -->
      * @return the value of the '<em>Start Angle</em>' attribute.
      * @see #setStartAngle(float)
      * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKArc_StartAngle()
@@ -66,6 +73,9 @@ public interface KArc extends KContainerRendering {
      * there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
+     * <!-- begin-model-doc -->
+     * the angle the arc should cover (counterclockwise)
+     * <!-- end-model-doc -->
      * @return the value of the '<em>Arc Angle</em>' attribute.
      * @see #setArcAngle(float)
      * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKArc_ArcAngle()

@@ -127,8 +127,13 @@ public abstract class EMapPropertyHolderImpl extends EObjectImpl implements EMap
      * @generated NOT
      */
     public void makePersistent() {
-        List<PersistentEntry> persisEntries = getPersistentEntries();
+        // chsch: deactivated the delivering of notifications as that feature is not used in KIML
+        //  so far and disturbs while working with KLighD
+        boolean deliver = this.eDeliver();
+        this.eSetDeliver(false);
+        
         int i = 0;
+        List<PersistentEntry> persisEntries = getPersistentEntries();
         for (Entry<IProperty<?>, Object> entry : getProperties()) {
             IProperty<?> key = entry.getKey();
             Object value = entry.getValue();
@@ -138,13 +143,18 @@ public abstract class EMapPropertyHolderImpl extends EObjectImpl implements EMap
                     persisEntry = KGraphFactory.eINSTANCE.createPersistentEntry();
                     persisEntries.add(persisEntry);
                 } else {
-                    persisEntry = persisEntries.get(i);
+                    persisEntry = persisEntries.get(i++);
                 }
+                
+                boolean pEdeliver = persisEntry.eDeliver();
+                persisEntry.eSetDeliver(false);
                 persisEntry.setKey(key.getId());
                 persisEntry.setValue(value.toString());
-                i++;
+                persisEntry.eSetDeliver(pEdeliver);
             }
         }
+        
+        this.eSetDeliver(deliver);
     }
 
     /**

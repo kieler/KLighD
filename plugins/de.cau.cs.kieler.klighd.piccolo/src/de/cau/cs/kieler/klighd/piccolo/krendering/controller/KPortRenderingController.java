@@ -16,12 +16,12 @@ package de.cau.cs.kieler.klighd.piccolo.krendering.controller;
 import java.util.ArrayList;
 
 import de.cau.cs.kieler.core.kgraph.KPort;
-import de.cau.cs.kieler.core.krendering.KForegroundColor;
+import de.cau.cs.kieler.core.krendering.KBackground;
+import de.cau.cs.kieler.core.krendering.KForeground;
 import de.cau.cs.kieler.core.krendering.KRectangle;
 import de.cau.cs.kieler.core.krendering.KRendering;
 import de.cau.cs.kieler.core.krendering.KRenderingFactory;
 import de.cau.cs.kieler.core.krendering.KStyle;
-import de.cau.cs.kieler.core.krendering.KVisibility;
 import de.cau.cs.kieler.klighd.piccolo.krendering.KPortNode;
 import edu.umd.cs.piccolo.PNode;
 
@@ -52,11 +52,11 @@ public class KPortRenderingController extends AbstractRenderingController<KPort,
         PNode renderingNode;
         if (currentRendering != null) {
                 renderingNode =
-                        handleDirectPlacementRendering(currentRendering, new ArrayList<KStyle>(0),
+                        handleAreaPlacementRendering(currentRendering, new ArrayList<KStyle>(0),
                                 repNode, repNode);
         } else {
                 renderingNode =
-                        handleDirectPlacementRendering(createDefaultPortRendering(),
+                        handleAreaPlacementRendering(createDefaultPortRendering(),
                                 new ArrayList<KStyle>(0), repNode, repNode);
         }
         
@@ -72,18 +72,14 @@ public class KPortRenderingController extends AbstractRenderingController<KPort,
         // create the default rendering model
         KRenderingFactory factory = KRenderingFactory.eINSTANCE;
         KRectangle rect = factory.createKRectangle();
-        KForegroundColor color = factory.createKForegroundColor();
-        color.setRed(0);
-        color.setGreen(0);
-        color.setBlue(0);
-        rect.getStyles().add(color);
-        // added by chsch:
-        KVisibility visibility = factory.createKForegroundVisibility();
-        visibility.setVisible(false);
-        rect.getStyles().add(visibility);
-        visibility = factory.createKBackgroundVisibility();
-        visibility.setVisible(false);
-        rect.getStyles().add(visibility);
+        
+        KForeground foreground = factory.createKForeground();
+        foreground.setColor(factory.createKColor());
+        KBackground background = factory.createKBackground();
+        background.setColor(factory.createKColor());
+
+        rect.getStyles().add(foreground);
+        rect.getStyles().add(background);
         return rect;
     }
     

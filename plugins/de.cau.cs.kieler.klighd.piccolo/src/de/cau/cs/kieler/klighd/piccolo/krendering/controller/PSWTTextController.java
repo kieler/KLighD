@@ -13,19 +13,21 @@
  */
 package de.cau.cs.kieler.klighd.piccolo.krendering.controller;
 
-import java.awt.Color;
-import java.awt.Font;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.FontData;
+import org.eclipse.swt.graphics.RGB;
 
+import de.cau.cs.kieler.core.krendering.Underline;
 import de.cau.cs.kieler.klighd.KlighdConstants;
-
-import edu.umd.cs.piccolox.swt.PSWTText;
+import de.cau.cs.kieler.klighd.piccolo.nodes.PSWTStyledText;
+import de.cau.cs.kieler.klighd.piccolo.util.StyleUtil.Styles;
 
 /**
  * A node controller for the {@code PSWTText}.
  * 
  * @author mri
  */
-public abstract class PSWTTextController extends PNodeController<PSWTText> {
+public abstract class PSWTTextController extends PNodeController<PSWTStyledText> {
 
     /** the name of the currently used font. */
     private String fontName = KlighdConstants.DEFAULT_FONT_NAME;
@@ -40,7 +42,7 @@ public abstract class PSWTTextController extends PNodeController<PSWTText> {
      * @param node
      *            the text
      */
-    public PSWTTextController(final PSWTText node) {
+    public PSWTTextController(final PSWTStyledText node) {
         super(node);
     }
 
@@ -48,7 +50,7 @@ public abstract class PSWTTextController extends PNodeController<PSWTText> {
      * {@inheritDoc}
      */
     @Override
-    public void setForegroundColor(final Color color) {
+    public void setForegroundColor(final RGB color) {
         getNode().setPenColor(color);
     }
 
@@ -56,17 +58,17 @@ public abstract class PSWTTextController extends PNodeController<PSWTText> {
      * {@inheritDoc}
      */
     @Override
-    public void setBackgroundColor(final Color color) {
-        getNode().setBackgroundColor(color);
+    public void setBackgroundColor(final RGB color) {
+        getNode().setPenPaint(color);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void setLineVisible(final boolean lineVisible) {
-        if (!lineVisible) {
-            getNode().setPenColor(null);
+    public void setLineAlpha(final int lineAlpha) {
+        if (lineAlpha == 0) {
+            getNode().setPenColor((RGB) null);
         }
     }
 
@@ -74,8 +76,8 @@ public abstract class PSWTTextController extends PNodeController<PSWTText> {
      * {@inheritDoc}
      */
     @Override
-    public void setFilled(final boolean filled) {
-        if (!filled) {
+    public void setBackgroundAlpha(final int backgroundAlpha) {
+        if (backgroundAlpha == 0) {
             getNode().setBackgroundColor(null);
             getNode().setTransparent(true);
         } else {
@@ -112,9 +114,9 @@ public abstract class PSWTTextController extends PNodeController<PSWTText> {
     @Override
     public void setItalic(final boolean italic) {
         if (italic) {
-            fontStyle |= Font.ITALIC;
+            fontStyle |= SWT.ITALIC;
         } else {
-            fontStyle &= ~Font.ITALIC;
+            fontStyle &= ~SWT.ITALIC;
         }
     }
 
@@ -124,9 +126,39 @@ public abstract class PSWTTextController extends PNodeController<PSWTText> {
     @Override
     public void setBold(final boolean bold) {
         if (bold) {
-            fontStyle |= Font.BOLD;
+            fontStyle |= SWT.BOLD;
         } else {
-            fontStyle &= ~Font.BOLD;
+            fontStyle &= ~SWT.BOLD;
+        }
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public void setUnderline(final Underline underline, final RGB color) {
+        if (underline != null) {
+            switch (underline) {
+            case SINGLE:
+                getNode().setUnderline(SWT.UNDERLINE_SINGLE, color);
+                break;
+            case DOUBLE:
+                getNode().setUnderline(SWT.UNDERLINE_DOUBLE, color);
+                break;
+            case ERROR:
+                getNode().setUnderline(SWT.UNDERLINE_ERROR, color);
+                break;
+            case SQUIGGLE:
+                getNode().setUnderline(SWT.UNDERLINE_SQUIGGLE, color);
+                break;
+            case LINK:
+                getNode().setUnderline(SWT.UNDERLINE_LINK, color);
+                break;
+            case NONE:
+            default:
+                getNode().setUnderline(KlighdConstants.NO_FONT_UNDERLINING, color);
+            }
+        } else {
+            getNode().setUnderline(KlighdConstants.NO_FONT_UNDERLINING, KlighdConstants.BLACK);
         }
     }
 
@@ -134,9 +166,17 @@ public abstract class PSWTTextController extends PNodeController<PSWTText> {
      * {@inheritDoc}
      */
     @Override
-    public void applyChanges() {
-        Font font = new Font(fontName, fontStyle, fontSize);
-        getNode().setFont(font);
+    public void setStrikeout(final boolean strikeout, final RGB color) {
+        getNode().setStrikeout(strikeout, color);
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void applyChanges(final Styles styles) {
+        super.applyChanges(styles);
+        getNode().setFont(new FontData(fontName, fontSize, fontStyle));
     }
 
 }

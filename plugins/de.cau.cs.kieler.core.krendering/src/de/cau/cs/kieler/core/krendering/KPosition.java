@@ -20,6 +20,10 @@ import org.eclipse.emf.ecore.EObject;
  * A representation of the model object '<em><b>KPosition</b></em>'.
  * <!-- end-user-doc -->
  *
+ * <!-- begin-model-doc -->
+ * Used to set an absolute Position of a single point by defining x and y coordinates of this point relative to the parent. The position can be set with absolute values or relative to the parent dimensions
+ * <!-- end-model-doc -->
+ *
  * <p>
  * The following features are supported:
  * <ul>
@@ -41,6 +45,9 @@ public interface KPosition extends EObject {
      * there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
+     * <!-- begin-model-doc -->
+     * the x-position relative to the parent based on absolute coordinates or relative parent width
+     * <!-- end-model-doc -->
      * @return the value of the '<em>X</em>' containment reference.
      * @see #setX(KXPosition)
      * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKPosition_X()
@@ -67,6 +74,9 @@ public interface KPosition extends EObject {
      * there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
+     * <!-- begin-model-doc -->
+     * the y-position relative to the parent based on absolute coordinates or relative parent height
+     * <!-- end-model-doc -->
      * @return the value of the '<em>Y</em>' containment reference.
      * @see #setY(KYPosition)
      * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKPosition_Y()

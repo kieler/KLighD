@@ -18,13 +18,28 @@
       <genEnumLiterals ecoreEnumLiteral="krendering.ecore#//HorizontalAlignment/LEFT"/>
       <genEnumLiterals ecoreEnumLiteral="krendering.ecore#//HorizontalAlignment/CENTER"/>
       <genEnumLiterals ecoreEnumLiteral="krendering.ecore#//HorizontalAlignment/RIGHT"/>
-      <genEnumLiterals ecoreEnumLiteral="krendering.ecore#//HorizontalAlignment/EEnumLiteral0"/>
     </genEnums>
     <genEnums typeSafeEnumCompatible="false" ecoreEnum="krendering.ecore#//VerticalAlignment">
       <genEnumLiterals ecoreEnumLiteral="krendering.ecore#//VerticalAlignment/TOP"/>
       <genEnumLiterals ecoreEnumLiteral="krendering.ecore#//VerticalAlignment/CENTER"/>
       <genEnumLiterals ecoreEnumLiteral="krendering.ecore#//VerticalAlignment/BOTTOM"/>
-      <genEnumLiterals ecoreEnumLiteral="krendering.ecore#//VerticalAlignment/EEnumLiteral0"/>
+    </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="krendering.ecore#//KTrigger">
+      <genEnumLiterals ecoreEnumLiteral="krendering.ecore#//KTrigger/SINGLECLICK"/>
+      <genEnumLiterals ecoreEnumLiteral="krendering.ecore#//KTrigger/DOUBLECLICK"/>
+    </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="krendering.ecore#//LineCap">
+      <genEnumLiterals ecoreEnumLiteral="krendering.ecore#//LineCap/CAP_FLAT"/>
+      <genEnumLiterals ecoreEnumLiteral="krendering.ecore#//LineCap/CAP_ROUND"/>
+      <genEnumLiterals ecoreEnumLiteral="krendering.ecore#//LineCap/CAP_SQUARE"/>
+    </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="krendering.ecore#//Underline">
+      <genEnumLiterals ecoreEnumLiteral="krendering.ecore#//Underline/NONE"/>
+      <genEnumLiterals ecoreEnumLiteral="krendering.ecore#//Underline/SINGLE"/>
+      <genEnumLiterals ecoreEnumLiteral="krendering.ecore#//Underline/DOUBLE"/>
+      <genEnumLiterals ecoreEnumLiteral="krendering.ecore#//Underline/ERROR"/>
+      <genEnumLiterals ecoreEnumLiteral="krendering.ecore#//Underline/SQUIGGLE"/>
+      <genEnumLiterals ecoreEnumLiteral="krendering.ecore#//Underline/LINK"/>
     </genEnums>
     <genClasses image="false" ecoreClass="krendering.ecore#//KPosition">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference krendering.ecore#//KPosition/x"/>
@@ -32,9 +47,8 @@
     </genClasses>
     <genClasses image="false" ecoreClass="krendering.ecore#//KRendering">
       <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference krendering.ecore#//KRendering/parent"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference krendering.ecore#//KRendering/references"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference krendering.ecore#//KRendering/placementData"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference krendering.ecore#//KRendering/styles"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference krendering.ecore#//KRendering/actions"/>
     </genClasses>
     <genClasses ecoreClass="krendering.ecore#//KEllipse"/>
     <genClasses ecoreClass="krendering.ecore#//KRectangle"/>
@@ -42,7 +56,10 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute krendering.ecore#//KRoundedRectangle/cornerWidth"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute krendering.ecore#//KRoundedRectangle/cornerHeight"/>
     </genClasses>
-    <genClasses ecoreClass="krendering.ecore#//KPolyline"/>
+    <genClasses ecoreClass="krendering.ecore#//KPolyline">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference krendering.ecore#//KPolyline/points"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference krendering.ecore#//KPolyline/jointPointRendering"/>
+    </genClasses>
     <genClasses ecoreClass="krendering.ecore#//KPolygon"/>
     <genClasses ecoreClass="krendering.ecore#//KImage">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute krendering.ecore#//KImage/bundleName"/>
@@ -50,12 +67,13 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute krendering.ecore#//KImage/imageObject"/>
     </genClasses>
     <genClasses ecoreClass="krendering.ecore#//KDecoratorPlacementData">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute krendering.ecore#//KDecoratorPlacementData/location"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute krendering.ecore#//KDecoratorPlacementData/absolute"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute krendering.ecore#//KDecoratorPlacementData/xOffset"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute krendering.ecore#//KDecoratorPlacementData/yOffset"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute krendering.ecore#//KDecoratorPlacementData/relative"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute krendering.ecore#//KDecoratorPlacementData/rotateWithLine"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute krendering.ecore#//KDecoratorPlacementData/width"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute krendering.ecore#//KDecoratorPlacementData/height"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute krendering.ecore#//KDecoratorPlacementData/relative"/>
     </genClasses>
     <genClasses image="false" ecoreClass="krendering.ecore#//KContainerRendering">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference krendering.ecore#//KContainerRendering/children"/>
@@ -66,8 +84,8 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute krendering.ecore#//KArc/arcAngle"/>
     </genClasses>
     <genClasses ecoreClass="krendering.ecore#//KStyle">
-      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference krendering.ecore#//KStyle/rendering"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute krendering.ecore#//KStyle/propagateToChildren"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute krendering.ecore#//KStyle/functionId"/>
     </genClasses>
     <genClasses ecoreClass="krendering.ecore#//KRenderingLibrary">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference krendering.ecore#//KRenderingLibrary/renderings"/>
@@ -78,48 +96,34 @@
     <genClasses ecoreClass="krendering.ecore#//KChildArea"/>
     <genClasses ecoreClass="krendering.ecore#//KText">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute krendering.ecore#//KText/text"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute krendering.ecore#//KText/clip"/>
     </genClasses>
     <genClasses image="false" ecoreClass="krendering.ecore#//KPlacement"/>
     <genClasses ecoreClass="krendering.ecore#//KGridPlacement">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute krendering.ecore#//KGridPlacement/numColumns"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference krendering.ecore#//KGridPlacement/topLeft"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference krendering.ecore#//KGridPlacement/bottomRight"/>
     </genClasses>
-    <genClasses ecoreClass="krendering.ecore#//KStackPlacement"/>
     <genClasses image="false" ecoreClass="krendering.ecore#//KPlacementData"/>
     <genClasses ecoreClass="krendering.ecore#//KGridPlacementData">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute krendering.ecore#//KGridPlacementData/widthHint"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute krendering.ecore#//KGridPlacementData/heightHint"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute krendering.ecore#//KGridPlacementData/insetRight"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute krendering.ecore#//KGridPlacementData/insetBottom"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute krendering.ecore#//KGridPlacementData/insetLeft"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute krendering.ecore#//KGridPlacementData/insetTop"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute krendering.ecore#//KGridPlacementData/minCellWidth"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute krendering.ecore#//KGridPlacementData/maxCellWidth"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute krendering.ecore#//KGridPlacementData/minCellHeight"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute krendering.ecore#//KGridPlacementData/maxCellHeight"/>
     </genClasses>
-    <genClasses ecoreClass="krendering.ecore#//KStackPlacementData">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute krendering.ecore#//KStackPlacementData/insetRight"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute krendering.ecore#//KStackPlacementData/insetBottom"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute krendering.ecore#//KStackPlacementData/insetLeft"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute krendering.ecore#//KStackPlacementData/insetTop"/>
-    </genClasses>
-    <genClasses ecoreClass="krendering.ecore#//KDirectPlacementData">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference krendering.ecore#//KDirectPlacementData/topLeft"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference krendering.ecore#//KDirectPlacementData/bottomRight"/>
-    </genClasses>
-    <genClasses ecoreClass="krendering.ecore#//KPolylinePlacementData">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference krendering.ecore#//KPolylinePlacementData/points"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference krendering.ecore#//KPolylinePlacementData/detailPlacementData"/>
+    <genClasses ecoreClass="krendering.ecore#//KAreaPlacementData">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference krendering.ecore#//KAreaPlacementData/topLeft"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference krendering.ecore#//KAreaPlacementData/bottomRight"/>
     </genClasses>
     <genClasses ecoreClass="krendering.ecore#//KCustomRendering">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute krendering.ecore#//KCustomRendering/className"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute krendering.ecore#//KCustomRendering/bundleName"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute krendering.ecore#//KCustomRendering/figureObject"/>
     </genClasses>
-    <genClasses ecoreClass="krendering.ecore#//KForegroundColor"/>
     <genClasses image="false" ecoreClass="krendering.ecore#//KColor">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute krendering.ecore#//KColor/red"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute krendering.ecore#//KColor/green"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute krendering.ecore#//KColor/blue"/>
     </genClasses>
-    <genClasses ecoreClass="krendering.ecore#//KBackgroundColor"/>
     <genClasses ecoreClass="krendering.ecore#//KLineWidth">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute krendering.ecore#//KLineWidth/lineWidth"/>
     </genClasses>
@@ -145,11 +149,15 @@
     <genClasses ecoreClass="krendering.ecore#//KTopPosition"/>
     <genClasses ecoreClass="krendering.ecore#//KBottomPosition"/>
     <genClasses ecoreClass="krendering.ecore#//KSpline"/>
-    <genClasses ecoreClass="krendering.ecore#//KForegroundVisibility"/>
-    <genClasses ecoreClass="krendering.ecore#//KVisibility">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute krendering.ecore#//KVisibility/visible"/>
+    <genClasses ecoreClass="krendering.ecore#//KForeground"/>
+    <genClasses image="false" ecoreClass="krendering.ecore#//KColoring">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute krendering.ecore#//KColoring/alpha"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference krendering.ecore#//KColoring/color"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference krendering.ecore#//KColoring/targetColor"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute krendering.ecore#//KColoring/targetAlpha"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute krendering.ecore#//KColoring/gradientAngle"/>
     </genClasses>
-    <genClasses ecoreClass="krendering.ecore#//KBackgroundVisibility"/>
+    <genClasses ecoreClass="krendering.ecore#//KBackground"/>
     <genClasses ecoreClass="krendering.ecore#//KFontBold">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute krendering.ecore#//KFontBold/bold"/>
     </genClasses>
@@ -161,12 +169,53 @@
     </genClasses>
     <genClasses ecoreClass="krendering.ecore#//KFontSize">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute krendering.ecore#//KFontSize/size"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute krendering.ecore#//KFontSize/scaleWithZoom"/>
     </genClasses>
     <genClasses ecoreClass="krendering.ecore#//KRoundedBendsPolyline">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute krendering.ecore#//KRoundedBendsPolyline/bendRadius"/>
     </genClasses>
     <genClasses ecoreClass="krendering.ecore#//KRotation">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute krendering.ecore#//KRotation/rotation"/>
+    </genClasses>
+    <genClasses ecoreClass="krendering.ecore#//KLineCap">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute krendering.ecore#//KLineCap/lineCap"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="krendering.ecore#//KAction">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute krendering.ecore#//KAction/id"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute krendering.ecore#//KAction/trigger"/>
+    </genClasses>
+    <genClasses ecoreClass="krendering.ecore#//KPointPlacementData">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference krendering.ecore#//KPointPlacementData/referencePoint"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute krendering.ecore#//KPointPlacementData/horizontalAlignment"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute krendering.ecore#//KPointPlacementData/verticalAlignment"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute krendering.ecore#//KPointPlacementData/horizontalMargin"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute krendering.ecore#//KPointPlacementData/verticalMargin"/>
+    </genClasses>
+    <genClasses ecoreClass="krendering.ecore#//KSelectAction"/>
+    <genClasses ecoreClass="krendering.ecore#//KExpandAction"/>
+    <genClasses ecoreClass="krendering.ecore#//KStyleHolder">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference krendering.ecore#//KStyleHolder/styles"/>
+    </genClasses>
+    <genClasses ecoreClass="krendering.ecore#//KInvisibility">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute krendering.ecore#//KInvisibility/invisible"/>
+    </genClasses>
+    <genClasses ecoreClass="krendering.ecore#//KShadow">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute krendering.ecore#//KShadow/xOffset"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute krendering.ecore#//KShadow/yOffset"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute krendering.ecore#//KShadow/blur"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference krendering.ecore#//KShadow/color"/>
+    </genClasses>
+    <genClasses ecoreClass="krendering.ecore#//KTextUnderline">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute krendering.ecore#//KTextUnderline/underline"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference krendering.ecore#//KTextUnderline/color"/>
+    </genClasses>
+    <genClasses ecoreClass="krendering.ecore#//KCollapseAction"/>
+    <genClasses ecoreClass="krendering.ecore#//KStyleRef">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference krendering.ecore#//KStyleRef/styleHolder"/>
+    </genClasses>
+    <genClasses ecoreClass="krendering.ecore#//KTextStrikeout">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute krendering.ecore#//KTextStrikeout/struckOut"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference krendering.ecore#//KTextStrikeout/color"/>
     </genClasses>
   </genPackages>
 </genmodel:GenModel>

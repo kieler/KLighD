@@ -23,6 +23,7 @@ package de.cau.cs.kieler.core.krendering;
  * The following features are supported:
  * <ul>
  *   <li>{@link de.cau.cs.kieler.core.krendering.KFontSize#getSize <em>Size</em>}</li>
+ *   <li>{@link de.cau.cs.kieler.core.krendering.KFontSize#isScaleWithZoom <em>Scale With Zoom</em>}</li>
  * </ul>
  * </p>
  *
@@ -56,5 +57,35 @@ public interface KFontSize extends KStyle {
      * @generated
      */
     void setSize(int value);
+
+    /**
+     * Returns the value of the '<em><b>Scale With Zoom</b></em>' attribute.
+     * The default value is <code>"false"</code>.
+     * <!-- begin-user-doc -->
+     * <p>
+     * If the meaning of the '<em>Scale With Zoom</em>' attribute isn't clear,
+     * there really should be more of a description here...
+     * </p>
+     * <!-- end-user-doc -->
+     * <!-- begin-model-doc -->
+     * whether the font size should increase when the user is zooming out to have text still be readable even when the containing object shrinks.
+     * <!-- end-model-doc -->
+     * @return the value of the '<em>Scale With Zoom</em>' attribute.
+     * @see #setScaleWithZoom(boolean)
+     * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKFontSize_ScaleWithZoom()
+     * @model default="false"
+     * @generated
+     */
+    boolean isScaleWithZoom();
+
+    /**
+     * Sets the value of the '{@link de.cau.cs.kieler.core.krendering.KFontSize#isScaleWithZoom <em>Scale With Zoom</em>}' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @param value the new value of the '<em>Scale With Zoom</em>' attribute.
+     * @see #isScaleWithZoom()
+     * @generated
+     */
+    void setScaleWithZoom(boolean value);
 
 } // KFontSize

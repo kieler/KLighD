@@ -44,7 +44,7 @@ public class KLineWidthImpl extends KStyleImpl implements KLineWidth {
      * @generated
      * @ordered
      */
-    protected static final int LINE_WIDTH_EDEFAULT = 0;
+    protected static final float LINE_WIDTH_EDEFAULT = 0.0F;
 
     /**
      * The cached value of the '{@link #getLineWidth() <em>Line Width</em>}' attribute.
@@ -54,7 +54,7 @@ public class KLineWidthImpl extends KStyleImpl implements KLineWidth {
      * @generated
      * @ordered
      */
-    protected int lineWidth = LINE_WIDTH_EDEFAULT;
+    protected float lineWidth = LINE_WIDTH_EDEFAULT;
 
     /**
      * <!-- begin-user-doc -->
@@ -80,7 +80,7 @@ public class KLineWidthImpl extends KStyleImpl implements KLineWidth {
      * <!-- end-user-doc -->
      * @generated
      */
-    public int getLineWidth() {
+    public float getLineWidth() {
         return lineWidth;
     }
 
@@ -89,8 +89,8 @@ public class KLineWidthImpl extends KStyleImpl implements KLineWidth {
      * <!-- end-user-doc -->
      * @generated
      */
-    public void setLineWidth(int newLineWidth) {
-        int oldLineWidth = lineWidth;
+    public void setLineWidth(float newLineWidth) {
+        float oldLineWidth = lineWidth;
         lineWidth = newLineWidth;
         if (eNotificationRequired())
             eNotify(new ENotificationImpl(this, Notification.SET, KRenderingPackage.KLINE_WIDTH__LINE_WIDTH, oldLineWidth, lineWidth));
@@ -119,7 +119,7 @@ public class KLineWidthImpl extends KStyleImpl implements KLineWidth {
     public void eSet(int featureID, Object newValue) {
         switch (featureID) {
             case KRenderingPackage.KLINE_WIDTH__LINE_WIDTH:
-                setLineWidth((Integer)newValue);
+                setLineWidth((Float)newValue);
                 return;
         }
         super.eSet(featureID, newValue);
