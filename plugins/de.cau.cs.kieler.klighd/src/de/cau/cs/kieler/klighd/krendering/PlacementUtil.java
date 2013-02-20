@@ -919,7 +919,7 @@ public final class PlacementUtil {
     
     /**
      * Normalize given insets to find out how big a child is in relation to it's parent 
-     * and how much space is needed to add absolute insets
+     * and how much space is needed to add absolute insets.
      * @param abs0 the absolute value of the position defining first inset
      * @param rel0 the relative value of the position defining first inset
      * @param positionId0 the identifier constant informing about the measurement direction 
@@ -1053,15 +1053,16 @@ public final class PlacementUtil {
                                     + Math.abs(absYOffest));
                 }
             } else if (plcData instanceof KPointPlacementData) {
-                
+                KPointPlacementData ppd = (KPointPlacementData) plcData;
                 // determine minimal needed size of the child
                 //  for point-based placement the parent size does not matter for the size! 
                 final Bounds childMinSize = estimateSize(rendering, new Bounds(0, 0));
-
+                childMinSize.width = Math.max(childMinSize.width, ppd.getMinWidth());
+                childMinSize.height = Math.max(childMinSize.height, ppd.getMinHeight());
+                
+                
                 if (minBounds.getHeight() < childMinSize.getHeight()
                         || minBounds.getWidth() < childMinSize.getWidth()) {
-                    
-                    KPointPlacementData ppd = (KPointPlacementData) plcData;
                     
                     float calculatedWidth = getHorizontalSize(ppd, childMinSize.getWidth());
                     float calculatedHeight = getVerticalSize(ppd, childMinSize.getHeight());
