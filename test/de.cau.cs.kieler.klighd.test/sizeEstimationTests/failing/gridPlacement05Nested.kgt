@@ -1,0 +1,88 @@
+//grid placement nested
+KNode {
+	children
+	KNode {
+		data:
+		Rectangle {
+			childPlacement:
+			gridPlacement 3
+			children:
+			Rectangle {
+				styles foreground {
+					color 255 0 0
+				}
+				placementData GridPlacementData {
+					minCellWidth 50.0
+				}
+			}
+			RoundedRectangle 10.0 10.0 {
+				styles foreground {
+					color 0 255 0
+				}
+				placementData GridPlacementData {
+				//					minCellWidth 100
+
+				}
+				children ChildArea
+			}
+			Rectangle {
+				styles foreground {
+					color 0 0 255
+				}
+				placementData GridPlacementData {
+				//					minCellWidth 30
+				//					maxCellWidth 0
+
+				}
+			}
+		}
+		children
+		KNode {
+			data KShapeLayout {
+				width 40.0 height 50.0
+			}
+			Rectangle {
+				childPlacement gridPlacement 1
+				children Rectangle {
+					styles
+					lineStyle DASHDOT foreground {
+					//blue-green
+						color 0 122 122
+					}
+					placementData GridPlacementData {
+						maxCellHeight 30.0
+						topLeft
+						left 10.0 0.0 / top 0.0 0.0
+						bottomRight
+						right 0.0 0.5 / bottom 0.0 0.0
+					}
+				}
+				Rectangle {
+					styles
+					lineStyle DASHDOT foreground {
+					//yellow
+						color 122 122 0
+					}
+					placementData GridPlacementData {
+					//									minCellWidth 20
+					//									maxCellWidth 20
+
+						topLeft
+						left 10.0 0.0 / top 0.0 0.0
+					}
+					children ChildArea
+				}
+			}
+			children
+			KNode {
+				data KShapeLayout {
+					width 30.0 height 70.0
+				}
+				RoundedRectangle 10.0 10.0 {
+					styles
+					lineStyle DASHDOTDOT
+				}
+			}
+		}
+	}
+}
