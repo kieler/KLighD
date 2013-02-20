@@ -1,4 +1,3 @@
-
 KNode {
 	children:
 	KNode {
@@ -10,9 +9,6 @@ KNode {
 			}
 			children:
 			Text Hello {
-				mapProperties:
-				"klighd.testing.height" = "11.0"
-				"klighd.testing.width" = "23.0"
 			}
 		}
 		KShapeLayout {

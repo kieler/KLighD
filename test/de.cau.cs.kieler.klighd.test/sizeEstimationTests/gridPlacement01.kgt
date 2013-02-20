@@ -1,28 +1,27 @@
+//test with grid layout and two text children
 KNode {
 	children
-	KNode {
-		data:
-		Rectangle {
-			childPlacement:
-			gridPlacement 1
-			children:
-			Text Hugo {
-				placementData:
-				GridPlacementData {
-					topLeft
-					left 10.0 0.0 / top 10.0 0.0
-					bottomRight
-					right 10.0 0.0 / bottom 10.0 0.0
-				}
-				mapProperties:
-				"klighd.testing.height" = "11.0"
-				"klighd.testing.width" = "25.0"
-			}
-		}
-		KShapeLayout {
+KNode {
+	data:
+	Rectangle {
+		childPlacement:
+		gridPlacement 1
+		children:
+		Text Hugo {
 			mapProperties:
-			"klighd.testing.expected.height" = "31.0"
-			"klighd.testing.expected.width" = "45.0"
+			"klighd.testing.height" = "16.0"
+			"klighd.testing.width" = "31.0"
+		}
+		Text "Hugos" {
+			mapProperties:
+			"klighd.testing.height" = "16.0"
+			"klighd.testing.width" = "38.0"
 		}
 	}
+	KShapeLayout {
+		mapProperties:
+		"klighd.testing.expected.height" = "32.0"
+		"klighd.testing.expected.width" = "38.0"
+	}
+}
 }
