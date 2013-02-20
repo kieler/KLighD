@@ -212,6 +212,8 @@ KPointPlacementData returns KPointPlacementData:
         ('horizontalAlignment' horizontalAlignment=HorizontalAlignment)?
         ('horizontalMargin' horizontalMargin=EFloat)?
         ('verticalMargin' verticalMargin=EFloat)?
+        ('minWidth' minWidth=EFloat)?
+        ('minHeight' minHeight=EFloat)?
     '}';
 
 KPosition returns KPosition:

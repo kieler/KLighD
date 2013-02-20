@@ -1240,7 +1240,8 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	//KPointPlacementData:
 	//	"PointPlacementData" "{" "referencePoint" referencePoint=KPosition ("verticalAlignment"
 	//	verticalAlignment=VerticalAlignment)? ("horizontalAlignment" horizontalAlignment=HorizontalAlignment)?
-	//	("horizontalMargin" horizontalMargin=EFloat)? ("verticalMargin" verticalMargin=EFloat)? "}";
+	//	("horizontalMargin" horizontalMargin=EFloat)? ("verticalMargin" verticalMargin=EFloat)? ("minWidth" minWidth=EFloat)?
+	//	("minHeight" minHeight=EFloat)? "}";
 	public KRenderingGrammarAccess.KPointPlacementDataElements getKPointPlacementDataAccess() {
 		return gaKRendering.getKPointPlacementDataAccess();
 	}

@@ -175,6 +175,8 @@ public class KRenderingParser extends AbstractContentAssistParser {
 					put(grammarAccess.getKPointPlacementDataAccess().getGroup_5(), "rule__KPointPlacementData__Group_5__0");
 					put(grammarAccess.getKPointPlacementDataAccess().getGroup_6(), "rule__KPointPlacementData__Group_6__0");
 					put(grammarAccess.getKPointPlacementDataAccess().getGroup_7(), "rule__KPointPlacementData__Group_7__0");
+					put(grammarAccess.getKPointPlacementDataAccess().getGroup_8(), "rule__KPointPlacementData__Group_8__0");
+					put(grammarAccess.getKPointPlacementDataAccess().getGroup_9(), "rule__KPointPlacementData__Group_9__0");
 					put(grammarAccess.getKPositionAccess().getGroup(), "rule__KPosition__Group__0");
 					put(grammarAccess.getKLeftPositionAccess().getGroup(), "rule__KLeftPosition__Group__0");
 					put(grammarAccess.getKRightPositionAccess().getGroup(), "rule__KRightPosition__Group__0");
@@ -348,6 +350,8 @@ public class KRenderingParser extends AbstractContentAssistParser {
 					put(grammarAccess.getKPointPlacementDataAccess().getHorizontalAlignmentAssignment_5_1(), "rule__KPointPlacementData__HorizontalAlignmentAssignment_5_1");
 					put(grammarAccess.getKPointPlacementDataAccess().getHorizontalMarginAssignment_6_1(), "rule__KPointPlacementData__HorizontalMarginAssignment_6_1");
 					put(grammarAccess.getKPointPlacementDataAccess().getVerticalMarginAssignment_7_1(), "rule__KPointPlacementData__VerticalMarginAssignment_7_1");
+					put(grammarAccess.getKPointPlacementDataAccess().getMinWidthAssignment_8_1(), "rule__KPointPlacementData__MinWidthAssignment_8_1");
+					put(grammarAccess.getKPointPlacementDataAccess().getMinHeightAssignment_9_1(), "rule__KPointPlacementData__MinHeightAssignment_9_1");
 					put(grammarAccess.getKPositionAccess().getXAssignment_0(), "rule__KPosition__XAssignment_0");
 					put(grammarAccess.getKPositionAccess().getYAssignment_2(), "rule__KPosition__YAssignment_2");
 					put(grammarAccess.getKLeftPositionAccess().getAbsoluteAssignment_2(), "rule__KLeftPosition__AbsoluteAssignment_2");
