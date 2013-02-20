@@ -3027,13 +3027,31 @@ public interface KRenderingPackage extends EPackage {
     int KPOINT_PLACEMENT_DATA__VERTICAL_MARGIN = KPLACEMENT_DATA_FEATURE_COUNT + 4;
 
     /**
+     * The feature id for the '<em><b>Min Width</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KPOINT_PLACEMENT_DATA__MIN_WIDTH = KPLACEMENT_DATA_FEATURE_COUNT + 5;
+
+    /**
+     * The feature id for the '<em><b>Min Height</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KPOINT_PLACEMENT_DATA__MIN_HEIGHT = KPLACEMENT_DATA_FEATURE_COUNT + 6;
+
+    /**
      * The number of structural features of the '<em>KPoint Placement Data</em>' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int KPOINT_PLACEMENT_DATA_FEATURE_COUNT = KPLACEMENT_DATA_FEATURE_COUNT + 5;
+    int KPOINT_PLACEMENT_DATA_FEATURE_COUNT = KPLACEMENT_DATA_FEATURE_COUNT + 7;
 
     /**
      * The meta object id for the '{@link de.cau.cs.kieler.core.krendering.impl.KSelectActionImpl <em>KSelect Action</em>}' class.
@@ -4751,6 +4769,28 @@ public interface KRenderingPackage extends EPackage {
     EAttribute getKPointPlacementData_VerticalMargin();
 
     /**
+     * Returns the meta object for the attribute '{@link de.cau.cs.kieler.core.krendering.KPointPlacementData#getMinWidth <em>Min Width</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the attribute '<em>Min Width</em>'.
+     * @see de.cau.cs.kieler.core.krendering.KPointPlacementData#getMinWidth()
+     * @see #getKPointPlacementData()
+     * @generated
+     */
+    EAttribute getKPointPlacementData_MinWidth();
+
+    /**
+     * Returns the meta object for the attribute '{@link de.cau.cs.kieler.core.krendering.KPointPlacementData#getMinHeight <em>Min Height</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the attribute '<em>Min Height</em>'.
+     * @see de.cau.cs.kieler.core.krendering.KPointPlacementData#getMinHeight()
+     * @see #getKPointPlacementData()
+     * @generated
+     */
+    EAttribute getKPointPlacementData_MinHeight();
+
+    /**
      * Returns the meta object for class '{@link de.cau.cs.kieler.core.krendering.KSelectAction <em>KSelect Action</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -6070,6 +6110,22 @@ public interface KRenderingPackage extends EPackage {
          * @generated
          */
         EAttribute KPOINT_PLACEMENT_DATA__VERTICAL_MARGIN = eINSTANCE.getKPointPlacementData_VerticalMargin();
+
+        /**
+         * The meta object literal for the '<em><b>Min Width</b></em>' attribute feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EAttribute KPOINT_PLACEMENT_DATA__MIN_WIDTH = eINSTANCE.getKPointPlacementData_MinWidth();
+
+        /**
+         * The meta object literal for the '<em><b>Min Height</b></em>' attribute feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EAttribute KPOINT_PLACEMENT_DATA__MIN_HEIGHT = eINSTANCE.getKPointPlacementData_MinHeight();
 
         /**
          * The meta object literal for the '{@link de.cau.cs.kieler.core.krendering.impl.KSelectActionImpl <em>KSelect Action</em>}' class.

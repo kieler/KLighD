@@ -40,6 +40,8 @@ import org.eclipse.emf.ecore.impl.EObjectImpl;
  *   <li>{@link de.cau.cs.kieler.core.krendering.impl.KPointPlacementDataImpl#getVerticalAlignment <em>Vertical Alignment</em>}</li>
  *   <li>{@link de.cau.cs.kieler.core.krendering.impl.KPointPlacementDataImpl#getHorizontalMargin <em>Horizontal Margin</em>}</li>
  *   <li>{@link de.cau.cs.kieler.core.krendering.impl.KPointPlacementDataImpl#getVerticalMargin <em>Vertical Margin</em>}</li>
+ *   <li>{@link de.cau.cs.kieler.core.krendering.impl.KPointPlacementDataImpl#getMinWidth <em>Min Width</em>}</li>
+ *   <li>{@link de.cau.cs.kieler.core.krendering.impl.KPointPlacementDataImpl#getMinHeight <em>Min Height</em>}</li>
  * </ul>
  * </p>
  *
@@ -135,6 +137,46 @@ public class KPointPlacementDataImpl extends EObjectImpl implements KPointPlacem
      * @ordered
      */
     protected float verticalMargin = VERTICAL_MARGIN_EDEFAULT;
+
+    /**
+     * The default value of the '{@link #getMinWidth() <em>Min Width</em>}' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see #getMinWidth()
+     * @generated
+     * @ordered
+     */
+    protected static final float MIN_WIDTH_EDEFAULT = 0.0F;
+
+    /**
+     * The cached value of the '{@link #getMinWidth() <em>Min Width</em>}' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see #getMinWidth()
+     * @generated
+     * @ordered
+     */
+    protected float minWidth = MIN_WIDTH_EDEFAULT;
+
+    /**
+     * The default value of the '{@link #getMinHeight() <em>Min Height</em>}' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see #getMinHeight()
+     * @generated
+     * @ordered
+     */
+    protected static final float MIN_HEIGHT_EDEFAULT = 0.0F;
+
+    /**
+     * The cached value of the '{@link #getMinHeight() <em>Min Height</em>}' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see #getMinHeight()
+     * @generated
+     * @ordered
+     */
+    protected float minHeight = MIN_HEIGHT_EDEFAULT;
 
     /**
      * <!-- begin-user-doc -->
@@ -287,6 +329,48 @@ public class KPointPlacementDataImpl extends EObjectImpl implements KPointPlacem
      * <!-- end-user-doc -->
      * @generated
      */
+    public float getMinWidth() {
+        return minWidth;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public void setMinWidth(float newMinWidth) {
+        float oldMinWidth = minWidth;
+        minWidth = newMinWidth;
+        if (eNotificationRequired())
+            eNotify(new ENotificationImpl(this, Notification.SET, KRenderingPackage.KPOINT_PLACEMENT_DATA__MIN_WIDTH, oldMinWidth, minWidth));
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public float getMinHeight() {
+        return minHeight;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public void setMinHeight(float newMinHeight) {
+        float oldMinHeight = minHeight;
+        minHeight = newMinHeight;
+        if (eNotificationRequired())
+            eNotify(new ENotificationImpl(this, Notification.SET, KRenderingPackage.KPOINT_PLACEMENT_DATA__MIN_HEIGHT, oldMinHeight, minHeight));
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
     @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
         switch (featureID) {
@@ -314,6 +398,10 @@ public class KPointPlacementDataImpl extends EObjectImpl implements KPointPlacem
                 return getHorizontalMargin();
             case KRenderingPackage.KPOINT_PLACEMENT_DATA__VERTICAL_MARGIN:
                 return getVerticalMargin();
+            case KRenderingPackage.KPOINT_PLACEMENT_DATA__MIN_WIDTH:
+                return getMinWidth();
+            case KRenderingPackage.KPOINT_PLACEMENT_DATA__MIN_HEIGHT:
+                return getMinHeight();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -340,6 +428,12 @@ public class KPointPlacementDataImpl extends EObjectImpl implements KPointPlacem
                 return;
             case KRenderingPackage.KPOINT_PLACEMENT_DATA__VERTICAL_MARGIN:
                 setVerticalMargin((Float)newValue);
+                return;
+            case KRenderingPackage.KPOINT_PLACEMENT_DATA__MIN_WIDTH:
+                setMinWidth((Float)newValue);
+                return;
+            case KRenderingPackage.KPOINT_PLACEMENT_DATA__MIN_HEIGHT:
+                setMinHeight((Float)newValue);
                 return;
         }
         super.eSet(featureID, newValue);
@@ -368,6 +462,12 @@ public class KPointPlacementDataImpl extends EObjectImpl implements KPointPlacem
             case KRenderingPackage.KPOINT_PLACEMENT_DATA__VERTICAL_MARGIN:
                 setVerticalMargin(VERTICAL_MARGIN_EDEFAULT);
                 return;
+            case KRenderingPackage.KPOINT_PLACEMENT_DATA__MIN_WIDTH:
+                setMinWidth(MIN_WIDTH_EDEFAULT);
+                return;
+            case KRenderingPackage.KPOINT_PLACEMENT_DATA__MIN_HEIGHT:
+                setMinHeight(MIN_HEIGHT_EDEFAULT);
+                return;
         }
         super.eUnset(featureID);
     }
@@ -390,6 +490,10 @@ public class KPointPlacementDataImpl extends EObjectImpl implements KPointPlacem
                 return horizontalMargin != HORIZONTAL_MARGIN_EDEFAULT;
             case KRenderingPackage.KPOINT_PLACEMENT_DATA__VERTICAL_MARGIN:
                 return verticalMargin != VERTICAL_MARGIN_EDEFAULT;
+            case KRenderingPackage.KPOINT_PLACEMENT_DATA__MIN_WIDTH:
+                return minWidth != MIN_WIDTH_EDEFAULT;
+            case KRenderingPackage.KPOINT_PLACEMENT_DATA__MIN_HEIGHT:
+                return minHeight != MIN_HEIGHT_EDEFAULT;
         }
         return super.eIsSet(featureID);
     }
@@ -412,6 +516,10 @@ public class KPointPlacementDataImpl extends EObjectImpl implements KPointPlacem
         result.append(horizontalMargin);
         result.append(", verticalMargin: ");
         result.append(verticalMargin);
+        result.append(", minWidth: ");
+        result.append(minWidth);
+        result.append(", minHeight: ");
+        result.append(minHeight);
         result.append(')');
         return result.toString();
     }

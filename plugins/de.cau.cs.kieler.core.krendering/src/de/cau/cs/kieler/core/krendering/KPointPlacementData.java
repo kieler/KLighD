@@ -31,6 +31,8 @@ package de.cau.cs.kieler.core.krendering;
  *   <li>{@link de.cau.cs.kieler.core.krendering.KPointPlacementData#getVerticalAlignment <em>Vertical Alignment</em>}</li>
  *   <li>{@link de.cau.cs.kieler.core.krendering.KPointPlacementData#getHorizontalMargin <em>Horizontal Margin</em>}</li>
  *   <li>{@link de.cau.cs.kieler.core.krendering.KPointPlacementData#getVerticalMargin <em>Vertical Margin</em>}</li>
+ *   <li>{@link de.cau.cs.kieler.core.krendering.KPointPlacementData#getMinWidth <em>Min Width</em>}</li>
+ *   <li>{@link de.cau.cs.kieler.core.krendering.KPointPlacementData#getMinHeight <em>Min Height</em>}</li>
  * </ul>
  * </p>
  *
@@ -141,6 +143,64 @@ public interface KPointPlacementData extends KPlacementData {
      * @generated
      */
     void setVerticalMargin(float value);
+
+    /**
+     * Returns the value of the '<em><b>Min Width</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <p>
+     * If the meaning of the '<em>Min Width</em>' attribute isn't clear,
+     * there really should be more of a description here...
+     * </p>
+     * <!-- end-user-doc -->
+     * <!-- begin-model-doc -->
+     * Minimal width of the element. When children are smaller or not present, this size will be used.
+     * <!-- end-model-doc -->
+     * @return the value of the '<em>Min Width</em>' attribute.
+     * @see #setMinWidth(float)
+     * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKPointPlacementData_MinWidth()
+     * @model
+     * @generated
+     */
+    float getMinWidth();
+
+    /**
+     * Sets the value of the '{@link de.cau.cs.kieler.core.krendering.KPointPlacementData#getMinWidth <em>Min Width</em>}' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @param value the new value of the '<em>Min Width</em>' attribute.
+     * @see #getMinWidth()
+     * @generated
+     */
+    void setMinWidth(float value);
+
+    /**
+     * Returns the value of the '<em><b>Min Height</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <p>
+     * If the meaning of the '<em>Min Height</em>' attribute isn't clear,
+     * there really should be more of a description here...
+     * </p>
+     * <!-- end-user-doc -->
+     * <!-- begin-model-doc -->
+     * Minimal height of the element. When children are smaller or not present, this size will be used.
+     * <!-- end-model-doc -->
+     * @return the value of the '<em>Min Height</em>' attribute.
+     * @see #setMinHeight(float)
+     * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKPointPlacementData_MinHeight()
+     * @model
+     * @generated
+     */
+    float getMinHeight();
+
+    /**
+     * Sets the value of the '{@link de.cau.cs.kieler.core.krendering.KPointPlacementData#getMinHeight <em>Min Height</em>}' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @param value the new value of the '<em>Min Height</em>' attribute.
+     * @see #getMinHeight()
+     * @generated
+     */
+    void setMinHeight(float value);
 
     /**
      * Returns the value of the '<em><b>Horizontal Alignment</b></em>' attribute.
