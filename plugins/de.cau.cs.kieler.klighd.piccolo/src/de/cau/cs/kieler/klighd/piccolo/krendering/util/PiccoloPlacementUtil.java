@@ -91,6 +91,8 @@ public final class PiccoloPlacementUtil {
             return new PBounds(0, 0, parentBounds.width, parentBounds.height);
         }
 
+        float width = Math.max(ownBounds.getWidth(), ppd.getMinWidth());
+        float height = Math.max(ownBounds.getHeight(), ppd.getMinHeight());
         KPosition ref = ppd.getReferencePoint();
         Point2D refPoint = evaluateDirectPosition(ref, parentBounds);
 
@@ -98,10 +100,10 @@ public final class PiccoloPlacementUtil {
 
         switch (ppd.getHorizontalAlignment()) {
         case CENTER:
-            x0 = refPoint.getX() - ownBounds.getWidth() / 2;
+            x0 = refPoint.getX() - width / 2;
             break;
         case RIGHT:
-            x0 = refPoint.getX() - ownBounds.getWidth();
+            x0 = refPoint.getX() - width;
             break;
         default:
         case LEFT:
@@ -110,17 +112,17 @@ public final class PiccoloPlacementUtil {
         
         switch (ppd.getVerticalAlignment()) {
         case BOTTOM:
-            y0 = refPoint.getY() - ownBounds.getHeight();
+            y0 = refPoint.getY() - height;
             break;
         case CENTER:
-            y0 = refPoint.getY() - ownBounds.getHeight() / 2;
+            y0 = refPoint.getY() - height / 2;
             break;
         default:
         case TOP:
             y0 = refPoint.getY();
         }
 
-        return new PBounds(x0, y0, ownBounds.getWidth(), ownBounds.getHeight());
+        return new PBounds(x0, y0, width, height);
     }
     
 

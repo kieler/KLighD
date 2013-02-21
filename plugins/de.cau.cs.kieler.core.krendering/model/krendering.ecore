@@ -557,6 +557,16 @@
         <details key="documentation" value="Some vertical margin that will be added on the bottom (top) for a TOP (BOTTOM) aligned child and to both top and bottom sides in case of a centrically aligned child."/>
       </eAnnotations>
     </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="minWidth" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EFloat">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="Minimal width of the element. When children are smaller or not present, this size will be used."/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="minHeight" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EFloat">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="Minimal height of the element. When children are smaller or not present, this size will be used."/>
+      </eAnnotations>
+    </eStructuralFeatures>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EEnum" name="KTrigger">
     <eLiterals name="SINGLECLICK" literal="SINGLECLICK"/>

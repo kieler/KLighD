@@ -52,8 +52,9 @@ import de.cau.cs.kieler.core.krendering.KText;
 import de.cau.cs.kieler.core.krendering.KTopPosition;
 import de.cau.cs.kieler.core.krendering.KXPosition;
 import de.cau.cs.kieler.core.krendering.KYPosition;
-import de.cau.cs.kieler.core.krendering.impl.KBottomPositionImpl;
 import de.cau.cs.kieler.core.krendering.util.KRenderingSwitch;
+import de.cau.cs.kieler.core.properties.IProperty;
+import de.cau.cs.kieler.core.properties.Property;
 import de.cau.cs.kieler.core.util.Pair;
 import de.cau.cs.kieler.kiml.klayoutdata.KInsets;
 import de.cau.cs.kieler.kiml.klayoutdata.KLayoutDataFactory;
@@ -74,6 +75,40 @@ public final class PlacementUtil {
     }
 
     // CHECKSTYLEOFF Visibility
+
+    /**
+     * todo.
+     */
+    public static final IProperty<GridSpacing> ESTIMATED_GRID_DATA = new Property<GridSpacing>(
+            "klighd.grid.estimatedGridData");
+    /**
+     * 
+     */
+    public static final IProperty<Pair<Integer, Integer>> CHILD_AREA_POSITION = 
+            new Property<Pair<Integer, Integer>>("klighd.grid.childAreaPosition");
+    
+    /**
+     * A data holder class for the spacing of the grid calculated during the size estimation.
+     * this class is intended to be used in the above defined IProperty ESTIMATED_GRID_DATA to be
+     * evaluated during the actual evaluation of parentBounds to place childElements
+     * @author akoc
+     *
+     */
+    static class GridSpacing {
+        float[] calculatedColumnWidths;
+        float[] calculatedRowHeights;
+        
+        /**
+         * Constructor. Sets the attributes according to given parameters 
+         * @param cols the col widths calculated during the size estimation
+         * @param rows the row heights calculated during the size estimation
+         */
+        GridSpacing(final float[] cols, final float[] rows) {
+            this.calculatedColumnWidths = cols;
+            this.calculatedRowHeights = rows;
+        }
+    }
+    
 
     /**
      * A data holder class for points. This class and its fields are intentionally package
@@ -520,7 +555,6 @@ public final class PlacementUtil {
      * <code>childPlacement instanceof KGridPlacement</code> and updates the placement data of
      * internal KRenderings if necessary.<br>
      * <br>
-     * chsch TODO: Modifying the placementData is evil! Think about attaching related
      * {@link de.cau.cs.kieler.core.properties.IProperty IProperties} for delivering those data.
      * 
      * @param container
@@ -534,7 +568,8 @@ public final class PlacementUtil {
         int numColumns = ((KGridPlacement) container.getChildPlacement()).getNumColumns();
         List<KRendering> childRenderings = container.getChildren();
 
-        Bounds minBounds = new Bounds(parentBounds);
+        //Bounds minBounds = new Bounds(parentBounds);
+        Bounds minBounds = new Bounds(0.0f, 0.0f, 0.0f, 0.0f);
         
         int numRows;
         if (numColumns == -1) {
@@ -554,67 +589,45 @@ public final class PlacementUtil {
         float[] minColumnWidths = new float[numColumns];
         float[] minRowHeights = new float[numRows];
 
-        // first evaluate the grid to get position and size of each cell
+        //variables to later store the information where an optional childArea might be placed
         int childAreaRowId = -1;
         int childAreaColId = -1;
 
+        // first evaluate the grid to get position and size of each cell
         // to make the layout as compact as possible but have space to place all children,
         // evaluate the space needed for each child
         for (int k = 0; k < childRenderings.size(); k++) {
+            KRendering currentChild = childRenderings.get(k);
+            
             int row = k / numColumns;
             int col = k - row * numColumns;
 
-            Bounds childMinBounds = estimateSize(childRenderings.get(k), new Bounds(0.0f, 0.0f));
+            LinkedList<KRendering> path = Lists.newLinkedList();
+            if (findChildArea(currentChild, path)) {
+                //if a childArea is contained in the current child (or the child itself is a childarea)
+                // remember the position of the area to be able to calculate
+                // the size of the parentNode correctly
+                // later this is used to calculate insets based on the cellPosition of the childArea
+                childAreaColId = col;
+                childAreaRowId = row;
+            }
+
+            Bounds childMinBounds = estimateSize(currentChild, new Bounds(0, 0));
 
             float elementHeight = childMinBounds.getHeight();
             float elementWidth = childMinBounds.getWidth();
 
             // evaluate given PlacementData
-            KPlacementData plcData = childRenderings.get(k).getPlacementData();
-            KGridPlacementData gridData = null;
+            KGridPlacementData gridData = asGridPlacementData(currentChild.getPlacementData());
 
-            if (childRenderings.get(k) instanceof KChildArea) {
-                // remember the position of the area to be able to calculate
-                // the size of the parentNode correctly
-                // later this is used to calculate insets based on x and y pos of the
-                childAreaColId = col;
-                childAreaRowId = row;
-            }
+            if (gridData != null) {
+                KPosition topLeft = gridData.getTopLeft();
+                KPosition bottomRight = gridData.getBottomRight();
 
-            if (plcData instanceof KGridPlacementData) {
-                gridData = (KGridPlacementData) plcData;
-                
-                
-                if (gridData.getTopLeft() != null) {
-                    elementWidth += additionalSizeNeeded(elementWidth, 
-                            gridData.getTopLeft().getX().getAbsolute(), 
-                            gridData.getTopLeft().getX().getRelative(),
-                            gridData.getTopLeft().getX().eClass().getClassifierID());
-                    elementHeight += additionalSizeNeeded(elementHeight, 
-                            gridData.getTopLeft().getY().getAbsolute(), 
-                            gridData.getTopLeft().getY().getRelative(),
-                            gridData.getTopLeft().getY().eClass().getClassifierID());
-                }
-                if (gridData.getBottomRight() != null) {
-                    elementWidth += additionalSizeNeeded(elementWidth, 
-                            gridData.getBottomRight().getX().getAbsolute(), 
-                            gridData.getBottomRight().getX().getRelative(),
-                            gridData.getBottomRight().getX().eClass().getClassifierID());
-                    elementHeight += additionalSizeNeeded(elementHeight, 
-                            gridData.getBottomRight().getY().getAbsolute(), 
-                            gridData.getBottomRight().getY().getRelative(),
-                            gridData.getBottomRight().getY().eClass().getClassifierID());
-                }
-
-
-                if (KRENDERING_PACKAGE.getKText().isInstance(childRenderings.get(k))) {
-                    // update Text with minimum needed space if already set value is less than that
-                    // to make it possible for the gridPlacer to give that space to the text (otherwise
-                    // the grid placer would not know the size needed and just give the text the space
-                    // defined in the placementData
-                    gridData.setMinCellHeight(Math.max(elementHeight, gridData.getMinCellHeight()));
-                    gridData.setMinCellWidth(Math.max(elementWidth, gridData.getMinCellWidth()));
-                }
+                //take insets into consideration
+                elementWidth = calculateParentWidth(elementWidth, topLeft, bottomRight);
+                elementHeight = calculateParentWidth(elementHeight, topLeft, bottomRight);
+                   
                 elementHeight = Math.max(gridData.getMinCellHeight(), elementHeight);
                 elementWidth = Math.max(gridData.getMinCellWidth(), elementWidth);
             }
@@ -623,8 +636,14 @@ public final class PlacementUtil {
             minRowHeights[row] = Math.max(minRowHeights[row], elementHeight);
             minColumnWidths[col] = Math.max(minColumnWidths[col], elementWidth);
         }
-
-        // the minimum total bound is the sum of the biggest renderings in height and width
+        
+        //store the information of the size of the cells into the KRendering the grid is attached to
+        //to be able to reUse that information later
+        container.setProperty(ESTIMATED_GRID_DATA, new GridSpacing(minColumnWidths, minRowHeights));
+        container.setProperty(CHILD_AREA_POSITION,  
+                new Pair<Integer, Integer>(childAreaColId, childAreaRowId));
+        
+        // the minimum total bound is the sum of the single column widths and row heights
         Bounds childBounds = new Bounds(0, 0, 0, 0);
         for (float width : minColumnWidths) {
             childBounds.width += width;
@@ -632,17 +651,47 @@ public final class PlacementUtil {
         for (float height : minRowHeights) {
             childBounds.height += height;
         }
-        float inset = 0.0f;
+        
+        //take insets of the grid itself into consideration
+        KPosition topLeft = ((KGridPlacement) container.getChildPlacement()).getTopLeft();
+        KPosition bottomRight =  ((KGridPlacement) container.getChildPlacement()).getBottomRight();
+        //increase size according to the space needed by the insets
+        childBounds.width = calculateParentWidth(childBounds.width, topLeft, bottomRight);
+        childBounds.height = calculateParentHeight(childBounds.height, topLeft, bottomRight);
+        
+        minBounds.width = childBounds.width;
+        minBounds.height = childBounds.height;
+                
+        //to make sure the calling function "createNode" is able to place the children correctly later, 
+        //we have to transfer a detailed position of the childArea to it.
+        //so calculate the insets for the childArea, if there is one explicitly defined
+        float inset = 0.0f, secondInset = 0.0f;
         if (childAreaColId >= 0 && childAreaRowId >= 0) {
             // found a childArea earlier, calculate 'insets' based on position
             // left inset is everything left of the childAreaCell
             for (int left = 0; left < childAreaColId; left++) {
                 inset += minColumnWidths[left];
             }
+            
+            //add insets defined in the GridPlacement itself 
+            inset += minBounds.width - getHorizontalSizeAvailable(minBounds.width, topLeft, null);
+            
+            //add insets defined in the GridPlacementData of the cell the childArea is placed in
+            KGridPlacementData gridData = asGridPlacementData(
+                    childRenderings.get(childAreaRowId * numColumns + childAreaColId)
+                        .getPlacementData());
+            if (gridData != null) {
+                topLeft = gridData.getTopLeft();
+                inset += minBounds.width - getHorizontalSizeAvailable(minBounds.width, topLeft, null);
+                bottomRight = gridData.getBottomRight();
+                secondInset =  minBounds.width 
+                        - getHorizontalSizeAvailable(minBounds.width, null, topLeft);
+            }
+            
             childBounds.getInsets().setLeft(inset);
-            // right inset is fullWidth-insetLeft-childAreaWidth
+            // right inset is fullWidth-insetLeft-(cellWidth of childArea - rightInset in that cell)
             childBounds.getInsets().setRight(
-                    childBounds.width - inset - minColumnWidths[childAreaColId]);
+                    childBounds.width - inset - (minColumnWidths[childAreaColId]) - secondInset);
 
             // reset for next calculation
             inset = 0.0f;
@@ -650,123 +699,297 @@ public final class PlacementUtil {
             for (int top = 0; top < childAreaRowId; top++) {
                 inset += minRowHeights[top];
             }
+            
+            //add insets defined in the GridPlacementData of the cell the childArea is placed in
+            inset += (minBounds.height - getVerticalSizeAvailable(minBounds.height, topLeft, null));
+                
+            if (gridData != null) {
+                bottomRight = gridData.getBottomRight();
+                secondInset =  minBounds.height
+                        - getVerticalSizeAvailable(minBounds.height, null, bottomRight);
+            }
+            
+            //add insets defined in the GridPlacement itself 
+            topLeft = ((KGridPlacement) container.getChildPlacement()).getTopLeft();
+            inset += (minBounds.height - getVerticalSizeAvailable(minBounds.height,  topLeft,  null));
+            
             childBounds.getInsets().setTop(inset);
             // bottom inset is fullHeight-insetTop-childAreaHeight
             childBounds.getInsets().setBottom(
-                    childBounds.height - inset - minRowHeights[childAreaRowId]);
+                    childBounds.height - inset - (minRowHeights[childAreaRowId] - secondInset));
         }
 
-        // compare the minimal need size with the maximal yet found size and
-        // update the minimal size accordingly
-        // transport the insets-sums on each side through the position
+        // transport the inset-sums on each side through the position
         minBounds.insets = childBounds.getInsets();
-
-        minBounds.width = Math.max(minBounds.width, childBounds.width);
-        minBounds.height = Math.max(minBounds.height, childBounds.height);
-        
-        //at last add any offset defined in topLeft and bottomRight of the placement definition
-        KPosition top = ((KGridPlacement) container.getChildPlacement()).getTopLeft();
-        KPosition bottom =  ((KGridPlacement) container.getChildPlacement()).getBottomRight();
-        
-        if (top != null) {
-            minBounds.width += additionalSizeNeeded(minBounds.width, 
-                    top.getX().getAbsolute(), 
-                    top.getX().getRelative(), 
-                    top.getX().eClass().getClassifierID());
-            minBounds.height += additionalSizeNeeded(minBounds.height, 
-                    top.getY().getAbsolute(), 
-                    top.getY().getRelative(), 
-                    top.getY().eClass().getClassifierID());
-        }
-        if (bottom != null) {
-            minBounds.width += additionalSizeNeeded(minBounds.width, 
-                    bottom.getX().getAbsolute(), 
-                    bottom.getX().getRelative(), 
-                    bottom.getX().eClass().getClassifierID());
-            minBounds.height += additionalSizeNeeded(minBounds.height, 
-                    bottom.getY().getAbsolute(), 
-                    bottom.getY().getRelative(), 
-                    bottom.getY().eClass().getClassifierID());
-        }
-        
         return minBounds;
     }
     
+    /*whether a position is measured in the same direction as the point it is defining 
+     * e.g. a top left position is measured from left*/
+    private static final int DIRECT = 0;
+    /*whether a position is measured contrary to the point it is defining 
+     * e.g. a top right position is measured from left*/
+    private static final int INDIRECT = 1;
+    
+    /* offset to be used to calculate below defined constants to determine how positions interact 
+     * first positions are left or top.
+     */
+    private static final int FIRST_OFFSET = 100;
+    
+    /* both positions are measured direct*/
+    private static final int DIRECT_DIRECT = DIRECT * FIRST_OFFSET + DIRECT;
+    /* first position is measured directly, second position is measured indirectly */
+    private static final int DIRECT_INDIRECT = DIRECT * FIRST_OFFSET + INDIRECT;
+    /* first position is measured indirectly, second position is measured directly */
+    private static final int INDIRECT_DIRECT = INDIRECT * FIRST_OFFSET + DIRECT;
+    /* both positions are measured indirectly */
+    private static final int INDIRECT_INDIRECT = INDIRECT * FIRST_OFFSET + INDIRECT;
     
     /**
-     * determine how much of a parent size is available after considering defined topLeft and bottomRight
-     * parameters
+     * Calculate how much space of a parent is available to place children after 
+     * considering by tL and bR defined insets.
      * @param parentSize the size of the parent
-     * @param absValue the absolute value of the topLeft or bottomRight position
-     * @param relValue the relative value of the topLeft or bottomRight position
-     * @param classifierId the classifierId of the KPosition the measurements are taken from
-     * @return
+     * @param tL the KPosition defining the top and Left insets
+     * @param bR the KPosition defining the bottom and right insets
+     * @return the size available to place children
      */
-    private static float getSizeAvailable(final float parentSize, final float absValue, 
-            final float relValue, final int classifierId){
-        float temp;
-        float localRelValue = relValue;
-        switch (classifierId) {
-        case KRenderingPackage.KBOTTOM_POSITION:
-        case KRenderingPackage.KRIGHT_POSITION:
-            // emulate left/topPosition by simply inverting the relValue
-            localRelValue = 1 - relValue;
-            // fallThrough
-        case KRenderingPackage.KTOP_POSITION:
-        case KRenderingPackage.KLEFT_POSITION:
-            temp = parentSize - absValue;
-            if (localRelValue < 1) {
-                temp = temp * (1-localRelValue);
-            } // else error in model: object placed outside of the parent, so ignore relValue.
-            return temp;
-        default:
-            // could not determine how the insets were measured so assume the whole parent Width is available
-            return parentSize;
+    private static float getHorizontalSizeAvailable(final float parentSize, final KPosition tL, 
+            final KPosition bR) {
+
+        float abs0, abs1, rel0, rel1;
+        int posId0, posId1;
+
+        if (tL == null) {
+            // emulate measuring from topLeft
+            abs0 = 0;
+            rel0 = 0;
+            posId0 = DIRECT;
+        } else {
+            abs0 = tL.getX().getAbsolute();
+            rel0 = tL.getX().getRelative();
+            posId0 = tL.getX().eClass().getClassifierID() == KRenderingPackage.KLEFT_POSITION ? DIRECT
+                    : INDIRECT;
         }
+
+        if (bR == null) {
+            // emulate measuring from bottomRight
+            abs1 = 0;
+            rel1 = 0;
+            posId1 = DIRECT;
+        } else {
+            abs1 = bR.getX().getAbsolute();
+            rel1 = bR.getX().getRelative();
+            posId1 = bR.getX().eClass().getClassifierID() == KRenderingPackage.KRIGHT_POSITION ? DIRECT
+                    : INDIRECT;
+        }
+
+        return getSizeAvailable(parentSize, abs0, rel0, posId0, abs1, rel1, posId1);
+    }   
+    
+    /**
+     * Calculate how much space of a parent is available to place children after 
+     * considering by tL and bR defined insets.
+     * @param parentSize the size of the parent
+     * @param tL the KPosition defining the top and Left insets
+     * @param bR the KPosition defining the bottom and right insets
+     * @return the size available to place children
+     */
+    private static float getVerticalSizeAvailable(final float parentSize, final KPosition tL, 
+            final KPosition bR) {
+
+        float abs0, abs1, rel0, rel1;
+        int posId0, posId1;
+
+        if (tL == null) {
+            // emulate measuring from topLeft
+            abs0 = 0;
+            rel0 = 0;
+            posId0 = DIRECT;
+        } else {
+            abs0 = tL.getY().getAbsolute();
+            rel0 = tL.getY().getRelative();
+            posId0 = tL.getY().eClass().getClassifierID() == KRenderingPackage.KTOP_POSITION ? DIRECT
+                    : INDIRECT;
+        }
+
+        if (bR == null) {
+            // emulate measuring from bottomRight
+            abs1 = 0;
+            rel1 = 0;
+            posId1 = DIRECT;
+        } else {
+            abs1 = bR.getY().getAbsolute();
+            rel1 = bR.getY().getRelative();
+            posId1 = bR.getY().eClass().getClassifierID() == KRenderingPackage.KBOTTOM_POSITION ? DIRECT
+                    : INDIRECT;
+        }
+
+        return getSizeAvailable(parentSize, abs0, rel0, posId0, abs1, rel1, posId1);
+    }  
+    
+    /**
+     * Calculate how much space of a parent is available to place children after 
+     * considering by abs0, abs1, rel0 and rel1 defined defined insets.
+     * @param parentSize the size of the parent
+     * @param abs0 the absolute value of the first inset
+     * @param rel0 the relative value of the first inset
+     * @param positionId0 the identifier constant informing about the measurement direction 
+     * (DIRECT, INDIRECT)
+     * @param abs1 the absolute value of the second inset
+     * @param rel1 the relative value of the second inset
+     * @param positionId1 the identifier constant informing about the measurement direction 
+     * (DIRECT, INDIRECT) 
+     * @return the size available to place children
+     */
+    private static float getSizeAvailable(
+            final float parentSize,
+            final float abs0, final float rel0, final int positionId0,
+            final float abs1, final float rel1, final int positionId1) {
+        
+        Pair<Float, Float> normalizedInsets = getSize(abs0, rel0, positionId0,
+                abs1, rel1, positionId1);
+        
+        float absOffset = normalizedInsets.getFirst();
+        float relSize = normalizedInsets.getSecond();
+        
+        float elementWidth = parentSize * relSize - absOffset;
+        
+        
+        if (elementWidth < 0) {
+            //invalid insets
+            return parentSize; 
+        } else {
+            return elementWidth;
+        }
+    }
+ 
+    /**
+     * Calculate the needed size of a parent based on the size of an element to be placed inside that 
+     * parent and the insets defined for that child.
+     * @param elementSize the size of the element to be placed
+     * @param tL the KPosition defining the top and Left insets
+     * @param bR the KPosition defining the bottom and right insets
+     * @return the size needed for the parent to be able to place the element with the given size
+     */
+    private static float calculateParentWidth(final float elementSize, final KPosition tL,
+            final KPosition bR) {
+        Pair<Float, Float> normalizedSize = getHorizontalSize(tL, bR);
+        Float parentWidth = elementSize;
+        
+        if (normalizedSize.getFirst() > 0) {
+            //parent has to be bigger than child
+            parentWidth += normalizedSize.getFirst();
+        }
+        
+        if (normalizedSize.getSecond() > 0 
+                && normalizedSize.getSecond() < 1) {
+         //if child should be bigger than parent or no space is left for child, ignore relative Values
+            parentWidth /= normalizedSize.getSecond();
+        }
+        
+        return parentWidth;
     }
     
     /**
-     * Determine the additional size needed to place an element with its according insets.
-     * 
-     * @param elementSize
-     *            the size of the element itself
-     * @param absValue
-     *            the absolute value of given insets
-     * @param relValue
-     *            the relative value of given insets
-     * @param classifierId
-     *            the classifier to identify how these insets are measured
-     * @return the additional size needed for the rendering
+     * Calculate the needed size of a parent based on the size of an element to be placed inside that 
+     * parent and the insets defined for that child.
+     * @param elementSize the size of the element to be placed
+     * @param tL the KPosition defining the top and Left insets
+     * @param bR the KPosition defining the bottom and right insets
+     * @return the size needed for the parent to be able to place the element with the given size
      */
-    private static float additionalSizeNeeded(final float elementSize, final float absValue,
-            final float relValue, final int classifierId) {
-        float temp;
-        float localRelValue = relValue;
-        switch (classifierId) {
-        case KRenderingPackage.KBOTTOM_POSITION:
-        case KRenderingPackage.KRIGHT_POSITION:
-            // emulate left/topPosition by simply inverting the relValue
-            localRelValue = 1 - relValue;
-            // fallThrough
-        case KRenderingPackage.KTOP_POSITION:
-        case KRenderingPackage.KLEFT_POSITION:
-            temp = elementSize + absValue;
-            if (localRelValue != 1) {
-                temp = temp / (1 - localRelValue);
-            } // else error in model: object placed outside of the parent, so ignore relValue.
-            return temp - elementSize;
-        default:
-            // could not determine how the insets were measured so don't change anything.
-            return 0f;
+    private static float calculateParentHeight(final float elementSize, final KPosition tL,
+            final KPosition bR) {
+        Pair<Float, Float> normalizedSize = getVerticalSize(tL, bR);
+        Float parentHeight = elementSize;
+        
+        if (normalizedSize.getFirst() > 0) {
+            //parent has to be bigger than child
+            parentHeight += normalizedSize.getFirst();
         }
+        
+        if (normalizedSize.getSecond() > 0 
+                && normalizedSize.getSecond() < 1) {
+         //if child should be bigger than parent or no space is left for child, ignore relative Values
+            parentHeight /= normalizedSize.getSecond();
+        }
+        
+        return parentHeight;
     }
-
+    
+    /**
+     * Normalize given insets to find out how big a child is in relation to it's parent 
+     * and how much space is needed to add absolute insets.
+     * @param abs0 the absolute value of the position defining first inset
+     * @param rel0 the relative value of the position defining first inset
+     * @param positionId0 the identifier constant informing about the measurement direction 
+     * (DIRECT, INDIRECT)
+     * @param abs1 the absolute value of the position defining first inset
+     * @param rel1 the relative value of the position defining the first inset
+     * @param positionId1 the identifier constant informing about the measurement direction 
+     * (DIRECT, INDIRECT)
+     * @return a pair informing about the absolute offset needed to place the child and 
+     * the relative size of a child to the parent
+     */
+    private static Pair<Float, Float> getSize(
+            final float abs0, final float rel0, final int positionId0,
+            final float abs1, final float rel1, final int positionId1) {
+        float absOffset = 0;
+        float relWidth = 1f;
+        
+        // boolean absoluteLength = false;
+        // the idea of that variable is to provide an information whether the size of
+        //  figure is influenced by the size of the parent or whether it's fully determined
+        //  by the absolute positioning components; need thinking on that further
+        
+        int position = positionId0 * FIRST_OFFSET + positionId1;
+        
+        switch (position) {
+        case DIRECT_DIRECT:
+            // top left comes from left
+            // bottom right comes from right
+            relWidth = 1f - rel1 - rel0;
+            absOffset = abs0 + abs1;
+            break;
+            
+        case DIRECT_INDIRECT:
+            // top left comes from left
+            // bottom right comes from left
+            relWidth = rel1 - rel0;
+            //absXOffset = Math.min(tL.getX().getAbsolute(), bR.getX().getAbsolute());
+            absOffset = abs0 - abs1;
+            break;
+            
+        case INDIRECT_DIRECT:
+            // top left comes from right
+            // bottom right comes from right
+            relWidth = rel0 - rel1;
+            //absXOffset = Math.min(bR.getX().getAbsolute(), tL.getX().getAbsolute());
+            absOffset = -abs0 + abs1; 
+            break;
+            
+        case INDIRECT_INDIRECT:
+            // top left comes from right
+            // bottom right comes from left
+            relWidth = rel1 + rel0 - 1f;
+            absOffset = -abs0 - abs1;
+            break;
+            
+        default:
+            // we don't know which position was taken
+            // TODO ensure that all placement positions are guaranteed
+            System.err.println("Found unknown placement position for size calculation");
+            break;
+        }
+        return new Pair<Float, Float>(absOffset, relWidth);
+        // return new Triple<Float, Float, Boolean>(absXOffest, relWidth, absoluteLength);
+    }
+    
     /**
      * Returns the minimal size of a {@link KContainerRendering} width
      * <code>childPlacement == null</code> and updates the placement data of
      * internal KRenderings if necessary.<br>
      * <br>
-     * chsch TODO: Modifying the placementData is evil! Think about attaching related
      * {@link IProperty IProperties} for delivering those data.
      * 
      * @param container
@@ -783,18 +1006,19 @@ public final class PlacementUtil {
             KPlacementData plcData = rendering.getPlacementData();
 
             if (plcData instanceof KAreaPlacementData) {
-                KAreaPlacementData dpd = (KAreaPlacementData) plcData;
+                KAreaPlacementData apd = (KAreaPlacementData) plcData;
 
-                final Bounds bounds = evaluateAreaPlacement(dpd, new Bounds(givenBounds));
+                final Bounds bounds = evaluateAreaPlacement(apd, new Bounds(givenBounds));
 
                 // determine minimal needed size of the child
                 final Bounds childMinSize = estimateSize(rendering, bounds);
-
-                // TODO chsch: I need to document the minds that let once introduce the following cases
-                if ((bounds.width < childMinSize.width)
-                        || (bounds.height < childMinSize.height)
+                if ((//the area gives less space than the child needs actually
+                        bounds.width < childMinSize.width)              
+                        || (bounds.height < childMinSize.height)        
+                        //the child needs more space than the parent is willing to give
                         || (givenBounds.width < childMinSize.width)
                         || (givenBounds.height < childMinSize.height)
+                        //the placement of the child needs more space than the parent is willing to give 
                         || (givenBounds.width  < bounds.width)
                         || (givenBounds.height < bounds.height)
                         ) {
@@ -804,8 +1028,8 @@ public final class PlacementUtil {
                     // float absYOffest = 0;
                     // float relHeight = 1f;
 
-                    KPosition tL = dpd.getTopLeft();
-                    KPosition bR = dpd.getBottomRight();
+                    KPosition tL = apd.getTopLeft();
+                    KPosition bR = apd.getBottomRight();
 
                     Pair<Float, Float> horSize = getHorizontalSize(tL, bR);
                     float absXOffest = horSize.getFirst();
@@ -829,15 +1053,16 @@ public final class PlacementUtil {
                                     + Math.abs(absYOffest));
                 }
             } else if (plcData instanceof KPointPlacementData) {
-                
+                KPointPlacementData ppd = (KPointPlacementData) plcData;
                 // determine minimal needed size of the child
                 //  for point-based placement the parent size does not matter for the size! 
                 final Bounds childMinSize = estimateSize(rendering, new Bounds(0, 0));
-
+                childMinSize.width = Math.max(childMinSize.width, ppd.getMinWidth());
+                childMinSize.height = Math.max(childMinSize.height, ppd.getMinHeight());
+                
+                
                 if (minBounds.getHeight() < childMinSize.getHeight()
                         || minBounds.getWidth() < childMinSize.getWidth()) {
-                    
-                    KPointPlacementData ppd = (KPointPlacementData) plcData;
                     
                     float calculatedWidth = getHorizontalSize(ppd, childMinSize.getWidth());
                     float calculatedHeight = getVerticalSize(ppd, childMinSize.getHeight());
@@ -858,20 +1083,8 @@ public final class PlacementUtil {
         return minBounds;
     }
 
-    private static final int TOP_LEFT_OFFSET = 100;
-
-    private static final int LEFT_LEFT = KRenderingPackage.KLEFT_POSITION * TOP_LEFT_OFFSET
-            + KRenderingPackage.KLEFT_POSITION;
-
-    private static final int RIGHT_RIGHT = KRenderingPackage.KRIGHT_POSITION * TOP_LEFT_OFFSET
-            + KRenderingPackage.KRIGHT_POSITION;
-
-    private static final int LEFT_RIGHT = KRenderingPackage.KLEFT_POSITION * TOP_LEFT_OFFSET
-            + KRenderingPackage.KRIGHT_POSITION;
-
-    private static final int RIGHT_LEFT = KRenderingPackage.KRIGHT_POSITION * TOP_LEFT_OFFSET
-            + KRenderingPackage.KLEFT_POSITION;
-
+    
+    
     /**
      * Determines the horizontal correction values for area-based placed child.
      * 
@@ -879,70 +1092,44 @@ public final class PlacementUtil {
      *            the topLeft position
      * @param bR
      *            the bottomRight position
-     * @return a {@link Pair} of the absolute size offset and the relative size divisor
+     * @return a {@link Pair} of the absolute size offset (first component)
+     *             and the relative size divisor (second component)
      */
     private static Pair<Float, Float> getHorizontalSize(final KPosition tL, final KPosition bR) {
-        float absXOffset = 0;
-        float relWidth = 1f;
-        
-        // boolean absoluteLength = false;
-        // the idea of that variable is to provide an information whether the size of
+        //  the idea of that variable is to provide an information whether the size of
         //  figure is influenced by the size of the parent or whether it's fully determined
         //  by the absolute positioning components; need thinking on that further
-
-        int position = bR.getX().eClass().getClassifierID() * TOP_LEFT_OFFSET
-                + tL.getX().eClass().getClassifierID();
-
-        switch (position) {
-        case RIGHT_LEFT:
-            // bottom right comes from right
-            // top left comes from left
-            relWidth = 1f - bR.getX().getRelative() - (tL.getX().getRelative());
-            absXOffset = bR.getX().getAbsolute() + tL.getX().getAbsolute();
-            break;
-
-        case LEFT_RIGHT:
-            // bottom right comes from left
-            // top left comes from right
-            relWidth = bR.getX().getRelative() + tL.getX().getRelative() - 1f;
-            absXOffset = -bR.getX().getAbsolute() - tL.getX().getAbsolute();
-            break;
-
-        case RIGHT_RIGHT:
-            // bottom right comes from right
-            // top left comes from right
-            relWidth = tL.getX().getRelative() - bR.getX().getRelative();
-            absXOffset = Math.min(bR.getX().getAbsolute(), tL.getX().getAbsolute());
-            break;
-
-        case LEFT_LEFT:
-            // bottom right comes from left
-            // top left comes from left
-            relWidth = bR.getX().getRelative() - tL.getX().getRelative();
-            absXOffset = Math.min(tL.getX().getAbsolute(), bR.getX().getAbsolute());
-            break;
-
-        default:
-            // we don't know which position was taken
-            // TODO ensure that all placement positions are guaranteed
-            System.err.println("Found unknown placement position of x-axis!");
-            break;
+        //boolean absoluteLength = false;
+        
+        float abs0, abs1, rel0, rel1;
+        int posId0, posId1;
+        
+        if (tL == null) {
+            // emulate measuring from topLeft
+            abs0 = 0;
+            rel0 = 0;
+            posId0 = DIRECT;
+        } else {
+            abs0 = tL.getX().getAbsolute();
+            rel0 = tL.getX().getRelative();
+            posId0 = tL.getX().eClass().getClassifierID() == KRenderingPackage.KLEFT_POSITION 
+                    ? DIRECT : INDIRECT;
         }
-        return new Pair<Float, Float>(absXOffset, relWidth);
-        // return new Triple<Float, Float, Boolean>(absXOffest, relWidth, absoluteLength);
+
+        if (bR == null) {
+            // emulate measuring from bottomRight
+            abs1 = 0;
+            rel1 = 0;
+            posId1 = DIRECT;
+        } else {
+            abs1 = bR.getX().getAbsolute();
+            rel1 = bR.getX().getRelative();
+            posId1 = bR.getX().eClass().getClassifierID() == KRenderingPackage.KRIGHT_POSITION 
+                    ? DIRECT : INDIRECT;
+        }
+        
+        return getSize(abs0, rel0, posId0, abs1, rel1, posId1);
     }
-
-    private static final int TOP_TOP = KRenderingPackage.KTOP_POSITION * TOP_LEFT_OFFSET
-            + KRenderingPackage.KTOP_POSITION;
-
-    private static final int BOTTOM_BOTTOM = KRenderingPackage.KBOTTOM_POSITION * TOP_LEFT_OFFSET
-            + KRenderingPackage.KBOTTOM_POSITION;
-
-    private static final int TOP_BOTTOM = KRenderingPackage.KTOP_POSITION * TOP_LEFT_OFFSET
-            + KRenderingPackage.KBOTTOM_POSITION;
-
-    private static final int BOTTOM_TOP = KRenderingPackage.KBOTTOM_POSITION * TOP_LEFT_OFFSET
-            + KRenderingPackage.KTOP_POSITION;
 
     /**
      * Determines the vertical correction values for area-based placed child.
@@ -954,52 +1141,34 @@ public final class PlacementUtil {
      * @return a {@link Pair} of the absolute size offset and the relative size divisor
      */
     private static Pair<Float, Float> getVerticalSize(final KPosition tL, final KPosition bR) {
-        float absYOffset = 0;
-        float relHeight = 1f;
+        float abs0, abs1, rel0, rel1;
+        int posId0, posId1;
         
-        // boolean absoluteLength = false;
-        //  see above
-        
-        int position = bR.getY().eClass().getClassifierID() * TOP_LEFT_OFFSET
-                + tL.getY().eClass().getClassifierID();
-
-        switch (position) {
-        case BOTTOM_TOP:
-            // bottom right comes from bottom
-            // top left comes from top
-            relHeight = 1f - bR.getY().getRelative() - tL.getY().getRelative();
-            absYOffset = bR.getY().getAbsolute() + tL.getY().getAbsolute();
-            break;
-
-        case TOP_BOTTOM:
-            // bottom right comes from top
-            // top left comes from bottom
-            relHeight = bR.getY().getRelative() + tL.getY().getRelative() - 1f;
-            absYOffset = -bR.getY().getAbsolute() - tL.getY().getAbsolute();
-            break;
-
-        case BOTTOM_BOTTOM:
-            // bottom right comes from bottom
-            // top left comes from bottom
-            relHeight = tL.getY().getRelative() - bR.getY().getRelative();
-            absYOffset = Math.min(bR.getY().getAbsolute(), tL.getY().getAbsolute());
-            break;
-
-        case TOP_TOP:
-            // bottom right comes from top
-            // top left comes from top
-            relHeight = bR.getY().getRelative() - tL.getY().getRelative();
-            absYOffset = Math.min(tL.getY().getAbsolute(), bR.getY().getAbsolute());
-            break;
-
-        default:
-            // we don't know which position was taken
-            // TODO ensure that all placement positions are guaranteed
-            System.err.println("Found unknown placement position of y-axis!");
-            break;
+        if (tL == null) {
+            // emulate measuring from topLeft
+            abs0 = 0;
+            rel0 = 0;
+            posId0 = DIRECT;
+        } else {
+            abs0 = tL.getY().getAbsolute();
+            rel0 = tL.getY().getRelative();
+            posId0 = tL.getY().eClass().getClassifierID() == KRenderingPackage.KTOP_POSITION 
+                    ? DIRECT : INDIRECT;
         }
-        return new Pair<Float, Float>(absYOffset, relHeight);
-        // return new Triple<Float, Float, Boolean>(absYOffest, relHeight, absoluteLength);
+
+        if (bR == null) {
+            // emulate measuring from bottomRight
+            abs1 = 0;
+            rel1 = 0;
+            posId1 = DIRECT;
+        } else {
+            abs1 = bR.getY().getAbsolute();
+            rel1 = bR.getY().getRelative();
+            posId1 = bR.getY().eClass().getClassifierID() == KRenderingPackage.KBOTTOM_POSITION 
+                    ? DIRECT : INDIRECT;
+        }
+        
+        return getSize(abs0, rel0, posId0, abs1, rel1, posId1);
     }
     
     
@@ -1350,11 +1519,11 @@ public final class PlacementUtil {
                 shapeLayout.getHeight());
 
         // the calculated insets
-        float leftInset = insets.getLeft();
-        float rightInset = insets.getRight();
-        float topInset = insets.getTop();
-        float bottomInset = insets.getBottom();
-
+        float leftInset = 0;
+        float rightInset = 0;
+        float topInset = 0;
+        float bottomInset = 0;
+        
         while (!path.isEmpty()) {
             KRendering currentRendering = path.pollFirst();
 
@@ -1382,10 +1551,8 @@ public final class PlacementUtil {
 
             // if the rendering is a container rendering set the new current parent
             if (currentRendering instanceof KContainerRendering) {
-                // TODO: we don't know the exact reason for deactivating the following line
-                //   check it!!
-                // currentParent = (KContainerRendering) currentRendering;
-                // currentBounds = bounds;
+                 currentParent = (KContainerRendering) currentRendering;
+                 currentBounds = bounds;
             }
         }
 
@@ -1420,8 +1587,9 @@ public final class PlacementUtil {
                 public Bounds caseKGridPlacement(final KGridPlacement gridPlacement) {
                     // evaluate grid based on the children, their placementData and size 
                     //  and get placement for current child
-                    return evaluateGridPlacement(gridPlacement, children, parentBounds)[children
-                            .lastIndexOf(child)];
+                    Bounds[] childBounds = evaluateGridPlacement(gridPlacement, children, parentBounds);
+                    int index = children.lastIndexOf(child);
+                    return childBounds[index];
                 }
             }
             .doSwitch(placement);
@@ -1485,10 +1653,6 @@ public final class PlacementUtil {
             .getKGridPlacementData_MinCellWidth().getDefaultValue();
     private static final float DEFAULT_MIN_CELL_HEIGHT = (Float) KRenderingPackage.eINSTANCE
             .getKGridPlacementData_MinCellHeight().getDefaultValue();
-    // private static final float DEFAULT_MAX_CELL_WIDTH = (Float) KRenderingPackage.eINSTANCE
-    //        .getKGridPlacementData_MaxCellWidth().getDefaultValue();
-    // private static final float DEFAULT_MAX_CELL_HEIGHT = (Float) KRenderingPackage.eINSTANCE
-    //        .getKGridPlacementData_MaxCellHeight().getDefaultValue();
 
     /**
      * returns a gridPlacer to calculate bounds of single elements inside the grid.
@@ -1502,6 +1666,7 @@ public final class PlacementUtil {
     public static GridPlacer getGridPlacementObject(final KGridPlacement gridPlacement,
             final List<KRendering> children) {
         GridPlacer placer = new GridPlacer();
+        placer.parent = (KRendering) gridPlacement.eContainer();
         placer.children = children;
 
         if (children.size() == 0) {
@@ -1519,6 +1684,8 @@ public final class PlacementUtil {
                 .getNumColumns();
         placer.numRows = (children.size() - 1) / placer.numColumns + 1;
 
+        
+        
         // determine the column widths and row heights
         // based on the minimum widths/height of cells in that column/row
         // regardless of conflicts with maximum widths/heights in the same column/row
@@ -1526,17 +1693,29 @@ public final class PlacementUtil {
         placer.columnHasMaxWidth = new boolean[placer.numColumns];
         placer.rowHasMinHeight = new boolean[placer.numRows];
         placer.rowHasMaxHeight = new boolean[placer.numRows];
-        placer.columnMaxMinWidth = new float[placer.numColumns];
-        placer.rowMaxMinHeight = new float[placer.numRows];
+        
+        GridSpacing estimatedSpacing = placer.parent.getProperty(ESTIMATED_GRID_DATA);
+        if (estimatedSpacing != null) {
+            //take the data already calculated during the size estimation
+            placer.columnMaxMinWidth = estimatedSpacing.calculatedColumnWidths;
+            placer.calculatedRowHeight = estimatedSpacing.calculatedRowHeights;
+        }
+        if (placer.columnMaxMinWidth == null) {
+            //start from scratch
+            placer.columnMaxMinWidth = new float[placer.numColumns];
+            Arrays.fill(placer.columnMaxMinWidth, 0);
+        }
+        if (placer.rowMaxMinHeight == null) {
+            placer.rowMaxMinHeight = new float[placer.numRows];
+            Arrays.fill(placer.rowMaxMinHeight, 0);
+        }
+        
         placer.columnMinMaxWidth = new float[placer.numColumns];
         placer.rowMinMaxHeight = new float[placer.numRows];
-
         Arrays.fill(placer.columnHasMinWidth, false);
-        Arrays.fill(placer.columnHasMaxWidth, false);
         Arrays.fill(placer.rowHasMinHeight, false);
+        Arrays.fill(placer.columnHasMaxWidth, false);
         Arrays.fill(placer.rowHasMaxHeight, false);
-        Arrays.fill(placer.columnMaxMinWidth, 0);
-        Arrays.fill(placer.rowMaxMinHeight, 0);
         Arrays.fill(placer.columnMinMaxWidth, Float.MAX_VALUE);
         Arrays.fill(placer.rowMinMaxHeight, Float.MAX_VALUE);
 
@@ -1568,10 +1747,17 @@ public final class PlacementUtil {
                     gpd.getMinCellHeight());
             if (gpd.getMaxCellWidth() >= placer.columnMaxMinWidth[column]) {
                 // We defined the "min width" to be stronger than the "max width" so  take the given max
-                //  width only, if it is bigger than the current maximal "min width" in the same column
+                //  width only if it is bigger than the current maximal "min width" in the same column
                 placer.columnMinMaxWidth[column] = Math.min(placer.columnMinMaxWidth[column],
                         gpd.getMaxCellWidth());
                 placer.columnHasMaxWidth[column] = true;
+                
+                /*TODO: reset this if minimal width is set to a lower value? 
+                question: reset it completely (no more max width in this column) 
+                                or fall back to the next bigger max width (if any)?
+                                maybe we should determine the minSizes first and 
+                                then evaluating the maxSizes
+                */
             }
             if (gpd.getMaxCellHeight() >= placer.rowMaxMinHeight[row]) {
                 placer.rowMinMaxHeight[row] = Math.min(placer.rowMinMaxHeight[row],
@@ -1606,6 +1792,7 @@ public final class PlacementUtil {
      */
     public static class GridPlacer {
 
+        private KRendering parent;
         /** the associated grid placement data. */
         private List<KRendering> children;
         /** the number of columns. */
@@ -1654,150 +1841,93 @@ public final class PlacementUtil {
          *            the parent bounds
          * @return the bounds for the placed elements
          */
-        // SUPPRESS CHECKSTYLE NEXT Length
         public Bounds[] evaluate(final Bounds parentBounds) {
             if (children.size() == 0) {
                 return new Bounds[0];
             }
 
             Bounds[] bounds = new Bounds[children.size()];
-            float availableParentWidth = (float) parentBounds.width;
-            float availableParentHeight = (float) parentBounds.height;
+            float availableParentWidth = parentBounds.width;
+            float availableParentHeight = parentBounds.height;
+
+            GridSpacing estimatedGrid = parent.getProperty(ESTIMATED_GRID_DATA);
+            Pair<Integer, Integer> childAreaPosition = parent.getProperty(CHILD_AREA_POSITION);
             
-            //variables that are later on used to define the bounds of single objects
-            float currentX = 0;
-            float currentY = 0;
+            int width = 0, height = 0;
+            float widthScale = 1, heightScale = 1;
             
-            //take insets into consideration
-            if (topLeft != null){
-                availableParentWidth = getSizeAvailable(availableParentWidth,
-                        topLeft.getX().getAbsolute(), 
-                        topLeft.getX().getRelative(),
-                        topLeft.getX().eClass().getClassifierID());
-                availableParentHeight = getSizeAvailable(availableParentHeight,
-                        topLeft.getY().getAbsolute(), 
-                        topLeft.getY().getRelative(),
-                        topLeft.getY().eClass().getClassifierID());
+            
+            if (estimatedGrid != null) {
+                //calculate the width that lead to the distribution before
+                for (int i = 0; i < estimatedGrid.calculatedColumnWidths.length; i++) {
+                    width += estimatedGrid.calculatedColumnWidths[i];
+                }
+                for (int i = 0; i < estimatedGrid.calculatedRowHeights.length; i++) {
+                    height += estimatedGrid.calculatedRowHeights[i];
+                }
+            }
+
+            //if the calculated width differs from the width the parent has, we have to put 
+            //that additional width to use
+            if (childAreaPosition != null
+                    && childAreaPosition.getFirst() > -1
+                    && childAreaPosition.getSecond() > -1) {
+                //check if there is a childArea and put that width into it's cell
                 
-                //take the offset into consideration to place the elements later
-                currentX = parentBounds.width - availableParentWidth;
-                currentY = parentBounds.height - availableParentHeight;
-            }
-            if (bottomRight != null){
-                availableParentWidth = getSizeAvailable(availableParentWidth,
-                        bottomRight.getX().getAbsolute(), 
-                        bottomRight.getX().getRelative(),
-                        bottomRight.getX().eClass().getClassifierID());
-                availableParentHeight = getSizeAvailable(availableParentHeight,
-                        bottomRight.getY().getAbsolute(), 
-                        bottomRight.getY().getRelative(),
-                        bottomRight.getY().eClass().getClassifierID());
+                if (parentBounds.width - width > 0.1
+                        && childAreaPosition.getFirst() < numColumns) {
+                    estimatedGrid.calculatedColumnWidths[childAreaPosition.getFirst()] 
+                            += parentBounds.width - width;
+                }
+                if (parentBounds.height - height > 0.1
+                        && childAreaPosition.getSecond() < numRows) {
+                    estimatedGrid.calculatedRowHeights[childAreaPosition.getSecond()]
+                            += parentBounds.height - height;
+                }
+                
+                calculatedColumnWidth = estimatedGrid.calculatedColumnWidths;
+                calculatedRowHeight = estimatedGrid.calculatedRowHeights;
+            } else {
+                // we have to calculate the data for the single rows / cols
+
+                // calculate if scaling is necessary
+                availableParentWidth = getHorizontalSizeAvailable(parentBounds.width, topLeft,
+                        bottomRight);
+                availableParentHeight = getVerticalSizeAvailable(parentBounds.height, topLeft,
+                        bottomRight);
+
+                Pair<Float, float[]> widthData = distributeParentSize(availableParentWidth,
+                        minTotalWidth, columnMinMaxWidth, columnMaxMinWidth, 
+                        columnHasMinWidth, columnHasMaxWidth,
+                        numColumns, numVariableColumnMinWidths, numVariableColumnMaxWidths
+
+                );
+                widthScale = widthData.getFirst();
+                calculatedColumnWidth = widthData.getSecond();
+
+                Pair<Float, float[]> heightData = distributeParentSize(availableParentHeight,
+                        minTotalHeight, rowMinMaxHeight, rowMaxMinHeight, 
+                        rowHasMinHeight, rowHasMaxHeight, numRows,
+                        numVariableRowMinHeights, numVariableRowMaxHeights
+
+                );
+                heightScale = heightData.getFirst();
+                calculatedRowHeight = heightData.getSecond();
             }
             
+            // variables that are later on used to define the bounds of single objects
+            float startX = 0;
+            float startY = 0;
+            // take insets into consideration
+            if (topLeft != null) {
+                startX = parentBounds.width * topLeft.getX().getRelative()
+                        + topLeft.getX().getAbsolute();
+                startY = parentBounds.height * topLeft.getY().getRelative()
+                        + topLeft.getY().getAbsolute();
+            }
+            float currentX = startX;
+            float currentY = startY;
             
-            // calculate scaling and variable width/height per column/row
-            float widthScale = 1;
-            // determine the width of columns
-            // start by giving each column it's desired minimum width
-            calculatedColumnWidth = columnMaxMinWidth.clone();
-            if (minTotalWidth > availableParentWidth) {
-                // if that's already too big, adapt scale
-                widthScale = availableParentWidth / minTotalWidth;
-            } else {
-                // space left to distribute
-                float parentWidthToSpend = availableParentWidth - minTotalWidth;
-                float distribute = parentWidthToSpend / numVariableColumnMinWidths;
-
-                // first of all try to distribute the space to columns that have no minimum size
-                for (int i = 0; i < numColumns; i++) {
-                    if (calculatedColumnWidth[i] == 0) {
-                        if (distribute < columnMinMaxWidth[i]) {
-                            // give the col what it deserves
-                            calculatedColumnWidth[i] = distribute;
-                            parentWidthToSpend -= distribute;
-                        } else {
-                            // give the col what it wants max
-                            calculatedColumnWidth[i] = columnMinMaxWidth[i];
-                            parentWidthToSpend -= columnMinMaxWidth[i];
-                        }
-                    }
-                }
-                if (parentWidthToSpend > 0) {
-                    // distribute rest-width to all columns that have no maxWidth defined
-                    if (!(numVariableColumnMaxWidths == 0)) {
-                        distribute = parentWidthToSpend / numVariableColumnMaxWidths;
-                        for (int i = 0; i < numColumns; i++) {
-                            if (!columnHasMaxWidth[i]) {
-                                calculatedColumnWidth[i] += distribute;
-                            }
-                        }
-                    } else {
-                        // we could do fixpoint-iteration here to distribute it to other elements, 
-                        // but for now a single iteration has to be enough
-                        distribute = parentWidthToSpend / numColumns;
-                        for (int i = 0; i < numColumns; i++) {
-                            if (calculatedColumnWidth[i] + distribute <= columnMinMaxWidth[i]) {
-                                calculatedColumnWidth[i] += distribute;
-                            } else {
-                                calculatedColumnWidth[i] = columnMinMaxWidth[i];
-                            }
-                        }
-                    }
-                }
-            }
-
-            // do the same routine for heights
-            float heightScale = 1;
-            // determine the height of rows
-            // start by giving each row it's desired minimum height
-            calculatedRowHeight = rowMaxMinHeight.clone();
-            if (minTotalHeight > availableParentHeight) {
-                // if that's already too big, adapt scale
-                heightScale = availableParentHeight / minTotalHeight;
-            } else {
-                // space left to distribute
-                float parentHeightToSpend = availableParentHeight - minTotalHeight;
-                float distribute = parentHeightToSpend / numVariableRowMinHeights;
-
-                // first of all try to distribute the space to rows that have no minimum height
-                for (int i = 0; i < numRows; i++) {
-                    if (calculatedRowHeight[i] == 0) {
-                        if (distribute < rowMinMaxHeight[i]) {
-                            // give the col what it deserves
-                            calculatedRowHeight[i] = distribute;
-                            parentHeightToSpend -= distribute;
-                        } else {
-                            // give the col what it wants max
-                            calculatedRowHeight[i] = rowMinMaxHeight[i];
-                            parentHeightToSpend -= rowMinMaxHeight[i];
-                        }
-                    }
-                }
-                if (parentHeightToSpend > 0) {
-                    // distribute rest-height to all rows that have no maxHeight defined
-                    if (!(numVariableRowMaxHeights == 0)) {
-                        distribute = parentHeightToSpend / numVariableRowMaxHeights;
-                        for (int i = 0; i < numRows; i++) {
-                            if (!rowHasMaxHeight[i]) {
-                                calculatedRowHeight[i] += distribute;
-                            }
-                        }
-                    } else {
-                        // we could do fixpoint-iteration here to distribute it to other elements,
-                        // but for now a single iteration has to be enough
-                        distribute = parentHeightToSpend / numRows;
-                        for (int i = 0; i < numRows; i++) {
-                            if (calculatedRowHeight[i] + distribute <= rowMinMaxHeight[i]) {
-                                calculatedRowHeight[i] += distribute;
-                            } else {
-                                calculatedRowHeight[i] = rowMinMaxHeight[i];
-                            }
-                        }
-                    }
-                }
-            }
-
-
             for (int i = 0; i < children.size(); i++) {
                 KGridPlacementData gpd = asGridPlacementData(children.get(i).getPlacementData());
                 int column = i % numColumns;
@@ -1813,45 +1943,14 @@ public final class PlacementUtil {
                 float insetBottom = 0;
                 
                 if (gpd != null) {
-                    if (gpd.getTopLeft() != null) {
-                        insetLeft = gpd.getTopLeft().getX().eClass().getClassifierID()
-                                == KRenderingPackage.KLEFT_POSITION
-                        // left indent measured from left so just take it
-                        ? gpd.getTopLeft().getX().getAbsolute()
-                                + (gpd.getTopLeft().getX().getRelative() * cellWidth)
-                                // left indent measured from right, so calculate based on cellWidth
-                                : cellWidth - gpd.getTopLeft().getX().getAbsolute()
-                                        - (gpd.getTopLeft().getX().getRelative() * cellWidth);
-
-                        insetTop = gpd.getTopLeft().getY().eClass().getClassifierID()
-                                == KRenderingPackage.KTOP_POSITION
-                        // top indent measured from top so just take it
-                        ? gpd.getTopLeft().getY().getAbsolute()
-                                + (gpd.getTopLeft().getY().getRelative() * cellHeight)
-                                // top indent measured from bottom so calculate based on cellHeight
-                                : cellHeight - gpd.getTopLeft().getY().getAbsolute()
-                                        - (gpd.getTopLeft().getY().getRelative() * cellHeight);
-                    }
-                    
-                    if (gpd.getBottomRight() != null) {
-                        insetRight = gpd.getBottomRight().getX().eClass().getClassifierID() 
-                                == KRenderingPackage.KRIGHT_POSITION
-                        // right indent measured from right so just take it
-                        ? gpd.getBottomRight().getX().getAbsolute()
-                                + (gpd.getBottomRight().getX().getRelative() * cellWidth)
-                                // right indent measured from left, so calculate based on cellWidth
-                                : cellWidth - gpd.getBottomRight().getX().getAbsolute()
-                                        - (gpd.getBottomRight().getX().getRelative() * cellWidth);
-                                
-                        insetBottom = gpd.getBottomRight().getY().eClass().getClassifierID()
-                                == KRenderingPackage.KBOTTOM_POSITION
-                        // bottom indent measured from bottom so just take it
-                        ? gpd.getBottomRight().getY().getAbsolute()
-                                + (gpd.getBottomRight().getY().getRelative() * cellHeight)
-                                // bottom indent measured from top so calculate based on cellHeight
-                                : cellHeight - gpd.getBottomRight().getY().getAbsolute()
-                                        - (gpd.getBottomRight().getY().getRelative() * cellHeight);
-                    }
+                        insetLeft = cellWidth - getHorizontalSizeAvailable(cellWidth, 
+                                gpd.getTopLeft(), null);
+                        insetTop = cellHeight - getVerticalSizeAvailable(cellHeight, 
+                                gpd.getTopLeft(), null);
+                        insetRight = cellWidth - getHorizontalSizeAvailable(cellWidth, 
+                                null, gpd.getBottomRight());
+                        insetBottom = cellHeight - getVerticalSizeAvailable(cellHeight, 
+                                null, gpd.getBottomRight());
                 }
 
                 // determine the elements bounds
@@ -1859,23 +1958,101 @@ public final class PlacementUtil {
                 float elementWidth = (cellWidth - insetLeft - insetRight) * widthScale;
                 float elementY = currentY + insetTop * heightScale;
                 float elementHeight = (cellHeight - insetTop - insetBottom) * heightScale;
-                // System.out.println(IterableExtensions.join(ImmutableList.of(elementX, elementY,
-                // elementWidth, elementHeight), "\t"));
-                // set bounds
                 bounds[i] = new Bounds(elementX, elementY, elementWidth, elementHeight);
-
+                
+                bounds[i].getInsets().setLeft(elementX);
+                
+                
                 currentX += cellWidth * widthScale;
 
                 // advance the current y-coordinate if necessary
                 if (column == numColumns - 1) {
                     currentY += cellHeight * heightScale;
-                    // new row = start from left.
-                    currentX = 0;
+                    // new row => start from left.
+                    currentX = startX;
                 }
             }
             return bounds;
         }
     }
+    
+    /**
+     * Calculate how much space should be given to each element of a grid. 
+     * An element can be a row or a column
+     * @param parentSize the size of the parent to spend
+     * @param minTotalSize the minimum total size needed by the elements
+     * @param minMaxSize an array containing all the minimal maximum sizes of single elements
+     * @param maxMinSize an array containing all the maximal minimum sizes of single elements 
+     * @param elementHasMinSize an array informing about whether an element has a minimum size or not
+     * @param elementHasMaxSize an array informing about whether an element has a maximum size or not
+     * @param numElements the number of elements to be placed
+     * @param numVariableElementMinSize the number of elements with variable minimum sizes
+     * @param numVariableElementMaxSize the number of elements with variable maximim sizes
+     * @return a pair containing a needed scaling-factor to place the grid, and the assigned widths of 
+     *          the single element
+     */
+    public static Pair<Float, float[]> distributeParentSize(
+            final float parentSize, final float minTotalSize, 
+            final float[] minMaxSize, final float[] maxMinSize, 
+            final boolean[] elementHasMinSize, final boolean[] elementHasMaxSize, 
+            final int numElements, 
+            final int numVariableElementMinSize, final int numVariableElementMaxSize
+            ) {
+        // calculate scaling and variable width/height per column/row
+        float scale = 1;
+        // determine the width of columns
+        // start by giving each column it's desired minimum width
+        float[] calculatedElementSize = maxMinSize.clone();
+        if (minTotalSize > parentSize) {
+            // if that's already too big, adapt scale
+            scale = parentSize / minTotalSize;
+        } else {
+            // space left to distribute
+            float parentSizeToSpend = parentSize - minTotalSize;
+            float distribute = parentSizeToSpend / numVariableElementMinSize;
+
+            // first of all try to distribute the space to columns that have no minimum size
+            for (int i = 0; i < numElements; i++) {
+                if (calculatedElementSize[i] == 0 
+                        || calculatedElementSize[i] < distribute) {
+                    if (distribute < minMaxSize[i]) {
+                        // give the col what it deserves
+                        // keep track of additionally spent space
+                        parentSizeToSpend -= (distribute - calculatedElementSize[i]);
+                        calculatedElementSize[i] = distribute;
+                    } else {
+                        // give the col what it wants max
+                        parentSizeToSpend -= (minMaxSize[i] - calculatedElementSize[i]);
+                        calculatedElementSize[i] = minMaxSize[i];
+                    }
+                }
+            }
+            if (parentSizeToSpend > 0) {
+                // distribute rest-width to all columns that have no maxWidth defined
+                if (numVariableElementMaxSize != 0) {
+                    distribute = parentSizeToSpend / numVariableElementMaxSize;
+                    for (int i = 0; i < numElements; i++) {
+                        if (!elementHasMaxSize[i]) {
+                            calculatedElementSize[i] += distribute;
+                        }
+                    }
+                } else {
+                    // we could do fixpoint-iteration here to distribute it to other elements, 
+                    // but for now a single iteration has to be enough
+                    distribute = parentSizeToSpend / numElements;
+                    for (int i = 0; i < numElements; i++) {
+                        if (calculatedElementSize[i] + distribute <= minMaxSize[i]) {
+                            calculatedElementSize[i] += distribute;
+                        } else {
+                            calculatedElementSize[i] = minMaxSize[i];
+                        }
+                    }
+                }
+            }
+        }
+        return new Pair<Float, float[]>(scale, calculatedElementSize); 
+    }
+    
 
     /**
      * Returns the bounds for a polyline placement data in given parent bounds.
@@ -1887,7 +2064,7 @@ public final class PlacementUtil {
      * @return the bounds
      */
     public static Bounds evaluatePolylinePlacement(final KPolyline line, final Bounds parentBounds) {
-        if (line == null || line.getPoints().size() == 0) {
+        if (line == null || line.getPoints().isEmpty()) {
             return new Bounds(0, 0, parentBounds.width, parentBounds.height);
         }
 
@@ -1929,7 +2106,7 @@ public final class PlacementUtil {
         float height = (float) parentBounds.height;
         Point point = new Point(0.0f, 0.0f);
         
-        if (position == null){
+        if (position == null) {
             return point;
         }
         

@@ -3804,9 +3804,53 @@ ruleKPointPlacementData returns [EObject current=null]
 	    }
 
 )
-))?	otherlv_12='}' 
+))?(	otherlv_12='minWidth' 
     {
-    	newLeafNode(otherlv_12, grammarAccess.getKPointPlacementDataAccess().getRightCurlyBracketKeyword_8());
+    	newLeafNode(otherlv_12, grammarAccess.getKPointPlacementDataAccess().getMinWidthKeyword_8_0());
+    }
+(
+(
+		{ 
+	        newCompositeNode(grammarAccess.getKPointPlacementDataAccess().getMinWidthEFloatParserRuleCall_8_1_0()); 
+	    }
+		lv_minWidth_13_0=ruleEFloat		{
+	        if ($current==null) {
+	            $current = createModelElementForParent(grammarAccess.getKPointPlacementDataRule());
+	        }
+       		set(
+       			$current, 
+       			"minWidth",
+        		lv_minWidth_13_0, 
+        		"EFloat");
+	        afterParserOrEnumRuleCall();
+	    }
+
+)
+))?(	otherlv_14='minHeight' 
+    {
+    	newLeafNode(otherlv_14, grammarAccess.getKPointPlacementDataAccess().getMinHeightKeyword_9_0());
+    }
+(
+(
+		{ 
+	        newCompositeNode(grammarAccess.getKPointPlacementDataAccess().getMinHeightEFloatParserRuleCall_9_1_0()); 
+	    }
+		lv_minHeight_15_0=ruleEFloat		{
+	        if ($current==null) {
+	            $current = createModelElementForParent(grammarAccess.getKPointPlacementDataRule());
+	        }
+       		set(
+       			$current, 
+       			"minHeight",
+        		lv_minHeight_15_0, 
+        		"EFloat");
+	        afterParserOrEnumRuleCall();
+	    }
+
+)
+))?	otherlv_16='}' 
+    {
+    	newLeafNode(otherlv_16, grammarAccess.getKPointPlacementDataAccess().getRightCurlyBracketKeyword_10());
     }
 )
 ;

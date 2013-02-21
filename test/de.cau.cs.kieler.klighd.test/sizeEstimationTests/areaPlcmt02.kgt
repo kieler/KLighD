@@ -17,17 +17,17 @@ KNode {
 					bottomRight right 10.0 0.0 / bottom 10.0 0.0
 				}
 				children:
-				Text Hello {
+				Text Hallo {
 					mapProperties:
-					"klighd.testing.height" = "11.0"
-					"klighd.testing.width" = "23.0"
+					"klighd.testing.height" = "16.0"
+					"klighd.testing.width" = "30.0"
 				}
 			}
 		}
 		KShapeLayout {
 			mapProperties:
-			"klighd.testing.expected.height" = "31.0"
-			"klighd.testing.expected.width" = "43.0"
+			"klighd.testing.expected.height" = "36.0"
+			"klighd.testing.expected.width" = "50.0"
 		}
 	}
 }

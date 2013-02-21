@@ -1,0 +1,68 @@
+
+KNode {
+	children
+	KNode {
+		data:
+		Rectangle {
+			childPlacement:
+			gridPlacement 1
+			children:
+			Text Label {
+				mapProperties:
+				"klighd.testing.height" = "16.0"
+				"klighd.testing.width" = "31.0"
+			}
+			Polyline {
+				points:
+				left 0.0 0.0 / top 0.0 0.0
+				right 0.0 0.0 / top 0.0 0.0
+			}
+			ChildArea Rectangle {
+				childPlacement:
+				gridPlacement -1
+				children:
+				Rectangle {
+					children:
+					Text status {
+						mapProperties:
+						"klighd.testing.height" = "16.0"
+						"klighd.testing.width" = "36.0"
+					}
+				}
+				Rectangle {
+					placementData:
+					GridPlacementData {
+						maxCellWidth 30.0
+					}
+					children:
+					Text C {
+						mapProperties:
+						"klighd.testing.height" = "16.0"
+						"klighd.testing.width" = "10.0"
+					}
+				}
+				Rectangle {
+					children:
+					Text R {
+						mapProperties:
+						"klighd.testing.height" = "16.0"
+						"klighd.testing.width" = "10.0"
+					}
+				}
+			}
+		}
+		KShapeLayout {
+			mapProperties:
+			"klighd.testing.expected.height" = "32.0"
+			"klighd.testing.expected.width" = "56.0"
+		}
+		children:
+		KNode {
+			data:
+			KShapeLayout {
+				width 300.0 height 200.0
+			}
+			RoundedRectangle 20.0 20.0
+		}
+	}
+} 

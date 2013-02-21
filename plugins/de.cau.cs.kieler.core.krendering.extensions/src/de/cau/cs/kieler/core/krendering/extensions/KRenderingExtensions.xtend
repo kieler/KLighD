@@ -36,6 +36,9 @@ import de.cau.cs.kieler.core.krendering.KGridPlacementData
 import de.cau.cs.kieler.core.krendering.Underline
 import de.cau.cs.kieler.core.krendering.KTextUnderline
 import de.cau.cs.kieler.core.krendering.KTextStrikeout
+import de.cau.cs.kieler.core.krendering.KEllipse
+import de.cau.cs.kieler.core.krendering.KRectangle
+import de.cau.cs.kieler.core.krendering.KText
 
 /**
  * This utility class contains various methods that are convenient while composing KRendering data.
@@ -56,6 +59,26 @@ class KRenderingExtensions {
         return kge.getData(typeof(KRendering));
     }
 
+    def KEllipse addEllipse(KNode node){
+        return renderingFactory.createKEllipse() => [
+            node.data.add(it)
+        ];
+    }
+
+    def KRectangle addRectangle(KNode node){
+        return renderingFactory.createKRectangle() => [
+            node.data.add(it)
+        ];
+    }
+
+    def KRoundedRectangle addRoundedRectangle(KNode node, float cWidth, float cHeight) {
+        return renderingFactory.createKRoundedRectangle => [
+            it.cornerWidth = cWidth;
+            it.cornerHeight = cHeight;
+            node.data.add(it)
+        ];
+    }
+    
     def KRoundedRectangle addRoundedRectangle(KNode node, float cWidth, float cHeight, float lineWidth) {
         return renderingFactory.createKRoundedRectangle => [
             it.cornerWidth = cWidth;
@@ -71,6 +94,14 @@ class KRenderingExtensions {
             it.cornerHeight = cHeight;
         ]
     }
+
+    def KText addText(KNode node, String text){
+        return renderingFactory.createKText() => [
+            node.data.add(it)
+            it.text = text;
+        ];
+    }
+
 
     def <T extends KRendering> T with(T rendering, KPlacementData pd) {
         return rendering => [
@@ -493,6 +524,13 @@ class KRenderingExtensions {
     def KRendering to(KAreaPlacementData placementData, KPosition bottomRight) {
         placementData.bottomRight = bottomRight; 
         return placementData.eContainer() as KRendering;
+    }
+    
+    def <T extends KRendering> T setSurroundingIndention(T rendering, float abs, float rel) {
+        return rendering.setAreaPlacementData(
+            createKPosition(LEFT, abs, rel, TOP, abs, rel),
+            createKPosition(RIGHT, abs, rel, BOTTOM, abs, rel)
+        );
     }
 
     def KRendering to(KAreaPlacementData placementData, 

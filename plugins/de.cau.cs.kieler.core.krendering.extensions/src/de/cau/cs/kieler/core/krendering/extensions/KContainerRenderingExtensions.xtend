@@ -24,6 +24,8 @@ import de.cau.cs.kieler.core.krendering.KGridPlacement
 import de.cau.cs.kieler.core.krendering.KPosition
 import de.cau.cs.kieler.core.krendering.KRoundedRectangle
 import de.cau.cs.kieler.core.krendering.KRendering
+import de.cau.cs.kieler.core.krendering.KText
+import de.cau.cs.kieler.core.krendering.KEllipse
 
 /**
  * @author chsch, alb
@@ -48,6 +50,18 @@ class KContainerRenderingExtensions {
         ];
     }
     
+    def KEllipse addEllipse(KContainerRendering cr){
+        return renderingFactory.createKEllipse() => [
+            cr.children += it;
+        ];
+    }
+
+    def KRectangle addRectangle(KContainerRendering cr){
+        return renderingFactory.createKRectangle() => [
+            cr.children += it;
+        ];
+    }
+
     def KRoundedRectangle addRoundedRectangle(KContainerRendering cr, float cWidth, float cHeight){
         return renderingFactory.createKRoundedRectangle => [
             cr.children += it;
@@ -62,6 +76,13 @@ class KContainerRenderingExtensions {
             it.cornerWidth = cWidth;
             it.cornerHeight = cHeight;
             it.lineWidth = lineWidth;
+        ];
+    }
+
+    def KText addText(KContainerRendering cr, String text){
+        return renderingFactory.createKText() => [
+            cr.children += it;
+            it.text = text;
         ];
     }
 

@@ -2663,17 +2663,27 @@ public class KRenderingGrammarAccess extends AbstractGrammarElementFinder {
 		private final Keyword cVerticalMarginKeyword_7_0 = (Keyword)cGroup_7.eContents().get(0);
 		private final Assignment cVerticalMarginAssignment_7_1 = (Assignment)cGroup_7.eContents().get(1);
 		private final RuleCall cVerticalMarginEFloatParserRuleCall_7_1_0 = (RuleCall)cVerticalMarginAssignment_7_1.eContents().get(0);
-		private final Keyword cRightCurlyBracketKeyword_8 = (Keyword)cGroup.eContents().get(8);
+		private final Group cGroup_8 = (Group)cGroup.eContents().get(8);
+		private final Keyword cMinWidthKeyword_8_0 = (Keyword)cGroup_8.eContents().get(0);
+		private final Assignment cMinWidthAssignment_8_1 = (Assignment)cGroup_8.eContents().get(1);
+		private final RuleCall cMinWidthEFloatParserRuleCall_8_1_0 = (RuleCall)cMinWidthAssignment_8_1.eContents().get(0);
+		private final Group cGroup_9 = (Group)cGroup.eContents().get(9);
+		private final Keyword cMinHeightKeyword_9_0 = (Keyword)cGroup_9.eContents().get(0);
+		private final Assignment cMinHeightAssignment_9_1 = (Assignment)cGroup_9.eContents().get(1);
+		private final RuleCall cMinHeightEFloatParserRuleCall_9_1_0 = (RuleCall)cMinHeightAssignment_9_1.eContents().get(0);
+		private final Keyword cRightCurlyBracketKeyword_10 = (Keyword)cGroup.eContents().get(10);
 		
 		//KPointPlacementData:
 		//	"PointPlacementData" "{" "referencePoint" referencePoint=KPosition ("verticalAlignment"
 		//	verticalAlignment=VerticalAlignment)? ("horizontalAlignment" horizontalAlignment=HorizontalAlignment)?
-		//	("horizontalMargin" horizontalMargin=EFloat)? ("verticalMargin" verticalMargin=EFloat)? "}";
+		//	("horizontalMargin" horizontalMargin=EFloat)? ("verticalMargin" verticalMargin=EFloat)? ("minWidth" minWidth=EFloat)?
+		//	("minHeight" minHeight=EFloat)? "}";
 		public ParserRule getRule() { return rule; }
 
 		//"PointPlacementData" "{" "referencePoint" referencePoint=KPosition ("verticalAlignment"
 		//verticalAlignment=VerticalAlignment)? ("horizontalAlignment" horizontalAlignment=HorizontalAlignment)?
-		//("horizontalMargin" horizontalMargin=EFloat)? ("verticalMargin" verticalMargin=EFloat)? "}"
+		//("horizontalMargin" horizontalMargin=EFloat)? ("verticalMargin" verticalMargin=EFloat)? ("minWidth" minWidth=EFloat)?
+		//("minHeight" minHeight=EFloat)? "}"
 		public Group getGroup() { return cGroup; }
 
 		//"PointPlacementData"
@@ -2739,8 +2749,32 @@ public class KRenderingGrammarAccess extends AbstractGrammarElementFinder {
 		//EFloat
 		public RuleCall getVerticalMarginEFloatParserRuleCall_7_1_0() { return cVerticalMarginEFloatParserRuleCall_7_1_0; }
 
+		//("minWidth" minWidth=EFloat)?
+		public Group getGroup_8() { return cGroup_8; }
+
+		//"minWidth"
+		public Keyword getMinWidthKeyword_8_0() { return cMinWidthKeyword_8_0; }
+
+		//minWidth=EFloat
+		public Assignment getMinWidthAssignment_8_1() { return cMinWidthAssignment_8_1; }
+
+		//EFloat
+		public RuleCall getMinWidthEFloatParserRuleCall_8_1_0() { return cMinWidthEFloatParserRuleCall_8_1_0; }
+
+		//("minHeight" minHeight=EFloat)?
+		public Group getGroup_9() { return cGroup_9; }
+
+		//"minHeight"
+		public Keyword getMinHeightKeyword_9_0() { return cMinHeightKeyword_9_0; }
+
+		//minHeight=EFloat
+		public Assignment getMinHeightAssignment_9_1() { return cMinHeightAssignment_9_1; }
+
+		//EFloat
+		public RuleCall getMinHeightEFloatParserRuleCall_9_1_0() { return cMinHeightEFloatParserRuleCall_9_1_0; }
+
 		//"}"
-		public Keyword getRightCurlyBracketKeyword_8() { return cRightCurlyBracketKeyword_8; }
+		public Keyword getRightCurlyBracketKeyword_10() { return cRightCurlyBracketKeyword_10; }
 	}
 
 	public class KPositionElements extends AbstractParserRuleElementFinder {
@@ -4307,7 +4341,8 @@ public class KRenderingGrammarAccess extends AbstractGrammarElementFinder {
 	//KPointPlacementData:
 	//	"PointPlacementData" "{" "referencePoint" referencePoint=KPosition ("verticalAlignment"
 	//	verticalAlignment=VerticalAlignment)? ("horizontalAlignment" horizontalAlignment=HorizontalAlignment)?
-	//	("horizontalMargin" horizontalMargin=EFloat)? ("verticalMargin" verticalMargin=EFloat)? "}";
+	//	("horizontalMargin" horizontalMargin=EFloat)? ("verticalMargin" verticalMargin=EFloat)? ("minWidth" minWidth=EFloat)?
+	//	("minHeight" minHeight=EFloat)? "}";
 	public KPointPlacementDataElements getKPointPlacementDataAccess() {
 		return (pKPointPlacementData != null) ? pKPointPlacementData : (pKPointPlacementData = new KPointPlacementDataElements());
 	}

@@ -11,14 +11,14 @@ KNode {
 			children:
 			Text Hello {
 				mapProperties:
-				"klighd.testing.height" = "11.0"
-				"klighd.testing.width" = "23.0"
+				"klighd.testing.height" = "16.0"
+				"klighd.testing.width" = "30.0"
 			}
 		}
 		KShapeLayout {
 			mapProperties:
-			"klighd.testing.expected.height" = "11.0"
-			"klighd.testing.expected.width" = "23.0"
+			"klighd.testing.expected.height" = "16.0"
+			"klighd.testing.expected.width" = "30.0"
 		}
 	}
 }

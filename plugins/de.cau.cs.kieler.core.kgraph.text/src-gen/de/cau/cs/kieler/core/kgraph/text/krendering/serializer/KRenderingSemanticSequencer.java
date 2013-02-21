@@ -672,7 +672,9 @@ public class KRenderingSemanticSequencer extends KLayoutDataSemanticSequencer {
 	 *         verticalAlignment=VerticalAlignment? 
 	 *         horizontalAlignment=HorizontalAlignment? 
 	 *         horizontalMargin=EFloat? 
-	 *         verticalMargin=EFloat?
+	 *         verticalMargin=EFloat? 
+	 *         minWidth=EFloat? 
+	 *         minHeight=EFloat?
 	 *     )
 	 */
 	protected void sequence_KPointPlacementData(EObject context, KPointPlacementData semanticObject) {
