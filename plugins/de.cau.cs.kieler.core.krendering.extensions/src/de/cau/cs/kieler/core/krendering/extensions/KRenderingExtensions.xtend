@@ -575,7 +575,7 @@ class KRenderingExtensions {
 
     def <T extends KRendering> T setPointPlacementData(T rendering, KPosition referencePoint,
         HorizontalAlignment horizontalAlignment, VerticalAlignment verticalAlignment,
-        float horizontalMargin, float verticalMargin) {
+        float horizontalMargin, float verticalMargin, float minWidth, float minHeight) {
         return rendering => [
             rendering.placementData = renderingFactory.createKPointPlacementData => [
                 it.referencePoint = referencePoint;
@@ -583,6 +583,8 @@ class KRenderingExtensions {
                 it.verticalAlignment = verticalAlignment;
                 it.horizontalMargin = horizontalMargin;
                 it.verticalMargin = verticalMargin;
+                it.minWidth = minWidth;
+                it.minHeight = minHeight;
             ];
         ];
     }
