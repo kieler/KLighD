@@ -18,6 +18,8 @@ import de.cau.cs.kieler.core.krendering.extensions.KColorExtensions
 import de.cau.cs.kieler.core.krendering.KPolyline
 import de.cau.cs.kieler.kiml.options.LayoutOptions
 import de.cau.cs.kieler.core.krendering.extensions.KContainerRenderingExtensions
+import de.cau.cs.kieler.klay.layered.properties.Properties
+import de.cau.cs.kieler.klay.layered.p4nodes.NodePlacementStrategy
 
 /**
  * This exemplary diagram synthesis implementation generates KGraph/KRendering model
@@ -50,6 +52,7 @@ class UML2UseCaseDiagramSynthesis extends AbstractDiagramSynthesis<Model> {
         // create the root node representing the diagram canvas ...
         return model.createNode() => [
             it.addLayoutParam(LayoutOptions::SPACING, 40f);
+            it.addLayoutParam(Properties::NODE_PLACER, NodePlacementStrategy::LINEAR_SEGMENTS);
             // ... and add the diagram elements
             it.children += model.packagedElements.map[
                 switch(it) {
@@ -73,9 +76,11 @@ class UML2UseCaseDiagramSynthesis extends AbstractDiagramSynthesis<Model> {
             ).putToLookUpWith(actor);
             it.addRectangle() => [
                 it.invisible = true;
-                it.addEllipse().setAreaPlacementData
-                    .from(LEFT, -17, 0.5f, TOP, 0, 0).to(RIGHT, -17, 0.5f, TOP, 34, 0);
-                it.children += createActorFigureBody();
+                it.addChild(createActorFigureBody());
+                it.addEllipse().setPointPlacementData(
+                    createKPosition(LEFT, 0, 0.5f, TOP, 0, 0),
+                    H_CENTRAL, V_TOP, 0, 0, 35, 35
+                ).background = "white".color;
             ];
         ];
     }
@@ -83,10 +88,10 @@ class UML2UseCaseDiagramSynthesis extends AbstractDiagramSynthesis<Model> {
     def KNode createUseCaseNode(UseCase useCase) {
         return useCase.createNode().putToLookUpWith(useCase) => [
             it.addEllipse() => [
-                it.foreground = "gray".color;
+                it.foreground = "darkGray".color;
                 it.addText(useCase.name).putToLookUpWith(useCase) => [
+                    it.setSurroundingIndention(10, 0.1f);
                     it.background = "white".color
-                    it.setSurroundingIndention(10, 0);
                 ];
             ];
         ];

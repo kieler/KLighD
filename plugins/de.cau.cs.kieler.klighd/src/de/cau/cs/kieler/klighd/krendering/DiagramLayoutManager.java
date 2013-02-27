@@ -592,7 +592,11 @@ public class DiagramLayoutManager implements IDiagramLayoutManager<KGraphElement
                 offset.x = sourceLayout.getInsets().getLeft();
                 offset.y = sourceLayout.getInsets().getTop();
             }
-            checkAndCopyPoint(originEdgeLayout.getSourcePoint(), destEdgeLayout.getSourcePoint(),
+            checkAndCopyPoint(
+                    originEdgeLayout.getSourcePoint(), 
+                    destEdgeLayout.getSourcePoint(),
+                    //TODO: check for null value
+                    (KNode) destEdgeLayout.eContainer().eContainer(),
                     sourceNode, edge.getSourcePort(), offset);
         }
 
@@ -647,7 +651,10 @@ public class DiagramLayoutManager implements IDiagramLayoutManager<KGraphElement
                 offset.x -= targetLayout.getXpos();
                 offset.y -= targetLayout.getYpos();
             }
-            checkAndCopyPoint(originEdgeLayout.getTargetPoint(), destEdgeLayout.getTargetPoint(),
+            checkAndCopyPoint(originEdgeLayout.getTargetPoint(), 
+                    destEdgeLayout.getTargetPoint(),
+                    //TODO: check for null value
+                    (KNode) destEdgeLayout.eContainer().eContainer(),
                     targetNode, edge.getTargetPort(), offset);
         }
     }
@@ -664,19 +671,19 @@ public class DiagramLayoutManager implements IDiagramLayoutManager<KGraphElement
      *          relative to the given node
      */
     private static void checkAndCopyPoint(final KPoint originPoint, final KPoint destinationPoint,
-            final KNode node, final KPort port, final KVector offset) {
+            final KNode edgeLayoutContainer, final KNode node, final KPort port, final KVector offset) {
         KShapeLayout nodeLayout = node.getData(KShapeLayout.class);
         KVector p = originPoint.createVector();
         if (port == null) {
             p.add(offset);
             AnchorUtil.anchorPoint(p, nodeLayout.getWidth(), nodeLayout.getHeight(),
-                    node.getData(KRendering.class));
+                    edgeLayoutContainer.getData(KRendering.class));
         } else {
             KShapeLayout portLayout = port.getData(KShapeLayout.class);
             offset.translate(-portLayout.getXpos(), -portLayout.getYpos());
             p.add(offset);
             AnchorUtil.anchorPoint(p, portLayout.getWidth(), portLayout.getHeight(),
-                    port.getData(KRendering.class));
+                    edgeLayoutContainer.getData(KRendering.class));
         }
         destinationPoint.applyVector(p.sub(offset));
     }

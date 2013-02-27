@@ -23,10 +23,13 @@ import de.cau.cs.kieler.core.krendering.KPlacementData;
 import de.cau.cs.kieler.core.krendering.KPointPlacementData;
 import de.cau.cs.kieler.core.krendering.KPolyline;
 import de.cau.cs.kieler.core.krendering.KPosition;
+import de.cau.cs.kieler.core.krendering.KRendering;
 import de.cau.cs.kieler.core.krendering.KRightPosition;
 import de.cau.cs.kieler.core.krendering.KTopPosition;
 import de.cau.cs.kieler.core.krendering.KXPosition;
 import de.cau.cs.kieler.core.krendering.KYPosition;
+import de.cau.cs.kieler.core.properties.IProperty;
+import de.cau.cs.kieler.core.properties.Property;
 import de.cau.cs.kieler.core.util.Pair;
 import de.cau.cs.kieler.klighd.krendering.PlacementUtil.Bounds;
 import de.cau.cs.kieler.klighd.piccolo.nodes.PSWTAdvancedPath;
@@ -74,6 +77,28 @@ public final class PiccoloPlacementUtil {
                 - topLeftPoint.getX(), bottomRightPoint.getY() - topLeftPoint.getY());
     }
 
+
+    /**
+     * Property to save xPosition of placed element.
+     */
+    private static IProperty<Double> pointPlacedObjectXPos = 
+            new Property<Double>("PointPlacedObjectXPos");
+    /**
+     * Property to save yPosition of placed element.
+     */
+    private static IProperty<Double> pointPlacedObjectYPos = 
+            new Property<Double>("PointPlacedObjectYPos");
+    /**
+     * Property to save width of element.
+     */
+    private static IProperty<Float> pointPlacedObjectWidth = 
+            new Property<Float>("PointPlacedObjectWidth");
+    /**
+     * Property to save height of element.
+     */
+    private static IProperty<Float> pointPlacedObjectHeight = 
+            new Property<Float>("PointPlacedObjectHeight");
+    
     /**
      * Returns the bounds for a point placement data in given parent bounds.
      * 
@@ -121,7 +146,13 @@ public final class PiccoloPlacementUtil {
         case TOP:
             y0 = refPoint.getY();
         }
-
+        
+        //attach the calculated data to be able to export the image later
+        ((KRendering) ppd.eContainer()).setProperty(pointPlacedObjectXPos, x0);
+        ((KRendering) ppd.eContainer()).setProperty(pointPlacedObjectYPos, y0);
+        ((KRendering) ppd.eContainer()).setProperty(pointPlacedObjectWidth, width);
+        ((KRendering) ppd.eContainer()).setProperty(pointPlacedObjectHeight, height);
+        
         return new PBounds(x0, y0, width, height);
     }
     

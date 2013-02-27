@@ -13,6 +13,7 @@
  */
 package de.cau.cs.kieler.klighd.krendering;
 
+import de.cau.cs.kieler.core.krendering.KEllipse;
 import de.cau.cs.kieler.core.krendering.KRendering;
 import de.cau.cs.kieler.core.krendering.KRenderingPackage;
 import de.cau.cs.kieler.core.krendering.KRoundedRectangle;
@@ -54,6 +55,9 @@ public final class AnchorUtil {
                 KRoundedRectangle roundedRectangle = (KRoundedRectangle) rendering;
                 anchorPointRoundedRectangle(point, width, height, roundedRectangle.getCornerWidth(),
                         roundedRectangle.getCornerHeight());
+                break;
+            case KRenderingPackage.KELLIPSE:
+                anchorPointEllipse(point, width, height);
                 break;
             default:
                 anchorPointRectangle(point, width, height);
@@ -104,7 +108,42 @@ public final class AnchorUtil {
      */
     public static void anchorPointRoundedRectangle(final KVector point, final double rectWidth,
             final double rectHeight, final double cornerWidth, final double cornerHeight) {
-        // TODO
+//        TODO
+//        point.x = 10;
+//        point.y = 10;
     }
 
+    /**
+     * Move anchorPoints of edges that are connected to ellipses to make the edge end on the line of the 
+     * Rendering.
+     * @param point the current end point of the edge to be changed by this method
+     * @param width the width of the ellipse
+     * @param height the height of the ellipse
+     */
+    public static void anchorPointEllipse(final KVector point, final double width, final double height) {
+        
+        double heightRelation = width / height;
+        double normWidth = width;
+        double normHeight = height * heightRelation;
+
+        // keep in mind that the radius of a circle is also the coordinate of the centerPoint of it
+        double xRad = normWidth / 2;
+        double yRad = normHeight / 2;
+
+        // calculate based on normated circle
+        if (point.x == 0) {
+            // edge is attached to the left side: calculate where the line is for the given y
+            // coordinate
+            // and manipulate x coordinate accordingly
+            point.x = xRad - Math.sqrt(xRad * yRad - Math.pow(yRad - point.y * heightRelation, 2));
+        } else if (point.x == width) {
+            point.x = xRad + Math.sqrt(xRad * yRad - Math.pow(yRad - point.y * heightRelation, 2));
+        } else if (point.y == 0) {
+            point.y = (yRad - Math.sqrt(xRad * yRad - Math.pow((point.x - xRad), 2)))
+                    / heightRelation;
+        } else if (point.y == height) {
+            point.y = (yRad + Math.sqrt(xRad * yRad - Math.pow((point.x - xRad), 2)))
+                    / heightRelation;
+        }
+     }
 }

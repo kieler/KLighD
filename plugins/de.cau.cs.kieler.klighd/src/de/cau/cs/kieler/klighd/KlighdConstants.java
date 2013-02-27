@@ -42,8 +42,10 @@ public final class KlighdConstants {
     /**
      * This font name is used for {@link de.cau.cs.kieler.core.krendering.KText KTexts}, if no related
      * {@link de.cau.cs.kieler.core.krendering.KFontName KFontName} style is attached.
+     * 
+     * Note: This is a AWT constant! 
      */
-    public static final String DEFAULT_FONT_NAME = "Arial";
+    public static final String DEFAULT_FONT_NAME = Font.SANS_SERIF;
     
     /**
      * This font size is used for {@link de.cau.cs.kieler.core.krendering.KText KTexts}, if no related
