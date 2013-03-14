@@ -43,6 +43,7 @@ import com.google.common.collect.Maps;
 
 import de.cau.cs.kieler.core.kgraph.KGraphElement;
 import de.cau.cs.kieler.core.kgraph.KGraphPackage;
+import de.cau.cs.kieler.core.kgraph.KNode;
 import de.cau.cs.kieler.core.krendering.KArc;
 import de.cau.cs.kieler.core.krendering.KChildArea;
 import de.cau.cs.kieler.core.krendering.KContainerRendering;
@@ -90,6 +91,8 @@ import de.cau.cs.kieler.klighd.piccolo.util.NodeUtil;
 import de.cau.cs.kieler.klighd.piccolo.util.StyleUtil;
 import de.cau.cs.kieler.klighd.piccolo.util.StyleUtil.Styles;
 import de.cau.cs.kieler.klighd.util.CrossDocumentContentAdapter;
+import de.cau.cs.kieler.klighd.util.ModelingUtil;
+import de.cau.cs.kieler.klighd.util.RenderingContextData;
 import edu.umd.cs.piccolo.PNode;
 import edu.umd.cs.piccolo.nodes.PPath;
 import edu.umd.cs.piccolo.util.PBounds;
@@ -110,12 +113,12 @@ import edu.umd.cs.piccolox.swt.PSWTImage;
 public abstract class AbstractRenderingController<S extends KGraphElement, T extends PNode> {
 
     /** the property for a rendering node's controller. */
-    private static final IProperty<Map<Object, PNodeController<?>>> CONTROLLER = 
-            new Property<Map<Object, PNodeController<?>>>("de.cau.cs.kieler.klighd.piccolo.controller");
+    private static final IProperty<Map<Object, PNodeController<?>>> CONTROLLER
+      = new Property<Map<Object, PNodeController<?>>>("de.cau.cs.kieler.klighd.piccolo.controller");
     /** the property for a rendering reference key. */
-    private static final IProperty<Map<Object, Object>> KEY = 
-            new Property<Map<Object, Object>>("de.cau.cs.kieler.klighd.piccolo.key");
-    
+    private static final IProperty<Map<Object, Object>> KEY = new Property<Map<Object, Object>>(
+            "de.cau.cs.kieler.klighd.piccolo.key");
+
     /**
      * This attribute key is used to let the PNodes be aware of their related KRenderings in their
      * attributes list.
@@ -207,7 +210,9 @@ public abstract class AbstractRenderingController<S extends KGraphElement, T ext
             unregisterElementAdapter();
             unregisterRenderingAdapter();
             removeMappedProperties(CONTROLLER);
+            RenderingContextData.get(element).getProperties().removeKey(CONTROLLER);
             removeMappedProperties(KEY);
+            RenderingContextData.get(element).getProperties().removeKey(KEY);
         }
 
         // remove the rendering node
@@ -223,16 +228,16 @@ public abstract class AbstractRenderingController<S extends KGraphElement, T ext
         // update the rendering
         renderingNode = internalUpdateRendering();
 
+        // TODO CHANGED
         // install rendering adapter if sync is enabled
-        if (syncRendering && currentRendering != null) {
-            // register an adapter on the rendering to stay in sync
-            registerRenderingAdapter();
-        }
-
-        // install element adapter if sync is enabled
         if (syncRendering) {
             // register an adapter on the element (KGE) to stay in sync
             registerElementAdapter();
+
+            if (currentRendering != null) {
+                // register an adapter on the rendering to stay in sync
+                registerRenderingAdapter();
+            }
         }
     }
 
@@ -257,14 +262,24 @@ public abstract class AbstractRenderingController<S extends KGraphElement, T ext
 
             public void notifyChanged(final Notification msg) {
                 super.notifyChanged(msg);
+
+                // iProperties and mappings are now in the update scope but we do not need them for
+                // rendering
+                if (msg.getNewValue() instanceof IProperty<?>
+                        || msg.getOldValue() instanceof IProperty<?>
+                        || msg.getNewValue() instanceof Map.Entry<?, ?>
+                        || msg.getOldValue() instanceof Map.Entry<?, ?>) {
+                    return;
+                }
+
                 switch (msg.getEventType()) {
+                case Notification.REMOVE:
+                case Notification.REMOVE_MANY:
                 case Notification.SET:
                 case Notification.UNSET:
                 case Notification.MOVE:
                 case Notification.ADD:
                 case Notification.ADD_MANY:
-                case Notification.REMOVE:
-                case Notification.REMOVE_MANY:
 
                     // Attention: Don't add 'newValue == null' as this will forbid to remove
                     // styles!!
@@ -277,10 +292,11 @@ public abstract class AbstractRenderingController<S extends KGraphElement, T ext
 
                     // handle new, moved and removed styles
                     // Caution: Due to multi-inheritance of the KRendering class (interface)
-                    //  KRenderingPackage.KRENDERING__STYLES differs from
-                    //  KRenderingPackage.KSTYLE_HOLDER__STYLES !!
-                    if (msg.getNotifier() instanceof KRendering && msg.getFeatureID(KRendering.class)
-                            == KRenderingPackage.KRENDERING__STYLES) {
+                    // KRenderingPackage.KRENDERING__STYLES differs from
+                    // KRenderingPackage.KSTYLE_HOLDER__STYLES !!
+                    if (msg.getNotifier() instanceof KRendering
+                            && msg.getFeatureID(KRendering.class)
+                               == KRenderingPackage.KRENDERING__STYLES) {
                         updateStylesInUi();
                         return;
                     }
@@ -344,11 +360,12 @@ public abstract class AbstractRenderingController<S extends KGraphElement, T ext
             elementAdapter = null;
         }
     }
-    
+
     /**
      * A little help to reduce the syncExec calls if possible.
      * 
-     * @param r the runnable to be performed in the UI context.
+     * @param r
+     *            the runnable to be performed in the UI context.
      */
     private static void runInUI(final Runnable r) {
         if (Display.getCurrent() != null) {
@@ -357,27 +374,26 @@ public abstract class AbstractRenderingController<S extends KGraphElement, T ext
             PlatformUI.getWorkbench().getDisplay().syncExec(r);
         }
     }
-    
+
     private Runnable updateRenderingRunnable = new Runnable() {
         public void run() {
             updateRendering();
         }
-    }; 
-    
+    };
+
     private void updateRenderingInUi() {
         runInUI(this.updateRenderingRunnable);
     }
-    
+
     private Runnable updateStylesRunnable = new Runnable() {
         public void run() {
             updateStyles();
         }
     };
-    
+
     private void updateStylesInUi() {
         runInUI(this.updateStylesRunnable);
     }
-    
 
     /**
      * Updates the styles of the current rendering.
@@ -390,7 +406,9 @@ public abstract class AbstractRenderingController<S extends KGraphElement, T ext
     private void updateStyles(final KRendering rendering, final Styles styles,
             final List<KStyle> propagatedStyles, final Object key) {
 
-        PNodeController<?> controller = getMappedProperty(rendering, CONTROLLER, key);
+        PNodeController<?> controller = getMappedProperty(
+                RenderingContextData.get(ModelingUtil.eContainerOfType(rendering, KNode.class)),
+                CONTROLLER, key);
         if (controller == null) {
             return;
         }
@@ -420,7 +438,9 @@ public abstract class AbstractRenderingController<S extends KGraphElement, T ext
         } else if (rendering instanceof KRenderingRef) {
             // update referenced rendering
             KRenderingRef renderingRef = (KRenderingRef) rendering;
-            Object refKey = getMappedProperty(rendering, KEY, key);
+            Object refKey = getMappedProperty(
+                    RenderingContextData.get(ModelingUtil.eContainerOfType(rendering, KNode.class)),
+                    KEY, key);
 
             // get the referenced rendering
             KRendering referencedRendering = renderingRef.getRendering();
@@ -481,8 +501,7 @@ public abstract class AbstractRenderingController<S extends KGraphElement, T ext
         final KPlacementData pcd = rendering.getPlacementData();
         PBounds bounds = null;
         if (pcd instanceof KPointPlacementData) {
-            bounds = PiccoloPlacementUtil.evaluatePointPlacement(
-                    (KPointPlacementData) pcd,
+            bounds = PiccoloPlacementUtil.evaluatePointPlacement((KPointPlacementData) pcd,
                     PlacementUtil.estimateSize(rendering, new PlacementUtil.Bounds(0.0f, 0.0f)),
                     parent.getBoundsReference());
         } else {
@@ -522,9 +541,8 @@ public abstract class AbstractRenderingController<S extends KGraphElement, T ext
                         }
                     });
         }
-        
+
         // add a listener on the parent's bounds
-        
 
         return controller.getNode();
     }
@@ -552,13 +570,11 @@ public abstract class AbstractRenderingController<S extends KGraphElement, T ext
         }
 
         // calculate the bounds
-        Bounds parentBounds = 
-                new Bounds(
-                (float) parent.getBoundsReference().getX(), 
-                (float) parent.getBoundsReference().getY(), 
-                (float) parent.getBoundsReference().getWidth(),
+        Bounds parentBounds = new Bounds((float) parent.getBoundsReference().getX(), (float) parent
+                .getBoundsReference().getY(), (float) parent.getBoundsReference().getWidth(),
                 (float) parent.getBoundsReference().getHeight());
-        final GridPlacer gridPlacer = PlacementUtil.getGridPlacementObject(gridPlacement, renderings);
+        final GridPlacer gridPlacer = PlacementUtil.getGridPlacementObject(gridPlacement,
+                renderings);
         Bounds[] elementBounds = gridPlacer.evaluate(parentBounds);
         // create the renderings and collect the controllers
         Bounds currentBounds;
@@ -629,7 +645,7 @@ public abstract class AbstractRenderingController<S extends KGraphElement, T ext
 
         // apply the initial rotation
         decorator.setRotation(decoration.getRotation());
-        
+
         // let the decorator be pickable
         decorator.setPickable(true);
 
@@ -694,8 +710,10 @@ public abstract class AbstractRenderingController<S extends KGraphElement, T ext
         applyStyles(controller, styles);
 
         // remember the controller in the related KRendering rendering
-        setMappedProperty(rendering, CONTROLLER, key, controller);
-        
+        setMappedProperty(
+        // ModelingUtil.eContainerOfType(rendering, KNode.class))
+                RenderingContextData.get(element), CONTROLLER, key, controller);
+
         controller.getNode().addAttribute(ATTR_KRENDERING, rendering);
 
         return controller;
@@ -788,8 +806,8 @@ public abstract class AbstractRenderingController<S extends KGraphElement, T ext
 
             // Custom Rendering
             public PNodeController<?> caseKCustomRendering(final KCustomRendering rendering) {
-                return createCustomRendering(rendering, styles, childPropagatedStyles,
-                        parent, initialBounds, key);
+                return createCustomRendering(rendering, styles, childPropagatedStyles, parent,
+                        initialBounds, key);
             }
 
             // Child Area
@@ -1076,8 +1094,8 @@ public abstract class AbstractRenderingController<S extends KGraphElement, T ext
         if (line.getChildren().size() > 0) {
             List<KRendering> restChildren = Lists.newLinkedList();
             for (final KRendering rendering : line.getChildren()) {
-                if (PiccoloPlacementUtil.asDecoratorPlacementData(
-                        rendering.getPlacementData()) != null) {
+                if (PiccoloPlacementUtil.asDecoratorPlacementData(rendering.getPlacementData()) != null)
+                {
                     handleDecoratorPlacementRendering(rendering, propagatedStyles, path, key);
                 } else {
                     restChildren.add(rendering);
@@ -1156,8 +1174,8 @@ public abstract class AbstractRenderingController<S extends KGraphElement, T ext
         if (polygon.getChildren().size() > 0) {
             List<KRendering> restChildren = Lists.newLinkedList();
             for (final KRendering rendering : polygon.getChildren()) {
-                if (PiccoloPlacementUtil.asDecoratorPlacementData(
-                        rendering.getPlacementData()) != null) {
+                if (PiccoloPlacementUtil.asDecoratorPlacementData(rendering.getPlacementData()) != null)
+                {
                     handleDecoratorPlacementRendering(rendering, propagatedStyles, path, key);
                 } else {
                     restChildren.add(rendering);
@@ -1212,7 +1230,7 @@ public abstract class AbstractRenderingController<S extends KGraphElement, T ext
     protected PNodeController<?> createRenderingReference(final KRenderingRef renderingReference,
             final Styles styles, final List<KStyle> propagatedStyles, final PNode parent,
             final PBounds initialBounds, final Object key) {
-        
+
         KRendering rendering = renderingReference.getRendering();
         if (rendering == null) {
             // create a dummy node
@@ -1273,7 +1291,7 @@ public abstract class AbstractRenderingController<S extends KGraphElement, T ext
     protected PNodeController<?> createImage(final KImage image, final Styles styles,
             final List<KStyle> propagatedStyles, final PNode parent, final PBounds initialBounds,
             final Object key) {
-        
+
         PSWTImage pImage = null;
 
         if (image.getImageObject() instanceof Image) {
@@ -1281,7 +1299,7 @@ public abstract class AbstractRenderingController<S extends KGraphElement, T ext
             pImage = new PSWTImage(PSWTCanvas.CURRENT_CANVAS, (Image) image.getImageObject());
 
         } else {
-            
+
             // get the bundle and actual image, trim the leading and trailing quotation marks
             Bundle bundle = Platform.getBundle(image.getBundleName().replace("\"", ""));
             if (bundle == null) {
@@ -1347,7 +1365,7 @@ public abstract class AbstractRenderingController<S extends KGraphElement, T ext
             final PBounds initialBounds, final Object key) {
 
         // get a wrapping PNode containing the actual figure
-        //  by means of the KCustomRenderingWrapperFactory
+        // by means of the KCustomRenderingWrapperFactory
         PNode node;
         if (customRendering.getFigureObject() != null) {
             if (parent instanceof KEdgeNode) {
@@ -1357,7 +1375,7 @@ public abstract class AbstractRenderingController<S extends KGraphElement, T ext
                 node = KCustomRenderingWrapperFactory.getInstance().getWrapperInstance(
                         customRendering.getFigureObject(), PNode.class);
             }
-            
+
         } else {
             if (parent instanceof KEdgeNode) {
                 node = KCustomRenderingWrapperFactory.getInstance().getWrapperInstance(
@@ -1374,12 +1392,12 @@ public abstract class AbstractRenderingController<S extends KGraphElement, T ext
         }
         // initialize the bounds of the node
         node.setBounds(0, 0, initialBounds.width, initialBounds.height);
-        
+
         // initialize the node
         initializeRenderingNode(node);
         node.translate(initialBounds.x, initialBounds.y);
         parent.addChild(node);
-        
+
         // handle children
         if (customRendering.getChildren().size() > 0) {
             handleChildren(customRendering.getChildren(), customRendering.getChildPlacement(),
@@ -1393,7 +1411,7 @@ public abstract class AbstractRenderingController<S extends KGraphElement, T ext
                 getNode().setBounds(0, 0, bounds.width, bounds.height);
                 NodeUtil.applyTranslation(getNode(), (float) bounds.x, (float) bounds.y);
             }
-        };    
+        };
     }
 
     /**
@@ -1459,8 +1477,8 @@ public abstract class AbstractRenderingController<S extends KGraphElement, T ext
             final PropertyChangeListener listener) {
         parent.addPropertyChangeListener(property, listener);
         @SuppressWarnings("unchecked")
-        List<Pair<String, PropertyChangeListener>> listeners =
-            (List<Pair<String, PropertyChangeListener>>) node.getAttribute(PROPERTY_LISTENER_KEY);
+        List<Pair<String, PropertyChangeListener>> listeners
+          = (List<Pair<String, PropertyChangeListener>>) node.getAttribute(PROPERTY_LISTENER_KEY);
         if (listeners == null) {
             listeners = Lists.newLinkedList();
             node.addAttribute(PROPERTY_LISTENER_KEY, listeners);
@@ -1476,8 +1494,8 @@ public abstract class AbstractRenderingController<S extends KGraphElement, T ext
      */
     protected void removeListeners(final PNode node) {
         @SuppressWarnings("unchecked")
-        List<Pair<String, PropertyChangeListener>> listeners = 
-            (List<Pair<String, PropertyChangeListener>>) node.getAttribute(PROPERTY_LISTENER_KEY);
+        List<Pair<String, PropertyChangeListener>> listeners
+          = (List<Pair<String, PropertyChangeListener>>) node.getAttribute(PROPERTY_LISTENER_KEY);
         if (listeners != null && node.getParent() != null) {
             for (Pair<String, PropertyChangeListener> pair : listeners) {
                 node.getParent().removePropertyChangeListener(pair.getFirst(), pair.getSecond());
@@ -1525,8 +1543,6 @@ public abstract class AbstractRenderingController<S extends KGraphElement, T ext
         return propagationStyles;
     }
 
-
-
     /**
      * Applies the styles to the node associated with the given node controller.
      * 
@@ -1536,7 +1552,7 @@ public abstract class AbstractRenderingController<S extends KGraphElement, T ext
      *            the styles
      */
     protected void applyStyles(final PNodeController<?> controller, final Styles styles) {
-       
+
         controller.applyChanges(styles);
     }
 
