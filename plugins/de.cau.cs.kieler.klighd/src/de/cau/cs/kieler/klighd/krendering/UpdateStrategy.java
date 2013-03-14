@@ -29,16 +29,16 @@ import org.eclipse.emf.compare.match.filter.IResourceFilter;
 import org.eclipse.emf.compare.match.metamodel.MatchModel;
 import org.eclipse.emf.compare.match.service.MatchService;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
-
 import com.google.common.collect.Maps;
 
-import de.cau.cs.kieler.core.kgraph.KGraphData;
+import de.cau.cs.kieler.core.kgraph.KGraphPackage;
 import de.cau.cs.kieler.core.kgraph.KNode;
-import de.cau.cs.kieler.core.krendering.KRendering;
-import de.cau.cs.kieler.core.krendering.KRenderingLibrary;
+import de.cau.cs.kieler.core.krendering.KRenderingPackage;
+import de.cau.cs.kieler.kiml.klayoutdata.KLayoutDataPackage;
 import de.cau.cs.kieler.kiml.util.KimlUtil;
 import de.cau.cs.kieler.klighd.IUpdateStrategy;
 import de.cau.cs.kieler.klighd.ViewContext;
@@ -82,18 +82,37 @@ public class UpdateStrategy implements IUpdateStrategy<KNode> {
      */
     public void update(final KNode baseModel, final KNode newModel, final ViewContext viewContext) {
         try {
+            //TODO RESOURCE HACK
+            ResourceSet resourceSet = new ResourceSetImpl();
+            Resource resource = resourceSet.createResource(URI.createURI("newDummy.kgraph"));
+            resource.getContents().add(newModel);
+
+            // DEBUG
+            //Path path = new Path("/test2/diff.xmi");
+            //System.out.println("baseModel begin");
+            //serialize(path, EcoreUtil.copy(baseModel));
+            //System.out.println("baseModel end\n");
+            //System.out.println("newModel begin");
+            //serialize(path, EcoreUtil.copy(newModel));
+            //System.out.println("newModel end\n");
+            
             // match the base and the new model
             Map<String, Object> matchOptions = Maps.newHashMap();
             //matchOptions.put(MatchOptions.OPTION_DISTINCT_METAMODELS, false);
             matchOptions.put(MatchOptions.OPTION_MATCH_SCOPE_PROVIDER, scopeProvider);
             MatchModel match = MatchService.doMatch(baseModel, newModel, matchOptions);
-
+            
             // compute differences
             DiffModel diff = DiffService.doDiff(match, false);
-            // serialize(new Path("/test2/diff.xmi"), EcoreUtil.copy(diff), baseModel, newModel);
+            
+            // DEBUG           
+            //System.out.println("Diff begin");
+            //serialize(path, EcoreUtil.copy(diff));
+            //System.out.println("Diff end\n");
             
             // merge differences
             MergeService.merge(diff.getOwnedElements(), false);
+
         } catch (InterruptedException e) {
             throw new RuntimeException("Failed to update KGraph");
         }
@@ -112,20 +131,21 @@ public class UpdateStrategy implements IUpdateStrategy<KNode> {
     private static class MatchScopeProvider implements IMatchScopeProvider {
 
         /** the match scope. */
-        private IMatchScope scope = new MatchScope();
+        private IMatchScope leftScope = new MatchScope();
+        private IMatchScope rightScope = new MatchScope();
         
         /**
          * {@inheritDoc}
          */
         public IMatchScope getLeftScope() {
-            return scope;
+            return leftScope;
         }
 
         /**
          * {@inheritDoc}
          */
         public IMatchScope getRightScope() {
-            return scope;
+            return rightScope;
         }
 
         /**
@@ -152,13 +172,37 @@ public class UpdateStrategy implements IUpdateStrategy<KNode> {
 
         /**
          * {@inheritDoc}
-         */
+         */        
         public boolean isInScope(final EObject eObject) {
-            if (eObject instanceof KGraphData) {
-                // exclude all graph data except rendering libraries and renderings
-                return eObject instanceof KRendering || eObject instanceof KRenderingLibrary;
+            int id = eObject.eClass().getClassifierID();
+
+            EPackage p = eObject.eClass().getEPackage();
+
+            if (p == KGraphPackage.eINSTANCE) {
+
+                switch (id) {
+                case KGraphPackage.KLABEL:
+                case KGraphPackage.KNODE:
+                case KGraphPackage.KEDGE:
+                case KGraphPackage.KPORT:
+                case KGraphPackage.IPROPERTY_TO_OBJECT_MAP:
+                    return true;
+                default: /* nothing */
+                }
+            } else if (p == KLayoutDataPackage.eINSTANCE) {
+
+                switch (id) {
+                case KLayoutDataPackage.KSHAPE_LAYOUT:
+                case KLayoutDataPackage.KEDGE_LAYOUT:
+                case KLayoutDataPackage.KINSETS:
+                case KLayoutDataPackage.KPOINT:
+                    return true;
+                default: /* nothing */
+                }
+            } else if (p == KRenderingPackage.eINSTANCE) {
+                return true;
             }
-            return true;
+            return false;
         }
 
         /**
@@ -185,7 +229,7 @@ public class UpdateStrategy implements IUpdateStrategy<KNode> {
         }
         
         try {
-            resource.save(Collections.emptyMap());
+            resource.save(System.out, Collections.emptyMap());
         } catch (IOException e) {
             e.printStackTrace();
         }
