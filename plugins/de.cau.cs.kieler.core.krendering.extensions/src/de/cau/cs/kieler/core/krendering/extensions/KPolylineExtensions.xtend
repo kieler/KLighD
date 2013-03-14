@@ -46,11 +46,12 @@ class KPolylineExtensions {
          	    val float scale = pl.lineWidth.lineWidth;
                 val float modifiedScale = Math::sqrt(3*scale).floatValue;
                 it.setRotateWithLine(true);
-                it.setAbsolute(1)
+                it.setRelative(1);
                 it.setHeight(15 * modifiedScale);
                 it.setWidth(15 * modifiedScale);
-                it.setXOffset(-15 * modifiedScale)
-                it.setYOffset(-(it.height + scale/2) / 2)
+                it.setXOffset(-15 * modifiedScale);
+                it.setYOffset(-(it.height + scale/2) / 2);
+                it.setAbsolute(-it.width);
             ];
         ];
     }
