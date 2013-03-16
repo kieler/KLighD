@@ -277,7 +277,7 @@ KLineStyle returns KLineStyle:
 
 KLineCap returns KLineCap:
      {KLineCap}
-     'lineCap' lineCap=LineCap;
+     'lineCap' lineCap=LineCap  propagateToChildren?='!'?;
     
 KRotation returns KRotation:
     {KRotation}
@@ -307,7 +307,7 @@ KHorizontalAlignment returns KHorizontalAlignment:
 
 KStyleRef returns KStyleRef:
     {KStyleRef}
-    'styleRef' styleHolder=[KStyleHolder|EString];
+    'styleRef' styleHolder=[KStyleHolder|EString] propagateToChildren?='!'?;
 
 KGridPlacement returns KGridPlacement:
     {KGridPlacement}

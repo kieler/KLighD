@@ -16,9 +16,14 @@ package de.cau.cs.kieler.core.kgraph.text.serializer;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
 
+import de.cau.cs.kieler.core.kgraph.KGraphData;
+import de.cau.cs.kieler.core.kgraph.KGraphElement;
 import de.cau.cs.kieler.core.kgraph.KGraphPackage;
 import de.cau.cs.kieler.core.kgraph.text.krendering.KRenderingTransientValueService;
+import de.cau.cs.kieler.core.krendering.KRendering;
+import de.cau.cs.kieler.core.krendering.KRenderingFactory;
 import de.cau.cs.kieler.core.krendering.KRenderingPackage;
+import de.cau.cs.kieler.kiml.klayoutdata.KEdgeLayout;
 import de.cau.cs.kieler.kiml.klayoutdata.KInsets;
 import de.cau.cs.kieler.kiml.klayoutdata.KLayoutDataPackage;
 import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout;
@@ -56,12 +61,34 @@ public class KGraphTransientValueService extends KRenderingTransientValueService
             //  
             return ListTransient.YES;
         }
+        if (feature == KGraphPackage.eINSTANCE.getEMapPropertyHolder_PersistentEntries()) {
+            return ListTransient.SOME;
+        }
+        if (feature == KGraphPackage.eINSTANCE.getKGraphElement_Data()) {
+            return ListTransient.SOME;
+        }
         return super.isListTransient(semanticObject, feature);
     }
 
     @Override
     public boolean isValueInListTransient(final EObject semanticObject, final int index,
-            final EStructuralFeature feature) {        
+            final EStructuralFeature feature) {
+        
+        if (feature == KGraphPackage.eINSTANCE.getEMapPropertyHolder_PersistentEntries()) {            
+            KGraphData data = (KGraphData) semanticObject;
+            return data.getPersistentEntries().get(index).getKey().endsWith("piccolo.controller");
+        }
+        if (feature == KGraphPackage.eINSTANCE.getKGraphElement_Data()) {
+            EObject eo = ((KGraphElement) semanticObject).getData().get(index);
+            if (eo instanceof KRendering
+                    || eo instanceof KRenderingFactory
+                    || eo instanceof KShapeLayout
+                    || eo instanceof KEdgeLayout) {
+                return false;
+            }
+            // chsch suppress e.g. RenderingContextData (extending KGraphDataImpl) of the klighd bundle
+            return true;
+        }
         return super.isValueInListTransient(semanticObject, index, feature);
     }
 
