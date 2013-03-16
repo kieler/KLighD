@@ -526,7 +526,7 @@ class KRenderingExtensions {
         return placementData.eContainer() as KRendering;
     }
     
-    def <T extends KRendering> T setSurroundingIndention(T rendering, float abs, float rel) {
+    def <T extends KRendering> T setSurroundingSpace(T rendering, float abs, float rel) {
         return rendering.setAreaPlacementData(
             createKPosition(LEFT, abs, rel, TOP, abs, rel),
             createKPosition(RIGHT, abs, rel, BOTTOM, abs, rel)
