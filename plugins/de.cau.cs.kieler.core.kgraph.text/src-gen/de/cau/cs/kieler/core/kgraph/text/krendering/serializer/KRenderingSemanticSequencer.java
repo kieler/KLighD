@@ -640,7 +640,7 @@ public class KRenderingSemanticSequencer extends KLayoutDataSemanticSequencer {
 	
 	/**
 	 * Constraint:
-	 *     lineCap=LineCap
+	 *     (lineCap=LineCap propagateToChildren?='!'?)
 	 */
 	protected void sequence_KLineCap(EObject context, KLineCap semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
@@ -832,7 +832,7 @@ public class KRenderingSemanticSequencer extends KLayoutDataSemanticSequencer {
 	
 	/**
 	 * Constraint:
-	 *     styleHolder=[KStyleHolder|EString]
+	 *     (styleHolder=[KStyleHolder|EString] propagateToChildren?='!'?)
 	 */
 	protected void sequence_KStyleRef(EObject context, KStyleRef semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);

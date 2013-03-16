@@ -1,0 +1,45 @@
+KNode {
+	children:
+	KNode {
+		data:
+		KShapeLayout {
+			mapProperties:
+			"de.cau.cs.kieler.borderSpacing" = "0.0"
+			"de.cau.cs.kieler.spacing" = "0.0"
+		}
+		Rectangle {
+			childPlacement gridPlacement 1
+			children:
+			Ellipse {
+				children
+				Text "HUGOHUGO" {
+					
+				}
+			}
+			Ellipse {
+				styles
+				background {
+					color 255 0 0
+				}
+				children
+				ChildArea {
+				}
+			}
+		}		
+		
+		children:
+		KNode {
+			data:
+			KShapeLayout {
+				width 10
+				height 10
+			}
+			RoundedRectangle 10 10 {
+				styles
+				foreground {
+					color 255 255 0
+				}
+			}
+		}
+	}
+}

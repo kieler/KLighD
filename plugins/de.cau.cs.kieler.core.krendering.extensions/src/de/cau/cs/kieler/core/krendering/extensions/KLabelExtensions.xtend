@@ -14,7 +14,6 @@
 package de.cau.cs.kieler.core.krendering.extensions
 
 import javax.inject.Inject
-
 import de.cau.cs.kieler.core.kgraph.KLabel
 import de.cau.cs.kieler.core.kgraph.KLabeledGraphElement
 import de.cau.cs.kieler.core.kgraph.KNode
@@ -136,7 +135,7 @@ class KLabelExtensions {
     /**
      * Configures a central node label!
      */
-    def KLabel configureOutsideCenteralBottomNodeLabel(KLabel label, String labelText, int fontSize, String fontName) {
+    def KLabel configureOutsideCentralBottomNodeLabel(KLabel label, String labelText, int fontSize, String fontName) {
         return label => [
             it.text = labelText;
             it.data += renderingFactory.createKText().setFontName(fontName).setFontSize(fontSize);
@@ -150,8 +149,8 @@ class KLabelExtensions {
     /**
      * Adds a central node label to KNode 'node'!
      */
-    def KLabel addOutsideCenteralBottomNodeLabel(KNode node, String labelText, int fontSize, String fontName) {
-        return node.createLabel().configureOutsideCenteralBottomNodeLabel(labelText, fontSize, fontName);
+    def KLabel addOutsideCentralBottomNodeLabel(KNode node, String labelText, int fontSize, String fontName) {
+        return node.createLabel().configureOutsideCentralBottomNodeLabel(labelText, fontSize, fontName);
     }
     
 

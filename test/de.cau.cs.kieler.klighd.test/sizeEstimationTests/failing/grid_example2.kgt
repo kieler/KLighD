@@ -61,6 +61,9 @@ KNode {
 			data:
 			KShapeLayout {
 				width 300.0 height 200.0
+				mapProperties:
+				"klighd.testing.expected.height" = "200.0"
+				"klighd.testing.expected.width" = "300.0"
 			}
 			RoundedRectangle 20.0 20.0
 		}

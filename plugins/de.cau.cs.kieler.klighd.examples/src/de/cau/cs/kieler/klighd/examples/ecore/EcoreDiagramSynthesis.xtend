@@ -24,6 +24,7 @@ import de.cau.cs.kieler.klighd.TransformationOption
 import com.google.common.collect.ImmutableSet
 import com.google.common.collect.ImmutableList
 import com.google.common.collect.Lists
+import static extension com.google.common.base.Strings.*
 
 class EcoreDiagramSynthesis extends AbstractTransformation<EModelElementCollection, KNode> {
 	
@@ -74,6 +75,7 @@ class EcoreDiagramSynthesis extends AbstractTransformation<EModelElementCollecti
 	    use(transformationContext);
 		
 		return KimlUtil::createInitializedNode => [
+//            it.addLayoutParam(LayoutOptions::ALGORITHM, "de.cau.cs.kieler.graphiviz.dot");
             it.addLayoutParam(LayoutOptions::ALGORITHM, "de.cau.cs.kieler.kiml.ogdf.planarization");
             it.addLayoutParam(LayoutOptions::SPACING, 75f);
             it.addLayoutParam(LayoutOptions::DIRECTION, Direction::UP);
@@ -128,15 +130,17 @@ class EcoreDiagramSynthesis extends AbstractTransformation<EModelElementCollecti
 	}
 	
 	def createClassifierFigures(Iterable<EClassifier> classes, KNode rootNode) {
-		classes.forEach[ EClassifier clazz |
+		classes.filterNull.forEach[ EClassifier clazz |
             rootNode.children += clazz.createNode().putToLookUpWith(clazz) => [
-                val boxWidth = if (clazz.name.length < 10) 180 else clazz.name.length*12+50;
+                val boxWidth = if (clazz.name.nullToEmpty.length < 10) 180 else clazz.name.length*12+50;
                 it.setNodeSize(boxWidth, 80);
-                it.data += renderingFactory.createKRectangle() => [
+                it.data += renderingFactory.createKRoundedRectangle() => [
+                	it.cornerHeight = 60;
+                    it.cornerWidth = 60;
                     it.setLineWidth(2);
                     it.background = "lemon".color;
                     it.children += renderingFactory.createKText().putToLookUpWith(clazz) => [
-                        it.text = clazz.name;
+                        it.text = clazz.name.nullToEmpty;
                         it.setFontSize(20);
                         it.setFontBold(true);
                     ];

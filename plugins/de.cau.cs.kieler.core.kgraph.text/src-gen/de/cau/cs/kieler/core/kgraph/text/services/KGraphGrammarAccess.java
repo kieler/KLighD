@@ -1363,7 +1363,7 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//KLineCap:
-	//	{KLineCap} "lineCap" lineCap=LineCap;
+	//	{KLineCap} "lineCap" lineCap=LineCap propagateToChildren?="!"?;
 	public KRenderingGrammarAccess.KLineCapElements getKLineCapAccess() {
 		return gaKRendering.getKLineCapAccess();
 	}
@@ -1443,7 +1443,7 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//KStyleRef:
-	//	{KStyleRef} "styleRef" styleHolder=[KStyleHolder|EString];
+	//	{KStyleRef} "styleRef" styleHolder=[KStyleHolder|EString] propagateToChildren?="!"?;
 	public KRenderingGrammarAccess.KStyleRefElements getKStyleRefAccess() {
 		return gaKRendering.getKStyleRefAccess();
 	}

@@ -39,17 +39,6 @@
       </manager>
    </extension>
    <extension
-         point="de.cau.cs.kieler.klighd.updateStrategies">
-      <!-- updateStrategy
-            class="de.cau.cs.kieler.klighd.krendering.UpdateStrategy"
-            id="de.cau.cs.kieler.klighd.krendering.UpdateStrategy">
-      </updateStrategy -->
-      <updateStrategy
-            class="de.cau.cs.kieler.klighd.krendering.SimpleUpdateStrategy"
-            id="de.cau.cs.kieler.klighd.krendering.SimpleUpdateStrategy">
-      </updateStrategy>
-   </extension>
-   <extension
          point="de.cau.cs.kieler.core.kivi.combinations">
       <combination
             active="true"
@@ -89,9 +78,18 @@
    <extension
          point="de.cau.cs.kieler.klighd.updateStrategies">
       <updateStrategy
-            class="de.cau.cs.kieler.klighd.krendering.SimpleUpdateStrategy"
-            id="de.cau.cs.kieler.klighd.krendering.SimpleUpdateStrategy">
+            class="de.cau.cs.kieler.klighd.krendering.UpdateStrategy"
+            id="de.cau.cs.kieler.klighd.krendering.UpdateStrategy">
       </updateStrategy>
+   </extension>
+   <extension
+         point="org.eclipse.emf.compare.diff.engine">
+      <diffengine
+            engineClass="de.cau.cs.kieler.klighd.diff.KgtDiffEngine"
+            label="KgtDiffEngine"
+            namespace="http://kieler.cs.cau.de/KGraph"
+            priority="normal">
+      </diffengine>
    </extension>
 
 </plugin>
