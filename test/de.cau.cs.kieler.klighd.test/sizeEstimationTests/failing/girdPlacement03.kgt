@@ -1,0 +1,36 @@
+KNode {
+	children:
+	KNode {
+		data:
+		RoundedRectangle 30.0 30.0 {
+			childPlacement:
+			gridPlacement 1
+			children:
+			Text Hans {
+				placementData:
+				GridPlacementData {
+					minCellWidth 24.0 minCellHeight 11.0
+				}
+				mapProperties:
+				"klighd.testing.height" = "11.0"
+				"klighd.testing.width" = "24.0"
+			}
+			ChildArea {
+				placementData:
+				GridPlacementData {
+				}
+			}
+		}
+		KShapeLayout {
+			mapProperties:
+			"klighd.testing.expected.height" = "11.0"
+			"klighd.testing.expected.width" = "24.0"
+		}
+		children:
+		KNode {
+			data:
+			KShapeLayout {
+			}
+		}
+	}
+}
