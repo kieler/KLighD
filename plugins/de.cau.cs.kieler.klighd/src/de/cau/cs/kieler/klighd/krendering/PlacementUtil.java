@@ -724,10 +724,10 @@ public final class PlacementUtil {
         return minBounds;
     }
     
-    /*whether a position is measured in the same direction as the point it is defining 
+    /* whether a position is measured in the same direction as the point it is defining 
      * e.g. a top left position is measured from left*/
     private static final int DIRECT = 0;
-    /*whether a position is measured contrary to the point it is defining 
+    /* whether a position is measured contrary to the point it is defining 
      * e.g. a top right position is measured from left*/
     private static final int INDIRECT = 1;
     
@@ -746,11 +746,15 @@ public final class PlacementUtil {
     private static final int INDIRECT_INDIRECT = INDIRECT * FIRST_OFFSET + INDIRECT;
     
     /**
-     * Calculate how much space of a parent is available to place children after 
-     * considering by tL and bR defined insets.
-     * @param parentSize the size of the parent
-     * @param tL the KPosition defining the top and Left insets
-     * @param bR the KPosition defining the bottom and right insets
+     * Calculate how much space of a parent is available to place children after considering by tL
+     * and bR defined insets.
+     * 
+     * @param parentSize
+     *            the size of the parent
+     * @param tL
+     *            the KPosition defining the top and Left insets
+     * @param bR
+     *            the KPosition defining the bottom and right insets
      * @return the size available to place children
      */
     private static float getHorizontalSizeAvailable(final float parentSize, final KPosition tL, 
@@ -787,11 +791,15 @@ public final class PlacementUtil {
     }   
     
     /**
-     * Calculate how much space of a parent is available to place children after 
-     * considering by tL and bR defined insets.
-     * @param parentSize the size of the parent
-     * @param tL the KPosition defining the top and Left insets
-     * @param bR the KPosition defining the bottom and right insets
+     * Calculate how much space of a parent is available to place children after considering by tL
+     * and bR defined insets.
+     *
+     * @param parentSize
+     *            the size of the parent
+     * @param tL
+     *            the KPosition defining the top and Left insets
+     * @param bR
+     *            the KPosition defining the bottom and right insets
      * @return the size available to place children
      */
     private static float getVerticalSizeAvailable(final float parentSize, final KPosition tL, 
@@ -828,17 +836,25 @@ public final class PlacementUtil {
     }  
     
     /**
-     * Calculate how much space of a parent is available to place children after 
-     * considering by abs0, abs1, rel0 and rel1 defined defined insets.
-     * @param parentSize the size of the parent
-     * @param abs0 the absolute value of the first inset
-     * @param rel0 the relative value of the first inset
-     * @param positionId0 the identifier constant informing about the measurement direction 
-     * (DIRECT, INDIRECT)
-     * @param abs1 the absolute value of the second inset
-     * @param rel1 the relative value of the second inset
-     * @param positionId1 the identifier constant informing about the measurement direction 
-     * (DIRECT, INDIRECT) 
+     * Calculate how much space of a parent is available to place children after considering by
+     * abs0, abs1, rel0 and rel1 defined defined insets.
+     *
+     * @param parentSize
+     *            the size of the parent
+     * @param abs0
+     *            the absolute value of the first inset
+     * @param rel0
+     *            the relative value of the first inset
+     * @param positionId0
+     *            the identifier constant informing about the measurement direction (DIRECT,
+     *            INDIRECT)
+     * @param abs1
+     *            the absolute value of the second inset
+     * @param rel1
+     *            the relative value of the second inset
+     * @param positionId1
+     *            the identifier constant informing about the measurement direction (DIRECT,
+     *            INDIRECT)
      * @return the size available to place children
      */
     private static float getSizeAvailable(
@@ -918,18 +934,25 @@ public final class PlacementUtil {
     }
     
     /**
-     * Normalize given insets to find out how big a child is in relation to it's parent 
-     * and how much space is needed to add absolute insets.
-     * @param abs0 the absolute value of the position defining first inset
-     * @param rel0 the relative value of the position defining first inset
-     * @param positionId0 the identifier constant informing about the measurement direction 
-     * (DIRECT, INDIRECT)
-     * @param abs1 the absolute value of the position defining first inset
-     * @param rel1 the relative value of the position defining the first inset
-     * @param positionId1 the identifier constant informing about the measurement direction 
-     * (DIRECT, INDIRECT)
-     * @return a pair informing about the absolute offset needed to place the child and 
-     * the relative size of a child to the parent
+     * Normalize given insets to find out how big a child is in relation to it's parent and how much
+     * space is needed to add absolute insets.
+     * 
+     * @param abs0
+     *            the absolute value of the position defining first inset
+     * @param rel0
+     *            the relative value of the position defining first inset
+     * @param positionId0
+     *            the identifier constant informing about the measurement direction (DIRECT,
+     *            INDIRECT)
+     * @param abs1
+     *            the absolute value of the position defining first inset
+     * @param rel1
+     *            the relative value of the position defining the first inset
+     * @param positionId1
+     *            the identifier constant informing about the measurement direction (DIRECT,
+     *            INDIRECT)
+     * @return a pair informing about the absolute value the child size is smaller than the parent
+     *         and the relative size of a child w.r.t. to the size of the parent
      */
     private static Pair<Float, Float> getSize(
             final float abs0, final float rel0, final int positionId0,
@@ -956,7 +979,6 @@ public final class PlacementUtil {
             // top left comes from left
             // bottom right comes from left
             relWidth = rel1 - rel0;
-            //absXOffset = Math.min(tL.getX().getAbsolute(), bR.getX().getAbsolute());
             absOffset = abs0 - abs1;
             break;
             
@@ -964,7 +986,6 @@ public final class PlacementUtil {
             // top left comes from right
             // bottom right comes from right
             relWidth = rel0 - rel1;
-            //absXOffset = Math.min(bR.getX().getAbsolute(), tL.getX().getAbsolute());
             absOffset = -abs0 + abs1; 
             break;
             
@@ -1012,8 +1033,8 @@ public final class PlacementUtil {
 
                 // determine minimal needed size of the child
                 final Bounds childMinSize = estimateSize(rendering, bounds);
-                if ((//the area gives less space than the child needs actually
-                        bounds.width < childMinSize.width)              
+                if (//the area gives less space than the child actually needs
+                        (bounds.width < childMinSize.width)              
                         || (bounds.height < childMinSize.height)        
                         //the child needs more space than the parent is willing to give
                         || (givenBounds.width < childMinSize.width)
@@ -1045,12 +1066,10 @@ public final class PlacementUtil {
                     // childBounds according to the maximal yet found size
                     minBounds.width = Math.max(
                             minBounds.width,
-                            (relWidth != 0f ? childMinSize.width / relWidth : 0f)
-                                    + Math.abs(absXOffest));
+                            (relWidth != 0f ? childMinSize.width / relWidth : 0f) + absXOffest);
                     minBounds.height = Math.max(
                             minBounds.height,
-                            (relHeight != 0f ? childMinSize.height / relHeight : 0f)
-                                    + Math.abs(absYOffest));
+                            (relHeight != 0f ? childMinSize.height / relHeight : 0f) + absYOffest);
                 }
             } else if (plcData instanceof KPointPlacementData) {
                 KPointPlacementData ppd = (KPointPlacementData) plcData;
@@ -1066,7 +1085,7 @@ public final class PlacementUtil {
                     
                     float calculatedWidth = getHorizontalSize(ppd, childMinSize.getWidth());
                     float calculatedHeight = getVerticalSize(ppd, childMinSize.getHeight());
-                    
+    
                     minBounds.width = Math.max(minBounds.width, calculatedWidth);
                     minBounds.height = Math.max(minBounds.height, calculatedHeight);
                 }
@@ -1261,10 +1280,10 @@ public final class PlacementUtil {
         case LEFT:
         case RIGHT:
             // the child requires its minWidth and the absolute margin defined by pos.getX()
-            calculatedWidth = abs + minWidth + ppd.getHorizontalMargin();
+            calculatedWidth = abs + Math.max(minWidth, ppd.getMinWidth()) + ppd.getHorizontalMargin();
             break;
         case CENTER:
-            float halfWidth = minWidth / 2;
+            float halfWidth = Math.max(minWidth, ppd.getMinWidth()) / 2;
             if (abs > halfWidth) {
                 // in this case the child requires, depending on type of pos.getX, on one side more
                 //  space than on the other, so:
@@ -1272,7 +1291,7 @@ public final class PlacementUtil {
             } else {
                 // in case one might argue the same way, but there's still the relative part
                 //  so I think potentially shrinking the width is not reasonable; thus:
-                calculatedWidth = minWidth;
+                calculatedWidth = Math.max(minWidth, ppd.getMinWidth());
             }
             calculatedWidth += 2 * ppd.getHorizontalMargin();
         }
@@ -1366,10 +1385,10 @@ public final class PlacementUtil {
         case TOP:
         case BOTTOM:
             // the child requires its minHeight and the absolute margin defined by pos.getY()
-            calculatedHeight = abs + minHeight + ppd.getVerticalMargin();
+            calculatedHeight = abs + Math.max(minHeight, ppd.getMinHeight()) + ppd.getVerticalMargin();
             break;
         case CENTER:
-            float halfHeight = minHeight / 2;
+            float halfHeight = Math.max(minHeight, ppd.getMinHeight()) / 2;
             if (abs > halfHeight) {
                 // in this case the child requires, depending on type of pos.getY, on one side more
                 //  space than on the other, so:
@@ -1377,7 +1396,7 @@ public final class PlacementUtil {
             } else {
                 // in case one might argue the same way, but there's still the relative part
                 //  so I think potentially shrinking the width is not reasonable; thus:
-                calculatedHeight = minHeight;
+                calculatedHeight = Math.max(minHeight, ppd.getMinHeight());
             }
             calculatedHeight += 2 * ppd.getVerticalMargin();
         }
