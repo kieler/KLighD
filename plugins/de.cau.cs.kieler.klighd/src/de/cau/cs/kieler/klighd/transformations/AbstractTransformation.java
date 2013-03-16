@@ -141,7 +141,7 @@ public abstract class AbstractTransformation<S, T> implements ITransformation<S,
      * {@inheritDoc}
      */
     public Class<?> getSourceClass() {
-        if (!triedToInferClasses) {
+        if (!triedToInferClass()) {
             inferSourceAndTargetModelClass();
         }
         return sourceModelClass;
@@ -159,7 +159,7 @@ public abstract class AbstractTransformation<S, T> implements ITransformation<S,
      * {@inheritDoc}
      */
     public Class<?> getTargetClass() {
-        if (!triedToInferClasses) {
+        if (!triedToInferClass()) {
             inferSourceAndTargetModelClass();
         }
         return targetModelClass;
@@ -173,6 +173,15 @@ public abstract class AbstractTransformation<S, T> implements ITransformation<S,
         this.targetModelClass = theTargetClass;
     }   
     
+    /**
+     * Getter for the triedToInferClasses flag.
+     * 
+     * @return true if source and target classes have been tried to infer
+     */
+    protected boolean triedToInferClass() {
+        return this.triedToInferClasses;
+    }
+
     /**
      * Setter for the triedToInferClasses flag.
      */
@@ -197,22 +206,22 @@ public abstract class AbstractTransformation<S, T> implements ITransformation<S,
         return Collections.emptySet();
     }
 
-
     /** the name of the {@code transform} method. */
-    private static final String TRANSFORM_METHOD_NAME = "transform";
+    protected static final String TRANSFORM_METHOD_NAME = "transform";
 
     /**
      * Tries to infer the class of the source and target model by analyzing the transform method.
      */
     protected void inferSourceAndTargetModelClass() {
         triedToInferClasses = true;
-        // try to find a method with one parameter which returns non-void
-        // takes the first matching method if the parameter is not Object
+        // try to find a method with two parameters which returns non-void
+        // takes the first matching method with parameter 0 != Object
         Method transformMethod = null;
         for (Method method : getClass().getDeclaredMethods()) {
             if (method.getName().equals(TRANSFORM_METHOD_NAME)
                     && method.getParameterTypes().length == 2
-                    && !method.getReturnType().equals(Void.TYPE)) {
+                    && !method.getReturnType().equals(Void.TYPE)
+                    && !method.getReturnType().equals(Object.class)) {
                 transformMethod = method;
                 // keep searching if the parameter is of type Object
                 // this is necessary to skip the method with type Object that is always present when

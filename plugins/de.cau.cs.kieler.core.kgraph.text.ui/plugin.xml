@@ -135,14 +135,24 @@
                <iterate
                      ifEmpty="false"
                      operator="and">
-                  <adapt
-                        type="org.eclipse.core.resources.IResource">
-                     <test
-                           forcePluginActivation="false"
-                           property="org.eclipse.core.resources.extension"
-                           value="kgx">
-                     </test>
-                  </adapt>
+                  <or>
+                     <adapt
+                           type="org.eclipse.core.resources.IResource">
+                        <test
+                              forcePluginActivation="false"
+                              property="org.eclipse.core.resources.extension"
+                              value="kgx">
+                        </test>
+                     </adapt>
+                     <adapt
+                           type="org.eclipse.core.resources.IResource">
+                        <test
+                              forcePluginActivation="false"
+                              property="org.eclipse.core.resources.extension"
+                              value="kgraph">
+                        </test>
+                     </adapt>
+                  </or>
                </iterate>
             </visibleWhen>
             <parameter

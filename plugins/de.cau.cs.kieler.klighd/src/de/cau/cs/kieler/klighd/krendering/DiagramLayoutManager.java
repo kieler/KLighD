@@ -267,19 +267,19 @@ public class DiagramLayoutManager implements IDiagramLayoutManager<KGraphElement
         // initialize with defaultLayout and try to get specific layout attached to the node
         KShapeLayout layoutLayout = layoutNode.getData(KShapeLayout.class);
         KShapeLayout nodeLayout = node.getData(KShapeLayout.class);
-        Bounds minSize;
+
         if (nodeLayout != null) {
             // there is layoutData attached to the node,
             // so take that as node layout instead of the default-layout
             transferShapeLayout(nodeLayout, layoutLayout);
 
-            // integrate the minimal estimated node size based on the updated useLayout
+            // integrate the minimal estimated node size based on the updated layoutLayout
             // - manipulating the nodeLayout may cause immediate glitches in the diagram
             // (through the listeners)
             KRendering rootRendering = node.getData(KRendering.class);
             if (rootRendering != null) {
                 // calculate the minimal size need for the rendering ...
-                minSize = PlacementUtil.estimateSize(rootRendering, new Bounds(
+                Bounds minSize = PlacementUtil.estimateSize(rootRendering, new Bounds(
                         layoutLayout.getWidth(), layoutLayout.getHeight()));
                 // ... and update the node size if it exceeds its size
                 if (minSize.width > layoutLayout.getWidth()) {
@@ -449,8 +449,37 @@ public class DiagramLayoutManager implements IDiagramLayoutManager<KGraphElement
         // set the label layout
         KShapeLayout layoutLayout = layoutLabel.getData(KShapeLayout.class);
         KShapeLayout labelLayout = label.getData(KShapeLayout.class);
+        
         if (labelLayout != null) {
             transferShapeLayout(labelLayout, layoutLayout);
+            
+            // integrate the minimal estimated label size based on the updated layoutLayout
+            // - manipulating the labelLayout may cause immediate glitches in the diagram
+            // (through the listeners)
+            KRendering rootRendering = label.getData(KRendering.class);
+            if (rootRendering != null) {
+                // calculate the minimal size need for the rendering ...
+                Bounds minSize = PlacementUtil.estimateTextSize(label);
+                // ... and update the node size if it exceeds its size
+                if (minSize.width > layoutLayout.getWidth()) {
+                    labelLayout.setWidth(minSize.width);
+                    layoutLayout.setWidth(minSize.width);
+
+                    // In order to instruct KIML to not shrink the node beyond the minimal size,
+                    //  e.g. due to less space required by child nodes,
+                    //  configure a related layout option!
+                    // This has to be done on the original node instance, as layout options are
+                    //  transfered by the {@link KGraphPropertyLayoutConfig}.
+                    labelLayout.setProperty(LayoutOptions.MIN_WIDTH, minSize.width);
+                }
+                if (minSize.height > layoutLayout.getHeight()) {
+                    labelLayout.setHeight(minSize.height);
+                    layoutLayout.setHeight(minSize.height);
+                    // see comment above
+                    labelLayout.setProperty(LayoutOptions.MIN_HEIGHT, minSize.height);
+                }
+                layoutLayout.setInsets(minSize.getInsets());
+            }
         }
 
         layoutLabel.setText(label.getText());

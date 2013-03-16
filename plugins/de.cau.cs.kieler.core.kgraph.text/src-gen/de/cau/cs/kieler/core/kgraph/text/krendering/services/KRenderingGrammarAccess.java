@@ -3368,12 +3368,14 @@ public class KRenderingGrammarAccess extends AbstractGrammarElementFinder {
 		private final Keyword cLineCapKeyword_1 = (Keyword)cGroup.eContents().get(1);
 		private final Assignment cLineCapAssignment_2 = (Assignment)cGroup.eContents().get(2);
 		private final RuleCall cLineCapLineCapEnumRuleCall_2_0 = (RuleCall)cLineCapAssignment_2.eContents().get(0);
+		private final Assignment cPropagateToChildrenAssignment_3 = (Assignment)cGroup.eContents().get(3);
+		private final Keyword cPropagateToChildrenExclamationMarkKeyword_3_0 = (Keyword)cPropagateToChildrenAssignment_3.eContents().get(0);
 		
 		//KLineCap:
-		//	{KLineCap} "lineCap" lineCap=LineCap;
+		//	{KLineCap} "lineCap" lineCap=LineCap propagateToChildren?="!"?;
 		public ParserRule getRule() { return rule; }
 
-		//{KLineCap} "lineCap" lineCap=LineCap
+		//{KLineCap} "lineCap" lineCap=LineCap propagateToChildren?="!"?
 		public Group getGroup() { return cGroup; }
 
 		//{KLineCap}
@@ -3387,6 +3389,12 @@ public class KRenderingGrammarAccess extends AbstractGrammarElementFinder {
 
 		//LineCap
 		public RuleCall getLineCapLineCapEnumRuleCall_2_0() { return cLineCapLineCapEnumRuleCall_2_0; }
+
+		//propagateToChildren?="!"?
+		public Assignment getPropagateToChildrenAssignment_3() { return cPropagateToChildrenAssignment_3; }
+
+		//"!"
+		public Keyword getPropagateToChildrenExclamationMarkKeyword_3_0() { return cPropagateToChildrenExclamationMarkKeyword_3_0; }
 	}
 
 	public class KRotationElements extends AbstractParserRuleElementFinder {
@@ -3633,12 +3641,14 @@ public class KRenderingGrammarAccess extends AbstractGrammarElementFinder {
 		private final Assignment cStyleHolderAssignment_2 = (Assignment)cGroup.eContents().get(2);
 		private final CrossReference cStyleHolderKStyleHolderCrossReference_2_0 = (CrossReference)cStyleHolderAssignment_2.eContents().get(0);
 		private final RuleCall cStyleHolderKStyleHolderEStringParserRuleCall_2_0_1 = (RuleCall)cStyleHolderKStyleHolderCrossReference_2_0.eContents().get(1);
+		private final Assignment cPropagateToChildrenAssignment_3 = (Assignment)cGroup.eContents().get(3);
+		private final Keyword cPropagateToChildrenExclamationMarkKeyword_3_0 = (Keyword)cPropagateToChildrenAssignment_3.eContents().get(0);
 		
 		//KStyleRef:
-		//	{KStyleRef} "styleRef" styleHolder=[KStyleHolder|EString];
+		//	{KStyleRef} "styleRef" styleHolder=[KStyleHolder|EString] propagateToChildren?="!"?;
 		public ParserRule getRule() { return rule; }
 
-		//{KStyleRef} "styleRef" styleHolder=[KStyleHolder|EString]
+		//{KStyleRef} "styleRef" styleHolder=[KStyleHolder|EString] propagateToChildren?="!"?
 		public Group getGroup() { return cGroup; }
 
 		//{KStyleRef}
@@ -3655,6 +3665,12 @@ public class KRenderingGrammarAccess extends AbstractGrammarElementFinder {
 
 		//EString
 		public RuleCall getStyleHolderKStyleHolderEStringParserRuleCall_2_0_1() { return cStyleHolderKStyleHolderEStringParserRuleCall_2_0_1; }
+
+		//propagateToChildren?="!"?
+		public Assignment getPropagateToChildrenAssignment_3() { return cPropagateToChildrenAssignment_3; }
+
+		//"!"
+		public Keyword getPropagateToChildrenExclamationMarkKeyword_3_0() { return cPropagateToChildrenExclamationMarkKeyword_3_0; }
 	}
 
 	public class KGridPlacementElements extends AbstractParserRuleElementFinder {
@@ -4464,7 +4480,7 @@ public class KRenderingGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//KLineCap:
-	//	{KLineCap} "lineCap" lineCap=LineCap;
+	//	{KLineCap} "lineCap" lineCap=LineCap propagateToChildren?="!"?;
 	public KLineCapElements getKLineCapAccess() {
 		return (pKLineCap != null) ? pKLineCap : (pKLineCap = new KLineCapElements());
 	}
@@ -4544,7 +4560,7 @@ public class KRenderingGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//KStyleRef:
-	//	{KStyleRef} "styleRef" styleHolder=[KStyleHolder|EString];
+	//	{KStyleRef} "styleRef" styleHolder=[KStyleHolder|EString] propagateToChildren?="!"?;
 	public KStyleRefElements getKStyleRefAccess() {
 		return (pKStyleRef != null) ? pKStyleRef : (pKStyleRef = new KStyleRefElements());
 	}
