@@ -3,7 +3,6 @@ package de.cau.cs.kieler.klighd.examples.uml2
 import org.eclipse.uml2.uml.Model
 import de.cau.cs.kieler.klighd.transformations.AbstractDiagramSynthesis
 import de.cau.cs.kieler.core.kgraph.KNode
-import de.cau.cs.kieler.klighd.TransformationContext
 import javax.inject.Inject
 import de.cau.cs.kieler.core.krendering.extensions.KNodeExtensions
 import de.cau.cs.kieler.core.krendering.extensions.KRenderingExtensions
@@ -47,8 +46,7 @@ class UML2UseCaseDiagramSynthesis extends AbstractDiagramSynthesis<Model> {
     @Inject
     extension KColorExtensions
     
-    override transform(Model model, TransformationContext<Model,KNode> transformationContext) {
-        use(transformationContext);
+    override transform(Model model) {
         // create the root node representing the diagram canvas ...
         return model.createNode() => [
             it.addLayoutParam(LayoutOptions::SPACING, 40f);
@@ -58,6 +56,7 @@ class UML2UseCaseDiagramSynthesis extends AbstractDiagramSynthesis<Model> {
                 switch(it) {
                     Actor: it.createActorNode()
                     UseCase: it.createUseCaseNode()
+                    default: null
                 }
             ].filterNull;
             // create representations of the associations (edges)
@@ -71,7 +70,7 @@ class UML2UseCaseDiagramSynthesis extends AbstractDiagramSynthesis<Model> {
     def KNode createActorNode(Actor actor) {
         return actor.createNode().putToLookUpWith(actor) => [
             it.setNodeSize(60, 100);
-            it.addOutsideCenteralBottomNodeLabel(actor.name,
+            it.addOutsideCentralBottomNodeLabel(actor.name,
                 KlighdConstants::DEFAULT_FONT_SIZE, KlighdConstants::DEFAULT_FONT_NAME
             ).putToLookUpWith(actor);
             it.addRectangle() => [
@@ -90,7 +89,7 @@ class UML2UseCaseDiagramSynthesis extends AbstractDiagramSynthesis<Model> {
             it.addEllipse() => [
                 it.foreground = "darkGray".color;
                 it.addText(useCase.name).putToLookUpWith(useCase) => [
-                    it.setSurroundingIndention(10, 0.1f);
+                    it.setSurroundingSpace(10, 0.1f);
                     it.background = "white".color
                 ];
             ];
