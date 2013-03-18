@@ -51,7 +51,6 @@ class KPolylineExtensions {
                 it.setWidth(15 * modifiedScale);
                 it.setXOffset(-15 * modifiedScale);
                 it.setYOffset(-(it.height + scale/2) / 2);
-                it.setAbsolute(-it.width);
             ];
         ];
     }
