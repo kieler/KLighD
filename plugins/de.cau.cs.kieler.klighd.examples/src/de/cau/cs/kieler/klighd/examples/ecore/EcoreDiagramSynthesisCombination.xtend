@@ -11,7 +11,6 @@ import org.eclipse.emf.ecore.EClass
 import org.eclipse.emf.ecore.EClassifier
 import de.cau.cs.kieler.core.model.triggers.PartTrigger
 import org.eclipse.core.runtime.IPath
-import de.cau.cs.kieler.klighd.effects.KlighdDiagramEffect
 import de.cau.cs.kieler.klighd.triggers.KlighdSelectionTrigger$KlighdSelectionState
 import org.eclipse.emf.ecore.EModelElement
 
@@ -56,8 +55,7 @@ class EcoreDiagramSynthesisCombination extends AbstractCombination {
                 val inputPath = es.getProperty(PartTrigger::EDITOR_INPUT_PATH) as IPath;
                 if (inputPath != null) {
                     val id = inputPath.toPortableString().replace(":", "") as String;
-                    this.schedule(
-                        new KlighdDiagramEffect(id, inputPath.lastSegment,
+                    this.schedule(new KlighdUpdateDiagramEffect(id, inputPath.lastSegment,
                             EModelElementCollection::of(selectionState.selectedObjects as Collection),
                             es.editorPart
                         )
@@ -69,13 +67,11 @@ class EcoreDiagramSynthesisCombination extends AbstractCombination {
                 
                 if (selection.forall[typeof(EcoreDomainNavigatorItem).isInstance(it)]) {
                     // in case ecore elements are selected within the 'Project Explorer' view
-		          this.schedule(
-		                new KlighdUpdateDiagramEffect(
-		                    EModelElementCollection::of(
-		                        selectionState.selectedObjects.map[
-		                            (it as EcoreDomainNavigatorItem).EObject as EModelElement
-            		            ])
-            	        )
+                    this.schedule(new KlighdUpdateDiagramEffect(EModelElementCollection::of(
+                            selectionState.selectedObjects.map[
+                                (it as EcoreDomainNavigatorItem).EObject as EModelElement
+        		            ])
+        		        )
                 	);
                 }
             } 
