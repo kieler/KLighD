@@ -11,23 +11,24 @@
  * This code is provided under the terms of the Eclipse Public License (EPL).
  * See the file epl-v10.html for the license text.
  */
-package de.cau.cs.kieler.klighd.piccolo.krendering;
+package de.cau.cs.kieler.klighd.piccolo.activities;
 
 import java.awt.geom.Point2D;
 
+import de.cau.cs.kieler.klighd.piccolo.krendering.KEdgeNode;
 import de.cau.cs.kieler.klighd.piccolo.util.MathUtil;
 import edu.umd.cs.piccolo.activities.PInterpolatingActivity;
 
 /**
  * The Piccolo activity for applying bend points to a {@KEdgeNode}.
  * 
- * @author mri
+ * @author mri, chsch
  */
 public class ApplyBendPointsActivity extends PInterpolatingActivity {
-    
-    /** the edge node for this activity.  */
-    private KEdgeNode edgeNode;
-    
+
+    /** the edge node for this activity. */
+    private final KEdgeNode edgeNode;
+
     /** the soure bends. */
     private Point2D[] sourceBends;
     /** the target bends. */
@@ -36,7 +37,7 @@ public class ApplyBendPointsActivity extends PInterpolatingActivity {
     private Point2D[] deltaBends;
     /** the temporary bends. */
     private Point2D[] tempBends;
-    
+
     /**
      * Constructs an activity to apply new bend points to an edge node over a specified duration.
      * 
@@ -53,7 +54,7 @@ public class ApplyBendPointsActivity extends PInterpolatingActivity {
         this.edgeNode = edgeNode;
         this.targetBends = newBends;
     }
-    
+
     /**
      * {@inheritDoc}
      */
@@ -63,7 +64,7 @@ public class ApplyBendPointsActivity extends PInterpolatingActivity {
         }
         super.activityStarted();
     }
-    
+
     /**
      * {@inheritDoc}
      */
@@ -94,13 +95,27 @@ public class ApplyBendPointsActivity extends PInterpolatingActivity {
     }
 
     /**
-     * Creates the required proxy bend points and buffers for performing the bend point
-     * transition.
+     * Getter.
      * 
-     * @param edgeLayout
-     *            the edge layout to be applied
+     * @return the edgeNode
      */
-    private void prepareBendTransition() {
+    KEdgeNode getEdgeNode() {
+        return edgeNode;
+    }
+
+    /**
+     * Getter.
+     * 
+     * @return the targetBends
+     */
+    Point2D[] getTargetBends() {
+        return targetBends;
+    }
+
+    /**
+     * Creates the required proxy bend points and buffers for performing the bend point transition.
+     */
+    protected void prepareBendTransition() {
         // for a smooth transition of bends the maximum number of bends in the source and target
         // layout are required
         Point2D[] originSourceBends = edgeNode.getBendPoints();
@@ -109,7 +124,7 @@ public class ApplyBendPointsActivity extends PInterpolatingActivity {
         int maxNumber = Math.max(sourceNumber, targetNumber);
         sourceBends = new Point2D[maxNumber];
         deltaBends = new Point2D[maxNumber];
-        
+
         // create proxy bend points if required
         if (sourceNumber == targetNumber) {
             // no proxies required
@@ -126,7 +141,7 @@ public class ApplyBendPointsActivity extends PInterpolatingActivity {
         } else {
             createBendsTargetProxy(originSourceBends);
         }
-        
+
         // prepare the bend point buffer
         tempBends = new Point2D[maxNumber];
         for (int i = 0; i < maxNumber; ++i) {
@@ -135,8 +150,8 @@ public class ApplyBendPointsActivity extends PInterpolatingActivity {
     }
 
     /**
-     * Creates the bend points for the transition and adds a required amount of source proxy
-     * bend points.
+     * Creates the bend points for the transition and adds a required amount of source proxy bend
+     * points.
      * 
      * @param sourceBendsTemp
      *            the source bend points
@@ -153,20 +168,20 @@ public class ApplyBendPointsActivity extends PInterpolatingActivity {
 
             // chsch: original code, produced an ArrayIndexOutOfBound exception...
             // if (sourceRels[k] > targetRel && targetRels.length - i > sourceRels.length - k) {
-            //     sourceBends[i] = MathUtil.getPoint(sourceBendsTemp, targetRel);
+            // sourceBends[i] = MathUtil.getPoint(sourceBendsTemp, targetRel);
             // } else {
-            //     sourceBends[i] = (Point2D) sourceBendsTemp[k].clone();
-            //     ++k;
+            // sourceBends[i] = (Point2D) sourceBendsTemp[k].clone();
+            // ++k;
             // }
-            
-            // chsch: my replacement,  
+
+            // chsch: my replacement,
             if (k < sourceRels.length && sourceRels[k] <= targetRel) {
                 sourceBends[i] = (Point2D) sourceBendsTemp[k++].clone();
             } else {
                 sourceBends[i] = MathUtil.getPoint(sourceBendsTemp, targetRel);
             }
         }
-        
+
         // calculate the bend point delta
         for (int i = 0; i < targetRels.length; ++i) {
             Point2D sourceBend = sourceBends[i];
@@ -177,8 +192,8 @@ public class ApplyBendPointsActivity extends PInterpolatingActivity {
     }
 
     /**
-     * Creates the bend points for the transition and adds a required amount of target proxy
-     * bend points.
+     * Creates the bend points for the transition and adds a required amount of target proxy bend
+     * points.
      * 
      * @param sourceBendsTemp
      *            the source bend points
@@ -188,7 +203,7 @@ public class ApplyBendPointsActivity extends PInterpolatingActivity {
         for (int i = 0; i < sourceBendsTemp.length; ++i) {
             sourceBends[i] = (Point2D) sourceBendsTemp[i];
         }
-        
+
         // create proxies for the target bend points
         double[] sourceRels = createIndexRelativePositionMapping(sourceBendsTemp);
         double[] targetRels = createIndexRelativePositionMapping(targetBends);
@@ -196,7 +211,7 @@ public class ApplyBendPointsActivity extends PInterpolatingActivity {
         int k = 0;
         for (int i = 0; i < sourceRels.length; ++i) {
             double sourceRel = sourceRels[i];
-            
+
             // chsch: the following code maybe erroneous, see foregoing method
             if (targetRels[k] > sourceRel && sourceRels.length - i > targetRels.length - k) {
                 targetBendsTemp[i] = MathUtil.getPoint(targetBends, sourceRel);
@@ -205,7 +220,7 @@ public class ApplyBendPointsActivity extends PInterpolatingActivity {
                 ++k;
             }
         }
-        
+
         // calculate the bend point delta
         for (int i = 0; i < sourceRels.length; ++i) {
             Point2D sourceBend = sourceBends[i];
@@ -216,8 +231,8 @@ public class ApplyBendPointsActivity extends PInterpolatingActivity {
     }
 
     /**
-     * Interprets the list of bend points as a polyline and returns a mapping of bend point
-     * indices to the relative position of the bend point on the line.
+     * Interprets the list of bend points as a polyline and returns a mapping of bend point indices
+     * to the relative position of the bend point on the line.
      * 
      * @param bends
      *            the bend points

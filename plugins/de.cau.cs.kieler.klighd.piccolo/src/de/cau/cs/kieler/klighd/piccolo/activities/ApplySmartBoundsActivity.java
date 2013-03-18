@@ -21,12 +21,12 @@ import edu.umd.cs.piccolo.util.PBounds;
 /**
  * The Piccolo activity for applying smart bounds to a Piccolo node.
  * 
- * @author mri
+ * @author mri, chsch
  */
 public class ApplySmartBoundsActivity extends PInterpolatingActivity {
 
     /** the node for this activity. */
-    private PNode node;
+    private final PNode node;
     
     /** the source bounds. */
     private PBounds sourceBounds;
@@ -91,4 +91,21 @@ public class ApplySmartBoundsActivity extends PInterpolatingActivity {
         return true;
     }
 
+    /**
+     * Getter.
+     * 
+     * @return the node
+     */
+    PNode getNode() {
+        return node;
+    }
+
+    /**
+     * Getter.
+     * 
+     * @return the targetBounds
+     */
+    PBounds getTargetBounds() {
+        return targetBounds;
+    }
 }

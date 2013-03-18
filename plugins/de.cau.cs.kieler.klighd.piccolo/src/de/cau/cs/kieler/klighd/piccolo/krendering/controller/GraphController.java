@@ -16,19 +16,13 @@ package de.cau.cs.kieler.klighd.piccolo.krendering.controller;
 import java.awt.geom.Point2D;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notification;
-import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.common.notify.impl.AdapterImpl;
-import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.util.EContentAdapter;
-import org.eclipse.emf.ecore.util.InternalEList;
 
-import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
@@ -57,8 +51,11 @@ import de.cau.cs.kieler.kiml.options.EdgeRouting;
 import de.cau.cs.kieler.kiml.options.LayoutOptions;
 import de.cau.cs.kieler.klighd.KlighdConstants;
 import de.cau.cs.kieler.klighd.krendering.DiagramLayoutManager;
+import de.cau.cs.kieler.klighd.piccolo.activities.ApplyBendPointsActivity;
 import de.cau.cs.kieler.klighd.piccolo.activities.ApplySmartBoundsActivity;
-import de.cau.cs.kieler.klighd.piccolo.krendering.ApplyBendPointsActivity;
+import de.cau.cs.kieler.klighd.piccolo.activities.FadeEdgeInActivity;
+import de.cau.cs.kieler.klighd.piccolo.activities.FadeNodeInActivity;
+import de.cau.cs.kieler.klighd.piccolo.krendering.IGraphElement;
 import de.cau.cs.kieler.klighd.piccolo.krendering.ILabeledGraphElement;
 import de.cau.cs.kieler.klighd.piccolo.krendering.INode;
 import de.cau.cs.kieler.klighd.piccolo.krendering.KChildAreaNode;
@@ -68,6 +65,7 @@ import de.cau.cs.kieler.klighd.piccolo.krendering.KNodeNode;
 import de.cau.cs.kieler.klighd.piccolo.krendering.KNodeTopNode;
 import de.cau.cs.kieler.klighd.piccolo.krendering.KPortNode;
 import de.cau.cs.kieler.klighd.piccolo.util.NodeUtil;
+import de.cau.cs.kieler.klighd.util.LimitedKGraphContentAdapter;
 import de.cau.cs.kieler.klighd.util.RenderingContextData;
 import edu.umd.cs.piccolo.PCamera;
 import edu.umd.cs.piccolo.PLayer;
@@ -143,7 +141,8 @@ public class GraphController {
     private boolean zoomToFit = false;
 
     /** the layout changes to graph elements while recording. */
-    private Map<Object, Object> recordedChanges = Maps.newLinkedHashMap();
+    private Map<IGraphElement<? extends KGraphElement>, Object> recordedChanges = Maps
+            .newLinkedHashMap();
 
     /**
      * Constructs a graph controller for the given graph. The Piccolo nodes created for the graph
@@ -685,6 +684,8 @@ public class GraphController {
         }
     }
 
+    private static final Point2D ZERO_ZERO = new Point2D.Double(0, 0);
+    
     /**
      * Applies the recorded layout changes by creating appropriate activities.
      */
@@ -699,7 +700,8 @@ public class GraphController {
         }
 
         // create activities to apply all recorded changes
-        for (Map.Entry<Object, Object> recordedChange : recordedChanges.entrySet()) {
+        for (Map.Entry<IGraphElement<? extends KGraphElement>, Object> recordedChange : recordedChanges
+                .entrySet()) {
             // create the activity to apply the change
             PInterpolatingActivity activity;
             final PNode shapeNode;
@@ -707,14 +709,28 @@ public class GraphController {
                 // edge layout changed
                 KEdgeNode edgeNode = (KEdgeNode) recordedChange.getKey();
                 shapeNode = edgeNode;
-                Point2D[] bends = (Point2D[]) recordedChange.getValue();
-                activity = new ApplyBendPointsActivity(edgeNode, bends, duration > 0 ? duration : 1);
+                Point2D[] bends = (Point2D[]) recordedChange.getValue();                
+                Point2D[] curBends = (Point2D[]) edgeNode.getBendPoints();                
+
+                if (curBends.length == 2 && curBends[0].equals(ZERO_ZERO)
+                        && curBends[1].equals(ZERO_ZERO)) {
+                    activity = new FadeEdgeInActivity(edgeNode, bends, duration > 0 ? duration : 1);
+                } else {
+                    activity = new ApplyBendPointsActivity(edgeNode, bends, duration > 0 ? duration
+                            : 1);
+                }
             } else {
                 // shape layout changed
                 shapeNode = (PNode) recordedChange.getKey();
                 PBounds bounds = (PBounds) recordedChange.getValue();
-                activity = new ApplySmartBoundsActivity(shapeNode, bounds, duration > 0 ? duration
-                        : 1);
+                
+                if (shapeNode.getFullBounds().getX() == 0 && shapeNode.getFullBounds().getY() == 0) {
+                    activity = new FadeNodeInActivity(shapeNode, bounds,
+                            duration > 0 ? duration : 1);
+                } else { 
+                    activity = new ApplySmartBoundsActivity(shapeNode, bounds,
+                            duration > 0 ? duration : 1);
+                }
             }
             if (duration > 0) {
                 // schedule the activity
@@ -905,31 +921,7 @@ public class GraphController {
         final KNode node = nodeRep.getGraphElement();
 
         // register adapter on the node to stay in sync
-        node.eAdapters().add(new EContentAdapter() {
-
-            protected void setTarget(final EObject target) {
-                if (target instanceof KNode) {
-                    // check if a shape layout is exists
-                    KNode node = (KNode) target;
-                    KShapeLayout shL = node.getData(KShapeLayout.class);
-
-                    if (shL != null) {
-                        // add the adapter to all contents of the shape layout
-                        basicSetTarget(target);
-                        Iterator<? extends Notifier> i = resolve() ? shL.eContents().iterator()
-                                : ((InternalEList<? extends Notifier>) shL.eContents())
-                                        .basicIterator();
-                        Iterator<? extends Notifier> allElements = Iterators.concat(
-                                Iterators.singletonIterator(shL), i);
-                        for (; allElements.hasNext();) {
-                            Notifier notifier = allElements.next();
-                            addAdapter(notifier);
-                        }
-                    }
-                } else {
-                    super.setTarget(target);
-                }
-            }
+        node.eAdapters().add(new LimitedKGraphContentAdapter(KShapeLayout.class) {
 
             public void notifyChanged(final Notification notification) {
                 super.notifyChanged(notification);
@@ -1018,31 +1010,7 @@ public class GraphController {
     private void installLayoutSyncAdapter(final KPortNode portRep) {
         final KPort port = portRep.getGraphElement();
         // register adapter on the port to stay in sync
-        port.eAdapters().add(new EContentAdapter() {
-
-            protected void setTarget(final EObject target) {
-                if (target instanceof KPort) {
-                    // check if a shape layout is exists
-                    KPort port = (KPort) target;
-                    KShapeLayout shL = port.getData(KShapeLayout.class);
-
-                    if (shL != null) {
-                        // add the adapter to all contents of the shape layout
-                        basicSetTarget(target);
-                        Iterator<? extends Notifier> i = resolve() ? shL.eContents().iterator()
-                                : ((InternalEList<? extends Notifier>) shL.eContents())
-                                        .basicIterator();
-                        Iterator<? extends Notifier> filtered = Iterators.concat(
-                                Iterators.singletonIterator(shL), i);
-                        for (; filtered.hasNext();) {
-                            Notifier notifier = filtered.next();
-                            addAdapter(notifier);
-                        }
-                    }
-                } else {
-                    super.setTarget(target);
-                }
-            }
+        port.eAdapters().add(new LimitedKGraphContentAdapter(KShapeLayout.class) {
 
             public void notifyChanged(final Notification notification) {
 
@@ -1105,31 +1073,7 @@ public class GraphController {
     private void installLayoutSyncAdapter(final KLabelNode labelRep) {
         final KLabel label = labelRep.getGraphElement();
         // register adapter on the label to stay in sync
-        label.eAdapters().add(new EContentAdapter() {
-
-            protected void setTarget(final EObject target) {
-                if (target instanceof KLabel) {
-                    // check if a shape layout exists
-                    KLabel label = (KLabel) target;
-                    KShapeLayout shL = label.getData(KShapeLayout.class);
-
-                    if (shL != null) {
-                        // add the adapter to all content of the shape layout
-                        basicSetTarget(target);
-                        Iterator<? extends Notifier> i = resolve() ? shL.eContents().iterator()
-                                : ((InternalEList<? extends Notifier>) shL.eContents())
-                                        .basicIterator();
-                        Iterator<? extends Notifier> filtered = Iterators.concat(
-                                Iterators.singletonIterator(shL), i);
-                        for (; filtered.hasNext();) {
-                            Notifier notifier = filtered.next();
-                            addAdapter(notifier);
-                        }
-                    }
-                } else {
-                    super.setTarget(target);
-                }
-            }
+        label.eAdapters().add(new LimitedKGraphContentAdapter(KShapeLayout.class) {
 
             public void notifyChanged(final Notification notification) {
                 super.notifyChanged(notification);
@@ -1203,31 +1147,7 @@ public class GraphController {
                 && !(rendering instanceof KSpline);
 
         // register adapter on the edge to stay in sync
-        edge.eAdapters().add(new EContentAdapter() {
-
-            protected void setTarget(final EObject target) {
-                if (target instanceof KEdge) {
-                    // check if a edge layout is exists
-                    KEdge edge = (KEdge) target;
-                    KEdgeLayout edL = edge.getData(KEdgeLayout.class);
-
-                    if (edL != null) {
-                        // add the adapter to all contents of the edge layout
-                        basicSetTarget(target);
-                        Iterator<? extends Notifier> i = resolve() ? edL.eContents().iterator()
-                                : ((InternalEList<? extends Notifier>) edL.eContents())
-                                        .basicIterator();
-                        Iterator<? extends Notifier> filtered = Iterators.concat(
-                                Iterators.singletonIterator(edL), i);
-                        for (; filtered.hasNext();) {
-                            Notifier notifier = filtered.next();
-                            addAdapter(notifier);
-                        }
-                    }
-                } else {
-                    super.setTarget(target);
-                }
-            }
+        edge.eAdapters().add(new LimitedKGraphContentAdapter(KEdgeLayout.class) {
 
             public void notifyChanged(final Notification notification) {
                 super.notifyChanged(notification);
