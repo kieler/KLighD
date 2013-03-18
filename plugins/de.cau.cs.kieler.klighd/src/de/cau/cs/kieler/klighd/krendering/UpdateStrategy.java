@@ -195,8 +195,10 @@ public class UpdateStrategy implements IUpdateStrategy<KNode> {
                 case KLayoutDataPackage.KSHAPE_LAYOUT:
                 case KLayoutDataPackage.KEDGE_LAYOUT:
                 case KLayoutDataPackage.KINSETS:
-                case KLayoutDataPackage.KPOINT:
                     return true;
+                case KLayoutDataPackage.KPOINT:
+                    // KPoint point = (KPoint) eObject;
+                    return true; //(point.getX() == 0 && point.getY() == 0);
                 default: /* nothing */
                 }
             } else if (p == KRenderingPackage.eINSTANCE) {

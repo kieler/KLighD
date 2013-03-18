@@ -85,7 +85,7 @@
    <extension
          point="org.eclipse.emf.compare.diff.engine">
       <diffengine
-            engineClass="de.cau.cs.kieler.klighd.diff.KgtDiffEngine"
+            engineClass="de.cau.cs.kieler.klighd.diff.KGraphDiffEngine"
             label="KgtDiffEngine"
             namespace="http://kieler.cs.cau.de/KGraph"
             priority="normal">

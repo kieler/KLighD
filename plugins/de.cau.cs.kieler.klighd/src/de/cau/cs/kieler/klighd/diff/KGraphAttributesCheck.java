@@ -28,12 +28,21 @@ import de.cau.cs.kieler.core.krendering.KRendering;
 import de.cau.cs.kieler.kiml.klayoutdata.KLayoutDataPackage;
 
 /**
- * Class filters attribute updates. For updates on these attributes merging will be suppressed.
+ * A customized {@link AttributesCheck} that realizes KGraph-specific customizations of the EMF
+ * Compare diff process.<br>
+ * <br>
+ * This concrete {@link AttributesCheck} excludes the synthesis of diff statements for differing
+ * attribute values in case the new values, i.e. those created by a subsequent diagram synthesis
+ * run, are initial values according to the meta models (usually zero) while deriving a diff model
+ * based on a given match model. This situation indicates non-set values that are not to be
+ * transfered into the diagram for avoiding flickering.<br>
+ * In case the value are non-zero, which indicated a pre-initialization of the layout data by the
+ * diagram synthesis, those data must be transfered into the diagram.
  * 
- * @author sgu
+ * @author chsch, sgu
  */
 
-public class KgtAttributesCheck extends AttributesCheck {
+public class KGraphAttributesCheck extends AttributesCheck {
 
     /**
      * {@inheritDoc}.
@@ -41,12 +50,12 @@ public class KgtAttributesCheck extends AttributesCheck {
      * @param manager
      *            a referencer
      */
-    public KgtAttributesCheck(final IMatchManager manager) {
+    public KGraphAttributesCheck(final IMatchManager manager) {
         super(manager);
     }
 
     /**
-     * List of attributes that will be suppressed.
+     * List of attributes that will be ignored.
      */
     private static List<EAttribute> attributes = ImmutableList.of(
             KLayoutDataPackage.eINSTANCE.getKShapeLayout_Xpos(),
@@ -57,7 +66,8 @@ public class KgtAttributesCheck extends AttributesCheck {
             KLayoutDataPackage.eINSTANCE.getKInsets_Right(),
             KLayoutDataPackage.eINSTANCE.getKInsets_Top(),
             KLayoutDataPackage.eINSTANCE.getKInsets_Bottom(),
-            KLayoutDataPackage.eINSTANCE.getKPoint_X(), KLayoutDataPackage.eINSTANCE.getKPoint_Y());
+            KLayoutDataPackage.eINSTANCE.getKPoint_X(),
+            KLayoutDataPackage.eINSTANCE.getKPoint_Y());
 
     /**
      * In case we're assessing a attributes of the list and the layout contains default values then
@@ -76,19 +86,20 @@ public class KgtAttributesCheck extends AttributesCheck {
     protected void checkAttributeUpdates(final DiffGroup root, final Match2Elements mapping,
             final EAttribute attribute) throws FactoryException {
 
+        // this case covers any property data that are introduced by 2D graphics framework bindings
+        // like that based on Piccolo2d; those properties are to be excluded from being merged/deleted
         if (attribute == KGraphPackage.eINSTANCE.getEMapPropertyHolder_Properties()
                 && mapping.getLeftElement() instanceof KRendering) {
             return;
         }
 
-        // if not(
-        // attributes.contains(attribute)
-        // && mapping.getRightElement() != null
-        // && mapping.getRightElement().eGet(attribute).equals(attribute.getDefaultValue())
-        // ) then suppress
-        if (!(attributes.contains(attribute)) || mapping.getRightElement() == null
-                || !(mapping.getRightElement().eGet(attribute).equals(attribute.getDefaultValue()))) {
-            super.checkAttributeUpdates(root, mapping, attribute);
+        // this case covers the layout data mentioned in #attributes, see class documentation.
+        if (attributes.contains(attribute)
+                && mapping.getRightElement() != null
+                && mapping.getRightElement().eGet(attribute).equals(attribute.getDefaultValue())) {
+            return;
         }
+        
+        super.checkAttributeUpdates(root, mapping, attribute);
     }
 }
