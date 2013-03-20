@@ -55,6 +55,7 @@ import de.cau.cs.kieler.klighd.piccolo.activities.ApplyBendPointsActivity;
 import de.cau.cs.kieler.klighd.piccolo.activities.ApplySmartBoundsActivity;
 import de.cau.cs.kieler.klighd.piccolo.activities.FadeEdgeInActivity;
 import de.cau.cs.kieler.klighd.piccolo.activities.FadeNodeInActivity;
+import de.cau.cs.kieler.klighd.piccolo.activities.IStartableActivity;
 import de.cau.cs.kieler.klighd.piccolo.krendering.IGraphElement;
 import de.cau.cs.kieler.klighd.piccolo.krendering.ILabeledGraphElement;
 import de.cau.cs.kieler.klighd.piccolo.krendering.INode;
@@ -73,9 +74,7 @@ import edu.umd.cs.piccolo.PNode;
 import edu.umd.cs.piccolo.activities.PInterpolatingActivity;
 import edu.umd.cs.piccolo.util.PAffineTransform;
 import edu.umd.cs.piccolo.util.PBounds;
-//import org.eclipse.ui.PlatformUI;
 
-//import org.eclipse.ui.PlatformUI;
 
 /**
  * The class which controls the transformation of a KGraph with attached KRendering data to Piccolo
@@ -739,6 +738,7 @@ public class GraphController {
                 // unschedule a currently running primary activity on the node if any
                 NodeUtil.unschedulePrimaryActivity(shapeNode);
                 // instantly apply the activity without scheduling it
+                ((IStartableActivity) activity).activityStarted(); 
                 activity.setRelativeTargetValue(1.0f);
             }
         }

@@ -43,7 +43,7 @@ public class FadeEdgeInActivity extends ApplyBendPointsActivity {
     /**
      * {@inheritDoc}
      */
-    protected void activityStarted() {
+    public void activityStarted() {
         super.activityStarted();
         if (getFirstLoop()) {
             getEdgeNode().setTransparency(0);

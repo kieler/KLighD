@@ -24,7 +24,7 @@ import edu.umd.cs.piccolo.activities.PInterpolatingActivity;
  * 
  * @author mri, chsch
  */
-public class ApplyBendPointsActivity extends PInterpolatingActivity {
+public class ApplyBendPointsActivity extends PInterpolatingActivity implements IStartableActivity {
 
     /** the edge node for this activity. */
     private final KEdgeNode edgeNode;
@@ -58,7 +58,7 @@ public class ApplyBendPointsActivity extends PInterpolatingActivity {
     /**
      * {@inheritDoc}
      */
-    protected void activityStarted() {
+    public void activityStarted() {
         if (getFirstLoop()) {
             prepareBendTransition();
         }

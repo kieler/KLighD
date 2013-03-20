@@ -46,7 +46,7 @@ public class FadeNodeInActivity extends ApplySmartBoundsActivity {
      * <br>
      * This customization sets the new node to transparent and initializes its position.
      */
-    protected void activityStarted() {
+    public void activityStarted() {
         if (getFirstLoop()) {
             ((PNode) getNode()).setTransparency(0);
             NodeUtil.applySmartBounds((PNode) getNode(), getTargetBounds());

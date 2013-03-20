@@ -23,7 +23,7 @@ import edu.umd.cs.piccolo.util.PBounds;
  * 
  * @author mri, chsch
  */
-public class ApplySmartBoundsActivity extends PInterpolatingActivity {
+public class ApplySmartBoundsActivity extends PInterpolatingActivity implements IStartableActivity {
 
     /** the node for this activity. */
     private final PNode node;
@@ -54,7 +54,7 @@ public class ApplySmartBoundsActivity extends PInterpolatingActivity {
     /**
      * {@inheritDoc}
      */
-    protected void activityStarted() {
+    public void activityStarted() {
         if (getFirstLoop()) {
             this.sourceBounds = NodeUtil.determineSmartBounds(node);
             this.deltaBounds =
