@@ -31,7 +31,7 @@ class KColorExtensions {
      *  allows to refer to colors by name
      *  adds them to the diagram on demand
      */
-	def private setColor(KColor color, String name) {
+    def private setColor(KColor color, String name) {
         switch (name) {
             case "black" : {
                 color.setRed(0);

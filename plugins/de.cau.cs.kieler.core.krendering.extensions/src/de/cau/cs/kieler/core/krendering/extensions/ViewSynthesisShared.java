@@ -37,4 +37,5 @@ import com.google.inject.ScopeAnnotation;
 @Target({ ElementType.TYPE })
 @Retention(RUNTIME)
 @ScopeAnnotation
-public @interface ViewSynthesisShared {}
+public @interface ViewSynthesisShared {
+}

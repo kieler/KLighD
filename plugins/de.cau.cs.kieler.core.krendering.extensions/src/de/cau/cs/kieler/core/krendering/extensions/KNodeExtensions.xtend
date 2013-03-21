@@ -35,12 +35,12 @@ import java.util.ArrayList
  */
 @ViewSynthesisShared
 class KNodeExtensions {
-	
+    
     private static val AnnotationsPackage annotationsPackage = AnnotationsPackage::eINSTANCE;
 
-	////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	////////////////////////					KNodeExtensions
-	////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////                    KNodeExtensions
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     /**
      * A convenient getter preserving the element image relation by a create extension.
@@ -110,13 +110,13 @@ class KNodeExtensions {
         ];
     }
     
-	def KNode addLayoutParam(KNode node, IProperty<?> property, Object value) {
-	    return node => [
-	        it.getData(typeof(KShapeLayout)).setProperty(property, value)
-	    ];
-	}
-	
-	
+    def KNode addLayoutParam(KNode node, IProperty<?> property, Object value) {
+        return node => [
+            it.getData(typeof(KShapeLayout)).setProperty(property, value)
+        ];
+    }
+    
+    
     /**
      * Helper transferring Annotations to shapes or the diagram.
      * 
@@ -146,5 +146,5 @@ class KNodeExtensions {
                 });
             }
         ];
-    }	
+    }
 }

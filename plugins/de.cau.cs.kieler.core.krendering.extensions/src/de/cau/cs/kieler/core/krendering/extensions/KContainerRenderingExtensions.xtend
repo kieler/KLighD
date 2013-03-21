@@ -32,14 +32,14 @@ import de.cau.cs.kieler.core.krendering.KEllipse
  */
 class KContainerRenderingExtensions {
 
-	private static val KRenderingFactory renderingFactory = KRenderingFactory::eINSTANCE
-	
+    private static val KRenderingFactory renderingFactory = KRenderingFactory::eINSTANCE
+    
     @Inject
     extension KRenderingExtensions;
     
-	////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	////////////////////////					KContainerRenderings
-	////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////                    KContainerRenderings
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     /**
      * @returns the child! 
@@ -86,28 +86,28 @@ class KContainerRenderingExtensions {
         ];
     }
 
-	def KGridPlacement setGridPlacement(KContainerRendering cr, int cols){
-		return renderingFactory.createKGridPlacement => [
-		    cr.setChildPlacement(it);	
-		    it.setNumColumns(cols);		
-		];
-	}
-	
-	
-	def KRectangle addGridBox(KContainerRendering cr, float widthHint, float heightHint, 
-	    KPosition topLeft, KPosition bottomRight){
-		return renderingFactory.createKRectangle => [
-		    cr.children.add(it);
-		    it.setBackground(renderingFactory.createKBackground()=>[
-		        it.alpha=0;
-		    ]);
-		    it.setForeground(renderingFactory.createKForeground()=>[
+    def KGridPlacement setGridPlacement(KContainerRendering cr, int cols){
+        return renderingFactory.createKGridPlacement => [
+            cr.setChildPlacement(it);    
+            it.setNumColumns(cols);        
+        ];
+    }
+    
+    
+    def KRectangle addGridBox(KContainerRendering cr, float widthHint, float heightHint, 
+        KPosition topLeft, KPosition bottomRight){
+        return renderingFactory.createKRectangle => [
+            cr.children.add(it);
+            it.setBackground(renderingFactory.createKBackground()=>[
+                it.alpha=0;
+            ]);
+            it.setForeground(renderingFactory.createKForeground()=>[
                 it.alpha=0;
             ]);
             it.setGridPlacementData(widthHint, heightHint, topLeft, bottomRight);
-		];
-	}
-	
+        ];
+    }
+    
     def KPolyline addHorizontalLine(KContainerRendering cr, float leftRightAbsIndent){
         return cr.addChild(renderingFactory.createKPolyline())  as KPolyline => [
            it.lineWidth = 1;
@@ -132,7 +132,7 @@ class KContainerRenderingExtensions {
         ];
     }
     
-	def KPolyline addHorizontalSeperatorLine(KContainerRendering cr, float lineWidth, int spacing){
+    def KPolyline addHorizontalSeperatorLine(KContainerRendering cr, float lineWidth, int spacing){
         return renderingFactory.createKPolyline => [
             cr.addChild(it);
             it.setLineWidth(lineWidth);
@@ -143,26 +143,26 @@ class KContainerRenderingExtensions {
             ]; 
         ];
     }
-	
-	def KChildArea addChildArea(KContainerRendering cr){
-		return renderingFactory.createKChildArea => [
+    
+    def KChildArea addChildArea(KContainerRendering cr){
+        return renderingFactory.createKChildArea => [
             cr.children.removeAll(cr.children.filter(typeof(KChildArea)).toList);
-		    cr.children.add(it)
-		]
-	}
-	
-	def KPolygon drawArrow(KContainerRendering cr){
+            cr.children.add(it)
+        ]
+    }
+    
+    def KPolygon drawArrow(KContainerRendering cr){
         return renderingFactory.createKPolygon => [
             cr.addChild(it).withCopyOf(cr.lineWidth).withCopyOf(cr.foreground);
             it.setBackground(cr.foreground);
             it.points.add(createKPosition(PositionReferenceX::LEFT, 0, 0, PositionReferenceY::TOP, 0, 0))
             it.points.add(createKPosition(PositionReferenceX::LEFT, 0, 0.4f, PositionReferenceY::TOP, 0, 0.5f))
             it.points.add(createKPosition(PositionReferenceX::LEFT, 0, 0, PositionReferenceY::BOTTOM, 0, 0))
-            it.points.add(createKPosition(PositionReferenceX::RIGHT, 0, 0, PositionReferenceY::BOTTOM, 0, 0.5f))	
+            it.points.add(createKPosition(PositionReferenceX::RIGHT, 0, 0, PositionReferenceY::BOTTOM, 0, 0.5f))    
        ];    
     }
-	
-	def KPolygon drawTriangle(KContainerRendering cr){
+    
+    def KPolygon drawTriangle(KContainerRendering cr){
         return renderingFactory.createKPolygon => [
             cr.addChild(it).withCopyOf(cr.lineWidth).withCopyOf(cr.foreground);
             it.points.add(createKPosition(PositionReferenceX::LEFT, 0, 0, PositionReferenceY::TOP, 0, 0))

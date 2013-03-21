@@ -1,3 +1,16 @@
+/*
+ * KIELER - Kiel Integrated Environment for Layout Eclipse RichClient
+ *
+ * http://www.informatik.uni-kiel.de/rtsys/kieler/
+ * 
+ * Copyright 2012 by
+ * + Christian-Albrechts-University of Kiel
+ *   + Department of Computer Science
+ *     + Real-Time and Embedded Systems Group
+ * 
+ * This code is provided under the terms of the Eclipse Public License (EPL).
+ * See the file epl-v10.html for the license text.
+ */
 package de.cau.cs.kieler.core.krendering.extensions
 
 import de.cau.cs.kieler.core.kgraph.KGraphElement
@@ -49,7 +62,7 @@ class KRenderingExtensions {
     private static val KRenderingFactory renderingFactory = KRenderingFactory::eINSTANCE
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    ////////////////////////					KRenderingExtensions
+    ////////////////////////                    KRenderingExtensions
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     /**
@@ -365,17 +378,17 @@ class KRenderingExtensions {
 //TODO: maybe add setters/getters for single components of KForeground/KBackground or simply a method 
 //that allows sticking additional Foreground/Background information to the list without removing 
 //already defined styles first        
-	
+    
 
-	def <T extends KRendering> T setFontBold(T rendering, boolean bold) {
+    def <T extends KRendering> T setFontBold(T rendering, boolean bold) {
         rendering.styles.removeAll(rendering.styles.filter(typeof(KFontBold)).toList);
-		return rendering => [
+        return rendering => [
             it.styles += renderingFactory.createKFontBold => [
-    		    it.setBold(bold);
-		    ];
-		];		
-	}
-	
+                it.setBold(bold);
+            ];
+        ];        
+    }
+    
     def <T extends KRendering> T setFontItalic(T rendering, boolean italic) {
         rendering.styles.removeAll(rendering.styles.filter(typeof(KFontItalic)).toList);
         return rendering => [
@@ -462,15 +475,15 @@ class KRenderingExtensions {
         ]);
     }
  
-	def <T extends KRendering> T setHorizontalAlignment(T rendering, HorizontalAlignment ha) {
+    def <T extends KRendering> T setHorizontalAlignment(T rendering, HorizontalAlignment ha) {
         rendering.styles.removeAll(rendering.styles.filter(typeof(KHorizontalAlignment)).toList);
-		return rendering => [
+        return rendering => [
             it.styles += renderingFactory.createKHorizontalAlignment => [
                 it.setHorizontalAlignment(ha);
             ];
-    	];		
-	}
-	
+        ];        
+    }
+    
     public val VerticalAlignment V_TOP = VerticalAlignment::TOP; 
     public val VerticalAlignment V_CENTRAL = VerticalAlignment::CENTER; 
     public val VerticalAlignment V_BOTTOM = VerticalAlignment::BOTTOM; 
@@ -482,16 +495,16 @@ class KRenderingExtensions {
         ]);
     }
  
-	def <T extends KRendering> T setVerticalAlignment(T rendering, VerticalAlignment va) {
+    def <T extends KRendering> T setVerticalAlignment(T rendering, VerticalAlignment va) {
         rendering.styles.removeAll(rendering.styles.filter(typeof(KVerticalAlignment)).toList);
-		return rendering => [
+        return rendering => [
             it.styles += renderingFactory.createKVerticalAlignment => [
                 it.setVerticalAlignment(va);
             ];
-		];
-	}
-	
-	
+        ];
+    }
+    
+    
     def <T extends KRendering> T setAreaPlacementData(T rendering, KPosition topLeft, KPosition bottomRight){
         return rendering => [
             rendering.placementData = renderingFactory.createKAreaPlacementData() => [
@@ -543,15 +556,15 @@ class KRenderingExtensions {
     
     def KGridPlacementData setGridPlacementData(KRendering rendering, float minCellWidth,
             float minCellHeight, KPosition topLeft, KPosition bottomRight) {
-		return renderingFactory.createKGridPlacementData() => [
-		    rendering.placementData = it;
+        return renderingFactory.createKGridPlacementData() => [
+            rendering.placementData = it;
             it.setMinCellWidth(minCellWidth);
             it.setMinCellHeight(minCellHeight);
             it.setTopLeft(topLeft);
             it.setBottomRight(bottomRight);
-		];
-	}
-	
+        ];
+    }
+
     def KGridPlacementData setGridPlacementData(KRendering rendering, float minCellWidth,
             float minCellHeight) {
         return renderingFactory.createKGridPlacementData() => [

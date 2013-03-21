@@ -411,10 +411,10 @@ class KPortExtensions {
         ];
     }
     
-	def KShapeLayout getShapeLayout(KPort port){
-		port.getData(typeof(KShapeLayout))
-	}
-	
+    def KShapeLayout getShapeLayout(KPort port){
+        port.getData(typeof(KShapeLayout))
+    }
+
     def KFontSize create it: renderingFactory.createKFontSize portLabelFontSize() {
         it.size = PORT_LABEL_FONT_SIZE;
     }
