@@ -1,32 +1,54 @@
+/*
+ * KIELER - Kiel Integrated Environment for Layout Eclipse RichClient
+ *
+ * http://www.informatik.uni-kiel.de/rtsys/kieler/
+ * 
+ * Copyright 2012 by
+ * + Christian-Albrechts-University of Kiel
+ *   + Department of Computer Science
+ *     + Real-Time and Embedded Systems Group
+ * 
+ * This code is provided under the terms of the Eclipse Public License (EPL).
+ * See the file epl-v10.html for the license text.
+ */
 package de.cau.cs.kieler.klighd.examples.ecore
 
 import javax.inject.Inject
-import de.cau.cs.kieler.klighd.transformations.AbstractTransformation
-import de.cau.cs.kieler.klighd.TransformationContext
-import de.cau.cs.kieler.core.kgraph.KNode
-import de.cau.cs.kieler.kiml.util.KimlUtil
-import de.cau.cs.kieler.klighd.examples.ecore.EModelElementCollection
-import org.eclipse.emf.ecore.EClassifier
-import org.eclipse.emf.ecore.EPackage
-import org.eclipse.emf.ecore.EClass
-import org.eclipse.emf.ecore.EReference
-import de.cau.cs.kieler.kiml.options.LayoutOptions
-import de.cau.cs.kieler.kiml.options.Direction
-import de.cau.cs.kieler.kiml.options.EdgeType
-import de.cau.cs.kieler.core.util.Pair
-import de.cau.cs.kieler.core.krendering.extensions.KNodeExtensions
-import de.cau.cs.kieler.core.krendering.extensions.KEdgeExtensions
-import de.cau.cs.kieler.core.krendering.extensions.KRenderingExtensions
-import de.cau.cs.kieler.core.krendering.KRenderingFactory
-import de.cau.cs.kieler.core.krendering.extensions.KPolylineExtensions
-import de.cau.cs.kieler.core.krendering.extensions.KColorExtensions
-import de.cau.cs.kieler.klighd.TransformationOption
 import com.google.common.collect.ImmutableSet
 import com.google.common.collect.ImmutableList
 import com.google.common.collect.Lists
 import static extension com.google.common.base.Strings.*
+import de.cau.cs.kieler.core.kgraph.KNode
+import de.cau.cs.kieler.core.util.Pair
+import de.cau.cs.kieler.core.krendering.KRenderingFactory
+import de.cau.cs.kieler.core.krendering.extensions.KNodeExtensions
+import de.cau.cs.kieler.core.krendering.extensions.KEdgeExtensions
+import de.cau.cs.kieler.core.krendering.extensions.KRenderingExtensions
+import de.cau.cs.kieler.core.krendering.extensions.KPolylineExtensions
+import de.cau.cs.kieler.core.krendering.extensions.KColorExtensions
+import de.cau.cs.kieler.kiml.options.LayoutOptions
+import de.cau.cs.kieler.kiml.options.Direction
+import de.cau.cs.kieler.kiml.options.EdgeType
+import de.cau.cs.kieler.klighd.TransformationOption
+import de.cau.cs.kieler.klighd.examples.ecore.EModelElementCollection
+import de.cau.cs.kieler.klighd.transformations.AbstractDiagramSynthesis
+import org.eclipse.emf.ecore.EClassifier
+import org.eclipse.emf.ecore.EPackage
+import org.eclipse.emf.ecore.EClass
+import org.eclipse.emf.ecore.EReference
 
-class EcoreDiagramSynthesis extends AbstractTransformation<EModelElementCollection, KNode> {
+/**
+ * This diagram synthesis implementation demonstrates the usage of KLighD for the purpose of
+ * representing content of models by means of graph-like diagrams.
+ * 
+ * This translation provides the following synthesis options:
+ * <ol>
+ *  <li>Depicting the selected classes only.</li>
+ *  <li>Depicting the selected classes, and directly related ones.</li>
+ *  <li>Depicting all classes of the Ecore model, the selected ones are highlighted.</li>
+ * <ol>
+ */
+class EcoreDiagramSynthesis extends AbstractDiagramSynthesis<EModelElementCollection> {
 	
 	@Inject
 	extension KNodeExtensions
@@ -52,16 +74,16 @@ class EcoreDiagramSynthesis extends AbstractTransformation<EModelElementCollecti
     private static val String CLASS_FILTER_NAME = "Class filter";
 
     /**
-     * The class filter option definition that allows the user to customize the class diagram.
+     * The filter option definition that allows users to customize the constructed class diagrams.
      */
     private static val TransformationOption CLASS_FILTER = TransformationOption::createChoiceOption(CLASS_FILTER_NAME,
        ImmutableList::of(CHOSEN, CHOSEN_AND_RELATED, ALL), CHOSEN_AND_RELATED);
 
     
     /**
-     * {@inheritDoc}
-     * <br><br>
-     * Registers the content filter option.
+     * {@inheritDoc}<br>
+     * <br>
+     * Registers the diagram filter option declared above, which allow users to tailor the constructed diagrams.
      */
     override public getTransformationOptions() {
         return ImmutableSet::of(CLASS_FILTER);
@@ -69,13 +91,16 @@ class EcoreDiagramSynthesis extends AbstractTransformation<EModelElementCollecti
 
 
     /**
-     * {@inheritDoc}
+     * {@inheritDoc}<br>
+     * <br>
+     * This main method creates the root node that represents the canvas of the diagram.
+     * It configures some layout options adds the diagram elements by distinguishing the three option cases.
+     * 
+     * Note that this translation added also the Classes contained in selected EPackages,
+     * see the end of this method.
      */
-	override KNode transform(EModelElementCollection choice, TransformationContext<EModelElementCollection, KNode> transformationContext) {
-	    use(transformationContext);
-		
-		return KimlUtil::createInitializedNode => [
-//            it.addLayoutParam(LayoutOptions::ALGORITHM, "de.cau.cs.kieler.graphiviz.dot");
+	override KNode transform(EModelElementCollection choice) {		
+		return createNode() => [
             it.addLayoutParam(LayoutOptions::ALGORITHM, "de.cau.cs.kieler.kiml.ogdf.planarization");
             it.addLayoutParam(LayoutOptions::SPACING, 75f);
             it.addLayoutParam(LayoutOptions::DIRECTION, Direction::UP);
@@ -132,17 +157,17 @@ class EcoreDiagramSynthesis extends AbstractTransformation<EModelElementCollecti
 	def createClassifierFigures(Iterable<EClassifier> classes, KNode rootNode) {
 		classes.filterNull.forEach[ EClassifier clazz |
             rootNode.children += clazz.createNode().putToLookUpWith(clazz) => [
-                val boxWidth = if (clazz.name.nullToEmpty.length < 10) 180 else clazz.name.length*12+50;
-                it.setNodeSize(boxWidth, 80);
+                it.setNodeSize(180, 80);
                 it.data += renderingFactory.createKRoundedRectangle() => [
-                	it.cornerHeight = 60;
-                    it.cornerWidth = 60;
+                	it.cornerHeight = 30;
+                    it.cornerWidth = 30;
                     it.setLineWidth(2);
                     it.background = "lemon".color;
                     it.children += renderingFactory.createKText().putToLookUpWith(clazz) => [
                         it.text = clazz.name.nullToEmpty;
                         it.setFontSize(20);
                         it.setFontBold(true);
+                        it.setSurroundingSpace(20, 0);
                     ];
                 ];         
             ];
@@ -188,5 +213,4 @@ class EcoreDiagramSynthesis extends AbstractTransformation<EModelElementCollecti
 	        ];		    
 		];
 	}
-	
 }
