@@ -199,7 +199,7 @@ public abstract class AbstractTransformation<S, T> implements ITransformation<S,
     /**
      * {@inheritDoc}
      * 
-     * Concrete transformations are supposed to override this method in order to register
+     * Concrete transformations are supposed to override this method in order to register dedicated
      * {@link TransformationOption TransformationOptions}. 
      */
     public Set<TransformationOption> getTransformationOptions() {
