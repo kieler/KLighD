@@ -165,11 +165,15 @@ public final class DiagramViewManager implements IPartListener {
                 page.bringToTop(diagramView);
                 // update the view context and viewer
                 Object theModel = (model != null ? model : currentInputModel);
+                
+                viewContext.getProperty(LightDiagramServices.VIEWER).setRecording(true);
                 if (!LightDiagramServices.getInstance().updateViewContext(viewContext, theModel,
                         propertyHolder)) {
                     return null;
                 }
+                LightDiagramServices.getInstance().layoutDiagram(viewContext, true, true);
             }
+            
             
             // trigger the update status
             KlighdStatusState state =
@@ -284,8 +288,12 @@ public final class DiagramViewManager implements IPartListener {
                 diagramView.getContextViewer().setModel(viewContext);
 
                 // do an initial update of the view context
+                viewContext.getProperty(LightDiagramServices.VIEWER).setRecording(true);
                 LightDiagramServices.getInstance().updateViewContext(viewContext, model);
                 
+                boolean animate = false;
+                LightDiagramServices.getInstance().layoutDiagram(viewContext, animate, true);
+
                 // fill the options pane according to the the incorporated transformations
                 // TODO implement this (the following line is a placeholder)
 //                diagramView.getContextViewer().updateOptions();

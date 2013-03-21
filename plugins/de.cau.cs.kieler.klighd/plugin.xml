@@ -40,12 +40,12 @@
    </extension>
    <extension
          point="de.cau.cs.kieler.core.kivi.combinations">
-      <combination
+      <!-- combination
             active="true"
             class="de.cau.cs.kieler.klighd.combinations.KlighdAutomaticLayoutCombination"
             description="Applies automatic layout on KLighD views which have been created or updated using the appropriate effect."
             name="Automatic Layout after KLighD View Creation and Update (KLighD)">
-      </combination>
+      </combination -->
       <combination
             active="true"
             class="de.cau.cs.kieler.klighd.combinations.KlighdVisualizeDroppedEMFModelCombination"
@@ -80,6 +80,10 @@
       <updateStrategy
             class="de.cau.cs.kieler.klighd.krendering.UpdateStrategy"
             id="de.cau.cs.kieler.klighd.krendering.UpdateStrategy">
+      </updateStrategy>
+      <updateStrategy
+            class="de.cau.cs.kieler.klighd.krendering.SimpleUpdateStrategy"
+            id="de.cau.cs.kieler.klighd.krendering.SimpleUpdateStrategy">
       </updateStrategy>
    </extension>
    <extension
