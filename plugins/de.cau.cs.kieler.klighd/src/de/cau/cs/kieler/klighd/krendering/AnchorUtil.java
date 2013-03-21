@@ -21,7 +21,7 @@ import de.cau.cs.kieler.core.math.KVector;
 /**
  * Utility class for anchor point calculation of edges.
  *
- * @author msp
+ * @author msp, chsch
  */
 public final class AnchorUtil {
 
@@ -52,8 +52,12 @@ public final class AnchorUtil {
             switch (rendering.eClass().getClassifierID()) {
             case KRenderingPackage.KROUNDED_RECTANGLE:
                 KRoundedRectangle roundedRectangle = (KRoundedRectangle) rendering;
-                anchorPointRoundedRectangle(point, width, height, roundedRectangle.getCornerWidth(),
-                        roundedRectangle.getCornerHeight());
+                double cornerWidth = roundedRectangle.getCornerWidth();
+                cornerWidth = 2 * cornerWidth <= width ? cornerWidth : width / 2;
+                double cornerHeight = roundedRectangle.getCornerHeight();
+                cornerHeight = 2 * cornerHeight <= height ? cornerHeight : height / 2;
+                
+                anchorPointRoundedRectangle(point, width, height, cornerWidth, cornerHeight);
                 break;
             case KRenderingPackage.KELLIPSE:
                 anchorPointEllipse(point, width, height);
@@ -107,7 +111,74 @@ public final class AnchorUtil {
      */
     public static void anchorPointRoundedRectangle(final KVector point, final double rectWidth,
             final double rectHeight, final double cornerWidth, final double cornerHeight) {
-
+        
+        double rectWidthWithoutCornerWidth = rectWidth - cornerWidth;
+        double rectWidthWithoutTwiceCornerWidth = rectWidthWithoutCornerWidth - cornerWidth;
+        double rectHeightWidthoutCornerHeight = rectHeight - cornerHeight;
+        double rectHeightWithoutTwiceCornerHeight = rectHeightWidthoutCornerHeight - cornerHeight;
+        
+        double x = point.x;
+        double y = point.y;
+        
+        // We determine the movement of the anchors by delegating to the ellipse case.
+        //  To this end, we distinguish the following cases and adjust the width and height of the
+        //  imaginary ellipse accordingly by subtracting the non rounded size fractions and re-adding
+        //  them afterwards.
+        
+        if (x <= 0) {
+            if (y <= cornerHeight) {                
+                anchorPointEllipse(point, 2 * cornerWidth, 2 * cornerHeight);
+            } else if (y >= rectHeightWidthoutCornerHeight) {
+                point.y -= rectHeightWithoutTwiceCornerHeight;
+                anchorPointEllipse(point, 2 * cornerWidth, 2 * cornerHeight);
+                point.y += rectHeightWithoutTwiceCornerHeight;
+            } else {
+                point.x = 0;
+            }
+        }
+        
+        if (x >= rectWidth) {
+            if (y <= cornerHeight) {                
+                point.x -= rectWidthWithoutTwiceCornerWidth;
+                anchorPointEllipse(point, 2 * cornerWidth, 2 * cornerHeight);
+                point.x += rectWidthWithoutTwiceCornerWidth;
+            } else if (y >= rectHeightWidthoutCornerHeight) {
+                point.x -= rectWidthWithoutTwiceCornerWidth;
+                point.y -= rectHeightWithoutTwiceCornerHeight;
+                anchorPointEllipse(point, 2 * cornerWidth, 2 * cornerHeight);
+                point.x += rectWidthWithoutTwiceCornerWidth;
+                point.y += rectHeightWithoutTwiceCornerHeight;
+            } else {
+                point.x = rectWidth;
+            }
+        }
+        if (y <= 0) {
+            if (x <= cornerWidth) {                
+                anchorPointEllipse(point, 2 * cornerWidth, 2 * cornerHeight);
+            } else if (x >= rectWidthWithoutCornerWidth) {
+                point.x -= rectWidthWithoutTwiceCornerWidth;
+                anchorPointEllipse(point, 2 * cornerWidth, 2 * cornerHeight);
+                point.x += rectWidthWithoutTwiceCornerWidth;
+            } else {
+                point.y = 0;
+            }
+        }
+        
+        if (y >= rectHeight) {
+            if (x <= cornerWidth) {                
+                point.y -= rectHeightWithoutTwiceCornerHeight;
+                anchorPointEllipse(point, 2 * cornerWidth, 2 * cornerHeight);
+                point.y += rectHeightWithoutTwiceCornerHeight;
+            } else if (x >= rectWidthWithoutCornerWidth) {
+                point.x -= rectWidthWithoutTwiceCornerWidth;
+                point.y -= rectHeightWithoutTwiceCornerHeight;
+                anchorPointEllipse(point, 2 * cornerWidth, 2 * cornerHeight);
+                point.x += rectWidthWithoutTwiceCornerWidth;
+                point.y += rectHeightWithoutTwiceCornerHeight;
+            } else {
+                point.y = rectHeight;
+            }
+        }
     }
     
     /**
@@ -123,17 +194,10 @@ public final class AnchorUtil {
         // the radius 'rad'.
         double heightRelation = width / height;
         double radius = width / 2;
-        
+
         double normX = point.x;
         double normY = point.y * heightRelation;
-        // double normWidth = width;
-        // double normHeight = height * heightRelation;
 
-        // keep in mind that the radius of a circle is also the coordinate of the centerPoint of it
-        // double xRad = normWidth / 2;
-        // double yRad = normHeight / 2;
-        
-        
         // The basic idea of this anchor point movement is the shift along the axis of the center of the
         //  imaginary circle and the current point. In order to understand the process easier the
         //  following 4 cases are distinguished, each of them distinguishes two more.
@@ -143,7 +207,6 @@ public final class AnchorUtil {
         //  y coordinates adjusted depending on the current case.   
 
         if (point.x <= 0) {
-            // point.x = xRad - Math.sqrt(xRad * yRad - Math.pow(yRad - point.y * heightRelation, 2));
             if (normY <= radius) {
                 double angle = Math.atan((radius - normY) / radius);
                 point.x = radius - Math.cos(angle) * radius;
@@ -155,9 +218,7 @@ public final class AnchorUtil {
                 point.y = (radius + Math.sin(angle) * radius) / heightRelation;
             }
         } else if (point.x >= width) {
-            // point.x = xRad + Math.sqrt(xRad * yRad - Math.pow(yRad - point.y * heightRelation, 2));
             if (normY <= radius) {
-
                 double angle = Math.atan((radius - normY) / radius);
                 point.x = radius + Math.cos(angle) * radius;
                 point.y = (radius - Math.sin(angle) * radius) / heightRelation;
@@ -168,10 +229,7 @@ public final class AnchorUtil {
                 point.y = (radius + Math.sin(angle) * radius) / heightRelation;
             }
         } else if (point.y <= 0) {
-            // point.y = (yRad - Math.sqrt(xRad * yRad - Math.pow((point.x - xRad), 2)))
-            //        / heightRelation;
             if (normX <= radius) {
-
                 double angle = Math.atan((radius - normX) / radius);
                 point.x = radius - Math.sin(angle) * radius;
                 point.y = (radius - Math.cos(angle) * radius) / heightRelation;
@@ -182,8 +240,6 @@ public final class AnchorUtil {
                 point.y = (radius - Math.cos(angle) * radius) / heightRelation;
             }
         } else if (point.y >= height) {
-            // point.y = (yRad + Math.sqrt(xRad * yRad - Math.pow((point.x - xRad), 2)))
-            //     / heightRelation;
             if (normX <= radius) {
                 double angle = Math.atan((radius - normX) / radius);
                 point.x = radius - Math.sin(angle) * radius;
