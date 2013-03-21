@@ -60,8 +60,8 @@ public interface ITransformation<S, T> {
     Class<?> getTargetClass();
 
     /**
-     * Provides the set of {@link TransformationOption TransformationOptions} forward to the users
-     * in the UI in order to allow them to influence the transformation result.
+     * Contributes the set of {@link TransformationOption TransformationOptions} provided
+     * in the UI in order to allow users to influence steer the diagram synthesis.
      * 
      * @return the set of {@link TransformationOption TransformationOptions}
      */
