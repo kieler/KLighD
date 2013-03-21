@@ -1,18 +1,18 @@
 package de.cau.cs.kieler.klighd.examples.ecore
 
+import java.util.Collection
 import de.cau.cs.kieler.core.kivi.AbstractCombination
-import de.cau.cs.kieler.core.model.triggers.SelectionTrigger
-import org.eclipse.emf.ecoretools.diagram.navigator.EcoreDomainNavigatorItem
 import de.cau.cs.kieler.klighd.effects.KlighdUpdateDiagramEffect
 import de.cau.cs.kieler.klighd.examples.ecore.EModelElementCollection
-import java.util.Collection
+import de.cau.cs.kieler.klighd.triggers.KlighdSelectionTrigger$KlighdSelectionState
+import de.cau.cs.kieler.core.model.triggers.PartTrigger
+import de.cau.cs.kieler.core.model.triggers.SelectionTrigger
+import org.eclipse.core.runtime.IPath
 import org.eclipse.emf.ecore.EPackage
 import org.eclipse.emf.ecore.EClass
 import org.eclipse.emf.ecore.EClassifier
-import de.cau.cs.kieler.core.model.triggers.PartTrigger
-import org.eclipse.core.runtime.IPath
-import de.cau.cs.kieler.klighd.triggers.KlighdSelectionTrigger$KlighdSelectionState
 import org.eclipse.emf.ecore.EModelElement
+import org.eclipse.emf.ecoretools.diagram.navigator.EcoreDomainNavigatorItem
 
 
 /**
@@ -38,10 +38,10 @@ class EcoreDiagramSynthesisCombination extends AbstractCombination {
 		    //  (the case of selections.size == 1 is skipped as this interferes with the
 		    //   'highlight in source functionality')
             this.schedule(
-                  new KlighdUpdateDiagramEffect(
-                      EModelElementCollection::of(klighdSelectionState.selectedEModelElements
-                          .filter(typeof(EClassifier)))
-                  )
+                new KlighdUpdateDiagramEffect("de.cau.cs.kieler.klighd.examples.ecore.selection",
+                    EModelElementCollection::of(klighdSelectionState.selectedEModelElements
+                        .filter(typeof(EClassifier)))
+                )
             );
             return;
 		}
@@ -61,13 +61,12 @@ class EcoreDiagramSynthesisCombination extends AbstractCombination {
                         )
                     );
                 }
-
             } else {
-                // this case covers the situation of depicting classes selected in the Project Explorer
-                
+                // this case covers the situation of depicting classes selected in the Project Explorer               
                 if (selection.forall[typeof(EcoreDomainNavigatorItem).isInstance(it)]) {
                     // in case ecore elements are selected within the 'Project Explorer' view
-                    this.schedule(new KlighdUpdateDiagramEffect(EModelElementCollection::of(
+                    this.schedule(new KlighdUpdateDiagramEffect("de.cau.cs.kieler.klighd.examples.ecore.explorer",
+                        "KLighD Class Diagram", EModelElementCollection::of(
                             selectionState.selectedObjects.map[
                                 (it as EcoreDomainNavigatorItem).EObject as EModelElement
         		            ])
