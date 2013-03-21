@@ -13,7 +13,6 @@
  */
 package de.cau.cs.kieler.klighd.krendering;
 
-import de.cau.cs.kieler.core.krendering.KEllipse;
 import de.cau.cs.kieler.core.krendering.KRendering;
 import de.cau.cs.kieler.core.krendering.KRenderingPackage;
 import de.cau.cs.kieler.core.krendering.KRoundedRectangle;
@@ -108,11 +107,9 @@ public final class AnchorUtil {
      */
     public static void anchorPointRoundedRectangle(final KVector point, final double rectWidth,
             final double rectHeight, final double cornerWidth, final double cornerHeight) {
-//        TODO
-//        point.x = 10;
-//        point.y = 10;
-    }
 
+    }
+    
     /**
      * Move anchorPoints of edges that are connected to ellipses to make the edge end on the line of the 
      * Rendering.
@@ -121,29 +118,82 @@ public final class AnchorUtil {
      * @param height the height of the ellipse
      */
     public static void anchorPointEllipse(final KVector point, final double width, final double height) {
-        
+
+        // By means of the following width-height-ratio we can abstract the ellipse by a circle with
+        // the radius 'rad'.
         double heightRelation = width / height;
-        double normWidth = width;
-        double normHeight = height * heightRelation;
+        double radius = width / 2;
+        
+        double normX = point.x;
+        double normY = point.y * heightRelation;
+        // double normWidth = width;
+        // double normHeight = height * heightRelation;
 
         // keep in mind that the radius of a circle is also the coordinate of the centerPoint of it
-        double xRad = normWidth / 2;
-        double yRad = normHeight / 2;
+        // double xRad = normWidth / 2;
+        // double yRad = normHeight / 2;
+        
+        
+        // The basic idea of this anchor point movement is the shift along the axis of the center of the
+        //  imaginary circle and the current point. In order to understand the process easier the
+        //  following 4 cases are distinguished, each of them distinguishes two more.
+        // First the angle of the above mentioned axis is determined by means of the arcTan function.
+        //  By means of this angle and our desired hypotenuse of 'radius' we can calculate the desired
+        //  adjacent and opposite sides of the imaginary rectangle. Those two values form our new x and
+        //  y coordinates adjusted depending on the current case.   
 
-        // calculate based on normated circle
-        if (point.x == 0) {
-            // edge is attached to the left side: calculate where the line is for the given y
-            // coordinate
-            // and manipulate x coordinate accordingly
-            point.x = xRad - Math.sqrt(xRad * yRad - Math.pow(yRad - point.y * heightRelation, 2));
-        } else if (point.x == width) {
-            point.x = xRad + Math.sqrt(xRad * yRad - Math.pow(yRad - point.y * heightRelation, 2));
-        } else if (point.y == 0) {
-            point.y = (yRad - Math.sqrt(xRad * yRad - Math.pow((point.x - xRad), 2)))
-                    / heightRelation;
-        } else if (point.y == height) {
-            point.y = (yRad + Math.sqrt(xRad * yRad - Math.pow((point.x - xRad), 2)))
-                    / heightRelation;
+        if (point.x <= 0) {
+            // point.x = xRad - Math.sqrt(xRad * yRad - Math.pow(yRad - point.y * heightRelation, 2));
+            if (normY <= radius) {
+                double angle = Math.atan((radius - normY) / radius);
+                point.x = radius - Math.cos(angle) * radius;
+                point.y = (radius - Math.sin(angle) * radius) / heightRelation;
+
+            } else {
+                double angle = Math.atan((normY - radius) / radius);
+                point.x = radius - Math.cos(angle) * radius;
+                point.y = (radius + Math.sin(angle) * radius) / heightRelation;
+            }
+        } else if (point.x >= width) {
+            // point.x = xRad + Math.sqrt(xRad * yRad - Math.pow(yRad - point.y * heightRelation, 2));
+            if (normY <= radius) {
+
+                double angle = Math.atan((radius - normY) / radius);
+                point.x = radius + Math.cos(angle) * radius;
+                point.y = (radius - Math.sin(angle) * radius) / heightRelation;
+
+            } else {
+                double angle = Math.atan((normY - radius) / radius);
+                point.x = radius + Math.cos(angle) * radius;
+                point.y = (radius + Math.sin(angle) * radius) / heightRelation;
+            }
+        } else if (point.y <= 0) {
+            // point.y = (yRad - Math.sqrt(xRad * yRad - Math.pow((point.x - xRad), 2)))
+            //        / heightRelation;
+            if (normX <= radius) {
+
+                double angle = Math.atan((radius - normX) / radius);
+                point.x = radius - Math.sin(angle) * radius;
+                point.y = (radius - Math.cos(angle) * radius) / heightRelation;
+
+            } else {
+                double angle = Math.atan((normX - radius) / radius);
+                point.x = radius + Math.sin(angle) * radius;
+                point.y = (radius - Math.cos(angle) * radius) / heightRelation;
+            }
+        } else if (point.y >= height) {
+            // point.y = (yRad + Math.sqrt(xRad * yRad - Math.pow((point.x - xRad), 2)))
+            //     / heightRelation;
+            if (normX <= radius) {
+                double angle = Math.atan((radius - normX) / radius);
+                point.x = radius - Math.sin(angle) * radius;
+                point.y = (radius + Math.cos(angle) * radius) / heightRelation;
+
+            } else {
+                double angle = Math.atan((normX - radius) / radius);
+                point.x = radius + Math.sin(angle) * radius;
+                point.y = (radius + Math.cos(angle) * radius) / heightRelation;
+            }
         }
-     }
+    }
 }
