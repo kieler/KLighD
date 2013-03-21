@@ -112,13 +112,13 @@ public final class AnchorUtil {
     public static void anchorPointRoundedRectangle(final KVector point, final double rectWidth,
             final double rectHeight, final double cornerWidth, final double cornerHeight) {
         
-        double rectWidthWithoutCornerWidth = rectWidth - cornerWidth;
-        double rectWidthWithoutTwiceCornerWidth = rectWidthWithoutCornerWidth - cornerWidth;
-        double rectHeightWidthoutCornerHeight = rectHeight - cornerHeight;
-        double rectHeightWithoutTwiceCornerHeight = rectHeightWidthoutCornerHeight - cornerHeight;
+        final double rectWidthWithoutCornerWidth = rectWidth - cornerWidth;
+        final double rectWidthWithoutTwiceCornerWidth = rectWidthWithoutCornerWidth - cornerWidth;
+        final double rectHeightWidthoutCornerHeight = rectHeight - cornerHeight;
+        final double rectHeightWithoutTwiceCornerHeight = rectHeightWidthoutCornerHeight - cornerHeight;
         
-        double x = point.x;
-        double y = point.y;
+        final double x = point.x;
+        final double y = point.y;
         
         // We determine the movement of the anchors by delegating to the ellipse case.
         //  To this end, we distinguish the following cases and adjust the width and height of the
@@ -192,11 +192,11 @@ public final class AnchorUtil {
 
         // By means of the following width-height-ratio we can abstract the ellipse by a circle with
         // the radius 'rad'.
-        double heightRelation = width / height;
-        double radius = width / 2;
+        final double heightRelation = width / height;
+        final double radius = width / 2;
 
-        double normX = point.x;
-        double normY = point.y * heightRelation;
+        final double normX = point.x;
+        final double normY = point.y * heightRelation;
 
         // The basic idea of this anchor point movement is the shift along the axis of the center of the
         //  imaginary circle and the current point. In order to understand the process easier the
