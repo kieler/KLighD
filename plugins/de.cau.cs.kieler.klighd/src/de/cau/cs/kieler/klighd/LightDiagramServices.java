@@ -13,19 +13,34 @@
  */
 package de.cau.cs.kieler.klighd;
 
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.statushandlers.StatusManager;
 
+import com.google.common.base.Predicate;
+import com.google.common.base.Strings;
+import com.google.common.collect.Iterables;
+import com.google.common.collect.Iterators;
+import com.google.common.collect.Lists;
+
+import de.cau.cs.kieler.core.kgraph.KNode;
+import de.cau.cs.kieler.core.krendering.KStyle;
 import de.cau.cs.kieler.core.properties.IProperty;
 import de.cau.cs.kieler.core.properties.IPropertyHolder;
 import de.cau.cs.kieler.core.properties.Property;
+import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout;
+import de.cau.cs.kieler.kiml.options.LayoutOptions;
+import de.cau.cs.kieler.kiml.ui.diagram.DiagramLayoutEngine;
 import de.cau.cs.kieler.klighd.transformations.ReinitializingTransformationProxy;
 import de.cau.cs.kieler.klighd.viewers.ContextViewer;
+import de.cau.cs.kieler.klighd.views.DiagramViewManager;
+import de.cau.cs.kieler.klighd.views.DiagramViewPart;
 
 /**
  * Singleton for accessing basic KLighD services.
@@ -329,4 +344,68 @@ public final class LightDiagramServices {
         return currentModel;
     }
 
+    /**
+     * Performs the automatic layout on the diagram represented by the given view context.
+     * 
+     * @param viewContext
+     *            the viewContext whose diagram diagram is to be arranged
+     * @param animate
+     *            layout with or without animation
+     * @param zoomToFit
+     *            layout with or without animation
+     */
+    public void layoutDiagram(final ViewContext viewContext, final boolean animate,
+            final boolean zoomToFit) {
+        @SuppressWarnings("unchecked")
+        IViewer<? extends EObject> diagramViewer = (IViewer<? extends EObject>) viewContext
+                .getProperty(LightDiagramServices.VIEWER);
+        DiagramViewPart viewPart = DiagramViewManager.getInstance().getView(
+                diagramViewer.getContextViewer().getViewPartId());
+        layoutDiagram(viewPart, diagramViewer, animate, zoomToFit);
+    }
+    
+    /**
+     * Performs the automatic layout on the diagram represented by the given {@link DiagramViewPart}
+     * /diagram viewer.
+     * 
+     * @param viewPart
+     *            the diagram view part showing the diagram to layout
+     * @param diagramViewer
+     *            the viewer that renders the diagram to layout
+     * @param animate
+     *            layout with or without animation
+     * @param zoomToFit
+     *            layout with or without animation
+     */
+    public void layoutDiagram(final DiagramViewPart viewPart,
+            final IViewer<? extends EObject> diagramViewer, final boolean animate,
+            final boolean zoomToFit) {
+        final KNode viewModel = (KNode) diagramViewer.getContextViewer().getCurrentViewContext()
+                .getViewModel();
+        if (viewModel != null
+                && !viewModel.getData(KShapeLayout.class).getProperty(LayoutOptions.NO_LAYOUT)) {
+            DiagramLayoutEngine.INSTANCE.layout(viewPart, diagramViewer, animate, false, false,
+                    zoomToFit, null);            
+        } else {
+            diagramViewer.setRecording(false);
+            
+        }
+
+        final List<KStyle> styles = Lists.newLinkedList();
+        Iterables.addAll(styles, new Iterable<KStyle>() {
+            public Iterator<KStyle> iterator() {
+                Iterator<EObject> it = diagramViewer.getModel().eAllContents();
+                return Iterators.filter(Iterators.filter(it, KStyle.class),
+                        new Predicate<KStyle>() {
+                            public boolean apply(final KStyle style) {
+                                return !Strings.isNullOrEmpty(style.getFunctionId());
+                            }
+                        });
+            }
+        });
+        for (KStyle s : styles) {
+            KlighdDataManager.getInstance().getStyleModifierById(s.getFunctionId())
+                    .modify(new StyleModificationContext(s));
+        }
+    }
 }
