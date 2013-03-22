@@ -16,14 +16,58 @@ package de.cau.cs.kieler.klighd.util;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 
+import com.google.common.collect.Iterators;
+
 /**
+ * A collection of some modeling related convenience functions.
+ * 
  * @author chsch
- *
  */
 public final class ModelingUtil {
     
     private ModelingUtil() {
     }
+    
+
+    /**
+     * Returns an {@link Iterable} containing {@code value} itself and all recursively contained
+     * elements.
+     * 
+     * @param value
+     *            the value
+     * @return the required {@link Iterable}
+     */
+    public static Iterable<? extends EObject> selfAndEAllContents(final EObject value) {
+        return Iterables2.toIterable(
+                Iterators.concat(
+                        Iterators.singletonIterator(value),
+                        value.eAllContents()
+                )
+        );
+    }
+
+    
+    /**
+     * Returns an {@link Iterable} containing {@code value} itself and all recursively contained
+     * elements of {@code value}'s type.
+     * 
+     * @param <T>
+     *            the generic type of {@code value}
+     * @param value
+     *            the value
+     * @return the required {@link Iterable}
+     */
+    public static <T extends EObject> Iterable<T> selfAndEAllContentsOfSameType(final T value) {
+        @SuppressWarnings("unchecked")
+        Class<T> clazz = (Class<T>) value.getClass();
+        return Iterables2.toIterable(
+                Iterators.concat(
+                        Iterators.singletonIterator(value),
+                        Iterators.filter(value.eAllContents(), clazz)
+                )
+        );
+    }
+
     
     /**
      * Returns the first element of type <code>eClass</code> in <code>eObject</code>'s containment
