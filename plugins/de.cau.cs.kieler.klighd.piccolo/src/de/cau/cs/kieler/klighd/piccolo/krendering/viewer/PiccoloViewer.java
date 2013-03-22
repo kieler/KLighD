@@ -76,7 +76,7 @@ public class PiccoloViewer extends AbstractViewer<KNode> implements INodeSelecti
     private PSWTCanvas canvas;
     /** the current selection event handler. */
     private PSWTSimpleSelectionEventHandler selectionHandler = null;
-    /** a map used track highlighting style attached to selected elements. */
+    /** a map used to track the highlighting styles, which have been attached to selected elements. */
     private Map<EObject, Iterable<? extends KStyle>> selectionHighlighting = Maps.newHashMap();
     /** the content outline page. */
     private PiccoloOutlinePage outlinePage;
