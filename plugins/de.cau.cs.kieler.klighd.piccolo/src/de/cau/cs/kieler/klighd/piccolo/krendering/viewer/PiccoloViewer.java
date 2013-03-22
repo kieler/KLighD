@@ -487,7 +487,7 @@ public class PiccoloViewer extends AbstractViewer<KNode> implements INodeSelecti
             if (KGraphPackage.eINSTANCE.getKGraphElement().isInstance(element)) {
                 KRendering rendering = ((KGraphElement) element).getData(KRendering.class);
                 if (rendering != null) {
-                    rendering.getStyles().add(0, style);
+                    rendering.getStyles().add(style);
                     selectionHighlighting.put(element, Lists.newArrayList(style));
                 }
             } else if (KRenderingPackage.eINSTANCE.getKText().isInstance(element)) {
