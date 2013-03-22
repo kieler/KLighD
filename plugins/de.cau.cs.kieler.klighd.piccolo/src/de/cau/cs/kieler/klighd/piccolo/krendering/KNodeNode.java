@@ -16,7 +16,8 @@ package de.cau.cs.kieler.klighd.piccolo.krendering;
 import de.cau.cs.kieler.core.kgraph.KNode;
 import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout;
 import de.cau.cs.kieler.klighd.KlighdConstants;
-import de.cau.cs.kieler.klighd.util.RenderingContextData;
+import de.cau.cs.kieler.klighd.piccolo.krendering.controller.AbstractRenderingController;
+import de.cau.cs.kieler.klighd.piccolo.krendering.controller.KNodeRenderingController;
 import de.cau.cs.kieler.klighd.piccolo.nodes.PZIndexNode;
 
 /**
@@ -35,10 +36,12 @@ public class KNodeNode extends PZIndexNode implements INode, ILabeledGraphElemen
     /** the z-index for the port layer. */
     private static final int PORT_LAYER = 1;
 
-    /** the encapsulated {@code KNode}. */
-    private transient KNode node;
     /** the parent node. */
     private INode parent;
+    /** the represented {@link KNode}. */
+    private KNode node;
+    /** the node rendering controller deployed to manage the rendering of {@link #node}. */
+    private KNodeRenderingController renderingController;
 
     /** the child area for this node. */
     private KChildAreaNode childArea = null;
@@ -58,7 +61,6 @@ public class KNodeNode extends PZIndexNode implements INode, ILabeledGraphElemen
         Object o = node.getData(KShapeLayout.class).getProperty(
                 KlighdConstants.KLIGHD_SELECTION_UNPICKABLE);
         setPickable(o != null && o.equals(Boolean.TRUE) ? false : true);
-        RenderingContextData.get(node).setProperty(NODE_REP, this);
     }
 
     /**
@@ -67,7 +69,29 @@ public class KNodeNode extends PZIndexNode implements INode, ILabeledGraphElemen
     public KNode getGraphElement() {
         return node;
     }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public void setRenderingController(
+            final AbstractRenderingController<KNode, ? extends IGraphElement<KNode>> controller) {
+        if (controller == null || controller instanceof KNodeRenderingController) {
+            this.renderingController = (KNodeRenderingController) controller;
+        } else {
+            String s = "KLighD: Fault occured while building up a concrete KNode rendering: KNodeNodes"
+                    + " are supposed to be controlled by KNodeRenderingControllers rather than "
+                    + controller.getClass().getCanonicalName();
+            throw new IllegalArgumentException(s);
+        }
+    }
 
+    /**
+     * {@inheritDoc}
+     */
+    public KNodeRenderingController getRenderingController() {
+        return this.renderingController;
+    }
+    
     /**
      * Adds the representation of a port to this node.
      * 

@@ -14,7 +14,7 @@
 package de.cau.cs.kieler.klighd.piccolo.krendering;
 
 import de.cau.cs.kieler.core.kgraph.KNode;
-import de.cau.cs.kieler.klighd.util.RenderingContextData;
+import de.cau.cs.kieler.klighd.piccolo.krendering.controller.AbstractRenderingController;
 import de.cau.cs.kieler.klighd.piccolo.nodes.PEmptyNode;
 
 /**
@@ -45,7 +45,6 @@ public class KNodeTopNode extends PEmptyNode implements INode {
         childArea.setClip(false);
         addChild(childArea);
         setPickable(false);
-        RenderingContextData.get(node).setProperty(NODE_REP, this);
     }
 
     /**
@@ -55,6 +54,25 @@ public class KNodeTopNode extends PEmptyNode implements INode {
         return node;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    public void setRenderingController(
+            final AbstractRenderingController<KNode, ? extends IGraphElement<KNode>> controller) {
+        String s = "KLighD: Invalid access occured: invoking setRenderingController()"
+                + "is not allowed for KNodeTopNodes!";
+        throw new UnsupportedOperationException(s);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public AbstractRenderingController<KNode, KNodeNode> getRenderingController() {
+        String s = "KLighD: Invalid access occured: calling getRenderingController()"
+                        + "is not allowed for KNodeTopNodes!";
+        throw new UnsupportedOperationException(s);
+    }
+    
     /**
      * {@inheritDoc}
      */

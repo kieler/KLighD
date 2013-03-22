@@ -17,6 +17,8 @@ import de.cau.cs.kieler.core.kgraph.KLabel;
 import de.cau.cs.kieler.core.properties.IProperty;
 import de.cau.cs.kieler.core.properties.Property;
 import de.cau.cs.kieler.klighd.util.RenderingContextData;
+import de.cau.cs.kieler.klighd.piccolo.krendering.controller.AbstractRenderingController;
+import de.cau.cs.kieler.klighd.piccolo.krendering.controller.KLabelRenderingController;
 import de.cau.cs.kieler.klighd.piccolo.nodes.PEmptyNode;
 import edu.umd.cs.piccolo.util.PPickPath;
 
@@ -36,8 +38,10 @@ public class KLabelNode extends PEmptyNode implements IGraphElement<KLabel> {
     /** the property name for changes of the label's text. */
     public static final String PROPERTY_TEXT = "labelText";
 
-    /** the encapsulated {@code KLabel}. */
+    /** the represented {@link KLabel}. */
     private transient KLabel label;
+    /** the label rendering controller deployed to manage the rendering of {@link #label}. */
+    private KLabelRenderingController renderingController;
 
     /** the text. */
     private String text = "";
@@ -61,6 +65,28 @@ public class KLabelNode extends PEmptyNode implements IGraphElement<KLabel> {
         return label;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    public void setRenderingController(
+            final AbstractRenderingController<KLabel, ? extends IGraphElement<KLabel>> controller) {
+        if (controller == null || controller instanceof KLabelRenderingController) {
+            this.renderingController = (KLabelRenderingController) controller;
+        } else {
+            String s = "KLighD: Fault occured while building up a concrete KLabel rendering: KLabelNodes"
+                    + " are supposed to be controlled by KLabelRenderingControllers rather than "
+                    + controller.getClass().getCanonicalName();
+            throw new IllegalArgumentException(s);
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public KLabelRenderingController getRenderingController() {
+        return this.renderingController;
+    }
+    
     /**
      * Sets the text for the label.
      * 

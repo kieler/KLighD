@@ -17,6 +17,8 @@ import de.cau.cs.kieler.core.kgraph.KPort;
 import de.cau.cs.kieler.core.properties.IProperty;
 import de.cau.cs.kieler.core.properties.Property;
 import de.cau.cs.kieler.klighd.util.RenderingContextData;
+import de.cau.cs.kieler.klighd.piccolo.krendering.controller.AbstractRenderingController;
+import de.cau.cs.kieler.klighd.piccolo.krendering.controller.KPortRenderingController;
 import de.cau.cs.kieler.klighd.piccolo.nodes.PZIndexNode;
 
 /**
@@ -37,8 +39,10 @@ public class KPortNode extends PZIndexNode implements ILabeledGraphElement<KPort
     /** the z-index for the label layer. */
     private static final int LABEL_LAYER = 1;
     
-    /** the encapsulated {@code KPort}. */
+    /** the represented {@link KPort}. */
     private transient KPort port;
+    /** the port rendering controller deployed to manage the rendering of {@link #port}. */
+    private KPortRenderingController renderingController;
 
     /**
      * Constructs a Piccolo node for representing a {@code KPort}.
@@ -54,6 +58,35 @@ public class KPortNode extends PZIndexNode implements ILabeledGraphElement<KPort
     }
     
     /**
+     * {@inheritDoc}
+     */
+    public KPort getGraphElement() {
+        return port;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void setRenderingController(
+            final AbstractRenderingController<KPort, ? extends IGraphElement<KPort>> controller) {
+        if (controller == null || controller instanceof KPortRenderingController) {
+            this.renderingController = (KPortRenderingController) controller;
+        } else {
+            String s = "KLighD: Fault occured while building up a concrete KPort rendering: KPortNodes"
+                    + " are supposed to be controlled by KPortRenderingController rather than "
+                    + controller.getClass().getCanonicalName();
+            throw new IllegalArgumentException(s);
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public KPortRenderingController getRenderingController() {
+        return this.renderingController;
+    }
+    
+    /**
      * Adds the representation of a label to this port.
      * 
      * @param label
@@ -62,12 +95,4 @@ public class KPortNode extends PZIndexNode implements ILabeledGraphElement<KPort
     public void addLabel(final KLabelNode label) {
         addChild(label, LABEL_LAYER);
     }
-
-    /**
-     * {@inheritDoc}
-     */
-    public KPort getGraphElement() {
-        return port;
-    }
-
 }

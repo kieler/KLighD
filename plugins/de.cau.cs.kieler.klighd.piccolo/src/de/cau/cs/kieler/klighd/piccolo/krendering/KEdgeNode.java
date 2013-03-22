@@ -19,6 +19,8 @@ import de.cau.cs.kieler.core.kgraph.KEdge;
 import de.cau.cs.kieler.core.properties.IProperty;
 import de.cau.cs.kieler.core.properties.Property;
 import de.cau.cs.kieler.klighd.util.RenderingContextData;
+import de.cau.cs.kieler.klighd.piccolo.krendering.controller.AbstractRenderingController;
+import de.cau.cs.kieler.klighd.piccolo.krendering.controller.KEdgeRenderingController;
 import de.cau.cs.kieler.klighd.piccolo.nodes.PChildRepresentedNode;
 import edu.umd.cs.piccolo.PNode;
 
@@ -42,8 +44,10 @@ public class KEdgeNode extends PChildRepresentedNode implements ILabeledGraphEle
     /** the property name for changes of the edge's bend points. */
     public static final String PROPERTY_BEND_POINTS = "bendPoints";
 
-    /** the encapsulated {@code KEdge}. */
+    /** the represented {@link KEdge}. */
     private transient KEdge edge;
+    /** the edge rendering controller deployed to manage the rendering of {@link #edge}. */
+    private KEdgeRenderingController renderingController;
 
     /** the bend points. */
     private Point2D[] bendPoints = new Point2D[2];
@@ -70,6 +74,28 @@ public class KEdgeNode extends PChildRepresentedNode implements ILabeledGraphEle
         return edge;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    public void setRenderingController(
+            final AbstractRenderingController<KEdge, ? extends IGraphElement<KEdge>> controller) {
+        if (controller == null || controller instanceof KEdgeRenderingController) {
+            this.renderingController = (KEdgeRenderingController) controller;
+        } else {
+            String s = "KLighD: Fault occured while building up a concrete KEdge rendering: KEdgeNodes"
+                    + " are supposed to be controlled by KEdgeRenderingControllers rather than "
+                    + controller.getClass().getCanonicalName();
+            throw new IllegalArgumentException(s);
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public KEdgeRenderingController getRenderingController() {
+        return this.renderingController;
+    }
+    
     /**
      * Sets the bend points for the edge.
      * 
