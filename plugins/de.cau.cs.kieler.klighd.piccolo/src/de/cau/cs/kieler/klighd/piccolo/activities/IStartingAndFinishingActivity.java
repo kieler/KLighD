@@ -16,13 +16,14 @@ package de.cau.cs.kieler.klighd.piccolo.activities;
 /**
  * Interface to be implemented by custom {@link edu.umd.cs.piccolo.activities.PActivity PActivities}
  * allowing to invoke {@link edu.umd.cs.piccolo.activities.PActivity#activityStarted
- * PActivity#activityStarted}, which is marked <code>protected</code> in
+ * PActivity#activityStarted} and {@link edu.umd.cs.piccolo.activities.PActivity#activityFinished
+ * PActivity#activityFinished}, which are marked <code>protected</code> in
  * {@link edu.umd.cs.piccolo.activities.PActivity PActivity}. This enables the initialization and
  * execution of such activities without scheduling them in case no animation is required.
  * 
  * @author chsch
  */
-public interface IStartableActivity {
+public interface IStartingAndFinishingActivity {
 
     /**
      * This method is called right before an activity is scheduled to start running. After this
@@ -30,4 +31,11 @@ public interface IStartableActivity {
      * {@link edu.umd.cs.piccolo.activities.PActivity#activityStarted PActivity#activityStarted})
      */
     void activityStarted();
+    
+    /**
+     * This method is called after an activity is has finished running and the
+     * activity has been removed from the PActivityScheduler queue. (from
+     * {@link edu.umd.cs.piccolo.activities.PActivity#activityFinished PActivity#activityFinished})
+     */
+    void activityFinished();
 }

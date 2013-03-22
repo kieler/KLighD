@@ -24,12 +24,13 @@ import edu.umd.cs.piccolo.activities.PInterpolatingActivity;
  * 
  * @author mri, chsch
  */
-public class ApplyBendPointsActivity extends PInterpolatingActivity implements IStartableActivity {
+public class ApplyBendPointsActivity extends PInterpolatingActivity implements
+        IStartingAndFinishingActivity {
 
     /** the edge node for this activity. */
     private final KEdgeNode edgeNode;
 
-    /** the soure bends. */
+    /** the source bends. */
     private Point2D[] sourceBends;
     /** the target bends. */
     private Point2D[] targetBends;
@@ -59,9 +60,8 @@ public class ApplyBendPointsActivity extends PInterpolatingActivity implements I
      * {@inheritDoc}
      */
     public void activityStarted() {
-        if (getFirstLoop()) {
-            prepareBendTransition();
-        }
+        prepareBendTransition();
+        edgeNode.setVisible(true);
         super.activityStarted();
     }
 
@@ -70,7 +70,6 @@ public class ApplyBendPointsActivity extends PInterpolatingActivity implements I
      */
     @Override
     public void setRelativeTargetValue(final float zeroToOne) {
-        super.setRelativeTargetValue(zeroToOne);
         if (zeroToOne == 1.0f) {
             // when the activity completes set the target bend points
             edgeNode.setBendPoints(targetBends);
@@ -84,6 +83,17 @@ public class ApplyBendPointsActivity extends PInterpolatingActivity implements I
             }
             edgeNode.setBendPoints(tempBends);
         }
+        super.setRelativeTargetValue(zeroToOne);
+    }
+
+    /**
+     * {@inheritDoc}<br>
+     * <br>
+     * This customization puts the desired bend points to the edge.
+     */
+    public void activityFinished() {
+        edgeNode.setBendPoints(targetBends);
+        super.activityFinished();
     }
 
     /**

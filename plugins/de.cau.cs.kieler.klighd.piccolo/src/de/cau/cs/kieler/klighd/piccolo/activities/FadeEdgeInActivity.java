@@ -16,6 +16,7 @@ package de.cau.cs.kieler.klighd.piccolo.activities;
 import java.awt.geom.Point2D;
 
 import de.cau.cs.kieler.klighd.piccolo.krendering.KEdgeNode;
+import edu.umd.cs.piccolo.activities.PInterpolatingActivity;
 
 /**
  * A custom {@link edu.umd.cs.piccolo.activities.PInterpolatingActivity PInterpolatingActivity} that
@@ -24,10 +25,17 @@ import de.cau.cs.kieler.klighd.piccolo.krendering.KEdgeNode;
  * 
  * @author chsch
  */
-public class FadeEdgeInActivity extends ApplyBendPointsActivity {
+public class FadeEdgeInActivity extends PInterpolatingActivity implements IStartingAndFinishingActivity {
+
+    /** the edge node for this activity. */
+    private final KEdgeNode edgeNode;
+
+    /** the target bends. */
+    private Point2D[] targetBends;
 
     /**
-     * Constructs an activity to apply new bend points to an edge node over a specified duration.
+     * Constructs an activity that immediately applies new bend points to a Piccolo edge node and
+     * fades it in over a duration.
      * 
      * @param edgeNode
      *            the edge node
@@ -37,18 +45,22 @@ public class FadeEdgeInActivity extends ApplyBendPointsActivity {
      *            the duration
      */
     public FadeEdgeInActivity(final KEdgeNode edgeNode, final Point2D[] newBends, final long duration) {
-        super(edgeNode, newBends, duration);
+        super(duration);
+        this.edgeNode = edgeNode;
+        this.targetBends = newBends;
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritDoc}<br>
+     * <br>
+     * This customization initializes the new node's position, set it transparent, and releases the
+     * invisibility.
      */
     public void activityStarted() {
+        edgeNode.setBendPoints(targetBends);
+        edgeNode.setTransparency(0);
+        edgeNode.setVisible(true);
         super.activityStarted();
-        if (getFirstLoop()) {
-            getEdgeNode().setTransparency(0);
-            getEdgeNode().setBendPoints(getTargetBends());
-        }
     }
     
     /**
@@ -56,6 +68,17 @@ public class FadeEdgeInActivity extends ApplyBendPointsActivity {
      */
     @Override
     public void setRelativeTargetValue(final float zeroToOne) {
-        getEdgeNode().setTransparency(1 - zeroToOne);
+        edgeNode.setTransparency(zeroToOne);
+        super.setRelativeTargetValue(zeroToOne);
+    }
+    
+    /**
+     * {@inheritDoc}<br>
+     * <br>
+     * This customization fully exposes the given edge.
+     */
+    public void activityFinished() {
+        edgeNode.setTransparency(1);
+        super.activityFinished();
     }
 }

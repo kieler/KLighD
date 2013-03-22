@@ -23,7 +23,8 @@ import edu.umd.cs.piccolo.util.PBounds;
  * 
  * @author mri, chsch
  */
-public class ApplySmartBoundsActivity extends PInterpolatingActivity implements IStartableActivity {
+public class ApplySmartBoundsActivity extends PInterpolatingActivity implements
+        IStartingAndFinishingActivity {
 
     /** the node for this activity. */
     private final PNode node;
@@ -55,13 +56,11 @@ public class ApplySmartBoundsActivity extends PInterpolatingActivity implements 
      * {@inheritDoc}
      */
     public void activityStarted() {
-        if (getFirstLoop()) {
-            this.sourceBounds = NodeUtil.determineSmartBounds(node);
-            this.deltaBounds =
-                    new PBounds(targetBounds.x - sourceBounds.x, targetBounds.y - sourceBounds.y,
-                            targetBounds.width - sourceBounds.width, targetBounds.height
-                                    - sourceBounds.height);
-        }
+        this.sourceBounds = NodeUtil.determineSmartBounds(node);
+        this.deltaBounds = new PBounds(targetBounds.x - sourceBounds.x, targetBounds.y
+                - sourceBounds.y, targetBounds.width - sourceBounds.width, targetBounds.height
+                - sourceBounds.height);
+        node.setVisible(true);
         super.activityStarted();
     }
     
@@ -70,7 +69,6 @@ public class ApplySmartBoundsActivity extends PInterpolatingActivity implements 
      */
     @Override
     public void setRelativeTargetValue(final float zeroToOne) {
-        super.setRelativeTargetValue(zeroToOne);
         if (zeroToOne == 1.0f) {
             // when the activity completes set the target bounds
             NodeUtil.applySmartBounds(node, targetBounds);
@@ -81,6 +79,17 @@ public class ApplySmartBoundsActivity extends PInterpolatingActivity implements 
                             + zeroToOne * deltaBounds.getWidth(), sourceBounds.getHeight()
                             + zeroToOne * deltaBounds.getHeight());
         }
+        super.setRelativeTargetValue(zeroToOne);
+    }
+
+    /**
+     * {@inheritDoc}<br>
+     * <br>
+     * This customization puts the desired bounds to the node.
+     */
+    public void activityFinished() {
+        NodeUtil.applySmartBounds(node, targetBounds);
+        super.activityFinished();
     }
 
     /**
