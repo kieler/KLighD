@@ -22,6 +22,7 @@ import java.beans.PropertyChangeListener;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -38,12 +39,13 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.statushandlers.StatusManager;
 import org.osgi.framework.Bundle;
 
+import com.google.common.base.Function;
+import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
 import de.cau.cs.kieler.core.kgraph.KGraphElement;
 import de.cau.cs.kieler.core.kgraph.KGraphPackage;
-import de.cau.cs.kieler.core.kgraph.KNode;
 import de.cau.cs.kieler.core.krendering.KArc;
 import de.cau.cs.kieler.core.krendering.KChildArea;
 import de.cau.cs.kieler.core.krendering.KContainerRendering;
@@ -68,13 +70,13 @@ import de.cau.cs.kieler.core.krendering.KText;
 import de.cau.cs.kieler.core.krendering.util.KRenderingSwitch;
 import de.cau.cs.kieler.core.properties.IProperty;
 import de.cau.cs.kieler.core.properties.IPropertyHolder;
-import de.cau.cs.kieler.core.properties.Property;
 import de.cau.cs.kieler.core.util.Pair;
 import de.cau.cs.kieler.klighd.KlighdPlugin;
 import de.cau.cs.kieler.klighd.krendering.KCustomRenderingWrapperFactory;
 import de.cau.cs.kieler.klighd.krendering.PlacementUtil;
 import de.cau.cs.kieler.klighd.krendering.PlacementUtil.Bounds;
 import de.cau.cs.kieler.klighd.krendering.PlacementUtil.GridPlacer;
+import de.cau.cs.kieler.klighd.piccolo.krendering.IGraphElement;
 import de.cau.cs.kieler.klighd.piccolo.krendering.KCustomConnectionFigureNode;
 import de.cau.cs.kieler.klighd.piccolo.krendering.KDecoratorNode;
 import de.cau.cs.kieler.klighd.piccolo.krendering.KEdgeNode;
@@ -92,7 +94,6 @@ import de.cau.cs.kieler.klighd.piccolo.util.StyleUtil;
 import de.cau.cs.kieler.klighd.piccolo.util.StyleUtil.Styles;
 import de.cau.cs.kieler.klighd.util.CrossDocumentContentAdapter;
 import de.cau.cs.kieler.klighd.util.ModelingUtil;
-import de.cau.cs.kieler.klighd.util.RenderingContextData;
 import edu.umd.cs.piccolo.PNode;
 import edu.umd.cs.piccolo.nodes.PPath;
 import edu.umd.cs.piccolo.util.PBounds;
@@ -100,29 +101,34 @@ import edu.umd.cs.piccolox.swt.PSWTCanvas;
 import edu.umd.cs.piccolox.swt.PSWTImage;
 
 /**
- * The abstract base class for classes which control the transformation of KRendering data to
- * Piccolo nodes and the synchronization of these Piccolo nodes with the KRendering model.
+ * The abstract base class for controllers that manages the transformation of a dedicated
+ * {@link KGraphElement}'s KRendering data to Piccolo nodes and the synchronization of those Piccolo
+ * nodes with the KRendering specification .
  * 
- * @author mri
+ * @author mri,chsch
  * 
  * @param <S>
  *            the type of the underlying graph element
  * @param <T>
  *            the type of the Piccolo node representing the graph element
  */
-public abstract class AbstractRenderingController<S extends KGraphElement, T extends PNode> {
-
-    /** the property for a rendering node's controller. */
-    private static final IProperty<Map<Object, PNodeController<?>>> CONTROLLER
-      = new Property<Map<Object, PNodeController<?>>>("de.cau.cs.kieler.klighd.piccolo.controller");
-    /** the property for a rendering reference key. */
-    private static final IProperty<Map<Object, Object>> KEY = new Property<Map<Object, Object>>(
-            "de.cau.cs.kieler.klighd.piccolo.key");
-
+public abstract class AbstractRenderingController<S extends KGraphElement, T extends IGraphElement<S>> {
 
     /**
+     * A map that tracks the {@link PNodeController PNodeControllers} that are deployed to manage
+     * PNode that represent {@link KRendering} structure over the life cycle of the diagram.<br>
+     * The map is populated initializing/updating the rendering of a {@link KGraphElement}. Pairs
+     * are removed when {@link KRendering} objects are removed from the KGE, see
+     * {@link #installRenderingSyncAdapter()}.<br>
+     * The map is cleared in when the whole node is removed and this controller is disposed, see
+     * references of {@link #removeMappedEntries()}.
+     */
+    private final Map<KRendering, PNodeController<? extends PNode>> pnodeControllers = Maps.newHashMap();
+    
+    
+    /**
      * This attribute key is used to let the PNodes be aware of their related KRenderings in their
-     * attributes list.
+     * attributes list. It is used in the KlighdActionEventHandler, for example.
      */
     public static final Object ATTR_KRENDERING = new Object();
 
@@ -137,12 +143,13 @@ public abstract class AbstractRenderingController<S extends KGraphElement, T ext
     private PNode renderingNode = null;
 
     /** the adapter currently installed on the rendering. */
-    private CrossDocumentContentAdapter renderingAdapter = null;
-    /** the element adapter currently installed on the element. */
+    private CrossDocumentContentAdapter renderingDeepAdapter = null;
+    
+    /**
+     * An adapter on the graph element that is supposed to react on changes in the 'data' field. It
+     * is sensitive to additions, exchanges, and removals of top level {@link KRendering} data.
+     */
     private AdapterImpl elementAdapter = null;
-
-    /** the map of properties used by this controller mapped on all mappings under that property. */
-    private Map<Object, List<Pair<IPropertyHolder, Object>>> mappedProperties = Maps.newHashMap();
 
     /** whether to synchronize the rendering with the model. */
     private boolean syncRendering = false;
@@ -158,6 +165,7 @@ public abstract class AbstractRenderingController<S extends KGraphElement, T ext
     public AbstractRenderingController(final S element, final T repNode) {
         this.element = element;
         this.repNode = repNode;
+        this.repNode.setRenderingController(this);
     }
 
     /**
@@ -210,10 +218,7 @@ public abstract class AbstractRenderingController<S extends KGraphElement, T ext
         if (currentRendering != null) {
             unregisterElementAdapter();
             unregisterRenderingAdapter();
-            removeMappedProperties(CONTROLLER);
-            RenderingContextData.get(element).getProperties().removeKey(CONTROLLER);
-            removeMappedProperties(KEY);
-            RenderingContextData.get(element).getProperties().removeKey(KEY);
+            removeMappedEntries();
         }
 
         // remove the rendering node
@@ -229,7 +234,6 @@ public abstract class AbstractRenderingController<S extends KGraphElement, T ext
         // update the rendering
         renderingNode = internalUpdateRendering();
 
-        // TODO CHANGED
         // install rendering adapter if sync is enabled
         if (syncRendering) {
             // register an adapter on the element (KGE) to stay in sync
@@ -237,7 +241,7 @@ public abstract class AbstractRenderingController<S extends KGraphElement, T ext
 
             if (currentRendering != null) {
                 // register an adapter on the rendering to stay in sync
-                registerRenderingAdapter();
+                installRenderingSyncAdapter();
             }
         }
     }
@@ -252,9 +256,9 @@ public abstract class AbstractRenderingController<S extends KGraphElement, T ext
     /**
      * Registers an adapter on the current rendering to react on changes.
      */
-    private void registerRenderingAdapter() {
+    private void installRenderingSyncAdapter() {
         // register adapter on the rendering to stay in sync
-        renderingAdapter = new CrossDocumentContentAdapter() {
+        renderingDeepAdapter = new CrossDocumentContentAdapter() {
 
             protected boolean shouldAdapt(final EStructuralFeature feature) {
                 // follow the rendering feature of the KRenderingRef
@@ -272,12 +276,36 @@ public abstract class AbstractRenderingController<S extends KGraphElement, T ext
                         || msg.getOldValue() instanceof Map.Entry<?, ?>) {
                     return;
                 }
-
+                
+                Iterable<KRendering> allRemovedRenderings = Collections.emptyList();
                 switch (msg.getEventType()) {
-                case Notification.REMOVE:
                 case Notification.REMOVE_MANY:
-                case Notification.SET:
+                    final Iterable<KRendering> removedRenderings = Iterables.filter(
+                            (Iterable<?>) msg.getOldValue(), KRendering.class);
+                    
+                    allRemovedRenderings = Iterables.concat(Iterables.transform(
+                            removedRenderings, new Function<KRendering, Iterable<KRendering>>() {
+                                public Iterable<KRendering> apply(final KRendering r) {
+                                    return ModelingUtil.selfAndEAllContentsOfSameType(r);
+                                }
+                            }));
+                    // there is no break by intention !
+                    
+                case Notification.REMOVE:
+                    if (msg.getOldValue() instanceof KRendering) {
+                        allRemovedRenderings = ModelingUtil
+                                .selfAndEAllContentsOfSameType((KRendering) msg.getOldValue());
+                    }
+                    for (KRendering r : allRemovedRenderings) {
+                        removeMappedProperty(null, null, r);
+                    }
+                    // there is no break by intention !
+                    
                 case Notification.UNSET:
+                case Notification.SET:
+                    // TODO in case of KRenderingRefs: Will the stuff above work here, too? 
+                    
+                    
                 case Notification.MOVE:
                 case Notification.ADD:
                 case Notification.ADD_MANY:
@@ -312,21 +340,22 @@ public abstract class AbstractRenderingController<S extends KGraphElement, T ext
         };
 
         // add the adapter to the rendering
-        currentRendering.eAdapters().add(renderingAdapter);
+        currentRendering.eAdapters().add(renderingDeepAdapter);
     }
 
     /**
      * Unregisters the adapter currently installed on the rendering.
      */
     private void unregisterRenderingAdapter() {
-        if (currentRendering != null && renderingAdapter != null) {
-            currentRendering.eAdapters().remove(renderingAdapter);
-            renderingAdapter = null;
+        if (currentRendering != null && renderingDeepAdapter != null) {
+            currentRendering.eAdapters().remove(renderingDeepAdapter);
+            renderingDeepAdapter = null;
         }
     }
 
     /**
      * Registers an adapter on the graph element to react on changes in its graph data feature.
+     * This on is sensitive to additions, exchanges, and removals of {@link KRendering} data.
      */
     private void registerElementAdapter() {
         elementAdapter = new AdapterImpl() {
@@ -395,21 +424,21 @@ public abstract class AbstractRenderingController<S extends KGraphElement, T ext
     private void updateStylesInUi() {
         runInUI(this.updateStylesRunnable);
     }
+    
+    
 
     /**
      * Updates the styles of the current rendering.
      */
     private void updateStyles() {
         // update using the recursive method
-        updateStyles(currentRendering, null, new ArrayList<KStyle>(0), repNode);
+        updateStyles(currentRendering, null, new ArrayList<KStyle>(0));
     }
 
     private void updateStyles(final KRendering rendering, final Styles styles,
-            final List<KStyle> propagatedStyles, final Object key) {
+            final List<KStyle> propagatedStyles) {
 
-        PNodeController<?> controller = getMappedProperty(
-                RenderingContextData.get(ModelingUtil.eContainerOfType(rendering, KNode.class)),
-                CONTROLLER, key);
+        PNodeController<?> controller = getMappedProperty(null, null, rendering);
         if (controller == null) {
             return;
         }
@@ -433,21 +462,18 @@ public abstract class AbstractRenderingController<S extends KGraphElement, T ext
 
                 // propagate to all children
                 for (KRendering child : container.getChildren()) {
-                    updateStyles(child, null, childPropagatedStyles, key);
+                    updateStyles(child, null, childPropagatedStyles);
                 }
             }
         } else if (rendering instanceof KRenderingRef) {
             // update referenced rendering
             KRenderingRef renderingRef = (KRenderingRef) rendering;
-            Object refKey = getMappedProperty(
-                    RenderingContextData.get(ModelingUtil.eContainerOfType(rendering, KNode.class)),
-                    KEY, key);
 
             // get the referenced rendering
             KRendering referencedRendering = renderingRef.getRendering();
 
             // proceed recursively with the referenced rendering
-            updateStyles(referencedRendering, newStyles, propagatedStyles, refKey);
+            updateStyles(referencedRendering, newStyles, propagatedStyles);
         }
     }
 
@@ -463,21 +489,19 @@ public abstract class AbstractRenderingController<S extends KGraphElement, T ext
      *            the styles propagated to the children
      * @param parent
      *            the parent Piccolo node
-     * @param key
-     *            the key used to identify the current reference hierarchy
      */
     protected void handleChildren(final List<KRendering> children, final KPlacement placement,
-            final List<KStyle> styles, final PNode parent, final Object key) {
+            final List<KStyle> styles, final PNode parent) {
         if (placement == null) {
             // Area Placement
             for (final KRendering rendering : children) {
-                handleAreaPlacementRendering(rendering, styles, parent, key);
+                handleAreaPlacementRendering(rendering, styles, parent);
             }
         } else {
             new KRenderingSwitch<Boolean>() {
                 // Grid Placement
                 public Boolean caseKGridPlacement(final KGridPlacement object) {
-                    handleGridPlacementRendering(object, children, styles, parent, key);
+                    handleGridPlacementRendering(object, children, styles, parent);
                     return true;
                 }
             } /**/.doSwitch(placement);
@@ -493,12 +517,10 @@ public abstract class AbstractRenderingController<S extends KGraphElement, T ext
      *            the styles propagated to the children
      * @param parent
      *            the parent Piccolo node
-     * @param key
-     *            the key used to identify the current reference hierarchy
      * @return the Piccolo node representing the rendering
      */
     protected PNode handleAreaPlacementRendering(final KRendering rendering,
-            final List<KStyle> styles, final PNode parent, final Object key) {
+            final List<KStyle> styles, final PNode parent) {
         final KPlacementData pcd = rendering.getPlacementData();
         PBounds bounds = null;
         if (pcd instanceof KPointPlacementData) {
@@ -512,8 +534,7 @@ public abstract class AbstractRenderingController<S extends KGraphElement, T ext
                     parent.getBoundsReference());
         }
         // create the rendering and receive its controller
-        final PNodeController<?> controller = createRendering(rendering, styles, parent, bounds,
-                key);
+        final PNodeController<?> controller = createRendering(rendering, styles, parent, bounds);
 
         if (pcd instanceof KPointPlacementData) {
             addListener(PNode.PROPERTY_BOUNDS, parent, controller.getNode(),
@@ -560,12 +581,9 @@ public abstract class AbstractRenderingController<S extends KGraphElement, T ext
      *            the styles propagated to the children
      * @param parent
      *            the parent Piccolo node
-     * @param key
-     *            the key used to identify the current reference hierarchy
      */
     protected void handleGridPlacementRendering(final KGridPlacement gridPlacement,
-            final List<KRendering> renderings, final List<KStyle> styles, final PNode parent,
-            final Object key) {
+            final List<KRendering> renderings, final List<KStyle> styles, final PNode parent) {
         if (renderings.size() == 0) {
             return;
         }
@@ -585,7 +603,7 @@ public abstract class AbstractRenderingController<S extends KGraphElement, T ext
             currentBounds = elementBounds[renderings.lastIndexOf(rendering)];
             PBounds currentPBounds = new PBounds(currentBounds.getX(), currentBounds.getY(),
                     currentBounds.getWidth(), currentBounds.getHeight());
-            controllers[i] = createRendering(rendering, styles, parent, currentPBounds, key);
+            controllers[i] = createRendering(rendering, styles, parent, currentPBounds);
             i++;
         }
 
@@ -621,12 +639,10 @@ public abstract class AbstractRenderingController<S extends KGraphElement, T ext
      *            the styles propagated to the children
      * @param parent
      *            the parent Piccolo node representing a polyline
-     * @param key
-     *            the key used to identify the current reference hierarchy
      * @return the Piccolo node representing the rendering
      */
     protected PNode handleDecoratorPlacementRendering(final KRendering rendering,
-            final List<KStyle> styles, final PSWTAdvancedPath parent, final Object key) {
+            final List<KStyle> styles, final PSWTAdvancedPath parent) {
         // determine the initial bounds and rotation
         final Decoration decoration = PiccoloPlacementUtil
                 .evaluateDecoratorPlacement(
@@ -641,7 +657,7 @@ public abstract class AbstractRenderingController<S extends KGraphElement, T ext
 
         // create the rendering and receive its controller
         final PNodeController<?> controller = createRendering(rendering, styles, decorator,
-                decoration.getBounds(), key);
+                decoration.getBounds());
         decorator.setRepresentationNode(controller.getNode());
 
         // apply the initial rotation
@@ -686,13 +702,10 @@ public abstract class AbstractRenderingController<S extends KGraphElement, T ext
      *            the parent Piccolo node
      * @param initialBounds
      *            the initial bounds
-     * @param key
-     *            the key used to identify the current reference hierarchy
      * @return the controller for the created Piccolo node
      */
     protected PNodeController<?> createRendering(final KRendering rendering,
-            final List<KStyle> propagatedStyles, final PNode parent, final PBounds initialBounds,
-            final Object key) {
+            final List<KStyle> propagatedStyles, final PNode parent, final PBounds initialBounds) {
         List<KStyle> renderingStyles = rendering.getStyles();
 
         // determine the styles for this rendering
@@ -705,15 +718,15 @@ public abstract class AbstractRenderingController<S extends KGraphElement, T ext
 
         // dispatch the rendering
         PNodeController<?> controller = createRendering(rendering, styles, childPropagatedStyles,
-                parent, initialBounds, key);
+                parent, initialBounds);
 
         // set the styles for the created rendering node using the controller
         applyStyles(controller, styles);
 
-        // remember the controller in the related KRendering rendering
-        setMappedProperty(
-        // ModelingUtil.eContainerOfType(rendering, KNode.class))
-                RenderingContextData.get(element), CONTROLLER, key, controller);
+        // remember the KRendering-controller pair in RenderingContextData attached to the KNode
+        //  that is 
+        setMapPropertyEntry(null, /* RenderingContextData.get(element), CONTROLLER */null, rendering,
+                controller);
 
         controller.getNode().addAttribute(ATTR_KRENDERING, rendering);
 
@@ -734,81 +747,74 @@ public abstract class AbstractRenderingController<S extends KGraphElement, T ext
      *            the parent Piccolo node
      * @param initialBounds
      *            the initial bounds
-     * @param key
-     *            the key used to identify the current reference hierarchy
      * @return the controller for the created Piccolo node
      */
     protected PNodeController<?> createRendering(final KRendering rendering, final Styles styles,
             final List<KStyle> childPropagatedStyles, final PNode parent,
-            final PBounds initialBounds, final Object key) {
+            final PBounds initialBounds) {
         // create the rendering and return its controller
         PNodeController<?> controller = new KRenderingSwitch<PNodeController<?>>() {
             // Ellipse
             public PNodeController<?> caseKEllipse(final KEllipse ellipse) {
-                return createEllipse(ellipse, styles, childPropagatedStyles, parent, initialBounds,
-                        key);
+                return createEllipse(ellipse, styles, childPropagatedStyles, parent, initialBounds);
             }
 
             // Rectangle
             public PNodeController<?> caseKRectangle(final KRectangle rect) {
-                return createRectangle(rect, styles, childPropagatedStyles, parent, initialBounds,
-                        key);
+                return createRectangle(rect, styles, childPropagatedStyles, parent, initialBounds);
             }
 
             // Rounded Rectangle
             public PNodeController<?> caseKRoundedRectangle(final KRoundedRectangle rect) {
                 return createRoundedRectangle(rect, styles, childPropagatedStyles, parent,
-                        initialBounds, key);
+                        initialBounds);
             }
 
             // Arc
             public PNodeController<?> caseKArc(final KArc arc) {
-                return createArc(arc, styles, childPropagatedStyles, parent, initialBounds, key);
+                return createArc(arc, styles, childPropagatedStyles, parent, initialBounds);
             }
 
             // Spline
             public PNodeController<?> caseKSpline(final KSpline spline) {
-                return createLine(spline, styles, childPropagatedStyles, parent, initialBounds, key);
+                return createLine(spline, styles, childPropagatedStyles, parent, initialBounds);
             }
 
             // Polyline
             public PNodeController<?> caseKPolyline(final KPolyline polyline) {
-                return createLine(polyline, styles, childPropagatedStyles, parent, initialBounds,
-                        key);
+                return createLine(polyline, styles, childPropagatedStyles, parent, initialBounds);
             }
 
             // RoundedBendPolyline
             public PNodeController<?> caseKRoundedBendsPolyline(final KRoundedBendsPolyline polyline) {
-                return createLine(polyline, styles, childPropagatedStyles, parent, initialBounds,
-                        key);
+                return createLine(polyline, styles, childPropagatedStyles, parent, initialBounds);
             }
 
             // Polygon
             public PNodeController<?> caseKPolygon(final KPolygon polygon) {
-                return createPolygon(polygon, styles, childPropagatedStyles, parent, initialBounds,
-                        key);
+                return createPolygon(polygon, styles, childPropagatedStyles, parent, initialBounds);
             }
 
             // Text
             public PNodeController<?> caseKText(final KText text) {
-                return createText(text, styles, childPropagatedStyles, parent, initialBounds, key);
+                return createText(text, styles, childPropagatedStyles, parent, initialBounds);
             };
 
             // Rendering Reference
             public PNodeController<?> caseKRenderingRef(final KRenderingRef renderingReference) {
                 return createRenderingReference(renderingReference, styles, childPropagatedStyles,
-                        parent, initialBounds, key);
+                        parent, initialBounds);
             }
 
             // Image
             public PNodeController<?> caseKImage(final KImage object) {
-                return createImage(object, styles, childPropagatedStyles, parent, initialBounds, key);
+                return createImage(object, styles, childPropagatedStyles, parent, initialBounds);
             }
 
             // Custom Rendering
             public PNodeController<?> caseKCustomRendering(final KCustomRendering rendering) {
                 return createCustomRendering(rendering, styles, childPropagatedStyles, parent,
-                        initialBounds, key);
+                        initialBounds);
             }
 
             // Child Area
@@ -833,13 +839,11 @@ public abstract class AbstractRenderingController<S extends KGraphElement, T ext
      *            the parent Piccolo node
      * @param initialBounds
      *            the initial bounds
-     * @param key
-     *            the key used to identify the current reference hierarchy
      * @return the controller for the created Piccolo node
      */
     protected PNodeController<PSWTAdvancedPath> createEllipse(final KEllipse ellipse,
             final Styles styles, final List<KStyle> propagatedStyles, final PNode parent,
-            final PBounds initialBounds, final Object key) {
+            final PBounds initialBounds) {
         // create the ellipse
         final PSWTAdvancedPath path = PSWTAdvancedPath.createEllipse(0, 0,
                 (float) initialBounds.width, (float) initialBounds.height);
@@ -850,7 +854,7 @@ public abstract class AbstractRenderingController<S extends KGraphElement, T ext
         // handle children
         if (ellipse.getChildren().size() > 0) {
             handleChildren(ellipse.getChildren(), ellipse.getChildPlacement(), propagatedStyles,
-                    path, key);
+                    path);
         }
 
         // return a controller for the ellipse
@@ -876,13 +880,11 @@ public abstract class AbstractRenderingController<S extends KGraphElement, T ext
      *            the parent Piccolo node
      * @param initialBounds
      *            the initial bounds
-     * @param key
-     *            the key used to identify the current reference hierarchy
      * @return the controller for the created Piccolo node
      */
     protected PNodeController<PSWTAdvancedPath> createRectangle(final KRectangle rect,
             final Styles styles, final List<KStyle> propagatedStyles, final PNode parent,
-            final PBounds initialBounds, final Object key) {
+            final PBounds initialBounds) {
         // create the rectangle
         final PSWTAdvancedPath path = PSWTAdvancedPath.createRectangle(0, 0,
                 (float) initialBounds.width, (float) initialBounds.height);
@@ -892,8 +894,7 @@ public abstract class AbstractRenderingController<S extends KGraphElement, T ext
 
         // handle children
         if (rect.getChildren().size() > 0) {
-            handleChildren(rect.getChildren(), rect.getChildPlacement(), propagatedStyles, path,
-                    key);
+            handleChildren(rect.getChildren(), rect.getChildPlacement(), propagatedStyles, path);
         }
 
         // create a controller for the rectangle and return it
@@ -919,25 +920,25 @@ public abstract class AbstractRenderingController<S extends KGraphElement, T ext
      *            the parent Piccolo node
      * @param initialBounds
      *            the initial bounds
-     * @param key
-     *            the key used to identify the current reference hierarchy
      * @return the controller for the created Piccolo node
      */
     protected PNodeController<PSWTAdvancedPath> createRoundedRectangle(
             final KRoundedRectangle rect, final Styles styles, final List<KStyle> propagatedStyles,
-            final PNode parent, final PBounds initialBounds, final Object key) {
+            final PNode parent, final PBounds initialBounds) {
+        final float cornerWidth = 2 * rect.getCornerWidth();
+        final float cornerHeight = 2 * rect.getCornerHeight();
+        
         // create the rounded rectangle
         final PSWTAdvancedPath path = PSWTAdvancedPath.createRoundRectangle(0, 0,
-                (float) initialBounds.width, (float) initialBounds.height, rect.getCornerWidth(),
-                rect.getCornerHeight());
+                (float) initialBounds.width, (float) initialBounds.height, cornerWidth,
+                cornerHeight);
         initializeRenderingNode(path);
         path.translate(initialBounds.x, initialBounds.y);
         parent.addChild(path);
 
         // handle children
         if (rect.getChildren().size() > 0) {
-            handleChildren(rect.getChildren(), rect.getChildPlacement(), propagatedStyles, path,
-                    key);
+            handleChildren(rect.getChildren(), rect.getChildPlacement(), propagatedStyles, path);
         }
 
         // create a controller for the rounded rectangle and return it
@@ -945,7 +946,7 @@ public abstract class AbstractRenderingController<S extends KGraphElement, T ext
             public void setBounds(final PBounds bounds) {
                 // apply the bounds
                 getNode().setPathToRoundRectangle(0, 0, (float) bounds.width,
-                        (float) bounds.height, rect.getCornerWidth(), rect.getCornerHeight());
+                        (float) bounds.height, cornerWidth, cornerHeight);
                 NodeUtil.applyTranslation(getNode(), (float) bounds.x, (float) bounds.y);
             }
         };
@@ -964,13 +965,10 @@ public abstract class AbstractRenderingController<S extends KGraphElement, T ext
      *            the parent Piccolo node
      * @param initialBounds
      *            the initial bounds
-     * @param key
-     *            the key used to identify the current reference hierarchy
      * @return the controller for the created Piccolo node
      */
     protected PNodeController<PSWTAdvancedPath> createArc(final KArc arc, final Styles styles,
-            final List<KStyle> propagatedStyles, final PNode parent, final PBounds initialBounds,
-            final Object key) {
+            final List<KStyle> propagatedStyles, final PNode parent, final PBounds initialBounds) {
         // create the rounded rectangle
         final PSWTAdvancedPath path = PSWTAdvancedPath.createArc(0, 0, (float) initialBounds.width,
                 (float) initialBounds.height, arc.getStartAngle(), arc.getArcAngle());
@@ -981,7 +979,7 @@ public abstract class AbstractRenderingController<S extends KGraphElement, T ext
 
         // handle children
         if (arc.getChildren().size() > 0) {
-            handleChildren(arc.getChildren(), arc.getChildPlacement(), propagatedStyles, path, key);
+            handleChildren(arc.getChildren(), arc.getChildPlacement(), propagatedStyles, path);
         }
 
         // create a controller for the rounded rectangle and return it
@@ -1008,13 +1006,10 @@ public abstract class AbstractRenderingController<S extends KGraphElement, T ext
      *            the parent Piccolo node
      * @param initialBounds
      *            the initial bounds
-     * @param key
-     *            the key used to identify the current reference hierarchy
      * @return the controller for the created Piccolo node
      */
     protected PNodeController<PSWTStyledText> createText(final KText text, final Styles styles,
-            final List<KStyle> propagatedStyles, final PNode parent, final PBounds initialBounds,
-            final Object key) {
+            final List<KStyle> propagatedStyles, final PNode parent, final PBounds initialBounds) {
         // create the text
         PSWTTracingText textNode = new PSWTTracingText(text);
         textNode.setGreekColor(null);
@@ -1064,13 +1059,11 @@ public abstract class AbstractRenderingController<S extends KGraphElement, T ext
      *            the parent Piccolo node
      * @param initialBounds
      *            the initial bounds
-     * @param key
-     *            the key used to identify the current reference hierarchy
      * @return the controller for the created Piccolo node
      */
     protected PNodeController<PSWTAdvancedPath> createLine(final KPolyline line,
             final Styles styles, final List<KStyle> propagatedStyles, final PNode parent,
-            final PBounds initialBounds, final Object key) {
+            final PBounds initialBounds) {
 
         Point2D[] points = PiccoloPlacementUtil.evaluatePolylinePlacement(line, initialBounds);
 
@@ -1097,7 +1090,7 @@ public abstract class AbstractRenderingController<S extends KGraphElement, T ext
             for (final KRendering rendering : line.getChildren()) {
                 if (PiccoloPlacementUtil.asDecoratorPlacementData(rendering.getPlacementData()) != null)
                 {
-                    handleDecoratorPlacementRendering(rendering, propagatedStyles, path, key);
+                    handleDecoratorPlacementRendering(rendering, propagatedStyles, path);
                 } else {
                     restChildren.add(rendering);
                 }
@@ -1116,7 +1109,7 @@ public abstract class AbstractRenderingController<S extends KGraphElement, T ext
                 });
 
                 handleChildren(restChildren, line.getChildPlacement(), propagatedStyles,
-                        proxyParent, key);
+                        proxyParent);
             }
         }
 
@@ -1157,13 +1150,11 @@ public abstract class AbstractRenderingController<S extends KGraphElement, T ext
      *            the parent Piccolo node
      * @param initialBounds
      *            the initial bounds
-     * @param key
-     *            the key used to identify the current reference hierarchy
      * @return the controller for the created Piccolo node
      */
     protected PNodeController<PSWTAdvancedPath> createPolygon(final KPolygon polygon,
             final Styles styles, final List<KStyle> propagatedStyles, final PNode parent,
-            final PBounds initialBounds, final Object key) {
+            final PBounds initialBounds) {
         // create the polygon
         final PSWTAdvancedPath path = PSWTAdvancedPath.createPolygon(PiccoloPlacementUtil
                 .evaluatePolylinePlacement(polygon, initialBounds));
@@ -1177,7 +1168,7 @@ public abstract class AbstractRenderingController<S extends KGraphElement, T ext
             for (final KRendering rendering : polygon.getChildren()) {
                 if (PiccoloPlacementUtil.asDecoratorPlacementData(rendering.getPlacementData()) != null)
                 {
-                    handleDecoratorPlacementRendering(rendering, propagatedStyles, path, key);
+                    handleDecoratorPlacementRendering(rendering, propagatedStyles, path);
                 } else {
                     restChildren.add(rendering);
                 }
@@ -1196,7 +1187,7 @@ public abstract class AbstractRenderingController<S extends KGraphElement, T ext
                 });
 
                 handleChildren(restChildren, polygon.getChildPlacement(), propagatedStyles,
-                        proxyParent, key);
+                        proxyParent);
             }
         }
 
@@ -1224,13 +1215,11 @@ public abstract class AbstractRenderingController<S extends KGraphElement, T ext
      *            the parent Piccolo node
      * @param initialBounds
      *            the initial bounds
-     * @param key
-     *            the key used to identify the current reference hierarchy
      * @return the controller for the created Piccolo node
      */
     protected PNodeController<?> createRenderingReference(final KRenderingRef renderingReference,
             final Styles styles, final List<KStyle> propagatedStyles, final PNode parent,
-            final PBounds initialBounds, final Object key) {
+            final PBounds initialBounds) {
 
         KRendering rendering = renderingReference.getRendering();
         if (rendering == null) {
@@ -1248,18 +1237,18 @@ public abstract class AbstractRenderingController<S extends KGraphElement, T ext
                 propagatedStyles);
 
         // create a key for this reference
-        Object refKey = new Object();
-        setMappedProperty(renderingReference, KEY, key, refKey);
+//        Object refKey = null; // new Object();
+//        setMappedProperty(renderingReference, KEY, key, refKey);
 
         // dispatch the rendering
         final PNodeController<?> controller = createRendering(rendering, refStyles,
-                childPropagatedStyles, parent, initialBounds, refKey);
+                childPropagatedStyles, parent, initialBounds);
 
         // set the styles for the created rendering node using the controller
         applyStyles(controller, refStyles);
 
         // remember the controller in the rendering
-        setMappedProperty(rendering, CONTROLLER, refKey, controller);
+//        setMappedProperty(rendering, CONTROLLER, refKey, controller);
 
         // return a controller for the reference which sets the bounds of the referenced node
         return new PNodeController<PNode>(controller.getNode()) {
@@ -1285,13 +1274,10 @@ public abstract class AbstractRenderingController<S extends KGraphElement, T ext
      *            the parent Piccolo node
      * @param initialBounds
      *            the initial bounds
-     * @param key
-     *            the key used to identify the current reference hierarchy
      * @return the controller for the created Piccolo node
      */
     protected PNodeController<?> createImage(final KImage image, final Styles styles,
-            final List<KStyle> propagatedStyles, final PNode parent, final PBounds initialBounds,
-            final Object key) {
+            final List<KStyle> propagatedStyles, final PNode parent, final PBounds initialBounds) {
 
         PSWTImage pImage = null;
 
@@ -1331,7 +1317,7 @@ public abstract class AbstractRenderingController<S extends KGraphElement, T ext
         // handle children
         if (image.getChildren().size() > 0) {
             handleChildren(image.getChildren(), image.getChildPlacement(), propagatedStyles,
-                    pImage, key);
+                    pImage);
         }
 
         // create a standard default node controller
@@ -1357,13 +1343,11 @@ public abstract class AbstractRenderingController<S extends KGraphElement, T ext
      *            the parent Piccolo node
      * @param initialBounds
      *            the initial bounds
-     * @param key
-     *            the key used to identify the current reference hierarchy
      * @return the controller for the created Piccolo node
      */
     protected PNodeController<?> createCustomRendering(final KCustomRendering customRendering,
             final Styles styles, final List<KStyle> propagatedStyles, final PNode parent,
-            final PBounds initialBounds, final Object key) {
+            final PBounds initialBounds) {
 
         // get a wrapping PNode containing the actual figure
         // by means of the KCustomRenderingWrapperFactory
@@ -1402,7 +1386,7 @@ public abstract class AbstractRenderingController<S extends KGraphElement, T ext
         // handle children
         if (customRendering.getChildren().size() > 0) {
             handleChildren(customRendering.getChildren(), customRendering.getChildPlacement(),
-                    propagatedStyles, node, key);
+                    propagatedStyles, node);
         }
 
         // create a standard default node controller
@@ -1557,8 +1541,15 @@ public abstract class AbstractRenderingController<S extends KGraphElement, T ext
         controller.applyChanges(styles);
     }
 
+//    *  This
+//    * information is stored in the {@link #CONTROLLER} property that is attached to a
+//    * {@link RenderingContextData} object, which in turn is attached to the related
+//    * {@link de.cau.cs.kieler.core.kgraph.KNode KNode}.
     /**
-     * Sets a value for a key in a given property holder using a specified property for a map type.
+     * Sets a value for a key in the given map {@link IProperty IProperty&lt;Map&lt;?,?&gt;&gt;},
+     * that is attached to the given property holder.<br>
+     * Here, it is used to memorize {@link PNodeController PNodeControllers} that are in charge of
+     * controlling the {@link PNode PNodes} representing {@link KRendering} definitions.
      * 
      * @param propertyHolder
      *            the property holder
@@ -1571,22 +1562,26 @@ public abstract class AbstractRenderingController<S extends KGraphElement, T ext
      * @param <R>
      *            the value-type of the map
      */
-    protected <R> void setMappedProperty(final IPropertyHolder propertyHolder,
-            final IProperty<Map<Object, R>> property, final Object key, final R value) {
-        Map<Object, R> map = propertyHolder.getProperty(property);
-        if (map == null) {
-            map = Maps.newHashMap();
-            propertyHolder.setProperty(property, map);
-        }
-        map.put(key, value);
-
+    protected <R> void setMapPropertyEntry(final IPropertyHolder propertyHolder,
+            final IProperty<Map<KRendering, PNodeController<?>>> property, final KRendering key,
+            final PNodeController<?> value) {
+        
+        this.pnodeControllers.put(key, value);
+        
+//        Map<KRendering, PNodeController<?>> map = propertyHolder.getProperty(property);
+//        if (map == null) {
+//            map = Maps.newHashMap();
+//            propertyHolder.setProperty(property, map);
+//        }
+//        map.put(key, value);
+//
         // track this mapping
-        List<Pair<IPropertyHolder, Object>> mappedPropertyList = mappedProperties.get(property);
-        if (mappedPropertyList == null) {
-            mappedPropertyList = Lists.newLinkedList();
-            mappedProperties.put(property, mappedPropertyList);
-        }
-        mappedPropertyList.add(new Pair<IPropertyHolder, Object>(propertyHolder, key));
+//        List<Pair<IPropertyHolder, Object>> mappedPropertyList = mappedProperties.get(property);
+//        if (mappedPropertyList == null) {
+//            mappedPropertyList = Lists.newLinkedList();
+//            mappedProperties.put(property, mappedPropertyList);
+//        }
+//        mappedPropertyList.add(new Pair<IPropertyHolder, Object>(propertyHolder, key));
     }
 
     /**
@@ -1599,17 +1594,20 @@ public abstract class AbstractRenderingController<S extends KGraphElement, T ext
      *            the property
      * @param key
      *            the key
-     * @param <R>
-     *            the value-type of the map
      * @return the value
      */
-    protected <R> R getMappedProperty(final IPropertyHolder propertyHolder,
-            final IProperty<Map<Object, R>> property, final Object key) {
-        Map<Object, R> map = propertyHolder.getProperty(property);
-        if (map != null) {
-            return map.get(key);
-        }
-        return null;
+//    * @param <R>
+//    *            the value-type of the map
+//    protected <R> R getMappedProperty(final IPropertyHolder propertyHolder,
+    protected PNodeController<?> getMappedProperty(final IPropertyHolder propertyHolder,
+            final IProperty<Map<KRendering, PNodeController<?>>> property, final KRendering key) {
+        
+        return this.pnodeControllers.get(key);
+//        Map<KRendering, PNodeController<?>> map = propertyHolder.getProperty(property);
+//        if (map != null) {
+//            return map.get(key);
+//        }
+//        return null;
     }
 
     /**
@@ -1625,32 +1623,50 @@ public abstract class AbstractRenderingController<S extends KGraphElement, T ext
      *            the value-type of the map
      */
     private <R> void removeMappedProperty(final IPropertyHolder propertyHolder,
-            final IProperty<Map<Object, R>> property, final Object key) {
-        Map<Object, R> map = propertyHolder.getProperty(property);
-        if (map != null) {
-            map.remove(key);
-            if (map.isEmpty()) {
-                propertyHolder.setProperty(property, null);
-            }
-        }
+            final IProperty<Map<Object, Object>> property, final KRendering key) {
+        this.pnodeControllers.remove(key);
+//        Map<Object, Object> map = propertyHolder.getProperty(property);
+//        if (map != null) {
+//            map.remove(key);
+//            if (map.isEmpty()) {
+//                propertyHolder.setProperty(property, null);
+//            }
+//        }
     }
-
+    
     /**
-     * Removes all mapped properties used in this controller from the associated property holders.
-     * 
-     * @param property
-     *            the property
-     * @param <R>
-     *            the value-type of the map
+     * Release all mapping information in order to let unused objects be garbage collected.
      */
-    private <R> void removeMappedProperties(final IProperty<Map<Object, R>> property) {
-        List<Pair<IPropertyHolder, Object>> mappedPropertyList = mappedProperties.get(property);
-        if (mappedPropertyList != null) {
-            for (Pair<IPropertyHolder, Object> pair : mappedPropertyList) {
-                removeMappedProperty(pair.getFirst(), property, pair.getSecond());
-            }
-            mappedProperties.remove(property);
-        }
+    public void removeMappedEntries() {
+        this.pnodeControllers.clear();
     }
-
+    
+//    /**
+//     * Removes all mapped properties used in this controller from the associated property holders.
+//     * 
+//     * @param property
+//     *            the property
+//     * @param <R>
+//     *            the value-type of the map
+//     */
+//    private void removeMappedProperties(final IProperty<Map<Object, Object>> property) {
+//        List<Pair<IPropertyHolder, Object>> mappedPropertyList = mappedProperties.get(property);
+//        if (mappedPropertyList != null) {
+////            for (Pair<IPropertyHolder, Object> pair : mappedPropertyList) {
+////                removeMappedProperty(pair.getFirst(), property, pair.getSecond());
+////            }
+//            mappedProperties.remove(property);
+//        }
+//    }
+//
+//    private void removeMappedProperties2(final IProperty<Map<KRendering, PNodeController<?>>>
+//              property) {
+//        List<Pair<IPropertyHolder, Object>> mappedPropertyList = mappedProperties.get(property);
+//        if (mappedPropertyList != null) {
+////            for (Pair<IPropertyHolder, Object> pair : mappedPropertyList) {
+////                removeMappedProperty(pair.getFirst(), property, pair.getSecond());
+////            }
+//            mappedProperties.remove(property);
+//        }
+//    }
 }

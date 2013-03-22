@@ -13,7 +13,7 @@
  */
 package de.cau.cs.kieler.klighd.piccolo.krendering.controller;
 
-import java.util.ArrayList;
+import java.util.Collections;
 
 import de.cau.cs.kieler.core.kgraph.KPort;
 import de.cau.cs.kieler.core.krendering.KBackground;
@@ -51,13 +51,11 @@ public class KPortRenderingController extends AbstractRenderingController<KPort,
         KRendering currentRendering = getCurrentRendering();
         PNode renderingNode;
         if (currentRendering != null) {
-                renderingNode =
-                        handleAreaPlacementRendering(currentRendering, new ArrayList<KStyle>(0),
-                                repNode, repNode);
+            renderingNode = handleAreaPlacementRendering(currentRendering,
+                    Collections.<KStyle>emptyList(), repNode);
         } else {
-                renderingNode =
-                        handleAreaPlacementRendering(createDefaultPortRendering(),
-                                new ArrayList<KStyle>(0), repNode, repNode);
+            renderingNode = handleAreaPlacementRendering(createDefaultPortRendering(),
+                    Collections.<KStyle>emptyList(), repNode);
         }
         
         return renderingNode;

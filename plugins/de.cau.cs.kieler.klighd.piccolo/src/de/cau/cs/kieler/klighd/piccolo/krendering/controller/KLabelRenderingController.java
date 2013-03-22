@@ -88,7 +88,7 @@ public class KLabelRenderingController extends AbstractRenderingController<KLabe
         @SuppressWarnings("unchecked")
         final PNodeController<PSWTText> controller =
                 (PNodeController<PSWTText>) createRendering(rendering, new ArrayList<KStyle>(0),
-                        parent, parent.getBoundsReference(), getRepresentation());
+                        parent, parent.getBoundsReference());
         controller.getNode().setText(KTextUtil.getTextLines(parent.getText()));
 
         // add a listener on the parent's bend points

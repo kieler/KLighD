@@ -55,7 +55,7 @@ import de.cau.cs.kieler.klighd.piccolo.activities.ApplyBendPointsActivity;
 import de.cau.cs.kieler.klighd.piccolo.activities.ApplySmartBoundsActivity;
 import de.cau.cs.kieler.klighd.piccolo.activities.FadeEdgeInActivity;
 import de.cau.cs.kieler.klighd.piccolo.activities.FadeNodeInActivity;
-import de.cau.cs.kieler.klighd.piccolo.activities.IStartableActivity;
+import de.cau.cs.kieler.klighd.piccolo.activities.IStartingAndFinishingActivity;
 import de.cau.cs.kieler.klighd.piccolo.krendering.IGraphElement;
 import de.cau.cs.kieler.klighd.piccolo.krendering.ILabeledGraphElement;
 import de.cau.cs.kieler.klighd.piccolo.krendering.INode;
@@ -67,6 +67,7 @@ import de.cau.cs.kieler.klighd.piccolo.krendering.KNodeTopNode;
 import de.cau.cs.kieler.klighd.piccolo.krendering.KPortNode;
 import de.cau.cs.kieler.klighd.piccolo.util.NodeUtil;
 import de.cau.cs.kieler.klighd.util.LimitedKGraphContentAdapter;
+import de.cau.cs.kieler.klighd.util.ModelingUtil;
 import de.cau.cs.kieler.klighd.util.RenderingContextData;
 import edu.umd.cs.piccolo.PCamera;
 import edu.umd.cs.piccolo.PLayer;
@@ -101,28 +102,28 @@ public class GraphController {
     public static final IProperty<PNode> REP = new Property<PNode>("klighd.piccolo.prepresentation");
     
     
-    /**
-     * the property for identifying whether a node has been populated. If a node is populated, child
-     * node have been created once.
-     */
-    private static final IProperty<Boolean> POPULATED = new Property<Boolean>("klighd.populated",
-            false);
-    /**
-     * the property for identifying whether a node is currently active. If a node is active, it is
-     * visible.
-     */
-    // Review: activate the subgraph:
-    // this is probably crucial in case the structure has been changed during an incremental update;
-    // the activity flag is also important in case of inter-level edges in combination with
-    // lazy loading/collapsing+expanding
-    private static final IProperty<Boolean> ACTIVE = new Property<Boolean>("klighd.active", false);
+//    /**
+//     * the property for identifying whether a node has been populated. If a node is populated, child
+//     * node have been created once.
+//     */
+//    private static final IProperty<Boolean> POPULATED = new Property<Boolean>("klighd.populated",
+//            false);
+//    /**
+//     * the property for identifying whether a node is currently active. If a node is active, it is
+//     * visible.
+//     */
+//    // Review: activate the subgraph:
+//    // this is probably crucial in case the structure has been changed during an incremental update;
+//    // the activity flag is also important in case of inter-level edges in combination with
+//    // lazy loading/collapsing+expanding
+//    private static final IProperty<Boolean> ACTIVE = new Property<Boolean>("klighd.active", false);
 
     /** the property for remembering the edge sync adapter on a node. */
     private static final IProperty<AdapterImpl> EDGE_SYNC_ADAPTER = new Property<AdapterImpl>(
             "klighd.edgeSyncAdapter");
 
-    /** the attribute key for the rendering. */
-    private static final Object RENDERING_KEY = new Object();
+//    /** the attribute key for the rendering. */
+//    private static final Object RENDERING_KEY = new Object();
     /** the attribute key for the edge offset listeners. */
     private static final Object EDGE_OFFSET_LISTENER_KEY = new Object();
     /** the attribute key for the nodes listed by edge offset listeners. */
@@ -163,6 +164,7 @@ public class GraphController {
         // shall be obsolete if an adequate update strategy is available
         resetGraphElement(graph);
         this.topNode = new KNodeTopNode(graph);
+        RenderingContextData.get(graph).setProperty(INode.NODE_REP, topNode);
         parent.addChild(topNode);
         this.sync = sync;
     }
@@ -381,6 +383,10 @@ public class GraphController {
             // if there is no Piccolo representation for the node create it
             if (nodeNode == null) {
                 nodeNode = new KNodeNode(node, parent);
+                RenderingContextData.get(node).setProperty(INode.NODE_REP, nodeNode);
+                if (record && isAutomaticallyArranged(node)) {
+                    nodeNode.setVisible(false);
+                }
                 updateLayout(nodeNode);
                 updateRendering(nodeNode);
                 handlePorts(nodeNode);
@@ -390,7 +396,6 @@ public class GraphController {
                 // add the node
                 parent.getChildArea().addNode(nodeNode);
 
-                // TODO only temporary auto-expand
                 KGraphData data = node.getData(KLayoutDataPackage.eINSTANCE.getKShapeLayout());
                 boolean expand = data == null || data.getProperty(KlighdConstants.EXPAND);
                 // in case the EXPAND property is not set the default value 'true' is returned
@@ -432,6 +437,10 @@ public class GraphController {
 
             // remove the node representation from the containing child area
             nodeNode.removeFromParent();
+            // release the objects kept in mind
+            nodeNode.getRenderingController().removeMappedEntries();
+            // release the node rendering controller
+            nodeNode.setRenderingController(null);
         }
     }
 
@@ -522,6 +531,9 @@ public class GraphController {
                 // if there is no Piccolo representation for the edge create it
                 if (edgeRep == null) {
                     edgeRep = new KEdgeNode(edge);
+                    if (record && isAutomaticallyArranged(edge)) {
+                        edgeRep.setVisible(false);
+                    }
                     updateLayout(edgeRep);
                     updateRendering(edgeRep);
                     handleLabels(edgeRep, edge);
@@ -565,6 +577,14 @@ public class GraphController {
 
             // remove the edge representation from the containing child area
             edgeNode.removeFromParent();
+            
+            // due to #deactivateSubgraph() this method will be performed multiple times so: 
+            if (edgeNode.getRenderingController() != null) {
+                // release the objects kept in mind
+                edgeNode.getRenderingController().removeMappedEntries();
+                // release the node rendering controller
+                edgeNode.setRenderingController(null);
+            }
         }
     }
 
@@ -600,6 +620,9 @@ public class GraphController {
         // if there is no Piccolo representation for the port create it
         if (portNode == null) {
             portNode = new KPortNode(port);
+            if (record && isAutomaticallyArranged(port)) {
+                portNode.setVisible(false);
+            }
             updateLayout(portNode);
             updateRendering(portNode);
             handleLabels(portNode, port);
@@ -620,6 +643,10 @@ public class GraphController {
         if (portNode != null) {
             // remove the port representation from the containing node
             portNode.removeFromParent();
+            // release the objects kept in mind
+            portNode.getRenderingController().removeMappedEntries();
+            // release the node rendering controller
+            portNode.setRenderingController(null);
         }
     }
 
@@ -680,6 +707,10 @@ public class GraphController {
         if (labelNode != null) {
             // remove the label representation from the containing node
             labelNode.removeFromParent();
+            // release the objects kept in mind
+            labelNode.getRenderingController().removeMappedEntries();
+            // release the node rendering controller
+            labelNode.setRenderingController(null);
         }
     }
 
@@ -723,7 +754,8 @@ public class GraphController {
                 shapeNode = (PNode) recordedChange.getKey();
                 PBounds bounds = (PBounds) recordedChange.getValue();
                 
-                if (shapeNode.getFullBounds().getX() == 0 && shapeNode.getFullBounds().getY() == 0) {
+                if (!shapeNode.getVisible()) {
+                    //shapeNode.getFullBounds().getX() == 0 && shapeNode.getFullBounds().getY() == 0) {
                     activity = new FadeNodeInActivity(shapeNode, bounds,
                             duration > 0 ? duration : 1);
                 } else { 
@@ -738,8 +770,8 @@ public class GraphController {
                 // unschedule a currently running primary activity on the node if any
                 NodeUtil.unschedulePrimaryActivity(shapeNode);
                 // instantly apply the activity without scheduling it
-                ((IStartableActivity) activity).activityStarted(); 
-                activity.setRelativeTargetValue(1.0f);
+                ((IStartingAndFinishingActivity) activity).activityStarted(); 
+                ((IStartingAndFinishingActivity) activity).activityFinished(); 
             }
         }
         recordedChanges.clear();
@@ -765,7 +797,6 @@ public class GraphController {
         if (shapeLayout != null) {
             NodeUtil.applySmartBounds(nodeNode, shapeLayout.getXpos(), shapeLayout.getYpos(),
                     shapeLayout.getWidth(), shapeLayout.getHeight());
-
             if (sync) {
                 installLayoutSyncAdapter(nodeNode);
             }
@@ -843,16 +874,16 @@ public class GraphController {
      *            the node representation
      */
     private void updateRendering(final KNodeNode nodeRep) {
-        KNodeRenderingController renderingController = (KNodeRenderingController) nodeRep
-                .getAttribute(RENDERING_KEY);
+        KNodeRenderingController renderingController = nodeRep.getRenderingController();
         if (renderingController == null) {
+            // the new rendering controller is attached to nodeRep in the constructor of
+            //  AbstractRenderingController
             renderingController = new KNodeRenderingController(nodeRep);
             nodeRep.setChildArea(renderingController.getChildAreaNode());
-            nodeRep.addAttribute(RENDERING_KEY, renderingController);
+            // nodeRep.addAttribute(RENDERING_KEY, renderingController);
             renderingController.initialize(sync);
         } else {
             renderingController.internalUpdateRendering();
-            // TODO renderingController.updateRendering(); // see AbstractRenderingController l.188
         }
     }
 
@@ -863,11 +894,12 @@ public class GraphController {
      *            the port representation
      */
     private void updateRendering(final KPortNode portRep) {
-        KPortRenderingController renderingController = (KPortRenderingController) portRep
-                .getAttribute(RENDERING_KEY);
+        KPortRenderingController renderingController = portRep.getRenderingController();
         if (renderingController == null) {
+            // the new rendering controller is attached to nodeRep in the constructor of
+            //  AbstractRenderingController
             renderingController = new KPortRenderingController(portRep);
-            portRep.addAttribute(RENDERING_KEY, renderingController);
+            // portRep.addAttribute(RENDERING_KEY, renderingController);
             renderingController.initialize(sync);
         } else {
             renderingController.internalUpdateRendering();
@@ -881,11 +913,12 @@ public class GraphController {
      *            the label representation
      */
     private void updateRendering(final KLabelNode labelRep) {
-        KLabelRenderingController renderingController = (KLabelRenderingController) labelRep
-                .getAttribute(RENDERING_KEY);
+        KLabelRenderingController renderingController = labelRep.getRenderingController();
         if (renderingController == null) {
+            // the new rendering controller is attached to nodeRep in the constructor of
+            //  AbstractRenderingController
             renderingController = new KLabelRenderingController(labelRep);
-            labelRep.addAttribute(RENDERING_KEY, renderingController);
+            // labelRep.addAttribute(RENDERING_KEY, renderingController);
             renderingController.initialize(sync);
         } else {
             renderingController.internalUpdateRendering();
@@ -899,11 +932,12 @@ public class GraphController {
      *            the edge representation
      */
     private void updateRendering(final KEdgeNode edgeRep) {
-        KEdgeRenderingController renderingController = (KEdgeRenderingController) edgeRep
-                .getAttribute(RENDERING_KEY);
+        KEdgeRenderingController renderingController = edgeRep.getRenderingController();
         if (renderingController == null) {
+            // the new rendering controller is attached to nodeRep in the constructor of
+            //  AbstractRenderingController
             renderingController = new KEdgeRenderingController(edgeRep);
-            edgeRep.addAttribute(RENDERING_KEY, renderingController);
+            // edgeRep.addAttribute(RENDERING_KEY, renderingController);
             renderingController.initialize(sync);
         } else {
             renderingController.internalUpdateRendering();
@@ -1758,5 +1792,20 @@ public class GraphController {
             }
         } /**/.doSwitch(element);
     }
-
+    
+    private boolean isAutomaticallyArranged(final KGraphElement element) {
+        KShapeLayout shapeLayout = this.topNode.getGraphElement().getData(KShapeLayout.class); 
+        if (shapeLayout == null || shapeLayout.getProperty(LayoutOptions.NO_LAYOUT)) {
+            return false;
+        }
+        shapeLayout = element.getData(KShapeLayout.class);
+        if (shapeLayout != null && shapeLayout.getProperty(LayoutOptions.NO_LAYOUT)) {
+            return false;
+        }
+        shapeLayout = ModelingUtil.eContainerOfType(element, KNode.class).getData(KShapeLayout.class);
+        if (shapeLayout != null && shapeLayout.getProperty(LayoutOptions.NO_LAYOUT)) {
+            return false;
+        }
+        return true;
+    }
 }

@@ -15,7 +15,7 @@ package de.cau.cs.kieler.klighd.piccolo.krendering.controller;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.util.ArrayList;
+import java.util.Collections;
 
 import de.cau.cs.kieler.core.kgraph.KNode;
 import de.cau.cs.kieler.core.krendering.KRendering;
@@ -76,11 +76,11 @@ public class KNodeRenderingController extends AbstractRenderingController<KNode,
         PNode renderingNode;
         // KPlacementData pd;
         if (currentRendering != null) {
-            renderingNode = handleAreaPlacementRendering(currentRendering, new ArrayList<KStyle>(
-                    0), repNode, repNode);
+            renderingNode = handleAreaPlacementRendering(currentRendering,
+                    Collections.<KStyle>emptyList(), repNode);
         } else {
             renderingNode = handleAreaPlacementRendering(createDefaultNodeRendering(),
-                    new ArrayList<KStyle>(0), repNode, repNode);
+                    Collections.<KStyle>emptyList(), repNode);
         }
 
         // make sure the child area is attached to something

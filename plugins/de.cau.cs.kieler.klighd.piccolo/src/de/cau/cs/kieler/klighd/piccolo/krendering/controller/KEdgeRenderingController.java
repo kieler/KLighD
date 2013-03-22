@@ -16,6 +16,7 @@ package de.cau.cs.kieler.klighd.piccolo.krendering.controller;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
+import java.util.Collections;
 
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -123,8 +124,7 @@ public class KEdgeRenderingController extends AbstractRenderingController<KEdge,
         final PNodeController<PSWTAdvancedPath> controller =
                 (PNodeController<PSWTAdvancedPath>) 
                 createRendering(rendering,
-                        new ArrayList<KStyle>(0), parent, new PBounds(0, 0, 1, 1),
-                        getRepresentation());
+                        new ArrayList<KStyle>(0), parent, new PBounds(0, 0, 1, 1));
         if (rendering instanceof KSpline) {
             controller.getNode().setPathToSpline(parent.getBendPoints());
         } else if (rendering instanceof KRoundedBendsPolyline) {
@@ -170,8 +170,7 @@ public class KEdgeRenderingController extends AbstractRenderingController<KEdge,
         @SuppressWarnings("unchecked")
         final PNodeController<KCustomConnectionFigureNode> controller =
                 (PNodeController<KCustomConnectionFigureNode>) createRendering(rendering,
-                        new ArrayList<KStyle>(0), parent, new PBounds(0, 0, 1, 1),
-                        getRepresentation());
+                        Collections.<KStyle>emptyList(), parent, new PBounds(0, 0, 1, 1));
         controller.getNode().setPoints(parent.getBendPoints());
 
         parent.setRepresentationNode(controller.getNode());
