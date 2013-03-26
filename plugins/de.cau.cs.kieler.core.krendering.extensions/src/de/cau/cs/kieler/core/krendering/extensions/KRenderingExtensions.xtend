@@ -52,6 +52,7 @@ import de.cau.cs.kieler.core.krendering.KTextStrikeout
 import de.cau.cs.kieler.core.krendering.KEllipse
 import de.cau.cs.kieler.core.krendering.KRectangle
 import de.cau.cs.kieler.core.krendering.KText
+import de.cau.cs.kieler.core.krendering.KShadow
 
 /**
  * This utility class contains various methods that are convenient while composing KRendering data.
@@ -415,7 +416,7 @@ class KRenderingExtensions {
         ];
     }
     
-    def <T extends KRendering>  T setForegroundInvisible(T rendering, boolean invisible){
+    def <T extends KRendering> T setForegroundInvisible(T rendering, boolean invisible) {
         return rendering => [
             it.styles?.filter(typeof(KForeground)).last?:(renderingFactory.createKForeground() => [
                 rendering.styles += it; 
@@ -431,11 +432,25 @@ class KRenderingExtensions {
 //that allows sticking additional Foreground/Background information to the list without removing 
 //already defined styles first        
     
+    def KShadow getShadow(KRendering rendering){
+        return rendering.styles.filter(typeof(KShadow)).last?:null;
+    }
+
+    def <T extends KRendering> T setShadow(T rendering, KColor color) {
+        rendering.styles.removeAll(rendering.styles.filter(typeof(KShadow)).toList);
+        return rendering => [
+            it.styles += renderingFactory.createKShadow() => [
+                rendering.styles += it; 
+                it.color = color;
+            ];
+        ];
+    }
+
 
     def <T extends KRendering> T setFontBold(T rendering, boolean bold) {
         rendering.styles.removeAll(rendering.styles.filter(typeof(KFontBold)).toList);
         return rendering => [
-            it.styles += renderingFactory.createKFontBold => [
+            it.styles += renderingFactory.createKFontBold() => [
                 it.setBold(bold);
             ];
         ];        
