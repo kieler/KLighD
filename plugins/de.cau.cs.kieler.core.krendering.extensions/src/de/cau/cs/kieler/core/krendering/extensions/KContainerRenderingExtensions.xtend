@@ -37,6 +37,9 @@ class KContainerRenderingExtensions {
     @Inject
     extension KRenderingExtensions;
     
+    @Inject
+    extension KColorExtensions;
+    
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////
     ////////////////////////                    KContainerRenderings
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -153,22 +156,20 @@ class KContainerRenderingExtensions {
     
     def KPolygon drawArrow(KContainerRendering cr){
         return renderingFactory.createKPolygon => [
-            cr.addChild(it).withCopyOf(cr.lineWidth).withCopyOf(cr.foreground);
-            it.setBackground(cr.foreground);
-            it.points.add(createKPosition(PositionReferenceX::LEFT, 0, 0, PositionReferenceY::TOP, 0, 0))
-            it.points.add(createKPosition(PositionReferenceX::LEFT, 0, 0.4f, PositionReferenceY::TOP, 0, 0.5f))
-            it.points.add(createKPosition(PositionReferenceX::LEFT, 0, 0, PositionReferenceY::BOTTOM, 0, 0))
-            it.points.add(createKPosition(PositionReferenceX::RIGHT, 0, 0, PositionReferenceY::BOTTOM, 0, 0.5f))    
+            cr.addChild(it).withCopyOf(cr.lineWidth).withCopyOf(cr.foreground).setBackground(cr.foreground);
+            it.points += createKPosition(PositionReferenceX::LEFT, 0, 0, PositionReferenceY::TOP, 0, 0)
+            it.points += createKPosition(PositionReferenceX::LEFT, 0, 0.4f, PositionReferenceY::TOP, 0, 0.5f)
+            it.points += createKPosition(PositionReferenceX::LEFT, 0, 0, PositionReferenceY::BOTTOM, 0, 0)
+            it.points += createKPosition(PositionReferenceX::RIGHT, 0, 0, PositionReferenceY::BOTTOM, 0, 0.5f)    
        ];    
     }
     
     def KPolygon drawTriangle(KContainerRendering cr){
         return renderingFactory.createKPolygon => [
-            cr.addChild(it).withCopyOf(cr.lineWidth).withCopyOf(cr.foreground);
-            it.points.add(createKPosition(PositionReferenceX::LEFT, 0, 0, PositionReferenceY::TOP, 0, 0))
-            // ppd.points.add(createKPosition(PositionReferenceX::LEFT, 0, "0.5".f, PositionReferenceY::TOP, 0, 0.5f))
-            it.points.add(createKPosition(PositionReferenceX::LEFT, 0, 0, PositionReferenceY::BOTTOM, 0, 0))
-            it.points.add(createKPosition(PositionReferenceX::RIGHT, 0, 0, PositionReferenceY::BOTTOM, 0, 0.5f))
+            cr.addChild(it).withCopyOf(cr.lineWidth).withCopyOf(cr.foreground).setBackground("white".color);
+            it.points += createKPosition(PositionReferenceX::LEFT, 0, 0, PositionReferenceY::TOP, 0, 0)
+            it.points += createKPosition(PositionReferenceX::LEFT, 0, 0, PositionReferenceY::BOTTOM, 0, 0)
+            it.points += createKPosition(PositionReferenceX::RIGHT, 0, 0, PositionReferenceY::BOTTOM, 0, 0.5f)
         ];
     }
 }
