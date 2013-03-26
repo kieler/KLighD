@@ -56,7 +56,7 @@ class KPolylineExtensions {
     def KRendering addInheritanceTriangleArrowDecorator(KPolyline pl) {
         return pl.drawTriangle() => [
             it.placementData = renderingFactory.createKDecoratorPlacementData => [
-                 val float scale = pl.lineWidth.lineWidth;
+                val float scale = pl.lineWidth.lineWidth;
                 val float modifiedScale = Math::sqrt(3*scale).floatValue;
                 it.rotateWithLine = true;
                 it.relative = 1f;
