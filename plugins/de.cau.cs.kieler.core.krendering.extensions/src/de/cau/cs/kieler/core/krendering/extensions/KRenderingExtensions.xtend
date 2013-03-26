@@ -271,7 +271,7 @@ class KRenderingExtensions {
         ]);
     }
     
-    def <T extends KRendering>  T setBackground(T rendering, KColoring coloring){
+    def <T extends KRendering> T setBackground(T rendering, KColoring coloring){
         rendering.styles.removeAll(rendering.styles.filter(typeof(KBackground)).toList);
         return rendering => [
             it.styles += renderingFactory.createKBackground => [
@@ -286,7 +286,7 @@ class KRenderingExtensions {
         ];
     }
     
-    def <T extends KRendering>  T setBackground(T rendering, KColor color){
+    def <T extends KRendering> T setBackground(T rendering, KColor color){
         rendering.styles.removeAll(rendering.styles.filter(typeof(KBackground)).toList);
         return rendering => [
             it.styles += renderingFactory.createKBackground => [
@@ -295,19 +295,7 @@ class KRenderingExtensions {
         ];
     }
     
-    def <T extends KRendering>  T setBackgroundInvisible(T rendering, boolean invisible){
-        return rendering => [
-            it.styles?.filter(typeof(KBackground)).last?:(renderingFactory.createKBackground() => [
-                rendering.styles += it; 
-                it.color = renderingFactory.createKColor();
-            ]) => [
-                it.alpha = if (invisible) 0
-                    else renderingFactory.KRenderingPackage.KColoring_Alpha.defaultValue as Integer;
-            ];
-        ];
-    }
-    
-    def <T extends KRendering>  T setBackgroundColor(T rendering, int red, int green, int blue){
+    def <T extends KRendering> T setBackgroundColor(T rendering, int red, int green, int blue){
         rendering.styles.removeAll(rendering.styles.filter(typeof(KBackground)).toList);
         return rendering => [
             it.styles += renderingFactory.createKBackground => [
@@ -316,6 +304,44 @@ class KRenderingExtensions {
                     it.green = green;
                     it.blue = blue;
                 ];
+            ];
+        ];
+    }
+    
+    def <T extends KRendering> T setBackgroundGradient(T rendering, KColor color1, KColor color2, int angle) {
+        rendering.styles.removeAll(rendering.styles.filter(typeof(KBackground)).toList);
+        return rendering => [
+            it.styles += renderingFactory.createKBackground => [
+                it.color = color1;                
+                it.targetColor = color2;
+                it.gradientAngle = angle;
+            ];
+        ];
+    }
+    
+    def <T extends KRendering> T setBackgroundGradient(T rendering, KColor color1, int alpha1,
+        KColor color2, int alpha2, int angle
+    ) {
+        rendering.styles.removeAll(rendering.styles.filter(typeof(KBackground)).toList);
+        return rendering => [
+            it.styles += renderingFactory.createKBackground => [
+                it.color = color1;
+                it.alpha = alpha1;                
+                it.targetColor = color2;
+                it.targetAlpha = alpha2;
+                it.gradientAngle = angle;
+            ];
+        ];
+    }
+    
+    def <T extends KRendering> T setBackgroundInvisible(T rendering, boolean invisible){
+        return rendering => [
+            it.styles?.filter(typeof(KBackground)).last?:(renderingFactory.createKBackground() => [
+                rendering.styles += it; 
+                it.color = renderingFactory.createKColor();
+            ]) => [
+                it.alpha = if (invisible) 0
+                    else renderingFactory.KRenderingPackage.KColoring_Alpha.defaultValue as Integer;
             ];
         ];
     }
@@ -350,19 +376,6 @@ class KRenderingExtensions {
         ];
     }
     
-    def <T extends KRendering>  T setForegroundInvisible(T rendering, boolean invisible){
-        return rendering => [
-            it.styles?.filter(typeof(KForeground)).last?:(renderingFactory.createKForeground() => [
-                rendering.styles += it; 
-                it.color = renderingFactory.createKColor();
-            ]) => [
-                it.alpha = if (invisible) 0
-                    else renderingFactory.KRenderingPackage.KColoring_Alpha.defaultValue as Integer;
-            ];
-        ];
-    }
-    
-    
     def <T extends KRendering>  T setForegroundColor(T rendering, int red, int green, int blue){
         rendering.styles.removeAll(rendering.styles.filter(typeof(KForeground)).toList);
         return rendering => [
@@ -374,7 +387,46 @@ class KRenderingExtensions {
                 ];
             ];
         ];
-    }    
+    }
+    
+    def <T extends KRendering> T setForegroundGradient(T rendering, KColor color1, KColor color2, int angle) {
+        rendering.styles.removeAll(rendering.styles.filter(typeof(KForeground)).toList);
+        return rendering => [
+            it.styles += renderingFactory.createKForeground => [
+                it.color = color1;                
+                it.targetColor = color2;
+                it.gradientAngle = angle;
+            ];
+        ];
+    }
+    
+    def <T extends KRendering> T setForegroundGradient(T rendering, KColor color1, int alpha1,
+        KColor color2, int alpha2, int angle
+    ) {
+        rendering.styles.removeAll(rendering.styles.filter(typeof(KForeground)).toList);
+        return rendering => [
+            it.styles += renderingFactory.createKForeground => [
+                it.color = color1;
+                it.alpha = alpha1;                
+                it.targetColor = color2;
+                it.targetAlpha = alpha2;
+                it.gradientAngle = angle;
+            ];
+        ];
+    }
+    
+    def <T extends KRendering>  T setForegroundInvisible(T rendering, boolean invisible){
+        return rendering => [
+            it.styles?.filter(typeof(KForeground)).last?:(renderingFactory.createKForeground() => [
+                rendering.styles += it; 
+                it.color = renderingFactory.createKColor();
+            ]) => [
+                it.alpha = if (invisible) 0
+                    else renderingFactory.KRenderingPackage.KColoring_Alpha.defaultValue as Integer;
+            ];
+        ];
+    }
+        
 //TODO: maybe add setters/getters for single components of KForeground/KBackground or simply a method 
 //that allows sticking additional Foreground/Background information to the list without removing 
 //already defined styles first        
