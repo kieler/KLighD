@@ -676,11 +676,12 @@ public class PSWTAdvancedPath extends PNode {
         //  dismiss the transparency.
         g2.setTransform(t);
         g2.setLineWidth(1);
-        g2.setAlpha(currentAlpha);            
+        g2.setAlpha(KlighdConstants.ALPHA_FULL_OPAQUE);            
         g2.setBackground(KlighdConstants.WHITE);
         fillShape(g2);
         
-        // reset the line
+        // reset the manipulated settings
+        g2.setAlpha(currentAlpha);
         g2.setLineWidth(lineWidth);
     }
 
