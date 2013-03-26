@@ -13,6 +13,7 @@
  */
 package de.cau.cs.kieler.klighd.piccolo.krendering.viewer;
 
+import java.awt.Graphics2D;
 import java.awt.event.InputEvent;
 import java.util.Collection;
 import java.util.List;
@@ -23,6 +24,8 @@ import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Device;
+import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Menu;
@@ -45,6 +48,8 @@ import de.cau.cs.kieler.core.krendering.KStyle;
 import de.cau.cs.kieler.core.krendering.KText;
 import de.cau.cs.kieler.core.krendering.LineStyle;
 import de.cau.cs.kieler.klighd.piccolo.INodeSelectionListener;
+import de.cau.cs.kieler.klighd.piccolo.KlighdSWTGraphics;
+import de.cau.cs.kieler.klighd.piccolo.KlighdSWTGraphicsImpl;
 import de.cau.cs.kieler.klighd.piccolo.Messages;
 import de.cau.cs.kieler.klighd.piccolo.PMouseWheelZoomEventHandler;
 import de.cau.cs.kieler.klighd.piccolo.PSWTSimpleSelectionEventHandler;
@@ -111,10 +116,22 @@ public class PiccoloViewer extends AbstractViewer<KNode> implements INodeSelecti
     public PiccoloViewer(final ContextViewer theParentViewer, final Composite parent,
             final int style) {
         if (parent.isDisposed()) {
-            throw new UnsupportedOperationException("So geht das nicht!");
+            final String msg = "KLighD (piccolo): A 'PiccoloViewer' has been tried to attach to a"
+                    + "disposed 'Composite' widget.";
+            throw new IllegalArgumentException(msg);
         }
         this.parentViewer = theParentViewer;
         this.canvas = new PSWTCanvas(parent, style) {
+            
+            private KlighdSWTGraphics graphics = new KlighdSWTGraphicsImpl(null,
+                    parent.getDisplay());
+
+            @Override
+            protected Graphics2D getGraphics2D(final GC gc, final Device device) {
+                graphics.setDevice(device);
+                graphics.setGC(gc);
+                return (Graphics2D) graphics;
+            }
             
             // with this specialized implementation I register
             //  customized event listeners that do not translate SWT events into AWT ones.
