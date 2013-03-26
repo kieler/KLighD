@@ -20,7 +20,6 @@ import com.google.common.collect.Lists
 import static extension com.google.common.base.Strings.*
 import de.cau.cs.kieler.core.kgraph.KNode
 import de.cau.cs.kieler.core.util.Pair
-import de.cau.cs.kieler.core.krendering.KRenderingFactory
 import de.cau.cs.kieler.core.krendering.extensions.KNodeExtensions
 import de.cau.cs.kieler.core.krendering.extensions.KEdgeExtensions
 import de.cau.cs.kieler.core.krendering.extensions.KRenderingExtensions
@@ -36,6 +35,8 @@ import org.eclipse.emf.ecore.EClassifier
 import org.eclipse.emf.ecore.EPackage
 import org.eclipse.emf.ecore.EClass
 import org.eclipse.emf.ecore.EReference
+import de.cau.cs.kieler.klighd.KlighdConstants
+import de.cau.cs.kieler.core.krendering.extensions.KContainerRenderingExtensions
 
 /**
  * This diagram synthesis implementation demonstrates the usage of KLighD for the purpose of
@@ -60,13 +61,14 @@ class EcoreDiagramSynthesis extends AbstractDiagramSynthesis<EModelElementCollec
     extension KRenderingExtensions
     
     @Inject
+    extension KContainerRenderingExtensions
+    
+    @Inject
     extension KPolylineExtensions
     
 	@Inject
 	extension KColorExtensions
 	
-    private static val KRenderingFactory renderingFactory = KRenderingFactory::eINSTANCE
-
     private static val CHOSEN = "Chosen classes";
     private static val CHOSEN_AND_RELATED = "Chosen (highlighted) & related classes";
     private static val ALL = "All classes, selection highlighted";
@@ -111,32 +113,47 @@ class EcoreDiagramSynthesis extends AbstractDiagramSynthesis<EModelElementCollec
 	    
 	        if (CLASS_FILTER.optionValue == CHOSEN) {
                 
+                // create class and relation figures for each of the elements in the collection
                 depictedClasses.createElementFigures(it);
                 
 	        } else if (CLASS_FILTER.optionValue == CHOSEN_AND_RELATED) {
                 
                 // The chosen classes ...
                 val chosenClasses = choice.filter(typeof(EClass)).toList => [
-                   // ... are inspected, their related classes are put into the classifiers list as well!
-	               it.forEach[depictedClasses.addAll(it.EStructuralFeatures.filter(typeof(EReference)).map[it.EType])];
-                   it.forEach[depictedClasses.addAll(it.ESuperTypes)];
+                   // ... are inspected, and ...
+	               it.forEach[
+	                   // .. their referenced classes ...
+	                   depictedClasses.addAll(it.EStructuralFeatures.filter(typeof(EReference)).map[it.EType])
+	               ];
+                   it.forEach[
+                       // ... as well as there super classes are put into the list of depicted classes, too.
+                       depictedClasses.addAll(it.ESuperTypes)
+                   ];
                 ];
                 
                 depictedClasses.createElementFigures(it);
 
+                // each of the above given ones is highlighted in a special fashion
                 chosenClasses.forEach[
-                    it.node.KRendering.background = "lightPink".color;
+                    it.node.KRendering.setBackgroundGradient("white".color,
+                        KlighdConstants::ALPHA_FULL_OPAQUE, "red".color, 150, 0
+                    );
                 ];
                 
-	        } else {
+	        } else { // (CLASS_FILTER.optionValue == ALL)
                 val chosenClasse = Lists::newArrayList(depictedClasses);
                 
+                // the package is revealed by means of the first class, all of the contained classifiers ... 
                 depictedClasses += depictedClasses.head.EPackage.EClassifiers => [classes |
+                    // ... are depicted (it denotes the root node introduced above in this case)
                     classes.createElementFigures(it)
                 ];
 
+                // each of the above given ones is highlighted in a special fashion
                 chosenClasse.forEach[
-                    it.node.KRendering.background = "lightPink".color;
+                    it.node.KRendering.setBackgroundGradient("white".color,
+                        KlighdConstants::ALPHA_FULL_OPAQUE, "red".color, 150, 0
+                    );
                 ];
 	        }
 		
@@ -157,14 +174,10 @@ class EcoreDiagramSynthesis extends AbstractDiagramSynthesis<EModelElementCollec
 	def createClassifierFigures(Iterable<EClassifier> classes, KNode rootNode) {
 		classes.filterNull.forEach[ EClassifier clazz |
             rootNode.children += clazz.createNode().putToLookUpWith(clazz) => [
-                it.setNodeSize(180, 80);
-                it.data += renderingFactory.createKRoundedRectangle() => [
-                	it.cornerHeight = 30;
-                    it.cornerWidth = 30;
-                    it.setLineWidth(2);
-                    it.background = "lemon".color;
-                    it.children += renderingFactory.createKText().putToLookUpWith(clazz) => [
-                        it.text = clazz.name.nullToEmpty;
+                it.addRoundedRectangle(30, 30, 2) => [
+                    it.setBackgroundGradient("white".color, KlighdConstants::ALPHA_FULL_OPAQUE, "lemon".color, 255, 0)
+                    it.shadow = "black".color;
+                    it.addText(clazz.name.nullToEmpty).putToLookUpWith(clazz) => [
                         it.setFontSize(20);
                         it.setFontBold(true);
                         it.setSurroundingSpace(20, 0);
@@ -187,8 +200,8 @@ class EcoreDiagramSynthesis extends AbstractDiagramSynthesis<EModelElementCollec
 	    ref.createEdge() => [
     		it.source = ref.eContainer.node;
 	       	it.target = ref.EType.node;
-	        it.data += renderingFactory.createKPolyline() => [
-	            it.setLineWidth(2);
+	        it.addPolyline() => [
+	            it.lineWidth = 2;
 	            it.addArrowDecorator();
 	        ];
 	    ];
@@ -207,8 +220,8 @@ class EcoreDiagramSynthesis extends AbstractDiagramSynthesis<EModelElementCollec
             it.addLayoutParam(LayoutOptions::EDGE_TYPE, EdgeType::GENERALIZATION);
     	    it.source = child.node;
 	        it.target = parent.node;
-	        it.data += renderingFactory.createKPolyline() => [
-                it.setLineWidth(2);
+	        it.data addPolyline() => [
+                it.lineWidth = 2;
                 it.addInheritanceTriangleArrowDecorator();
 	        ];		    
 		];
