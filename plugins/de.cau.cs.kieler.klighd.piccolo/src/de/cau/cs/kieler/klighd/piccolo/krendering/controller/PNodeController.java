@@ -19,14 +19,16 @@ package de.cau.cs.kieler.klighd.piccolo.krendering.controller;
 import org.eclipse.swt.graphics.RGB;
 
 import de.cau.cs.kieler.core.krendering.KColor;
-import de.cau.cs.kieler.core.krendering.KRenderingPackage;
+import de.cau.cs.kieler.core.krendering.KColoring;
 import de.cau.cs.kieler.core.krendering.KRotation;
+import de.cau.cs.kieler.core.krendering.KShadow;
 import de.cau.cs.kieler.core.krendering.LineCap;
 import de.cau.cs.kieler.core.krendering.LineStyle;
 import de.cau.cs.kieler.core.krendering.Underline;
 import de.cau.cs.kieler.klighd.KlighdConstants;
 import de.cau.cs.kieler.klighd.piccolo.nodes.PAlignmentNode.HAlignment;
 import de.cau.cs.kieler.klighd.piccolo.nodes.PAlignmentNode.VAlignment;
+import de.cau.cs.kieler.klighd.piccolo.util.RGBGradient;
 import de.cau.cs.kieler.klighd.piccolo.util.StyleUtil.Styles;
 import edu.umd.cs.piccolo.PNode;
 import edu.umd.cs.piccolo.util.PBounds;
@@ -37,7 +39,7 @@ import edu.umd.cs.piccolo.util.PBounds;
  * A node controller is a facade on a specific Piccolo node, providing a generic interface to set
  * the bounds and other parameters of the node.
  * 
- * @author mri
+ * @author mri, chsch
  * 
  * @param <T>
  *            the type of the associated node
@@ -65,7 +67,7 @@ public abstract class PNodeController<T extends PNode> {
     public T getNode() {
         return node;
     }
-    
+
     /**
      * Sets the bounds of the associated node.
      * 
@@ -74,7 +76,6 @@ public abstract class PNodeController<T extends PNode> {
      */
     public abstract void setBounds(final PBounds bounds);
 
-    
     /**
      * Sets the invisibility of the associated node.
      * 
@@ -84,30 +85,54 @@ public abstract class PNodeController<T extends PNode> {
     public void setInvisible(final boolean invisible) {
         getNode().setOccluded(invisible);
         // need the following call in order to get newly invisible figures away
-        //  (PNode does not do it)
+        // (PNode does not do it)
         getNode().invalidatePaint();
 
-        //question: is it correct to do the following when propagateToChildren is set?
+        // question: is it correct to do the following when propagateToChildren is set?
         // controller.getNode().setVisible(!styles.invisibility.isInvisible());
     }
-    
+
     /**
      * Sets the foreground color of the associated node.
      * 
      * @param color
      *            the foreground color
+     * @param alpha
+     *            the related alpha value
      */
-    public void setForegroundColor(final RGB color) {
+    public void setForegroundColor(final RGB color, final int alpha) {
         // do nothing
     }
-    
+
+    /**
+     * Sets the foreground gradient of the associated node.
+     * 
+     * @param gradient
+     *            the foreground gradient
+     */
+    public void setForegroundGradient(final RGBGradient gradient) {
+        // do nothing
+    }
+
     /**
      * Sets the background color of the associated node.
      * 
      * @param color
      *            the background color
+     * @param alpha
+     *            the related alpha value
      */
-    public void setBackgroundColor(final RGB color) {
+    public void setBackgroundColor(final RGB color, final int alpha) {
+        // do nothing
+    }
+
+    /**
+     * Sets the background gradient of the associated node.
+     * 
+     * @param gradient
+     *            the background gradient
+     */
+    public void setBackgroundGradient(final RGBGradient gradient) {
         // do nothing
     }
 
@@ -122,26 +147,6 @@ public abstract class PNodeController<T extends PNode> {
     }
 
     /**
-     * Sets the line visibility of the associated node.
-     * 
-     * @param lineAlpha
-     *            the line alpha
-     */
-    public void setLineAlpha(final int lineAlpha) {
-        // do nothing
-    }
-
-    /**
-     * Sets the filled status of the associated node.
-     * 
-     * @param backgroundAlpha
-     *            the background alpha
-     */
-    public void setBackgroundAlpha(final int backgroundAlpha) {
-        // do nothing
-    }
-
-    /**
      * Sets the line style of the associated node.
      * 
      * @param lineStyle
@@ -150,7 +155,7 @@ public abstract class PNodeController<T extends PNode> {
     public void setLineStyle(final LineStyle lineStyle) {
         // do nothing
     }
-    
+
     /**
      * Sets the line cap style of the associated node.
      * 
@@ -168,6 +173,16 @@ public abstract class PNodeController<T extends PNode> {
      *            the rotation
      */
     public void setRotation(final float rotation) {
+        // do nothing
+    }
+
+    /**
+     * Sets the shadow of the associated node.
+     * 
+     * @param color
+     *            the shadow color
+     */
+    public void setShadow(final KColor color) {
         // do nothing
     }
 
@@ -230,7 +245,7 @@ public abstract class PNodeController<T extends PNode> {
     public void setBold(final boolean bold) {
         // do nothing
     }
-    
+
     /**
      * Sets the underlining property for the associated node (most likely some kind of text).
      * 
@@ -242,7 +257,7 @@ public abstract class PNodeController<T extends PNode> {
     public void setUnderline(final Underline underline, final RGB color) {
         // do nothing
     }
-    
+
     /**
      * Sets the strikeout property for the associated node (most likely some kind of text).
      * 
@@ -254,13 +269,14 @@ public abstract class PNodeController<T extends PNode> {
     public void setStrikeout(final boolean strikeout, final RGB color) {
         // do nothing
     }
-    
+
     /**
      * Applies changes to the associated node.<br>
      * <br>
      * This can be used to apply several style changes at once to prevent costly redundancy.
      * 
-     * @param styles A compound {@link Styles} field to infer the data from. 
+     * @param styles
+     *            A compound {@link Styles} field to infer the data from.
      */
     public void applyChanges(final Styles styles) {
         // apply invisibility
@@ -271,29 +287,34 @@ public abstract class PNodeController<T extends PNode> {
                 return;
             }
         }
-        
+
         // apply foreground coloring
         if (styles.foreground != null) {
-            int alphaValue = styles.foreground.getAlpha();
             KColor color = styles.foreground.getColor();
-            if (color != null) {
-                this.setForegroundColor(toRGB(color));
+            KColor targetColor = styles.foreground.getTargetColor();
+            if (targetColor != null && color != null) {
+                this.setForegroundGradient(toRGBGradient(styles.foreground));
+            } else if (color != null) {
+                this.setForegroundColor(toRGB(color), styles.foreground.getAlpha());
             }
-            this.setLineAlpha(alphaValue);
+
         } else {
-            this.setForegroundColor(KlighdConstants.BLACK);
-            this.setLineAlpha(
-                (Integer) KRenderingPackage.eINSTANCE.getKColoring_Alpha().getDefaultValue());
+            this.setForegroundColor(KlighdConstants.BLACK, KlighdConstants.ALPHA_FULL_OPAQUE);
         }
 
         // apply background coloring
         if (styles.background != null) {
             KColor color = styles.background.getColor();
-            int alphaValue = styles.background.getAlpha();
-            if (color != null) {
-                this.setBackgroundColor(toRGB(color));
+            KColor targetColor = styles.background.getTargetColor();
+
+            if (targetColor != null && color != null) {
+                this.setBackgroundGradient(toRGBGradient(styles.background));
+            } else if (color != null) {
+                this.setBackgroundColor(toRGB(color), styles.background.getAlpha());
             }
-            this.setBackgroundAlpha(alphaValue);
+        } else {
+            this.setBackgroundColor((RGB) null, KlighdConstants.ALPHA_FULL_OPAQUE);
+            this.setBackgroundGradient(null);
         }
 
         // apply line width
@@ -309,7 +330,7 @@ public abstract class PNodeController<T extends PNode> {
         } else {
             this.setLineStyle(LineStyle.SOLID);
         }
-        
+
         // apply line cap style
         if (styles.lineCap != null) {
             this.setLineCap(styles.lineCap.getLineCap());
@@ -321,6 +342,12 @@ public abstract class PNodeController<T extends PNode> {
         if (styles.rotation != null) {
             KRotation rotation = styles.rotation;
             this.setRotation(rotation.getRotation());
+        }
+
+        // apply shadow
+        if (styles.shadow != null) {
+            KShadow shadow = styles.shadow;
+            this.setShadow(shadow.getColor());
         }
 
         // apply horizontal alignment
@@ -374,21 +401,20 @@ public abstract class PNodeController<T extends PNode> {
         if (styles.bold != null) {
             this.setBold(styles.bold.isBold());
         }
-        
+
         // apply the underlined property
         if (styles.underline != null) {
             this.setUnderline(styles.underline.getUnderline(), toRGB(styles.underline.getColor()));
         } else {
             this.setUnderline(null, KlighdConstants.BLACK);
         }
-        
+
         // apply the strikeout property
         if (styles.strikeout != null) {
             this.setStrikeout(styles.strikeout.getStruckOut(), toRGB(styles.strikeout.getColor()));
         } else {
             this.setStrikeout(false, KlighdConstants.BLACK);
         }
-        
     }
 
     /**
@@ -402,5 +428,23 @@ public abstract class PNodeController<T extends PNode> {
      */
     public RGB toRGB(final KColor color) {
         return color == null ? null : new RGB(color.getRed(), color.getGreen(), color.getBlue());
+    }
+
+    /**
+     * Convenience transformation converting a {@link KColoring} with defined target color into an
+     * {@link RGBGradient}.
+     * 
+     * @param coloring
+     *            the {@link KColoring} to be converted
+     * @return null if<code>color = null<code>, the related {@link RGB} otherwise
+     */
+    public RGBGradient toRGBGradient(final KColoring coloring) {
+        if (coloring == null || coloring.getColor() == null || coloring.getTargetColor() == null) {
+            return null;
+        } else {
+            return new RGBGradient(toRGB(coloring.getColor()), coloring.getAlpha(),
+                    toRGB(coloring.getTargetColor()), coloring.getTargetAlpha(),
+                    coloring.getGradientAngle());
+        }
     }
 }

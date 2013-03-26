@@ -20,12 +20,13 @@ import org.eclipse.swt.graphics.RGB;
 import de.cau.cs.kieler.core.krendering.Underline;
 import de.cau.cs.kieler.klighd.KlighdConstants;
 import de.cau.cs.kieler.klighd.piccolo.nodes.PSWTStyledText;
+import de.cau.cs.kieler.klighd.piccolo.util.RGBGradient;
 import de.cau.cs.kieler.klighd.piccolo.util.StyleUtil.Styles;
 
 /**
  * A node controller for the {@code PSWTText}.
  * 
- * @author mri
+ * @author mri, chsch
  */
 public abstract class PSWTTextController extends PNodeController<PSWTStyledText> {
 
@@ -50,40 +51,55 @@ public abstract class PSWTTextController extends PNodeController<PSWTStyledText>
      * {@inheritDoc}
      */
     @Override
-    public void setForegroundColor(final RGB color) {
+    public void setForegroundColor(final RGB color, final int alpha) {
+        getNode().setPenAlpha(alpha);
         getNode().setPenColor(color);
     }
 
     /**
      * {@inheritDoc}
      */
+    public void setForegroundGradient(final RGBGradient gradient) {
+        getNode().setPenColor(gradient);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public void setBackgroundColor(final RGB color) {
+    public void setBackgroundColor(final RGB color, final int alpha) {
+        getNode().setPenPaintAlpha(alpha);
         getNode().setPenPaint(color);
     }
-
-    /**
+   /**
      * {@inheritDoc}
      */
-    @Override
-    public void setLineAlpha(final int lineAlpha) {
-        if (lineAlpha == 0) {
-            getNode().setPenColor((RGB) null);
-        }
+    public void setBackgroundGradient(final RGBGradient gradient) {
+        getNode().setPaint(gradient);
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setBackgroundAlpha(final int backgroundAlpha) {
-        if (backgroundAlpha == 0) {
-            getNode().setBackgroundColor(null);
-            getNode().setTransparent(true);
-        } else {
-            getNode().setTransparent(false);
-        }
-    }
+//    /**
+//     * {@inheritDoc}
+//     */
+//    @Override
+//    public void setLineAlpha(final int lineAlpha) {
+//        if (lineAlpha == 0) {
+//            getNode().setPenColor((RGB) null);
+//        }
+//    }
+//
+//    /**
+//     * {@inheritDoc}
+//     */
+//    @Override
+//    public void setBackgroundAlpha(final int backgroundAlpha) {
+//        if (backgroundAlpha == 0) {
+//            getNode().setBackgroundColor(null);
+//            getNode().setTransparent(true);
+//        } else {
+//            getNode().setTransparent(false);
+//        }
+//    }
 
     /**
      * {@inheritDoc}

@@ -18,9 +18,11 @@ package de.cau.cs.kieler.klighd.piccolo.krendering.controller;
 
 import org.eclipse.swt.graphics.RGB;
 
+import de.cau.cs.kieler.core.krendering.KColor;
 import de.cau.cs.kieler.core.krendering.LineCap;
 import de.cau.cs.kieler.core.krendering.LineStyle;
 import de.cau.cs.kieler.klighd.piccolo.nodes.PSWTAdvancedPath;
+import de.cau.cs.kieler.klighd.piccolo.util.RGBGradient;
 
 
 /**
@@ -44,16 +46,32 @@ public abstract class PSWTAdvancedPathController extends PNodeController<PSWTAdv
      * {@inheritDoc}
      */
     @Override
-    public void setForegroundColor(final RGB color) {
+    public void setForegroundColor(final RGB color, final int alpha) {
+        getNode().setStrokeAlpha(alpha);
         getNode().setStrokeColor(color);
     }
 
     /**
      * {@inheritDoc}
      */
+    public void setForegroundGradient(final RGBGradient gradient) {
+        getNode().setStrokeColor(gradient);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public void setBackgroundColor(final RGB color) {
+    public void setBackgroundColor(final RGB color, final int alpha) {
+        getNode().setPaintAlpha(alpha);
         getNode().setPaint(color);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void setBackgroundGradient(final RGBGradient gradient) {
+        getNode().setPaint(gradient);
     }
 
     /**
@@ -64,25 +82,25 @@ public abstract class PSWTAdvancedPathController extends PNodeController<PSWTAdv
         getNode().setLineWidth(lineWidth);
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setLineAlpha(final int lineAlpha) {
-        if (lineAlpha == 0) {
-            getNode().setStrokeColor(null);
-        }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setBackgroundAlpha(final int backgroundAlpha) {
-        if (backgroundAlpha == 0) {
-            getNode().setPaint((RGB) null);
-        }
-    }
+//    /**
+//     * {@inheritDoc}
+//     */
+//    @Override
+//    public void setLineAlpha(final int lineAlpha) {
+//        if (lineAlpha == 0) {
+//            getNode().setStrokeColor((RGB) null);
+//        }
+//    }
+//
+//    /**
+//     * {@inheritDoc}
+//     */
+//    @Override
+//    public void setBackgroundAlpha(final int backgroundAlpha) {
+//        if (backgroundAlpha == 0) {
+//            getNode().setPaint((RGB) null);
+//        }
+//    }
 
     /**
      * {@inheritDoc}
@@ -107,4 +125,10 @@ public abstract class PSWTAdvancedPathController extends PNodeController<PSWTAdv
         getNode().setRotation(Math.toRadians(rotation));
     }
     
+    /**
+     * {@inheritDoc}
+     */
+    public void setShadow(final KColor color) {
+        getNode().setShadow(toRGB(color));
+    }
 }
