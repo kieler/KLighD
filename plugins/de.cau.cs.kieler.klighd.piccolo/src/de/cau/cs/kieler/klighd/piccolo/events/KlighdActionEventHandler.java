@@ -21,12 +21,14 @@ import de.cau.cs.kieler.core.krendering.KAction;
 import de.cau.cs.kieler.core.krendering.KRendering;
 import de.cau.cs.kieler.core.krendering.KTrigger;
 import de.cau.cs.kieler.klighd.IAction.ActionContext;
+import de.cau.cs.kieler.klighd.LightDiagramServices;
 import de.cau.cs.kieler.klighd.actions.CollapseExpandAction;
 import de.cau.cs.kieler.klighd.piccolo.krendering.controller.AbstractRenderingController;
 import de.cau.cs.kieler.klighd.piccolo.krendering.viewer.KlighdMouseEventListener.KlighdMouseEvent;
 import de.cau.cs.kieler.klighd.piccolo.krendering.viewer.PiccoloViewer;
 import de.cau.cs.kieler.klighd.triggers.KlighdStatusTrigger;
 import de.cau.cs.kieler.klighd.triggers.KlighdStatusTrigger.KlighdStatusState;
+import de.cau.cs.kieler.klighd.views.DiagramViewManager;
 import edu.umd.cs.piccolo.event.PInputEvent;
 import edu.umd.cs.piccolo.event.PInputEventListener;
 
@@ -73,6 +75,8 @@ public class KlighdActionEventHandler implements PInputEventListener {
             
             ActionContext context = null; // construct the context lazily when it is required
             
+            viewer.setRecording(true);
+            
             for (KAction action : Iterables.filter(rendering.getActions(), WELLFORMED)) {
                 if (action.getTrigger().equals(KTrigger.DOUBLECLICK) && action.getId() != null) {
                     if (context == null) {
@@ -83,6 +87,10 @@ public class KlighdActionEventHandler implements PInputEventListener {
                 }
             }
 
+            LightDiagramServices.getInstance().layoutDiagram(
+                    DiagramViewManager.getInstance().getView(
+                            viewer.getContextViewer().getViewPartId()), viewer, true, true);
+            
             KlighdStatusState state = new KlighdStatusState(KlighdStatusState.Status.UPDATE, viewer
                     .getContextViewer().getViewPartId(), viewer.getContextViewer()
                     .getCurrentViewContext(), viewer);
