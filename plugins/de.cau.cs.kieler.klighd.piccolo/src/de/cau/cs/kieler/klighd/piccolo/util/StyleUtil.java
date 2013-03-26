@@ -27,6 +27,7 @@ import de.cau.cs.kieler.core.krendering.KLineCap;
 import de.cau.cs.kieler.core.krendering.KLineStyle;
 import de.cau.cs.kieler.core.krendering.KLineWidth;
 import de.cau.cs.kieler.core.krendering.KRotation;
+import de.cau.cs.kieler.core.krendering.KShadow;
 import de.cau.cs.kieler.core.krendering.KStyle;
 import de.cau.cs.kieler.core.krendering.KStyleRef;
 import de.cau.cs.kieler.core.krendering.KTextStrikeout;
@@ -51,24 +52,22 @@ public final class StyleUtil {
         
         // CHECKSTYLEOFF Visibility
 
-        /** the invisibility. */
-        public KInvisibility invisibility = null;
-        /** the line width. */
-        public KLineWidth lineWidth = null;
         /** the foreground. */
         public KForeground foreground =  null;
         /** the background. */
         public KBackground background = null;
+        /** the invisibility. */
+        public KInvisibility invisibility = null;
+        /** the line width. */
+        public KLineWidth lineWidth = null;
         /** the line style. */
         public KLineStyle lineStyle = null;
         /** the line style. */
         public KLineCap lineCap = null;
-        /** the horizontal alignment. */
+        /** the shadow. */
+        public KShadow shadow = null;
+        /** the rotation. */
         public KRotation rotation = null;
-        /** the horizontal alignment. */
-        public KHorizontalAlignment horizontalAlignment = null;
-        /** the vertical alignment. */
-        public KVerticalAlignment verticalAlignment = null;
         /** the font name. */
         public KFontName fontName = null;
         /** the font size. */
@@ -77,6 +76,10 @@ public final class StyleUtil {
         public KFontItalic italic = null;
         /** the font bold property. */
         public KFontBold bold = null;
+        /** the horizontal alignment. */
+        public KHorizontalAlignment horizontalAlignment = null;
+        /** the vertical alignment. */
+        public KVerticalAlignment verticalAlignment = null;
         /** the font underline property. */
         public KTextUnderline underline = null;
         /** the font underline property. */
@@ -141,10 +144,16 @@ public final class StyleUtil {
                 theStyles.lineCap = lcs;
                 return true;
             }
-
+            
             // rotation
             public Boolean caseKRotation(final KRotation r) {
                 theStyles.rotation = r;
+                return true;
+            }
+
+            // shadow
+            public Boolean caseKShadow(final KShadow s) {
+                theStyles.shadow = s;
                 return true;
             }
 
@@ -190,7 +199,7 @@ public final class StyleUtil {
                 return true;
             }
 
-            // strikeout
+            // strike-out
             public Boolean caseKTextStrikeout(final KTextStrikeout strikeout) {
                 theStyles.strikeout = strikeout;
                 return true;
