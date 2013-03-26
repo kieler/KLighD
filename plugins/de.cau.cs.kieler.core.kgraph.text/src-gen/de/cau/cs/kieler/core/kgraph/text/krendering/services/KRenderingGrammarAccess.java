@@ -179,21 +179,22 @@ public class KRenderingGrammarAccess extends AbstractGrammarElementFinder {
 		private final RuleCall cKLineStyleParserRuleCall_4 = (RuleCall)cAlternatives.eContents().get(4);
 		private final RuleCall cKLineCapParserRuleCall_5 = (RuleCall)cAlternatives.eContents().get(5);
 		private final RuleCall cKRotationParserRuleCall_6 = (RuleCall)cAlternatives.eContents().get(6);
-		private final RuleCall cKFontBoldParserRuleCall_7 = (RuleCall)cAlternatives.eContents().get(7);
-		private final RuleCall cKFontItalicParserRuleCall_8 = (RuleCall)cAlternatives.eContents().get(8);
-		private final RuleCall cKFontNameParserRuleCall_9 = (RuleCall)cAlternatives.eContents().get(9);
-		private final RuleCall cKFontSizeParserRuleCall_10 = (RuleCall)cAlternatives.eContents().get(10);
-		private final RuleCall cKVerticalAlignmentParserRuleCall_11 = (RuleCall)cAlternatives.eContents().get(11);
-		private final RuleCall cKHorizontalAlignmentParserRuleCall_12 = (RuleCall)cAlternatives.eContents().get(12);
-		private final RuleCall cKStyleRefParserRuleCall_13 = (RuleCall)cAlternatives.eContents().get(13);
+		private final RuleCall cKShadowParserRuleCall_7 = (RuleCall)cAlternatives.eContents().get(7);
+		private final RuleCall cKFontBoldParserRuleCall_8 = (RuleCall)cAlternatives.eContents().get(8);
+		private final RuleCall cKFontItalicParserRuleCall_9 = (RuleCall)cAlternatives.eContents().get(9);
+		private final RuleCall cKFontNameParserRuleCall_10 = (RuleCall)cAlternatives.eContents().get(10);
+		private final RuleCall cKFontSizeParserRuleCall_11 = (RuleCall)cAlternatives.eContents().get(11);
+		private final RuleCall cKVerticalAlignmentParserRuleCall_12 = (RuleCall)cAlternatives.eContents().get(12);
+		private final RuleCall cKHorizontalAlignmentParserRuleCall_13 = (RuleCall)cAlternatives.eContents().get(13);
+		private final RuleCall cKStyleRefParserRuleCall_14 = (RuleCall)cAlternatives.eContents().get(14);
 		
 		//KStyle:
-		//	KLineWidth | KForeground | KBackground | KVisibility | KLineStyle | KLineCap | KRotation | KFontBold | KFontItalic |
-		//	KFontName | KFontSize | KVerticalAlignment | KHorizontalAlignment | KStyleRef;
+		//	KLineWidth | KForeground | KBackground | KVisibility | KLineStyle | KLineCap | KRotation | KShadow | KFontBold |
+		//	KFontItalic | KFontName | KFontSize | KVerticalAlignment | KHorizontalAlignment | KStyleRef;
 		public ParserRule getRule() { return rule; }
 
-		//KLineWidth | KForeground | KBackground | KVisibility | KLineStyle | KLineCap | KRotation | KFontBold | KFontItalic |
-		//KFontName | KFontSize | KVerticalAlignment | KHorizontalAlignment | KStyleRef
+		//KLineWidth | KForeground | KBackground | KVisibility | KLineStyle | KLineCap | KRotation | KShadow | KFontBold |
+		//KFontItalic | KFontName | KFontSize | KVerticalAlignment | KHorizontalAlignment | KStyleRef
 		public Alternatives getAlternatives() { return cAlternatives; }
 
 		//KLineWidth
@@ -217,26 +218,29 @@ public class KRenderingGrammarAccess extends AbstractGrammarElementFinder {
 		//KRotation
 		public RuleCall getKRotationParserRuleCall_6() { return cKRotationParserRuleCall_6; }
 
+		//KShadow
+		public RuleCall getKShadowParserRuleCall_7() { return cKShadowParserRuleCall_7; }
+
 		//KFontBold
-		public RuleCall getKFontBoldParserRuleCall_7() { return cKFontBoldParserRuleCall_7; }
+		public RuleCall getKFontBoldParserRuleCall_8() { return cKFontBoldParserRuleCall_8; }
 
 		//KFontItalic
-		public RuleCall getKFontItalicParserRuleCall_8() { return cKFontItalicParserRuleCall_8; }
+		public RuleCall getKFontItalicParserRuleCall_9() { return cKFontItalicParserRuleCall_9; }
 
 		//KFontName
-		public RuleCall getKFontNameParserRuleCall_9() { return cKFontNameParserRuleCall_9; }
+		public RuleCall getKFontNameParserRuleCall_10() { return cKFontNameParserRuleCall_10; }
 
 		//KFontSize
-		public RuleCall getKFontSizeParserRuleCall_10() { return cKFontSizeParserRuleCall_10; }
+		public RuleCall getKFontSizeParserRuleCall_11() { return cKFontSizeParserRuleCall_11; }
 
 		//KVerticalAlignment
-		public RuleCall getKVerticalAlignmentParserRuleCall_11() { return cKVerticalAlignmentParserRuleCall_11; }
+		public RuleCall getKVerticalAlignmentParserRuleCall_12() { return cKVerticalAlignmentParserRuleCall_12; }
 
 		//KHorizontalAlignment
-		public RuleCall getKHorizontalAlignmentParserRuleCall_12() { return cKHorizontalAlignmentParserRuleCall_12; }
+		public RuleCall getKHorizontalAlignmentParserRuleCall_13() { return cKHorizontalAlignmentParserRuleCall_13; }
 
 		//KStyleRef
-		public RuleCall getKStyleRefParserRuleCall_13() { return cKStyleRefParserRuleCall_13; }
+		public RuleCall getKStyleRefParserRuleCall_14() { return cKStyleRefParserRuleCall_14; }
 	}
 
 	public class KPlacementElements extends AbstractParserRuleElementFinder {
@@ -3433,6 +3437,42 @@ public class KRenderingGrammarAccess extends AbstractGrammarElementFinder {
 		public Keyword getPropagateToChildrenExclamationMarkKeyword_3_0() { return cPropagateToChildrenExclamationMarkKeyword_3_0; }
 	}
 
+	public class KShadowElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "KShadow");
+		private final Group cGroup = (Group)rule.eContents().get(1);
+		private final Action cKShadowAction_0 = (Action)cGroup.eContents().get(0);
+		private final Keyword cShadowKeyword_1 = (Keyword)cGroup.eContents().get(1);
+		private final Assignment cColorAssignment_2 = (Assignment)cGroup.eContents().get(2);
+		private final RuleCall cColorKColorParserRuleCall_2_0 = (RuleCall)cColorAssignment_2.eContents().get(0);
+		private final Assignment cPropagateToChildrenAssignment_3 = (Assignment)cGroup.eContents().get(3);
+		private final Keyword cPropagateToChildrenExclamationMarkKeyword_3_0 = (Keyword)cPropagateToChildrenAssignment_3.eContents().get(0);
+		
+		//KShadow:
+		//	{KShadow} "shadow" color=KColor propagateToChildren?="!"?;
+		public ParserRule getRule() { return rule; }
+
+		//{KShadow} "shadow" color=KColor propagateToChildren?="!"?
+		public Group getGroup() { return cGroup; }
+
+		//{KShadow}
+		public Action getKShadowAction_0() { return cKShadowAction_0; }
+
+		//"shadow"
+		public Keyword getShadowKeyword_1() { return cShadowKeyword_1; }
+
+		//color=KColor
+		public Assignment getColorAssignment_2() { return cColorAssignment_2; }
+
+		//KColor
+		public RuleCall getColorKColorParserRuleCall_2_0() { return cColorKColorParserRuleCall_2_0; }
+
+		//propagateToChildren?="!"?
+		public Assignment getPropagateToChildrenAssignment_3() { return cPropagateToChildrenAssignment_3; }
+
+		//"!"
+		public Keyword getPropagateToChildrenExclamationMarkKeyword_3_0() { return cPropagateToChildrenExclamationMarkKeyword_3_0; }
+	}
+
 	public class KFontBoldElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "KFontBold");
 		private final Group cGroup = (Group)rule.eContents().get(1);
@@ -4037,6 +4077,7 @@ public class KRenderingGrammarAccess extends AbstractGrammarElementFinder {
 	private KLineStyleElements pKLineStyle;
 	private KLineCapElements pKLineCap;
 	private KRotationElements pKRotation;
+	private KShadowElements pKShadow;
 	private KFontBoldElements pKFontBold;
 	private KFontItalicElements pKFontItalic;
 	private KFontNameElements pKFontName;
@@ -4123,8 +4164,8 @@ public class KRenderingGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//KStyle:
-	//	KLineWidth | KForeground | KBackground | KVisibility | KLineStyle | KLineCap | KRotation | KFontBold | KFontItalic |
-	//	KFontName | KFontSize | KVerticalAlignment | KHorizontalAlignment | KStyleRef;
+	//	KLineWidth | KForeground | KBackground | KVisibility | KLineStyle | KLineCap | KRotation | KShadow | KFontBold |
+	//	KFontItalic | KFontName | KFontSize | KVerticalAlignment | KHorizontalAlignment | KStyleRef;
 	public KStyleElements getKStyleAccess() {
 		return (pKStyle != null) ? pKStyle : (pKStyle = new KStyleElements());
 	}
@@ -4497,6 +4538,16 @@ public class KRenderingGrammarAccess extends AbstractGrammarElementFinder {
 	
 	public ParserRule getKRotationRule() {
 		return getKRotationAccess().getRule();
+	}
+
+	//KShadow:
+	//	{KShadow} "shadow" color=KColor propagateToChildren?="!"?;
+	public KShadowElements getKShadowAccess() {
+		return (pKShadow != null) ? pKShadow : (pKShadow = new KShadowElements());
+	}
+	
+	public ParserRule getKShadowRule() {
+		return getKShadowAccess().getRule();
 	}
 
 	//KFontBold:

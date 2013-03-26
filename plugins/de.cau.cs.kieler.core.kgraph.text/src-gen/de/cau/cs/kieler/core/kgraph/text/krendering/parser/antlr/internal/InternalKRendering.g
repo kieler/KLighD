@@ -439,71 +439,81 @@ ruleKStyle returns [EObject current=null]
 
     |
     { 
-        newCompositeNode(grammarAccess.getKStyleAccess().getKFontBoldParserRuleCall_7()); 
+        newCompositeNode(grammarAccess.getKStyleAccess().getKShadowParserRuleCall_7()); 
     }
-    this_KFontBold_7=ruleKFontBold
+    this_KShadow_7=ruleKShadow
     { 
-        $current = $this_KFontBold_7.current; 
+        $current = $this_KShadow_7.current; 
         afterParserOrEnumRuleCall();
     }
 
     |
     { 
-        newCompositeNode(grammarAccess.getKStyleAccess().getKFontItalicParserRuleCall_8()); 
+        newCompositeNode(grammarAccess.getKStyleAccess().getKFontBoldParserRuleCall_8()); 
     }
-    this_KFontItalic_8=ruleKFontItalic
+    this_KFontBold_8=ruleKFontBold
     { 
-        $current = $this_KFontItalic_8.current; 
+        $current = $this_KFontBold_8.current; 
         afterParserOrEnumRuleCall();
     }
 
     |
     { 
-        newCompositeNode(grammarAccess.getKStyleAccess().getKFontNameParserRuleCall_9()); 
+        newCompositeNode(grammarAccess.getKStyleAccess().getKFontItalicParserRuleCall_9()); 
     }
-    this_KFontName_9=ruleKFontName
+    this_KFontItalic_9=ruleKFontItalic
     { 
-        $current = $this_KFontName_9.current; 
+        $current = $this_KFontItalic_9.current; 
         afterParserOrEnumRuleCall();
     }
 
     |
     { 
-        newCompositeNode(grammarAccess.getKStyleAccess().getKFontSizeParserRuleCall_10()); 
+        newCompositeNode(grammarAccess.getKStyleAccess().getKFontNameParserRuleCall_10()); 
     }
-    this_KFontSize_10=ruleKFontSize
+    this_KFontName_10=ruleKFontName
     { 
-        $current = $this_KFontSize_10.current; 
+        $current = $this_KFontName_10.current; 
         afterParserOrEnumRuleCall();
     }
 
     |
     { 
-        newCompositeNode(grammarAccess.getKStyleAccess().getKVerticalAlignmentParserRuleCall_11()); 
+        newCompositeNode(grammarAccess.getKStyleAccess().getKFontSizeParserRuleCall_11()); 
     }
-    this_KVerticalAlignment_11=ruleKVerticalAlignment
+    this_KFontSize_11=ruleKFontSize
     { 
-        $current = $this_KVerticalAlignment_11.current; 
+        $current = $this_KFontSize_11.current; 
         afterParserOrEnumRuleCall();
     }
 
     |
     { 
-        newCompositeNode(grammarAccess.getKStyleAccess().getKHorizontalAlignmentParserRuleCall_12()); 
+        newCompositeNode(grammarAccess.getKStyleAccess().getKVerticalAlignmentParserRuleCall_12()); 
     }
-    this_KHorizontalAlignment_12=ruleKHorizontalAlignment
+    this_KVerticalAlignment_12=ruleKVerticalAlignment
     { 
-        $current = $this_KHorizontalAlignment_12.current; 
+        $current = $this_KVerticalAlignment_12.current; 
         afterParserOrEnumRuleCall();
     }
 
     |
     { 
-        newCompositeNode(grammarAccess.getKStyleAccess().getKStyleRefParserRuleCall_13()); 
+        newCompositeNode(grammarAccess.getKStyleAccess().getKHorizontalAlignmentParserRuleCall_13()); 
     }
-    this_KStyleRef_13=ruleKStyleRef
+    this_KHorizontalAlignment_13=ruleKHorizontalAlignment
     { 
-        $current = $this_KStyleRef_13.current; 
+        $current = $this_KHorizontalAlignment_13.current; 
+        afterParserOrEnumRuleCall();
+    }
+
+    |
+    { 
+        newCompositeNode(grammarAccess.getKStyleAccess().getKStyleRefParserRuleCall_14()); 
+    }
+    this_KStyleRef_14=ruleKStyleRef
+    { 
+        $current = $this_KStyleRef_14.current; 
         afterParserOrEnumRuleCall();
     }
 )
@@ -4929,6 +4939,70 @@ ruleKRotation returns [EObject current=null]
 	    {
 	        if ($current==null) {
 	            $current = createModelElement(grammarAccess.getKRotationRule());
+	        }
+       		setWithLastConsumed($current, "propagateToChildren", true, "!");
+	    }
+
+)
+)?)
+;
+
+
+
+
+
+// Entry rule entryRuleKShadow
+entryRuleKShadow returns [EObject current=null] 
+	:
+	{ newCompositeNode(grammarAccess.getKShadowRule()); }
+	 iv_ruleKShadow=ruleKShadow 
+	 { $current=$iv_ruleKShadow.current; } 
+	 EOF 
+;
+
+// Rule KShadow
+ruleKShadow returns [EObject current=null] 
+    @init { enterRule(); 
+    }
+    @after { leaveRule(); }:
+((
+    {
+        $current = forceCreateModelElement(
+            grammarAccess.getKShadowAccess().getKShadowAction_0(),
+            $current);
+    }
+)	otherlv_1='shadow' 
+    {
+    	newLeafNode(otherlv_1, grammarAccess.getKShadowAccess().getShadowKeyword_1());
+    }
+(
+(
+		{ 
+	        newCompositeNode(grammarAccess.getKShadowAccess().getColorKColorParserRuleCall_2_0()); 
+	    }
+		lv_color_2_0=ruleKColor		{
+	        if ($current==null) {
+	            $current = createModelElementForParent(grammarAccess.getKShadowRule());
+	        }
+       		set(
+       			$current, 
+       			"color",
+        		lv_color_2_0, 
+        		"KColor");
+	        afterParserOrEnumRuleCall();
+	    }
+
+)
+)(
+(
+		lv_propagateToChildren_3_0=	'!' 
+    {
+        newLeafNode(lv_propagateToChildren_3_0, grammarAccess.getKShadowAccess().getPropagateToChildrenExclamationMarkKeyword_3_0());
+    }
+ 
+	    {
+	        if ($current==null) {
+	            $current = createModelElement(grammarAccess.getKShadowRule());
 	        }
        		setWithLastConsumed($current, "propagateToChildren", true, "!");
 	    }
