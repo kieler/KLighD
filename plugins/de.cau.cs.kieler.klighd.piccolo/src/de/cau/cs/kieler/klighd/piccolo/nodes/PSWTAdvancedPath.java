@@ -53,7 +53,10 @@ import de.cau.cs.kieler.core.krendering.LineStyle;
 import de.cau.cs.kieler.core.math.KVector;
 import de.cau.cs.kieler.core.math.KVectorChain;
 import de.cau.cs.kieler.core.math.KielerMath;
+import de.cau.cs.kieler.klighd.KlighdConstants;
+import de.cau.cs.kieler.klighd.piccolo.KlighdSWTGraphics;
 import de.cau.cs.kieler.klighd.piccolo.krendering.util.PolylineUtil;
+import de.cau.cs.kieler.klighd.piccolo.util.RGBGradient;
 
 import edu.umd.cs.piccolo.PNode;
 import edu.umd.cs.piccolo.nodes.PPath;
@@ -61,7 +64,6 @@ import edu.umd.cs.piccolo.util.PAffineTransform;
 import edu.umd.cs.piccolo.util.PAffineTransformException;
 import edu.umd.cs.piccolo.util.PBounds;
 import edu.umd.cs.piccolo.util.PPaintContext;
-import edu.umd.cs.piccolox.swt.SWTGraphics2D;
 import edu.umd.cs.piccolox.swt.SWTShapeManager;
 
 /**
@@ -95,8 +97,16 @@ public class PSWTAdvancedPath extends PNode {
     
     private static final Map<Color, RGB> RGB_CACHE = Maps.newConcurrentMap(); 
 
+    private int strokeAlpha = KlighdConstants.ALPHA_FULL_OPAQUE;
     private RGB strokePaint = DEFAULT_STROKE_PAINT;
+    private RGBGradient strokePaintGradient = null;
+    
+    // at most one of the following is allowed to have a non-null value at any time!
+    private int paintAlpha = KlighdConstants.ALPHA_FULL_OPAQUE;
     private RGB paint = null;
+    private RGBGradient paintGradient = null;
+    
+    private RGB shadow = null;
 
     /** the line width for this path. */
     private double lineWidth = 1.0;
@@ -348,6 +358,15 @@ public class PSWTAdvancedPath extends PNode {
     }
 
     /**
+     * Returns the stroke paint gradient used while painting this node. This value may be null.
+     * 
+     * @return the stroke paint gradient used while painting this node.
+     */
+    public RGBGradient getStrokePaintGradient() {
+        return this.paintGradient;
+    }
+
+    /**
      * Sets the paint to use when drawing the stroke of the shape.
      * 
      * @param strokeColor
@@ -356,13 +375,47 @@ public class PSWTAdvancedPath extends PNode {
     public void setStrokeColor(final RGB strokeColor) {
         final RGB old = strokePaint;
         strokePaint = strokeColor;
+        strokePaintGradient = null;
         invalidatePaint();
         firePropertyChange(PPath.PROPERTY_CODE_STROKE_PAINT, PPath.PROPERTY_STROKE_PAINT, old,
                 strokePaint);
     }
 
     /**
-     * Return the paint used while painting this node. This value may be null.
+     * Set the alpha used to draw the stroke of the shape.
+     * 
+     * @param alpha
+     *            the alpha value
+     */
+    public void setStrokeAlpha(final int alpha) {
+        this.strokeAlpha = alpha;
+    }
+    
+    /**
+     * Sets the paint to use when drawing the stroke of the shape.
+     * 
+     * @param strokeGradient
+     *            new stroke color
+     */
+    public void setStrokeColor(final RGBGradient strokeGradient) {
+        if (strokePaintGradient != null && strokePaintGradient.equals(strokeGradient)) {
+            return;
+        }
+        Object oldPaint = null;
+        if (strokePaintGradient != null) {
+            oldPaint = strokePaintGradient;   
+        } else if (strokePaint != null) {
+            oldPaint = strokePaint;
+            strokePaint = null;
+        }
+        strokePaintGradient = strokeGradient;
+        invalidatePaint();
+        firePropertyChange(PPath.PROPERTY_CODE_STROKE_PAINT, PPath.PROPERTY_STROKE_PAINT, oldPaint,
+                strokePaintGradient);
+    }
+
+    /**
+     * Returns the paint used while painting this node. This value may be null.
      * 
      * @return the paint used while painting this node.
      */
@@ -371,17 +424,62 @@ public class PSWTAdvancedPath extends PNode {
     }
 
     /**
+     * Returns the paint gradient used while painting this node. This value may be null.
+     * 
+     * @return the paint gradient used while painting this node.
+     */
+    public RGBGradient getSWTPaintGradient() {
+        return this.paintGradient;
+    }
+
+    /**
      * Set the paint used to paint this node, which may be null.
      * 
      * @param newPaint paint that this node should use when painting itself.
      */
     public void setPaint(final RGB newPaint) {
-        if (paint == newPaint) {
+        if (paint != null && paint.equals(newPaint)) {
             return;
         }
-
-        final RGB oldPaint = paint;
+        Object oldPaint = null;
+        if (paintGradient != null) {
+            oldPaint = paintGradient;
+            paintGradient = null;
+        } else if (paint != null) {
+            oldPaint = paint;
+        }
         paint = newPaint;
+        invalidatePaint();
+        firePropertyChange(PROPERTY_CODE_PAINT, PROPERTY_PAINT, oldPaint, paint);
+    }
+    
+    /**
+     * Set the alpha used to paint this node.
+     * 
+     * @param alpha
+     *            the alpha value
+     */
+    public void setPaintAlpha(final int alpha) {
+        this.paintAlpha = alpha;
+    }
+    
+    /**
+     * Set the paint used to paint this node, which may be null.
+     * 
+     * @param newPaint paint that this node should use when painting itself.
+     */
+    public void setPaint(final RGBGradient newPaint) {
+        if (paintGradient != null && paintGradient.equals(newPaint)) {
+            return;
+        }
+        Object oldPaint = null;
+        if (paintGradient != null) {
+            oldPaint = paintGradient;   
+        } else if (paint != null) {
+            oldPaint = paint;
+            paint = null;
+        }
+        paintGradient = newPaint;
         invalidatePaint();
         firePropertyChange(PROPERTY_CODE_PAINT, PROPERTY_PAINT, oldPaint, paint);
     }
@@ -480,13 +578,13 @@ public class PSWTAdvancedPath extends PNode {
         }
         updatingBoundsFromPath = false;
     }
-
+    
     /**
      * {@inheritDoc}
      */
     @Override
     protected void paint(final PPaintContext paintContext) {
-        SWTGraphics2D g2 = (SWTGraphics2D) paintContext.getGraphics();
+        KlighdSWTGraphics g2 = (KlighdSWTGraphics) paintContext.getGraphics();
         g2.setLineWidth(lineWidth);
         g2.setLineStyle(lineStyle);
         g2.setLineCap(lineCapStyle);
@@ -495,29 +593,101 @@ public class PSWTAdvancedPath extends PNode {
             g2.transform(internalXForm);
         }
 
+        if (!isPolyline && shadow != null) {
+            drawShadow(g2);
+        }
+        final int currentAlpha = g2.getAlpha();
+        final float currentAlphaFloat = (float) currentAlpha;
+        
         RGB p = getSWTPaint();
         if (p != null) {
+            g2.setAlpha((int) (paintAlpha * (currentAlphaFloat / KlighdConstants.ALPHA_FULL_OPAQUE)));
             g2.setBackground(p);
+            fillShape(g2);
+        }
+        
+        RGBGradient pg = getSWTPaintGradient();
+        if (pg != null && g2 instanceof KlighdSWTGraphics) {
+            ((KlighdSWTGraphics) g2).setBackgroundPattern(pg, getBounds());            
             fillShape(g2);
         }
 
         if (strokePaint != null) {
+            g2.setAlpha((int) (strokeAlpha * (currentAlphaFloat / KlighdConstants.ALPHA_FULL_OPAQUE)));
             g2.setColor(strokePaint);
+            drawShape(g2);
+        }
+
+        if (strokePaintGradient != null && g2 instanceof KlighdSWTGraphics) {
+            Rectangle2D bounds = getBounds();
+            ((KlighdSWTGraphics) g2).setPattern(
+                    strokePaintGradient,
+                    new Rectangle2D.Double(bounds.getMinX() - 1, bounds.getMinY() - 1, bounds
+                            .getMaxX() + 1, bounds.getMaxY() + 2));
             drawShape(g2);
         }
 
         if (inverseXForm != null) {
             g2.transform(inverseXForm);
         }
+
+        g2.setAlpha(currentAlpha);
         g2.setLineWidth(1.0);
         g2.setLineStyle(SWT.LINE_SOLID);
         g2.setLineCap(SWT.CAP_FLAT);
+    }
+    
+    
+    /**
+     * Draws the shadow of the current shape.
+     * 
+     * @param g2 the {@link SWTGraphics2D} to draw on.
+     */
+    private void drawShadow(final KlighdSWTGraphics g2) {
+        // the amount of pixels the shadow will cover in horizontal and vertical direction
+        final int shadowExtend = 8;
+
+        final int currentAlpha = g2.getAlpha();
+        
+        // the alpha value of the particular shadow shapes
+        //  note that the alpha values of stacked shapes will kind of accumulate
+        final float shadowAlpha = 25f;
+        
+        // determine the movement of the shape coordinates by means of an affine transform
+        AffineTransform t = g2.getTransform();
+        AffineTransform tc = new AffineTransform(t);
+        tc.translate(shadowExtend, shadowExtend);
+        
+        // configure the graphics layer
+        g2.setBackground(this.shadow);
+        g2.setLineWidth(0);
+        g2.setAlpha((int) ((float) currentAlpha * shadowAlpha / KlighdConstants.ALPHA_FULL_OPAQUE));
+        
+        // draw a bunch of shape copies, each of them is moved a bit towards the original position
+        for (int i = 0; i < shadowExtend; i++) {
+            g2.setTransform(tc);
+            fillShape(g2);
+            tc.translate(-1, -1);
+        }
+
+        // re-set the original transform to the graphics layer
+        //  and draw a fresh white background on the shadow shape stack at the original position
+        // Note, that we accept the incompatibility of transparent shapes and shadow, and thus
+        //  dismiss the transparency.
+        g2.setTransform(t);
+        g2.setLineWidth(1);
+        g2.setAlpha(currentAlpha);            
+        g2.setBackground(KlighdConstants.WHITE);
+        fillShape(g2);
+        
+        // reset the line
+        g2.setLineWidth(lineWidth);
     }
 
     // CHECKSTYLEOFF MagicNumber
 
     @SuppressWarnings("deprecation")
-    private void drawShape(final SWTGraphics2D g2) {
+    private void drawShape(final KlighdSWTGraphics g2) { //SWTGraphics2D g2) {
         final double lw = g2.getLineWidth();
         if (shape instanceof Rectangle2D) {
             g2.drawRect(shapePts[0] + lw / 2, shapePts[1] + lw / 2, shapePts[2] - lw, shapePts[3]
@@ -550,7 +720,7 @@ public class PSWTAdvancedPath extends PNode {
     }
 
     @SuppressWarnings("deprecation")
-    private void fillShape(final SWTGraphics2D g2) {
+    private void fillShape(final KlighdSWTGraphics g2) { // SWTGraphics2D g2) {
         final double lw = g2.getLineWidth();
         if (shape instanceof Rectangle2D) {
             g2.fillRect(shapePts[0] + lw / 2, shapePts[1] + lw / 2, shapePts[2] - lw, shapePts[3]
@@ -575,7 +745,7 @@ public class PSWTAdvancedPath extends PNode {
         }
     }
 
-    // CHECKSTYLEON MagicNumber
+    // CHECKSTYLEON Magic Number
 
     /**
      * Changes the underlying shape of this PSWTPath.
@@ -1052,6 +1222,17 @@ public class PSWTAdvancedPath extends PNode {
         default:
             return LineCap.CAP_FLAT;
         }
+    }
+    
+    /**
+     * Sets the shadow color for this path. Note that this definition will be ignored for non-closed
+     * shapes, i.e. polylines and curves.
+     * 
+     * @param color
+     *            the color of the attached shadow
+     */
+    public void setShadow(final RGB color) {
+        this.shadow = color;
     }
 
 }
