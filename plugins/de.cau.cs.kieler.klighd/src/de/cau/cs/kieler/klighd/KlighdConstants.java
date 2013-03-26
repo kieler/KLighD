@@ -35,10 +35,44 @@ public final class KlighdConstants {
     public static final RGB BLACK = new RGB(0, 0, 0);
     
     /**
+     * Constant definition of the red {@link RGB} color constant.
+     */
+    public static final RGB BLUE = new RGB(0, 0, 255);
+    
+    /**
+     * Constant definition of the red {@link RGB} color constant.
+     */
+    public static final RGB GREEN = new RGB(0, 255, 0);
+    
+    /**
+     * Constant definition of the red {@link RGB} color constant.
+     */
+    public static final RGB RED = new RGB(255, 0, 0);
+    
+    /**
      * Constant definition of the white {@link RGB} color constant.
      */
     public static final RGB WHITE = new RGB(255, 255, 255);
 
+    /**
+     * Constant definition of the yellow {@link RGB} color constant.
+     */
+    public static final RGB YELLOW = new RGB(255, 255, 0);
+
+    /**
+     * Constant definition of the <i>full transparent</i> SWT alpha value.
+     * 
+     * @see #ALPHA_FULL_OPAQUE
+     */
+    public static final int ALPHA_FULL_TRANSPARENT = 0;
+    
+    /**
+     * Constant definition of the <i>full opaque</i> SWT alpha value.
+     * 
+     * @see #ALPHA_FULL_TRANSPARENT
+     */
+    public static final int ALPHA_FULL_OPAQUE = 255;
+    
     /**
      * This font name is used for {@link de.cau.cs.kieler.core.krendering.KText KTexts}, if no related
      * {@link de.cau.cs.kieler.core.krendering.KFontName KFontName} style is attached.
