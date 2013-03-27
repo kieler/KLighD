@@ -429,6 +429,15 @@ public interface KRenderingFactory extends EFactory {
     KTextStrikeout createKTextStrikeout();
 
     /**
+     * Returns a new object of class '<em>KLine Join</em>'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return a new object of class '<em>KLine Join</em>'.
+     * @generated
+     */
+    KLineJoin createKLineJoin();
+
+    /**
      * Returns the package supported by this factory.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->

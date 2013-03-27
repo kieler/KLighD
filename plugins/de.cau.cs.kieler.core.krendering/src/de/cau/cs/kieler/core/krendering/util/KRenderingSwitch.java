@@ -514,6 +514,13 @@ public class KRenderingSwitch<T> extends Switch<T> {
                 if (result == null) result = defaultCase(theEObject);
                 return result;
             }
+            case KRenderingPackage.KLINE_JOIN: {
+                KLineJoin kLineJoin = (KLineJoin)theEObject;
+                T result = caseKLineJoin(kLineJoin);
+                if (result == null) result = caseKStyle(kLineJoin);
+                if (result == null) result = defaultCase(theEObject);
+                return result;
+            }
             default: return defaultCase(theEObject);
         }
     }
@@ -1295,6 +1302,21 @@ public class KRenderingSwitch<T> extends Switch<T> {
      * @generated
      */
     public T caseKTextStrikeout(KTextStrikeout object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>KLine Join</em>'.
+     * <!-- begin-user-doc -->
+     * This implementation returns null;
+     * returning a non-null result will terminate the switch.
+     * <!-- end-user-doc -->
+     * @param object the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>KLine Join</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseKLineJoin(KLineJoin object) {
         return null;
     }
 

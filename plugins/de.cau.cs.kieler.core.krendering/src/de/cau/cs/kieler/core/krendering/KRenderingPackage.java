@@ -1854,13 +1854,31 @@ public interface KRenderingPackage extends EPackage {
     int KLINE_STYLE__LINE_STYLE = KSTYLE_FEATURE_COUNT + 0;
 
     /**
+     * The feature id for the '<em><b>Dash Pattern</b></em>' attribute list.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KLINE_STYLE__DASH_PATTERN = KSTYLE_FEATURE_COUNT + 1;
+
+    /**
+     * The feature id for the '<em><b>Dash Offset</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KLINE_STYLE__DASH_OFFSET = KSTYLE_FEATURE_COUNT + 2;
+
+    /**
      * The number of structural features of the '<em>KLine Style</em>' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int KLINE_STYLE_FEATURE_COUNT = KSTYLE_FEATURE_COUNT + 1;
+    int KLINE_STYLE_FEATURE_COUNT = KSTYLE_FEATURE_COUNT + 3;
 
     /**
      * The meta object id for the '{@link de.cau.cs.kieler.core.krendering.impl.KVerticalAlignmentImpl <em>KVertical Alignment</em>}' class.
@@ -3357,6 +3375,61 @@ public interface KRenderingPackage extends EPackage {
     int KTEXT_STRIKEOUT_FEATURE_COUNT = KSTYLE_FEATURE_COUNT + 2;
 
     /**
+     * The meta object id for the '{@link de.cau.cs.kieler.core.krendering.impl.KLineJoinImpl <em>KLine Join</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see de.cau.cs.kieler.core.krendering.impl.KLineJoinImpl
+     * @see de.cau.cs.kieler.core.krendering.impl.KRenderingPackageImpl#getKLineJoin()
+     * @generated
+     */
+    int KLINE_JOIN = 52;
+
+    /**
+     * The feature id for the '<em><b>Propagate To Children</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KLINE_JOIN__PROPAGATE_TO_CHILDREN = KSTYLE__PROPAGATE_TO_CHILDREN;
+
+    /**
+     * The feature id for the '<em><b>Modifier Id</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KLINE_JOIN__MODIFIER_ID = KSTYLE__MODIFIER_ID;
+
+    /**
+     * The feature id for the '<em><b>Line Join</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KLINE_JOIN__LINE_JOIN = KSTYLE_FEATURE_COUNT + 0;
+
+    /**
+     * The feature id for the '<em><b>Miter Limit</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KLINE_JOIN__MITER_LIMIT = KSTYLE_FEATURE_COUNT + 1;
+
+    /**
+     * The number of structural features of the '<em>KLine Join</em>' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KLINE_JOIN_FEATURE_COUNT = KSTYLE_FEATURE_COUNT + 2;
+
+    /**
      * The meta object id for the '{@link de.cau.cs.kieler.core.krendering.LineStyle <em>Line Style</em>}' enum.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -3364,7 +3437,7 @@ public interface KRenderingPackage extends EPackage {
      * @see de.cau.cs.kieler.core.krendering.impl.KRenderingPackageImpl#getLineStyle()
      * @generated
      */
-    int LINE_STYLE = 52;
+    int LINE_STYLE = 53;
 
     /**
      * The meta object id for the '{@link de.cau.cs.kieler.core.krendering.HorizontalAlignment <em>Horizontal Alignment</em>}' enum.
@@ -3374,7 +3447,7 @@ public interface KRenderingPackage extends EPackage {
      * @see de.cau.cs.kieler.core.krendering.impl.KRenderingPackageImpl#getHorizontalAlignment()
      * @generated
      */
-    int HORIZONTAL_ALIGNMENT = 53;
+    int HORIZONTAL_ALIGNMENT = 54;
 
     /**
      * The meta object id for the '{@link de.cau.cs.kieler.core.krendering.VerticalAlignment <em>Vertical Alignment</em>}' enum.
@@ -3384,7 +3457,7 @@ public interface KRenderingPackage extends EPackage {
      * @see de.cau.cs.kieler.core.krendering.impl.KRenderingPackageImpl#getVerticalAlignment()
      * @generated
      */
-    int VERTICAL_ALIGNMENT = 54;
+    int VERTICAL_ALIGNMENT = 55;
 
     /**
      * The meta object id for the '{@link de.cau.cs.kieler.core.krendering.Trigger <em>Trigger</em>}' enum.
@@ -3394,7 +3467,7 @@ public interface KRenderingPackage extends EPackage {
      * @see de.cau.cs.kieler.core.krendering.impl.KRenderingPackageImpl#getTrigger()
      * @generated
      */
-    int TRIGGER = 55;
+    int TRIGGER = 57;
 
     /**
      * The meta object id for the '{@link de.cau.cs.kieler.core.krendering.LineCap <em>Line Cap</em>}' enum.
@@ -3414,7 +3487,17 @@ public interface KRenderingPackage extends EPackage {
      * @see de.cau.cs.kieler.core.krendering.impl.KRenderingPackageImpl#getUnderline()
      * @generated
      */
-    int UNDERLINE = 57;
+    int UNDERLINE = 58;
+
+    /**
+     * The meta object id for the '{@link de.cau.cs.kieler.core.krendering.LineJoin <em>Line Join</em>}' enum.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see de.cau.cs.kieler.core.krendering.LineJoin
+     * @see de.cau.cs.kieler.core.krendering.impl.KRenderingPackageImpl#getLineJoin()
+     * @generated
+     */
+    int LINE_JOIN = 59;
 
     /**
      * Returns the meta object for class '{@link de.cau.cs.kieler.core.krendering.KPosition <em>KPosition</em>}'.
@@ -4162,6 +4245,28 @@ public interface KRenderingPackage extends EPackage {
     EAttribute getKLineStyle_LineStyle();
 
     /**
+     * Returns the meta object for the attribute list '{@link de.cau.cs.kieler.core.krendering.KLineStyle#getDashPattern <em>Dash Pattern</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the attribute list '<em>Dash Pattern</em>'.
+     * @see de.cau.cs.kieler.core.krendering.KLineStyle#getDashPattern()
+     * @see #getKLineStyle()
+     * @generated
+     */
+    EAttribute getKLineStyle_DashPattern();
+
+    /**
+     * Returns the meta object for the attribute '{@link de.cau.cs.kieler.core.krendering.KLineStyle#getDashOffset <em>Dash Offset</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the attribute '<em>Dash Offset</em>'.
+     * @see de.cau.cs.kieler.core.krendering.KLineStyle#getDashOffset()
+     * @see #getKLineStyle()
+     * @generated
+     */
+    EAttribute getKLineStyle_DashOffset();
+
+    /**
      * Returns the meta object for class '{@link de.cau.cs.kieler.core.krendering.KVerticalAlignment <em>KVertical Alignment</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -4861,6 +4966,38 @@ public interface KRenderingPackage extends EPackage {
     EReference getKTextStrikeout_Color();
 
     /**
+     * Returns the meta object for class '{@link de.cau.cs.kieler.core.krendering.KLineJoin <em>KLine Join</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for class '<em>KLine Join</em>'.
+     * @see de.cau.cs.kieler.core.krendering.KLineJoin
+     * @generated
+     */
+    EClass getKLineJoin();
+
+    /**
+     * Returns the meta object for the attribute '{@link de.cau.cs.kieler.core.krendering.KLineJoin#getLineJoin <em>Line Join</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the attribute '<em>Line Join</em>'.
+     * @see de.cau.cs.kieler.core.krendering.KLineJoin#getLineJoin()
+     * @see #getKLineJoin()
+     * @generated
+     */
+    EAttribute getKLineJoin_LineJoin();
+
+    /**
+     * Returns the meta object for the attribute '{@link de.cau.cs.kieler.core.krendering.KLineJoin#getMiterLimit <em>Miter Limit</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the attribute '<em>Miter Limit</em>'.
+     * @see de.cau.cs.kieler.core.krendering.KLineJoin#getMiterLimit()
+     * @see #getKLineJoin()
+     * @generated
+     */
+    EAttribute getKLineJoin_MiterLimit();
+
+    /**
      * Returns the meta object for enum '{@link de.cau.cs.kieler.core.krendering.LineStyle <em>Line Style</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -4919,6 +5056,16 @@ public interface KRenderingPackage extends EPackage {
      * @generated
      */
     EEnum getUnderline();
+
+    /**
+     * Returns the meta object for enum '{@link de.cau.cs.kieler.core.krendering.LineJoin <em>Line Join</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for enum '<em>Line Join</em>'.
+     * @see de.cau.cs.kieler.core.krendering.LineJoin
+     * @generated
+     */
+    EEnum getLineJoin();
 
     /**
      * Returns the factory that creates the instances of the model.
@@ -5553,6 +5700,22 @@ public interface KRenderingPackage extends EPackage {
         EAttribute KLINE_STYLE__LINE_STYLE = eINSTANCE.getKLineStyle_LineStyle();
 
         /**
+         * The meta object literal for the '<em><b>Dash Pattern</b></em>' attribute list feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EAttribute KLINE_STYLE__DASH_PATTERN = eINSTANCE.getKLineStyle_DashPattern();
+
+        /**
+         * The meta object literal for the '<em><b>Dash Offset</b></em>' attribute feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EAttribute KLINE_STYLE__DASH_OFFSET = eINSTANCE.getKLineStyle_DashOffset();
+
+        /**
          * The meta object literal for the '{@link de.cau.cs.kieler.core.krendering.impl.KVerticalAlignmentImpl <em>KVertical Alignment</em>}' class.
          * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
@@ -6135,6 +6298,32 @@ public interface KRenderingPackage extends EPackage {
         EReference KTEXT_STRIKEOUT__COLOR = eINSTANCE.getKTextStrikeout_Color();
 
         /**
+         * The meta object literal for the '{@link de.cau.cs.kieler.core.krendering.impl.KLineJoinImpl <em>KLine Join</em>}' class.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @see de.cau.cs.kieler.core.krendering.impl.KLineJoinImpl
+         * @see de.cau.cs.kieler.core.krendering.impl.KRenderingPackageImpl#getKLineJoin()
+         * @generated
+         */
+        EClass KLINE_JOIN = eINSTANCE.getKLineJoin();
+
+        /**
+         * The meta object literal for the '<em><b>Line Join</b></em>' attribute feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EAttribute KLINE_JOIN__LINE_JOIN = eINSTANCE.getKLineJoin_LineJoin();
+
+        /**
+         * The meta object literal for the '<em><b>Miter Limit</b></em>' attribute feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EAttribute KLINE_JOIN__MITER_LIMIT = eINSTANCE.getKLineJoin_MiterLimit();
+
+        /**
          * The meta object literal for the '{@link de.cau.cs.kieler.core.krendering.LineStyle <em>Line Style</em>}' enum.
          * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
@@ -6193,6 +6382,16 @@ public interface KRenderingPackage extends EPackage {
          * @generated
          */
         EEnum UNDERLINE = eINSTANCE.getUnderline();
+
+        /**
+         * The meta object literal for the '{@link de.cau.cs.kieler.core.krendering.LineJoin <em>Line Join</em>}' enum.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @see de.cau.cs.kieler.core.krendering.LineJoin
+         * @see de.cau.cs.kieler.core.krendering.impl.KRenderingPackageImpl#getLineJoin()
+         * @generated
+         */
+        EEnum LINE_JOIN = eINSTANCE.getLineJoin();
 
     }
 

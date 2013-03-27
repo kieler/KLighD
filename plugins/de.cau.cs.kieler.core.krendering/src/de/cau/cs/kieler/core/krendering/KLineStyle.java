@@ -13,6 +13,8 @@
  */
 package de.cau.cs.kieler.core.krendering;
 
+import org.eclipse.emf.common.util.EList;
+
 
 /**
  * <!-- begin-user-doc -->
@@ -20,13 +22,16 @@ package de.cau.cs.kieler.core.krendering;
  * <!-- end-user-doc -->
  *
  * <!-- begin-model-doc -->
- * defines the linestyle of a rendering by setting one of the available lineStyles
+ * Defines the line style of a rendering by setting one of the available values of the LineStyle enumeration.
+ * 'dashPattern' and 'dashOffset' are evaluated if and only if the literal 'CUSTOM' is chosen.
  * <!-- end-model-doc -->
  *
  * <p>
  * The following features are supported:
  * <ul>
  *   <li>{@link de.cau.cs.kieler.core.krendering.KLineStyle#getLineStyle <em>Line Style</em>}</li>
+ *   <li>{@link de.cau.cs.kieler.core.krendering.KLineStyle#getDashPattern <em>Dash Pattern</em>}</li>
+ *   <li>{@link de.cau.cs.kieler.core.krendering.KLineStyle#getDashOffset <em>Dash Offset</em>}</li>
  * </ul>
  * </p>
  *
@@ -63,5 +68,47 @@ public interface KLineStyle extends KStyle {
      * @generated
      */
     void setLineStyle(LineStyle value);
+
+    /**
+     * Returns the value of the '<em><b>Dash Pattern</b></em>' attribute list.
+     * The list contents are of type {@link java.lang.Float}.
+     * <!-- begin-user-doc -->
+     * <p>
+     * If the meaning of the '<em>Dash Pattern</em>' attribute isn't clear,
+     * there really should be more of a description here...
+     * </p>
+     * <!-- end-user-doc -->
+     * @return the value of the '<em>Dash Pattern</em>' attribute list.
+     * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKLineStyle_DashPattern()
+     * @model
+     * @generated
+     */
+    EList<Float> getDashPattern();
+
+    /**
+     * Returns the value of the '<em><b>Dash Offset</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <p>
+     * If the meaning of the '<em>Dash Offset</em>' attribute isn't clear,
+     * there really should be more of a description here...
+     * </p>
+     * <!-- end-user-doc -->
+     * @return the value of the '<em>Dash Offset</em>' attribute.
+     * @see #setDashOffset(float)
+     * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKLineStyle_DashOffset()
+     * @model
+     * @generated
+     */
+    float getDashOffset();
+
+    /**
+     * Sets the value of the '{@link de.cau.cs.kieler.core.krendering.KLineStyle#getDashOffset <em>Dash Offset</em>}' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @param value the new value of the '<em>Dash Offset</em>' attribute.
+     * @see #getDashOffset()
+     * @generated
+     */
+    void setDashOffset(float value);
 
 } // KLineStyle

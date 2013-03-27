@@ -46,6 +46,7 @@ import de.cau.cs.kieler.core.krendering.KImage;
 import de.cau.cs.kieler.core.krendering.KInvisibility;
 import de.cau.cs.kieler.core.krendering.KLeftPosition;
 import de.cau.cs.kieler.core.krendering.KLineCap;
+import de.cau.cs.kieler.core.krendering.KLineJoin;
 import de.cau.cs.kieler.core.krendering.KLineStyle;
 import de.cau.cs.kieler.core.krendering.KLineWidth;
 import de.cau.cs.kieler.core.krendering.KPlacement;
@@ -77,6 +78,7 @@ import de.cau.cs.kieler.core.krendering.KVerticalAlignment;
 import de.cau.cs.kieler.core.krendering.KXPosition;
 import de.cau.cs.kieler.core.krendering.KYPosition;
 import de.cau.cs.kieler.core.krendering.LineCap;
+import de.cau.cs.kieler.core.krendering.LineJoin;
 import de.cau.cs.kieler.core.krendering.LineStyle;
 import de.cau.cs.kieler.core.krendering.Trigger;
 import de.cau.cs.kieler.core.krendering.Underline;
@@ -458,6 +460,13 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
      * <!-- end-user-doc -->
      * @generated
      */
+    private EClass kLineJoinEClass = null;
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
     private EEnum lineStyleEEnum = null;
 
     /**
@@ -494,6 +503,13 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
      * @generated
      */
     private EEnum underlineEEnum = null;
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    private EEnum lineJoinEEnum = null;
 
     /**
      * Creates an instance of the model <b>Package</b>, registered with
@@ -1194,6 +1210,24 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
      * <!-- end-user-doc -->
      * @generated
      */
+    public EAttribute getKLineStyle_DashPattern() {
+        return (EAttribute)kLineStyleEClass.getEStructuralFeatures().get(1);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EAttribute getKLineStyle_DashOffset() {
+        return (EAttribute)kLineStyleEClass.getEStructuralFeatures().get(2);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
     public EClass getKVerticalAlignment() {
         return kVerticalAlignmentEClass;
     }
@@ -1788,6 +1822,33 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
      * <!-- end-user-doc -->
      * @generated
      */
+    public EClass getKLineJoin() {
+        return kLineJoinEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EAttribute getKLineJoin_LineJoin() {
+        return (EAttribute)kLineJoinEClass.getEStructuralFeatures().get(0);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EAttribute getKLineJoin_MiterLimit() {
+        return (EAttribute)kLineJoinEClass.getEStructuralFeatures().get(1);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
     public EEnum getLineStyle() {
         return lineStyleEEnum;
     }
@@ -1835,6 +1896,15 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
      */
     public EEnum getUnderline() {
         return underlineEEnum;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EEnum getLineJoin() {
+        return lineJoinEEnum;
     }
 
     /**
@@ -1959,6 +2029,8 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
 
         kLineStyleEClass = createEClass(KLINE_STYLE);
         createEAttribute(kLineStyleEClass, KLINE_STYLE__LINE_STYLE);
+        createEAttribute(kLineStyleEClass, KLINE_STYLE__DASH_PATTERN);
+        createEAttribute(kLineStyleEClass, KLINE_STYLE__DASH_OFFSET);
 
         kVerticalAlignmentEClass = createEClass(KVERTICAL_ALIGNMENT);
         createEAttribute(kVerticalAlignmentEClass, KVERTICAL_ALIGNMENT__VERTICAL_ALIGNMENT);
@@ -2053,13 +2125,18 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
         createEAttribute(kTextStrikeoutEClass, KTEXT_STRIKEOUT__STRUCK_OUT);
         createEReference(kTextStrikeoutEClass, KTEXT_STRIKEOUT__COLOR);
 
+        kLineJoinEClass = createEClass(KLINE_JOIN);
+        createEAttribute(kLineJoinEClass, KLINE_JOIN__LINE_JOIN);
+        createEAttribute(kLineJoinEClass, KLINE_JOIN__MITER_LIMIT);
+
         // Create enums
         lineStyleEEnum = createEEnum(LINE_STYLE);
         horizontalAlignmentEEnum = createEEnum(HORIZONTAL_ALIGNMENT);
         verticalAlignmentEEnum = createEEnum(VERTICAL_ALIGNMENT);
-        triggerEEnum = createEEnum(TRIGGER);
         lineCapEEnum = createEEnum(LINE_CAP);
+        triggerEEnum = createEEnum(TRIGGER);
         underlineEEnum = createEEnum(UNDERLINE);
+        lineJoinEEnum = createEEnum(LINE_JOIN);
     }
 
     /**
@@ -2137,6 +2214,7 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
         kTextUnderlineEClass.getESuperTypes().add(this.getKStyle());
         kStyleRefEClass.getESuperTypes().add(this.getKStyle());
         kTextStrikeoutEClass.getESuperTypes().add(this.getKStyle());
+        kLineJoinEClass.getESuperTypes().add(this.getKStyle());
 
         // Initialize classes and features; add operations and parameters
         initEClass(kPositionEClass, KPosition.class, "KPosition", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -2233,6 +2311,8 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
 
         initEClass(kLineStyleEClass, KLineStyle.class, "KLineStyle", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         initEAttribute(getKLineStyle_LineStyle(), this.getLineStyle(), "lineStyle", null, 1, 1, KLineStyle.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEAttribute(getKLineStyle_DashPattern(), ecorePackage.getEFloat(), "dashPattern", null, 0, -1, KLineStyle.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEAttribute(getKLineStyle_DashOffset(), ecorePackage.getEFloat(), "dashOffset", null, 0, 1, KLineStyle.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         initEClass(kVerticalAlignmentEClass, KVerticalAlignment.class, "KVerticalAlignment", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         initEAttribute(getKVerticalAlignment_VerticalAlignment(), this.getVerticalAlignment(), "verticalAlignment", null, 1, 1, KVerticalAlignment.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -2327,6 +2407,10 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
         initEAttribute(getKTextStrikeout_StruckOut(), ecorePackage.getEBooleanObject(), "struckOut", "true", 1, 1, KTextStrikeout.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEReference(getKTextStrikeout_Color(), this.getKColor(), null, "color", null, 0, 1, KTextStrikeout.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
+        initEClass(kLineJoinEClass, KLineJoin.class, "KLineJoin", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        initEAttribute(getKLineJoin_LineJoin(), this.getLineJoin(), "lineJoin", null, 1, 1, KLineJoin.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEAttribute(getKLineJoin_MiterLimit(), ecorePackage.getEFloat(), "miterLimit", "10", 0, 1, KLineJoin.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
         // Initialize enums and add enum literals
         initEEnum(lineStyleEEnum, LineStyle.class, "LineStyle");
         addEEnumLiteral(lineStyleEEnum, LineStyle.SOLID);
@@ -2334,6 +2418,7 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
         addEEnumLiteral(lineStyleEEnum, LineStyle.DOT);
         addEEnumLiteral(lineStyleEEnum, LineStyle.DASHDOT);
         addEEnumLiteral(lineStyleEEnum, LineStyle.DASHDOTDOT);
+        addEEnumLiteral(lineStyleEEnum, LineStyle.CUSTOM);
 
         initEEnum(horizontalAlignmentEEnum, HorizontalAlignment.class, "HorizontalAlignment");
         addEEnumLiteral(horizontalAlignmentEEnum, HorizontalAlignment.LEFT);
@@ -2345,14 +2430,14 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
         addEEnumLiteral(verticalAlignmentEEnum, VerticalAlignment.CENTER);
         addEEnumLiteral(verticalAlignmentEEnum, VerticalAlignment.BOTTOM);
 
-        initEEnum(triggerEEnum, Trigger.class, "Trigger");
-        addEEnumLiteral(triggerEEnum, Trigger.SINGLECLICK);
-        addEEnumLiteral(triggerEEnum, Trigger.DOUBLECLICK);
-
         initEEnum(lineCapEEnum, LineCap.class, "LineCap");
         addEEnumLiteral(lineCapEEnum, LineCap.CAP_FLAT);
         addEEnumLiteral(lineCapEEnum, LineCap.CAP_ROUND);
         addEEnumLiteral(lineCapEEnum, LineCap.CAP_SQUARE);
+
+        initEEnum(triggerEEnum, Trigger.class, "Trigger");
+        addEEnumLiteral(triggerEEnum, Trigger.SINGLECLICK);
+        addEEnumLiteral(triggerEEnum, Trigger.DOUBLECLICK);
 
         initEEnum(underlineEEnum, Underline.class, "Underline");
         addEEnumLiteral(underlineEEnum, Underline.NONE);
@@ -2361,6 +2446,11 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
         addEEnumLiteral(underlineEEnum, Underline.ERROR);
         addEEnumLiteral(underlineEEnum, Underline.SQUIGGLE);
         addEEnumLiteral(underlineEEnum, Underline.LINK);
+
+        initEEnum(lineJoinEEnum, LineJoin.class, "LineJoin");
+        addEEnumLiteral(lineJoinEEnum, LineJoin.JOIN_MITER);
+        addEEnumLiteral(lineJoinEEnum, LineJoin.JOIN_ROUND);
+        addEEnumLiteral(lineJoinEEnum, LineJoin.JOIN_BEVEL);
 
         // Create resource
         createResource(eNS_URI);

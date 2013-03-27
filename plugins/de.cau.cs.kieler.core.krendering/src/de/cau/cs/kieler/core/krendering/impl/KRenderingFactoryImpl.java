@@ -112,6 +112,7 @@ public class KRenderingFactoryImpl extends EFactoryImpl implements KRenderingFac
             case KRenderingPackage.KTEXT_UNDERLINE: return createKTextUnderline();
             case KRenderingPackage.KSTYLE_REF: return createKStyleRef();
             case KRenderingPackage.KTEXT_STRIKEOUT: return createKTextStrikeout();
+            case KRenderingPackage.KLINE_JOIN: return createKLineJoin();
             default:
                 throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
         }
@@ -131,12 +132,14 @@ public class KRenderingFactoryImpl extends EFactoryImpl implements KRenderingFac
                 return createHorizontalAlignmentFromString(eDataType, initialValue);
             case KRenderingPackage.VERTICAL_ALIGNMENT:
                 return createVerticalAlignmentFromString(eDataType, initialValue);
-            case KRenderingPackage.TRIGGER:
-                return createTriggerFromString(eDataType, initialValue);
             case KRenderingPackage.LINE_CAP:
                 return createLineCapFromString(eDataType, initialValue);
+            case KRenderingPackage.TRIGGER:
+                return createTriggerFromString(eDataType, initialValue);
             case KRenderingPackage.UNDERLINE:
                 return createUnderlineFromString(eDataType, initialValue);
+            case KRenderingPackage.LINE_JOIN:
+                return createLineJoinFromString(eDataType, initialValue);
             default:
                 throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
         }
@@ -156,12 +159,14 @@ public class KRenderingFactoryImpl extends EFactoryImpl implements KRenderingFac
                 return convertHorizontalAlignmentToString(eDataType, instanceValue);
             case KRenderingPackage.VERTICAL_ALIGNMENT:
                 return convertVerticalAlignmentToString(eDataType, instanceValue);
-            case KRenderingPackage.TRIGGER:
-                return convertTriggerToString(eDataType, instanceValue);
             case KRenderingPackage.LINE_CAP:
                 return convertLineCapToString(eDataType, instanceValue);
+            case KRenderingPackage.TRIGGER:
+                return convertTriggerToString(eDataType, instanceValue);
             case KRenderingPackage.UNDERLINE:
                 return convertUnderlineToString(eDataType, instanceValue);
+            case KRenderingPackage.LINE_JOIN:
+                return convertLineJoinToString(eDataType, instanceValue);
             default:
                 throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
         }
@@ -612,6 +617,16 @@ public class KRenderingFactoryImpl extends EFactoryImpl implements KRenderingFac
      * <!-- end-user-doc -->
      * @generated
      */
+    public KLineJoin createKLineJoin() {
+        KLineJoinImpl kLineJoin = new KLineJoinImpl();
+        return kLineJoin;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
     public LineStyle createLineStyleFromString(EDataType eDataType, String initialValue) {
         LineStyle result = LineStyle.get(initialValue);
         if (result == null) throw new IllegalArgumentException("The value '" + initialValue + "' is not a valid enumerator of '" + eDataType.getName() + "'");
@@ -724,6 +739,26 @@ public class KRenderingFactoryImpl extends EFactoryImpl implements KRenderingFac
      * @generated
      */
     public String convertUnderlineToString(EDataType eDataType, Object instanceValue) {
+        return instanceValue == null ? null : instanceValue.toString();
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public LineJoin createLineJoinFromString(EDataType eDataType, String initialValue) {
+        LineJoin result = LineJoin.get(initialValue);
+        if (result == null) throw new IllegalArgumentException("The value '" + initialValue + "' is not a valid enumerator of '" + eDataType.getName() + "'");
+        return result;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public String convertLineJoinToString(EDataType eDataType, Object instanceValue) {
         return instanceValue == null ? null : instanceValue.toString();
     }
 

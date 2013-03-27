@@ -77,7 +77,15 @@ public enum LineStyle implements Enumerator {
      * @generated
      * @ordered
      */
-    DASHDOTDOT(4, "DASHDOTDOT", "DASHDOTDOT");
+    DASHDOTDOT(4, "DASHDOTDOT", "DASHDOTDOT"), /**
+     * The '<em><b>CUSTOM</b></em>' literal object.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see #CUSTOM_VALUE
+     * @generated
+     * @ordered
+     */
+    CUSTOM(5, "CUSTOM", "CUSTOM");
 
     /**
      * The '<em><b>SOLID</b></em>' literal value.
@@ -155,6 +163,21 @@ public enum LineStyle implements Enumerator {
     public static final int DASHDOTDOT_VALUE = 4;
 
     /**
+     * The '<em><b>CUSTOM</b></em>' literal value.
+     * <!-- begin-user-doc -->
+     * <p>
+     * If the meaning of '<em><b>CUSTOM</b></em>' literal object isn't clear,
+     * there really should be more of a description here...
+     * </p>
+     * <!-- end-user-doc -->
+     * @see #CUSTOM
+     * @model
+     * @generated
+     * @ordered
+     */
+    public static final int CUSTOM_VALUE = 5;
+
+    /**
      * An array of all the '<em><b>Line Style</b></em>' enumerators.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -167,6 +190,7 @@ public enum LineStyle implements Enumerator {
             DOT,
             DASHDOT,
             DASHDOTDOT,
+            CUSTOM,
         };
 
     /**
@@ -222,6 +246,7 @@ public enum LineStyle implements Enumerator {
             case DOT_VALUE: return DOT;
             case DASHDOT_VALUE: return DASHDOT;
             case DASHDOTDOT_VALUE: return DASHDOTDOT;
+            case CUSTOM_VALUE: return CUSTOM;
         }
         return null;
     }

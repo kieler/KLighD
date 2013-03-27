@@ -367,13 +367,17 @@
     <eLiterals name="DOT" value="2"/>
     <eLiterals name="DASHDOT" value="3"/>
     <eLiterals name="DASHDOTDOT" value="4"/>
+    <eLiterals name="CUSTOM" value="5"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="KLineStyle" eSuperTypes="#//KStyle">
     <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-      <details key="documentation" value="defines the linestyle of a rendering by setting one of the available lineStyles"/>
+      <details key="documentation" value="Defines the line style of a rendering by setting one of the available values of the LineStyle enumeration.&#xA;'dashPattern' and 'dashOffset' are evaluated if and only if the literal 'CUSTOM' is chosen."/>
     </eAnnotations>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="lineStyle" lowerBound="1"
         eType="#//LineStyle"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="dashPattern" upperBound="-1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EFloat"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="dashOffset" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EFloat"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EEnum" name="HorizontalAlignment">
     <eLiterals name="LEFT"/>
@@ -502,6 +506,14 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="rotation" lowerBound="1"
         eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EFloat"/>
   </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="LineCap">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="LineCapStyles analog to SWT LineCapStyles"/>
+    </eAnnotations>
+    <eLiterals name="CAP_FLAT" literal="CAP_FLAT"/>
+    <eLiterals name="CAP_ROUND" value="1"/>
+    <eLiterals name="CAP_SQUARE" value="2"/>
+  </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="KLineCap" eSuperTypes="#//KStyle">
     <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
       <details key="documentation" value="implements different line ending styles"/>
@@ -579,14 +591,6 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="styles" upperBound="-1"
         eType="#//KStyle" containment="true"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EEnum" name="LineCap">
-    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-      <details key="documentation" value="LineCapStyles analog to SWT LineCapStyles"/>
-    </eAnnotations>
-    <eLiterals name="CAP_FLAT" literal="CAP_FLAT"/>
-    <eLiterals name="CAP_ROUND" value="1"/>
-    <eLiterals name="CAP_SQUARE" value="2"/>
-  </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="KInvisibility" eSuperTypes="#//KStyle">
     <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
       <details key="documentation" value="defines whether an object is visible or not"/>
@@ -625,5 +629,19 @@
         defaultValueLiteral="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="color" eType="#//KColor"
         containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="LineJoin">
+    <eLiterals name="JOIN_MITER" literal="JOIN_MITER"/>
+    <eLiterals name="JOIN_ROUND" value="1"/>
+    <eLiterals name="JOIN_BEVEL" value="2"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="KLineJoin" eSuperTypes="#//KStyle">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="Defines the line join style of a rendering by setting one of the available values of the LineJoin enumeration.&#xA;'miterLimit' is evaluated if and only if the literal 'MITER' is chosen."/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="lineJoin" lowerBound="1"
+        eType="#//LineJoin"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="miterLimit" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EFloat"
+        defaultValueLiteral="10"/>
   </eClassifiers>
 </ecore:EPackage>
