@@ -53,6 +53,7 @@ import de.cau.cs.kieler.core.krendering.KEllipse
 import de.cau.cs.kieler.core.krendering.KRectangle
 import de.cau.cs.kieler.core.krendering.KText
 import de.cau.cs.kieler.core.krendering.KShadow
+import de.cau.cs.kieler.core.krendering.Trigger
 
 /**
  * This utility class contains various methods that are convenient while composing KRendering data.
@@ -114,6 +115,19 @@ class KRenderingExtensions {
             node.data.add(it)
             it.text = text;
         ];
+    }
+    
+    def <T extends KRendering> T addAction(T rendering, Trigger trigger, String actionId) {
+        return rendering => [
+            it.actions += renderingFactory.createKAction() => [
+                it.trigger = trigger;
+                it.id = actionId;
+            ];
+        ];
+    }
+    
+    def <T extends KRendering> T addDoubleClickAction(T rendering, String actionId) {
+        return rendering.addAction(Trigger::DOUBLECLICK, actionId);
     }
 
 

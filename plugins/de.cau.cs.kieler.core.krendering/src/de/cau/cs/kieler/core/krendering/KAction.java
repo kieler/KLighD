@@ -33,7 +33,7 @@ import org.eclipse.emf.ecore.EObject;
  * </p>
  *
  * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKAction()
- * @model abstract="true"
+ * @model
  * @generated
  */
 public interface KAction extends EObject {
@@ -64,30 +64,30 @@ public interface KAction extends EObject {
 
     /**
      * Returns the value of the '<em><b>Trigger</b></em>' attribute.
-     * The literals are from the enumeration {@link de.cau.cs.kieler.core.krendering.KTrigger}.
+     * The literals are from the enumeration {@link de.cau.cs.kieler.core.krendering.Trigger}.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * <!-- begin-model-doc -->
      * trigger that activates action
      * <!-- end-model-doc -->
      * @return the value of the '<em>Trigger</em>' attribute.
-     * @see de.cau.cs.kieler.core.krendering.KTrigger
-     * @see #setTrigger(KTrigger)
+     * @see de.cau.cs.kieler.core.krendering.Trigger
+     * @see #setTrigger(Trigger)
      * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKAction_Trigger()
      * @model required="true"
      * @generated
      */
-    KTrigger getTrigger();
+    Trigger getTrigger();
 
     /**
      * Sets the value of the '{@link de.cau.cs.kieler.core.krendering.KAction#getTrigger <em>Trigger</em>}' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @param value the new value of the '<em>Trigger</em>' attribute.
-     * @see de.cau.cs.kieler.core.krendering.KTrigger
+     * @see de.cau.cs.kieler.core.krendering.Trigger
      * @see #getTrigger()
      * @generated
      */
-    void setTrigger(KTrigger value);
+    void setTrigger(Trigger value);
 
 } // KAction

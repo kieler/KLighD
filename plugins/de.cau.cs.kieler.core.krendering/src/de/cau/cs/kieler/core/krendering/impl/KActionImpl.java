@@ -15,7 +15,7 @@ package de.cau.cs.kieler.core.krendering.impl;
 
 import de.cau.cs.kieler.core.krendering.KAction;
 import de.cau.cs.kieler.core.krendering.KRenderingPackage;
-import de.cau.cs.kieler.core.krendering.KTrigger;
+import de.cau.cs.kieler.core.krendering.Trigger;
 
 import org.eclipse.emf.common.notify.Notification;
 
@@ -38,7 +38,7 @@ import org.eclipse.emf.ecore.impl.EObjectImpl;
  *
  * @generated
  */
-public abstract class KActionImpl extends EObjectImpl implements KAction {
+public class KActionImpl extends EObjectImpl implements KAction {
     /**
      * The default value of the '{@link #getId() <em>Id</em>}' attribute.
      * <!-- begin-user-doc -->
@@ -67,7 +67,7 @@ public abstract class KActionImpl extends EObjectImpl implements KAction {
      * @generated
      * @ordered
      */
-    protected static final KTrigger TRIGGER_EDEFAULT = KTrigger.SINGLECLICK;
+    protected static final Trigger TRIGGER_EDEFAULT = Trigger.SINGLECLICK;
 
     /**
      * The cached value of the '{@link #getTrigger() <em>Trigger</em>}' attribute.
@@ -77,7 +77,7 @@ public abstract class KActionImpl extends EObjectImpl implements KAction {
      * @generated
      * @ordered
      */
-    protected KTrigger trigger = TRIGGER_EDEFAULT;
+    protected Trigger trigger = TRIGGER_EDEFAULT;
 
     /**
      * <!-- begin-user-doc -->
@@ -124,7 +124,7 @@ public abstract class KActionImpl extends EObjectImpl implements KAction {
      * <!-- end-user-doc -->
      * @generated
      */
-    public KTrigger getTrigger() {
+    public Trigger getTrigger() {
         return trigger;
     }
 
@@ -133,8 +133,8 @@ public abstract class KActionImpl extends EObjectImpl implements KAction {
      * <!-- end-user-doc -->
      * @generated
      */
-    public void setTrigger(KTrigger newTrigger) {
-        KTrigger oldTrigger = trigger;
+    public void setTrigger(Trigger newTrigger) {
+        Trigger oldTrigger = trigger;
         trigger = newTrigger == null ? TRIGGER_EDEFAULT : newTrigger;
         if (eNotificationRequired())
             eNotify(new ENotificationImpl(this, Notification.SET, KRenderingPackage.KACTION__TRIGGER, oldTrigger, trigger));
@@ -168,7 +168,7 @@ public abstract class KActionImpl extends EObjectImpl implements KAction {
                 setId((String)newValue);
                 return;
             case KRenderingPackage.KACTION__TRIGGER:
-                setTrigger((KTrigger)newValue);
+                setTrigger((Trigger)newValue);
                 return;
         }
         super.eSet(featureID, newValue);

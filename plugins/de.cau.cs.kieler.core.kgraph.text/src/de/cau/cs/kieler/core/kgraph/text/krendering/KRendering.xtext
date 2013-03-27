@@ -26,6 +26,10 @@ KRenderingLibrary returns KRenderingLibrary:
 KRendering returns KRendering:
     KEllipse | KRectangle | KRoundedRectangle | KPolyline_Impl | KPolygon | KImage | KArc | KRenderingRef | KChildArea | KText | KCustomRendering | KSpline | KRoundedBendsPolyline;
 
+KAction returns KAction:
+    {KAction}
+    'KAction' 'trigger' '=' trigger = Trigger 'id' '=' id = EString;
+
 KPlacementData returns KPlacementData:
     KDecoratorPlacementData | KGridPlacementData | KAreaPlacementData | KPointPlacementData;
 
@@ -53,6 +57,7 @@ KEllipse returns KEllipse:
     {KEllipse}
     'Ellipse'
     ('{'
+        ('actions' ':'? actions+=KAction ( ","? actions+=KAction)*)?
         ('styles' ':'? styles+=KStyle ( ","? styles+=KStyle)*)?
         ('placementData' ':'? placementData=KPlacementData)?
         ('childPlacement' ':'? childPlacement=KPlacement)?
@@ -63,6 +68,7 @@ KRectangle returns KRectangle:
     {KRectangle}
     'Rectangle'
     ('{'
+        ('actions' ':'? actions+=KAction ( ","? actions+=KAction)*)?
         ('styles' ':'? styles+=KStyle ( ","? styles+=KStyle)*)?
         ('placementData' ':'? placementData=KPlacementData)?
         ('childPlacement' ':'? childPlacement=KPlacement)?
@@ -73,6 +79,7 @@ KRoundedRectangle returns KRoundedRectangle:
     {KRoundedRectangle}
     'RoundedRectangle' cornerWidth=EFloat ','? cornerHeight=EFloat
     ('{'
+        ('actions' ':'? actions+=KAction ( ","? actions+=KAction)*)?
         ('styles' ':'? styles+=KStyle ( ","? styles+=KStyle)*)?
         ('placementData' ':'? placementData=KPlacementData)?
         ('childPlacement' ':'? childPlacement=KPlacement)?
@@ -84,6 +91,7 @@ KPolyline_Impl returns KPolyline:
     'Polyline'
     ('{'
         ('points' ':'? points+=KPosition ( ","? points+=KPosition)*)? 
+        ('actions' ':'? actions+=KAction ( ","? actions+=KAction)*)?
         ('styles' ':'? styles+=KStyle ( ","? styles+=KStyle)*)?
         ('placementData' ':'? placementData=KPlacementData)?
         ('childPlacement' ':'? childPlacement=KPlacement)?
@@ -106,6 +114,7 @@ KPolygon returns KPolygon:
     'Polygon'
     ('{'
         ('points' ':'? points+=KPosition ( ","? points+=KPosition)*)? 
+        ('actions' ':'? actions+=KAction ( ","? actions+=KAction)*)?
         ('styles' ':'? styles+=KStyle ( ","? styles+=KStyle)*)?
         ('placementData' ':'? placementData=KPlacementData)?
         ('childPlacement' ':'? childPlacement=KPlacement)?
@@ -116,6 +125,7 @@ KImage returns KImage:
     {KImage}
     'Image' ((bundleName=EString) | '-') imagePath=EString
     ('{'
+        ('actions' ':'? actions+=KAction ( ","? actions+=KAction)*)?
         ('styles' ':'? styles+=KStyle ( ","? styles+=KStyle)*)?
         ('placementData' ':'? placementData=KPlacementData)?
         ('childPlacement' ':'? childPlacement=KPlacement)?
@@ -126,6 +136,7 @@ KArc returns KArc:
     {KArc}
     'Arc' startAngle=EFloat ','? arcAngle=EFloat
     ('{'
+        ('actions' ':'? actions+=KAction ( ","? actions+=KAction)*)?
         ('styles' ':'? styles+=KStyle ( ","? styles+=KStyle)*)?
         ('placementData' ':'? placementData=KPlacementData)?
         ('childPlacement' ':'? childPlacement=KPlacement)?
@@ -136,6 +147,7 @@ KChildArea returns KChildArea:
     {KChildArea}
     'ChildArea'
     ('{'
+        ('actions' ':'? actions+=KAction ( ","? actions+=KAction)*)?
         ('styles' ':'? styles+=KStyle ( ","? styles+=KStyle)*)?
         ('placementData' ':'? placementData=KPlacementData)?
     '}')?;
@@ -144,6 +156,7 @@ KText returns KText:
     {KText}
     'Text' (text=EString)?
     ('{'
+        ('actions' ':'? actions+=KAction ( ","? actions+=KAction)*)?
         ('styles' ':'? styles+=KStyle ( ","? styles+=KStyle)*)?
         ('placementData' ':'? placementData=KPlacementData)?
         // allow mapProperties in order to specify size for size estimation tests
@@ -158,6 +171,7 @@ KCustomRendering returns KCustomRendering:
     ('{'
         'className' className=EString
         'bundleName' bundleName=EString
+        ('actions' ':'? actions+=KAction ( ","? actions+=KAction)*)?
         ('styles' ':'? styles+=KStyle ( ","? styles+=KStyle)*)?
         ('placementData' ':'? placementData=KPlacementData)?
         ('childPlacement' ':'? childPlacement=KPlacement)?
@@ -168,6 +182,7 @@ KSpline returns KSpline:
     {KSpline}
     'Spline'
     ('{'
+        ('actions' ':'? actions+=KAction ( ","? actions+=KAction)*)?
         ('styles' ':'? styles+=KStyle ( ","? styles+=KStyle)*)?
         ('placementData' ':'? placementData=KPlacementData)?
         ('childPlacement' ':'? childPlacement=KPlacement)?
@@ -333,6 +348,10 @@ KGridPlacement returns KGridPlacement:
     '}')?
     ;
     
+
+enum Trigger returns Trigger:
+    DOUBLECLICK = "DOUBLECLICK" | SINGLECLICK = "SINGLECLICK"
+;
 
 enum LineStyle returns LineStyle:
     SOLID = 'SOLID' | DASH = 'DASH' | DOT = 'DOT' | DASHDOT = 'DASHDOT' | DASHDOTDOT = 'DASHDOTDOT';

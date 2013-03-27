@@ -16,7 +16,7 @@ package de.cau.cs.kieler.klighd;
 import de.cau.cs.kieler.core.kgraph.KGraphPackage;
 import de.cau.cs.kieler.core.kgraph.KNode;
 import de.cau.cs.kieler.core.krendering.KRendering;
-import de.cau.cs.kieler.core.krendering.KTrigger;
+import de.cau.cs.kieler.core.krendering.Trigger;
 import de.cau.cs.kieler.klighd.util.ModelingUtil;
 
 /**
@@ -44,7 +44,7 @@ public interface IAction {
     public static class ActionContext {
         
         private IViewer<?> viewer = null;
-        private KTrigger trigger = null;
+        private Trigger trigger = null;
         private KNode node = null;
         private KRendering rendering = null;
         
@@ -60,7 +60,7 @@ public interface IAction {
          * @param r
          *            the rendering the action is invoked on
          */
-        public ActionContext(final IViewer<?> v, final KTrigger t, final KNode n, final KRendering r) {
+        public ActionContext(final IViewer<?> v, final Trigger t, final KNode n, final KRendering r) {
             this.viewer = v;
             this.trigger = t;
             this.node = n;
@@ -77,7 +77,7 @@ public interface IAction {
         /**
          * @return the trigger
          */
-        public KTrigger getTrigger() {
+        public Trigger getTrigger() {
             return trigger;
         }
         

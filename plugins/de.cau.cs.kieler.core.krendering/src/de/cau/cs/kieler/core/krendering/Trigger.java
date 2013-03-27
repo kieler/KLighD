@@ -21,14 +21,14 @@ import org.eclipse.emf.common.util.Enumerator;
 
 /**
  * <!-- begin-user-doc -->
- * A representation of the literals of the enumeration '<em><b>KTrigger</b></em>',
+ * A representation of the literals of the enumeration '<em><b>Trigger</b></em>',
  * and utility methods for working with them.
  * <!-- end-user-doc -->
- * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKTrigger()
+ * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getTrigger()
  * @model
  * @generated
  */
-public enum KTrigger implements Enumerator {
+public enum Trigger implements Enumerator {
     /**
      * The '<em><b>SINGLECLICK</b></em>' literal object.
      * <!-- begin-user-doc -->
@@ -80,34 +80,34 @@ public enum KTrigger implements Enumerator {
     public static final int DOUBLECLICK_VALUE = 1;
 
     /**
-     * An array of all the '<em><b>KTrigger</b></em>' enumerators.
+     * An array of all the '<em><b>Trigger</b></em>' enumerators.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      */
-    private static final KTrigger[] VALUES_ARRAY =
-        new KTrigger[] {
+    private static final Trigger[] VALUES_ARRAY =
+        new Trigger[] {
             SINGLECLICK,
             DOUBLECLICK,
         };
 
     /**
-     * A public read-only list of all the '<em><b>KTrigger</b></em>' enumerators.
+     * A public read-only list of all the '<em><b>Trigger</b></em>' enumerators.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      */
-    public static final List<KTrigger> VALUES = Collections.unmodifiableList(Arrays.asList(VALUES_ARRAY));
+    public static final List<Trigger> VALUES = Collections.unmodifiableList(Arrays.asList(VALUES_ARRAY));
 
     /**
-     * Returns the '<em><b>KTrigger</b></em>' literal with the specified literal value.
+     * Returns the '<em><b>Trigger</b></em>' literal with the specified literal value.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      */
-    public static KTrigger get(String literal) {
+    public static Trigger get(String literal) {
         for (int i = 0; i < VALUES_ARRAY.length; ++i) {
-            KTrigger result = VALUES_ARRAY[i];
+            Trigger result = VALUES_ARRAY[i];
             if (result.toString().equals(literal)) {
                 return result;
             }
@@ -116,14 +116,14 @@ public enum KTrigger implements Enumerator {
     }
 
     /**
-     * Returns the '<em><b>KTrigger</b></em>' literal with the specified name.
+     * Returns the '<em><b>Trigger</b></em>' literal with the specified name.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      */
-    public static KTrigger getByName(String name) {
+    public static Trigger getByName(String name) {
         for (int i = 0; i < VALUES_ARRAY.length; ++i) {
-            KTrigger result = VALUES_ARRAY[i];
+            Trigger result = VALUES_ARRAY[i];
             if (result.getName().equals(name)) {
                 return result;
             }
@@ -132,12 +132,12 @@ public enum KTrigger implements Enumerator {
     }
 
     /**
-     * Returns the '<em><b>KTrigger</b></em>' literal with the specified integer value.
+     * Returns the '<em><b>Trigger</b></em>' literal with the specified integer value.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      */
-    public static KTrigger get(int value) {
+    public static Trigger get(int value) {
         switch (value) {
             case SINGLECLICK_VALUE: return SINGLECLICK;
             case DOUBLECLICK_VALUE: return DOUBLECLICK;
@@ -172,7 +172,7 @@ public enum KTrigger implements Enumerator {
      * <!-- end-user-doc -->
      * @generated
      */
-    private KTrigger(int value, String name, String literal) {
+    private Trigger(int value, String name, String literal) {
         this.value = value;
         this.name = name;
         this.literal = literal;
@@ -216,4 +216,4 @@ public enum KTrigger implements Enumerator {
         return literal;
     }
     
-} //KTrigger
+} //Trigger

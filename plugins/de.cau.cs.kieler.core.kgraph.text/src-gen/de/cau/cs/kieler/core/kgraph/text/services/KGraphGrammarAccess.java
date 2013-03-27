@@ -995,6 +995,16 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 		return getKRenderingAccess().getRule();
 	}
 
+	//KAction:
+	//	{KAction} "KAction" "trigger" "=" trigger=Trigger "id" "=" id=EString;
+	public KRenderingGrammarAccess.KActionElements getKActionAccess() {
+		return gaKRendering.getKActionAccess();
+	}
+	
+	public ParserRule getKActionRule() {
+		return getKActionAccess().getRule();
+	}
+
 	//KPlacementData:
 	//	KDecoratorPlacementData | KGridPlacementData | KAreaPlacementData | KPointPlacementData;
 	public KRenderingGrammarAccess.KPlacementDataElements getKPlacementDataAccess() {
@@ -1058,9 +1068,9 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//KEllipse:
-	//	{KEllipse} "Ellipse" ("{" ("styles" ":"? styles+=KStyle (","? styles+=KStyle)*)? ("placementData" ":"?
-	//	placementData=KPlacementData)? ("childPlacement" ":"? childPlacement=KPlacement)? ("children" ":"?
-	//	children+=KRendering (","? children+=KRendering)*)? "}")?;
+	//	{KEllipse} "Ellipse" ("{" ("actions" ":"? actions+=KAction (","? actions+=KAction)*)? ("styles" ":"? styles+=KStyle
+	//	(","? styles+=KStyle)*)? ("placementData" ":"? placementData=KPlacementData)? ("childPlacement" ":"?
+	//	childPlacement=KPlacement)? ("children" ":"? children+=KRendering (","? children+=KRendering)*)? "}")?;
 	public KRenderingGrammarAccess.KEllipseElements getKEllipseAccess() {
 		return gaKRendering.getKEllipseAccess();
 	}
@@ -1070,9 +1080,9 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//KRectangle:
-	//	{KRectangle} "Rectangle" ("{" ("styles" ":"? styles+=KStyle (","? styles+=KStyle)*)? ("placementData" ":"?
-	//	placementData=KPlacementData)? ("childPlacement" ":"? childPlacement=KPlacement)? ("children" ":"?
-	//	children+=KRendering (","? children+=KRendering)*)? "}")?;
+	//	{KRectangle} "Rectangle" ("{" ("actions" ":"? actions+=KAction (","? actions+=KAction)*)? ("styles" ":"?
+	//	styles+=KStyle (","? styles+=KStyle)*)? ("placementData" ":"? placementData=KPlacementData)? ("childPlacement" ":"?
+	//	childPlacement=KPlacement)? ("children" ":"? children+=KRendering (","? children+=KRendering)*)? "}")?;
 	public KRenderingGrammarAccess.KRectangleElements getKRectangleAccess() {
 		return gaKRendering.getKRectangleAccess();
 	}
@@ -1082,9 +1092,10 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//KRoundedRectangle:
-	//	{KRoundedRectangle} "RoundedRectangle" cornerWidth=EFloat ","? cornerHeight=EFloat ("{" ("styles" ":"? styles+=KStyle
-	//	(","? styles+=KStyle)*)? ("placementData" ":"? placementData=KPlacementData)? ("childPlacement" ":"?
-	//	childPlacement=KPlacement)? ("children" ":"? children+=KRendering (","? children+=KRendering)*)? "}")?;
+	//	{KRoundedRectangle} "RoundedRectangle" cornerWidth=EFloat ","? cornerHeight=EFloat ("{" ("actions" ":"?
+	//	actions+=KAction (","? actions+=KAction)*)? ("styles" ":"? styles+=KStyle (","? styles+=KStyle)*)? ("placementData"
+	//	":"? placementData=KPlacementData)? ("childPlacement" ":"? childPlacement=KPlacement)? ("children" ":"?
+	//	children+=KRendering (","? children+=KRendering)*)? "}")?;
 	public KRenderingGrammarAccess.KRoundedRectangleElements getKRoundedRectangleAccess() {
 		return gaKRendering.getKRoundedRectangleAccess();
 	}
@@ -1094,9 +1105,10 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//KPolyline_Impl returns KPolyline:
-	//	{KPolyline} "Polyline" ("{" ("points" ":"? points+=KPosition (","? points+=KPosition)*)? ("styles" ":"? styles+=KStyle
-	//	(","? styles+=KStyle)*)? ("placementData" ":"? placementData=KPlacementData)? ("childPlacement" ":"?
-	//	childPlacement=KPlacement)? ("children" ":"? children+=KRendering (","? children+=KRendering)*)? "}")?;
+	//	{KPolyline} "Polyline" ("{" ("points" ":"? points+=KPosition (","? points+=KPosition)*)? ("actions" ":"?
+	//	actions+=KAction (","? actions+=KAction)*)? ("styles" ":"? styles+=KStyle (","? styles+=KStyle)*)? ("placementData"
+	//	":"? placementData=KPlacementData)? ("childPlacement" ":"? childPlacement=KPlacement)? ("children" ":"?
+	//	children+=KRendering (","? children+=KRendering)*)? "}")?;
 	public KRenderingGrammarAccess.KPolyline_ImplElements getKPolyline_ImplAccess() {
 		return gaKRendering.getKPolyline_ImplAccess();
 	}
@@ -1119,9 +1131,10 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//KPolygon:
-	//	{KPolygon} "Polygon" ("{" ("points" ":"? points+=KPosition (","? points+=KPosition)*)? ("styles" ":"? styles+=KStyle
-	//	(","? styles+=KStyle)*)? ("placementData" ":"? placementData=KPlacementData)? ("childPlacement" ":"?
-	//	childPlacement=KPlacement)? ("children" ":"? children+=KRendering (","? children+=KRendering)*)? "}")?;
+	//	{KPolygon} "Polygon" ("{" ("points" ":"? points+=KPosition (","? points+=KPosition)*)? ("actions" ":"?
+	//	actions+=KAction (","? actions+=KAction)*)? ("styles" ":"? styles+=KStyle (","? styles+=KStyle)*)? ("placementData"
+	//	":"? placementData=KPlacementData)? ("childPlacement" ":"? childPlacement=KPlacement)? ("children" ":"?
+	//	children+=KRendering (","? children+=KRendering)*)? "}")?;
 	public KRenderingGrammarAccess.KPolygonElements getKPolygonAccess() {
 		return gaKRendering.getKPolygonAccess();
 	}
@@ -1131,9 +1144,10 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//KImage:
-	//	{KImage} "Image" (bundleName=EString | "-") imagePath=EString ("{" ("styles" ":"? styles+=KStyle (","?
-	//	styles+=KStyle)*)? ("placementData" ":"? placementData=KPlacementData)? ("childPlacement" ":"?
-	//	childPlacement=KPlacement)? ("children" ":"? children+=KRendering (","? children+=KRendering)*)? "}")?;
+	//	{KImage} "Image" (bundleName=EString | "-") imagePath=EString ("{" ("actions" ":"? actions+=KAction (","?
+	//	actions+=KAction)*)? ("styles" ":"? styles+=KStyle (","? styles+=KStyle)*)? ("placementData" ":"?
+	//	placementData=KPlacementData)? ("childPlacement" ":"? childPlacement=KPlacement)? ("children" ":"?
+	//	children+=KRendering (","? children+=KRendering)*)? "}")?;
 	public KRenderingGrammarAccess.KImageElements getKImageAccess() {
 		return gaKRendering.getKImageAccess();
 	}
@@ -1143,9 +1157,10 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//KArc:
-	//	{KArc} "Arc" startAngle=EFloat ","? arcAngle=EFloat ("{" ("styles" ":"? styles+=KStyle (","? styles+=KStyle)*)?
-	//	("placementData" ":"? placementData=KPlacementData)? ("childPlacement" ":"? childPlacement=KPlacement)? ("children"
-	//	":"? children+=KRendering (","? children+=KRendering)*)? "}")?;
+	//	{KArc} "Arc" startAngle=EFloat ","? arcAngle=EFloat ("{" ("actions" ":"? actions+=KAction (","? actions+=KAction)*)?
+	//	("styles" ":"? styles+=KStyle (","? styles+=KStyle)*)? ("placementData" ":"? placementData=KPlacementData)?
+	//	("childPlacement" ":"? childPlacement=KPlacement)? ("children" ":"? children+=KRendering (","?
+	//	children+=KRendering)*)? "}")?;
 	public KRenderingGrammarAccess.KArcElements getKArcAccess() {
 		return gaKRendering.getKArcAccess();
 	}
@@ -1155,8 +1170,8 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//KChildArea:
-	//	{KChildArea} "ChildArea" ("{" ("styles" ":"? styles+=KStyle (","? styles+=KStyle)*)? ("placementData" ":"?
-	//	placementData=KPlacementData)? "}")?;
+	//	{KChildArea} "ChildArea" ("{" ("actions" ":"? actions+=KAction (","? actions+=KAction)*)? ("styles" ":"?
+	//	styles+=KStyle (","? styles+=KStyle)*)? ("placementData" ":"? placementData=KPlacementData)? "}")?;
 	public KRenderingGrammarAccess.KChildAreaElements getKChildAreaAccess() {
 		return gaKRendering.getKChildAreaAccess();
 	}
@@ -1166,8 +1181,8 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//KText:
-	//	{KText} "Text" text=EString? ("{" ("styles" ":"? styles+=KStyle (","? styles+=KStyle)*)? ("placementData" ":"?
-	//	placementData=KPlacementData)? // allow mapProperties in order to specify size for size estimation tests
+	//	{KText} "Text" text=EString? ("{" ("actions" ":"? actions+=KAction (","? actions+=KAction)*)? ("styles" ":"?
+	//	styles+=KStyle (","? styles+=KStyle)*)? ("placementData" ":"? placementData=KPlacementData)? // allow mapProperties in order to specify size for size estimation tests
 	//	// (I don't trust in the different SWT implementations to
 	//	// provide the same size of a text on different platforms)
 	//	("mapProperties" ":"? persistentEntries+=PersistentEntry (","? persistentEntries+=PersistentEntry)*)? "}")?;
@@ -1180,9 +1195,10 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//KCustomRendering:
-	//	{KCustomRendering} "CustomRendering" ("{" "className" className=EString "bundleName" bundleName=EString ("styles" ":"?
-	//	styles+=KStyle (","? styles+=KStyle)*)? ("placementData" ":"? placementData=KPlacementData)? ("childPlacement" ":"?
-	//	childPlacement=KPlacement)? ("children" ":"? children+=KRendering (","? children+=KRendering)*)? "}")?;
+	//	{KCustomRendering} "CustomRendering" ("{" "className" className=EString "bundleName" bundleName=EString ("actions"
+	//	":"? actions+=KAction (","? actions+=KAction)*)? ("styles" ":"? styles+=KStyle (","? styles+=KStyle)*)?
+	//	("placementData" ":"? placementData=KPlacementData)? ("childPlacement" ":"? childPlacement=KPlacement)? ("children"
+	//	":"? children+=KRendering (","? children+=KRendering)*)? "}")?;
 	public KRenderingGrammarAccess.KCustomRenderingElements getKCustomRenderingAccess() {
 		return gaKRendering.getKCustomRenderingAccess();
 	}
@@ -1192,9 +1208,9 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//KSpline:
-	//	{KSpline} "Spline" ("{" ("styles" ":"? styles+=KStyle (","? styles+=KStyle)*)? ("placementData" ":"?
-	//	placementData=KPlacementData)? ("childPlacement" ":"? childPlacement=KPlacement)? ("children" ":"?
-	//	children+=KRendering (","? children+=KRendering)*)? "}")?;
+	//	{KSpline} "Spline" ("{" ("actions" ":"? actions+=KAction (","? actions+=KAction)*)? ("styles" ":"? styles+=KStyle
+	//	(","? styles+=KStyle)*)? ("placementData" ":"? placementData=KPlacementData)? ("childPlacement" ":"?
+	//	childPlacement=KPlacement)? ("children" ":"? children+=KRendering (","? children+=KRendering)*)? "}")?;
 	public KRenderingGrammarAccess.KSplineElements getKSplineAccess() {
 		return gaKRendering.getKSplineAccess();
 	}
@@ -1474,6 +1490,16 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	
 	public ParserRule getKGridPlacementRule() {
 		return getKGridPlacementAccess().getRule();
+	}
+
+	//enum Trigger:
+	//	DOUBLECLICK | SINGLECLICK;
+	public KRenderingGrammarAccess.TriggerElements getTriggerAccess() {
+		return gaKRendering.getTriggerAccess();
+	}
+	
+	public EnumRule getTriggerRule() {
+		return getTriggerAccess().getRule();
 	}
 
 	//enum LineStyle:

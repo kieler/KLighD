@@ -11,6 +11,7 @@ import de.cau.cs.kieler.core.kgraph.KPort;
 import de.cau.cs.kieler.core.kgraph.PersistentEntry;
 import de.cau.cs.kieler.core.kgraph.text.krendering.serializer.KRenderingSemanticSequencer;
 import de.cau.cs.kieler.core.kgraph.text.services.KGraphGrammarAccess;
+import de.cau.cs.kieler.core.krendering.KAction;
 import de.cau.cs.kieler.core.krendering.KArc;
 import de.cau.cs.kieler.core.krendering.KAreaPlacementData;
 import de.cau.cs.kieler.core.krendering.KBackground;
@@ -140,6 +141,12 @@ public class KGraphSemanticSequencer extends KRenderingSemanticSequencer {
 				else break;
 			}
 		else if(semanticObject.eClass().getEPackage() == KRenderingPackage.eINSTANCE) switch(semanticObject.eClass().getClassifierID()) {
+			case KRenderingPackage.KACTION:
+				if(context == grammarAccess.getKActionRule()) {
+					sequence_KAction(context, (KAction) semanticObject); 
+					return; 
+				}
+				else break;
 			case KRenderingPackage.KARC:
 				if(context == grammarAccess.getKArcRule() ||
 				   context == grammarAccess.getKGraphDataRule() ||

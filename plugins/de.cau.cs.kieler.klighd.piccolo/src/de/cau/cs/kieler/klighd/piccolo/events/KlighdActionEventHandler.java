@@ -19,7 +19,7 @@ import com.google.common.collect.Iterables;
 
 import de.cau.cs.kieler.core.krendering.KAction;
 import de.cau.cs.kieler.core.krendering.KRendering;
-import de.cau.cs.kieler.core.krendering.KTrigger;
+import de.cau.cs.kieler.core.krendering.Trigger;
 import de.cau.cs.kieler.klighd.IAction.ActionContext;
 import de.cau.cs.kieler.klighd.LightDiagramServices;
 import de.cau.cs.kieler.klighd.actions.CollapseExpandAction;
@@ -78,7 +78,7 @@ public class KlighdActionEventHandler implements PInputEventListener {
             viewer.setRecording(true);
             
             for (KAction action : Iterables.filter(rendering.getActions(), WELLFORMED)) {
-                if (action.getTrigger().equals(KTrigger.DOUBLECLICK) && action.getId() != null) {
+                if (action.getTrigger().equals(Trigger.DOUBLECLICK) && action.getId() != null) {
                     if (context == null) {
                         context = new ActionContext(this.viewer, action.getTrigger(), null, rendering);
                     }

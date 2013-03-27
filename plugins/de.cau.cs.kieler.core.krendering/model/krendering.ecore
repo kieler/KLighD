@@ -509,7 +509,7 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="lineCap" lowerBound="1"
         eType="#//LineCap"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="KAction" abstract="true">
+  <eClassifiers xsi:type="ecore:EClass" name="KAction">
     <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
       <details key="documentation" value="performs action &lt;id> on &lt;trigger> event"/>
     </eAnnotations>
@@ -519,7 +519,7 @@
       </eAnnotations>
     </eStructuralFeatures>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="trigger" lowerBound="1"
-        eType="#//KTrigger">
+        eType="#//Trigger">
       <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
         <details key="documentation" value="trigger that activates action"/>
       </eAnnotations>
@@ -568,12 +568,10 @@
       </eAnnotations>
     </eStructuralFeatures>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EEnum" name="KTrigger">
+  <eClassifiers xsi:type="ecore:EEnum" name="Trigger">
     <eLiterals name="SINGLECLICK" literal="SINGLECLICK"/>
     <eLiterals name="DOUBLECLICK" value="1"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="KSelectAction" eSuperTypes="#//KAction"/>
-  <eClassifiers xsi:type="ecore:EClass" name="KExpandAction" eSuperTypes="#//KAction"/>
   <eClassifiers xsi:type="ecore:EClass" name="KStyleHolder">
     <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
       <details key="documentation" value="Element to define styles without attaching them to a specific rendering"/>
@@ -617,7 +615,6 @@
     <eLiterals name="SQUIGGLE" value="4"/>
     <eLiterals name="LINK" value="5"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="KCollapseAction" eSuperTypes="#//KAction"/>
   <eClassifiers xsi:type="ecore:EClass" name="KStyleRef" eSuperTypes="#//KStyle">
     <eStructuralFeatures xsi:type="ecore:EReference" name="styleHolder" lowerBound="1"
         eType="#//KStyleHolder"/>

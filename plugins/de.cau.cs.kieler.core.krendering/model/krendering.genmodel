@@ -85,7 +85,7 @@
     </genClasses>
     <genClasses ecoreClass="krendering.ecore#//KStyle">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute krendering.ecore#//KStyle/propagateToChildren"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute krendering.ecore#//KStyle/functionId"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute krendering.ecore#//KStyle/modifierId"/>
     </genClasses>
     <genClasses ecoreClass="krendering.ecore#//KRenderingLibrary">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference krendering.ecore#//KRenderingLibrary/renderings"/>
@@ -190,9 +190,9 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute krendering.ecore#//KPointPlacementData/verticalAlignment"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute krendering.ecore#//KPointPlacementData/horizontalMargin"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute krendering.ecore#//KPointPlacementData/verticalMargin"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute krendering.ecore#//KPointPlacementData/minWidth"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute krendering.ecore#//KPointPlacementData/minHeight"/>
     </genClasses>
-    <genClasses ecoreClass="krendering.ecore#//KSelectAction"/>
-    <genClasses ecoreClass="krendering.ecore#//KExpandAction"/>
     <genClasses ecoreClass="krendering.ecore#//KStyleHolder">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference krendering.ecore#//KStyleHolder/styles"/>
     </genClasses>
@@ -209,7 +209,6 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute krendering.ecore#//KTextUnderline/underline"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference krendering.ecore#//KTextUnderline/color"/>
     </genClasses>
-    <genClasses ecoreClass="krendering.ecore#//KCollapseAction"/>
     <genClasses ecoreClass="krendering.ecore#//KStyleRef">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference krendering.ecore#//KStyleRef/styleHolder"/>
     </genClasses>

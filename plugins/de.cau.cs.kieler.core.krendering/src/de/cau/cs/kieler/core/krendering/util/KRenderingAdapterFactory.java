@@ -268,14 +268,6 @@ public class KRenderingAdapterFactory extends AdapterFactoryImpl {
                 return createKPointPlacementDataAdapter();
             }
             @Override
-            public Adapter caseKSelectAction(KSelectAction object) {
-                return createKSelectActionAdapter();
-            }
-            @Override
-            public Adapter caseKExpandAction(KExpandAction object) {
-                return createKExpandActionAdapter();
-            }
-            @Override
             public Adapter caseKStyleHolder(KStyleHolder object) {
                 return createKStyleHolderAdapter();
             }
@@ -290,10 +282,6 @@ public class KRenderingAdapterFactory extends AdapterFactoryImpl {
             @Override
             public Adapter caseKTextUnderline(KTextUnderline object) {
                 return createKTextUnderlineAdapter();
-            }
-            @Override
-            public Adapter caseKCollapseAction(KCollapseAction object) {
-                return createKCollapseActionAdapter();
             }
             @Override
             public Adapter caseKStyleRef(KStyleRef object) {
@@ -980,34 +968,6 @@ public class KRenderingAdapterFactory extends AdapterFactoryImpl {
     }
 
     /**
-     * Creates a new adapter for an object of class '{@link de.cau.cs.kieler.core.krendering.KSelectAction <em>KSelect Action</em>}'.
-     * <!-- begin-user-doc -->
-     * This default implementation returns null so that we can easily ignore cases;
-     * it's useful to ignore a case when inheritance will catch all the cases anyway.
-     * <!-- end-user-doc -->
-     * @return the new adapter.
-     * @see de.cau.cs.kieler.core.krendering.KSelectAction
-     * @generated
-     */
-    public Adapter createKSelectActionAdapter() {
-        return null;
-    }
-
-    /**
-     * Creates a new adapter for an object of class '{@link de.cau.cs.kieler.core.krendering.KExpandAction <em>KExpand Action</em>}'.
-     * <!-- begin-user-doc -->
-     * This default implementation returns null so that we can easily ignore cases;
-     * it's useful to ignore a case when inheritance will catch all the cases anyway.
-     * <!-- end-user-doc -->
-     * @return the new adapter.
-     * @see de.cau.cs.kieler.core.krendering.KExpandAction
-     * @generated
-     */
-    public Adapter createKExpandActionAdapter() {
-        return null;
-    }
-
-    /**
      * Creates a new adapter for an object of class '{@link de.cau.cs.kieler.core.krendering.KStyleHolder <em>KStyle Holder</em>}'.
      * <!-- begin-user-doc -->
      * This default implementation returns null so that we can easily ignore cases;
@@ -1060,20 +1020,6 @@ public class KRenderingAdapterFactory extends AdapterFactoryImpl {
      * @generated
      */
     public Adapter createKTextUnderlineAdapter() {
-        return null;
-    }
-
-    /**
-     * Creates a new adapter for an object of class '{@link de.cau.cs.kieler.core.krendering.KCollapseAction <em>KCollapse Action</em>}'.
-     * <!-- begin-user-doc -->
-     * This default implementation returns null so that we can easily ignore cases;
-     * it's useful to ignore a case when inheritance will catch all the cases anyway.
-     * <!-- end-user-doc -->
-     * @return the new adapter.
-     * @see de.cau.cs.kieler.core.krendering.KCollapseAction
-     * @generated
-     */
-    public Adapter createKCollapseActionAdapter() {
         return null;
     }
 
