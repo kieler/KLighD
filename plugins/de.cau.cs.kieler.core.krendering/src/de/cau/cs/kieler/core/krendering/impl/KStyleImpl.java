@@ -31,7 +31,7 @@ import org.eclipse.emf.ecore.impl.EObjectImpl;
  * The following features are implemented:
  * <ul>
  *   <li>{@link de.cau.cs.kieler.core.krendering.impl.KStyleImpl#isPropagateToChildren <em>Propagate To Children</em>}</li>
- *   <li>{@link de.cau.cs.kieler.core.krendering.impl.KStyleImpl#getFunctionId <em>Function Id</em>}</li>
+ *   <li>{@link de.cau.cs.kieler.core.krendering.impl.KStyleImpl#getModifierId <em>Modifier Id</em>}</li>
  * </ul>
  * </p>
  *
@@ -59,24 +59,24 @@ public abstract class KStyleImpl extends EObjectImpl implements KStyle {
     protected boolean propagateToChildren = PROPAGATE_TO_CHILDREN_EDEFAULT;
 
     /**
-     * The default value of the '{@link #getFunctionId() <em>Function Id</em>}' attribute.
+     * The default value of the '{@link #getModifierId() <em>Modifier Id</em>}' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see #getFunctionId()
+     * @see #getModifierId()
      * @generated
      * @ordered
      */
-    protected static final String FUNCTION_ID_EDEFAULT = null;
+    protected static final String MODIFIER_ID_EDEFAULT = null;
 
     /**
-     * The cached value of the '{@link #getFunctionId() <em>Function Id</em>}' attribute.
+     * The cached value of the '{@link #getModifierId() <em>Modifier Id</em>}' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see #getFunctionId()
+     * @see #getModifierId()
      * @generated
      * @ordered
      */
-    protected String functionId = FUNCTION_ID_EDEFAULT;
+    protected String modifierId = MODIFIER_ID_EDEFAULT;
 
     /**
      * <!-- begin-user-doc -->
@@ -123,8 +123,8 @@ public abstract class KStyleImpl extends EObjectImpl implements KStyle {
      * <!-- end-user-doc -->
      * @generated
      */
-    public String getFunctionId() {
-        return functionId;
+    public String getModifierId() {
+        return modifierId;
     }
 
     /**
@@ -132,11 +132,11 @@ public abstract class KStyleImpl extends EObjectImpl implements KStyle {
      * <!-- end-user-doc -->
      * @generated
      */
-    public void setFunctionId(String newFunctionId) {
-        String oldFunctionId = functionId;
-        functionId = newFunctionId;
+    public void setModifierId(String newModifierId) {
+        String oldModifierId = modifierId;
+        modifierId = newModifierId;
         if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, KRenderingPackage.KSTYLE__FUNCTION_ID, oldFunctionId, functionId));
+            eNotify(new ENotificationImpl(this, Notification.SET, KRenderingPackage.KSTYLE__MODIFIER_ID, oldModifierId, modifierId));
     }
 
     /**
@@ -149,8 +149,8 @@ public abstract class KStyleImpl extends EObjectImpl implements KStyle {
         switch (featureID) {
             case KRenderingPackage.KSTYLE__PROPAGATE_TO_CHILDREN:
                 return isPropagateToChildren();
-            case KRenderingPackage.KSTYLE__FUNCTION_ID:
-                return getFunctionId();
+            case KRenderingPackage.KSTYLE__MODIFIER_ID:
+                return getModifierId();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -166,8 +166,8 @@ public abstract class KStyleImpl extends EObjectImpl implements KStyle {
             case KRenderingPackage.KSTYLE__PROPAGATE_TO_CHILDREN:
                 setPropagateToChildren((Boolean)newValue);
                 return;
-            case KRenderingPackage.KSTYLE__FUNCTION_ID:
-                setFunctionId((String)newValue);
+            case KRenderingPackage.KSTYLE__MODIFIER_ID:
+                setModifierId((String)newValue);
                 return;
         }
         super.eSet(featureID, newValue);
@@ -184,8 +184,8 @@ public abstract class KStyleImpl extends EObjectImpl implements KStyle {
             case KRenderingPackage.KSTYLE__PROPAGATE_TO_CHILDREN:
                 setPropagateToChildren(PROPAGATE_TO_CHILDREN_EDEFAULT);
                 return;
-            case KRenderingPackage.KSTYLE__FUNCTION_ID:
-                setFunctionId(FUNCTION_ID_EDEFAULT);
+            case KRenderingPackage.KSTYLE__MODIFIER_ID:
+                setModifierId(MODIFIER_ID_EDEFAULT);
                 return;
         }
         super.eUnset(featureID);
@@ -201,8 +201,8 @@ public abstract class KStyleImpl extends EObjectImpl implements KStyle {
         switch (featureID) {
             case KRenderingPackage.KSTYLE__PROPAGATE_TO_CHILDREN:
                 return propagateToChildren != PROPAGATE_TO_CHILDREN_EDEFAULT;
-            case KRenderingPackage.KSTYLE__FUNCTION_ID:
-                return FUNCTION_ID_EDEFAULT == null ? functionId != null : !FUNCTION_ID_EDEFAULT.equals(functionId);
+            case KRenderingPackage.KSTYLE__MODIFIER_ID:
+                return MODIFIER_ID_EDEFAULT == null ? modifierId != null : !MODIFIER_ID_EDEFAULT.equals(modifierId);
         }
         return super.eIsSet(featureID);
     }
@@ -219,8 +219,8 @@ public abstract class KStyleImpl extends EObjectImpl implements KStyle {
         StringBuffer result = new StringBuffer(super.toString());
         result.append(" (propagateToChildren: ");
         result.append(propagateToChildren);
-        result.append(", functionId: ");
-        result.append(functionId);
+        result.append(", modifierId: ");
+        result.append(modifierId);
         result.append(')');
         return result.toString();
     }

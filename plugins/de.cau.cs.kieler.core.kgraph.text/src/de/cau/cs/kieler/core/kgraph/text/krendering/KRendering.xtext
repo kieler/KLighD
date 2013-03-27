@@ -264,54 +264,65 @@ KForeground returns KForeground:
 KVisibility returns KInvisibility:
     {KInvisibility}
     invisible?='invisible'
-    ('modifier' '=' functionId=EString)?;
+    ('modifier' '=' modifierId=EString)?;
     
     
 KLineWidth returns KLineWidth:
     'lineWidth' lineWidth=EFloat (propagateToChildren?='!')? 
-    ('modifier' '=' functionId=EString)?;
+    ('modifier' '=' modifierId=EString)?;
 
 KLineStyle returns KLineStyle:
     {KLineStyle}
-    'lineStyle' lineStyle=LineStyle propagateToChildren?='!'?;
+    'lineStyle' lineStyle=LineStyle propagateToChildren?='!'?
+    ('modifier' '=' modifierId=EString)?;
 
 KLineCap returns KLineCap:
      {KLineCap}
-     'lineCap' lineCap=LineCap  propagateToChildren?='!'?;
+     'lineCap' lineCap=LineCap  propagateToChildren?='!'?
+    ('modifier' '=' modifierId=EString)?;
     
 KRotation returns KRotation:
     {KRotation}
-    'rotation' rotation=EFloat propagateToChildren?='!'?;
+    'rotation' rotation=EFloat propagateToChildren?='!'?
+    ('modifier' '=' modifierId=EString)?;
     
 KShadow returns KShadow:
     {KShadow}
-    'shadow' color=KColor propagateToChildren?='!'?;
+    'shadow' color=KColor propagateToChildren?='!'?
+    ('modifier' '=' modifierId=EString)?;
     
 KFontBold returns KFontBold:
     {KFontBold}
-    bold?='bold' propagateToChildren?='!'?;
+    bold?='bold' propagateToChildren?='!'?
+    ('modifier' '=' modifierId=EString)?;
     
 KFontItalic returns KFontItalic:
     {KFontItalic}
-    italic?='italic' propagateToChildren?='!'?;
+    italic?='italic' propagateToChildren?='!'?
+    ('modifier' '=' modifierId=EString)?;
     
 KFontName returns KFontName:
-    'font' name=EString propagateToChildren?='!'?;
+    'font' name=EString propagateToChildren?='!'?
+    ('modifier' '=' modifierId=EString)?;
 
 KFontSize returns KFontSize:
-    'fontSize' size=EInt propagateToChildren?='!'?;
+    'fontSize' size=EInt propagateToChildren?='!'?
+    ('modifier' '=' modifierId=EString)?;
 
 KVerticalAlignment returns KVerticalAlignment:
     {KVerticalAlignment}
-    'verticalAlignment' verticalAlignment=VerticalAlignment propagateToChildren?='!'?;
+    'verticalAlignment' verticalAlignment=VerticalAlignment propagateToChildren?='!'?
+    ('modifier' '=' modifierId=EString)?;
     
 KHorizontalAlignment returns KHorizontalAlignment:
     {KHorizontalAlignment}
-    'horizontalAlignment' horizontalAlignment=HorizontalAlignment propagateToChildren?='!'?;
+    'horizontalAlignment' horizontalAlignment=HorizontalAlignment propagateToChildren?='!'?
+    ('modifier' '=' modifierId=EString)?;
 
 KStyleRef returns KStyleRef:
     {KStyleRef}
-    'styleRef' styleHolder=[KStyleHolder|EString] propagateToChildren?='!'?;
+    'styleRef' styleHolder=[KStyleHolder|EString] propagateToChildren?='!'?
+    ('modifier' '=' modifierId=EString)?;
 
 KGridPlacement returns KGridPlacement:
     {KGridPlacement}

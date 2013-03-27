@@ -1131,13 +1131,13 @@ public interface KRenderingPackage extends EPackage {
     int KSTYLE__PROPAGATE_TO_CHILDREN = 0;
 
     /**
-     * The feature id for the '<em><b>Function Id</b></em>' attribute.
+     * The feature id for the '<em><b>Modifier Id</b></em>' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int KSTYLE__FUNCTION_ID = 1;
+    int KSTYLE__MODIFIER_ID = 1;
 
     /**
      * The number of structural features of the '<em>KStyle</em>' class.
@@ -1790,13 +1790,13 @@ public interface KRenderingPackage extends EPackage {
     int KLINE_WIDTH__PROPAGATE_TO_CHILDREN = KSTYLE__PROPAGATE_TO_CHILDREN;
 
     /**
-     * The feature id for the '<em><b>Function Id</b></em>' attribute.
+     * The feature id for the '<em><b>Modifier Id</b></em>' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int KLINE_WIDTH__FUNCTION_ID = KSTYLE__FUNCTION_ID;
+    int KLINE_WIDTH__MODIFIER_ID = KSTYLE__MODIFIER_ID;
 
     /**
      * The feature id for the '<em><b>Line Width</b></em>' attribute.
@@ -1836,13 +1836,13 @@ public interface KRenderingPackage extends EPackage {
     int KLINE_STYLE__PROPAGATE_TO_CHILDREN = KSTYLE__PROPAGATE_TO_CHILDREN;
 
     /**
-     * The feature id for the '<em><b>Function Id</b></em>' attribute.
+     * The feature id for the '<em><b>Modifier Id</b></em>' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int KLINE_STYLE__FUNCTION_ID = KSTYLE__FUNCTION_ID;
+    int KLINE_STYLE__MODIFIER_ID = KSTYLE__MODIFIER_ID;
 
     /**
      * The feature id for the '<em><b>Line Style</b></em>' attribute.
@@ -1882,13 +1882,13 @@ public interface KRenderingPackage extends EPackage {
     int KVERTICAL_ALIGNMENT__PROPAGATE_TO_CHILDREN = KSTYLE__PROPAGATE_TO_CHILDREN;
 
     /**
-     * The feature id for the '<em><b>Function Id</b></em>' attribute.
+     * The feature id for the '<em><b>Modifier Id</b></em>' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int KVERTICAL_ALIGNMENT__FUNCTION_ID = KSTYLE__FUNCTION_ID;
+    int KVERTICAL_ALIGNMENT__MODIFIER_ID = KSTYLE__MODIFIER_ID;
 
     /**
      * The feature id for the '<em><b>Vertical Alignment</b></em>' attribute.
@@ -1928,13 +1928,13 @@ public interface KRenderingPackage extends EPackage {
     int KHORIZONTAL_ALIGNMENT__PROPAGATE_TO_CHILDREN = KSTYLE__PROPAGATE_TO_CHILDREN;
 
     /**
-     * The feature id for the '<em><b>Function Id</b></em>' attribute.
+     * The feature id for the '<em><b>Modifier Id</b></em>' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int KHORIZONTAL_ALIGNMENT__FUNCTION_ID = KSTYLE__FUNCTION_ID;
+    int KHORIZONTAL_ALIGNMENT__MODIFIER_ID = KSTYLE__MODIFIER_ID;
 
     /**
      * The feature id for the '<em><b>Horizontal Alignment</b></em>' attribute.
@@ -2305,13 +2305,13 @@ public interface KRenderingPackage extends EPackage {
     int KCOLORING__PROPAGATE_TO_CHILDREN = KSTYLE__PROPAGATE_TO_CHILDREN;
 
     /**
-     * The feature id for the '<em><b>Function Id</b></em>' attribute.
+     * The feature id for the '<em><b>Modifier Id</b></em>' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int KCOLORING__FUNCTION_ID = KSTYLE__FUNCTION_ID;
+    int KCOLORING__MODIFIER_ID = KSTYLE__MODIFIER_ID;
 
     /**
      * The feature id for the '<em><b>Alpha</b></em>' attribute.
@@ -2387,13 +2387,13 @@ public interface KRenderingPackage extends EPackage {
     int KFOREGROUND__PROPAGATE_TO_CHILDREN = KCOLORING__PROPAGATE_TO_CHILDREN;
 
     /**
-     * The feature id for the '<em><b>Function Id</b></em>' attribute.
+     * The feature id for the '<em><b>Modifier Id</b></em>' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int KFOREGROUND__FUNCTION_ID = KCOLORING__FUNCTION_ID;
+    int KFOREGROUND__MODIFIER_ID = KCOLORING__MODIFIER_ID;
 
     /**
      * The feature id for the '<em><b>Alpha</b></em>' attribute.
@@ -2469,13 +2469,13 @@ public interface KRenderingPackage extends EPackage {
     int KBACKGROUND__PROPAGATE_TO_CHILDREN = KCOLORING__PROPAGATE_TO_CHILDREN;
 
     /**
-     * The feature id for the '<em><b>Function Id</b></em>' attribute.
+     * The feature id for the '<em><b>Modifier Id</b></em>' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int KBACKGROUND__FUNCTION_ID = KCOLORING__FUNCTION_ID;
+    int KBACKGROUND__MODIFIER_ID = KCOLORING__MODIFIER_ID;
 
     /**
      * The feature id for the '<em><b>Alpha</b></em>' attribute.
@@ -2551,13 +2551,13 @@ public interface KRenderingPackage extends EPackage {
     int KFONT_BOLD__PROPAGATE_TO_CHILDREN = KSTYLE__PROPAGATE_TO_CHILDREN;
 
     /**
-     * The feature id for the '<em><b>Function Id</b></em>' attribute.
+     * The feature id for the '<em><b>Modifier Id</b></em>' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int KFONT_BOLD__FUNCTION_ID = KSTYLE__FUNCTION_ID;
+    int KFONT_BOLD__MODIFIER_ID = KSTYLE__MODIFIER_ID;
 
     /**
      * The feature id for the '<em><b>Bold</b></em>' attribute.
@@ -2597,13 +2597,13 @@ public interface KRenderingPackage extends EPackage {
     int KFONT_ITALIC__PROPAGATE_TO_CHILDREN = KSTYLE__PROPAGATE_TO_CHILDREN;
 
     /**
-     * The feature id for the '<em><b>Function Id</b></em>' attribute.
+     * The feature id for the '<em><b>Modifier Id</b></em>' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int KFONT_ITALIC__FUNCTION_ID = KSTYLE__FUNCTION_ID;
+    int KFONT_ITALIC__MODIFIER_ID = KSTYLE__MODIFIER_ID;
 
     /**
      * The feature id for the '<em><b>Italic</b></em>' attribute.
@@ -2643,13 +2643,13 @@ public interface KRenderingPackage extends EPackage {
     int KFONT_NAME__PROPAGATE_TO_CHILDREN = KSTYLE__PROPAGATE_TO_CHILDREN;
 
     /**
-     * The feature id for the '<em><b>Function Id</b></em>' attribute.
+     * The feature id for the '<em><b>Modifier Id</b></em>' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int KFONT_NAME__FUNCTION_ID = KSTYLE__FUNCTION_ID;
+    int KFONT_NAME__MODIFIER_ID = KSTYLE__MODIFIER_ID;
 
     /**
      * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -2689,13 +2689,13 @@ public interface KRenderingPackage extends EPackage {
     int KFONT_SIZE__PROPAGATE_TO_CHILDREN = KSTYLE__PROPAGATE_TO_CHILDREN;
 
     /**
-     * The feature id for the '<em><b>Function Id</b></em>' attribute.
+     * The feature id for the '<em><b>Modifier Id</b></em>' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int KFONT_SIZE__FUNCTION_ID = KSTYLE__FUNCTION_ID;
+    int KFONT_SIZE__MODIFIER_ID = KSTYLE__MODIFIER_ID;
 
     /**
      * The feature id for the '<em><b>Size</b></em>' attribute.
@@ -2862,13 +2862,13 @@ public interface KRenderingPackage extends EPackage {
     int KROTATION__PROPAGATE_TO_CHILDREN = KSTYLE__PROPAGATE_TO_CHILDREN;
 
     /**
-     * The feature id for the '<em><b>Function Id</b></em>' attribute.
+     * The feature id for the '<em><b>Modifier Id</b></em>' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int KROTATION__FUNCTION_ID = KSTYLE__FUNCTION_ID;
+    int KROTATION__MODIFIER_ID = KSTYLE__MODIFIER_ID;
 
     /**
      * The feature id for the '<em><b>Rotation</b></em>' attribute.
@@ -2908,13 +2908,13 @@ public interface KRenderingPackage extends EPackage {
     int KLINE_CAP__PROPAGATE_TO_CHILDREN = KSTYLE__PROPAGATE_TO_CHILDREN;
 
     /**
-     * The feature id for the '<em><b>Function Id</b></em>' attribute.
+     * The feature id for the '<em><b>Modifier Id</b></em>' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int KLINE_CAP__FUNCTION_ID = KSTYLE__FUNCTION_ID;
+    int KLINE_CAP__MODIFIER_ID = KSTYLE__MODIFIER_ID;
 
     /**
      * The feature id for the '<em><b>Line Cap</b></em>' attribute.
@@ -3175,13 +3175,13 @@ public interface KRenderingPackage extends EPackage {
     int KINVISIBILITY__PROPAGATE_TO_CHILDREN = KSTYLE__PROPAGATE_TO_CHILDREN;
 
     /**
-     * The feature id for the '<em><b>Function Id</b></em>' attribute.
+     * The feature id for the '<em><b>Modifier Id</b></em>' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int KINVISIBILITY__FUNCTION_ID = KSTYLE__FUNCTION_ID;
+    int KINVISIBILITY__MODIFIER_ID = KSTYLE__MODIFIER_ID;
 
     /**
      * The feature id for the '<em><b>Invisible</b></em>' attribute.
@@ -3221,13 +3221,13 @@ public interface KRenderingPackage extends EPackage {
     int KSHADOW__PROPAGATE_TO_CHILDREN = KSTYLE__PROPAGATE_TO_CHILDREN;
 
     /**
-     * The feature id for the '<em><b>Function Id</b></em>' attribute.
+     * The feature id for the '<em><b>Modifier Id</b></em>' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int KSHADOW__FUNCTION_ID = KSTYLE__FUNCTION_ID;
+    int KSHADOW__MODIFIER_ID = KSTYLE__MODIFIER_ID;
 
     /**
      * The feature id for the '<em><b>XOffset</b></em>' attribute.
@@ -3294,13 +3294,13 @@ public interface KRenderingPackage extends EPackage {
     int KTEXT_UNDERLINE__PROPAGATE_TO_CHILDREN = KSTYLE__PROPAGATE_TO_CHILDREN;
 
     /**
-     * The feature id for the '<em><b>Function Id</b></em>' attribute.
+     * The feature id for the '<em><b>Modifier Id</b></em>' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int KTEXT_UNDERLINE__FUNCTION_ID = KSTYLE__FUNCTION_ID;
+    int KTEXT_UNDERLINE__MODIFIER_ID = KSTYLE__MODIFIER_ID;
 
     /**
      * The feature id for the '<em><b>Underline</b></em>' attribute.
@@ -3386,13 +3386,13 @@ public interface KRenderingPackage extends EPackage {
     int KSTYLE_REF__PROPAGATE_TO_CHILDREN = KSTYLE__PROPAGATE_TO_CHILDREN;
 
     /**
-     * The feature id for the '<em><b>Function Id</b></em>' attribute.
+     * The feature id for the '<em><b>Modifier Id</b></em>' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int KSTYLE_REF__FUNCTION_ID = KSTYLE__FUNCTION_ID;
+    int KSTYLE_REF__MODIFIER_ID = KSTYLE__MODIFIER_ID;
 
     /**
      * The feature id for the '<em><b>Style Holder</b></em>' reference.
@@ -3432,13 +3432,13 @@ public interface KRenderingPackage extends EPackage {
     int KTEXT_STRIKEOUT__PROPAGATE_TO_CHILDREN = KSTYLE__PROPAGATE_TO_CHILDREN;
 
     /**
-     * The feature id for the '<em><b>Function Id</b></em>' attribute.
+     * The feature id for the '<em><b>Modifier Id</b></em>' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int KTEXT_STRIKEOUT__FUNCTION_ID = KSTYLE__FUNCTION_ID;
+    int KTEXT_STRIKEOUT__MODIFIER_ID = KSTYLE__MODIFIER_ID;
 
     /**
      * The feature id for the '<em><b>Struck Out</b></em>' attribute.
@@ -3912,15 +3912,15 @@ public interface KRenderingPackage extends EPackage {
     EAttribute getKStyle_PropagateToChildren();
 
     /**
-     * Returns the meta object for the attribute '{@link de.cau.cs.kieler.core.krendering.KStyle#getFunctionId <em>Function Id</em>}'.
+     * Returns the meta object for the attribute '{@link de.cau.cs.kieler.core.krendering.KStyle#getModifierId <em>Modifier Id</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for the attribute '<em>Function Id</em>'.
-     * @see de.cau.cs.kieler.core.krendering.KStyle#getFunctionId()
+     * @return the meta object for the attribute '<em>Modifier Id</em>'.
+     * @see de.cau.cs.kieler.core.krendering.KStyle#getModifierId()
      * @see #getKStyle()
      * @generated
      */
-    EAttribute getKStyle_FunctionId();
+    EAttribute getKStyle_ModifierId();
 
     /**
      * Returns the meta object for class '{@link de.cau.cs.kieler.core.krendering.KRenderingLibrary <em>Library</em>}'.
@@ -5396,12 +5396,12 @@ public interface KRenderingPackage extends EPackage {
         EAttribute KSTYLE__PROPAGATE_TO_CHILDREN = eINSTANCE.getKStyle_PropagateToChildren();
 
         /**
-         * The meta object literal for the '<em><b>Function Id</b></em>' attribute feature.
+         * The meta object literal for the '<em><b>Modifier Id</b></em>' attribute feature.
          * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
          * @generated
          */
-        EAttribute KSTYLE__FUNCTION_ID = eINSTANCE.getKStyle_FunctionId();
+        EAttribute KSTYLE__MODIFIER_ID = eINSTANCE.getKStyle_ModifierId();
 
         /**
          * The meta object literal for the '{@link de.cau.cs.kieler.core.krendering.impl.KRenderingLibraryImpl <em>Library</em>}' class.

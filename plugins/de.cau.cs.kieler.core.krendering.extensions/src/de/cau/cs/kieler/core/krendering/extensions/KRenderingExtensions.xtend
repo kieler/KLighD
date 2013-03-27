@@ -281,7 +281,7 @@ class KRenderingExtensions {
                 it.targetAlpha = coloring.targetAlpha;
                 it.targetColor = coloring.targetColor.copy;
                 it.gradientAngle = coloring.gradientAngle;
-                it.functionId = coloring.functionId;
+                it.modifierId = coloring.modifierId;
                 it.propagateToChildren = coloring.propagateToChildren;
             ];
         ];
@@ -362,7 +362,7 @@ class KRenderingExtensions {
                 it.targetAlpha = coloring.targetAlpha;
                 it.targetColor = coloring.targetColor.copy;
                 it.gradientAngle = coloring.gradientAngle;
-                it.functionId = coloring.functionId;
+                it.modifierId = coloring.modifierId;
                 it.propagateToChildren = coloring.propagateToChildren;
             ];
         ];

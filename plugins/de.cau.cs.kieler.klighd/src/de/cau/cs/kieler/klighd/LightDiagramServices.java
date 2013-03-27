@@ -398,13 +398,13 @@ public final class LightDiagramServices {
                 return Iterators.filter(Iterators.filter(it, KStyle.class),
                         new Predicate<KStyle>() {
                             public boolean apply(final KStyle style) {
-                                return !Strings.isNullOrEmpty(style.getFunctionId());
+                                return !Strings.isNullOrEmpty(style.getModifierId());
                             }
                         });
             }
         });
         for (KStyle s : styles) {
-            KlighdDataManager.getInstance().getStyleModifierById(s.getFunctionId())
+            KlighdDataManager.getInstance().getStyleModifierById(s.getModifierId())
                     .modify(new StyleModificationContext(s));
         }
     }

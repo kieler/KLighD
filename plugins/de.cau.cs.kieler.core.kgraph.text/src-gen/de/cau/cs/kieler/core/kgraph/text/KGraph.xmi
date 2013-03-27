@@ -1559,7 +1559,7 @@
         <elements xsi:type="xtext:Group" cardinality="?">
           <elements xsi:type="xtext:Keyword" value="modifier"/>
           <elements xsi:type="xtext:Keyword" value="="/>
-          <elements xsi:type="xtext:Assignment" feature="functionId" operator="=">
+          <elements xsi:type="xtext:Assignment" feature="modifierId" operator="=">
             <terminal xsi:type="xtext:RuleCall" rule="/2/@rules.5"/>
           </elements>
         </elements>
@@ -1580,7 +1580,7 @@
         <elements xsi:type="xtext:Group" cardinality="?">
           <elements xsi:type="xtext:Keyword" value="modifier"/>
           <elements xsi:type="xtext:Keyword" value="="/>
-          <elements xsi:type="xtext:Assignment" feature="functionId" operator="=">
+          <elements xsi:type="xtext:Assignment" feature="modifierId" operator="=">
             <terminal xsi:type="xtext:RuleCall" rule="/2/@rules.5"/>
           </elements>
         </elements>
@@ -1603,6 +1603,13 @@
         <elements xsi:type="xtext:Assignment" cardinality="?" feature="propagateToChildren" operator="?=">
           <terminal xsi:type="xtext:Keyword" value="!"/>
         </elements>
+        <elements xsi:type="xtext:Group" cardinality="?">
+          <elements xsi:type="xtext:Keyword" value="modifier"/>
+          <elements xsi:type="xtext:Keyword" value="="/>
+          <elements xsi:type="xtext:Assignment" feature="modifierId" operator="=">
+            <terminal xsi:type="xtext:RuleCall" rule="/2/@rules.5"/>
+          </elements>
+        </elements>
       </alternatives>
     </rules>
     <rules xsi:type="xtext:ParserRule" name="KLineCap">
@@ -1621,6 +1628,13 @@
         </elements>
         <elements xsi:type="xtext:Assignment" cardinality="?" feature="propagateToChildren" operator="?=">
           <terminal xsi:type="xtext:Keyword" value="!"/>
+        </elements>
+        <elements xsi:type="xtext:Group" cardinality="?">
+          <elements xsi:type="xtext:Keyword" value="modifier"/>
+          <elements xsi:type="xtext:Keyword" value="="/>
+          <elements xsi:type="xtext:Assignment" feature="modifierId" operator="=">
+            <terminal xsi:type="xtext:RuleCall" rule="/2/@rules.5"/>
+          </elements>
         </elements>
       </alternatives>
     </rules>
@@ -1641,6 +1655,13 @@
         <elements xsi:type="xtext:Assignment" cardinality="?" feature="propagateToChildren" operator="?=">
           <terminal xsi:type="xtext:Keyword" value="!"/>
         </elements>
+        <elements xsi:type="xtext:Group" cardinality="?">
+          <elements xsi:type="xtext:Keyword" value="modifier"/>
+          <elements xsi:type="xtext:Keyword" value="="/>
+          <elements xsi:type="xtext:Assignment" feature="modifierId" operator="=">
+            <terminal xsi:type="xtext:RuleCall" rule="/2/@rules.5"/>
+          </elements>
+        </elements>
       </alternatives>
     </rules>
     <rules xsi:type="xtext:ParserRule" name="KShadow">
@@ -1660,6 +1681,13 @@
         <elements xsi:type="xtext:Assignment" cardinality="?" feature="propagateToChildren" operator="?=">
           <terminal xsi:type="xtext:Keyword" value="!"/>
         </elements>
+        <elements xsi:type="xtext:Group" cardinality="?">
+          <elements xsi:type="xtext:Keyword" value="modifier"/>
+          <elements xsi:type="xtext:Keyword" value="="/>
+          <elements xsi:type="xtext:Assignment" feature="modifierId" operator="=">
+            <terminal xsi:type="xtext:RuleCall" rule="/2/@rules.5"/>
+          </elements>
+        </elements>
       </alternatives>
     </rules>
     <rules xsi:type="xtext:ParserRule" name="KFontBold">
@@ -1677,6 +1705,13 @@
         </elements>
         <elements xsi:type="xtext:Assignment" cardinality="?" feature="propagateToChildren" operator="?=">
           <terminal xsi:type="xtext:Keyword" value="!"/>
+        </elements>
+        <elements xsi:type="xtext:Group" cardinality="?">
+          <elements xsi:type="xtext:Keyword" value="modifier"/>
+          <elements xsi:type="xtext:Keyword" value="="/>
+          <elements xsi:type="xtext:Assignment" feature="modifierId" operator="=">
+            <terminal xsi:type="xtext:RuleCall" rule="/2/@rules.5"/>
+          </elements>
         </elements>
       </alternatives>
     </rules>
@@ -1696,6 +1731,13 @@
         <elements xsi:type="xtext:Assignment" cardinality="?" feature="propagateToChildren" operator="?=">
           <terminal xsi:type="xtext:Keyword" value="!"/>
         </elements>
+        <elements xsi:type="xtext:Group" cardinality="?">
+          <elements xsi:type="xtext:Keyword" value="modifier"/>
+          <elements xsi:type="xtext:Keyword" value="="/>
+          <elements xsi:type="xtext:Assignment" feature="modifierId" operator="=">
+            <terminal xsi:type="xtext:RuleCall" rule="/2/@rules.5"/>
+          </elements>
+        </elements>
       </alternatives>
     </rules>
     <rules xsi:type="xtext:ParserRule" name="KFontName">
@@ -1710,6 +1752,13 @@
         <elements xsi:type="xtext:Assignment" cardinality="?" feature="propagateToChildren" operator="?=">
           <terminal xsi:type="xtext:Keyword" value="!"/>
         </elements>
+        <elements xsi:type="xtext:Group" cardinality="?">
+          <elements xsi:type="xtext:Keyword" value="modifier"/>
+          <elements xsi:type="xtext:Keyword" value="="/>
+          <elements xsi:type="xtext:Assignment" feature="modifierId" operator="=">
+            <terminal xsi:type="xtext:RuleCall" rule="/2/@rules.5"/>
+          </elements>
+        </elements>
       </alternatives>
     </rules>
     <rules xsi:type="xtext:ParserRule" name="KFontSize">
@@ -1723,6 +1772,13 @@
         </elements>
         <elements xsi:type="xtext:Assignment" cardinality="?" feature="propagateToChildren" operator="?=">
           <terminal xsi:type="xtext:Keyword" value="!"/>
+        </elements>
+        <elements xsi:type="xtext:Group" cardinality="?">
+          <elements xsi:type="xtext:Keyword" value="modifier"/>
+          <elements xsi:type="xtext:Keyword" value="="/>
+          <elements xsi:type="xtext:Assignment" feature="modifierId" operator="=">
+            <terminal xsi:type="xtext:RuleCall" rule="/2/@rules.5"/>
+          </elements>
         </elements>
       </alternatives>
     </rules>
@@ -1743,6 +1799,13 @@
         <elements xsi:type="xtext:Assignment" cardinality="?" feature="propagateToChildren" operator="?=">
           <terminal xsi:type="xtext:Keyword" value="!"/>
         </elements>
+        <elements xsi:type="xtext:Group" cardinality="?">
+          <elements xsi:type="xtext:Keyword" value="modifier"/>
+          <elements xsi:type="xtext:Keyword" value="="/>
+          <elements xsi:type="xtext:Assignment" feature="modifierId" operator="=">
+            <terminal xsi:type="xtext:RuleCall" rule="/2/@rules.5"/>
+          </elements>
+        </elements>
       </alternatives>
     </rules>
     <rules xsi:type="xtext:ParserRule" name="KHorizontalAlignment">
@@ -1761,6 +1824,13 @@
         </elements>
         <elements xsi:type="xtext:Assignment" cardinality="?" feature="propagateToChildren" operator="?=">
           <terminal xsi:type="xtext:Keyword" value="!"/>
+        </elements>
+        <elements xsi:type="xtext:Group" cardinality="?">
+          <elements xsi:type="xtext:Keyword" value="modifier"/>
+          <elements xsi:type="xtext:Keyword" value="="/>
+          <elements xsi:type="xtext:Assignment" feature="modifierId" operator="=">
+            <terminal xsi:type="xtext:RuleCall" rule="/2/@rules.5"/>
+          </elements>
         </elements>
       </alternatives>
     </rules>
@@ -1785,6 +1855,13 @@
         </elements>
         <elements xsi:type="xtext:Assignment" cardinality="?" feature="propagateToChildren" operator="?=">
           <terminal xsi:type="xtext:Keyword" value="!"/>
+        </elements>
+        <elements xsi:type="xtext:Group" cardinality="?">
+          <elements xsi:type="xtext:Keyword" value="modifier"/>
+          <elements xsi:type="xtext:Keyword" value="="/>
+          <elements xsi:type="xtext:Assignment" feature="modifierId" operator="=">
+            <terminal xsi:type="xtext:RuleCall" rule="/2/@rules.5"/>
+          </elements>
         </elements>
       </alternatives>
     </rules>

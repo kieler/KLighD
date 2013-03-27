@@ -29,7 +29,7 @@ import org.eclipse.emf.ecore.EObject;
  * The following features are supported:
  * <ul>
  *   <li>{@link de.cau.cs.kieler.core.krendering.KStyle#isPropagateToChildren <em>Propagate To Children</em>}</li>
- *   <li>{@link de.cau.cs.kieler.core.krendering.KStyle#getFunctionId <em>Function Id</em>}</li>
+ *   <li>{@link de.cau.cs.kieler.core.krendering.KStyle#getModifierId <em>Modifier Id</em>}</li>
  * </ul>
  * </p>
  *
@@ -68,28 +68,28 @@ public interface KStyle extends EObject {
     void setPropagateToChildren(boolean value);
 
     /**
-     * Returns the value of the '<em><b>Function Id</b></em>' attribute.
+     * Returns the value of the '<em><b>Modifier Id</b></em>' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * <!-- begin-model-doc -->
      * id of the function that should be called when layout is finished to change this style
      * <!-- end-model-doc -->
-     * @return the value of the '<em>Function Id</em>' attribute.
-     * @see #setFunctionId(String)
-     * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKStyle_FunctionId()
+     * @return the value of the '<em>Modifier Id</em>' attribute.
+     * @see #setModifierId(String)
+     * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKStyle_ModifierId()
      * @model
      * @generated
      */
-    String getFunctionId();
+    String getModifierId();
 
     /**
-     * Sets the value of the '{@link de.cau.cs.kieler.core.krendering.KStyle#getFunctionId <em>Function Id</em>}' attribute.
+     * Sets the value of the '{@link de.cau.cs.kieler.core.krendering.KStyle#getModifierId <em>Modifier Id</em>}' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @param value the new value of the '<em>Function Id</em>' attribute.
-     * @see #getFunctionId()
+     * @param value the new value of the '<em>Modifier Id</em>' attribute.
+     * @see #getModifierId()
      * @generated
      */
-    void setFunctionId(String value);
+    void setModifierId(String value);
 
 } // KStyle

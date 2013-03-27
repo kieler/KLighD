@@ -4653,16 +4653,16 @@ ruleKVisibility returns [EObject current=null]
 (
 (
 		{ 
-	        newCompositeNode(grammarAccess.getKVisibilityAccess().getFunctionIdEStringParserRuleCall_2_2_0()); 
+	        newCompositeNode(grammarAccess.getKVisibilityAccess().getModifierIdEStringParserRuleCall_2_2_0()); 
 	    }
-		lv_functionId_4_0=ruleEString		{
+		lv_modifierId_4_0=ruleEString		{
 	        if ($current==null) {
 	            $current = createModelElementForParent(grammarAccess.getKVisibilityRule());
 	        }
        		set(
        			$current, 
-       			"functionId",
-        		lv_functionId_4_0, 
+       			"modifierId",
+        		lv_modifierId_4_0, 
         		"EString");
 	        afterParserOrEnumRuleCall();
 	    }
@@ -4737,16 +4737,16 @@ ruleKLineWidth returns [EObject current=null]
 (
 (
 		{ 
-	        newCompositeNode(grammarAccess.getKLineWidthAccess().getFunctionIdEStringParserRuleCall_3_2_0()); 
+	        newCompositeNode(grammarAccess.getKLineWidthAccess().getModifierIdEStringParserRuleCall_3_2_0()); 
 	    }
-		lv_functionId_5_0=ruleEString		{
+		lv_modifierId_5_0=ruleEString		{
 	        if ($current==null) {
 	            $current = createModelElementForParent(grammarAccess.getKLineWidthRule());
 	        }
        		set(
        			$current, 
-       			"functionId",
-        		lv_functionId_5_0, 
+       			"modifierId",
+        		lv_modifierId_5_0, 
         		"EString");
 	        afterParserOrEnumRuleCall();
 	    }
@@ -4816,7 +4816,33 @@ ruleKLineStyle returns [EObject current=null]
 	    }
 
 )
-)?)
+)?(	otherlv_4='modifier' 
+    {
+    	newLeafNode(otherlv_4, grammarAccess.getKLineStyleAccess().getModifierKeyword_4_0());
+    }
+	otherlv_5='=' 
+    {
+    	newLeafNode(otherlv_5, grammarAccess.getKLineStyleAccess().getEqualsSignKeyword_4_1());
+    }
+(
+(
+		{ 
+	        newCompositeNode(grammarAccess.getKLineStyleAccess().getModifierIdEStringParserRuleCall_4_2_0()); 
+	    }
+		lv_modifierId_6_0=ruleEString		{
+	        if ($current==null) {
+	            $current = createModelElementForParent(grammarAccess.getKLineStyleRule());
+	        }
+       		set(
+       			$current, 
+       			"modifierId",
+        		lv_modifierId_6_0, 
+        		"EString");
+	        afterParserOrEnumRuleCall();
+	    }
+
+)
+))?)
 ;
 
 
@@ -4880,7 +4906,33 @@ ruleKLineCap returns [EObject current=null]
 	    }
 
 )
-)?)
+)?(	otherlv_4='modifier' 
+    {
+    	newLeafNode(otherlv_4, grammarAccess.getKLineCapAccess().getModifierKeyword_4_0());
+    }
+	otherlv_5='=' 
+    {
+    	newLeafNode(otherlv_5, grammarAccess.getKLineCapAccess().getEqualsSignKeyword_4_1());
+    }
+(
+(
+		{ 
+	        newCompositeNode(grammarAccess.getKLineCapAccess().getModifierIdEStringParserRuleCall_4_2_0()); 
+	    }
+		lv_modifierId_6_0=ruleEString		{
+	        if ($current==null) {
+	            $current = createModelElementForParent(grammarAccess.getKLineCapRule());
+	        }
+       		set(
+       			$current, 
+       			"modifierId",
+        		lv_modifierId_6_0, 
+        		"EString");
+	        afterParserOrEnumRuleCall();
+	    }
+
+)
+))?)
 ;
 
 
@@ -4944,7 +4996,33 @@ ruleKRotation returns [EObject current=null]
 	    }
 
 )
-)?)
+)?(	otherlv_4='modifier' 
+    {
+    	newLeafNode(otherlv_4, grammarAccess.getKRotationAccess().getModifierKeyword_4_0());
+    }
+	otherlv_5='=' 
+    {
+    	newLeafNode(otherlv_5, grammarAccess.getKRotationAccess().getEqualsSignKeyword_4_1());
+    }
+(
+(
+		{ 
+	        newCompositeNode(grammarAccess.getKRotationAccess().getModifierIdEStringParserRuleCall_4_2_0()); 
+	    }
+		lv_modifierId_6_0=ruleEString		{
+	        if ($current==null) {
+	            $current = createModelElementForParent(grammarAccess.getKRotationRule());
+	        }
+       		set(
+       			$current, 
+       			"modifierId",
+        		lv_modifierId_6_0, 
+        		"EString");
+	        afterParserOrEnumRuleCall();
+	    }
+
+)
+))?)
 ;
 
 
@@ -5008,7 +5086,33 @@ ruleKShadow returns [EObject current=null]
 	    }
 
 )
-)?)
+)?(	otherlv_4='modifier' 
+    {
+    	newLeafNode(otherlv_4, grammarAccess.getKShadowAccess().getModifierKeyword_4_0());
+    }
+	otherlv_5='=' 
+    {
+    	newLeafNode(otherlv_5, grammarAccess.getKShadowAccess().getEqualsSignKeyword_4_1());
+    }
+(
+(
+		{ 
+	        newCompositeNode(grammarAccess.getKShadowAccess().getModifierIdEStringParserRuleCall_4_2_0()); 
+	    }
+		lv_modifierId_6_0=ruleEString		{
+	        if ($current==null) {
+	            $current = createModelElementForParent(grammarAccess.getKShadowRule());
+	        }
+       		set(
+       			$current, 
+       			"modifierId",
+        		lv_modifierId_6_0, 
+        		"EString");
+	        afterParserOrEnumRuleCall();
+	    }
+
+)
+))?)
 ;
 
 
@@ -5065,7 +5169,33 @@ ruleKFontBold returns [EObject current=null]
 	    }
 
 )
-)?)
+)?(	otherlv_3='modifier' 
+    {
+    	newLeafNode(otherlv_3, grammarAccess.getKFontBoldAccess().getModifierKeyword_3_0());
+    }
+	otherlv_4='=' 
+    {
+    	newLeafNode(otherlv_4, grammarAccess.getKFontBoldAccess().getEqualsSignKeyword_3_1());
+    }
+(
+(
+		{ 
+	        newCompositeNode(grammarAccess.getKFontBoldAccess().getModifierIdEStringParserRuleCall_3_2_0()); 
+	    }
+		lv_modifierId_5_0=ruleEString		{
+	        if ($current==null) {
+	            $current = createModelElementForParent(grammarAccess.getKFontBoldRule());
+	        }
+       		set(
+       			$current, 
+       			"modifierId",
+        		lv_modifierId_5_0, 
+        		"EString");
+	        afterParserOrEnumRuleCall();
+	    }
+
+)
+))?)
 ;
 
 
@@ -5122,7 +5252,33 @@ ruleKFontItalic returns [EObject current=null]
 	    }
 
 )
-)?)
+)?(	otherlv_3='modifier' 
+    {
+    	newLeafNode(otherlv_3, grammarAccess.getKFontItalicAccess().getModifierKeyword_3_0());
+    }
+	otherlv_4='=' 
+    {
+    	newLeafNode(otherlv_4, grammarAccess.getKFontItalicAccess().getEqualsSignKeyword_3_1());
+    }
+(
+(
+		{ 
+	        newCompositeNode(grammarAccess.getKFontItalicAccess().getModifierIdEStringParserRuleCall_3_2_0()); 
+	    }
+		lv_modifierId_5_0=ruleEString		{
+	        if ($current==null) {
+	            $current = createModelElementForParent(grammarAccess.getKFontItalicRule());
+	        }
+       		set(
+       			$current, 
+       			"modifierId",
+        		lv_modifierId_5_0, 
+        		"EString");
+	        afterParserOrEnumRuleCall();
+	    }
+
+)
+))?)
 ;
 
 
@@ -5180,7 +5336,33 @@ ruleKFontName returns [EObject current=null]
 	    }
 
 )
-)?)
+)?(	otherlv_3='modifier' 
+    {
+    	newLeafNode(otherlv_3, grammarAccess.getKFontNameAccess().getModifierKeyword_3_0());
+    }
+	otherlv_4='=' 
+    {
+    	newLeafNode(otherlv_4, grammarAccess.getKFontNameAccess().getEqualsSignKeyword_3_1());
+    }
+(
+(
+		{ 
+	        newCompositeNode(grammarAccess.getKFontNameAccess().getModifierIdEStringParserRuleCall_3_2_0()); 
+	    }
+		lv_modifierId_5_0=ruleEString		{
+	        if ($current==null) {
+	            $current = createModelElementForParent(grammarAccess.getKFontNameRule());
+	        }
+       		set(
+       			$current, 
+       			"modifierId",
+        		lv_modifierId_5_0, 
+        		"EString");
+	        afterParserOrEnumRuleCall();
+	    }
+
+)
+))?)
 ;
 
 
@@ -5238,7 +5420,33 @@ ruleKFontSize returns [EObject current=null]
 	    }
 
 )
-)?)
+)?(	otherlv_3='modifier' 
+    {
+    	newLeafNode(otherlv_3, grammarAccess.getKFontSizeAccess().getModifierKeyword_3_0());
+    }
+	otherlv_4='=' 
+    {
+    	newLeafNode(otherlv_4, grammarAccess.getKFontSizeAccess().getEqualsSignKeyword_3_1());
+    }
+(
+(
+		{ 
+	        newCompositeNode(grammarAccess.getKFontSizeAccess().getModifierIdEStringParserRuleCall_3_2_0()); 
+	    }
+		lv_modifierId_5_0=ruleEString		{
+	        if ($current==null) {
+	            $current = createModelElementForParent(grammarAccess.getKFontSizeRule());
+	        }
+       		set(
+       			$current, 
+       			"modifierId",
+        		lv_modifierId_5_0, 
+        		"EString");
+	        afterParserOrEnumRuleCall();
+	    }
+
+)
+))?)
 ;
 
 
@@ -5302,7 +5510,33 @@ ruleKVerticalAlignment returns [EObject current=null]
 	    }
 
 )
-)?)
+)?(	otherlv_4='modifier' 
+    {
+    	newLeafNode(otherlv_4, grammarAccess.getKVerticalAlignmentAccess().getModifierKeyword_4_0());
+    }
+	otherlv_5='=' 
+    {
+    	newLeafNode(otherlv_5, grammarAccess.getKVerticalAlignmentAccess().getEqualsSignKeyword_4_1());
+    }
+(
+(
+		{ 
+	        newCompositeNode(grammarAccess.getKVerticalAlignmentAccess().getModifierIdEStringParserRuleCall_4_2_0()); 
+	    }
+		lv_modifierId_6_0=ruleEString		{
+	        if ($current==null) {
+	            $current = createModelElementForParent(grammarAccess.getKVerticalAlignmentRule());
+	        }
+       		set(
+       			$current, 
+       			"modifierId",
+        		lv_modifierId_6_0, 
+        		"EString");
+	        afterParserOrEnumRuleCall();
+	    }
+
+)
+))?)
 ;
 
 
@@ -5366,7 +5600,33 @@ ruleKHorizontalAlignment returns [EObject current=null]
 	    }
 
 )
-)?)
+)?(	otherlv_4='modifier' 
+    {
+    	newLeafNode(otherlv_4, grammarAccess.getKHorizontalAlignmentAccess().getModifierKeyword_4_0());
+    }
+	otherlv_5='=' 
+    {
+    	newLeafNode(otherlv_5, grammarAccess.getKHorizontalAlignmentAccess().getEqualsSignKeyword_4_1());
+    }
+(
+(
+		{ 
+	        newCompositeNode(grammarAccess.getKHorizontalAlignmentAccess().getModifierIdEStringParserRuleCall_4_2_0()); 
+	    }
+		lv_modifierId_6_0=ruleEString		{
+	        if ($current==null) {
+	            $current = createModelElementForParent(grammarAccess.getKHorizontalAlignmentRule());
+	        }
+       		set(
+       			$current, 
+       			"modifierId",
+        		lv_modifierId_6_0, 
+        		"EString");
+	        afterParserOrEnumRuleCall();
+	    }
+
+)
+))?)
 ;
 
 
@@ -5427,7 +5687,33 @@ ruleKStyleRef returns [EObject current=null]
 	    }
 
 )
-)?)
+)?(	otherlv_4='modifier' 
+    {
+    	newLeafNode(otherlv_4, grammarAccess.getKStyleRefAccess().getModifierKeyword_4_0());
+    }
+	otherlv_5='=' 
+    {
+    	newLeafNode(otherlv_5, grammarAccess.getKStyleRefAccess().getEqualsSignKeyword_4_1());
+    }
+(
+(
+		{ 
+	        newCompositeNode(grammarAccess.getKStyleRefAccess().getModifierIdEStringParserRuleCall_4_2_0()); 
+	    }
+		lv_modifierId_6_0=ruleEString		{
+	        if ($current==null) {
+	            $current = createModelElementForParent(grammarAccess.getKStyleRefRule());
+	        }
+       		set(
+       			$current, 
+       			"modifierId",
+        		lv_modifierId_6_0, 
+        		"EString");
+	        afterParserOrEnumRuleCall();
+	    }
+
+)
+))?)
 ;
 
 
