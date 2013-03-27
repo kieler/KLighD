@@ -148,6 +148,11 @@ class KContainerRenderingExtensions {
         ];
     }
     
+    def KPolyline addHorizontalLine(KContainerRendering cr, float leftRightAbsIndent, float lineWidth) {
+        return cr.addHorizontalLine(leftRightAbsIndent).lineWidth = lineWidth;
+    }
+    
+    
     def KPolyline addHorizontalLine(KContainerRendering cr, PositionReferenceY y, float absIndent) {
         return cr.addChild(renderingFactory.createKPolyline())  as KPolyline => [
            it.lineWidth = 1;
@@ -155,6 +160,11 @@ class KContainerRenderingExtensions {
            it.points += createKPosition(PositionReferenceX::RIGHT, absIndent, 0, y, 0, 0);
         ];
     }
+
+    def KPolyline addHorizontalLine(KContainerRendering cr, PositionReferenceY y, float absIndent, float lineWidth) {
+        return addHorizontalLine(cr, y, absIndent).lineWidth = lineWidth;
+    }
+
     
     def KPolyline addVerticalLine(KContainerRendering cr, PositionReferenceX x, float absIndent) {
         return cr.addChild(renderingFactory.createKPolyline()) => [
@@ -163,6 +173,11 @@ class KContainerRenderingExtensions {
            it.points += createKPosition(x, 0, 0, BOTTOM, absIndent, 0);
         ];
     }
+
+    def KPolyline addVerticalLine(KContainerRendering cr, PositionReferenceX x, float absIndent, float lineWidth) {
+        return addVerticalLine(cr, x, absIndent).lineWidth = lineWidth;
+    }
+
     
     def KPolyline addHorizontalSeperatorLine(KContainerRendering cr, float lineWidth, int spacing) {
         return renderingFactory.createKPolyline => [

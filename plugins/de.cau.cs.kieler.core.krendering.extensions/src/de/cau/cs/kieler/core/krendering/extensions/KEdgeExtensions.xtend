@@ -13,14 +13,18 @@
  */
 package de.cau.cs.kieler.core.krendering.extensions
 
+import java.util.ArrayList
+import javax.inject.Inject
+
 import de.cau.cs.kieler.core.kgraph.KEdge
 import de.cau.cs.kieler.core.krendering.KPolyline
 import de.cau.cs.kieler.core.krendering.KRenderingFactory
-import de.cau.cs.kieler.kiml.klayoutdata.KEdgeLayout
-
 import de.cau.cs.kieler.core.properties.IProperty
+
+import de.cau.cs.kieler.kiml.klayoutdata.KEdgeLayout
 import de.cau.cs.kieler.kiml.util.KimlUtil
-import java.util.ArrayList
+import de.cau.cs.kieler.core.krendering.KSpline
+import de.cau.cs.kieler.core.krendering.KRoundedBendsPolyline
 
 /**
  * @author chsch, alb
@@ -29,6 +33,10 @@ import java.util.ArrayList
 class KEdgeExtensions {
 
     private static val KRenderingFactory renderingFactory = KRenderingFactory::eINSTANCE
+        
+    @Inject
+    extension KRenderingExtensions;
+    
         
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////
     ////////////////////////                    KEdgeExtensions
@@ -118,23 +126,35 @@ class KEdgeExtensions {
         ];
     }
     
-    def KPolyline addPolyline(KEdge e){
+    def KPolyline addPolyline(KEdge e) {
         return renderingFactory.createKPolyline() => [
             e.data += it;
         ];
     }
     
-    def KPolyline addRoundedBendsPolyline(KEdge e, float bendRadius){
+    def KPolyline addPolyline(KEdge e, float lineWidth) {
+        return e.addPolyline.lineWidth = lineWidth;
+    }
+    
+    def KRoundedBendsPolyline addRoundedBendsPolyline(KEdge e, float bendRadius) {
         return renderingFactory.createKRoundedBendsPolyline() => [
             e.data += it;
             it.bendRadius = bendRadius;
         ];
     }
 
-    def KPolyline addSpline(KEdge e){
+    def KRoundedBendsPolyline addRoundedBendsPolyline(KEdge e, float bendRadius, float lineWidth) {
+        return e.addRoundedBendsPolyline(bendRadius).lineWidth = lineWidth;
+    }
+    
+    def KSpline addSpline(KEdge e) {
         return renderingFactory.createKSpline => [
             e.data += it;
         ];
+    }
+    
+    def KSpline addSpline(KEdge e, float lineWidth) {
+        return e.addSpline.lineWidth = lineWidth;
     }
     
 }
