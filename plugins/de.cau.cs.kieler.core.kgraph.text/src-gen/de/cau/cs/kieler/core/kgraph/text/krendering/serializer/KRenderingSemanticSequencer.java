@@ -28,6 +28,7 @@ import de.cau.cs.kieler.core.krendering.KImage;
 import de.cau.cs.kieler.core.krendering.KInvisibility;
 import de.cau.cs.kieler.core.krendering.KLeftPosition;
 import de.cau.cs.kieler.core.krendering.KLineCap;
+import de.cau.cs.kieler.core.krendering.KLineJoin;
 import de.cau.cs.kieler.core.krendering.KLineStyle;
 import de.cau.cs.kieler.core.krendering.KLineWidth;
 import de.cau.cs.kieler.core.krendering.KPointPlacementData;
@@ -255,6 +256,13 @@ public class KRenderingSemanticSequencer extends KLayoutDataSemanticSequencer {
 				if(context == grammarAccess.getKLineCapRule() ||
 				   context == grammarAccess.getKStyleRule()) {
 					sequence_KLineCap(context, (KLineCap) semanticObject); 
+					return; 
+				}
+				else break;
+			case KRenderingPackage.KLINE_JOIN:
+				if(context == grammarAccess.getKLineJoinRule() ||
+				   context == grammarAccess.getKStyleRule()) {
+					sequence_KLineJoin(context, (KLineJoin) semanticObject); 
 					return; 
 				}
 				else break;
@@ -704,7 +712,16 @@ public class KRenderingSemanticSequencer extends KLayoutDataSemanticSequencer {
 	
 	/**
 	 * Constraint:
-	 *     (lineStyle=LineStyle propagateToChildren?='!'? modifierId=EString?)
+	 *     (lineJoin=LineJoin propagateToChildren?='!'? miterLimit=EFloat? modifierId=EString?)
+	 */
+	protected void sequence_KLineJoin(EObject context, KLineJoin semanticObject) {
+		genericSequencer.createSequence(context, semanticObject);
+	}
+	
+	
+	/**
+	 * Constraint:
+	 *     (lineStyle=LineStyle propagateToChildren?='!'? (dashPattern+=EFloat dashPattern+=EFloat*)? dashOffset=EFloat? modifierId=EString?)
 	 */
 	protected void sequence_KLineStyle(EObject context, KLineStyle semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);

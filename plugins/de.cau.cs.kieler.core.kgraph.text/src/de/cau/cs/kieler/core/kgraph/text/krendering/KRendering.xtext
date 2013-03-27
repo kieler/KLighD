@@ -34,7 +34,7 @@ KPlacementData returns KPlacementData:
     KDecoratorPlacementData | KGridPlacementData | KAreaPlacementData | KPointPlacementData;
 
 KStyle returns KStyle:
-    KLineWidth | KForeground | KBackground | KVisibility | KLineStyle | KLineCap | KRotation | KShadow | KFontBold | KFontItalic | KFontName | KFontSize | KVerticalAlignment | KHorizontalAlignment | KStyleRef;
+    KLineWidth | KForeground | KBackground | KVisibility | KLineStyle | KLineCap |  KLineJoin | KRotation | KShadow | KFontBold | KFontItalic | KFontName | KFontSize | KVerticalAlignment | KHorizontalAlignment | KStyleRef;
 
 KPlacement returns KPlacement:
     KGridPlacement;
@@ -289,11 +289,19 @@ KLineWidth returns KLineWidth:
 KLineStyle returns KLineStyle:
     {KLineStyle}
     'lineStyle' lineStyle=LineStyle propagateToChildren?='!'?
+    ('dashPattern' '=' '[' dashPattern+=EFloat ( ','? dashPattern+=EFloat)* ']')?
+    ('dashOffset' '=' dashOffset=EFloat)?
     ('modifier' '=' modifierId=EString)?;
 
 KLineCap returns KLineCap:
-     {KLineCap}
-     'lineCap' lineCap=LineCap  propagateToChildren?='!'?
+    {KLineCap}
+    'lineCap' lineCap=LineCap  propagateToChildren?='!'?
+    ('modifier' '=' modifierId=EString)?;
+    
+KLineJoin returns KLineJoin:
+    {KLineJoin}
+    'lineJoin' lineJoin=LineJoin  propagateToChildren?='!'?
+    ('miterLimit' '=' miterLimit=EFloat)?
     ('modifier' '=' modifierId=EString)?;
     
 KRotation returns KRotation:
@@ -350,14 +358,16 @@ KGridPlacement returns KGridPlacement:
     
 
 enum Trigger returns Trigger:
-    DOUBLECLICK = "DOUBLECLICK" | SINGLECLICK = "SINGLECLICK"
-;
+    DOUBLECLICK = "DOUBLECLICK" | SINGLECLICK = "SINGLECLICK";
 
 enum LineStyle returns LineStyle:
     SOLID = 'SOLID' | DASH = 'DASH' | DOT = 'DOT' | DASHDOT = 'DASHDOT' | DASHDOTDOT = 'DASHDOTDOT';
 
 enum LineCap returns LineCap:
     CAP_FLAT = 'CAP_FLAT' | CAP_ROUND = 'CAP_ROUND' | CAP_SQUARE = 'CAP_SQUARE';
+
+enum LineJoin returns LineJoin:
+    JOIN_MITER = 'JOIN_MITER' | JOIN_ROUND = 'JOIN_ROUND' | JOIN_BEVEL = 'JOIN_BEVEL';
 
 enum VerticalAlignment returns VerticalAlignment:
     TOP = 'TOP' | CENTER = 'CENTER' | BOTTOM = 'BOTTOM';

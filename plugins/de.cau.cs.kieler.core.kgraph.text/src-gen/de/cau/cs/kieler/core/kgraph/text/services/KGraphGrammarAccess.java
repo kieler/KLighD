@@ -1016,8 +1016,8 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//KStyle:
-	//	KLineWidth | KForeground | KBackground | KVisibility | KLineStyle | KLineCap | KRotation | KShadow | KFontBold |
-	//	KFontItalic | KFontName | KFontSize | KVerticalAlignment | KHorizontalAlignment | KStyleRef;
+	//	KLineWidth | KForeground | KBackground | KVisibility | KLineStyle | KLineCap | KLineJoin | KRotation | KShadow |
+	//	KFontBold | KFontItalic | KFontName | KFontSize | KVerticalAlignment | KHorizontalAlignment | KStyleRef;
 	public KRenderingGrammarAccess.KStyleElements getKStyleAccess() {
 		return gaKRendering.getKStyleAccess();
 	}
@@ -1369,7 +1369,8 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//KLineStyle:
-	//	{KLineStyle} "lineStyle" lineStyle=LineStyle propagateToChildren?="!"? ("modifier" "=" modifierId=EString)?;
+	//	{KLineStyle} "lineStyle" lineStyle=LineStyle propagateToChildren?="!"? ("dashPattern" "=" "[" dashPattern+=EFloat
+	//	(","? dashPattern+=EFloat)* "]")? ("dashOffset" "=" dashOffset=EFloat)? ("modifier" "=" modifierId=EString)?;
 	public KRenderingGrammarAccess.KLineStyleElements getKLineStyleAccess() {
 		return gaKRendering.getKLineStyleAccess();
 	}
@@ -1386,6 +1387,17 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	
 	public ParserRule getKLineCapRule() {
 		return getKLineCapAccess().getRule();
+	}
+
+	//KLineJoin:
+	//	{KLineJoin} "lineJoin" lineJoin=LineJoin propagateToChildren?="!"? ("miterLimit" "=" miterLimit=EFloat)? ("modifier"
+	//	"=" modifierId=EString)?;
+	public KRenderingGrammarAccess.KLineJoinElements getKLineJoinAccess() {
+		return gaKRendering.getKLineJoinAccess();
+	}
+	
+	public ParserRule getKLineJoinRule() {
+		return getKLineJoinAccess().getRule();
 	}
 
 	//KRotation:
@@ -1520,6 +1532,16 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	
 	public EnumRule getLineCapRule() {
 		return getLineCapAccess().getRule();
+	}
+
+	//enum LineJoin:
+	//	JOIN_MITER | JOIN_ROUND | JOIN_BEVEL;
+	public KRenderingGrammarAccess.LineJoinElements getLineJoinAccess() {
+		return gaKRendering.getLineJoinAccess();
+	}
+	
+	public EnumRule getLineJoinRule() {
+		return getLineJoinAccess().getRule();
 	}
 
 	//enum VerticalAlignment:

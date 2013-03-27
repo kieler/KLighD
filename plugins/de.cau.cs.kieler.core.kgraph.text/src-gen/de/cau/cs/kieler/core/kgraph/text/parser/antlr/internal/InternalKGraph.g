@@ -1406,91 +1406,101 @@ ruleKStyle returns [EObject current=null]
 
     |
     { 
-        newCompositeNode(grammarAccess.getKStyleAccess().getKRotationParserRuleCall_6()); 
+        newCompositeNode(grammarAccess.getKStyleAccess().getKLineJoinParserRuleCall_6()); 
     }
-    this_KRotation_6=ruleKRotation
+    this_KLineJoin_6=ruleKLineJoin
     { 
-        $current = $this_KRotation_6.current; 
+        $current = $this_KLineJoin_6.current; 
         afterParserOrEnumRuleCall();
     }
 
     |
     { 
-        newCompositeNode(grammarAccess.getKStyleAccess().getKShadowParserRuleCall_7()); 
+        newCompositeNode(grammarAccess.getKStyleAccess().getKRotationParserRuleCall_7()); 
     }
-    this_KShadow_7=ruleKShadow
+    this_KRotation_7=ruleKRotation
     { 
-        $current = $this_KShadow_7.current; 
+        $current = $this_KRotation_7.current; 
         afterParserOrEnumRuleCall();
     }
 
     |
     { 
-        newCompositeNode(grammarAccess.getKStyleAccess().getKFontBoldParserRuleCall_8()); 
+        newCompositeNode(grammarAccess.getKStyleAccess().getKShadowParserRuleCall_8()); 
     }
-    this_KFontBold_8=ruleKFontBold
+    this_KShadow_8=ruleKShadow
     { 
-        $current = $this_KFontBold_8.current; 
+        $current = $this_KShadow_8.current; 
         afterParserOrEnumRuleCall();
     }
 
     |
     { 
-        newCompositeNode(grammarAccess.getKStyleAccess().getKFontItalicParserRuleCall_9()); 
+        newCompositeNode(grammarAccess.getKStyleAccess().getKFontBoldParserRuleCall_9()); 
     }
-    this_KFontItalic_9=ruleKFontItalic
+    this_KFontBold_9=ruleKFontBold
     { 
-        $current = $this_KFontItalic_9.current; 
+        $current = $this_KFontBold_9.current; 
         afterParserOrEnumRuleCall();
     }
 
     |
     { 
-        newCompositeNode(grammarAccess.getKStyleAccess().getKFontNameParserRuleCall_10()); 
+        newCompositeNode(grammarAccess.getKStyleAccess().getKFontItalicParserRuleCall_10()); 
     }
-    this_KFontName_10=ruleKFontName
+    this_KFontItalic_10=ruleKFontItalic
     { 
-        $current = $this_KFontName_10.current; 
+        $current = $this_KFontItalic_10.current; 
         afterParserOrEnumRuleCall();
     }
 
     |
     { 
-        newCompositeNode(grammarAccess.getKStyleAccess().getKFontSizeParserRuleCall_11()); 
+        newCompositeNode(grammarAccess.getKStyleAccess().getKFontNameParserRuleCall_11()); 
     }
-    this_KFontSize_11=ruleKFontSize
+    this_KFontName_11=ruleKFontName
     { 
-        $current = $this_KFontSize_11.current; 
+        $current = $this_KFontName_11.current; 
         afterParserOrEnumRuleCall();
     }
 
     |
     { 
-        newCompositeNode(grammarAccess.getKStyleAccess().getKVerticalAlignmentParserRuleCall_12()); 
+        newCompositeNode(grammarAccess.getKStyleAccess().getKFontSizeParserRuleCall_12()); 
     }
-    this_KVerticalAlignment_12=ruleKVerticalAlignment
+    this_KFontSize_12=ruleKFontSize
     { 
-        $current = $this_KVerticalAlignment_12.current; 
+        $current = $this_KFontSize_12.current; 
         afterParserOrEnumRuleCall();
     }
 
     |
     { 
-        newCompositeNode(grammarAccess.getKStyleAccess().getKHorizontalAlignmentParserRuleCall_13()); 
+        newCompositeNode(grammarAccess.getKStyleAccess().getKVerticalAlignmentParserRuleCall_13()); 
     }
-    this_KHorizontalAlignment_13=ruleKHorizontalAlignment
+    this_KVerticalAlignment_13=ruleKVerticalAlignment
     { 
-        $current = $this_KHorizontalAlignment_13.current; 
+        $current = $this_KVerticalAlignment_13.current; 
         afterParserOrEnumRuleCall();
     }
 
     |
     { 
-        newCompositeNode(grammarAccess.getKStyleAccess().getKStyleRefParserRuleCall_14()); 
+        newCompositeNode(grammarAccess.getKStyleAccess().getKHorizontalAlignmentParserRuleCall_14()); 
     }
-    this_KStyleRef_14=ruleKStyleRef
+    this_KHorizontalAlignment_14=ruleKHorizontalAlignment
     { 
-        $current = $this_KStyleRef_14.current; 
+        $current = $this_KHorizontalAlignment_14.current; 
+        afterParserOrEnumRuleCall();
+    }
+
+    |
+    { 
+        newCompositeNode(grammarAccess.getKStyleAccess().getKStyleRefParserRuleCall_15()); 
+    }
+    this_KStyleRef_15=ruleKStyleRef
+    { 
+        $current = $this_KStyleRef_15.current; 
         afterParserOrEnumRuleCall();
     }
 )
@@ -6321,27 +6331,109 @@ ruleKLineStyle returns [EObject current=null]
 	    }
 
 )
-)?(	otherlv_4='modifier' 
+)?(	otherlv_4='dashPattern' 
     {
-    	newLeafNode(otherlv_4, grammarAccess.getKLineStyleAccess().getModifierKeyword_4_0());
+    	newLeafNode(otherlv_4, grammarAccess.getKLineStyleAccess().getDashPatternKeyword_4_0());
     }
 	otherlv_5='=' 
     {
     	newLeafNode(otherlv_5, grammarAccess.getKLineStyleAccess().getEqualsSignKeyword_4_1());
     }
+	otherlv_6='[' 
+    {
+    	newLeafNode(otherlv_6, grammarAccess.getKLineStyleAccess().getLeftSquareBracketKeyword_4_2());
+    }
 (
 (
 		{ 
-	        newCompositeNode(grammarAccess.getKLineStyleAccess().getModifierIdEStringParserRuleCall_4_2_0()); 
+	        newCompositeNode(grammarAccess.getKLineStyleAccess().getDashPatternEFloatParserRuleCall_4_3_0()); 
 	    }
-		lv_modifierId_6_0=ruleEString		{
+		lv_dashPattern_7_0=ruleEFloat		{
+	        if ($current==null) {
+	            $current = createModelElementForParent(grammarAccess.getKLineStyleRule());
+	        }
+       		add(
+       			$current, 
+       			"dashPattern",
+        		lv_dashPattern_7_0, 
+        		"EFloat");
+	        afterParserOrEnumRuleCall();
+	    }
+
+)
+)((	otherlv_8=',' 
+    {
+    	newLeafNode(otherlv_8, grammarAccess.getKLineStyleAccess().getCommaKeyword_4_4_0());
+    }
+)?(
+(
+		{ 
+	        newCompositeNode(grammarAccess.getKLineStyleAccess().getDashPatternEFloatParserRuleCall_4_4_1_0()); 
+	    }
+		lv_dashPattern_9_0=ruleEFloat		{
+	        if ($current==null) {
+	            $current = createModelElementForParent(grammarAccess.getKLineStyleRule());
+	        }
+       		add(
+       			$current, 
+       			"dashPattern",
+        		lv_dashPattern_9_0, 
+        		"EFloat");
+	        afterParserOrEnumRuleCall();
+	    }
+
+)
+))*	otherlv_10=']' 
+    {
+    	newLeafNode(otherlv_10, grammarAccess.getKLineStyleAccess().getRightSquareBracketKeyword_4_5());
+    }
+)?(	otherlv_11='dashOffset' 
+    {
+    	newLeafNode(otherlv_11, grammarAccess.getKLineStyleAccess().getDashOffsetKeyword_5_0());
+    }
+	otherlv_12='=' 
+    {
+    	newLeafNode(otherlv_12, grammarAccess.getKLineStyleAccess().getEqualsSignKeyword_5_1());
+    }
+(
+(
+		{ 
+	        newCompositeNode(grammarAccess.getKLineStyleAccess().getDashOffsetEFloatParserRuleCall_5_2_0()); 
+	    }
+		lv_dashOffset_13_0=ruleEFloat		{
+	        if ($current==null) {
+	            $current = createModelElementForParent(grammarAccess.getKLineStyleRule());
+	        }
+       		set(
+       			$current, 
+       			"dashOffset",
+        		lv_dashOffset_13_0, 
+        		"EFloat");
+	        afterParserOrEnumRuleCall();
+	    }
+
+)
+))?(	otherlv_14='modifier' 
+    {
+    	newLeafNode(otherlv_14, grammarAccess.getKLineStyleAccess().getModifierKeyword_6_0());
+    }
+	otherlv_15='=' 
+    {
+    	newLeafNode(otherlv_15, grammarAccess.getKLineStyleAccess().getEqualsSignKeyword_6_1());
+    }
+(
+(
+		{ 
+	        newCompositeNode(grammarAccess.getKLineStyleAccess().getModifierIdEStringParserRuleCall_6_2_0()); 
+	    }
+		lv_modifierId_16_0=ruleEString		{
 	        if ($current==null) {
 	            $current = createModelElementForParent(grammarAccess.getKLineStyleRule());
 	        }
        		set(
        			$current, 
        			"modifierId",
-        		lv_modifierId_6_0, 
+        		lv_modifierId_16_0, 
         		"EString");
 	        afterParserOrEnumRuleCall();
 	    }
@@ -6432,6 +6524,122 @@ ruleKLineCap returns [EObject current=null]
        			$current, 
        			"modifierId",
         		lv_modifierId_6_0, 
+        		"EString");
+	        afterParserOrEnumRuleCall();
+	    }
+
+)
+))?)
+;
+
+
+
+
+
+// Entry rule entryRuleKLineJoin
+entryRuleKLineJoin returns [EObject current=null] 
+	:
+	{ newCompositeNode(grammarAccess.getKLineJoinRule()); }
+	 iv_ruleKLineJoin=ruleKLineJoin 
+	 { $current=$iv_ruleKLineJoin.current; } 
+	 EOF 
+;
+
+// Rule KLineJoin
+ruleKLineJoin returns [EObject current=null] 
+    @init { enterRule(); 
+    }
+    @after { leaveRule(); }:
+((
+    {
+        $current = forceCreateModelElement(
+            grammarAccess.getKLineJoinAccess().getKLineJoinAction_0(),
+            $current);
+    }
+)	otherlv_1='lineJoin' 
+    {
+    	newLeafNode(otherlv_1, grammarAccess.getKLineJoinAccess().getLineJoinKeyword_1());
+    }
+(
+(
+		{ 
+	        newCompositeNode(grammarAccess.getKLineJoinAccess().getLineJoinLineJoinEnumRuleCall_2_0()); 
+	    }
+		lv_lineJoin_2_0=ruleLineJoin		{
+	        if ($current==null) {
+	            $current = createModelElementForParent(grammarAccess.getKLineJoinRule());
+	        }
+       		set(
+       			$current, 
+       			"lineJoin",
+        		lv_lineJoin_2_0, 
+        		"LineJoin");
+	        afterParserOrEnumRuleCall();
+	    }
+
+)
+)(
+(
+		lv_propagateToChildren_3_0=	'!' 
+    {
+        newLeafNode(lv_propagateToChildren_3_0, grammarAccess.getKLineJoinAccess().getPropagateToChildrenExclamationMarkKeyword_3_0());
+    }
+ 
+	    {
+	        if ($current==null) {
+	            $current = createModelElement(grammarAccess.getKLineJoinRule());
+	        }
+       		setWithLastConsumed($current, "propagateToChildren", true, "!");
+	    }
+
+)
+)?(	otherlv_4='miterLimit' 
+    {
+    	newLeafNode(otherlv_4, grammarAccess.getKLineJoinAccess().getMiterLimitKeyword_4_0());
+    }
+	otherlv_5='=' 
+    {
+    	newLeafNode(otherlv_5, grammarAccess.getKLineJoinAccess().getEqualsSignKeyword_4_1());
+    }
+(
+(
+		{ 
+	        newCompositeNode(grammarAccess.getKLineJoinAccess().getMiterLimitEFloatParserRuleCall_4_2_0()); 
+	    }
+		lv_miterLimit_6_0=ruleEFloat		{
+	        if ($current==null) {
+	            $current = createModelElementForParent(grammarAccess.getKLineJoinRule());
+	        }
+       		set(
+       			$current, 
+       			"miterLimit",
+        		lv_miterLimit_6_0, 
+        		"EFloat");
+	        afterParserOrEnumRuleCall();
+	    }
+
+)
+))?(	otherlv_7='modifier' 
+    {
+    	newLeafNode(otherlv_7, grammarAccess.getKLineJoinAccess().getModifierKeyword_5_0());
+    }
+	otherlv_8='=' 
+    {
+    	newLeafNode(otherlv_8, grammarAccess.getKLineJoinAccess().getEqualsSignKeyword_5_1());
+    }
+(
+(
+		{ 
+	        newCompositeNode(grammarAccess.getKLineJoinAccess().getModifierIdEStringParserRuleCall_5_2_0()); 
+	    }
+		lv_modifierId_9_0=ruleEString		{
+	        if ($current==null) {
+	            $current = createModelElementForParent(grammarAccess.getKLineJoinRule());
+	        }
+       		set(
+       			$current, 
+       			"modifierId",
+        		lv_modifierId_9_0, 
         		"EString");
 	        afterParserOrEnumRuleCall();
 	    }
@@ -8198,6 +8406,31 @@ ruleLineCap returns [Enumerator current=null]
 	{
         $current = grammarAccess.getLineCapAccess().getCAP_SQUAREEnumLiteralDeclaration_2().getEnumLiteral().getInstance();
         newLeafNode(enumLiteral_2, grammarAccess.getLineCapAccess().getCAP_SQUAREEnumLiteralDeclaration_2()); 
+    }
+));
+
+
+
+// Rule LineJoin
+ruleLineJoin returns [Enumerator current=null] 
+    @init { enterRule(); }
+    @after { leaveRule(); }:
+((	enumLiteral_0='JOIN_MITER' 
+	{
+        $current = grammarAccess.getLineJoinAccess().getJOIN_MITEREnumLiteralDeclaration_0().getEnumLiteral().getInstance();
+        newLeafNode(enumLiteral_0, grammarAccess.getLineJoinAccess().getJOIN_MITEREnumLiteralDeclaration_0()); 
+    }
+)
+    |(	enumLiteral_1='JOIN_ROUND' 
+	{
+        $current = grammarAccess.getLineJoinAccess().getJOIN_ROUNDEnumLiteralDeclaration_1().getEnumLiteral().getInstance();
+        newLeafNode(enumLiteral_1, grammarAccess.getLineJoinAccess().getJOIN_ROUNDEnumLiteralDeclaration_1()); 
+    }
+)
+    |(	enumLiteral_2='JOIN_BEVEL' 
+	{
+        $current = grammarAccess.getLineJoinAccess().getJOIN_BEVELEnumLiteralDeclaration_2().getEnumLiteral().getInstance();
+        newLeafNode(enumLiteral_2, grammarAccess.getLineJoinAccess().getJOIN_BEVELEnumLiteralDeclaration_2()); 
     }
 ));
 

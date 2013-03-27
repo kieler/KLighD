@@ -33,6 +33,7 @@ import de.cau.cs.kieler.core.krendering.KImage;
 import de.cau.cs.kieler.core.krendering.KInvisibility;
 import de.cau.cs.kieler.core.krendering.KLeftPosition;
 import de.cau.cs.kieler.core.krendering.KLineCap;
+import de.cau.cs.kieler.core.krendering.KLineJoin;
 import de.cau.cs.kieler.core.krendering.KLineStyle;
 import de.cau.cs.kieler.core.krendering.KLineWidth;
 import de.cau.cs.kieler.core.krendering.KPointPlacementData;
@@ -295,6 +296,13 @@ public class KGraphSemanticSequencer extends KRenderingSemanticSequencer {
 				if(context == grammarAccess.getKLineCapRule() ||
 				   context == grammarAccess.getKStyleRule()) {
 					sequence_KLineCap(context, (KLineCap) semanticObject); 
+					return; 
+				}
+				else break;
+			case KRenderingPackage.KLINE_JOIN:
+				if(context == grammarAccess.getKLineJoinRule() ||
+				   context == grammarAccess.getKStyleRule()) {
+					sequence_KLineJoin(context, (KLineJoin) semanticObject); 
 					return; 
 				}
 				else break;

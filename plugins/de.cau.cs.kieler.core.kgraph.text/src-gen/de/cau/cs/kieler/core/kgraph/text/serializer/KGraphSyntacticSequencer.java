@@ -75,6 +75,7 @@ public class KGraphSyntacticSequencer extends AbstractSyntacticSequencer {
 	protected AbstractElementAlias match_KImage___LeftCurlyBracketKeyword_4_0_RightCurlyBracketKeyword_4_6__q;
 	protected AbstractElementAlias match_KLabel_ColonKeyword_3_1_q;
 	protected AbstractElementAlias match_KLabel_CommaKeyword_3_3_0_q;
+	protected AbstractElementAlias match_KLineStyle_CommaKeyword_4_4_0_q;
 	protected AbstractElementAlias match_KNode_ColonKeyword_3_1_q;
 	protected AbstractElementAlias match_KNode_ColonKeyword_4_1_q;
 	protected AbstractElementAlias match_KNode_ColonKeyword_5_1_q;
@@ -225,6 +226,7 @@ public class KGraphSyntacticSequencer extends AbstractSyntacticSequencer {
 		match_KImage___LeftCurlyBracketKeyword_4_0_RightCurlyBracketKeyword_4_6__q = new GroupAlias(false, true, new TokenAlias(false, false, grammarAccess.getKImageAccess().getLeftCurlyBracketKeyword_4_0()), new TokenAlias(false, false, grammarAccess.getKImageAccess().getRightCurlyBracketKeyword_4_6()));
 		match_KLabel_ColonKeyword_3_1_q = new TokenAlias(false, true, grammarAccess.getKLabelAccess().getColonKeyword_3_1());
 		match_KLabel_CommaKeyword_3_3_0_q = new TokenAlias(false, true, grammarAccess.getKLabelAccess().getCommaKeyword_3_3_0());
+		match_KLineStyle_CommaKeyword_4_4_0_q = new TokenAlias(false, true, grammarAccess.getKLineStyleAccess().getCommaKeyword_4_4_0());
 		match_KNode_ColonKeyword_3_1_q = new TokenAlias(false, true, grammarAccess.getKNodeAccess().getColonKeyword_3_1());
 		match_KNode_ColonKeyword_4_1_q = new TokenAlias(false, true, grammarAccess.getKNodeAccess().getColonKeyword_4_1());
 		match_KNode_ColonKeyword_5_1_q = new TokenAlias(false, true, grammarAccess.getKNodeAccess().getColonKeyword_5_1());
@@ -442,6 +444,8 @@ public class KGraphSyntacticSequencer extends AbstractSyntacticSequencer {
 				emit_KLabel_ColonKeyword_3_1_q(semanticObject, getLastNavigableState(), syntaxNodes);
 			else if(match_KLabel_CommaKeyword_3_3_0_q.equals(syntax))
 				emit_KLabel_CommaKeyword_3_3_0_q(semanticObject, getLastNavigableState(), syntaxNodes);
+			else if(match_KLineStyle_CommaKeyword_4_4_0_q.equals(syntax))
+				emit_KLineStyle_CommaKeyword_4_4_0_q(semanticObject, getLastNavigableState(), syntaxNodes);
 			else if(match_KNode_ColonKeyword_3_1_q.equals(syntax))
 				emit_KNode_ColonKeyword_3_1_q(semanticObject, getLastNavigableState(), syntaxNodes);
 			else if(match_KNode_ColonKeyword_4_1_q.equals(syntax))
@@ -1077,6 +1081,14 @@ public class KGraphSyntacticSequencer extends AbstractSyntacticSequencer {
 	 *     ','?
 	 */
 	protected void emit_KLabel_CommaKeyword_3_3_0_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
+		acceptNodes(transition, nodes);
+	}
+	
+	/**
+	 * Syntax:
+	 *     ','?
+	 */
+	protected void emit_KLineStyle_CommaKeyword_4_4_0_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
 		acceptNodes(transition, nodes);
 	}
 	
