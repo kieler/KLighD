@@ -54,6 +54,8 @@ import de.cau.cs.kieler.core.krendering.KRectangle
 import de.cau.cs.kieler.core.krendering.KText
 import de.cau.cs.kieler.core.krendering.KShadow
 import de.cau.cs.kieler.core.krendering.Trigger
+import de.cau.cs.kieler.core.krendering.LineJoin
+import de.cau.cs.kieler.core.krendering.KLineJoin
 
 /**
  * This utility class contains various methods that are convenient while composing KRendering data.
@@ -220,7 +222,7 @@ class KRenderingExtensions {
         ]);
     }
  
-    def LineStyle getEnumLineStyle(KRendering rendering) {
+    def LineStyle getLineStyleValue(KRendering rendering) {
         // chsch: I'm currently not sure whether the first or the last will win...
         return (rendering.styles.filter(typeof(KLineStyle)).last?:(renderingFactory.createKLineStyle => [
             lineStyle = LineStyle::SOLID;
@@ -243,7 +245,7 @@ class KRenderingExtensions {
         ]);
     }
  
-    def LineCap getEnumLineCap(KRendering rendering) {
+    def LineCap getLineCapValue(KRendering rendering) {
         // chsch: I'm currently not sure whether the first or the last will win...
         return (rendering.styles.filter(typeof(KLineCap)).last?:(renderingFactory.createKLineCap => [
             lineCap = LineCap::CAP_FLAT;
@@ -254,7 +256,40 @@ class KRenderingExtensions {
         rendering.styles.removeAll(rendering.styles.filter(typeof(KLineCap)).toList);
         return rendering => [
             it.styles += renderingFactory.createKLineCap => [
-                it.setLineCap(style);
+                it.lineCap = style;
+            ];
+        ];
+    }
+    
+    def KLineJoin getLineJoin(KRendering rendering) {
+        // chsch: I'm currently not sure whether the first or the last will win...
+        return rendering.styles.filter(typeof(KLineJoin)).last?:(renderingFactory.createKLineJoin => [
+            lineJoin = LineJoin::JOIN_MITER;
+        ]);
+    }
+ 
+    def LineJoin getLineJoinValue(KRendering rendering) {
+        // chsch: I'm currently not sure whether the first or the last will win...
+        return (rendering.styles.filter(typeof(KLineJoin)).last?:(renderingFactory.createKLineJoin => [
+            lineJoin = LineJoin::JOIN_MITER;
+        ])).lineJoin;
+    }
+ 
+    def <T extends KRendering> T setLineJoin(T rendering, LineJoin style) {
+        rendering.styles.removeAll(rendering.styles.filter(typeof(KLineJoin)).toList);
+        return rendering => [
+            it.styles += renderingFactory.createKLineJoin => [
+                it.lineJoin = style;
+            ];
+        ];
+    }
+    
+    def <T extends KRendering> T setLineJoin(T rendering, LineJoin style, float miterLimit) {
+        rendering.styles.removeAll(rendering.styles.filter(typeof(KLineJoin)).toList);
+        return rendering => [
+            it.styles += renderingFactory.createKLineJoin => [
+                it.lineJoin = style;
+                it.miterLimit = miterLimit;
             ];
         ];
     }
