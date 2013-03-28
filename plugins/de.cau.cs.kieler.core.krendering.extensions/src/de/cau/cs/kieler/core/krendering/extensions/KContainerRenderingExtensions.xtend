@@ -14,6 +14,8 @@
 package de.cau.cs.kieler.core.krendering.extensions
 
 import javax.inject.Inject
+import java.util.List
+
 import de.cau.cs.kieler.core.krendering.KChildArea
 import de.cau.cs.kieler.core.krendering.KContainerRendering
 import de.cau.cs.kieler.core.krendering.KPolyline
@@ -26,7 +28,7 @@ import de.cau.cs.kieler.core.krendering.KRoundedRectangle
 import de.cau.cs.kieler.core.krendering.KRendering
 import de.cau.cs.kieler.core.krendering.KText
 import de.cau.cs.kieler.core.krendering.KEllipse
-import java.util.List
+import de.cau.cs.kieler.core.krendering.LineJoin
 
 /**
  * @author chsch, alb
@@ -193,20 +195,20 @@ class KContainerRenderingExtensions {
     
     def KPolygon drawArrow(KContainerRendering cr) {
         return renderingFactory.createKPolygon => [
-            cr.addChild(it).withCopyOf(cr.lineWidth).withCopyOf(cr.foreground).setBackground(cr.foreground);
-            it.points += createKPosition(PositionReferenceX::LEFT, 0, 0, PositionReferenceY::TOP, 0, 0)
-            it.points += createKPosition(PositionReferenceX::LEFT, 0, 0.4f, PositionReferenceY::TOP, 0, 0.5f)
-            it.points += createKPosition(PositionReferenceX::LEFT, 0, 0, PositionReferenceY::BOTTOM, 0, 0)
-            it.points += createKPosition(PositionReferenceX::RIGHT, 0, 0, PositionReferenceY::BOTTOM, 0, 0.5f)    
+            cr.addChild(it).withCopyOf(cr.lineWidth).withCopyOf(cr.foreground).setBackground(cr.foreground).setLineJoin(LineJoin::JOIN_ROUND);
+            it.points += createKPosition(PositionReferenceX::LEFT, 0, 0, PositionReferenceY::TOP, 0, 0);
+            it.points += createKPosition(PositionReferenceX::LEFT, 0, 0.4f, PositionReferenceY::TOP, 0, 0.5f);
+            it.points += createKPosition(PositionReferenceX::LEFT, 0, 0, PositionReferenceY::BOTTOM, 0, 0);
+            it.points += createKPosition(PositionReferenceX::RIGHT, 0, 0, PositionReferenceY::BOTTOM, 0, 0.5f);    
        ];    
     }
     
     def KPolygon drawTriangle(KContainerRendering cr) {
         return renderingFactory.createKPolygon => [
             cr.addChild(it).withCopyOf(cr.lineWidth).withCopyOf(cr.foreground).setBackground("white".color);
-            it.points += createKPosition(PositionReferenceX::LEFT, 0, 0, PositionReferenceY::TOP, 0, 0)
-            it.points += createKPosition(PositionReferenceX::LEFT, 0, 0, PositionReferenceY::BOTTOM, 0, 0)
-            it.points += createKPosition(PositionReferenceX::RIGHT, 0, 0, PositionReferenceY::BOTTOM, 0, 0.5f)
+            it.points += createKPosition(PositionReferenceX::LEFT, 0, 0, PositionReferenceY::TOP, 0, 0);
+            it.points += createKPosition(PositionReferenceX::LEFT, 0, 0, PositionReferenceY::BOTTOM, 0, 0);
+            it.points += createKPosition(PositionReferenceX::RIGHT, 0, 0, PositionReferenceY::BOTTOM, 0, 0.5f);
         ];
     }
 }

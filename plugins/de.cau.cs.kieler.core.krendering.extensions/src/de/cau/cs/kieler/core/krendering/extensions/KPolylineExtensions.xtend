@@ -21,6 +21,7 @@ import de.cau.cs.kieler.core.krendering.KRendering
 import de.cau.cs.kieler.core.krendering.KRenderingFactory
 import de.cau.cs.kieler.core.krendering.KXPosition
 import de.cau.cs.kieler.core.krendering.KYPosition
+import de.cau.cs.kieler.core.krendering.LineCap
 
 /**
  * @author chsch, alb
@@ -40,15 +41,16 @@ class KPolylineExtensions {
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////
     
     def KRendering addArrowDecorator(KPolyline pl) {
+        pl.lineCap = LineCap::CAP_FLAT
         return pl.drawArrow() => [
             it.placementData = renderingFactory.createKDecoratorPlacementData => [
                 it.rotateWithLine = true;
                 it.relative = 1f;
-                it.absolute = -3f;
-                it.width = 7;
-                it.height = 5;
-                it.xOffset = -5f;
-                it.yOffset = -2.5f;
+                it.absolute = -2f;
+                it.width = 10;
+                it.height = 8;
+                it.xOffset = -8f;
+                it.yOffset = -4f;
             ];
         ];
     }
