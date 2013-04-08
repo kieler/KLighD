@@ -18,6 +18,8 @@ package de.cau.cs.kieler.klighd.piccolo.util;
 
 import java.awt.geom.Point2D;
 
+import de.cau.cs.kieler.klighd.krendering.PlacementUtil.Bounds;
+
 import edu.umd.cs.piccolo.PNode;
 import edu.umd.cs.piccolo.activities.PActivity;
 import edu.umd.cs.piccolo.activities.PActivity.PActivityDelegate;
@@ -45,7 +47,7 @@ public final class NodeUtil {
     }
 
     /**
-     * Applies the bounds to the given node using the nodes translation and the its bounds.
+     * Applies the bounds to the given node using the node's translation and its bounds.
      * 
      * @param node
      *            the node
@@ -71,7 +73,19 @@ public final class NodeUtil {
     }
 
     /**
-     * Applies the bounds to the given node using the nodes translation and the its bounds.
+     * Applies the bounds to the given node using the node's translation and its bounds.
+     * 
+     * @param node
+     *            the node
+     * @param bounds
+     *            the bounds
+     */
+    public static void applySmartBounds(final PNode node, final Bounds bounds) {
+        applySmartBounds(node, bounds.getX(), bounds.getY(), bounds.getWidth(), bounds.getHeight());
+    }
+
+    /**
+     * Applies the bounds to the given node using the node's translation and its bounds.
      * 
      * @param node
      *            the node
