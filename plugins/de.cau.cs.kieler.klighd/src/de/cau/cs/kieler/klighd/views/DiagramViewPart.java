@@ -46,7 +46,6 @@ import de.cau.cs.kieler.kiml.config.ILayoutConfig;
 import de.cau.cs.kieler.kiml.options.Direction;
 import de.cau.cs.kieler.kiml.options.LayoutOptions;
 import de.cau.cs.kieler.kiml.ui.KimlUiPlugin;
-import de.cau.cs.kieler.kiml.ui.diagram.DiagramLayoutEngine;
 import de.cau.cs.kieler.klighd.KlighdPlugin;
 import de.cau.cs.kieler.klighd.LightDiagramServices;
 import de.cau.cs.kieler.klighd.triggers.KlighdResourceDropTrigger;
@@ -311,7 +310,8 @@ public class DiagramViewPart extends ViewPart {
     /**
      * ButtonLayoutConfig.
      * 
-     * Special layout configuration handed over to the {@link DiagramLayoutEngine} if the
+     * Special layout configuration handed over to the
+     * {@link de.cau.cs.kieler.kiml.ui.diagram.DiagramLayoutEngine DiagramLayoutEngine} if the
      * layout is invoked by the above introduced buttons.
      * 
      * @author chsch
