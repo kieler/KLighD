@@ -18,9 +18,10 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.GeneralPath;
 import java.awt.geom.Rectangle2D;
 
-import org.eclipse.swt.SWT; // SUPPRESS CHECKSTYLE Unused: Is referenced in lots of Javadoc annotations
+//import org.eclipse.swt.SWT; // SUPPRESS CHECKSTYLE Unused: Is referenced in lots of Javadoc annotations
 import org.eclipse.swt.graphics.Device;
 import org.eclipse.swt.graphics.GC;
+import org.eclipse.swt.graphics.LineAttributes;
 import org.eclipse.swt.graphics.RGB;
 
 import de.cau.cs.kieler.klighd.piccolo.util.RGBGradient;
@@ -56,7 +57,40 @@ public interface KlighdSWTGraphics {
      */
     void setGC(GC theGc);
 
+    /**
+     * Returns the currently configured line attributes in a {@link LineAttributes} record
+     * structure.
+     * 
+     * @return a {@link LineAttributes} object reflecting the currently set line attributes.
+     */
+    LineAttributes getLineAttributes();
     
+    /**
+     * Sets the line attributes to use when drawing shapes.
+     * 
+     * @param attributes of lines when drawing shapes
+     */
+    void setLineAttributes(LineAttributes attributes);
+    
+    /**
+     * Returns the line width to use when drawing shapes.
+     * 
+     * @author chsch
+     * 
+     * @return width of lines when drawing shapes
+     */
+    float getLineWidth();
+
+    /**
+     * Sets the line width to use when drawing shapes.
+     * 
+     * @author chsch
+     * 
+     * @param lineWidth
+     *            width of lines when drawing shapes
+     */
+    void setLineWidth(final float lineWidth);
+
     /*---------------------------------------------*/
     /* Desired coloring & style getter and setter. */
     /*---------------------------------------------*/
@@ -129,69 +163,50 @@ public interface KlighdSWTGraphics {
      */
     void setBackgroundPattern(final RGBGradient backgroundGradient, final Rectangle2D bounds);
 
-    /**
-     * Returns the line width to use when drawing shapes.
-     * 
-     * @author chsch
-     * 
-     * @return width of line when drawing shapes
-     */
-    double getLineWidth();
-
-    /**
-     * Sets the line width to use when drawing shapes.
-     * 
-     * @author chsch
-     * 
-     * @param lineWidth
-     *            width of line when drawing shapes
-     */
-    void setLineWidth(final double lineWidth);
-
-    /**
-     * Returns the line width to use when drawing shapes.<br>
-     * Result is supposed to be one of the constants {@link SWT#LINE_SOLID}, {@link SWT#LINE_DASH},
-     * {@link SWT#LINE_DOT}, {@link SWT#LINE_DASHDOT} or {@link SWT#LINE_DASHDOTDOT}.
-     * 
-     * @author chsch
-     * 
-     * @return style of lines when drawing shapes
-     */
-    int getLineStyle();
-    
-    /**
-     * Sets the line width to use when drawing shapes. <br>
-     * Must be one of the constants {@link SWT#LINE_SOLID}, {@link SWT#LINE_DASH},
-     * {@link SWT#LINE_DOT}, {@link SWT#LINE_DASHDOT} or {@link SWT#LINE_DASHDOTDOT}.
-     * 
-     * @author chsch
-     * 
-     * @param lineStyle
-     *            style of lines when drawing shapes
-     */
-    void setLineStyle(final int lineStyle);
-
-    /**
-     * Returns the line width to use when drawing shapes. Result is supposed to be one of the
-     * constants {@link SWT#CAP_FLAT}, {@link SWT#CAP_ROUND}, or {@link SWT#CAP_SQUARE}.
-     * 
-     * @author chsch
-     * 
-     * @return cap style of lines when drawing strokes
-     */
-    int getLineCap();
-    
-    /**
-     * Sets the line width to use when drawing shapes. <br>
-     * Must be one of the constants {@link SWT#CAP_FLAT}, {@link SWT#CAP_ROUND}, or
-     * {@link SWT#CAP_SQUARE}.
-     * 
-     * @author chsch
-     * 
-     * @param lineCap
-     *            cap style of lines when drawing strokes
-     */
-    void setLineCap(final int lineCap);
+//    /**
+//     * Returns the line width to use when drawing shapes.<br>
+//     * Result is supposed to be one of the constants {@link SWT#LINE_SOLID}, {@link SWT#LINE_DASH},
+//     * {@link SWT#LINE_DOT}, {@link SWT#LINE_DASHDOT} or {@link SWT#LINE_DASHDOTDOT}.
+//     * 
+//     * @author chsch
+//     * 
+//     * @return style of lines when drawing shapes
+//     */
+//    int getLineStyle();
+//    
+//    /**
+//     * Sets the line width to use when drawing shapes. <br>
+//     * Must be one of the constants {@link SWT#LINE_SOLID}, {@link SWT#LINE_DASH},
+//     * {@link SWT#LINE_DOT}, {@link SWT#LINE_DASHDOT} or {@link SWT#LINE_DASHDOTDOT}.
+//     * 
+//     * @author chsch
+//     * 
+//     * @param lineStyle
+//     *            style of lines when drawing shapes
+//     */
+//    void setLineStyle(final int lineStyle);
+//
+//    /**
+//     * Returns the line width to use when drawing shapes. Result is supposed to be one of the
+//     * constants {@link SWT#CAP_FLAT}, {@link SWT#CAP_ROUND}, or {@link SWT#CAP_SQUARE}.
+//     * 
+//     * @author chsch
+//     * 
+//     * @return cap style of lines when drawing strokes
+//     */
+//    int getLineCap();
+//    
+//    /**
+//     * Sets the line width to use when drawing shapes. <br>
+//     * Must be one of the constants {@link SWT#CAP_FLAT}, {@link SWT#CAP_ROUND}, or
+//     * {@link SWT#CAP_SQUARE}.
+//     * 
+//     * @author chsch
+//     * 
+//     * @param lineCap
+//     *            cap style of lines when drawing strokes
+//     */
+//    void setLineCap(final int lineCap);
 
     /*-----------------------------------------------------------------------*/
     /* Some AffineTransform-related methods required by the PSWTAdvancedPath */

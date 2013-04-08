@@ -14,13 +14,16 @@
 package de.cau.cs.kieler.klighd.piccolo;
 
 import java.awt.Shape;
+import java.awt.geom.GeneralPath;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Device;
 import org.eclipse.swt.graphics.GC;
+import org.eclipse.swt.graphics.LineAttributes;
 import org.eclipse.swt.graphics.Pattern;
+import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.graphics.TextLayout;
 
 import de.cau.cs.kieler.klighd.KlighdConstants;
@@ -89,7 +92,38 @@ public class KlighdSWTGraphicsImpl extends SWTGraphics2D implements KlighdSWTGra
     public void setAlpha(final int alpha) {
         super.setAlpha(alpha);
     }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public void setColor(final RGB foregroundColor) {
+        super.setColor(foregroundColor);
+    }
 
+    /**
+     * {@inheritDoc}
+     */
+    public LineAttributes getLineAttributes() {
+        return gc.getLineAttributes();
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public void setLineAttributes(final LineAttributes attributes) {
+        gc.setLineAttributes(attributes);
+        // the following line keeps the lineWidth in mind in order to
+        //  be able to adjust it according to the zoom factor
+        this.setLineWidth(attributes.width);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public float getLineWidth() {
+        return super.getLineWidth();
+    }
+    
     /**
      * {@inheritDoc}
      */
@@ -127,6 +161,97 @@ public class KlighdSWTGraphicsImpl extends SWTGraphics2D implements KlighdSWTGra
                 (float) points[1].getY(), this.getColor(gradient.getColor1()), alpha1, this
                         .getColor(gradient.getColor2()), alpha2));
     }
+
+
+    /*----------------------------------------------------*/
+    /* overrides of draw methods to realize anti-aliasing */
+    /*----------------------------------------------------*/
+    
+    /**
+     * {@inheritDoc}
+     */
+    public void drawRect(final double x, final double y, final double width, final double height) {
+        int alpha = getAlpha();
+        antiAliase();
+        
+        super.drawRect(x, y, width, height);
+        
+        setAlpha(alpha);
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public void drawRoundRect(final double x, final double y, final double width,
+            final double height, final double arcWidth, final double arcHeight) {
+        int alpha = getAlpha();
+        antiAliase();
+        
+        super.drawRoundRect(x, y, width, height, arcWidth, arcHeight);
+        
+        setAlpha(alpha);
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public void drawOval(final double x, final double y, final double width, final double height) {
+        int alpha = getAlpha();
+        antiAliase();
+        
+        super.drawOval(x, y, width, height);
+        
+        setAlpha(alpha);
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public void drawPolygon(final double[] points) {
+        int alpha = getAlpha();
+        antiAliase();
+        
+        super.drawPolygon(points);
+        
+        setAlpha(alpha);
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public void drawArc(final double x, final double y, final double width, final double height,
+            final double startAngle, final double extent) {
+        int alpha = getAlpha();
+        antiAliase();
+        
+        super.drawArc(x, y, width, height, startAngle, extent);
+        
+        setAlpha(alpha);
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public void drawPolyline(final double[] points) {
+        int alpha = getAlpha();
+        antiAliase();
+        
+        super.drawPolyline(points);
+        
+        setAlpha(alpha);
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public void drawGeneralPath(final GeneralPath gp) {
+        int alpha = getAlpha();
+        antiAliase();
+        
+        super.drawGeneralPath(gp);
+        
+        setAlpha(alpha);
+    }
     
     /*-----------------------------*/
     /* overrides of legacy methods */
@@ -156,6 +281,23 @@ public class KlighdSWTGraphicsImpl extends SWTGraphics2D implements KlighdSWTGra
     /* internal helper methods */
     /*-------------------------*/
 
+    /**
+     * This method realizes a poor man anti aliasing if the adjusted line width drawn on the screen
+     * is less than two.
+     */
+    protected void antiAliase() {
+        final int alpha = getAlpha();
+        final float lineWidth = this.getTransformedLineWidthFloat();
+        final int factor = 100;
+        
+        if (lineWidth < 2) {
+            double adjustedAlpha = 
+                    alpha * (KlighdConstants.ALPHA_FULL_OPAQUE - (2 - lineWidth) * factor)
+                            / KlighdConstants.ALPHA_FULL_OPAQUE;
+            this.setAlpha((int) adjustedAlpha);
+        }
+    }
+    
     private Point2D[] computePatternPoints(final Rectangle2D bounds, final double angle) {
 
         PAffineTransform t = new PAffineTransform();
