@@ -433,6 +433,7 @@ public class OptionControlFactory {
          * 
          * @param optionValue the layout option value
          */
+        @SuppressWarnings("incomplete-switch")
         public void setOptionValue(final float optionValue) {
             switch (optionData.getType()) {
             case INT:
