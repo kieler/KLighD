@@ -59,22 +59,22 @@ public final class PiccoloPlacementUtil {
      *            the parent bounds
      * @return the bounds
      */
-    public static PBounds evaluateAreaPlacement(final KAreaPlacementData dpd,
+    public static Bounds evaluateAreaPlacement(final KAreaPlacementData dpd,
             final PBounds parentBounds) {
         if (dpd == null) {
-            return new PBounds(0, 0, parentBounds.width, parentBounds.height);
+            return new Bounds(parentBounds.getWidth(), parentBounds.getHeight());
         }
 
         // determine the top-left
         KPosition topLeft = dpd.getTopLeft();
-        Point2D topLeftPoint = evaluateDirectPosition(topLeft, parentBounds);
+        Point2D.Float topLeftPoint = evaluateDirectPosition(topLeft, parentBounds);
 
         // determine the bottom-right
         KPosition bottomRight = dpd.getBottomRight();
-        Point2D bottomRightPoint = evaluateDirectPosition(bottomRight, parentBounds);
+        Point2D.Float bottomRightPoint = evaluateDirectPosition(bottomRight, parentBounds);
 
-        return new PBounds(topLeftPoint.getX(), topLeftPoint.getY(), bottomRightPoint.getX()
-                - topLeftPoint.getX(), bottomRightPoint.getY() - topLeftPoint.getY());
+        return new Bounds(topLeftPoint.x, topLeftPoint.y, bottomRightPoint.x
+                - topLeftPoint.x, bottomRightPoint.y - topLeftPoint.y);
     }
 
 
@@ -110,41 +110,41 @@ public final class PiccoloPlacementUtil {
      *            the parent bounds
      * @return the bounds
      */
-    public static PBounds evaluatePointPlacement(final KPointPlacementData ppd, final Bounds ownBounds,
+    public static Bounds evaluatePointPlacement(final KPointPlacementData ppd, final Bounds ownBounds,
             final PBounds parentBounds) {
         if (ppd == null) {
-            return new PBounds(0, 0, parentBounds.width, parentBounds.height);
+            return new Bounds(parentBounds.getWidth(), parentBounds.getHeight());
         }
 
         float width = Math.max(ownBounds.getWidth(), ppd.getMinWidth());
         float height = Math.max(ownBounds.getHeight(), ppd.getMinHeight());
         KPosition ref = ppd.getReferencePoint();
-        Point2D refPoint = evaluateDirectPosition(ref, parentBounds);
+        Point2D.Float refPoint = evaluateDirectPosition(ref, parentBounds);
 
-        Double x0, y0;
+        float x0, y0;
 
         switch (ppd.getHorizontalAlignment()) {
         case CENTER:
-            x0 = refPoint.getX() - width / 2;
+            x0 = refPoint.x - width / 2;
             break;
         case RIGHT:
-            x0 = refPoint.getX() - width;
+            x0 = refPoint.x - width;
             break;
         default:
         case LEFT:
-            x0 = refPoint.getX();
+            x0 = refPoint.x;
         }
         
         switch (ppd.getVerticalAlignment()) {
         case BOTTOM:
-            y0 = refPoint.getY() - height;
+            y0 = refPoint.y - height;
             break;
         case CENTER:
-            y0 = refPoint.getY() - height / 2;
+            y0 = refPoint.y - height / 2;
             break;
         default:
         case TOP:
-            y0 = refPoint.getY();
+            y0 = refPoint.y;
         }
         
         //attach the calculated data to be able to export the image later
@@ -153,7 +153,7 @@ public final class PiccoloPlacementUtil {
         ((KRendering) ppd.eContainer()).setProperty(pointPlacedObjectWidth, width);
         ((KRendering) ppd.eContainer()).setProperty(pointPlacedObjectHeight, height);
         
-        return new PBounds(x0, y0, width, height);
+        return new Bounds(x0, y0, width, height);
     }
     
 
@@ -167,7 +167,7 @@ public final class PiccoloPlacementUtil {
      * @return the points
      */
     public static Point2D[] evaluatePolylinePlacement(final KPolyline line,
-            final PBounds parentBounds) {
+            final Bounds parentBounds) {
         if (line.getPoints() == null || line.getPoints().isEmpty()) {
             return new Point2D[] { new Point2D.Float(0, 0) };
         }
@@ -175,8 +175,9 @@ public final class PiccoloPlacementUtil {
         // evaluate the points of the polyline inside the parent bounds
         Point2D[] points = new Point2D[line.getPoints().size()];
         int i = 0;
+        PBounds parentPBounds = new PBounds(parentBounds.toRectangle2D());
         for (KPosition point : line.getPoints()) {
-            points[i++] = evaluateDirectPosition(point, parentBounds);
+            points[i++] = evaluateDirectPosition(point, parentPBounds);
         }
 
         return points;
@@ -211,8 +212,8 @@ public final class PiccoloPlacementUtil {
         // default case
         if (dpd == null) {
             decoration.origin = (Point2D) points[0].clone();
-            decoration.bounds = new PBounds(0.0, 0.0, 0.0, 0.0);
-            decoration.rotation = 0.0;
+            decoration.bounds = new Bounds(0, 0);
+            decoration.rotation = 0;
             return decoration;
         }
 
@@ -222,15 +223,15 @@ public final class PiccoloPlacementUtil {
         decoration.origin = result.getSecond();
 
         // calculate the decorator bounds
-        decoration.bounds = new PBounds(dpd.getXOffset(), dpd.getYOffset(), dpd.getWidth(),
+        decoration.bounds = new Bounds(dpd.getXOffset(), dpd.getYOffset(), dpd.getWidth(),
                 dpd.getHeight());
 
         // if the decorator placement data specifies it to be relative calculate its rotation
         if (dpd.isRotateWithLine() && points.length > 1) {
             int segmentStart = result.getFirst();
-            decoration.rotation = MathUtil.angle(points[segmentStart], points[segmentStart + 1]);
+            decoration.rotation = (float) MathUtil.angle(points[segmentStart], points[segmentStart + 1]);
         } else {
-            decoration.rotation = 0.0;
+            decoration.rotation = 0;
         }
 
         return decoration;
@@ -247,8 +248,8 @@ public final class PiccoloPlacementUtil {
      */
     public static Point2D.Float evaluateDirectPosition(final KPosition position,
             final PBounds parentBounds) {
-        float width = (float) parentBounds.width;
-        float height = (float) parentBounds.height;
+        float width = (float) parentBounds.getWidth();
+        float height = (float) parentBounds.getHeight();
         Point2D.Float point = new Point2D.Float();
         KXPosition xPos = position.getX();
         KYPosition yPos = position.getY();
@@ -294,9 +295,9 @@ public final class PiccoloPlacementUtil {
         /** the origin of the decoration. */
         private Point2D origin;
         /** the bounds of the decoration. */
-        private PBounds bounds;
+        private Bounds bounds;
         /** the rotation of the decoration. */
-        private double rotation;
+        private float rotation;
 
         /**
          * Returns the origin of the decoration.
@@ -312,7 +313,7 @@ public final class PiccoloPlacementUtil {
          * 
          * @return the bounds
          */
-        public final PBounds getBounds() {
+        public final Bounds getBounds() {
             return bounds;
         }
 
