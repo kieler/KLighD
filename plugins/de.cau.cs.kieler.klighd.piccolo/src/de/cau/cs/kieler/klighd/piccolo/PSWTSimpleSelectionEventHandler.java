@@ -22,12 +22,12 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.LineAttributes;
 import org.eclipse.swt.graphics.RGB;
 
 import com.google.common.collect.Sets;
 
-import de.cau.cs.kieler.core.krendering.LineCap;
-import de.cau.cs.kieler.core.krendering.LineStyle;
 import de.cau.cs.kieler.klighd.KlighdConstants;
 import de.cau.cs.kieler.klighd.piccolo.nodes.PSWTAdvancedPath;
 
@@ -312,8 +312,8 @@ public class PSWTSimpleSelectionEventHandler extends PDragSequenceEventHandler {
     private void initializeMarquee(final PInputEvent event) {
         marquee =
                 PSWTAdvancedPath.createRectangle((float) point.getX(), (float) point.getY(), 0, 0);
-        marquee.setLineStyle(LineStyle.DASH);
-        marquee.setLineCapStyle(LineCap.CAP_FLAT);
+        marquee.setLineAttributes(new LineAttributes(1, SWT.CAP_FLAT, SWT.JOIN_MITER));
+        marquee.getLineAttributes().style = SWT.LINE_DASH;
         marquee.setStrokeColor(KlighdConstants.BLACK);
         marquee.setPaint((RGB) null);
         marquee.setPickable(false);
