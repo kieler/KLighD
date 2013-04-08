@@ -61,7 +61,7 @@ import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout;
 import de.cau.cs.kieler.klighd.KlighdConstants;
 
 /**
- * A utility class for evaluating the placement of KRenderings.
+ * A utility class for evaluating the micro layout of KRenderings.
  * 
  * @author chsch, sgu, akoc
  */
@@ -243,10 +243,10 @@ public final class PlacementUtil {
         }
 
         /**
-         * Constructs bounds from the dimensions of the given SWT Point with coordinates (0,0).
+         * Constructs bounds from the dimensions of the given AWT geometry {@link Rectangle2D.Float}.
          * 
-         * @param point
-         *            the SWT point to take width and height from
+         * @param rect
+         *            the {@link Rectangle2D.Float} to take x, y, width, and height from
          */
         public Bounds(final Rectangle2D.Float rect) {
             this.x = rect.x;
@@ -257,10 +257,10 @@ public final class PlacementUtil {
         }
 
         /**
-         * Constructs bounds from the dimensions of the given SWT Point with coordinates (0,0).
+         * Constructs bounds from the dimensions of the given AWT geometry {@link Rectangle2D.Float}.
          * 
-         * @param point
-         *            the SWT point to take width and height from
+         * @param rect
+         *            the {@link Rectangle2D} to take x, y, width, and height from
          */
         public Bounds(final Rectangle2D rect) {
             this.x = (float) rect.getX();
@@ -341,8 +341,9 @@ public final class PlacementUtil {
         }
 
         /**
+         * Transforms the current {@link Bounds} object in an AWT geometry {@link Rectangle2D}.
          * 
-         * @return
+         * @return a related {@link Rectangle2D}
          */
         public Rectangle2D toRectangle2D() {
             return new Rectangle2D.Float(this.x, this.y, this.width, this.height);
@@ -405,19 +406,22 @@ public final class PlacementUtil {
          *            the width
          * @param height
          *            the height
+         * @return the desired {@link Bounds} object
          */
-       public static Bounds of(final float width, final float height) {
-           return new Bounds(width, height);
-       }
+        public static Bounds of(final float width, final float height) {
+            return new Bounds(width, height);
+        }
        
-       /**
-        * Constructs bounds with the given dimensions and (x,y) coordinates (0,0).
-        * 
-        * @param rect
-        */
-      public static Bounds of(final Rectangle2D rect) {
-          return new Bounds(rect);
-      }
+        /**
+         * Constructs bounds from the dimensions of the given AWT geometry {@link Rectangle2D}.
+         * 
+         * @param rect
+         *            the {@link Rectangle2D} to take x, y, width, and height from
+         * @return the desired {@link Bounds} object
+         */
+        public static Bounds of(final Rectangle2D rect) {
+            return new Bounds(rect);
+        }
     }
     
     /**

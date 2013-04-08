@@ -23,14 +23,15 @@ import de.cau.cs.kieler.core.krendering.KRendering;
 import de.cau.cs.kieler.core.krendering.KRenderingFactory;
 import de.cau.cs.kieler.core.krendering.KRenderingPackage;
 import de.cau.cs.kieler.core.util.Pair;
-import static de.cau.cs.kieler.klighd.krendering.PlacementUtil.*;
+import static de.cau.cs.kieler.klighd.krendering.PlacementUtil.*; // SUPPRESS CHECKSTYLE Import
 import de.cau.cs.kieler.klighd.krendering.PlacementUtil.Bounds;
 import de.cau.cs.kieler.klighd.krendering.PlacementUtil.GridSpacing;
 
 
 /**
- * @author chsch
- *
+ * A utility class for evaluating the grid micro layout of KRenderings.
+ * 
+ * @author chsch, akoc
  */
 public final class GridPlacementUtil {
 
@@ -86,6 +87,8 @@ public final class GridPlacementUtil {
         
         private KPosition topLeft = null;
         private KPosition bottomRight = null;
+        
+        private static final float TOLERANCE = 0.1f;
 
         /**
          * Evaluates the grid placement for the given parent bounds.
@@ -127,12 +130,12 @@ public final class GridPlacementUtil {
                     && childAreaPosition.getSecond() > -1) {
                 //check if there is a childArea and put that width into it's cell
                 
-                if (parentBounds.width - width > 0.1
+                if (parentBounds.width - width > TOLERANCE
                         && childAreaPosition.getFirst() < numColumns) {
                     estimatedGrid.calculatedColumnWidths[childAreaPosition.getFirst()] 
                             += parentBounds.width - width;
                 }
-                if (parentBounds.height - height > 0.1
+                if (parentBounds.height - height > TOLERANCE
                         && childAreaPosition.getSecond() < numRows) {
                     estimatedGrid.calculatedRowHeights[childAreaPosition.getSecond()]
                             += parentBounds.height - height;
