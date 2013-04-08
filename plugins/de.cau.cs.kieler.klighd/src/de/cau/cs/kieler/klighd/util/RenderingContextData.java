@@ -18,6 +18,7 @@ package de.cau.cs.kieler.klighd.util;
 
 import de.cau.cs.kieler.core.kgraph.KGraphElement;
 import de.cau.cs.kieler.core.kgraph.impl.KGraphDataImpl;
+import de.cau.cs.kieler.core.properties.IProperty;
 
 /**
  * A graph data implementation for storing context information about elements in a
@@ -42,6 +43,17 @@ public class RenderingContextData extends KGraphDataImpl {
             element.getData().add(data);
         }
         return data;
+    }
+    
+    /**
+     * Returns true if <code>property</code> has been defined for <code>this</code> instance.
+     * 
+     * @param property
+     *            the <code>property</code> to check for definition
+     * @return true if <code>property</code> is set, false otherwise.
+     */
+    public boolean containsPoperty(final IProperty<?> property) {
+        return this.getProperties().keySet().contains(property);
     }
 
 }
