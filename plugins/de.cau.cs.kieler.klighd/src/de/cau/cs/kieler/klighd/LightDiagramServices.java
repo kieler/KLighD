@@ -13,6 +13,7 @@
  */
 package de.cau.cs.kieler.klighd;
 
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -34,6 +35,7 @@ import de.cau.cs.kieler.core.krendering.KStyle;
 import de.cau.cs.kieler.core.properties.IProperty;
 import de.cau.cs.kieler.core.properties.IPropertyHolder;
 import de.cau.cs.kieler.core.properties.Property;
+import de.cau.cs.kieler.kiml.config.ILayoutConfig;
 import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout;
 import de.cau.cs.kieler.kiml.options.LayoutOptions;
 import de.cau.cs.kieler.kiml.ui.diagram.DiagramLayoutEngine;
@@ -356,12 +358,29 @@ public final class LightDiagramServices {
      */
     public void layoutDiagram(final ViewContext viewContext, final boolean animate,
             final boolean zoomToFit) {
+        layoutDiagram(viewContext, animate, zoomToFit, Collections.<ILayoutConfig>emptyList());
+    }
+
+    /**
+     * Performs the automatic layout on the diagram represented by the given view context.
+     * 
+     * @param viewContext
+     *            the viewContext whose diagram diagram is to be arranged
+     * @param animate
+     *            layout with or without animation
+     * @param zoomToFit
+     *            layout with or without animation
+     * @param options
+     *            an optional list of layout options
+     */
+    public void layoutDiagram(final ViewContext viewContext, final boolean animate,
+            final boolean zoomToFit, final List<ILayoutConfig> options) {
         @SuppressWarnings("unchecked")
         IViewer<? extends EObject> diagramViewer = (IViewer<? extends EObject>) viewContext
                 .getProperty(LightDiagramServices.VIEWER);
         DiagramViewPart viewPart = DiagramViewManager.getInstance().getView(
                 diagramViewer.getContextViewer().getViewPartId());
-        layoutDiagram(viewPart, diagramViewer, animate, zoomToFit);
+        layoutDiagram(viewPart, diagramViewer, animate, zoomToFit, options);
     }
     
     /**
@@ -376,16 +395,18 @@ public final class LightDiagramServices {
      *            layout with or without animation
      * @param zoomToFit
      *            layout with or without animation
+     * @param options
+     *            an optional list of layout options
      */
     public void layoutDiagram(final DiagramViewPart viewPart,
             final IViewer<? extends EObject> diagramViewer, final boolean animate,
-            final boolean zoomToFit) {
+            final boolean zoomToFit, final List<ILayoutConfig> options) {
         final KNode viewModel = (KNode) diagramViewer.getContextViewer().getCurrentViewContext()
                 .getViewModel();
         if (viewModel != null
                 && !viewModel.getData(KShapeLayout.class).getProperty(LayoutOptions.NO_LAYOUT)) {
             DiagramLayoutEngine.INSTANCE.layout(viewPart, diagramViewer, animate, false, false,
-                    zoomToFit, null);            
+                    zoomToFit, options);            
         } else {
             diagramViewer.setRecording(false);
             
