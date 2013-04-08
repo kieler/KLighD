@@ -26,7 +26,15 @@ public class CollapseExpandAction implements IAction {
     /**
      * {@inheritDoc}.<br>
      * <br>
-     * This ones expands the KNode provided in 'context'.
+     * This ones expands the KNode provided in 'context'.<br>
+     * It is important to notice that collapsing a node means the collapsing of its child area.
+     * Thus, the node itself is visible and gets layouted, while all its children and edges
+     * originating from or pointing to that children are marked as non-ACTIVE, removed from the
+     * diagram rendering (see GraphController#deactivateSubgraph(KNode), and ignored in the layout
+     * process. This implies that the collapsed node is now treated as a non-hierarchical node whose
+     * size is determined by the values in the KShapeLayout rather than by the MIN_WIDTH/MIN_HEIGHT
+     * layout options.
+     * 
      */
     public boolean execute(final ActionContext context) {
         context.getViewer().toggleExpansion(context.getNode());
