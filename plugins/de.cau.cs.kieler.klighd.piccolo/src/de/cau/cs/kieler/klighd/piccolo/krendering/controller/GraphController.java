@@ -101,23 +101,6 @@ public class GraphController {
     /** the property for the Piccolo representation of a node. */
     public static final IProperty<PNode> REP = new Property<PNode>("klighd.piccolo.prepresentation");
     
-    
-//    /**
-//     * the property for identifying whether a node has been populated. If a node is populated, child
-//     * node have been created once.
-//     */
-//    private static final IProperty<Boolean> POPULATED = new Property<Boolean>("klighd.populated",
-//            false);
-//    /**
-//     * the property for identifying whether a node is currently active. If a node is active, it is
-//     * visible.
-//     */
-//    // Review: activate the subgraph:
-//    // this is probably crucial in case the structure has been changed during an incremental update;
-//    // the activity flag is also important in case of inter-level edges in combination with
-//    // lazy loading/collapsing+expanding
-//    private static final IProperty<Boolean> ACTIVE = new Property<Boolean>("klighd.active", false);
-
     /** the property for remembering the edge sync adapter on a node. */
     private static final IProperty<AdapterImpl> EDGE_SYNC_ADAPTER = new Property<AdapterImpl>(
             "klighd.edgeSyncAdapter");
@@ -322,6 +305,11 @@ public class GraphController {
                                     // lazy loading/collapsing+expanding
                                     if (data.getProperty(KlighdConstants.ACTIVE)) {
                                         for (KNode child : node.getChildren()) {
+                                            INode rep = RenderingContextData.get(child)
+                                                    .getProperty(INode.NODE_REP);
+                                            // this 'invisible' configuration is examined
+                                            //  while deciding on moving the node or fading it in
+                                            ((PNode) rep).setVisible(false);
                                             activateSubgraph(child);
                                         }
                                     }
