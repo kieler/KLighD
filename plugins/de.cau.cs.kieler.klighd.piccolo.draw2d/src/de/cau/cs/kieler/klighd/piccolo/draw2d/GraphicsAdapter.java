@@ -45,9 +45,8 @@ public class GraphicsAdapter extends Graphics {
         private org.eclipse.swt.graphics.Color foreground;
         private org.eclipse.swt.graphics.Color background;
         private Font font;
-        private double lineWidth;
-        private int lineStyle;
-        private int lineCap;
+//        private LineAttributes lineAttributes;
+        private float lineWidth;
         
         /**
          * Stores the state data of the given graphics into a new state.
@@ -60,9 +59,8 @@ public class GraphicsAdapter extends Graphics {
             this.foreground = g.getGraphicsContext().getForeground();
             this.background = g.getGraphicsContext().getBackground();
             this.font = g.getSWTFont();
+//            this.lineAttributes = g.getLineAttributes();
             this.lineWidth = g.getLineWidth();
-            this.lineStyle = g.getLineStyle();
-            this.lineCap = g.getLineCap();
         }
     }
     
@@ -142,6 +140,7 @@ public class GraphicsAdapter extends Graphics {
 
     /** the Piccolo wrapper for SWT graphics. */
     private SWTGraphics2D pg;
+    // TODO : migrate this to KLighdSWTGraphics
     
     /** the stack of graphics states. */
     private LinkedList<State> stack = new LinkedList<State>();
@@ -495,8 +494,7 @@ public class GraphicsAdapter extends Graphics {
     @Override
     public void setLineAttributes(final LineAttributes attributes) {
         pg.setLineWidth(attributes.width);
-        pg.setLineStyle(attributes.style);
-        pg.setLineCap(attributes.cap);
+//        pg.setLineAttributes(attributes);
         pg.updateClip();
     }
 
@@ -589,7 +587,7 @@ public class GraphicsAdapter extends Graphics {
      */
     @Override
     public int getLineStyle() {
-        return pg.getLineStyle();
+        return pg.getGraphicsContext().getLineStyle();
     }
 
     /**
@@ -597,21 +595,21 @@ public class GraphicsAdapter extends Graphics {
      */
     @Override
     public void setLineStyle(final int style) {
-        pg.setLineStyle(style);
+        pg.getGraphicsContext().setLineStyle(style);
     }
 
     /**
      * {@inheritDoc}
      */
     public int getLineCap() {
-        return pg.getLineCap();
+        return pg.getGraphicsContext().getLineCap();
     }
     
     /**
      * {@inheritDoc}
      */
     public void setLineCap(final int cap) {
-        pg.setLineCap(cap);
+        pg.getGraphicsContext().setLineCap(cap);
     }
     
     /**
@@ -654,8 +652,6 @@ public class GraphicsAdapter extends Graphics {
             pg.setBackground(lastState.background);
             pg.setFont(lastState.font);
             pg.setLineWidth(lastState.lineWidth);
-            pg.setLineStyle(lastState.lineStyle);
-            pg.setLineCap(lastState.lineCap);
         }
     }
 
