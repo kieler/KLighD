@@ -21,6 +21,7 @@ import de.cau.cs.kieler.core.annotations.IntAnnotation
 import de.cau.cs.kieler.core.annotations.StringAnnotation
 import de.cau.cs.kieler.core.kgraph.KNode
 import de.cau.cs.kieler.core.properties.IProperty
+import de.cau.cs.kieler.core.properties.Property
 import de.cau.cs.kieler.core.util.Pair
 
 import de.cau.cs.kieler.kiml.LayoutDataService
@@ -29,6 +30,7 @@ import de.cau.cs.kieler.kiml.LayoutOptionData$Type
 import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout
 import de.cau.cs.kieler.kiml.util.KimlUtil
 import java.util.ArrayList
+import de.cau.cs.kieler.core.math.KVector
 
 /**
  * @author chsch
@@ -107,6 +109,15 @@ class KNodeExtensions {
     def KNode setNodeSize(KNode node, float width, float height) {
         return node => [
             getData(typeof(KShapeLayout)).setSize(width, height)
+        ];
+    }
+    
+    public static val IProperty<KVector> MINIMAL_NODE_SIZE = new Property<KVector>(
+            "klighd.minimalNodeSize", new KVector(10d, 10d));
+
+    def KNode setMinimalNodeSize(KNode node, float width, float height) {
+        return node.setNodeSize(width, height) => [
+            it.addLayoutParam(MINIMAL_NODE_SIZE, new KVector(width, height));
         ];
     }
     
