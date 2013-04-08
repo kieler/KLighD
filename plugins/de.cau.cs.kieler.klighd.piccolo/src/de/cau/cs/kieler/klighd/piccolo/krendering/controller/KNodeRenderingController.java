@@ -21,12 +21,12 @@ import de.cau.cs.kieler.core.kgraph.KNode;
 import de.cau.cs.kieler.core.krendering.KRendering;
 import de.cau.cs.kieler.core.krendering.KRenderingFactory;
 import de.cau.cs.kieler.core.krendering.KStyle;
+import de.cau.cs.kieler.klighd.krendering.PlacementUtil.Bounds;
 import de.cau.cs.kieler.klighd.piccolo.krendering.KChildAreaNode;
 import de.cau.cs.kieler.klighd.piccolo.krendering.KNodeNode;
 import de.cau.cs.kieler.klighd.piccolo.krendering.util.PiccoloPlacementUtil;
 import de.cau.cs.kieler.klighd.piccolo.util.NodeUtil;
 import edu.umd.cs.piccolo.PNode;
-import edu.umd.cs.piccolo.util.PBounds;
 
 /**
  * An {@link AbstractRenderingController} for KNodes generating the rendering PNodes according to
@@ -96,7 +96,7 @@ public class KNodeRenderingController extends AbstractRenderingController<KNode,
      * {@inheritDoc}
      */
     @Override
-    protected PNodeController<?> createChildArea(final PNode parent, final PBounds initialBounds) {
+    protected PNodeController<?> createChildArea(final PNode parent, final Bounds initialBounds) {
         // there can only be none or one child area
         if (childAreaNode.getParent() != null) {
             throw new RuntimeException("More then one child area found in graph element: "
@@ -113,7 +113,7 @@ public class KNodeRenderingController extends AbstractRenderingController<KNode,
 
         // create a controller for the child area and return it
         return new PNodeController<PNode>(childAreaNode) {
-            public void setBounds(final PBounds bounds) {
+            public void setBounds(final Bounds bounds) {
                 // apply the bounds
                 NodeUtil.applySmartBounds(getNode(), bounds);
             }
@@ -128,7 +128,7 @@ public class KNodeRenderingController extends AbstractRenderingController<KNode,
      */
     private void createDefaultChildArea(final PNode parent) {
         // determine the initial bounds
-        PBounds bounds = PiccoloPlacementUtil.evaluateAreaPlacement(null,
+        Bounds bounds = PiccoloPlacementUtil.evaluateAreaPlacement(null,
                 parent.getBoundsReference());
 
         // configure the child area
@@ -139,7 +139,7 @@ public class KNodeRenderingController extends AbstractRenderingController<KNode,
                 new PropertyChangeListener() {
                     public void propertyChange(final PropertyChangeEvent e) {
                         // calculate the new bounds of the rendering
-                        PBounds bounds = PiccoloPlacementUtil.evaluateAreaPlacement(null,
+                        Bounds bounds = PiccoloPlacementUtil.evaluateAreaPlacement(null,
                                 parent.getBoundsReference());
                         // use the controller to apply the new bounds
                         controller.setBounds(bounds);

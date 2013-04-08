@@ -25,10 +25,10 @@ import de.cau.cs.kieler.core.krendering.KStyle;
 import de.cau.cs.kieler.core.krendering.KText;
 import de.cau.cs.kieler.klighd.krendering.KTextUtil;
 import de.cau.cs.kieler.klighd.krendering.PlacementUtil;
+import de.cau.cs.kieler.klighd.krendering.PlacementUtil.Bounds;
 import de.cau.cs.kieler.klighd.piccolo.krendering.KLabelNode;
 import de.cau.cs.kieler.klighd.piccolo.krendering.util.PiccoloPlacementUtil;
 import edu.umd.cs.piccolo.PNode;
-import edu.umd.cs.piccolo.util.PBounds;
 import edu.umd.cs.piccolox.swt.PSWTText;
 
 /**
@@ -88,7 +88,7 @@ public class KLabelRenderingController extends AbstractRenderingController<KLabe
         @SuppressWarnings("unchecked")
         final PNodeController<PSWTText> controller =
                 (PNodeController<PSWTText>) createRendering(rendering, new ArrayList<KStyle>(0),
-                        parent, parent.getBoundsReference());
+                        parent, Bounds.of(parent.getBoundsReference()));
         controller.getNode().setText(KTextUtil.getTextLines(parent.getText()));
 
         // add a listener on the parent's bend points
@@ -104,7 +104,7 @@ public class KLabelRenderingController extends AbstractRenderingController<KLabe
                 new PropertyChangeListener() {
                     public void propertyChange(final PropertyChangeEvent e) {
                         // calculate the new bounds of the rendering
-                        PBounds bounds =
+                        Bounds bounds =
                                 PiccoloPlacementUtil.evaluateAreaPlacement(PlacementUtil
                                         .asAreaPlacementData(rendering.getPlacementData()),
                                         parent.getBoundsReference());

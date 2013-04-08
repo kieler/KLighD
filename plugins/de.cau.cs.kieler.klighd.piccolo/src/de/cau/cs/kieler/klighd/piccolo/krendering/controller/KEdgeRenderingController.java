@@ -32,12 +32,12 @@ import de.cau.cs.kieler.core.krendering.KRenderingPackage;
 import de.cau.cs.kieler.core.krendering.KRoundedBendsPolyline;
 import de.cau.cs.kieler.core.krendering.KSpline;
 import de.cau.cs.kieler.core.krendering.KStyle;
+import de.cau.cs.kieler.klighd.krendering.PlacementUtil.Bounds;
 import de.cau.cs.kieler.klighd.piccolo.KlighdPiccoloPlugin;
 import de.cau.cs.kieler.klighd.piccolo.krendering.KCustomConnectionFigureNode;
 import de.cau.cs.kieler.klighd.piccolo.krendering.KEdgeNode;
 import de.cau.cs.kieler.klighd.piccolo.nodes.PSWTAdvancedPath;
 import edu.umd.cs.piccolo.PNode;
-import edu.umd.cs.piccolo.util.PBounds;
 
 /**
  * @author mri
@@ -124,7 +124,7 @@ public class KEdgeRenderingController extends AbstractRenderingController<KEdge,
         final PNodeController<PSWTAdvancedPath> controller =
                 (PNodeController<PSWTAdvancedPath>) 
                 createRendering(rendering,
-                        new ArrayList<KStyle>(0), parent, new PBounds(0, 0, 1, 1));
+                        new ArrayList<KStyle>(0), parent, new Bounds(1, 1));
         if (rendering instanceof KSpline) {
             controller.getNode().setPathToSpline(parent.getBendPoints());
         } else if (rendering instanceof KRoundedBendsPolyline) {
@@ -170,7 +170,7 @@ public class KEdgeRenderingController extends AbstractRenderingController<KEdge,
         @SuppressWarnings("unchecked")
         final PNodeController<KCustomConnectionFigureNode> controller =
                 (PNodeController<KCustomConnectionFigureNode>) createRendering(rendering,
-                        Collections.<KStyle>emptyList(), parent, new PBounds(0, 0, 1, 1));
+                        Collections.<KStyle>emptyList(), parent, new Bounds(1, 1));
         controller.getNode().setPoints(parent.getBendPoints());
 
         parent.setRepresentationNode(controller.getNode());
