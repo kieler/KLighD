@@ -22,7 +22,9 @@ import java.util.Set;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.ui.IWorkbenchPart;
 
+import com.google.common.base.Predicate;
 import com.google.common.collect.BiMap;
+import com.google.common.collect.Iterables;
 
 import de.cau.cs.kieler.core.kgraph.KEdge;
 import de.cau.cs.kieler.core.kgraph.KGraphElement;
@@ -238,17 +240,34 @@ public class DiagramLayoutManager implements IDiagramLayoutManager<KGraphElement
      */
     private static void processNodes(final LayoutMapping<KGraphElement> mapping,
             final KNode parent, final KNode layoutParent) {
-        // if the node is active, i.e. if its children are displayed in the diagram ...
-        if (RenderingContextData.get(parent).getProperty(KlighdConstants.ACTIVE)) {
-            // ... iterate through its children and put copies in the layout graph
-            for (KNode node : parent.getChildren()) {
-                createNode(mapping, node, layoutParent);
-            }
-        } else {
-            // experimental...
-            layoutParent.getData(KShapeLayout.class).setSize(0, 0);
+        // iterate through the parent's active children and put copies in the layout graph;
+        //  a child is active if it contains RenderingContextData and the 'true' value wrt.
+        //  the property KlighdConstants.ACTIVE, see the predicate definition below
+        for (KNode node : Iterables.filter(parent.getChildren(), CHILD_ACTIVE)) {
+            createNode(mapping, node, layoutParent);
         }
     }
+    
+    /**
+     * A predicate definition used to drop inactive nodes while processing the layout input graph.<br>
+     * Currently all children of a node are active or non-active at a time, a selective filtering is
+     * not done so far (see e.g. GraphController#addExpansionListener). This might change in future.
+     */
+    private static final Predicate<KNode> CHILD_ACTIVE = new Predicate<KNode>() {
+        public boolean apply(final KNode node) {
+            return !RenderingContextData.get(node).containsPoperty(KlighdConstants.ACTIVE)
+                    || RenderingContextData.get(node).getProperty(KlighdConstants.ACTIVE);
+        }
+    };
+    
+    /**
+     * A property definition that is used to store the initial minimal node size.<br>
+     * The {@link LayoutOptions#MIN_WIDTH}/{@link LayoutOptions#MIN_HEIGHT} properties are not sufficient
+     * as they have to be modified for hierarchical diagrams.
+     */
+    private static final IProperty<KVector> MINIMAL_NODE_SIZE = new Property<KVector>(
+            "klighd.minimalNodeSize", new KVector(KlighdConstants.MINIMAL_NODE_BOUNDS.width,
+                    KlighdConstants.MINIMAL_NODE_BOUNDS.height));
 
     /**
      * Creates a layout node for the node inside the given layout parent node.
@@ -272,34 +291,54 @@ public class DiagramLayoutManager implements IDiagramLayoutManager<KGraphElement
             // there is layoutData attached to the node,
             // so take that as node layout instead of the default-layout
             transferShapeLayout(nodeLayout, layoutLayout);
+            
+            final IProperty<Float> pMW = LayoutOptions.MIN_WIDTH;
+            final IProperty<Float> pMH = LayoutOptions.MIN_HEIGHT;
+            
+            RenderingContextData rcd = RenderingContextData.get(node);
+
+            float minWidth = 0;
+            if (!rcd.containsPoperty(pMW)) {
+                minWidth = (float) nodeLayout.getProperty(MINIMAL_NODE_SIZE).x;
+                rcd.setProperty(pMW, minWidth);                
+            } else {
+                minWidth = rcd.getProperty(pMW);
+            }
+
+            float minHeight = 0;
+            if (!rcd.containsPoperty(pMH)) {
+                minHeight = (float) nodeLayout.getProperty(MINIMAL_NODE_SIZE).y;
+                rcd.setProperty(pMH, minHeight);
+            } else {
+                minHeight = rcd.getProperty(pMH);
+            }
 
             // integrate the minimal estimated node size based on the updated layoutLayout
             // - manipulating the nodeLayout may cause immediate glitches in the diagram
             // (through the listeners)
             KRendering rootRendering = node.getData(KRendering.class);
             if (rootRendering != null) {
+                
+                Bounds minSize = Bounds.max(
+                        Bounds.of(minWidth, minHeight),
+                        KlighdConstants.MINIMAL_NODE_BOUNDS);
+                
                 // calculate the minimal size need for the rendering ...
-                Bounds minSize = PlacementUtil.estimateSize(rootRendering, new Bounds(
-                        layoutLayout.getWidth(), layoutLayout.getHeight()));
+                Bounds estimatedSize = PlacementUtil.estimateSize(rootRendering, minSize);
+                // new Bounds(layoutLayout.getWidth(), layoutLayout.getHeight()));
                 // ... and update the node size if it exceeds its size
-                if (minSize.width > layoutLayout.getWidth()) {
-                    nodeLayout.setWidth(minSize.width);
-                    layoutLayout.setWidth(minSize.width);
+                
+                Bounds size = Bounds.max(minSize, estimatedSize);
+                if (Iterables.any(node.getChildren(), CHILD_ACTIVE)) {
+                    nodeLayout.setProperty(LayoutOptions.MIN_WIDTH, size.width);
+                    nodeLayout.setProperty(LayoutOptions.MIN_HEIGHT, size.height);
+                } else {
+                    nodeLayout.setSize(size.width, size.height);
+                    layoutLayout.setSize(size.width, size.height);
+                }
 
-                    // In order to instruct KIML to not shrink the node beyond the minimal size,
-                    //  e.g. due to less space required by child nodes,
-                    //  configure a related layout option!
-                    // This has to be done on the original node instance, as layout options are
-                    //  transfered by the {@link KGraphPropertyLayoutConfig}.
-                    nodeLayout.setProperty(LayoutOptions.MIN_WIDTH, minSize.width);
-                }
-                if (minSize.height > layoutLayout.getHeight()) {
-                    nodeLayout.setHeight(minSize.height);
-                    layoutLayout.setHeight(minSize.height);
-                    // see comment above
-                    nodeLayout.setProperty(LayoutOptions.MIN_HEIGHT, minSize.height);
-                }
-                layoutLayout.setInsets(minSize.getInsets());
+                // TODO: correct this according to the above case distinction
+                layoutLayout.setInsets(estimatedSize.getInsets());
             }
         }
         
