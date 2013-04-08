@@ -16,22 +16,27 @@
  */
 package de.cau.cs.kieler.klighd.piccolo.krendering.controller;
 
+
 import org.eclipse.swt.graphics.RGB;
+
+import com.google.common.primitives.Floats;
 
 import de.cau.cs.kieler.core.krendering.KColor;
 import de.cau.cs.kieler.core.krendering.KColoring;
+import de.cau.cs.kieler.core.krendering.KRenderingPackage;
 import de.cau.cs.kieler.core.krendering.KRotation;
 import de.cau.cs.kieler.core.krendering.KShadow;
 import de.cau.cs.kieler.core.krendering.LineCap;
+import de.cau.cs.kieler.core.krendering.LineJoin;
 import de.cau.cs.kieler.core.krendering.LineStyle;
 import de.cau.cs.kieler.core.krendering.Underline;
 import de.cau.cs.kieler.klighd.KlighdConstants;
+import de.cau.cs.kieler.klighd.krendering.PlacementUtil.Bounds;
 import de.cau.cs.kieler.klighd.piccolo.nodes.PAlignmentNode.HAlignment;
 import de.cau.cs.kieler.klighd.piccolo.nodes.PAlignmentNode.VAlignment;
 import de.cau.cs.kieler.klighd.piccolo.util.RGBGradient;
 import de.cau.cs.kieler.klighd.piccolo.util.StyleUtil.Styles;
 import edu.umd.cs.piccolo.PNode;
-import edu.umd.cs.piccolo.util.PBounds;
 
 /**
  * The abstract base class for Piccolo node controllers.<br />
@@ -74,7 +79,7 @@ public abstract class PNodeController<T extends PNode> {
      * @param bounds
      *            the bounds
      */
-    public abstract void setBounds(final PBounds bounds);
+    public abstract void setBounds(final Bounds bounds);
 
     /**
      * Sets the invisibility of the associated node.
@@ -151,8 +156,13 @@ public abstract class PNodeController<T extends PNode> {
      * 
      * @param lineStyle
      *            the line style
+     * @param dashPattern
+     *            the line dash pattern in case of {@link LineStyle#CUSTOM}
+     * @param dashOffset
+     *            the line dash offset in case of {@link LineStyle#CUSTOM}
      */
-    public void setLineStyle(final LineStyle lineStyle) {
+    public void setLineStyle(final LineStyle lineStyle, final float[] dashPattern,
+            final float dashOffset) {
         // do nothing
     }
 
@@ -163,6 +173,18 @@ public abstract class PNodeController<T extends PNode> {
      *            the line cap style
      */
     public void setLineCap(final LineCap lineCap) {
+        // do nothing
+    }
+
+    /**
+     * Sets the line join style of the associated node.
+     * 
+     * @param lineJoin
+     *            the line join style
+     * @param miterLimit
+     *            the miter limit in case of {@link LineJoin#JOIN_MITER}
+     */
+    public void setLineJoin(final LineJoin lineJoin, final float miterLimit) {
         // do nothing
     }
 
@@ -278,6 +300,7 @@ public abstract class PNodeController<T extends PNode> {
      * @param styles
      *            A compound {@link Styles} field to infer the data from.
      */
+    // SUPPRESS CHECKSTYLE NEXT Length
     public void applyChanges(final Styles styles) {
         // apply invisibility
         if (styles.invisibility != null) {
@@ -326,16 +349,35 @@ public abstract class PNodeController<T extends PNode> {
 
         // apply line style
         if (styles.lineStyle != null) {
-            this.setLineStyle(styles.lineStyle.getLineStyle());
+            if (styles.lineStyle.getLineStyle() == LineStyle.CUSTOM) {
+                this.setLineStyle(styles.lineStyle.getLineStyle(),
+                        Floats.toArray(styles.lineStyle.getDashPattern()),
+                        styles.lineStyle.getDashOffset());
+            } else {
+                this.setLineStyle(styles.lineStyle.getLineStyle(), null, 0f);
+            }
         } else {
-            this.setLineStyle(LineStyle.SOLID);
+            this.setLineStyle(LineStyle.SOLID, null, 0f);
         }
 
         // apply line cap style
         if (styles.lineCap != null) {
             this.setLineCap(styles.lineCap.getLineCap());
         } else {
-            this.setLineCap(LineCap.CAP_FLAT);
+            this.setLineCap(LineCap.get(0));
+        }
+
+        // apply line join style
+        if (styles.lineJoin != null) {
+            if (styles.lineJoin.getLineJoin() == LineJoin.JOIN_MITER) {
+                this.setLineJoin(styles.lineJoin.getLineJoin(), styles.lineJoin.getMiterLimit());
+            } else {
+                this.setLineJoin(styles.lineJoin.getLineJoin(), (Float) KRenderingPackage.eINSTANCE
+                        .getKLineJoin_MiterLimit().getDefaultValue());
+            }
+        } else {
+            this.setLineJoin(LineJoin.get(0), (Float) KRenderingPackage.eINSTANCE
+                    .getKLineJoin_MiterLimit().getDefaultValue());
         }
 
         // apply rotation
