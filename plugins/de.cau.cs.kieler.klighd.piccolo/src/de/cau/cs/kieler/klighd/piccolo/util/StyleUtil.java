@@ -24,6 +24,7 @@ import de.cau.cs.kieler.core.krendering.KForeground;
 import de.cau.cs.kieler.core.krendering.KHorizontalAlignment;
 import de.cau.cs.kieler.core.krendering.KInvisibility;
 import de.cau.cs.kieler.core.krendering.KLineCap;
+import de.cau.cs.kieler.core.krendering.KLineJoin;
 import de.cau.cs.kieler.core.krendering.KLineStyle;
 import de.cau.cs.kieler.core.krendering.KLineWidth;
 import de.cau.cs.kieler.core.krendering.KRotation;
@@ -36,7 +37,7 @@ import de.cau.cs.kieler.core.krendering.KVerticalAlignment;
 import de.cau.cs.kieler.core.krendering.util.KRenderingSwitch;
 
 /**
- * 
+ * Dedicated utility class providing structures and methods to handle the {@link KStyle} definitions.
  * 
  * @author chsch
  */
@@ -62,8 +63,10 @@ public final class StyleUtil {
         public KLineWidth lineWidth = null;
         /** the line style. */
         public KLineStyle lineStyle = null;
-        /** the line style. */
+        /** the line cap style. */
         public KLineCap lineCap = null;
+        /** the line join style. */
+        public KLineJoin lineJoin = null;
         /** the shadow. */
         public KShadow shadow = null;
         /** the rotation. */
@@ -142,6 +145,12 @@ public final class StyleUtil {
             // line cap style
             public Boolean caseKLineCap(final KLineCap lcs) {
                 theStyles.lineCap = lcs;
+                return true;
+            }
+            
+            // line join style
+            public Boolean caseKLineJoin(final KLineJoin ljs) {
+                theStyles.lineJoin = ljs;
                 return true;
             }
             
