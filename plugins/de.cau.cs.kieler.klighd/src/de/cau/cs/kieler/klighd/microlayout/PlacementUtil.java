@@ -537,20 +537,30 @@ public final class PlacementUtil {
         case KRenderingPackage.KCONTAINER_RENDERING:
             KContainerRendering container = (KContainerRendering) rendering;
 
-            int placementId = container.getChildPlacement() != null ? container.getChildPlacement()
-                    .eClass().getClassifierID() : -1;
-
+            int placementId = container.getChildPlacement() != null
+                    ? container.getChildPlacement().eClass().getClassifierID() : -1;
             switch (placementId) {
             case KRenderingPackage.KGRID_PLACEMENT:
-                // in case of a GridPlacement
-                // calculate the number of columns and rows of the grid to the bounds of an inner
-                // rendering
+                // in case of a GridPlacement calculate the number of columns and rows of the grid
+                // to the bounds of an inner rendering
                 return estimateGridSize(container, givenBounds);
+
             default:
-                // in case of a AreaPlacement
-                // calculate the offsets of each rendering and find the biggest rendering in width
-                // and height
-                return estimateAreaSize(container, givenBounds);
+                // in case of no placement definition calculate the size of each child rendering and
+                // find the biggest rendering in width and height
+                Bounds maxSize = new Bounds(givenBounds);
+                for (KRendering child : container.getChildren()) {
+                    if (child.getPlacementData() instanceof KPointPlacementData) {
+                        Bounds.max(maxSize, estimatePointPlacedChildSize(child));
+                    } else if (child.getPlacementData() instanceof KAreaPlacementData) {
+                        Bounds.max(maxSize, estimateAreaPlacedChildSize(child, givenBounds));
+                    } else {
+                        // in case no valid placement data are given we assume the size of the
+                        // parent by the size of the child
+                        Bounds.max(maxSize, estimateSize(child, givenBounds));      
+                    }
+                }
+                return maxSize;
             }
         default:
             // there is something else than a text box or a container, e.g. a KPolyline
@@ -638,8 +648,9 @@ public final class PlacementUtil {
         // font, style, and size a GC is instantiated, configured, and queried for each line of the
         // text. This code has basically taken from PSWTText and condensed.
         final GC gc = new GC(Display.getDefault());
+        final Font font = new Font(Display.getDefault(), fontName, fontSize, fontStyle);
         gc.setAntialias(SWT.ON);
-        gc.setFont(new Font(Display.getDefault(), fontName, fontSize, fontStyle));
+        gc.setFont(font);
         final FontMetrics fm = gc.getFontMetrics();
 
         Bounds textBounds = new Bounds(0, 0);
@@ -662,10 +673,155 @@ public final class PlacementUtil {
                 }
             }
         }
+        font.dispose();
         gc.dispose();
         return textBounds;
     }
 
+
+    /**
+     * Returns the required minimal size of a {@link KRendering} width attached
+     * {@link KPointPlacementData}.
+     * 
+     * @param container
+     *            the {@link KRendering} to be evaluated
+     * 
+     * @return the minimal required size
+     */
+    private static Bounds estimatePointPlacedChildSize(final KRendering rendering) {
+        KPointPlacementData ppd = (KPointPlacementData) rendering.getPlacementData();
+
+        // determine minimal needed size of the child
+        //  for point-based placement the parent size does not matter for the size! 
+        final Bounds minimalSize = Bounds.of(ppd.getMinWidth(), ppd.getMinHeight());
+        final Bounds cSize = Bounds.max(minimalSize, estimateSize(rendering, minimalSize));
+                
+        float requiredWidth = getHorizontalSize(ppd, cSize.getWidth());
+        float requiredHeight = getVerticalSize(ppd, cSize.getHeight());
+
+        return Bounds.of(requiredWidth, requiredHeight);
+    }
+
+    /**
+     * Determines the horizontal size value for a point-based placed child.
+     * 
+     * @param ppd
+     *            the {@link KPointPlacementData} containing the required declarations
+     * @param minWidth
+     *            the estimated minimal width of the child
+     * @return a {@link Pair} of the absolute size offset and the relative size divisor
+     */
+    private static float getHorizontalSize(final KPointPlacementData ppd, final float minWidth) {
+        if (ppd == null) {
+            return minWidth;
+        }
+
+        KPosition pos = ppd.getReferencePoint();
+        float abs = pos != null && pos.getX() != null ? pos.getX().getAbsolute() : 0f;
+        float calculatedWidth = 0f;
+
+        switch (ppd.getHorizontalAlignment()) {
+        case LEFT:
+        case RIGHT:
+            // the child requires its minWidth and the absolute margin defined by pos.getX()
+            calculatedWidth = abs + Math.max(minWidth, ppd.getMinWidth()) + ppd.getHorizontalMargin();
+            break;
+        case CENTER:
+            float halfWidth = Math.max(minWidth, ppd.getMinWidth()) / 2;
+            if (abs > halfWidth) {
+                // in this case the child requires, depending on type of pos.getX, on one side more
+                //  space than on the other, so:
+                calculatedWidth = abs + halfWidth; 
+            } else {
+                // in case one might argue the same way, but there's still the relative part
+                //  so I think potentially shrinking the width is not reasonable; thus:
+                calculatedWidth = Math.max(minWidth, ppd.getMinWidth());
+            }
+            calculatedWidth += 2 * ppd.getHorizontalMargin();
+        }
+        
+        return calculatedWidth;
+    }
+
+    /**
+     * Determines the vertical size value for a point-based placed child.
+     * 
+     * @param ppd
+     *            the {@link KPointPlacementData} containing the required declarations
+     * @param minHeight
+     *            the estimated minimal height of the child
+     * @return a {@link Pair} of the absolute size offset and the relative size divisor
+     */
+    private static float getVerticalSize(final KPointPlacementData ppd, final float minHeight) {
+        if (ppd == null) {
+            return minHeight;
+        }
+
+        KPosition pos = ppd.getReferencePoint();
+        float abs = pos != null && pos.getY() != null ? pos.getY().getAbsolute() : 0f;
+        float calculatedHeight = 0f;
+
+        switch (ppd.getVerticalAlignment()) {
+        case TOP:
+        case BOTTOM:
+            // the child requires its minHeight and the absolute margin defined by pos.getY()
+            calculatedHeight = abs + Math.max(minHeight, ppd.getMinHeight()) + ppd.getVerticalMargin();
+            break;
+        case CENTER:
+            float halfHeight = Math.max(minHeight, ppd.getMinHeight()) / 2;
+            if (abs > halfHeight) {
+                // in this case the child requires, depending on type of pos.getY, on one side more
+                //  space than on the other, so:
+                calculatedHeight = abs + halfHeight; 
+            } else {
+                // in case one might argue the same way, but there's still the relative part
+                //  so I think potentially shrinking the width is not reasonable; thus:
+                calculatedHeight = Math.max(minHeight, ppd.getMinHeight());
+            }
+            calculatedHeight += 2 * ppd.getVerticalMargin();
+        }
+        return calculatedHeight;
+    }
+
+
+    /**
+     * Returns the required minimal size of a {@link KRendering} width attached
+     * {@link KAreaPlacementData}.
+     * 
+     * @param container
+     *            the {@link KRendering} to be evaluated
+     * @param givenBounds
+     *            the size that is currently assigned to <code>rendering</code>'s container.
+     * 
+     * @return the minimal required size
+     */
+    private static Bounds estimateAreaPlacedChildSize(final KRendering rendering,
+            final Bounds initialSize) {
+        KAreaPlacementData apd = (KAreaPlacementData) rendering.getPlacementData();
+
+        final Bounds cSize = evaluateAreaPlacement(apd, initialSize);
+        // determine minimal needed size of the child
+        final Bounds containerMinSize = estimateSize(rendering, cSize);
+        
+        KPosition tL = apd.getTopLeft();
+        KPosition bR = apd.getBottomRight();
+
+        Pair<Float, Float> horSize = getHorizontalSize(tL, bR);
+        float absXOffest = horSize.getFirst();
+        float relWidth = horSize.getSecond();
+
+        Pair<Float, Float> verSize = getVerticalSize(tL, bR);
+        float absYOffest = verSize.getFirst();
+        float relHeight = verSize.getSecond();
+
+        containerMinSize.width = (relWidth == 0f ? 0f : containerMinSize.width / relWidth) + absXOffest;
+        containerMinSize.height = (relHeight == 0f ? 0f : containerMinSize.height / relHeight)
+                + absYOffest;
+        
+        return containerMinSize;
+    }
+
+    
     /**
      * Returns the minimal size of a {@link KContainerRendering} with
      * <code>childPlacement instanceof KGridPlacement</code> and updates the placement data of
@@ -1050,178 +1206,8 @@ public final class PlacementUtil {
         
         return parentHeight;
     }
-    
-    /**
-     * Normalize given insets to find out how big a child is in relation to it's parent and how much
-     * space is needed to add absolute insets.
-     * 
-     * @param abs0
-     *            the absolute value of the position defining first inset
-     * @param rel0
-     *            the relative value of the position defining first inset
-     * @param positionId0
-     *            the identifier constant informing about the measurement direction (DIRECT,
-     *            INDIRECT)
-     * @param abs1
-     *            the absolute value of the position defining first inset
-     * @param rel1
-     *            the relative value of the position defining the first inset
-     * @param positionId1
-     *            the identifier constant informing about the measurement direction (DIRECT,
-     *            INDIRECT)
-     * @return a pair informing about the absolute value the child size is smaller than the parent
-     *         and the relative size of a child w.r.t. to the size of the parent
-     */
-    private static Pair<Float, Float> getSize(
-            final float abs0, final float rel0, final int positionId0,
-            final float abs1, final float rel1, final int positionId1) {
-        float absOffset = 0;
-        float relWidth = 1f;
-        
-        // boolean absoluteLength = false;
-        // the idea of that variable is to provide an information whether the size of
-        //  figure is influenced by the size of the parent or whether it's fully determined
-        //  by the absolute positioning components; need thinking on that further
-        
-        int position = positionId0 * FIRST_OFFSET + positionId1;
-        
-        switch (position) {
-        case DIRECT_DIRECT:
-            // top left comes from left
-            // bottom right comes from right
-            relWidth = 1f - rel1 - rel0;
-            absOffset = abs0 + abs1;
-            break;
-            
-        case DIRECT_INDIRECT:
-            // top left comes from left
-            // bottom right comes from left
-            relWidth = rel1 - rel0;
-            absOffset = abs0 - abs1;
-            break;
-            
-        case INDIRECT_DIRECT:
-            // top left comes from right
-            // bottom right comes from right
-            relWidth = rel0 - rel1;
-            absOffset = -abs0 + abs1; 
-            break;
-            
-        case INDIRECT_INDIRECT:
-            // top left comes from right
-            // bottom right comes from left
-            relWidth = rel1 + rel0 - 1f;
-            absOffset = -abs0 - abs1;
-            break;
-            
-        default:
-            // we don't know which position was taken
-            // TODO ensure that all placement positions are guaranteed
-            System.err.println("Found unknown placement position for size calculation");
-            break;
-        }
-        return new Pair<Float, Float>(absOffset, relWidth);
-        // return new Triple<Float, Float, Boolean>(absXOffest, relWidth, absoluteLength);
-    }
-    
-    /**
-     * Returns the minimal size of a {@link KContainerRendering} width
-     * <code>childPlacement == null</code> and updates the placement data of
-     * internal KRenderings if necessary.<br>
-     * <br>
-     * {@link IProperty IProperties} for delivering those data.
-     * 
-     * @param container
-     *            the {@link KContainerRendering} to be evaluated
-     * @param givenBounds
-     *            the size that is currently assigned to 'container'
-     * @return the minimal size
-     */
-    public static Bounds estimateAreaSize(final KContainerRendering container,
-            final Bounds givenBounds) {
-        final Bounds minBounds = new Bounds(givenBounds);
-        for (KRendering rendering : container.getChildren()) {
-            
-            KPlacementData plcData = rendering.getPlacementData();
 
-            if (plcData instanceof KAreaPlacementData) {
-                KAreaPlacementData apd = (KAreaPlacementData) plcData;
 
-                final Bounds bounds = evaluateAreaPlacement(apd, new Bounds(givenBounds));
-
-                // determine minimal needed size of the child
-                final Bounds childMinSize = estimateSize(rendering, bounds);
-                if (//the area gives less space than the child actually needs
-                        (bounds.width < childMinSize.width)              
-                        || (bounds.height < childMinSize.height)        
-                        //the child needs more space than the parent is willing to give
-                        || (givenBounds.width < childMinSize.width)
-                        || (givenBounds.height < childMinSize.height)
-                        //the placement of the child needs more space than the parent is willing to give 
-                        || (givenBounds.width  < bounds.width)
-                        || (givenBounds.height < bounds.height)
-                        ) {
-
-                    // float absXOffest = 0;
-                    // float relWidth = 1f;
-                    // float absYOffest = 0;
-                    // float relHeight = 1f;
-
-                    KPosition tL = apd.getTopLeft();
-                    KPosition bR = apd.getBottomRight();
-
-                    Pair<Float, Float> horSize = getHorizontalSize(tL, bR);
-                    float absXOffest = horSize.getFirst();
-                    float relWidth = horSize.getSecond();
-
-                    Pair<Float, Float> verSize = getVerticalSize(tL, bR);
-                    float absYOffest = verSize.getFirst();
-                    float relHeight = verSize.getSecond();
-
-                    // compare the minimal need size with the maximal yet found size ad
-                    // update the minimal size accordingly
-                    // relWidth and relHeight are now the total relative size of the
-                    // childBounds according to the maximal yet found size
-                    minBounds.width = Math.max(
-                            minBounds.width,
-                            (relWidth != 0f ? childMinSize.width / relWidth : 0f) + absXOffest);
-                    minBounds.height = Math.max(
-                            minBounds.height,
-                            (relHeight != 0f ? childMinSize.height / relHeight : 0f) + absYOffest);
-                }
-            } else if (plcData instanceof KPointPlacementData) {
-                KPointPlacementData ppd = (KPointPlacementData) plcData;
-                // determine minimal needed size of the child
-                //  for point-based placement the parent size does not matter for the size! 
-                final Bounds childMinSize = estimateSize(rendering, new Bounds(0, 0));
-                childMinSize.width = Math.max(childMinSize.width, ppd.getMinWidth());
-                childMinSize.height = Math.max(childMinSize.height, ppd.getMinHeight());
-                
-                
-                if (minBounds.getHeight() < childMinSize.getHeight()
-                        || minBounds.getWidth() < childMinSize.getWidth()) {
-                    
-                    float calculatedWidth = getHorizontalSize(ppd, childMinSize.getWidth());
-                    float calculatedHeight = getVerticalSize(ppd, childMinSize.getHeight());
-    
-                    minBounds.width = Math.max(minBounds.width, calculatedWidth);
-                    minBounds.height = Math.max(minBounds.height, calculatedHeight);
-                }
-            } else {
-                
-                // determine minimal needed size of the child
-                final Bounds childMinSize = estimateSize(rendering, givenBounds);
-
-                // in case no valid placement data are given we assume the plain size of the child
-                minBounds.width = Math.max(minBounds.width, childMinSize.width);
-                minBounds.height = Math.max(minBounds.height, childMinSize.height);
-            }
-        }
-        return minBounds;
-    }
-
-    
-    
     /**
      * Determines the horizontal correction values for area-based placed child.
      * 
@@ -1307,315 +1293,81 @@ public final class PlacementUtil {
         
         return getSize(abs0, rel0, posId0, abs1, rel1, posId1);
     }
-    
-    
-    /**
-     * Determines the horizontal size value for a point-based placed child.
-     * 
-     * @param ppd
-     *            the {@link KPointPlacementData} containing the required declarations
-     * @param minWidth
-     *            the estimated minimal width of the child
-     * @return a {@link Pair} of the absolute size offset and the relative size divisor
-     */
-    private static float getHorizontalSize(final KPointPlacementData ppd, final float minWidth) {
-        
-        if (ppd == null) {
-            return minWidth;
-        }
-        
-        KPosition pos = ppd.getReferencePoint();
-        float abs = pos != null && pos.getX() != null ? pos.getX().getAbsolute() : 0f;
-        float calculatedWidth = 0f;
-        
-// chsch: IMO distinguishing the cases rel == 1f and rel != 1f is not reasonable!
-//  Image rel = 0.9999999...: In the case the parent figure will get huuuuuugggge...
-//  Same applies to rel == 0f / rel != 0f.
-        
-//        float rel = pos.getX().getRelative();
-//
-//        switch (pos.getX().eClass().getClassifierID()) {
-//        case KRenderingPackage.KLEFT_POSITION: {
-//
-//            switch (ppd.getHorizontalAlignment()) {
-//            case LEFT:
-//                if (rel == 1f) {
-//                    // child is outside of the parent and,
-//                    //  therefore, does not influence its parent's width
-//                    calculatedWidth = minBounds.getWidth();
-//                } else {
-//                    calculatedWidth = (minWidth + abs) / (1 - rel);
-//                }
-//                break;
-//            case CENTER:
-//                if (rel != 1f) {
-//                    calculatedWidth = (minWidth / 2 + abs) / (1 - rel);
-//                }
-//                if (rel != 0f) {
-//                    calculatedWidth = Math.max(calculatedWidth, (abs - minWidth / 2)
-//                            / (-rel));
-//                }
-//                break;
-//            case RIGHT:
-//                if (rel == 0f) {
-//                    calculatedWidth = Math.max(minBounds.getWidth(), abs);
-//                } else {
-//                    calculatedWidth = (minWidth - abs) / rel;
-//                }
-//                break;
-//            }
-//        }
-//        case KRenderingPackage.KRIGHT_POSITION: {
-//            // reference Point measured from right
-//            switch (ppd.getHorizontalAlignment()) {
-//            case LEFT:
-//                if (rel == 0) {
-//                    calculatedWidth = Math.max(minBounds.getWidth(), abs);
-//                } else {
-//                    calculatedWidth = (minWidth - abs) / rel;
-//                }
-//                break;
-//            case CENTER:
-//                if (rel != 0f) {
-//                    calculatedWidth = (minWidth / 2 - abs) / rel;
-//                }
-//                if (rel != 1f) {
-//                    calculatedWidth = Math.max(calculatedWidth, (abs + minWidth / 2)
-//                            / (1 - rel));
-//                }
-//                break;
-//            case RIGHT:
-//                if (rel == 1f) {
-//                    calculatedWidth = Math.max(minBounds.getWidth(), abs);
-//                } else {
-//                    calculatedWidth = (abs + minWidth) / (1 - rel);
-//                }
-//            }
-//        }
-//        }
-        
-        switch (ppd.getHorizontalAlignment()) {
-        case LEFT:
-        case RIGHT:
-            // the child requires its minWidth and the absolute margin defined by pos.getX()
-            calculatedWidth = abs + Math.max(minWidth, ppd.getMinWidth()) + ppd.getHorizontalMargin();
-            break;
-        case CENTER:
-            float halfWidth = Math.max(minWidth, ppd.getMinWidth()) / 2;
-            if (abs > halfWidth) {
-                // in this case the child requires, depending on type of pos.getX, on one side more
-                //  space than on the other, so:
-                calculatedWidth = abs + halfWidth; 
-            } else {
-                // in case one might argue the same way, but there's still the relative part
-                //  so I think potentially shrinking the width is not reasonable; thus:
-                calculatedWidth = Math.max(minWidth, ppd.getMinWidth());
-            }
-            calculatedWidth += 2 * ppd.getHorizontalMargin();
-        }
-        
-        return calculatedWidth;
-    }
+
 
     /**
-     * Determines the vertical size value for a point-based placed child.
+     * Normalize given insets to find out how big a child is in relation to it's parent and how much
+     * space is needed to add absolute insets.
      * 
-     * @param ppd
-     *            the {@link KPointPlacementData} containing the required declarations
-     * @param minHeight
-     *            the estimated minimal height of the child
-     * @return a {@link Pair} of the absolute size offset and the relative size divisor
+     * @param abs0
+     *            the absolute value of the position defining first inset
+     * @param rel0
+     *            the relative value of the position defining first inset
+     * @param positionId0
+     *            the identifier constant informing about the measurement direction (DIRECT,
+     *            INDIRECT)
+     * @param abs1
+     *            the absolute value of the position defining first inset
+     * @param rel1
+     *            the relative value of the position defining the first inset
+     * @param positionId1
+     *            the identifier constant informing about the measurement direction (DIRECT,
+     *            INDIRECT)
+     * @return a pair informing about the absolute value the child size is smaller than the parent
+     *         and the relative size of a child w.r.t. to the size of the parent
      */
-    private static float getVerticalSize(final KPointPlacementData ppd, final float minHeight) {
-        if (ppd == null) {
-            return minHeight;
-        }
+    private static Pair<Float, Float> getSize(
+            final float abs0, final float rel0, final int positionId0,
+            final float abs1, final float rel1, final int positionId1) {
+        float absOffset = 0;
+        float relWidth = 1f;
         
-        KPosition pos = ppd.getReferencePoint();
-        float abs = pos != null && pos.getY() != null ? pos.getY().getAbsolute() : 0f;
-        float calculatedHeight = 0f;
+        // boolean absoluteLength = false;
+        // the idea of that variable is to provide an information whether the size of
+        //  figure is influenced by the size of the parent or whether it's fully determined
+        //  by the absolute positioning components; need thinking on that further
         
-// chsch: IMO distinguishing the cases rel == 1f and rel != 1f is not reasonable!
-//  Image rel = 0.9999999...: In the case the parent figure will get huuuuuugggge...
-//  Same applies to rel == 0f / rel != 0f.
+        int position = positionId0 * FIRST_OFFSET + positionId1;
+        
+        switch (position) {
+        case DIRECT_DIRECT:
+            // top left comes from left
+            // bottom right comes from right
+            relWidth = 1f - rel1 - rel0;
+            absOffset = abs0 + abs1;
+            break;
             
-//        float rel = pos.getX().getRelative();
-//
-//        switch (pos.getX().eClass().getClassifierID()) {
-//        case KRenderingPackage.KTOP_POSITION: {
-//            switch (alignment) {
-//            case TOP:
-//                if (rel == 1f) {
-//                    // child is outside of the parent and does not influence its width
-//                    calculatedHeight = minBounds.getHeight();
-//                } else {
-//                    calculatedHeight = (minHeight + abs) / (1 - rel);
-//                }
-//                break;
-//            case CENTER:
-//                if (rel != 1f) {
-//                    calculatedHeight = (minHeight / 2 + abs) / (1 - rel);
-//                }
-//                if (rel != 0f) {
-//                    calculatedHeight = Math.max(calculatedHeight,
-//                            (abs - minHeight / 2) / (-rel));
-//                }
-//                break;
-//            case BOTTOM:
-//                if (rel == 0f) {
-//                    calculatedHeight = Math.max(minBounds.getHeight(), abs);
-//                } else {
-//                    calculatedHeight = (minHeight - abs) / rel;
-//                }
-//                break;
-//            }
-//        } 
-//        case KRenderingPackage.KBOTTOM_POSITION: {
-//            // reference Point measured from right
-//            switch (alignment) {
-//            case TOP:
-//                if (rel == 0) {
-//                    calculatedHeight = Math.max(minBounds.getHeight(), abs);
-//                } else {
-//                    calculatedHeight = (minHeight - abs) / rel;
-//                }
-//                break;
-//            case CENTER:
-//                if (rel != 0f) {
-//                    calculatedHeight = (minHeight / 2 - abs) / rel;
-//                }
-//                if (rel != 1f) {
-//                    calculatedHeight = Math.max(calculatedHeight,
-//                            (abs + childMinSize.getWidth() / 2) / (1 - rel));
-//                }
-//                break;
-//            case BOTTOM:
-//                if (rel == 1f) {
-//                    calculatedHeight = Math.max(minBounds.getHeight(), abs);
-//                } else {
-//                    calculatedHeight = (abs + minHeight) / (1 - rel);
-//                }
-//            }
-//        }
-//        }        
-        
-        switch (ppd.getVerticalAlignment()) {
-        case TOP:
-        case BOTTOM:
-            // the child requires its minHeight and the absolute margin defined by pos.getY()
-            calculatedHeight = abs + Math.max(minHeight, ppd.getMinHeight()) + ppd.getVerticalMargin();
+        case DIRECT_INDIRECT:
+            // top left comes from left
+            // bottom right comes from left
+            relWidth = rel1 - rel0;
+            absOffset = abs0 - abs1;
             break;
-        case CENTER:
-            float halfHeight = Math.max(minHeight, ppd.getMinHeight()) / 2;
-            if (abs > halfHeight) {
-                // in this case the child requires, depending on type of pos.getY, on one side more
-                //  space than on the other, so:
-                calculatedHeight = abs + halfHeight; 
-            } else {
-                // in case one might argue the same way, but there's still the relative part
-                //  so I think potentially shrinking the width is not reasonable; thus:
-                calculatedHeight = Math.max(minHeight, ppd.getMinHeight());
-            }
-            calculatedHeight += 2 * ppd.getVerticalMargin();
-        }
-        return calculatedHeight;
-    }    
-    
-
-    private static final int SCALE_XY = 0;
-    private static final int SCALE_X = 1;
-    private static final int SCALE_Y = 2;
-    private static final int SCALE_NONE = 3;
-
-    /**
-     * This method manipulates direct placement configurations in order to scale figure parts
-     *  proportionally. It is currently unused as I'm not convinced of that idea. (chsch) 
-     * 
-     * @param container
-     * @param minBounds
-     * @param defBounds
-     * @return
-     */
-    @SuppressWarnings("unused")
-    private static Point scaleBounds(final KContainerRendering container, final Point minBounds,
-            final Point defBounds) {
-
-        // test if the minBounds exceeds the size of the defBounds and if so the absolute
-        // offsets have to be upscaled by the minimal size
-        float xScaling = (float) minBounds.x / (float) defBounds.x;
-        float yScaling = (float) minBounds.y / (float) defBounds.y;
-        boolean scaleX = 1f < xScaling;
-        boolean scaleY = 1f < yScaling;
-
-        // determine if the x and y offset have to be upscaled or just one of them
-        // 0 scale x and y
-        // 1 scale x
-        // 2 (default) scale y
-        // 3 neither x nor y
-        int cas = (scaleX && scaleY) ? SCALE_XY : scaleX ? SCALE_X : scaleY ? SCALE_Y : SCALE_NONE;
-        switch (cas) {
-        case SCALE_XY:
-            // scale the x and y offset
-            for (KRendering rendering : container.getChildren()) {
-                KPlacementData plcData = rendering.getPlacementData();
-                if (plcData instanceof KAreaPlacementData) {
-                    KPosition bR = ((KAreaPlacementData) plcData).getBottomRight();
-                    KPosition tL = ((KAreaPlacementData) plcData).getTopLeft();
-
-                    bR.getX().setAbsolute(bR.getX().getAbsolute() * xScaling);
-                    tL.getX().setAbsolute(tL.getX().getAbsolute() * xScaling);
-                    bR.getY().setAbsolute(bR.getY().getAbsolute() * yScaling);
-                    tL.getY().setAbsolute(tL.getY().getAbsolute() * yScaling);
-
-                    ((KAreaPlacementData) plcData).setBottomRight(bR);
-                    ((KAreaPlacementData) plcData).setTopLeft(tL);
-                    rendering.setPlacementData(plcData);
-                }
-            }
+            
+        case INDIRECT_DIRECT:
+            // top left comes from right
+            // bottom right comes from right
+            relWidth = rel0 - rel1;
+            absOffset = -abs0 + abs1; 
             break;
-
-        case SCALE_X:
-            // scale just the x offset
-            for (KRendering rendering : container.getChildren()) {
-                KPlacementData plcData = rendering.getPlacementData();
-                if (plcData instanceof KAreaPlacementData) {
-                    KPosition bR = ((KAreaPlacementData) plcData).getBottomRight();
-                    KPosition tL = ((KAreaPlacementData) plcData).getTopLeft();
-
-                    bR.getX().setAbsolute(bR.getX().getAbsolute() * xScaling);
-                    tL.getX().setAbsolute(tL.getX().getAbsolute() * xScaling);
-
-                    ((KAreaPlacementData) plcData).setBottomRight(bR);
-                    ((KAreaPlacementData) plcData).setTopLeft(tL);
-                    rendering.setPlacementData(plcData);
-                }
-            }
+            
+        case INDIRECT_INDIRECT:
+            // top left comes from right
+            // bottom right comes from left
+            relWidth = rel1 + rel0 - 1f;
+            absOffset = -abs0 - abs1;
             break;
-
-        case SCALE_Y:
-            // scale just the y offset
-            for (KRendering rendering : container.getChildren()) {
-                KPlacementData plcData = rendering.getPlacementData();
-                if (plcData instanceof KAreaPlacementData) {
-                    KPosition bR = ((KAreaPlacementData) plcData).getBottomRight();
-                    KPosition tL = ((KAreaPlacementData) plcData).getTopLeft();
-
-                    bR.getY().setAbsolute(bR.getY().getAbsolute() * yScaling);
-                    tL.getY().setAbsolute(tL.getY().getAbsolute() * yScaling);
-
-                    ((KAreaPlacementData) plcData).setBottomRight(bR);
-                    ((KAreaPlacementData) plcData).setTopLeft(tL);
-                    rendering.setPlacementData(plcData);
-                }
-            }
-            break;
-
+            
         default:
-            // the bound do not exceeds the default size -- nothing to do
+            // we don't know which position was taken
+            // TODO ensure that all placement positions are guaranteed
+            System.err.println("Found unknown placement position for size calculation");
             break;
         }
-        return minBounds;
+        return new Pair<Float, Float>(absOffset, relWidth);
+        // return new Triple<Float, Float, Boolean>(absXOffest, relWidth, absoluteLength);
     }
+
 
     /**
      * Calculates the offset of the child area in the given <code>rootRendering</code>, which is
@@ -1748,16 +1500,16 @@ public final class PlacementUtil {
     public static Bounds evaluateAreaPlacement(final KAreaPlacementData dpd,
             final Bounds parentBounds) {
         if (dpd == null) {
-            return new Bounds(0, 0, parentBounds.width, parentBounds.height);
+            return new Bounds(parentBounds);
         }
 
         // determine the top-left
         KPosition topLeft = dpd.getTopLeft();
-        Point topLeftPoint = evaluateDirectPosition(topLeft, parentBounds);
+        Point topLeftPoint = evaluateFlexiblePosition(topLeft, parentBounds);
 
         // determine the bottom-right
         KPosition bottomRight = dpd.getBottomRight();
-        Point bottomRightPoint = evaluateDirectPosition(bottomRight, parentBounds);
+        Point bottomRightPoint = evaluateFlexiblePosition(bottomRight, parentBounds);
 
         return new Bounds(topLeftPoint.x, topLeftPoint.y, bottomRightPoint.x - topLeftPoint.x,
                 bottomRightPoint.y - topLeftPoint.y);
@@ -1782,8 +1534,8 @@ public final class PlacementUtil {
         float maxX = Float.MIN_VALUE;
         float minY = Float.MAX_VALUE;
         float maxY = Float.MIN_VALUE;
-        for (KPosition polyPoint : line.getPoints()) {
-            Point point = evaluateDirectPosition(polyPoint, parentBounds);
+        for (KPosition polylinePoint : line.getPoints()) {
+            Point point = evaluateFlexiblePosition(polylinePoint, parentBounds);
             if (point.x < minX) {
                 minX = point.x;
             }
@@ -1810,7 +1562,7 @@ public final class PlacementUtil {
      *            the parent bounds
      * @return the evaluated position
      */
-    public static Point evaluateDirectPosition(final KPosition position, final Bounds parentBounds) {
+    public static Point evaluateFlexiblePosition(final KPosition position, final Bounds parentBounds) {
         float width = (float) parentBounds.width;
         float height = (float) parentBounds.height;
         Point point = new Point(0.0f, 0.0f);
