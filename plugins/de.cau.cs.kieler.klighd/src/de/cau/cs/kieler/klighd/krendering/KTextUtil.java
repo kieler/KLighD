@@ -31,6 +31,7 @@ import de.cau.cs.kieler.core.krendering.extensions.KPortExtensions;
 import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout;
 import de.cau.cs.kieler.kiml.options.LayoutOptions;
 import de.cau.cs.kieler.kiml.options.PortSide;
+import de.cau.cs.kieler.klighd.microlayout.PlacementUtil;
 
 /**
  * Some convenience methods supporting the proper handling of KText renderings.

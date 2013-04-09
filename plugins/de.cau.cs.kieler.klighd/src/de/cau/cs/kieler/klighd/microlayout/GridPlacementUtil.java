@@ -11,7 +11,7 @@
  * This code is provided under the terms of the Eclipse Public License (EPL).
  * See the file epl-v10.html for the license text.
  */
-package de.cau.cs.kieler.klighd.krendering;
+package de.cau.cs.kieler.klighd.microlayout;
 
 import java.util.Arrays;
 import java.util.List;
@@ -23,9 +23,7 @@ import de.cau.cs.kieler.core.krendering.KRendering;
 import de.cau.cs.kieler.core.krendering.KRenderingFactory;
 import de.cau.cs.kieler.core.krendering.KRenderingPackage;
 import de.cau.cs.kieler.core.util.Pair;
-import static de.cau.cs.kieler.klighd.krendering.PlacementUtil.*; // SUPPRESS CHECKSTYLE Import
-import de.cau.cs.kieler.klighd.krendering.PlacementUtil.Bounds;
-import de.cau.cs.kieler.klighd.krendering.PlacementUtil.GridSpacing;
+import static de.cau.cs.kieler.klighd.microlayout.PlacementUtil.*; // SUPPRESS CHECKSTYLE Import
 
 
 /**

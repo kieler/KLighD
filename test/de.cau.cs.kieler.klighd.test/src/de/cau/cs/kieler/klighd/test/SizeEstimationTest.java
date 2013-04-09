@@ -37,8 +37,8 @@ import de.cau.cs.kieler.core.test.runners.ModelCollectionTestRunner.ModelFilter;
 import de.cau.cs.kieler.core.test.runners.ModelCollectionTestRunner.ModelPath;
 import de.cau.cs.kieler.core.test.runners.ModelCollectionTestRunner.StopOnFailure;
 import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout;
-import de.cau.cs.kieler.klighd.krendering.PlacementUtil;
-import de.cau.cs.kieler.klighd.krendering.PlacementUtil.Bounds;
+import de.cau.cs.kieler.klighd.microlayout.Bounds;
+import de.cau.cs.kieler.klighd.microlayout.PlacementUtil;
 
 /**
  * Tests the node size estimation calculations in {@link PlacementUtil}. It does so by requiring the

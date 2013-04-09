@@ -73,10 +73,10 @@ import de.cau.cs.kieler.core.properties.IProperty;
 import de.cau.cs.kieler.core.properties.IPropertyHolder;
 import de.cau.cs.kieler.core.util.Pair;
 import de.cau.cs.kieler.klighd.KlighdPlugin;
-import de.cau.cs.kieler.klighd.krendering.GridPlacementUtil;
 import de.cau.cs.kieler.klighd.krendering.KCustomRenderingWrapperFactory;
-import de.cau.cs.kieler.klighd.krendering.PlacementUtil;
-import de.cau.cs.kieler.klighd.krendering.PlacementUtil.Bounds;
+import de.cau.cs.kieler.klighd.microlayout.Bounds;
+import de.cau.cs.kieler.klighd.microlayout.GridPlacementUtil;
+import de.cau.cs.kieler.klighd.microlayout.PlacementUtil;
 import de.cau.cs.kieler.klighd.piccolo.krendering.IGraphElement;
 import de.cau.cs.kieler.klighd.piccolo.krendering.KCustomConnectionFigureNode;
 import de.cau.cs.kieler.klighd.piccolo.krendering.KDecoratorNode;
@@ -526,7 +526,7 @@ public abstract class AbstractRenderingController<S extends KGraphElement, T ext
         Bounds bounds = null;
         if (pcd instanceof KPointPlacementData) {
             bounds = PiccoloPlacementUtil.evaluatePointPlacement((KPointPlacementData) pcd,
-                    PlacementUtil.estimateSize(rendering, new PlacementUtil.Bounds(0.0f, 0.0f)),
+                    PlacementUtil.estimateSize(rendering, new Bounds(0.0f, 0.0f)),
                     parent.getBoundsReference());
         } else {
             // determine the initial bounds
@@ -544,7 +544,7 @@ public abstract class AbstractRenderingController<S extends KGraphElement, T ext
                             Bounds bounds = null;
                             bounds = PiccoloPlacementUtil.evaluatePointPlacement(
                                     (KPointPlacementData) pcd, PlacementUtil.estimateSize(
-                                            rendering, new PlacementUtil.Bounds(0.0f, 0.0f)),
+                                            rendering, new Bounds(0.0f, 0.0f)),
                                     parent.getBoundsReference());
                             // use the controller to apply the new bounds
                             controller.setBounds(bounds);

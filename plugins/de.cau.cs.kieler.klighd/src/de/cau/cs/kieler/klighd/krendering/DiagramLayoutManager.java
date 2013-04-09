@@ -51,7 +51,8 @@ import de.cau.cs.kieler.kiml.util.KimlUtil;
 import de.cau.cs.kieler.klighd.IViewer;
 import de.cau.cs.kieler.klighd.KlighdConstants;
 import de.cau.cs.kieler.klighd.ViewContext;
-import de.cau.cs.kieler.klighd.krendering.PlacementUtil.Bounds;
+import de.cau.cs.kieler.klighd.microlayout.Bounds;
+import de.cau.cs.kieler.klighd.microlayout.PlacementUtil;
 import de.cau.cs.kieler.klighd.util.RenderingContextData;
 import de.cau.cs.kieler.klighd.viewers.ContextViewer;
 import de.cau.cs.kieler.klighd.viewers.KlighdViewer;
@@ -266,8 +267,8 @@ public class DiagramLayoutManager implements IDiagramLayoutManager<KGraphElement
      * as they have to be modified for hierarchical diagrams.
      */
     private static final IProperty<KVector> MINIMAL_NODE_SIZE = new Property<KVector>(
-            "klighd.minimalNodeSize", new KVector(KlighdConstants.MINIMAL_NODE_BOUNDS.width,
-                    KlighdConstants.MINIMAL_NODE_BOUNDS.height));
+            "klighd.minimalNodeSize", new KVector(KlighdConstants.MINIMAL_NODE_BOUNDS.getWidth(),
+                    KlighdConstants.MINIMAL_NODE_BOUNDS.getHeight()));
 
     /**
      * Creates a layout node for the node inside the given layout parent node.
@@ -331,11 +332,11 @@ public class DiagramLayoutManager implements IDiagramLayoutManager<KGraphElement
                 
                 size = Bounds.max(minSize, estimatedSize);
                 if (Iterables.any(node.getChildren(), CHILD_ACTIVE)) {
-                    nodeLayout.setProperty(LayoutOptions.MIN_WIDTH, size.width);
-                    nodeLayout.setProperty(LayoutOptions.MIN_HEIGHT, size.height);
+                    nodeLayout.setProperty(LayoutOptions.MIN_WIDTH, size.getWidth());
+                    nodeLayout.setProperty(LayoutOptions.MIN_HEIGHT, size.getHeight());
                 } else {
-                    nodeLayout.setSize(size.width, size.height);
-                    layoutLayout.setSize(size.width, size.height);
+                    nodeLayout.setSize(size.getWidth(), size.getHeight());
+                    layoutLayout.setSize(size.getWidth(), size.getHeight());
                 }
 
                 // TODO: correct this according to the above case distinction
@@ -501,22 +502,22 @@ public class DiagramLayoutManager implements IDiagramLayoutManager<KGraphElement
                 // calculate the minimal size need for the rendering ...
                 Bounds minSize = PlacementUtil.estimateTextSize(label);
                 // ... and update the node size if it exceeds its size
-                if (minSize.width > layoutLayout.getWidth()) {
-                    labelLayout.setWidth(minSize.width);
-                    layoutLayout.setWidth(minSize.width);
+                if (minSize.getWidth() > layoutLayout.getWidth()) {
+                    labelLayout.setWidth(minSize.getWidth());
+                    layoutLayout.setWidth(minSize.getWidth());
 
                     // In order to instruct KIML to not shrink the node beyond the minimal size,
                     //  e.g. due to less space required by child nodes,
                     //  configure a related layout option!
                     // This has to be done on the original node instance, as layout options are
                     //  transfered by the {@link KGraphPropertyLayoutConfig}.
-                    labelLayout.setProperty(LayoutOptions.MIN_WIDTH, minSize.width);
+                    labelLayout.setProperty(LayoutOptions.MIN_WIDTH, minSize.getWidth());
                 }
-                if (minSize.height > layoutLayout.getHeight()) {
-                    labelLayout.setHeight(minSize.height);
-                    layoutLayout.setHeight(minSize.height);
+                if (minSize.getHeight() > layoutLayout.getHeight()) {
+                    labelLayout.setHeight(minSize.getHeight());
+                    layoutLayout.setHeight(minSize.getHeight());
                     // see comment above
-                    labelLayout.setProperty(LayoutOptions.MIN_HEIGHT, minSize.height);
+                    labelLayout.setProperty(LayoutOptions.MIN_HEIGHT, minSize.getHeight());
                 }
                 layoutLayout.setInsets(minSize.getInsets());
             }

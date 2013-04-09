@@ -21,7 +21,7 @@ import de.cau.cs.kieler.core.kgraph.KNode;
 import de.cau.cs.kieler.core.krendering.KRendering;
 import de.cau.cs.kieler.core.krendering.KRenderingFactory;
 import de.cau.cs.kieler.core.krendering.KStyle;
-import de.cau.cs.kieler.klighd.krendering.PlacementUtil.Bounds;
+import de.cau.cs.kieler.klighd.microlayout.Bounds;
 import de.cau.cs.kieler.klighd.piccolo.krendering.KChildAreaNode;
 import de.cau.cs.kieler.klighd.piccolo.krendering.KNodeNode;
 import de.cau.cs.kieler.klighd.piccolo.krendering.util.PiccoloPlacementUtil;

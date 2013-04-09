@@ -31,7 +31,7 @@ import de.cau.cs.kieler.core.krendering.LineJoin;
 import de.cau.cs.kieler.core.krendering.LineStyle;
 import de.cau.cs.kieler.core.krendering.Underline;
 import de.cau.cs.kieler.klighd.KlighdConstants;
-import de.cau.cs.kieler.klighd.krendering.PlacementUtil.Bounds;
+import de.cau.cs.kieler.klighd.microlayout.Bounds;
 import de.cau.cs.kieler.klighd.piccolo.nodes.PAlignmentNode.HAlignment;
 import de.cau.cs.kieler.klighd.piccolo.nodes.PAlignmentNode.VAlignment;
 import de.cau.cs.kieler.klighd.piccolo.util.RGBGradient;

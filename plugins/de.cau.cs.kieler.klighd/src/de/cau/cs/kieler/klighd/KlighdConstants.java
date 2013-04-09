@@ -22,7 +22,7 @@ import org.eclipse.swt.graphics.RGB;
 
 import de.cau.cs.kieler.core.properties.IProperty;
 import de.cau.cs.kieler.core.properties.Property;
-import de.cau.cs.kieler.klighd.krendering.PlacementUtil.Bounds;
+import de.cau.cs.kieler.klighd.microlayout.Bounds;
 
 /**
  * This class contains definitions of initial & default values.

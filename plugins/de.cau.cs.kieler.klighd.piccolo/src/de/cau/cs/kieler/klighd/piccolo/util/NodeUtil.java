@@ -18,7 +18,7 @@ package de.cau.cs.kieler.klighd.piccolo.util;
 
 import java.awt.geom.Point2D;
 
-import de.cau.cs.kieler.klighd.krendering.PlacementUtil.Bounds;
+import de.cau.cs.kieler.klighd.microlayout.Bounds;
 
 import edu.umd.cs.piccolo.PNode;
 import edu.umd.cs.piccolo.activities.PActivity;

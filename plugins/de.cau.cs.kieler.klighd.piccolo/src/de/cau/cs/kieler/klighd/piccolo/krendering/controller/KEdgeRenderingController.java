@@ -32,7 +32,7 @@ import de.cau.cs.kieler.core.krendering.KRenderingPackage;
 import de.cau.cs.kieler.core.krendering.KRoundedBendsPolyline;
 import de.cau.cs.kieler.core.krendering.KSpline;
 import de.cau.cs.kieler.core.krendering.KStyle;
-import de.cau.cs.kieler.klighd.krendering.PlacementUtil.Bounds;
+import de.cau.cs.kieler.klighd.microlayout.Bounds;
 import de.cau.cs.kieler.klighd.piccolo.KlighdPiccoloPlugin;
 import de.cau.cs.kieler.klighd.piccolo.krendering.KCustomConnectionFigureNode;
 import de.cau.cs.kieler.klighd.piccolo.krendering.KEdgeNode;

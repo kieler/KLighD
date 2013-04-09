@@ -947,7 +947,9 @@ public class GraphController {
 
             public void notifyChanged(final Notification notification) {
                 super.notifyChanged(notification);
-
+                
+                final KNode theNode = node;
+                
                 KShapeLayout shL = node.getData(KShapeLayout.class);
                 // check if a shape layout is exists
                 if (shL != null) {
