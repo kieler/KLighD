@@ -287,6 +287,7 @@ public class DiagramLayoutManager implements IDiagramLayoutManager<KGraphElement
         KShapeLayout layoutLayout = layoutNode.getData(KShapeLayout.class);
         KShapeLayout nodeLayout = node.getData(KShapeLayout.class);
 
+        Bounds size = null;
         if (nodeLayout != null) {
             // there is layoutData attached to the node,
             // so take that as node layout instead of the default-layout
@@ -328,7 +329,7 @@ public class DiagramLayoutManager implements IDiagramLayoutManager<KGraphElement
                 // new Bounds(layoutLayout.getWidth(), layoutLayout.getHeight()));
                 // ... and update the node size if it exceeds its size
                 
-                Bounds size = Bounds.max(minSize, estimatedSize);
+                size = Bounds.max(minSize, estimatedSize);
                 if (Iterables.any(node.getChildren(), CHILD_ACTIVE)) {
                     nodeLayout.setProperty(LayoutOptions.MIN_WIDTH, size.width);
                     nodeLayout.setProperty(LayoutOptions.MIN_HEIGHT, size.height);
@@ -344,7 +345,7 @@ public class DiagramLayoutManager implements IDiagramLayoutManager<KGraphElement
         
         // set insets if available
         KInsets layoutInsets = layoutLayout.getInsets();
-        PlacementUtil.calculateInsets(node, layoutInsets);
+        PlacementUtil.calculateInsets(node.getData(KRendering.class), layoutInsets, size);
 
         layoutParent.getChildren().add(layoutNode);
         mapping.getGraphMap().put(layoutNode, node);

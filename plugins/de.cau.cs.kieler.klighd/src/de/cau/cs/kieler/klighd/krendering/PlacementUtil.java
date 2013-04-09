@@ -1619,42 +1619,38 @@ public final class PlacementUtil {
     }
 
     /**
-     * Calculates the offset of the child area in the given node, which equals the insets of the
-     * node.<br>
+     * Calculates the offset of the child area in the given <code>rootRendering</code>, which is
+     * equal to the insets of the related node.<br>
      * <br>
      * To ensure correct layout, changes in the bounds of the node are not allowed to influence the
-     * insets. If this is not given the insets can be incorrect.
+     * insets. If this is not given the insets may be incorrect.
      * 
-     * @param node
-     *            the node
+     * @param rootRendering
+     *            the related node's root KRendering element
      * @param insets
      *            the insets
+     * @param minSize
+     *            the minimal size of the related node (might not be reflected in the node's layout data)
      */
-    public static void calculateInsets(final KNode node, final KInsets insets) {
-        KRendering rendering = node.getData(KRendering.class);
+    public static void calculateInsets(final KRendering rootRendering, final KInsets insets,
+            final Bounds minSize) {
 
         // no rendering so the whole node is the child area
-        if (rendering == null) {
+        if (rootRendering == null) {
             return;
         }
 
         // find the path to the child area
         LinkedList<KRendering> path = Lists.newLinkedList();
-        if (!findChildArea(rendering, path)) {
+        if (!findChildArea(rootRendering, path)) {
             // no child area so the whole node is the child area
             return;
         }
-
-        // get the shape layout for the initial bounds of the reference parent
-        KShapeLayout shapeLayout = node.getData(KShapeLayout.class);
-        if (shapeLayout == null) {
-            return;
-        }
+        
+        Bounds currentBounds = minSize;
 
         // the data of the reference parent
         KContainerRendering currentParent = null;
-        Bounds currentBounds = new Bounds(0.0f, 0.0f, shapeLayout.getWidth(),
-                shapeLayout.getHeight());
 
         // the calculated insets
         float leftInset = 0;
