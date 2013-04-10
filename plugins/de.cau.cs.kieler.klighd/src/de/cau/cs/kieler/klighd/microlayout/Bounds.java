@@ -280,6 +280,17 @@ public class Bounds {
     public static Bounds of(final Rectangle2D rect) {
         return new Bounds(rect);
     }
+    
+    /**
+     * Creates an immutable copy of the given <code>bounds</code>.
+     * 
+     * @param bounds
+     *            the {@link Bounds} object providing the atomic values
+     * @return the desired immutable copy
+     */
+    public static Bounds immutableCopy(final Bounds bounds) {
+        return new ImmutableBounds(bounds);
+    }
 
     /**
      * An immutable variant of {@link Bounds} that can be used to make sure the bounds are not

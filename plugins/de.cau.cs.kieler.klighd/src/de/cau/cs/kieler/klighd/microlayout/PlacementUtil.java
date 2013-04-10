@@ -13,6 +13,7 @@
  */
 package de.cau.cs.kieler.klighd.microlayout;
 
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -93,8 +94,16 @@ public final class PlacementUtil {
      *
      */
     static class GridSpacing {
-        float[] calculatedColumnWidths;
-        float[] calculatedRowHeights;
+        private float[] calculatedColumnWidths;
+        private float[] calculatedRowHeights;
+        
+        /**
+         * 
+         */
+        public GridSpacing(final GridSpacing other) {
+            this.calculatedColumnWidths = other.calculatedColumnWidths.clone();
+            this.calculatedRowHeights = other.calculatedRowHeights.clone();
+        }
         
         /**
          * Constructor. Sets the attributes according to given parameters 
@@ -104,6 +113,29 @@ public final class PlacementUtil {
         GridSpacing(final float[] cols, final float[] rows) {
             this.calculatedColumnWidths = cols;
             this.calculatedRowHeights = rows;
+        }
+
+        /**
+         * Getter.
+         * 
+         * @return the calculatedColumnWidths
+         */
+        public float[] getCalculatedColumnWidths() {
+            return calculatedColumnWidths;
+        }
+
+        /**
+         * Getter.
+         * 
+         * @return the calculatedRowHeights
+         */
+        public float[] getCalculatedRowHeights() {
+            return calculatedRowHeights;
+        }
+
+        public String toString() {
+            return "(Widths = " + Arrays.toString(this.calculatedColumnWidths) + ", Height = "
+                    + Arrays.toString(this.calculatedRowHeights) + ")";
         }
     }
     
@@ -163,265 +195,6 @@ public final class PlacementUtil {
             return "(" + this.x + "," + this.y + ")"; 
         }
     }
-
-//    /**
-//     * A data holder class for bounds.
-//     */
-//    private static class Bounds {
-//
-//        /** the x-coordinate. */
-//        float x;
-//        /** the y-coordinate. */
-//        float y;
-//        /** the width. */
-//        float width;
-//        /** the height. */
-//        float height;
-//        /**
-//         * the insets used to transport the position of a ChildAreaCell from estimateGridSize to
-//         * calculateInsets method.
-//         */
-//        KInsets insets = null;
-//
-//        /**
-//         * Constructs bounds with the given dimensions and (x,y) coordinates of (0,0).
-//         * 
-//         * @param width
-//         *            the width
-//         * @param height
-//         *            the height
-//         */
-//        public Bounds(final float width, final float height) {
-//            this.x = 0;
-//            this.y = 0;
-//            this.width = width;
-//            this.height = height;
-//            this.insets = KLayoutDataFactory.eINSTANCE.createKInsets();
-//        }
-//
-//        /**
-//         * Constructs bounds with the given dimensions and (x,y) coordinates of (0,0).
-//         * 
-//         * @param width
-//         *            the width
-//         * @param height
-//         *            the height
-//         */
-//        public Bounds(final double width, final double height) {
-//            this.x = 0;
-//            this.y = 0;
-//            this.width = (float) width;
-//            this.height = (float) height;
-//            this.insets = KLayoutDataFactory.eINSTANCE.createKInsets();
-//        }
-//
-//        /**
-//         * Constructs bounds from the dimensions of the given Bounds.
-//         * 
-//         * @param bounds
-//         *            the Bounds to take the data from
-//         */
-//        public Bounds(final Bounds bounds) {
-//            this.x = bounds.x;
-//            this.y = bounds.y;
-//            this.width = bounds.width;
-//            this.height = bounds.height;
-//            this.insets = KLayoutDataFactory.eINSTANCE.createKInsets();
-//        }
-//
-//        /**
-//         * Constructs bounds from the dimensions of the given SWT Point with coordinates (0,0).
-//         * 
-//         * @param point
-//         *            the SWT point to take width and height from
-//         */
-//        public Bounds(final org.eclipse.swt.graphics.Point point) {
-//            this.width = point.x;
-//            this.height = point.y;
-//            this.insets = KLayoutDataFactory.eINSTANCE.createKInsets();
-//        }
-//
-//        /**
-//         * Constructs bounds from the dimensions of the given AWT geometry {@link Rectangle2D.Float}.
-//         * 
-//         * @param rect
-//         *            the {@link Rectangle2D.Float} to take x, y, width, and height from
-//         */
-//        public Bounds(final Rectangle2D.Float rect) {
-//            this.x = rect.x;
-//            this.y = rect.y;
-//            this.width = rect.width;
-//            this.height = rect.height;
-//            this.insets = KLayoutDataFactory.eINSTANCE.createKInsets();
-//        }
-//
-//        /**
-//         * Constructs bounds from the dimensions of the given AWT geometry {@link Rectangle2D.Float}.
-//         * 
-//         * @param rect
-//         *            the {@link Rectangle2D} to take x, y, width, and height from
-//         */
-//        public Bounds(final Rectangle2D rect) {
-//            this.x = (float) rect.getX();
-//            this.y = (float) rect.getY();
-//            this.width = (float) rect.getWidth();
-//            this.height = (float) rect.getHeight();
-//            this.insets = KLayoutDataFactory.eINSTANCE.createKInsets();
-//        }
-//
-//        /**
-//         * Constructs bounds from the given coordinates and dimensions.
-//         * 
-//         * @param x
-//         *            the x-coordinate
-//         * @param y
-//         *            the y-coordinate
-//         * @param width
-//         *            the width
-//         * @param height
-//         *            the height
-//         */
-//        public Bounds(final float x, final float y, final float width, final float height) {
-//            this.x = x;
-//            this.y = y;
-//            this.width = width;
-//            this.height = height;
-//            this.insets = KLayoutDataFactory.eINSTANCE.createKInsets();
-//        }
-//
-//        /**
-//         * Takes the data of the given bounds.
-//         * 
-//         * @param bounds
-//         *            the bounds to take the data from
-//         */
-//        void setBounds(final Bounds bounds) {
-//            this.x = bounds.x;
-//            this.y = bounds.y;
-//            this.width = bounds.width;
-//            this.height = bounds.height;
-//            this.insets = KLayoutDataFactory.eINSTANCE.createKInsets();
-//        }
-//
-//        /**
-//         * Getter for X coordinate.
-//         * 
-//         * @return height
-//         */
-//        public float getX() {
-//            return this.x;
-//        }
-//
-//        /**
-//         * Getter for Y coordinate.
-//         * 
-//         * @return width
-//         */
-//        public float getY() {
-//            return this.y;
-//        }
-//
-//        /**
-//         * Getter used in JUnit test of the placement logic.
-//         * 
-//         * @return height
-//         */
-//        public float getHeight() {
-//            return this.height;
-//        }
-//
-//        /**
-//         * Getter used in JUnit test of the placement logic.
-//         * 
-//         * @return width
-//         */
-//        public float getWidth() {
-//            return this.width;
-//        }
-//
-//        /**
-//         * Transforms the current {@link Bounds} object in an AWT geometry {@link Rectangle2D}.
-//         * 
-//         * @return a related {@link Rectangle2D}
-//         */
-//        public Rectangle2D toRectangle2D() {
-//            return new Rectangle2D.Float(this.x, this.y, this.width, this.height);
-//        }
-//
-//        /**
-//         * Getter to access the Insets of this Bounds.
-//         * 
-//         * @return width
-//         */
-//        public KInsets getInsets() {
-//            return this.insets;
-//        }
-//        
-//        /**
-//         * {@inheritDoc}
-//         */
-//        public String toString() {
-//            return "(" + this.x + "," + this.y + "|" + this.width + "," + this.height + ")"; 
-//        }
-//
-//        /**
-//         * Determines component-wise the maximum of the given bounds <code>b1</code> and
-//         * <code>b2</code>. The function <b>modifies</b> <code>b1</code>.
-//         * 
-//         * @param b1
-//         *            the first {@link Bounds} object
-//         * @param b2
-//         *            the second {@link Bounds} object
-//         * @return the object b1 with modified <code>width</code> and <code>height</code> data
-//         *         containing the particular maximal values.
-//         */
-//        public static Bounds max(final Bounds b1, final Bounds b2) {
-//            b1.width = Math.max(b1.width, b2.width);
-//            b1.height = Math.max(b1.height, b2.height);
-//            return b1;
-//        }
-//        
-//        /**
-//         * Determines component-wise the minimum of the given bounds <code>b1</code> and
-//         * <code>b2</code>. The function <b>modifies</b> <code>b1</code>.
-//         * 
-//         * @param b1
-//         *            the first {@link Bounds} object
-//         * @param b2
-//         *            the second {@link Bounds} object
-//         * @return the object b1 with modified <code>width</code> and <code>height</code> data
-//         *         containing the particular minimal values.
-//         */
-//        public static Bounds min(final Bounds b1, final Bounds b2) {
-//            b1.width = Math.min(b1.width, b2.width);
-//            b1.height = Math.min(b1.height, b2.height);
-//            return b1;
-//        }
-//        
-//        /**
-//         * Constructs bounds with the given dimensions and (x,y) coordinates (0,0).
-//         * 
-//         * @param width
-//         *            the width
-//         * @param height
-//         *            the height
-//         * @return the desired {@link Bounds} object
-//         */
-//        public static Bounds of(final float width, final float height) {
-//            return new Bounds(width, height);
-//        }
-//       
-//        /**
-//         * Constructs bounds from the dimensions of the given AWT geometry {@link Rectangle2D}.
-//         * 
-//         * @param rect
-//         *            the {@link Rectangle2D} to take x, y, width, and height from
-//         * @return the desired {@link Bounds} object
-//         */
-//        public static Bounds of(final Rectangle2D rect) {
-//            return new Bounds(rect);
-//        }
-//    }
     
     /**
      * Data container class that is convenient if a method shall return up to 3 results.
@@ -933,88 +706,99 @@ public final class PlacementUtil {
         
         minBounds.width = childBounds.width;
         minBounds.height = childBounds.height;
-                
-        //to make sure the calling function "createNode" is able to place the children correctly later, 
-        //we have to transfer a detailed position of the childArea to it.
-        //so calculate the insets for the childArea, if there is one explicitly defined
-        float inset = 0.0f, secondInset = 0.0f;
-        if (childAreaColId >= 0 && childAreaRowId >= 0) {
-            // found a childArea earlier, calculate 'insets' based on position
-            // left inset is everything left of the childAreaCell
-            for (int left = 0; left < childAreaColId; left++) {
-                inset += minColumnWidths[left];
-            }
-            
-            //add insets defined in the GridPlacement itself 
-            inset += minBounds.width - getHorizontalSizeAvailable(minBounds.width, topLeft, null);
-            
-            //add insets defined in the GridPlacementData of the cell the childArea is placed in
-            KGridPlacementData gridData = asGridPlacementData(
-                    childRenderings.get(childAreaRowId * numColumns + childAreaColId)
-                        .getPlacementData());
-            if (gridData != null) {
-                topLeft = gridData.getTopLeft();
-                inset += minBounds.width - getHorizontalSizeAvailable(minBounds.width, topLeft, null);
-                bottomRight = gridData.getBottomRight();
-                secondInset =  minBounds.width 
-                        - getHorizontalSizeAvailable(minBounds.width, null, topLeft);
-            }
-            
-            childBounds.getInsets().setLeft(inset);
-            // right inset is fullWidth-insetLeft-(cellWidth of childArea - rightInset in that cell)
-            childBounds.getInsets().setRight(
-                    childBounds.width - inset - (minColumnWidths[childAreaColId]) - secondInset);
-
-            // reset for next calculation
-            inset = 0.0f;
-            // top inset is everything top of the childAreaCell
-            for (int top = 0; top < childAreaRowId; top++) {
-                inset += minRowHeights[top];
-            }
-            
-            //add insets defined in the GridPlacementData of the cell the childArea is placed in
-            inset += (minBounds.height - getVerticalSizeAvailable(minBounds.height, topLeft, null));
-                
-            if (gridData != null) {
-                bottomRight = gridData.getBottomRight();
-                secondInset =  minBounds.height
-                        - getVerticalSizeAvailable(minBounds.height, null, bottomRight);
-            }
-            
-            //add insets defined in the GridPlacement itself 
-            topLeft = ((KGridPlacement) container.getChildPlacement()).getTopLeft();
-            inset += (minBounds.height - getVerticalSizeAvailable(minBounds.height,  topLeft,  null));
-            
-            childBounds.getInsets().setTop(inset);
-            // bottom inset is fullHeight-insetTop-childAreaHeight
-            childBounds.getInsets().setBottom(
-                    childBounds.height - inset - (minRowHeights[childAreaRowId] - secondInset));
-        }
-
-        // transport the inset-sums on each side through the position
-        minBounds.insets = childBounds.getInsets();
+        
         return minBounds;
     }
     
-    /* whether a position is measured in the same direction as the point it is defining 
-     * e.g. a top left position is measured from left*/
+//    private Bounds determineGridBasedInsets(final Bounds minBounds) {
+//                
+//        //to make sure the calling function "createNode" is able to place the children correctly
+//        //later, we have to transfer a detailed position of the childArea to it.
+//        //so calculate the insets for the childArea, if there is one explicitly defined
+//        float inset = 0.0f, secondInset = 0.0f;
+//        if (childAreaColId >= 0 && childAreaRowId >= 0) {
+//            // found a childArea earlier, calculate 'insets' based on position
+//            // left inset is everything left of the childAreaCell
+//            for (int left = 0; left < childAreaColId; left++) {
+//                inset += minColumnWidths[left];
+//            }
+//            
+//            //add insets defined in the GridPlacement itself 
+//            inset += minBounds.width - getHorizontalSizeAvailable(minBounds.width, topLeft, null);
+//            
+//            //add insets defined in the GridPlacementData of the cell the childArea is placed in
+//            KGridPlacementData gridData = asGridPlacementData(
+//                    childRenderings.get(childAreaRowId * numColumns + childAreaColId)
+//                        .getPlacementData());
+//            if (gridData != null) {
+//                topLeft = gridData.getTopLeft();
+//                inset += minBounds.width - getHorizontalSizeAvailable(minBounds.width, topLeft, null);
+//                bottomRight = gridData.getBottomRight();
+//                secondInset =  minBounds.width 
+//                        - getHorizontalSizeAvailable(minBounds.width, null, topLeft);
+//            }
+//            
+//            childBounds.getInsets().setLeft(inset);
+//            // right inset is fullWidth-insetLeft-(cellWidth of childArea - rightInset in that cell)
+//            childBounds.getInsets().setRight(
+//                    childBounds.width - inset - (minColumnWidths[childAreaColId]) - secondInset);
+//
+//            // reset for next calculation
+//            inset = 0.0f;
+//            // top inset is everything top of the childAreaCell
+//            for (int top = 0; top < childAreaRowId; top++) {
+//                inset += minRowHeights[top];
+//            }
+//            
+//            //add insets defined in the GridPlacementData of the cell the childArea is placed in
+//            inset += (minBounds.height - getVerticalSizeAvailable(minBounds.height, topLeft, null));
+//                
+//            if (gridData != null) {
+//                bottomRight = gridData.getBottomRight();
+//                secondInset =  minBounds.height
+//                        - getVerticalSizeAvailable(minBounds.height, null, bottomRight);
+//            }
+//            
+//            //add insets defined in the GridPlacement itself 
+//            topLeft = ((KGridPlacement) container.getChildPlacement()).getTopLeft();
+//            inset += (minBounds.height - getVerticalSizeAvailable(minBounds.height,  topLeft,  null));
+//            
+//            childBounds.getInsets().setTop(inset);
+//            // bottom inset is fullHeight-insetTop-childAreaHeight
+//            childBounds.getInsets().setBottom(
+//                    childBounds.height - inset - (minRowHeights[childAreaRowId] - secondInset));
+//        }
+//
+//        // transport the inset-sums on each side through the position
+//        minBounds.insets = childBounds.getInsets();
+//        return minBounds;
+//    }
+    
+    /**
+     * whether a position is measured in the same direction as the point it is defining e.g. a top
+     * left position is measured from left
+     */
     private static final int DIRECT = 0;
-    /* whether a position is measured contrary to the point it is defining 
-     * e.g. a top right position is measured from left*/
+    
+    /**
+     * whether a position is measured contrary to the point it is defining e.g. a top right position
+     * is measured from left
+     */
     private static final int INDIRECT = 1;
     
-    /* offset to be used to calculate below defined constants to determine how positions interact 
+    /**
+     * offset to be used to calculate below defined constants to determine how positions interact
      * first positions are left or top.
      */
     private static final int FIRST_OFFSET = 100;
     
-    /* both positions are measured direct*/
+    /** both positions are measured direct. */
     private static final int DIRECT_DIRECT = DIRECT * FIRST_OFFSET + DIRECT;
-    /* first position is measured directly, second position is measured indirectly */
+    /** first position is measured directly, second position is measured indirectly. */
     private static final int DIRECT_INDIRECT = DIRECT * FIRST_OFFSET + INDIRECT;
-    /* first position is measured indirectly, second position is measured directly */
+    /** first position is measured indirectly, second position is measured directly. */
     private static final int INDIRECT_DIRECT = INDIRECT * FIRST_OFFSET + DIRECT;
-    /* both positions are measured indirectly */
+    /** both positions are measured indirectly. */
     private static final int INDIRECT_INDIRECT = INDIRECT * FIRST_OFFSET + INDIRECT;
     
     /**
@@ -1164,7 +948,7 @@ public final class PlacementUtil {
     private static float calculateParentWidth(final float elementSize, final KPosition tL,
             final KPosition bR) {
         Pair<Float, Float> normalizedSize = getHorizontalSize(tL, bR);
-        Float parentWidth = elementSize;
+        float parentWidth = elementSize;
         
         if (normalizedSize.getFirst() > 0) {
             //parent has to be bigger than child
@@ -1191,7 +975,7 @@ public final class PlacementUtil {
     private static float calculateParentHeight(final float elementSize, final KPosition tL,
             final KPosition bR) {
         Pair<Float, Float> normalizedSize = getVerticalSize(tL, bR);
-        Float parentHeight = elementSize;
+        float parentHeight = elementSize;
         
         if (normalizedSize.getFirst() > 0) {
             //parent has to be bigger than child

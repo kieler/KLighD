@@ -113,11 +113,11 @@ public final class GridPlacementUtil {
             
             if (estimatedGrid != null) {
                 //calculate the width that lead to the distribution before
-                for (int i = 0; i < estimatedGrid.calculatedColumnWidths.length; i++) {
-                    width += estimatedGrid.calculatedColumnWidths[i];
+                for (int i = 0; i < estimatedGrid.getCalculatedColumnWidths().length; i++) {
+                    width += estimatedGrid.getCalculatedColumnWidths()[i];
                 }
-                for (int i = 0; i < estimatedGrid.calculatedRowHeights.length; i++) {
-                    height += estimatedGrid.calculatedRowHeights[i];
+                for (int i = 0; i < estimatedGrid.getCalculatedRowHeights().length; i++) {
+                    height += estimatedGrid.getCalculatedRowHeights()[i];
                 }
             }
 
@@ -127,20 +127,21 @@ public final class GridPlacementUtil {
                     && childAreaPosition.getFirst() > -1
                     && childAreaPosition.getSecond() > -1) {
                 //check if there is a childArea and put that width into it's cell
+
+                calculatedColumnWidth = estimatedGrid.getCalculatedColumnWidths().clone();
+                calculatedRowHeight = estimatedGrid.getCalculatedRowHeights().clone();
                 
                 if (parentBounds.width - width > TOLERANCE
                         && childAreaPosition.getFirst() < numColumns) {
-                    estimatedGrid.calculatedColumnWidths[childAreaPosition.getFirst()] 
+                    calculatedColumnWidth[childAreaPosition.getFirst()] 
                             += parentBounds.width - width;
                 }
                 if (parentBounds.height - height > TOLERANCE
                         && childAreaPosition.getSecond() < numRows) {
-                    estimatedGrid.calculatedRowHeights[childAreaPosition.getSecond()]
+                    calculatedRowHeight[childAreaPosition.getSecond()]
                             += parentBounds.height - height;
                 }
                 
-                calculatedColumnWidth = estimatedGrid.calculatedColumnWidths;
-                calculatedRowHeight = estimatedGrid.calculatedRowHeights;
             } else {
                 // we have to calculate the data for the single rows / cols
 
@@ -293,11 +294,12 @@ public final class GridPlacementUtil {
         placer.rowHasMinHeight = new boolean[placer.numRows];
         placer.rowHasMaxHeight = new boolean[placer.numRows];
         
-        GridSpacing estimatedSpacing = placer.parent.getProperty(ESTIMATED_GRID_DATA);
+        GridSpacing spacingProperty = placer.parent.getProperty(ESTIMATED_GRID_DATA);
+        GridSpacing estimatedSpacing = spacingProperty == null ? null : new GridSpacing(spacingProperty);
         if (estimatedSpacing != null) {
             //take the data already calculated during the size estimation
-            placer.columnMaxMinWidth = estimatedSpacing.calculatedColumnWidths;
-            placer.calculatedRowHeight = estimatedSpacing.calculatedRowHeights;
+            placer.calculatedColumnWidth = estimatedSpacing.getCalculatedColumnWidths().clone();
+            placer.calculatedRowHeight = estimatedSpacing.getCalculatedRowHeights().clone();
         }
         if (placer.columnMaxMinWidth == null) {
             //start from scratch
