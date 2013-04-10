@@ -590,20 +590,17 @@ public abstract class AbstractRenderingController<S extends KGraphElement, T ext
         }
 
         // calculate the bounds
-        GridPlacementUtil.GridPlacer gridPlacer = GridPlacementUtil.getGridPlacementObject(
+        final GridPlacementUtil.GridPlacer gridPlacer = GridPlacementUtil.getGridPlacementObject(
                 gridPlacement, renderings);
+
         Bounds parentBounds = new Bounds(parent.getBoundsReference());
         Bounds[] elementBounds = gridPlacer.evaluate(parentBounds);
+        
         // create the renderings and collect the controllers
-        Bounds currentBounds;
         final PNodeController<?>[] controllers = new PNodeController<?>[renderings.size()];
         
         for (int i = 0; i < renderings.size(); i++) {
-            KRendering rendering = renderings.get(i);
-            currentBounds = elementBounds[i];
-//            PBounds currentPBounds = new PBounds(currentBounds.getX(), currentBounds.getY(),
-//                    currentBounds.getWidth(), currentBounds.getHeight());
-            controllers[i] = createRendering(rendering, styles, parent, new Bounds(currentBounds));
+            controllers[i] = createRendering(renderings.get(i), styles, parent, elementBounds[i]);
         }
 
         // add a listener on the parent's bounds
@@ -611,10 +608,8 @@ public abstract class AbstractRenderingController<S extends KGraphElement, T ext
                 new PropertyChangeListener() {
                     public void propertyChange(final PropertyChangeEvent e) {
                         // calculate the new bounds of the rendering
-                        GridPlacementUtil.GridPlacer gridPlacer = GridPlacementUtil
-                                .getGridPlacementObject(gridPlacement, renderings);
-                        Bounds newParentBounds = new Bounds(parent.getBoundsReference());
-                        Bounds[] bounds = gridPlacer.evaluate(newParentBounds);
+                        Bounds[] bounds = gridPlacer.evaluate(Bounds.of(parent.getBoundsReference()));
+
                         // use the controllers to apply the new bounds
                         int i = 0;
                         Bounds currentBounds;
