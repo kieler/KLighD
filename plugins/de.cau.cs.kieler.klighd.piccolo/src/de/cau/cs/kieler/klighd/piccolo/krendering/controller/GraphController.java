@@ -426,7 +426,7 @@ public class GraphController {
             // remove the node representation from the containing child area
             nodeNode.removeFromParent();
             // release the objects kept in mind
-            nodeNode.getRenderingController().removeMappedEntries();
+            nodeNode.getRenderingController().removeAllPNodeControllers();
             // release the node rendering controller
             nodeNode.setRenderingController(null);
         }
@@ -539,6 +539,10 @@ public class GraphController {
                 // update the offset of the edge layout to the containing child area
                 updateEdgeOffset(edgeRep);
             }
+        } else {
+            if (record && isAutomaticallyArranged(edge)) {
+                edgeRep.setVisible(false);
+            }
         }
     }
 
@@ -569,7 +573,7 @@ public class GraphController {
             // due to #deactivateSubgraph() this method will be performed multiple times so: 
             if (edgeNode.getRenderingController() != null) {
                 // release the objects kept in mind
-                edgeNode.getRenderingController().removeMappedEntries();
+                edgeNode.getRenderingController().removeAllPNodeControllers();
                 // release the node rendering controller
                 edgeNode.setRenderingController(null);
             }
@@ -632,7 +636,7 @@ public class GraphController {
             // remove the port representation from the containing node
             portNode.removeFromParent();
             // release the objects kept in mind
-            portNode.getRenderingController().removeMappedEntries();
+            portNode.getRenderingController().removeAllPNodeControllers();
             // release the node rendering controller
             portNode.setRenderingController(null);
         }
@@ -696,7 +700,7 @@ public class GraphController {
             // remove the label representation from the containing node
             labelNode.removeFromParent();
             // release the objects kept in mind
-            labelNode.getRenderingController().removeMappedEntries();
+            labelNode.getRenderingController().removeAllPNodeControllers();
             // release the node rendering controller
             labelNode.setRenderingController(null);
         }

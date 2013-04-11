@@ -24,6 +24,7 @@ import de.cau.cs.kieler.core.krendering.KPointPlacementData;
 import de.cau.cs.kieler.core.krendering.KPolyline;
 import de.cau.cs.kieler.core.krendering.KPosition;
 import de.cau.cs.kieler.core.krendering.KRendering;
+import de.cau.cs.kieler.core.krendering.KRenderingRef;
 import de.cau.cs.kieler.core.krendering.KRightPosition;
 import de.cau.cs.kieler.core.krendering.KTopPosition;
 import de.cau.cs.kieler.core.krendering.KXPosition;
@@ -272,7 +273,7 @@ public final class PiccoloPlacementUtil {
         return point;
     }
 
-       /**
+    /**
      * Returns the given placement data as decorator placement data.
      * 
      * @param data
@@ -285,6 +286,22 @@ public final class PiccoloPlacementUtil {
             return (KDecoratorPlacementData) data;
         }
         return null;
+    }
+
+    /**
+     * Reveals {@link KDecoratorPlacementData} in a given {@link KRendering}.
+     * 
+     * @param rendering
+     *            the {@link KRendering}
+     * @return the desired {@link KDecoratorPlacementData}, or <code>null</code> if none are given.
+     */
+    public static KDecoratorPlacementData getDecoratorPlacementData(final KRendering rendering) {
+        KDecoratorPlacementData data = asDecoratorPlacementData(rendering.getPlacementData());
+        if (data == null && rendering instanceof KRenderingRef) {
+            return getDecoratorPlacementData(((KRenderingRef) rendering).getRendering());
+        } else {
+            return data;
+        }
     }
 
     /**
