@@ -41,21 +41,22 @@ class PNodeConstructionKRenderingSwitch extends KRenderingSwitch<PNodeController
 
     /**
      * Standard constructor.
-     *
+     * 
      * @param theController
      *            the controller that uses this switch and that is delegated to while calling
      *            further methods
      */
-    public PNodeConstructionKRenderingSwitch(final AbstractKGERenderingController<?, ?> theController) {
+    public PNodeConstructionKRenderingSwitch(
+            final AbstractKGERenderingController<?, ?> theController) {
         this.controller = theController;
     }
-    
+
     private AbstractKGERenderingController<?, ?> controller;
     private Styles styles = null;
     private List<KStyle> childPropagatedStyles = null;
     private PNode parent = null;
     private Bounds initialBounds = null;
-    
+
     /**
      * A.
      * 
@@ -80,84 +81,84 @@ class PNodeConstructionKRenderingSwitch extends KRenderingSwitch<PNodeController
     // Ellipse
     @Override
     public PNodeController<?> caseKEllipse(final KEllipse ellipse) {
-        return KGERenderingControllerHelper.createEllipse(controller, ellipse, styles,
+        return KGERenderingControllerHelper.createEllipse(controller, ellipse,
                 childPropagatedStyles, parent, initialBounds);
     }
 
     // Rectangle
     @Override
     public PNodeController<?> caseKRectangle(final KRectangle rect) {
-        return KGERenderingControllerHelper.createRectangle(controller, rect, styles,
+        return KGERenderingControllerHelper.createRectangle(controller, rect,
                 childPropagatedStyles, parent, initialBounds);
     }
 
     // Rounded Rectangle
     @Override
     public PNodeController<?> caseKRoundedRectangle(final KRoundedRectangle rect) {
-        return KGERenderingControllerHelper.createRoundedRectangle(controller, rect, styles,
+        return KGERenderingControllerHelper.createRoundedRectangle(controller, rect,
                 childPropagatedStyles, parent, initialBounds);
     }
 
     // Arc
     @Override
     public PNodeController<?> caseKArc(final KArc arc) {
-        return KGERenderingControllerHelper.createArc(controller, arc, styles, childPropagatedStyles,
+        return KGERenderingControllerHelper.createArc(controller, arc, childPropagatedStyles,
                 parent, initialBounds);
     }
 
     // Spline
     @Override
     public PNodeController<?> caseKSpline(final KSpline spline) {
-        return KGERenderingControllerHelper.createLine(controller, spline, styles,
-                childPropagatedStyles, parent, initialBounds);
+        return KGERenderingControllerHelper.createLine(controller, spline, childPropagatedStyles,
+                parent, initialBounds);
     }
 
     // Polyline
     @Override
     public PNodeController<?> caseKPolyline(final KPolyline polyline) {
-        return KGERenderingControllerHelper.createLine(controller, polyline, styles,
-                childPropagatedStyles, parent, initialBounds);
+        return KGERenderingControllerHelper.createLine(controller, polyline, childPropagatedStyles,
+                parent, initialBounds);
     }
 
     // RoundedBendPolyline
     @Override
     public PNodeController<?> caseKRoundedBendsPolyline(final KRoundedBendsPolyline polyline) {
-        return KGERenderingControllerHelper.createLine(controller, polyline, styles,
-                childPropagatedStyles, parent, initialBounds);
+        return KGERenderingControllerHelper.createLine(controller, polyline, childPropagatedStyles,
+                parent, initialBounds);
     }
 
     // Polygon
     @Override
     public PNodeController<?> caseKPolygon(final KPolygon polygon) {
-        return KGERenderingControllerHelper.createPolygon(controller, polygon, styles,
+        return KGERenderingControllerHelper.createPolygon(controller, polygon,
                 childPropagatedStyles, parent, initialBounds);
     }
 
     // Text
     @Override
     public PNodeController<?> caseKText(final KText text) {
-        return KGERenderingControllerHelper.createText(controller, text, styles,
-                childPropagatedStyles, parent, initialBounds);
+        return KGERenderingControllerHelper.createText(controller, text, childPropagatedStyles,
+                parent, initialBounds);
     };
 
     // Rendering Reference
     @Override
     public PNodeController<?> caseKRenderingRef(final KRenderingRef renderingReference) {
-        return KGERenderingControllerHelper.createRenderingReference(controller, renderingReference,
-                styles, childPropagatedStyles, parent, initialBounds);
+        return KGERenderingControllerHelper.createRenderingReference(controller,
+                renderingReference, styles, childPropagatedStyles, parent, initialBounds);
     }
 
     // Image
     @Override
     public PNodeController<?> caseKImage(final KImage image) {
-        return KGERenderingControllerHelper.createImage(controller, image, styles,
-                childPropagatedStyles, parent, initialBounds);
+        return KGERenderingControllerHelper.createImage(controller, image, childPropagatedStyles,
+                parent, initialBounds);
     }
 
     // Custom Rendering
     @Override
     public PNodeController<?> caseKCustomRendering(final KCustomRendering rendering) {
-        return KGERenderingControllerHelper.createCustomRendering(controller, rendering, styles,
+        return KGERenderingControllerHelper.createCustomRendering(controller, rendering,
                 childPropagatedStyles, parent, initialBounds);
     }
 
