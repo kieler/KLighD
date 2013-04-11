@@ -16,7 +16,7 @@ package de.cau.cs.kieler.klighd.piccolo.krendering;
 import de.cau.cs.kieler.core.kgraph.KNode;
 import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout;
 import de.cau.cs.kieler.klighd.KlighdConstants;
-import de.cau.cs.kieler.klighd.piccolo.krendering.controller.AbstractRenderingController;
+import de.cau.cs.kieler.klighd.piccolo.krendering.controller.AbstractKGERenderingController;
 import de.cau.cs.kieler.klighd.piccolo.krendering.controller.KNodeRenderingController;
 import de.cau.cs.kieler.klighd.piccolo.nodes.PZIndexNode;
 
@@ -74,7 +74,7 @@ public class KNodeNode extends PZIndexNode implements INode, ILabeledGraphElemen
      * {@inheritDoc}
      */
     public void setRenderingController(
-            final AbstractRenderingController<KNode, ? extends IGraphElement<KNode>> controller) {
+            final AbstractKGERenderingController<KNode, ? extends IGraphElement<KNode>> controller) {
         if (controller == null || controller instanceof KNodeRenderingController) {
             this.renderingController = (KNodeRenderingController) controller;
         } else {

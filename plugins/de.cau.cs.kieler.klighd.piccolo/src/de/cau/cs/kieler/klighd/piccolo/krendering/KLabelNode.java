@@ -17,7 +17,7 @@ import de.cau.cs.kieler.core.kgraph.KLabel;
 import de.cau.cs.kieler.core.properties.IProperty;
 import de.cau.cs.kieler.core.properties.Property;
 import de.cau.cs.kieler.klighd.util.RenderingContextData;
-import de.cau.cs.kieler.klighd.piccolo.krendering.controller.AbstractRenderingController;
+import de.cau.cs.kieler.klighd.piccolo.krendering.controller.AbstractKGERenderingController;
 import de.cau.cs.kieler.klighd.piccolo.krendering.controller.KLabelRenderingController;
 import de.cau.cs.kieler.klighd.piccolo.nodes.PEmptyNode;
 import edu.umd.cs.piccolo.util.PPickPath;
@@ -69,7 +69,7 @@ public class KLabelNode extends PEmptyNode implements IGraphElement<KLabel> {
      * {@inheritDoc}
      */
     public void setRenderingController(
-            final AbstractRenderingController<KLabel, ? extends IGraphElement<KLabel>> controller) {
+            final AbstractKGERenderingController<KLabel, ? extends IGraphElement<KLabel>> controller) {
         if (controller == null || controller instanceof KLabelRenderingController) {
             this.renderingController = (KLabelRenderingController) controller;
         } else {

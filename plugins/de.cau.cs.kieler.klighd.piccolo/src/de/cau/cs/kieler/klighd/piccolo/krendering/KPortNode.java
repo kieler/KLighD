@@ -17,7 +17,7 @@ import de.cau.cs.kieler.core.kgraph.KPort;
 import de.cau.cs.kieler.core.properties.IProperty;
 import de.cau.cs.kieler.core.properties.Property;
 import de.cau.cs.kieler.klighd.util.RenderingContextData;
-import de.cau.cs.kieler.klighd.piccolo.krendering.controller.AbstractRenderingController;
+import de.cau.cs.kieler.klighd.piccolo.krendering.controller.AbstractKGERenderingController;
 import de.cau.cs.kieler.klighd.piccolo.krendering.controller.KPortRenderingController;
 import de.cau.cs.kieler.klighd.piccolo.nodes.PZIndexNode;
 
@@ -68,7 +68,7 @@ public class KPortNode extends PZIndexNode implements ILabeledGraphElement<KPort
      * {@inheritDoc}
      */
     public void setRenderingController(
-            final AbstractRenderingController<KPort, ? extends IGraphElement<KPort>> controller) {
+            final AbstractKGERenderingController<KPort, ? extends IGraphElement<KPort>> controller) {
         if (controller == null || controller instanceof KPortRenderingController) {
             this.renderingController = (KPortRenderingController) controller;
         } else {

@@ -23,7 +23,7 @@ import de.cau.cs.kieler.core.krendering.Trigger;
 import de.cau.cs.kieler.klighd.IAction.ActionContext;
 import de.cau.cs.kieler.klighd.LightDiagramServices;
 import de.cau.cs.kieler.klighd.actions.CollapseExpandAction;
-import de.cau.cs.kieler.klighd.piccolo.krendering.controller.AbstractRenderingController;
+import de.cau.cs.kieler.klighd.piccolo.krendering.controller.AbstractKGERenderingController;
 import de.cau.cs.kieler.klighd.piccolo.krendering.viewer.KlighdMouseEventListener.KlighdMouseEvent;
 import de.cau.cs.kieler.klighd.piccolo.krendering.viewer.PiccoloViewer;
 import de.cau.cs.kieler.klighd.triggers.KlighdStatusTrigger;
@@ -68,7 +68,7 @@ public class KlighdActionEventHandler implements PInputEventListener {
     public void processEvent(final PInputEvent inputEvent, final int eventType) {
         if (inputEvent.getSourceSwingEvent() instanceof KlighdMouseEvent) {
             KRendering rendering = (KRendering) inputEvent.getPickedNode().getAttribute(
-                    AbstractRenderingController.ATTR_KRENDERING);
+                    AbstractKGERenderingController.ATTR_KRENDERING);
             if (rendering == null) {
                 return;
             }

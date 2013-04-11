@@ -14,7 +14,7 @@
 package de.cau.cs.kieler.klighd.piccolo.krendering;
 
 import de.cau.cs.kieler.core.kgraph.KGraphElement;
-import de.cau.cs.kieler.klighd.piccolo.krendering.controller.AbstractRenderingController;
+import de.cau.cs.kieler.klighd.piccolo.krendering.controller.AbstractKGERenderingController;
 
 /**
  * The interface for Piccolo nodes representing a {@code KGraphElement}.
@@ -45,7 +45,7 @@ public interface IGraphElement<T extends KGraphElement> extends ITracingElement<
      *            the deployed rendering controller
      */
     void setRenderingController(
-            AbstractRenderingController<T, ? extends IGraphElement<T>> controller);
+            AbstractKGERenderingController<T, ? extends IGraphElement<T>> controller);
 
     /**
      * Getter for accessing the rendering controller that is in charge of managing the correct
@@ -55,5 +55,5 @@ public interface IGraphElement<T extends KGraphElement> extends ITracingElement<
      * 
      * @return the related rendering controller
      */
-    AbstractRenderingController<T, ? extends IGraphElement<T>> getRenderingController();
+    AbstractKGERenderingController<T, ? extends IGraphElement<T>> getRenderingController();
 }

@@ -80,7 +80,7 @@ final class KGERenderingControllerHelper {
      * Creates a {@code PSWTAdvancedPath} representation for the {@code KEllipse}.
      * 
      * @param controller
-     *            the {@link AbstractRenderingController} that is delegated to in this method (and
+     *            the {@link AbstractKGERenderingController} that is delegated to in this method (and
      *            should be the caller of this method)
      * @param ellipse
      *            the ellipse rendering
@@ -95,7 +95,7 @@ final class KGERenderingControllerHelper {
      * @return the controller for the created Piccolo node
      */
     static PNodeController<PSWTAdvancedPath> createEllipse(
-            final AbstractRenderingController<?, ?> controller, final KEllipse ellipse,
+            final AbstractKGERenderingController<?, ?> controller, final KEllipse ellipse,
             final Styles styles, final List<KStyle> propagatedStyles, final PNode parent,
             final Bounds initialBounds) {
 
@@ -125,7 +125,7 @@ final class KGERenderingControllerHelper {
      * Creates a {@code PSWTAdvancedPath} representation for the {@code KRectangle}.
      * 
      * @param controller
-     *            the {@link AbstractRenderingController} that is delegated to in this method (and
+     *            the {@link AbstractKGERenderingController} that is delegated to in this method (and
      *            should be the caller of this method)
      * @param rect
      *            the rectangle rendering
@@ -140,7 +140,7 @@ final class KGERenderingControllerHelper {
      * @return the controller for the created Piccolo node
      */
     static PNodeController<PSWTAdvancedPath> createRectangle(
-            final AbstractRenderingController<?, ?> controller, final KRectangle rect,
+            final AbstractKGERenderingController<?, ?> controller, final KRectangle rect,
             final Styles styles, final List<KStyle> propagatedStyles, final PNode parent,
             final Bounds initialBounds) {
         // create the rectangle
@@ -170,7 +170,7 @@ final class KGERenderingControllerHelper {
      * Creates a {@code PSWTAdvancedPath} representation for the {@code KRoundedRectangle}.
      * 
      * @param controller
-     *            the {@link AbstractRenderingController} that is delegated to in this method (and
+     *            the {@link AbstractKGERenderingController} that is delegated to in this method (and
      *            should be the caller of this method)
      * @param rect
      *            the rounded rectangle rendering
@@ -185,7 +185,7 @@ final class KGERenderingControllerHelper {
      * @return the controller for the created Piccolo node
      */
     static PNodeController<PSWTAdvancedPath> createRoundedRectangle(
-            final AbstractRenderingController<?, ?> controller, final KRoundedRectangle rect,
+            final AbstractKGERenderingController<?, ?> controller, final KRoundedRectangle rect,
             final Styles styles, final List<KStyle> propagatedStyles, final PNode parent,
             final Bounds initialBounds) {
         final float cornerWidth = 2 * rect.getCornerWidth();
@@ -219,7 +219,7 @@ final class KGERenderingControllerHelper {
      * Creates a {@code PSWTAdvancedPath} representation for the {@code KArc}.
      * 
      * @param controller
-     *            the {@link AbstractRenderingController} that is delegated to in this method (and
+     *            the {@link AbstractKGERenderingController} that is delegated to in this method (and
      *            should be the caller of this method)
      * @param arc
      *            the arc rendering
@@ -234,7 +234,7 @@ final class KGERenderingControllerHelper {
      * @return the controller for the created Piccolo node
      */
     static PNodeController<PSWTAdvancedPath> createArc(
-            final AbstractRenderingController<?, ?> controller, final KArc arc,
+            final AbstractKGERenderingController<?, ?> controller, final KArc arc,
             final Styles styles, final List<KStyle> propagatedStyles, final PNode parent,
             final Bounds initialBounds) {
         // create the rounded rectangle
@@ -266,7 +266,7 @@ final class KGERenderingControllerHelper {
      * Creates a {@code PSWTText} representation for the {@code KText}.
      * 
      * @param controller
-     *            the {@link AbstractRenderingController} that is delegated to in this method (and
+     *            the {@link AbstractKGERenderingController} that is delegated to in this method (and
      *            should be the caller of this method)
      * @param text
      *            the text rendering
@@ -281,7 +281,7 @@ final class KGERenderingControllerHelper {
      * @return the controller for the created Piccolo node
      */
     static PNodeController<PSWTStyledText> createText(
-            final AbstractRenderingController<?, ?> controller, final KText text,
+            final AbstractKGERenderingController<?, ?> controller, final KText text,
             final Styles styles, final List<KStyle> propagatedStyles, final PNode parent,
             final Bounds initialBounds) {
         // create the text
@@ -324,7 +324,7 @@ final class KGERenderingControllerHelper {
      * {@code KSpline}.
      * 
      * @param controller
-     *            the {@link AbstractRenderingController} that is delegated to in this method (and
+     *            the {@link AbstractKGERenderingController} that is delegated to in this method (and
      *            should be the caller of this method)
      * @param line
      *            the polyline or spline rendering
@@ -339,7 +339,7 @@ final class KGERenderingControllerHelper {
      * @return the controller for the created Piccolo node
      */
     static PNodeController<PSWTAdvancedPath> createLine(
-            final AbstractRenderingController<?, ?> controller, final KPolyline line,
+            final AbstractKGERenderingController<?, ?> controller, final KPolyline line,
             final Styles styles, final List<KStyle> propagatedStyles, final PNode parent,
             final Bounds initialBounds) {
 
@@ -420,7 +420,7 @@ final class KGERenderingControllerHelper {
      * Creates a {@code PSWTAdvancedPath} representation for the {@code KPolygon}.
      * 
      * @param controller
-     *            the {@link AbstractRenderingController} that is delegated to in this method (and
+     *            the {@link AbstractKGERenderingController} that is delegated to in this method (and
      *            should be the caller of this method)
      * @param polygon
      *            the polygon rendering
@@ -435,7 +435,7 @@ final class KGERenderingControllerHelper {
      * @return the controller for the created Piccolo node
      */
     static PNodeController<PSWTAdvancedPath> createPolygon(
-            final AbstractRenderingController<?, ?> controller, final KPolygon polygon,
+            final AbstractKGERenderingController<?, ?> controller, final KPolygon polygon,
             final Styles styles, final List<KStyle> propagatedStyles, final PNode parent,
             final Bounds initialBounds) {
         // create the polygon
@@ -490,7 +490,7 @@ final class KGERenderingControllerHelper {
      * Creates a representation for the {@code KRenderingRef}.
      * 
      * @param controller
-     *            the {@link AbstractRenderingController} that is delegated to in this method (and
+     *            the {@link AbstractKGERenderingController} that is delegated to in this method (and
      *            should be the caller of this method)
      * @param renderingReference
      *            the rendering reference
@@ -505,7 +505,7 @@ final class KGERenderingControllerHelper {
      * @return the controller for the created Piccolo node
      */
     static PNodeController<?> createRenderingReference(
-            final AbstractRenderingController<?, ?> controller,
+            final AbstractKGERenderingController<?, ?> controller,
             final KRenderingRef renderingReference, final Styles styles,
             final List<KStyle> propagatedStyles, final PNode parent, final Bounds initialBounds) {
 
@@ -564,7 +564,7 @@ final class KGERenderingControllerHelper {
      *            the initial bounds
      * @return the controller for the created Piccolo node
      */
-    static PNodeController<?> createImage(final AbstractRenderingController<?, ?> controller,
+    static PNodeController<?> createImage(final AbstractKGERenderingController<?, ?> controller,
             final KImage image, final Styles styles, final List<KStyle> propagatedStyles,
             final PNode parent, final Bounds initialBounds) {
 
@@ -635,7 +635,7 @@ final class KGERenderingControllerHelper {
      * @return the controller for the created Piccolo node
      */
     static PNodeController<?> createCustomRendering(
-            final AbstractRenderingController<?, ?> controller,
+            final AbstractKGERenderingController<?, ?> controller,
             final KCustomRendering customRendering, final Styles styles,
             final List<KStyle> propagatedStyles, final PNode parent, final Bounds initialBounds) {
 

@@ -29,13 +29,13 @@ import de.cau.cs.kieler.klighd.piccolo.util.NodeUtil;
 import edu.umd.cs.piccolo.PNode;
 
 /**
- * An {@link AbstractRenderingController} for KNodes generating the rendering PNodes according to
+ * An {@link AbstractKGERenderingController} for KNodes generating the rendering PNodes according to
  * the related KRendering rendering description.
  * 
  * 
  * @author mri
  */
-public class KNodeRenderingController extends AbstractRenderingController<KNode, KNodeNode> {
+public class KNodeRenderingController extends AbstractKGERenderingController<KNode, KNodeNode> {
 
     /** the Piccolo node representing the child area. */
     private KChildAreaNode childAreaNode;

@@ -19,7 +19,7 @@ import de.cau.cs.kieler.core.kgraph.KEdge;
 import de.cau.cs.kieler.core.properties.IProperty;
 import de.cau.cs.kieler.core.properties.Property;
 import de.cau.cs.kieler.klighd.util.RenderingContextData;
-import de.cau.cs.kieler.klighd.piccolo.krendering.controller.AbstractRenderingController;
+import de.cau.cs.kieler.klighd.piccolo.krendering.controller.AbstractKGERenderingController;
 import de.cau.cs.kieler.klighd.piccolo.krendering.controller.KEdgeRenderingController;
 import de.cau.cs.kieler.klighd.piccolo.nodes.PChildRepresentedNode;
 import edu.umd.cs.piccolo.PNode;
@@ -78,7 +78,7 @@ public class KEdgeNode extends PChildRepresentedNode implements ILabeledGraphEle
      * {@inheritDoc}
      */
     public void setRenderingController(
-            final AbstractRenderingController<KEdge, ? extends IGraphElement<KEdge>> controller) {
+            final AbstractKGERenderingController<KEdge, ? extends IGraphElement<KEdge>> controller) {
         if (controller == null || controller instanceof KEdgeRenderingController) {
             this.renderingController = (KEdgeRenderingController) controller;
         } else {

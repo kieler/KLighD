@@ -28,7 +28,7 @@ import edu.umd.cs.piccolo.PNode;
 /**
  * @author mri
  */
-public class KPortRenderingController extends AbstractRenderingController<KPort, KPortNode> {
+public class KPortRenderingController extends AbstractKGERenderingController<KPort, KPortNode> {
 
     /**
      * Constructs a rendering controller for a port.

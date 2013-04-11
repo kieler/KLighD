@@ -72,7 +72,8 @@ import edu.umd.cs.piccolo.nodes.PPath;
  * @param <T>
  *            the type of the Piccolo node representing the graph element
  */
-public abstract class AbstractRenderingController<S extends KGraphElement, T extends IGraphElement<S>> {
+public abstract class AbstractKGERenderingController
+    <S extends KGraphElement, T extends IGraphElement<S>> {
 
     /**
      * A map that tracks the {@link PNodeController PNodeControllers} that are deployed to manage
@@ -121,7 +122,7 @@ public abstract class AbstractRenderingController<S extends KGraphElement, T ext
      * @param repNode
      *            the Piccolo node representing the graph element
      */
-    public AbstractRenderingController(final S element, final T repNode) {
+    public AbstractKGERenderingController(final S element, final T repNode) {
         this.element = element;
         this.repNode = repNode;
         this.repNode.setRenderingController(this);

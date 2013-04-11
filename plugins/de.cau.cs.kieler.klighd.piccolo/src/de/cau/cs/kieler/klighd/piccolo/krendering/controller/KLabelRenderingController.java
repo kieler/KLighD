@@ -34,7 +34,7 @@ import edu.umd.cs.piccolox.swt.PSWTText;
 /**
  * @author mri
  */
-public class KLabelRenderingController extends AbstractRenderingController<KLabel, KLabelNode> {
+public class KLabelRenderingController extends AbstractKGERenderingController<KLabel, KLabelNode> {
 
     /**
      * Constructs a rendering controller for a label.

@@ -42,7 +42,7 @@ import edu.umd.cs.piccolo.PNode;
 /**
  * @author mri
  */
-public class KEdgeRenderingController extends AbstractRenderingController<KEdge, KEdgeNode> {
+public class KEdgeRenderingController extends AbstractKGERenderingController<KEdge, KEdgeNode> {
 
     /**
      * Constructs a rendering controller for an edge.
