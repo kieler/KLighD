@@ -50,6 +50,7 @@ import de.cau.cs.kieler.klighd.microlayout.Bounds;
 import de.cau.cs.kieler.klighd.piccolo.krendering.KCustomConnectionFigureNode;
 import de.cau.cs.kieler.klighd.piccolo.krendering.KEdgeNode;
 import de.cau.cs.kieler.klighd.piccolo.krendering.util.PiccoloPlacementUtil;
+import de.cau.cs.kieler.klighd.piccolo.krendering.util.Styles;
 import de.cau.cs.kieler.klighd.piccolo.nodes.PAlignmentNode;
 import de.cau.cs.kieler.klighd.piccolo.nodes.PEmptyNode;
 import de.cau.cs.kieler.klighd.piccolo.nodes.PSWTAdvancedPath;
@@ -58,8 +59,6 @@ import de.cau.cs.kieler.klighd.piccolo.nodes.PSWTTracingText;
 import de.cau.cs.kieler.klighd.piccolo.nodes.PAlignmentNode.HAlignment;
 import de.cau.cs.kieler.klighd.piccolo.nodes.PAlignmentNode.VAlignment;
 import de.cau.cs.kieler.klighd.piccolo.util.NodeUtil;
-import de.cau.cs.kieler.klighd.piccolo.util.StyleUtil;
-import de.cau.cs.kieler.klighd.piccolo.util.StyleUtil.Styles;
 import edu.umd.cs.piccolo.PNode;
 import edu.umd.cs.piccolox.swt.PSWTCanvas;
 import edu.umd.cs.piccolox.swt.PSWTImage;
@@ -522,7 +521,7 @@ final class KGERenderingControllerHelper {
         controller.addPNodeController(rendering, pnodeController);
         
         // determine the styles for this rendering
-        StyleUtil.deriveStyles(styles, childPropagatedStyles);
+        styles.deriveStyles(childPropagatedStyles);
         
         // set the styles for the created rendering node using the controller
         pnodeController.applyChanges(styles);

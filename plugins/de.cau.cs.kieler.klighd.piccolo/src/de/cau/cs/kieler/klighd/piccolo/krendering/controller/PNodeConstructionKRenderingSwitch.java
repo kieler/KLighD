@@ -31,7 +31,7 @@ import de.cau.cs.kieler.core.krendering.KStyle;
 import de.cau.cs.kieler.core.krendering.KText;
 import de.cau.cs.kieler.core.krendering.util.KRenderingSwitch;
 import de.cau.cs.kieler.klighd.microlayout.Bounds;
-import de.cau.cs.kieler.klighd.piccolo.util.StyleUtil.Styles;
+import de.cau.cs.kieler.klighd.piccolo.krendering.util.Styles;
 import edu.umd.cs.piccolo.PNode;
 
 /**

@@ -16,7 +16,6 @@
  */
 package de.cau.cs.kieler.klighd.piccolo.krendering.controller;
 
-
 import org.eclipse.swt.graphics.RGB;
 
 import com.google.common.primitives.Floats;
@@ -32,10 +31,10 @@ import de.cau.cs.kieler.core.krendering.LineStyle;
 import de.cau.cs.kieler.core.krendering.Underline;
 import de.cau.cs.kieler.klighd.KlighdConstants;
 import de.cau.cs.kieler.klighd.microlayout.Bounds;
+import de.cau.cs.kieler.klighd.piccolo.krendering.util.Styles;
 import de.cau.cs.kieler.klighd.piccolo.nodes.PAlignmentNode.HAlignment;
 import de.cau.cs.kieler.klighd.piccolo.nodes.PAlignmentNode.VAlignment;
 import de.cau.cs.kieler.klighd.piccolo.util.RGBGradient;
-import de.cau.cs.kieler.klighd.piccolo.util.StyleUtil.Styles;
 import edu.umd.cs.piccolo.PNode;
 
 /**

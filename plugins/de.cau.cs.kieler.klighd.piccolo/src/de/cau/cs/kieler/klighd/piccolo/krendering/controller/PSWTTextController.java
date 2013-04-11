@@ -19,9 +19,9 @@ import org.eclipse.swt.graphics.RGB;
 
 import de.cau.cs.kieler.core.krendering.Underline;
 import de.cau.cs.kieler.klighd.KlighdConstants;
+import de.cau.cs.kieler.klighd.piccolo.krendering.util.Styles;
 import de.cau.cs.kieler.klighd.piccolo.nodes.PSWTStyledText;
 import de.cau.cs.kieler.klighd.piccolo.util.RGBGradient;
-import de.cau.cs.kieler.klighd.piccolo.util.StyleUtil.Styles;
 
 /**
  * A node controller for the {@code PSWTText}.

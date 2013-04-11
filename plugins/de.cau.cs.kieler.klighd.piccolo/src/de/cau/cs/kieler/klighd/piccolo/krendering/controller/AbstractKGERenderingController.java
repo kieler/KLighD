@@ -51,10 +51,9 @@ import de.cau.cs.kieler.klighd.microlayout.PlacementUtil;
 import de.cau.cs.kieler.klighd.piccolo.krendering.IGraphElement;
 import de.cau.cs.kieler.klighd.piccolo.krendering.KDecoratorNode;
 import de.cau.cs.kieler.klighd.piccolo.krendering.util.PiccoloPlacementUtil;
+import de.cau.cs.kieler.klighd.piccolo.krendering.util.Styles;
 import de.cau.cs.kieler.klighd.piccolo.krendering.util.PiccoloPlacementUtil.Decoration;
 import de.cau.cs.kieler.klighd.piccolo.nodes.PSWTAdvancedPath;
-import de.cau.cs.kieler.klighd.piccolo.util.StyleUtil;
-import de.cau.cs.kieler.klighd.piccolo.util.StyleUtil.Styles;
 import de.cau.cs.kieler.klighd.util.CrossDocumentContentAdapter;
 import de.cau.cs.kieler.klighd.util.ModelingUtil;
 import edu.umd.cs.piccolo.PNode;
@@ -414,11 +413,10 @@ public abstract class AbstractKGERenderingController
         List<KStyle> renderingStyles = rendering.getStyles();
 
         // determine the styles for this rendering
-        final Styles newStyles = StyleUtil.deriveStyles(styles,
-                determineRenderingStyles(renderingStyles, propagatedStyles));
+        styles.deriveStyles(determineRenderingStyles(renderingStyles, propagatedStyles));
         
         // apply the styles to the rendering
-        controller.applyChanges(newStyles);
+        controller.applyChanges(styles);
         
         if (rendering instanceof KContainerRendering) {
             // update children
@@ -678,14 +676,12 @@ public abstract class AbstractKGERenderingController
         final List<KStyle> childPropagatedStyles = determinePropagationStyles(renderingStyles,
                 propagatedStyles);
 
-//        final Styles theStyles = styles != null ? styles : new Styles();
         // create the rendering and return its controller
         kSwitch.configure(styles, childPropagatedStyles, parent, initialBounds);
         PNodeController<?> controller = kSwitch.doSwitch(rendering);
         
         // determine the styles for this rendering
-        StyleUtil.deriveStyles(styles,
-                determineRenderingStyles(renderingStyles, propagatedStyles));
+        styles.deriveStyles(determineRenderingStyles(renderingStyles, propagatedStyles));
 
         // set the styles for the created rendering node using the controller
         controller.applyChanges(styles);
