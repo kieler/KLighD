@@ -678,7 +678,8 @@ public class PSWTAdvancedPath extends PNode {
         }
         
         RGBGradient pg = getSWTPaintGradient();
-        if (pg != null && g2 instanceof KlighdSWTGraphics) {
+        if (!isPolyline && !isRoundedBendsPolyline && !isSpline && pg != null
+                && g2 instanceof KlighdSWTGraphics) {
             ((KlighdSWTGraphics) g2).setBackgroundPattern(pg, getBounds());            
             fillShape(g2);
         }
