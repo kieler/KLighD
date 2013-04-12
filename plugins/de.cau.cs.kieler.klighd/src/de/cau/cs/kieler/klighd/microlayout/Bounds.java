@@ -15,16 +15,19 @@ package de.cau.cs.kieler.klighd.microlayout;
 
 import java.awt.geom.Rectangle2D;
 
+import de.cau.cs.kieler.core.util.Pair;
 import de.cau.cs.kieler.kiml.klayoutdata.KInsets;
 import de.cau.cs.kieler.kiml.klayoutdata.KLayoutDataFactory;
 
 /**
+ * A convenience class representing floating-point-precise bounds and lots of helpful operations on
+ * them.
+ * 
  * @author chsch
- *
  */
 public class Bounds {
 
-    // CHECKSTYLEOFF Visibility
+    // CHECKSTYLEOFF Visibility: values shall be directly accessible by the classes in the same package!
 
     /** the x-coordinate. */
     float x;
@@ -221,6 +224,40 @@ public class Bounds {
      */
     public String toString() {
         return "(" + this.x + "," + this.y + "|" + this.width + "," + this.height + ")"; 
+    }
+
+    /**
+     * Compares two {@link Bounds} objects wrt. equality of their widths and heights
+     * 
+     * @param b1
+     *            the first {@link Bounds}
+     * @param b2
+     *            the second {@link Bounds}
+     * 
+     * @return a {@link Pair} of {@link Boolean} denoting the width and height equality
+     */
+    public static Pair<Boolean, Boolean> compare(final Bounds b1, final Bounds b2) {
+        return compare(b1, b2, 0f); 
+    }
+
+    /**
+     * Compares two {@link Bounds} objects wrt. equality of their widths and heights whilst
+     * tolerating the provided <code>delta</code>.
+     * 
+     * @param b1
+     *            the first {@link Bounds}
+     * @param b2
+     *            the second {@link Bounds}
+     * @param delta
+     *            the delta to accept while determining the equality of width and height
+     * 
+     * @return a {@link Pair} of {@link Boolean} denoting the width and height equality
+     */
+    public static Pair<Boolean, Boolean> compare(final Bounds b1, final Bounds b2, final float delta) {
+        boolean widthEqual = Math.abs(b1.width - b2.width) <= delta;
+        boolean heightEqual = Math.abs(b1.height - b2.height) <= delta;
+
+        return Pair.of(widthEqual, heightEqual); 
     }
 
     /**

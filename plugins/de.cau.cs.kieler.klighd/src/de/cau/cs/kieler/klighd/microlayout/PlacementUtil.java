@@ -497,22 +497,20 @@ public final class PlacementUtil {
         case LEFT:
         case RIGHT:
             // the child requires its minWidth and the absolute margin defined by pos.getX()
-            calculatedWidth = abs + Math.max(minWidth, ppd.getMinWidth()) + ppd.getHorizontalMargin();
+            calculatedWidth = abs + minWidth + ppd.getHorizontalMargin();
             break;
         case CENTER:
-            float halfWidth = Math.max(minWidth, ppd.getMinWidth()) / 2;
+            float halfWidth = minWidth / 2;
             if (abs > halfWidth) {
                 // in this case the child requires, depending on type of pos.getX, on one side more
                 //  space than on the other, so:
-                calculatedWidth = abs + halfWidth; 
+                calculatedWidth = abs + halfWidth + ppd.getHorizontalMargin(); 
             } else {
                 // in case one might argue the same way, but there's still the relative part
                 //  so I think potentially shrinking the width is not reasonable; thus:
-                calculatedWidth = Math.max(minWidth, ppd.getMinWidth());
+                calculatedWidth = minWidth + 2 * ppd.getHorizontalMargin();
             }
-            calculatedWidth += 2 * ppd.getHorizontalMargin();
         }
-        
         return calculatedWidth;
     }
 
@@ -538,20 +536,19 @@ public final class PlacementUtil {
         case TOP:
         case BOTTOM:
             // the child requires its minHeight and the absolute margin defined by pos.getY()
-            calculatedHeight = abs + Math.max(minHeight, ppd.getMinHeight()) + ppd.getVerticalMargin();
+            calculatedHeight = abs + minHeight + ppd.getVerticalMargin();
             break;
         case CENTER:
-            float halfHeight = Math.max(minHeight, ppd.getMinHeight()) / 2;
+            float halfHeight = minHeight / 2;
             if (abs > halfHeight) {
                 // in this case the child requires, depending on type of pos.getY, on one side more
                 //  space than on the other, so:
-                calculatedHeight = abs + halfHeight; 
+                calculatedHeight = abs + halfHeight + ppd.getVerticalMargin(); 
             } else {
                 // in case one might argue the same way, but there's still the relative part
                 //  so I think potentially shrinking the width is not reasonable; thus:
-                calculatedHeight = Math.max(minHeight, ppd.getMinHeight());
+                calculatedHeight = minHeight + 2 * ppd.getVerticalMargin();
             }
-            calculatedHeight += 2 * ppd.getVerticalMargin();
         }
         return calculatedHeight;
     }
@@ -1117,7 +1114,7 @@ public final class PlacementUtil {
         case DIRECT_DIRECT:
             // top left comes from left
             // bottom right comes from right
-            relWidth = 1f - rel1 - rel0;
+            relWidth = 1f - (rel1 + rel0); // this way the result is more precise!
             absOffset = abs0 + abs1;
             break;
             
