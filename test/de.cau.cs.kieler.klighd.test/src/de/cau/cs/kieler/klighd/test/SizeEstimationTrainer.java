@@ -33,8 +33,8 @@ import de.cau.cs.kieler.klighd.microlayout.Bounds;
 import de.cau.cs.kieler.klighd.microlayout.PlacementUtil;
 
 /**
- * Class provides method to train {@link KNode KNodes} for the {@link SizeEstimationTest}, i.e.
- * attaches required size properties as required by the test.
+ * Class provides a method to train {@link KNode KNodes} for the {@link SizeEstimationTest}, i.e.
+ * attaches required size properties as required by the test, as well as to add an 'ignore' tag.
  * 
  * @author chsch
  */
@@ -45,9 +45,21 @@ public final class SizeEstimationTrainer {
      */
     private SizeEstimationTrainer() {
     }
+    
+    /**
+     * Method marks the given KNode as ignored by size estimation tests.
+     * 
+     * @param node
+     *            the KNode to be ignored
+     */
+    public static void ignore(final KNode node) {
+        PersistentEntry pe = KGraphFactory.eINSTANCE.createPersistentEntry();
+        pe.setKey(KlighdConstants.KLIGHD_TESTING_IGNORE.getId());
+        node.getData(KShapeLayout.class).getPersistentEntries().add(pe);
+    }
 
     /**
-     * Methods trains the given KNode, i.e. attaches required size properties as required by the
+     * Method trains the given KNode, i.e. attaches required size properties as required by the
      * {@link SizeEstimationTest}.
      * 
      * @param node
