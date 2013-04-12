@@ -1,0 +1,93 @@
+KNode {
+    children:
+    KNode {
+        data:
+        RoundedRectangle 20.0 20.0 {
+            children:
+            Polyline {
+            // mid vertical line
+                points:
+                left 0.0 0.5 / top 0.0 0.0,
+                left 0.0 0.5 / top 0.0 1.0
+                styles:
+                foreground {
+                    color 255 0 0
+                }
+            }
+            Polyline {
+            // right vertical line
+                points:
+                left 0.0 0.75 / top 0.0 0.0,
+                left 0.0 0.75 / top 0.0 1.0
+                styles:
+                lineWidth 2.0 foreground {
+                    color 0 255 0
+                }
+            }
+            Polyline {
+            // left vertical line
+                points:
+                left 0.0 0.25 / top 0.0 0.0,
+                left 0.0 0.25 / top 0.0 1.0
+                styles:
+                foreground {
+                    color 0 0 255
+                }
+            }
+            Polyline {
+            //horizontal line
+                points:
+                left 0.0 0.0 / top 0.0 0.5,
+                left 0.0 1.0 / top 0.0 0.5
+                styles:
+                foreground {
+                    color 255 0 0 targetColor 255 0 0 alpha 2 targetAlpha 255 gradientAngle 0.0
+                }
+            }
+            Rectangle {
+                styles:
+                foreground {
+                    color 0 255 255
+                }
+                placementData:
+                PointPlacementData {
+                    referencePoint
+                    left 0.0 0.5 / top 0.0 0.5
+                    verticalAlignment CENTER
+                    horizontalAlignment CENTER
+                    horizontalMargin 15
+                }
+                children:
+                Text "________________|________________" {
+                    mapProperties:
+                    "klighd.testing.height" = "10.0"
+                    "klighd.testing.width" = "164.0"
+                }
+            }
+            Rectangle {
+                styles:
+                foreground {
+                    color 255 255 0
+                }
+                placementData:
+                PointPlacementData {
+                    referencePoint
+                    left 0.0 0.1 / top 0.0 0.5
+                    verticalAlignment CENTER
+                    horizontalAlignment LEFT
+                }
+                children:
+                Text "|\n|\n|\n|\n|\n|\n|\n|\n|\n" {
+                    mapProperties:
+                    "klighd.testing.height" = "106.0"
+                    "klighd.testing.width" = "4.0"
+                }
+            }
+        }
+        KShapeLayout {
+            mapProperties:
+            "klighd.testing.expected.height" = "106.0"
+            "klighd.testing.expected.width" = "194.0"
+        }
+    }
+} 

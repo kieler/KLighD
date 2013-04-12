@@ -1,0 +1,78 @@
+KNode {
+	children:
+	// the red one
+	KNode {
+		data:
+		Rectangle {
+			styles:
+			background {
+				color 255 0 0
+			}
+			children:
+			Ellipse {
+				placementData:
+				PointPlacementData {
+					referencePoint
+					left 5.0 0.0 / top 5.0 0.0
+					verticalAlignment CENTER
+					horizontalAlignment CENTER horizontalMargin 10.0 verticalMargin 10.0
+				}
+				children:
+				Text T {
+					mapProperties:
+					"klighd.testing.height" = "10.0"
+					"klighd.testing.width" = "7.0"
+				}
+			}
+		}
+		KShapeLayout {
+			mapProperties:
+			"klighd.testing.expected.height" = "30.0"
+			"klighd.testing.expected.width" = "18.5"
+		}
+	}
+	// the green one
+	KNode {
+		data:
+		Rectangle {
+			styles:
+			background {
+				color 0 255 0
+			}
+			children:
+			Rectangle {
+				styles:
+				lineStyle DOT foreground {
+					color 0 0 255
+				}
+				placementData:
+				PointPlacementData {
+					referencePoint
+					left 0.0 0.0 / top 0.0 0.0 minWidth 20.0 minHeight 20.0
+				}
+			}
+			Ellipse {
+				placementData:
+				PointPlacementData {
+					referencePoint
+					left 20.0 0.0 / top 20.0 0.0
+					verticalAlignment CENTER
+					horizontalAlignment CENTER
+					horizontalMargin 10.0 
+					verticalMargin 10.0
+				}
+				children:
+				Text T {
+					mapProperties:
+					"klighd.testing.height" = "10.0"
+					"klighd.testing.width" = "7.0"
+				}
+			}
+		}
+		KShapeLayout {
+			mapProperties:
+			"klighd.testing.expected.height" = "35.0"
+			"klighd.testing.expected.width" = "33.5"
+		}
+	}
+}
