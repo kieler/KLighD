@@ -55,6 +55,7 @@ public final class SizeEstimationTrainer {
     public static void ignore(final KNode node) {
         PersistentEntry pe = KGraphFactory.eINSTANCE.createPersistentEntry();
         pe.setKey(KlighdConstants.KLIGHD_TESTING_IGNORE.getId());
+        pe.setValue(Boolean.valueOf(true).toString());
         node.getData(KShapeLayout.class).getPersistentEntries().add(pe);
     }
 
