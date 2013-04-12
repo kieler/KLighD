@@ -108,7 +108,8 @@ class KNodeExtensions {
     
     def KNode setNodeSize(KNode node, float width, float height) {
         return node => [
-            getData(typeof(KShapeLayout)).setSize(width, height)
+            getData(typeof(KShapeLayout)).setSize(width, height);
+            setMinimalNodeSize(width, height);
         ];
     }
     
@@ -116,7 +117,7 @@ class KNodeExtensions {
             "klighd.minimalNodeSize", new KVector(10d, 10d));
 
     def KNode setMinimalNodeSize(KNode node, float width, float height) {
-        return node.setNodeSize(width, height) => [
+        return node => [
             it.addLayoutParam(MINIMAL_NODE_SIZE, new KVector(width, height));
         ];
     }
