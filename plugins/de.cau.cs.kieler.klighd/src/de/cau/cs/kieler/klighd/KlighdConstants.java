@@ -197,7 +197,7 @@ public final class KlighdConstants {
     
     /**
      * Property to be attached to the {@link de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout
-     * KShapeLayout} of a view model's nodes in some regression tests.
+     * KShapeLayout} of a view model's nodes for properly performing regression tests.
      */
     public static final IProperty<Float> KLIGHD_TESTING_EXPECTED_HEIGHT = new Property<Float>(
             "klighd.testing.expected.height");
@@ -208,6 +208,15 @@ public final class KlighdConstants {
      */
     public static final IProperty<Float> KLIGHD_TESTING_EXPECTED_WIDTH = new Property<Float>(
             "klighd.testing.expected.width");
+
+    /**
+     * Property to be attached to the {@link de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout
+     * KShapeLayout} of a view model's nodes in order to ignore those nodes.<br>
+     * <br>
+     * The id is also hard-coded in KGraphJavaValidator!
+     */
+    public static final IProperty<Boolean> KLIGHD_TESTING_IGNORE = new Property<Boolean>(
+            "klighd.testing.ignore", false);
 
     /**
      * Property to be attached to the {@link de.cau.cs.kieler.core.krendering.KText KTexts} of a
