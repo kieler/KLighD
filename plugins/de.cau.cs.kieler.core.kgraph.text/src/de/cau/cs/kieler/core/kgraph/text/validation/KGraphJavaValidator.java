@@ -18,7 +18,6 @@ import java.util.Iterator;
 import org.eclipse.xtext.validation.Check;
 
 import com.google.common.base.Function;
-import com.google.common.collect.Iterables;
 import com.google.common.collect.Iterators;
 
 import de.cau.cs.kieler.core.kgraph.KGraphPackage;
@@ -27,6 +26,11 @@ import de.cau.cs.kieler.core.krendering.KRendering;
 import de.cau.cs.kieler.core.krendering.KText;
 
 /**
+ * An {@link org.eclipse.emf.ecore.EValidator EValidator} providing marker annotations in the
+ * textual KGraph/KRendering editor.<br>
+ * <br>
+ * Currently, it provides 'train' info markers for KNodes whose KRendering contains KTexts (as
+ * KTexts are the only atomic elements that require width and height. 
  * 
  * @author chsch
  */
@@ -38,23 +42,35 @@ public class KGraphJavaValidator extends AbstractKGraphJavaValidator {
     public static final String TRAIN_KNODE_INFO = "train.knode.info";
     
     /**
+     * The check attaching the 'train' info markers for KNodes whose KRendering contains KTexts (as
+     * KTexts are the only atomic elements that require width and height.
      * 
-     * @param node the node to attach the marker
+     * @param node
+     *            the node to attach the marker
      */
     @Check
     public void addTrainTest(final KNode node) {
         try {
             Class.forName("de.cau.cs.kieler.klighd.test.SizeEstimationTrainer");
             Iterator<KRendering> renderings = Iterators.concat(Iterators.transform(
+                    // for each KRendering in the node's 'data' field ...
                     Iterators.filter(node.getData().iterator(), KRendering.class),
+                    // ... construct an iterator providing the KRendering and all its children and
+                    // children's children of type KRendering
                     new Function<KRendering, Iterator<KRendering>>() {
                         public Iterator<KRendering> apply(final KRendering r) {
                             return Iterators.concat(Iterators.singletonIterator(r),
                                     Iterators.filter(r.eAllContents(), KRendering.class));
                         }
-                    }));
+                    })
+                    // the resulting Iterable of Iterators is finally concatenated 
+            );
+            
+            // check whether that Iterator of KRenderings finds a KText element ...
             boolean valid = Iterators.filter(renderings, KText.class).hasNext();
+            
             if (valid) {
+                // if so provide the 'train' info marker 
                 info("'Train KNode' marker", KGraphPackage.eINSTANCE.getKNode_Parent(),
                         TRAIN_KNODE_INFO);
             }
