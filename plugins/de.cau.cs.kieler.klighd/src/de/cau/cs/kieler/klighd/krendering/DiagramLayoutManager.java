@@ -299,25 +299,56 @@ public class DiagramLayoutManager implements IDiagramLayoutManager<KGraphElement
             
             RenderingContextData rcd = RenderingContextData.get(node);
 
+            // In the following the minimal width and height of the node is determined, which
+            //  is used as a basis for the size estimation (necessary for grid-based micro layouts).
+            // This minimal size is saved in the RenderingContextData attached to the node at the
+            //  first time and re-used later on.
+            // TODO: This prevents size adjustments in textually formulated diagrams. 
+            
             float minWidth = 0;
             if (!rcd.containsPoperty(pMW)) {
-                minWidth = (float) nodeLayout.getProperty(MINIMAL_NODE_SIZE).x;
+                
+                // minWidth is initialized with nodeLayout.width
+                minWidth = nodeLayout.getWidth();
+                
+                // if it is not initialized, i.e. 0f that is the default of MIN_WIDTH
+                if (minWidth == pMW.getDefault()) {
+                    // MIN_WIDTH is evaluated for nodeLayout
+                    minWidth = nodeLayout.getProperty(pMW);
+                }
+                // if this does not change the value, too, MINIMAL_NODE_SIZE is evaluated
+                //  that might be set by the diagram synthesis
+                //  if it is not set, its default value is taken
+                if (minWidth == pMW.getDefault()) {
+                    minWidth = (float) nodeLayout.getProperty(MINIMAL_NODE_SIZE).x;
+                }
+                // save the minWidth in the rendering context data
                 rcd.setProperty(pMW, minWidth);                
             } else {
+                // load the minWidth from the rendering context data
                 minWidth = rcd.getProperty(pMW);
             }
 
+            // analogously
             float minHeight = 0;
             if (!rcd.containsPoperty(pMH)) {
-                minHeight = (float) nodeLayout.getProperty(MINIMAL_NODE_SIZE).y;
+                minHeight = nodeLayout.getHeight();
+                if (minHeight == pMH.getDefault()) {
+                    minHeight = nodeLayout.getProperty(pMH);
+                }
+                if (minHeight == pMH.getDefault()) {
+                    minHeight = (float) nodeLayout.getProperty(MINIMAL_NODE_SIZE).y;
+                }
                 rcd.setProperty(pMH, minHeight);
             } else {
                 minHeight = rcd.getProperty(pMH);
             }
 
-            // integrate the minimal estimated node size based on the updated layoutLayout
-            // - manipulating the nodeLayout may cause immediate glitches in the diagram
-            // (through the listeners)
+            // integrate the minimal estimated node size
+            //  manipulating the nodeLayout of a hierarchical node with active children may cause
+            //   immediate glitches in the diagram, so only the MIN_WIDTH/MIN_HEIGHT properties are set
+            //  in case of non-hierarchical nodes the layoutLayout is updated since the size is required
+            //   during the layout and will be transfered while applying the resulting layout
             KRendering rootRendering = node.getData(KRendering.class);
             if (rootRendering != null) {
                 
@@ -335,12 +366,8 @@ public class DiagramLayoutManager implements IDiagramLayoutManager<KGraphElement
                     nodeLayout.setProperty(LayoutOptions.MIN_WIDTH, size.getWidth());
                     nodeLayout.setProperty(LayoutOptions.MIN_HEIGHT, size.getHeight());
                 } else {
-                    nodeLayout.setSize(size.getWidth(), size.getHeight());
                     layoutLayout.setSize(size.getWidth(), size.getHeight());
                 }
-
-                // TODO: correct this according to the above case distinction
-                layoutLayout.setInsets(estimatedSize.getInsets());
             }
         }
         
