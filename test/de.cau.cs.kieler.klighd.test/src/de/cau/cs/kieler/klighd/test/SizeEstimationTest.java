@@ -36,6 +36,7 @@ import de.cau.cs.kieler.core.test.runners.ModelCollectionTestRunner.BundleId;
 import de.cau.cs.kieler.core.test.runners.ModelCollectionTestRunner.ModelFilter;
 import de.cau.cs.kieler.core.test.runners.ModelCollectionTestRunner.ModelPath;
 import de.cau.cs.kieler.core.test.runners.ModelCollectionTestRunner.StopOnFailure;
+import de.cau.cs.kieler.core.util.Pair;
 import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout;
 import de.cau.cs.kieler.klighd.microlayout.Bounds;
 import de.cau.cs.kieler.klighd.microlayout.PlacementUtil;
@@ -145,6 +146,8 @@ public class SizeEstimationTest {
         sizeEstimationTest(node);
     }
     
+    private static final float DELTA = 0.5f;
+    
     private void performSizeEstimationTest(final KNode node) {
         if (node.getData(KRendering.class) == null) {
             // if no rendering is attached, there is nothing to test
@@ -152,29 +155,32 @@ public class SizeEstimationTest {
         }
         
         KShapeLayout sl = node.getData(KShapeLayout.class);
-        float expectedHeight = Float.parseFloat(sl.getProperties()
-                .get(KLIGHD_TESTING_EXPECTED_HEIGHT).toString());
-        float expectedWidth = Float.parseFloat(sl.getProperties()
-                .get(KLIGHD_TESTING_EXPECTED_WIDTH).toString());
+
+        Bounds expected = Bounds.of(
+            Float.parseFloat(sl.getProperties().get(KLIGHD_TESTING_EXPECTED_WIDTH).toString()),
+            Float.parseFloat(sl.getProperties().get(KLIGHD_TESTING_EXPECTED_HEIGHT).toString())
+        );
         
-        Bounds size = PlacementUtil.estimateSize(node);
+        Bounds actual = PlacementUtil.estimateSize(node);
         
         // put the estimated size into the node layout for testing the stability
         //  in the second run (second test; statement is useless in 2nd run)
-        sl.setSize(size.getWidth(), size.getHeight());
+        sl.setSize(actual.getWidth(), actual.getHeight());
         
-        if (size.getHeight() != expectedHeight && size.getWidth() != expectedWidth) {
-            throw new RuntimeException("Expected node height of " + expectedHeight
-                    + ", estimation gave " + size.getHeight() + ", expected node width of "
-                    + expectedWidth + ", estimation gave " + size.getWidth());
+        Pair<Boolean, Boolean> equal = Bounds.compare(expected, actual, DELTA);
+                
+        if (!equal.getFirst() && !equal.getSecond()) {
+            throw new AssertionError("Expected node height of " + expected.getHeight()
+                    + ", estimation gave " + actual.getHeight() + ", expected node width of "
+                    + expected.getWidth() + ", estimation gave " + actual.getWidth());
         }
-        if (size.getHeight() != expectedHeight) {
-            throw new RuntimeException("Expected node height of " + expectedHeight
-                    + ", estimation gave " + size.getHeight());
+        if (!equal.getFirst()) {
+            throw new AssertionError("Expected node width of " + expected.getWidth()
+                    + ", estimation gave " + actual.getWidth());
         }
-        if (size.getWidth() != expectedWidth) {
-            throw new RuntimeException("Expected node width of " + expectedWidth
-                    + ", estimation gave " + size.getWidth());
+        if (!equal.getSecond()) {
+            throw new AssertionError("Expected node height of " + expected.getHeight()
+                    + ", estimation gave " + actual.getHeight());
         }
     }
 }
