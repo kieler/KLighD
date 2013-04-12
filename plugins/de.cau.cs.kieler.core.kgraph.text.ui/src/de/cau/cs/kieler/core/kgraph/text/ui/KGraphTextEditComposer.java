@@ -27,12 +27,14 @@ import org.eclipse.xtext.ui.editor.model.edit.DefaultTextEditComposer;
 public class KGraphTextEditComposer extends DefaultTextEditComposer {
 
     /**
-     * Custom definition setting the 'formatting' flag.
+     * Custom definition setting the 'formatting' and 'noValidation' flags. The latter is required
+     * as the model validation ahead of the serialization does currently not incorporate the
+     * transient value service.
      * 
      * @return the customized {@link SaveOptions}.
      */
     protected SaveOptions getSaveOptions() {
-        return SaveOptions.newBuilder().format().getOptions();
+        return SaveOptions.newBuilder().format().noValidation().getOptions();
     }
 
 }
