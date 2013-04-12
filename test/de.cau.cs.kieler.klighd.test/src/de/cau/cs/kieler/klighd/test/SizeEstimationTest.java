@@ -15,6 +15,7 @@ package de.cau.cs.kieler.klighd.test;
 
 import static de.cau.cs.kieler.klighd.KlighdConstants.KLIGHD_TESTING_EXPECTED_HEIGHT;
 import static de.cau.cs.kieler.klighd.KlighdConstants.KLIGHD_TESTING_EXPECTED_WIDTH;
+import static de.cau.cs.kieler.klighd.KlighdConstants.KLIGHD_TESTING_IGNORE;
 import static de.cau.cs.kieler.klighd.KlighdConstants.KLIGHD_TESTING_HEIGHT;
 import static de.cau.cs.kieler.klighd.KlighdConstants.KLIGHD_TESTING_WIDTH;
 
@@ -25,6 +26,7 @@ import org.eclipse.xtext.resource.XtextResourceSet;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import com.google.common.base.Predicate;
 import com.google.common.collect.Iterators;
 
 import de.cau.cs.kieler.core.kgraph.KNode;
@@ -98,10 +100,15 @@ public class SizeEstimationTest {
         
         KShapeLayout sl = node.getData(KShapeLayout.class);
         
+        boolean isIgnored = sl.getProperties().get(KLIGHD_TESTING_IGNORE) != null;
+        if (isIgnored) {
+            return;
+        }
+        
         boolean containsSizeData = sl.getProperties().get(KLIGHD_TESTING_EXPECTED_HEIGHT) != null;
         containsSizeData &= sl.getProperties().get(KLIGHD_TESTING_EXPECTED_WIDTH) != null;
         
-        if (!containsSizeData) {
+        if (!containsSizeData && !isIgnored) {
             throw new IllegalArgumentException(
                     "The KShapeLayout of the tested node must be equipped with properties"
                             + " named " + KLIGHD_TESTING_EXPECTED_HEIGHT + " and "
@@ -131,7 +138,18 @@ public class SizeEstimationTest {
      */
     @Test
     public void sizeEstimationTest(final KNode node) {
-        for (Iterator<KNode> it = Iterators.filter(node.eAllContents(), KNode.class); it.hasNext();) {
+        // reveal all KNodes that are not to be ignored ...
+        Iterator<KNode> it = Iterators.filter(
+                Iterators.filter(node.eAllContents(), KNode.class),
+                new Predicate<KNode>() {
+                    public boolean apply(final KNode node) {
+                        return node.getData(KShapeLayout.class).getProperties()
+                                .get(KLIGHD_TESTING_IGNORE) == null;
+                    }
+                });
+        
+        // ... and perform the size estimation test on the valid ones
+        for (; it.hasNext();) {
             performSizeEstimationTest(it.next());
         }
     }
@@ -167,20 +185,23 @@ public class SizeEstimationTest {
         //  in the second run (second test; statement is useless in 2nd run)
         sl.setSize(actual.getWidth(), actual.getHeight());
         
-        Pair<Boolean, Boolean> equal = Bounds.compare(expected, actual, DELTA);
+        Pair<Boolean, Boolean> result = Bounds.compare(expected, actual, DELTA);
+        
+        String fragment = node.eResource().getURIFragment(node);
                 
-        if (!equal.getFirst() && !equal.getSecond()) {
-            throw new AssertionError("Expected node height of " + expected.getHeight()
-                    + ", estimation gave " + actual.getHeight() + ", expected node width of "
+        if (!result.getFirst() && !result.getSecond()) {
+            throw new AssertionError("Node '" + fragment + "': Expected node height of "
+                    + expected.getHeight() + ", estimation gave " + actual.getHeight()
+                    + ", expected node width of " + expected.getWidth() + ", estimation gave "
+                    + actual.getWidth());
+        }
+        if (!result.getFirst()) {
+            throw new AssertionError("Node '" + fragment + "': Expected node width of "
                     + expected.getWidth() + ", estimation gave " + actual.getWidth());
         }
-        if (!equal.getFirst()) {
-            throw new AssertionError("Expected node width of " + expected.getWidth()
-                    + ", estimation gave " + actual.getWidth());
-        }
-        if (!equal.getSecond()) {
-            throw new AssertionError("Expected node height of " + expected.getHeight()
-                    + ", estimation gave " + actual.getHeight());
+        if (!result.getSecond()) {
+            throw new AssertionError("Node '" + fragment + "': Expected node height of "
+                    + expected.getHeight() + ", estimation gave " + actual.getHeight());
         }
     }
 }
