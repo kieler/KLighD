@@ -11,9 +11,6 @@
  * This code is provided under the terms of the Eclipse Public License (EPL).
  * See the file epl-v10.html for the license text.
  */
-/**
- * 
- */
 package de.cau.cs.kieler.klighd.piccolo.krendering.controller;
 
 import org.eclipse.swt.graphics.RGB;
@@ -456,6 +453,8 @@ public abstract class PNodeController<T extends PNode> {
         } else {
             this.setStrikeout(false, KlighdConstants.BLACK);
         }
+
+        getNode().repaint();
     }
 
     /**
