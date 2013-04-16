@@ -679,11 +679,28 @@ public final class PlacementUtil {
             minColumnWidths[col] = Math.max(minColumnWidths[col], elementWidth);
         }
         
-        //store the information of the size of the cells into the KRendering the grid is attached to
-        //to be able to reUse that information later
-        container.setProperty(ESTIMATED_GRID_DATA, new GridSpacing(minColumnWidths, minRowHeights));
-        container.setProperty(CHILD_AREA_POSITION,  
-                new Pair<Integer, Integer>(childAreaColId, childAreaRowId));
+        // store the information of the size of the cells into the KRendering the grid is attached to
+        //  to be able to re-use that information later
+        // the re-usage of already present property objects is done to reduce the notification flood
+        //  and the result re-composition of the node figures in the Piccolo binding 
+        
+        boolean deliver = container.eDeliver();
+        container.eSetDeliver(false);
+        GridSpacing pSpacing = container.getProperty(ESTIMATED_GRID_DATA);
+        if (pSpacing != null) {
+            pSpacing.calculatedColumnWidths = minColumnWidths;
+            pSpacing.calculatedRowHeights = minRowHeights;
+        } else {
+            container.setProperty(ESTIMATED_GRID_DATA, new GridSpacing(minColumnWidths, minRowHeights));
+        }
+        Pair<Integer, Integer> pCAPos = container.getProperty(CHILD_AREA_POSITION);
+        if (pCAPos != null) {
+            pCAPos.setFirst(childAreaColId);
+            pCAPos.setSecond(childAreaRowId);
+        } else {
+            container.setProperty(CHILD_AREA_POSITION, Pair.create(childAreaColId, childAreaRowId));
+        }
+        container.eSetDeliver(deliver);
         
         // the minimum total bound is the sum of the single column widths and row heights
         Bounds childBounds = new Bounds(0, 0, 0, 0);
