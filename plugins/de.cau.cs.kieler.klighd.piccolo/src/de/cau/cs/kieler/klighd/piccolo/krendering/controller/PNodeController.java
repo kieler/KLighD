@@ -467,7 +467,13 @@ public abstract class PNodeController<T extends PNode> {
      * @return null if<code>color = null<code>, the related {@link RGB} otherwise
      */
     public RGB toRGB(final KColor color) {
-        return color == null ? null : new RGB(color.getRed(), color.getGreen(), color.getBlue());
+        final int maxValue = 255;
+        
+        int red = color.getRed() < maxValue ? color.getRed() : maxValue;
+        int green = color.getGreen() < maxValue ? color.getGreen() : maxValue;
+        int blue = color.getBlue() < maxValue ? color.getBlue() : maxValue;
+        
+        return color == null ? null : new RGB(red, green, blue);
     }
 
     /**
