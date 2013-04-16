@@ -34,6 +34,7 @@ import com.google.common.collect.Maps;
 import de.cau.cs.kieler.core.kgraph.KGraphElement;
 import de.cau.cs.kieler.core.kgraph.KGraphPackage;
 import de.cau.cs.kieler.core.kgraph.impl.IPropertyToObjectMapImpl;
+import de.cau.cs.kieler.core.krendering.KColor;
 import de.cau.cs.kieler.core.krendering.KContainerRendering;
 import de.cau.cs.kieler.core.krendering.KGridPlacement;
 import de.cau.cs.kieler.core.krendering.KPlacement;
@@ -270,7 +271,7 @@ public abstract class AbstractKGERenderingController
                     // styles!!
 
                     // handle style changes
-                    if (msg.getNotifier() instanceof KStyle) {
+                    if (msg.getNotifier() instanceof KStyle || msg.getNotifier() instanceof KColor) {
                         updateStylesInUi();
                         return;
                     }
