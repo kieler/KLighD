@@ -14,8 +14,10 @@ KNode {
 				PointPlacementData {
 					referencePoint
 					left 5.0 0.0 / top 5.0 0.0
+					horizontalAlignment CENTER
 					verticalAlignment CENTER
-					horizontalAlignment CENTER horizontalMargin 10.0 verticalMargin 10.0
+					horizontalMargin 10.0
+					verticalMargin 10.0
 				}
 				children:
 				Text T {
@@ -42,13 +44,16 @@ KNode {
 			children:
 			Rectangle {
 				styles:
-				lineStyle DOT foreground {
+				lineStyle DOT
+				foreground {
 					color 0 0 255
 				}
 				placementData:
 				PointPlacementData {
 					referencePoint
-					left 0.0 0.0 / top 0.0 0.0 minWidth 20.0 minHeight 20.0
+					left 0.0 0.0 / top 0.0 0.0
+					minWidth 20.0
+					minHeight 20.0
 				}
 			}
 			Ellipse {
@@ -56,9 +61,9 @@ KNode {
 				PointPlacementData {
 					referencePoint
 					left 20.0 0.0 / top 20.0 0.0
-					verticalAlignment CENTER
 					horizontalAlignment CENTER
-					horizontalMargin 10.0 
+					verticalAlignment CENTER
+					horizontalMargin 10.0
 					verticalMargin 10.0
 				}
 				children:

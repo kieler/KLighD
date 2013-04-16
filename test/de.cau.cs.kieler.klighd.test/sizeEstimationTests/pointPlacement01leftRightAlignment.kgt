@@ -13,7 +13,9 @@ KNode {
 				placementData:
 				PointPlacementData {
 					referencePoint
-					left 10.0 0.0 / top 10.0 0.0 horizontalMargin 10.0 verticalMargin 10.0
+					left 10.0 0.0 / top 10.0 0.0
+					horizontalMargin 10.0
+					verticalMargin 10.0
 				}
 				children:
 				Text T {
@@ -43,8 +45,10 @@ KNode {
 				PointPlacementData {
 					referencePoint
 					right 10.0 0.0 / bottom 10.0 0.0
+					horizontalAlignment RIGHT
 					verticalAlignment BOTTOM
-					horizontalAlignment RIGHT horizontalMargin 10.0 verticalMargin 10.0
+					horizontalMargin 10.0
+					verticalMargin 10.0
 				}
 				children:
 				Text T {

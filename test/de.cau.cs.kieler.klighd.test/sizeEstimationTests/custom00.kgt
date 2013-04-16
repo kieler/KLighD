@@ -13,8 +13,7 @@ KNode {
 				styles:
 				foreground {
 					color 0 255 0
-				}
-				!
+				} !
 				placementData:
 				AreaPlacementData {
 					topLeft left 0.0 0.1 / top 10.0 0.0,
@@ -35,9 +34,10 @@ KNode {
 				styles:
 				foreground {
 					color 255 0 0
-				}
-				! background {
-					color 0 0 0 alpha 0
+				} !
+				background {
+					color 0 0 0
+					alpha 0
 				}
 				placementData:
 				AreaPlacementData {
