@@ -13,6 +13,7 @@
       <genEnumLiterals ecoreEnumLiteral="krendering.ecore#//LineStyle/DOT"/>
       <genEnumLiterals ecoreEnumLiteral="krendering.ecore#//LineStyle/DASHDOT"/>
       <genEnumLiterals ecoreEnumLiteral="krendering.ecore#//LineStyle/DASHDOTDOT"/>
+      <genEnumLiterals ecoreEnumLiteral="krendering.ecore#//LineStyle/CUSTOM"/>
     </genEnums>
     <genEnums typeSafeEnumCompatible="false" ecoreEnum="krendering.ecore#//HorizontalAlignment">
       <genEnumLiterals ecoreEnumLiteral="krendering.ecore#//HorizontalAlignment/LEFT"/>
@@ -24,14 +25,14 @@
       <genEnumLiterals ecoreEnumLiteral="krendering.ecore#//VerticalAlignment/CENTER"/>
       <genEnumLiterals ecoreEnumLiteral="krendering.ecore#//VerticalAlignment/BOTTOM"/>
     </genEnums>
-    <genEnums typeSafeEnumCompatible="false" ecoreEnum="krendering.ecore#//KTrigger">
-      <genEnumLiterals ecoreEnumLiteral="krendering.ecore#//KTrigger/SINGLECLICK"/>
-      <genEnumLiterals ecoreEnumLiteral="krendering.ecore#//KTrigger/DOUBLECLICK"/>
-    </genEnums>
     <genEnums typeSafeEnumCompatible="false" ecoreEnum="krendering.ecore#//LineCap">
       <genEnumLiterals ecoreEnumLiteral="krendering.ecore#//LineCap/CAP_FLAT"/>
       <genEnumLiterals ecoreEnumLiteral="krendering.ecore#//LineCap/CAP_ROUND"/>
       <genEnumLiterals ecoreEnumLiteral="krendering.ecore#//LineCap/CAP_SQUARE"/>
+    </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="krendering.ecore#//Trigger">
+      <genEnumLiterals ecoreEnumLiteral="krendering.ecore#//Trigger/SINGLECLICK"/>
+      <genEnumLiterals ecoreEnumLiteral="krendering.ecore#//Trigger/DOUBLECLICK"/>
     </genEnums>
     <genEnums typeSafeEnumCompatible="false" ecoreEnum="krendering.ecore#//Underline">
       <genEnumLiterals ecoreEnumLiteral="krendering.ecore#//Underline/NONE"/>
@@ -40,6 +41,11 @@
       <genEnumLiterals ecoreEnumLiteral="krendering.ecore#//Underline/ERROR"/>
       <genEnumLiterals ecoreEnumLiteral="krendering.ecore#//Underline/SQUIGGLE"/>
       <genEnumLiterals ecoreEnumLiteral="krendering.ecore#//Underline/LINK"/>
+    </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="krendering.ecore#//LineJoin">
+      <genEnumLiterals ecoreEnumLiteral="krendering.ecore#//LineJoin/JOIN_MITER"/>
+      <genEnumLiterals ecoreEnumLiteral="krendering.ecore#//LineJoin/JOIN_ROUND"/>
+      <genEnumLiterals ecoreEnumLiteral="krendering.ecore#//LineJoin/JOIN_BEVEL"/>
     </genEnums>
     <genClasses image="false" ecoreClass="krendering.ecore#//KPosition">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference krendering.ecore#//KPosition/x"/>
@@ -109,6 +115,8 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute krendering.ecore#//KGridPlacementData/maxCellWidth"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute krendering.ecore#//KGridPlacementData/minCellHeight"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute krendering.ecore#//KGridPlacementData/maxCellHeight"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute krendering.ecore#//KGridPlacementData/fixedWidth"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute krendering.ecore#//KGridPlacementData/fixedHeight"/>
     </genClasses>
     <genClasses ecoreClass="krendering.ecore#//KAreaPlacementData">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference krendering.ecore#//KAreaPlacementData/topLeft"/>
@@ -129,6 +137,8 @@
     </genClasses>
     <genClasses ecoreClass="krendering.ecore#//KLineStyle">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute krendering.ecore#//KLineStyle/lineStyle"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute krendering.ecore#//KLineStyle/dashPattern"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute krendering.ecore#//KLineStyle/dashOffset"/>
     </genClasses>
     <genClasses ecoreClass="krendering.ecore#//KVerticalAlignment">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute krendering.ecore#//KVerticalAlignment/verticalAlignment"/>
@@ -215,6 +225,10 @@
     <genClasses ecoreClass="krendering.ecore#//KTextStrikeout">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute krendering.ecore#//KTextStrikeout/struckOut"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference krendering.ecore#//KTextStrikeout/color"/>
+    </genClasses>
+    <genClasses ecoreClass="krendering.ecore#//KLineJoin">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute krendering.ecore#//KLineJoin/lineJoin"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute krendering.ecore#//KLineJoin/miterLimit"/>
     </genClasses>
   </genPackages>
 </genmodel:GenModel>

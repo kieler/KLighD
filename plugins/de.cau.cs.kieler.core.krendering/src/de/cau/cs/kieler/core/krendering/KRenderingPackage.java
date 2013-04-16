@@ -1598,13 +1598,31 @@ public interface KRenderingPackage extends EPackage {
     int KGRID_PLACEMENT_DATA__MAX_CELL_HEIGHT = KAREA_PLACEMENT_DATA_FEATURE_COUNT + 3;
 
     /**
+     * The feature id for the '<em><b>Fixed Width</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KGRID_PLACEMENT_DATA__FIXED_WIDTH = KAREA_PLACEMENT_DATA_FEATURE_COUNT + 4;
+
+    /**
+     * The feature id for the '<em><b>Fixed Height</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KGRID_PLACEMENT_DATA__FIXED_HEIGHT = KAREA_PLACEMENT_DATA_FEATURE_COUNT + 5;
+
+    /**
      * The number of structural features of the '<em>KGrid Placement Data</em>' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int KGRID_PLACEMENT_DATA_FEATURE_COUNT = KAREA_PLACEMENT_DATA_FEATURE_COUNT + 4;
+    int KGRID_PLACEMENT_DATA_FEATURE_COUNT = KAREA_PLACEMENT_DATA_FEATURE_COUNT + 6;
 
     /**
      * The meta object id for the '{@link de.cau.cs.kieler.core.krendering.impl.KCustomRenderingImpl <em>KCustom Rendering</em>}' class.
@@ -4085,6 +4103,28 @@ public interface KRenderingPackage extends EPackage {
     EAttribute getKGridPlacementData_MaxCellHeight();
 
     /**
+     * Returns the meta object for the attribute '{@link de.cau.cs.kieler.core.krendering.KGridPlacementData#getFixedWidth <em>Fixed Width</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the attribute '<em>Fixed Width</em>'.
+     * @see de.cau.cs.kieler.core.krendering.KGridPlacementData#getFixedWidth()
+     * @see #getKGridPlacementData()
+     * @generated
+     */
+    EAttribute getKGridPlacementData_FixedWidth();
+
+    /**
+     * Returns the meta object for the attribute '{@link de.cau.cs.kieler.core.krendering.KGridPlacementData#getFixedHeight <em>Fixed Height</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the attribute '<em>Fixed Height</em>'.
+     * @see de.cau.cs.kieler.core.krendering.KGridPlacementData#getFixedHeight()
+     * @see #getKGridPlacementData()
+     * @generated
+     */
+    EAttribute getKGridPlacementData_FixedHeight();
+
+    /**
      * Returns the meta object for class '{@link de.cau.cs.kieler.core.krendering.KAreaPlacementData <em>KArea Placement Data</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -5568,6 +5608,22 @@ public interface KRenderingPackage extends EPackage {
          * @generated
          */
         EAttribute KGRID_PLACEMENT_DATA__MAX_CELL_HEIGHT = eINSTANCE.getKGridPlacementData_MaxCellHeight();
+
+        /**
+         * The meta object literal for the '<em><b>Fixed Width</b></em>' attribute feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EAttribute KGRID_PLACEMENT_DATA__FIXED_WIDTH = eINSTANCE.getKGridPlacementData_FixedWidth();
+
+        /**
+         * The meta object literal for the '<em><b>Fixed Height</b></em>' attribute feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EAttribute KGRID_PLACEMENT_DATA__FIXED_HEIGHT = eINSTANCE.getKGridPlacementData_FixedHeight();
 
         /**
          * The meta object literal for the '{@link de.cau.cs.kieler.core.krendering.impl.KAreaPlacementDataImpl <em>KArea Placement Data</em>}' class.
