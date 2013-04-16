@@ -410,7 +410,7 @@ public class PSWTAdvancedPath extends PNode {
         final RGB old = strokePaint;
         strokePaint = strokeColor;
         strokePaintGradient = null;
-        invalidatePaint();
+//        invalidatePaint();
         firePropertyChange(PPath.PROPERTY_CODE_STROKE_PAINT, PPath.PROPERTY_STROKE_PAINT, old,
                 strokePaint);
     }
@@ -443,7 +443,7 @@ public class PSWTAdvancedPath extends PNode {
             strokePaint = null;
         }
         strokePaintGradient = strokeGradient;
-        invalidatePaint();
+//        invalidatePaint();
         firePropertyChange(PPath.PROPERTY_CODE_STROKE_PAINT, PPath.PROPERTY_STROKE_PAINT, oldPaint,
                 strokePaintGradient);
     }
@@ -484,7 +484,7 @@ public class PSWTAdvancedPath extends PNode {
             oldPaint = paint;
         }
         paint = newPaint;
-        invalidatePaint();
+//        invalidatePaint();
         firePropertyChange(PROPERTY_CODE_PAINT, PROPERTY_PAINT, oldPaint, paint);
     }
     
@@ -516,7 +516,7 @@ public class PSWTAdvancedPath extends PNode {
             paint = null;
         }
         paintGradient = newPaint;
-        invalidatePaint();
+//        invalidatePaint();
         firePropertyChange(PROPERTY_CODE_PAINT, PROPERTY_PAINT, oldPaint, paint);
     }
     

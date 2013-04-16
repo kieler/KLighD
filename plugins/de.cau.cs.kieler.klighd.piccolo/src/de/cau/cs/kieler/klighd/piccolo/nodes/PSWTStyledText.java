@@ -33,7 +33,6 @@ import de.cau.cs.kieler.klighd.piccolo.KlighdPiccoloPlugin;
 import de.cau.cs.kieler.klighd.piccolo.KlighdSWTGraphics;
 import de.cau.cs.kieler.klighd.piccolo.util.RGBGradient;
 
-import edu.umd.cs.piccolo.nodes.PText;
 import edu.umd.cs.piccolo.util.PPaintContext;
 import edu.umd.cs.piccolox.swt.PSWTText;
 import edu.umd.cs.piccolox.swt.SWTGraphics2D;
@@ -114,10 +113,10 @@ public class PSWTStyledText extends PSWTText {
         if (penColor.equals(color)) {
             return;
         }        
-        Object oldPaint = penColor;
+//        Object oldPaint = penColor;
         penColor = color;
-        repaint();
-        firePropertyChange(PText.PROPERTY_CODE_TEXT_PAINT, PROPERTY_PAINT, oldPaint, penColor);
+//        repaint();
+//        firePropertyChange(PText.PROPERTY_CODE_TEXT_PAINT, PROPERTY_PAINT, oldPaint, penColor);
     }
 
     /**
@@ -128,7 +127,7 @@ public class PSWTStyledText extends PSWTText {
      */
     public void setPenAlpha(final int alpha) {
         penAlpha = alpha;
-        repaint();
+//        repaint();
     }
 
     private static final String TEXT_GRADIENT_MESSAGE = "KLighD (Piccolo2D): A color gradient has been"
@@ -175,10 +174,10 @@ public class PSWTStyledText extends PSWTText {
         if (penPaint != null && penPaint.equals(color)) {
             return;
         }        
-        Object oldPaint = penPaint;
+//        Object oldPaint = penPaint;
         penPaint = color;
-        repaint();
-        firePropertyChange(PROPERTY_CODE_PAINT, PROPERTY_PAINT, oldPaint, penPaint);
+//        repaint();
+//        firePropertyChange(PROPERTY_CODE_PAINT, PROPERTY_PAINT, oldPaint, penPaint);
     }
 
     /**
@@ -189,7 +188,7 @@ public class PSWTStyledText extends PSWTText {
      */
     public void setPenPaintAlpha(final int alpha) {
         penPaintAlpha = alpha;
-        repaint();
+//        repaint();
     }
     
     /**
@@ -209,7 +208,7 @@ public class PSWTStyledText extends PSWTText {
             penPaint = null;
         }
         penPaintGradient = newPaint;
-        repaint();
+//        repaint();
         firePropertyChange(PROPERTY_CODE_PAINT, PROPERTY_PAINT, oldPaint, penPaintGradient);
     }
 
@@ -245,7 +244,7 @@ public class PSWTStyledText extends PSWTText {
     public void setUnderline(final int theUnderlining, final RGB color) {
         this.underlining = theUnderlining;
         this.underlineColor = color != null ? color : this.penColor;
-        repaint();
+//        repaint();
     }
 
     /**
@@ -259,7 +258,7 @@ public class PSWTStyledText extends PSWTText {
     public void setStrikeout(final boolean theStrikeout, final RGB color) {
         this.strikeout = theStrikeout;
         this.strikeoutColor = color != null ? color : this.penColor;
-        repaint();
+//        repaint();
     }
 
     @Override
