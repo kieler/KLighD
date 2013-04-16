@@ -5,7 +5,6 @@ package de.cau.cs.kieler.core.kgraph.text.ui.contentassist;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.xtext.*;
-import de.cau.cs.kieler.core.kgraph.text.krendering.ui.contentassist.KRenderingProposalProvider;
 import org.eclipse.xtext.ui.editor.contentassist.ICompletionProposalAcceptor;
 import org.eclipse.xtext.ui.editor.contentassist.ContentAssistContext;
 
@@ -15,7 +14,7 @@ import org.eclipse.xtext.ui.editor.contentassist.ContentAssistContext;
  * with a more concrete subtype. 
  */
 @SuppressWarnings("all")
-public class AbstractKGraphProposalProvider extends KRenderingProposalProvider {
+public class AbstractKGraphProposalProvider extends de.cau.cs.kieler.core.kgraph.text.krendering.ui.contentassist.KRenderingProposalProvider {
 		
 	public void completeKNode_Ports(EObject model, Assignment assignment, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
 		completeRuleCall(((RuleCall)assignment.getTerminal()), context, acceptor);

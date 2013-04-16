@@ -94,6 +94,11 @@ public abstract class AbstractKRenderingRuntimeModule extends DefaultRuntimeModu
 		return org.eclipse.xtext.parser.antlr.AntlrTokenDefProvider.class;
 	}
 
+	// contributed by org.eclipse.xtext.generator.parser.antlr.XtextAntlrGeneratorFragment
+	public Class<? extends org.eclipse.xtext.parser.antlr.IUnorderedGroupHelper> bindIUnorderedGroupHelper() {
+		return org.eclipse.xtext.parser.antlr.UnorderedGroupHelper.class;
+	}
+
 	// contributed by org.eclipse.xtext.generator.ecore2xtext.Ecore2XtextValueConverterServiceFragment
 	public Class<? extends org.eclipse.xtext.conversion.IValueConverterService> bindIValueConverterService() {
 		return org.eclipse.xtext.common.services.Ecore2XtextTerminalConverters.class;

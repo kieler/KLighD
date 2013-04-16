@@ -52,6 +52,8 @@ import de.cau.cs.kieler.core.krendering.KShadow;
 import de.cau.cs.kieler.core.krendering.KSpline;
 import de.cau.cs.kieler.core.krendering.KStyleRef;
 import de.cau.cs.kieler.core.krendering.KText;
+import de.cau.cs.kieler.core.krendering.KTextStrikeout;
+import de.cau.cs.kieler.core.krendering.KTextUnderline;
 import de.cau.cs.kieler.core.krendering.KTopPosition;
 import de.cau.cs.kieler.core.krendering.KVerticalAlignment;
 import de.cau.cs.kieler.kiml.klayoutdata.KEdgeLayout;
@@ -429,6 +431,20 @@ public class KGraphSemanticSequencer extends KRenderingSemanticSequencer {
 				   context == grammarAccess.getKRenderingRule() ||
 				   context == grammarAccess.getKTextRule()) {
 					sequence_KText(context, (KText) semanticObject); 
+					return; 
+				}
+				else break;
+			case KRenderingPackage.KTEXT_STRIKEOUT:
+				if(context == grammarAccess.getKStyleRule() ||
+				   context == grammarAccess.getKTextStrikeoutRule()) {
+					sequence_KTextStrikeout(context, (KTextStrikeout) semanticObject); 
+					return; 
+				}
+				else break;
+			case KRenderingPackage.KTEXT_UNDERLINE:
+				if(context == grammarAccess.getKStyleRule() ||
+				   context == grammarAccess.getKTextUnderlineRule()) {
+					sequence_KTextUnderline(context, (KTextUnderline) semanticObject); 
 					return; 
 				}
 				else break;

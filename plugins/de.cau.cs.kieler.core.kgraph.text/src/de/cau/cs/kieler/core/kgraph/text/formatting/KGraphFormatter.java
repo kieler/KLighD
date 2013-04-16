@@ -48,14 +48,26 @@ public class KGraphFormatter extends AbstractDeclarativeFormatter {
             c.setLinewrap().after(comma);
         }
         
+        // avoid line break in the dash pattern of custom line style definitions
+        c.setNoLinewrap().after(f.getKLineStyleAccess().getCommaKeyword_4_3_0());
+        
+        // configure avoidance of line wrap insertion in front of exclamation marks
+        for (Keyword word : f.findKeywords("!")) {
+            c.setNoLinewrap().before(word);
+        }
+        
         // configure insertion of a line wrap in front of the following keywords
-        for (Keyword word : f.findKeywords("mapProperties", "children", "styles", "bendPoints",
-                "placementData", "detailedPlacementData", "sourcePoint", "targetPoint",
-                "sourcePort", "targetPort", "topLeft", "bottomRight", "lineStyle", "lineWidth",
-                "backgroundColor", "foregroundColor", "backgroundVisibility",
-                "foregroundVisibility", "font", "fontSize", "fontColor", "bold", "italic",
-                "horizontalAlignment", "verticalAlignment", "left", "right", "location", "xOffset",
-                "width", "insets", "KNode", "KInsets", "KPoint")) {
+        for (Keyword word : f.findKeywords(// "KNode",
+                "KInsets", "KPoint", "children",
+                "width", "insets", "mapProperties",
+                "sourcePort", "targetPort", "sourcePoint", "targetPoint", "bendPoints",
+                "placementData", "topLeft", "bottomRight", "left", "right",
+                "referencePoint","minWidth", "minHeight", "horizontalMargin", "verticalMargin",
+                "width", "height", "absolute", "relative", "xOffset", "yOffset",
+                "horizontalAlignment", "verticalAlignment",
+                "styles", "lineCap", "lineJoin", "lineStyle", "lineWidth",
+                "background", "foreground", "color", "targetColor", "alpha", "targetAlpha",
+                "font", "fontSize", "fontColor", "bold", "italic", "struckout", "underline")) {
             c.setLinewrap().before(word);
         }
         
@@ -67,7 +79,7 @@ public class KGraphFormatter extends AbstractDeclarativeFormatter {
         // suppress the line wrap after 'topLeft' and 'bottomRight' of directPlacementData 
         c.setNoLinewrap().after(f.getKAreaPlacementDataAccess().getTopLeftKeyword_2());
         c.setNoLinewrap().after(f.getKAreaPlacementDataAccess().getBottomRightKeyword_5());
-
+        
         // some custom formatting of coordinate numbers 
         c.setNoLinewrap().after(
                 f.getKRenderingGrammarAccess().getKLayoutDataGrammarAccess().getKPointAccess()
@@ -87,7 +99,7 @@ public class KGraphFormatter extends AbstractDeclarativeFormatter {
                 f.getPersistentEntryAccess().getKeyEStringParserRuleCall_0_0());
         c.setLinewrap().between(f.getKShapeLayoutAccess().getMapPropertiesKeyword_8_0(),
                 f.getPersistentEntryAccess().getKeyEStringParserRuleCall_0_0());
-        c.setLinewrap().between(f.getKTextAccess().getMapPropertiesKeyword_3_4_0(),
+        c.setLinewrap().between(f.getKTextAccess().getMapPropertiesKeyword_3_1_3_0(),
                 f.getPersistentEntryAccess().getKeyEStringParserRuleCall_0_0());
         
         // standard rules targeting comments

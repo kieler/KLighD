@@ -47,6 +47,8 @@ import de.cau.cs.kieler.core.krendering.KShadow;
 import de.cau.cs.kieler.core.krendering.KSpline;
 import de.cau.cs.kieler.core.krendering.KStyleRef;
 import de.cau.cs.kieler.core.krendering.KText;
+import de.cau.cs.kieler.core.krendering.KTextStrikeout;
+import de.cau.cs.kieler.core.krendering.KTextUnderline;
 import de.cau.cs.kieler.core.krendering.KTopPosition;
 import de.cau.cs.kieler.core.krendering.KVerticalAlignment;
 import de.cau.cs.kieler.kiml.klayoutdata.KEdgeLayout;
@@ -383,6 +385,20 @@ public class KRenderingSemanticSequencer extends KLayoutDataSemanticSequencer {
 					return; 
 				}
 				else break;
+			case KRenderingPackage.KTEXT_STRIKEOUT:
+				if(context == grammarAccess.getKStyleRule() ||
+				   context == grammarAccess.getKTextStrikeoutRule()) {
+					sequence_KTextStrikeout(context, (KTextStrikeout) semanticObject); 
+					return; 
+				}
+				else break;
+			case KRenderingPackage.KTEXT_UNDERLINE:
+				if(context == grammarAccess.getKStyleRule() ||
+				   context == grammarAccess.getKTextUnderlineRule()) {
+					sequence_KTextUnderline(context, (KTextUnderline) semanticObject); 
+					return; 
+				}
+				else break;
 			case KRenderingPackage.KTOP_POSITION:
 				if(context == grammarAccess.getKTopPositionRule() ||
 				   context == grammarAccess.getKYPositionRule()) {
@@ -414,8 +430,8 @@ public class KRenderingSemanticSequencer extends KLayoutDataSemanticSequencer {
 		}
 		INodesForEObjectProvider nodes = createNodeProvider(semanticObject);
 		SequenceFeeder feeder = createSequencerFeeder(semanticObject, nodes);
-		feeder.accept(grammarAccess.getKActionAccess().getTriggerTriggerEnumRuleCall_4_0(), semanticObject.getTrigger());
-		feeder.accept(grammarAccess.getKActionAccess().getIdEStringParserRuleCall_7_0(), semanticObject.getId());
+		feeder.accept(grammarAccess.getKActionAccess().getTriggerTriggerEnumRuleCall_3_0(), semanticObject.getTrigger());
+		feeder.accept(grammarAccess.getKActionAccess().getIdEStringParserRuleCall_5_0(), semanticObject.getId());
 		feeder.finish();
 	}
 	
@@ -547,12 +563,12 @@ public class KRenderingSemanticSequencer extends KLayoutDataSemanticSequencer {
 	 * Constraint:
 	 *     (
 	 *         rotateWithLine?='rotateWithLine'? 
-	 *         absolute=EFloat 
+	 *         absolute=EFloat? 
 	 *         relative=EFloat? 
 	 *         xOffset=EFloat? 
 	 *         yOffset=EFloat? 
-	 *         width=EFloat? 
-	 *         height=EFloat?
+	 *         width=EFloat 
+	 *         height=EFloat
 	 *     )
 	 */
 	protected void sequence_KDecoratorPlacementData(EObject context, KDecoratorPlacementData semanticObject) {
@@ -632,6 +648,8 @@ public class KRenderingSemanticSequencer extends KLayoutDataSemanticSequencer {
 	/**
 	 * Constraint:
 	 *     (
+	 *         fixedWidth=EBoolean? 
+	 *         fixedHeight=EBoolean? 
 	 *         minCellWidth=EFloat? 
 	 *         minCellHeight=EFloat? 
 	 *         maxCellWidth=EFloat? 
@@ -647,7 +665,7 @@ public class KRenderingSemanticSequencer extends KLayoutDataSemanticSequencer {
 	
 	/**
 	 * Constraint:
-	 *     (numColumns=EInt (topLeft=KPosition bottomRight=KPosition)?)
+	 *     (numColumns=EInt (topLeft=KPosition? bottomRight=KPosition?)?)
 	 */
 	protected void sequence_KGridPlacement(EObject context, KGridPlacement semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
@@ -741,8 +759,8 @@ public class KRenderingSemanticSequencer extends KLayoutDataSemanticSequencer {
 	 * Constraint:
 	 *     (
 	 *         referencePoint=KPosition 
-	 *         verticalAlignment=VerticalAlignment? 
 	 *         horizontalAlignment=HorizontalAlignment? 
+	 *         verticalAlignment=VerticalAlignment? 
 	 *         horizontalMargin=EFloat? 
 	 *         verticalMargin=EFloat? 
 	 *         minWidth=EFloat? 
@@ -940,6 +958,24 @@ public class KRenderingSemanticSequencer extends KLayoutDataSemanticSequencer {
 	 *     (styleHolder=[KStyleHolder|EString] propagateToChildren?='!'? modifierId=EString?)
 	 */
 	protected void sequence_KStyleRef(EObject context, KStyleRef semanticObject) {
+		genericSequencer.createSequence(context, semanticObject);
+	}
+	
+	
+	/**
+	 * Constraint:
+	 *     (struckOut?='strikeOut' color=KColor? propagateToChildren?='!'? modifierId=EString?)
+	 */
+	protected void sequence_KTextStrikeout(EObject context, KTextStrikeout semanticObject) {
+		genericSequencer.createSequence(context, semanticObject);
+	}
+	
+	
+	/**
+	 * Constraint:
+	 *     (underline=Underline color=KColor? propagateToChildren?='!'? modifierId=EString?)
+	 */
+	protected void sequence_KTextUnderline(EObject context, KTextUnderline semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
 	}
 	

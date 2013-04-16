@@ -18,70 +18,42 @@ import "http://kieler.cs.cau.de/KGraph" as kgraph
 import "http://kieler.cs.cau.de/KLayoutData"
 
 KShapeLayout returns KShapeLayout:
-//    {KShapeLayout}
-//    'KShapeLayout'
-//    '{'
-//        ('xpos' xpos=EFloat)?
-//        ('ypos' ypos=EFloat)?
-//        ('width' width=EFloat)?
-//        ('height' height=EFloat)?
-//        ('persistentEntries' '{' persistentEntries+=PersistentEntry ( "," persistentEntries+=PersistentEntry)* '}' )?
-//        ('insets' insets=KInsets)?
-//    '}';
     {KShapeLayout}
     'KShapeLayout'
-    '{'
+    '{' (
         ('xpos' xpos=EFloat)?
-        ('ypos' ypos=EFloat)?
-        ('width' width=EFloat)?
-        ('height' height=EFloat)?
-        ('insets' insets=KInsets)?
-        ('mapProperties' ':'? persistentEntries+=PersistentEntry ( ","? persistentEntries+=PersistentEntry)*)?
-    '}';
+        & ('ypos' ypos=EFloat)?
+        & ('width' width=EFloat)?
+        & ('height' height=EFloat)?
+        & ('insets' insets=KInsets)?
+        & ('mapProperties' ':'? persistentEntries+=PersistentEntry ( ","? persistentEntries+=PersistentEntry)*)?
+    ) '}';
 
 KInsets returns KInsets:
     {KInsets}
     'KInsets'
-    '{'
+    '{' (
         ('top' top=EFloat)?
-        ('bottom' bottom=EFloat)?
-        ('left' left=EFloat)?
-        ('right' right=EFloat)?
-    '}';
+        & ('bottom' bottom=EFloat)?
+        & ('left' left=EFloat)?
+        & ('right' right=EFloat)?
+    ) '}';
 
 KEdgeLayout returns KEdgeLayout:
-//    'KEdgeLayout'
-//    '{'
-//        ('persistentEntries' '{' persistentEntries+=PersistentEntry ( "," persistentEntries+=PersistentEntry)* '}' )?
-//        ('bendPoints' '{' bendPoints+=KPoint ( "," bendPoints+=KPoint)* '}' )?
-//        'sourcePoint' sourcePoint=KPoint
-//        'targetPoint' targetPoint=KPoint
-//    '}';
     {KEdgeLayout}
     'KEdgeLayout'
-    '{'
+    '{' (
         ('sourcePoint' ':'? sourcePoint=KPoint)?
-        ('targetPoint' ':'? targetPoint=KPoint)?
-        ('bendPoints' ':'? bendPoints+=KPoint ( ","? bendPoints+=KPoint)*)?
-        ('mapProperties' ':'?  persistentEntries+=PersistentEntry ( ","? persistentEntries+=PersistentEntry)*)?
-    '}';
+        & ('targetPoint' ':'? targetPoint=KPoint)?
+        & ('bendPoints' ':'? bendPoints+=KPoint ( ","? bendPoints+=KPoint)*)?
+        & ('mapProperties' ':'?  persistentEntries+=PersistentEntry ( ","? persistentEntries+=PersistentEntry)*)?
+    ) '}';
 
 KPoint returns KPoint:
-//    {KPoint}
-//    'KPoint'
-//    '{'
-//        ('x' x=EFloat)?
-//        ('y' y=EFloat)?
-//    '}';
     {KPoint}
     'KPoint' ('x' x=EFloat) ('y' y=EFloat);
 
 PersistentEntry returns kgraph::PersistentEntry:
-//    'PersistentEntry'
-//    '{'
-//        'key' key=EString
-//        ('value' value=EString)?
-//    '}';
     key=EString ('=' value=EString)?;
 
 EString returns ecore::EString:

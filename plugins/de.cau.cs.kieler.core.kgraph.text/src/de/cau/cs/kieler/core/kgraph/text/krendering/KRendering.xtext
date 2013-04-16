@@ -28,13 +28,16 @@ KRendering returns KRendering:
 
 KAction returns KAction:
     {KAction}
-    'KAction' 'trigger' '=' trigger = Trigger 'id' '=' id = EString;
+    'KAction' 'trigger' trigger = Trigger 'id' id = EString;
 
 KPlacementData returns KPlacementData:
     KDecoratorPlacementData | KGridPlacementData | KAreaPlacementData | KPointPlacementData;
 
 KStyle returns KStyle:
-    KLineWidth | KForeground | KBackground | KVisibility | KLineStyle | KLineCap |  KLineJoin | KRotation | KShadow | KFontBold | KFontItalic | KFontName | KFontSize | KVerticalAlignment | KHorizontalAlignment | KStyleRef;
+    KVisibility | KForeground | KBackground | KRotation | KShadow | KStyleRef |
+    KLineWidth | KLineStyle | KLineCap |  KLineJoin |
+    KFontBold | KFontItalic | KFontName | KFontSize | KTextUnderline | KTextStrikeout |
+    KHorizontalAlignment | KVerticalAlignment;
 
 KPlacement returns KPlacement:
     KGridPlacement;
@@ -48,170 +51,181 @@ KYPosition returns KYPosition:
 KRenderingRef returns KRenderingRef:
     {KRenderingRef}
     'RenderingRef' rendering=[KRendering|EString]
-    ('{'
+    ('{' (
         ('styles' ':'?  styles+=KStyle ( ","? styles+=KStyle)*)?
-        ('placementData' ':'? placementData=KPlacementData)?
-    '}')?;
+        & ('placementData' ':'? placementData=KPlacementData)?
+    ) '}')?;
     
 KEllipse returns KEllipse:
     {KEllipse}
     'Ellipse'
-    ('{'
+    ('{' (
         ('actions' ':'? actions+=KAction ( ","? actions+=KAction)*)?
-        ('styles' ':'? styles+=KStyle ( ","? styles+=KStyle)*)?
-        ('placementData' ':'? placementData=KPlacementData)?
-        ('childPlacement' ':'? childPlacement=KPlacement)?
-        ('children' ':'? children+=KRendering ( ","? children+=KRendering)*)?
-    '}')?;
+        & ('styles' ':'? styles+=KStyle ( ","? styles+=KStyle)*)?
+        & ('placementData' ':'? placementData=KPlacementData)?
+        & ('childPlacement' ':'? childPlacement=KPlacement)?
+        & ('children' ':'? children+=KRendering ( ","? children+=KRendering)*)?
+    ) '}')?;
 
 KRectangle returns KRectangle:
     {KRectangle}
     'Rectangle'
-    ('{'
+    ('{' (
         ('actions' ':'? actions+=KAction ( ","? actions+=KAction)*)?
-        ('styles' ':'? styles+=KStyle ( ","? styles+=KStyle)*)?
-        ('placementData' ':'? placementData=KPlacementData)?
-        ('childPlacement' ':'? childPlacement=KPlacement)?
-        ('children' ':'? children+=KRendering ( ","? children+=KRendering)*)?
-    '}')?;
+        & ('styles' ':'? styles+=KStyle ( ","? styles+=KStyle)*)?
+        & ('placementData' ':'? placementData=KPlacementData)?
+        & ('childPlacement' ':'? childPlacement=KPlacement)?
+        & ('children' ':'? children+=KRendering ( ","? children+=KRendering)*)?
+    ) '}')?;
 
 KRoundedRectangle returns KRoundedRectangle:
     {KRoundedRectangle}
     'RoundedRectangle' cornerWidth=EFloat ','? cornerHeight=EFloat
-    ('{'
+    ('{' (
         ('actions' ':'? actions+=KAction ( ","? actions+=KAction)*)?
-        ('styles' ':'? styles+=KStyle ( ","? styles+=KStyle)*)?
-        ('placementData' ':'? placementData=KPlacementData)?
-        ('childPlacement' ':'? childPlacement=KPlacement)?
-        ('children' ':'? children+=KRendering ( ","? children+=KRendering)*)?
-    '}')?;
+        & ('styles' ':'? styles+=KStyle ( ","? styles+=KStyle)*)?
+        & ('placementData' ':'? placementData=KPlacementData)?
+        & ('childPlacement' ':'? childPlacement=KPlacement)?
+        & ('children' ':'? children+=KRendering ( ","? children+=KRendering)*)?
+    ) '}')?;
 
 KPolyline_Impl returns KPolyline:
     {KPolyline}
     'Polyline'
-    ('{'
+    ('{' (
         ('points' ':'? points+=KPosition ( ","? points+=KPosition)*)? 
-        ('actions' ':'? actions+=KAction ( ","? actions+=KAction)*)?
-        ('styles' ':'? styles+=KStyle ( ","? styles+=KStyle)*)?
-        ('placementData' ':'? placementData=KPlacementData)?
-        ('childPlacement' ':'? childPlacement=KPlacement)?
-        ('children' ':'? children+=KRendering ( ","? children+=KRendering)*)?
-    '}')?;
+        & ('actions' ':'? actions+=KAction ( ","? actions+=KAction)*)?
+        & ('styles' ':'? styles+=KStyle ( ","? styles+=KStyle)*)?
+        & ('placementData' ':'? placementData=KPlacementData)?
+        & ('childPlacement' ':'? childPlacement=KPlacement)?
+        & ('children' ':'? children+=KRendering ( ","? children+=KRendering)*)?
+    ) '}')?;
 
 KRoundedBendsPolyline returns KRoundedBendsPolyline:
     {KRoundedBendsPolyline}
     'RoundedBendsPolyline' bendRadius=EFloat
-    ('{'
+    ('{' (
         ('points' ':'? points+=KPosition ( ","? points+=KPosition)*)? 
-        ('styles' ':'? styles+=KStyle ( ","? styles+=KStyle)*)?
-        ('placementData' ':'? placementData=KPlacementData)?
-        ('childPlacement' ':'? childPlacement=KPlacement)?
-        ('children' ':'? children+=KRendering ( ","? children+=KRendering)*)?
-    '}')?;
+        & ('styles' ':'? styles+=KStyle ( ","? styles+=KStyle)*)?
+        & ('placementData' ':'? placementData=KPlacementData)?
+        & ('childPlacement' ':'? childPlacement=KPlacement)?
+        & ('children' ':'? children+=KRendering ( ","? children+=KRendering)*)?
+    ) '}')?;
 
 KPolygon returns KPolygon:
     {KPolygon}
     'Polygon'
-    ('{'
+    ('{' (
         ('points' ':'? points+=KPosition ( ","? points+=KPosition)*)? 
-        ('actions' ':'? actions+=KAction ( ","? actions+=KAction)*)?
-        ('styles' ':'? styles+=KStyle ( ","? styles+=KStyle)*)?
-        ('placementData' ':'? placementData=KPlacementData)?
-        ('childPlacement' ':'? childPlacement=KPlacement)?
-        ('children' ':'? children+=KRendering ( ","? children+=KRendering)*)?
-    '}')?;
+        & ('actions' ':'? actions+=KAction ( ","? actions+=KAction)*)?
+        & ('styles' ':'? styles+=KStyle ( ","? styles+=KStyle)*)?
+        & ('placementData' ':'? placementData=KPlacementData)?
+        & ('childPlacement' ':'? childPlacement=KPlacement)?
+        & ('children' ':'? children+=KRendering ( ","? children+=KRendering)*)?
+    ) '}')?;
 
 KImage returns KImage:
     {KImage}
     'Image' ((bundleName=EString) | '-') imagePath=EString
-    ('{'
+    ('{' (
         ('actions' ':'? actions+=KAction ( ","? actions+=KAction)*)?
-        ('styles' ':'? styles+=KStyle ( ","? styles+=KStyle)*)?
-        ('placementData' ':'? placementData=KPlacementData)?
-        ('childPlacement' ':'? childPlacement=KPlacement)?
-        ('children' ':'? children+=KRendering ( ","? children+=KRendering)*)?
-    '}')?;
+        & ('styles' ':'? styles+=KStyle ( ","? styles+=KStyle)*)?
+        & ('placementData' ':'? placementData=KPlacementData)?
+        & ('childPlacement' ':'? childPlacement=KPlacement)?
+        & ('children' ':'? children+=KRendering ( ","? children+=KRendering)*)?
+    ) '}')?;
 
 KArc returns KArc:
     {KArc}
     'Arc' startAngle=EFloat ','? arcAngle=EFloat
-    ('{'
+    ('{' (
         ('actions' ':'? actions+=KAction ( ","? actions+=KAction)*)?
-        ('styles' ':'? styles+=KStyle ( ","? styles+=KStyle)*)?
-        ('placementData' ':'? placementData=KPlacementData)?
-        ('childPlacement' ':'? childPlacement=KPlacement)?
-        ('children' ':'? children+=KRendering ( ","? children+=KRendering)*)?
-    '}')?;
+        & ('styles' ':'? styles+=KStyle ( ","? styles+=KStyle)*)?
+        & ('placementData' ':'? placementData=KPlacementData)?
+        & ('childPlacement' ':'? childPlacement=KPlacement)?
+        & ('children' ':'? children+=KRendering ( ","? children+=KRendering)*)?
+    ) '}')?;
 
 KChildArea returns KChildArea:
     {KChildArea}
     'ChildArea'
-    ('{'
+    ('{' (
         ('actions' ':'? actions+=KAction ( ","? actions+=KAction)*)?
-        ('styles' ':'? styles+=KStyle ( ","? styles+=KStyle)*)?
-        ('placementData' ':'? placementData=KPlacementData)?
-    '}')?;
+        & ('styles' ':'? styles+=KStyle ( ","? styles+=KStyle)*)?
+        & ('placementData' ':'? placementData=KPlacementData)?
+    ) '}')?;
 
 KText returns KText:
     {KText}
     'Text' (text=EString)?
-    ('{'
+    ('{' (
         ('actions' ':'? actions+=KAction ( ","? actions+=KAction)*)?
-        ('styles' ':'? styles+=KStyle ( ","? styles+=KStyle)*)?
-        ('placementData' ':'? placementData=KPlacementData)?
+        & ('styles' ':'? styles+=KStyle ( ","? styles+=KStyle)*)?
+        & ('placementData' ':'? placementData=KPlacementData)?
         // allow mapProperties in order to specify size for size estimation tests
         // (I don't trust in the different SWT implementations to
         // provide the same size of a text on different platforms)
-        ('mapProperties' ':'? persistentEntries+=PersistentEntry ( ","? persistentEntries+=PersistentEntry)*)?
-    '}')?;
+        & ('mapProperties' ':'? persistentEntries+=PersistentEntry ( ","? persistentEntries+=PersistentEntry)*)?
+    ) '}')?;
 
 KCustomRendering returns KCustomRendering:
     {KCustomRendering}
     'CustomRendering'
     ('{'
         'className' className=EString
-        'bundleName' bundleName=EString
+        'bundleName' bundleName=EString (
         ('actions' ':'? actions+=KAction ( ","? actions+=KAction)*)?
-        ('styles' ':'? styles+=KStyle ( ","? styles+=KStyle)*)?
-        ('placementData' ':'? placementData=KPlacementData)?
-        ('childPlacement' ':'? childPlacement=KPlacement)?
-        ('children' ':'? children+=KRendering ( ","? children+=KRendering)*)?
-    '}')?;
+        & ('styles' ':'? styles+=KStyle ( ","? styles+=KStyle)*)?
+        & ('placementData' ':'? placementData=KPlacementData)?
+        & ('childPlacement' ':'? childPlacement=KPlacement)?
+        & ('children' ':'? children+=KRendering ( ","? children+=KRendering)*)?
+    ) '}')?;
 
 KSpline returns KSpline:
     {KSpline}
     'Spline'
-    ('{'
+    ('{' (
         ('actions' ':'? actions+=KAction ( ","? actions+=KAction)*)?
-        ('styles' ':'? styles+=KStyle ( ","? styles+=KStyle)*)?
-        ('placementData' ':'? placementData=KPlacementData)?
-        ('childPlacement' ':'? childPlacement=KPlacement)?
-        ('children' ':'? children+=KRendering ( ","? children+=KRendering)*)?
-    '}')?;
+        & ('styles' ':'? styles+=KStyle ( ","? styles+=KStyle)*)?
+        & ('placementData' ':'? placementData=KPlacementData)?
+        & ('childPlacement' ':'? childPlacement=KPlacement)?
+        & ('children' ':'? children+=KRendering ( ","? children+=KRendering)*)?
+    ) '}')?;
 
 KDecoratorPlacementData returns KDecoratorPlacementData:
+    {KDecoratorPlacementData}
     'DecoratorPlacementData'
-    '{'
+    '{' (
         (rotateWithLine?='rotateWithLine')?
-        'absolute' absolute=EFloat
-        ('relative' relative=EFloat)?
-        ('xOffset' xOffset=EFloat)?
-        ('yOffset' yOffset=EFloat)?
-        ('width' width=EFloat)?
-        ('height' height=EFloat)?
-    '}';
+        & ('absolute' absolute=EFloat)?
+        & ('relative' relative=EFloat)?
+        & ('xOffset' xOffset=EFloat)?
+        & ('yOffset' yOffset=EFloat)?
+        & ('width' width=EFloat)
+        & ('height' height=EFloat)
+    ) '}';
 
+KGridPlacement returns KGridPlacement:
+    {KGridPlacement}
+    'gridPlacement' numColumns=EInt
+    ( '{' (
+        ('topLeft' topLeft=KPosition ","?)?
+        & ('bottomRight' bottomRight=KPosition)?
+    ) '}')?;
+    
 KGridPlacementData returns KGridPlacementData:
     {KGridPlacementData}
     'GridPlacementData'
-    '{'
-        ('minCellWidth' minCellWidth=EFloat)?
-        ('minCellHeight' minCellHeight=EFloat)?
-        ('maxCellWidth' maxCellWidth=EFloat)?
-        ('maxCellHeight' maxCellHeight=EFloat)?
-        ('topLeft' topLeft=KPosition)?
-        ('bottomRight' bottomRight=KPosition)?
-     '}';
+    '{' (
+        ('fixedWidth' fixedWidth=EBoolean)?
+        & ('fixedHeight' fixedHeight=EBoolean)?
+        & ('minCellWidth' minCellWidth=EFloat)?
+        & ('minCellHeight' minCellHeight=EFloat)?
+        & ('maxCellWidth' maxCellWidth=EFloat)?
+        & ('maxCellHeight' maxCellHeight=EFloat)?
+        & ('topLeft' topLeft=KPosition)?
+        & ('bottomRight' bottomRight=KPosition)?
+     ) '}';
 
 KAreaPlacementData returns KAreaPlacementData:
     'AreaPlacementData'
@@ -223,12 +237,12 @@ KPointPlacementData returns KPointPlacementData:
     'PointPlacementData'
     '{'
         'referencePoint' referencePoint=KPosition
-        ('verticalAlignment' verticalAlignment=VerticalAlignment)?
-        ('horizontalAlignment' horizontalAlignment=HorizontalAlignment)?
-        ('horizontalMargin' horizontalMargin=EFloat)?
-        ('verticalMargin' verticalMargin=EFloat)?
-        ('minWidth' minWidth=EFloat)?
-        ('minHeight' minHeight=EFloat)?
+        & ('horizontalAlignment' horizontalAlignment=HorizontalAlignment)?
+        & ('verticalAlignment' verticalAlignment=VerticalAlignment)?
+        & ('horizontalMargin' horizontalMargin=EFloat)?
+        & ('verticalMargin' verticalMargin=EFloat)?
+        & ('minWidth' minWidth=EFloat)?
+        & ('minHeight' minHeight=EFloat)?
     '}';
 
 KPosition returns KPosition:
@@ -257,111 +271,112 @@ KColor returns KColor:
 KBackground returns KBackground:
     {KBackground}
     'background'
-    '{'
+    '{' (
         ('color' color=KColor)?
-        ('targetColor' targetColor=KColor)?
-        ('alpha' alpha=EInt)?
-        ('targetAlpha' targetAlpha=EInt)?
-        ('gradientAngle' gradientAngle=EFloat)?
-    '}' (propagateToChildren?='!')?;
+        & ('targetColor' targetColor=KColor)?
+        & ('alpha' alpha=EInt)?
+        & ('targetAlpha' targetAlpha=EInt)?
+        & ('gradientAngle' gradientAngle=EFloat)?
+    ) '}' (propagateToChildren?='!')?;
 
 KForeground returns KForeground:
     {KForeground}
    'foreground'
-    '{'
+    '{' (
         ('color' color=KColor)?
-        ('targetColor' targetColor=KColor)?
-        ('alpha' alpha=EInt)?
-        ('targetAlpha' targetAlpha=EInt)?
-        ('gradientAngle' gradientAngle=EFloat)?
-    '}' (propagateToChildren?='!')?;
+        & ('targetColor' targetColor=KColor)?
+        & ('alpha' alpha=EInt)?
+        & ('targetAlpha' targetAlpha=EInt)?
+        & ('gradientAngle' gradientAngle=EFloat)?
+    ) '}' (propagateToChildren?='!')?;
     
 KVisibility returns KInvisibility:
     {KInvisibility}
     invisible?='invisible'
-    ('modifier' '=' modifierId=EString)?;
+    ('modifier' modifierId=EString)?;
     
     
 KLineWidth returns KLineWidth:
     'lineWidth' lineWidth=EFloat (propagateToChildren?='!')? 
-    ('modifier' '=' modifierId=EString)?;
+    ('modifier' modifierId=EString)?;
 
 KLineStyle returns KLineStyle:
     {KLineStyle}
     'lineStyle' lineStyle=LineStyle propagateToChildren?='!'?
-    ('dashPattern' '=' '[' dashPattern+=EFloat ( ','? dashPattern+=EFloat)* ']')?
-    ('dashOffset' '=' dashOffset=EFloat)?
-    ('modifier' '=' modifierId=EString)?;
+    ('dashPattern' '[' dashPattern+=EFloat ( ','? dashPattern+=EFloat)* ']')?
+    ('dashOffset' dashOffset=EFloat)?
+    ('modifier' modifierId=EString)?;
 
 KLineCap returns KLineCap:
     {KLineCap}
     'lineCap' lineCap=LineCap  propagateToChildren?='!'?
-    ('modifier' '=' modifierId=EString)?;
+    ('modifier' modifierId=EString)?;
     
 KLineJoin returns KLineJoin:
     {KLineJoin}
     'lineJoin' lineJoin=LineJoin  propagateToChildren?='!'?
-    ('miterLimit' '=' miterLimit=EFloat)?
-    ('modifier' '=' modifierId=EString)?;
+    ('miterLimit' miterLimit=EFloat)?
+    ('modifier' modifierId=EString)?;
     
 KRotation returns KRotation:
     {KRotation}
     'rotation' rotation=EFloat propagateToChildren?='!'?
-    ('modifier' '=' modifierId=EString)?;
+    ('modifier' modifierId=EString)?;
     
 KShadow returns KShadow:
     {KShadow}
     'shadow' color=KColor propagateToChildren?='!'?
-    ('modifier' '=' modifierId=EString)?;
+    ('modifier' modifierId=EString)?;
     
 KFontBold returns KFontBold:
     {KFontBold}
     bold?='bold' propagateToChildren?='!'?
-    ('modifier' '=' modifierId=EString)?;
+    ('modifier' modifierId=EString)?;
     
 KFontItalic returns KFontItalic:
     {KFontItalic}
     italic?='italic' propagateToChildren?='!'?
-    ('modifier' '=' modifierId=EString)?;
+    ('modifier' modifierId=EString)?;
     
 KFontName returns KFontName:
     'font' name=EString propagateToChildren?='!'?
-    ('modifier' '=' modifierId=EString)?;
+    ('modifier' modifierId=EString)?;
 
 KFontSize returns KFontSize:
     'fontSize' size=EInt propagateToChildren?='!'?
-    ('modifier' '=' modifierId=EString)?;
+    ('modifier' modifierId=EString)?;
+
+KTextStrikeout returns KTextStrikeout:
+    {KTextStrikeout}
+    struckOut?='strikeOut' ('color' color=KColor)? propagateToChildren?='!'?
+    ('modifier' modifierId=EString)?;
+
+KTextUnderline returns KTextUnderline:
+    {KTextUnderline}
+    'underline' underline=Underline ('color' color=KColor)? propagateToChildren?='!'?
+    ('modifier' modifierId=EString)?;
 
 KVerticalAlignment returns KVerticalAlignment:
     {KVerticalAlignment}
     'verticalAlignment' verticalAlignment=VerticalAlignment propagateToChildren?='!'?
-    ('modifier' '=' modifierId=EString)?;
+    ('modifier' modifierId=EString)?;
     
 KHorizontalAlignment returns KHorizontalAlignment:
     {KHorizontalAlignment}
     'horizontalAlignment' horizontalAlignment=HorizontalAlignment propagateToChildren?='!'?
-    ('modifier' '=' modifierId=EString)?;
+    ('modifier' modifierId=EString)?;
 
 KStyleRef returns KStyleRef:
     {KStyleRef}
     'styleRef' styleHolder=[KStyleHolder|EString] propagateToChildren?='!'?
-    ('modifier' '=' modifierId=EString)?;
+    ('modifier' modifierId=EString)?;
 
-KGridPlacement returns KGridPlacement:
-    {KGridPlacement}
-    'gridPlacement' numColumns=EInt
-    ('{'
-        'topLeft' topLeft=KPosition ","?
-        'bottomRight' bottomRight=KPosition
-    '}')?
-    ;
-    
 
 enum Trigger returns Trigger:
     DOUBLECLICK = "DOUBLECLICK" | SINGLECLICK = "SINGLECLICK";
 
 enum LineStyle returns LineStyle:
-    SOLID = 'SOLID' | DASH = 'DASH' | DOT = 'DOT' | DASHDOT = 'DASHDOT' | DASHDOTDOT = 'DASHDOTDOT';
+    SOLID = 'SOLID' | DASH = 'DASH' | DOT = 'DOT' | DASHDOT = 'DASHDOT' | DASHDOTDOT = 'DASHDOTDOT' | CUSTOM = 'CUSTOM';
 
 enum LineCap returns LineCap:
     CAP_FLAT = 'CAP_FLAT' | CAP_ROUND = 'CAP_ROUND' | CAP_SQUARE = 'CAP_SQUARE';
@@ -371,6 +386,10 @@ enum LineJoin returns LineJoin:
 
 enum VerticalAlignment returns VerticalAlignment:
     TOP = 'TOP' | CENTER = 'CENTER' | BOTTOM = 'BOTTOM';
+
+enum Underline returns Underline:
+    NONE = 'NONE' | SINGLE = 'SINGLE' | DOUBLE = 'DOUBLE' | ERROR = 'ERROR' | SQUIGGLE = 'SQUIGGLE' | LINK = 'LINK'
+;
 
 enum HorizontalAlignment returns HorizontalAlignment:
     LEFT = 'LEFT' | CENTER = 'CENTER' | RIGHT = 'RIGHT';
