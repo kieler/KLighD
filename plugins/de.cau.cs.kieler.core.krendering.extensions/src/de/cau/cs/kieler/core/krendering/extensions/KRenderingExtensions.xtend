@@ -172,12 +172,10 @@ class KRenderingExtensions {
     }
  
     def KInvisibility getInvisible(KRendering rendering) {
-        // chsch: I'm currently not sure whether the first or the last will win...
         return rendering.styles.filter(typeof(KInvisibility)).last?:(renderingFactory.createKInvisibility());
     }
  
     def boolean getBooleanInvisible(KRendering rendering) {
-        // chsch: I'm currently not sure whether the first or the last will win...
         return (
             rendering.styles.filter(typeof(KInvisibility)).last?:(renderingFactory.createKInvisibility())
         ).invisible;
@@ -193,14 +191,12 @@ class KRenderingExtensions {
     }
     
     def KLineWidth getLineWidth(KRendering rendering) {
-        // chsch: I'm currently not sure whether the first or the last will win...
         return rendering.styles.filter(typeof(KLineWidth)).last?:(renderingFactory.createKLineWidth => [
             lineWidth = 1f
         ]);
     }
  
     def float getLineWidthValue(KRendering rendering) {
-        // chsch: I'm currently not sure whether the first or the last will win...
         return (rendering.styles.filter(typeof(KLineWidth)).last?:(renderingFactory.createKLineWidth => [
             lineWidth = 1f
         ])).lineWidth;
@@ -216,14 +212,12 @@ class KRenderingExtensions {
     }
     
     def KLineStyle getLineStyle(KRendering rendering) {
-        // chsch: I'm currently not sure whether the first or the last will win...
         return rendering.styles.filter(typeof(KLineStyle)).last?:(renderingFactory.createKLineStyle => [
             lineStyle = LineStyle::SOLID;
         ]);
     }
  
     def LineStyle getLineStyleValue(KRendering rendering) {
-        // chsch: I'm currently not sure whether the first or the last will win...
         return (rendering.styles.filter(typeof(KLineStyle)).last?:(renderingFactory.createKLineStyle => [
             lineStyle = LineStyle::SOLID;
         ])).lineStyle;
@@ -239,14 +233,12 @@ class KRenderingExtensions {
     }
     
     def KLineCap getLineCap(KRendering rendering) {
-        // chsch: I'm currently not sure whether the first or the last will win...
         return rendering.styles.filter(typeof(KLineCap)).last?:(renderingFactory.createKLineCap => [
             lineCap = LineCap::CAP_FLAT;
         ]);
     }
  
     def LineCap getLineCapValue(KRendering rendering) {
-        // chsch: I'm currently not sure whether the first or the last will win...
         return (rendering.styles.filter(typeof(KLineCap)).last?:(renderingFactory.createKLineCap => [
             lineCap = LineCap::CAP_FLAT;
         ])).lineCap;
@@ -262,14 +254,12 @@ class KRenderingExtensions {
     }
     
     def KLineJoin getLineJoin(KRendering rendering) {
-        // chsch: I'm currently not sure whether the first or the last will win...
         return rendering.styles.filter(typeof(KLineJoin)).last?:(renderingFactory.createKLineJoin => [
             lineJoin = LineJoin::JOIN_MITER;
         ]);
     }
  
     def LineJoin getLineJoinValue(KRendering rendering) {
-        // chsch: I'm currently not sure whether the first or the last will win...
         return (rendering.styles.filter(typeof(KLineJoin)).last?:(renderingFactory.createKLineJoin => [
             lineJoin = LineJoin::JOIN_MITER;
         ])).lineJoin;
@@ -295,12 +285,10 @@ class KRenderingExtensions {
     }
     
     def KRotation getRotation(KRendering rendering) {
-        // chsch: I'm currently not sure whether the first or the last will win...
         return rendering.styles.filter(typeof(KRotation)).last?:renderingFactory.createKRotation;
     }
  
     def float getFloatRotation(KRendering rendering) {
-        // chsch: I'm currently not sure whether the first or the last will win...
         return (
             rendering.styles.filter(typeof(KRotation)).last?:renderingFactory.createKRotation
         ).rotation;
@@ -549,7 +537,6 @@ class KRenderingExtensions {
     }
     
     def KFontSize getFontSize(KRendering rendering) {
-        // chsch: I'm currently not sure whether the first or the last will win...
         return rendering.styles.filter(typeof(KFontSize)).last?:(renderingFactory.createKFontSize => [
             size = 10
         ]);
@@ -565,7 +552,6 @@ class KRenderingExtensions {
     }
     
     def KFontName getFontName(KRendering rendering) {
-        // chsch: I'm currently not sure whether the first or the last will win...
         return rendering.styles.filter(typeof(KFontName)).last?:(renderingFactory.createKFontName => [
             name = "Arial"
         ]);
@@ -585,7 +571,6 @@ class KRenderingExtensions {
     public val HorizontalAlignment H_RIGHT = HorizontalAlignment::RIGHT; 
     
     def KHorizontalAlignment getHorizontalAlignment(KRendering rendering) {
-        // chsch: I'm currently not sure whether the first or the last will win...
         return rendering.styles.filter(typeof(KHorizontalAlignment)).last?:(renderingFactory.createKHorizontalAlignment => [
             horizontalAlignment = H_CENTRAL;
         ]);
@@ -605,7 +590,6 @@ class KRenderingExtensions {
     public val VerticalAlignment V_BOTTOM = VerticalAlignment::BOTTOM; 
     
     def KVerticalAlignment getVerticalAlignment(KRendering rendering) {
-        // chsch: I'm currently not sure whether the first or the last will win...
         return rendering.styles.filter(typeof(KVerticalAlignment)).last?:(renderingFactory.createKVerticalAlignment => [
             verticalAlignment = V_CENTRAL;
         ]);
