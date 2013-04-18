@@ -20,8 +20,6 @@ import com.google.common.primitives.Floats;
 import de.cau.cs.kieler.core.krendering.KColor;
 import de.cau.cs.kieler.core.krendering.KColoring;
 import de.cau.cs.kieler.core.krendering.KRenderingPackage;
-import de.cau.cs.kieler.core.krendering.KRotation;
-import de.cau.cs.kieler.core.krendering.KShadow;
 import de.cau.cs.kieler.core.krendering.LineCap;
 import de.cau.cs.kieler.core.krendering.LineJoin;
 import de.cau.cs.kieler.core.krendering.LineStyle;
@@ -378,14 +376,16 @@ public abstract class PNodeController<T extends PNode> {
 
         // apply rotation
         if (styles.rotation != null) {
-            KRotation rotation = styles.rotation;
-            this.setRotation(rotation.getRotation());
+            this.setRotation(styles.rotation.getRotation());
+        } else {
+            this.setRotation(0);
         }
 
         // apply shadow
         if (styles.shadow != null) {
-            KShadow shadow = styles.shadow;
-            this.setShadow(shadow.getColor());
+            this.setShadow(styles.shadow.getColor());
+        } else {
+            this.setShadow(null);
         }
 
         // apply horizontal alignment
@@ -423,21 +423,29 @@ public abstract class PNodeController<T extends PNode> {
         // apply font name
         if (styles.fontName != null) {
             this.setFontName(styles.fontName.getName());
+        } else {
+            this.setFontName(KlighdConstants.DEFAULT_FONT_NAME);
         }
 
         // apply font size
         if (styles.fontSize != null) {
             this.setFontSize(styles.fontSize.getSize());
+        } else {
+            this.setFontSize(KlighdConstants.DEFAULT_FONT_SIZE);
         }
 
         // apply the italic property
         if (styles.italic != null) {
             this.setItalic(styles.italic.isItalic());
+        } else {
+            this.setItalic(false);
         }
 
         // apply the bold property
         if (styles.bold != null) {
             this.setBold(styles.bold.isBold());
+        } else {
+            this.setBold(false);
         }
 
         // apply the underlined property
@@ -453,8 +461,6 @@ public abstract class PNodeController<T extends PNode> {
         } else {
             this.setStrikeout(false, KlighdConstants.BLACK);
         }
-
-        getNode().repaint();
     }
 
     /**
@@ -469,11 +475,15 @@ public abstract class PNodeController<T extends PNode> {
     public RGB toRGB(final KColor color) {
         final int maxValue = 255;
         
+        if (color == null) {
+            return null;
+        }
+        
         int red = color.getRed() < maxValue ? color.getRed() : maxValue;
         int green = color.getGreen() < maxValue ? color.getGreen() : maxValue;
         int blue = color.getBlue() < maxValue ? color.getBlue() : maxValue;
         
-        return color == null ? null : new RGB(red, green, blue);
+        return new RGB(red, green, blue);
     }
 
     /**
