@@ -678,9 +678,8 @@ public class PSWTAdvancedPath extends PNode {
         }
         
         RGBGradient pg = getSWTPaintGradient();
-        if (!isPolyline && !isRoundedBendsPolyline && !isSpline && pg != null
-                && g2 instanceof KlighdSWTGraphics) {
-            ((KlighdSWTGraphics) g2).setBackgroundPattern(pg, getBounds());            
+        if (!isPolyline && !isRoundedBendsPolyline && !isSpline && pg != null) {
+            g2.setBackgroundPattern(pg, getBounds());            
             fillShape(g2);
         }
 
@@ -690,10 +689,9 @@ public class PSWTAdvancedPath extends PNode {
             drawShape(g2);
         }
 
-        if (strokePaintGradient != null && g2 instanceof KlighdSWTGraphics) {
+        if (strokePaintGradient != null) {
             Rectangle2D bounds = getBounds();
-            ((KlighdSWTGraphics) g2).setPattern(
-                    strokePaintGradient,
+            g2.setPattern(strokePaintGradient,
                     new Rectangle2D.Double(bounds.getMinX() - 1, bounds.getMinY() - 1, bounds
                             .getMaxX() + 1, bounds.getMaxY() + 2));
             drawShape(g2);
