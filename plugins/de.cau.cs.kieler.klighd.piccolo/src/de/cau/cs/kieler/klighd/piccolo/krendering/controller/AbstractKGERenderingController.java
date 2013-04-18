@@ -27,6 +27,7 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.PlatformUI;
 
 import com.google.common.base.Function;
+import com.google.common.base.Predicates;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -52,8 +53,8 @@ import de.cau.cs.kieler.klighd.microlayout.PlacementUtil;
 import de.cau.cs.kieler.klighd.piccolo.krendering.IGraphElement;
 import de.cau.cs.kieler.klighd.piccolo.krendering.KDecoratorNode;
 import de.cau.cs.kieler.klighd.piccolo.krendering.util.PiccoloPlacementUtil;
-import de.cau.cs.kieler.klighd.piccolo.krendering.util.Styles;
 import de.cau.cs.kieler.klighd.piccolo.krendering.util.PiccoloPlacementUtil.Decoration;
+import de.cau.cs.kieler.klighd.piccolo.krendering.util.Styles;
 import de.cau.cs.kieler.klighd.piccolo.nodes.PSWTAdvancedPath;
 import de.cau.cs.kieler.klighd.util.CrossDocumentContentAdapter;
 import de.cau.cs.kieler.klighd.util.ModelingUtil;
@@ -240,8 +241,14 @@ public abstract class AbstractKGERenderingController
                 Iterable<KRendering> allRemovedRenderings = Collections.emptyList();
                 switch (msg.getEventType()) {
                 case Notification.REMOVE_MANY:
+                    Iterable<?> removed = (Iterable<?>) msg.getOldValue();
+                    if (Iterables.any(removed, Predicates.instanceOf(KStyle.class))) {
+                        updateStylesInUi();
+                        return;
+                    }
+                    
                     final Iterable<KRendering> removedRenderings = Iterables.filter(
-                            (Iterable<?>) msg.getOldValue(), KRendering.class);
+                            removed, KRendering.class);
                     
                     allRemovedRenderings = Iterables.concat(Iterables.transform(
                             removedRenderings, new Function<KRendering, Iterable<KRendering>>() {
@@ -252,6 +259,11 @@ public abstract class AbstractKGERenderingController
                     // there is no break here by intention !
                     
                 case Notification.REMOVE:
+                    if (msg.getOldValue() instanceof KStyle) {
+                        updateStylesInUi();
+                        return;
+                    }
+                    
                     if (msg.getOldValue() instanceof KRendering) {
                         allRemovedRenderings = ModelingUtil
                                 .selfAndEAllContentsOfSameType((KRendering) msg.getOldValue());
@@ -390,6 +402,7 @@ public abstract class AbstractKGERenderingController
     private void updateStyles() {
         // update using the recursive method
         updateStyles(currentRendering, new Styles(), new ArrayList<KStyle>(0));
+        getPNodeController(currentRendering).getNode().repaint();
     }
 
     private void updateStyles(final KRendering rendering, final Styles styles,
