@@ -173,6 +173,7 @@ public class KlighdSWTGraphicsImpl extends SWTGraphics2D implements KlighdSWTGra
     public void drawRect(final double x, final double y, final double width, final double height) {
         int alpha = getAlpha();
         antiAliase();
+        updateCustomLineStyle(); 
         
         super.drawRect(x, y, width, height);
         
@@ -186,6 +187,7 @@ public class KlighdSWTGraphicsImpl extends SWTGraphics2D implements KlighdSWTGra
             final double height, final double arcWidth, final double arcHeight) {
         int alpha = getAlpha();
         antiAliase();
+        updateCustomLineStyle(); 
         
         super.drawRoundRect(x, y, width, height, arcWidth, arcHeight);
         
@@ -198,6 +200,7 @@ public class KlighdSWTGraphicsImpl extends SWTGraphics2D implements KlighdSWTGra
     public void drawOval(final double x, final double y, final double width, final double height) {
         int alpha = getAlpha();
         antiAliase();
+        updateCustomLineStyle(); 
         
         super.drawOval(x, y, width, height);
         
@@ -210,6 +213,7 @@ public class KlighdSWTGraphicsImpl extends SWTGraphics2D implements KlighdSWTGra
     public void drawPolygon(final double[] points) {
         int alpha = getAlpha();
         antiAliase();
+        updateCustomLineStyle(); 
         
         super.drawPolygon(points);
         
@@ -223,6 +227,7 @@ public class KlighdSWTGraphicsImpl extends SWTGraphics2D implements KlighdSWTGra
             final double startAngle, final double extent) {
         int alpha = getAlpha();
         antiAliase();
+        updateCustomLineStyle(); 
         
         super.drawArc(x, y, width, height, startAngle, extent);
         
@@ -235,6 +240,7 @@ public class KlighdSWTGraphicsImpl extends SWTGraphics2D implements KlighdSWTGra
     public void drawPolyline(final double[] points) {
         int alpha = getAlpha();
         antiAliase();
+        updateCustomLineStyle(); 
         
         super.drawPolyline(points);
         
@@ -247,6 +253,7 @@ public class KlighdSWTGraphicsImpl extends SWTGraphics2D implements KlighdSWTGra
     public void drawGeneralPath(final GeneralPath gp) {
         int alpha = getAlpha();
         antiAliase();
+        updateCustomLineStyle(); 
         
         super.drawGeneralPath(gp);
         
@@ -295,6 +302,33 @@ public class KlighdSWTGraphicsImpl extends SWTGraphics2D implements KlighdSWTGra
                     alpha * (KlighdConstants.ALPHA_FULL_OPAQUE - (2 - lineWidth) * factor)
                             / KlighdConstants.ALPHA_FULL_OPAQUE;
             this.setAlpha((int) adjustedAlpha);
+        }
+    }
+    
+    /** A rectangle object used to adjust custom line dash configurations wrt. the current transform. */
+    private static final Rectangle2D.Float TEMP_DASH_RECT = new Rectangle2D.Float(); 
+
+    /**
+     * A helper function that adjusts custom dash patterns and dash offset according the given transform,
+     * i.e. the zoom factor
+     * 
+     */
+    private void updateCustomLineStyle() {
+        if (this.gc.getGCData().lineStyle == SWT.LINE_CUSTOM) {
+            
+            // adjust the pattern
+            float[] dashPattern = this.gc.getGCData().lineDashes;
+            for (int i = 0; i < dashPattern.length; i++) {
+                TEMP_DASH_RECT.setRect(0, 0, dashPattern[i], dashPattern[i]);
+                SWTShapeManager.transform(TEMP_DASH_RECT, transform);
+                dashPattern[i] = TEMP_DASH_RECT.width;
+            }
+            
+            // adjust the offset
+            float dashOffset = this.gc.getGCData().lineDashesOffset;
+            TEMP_DASH_RECT.setRect(0, 0, dashOffset, dashOffset);
+            SWTShapeManager.transform(TEMP_DASH_RECT, transform);
+            this.gc.getGCData().lineDashesOffset = TEMP_DASH_RECT.width;
         }
     }
     
