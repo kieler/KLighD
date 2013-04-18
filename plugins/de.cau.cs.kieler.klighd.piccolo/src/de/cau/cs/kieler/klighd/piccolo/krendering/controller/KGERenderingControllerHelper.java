@@ -250,7 +250,7 @@ final class KGERenderingControllerHelper {
         return new PSWTAdvancedPathController(path) {
             public void setBounds(final Bounds bounds) {
                 // apply the bounds
-                getNode().setPathToRoundRectangle(0, 0, bounds.getWidth(), bounds.getHeight(),
+                getNode().setPathToArc(0, 0, bounds.getWidth(), bounds.getHeight(),
                         arc.getStartAngle(), arc.getArcAngle());
                 NodeUtil.applyTranslation(getNode(), bounds.getX(), bounds.getY());
             }
