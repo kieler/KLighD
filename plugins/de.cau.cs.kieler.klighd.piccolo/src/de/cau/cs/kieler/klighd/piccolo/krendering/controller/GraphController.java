@@ -105,8 +105,6 @@ public class GraphController {
     private static final IProperty<AdapterImpl> EDGE_SYNC_ADAPTER = new Property<AdapterImpl>(
             "klighd.edgeSyncAdapter");
 
-//    /** the attribute key for the rendering. */
-//    private static final Object RENDERING_KEY = new Object();
     /** the attribute key for the edge offset listeners. */
     private static final Object EDGE_OFFSET_LISTENER_KEY = new Object();
     /** the attribute key for the nodes listed by edge offset listeners. */
@@ -510,7 +508,7 @@ public class GraphController {
     private void addEdge(final KEdge edge) {
         KEdgeNode edgeRep = RenderingContextData.get(edge).getProperty(KEdgeNode.EDGE_REP);
         // only add the representation if it is not added already
-        if (edgeRep == null || edgeRep.getParent() == null) {
+        if (edgeRep == null) {
             KNode source = edge.getSource();
             KNode target = edge.getTarget();
             if (source != null && target != null
@@ -538,8 +536,15 @@ public class GraphController {
 
                 // update the offset of the edge layout to the containing child area
                 updateEdgeOffset(edgeRep);
-            }
-        } else {
+            }            
+        } else /* if (edgeRep.getParent() == null) */ {
+            
+            // find and set the parent for the edge
+            updateEdgeParent(edgeRep);
+
+            // update the offset of the edge layout to the containing child area
+            updateEdgeOffset(edgeRep);
+
             if (record && isAutomaticallyArranged(edge)) {
                 edgeRep.setVisible(false);
             }
@@ -706,7 +711,7 @@ public class GraphController {
         }
     }
 
-    private static final Point2D ZERO_ZERO = new Point2D.Double(0, 0);
+    // private static final Point2D ZERO_ZERO = new Point2D.Double(0, 0);
     
     /**
      * Applies the recorded layout changes by creating appropriate activities.
@@ -732,10 +737,10 @@ public class GraphController {
                 KEdgeNode edgeNode = (KEdgeNode) recordedChange.getKey();
                 shapeNode = edgeNode;
                 Point2D[] bends = (Point2D[]) recordedChange.getValue();                
-                Point2D[] curBends = (Point2D[]) edgeNode.getBendPoints();                
+                // Point2D[] curBends = (Point2D[]) edgeNode.getBendPoints();                
 
-                if (curBends.length == 2 && curBends[0].equals(ZERO_ZERO)
-                        && curBends[1].equals(ZERO_ZERO)) {
+                if (!edgeNode.getVisible() /* curBends.length == 2 && curBends[0].equals(ZERO_ZERO)
+                        && curBends[1].equals(ZERO_ZERO) */) {
                     activity = new FadeEdgeInActivity(edgeNode, bends, duration > 0 ? duration : 1);
                 } else {
                     activity = new ApplyBendPointsActivity(edgeNode, bends, duration > 0 ? duration
