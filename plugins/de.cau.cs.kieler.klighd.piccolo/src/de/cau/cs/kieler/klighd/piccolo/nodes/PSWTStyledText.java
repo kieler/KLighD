@@ -200,16 +200,16 @@ public class PSWTStyledText extends PSWTText {
         if (penPaintGradient != null && penPaintGradient.equals(newPaint)) {
             return;
         }
-        Object oldPaint = null;
-        if (penPaintGradient != null) {
-            oldPaint = penPaintGradient;   
-        } else if (penPaint != null) {
-            oldPaint = penPaint;
+//        Object oldPaint = null;
+//        if (penPaintGradient != null) {
+//            oldPaint = penPaintGradient;   
+//        } else if (penPaint != null) {
+//            oldPaint = penPaint;
             penPaint = null;
-        }
+//        }
         penPaintGradient = newPaint;
 //        repaint();
-        firePropertyChange(PROPERTY_CODE_PAINT, PROPERTY_PAINT, oldPaint, penPaintGradient);
+//        firePropertyChange(PROPERTY_CODE_PAINT, PROPERTY_PAINT, oldPaint, penPaintGradient);
     }
 
     /**
