@@ -16,6 +16,7 @@ package de.cau.cs.kieler.core.krendering.extensions
 import javax.inject.Inject
 import java.util.List
 
+import de.cau.cs.kieler.core.krendering.KArc
 import de.cau.cs.kieler.core.krendering.KChildArea
 import de.cau.cs.kieler.core.krendering.KContainerRendering
 import de.cau.cs.kieler.core.krendering.KPolyline
@@ -61,6 +62,12 @@ class KContainerRenderingExtensions {
             cr.children.removeAll(cr.children.filter(typeof(KChildArea)).toList);
             cr.children.add(it)
         ]
+    }
+
+    def KArc addArc(KContainerRendering cr) {
+        return renderingFactory.createKArc() => [
+            cr.children += it;
+        ];
     }
 
     def KEllipse addEllipse(KContainerRendering cr) {
