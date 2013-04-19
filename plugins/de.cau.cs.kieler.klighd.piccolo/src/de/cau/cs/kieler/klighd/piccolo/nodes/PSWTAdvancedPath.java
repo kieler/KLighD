@@ -670,17 +670,20 @@ public class PSWTAdvancedPath extends PNode {
         final int currentAlpha = g2.getAlpha();
         final float currentAlphaFloat = (float) currentAlpha;
         
-        RGB p = getSWTPaint();
-        if (p != null) {
-            g2.setAlpha((int) (paintAlpha * (currentAlphaFloat / KlighdConstants.ALPHA_FULL_OPAQUE)));
-            g2.setBackground(p);
-            fillShape(g2);
-        }
-        
-        RGBGradient pg = getSWTPaintGradient();
-        if (!isPolyline && !isRoundedBendsPolyline && !isSpline && pg != null) {
-            g2.setBackgroundPattern(pg, getBounds());            
-            fillShape(g2);
+        if (!isPolyline && !isRoundedBendsPolyline && !isSpline) {
+            RGB p = getSWTPaint();
+            if (p != null) {
+                g2.setAlpha(
+                        (int) (paintAlpha * (currentAlphaFloat / KlighdConstants.ALPHA_FULL_OPAQUE)));
+                g2.setBackground(p);
+                fillShape(g2);
+            }
+            
+            RGBGradient pg = getSWTPaintGradient();
+            if (pg != null) {
+                g2.setBackgroundPattern(pg, getBounds());            
+                fillShape(g2);
+            }
         }
 
         if (strokePaint != null) {
