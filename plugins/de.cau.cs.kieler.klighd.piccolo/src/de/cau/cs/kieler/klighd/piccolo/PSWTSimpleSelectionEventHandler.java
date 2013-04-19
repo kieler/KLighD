@@ -30,7 +30,6 @@ import com.google.common.collect.Sets;
 
 import de.cau.cs.kieler.klighd.KlighdConstants;
 import de.cau.cs.kieler.klighd.piccolo.nodes.PSWTAdvancedPath;
-
 import edu.umd.cs.piccolo.PCamera;
 import edu.umd.cs.piccolo.PLayer;
 import edu.umd.cs.piccolo.PNode;
@@ -42,9 +41,10 @@ import edu.umd.cs.piccolo.util.PNodeFilter;
 
 /**
  * This handler provides simple interaction for node selection. Clicking selects the object under
- * the cursor and dragging with control pressed offers marquee selection. This handler does not
- * modify the selected nodes in any way, it just provides selection functionality. Much of the
- * implementation is based on {@code PSelectionEventHandler}.
+ * the cursor and dragging with control/command key pressed offers marquee selection (dashed-
+ * rectangle-based selection). This handler does not modify the selected nodes in any way, it just
+ * provides selection functionality. Much of the implementation is based on
+ * {@code PSelectionEventHandler}.
  * 
  * @author mri
  */
