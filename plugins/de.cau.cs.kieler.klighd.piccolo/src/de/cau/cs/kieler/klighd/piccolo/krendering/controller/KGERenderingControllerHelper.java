@@ -281,7 +281,6 @@ final class KGERenderingControllerHelper {
         // create the text
         PSWTTracingText textNode = new PSWTTracingText(text);
         textNode.setGreekColor(null);
-        textNode.setTransparent(true); // supplement due to KIELER-2155
         controller.initializeRenderingNode(textNode);
 
         // supplement (chsch)

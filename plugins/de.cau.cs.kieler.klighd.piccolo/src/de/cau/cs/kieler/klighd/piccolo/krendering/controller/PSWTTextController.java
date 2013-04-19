@@ -78,29 +78,6 @@ public abstract class PSWTTextController extends PNodeController<PSWTStyledText>
         getNode().setPaint(gradient);
     }
 
-//    /**
-//     * {@inheritDoc}
-//     */
-//    @Override
-//    public void setLineAlpha(final int lineAlpha) {
-//        if (lineAlpha == 0) {
-//            getNode().setPenColor((RGB) null);
-//        }
-//    }
-//
-//    /**
-//     * {@inheritDoc}
-//     */
-//    @Override
-//    public void setBackgroundAlpha(final int backgroundAlpha) {
-//        if (backgroundAlpha == 0) {
-//            getNode().setBackgroundColor(null);
-//            getNode().setTransparent(true);
-//        } else {
-//            getNode().setTransparent(false);
-//        }
-//    }
-
     /**
      * {@inheritDoc}
      */

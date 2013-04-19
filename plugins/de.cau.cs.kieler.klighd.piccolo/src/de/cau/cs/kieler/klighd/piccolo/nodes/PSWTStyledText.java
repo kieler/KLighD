@@ -301,13 +301,11 @@ public class PSWTStyledText extends PSWTText {
                 g2.setAlpha((int) (penPaintAlpha
                         * (currentAlphaFloat / KlighdConstants.ALPHA_FULL_OPAQUE)));
                 g2.setBackground(getSWTPenPaint());
-                
-            } else {
-                g2.setAlpha(currentAlpha);
-                g2.setBackground(KlighdConstants.WHITE);
             }
 
-            g2.fillRect(0, 0, getWidth(), getHeight());
+            if (p != null || pg != null) {
+                g2.fillRect(0, 0, getWidth(), getHeight());
+            }
         }
 
         g2.translate(padding, padding);
