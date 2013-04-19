@@ -13,6 +13,7 @@
  */
 package de.cau.cs.kieler.klighd.viewers;
 
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
@@ -112,7 +113,7 @@ public class KlighdViewer extends AbstractViewer<Object> {
      * {@inheritDoc}
      */
     @Override
-    public void setSelection(final Object[] diagramElements) {
+    public void setSelection(final Iterable<EObject> diagramElements) {
         contextViewer.setSelection(diagramElements);
     }
 
@@ -128,7 +129,7 @@ public class KlighdViewer extends AbstractViewer<Object> {
      * {@inheritDoc}
      */
     @Override
-    public void select(final Object[] diagramElements) {
+    public void select(final Iterable<EObject> diagramElements) {
         contextViewer.select(diagramElements);
     }
 
@@ -136,7 +137,7 @@ public class KlighdViewer extends AbstractViewer<Object> {
      * {@inheritDoc}
      */
     @Override
-    public void unselect(final Object[] diagramElements) {
+    public void unselect(final Iterable<EObject> diagramElements) {
         contextViewer.unselect(diagramElements);
     }
 
@@ -160,7 +161,7 @@ public class KlighdViewer extends AbstractViewer<Object> {
      * {@inheritDoc}
      */
     @Override
-    public void reveal(final Object diagramObject, final int duration) {
+    public void reveal(final EObject diagramObject, final int duration) {
         contextViewer.reveal(diagramObject, duration);
     }
 
@@ -168,7 +169,7 @@ public class KlighdViewer extends AbstractViewer<Object> {
      * {@inheritDoc}
      */
     @Override
-    public void centerOn(final Object diagramElement, final int duration) {
+    public void centerOn(final EObject diagramElement, final int duration) {
         contextViewer.centerOn(diagramElement, duration);
     }
 

@@ -13,7 +13,6 @@
  */
 package de.cau.cs.kieler.klighd.viewers;
 
-import java.util.Collection;
 import java.util.EnumSet;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
@@ -22,6 +21,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IContributionItem;
@@ -55,9 +56,22 @@ import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.ScrolledForm;
 import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 
+import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 
+import de.cau.cs.kieler.core.kgraph.KGraphElement;
+import de.cau.cs.kieler.core.kgraph.KGraphPackage;
 import de.cau.cs.kieler.core.kgraph.KNode;
+import de.cau.cs.kieler.core.krendering.KBackground;
+import de.cau.cs.kieler.core.krendering.KColor;
+import de.cau.cs.kieler.core.krendering.KLineStyle;
+import de.cau.cs.kieler.core.krendering.KRendering;
+import de.cau.cs.kieler.core.krendering.KRenderingFactory;
+import de.cau.cs.kieler.core.krendering.KRenderingPackage;
+import de.cau.cs.kieler.core.krendering.KStyle;
+import de.cau.cs.kieler.core.krendering.KText;
+import de.cau.cs.kieler.core.krendering.LineStyle;
 import de.cau.cs.kieler.kiml.options.Direction;
 import de.cau.cs.kieler.kiml.options.LayoutOptions;
 import de.cau.cs.kieler.klighd.IViewer;
@@ -117,7 +131,7 @@ public class ContextViewer extends AbstractViewer<Object> implements IViewerEven
     /** the form toolkit. */
     private FormToolkit formToolkit;
     /** the set of resources to be disposed when the view is closed. */
-    private final Collection<Resource> resources = new LinkedList<Resource>();
+    private final List<Resource> resources = new LinkedList<Resource>();
 
     /**
      * Constructs a view context viewer.
@@ -514,21 +528,27 @@ public class ContextViewer extends AbstractViewer<Object> implements IViewerEven
     /**
      * {@inheritDoc}
      */
-    public void selected(final IViewer<?> viewer, final Object selectedElement) {
+    public void selected(final IViewer<?> viewer, final EObject selectedElement) {
         notifyListenersSelected(selectedElement);
     }
 
     /**
      * {@inheritDoc}
      */
-    public void unselected(final IViewer<?> viewer, final Object unselectedElement) {
+    public void unselected(final IViewer<?> viewer, final EObject unselectedElement) {
         notifyListenersUnselected(unselectedElement);
     }
 
     /**
      * {@inheritDoc}
      */
-    public void selection(final IViewer<?> viewer, final Collection<?> selectedElements) {
+    public void selection(final IViewer<?> viewer, final Iterable<? extends Object> selectedElements) {
+        // here the selected elements are assumed to be diagram elements, i.e. KGraph elements or KTexts
+        List<? extends EObject> diagramElements = Lists.newLinkedList(Iterables.filter(
+                selectedElements, EObject.class));
+        
+        updateSelectionHighlighting(diagramElements);
+        
         KlighdSelectionTrigger trigger = KlighdSelectionTrigger.getInstance();
         if (trigger != null) {
             // create the selection objects
@@ -537,18 +557,12 @@ public class ContextViewer extends AbstractViewer<Object> implements IViewerEven
             KlighdSelectionState state = new KlighdSelectionState(viewId, getCurrentViewContext(),
                     currentViewer, selections);
             // fill the selection
-            for (Object diagramObject : selectedElements) {
+            for (EObject diagramObject : diagramElements) {
                 selections.add(state.new SelectionElement(diagramObject));
             }
             trigger.trigger(state);
         }
         
-        // chsch: was 
-        //  updateSelection(selectedElements);
-        //  notifyListenersSelection(selectedElements);
-        //
-        // updated it since it makes IMO more sense this way:
-
         // update the selection status for the ISelectionProvider interface
         List<Object> selectedModelElements = Lists.newArrayList();
         Object modelElement;
@@ -564,7 +578,59 @@ public class ContextViewer extends AbstractViewer<Object> implements IViewerEven
         notifyListenersSelection(selectedModelElements);  
     }
 
-    private void updateSelection(final Collection<?> selectedElements) {
+    /** a map used to track the highlighting styles, which have been attached to selected elements. */
+    private Map<EObject, Iterable<? extends KStyle>> selectionHighlighting = Maps.newHashMap();
+    
+    private void updateSelectionHighlighting(final List<? extends EObject> diagramElements) {
+        // chsch: the following lines realizes the highlighting of selected diagram elements
+        //  (if the diagram is given as a KGraph/KRendering model)
+        List<?> noLongerSelected = Lists.newLinkedList(selectionHighlighting.keySet());
+        noLongerSelected.removeAll(diagramElements);
+        for (Object element : noLongerSelected) {
+            // the related value should never be null!!
+            for (KStyle style : selectionHighlighting.remove(element)) {
+                EcoreUtil.remove(style);
+            }
+        }
+        
+        List<EObject> newlySelected = Lists.newLinkedList(Iterables.filter(diagramElements,
+                EObject.class));
+        newlySelected.removeAll(selectionHighlighting.keySet());
+
+        for (EObject element : newlySelected) {
+
+            final KBackground bg = KRenderingFactory.eINSTANCE.createKBackground();
+            final KColor bgColor = KRenderingFactory.eINSTANCE.createKColor();
+            bg.setColor(bgColor);
+            // the color values of 'DimGray'   // SUPPRESS CHECKSTYLE NEXT 3 MagicNumber
+            bgColor.setRed(190);
+            bgColor.setGreen(190);
+            bgColor.setBlue(190);
+
+            if (KGraphPackage.eINSTANCE.getKGraphElement().isInstance(element)) {
+                KRendering rendering = ((KGraphElement) element).getData(KRendering.class);
+                KLineStyle style = KRenderingFactory.eINSTANCE.createKLineStyle();
+                if (rendering != null) {
+                    style.setLineStyle(LineStyle.DASH);
+                    List<KStyle> styles = Lists.newArrayList(style, bg);
+                    rendering.getStyles().addAll(styles);
+                    selectionHighlighting.put(element, styles);
+                    
+                    if (KGraphPackage.eINSTANCE.getKEdge().isInstance(element)) {
+                        for (KStyle s: styles) {
+                            s.setPropagateToChildren(true);
+                        }
+                    }
+                }
+            } else if (KRenderingPackage.eINSTANCE.getKText().isInstance(element)) {
+                ((KText) element).getStyles().add(bg);                
+                selectionHighlighting.put(element, Lists.newArrayList(bg));
+            }
+        }
+        // end of selection highlighting stuff
+    }
+        
+    private void updateSelection(final List<?> selectedElements) {
         synchronized (selection) {
             selection.selectedElements.clear();
             selection.selectedElements.addAll(selectedElements);
@@ -680,7 +746,7 @@ public class ContextViewer extends AbstractViewer<Object> implements IViewerEven
      * {@inheritDoc}
      */
     @Override
-    public void setSelection(final Object[] diagramElements) {
+    public void setSelection(final Iterable<EObject> diagramElements) {
         if (currentViewer != null) {
             currentViewer.setSelection(diagramElements);
         }
@@ -700,7 +766,7 @@ public class ContextViewer extends AbstractViewer<Object> implements IViewerEven
      * {@inheritDoc}
      */
     @Override
-    public void select(final Object[] diagramElements) {
+    public void select(final Iterable<EObject> diagramElements) {
         if (currentViewer != null) {
             currentViewer.select(diagramElements);
         }
@@ -710,7 +776,7 @@ public class ContextViewer extends AbstractViewer<Object> implements IViewerEven
      * {@inheritDoc}
      */
     @Override
-    public void unselect(final Object[] diagramElements) {
+    public void unselect(final Iterable<EObject> diagramElements) {
         if (currentViewer != null) {
             currentViewer.unselect(diagramElements);
         }
@@ -720,7 +786,7 @@ public class ContextViewer extends AbstractViewer<Object> implements IViewerEven
      * {@inheritDoc}
      */
     @Override
-    public void reveal(final Object diagramElement, final int duration) {
+    public void reveal(final EObject diagramElement, final int duration) {
         if (currentViewer != null) {
             currentViewer.reveal(diagramElement, duration);
         }
@@ -730,7 +796,7 @@ public class ContextViewer extends AbstractViewer<Object> implements IViewerEven
      * {@inheritDoc}
      */
     @Override
-    public void centerOn(final Object diagramElement, final int duration) {
+    public void centerOn(final EObject diagramElement, final int duration) {
         if (currentViewer != null) {
             currentViewer.centerOn(diagramElement, duration);
         }

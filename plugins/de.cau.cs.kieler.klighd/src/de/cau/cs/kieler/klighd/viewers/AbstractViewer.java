@@ -13,9 +13,10 @@
  */
 package de.cau.cs.kieler.klighd.viewers;
 
-import java.util.Collection;
 import java.util.LinkedHashSet;
 import java.util.Set;
+
+import org.eclipse.emf.ecore.EObject;
 
 import de.cau.cs.kieler.core.kgraph.KNode;
 import de.cau.cs.kieler.klighd.IViewer;
@@ -45,7 +46,7 @@ public abstract class AbstractViewer<T> implements IViewer<T> {
     /**
      * {@inheritDoc}
      */
-    public void setSelection(final Object[] diagramElements) {
+    public void setSelection(final Iterable<EObject> diagramElements) {
         // do nothing
     }
 
@@ -59,14 +60,14 @@ public abstract class AbstractViewer<T> implements IViewer<T> {
     /**
      * {@inheritDoc}
      */
-    public void select(final Object[] diagramElements) {
+    public void select(final Iterable<EObject> diagramElements) {
         // do nothing
     }
 
     /**
      * {@inheritDoc}
      */
-    public void unselect(final Object[] diagramElements) {
+    public void unselect(final Iterable<EObject> diagramElements) {
         // do nothing
     }
 
@@ -87,14 +88,14 @@ public abstract class AbstractViewer<T> implements IViewer<T> {
     /**
      * {@inheritDoc}
      */
-    public void reveal(final Object diagramObject, final int duration) {
+    public void reveal(final EObject diagramObject, final int duration) {
         // do nothing
     }
 
     /**
      * {@inheritDoc}
      */
-    public void centerOn(final Object diagramObject, final int duration) {
+    public void centerOn(final EObject diagramObject, final int duration) {
         // do nothing
     }
 
@@ -160,7 +161,7 @@ public abstract class AbstractViewer<T> implements IViewer<T> {
      * @param selectedElements
      *            the selected elements
      */
-    protected void notifyListenersSelection(final Collection<?> selectedElements) {
+    protected void notifyListenersSelection(final Iterable<? extends Object> selectedElements) {
         for (IViewerEventListener listener : listeners) {
             listener.selection(this, selectedElements);
         }
@@ -172,7 +173,7 @@ public abstract class AbstractViewer<T> implements IViewer<T> {
      * @param selectedElement
      *            the selected element
      */
-    protected void notifyListenersSelected(final Object selectedElement) {
+    protected void notifyListenersSelected(final EObject selectedElement) {
         for (IViewerEventListener listener : listeners) {
             listener.selected(this, selectedElement);
         }
@@ -184,7 +185,7 @@ public abstract class AbstractViewer<T> implements IViewer<T> {
      * @param unselectedElement
      *            the selected element
      */
-    protected void notifyListenersUnselected(final Object unselectedElement) {
+    protected void notifyListenersUnselected(final EObject unselectedElement) {
         for (IViewerEventListener listener : listeners) {
             listener.unselected(this, unselectedElement);
         }

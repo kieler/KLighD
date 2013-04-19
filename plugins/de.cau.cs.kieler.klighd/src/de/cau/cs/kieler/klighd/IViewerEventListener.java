@@ -13,7 +13,7 @@
  */
 package de.cau.cs.kieler.klighd;
 
-import java.util.Collection;
+import org.eclipse.emf.ecore.EObject;
 
 /**
  * The interface for listeners on the events of a viewer.
@@ -30,7 +30,7 @@ public interface IViewerEventListener {
      * @param selectedElement
      *            the selected element
      */
-    void selected(final IViewer<?> viewer, final Object selectedElement);
+    void selected(final IViewer<?> viewer, final EObject selectedElement);
 
     /**
      * Handles the unselection of an element.
@@ -40,7 +40,7 @@ public interface IViewerEventListener {
      * @param unselectedElement
      *            the unselected element
      */
-    void unselected(final IViewer<?> viewer, final Object unselectedElement);
+    void unselected(final IViewer<?> viewer, final EObject unselectedElement);
 
     /**
      * Handles a change of selection.
@@ -50,6 +50,6 @@ public interface IViewerEventListener {
      * @param selectedElements
      *            the currently selected elements
      */
-    void selection(final IViewer<?> viewer, final Collection<?> selectedElements);
+    void selection(final IViewer<?> viewer, final Iterable<? extends Object> selectedElements);
 
 }

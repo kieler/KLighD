@@ -13,6 +13,7 @@
  */
 package de.cau.cs.kieler.klighd;
 
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 
@@ -107,7 +108,7 @@ public interface IViewer<T> {
      * @param diagramElements
      *            the diagram elements
      */
-    void setSelection(Object[] diagramElements);
+    void setSelection(Iterable<EObject> diagramElements);
 
     /**
      * Clears the current selection.
@@ -120,7 +121,7 @@ public interface IViewer<T> {
      * @param diagramElements
      *            the diagram elements
      */
-    void select(Object[] diagramElements);
+    void select(Iterable<EObject> diagramElements);
 
     /**
      * Removes the given diagram elements from the current selection if possible.
@@ -128,7 +129,7 @@ public interface IViewer<T> {
      * @param diagramElements
      *            the diagram elements
      */
-    void unselect(Object[] diagramElements);
+    void unselect(Iterable<EObject> diagramElements);
 
     /**
      * Reveals the given diagram element over the specified duration.
@@ -138,7 +139,7 @@ public interface IViewer<T> {
      * @param duration
      *            the duration
      */
-    void reveal(Object diagramElement, int duration);
+    void reveal(EObject diagramElement, int duration);
 
     /**
      * Centers on the given diagram element over the specified duration.
@@ -148,7 +149,7 @@ public interface IViewer<T> {
      * @param duration
      *            the duration
      */
-    void centerOn(Object diagramElement, int duration);
+    void centerOn(EObject diagramElement, int duration);
 
     /**
      * Zooms to the given zoom level over the specified duration.

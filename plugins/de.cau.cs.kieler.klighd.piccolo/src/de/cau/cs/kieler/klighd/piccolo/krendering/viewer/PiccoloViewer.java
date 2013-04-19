@@ -15,12 +15,8 @@ package de.cau.cs.kieler.klighd.piccolo.krendering.viewer;
 
 import java.awt.Graphics2D;
 import java.awt.event.InputEvent;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
 
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.swt.SWT;
@@ -31,22 +27,11 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 
+import com.google.common.base.Function;
 import com.google.common.collect.Iterables;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 
 import de.cau.cs.kieler.core.kgraph.KGraphElement;
-import de.cau.cs.kieler.core.kgraph.KGraphPackage;
 import de.cau.cs.kieler.core.kgraph.KNode;
-import de.cau.cs.kieler.core.krendering.KBackground;
-import de.cau.cs.kieler.core.krendering.KColor;
-import de.cau.cs.kieler.core.krendering.KLineStyle;
-import de.cau.cs.kieler.core.krendering.KRendering;
-import de.cau.cs.kieler.core.krendering.KRenderingFactory;
-import de.cau.cs.kieler.core.krendering.KRenderingPackage;
-import de.cau.cs.kieler.core.krendering.KStyle;
-import de.cau.cs.kieler.core.krendering.KText;
-import de.cau.cs.kieler.core.krendering.LineStyle;
 import de.cau.cs.kieler.klighd.piccolo.INodeSelectionListener;
 import de.cau.cs.kieler.klighd.piccolo.KlighdSWTGraphics;
 import de.cau.cs.kieler.klighd.piccolo.KlighdSWTGraphicsImpl;
@@ -57,9 +42,9 @@ import de.cau.cs.kieler.klighd.piccolo.activities.ZoomActivity;
 import de.cau.cs.kieler.klighd.piccolo.events.KlighdActionEventHandler;
 import de.cau.cs.kieler.klighd.piccolo.krendering.ITracingElement;
 import de.cau.cs.kieler.klighd.piccolo.krendering.controller.GraphController;
-import de.cau.cs.kieler.klighd.util.RenderingContextData;
 import de.cau.cs.kieler.klighd.piccolo.nodes.PEmptyNode;
 import de.cau.cs.kieler.klighd.piccolo.ui.SaveAsImageAction;
+import de.cau.cs.kieler.klighd.util.RenderingContextData;
 import de.cau.cs.kieler.klighd.viewers.AbstractViewer;
 import de.cau.cs.kieler.klighd.viewers.ContextViewer;
 import edu.umd.cs.piccolo.PCamera;
@@ -69,6 +54,7 @@ import edu.umd.cs.piccolo.PRoot;
 import edu.umd.cs.piccolo.event.PInputEventFilter;
 import edu.umd.cs.piccolo.util.PBounds;
 import edu.umd.cs.piccolox.swt.PSWTCanvas;
+//import java.util.List;
 
 /**
  * A viewer for Piccolo diagram contexts.
@@ -81,8 +67,6 @@ public class PiccoloViewer extends AbstractViewer<KNode> implements INodeSelecti
     private PSWTCanvas canvas;
     /** the current selection event handler. */
     private PSWTSimpleSelectionEventHandler selectionHandler = null;
-    /** a map used to track the highlighting styles, which have been attached to selected elements. */
-    private Map<EObject, Iterable<? extends KStyle>> selectionHighlighting = Maps.newHashMap();
     /** the content outline page. */
     private PiccoloOutlinePage outlinePage;
     
@@ -242,10 +226,6 @@ public class PiccoloViewer extends AbstractViewer<KNode> implements INodeSelecti
 
         // forward the selection events
         selectionHandler.addSelectionListener(this);
-        for (KStyle style: Iterables.concat(selectionHighlighting.values())) {
-            EcoreUtil.remove(style);
-        }
-        selectionHighlighting.clear();
     }
 
     /**
@@ -292,7 +272,7 @@ public class PiccoloViewer extends AbstractViewer<KNode> implements INodeSelecti
         }
         // reset
         @SuppressWarnings("unchecked")
-        List<PLayer> layers = camera.getLayersReference();
+        Iterable<PLayer> layers = camera.getLayersReference();
         for (PLayer layer : layers) {
             layer.removeAllChildren();
         }
@@ -316,7 +296,7 @@ public class PiccoloViewer extends AbstractViewer<KNode> implements INodeSelecti
      * {@inheritDoc}
      */
     @Override
-    public void setSelection(final Object[] diagramElements) {
+    public void setSelection(final Iterable<EObject> diagramElements) {
         if (selectionHandler != null) {
             selectionHandler.unselectAll();
             select(diagramElements);
@@ -337,7 +317,7 @@ public class PiccoloViewer extends AbstractViewer<KNode> implements INodeSelecti
      * {@inheritDoc}
      */
     @Override
-    public void select(final Object[] diagramElements) {
+    public void select(final Iterable<EObject> diagramElements) {
         if (selectionHandler != null) {
             for (Object diagramElement : diagramElements) {
                 PNode node = getRepresentation(diagramElement);
@@ -352,7 +332,7 @@ public class PiccoloViewer extends AbstractViewer<KNode> implements INodeSelecti
      * {@inheritDoc}
      */
     @Override
-    public void unselect(final Object[] diagramElements) {
+    public void unselect(final Iterable<EObject> diagramElements) {
         if (selectionHandler != null) {
             for (Object diagramElement : diagramElements) {
                 PNode node = getRepresentation(diagramElement);
@@ -388,7 +368,7 @@ public class PiccoloViewer extends AbstractViewer<KNode> implements INodeSelecti
      * {@inheritDoc}
      */
     @Override
-    public void reveal(final Object diagramElement, final int duration) {
+    public void reveal(final EObject diagramElement, final int duration) {
         PNode node = getRepresentation(diagramElement);
         if (node != null) {
             // move the camera so it includes the bounds of the node
@@ -401,7 +381,7 @@ public class PiccoloViewer extends AbstractViewer<KNode> implements INodeSelecti
      * {@inheritDoc}
      */
     @Override
-    public void centerOn(final Object diagramElement, final int duration) {
+    public void centerOn(final EObject diagramElement, final int duration) {
         PNode node = getRepresentation(diagramElement);
         if (node != null) {
             // center the camera on the node
@@ -475,57 +455,23 @@ public class PiccoloViewer extends AbstractViewer<KNode> implements INodeSelecti
      * {@inheritDoc}
      */
     public void selection(final PSWTSimpleSelectionEventHandler handler,
-            final Collection<PNode> nodes) {
-        List<Object> graphElements = Lists.newLinkedList();
-        for (PNode node : nodes) {
-            if (node instanceof ITracingElement<?>) {
-                ITracingElement<?> graphElement = (ITracingElement<?>) node;
-                graphElements.add(graphElement.getGraphElement());
-            }
-        }
+            final Iterable<PNode> nodes) {
         
-        // chsch: the following lines realizes the highlighting of selected diagram elements
-        //  (if the diagram is given as a KGraph/KRendering model)
-        List<EObject> noLongerSelected = Lists.newLinkedList(selectionHighlighting.keySet());
-        noLongerSelected.removeAll(graphElements);
-        for (EObject element : noLongerSelected) {
-            // the related value should never be null!!
-            for (KStyle style : selectionHighlighting.remove(element)) {
-                EcoreUtil.remove(style);
-            }
-        }
+        @SuppressWarnings("unchecked")
+        Iterable<ITracingElement<EObject>> elements = (Iterable<ITracingElement<EObject>>)
+                (Iterable<?>) Iterables.filter(nodes, ITracingElement.class);
         
-        List<EObject> newlySelected = Lists.newLinkedList(Iterables.filter(graphElements,
-                EObject.class));
-        newlySelected.removeAll(selectionHighlighting.keySet());
-        for (EObject element : newlySelected) {
-            KLineStyle style = KRenderingFactory.eINSTANCE.createKLineStyle();
-            style.setLineStyle(LineStyle.DASH);
-            if (KGraphPackage.eINSTANCE.getKGraphElement().isInstance(element)) {
-                KRendering rendering = ((KGraphElement) element).getData(KRendering.class);
-                if (rendering != null) {
-                    rendering.getStyles().add(style);
-                    selectionHighlighting.put(element, Lists.newArrayList(style));
-                }
-            } else if (KRenderingPackage.eINSTANCE.getKText().isInstance(element)) {
-                final KBackground bg = KRenderingFactory.eINSTANCE.createKBackground();
-                final KColor bgColor = KRenderingFactory.eINSTANCE.createKColor();
-                // the color values of 'DimGray'   // SUPPRESS CHECKSTYLE NEXT 3 MagicNumber
-                bgColor.setRed(190);
-                bgColor.setGreen(190);
-                bgColor.setBlue(190);
-                bg.setColor(bgColor);
-                ((KText) element).getStyles().add(bg);
-                selectionHighlighting.put(element, Lists.newArrayList(bg));
-            }
-        }
-        // end of selection highlighting stuff
+//        List<EObject> graphElements = Lists.newLinkedList();
+//        for (ITracingElement<EObject> element : elements) {
+//            graphElements.add(element.getGraphElement());
+//        }
         
-        if (graphElements.size() > 0) {
-            // chsch question: Is this restriction reasonable?
-            //  one may also be informed on the clearing of the selection...
-            notifyListenersSelection(graphElements);
-        }
+        notifyListenersSelection(Iterables.transform(elements,
+                new Function<ITracingElement<EObject>, EObject>() {
+                    public EObject apply(final ITracingElement<EObject> element) {
+                        return element.getGraphElement();
+                    }
+                }));
     }
 
 }
