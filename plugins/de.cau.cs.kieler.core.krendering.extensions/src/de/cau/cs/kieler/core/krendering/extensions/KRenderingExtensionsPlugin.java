@@ -11,9 +11,9 @@
  * This code is provided under the terms of the Eclipse Public License (EPL).
  * See the file epl-v10.html for the license text.
  */
-package de.cau.cs.kieler.core.krendering.extensions.internal;
+package de.cau.cs.kieler.core.krendering.extensions;
 
-import org.osgi.framework.BundleActivator;
+import org.eclipse.core.runtime.Plugin;
 import org.osgi.framework.BundleContext;
 
 /**
@@ -22,8 +22,11 @@ import org.osgi.framework.BundleContext;
  * 
  * @author chsch
  */
-public class Activator implements BundleActivator {
+public class KRenderingExtensionsPlugin extends Plugin {
 
+    /** The plug-in ID. */
+    public static final String PLUGIN_ID = "de.cau.cs.kieler.core.krendering.extensions";
+    
     private static BundleContext context;
 
     static BundleContext getContext() {
@@ -34,14 +37,14 @@ public class Activator implements BundleActivator {
      * {@inheritDoc}
      */
     public void start(final BundleContext bundleContext) throws Exception {
-        Activator.context = bundleContext;
+        KRenderingExtensionsPlugin.context = bundleContext;
     }
 
     /**
      * {@inheritDoc}
      */
     public void stop(final BundleContext bundleContext) throws Exception {
-        Activator.context = null;
+        KRenderingExtensionsPlugin.context = null;
     }
 
 }
