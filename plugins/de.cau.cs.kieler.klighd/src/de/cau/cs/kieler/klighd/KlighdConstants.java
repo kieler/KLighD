@@ -15,6 +15,7 @@ package de.cau.cs.kieler.klighd;
 
 import java.awt.Font;
 
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.graphics.LineAttributes;
@@ -86,7 +87,8 @@ public final class KlighdConstants {
      * 
      * Note: This is a AWT constant! 
      */
-    public static final String DEFAULT_FONT_NAME = Font.SANS_SERIF;
+    public static final String DEFAULT_FONT_NAME = Platform.getOS().equals(Platform.OS_WIN32) ? "Arial"
+            : Font.SANS_SERIF;
     
     /**
      * This font size is used for {@link de.cau.cs.kieler.core.krendering.KText KTexts}, if no related
