@@ -704,10 +704,13 @@ public class GraphController {
         if (labelNode != null) {
             // remove the label representation from the containing node
             labelNode.removeFromParent();
-            // release the objects kept in mind
-            labelNode.getRenderingController().removeAllPNodeControllers();
-            // release the node rendering controller
-            labelNode.setRenderingController(null);
+            if (labelNode.getRenderingController() != null) {
+                // TODO (chsch) Why may the rendering controller be 'null' here? 
+                // release the objects kept in mind
+                labelNode.getRenderingController().removeAllPNodeControllers();
+                // release the node rendering controller
+                labelNode.setRenderingController(null);
+            }
         }
     }
 
