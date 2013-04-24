@@ -2277,7 +2277,7 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 		private final RuleCall cKFontItalicParserRuleCall_0_2 = (RuleCall)cAlternatives_0.eContents().get(2);
 		private final RuleCall cKFontNameParserRuleCall_0_3 = (RuleCall)cAlternatives_0.eContents().get(3);
 		private final RuleCall cKFontSizeParserRuleCall_0_4 = (RuleCall)cAlternatives_0.eContents().get(4);
-		private final RuleCall cKFontUnderlinedParserRuleCall_0_5 = (RuleCall)cAlternatives_0.eContents().get(5);
+		private final RuleCall cKTextUnderlineParserRuleCall_0_5 = (RuleCall)cAlternatives_0.eContents().get(5);
 		private final RuleCall cKHorizontalAlignmentParserRuleCall_0_6 = (RuleCall)cAlternatives_0.eContents().get(6);
 		private final RuleCall cKVerticalAlignmentParserRuleCall_0_7 = (RuleCall)cAlternatives_0.eContents().get(7);
 		private final RuleCall cKInvisibilityParserRuleCall_0_8 = (RuleCall)cAlternatives_0.eContents().get(8);
@@ -2288,24 +2288,24 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 		private final RuleCall cKShadowParserRuleCall_0_13 = (RuleCall)cAlternatives_0.eContents().get(13);
 		private final RuleCall cKStyleRefParserRuleCall_0_14 = (RuleCall)cAlternatives_0.eContents().get(14);
 		private final Group cGroup_1 = (Group)cGroup.eContents().get(1);
-		private final Keyword cFunctionKeyword_1_0 = (Keyword)cGroup_1.eContents().get(0);
-		private final Assignment cFunctionIdAssignment_1_1 = (Assignment)cGroup_1.eContents().get(1);
-		private final RuleCall cFunctionIdQualifiedIDParserRuleCall_1_1_0 = (RuleCall)cFunctionIdAssignment_1_1.eContents().get(0);
+		private final Keyword cModifierKeyword_1_0 = (Keyword)cGroup_1.eContents().get(0);
+		private final Assignment cModifierIdAssignment_1_1 = (Assignment)cGroup_1.eContents().get(1);
+		private final RuleCall cModifierIdQualifiedIDParserRuleCall_1_1_0 = (RuleCall)cModifierIdAssignment_1_1.eContents().get(0);
 		
 		////----------------- KStyle -----------------
 		//KStyle:
-		//	(KColoring | KFontBold | KFontItalic | KFontName | KFontSize | KFontUnderlined | KHorizontalAlignment |
-		//	KVerticalAlignment | KInvisibility | KLineCap | KLineStyle | KLineWidth | KRotation | KShadow | KStyleRef) ("function"
-		//	functionId=QualifiedID)?;
+		//	(KColoring | KFontBold | KFontItalic | KFontName | KFontSize | KTextUnderline | KHorizontalAlignment |
+		//	KVerticalAlignment | KInvisibility | KLineCap | KLineStyle | KLineWidth | KRotation | KShadow | KStyleRef) ("modifier"
+		//	modifierId=QualifiedID)?;
 		public ParserRule getRule() { return rule; }
 
-		//(KColoring | KFontBold | KFontItalic | KFontName | KFontSize | KFontUnderlined | KHorizontalAlignment |
-		//KVerticalAlignment | KInvisibility | KLineCap | KLineStyle | KLineWidth | KRotation | KShadow | KStyleRef) ("function"
-		//functionId=QualifiedID)?
+		//(KColoring | KFontBold | KFontItalic | KFontName | KFontSize | KTextUnderline | KHorizontalAlignment |
+		//KVerticalAlignment | KInvisibility | KLineCap | KLineStyle | KLineWidth | KRotation | KShadow | KStyleRef) ("modifier"
+		//modifierId=QualifiedID)?
 		public Group getGroup() { return cGroup; }
 
-		//KColoring | KFontBold | KFontItalic | KFontName | KFontSize | KFontUnderlined | KHorizontalAlignment |
-		//KVerticalAlignment | KInvisibility | KLineCap | KLineStyle | KLineWidth | KRotation | KShadow | KStyleRef
+		//KColoring | KFontBold | KFontItalic | KFontName | KFontSize | KTextUnderline | KHorizontalAlignment | KVerticalAlignment
+		//| KInvisibility | KLineCap | KLineStyle | KLineWidth | KRotation | KShadow | KStyleRef
 		public Alternatives getAlternatives_0() { return cAlternatives_0; }
 
 		//KColoring
@@ -2323,8 +2323,8 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 		//KFontSize
 		public RuleCall getKFontSizeParserRuleCall_0_4() { return cKFontSizeParserRuleCall_0_4; }
 
-		//KFontUnderlined
-		public RuleCall getKFontUnderlinedParserRuleCall_0_5() { return cKFontUnderlinedParserRuleCall_0_5; }
+		//KTextUnderline
+		public RuleCall getKTextUnderlineParserRuleCall_0_5() { return cKTextUnderlineParserRuleCall_0_5; }
 
 		//KHorizontalAlignment
 		public RuleCall getKHorizontalAlignmentParserRuleCall_0_6() { return cKHorizontalAlignmentParserRuleCall_0_6; }
@@ -2353,17 +2353,17 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 		//KStyleRef
 		public RuleCall getKStyleRefParserRuleCall_0_14() { return cKStyleRefParserRuleCall_0_14; }
 
-		//("function" functionId=QualifiedID)?
+		//("modifier" modifierId=QualifiedID)?
 		public Group getGroup_1() { return cGroup_1; }
 
-		//"function"
-		public Keyword getFunctionKeyword_1_0() { return cFunctionKeyword_1_0; }
+		//"modifier"
+		public Keyword getModifierKeyword_1_0() { return cModifierKeyword_1_0; }
 
-		//functionId=QualifiedID
-		public Assignment getFunctionIdAssignment_1_1() { return cFunctionIdAssignment_1_1; }
+		//modifierId=QualifiedID
+		public Assignment getModifierIdAssignment_1_1() { return cModifierIdAssignment_1_1; }
 
 		//QualifiedID
-		public RuleCall getFunctionIdQualifiedIDParserRuleCall_1_1_0() { return cFunctionIdQualifiedIDParserRuleCall_1_1_0; }
+		public RuleCall getModifierIdQualifiedIDParserRuleCall_1_1_0() { return cModifierIdQualifiedIDParserRuleCall_1_1_0; }
 	}
 
 	public class KColoringElements extends AbstractParserRuleElementFinder {
@@ -2680,21 +2680,21 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 		public RuleCall getSizeFSIZETerminalRuleCall_4_0() { return cSizeFSIZETerminalRuleCall_4_0; }
 	}
 
-	public class KFontUnderlinedElements extends AbstractParserRuleElementFinder {
-		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "KFontUnderlined");
+	public class KTextUnderlineElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "KTextUnderline");
 		private final Group cGroup = (Group)rule.eContents().get(1);
 		private final Assignment cPropagateToChildrenAssignment_0 = (Assignment)cGroup.eContents().get(0);
 		private final Keyword cPropagateToChildrenPropagateKeyword_0_0 = (Keyword)cPropagateToChildrenAssignment_0.eContents().get(0);
 		private final Keyword cUnderlineKeyword_1 = (Keyword)cGroup.eContents().get(1);
 		private final Keyword cEqualsSignKeyword_2 = (Keyword)cGroup.eContents().get(2);
-		private final Assignment cUnderlineStyleAssignment_3 = (Assignment)cGroup.eContents().get(3);
-		private final RuleCall cUnderlineStyleUnderlineStyleEnumRuleCall_3_0 = (RuleCall)cUnderlineStyleAssignment_3.eContents().get(0);
+		private final Assignment cUnderlineAssignment_3 = (Assignment)cGroup.eContents().get(3);
+		private final RuleCall cUnderlineUnderlineEnumRuleCall_3_0 = (RuleCall)cUnderlineAssignment_3.eContents().get(0);
 		
-		//KFontUnderlined:
-		//	propagateToChildren?="propagate"? "underline" "=" underlineStyle=UnderlineStyle;
+		//KTextUnderline:
+		//	propagateToChildren?="propagate"? "underline" "=" underline=Underline;
 		public ParserRule getRule() { return rule; }
 
-		//propagateToChildren?="propagate"? "underline" "=" underlineStyle=UnderlineStyle
+		//propagateToChildren?="propagate"? "underline" "=" underline=Underline
 		public Group getGroup() { return cGroup; }
 
 		//propagateToChildren?="propagate"?
@@ -2709,11 +2709,11 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 		//"="
 		public Keyword getEqualsSignKeyword_2() { return cEqualsSignKeyword_2; }
 
-		//underlineStyle=UnderlineStyle
-		public Assignment getUnderlineStyleAssignment_3() { return cUnderlineStyleAssignment_3; }
+		//underline=Underline
+		public Assignment getUnderlineAssignment_3() { return cUnderlineAssignment_3; }
 
-		//UnderlineStyle
-		public RuleCall getUnderlineStyleUnderlineStyleEnumRuleCall_3_0() { return cUnderlineStyleUnderlineStyleEnumRuleCall_3_0; }
+		//Underline
+		public RuleCall getUnderlineUnderlineEnumRuleCall_3_0() { return cUnderlineUnderlineEnumRuleCall_3_0; }
 	}
 
 	public class KHorizontalAlignmentElements extends AbstractParserRuleElementFinder {
@@ -3872,23 +3872,23 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "KAction");
 		private final Group cGroup = (Group)rule.eContents().get(1);
 		private final Assignment cTriggerAssignment_0 = (Assignment)cGroup.eContents().get(0);
-		private final RuleCall cTriggerKTriggerEnumRuleCall_0_0 = (RuleCall)cTriggerAssignment_0.eContents().get(0);
+		private final RuleCall cTriggerTriggerEnumRuleCall_0_0 = (RuleCall)cTriggerAssignment_0.eContents().get(0);
 		private final Keyword cEqualsSignGreaterThanSignKeyword_1 = (Keyword)cGroup.eContents().get(1);
 		private final Assignment cIdAssignment_2 = (Assignment)cGroup.eContents().get(2);
 		private final RuleCall cIdQualifiedIDParserRuleCall_2_0 = (RuleCall)cIdAssignment_2.eContents().get(0);
 		
 		//KAction:
-		//	trigger=KTrigger "=>" id=QualifiedID;
+		//	trigger=Trigger "=>" id=QualifiedID;
 		public ParserRule getRule() { return rule; }
 
-		//trigger=KTrigger "=>" id=QualifiedID
+		//trigger=Trigger "=>" id=QualifiedID
 		public Group getGroup() { return cGroup; }
 
-		//trigger=KTrigger
+		//trigger=Trigger
 		public Assignment getTriggerAssignment_0() { return cTriggerAssignment_0; }
 
-		//KTrigger
-		public RuleCall getTriggerKTriggerEnumRuleCall_0_0() { return cTriggerKTriggerEnumRuleCall_0_0; }
+		//Trigger
+		public RuleCall getTriggerTriggerEnumRuleCall_0_0() { return cTriggerTriggerEnumRuleCall_0_0; }
 
 		//"=>"
 		public Keyword getEqualsSignGreaterThanSignKeyword_1() { return cEqualsSignGreaterThanSignKeyword_1; }
@@ -4378,8 +4378,8 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 		public Keyword getBOTTOMBottomKeyword_2_0() { return cBOTTOMBottomKeyword_2_0; }
 	}
 
-	public class UnderlineStyleElements extends AbstractEnumRuleElementFinder {
-		private final EnumRule rule = (EnumRule) GrammarUtil.findRuleForName(getGrammar(), "UnderlineStyle");
+	public class UnderlineElements extends AbstractEnumRuleElementFinder {
+		private final EnumRule rule = (EnumRule) GrammarUtil.findRuleForName(getGrammar(), "Underline");
 		private final Alternatives cAlternatives = (Alternatives)rule.eContents().get(1);
 		private final EnumLiteralDeclaration cNONEEnumLiteralDeclaration_0 = (EnumLiteralDeclaration)cAlternatives.eContents().get(0);
 		private final Keyword cNONENoneKeyword_0_0 = (Keyword)cNONEEnumLiteralDeclaration_0.eContents().get(0);
@@ -4389,16 +4389,16 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 		private final Keyword cDOUBLEDoubleKeyword_2_0 = (Keyword)cDOUBLEEnumLiteralDeclaration_2.eContents().get(0);
 		private final EnumLiteralDeclaration cERROREnumLiteralDeclaration_3 = (EnumLiteralDeclaration)cAlternatives.eContents().get(3);
 		private final Keyword cERRORErrorKeyword_3_0 = (Keyword)cERROREnumLiteralDeclaration_3.eContents().get(0);
-		private final EnumLiteralDeclaration cWARNINGEnumLiteralDeclaration_4 = (EnumLiteralDeclaration)cAlternatives.eContents().get(4);
-		private final Keyword cWARNINGWarningKeyword_4_0 = (Keyword)cWARNINGEnumLiteralDeclaration_4.eContents().get(0);
+		private final EnumLiteralDeclaration cSQUIGGLEEnumLiteralDeclaration_4 = (EnumLiteralDeclaration)cAlternatives.eContents().get(4);
+		private final Keyword cSQUIGGLESquiggleKeyword_4_0 = (Keyword)cSQUIGGLEEnumLiteralDeclaration_4.eContents().get(0);
 		private final EnumLiteralDeclaration cLINKEnumLiteralDeclaration_5 = (EnumLiteralDeclaration)cAlternatives.eContents().get(5);
 		private final Keyword cLINKLinkKeyword_5_0 = (Keyword)cLINKEnumLiteralDeclaration_5.eContents().get(0);
 		
-		//enum UnderlineStyle:
-		//	NONE="none" | SINGLE="single" | DOUBLE="double" | ERROR="error" | WARNING="warning" | LINK="link";
+		//enum Underline:
+		//	NONE="none" | SINGLE="single" | DOUBLE="double" | ERROR="error" | SQUIGGLE="squiggle" | LINK="link";
 		public EnumRule getRule() { return rule; }
 
-		//NONE="none" | SINGLE="single" | DOUBLE="double" | ERROR="error" | WARNING="warning" | LINK="link"
+		//NONE="none" | SINGLE="single" | DOUBLE="double" | ERROR="error" | SQUIGGLE="squiggle" | LINK="link"
 		public Alternatives getAlternatives() { return cAlternatives; }
 
 		//NONE="none"
@@ -4425,11 +4425,11 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 		//"error"
 		public Keyword getERRORErrorKeyword_3_0() { return cERRORErrorKeyword_3_0; }
 
-		//WARNING="warning"
-		public EnumLiteralDeclaration getWARNINGEnumLiteralDeclaration_4() { return cWARNINGEnumLiteralDeclaration_4; }
+		//SQUIGGLE="squiggle"
+		public EnumLiteralDeclaration getSQUIGGLEEnumLiteralDeclaration_4() { return cSQUIGGLEEnumLiteralDeclaration_4; }
 
-		//"warning"
-		public Keyword getWARNINGWarningKeyword_4_0() { return cWARNINGWarningKeyword_4_0; }
+		//"squiggle"
+		public Keyword getSQUIGGLESquiggleKeyword_4_0() { return cSQUIGGLESquiggleKeyword_4_0; }
 
 		//LINK="link"
 		public EnumLiteralDeclaration getLINKEnumLiteralDeclaration_5() { return cLINKEnumLiteralDeclaration_5; }
@@ -4526,15 +4526,15 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 		public Keyword getCAP_SQUARESquareKeyword_2_0() { return cCAP_SQUARESquareKeyword_2_0; }
 	}
 
-	public class KTriggerElements extends AbstractEnumRuleElementFinder {
-		private final EnumRule rule = (EnumRule) GrammarUtil.findRuleForName(getGrammar(), "KTrigger");
+	public class TriggerElements extends AbstractEnumRuleElementFinder {
+		private final EnumRule rule = (EnumRule) GrammarUtil.findRuleForName(getGrammar(), "Trigger");
 		private final Alternatives cAlternatives = (Alternatives)rule.eContents().get(1);
 		private final EnumLiteralDeclaration cSINGLECLICKEnumLiteralDeclaration_0 = (EnumLiteralDeclaration)cAlternatives.eContents().get(0);
 		private final Keyword cSINGLECLICKSingleClickKeyword_0_0 = (Keyword)cSINGLECLICKEnumLiteralDeclaration_0.eContents().get(0);
 		private final EnumLiteralDeclaration cDOUBLECLICKEnumLiteralDeclaration_1 = (EnumLiteralDeclaration)cAlternatives.eContents().get(1);
 		private final Keyword cDOUBLECLICKDoubleClickKeyword_1_0 = (Keyword)cDOUBLECLICKEnumLiteralDeclaration_1.eContents().get(0);
 		
-		//enum KTrigger:
+		//enum Trigger:
 		//	SINGLECLICK="singleClick" | DOUBLECLICK="doubleClick";
 		public EnumRule getRule() { return rule; }
 
@@ -4596,7 +4596,7 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	private KFontItalicElements pKFontItalic;
 	private KFontNameElements pKFontName;
 	private KFontSizeElements pKFontSize;
-	private KFontUnderlinedElements pKFontUnderlined;
+	private KTextUnderlineElements pKTextUnderline;
 	private KHorizontalAlignmentElements pKHorizontalAlignment;
 	private KVerticalAlignmentElements pKVerticalAlignment;
 	private KInvisibilityElements pKInvisibility;
@@ -4629,10 +4629,10 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	private FloatElements pFloat;
 	private HorizontalAlignmentElements unknownRuleHorizontalAlignment;
 	private VerticalAlignmentElements unknownRuleVerticalAlignment;
-	private UnderlineStyleElements unknownRuleUnderlineStyle;
+	private UnderlineElements unknownRuleUnderline;
 	private LineStyleElements unknownRuleLineStyle;
 	private LineCapElements unknownRuleLineCap;
-	private KTriggerElements unknownRuleKTrigger;
+	private TriggerElements unknownRuleTrigger;
 	private TerminalRule tBOOLEAN;
 	private TerminalRule tRED;
 	private TerminalRule tGREEN;
@@ -5042,9 +5042,9 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 
 	////----------------- KStyle -----------------
 	//KStyle:
-	//	(KColoring | KFontBold | KFontItalic | KFontName | KFontSize | KFontUnderlined | KHorizontalAlignment |
-	//	KVerticalAlignment | KInvisibility | KLineCap | KLineStyle | KLineWidth | KRotation | KShadow | KStyleRef) ("function"
-	//	functionId=QualifiedID)?;
+	//	(KColoring | KFontBold | KFontItalic | KFontName | KFontSize | KTextUnderline | KHorizontalAlignment |
+	//	KVerticalAlignment | KInvisibility | KLineCap | KLineStyle | KLineWidth | KRotation | KShadow | KStyleRef) ("modifier"
+	//	modifierId=QualifiedID)?;
 	public KStyleElements getKStyleAccess() {
 		return (pKStyle != null) ? pKStyle : (pKStyle = new KStyleElements());
 	}
@@ -5124,14 +5124,14 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 		return getKFontSizeAccess().getRule();
 	}
 
-	//KFontUnderlined:
-	//	propagateToChildren?="propagate"? "underline" "=" underlineStyle=UnderlineStyle;
-	public KFontUnderlinedElements getKFontUnderlinedAccess() {
-		return (pKFontUnderlined != null) ? pKFontUnderlined : (pKFontUnderlined = new KFontUnderlinedElements());
+	//KTextUnderline:
+	//	propagateToChildren?="propagate"? "underline" "=" underline=Underline;
+	public KTextUnderlineElements getKTextUnderlineAccess() {
+		return (pKTextUnderline != null) ? pKTextUnderline : (pKTextUnderline = new KTextUnderlineElements());
 	}
 	
-	public ParserRule getKFontUnderlinedRule() {
-		return getKFontUnderlinedAccess().getRule();
+	public ParserRule getKTextUnderlineRule() {
+		return getKTextUnderlineAccess().getRule();
 	}
 
 	//KHorizontalAlignment:
@@ -5326,7 +5326,7 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//KAction:
-	//	trigger=KTrigger "=>" id=QualifiedID;
+	//	trigger=Trigger "=>" id=QualifiedID;
 	public KActionElements getKActionAccess() {
 		return (pKAction != null) ? pKAction : (pKAction = new KActionElements());
 	}
@@ -5466,14 +5466,14 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 		return getVerticalAlignmentAccess().getRule();
 	}
 
-	//enum UnderlineStyle:
-	//	NONE="none" | SINGLE="single" | DOUBLE="double" | ERROR="error" | WARNING="warning" | LINK="link";
-	public UnderlineStyleElements getUnderlineStyleAccess() {
-		return (unknownRuleUnderlineStyle != null) ? unknownRuleUnderlineStyle : (unknownRuleUnderlineStyle = new UnderlineStyleElements());
+	//enum Underline:
+	//	NONE="none" | SINGLE="single" | DOUBLE="double" | ERROR="error" | SQUIGGLE="squiggle" | LINK="link";
+	public UnderlineElements getUnderlineAccess() {
+		return (unknownRuleUnderline != null) ? unknownRuleUnderline : (unknownRuleUnderline = new UnderlineElements());
 	}
 	
-	public EnumRule getUnderlineStyleRule() {
-		return getUnderlineStyleAccess().getRule();
+	public EnumRule getUnderlineRule() {
+		return getUnderlineAccess().getRule();
 	}
 
 	//enum LineStyle:
@@ -5496,14 +5496,14 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 		return getLineCapAccess().getRule();
 	}
 
-	//enum KTrigger:
+	//enum Trigger:
 	//	SINGLECLICK="singleClick" | DOUBLECLICK="doubleClick";
-	public KTriggerElements getKTriggerAccess() {
-		return (unknownRuleKTrigger != null) ? unknownRuleKTrigger : (unknownRuleKTrigger = new KTriggerElements());
+	public TriggerElements getTriggerAccess() {
+		return (unknownRuleTrigger != null) ? unknownRuleTrigger : (unknownRuleTrigger = new TriggerElements());
 	}
 	
-	public EnumRule getKTriggerRule() {
-		return getKTriggerAccess().getRule();
+	public EnumRule getTriggerRule() {
+		return getTriggerAccess().getRule();
 	}
 
 	//terminal BOOLEAN returns ecore::EBoolean:

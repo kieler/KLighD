@@ -190,10 +190,10 @@ KSpline returns KSpline:
 //----------------- KStyle -----------------
 
 KStyle returns KStyle:
-	(KColoring | KFontBold | KFontItalic | KFontName | KFontSize | KFontUnderlined
+	(KColoring | KFontBold | KFontItalic | KFontName | KFontSize | KTextUnderline
 	| KHorizontalAlignment | KVerticalAlignment | KInvisibility | KLineCap
 	| KLineStyle | KLineWidth | KRotation | KShadow | KStyleRef)
-	('function' functionId=QualifiedID)?;
+	('modifier' modifierId=QualifiedID)?;
 
 KColoring returns KColoring:
 	(KForeground | KBackground) '=' color=KColor (',' alpha=ALPHA)?
@@ -220,8 +220,8 @@ KFontSize returns KFontSize:
 	(propagateToChildren?='propagate')? (scaleWithZoom?='scale')?
 	'fontSize' '=' size=FSIZE;
 
-KFontUnderlined returns KFontUnderlined:
-	(propagateToChildren?='propagate')? 'underline' '=' underlineStyle=UnderlineStyle;
+KTextUnderline returns KTextUnderline:
+	(propagateToChildren?='propagate')? 'underline' '=' underline=Underline;
 
 KHorizontalAlignment returns KHorizontalAlignment:
 	(propagateToChildren?='propagate')? 'hAlign' '=' horizontalAlignment=HorizontalAlignment;
@@ -318,7 +318,7 @@ KDecoratorPlacementData returns KDecoratorPlacementData:
 		& ('rotateWithLine' '=' rotateWithLine=BOOLEAN)?);
 
 KAction returns KAction:
-	trigger=KTrigger '=>' id=QualifiedID;
+	trigger=Trigger '=>' id=QualifiedID;
 
 KPosition returns KPosition:
 	x=KXPosition ',' y=KYPosition;
@@ -370,8 +370,8 @@ enum HorizontalAlignment returns HorizontalAlignment:
 enum VerticalAlignment returns VerticalAlignment:
 	TOP='top' | CENTER='center' | BOTTOM='bottom';
 
-enum UnderlineStyle returns UnderlineStyle:
-	NONE='none' | SINGLE='single' | DOUBLE='double' | ERROR='error' | WARNING='warning' | LINK='link';
+enum Underline returns Underline:
+	NONE='none' | SINGLE='single' | DOUBLE='double' | ERROR='error' | SQUIGGLE="squiggle" | LINK='link';
 
 enum LineStyle returns LineStyle:
 	SOLID='solid' | DASH='dash' | DOT='dot' | DASHDOT='dash-dot' | DASHDOTDOT='dash-dot-dot';
@@ -379,7 +379,7 @@ enum LineStyle returns LineStyle:
 enum LineCap returns LineCap:
 	CAP_FLAT='flat' | CAP_ROUND='round' | CAP_SQUARE='square';
 
-enum KTrigger returns KTrigger:
+enum Trigger returns Trigger:
 	SINGLECLICK='singleClick' | DOUBLECLICK='doubleClick';
 
 terminal BOOLEAN returns ecore::EBoolean:

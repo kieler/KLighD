@@ -1238,25 +1238,25 @@ finally {
 
 
 
-// Entry rule entryRuleKFontUnderlined
-entryRuleKFontUnderlined 
+// Entry rule entryRuleKTextUnderline
+entryRuleKTextUnderline 
 :
-{ before(grammarAccess.getKFontUnderlinedRule()); }
-	 ruleKFontUnderlined
-{ after(grammarAccess.getKFontUnderlinedRule()); } 
+{ before(grammarAccess.getKTextUnderlineRule()); }
+	 ruleKTextUnderline
+{ after(grammarAccess.getKTextUnderlineRule()); } 
 	 EOF 
 ;
 
-// Rule KFontUnderlined
-ruleKFontUnderlined
+// Rule KTextUnderline
+ruleKTextUnderline
     @init {
 		int stackSize = keepStackSize();
     }
 	:
 (
-{ before(grammarAccess.getKFontUnderlinedAccess().getGroup()); }
-(rule__KFontUnderlined__Group__0)
-{ after(grammarAccess.getKFontUnderlinedAccess().getGroup()); }
+{ before(grammarAccess.getKTextUnderlineAccess().getGroup()); }
+(rule__KTextUnderline__Group__0)
+{ after(grammarAccess.getKTextUnderlineAccess().getGroup()); }
 )
 
 ;
@@ -2145,16 +2145,16 @@ finally {
 
 
 
-// Rule UnderlineStyle
-ruleUnderlineStyle
+// Rule Underline
+ruleUnderline
     @init {
 		int stackSize = keepStackSize();
     }
 :
 (
-{ before(grammarAccess.getUnderlineStyleAccess().getAlternatives()); }
-(rule__UnderlineStyle__Alternatives)
-{ after(grammarAccess.getUnderlineStyleAccess().getAlternatives()); }
+{ before(grammarAccess.getUnderlineAccess().getAlternatives()); }
+(rule__Underline__Alternatives)
+{ after(grammarAccess.getUnderlineAccess().getAlternatives()); }
 )
 
 ;
@@ -2202,16 +2202,16 @@ finally {
 
 
 
-// Rule KTrigger
-ruleKTrigger
+// Rule Trigger
+ruleTrigger
     @init {
 		int stackSize = keepStackSize();
     }
 :
 (
-{ before(grammarAccess.getKTriggerAccess().getAlternatives()); }
-(rule__KTrigger__Alternatives)
-{ after(grammarAccess.getKTriggerAccess().getAlternatives()); }
+{ before(grammarAccess.getTriggerAccess().getAlternatives()); }
+(rule__Trigger__Alternatives)
+{ after(grammarAccess.getTriggerAccess().getAlternatives()); }
 )
 
 ;
@@ -2705,9 +2705,9 @@ rule__KStyle__Alternatives_0
 )
 
     |(
-{ before(grammarAccess.getKStyleAccess().getKFontUnderlinedParserRuleCall_0_5()); }
-	ruleKFontUnderlined
-{ after(grammarAccess.getKStyleAccess().getKFontUnderlinedParserRuleCall_0_5()); }
+{ before(grammarAccess.getKStyleAccess().getKTextUnderlineParserRuleCall_0_5()); }
+	ruleKTextUnderline
+{ after(grammarAccess.getKStyleAccess().getKTextUnderlineParserRuleCall_0_5()); }
 )
 
     |(
@@ -3075,51 +3075,51 @@ finally {
 	restoreStackSize(stackSize);
 }
 
-rule__UnderlineStyle__Alternatives
+rule__Underline__Alternatives
     @init {
 		int stackSize = keepStackSize();
     }
 :
 (
-{ before(grammarAccess.getUnderlineStyleAccess().getNONEEnumLiteralDeclaration_0()); }
+{ before(grammarAccess.getUnderlineAccess().getNONEEnumLiteralDeclaration_0()); }
 (	'none' 
 )
-{ after(grammarAccess.getUnderlineStyleAccess().getNONEEnumLiteralDeclaration_0()); }
+{ after(grammarAccess.getUnderlineAccess().getNONEEnumLiteralDeclaration_0()); }
 )
 
     |(
-{ before(grammarAccess.getUnderlineStyleAccess().getSINGLEEnumLiteralDeclaration_1()); }
+{ before(grammarAccess.getUnderlineAccess().getSINGLEEnumLiteralDeclaration_1()); }
 (	'single' 
 )
-{ after(grammarAccess.getUnderlineStyleAccess().getSINGLEEnumLiteralDeclaration_1()); }
+{ after(grammarAccess.getUnderlineAccess().getSINGLEEnumLiteralDeclaration_1()); }
 )
 
     |(
-{ before(grammarAccess.getUnderlineStyleAccess().getDOUBLEEnumLiteralDeclaration_2()); }
+{ before(grammarAccess.getUnderlineAccess().getDOUBLEEnumLiteralDeclaration_2()); }
 (	'double' 
 )
-{ after(grammarAccess.getUnderlineStyleAccess().getDOUBLEEnumLiteralDeclaration_2()); }
+{ after(grammarAccess.getUnderlineAccess().getDOUBLEEnumLiteralDeclaration_2()); }
 )
 
     |(
-{ before(grammarAccess.getUnderlineStyleAccess().getERROREnumLiteralDeclaration_3()); }
+{ before(grammarAccess.getUnderlineAccess().getERROREnumLiteralDeclaration_3()); }
 (	'error' 
 )
-{ after(grammarAccess.getUnderlineStyleAccess().getERROREnumLiteralDeclaration_3()); }
+{ after(grammarAccess.getUnderlineAccess().getERROREnumLiteralDeclaration_3()); }
 )
 
     |(
-{ before(grammarAccess.getUnderlineStyleAccess().getWARNINGEnumLiteralDeclaration_4()); }
-(	'warning' 
+{ before(grammarAccess.getUnderlineAccess().getSQUIGGLEEnumLiteralDeclaration_4()); }
+(	'squiggle' 
 )
-{ after(grammarAccess.getUnderlineStyleAccess().getWARNINGEnumLiteralDeclaration_4()); }
+{ after(grammarAccess.getUnderlineAccess().getSQUIGGLEEnumLiteralDeclaration_4()); }
 )
 
     |(
-{ before(grammarAccess.getUnderlineStyleAccess().getLINKEnumLiteralDeclaration_5()); }
+{ before(grammarAccess.getUnderlineAccess().getLINKEnumLiteralDeclaration_5()); }
 (	'link' 
 )
-{ after(grammarAccess.getUnderlineStyleAccess().getLINKEnumLiteralDeclaration_5()); }
+{ after(grammarAccess.getUnderlineAccess().getLINKEnumLiteralDeclaration_5()); }
 )
 
 ;
@@ -3203,23 +3203,23 @@ finally {
 	restoreStackSize(stackSize);
 }
 
-rule__KTrigger__Alternatives
+rule__Trigger__Alternatives
     @init {
 		int stackSize = keepStackSize();
     }
 :
 (
-{ before(grammarAccess.getKTriggerAccess().getSINGLECLICKEnumLiteralDeclaration_0()); }
+{ before(grammarAccess.getTriggerAccess().getSINGLECLICKEnumLiteralDeclaration_0()); }
 (	'singleClick' 
 )
-{ after(grammarAccess.getKTriggerAccess().getSINGLECLICKEnumLiteralDeclaration_0()); }
+{ after(grammarAccess.getTriggerAccess().getSINGLECLICKEnumLiteralDeclaration_0()); }
 )
 
     |(
-{ before(grammarAccess.getKTriggerAccess().getDOUBLECLICKEnumLiteralDeclaration_1()); }
+{ before(grammarAccess.getTriggerAccess().getDOUBLECLICKEnumLiteralDeclaration_1()); }
 (	'doubleClick' 
 )
-{ after(grammarAccess.getKTriggerAccess().getDOUBLECLICKEnumLiteralDeclaration_1()); }
+{ after(grammarAccess.getTriggerAccess().getDOUBLECLICKEnumLiteralDeclaration_1()); }
 )
 
 ;
@@ -11689,11 +11689,11 @@ rule__KStyle__Group_1__0__Impl
     }
 :
 (
-{ before(grammarAccess.getKStyleAccess().getFunctionKeyword_1_0()); }
+{ before(grammarAccess.getKStyleAccess().getModifierKeyword_1_0()); }
 
-	'function' 
+	'modifier' 
 
-{ after(grammarAccess.getKStyleAccess().getFunctionKeyword_1_0()); }
+{ after(grammarAccess.getKStyleAccess().getModifierKeyword_1_0()); }
 )
 
 ;
@@ -11719,9 +11719,9 @@ rule__KStyle__Group_1__1__Impl
     }
 :
 (
-{ before(grammarAccess.getKStyleAccess().getFunctionIdAssignment_1_1()); }
-(rule__KStyle__FunctionIdAssignment_1_1)
-{ after(grammarAccess.getKStyleAccess().getFunctionIdAssignment_1_1()); }
+{ before(grammarAccess.getKStyleAccess().getModifierIdAssignment_1_1()); }
+(rule__KStyle__ModifierIdAssignment_1_1)
+{ after(grammarAccess.getKStyleAccess().getModifierIdAssignment_1_1()); }
 )
 
 ;
@@ -12968,27 +12968,27 @@ finally {
 
 
 
-rule__KFontUnderlined__Group__0
+rule__KTextUnderline__Group__0
     @init {
 		int stackSize = keepStackSize();
     }
 :
-	rule__KFontUnderlined__Group__0__Impl
-	rule__KFontUnderlined__Group__1
+	rule__KTextUnderline__Group__0__Impl
+	rule__KTextUnderline__Group__1
 ;
 finally {
 	restoreStackSize(stackSize);
 }
 
-rule__KFontUnderlined__Group__0__Impl
+rule__KTextUnderline__Group__0__Impl
     @init {
 		int stackSize = keepStackSize();
     }
 :
 (
-{ before(grammarAccess.getKFontUnderlinedAccess().getPropagateToChildrenAssignment_0()); }
-(rule__KFontUnderlined__PropagateToChildrenAssignment_0)?
-{ after(grammarAccess.getKFontUnderlinedAccess().getPropagateToChildrenAssignment_0()); }
+{ before(grammarAccess.getKTextUnderlineAccess().getPropagateToChildrenAssignment_0()); }
+(rule__KTextUnderline__PropagateToChildrenAssignment_0)?
+{ after(grammarAccess.getKTextUnderlineAccess().getPropagateToChildrenAssignment_0()); }
 )
 
 ;
@@ -12997,29 +12997,29 @@ finally {
 }
 
 
-rule__KFontUnderlined__Group__1
+rule__KTextUnderline__Group__1
     @init {
 		int stackSize = keepStackSize();
     }
 :
-	rule__KFontUnderlined__Group__1__Impl
-	rule__KFontUnderlined__Group__2
+	rule__KTextUnderline__Group__1__Impl
+	rule__KTextUnderline__Group__2
 ;
 finally {
 	restoreStackSize(stackSize);
 }
 
-rule__KFontUnderlined__Group__1__Impl
+rule__KTextUnderline__Group__1__Impl
     @init {
 		int stackSize = keepStackSize();
     }
 :
 (
-{ before(grammarAccess.getKFontUnderlinedAccess().getUnderlineKeyword_1()); }
+{ before(grammarAccess.getKTextUnderlineAccess().getUnderlineKeyword_1()); }
 
 	'underline' 
 
-{ after(grammarAccess.getKFontUnderlinedAccess().getUnderlineKeyword_1()); }
+{ after(grammarAccess.getKTextUnderlineAccess().getUnderlineKeyword_1()); }
 )
 
 ;
@@ -13028,29 +13028,29 @@ finally {
 }
 
 
-rule__KFontUnderlined__Group__2
+rule__KTextUnderline__Group__2
     @init {
 		int stackSize = keepStackSize();
     }
 :
-	rule__KFontUnderlined__Group__2__Impl
-	rule__KFontUnderlined__Group__3
+	rule__KTextUnderline__Group__2__Impl
+	rule__KTextUnderline__Group__3
 ;
 finally {
 	restoreStackSize(stackSize);
 }
 
-rule__KFontUnderlined__Group__2__Impl
+rule__KTextUnderline__Group__2__Impl
     @init {
 		int stackSize = keepStackSize();
     }
 :
 (
-{ before(grammarAccess.getKFontUnderlinedAccess().getEqualsSignKeyword_2()); }
+{ before(grammarAccess.getKTextUnderlineAccess().getEqualsSignKeyword_2()); }
 
 	'=' 
 
-{ after(grammarAccess.getKFontUnderlinedAccess().getEqualsSignKeyword_2()); }
+{ after(grammarAccess.getKTextUnderlineAccess().getEqualsSignKeyword_2()); }
 )
 
 ;
@@ -13059,26 +13059,26 @@ finally {
 }
 
 
-rule__KFontUnderlined__Group__3
+rule__KTextUnderline__Group__3
     @init {
 		int stackSize = keepStackSize();
     }
 :
-	rule__KFontUnderlined__Group__3__Impl
+	rule__KTextUnderline__Group__3__Impl
 ;
 finally {
 	restoreStackSize(stackSize);
 }
 
-rule__KFontUnderlined__Group__3__Impl
+rule__KTextUnderline__Group__3__Impl
     @init {
 		int stackSize = keepStackSize();
     }
 :
 (
-{ before(grammarAccess.getKFontUnderlinedAccess().getUnderlineStyleAssignment_3()); }
-(rule__KFontUnderlined__UnderlineStyleAssignment_3)
-{ after(grammarAccess.getKFontUnderlinedAccess().getUnderlineStyleAssignment_3()); }
+{ before(grammarAccess.getKTextUnderlineAccess().getUnderlineAssignment_3()); }
+(rule__KTextUnderline__UnderlineAssignment_3)
+{ after(grammarAccess.getKTextUnderlineAccess().getUnderlineAssignment_3()); }
 )
 
 ;
@@ -22867,14 +22867,14 @@ finally {
 	restoreStackSize(stackSize);
 }
 
-rule__KStyle__FunctionIdAssignment_1_1
+rule__KStyle__ModifierIdAssignment_1_1
     @init {
 		int stackSize = keepStackSize();
     }
 :
 (
-{ before(grammarAccess.getKStyleAccess().getFunctionIdQualifiedIDParserRuleCall_1_1_0()); }
-	ruleQualifiedID{ after(grammarAccess.getKStyleAccess().getFunctionIdQualifiedIDParserRuleCall_1_1_0()); }
+{ before(grammarAccess.getKStyleAccess().getModifierIdQualifiedIDParserRuleCall_1_1_0()); }
+	ruleQualifiedID{ after(grammarAccess.getKStyleAccess().getModifierIdQualifiedIDParserRuleCall_1_1_0()); }
 )
 
 ;
@@ -23178,22 +23178,22 @@ finally {
 	restoreStackSize(stackSize);
 }
 
-rule__KFontUnderlined__PropagateToChildrenAssignment_0
+rule__KTextUnderline__PropagateToChildrenAssignment_0
     @init {
 		int stackSize = keepStackSize();
     }
 :
 (
-{ before(grammarAccess.getKFontUnderlinedAccess().getPropagateToChildrenPropagateKeyword_0_0()); }
+{ before(grammarAccess.getKTextUnderlineAccess().getPropagateToChildrenPropagateKeyword_0_0()); }
 (
-{ before(grammarAccess.getKFontUnderlinedAccess().getPropagateToChildrenPropagateKeyword_0_0()); }
+{ before(grammarAccess.getKTextUnderlineAccess().getPropagateToChildrenPropagateKeyword_0_0()); }
 
 	'propagate' 
 
-{ after(grammarAccess.getKFontUnderlinedAccess().getPropagateToChildrenPropagateKeyword_0_0()); }
+{ after(grammarAccess.getKTextUnderlineAccess().getPropagateToChildrenPropagateKeyword_0_0()); }
 )
 
-{ after(grammarAccess.getKFontUnderlinedAccess().getPropagateToChildrenPropagateKeyword_0_0()); }
+{ after(grammarAccess.getKTextUnderlineAccess().getPropagateToChildrenPropagateKeyword_0_0()); }
 )
 
 ;
@@ -23201,14 +23201,14 @@ finally {
 	restoreStackSize(stackSize);
 }
 
-rule__KFontUnderlined__UnderlineStyleAssignment_3
+rule__KTextUnderline__UnderlineAssignment_3
     @init {
 		int stackSize = keepStackSize();
     }
 :
 (
-{ before(grammarAccess.getKFontUnderlinedAccess().getUnderlineStyleUnderlineStyleEnumRuleCall_3_0()); }
-	ruleUnderlineStyle{ after(grammarAccess.getKFontUnderlinedAccess().getUnderlineStyleUnderlineStyleEnumRuleCall_3_0()); }
+{ before(grammarAccess.getKTextUnderlineAccess().getUnderlineUnderlineEnumRuleCall_3_0()); }
+	ruleUnderline{ after(grammarAccess.getKTextUnderlineAccess().getUnderlineUnderlineEnumRuleCall_3_0()); }
 )
 
 ;
@@ -24010,8 +24010,8 @@ rule__KAction__TriggerAssignment_0
     }
 :
 (
-{ before(grammarAccess.getKActionAccess().getTriggerKTriggerEnumRuleCall_0_0()); }
-	ruleKTrigger{ after(grammarAccess.getKActionAccess().getTriggerKTriggerEnumRuleCall_0_0()); }
+{ before(grammarAccess.getKActionAccess().getTriggerTriggerEnumRuleCall_0_0()); }
+	ruleTrigger{ after(grammarAccess.getKActionAccess().getTriggerTriggerEnumRuleCall_0_0()); }
 )
 
 ;

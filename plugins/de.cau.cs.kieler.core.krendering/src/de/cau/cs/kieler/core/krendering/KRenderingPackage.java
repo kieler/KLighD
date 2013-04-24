@@ -148,13 +148,22 @@ public interface KRenderingPackage extends EPackage {
     int KRENDERING__STYLES = KGraphPackage.KGRAPH_DATA_FEATURE_COUNT + 0;
 
     /**
+     * The feature id for the '<em><b>Id</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KRENDERING__ID = KGraphPackage.KGRAPH_DATA_FEATURE_COUNT + 1;
+
+    /**
      * The feature id for the '<em><b>Parent</b></em>' container reference.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int KRENDERING__PARENT = KGraphPackage.KGRAPH_DATA_FEATURE_COUNT + 1;
+    int KRENDERING__PARENT = KGraphPackage.KGRAPH_DATA_FEATURE_COUNT + 2;
 
     /**
      * The feature id for the '<em><b>Placement Data</b></em>' containment reference.
@@ -163,7 +172,7 @@ public interface KRenderingPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int KRENDERING__PLACEMENT_DATA = KGraphPackage.KGRAPH_DATA_FEATURE_COUNT + 2;
+    int KRENDERING__PLACEMENT_DATA = KGraphPackage.KGRAPH_DATA_FEATURE_COUNT + 3;
 
     /**
      * The feature id for the '<em><b>Actions</b></em>' containment reference list.
@@ -172,7 +181,7 @@ public interface KRenderingPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int KRENDERING__ACTIONS = KGraphPackage.KGRAPH_DATA_FEATURE_COUNT + 3;
+    int KRENDERING__ACTIONS = KGraphPackage.KGRAPH_DATA_FEATURE_COUNT + 4;
 
     /**
      * The number of structural features of the '<em>KRendering</em>' class.
@@ -181,7 +190,7 @@ public interface KRenderingPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int KRENDERING_FEATURE_COUNT = KGraphPackage.KGRAPH_DATA_FEATURE_COUNT + 4;
+    int KRENDERING_FEATURE_COUNT = KGraphPackage.KGRAPH_DATA_FEATURE_COUNT + 5;
 
     /**
      * The meta object id for the '{@link de.cau.cs.kieler.core.krendering.impl.KContainerRenderingImpl <em>KContainer Rendering</em>}' class.
@@ -219,6 +228,15 @@ public interface KRenderingPackage extends EPackage {
      * @ordered
      */
     int KCONTAINER_RENDERING__STYLES = KRENDERING__STYLES;
+
+    /**
+     * The feature id for the '<em><b>Id</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KCONTAINER_RENDERING__ID = KRENDERING__ID;
 
     /**
      * The feature id for the '<em><b>Parent</b></em>' container reference.
@@ -312,6 +330,15 @@ public interface KRenderingPackage extends EPackage {
     int KELLIPSE__STYLES = KCONTAINER_RENDERING__STYLES;
 
     /**
+     * The feature id for the '<em><b>Id</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KELLIPSE__ID = KCONTAINER_RENDERING__ID;
+
+    /**
      * The feature id for the '<em><b>Parent</b></em>' container reference.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -403,6 +430,15 @@ public interface KRenderingPackage extends EPackage {
     int KRECTANGLE__STYLES = KCONTAINER_RENDERING__STYLES;
 
     /**
+     * The feature id for the '<em><b>Id</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KRECTANGLE__ID = KCONTAINER_RENDERING__ID;
+
+    /**
      * The feature id for the '<em><b>Parent</b></em>' container reference.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -492,6 +528,15 @@ public interface KRenderingPackage extends EPackage {
      * @ordered
      */
     int KROUNDED_RECTANGLE__STYLES = KCONTAINER_RENDERING__STYLES;
+
+    /**
+     * The feature id for the '<em><b>Id</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KROUNDED_RECTANGLE__ID = KCONTAINER_RENDERING__ID;
 
     /**
      * The feature id for the '<em><b>Parent</b></em>' container reference.
@@ -603,6 +648,15 @@ public interface KRenderingPackage extends EPackage {
     int KPOLYLINE__STYLES = KCONTAINER_RENDERING__STYLES;
 
     /**
+     * The feature id for the '<em><b>Id</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KPOLYLINE__ID = KCONTAINER_RENDERING__ID;
+
+    /**
      * The feature id for the '<em><b>Parent</b></em>' container reference.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -712,6 +766,15 @@ public interface KRenderingPackage extends EPackage {
     int KPOLYGON__STYLES = KPOLYLINE__STYLES;
 
     /**
+     * The feature id for the '<em><b>Id</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KPOLYGON__ID = KPOLYLINE__ID;
+
+    /**
      * The feature id for the '<em><b>Parent</b></em>' container reference.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -819,6 +882,15 @@ public interface KRenderingPackage extends EPackage {
      * @ordered
      */
     int KIMAGE__STYLES = KCONTAINER_RENDERING__STYLES;
+
+    /**
+     * The feature id for the '<em><b>Id</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KIMAGE__ID = KCONTAINER_RENDERING__ID;
 
     /**
      * The feature id for the '<em><b>Parent</b></em>' container reference.
@@ -1040,6 +1112,15 @@ public interface KRenderingPackage extends EPackage {
     int KARC__STYLES = KCONTAINER_RENDERING__STYLES;
 
     /**
+     * The feature id for the '<em><b>Id</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KARC__ID = KCONTAINER_RENDERING__ID;
+
+    /**
      * The feature id for the '<em><b>Parent</b></em>' container reference.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -1232,6 +1313,15 @@ public interface KRenderingPackage extends EPackage {
     int KRENDERING_REF__STYLES = KRENDERING__STYLES;
 
     /**
+     * The feature id for the '<em><b>Id</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KRENDERING_REF__ID = KRENDERING__ID;
+
+    /**
      * The feature id for the '<em><b>Parent</b></em>' container reference.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -1314,6 +1404,15 @@ public interface KRenderingPackage extends EPackage {
     int KCHILD_AREA__STYLES = KRENDERING__STYLES;
 
     /**
+     * The feature id for the '<em><b>Id</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KCHILD_AREA__ID = KRENDERING__ID;
+
+    /**
      * The feature id for the '<em><b>Parent</b></em>' container reference.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -1385,6 +1484,15 @@ public interface KRenderingPackage extends EPackage {
      * @ordered
      */
     int KTEXT__STYLES = KRENDERING__STYLES;
+
+    /**
+     * The feature id for the '<em><b>Id</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KTEXT__ID = KRENDERING__ID;
 
     /**
      * The feature id for the '<em><b>Parent</b></em>' container reference.
@@ -1660,6 +1768,15 @@ public interface KRenderingPackage extends EPackage {
      * @ordered
      */
     int KCUSTOM_RENDERING__STYLES = KCONTAINER_RENDERING__STYLES;
+
+    /**
+     * The feature id for the '<em><b>Id</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KCUSTOM_RENDERING__ID = KCONTAINER_RENDERING__ID;
 
     /**
      * The feature id for the '<em><b>Parent</b></em>' container reference.
@@ -2250,6 +2367,15 @@ public interface KRenderingPackage extends EPackage {
     int KSPLINE__STYLES = KPOLYLINE__STYLES;
 
     /**
+     * The feature id for the '<em><b>Id</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KSPLINE__ID = KPOLYLINE__ID;
+
+    /**
      * The feature id for the '<em><b>Parent</b></em>' container reference.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -2798,6 +2924,15 @@ public interface KRenderingPackage extends EPackage {
     int KROUNDED_BENDS_POLYLINE__STYLES = KPOLYLINE__STYLES;
 
     /**
+     * The feature id for the '<em><b>Id</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KROUNDED_BENDS_POLYLINE__ID = KPOLYLINE__ID;
+
+    /**
      * The feature id for the '<em><b>Parent</b></em>' container reference.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -3109,13 +3244,22 @@ public interface KRenderingPackage extends EPackage {
     int KSTYLE_HOLDER__STYLES = 0;
 
     /**
+     * The feature id for the '<em><b>Id</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KSTYLE_HOLDER__ID = 1;
+
+    /**
      * The number of structural features of the '<em>KStyle Holder</em>' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int KSTYLE_HOLDER_FEATURE_COUNT = 1;
+    int KSTYLE_HOLDER_FEATURE_COUNT = 2;
 
     /**
      * The meta object id for the '{@link de.cau.cs.kieler.core.krendering.impl.KInvisibilityImpl <em>KInvisibility</em>}' class.
@@ -4846,6 +4990,17 @@ public interface KRenderingPackage extends EPackage {
     EReference getKStyleHolder_Styles();
 
     /**
+     * Returns the meta object for the attribute '{@link de.cau.cs.kieler.core.krendering.KStyleHolder#getId <em>Id</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the attribute '<em>Id</em>'.
+     * @see de.cau.cs.kieler.core.krendering.KStyleHolder#getId()
+     * @see #getKStyleHolder()
+     * @generated
+     */
+    EAttribute getKStyleHolder_Id();
+
+    /**
      * Returns the meta object for class '{@link de.cau.cs.kieler.core.krendering.KInvisibility <em>KInvisibility</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -6222,6 +6377,14 @@ public interface KRenderingPackage extends EPackage {
          * @generated
          */
         EReference KSTYLE_HOLDER__STYLES = eINSTANCE.getKStyleHolder_Styles();
+
+        /**
+         * The meta object literal for the '<em><b>Id</b></em>' attribute feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EAttribute KSTYLE_HOLDER__ID = eINSTANCE.getKStyleHolder_Id();
 
         /**
          * The meta object literal for the '{@link de.cau.cs.kieler.core.krendering.impl.KInvisibilityImpl <em>KInvisibility</em>}' class.

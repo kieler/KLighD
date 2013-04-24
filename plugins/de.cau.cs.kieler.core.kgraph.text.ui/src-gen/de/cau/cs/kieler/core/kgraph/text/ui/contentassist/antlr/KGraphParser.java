@@ -66,10 +66,10 @@ public class KGraphParser extends AbstractContentAssistParser {
 					put(grammarAccess.getFloatAccess().getAlternatives(), "rule__Float__Alternatives");
 					put(grammarAccess.getHorizontalAlignmentAccess().getAlternatives(), "rule__HorizontalAlignment__Alternatives");
 					put(grammarAccess.getVerticalAlignmentAccess().getAlternatives(), "rule__VerticalAlignment__Alternatives");
-					put(grammarAccess.getUnderlineStyleAccess().getAlternatives(), "rule__UnderlineStyle__Alternatives");
+					put(grammarAccess.getUnderlineAccess().getAlternatives(), "rule__Underline__Alternatives");
 					put(grammarAccess.getLineStyleAccess().getAlternatives(), "rule__LineStyle__Alternatives");
 					put(grammarAccess.getLineCapAccess().getAlternatives(), "rule__LineCap__Alternatives");
-					put(grammarAccess.getKTriggerAccess().getAlternatives(), "rule__KTrigger__Alternatives");
+					put(grammarAccess.getTriggerAccess().getAlternatives(), "rule__Trigger__Alternatives");
 					put(grammarAccess.getParentKNodeAccess().getGroup(), "rule__ParentKNode__Group__0");
 					put(grammarAccess.getParentKNodeAccess().getGroup_1(), "rule__ParentKNode__Group_1__0");
 					put(grammarAccess.getKNodeAccess().getGroup(), "rule__KNode__Group__0");
@@ -170,7 +170,7 @@ public class KGraphParser extends AbstractContentAssistParser {
 					put(grammarAccess.getKFontItalicAccess().getGroup(), "rule__KFontItalic__Group__0");
 					put(grammarAccess.getKFontNameAccess().getGroup(), "rule__KFontName__Group__0");
 					put(grammarAccess.getKFontSizeAccess().getGroup(), "rule__KFontSize__Group__0");
-					put(grammarAccess.getKFontUnderlinedAccess().getGroup(), "rule__KFontUnderlined__Group__0");
+					put(grammarAccess.getKTextUnderlineAccess().getGroup(), "rule__KTextUnderline__Group__0");
 					put(grammarAccess.getKHorizontalAlignmentAccess().getGroup(), "rule__KHorizontalAlignment__Group__0");
 					put(grammarAccess.getKVerticalAlignmentAccess().getGroup(), "rule__KVerticalAlignment__Group__0");
 					put(grammarAccess.getKInvisibilityAccess().getGroup(), "rule__KInvisibility__Group__0");
@@ -334,7 +334,7 @@ public class KGraphParser extends AbstractContentAssistParser {
 					put(grammarAccess.getKPolylineAccess().getJointPointRenderingAssignment_3_2_1(), "rule__KPolyline__JointPointRenderingAssignment_3_2_1");
 					put(grammarAccess.getKPolylineAccess().getChildrenAssignment_3_3(), "rule__KPolyline__ChildrenAssignment_3_3");
 					put(grammarAccess.getKRoundedBendsPolylineAccess().getBendRadiusAssignment_2_1(), "rule__KRoundedBendsPolyline__BendRadiusAssignment_2_1");
-					put(grammarAccess.getKStyleAccess().getFunctionIdAssignment_1_1(), "rule__KStyle__FunctionIdAssignment_1_1");
+					put(grammarAccess.getKStyleAccess().getModifierIdAssignment_1_1(), "rule__KStyle__ModifierIdAssignment_1_1");
 					put(grammarAccess.getKColoringAccess().getColorAssignment_2(), "rule__KColoring__ColorAssignment_2");
 					put(grammarAccess.getKColoringAccess().getAlphaAssignment_3_1(), "rule__KColoring__AlphaAssignment_3_1");
 					put(grammarAccess.getKColoringAccess().getTargetColorAssignment_4_1(), "rule__KColoring__TargetColorAssignment_4_1");
@@ -351,8 +351,8 @@ public class KGraphParser extends AbstractContentAssistParser {
 					put(grammarAccess.getKFontSizeAccess().getPropagateToChildrenAssignment_0(), "rule__KFontSize__PropagateToChildrenAssignment_0");
 					put(grammarAccess.getKFontSizeAccess().getScaleWithZoomAssignment_1(), "rule__KFontSize__ScaleWithZoomAssignment_1");
 					put(grammarAccess.getKFontSizeAccess().getSizeAssignment_4(), "rule__KFontSize__SizeAssignment_4");
-					put(grammarAccess.getKFontUnderlinedAccess().getPropagateToChildrenAssignment_0(), "rule__KFontUnderlined__PropagateToChildrenAssignment_0");
-					put(grammarAccess.getKFontUnderlinedAccess().getUnderlineStyleAssignment_3(), "rule__KFontUnderlined__UnderlineStyleAssignment_3");
+					put(grammarAccess.getKTextUnderlineAccess().getPropagateToChildrenAssignment_0(), "rule__KTextUnderline__PropagateToChildrenAssignment_0");
+					put(grammarAccess.getKTextUnderlineAccess().getUnderlineAssignment_3(), "rule__KTextUnderline__UnderlineAssignment_3");
 					put(grammarAccess.getKHorizontalAlignmentAccess().getPropagateToChildrenAssignment_0(), "rule__KHorizontalAlignment__PropagateToChildrenAssignment_0");
 					put(grammarAccess.getKHorizontalAlignmentAccess().getHorizontalAlignmentAssignment_3(), "rule__KHorizontalAlignment__HorizontalAlignmentAssignment_3");
 					put(grammarAccess.getKVerticalAlignmentAccess().getPropagateToChildrenAssignment_0(), "rule__KVerticalAlignment__PropagateToChildrenAssignment_0");

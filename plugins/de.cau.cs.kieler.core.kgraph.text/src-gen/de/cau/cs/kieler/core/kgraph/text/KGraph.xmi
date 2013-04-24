@@ -1002,8 +1002,8 @@
         <elements xsi:type="xtext:RuleCall" rule="//@rules.51"/>
       </elements>
       <elements xsi:type="xtext:Group" cardinality="?">
-        <elements xsi:type="xtext:Keyword" value="function"/>
-        <elements xsi:type="xtext:Assignment" feature="functionId" operator="=">
+        <elements xsi:type="xtext:Keyword" value="modifier"/>
+        <elements xsi:type="xtext:Assignment" feature="modifierId" operator="=">
           <terminal xsi:type="xtext:RuleCall" rule="//@rules.70"/>
         </elements>
       </elements>
@@ -1144,9 +1144,9 @@
       </elements>
     </alternatives>
   </rules>
-  <rules xsi:type="xtext:ParserRule" name="KFontUnderlined">
+  <rules xsi:type="xtext:ParserRule" name="KTextUnderline">
     <type metamodel="//@metamodelDeclarations.2">
-      <classifier xsi:type="ecore:EClass" href="http://kieler.cs.cau.de/KRendering#//KFontUnderlined"/>
+      <classifier xsi:type="ecore:EClass" href="http://kieler.cs.cau.de/KRendering#//KTextUnderline"/>
     </type>
     <alternatives xsi:type="xtext:Group">
       <elements xsi:type="xtext:Assignment" cardinality="?" feature="propagateToChildren" operator="?=">
@@ -1154,7 +1154,7 @@
       </elements>
       <elements xsi:type="xtext:Keyword" value="underline"/>
       <elements xsi:type="xtext:Keyword" value="="/>
-      <elements xsi:type="xtext:Assignment" feature="underlineStyle" operator="=">
+      <elements xsi:type="xtext:Assignment" feature="underline" operator="=">
         <terminal xsi:type="xtext:RuleCall" rule="//@rules.75"/>
       </elements>
     </alternatives>
@@ -1868,33 +1868,33 @@
       </elements>
     </alternatives>
   </rules>
-  <rules xsi:type="xtext:EnumRule" name="UnderlineStyle">
+  <rules xsi:type="xtext:EnumRule" name="Underline">
     <type metamodel="//@metamodelDeclarations.2">
-      <classifier xsi:type="ecore:EEnum" href="http://kieler.cs.cau.de/KRendering#//UnderlineStyle"/>
+      <classifier xsi:type="ecore:EEnum" href="http://kieler.cs.cau.de/KRendering#//Underline"/>
     </type>
     <alternatives xsi:type="xtext:Alternatives">
       <elements xsi:type="xtext:EnumLiteralDeclaration">
-        <enumLiteral href="http://kieler.cs.cau.de/KRendering#//UnderlineStyle/NONE"/>
+        <enumLiteral href="http://kieler.cs.cau.de/KRendering#//Underline/NONE"/>
         <literal value="none"/>
       </elements>
       <elements xsi:type="xtext:EnumLiteralDeclaration">
-        <enumLiteral href="http://kieler.cs.cau.de/KRendering#//UnderlineStyle/SINGLE"/>
+        <enumLiteral href="http://kieler.cs.cau.de/KRendering#//Underline/SINGLE"/>
         <literal value="single"/>
       </elements>
       <elements xsi:type="xtext:EnumLiteralDeclaration">
-        <enumLiteral href="http://kieler.cs.cau.de/KRendering#//UnderlineStyle/DOUBLE"/>
+        <enumLiteral href="http://kieler.cs.cau.de/KRendering#//Underline/DOUBLE"/>
         <literal value="double"/>
       </elements>
       <elements xsi:type="xtext:EnumLiteralDeclaration">
-        <enumLiteral href="http://kieler.cs.cau.de/KRendering#//UnderlineStyle/ERROR"/>
+        <enumLiteral href="http://kieler.cs.cau.de/KRendering#//Underline/ERROR"/>
         <literal value="error"/>
       </elements>
       <elements xsi:type="xtext:EnumLiteralDeclaration">
-        <enumLiteral href="http://kieler.cs.cau.de/KRendering#//UnderlineStyle/WARNING"/>
-        <literal value="warning"/>
+        <enumLiteral href="http://kieler.cs.cau.de/KRendering#//Underline/SQUIGGLE"/>
+        <literal value="squiggle"/>
       </elements>
       <elements xsi:type="xtext:EnumLiteralDeclaration">
-        <enumLiteral href="http://kieler.cs.cau.de/KRendering#//UnderlineStyle/LINK"/>
+        <enumLiteral href="http://kieler.cs.cau.de/KRendering#//Underline/LINK"/>
         <literal value="link"/>
       </elements>
     </alternatives>
@@ -1945,17 +1945,17 @@
       </elements>
     </alternatives>
   </rules>
-  <rules xsi:type="xtext:EnumRule" name="KTrigger">
+  <rules xsi:type="xtext:EnumRule" name="Trigger">
     <type metamodel="//@metamodelDeclarations.2">
-      <classifier xsi:type="ecore:EEnum" href="http://kieler.cs.cau.de/KRendering#//KTrigger"/>
+      <classifier xsi:type="ecore:EEnum" href="http://kieler.cs.cau.de/KRendering#//Trigger"/>
     </type>
     <alternatives xsi:type="xtext:Alternatives">
       <elements xsi:type="xtext:EnumLiteralDeclaration">
-        <enumLiteral href="http://kieler.cs.cau.de/KRendering#//KTrigger/SINGLECLICK"/>
+        <enumLiteral href="http://kieler.cs.cau.de/KRendering#//Trigger/SINGLECLICK"/>
         <literal value="singleClick"/>
       </elements>
       <elements xsi:type="xtext:EnumLiteralDeclaration">
-        <enumLiteral href="http://kieler.cs.cau.de/KRendering#//KTrigger/DOUBLECLICK"/>
+        <enumLiteral href="http://kieler.cs.cau.de/KRendering#//Trigger/DOUBLECLICK"/>
         <literal value="doubleClick"/>
       </elements>
     </alternatives>

@@ -178,8 +178,6 @@ public interface KEdge extends KLabeledGraphElement {
      * <!-- end-user-doc -->
      * @model portRequired="true"
      * @generated
-     * @deprecated Now {@link #setSourcePort(KPort)} also updates the port's list of edges,
-     *          hence this utility operation is not required anymore.
      */
     void connectSourcePort(KPort port);
 
@@ -190,8 +188,6 @@ public interface KEdge extends KLabeledGraphElement {
      * <!-- end-user-doc -->
      * @model portRequired="true"
      * @generated
-     * @deprecated Now {@link #setTargetPort(KPort)} also updates the port's list of edges,
-     *          hence this utility operation is not required anymore.
      */
     void connectTargetPort(KPort port);
 

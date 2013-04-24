@@ -50,7 +50,7 @@ public class KShadowImpl extends KStyleImpl implements KShadow {
      * @generated
      * @ordered
      */
-    protected static final float XOFFSET_EDEFAULT = 0.0F;
+    protected static final float XOFFSET_EDEFAULT = 3.0F;
 
     /**
      * The cached value of the '{@link #getXOffset() <em>XOffset</em>}' attribute.
@@ -70,7 +70,7 @@ public class KShadowImpl extends KStyleImpl implements KShadow {
      * @generated
      * @ordered
      */
-    protected static final float YOFFSET_EDEFAULT = 0.0F;
+    protected static final float YOFFSET_EDEFAULT = 3.0F;
 
     /**
      * The cached value of the '{@link #getYOffset() <em>YOffset</em>}' attribute.

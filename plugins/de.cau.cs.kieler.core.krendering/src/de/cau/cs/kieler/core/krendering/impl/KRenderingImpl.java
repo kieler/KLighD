@@ -47,6 +47,7 @@ import org.eclipse.emf.ecore.util.InternalEList;
  * The following features are implemented:
  * <ul>
  *   <li>{@link de.cau.cs.kieler.core.krendering.impl.KRenderingImpl#getStyles <em>Styles</em>}</li>
+ *   <li>{@link de.cau.cs.kieler.core.krendering.impl.KRenderingImpl#getId <em>Id</em>}</li>
  *   <li>{@link de.cau.cs.kieler.core.krendering.impl.KRenderingImpl#getParent <em>Parent</em>}</li>
  *   <li>{@link de.cau.cs.kieler.core.krendering.impl.KRenderingImpl#getPlacementData <em>Placement Data</em>}</li>
  *   <li>{@link de.cau.cs.kieler.core.krendering.impl.KRenderingImpl#getActions <em>Actions</em>}</li>
@@ -65,6 +66,26 @@ public abstract class KRenderingImpl extends KGraphDataImpl implements KRenderin
      * @ordered
      */
     protected EList<KStyle> styles;
+
+    /**
+     * The default value of the '{@link #getId() <em>Id</em>}' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see #getId()
+     * @generated
+     * @ordered
+     */
+    protected static final String ID_EDEFAULT = null;
+
+    /**
+     * The cached value of the '{@link #getId() <em>Id</em>}' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see #getId()
+     * @generated
+     * @ordered
+     */
+    protected String id = ID_EDEFAULT;
 
     /**
      * The cached value of the '{@link #getPlacementData() <em>Placement Data</em>}' containment reference.
@@ -115,6 +136,27 @@ public abstract class KRenderingImpl extends KGraphDataImpl implements KRenderin
             styles = new EObjectContainmentEList<KStyle>(KStyle.class, this, KRenderingPackage.KRENDERING__STYLES);
         }
         return styles;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public String getId() {
+        return id;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public void setId(String newId) {
+        String oldId = id;
+        id = newId;
+        if (eNotificationRequired())
+            eNotify(new ENotificationImpl(this, Notification.SET, KRenderingPackage.KRENDERING__ID, oldId, id));
     }
 
     /**
@@ -273,6 +315,8 @@ public abstract class KRenderingImpl extends KGraphDataImpl implements KRenderin
         switch (featureID) {
             case KRenderingPackage.KRENDERING__STYLES:
                 return getStyles();
+            case KRenderingPackage.KRENDERING__ID:
+                return getId();
             case KRenderingPackage.KRENDERING__PARENT:
                 return getParent();
             case KRenderingPackage.KRENDERING__PLACEMENT_DATA:
@@ -295,6 +339,9 @@ public abstract class KRenderingImpl extends KGraphDataImpl implements KRenderin
             case KRenderingPackage.KRENDERING__STYLES:
                 getStyles().clear();
                 getStyles().addAll((Collection<? extends KStyle>)newValue);
+                return;
+            case KRenderingPackage.KRENDERING__ID:
+                setId((String)newValue);
                 return;
             case KRenderingPackage.KRENDERING__PARENT:
                 setParent((KContainerRendering)newValue);
@@ -321,6 +368,9 @@ public abstract class KRenderingImpl extends KGraphDataImpl implements KRenderin
             case KRenderingPackage.KRENDERING__STYLES:
                 getStyles().clear();
                 return;
+            case KRenderingPackage.KRENDERING__ID:
+                setId(ID_EDEFAULT);
+                return;
             case KRenderingPackage.KRENDERING__PARENT:
                 setParent((KContainerRendering)null);
                 return;
@@ -344,6 +394,8 @@ public abstract class KRenderingImpl extends KGraphDataImpl implements KRenderin
         switch (featureID) {
             case KRenderingPackage.KRENDERING__STYLES:
                 return styles != null && !styles.isEmpty();
+            case KRenderingPackage.KRENDERING__ID:
+                return ID_EDEFAULT == null ? id != null : !ID_EDEFAULT.equals(id);
             case KRenderingPackage.KRENDERING__PARENT:
                 return getParent() != null;
             case KRenderingPackage.KRENDERING__PLACEMENT_DATA:
@@ -364,6 +416,7 @@ public abstract class KRenderingImpl extends KGraphDataImpl implements KRenderin
         if (baseClass == KStyleHolder.class) {
             switch (derivedFeatureID) {
                 case KRenderingPackage.KRENDERING__STYLES: return KRenderingPackage.KSTYLE_HOLDER__STYLES;
+                case KRenderingPackage.KRENDERING__ID: return KRenderingPackage.KSTYLE_HOLDER__ID;
                 default: return -1;
             }
         }
@@ -380,10 +433,27 @@ public abstract class KRenderingImpl extends KGraphDataImpl implements KRenderin
         if (baseClass == KStyleHolder.class) {
             switch (baseFeatureID) {
                 case KRenderingPackage.KSTYLE_HOLDER__STYLES: return KRenderingPackage.KRENDERING__STYLES;
+                case KRenderingPackage.KSTYLE_HOLDER__ID: return KRenderingPackage.KRENDERING__ID;
                 default: return -1;
             }
         }
         return super.eDerivedStructuralFeatureID(baseFeatureID, baseClass);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    @Override
+    public String toString() {
+        if (eIsProxy()) return super.toString();
+
+        StringBuffer result = new StringBuffer(super.toString());
+        result.append(" (id: ");
+        result.append(id);
+        result.append(')');
+        return result.toString();
     }
 
 } //KRenderingImpl

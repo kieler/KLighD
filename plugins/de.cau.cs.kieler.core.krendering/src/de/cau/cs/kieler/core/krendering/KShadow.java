@@ -36,6 +36,7 @@ package de.cau.cs.kieler.core.krendering;
 public interface KShadow extends KStyle {
     /**
      * Returns the value of the '<em><b>XOffset</b></em>' attribute.
+     * The default value is <code>"3"</code>.
      * <!-- begin-user-doc -->
      * <p>
      * If the meaning of the '<em>XOffset</em>' attribute isn't clear,
@@ -45,7 +46,7 @@ public interface KShadow extends KStyle {
      * @return the value of the '<em>XOffset</em>' attribute.
      * @see #setXOffset(float)
      * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKShadow_XOffset()
-     * @model
+     * @model default="3"
      * @generated
      */
     float getXOffset();
@@ -62,6 +63,7 @@ public interface KShadow extends KStyle {
 
     /**
      * Returns the value of the '<em><b>YOffset</b></em>' attribute.
+     * The default value is <code>"3"</code>.
      * <!-- begin-user-doc -->
      * <p>
      * If the meaning of the '<em>YOffset</em>' attribute isn't clear,
@@ -71,7 +73,7 @@ public interface KShadow extends KStyle {
      * @return the value of the '<em>YOffset</em>' attribute.
      * @see #setYOffset(float)
      * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKShadow_YOffset()
-     * @model
+     * @model default="3"
      * @generated
      */
     float getYOffset();

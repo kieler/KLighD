@@ -23,7 +23,6 @@ import de.cau.cs.kieler.core.krendering.KFontBold;
 import de.cau.cs.kieler.core.krendering.KFontItalic;
 import de.cau.cs.kieler.core.krendering.KFontName;
 import de.cau.cs.kieler.core.krendering.KFontSize;
-import de.cau.cs.kieler.core.krendering.KFontUnderlined;
 import de.cau.cs.kieler.core.krendering.KForeground;
 import de.cau.cs.kieler.core.krendering.KGridPlacement;
 import de.cau.cs.kieler.core.krendering.KGridPlacementData;
@@ -51,6 +50,7 @@ import de.cau.cs.kieler.core.krendering.KSpline;
 import de.cau.cs.kieler.core.krendering.KStyleHolder;
 import de.cau.cs.kieler.core.krendering.KStyleRef;
 import de.cau.cs.kieler.core.krendering.KText;
+import de.cau.cs.kieler.core.krendering.KTextUnderline;
 import de.cau.cs.kieler.core.krendering.KTopPosition;
 import de.cau.cs.kieler.core.krendering.KVerticalAlignment;
 import de.cau.cs.kieler.kiml.klayoutdata.KEdgeLayout;
@@ -302,16 +302,6 @@ public class KGraphSemanticSequencer extends AbstractDelegatingSemanticSequencer
 				}
 				else if(context == grammarAccess.getKStyleRule()) {
 					sequence_KFontSize_KStyle(context, (KFontSize) semanticObject); 
-					return; 
-				}
-				else break;
-			case KRenderingPackage.KFONT_UNDERLINED:
-				if(context == grammarAccess.getKFontUnderlinedRule()) {
-					sequence_KFontUnderlined(context, (KFontUnderlined) semanticObject); 
-					return; 
-				}
-				else if(context == grammarAccess.getKStyleRule()) {
-					sequence_KFontUnderlined_KStyle(context, (KFontUnderlined) semanticObject); 
 					return; 
 				}
 				else break;
@@ -567,6 +557,16 @@ public class KGraphSemanticSequencer extends AbstractDelegatingSemanticSequencer
 					return; 
 				}
 				else break;
+			case KRenderingPackage.KTEXT_UNDERLINE:
+				if(context == grammarAccess.getKStyleRule()) {
+					sequence_KStyle_KTextUnderline(context, (KTextUnderline) semanticObject); 
+					return; 
+				}
+				else if(context == grammarAccess.getKTextUnderlineRule()) {
+					sequence_KTextUnderline(context, (KTextUnderline) semanticObject); 
+					return; 
+				}
+				else break;
 			case KRenderingPackage.KTOP_POSITION:
 				if(context == grammarAccess.getKTopPositionRule()) {
 					sequence_KTopPosition(context, (KTopPosition) semanticObject); 
@@ -638,7 +638,7 @@ public class KGraphSemanticSequencer extends AbstractDelegatingSemanticSequencer
 	
 	/**
 	 * Constraint:
-	 *     (trigger=KTrigger id=QualifiedID)
+	 *     (trigger=Trigger id=QualifiedID)
 	 */
 	protected void sequence_KAction(EObject context, KAction semanticObject) {
 		if(errorAcceptor != null) {
@@ -649,7 +649,7 @@ public class KGraphSemanticSequencer extends AbstractDelegatingSemanticSequencer
 		}
 		INodesForEObjectProvider nodes = createNodeProvider(semanticObject);
 		SequenceFeeder feeder = createSequencerFeeder(semanticObject, nodes);
-		feeder.accept(grammarAccess.getKActionAccess().getTriggerKTriggerEnumRuleCall_0_0(), semanticObject.getTrigger());
+		feeder.accept(grammarAccess.getKActionAccess().getTriggerTriggerEnumRuleCall_0_0(), semanticObject.getTrigger());
 		feeder.accept(grammarAccess.getKActionAccess().getIdQualifiedIDParserRuleCall_2_0(), semanticObject.getId());
 		feeder.finish();
 	}
@@ -713,7 +713,7 @@ public class KGraphSemanticSequencer extends AbstractDelegatingSemanticSequencer
 	 *         color=KColor 
 	 *         alpha=ALPHA? 
 	 *         (targetColor=KColor targetAlpha=ALPHA? gradientAngle=Float?)? 
-	 *         functionId=QualifiedID?
+	 *         modifierId=QualifiedID?
 	 *     )
 	 */
 	protected void sequence_KBackground_KColoring_KStyle(EObject context, KBackground semanticObject) {
@@ -764,7 +764,7 @@ public class KGraphSemanticSequencer extends AbstractDelegatingSemanticSequencer
 	 *         color=KColor 
 	 *         alpha=ALPHA? 
 	 *         (targetColor=KColor targetAlpha=ALPHA? gradientAngle=Float?)? 
-	 *         functionId=QualifiedID?
+	 *         modifierId=QualifiedID?
 	 *     )
 	 */
 	protected void sequence_KColoring_KForeground_KStyle(EObject context, KForeground semanticObject) {
@@ -917,7 +917,7 @@ public class KGraphSemanticSequencer extends AbstractDelegatingSemanticSequencer
 	
 	/**
 	 * Constraint:
-	 *     (propagateToChildren?='propagate'? bold=BOOLEAN functionId=QualifiedID?)
+	 *     (propagateToChildren?='propagate'? bold=BOOLEAN modifierId=QualifiedID?)
 	 */
 	protected void sequence_KFontBold_KStyle(EObject context, KFontBold semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
@@ -935,7 +935,7 @@ public class KGraphSemanticSequencer extends AbstractDelegatingSemanticSequencer
 	
 	/**
 	 * Constraint:
-	 *     (propagateToChildren?='propagate'? italic=BOOLEAN functionId=QualifiedID?)
+	 *     (propagateToChildren?='propagate'? italic=BOOLEAN modifierId=QualifiedID?)
 	 */
 	protected void sequence_KFontItalic_KStyle(EObject context, KFontItalic semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
@@ -953,7 +953,7 @@ public class KGraphSemanticSequencer extends AbstractDelegatingSemanticSequencer
 	
 	/**
 	 * Constraint:
-	 *     (propagateToChildren?='propagate'? name=STRING functionId=QualifiedID?)
+	 *     (propagateToChildren?='propagate'? name=STRING modifierId=QualifiedID?)
 	 */
 	protected void sequence_KFontName_KStyle(EObject context, KFontName semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
@@ -971,27 +971,9 @@ public class KGraphSemanticSequencer extends AbstractDelegatingSemanticSequencer
 	
 	/**
 	 * Constraint:
-	 *     (propagateToChildren?='propagate'? scaleWithZoom?='scale'? size=FSIZE functionId=QualifiedID?)
+	 *     (propagateToChildren?='propagate'? scaleWithZoom?='scale'? size=FSIZE modifierId=QualifiedID?)
 	 */
 	protected void sequence_KFontSize_KStyle(EObject context, KFontSize semanticObject) {
-		genericSequencer.createSequence(context, semanticObject);
-	}
-	
-	
-	/**
-	 * Constraint:
-	 *     (propagateToChildren?='propagate'? underlineStyle=UnderlineStyle)
-	 */
-	protected void sequence_KFontUnderlined(EObject context, KFontUnderlined semanticObject) {
-		genericSequencer.createSequence(context, semanticObject);
-	}
-	
-	
-	/**
-	 * Constraint:
-	 *     (propagateToChildren?='propagate'? underlineStyle=UnderlineStyle functionId=QualifiedID?)
-	 */
-	protected void sequence_KFontUnderlined_KStyle(EObject context, KFontUnderlined semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
 	}
 	
@@ -1041,7 +1023,7 @@ public class KGraphSemanticSequencer extends AbstractDelegatingSemanticSequencer
 	
 	/**
 	 * Constraint:
-	 *     (propagateToChildren?='propagate'? horizontalAlignment=HorizontalAlignment functionId=QualifiedID?)
+	 *     (propagateToChildren?='propagate'? horizontalAlignment=HorizontalAlignment modifierId=QualifiedID?)
 	 */
 	protected void sequence_KHorizontalAlignment_KStyle(EObject context, KHorizontalAlignment semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
@@ -1086,7 +1068,7 @@ public class KGraphSemanticSequencer extends AbstractDelegatingSemanticSequencer
 	
 	/**
 	 * Constraint:
-	 *     (propagateToChildren?='propagate'? invisible=BOOLEAN functionId=QualifiedID?)
+	 *     (propagateToChildren?='propagate'? invisible=BOOLEAN modifierId=QualifiedID?)
 	 */
 	protected void sequence_KInvisibility_KStyle(EObject context, KInvisibility semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
@@ -1122,7 +1104,7 @@ public class KGraphSemanticSequencer extends AbstractDelegatingSemanticSequencer
 	
 	/**
 	 * Constraint:
-	 *     (propagateToChildren?='propagate'? lineCap=LineCap functionId=QualifiedID?)
+	 *     (propagateToChildren?='propagate'? lineCap=LineCap modifierId=QualifiedID?)
 	 */
 	protected void sequence_KLineCap_KStyle(EObject context, KLineCap semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
@@ -1140,7 +1122,7 @@ public class KGraphSemanticSequencer extends AbstractDelegatingSemanticSequencer
 	
 	/**
 	 * Constraint:
-	 *     (propagateToChildren?='propagate'? lineStyle=LineStyle functionId=QualifiedID?)
+	 *     (propagateToChildren?='propagate'? lineStyle=LineStyle modifierId=QualifiedID?)
 	 */
 	protected void sequence_KLineStyle_KStyle(EObject context, KLineStyle semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
@@ -1158,7 +1140,7 @@ public class KGraphSemanticSequencer extends AbstractDelegatingSemanticSequencer
 	
 	/**
 	 * Constraint:
-	 *     (propagateToChildren?='propagate'? lineWidth=Float functionId=QualifiedID?)
+	 *     (propagateToChildren?='propagate'? lineWidth=Float modifierId=QualifiedID?)
 	 */
 	protected void sequence_KLineWidth_KStyle(EObject context, KLineWidth semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
@@ -1416,7 +1398,7 @@ public class KGraphSemanticSequencer extends AbstractDelegatingSemanticSequencer
 	
 	/**
 	 * Constraint:
-	 *     (propagateToChildren?='propagate'? rotation=Float functionId=QualifiedID?)
+	 *     (propagateToChildren?='propagate'? rotation=Float modifierId=QualifiedID?)
 	 */
 	protected void sequence_KRotation_KStyle(EObject context, KRotation semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
@@ -1452,7 +1434,7 @@ public class KGraphSemanticSequencer extends AbstractDelegatingSemanticSequencer
 	
 	/**
 	 * Constraint:
-	 *     (propagateToChildren?='propagate'? color=KColor? (xOffset=Float yOffset=Float blur=Float?)? functionId=QualifiedID?)
+	 *     (propagateToChildren?='propagate'? color=KColor? (xOffset=Float yOffset=Float blur=Float?)? modifierId=QualifiedID?)
 	 */
 	protected void sequence_KShadow_KStyle(EObject context, KShadow semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
@@ -1524,7 +1506,7 @@ public class KGraphSemanticSequencer extends AbstractDelegatingSemanticSequencer
 	
 	/**
 	 * Constraint:
-	 *     (styleHolder=[KStyleHolder|QualifiedID] functionId=QualifiedID?)
+	 *     (styleHolder=[KStyleHolder|QualifiedID] modifierId=QualifiedID?)
 	 */
 	protected void sequence_KStyle_KStyleRef(EObject context, KStyleRef semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
@@ -1533,9 +1515,27 @@ public class KGraphSemanticSequencer extends AbstractDelegatingSemanticSequencer
 	
 	/**
 	 * Constraint:
-	 *     (propagateToChildren?='propagate'? verticalAlignment=VerticalAlignment functionId=QualifiedID?)
+	 *     (propagateToChildren?='propagate'? underline=Underline modifierId=QualifiedID?)
+	 */
+	protected void sequence_KStyle_KTextUnderline(EObject context, KTextUnderline semanticObject) {
+		genericSequencer.createSequence(context, semanticObject);
+	}
+	
+	
+	/**
+	 * Constraint:
+	 *     (propagateToChildren?='propagate'? verticalAlignment=VerticalAlignment modifierId=QualifiedID?)
 	 */
 	protected void sequence_KStyle_KVerticalAlignment(EObject context, KVerticalAlignment semanticObject) {
+		genericSequencer.createSequence(context, semanticObject);
+	}
+	
+	
+	/**
+	 * Constraint:
+	 *     (propagateToChildren?='propagate'? underline=Underline)
+	 */
+	protected void sequence_KTextUnderline(EObject context, KTextUnderline semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
 	}
 	

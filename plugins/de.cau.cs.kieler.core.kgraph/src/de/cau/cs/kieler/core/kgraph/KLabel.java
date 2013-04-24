@@ -45,7 +45,7 @@ public interface KLabel extends KGraphElement {
      * @return the value of the '<em>Text</em>' attribute.
      * @see #setText(String)
      * @see de.cau.cs.kieler.core.kgraph.KGraphPackage#getKLabel_Text()
-     * @model required="true"
+     * @model
      * @generated
      */
     String getText();

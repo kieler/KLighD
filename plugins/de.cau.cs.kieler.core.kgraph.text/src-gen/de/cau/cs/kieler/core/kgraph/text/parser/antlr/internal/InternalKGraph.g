@@ -3986,11 +3986,11 @@ ruleKStyle returns [EObject current=null]
 
     |
     { 
-        newCompositeNode(grammarAccess.getKStyleAccess().getKFontUnderlinedParserRuleCall_0_5()); 
+        newCompositeNode(grammarAccess.getKStyleAccess().getKTextUnderlineParserRuleCall_0_5()); 
     }
-    this_KFontUnderlined_5=ruleKFontUnderlined
+    this_KTextUnderline_5=ruleKTextUnderline
     { 
-        $current = $this_KFontUnderlined_5.current; 
+        $current = $this_KTextUnderline_5.current; 
         afterParserOrEnumRuleCall();
     }
 
@@ -4083,23 +4083,23 @@ ruleKStyle returns [EObject current=null]
         $current = $this_KStyleRef_14.current; 
         afterParserOrEnumRuleCall();
     }
-)(	otherlv_15='function' 
+)(	otherlv_15='modifier' 
     {
-    	newLeafNode(otherlv_15, grammarAccess.getKStyleAccess().getFunctionKeyword_1_0());
+    	newLeafNode(otherlv_15, grammarAccess.getKStyleAccess().getModifierKeyword_1_0());
     }
 (
 (
 		{ 
-	        newCompositeNode(grammarAccess.getKStyleAccess().getFunctionIdQualifiedIDParserRuleCall_1_1_0()); 
+	        newCompositeNode(grammarAccess.getKStyleAccess().getModifierIdQualifiedIDParserRuleCall_1_1_0()); 
 	    }
-		lv_functionId_16_0=ruleQualifiedID		{
+		lv_modifierId_16_0=ruleQualifiedID		{
 	        if ($current==null) {
 	            $current = createModelElementForParent(grammarAccess.getKStyleRule());
 	        }
        		set(
        			$current, 
-       			"functionId",
-        		lv_functionId_16_0, 
+       			"modifierId",
+        		lv_modifierId_16_0, 
         		"QualifiedID");
 	        afterParserOrEnumRuleCall();
 	    }
@@ -4621,17 +4621,17 @@ ruleKFontSize returns [EObject current=null]
 
 
 
-// Entry rule entryRuleKFontUnderlined
-entryRuleKFontUnderlined returns [EObject current=null] 
+// Entry rule entryRuleKTextUnderline
+entryRuleKTextUnderline returns [EObject current=null] 
 	:
-	{ newCompositeNode(grammarAccess.getKFontUnderlinedRule()); }
-	 iv_ruleKFontUnderlined=ruleKFontUnderlined 
-	 { $current=$iv_ruleKFontUnderlined.current; } 
+	{ newCompositeNode(grammarAccess.getKTextUnderlineRule()); }
+	 iv_ruleKTextUnderline=ruleKTextUnderline 
+	 { $current=$iv_ruleKTextUnderline.current; } 
 	 EOF 
 ;
 
-// Rule KFontUnderlined
-ruleKFontUnderlined returns [EObject current=null] 
+// Rule KTextUnderline
+ruleKTextUnderline returns [EObject current=null] 
     @init { enterRule(); 
     }
     @after { leaveRule(); }:
@@ -4639,12 +4639,12 @@ ruleKFontUnderlined returns [EObject current=null]
 (
 		lv_propagateToChildren_0_0=	'propagate' 
     {
-        newLeafNode(lv_propagateToChildren_0_0, grammarAccess.getKFontUnderlinedAccess().getPropagateToChildrenPropagateKeyword_0_0());
+        newLeafNode(lv_propagateToChildren_0_0, grammarAccess.getKTextUnderlineAccess().getPropagateToChildrenPropagateKeyword_0_0());
     }
  
 	    {
 	        if ($current==null) {
-	            $current = createModelElement(grammarAccess.getKFontUnderlinedRule());
+	            $current = createModelElement(grammarAccess.getKTextUnderlineRule());
 	        }
        		setWithLastConsumed($current, "propagateToChildren", true, "propagate");
 	    }
@@ -4652,26 +4652,26 @@ ruleKFontUnderlined returns [EObject current=null]
 )
 )?	otherlv_1='underline' 
     {
-    	newLeafNode(otherlv_1, grammarAccess.getKFontUnderlinedAccess().getUnderlineKeyword_1());
+    	newLeafNode(otherlv_1, grammarAccess.getKTextUnderlineAccess().getUnderlineKeyword_1());
     }
 	otherlv_2='=' 
     {
-    	newLeafNode(otherlv_2, grammarAccess.getKFontUnderlinedAccess().getEqualsSignKeyword_2());
+    	newLeafNode(otherlv_2, grammarAccess.getKTextUnderlineAccess().getEqualsSignKeyword_2());
     }
 (
 (
 		{ 
-	        newCompositeNode(grammarAccess.getKFontUnderlinedAccess().getUnderlineStyleUnderlineStyleEnumRuleCall_3_0()); 
+	        newCompositeNode(grammarAccess.getKTextUnderlineAccess().getUnderlineUnderlineEnumRuleCall_3_0()); 
 	    }
-		lv_underlineStyle_3_0=ruleUnderlineStyle		{
+		lv_underline_3_0=ruleUnderline		{
 	        if ($current==null) {
-	            $current = createModelElementForParent(grammarAccess.getKFontUnderlinedRule());
+	            $current = createModelElementForParent(grammarAccess.getKTextUnderlineRule());
 	        }
        		set(
        			$current, 
-       			"underlineStyle",
-        		lv_underlineStyle_3_0, 
-        		"UnderlineStyle");
+       			"underline",
+        		lv_underline_3_0, 
+        		"Underline");
 	        afterParserOrEnumRuleCall();
 	    }
 
@@ -6712,9 +6712,9 @@ ruleKAction returns [EObject current=null]
 ((
 (
 		{ 
-	        newCompositeNode(grammarAccess.getKActionAccess().getTriggerKTriggerEnumRuleCall_0_0()); 
+	        newCompositeNode(grammarAccess.getKActionAccess().getTriggerTriggerEnumRuleCall_0_0()); 
 	    }
-		lv_trigger_0_0=ruleKTrigger		{
+		lv_trigger_0_0=ruleTrigger		{
 	        if ($current==null) {
 	            $current = createModelElementForParent(grammarAccess.getKActionRule());
 	        }
@@ -6722,7 +6722,7 @@ ruleKAction returns [EObject current=null]
        			$current, 
        			"trigger",
         		lv_trigger_0_0, 
-        		"KTrigger");
+        		"Trigger");
 	        afterParserOrEnumRuleCall();
 	    }
 
@@ -7461,44 +7461,44 @@ ruleVerticalAlignment returns [Enumerator current=null]
 
 
 
-// Rule UnderlineStyle
-ruleUnderlineStyle returns [Enumerator current=null] 
+// Rule Underline
+ruleUnderline returns [Enumerator current=null] 
     @init { enterRule(); }
     @after { leaveRule(); }:
 ((	enumLiteral_0='none' 
 	{
-        $current = grammarAccess.getUnderlineStyleAccess().getNONEEnumLiteralDeclaration_0().getEnumLiteral().getInstance();
-        newLeafNode(enumLiteral_0, grammarAccess.getUnderlineStyleAccess().getNONEEnumLiteralDeclaration_0()); 
+        $current = grammarAccess.getUnderlineAccess().getNONEEnumLiteralDeclaration_0().getEnumLiteral().getInstance();
+        newLeafNode(enumLiteral_0, grammarAccess.getUnderlineAccess().getNONEEnumLiteralDeclaration_0()); 
     }
 )
     |(	enumLiteral_1='single' 
 	{
-        $current = grammarAccess.getUnderlineStyleAccess().getSINGLEEnumLiteralDeclaration_1().getEnumLiteral().getInstance();
-        newLeafNode(enumLiteral_1, grammarAccess.getUnderlineStyleAccess().getSINGLEEnumLiteralDeclaration_1()); 
+        $current = grammarAccess.getUnderlineAccess().getSINGLEEnumLiteralDeclaration_1().getEnumLiteral().getInstance();
+        newLeafNode(enumLiteral_1, grammarAccess.getUnderlineAccess().getSINGLEEnumLiteralDeclaration_1()); 
     }
 )
     |(	enumLiteral_2='double' 
 	{
-        $current = grammarAccess.getUnderlineStyleAccess().getDOUBLEEnumLiteralDeclaration_2().getEnumLiteral().getInstance();
-        newLeafNode(enumLiteral_2, grammarAccess.getUnderlineStyleAccess().getDOUBLEEnumLiteralDeclaration_2()); 
+        $current = grammarAccess.getUnderlineAccess().getDOUBLEEnumLiteralDeclaration_2().getEnumLiteral().getInstance();
+        newLeafNode(enumLiteral_2, grammarAccess.getUnderlineAccess().getDOUBLEEnumLiteralDeclaration_2()); 
     }
 )
     |(	enumLiteral_3='error' 
 	{
-        $current = grammarAccess.getUnderlineStyleAccess().getERROREnumLiteralDeclaration_3().getEnumLiteral().getInstance();
-        newLeafNode(enumLiteral_3, grammarAccess.getUnderlineStyleAccess().getERROREnumLiteralDeclaration_3()); 
+        $current = grammarAccess.getUnderlineAccess().getERROREnumLiteralDeclaration_3().getEnumLiteral().getInstance();
+        newLeafNode(enumLiteral_3, grammarAccess.getUnderlineAccess().getERROREnumLiteralDeclaration_3()); 
     }
 )
-    |(	enumLiteral_4='warning' 
+    |(	enumLiteral_4='squiggle' 
 	{
-        $current = grammarAccess.getUnderlineStyleAccess().getWARNINGEnumLiteralDeclaration_4().getEnumLiteral().getInstance();
-        newLeafNode(enumLiteral_4, grammarAccess.getUnderlineStyleAccess().getWARNINGEnumLiteralDeclaration_4()); 
+        $current = grammarAccess.getUnderlineAccess().getSQUIGGLEEnumLiteralDeclaration_4().getEnumLiteral().getInstance();
+        newLeafNode(enumLiteral_4, grammarAccess.getUnderlineAccess().getSQUIGGLEEnumLiteralDeclaration_4()); 
     }
 )
     |(	enumLiteral_5='link' 
 	{
-        $current = grammarAccess.getUnderlineStyleAccess().getLINKEnumLiteralDeclaration_5().getEnumLiteral().getInstance();
-        newLeafNode(enumLiteral_5, grammarAccess.getUnderlineStyleAccess().getLINKEnumLiteralDeclaration_5()); 
+        $current = grammarAccess.getUnderlineAccess().getLINKEnumLiteralDeclaration_5().getEnumLiteral().getInstance();
+        newLeafNode(enumLiteral_5, grammarAccess.getUnderlineAccess().getLINKEnumLiteralDeclaration_5()); 
     }
 ));
 
@@ -7566,20 +7566,20 @@ ruleLineCap returns [Enumerator current=null]
 
 
 
-// Rule KTrigger
-ruleKTrigger returns [Enumerator current=null] 
+// Rule Trigger
+ruleTrigger returns [Enumerator current=null] 
     @init { enterRule(); }
     @after { leaveRule(); }:
 ((	enumLiteral_0='singleClick' 
 	{
-        $current = grammarAccess.getKTriggerAccess().getSINGLECLICKEnumLiteralDeclaration_0().getEnumLiteral().getInstance();
-        newLeafNode(enumLiteral_0, grammarAccess.getKTriggerAccess().getSINGLECLICKEnumLiteralDeclaration_0()); 
+        $current = grammarAccess.getTriggerAccess().getSINGLECLICKEnumLiteralDeclaration_0().getEnumLiteral().getInstance();
+        newLeafNode(enumLiteral_0, grammarAccess.getTriggerAccess().getSINGLECLICKEnumLiteralDeclaration_0()); 
     }
 )
     |(	enumLiteral_1='doubleClick' 
 	{
-        $current = grammarAccess.getKTriggerAccess().getDOUBLECLICKEnumLiteralDeclaration_1().getEnumLiteral().getInstance();
-        newLeafNode(enumLiteral_1, grammarAccess.getKTriggerAccess().getDOUBLECLICKEnumLiteralDeclaration_1()); 
+        $current = grammarAccess.getTriggerAccess().getDOUBLECLICKEnumLiteralDeclaration_1().getEnumLiteral().getInstance();
+        newLeafNode(enumLiteral_1, grammarAccess.getTriggerAccess().getDOUBLECLICKEnumLiteralDeclaration_1()); 
     }
 ));
 
