@@ -25,7 +25,7 @@ public class KGraphParser extends org.eclipse.xtext.parser.antlr.AbstractAntlrPa
 	
 	@Override 
 	protected String getDefaultRuleName() {
-		return "KNode";
+		return "ParentKNode";
 	}
 	
 	public KGraphGrammarAccess getGrammarAccess() {

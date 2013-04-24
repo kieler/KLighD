@@ -8,6 +8,7 @@ import org.eclipse.xtext.IGrammarAccess;
 import org.eclipse.xtext.RuleCall;
 import org.eclipse.xtext.nodemodel.INode;
 import org.eclipse.xtext.serializer.analysis.GrammarAlias.AbstractElementAlias;
+import org.eclipse.xtext.serializer.analysis.GrammarAlias.AlternativeAlias;
 import org.eclipse.xtext.serializer.analysis.GrammarAlias.GroupAlias;
 import org.eclipse.xtext.serializer.analysis.GrammarAlias.TokenAlias;
 import org.eclipse.xtext.serializer.analysis.ISyntacticSequencerPDAProvider.ISynNavigable;
@@ -18,310 +19,90 @@ import org.eclipse.xtext.serializer.sequencer.AbstractSyntacticSequencer;
 public class KGraphSyntacticSequencer extends AbstractSyntacticSequencer {
 
 	protected KGraphGrammarAccess grammarAccess;
-	protected AbstractElementAlias match_KArc_ColonKeyword_5_1_0_1_q;
-	protected AbstractElementAlias match_KArc_ColonKeyword_5_1_1_1_q;
-	protected AbstractElementAlias match_KArc_ColonKeyword_5_1_2_1_q;
-	protected AbstractElementAlias match_KArc_ColonKeyword_5_1_3_1_q;
-	protected AbstractElementAlias match_KArc_ColonKeyword_5_1_4_1_q;
-	protected AbstractElementAlias match_KArc_CommaKeyword_3_q;
-	protected AbstractElementAlias match_KArc_CommaKeyword_5_1_0_3_0_q;
-	protected AbstractElementAlias match_KArc_CommaKeyword_5_1_1_3_0_q;
-	protected AbstractElementAlias match_KArc_CommaKeyword_5_1_4_3_0_q;
-	protected AbstractElementAlias match_KArc___LeftCurlyBracketKeyword_5_0_RightCurlyBracketKeyword_5_2__q;
-	protected AbstractElementAlias match_KAreaPlacementData_CommaKeyword_4_q;
-	protected AbstractElementAlias match_KChildArea_ColonKeyword_2_1_0_1_q;
-	protected AbstractElementAlias match_KChildArea_ColonKeyword_2_1_1_1_q;
-	protected AbstractElementAlias match_KChildArea_ColonKeyword_2_1_2_1_q;
-	protected AbstractElementAlias match_KChildArea_CommaKeyword_2_1_0_3_0_q;
-	protected AbstractElementAlias match_KChildArea_CommaKeyword_2_1_1_3_0_q;
-	protected AbstractElementAlias match_KChildArea___LeftCurlyBracketKeyword_2_0_RightCurlyBracketKeyword_2_2__q;
-	protected AbstractElementAlias match_KCustomRendering_ColonKeyword_2_5_0_1_q;
-	protected AbstractElementAlias match_KCustomRendering_ColonKeyword_2_5_1_1_q;
-	protected AbstractElementAlias match_KCustomRendering_ColonKeyword_2_5_2_1_q;
-	protected AbstractElementAlias match_KCustomRendering_ColonKeyword_2_5_3_1_q;
-	protected AbstractElementAlias match_KCustomRendering_ColonKeyword_2_5_4_1_q;
-	protected AbstractElementAlias match_KCustomRendering_CommaKeyword_2_5_0_3_0_q;
-	protected AbstractElementAlias match_KCustomRendering_CommaKeyword_2_5_1_3_0_q;
-	protected AbstractElementAlias match_KCustomRendering_CommaKeyword_2_5_4_3_0_q;
-	protected AbstractElementAlias match_KEdgeLayout_ColonKeyword_3_1_q;
-	protected AbstractElementAlias match_KEdgeLayout_ColonKeyword_4_1_q;
-	protected AbstractElementAlias match_KEdgeLayout_ColonKeyword_5_1_q;
-	protected AbstractElementAlias match_KEdgeLayout_ColonKeyword_6_1_q;
-	protected AbstractElementAlias match_KEdgeLayout_CommaKeyword_5_3_0_q;
-	protected AbstractElementAlias match_KEdgeLayout_CommaKeyword_6_3_0_q;
-	protected AbstractElementAlias match_KEdge_ColonKeyword_5_1_q;
-	protected AbstractElementAlias match_KEdge_ColonKeyword_6_1_q;
-	protected AbstractElementAlias match_KEdge_CommaKeyword_5_3_0_q;
-	protected AbstractElementAlias match_KEdge_CommaKeyword_6_3_0_q;
-	protected AbstractElementAlias match_KEllipse_ColonKeyword_2_1_0_1_q;
-	protected AbstractElementAlias match_KEllipse_ColonKeyword_2_1_1_1_q;
-	protected AbstractElementAlias match_KEllipse_ColonKeyword_2_1_2_1_q;
-	protected AbstractElementAlias match_KEllipse_ColonKeyword_2_1_3_1_q;
-	protected AbstractElementAlias match_KEllipse_ColonKeyword_2_1_4_1_q;
-	protected AbstractElementAlias match_KEllipse_CommaKeyword_2_1_0_3_0_q;
-	protected AbstractElementAlias match_KEllipse_CommaKeyword_2_1_1_3_0_q;
-	protected AbstractElementAlias match_KEllipse_CommaKeyword_2_1_4_3_0_q;
-	protected AbstractElementAlias match_KEllipse___LeftCurlyBracketKeyword_2_0_RightCurlyBracketKeyword_2_2__q;
-	protected AbstractElementAlias match_KGraphDataImpl_ColonKeyword_3_1_q;
-	protected AbstractElementAlias match_KGridPlacement_CommaKeyword_3_1_0_2_q;
-	protected AbstractElementAlias match_KGridPlacement___LeftCurlyBracketKeyword_3_0_RightCurlyBracketKeyword_3_2__q;
-	protected AbstractElementAlias match_KImage_ColonKeyword_4_1_0_1_q;
-	protected AbstractElementAlias match_KImage_ColonKeyword_4_1_1_1_q;
-	protected AbstractElementAlias match_KImage_ColonKeyword_4_1_2_1_q;
-	protected AbstractElementAlias match_KImage_ColonKeyword_4_1_3_1_q;
-	protected AbstractElementAlias match_KImage_ColonKeyword_4_1_4_1_q;
-	protected AbstractElementAlias match_KImage_CommaKeyword_4_1_0_3_0_q;
-	protected AbstractElementAlias match_KImage_CommaKeyword_4_1_1_3_0_q;
-	protected AbstractElementAlias match_KImage_CommaKeyword_4_1_4_3_0_q;
-	protected AbstractElementAlias match_KImage___LeftCurlyBracketKeyword_4_0_RightCurlyBracketKeyword_4_2__q;
-	protected AbstractElementAlias match_KLabel_ColonKeyword_3_1_q;
-	protected AbstractElementAlias match_KLabel_CommaKeyword_3_3_0_q;
-	protected AbstractElementAlias match_KLineStyle_CommaKeyword_4_3_0_q;
-	protected AbstractElementAlias match_KNode_ColonKeyword_3_1_q;
-	protected AbstractElementAlias match_KNode_ColonKeyword_4_1_q;
-	protected AbstractElementAlias match_KNode_ColonKeyword_5_1_q;
-	protected AbstractElementAlias match_KNode_ColonKeyword_6_1_q;
-	protected AbstractElementAlias match_KNode_CommaKeyword_3_3_0_q;
-	protected AbstractElementAlias match_KNode_CommaKeyword_4_3_0_q;
-	protected AbstractElementAlias match_KNode_CommaKeyword_5_3_0_q;
-	protected AbstractElementAlias match_KNode_CommaKeyword_6_3_0_q;
-	protected AbstractElementAlias match_KNode_CommaKeyword_8_1_0_q;
-	protected AbstractElementAlias match_KPointPlacementData_RightCurlyBracketKeyword_6_1_a;
-	protected AbstractElementAlias match_KPointPlacementData_RightCurlyBracketKeyword_6_1_p;
-	protected AbstractElementAlias match_KPolygon_ColonKeyword_2_1_0_1_q;
-	protected AbstractElementAlias match_KPolygon_ColonKeyword_2_1_1_1_q;
-	protected AbstractElementAlias match_KPolygon_ColonKeyword_2_1_2_1_q;
-	protected AbstractElementAlias match_KPolygon_ColonKeyword_2_1_3_1_q;
-	protected AbstractElementAlias match_KPolygon_ColonKeyword_2_1_4_1_q;
-	protected AbstractElementAlias match_KPolygon_ColonKeyword_2_1_5_1_q;
-	protected AbstractElementAlias match_KPolygon_CommaKeyword_2_1_0_3_0_q;
-	protected AbstractElementAlias match_KPolygon_CommaKeyword_2_1_1_3_0_q;
-	protected AbstractElementAlias match_KPolygon_CommaKeyword_2_1_2_3_0_q;
-	protected AbstractElementAlias match_KPolygon_CommaKeyword_2_1_5_3_0_q;
-	protected AbstractElementAlias match_KPolygon___LeftCurlyBracketKeyword_2_0_RightCurlyBracketKeyword_2_2__q;
-	protected AbstractElementAlias match_KPolyline_Impl_ColonKeyword_2_1_0_1_q;
-	protected AbstractElementAlias match_KPolyline_Impl_ColonKeyword_2_1_1_1_q;
-	protected AbstractElementAlias match_KPolyline_Impl_ColonKeyword_2_1_2_1_q;
-	protected AbstractElementAlias match_KPolyline_Impl_ColonKeyword_2_1_3_1_q;
-	protected AbstractElementAlias match_KPolyline_Impl_ColonKeyword_2_1_4_1_q;
-	protected AbstractElementAlias match_KPolyline_Impl_ColonKeyword_2_1_5_1_q;
-	protected AbstractElementAlias match_KPolyline_Impl_CommaKeyword_2_1_0_3_0_q;
-	protected AbstractElementAlias match_KPolyline_Impl_CommaKeyword_2_1_1_3_0_q;
-	protected AbstractElementAlias match_KPolyline_Impl_CommaKeyword_2_1_2_3_0_q;
-	protected AbstractElementAlias match_KPolyline_Impl_CommaKeyword_2_1_5_3_0_q;
-	protected AbstractElementAlias match_KPolyline_Impl___LeftCurlyBracketKeyword_2_0_RightCurlyBracketKeyword_2_2__q;
-	protected AbstractElementAlias match_KPort_ColonKeyword_3_1_q;
-	protected AbstractElementAlias match_KPort_ColonKeyword_4_1_q;
-	protected AbstractElementAlias match_KPort_ColonKeyword_5_1_q;
-	protected AbstractElementAlias match_KPort_CommaKeyword_3_3_0_q;
-	protected AbstractElementAlias match_KPort_CommaKeyword_4_3_0_q;
-	protected AbstractElementAlias match_KPort_CommaKeyword_5_3_0_q;
-	protected AbstractElementAlias match_KRectangle_ColonKeyword_2_1_0_1_q;
-	protected AbstractElementAlias match_KRectangle_ColonKeyword_2_1_1_1_q;
-	protected AbstractElementAlias match_KRectangle_ColonKeyword_2_1_2_1_q;
-	protected AbstractElementAlias match_KRectangle_ColonKeyword_2_1_3_1_q;
-	protected AbstractElementAlias match_KRectangle_ColonKeyword_2_1_4_1_q;
-	protected AbstractElementAlias match_KRectangle_CommaKeyword_2_1_0_3_0_q;
-	protected AbstractElementAlias match_KRectangle_CommaKeyword_2_1_1_3_0_q;
-	protected AbstractElementAlias match_KRectangle_CommaKeyword_2_1_4_3_0_q;
-	protected AbstractElementAlias match_KRectangle___LeftCurlyBracketKeyword_2_0_RightCurlyBracketKeyword_2_2__q;
-	protected AbstractElementAlias match_KRenderingLibrary_CommaKeyword_3_1_0_q;
-	protected AbstractElementAlias match_KRenderingRef_ColonKeyword_3_1_0_1_q;
-	protected AbstractElementAlias match_KRenderingRef_ColonKeyword_3_1_1_1_q;
-	protected AbstractElementAlias match_KRenderingRef_CommaKeyword_3_1_0_3_0_q;
-	protected AbstractElementAlias match_KRenderingRef___LeftCurlyBracketKeyword_3_0_RightCurlyBracketKeyword_3_2__q;
-	protected AbstractElementAlias match_KRoundedBendsPolyline_ColonKeyword_3_1_0_1_q;
-	protected AbstractElementAlias match_KRoundedBendsPolyline_ColonKeyword_3_1_1_1_q;
-	protected AbstractElementAlias match_KRoundedBendsPolyline_ColonKeyword_3_1_2_1_q;
-	protected AbstractElementAlias match_KRoundedBendsPolyline_ColonKeyword_3_1_3_1_q;
-	protected AbstractElementAlias match_KRoundedBendsPolyline_ColonKeyword_3_1_4_1_q;
-	protected AbstractElementAlias match_KRoundedBendsPolyline_CommaKeyword_3_1_0_3_0_q;
-	protected AbstractElementAlias match_KRoundedBendsPolyline_CommaKeyword_3_1_1_3_0_q;
-	protected AbstractElementAlias match_KRoundedBendsPolyline_CommaKeyword_3_1_4_3_0_q;
-	protected AbstractElementAlias match_KRoundedBendsPolyline___LeftCurlyBracketKeyword_3_0_RightCurlyBracketKeyword_3_2__q;
-	protected AbstractElementAlias match_KRoundedRectangle_ColonKeyword_5_1_0_1_q;
-	protected AbstractElementAlias match_KRoundedRectangle_ColonKeyword_5_1_1_1_q;
-	protected AbstractElementAlias match_KRoundedRectangle_ColonKeyword_5_1_2_1_q;
-	protected AbstractElementAlias match_KRoundedRectangle_ColonKeyword_5_1_3_1_q;
-	protected AbstractElementAlias match_KRoundedRectangle_ColonKeyword_5_1_4_1_q;
-	protected AbstractElementAlias match_KRoundedRectangle_CommaKeyword_3_q;
-	protected AbstractElementAlias match_KRoundedRectangle_CommaKeyword_5_1_0_3_0_q;
-	protected AbstractElementAlias match_KRoundedRectangle_CommaKeyword_5_1_1_3_0_q;
-	protected AbstractElementAlias match_KRoundedRectangle_CommaKeyword_5_1_4_3_0_q;
-	protected AbstractElementAlias match_KRoundedRectangle___LeftCurlyBracketKeyword_5_0_RightCurlyBracketKeyword_5_2__q;
-	protected AbstractElementAlias match_KShapeLayout_ColonKeyword_8_1_q;
-	protected AbstractElementAlias match_KShapeLayout_CommaKeyword_8_3_0_q;
-	protected AbstractElementAlias match_KSpline_ColonKeyword_2_1_0_1_q;
-	protected AbstractElementAlias match_KSpline_ColonKeyword_2_1_1_1_q;
-	protected AbstractElementAlias match_KSpline_ColonKeyword_2_1_2_1_q;
-	protected AbstractElementAlias match_KSpline_ColonKeyword_2_1_3_1_q;
-	protected AbstractElementAlias match_KSpline_ColonKeyword_2_1_4_1_q;
-	protected AbstractElementAlias match_KSpline_CommaKeyword_2_1_0_3_0_q;
-	protected AbstractElementAlias match_KSpline_CommaKeyword_2_1_1_3_0_q;
-	protected AbstractElementAlias match_KSpline_CommaKeyword_2_1_4_3_0_q;
-	protected AbstractElementAlias match_KSpline___LeftCurlyBracketKeyword_2_0_RightCurlyBracketKeyword_2_2__q;
-	protected AbstractElementAlias match_KText_ColonKeyword_3_1_0_1_q;
-	protected AbstractElementAlias match_KText_ColonKeyword_3_1_1_1_q;
-	protected AbstractElementAlias match_KText_ColonKeyword_3_1_2_1_q;
-	protected AbstractElementAlias match_KText_ColonKeyword_3_1_3_1_q;
-	protected AbstractElementAlias match_KText_CommaKeyword_3_1_0_3_0_q;
-	protected AbstractElementAlias match_KText_CommaKeyword_3_1_1_3_0_q;
-	protected AbstractElementAlias match_KText_CommaKeyword_3_1_3_3_0_q;
-	protected AbstractElementAlias match_KText___LeftCurlyBracketKeyword_3_0_RightCurlyBracketKeyword_3_2__q;
+	protected AbstractElementAlias match_KContainerRendering___LeftCurlyBracketKeyword_3_0_____ActionsKeyword_3_1_1_0_ColonKeyword_3_1_1_1___or___StylesKeyword_3_1_0_0_ColonKeyword_3_1_0_1____a_RightCurlyBracketKeyword_3_3__q;
+	protected AbstractElementAlias match_KContainerRendering___LeftSquareBracketKeyword_2_0_RightSquareBracketKeyword_2_2__q;
+	protected AbstractElementAlias match_KContainerRendering_____ActionsKeyword_3_1_1_0_ColonKeyword_3_1_1_1___or___StylesKeyword_3_1_0_0_ColonKeyword_3_1_0_1____a;
+	protected AbstractElementAlias match_KContainerRendering_____ActionsKeyword_3_1_1_0_ColonKeyword_3_1_1_1__a_StylesKeyword_3_1_0_0_ColonKeyword_3_1_0_1__a;
+	protected AbstractElementAlias match_KContainerRendering_____ActionsKeyword_3_1_1_0_ColonKeyword_3_1_1_1__a_StylesKeyword_3_1_0_0_ColonKeyword_3_1_0_1__p;
+	protected AbstractElementAlias match_KContainerRendering_____StylesKeyword_3_1_0_0_ColonKeyword_3_1_0_1__a_ActionsKeyword_3_1_1_0_ColonKeyword_3_1_1_1__a;
+	protected AbstractElementAlias match_KContainerRendering_____StylesKeyword_3_1_0_0_ColonKeyword_3_1_0_1__a_ActionsKeyword_3_1_1_0_ColonKeyword_3_1_1_1__p;
+	protected AbstractElementAlias match_KEdgeLayout___PropertiesKeyword_1_0_ColonKeyword_1_1__q;
+	protected AbstractElementAlias match_KIdentifier___LeftSquareBracketKeyword_1_0_RightSquareBracketKeyword_1_2__q;
+	protected AbstractElementAlias match_KNodeLayout_____PosKeyword_0_0_0_ColonKeyword_0_0_1___or___PropertiesKeyword_0_2_0_ColonKeyword_0_2_1___or___SizeKeyword_0_1_0_ColonKeyword_0_1_1____a;
+	protected AbstractElementAlias match_KNodeLayout_______PosKeyword_0_0_0_ColonKeyword_0_0_1___or___PropertiesKeyword_0_2_0_ColonKeyword_0_2_1____a_SizeKeyword_0_1_0_ColonKeyword_0_1_1__a;
+	protected AbstractElementAlias match_KNodeLayout_______PosKeyword_0_0_0_ColonKeyword_0_0_1___or___PropertiesKeyword_0_2_0_ColonKeyword_0_2_1____a_SizeKeyword_0_1_0_ColonKeyword_0_1_1__p;
+	protected AbstractElementAlias match_KNodeLayout_______PosKeyword_0_0_0_ColonKeyword_0_0_1___or___SizeKeyword_0_1_0_ColonKeyword_0_1_1____a_PropertiesKeyword_0_2_0_ColonKeyword_0_2_1__a;
+	protected AbstractElementAlias match_KNodeLayout_______PosKeyword_0_0_0_ColonKeyword_0_0_1___or___SizeKeyword_0_1_0_ColonKeyword_0_1_1____a_PropertiesKeyword_0_2_0_ColonKeyword_0_2_1__p;
+	protected AbstractElementAlias match_KNodeLayout_______PropertiesKeyword_0_2_0_ColonKeyword_0_2_1___or___SizeKeyword_0_1_0_ColonKeyword_0_1_1____a_PosKeyword_0_0_0_ColonKeyword_0_0_1__a;
+	protected AbstractElementAlias match_KNodeLayout_______PropertiesKeyword_0_2_0_ColonKeyword_0_2_1___or___SizeKeyword_0_1_0_ColonKeyword_0_1_1____a_PosKeyword_0_0_0_ColonKeyword_0_0_1__p;
+	protected AbstractElementAlias match_KPolyline___LeftCurlyBracketKeyword_3_0_____ActionsKeyword_3_1_2_0_ColonKeyword_3_1_2_1___or___PointsKeyword_3_1_0_0_ColonKeyword_3_1_0_1___or___StylesKeyword_3_1_1_0_ColonKeyword_3_1_1_1____a_RightCurlyBracketKeyword_3_4__q;
+	protected AbstractElementAlias match_KPolyline___LeftSquareBracketKeyword_2_0_RightSquareBracketKeyword_2_2__q;
+	protected AbstractElementAlias match_KPolyline_____ActionsKeyword_3_1_2_0_ColonKeyword_3_1_2_1___or___PointsKeyword_3_1_0_0_ColonKeyword_3_1_0_1___or___StylesKeyword_3_1_1_0_ColonKeyword_3_1_1_1____a;
+	protected AbstractElementAlias match_KPolyline_______ActionsKeyword_3_1_2_0_ColonKeyword_3_1_2_1___or___PointsKeyword_3_1_0_0_ColonKeyword_3_1_0_1____a_StylesKeyword_3_1_1_0_ColonKeyword_3_1_1_1__a;
+	protected AbstractElementAlias match_KPolyline_______ActionsKeyword_3_1_2_0_ColonKeyword_3_1_2_1___or___PointsKeyword_3_1_0_0_ColonKeyword_3_1_0_1____a_StylesKeyword_3_1_1_0_ColonKeyword_3_1_1_1__p;
+	protected AbstractElementAlias match_KPolyline_______ActionsKeyword_3_1_2_0_ColonKeyword_3_1_2_1___or___StylesKeyword_3_1_1_0_ColonKeyword_3_1_1_1____a_PointsKeyword_3_1_0_0_ColonKeyword_3_1_0_1__p;
+	protected AbstractElementAlias match_KPolyline_______PointsKeyword_3_1_0_0_ColonKeyword_3_1_0_1___or___StylesKeyword_3_1_1_0_ColonKeyword_3_1_1_1____a_ActionsKeyword_3_1_2_0_ColonKeyword_3_1_2_1__a;
+	protected AbstractElementAlias match_KPolyline_______PointsKeyword_3_1_0_0_ColonKeyword_3_1_0_1___or___StylesKeyword_3_1_1_0_ColonKeyword_3_1_1_1____a_ActionsKeyword_3_1_2_0_ColonKeyword_3_1_2_1__p;
+	protected AbstractElementAlias match_KRenderingLibrary___LeftSquareBracketKeyword_2_0_RightSquareBracketKeyword_2_2__q;
+	protected AbstractElementAlias match_KShapeLayout_____PosKeyword_1_0_0_ColonKeyword_1_0_1___or___PropertiesKeyword_1_2_0_ColonKeyword_1_2_1___or___SizeKeyword_1_1_0_ColonKeyword_1_1_1____a;
+	protected AbstractElementAlias match_KShapeLayout_______PosKeyword_1_0_0_ColonKeyword_1_0_1___or___PropertiesKeyword_1_2_0_ColonKeyword_1_2_1____a_SizeKeyword_1_1_0_ColonKeyword_1_1_1__a;
+	protected AbstractElementAlias match_KShapeLayout_______PosKeyword_1_0_0_ColonKeyword_1_0_1___or___PropertiesKeyword_1_2_0_ColonKeyword_1_2_1____a_SizeKeyword_1_1_0_ColonKeyword_1_1_1__p;
+	protected AbstractElementAlias match_KShapeLayout_______PosKeyword_1_0_0_ColonKeyword_1_0_1___or___SizeKeyword_1_1_0_ColonKeyword_1_1_1____a_PropertiesKeyword_1_2_0_ColonKeyword_1_2_1__a;
+	protected AbstractElementAlias match_KShapeLayout_______PosKeyword_1_0_0_ColonKeyword_1_0_1___or___SizeKeyword_1_1_0_ColonKeyword_1_1_1____a_PropertiesKeyword_1_2_0_ColonKeyword_1_2_1__p;
+	protected AbstractElementAlias match_KShapeLayout_______PropertiesKeyword_1_2_0_ColonKeyword_1_2_1___or___SizeKeyword_1_1_0_ColonKeyword_1_1_1____a_PosKeyword_1_0_0_ColonKeyword_1_0_1__a;
+	protected AbstractElementAlias match_KShapeLayout_______PropertiesKeyword_1_2_0_ColonKeyword_1_2_1___or___SizeKeyword_1_1_0_ColonKeyword_1_1_1____a_PosKeyword_1_0_0_ColonKeyword_1_0_1__p;
+	protected AbstractElementAlias match_KSimpleRendering___LeftCurlyBracketKeyword_3_0_____ActionsKeyword_3_1_1_0_ColonKeyword_3_1_1_1___or___StylesKeyword_3_1_0_0_ColonKeyword_3_1_0_1____a_RightCurlyBracketKeyword_3_2__q;
+	protected AbstractElementAlias match_KSimpleRendering___LeftSquareBracketKeyword_2_0_RightSquareBracketKeyword_2_2__q;
+	protected AbstractElementAlias match_KSimpleRendering_____ActionsKeyword_3_1_1_0_ColonKeyword_3_1_1_1___or___StylesKeyword_3_1_0_0_ColonKeyword_3_1_0_1____a;
+	protected AbstractElementAlias match_KSimpleRendering_____ActionsKeyword_3_1_1_0_ColonKeyword_3_1_1_1__a_StylesKeyword_3_1_0_0_ColonKeyword_3_1_0_1__a;
+	protected AbstractElementAlias match_KSimpleRendering_____ActionsKeyword_3_1_1_0_ColonKeyword_3_1_1_1__a_StylesKeyword_3_1_0_0_ColonKeyword_3_1_0_1__p;
+	protected AbstractElementAlias match_KSimpleRendering_____StylesKeyword_3_1_0_0_ColonKeyword_3_1_0_1__a_ActionsKeyword_3_1_1_0_ColonKeyword_3_1_1_1__a;
+	protected AbstractElementAlias match_KSimpleRendering_____StylesKeyword_3_1_0_0_ColonKeyword_3_1_0_1__a_ActionsKeyword_3_1_1_0_ColonKeyword_3_1_1_1__p;
+	protected AbstractElementAlias match_ParentKNode_KgraphKeyword_1_0_q;
 	
 	@Inject
 	protected void init(IGrammarAccess access) {
 		grammarAccess = (KGraphGrammarAccess) access;
-		match_KArc_ColonKeyword_5_1_0_1_q = new TokenAlias(false, true, grammarAccess.getKArcAccess().getColonKeyword_5_1_0_1());
-		match_KArc_ColonKeyword_5_1_1_1_q = new TokenAlias(false, true, grammarAccess.getKArcAccess().getColonKeyword_5_1_1_1());
-		match_KArc_ColonKeyword_5_1_2_1_q = new TokenAlias(false, true, grammarAccess.getKArcAccess().getColonKeyword_5_1_2_1());
-		match_KArc_ColonKeyword_5_1_3_1_q = new TokenAlias(false, true, grammarAccess.getKArcAccess().getColonKeyword_5_1_3_1());
-		match_KArc_ColonKeyword_5_1_4_1_q = new TokenAlias(false, true, grammarAccess.getKArcAccess().getColonKeyword_5_1_4_1());
-		match_KArc_CommaKeyword_3_q = new TokenAlias(false, true, grammarAccess.getKArcAccess().getCommaKeyword_3());
-		match_KArc_CommaKeyword_5_1_0_3_0_q = new TokenAlias(false, true, grammarAccess.getKArcAccess().getCommaKeyword_5_1_0_3_0());
-		match_KArc_CommaKeyword_5_1_1_3_0_q = new TokenAlias(false, true, grammarAccess.getKArcAccess().getCommaKeyword_5_1_1_3_0());
-		match_KArc_CommaKeyword_5_1_4_3_0_q = new TokenAlias(false, true, grammarAccess.getKArcAccess().getCommaKeyword_5_1_4_3_0());
-		match_KArc___LeftCurlyBracketKeyword_5_0_RightCurlyBracketKeyword_5_2__q = new GroupAlias(false, true, new TokenAlias(false, false, grammarAccess.getKArcAccess().getLeftCurlyBracketKeyword_5_0()), new TokenAlias(false, false, grammarAccess.getKArcAccess().getRightCurlyBracketKeyword_5_2()));
-		match_KAreaPlacementData_CommaKeyword_4_q = new TokenAlias(false, true, grammarAccess.getKAreaPlacementDataAccess().getCommaKeyword_4());
-		match_KChildArea_ColonKeyword_2_1_0_1_q = new TokenAlias(false, true, grammarAccess.getKChildAreaAccess().getColonKeyword_2_1_0_1());
-		match_KChildArea_ColonKeyword_2_1_1_1_q = new TokenAlias(false, true, grammarAccess.getKChildAreaAccess().getColonKeyword_2_1_1_1());
-		match_KChildArea_ColonKeyword_2_1_2_1_q = new TokenAlias(false, true, grammarAccess.getKChildAreaAccess().getColonKeyword_2_1_2_1());
-		match_KChildArea_CommaKeyword_2_1_0_3_0_q = new TokenAlias(false, true, grammarAccess.getKChildAreaAccess().getCommaKeyword_2_1_0_3_0());
-		match_KChildArea_CommaKeyword_2_1_1_3_0_q = new TokenAlias(false, true, grammarAccess.getKChildAreaAccess().getCommaKeyword_2_1_1_3_0());
-		match_KChildArea___LeftCurlyBracketKeyword_2_0_RightCurlyBracketKeyword_2_2__q = new GroupAlias(false, true, new TokenAlias(false, false, grammarAccess.getKChildAreaAccess().getLeftCurlyBracketKeyword_2_0()), new TokenAlias(false, false, grammarAccess.getKChildAreaAccess().getRightCurlyBracketKeyword_2_2()));
-		match_KCustomRendering_ColonKeyword_2_5_0_1_q = new TokenAlias(false, true, grammarAccess.getKCustomRenderingAccess().getColonKeyword_2_5_0_1());
-		match_KCustomRendering_ColonKeyword_2_5_1_1_q = new TokenAlias(false, true, grammarAccess.getKCustomRenderingAccess().getColonKeyword_2_5_1_1());
-		match_KCustomRendering_ColonKeyword_2_5_2_1_q = new TokenAlias(false, true, grammarAccess.getKCustomRenderingAccess().getColonKeyword_2_5_2_1());
-		match_KCustomRendering_ColonKeyword_2_5_3_1_q = new TokenAlias(false, true, grammarAccess.getKCustomRenderingAccess().getColonKeyword_2_5_3_1());
-		match_KCustomRendering_ColonKeyword_2_5_4_1_q = new TokenAlias(false, true, grammarAccess.getKCustomRenderingAccess().getColonKeyword_2_5_4_1());
-		match_KCustomRendering_CommaKeyword_2_5_0_3_0_q = new TokenAlias(false, true, grammarAccess.getKCustomRenderingAccess().getCommaKeyword_2_5_0_3_0());
-		match_KCustomRendering_CommaKeyword_2_5_1_3_0_q = new TokenAlias(false, true, grammarAccess.getKCustomRenderingAccess().getCommaKeyword_2_5_1_3_0());
-		match_KCustomRendering_CommaKeyword_2_5_4_3_0_q = new TokenAlias(false, true, grammarAccess.getKCustomRenderingAccess().getCommaKeyword_2_5_4_3_0());
-		match_KEdgeLayout_ColonKeyword_3_1_q = new TokenAlias(false, true, grammarAccess.getKEdgeLayoutAccess().getColonKeyword_3_1());
-		match_KEdgeLayout_ColonKeyword_4_1_q = new TokenAlias(false, true, grammarAccess.getKEdgeLayoutAccess().getColonKeyword_4_1());
-		match_KEdgeLayout_ColonKeyword_5_1_q = new TokenAlias(false, true, grammarAccess.getKEdgeLayoutAccess().getColonKeyword_5_1());
-		match_KEdgeLayout_ColonKeyword_6_1_q = new TokenAlias(false, true, grammarAccess.getKEdgeLayoutAccess().getColonKeyword_6_1());
-		match_KEdgeLayout_CommaKeyword_5_3_0_q = new TokenAlias(false, true, grammarAccess.getKEdgeLayoutAccess().getCommaKeyword_5_3_0());
-		match_KEdgeLayout_CommaKeyword_6_3_0_q = new TokenAlias(false, true, grammarAccess.getKEdgeLayoutAccess().getCommaKeyword_6_3_0());
-		match_KEdge_ColonKeyword_5_1_q = new TokenAlias(false, true, grammarAccess.getKEdgeAccess().getColonKeyword_5_1());
-		match_KEdge_ColonKeyword_6_1_q = new TokenAlias(false, true, grammarAccess.getKEdgeAccess().getColonKeyword_6_1());
-		match_KEdge_CommaKeyword_5_3_0_q = new TokenAlias(false, true, grammarAccess.getKEdgeAccess().getCommaKeyword_5_3_0());
-		match_KEdge_CommaKeyword_6_3_0_q = new TokenAlias(false, true, grammarAccess.getKEdgeAccess().getCommaKeyword_6_3_0());
-		match_KEllipse_ColonKeyword_2_1_0_1_q = new TokenAlias(false, true, grammarAccess.getKEllipseAccess().getColonKeyword_2_1_0_1());
-		match_KEllipse_ColonKeyword_2_1_1_1_q = new TokenAlias(false, true, grammarAccess.getKEllipseAccess().getColonKeyword_2_1_1_1());
-		match_KEllipse_ColonKeyword_2_1_2_1_q = new TokenAlias(false, true, grammarAccess.getKEllipseAccess().getColonKeyword_2_1_2_1());
-		match_KEllipse_ColonKeyword_2_1_3_1_q = new TokenAlias(false, true, grammarAccess.getKEllipseAccess().getColonKeyword_2_1_3_1());
-		match_KEllipse_ColonKeyword_2_1_4_1_q = new TokenAlias(false, true, grammarAccess.getKEllipseAccess().getColonKeyword_2_1_4_1());
-		match_KEllipse_CommaKeyword_2_1_0_3_0_q = new TokenAlias(false, true, grammarAccess.getKEllipseAccess().getCommaKeyword_2_1_0_3_0());
-		match_KEllipse_CommaKeyword_2_1_1_3_0_q = new TokenAlias(false, true, grammarAccess.getKEllipseAccess().getCommaKeyword_2_1_1_3_0());
-		match_KEllipse_CommaKeyword_2_1_4_3_0_q = new TokenAlias(false, true, grammarAccess.getKEllipseAccess().getCommaKeyword_2_1_4_3_0());
-		match_KEllipse___LeftCurlyBracketKeyword_2_0_RightCurlyBracketKeyword_2_2__q = new GroupAlias(false, true, new TokenAlias(false, false, grammarAccess.getKEllipseAccess().getLeftCurlyBracketKeyword_2_0()), new TokenAlias(false, false, grammarAccess.getKEllipseAccess().getRightCurlyBracketKeyword_2_2()));
-		match_KGraphDataImpl_ColonKeyword_3_1_q = new TokenAlias(false, true, grammarAccess.getKGraphDataImplAccess().getColonKeyword_3_1());
-		match_KGridPlacement_CommaKeyword_3_1_0_2_q = new TokenAlias(false, true, grammarAccess.getKGridPlacementAccess().getCommaKeyword_3_1_0_2());
-		match_KGridPlacement___LeftCurlyBracketKeyword_3_0_RightCurlyBracketKeyword_3_2__q = new GroupAlias(false, true, new TokenAlias(false, false, grammarAccess.getKGridPlacementAccess().getLeftCurlyBracketKeyword_3_0()), new TokenAlias(false, false, grammarAccess.getKGridPlacementAccess().getRightCurlyBracketKeyword_3_2()));
-		match_KImage_ColonKeyword_4_1_0_1_q = new TokenAlias(false, true, grammarAccess.getKImageAccess().getColonKeyword_4_1_0_1());
-		match_KImage_ColonKeyword_4_1_1_1_q = new TokenAlias(false, true, grammarAccess.getKImageAccess().getColonKeyword_4_1_1_1());
-		match_KImage_ColonKeyword_4_1_2_1_q = new TokenAlias(false, true, grammarAccess.getKImageAccess().getColonKeyword_4_1_2_1());
-		match_KImage_ColonKeyword_4_1_3_1_q = new TokenAlias(false, true, grammarAccess.getKImageAccess().getColonKeyword_4_1_3_1());
-		match_KImage_ColonKeyword_4_1_4_1_q = new TokenAlias(false, true, grammarAccess.getKImageAccess().getColonKeyword_4_1_4_1());
-		match_KImage_CommaKeyword_4_1_0_3_0_q = new TokenAlias(false, true, grammarAccess.getKImageAccess().getCommaKeyword_4_1_0_3_0());
-		match_KImage_CommaKeyword_4_1_1_3_0_q = new TokenAlias(false, true, grammarAccess.getKImageAccess().getCommaKeyword_4_1_1_3_0());
-		match_KImage_CommaKeyword_4_1_4_3_0_q = new TokenAlias(false, true, grammarAccess.getKImageAccess().getCommaKeyword_4_1_4_3_0());
-		match_KImage___LeftCurlyBracketKeyword_4_0_RightCurlyBracketKeyword_4_2__q = new GroupAlias(false, true, new TokenAlias(false, false, grammarAccess.getKImageAccess().getLeftCurlyBracketKeyword_4_0()), new TokenAlias(false, false, grammarAccess.getKImageAccess().getRightCurlyBracketKeyword_4_2()));
-		match_KLabel_ColonKeyword_3_1_q = new TokenAlias(false, true, grammarAccess.getKLabelAccess().getColonKeyword_3_1());
-		match_KLabel_CommaKeyword_3_3_0_q = new TokenAlias(false, true, grammarAccess.getKLabelAccess().getCommaKeyword_3_3_0());
-		match_KLineStyle_CommaKeyword_4_3_0_q = new TokenAlias(false, true, grammarAccess.getKLineStyleAccess().getCommaKeyword_4_3_0());
-		match_KNode_ColonKeyword_3_1_q = new TokenAlias(false, true, grammarAccess.getKNodeAccess().getColonKeyword_3_1());
-		match_KNode_ColonKeyword_4_1_q = new TokenAlias(false, true, grammarAccess.getKNodeAccess().getColonKeyword_4_1());
-		match_KNode_ColonKeyword_5_1_q = new TokenAlias(false, true, grammarAccess.getKNodeAccess().getColonKeyword_5_1());
-		match_KNode_ColonKeyword_6_1_q = new TokenAlias(false, true, grammarAccess.getKNodeAccess().getColonKeyword_6_1());
-		match_KNode_CommaKeyword_3_3_0_q = new TokenAlias(false, true, grammarAccess.getKNodeAccess().getCommaKeyword_3_3_0());
-		match_KNode_CommaKeyword_4_3_0_q = new TokenAlias(false, true, grammarAccess.getKNodeAccess().getCommaKeyword_4_3_0());
-		match_KNode_CommaKeyword_5_3_0_q = new TokenAlias(false, true, grammarAccess.getKNodeAccess().getCommaKeyword_5_3_0());
-		match_KNode_CommaKeyword_6_3_0_q = new TokenAlias(false, true, grammarAccess.getKNodeAccess().getCommaKeyword_6_3_0());
-		match_KNode_CommaKeyword_8_1_0_q = new TokenAlias(false, true, grammarAccess.getKNodeAccess().getCommaKeyword_8_1_0());
-		match_KPointPlacementData_RightCurlyBracketKeyword_6_1_a = new TokenAlias(true, true, grammarAccess.getKPointPlacementDataAccess().getRightCurlyBracketKeyword_6_1());
-		match_KPointPlacementData_RightCurlyBracketKeyword_6_1_p = new TokenAlias(true, false, grammarAccess.getKPointPlacementDataAccess().getRightCurlyBracketKeyword_6_1());
-		match_KPolygon_ColonKeyword_2_1_0_1_q = new TokenAlias(false, true, grammarAccess.getKPolygonAccess().getColonKeyword_2_1_0_1());
-		match_KPolygon_ColonKeyword_2_1_1_1_q = new TokenAlias(false, true, grammarAccess.getKPolygonAccess().getColonKeyword_2_1_1_1());
-		match_KPolygon_ColonKeyword_2_1_2_1_q = new TokenAlias(false, true, grammarAccess.getKPolygonAccess().getColonKeyword_2_1_2_1());
-		match_KPolygon_ColonKeyword_2_1_3_1_q = new TokenAlias(false, true, grammarAccess.getKPolygonAccess().getColonKeyword_2_1_3_1());
-		match_KPolygon_ColonKeyword_2_1_4_1_q = new TokenAlias(false, true, grammarAccess.getKPolygonAccess().getColonKeyword_2_1_4_1());
-		match_KPolygon_ColonKeyword_2_1_5_1_q = new TokenAlias(false, true, grammarAccess.getKPolygonAccess().getColonKeyword_2_1_5_1());
-		match_KPolygon_CommaKeyword_2_1_0_3_0_q = new TokenAlias(false, true, grammarAccess.getKPolygonAccess().getCommaKeyword_2_1_0_3_0());
-		match_KPolygon_CommaKeyword_2_1_1_3_0_q = new TokenAlias(false, true, grammarAccess.getKPolygonAccess().getCommaKeyword_2_1_1_3_0());
-		match_KPolygon_CommaKeyword_2_1_2_3_0_q = new TokenAlias(false, true, grammarAccess.getKPolygonAccess().getCommaKeyword_2_1_2_3_0());
-		match_KPolygon_CommaKeyword_2_1_5_3_0_q = new TokenAlias(false, true, grammarAccess.getKPolygonAccess().getCommaKeyword_2_1_5_3_0());
-		match_KPolygon___LeftCurlyBracketKeyword_2_0_RightCurlyBracketKeyword_2_2__q = new GroupAlias(false, true, new TokenAlias(false, false, grammarAccess.getKPolygonAccess().getLeftCurlyBracketKeyword_2_0()), new TokenAlias(false, false, grammarAccess.getKPolygonAccess().getRightCurlyBracketKeyword_2_2()));
-		match_KPolyline_Impl_ColonKeyword_2_1_0_1_q = new TokenAlias(false, true, grammarAccess.getKPolyline_ImplAccess().getColonKeyword_2_1_0_1());
-		match_KPolyline_Impl_ColonKeyword_2_1_1_1_q = new TokenAlias(false, true, grammarAccess.getKPolyline_ImplAccess().getColonKeyword_2_1_1_1());
-		match_KPolyline_Impl_ColonKeyword_2_1_2_1_q = new TokenAlias(false, true, grammarAccess.getKPolyline_ImplAccess().getColonKeyword_2_1_2_1());
-		match_KPolyline_Impl_ColonKeyword_2_1_3_1_q = new TokenAlias(false, true, grammarAccess.getKPolyline_ImplAccess().getColonKeyword_2_1_3_1());
-		match_KPolyline_Impl_ColonKeyword_2_1_4_1_q = new TokenAlias(false, true, grammarAccess.getKPolyline_ImplAccess().getColonKeyword_2_1_4_1());
-		match_KPolyline_Impl_ColonKeyword_2_1_5_1_q = new TokenAlias(false, true, grammarAccess.getKPolyline_ImplAccess().getColonKeyword_2_1_5_1());
-		match_KPolyline_Impl_CommaKeyword_2_1_0_3_0_q = new TokenAlias(false, true, grammarAccess.getKPolyline_ImplAccess().getCommaKeyword_2_1_0_3_0());
-		match_KPolyline_Impl_CommaKeyword_2_1_1_3_0_q = new TokenAlias(false, true, grammarAccess.getKPolyline_ImplAccess().getCommaKeyword_2_1_1_3_0());
-		match_KPolyline_Impl_CommaKeyword_2_1_2_3_0_q = new TokenAlias(false, true, grammarAccess.getKPolyline_ImplAccess().getCommaKeyword_2_1_2_3_0());
-		match_KPolyline_Impl_CommaKeyword_2_1_5_3_0_q = new TokenAlias(false, true, grammarAccess.getKPolyline_ImplAccess().getCommaKeyword_2_1_5_3_0());
-		match_KPolyline_Impl___LeftCurlyBracketKeyword_2_0_RightCurlyBracketKeyword_2_2__q = new GroupAlias(false, true, new TokenAlias(false, false, grammarAccess.getKPolyline_ImplAccess().getLeftCurlyBracketKeyword_2_0()), new TokenAlias(false, false, grammarAccess.getKPolyline_ImplAccess().getRightCurlyBracketKeyword_2_2()));
-		match_KPort_ColonKeyword_3_1_q = new TokenAlias(false, true, grammarAccess.getKPortAccess().getColonKeyword_3_1());
-		match_KPort_ColonKeyword_4_1_q = new TokenAlias(false, true, grammarAccess.getKPortAccess().getColonKeyword_4_1());
-		match_KPort_ColonKeyword_5_1_q = new TokenAlias(false, true, grammarAccess.getKPortAccess().getColonKeyword_5_1());
-		match_KPort_CommaKeyword_3_3_0_q = new TokenAlias(false, true, grammarAccess.getKPortAccess().getCommaKeyword_3_3_0());
-		match_KPort_CommaKeyword_4_3_0_q = new TokenAlias(false, true, grammarAccess.getKPortAccess().getCommaKeyword_4_3_0());
-		match_KPort_CommaKeyword_5_3_0_q = new TokenAlias(false, true, grammarAccess.getKPortAccess().getCommaKeyword_5_3_0());
-		match_KRectangle_ColonKeyword_2_1_0_1_q = new TokenAlias(false, true, grammarAccess.getKRectangleAccess().getColonKeyword_2_1_0_1());
-		match_KRectangle_ColonKeyword_2_1_1_1_q = new TokenAlias(false, true, grammarAccess.getKRectangleAccess().getColonKeyword_2_1_1_1());
-		match_KRectangle_ColonKeyword_2_1_2_1_q = new TokenAlias(false, true, grammarAccess.getKRectangleAccess().getColonKeyword_2_1_2_1());
-		match_KRectangle_ColonKeyword_2_1_3_1_q = new TokenAlias(false, true, grammarAccess.getKRectangleAccess().getColonKeyword_2_1_3_1());
-		match_KRectangle_ColonKeyword_2_1_4_1_q = new TokenAlias(false, true, grammarAccess.getKRectangleAccess().getColonKeyword_2_1_4_1());
-		match_KRectangle_CommaKeyword_2_1_0_3_0_q = new TokenAlias(false, true, grammarAccess.getKRectangleAccess().getCommaKeyword_2_1_0_3_0());
-		match_KRectangle_CommaKeyword_2_1_1_3_0_q = new TokenAlias(false, true, grammarAccess.getKRectangleAccess().getCommaKeyword_2_1_1_3_0());
-		match_KRectangle_CommaKeyword_2_1_4_3_0_q = new TokenAlias(false, true, grammarAccess.getKRectangleAccess().getCommaKeyword_2_1_4_3_0());
-		match_KRectangle___LeftCurlyBracketKeyword_2_0_RightCurlyBracketKeyword_2_2__q = new GroupAlias(false, true, new TokenAlias(false, false, grammarAccess.getKRectangleAccess().getLeftCurlyBracketKeyword_2_0()), new TokenAlias(false, false, grammarAccess.getKRectangleAccess().getRightCurlyBracketKeyword_2_2()));
-		match_KRenderingLibrary_CommaKeyword_3_1_0_q = new TokenAlias(false, true, grammarAccess.getKRenderingLibraryAccess().getCommaKeyword_3_1_0());
-		match_KRenderingRef_ColonKeyword_3_1_0_1_q = new TokenAlias(false, true, grammarAccess.getKRenderingRefAccess().getColonKeyword_3_1_0_1());
-		match_KRenderingRef_ColonKeyword_3_1_1_1_q = new TokenAlias(false, true, grammarAccess.getKRenderingRefAccess().getColonKeyword_3_1_1_1());
-		match_KRenderingRef_CommaKeyword_3_1_0_3_0_q = new TokenAlias(false, true, grammarAccess.getKRenderingRefAccess().getCommaKeyword_3_1_0_3_0());
-		match_KRenderingRef___LeftCurlyBracketKeyword_3_0_RightCurlyBracketKeyword_3_2__q = new GroupAlias(false, true, new TokenAlias(false, false, grammarAccess.getKRenderingRefAccess().getLeftCurlyBracketKeyword_3_0()), new TokenAlias(false, false, grammarAccess.getKRenderingRefAccess().getRightCurlyBracketKeyword_3_2()));
-		match_KRoundedBendsPolyline_ColonKeyword_3_1_0_1_q = new TokenAlias(false, true, grammarAccess.getKRoundedBendsPolylineAccess().getColonKeyword_3_1_0_1());
-		match_KRoundedBendsPolyline_ColonKeyword_3_1_1_1_q = new TokenAlias(false, true, grammarAccess.getKRoundedBendsPolylineAccess().getColonKeyword_3_1_1_1());
-		match_KRoundedBendsPolyline_ColonKeyword_3_1_2_1_q = new TokenAlias(false, true, grammarAccess.getKRoundedBendsPolylineAccess().getColonKeyword_3_1_2_1());
-		match_KRoundedBendsPolyline_ColonKeyword_3_1_3_1_q = new TokenAlias(false, true, grammarAccess.getKRoundedBendsPolylineAccess().getColonKeyword_3_1_3_1());
-		match_KRoundedBendsPolyline_ColonKeyword_3_1_4_1_q = new TokenAlias(false, true, grammarAccess.getKRoundedBendsPolylineAccess().getColonKeyword_3_1_4_1());
-		match_KRoundedBendsPolyline_CommaKeyword_3_1_0_3_0_q = new TokenAlias(false, true, grammarAccess.getKRoundedBendsPolylineAccess().getCommaKeyword_3_1_0_3_0());
-		match_KRoundedBendsPolyline_CommaKeyword_3_1_1_3_0_q = new TokenAlias(false, true, grammarAccess.getKRoundedBendsPolylineAccess().getCommaKeyword_3_1_1_3_0());
-		match_KRoundedBendsPolyline_CommaKeyword_3_1_4_3_0_q = new TokenAlias(false, true, grammarAccess.getKRoundedBendsPolylineAccess().getCommaKeyword_3_1_4_3_0());
-		match_KRoundedBendsPolyline___LeftCurlyBracketKeyword_3_0_RightCurlyBracketKeyword_3_2__q = new GroupAlias(false, true, new TokenAlias(false, false, grammarAccess.getKRoundedBendsPolylineAccess().getLeftCurlyBracketKeyword_3_0()), new TokenAlias(false, false, grammarAccess.getKRoundedBendsPolylineAccess().getRightCurlyBracketKeyword_3_2()));
-		match_KRoundedRectangle_ColonKeyword_5_1_0_1_q = new TokenAlias(false, true, grammarAccess.getKRoundedRectangleAccess().getColonKeyword_5_1_0_1());
-		match_KRoundedRectangle_ColonKeyword_5_1_1_1_q = new TokenAlias(false, true, grammarAccess.getKRoundedRectangleAccess().getColonKeyword_5_1_1_1());
-		match_KRoundedRectangle_ColonKeyword_5_1_2_1_q = new TokenAlias(false, true, grammarAccess.getKRoundedRectangleAccess().getColonKeyword_5_1_2_1());
-		match_KRoundedRectangle_ColonKeyword_5_1_3_1_q = new TokenAlias(false, true, grammarAccess.getKRoundedRectangleAccess().getColonKeyword_5_1_3_1());
-		match_KRoundedRectangle_ColonKeyword_5_1_4_1_q = new TokenAlias(false, true, grammarAccess.getKRoundedRectangleAccess().getColonKeyword_5_1_4_1());
-		match_KRoundedRectangle_CommaKeyword_3_q = new TokenAlias(false, true, grammarAccess.getKRoundedRectangleAccess().getCommaKeyword_3());
-		match_KRoundedRectangle_CommaKeyword_5_1_0_3_0_q = new TokenAlias(false, true, grammarAccess.getKRoundedRectangleAccess().getCommaKeyword_5_1_0_3_0());
-		match_KRoundedRectangle_CommaKeyword_5_1_1_3_0_q = new TokenAlias(false, true, grammarAccess.getKRoundedRectangleAccess().getCommaKeyword_5_1_1_3_0());
-		match_KRoundedRectangle_CommaKeyword_5_1_4_3_0_q = new TokenAlias(false, true, grammarAccess.getKRoundedRectangleAccess().getCommaKeyword_5_1_4_3_0());
-		match_KRoundedRectangle___LeftCurlyBracketKeyword_5_0_RightCurlyBracketKeyword_5_2__q = new GroupAlias(false, true, new TokenAlias(false, false, grammarAccess.getKRoundedRectangleAccess().getLeftCurlyBracketKeyword_5_0()), new TokenAlias(false, false, grammarAccess.getKRoundedRectangleAccess().getRightCurlyBracketKeyword_5_2()));
-		match_KShapeLayout_ColonKeyword_8_1_q = new TokenAlias(false, true, grammarAccess.getKShapeLayoutAccess().getColonKeyword_8_1());
-		match_KShapeLayout_CommaKeyword_8_3_0_q = new TokenAlias(false, true, grammarAccess.getKShapeLayoutAccess().getCommaKeyword_8_3_0());
-		match_KSpline_ColonKeyword_2_1_0_1_q = new TokenAlias(false, true, grammarAccess.getKSplineAccess().getColonKeyword_2_1_0_1());
-		match_KSpline_ColonKeyword_2_1_1_1_q = new TokenAlias(false, true, grammarAccess.getKSplineAccess().getColonKeyword_2_1_1_1());
-		match_KSpline_ColonKeyword_2_1_2_1_q = new TokenAlias(false, true, grammarAccess.getKSplineAccess().getColonKeyword_2_1_2_1());
-		match_KSpline_ColonKeyword_2_1_3_1_q = new TokenAlias(false, true, grammarAccess.getKSplineAccess().getColonKeyword_2_1_3_1());
-		match_KSpline_ColonKeyword_2_1_4_1_q = new TokenAlias(false, true, grammarAccess.getKSplineAccess().getColonKeyword_2_1_4_1());
-		match_KSpline_CommaKeyword_2_1_0_3_0_q = new TokenAlias(false, true, grammarAccess.getKSplineAccess().getCommaKeyword_2_1_0_3_0());
-		match_KSpline_CommaKeyword_2_1_1_3_0_q = new TokenAlias(false, true, grammarAccess.getKSplineAccess().getCommaKeyword_2_1_1_3_0());
-		match_KSpline_CommaKeyword_2_1_4_3_0_q = new TokenAlias(false, true, grammarAccess.getKSplineAccess().getCommaKeyword_2_1_4_3_0());
-		match_KSpline___LeftCurlyBracketKeyword_2_0_RightCurlyBracketKeyword_2_2__q = new GroupAlias(false, true, new TokenAlias(false, false, grammarAccess.getKSplineAccess().getLeftCurlyBracketKeyword_2_0()), new TokenAlias(false, false, grammarAccess.getKSplineAccess().getRightCurlyBracketKeyword_2_2()));
-		match_KText_ColonKeyword_3_1_0_1_q = new TokenAlias(false, true, grammarAccess.getKTextAccess().getColonKeyword_3_1_0_1());
-		match_KText_ColonKeyword_3_1_1_1_q = new TokenAlias(false, true, grammarAccess.getKTextAccess().getColonKeyword_3_1_1_1());
-		match_KText_ColonKeyword_3_1_2_1_q = new TokenAlias(false, true, grammarAccess.getKTextAccess().getColonKeyword_3_1_2_1());
-		match_KText_ColonKeyword_3_1_3_1_q = new TokenAlias(false, true, grammarAccess.getKTextAccess().getColonKeyword_3_1_3_1());
-		match_KText_CommaKeyword_3_1_0_3_0_q = new TokenAlias(false, true, grammarAccess.getKTextAccess().getCommaKeyword_3_1_0_3_0());
-		match_KText_CommaKeyword_3_1_1_3_0_q = new TokenAlias(false, true, grammarAccess.getKTextAccess().getCommaKeyword_3_1_1_3_0());
-		match_KText_CommaKeyword_3_1_3_3_0_q = new TokenAlias(false, true, grammarAccess.getKTextAccess().getCommaKeyword_3_1_3_3_0());
-		match_KText___LeftCurlyBracketKeyword_3_0_RightCurlyBracketKeyword_3_2__q = new GroupAlias(false, true, new TokenAlias(false, false, grammarAccess.getKTextAccess().getLeftCurlyBracketKeyword_3_0()), new TokenAlias(false, false, grammarAccess.getKTextAccess().getRightCurlyBracketKeyword_3_2()));
+		match_KContainerRendering___LeftCurlyBracketKeyword_3_0_____ActionsKeyword_3_1_1_0_ColonKeyword_3_1_1_1___or___StylesKeyword_3_1_0_0_ColonKeyword_3_1_0_1____a_RightCurlyBracketKeyword_3_3__q = new GroupAlias(false, true, new TokenAlias(false, false, grammarAccess.getKContainerRenderingAccess().getLeftCurlyBracketKeyword_3_0()), new AlternativeAlias(true, true, new GroupAlias(false, false, new TokenAlias(false, false, grammarAccess.getKContainerRenderingAccess().getActionsKeyword_3_1_1_0()), new TokenAlias(false, false, grammarAccess.getKContainerRenderingAccess().getColonKeyword_3_1_1_1())), new GroupAlias(false, false, new TokenAlias(false, false, grammarAccess.getKContainerRenderingAccess().getStylesKeyword_3_1_0_0()), new TokenAlias(false, false, grammarAccess.getKContainerRenderingAccess().getColonKeyword_3_1_0_1()))), new TokenAlias(false, false, grammarAccess.getKContainerRenderingAccess().getRightCurlyBracketKeyword_3_3()));
+		match_KContainerRendering___LeftSquareBracketKeyword_2_0_RightSquareBracketKeyword_2_2__q = new GroupAlias(false, true, new TokenAlias(false, false, grammarAccess.getKContainerRenderingAccess().getLeftSquareBracketKeyword_2_0()), new TokenAlias(false, false, grammarAccess.getKContainerRenderingAccess().getRightSquareBracketKeyword_2_2()));
+		match_KContainerRendering_____ActionsKeyword_3_1_1_0_ColonKeyword_3_1_1_1___or___StylesKeyword_3_1_0_0_ColonKeyword_3_1_0_1____a = new AlternativeAlias(true, true, new GroupAlias(false, false, new TokenAlias(false, false, grammarAccess.getKContainerRenderingAccess().getActionsKeyword_3_1_1_0()), new TokenAlias(false, false, grammarAccess.getKContainerRenderingAccess().getColonKeyword_3_1_1_1())), new GroupAlias(false, false, new TokenAlias(false, false, grammarAccess.getKContainerRenderingAccess().getStylesKeyword_3_1_0_0()), new TokenAlias(false, false, grammarAccess.getKContainerRenderingAccess().getColonKeyword_3_1_0_1())));
+		match_KContainerRendering_____ActionsKeyword_3_1_1_0_ColonKeyword_3_1_1_1__a_StylesKeyword_3_1_0_0_ColonKeyword_3_1_0_1__a = new GroupAlias(true, true, new GroupAlias(true, true, new TokenAlias(false, false, grammarAccess.getKContainerRenderingAccess().getActionsKeyword_3_1_1_0()), new TokenAlias(false, false, grammarAccess.getKContainerRenderingAccess().getColonKeyword_3_1_1_1())), new TokenAlias(false, false, grammarAccess.getKContainerRenderingAccess().getStylesKeyword_3_1_0_0()), new TokenAlias(false, false, grammarAccess.getKContainerRenderingAccess().getColonKeyword_3_1_0_1()));
+		match_KContainerRendering_____ActionsKeyword_3_1_1_0_ColonKeyword_3_1_1_1__a_StylesKeyword_3_1_0_0_ColonKeyword_3_1_0_1__p = new GroupAlias(true, false, new GroupAlias(true, true, new TokenAlias(false, false, grammarAccess.getKContainerRenderingAccess().getActionsKeyword_3_1_1_0()), new TokenAlias(false, false, grammarAccess.getKContainerRenderingAccess().getColonKeyword_3_1_1_1())), new TokenAlias(false, false, grammarAccess.getKContainerRenderingAccess().getStylesKeyword_3_1_0_0()), new TokenAlias(false, false, grammarAccess.getKContainerRenderingAccess().getColonKeyword_3_1_0_1()));
+		match_KContainerRendering_____StylesKeyword_3_1_0_0_ColonKeyword_3_1_0_1__a_ActionsKeyword_3_1_1_0_ColonKeyword_3_1_1_1__a = new GroupAlias(true, true, new GroupAlias(true, true, new TokenAlias(false, false, grammarAccess.getKContainerRenderingAccess().getStylesKeyword_3_1_0_0()), new TokenAlias(false, false, grammarAccess.getKContainerRenderingAccess().getColonKeyword_3_1_0_1())), new TokenAlias(false, false, grammarAccess.getKContainerRenderingAccess().getActionsKeyword_3_1_1_0()), new TokenAlias(false, false, grammarAccess.getKContainerRenderingAccess().getColonKeyword_3_1_1_1()));
+		match_KContainerRendering_____StylesKeyword_3_1_0_0_ColonKeyword_3_1_0_1__a_ActionsKeyword_3_1_1_0_ColonKeyword_3_1_1_1__p = new GroupAlias(true, false, new GroupAlias(true, true, new TokenAlias(false, false, grammarAccess.getKContainerRenderingAccess().getStylesKeyword_3_1_0_0()), new TokenAlias(false, false, grammarAccess.getKContainerRenderingAccess().getColonKeyword_3_1_0_1())), new TokenAlias(false, false, grammarAccess.getKContainerRenderingAccess().getActionsKeyword_3_1_1_0()), new TokenAlias(false, false, grammarAccess.getKContainerRenderingAccess().getColonKeyword_3_1_1_1()));
+		match_KEdgeLayout___PropertiesKeyword_1_0_ColonKeyword_1_1__q = new GroupAlias(false, true, new TokenAlias(false, false, grammarAccess.getKEdgeLayoutAccess().getPropertiesKeyword_1_0()), new TokenAlias(false, false, grammarAccess.getKEdgeLayoutAccess().getColonKeyword_1_1()));
+		match_KIdentifier___LeftSquareBracketKeyword_1_0_RightSquareBracketKeyword_1_2__q = new GroupAlias(false, true, new TokenAlias(false, false, grammarAccess.getKIdentifierAccess().getLeftSquareBracketKeyword_1_0()), new TokenAlias(false, false, grammarAccess.getKIdentifierAccess().getRightSquareBracketKeyword_1_2()));
+		match_KNodeLayout_____PosKeyword_0_0_0_ColonKeyword_0_0_1___or___PropertiesKeyword_0_2_0_ColonKeyword_0_2_1___or___SizeKeyword_0_1_0_ColonKeyword_0_1_1____a = new AlternativeAlias(true, true, new GroupAlias(false, false, new TokenAlias(false, false, grammarAccess.getKNodeLayoutAccess().getPosKeyword_0_0_0()), new TokenAlias(false, false, grammarAccess.getKNodeLayoutAccess().getColonKeyword_0_0_1())), new GroupAlias(false, false, new TokenAlias(false, false, grammarAccess.getKNodeLayoutAccess().getPropertiesKeyword_0_2_0()), new TokenAlias(false, false, grammarAccess.getKNodeLayoutAccess().getColonKeyword_0_2_1())), new GroupAlias(false, false, new TokenAlias(false, false, grammarAccess.getKNodeLayoutAccess().getSizeKeyword_0_1_0()), new TokenAlias(false, false, grammarAccess.getKNodeLayoutAccess().getColonKeyword_0_1_1())));
+		match_KNodeLayout_______PosKeyword_0_0_0_ColonKeyword_0_0_1___or___PropertiesKeyword_0_2_0_ColonKeyword_0_2_1____a_SizeKeyword_0_1_0_ColonKeyword_0_1_1__a = new GroupAlias(true, true, new AlternativeAlias(true, true, new GroupAlias(false, false, new TokenAlias(false, false, grammarAccess.getKNodeLayoutAccess().getPosKeyword_0_0_0()), new TokenAlias(false, false, grammarAccess.getKNodeLayoutAccess().getColonKeyword_0_0_1())), new GroupAlias(false, false, new TokenAlias(false, false, grammarAccess.getKNodeLayoutAccess().getPropertiesKeyword_0_2_0()), new TokenAlias(false, false, grammarAccess.getKNodeLayoutAccess().getColonKeyword_0_2_1()))), new TokenAlias(false, false, grammarAccess.getKNodeLayoutAccess().getSizeKeyword_0_1_0()), new TokenAlias(false, false, grammarAccess.getKNodeLayoutAccess().getColonKeyword_0_1_1()));
+		match_KNodeLayout_______PosKeyword_0_0_0_ColonKeyword_0_0_1___or___PropertiesKeyword_0_2_0_ColonKeyword_0_2_1____a_SizeKeyword_0_1_0_ColonKeyword_0_1_1__p = new GroupAlias(true, false, new AlternativeAlias(true, true, new GroupAlias(false, false, new TokenAlias(false, false, grammarAccess.getKNodeLayoutAccess().getPosKeyword_0_0_0()), new TokenAlias(false, false, grammarAccess.getKNodeLayoutAccess().getColonKeyword_0_0_1())), new GroupAlias(false, false, new TokenAlias(false, false, grammarAccess.getKNodeLayoutAccess().getPropertiesKeyword_0_2_0()), new TokenAlias(false, false, grammarAccess.getKNodeLayoutAccess().getColonKeyword_0_2_1()))), new TokenAlias(false, false, grammarAccess.getKNodeLayoutAccess().getSizeKeyword_0_1_0()), new TokenAlias(false, false, grammarAccess.getKNodeLayoutAccess().getColonKeyword_0_1_1()));
+		match_KNodeLayout_______PosKeyword_0_0_0_ColonKeyword_0_0_1___or___SizeKeyword_0_1_0_ColonKeyword_0_1_1____a_PropertiesKeyword_0_2_0_ColonKeyword_0_2_1__a = new GroupAlias(true, true, new AlternativeAlias(true, true, new GroupAlias(false, false, new TokenAlias(false, false, grammarAccess.getKNodeLayoutAccess().getPosKeyword_0_0_0()), new TokenAlias(false, false, grammarAccess.getKNodeLayoutAccess().getColonKeyword_0_0_1())), new GroupAlias(false, false, new TokenAlias(false, false, grammarAccess.getKNodeLayoutAccess().getSizeKeyword_0_1_0()), new TokenAlias(false, false, grammarAccess.getKNodeLayoutAccess().getColonKeyword_0_1_1()))), new TokenAlias(false, false, grammarAccess.getKNodeLayoutAccess().getPropertiesKeyword_0_2_0()), new TokenAlias(false, false, grammarAccess.getKNodeLayoutAccess().getColonKeyword_0_2_1()));
+		match_KNodeLayout_______PosKeyword_0_0_0_ColonKeyword_0_0_1___or___SizeKeyword_0_1_0_ColonKeyword_0_1_1____a_PropertiesKeyword_0_2_0_ColonKeyword_0_2_1__p = new GroupAlias(true, false, new AlternativeAlias(true, true, new GroupAlias(false, false, new TokenAlias(false, false, grammarAccess.getKNodeLayoutAccess().getPosKeyword_0_0_0()), new TokenAlias(false, false, grammarAccess.getKNodeLayoutAccess().getColonKeyword_0_0_1())), new GroupAlias(false, false, new TokenAlias(false, false, grammarAccess.getKNodeLayoutAccess().getSizeKeyword_0_1_0()), new TokenAlias(false, false, grammarAccess.getKNodeLayoutAccess().getColonKeyword_0_1_1()))), new TokenAlias(false, false, grammarAccess.getKNodeLayoutAccess().getPropertiesKeyword_0_2_0()), new TokenAlias(false, false, grammarAccess.getKNodeLayoutAccess().getColonKeyword_0_2_1()));
+		match_KNodeLayout_______PropertiesKeyword_0_2_0_ColonKeyword_0_2_1___or___SizeKeyword_0_1_0_ColonKeyword_0_1_1____a_PosKeyword_0_0_0_ColonKeyword_0_0_1__a = new GroupAlias(true, true, new AlternativeAlias(true, true, new GroupAlias(false, false, new TokenAlias(false, false, grammarAccess.getKNodeLayoutAccess().getPropertiesKeyword_0_2_0()), new TokenAlias(false, false, grammarAccess.getKNodeLayoutAccess().getColonKeyword_0_2_1())), new GroupAlias(false, false, new TokenAlias(false, false, grammarAccess.getKNodeLayoutAccess().getSizeKeyword_0_1_0()), new TokenAlias(false, false, grammarAccess.getKNodeLayoutAccess().getColonKeyword_0_1_1()))), new TokenAlias(false, false, grammarAccess.getKNodeLayoutAccess().getPosKeyword_0_0_0()), new TokenAlias(false, false, grammarAccess.getKNodeLayoutAccess().getColonKeyword_0_0_1()));
+		match_KNodeLayout_______PropertiesKeyword_0_2_0_ColonKeyword_0_2_1___or___SizeKeyword_0_1_0_ColonKeyword_0_1_1____a_PosKeyword_0_0_0_ColonKeyword_0_0_1__p = new GroupAlias(true, false, new AlternativeAlias(true, true, new GroupAlias(false, false, new TokenAlias(false, false, grammarAccess.getKNodeLayoutAccess().getPropertiesKeyword_0_2_0()), new TokenAlias(false, false, grammarAccess.getKNodeLayoutAccess().getColonKeyword_0_2_1())), new GroupAlias(false, false, new TokenAlias(false, false, grammarAccess.getKNodeLayoutAccess().getSizeKeyword_0_1_0()), new TokenAlias(false, false, grammarAccess.getKNodeLayoutAccess().getColonKeyword_0_1_1()))), new TokenAlias(false, false, grammarAccess.getKNodeLayoutAccess().getPosKeyword_0_0_0()), new TokenAlias(false, false, grammarAccess.getKNodeLayoutAccess().getColonKeyword_0_0_1()));
+		match_KPolyline___LeftCurlyBracketKeyword_3_0_____ActionsKeyword_3_1_2_0_ColonKeyword_3_1_2_1___or___PointsKeyword_3_1_0_0_ColonKeyword_3_1_0_1___or___StylesKeyword_3_1_1_0_ColonKeyword_3_1_1_1____a_RightCurlyBracketKeyword_3_4__q = new GroupAlias(false, true, new TokenAlias(false, false, grammarAccess.getKPolylineAccess().getLeftCurlyBracketKeyword_3_0()), new AlternativeAlias(true, true, new GroupAlias(false, false, new TokenAlias(false, false, grammarAccess.getKPolylineAccess().getActionsKeyword_3_1_2_0()), new TokenAlias(false, false, grammarAccess.getKPolylineAccess().getColonKeyword_3_1_2_1())), new GroupAlias(false, false, new TokenAlias(false, false, grammarAccess.getKPolylineAccess().getPointsKeyword_3_1_0_0()), new TokenAlias(false, false, grammarAccess.getKPolylineAccess().getColonKeyword_3_1_0_1())), new GroupAlias(false, false, new TokenAlias(false, false, grammarAccess.getKPolylineAccess().getStylesKeyword_3_1_1_0()), new TokenAlias(false, false, grammarAccess.getKPolylineAccess().getColonKeyword_3_1_1_1()))), new TokenAlias(false, false, grammarAccess.getKPolylineAccess().getRightCurlyBracketKeyword_3_4()));
+		match_KPolyline___LeftSquareBracketKeyword_2_0_RightSquareBracketKeyword_2_2__q = new GroupAlias(false, true, new TokenAlias(false, false, grammarAccess.getKPolylineAccess().getLeftSquareBracketKeyword_2_0()), new TokenAlias(false, false, grammarAccess.getKPolylineAccess().getRightSquareBracketKeyword_2_2()));
+		match_KPolyline_____ActionsKeyword_3_1_2_0_ColonKeyword_3_1_2_1___or___PointsKeyword_3_1_0_0_ColonKeyword_3_1_0_1___or___StylesKeyword_3_1_1_0_ColonKeyword_3_1_1_1____a = new AlternativeAlias(true, true, new GroupAlias(false, false, new TokenAlias(false, false, grammarAccess.getKPolylineAccess().getActionsKeyword_3_1_2_0()), new TokenAlias(false, false, grammarAccess.getKPolylineAccess().getColonKeyword_3_1_2_1())), new GroupAlias(false, false, new TokenAlias(false, false, grammarAccess.getKPolylineAccess().getPointsKeyword_3_1_0_0()), new TokenAlias(false, false, grammarAccess.getKPolylineAccess().getColonKeyword_3_1_0_1())), new GroupAlias(false, false, new TokenAlias(false, false, grammarAccess.getKPolylineAccess().getStylesKeyword_3_1_1_0()), new TokenAlias(false, false, grammarAccess.getKPolylineAccess().getColonKeyword_3_1_1_1())));
+		match_KPolyline_______ActionsKeyword_3_1_2_0_ColonKeyword_3_1_2_1___or___PointsKeyword_3_1_0_0_ColonKeyword_3_1_0_1____a_StylesKeyword_3_1_1_0_ColonKeyword_3_1_1_1__a = new GroupAlias(true, true, new AlternativeAlias(true, true, new GroupAlias(false, false, new TokenAlias(false, false, grammarAccess.getKPolylineAccess().getActionsKeyword_3_1_2_0()), new TokenAlias(false, false, grammarAccess.getKPolylineAccess().getColonKeyword_3_1_2_1())), new GroupAlias(false, false, new TokenAlias(false, false, grammarAccess.getKPolylineAccess().getPointsKeyword_3_1_0_0()), new TokenAlias(false, false, grammarAccess.getKPolylineAccess().getColonKeyword_3_1_0_1()))), new TokenAlias(false, false, grammarAccess.getKPolylineAccess().getStylesKeyword_3_1_1_0()), new TokenAlias(false, false, grammarAccess.getKPolylineAccess().getColonKeyword_3_1_1_1()));
+		match_KPolyline_______ActionsKeyword_3_1_2_0_ColonKeyword_3_1_2_1___or___PointsKeyword_3_1_0_0_ColonKeyword_3_1_0_1____a_StylesKeyword_3_1_1_0_ColonKeyword_3_1_1_1__p = new GroupAlias(true, false, new AlternativeAlias(true, true, new GroupAlias(false, false, new TokenAlias(false, false, grammarAccess.getKPolylineAccess().getActionsKeyword_3_1_2_0()), new TokenAlias(false, false, grammarAccess.getKPolylineAccess().getColonKeyword_3_1_2_1())), new GroupAlias(false, false, new TokenAlias(false, false, grammarAccess.getKPolylineAccess().getPointsKeyword_3_1_0_0()), new TokenAlias(false, false, grammarAccess.getKPolylineAccess().getColonKeyword_3_1_0_1()))), new TokenAlias(false, false, grammarAccess.getKPolylineAccess().getStylesKeyword_3_1_1_0()), new TokenAlias(false, false, grammarAccess.getKPolylineAccess().getColonKeyword_3_1_1_1()));
+		match_KPolyline_______ActionsKeyword_3_1_2_0_ColonKeyword_3_1_2_1___or___StylesKeyword_3_1_1_0_ColonKeyword_3_1_1_1____a_PointsKeyword_3_1_0_0_ColonKeyword_3_1_0_1__p = new GroupAlias(true, false, new AlternativeAlias(true, true, new GroupAlias(false, false, new TokenAlias(false, false, grammarAccess.getKPolylineAccess().getActionsKeyword_3_1_2_0()), new TokenAlias(false, false, grammarAccess.getKPolylineAccess().getColonKeyword_3_1_2_1())), new GroupAlias(false, false, new TokenAlias(false, false, grammarAccess.getKPolylineAccess().getStylesKeyword_3_1_1_0()), new TokenAlias(false, false, grammarAccess.getKPolylineAccess().getColonKeyword_3_1_1_1()))), new TokenAlias(false, false, grammarAccess.getKPolylineAccess().getPointsKeyword_3_1_0_0()), new TokenAlias(false, false, grammarAccess.getKPolylineAccess().getColonKeyword_3_1_0_1()));
+		match_KPolyline_______PointsKeyword_3_1_0_0_ColonKeyword_3_1_0_1___or___StylesKeyword_3_1_1_0_ColonKeyword_3_1_1_1____a_ActionsKeyword_3_1_2_0_ColonKeyword_3_1_2_1__a = new GroupAlias(true, true, new AlternativeAlias(true, true, new GroupAlias(false, false, new TokenAlias(false, false, grammarAccess.getKPolylineAccess().getPointsKeyword_3_1_0_0()), new TokenAlias(false, false, grammarAccess.getKPolylineAccess().getColonKeyword_3_1_0_1())), new GroupAlias(false, false, new TokenAlias(false, false, grammarAccess.getKPolylineAccess().getStylesKeyword_3_1_1_0()), new TokenAlias(false, false, grammarAccess.getKPolylineAccess().getColonKeyword_3_1_1_1()))), new TokenAlias(false, false, grammarAccess.getKPolylineAccess().getActionsKeyword_3_1_2_0()), new TokenAlias(false, false, grammarAccess.getKPolylineAccess().getColonKeyword_3_1_2_1()));
+		match_KPolyline_______PointsKeyword_3_1_0_0_ColonKeyword_3_1_0_1___or___StylesKeyword_3_1_1_0_ColonKeyword_3_1_1_1____a_ActionsKeyword_3_1_2_0_ColonKeyword_3_1_2_1__p = new GroupAlias(true, false, new AlternativeAlias(true, true, new GroupAlias(false, false, new TokenAlias(false, false, grammarAccess.getKPolylineAccess().getPointsKeyword_3_1_0_0()), new TokenAlias(false, false, grammarAccess.getKPolylineAccess().getColonKeyword_3_1_0_1())), new GroupAlias(false, false, new TokenAlias(false, false, grammarAccess.getKPolylineAccess().getStylesKeyword_3_1_1_0()), new TokenAlias(false, false, grammarAccess.getKPolylineAccess().getColonKeyword_3_1_1_1()))), new TokenAlias(false, false, grammarAccess.getKPolylineAccess().getActionsKeyword_3_1_2_0()), new TokenAlias(false, false, grammarAccess.getKPolylineAccess().getColonKeyword_3_1_2_1()));
+		match_KRenderingLibrary___LeftSquareBracketKeyword_2_0_RightSquareBracketKeyword_2_2__q = new GroupAlias(false, true, new TokenAlias(false, false, grammarAccess.getKRenderingLibraryAccess().getLeftSquareBracketKeyword_2_0()), new TokenAlias(false, false, grammarAccess.getKRenderingLibraryAccess().getRightSquareBracketKeyword_2_2()));
+		match_KShapeLayout_____PosKeyword_1_0_0_ColonKeyword_1_0_1___or___PropertiesKeyword_1_2_0_ColonKeyword_1_2_1___or___SizeKeyword_1_1_0_ColonKeyword_1_1_1____a = new AlternativeAlias(true, true, new GroupAlias(false, false, new TokenAlias(false, false, grammarAccess.getKShapeLayoutAccess().getPosKeyword_1_0_0()), new TokenAlias(false, false, grammarAccess.getKShapeLayoutAccess().getColonKeyword_1_0_1())), new GroupAlias(false, false, new TokenAlias(false, false, grammarAccess.getKShapeLayoutAccess().getPropertiesKeyword_1_2_0()), new TokenAlias(false, false, grammarAccess.getKShapeLayoutAccess().getColonKeyword_1_2_1())), new GroupAlias(false, false, new TokenAlias(false, false, grammarAccess.getKShapeLayoutAccess().getSizeKeyword_1_1_0()), new TokenAlias(false, false, grammarAccess.getKShapeLayoutAccess().getColonKeyword_1_1_1())));
+		match_KShapeLayout_______PosKeyword_1_0_0_ColonKeyword_1_0_1___or___PropertiesKeyword_1_2_0_ColonKeyword_1_2_1____a_SizeKeyword_1_1_0_ColonKeyword_1_1_1__a = new GroupAlias(true, true, new AlternativeAlias(true, true, new GroupAlias(false, false, new TokenAlias(false, false, grammarAccess.getKShapeLayoutAccess().getPosKeyword_1_0_0()), new TokenAlias(false, false, grammarAccess.getKShapeLayoutAccess().getColonKeyword_1_0_1())), new GroupAlias(false, false, new TokenAlias(false, false, grammarAccess.getKShapeLayoutAccess().getPropertiesKeyword_1_2_0()), new TokenAlias(false, false, grammarAccess.getKShapeLayoutAccess().getColonKeyword_1_2_1()))), new TokenAlias(false, false, grammarAccess.getKShapeLayoutAccess().getSizeKeyword_1_1_0()), new TokenAlias(false, false, grammarAccess.getKShapeLayoutAccess().getColonKeyword_1_1_1()));
+		match_KShapeLayout_______PosKeyword_1_0_0_ColonKeyword_1_0_1___or___PropertiesKeyword_1_2_0_ColonKeyword_1_2_1____a_SizeKeyword_1_1_0_ColonKeyword_1_1_1__p = new GroupAlias(true, false, new AlternativeAlias(true, true, new GroupAlias(false, false, new TokenAlias(false, false, grammarAccess.getKShapeLayoutAccess().getPosKeyword_1_0_0()), new TokenAlias(false, false, grammarAccess.getKShapeLayoutAccess().getColonKeyword_1_0_1())), new GroupAlias(false, false, new TokenAlias(false, false, grammarAccess.getKShapeLayoutAccess().getPropertiesKeyword_1_2_0()), new TokenAlias(false, false, grammarAccess.getKShapeLayoutAccess().getColonKeyword_1_2_1()))), new TokenAlias(false, false, grammarAccess.getKShapeLayoutAccess().getSizeKeyword_1_1_0()), new TokenAlias(false, false, grammarAccess.getKShapeLayoutAccess().getColonKeyword_1_1_1()));
+		match_KShapeLayout_______PosKeyword_1_0_0_ColonKeyword_1_0_1___or___SizeKeyword_1_1_0_ColonKeyword_1_1_1____a_PropertiesKeyword_1_2_0_ColonKeyword_1_2_1__a = new GroupAlias(true, true, new AlternativeAlias(true, true, new GroupAlias(false, false, new TokenAlias(false, false, grammarAccess.getKShapeLayoutAccess().getPosKeyword_1_0_0()), new TokenAlias(false, false, grammarAccess.getKShapeLayoutAccess().getColonKeyword_1_0_1())), new GroupAlias(false, false, new TokenAlias(false, false, grammarAccess.getKShapeLayoutAccess().getSizeKeyword_1_1_0()), new TokenAlias(false, false, grammarAccess.getKShapeLayoutAccess().getColonKeyword_1_1_1()))), new TokenAlias(false, false, grammarAccess.getKShapeLayoutAccess().getPropertiesKeyword_1_2_0()), new TokenAlias(false, false, grammarAccess.getKShapeLayoutAccess().getColonKeyword_1_2_1()));
+		match_KShapeLayout_______PosKeyword_1_0_0_ColonKeyword_1_0_1___or___SizeKeyword_1_1_0_ColonKeyword_1_1_1____a_PropertiesKeyword_1_2_0_ColonKeyword_1_2_1__p = new GroupAlias(true, false, new AlternativeAlias(true, true, new GroupAlias(false, false, new TokenAlias(false, false, grammarAccess.getKShapeLayoutAccess().getPosKeyword_1_0_0()), new TokenAlias(false, false, grammarAccess.getKShapeLayoutAccess().getColonKeyword_1_0_1())), new GroupAlias(false, false, new TokenAlias(false, false, grammarAccess.getKShapeLayoutAccess().getSizeKeyword_1_1_0()), new TokenAlias(false, false, grammarAccess.getKShapeLayoutAccess().getColonKeyword_1_1_1()))), new TokenAlias(false, false, grammarAccess.getKShapeLayoutAccess().getPropertiesKeyword_1_2_0()), new TokenAlias(false, false, grammarAccess.getKShapeLayoutAccess().getColonKeyword_1_2_1()));
+		match_KShapeLayout_______PropertiesKeyword_1_2_0_ColonKeyword_1_2_1___or___SizeKeyword_1_1_0_ColonKeyword_1_1_1____a_PosKeyword_1_0_0_ColonKeyword_1_0_1__a = new GroupAlias(true, true, new AlternativeAlias(true, true, new GroupAlias(false, false, new TokenAlias(false, false, grammarAccess.getKShapeLayoutAccess().getPropertiesKeyword_1_2_0()), new TokenAlias(false, false, grammarAccess.getKShapeLayoutAccess().getColonKeyword_1_2_1())), new GroupAlias(false, false, new TokenAlias(false, false, grammarAccess.getKShapeLayoutAccess().getSizeKeyword_1_1_0()), new TokenAlias(false, false, grammarAccess.getKShapeLayoutAccess().getColonKeyword_1_1_1()))), new TokenAlias(false, false, grammarAccess.getKShapeLayoutAccess().getPosKeyword_1_0_0()), new TokenAlias(false, false, grammarAccess.getKShapeLayoutAccess().getColonKeyword_1_0_1()));
+		match_KShapeLayout_______PropertiesKeyword_1_2_0_ColonKeyword_1_2_1___or___SizeKeyword_1_1_0_ColonKeyword_1_1_1____a_PosKeyword_1_0_0_ColonKeyword_1_0_1__p = new GroupAlias(true, false, new AlternativeAlias(true, true, new GroupAlias(false, false, new TokenAlias(false, false, grammarAccess.getKShapeLayoutAccess().getPropertiesKeyword_1_2_0()), new TokenAlias(false, false, grammarAccess.getKShapeLayoutAccess().getColonKeyword_1_2_1())), new GroupAlias(false, false, new TokenAlias(false, false, grammarAccess.getKShapeLayoutAccess().getSizeKeyword_1_1_0()), new TokenAlias(false, false, grammarAccess.getKShapeLayoutAccess().getColonKeyword_1_1_1()))), new TokenAlias(false, false, grammarAccess.getKShapeLayoutAccess().getPosKeyword_1_0_0()), new TokenAlias(false, false, grammarAccess.getKShapeLayoutAccess().getColonKeyword_1_0_1()));
+		match_KSimpleRendering___LeftCurlyBracketKeyword_3_0_____ActionsKeyword_3_1_1_0_ColonKeyword_3_1_1_1___or___StylesKeyword_3_1_0_0_ColonKeyword_3_1_0_1____a_RightCurlyBracketKeyword_3_2__q = new GroupAlias(false, true, new TokenAlias(false, false, grammarAccess.getKSimpleRenderingAccess().getLeftCurlyBracketKeyword_3_0()), new AlternativeAlias(true, true, new GroupAlias(false, false, new TokenAlias(false, false, grammarAccess.getKSimpleRenderingAccess().getActionsKeyword_3_1_1_0()), new TokenAlias(false, false, grammarAccess.getKSimpleRenderingAccess().getColonKeyword_3_1_1_1())), new GroupAlias(false, false, new TokenAlias(false, false, grammarAccess.getKSimpleRenderingAccess().getStylesKeyword_3_1_0_0()), new TokenAlias(false, false, grammarAccess.getKSimpleRenderingAccess().getColonKeyword_3_1_0_1()))), new TokenAlias(false, false, grammarAccess.getKSimpleRenderingAccess().getRightCurlyBracketKeyword_3_2()));
+		match_KSimpleRendering___LeftSquareBracketKeyword_2_0_RightSquareBracketKeyword_2_2__q = new GroupAlias(false, true, new TokenAlias(false, false, grammarAccess.getKSimpleRenderingAccess().getLeftSquareBracketKeyword_2_0()), new TokenAlias(false, false, grammarAccess.getKSimpleRenderingAccess().getRightSquareBracketKeyword_2_2()));
+		match_KSimpleRendering_____ActionsKeyword_3_1_1_0_ColonKeyword_3_1_1_1___or___StylesKeyword_3_1_0_0_ColonKeyword_3_1_0_1____a = new AlternativeAlias(true, true, new GroupAlias(false, false, new TokenAlias(false, false, grammarAccess.getKSimpleRenderingAccess().getActionsKeyword_3_1_1_0()), new TokenAlias(false, false, grammarAccess.getKSimpleRenderingAccess().getColonKeyword_3_1_1_1())), new GroupAlias(false, false, new TokenAlias(false, false, grammarAccess.getKSimpleRenderingAccess().getStylesKeyword_3_1_0_0()), new TokenAlias(false, false, grammarAccess.getKSimpleRenderingAccess().getColonKeyword_3_1_0_1())));
+		match_KSimpleRendering_____ActionsKeyword_3_1_1_0_ColonKeyword_3_1_1_1__a_StylesKeyword_3_1_0_0_ColonKeyword_3_1_0_1__a = new GroupAlias(true, true, new GroupAlias(true, true, new TokenAlias(false, false, grammarAccess.getKSimpleRenderingAccess().getActionsKeyword_3_1_1_0()), new TokenAlias(false, false, grammarAccess.getKSimpleRenderingAccess().getColonKeyword_3_1_1_1())), new TokenAlias(false, false, grammarAccess.getKSimpleRenderingAccess().getStylesKeyword_3_1_0_0()), new TokenAlias(false, false, grammarAccess.getKSimpleRenderingAccess().getColonKeyword_3_1_0_1()));
+		match_KSimpleRendering_____ActionsKeyword_3_1_1_0_ColonKeyword_3_1_1_1__a_StylesKeyword_3_1_0_0_ColonKeyword_3_1_0_1__p = new GroupAlias(true, false, new GroupAlias(true, true, new TokenAlias(false, false, grammarAccess.getKSimpleRenderingAccess().getActionsKeyword_3_1_1_0()), new TokenAlias(false, false, grammarAccess.getKSimpleRenderingAccess().getColonKeyword_3_1_1_1())), new TokenAlias(false, false, grammarAccess.getKSimpleRenderingAccess().getStylesKeyword_3_1_0_0()), new TokenAlias(false, false, grammarAccess.getKSimpleRenderingAccess().getColonKeyword_3_1_0_1()));
+		match_KSimpleRendering_____StylesKeyword_3_1_0_0_ColonKeyword_3_1_0_1__a_ActionsKeyword_3_1_1_0_ColonKeyword_3_1_1_1__a = new GroupAlias(true, true, new GroupAlias(true, true, new TokenAlias(false, false, grammarAccess.getKSimpleRenderingAccess().getStylesKeyword_3_1_0_0()), new TokenAlias(false, false, grammarAccess.getKSimpleRenderingAccess().getColonKeyword_3_1_0_1())), new TokenAlias(false, false, grammarAccess.getKSimpleRenderingAccess().getActionsKeyword_3_1_1_0()), new TokenAlias(false, false, grammarAccess.getKSimpleRenderingAccess().getColonKeyword_3_1_1_1()));
+		match_KSimpleRendering_____StylesKeyword_3_1_0_0_ColonKeyword_3_1_0_1__a_ActionsKeyword_3_1_1_0_ColonKeyword_3_1_1_1__p = new GroupAlias(true, false, new GroupAlias(true, true, new TokenAlias(false, false, grammarAccess.getKSimpleRenderingAccess().getStylesKeyword_3_1_0_0()), new TokenAlias(false, false, grammarAccess.getKSimpleRenderingAccess().getColonKeyword_3_1_0_1())), new TokenAlias(false, false, grammarAccess.getKSimpleRenderingAccess().getActionsKeyword_3_1_1_0()), new TokenAlias(false, false, grammarAccess.getKSimpleRenderingAccess().getColonKeyword_3_1_1_1()));
+		match_ParentKNode_KgraphKeyword_1_0_q = new TokenAlias(false, true, grammarAccess.getParentKNodeAccess().getKgraphKeyword_1_0());
 	}
 	
 	@Override
@@ -336,1507 +117,407 @@ public class KGraphSyntacticSequencer extends AbstractSyntacticSequencer {
 		List<INode> transitionNodes = collectNodes(fromNode, toNode);
 		for (AbstractElementAlias syntax : transition.getAmbiguousSyntaxes()) {
 			List<INode> syntaxNodes = getNodesFor(transitionNodes, syntax);
-			if(match_KArc_ColonKeyword_5_1_0_1_q.equals(syntax))
-				emit_KArc_ColonKeyword_5_1_0_1_q(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if(match_KArc_ColonKeyword_5_1_1_1_q.equals(syntax))
-				emit_KArc_ColonKeyword_5_1_1_1_q(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if(match_KArc_ColonKeyword_5_1_2_1_q.equals(syntax))
-				emit_KArc_ColonKeyword_5_1_2_1_q(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if(match_KArc_ColonKeyword_5_1_3_1_q.equals(syntax))
-				emit_KArc_ColonKeyword_5_1_3_1_q(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if(match_KArc_ColonKeyword_5_1_4_1_q.equals(syntax))
-				emit_KArc_ColonKeyword_5_1_4_1_q(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if(match_KArc_CommaKeyword_3_q.equals(syntax))
-				emit_KArc_CommaKeyword_3_q(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if(match_KArc_CommaKeyword_5_1_0_3_0_q.equals(syntax))
-				emit_KArc_CommaKeyword_5_1_0_3_0_q(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if(match_KArc_CommaKeyword_5_1_1_3_0_q.equals(syntax))
-				emit_KArc_CommaKeyword_5_1_1_3_0_q(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if(match_KArc_CommaKeyword_5_1_4_3_0_q.equals(syntax))
-				emit_KArc_CommaKeyword_5_1_4_3_0_q(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if(match_KArc___LeftCurlyBracketKeyword_5_0_RightCurlyBracketKeyword_5_2__q.equals(syntax))
-				emit_KArc___LeftCurlyBracketKeyword_5_0_RightCurlyBracketKeyword_5_2__q(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if(match_KAreaPlacementData_CommaKeyword_4_q.equals(syntax))
-				emit_KAreaPlacementData_CommaKeyword_4_q(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if(match_KChildArea_ColonKeyword_2_1_0_1_q.equals(syntax))
-				emit_KChildArea_ColonKeyword_2_1_0_1_q(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if(match_KChildArea_ColonKeyword_2_1_1_1_q.equals(syntax))
-				emit_KChildArea_ColonKeyword_2_1_1_1_q(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if(match_KChildArea_ColonKeyword_2_1_2_1_q.equals(syntax))
-				emit_KChildArea_ColonKeyword_2_1_2_1_q(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if(match_KChildArea_CommaKeyword_2_1_0_3_0_q.equals(syntax))
-				emit_KChildArea_CommaKeyword_2_1_0_3_0_q(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if(match_KChildArea_CommaKeyword_2_1_1_3_0_q.equals(syntax))
-				emit_KChildArea_CommaKeyword_2_1_1_3_0_q(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if(match_KChildArea___LeftCurlyBracketKeyword_2_0_RightCurlyBracketKeyword_2_2__q.equals(syntax))
-				emit_KChildArea___LeftCurlyBracketKeyword_2_0_RightCurlyBracketKeyword_2_2__q(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if(match_KCustomRendering_ColonKeyword_2_5_0_1_q.equals(syntax))
-				emit_KCustomRendering_ColonKeyword_2_5_0_1_q(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if(match_KCustomRendering_ColonKeyword_2_5_1_1_q.equals(syntax))
-				emit_KCustomRendering_ColonKeyword_2_5_1_1_q(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if(match_KCustomRendering_ColonKeyword_2_5_2_1_q.equals(syntax))
-				emit_KCustomRendering_ColonKeyword_2_5_2_1_q(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if(match_KCustomRendering_ColonKeyword_2_5_3_1_q.equals(syntax))
-				emit_KCustomRendering_ColonKeyword_2_5_3_1_q(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if(match_KCustomRendering_ColonKeyword_2_5_4_1_q.equals(syntax))
-				emit_KCustomRendering_ColonKeyword_2_5_4_1_q(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if(match_KCustomRendering_CommaKeyword_2_5_0_3_0_q.equals(syntax))
-				emit_KCustomRendering_CommaKeyword_2_5_0_3_0_q(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if(match_KCustomRendering_CommaKeyword_2_5_1_3_0_q.equals(syntax))
-				emit_KCustomRendering_CommaKeyword_2_5_1_3_0_q(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if(match_KCustomRendering_CommaKeyword_2_5_4_3_0_q.equals(syntax))
-				emit_KCustomRendering_CommaKeyword_2_5_4_3_0_q(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if(match_KEdgeLayout_ColonKeyword_3_1_q.equals(syntax))
-				emit_KEdgeLayout_ColonKeyword_3_1_q(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if(match_KEdgeLayout_ColonKeyword_4_1_q.equals(syntax))
-				emit_KEdgeLayout_ColonKeyword_4_1_q(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if(match_KEdgeLayout_ColonKeyword_5_1_q.equals(syntax))
-				emit_KEdgeLayout_ColonKeyword_5_1_q(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if(match_KEdgeLayout_ColonKeyword_6_1_q.equals(syntax))
-				emit_KEdgeLayout_ColonKeyword_6_1_q(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if(match_KEdgeLayout_CommaKeyword_5_3_0_q.equals(syntax))
-				emit_KEdgeLayout_CommaKeyword_5_3_0_q(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if(match_KEdgeLayout_CommaKeyword_6_3_0_q.equals(syntax))
-				emit_KEdgeLayout_CommaKeyword_6_3_0_q(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if(match_KEdge_ColonKeyword_5_1_q.equals(syntax))
-				emit_KEdge_ColonKeyword_5_1_q(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if(match_KEdge_ColonKeyword_6_1_q.equals(syntax))
-				emit_KEdge_ColonKeyword_6_1_q(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if(match_KEdge_CommaKeyword_5_3_0_q.equals(syntax))
-				emit_KEdge_CommaKeyword_5_3_0_q(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if(match_KEdge_CommaKeyword_6_3_0_q.equals(syntax))
-				emit_KEdge_CommaKeyword_6_3_0_q(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if(match_KEllipse_ColonKeyword_2_1_0_1_q.equals(syntax))
-				emit_KEllipse_ColonKeyword_2_1_0_1_q(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if(match_KEllipse_ColonKeyword_2_1_1_1_q.equals(syntax))
-				emit_KEllipse_ColonKeyword_2_1_1_1_q(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if(match_KEllipse_ColonKeyword_2_1_2_1_q.equals(syntax))
-				emit_KEllipse_ColonKeyword_2_1_2_1_q(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if(match_KEllipse_ColonKeyword_2_1_3_1_q.equals(syntax))
-				emit_KEllipse_ColonKeyword_2_1_3_1_q(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if(match_KEllipse_ColonKeyword_2_1_4_1_q.equals(syntax))
-				emit_KEllipse_ColonKeyword_2_1_4_1_q(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if(match_KEllipse_CommaKeyword_2_1_0_3_0_q.equals(syntax))
-				emit_KEllipse_CommaKeyword_2_1_0_3_0_q(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if(match_KEllipse_CommaKeyword_2_1_1_3_0_q.equals(syntax))
-				emit_KEllipse_CommaKeyword_2_1_1_3_0_q(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if(match_KEllipse_CommaKeyword_2_1_4_3_0_q.equals(syntax))
-				emit_KEllipse_CommaKeyword_2_1_4_3_0_q(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if(match_KEllipse___LeftCurlyBracketKeyword_2_0_RightCurlyBracketKeyword_2_2__q.equals(syntax))
-				emit_KEllipse___LeftCurlyBracketKeyword_2_0_RightCurlyBracketKeyword_2_2__q(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if(match_KGraphDataImpl_ColonKeyword_3_1_q.equals(syntax))
-				emit_KGraphDataImpl_ColonKeyword_3_1_q(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if(match_KGridPlacement_CommaKeyword_3_1_0_2_q.equals(syntax))
-				emit_KGridPlacement_CommaKeyword_3_1_0_2_q(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if(match_KGridPlacement___LeftCurlyBracketKeyword_3_0_RightCurlyBracketKeyword_3_2__q.equals(syntax))
-				emit_KGridPlacement___LeftCurlyBracketKeyword_3_0_RightCurlyBracketKeyword_3_2__q(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if(match_KImage_ColonKeyword_4_1_0_1_q.equals(syntax))
-				emit_KImage_ColonKeyword_4_1_0_1_q(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if(match_KImage_ColonKeyword_4_1_1_1_q.equals(syntax))
-				emit_KImage_ColonKeyword_4_1_1_1_q(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if(match_KImage_ColonKeyword_4_1_2_1_q.equals(syntax))
-				emit_KImage_ColonKeyword_4_1_2_1_q(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if(match_KImage_ColonKeyword_4_1_3_1_q.equals(syntax))
-				emit_KImage_ColonKeyword_4_1_3_1_q(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if(match_KImage_ColonKeyword_4_1_4_1_q.equals(syntax))
-				emit_KImage_ColonKeyword_4_1_4_1_q(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if(match_KImage_CommaKeyword_4_1_0_3_0_q.equals(syntax))
-				emit_KImage_CommaKeyword_4_1_0_3_0_q(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if(match_KImage_CommaKeyword_4_1_1_3_0_q.equals(syntax))
-				emit_KImage_CommaKeyword_4_1_1_3_0_q(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if(match_KImage_CommaKeyword_4_1_4_3_0_q.equals(syntax))
-				emit_KImage_CommaKeyword_4_1_4_3_0_q(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if(match_KImage___LeftCurlyBracketKeyword_4_0_RightCurlyBracketKeyword_4_2__q.equals(syntax))
-				emit_KImage___LeftCurlyBracketKeyword_4_0_RightCurlyBracketKeyword_4_2__q(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if(match_KLabel_ColonKeyword_3_1_q.equals(syntax))
-				emit_KLabel_ColonKeyword_3_1_q(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if(match_KLabel_CommaKeyword_3_3_0_q.equals(syntax))
-				emit_KLabel_CommaKeyword_3_3_0_q(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if(match_KLineStyle_CommaKeyword_4_3_0_q.equals(syntax))
-				emit_KLineStyle_CommaKeyword_4_3_0_q(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if(match_KNode_ColonKeyword_3_1_q.equals(syntax))
-				emit_KNode_ColonKeyword_3_1_q(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if(match_KNode_ColonKeyword_4_1_q.equals(syntax))
-				emit_KNode_ColonKeyword_4_1_q(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if(match_KNode_ColonKeyword_5_1_q.equals(syntax))
-				emit_KNode_ColonKeyword_5_1_q(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if(match_KNode_ColonKeyword_6_1_q.equals(syntax))
-				emit_KNode_ColonKeyword_6_1_q(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if(match_KNode_CommaKeyword_3_3_0_q.equals(syntax))
-				emit_KNode_CommaKeyword_3_3_0_q(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if(match_KNode_CommaKeyword_4_3_0_q.equals(syntax))
-				emit_KNode_CommaKeyword_4_3_0_q(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if(match_KNode_CommaKeyword_5_3_0_q.equals(syntax))
-				emit_KNode_CommaKeyword_5_3_0_q(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if(match_KNode_CommaKeyword_6_3_0_q.equals(syntax))
-				emit_KNode_CommaKeyword_6_3_0_q(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if(match_KNode_CommaKeyword_8_1_0_q.equals(syntax))
-				emit_KNode_CommaKeyword_8_1_0_q(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if(match_KPointPlacementData_RightCurlyBracketKeyword_6_1_a.equals(syntax))
-				emit_KPointPlacementData_RightCurlyBracketKeyword_6_1_a(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if(match_KPointPlacementData_RightCurlyBracketKeyword_6_1_p.equals(syntax))
-				emit_KPointPlacementData_RightCurlyBracketKeyword_6_1_p(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if(match_KPolygon_ColonKeyword_2_1_0_1_q.equals(syntax))
-				emit_KPolygon_ColonKeyword_2_1_0_1_q(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if(match_KPolygon_ColonKeyword_2_1_1_1_q.equals(syntax))
-				emit_KPolygon_ColonKeyword_2_1_1_1_q(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if(match_KPolygon_ColonKeyword_2_1_2_1_q.equals(syntax))
-				emit_KPolygon_ColonKeyword_2_1_2_1_q(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if(match_KPolygon_ColonKeyword_2_1_3_1_q.equals(syntax))
-				emit_KPolygon_ColonKeyword_2_1_3_1_q(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if(match_KPolygon_ColonKeyword_2_1_4_1_q.equals(syntax))
-				emit_KPolygon_ColonKeyword_2_1_4_1_q(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if(match_KPolygon_ColonKeyword_2_1_5_1_q.equals(syntax))
-				emit_KPolygon_ColonKeyword_2_1_5_1_q(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if(match_KPolygon_CommaKeyword_2_1_0_3_0_q.equals(syntax))
-				emit_KPolygon_CommaKeyword_2_1_0_3_0_q(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if(match_KPolygon_CommaKeyword_2_1_1_3_0_q.equals(syntax))
-				emit_KPolygon_CommaKeyword_2_1_1_3_0_q(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if(match_KPolygon_CommaKeyword_2_1_2_3_0_q.equals(syntax))
-				emit_KPolygon_CommaKeyword_2_1_2_3_0_q(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if(match_KPolygon_CommaKeyword_2_1_5_3_0_q.equals(syntax))
-				emit_KPolygon_CommaKeyword_2_1_5_3_0_q(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if(match_KPolygon___LeftCurlyBracketKeyword_2_0_RightCurlyBracketKeyword_2_2__q.equals(syntax))
-				emit_KPolygon___LeftCurlyBracketKeyword_2_0_RightCurlyBracketKeyword_2_2__q(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if(match_KPolyline_Impl_ColonKeyword_2_1_0_1_q.equals(syntax))
-				emit_KPolyline_Impl_ColonKeyword_2_1_0_1_q(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if(match_KPolyline_Impl_ColonKeyword_2_1_1_1_q.equals(syntax))
-				emit_KPolyline_Impl_ColonKeyword_2_1_1_1_q(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if(match_KPolyline_Impl_ColonKeyword_2_1_2_1_q.equals(syntax))
-				emit_KPolyline_Impl_ColonKeyword_2_1_2_1_q(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if(match_KPolyline_Impl_ColonKeyword_2_1_3_1_q.equals(syntax))
-				emit_KPolyline_Impl_ColonKeyword_2_1_3_1_q(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if(match_KPolyline_Impl_ColonKeyword_2_1_4_1_q.equals(syntax))
-				emit_KPolyline_Impl_ColonKeyword_2_1_4_1_q(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if(match_KPolyline_Impl_ColonKeyword_2_1_5_1_q.equals(syntax))
-				emit_KPolyline_Impl_ColonKeyword_2_1_5_1_q(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if(match_KPolyline_Impl_CommaKeyword_2_1_0_3_0_q.equals(syntax))
-				emit_KPolyline_Impl_CommaKeyword_2_1_0_3_0_q(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if(match_KPolyline_Impl_CommaKeyword_2_1_1_3_0_q.equals(syntax))
-				emit_KPolyline_Impl_CommaKeyword_2_1_1_3_0_q(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if(match_KPolyline_Impl_CommaKeyword_2_1_2_3_0_q.equals(syntax))
-				emit_KPolyline_Impl_CommaKeyword_2_1_2_3_0_q(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if(match_KPolyline_Impl_CommaKeyword_2_1_5_3_0_q.equals(syntax))
-				emit_KPolyline_Impl_CommaKeyword_2_1_5_3_0_q(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if(match_KPolyline_Impl___LeftCurlyBracketKeyword_2_0_RightCurlyBracketKeyword_2_2__q.equals(syntax))
-				emit_KPolyline_Impl___LeftCurlyBracketKeyword_2_0_RightCurlyBracketKeyword_2_2__q(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if(match_KPort_ColonKeyword_3_1_q.equals(syntax))
-				emit_KPort_ColonKeyword_3_1_q(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if(match_KPort_ColonKeyword_4_1_q.equals(syntax))
-				emit_KPort_ColonKeyword_4_1_q(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if(match_KPort_ColonKeyword_5_1_q.equals(syntax))
-				emit_KPort_ColonKeyword_5_1_q(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if(match_KPort_CommaKeyword_3_3_0_q.equals(syntax))
-				emit_KPort_CommaKeyword_3_3_0_q(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if(match_KPort_CommaKeyword_4_3_0_q.equals(syntax))
-				emit_KPort_CommaKeyword_4_3_0_q(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if(match_KPort_CommaKeyword_5_3_0_q.equals(syntax))
-				emit_KPort_CommaKeyword_5_3_0_q(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if(match_KRectangle_ColonKeyword_2_1_0_1_q.equals(syntax))
-				emit_KRectangle_ColonKeyword_2_1_0_1_q(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if(match_KRectangle_ColonKeyword_2_1_1_1_q.equals(syntax))
-				emit_KRectangle_ColonKeyword_2_1_1_1_q(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if(match_KRectangle_ColonKeyword_2_1_2_1_q.equals(syntax))
-				emit_KRectangle_ColonKeyword_2_1_2_1_q(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if(match_KRectangle_ColonKeyword_2_1_3_1_q.equals(syntax))
-				emit_KRectangle_ColonKeyword_2_1_3_1_q(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if(match_KRectangle_ColonKeyword_2_1_4_1_q.equals(syntax))
-				emit_KRectangle_ColonKeyword_2_1_4_1_q(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if(match_KRectangle_CommaKeyword_2_1_0_3_0_q.equals(syntax))
-				emit_KRectangle_CommaKeyword_2_1_0_3_0_q(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if(match_KRectangle_CommaKeyword_2_1_1_3_0_q.equals(syntax))
-				emit_KRectangle_CommaKeyword_2_1_1_3_0_q(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if(match_KRectangle_CommaKeyword_2_1_4_3_0_q.equals(syntax))
-				emit_KRectangle_CommaKeyword_2_1_4_3_0_q(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if(match_KRectangle___LeftCurlyBracketKeyword_2_0_RightCurlyBracketKeyword_2_2__q.equals(syntax))
-				emit_KRectangle___LeftCurlyBracketKeyword_2_0_RightCurlyBracketKeyword_2_2__q(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if(match_KRenderingLibrary_CommaKeyword_3_1_0_q.equals(syntax))
-				emit_KRenderingLibrary_CommaKeyword_3_1_0_q(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if(match_KRenderingRef_ColonKeyword_3_1_0_1_q.equals(syntax))
-				emit_KRenderingRef_ColonKeyword_3_1_0_1_q(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if(match_KRenderingRef_ColonKeyword_3_1_1_1_q.equals(syntax))
-				emit_KRenderingRef_ColonKeyword_3_1_1_1_q(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if(match_KRenderingRef_CommaKeyword_3_1_0_3_0_q.equals(syntax))
-				emit_KRenderingRef_CommaKeyword_3_1_0_3_0_q(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if(match_KRenderingRef___LeftCurlyBracketKeyword_3_0_RightCurlyBracketKeyword_3_2__q.equals(syntax))
-				emit_KRenderingRef___LeftCurlyBracketKeyword_3_0_RightCurlyBracketKeyword_3_2__q(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if(match_KRoundedBendsPolyline_ColonKeyword_3_1_0_1_q.equals(syntax))
-				emit_KRoundedBendsPolyline_ColonKeyword_3_1_0_1_q(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if(match_KRoundedBendsPolyline_ColonKeyword_3_1_1_1_q.equals(syntax))
-				emit_KRoundedBendsPolyline_ColonKeyword_3_1_1_1_q(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if(match_KRoundedBendsPolyline_ColonKeyword_3_1_2_1_q.equals(syntax))
-				emit_KRoundedBendsPolyline_ColonKeyword_3_1_2_1_q(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if(match_KRoundedBendsPolyline_ColonKeyword_3_1_3_1_q.equals(syntax))
-				emit_KRoundedBendsPolyline_ColonKeyword_3_1_3_1_q(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if(match_KRoundedBendsPolyline_ColonKeyword_3_1_4_1_q.equals(syntax))
-				emit_KRoundedBendsPolyline_ColonKeyword_3_1_4_1_q(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if(match_KRoundedBendsPolyline_CommaKeyword_3_1_0_3_0_q.equals(syntax))
-				emit_KRoundedBendsPolyline_CommaKeyword_3_1_0_3_0_q(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if(match_KRoundedBendsPolyline_CommaKeyword_3_1_1_3_0_q.equals(syntax))
-				emit_KRoundedBendsPolyline_CommaKeyword_3_1_1_3_0_q(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if(match_KRoundedBendsPolyline_CommaKeyword_3_1_4_3_0_q.equals(syntax))
-				emit_KRoundedBendsPolyline_CommaKeyword_3_1_4_3_0_q(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if(match_KRoundedBendsPolyline___LeftCurlyBracketKeyword_3_0_RightCurlyBracketKeyword_3_2__q.equals(syntax))
-				emit_KRoundedBendsPolyline___LeftCurlyBracketKeyword_3_0_RightCurlyBracketKeyword_3_2__q(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if(match_KRoundedRectangle_ColonKeyword_5_1_0_1_q.equals(syntax))
-				emit_KRoundedRectangle_ColonKeyword_5_1_0_1_q(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if(match_KRoundedRectangle_ColonKeyword_5_1_1_1_q.equals(syntax))
-				emit_KRoundedRectangle_ColonKeyword_5_1_1_1_q(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if(match_KRoundedRectangle_ColonKeyword_5_1_2_1_q.equals(syntax))
-				emit_KRoundedRectangle_ColonKeyword_5_1_2_1_q(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if(match_KRoundedRectangle_ColonKeyword_5_1_3_1_q.equals(syntax))
-				emit_KRoundedRectangle_ColonKeyword_5_1_3_1_q(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if(match_KRoundedRectangle_ColonKeyword_5_1_4_1_q.equals(syntax))
-				emit_KRoundedRectangle_ColonKeyword_5_1_4_1_q(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if(match_KRoundedRectangle_CommaKeyword_3_q.equals(syntax))
-				emit_KRoundedRectangle_CommaKeyword_3_q(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if(match_KRoundedRectangle_CommaKeyword_5_1_0_3_0_q.equals(syntax))
-				emit_KRoundedRectangle_CommaKeyword_5_1_0_3_0_q(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if(match_KRoundedRectangle_CommaKeyword_5_1_1_3_0_q.equals(syntax))
-				emit_KRoundedRectangle_CommaKeyword_5_1_1_3_0_q(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if(match_KRoundedRectangle_CommaKeyword_5_1_4_3_0_q.equals(syntax))
-				emit_KRoundedRectangle_CommaKeyword_5_1_4_3_0_q(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if(match_KRoundedRectangle___LeftCurlyBracketKeyword_5_0_RightCurlyBracketKeyword_5_2__q.equals(syntax))
-				emit_KRoundedRectangle___LeftCurlyBracketKeyword_5_0_RightCurlyBracketKeyword_5_2__q(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if(match_KShapeLayout_ColonKeyword_8_1_q.equals(syntax))
-				emit_KShapeLayout_ColonKeyword_8_1_q(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if(match_KShapeLayout_CommaKeyword_8_3_0_q.equals(syntax))
-				emit_KShapeLayout_CommaKeyword_8_3_0_q(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if(match_KSpline_ColonKeyword_2_1_0_1_q.equals(syntax))
-				emit_KSpline_ColonKeyword_2_1_0_1_q(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if(match_KSpline_ColonKeyword_2_1_1_1_q.equals(syntax))
-				emit_KSpline_ColonKeyword_2_1_1_1_q(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if(match_KSpline_ColonKeyword_2_1_2_1_q.equals(syntax))
-				emit_KSpline_ColonKeyword_2_1_2_1_q(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if(match_KSpline_ColonKeyword_2_1_3_1_q.equals(syntax))
-				emit_KSpline_ColonKeyword_2_1_3_1_q(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if(match_KSpline_ColonKeyword_2_1_4_1_q.equals(syntax))
-				emit_KSpline_ColonKeyword_2_1_4_1_q(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if(match_KSpline_CommaKeyword_2_1_0_3_0_q.equals(syntax))
-				emit_KSpline_CommaKeyword_2_1_0_3_0_q(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if(match_KSpline_CommaKeyword_2_1_1_3_0_q.equals(syntax))
-				emit_KSpline_CommaKeyword_2_1_1_3_0_q(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if(match_KSpline_CommaKeyword_2_1_4_3_0_q.equals(syntax))
-				emit_KSpline_CommaKeyword_2_1_4_3_0_q(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if(match_KSpline___LeftCurlyBracketKeyword_2_0_RightCurlyBracketKeyword_2_2__q.equals(syntax))
-				emit_KSpline___LeftCurlyBracketKeyword_2_0_RightCurlyBracketKeyword_2_2__q(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if(match_KText_ColonKeyword_3_1_0_1_q.equals(syntax))
-				emit_KText_ColonKeyword_3_1_0_1_q(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if(match_KText_ColonKeyword_3_1_1_1_q.equals(syntax))
-				emit_KText_ColonKeyword_3_1_1_1_q(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if(match_KText_ColonKeyword_3_1_2_1_q.equals(syntax))
-				emit_KText_ColonKeyword_3_1_2_1_q(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if(match_KText_ColonKeyword_3_1_3_1_q.equals(syntax))
-				emit_KText_ColonKeyword_3_1_3_1_q(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if(match_KText_CommaKeyword_3_1_0_3_0_q.equals(syntax))
-				emit_KText_CommaKeyword_3_1_0_3_0_q(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if(match_KText_CommaKeyword_3_1_1_3_0_q.equals(syntax))
-				emit_KText_CommaKeyword_3_1_1_3_0_q(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if(match_KText_CommaKeyword_3_1_3_3_0_q.equals(syntax))
-				emit_KText_CommaKeyword_3_1_3_3_0_q(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if(match_KText___LeftCurlyBracketKeyword_3_0_RightCurlyBracketKeyword_3_2__q.equals(syntax))
-				emit_KText___LeftCurlyBracketKeyword_3_0_RightCurlyBracketKeyword_3_2__q(semanticObject, getLastNavigableState(), syntaxNodes);
+			if(match_KContainerRendering___LeftCurlyBracketKeyword_3_0_____ActionsKeyword_3_1_1_0_ColonKeyword_3_1_1_1___or___StylesKeyword_3_1_0_0_ColonKeyword_3_1_0_1____a_RightCurlyBracketKeyword_3_3__q.equals(syntax))
+				emit_KContainerRendering___LeftCurlyBracketKeyword_3_0_____ActionsKeyword_3_1_1_0_ColonKeyword_3_1_1_1___or___StylesKeyword_3_1_0_0_ColonKeyword_3_1_0_1____a_RightCurlyBracketKeyword_3_3__q(semanticObject, getLastNavigableState(), syntaxNodes);
+			else if(match_KContainerRendering___LeftSquareBracketKeyword_2_0_RightSquareBracketKeyword_2_2__q.equals(syntax))
+				emit_KContainerRendering___LeftSquareBracketKeyword_2_0_RightSquareBracketKeyword_2_2__q(semanticObject, getLastNavigableState(), syntaxNodes);
+			else if(match_KContainerRendering_____ActionsKeyword_3_1_1_0_ColonKeyword_3_1_1_1___or___StylesKeyword_3_1_0_0_ColonKeyword_3_1_0_1____a.equals(syntax))
+				emit_KContainerRendering_____ActionsKeyword_3_1_1_0_ColonKeyword_3_1_1_1___or___StylesKeyword_3_1_0_0_ColonKeyword_3_1_0_1____a(semanticObject, getLastNavigableState(), syntaxNodes);
+			else if(match_KContainerRendering_____ActionsKeyword_3_1_1_0_ColonKeyword_3_1_1_1__a_StylesKeyword_3_1_0_0_ColonKeyword_3_1_0_1__a.equals(syntax))
+				emit_KContainerRendering_____ActionsKeyword_3_1_1_0_ColonKeyword_3_1_1_1__a_StylesKeyword_3_1_0_0_ColonKeyword_3_1_0_1__a(semanticObject, getLastNavigableState(), syntaxNodes);
+			else if(match_KContainerRendering_____ActionsKeyword_3_1_1_0_ColonKeyword_3_1_1_1__a_StylesKeyword_3_1_0_0_ColonKeyword_3_1_0_1__p.equals(syntax))
+				emit_KContainerRendering_____ActionsKeyword_3_1_1_0_ColonKeyword_3_1_1_1__a_StylesKeyword_3_1_0_0_ColonKeyword_3_1_0_1__p(semanticObject, getLastNavigableState(), syntaxNodes);
+			else if(match_KContainerRendering_____StylesKeyword_3_1_0_0_ColonKeyword_3_1_0_1__a_ActionsKeyword_3_1_1_0_ColonKeyword_3_1_1_1__a.equals(syntax))
+				emit_KContainerRendering_____StylesKeyword_3_1_0_0_ColonKeyword_3_1_0_1__a_ActionsKeyword_3_1_1_0_ColonKeyword_3_1_1_1__a(semanticObject, getLastNavigableState(), syntaxNodes);
+			else if(match_KContainerRendering_____StylesKeyword_3_1_0_0_ColonKeyword_3_1_0_1__a_ActionsKeyword_3_1_1_0_ColonKeyword_3_1_1_1__p.equals(syntax))
+				emit_KContainerRendering_____StylesKeyword_3_1_0_0_ColonKeyword_3_1_0_1__a_ActionsKeyword_3_1_1_0_ColonKeyword_3_1_1_1__p(semanticObject, getLastNavigableState(), syntaxNodes);
+			else if(match_KEdgeLayout___PropertiesKeyword_1_0_ColonKeyword_1_1__q.equals(syntax))
+				emit_KEdgeLayout___PropertiesKeyword_1_0_ColonKeyword_1_1__q(semanticObject, getLastNavigableState(), syntaxNodes);
+			else if(match_KIdentifier___LeftSquareBracketKeyword_1_0_RightSquareBracketKeyword_1_2__q.equals(syntax))
+				emit_KIdentifier___LeftSquareBracketKeyword_1_0_RightSquareBracketKeyword_1_2__q(semanticObject, getLastNavigableState(), syntaxNodes);
+			else if(match_KNodeLayout_____PosKeyword_0_0_0_ColonKeyword_0_0_1___or___PropertiesKeyword_0_2_0_ColonKeyword_0_2_1___or___SizeKeyword_0_1_0_ColonKeyword_0_1_1____a.equals(syntax))
+				emit_KNodeLayout_____PosKeyword_0_0_0_ColonKeyword_0_0_1___or___PropertiesKeyword_0_2_0_ColonKeyword_0_2_1___or___SizeKeyword_0_1_0_ColonKeyword_0_1_1____a(semanticObject, getLastNavigableState(), syntaxNodes);
+			else if(match_KNodeLayout_______PosKeyword_0_0_0_ColonKeyword_0_0_1___or___PropertiesKeyword_0_2_0_ColonKeyword_0_2_1____a_SizeKeyword_0_1_0_ColonKeyword_0_1_1__a.equals(syntax))
+				emit_KNodeLayout_______PosKeyword_0_0_0_ColonKeyword_0_0_1___or___PropertiesKeyword_0_2_0_ColonKeyword_0_2_1____a_SizeKeyword_0_1_0_ColonKeyword_0_1_1__a(semanticObject, getLastNavigableState(), syntaxNodes);
+			else if(match_KNodeLayout_______PosKeyword_0_0_0_ColonKeyword_0_0_1___or___PropertiesKeyword_0_2_0_ColonKeyword_0_2_1____a_SizeKeyword_0_1_0_ColonKeyword_0_1_1__p.equals(syntax))
+				emit_KNodeLayout_______PosKeyword_0_0_0_ColonKeyword_0_0_1___or___PropertiesKeyword_0_2_0_ColonKeyword_0_2_1____a_SizeKeyword_0_1_0_ColonKeyword_0_1_1__p(semanticObject, getLastNavigableState(), syntaxNodes);
+			else if(match_KNodeLayout_______PosKeyword_0_0_0_ColonKeyword_0_0_1___or___SizeKeyword_0_1_0_ColonKeyword_0_1_1____a_PropertiesKeyword_0_2_0_ColonKeyword_0_2_1__a.equals(syntax))
+				emit_KNodeLayout_______PosKeyword_0_0_0_ColonKeyword_0_0_1___or___SizeKeyword_0_1_0_ColonKeyword_0_1_1____a_PropertiesKeyword_0_2_0_ColonKeyword_0_2_1__a(semanticObject, getLastNavigableState(), syntaxNodes);
+			else if(match_KNodeLayout_______PosKeyword_0_0_0_ColonKeyword_0_0_1___or___SizeKeyword_0_1_0_ColonKeyword_0_1_1____a_PropertiesKeyword_0_2_0_ColonKeyword_0_2_1__p.equals(syntax))
+				emit_KNodeLayout_______PosKeyword_0_0_0_ColonKeyword_0_0_1___or___SizeKeyword_0_1_0_ColonKeyword_0_1_1____a_PropertiesKeyword_0_2_0_ColonKeyword_0_2_1__p(semanticObject, getLastNavigableState(), syntaxNodes);
+			else if(match_KNodeLayout_______PropertiesKeyword_0_2_0_ColonKeyword_0_2_1___or___SizeKeyword_0_1_0_ColonKeyword_0_1_1____a_PosKeyword_0_0_0_ColonKeyword_0_0_1__a.equals(syntax))
+				emit_KNodeLayout_______PropertiesKeyword_0_2_0_ColonKeyword_0_2_1___or___SizeKeyword_0_1_0_ColonKeyword_0_1_1____a_PosKeyword_0_0_0_ColonKeyword_0_0_1__a(semanticObject, getLastNavigableState(), syntaxNodes);
+			else if(match_KNodeLayout_______PropertiesKeyword_0_2_0_ColonKeyword_0_2_1___or___SizeKeyword_0_1_0_ColonKeyword_0_1_1____a_PosKeyword_0_0_0_ColonKeyword_0_0_1__p.equals(syntax))
+				emit_KNodeLayout_______PropertiesKeyword_0_2_0_ColonKeyword_0_2_1___or___SizeKeyword_0_1_0_ColonKeyword_0_1_1____a_PosKeyword_0_0_0_ColonKeyword_0_0_1__p(semanticObject, getLastNavigableState(), syntaxNodes);
+			else if(match_KPolyline___LeftCurlyBracketKeyword_3_0_____ActionsKeyword_3_1_2_0_ColonKeyword_3_1_2_1___or___PointsKeyword_3_1_0_0_ColonKeyword_3_1_0_1___or___StylesKeyword_3_1_1_0_ColonKeyword_3_1_1_1____a_RightCurlyBracketKeyword_3_4__q.equals(syntax))
+				emit_KPolyline___LeftCurlyBracketKeyword_3_0_____ActionsKeyword_3_1_2_0_ColonKeyword_3_1_2_1___or___PointsKeyword_3_1_0_0_ColonKeyword_3_1_0_1___or___StylesKeyword_3_1_1_0_ColonKeyword_3_1_1_1____a_RightCurlyBracketKeyword_3_4__q(semanticObject, getLastNavigableState(), syntaxNodes);
+			else if(match_KPolyline___LeftSquareBracketKeyword_2_0_RightSquareBracketKeyword_2_2__q.equals(syntax))
+				emit_KPolyline___LeftSquareBracketKeyword_2_0_RightSquareBracketKeyword_2_2__q(semanticObject, getLastNavigableState(), syntaxNodes);
+			else if(match_KPolyline_____ActionsKeyword_3_1_2_0_ColonKeyword_3_1_2_1___or___PointsKeyword_3_1_0_0_ColonKeyword_3_1_0_1___or___StylesKeyword_3_1_1_0_ColonKeyword_3_1_1_1____a.equals(syntax))
+				emit_KPolyline_____ActionsKeyword_3_1_2_0_ColonKeyword_3_1_2_1___or___PointsKeyword_3_1_0_0_ColonKeyword_3_1_0_1___or___StylesKeyword_3_1_1_0_ColonKeyword_3_1_1_1____a(semanticObject, getLastNavigableState(), syntaxNodes);
+			else if(match_KPolyline_______ActionsKeyword_3_1_2_0_ColonKeyword_3_1_2_1___or___PointsKeyword_3_1_0_0_ColonKeyword_3_1_0_1____a_StylesKeyword_3_1_1_0_ColonKeyword_3_1_1_1__a.equals(syntax))
+				emit_KPolyline_______ActionsKeyword_3_1_2_0_ColonKeyword_3_1_2_1___or___PointsKeyword_3_1_0_0_ColonKeyword_3_1_0_1____a_StylesKeyword_3_1_1_0_ColonKeyword_3_1_1_1__a(semanticObject, getLastNavigableState(), syntaxNodes);
+			else if(match_KPolyline_______ActionsKeyword_3_1_2_0_ColonKeyword_3_1_2_1___or___PointsKeyword_3_1_0_0_ColonKeyword_3_1_0_1____a_StylesKeyword_3_1_1_0_ColonKeyword_3_1_1_1__p.equals(syntax))
+				emit_KPolyline_______ActionsKeyword_3_1_2_0_ColonKeyword_3_1_2_1___or___PointsKeyword_3_1_0_0_ColonKeyword_3_1_0_1____a_StylesKeyword_3_1_1_0_ColonKeyword_3_1_1_1__p(semanticObject, getLastNavigableState(), syntaxNodes);
+			else if(match_KPolyline_______ActionsKeyword_3_1_2_0_ColonKeyword_3_1_2_1___or___StylesKeyword_3_1_1_0_ColonKeyword_3_1_1_1____a_PointsKeyword_3_1_0_0_ColonKeyword_3_1_0_1__p.equals(syntax))
+				emit_KPolyline_______ActionsKeyword_3_1_2_0_ColonKeyword_3_1_2_1___or___StylesKeyword_3_1_1_0_ColonKeyword_3_1_1_1____a_PointsKeyword_3_1_0_0_ColonKeyword_3_1_0_1__p(semanticObject, getLastNavigableState(), syntaxNodes);
+			else if(match_KPolyline_______PointsKeyword_3_1_0_0_ColonKeyword_3_1_0_1___or___StylesKeyword_3_1_1_0_ColonKeyword_3_1_1_1____a_ActionsKeyword_3_1_2_0_ColonKeyword_3_1_2_1__a.equals(syntax))
+				emit_KPolyline_______PointsKeyword_3_1_0_0_ColonKeyword_3_1_0_1___or___StylesKeyword_3_1_1_0_ColonKeyword_3_1_1_1____a_ActionsKeyword_3_1_2_0_ColonKeyword_3_1_2_1__a(semanticObject, getLastNavigableState(), syntaxNodes);
+			else if(match_KPolyline_______PointsKeyword_3_1_0_0_ColonKeyword_3_1_0_1___or___StylesKeyword_3_1_1_0_ColonKeyword_3_1_1_1____a_ActionsKeyword_3_1_2_0_ColonKeyword_3_1_2_1__p.equals(syntax))
+				emit_KPolyline_______PointsKeyword_3_1_0_0_ColonKeyword_3_1_0_1___or___StylesKeyword_3_1_1_0_ColonKeyword_3_1_1_1____a_ActionsKeyword_3_1_2_0_ColonKeyword_3_1_2_1__p(semanticObject, getLastNavigableState(), syntaxNodes);
+			else if(match_KRenderingLibrary___LeftSquareBracketKeyword_2_0_RightSquareBracketKeyword_2_2__q.equals(syntax))
+				emit_KRenderingLibrary___LeftSquareBracketKeyword_2_0_RightSquareBracketKeyword_2_2__q(semanticObject, getLastNavigableState(), syntaxNodes);
+			else if(match_KShapeLayout_____PosKeyword_1_0_0_ColonKeyword_1_0_1___or___PropertiesKeyword_1_2_0_ColonKeyword_1_2_1___or___SizeKeyword_1_1_0_ColonKeyword_1_1_1____a.equals(syntax))
+				emit_KShapeLayout_____PosKeyword_1_0_0_ColonKeyword_1_0_1___or___PropertiesKeyword_1_2_0_ColonKeyword_1_2_1___or___SizeKeyword_1_1_0_ColonKeyword_1_1_1____a(semanticObject, getLastNavigableState(), syntaxNodes);
+			else if(match_KShapeLayout_______PosKeyword_1_0_0_ColonKeyword_1_0_1___or___PropertiesKeyword_1_2_0_ColonKeyword_1_2_1____a_SizeKeyword_1_1_0_ColonKeyword_1_1_1__a.equals(syntax))
+				emit_KShapeLayout_______PosKeyword_1_0_0_ColonKeyword_1_0_1___or___PropertiesKeyword_1_2_0_ColonKeyword_1_2_1____a_SizeKeyword_1_1_0_ColonKeyword_1_1_1__a(semanticObject, getLastNavigableState(), syntaxNodes);
+			else if(match_KShapeLayout_______PosKeyword_1_0_0_ColonKeyword_1_0_1___or___PropertiesKeyword_1_2_0_ColonKeyword_1_2_1____a_SizeKeyword_1_1_0_ColonKeyword_1_1_1__p.equals(syntax))
+				emit_KShapeLayout_______PosKeyword_1_0_0_ColonKeyword_1_0_1___or___PropertiesKeyword_1_2_0_ColonKeyword_1_2_1____a_SizeKeyword_1_1_0_ColonKeyword_1_1_1__p(semanticObject, getLastNavigableState(), syntaxNodes);
+			else if(match_KShapeLayout_______PosKeyword_1_0_0_ColonKeyword_1_0_1___or___SizeKeyword_1_1_0_ColonKeyword_1_1_1____a_PropertiesKeyword_1_2_0_ColonKeyword_1_2_1__a.equals(syntax))
+				emit_KShapeLayout_______PosKeyword_1_0_0_ColonKeyword_1_0_1___or___SizeKeyword_1_1_0_ColonKeyword_1_1_1____a_PropertiesKeyword_1_2_0_ColonKeyword_1_2_1__a(semanticObject, getLastNavigableState(), syntaxNodes);
+			else if(match_KShapeLayout_______PosKeyword_1_0_0_ColonKeyword_1_0_1___or___SizeKeyword_1_1_0_ColonKeyword_1_1_1____a_PropertiesKeyword_1_2_0_ColonKeyword_1_2_1__p.equals(syntax))
+				emit_KShapeLayout_______PosKeyword_1_0_0_ColonKeyword_1_0_1___or___SizeKeyword_1_1_0_ColonKeyword_1_1_1____a_PropertiesKeyword_1_2_0_ColonKeyword_1_2_1__p(semanticObject, getLastNavigableState(), syntaxNodes);
+			else if(match_KShapeLayout_______PropertiesKeyword_1_2_0_ColonKeyword_1_2_1___or___SizeKeyword_1_1_0_ColonKeyword_1_1_1____a_PosKeyword_1_0_0_ColonKeyword_1_0_1__a.equals(syntax))
+				emit_KShapeLayout_______PropertiesKeyword_1_2_0_ColonKeyword_1_2_1___or___SizeKeyword_1_1_0_ColonKeyword_1_1_1____a_PosKeyword_1_0_0_ColonKeyword_1_0_1__a(semanticObject, getLastNavigableState(), syntaxNodes);
+			else if(match_KShapeLayout_______PropertiesKeyword_1_2_0_ColonKeyword_1_2_1___or___SizeKeyword_1_1_0_ColonKeyword_1_1_1____a_PosKeyword_1_0_0_ColonKeyword_1_0_1__p.equals(syntax))
+				emit_KShapeLayout_______PropertiesKeyword_1_2_0_ColonKeyword_1_2_1___or___SizeKeyword_1_1_0_ColonKeyword_1_1_1____a_PosKeyword_1_0_0_ColonKeyword_1_0_1__p(semanticObject, getLastNavigableState(), syntaxNodes);
+			else if(match_KSimpleRendering___LeftCurlyBracketKeyword_3_0_____ActionsKeyword_3_1_1_0_ColonKeyword_3_1_1_1___or___StylesKeyword_3_1_0_0_ColonKeyword_3_1_0_1____a_RightCurlyBracketKeyword_3_2__q.equals(syntax))
+				emit_KSimpleRendering___LeftCurlyBracketKeyword_3_0_____ActionsKeyword_3_1_1_0_ColonKeyword_3_1_1_1___or___StylesKeyword_3_1_0_0_ColonKeyword_3_1_0_1____a_RightCurlyBracketKeyword_3_2__q(semanticObject, getLastNavigableState(), syntaxNodes);
+			else if(match_KSimpleRendering___LeftSquareBracketKeyword_2_0_RightSquareBracketKeyword_2_2__q.equals(syntax))
+				emit_KSimpleRendering___LeftSquareBracketKeyword_2_0_RightSquareBracketKeyword_2_2__q(semanticObject, getLastNavigableState(), syntaxNodes);
+			else if(match_KSimpleRendering_____ActionsKeyword_3_1_1_0_ColonKeyword_3_1_1_1___or___StylesKeyword_3_1_0_0_ColonKeyword_3_1_0_1____a.equals(syntax))
+				emit_KSimpleRendering_____ActionsKeyword_3_1_1_0_ColonKeyword_3_1_1_1___or___StylesKeyword_3_1_0_0_ColonKeyword_3_1_0_1____a(semanticObject, getLastNavigableState(), syntaxNodes);
+			else if(match_KSimpleRendering_____ActionsKeyword_3_1_1_0_ColonKeyword_3_1_1_1__a_StylesKeyword_3_1_0_0_ColonKeyword_3_1_0_1__a.equals(syntax))
+				emit_KSimpleRendering_____ActionsKeyword_3_1_1_0_ColonKeyword_3_1_1_1__a_StylesKeyword_3_1_0_0_ColonKeyword_3_1_0_1__a(semanticObject, getLastNavigableState(), syntaxNodes);
+			else if(match_KSimpleRendering_____ActionsKeyword_3_1_1_0_ColonKeyword_3_1_1_1__a_StylesKeyword_3_1_0_0_ColonKeyword_3_1_0_1__p.equals(syntax))
+				emit_KSimpleRendering_____ActionsKeyword_3_1_1_0_ColonKeyword_3_1_1_1__a_StylesKeyword_3_1_0_0_ColonKeyword_3_1_0_1__p(semanticObject, getLastNavigableState(), syntaxNodes);
+			else if(match_KSimpleRendering_____StylesKeyword_3_1_0_0_ColonKeyword_3_1_0_1__a_ActionsKeyword_3_1_1_0_ColonKeyword_3_1_1_1__a.equals(syntax))
+				emit_KSimpleRendering_____StylesKeyword_3_1_0_0_ColonKeyword_3_1_0_1__a_ActionsKeyword_3_1_1_0_ColonKeyword_3_1_1_1__a(semanticObject, getLastNavigableState(), syntaxNodes);
+			else if(match_KSimpleRendering_____StylesKeyword_3_1_0_0_ColonKeyword_3_1_0_1__a_ActionsKeyword_3_1_1_0_ColonKeyword_3_1_1_1__p.equals(syntax))
+				emit_KSimpleRendering_____StylesKeyword_3_1_0_0_ColonKeyword_3_1_0_1__a_ActionsKeyword_3_1_1_0_ColonKeyword_3_1_1_1__p(semanticObject, getLastNavigableState(), syntaxNodes);
+			else if(match_ParentKNode_KgraphKeyword_1_0_q.equals(syntax))
+				emit_ParentKNode_KgraphKeyword_1_0_q(semanticObject, getLastNavigableState(), syntaxNodes);
 			else acceptNodes(getLastNavigableState(), syntaxNodes);
 		}
 	}
 
 	/**
 	 * Syntax:
-	 *     ':'?
+	 *     ('{' (('actions' ':') | ('styles' ':'))* '}')?
 	 */
-	protected void emit_KArc_ColonKeyword_5_1_0_1_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
+	protected void emit_KContainerRendering___LeftCurlyBracketKeyword_3_0_____ActionsKeyword_3_1_1_0_ColonKeyword_3_1_1_1___or___StylesKeyword_3_1_0_0_ColonKeyword_3_1_0_1____a_RightCurlyBracketKeyword_3_3__q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
 		acceptNodes(transition, nodes);
 	}
 	
 	/**
 	 * Syntax:
-	 *     ':'?
+	 *     ('[' ']')?
 	 */
-	protected void emit_KArc_ColonKeyword_5_1_1_1_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
+	protected void emit_KContainerRendering___LeftSquareBracketKeyword_2_0_RightSquareBracketKeyword_2_2__q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
 		acceptNodes(transition, nodes);
 	}
 	
 	/**
 	 * Syntax:
-	 *     ':'?
+	 *     (('actions' ':') | ('styles' ':'))*
 	 */
-	protected void emit_KArc_ColonKeyword_5_1_2_1_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
+	protected void emit_KContainerRendering_____ActionsKeyword_3_1_1_0_ColonKeyword_3_1_1_1___or___StylesKeyword_3_1_0_0_ColonKeyword_3_1_0_1____a(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
 		acceptNodes(transition, nodes);
 	}
 	
 	/**
 	 * Syntax:
-	 *     ':'?
+	 *     (('actions' ':')* 'styles' ':')*
 	 */
-	protected void emit_KArc_ColonKeyword_5_1_3_1_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
+	protected void emit_KContainerRendering_____ActionsKeyword_3_1_1_0_ColonKeyword_3_1_1_1__a_StylesKeyword_3_1_0_0_ColonKeyword_3_1_0_1__a(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
 		acceptNodes(transition, nodes);
 	}
 	
 	/**
 	 * Syntax:
-	 *     ':'?
+	 *     (('actions' ':')* 'styles' ':')+
 	 */
-	protected void emit_KArc_ColonKeyword_5_1_4_1_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
+	protected void emit_KContainerRendering_____ActionsKeyword_3_1_1_0_ColonKeyword_3_1_1_1__a_StylesKeyword_3_1_0_0_ColonKeyword_3_1_0_1__p(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
 		acceptNodes(transition, nodes);
 	}
 	
 	/**
 	 * Syntax:
-	 *     ','?
+	 *     (('styles' ':')* 'actions' ':')*
 	 */
-	protected void emit_KArc_CommaKeyword_3_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
+	protected void emit_KContainerRendering_____StylesKeyword_3_1_0_0_ColonKeyword_3_1_0_1__a_ActionsKeyword_3_1_1_0_ColonKeyword_3_1_1_1__a(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
 		acceptNodes(transition, nodes);
 	}
 	
 	/**
 	 * Syntax:
-	 *     ','?
+	 *     (('styles' ':')* 'actions' ':')+
 	 */
-	protected void emit_KArc_CommaKeyword_5_1_0_3_0_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
+	protected void emit_KContainerRendering_____StylesKeyword_3_1_0_0_ColonKeyword_3_1_0_1__a_ActionsKeyword_3_1_1_0_ColonKeyword_3_1_1_1__p(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
 		acceptNodes(transition, nodes);
 	}
 	
 	/**
 	 * Syntax:
-	 *     ','?
+	 *     ('properties' ':')?
 	 */
-	protected void emit_KArc_CommaKeyword_5_1_1_3_0_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
+	protected void emit_KEdgeLayout___PropertiesKeyword_1_0_ColonKeyword_1_1__q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
 		acceptNodes(transition, nodes);
 	}
 	
 	/**
 	 * Syntax:
-	 *     ','?
+	 *     ('[' ']')?
 	 */
-	protected void emit_KArc_CommaKeyword_5_1_4_3_0_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
+	protected void emit_KIdentifier___LeftSquareBracketKeyword_1_0_RightSquareBracketKeyword_1_2__q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
 		acceptNodes(transition, nodes);
 	}
 	
 	/**
 	 * Syntax:
-	 *     ('{' '}')?
+	 *     (('properties' ':') | ('size' ':') | ('pos' ':'))*
 	 */
-	protected void emit_KArc___LeftCurlyBracketKeyword_5_0_RightCurlyBracketKeyword_5_2__q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
+	protected void emit_KNodeLayout_____PosKeyword_0_0_0_ColonKeyword_0_0_1___or___PropertiesKeyword_0_2_0_ColonKeyword_0_2_1___or___SizeKeyword_0_1_0_ColonKeyword_0_1_1____a(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
 		acceptNodes(transition, nodes);
 	}
 	
 	/**
 	 * Syntax:
-	 *     ','?
+	 *     ((('properties' ':') | ('pos' ':'))* 'size' ':')*
 	 */
-	protected void emit_KAreaPlacementData_CommaKeyword_4_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
+	protected void emit_KNodeLayout_______PosKeyword_0_0_0_ColonKeyword_0_0_1___or___PropertiesKeyword_0_2_0_ColonKeyword_0_2_1____a_SizeKeyword_0_1_0_ColonKeyword_0_1_1__a(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
 		acceptNodes(transition, nodes);
 	}
 	
 	/**
 	 * Syntax:
-	 *     ':'?
+	 *     ((('properties' ':') | ('pos' ':'))* 'size' ':')+
 	 */
-	protected void emit_KChildArea_ColonKeyword_2_1_0_1_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
+	protected void emit_KNodeLayout_______PosKeyword_0_0_0_ColonKeyword_0_0_1___or___PropertiesKeyword_0_2_0_ColonKeyword_0_2_1____a_SizeKeyword_0_1_0_ColonKeyword_0_1_1__p(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
 		acceptNodes(transition, nodes);
 	}
 	
 	/**
 	 * Syntax:
-	 *     ':'?
+	 *     ((('size' ':') | ('pos' ':'))* 'properties' ':')*
 	 */
-	protected void emit_KChildArea_ColonKeyword_2_1_1_1_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
+	protected void emit_KNodeLayout_______PosKeyword_0_0_0_ColonKeyword_0_0_1___or___SizeKeyword_0_1_0_ColonKeyword_0_1_1____a_PropertiesKeyword_0_2_0_ColonKeyword_0_2_1__a(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
 		acceptNodes(transition, nodes);
 	}
 	
 	/**
 	 * Syntax:
-	 *     ':'?
+	 *     ((('size' ':') | ('pos' ':'))* 'properties' ':')+
 	 */
-	protected void emit_KChildArea_ColonKeyword_2_1_2_1_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
+	protected void emit_KNodeLayout_______PosKeyword_0_0_0_ColonKeyword_0_0_1___or___SizeKeyword_0_1_0_ColonKeyword_0_1_1____a_PropertiesKeyword_0_2_0_ColonKeyword_0_2_1__p(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
 		acceptNodes(transition, nodes);
 	}
 	
 	/**
 	 * Syntax:
-	 *     ','?
+	 *     ((('properties' ':') | ('size' ':'))* 'pos' ':')*
 	 */
-	protected void emit_KChildArea_CommaKeyword_2_1_0_3_0_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
+	protected void emit_KNodeLayout_______PropertiesKeyword_0_2_0_ColonKeyword_0_2_1___or___SizeKeyword_0_1_0_ColonKeyword_0_1_1____a_PosKeyword_0_0_0_ColonKeyword_0_0_1__a(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
 		acceptNodes(transition, nodes);
 	}
 	
 	/**
 	 * Syntax:
-	 *     ','?
+	 *     ((('properties' ':') | ('size' ':'))* 'pos' ':')+
 	 */
-	protected void emit_KChildArea_CommaKeyword_2_1_1_3_0_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
+	protected void emit_KNodeLayout_______PropertiesKeyword_0_2_0_ColonKeyword_0_2_1___or___SizeKeyword_0_1_0_ColonKeyword_0_1_1____a_PosKeyword_0_0_0_ColonKeyword_0_0_1__p(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
 		acceptNodes(transition, nodes);
 	}
 	
 	/**
 	 * Syntax:
-	 *     ('{' '}')?
+	 *     ('{' (('points' ':') | ('actions' ':') | ('styles' ':'))* '}')?
 	 */
-	protected void emit_KChildArea___LeftCurlyBracketKeyword_2_0_RightCurlyBracketKeyword_2_2__q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
+	protected void emit_KPolyline___LeftCurlyBracketKeyword_3_0_____ActionsKeyword_3_1_2_0_ColonKeyword_3_1_2_1___or___PointsKeyword_3_1_0_0_ColonKeyword_3_1_0_1___or___StylesKeyword_3_1_1_0_ColonKeyword_3_1_1_1____a_RightCurlyBracketKeyword_3_4__q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
 		acceptNodes(transition, nodes);
 	}
 	
 	/**
 	 * Syntax:
-	 *     ':'?
+	 *     ('[' ']')?
 	 */
-	protected void emit_KCustomRendering_ColonKeyword_2_5_0_1_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
+	protected void emit_KPolyline___LeftSquareBracketKeyword_2_0_RightSquareBracketKeyword_2_2__q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
 		acceptNodes(transition, nodes);
 	}
 	
 	/**
 	 * Syntax:
-	 *     ':'?
+	 *     (('points' ':') | ('actions' ':') | ('styles' ':'))*
 	 */
-	protected void emit_KCustomRendering_ColonKeyword_2_5_1_1_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
+	protected void emit_KPolyline_____ActionsKeyword_3_1_2_0_ColonKeyword_3_1_2_1___or___PointsKeyword_3_1_0_0_ColonKeyword_3_1_0_1___or___StylesKeyword_3_1_1_0_ColonKeyword_3_1_1_1____a(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
 		acceptNodes(transition, nodes);
 	}
 	
 	/**
 	 * Syntax:
-	 *     ':'?
+	 *     ((('points' ':') | ('actions' ':'))* 'styles' ':')*
 	 */
-	protected void emit_KCustomRendering_ColonKeyword_2_5_2_1_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
+	protected void emit_KPolyline_______ActionsKeyword_3_1_2_0_ColonKeyword_3_1_2_1___or___PointsKeyword_3_1_0_0_ColonKeyword_3_1_0_1____a_StylesKeyword_3_1_1_0_ColonKeyword_3_1_1_1__a(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
 		acceptNodes(transition, nodes);
 	}
 	
 	/**
 	 * Syntax:
-	 *     ':'?
+	 *     ((('points' ':') | ('actions' ':'))* 'styles' ':')+
 	 */
-	protected void emit_KCustomRendering_ColonKeyword_2_5_3_1_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
+	protected void emit_KPolyline_______ActionsKeyword_3_1_2_0_ColonKeyword_3_1_2_1___or___PointsKeyword_3_1_0_0_ColonKeyword_3_1_0_1____a_StylesKeyword_3_1_1_0_ColonKeyword_3_1_1_1__p(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
 		acceptNodes(transition, nodes);
 	}
 	
 	/**
 	 * Syntax:
-	 *     ':'?
+	 *     ((('actions' ':') | ('styles' ':'))* 'points' ':')+
 	 */
-	protected void emit_KCustomRendering_ColonKeyword_2_5_4_1_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
+	protected void emit_KPolyline_______ActionsKeyword_3_1_2_0_ColonKeyword_3_1_2_1___or___StylesKeyword_3_1_1_0_ColonKeyword_3_1_1_1____a_PointsKeyword_3_1_0_0_ColonKeyword_3_1_0_1__p(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
 		acceptNodes(transition, nodes);
 	}
 	
 	/**
 	 * Syntax:
-	 *     ','?
+	 *     ((('points' ':') | ('styles' ':'))* 'actions' ':')*
 	 */
-	protected void emit_KCustomRendering_CommaKeyword_2_5_0_3_0_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
+	protected void emit_KPolyline_______PointsKeyword_3_1_0_0_ColonKeyword_3_1_0_1___or___StylesKeyword_3_1_1_0_ColonKeyword_3_1_1_1____a_ActionsKeyword_3_1_2_0_ColonKeyword_3_1_2_1__a(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
 		acceptNodes(transition, nodes);
 	}
 	
 	/**
 	 * Syntax:
-	 *     ','?
+	 *     ((('points' ':') | ('styles' ':'))* 'actions' ':')+
 	 */
-	protected void emit_KCustomRendering_CommaKeyword_2_5_1_3_0_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
+	protected void emit_KPolyline_______PointsKeyword_3_1_0_0_ColonKeyword_3_1_0_1___or___StylesKeyword_3_1_1_0_ColonKeyword_3_1_1_1____a_ActionsKeyword_3_1_2_0_ColonKeyword_3_1_2_1__p(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
 		acceptNodes(transition, nodes);
 	}
 	
 	/**
 	 * Syntax:
-	 *     ','?
+	 *     ('[' ']')?
 	 */
-	protected void emit_KCustomRendering_CommaKeyword_2_5_4_3_0_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
+	protected void emit_KRenderingLibrary___LeftSquareBracketKeyword_2_0_RightSquareBracketKeyword_2_2__q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
 		acceptNodes(transition, nodes);
 	}
 	
 	/**
 	 * Syntax:
-	 *     ':'?
+	 *     (('pos' ':') | ('properties' ':') | ('size' ':'))*
 	 */
-	protected void emit_KEdgeLayout_ColonKeyword_3_1_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
+	protected void emit_KShapeLayout_____PosKeyword_1_0_0_ColonKeyword_1_0_1___or___PropertiesKeyword_1_2_0_ColonKeyword_1_2_1___or___SizeKeyword_1_1_0_ColonKeyword_1_1_1____a(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
 		acceptNodes(transition, nodes);
 	}
 	
 	/**
 	 * Syntax:
-	 *     ':'?
+	 *     ((('pos' ':') | ('properties' ':'))* 'size' ':')*
 	 */
-	protected void emit_KEdgeLayout_ColonKeyword_4_1_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
+	protected void emit_KShapeLayout_______PosKeyword_1_0_0_ColonKeyword_1_0_1___or___PropertiesKeyword_1_2_0_ColonKeyword_1_2_1____a_SizeKeyword_1_1_0_ColonKeyword_1_1_1__a(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
 		acceptNodes(transition, nodes);
 	}
 	
 	/**
 	 * Syntax:
-	 *     ':'?
+	 *     ((('pos' ':') | ('properties' ':'))* 'size' ':')+
 	 */
-	protected void emit_KEdgeLayout_ColonKeyword_5_1_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
+	protected void emit_KShapeLayout_______PosKeyword_1_0_0_ColonKeyword_1_0_1___or___PropertiesKeyword_1_2_0_ColonKeyword_1_2_1____a_SizeKeyword_1_1_0_ColonKeyword_1_1_1__p(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
 		acceptNodes(transition, nodes);
 	}
 	
 	/**
 	 * Syntax:
-	 *     ':'?
+	 *     ((('pos' ':') | ('size' ':'))* 'properties' ':')*
 	 */
-	protected void emit_KEdgeLayout_ColonKeyword_6_1_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
+	protected void emit_KShapeLayout_______PosKeyword_1_0_0_ColonKeyword_1_0_1___or___SizeKeyword_1_1_0_ColonKeyword_1_1_1____a_PropertiesKeyword_1_2_0_ColonKeyword_1_2_1__a(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
 		acceptNodes(transition, nodes);
 	}
 	
 	/**
 	 * Syntax:
-	 *     ','?
+	 *     ((('pos' ':') | ('size' ':'))* 'properties' ':')+
 	 */
-	protected void emit_KEdgeLayout_CommaKeyword_5_3_0_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
+	protected void emit_KShapeLayout_______PosKeyword_1_0_0_ColonKeyword_1_0_1___or___SizeKeyword_1_1_0_ColonKeyword_1_1_1____a_PropertiesKeyword_1_2_0_ColonKeyword_1_2_1__p(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
 		acceptNodes(transition, nodes);
 	}
 	
 	/**
 	 * Syntax:
-	 *     ','?
+	 *     ((('properties' ':') | ('size' ':'))* 'pos' ':')*
 	 */
-	protected void emit_KEdgeLayout_CommaKeyword_6_3_0_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
+	protected void emit_KShapeLayout_______PropertiesKeyword_1_2_0_ColonKeyword_1_2_1___or___SizeKeyword_1_1_0_ColonKeyword_1_1_1____a_PosKeyword_1_0_0_ColonKeyword_1_0_1__a(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
 		acceptNodes(transition, nodes);
 	}
 	
 	/**
 	 * Syntax:
-	 *     ':'?
+	 *     ((('properties' ':') | ('size' ':'))* 'pos' ':')+
 	 */
-	protected void emit_KEdge_ColonKeyword_5_1_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
+	protected void emit_KShapeLayout_______PropertiesKeyword_1_2_0_ColonKeyword_1_2_1___or___SizeKeyword_1_1_0_ColonKeyword_1_1_1____a_PosKeyword_1_0_0_ColonKeyword_1_0_1__p(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
 		acceptNodes(transition, nodes);
 	}
 	
 	/**
 	 * Syntax:
-	 *     ':'?
+	 *     ('{' (('actions' ':') | ('styles' ':'))* '}')?
 	 */
-	protected void emit_KEdge_ColonKeyword_6_1_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
+	protected void emit_KSimpleRendering___LeftCurlyBracketKeyword_3_0_____ActionsKeyword_3_1_1_0_ColonKeyword_3_1_1_1___or___StylesKeyword_3_1_0_0_ColonKeyword_3_1_0_1____a_RightCurlyBracketKeyword_3_2__q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
 		acceptNodes(transition, nodes);
 	}
 	
 	/**
 	 * Syntax:
-	 *     ','?
+	 *     ('[' ']')?
 	 */
-	protected void emit_KEdge_CommaKeyword_5_3_0_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
+	protected void emit_KSimpleRendering___LeftSquareBracketKeyword_2_0_RightSquareBracketKeyword_2_2__q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
 		acceptNodes(transition, nodes);
 	}
 	
 	/**
 	 * Syntax:
-	 *     ','?
+	 *     (('actions' ':') | ('styles' ':'))*
 	 */
-	protected void emit_KEdge_CommaKeyword_6_3_0_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
+	protected void emit_KSimpleRendering_____ActionsKeyword_3_1_1_0_ColonKeyword_3_1_1_1___or___StylesKeyword_3_1_0_0_ColonKeyword_3_1_0_1____a(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
 		acceptNodes(transition, nodes);
 	}
 	
 	/**
 	 * Syntax:
-	 *     ':'?
+	 *     (('actions' ':')* 'styles' ':')*
 	 */
-	protected void emit_KEllipse_ColonKeyword_2_1_0_1_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
+	protected void emit_KSimpleRendering_____ActionsKeyword_3_1_1_0_ColonKeyword_3_1_1_1__a_StylesKeyword_3_1_0_0_ColonKeyword_3_1_0_1__a(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
 		acceptNodes(transition, nodes);
 	}
 	
 	/**
 	 * Syntax:
-	 *     ':'?
+	 *     (('actions' ':')* 'styles' ':')+
 	 */
-	protected void emit_KEllipse_ColonKeyword_2_1_1_1_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
+	protected void emit_KSimpleRendering_____ActionsKeyword_3_1_1_0_ColonKeyword_3_1_1_1__a_StylesKeyword_3_1_0_0_ColonKeyword_3_1_0_1__p(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
 		acceptNodes(transition, nodes);
 	}
 	
 	/**
 	 * Syntax:
-	 *     ':'?
+	 *     (('styles' ':')* 'actions' ':')*
 	 */
-	protected void emit_KEllipse_ColonKeyword_2_1_2_1_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
+	protected void emit_KSimpleRendering_____StylesKeyword_3_1_0_0_ColonKeyword_3_1_0_1__a_ActionsKeyword_3_1_1_0_ColonKeyword_3_1_1_1__a(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
 		acceptNodes(transition, nodes);
 	}
 	
 	/**
 	 * Syntax:
-	 *     ':'?
+	 *     (('styles' ':')* 'actions' ':')+
 	 */
-	protected void emit_KEllipse_ColonKeyword_2_1_3_1_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
+	protected void emit_KSimpleRendering_____StylesKeyword_3_1_0_0_ColonKeyword_3_1_0_1__a_ActionsKeyword_3_1_1_0_ColonKeyword_3_1_1_1__p(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
 		acceptNodes(transition, nodes);
 	}
 	
 	/**
 	 * Syntax:
-	 *     ':'?
+	 *     'kgraph'?
 	 */
-	protected void emit_KEllipse_ColonKeyword_2_1_4_1_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
-		acceptNodes(transition, nodes);
-	}
-	
-	/**
-	 * Syntax:
-	 *     ','?
-	 */
-	protected void emit_KEllipse_CommaKeyword_2_1_0_3_0_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
-		acceptNodes(transition, nodes);
-	}
-	
-	/**
-	 * Syntax:
-	 *     ','?
-	 */
-	protected void emit_KEllipse_CommaKeyword_2_1_1_3_0_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
-		acceptNodes(transition, nodes);
-	}
-	
-	/**
-	 * Syntax:
-	 *     ','?
-	 */
-	protected void emit_KEllipse_CommaKeyword_2_1_4_3_0_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
-		acceptNodes(transition, nodes);
-	}
-	
-	/**
-	 * Syntax:
-	 *     ('{' '}')?
-	 */
-	protected void emit_KEllipse___LeftCurlyBracketKeyword_2_0_RightCurlyBracketKeyword_2_2__q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
-		acceptNodes(transition, nodes);
-	}
-	
-	/**
-	 * Syntax:
-	 *     ':'?
-	 */
-	protected void emit_KGraphDataImpl_ColonKeyword_3_1_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
-		acceptNodes(transition, nodes);
-	}
-	
-	/**
-	 * Syntax:
-	 *     ','?
-	 */
-	protected void emit_KGridPlacement_CommaKeyword_3_1_0_2_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
-		acceptNodes(transition, nodes);
-	}
-	
-	/**
-	 * Syntax:
-	 *     ('{' '}')?
-	 */
-	protected void emit_KGridPlacement___LeftCurlyBracketKeyword_3_0_RightCurlyBracketKeyword_3_2__q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
-		acceptNodes(transition, nodes);
-	}
-	
-	/**
-	 * Syntax:
-	 *     ':'?
-	 */
-	protected void emit_KImage_ColonKeyword_4_1_0_1_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
-		acceptNodes(transition, nodes);
-	}
-	
-	/**
-	 * Syntax:
-	 *     ':'?
-	 */
-	protected void emit_KImage_ColonKeyword_4_1_1_1_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
-		acceptNodes(transition, nodes);
-	}
-	
-	/**
-	 * Syntax:
-	 *     ':'?
-	 */
-	protected void emit_KImage_ColonKeyword_4_1_2_1_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
-		acceptNodes(transition, nodes);
-	}
-	
-	/**
-	 * Syntax:
-	 *     ':'?
-	 */
-	protected void emit_KImage_ColonKeyword_4_1_3_1_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
-		acceptNodes(transition, nodes);
-	}
-	
-	/**
-	 * Syntax:
-	 *     ':'?
-	 */
-	protected void emit_KImage_ColonKeyword_4_1_4_1_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
-		acceptNodes(transition, nodes);
-	}
-	
-	/**
-	 * Syntax:
-	 *     ','?
-	 */
-	protected void emit_KImage_CommaKeyword_4_1_0_3_0_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
-		acceptNodes(transition, nodes);
-	}
-	
-	/**
-	 * Syntax:
-	 *     ','?
-	 */
-	protected void emit_KImage_CommaKeyword_4_1_1_3_0_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
-		acceptNodes(transition, nodes);
-	}
-	
-	/**
-	 * Syntax:
-	 *     ','?
-	 */
-	protected void emit_KImage_CommaKeyword_4_1_4_3_0_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
-		acceptNodes(transition, nodes);
-	}
-	
-	/**
-	 * Syntax:
-	 *     ('{' '}')?
-	 */
-	protected void emit_KImage___LeftCurlyBracketKeyword_4_0_RightCurlyBracketKeyword_4_2__q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
-		acceptNodes(transition, nodes);
-	}
-	
-	/**
-	 * Syntax:
-	 *     ':'?
-	 */
-	protected void emit_KLabel_ColonKeyword_3_1_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
-		acceptNodes(transition, nodes);
-	}
-	
-	/**
-	 * Syntax:
-	 *     ','?
-	 */
-	protected void emit_KLabel_CommaKeyword_3_3_0_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
-		acceptNodes(transition, nodes);
-	}
-	
-	/**
-	 * Syntax:
-	 *     ','?
-	 */
-	protected void emit_KLineStyle_CommaKeyword_4_3_0_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
-		acceptNodes(transition, nodes);
-	}
-	
-	/**
-	 * Syntax:
-	 *     ':'?
-	 */
-	protected void emit_KNode_ColonKeyword_3_1_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
-		acceptNodes(transition, nodes);
-	}
-	
-	/**
-	 * Syntax:
-	 *     ':'?
-	 */
-	protected void emit_KNode_ColonKeyword_4_1_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
-		acceptNodes(transition, nodes);
-	}
-	
-	/**
-	 * Syntax:
-	 *     ':'?
-	 */
-	protected void emit_KNode_ColonKeyword_5_1_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
-		acceptNodes(transition, nodes);
-	}
-	
-	/**
-	 * Syntax:
-	 *     ':'?
-	 */
-	protected void emit_KNode_ColonKeyword_6_1_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
-		acceptNodes(transition, nodes);
-	}
-	
-	/**
-	 * Syntax:
-	 *     ','?
-	 */
-	protected void emit_KNode_CommaKeyword_3_3_0_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
-		acceptNodes(transition, nodes);
-	}
-	
-	/**
-	 * Syntax:
-	 *     ','?
-	 */
-	protected void emit_KNode_CommaKeyword_4_3_0_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
-		acceptNodes(transition, nodes);
-	}
-	
-	/**
-	 * Syntax:
-	 *     ','?
-	 */
-	protected void emit_KNode_CommaKeyword_5_3_0_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
-		acceptNodes(transition, nodes);
-	}
-	
-	/**
-	 * Syntax:
-	 *     ','?
-	 */
-	protected void emit_KNode_CommaKeyword_6_3_0_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
-		acceptNodes(transition, nodes);
-	}
-	
-	/**
-	 * Syntax:
-	 *     ','?
-	 */
-	protected void emit_KNode_CommaKeyword_8_1_0_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
-		acceptNodes(transition, nodes);
-	}
-	
-	/**
-	 * Syntax:
-	 *     '}'*
-	 */
-	protected void emit_KPointPlacementData_RightCurlyBracketKeyword_6_1_a(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
-		acceptNodes(transition, nodes);
-	}
-	
-	/**
-	 * Syntax:
-	 *     '}'+
-	 */
-	protected void emit_KPointPlacementData_RightCurlyBracketKeyword_6_1_p(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
-		acceptNodes(transition, nodes);
-	}
-	
-	/**
-	 * Syntax:
-	 *     ':'?
-	 */
-	protected void emit_KPolygon_ColonKeyword_2_1_0_1_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
-		acceptNodes(transition, nodes);
-	}
-	
-	/**
-	 * Syntax:
-	 *     ':'?
-	 */
-	protected void emit_KPolygon_ColonKeyword_2_1_1_1_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
-		acceptNodes(transition, nodes);
-	}
-	
-	/**
-	 * Syntax:
-	 *     ':'?
-	 */
-	protected void emit_KPolygon_ColonKeyword_2_1_2_1_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
-		acceptNodes(transition, nodes);
-	}
-	
-	/**
-	 * Syntax:
-	 *     ':'?
-	 */
-	protected void emit_KPolygon_ColonKeyword_2_1_3_1_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
-		acceptNodes(transition, nodes);
-	}
-	
-	/**
-	 * Syntax:
-	 *     ':'?
-	 */
-	protected void emit_KPolygon_ColonKeyword_2_1_4_1_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
-		acceptNodes(transition, nodes);
-	}
-	
-	/**
-	 * Syntax:
-	 *     ':'?
-	 */
-	protected void emit_KPolygon_ColonKeyword_2_1_5_1_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
-		acceptNodes(transition, nodes);
-	}
-	
-	/**
-	 * Syntax:
-	 *     ','?
-	 */
-	protected void emit_KPolygon_CommaKeyword_2_1_0_3_0_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
-		acceptNodes(transition, nodes);
-	}
-	
-	/**
-	 * Syntax:
-	 *     ','?
-	 */
-	protected void emit_KPolygon_CommaKeyword_2_1_1_3_0_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
-		acceptNodes(transition, nodes);
-	}
-	
-	/**
-	 * Syntax:
-	 *     ','?
-	 */
-	protected void emit_KPolygon_CommaKeyword_2_1_2_3_0_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
-		acceptNodes(transition, nodes);
-	}
-	
-	/**
-	 * Syntax:
-	 *     ','?
-	 */
-	protected void emit_KPolygon_CommaKeyword_2_1_5_3_0_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
-		acceptNodes(transition, nodes);
-	}
-	
-	/**
-	 * Syntax:
-	 *     ('{' '}')?
-	 */
-	protected void emit_KPolygon___LeftCurlyBracketKeyword_2_0_RightCurlyBracketKeyword_2_2__q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
-		acceptNodes(transition, nodes);
-	}
-	
-	/**
-	 * Syntax:
-	 *     ':'?
-	 */
-	protected void emit_KPolyline_Impl_ColonKeyword_2_1_0_1_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
-		acceptNodes(transition, nodes);
-	}
-	
-	/**
-	 * Syntax:
-	 *     ':'?
-	 */
-	protected void emit_KPolyline_Impl_ColonKeyword_2_1_1_1_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
-		acceptNodes(transition, nodes);
-	}
-	
-	/**
-	 * Syntax:
-	 *     ':'?
-	 */
-	protected void emit_KPolyline_Impl_ColonKeyword_2_1_2_1_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
-		acceptNodes(transition, nodes);
-	}
-	
-	/**
-	 * Syntax:
-	 *     ':'?
-	 */
-	protected void emit_KPolyline_Impl_ColonKeyword_2_1_3_1_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
-		acceptNodes(transition, nodes);
-	}
-	
-	/**
-	 * Syntax:
-	 *     ':'?
-	 */
-	protected void emit_KPolyline_Impl_ColonKeyword_2_1_4_1_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
-		acceptNodes(transition, nodes);
-	}
-	
-	/**
-	 * Syntax:
-	 *     ':'?
-	 */
-	protected void emit_KPolyline_Impl_ColonKeyword_2_1_5_1_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
-		acceptNodes(transition, nodes);
-	}
-	
-	/**
-	 * Syntax:
-	 *     ','?
-	 */
-	protected void emit_KPolyline_Impl_CommaKeyword_2_1_0_3_0_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
-		acceptNodes(transition, nodes);
-	}
-	
-	/**
-	 * Syntax:
-	 *     ','?
-	 */
-	protected void emit_KPolyline_Impl_CommaKeyword_2_1_1_3_0_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
-		acceptNodes(transition, nodes);
-	}
-	
-	/**
-	 * Syntax:
-	 *     ','?
-	 */
-	protected void emit_KPolyline_Impl_CommaKeyword_2_1_2_3_0_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
-		acceptNodes(transition, nodes);
-	}
-	
-	/**
-	 * Syntax:
-	 *     ','?
-	 */
-	protected void emit_KPolyline_Impl_CommaKeyword_2_1_5_3_0_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
-		acceptNodes(transition, nodes);
-	}
-	
-	/**
-	 * Syntax:
-	 *     ('{' '}')?
-	 */
-	protected void emit_KPolyline_Impl___LeftCurlyBracketKeyword_2_0_RightCurlyBracketKeyword_2_2__q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
-		acceptNodes(transition, nodes);
-	}
-	
-	/**
-	 * Syntax:
-	 *     ':'?
-	 */
-	protected void emit_KPort_ColonKeyword_3_1_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
-		acceptNodes(transition, nodes);
-	}
-	
-	/**
-	 * Syntax:
-	 *     ':'?
-	 */
-	protected void emit_KPort_ColonKeyword_4_1_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
-		acceptNodes(transition, nodes);
-	}
-	
-	/**
-	 * Syntax:
-	 *     ':'?
-	 */
-	protected void emit_KPort_ColonKeyword_5_1_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
-		acceptNodes(transition, nodes);
-	}
-	
-	/**
-	 * Syntax:
-	 *     ','?
-	 */
-	protected void emit_KPort_CommaKeyword_3_3_0_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
-		acceptNodes(transition, nodes);
-	}
-	
-	/**
-	 * Syntax:
-	 *     ','?
-	 */
-	protected void emit_KPort_CommaKeyword_4_3_0_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
-		acceptNodes(transition, nodes);
-	}
-	
-	/**
-	 * Syntax:
-	 *     ','?
-	 */
-	protected void emit_KPort_CommaKeyword_5_3_0_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
-		acceptNodes(transition, nodes);
-	}
-	
-	/**
-	 * Syntax:
-	 *     ':'?
-	 */
-	protected void emit_KRectangle_ColonKeyword_2_1_0_1_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
-		acceptNodes(transition, nodes);
-	}
-	
-	/**
-	 * Syntax:
-	 *     ':'?
-	 */
-	protected void emit_KRectangle_ColonKeyword_2_1_1_1_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
-		acceptNodes(transition, nodes);
-	}
-	
-	/**
-	 * Syntax:
-	 *     ':'?
-	 */
-	protected void emit_KRectangle_ColonKeyword_2_1_2_1_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
-		acceptNodes(transition, nodes);
-	}
-	
-	/**
-	 * Syntax:
-	 *     ':'?
-	 */
-	protected void emit_KRectangle_ColonKeyword_2_1_3_1_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
-		acceptNodes(transition, nodes);
-	}
-	
-	/**
-	 * Syntax:
-	 *     ':'?
-	 */
-	protected void emit_KRectangle_ColonKeyword_2_1_4_1_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
-		acceptNodes(transition, nodes);
-	}
-	
-	/**
-	 * Syntax:
-	 *     ','?
-	 */
-	protected void emit_KRectangle_CommaKeyword_2_1_0_3_0_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
-		acceptNodes(transition, nodes);
-	}
-	
-	/**
-	 * Syntax:
-	 *     ','?
-	 */
-	protected void emit_KRectangle_CommaKeyword_2_1_1_3_0_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
-		acceptNodes(transition, nodes);
-	}
-	
-	/**
-	 * Syntax:
-	 *     ','?
-	 */
-	protected void emit_KRectangle_CommaKeyword_2_1_4_3_0_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
-		acceptNodes(transition, nodes);
-	}
-	
-	/**
-	 * Syntax:
-	 *     ('{' '}')?
-	 */
-	protected void emit_KRectangle___LeftCurlyBracketKeyword_2_0_RightCurlyBracketKeyword_2_2__q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
-		acceptNodes(transition, nodes);
-	}
-	
-	/**
-	 * Syntax:
-	 *     ','?
-	 */
-	protected void emit_KRenderingLibrary_CommaKeyword_3_1_0_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
-		acceptNodes(transition, nodes);
-	}
-	
-	/**
-	 * Syntax:
-	 *     ':'?
-	 */
-	protected void emit_KRenderingRef_ColonKeyword_3_1_0_1_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
-		acceptNodes(transition, nodes);
-	}
-	
-	/**
-	 * Syntax:
-	 *     ':'?
-	 */
-	protected void emit_KRenderingRef_ColonKeyword_3_1_1_1_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
-		acceptNodes(transition, nodes);
-	}
-	
-	/**
-	 * Syntax:
-	 *     ','?
-	 */
-	protected void emit_KRenderingRef_CommaKeyword_3_1_0_3_0_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
-		acceptNodes(transition, nodes);
-	}
-	
-	/**
-	 * Syntax:
-	 *     ('{' '}')?
-	 */
-	protected void emit_KRenderingRef___LeftCurlyBracketKeyword_3_0_RightCurlyBracketKeyword_3_2__q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
-		acceptNodes(transition, nodes);
-	}
-	
-	/**
-	 * Syntax:
-	 *     ':'?
-	 */
-	protected void emit_KRoundedBendsPolyline_ColonKeyword_3_1_0_1_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
-		acceptNodes(transition, nodes);
-	}
-	
-	/**
-	 * Syntax:
-	 *     ':'?
-	 */
-	protected void emit_KRoundedBendsPolyline_ColonKeyword_3_1_1_1_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
-		acceptNodes(transition, nodes);
-	}
-	
-	/**
-	 * Syntax:
-	 *     ':'?
-	 */
-	protected void emit_KRoundedBendsPolyline_ColonKeyword_3_1_2_1_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
-		acceptNodes(transition, nodes);
-	}
-	
-	/**
-	 * Syntax:
-	 *     ':'?
-	 */
-	protected void emit_KRoundedBendsPolyline_ColonKeyword_3_1_3_1_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
-		acceptNodes(transition, nodes);
-	}
-	
-	/**
-	 * Syntax:
-	 *     ':'?
-	 */
-	protected void emit_KRoundedBendsPolyline_ColonKeyword_3_1_4_1_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
-		acceptNodes(transition, nodes);
-	}
-	
-	/**
-	 * Syntax:
-	 *     ','?
-	 */
-	protected void emit_KRoundedBendsPolyline_CommaKeyword_3_1_0_3_0_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
-		acceptNodes(transition, nodes);
-	}
-	
-	/**
-	 * Syntax:
-	 *     ','?
-	 */
-	protected void emit_KRoundedBendsPolyline_CommaKeyword_3_1_1_3_0_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
-		acceptNodes(transition, nodes);
-	}
-	
-	/**
-	 * Syntax:
-	 *     ','?
-	 */
-	protected void emit_KRoundedBendsPolyline_CommaKeyword_3_1_4_3_0_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
-		acceptNodes(transition, nodes);
-	}
-	
-	/**
-	 * Syntax:
-	 *     ('{' '}')?
-	 */
-	protected void emit_KRoundedBendsPolyline___LeftCurlyBracketKeyword_3_0_RightCurlyBracketKeyword_3_2__q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
-		acceptNodes(transition, nodes);
-	}
-	
-	/**
-	 * Syntax:
-	 *     ':'?
-	 */
-	protected void emit_KRoundedRectangle_ColonKeyword_5_1_0_1_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
-		acceptNodes(transition, nodes);
-	}
-	
-	/**
-	 * Syntax:
-	 *     ':'?
-	 */
-	protected void emit_KRoundedRectangle_ColonKeyword_5_1_1_1_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
-		acceptNodes(transition, nodes);
-	}
-	
-	/**
-	 * Syntax:
-	 *     ':'?
-	 */
-	protected void emit_KRoundedRectangle_ColonKeyword_5_1_2_1_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
-		acceptNodes(transition, nodes);
-	}
-	
-	/**
-	 * Syntax:
-	 *     ':'?
-	 */
-	protected void emit_KRoundedRectangle_ColonKeyword_5_1_3_1_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
-		acceptNodes(transition, nodes);
-	}
-	
-	/**
-	 * Syntax:
-	 *     ':'?
-	 */
-	protected void emit_KRoundedRectangle_ColonKeyword_5_1_4_1_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
-		acceptNodes(transition, nodes);
-	}
-	
-	/**
-	 * Syntax:
-	 *     ','?
-	 */
-	protected void emit_KRoundedRectangle_CommaKeyword_3_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
-		acceptNodes(transition, nodes);
-	}
-	
-	/**
-	 * Syntax:
-	 *     ','?
-	 */
-	protected void emit_KRoundedRectangle_CommaKeyword_5_1_0_3_0_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
-		acceptNodes(transition, nodes);
-	}
-	
-	/**
-	 * Syntax:
-	 *     ','?
-	 */
-	protected void emit_KRoundedRectangle_CommaKeyword_5_1_1_3_0_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
-		acceptNodes(transition, nodes);
-	}
-	
-	/**
-	 * Syntax:
-	 *     ','?
-	 */
-	protected void emit_KRoundedRectangle_CommaKeyword_5_1_4_3_0_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
-		acceptNodes(transition, nodes);
-	}
-	
-	/**
-	 * Syntax:
-	 *     ('{' '}')?
-	 */
-	protected void emit_KRoundedRectangle___LeftCurlyBracketKeyword_5_0_RightCurlyBracketKeyword_5_2__q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
-		acceptNodes(transition, nodes);
-	}
-	
-	/**
-	 * Syntax:
-	 *     ':'?
-	 */
-	protected void emit_KShapeLayout_ColonKeyword_8_1_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
-		acceptNodes(transition, nodes);
-	}
-	
-	/**
-	 * Syntax:
-	 *     ','?
-	 */
-	protected void emit_KShapeLayout_CommaKeyword_8_3_0_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
-		acceptNodes(transition, nodes);
-	}
-	
-	/**
-	 * Syntax:
-	 *     ':'?
-	 */
-	protected void emit_KSpline_ColonKeyword_2_1_0_1_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
-		acceptNodes(transition, nodes);
-	}
-	
-	/**
-	 * Syntax:
-	 *     ':'?
-	 */
-	protected void emit_KSpline_ColonKeyword_2_1_1_1_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
-		acceptNodes(transition, nodes);
-	}
-	
-	/**
-	 * Syntax:
-	 *     ':'?
-	 */
-	protected void emit_KSpline_ColonKeyword_2_1_2_1_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
-		acceptNodes(transition, nodes);
-	}
-	
-	/**
-	 * Syntax:
-	 *     ':'?
-	 */
-	protected void emit_KSpline_ColonKeyword_2_1_3_1_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
-		acceptNodes(transition, nodes);
-	}
-	
-	/**
-	 * Syntax:
-	 *     ':'?
-	 */
-	protected void emit_KSpline_ColonKeyword_2_1_4_1_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
-		acceptNodes(transition, nodes);
-	}
-	
-	/**
-	 * Syntax:
-	 *     ','?
-	 */
-	protected void emit_KSpline_CommaKeyword_2_1_0_3_0_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
-		acceptNodes(transition, nodes);
-	}
-	
-	/**
-	 * Syntax:
-	 *     ','?
-	 */
-	protected void emit_KSpline_CommaKeyword_2_1_1_3_0_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
-		acceptNodes(transition, nodes);
-	}
-	
-	/**
-	 * Syntax:
-	 *     ','?
-	 */
-	protected void emit_KSpline_CommaKeyword_2_1_4_3_0_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
-		acceptNodes(transition, nodes);
-	}
-	
-	/**
-	 * Syntax:
-	 *     ('{' '}')?
-	 */
-	protected void emit_KSpline___LeftCurlyBracketKeyword_2_0_RightCurlyBracketKeyword_2_2__q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
-		acceptNodes(transition, nodes);
-	}
-	
-	/**
-	 * Syntax:
-	 *     ':'?
-	 */
-	protected void emit_KText_ColonKeyword_3_1_0_1_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
-		acceptNodes(transition, nodes);
-	}
-	
-	/**
-	 * Syntax:
-	 *     ':'?
-	 */
-	protected void emit_KText_ColonKeyword_3_1_1_1_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
-		acceptNodes(transition, nodes);
-	}
-	
-	/**
-	 * Syntax:
-	 *     ':'?
-	 */
-	protected void emit_KText_ColonKeyword_3_1_2_1_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
-		acceptNodes(transition, nodes);
-	}
-	
-	/**
-	 * Syntax:
-	 *     ':'?
-	 */
-	protected void emit_KText_ColonKeyword_3_1_3_1_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
-		acceptNodes(transition, nodes);
-	}
-	
-	/**
-	 * Syntax:
-	 *     ','?
-	 */
-	protected void emit_KText_CommaKeyword_3_1_0_3_0_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
-		acceptNodes(transition, nodes);
-	}
-	
-	/**
-	 * Syntax:
-	 *     ','?
-	 */
-	protected void emit_KText_CommaKeyword_3_1_1_3_0_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
-		acceptNodes(transition, nodes);
-	}
-	
-	/**
-	 * Syntax:
-	 *     ','?
-	 */
-	protected void emit_KText_CommaKeyword_3_1_3_3_0_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
-		acceptNodes(transition, nodes);
-	}
-	
-	/**
-	 * Syntax:
-	 *     ('{' '}')?
-	 */
-	protected void emit_KText___LeftCurlyBracketKeyword_3_0_RightCurlyBracketKeyword_3_2__q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
+	protected void emit_ParentKNode_KgraphKeyword_1_0_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
 		acceptNodes(transition, nodes);
 	}
 	

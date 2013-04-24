@@ -14,8 +14,8 @@ public class AbstractKGraphJavaValidator extends org.eclipse.xtext.validation.Ab
 	protected List<EPackage> getEPackages() {
 	    List<EPackage> result = new ArrayList<EPackage>();
 	    result.add(EPackage.Registry.INSTANCE.getEPackage("http://kieler.cs.cau.de/KGraph"));
-	    result.add(EPackage.Registry.INSTANCE.getEPackage("http://kieler.cs.cau.de/KRendering"));
 	    result.add(EPackage.Registry.INSTANCE.getEPackage("http://kieler.cs.cau.de/KLayoutData"));
+	    result.add(EPackage.Registry.INSTANCE.getEPackage("http://kieler.cs.cau.de/KRendering"));
 		return result;
 	}
 

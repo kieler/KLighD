@@ -1,111 +1,418 @@
-/*
- * KIELER - Kiel Integrated Environment for Layout Eclipse RichClient
- * 
- * http://www.informatik.uni-kiel.de/rtsys/kieler/
- * 
- * Copyright 2012 by
- * + Christian-Albrechts-University of Kiel
- *   + Department of Computer Science
- *     + Real-Time and Embedded Systems Group
- * 
- * This code is provided under the terms of the Eclipse Public License (EPL).
- * See the file epl-v10.html for the license text.
- */
-grammar de.cau.cs.kieler.core.kgraph.text.KGraph with de.cau.cs.kieler.core.kgraph.text.krendering.KRendering 
+grammar de.cau.cs.kieler.core.kgraph.text.KGraph
+hidden(WS, ML_COMMENT, SL_COMMENT)
 
+import "http://www.eclipse.org/emf/2002/Ecore" as ecore
 import "http://kieler.cs.cau.de/KGraph"
+import "http://kieler.cs.cau.de/KRendering"
+import "http://kieler.cs.cau.de/KLayoutData"
+
+
+//----------------- KGraph -----------------
+
+ParentKNode returns KNode:
+    {KNode}
+    ('kgraph' (data+=KIdentifier)?)?
+    data+=KNodeLayout
+    (labels+=KLabel | children+=KNode | ports+=KPort | outgoingEdges+=KEdge
+    	| data+=KRendering | data+=KRenderingLibrary)*;
 
 KNode returns KNode:
-//    {KNode}
-//    'KNode'
-//    '{'
-//        ('incomingEdges' '(' incomingEdges+=[KEdge|EString] ( "," incomingEdges+=[KEdge|EString])* ')' )?
-//        ('data' '{' data+=KGraphData ( "," data+=KGraphData)* '}' )?
-//        ('labels' '{' labels+=KLabel ( "," labels+=KLabel)* '}' )?
-//        ('children' '{' children+=KNode ( "," children+=KNode)* '}' )?
-//        ('ports' '{' ports+=KPort ( "," ports+=KPort)* '}' )?
-//        ('outgoingEdges' '{' outgoingEdges+=KEdge ( "," outgoingEdges+=KEdge)* '}' )?
-//    '}';
     {KNode}
-    'KNode'
-    '{'
-        ('ports' ':'? ports+=KPort ( ","? ports+=KPort)* )?
-        ('data' ':'? data+=KGraphData ( ","? data+=KGraphData)* )?
-        ('labels' ':'? labels+=KLabel ( ","? labels+=KLabel)* )?
-        ('children' ':'? children+=KNode ( ","? children+=KNode)* )?
-    '}'
-    (outgoingEdges+=KEdge ( ","? outgoingEdges+=KEdge)*)?
-    ;
-
-KLabel returns KLabel:
-//    'KLabel'
-//    '{'
-//        'text' text=EString
-//        ('data' '{' data+=KGraphData ( "," data+=KGraphData)* '}' )?
-//    '}';
-    'KLabel' text=EString
-    '{'
-        ('data' ':'? data+=KGraphData ( ","? data+=KGraphData)* )?
-    '}';
-
-KPort returns KPort:
-//    {KPort}
-//    'KPort'
-//    '{'
-//        ('edges' '(' edges+=[KEdge|EString] ( "," edges+=[KEdge|EString])* ')' )?
-//        ('data' '{' data+=KGraphData ( "," data+=KGraphData)* '}' )?
-//        ('labels' '{' labels+=KLabel ( "," labels+=KLabel)* '}' )?
-//    '}';
-    {KPort}
-    'KPort'
-    '{'
-        ('edges' ':'? edges+=[KEdge|EString] ( ","? edges+=[KEdge|EString])*)?
-        ('data' ':'? data+=KGraphData ( ","? data+=KGraphData)*)?
-        ('labels' ':'? labels+=KLabel ( ","? labels+=KLabel)*)?
-    '}';
+    'knode' (data+=KIdentifier)? (('{'
+        data+=KNodeLayout
+        (labels+=KLabel | children+=KNode | ports+=KPort | outgoingEdges+=KEdge
+        	| data+=KRendering | data+=KRenderingLibrary)*
+    '}') | data+=EmptyKNodeLayout);
 
 KEdge returns KEdge:
-//    'KEdge'
-//    '{'
-//        'target' target=[KNode|EString]
-//        ('sourcePort' sourcePort=[KPort|EString])?
-//        ('targetPort' targetPort=[KPort|EString])?
-//        ('data' '{' data+=KGraphData ( "," data+=KGraphData)* '}' )?
-//        ('labels' '{' labels+=KLabel ( "," labels+=KLabel)* '}' )?
-//    '}';
+    'kedge' (data+=KIdentifier)? '(' (':' sourcePort=[KPort|QualifiedID])?
+            '->' target=[KNode|QualifiedID]
+            (':' targetPort=[KPort|QualifiedID])? ')'
+            (('{'
+        data+=KEdgeLayout
+        (labels+=KLabel | data+=KRendering)*
+    '}') | data+=EmptyKEdgeLayout);
 
-// TODO: In an advanced version of the textual KGraph language the fragment URI used to identify the
-// edge's target and ports shall be parsed and decomposed by related parser rules.
-    '-->' target=[KNode|EString]
-    '{'
-        ('sourcePort' sourcePort=[KPort|EString])?
-        ('targetPort' targetPort=[KPort|EString])?
-        ('data' ':'? data+=KGraphData ( ","? data+=KGraphData)*)?
-        ('labels' ':'? labels+=KLabel ( ","? labels+=KLabel)*)?
-    '}';
+KLabel returns KLabel:
+    {KLabel}
+    'klabel' (data+=KIdentifier)? (text=STRING)? (('{'
+        data+=KShapeLayout
+        (data+=KRendering)*
+    '}') | data+=EmptyKShapeLayout);
 
-KGraphData returns KGraphData:
-//    {KGraphData}
-//    'KGraphData'
-//    '{'
-//        ('persistentEntries' '{' persistentEntries+=PersistentEntry ( "," persistentEntries+=PersistentEntry)* '}' )?
-//    '}';
-    KRendering | KRenderingLibrary | KShapeLayout | KEdgeLayout | KGraphDataImpl;
-
-KGraphDataImpl returns KGraphData:
-  {KGraphData}
-  'KGraphData'
-  '{'
-      ('mapProperties' ':'? '{' persistentEntries+=PersistentEntry ( "," persistentEntries+=PersistentEntry)* '}' )?
-  '}';
+KPort returns KPort:
+    {KPort}
+    'kport' (data+=KIdentifier)? (('{'
+        data+=KShapeLayout
+        (labels+=KLabel | data+=KRendering)*
+    '}') | data+=EmptyKShapeLayout);
 
 
-//PersistentEntry returns PersistentEntry:
-//    'PersistentEntry'
-//    '{'
-//        'key' key=EString
-//        ('value' value=EString)?
-//    '}';
+//-------------- KLayoutData ---------------
 
-//EString returns ecore::EString:
-//    STRING | ID;
+PersistentEntry returns PersistentEntry:
+    key=QualifiedID '=' value=PropertyValue;
+
+KIdentifier returns KIdentifier:
+    id=QualifiedID ('[' (persistentEntries+=PersistentEntry)* ']')?;
+
+KNodeLayout returns KShapeLayout:
+    (('pos' ':' (('x' '=' xpos=Float)? & ('y' '=' ypos=Float)?))?
+	    & ('size' ':' (('width' '=' width=Float)? & ('height' '=' height=Float)?))?
+	    & ('properties' ':' (persistentEntries+=PersistentEntry)*)?)
+    (('insets' ':' insets=KInsets) | insets=EmptyKInsets);
+
+EmptyKNodeLayout returns KShapeLayout:
+    insets=EmptyKInsets;
+
+KInsets returns KInsets:
+    {KInsets}
+    (('top' '=' top=Float)? & ('bottom' '=' bottom=Float)?
+        & ('left' '=' left=Float)? & ('right' '=' right=Float)?);
+
+EmptyKInsets returns KInsets:
+    {KInsets};
+
+KShapeLayout returns KShapeLayout:
+    {KShapeLayout}
+    (('pos' ':' (('x' '=' xpos=Float)? & ('y' '=' ypos=Float)?))?
+    & ('size' ':' (('width' '=' width=Float)? & ('height' '=' height=Float)?))?
+    & ('properties' ':' (persistentEntries+=PersistentEntry)*)?);
+
+EmptyKShapeLayout returns KShapeLayout:
+    {KShapeLayout};
+
+KEdgeLayout returns KEdgeLayout:
+    (('points' ':'
+        ((sourcePoint=KPoint ((';' (bendPoints+=KPoint ';')* targetPoint=KPoint)
+            | targetPoint=EmptyKPoint))
+        | (sourcePoint=EmptyKPoint targetPoint=EmptyKPoint))
+    ) | (sourcePoint=EmptyKPoint targetPoint=EmptyKPoint))
+    ('properties' ':' (persistentEntries+=PersistentEntry)*)?;
+
+EmptyKEdgeLayout returns KEdgeLayout:
+    sourcePoint=EmptyKPoint targetPoint=EmptyKPoint;
+
+KPoint returns KPoint:
+    x=Float ',' y=Float;
+
+EmptyKPoint returns KPoint:
+    {KPoint};
+
+
+//--------------- KRendering ---------------
+
+KRendering returns KRendering:
+    KSimpleRendering | KContainerRendering | KPolyline;
+
+KSimpleRendering returns KRendering:
+	(KRenderingRef | KChildArea | KText)
+	(id=QualifiedID)? ('[' (persistentEntries+=PersistentEntry)* ']')? ('{'
+		(('styles' ':' (styles+=KStyle)*)?
+		& ('actions' ':' (actions+=KAction)*)?
+		& (placementData=KPlacementData)?)
+	'}')?;
+
+KContainerRendering returns KContainerRendering:
+	(KRectangle | KRoundedRectangle | KEllipse | KArc | KCustomRendering | KImage)
+	(id=QualifiedID)? ('[' (persistentEntries+=PersistentEntry)* ']')? ('{'
+		(('styles' ':' (styles+=KStyle)*)?
+		& ('actions' ':' (actions+=KAction)*)?
+		& (placementData=KPlacementData)?
+		& (childPlacement=KPlacement)?)
+		(children+=KRendering)*
+	'}')?;
+
+KRenderingRef returns KRenderingRef:
+	'krendering' '*' rendering=[KRendering|QualifiedID];
+
+KChildArea returns KChildArea:
+	{KChildArea}
+	'kchildArea';
+
+KText returns KText:
+	{KText}
+	'ktext' ('(' text=STRING ')')?;
+
+KRectangle returns KRectangle:
+	{KRectangle}
+	'krectangle';
+
+KRoundedRectangle returns KRoundedRectangle:
+	{KRoundedRectangle}
+	'kroundedRectangle' ('(' cornerWidth=Float ',' cornerHeight=Float ')')?;
+
+KEllipse returns KEllipse:
+	{KEllipse}
+	'kellipse';
+
+KArc returns KArc:
+	{KArc}
+	'karc' ('(' startAngle=DEGREES ',' arcAngle=DEGREES ')');
+
+KCustomRendering returns KCustomRendering:
+	{KCustomRendering}
+	'kcustomRendering' ('(' (bundleName=QualifiedID ':')? className=QualifiedID ')')?;
+
+KImage returns KImage:
+	{KImage}
+	'kimage' ('(' (bundleName=QualifiedID ':')? imagePath=STRING ')')?;
+
+KPolyline returns KPolyline:
+	(KSimplePolyline | KPolygon | KRoundedBendsPolyline | KSpline)
+	(id=QualifiedID)? ('[' (persistentEntries+=PersistentEntry)* ']')? ('{'
+		(('points' ':' (points+=KPosition (';' points+=KPosition)*)?)?
+		& ('styles' ':' (styles+=KStyle)*)?
+		& ('actions' ':' (actions+=KAction)*)?
+		& (placementData=KPlacementData)?
+		& (childPlacement=KPlacement)?)
+		('junction' jointPointRendering=KRendering)?
+		(children+=KRendering)*
+	'}')?;
+
+KSimplePolyline returns KPolyline:
+	{KPolyline}
+	'kpolyline';
+
+KPolygon returns KPolygon:
+	{KPolygon}
+	'kpolygon';
+
+KRoundedBendsPolyline returns KRoundedBendsPolyline:
+	{KRoundedBendsPolyline}
+	'kroundedPolyline' ('(' bendRadius=Float ')')?;
+
+KSpline returns KSpline:
+	{KSpline}
+	'kspline';
+
+
+//----------------- KStyle -----------------
+
+KStyle returns KStyle:
+	(KColoring | KFontBold | KFontItalic | KFontName | KFontSize | KFontUnderlined
+	| KHorizontalAlignment | KVerticalAlignment | KInvisibility | KLineCap
+	| KLineStyle | KLineWidth | KRotation | KShadow | KStyleRef)
+	('function' functionId=QualifiedID)?;
+
+KColoring returns KColoring:
+	(KForeground | KBackground) '=' color=KColor (',' alpha=ALPHA)?
+	('->' targetColor=KColor (',' targetAlpha=ALPHA)? ('(' gradientAngle=Float ')')?)?;
+
+KForeground returns KForeground:
+	{KForeground}
+	(propagateToChildren?='propagate')? 'foreground';
+
+KBackground returns KBackground:
+	{KBackground}
+	(propagateToChildren?='propagate')? 'background';
+
+KFontBold returns KFontBold:
+	(propagateToChildren?='propagate')? 'bold' '=' bold=BOOLEAN;
+
+KFontItalic returns KFontItalic:
+	(propagateToChildren?='propagate')? 'italic' '=' italic=BOOLEAN;
+
+KFontName returns KFontName:
+	(propagateToChildren?='propagate')? 'fontName' '=' name=STRING;
+
+KFontSize returns KFontSize:
+	(propagateToChildren?='propagate')? (scaleWithZoom?='scale')?
+	'fontSize' '=' size=FSIZE;
+
+KFontUnderlined returns KFontUnderlined:
+	(propagateToChildren?='propagate')? 'underline' '=' underlineStyle=UnderlineStyle;
+
+KHorizontalAlignment returns KHorizontalAlignment:
+	(propagateToChildren?='propagate')? 'hAlign' '=' horizontalAlignment=HorizontalAlignment;
+
+KVerticalAlignment returns KVerticalAlignment:
+	(propagateToChildren?='propagate')? 'vAlign' '=' verticalAlignment=VerticalAlignment;
+
+KInvisibility returns KInvisibility:
+	(propagateToChildren?='propagate')? 'invisible' '=' invisible=BOOLEAN;
+
+KLineCap returns KLineCap:
+	(propagateToChildren?='propagate')? 'lineCap' '=' lineCap=LineCap;
+
+KLineStyle returns KLineStyle:
+	(propagateToChildren?='propagate')? 'lineStyle' '=' lineStyle=LineStyle;
+
+KLineWidth returns KLineWidth:
+	(propagateToChildren?='propagate')? 'lineWidth' '=' lineWidth=Float;
+
+KRotation returns KRotation:
+	(propagateToChildren?='propagate')? 'rotation' '=' rotation=Float;
+
+KShadow returns KShadow:
+	{KShadow}
+	(propagateToChildren?='propagate')? 'shadow' '=' (color=KColor)?
+	('(' xOffset=Float ',' yOffset=Float (',' blur=Float)? ')')?;
+
+KStyleRef returns KStyleRef:
+	'reference' '=' styleHolder=[KStyleHolder|QualifiedID];
+
+
+//----------- KRendering Utility ------------
+
+KRenderingLibrary returns KRenderingLibrary:
+	{KRenderingLibrary}
+	'krenderingLibrary'
+	('[' (persistentEntries+=PersistentEntry)* ']')? '{'
+		(renderings+=KRendering | renderings+=KStyleHolder)*
+	'}';
+
+KStyleHolder returns KStyleHolder:
+	{KStyleHolder}
+	'kstylesTemplate' (id=QualifiedID)? '{'
+		(styles+=KStyle)*
+	'}';
+
+KPlacement returns KPlacement:
+	KGridPlacement;
+
+KGridPlacement returns KGridPlacement:
+	{KGridPlacement}
+	'grid' ':'
+		(('topLeftAnchor' '=' topLeft=KPosition)?
+		& ('bottomRightAnchor' '=' bottomRight=KPosition)?
+		& ('columns' '=' numColumns=NATURAL)?);
+
+KPlacementData returns KPlacementData:
+	KAreaPlacementData | KPointPlacementData | KGridPlacementData | KDecoratorPlacementData;
+
+KAreaPlacementData returns KAreaPlacementData:
+	{KAreaPlacementData}
+	'areaData' ':'
+		(('topLeftAnchor' '=' topLeft=KPosition)?
+		& ('bottomRightAnchor' '=' bottomRight=KPosition)?);
+
+KPointPlacementData returns KPointPlacementData:
+	{KPointPlacementData}
+	'pointData' ':'
+		(('referencePoint' '=' referencePoint=KPosition)?
+		& ('horizontalAlignment' '=' horizontalAlignment=HorizontalAlignment)?
+		& ('verticalAlignment' '=' verticalAlignment=VerticalAlignment)?
+		& ('horizontalMargin' '=' horizontalMargin=Float)?
+		& ('verticalMargin' '=' verticalMargin=Float)?);
+
+KGridPlacementData returns KGridPlacementData:
+	{KGridPlacementData}
+	'gridData' ':'
+		(('topLeftAnchor' '=' topLeft=KPosition)?
+		& ('bottomRightAnchor' '=' bottomRight=KPosition)?
+		& ('minCellWidth' '=' minCellWidth=Float)?
+		& ('minCellHeight' '=' minCellHeight=Float)?
+		& ('maxCellWidth' '=' maxCellWidth=Float)?
+		& ('maxCellHeight' '=' maxCellHeight=Float)?);
+
+KDecoratorPlacementData returns KDecoratorPlacementData:
+	{KDecoratorPlacementData}
+	'decoratorData' ':'
+		(('xoffset' '=' xOffset=Float)?
+		& ('yoffset' '=' yOffset=Float)?
+		& ('width' '=' width=Float)?
+		& ('height' '=' height=Float)?
+		& ('relativePos' '=' relative=Float)?
+		& ('absolutePos' '=' absolute=Float)?
+		& ('rotateWithLine' '=' rotateWithLine=BOOLEAN)?);
+
+KAction returns KAction:
+	trigger=KTrigger '=>' id=QualifiedID;
+
+KPosition returns KPosition:
+	x=KXPosition ',' y=KYPosition;
+
+KXPosition returns KXPosition:
+	(KLeftPosition | KRightPosition)
+	((relative=PERCENT '+')? (absolute=Float)? | relative=PERCENT);
+
+KLeftPosition returns KLeftPosition:
+	{KLeftPosition}
+	'left';
+
+KRightPosition returns KRightPosition:
+	{KRightPosition}
+	'right';
+
+KYPosition returns KYPosition:
+	(KTopPosition | KBottomPosition)
+	((relative=PERCENT '+')? (absolute=Float)? | relative=PERCENT);
+
+KTopPosition returns KTopPosition:
+	{KTopPosition}
+	'top';
+
+KBottomPosition returns KBottomPosition:
+	{KBottomPosition}
+	'bottom';
+
+KColor returns KColor:
+	(red=RED (',' green=GREEN)? (',' blue=BLUE)?)
+	| (green=GREEN (',' blue=BLUE)?)
+	| blue=BLUE;
+
+
+//--------------- Terminals ----------------
+
+QualifiedID returns ecore::EString:
+    ID ('.' ID)*;
+
+PropertyValue returns ecore::EString:
+    STRING | Float | QualifiedID;
+
+Float returns ecore::EFloat:
+	TFLOAT | NATURAL;
+
+enum HorizontalAlignment returns HorizontalAlignment:
+	LEFT='left' | CENTER='center' | RIGHT='right';
+
+enum VerticalAlignment returns VerticalAlignment:
+	TOP='top' | CENTER='center' | BOTTOM='bottom';
+
+enum UnderlineStyle returns UnderlineStyle:
+	NONE='none' | SINGLE='single' | DOUBLE='double' | ERROR='error' | WARNING='warning' | LINK='link';
+
+enum LineStyle returns LineStyle:
+	SOLID='solid' | DASH='dash' | DOT='dot' | DASHDOT='dash-dot' | DASHDOTDOT='dash-dot-dot';
+
+enum LineCap returns LineCap:
+	CAP_FLAT='flat' | CAP_ROUND='round' | CAP_SQUARE='square';
+
+enum KTrigger returns KTrigger:
+	SINGLECLICK='singleClick' | DOUBLECLICK='doubleClick';
+
+terminal BOOLEAN returns ecore::EBoolean:
+	'true' | 'false';
+terminal RED returns ecore::EInt:
+	('0'..'9')+ 'r';
+terminal GREEN returns ecore::EInt:
+	('0'..'9')+ 'g';
+terminal BLUE returns ecore::EInt:
+	('0'..'9')+ 'b';
+terminal ALPHA returns ecore::EInt:
+	('0'..'9')+ 'a';
+terminal FSIZE returns ecore::EInt:
+	('0'..'9')+ 'pt';
+terminal DEGREES returns ecore::EFloat:
+	('+' | '-')? (('0'..'9')+ ('.' ('0'..'9')*)? | '.' ('0'..'9')+) 'deg';
+terminal PERCENT returns ecore::EFloat:
+	('+' | '-')? (('0'..'9')+ ('.' ('0'..'9')*)? | '.' ('0'..'9')+) '%';
+terminal TFLOAT returns ecore::EFloat:
+    ('+' | '-') (
+        ('0'..'9')+ ('.' ('0'..'9')*)? (('e' | 'E') ('+' | '-')? ('0'..'9')+)?
+        | '.' ('0'..'9')+ (('e' | 'E') ('+' | '-')? ('0'..'9')+)?
+    )
+    | ('0'..'9')+ '.' ('0'..'9')* (('e' | 'E') ('+' | '-')? ('0'..'9')+)?
+    | '.' ('0'..'9')+ (('e' | 'E') ('+' | '-')? ('0'..'9')+)?
+    | ('0'..'9')+ ('e' | 'E') ('+' | '-')? ('0'..'9')+;
+terminal NATURAL returns ecore::EInt:
+	('0'..'9')+;
+terminal ID:
+    ('a'..'z'|'A'..'Z'|'_') ('a'..'z'|'A'..'Z'|'_'|'0'..'9')*;
+terminal STRING : 
+    '"' ( '\\' ('b'|'t'|'n'|'f'|'r'|'u'|'"'|'\\') | !('\\'|'"') )* '"';
+
+terminal ML_COMMENT    : '/*' -> '*/';
+terminal SL_COMMENT     : '//' !('\n'|'\r')* ('\r'? '\n')?;
+terminal WS         : (' '|'\t'|'\r'|'\n')+;

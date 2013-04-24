@@ -1,9 +1,9 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: KIELER KGraph Textual Editor
-Bundle-Vendor: Christian-Albrechts-Universität zu Kiel
-Bundle-Version: 0.1.0.qualifier
-Bundle-SymbolicName: de.cau.cs.kieler.core.kgraph.text.ui;singleton:=true
+Bundle-Name: de.cau.cs.kieler.core.kgraph.text.ui
+Bundle-Vendor: My Company
+Bundle-Version: 1.0.0.qualifier
+Bundle-SymbolicName: de.cau.cs.kieler.core.kgraph.text.ui; singleton:=true
 Bundle-ActivationPolicy: lazy
 Require-Bundle: org.eclipse.xtext.ui,
  org.eclipse.ui.editors;bundle-version="3.5.0",
@@ -12,16 +12,14 @@ Require-Bundle: org.eclipse.xtext.ui,
  org.eclipse.ui,
  org.antlr.runtime,
  org.eclipse.compare,
- de.cau.cs.kieler.core.kgraph;bundle-version="0.4.1",
- de.cau.cs.kieler.core.kgraph.text;visibility:=reexport
-Import-Package: org.apache.log4j,
- org.apache.commons.logging
-DynamicImport-Package: de.cau.cs.kieler.klighd.test
+ org.eclipse.xtext.builder,
+ de.cau.cs.kieler.core.kgraph,
+ de.cau.cs.kieler.core.kgraph.text;visibility:=reexport,
+ de.cau.cs.kieler.core.krendering,
+ de.cau.cs.kieler.kiml
+Import-Package: org.apache.log4j
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
-Export-Package: de.cau.cs.kieler.core.kgraph.text.klayoutdata.ui.contentassist.antlr,
- de.cau.cs.kieler.core.kgraph.text.krendering.ui.contentassist.antlr,
+Export-Package: de.cau.cs.kieler.core.kgraph.text.ui.contentassist,
  de.cau.cs.kieler.core.kgraph.text.ui.contentassist.antlr,
- de.cau.cs.kieler.core.kgraph.text.ui.contentassist,
- de.cau.cs.kieler.core.kgraph.text.klayoutdata.ui.contentassist,
- de.cau.cs.kieler.core.kgraph.text.krendering.ui.contentassist
+ de.cau.cs.kieler.core.kgraph.text.ui.quickfix
 Bundle-Activator: de.cau.cs.kieler.core.kgraph.text.ui.internal.KGraphActivator
