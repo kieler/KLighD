@@ -74,7 +74,8 @@ public class SizeEstimationTest {
      */
     @ModelCollectionTestRunner.ResourceSet
     public static ResourceSet getResourceSet() {
-        return KGraphStandaloneSetup.doSetup().getInstance(XtextResourceSet.class);
+        return new KGraphStandaloneSetup().createInjectorAndDoEMFRegistration().getInstance(
+                XtextResourceSet.class);
     }
     
     
