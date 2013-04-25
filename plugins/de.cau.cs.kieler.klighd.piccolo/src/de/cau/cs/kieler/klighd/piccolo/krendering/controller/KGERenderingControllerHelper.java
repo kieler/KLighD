@@ -657,7 +657,7 @@ final class KGERenderingControllerHelper {
             return createDummy(parent, initialBounds);
         }
         // initialize the bounds of the node
-        node.setBounds(0, 0, initialBounds.getWidth(), initialBounds.getWidth());
+        node.setBounds(0, 0, initialBounds.getWidth(), initialBounds.getHeight());
 
         // initialize the node
         controller.initializeRenderingNode(node);
@@ -674,7 +674,7 @@ final class KGERenderingControllerHelper {
         return new PNodeController<PNode>(node) {
             public void setBounds(final Bounds bounds) {
                 // apply the bounds
-                getNode().setBounds(0, 0, bounds.getWidth(), bounds.getWidth());
+                getNode().setBounds(0, 0, bounds.getWidth(), bounds.getHeight());
                 NodeUtil.applyTranslation(getNode(), bounds.getX(), bounds.getY());
             }
         };
