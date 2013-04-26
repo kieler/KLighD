@@ -19,10 +19,19 @@ import java.beans.PropertyChangeListener;
 import java.util.List;
 import java.util.Map;
 
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.impl.AdapterImpl;
+import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
+import org.eclipse.ui.statushandlers.StatusManager;
 
+import com.google.common.base.Predicates;
+import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
@@ -50,7 +59,12 @@ import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout;
 import de.cau.cs.kieler.kiml.options.EdgeRouting;
 import de.cau.cs.kieler.kiml.options.LayoutOptions;
 import de.cau.cs.kieler.klighd.KlighdConstants;
+import de.cau.cs.kieler.klighd.KlighdDataManager;
+import de.cau.cs.kieler.klighd.KlighdPlugin;
+import de.cau.cs.kieler.klighd.LightDiagramServices;
+import de.cau.cs.kieler.klighd.ViewContext;
 import de.cau.cs.kieler.klighd.krendering.DiagramLayoutManager;
+import de.cau.cs.kieler.klighd.krendering.SimpleUpdateStrategy;
 import de.cau.cs.kieler.klighd.piccolo.activities.ApplyBendPointsActivity;
 import de.cau.cs.kieler.klighd.piccolo.activities.ApplySmartBoundsActivity;
 import de.cau.cs.kieler.klighd.piccolo.activities.FadeEdgeInActivity;
@@ -289,6 +303,12 @@ public class GraphController {
                         public void propertyChange(final PropertyChangeEvent event) {
                             if ((Boolean) event.getNewValue()) {
                                 // populate the node if necessary
+                                
+                                // Note that the properties 'POPULATED' and 'ACTIVE' are independent.
+                                //  'POPULATED' denotes the state of the children,
+                                //  'ACTIVE' denotes the state of the parent itself.
+                                // Right now nodes child nodes added to the one being populated
+                                //  are activated, i.e. immediately added to the diagram.
                                 if (!data.getProperty(KlighdConstants.POPULATED)) {
                                     // if children nodes have never been created in the past
                                     // create them right now!
@@ -319,6 +339,16 @@ public class GraphController {
                                         deactivateSubgraph(child);
                                     }
                                 }
+                            }
+
+                            // in case distinct 'expanded' and/or 'collapsed' KRendering definitions
+                            //  are given the rendering needs to be updated/exchanged after changing the
+                            //  expansion state, so ...
+                            if (Iterables.any(Iterables.filter(node.getData(), KRendering.class),
+                                    Predicates.or(
+                                            AbstractKGERenderingController.IS_COLLAPSED_RENDERING,
+                                            AbstractKGERenderingController.IS_EXPANDED_RENDERING))) {
+                                nodeNode.getRenderingController().initialize(true);
                             }
                         }
                     });
@@ -457,6 +487,12 @@ public class GraphController {
             installEdgeSyncAdapter(node);
         }
 
+        // Look whether a URI is attached to the node's shape layout
+        //  this currently indicates externalized child elements that
+        //  are to be loaded and translated lazily, which has to be done now!
+        URI uri = node.getData(KShapeLayout.class)
+                .getProperty(KlighdConstants.CHILD_URI);
+
         // proceed recursively if the node is expanded
         if (node.getChildren().size() > 0) {
             INode nodeNode = contextData.getProperty(INode.NODE_REP);
@@ -464,6 +500,28 @@ public class GraphController {
                 for (KNode child : node.getChildren()) {
                     activateSubgraph(child);
                 }
+            }
+        } else //if (!RenderingContextData.get(node).getProperty(KlighdConstants.POPULATED))
+               {
+            KNode result = null;
+            if (uri != null) {
+                try {
+                    Resource res = new ResourceSetImpl().getResource(uri, true);
+                    EObject model = res.getContents().get(0);
+                    ViewContext vc = LightDiagramServices.getInstance().createViewContext(model);
+                    vc.setUpdateStrategy(KlighdDataManager.getInstance().getUpdateStrategyById(
+                            SimpleUpdateStrategy.ID));
+                    LightDiagramServices.getInstance().updateViewContext(vc, model);
+                    res.unload();
+                    result = (KNode) vc.getViewModel();
+                } catch (Exception e) {
+                    StatusManager.getManager()
+                            .handle(new Status(IStatus.ERROR, KlighdPlugin.PLUGIN_ID,
+                                    "Lazy-loading failed"));
+                }
+            }
+            if (result != null) {
+                node.getChildren().addAll(result.getChildren());
             }
         }
     }
@@ -680,6 +738,9 @@ public class GraphController {
         // if there is no Piccolo representation for the label create it
         if (labelNode == null) {
             labelNode = new KLabelNode(label);
+            if (record) {
+                labelNode.setVisible(false);
+            }
             labelNode.setText(label.getText());
             updateLayout(labelNode);
             updateRendering(labelNode);
