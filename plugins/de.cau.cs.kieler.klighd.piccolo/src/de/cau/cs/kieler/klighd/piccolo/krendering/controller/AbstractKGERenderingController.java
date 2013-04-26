@@ -27,6 +27,7 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.PlatformUI;
 
 import com.google.common.base.Function;
+import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
@@ -34,6 +35,7 @@ import com.google.common.collect.Maps;
 
 import de.cau.cs.kieler.core.kgraph.KGraphElement;
 import de.cau.cs.kieler.core.kgraph.KGraphPackage;
+import de.cau.cs.kieler.core.kgraph.KNode;
 import de.cau.cs.kieler.core.kgraph.impl.IPropertyToObjectMapImpl;
 import de.cau.cs.kieler.core.krendering.KColor;
 import de.cau.cs.kieler.core.krendering.KContainerRendering;
@@ -47,17 +49,20 @@ import de.cau.cs.kieler.core.krendering.KRenderingRef;
 import de.cau.cs.kieler.core.krendering.KStyle;
 import de.cau.cs.kieler.core.properties.IProperty;
 import de.cau.cs.kieler.core.util.Pair;
+import de.cau.cs.kieler.klighd.KlighdConstants;
 import de.cau.cs.kieler.klighd.microlayout.Bounds;
 import de.cau.cs.kieler.klighd.microlayout.GridPlacementUtil;
 import de.cau.cs.kieler.klighd.microlayout.PlacementUtil;
 import de.cau.cs.kieler.klighd.piccolo.krendering.IGraphElement;
 import de.cau.cs.kieler.klighd.piccolo.krendering.KDecoratorNode;
+import de.cau.cs.kieler.klighd.piccolo.krendering.KNodeNode;
 import de.cau.cs.kieler.klighd.piccolo.krendering.util.PiccoloPlacementUtil;
 import de.cau.cs.kieler.klighd.piccolo.krendering.util.PiccoloPlacementUtil.Decoration;
 import de.cau.cs.kieler.klighd.piccolo.krendering.util.Styles;
 import de.cau.cs.kieler.klighd.piccolo.nodes.PSWTAdvancedPath;
 import de.cau.cs.kieler.klighd.util.CrossDocumentContentAdapter;
 import de.cau.cs.kieler.klighd.util.ModelingUtil;
+import de.cau.cs.kieler.klighd.util.RenderingContextData;
 import edu.umd.cs.piccolo.PNode;
 import edu.umd.cs.piccolo.nodes.PPath;
 
@@ -95,11 +100,13 @@ public abstract class AbstractKGERenderingController
 
     /** the graph element which rendering is controlled by this controller. */
     private S element;
+    
     /** the rendering currently in use by this controller. */
     private KRendering currentRendering;
 
     /** the Piccolo node representing the node. */
     private T repNode;
+    
     /** the Piccolo node representing the rendering. */
     private PNode renderingNode = null;
 
@@ -148,11 +155,34 @@ public abstract class AbstractKGERenderingController
     }
 
     /**
-     * Returns the rendering currently managed by this controller.
+     * Determines and returns the rendering currently managed by this controller.<br>
+     * As a side effect this method puts the returned rendering into the 'currentRendering' field.
      * 
      * @return the rendering
      */
     public KRendering getCurrentRendering() {
+        if (this.element instanceof KNode) {
+            Iterable<KRendering> renderings = Iterables.filter(element.getData(), KRendering.class);
+            
+            if (((KNodeNode) repNode).getChildArea().getChildrenCount() == 0) {
+                currentRendering = element.getData(KRendering.class);
+                
+            } else if (Iterables.any(((KNode) this.element).getChildren(),
+                    RenderingContextData.CHILD_ACTIVE)) {
+                currentRendering = Iterables.getFirst(
+                        Iterables.filter(renderings, IS_EXPANDED_RENDERING),
+                        Iterables.getFirst(Iterables.filter(renderings,
+                                Predicates.not(IS_COLLAPSED_RENDERING)), null));
+            } else {
+                currentRendering = Iterables.getFirst(
+                        Iterables.filter(renderings, IS_COLLAPSED_RENDERING),
+                        Iterables.getFirst(Iterables.filter(renderings,
+                                Predicates.not(IS_EXPANDED_RENDERING)), null));
+            }
+
+        } else {
+            currentRendering = element.getData(KRendering.class);
+        }
         return currentRendering;
     }
 
@@ -168,6 +198,28 @@ public abstract class AbstractKGERenderingController
         // do the initial update of the rendering
         updateRendering();
     }
+    
+    /**
+     * A predicate used to identify the KRendering of a KNode in case the node is collapsed.
+     * This predicate is also used by the {@link GraphController} and thus marked
+     * 'package protected' (no modifier).
+     */
+    static final Predicate<KRendering> IS_COLLAPSED_RENDERING = new Predicate<KRendering>() {
+        public boolean apply(final KRendering rendering) {
+            return rendering.getProperty(KlighdConstants.COLLAPSED_RENDERING);
+        }
+    };
+    
+    /**
+     * A predicate used to identify the KRendering of a KNode in case the node is expanded.
+     * This predicate is also used by the {@link GraphController} and thus marked
+     * 'package protected' (no modifier).
+     */
+    static final Predicate<KRendering> IS_EXPANDED_RENDERING = new Predicate<KRendering>() {
+        public boolean apply(final KRendering rendering) {
+            return rendering.getProperty(KlighdConstants.EXPANDED_RENDERING);
+        }
+    };
 
     /**
      * Updates the rendering by removing the current rendering and evaluating the rendering data
@@ -189,7 +241,8 @@ public abstract class AbstractKGERenderingController
         }
 
         // get the current rendering
-        currentRendering = element.getData(KRendering.class);
+        //  this call updates the 'currentRendering' field
+        getCurrentRendering();
 
         // update the rendering
         renderingNode = internalUpdateRendering();
@@ -393,8 +446,7 @@ public abstract class AbstractKGERenderingController
     private void updateStylesInUi() {
         runInUI(this.updateStylesRunnable);
     }
-    
-    
+
 
     /**
      * Updates the styles of the current rendering.
@@ -402,7 +454,17 @@ public abstract class AbstractKGERenderingController
     private void updateStyles() {
         // update using the recursive method
         updateStyles(currentRendering, new Styles(), new ArrayList<KStyle>(0));
-        getPNodeController(currentRendering).getNode().repaint();
+
+        // in case styles of a detached KRendering are modified, e.g. if selection highlighting
+        //  is removed from renderings that are not part of the diagram in the meantime
+        //  'null' values may occur here 
+        PNodeController<? extends PNode> nodeController = getPNodeController(currentRendering);
+        if (nodeController != null) {
+            PNode node = nodeController.getNode();
+            if (node != null) {
+                node.invalidatePaint();
+            }
+        }
     }
 
     private void updateStyles(final KRendering rendering, final Styles styles,
@@ -703,8 +765,15 @@ public abstract class AbstractKGERenderingController
         // remember the KRendering-controller pair in the controller's 'pnodeControllers' map 
         addPNodeController(rendering, controller);
 
+        // remember the KRendering element in the PNode
         controller.getNode().addAttribute(ATTR_KRENDERING, rendering);
-
+        
+        // in case an action is attached to the KRendering make the node pickable
+        //  this is only done in the PNode initialization as adding and removing actions later in life
+        //  of a KRendering/PNode is considered unlikely and thus not supported yet 
+        if (!rendering.getActions().isEmpty()) {
+            controller.getNode().setPickable(true);
+        }
         return controller;
     }
     
