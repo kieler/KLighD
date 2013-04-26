@@ -62,6 +62,7 @@ import edu.umd.cs.piccolo.util.PAffineTransform;
 import edu.umd.cs.piccolo.util.PAffineTransformException;
 import edu.umd.cs.piccolo.util.PBounds;
 import edu.umd.cs.piccolo.util.PPaintContext;
+import edu.umd.cs.piccolo.util.PPickPath;
 import edu.umd.cs.piccolox.swt.SWTShapeManager;
 
 /**
@@ -77,7 +78,7 @@ import edu.umd.cs.piccolox.swt.SWTShapeManager;
 public class PSWTAdvancedPath extends PNode {
 
     /**
-     * A property identifier leading to the approximated path if the path is a BÃ©zier curve or to
+     * A property identifier leading to the approximated path if the path is a BŽzier curve or to
      * itself otherwise. This approximated path is needed while computing the decorator rotations.
      */
     public static final String APPROXIMATED_PATH = "ApproximatedPath";
@@ -332,6 +333,15 @@ public class PSWTAdvancedPath extends PNode {
         strokePaint = DEFAULT_STROKE_PAINT;
     }
 
+    /**
+     * Provides the information whether is path is a simple line or a shape with a closed periphery.
+     * 
+     * @return true if the path is a polyline, rounded bend point polyline, or a spline; false otherwise.
+     */
+    public boolean isLine() {
+        return isPolyline || isRoundedBendsPolyline || isSpline; 
+    }
+
 //    /**
 //     * Creates a SWTAdvancedPath in the given shape with the default paint and stroke.
 //     * 
@@ -543,7 +553,7 @@ public class PSWTAdvancedPath extends PNode {
      *            the color of the attached shadow
      */
     public void setShadow(final RGB color) {
-        if (!isPolyline && !isRoundedBendsPolyline && !isSpline && color != null) {
+        if (!isLine() && color != null) {
             this.shadow = color;
         } else {
             this.shadow = null;
@@ -605,7 +615,9 @@ public class PSWTAdvancedPath extends PNode {
                 internalXForm.inverseTransform(srcBounds, srcBounds);
             }
 
-            if (getPaint() != null && shape.intersects(srcBounds)) {
+            if (!isLine() && shape.intersects(srcBounds)) {
+                // chsch: updated the condition:
+                //  we also accept non-filled closed shapes, i.e. no general polyline, etc.
                 return true;
             } else if (strokePaint != null) {
                 return BASIC_STROKE.createStrokedShape(shape).intersects(srcBounds);
@@ -652,6 +664,20 @@ public class PSWTAdvancedPath extends PNode {
         return curBounds;
     }
     
+    @Override
+    public boolean fullPick(final PPickPath pickPath) {        
+        return super.fullPick(pickPath);
+    }
+    
+    @Override
+    public boolean pick(final PPickPath pickPath) {
+        if (this.getPickable()) {
+            
+            return super.pickAfterChildren(pickPath);
+        }
+        return super.pick(pickPath);
+    }
+    
     /**
      * {@inheritDoc}
      */
@@ -670,7 +696,7 @@ public class PSWTAdvancedPath extends PNode {
         final int currentAlpha = g2.getAlpha();
         final float currentAlphaFloat = (float) currentAlpha;
         
-        if (!isPolyline && !isRoundedBendsPolyline && !isSpline) {
+        if (!isLine()) {
             RGB p = getSWTPaint();
             if (p != null) {
                 g2.setAlpha(
