@@ -16,6 +16,7 @@ package de.cau.cs.kieler.klighd;
 import java.awt.Font;
 
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.emf.common.util.URI;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.graphics.LineAttributes;
@@ -141,15 +142,39 @@ public final class KlighdConstants {
     public static final Bounds MINIMAL_NODE_BOUNDS = new Bounds(10, 10);
     
     /**
+     * Property to be attached to root {@link de.cau.cs.kieler.core.krendering.KRendering
+     * KRendering} objects of {@link de.cau.cs.kieler.core.kgraph.KNode KNodes} during the view
+     * synthesis process indicating that the {@link de.cau.cs.kieler.core.krendering.KRendering
+     * KRendering} is to be shown in the collapsed state of the node.
+     */
+    public static final IProperty<Boolean> COLLAPSED_RENDERING = new Property<Boolean>(
+            "de.cau.cs.kieler.klighd.collapsedRendering", false);
+
+    /**
+     * Property to be attached to root {@link de.cau.cs.kieler.core.krendering.KRendering
+     * KRendering} objects of {@link de.cau.cs.kieler.core.kgraph.KNode KNodes} during the view
+     * synthesis process indicating that the {@link de.cau.cs.kieler.core.krendering.KRendering
+     * KRendering} is to be shown in the expanded state of the node.
+     */
+    public static final IProperty<Boolean> EXPANDED_RENDERING = new Property<Boolean>(
+            "de.cau.cs.kieler.klighd.expandedRendering", false);
+    
+    /**
      * Property indicating the auto expansion of a node if the value is true.<br>
      * This is property is currently to be attached to the nodes shape layout data during the view
      * synthesis process. If it is absent the node gets expanded, anyway.
      */
     public static final IProperty<Boolean> EXPAND = new Property<Boolean>("klighd.expand", true);
 
+    /**
+     * Property providing a URI to semantic elements to be depicted but that are to be loaded lazily.
+     * This is property is currently to be attached to the nodes shape layout data during the view
+     * synthesis process. 
+     */
+    public static final IProperty<URI> CHILD_URI = new Property<URI>("klighd.childURI");
 
     /**
-     * A property for identifying whether a node has been populated. If a node is populated, child
+     * Property indicating that the node has been populated. If a node is populated, child
      * nodes have been created once, e.g. in case of lazy loading.<br>
      * <br>
      * <b>It is intended for KLighD internal use only!</b> 
@@ -178,7 +203,7 @@ public final class KlighdConstants {
 //     * @author chsch
 //     */
 //    public static enum KNodeState {
-//        /** Denotes the absence of any children of a {@link de.cau.cs.kieler.core.kgraph.KNode KNode}. */
+//        /**Denotes the absence of any children of a {@link de.cau.cs.kieler.core.kgraph.KNode KNode}.*/
 //        EMPTY,
 //        /** Denotes the potential presence of some children in a
 //         * {@link de.cau.cs.kieler.core.kgraph.KNode KNode}, none of them is loaded and visible. */
