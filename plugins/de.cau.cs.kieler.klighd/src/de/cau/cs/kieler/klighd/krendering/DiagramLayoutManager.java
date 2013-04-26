@@ -22,7 +22,6 @@ import java.util.Set;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.ui.IWorkbenchPart;
 
-import com.google.common.base.Predicate;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.Iterables;
 
@@ -244,22 +243,10 @@ public class DiagramLayoutManager implements IDiagramLayoutManager<KGraphElement
         // iterate through the parent's active children and put copies in the layout graph;
         //  a child is active if it contains RenderingContextData and the 'true' value wrt.
         //  the property KlighdConstants.ACTIVE, see the predicate definition below
-        for (KNode node : Iterables.filter(parent.getChildren(), CHILD_ACTIVE)) {
+        for (KNode node : Iterables.filter(parent.getChildren(), RenderingContextData.CHILD_ACTIVE)) {
             createNode(mapping, node, layoutParent);
         }
     }
-    
-    /**
-     * A predicate definition used to drop inactive nodes while processing the layout input graph.<br>
-     * Currently all children of a node are active or non-active at a time, a selective filtering is
-     * not done so far (see e.g. GraphController#addExpansionListener). This might change in future.
-     */
-    private static final Predicate<KNode> CHILD_ACTIVE = new Predicate<KNode>() {
-        public boolean apply(final KNode node) {
-            return !RenderingContextData.get(node).containsPoperty(KlighdConstants.ACTIVE)
-                    || RenderingContextData.get(node).getProperty(KlighdConstants.ACTIVE);
-        }
-    };
     
     /**
      * A property definition that is used to store the initial minimal node size.<br>
@@ -362,7 +349,7 @@ public class DiagramLayoutManager implements IDiagramLayoutManager<KGraphElement
                 // ... and update the node size if it exceeds its size
                 
                 size = Bounds.max(minSize, estimatedSize);
-                if (Iterables.any(node.getChildren(), CHILD_ACTIVE)) {
+                if (Iterables.any(node.getChildren(), RenderingContextData.CHILD_ACTIVE)) {
                     nodeLayout.setProperty(LayoutOptions.MIN_WIDTH, size.getWidth());
                     nodeLayout.setProperty(LayoutOptions.MIN_HEIGHT, size.getHeight());
                 } else {
