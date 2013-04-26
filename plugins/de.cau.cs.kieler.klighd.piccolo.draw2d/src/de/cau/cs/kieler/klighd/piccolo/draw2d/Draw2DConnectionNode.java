@@ -28,10 +28,10 @@ import org.eclipse.ui.statushandlers.StatusManager;
 import com.google.common.collect.Iterables;
 
 import de.cau.cs.kieler.klighd.KlighdPlugin;
+import de.cau.cs.kieler.klighd.piccolo.KlighdSWTGraphicsImpl;
 import de.cau.cs.kieler.klighd.piccolo.draw2d.Draw2DNode.WrappingUpdateManager;
 import de.cau.cs.kieler.klighd.piccolo.krendering.KCustomConnectionFigureNode;
 import edu.umd.cs.piccolo.util.PPaintContext;
-import edu.umd.cs.piccolox.swt.SWTGraphics2D;
 
 /**
  * A Piccolo node implementation wrapping a Draw2d connections.<br>
@@ -64,7 +64,7 @@ public class Draw2DConnectionNode extends KCustomConnectionFigureNode {
      */
     public Draw2DConnectionNode(final Connection theFigure) {
         this.graphics = new GraphicsAdapter();
-        this.updateManager = new WrappingUpdateManager();        
+        this.updateManager = new WrappingUpdateManager(this);        
         this.figure = new PolylineConnection() {
             {
                 this.setOutline(false);
@@ -108,7 +108,7 @@ public class Draw2DConnectionNode extends KCustomConnectionFigureNode {
      */
     @Override
     protected void paint(final PPaintContext paintContext) {
-        this.graphics.setSWTGraphics2D((SWTGraphics2D) paintContext.getGraphics());
+        this.graphics.setKlighdSWTGraphics((KlighdSWTGraphicsImpl) paintContext.getGraphics());
         try {
             figure.paint(this.graphics);
         } catch (Throwable throwable) {

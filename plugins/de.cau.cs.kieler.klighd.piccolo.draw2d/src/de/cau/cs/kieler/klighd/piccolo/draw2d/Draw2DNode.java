@@ -26,14 +26,12 @@ import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.ui.statushandlers.StatusManager;
 
 import de.cau.cs.kieler.klighd.KlighdPlugin;
+import de.cau.cs.kieler.klighd.piccolo.KlighdSWTGraphicsImpl;
 import edu.umd.cs.piccolo.PNode;
 import edu.umd.cs.piccolo.util.PPaintContext;
-import edu.umd.cs.piccolox.swt.SWTGraphics2D;
 
 /**
- * A Piccolo node implementation wrapping a Draw2d figure.
- * 
- * TODO: Implement the {@link WrappingUpdateManager}.
+ * A Piccolo2D node implementation wrapping a Draw2d figure.
  *
  * @author msp, chsch
  */
@@ -61,7 +59,7 @@ public class Draw2DNode extends PNode {
      */
     public Draw2DNode(final Figure theFigure) {
         this.graphics = new GraphicsAdapter();
-        this.updateManager = new WrappingUpdateManager();   
+        this.updateManager = new WrappingUpdateManager(this);   
         this.figure = new Figure() {
             {
                 this.setClippingStrategy(new IClippingStrategy() {
@@ -80,17 +78,29 @@ public class Draw2DNode extends PNode {
             }
             
             @Override
-            public void revalidate() {
-                super.revalidate();
-            }
-            
-            @Override
             public UpdateManager getUpdateManager() {
                 return Draw2DNode.this.updateManager;
             }
+            
+            @Override
+            public boolean useLocalCoordinates() {
+                // the displacement of this figure is realized by the wrapping PNodes
+                return true;
+            }
+            
+            @Override
+            public void setBounds(final Rectangle r) {
+                super.setBounds(r);
+            }
+            
+            @Override
+            public void paintFigure(final Graphics theGraphics) {
+                super.paintFigure(theGraphics);
+            }
         };
-        this.figure.setLayoutManager(new StackLayout());
+        
         this.figure.add(theFigure);
+        this.figure.setLayoutManager(new StackLayout());
     }
     
     /**
@@ -101,6 +111,7 @@ public class Draw2DNode extends PNode {
      */
     public boolean setBounds(final double x, final double y, final double width, final double height) {
         this.figure.setBounds(new Rectangle((int) (x), (int) (y), (int) (width), (int) (height)));
+        this.figure.revalidate();
         return super.setBounds(x, y, width, height);
     }
     
@@ -109,7 +120,7 @@ public class Draw2DNode extends PNode {
      */
     @Override
     protected void paint(final PPaintContext paintContext) {
-        this.graphics.setSWTGraphics2D((SWTGraphics2D) paintContext.getGraphics());
+        this.graphics.setKlighdSWTGraphics((KlighdSWTGraphicsImpl) paintContext.getGraphics());
         try {
             figure.paint(this.graphics);
         } catch (Throwable throwable) {
@@ -122,24 +133,36 @@ public class Draw2DNode extends PNode {
     }
 
     /**
-     * A custom {@link UpdateManager} realizing the escalating of repainting requests to the
-     * Piccolo nodes.
-     * 
-     * TODO to be implemented
+     * A custom {@link UpdateManager} that might realize the escalating of repaint requests to the
+     * wrapping Piccolo nodes.
      * 
      * @author chsch
      */
     static final class WrappingUpdateManager extends DeferredUpdateManager {
         
-        WrappingUpdateManager() {
+        @SuppressWarnings("unused")
+        private PNode wrappingPNode;
+        
+        WrappingUpdateManager(final PNode wrapper) {
             super();
+            this.wrappingPNode = wrapper;
+        }
+        
+        @Override
+        public void queueWork() {
+            // the construction with this fake update manager appear to do not work correctly
+            //  in combination with the queuing of the 'validate bounds' tasks
+            //  (bounds have not been correctly propagated to children)
+            // bridging the decoupling, and thus validating the compound figure at once, works
+            //  as desired
+            super.performUpdate();
         }
         
         @Override
         protected Graphics getGraphics(final Rectangle region) {
             // We do not allow the update manager to directly access the
             //  graphics object, redraw requests shall be somehow escalated
-            //  to the Piccolo node in future (TODO).
+            //  to the Piccolo2D node in future (TODO).
             return null;
         }
     }

@@ -29,7 +29,7 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.LineAttributes;
 import org.eclipse.swt.graphics.Path;
 
-import edu.umd.cs.piccolox.swt.SWTGraphics2D;
+import de.cau.cs.kieler.klighd.piccolo.KlighdSWTGraphicsImpl;
 
 /**
  * A Draw2D graphics object that wraps a Piccolo graphics.
@@ -45,22 +45,20 @@ public class GraphicsAdapter extends Graphics {
         private org.eclipse.swt.graphics.Color foreground;
         private org.eclipse.swt.graphics.Color background;
         private Font font;
-//        private LineAttributes lineAttributes;
-        private float lineWidth;
+        private LineAttributes lineAttributes;
         
         /**
          * Stores the state data of the given graphics into a new state.
          * 
          * @param g an SWT graphics wrapper
          */
-        State(final SWTGraphics2D g) {
+        State(final KlighdSWTGraphicsImpl g) {
             this.clip = g.getClip();
             this.transform = g.getTransform();
             this.foreground = g.getGraphicsContext().getForeground();
             this.background = g.getGraphicsContext().getBackground();
             this.font = g.getSWTFont();
-//            this.lineAttributes = g.getLineAttributes();
-            this.lineWidth = g.getLineWidth();
+            this.lineAttributes = g.getLineAttributes();
         }
     }
     
@@ -139,8 +137,7 @@ public class GraphicsAdapter extends Graphics {
     
 
     /** the Piccolo wrapper for SWT graphics. */
-    private SWTGraphics2D pg;
-    // TODO : migrate this to KLighdSWTGraphics
+    private KlighdSWTGraphicsImpl pg;
     
     /** the stack of graphics states. */
     private LinkedList<State> stack = new LinkedList<State>();
@@ -160,7 +157,7 @@ public class GraphicsAdapter extends Graphics {
      * 
      * @param graphics the Piccolo wrapper for SWT graphics
      */
-    public GraphicsAdapter(final SWTGraphics2D graphics) {
+    public GraphicsAdapter(final KlighdSWTGraphicsImpl graphics) {
         this.pg = graphics;
     }
     
@@ -173,7 +170,7 @@ public class GraphicsAdapter extends Graphics {
      * 
      * @param thePg the pg to set
      */
-    void setSWTGraphics2D(final SWTGraphics2D thePg) {
+    void setKlighdSWTGraphics(final KlighdSWTGraphicsImpl thePg) {
         this.pg = thePg;
     }
     
@@ -218,6 +215,7 @@ public class GraphicsAdapter extends Graphics {
      */
     @Override
     public void drawLine(final int x1, final int y1, final int x2, final int y2) {
+        pg.getGraphicsContext().getGCData().lineWidth = pg.getTransformedLineWidthFloat();
         pg.drawLine(x1, y1, x2, y2);
     }
 
@@ -243,6 +241,7 @@ public class GraphicsAdapter extends Graphics {
      */
     @Override
     public void drawPolygon(final PointList points) {
+        pg.getGraphicsContext().getGCData().lineWidth = pg.getTransformedLineWidthFloat();
         pg.drawPolygon(toArray(points, pg.getLineWidth()));
     }
 
@@ -251,6 +250,7 @@ public class GraphicsAdapter extends Graphics {
      */
     @Override
     public void drawPolyline(final PointList points) {
+        pg.getGraphicsContext().getGCData().lineWidth = pg.getTransformedLineWidthFloat();
         pg.drawPolyline(toArray(points, pg.getLineWidth()));
     }
 
@@ -259,6 +259,7 @@ public class GraphicsAdapter extends Graphics {
      */
     @Override
     public void drawRectangle(final int x, final int y, final int width, final int height) {
+        pg.getGraphicsContext().getGCData().lineWidth = pg.getTransformedLineWidthFloat();
         pg.drawRect(x, y, width, height);
     }
 
@@ -493,8 +494,7 @@ public class GraphicsAdapter extends Graphics {
      */
     @Override
     public void setLineAttributes(final LineAttributes attributes) {
-        pg.setLineWidth(attributes.width);
-//        pg.setLineAttributes(attributes);
+        pg.setLineAttributes(attributes);
         pg.updateClip();
     }
 
@@ -651,8 +651,7 @@ public class GraphicsAdapter extends Graphics {
             pg.setColor(lastState.foreground);
             pg.setBackground(lastState.background);
             pg.setFont(lastState.font);
-            pg.setLineWidth(lastState.lineWidth);
+            pg.setLineAttributes(lastState.lineAttributes);
         }
     }
-
 }
