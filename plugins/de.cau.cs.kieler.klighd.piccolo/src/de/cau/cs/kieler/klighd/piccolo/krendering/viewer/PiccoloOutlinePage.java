@@ -13,6 +13,7 @@
  */
 package de.cau.cs.kieler.klighd.piccolo.krendering.viewer;
 
+import java.awt.Graphics2D;
 import java.awt.geom.Rectangle2D;
 
 import org.eclipse.emf.common.notify.Adapter;
@@ -23,6 +24,8 @@ import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ControlEvent;
 import org.eclipse.swt.events.ControlListener;
+import org.eclipse.swt.graphics.Device;
+import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.IActionBars;
@@ -30,6 +33,8 @@ import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 
 import de.cau.cs.kieler.kiml.klayoutdata.KLayoutDataPackage;
 import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout;
+import de.cau.cs.kieler.klighd.piccolo.KlighdSWTGraphics;
+import de.cau.cs.kieler.klighd.piccolo.KlighdSWTGraphicsImpl;
 import de.cau.cs.kieler.klighd.piccolo.krendering.KNodeTopNode;
 
 import edu.umd.cs.piccolo.PCamera;
@@ -43,7 +48,7 @@ import edu.umd.cs.piccolox.swt.PSWTCanvas;
  * @author msp
  */
 public class PiccoloOutlinePage implements IContentOutlinePage {
-    
+
     /** the canvas used for drawing. */
     private PSWTCanvas canvas;
     /** the graph layer to display. */
@@ -59,7 +64,18 @@ public class PiccoloOutlinePage implements IContentOutlinePage {
      * {@inheritDoc}
      */
     public void createControl(final Composite parent) {
-        canvas = new PSWTCanvas(parent, SWT.NONE);
+        canvas = new PSWTCanvas(parent, SWT.NONE) {
+
+            private KlighdSWTGraphics graphics = new KlighdSWTGraphicsImpl(null,
+                    parent.getDisplay());
+
+            @Override
+            protected Graphics2D getGraphics2D(final GC gc, final Device device) {
+                graphics.setDevice(device);
+                graphics.setGC(gc);
+                return (Graphics2D) graphics;
+            }
+        };
         canvas.setDoubleBuffered(false);
         setContent(graphLayer);
     }
@@ -77,11 +93,12 @@ public class PiccoloOutlinePage implements IContentOutlinePage {
     public void setFocus() {
         canvas.setFocus();
     }
-    
+
     /**
      * Update the content of the outline page.
      * 
-     * @param newLayer the graph layer to display
+     * @param newLayer
+     *            the graph layer to display
      */
     public void setContent(final PLayer newLayer) {
         if (canvas != null) {
@@ -97,17 +114,18 @@ public class PiccoloOutlinePage implements IContentOutlinePage {
                 canvas.removeControlListener(canvasResizeListener);
                 canvasResizeListener = null;
             }
-            
+
             // install a new camera into the given layer
             final PCamera camera = new PCamera();
             newLayer.getRoot().addChild(camera);
             camera.addLayer(newLayer);
             canvas.setCamera(camera);
-            
+
             // add listeners to layout changes and canvas resizing
             PNode childNode = newLayer.getChild(0);
             if (childNode instanceof KNodeTopNode) {
-                graphLayout = ((KNodeTopNode) childNode).getGraphElement().getData(KShapeLayout.class);
+                graphLayout = ((KNodeTopNode) childNode).getGraphElement().getData(
+                        KShapeLayout.class);
                 adjustCamera(camera);
                 graphLayoutAdapter = new AdapterImpl() {
                     public void notifyChanged(final Notification notification) {
@@ -125,6 +143,7 @@ public class PiccoloOutlinePage implements IContentOutlinePage {
                     public void controlMoved(final ControlEvent e) {
                         adjustCamera(camera);
                     }
+
                     public void controlResized(final ControlEvent e) {
                         adjustCamera(camera);
                     }
@@ -134,14 +153,15 @@ public class PiccoloOutlinePage implements IContentOutlinePage {
         }
         this.graphLayer = newLayer;
     }
-    
+
     /** the minimal size of the view. */
     private static final float MIN_SIZE = 10.0f;
-    
+
     /**
      * Adjust the given camera to the bounds of the currently tracked graph layout.
      * 
-     * @param camera a camera
+     * @param camera
+     *            a camera
      */
     private void adjustCamera(final PCamera camera) {
         float width = Math.max(graphLayout.getWidth(), MIN_SIZE);
