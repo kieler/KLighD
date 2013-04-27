@@ -58,9 +58,9 @@ public class KNodeNode extends PZIndexNode implements INode, ILabeledGraphElemen
         super(Z_LAYERS);
         this.node = node;
         this.parent = parent;
-        Object o = node.getData(KShapeLayout.class).getProperty(
+        Boolean b = node.getData(KShapeLayout.class).getProperty(
                 KlighdConstants.KLIGHD_SELECTION_UNPICKABLE);
-        setPickable(o != null && o.equals(Boolean.TRUE) ? false : true);
+        setPickable(b != null && b.equals(Boolean.TRUE) ? false : true);
     }
 
     /**

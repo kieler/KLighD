@@ -16,6 +16,8 @@ package de.cau.cs.kieler.klighd.piccolo.krendering;
 import de.cau.cs.kieler.core.kgraph.KPort;
 import de.cau.cs.kieler.core.properties.IProperty;
 import de.cau.cs.kieler.core.properties.Property;
+import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout;
+import de.cau.cs.kieler.klighd.KlighdConstants;
 import de.cau.cs.kieler.klighd.util.RenderingContextData;
 import de.cau.cs.kieler.klighd.piccolo.krendering.controller.AbstractKGERenderingController;
 import de.cau.cs.kieler.klighd.piccolo.krendering.controller.KPortRenderingController;
@@ -53,8 +55,10 @@ public class KPortNode extends PZIndexNode implements ILabeledGraphElement<KPort
     public KPortNode(final KPort port) {
         super(Z_LAYERS);
         this.port = port;
-        setPickable(true);
         RenderingContextData.get(port).setProperty(PORT_REP, this);
+        Boolean b = port.getData(KShapeLayout.class).getProperty(
+                KlighdConstants.KLIGHD_SELECTION_UNPICKABLE);
+        setPickable(b != null && b.equals(Boolean.TRUE) ? false : true);
     }
     
     /**
