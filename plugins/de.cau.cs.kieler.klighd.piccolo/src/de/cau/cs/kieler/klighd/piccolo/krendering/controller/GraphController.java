@@ -116,6 +116,10 @@ public class GraphController {
     public static final IProperty<PNode> REP = new Property<PNode>("klighd.piccolo.prepresentation");
     
     /** the property for remembering the edge sync adapter on a node. */
+    private static final IProperty<AdapterImpl> CHILDREN_SYNC_ADAPTER = new Property<AdapterImpl>(
+            "klighd.childrenSyncAdapter");
+
+    /** the property for remembering the edge sync adapter on a node. */
     private static final IProperty<AdapterImpl> EDGE_SYNC_ADAPTER = new Property<AdapterImpl>(
             "klighd.edgeSyncAdapter");
 
@@ -297,48 +301,16 @@ public class GraphController {
         KChildAreaNode childAreaNode = nodeNode.getChildArea();
         if (childAreaNode != null) {
             final KNode node = nodeNode.getGraphElement();
-            final RenderingContextData data = RenderingContextData.get(node);
+
             childAreaNode.addPropertyChangeListener(KChildAreaNode.PROPERTY_EXPANSION,
                     new PropertyChangeListener() {
                         public void propertyChange(final PropertyChangeEvent event) {
                             if ((Boolean) event.getNewValue()) {
-                                // populate the node if necessary
-                                
-                                // Note that the properties 'POPULATED' and 'ACTIVE' are independent.
-                                //  'POPULATED' denotes the state of the children,
-                                //  'ACTIVE' denotes the state of the parent itself.
-                                // Right now nodes child nodes added to the one being populated
-                                //  are activated, i.e. immediately added to the diagram.
-                                if (!data.getProperty(KlighdConstants.POPULATED)) {
-                                    // if children nodes have never been created in the past
-                                    // create them right now!
-                                    handleChildren(nodeNode);
-                                    data.setProperty(KlighdConstants.POPULATED, true);
-                                } else {
-                                    // activate the subgraph
-                                    // this is probably crucial in case the structure
-                                    // has been changed during an incremental update
-                                    // the activity flag is also important
-                                    // in case of inter-level edges in combination with
-                                    // lazy loading/collapsing+expanding
-                                    if (data.getProperty(KlighdConstants.ACTIVE)) {
-                                        for (KNode child : node.getChildren()) {
-                                            INode rep = RenderingContextData.get(child)
-                                                    .getProperty(INode.NODE_REP);
-                                            // this 'invisible' configuration is examined
-                                            //  while deciding on moving the node or fading it in
-                                            ((PNode) rep).setVisible(false);
-                                            activateSubgraph(child);
-                                        }
-                                    }
-                                }
+                                // i.e. the child area of node 'nodeNode' has been expanded ...
+                                addChildren(nodeNode);
                             } else {
-                                // deactivate the subgraph if necessary
-                                if (data.getProperty(KlighdConstants.ACTIVE)) {
-                                    for (KNode child : node.getChildren()) {
-                                        deactivateSubgraph(child);
-                                    }
-                                }
+                                // i.e. the child area of node 'nodeNode' has been collapsed ...
+                                removeChildren(node);
                             }
 
                             // in case distinct 'expanded' and/or 'collapsed' KRendering definitions
@@ -361,17 +333,49 @@ public class GraphController {
      * @param parentNode
      *            the parent structure node representing a KNode
      */
-    private void handleChildren(final INode parentNode) {
+    private void addChildren(final INode parentNode) {
         KNode parent = parentNode.getGraphElement();
+
+        if (parent.getChildren().isEmpty()) {
+            // Look whether a URI is attached to the node's shape layout
+            //  this currently indicates externalized child elements that
+            //  are to be loaded and translated lazily, which has to be done now!
+            URI uri = parent.getData(KShapeLayout.class)
+                    .getProperty(KlighdConstants.CHILD_URI);
+            
+            KNode result = null;
+            if (uri != null) {
+                try {
+                    Resource res = new ResourceSetImpl().getResource(uri, true);
+                    EObject model = res.getContents().get(0);
+                    ViewContext vc = LightDiagramServices.getInstance().createViewContext(model);
+                    vc.setUpdateStrategy(KlighdDataManager.getInstance().getUpdateStrategyById(
+                            SimpleUpdateStrategy.ID));
+                    LightDiagramServices.getInstance().updateViewContext(vc, model);
+                    res.unload();
+                    result = (KNode) vc.getViewModel();
+                } catch (Exception e) {
+                    StatusManager.getManager().handle(
+                            new Status(IStatus.ERROR, KlighdPlugin.PLUGIN_ID, "Lazy-loading failed"));
+                }
+            }
+            if (result != null && !result.getChildren().isEmpty()) {
+                result = result.getChildren().get(0);
+                parent.getChildren().addAll(result.getChildren());
+            }
+        }
 
         // create the nodes
         for (KNode child : parent.getChildren()) {
             addNode(parentNode, child);
         }
 
+        RenderingContextData.get(parent).setProperty(KlighdConstants.POPULATED, true);
+
         if (sync) {
             installChildrenSyncAdapter(parentNode);
         }
+        
     }
 
     /**
@@ -395,6 +399,9 @@ public class GraphController {
         }
 
         // only add the representation if it is not added already
+        //  note that this condition implies that invisible children's children
+        //  that are still contained in there parent will break the recursion
+        //  of this method
         if (nodeNode == null || nodeNode.getParent() == null) {
             // if there is no Piccolo representation for the node create it
             if (nodeNode == null) {
@@ -411,26 +418,60 @@ public class GraphController {
 
                 // add the node
                 parent.getChildArea().addNode(nodeNode);
+                RenderingContextData.get(node).setProperty(KlighdConstants.ACTIVE, true);
 
                 KGraphData data = node.getData(KLayoutDataPackage.eINSTANCE.getKShapeLayout());
                 boolean expand = data == null || data.getProperty(KlighdConstants.EXPAND);
                 // in case the EXPAND property is not set the default value 'true' is returned
                 nodeNode.getChildArea().setExpanded(expand);
+                
             } else {
+                if (record && isAutomaticallyArranged(node)) {
+                    nodeNode.setVisible(false);
+                }
+
                 // add the node
                 parent.getChildArea().addNode(nodeNode);
+                RenderingContextData.get(node).setProperty(KlighdConstants.ACTIVE, true);
             }
 
-            // activate the subgraph specified by the node
-            if (RenderingContextData.get(parent.getGraphElement()).getProperty(
-                    KlighdConstants.ACTIVE)) {
-                activateSubgraph(node);
+            // add all incoming edges
+            for (KEdge incomingEdge : node.getIncomingEdges()) {
+                addEdge(incomingEdge);
+            }
+            
+            // add all outgoing edges
+            for (KEdge outgoingEdge : node.getOutgoingEdges()) {
+                addEdge(outgoingEdge);
+            }
+            
+            if (sync) {
+                installEdgeSyncAdapter(node);
             }
         }
-
         return nodeNode;
     }
 
+
+    /**
+     * Handles the children of the parent node.
+     * 
+     * @param parentNode
+     *            the parent structure node representing a KNode
+     */
+    private void removeChildren(final KNode parentNode) {
+        for (KNode child : parentNode.getChildren()) {
+            removeNode(child);
+        }
+        RenderingContextData.get(parentNode).setProperty(KlighdConstants.POPULATED, false);
+
+        if (sync) {
+            uninstallChildrenSyncAdapter(parentNode);
+        }
+    }
+
+    
+    
     /**
      * Removes the representation for the node from its parent.
      * 
@@ -449,113 +490,33 @@ public class GraphController {
             }
 
             // deactivate the subgraph
-            deactivateSubgraph(node);
+            // deactivateSubgraph(node);
+
+            if (sync) {
+                uninstallEdgeSyncAdapter(node);
+            }
+
+            // remove all incoming edges
+            for (KEdge incomingEdge : node.getIncomingEdges()) {
+                removeEdge(incomingEdge);
+            }
+
+            // remove all outgoing edges
+            for (KEdge outgoingEdge : node.getOutgoingEdges()) {
+                removeEdge(outgoingEdge);
+            }
 
             // remove the node representation from the containing child area
             nodeNode.removeFromParent();
+            RenderingContextData.get(node).setProperty(KlighdConstants.ACTIVE, false);
+            
             // release the objects kept in mind
             nodeNode.getRenderingController().removeAllPNodeControllers();
             // release the node rendering controller
-            nodeNode.setRenderingController(null);
+//            nodeNode.setRenderingController(null);
         }
     }
 
-    /**
-     * Adds the representations of all edges and marks all nodes as visualized in the subgraph
-     * specified by the given node.
-     * 
-     * @param node
-     *            the node
-     */
-    private void activateSubgraph(final KNode node) {
-        RenderingContextData contextData = RenderingContextData.get(node);
-
-        // mark the node as active
-        contextData.setProperty(KlighdConstants.ACTIVE, true);
-
-        // add all incoming edges
-        for (KEdge incomingEdge : node.getIncomingEdges()) {
-            addEdge(incomingEdge);
-        }
-
-        // add all outgoing edges
-        for (KEdge outgoingEdge : node.getOutgoingEdges()) {
-            addEdge(outgoingEdge);
-        }
-
-        if (sync) {
-            installEdgeSyncAdapter(node);
-        }
-
-        // Look whether a URI is attached to the node's shape layout
-        //  this currently indicates externalized child elements that
-        //  are to be loaded and translated lazily, which has to be done now!
-        URI uri = node.getData(KShapeLayout.class)
-                .getProperty(KlighdConstants.CHILD_URI);
-
-        // proceed recursively if the node is expanded
-        if (node.getChildren().size() > 0) {
-            INode nodeNode = contextData.getProperty(INode.NODE_REP);
-            if (nodeNode != null && nodeNode.getChildArea().isExpanded()) {
-                for (KNode child : node.getChildren()) {
-                    activateSubgraph(child);
-                }
-            }
-        } else //if (!RenderingContextData.get(node).getProperty(KlighdConstants.POPULATED))
-               {
-            KNode result = null;
-            if (uri != null) {
-                try {
-                    Resource res = new ResourceSetImpl().getResource(uri, true);
-                    EObject model = res.getContents().get(0);
-                    ViewContext vc = LightDiagramServices.getInstance().createViewContext(model);
-                    vc.setUpdateStrategy(KlighdDataManager.getInstance().getUpdateStrategyById(
-                            SimpleUpdateStrategy.ID));
-                    LightDiagramServices.getInstance().updateViewContext(vc, model);
-                    res.unload();
-                    result = (KNode) vc.getViewModel();
-                } catch (Exception e) {
-                    StatusManager.getManager()
-                            .handle(new Status(IStatus.ERROR, KlighdPlugin.PLUGIN_ID,
-                                    "Lazy-loading failed"));
-                }
-            }
-            if (result != null) {
-                node.getChildren().addAll(result.getChildren());
-            }
-        }
-    }
-
-    /**
-     * Removes the representations of all edges and marks all nodes as not visualized in the
-     * subgraph specified by the given node.
-     * 
-     * @param node
-     *            the node
-     */
-    private void deactivateSubgraph(final KNode node) {
-        // mark the node as inactive
-        RenderingContextData.get(node).setProperty(KlighdConstants.ACTIVE, false);
-
-        if (sync) {
-            uninstallEdgeSyncAdapter(node);
-        }
-
-        // remove all incoming edges
-        for (KEdge incomingEdge : node.getIncomingEdges()) {
-            removeEdge(incomingEdge);
-        }
-
-        // remove all outgoing edges
-        for (KEdge outgoingEdge : node.getOutgoingEdges()) {
-            removeEdge(outgoingEdge);
-        }
-
-        // proceed recursively
-        for (KNode child : node.getChildren()) {
-            deactivateSubgraph(child);
-        }
-    }
 
     /**
      * Adds a representation for the edge to the appropriate child area.
@@ -1333,6 +1294,19 @@ public class GraphController {
                 }
             }
         });
+    }
+
+    /**
+     * Uninstalls the children synchronization adapter on a node.
+     * 
+     * @param node
+     *            the node
+     */
+    private void uninstallChildrenSyncAdapter(final KNode node) {
+        Adapter childrenSyncAdapter = RenderingContextData.get(node).getProperty(CHILDREN_SYNC_ADAPTER);
+        if (childrenSyncAdapter != null) {
+            node.eAdapters().remove(childrenSyncAdapter);
+        }
     }
 
     /**
