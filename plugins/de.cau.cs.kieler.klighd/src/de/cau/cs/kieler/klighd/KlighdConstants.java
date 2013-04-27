@@ -174,26 +174,22 @@ public final class KlighdConstants {
     public static final IProperty<URI> CHILD_URI = new Property<URI>("klighd.childURI");
 
     /**
-     * Property indicating that the node has been populated. If a node is populated, child
-     * nodes have been created once, e.g. in case of lazy loading.<br>
+     * Property indicating that the node has been populated. A node is populated, if and only if the
+     * node's child nodes are visible in the diagram.<br>
      * <br>
-     * <b>It is intended for KLighD internal use only!</b> 
-     * The property declaration has been moved here from klighd.piccolo's AbstractRenderingController.
+     * <b>It is intended for KLighD internal use only!</b> The property declaration has been moved
+     * here from klighd.piccolo's AbstractRenderingController.
      */
     public static final IProperty<Boolean> POPULATED = new Property<Boolean>("klighd.populated",
             false);
     
     /**
-     * A property for identifying whether a node is currently active. If a node is active, it is
-     * visible.<br>
+     * A property for identifying whether a node is currently active. A node is active if and only
+     * if it is visible.<br>
      * <br>
      * <b>It is intended for KLighD internal use only!</b> The property declaration has been moved
      * here from klighd.piccolo's AbstractRenderingController.
      */
-    // Review with mri: activate the subgraph:
-    // this is probably crucial in case the structure has been changed during an incremental update;
-    // the activity flag is also important in case of inter-level edges in combination with
-    // lazy loading/collapsing+expanding
     public static final IProperty<Boolean> ACTIVE = new Property<Boolean>("klighd.active", false);
 
 // chsch: the following definitions are not used yet but might be in future
