@@ -22,6 +22,8 @@ import org.eclipse.swt.events.MouseMoveListener;
 import org.eclipse.swt.events.MouseTrackListener;
 import org.eclipse.swt.events.MouseWheelListener;
 
+import de.cau.cs.kieler.core.krendering.Trigger;
+
 import edu.umd.cs.piccolox.swt.PSWTCanvas;
 
 /**
@@ -114,6 +116,7 @@ public class KlighdMouseEventListener implements MouseListener, MouseMoveListene
         private static final long serialVersionUID = 4690767684494461534L;
 
         private MouseEvent mouseEvent = null;
+        private int eventType = SWT.None;
         
         private static Component dummySrc = new Component() {
             private static final long serialVersionUID = 2109584415310636543L;
@@ -128,6 +131,7 @@ public class KlighdMouseEventListener implements MouseListener, MouseMoveListene
         public KlighdMouseEvent(final MouseEvent me, final int type) {
             super(dummySrc, type, me.time, 0, me.x, me.y, 0, false, me.button);
             this.mouseEvent = me;
+            this.eventType = type;
         }
 
         /**
@@ -137,6 +141,29 @@ public class KlighdMouseEventListener implements MouseListener, MouseMoveListene
          */
         public MouseEvent getMouseEvent() {
             return mouseEvent;
+        }
+        
+        /**
+         * Getter.
+         * 
+         * @return the original SWT event type
+         */
+        public int getEventType() {
+            return eventType;
+        }
+        
+        /**
+         * Provides the MouseEventType translated into values of {@link Trigger}.
+         * 
+         * TODO: supports currently only double clicks, further events are still to be translated.
+         * 
+         * @return the event {@link Trigger}.
+         */
+        public Trigger getTrigger() {
+            if (eventType == SWT.MouseDoubleClick) {
+                return Trigger.DOUBLECLICK;
+            }
+            return null;
         }
     }
 }

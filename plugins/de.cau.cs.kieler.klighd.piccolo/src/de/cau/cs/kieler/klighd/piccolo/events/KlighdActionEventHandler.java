@@ -20,11 +20,11 @@ import com.google.common.collect.Iterables;
 
 import de.cau.cs.kieler.core.krendering.KAction;
 import de.cau.cs.kieler.core.krendering.KRendering;
-import de.cau.cs.kieler.core.krendering.Trigger;
 import de.cau.cs.kieler.kiml.config.ILayoutConfig;
+import de.cau.cs.kieler.klighd.IAction;
 import de.cau.cs.kieler.klighd.IAction.ActionContext;
+import de.cau.cs.kieler.klighd.KlighdDataManager;
 import de.cau.cs.kieler.klighd.LightDiagramServices;
-import de.cau.cs.kieler.klighd.actions.CollapseExpandAction;
 import de.cau.cs.kieler.klighd.piccolo.krendering.controller.AbstractKGERenderingController;
 import de.cau.cs.kieler.klighd.piccolo.krendering.viewer.KlighdMouseEventListener.KlighdMouseEvent;
 import de.cau.cs.kieler.klighd.piccolo.krendering.viewer.PiccoloViewer;
@@ -68,7 +68,9 @@ public class KlighdActionEventHandler implements PInputEventListener {
      */
     public void processEvent(final PInputEvent inputEvent, final int eventType) {
         if (inputEvent.getSourceSwingEvent() instanceof KlighdMouseEvent) {
-            KRendering rendering = (KRendering) inputEvent.getPickedNode().getAttribute(
+            final KlighdMouseEvent me = (KlighdMouseEvent) inputEvent.getSourceSwingEvent();
+            
+            final KRendering rendering = (KRendering) inputEvent.getPickedNode().getAttribute(
                     AbstractKGERenderingController.ATTR_KRENDERING);
             if (rendering == null) {
                 return;
@@ -77,15 +79,36 @@ public class KlighdActionEventHandler implements PInputEventListener {
             ActionContext context = null; // construct the context lazily when it is required
             ILayoutConfig config = null;
             
-            viewer.setRecording(true);
+            // this flag is used to track the successful execution of actions
+            //  in order to enable animated diagram changes, the viewer must be informed to
+            //  record view model changes, which is done once an action is actually executed
+            boolean anyActionPerformed = false;
+            
             for (KAction action : Iterables.filter(rendering.getActions(), WELLFORMED)) {
-                if (action.getTrigger().equals(Trigger.DOUBLECLICK) && action.getId() != null) {
-                    if (context == null) {
-                        context = new ActionContext(this.viewer, action.getTrigger(), null, rendering);
+                if (action.getTrigger().equals(me.getTrigger())) {
+                    IAction actionImpl = KlighdDataManager.getInstance().getActionById(
+                            action.getId());
+                    if (actionImpl != null) {
+                        if (context == null) {
+                            context = new ActionContext(this.viewer, action.getTrigger(), null,
+                                    rendering);
+                        }
+                        if (!anyActionPerformed) {
+                            viewer.setRecording(true);
+                            // the related 'setRecording(false) will be performed after the layout
+                            // application
+                        }
+                        config = actionImpl.execute(context);
+                        anyActionPerformed = true;
+                    } else {
+                        continue;
                     }
-                    // initial draft: look up in IAction library must happen here! (TODO)
-                    config = new CollapseExpandAction().execute(context);
                 }
+            }
+            
+            if (!anyActionPerformed) {
+                // if no action has been performed, skip the layout update and return
+                return;
             }
 
             LightDiagramServices.getInstance().layoutDiagram(
