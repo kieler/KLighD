@@ -36,26 +36,39 @@ public final class KlighdDataManager {
 
     /** identifier of the extension point for viewer providers. */
     public static final String EXTP_ID_VIEWER_PROVIDERS = "de.cau.cs.kieler.klighd.viewerProviders";
+    
     /** identifier of the extension point for model transformations. */
     public static final String EXTP_ID_MODEL_TRANSFORMATIONS =
             "de.cau.cs.kieler.klighd.modelTransformations";
+    
     /** identifier of the extension point for update strategies. */
     public static final String EXTP_ID_UPDATE_STRATEGIES = "de.cau.cs.kieler.klighd.updateStrategies";
+    
     /** identifier of the extension point for layout post processors. */
     public static final String EXTP_ID_LAYOUT_POST_PROCESSORS =
             "de.cau.cs.kieler.klighd.layoutPostProcessors";
 
+    /** identifier of the extension point for actions. */
+    public static final String EXTP_ID_ACTION = "de.cau.cs.kieler.klighd.actions";
+
     /** name of the 'viewer' element. */
     public static final String ELEMENT_VIEWER = "viewer";
+    
     /** name of the 'transformation' element. */
     public static final String ELEMENT_TRANSFORMATION = "transformation";
+    
     /** name of the 'updateStrategy' element. */
     public static final String ELEMENT_UPDATE_STRATEGY = "updateStrategy";
+    
     /** name of the 'styleModifier' element. */
     public static final String ELEMENT_STYLE_MODIFIER = "styleModifier";
 
+    /** name of the 'action' element. */
+    public static final String ELEMENT_ACTION = "action";
+
     /** name of the 'id' attribute in the extension points. */
     public static final String ATTRIBUTE_ID = "id";
+    
     /** name of the 'class' attribute in the extension points. */
     public static final String ATTRIBUTE_CLASS = "class";
     
@@ -71,12 +84,18 @@ public final class KlighdDataManager {
 
     /** the mapping of ids on the associated transformations. */
     private Map<String, ITransformation<?, ?>> idTransformationMapping = Maps.newHashMap();
+    
     /** the mapping of ids on the associated viewer providers. */
     private Map<String, IViewerProvider<?>> idViewerProviderMapping = Maps.newHashMap();
+    
     /** the mapping of ids on the associated update strategies. */
     private Map<String, IUpdateStrategy<?>> idUpdateStrategyMapping = Maps.newHashMap();
+    
     /** the mapping of ids on the associated style modifiers. */
     private Map<String, IStyleModifier> idStyleModifierMapping = Maps.newHashMap();
+
+    /** the mapping of ids on the associated actions. */
+    private Map<String, IAction> idActionMapping = Maps.newHashMap();
 
     /**
      * A private constructor to prevent instantiation.
@@ -101,6 +120,7 @@ public final class KlighdDataManager {
         }
         instance.loadUpdateStrategyExtension();
         instance.loadLayoutPostProcessorExtension();
+        instance.loadActionExtension();
     }
 
     /**
@@ -260,6 +280,33 @@ public final class KlighdDataManager {
     }
     
     /**
+     * Loads and registers all actions from the extension point.
+     */
+    private void loadActionExtension() {
+        IConfigurationElement[] extensions = Platform.getExtensionRegistry()
+                .getConfigurationElementsFor(EXTP_ID_ACTION);
+        for (IConfigurationElement element : extensions) {
+            try {
+                if (ELEMENT_ACTION.equals(element.getName())) {
+                    // initialize style modifier from the extension point
+                    IAction action = (IAction) element
+                            .createExecutableExtension(ATTRIBUTE_CLASS);
+                    if (action != null) {
+                        String id = element.getAttribute(ATTRIBUTE_ID);
+                        if (id == null || id.length() == 0) {
+                            reportError(EXTP_ID_ACTION, element, ATTRIBUTE_ID, null);
+                        } else {
+                            idActionMapping.put(id, action);
+                        }
+                    }
+                }
+            } catch (CoreException exception) {
+                StatusManager.getManager().handle(exception, KlighdPlugin.PLUGIN_ID);
+            }
+        }
+    }
+    
+    /**
      * Returns the graph containing the registered transformations.
      * 
      * @return the transformations graph
@@ -316,6 +363,17 @@ public final class KlighdDataManager {
      */
     public IStyleModifier getStyleModifierById(final String id) {
         return idStyleModifierMapping.get(id);
+    }
+    
+    /**
+     * Returns the action with the given identifier.
+     * 
+     * @param id
+     *            the identifier
+     * @return the action
+     */
+    public IAction getActionById(final String id) {
+        return idActionMapping.get(id);
     }
     
 }
