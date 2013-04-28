@@ -22,8 +22,10 @@ import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.graphics.LineAttributes;
 import org.eclipse.swt.graphics.RGB;
 
+import de.cau.cs.kieler.core.math.KVector;
 import de.cau.cs.kieler.core.properties.IProperty;
 import de.cau.cs.kieler.core.properties.Property;
+import de.cau.cs.kieler.klighd.actions.CollapseExpandAction;
 import de.cau.cs.kieler.klighd.microlayout.Bounds;
 
 /**
@@ -133,7 +135,7 @@ public final class KlighdConstants {
      * Identifier of the built-in collapse expand action to be mentioned in instances of
      * {@link de.cau.cs.kieler.core.krendering.KAction KAction}.
      */
-    public static final String ACTION_COLLAPSE_EXPAND = "klighd.collapse.expand";
+    public static final String ACTION_COLLAPSE_EXPAND = CollapseExpandAction.ID;
 
     /**
      * The minimal size of {@link de.cau.cs.kieler.core.kgraph.KNode KNodes} that is applied in case
@@ -141,6 +143,23 @@ public final class KlighdConstants {
      */
     public static final Bounds MINIMAL_NODE_BOUNDS = new Bounds(10, 10);
     
+    /**
+     * Property to determine the minimal size of a node that has to hold for the node's whole
+     * "life time".<br>
+     * The {@link de.cau.cs.kieler.kiml.options.LayoutOptions#MIN_WIDTH LayoutOptions#MIN_WIDTH}/
+     * {@link de.cau.cs.kieler.kiml.options.LayoutOptions#MIN_HEIGHT LayoutOptions#MIN_HEIGHT}
+     * properties are not sufficient as they have to be modified for hierarchical diagrams before
+     * each automatic layout run.<br>
+     * <br>
+     * <b>Caution</b>: This property has been defined in
+     * {@link de.cau.cs.kieler.core.krendering.extensions.KNodeExtensions KNodeExtensions}, too, in
+     * order to enable the independence of both bundles. This is possible as {@link IProperty
+     * IProperties} are determined to be equal or unequal based on their id's.
+     */
+    public static final IProperty<KVector> MINIMAL_NODE_SIZE = new Property<KVector>(
+            "klighd.minimalNodeSize", new KVector(KlighdConstants.MINIMAL_NODE_BOUNDS.getWidth(),
+                    KlighdConstants.MINIMAL_NODE_BOUNDS.getHeight()));
+
     /**
      * Property to be attached to root {@link de.cau.cs.kieler.core.krendering.KRendering
      * KRendering} objects of {@link de.cau.cs.kieler.core.kgraph.KNode KNodes} during the view
@@ -192,32 +211,6 @@ public final class KlighdConstants {
      */
     public static final IProperty<Boolean> ACTIVE = new Property<Boolean>("klighd.active", false);
 
-// chsch: the following definitions are not used yet but might be in future
-//    /**
-//     * An enumeration whose values denote the states of KNodes in a diagram.
-//     * 
-//     * @author chsch
-//     */
-//    public static enum KNodeState {
-//        /**Denotes the absence of any children of a {@link de.cau.cs.kieler.core.kgraph.KNode KNode}.*/
-//        EMPTY,
-//        /** Denotes the potential presence of some children in a
-//         * {@link de.cau.cs.kieler.core.kgraph.KNode KNode}, none of them is loaded and visible. */
-//        COLLAPSED,
-//        /** Denotes the presence of children in a {@link de.cau.cs.kieler.core.kgraph.KNode KNode},
-//         * none of them is visible. */
-//        COLLAPSED_POPULATED,
-//        /** Denotes the presence of children in a {@link de.cau.cs.kieler.core.kgraph.KNode KNode},
-//         * and they are visible. */
-//        EXPANDED
-//    }
-//    
-//    /**
-//     * The property that is used to track the state of KNodes in a diagram.
-//     */
-//    public static final IProperty<KNodeState> KNODE_STATE = new Property<KlighdConstants.KNodeState>(
-//            "klighd.knodeState", KNodeState.EMPTY);
-    
     /**
      * Property to be attached to the {@link de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout
      * KShapeLayout} of a view model's nodes for properly performing regression tests.
