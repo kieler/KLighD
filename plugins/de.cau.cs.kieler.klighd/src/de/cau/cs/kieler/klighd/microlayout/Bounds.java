@@ -15,6 +15,7 @@ package de.cau.cs.kieler.klighd.microlayout;
 
 import java.awt.geom.Rectangle2D;
 
+import de.cau.cs.kieler.core.math.KVector;
 import de.cau.cs.kieler.core.util.Pair;
 import de.cau.cs.kieler.kiml.klayoutdata.KInsets;
 import de.cau.cs.kieler.kiml.klayoutdata.KLayoutDataFactory;
@@ -295,6 +296,17 @@ public class Bounds {
     }
     
     /**
+     * Constructs a new bounds object with the data of the given bounds.
+     * 
+     * @param bounds
+     *            bounds
+     * @return the desired {@link Bounds} object
+     */
+    public static Bounds of(final Bounds bounds) {
+        return new Bounds(bounds);
+    }
+   
+    /**
      * Constructs bounds with the given dimensions and (x,y) coordinates (0,0).
      * 
      * @param width
@@ -316,6 +328,17 @@ public class Bounds {
      */
     public static Bounds of(final Rectangle2D rect) {
         return new Bounds(rect);
+    }
+    
+    /**
+     * Constructs bounds from the given {@link KVector}.
+     * 
+     * @param sizeVector
+     *            the {@link KVector} to take x as width, and  y as height from
+     * @return the desired {@link Bounds} object
+     */
+    public static Bounds of(final KVector sizeVector) {
+        return new Bounds(sizeVector.x, sizeVector.y);
     }
     
     /**

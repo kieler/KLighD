@@ -43,7 +43,6 @@ import de.cau.cs.kieler.kiml.klayoutdata.KLayoutDataFactory;
 import de.cau.cs.kieler.kiml.klayoutdata.KPoint;
 import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout;
 import de.cau.cs.kieler.kiml.options.LayoutOptions;
-import de.cau.cs.kieler.kiml.options.SizeConstraint;
 import de.cau.cs.kieler.kiml.ui.diagram.IDiagramLayoutManager;
 import de.cau.cs.kieler.kiml.ui.diagram.LayoutMapping;
 import de.cau.cs.kieler.kiml.ui.service.EclipseLayoutConfig;
@@ -250,14 +249,12 @@ public class DiagramLayoutManager implements IDiagramLayoutManager<KGraphElement
     }
     
     /**
-     * A property definition that is used to store the initial minimal node size.<br>
-     * The {@link LayoutOptions#MIN_WIDTH}/{@link LayoutOptions#MIN_HEIGHT} properties are not sufficient
-     * as they have to be modified for hierarchical diagrams.
+     * An internal property attached to a node's shape layout when the size of the node is affected
+     * by KIML. It is used to decide which value to rely on for the minimal node size.
      */
-    private static final IProperty<KVector> MINIMAL_NODE_SIZE = new Property<KVector>(
-            "klighd.minimalNodeSize", new KVector(KlighdConstants.MINIMAL_NODE_BOUNDS.getWidth(),
-                    KlighdConstants.MINIMAL_NODE_BOUNDS.getHeight()));
-
+    private static final IProperty<Boolean> INITIAL_NODE_SIZE = new Property<Boolean>(
+            "klighd.initialNodeSize", true);
+    
     /**
      * Creates a layout node for the node inside the given layout parent node.
      * 
@@ -275,6 +272,9 @@ public class DiagramLayoutManager implements IDiagramLayoutManager<KGraphElement
         // initialize with defaultLayout and try to get specific layout attached to the node
         KShapeLayout layoutLayout = layoutNode.getData(KShapeLayout.class);
         KShapeLayout nodeLayout = node.getData(KShapeLayout.class);
+        
+        boolean isCompoundNode = RenderingContextData.get(node).getProperty(KlighdConstants.POPULATED)
+                && Iterables.any(node.getChildren(), RenderingContextData.CHILD_ACTIVE);
 
         Bounds size = null;
         if (nodeLayout != null) {
@@ -282,84 +282,49 @@ public class DiagramLayoutManager implements IDiagramLayoutManager<KGraphElement
             // so take that as node layout instead of the default-layout
             transferShapeLayout(nodeLayout, layoutLayout);
             
-            if (!nodeLayout.getProperty(LayoutOptions.SIZE_CONSTRAINT).equals(SizeConstraint.fixed())) {
+            // In the following the minimal width and height of the node is determined, which
+            //  is used as a basis for the size estimation (necessary for grid-based micro layouts).
 
-                final IProperty<Float> pMW = LayoutOptions.MIN_WIDTH;
-                final IProperty<Float> pMH = LayoutOptions.MIN_HEIGHT;
+            // We start with standard minimal bounds given in the related constant. 
+            Bounds minSize = Bounds.of(KlighdConstants.MINIMAL_NODE_BOUNDS);
+            // check the definition of the minimal size property
+            boolean minNodeSizeIsSet = nodeLayout.getProperties().containsKey(
+                    KlighdConstants.MINIMAL_NODE_SIZE);
+            
+            if (minNodeSizeIsSet) {
+                // if the minimal node size is given in terms of the dedicated property, use its values
+                minSize = Bounds.of(nodeLayout.getProperty(KlighdConstants.MINIMAL_NODE_SIZE));
+            } else if (!isCompoundNode || nodeLayout.getProperty(INITIAL_NODE_SIZE)) {
+                // otherwise, if the node is a non-compound one or the size is not yet modified by KIML
+                //  take the component-wise maximum of the standard bounds and 'nodelayout's values 
+                minSize = Bounds.max(minSize, Bounds.of(nodeLayout.getWidth(), nodeLayout.getHeight()));
+            }
                 
-                RenderingContextData rcd = RenderingContextData.get(node);
-    
-                // In the following the minimal width and height of the node is determined, which
-                //  is used as a basis for the size estimation (necessary for grid-based micro layouts).
-                // This minimal size is saved in the RenderingContextData attached to the node at the
-                //  first time and re-used later on.
-                // TODO: This prevents size adjustments in textually formulated diagrams. 
+            // explicitly store the determined minimal node size in the layout data of the node
+            //  note that this information will be removed or overwritten by the update strategies
+            boolean deliver = nodeLayout.eDeliver();
+            nodeLayout.eSetDeliver(false);
+            nodeLayout.setProperty(KlighdConstants.MINIMAL_NODE_SIZE,
+                    new KVector(minSize.getWidth(), minSize.getHeight()));
+            nodeLayout.eSetDeliver(deliver);
+
+            KRendering rootRendering = node.getData(KRendering.class);
+            // if a rendering definition is given ...
+            if (rootRendering != null) {
                 
-                float minWidth = 0;
-                if (!rcd.containsPoperty(pMW)) {
-                    
-                    // minWidth is initialized with nodeLayout.width
-                    minWidth = nodeLayout.getWidth();
-                    
-                    // if it is not initialized, i.e. 0f that is the default of MIN_WIDTH
-                    if (minWidth == pMW.getDefault()) {
-                        // MIN_WIDTH is evaluated for nodeLayout
-                        minWidth = nodeLayout.getProperty(pMW);
-                    }
-                    // if this does not change the value, too, MINIMAL_NODE_SIZE is evaluated
-                    //  that might be set by the diagram synthesis
-                    //  if it is not set, its default value is taken
-                    if (minWidth == pMW.getDefault()) {
-                        minWidth = (float) nodeLayout.getProperty(MINIMAL_NODE_SIZE).x;
-                    }
-                    // save the minWidth in the rendering context data
-                    rcd.setProperty(pMW, minWidth);                
-                } else {
-                    // load the minWidth from the rendering context data
-                    minWidth = rcd.getProperty(pMW);
-                }
-    
-                // analogously
-                float minHeight = 0;
-                if (!rcd.containsPoperty(pMH)) {
-                    minHeight = nodeLayout.getHeight();
-                    if (minHeight == pMH.getDefault()) {
-                        minHeight = nodeLayout.getProperty(pMH);
-                    }
-                    if (minHeight == pMH.getDefault()) {
-                        minHeight = (float) nodeLayout.getProperty(MINIMAL_NODE_SIZE).y;
-                    }
-                    rcd.setProperty(pMH, minHeight);
-                } else {
-                    minHeight = rcd.getProperty(pMH);
-                }
-    
+                // ... calculate the minimal required size based on the determined 'minSize' bounds
+                size = Bounds.max(minSize, PlacementUtil.estimateSize(rootRendering, minSize));
+
                 // integrate the minimal estimated node size
-                //  manipulating the nodeLayout of a hierarchical node with active children may cause
-                //   immediate glitches in the diagram, so only the MIN_WIDTH/MIN_HEIGHT properties are
-                //   set
-                //  in case of non-hierarchical nodes the layoutLayout is updated since the size is
-                //   required during the layout and will be transfered while applying the resulting
-                //   layout
-                KRendering rootRendering = node.getData(KRendering.class);
-                if (rootRendering != null) {
-                    
-                    Bounds minSize = Bounds.max(
-                            Bounds.of(minWidth, minHeight),
-                            KlighdConstants.MINIMAL_NODE_BOUNDS);
-                    
-                    // calculate the minimal size need for the rendering ...
-                    Bounds estimatedSize = PlacementUtil.estimateSize(rootRendering, minSize);
-                    // new Bounds(layoutLayout.getWidth(), layoutLayout.getHeight()));
-                    // ... and update the node size if it exceeds its size
-                    
-                    size = Bounds.max(minSize, estimatedSize);
-                    if (Iterables.any(node.getChildren(), RenderingContextData.CHILD_ACTIVE)) {
-                        nodeLayout.setProperty(LayoutOptions.MIN_WIDTH, size.getWidth());
-                        nodeLayout.setProperty(LayoutOptions.MIN_HEIGHT, size.getHeight());
-                    } else {
-                        layoutLayout.setSize(size.getWidth(), size.getHeight());
-                    }
+                //  in case of a compound node, the minimal node size to be preserved by KIML must be
+                //   handed over by means of the MIN_WIDTH/MIN_HEIGHT properties
+                //  in case of non-hierarchical nodes the node size is taken from the layoutLayout
+                //   directly
+                if (isCompoundNode) {
+                    nodeLayout.setProperty(LayoutOptions.MIN_WIDTH, size.getWidth());
+                    nodeLayout.setProperty(LayoutOptions.MIN_HEIGHT, size.getHeight());
+                } else {
+                    layoutLayout.setSize(size.getWidth(), size.getHeight());
                 }
             }
         }
@@ -382,7 +347,9 @@ public class DiagramLayoutManager implements IDiagramLayoutManager<KGraphElement
         }
 
         // process the child as new parent
-        processNodes(mapping, node, layoutNode);
+        if (isCompoundNode) {
+            processNodes(mapping, node, layoutNode);
+        }
 
         // store all the edges to process them later
         List<KEdge> edges = mapping.getProperty(EDGES);
@@ -433,6 +400,12 @@ public class DiagramLayoutManager implements IDiagramLayoutManager<KGraphElement
         // iterate through the list of collected edges
         List<KEdge> edges = mapping.getProperty(EDGES);
         for (KEdge edge : edges) {
+            
+            KEdgeLayout layout = edge.getData(KEdgeLayout.class);
+            if (layout == null || layout.getProperty(LayoutOptions.NO_LAYOUT)) {
+                continue;
+            }
+                
             KNode layoutSource = (KNode) graphMap.get(edge.getSource());
             KNode layoutTarget = (KNode) graphMap.get(edge.getTarget());
 
@@ -444,9 +417,7 @@ public class DiagramLayoutManager implements IDiagramLayoutManager<KGraphElement
             if (edge.getTargetPort() != null) {
                 layoutTargetPort = (KPort) graphMap.get(edge.getTargetPort());
             }
-            KEdgeLayout edgeLayout = edge.getData(KEdgeLayout.class);
-            if (layoutSource != null && layoutTarget != null && edgeLayout != null
-                    && !edgeLayout.getProperty(LayoutOptions.NO_LAYOUT)) {
+            if (layoutSource != null && layoutTarget != null) {
                 createEdge(mapping, edge, layoutSource, layoutTarget, layoutSourcePort,
                         layoutTargetPort);
             }
@@ -595,6 +566,7 @@ public class DiagramLayoutManager implements IDiagramLayoutManager<KGraphElement
                     KShapeLayout nodeLayout = element.getData(KShapeLayout.class);
                     if (nodeLayout != null) {
                         transferShapeLayout(layoutLayout, nodeLayout);
+                        nodeLayout.setProperty(INITIAL_NODE_SIZE, false);
                     }
                     return true;
                 }

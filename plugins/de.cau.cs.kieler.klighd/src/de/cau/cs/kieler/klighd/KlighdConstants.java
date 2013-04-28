@@ -141,7 +141,7 @@ public final class KlighdConstants {
      * The minimal size of {@link de.cau.cs.kieler.core.kgraph.KNode KNodes} that is applied in case
      * no definition is given for a particular node.
      */
-    public static final Bounds MINIMAL_NODE_BOUNDS = new Bounds(10, 10);
+    public static final Bounds MINIMAL_NODE_BOUNDS = Bounds.immutableCopy(new Bounds(10, 10));
     
     /**
      * Property to determine the minimal size of a node that has to hold for the node's whole
