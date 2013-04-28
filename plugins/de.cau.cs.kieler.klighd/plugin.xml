@@ -96,5 +96,12 @@
             priority="normal">
       </diffengine>
    </extension>
+   <extension
+         point="de.cau.cs.kieler.klighd.actions">
+      <action
+            class="de.cau.cs.kieler.klighd.actions.CollapseExpandAction"
+            id="de.cau.cs.kieler.klighd.actions.CollapseExpandAction">
+      </action>
+   </extension>
 
 </plugin>

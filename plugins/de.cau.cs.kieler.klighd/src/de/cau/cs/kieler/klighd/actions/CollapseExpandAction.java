@@ -25,6 +25,12 @@ import de.cau.cs.kieler.klighd.IAction;
 public class CollapseExpandAction implements IAction {
     
     /**
+     * The extension id of this actions. This id is to be mentioned in instances of
+     * {@link de.cau.cs.kieler.core.krendering.KAction KAction}.
+     */
+    public static final String ID = "de.cau.cs.kieler.klighd.actions.CollapseExpandAction";
+    
+    /**
      * {@inheritDoc}.<br>
      * <br>
      * This ones expands the KNode provided in 'context'.<br>
