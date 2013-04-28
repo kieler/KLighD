@@ -17,6 +17,7 @@ import de.cau.cs.kieler.core.kgraph.KGraphPackage;
 import de.cau.cs.kieler.core.kgraph.KNode;
 import de.cau.cs.kieler.core.krendering.KRendering;
 import de.cau.cs.kieler.core.krendering.Trigger;
+import de.cau.cs.kieler.kiml.config.ILayoutConfig;
 import de.cau.cs.kieler.klighd.util.ModelingUtil;
 
 /**
@@ -32,9 +33,10 @@ public interface IAction {
      * 
      * @param context
      *            an {@link ActionContext} instance providing various useful data.
-     * @return true of the action could be performed successful, false otherwise
+     * @return a specific {@link ILayoutConfig} to be incorporated while updating the layout after
+     *         the action has been performed, or <code>null</code>.
      */
-    boolean execute(ActionContext context);
+    ILayoutConfig execute(ActionContext context);
 
     /**
      * This class comprises various useful data required for performing things in diagrams.
