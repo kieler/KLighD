@@ -5,6 +5,7 @@ package de.cau.cs.kieler.core.kgraph.text.ui.contentassist;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.xtext.*;
+import org.eclipse.xtext.ui.editor.contentassist.AbstractJavaBasedContentProposalProvider;
 import org.eclipse.xtext.ui.editor.contentassist.ICompletionProposalAcceptor;
 import org.eclipse.xtext.ui.editor.contentassist.ContentAssistContext;
 
@@ -14,7 +15,7 @@ import org.eclipse.xtext.ui.editor.contentassist.ContentAssistContext;
  * with a more concrete subtype. 
  */
 @SuppressWarnings("all")
-public class AbstractKGraphProposalProvider extends org.eclipse.xtext.ui.editor.contentassist.AbstractJavaBasedContentProposalProvider {
+public class AbstractKGraphProposalProvider extends AbstractJavaBasedContentProposalProvider {
 		
 	public void completeParentKNode_Data(EObject model, Assignment assignment, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
 		completeRuleCall(((RuleCall)assignment.getTerminal()), context, acceptor);

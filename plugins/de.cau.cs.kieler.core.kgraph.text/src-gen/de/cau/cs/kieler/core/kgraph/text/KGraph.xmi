@@ -2238,6 +2238,7 @@
       <classifier xsi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     </type>
     <alternatives xsi:type="xtext:Group">
+      <elements xsi:type="xtext:Keyword" cardinality="?" value="^"/>
       <elements xsi:type="xtext:Alternatives">
         <elements xsi:type="xtext:CharacterRange">
           <left value="a"/>
