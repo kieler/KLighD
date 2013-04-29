@@ -13,11 +13,16 @@
  */
 package de.cau.cs.kieler.core.kgraph.text;
 
+import org.eclipse.xtext.linking.impl.Linker;
+import org.eclipse.xtext.resource.XtextResource;
+
 import de.cau.cs.kieler.core.kgraph.text.scoping.KGraphQualifiedNameProvider;
 
 /**
- * Use this class to register components to be used at runtime / without the Equinox extension
- * registry.
+ * This class defines some customizations on the textual KGraph editing tooling.
+ * 
+ * @author chsch
+ * @author msp
  */
 public class KGraphRuntimeModule extends AbstractKGraphRuntimeModule {
 
@@ -35,6 +40,29 @@ public class KGraphRuntimeModule extends AbstractKGraphRuntimeModule {
     @Override
     public Class<? extends org.eclipse.xtext.conversion.IValueConverterService> bindIValueConverterService() {
         return KGraphValueConverters.class;
+    }
+
+    /**
+     * Method registers a customized {@link org.eclipse.xtext.linking.lazy.LazyLinkingResource} in
+     * order to handle the (de-) serialization of {@link de.cau.cs.kieler.core.properties.IProperty}s
+     * correctly.
+     * 
+     * @return the {@link KGraphResource} class
+     */
+    public Class<? extends XtextResource> bindXtextResource() {
+        return KGraphResource.class;
+    }
+    
+    /**
+     * Method registers the non-lazy linking Linker since the default
+     * {@link org.eclipse.xtext.linking.lazy.LazyLinker} doesn't work properly with EOpposite
+     * references. (Produces error markers in editor.)
+     * 
+     * @return the {@link Linker} class
+     */
+    @Override
+    public Class<? extends org.eclipse.xtext.linking.ILinker> bindILinker() {
+        return Linker.class;
     }
     
 }
