@@ -400,6 +400,11 @@ public final class DiagramViewManager implements IPartListener {
             registered = true;
             IWorkbenchPage page =
                     PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
+
+            if (page == null) {
+                return;
+            }
+
             // find existing views
             IViewReference[] viewReferences = page.getViewReferences();
             for (IViewReference viewReference : viewReferences) {
