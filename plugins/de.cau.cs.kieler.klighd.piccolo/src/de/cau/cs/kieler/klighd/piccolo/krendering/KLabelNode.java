@@ -16,6 +16,8 @@ package de.cau.cs.kieler.klighd.piccolo.krendering;
 import de.cau.cs.kieler.core.kgraph.KLabel;
 import de.cau.cs.kieler.core.properties.IProperty;
 import de.cau.cs.kieler.core.properties.Property;
+import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout;
+import de.cau.cs.kieler.klighd.KlighdConstants;
 import de.cau.cs.kieler.klighd.util.RenderingContextData;
 import de.cau.cs.kieler.klighd.piccolo.krendering.controller.AbstractKGERenderingController;
 import de.cau.cs.kieler.klighd.piccolo.krendering.controller.KLabelRenderingController;
@@ -55,6 +57,9 @@ public class KLabelNode extends PEmptyNode implements IGraphElement<KLabel> {
     public KLabelNode(final KLabel label) {
         this.label = label;
         setPickable(true);
+        Boolean b = label.getData(KShapeLayout.class).getProperty(
+                KlighdConstants.KLIGHD_SELECTION_UNPICKABLE);
+        setPickable(b != null && b.equals(Boolean.TRUE) ? false : true);
         RenderingContextData.get(label).setProperty(LABEL_REP, this);
     }
 
