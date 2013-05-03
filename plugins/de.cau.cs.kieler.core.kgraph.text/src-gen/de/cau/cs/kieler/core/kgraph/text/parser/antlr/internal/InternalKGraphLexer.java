@@ -3855,9 +3855,27 @@ public class InternalKGraphLexer extends Lexer {
         try {
             int _type = RULE_ID;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7608:9: ( ( 'a' .. 'z' | 'A' .. 'Z' | '_' ) ( 'a' .. 'z' | 'A' .. 'Z' | '_' | '0' .. '9' )* )
-            // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7608:11: ( 'a' .. 'z' | 'A' .. 'Z' | '_' ) ( 'a' .. 'z' | 'A' .. 'Z' | '_' | '0' .. '9' )*
+            // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7608:9: ( ( '^' )? ( 'a' .. 'z' | 'A' .. 'Z' | '_' ) ( 'a' .. 'z' | 'A' .. 'Z' | '_' | '0' .. '9' )* )
+            // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7608:11: ( '^' )? ( 'a' .. 'z' | 'A' .. 'Z' | '_' ) ( 'a' .. 'z' | 'A' .. 'Z' | '_' | '0' .. '9' )*
             {
+            // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7608:11: ( '^' )?
+            int alt44=2;
+            int LA44_0 = input.LA(1);
+
+            if ( (LA44_0=='^') ) {
+                alt44=1;
+            }
+            switch (alt44) {
+                case 1 :
+                    // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7608:11: '^'
+                    {
+                    match('^'); 
+
+                    }
+                    break;
+
+            }
+
             if ( (input.LA(1)>='A' && input.LA(1)<='Z')||input.LA(1)=='_'||(input.LA(1)>='a' && input.LA(1)<='z') ) {
                 input.consume();
 
@@ -3867,18 +3885,18 @@ public class InternalKGraphLexer extends Lexer {
                 recover(mse);
                 throw mse;}
 
-            // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7608:35: ( 'a' .. 'z' | 'A' .. 'Z' | '_' | '0' .. '9' )*
-            loop44:
+            // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7608:40: ( 'a' .. 'z' | 'A' .. 'Z' | '_' | '0' .. '9' )*
+            loop45:
             do {
-                int alt44=2;
-                int LA44_0 = input.LA(1);
+                int alt45=2;
+                int LA45_0 = input.LA(1);
 
-                if ( ((LA44_0>='0' && LA44_0<='9')||(LA44_0>='A' && LA44_0<='Z')||LA44_0=='_'||(LA44_0>='a' && LA44_0<='z')) ) {
-                    alt44=1;
+                if ( ((LA45_0>='0' && LA45_0<='9')||(LA45_0>='A' && LA45_0<='Z')||LA45_0=='_'||(LA45_0>='a' && LA45_0<='z')) ) {
+                    alt45=1;
                 }
 
 
-                switch (alt44) {
+                switch (alt45) {
             	case 1 :
             	    // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:
             	    {
@@ -3896,7 +3914,7 @@ public class InternalKGraphLexer extends Lexer {
             	    break;
 
             	default :
-            	    break loop44;
+            	    break loop45;
                 }
             } while (true);
 
@@ -3921,20 +3939,20 @@ public class InternalKGraphLexer extends Lexer {
             {
             match('\"'); 
             // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7610:19: ( '\\\\' ( 'b' | 't' | 'n' | 'f' | 'r' | 'u' | '\"' | '\\\\' ) | ~ ( ( '\\\\' | '\"' ) ) )*
-            loop45:
+            loop46:
             do {
-                int alt45=3;
-                int LA45_0 = input.LA(1);
+                int alt46=3;
+                int LA46_0 = input.LA(1);
 
-                if ( (LA45_0=='\\') ) {
-                    alt45=1;
+                if ( (LA46_0=='\\') ) {
+                    alt46=1;
                 }
-                else if ( ((LA45_0>='\u0000' && LA45_0<='!')||(LA45_0>='#' && LA45_0<='[')||(LA45_0>=']' && LA45_0<='\uFFFF')) ) {
-                    alt45=2;
+                else if ( ((LA46_0>='\u0000' && LA46_0<='!')||(LA46_0>='#' && LA46_0<='[')||(LA46_0>=']' && LA46_0<='\uFFFF')) ) {
+                    alt46=2;
                 }
 
 
-                switch (alt45) {
+                switch (alt46) {
             	case 1 :
             	    // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7610:20: '\\\\' ( 'b' | 't' | 'n' | 'f' | 'r' | 'u' | '\"' | '\\\\' )
             	    {
@@ -3968,7 +3986,7 @@ public class InternalKGraphLexer extends Lexer {
             	    break;
 
             	default :
-            	    break loop45;
+            	    break loop46;
                 }
             } while (true);
 
@@ -3995,29 +4013,29 @@ public class InternalKGraphLexer extends Lexer {
             match("/*"); 
 
             // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7612:24: ( options {greedy=false; } : . )*
-            loop46:
+            loop47:
             do {
-                int alt46=2;
-                int LA46_0 = input.LA(1);
+                int alt47=2;
+                int LA47_0 = input.LA(1);
 
-                if ( (LA46_0=='*') ) {
-                    int LA46_1 = input.LA(2);
+                if ( (LA47_0=='*') ) {
+                    int LA47_1 = input.LA(2);
 
-                    if ( (LA46_1=='/') ) {
-                        alt46=2;
+                    if ( (LA47_1=='/') ) {
+                        alt47=2;
                     }
-                    else if ( ((LA46_1>='\u0000' && LA46_1<='.')||(LA46_1>='0' && LA46_1<='\uFFFF')) ) {
-                        alt46=1;
+                    else if ( ((LA47_1>='\u0000' && LA47_1<='.')||(LA47_1>='0' && LA47_1<='\uFFFF')) ) {
+                        alt47=1;
                     }
 
 
                 }
-                else if ( ((LA46_0>='\u0000' && LA46_0<=')')||(LA46_0>='+' && LA46_0<='\uFFFF')) ) {
-                    alt46=1;
+                else if ( ((LA47_0>='\u0000' && LA47_0<=')')||(LA47_0>='+' && LA47_0<='\uFFFF')) ) {
+                    alt47=1;
                 }
 
 
-                switch (alt46) {
+                switch (alt47) {
             	case 1 :
             	    // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7612:52: .
             	    {
@@ -4027,7 +4045,7 @@ public class InternalKGraphLexer extends Lexer {
             	    break;
 
             	default :
-            	    break loop46;
+            	    break loop47;
                 }
             } while (true);
 
@@ -4055,17 +4073,17 @@ public class InternalKGraphLexer extends Lexer {
             match("//"); 
 
             // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7614:24: (~ ( ( '\\n' | '\\r' ) ) )*
-            loop47:
+            loop48:
             do {
-                int alt47=2;
-                int LA47_0 = input.LA(1);
+                int alt48=2;
+                int LA48_0 = input.LA(1);
 
-                if ( ((LA47_0>='\u0000' && LA47_0<='\t')||(LA47_0>='\u000B' && LA47_0<='\f')||(LA47_0>='\u000E' && LA47_0<='\uFFFF')) ) {
-                    alt47=1;
+                if ( ((LA48_0>='\u0000' && LA48_0<='\t')||(LA48_0>='\u000B' && LA48_0<='\f')||(LA48_0>='\u000E' && LA48_0<='\uFFFF')) ) {
+                    alt48=1;
                 }
 
 
-                switch (alt47) {
+                switch (alt48) {
             	case 1 :
             	    // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7614:24: ~ ( ( '\\n' | '\\r' ) )
             	    {
@@ -4083,29 +4101,29 @@ public class InternalKGraphLexer extends Lexer {
             	    break;
 
             	default :
-            	    break loop47;
+            	    break loop48;
                 }
             } while (true);
 
             // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7614:40: ( ( '\\r' )? '\\n' )?
-            int alt49=2;
-            int LA49_0 = input.LA(1);
+            int alt50=2;
+            int LA50_0 = input.LA(1);
 
-            if ( (LA49_0=='\n'||LA49_0=='\r') ) {
-                alt49=1;
+            if ( (LA50_0=='\n'||LA50_0=='\r') ) {
+                alt50=1;
             }
-            switch (alt49) {
+            switch (alt50) {
                 case 1 :
                     // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7614:41: ( '\\r' )? '\\n'
                     {
                     // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7614:41: ( '\\r' )?
-                    int alt48=2;
-                    int LA48_0 = input.LA(1);
+                    int alt49=2;
+                    int LA49_0 = input.LA(1);
 
-                    if ( (LA48_0=='\r') ) {
-                        alt48=1;
+                    if ( (LA49_0=='\r') ) {
+                        alt49=1;
                     }
-                    switch (alt48) {
+                    switch (alt49) {
                         case 1 :
                             // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7614:41: '\\r'
                             {
@@ -4143,18 +4161,18 @@ public class InternalKGraphLexer extends Lexer {
             // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7616:11: ( ' ' | '\\t' | '\\r' | '\\n' )+
             {
             // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7616:11: ( ' ' | '\\t' | '\\r' | '\\n' )+
-            int cnt50=0;
-            loop50:
+            int cnt51=0;
+            loop51:
             do {
-                int alt50=2;
-                int LA50_0 = input.LA(1);
+                int alt51=2;
+                int LA51_0 = input.LA(1);
 
-                if ( ((LA50_0>='\t' && LA50_0<='\n')||LA50_0=='\r'||LA50_0==' ') ) {
-                    alt50=1;
+                if ( ((LA51_0>='\t' && LA51_0<='\n')||LA51_0=='\r'||LA51_0==' ') ) {
+                    alt51=1;
                 }
 
 
-                switch (alt50) {
+                switch (alt51) {
             	case 1 :
             	    // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:
             	    {
@@ -4172,12 +4190,12 @@ public class InternalKGraphLexer extends Lexer {
             	    break;
 
             	default :
-            	    if ( cnt50 >= 1 ) break loop50;
+            	    if ( cnt51 >= 1 ) break loop51;
                         EarlyExitException eee =
-                            new EarlyExitException(50, input);
+                            new EarlyExitException(51, input);
                         throw eee;
                 }
-                cnt50++;
+                cnt51++;
             } while (true);
 
 
@@ -4193,9 +4211,9 @@ public class InternalKGraphLexer extends Lexer {
 
     public void mTokens() throws RecognitionException {
         // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:1:8: ( T__19 | T__20 | T__21 | T__22 | T__23 | T__24 | T__25 | T__26 | T__27 | T__28 | T__29 | T__30 | T__31 | T__32 | T__33 | T__34 | T__35 | T__36 | T__37 | T__38 | T__39 | T__40 | T__41 | T__42 | T__43 | T__44 | T__45 | T__46 | T__47 | T__48 | T__49 | T__50 | T__51 | T__52 | T__53 | T__54 | T__55 | T__56 | T__57 | T__58 | T__59 | T__60 | T__61 | T__62 | T__63 | T__64 | T__65 | T__66 | T__67 | T__68 | T__69 | T__70 | T__71 | T__72 | T__73 | T__74 | T__75 | T__76 | T__77 | T__78 | T__79 | T__80 | T__81 | T__82 | T__83 | T__84 | T__85 | T__86 | T__87 | T__88 | T__89 | T__90 | T__91 | T__92 | T__93 | T__94 | T__95 | T__96 | T__97 | T__98 | T__99 | T__100 | T__101 | T__102 | T__103 | T__104 | T__105 | T__106 | T__107 | T__108 | T__109 | T__110 | T__111 | T__112 | T__113 | T__114 | T__115 | T__116 | T__117 | T__118 | T__119 | T__120 | T__121 | T__122 | T__123 | T__124 | T__125 | T__126 | T__127 | RULE_BOOLEAN | RULE_RED | RULE_GREEN | RULE_BLUE | RULE_ALPHA | RULE_FSIZE | RULE_DEGREES | RULE_PERCENT | RULE_TFLOAT | RULE_NATURAL | RULE_ID | RULE_STRING | RULE_ML_COMMENT | RULE_SL_COMMENT | RULE_WS )
-        int alt51=124;
-        alt51 = dfa51.predict(input);
-        switch (alt51) {
+        int alt52=124;
+        alt52 = dfa52.predict(input);
+        switch (alt52) {
             case 1 :
                 // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:1:10: T__19
                 {
@@ -5071,7 +5089,7 @@ public class InternalKGraphLexer extends Lexer {
 
 
     protected DFA42 dfa42 = new DFA42(this);
-    protected DFA51 dfa51 = new DFA51(this);
+    protected DFA52 dfa52 = new DFA52(this);
     static final String DFA42_eotS =
         "\6\uffff";
     static final String DFA42_eofS =
@@ -5126,31 +5144,31 @@ public class InternalKGraphLexer extends Lexer {
             return "7604:15: ( ( '+' | '-' ) ( ( '0' .. '9' )+ ( '.' ( '0' .. '9' )* )? ( ( 'e' | 'E' ) ( '+' | '-' )? ( '0' .. '9' )+ )? | '.' ( '0' .. '9' )+ ( ( 'e' | 'E' ) ( '+' | '-' )? ( '0' .. '9' )+ )? ) | ( '0' .. '9' )+ '.' ( '0' .. '9' )* ( ( 'e' | 'E' ) ( '+' | '-' )? ( '0' .. '9' )+ )? | '.' ( '0' .. '9' )+ ( ( 'e' | 'E' ) ( '+' | '-' )? ( '0' .. '9' )+ )? | ( '0' .. '9' )+ ( 'e' | 'E' ) ( '+' | '-' )? ( '0' .. '9' )+ )";
         }
     }
-    static final String DFA51_eotS =
+    static final String DFA52_eotS =
         "\1\uffff\1\47\6\uffff\1\72\2\uffff\1\47\1\76\1\100\10\47\2\uffff"+
-        "\1\47\1\uffff\10\47\1\151\1\153\2\47\1\162\4\uffff\13\47\1\uffff"+
-        "\1\160\3\uffff\3\47\1\uffff\1\47\1\uffff\50\47\1\uffff\1\160\1\uffff"+
-        "\2\47\5\uffff\1\160\6\uffff\17\47\2\160\1\u00d4\22\47\1\u00e9\36"+
-        "\47\1\u0109\3\47\1\160\15\47\1\u011a\3\47\1\160\1\uffff\4\47\1\u0123"+
-        "\17\47\1\uffff\1\u0133\1\47\1\u0135\1\47\1\u0137\1\47\1\u013b\16"+
-        "\47\1\u014b\4\47\1\u0151\4\47\1\uffff\1\u0157\1\u0158\2\47\1\u015b"+
-        "\1\u015c\2\47\1\u015f\6\47\1\u0167\1\uffff\10\47\1\uffff\2\47\1"+
-        "\u0173\3\47\1\u0177\1\u0178\7\47\1\uffff\1\47\1\uffff\1\47\1\uffff"+
-        "\3\47\1\uffff\1\u0185\1\47\1\u0188\14\47\1\uffff\1\u0133\4\47\1"+
-        "\uffff\4\47\3\uffff\1\u019e\1\u019f\2\uffff\1\47\1\u01a1\1\uffff"+
-        "\7\47\1\uffff\1\u01a9\2\47\1\u01ac\5\47\1\u01b3\1\u01b4\1\uffff"+
-        "\1\u01b5\1\47\1\u01b7\2\uffff\1\u01b8\1\u01b9\1\47\1\u01bb\1\47"+
-        "\1\u01bd\1\47\1\u01c0\4\47\1\uffff\2\47\1\uffff\15\47\1\u01d4\3"+
-        "\47\1\u01d8\1\47\1\u01db\3\uffff\1\47\1\uffff\7\47\1\uffff\1\u01e5"+
-        "\1\47\1\uffff\3\47\1\u01ea\1\u01eb\1\47\3\uffff\1\47\3\uffff\1\47"+
-        "\1\uffff\1\47\1\uffff\2\47\1\uffff\1\47\1\u01f3\6\47\1\u01fa\12"+
-        "\47\1\uffff\2\47\1\u0209\1\uffff\2\47\2\uffff\1\u020d\1\47\1\u020f"+
-        "\5\47\1\uffff\4\47\2\uffff\1\47\1\u021b\5\47\1\uffff\2\47\1\u0223"+
-        "\3\47\1\uffff\1\u0227\1\47\1\u0229\1\u022a\5\47\1\u0230\1\u0231"+
-        "\2\47\1\u0235\1\uffff\2\47\1\u0239\1\uffff\1\u023a\1\uffff\7\47"+
-        "\1\u0242\1\47\1\u0244\1\47\1\uffff\1\47\1\u0247\3\47\1\u024b\1\u024c"+
-        "\1\uffff\1\47\1\u024f\1\47\1\uffff\1\47\2\uffff\5\47\2\uffff\1\u0257"+
-        "\2\47\1\uffff\2\47\3\uffff\1\u025d\1\u025e\2\47\1\u0261\2\47\1\uffff"+
+        "\1\47\1\uffff\10\47\1\151\1\153\2\47\1\164\4\uffff\13\47\1\uffff"+
+        "\1\161\3\uffff\3\47\1\uffff\1\47\1\uffff\50\47\1\uffff\1\161\1\uffff"+
+        "\2\47\1\161\13\uffff\17\47\2\161\1\u00d4\22\47\1\u00e9\36\47\1\u0109"+
+        "\3\47\1\161\15\47\1\u011a\3\47\1\161\1\uffff\4\47\1\u0123\17\47"+
+        "\1\uffff\1\u0133\1\47\1\u0135\1\47\1\u0137\1\47\1\u013b\16\47\1"+
+        "\u014b\4\47\1\u0151\4\47\1\uffff\1\u0157\1\u0158\2\47\1\u015b\1"+
+        "\u015c\2\47\1\u015f\6\47\1\u0167\1\uffff\10\47\1\uffff\2\47\1\u0173"+
+        "\3\47\1\u0177\1\u0178\7\47\1\uffff\1\47\1\uffff\1\47\1\uffff\3\47"+
+        "\1\uffff\1\u0185\1\47\1\u0188\14\47\1\uffff\1\u0133\4\47\1\uffff"+
+        "\4\47\3\uffff\1\u019e\1\u019f\2\uffff\1\47\1\u01a1\1\uffff\7\47"+
+        "\1\uffff\1\u01a9\2\47\1\u01ac\5\47\1\u01b3\1\u01b4\1\uffff\1\u01b5"+
+        "\1\47\1\u01b7\2\uffff\1\u01b8\1\u01b9\1\47\1\u01bb\1\47\1\u01bd"+
+        "\1\47\1\u01c0\4\47\1\uffff\2\47\1\uffff\15\47\1\u01d4\3\47\1\u01d8"+
+        "\1\47\1\u01db\3\uffff\1\47\1\uffff\7\47\1\uffff\1\u01e5\1\47\1\uffff"+
+        "\3\47\1\u01ea\1\u01eb\1\47\3\uffff\1\47\3\uffff\1\47\1\uffff\1\47"+
+        "\1\uffff\2\47\1\uffff\1\47\1\u01f3\6\47\1\u01fa\12\47\1\uffff\2"+
+        "\47\1\u0209\1\uffff\2\47\2\uffff\1\u020d\1\47\1\u020f\5\47\1\uffff"+
+        "\4\47\2\uffff\1\47\1\u021b\5\47\1\uffff\2\47\1\u0223\3\47\1\uffff"+
+        "\1\u0227\1\47\1\u0229\1\u022a\5\47\1\u0230\1\u0231\2\47\1\u0235"+
+        "\1\uffff\2\47\1\u0239\1\uffff\1\u023a\1\uffff\7\47\1\u0242\1\47"+
+        "\1\u0244\1\47\1\uffff\1\47\1\u0247\3\47\1\u024b\1\u024c\1\uffff"+
+        "\1\47\1\u024f\1\47\1\uffff\1\47\2\uffff\5\47\2\uffff\1\u0257\2\47"+
+        "\1\uffff\2\47\3\uffff\1\u025d\1\u025e\2\47\1\u0261\2\47\1\uffff"+
         "\1\u0264\1\uffff\2\47\1\uffff\2\47\1\u026a\2\uffff\2\47\1\uffff"+
         "\6\47\1\u0273\1\uffff\5\47\2\uffff\2\47\1\uffff\2\47\1\uffff\1\u027d"+
         "\4\47\1\uffff\2\47\1\u0284\1\u0285\4\47\1\uffff\3\47\1\u028d\5\47"+
@@ -5160,9 +5178,9 @@ public class InternalKGraphLexer extends Lexer {
         "\3\47\2\uffff\1\47\1\uffff\2\47\1\u02c7\1\u02c8\1\uffff\1\47\1\u02ca"+
         "\2\47\1\u02cd\1\u02ce\2\uffff\1\47\1\uffff\1\u02d0\1\u02d1\2\uffff"+
         "\1\47\2\uffff\1\u02d3\1\uffff";
-    static final String DFA51_eofS =
+    static final String DFA52_eofS =
         "\u02d4\uffff";
-    static final String DFA51_minS =
+    static final String DFA52_minS =
         "\1\11\1\141\4\uffff\1\56\1\uffff\1\76\2\uffff\1\157\2\60\1\143\1"+
         "\151\1\101\1\156\1\157\1\141\2\145\2\uffff\1\142\1\uffff\1\165\2"+
         "\141\1\156\1\101\1\162\1\145\1\141\1\56\1\60\1\157\1\162\1\45\2"+
@@ -5172,18 +5190,18 @@ public class InternalKGraphLexer extends Lexer {
         "\1\154\1\162\1\163\1\141\1\160\1\165\1\154\1\143\1\146\1\156\1\147"+
         "\1\164\1\146\1\164\1\145\1\163\1\156\1\144\1\156\1\170\1\156\1\141"+
         "\1\154\1\144\1\154\1\162\1\151\1\154\1\156\1\143\1\164\1\163\1\uffff"+
-        "\1\45\1\uffff\1\156\1\162\5\uffff\1\45\6\uffff\1\141\1\144\1\147"+
-        "\1\154\1\142\1\154\1\143\1\165\1\151\1\163\1\170\1\143\1\141\1\154"+
-        "\1\171\2\45\1\60\1\156\1\160\2\146\1\145\1\147\2\154\1\144\1\141"+
-        "\1\151\1\164\1\147\2\151\1\145\1\151\1\154\1\60\1\145\1\164\1\144"+
-        "\1\153\1\164\1\145\1\150\1\141\1\156\1\145\1\141\1\151\1\141\1\157"+
-        "\1\143\1\151\2\103\1\145\2\164\1\163\1\145\1\151\1\164\1\144\1\165"+
-        "\1\164\1\157\1\142\1\60\1\150\1\145\1\157\1\45\1\160\2\145\1\151"+
-        "\1\145\1\164\1\171\1\144\1\164\1\156\1\154\2\164\1\60\1\147\1\151"+
-        "\1\154\1\45\1\uffff\1\164\1\141\2\163\1\60\1\154\2\145\1\157\1\147"+
-        "\1\162\1\144\2\150\1\147\1\172\1\164\1\163\1\151\1\145\1\uffff\1"+
-        "\60\1\157\1\60\1\147\1\60\1\103\1\60\2\164\1\144\1\162\1\164\1\157"+
-        "\1\104\1\154\1\164\1\146\2\145\1\147\1\116\1\60\1\145\1\162\1\147"+
+        "\1\45\1\uffff\1\156\1\162\1\45\13\uffff\1\141\1\144\1\147\1\154"+
+        "\1\142\1\154\1\143\1\165\1\151\1\163\1\170\1\143\1\141\1\154\1\171"+
+        "\2\45\1\60\1\156\1\160\2\146\1\145\1\147\2\154\1\144\1\141\1\151"+
+        "\1\164\1\147\2\151\1\145\1\151\1\154\1\60\1\145\1\164\1\144\1\153"+
+        "\1\164\1\145\1\150\1\141\1\156\1\145\1\141\1\151\1\141\1\157\1\143"+
+        "\1\151\2\103\1\145\2\164\1\163\1\145\1\151\1\164\1\144\1\165\1\164"+
+        "\1\157\1\142\1\60\1\150\1\145\1\157\1\45\1\160\2\145\1\151\1\145"+
+        "\1\164\1\171\1\144\1\164\1\156\1\154\2\164\1\60\1\147\1\151\1\154"+
+        "\1\45\1\uffff\1\164\1\141\2\163\1\60\1\154\2\145\1\157\1\147\1\162"+
+        "\1\144\2\150\1\147\1\172\1\164\1\163\1\151\1\145\1\uffff\1\60\1"+
+        "\157\1\60\1\147\1\60\1\103\1\60\2\164\1\144\1\162\1\164\1\157\1"+
+        "\104\1\154\1\164\1\146\2\145\1\147\1\116\1\60\1\145\1\162\1\147"+
         "\1\151\1\60\1\155\1\145\1\162\1\154\1\uffff\1\55\1\60\1\162\1\150"+
         "\2\60\1\160\1\154\1\60\1\147\1\145\1\141\2\144\1\157\1\60\1\uffff"+
         "\1\145\1\156\1\145\1\104\1\162\1\147\2\145\1\uffff\1\145\1\163\1"+
@@ -5223,7 +5241,7 @@ public class InternalKGraphLexer extends Lexer {
         "\1\162\1\154\1\145\1\147\1\60\1\155\1\156\1\157\2\uffff\1\156\1"+
         "\uffff\1\171\1\145\2\60\1\uffff\1\145\1\60\1\162\1\164\2\60\2\uffff"+
         "\1\156\1\uffff\2\60\2\uffff\1\164\2\uffff\1\60\1\uffff";
-    static final String DFA51_maxS =
+    static final String DFA52_maxS =
         "\1\175\1\164\4\uffff\1\76\1\uffff\1\76\2\uffff\1\162\2\172\1\164"+
         "\1\151\1\157\1\164\1\162\1\157\1\151\1\157\2\uffff\1\162\1\uffff"+
         "\1\165\2\157\1\156\1\145\1\162\2\157\2\71\1\157\2\162\2\uffff\1"+
@@ -5233,90 +5251,90 @@ public class InternalKGraphLexer extends Lexer {
         "\166\1\141\1\160\1\165\1\164\1\143\1\146\1\156\1\147\1\165\1\154"+
         "\1\164\1\145\1\163\1\156\1\144\1\156\1\170\1\162\1\141\1\154\1\144"+
         "\1\154\1\162\1\151\1\154\1\156\1\143\1\165\1\163\1\uffff\1\144\1"+
-        "\uffff\1\156\1\162\5\uffff\1\144\6\uffff\1\141\1\144\1\147\1\154"+
-        "\1\142\1\162\1\156\1\165\1\151\1\163\1\170\1\143\1\141\1\154\1\171"+
-        "\2\144\1\172\1\156\1\160\2\146\1\145\1\147\2\154\1\144\2\151\1\164"+
-        "\1\147\2\151\1\145\1\151\1\154\1\172\1\145\1\164\1\144\1\153\1\164"+
-        "\1\153\1\150\1\141\1\156\1\145\1\141\1\151\1\141\1\157\1\143\1\151"+
-        "\2\103\1\145\2\164\1\163\1\145\1\151\1\164\1\144\1\165\1\164\1\157"+
-        "\1\142\1\172\1\150\1\145\1\157\1\144\1\160\2\145\1\151\1\145\1\164"+
-        "\1\171\1\144\1\164\1\156\1\154\2\164\1\172\1\147\1\151\1\154\1\144"+
-        "\1\uffff\1\164\1\145\2\163\1\172\1\154\2\145\1\157\1\147\1\162\1"+
-        "\144\2\150\1\147\1\172\1\164\1\163\1\151\1\145\1\uffff\1\172\1\157"+
-        "\1\172\1\147\1\172\1\127\1\172\2\164\1\144\1\162\1\164\1\157\1\104"+
-        "\1\154\1\164\1\146\2\145\1\147\1\123\1\172\1\145\1\162\1\147\1\151"+
-        "\1\172\1\155\1\145\1\162\1\154\1\uffff\2\172\1\162\1\150\2\172\1"+
-        "\160\1\154\1\172\1\154\1\145\1\141\2\144\1\157\1\172\1\uffff\1\145"+
-        "\1\156\1\145\1\163\1\162\1\147\2\145\1\uffff\1\145\1\163\1\172\1"+
-        "\167\1\147\1\145\2\172\1\164\1\156\1\157\1\163\1\151\1\143\1\146"+
-        "\1\uffff\1\155\1\uffff\1\162\1\uffff\1\141\1\164\1\151\1\uffff\1"+
-        "\172\1\151\1\172\1\145\1\151\1\156\1\141\1\165\2\151\2\154\1\162"+
-        "\1\141\1\151\1\uffff\1\172\1\154\1\156\1\143\1\141\1\uffff\1\156"+
-        "\1\162\1\141\1\145\1\144\2\uffff\2\172\2\uffff\1\163\1\172\1\uffff"+
-        "\1\151\1\157\1\162\1\156\1\145\1\101\1\155\1\uffff\1\172\1\145\1"+
-        "\163\1\172\1\141\1\164\1\141\2\164\2\172\1\uffff\1\172\1\154\1\172"+
-        "\2\uffff\2\172\1\156\1\172\1\142\1\172\1\164\1\172\1\157\1\160\1"+
-        "\171\1\144\1\uffff\1\157\1\127\1\uffff\1\156\1\166\1\163\2\164\1"+
-        "\157\1\145\2\154\1\157\1\155\1\172\1\151\1\172\1\141\1\164\1\163"+
-        "\1\172\1\164\1\172\1\157\2\uffff\1\145\1\uffff\2\156\1\151\1\147"+
-        "\1\144\1\162\1\122\1\uffff\1\172\1\124\1\uffff\1\164\1\151\1\164"+
-        "\2\172\1\154\3\uffff\1\145\3\uffff\1\164\1\uffff\1\154\1\uffff\1"+
-        "\101\1\151\1\uffff\1\165\1\172\1\154\1\164\1\156\1\151\1\143\1\145"+
-        "\1\172\1\141\1\145\1\156\1\162\2\127\1\165\2\145\1\156\1\uffff\1"+
-        "\154\1\141\1\172\1\uffff\1\157\1\154\1\uffff\1\164\1\172\1\145\1"+
-        "\172\1\156\1\154\1\122\2\145\1\uffff\1\145\1\141\2\145\2\uffff\1"+
-        "\151\1\172\1\141\1\145\1\156\1\147\1\156\1\uffff\1\145\1\150\1\172"+
-        "\1\164\1\145\1\120\1\uffff\1\172\1\120\2\172\1\151\1\145\1\151\1"+
-        "\145\1\156\2\172\1\145\1\115\1\172\1\uffff\1\162\1\151\1\55\1\uffff"+
-        "\1\172\1\uffff\1\147\2\145\1\157\1\141\1\156\1\155\1\172\1\163\1"+
-        "\172\1\143\1\uffff\1\154\1\172\1\143\1\150\1\144\2\172\1\uffff\1"+
-        "\150\1\172\1\157\1\uffff\1\157\2\uffff\1\144\1\151\1\144\1\151\1"+
-        "\144\2\uffff\1\172\1\154\1\141\1\uffff\1\104\1\143\3\uffff\2\172"+
-        "\1\143\1\154\1\172\1\144\1\160\1\uffff\1\172\1\uffff\1\153\1\115"+
-        "\1\uffff\1\150\1\164\1\172\2\uffff\1\114\1\157\1\uffff\2\163\1\164"+
-        "\1\147\1\164\1\147\1\172\1\uffff\1\151\1\162\1\141\1\153\1\151\2"+
-        "\uffff\1\164\1\171\1\uffff\1\145\1\154\1\uffff\1\172\1\154\1\141"+
-        "\1\157\1\101\1\uffff\2\151\2\172\4\150\1\uffff\2\147\1\164\1\172"+
-        "\1\142\1\141\1\154\1\162\1\141\1\uffff\1\151\2\162\3\156\2\uffff"+
-        "\1\172\1\164\1\172\1\164\1\156\1\151\1\141\1\uffff\1\162\1\156\2"+
-        "\151\1\164\2\147\1\172\1\143\1\145\1\164\1\uffff\1\172\1\uffff\1"+
-        "\172\1\155\1\156\1\172\1\141\1\147\2\156\1\145\1\156\1\151\1\uffff"+
-        "\1\150\2\172\2\uffff\1\145\1\172\1\uffff\1\162\1\154\1\145\1\147"+
-        "\1\172\1\155\1\156\1\157\2\uffff\1\156\1\uffff\1\171\1\145\2\172"+
-        "\1\uffff\1\145\1\172\1\162\1\164\2\172\2\uffff\1\156\1\uffff\2\172"+
-        "\2\uffff\1\164\2\uffff\1\172\1\uffff";
-    static final String DFA51_acceptS =
+        "\uffff\1\156\1\162\1\144\13\uffff\1\141\1\144\1\147\1\154\1\142"+
+        "\1\162\1\156\1\165\1\151\1\163\1\170\1\143\1\141\1\154\1\171\2\144"+
+        "\1\172\1\156\1\160\2\146\1\145\1\147\2\154\1\144\2\151\1\164\1\147"+
+        "\2\151\1\145\1\151\1\154\1\172\1\145\1\164\1\144\1\153\1\164\1\153"+
+        "\1\150\1\141\1\156\1\145\1\141\1\151\1\141\1\157\1\143\1\151\2\103"+
+        "\1\145\2\164\1\163\1\145\1\151\1\164\1\144\1\165\1\164\1\157\1\142"+
+        "\1\172\1\150\1\145\1\157\1\144\1\160\2\145\1\151\1\145\1\164\1\171"+
+        "\1\144\1\164\1\156\1\154\2\164\1\172\1\147\1\151\1\154\1\144\1\uffff"+
+        "\1\164\1\145\2\163\1\172\1\154\2\145\1\157\1\147\1\162\1\144\2\150"+
+        "\1\147\1\172\1\164\1\163\1\151\1\145\1\uffff\1\172\1\157\1\172\1"+
+        "\147\1\172\1\127\1\172\2\164\1\144\1\162\1\164\1\157\1\104\1\154"+
+        "\1\164\1\146\2\145\1\147\1\123\1\172\1\145\1\162\1\147\1\151\1\172"+
+        "\1\155\1\145\1\162\1\154\1\uffff\2\172\1\162\1\150\2\172\1\160\1"+
+        "\154\1\172\1\154\1\145\1\141\2\144\1\157\1\172\1\uffff\1\145\1\156"+
+        "\1\145\1\163\1\162\1\147\2\145\1\uffff\1\145\1\163\1\172\1\167\1"+
+        "\147\1\145\2\172\1\164\1\156\1\157\1\163\1\151\1\143\1\146\1\uffff"+
+        "\1\155\1\uffff\1\162\1\uffff\1\141\1\164\1\151\1\uffff\1\172\1\151"+
+        "\1\172\1\145\1\151\1\156\1\141\1\165\2\151\2\154\1\162\1\141\1\151"+
+        "\1\uffff\1\172\1\154\1\156\1\143\1\141\1\uffff\1\156\1\162\1\141"+
+        "\1\145\1\144\2\uffff\2\172\2\uffff\1\163\1\172\1\uffff\1\151\1\157"+
+        "\1\162\1\156\1\145\1\101\1\155\1\uffff\1\172\1\145\1\163\1\172\1"+
+        "\141\1\164\1\141\2\164\2\172\1\uffff\1\172\1\154\1\172\2\uffff\2"+
+        "\172\1\156\1\172\1\142\1\172\1\164\1\172\1\157\1\160\1\171\1\144"+
+        "\1\uffff\1\157\1\127\1\uffff\1\156\1\166\1\163\2\164\1\157\1\145"+
+        "\2\154\1\157\1\155\1\172\1\151\1\172\1\141\1\164\1\163\1\172\1\164"+
+        "\1\172\1\157\2\uffff\1\145\1\uffff\2\156\1\151\1\147\1\144\1\162"+
+        "\1\122\1\uffff\1\172\1\124\1\uffff\1\164\1\151\1\164\2\172\1\154"+
+        "\3\uffff\1\145\3\uffff\1\164\1\uffff\1\154\1\uffff\1\101\1\151\1"+
+        "\uffff\1\165\1\172\1\154\1\164\1\156\1\151\1\143\1\145\1\172\1\141"+
+        "\1\145\1\156\1\162\2\127\1\165\2\145\1\156\1\uffff\1\154\1\141\1"+
+        "\172\1\uffff\1\157\1\154\1\uffff\1\164\1\172\1\145\1\172\1\156\1"+
+        "\154\1\122\2\145\1\uffff\1\145\1\141\2\145\2\uffff\1\151\1\172\1"+
+        "\141\1\145\1\156\1\147\1\156\1\uffff\1\145\1\150\1\172\1\164\1\145"+
+        "\1\120\1\uffff\1\172\1\120\2\172\1\151\1\145\1\151\1\145\1\156\2"+
+        "\172\1\145\1\115\1\172\1\uffff\1\162\1\151\1\55\1\uffff\1\172\1"+
+        "\uffff\1\147\2\145\1\157\1\141\1\156\1\155\1\172\1\163\1\172\1\143"+
+        "\1\uffff\1\154\1\172\1\143\1\150\1\144\2\172\1\uffff\1\150\1\172"+
+        "\1\157\1\uffff\1\157\2\uffff\1\144\1\151\1\144\1\151\1\144\2\uffff"+
+        "\1\172\1\154\1\141\1\uffff\1\104\1\143\3\uffff\2\172\1\143\1\154"+
+        "\1\172\1\144\1\160\1\uffff\1\172\1\uffff\1\153\1\115\1\uffff\1\150"+
+        "\1\164\1\172\2\uffff\1\114\1\157\1\uffff\2\163\1\164\1\147\1\164"+
+        "\1\147\1\172\1\uffff\1\151\1\162\1\141\1\153\1\151\2\uffff\1\164"+
+        "\1\171\1\uffff\1\145\1\154\1\uffff\1\172\1\154\1\141\1\157\1\101"+
+        "\1\uffff\2\151\2\172\4\150\1\uffff\2\147\1\164\1\172\1\142\1\141"+
+        "\1\154\1\162\1\141\1\uffff\1\151\2\162\3\156\2\uffff\1\172\1\164"+
+        "\1\172\1\164\1\156\1\151\1\141\1\uffff\1\162\1\156\2\151\1\164\2"+
+        "\147\1\172\1\143\1\145\1\164\1\uffff\1\172\1\uffff\1\172\1\155\1"+
+        "\156\1\172\1\141\1\147\2\156\1\145\1\156\1\151\1\uffff\1\150\2\172"+
+        "\2\uffff\1\145\1\172\1\uffff\1\162\1\154\1\145\1\147\1\172\1\155"+
+        "\1\156\1\157\2\uffff\1\156\1\uffff\1\171\1\145\2\172\1\uffff\1\145"+
+        "\1\172\1\162\1\164\2\172\2\uffff\1\156\1\uffff\2\172\2\uffff\1\164"+
+        "\2\uffff\1\172\1\uffff";
+    static final String DFA52_acceptS =
         "\2\uffff\1\3\1\4\1\6\1\7\1\uffff\1\11\1\uffff\1\15\1\16\13\uffff"+
         "\1\34\1\35\1\uffff\1\41\15\uffff\1\170\1\171\1\uffff\1\174\13\uffff"+
         "\1\10\2\uffff\1\132\1\14\3\uffff\1\20\1\uffff\1\21\50\uffff\1\133"+
-        "\1\uffff\1\134\2\uffff\1\161\1\163\1\166\1\160\1\167\1\uffff\1\165"+
-        "\1\157\1\164\1\162\1\172\1\173\132\uffff\1\17\24\uffff\1\27\37\uffff"+
-        "\1\146\20\uffff\1\47\10\uffff\1\22\17\uffff\1\156\1\uffff\1\63\1"+
-        "\uffff\1\31\3\uffff\1\143\17\uffff\1\151\5\uffff\1\104\5\uffff\1"+
-        "\145\1\136\2\uffff\1\2\1\5\2\uffff\1\13\7\uffff\1\43\13\uffff\1"+
-        "\66\3\uffff\1\144\1\23\14\uffff\1\32\2\uffff\1\152\25\uffff\1\141"+
-        "\1\1\1\uffff\1\12\7\uffff\1\51\2\uffff\1\33\6\uffff\1\137\1\36\1"+
-        "\100\1\uffff\1\153\1\24\1\71\1\uffff\1\26\1\uffff\1\64\2\uffff\1"+
-        "\30\23\uffff\1\72\3\uffff\1\135\2\uffff\1\140\11\uffff\1\56\4\uffff"+
-        "\1\125\1\126\7\uffff\1\74\6\uffff\1\37\16\uffff\1\107\3\uffff\1"+
-        "\46\1\uffff\1\54\13\uffff\1\142\7\uffff\1\77\3\uffff\1\110\1\uffff"+
-        "\1\52\1\57\5\uffff\1\65\1\67\3\uffff\1\117\2\uffff\1\150\1\147\1"+
-        "\53\7\uffff\1\111\1\uffff\1\60\2\uffff\1\73\3\uffff\1\75\1\76\2"+
-        "\uffff\1\101\7\uffff\1\70\5\uffff\1\40\1\44\2\uffff\1\42\2\uffff"+
-        "\1\25\5\uffff\1\62\10\uffff\1\61\11\uffff\1\154\6\uffff\1\127\1"+
-        "\130\7\uffff\1\155\13\uffff\1\120\1\uffff\1\122\13\uffff\1\105\3"+
-        "\uffff\1\121\1\123\2\uffff\1\124\10\uffff\1\131\1\112\1\uffff\1"+
-        "\116\4\uffff\1\103\6\uffff\1\55\1\50\1\uffff\1\115\2\uffff\1\102"+
-        "\1\45\1\uffff\1\106\1\114\1\uffff\1\113";
-    static final String DFA51_specialS =
+        "\1\uffff\1\134\3\uffff\1\157\1\165\1\166\1\162\1\161\1\167\1\164"+
+        "\1\160\1\163\1\172\1\173\132\uffff\1\17\24\uffff\1\27\37\uffff\1"+
+        "\146\20\uffff\1\47\10\uffff\1\22\17\uffff\1\156\1\uffff\1\63\1\uffff"+
+        "\1\31\3\uffff\1\143\17\uffff\1\151\5\uffff\1\104\5\uffff\1\145\1"+
+        "\136\2\uffff\1\2\1\5\2\uffff\1\13\7\uffff\1\43\13\uffff\1\66\3\uffff"+
+        "\1\144\1\23\14\uffff\1\32\2\uffff\1\152\25\uffff\1\141\1\1\1\uffff"+
+        "\1\12\7\uffff\1\51\2\uffff\1\33\6\uffff\1\137\1\36\1\100\1\uffff"+
+        "\1\153\1\24\1\71\1\uffff\1\26\1\uffff\1\64\2\uffff\1\30\23\uffff"+
+        "\1\72\3\uffff\1\135\2\uffff\1\140\11\uffff\1\56\4\uffff\1\125\1"+
+        "\126\7\uffff\1\74\6\uffff\1\37\16\uffff\1\107\3\uffff\1\46\1\uffff"+
+        "\1\54\13\uffff\1\142\7\uffff\1\77\3\uffff\1\110\1\uffff\1\52\1\57"+
+        "\5\uffff\1\65\1\67\3\uffff\1\117\2\uffff\1\150\1\147\1\53\7\uffff"+
+        "\1\111\1\uffff\1\60\2\uffff\1\73\3\uffff\1\75\1\76\2\uffff\1\101"+
+        "\7\uffff\1\70\5\uffff\1\40\1\44\2\uffff\1\42\2\uffff\1\25\5\uffff"+
+        "\1\62\10\uffff\1\61\11\uffff\1\154\6\uffff\1\127\1\130\7\uffff\1"+
+        "\155\13\uffff\1\120\1\uffff\1\122\13\uffff\1\105\3\uffff\1\121\1"+
+        "\123\2\uffff\1\124\10\uffff\1\131\1\112\1\uffff\1\116\4\uffff\1"+
+        "\103\6\uffff\1\55\1\50\1\uffff\1\115\2\uffff\1\102\1\45\1\uffff"+
+        "\1\106\1\114\1\uffff\1\113";
+    static final String DFA52_specialS =
         "\u02d4\uffff}>";
-    static final String[] DFA51_transitionS = {
+    static final String[] DFA52_transitionS = {
             "\2\52\2\uffff\1\52\22\uffff\1\52\1\uffff\1\50\5\uffff\1\4\1"+
             "\7\1\31\1\42\1\27\1\6\1\43\1\51\12\46\1\5\1\26\1\uffff\1\10"+
-            "\3\uffff\32\47\1\11\1\uffff\1\12\1\uffff\1\47\1\uffff\1\30\1"+
-            "\23\1\40\1\41\1\45\1\34\1\37\1\20\1\21\1\32\1\1\1\24\1\33\1"+
-            "\44\1\47\1\13\1\47\1\25\1\16\1\22\1\35\1\36\1\17\1\14\1\15\1"+
-            "\47\1\2\1\uffff\1\3",
+            "\3\uffff\32\47\1\11\1\uffff\1\12\2\47\1\uffff\1\30\1\23\1\40"+
+            "\1\41\1\45\1\34\1\37\1\20\1\21\1\32\1\1\1\24\1\33\1\44\1\47"+
+            "\1\13\1\47\1\25\1\16\1\22\1\35\1\36\1\17\1\14\1\15\1\47\1\2"+
+            "\1\uffff\1\3",
             "\1\63\1\uffff\1\61\1\uffff\1\55\1\uffff\1\53\1\uffff\1\64\2"+
             "\uffff\1\56\1\uffff\1\54\1\uffff\1\57\1\uffff\1\60\1\65\1\62",
             "",
@@ -5356,9 +5374,9 @@ public class InternalKGraphLexer extends Lexer {
             "\12\152",
             "\1\154",
             "\1\155",
-            "\1\164\10\uffff\1\163\1\uffff\12\46\13\uffff\1\160\33\uffff"+
-            "\1\167\1\156\1\uffff\1\166\1\160\1\uffff\1\161\10\uffff\1\157"+
-            "\1\uffff\1\165",
+            "\1\160\10\uffff\1\156\1\uffff\12\46\13\uffff\1\161\33\uffff"+
+            "\1\162\1\163\1\uffff\1\165\1\161\1\uffff\1\166\10\uffff\1\167"+
+            "\1\uffff\1\157",
             "",
             "",
             "\1\170\4\uffff\1\171",
@@ -5375,7 +5393,7 @@ public class InternalKGraphLexer extends Lexer {
             "\1\u0086",
             "\1\u0087\3\uffff\1\u0088",
             "",
-            "\1\164\10\uffff\1\u0089\1\uffff\12\67\52\uffff\1\166",
+            "\1\160\10\uffff\1\u0089\1\uffff\12\67\52\uffff\1\165",
             "\12\u008a",
             "",
             "",
@@ -5426,16 +5444,16 @@ public class InternalKGraphLexer extends Lexer {
             "\1\u00bd\1\u00bc",
             "\1\u00be",
             "",
-            "\1\164\12\uffff\12\152\52\uffff\1\166",
+            "\1\160\12\uffff\12\152\52\uffff\1\165",
             "",
             "\1\u00bf",
             "\1\u00c0",
+            "\1\160\12\uffff\12\u00c1\52\uffff\1\165",
             "",
             "",
             "",
             "",
             "",
-            "\1\164\12\uffff\12\u00c1\52\uffff\1\166",
             "",
             "",
             "",
@@ -5457,8 +5475,8 @@ public class InternalKGraphLexer extends Lexer {
             "\1\u00d0",
             "\1\u00d1",
             "\1\u00d2",
-            "\1\164\12\uffff\12\u00d3\52\uffff\1\166",
-            "\1\164\12\uffff\12\u008a\52\uffff\1\166",
+            "\1\160\12\uffff\12\u00d3\52\uffff\1\165",
+            "\1\160\12\uffff\12\u008a\52\uffff\1\165",
             "\12\47\7\uffff\32\47\4\uffff\1\47\1\uffff\32\47",
             "\1\u00d5",
             "\1\u00d6",
@@ -5514,7 +5532,7 @@ public class InternalKGraphLexer extends Lexer {
             "\1\u010a",
             "\1\u010b",
             "\1\u010c",
-            "\1\164\12\uffff\12\u00c1\52\uffff\1\166",
+            "\1\160\12\uffff\12\u00c1\52\uffff\1\165",
             "\1\u010d",
             "\1\u010e",
             "\1\u010f",
@@ -5532,7 +5550,7 @@ public class InternalKGraphLexer extends Lexer {
             "\1\u011b",
             "\1\u011c",
             "\1\u011d",
-            "\1\164\12\uffff\12\u00d3\52\uffff\1\166",
+            "\1\160\12\uffff\12\u00d3\52\uffff\1\165",
             "",
             "\1\u011e",
             "\1\u0120\3\uffff\1\u011f",
@@ -6051,34 +6069,34 @@ public class InternalKGraphLexer extends Lexer {
             ""
     };
 
-    static final short[] DFA51_eot = DFA.unpackEncodedString(DFA51_eotS);
-    static final short[] DFA51_eof = DFA.unpackEncodedString(DFA51_eofS);
-    static final char[] DFA51_min = DFA.unpackEncodedStringToUnsignedChars(DFA51_minS);
-    static final char[] DFA51_max = DFA.unpackEncodedStringToUnsignedChars(DFA51_maxS);
-    static final short[] DFA51_accept = DFA.unpackEncodedString(DFA51_acceptS);
-    static final short[] DFA51_special = DFA.unpackEncodedString(DFA51_specialS);
-    static final short[][] DFA51_transition;
+    static final short[] DFA52_eot = DFA.unpackEncodedString(DFA52_eotS);
+    static final short[] DFA52_eof = DFA.unpackEncodedString(DFA52_eofS);
+    static final char[] DFA52_min = DFA.unpackEncodedStringToUnsignedChars(DFA52_minS);
+    static final char[] DFA52_max = DFA.unpackEncodedStringToUnsignedChars(DFA52_maxS);
+    static final short[] DFA52_accept = DFA.unpackEncodedString(DFA52_acceptS);
+    static final short[] DFA52_special = DFA.unpackEncodedString(DFA52_specialS);
+    static final short[][] DFA52_transition;
 
     static {
-        int numStates = DFA51_transitionS.length;
-        DFA51_transition = new short[numStates][];
+        int numStates = DFA52_transitionS.length;
+        DFA52_transition = new short[numStates][];
         for (int i=0; i<numStates; i++) {
-            DFA51_transition[i] = DFA.unpackEncodedString(DFA51_transitionS[i]);
+            DFA52_transition[i] = DFA.unpackEncodedString(DFA52_transitionS[i]);
         }
     }
 
-    class DFA51 extends DFA {
+    class DFA52 extends DFA {
 
-        public DFA51(BaseRecognizer recognizer) {
+        public DFA52(BaseRecognizer recognizer) {
             this.recognizer = recognizer;
-            this.decisionNumber = 51;
-            this.eot = DFA51_eot;
-            this.eof = DFA51_eof;
-            this.min = DFA51_min;
-            this.max = DFA51_max;
-            this.accept = DFA51_accept;
-            this.special = DFA51_special;
-            this.transition = DFA51_transition;
+            this.decisionNumber = 52;
+            this.eot = DFA52_eot;
+            this.eof = DFA52_eof;
+            this.min = DFA52_min;
+            this.max = DFA52_max;
+            this.accept = DFA52_accept;
+            this.special = DFA52_special;
+            this.transition = DFA52_transition;
         }
         public String getDescription() {
             return "1:1: Tokens : ( T__19 | T__20 | T__21 | T__22 | T__23 | T__24 | T__25 | T__26 | T__27 | T__28 | T__29 | T__30 | T__31 | T__32 | T__33 | T__34 | T__35 | T__36 | T__37 | T__38 | T__39 | T__40 | T__41 | T__42 | T__43 | T__44 | T__45 | T__46 | T__47 | T__48 | T__49 | T__50 | T__51 | T__52 | T__53 | T__54 | T__55 | T__56 | T__57 | T__58 | T__59 | T__60 | T__61 | T__62 | T__63 | T__64 | T__65 | T__66 | T__67 | T__68 | T__69 | T__70 | T__71 | T__72 | T__73 | T__74 | T__75 | T__76 | T__77 | T__78 | T__79 | T__80 | T__81 | T__82 | T__83 | T__84 | T__85 | T__86 | T__87 | T__88 | T__89 | T__90 | T__91 | T__92 | T__93 | T__94 | T__95 | T__96 | T__97 | T__98 | T__99 | T__100 | T__101 | T__102 | T__103 | T__104 | T__105 | T__106 | T__107 | T__108 | T__109 | T__110 | T__111 | T__112 | T__113 | T__114 | T__115 | T__116 | T__117 | T__118 | T__119 | T__120 | T__121 | T__122 | T__123 | T__124 | T__125 | T__126 | T__127 | RULE_BOOLEAN | RULE_RED | RULE_GREEN | RULE_BLUE | RULE_ALPHA | RULE_FSIZE | RULE_DEGREES | RULE_PERCENT | RULE_TFLOAT | RULE_NATURAL | RULE_ID | RULE_STRING | RULE_ML_COMMENT | RULE_SL_COMMENT | RULE_WS );";

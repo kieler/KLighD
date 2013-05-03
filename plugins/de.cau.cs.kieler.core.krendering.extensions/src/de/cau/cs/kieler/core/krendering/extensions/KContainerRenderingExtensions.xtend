@@ -76,6 +76,12 @@ class KContainerRenderingExtensions {
         ];
     }
 
+    def KPolygon addPolygon(KContainerRendering cr) {
+        return renderingFactory.createKPolygon() => [
+            cr.children += it;
+        ];
+    }
+
     def KRectangle addRectangle(KContainerRendering cr) {
         return renderingFactory.createKRectangle() => [
             cr.children += it;

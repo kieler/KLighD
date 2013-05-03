@@ -409,7 +409,8 @@ terminal TFLOAT returns ecore::EFloat:
 terminal NATURAL returns ecore::EInt:
 	('0'..'9')+;
 terminal ID:
-    ('a'..'z'|'A'..'Z'|'_') ('a'..'z'|'A'..'Z'|'_'|'0'..'9')*;
+    // chsch: the optional leading '^' is the implicit keyword escape character
+    '^'? ('a'..'z'|'A'..'Z'|'_') ('a'..'z'|'A'..'Z'|'_'|'0'..'9')*;
 terminal STRING : 
     '"' ( '\\' ('b'|'t'|'n'|'f'|'r'|'u'|'"'|'\\') | !('\\'|'"') )* '"';
 

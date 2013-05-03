@@ -318,12 +318,12 @@ public class DiagramLayoutManager implements IDiagramLayoutManager<KGraphElement
                 // integrate the minimal estimated node size
                 //  in case of a compound node, the minimal node size to be preserved by KIML must be
                 //   handed over by means of the MIN_WIDTH/MIN_HEIGHT properties
-                //  in case of non-hierarchical nodes the node size is taken from the layoutLayout
-                //   directly
-                if (isCompoundNode) {
-                    nodeLayout.setProperty(LayoutOptions.MIN_WIDTH, size.getWidth());
-                    nodeLayout.setProperty(LayoutOptions.MIN_HEIGHT, size.getHeight());
-                } else {
+                //  in case of non-compound nodes with SizeConstraint::MINIMUM_SIZE set, the property
+                //   definitions are also relevant 
+                nodeLayout.setProperty(LayoutOptions.MIN_WIDTH, size.getWidth());
+                nodeLayout.setProperty(LayoutOptions.MIN_HEIGHT, size.getHeight());
+                if (!isCompoundNode) {
+                    // in case of non-compound nodes the node size is usually taken from the layoutLayout
                     layoutLayout.setSize(size.getWidth(), size.getHeight());
                 }
             }

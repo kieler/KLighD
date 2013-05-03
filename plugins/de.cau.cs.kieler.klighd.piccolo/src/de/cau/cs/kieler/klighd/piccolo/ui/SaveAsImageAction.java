@@ -34,6 +34,7 @@ import org.eclipse.swt.graphics.ImageLoader;
 import org.eclipse.ui.statushandlers.StatusManager;
 
 import de.cau.cs.kieler.klighd.piccolo.KlighdPiccoloPlugin;
+import de.cau.cs.kieler.klighd.piccolo.KlighdSWTGraphicsImpl;
 import de.cau.cs.kieler.klighd.piccolo.krendering.viewer.PiccoloViewer;
 import edu.umd.cs.piccolo.PCamera;
 import edu.umd.cs.piccolo.PLayer;
@@ -41,7 +42,6 @@ import edu.umd.cs.piccolo.util.PAffineTransform;
 import edu.umd.cs.piccolo.util.PBounds;
 import edu.umd.cs.piccolo.util.PPaintContext;
 import edu.umd.cs.piccolox.swt.PSWTCanvas;
-import edu.umd.cs.piccolox.swt.SWTGraphics2D;
 
 /**
  * An action which invokes the 'save-as-image' dialog and performs the save for Piccolo.
@@ -133,12 +133,16 @@ public class SaveAsImageAction extends Action {
         } else {
             bounds = camera.getUnionOfLayerFullBounds();
         }
-        int width = (int) bounds.getWidth();
-        int height = (int) bounds.getHeight();
+        
+        // reveal the size and add some space in order to fully print out bounding strokes
+        //  (half width might get clipped otherwise)
+        int width = (int) bounds.getWidth() + 2;
+        int height = (int) bounds.getHeight() + 2;
         Image image = new Image(canvas.getDisplay(), width, height);
         GC gc = new GC(image);
         // let Piccolo render onto the image GC
-        PPaintContext paintContext = new PPaintContext(new SWTGraphics2D(gc, canvas.getDisplay()));
+        PPaintContext paintContext = new PPaintContext(new KlighdSWTGraphicsImpl(gc,
+                canvas.getDisplay()));
         if (cameraViewport) {
             camera.fullPaint(paintContext);
         } else {
