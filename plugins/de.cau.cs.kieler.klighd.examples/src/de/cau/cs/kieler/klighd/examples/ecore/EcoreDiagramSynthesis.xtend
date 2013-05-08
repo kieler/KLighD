@@ -174,7 +174,8 @@ class EcoreDiagramSynthesis extends AbstractDiagramSynthesis<EModelElementCollec
 	def createClassifierFigures(Iterable<EClassifier> classes, KNode rootNode) {
 		classes.filterNull.forEach[ EClassifier clazz |
             rootNode.children += clazz.createNode().putToLookUpWith(clazz) => [
-                it.addRoundedRectangle(30, 30, 2) => [
+                it.addRectangle /*(30, 30, 2)*/ => [
+                    it.lineWidth = 2;
                     it.setBackgroundGradient("white".color, KlighdConstants::ALPHA_FULL_OPAQUE, "lemon".color, 255, 0)
                     it.shadow = "black".color;
                     it.addText(clazz.name.nullToEmpty).putToLookUpWith(clazz) => [
@@ -203,6 +204,16 @@ class EcoreDiagramSynthesis extends AbstractDiagramSynthesis<EModelElementCollec
 	        it.addPolyline() => [
 	            it.lineWidth = 2;
 	            it.addArrowDecorator();
+	            if (ref.containment) {
+    	            it.addPolygon() => [
+    	                it.points += createKPosition(LEFT, 0, 0, TOP, 0, 0.5f);
+                        it.points += createKPosition(LEFT, 0, 0.5f, TOP, 0, 0);
+                        it.points += createKPosition(RIGHT, 0, 0, TOP, 0, 0.5f);
+                        it.points += createKPosition(LEFT, 0, 0.5f, BOTTOM, 0, 0);
+                        it.setDecoratorPlacementData(24, 12, 12, 0, true);
+                        it.background = "black".color;
+    	            ];
+	            }
 	        ];
 	    ];
 	}
