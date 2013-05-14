@@ -2374,33 +2374,36 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 		private final RuleCall cKForegroundParserRuleCall_0_0 = (RuleCall)cAlternatives_0.eContents().get(0);
 		private final RuleCall cKBackgroundParserRuleCall_0_1 = (RuleCall)cAlternatives_0.eContents().get(1);
 		private final Keyword cEqualsSignKeyword_1 = (Keyword)cGroup.eContents().get(1);
-		private final Assignment cColorAssignment_2 = (Assignment)cGroup.eContents().get(2);
-		private final RuleCall cColorKColorParserRuleCall_2_0 = (RuleCall)cColorAssignment_2.eContents().get(0);
-		private final Group cGroup_3 = (Group)cGroup.eContents().get(3);
-		private final Keyword cCommaKeyword_3_0 = (Keyword)cGroup_3.eContents().get(0);
-		private final Assignment cAlphaAssignment_3_1 = (Assignment)cGroup_3.eContents().get(1);
-		private final RuleCall cAlphaALPHATerminalRuleCall_3_1_0 = (RuleCall)cAlphaAssignment_3_1.eContents().get(0);
-		private final Group cGroup_4 = (Group)cGroup.eContents().get(4);
-		private final Keyword cHyphenMinusGreaterThanSignKeyword_4_0 = (Keyword)cGroup_4.eContents().get(0);
-		private final Assignment cTargetColorAssignment_4_1 = (Assignment)cGroup_4.eContents().get(1);
-		private final RuleCall cTargetColorKColorParserRuleCall_4_1_0 = (RuleCall)cTargetColorAssignment_4_1.eContents().get(0);
-		private final Group cGroup_4_2 = (Group)cGroup_4.eContents().get(2);
-		private final Keyword cCommaKeyword_4_2_0 = (Keyword)cGroup_4_2.eContents().get(0);
-		private final Assignment cTargetAlphaAssignment_4_2_1 = (Assignment)cGroup_4_2.eContents().get(1);
-		private final RuleCall cTargetAlphaALPHATerminalRuleCall_4_2_1_0 = (RuleCall)cTargetAlphaAssignment_4_2_1.eContents().get(0);
-		private final Group cGroup_4_3 = (Group)cGroup_4.eContents().get(3);
-		private final Keyword cLeftParenthesisKeyword_4_3_0 = (Keyword)cGroup_4_3.eContents().get(0);
-		private final Assignment cGradientAngleAssignment_4_3_1 = (Assignment)cGroup_4_3.eContents().get(1);
-		private final RuleCall cGradientAngleFloatParserRuleCall_4_3_1_0 = (RuleCall)cGradientAngleAssignment_4_3_1.eContents().get(0);
-		private final Keyword cRightParenthesisKeyword_4_3_2 = (Keyword)cGroup_4_3.eContents().get(2);
+		private final Alternatives cAlternatives_2 = (Alternatives)cGroup.eContents().get(2);
+		private final Keyword cNullKeyword_2_0 = (Keyword)cAlternatives_2.eContents().get(0);
+		private final Group cGroup_2_1 = (Group)cAlternatives_2.eContents().get(1);
+		private final Assignment cColorAssignment_2_1_0 = (Assignment)cGroup_2_1.eContents().get(0);
+		private final RuleCall cColorKColorParserRuleCall_2_1_0_0 = (RuleCall)cColorAssignment_2_1_0.eContents().get(0);
+		private final Group cGroup_2_1_1 = (Group)cGroup_2_1.eContents().get(1);
+		private final Keyword cCommaKeyword_2_1_1_0 = (Keyword)cGroup_2_1_1.eContents().get(0);
+		private final Assignment cAlphaAssignment_2_1_1_1 = (Assignment)cGroup_2_1_1.eContents().get(1);
+		private final RuleCall cAlphaALPHATerminalRuleCall_2_1_1_1_0 = (RuleCall)cAlphaAssignment_2_1_1_1.eContents().get(0);
+		private final Group cGroup_2_1_2 = (Group)cGroup_2_1.eContents().get(2);
+		private final Keyword cHyphenMinusGreaterThanSignKeyword_2_1_2_0 = (Keyword)cGroup_2_1_2.eContents().get(0);
+		private final Assignment cTargetColorAssignment_2_1_2_1 = (Assignment)cGroup_2_1_2.eContents().get(1);
+		private final RuleCall cTargetColorKColorParserRuleCall_2_1_2_1_0 = (RuleCall)cTargetColorAssignment_2_1_2_1.eContents().get(0);
+		private final Group cGroup_2_1_2_2 = (Group)cGroup_2_1_2.eContents().get(2);
+		private final Keyword cCommaKeyword_2_1_2_2_0 = (Keyword)cGroup_2_1_2_2.eContents().get(0);
+		private final Assignment cTargetAlphaAssignment_2_1_2_2_1 = (Assignment)cGroup_2_1_2_2.eContents().get(1);
+		private final RuleCall cTargetAlphaALPHATerminalRuleCall_2_1_2_2_1_0 = (RuleCall)cTargetAlphaAssignment_2_1_2_2_1.eContents().get(0);
+		private final Group cGroup_2_1_2_3 = (Group)cGroup_2_1_2.eContents().get(3);
+		private final Keyword cLeftParenthesisKeyword_2_1_2_3_0 = (Keyword)cGroup_2_1_2_3.eContents().get(0);
+		private final Assignment cGradientAngleAssignment_2_1_2_3_1 = (Assignment)cGroup_2_1_2_3.eContents().get(1);
+		private final RuleCall cGradientAngleFloatParserRuleCall_2_1_2_3_1_0 = (RuleCall)cGradientAngleAssignment_2_1_2_3_1.eContents().get(0);
+		private final Keyword cRightParenthesisKeyword_2_1_2_3_2 = (Keyword)cGroup_2_1_2_3.eContents().get(2);
 		
 		//KColoring:
-		//	(KForeground | KBackground) "=" color=KColor ("," alpha=ALPHA)? ("->" targetColor=KColor ("," targetAlpha=ALPHA)? ("("
-		//	gradientAngle=Float ")")?)?;
+		//	(KForeground | KBackground) "=" ("null" | color=KColor ("," alpha=ALPHA)? ("->" targetColor=KColor (","
+		//	targetAlpha=ALPHA)? ("(" gradientAngle=Float ")")?)?);
 		public ParserRule getRule() { return rule; }
 
-		//(KForeground | KBackground) "=" color=KColor ("," alpha=ALPHA)? ("->" targetColor=KColor ("," targetAlpha=ALPHA)? ("("
-		//gradientAngle=Float ")")?)?
+		//(KForeground | KBackground) "=" ("null" | color=KColor ("," alpha=ALPHA)? ("->" targetColor=KColor (","
+		//targetAlpha=ALPHA)? ("(" gradientAngle=Float ")")?)?)
 		public Group getGroup() { return cGroup; }
 
 		//KForeground | KBackground
@@ -2415,62 +2418,72 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 		//"="
 		public Keyword getEqualsSignKeyword_1() { return cEqualsSignKeyword_1; }
 
+		//"null" | color=KColor ("," alpha=ALPHA)? ("->" targetColor=KColor ("," targetAlpha=ALPHA)? ("(" gradientAngle=Float
+		//")")?)?
+		public Alternatives getAlternatives_2() { return cAlternatives_2; }
+
+		//"null"
+		public Keyword getNullKeyword_2_0() { return cNullKeyword_2_0; }
+
+		//color=KColor ("," alpha=ALPHA)? ("->" targetColor=KColor ("," targetAlpha=ALPHA)? ("(" gradientAngle=Float ")")?)?
+		public Group getGroup_2_1() { return cGroup_2_1; }
+
 		//color=KColor
-		public Assignment getColorAssignment_2() { return cColorAssignment_2; }
+		public Assignment getColorAssignment_2_1_0() { return cColorAssignment_2_1_0; }
 
 		//KColor
-		public RuleCall getColorKColorParserRuleCall_2_0() { return cColorKColorParserRuleCall_2_0; }
+		public RuleCall getColorKColorParserRuleCall_2_1_0_0() { return cColorKColorParserRuleCall_2_1_0_0; }
 
 		//("," alpha=ALPHA)?
-		public Group getGroup_3() { return cGroup_3; }
+		public Group getGroup_2_1_1() { return cGroup_2_1_1; }
 
 		//","
-		public Keyword getCommaKeyword_3_0() { return cCommaKeyword_3_0; }
+		public Keyword getCommaKeyword_2_1_1_0() { return cCommaKeyword_2_1_1_0; }
 
 		//alpha=ALPHA
-		public Assignment getAlphaAssignment_3_1() { return cAlphaAssignment_3_1; }
+		public Assignment getAlphaAssignment_2_1_1_1() { return cAlphaAssignment_2_1_1_1; }
 
 		//ALPHA
-		public RuleCall getAlphaALPHATerminalRuleCall_3_1_0() { return cAlphaALPHATerminalRuleCall_3_1_0; }
+		public RuleCall getAlphaALPHATerminalRuleCall_2_1_1_1_0() { return cAlphaALPHATerminalRuleCall_2_1_1_1_0; }
 
 		//("->" targetColor=KColor ("," targetAlpha=ALPHA)? ("(" gradientAngle=Float ")")?)?
-		public Group getGroup_4() { return cGroup_4; }
+		public Group getGroup_2_1_2() { return cGroup_2_1_2; }
 
 		//"->"
-		public Keyword getHyphenMinusGreaterThanSignKeyword_4_0() { return cHyphenMinusGreaterThanSignKeyword_4_0; }
+		public Keyword getHyphenMinusGreaterThanSignKeyword_2_1_2_0() { return cHyphenMinusGreaterThanSignKeyword_2_1_2_0; }
 
 		//targetColor=KColor
-		public Assignment getTargetColorAssignment_4_1() { return cTargetColorAssignment_4_1; }
+		public Assignment getTargetColorAssignment_2_1_2_1() { return cTargetColorAssignment_2_1_2_1; }
 
 		//KColor
-		public RuleCall getTargetColorKColorParserRuleCall_4_1_0() { return cTargetColorKColorParserRuleCall_4_1_0; }
+		public RuleCall getTargetColorKColorParserRuleCall_2_1_2_1_0() { return cTargetColorKColorParserRuleCall_2_1_2_1_0; }
 
 		//("," targetAlpha=ALPHA)?
-		public Group getGroup_4_2() { return cGroup_4_2; }
+		public Group getGroup_2_1_2_2() { return cGroup_2_1_2_2; }
 
 		//","
-		public Keyword getCommaKeyword_4_2_0() { return cCommaKeyword_4_2_0; }
+		public Keyword getCommaKeyword_2_1_2_2_0() { return cCommaKeyword_2_1_2_2_0; }
 
 		//targetAlpha=ALPHA
-		public Assignment getTargetAlphaAssignment_4_2_1() { return cTargetAlphaAssignment_4_2_1; }
+		public Assignment getTargetAlphaAssignment_2_1_2_2_1() { return cTargetAlphaAssignment_2_1_2_2_1; }
 
 		//ALPHA
-		public RuleCall getTargetAlphaALPHATerminalRuleCall_4_2_1_0() { return cTargetAlphaALPHATerminalRuleCall_4_2_1_0; }
+		public RuleCall getTargetAlphaALPHATerminalRuleCall_2_1_2_2_1_0() { return cTargetAlphaALPHATerminalRuleCall_2_1_2_2_1_0; }
 
 		//("(" gradientAngle=Float ")")?
-		public Group getGroup_4_3() { return cGroup_4_3; }
+		public Group getGroup_2_1_2_3() { return cGroup_2_1_2_3; }
 
 		//"("
-		public Keyword getLeftParenthesisKeyword_4_3_0() { return cLeftParenthesisKeyword_4_3_0; }
+		public Keyword getLeftParenthesisKeyword_2_1_2_3_0() { return cLeftParenthesisKeyword_2_1_2_3_0; }
 
 		//gradientAngle=Float
-		public Assignment getGradientAngleAssignment_4_3_1() { return cGradientAngleAssignment_4_3_1; }
+		public Assignment getGradientAngleAssignment_2_1_2_3_1() { return cGradientAngleAssignment_2_1_2_3_1; }
 
 		//Float
-		public RuleCall getGradientAngleFloatParserRuleCall_4_3_1_0() { return cGradientAngleFloatParserRuleCall_4_3_1_0; }
+		public RuleCall getGradientAngleFloatParserRuleCall_2_1_2_3_1_0() { return cGradientAngleFloatParserRuleCall_2_1_2_3_1_0; }
 
 		//")"
-		public Keyword getRightParenthesisKeyword_4_3_2() { return cRightParenthesisKeyword_4_3_2; }
+		public Keyword getRightParenthesisKeyword_2_1_2_3_2() { return cRightParenthesisKeyword_2_1_2_3_2; }
 	}
 
 	public class KForegroundElements extends AbstractParserRuleElementFinder {
@@ -5055,8 +5068,8 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//KColoring:
-	//	(KForeground | KBackground) "=" color=KColor ("," alpha=ALPHA)? ("->" targetColor=KColor ("," targetAlpha=ALPHA)? ("("
-	//	gradientAngle=Float ")")?)?;
+	//	(KForeground | KBackground) "=" ("null" | color=KColor ("," alpha=ALPHA)? ("->" targetColor=KColor (","
+	//	targetAlpha=ALPHA)? ("(" gradientAngle=Float ")")?)?);
 	public KColoringElements getKColoringAccess() {
 		return (pKColoring != null) ? pKColoring : (pKColoring = new KColoringElements());
 	}
@@ -5569,7 +5582,7 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 		return (tNATURAL != null) ? tNATURAL : (tNATURAL = (TerminalRule) GrammarUtil.findRuleForName(getGrammar(), "NATURAL"));
 	} 
 
-	//terminal ID:
+	//terminal ID: // chsch: the optional leading '^' is the implicit keyword escape character
 	//	"^"? ("a".."z" | "A".."Z" | "_") ("a".."z" | "A".."Z" | "_" | "0".."9")*;
 	public TerminalRule getIDRule() {
 		return (tID != null) ? tID : (tID = (TerminalRule) GrammarUtil.findRuleForName(getGrammar(), "ID"));

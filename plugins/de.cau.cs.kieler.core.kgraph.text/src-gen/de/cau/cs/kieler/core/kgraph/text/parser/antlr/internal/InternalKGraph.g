@@ -4149,33 +4149,38 @@ ruleKColoring returns [EObject current=null]
     {
     	newLeafNode(otherlv_2, grammarAccess.getKColoringAccess().getEqualsSignKeyword_1());
     }
-(
+(	otherlv_3='null' 
+    {
+    	newLeafNode(otherlv_3, grammarAccess.getKColoringAccess().getNullKeyword_2_0());
+    }
+
+    |((
 (
 		{ 
-	        newCompositeNode(grammarAccess.getKColoringAccess().getColorKColorParserRuleCall_2_0()); 
+	        newCompositeNode(grammarAccess.getKColoringAccess().getColorKColorParserRuleCall_2_1_0_0()); 
 	    }
-		lv_color_3_0=ruleKColor		{
+		lv_color_4_0=ruleKColor		{
 	        if ($current==null) {
 	            $current = createModelElementForParent(grammarAccess.getKColoringRule());
 	        }
        		set(
        			$current, 
        			"color",
-        		lv_color_3_0, 
+        		lv_color_4_0, 
         		"KColor");
 	        afterParserOrEnumRuleCall();
 	    }
 
 )
-)(	otherlv_4=',' 
+)(	otherlv_5=',' 
     {
-    	newLeafNode(otherlv_4, grammarAccess.getKColoringAccess().getCommaKeyword_3_0());
+    	newLeafNode(otherlv_5, grammarAccess.getKColoringAccess().getCommaKeyword_2_1_1_0());
     }
 (
 (
-		lv_alpha_5_0=RULE_ALPHA
+		lv_alpha_6_0=RULE_ALPHA
 		{
-			newLeafNode(lv_alpha_5_0, grammarAccess.getKColoringAccess().getAlphaALPHATerminalRuleCall_3_1_0()); 
+			newLeafNode(lv_alpha_6_0, grammarAccess.getKColoringAccess().getAlphaALPHATerminalRuleCall_2_1_1_1_0()); 
 		}
 		{
 	        if ($current==null) {
@@ -4184,42 +4189,42 @@ ruleKColoring returns [EObject current=null]
        		setWithLastConsumed(
        			$current, 
        			"alpha",
-        		lv_alpha_5_0, 
+        		lv_alpha_6_0, 
         		"ALPHA");
 	    }
 
 )
-))?(	otherlv_6='->' 
+))?(	otherlv_7='->' 
     {
-    	newLeafNode(otherlv_6, grammarAccess.getKColoringAccess().getHyphenMinusGreaterThanSignKeyword_4_0());
+    	newLeafNode(otherlv_7, grammarAccess.getKColoringAccess().getHyphenMinusGreaterThanSignKeyword_2_1_2_0());
     }
 (
 (
 		{ 
-	        newCompositeNode(grammarAccess.getKColoringAccess().getTargetColorKColorParserRuleCall_4_1_0()); 
+	        newCompositeNode(grammarAccess.getKColoringAccess().getTargetColorKColorParserRuleCall_2_1_2_1_0()); 
 	    }
-		lv_targetColor_7_0=ruleKColor		{
+		lv_targetColor_8_0=ruleKColor		{
 	        if ($current==null) {
 	            $current = createModelElementForParent(grammarAccess.getKColoringRule());
 	        }
        		set(
        			$current, 
        			"targetColor",
-        		lv_targetColor_7_0, 
+        		lv_targetColor_8_0, 
         		"KColor");
 	        afterParserOrEnumRuleCall();
 	    }
 
 )
-)(	otherlv_8=',' 
+)(	otherlv_9=',' 
     {
-    	newLeafNode(otherlv_8, grammarAccess.getKColoringAccess().getCommaKeyword_4_2_0());
+    	newLeafNode(otherlv_9, grammarAccess.getKColoringAccess().getCommaKeyword_2_1_2_2_0());
     }
 (
 (
-		lv_targetAlpha_9_0=RULE_ALPHA
+		lv_targetAlpha_10_0=RULE_ALPHA
 		{
-			newLeafNode(lv_targetAlpha_9_0, grammarAccess.getKColoringAccess().getTargetAlphaALPHATerminalRuleCall_4_2_1_0()); 
+			newLeafNode(lv_targetAlpha_10_0, grammarAccess.getKColoringAccess().getTargetAlphaALPHATerminalRuleCall_2_1_2_2_1_0()); 
 		}
 		{
 	        if ($current==null) {
@@ -4228,38 +4233,38 @@ ruleKColoring returns [EObject current=null]
        		setWithLastConsumed(
        			$current, 
        			"targetAlpha",
-        		lv_targetAlpha_9_0, 
+        		lv_targetAlpha_10_0, 
         		"ALPHA");
 	    }
 
 )
-))?(	otherlv_10='(' 
+))?(	otherlv_11='(' 
     {
-    	newLeafNode(otherlv_10, grammarAccess.getKColoringAccess().getLeftParenthesisKeyword_4_3_0());
+    	newLeafNode(otherlv_11, grammarAccess.getKColoringAccess().getLeftParenthesisKeyword_2_1_2_3_0());
     }
 (
 (
 		{ 
-	        newCompositeNode(grammarAccess.getKColoringAccess().getGradientAngleFloatParserRuleCall_4_3_1_0()); 
+	        newCompositeNode(grammarAccess.getKColoringAccess().getGradientAngleFloatParserRuleCall_2_1_2_3_1_0()); 
 	    }
-		lv_gradientAngle_11_0=ruleFloat		{
+		lv_gradientAngle_12_0=ruleFloat		{
 	        if ($current==null) {
 	            $current = createModelElementForParent(grammarAccess.getKColoringRule());
 	        }
        		set(
        			$current, 
        			"gradientAngle",
-        		lv_gradientAngle_11_0, 
+        		lv_gradientAngle_12_0, 
         		"Float");
 	        afterParserOrEnumRuleCall();
 	    }
 
 )
-)	otherlv_12=')' 
+)	otherlv_13=')' 
     {
-    	newLeafNode(otherlv_12, grammarAccess.getKColoringAccess().getRightParenthesisKeyword_4_3_2());
+    	newLeafNode(otherlv_13, grammarAccess.getKColoringAccess().getRightParenthesisKeyword_2_1_2_3_2());
     }
-)?)?)
+)?)?)))
 ;
 
 

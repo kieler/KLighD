@@ -196,8 +196,14 @@ KStyle returns KStyle:
 	('modifier' modifierId=QualifiedID)?;
 
 KColoring returns KColoring:
-	(KForeground | KBackground) '=' color=KColor (',' alpha=ALPHA)?
-	('->' targetColor=KColor (',' targetAlpha=ALPHA)? ('(' gradientAngle=Float ')')?)?;
+	(KForeground | KBackground) '=' 
+	(
+      'null' |
+	  ( color=KColor
+	      (',' alpha=ALPHA)?
+	      ('->' targetColor=KColor (',' targetAlpha=ALPHA)? ('(' gradientAngle=Float ')')?)?
+	   )
+	 );
 
 KForeground returns KForeground:
 	{KForeground}

@@ -699,7 +699,7 @@ public class KGraphSemanticSequencer extends AbstractDelegatingSemanticSequencer
 	
 	/**
 	 * Constraint:
-	 *     (propagateToChildren?='propagate'? color=KColor alpha=ALPHA? (targetColor=KColor targetAlpha=ALPHA? gradientAngle=Float?)?)
+	 *     (propagateToChildren?='propagate'? (color=KColor alpha=ALPHA? (targetColor=KColor targetAlpha=ALPHA? gradientAngle=Float?)?)?)
 	 */
 	protected void sequence_KBackground_KColoring(EObject context, KBackground semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
@@ -710,9 +710,7 @@ public class KGraphSemanticSequencer extends AbstractDelegatingSemanticSequencer
 	 * Constraint:
 	 *     (
 	 *         propagateToChildren?='propagate'? 
-	 *         color=KColor 
-	 *         alpha=ALPHA? 
-	 *         (targetColor=KColor targetAlpha=ALPHA? gradientAngle=Float?)? 
+	 *         (color=KColor alpha=ALPHA? (targetColor=KColor targetAlpha=ALPHA? gradientAngle=Float?)?)? 
 	 *         modifierId=QualifiedID?
 	 *     )
 	 */
@@ -750,7 +748,7 @@ public class KGraphSemanticSequencer extends AbstractDelegatingSemanticSequencer
 	
 	/**
 	 * Constraint:
-	 *     (propagateToChildren?='propagate'? color=KColor alpha=ALPHA? (targetColor=KColor targetAlpha=ALPHA? gradientAngle=Float?)?)
+	 *     (propagateToChildren?='propagate'? (color=KColor alpha=ALPHA? (targetColor=KColor targetAlpha=ALPHA? gradientAngle=Float?)?)?)
 	 */
 	protected void sequence_KColoring_KForeground(EObject context, KForeground semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
@@ -761,9 +759,7 @@ public class KGraphSemanticSequencer extends AbstractDelegatingSemanticSequencer
 	 * Constraint:
 	 *     (
 	 *         propagateToChildren?='propagate'? 
-	 *         color=KColor 
-	 *         alpha=ALPHA? 
-	 *         (targetColor=KColor targetAlpha=ALPHA? gradientAngle=Float?)? 
+	 *         (color=KColor alpha=ALPHA? (targetColor=KColor targetAlpha=ALPHA? gradientAngle=Float?)?)? 
 	 *         modifierId=QualifiedID?
 	 *     )
 	 */
