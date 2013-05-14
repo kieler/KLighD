@@ -13,6 +13,7 @@
  */
 package de.cau.cs.kieler.klighd;
 
+import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
 
@@ -240,7 +241,7 @@ public class TransformationContext<S, T> {
      *            the element in the source model
      * @return the element in the target model or null if the element could not be found
      */
-    public Object getTargetElement(final Object element) {
+    public Collection<?> getTargetElement(final Object element) {
         if (this.sourceTargetElementMap != null) {
             return this.sourceTargetElementMap.get(element);
         }

@@ -13,8 +13,12 @@
  */
 package de.cau.cs.kieler.klighd.krendering;
 
+import java.util.Collection;
 import java.util.List;
 
+import org.eclipse.emf.ecore.EObject;
+
+import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 
 import de.cau.cs.kieler.core.kgraph.KGraphData;
@@ -24,6 +28,7 @@ import de.cau.cs.kieler.core.krendering.KRenderingLibrary;
 import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout;
 import de.cau.cs.kieler.kiml.util.KimlUtil;
 import de.cau.cs.kieler.klighd.IUpdateStrategy;
+import de.cau.cs.kieler.klighd.TransformationContext;
 import de.cau.cs.kieler.klighd.ViewContext;
 
 /**
@@ -77,6 +82,27 @@ public class SimpleUpdateStrategy implements IUpdateStrategy<KNode> {
         baseModel.getChildren().clear();
         baseModel.getData().addAll(data);
         baseModel.getChildren().addAll(children);
+
+        
+        // In the following part all tracing relation of the semantic elements, that is associated
+        //  newModels' root node are reset, since the root node is not transfered into the diagram's
+        //  view model (the root KNode of a diagram is constant for the diagram's life time).
+        @SuppressWarnings("unchecked")
+        TransformationContext<?, KNode> tc = (TransformationContext<?, KNode>) Iterables
+                .getLast(viewContext.getTransformationContexts());
+        
+        Object semanticRoot = tc.getSourceElement(newModel);
+        if (semanticRoot != null) {
+            @SuppressWarnings("unchecked")
+            Collection<EObject> viewElements = (Collection<EObject>) tc.getTargetElement(semanticRoot);
+            List<EObject> copy = Lists.newArrayList(viewElements);
+            viewElements.clear();
+            copy.remove(newModel);
+            copy.add(baseModel);
+            for (EObject viewElement : copy) {
+                tc.addSourceTargetPair(semanticRoot, viewElement);
+            }
+        }
     }
 
     /**
