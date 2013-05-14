@@ -313,6 +313,8 @@ public abstract class PNodeController<T extends PNode> {
                 this.setForegroundGradient(toRGBGradient(styles.foreground));
             } else if (color != null) {
                 this.setForegroundColor(toRGB(color), styles.foreground.getAlpha());
+            } else {
+                this.setForegroundColor((RGB) null, KlighdConstants.ALPHA_FULL_OPAQUE);
             }
 
         } else {
@@ -328,6 +330,9 @@ public abstract class PNodeController<T extends PNode> {
                 this.setBackgroundGradient(toRGBGradient(styles.background));
             } else if (color != null) {
                 this.setBackgroundColor(toRGB(color), styles.background.getAlpha());
+            } else {
+                this.setBackgroundColor((RGB) null, KlighdConstants.ALPHA_FULL_OPAQUE);
+                this.setBackgroundGradient(null);
             }
         } else {
             this.setBackgroundColor((RGB) null, KlighdConstants.ALPHA_FULL_OPAQUE);
