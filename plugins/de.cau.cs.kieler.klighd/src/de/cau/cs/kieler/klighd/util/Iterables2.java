@@ -15,7 +15,7 @@ package de.cau.cs.kieler.klighd.util;
 
 import java.util.Iterator;
 
-import com.google.common.collect.Iterators;
+import com.google.common.collect.ImmutableList;
 
 /**
  * This class provides some convenience methods that I miss in
@@ -57,6 +57,6 @@ public final class Iterables2 {
      * @return the required {@link Iterable}
      */
     public static <T> Iterable<T> singletonIterable(final T value) {
-        return toIterable(Iterators.singletonIterator(value));
+        return ImmutableList.of(value);
     }
 }
