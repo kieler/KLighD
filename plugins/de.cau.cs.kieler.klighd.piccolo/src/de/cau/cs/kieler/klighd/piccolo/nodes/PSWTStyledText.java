@@ -286,7 +286,7 @@ public class PSWTStyledText extends PSWTText {
 
     @Override
     public void paintAsText(final PPaintContext ppc) {
-        final SWTGraphics2D g2 = (SWTGraphics2D) ppc.getGraphics();
+        final KlighdSWTGraphics g2 = (KlighdSWTGraphics) ppc.getGraphics();
 
         final int currentAlpha = g2.getAlpha();
         final float currentAlphaFloat = (float) currentAlpha;
@@ -307,10 +307,13 @@ public class PSWTStyledText extends PSWTText {
                 g2.fillRect(0, 0, getWidth(), getHeight());
             }
         }
+        
+        g2.setColor(KlighdConstants.RED);
 
-        g2.translate(padding, padding);
-        g2.setUnderline(underlining, underlineColor);
-        g2.setStrikeout(strikeout, strikeoutColor);
+        // FIXME
+        //g2.translate(padding, padding);
+        //g2.setUnderline(underlining, underlineColor);
+        //g2.setStrikeout(strikeout, strikeoutColor);
         
         RGB c = getSWTPenColor();
         RGBGradient cg = getSWTPenColorGradient();
@@ -326,20 +329,21 @@ public class PSWTStyledText extends PSWTText {
         }
         
         if (fontData != null) {
-            g2.setFont(fontData);
+//            g2.setFont(fontData);
         }        
 
         double y = 0;
-        final FontMetrics fontMetrics = g2.getSWTFontMetrics();
+//        final FontMetrics fontMetrics = g2.getSWTFontMetrics();
 
         for (String line : lines) {
             if (line.length() != 0) {
-                g2.drawText(line, 0, y);
+//                g2.drawText(line, 0, y);
+                g2.drawString(line, 0, (int) y);
             }
-            y += fontMetrics.getHeight();
+//            y += fontMetrics.getHeight();
         }
 
-        g2.translate(-padding, -padding);
+//        g2.translate(-padding, -padding);
         g2.setAlpha(currentAlpha);
     }
 

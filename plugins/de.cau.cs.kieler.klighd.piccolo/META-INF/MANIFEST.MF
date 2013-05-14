@@ -20,3 +20,13 @@ Require-Bundle: org.eclipse.core.resources,
  edu.umd.cs.piccolo;bundle-version="1.3.1",
  de.cau.cs.kieler.core.kivi;bundle-version="0.4.1"
 Bundle-Activator: de.cau.cs.kieler.klighd.piccolo.KlighdPiccoloPlugin
+Export-Package: de.cau.cs.kieler.klighd.piccolo,
+ de.cau.cs.kieler.klighd.piccolo.activities,
+ de.cau.cs.kieler.klighd.piccolo.events,
+ de.cau.cs.kieler.klighd.piccolo.krendering,
+ de.cau.cs.kieler.klighd.piccolo.krendering.controller,
+ de.cau.cs.kieler.klighd.piccolo.krendering.util,
+ de.cau.cs.kieler.klighd.piccolo.krendering.viewer,
+ de.cau.cs.kieler.klighd.piccolo.nodes,
+ de.cau.cs.kieler.klighd.piccolo.ui,
+ de.cau.cs.kieler.klighd.piccolo.util

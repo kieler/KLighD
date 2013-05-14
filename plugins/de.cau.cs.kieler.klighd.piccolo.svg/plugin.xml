@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="de.cau.cs.kieler.klighd.viewerProviders">
+      <viewer
+            class="de.cau.cs.kieler.klighd.piccolo.svg.PiccoloSVGViewerProvider"
+            id="de.cau.cs.kieler.klighd.piccolo.svg.piccoloViewer">
+      </viewer>
+   </extension>
+</plugin>

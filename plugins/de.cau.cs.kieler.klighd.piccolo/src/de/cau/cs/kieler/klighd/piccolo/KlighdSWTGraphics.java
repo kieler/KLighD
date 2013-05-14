@@ -500,4 +500,6 @@ public interface KlighdSWTGraphics {
      */
     void fill(final Shape s);
     
+    
+    void drawString(final String text, final int x, final int y);
 }

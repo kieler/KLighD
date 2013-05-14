@@ -1,0 +1,77 @@
+<!doctype html>
+<html encoding="UTF8">
+
+<head>
+<meta charset="utf-8">
+<title>KlighD SVG Viewer</title>
+<script
+	src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
+</head>
+
+<style>
+body {
+	background-color: #eeeeee;
+}
+
+#viewport {
+	width: 800px;
+	height: 600px;
+	background-color: #ffffff;
+}
+
+svg {
+	width: 100%;
+	height: 100%;
+}
+</style>
+
+<body>
+
+	<button id="connect">Connect</button>
+
+	<div id="viewport"></div>
+
+	<div id="messages"></div>
+
+	<script>
+    $('#connect').click(function() {
+
+      var connection = new WebSocket('ws://localhost:8080/svg/', "protocol.svgws");
+
+      // When the connection is open, send some data to the server
+      connection.onopen = function() {
+        connection.send('Ping U'); // Send the message 'Ping' to the server
+      };
+
+      // Log errors
+      connection.onerror = function(error) {
+        $('#messages').html('WebSocket Error ' + error);
+      };
+
+      // Received SVG from server
+      connection.onmessage = function(e) {
+        // set the svg
+        $('#viewport').html(e.data);
+      };
+
+      $('#messages').html("Connecting ...");
+      setTimeout(function() {
+        if (connection.readyState === WebSocket.OPEN) {
+          $('#messages').html("Connected.");
+        } else {
+          $('#messages').html("Could not connect to web socket.");
+        }
+      }, 500);
+
+    });
+
+    // executed
+    $(function() {
+    });
+  </script>
+
+
+
+</body>
+
+</html>
