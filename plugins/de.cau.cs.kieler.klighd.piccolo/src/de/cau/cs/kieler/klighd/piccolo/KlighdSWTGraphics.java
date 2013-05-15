@@ -13,6 +13,7 @@
  */
 package de.cau.cs.kieler.klighd.piccolo;
 
+import java.awt.Font;
 import java.awt.Shape;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.GeneralPath;
@@ -20,6 +21,7 @@ import java.awt.geom.Rectangle2D;
 
 //import org.eclipse.swt.SWT; // SUPPRESS CHECKSTYLE Unused: Is referenced in lots of Javadoc annotations
 import org.eclipse.swt.graphics.Device;
+import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.LineAttributes;
 import org.eclipse.swt.graphics.RGB;
@@ -502,4 +504,6 @@ public interface KlighdSWTGraphics {
     
     
     void drawString(final String text, final int x, final int y);
+    
+    void setFont(FontData font) ;
 }

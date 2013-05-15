@@ -192,7 +192,8 @@ public class PiccoloSVGViewer extends AbstractViewer<KNode> implements INodeSele
         };
 
         // this reduces flickering drastically
-        canvas.setDoubleBuffered(true);
+        //canvas.setDoubleBuffered(true);
+        
         // canvas.setDefaultRenderQuality(PPaintContext.LOW_QUALITY_RENDERING);
         // canvas.removeInputEventListener(canvas.getPanEventHandler());
         // prevent conflicts with selection handler

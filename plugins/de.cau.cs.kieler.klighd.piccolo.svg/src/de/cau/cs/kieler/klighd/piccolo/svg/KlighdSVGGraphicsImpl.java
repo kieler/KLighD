@@ -47,6 +47,7 @@ import org.apache.batik.dom.GenericDOMImplementation;
 import org.apache.batik.svggen.SVGGraphics2D;
 import org.apache.batik.svggen.SVGGraphics2DIOException;
 import org.eclipse.swt.graphics.Device;
+import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.LineAttributes;
 import org.eclipse.swt.graphics.RGB;
@@ -100,16 +101,14 @@ public class KlighdSVGGraphicsImpl extends Graphics2D implements KlighdSWTGraphi
     }
 
     private GradientPaint rgb2Pattern(final RGBGradient gradient, Rectangle2D bounds) {
-        GradientPaint gp = new GradientPaint((float)bounds.getMinX(), 
-                (float)bounds.getMinY(), 
-                rgb2Color(gradient.getColor1()),
-                (float)bounds.getMaxX(), 
-                (float)bounds.getMaxY(), 
-                rgb2Color(gradient.getColor2()));
-        
+        GradientPaint gp =
+                new GradientPaint((float) bounds.getMinX(), (float) bounds.getMinY(),
+                        rgb2Color(gradient.getColor1()), (float) bounds.getMaxX(),
+                        (float) bounds.getMaxY(), rgb2Color(gradient.getColor2()));
+
         return gp;
     }
-    
+
     /**
      * {@inheritDoc}
      */
@@ -132,6 +131,7 @@ public class KlighdSVGGraphicsImpl extends Graphics2D implements KlighdSWTGraphi
     @Override
     public LineAttributes getLineAttributes() {
         // TODO Auto-generated method stub
+        //unsupported();
         return null;
     }
 
@@ -141,7 +141,7 @@ public class KlighdSVGGraphicsImpl extends Graphics2D implements KlighdSWTGraphi
     @Override
     public void setLineAttributes(LineAttributes attributes) {
         // TODO Auto-generated method stub
-
+        //unsupported();
     }
 
     /**
@@ -149,15 +149,17 @@ public class KlighdSVGGraphicsImpl extends Graphics2D implements KlighdSWTGraphi
      */
     @Override
     public float getLineWidth() {
-        return 0;
+        return strokeWidth;
     }
 
+    private int strokeWidth = 0;
+    
     /**
      * {@inheritDoc}
      */
     @Override
     public void setLineWidth(float lineWidth) {
-        // TODO Auto-generated method stub
+        //unsupported();
     }
 
     /**
@@ -341,7 +343,7 @@ public class KlighdSVGGraphicsImpl extends Graphics2D implements KlighdSWTGraphi
      */
     @Override
     public void drawGeneralPath(GeneralPath gp) {
-        unsupported();
+        graphics.draw(gp);
     }
 
     /**
@@ -375,7 +377,19 @@ public class KlighdSVGGraphicsImpl extends Graphics2D implements KlighdSWTGraphi
     }
 
     private void unsupported() {
-        throw new UnsupportedOperationException();
+        try {
+            throw new UnsupportedOperationException();
+        } catch (UnsupportedOperationException ue) {
+            ue.printStackTrace();
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setFont(final FontData font) {
+        graphics.setFont(new Font(font.getName(), font.getStyle(), font.getHeight()));
     }
 
     /**
@@ -383,7 +397,7 @@ public class KlighdSVGGraphicsImpl extends Graphics2D implements KlighdSWTGraphi
      */
     @Override
     public void addRenderingHints(Map<?, ?> hints) {
-        // TODO Auto-generated method stub
+        unsupported();
 
     }
 
@@ -392,8 +406,7 @@ public class KlighdSVGGraphicsImpl extends Graphics2D implements KlighdSWTGraphi
      */
     @Override
     public void clip(Shape s) {
-        // TODO Auto-generated method stub
-
+        graphics.clip(s);
     }
 
     /**
@@ -402,7 +415,7 @@ public class KlighdSVGGraphicsImpl extends Graphics2D implements KlighdSWTGraphi
     @Override
     public void drawGlyphVector(GlyphVector g, float x, float y) {
         // TODO Auto-generated method stub
-
+        unsupported();
     }
 
     /**
@@ -411,6 +424,8 @@ public class KlighdSVGGraphicsImpl extends Graphics2D implements KlighdSWTGraphi
     @Override
     public boolean drawImage(Image img, AffineTransform xform, ImageObserver obs) {
         // TODO Auto-generated method stub
+        System.out.println("di");
+        unsupported();
         return false;
     }
 
@@ -420,7 +435,7 @@ public class KlighdSVGGraphicsImpl extends Graphics2D implements KlighdSWTGraphi
     @Override
     public void drawImage(BufferedImage img, BufferedImageOp op, int x, int y) {
         // TODO Auto-generated method stub
-
+        unsupported();
     }
 
     /**
@@ -429,7 +444,8 @@ public class KlighdSVGGraphicsImpl extends Graphics2D implements KlighdSWTGraphi
     @Override
     public void drawRenderableImage(RenderableImage img, AffineTransform xform) {
         // TODO Auto-generated method stub
-
+        System.out.println("di");
+        unsupported();
     }
 
     /**
@@ -438,7 +454,8 @@ public class KlighdSVGGraphicsImpl extends Graphics2D implements KlighdSWTGraphi
     @Override
     public void drawRenderedImage(RenderedImage img, AffineTransform xform) {
         // TODO Auto-generated method stub
-
+        System.out.println("di");
+        unsupported();
     }
 
     /**
@@ -454,8 +471,7 @@ public class KlighdSVGGraphicsImpl extends Graphics2D implements KlighdSWTGraphi
      */
     @Override
     public void drawString(String str, float x, float y) {
-        // TODO Auto-generated method stub
-
+        graphics.drawString(str, (int) x, (int) y);
     }
 
     /**
@@ -464,7 +480,7 @@ public class KlighdSVGGraphicsImpl extends Graphics2D implements KlighdSWTGraphi
     @Override
     public void drawString(AttributedCharacterIterator iterator, int x, int y) {
         // TODO Auto-generated method stub
-
+        unsupported();
     }
 
     /**
@@ -473,7 +489,7 @@ public class KlighdSVGGraphicsImpl extends Graphics2D implements KlighdSWTGraphi
     @Override
     public void drawString(AttributedCharacterIterator iterator, float x, float y) {
         // TODO Auto-generated method stub
-
+        unsupported();
     }
 
     /**
@@ -481,8 +497,7 @@ public class KlighdSVGGraphicsImpl extends Graphics2D implements KlighdSWTGraphi
      */
     @Override
     public Color getBackground() {
-        // TODO Auto-generated method stub
-        return null;
+        return graphics.getBackground();
     }
 
     /**
@@ -490,8 +505,7 @@ public class KlighdSVGGraphicsImpl extends Graphics2D implements KlighdSWTGraphi
      */
     @Override
     public Composite getComposite() {
-        // TODO Auto-generated method stub
-        return null;
+        return graphics.getComposite();
     }
 
     /**
@@ -499,7 +513,8 @@ public class KlighdSVGGraphicsImpl extends Graphics2D implements KlighdSWTGraphi
      */
     @Override
     public GraphicsConfiguration getDeviceConfiguration() {
-        // TODO Auto-generated method stub
+        // TODO Auto-generated method stubunsupported();
+        unsupported();
         return null;
     }
 
@@ -509,6 +524,7 @@ public class KlighdSVGGraphicsImpl extends Graphics2D implements KlighdSWTGraphi
     @Override
     public FontRenderContext getFontRenderContext() {
         // TODO Auto-generated method stub
+        unsupported();
         return null;
     }
 
@@ -517,8 +533,7 @@ public class KlighdSVGGraphicsImpl extends Graphics2D implements KlighdSWTGraphi
      */
     @Override
     public Paint getPaint() {
-        // TODO Auto-generated method stub
-        return null;
+        return graphics.getPaint();
     }
 
     /**
@@ -527,6 +542,7 @@ public class KlighdSVGGraphicsImpl extends Graphics2D implements KlighdSWTGraphi
     @Override
     public Object getRenderingHint(Key hintKey) {
         // TODO Auto-generated method stub
+        unsupported();
         return null;
     }
 
@@ -536,6 +552,7 @@ public class KlighdSVGGraphicsImpl extends Graphics2D implements KlighdSWTGraphi
     @Override
     public RenderingHints getRenderingHints() {
         // TODO Auto-generated method stub
+        unsupported();
         return null;
     }
 
@@ -545,6 +562,7 @@ public class KlighdSVGGraphicsImpl extends Graphics2D implements KlighdSWTGraphi
     @Override
     public Stroke getStroke() {
         // TODO Auto-generated method stub
+        unsupported();
         return null;
     }
 
@@ -554,6 +572,7 @@ public class KlighdSVGGraphicsImpl extends Graphics2D implements KlighdSWTGraphi
     @Override
     public boolean hit(Rectangle rect, Shape s, boolean onStroke) {
         // TODO Auto-generated method stub
+        unsupported();
         return false;
     }
 
@@ -563,6 +582,7 @@ public class KlighdSVGGraphicsImpl extends Graphics2D implements KlighdSWTGraphi
     @Override
     public void rotate(double theta) {
         // TODO Auto-generated method stub
+        unsupported();
 
     }
 
@@ -572,7 +592,7 @@ public class KlighdSVGGraphicsImpl extends Graphics2D implements KlighdSWTGraphi
     @Override
     public void rotate(double theta, double x, double y) {
         // TODO Auto-generated method stub
-
+        unsupported();
     }
 
     /**
@@ -581,7 +601,7 @@ public class KlighdSVGGraphicsImpl extends Graphics2D implements KlighdSWTGraphi
     @Override
     public void scale(double sx, double sy) {
         // TODO Auto-generated method stub
-
+        unsupported();
     }
 
     /**
@@ -589,8 +609,7 @@ public class KlighdSVGGraphicsImpl extends Graphics2D implements KlighdSWTGraphi
      */
     @Override
     public void setBackground(Color color) {
-        // TODO Auto-generated method stub
-
+        graphics.setBackground(color);
     }
 
     /**
@@ -599,7 +618,7 @@ public class KlighdSVGGraphicsImpl extends Graphics2D implements KlighdSWTGraphi
     @Override
     public void setComposite(Composite comp) {
         // TODO Auto-generated method stub
-
+        unsupported();
     }
 
     /**
@@ -608,7 +627,7 @@ public class KlighdSVGGraphicsImpl extends Graphics2D implements KlighdSWTGraphi
     @Override
     public void setPaint(Paint paint) {
         // TODO Auto-generated method stub
-
+        unsupported();
     }
 
     /**
@@ -616,8 +635,7 @@ public class KlighdSVGGraphicsImpl extends Graphics2D implements KlighdSWTGraphi
      */
     @Override
     public void setRenderingHint(Key hintKey, Object hintValue) {
-        // TODO Auto-generated method stub
-
+        graphics.setRenderingHint(hintKey, hintValue);
     }
 
     /**
@@ -625,8 +643,7 @@ public class KlighdSVGGraphicsImpl extends Graphics2D implements KlighdSWTGraphi
      */
     @Override
     public void setRenderingHints(Map<?, ?> hints) {
-        // TODO Auto-generated method stub
-
+        graphics.setRenderingHints(hints);
     }
 
     /**
@@ -634,8 +651,8 @@ public class KlighdSVGGraphicsImpl extends Graphics2D implements KlighdSWTGraphi
      */
     @Override
     public void setStroke(Stroke s) {
-        // TODO Auto-generated method stub
-
+        
+        unsupported();
     }
 
     /**
@@ -644,7 +661,7 @@ public class KlighdSVGGraphicsImpl extends Graphics2D implements KlighdSWTGraphi
     @Override
     public void shear(double shx, double shy) {
         // TODO Auto-generated method stub
-
+        unsupported();
     }
 
     /**
@@ -653,7 +670,7 @@ public class KlighdSVGGraphicsImpl extends Graphics2D implements KlighdSWTGraphi
     @Override
     public void translate(int x, int y) {
         // TODO Auto-generated method stub
-
+        unsupported();
     }
 
     /**
@@ -662,7 +679,7 @@ public class KlighdSVGGraphicsImpl extends Graphics2D implements KlighdSWTGraphi
     @Override
     public void translate(double tx, double ty) {
         // TODO Auto-generated method stub
-
+        unsupported();
     }
 
     /**
@@ -671,7 +688,7 @@ public class KlighdSVGGraphicsImpl extends Graphics2D implements KlighdSWTGraphi
     @Override
     public void clearRect(int arg0, int arg1, int arg2, int arg3) {
         // TODO Auto-generated method stub
-
+        unsupported();
     }
 
     /**
@@ -680,7 +697,7 @@ public class KlighdSVGGraphicsImpl extends Graphics2D implements KlighdSWTGraphi
     @Override
     public void clipRect(int arg0, int arg1, int arg2, int arg3) {
         // TODO Auto-generated method stub
-
+        unsupported();
     }
 
     /**
@@ -689,7 +706,7 @@ public class KlighdSVGGraphicsImpl extends Graphics2D implements KlighdSWTGraphi
     @Override
     public void copyArea(int arg0, int arg1, int arg2, int arg3, int arg4, int arg5) {
         // TODO Auto-generated method stub
-
+        unsupported();
     }
 
     /**
@@ -697,8 +714,7 @@ public class KlighdSVGGraphicsImpl extends Graphics2D implements KlighdSWTGraphi
      */
     @Override
     public Graphics create() {
-        // TODO Auto-generated method stub
-        return null;
+        return graphics.create();
     }
 
     /**
@@ -707,7 +723,7 @@ public class KlighdSVGGraphicsImpl extends Graphics2D implements KlighdSWTGraphi
     @Override
     public void dispose() {
         // TODO Auto-generated method stub
-
+        unsupported();
     }
 
     /**
@@ -716,7 +732,7 @@ public class KlighdSVGGraphicsImpl extends Graphics2D implements KlighdSWTGraphi
     @Override
     public void drawArc(int arg0, int arg1, int arg2, int arg3, int arg4, int arg5) {
         // TODO Auto-generated method stub
-
+        unsupported();
     }
 
     /**
@@ -724,7 +740,8 @@ public class KlighdSVGGraphicsImpl extends Graphics2D implements KlighdSWTGraphi
      */
     @Override
     public boolean drawImage(Image arg0, int arg1, int arg2, ImageObserver arg3) {
-        // TODO Auto-generated method stub
+        System.out.println("Dri");
+        unsupported();
         return false;
     }
 
@@ -734,6 +751,8 @@ public class KlighdSVGGraphicsImpl extends Graphics2D implements KlighdSWTGraphi
     @Override
     public boolean drawImage(Image arg0, int arg1, int arg2, Color arg3, ImageObserver arg4) {
         // TODO Auto-generated method stub
+        System.out.println("Dri");
+        unsupported();
         return false;
     }
 
@@ -743,6 +762,8 @@ public class KlighdSVGGraphicsImpl extends Graphics2D implements KlighdSWTGraphi
     @Override
     public boolean drawImage(Image arg0, int arg1, int arg2, int arg3, int arg4, ImageObserver arg5) {
         // TODO Auto-generated method stub
+        System.out.println("Dri");
+        unsupported();
         return false;
     }
 
@@ -753,6 +774,8 @@ public class KlighdSVGGraphicsImpl extends Graphics2D implements KlighdSWTGraphi
     public boolean drawImage(Image arg0, int arg1, int arg2, int arg3, int arg4, Color arg5,
             ImageObserver arg6) {
         // TODO Auto-generated method stub
+        System.out.println("Dri");
+        unsupported();
         return false;
     }
 
@@ -763,6 +786,8 @@ public class KlighdSVGGraphicsImpl extends Graphics2D implements KlighdSWTGraphi
     public boolean drawImage(Image arg0, int arg1, int arg2, int arg3, int arg4, int arg5,
             int arg6, int arg7, int arg8, ImageObserver arg9) {
         // TODO Auto-generated method stub
+        System.out.println("Dri");
+        unsupported();
         return false;
     }
 
@@ -773,6 +798,8 @@ public class KlighdSVGGraphicsImpl extends Graphics2D implements KlighdSWTGraphi
     public boolean drawImage(Image arg0, int arg1, int arg2, int arg3, int arg4, int arg5,
             int arg6, int arg7, int arg8, Color arg9, ImageObserver arg10) {
         // TODO Auto-generated method stub
+        System.out.println("Dri");
+        unsupported();
         return false;
     }
 
@@ -782,7 +809,7 @@ public class KlighdSVGGraphicsImpl extends Graphics2D implements KlighdSWTGraphi
     @Override
     public void drawLine(int arg0, int arg1, int arg2, int arg3) {
         // TODO Auto-generated method stub
-
+        unsupported();
     }
 
     /**
@@ -791,7 +818,7 @@ public class KlighdSVGGraphicsImpl extends Graphics2D implements KlighdSWTGraphi
     @Override
     public void drawOval(int arg0, int arg1, int arg2, int arg3) {
         // TODO Auto-generated method stub
-
+        unsupported();
     }
 
     /**
@@ -800,7 +827,7 @@ public class KlighdSVGGraphicsImpl extends Graphics2D implements KlighdSWTGraphi
     @Override
     public void drawPolygon(int[] arg0, int[] arg1, int arg2) {
         // TODO Auto-generated method stub
-
+        unsupported();
     }
 
     /**
@@ -809,7 +836,7 @@ public class KlighdSVGGraphicsImpl extends Graphics2D implements KlighdSWTGraphi
     @Override
     public void drawPolyline(int[] arg0, int[] arg1, int arg2) {
         // TODO Auto-generated method stub
-
+        unsupported();
     }
 
     /**
@@ -818,7 +845,7 @@ public class KlighdSVGGraphicsImpl extends Graphics2D implements KlighdSWTGraphi
     @Override
     public void drawRoundRect(int arg0, int arg1, int arg2, int arg3, int arg4, int arg5) {
         // TODO Auto-generated method stub
-
+        unsupported();
     }
 
     /**
@@ -827,7 +854,7 @@ public class KlighdSVGGraphicsImpl extends Graphics2D implements KlighdSWTGraphi
     @Override
     public void fillArc(int arg0, int arg1, int arg2, int arg3, int arg4, int arg5) {
         // TODO Auto-generated method stub
-
+        unsupported();
     }
 
     /**
@@ -836,7 +863,7 @@ public class KlighdSVGGraphicsImpl extends Graphics2D implements KlighdSWTGraphi
     @Override
     public void fillOval(int arg0, int arg1, int arg2, int arg3) {
         // TODO Auto-generated method stub
-
+        unsupported();
     }
 
     /**
@@ -845,16 +872,15 @@ public class KlighdSVGGraphicsImpl extends Graphics2D implements KlighdSWTGraphi
     @Override
     public void fillPolygon(int[] arg0, int[] arg1, int arg2) {
         // TODO Auto-generated method stub
-
+        unsupported();
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void fillRect(int arg0, int arg1, int arg2, int arg3) {
-        // TODO Auto-generated method stub
-
+    public void fillRect(int x, int y, int width, int height) {
+        graphics.fillRect(x, y, width, height);
     }
 
     /**
@@ -863,7 +889,7 @@ public class KlighdSVGGraphicsImpl extends Graphics2D implements KlighdSWTGraphi
     @Override
     public void fillRoundRect(int arg0, int arg1, int arg2, int arg3, int arg4, int arg5) {
         // TODO Auto-generated method stub
-
+        unsupported();
     }
 
     /**
@@ -871,8 +897,7 @@ public class KlighdSVGGraphicsImpl extends Graphics2D implements KlighdSWTGraphi
      */
     @Override
     public Shape getClip() {
-        // TODO Auto-generated method stub
-        return null;
+        return graphics.getClip();
     }
 
     /**
@@ -881,6 +906,7 @@ public class KlighdSVGGraphicsImpl extends Graphics2D implements KlighdSWTGraphi
     @Override
     public Rectangle getClipBounds() {
         // TODO Auto-generated method stub
+        unsupported();
         return null;
     }
 
@@ -890,6 +916,7 @@ public class KlighdSVGGraphicsImpl extends Graphics2D implements KlighdSWTGraphi
     @Override
     public Color getColor() {
         // TODO Auto-generated method stub
+        unsupported();
         return null;
     }
 
@@ -899,6 +926,7 @@ public class KlighdSVGGraphicsImpl extends Graphics2D implements KlighdSWTGraphi
     @Override
     public Font getFont() {
         // TODO Auto-generated method stub
+        unsupported();
         return null;
     }
 
@@ -908,6 +936,7 @@ public class KlighdSVGGraphicsImpl extends Graphics2D implements KlighdSWTGraphi
     @Override
     public FontMetrics getFontMetrics(Font arg0) {
         // TODO Auto-generated method stub
+        unsupported();
         return null;
     }
 
@@ -915,9 +944,8 @@ public class KlighdSVGGraphicsImpl extends Graphics2D implements KlighdSWTGraphi
      * {@inheritDoc}
      */
     @Override
-    public void setClip(Shape arg0) {
-        // TODO Auto-generated method stub
-
+    public void setClip(Shape clip) {
+        graphics.setClip(clip);
     }
 
     /**
@@ -926,25 +954,15 @@ public class KlighdSVGGraphicsImpl extends Graphics2D implements KlighdSWTGraphi
     @Override
     public void setClip(int arg0, int arg1, int arg2, int arg3) {
         // TODO Auto-generated method stub
-
+        unsupported();
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void setColor(Color arg0) {
-        // TODO Auto-generated method stub
-
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setFont(Font arg0) {
-        // TODO Auto-generated method stub
-
+    public void setColor(Color color) {
+        graphics.setColor(color);
     }
 
     /**
@@ -953,7 +971,7 @@ public class KlighdSVGGraphicsImpl extends Graphics2D implements KlighdSWTGraphi
     @Override
     public void setPaintMode() {
         // TODO Auto-generated method stub
-
+        unsupported();
     }
 
     /**
@@ -962,6 +980,15 @@ public class KlighdSVGGraphicsImpl extends Graphics2D implements KlighdSWTGraphi
     @Override
     public void setXORMode(Color arg0) {
         // TODO Auto-generated method stub
+        unsupported();
+    }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setFont(Font arg0) {
+        // TODO Auto-generated method stub
+        unsupported();
     }
 }
