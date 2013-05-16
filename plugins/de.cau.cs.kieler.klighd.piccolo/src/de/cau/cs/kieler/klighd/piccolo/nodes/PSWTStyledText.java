@@ -175,6 +175,7 @@ public class PSWTStyledText extends PSWTText {
             return;
         }        
 //        Object oldPaint = penPaint;
+        penPaintGradient = null;
         penPaint = color;
 //        repaint();
 //        firePropertyChange(PROPERTY_CODE_PAINT, PROPERTY_PAINT, oldPaint, penPaint);
