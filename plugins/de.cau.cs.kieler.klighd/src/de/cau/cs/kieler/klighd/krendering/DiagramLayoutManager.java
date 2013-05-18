@@ -20,6 +20,9 @@ import java.util.Map.Entry;
 import java.util.Set;
 
 import org.eclipse.core.runtime.IAdaptable;
+import org.eclipse.emf.common.notify.Notification;
+import org.eclipse.emf.ecore.InternalEObject;
+import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.ui.IWorkbenchPart;
 
 import com.google.common.collect.BiMap;
@@ -40,6 +43,7 @@ import de.cau.cs.kieler.kiml.config.ILayoutConfig;
 import de.cau.cs.kieler.kiml.klayoutdata.KEdgeLayout;
 import de.cau.cs.kieler.kiml.klayoutdata.KInsets;
 import de.cau.cs.kieler.kiml.klayoutdata.KLayoutDataFactory;
+import de.cau.cs.kieler.kiml.klayoutdata.KLayoutDataPackage;
 import de.cau.cs.kieler.kiml.klayoutdata.KPoint;
 import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout;
 import de.cau.cs.kieler.kiml.options.LayoutOptions;
@@ -446,7 +450,7 @@ public class DiagramLayoutManager implements IDiagramLayoutManager<KGraphElement
         KEdgeLayout layoutLayout = layoutEdge.getData(KEdgeLayout.class);
         KEdgeLayout edgeLayout = edge.getData(KEdgeLayout.class);
         if (edgeLayout != null) {
-            transferEdgeLayout(edgeLayout, layoutLayout, null);
+            transferEdgeLayout(edgeLayout, layoutLayout, true);
         }
 
         layoutEdge.setSource(layoutSource);
@@ -575,7 +579,7 @@ public class DiagramLayoutManager implements IDiagramLayoutManager<KGraphElement
                     KEdgeLayout layoutLayout = layoutEdge.getData(KEdgeLayout.class);
                     KEdgeLayout edgeLayout = element.getData(KEdgeLayout.class);
                     if (edgeLayout != null) {
-                        transferEdgeLayout(layoutLayout, edgeLayout, layoutEdge);
+                        transferEdgeLayout(edgeLayout, layoutLayout, false);
                     }
                     return true;
                 }
@@ -619,54 +623,65 @@ public class DiagramLayoutManager implements IDiagramLayoutManager<KGraphElement
     /**
      * Transfers the source edge layout to the target edge layout.
      * 
-     * @param originEdgeLayout
-     *            the origin edge layout
-     * @param destEdgeLayout
+     * @param viewModelEdgeLayout
      *            the destination edge layout
-     * @param edge
-     *            the edge, or {@code null} if no point checking shall be performed
+     * @param layoutEdgeLayout
+     *            the origin edge layout
+     * @param viewModel2LayoutGraph
+     *            if true the transfer is to be done from viewModel to layout graph, if false the
+     *            other round
      */
-    private static void transferEdgeLayout(final KEdgeLayout originEdgeLayout,
-            final KEdgeLayout destEdgeLayout, final KEdge edge) {
+    private static void transferEdgeLayout(final KEdgeLayout viewModelEdgeLayout,
+            final KEdgeLayout layoutEdgeLayout, final boolean viewModel2LayoutGraph) {
+        
+        KEdge layoutEdge = (KEdge) layoutEdgeLayout.eContainer();
 
-        // do not notify listeners about any change on the displayed KGraph
-        final boolean deliver = destEdgeLayout.eDeliver();
-        destEdgeLayout.eSetDeliver(false);
+        // do not notify listeners about any change on the displayed KGraph in order
+        //  to avoid unnecessary diagram refresh cycles
+        final boolean deliver = viewModelEdgeLayout.eDeliver();
+        viewModelEdgeLayout.eSetDeliver(false);
 
-        destEdgeLayout.copyProperties(originEdgeLayout);
+        viewModelEdgeLayout.copyProperties(layoutEdgeLayout);
 
-        if (destEdgeLayout.getSourcePoint() == null) {
-            destEdgeLayout.setSourcePoint(KLayoutDataFactory.eINSTANCE.createKPoint());
+        if (viewModelEdgeLayout.getSourcePoint() == null) {
+            viewModelEdgeLayout.setSourcePoint(KLayoutDataFactory.eINSTANCE.createKPoint());
         }
-        if (edge == null) {
+        if (viewModel2LayoutGraph) {
             // transfer the source point without checking
-            KPoint sourcePoint = originEdgeLayout.getSourcePoint();
-            destEdgeLayout.getSourcePoint().setPos(sourcePoint.getX(), sourcePoint.getY());
+            KPoint sourcePoint = viewModelEdgeLayout.getSourcePoint();
+            layoutEdgeLayout.getSourcePoint().setPos(sourcePoint.getX(), sourcePoint.getY());
         } else {
-            KNode sourceNode = edge.getSource();
+            KNode layoutSourceNode = layoutEdge.getSource();
             KVector offset = new KVector();
+            
             // If the target is a descendant of the source, the edge's source point is already
             // relative to the source node's position.
-            if (!KimlUtil.isDescendant(edge.getTarget(), sourceNode)) {
-                KShapeLayout sourceLayout = sourceNode.getData(KShapeLayout.class);
+            if (!KimlUtil.isDescendant(layoutEdge.getTarget(), layoutSourceNode)) {
+                KShapeLayout sourceLayout = layoutSourceNode.getData(KShapeLayout.class);
                 offset.x = -sourceLayout.getXpos();
                 offset.y = -sourceLayout.getYpos();
             } else {
-                KShapeLayout sourceLayout = sourceNode.getData(KShapeLayout.class);
+                KShapeLayout sourceLayout = layoutSourceNode.getData(KShapeLayout.class);
                 offset.x = sourceLayout.getInsets().getLeft();
                 offset.y = sourceLayout.getInsets().getTop();
             }
-            checkAndCopyPoint(
-                    originEdgeLayout.getSourcePoint(), 
-                    destEdgeLayout.getSourcePoint(),
-                    //TODO: check for null value
-                    (KNode) destEdgeLayout.eContainer().eContainer(),
-                    sourceNode, edge.getSourcePort(), offset);
+            
+            boolean pointDeliver = viewModelEdgeLayout.getSourcePoint().eDeliver();
+            viewModelEdgeLayout.getSourcePoint().eSetDeliver(false);
+            
+            checkAndCopyPoint(layoutEdgeLayout.getSourcePoint(),
+                    viewModelEdgeLayout.getSourcePoint(), layoutSourceNode,
+                    layoutEdge.getSourcePort(), ((KEdge) viewModelEdgeLayout.eContainer())
+                            .getSource().getData(KRendering.class), offset);
+            
+            viewModelEdgeLayout.getSourcePoint().eSetDeliver(pointDeliver);
         }
 
         // transfer the bend points, reusing any existing KPoint instances
-        ListIterator<KPoint> originBendIter = originEdgeLayout.getBendPoints().listIterator();
-        ListIterator<KPoint> destBendIter = destEdgeLayout.getBendPoints().listIterator();
+        ListIterator<KPoint> originBendIter = (viewModel2LayoutGraph ? viewModelEdgeLayout
+                : layoutEdgeLayout).getBendPoints().listIterator();
+        ListIterator<KPoint> destBendIter = (viewModel2LayoutGraph ? layoutEdgeLayout
+                : viewModelEdgeLayout).getBendPoints().listIterator();
         while (originBendIter.hasNext()) {
             KPoint originPoint = originBendIter.next();
             KPoint destPoint;
@@ -684,43 +699,55 @@ public class DiagramLayoutManager implements IDiagramLayoutManager<KGraphElement
             destBendIter.remove();
         }
 
-        // reactivate notifications for the final modification
-        destEdgeLayout.eSetDeliver(deliver);
-        
-        if (destEdgeLayout.getTargetPoint() == null) {
-            destEdgeLayout.setTargetPoint(KLayoutDataFactory.eINSTANCE.createKPoint());
+        if (viewModelEdgeLayout.getTargetPoint() == null) {
+            viewModelEdgeLayout.setTargetPoint(KLayoutDataFactory.eINSTANCE.createKPoint());
         }
-        if (edge == null) {
+        if (viewModel2LayoutGraph) {
             // transfer the target point without checking
-            KPoint targetPoint = originEdgeLayout.getTargetPoint();
-            destEdgeLayout.getTargetPoint().setPos(targetPoint.getX(), targetPoint.getY());
-        } else {
-            KNode sourceNode = edge.getSource();
-            KNode targetNode = edge.getTarget();
+            KPoint targetPoint = viewModelEdgeLayout.getTargetPoint();
+            layoutEdgeLayout.getTargetPoint().setPos(targetPoint.getX(), targetPoint.getY());
+        } else {            
+            KNode layoutSourceNode = layoutEdge.getSource();
+            KNode layoutTargetNode = layoutEdge.getTarget();
             KVector offset = new KVector();
-            if (sourceNode.getParent() == targetNode.getParent()) {
+            
+            if (layoutSourceNode.getParent() == layoutTargetNode.getParent()) {
                 // The source and target are on the same level, so just subtract the target position.
-                KShapeLayout targetLayout = targetNode.getData(KShapeLayout.class);
+                KShapeLayout targetLayout = layoutTargetNode.getData(KShapeLayout.class);
                 offset.x = -targetLayout.getXpos();
                 offset.y = -targetLayout.getYpos();
             } else {
                 // The source and target are on different levels, so transform coordinate system.
-                KNode referenceNode = sourceNode;
-                if (!KimlUtil.isDescendant(targetNode, sourceNode)) {
+                KNode referenceNode = layoutSourceNode;
+                if (!KimlUtil.isDescendant(layoutTargetNode, layoutSourceNode)) {
                     referenceNode = referenceNode.getParent();
                 }
                 KimlUtil.toAbsolute(offset, referenceNode);
-                KimlUtil.toRelative(offset, targetNode.getParent());
-                KShapeLayout targetLayout = targetNode.getData(KShapeLayout.class);
+                KimlUtil.toRelative(offset, layoutTargetNode.getParent());
+                KShapeLayout targetLayout = layoutTargetNode.getData(KShapeLayout.class);
                 offset.x -= targetLayout.getXpos();
                 offset.y -= targetLayout.getYpos();
             }
-            checkAndCopyPoint(originEdgeLayout.getTargetPoint(), 
-                    destEdgeLayout.getTargetPoint(),
-                    //TODO: check for null value
-                    (KNode) destEdgeLayout.eContainer().eContainer(),
-                    targetNode, edge.getTargetPort(), offset);
+            boolean pointDeliver = viewModelEdgeLayout.getTargetPoint().eDeliver();
+            viewModelEdgeLayout.getTargetPoint().eSetDeliver(false);
+
+            checkAndCopyPoint(layoutEdgeLayout.getTargetPoint(),
+                    viewModelEdgeLayout.getTargetPoint(), layoutTargetNode,
+                    layoutEdge.getTargetPort(), ((KEdge) viewModelEdgeLayout.eContainer())
+                            .getTarget().getData(KRendering.class), offset);
+            
+            viewModelEdgeLayout.getTargetPoint().eSetDeliver(pointDeliver);
         }
+
+        // reactivate notifications & fire a notification
+        //  bringing the observing diagram controller to update the displayed diagram
+        viewModelEdgeLayout.eSetDeliver(deliver);
+        if (!viewModel2LayoutGraph) {
+            viewModelEdgeLayout.eNotify(new ENotificationImpl(
+                    (InternalEObject) viewModelEdgeLayout, Notification.SET,
+                    KLayoutDataPackage.KEDGE_LAYOUT__BEND_POINTS, null, null));
+        }
+
     }
     
     /**
@@ -731,23 +758,24 @@ public class DiagramLayoutManager implements IDiagramLayoutManager<KGraphElement
      * @param destinationPoint the point to which to copy the anchored position
      * @param node the corresponding node
      * @param port the corresponding port, or {@code null}
+     * @param rendering the rendering of the corresponding node
      * @param offset the offset that must be added to the source point in order to make it
      *          relative to the given node
      */
     private static void checkAndCopyPoint(final KPoint originPoint, final KPoint destinationPoint,
-            final KNode edgeLayoutContainer, final KNode node, final KPort port, final KVector offset) {
+            final KNode node, final KPort port, final KRendering rendering, final KVector offset) {
         KShapeLayout nodeLayout = node.getData(KShapeLayout.class);
         KVector p = originPoint.createVector();
         if (port == null) {
             p.add(offset);
             AnchorUtil.anchorPoint(p, nodeLayout.getWidth(), nodeLayout.getHeight(),
-                    edgeLayoutContainer.getData(KRendering.class));
+                    rendering);
         } else {
             KShapeLayout portLayout = port.getData(KShapeLayout.class);
             offset.translate(-portLayout.getXpos(), -portLayout.getYpos());
             p.add(offset);
             AnchorUtil.anchorPoint(p, portLayout.getWidth(), portLayout.getHeight(),
-                    edgeLayoutContainer.getData(KRendering.class));
+                    port.getData(KRendering.class));
         }
         destinationPoint.applyVector(p.sub(offset));
     }
