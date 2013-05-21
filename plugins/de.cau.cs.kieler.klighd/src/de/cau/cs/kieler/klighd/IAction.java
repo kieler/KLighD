@@ -103,5 +103,20 @@ public interface IAction {
         public KRendering getRendering() {
             return rendering;
         }
+
+
+        /**
+         * Reveals the source (domain) element associated with the given <code>node</code>
+         * if any exists, or <code>null</code>.
+         * 
+         * @param <T> the expected return type
+         * @param viewElement the {@link KNode} to get the associated source element for
+         * @return the related source (domain) element if any associated one exists, or <code>null</code>
+         */
+        @SuppressWarnings("unchecked")
+        public <T> T getDomainElement(final KNode viewElement) {
+            return (T) this.viewer.getContextViewer().getCurrentViewContext()
+                    .getSourceElement(viewElement);
+        }
     }
 }
