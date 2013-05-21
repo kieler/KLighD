@@ -429,4 +429,25 @@ public final class LightDiagramServices {
                     .modify(new StyleModificationContext(s));
         }
     }
+    
+    /**
+     * Translates the given <code>model</code> by means of the known diagram synthesis translations.
+     * Incorporates constraints given in the <code>propertyHolders</code>.
+     * 
+     * @param <T>
+     *            the expected type of the result
+     * @param model
+     *            the model
+     * @param propertyHolders
+     *            the property holders
+     * @return the view context or null if the model and all possible transformations are
+     *         unsupported by all viewer providers
+     */
+    public static <T> T translateModel(final Object model, final IPropertyHolder... propertyHolders) {
+        ViewContext vc = LightDiagramServices.getInstance().createViewContext(model, propertyHolders);
+        LightDiagramServices.getInstance().updateViewContext(vc, model);
+        @SuppressWarnings("unchecked")
+        T result = (T) vc.getViewModel();
+        return result;
+    }
 }
