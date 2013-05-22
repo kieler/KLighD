@@ -31,6 +31,7 @@ import de.cau.cs.kieler.core.krendering.KImage;
 import de.cau.cs.kieler.core.krendering.KInvisibility;
 import de.cau.cs.kieler.core.krendering.KLeftPosition;
 import de.cau.cs.kieler.core.krendering.KLineCap;
+import de.cau.cs.kieler.core.krendering.KLineJoin;
 import de.cau.cs.kieler.core.krendering.KLineStyle;
 import de.cau.cs.kieler.core.krendering.KLineWidth;
 import de.cau.cs.kieler.core.krendering.KPointPlacementData;
@@ -381,6 +382,16 @@ public class KGraphSemanticSequencer extends AbstractDelegatingSemanticSequencer
 				}
 				else if(context == grammarAccess.getKStyleRule()) {
 					sequence_KLineCap_KStyle(context, (KLineCap) semanticObject); 
+					return; 
+				}
+				else break;
+			case KRenderingPackage.KLINE_JOIN:
+				if(context == grammarAccess.getKLineJoinRule()) {
+					sequence_KLineJoin(context, (KLineJoin) semanticObject); 
+					return; 
+				}
+				else if(context == grammarAccess.getKStyleRule()) {
+					sequence_KLineJoin_KStyle(context, (KLineJoin) semanticObject); 
 					return; 
 				}
 				else break;
@@ -1103,6 +1114,24 @@ public class KGraphSemanticSequencer extends AbstractDelegatingSemanticSequencer
 	 *     (propagateToChildren?='propagate'? lineCap=LineCap modifierId=QualifiedID?)
 	 */
 	protected void sequence_KLineCap_KStyle(EObject context, KLineCap semanticObject) {
+		genericSequencer.createSequence(context, semanticObject);
+	}
+	
+	
+	/**
+	 * Constraint:
+	 *     (propagateToChildren?='propagate'? lineJoin=LineJoin)
+	 */
+	protected void sequence_KLineJoin(EObject context, KLineJoin semanticObject) {
+		genericSequencer.createSequence(context, semanticObject);
+	}
+	
+	
+	/**
+	 * Constraint:
+	 *     (propagateToChildren?='propagate'? lineJoin=LineJoin modifierId=QualifiedID?)
+	 */
+	protected void sequence_KLineJoin_KStyle(EObject context, KLineJoin semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
 	}
 	

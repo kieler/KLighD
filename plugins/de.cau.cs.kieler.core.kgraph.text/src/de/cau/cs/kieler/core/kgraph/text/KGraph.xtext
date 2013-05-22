@@ -191,7 +191,7 @@ KSpline returns KSpline:
 
 KStyle returns KStyle:
 	(KColoring | KFontBold | KFontItalic | KFontName | KFontSize | KTextUnderline
-	| KHorizontalAlignment | KVerticalAlignment | KInvisibility | KLineCap
+	| KHorizontalAlignment | KVerticalAlignment | KInvisibility | KLineCap | KLineJoin
 	| KLineStyle | KLineWidth | KRotation | KShadow | KStyleRef)
 	('modifier' modifierId=QualifiedID)?;
 
@@ -239,7 +239,10 @@ KInvisibility returns KInvisibility:
 	(propagateToChildren?='propagate')? 'invisible' '=' invisible=BOOLEAN;
 
 KLineCap returns KLineCap:
-	(propagateToChildren?='propagate')? 'lineCap' '=' lineCap=LineCap;
+    (propagateToChildren?='propagate')? 'lineCap' '=' lineCap=LineCap;
+
+KLineJoin returns KLineJoin:
+    (propagateToChildren?='propagate')? 'lineJoin' '=' lineJoin=LineJoin;
 
 KLineStyle returns KLineStyle:
 	(propagateToChildren?='propagate')? 'lineStyle' '=' lineStyle=LineStyle;
@@ -383,7 +386,10 @@ enum LineStyle returns LineStyle:
 	SOLID='solid' | DASH='dash' | DOT='dot' | DASHDOT='dash-dot' | DASHDOTDOT='dash-dot-dot';
 
 enum LineCap returns LineCap:
-	CAP_FLAT='flat' | CAP_ROUND='round' | CAP_SQUARE='square';
+    CAP_FLAT='flat' | CAP_ROUND='round' | CAP_SQUARE='square';
+
+enum LineJoin returns LineJoin:
+    JOIN_MITER='miter' | JOIN_ROUND='round' | JOIN_BEVEL='bevel';
 
 enum Trigger returns Trigger:
 	SINGLECLICK='singleClick' | DOUBLECLICK='doubleClick';

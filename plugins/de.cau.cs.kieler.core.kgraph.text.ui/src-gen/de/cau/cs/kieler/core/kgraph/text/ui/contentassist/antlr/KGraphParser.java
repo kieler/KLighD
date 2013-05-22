@@ -70,6 +70,7 @@ public class KGraphParser extends AbstractContentAssistParser {
 					put(grammarAccess.getUnderlineAccess().getAlternatives(), "rule__Underline__Alternatives");
 					put(grammarAccess.getLineStyleAccess().getAlternatives(), "rule__LineStyle__Alternatives");
 					put(grammarAccess.getLineCapAccess().getAlternatives(), "rule__LineCap__Alternatives");
+					put(grammarAccess.getLineJoinAccess().getAlternatives(), "rule__LineJoin__Alternatives");
 					put(grammarAccess.getTriggerAccess().getAlternatives(), "rule__Trigger__Alternatives");
 					put(grammarAccess.getParentKNodeAccess().getGroup(), "rule__ParentKNode__Group__0");
 					put(grammarAccess.getParentKNodeAccess().getGroup_1(), "rule__ParentKNode__Group_1__0");
@@ -177,6 +178,7 @@ public class KGraphParser extends AbstractContentAssistParser {
 					put(grammarAccess.getKVerticalAlignmentAccess().getGroup(), "rule__KVerticalAlignment__Group__0");
 					put(grammarAccess.getKInvisibilityAccess().getGroup(), "rule__KInvisibility__Group__0");
 					put(grammarAccess.getKLineCapAccess().getGroup(), "rule__KLineCap__Group__0");
+					put(grammarAccess.getKLineJoinAccess().getGroup(), "rule__KLineJoin__Group__0");
 					put(grammarAccess.getKLineStyleAccess().getGroup(), "rule__KLineStyle__Group__0");
 					put(grammarAccess.getKLineWidthAccess().getGroup(), "rule__KLineWidth__Group__0");
 					put(grammarAccess.getKRotationAccess().getGroup(), "rule__KRotation__Group__0");
@@ -363,6 +365,8 @@ public class KGraphParser extends AbstractContentAssistParser {
 					put(grammarAccess.getKInvisibilityAccess().getInvisibleAssignment_3(), "rule__KInvisibility__InvisibleAssignment_3");
 					put(grammarAccess.getKLineCapAccess().getPropagateToChildrenAssignment_0(), "rule__KLineCap__PropagateToChildrenAssignment_0");
 					put(grammarAccess.getKLineCapAccess().getLineCapAssignment_3(), "rule__KLineCap__LineCapAssignment_3");
+					put(grammarAccess.getKLineJoinAccess().getPropagateToChildrenAssignment_0(), "rule__KLineJoin__PropagateToChildrenAssignment_0");
+					put(grammarAccess.getKLineJoinAccess().getLineJoinAssignment_3(), "rule__KLineJoin__LineJoinAssignment_3");
 					put(grammarAccess.getKLineStyleAccess().getPropagateToChildrenAssignment_0(), "rule__KLineStyle__PropagateToChildrenAssignment_0");
 					put(grammarAccess.getKLineStyleAccess().getLineStyleAssignment_3(), "rule__KLineStyle__LineStyleAssignment_3");
 					put(grammarAccess.getKLineWidthAccess().getPropagateToChildrenAssignment_0(), "rule__KLineWidth__PropagateToChildrenAssignment_0");
