@@ -13,29 +13,34 @@
  */
 package de.cau.cs.kieler.klighd.util;
 
-import de.cau.cs.kieler.core.properties.MapPropertyHolder;
-import de.cau.cs.kieler.klighd.LightDiagramServices;
-import de.cau.cs.kieler.klighd.krendering.SimpleUpdateStrategy;
+import de.cau.cs.kieler.core.properties.IProperty;
+import de.cau.cs.kieler.core.properties.Property;
+import de.cau.cs.kieler.kiml.options.PortSide;
 
 /**
- * Convenience class for easily composing diagram synthesis customizations, e.g. requested
- * transformations, update strategies, ...<br>
- * <br>
- * To be continued ... :-
+ * A collection of KLighD-specific {@link de.cau.cs.kieler.core.properties.IProperty IProperties}.
  * 
  * @author chsch
  */
-public class KlighdProperties extends MapPropertyHolder {
-
-    private static final long serialVersionUID = -5635072164749313580L;
+public final class KlighdProperties {
 
     /**
-     * Configures a 'use simple update strategy' setting.
-     * 
-     * @return <code>this<code> {@link KlighdProperties} object.
+     * Standard hidden constructor.
      */
-    public KlighdProperties useSimpleUpdateStrategy() {
-        this.setProperty(LightDiagramServices.REQUESTED_UPDATE_STRATEGY, SimpleUpdateStrategy.ID);
-        return this;
-    }    
+    private KlighdProperties() {
+    }
+
+    /**
+     * Property that is used to keep original port side data during the whole life cycle of a port,
+     * the values must not be changed once it is set.
+     */
+    public static final IProperty<PortSide> ORIGINAL_PORT_SIDE = new Property<PortSide>(
+            "klighd.original.port.side");
+
+    /**
+     * Property that is used to provide the port side data determined by the layouter of the most
+     * recent layout computation. This value must not be manipulated by others than the layout manager.
+     */
+    public static final IProperty<PortSide> LAYOUT_PORT_SIDE = new Property<PortSide>(
+            "klighd.layout.port.side");
 }

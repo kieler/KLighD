@@ -56,6 +56,7 @@ import de.cau.cs.kieler.klighd.KlighdConstants;
 import de.cau.cs.kieler.klighd.ViewContext;
 import de.cau.cs.kieler.klighd.microlayout.Bounds;
 import de.cau.cs.kieler.klighd.microlayout.PlacementUtil;
+import de.cau.cs.kieler.klighd.util.KlighdProperties;
 import de.cau.cs.kieler.klighd.util.RenderingContextData;
 import de.cau.cs.kieler.klighd.viewers.ContextViewer;
 import de.cau.cs.kieler.klighd.viewers.KlighdViewer;
@@ -589,6 +590,8 @@ public class DiagramLayoutManager implements IDiagramLayoutManager<KGraphElement
                     KShapeLayout portLayout = element.getData(KShapeLayout.class);
                     if (portLayout != null) {
                         transferShapeLayout(layoutLayout, portLayout);
+                        portLayout.setProperty(KlighdProperties.LAYOUT_PORT_SIDE,
+                                layoutLayout.getProperty(LayoutOptions.PORT_SIDE));
                     }
                     return true;
                 }
