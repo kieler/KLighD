@@ -677,6 +677,18 @@ final class KGERenderingControllerHelper {
                 getNode().setBounds(0, 0, bounds.getWidth(), bounds.getHeight());
                 NodeUtil.applyTranslation(getNode(), bounds.getX(), bounds.getY());
             }
+            
+            private float prevRotation = 0f;
+            
+            public void setRotation(final float rotation) {
+                // The point coordinates are a heuristic right now.
+                //  I'm afraid and I'm almost sure that this will not work in general...
+                // SUPPRESS CHECKSTYLE NEXT MagicNumber
+                getNode().rotateAboutPoint(Math.toRadians(rotation - prevRotation), 1.5, 1.5);
+                // Remember the rotation in this memory since this rotation needs to be reverted
+                //  (merged) with the subsequent rotation, since these rotations are absolute.
+                prevRotation = rotation;
+            }
         };
     }
 
