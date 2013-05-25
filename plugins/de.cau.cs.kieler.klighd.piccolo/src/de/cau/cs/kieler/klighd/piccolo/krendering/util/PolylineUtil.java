@@ -64,6 +64,8 @@ public final class PolylineUtil {
             pnode.removeAllChildren();
         }
 
+        path.reset();
+
         // start from the first point
         path.moveTo((float) points[0].getX(), (float) points[0].getY());
 
