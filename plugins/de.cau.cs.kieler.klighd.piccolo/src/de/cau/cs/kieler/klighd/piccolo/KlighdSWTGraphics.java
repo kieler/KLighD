@@ -17,7 +17,6 @@ import java.awt.Shape;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
 
-//import org.eclipse.swt.SWT; // SUPPRESS CHECKSTYLE Unused: Is referenced in lots of Javadoc annotations
 import org.eclipse.swt.graphics.Device;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.LineAttributes;
@@ -27,10 +26,35 @@ import de.cau.cs.kieler.klighd.piccolo.util.RGBGradient;
 
 /**
  * This interface defines methods to be used by custom {@link edu.umd.cs.piccolo.PNode PNode}
- * implementations to draw there shapes in order to abstract the concrete
+ * implementations to draw there shapes. Its aim is to abstract the concrete
  * {@link edu.umd.cs.piccolox.swt.SWTGraphics2D SWTGraphics2D} implementation contributed by the
  * <code>edu.umd.cs.piccolo</code> packages.<br>
- * It is still incomplete.
+ * <br>
+ * For drawing basic figures (except text fields) only {@link #draw(Shape)} and {@link #fill(Shape)}
+ * are provided, since drawing and coloring such elements is to be performed by means of
+ * {@link java.awt.geom.PathIterator PathIterators}, which are provided by AWT {@link Shape Shapes}
+ * via {@link Shape#getPathIterator(AffineTransform)}.<br>
+ * <br>
+ * The rational of this approach is the decision to draw all basic figures by means of SWT
+ * {@link org.eclipse.swt.graphics.Path Path} objects. This is currently the only way of passing
+ * floating-point-based coordinates to the {@link org.eclipse.swt.graphics.GC GC}. Such SWT
+ * {@link org.eclipse.swt.graphics.Path Paths} can be easily built-up by means of AWT Geometry
+ * {@link java.awt.geom.PathIterator PathIterators}, see
+ * {@link edu.umd.cs.piccolox.swt.SWTGraphics2D#pathIterator2Path(java.awt.geom.PathIterator)
+ * SWTGraphics2D#pathIterator2Path(PathIterator)}.<br>
+ * <br>
+ * Since the coordinates of the particular figures are relative to their parent figures, all
+ * coordinates must be adjusted by the currently visible area and zoom factor. In order to do that
+ * the path object must be inspected and the segment values updated. This is task is, fortunately,
+ * also performed by the {@link java.awt.geom.PathIterator PathIterators}.<br>
+ * <br>
+ * A further of this approach is an easier support of rotation of basic figures. This requires the
+ * rotation of the coordinates while drawing the figures on the one hand, and the incorporation of
+ * the rotation for determining the currently picked figure while processing mouse input events.
+ * Relying on the AWT Geometry {@link java.awt.geom.PathIterator PathIterators} enables consistent
+ * and homogeneous calculations for both use cases.<br>
+ * <br>
+ * To be continued for text stuff.
  * 
  * @author chsch
  */
@@ -126,7 +150,7 @@ public interface KlighdSWTGraphics {
     void setAlpha(final int alpha);
 
     /**
-     * Sets the stroke color to the provided RGB color descriptor.
+     * Sets the stroke color to the provided {@link RGB} color descriptor.
      * 
      * @author chsch
      * 
@@ -136,7 +160,7 @@ public interface KlighdSWTGraphics {
     void setColor(final RGB color);
 
     /**
-     * Sets the stroke color gradient to the provided RGB gradient descriptor.
+     * Sets the stroke color gradient to the provided {@link RGBGradient} descriptor.
      * 
      * @author chsch
      * 
@@ -148,7 +172,7 @@ public interface KlighdSWTGraphics {
     void setPattern(final RGBGradient gradient, final Rectangle2D bounds);
 
     /**
-     * Sets the background color to the provided RGB color descriptor.
+     * Sets the background color to the provided {@link RGB} color descriptor.
      * 
      * @author chsch
      * 
@@ -158,7 +182,7 @@ public interface KlighdSWTGraphics {
     void setBackground(final RGB backgroundColor);
 
     /**
-     * Sets the background color gradient to the provided RGB gradient descriptor.
+     * Sets the background color gradient to the provided {@link RGBGradient} descriptor.
      * 
      * @author chsch
      * 
