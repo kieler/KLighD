@@ -13,23 +13,37 @@
  */
 package de.cau.cs.kieler.klighd.piccolo.krendering.util;
 
-import java.awt.geom.GeneralPath;
+import java.awt.geom.Path2D;
+import java.awt.geom.PathIterator;
 import java.awt.geom.Point2D;
+
+import java.util.ArrayList;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Display;
 
+import com.google.common.collect.Iterables;
+import com.google.common.collect.Lists;
+
 import de.cau.cs.kieler.klighd.piccolo.nodes.PSWTAdvancedPath;
 
 /**
- * Some out-sourced calculations for proper
- * {@link de.cau.cs.kieler.core.krendering.KRoundedBendsPolyline KRoundedBendsPolyline} rendering.
+ * Some out-sourced calculations for rendering the different
+ * {@link de.cau.cs.kieler.core.krendering.KPolyline KPolylines}. Unfortunately, AWT Geometry itself
+ * does not provide related classes for line paths with initialization methods taking arrays of
+ * points.
  * 
  * @author chsch
  */
 public final class PolylineUtil {
 
-    // CHECKSTYLEOFF MagicNumber 
+    /**
+     * This metric controls the quality of the curve approximation in
+     * {@link #createSplineApproximationPath(Path2D)}. For details on its meaning see
+     * {@link java.awt.Shape#getPathIterator(java.awt.geom.AffineTransform, double)
+     * Shape#getPathIterator(AffineTransform, double)}
+     */
+    private static final float MAX_APPROX_DISTANCE = 0.5f;
     
     /**
      * The control points of the arcs are moved from the given bend point towards the respective
@@ -42,12 +56,208 @@ public final class PolylineUtil {
     /** Hidden constructor.*/
     private PolylineUtil() {
     }
-    
+
+
+    /**
+     * Resets the given <code>thePath</code> and adds the required segments for drawing a polygon.
+     * If <code>thePath</code> is <code>null</code> a new path object is created.
+     * 
+     * @param thePath
+     *            the path object to put the segments into, may be <code>null</code>
+     * @param points
+     *            the points in form of an integer array like {x0, y0, x1, y1, ...} 
+     * @return the path object containing the required segments
+     */
+    public static Path2D createPolygonPath(final Path2D thePath, final int[] points) {
+
+        Path2D path = thePath != null ? thePath : new Path2D.Float();
+        
+        path.reset();
+        path.moveTo(points[0], points[1]);
+        for (int i = 2; i < points.length;) {
+            path.lineTo(points[i++], points[i++]);
+        }
+        path.closePath();
+        
+        return path;
+    }
+
+
+    /**
+     * Resets the given <code>thePath</code> and adds the required segments for drawing a polygon.
+     * If <code>thePath</code> is <code>null</code> a new path object is created.
+     * 
+     * @param thePath
+     *            the path object to put the segments into, may be <code>null</code>
+     * @param points
+     *            an array of AWT Geometry {@link Point2D Point2Ds} 
+     * @return the path object containing the required segments
+     */
+    public static Path2D createPolygonPath(final Path2D thePath, final Point2D[] points) {
+
+        Path2D path = thePath != null ? thePath : new Path2D.Float();
+        
+        path.reset();
+        path.moveTo(points[0].getX(), points[0].getY());
+        for (int i = 1; i < points.length; i++) {
+            path.lineTo(points[i].getX(), points[i].getY());
+        }
+        path.closePath();
+
+        return path;
+    }
+
+
+    /**
+     * Resets the given <code>thePath</code> and adds the required segments for drawing a polyline.
+     * If <code>thePath</code> is <code>null</code> a new path object is created.
+     * 
+     * @param thePath
+     *            the path object to put the segments into, may be <code>null</code>
+     * @param points
+     *            the points in form of an integer array like {x0, y0, x1, y1, ...} 
+     * @return the path object containing the required segments
+     */
+    public static Path2D createPolylinePath(final Path2D thePath, final int[] points) {
+
+        Path2D path = thePath != null ? thePath : new Path2D.Float();
+        
+        path.reset();
+        path.moveTo(points[0], points[1]);
+        for (int i = 2; i < points.length;) {
+            path.lineTo(points[i++], points[i++]);
+        }
+        
+        return path;
+    }
+
+
+    /**
+     * Resets the given <code>thePath</code> and adds the required segments for drawing a polyline.
+     * If <code>thePath</code> is <code>null</code> a new path object is created.
+     * 
+     * @param thePath
+     *            the path object to put the segments into, may be <code>null</code>
+     * @param points
+     *            an array of AWT Geometry {@link Point2D Point2Ds} 
+     * @return the path object containing the required segments
+     */
+    public static Path2D createPolylinePath(final Path2D thePath, final Point2D[] points) {
+
+        Path2D path = thePath != null ? thePath : new Path2D.Float();
+        
+        path.reset();
+        path.moveTo((float) points[0].getX(), (float) points[0].getY());
+        for (int i = 1; i < points.length; i++) {
+            path.lineTo((float) points[i].getX(), (float) points[i].getY());
+        }
+
+        return path;
+    }
+
+
+    /**
+     * Resets the given <code>thePath</code> and adds the required segments for drawing a spline.
+     * If <code>thePath</code> is <code>null</code> a new path object is created.
+     * 
+     * @param thePath
+     *            the path object to put the segments into, may be <code>null</code>
+     * @param points
+     *            an array of AWT Geometry {@link Point2D Point2Ds} 
+     * @return the path object containing the required segments
+     */
+    public static Path2D createSplinePath(final Path2D thePath, final Point2D[] points) {
+
+        Path2D path = thePath != null ? thePath : new Path2D.Float();
+        
+        path.reset();
+        int size = points.length;
+        
+        if (size < 1) {
+            return path; // nothing to do
+        }
+        
+        path.moveTo(points[0].getX(), points[0].getY());
+
+        // draw cubic sections
+        int i = 1;
+        for (; i < size - 2; i += 3) { // SUPPRESS CHECKSTYLE MagicNumber
+            path.curveTo(points[i].getX(), points[i].getY(),
+                    points[i + 1].getX(), points[i + 1].getY(),
+                    points[i + 2].getX(), points[i + 2].getY());
+        }
+
+        // draw remaining sections, won't happen if 'Graphviz Dot' was applied
+        // size-1: one straight line
+        // size-2: one quadratic
+        switch (size - i) {
+        case 1:
+            path.lineTo(points[i].getX(), points[i].getY());
+            break;
+        case 2:
+            path.quadTo(points[i].getX(), points[i].getY(),
+                    points[i + 1].getX(), points[i + 1].getY());
+            break;
+        default:
+            // this should not happen
+            break;
+        }
+        
+        return path;
+    }
+
+
+    /**
+     * Calculates and returns approximation points of the given {@link Path2D} that may contain
+     * curve segments.
+     * 
+     * @param path
+     *            the path object to put the segments into, may be <code>null</code>
+     * @return the path object containing the required segments
+     */
+    public static Point2D[] createSplineApproximationPath(final Path2D path) {
+        
+        float[] coords = new float[2];
+        ArrayList<Point2D> approxPoints2 = Lists.newArrayList();
+        PathIterator pi = path.getPathIterator(null, MAX_APPROX_DISTANCE);
+
+        while (!pi.isDone()) {
+            pi.currentSegment(coords);
+            approxPoints2.add(new Point2D.Float(coords[0], coords[1]));
+            pi.next();
+        }
+        
+        return Iterables.toArray(approxPoints2, Point2D.class);
+    }
+
+
+    /**
+     * Resets the given <code>thePath</code> and adds the required segments for drawing a rounded
+     * bends polyline. If <code>thePath</code> is <code>null</code> a new path object is created.
+     * 
+     * @param thePath
+     *            the path object to put the segments into, may be <code>null</code>
+     * @param points
+     *            an array of AWT Geometry {@link Point2D Point2Ds}
+     * @param bendRadius
+     *            the bend curve radius as determined in the KRendering description
+     * @return the path object containing the required segments
+     */
+    public static Path2D createRoundedBendsPolylinePath(final Path2D thePath, final Point2D[] points,
+            final float bendRadius) {
+        
+        Path2D path = thePath != null ? thePath : new Path2D.Float();
+        createRoundedBendPoints(path, points, bendRadius, null);
+        return path;
+    }
+
+    // CHECKSTYLEOFF MagicNumber 
+
     /**
      * Transforms polyline bend points into rounded curves and attaches them to the given path.
      * 
      * @param path
-     *            the {@link GeneralPath} being treated
+     *            the {@link Path2D} being treated
      * @param points
      *            the original bend points (as provided by the layouters)
      * @param bendRadius
@@ -56,12 +266,14 @@ public final class PolylineUtil {
      *            the {@link edu.umd.cs.piccolo.PNode PNode} being treatment (only needed for
      *            attaching debug visualization points)
      */
-    public static void createRoundedBendPoints(final GeneralPath path, final Point2D[] points,
+    public static void createRoundedBendPoints(final Path2D path, final Point2D[] points,
             final float bendRadius, final PSWTAdvancedPath pnode) {
 
         if (DEBUG) {
-            // in case there're already debug points throw them away 
-            pnode.removeAllChildren();
+            if (pnode != null) {
+                // in case there're already debug points throw them away 
+                pnode.removeAllChildren();
+            }
         }
 
         path.reset();
@@ -93,8 +305,10 @@ public final class PolylineUtil {
                         (float) cPoints[5], (float) cPoints[6], (float) cPoints[7]);
                 
                 if (DEBUG) {
-                    // and provide visualizations of the determined points
-                    PolylineUtil.visualizeShortDistanceApproximationPoints(pnode, cPoints);
+                    if (pnode != null) {
+                        // and provide visualizations of the determined points
+                        PolylineUtil.visualizeShortDistanceApproximationPoints(pnode, cPoints);
+                    }
                 }
                 
                 // finally, skip the next point, since it has been treated by the above procedure. 
@@ -114,9 +328,11 @@ public final class PolylineUtil {
                 path.curveTo(cPoints[2], cPoints[3], cPoints[4], cPoints[5], cPoints[6], cPoints[7]);
                 
                 if (DEBUG) {
-                    // and provide visualizations of the determined points
-                    PolylineUtil.visualizeRoundedBendControlPoints(pnode, points[i].getX(),
-                            points[i].getY(), cPoints);
+                    if (pnode != null) {
+                        // and provide visualizations of the determined points
+                        PolylineUtil.visualizeRoundedBendControlPoints(pnode, points[i].getX(),
+                                points[i].getY(), cPoints);
+                    }
                 }
             }
         }
