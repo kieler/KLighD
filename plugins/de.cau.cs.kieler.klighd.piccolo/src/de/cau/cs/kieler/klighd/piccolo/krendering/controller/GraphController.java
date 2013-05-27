@@ -32,6 +32,7 @@ import org.eclipse.ui.statushandlers.StatusManager;
 
 import com.google.common.base.Predicates;
 import com.google.common.collect.Iterables;
+import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
@@ -80,6 +81,7 @@ import de.cau.cs.kieler.klighd.piccolo.krendering.KNodeNode;
 import de.cau.cs.kieler.klighd.piccolo.krendering.KNodeTopNode;
 import de.cau.cs.kieler.klighd.piccolo.krendering.KPortNode;
 import de.cau.cs.kieler.klighd.piccolo.util.NodeUtil;
+import de.cau.cs.kieler.klighd.util.Iterables2;
 import de.cau.cs.kieler.klighd.util.LimitedKGraphContentAdapter;
 import de.cau.cs.kieler.klighd.util.ModelingUtil;
 import de.cau.cs.kieler.klighd.util.RenderingContextData;
@@ -474,7 +476,9 @@ public class GraphController {
     
     
     /**
-     * Removes the representation for the node from its parent.
+     * Removes the representation for <code>node</code> from its parent.<br>
+     * <code>node</code> is not marked collapsed, this way the memory of the expand-collapse-state
+     * of nested nodes is preserved.
      * 
      * @param node
      *            the node
@@ -489,12 +493,6 @@ public class GraphController {
             } else {
                 nodeNode = (KNodeNode) nodeRep;
             }
-
-            // deactivate the subgraph
-            // Collapsing the node before removing it is required to catch all outgoing or incoming
-            //  edges, as in case of interlevel edges their representing KEdgeNodes are attached
-            //  to one of nodeNode's parents.
-            nodeNode.getChildArea().setExpanded(false);
 
             if (sync) {
                 uninstallEdgeSyncAdapter(node);
@@ -1283,6 +1281,15 @@ public class GraphController {
                         // PlatformUI.getWorkbench().getDisplay().syncExec(new Runnable() {
                         // public void run() {
                         removeNode(removedNode);
+
+                        // Removing all contained nodes is required to remove all outgoing or
+                        //  incoming edges, as in case of interlevel ones their representing
+                        //  KEdgeNodes are attached to one of n's parent representatives, which might
+                        //  be one of removedNode's parent representatives.
+                        for (KNode n : Iterables2.toIterable(Iterators.filter(
+                                removedNode.eAllContents(), KNode.class))) {
+                            removeNode(n);
+                        }
                         // }
                         // });
                         break;
@@ -1294,6 +1301,15 @@ public class GraphController {
                         // public void run() {
                         for (KNode removedNode : removedNodes) {
                             removeNode(removedNode);
+
+                            // Removing all contained nodes is required to remove all outgoing or
+                            //  incoming edges, as in case of interlevel ones their representing
+                            //  KEdgeNodes are attached to one of n's parent representatives, which might
+                            //  be one of removedNode's parent representatives.
+                            for (KNode n : Iterables2.toIterable(Iterators.filter(
+                                    removedNode.eAllContents(), KNode.class))) {
+                                removeNode(n);
+                            }
                         }
                         // }
                         // });
