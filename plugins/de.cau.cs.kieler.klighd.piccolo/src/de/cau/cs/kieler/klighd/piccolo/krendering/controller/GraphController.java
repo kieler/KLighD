@@ -491,7 +491,10 @@ public class GraphController {
             }
 
             // deactivate the subgraph
-            // deactivateSubgraph(node);
+            // Collapsing the node before removing it is required to catch all outgoing or incoming
+            //  edges, as in case of interlevel edges their representing KEdgeNodes are attached
+            //  to one of nodeNode's parents.
+            nodeNode.getChildArea().setExpanded(false);
 
             if (sync) {
                 uninstallEdgeSyncAdapter(node);
@@ -514,7 +517,7 @@ public class GraphController {
             // release the objects kept in mind
             nodeNode.getRenderingController().removeAllPNodeControllers();
             // release the node rendering controller
-//            nodeNode.setRenderingController(null);
+            // nodeNode.setRenderingController(null);
         }
     }
 
