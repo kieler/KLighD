@@ -35,11 +35,10 @@ import java.awt.Shape;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Arc2D;
 import java.awt.geom.Ellipse2D;
-import java.awt.geom.GeneralPath;
+import java.awt.geom.Path2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
-import java.util.ArrayList;
 import java.util.Map;
 
 import org.eclipse.swt.graphics.LineAttributes;
@@ -47,14 +46,10 @@ import org.eclipse.swt.graphics.RGB;
 
 import com.google.common.collect.Maps;
 
-import de.cau.cs.kieler.core.math.KVector;
-import de.cau.cs.kieler.core.math.KVectorChain;
-import de.cau.cs.kieler.core.math.KielerMath;
 import de.cau.cs.kieler.klighd.KlighdConstants;
 import de.cau.cs.kieler.klighd.piccolo.KlighdSWTGraphics;
 import de.cau.cs.kieler.klighd.piccolo.krendering.util.PolylineUtil;
 import de.cau.cs.kieler.klighd.piccolo.util.RGBGradient;
-
 import edu.umd.cs.piccolo.PNode;
 import edu.umd.cs.piccolo.nodes.PPath;
 import edu.umd.cs.piccolo.util.PBounds;
@@ -91,19 +86,6 @@ import edu.umd.cs.piccolo.util.PPickPath;
  */
 public class PSWTAdvancedPath extends PNode {
 
-    /**
-     * A property identifier leading to the approximated path if the path is a Bézier curve or to
-     * itself otherwise. This approximated path is needed while computing the decorator rotations.
-     */
-    public static final String APPROXIMATED_PATH = "ApproximatedPath";
-
-    /**
-     * A property identifier used to keep the list of points used to initialize edge lines in mind.
-     * They required while determining the rotation of edge decorators. By remembering them
-     * a re-extraction from the {@link GeneralPath GeneralPaths} is avoided.
-     */
-    private static final String LINE_POINTS = "LinePoints";
-
     private static final long serialVersionUID = 8034306769936734586L;
 
     private static final RGB DEFAULT_STROKE_PAINT = new RGB(0, 0, 0);
@@ -126,8 +108,15 @@ public class PSWTAdvancedPath extends PNode {
     private final int shadowExtend = 8;
     private RGB shadow = null;
 
-    private Shape origShape;
+    // default initialization that avoids null pointer faults in case of failing setPathTo... calls
+    private Shape origShape = new Rectangle2D.Float();
     private Shape shape;
+
+    
+    // A field to keep the list of points line points in mind. They are required while determining
+    // the rotation of edge decorators. By remembering them a re-extraction from the {@link Path2D
+    // Path2D} is avoided.
+    private Point2D[] linePoints;
 
     // These deactivated internal affine transforms are kept here and later on in the code
     //  for the potential case they are be required in future for realizing a certain feature.
@@ -541,7 +530,7 @@ public class PSWTAdvancedPath extends PNode {
             final double height) {
         // unused (left it the for the case it might be helpful in future,
         //  should not sink into obscurity) 
-        //  if it is used again one make sure that no recursive cycles occure with
+        //  if it is used again one make sure that no recursive cycles occur with
         //  #updateBoundsFromPath
     }
 
@@ -738,7 +727,7 @@ public class PSWTAdvancedPath extends PNode {
      * Draws the shadow of the current shape.
      * 
      * @param g2
-     *            the {@link SWTGraphics2D} to draw on.
+     *            the {@link KlighdSWTGraphics} to draw on.
      */
     private void drawShadow(final KlighdSWTGraphics g2) {
 
@@ -798,10 +787,10 @@ public class PSWTAdvancedPath extends PNode {
     /**
      * Returns the points of the shape.
      * 
-     * @return the points
+     * @return the points or <code>null</code> if path is not a line or is not initialized properly.
      */
     public Point2D[] getShapePoints() {
-        return (Point2D[]) this.getAttribute(LINE_POINTS);
+        return this.linePoints;
     }
 
 
@@ -860,6 +849,7 @@ public class PSWTAdvancedPath extends PNode {
         setShape(new Ellipse2D.Float(x, y, width, height));
     }
 
+
     /**
      * Resets the path to an arc positioned at the coordinate provided with the dimensions, angular
      * start and angular extent provided.
@@ -882,65 +872,24 @@ public class PSWTAdvancedPath extends PNode {
         setShape(new Arc2D.Float(x, y, width, height, angStart, angExtend, Arc2D.OPEN));
     }
 
+
     /**
-     * @see de.cau.cs.kieler.core.model.gmf.figures.SplineConnection#outlineShape
-     * 
-     *      Sets the path to a sequence of segments described by the points.
+     * Sets the path to a sequence of segments described by the points.
      * 
      * @param points
      *            points to that lie along the generated path
      */
     public void setPathToSpline(final Point2D[] points) {
-        final GeneralPath path = new GeneralPath();
-        path.reset();
-        int size = points.length;
-        if (size < 1) {
-            return; // nothing to do
-        }
-        path.moveTo((float) points[0].getX(), (float) points[0].getY());
-
-        // draw cubic sections
-        int i = 1;
-        for (; i < size - 2; i += 3) { // SUPPRESS CHECKSTYLE MagicNumber
-            path.curveTo((float) points[i].getX(), (float) points[i].getY(),
-                    (float) points[i + 1].getX(), (float) points[i + 1].getY(),
-                    (float) points[i + 2].getX(), (float) points[i + 2].getY());
+        if (points.length == 0) {
+            return;
         }
 
-        // draw remaining sections, won't happen if 'Graphviz Dot' was applied
-        // size-1: one straight line
-        // size-2: one quadratic
-        switch (size - i) {
-        case 1:
-            path.lineTo((float) points[i].getX(), (float) points[i].getY());
-            break;
-        case 2:
-            path.quadTo((float) points[i].getX(), (float) points[i].getY(),
-                    (float) points[i + 1].getX(), (float) points[i + 1].getY());
-            break;
-        default:
-            // this should not happen
-            break;
-        }
-
-        // for properly supporting pickability of Splines we keep an approximated path in mind
-        PSWTAdvancedPath approxPath = new PSWTAdvancedPath();
-        KVectorChain chain = new KVectorChain();
-        for (Point2D p : points) {
-            chain.add(p.getX(), p.getY());
-        }
-        chain = KielerMath.approximateSpline(chain);
-        ArrayList<Point2D> approxPoints = new ArrayList<Point2D>(points.length);
-        for (KVector v : chain) {
-            approxPoints.add(new Point2D.Double(v.x, v.y));
-        }
-        approxPath.setPathToPolyline(approxPoints.toArray(new Point2D.Double[points.length]));
-        this.addAttribute(APPROXIMATED_PATH, approxPath);
-
-        // this operation finally integrates the path and fires the change listeners
         isSpline = true;
-        setShape(path);
+        Path2D spline = PolylineUtil.createSplinePath(new Path2D.Float(), points);
+        this.linePoints = PolylineUtil.createSplineApproximationPath(spline);
+        setShape(spline);
     }
+
 
     /**
      * Sets the path to a sequence of segments described by the points.
@@ -951,20 +900,15 @@ public class PSWTAdvancedPath extends PNode {
      *            the radius of the bend points
      */
     public void setPathToRoundedBendPolyline(final Point2D[] points, final float bendRadius) {
+        if (points.length == 0) {
+            return;
+        }
         
-        final GeneralPath path = new GeneralPath();
-        PolylineUtil.createRoundedBendPoints(path, points, bendRadius, this);
-
-        // for properly supporting pickability of Splines we keep an approximated path in mind
-        //  in order to avoid unnecessary case distinctions we simply do this for all polylines
-        this.addAttribute(APPROXIMATED_PATH, this);
-
-        this.addAttribute(LINE_POINTS, points);
-
-        // this operation finally integrates the path and fires the change listeners
         isRoundedBendsPolyline = true;
-        setShape(path);
+        this.linePoints = points;
+        setShape(PolylineUtil.createRoundedBendsPolylinePath(new Path2D.Float(), points, bendRadius));
     }
+
 
     /**
      * Sets the path to a sequence of segments described by the points.
@@ -976,24 +920,12 @@ public class PSWTAdvancedPath extends PNode {
         if (points.length == 0) {
             return;
         }
-
-        final GeneralPath path = new GeneralPath();
         
-        path.moveTo((float) points[0].getX(), (float) points[0].getY());
-        for (int i = 1; i < points.length; i++) {
-            path.lineTo((float) points[i].getX(), (float) points[i].getY());
-        }
-
-        // for properly supporting pickability of Splines we keep an approximated path in mind
-        // in order to avoid unnecessary case distinctions we simply do this for all polylines
-        this.addAttribute(APPROXIMATED_PATH, this);
-
-        this.addAttribute(LINE_POINTS, points);
-
-        // this operation finally integrates the path and fires the change listeners
-        isPolyline = true;
-        setShape(path);
+        this.isPolyline = true;
+        this.linePoints = points;
+        this.setShape(PolylineUtil.createPolylinePath(new Path2D.Float(), points));
     }
+
 
     /**
      * Sets the path to a sequence of segments described by the points.
@@ -1005,18 +937,9 @@ public class PSWTAdvancedPath extends PNode {
         if (points.length == 0) {
             return;
         }
-
-        final GeneralPath path = new GeneralPath();
         
-        path.moveTo((float) points[0].getX(), (float) points[0].getY());
-        for (int i = 1; i < points.length; i++) {
-            path.lineTo((float) points[i].getX(), (float) points[i].getY());
-        }
-        path.closePath();
-
-        this.addAttribute(LINE_POINTS, points);
-
-        isPolygon = true;
-        setShape(path);
+        this.isPolygon = true;
+        this.linePoints = points;
+        this.setShape(PolylineUtil.createPolygonPath(new Path2D.Float(), points));
     }
 }
