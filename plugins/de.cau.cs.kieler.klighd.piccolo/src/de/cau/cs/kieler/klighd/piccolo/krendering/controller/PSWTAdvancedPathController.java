@@ -21,6 +21,7 @@ import de.cau.cs.kieler.core.krendering.KColor;
 import de.cau.cs.kieler.core.krendering.LineCap;
 import de.cau.cs.kieler.core.krendering.LineJoin;
 import de.cau.cs.kieler.core.krendering.LineStyle;
+import de.cau.cs.kieler.klighd.piccolo.krendering.util.Styles;
 import de.cau.cs.kieler.klighd.piccolo.nodes.PSWTAdvancedPath;
 import de.cau.cs.kieler.klighd.piccolo.util.RGBGradient;
 
@@ -163,5 +164,15 @@ public abstract class PSWTAdvancedPathController extends PNodeController<PSWTAdv
      */
     public void setShadow(final KColor color) {
         getNode().setShadow(toRGB(color));
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public void applyChanges(final Styles styles) {
+        super.applyChanges(styles);
+
+        // this simply flushes the internal update of the line attributes
+        getNode().setLineAttributes(getNode().getLineAttributes());
     }
 }

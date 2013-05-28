@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: de.cau.cs.kieler.core.kgraph.text.ui
-Bundle-Vendor: My Company
+Bundle-Vendor: Christian-Albrechts-Universität zu Kiel
 Bundle-Version: 0.1.0.qualifier
 Bundle-SymbolicName: de.cau.cs.kieler.core.kgraph.text.ui; singleton:=true
 Bundle-ActivationPolicy: lazy
@@ -13,6 +13,7 @@ Require-Bundle: org.eclipse.xtext.ui,
  org.antlr.runtime,
  org.eclipse.compare,
  org.eclipse.xtext.builder,
+ de.cau.cs.kieler.core,
  de.cau.cs.kieler.core.kgraph,
  de.cau.cs.kieler.core.kgraph.text;visibility:=reexport,
  de.cau.cs.kieler.core.krendering,

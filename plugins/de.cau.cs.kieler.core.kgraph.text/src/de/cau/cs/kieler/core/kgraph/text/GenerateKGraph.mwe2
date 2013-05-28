@@ -64,7 +64,7 @@ Workflow {
 			}
 
 			// the Ecore2Xtext specific terminal converter
-			fragment = ecore2xtext.Ecore2XtextValueConverterServiceFragment {}
+			// fragment = ecore2xtext.Ecore2XtextValueConverterServiceFragment {}
 
 			// java-based API for validation 
 			fragment = validation.JavaValidatorFragment {
@@ -107,7 +107,8 @@ Workflow {
                 fileExtensions = file.extensions
             }
 
-			fragment = builder.BuilderIntegrationFragment {}
+            // chsch: we don't need any builder 
+			// fragment = builder.BuilderIntegrationFragment {}
 
 			// project wizard (optional) 
 

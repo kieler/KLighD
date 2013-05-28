@@ -31,6 +31,7 @@ import de.cau.cs.kieler.core.krendering.KImage;
 import de.cau.cs.kieler.core.krendering.KInvisibility;
 import de.cau.cs.kieler.core.krendering.KLeftPosition;
 import de.cau.cs.kieler.core.krendering.KLineCap;
+import de.cau.cs.kieler.core.krendering.KLineJoin;
 import de.cau.cs.kieler.core.krendering.KLineStyle;
 import de.cau.cs.kieler.core.krendering.KLineWidth;
 import de.cau.cs.kieler.core.krendering.KPointPlacementData;
@@ -384,6 +385,16 @@ public class KGraphSemanticSequencer extends AbstractDelegatingSemanticSequencer
 					return; 
 				}
 				else break;
+			case KRenderingPackage.KLINE_JOIN:
+				if(context == grammarAccess.getKLineJoinRule()) {
+					sequence_KLineJoin(context, (KLineJoin) semanticObject); 
+					return; 
+				}
+				else if(context == grammarAccess.getKStyleRule()) {
+					sequence_KLineJoin_KStyle(context, (KLineJoin) semanticObject); 
+					return; 
+				}
+				else break;
 			case KRenderingPackage.KLINE_STYLE:
 				if(context == grammarAccess.getKLineStyleRule()) {
 					sequence_KLineStyle(context, (KLineStyle) semanticObject); 
@@ -699,7 +710,7 @@ public class KGraphSemanticSequencer extends AbstractDelegatingSemanticSequencer
 	
 	/**
 	 * Constraint:
-	 *     (propagateToChildren?='propagate'? color=KColor alpha=ALPHA? (targetColor=KColor targetAlpha=ALPHA? gradientAngle=Float?)?)
+	 *     (propagateToChildren?='propagate'? (color=KColor alpha=ALPHA? (targetColor=KColor targetAlpha=ALPHA? gradientAngle=Float?)?)?)
 	 */
 	protected void sequence_KBackground_KColoring(EObject context, KBackground semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
@@ -710,9 +721,7 @@ public class KGraphSemanticSequencer extends AbstractDelegatingSemanticSequencer
 	 * Constraint:
 	 *     (
 	 *         propagateToChildren?='propagate'? 
-	 *         color=KColor 
-	 *         alpha=ALPHA? 
-	 *         (targetColor=KColor targetAlpha=ALPHA? gradientAngle=Float?)? 
+	 *         (color=KColor alpha=ALPHA? (targetColor=KColor targetAlpha=ALPHA? gradientAngle=Float?)?)? 
 	 *         modifierId=QualifiedID?
 	 *     )
 	 */
@@ -750,7 +759,7 @@ public class KGraphSemanticSequencer extends AbstractDelegatingSemanticSequencer
 	
 	/**
 	 * Constraint:
-	 *     (propagateToChildren?='propagate'? color=KColor alpha=ALPHA? (targetColor=KColor targetAlpha=ALPHA? gradientAngle=Float?)?)
+	 *     (propagateToChildren?='propagate'? (color=KColor alpha=ALPHA? (targetColor=KColor targetAlpha=ALPHA? gradientAngle=Float?)?)?)
 	 */
 	protected void sequence_KColoring_KForeground(EObject context, KForeground semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
@@ -761,9 +770,7 @@ public class KGraphSemanticSequencer extends AbstractDelegatingSemanticSequencer
 	 * Constraint:
 	 *     (
 	 *         propagateToChildren?='propagate'? 
-	 *         color=KColor 
-	 *         alpha=ALPHA? 
-	 *         (targetColor=KColor targetAlpha=ALPHA? gradientAngle=Float?)? 
+	 *         (color=KColor alpha=ALPHA? (targetColor=KColor targetAlpha=ALPHA? gradientAngle=Float?)?)? 
 	 *         modifierId=QualifiedID?
 	 *     )
 	 */
@@ -1107,6 +1114,24 @@ public class KGraphSemanticSequencer extends AbstractDelegatingSemanticSequencer
 	 *     (propagateToChildren?='propagate'? lineCap=LineCap modifierId=QualifiedID?)
 	 */
 	protected void sequence_KLineCap_KStyle(EObject context, KLineCap semanticObject) {
+		genericSequencer.createSequence(context, semanticObject);
+	}
+	
+	
+	/**
+	 * Constraint:
+	 *     (propagateToChildren?='propagate'? lineJoin=LineJoin)
+	 */
+	protected void sequence_KLineJoin(EObject context, KLineJoin semanticObject) {
+		genericSequencer.createSequence(context, semanticObject);
+	}
+	
+	
+	/**
+	 * Constraint:
+	 *     (propagateToChildren?='propagate'? lineJoin=LineJoin modifierId=QualifiedID?)
+	 */
+	protected void sequence_KLineJoin_KStyle(EObject context, KLineJoin semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
 	}
 	

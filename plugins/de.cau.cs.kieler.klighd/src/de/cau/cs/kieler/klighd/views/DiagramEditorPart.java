@@ -31,6 +31,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
@@ -46,9 +47,12 @@ import org.eclipse.ui.part.EditorPart;
 import org.eclipse.ui.statushandlers.StatusManager;
 import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 
+import de.cau.cs.kieler.core.properties.MapPropertyHolder;
 import de.cau.cs.kieler.klighd.KlighdPlugin;
 import de.cau.cs.kieler.klighd.LightDiagramServices;
 import de.cau.cs.kieler.klighd.ViewContext;
+import de.cau.cs.kieler.klighd.krendering.SimpleUpdateStrategy;
+import de.cau.cs.kieler.klighd.util.Iterables2;
 import de.cau.cs.kieler.klighd.viewers.ContextViewer;
 
 /**
@@ -95,12 +99,19 @@ public class DiagramEditorPart extends EditorPart {
         // create a context viewer
         viewer = new ContextViewer(parent, getEditorInput().getName(), this);
         
+        MapPropertyHolder props = new MapPropertyHolder();
+        props.setProperty(LightDiagramServices.REQUESTED_UPDATE_STRATEGY, SimpleUpdateStrategy.ID);
+        
         // create a view context for the viewer
-        ViewContext viewContext = LightDiagramServices.getInstance().createViewContext(model);
+        ViewContext viewContext = LightDiagramServices.getInstance().createViewContext(model, props);
         if (viewContext != null) {
             viewer.setModel(viewContext);
             // do an initial update of the view context
             LightDiagramServices.getInstance().updateViewContext(viewContext, model);
+
+            // since no initial selection is set in the view context/context viewer implementation,
+            // define some here by selection the root of the view model representing the diagram canvas!
+            viewer.selection(null, Iterables2.singletonIterable((EObject) viewContext.getViewModel()));
         } else {
             viewer.setModel("The selected file does not contain any supported model.", false);
         }

@@ -14,26 +14,33 @@
 package de.cau.cs.kieler.klighd.piccolo.draw2d;
 
 import java.awt.BasicStroke;
-import java.awt.Polygon;
 import java.awt.Shape;
 import java.awt.Stroke;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.Arc2D;
+import java.awt.geom.Ellipse2D;
+import java.awt.geom.GeneralPath;
+import java.awt.geom.Line2D;
+import java.awt.geom.Rectangle2D;
+import java.awt.geom.RoundRectangle2D;
 import java.util.LinkedList;
 
 import org.eclipse.draw2d.Graphics;
 import org.eclipse.draw2d.geometry.PointList;
-import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.FontMetrics;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.LineAttributes;
 import org.eclipse.swt.graphics.Path;
+import org.eclipse.swt.graphics.Pattern;
 
 import de.cau.cs.kieler.klighd.piccolo.KlighdSWTGraphicsImpl;
+import de.cau.cs.kieler.klighd.piccolo.krendering.util.PolylineUtil;
 
 /**
- * A Draw2D graphics object that wraps a Piccolo graphics.
- *
+ * A Draw2D graphics object bridging to a {@link de.cau.cs.kieler.klighd.piccolo.KlighdSWTGraphics
+ * KlighdSWTGraphics} graphics.
+ * 
  * @author msp, chsch
  */
 public class GraphicsAdapter extends Graphics {
@@ -42,8 +49,11 @@ public class GraphicsAdapter extends Graphics {
     private static class State {
         private Shape clip;
         private AffineTransform transform;
+        private int alpha;
         private org.eclipse.swt.graphics.Color foreground;
         private org.eclipse.swt.graphics.Color background;
+        private Pattern foregroundPattern;
+        private Pattern backgroundPattern;
         private Font font;
         private LineAttributes lineAttributes;
         
@@ -55,13 +65,24 @@ public class GraphicsAdapter extends Graphics {
         State(final KlighdSWTGraphicsImpl g) {
             this.clip = g.getClip();
             this.transform = g.getTransform();
+            this.alpha = g.getGraphicsContext().getAlpha();
             this.foreground = g.getGraphicsContext().getForeground();
             this.background = g.getGraphicsContext().getBackground();
+            this.foregroundPattern = g.getGraphicsContext().getForegroundPattern();
+            this.backgroundPattern = g.getGraphicsContext().getBackgroundPattern();
             this.font = g.getSWTFont();
             this.lineAttributes = g.getLineAttributes();
         }
     }
     
+    private static final GeneralPath SINGLETON_PATH = new GeneralPath();
+    private static final Line2D.Float SINGLETON_LINE = new Line2D.Float();
+    private static final Arc2D.Float SINGLETON_ARC = new Arc2D.Float(); 
+    private static final Ellipse2D.Float SINGLETON_ELLIPSE = new Ellipse2D.Float(); 
+    private static final Rectangle2D.Float SINGLETON_RECTANGLE = new Rectangle2D.Float(); 
+    private static final RoundRectangle2D.Float SINGLETON_ROUND_RECTANGLE
+                                                            = new RoundRectangle2D.Float(); 
+
     /**
      * Transform the given Draw2D rectangle to an AWT rectangle.
      * 
@@ -85,37 +106,6 @@ public class GraphicsAdapter extends Graphics {
     }
     
     /**
-     * Transform the given Draw2D point list to an AWT polygon.
-     * 
-     * @param pl a Draw2D point list
-     * @return an AWT polygon
-     */
-    public static Polygon toPolygon(final PointList pl) {
-        Polygon result = new Polygon();
-        for (int i = 0; i < pl.size(); i++) {
-            org.eclipse.draw2d.geometry.Point p = pl.getPoint(i);
-            result.addPoint(p.x, p.y);
-        }
-        return result;
-    }
-    
-    /**
-     * Transform the given Draw2D point list into an array of coordinates.
-     * 
-     * @param pl a Draw2D point list
-     * @param lineWidth the line width to be used
-     * @return a double precision array
-     */
-    public static double[] toArray(final PointList pl, final double lineWidth) {
-        int[] points = pl.toIntArray();
-        double[] result = new double[points.length];
-        for (int i = 0; i < points.length; i++) {
-            result[i] = points[i];
-        }
-        return result;
-    }
-    
-    /**
      * Transform the given SWT color into an AWT color.
      * 
      * @param color an SWT color
@@ -135,17 +125,19 @@ public class GraphicsAdapter extends Graphics {
         return new BasicStroke(la.width, la.cap, la.join, la.miterLimit, la.dash, la.dashOffset);
     }
     
-
-    /** the Piccolo wrapper for SWT graphics. */
+    /**
+     * The specialized AWT {@link java.awt.Graphics2D Graphics2D} graphics facading SWT's
+     * {@link org.eclipse.swt.graphics.GC GC}.
+     */
     private KlighdSWTGraphicsImpl pg;
     
-    /** the stack of graphics states. */
+    /** The stack of graphics states. */
     private LinkedList<State> stack = new LinkedList<State>();
     
     
     /**
-     * Creates a Draw2D graphics adapter.
-     * An {@link SWTGraphics2D} must be provided by means of a setter!
+     * Creates a Draw2D graphics adapter. An {@link edu.umd.cs.piccolox.swt.SWTGraphics2D
+     * SWTGraphics2D} must be provided by means of a setter!
      * 
      * @author chsch
      */
@@ -155,20 +147,23 @@ public class GraphicsAdapter extends Graphics {
     /**
      * Creates a Draw2D graphics adapter.
      * 
-     * @param graphics the Piccolo wrapper for SWT graphics
+     * @param graphics
+     *            a specialized AWT {@link java.awt.Graphics2D Graphics2D} graphics facading SWT's
+     *            {@link org.eclipse.swt.graphics.GC GC}
      */
     public GraphicsAdapter(final KlighdSWTGraphicsImpl graphics) {
         this.pg = graphics;
     }
     
     /**
-     * Setter of the 'SWTGraphics2D' to be used.
-     * Must be invoked in combination with using the default constructor.
-     * Is flagged 'package protected' (no modifier) by intention.
+     * Setter of the 'SWTGraphics2D' to be used. Must be invoked in combination with using the
+     * default constructor. Is flagged 'package protected' (no modifier) by intention.
      * 
      * @author chsch
      * 
-     * @param thePg the pg to set
+     * @param thePg
+     *            a specialized AWT {@link java.awt.Graphics2D Graphics2D} graphics facading SWT's
+     *            {@link org.eclipse.swt.graphics.GC GC}
      */
     void setKlighdSWTGraphics(final KlighdSWTGraphicsImpl thePg) {
         this.pg = thePg;
@@ -189,7 +184,8 @@ public class GraphicsAdapter extends Graphics {
     @Override
     public void drawArc(final int x, final int y, final int w, final int h, final int offset,
             final int length) {
-        pg.drawArc(x, y, w, h, offset, length);
+        SINGLETON_ARC.setArc(x, y, w, h, offset, length, Arc2D.OPEN);
+        pg.draw(SINGLETON_ARC);
     }
 
     /**
@@ -215,8 +211,8 @@ public class GraphicsAdapter extends Graphics {
      */
     @Override
     public void drawLine(final int x1, final int y1, final int x2, final int y2) {
-        pg.getGraphicsContext().getGCData().lineWidth = pg.getTransformedLineWidthFloat();
-        pg.drawLine(x1, y1, x2, y2);
+        SINGLETON_LINE.setLine(x1, y1, x2, y2);
+        pg.draw(SINGLETON_LINE);
     }
 
     /**
@@ -224,7 +220,8 @@ public class GraphicsAdapter extends Graphics {
      */
     @Override
     public void drawOval(final int x, final int y, final int w, final int h) {
-        pg.drawOval(x, y, w, h);
+        SINGLETON_ELLIPSE.setFrame(x, y, w, h);
+        pg.draw(SINGLETON_ELLIPSE);
     }
     
     /**
@@ -241,8 +238,7 @@ public class GraphicsAdapter extends Graphics {
      */
     @Override
     public void drawPolygon(final PointList points) {
-        pg.getGraphicsContext().getGCData().lineWidth = pg.getTransformedLineWidthFloat();
-        pg.drawPolygon(toArray(points, pg.getLineWidth()));
+        pg.draw(PolylineUtil.createPolygonPath(SINGLETON_PATH, points.toIntArray()));
     }
 
     /**
@@ -250,8 +246,7 @@ public class GraphicsAdapter extends Graphics {
      */
     @Override
     public void drawPolyline(final PointList points) {
-        pg.getGraphicsContext().getGCData().lineWidth = pg.getTransformedLineWidthFloat();
-        pg.drawPolyline(toArray(points, pg.getLineWidth()));
+        pg.draw(PolylineUtil.createPolylinePath(SINGLETON_PATH, points.toIntArray()));
     }
 
     /**
@@ -259,8 +254,8 @@ public class GraphicsAdapter extends Graphics {
      */
     @Override
     public void drawRectangle(final int x, final int y, final int width, final int height) {
-        pg.getGraphicsContext().getGCData().lineWidth = pg.getTransformedLineWidthFloat();
-        pg.drawRect(x, y, width, height);
+        SINGLETON_RECTANGLE.setRect(x, y, width, height);
+        pg.draw(SINGLETON_RECTANGLE);
     }
 
     /**
@@ -269,7 +264,8 @@ public class GraphicsAdapter extends Graphics {
     @Override
     public void drawRoundRectangle(final org.eclipse.draw2d.geometry.Rectangle r,
             final int arcWidth, final int arcHeight) {
-        pg.drawRoundRect(r.x, r.y, r.width, r.height, arcWidth, arcHeight);
+        SINGLETON_ROUND_RECTANGLE.setRoundRect(r.x, r.y, r.width, r.height, arcWidth, arcHeight);
+        pg.draw(SINGLETON_ROUND_RECTANGLE);
     }
 
     /**
@@ -302,7 +298,8 @@ public class GraphicsAdapter extends Graphics {
     @Override
     public void fillArc(final int x, final int y, final int w, final int h, final int offset,
             final int length) {
-        pg.fillArc(x, y, w, h, offset, length);
+        SINGLETON_ARC.setArc(x, y, w, h, offset, length, Arc2D.OPEN);
+        pg.fill(SINGLETON_ARC);
     }
 
     /**
@@ -319,7 +316,8 @@ public class GraphicsAdapter extends Graphics {
      */
     @Override
     public void fillOval(final int x, final int y, final int w, final int h) {
-        pg.fillOval(x, y, w, h);
+        SINGLETON_ELLIPSE.setFrame(x, y, w, h);
+        pg.fill(SINGLETON_ELLIPSE);
     }
     
     /**
@@ -336,7 +334,7 @@ public class GraphicsAdapter extends Graphics {
      */
     @Override
     public void fillPolygon(final PointList points) {
-        pg.fillPolygon(toArray(points, pg.getLineWidth()));
+        pg.fill(PolylineUtil.createPolygonPath(SINGLETON_PATH, points.toIntArray()));
     }
 
     /**
@@ -344,7 +342,8 @@ public class GraphicsAdapter extends Graphics {
      */
     @Override
     public void fillRectangle(final int x, final int y, final int width, final int height) {
-        pg.fillRect(x, y, width, height);
+        SINGLETON_RECTANGLE.setRect(x, y, width, height);
+        pg.fill(SINGLETON_RECTANGLE);
     }
 
     /**
@@ -353,7 +352,8 @@ public class GraphicsAdapter extends Graphics {
     @Override
     public void fillRoundRectangle(final org.eclipse.draw2d.geometry.Rectangle r,
             final int arcWidth, final int arcHeight) {
-        pg.fillRoundRect(r.x, r.y, r.width, r.height, arcWidth, arcHeight);
+        SINGLETON_ROUND_RECTANGLE.setRoundRect(r.x, r.y, r.width, r.height, arcWidth, arcHeight);
+        pg.fill(SINGLETON_ROUND_RECTANGLE);
     }
 
     /**
@@ -374,14 +374,6 @@ public class GraphicsAdapter extends Graphics {
         org.eclipse.swt.graphics.Point extent = pg.textExtent(s);
         pg.fillRect(x, y, extent.x, extent.y);
         pg.drawText(s, x, y);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public org.eclipse.swt.graphics.Color getBackgroundColor() {
-        return pg.getGraphicsContext().getBackground();
     }
 
     /**
@@ -437,6 +429,46 @@ public class GraphicsAdapter extends Graphics {
      * {@inheritDoc}
      */
     @Override
+    public void setForegroundColor(final org.eclipse.swt.graphics.Color rgb) {
+        pg.setColor(rgb);
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setForegroundPattern(final Pattern pattern) {
+        pg.setPattern(pattern);
+    }
+
+     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public org.eclipse.swt.graphics.Color getBackgroundColor() {
+        return pg.getGraphicsContext().getBackground();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setBackgroundColor(final org.eclipse.swt.graphics.Color rgb) {
+        pg.setBackground(rgb);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setBackgroundPattern(final Pattern pattern) {
+        pg.setBackgoundPattern(pattern);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public void rotate(final float degrees) {
         pg.rotate(degrees);
     }
@@ -447,14 +479,6 @@ public class GraphicsAdapter extends Graphics {
     @Override
     public void scale(final double amount) {
         pg.scale(amount, amount);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setBackgroundColor(final org.eclipse.swt.graphics.Color rgb) {
-        pg.setBackground(rgb);
     }
 
     /**
@@ -481,14 +505,6 @@ public class GraphicsAdapter extends Graphics {
         pg.setFont(f);
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setForegroundColor(final org.eclipse.swt.graphics.Color rgb) {
-        pg.setColor(rgb);
-    }
-    
     /**
      * {@inheritDoc}
      */
@@ -545,7 +561,7 @@ public class GraphicsAdapter extends Graphics {
      */
     @Override
     public void setAlpha(final int alpha) {
-        // TODO not yet implemented
+        pg.setAlpha(alpha);
     }
     
     /**
@@ -553,8 +569,7 @@ public class GraphicsAdapter extends Graphics {
      */
     @Override
     public int getAntialias() {
-        // TODO not yet implemented
-        return SWT.DEFAULT;
+        return pg.getGraphicsContext().getAntialias();
     }
     
     /**
@@ -562,7 +577,7 @@ public class GraphicsAdapter extends Graphics {
      */
     @Override
     public void setAntialias(final int value) {
-        // TODO not yet implemented
+        pg.getGraphicsContext().setAntialias(value);
     }
 
     /**
@@ -570,16 +585,16 @@ public class GraphicsAdapter extends Graphics {
      */
     @Override
     public boolean getXORMode() {
-        // TODO not yet implemented
-        return false;
+        return pg.getGraphicsContext().getXORMode();
     }
 
     /**
      * {@inheritDoc}
      */
+    @SuppressWarnings("deprecation")
     @Override
     public void setXORMode(final boolean b) {
-        // TODO not yet implemented
+        pg.getGraphicsContext().setXORMode(b);
     }
 
     /**
@@ -601,6 +616,15 @@ public class GraphicsAdapter extends Graphics {
     /**
      * {@inheritDoc}
      */
+    @Override
+    public LineAttributes getLineAttributes() {
+       return pg.getLineAttributes(); 
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public int getLineCap() {
         return pg.getGraphicsContext().getLineCap();
     }
@@ -608,6 +632,7 @@ public class GraphicsAdapter extends Graphics {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setLineCap(final int cap) {
         pg.getGraphicsContext().setLineCap(cap);
     }
@@ -616,8 +641,56 @@ public class GraphicsAdapter extends Graphics {
      * {@inheritDoc}
      */
     @Override
+    public void setLineDash(final int[] dash) {
+        pg.getGraphicsContext().setLineDash(dash);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setLineDash(final float[] value) {
+        pg.getGraphicsContext().getGCData().lineDashes = value;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setLineDashOffset(final float value) {
+        pg.getGraphicsContext().getGCData().lineDashesOffset = value;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int getLineJoin() {
+        return pg.getGraphicsContext().getLineJoin();
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setLineJoin(final int join) {
+        pg.getGraphicsContext().setLineJoin(join);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public float getLineMiterLimit() {
+        return pg.getGraphicsContext().getGCData().lineMiterLimit;
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public void setLineMiterLimit(final float miterLimit) {
-        // TODO not yet implemented
+        pg.getGraphicsContext().getGCData().lineMiterLimit = miterLimit;
     }
 
     /**
@@ -648,7 +721,10 @@ public class GraphicsAdapter extends Graphics {
         if (lastState != null) {
             pg.setClip(lastState.clip);
             pg.setTransform(lastState.transform);
+            pg.setAlpha(lastState.alpha);
             pg.setColor(lastState.foreground);
+            pg.setPattern(lastState.foregroundPattern);
+            pg.setBackgoundPattern(lastState.backgroundPattern);
             pg.setBackground(lastState.background);
             pg.setFont(lastState.font);
             pg.setLineAttributes(lastState.lineAttributes);

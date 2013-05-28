@@ -14,7 +14,6 @@
 package de.cau.cs.kieler.klighd.piccolo;
 
 import java.awt.Shape;
-import java.awt.geom.GeneralPath;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 
@@ -69,7 +68,12 @@ public class KlighdSWTGraphicsImpl extends SWTGraphics2D implements KlighdSWTGra
         super(gc, tl, device);
     }
 
-    private static final Rectangle2D.Float TEMP_RECT = new Rectangle2D.Float();
+    /**
+     * {@inheritDoc}
+     */
+    public Device getDevice() {
+        return this.device;
+    }
 
     /**
      * {@inheritDoc}
@@ -124,6 +128,8 @@ public class KlighdSWTGraphicsImpl extends SWTGraphics2D implements KlighdSWTGra
         return super.getLineWidth();
     }
     
+    private static final Rectangle2D.Float TEMP_RECT = new Rectangle2D.Float();
+
     /**
      * {@inheritDoc}
      */
@@ -161,104 +167,7 @@ public class KlighdSWTGraphicsImpl extends SWTGraphics2D implements KlighdSWTGra
                 (float) points[1].getY(), this.getColor(gradient.getColor1()), alpha1, this
                         .getColor(gradient.getColor2()), alpha2));
     }
-
-
-    /*----------------------------------------------------*/
-    /* overrides of draw methods to realize anti-aliasing */
-    /*----------------------------------------------------*/
     
-    /**
-     * {@inheritDoc}
-     */
-    public void drawRect(final double x, final double y, final double width, final double height) {
-        int alpha = getAlpha();
-        antiAliase();
-        updateCustomLineStyle(); 
-        
-        super.drawRect(x, y, width, height);
-        
-        setAlpha(alpha);
-    }
-    
-    /**
-     * {@inheritDoc}
-     */
-    public void drawRoundRect(final double x, final double y, final double width,
-            final double height, final double arcWidth, final double arcHeight) {
-        int alpha = getAlpha();
-        antiAliase();
-        updateCustomLineStyle(); 
-        
-        super.drawRoundRect(x, y, width, height, arcWidth, arcHeight);
-        
-        setAlpha(alpha);
-    }
-    
-    /**
-     * {@inheritDoc}
-     */
-    public void drawOval(final double x, final double y, final double width, final double height) {
-        int alpha = getAlpha();
-        antiAliase();
-        updateCustomLineStyle(); 
-        
-        super.drawOval(x, y, width, height);
-        
-        setAlpha(alpha);
-    }
-    
-    /**
-     * {@inheritDoc}
-     */
-    public void drawPolygon(final double[] points) {
-        int alpha = getAlpha();
-        antiAliase();
-        updateCustomLineStyle(); 
-        
-        super.drawPolygon(points);
-        
-        setAlpha(alpha);
-    }
-    
-    /**
-     * {@inheritDoc}
-     */
-    public void drawArc(final double x, final double y, final double width, final double height,
-            final double startAngle, final double extent) {
-        int alpha = getAlpha();
-        antiAliase();
-        updateCustomLineStyle(); 
-        
-        super.drawArc(x, y, width, height, startAngle, extent);
-        
-        setAlpha(alpha);
-    }
-    
-    /**
-     * {@inheritDoc}
-     */
-    public void drawPolyline(final double[] points) {
-        int alpha = getAlpha();
-        antiAliase();
-        updateCustomLineStyle(); 
-        
-        super.drawPolyline(points);
-        
-        setAlpha(alpha);
-    }
-    
-    /**
-     * {@inheritDoc}
-     */
-    public void drawGeneralPath(final GeneralPath gp) {
-        int alpha = getAlpha();
-        antiAliase();
-        updateCustomLineStyle(); 
-        
-        super.drawGeneralPath(gp);
-        
-        setAlpha(alpha);
-    }
     
     /*-----------------------------*/
     /* overrides of legacy methods */
@@ -266,24 +175,29 @@ public class KlighdSWTGraphicsImpl extends SWTGraphics2D implements KlighdSWTGra
     
     /**
      * {@inheritDoc}
-     * @deprecated see {@link KlighdSWTGraphics#draw(Shape)}.
      */
     public void draw(final Shape shape) {
-        final String msg = "KLighD: Invocation of KlighdSWTGraphics#draw(Shape) is not supported as"
-                + " the position and size data cannot be scaled properly for general shapes.";
-        throw new UnsupportedOperationException(msg); 
+        int alpha = getAlpha();
+        antiAliase();
+        updateCustomLineStyle(); 
+        
+        gc.getGCData().lineWidth = getTransformedLineWidthFloat();
+
+        gc.drawPath(pathIterator2Path(shape.getPathIterator(transform)));
+        
+        setAlpha(alpha);
     }
     
     /**
      * {@inheritDoc}
-     * @deprecated see {@link KlighdSWTGraphics#fill(Shape)}.
      */
     public void fill(final Shape shape) {
-        final String msg = "KLighD: Invocation of KlighdSWTGraphics#fill(Shape) is not supported as"
-                + " the position and size data cannot be scaled properly for general shapes.";
-        throw new UnsupportedOperationException(msg); 
+        gc.getGCData().lineWidth = getTransformedLineWidthFloat();
+
+        gc.fillPath(pathIterator2Path(shape.getPathIterator(transform)));
     }
-    
+
+
     /*-------------------------*/
     /* internal helper methods */
     /*-------------------------*/

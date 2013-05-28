@@ -99,11 +99,6 @@ public abstract class AbstractKGraphRuntimeModule extends DefaultRuntimeModule {
 		return org.eclipse.xtext.parser.antlr.UnorderedGroupHelper.class;
 	}
 
-	// contributed by org.eclipse.xtext.generator.ecore2xtext.Ecore2XtextValueConverterServiceFragment
-	public Class<? extends org.eclipse.xtext.conversion.IValueConverterService> bindIValueConverterService() {
-		return org.eclipse.xtext.common.services.Ecore2XtextTerminalConverters.class;
-	}
-
 	// contributed by org.eclipse.xtext.generator.validation.JavaValidatorFragment
 	@org.eclipse.xtext.service.SingletonBinding(eager=true)	public Class<? extends de.cau.cs.kieler.core.kgraph.text.validation.KGraphJavaValidator> bindKGraphJavaValidator() {
 		return de.cau.cs.kieler.core.kgraph.text.validation.KGraphJavaValidator.class;
@@ -137,26 +132,6 @@ public abstract class AbstractKGraphRuntimeModule extends DefaultRuntimeModule {
 	// contributed by org.eclipse.xtext.generator.formatting.FormatterFragment
 	public Class<? extends org.eclipse.xtext.formatting.IFormatter> bindIFormatter() {
 		return de.cau.cs.kieler.core.kgraph.text.formatting.KGraphFormatter.class;
-	}
-
-	// contributed by org.eclipse.xtext.generator.builder.BuilderIntegrationFragment
-	public Class<? extends org.eclipse.xtext.resource.IContainer.Manager> bindIContainer$Manager() {
-		return org.eclipse.xtext.resource.containers.StateBasedContainerManager.class;
-	}
-
-	// contributed by org.eclipse.xtext.generator.builder.BuilderIntegrationFragment
-	public Class<? extends org.eclipse.xtext.resource.containers.IAllContainersState.Provider> bindIAllContainersState$Provider() {
-		return org.eclipse.xtext.resource.containers.ResourceSetBasedAllContainersStateProvider.class;
-	}
-
-	// contributed by org.eclipse.xtext.generator.builder.BuilderIntegrationFragment
-	public void configureIResourceDescriptions(com.google.inject.Binder binder) {
-		binder.bind(org.eclipse.xtext.resource.IResourceDescriptions.class).to(org.eclipse.xtext.resource.impl.ResourceSetBasedResourceDescriptions.class);
-	}
-
-	// contributed by org.eclipse.xtext.generator.builder.BuilderIntegrationFragment
-	public void configureIResourceDescriptionsBuilderScope(com.google.inject.Binder binder) {
-		binder.bind(org.eclipse.xtext.resource.IResourceDescriptions.class).annotatedWith(com.google.inject.name.Names.named(org.eclipse.xtext.resource.impl.ResourceDescriptionsProvider.NAMED_BUILDER_SCOPE)).to(org.eclipse.xtext.resource.impl.ResourceSetBasedResourceDescriptions.class);
 	}
 
 }

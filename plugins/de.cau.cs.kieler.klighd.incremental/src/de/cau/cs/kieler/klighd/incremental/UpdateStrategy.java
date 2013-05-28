@@ -11,7 +11,7 @@
  * This code is provided under the terms of the Eclipse Public License (EPL).
  * See the file epl-v10.html for the license text.
  */
-package de.cau.cs.kieler.klighd.krendering;
+package de.cau.cs.kieler.klighd.incremental;
 
 import java.io.IOException;
 import java.util.Collections;
@@ -51,7 +51,7 @@ import de.cau.cs.kieler.klighd.ViewContext;
 public class UpdateStrategy implements IUpdateStrategy<KNode> {
 
     /** The id used at registration of the strategy in the plugin.xml. */
-    public static final String ID = SimpleUpdateStrategy.class.getCanonicalName();
+    public static final String ID = UpdateStrategy.class.getCanonicalName();
     
     /** the priority for this update strategy. */
     public static final int PRIORITY = 20;

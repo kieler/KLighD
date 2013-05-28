@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: de.cau.cs.kieler.core.kgraph.text
-Bundle-Vendor: My Company
+Bundle-Vendor: Christian-Albrechts-Universität zu Kiel
 Bundle-Version: 0.1.0.qualifier
 Bundle-SymbolicName: de.cau.cs.kieler.core.kgraph.text; singleton:=true
 Bundle-ActivationPolicy: lazy

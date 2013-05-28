@@ -93,26 +93,6 @@ public abstract class AbstractKGraphUiModule extends DefaultUiModule {
 		return org.eclipse.xtext.ui.compare.DefaultViewerCreator.class;
 	}
 
-	// contributed by org.eclipse.xtext.generator.builder.BuilderIntegrationFragment
-	public void configureIResourceDescriptionsBuilderScope(com.google.inject.Binder binder) {
-		binder.bind(org.eclipse.xtext.resource.IResourceDescriptions.class).annotatedWith(com.google.inject.name.Names.named(org.eclipse.xtext.resource.impl.ResourceDescriptionsProvider.NAMED_BUILDER_SCOPE)).to(org.eclipse.xtext.builder.clustering.CurrentDescriptions.ResourceSetAware.class);
-	}
-
-	// contributed by org.eclipse.xtext.generator.builder.BuilderIntegrationFragment
-	public Class<? extends org.eclipse.xtext.ui.editor.IXtextEditorCallback> bindIXtextEditorCallback() {
-		return org.eclipse.xtext.builder.nature.NatureAddingEditorCallback.class;
-	}
-
-	// contributed by org.eclipse.xtext.generator.builder.BuilderIntegrationFragment
-	public void configureIResourceDescriptionsPersisted(com.google.inject.Binder binder) {
-		binder.bind(org.eclipse.xtext.resource.IResourceDescriptions.class).annotatedWith(com.google.inject.name.Names.named(org.eclipse.xtext.builder.impl.PersistentDataAwareDirtyResource.PERSISTED_DESCRIPTIONS)).to(org.eclipse.xtext.builder.builderState.IBuilderState.class);
-	}
-
-	// contributed by org.eclipse.xtext.generator.builder.BuilderIntegrationFragment
-	public Class<? extends org.eclipse.xtext.ui.editor.DocumentBasedDirtyResource> bindDocumentBasedDirtyResource() {
-		return org.eclipse.xtext.builder.impl.PersistentDataAwareDirtyResource.class;
-	}
-
 	// contributed by org.eclipse.xtext.ui.generator.quickfix.QuickfixProviderFragment
 	public Class<? extends org.eclipse.xtext.ui.editor.quickfix.IssueResolutionProvider> bindIssueResolutionProvider() {
 		return de.cau.cs.kieler.core.kgraph.text.ui.quickfix.KGraphQuickfixProvider.class;

@@ -96,6 +96,7 @@ public class KLabelRenderingController extends AbstractKGERenderingController<KL
                 new PropertyChangeListener() {
                     public void propertyChange(final PropertyChangeEvent e) {
                         controller.getNode().setText(KTextUtil.getTextLines(parent.getText()));
+                        controller.getNode().repaint();
                     }
                 });
 

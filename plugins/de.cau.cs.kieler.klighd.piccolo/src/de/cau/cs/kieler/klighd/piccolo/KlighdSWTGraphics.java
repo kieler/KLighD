@@ -16,10 +16,8 @@ package de.cau.cs.kieler.klighd.piccolo;
 import java.awt.Font;
 import java.awt.Shape;
 import java.awt.geom.AffineTransform;
-import java.awt.geom.GeneralPath;
 import java.awt.geom.Rectangle2D;
 
-//import org.eclipse.swt.SWT; // SUPPRESS CHECKSTYLE Unused: Is referenced in lots of Javadoc annotations
 import org.eclipse.swt.graphics.Device;
 import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.graphics.GC;
@@ -30,15 +28,47 @@ import de.cau.cs.kieler.klighd.piccolo.util.RGBGradient;
 
 /**
  * This interface defines methods to be used by custom {@link edu.umd.cs.piccolo.PNode PNode}
- * implementations to draw there shapes in order to abstract the concrete
+ * implementations to draw there shapes. Its aim is to abstract the concrete
  * {@link edu.umd.cs.piccolox.swt.SWTGraphics2D SWTGraphics2D} implementation contributed by the
  * <code>edu.umd.cs.piccolo</code> packages.<br>
- * It is still incomplete.
+ * <br>
+ * For drawing basic figures (except text fields) only {@link #draw(Shape)} and {@link #fill(Shape)}
+ * are provided, since drawing and coloring such elements is to be performed by means of
+ * {@link java.awt.geom.PathIterator PathIterators}, which are provided by AWT {@link Shape Shapes}
+ * via {@link Shape#getPathIterator(AffineTransform)}.<br>
+ * <br>
+ * The rational of this approach is the decision to draw all basic figures by means of SWT
+ * {@link org.eclipse.swt.graphics.Path Path} objects. This is currently the only way of passing
+ * floating-point-based coordinates to the {@link org.eclipse.swt.graphics.GC GC}. Such SWT
+ * {@link org.eclipse.swt.graphics.Path Paths} can be easily built-up by means of AWT Geometry
+ * {@link java.awt.geom.PathIterator PathIterators}, see
+ * {@link edu.umd.cs.piccolox.swt.SWTGraphics2D#pathIterator2Path(java.awt.geom.PathIterator)
+ * SWTGraphics2D#pathIterator2Path(PathIterator)}.<br>
+ * <br>
+ * Since the coordinates of the particular figures are relative to their parent figures, all
+ * coordinates must be adjusted by the currently visible area and zoom factor. In order to do that
+ * the path object must be inspected and the segment values updated. This is task is, fortunately,
+ * also performed by the {@link java.awt.geom.PathIterator PathIterators}.<br>
+ * <br>
+ * A further of this approach is an easier support of rotation of basic figures. This requires the
+ * rotation of the coordinates while drawing the figures on the one hand, and the incorporation of
+ * the rotation for determining the currently picked figure while processing mouse input events.
+ * Relying on the AWT Geometry {@link java.awt.geom.PathIterator PathIterators} enables consistent
+ * and homogeneous calculations for both use cases.<br>
+ * <br>
+ * To be continued for text stuff.
  * 
  * @author chsch
  */
 public interface KlighdSWTGraphics {
 
+    /**
+     * 
+     * @return the {@link Device} to work with
+     */
+    Device getDevice();
+
+    
     /**
      * This setter allows to (re-) use an object adhering to this interface for multiple paint runs.
      * 
@@ -122,7 +152,7 @@ public interface KlighdSWTGraphics {
     void setAlpha(final int alpha);
 
     /**
-     * Sets the stroke color to the provided RGB color descriptor.
+     * Sets the stroke color to the provided {@link RGB} color descriptor.
      * 
      * @author chsch
      * 
@@ -132,7 +162,7 @@ public interface KlighdSWTGraphics {
     void setColor(final RGB color);
 
     /**
-     * Sets the stroke color gradient to the provided RGB gradient descriptor.
+     * Sets the stroke color gradient to the provided {@link RGBGradient} descriptor.
      * 
      * @author chsch
      * 
@@ -144,7 +174,7 @@ public interface KlighdSWTGraphics {
     void setPattern(final RGBGradient gradient, final Rectangle2D bounds);
 
     /**
-     * Sets the background color to the provided RGB color descriptor.
+     * Sets the background color to the provided {@link RGB} color descriptor.
      * 
      * @author chsch
      * 
@@ -154,7 +184,7 @@ public interface KlighdSWTGraphics {
     void setBackground(final RGB backgroundColor);
 
     /**
-     * Sets the background color gradient to the provided RGB gradient descriptor.
+     * Sets the background color gradient to the provided {@link RGBGradient} descriptor.
      * 
      * @author chsch
      * 
@@ -165,50 +195,6 @@ public interface KlighdSWTGraphics {
      */
     void setBackgroundPattern(final RGBGradient backgroundGradient, final Rectangle2D bounds);
 
-//    /**
-//     * Returns the line width to use when drawing shapes.<br>
-//     * Result is supposed to be one of the constants {@link SWT#LINE_SOLID}, {@link SWT#LINE_DASH},
-//     * {@link SWT#LINE_DOT}, {@link SWT#LINE_DASHDOT} or {@link SWT#LINE_DASHDOTDOT}.
-//     * 
-//     * @author chsch
-//     * 
-//     * @return style of lines when drawing shapes
-//     */
-//    int getLineStyle();
-//    
-//    /**
-//     * Sets the line width to use when drawing shapes. <br>
-//     * Must be one of the constants {@link SWT#LINE_SOLID}, {@link SWT#LINE_DASH},
-//     * {@link SWT#LINE_DOT}, {@link SWT#LINE_DASHDOT} or {@link SWT#LINE_DASHDOTDOT}.
-//     * 
-//     * @author chsch
-//     * 
-//     * @param lineStyle
-//     *            style of lines when drawing shapes
-//     */
-//    void setLineStyle(final int lineStyle);
-//
-//    /**
-//     * Returns the line width to use when drawing shapes. Result is supposed to be one of the
-//     * constants {@link SWT#CAP_FLAT}, {@link SWT#CAP_ROUND}, or {@link SWT#CAP_SQUARE}.
-//     * 
-//     * @author chsch
-//     * 
-//     * @return cap style of lines when drawing strokes
-//     */
-//    int getLineCap();
-//    
-//    /**
-//     * Sets the line width to use when drawing shapes. <br>
-//     * Must be one of the constants {@link SWT#CAP_FLAT}, {@link SWT#CAP_ROUND}, or
-//     * {@link SWT#CAP_SQUARE}.
-//     * 
-//     * @author chsch
-//     * 
-//     * @param lineCap
-//     *            cap style of lines when drawing strokes
-//     */
-//    void setLineCap(final int lineCap);
 
     /*-----------------------------------------------------------------------*/
     /* Some AffineTransform-related methods required by the PSWTAdvancedPath */
@@ -258,233 +244,11 @@ public interface KlighdSWTGraphics {
      */
     void setTransform(final AffineTransform transform);
 
-    /*------------------------------------------------------------*/
-    /* Desired floating-point-based shape drawing methods.        */
-    /* They have mostly been defined by the Piccolo2D developers. */
-    /*------------------------------------------------------------*/
-    
     /**
-     * Draws the outline of the specified rectangle. The left and right edges of the rectangle are
-     * at x and x + width. The top and bottom edges are at y and y + height. The rectangle is drawn
-     * using the graphics context's current color.
-     * 
-     * @author Interface & documentation has been defined by the Piccolo2D project
-     * 
-     * @param x
-     *            the x coordinate of the rectangle to be drawn.
-     * @param y
-     *            the y coordinate of the rectangle to be drawn.
-     * @param width
-     *            the width of the rectangle to be drawn.
-     * @param height
-     *            the height of the rectangle to be drawn.
-     */
-    void drawRect(final double x, final double y, final double width, final double height);
-
-    /**
-     * Fills the specified rectangle. The left and right edges of the rectangle are at x and x +
-     * width - 1. The top and bottom edges are at y and y + height - 1. The resulting rectangle
-     * covers an area width pixels wide by height pixels tall. The rectangle is filled using the
-     * graphics context's current color.
-     * 
-     * @author Interface & documentation has been defined by the Piccolo2D project
-     * 
-     * @param x
-     *            the x coordinate of the rectangle to be filled.
-     * @param y
-     *            the y coordinate of the rectangle to be filled.
-     * @param width
-     *            the width of the rectangle to be filled.
-     * @param height
-     *            the height of the rectangle to be filled.
-     */
-    void fillRect(final double x, final double y, final double width, final double height);
-
-    /**
-     * Draws the outline of an oval. The result is a circle or ellipse that fits within the
-     * rectangle specified by the x, y, width, and height arguments. The oval covers an area that is
-     * width + 1 pixels wide and height + 1 pixels tall.
-     * 
-     * @author Interface & documentation has been defined by the Piccolo2D project
-     * 
-     * @param x
-     *            the x coordinate of the upper left corner of the oval to be drawn.
-     * @param y
-     *            the y coordinate of the upper left corner of the oval to be drawn.
-     * @param width
-     *            the width of the oval to be drawn.
-     * @param height
-     *            the height of the oval to be drawn.
-     */
-    void drawOval(final double x, final double y, final double width, final double height);
-
-    /**
-     * Fills an oval bounded by the specified rectangle with the current color.
-     * 
-     * @author Interface & documentation has been defined by the Piccolo2D project
-     * 
-     * @param x
-     *            the x coordinate of the upper left corner of the oval to be filled.
-     * @param y
-     *            the y coordinate of the upper left corner of the oval to be filled.
-     * @param width
-     *            the width of the oval to be filled.
-     * @param height
-     *            the height of the oval to be filled.
-     */
-    void fillOval(final double x, final double y, final double width, final double height);
-
-    /**
-     * Draws the outline of a circular or elliptical arc covering the specified rectangle.
-     * 
-     * The resulting arc begins at startAngle and extends for arcAngle degrees, using the current
-     * color. Angles are interpreted such that 0 degrees is at the 3 o'clock position. A positive
-     * value indicates a counter-clockwise rotation while a negative value indicates a clockwise
-     * rotation.
-     * 
-     * The center of the arc is the center of the rectangle whose origin is (x, y) and whose size is
-     * specified by the width and height arguments.
-     * 
-     * The resulting arc covers an area width + 1 pixels wide by height + 1 pixels tall.
-     * 
-     * The angles are specified relative to the non-square extents of the bounding rectangle such
-     * that 45 degrees always falls on the line from the center of the ellipse to the upper right
-     * corner of the bounding rectangle. As a result, if the bounding rectangle is noticeably longer
-     * in one axis than the other, the angles to the start and end of the arc segment will be skewed
-     * farther along the longer axis of the bounds.
-     * 
-     * @author Interface & documentation has been defined by the Piccolo2D project
-     * 
-     * @param x
-     *            the x coordinate of the upper-left corner of the arc to be drawn.
-     * @param y
-     *            the y coordinate of the upper-left corner of the arc to be drawn.
-     * @param width
-     *            the width of the arc to be drawn.
-     * @param height
-     *            the height of the arc to be drawn.
-     * @param startAngle
-     *            the beginning angle.
-     * @param extent
-     *            the angular extent of the arc, relative to the start angle.
-     */
-    void drawArc(final double x, final double y, final double width, final double height,
-            final double startAngle, final double extent);
-
-    /**
-     * Draws a filledArc with the options provided.
-     * 
-     * @author Interface & documentation has been defined by the Piccolo2D project
-     * 
-     * @param x
-     *            the x coordinate of the upper-left corner of the arc to be filled.
-     * @param y
-     *            the y coordinate of the upper-left corner of the arc to be filled.
-     * @param width
-     *            the width of the arc to be filled.
-     * @param height
-     *            the height of the arc to be filled.
-     * @param startAngle
-     *            the beginning angle.
-     * @param extent
-     *            the angular extent of the arc, relative to the start angle.
-     */
-    void fillArc(final double x, final double y, final double width, final double height,
-            final double startAngle, final double extent);
-
-    /**
-     * Draws an outlined round-cornered rectangle using this graphics context's current color. The
-     * left and right edges of the rectangle are at x and x + width, respectively. The top and
-     * bottom edges of the rectangle are at y and y + height.
-     * 
-     * @author Interface & documentation has been defined by the Piccolo2D project
-     * 
-     * @param x
-     *            the x coordinate of the rectangle to be drawn.
-     * @param y
-     *            the y coordinate of the rectangle to be drawn.
-     * @param width
-     *            the width of the rectangle to be drawn.
-     * @param height
-     *            the height of the rectangle to be drawn.
-     * @param arcWidth
-     *            the horizontal diameter of the arc at the four corners.
-     * @param arcHeight
-     *            the vertical diameter of the arc at the four corners.
-     */
-    void drawRoundRect(final double x, final double y, final double width, final double height,
-            final double arcWidth, final double arcHeight);
-
-    /**
-     * Fills the specified rounded corner rectangle with the current color. The left and right edges
-     * of the rectangle are at x and x + width - 1, respectively. The top and bottom edges of the
-     * rectangle are at y and y + height - 1.
-     * 
-     * @author Interface & documentation has been defined by the Piccolo2D project
-     * 
-     * @param x
-     *            the x coordinate of the rectangle to be filled.
-     * @param y
-     *            the y coordinate of the rectangle to be filled.
-     * @param width
-     *            the width of the rectangle to be filled.
-     * @param height
-     *            the height of the rectangle to be filled.
-     * @param arcWidth
-     *            the horizontal diameter of the arc at the four corners.
-     * @param arcHeight
-     *            the vertical diameter of the arc at the four corners.
-     */
-    void fillRoundRect(final double x, final double y, final double width, final double height,
-            final double arcWidth, final double arcHeight);
-
-    /**
-     * Draw a polygon from the specified double array of points.<br>
-     * Derivative of {@link #drawPolyline(double[])}.
-     * 
-     * @author chsch
-     * 
-     * @param pts
-     *            double array of points
-     */
-    void drawPolygon(final double[] pts);
-    
-    /**
-     * Fill a polygon from the specified double array of points.
-     * 
-     * @author Interface & documentation has been defined by the Piccolo2D project
-     * 
-     * @param pts
-     *            double array of points
-     */
-    void fillPolygon(final double[] pts);
-    
-    /**
-     * Draw a polyline from the specified double array of points.
-     * 
-     * @author Interface & documentation has been defined by the Piccolo2D project
-     * 
-     * @param pts
-     *            double array of points
-     */
-    void drawPolyline(final double[] pts);
-
-    /**
-     * Draws the provided AWT GeneralPath respecting the current AWT transform without any caching.
-     * We need to assess whether this is OK w.r.t. the runtime performance.
-     * 
-     * @author chsch
-     * 
-     * @param gp
-     *            path to draw
-     */
-    void drawGeneralPath(final GeneralPath gp);
-
-    /**
-     * See {@link java.awt.Graphics2D#draw(Shape)}!
-     * 
-     * @deprecated Method is deprecated as the position and size data cannot be scaled properly for
-     *             general shapes.
+     * Draws the provided AWT {@link Shape} by relying on the provided
+     * {@link java.awt.geom.PathIterator PathIterator} (
+     * {@link Shape#getPathIterator(AffineTransform)}) respecting the current AWT transform without
+     * any caching.
      * 
      * @param s
      *            the <code>Shape</code> to be rendered
@@ -492,10 +256,10 @@ public interface KlighdSWTGraphics {
     void draw(final Shape s);
     
     /**
-     * See {@link java.awt.Graphics2D#fill(Shape)}!
-     * 
-     * @deprecated Method is deprecated as the position and size data cannot be scaled properly for
-     *             general shapes.
+     * Fills the provided AWT {@link Shape} by relying on the provided
+     * {@link java.awt.geom.PathIterator PathIterator} (
+     * {@link Shape#getPathIterator(AffineTransform)}) respecting the current AWT transform without
+     * any caching.
      * 
      * @param s
      *            the <code>Shape</code> to be filled

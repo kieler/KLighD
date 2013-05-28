@@ -64,6 +64,9 @@ import edu.umd.cs.piccolox.swt.PSWTCanvas;
 import edu.umd.cs.piccolox.swt.PSWTImage;
 
 /**
+ * Collection of KRendering-related figure creation methods.<br>
+ * These methods are outsourced from {@link AbstractKGERenderingController} in order
+ * to reduce the size of that class.
  * 
  * @author chsch
  */
@@ -440,8 +443,7 @@ final class KGERenderingControllerHelper {
         if (polygon.getChildren().size() > 0) {
             List<KRendering> restChildren = Lists.newLinkedList();
             for (final KRendering rendering : polygon.getChildren()) {
-                if (PiccoloPlacementUtil.getDecoratorPlacementData(rendering) != null)
-                {
+                if (PiccoloPlacementUtil.getDecoratorPlacementData(rendering) != null) {
                     controller.handleDecoratorPlacementRendering(rendering, propagatedStyles, path);
                 } else {
                     restChildren.add(rendering);
@@ -450,19 +452,21 @@ final class KGERenderingControllerHelper {
 
             // handle children without decorator placement data if any
             if (restChildren.size() > 0) {
+                // chsch: Why is that proxy node needed. Don't see the point... 
+                // 
                 // create a proxy parent for the children without decorator placement data
-                final PNode proxyParent = new PEmptyNode();
-                path.addChild(proxyParent);
-                NodeUtil.applySmartBounds(proxyParent, path.getBoundsReference());
-                controller.addListener(PNode.PROPERTY_BOUNDS, path, proxyParent,
-                        new PropertyChangeListener() {
-                            public void propertyChange(final PropertyChangeEvent arg0) {
-                                NodeUtil.applySmartBounds(proxyParent, path.getBoundsReference());
-                            }
-                        });
+                // final PNode proxyParent = new PEmptyNode();
+                // path.addChild(proxyParent);
+                // NodeUtil.applySmartBounds(proxyParent, path.getBoundsReference());
+                // controller.addListener(PNode.PROPERTY_BOUNDS, path, proxyParent,
+                //         new PropertyChangeListener() {
+                //             public void propertyChange(final PropertyChangeEvent arg0) {
+                //                 NodeUtil.applySmartBounds(proxyParent, path.getBoundsReference());
+                //             }
+                //         });
 
                 controller.handleChildren(restChildren, polygon.getChildPlacement(), propagatedStyles,
-                        proxyParent);
+                        path); //proxyParent);
             }
         }
 
@@ -676,6 +680,18 @@ final class KGERenderingControllerHelper {
                 // apply the bounds
                 getNode().setBounds(0, 0, bounds.getWidth(), bounds.getHeight());
                 NodeUtil.applyTranslation(getNode(), bounds.getX(), bounds.getY());
+            }
+            
+            private float prevRotation = 0f;
+            
+            public void setRotation(final float rotation) {
+                // The point coordinates are a heuristic right now.
+                //  I'm afraid and I'm almost sure that this will not work in general...
+                // SUPPRESS CHECKSTYLE NEXT MagicNumber
+                getNode().rotateAboutPoint(Math.toRadians(rotation - prevRotation), 1.5, 1.5);
+                // Remember the rotation in this memory since this rotation needs to be reverted
+                //  (merged) with the subsequent rotation, since these rotations are absolute.
+                prevRotation = rotation;
             }
         };
     }

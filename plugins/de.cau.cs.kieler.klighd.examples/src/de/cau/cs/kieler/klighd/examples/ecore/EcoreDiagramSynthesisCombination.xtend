@@ -2,12 +2,16 @@ package de.cau.cs.kieler.klighd.examples.ecore
 
 import java.util.Collection
 import java.util.List
+
 import de.cau.cs.kieler.core.kivi.AbstractCombination
+import de.cau.cs.kieler.core.model.triggers.PartTrigger
+import de.cau.cs.kieler.core.model.triggers.SelectionTrigger
 import de.cau.cs.kieler.klighd.effects.KlighdUpdateDiagramEffect
 import de.cau.cs.kieler.klighd.examples.ecore.EModelElementCollection
 import de.cau.cs.kieler.klighd.triggers.KlighdSelectionTrigger$KlighdSelectionState
-import de.cau.cs.kieler.core.model.triggers.PartTrigger
-import de.cau.cs.kieler.core.model.triggers.SelectionTrigger
+import de.cau.cs.kieler.klighd.LightDiagramServices
+import de.cau.cs.kieler.klighd.incremental.UpdateStrategy
+
 import org.eclipse.core.runtime.IPath
 import org.eclipse.emf.ecore.EPackage
 import org.eclipse.emf.ecore.EClass
@@ -81,8 +85,9 @@ class EcoreDiagramSynthesisCombination extends AbstractCombination {
                     // in case Ecore elements are selected within the 'Project Explorer' view
                     this.schedule(new KlighdUpdateDiagramEffect("de.cau.cs.kieler.klighd.examples.ecore.explorer",
                             "KLighD Class Diagram", EModelElementCollection::of(selectedModelElements)
-        		        )
-                	);
+        		        ) => [
+                        it.setProperty(LightDiagramServices::REQUESTED_UPDATE_STRATEGY, UpdateStrategy::ID);
+                    ]);
                 }
             } 
 		}
