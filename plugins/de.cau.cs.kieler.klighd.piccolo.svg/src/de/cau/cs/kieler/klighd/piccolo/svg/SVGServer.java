@@ -27,6 +27,9 @@ import org.eclipse.jetty.server.handler.ResourceHandler;
 import org.eclipse.jetty.server.nio.SelectChannelConnector;
 import org.eclipse.jetty.websocket.WebSocket;
 import org.eclipse.jetty.websocket.WebSocketHandler;
+import org.eclipse.swt.widgets.Display;
+
+import de.cau.cs.kieler.klighd.IViewer;
 
 public class SVGServer extends Server {
 
@@ -35,9 +38,11 @@ public class SVGServer extends Server {
     private ConcurrentLinkedQueue<SVGSendingWebSocket> broadcast =
             new ConcurrentLinkedQueue<SVGSendingWebSocket>();
     private KlighdSVGGraphicsImpl svgGenerator;
+    private PiccoloSVGViewer viewer;
 
-    public SVGServer(int port, KlighdSVGGraphicsImpl theSvgGenerator) {
+    public SVGServer(int port, KlighdSVGGraphicsImpl theSvgGenerator, PiccoloSVGViewer viewer) {
         svgGenerator = theSvgGenerator;
+        this.viewer = viewer;
 
         SelectChannelConnector connector = new SelectChannelConnector();
         connector.setPort(port);
@@ -59,7 +64,7 @@ public class SVGServer extends Server {
         rHandler.setResourceBase("svg/");
         wsHandler.setHandler(rHandler);
 
-        verbose = true; 
+        verbose = true;
 
     }
 
@@ -97,7 +102,21 @@ public class SVGServer extends Server {
                 System.err.printf("%s#onMessage     %s\n", this.getClass().getSimpleName(), data);
             }
 
-            broadcastSVG();
+            int x = Integer.valueOf(data.substring(5, data.indexOf(',')));
+            int y =
+                    Integer.valueOf(data.substring(data.lastIndexOf(':') + 1, data.lastIndexOf('}')));
+            System.out.println(x +" " +y);
+            viewer.getCanvas().getCamera().translateView(-x, -y);
+            
+            Display.getDefault().syncExec(new Runnable() {
+                
+                @Override
+                public void run() {
+                    viewer.getCanvas().getCamera().invalidatePaint();
+                    viewer.getCanvas().redraw();     
+                }
+            });
+            // broadcastSVG();
         }
 
         /**
@@ -117,7 +136,7 @@ public class SVGServer extends Server {
     public void broadcastSVG() {
 
         String data = svgGenerator.getSVG();
-        //System.out.println("sending data " + data.length());
+        // System.out.println("sending data " + data.length());
 
         if (data.length() < 1000) {
             return;

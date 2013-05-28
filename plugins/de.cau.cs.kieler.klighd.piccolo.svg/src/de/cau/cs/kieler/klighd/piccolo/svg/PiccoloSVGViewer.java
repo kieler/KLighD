@@ -19,6 +19,8 @@ import java.awt.event.InputEvent;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.DisposeEvent;
+import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.graphics.Device;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.widgets.Composite;
@@ -31,7 +33,10 @@ import com.google.common.collect.Iterables;
 
 import de.cau.cs.kieler.core.kgraph.KGraphElement;
 import de.cau.cs.kieler.core.kgraph.KNode;
+import de.cau.cs.kieler.klighd.IViewer;
+import de.cau.cs.kieler.klighd.IViewerEventListener;
 import de.cau.cs.kieler.klighd.piccolo.INodeSelectionListener;
+import de.cau.cs.kieler.klighd.piccolo.KlighdSWTGraphicsImpl;
 import de.cau.cs.kieler.klighd.piccolo.PMouseWheelZoomEventHandler;
 import de.cau.cs.kieler.klighd.piccolo.PSWTSimpleSelectionEventHandler;
 import de.cau.cs.kieler.klighd.piccolo.activities.ZoomActivity;
@@ -85,6 +90,8 @@ public class PiccoloSVGViewer extends AbstractViewer<KNode> implements INodeSele
         this(parentViewer, parent, SWT.NONE);
     }
 
+    SVGServer server;
+    
     /**
      * Creates a Piccolo viewer with given style.
      * 
@@ -109,10 +116,11 @@ public class PiccoloSVGViewer extends AbstractViewer<KNode> implements INodeSele
 
             // private KlighdSWTGraphics graphics = new KlighdSWTGraphicsImpl(null,
             // parent.getDisplay());
-            
+
             // TODO
-            private KlighdSVGGraphicsImpl graphics = new KlighdSVGGraphicsImpl();
-            SVGServer server;
+            private KlighdSVGGraphicsImpl graphics = new KlighdSVGGraphicsImpl(
+                     parent.getDisplay());
+            
 
             @Override
             protected Graphics2D getGraphics2D(final GC gc, final Device device) {
@@ -156,26 +164,30 @@ public class PiccoloSVGViewer extends AbstractViewer<KNode> implements INodeSele
 
                 server.broadcastSVG();
             }
+            
+            /**
+             * {@inheritDoc}
+             */
+            @Override
+            public void redraw() {
+                // TODO Auto-generated method stub
+                super.redraw();
+                if (server == null) {
+                    startServer();
+                }
+                server.broadcastSVG();
+            }
 
             /**
              * {@inheritDoc}
              */
             @Override
             public void dispose() {
-
-                super.dispose();
-                try {
-                    server.stop();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
             }
-            
-            
 
             private void startServer() {
                 int port = 8080;
-                server = new SVGServer(port, graphics);
+                server = new SVGServer(port, graphics, PiccoloSVGViewer.this);
 
                 new Thread("Jetty") {
                     public void run() {
@@ -191,9 +203,21 @@ public class PiccoloSVGViewer extends AbstractViewer<KNode> implements INodeSele
             }
         };
 
+        parent.addDisposeListener(new DisposeListener() {
+            
+            @Override
+            public void widgetDisposed(DisposeEvent e) {
+                try {
+                    server.stop();
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+                
+            }
+        });
         // this reduces flickering drastically
-        //canvas.setDoubleBuffered(true);
-        
+         canvas.setDoubleBuffered(true);
+
         // canvas.setDefaultRenderQuality(PPaintContext.LOW_QUALITY_RENDERING);
         // canvas.removeInputEventListener(canvas.getPanEventHandler());
         // prevent conflicts with selection handler

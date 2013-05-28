@@ -32,7 +32,6 @@ import java.awt.Stroke;
 import java.awt.font.FontRenderContext;
 import java.awt.font.GlyphVector;
 import java.awt.geom.AffineTransform;
-import java.awt.geom.GeneralPath;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.awt.image.BufferedImageOp;
@@ -55,20 +54,25 @@ import org.w3c.dom.DOMImplementation;
 import org.w3c.dom.Document;
 
 import de.cau.cs.kieler.klighd.piccolo.KlighdSWTGraphics;
+import de.cau.cs.kieler.klighd.piccolo.KlighdSWTGraphicsImpl;
 import de.cau.cs.kieler.klighd.piccolo.util.RGBGradient;
+import edu.umd.cs.piccolox.swt.SWTGraphics2D;
 
 /**
  * @author uru
  * 
  */
-public class KlighdSVGGraphicsImpl extends Graphics2D implements KlighdSWTGraphics {
+public class KlighdSVGGraphicsImpl extends KlighdSWTGraphicsImpl implements KlighdSWTGraphics {
 
     private SVGGraphics2D graphics;
+    //private KlighdSWTGraphicsImpl origGraphics;
 
     /**
      * 
      */
-    public KlighdSVGGraphicsImpl() {
+    public KlighdSVGGraphicsImpl(Device d) {
+        super(null, d);
+        //origGraphics = og;
         // Get a DOMImplementation.
         DOMImplementation domImpl = GenericDOMImplementation.getDOMImplementation();
 
@@ -114,7 +118,7 @@ public class KlighdSVGGraphicsImpl extends Graphics2D implements KlighdSWTGraphi
      */
     @Override
     public void setDevice(Device theDevice) {
-        // nothing
+        super.setDevice(theDevice);
     }
 
     /**
@@ -122,7 +126,8 @@ public class KlighdSVGGraphicsImpl extends Graphics2D implements KlighdSWTGraphi
      */
     @Override
     public void setGC(GC theGc) {
-        // nothing
+        super.gc = theGc;
+        super.setGC(theGc);
     }
 
     /**
@@ -132,7 +137,7 @@ public class KlighdSVGGraphicsImpl extends Graphics2D implements KlighdSWTGraphi
     public LineAttributes getLineAttributes() {
         // TODO Auto-generated method stub
         //unsupported();
-        return null;
+        return super.getLineAttributes();
     }
 
     /**
@@ -142,6 +147,7 @@ public class KlighdSVGGraphicsImpl extends Graphics2D implements KlighdSWTGraphi
     public void setLineAttributes(LineAttributes attributes) {
         // TODO Auto-generated method stub
         //unsupported();
+        super.setLineAttributes(attributes);
     }
 
     /**
@@ -149,7 +155,8 @@ public class KlighdSVGGraphicsImpl extends Graphics2D implements KlighdSWTGraphi
      */
     @Override
     public float getLineWidth() {
-        return strokeWidth;
+        return super.getLineWidth();
+        //return strokeWidth;
     }
 
     private int strokeWidth = 0;
@@ -159,7 +166,7 @@ public class KlighdSVGGraphicsImpl extends Graphics2D implements KlighdSWTGraphi
      */
     @Override
     public void setLineWidth(float lineWidth) {
-        //unsupported();
+        super.setLineWidth(lineWidth);
     }
 
     /**
@@ -175,6 +182,8 @@ public class KlighdSVGGraphicsImpl extends Graphics2D implements KlighdSWTGraphi
      */
     @Override
     public void setAlpha(int alpha) {
+        super.setAlpha(alpha);
+        
         Color c = graphics.getColor();
         Color c2 = new Color(c.getRed(), c.getGreen(), c.getBlue(), alpha);
         graphics.setColor(c2);
@@ -185,6 +194,8 @@ public class KlighdSVGGraphicsImpl extends Graphics2D implements KlighdSWTGraphi
      */
     @Override
     public void setColor(RGB color) {
+        super.setColor(color);
+        
         graphics.setColor(rgb2Color(color));
     }
 
@@ -193,6 +204,8 @@ public class KlighdSVGGraphicsImpl extends Graphics2D implements KlighdSWTGraphi
      */
     @Override
     public void setPattern(RGBGradient gradient, Rectangle2D bounds) {
+        super.setPattern(gradient, bounds);
+        
         graphics.setPaint(rgb2Pattern(gradient, bounds));
     }
 
@@ -201,6 +214,8 @@ public class KlighdSVGGraphicsImpl extends Graphics2D implements KlighdSWTGraphi
      */
     @Override
     public void setBackground(RGB backgroundColor) {
+        super.setBackground(backgroundColor);
+        
         graphics.setBackground(rgb2Color(backgroundColor));
     }
 
@@ -209,6 +224,8 @@ public class KlighdSVGGraphicsImpl extends Graphics2D implements KlighdSWTGraphi
      */
     @Override
     public void setBackgroundPattern(RGBGradient backgroundGradient, Rectangle2D bounds) {
+        super.setBackgroundPattern(backgroundGradient, bounds);
+        
         graphics.setPaint(rgb2Pattern(backgroundGradient, bounds));
     }
 
@@ -225,6 +242,8 @@ public class KlighdSVGGraphicsImpl extends Graphics2D implements KlighdSWTGraphi
      */
     @Override
     public void transform(AffineTransform transform) {
+        super.transform(transform);
+        
         graphics.transform(transform);
     }
 
@@ -233,124 +252,139 @@ public class KlighdSVGGraphicsImpl extends Graphics2D implements KlighdSWTGraphi
      */
     @Override
     public void setTransform(AffineTransform transform) {
+        super.setTransform(transform);
+        
         graphics.setTransform(transform);
     }
-
+    
+    
     /**
      * {@inheritDoc}
      */
     @Override
-    public void drawRect(double x, double y, double width, double height) {
-        graphics.drawRect((int) x, (int) y, (int) width, (int) height);
+    public void drawText(String str, double x, double y) {
+        super.drawText(str, x, y);
+        
+        graphics.drawString(str, (float) x, (float) y);
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void fillRect(double x, double y, double width, double height) {
-        graphics.fillRect((int) x, (int) y, (int) width, (int) height);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void drawOval(double x, double y, double width, double height) {
-        graphics.drawOval((int) x, (int) y, (int) width, (int) height);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void fillOval(double x, double y, double width, double height) {
-        graphics.fillOval((int) x, (int) y, (int) width, (int) height);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void drawArc(double x, double y, double width, double height, double startAngle,
-            double extent) {
-        graphics.drawArc((int) x, (int) y, (int) width, (int) height, (int) startAngle,
-                (int) extent);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void fillArc(double x, double y, double width, double height, double startAngle,
-            double extent) {
-        graphics.fillArc((int) x, (int) y, (int) width, (int) height, (int) startAngle,
-                (int) extent);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void drawRoundRect(double x, double y, double width, double height, double arcWidth,
-            double arcHeight) {
-        graphics.drawRect((int) x, (int) y, (int) width, (int) height);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void fillRoundRect(double x, double y, double width, double height, double arcWidth,
-            double arcHeight) {
-        graphics.fillRoundRect((int) x, (int) y, (int) width, (int) height, (int) arcWidth,
-                (int) arcHeight);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void drawPolygon(double[] pts) {
-        graphics.drawPolygon(getPolygon(pts));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void fillPolygon(double[] pts) {
-        graphics.fillPolygon(getPolygon(pts));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void drawPolyline(double[] pts) {
-        int[] xs = new int[pts.length / 2];
-        int[] ys = new int[pts.length / 2];
-        for (int i = 0; i < pts.length; i += 2) {
-            xs[i / 2] = (int) pts[i];
-            ys[i / 2] = (int) pts[i + 1];
-        }
-
-        graphics.drawPolyline(xs, ys, pts.length / 2);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void drawGeneralPath(GeneralPath gp) {
-        graphics.draw(gp);
-    }
+//    /**
+//     * {@inheritDoc}
+//     */
+//    @Override
+//    public void drawRect(double x, double y, double width, double height) {
+//        graphics.drawRect((int) x, (int) y, (int) width, (int) height);
+//    }
+//
+//    /**
+//     * {@inheritDoc}
+//     */
+//    @Override
+//    public void fillRect(double x, double y, double width, double height) {
+//        graphics.fillRect((int) x, (int) y, (int) width, (int) height);
+//    }
+//
+//    /**
+//     * {@inheritDoc}
+//     */
+//    @Override
+//    public void drawOval(double x, double y, double width, double height) {
+//        graphics.drawOval((int) x, (int) y, (int) width, (int) height);
+//    }
+//
+//    /**
+//     * {@inheritDoc}
+//     */
+//    @Override
+//    public void fillOval(double x, double y, double width, double height) {
+//        graphics.fillOval((int) x, (int) y, (int) width, (int) height);
+//    }
+//
+//    /**
+//     * {@inheritDoc}
+//     */
+//    @Override
+//    public void drawArc(double x, double y, double width, double height, double startAngle,
+//            double extent) {
+//        graphics.drawArc((int) x, (int) y, (int) width, (int) height, (int) startAngle,
+//                (int) extent);
+//    }
+//
+//    /**
+//     * {@inheritDoc}
+//     */
+//    @Override
+//    public void fillArc(double x, double y, double width, double height, double startAngle,
+//            double extent) {
+//        graphics.fillArc((int) x, (int) y, (int) width, (int) height, (int) startAngle,
+//                (int) extent);
+//    }
+//
+//    /**
+//     * {@inheritDoc}
+//     */
+//    @Override
+//    public void drawRoundRect(double x, double y, double width, double height, double arcWidth,
+//            double arcHeight) {
+//        graphics.drawRect((int) x, (int) y, (int) width, (int) height);
+//    }
+//
+//    /**
+//     * {@inheritDoc}
+//     */
+//    @Override
+//    public void fillRoundRect(double x, double y, double width, double height, double arcWidth,
+//            double arcHeight) {
+//        graphics.fillRoundRect((int) x, (int) y, (int) width, (int) height, (int) arcWidth,
+//                (int) arcHeight);
+//    }
+//
+//    /**
+//     * {@inheritDoc}
+//     */
+//    @Override
+//    public void drawPolygon(double[] pts) {
+//        graphics.drawPolygon(getPolygon(pts));
+//    }
+//
+//    /**
+//     * {@inheritDoc}
+//     */
+//    @Override
+//    public void fillPolygon(double[] pts) {
+//        graphics.fillPolygon(getPolygon(pts));
+//    }
+//
+//    /**
+//     * {@inheritDoc}
+//     */
+//    @Override
+//    public void drawPolyline(double[] pts) {
+//        int[] xs = new int[pts.length / 2];
+//        int[] ys = new int[pts.length / 2];
+//        for (int i = 0; i < pts.length; i += 2) {
+//            xs[i / 2] = (int) pts[i];
+//            ys[i / 2] = (int) pts[i + 1];
+//        }
+//
+//        graphics.drawPolyline(xs, ys, pts.length / 2);
+//    }
+//
+//    /**
+//     * {@inheritDoc}
+//     */
+//    @Override
+//    public void drawGeneralPath(GeneralPath gp) {
+//        graphics.draw(gp);
+//    }
 
     /**
      * {@inheritDoc}
      */
     @Override
     public void draw(Shape s) {
+        super.draw(s);
+        
         graphics.draw(s);
     }
 
@@ -359,6 +393,8 @@ public class KlighdSVGGraphicsImpl extends Graphics2D implements KlighdSWTGraphi
      */
     @Override
     public void fill(Shape s) {
+        super.fill(s);
+        
         graphics.fill(s);
     }
 
@@ -389,33 +425,19 @@ public class KlighdSVGGraphicsImpl extends Graphics2D implements KlighdSWTGraphi
      */
     @Override
     public void setFont(final FontData font) {
+        super.setFont(font);
+        
         graphics.setFont(new Font(font.getName(), font.getStyle(), font.getHeight()));
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void addRenderingHints(Map<?, ?> hints) {
-        unsupported();
-
-    }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void clip(Shape s) {
+    public void clip(Shape s) {        
+        super.clip(s);
         graphics.clip(s);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void drawGlyphVector(GlyphVector g, float x, float y) {
-        // TODO Auto-generated method stub
-        unsupported();
     }
 
     /**
@@ -478,24 +500,6 @@ public class KlighdSVGGraphicsImpl extends Graphics2D implements KlighdSWTGraphi
      * {@inheritDoc}
      */
     @Override
-    public void drawString(AttributedCharacterIterator iterator, int x, int y) {
-        // TODO Auto-generated method stub
-        unsupported();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void drawString(AttributedCharacterIterator iterator, float x, float y) {
-        // TODO Auto-generated method stub
-        unsupported();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public Color getBackground() {
         return graphics.getBackground();
     }
@@ -508,101 +512,8 @@ public class KlighdSVGGraphicsImpl extends Graphics2D implements KlighdSWTGraphi
         return graphics.getComposite();
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public GraphicsConfiguration getDeviceConfiguration() {
-        // TODO Auto-generated method stubunsupported();
-        unsupported();
-        return null;
-    }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public FontRenderContext getFontRenderContext() {
-        // TODO Auto-generated method stub
-        unsupported();
-        return null;
-    }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Paint getPaint() {
-        return graphics.getPaint();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Object getRenderingHint(Key hintKey) {
-        // TODO Auto-generated method stub
-        unsupported();
-        return null;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public RenderingHints getRenderingHints() {
-        // TODO Auto-generated method stub
-        unsupported();
-        return null;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Stroke getStroke() {
-        // TODO Auto-generated method stub
-        unsupported();
-        return null;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public boolean hit(Rectangle rect, Shape s, boolean onStroke) {
-        // TODO Auto-generated method stub
-        unsupported();
-        return false;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void rotate(double theta) {
-        // TODO Auto-generated method stub
-        unsupported();
-
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void rotate(double theta, double x, double y) {
-        // TODO Auto-generated method stub
-        unsupported();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void scale(double sx, double sy) {
-        // TODO Auto-generated method stub
-        unsupported();
-    }
 
     /**
      * {@inheritDoc}
@@ -617,17 +528,8 @@ public class KlighdSVGGraphicsImpl extends Graphics2D implements KlighdSWTGraphi
      */
     @Override
     public void setComposite(Composite comp) {
-        // TODO Auto-generated method stub
-        unsupported();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setPaint(Paint paint) {
-        // TODO Auto-generated method stub
-        unsupported();
+        super.setComposite(comp);
+//        unsupported();
     }
 
     /**
@@ -635,6 +537,7 @@ public class KlighdSVGGraphicsImpl extends Graphics2D implements KlighdSWTGraphi
      */
     @Override
     public void setRenderingHint(Key hintKey, Object hintValue) {
+        super.setRenderingHint(hintKey, hintValue);
         graphics.setRenderingHint(hintKey, hintValue);
     }
 
@@ -643,17 +546,10 @@ public class KlighdSVGGraphicsImpl extends Graphics2D implements KlighdSWTGraphi
      */
     @Override
     public void setRenderingHints(Map<?, ?> hints) {
+        super.setRenderingHints(hints);
         graphics.setRenderingHints(hints);
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setStroke(Stroke s) {
-        
-        unsupported();
-    }
 
     /**
      * {@inheritDoc}
@@ -669,8 +565,9 @@ public class KlighdSVGGraphicsImpl extends Graphics2D implements KlighdSWTGraphi
      */
     @Override
     public void translate(int x, int y) {
-        // TODO Auto-generated method stub
-        unsupported();
+        super.translate(x, y);
+        
+        graphics.translate(x, y);
     }
 
     /**
@@ -686,9 +583,10 @@ public class KlighdSVGGraphicsImpl extends Graphics2D implements KlighdSWTGraphi
      * {@inheritDoc}
      */
     @Override
-    public void clearRect(int arg0, int arg1, int arg2, int arg3) {
-        // TODO Auto-generated method stub
-        unsupported();
+    public void clearRect(int x, int y, int width, int height) {
+        super.clearRect(x, y, width, height);
+        graphics.clearRect(x, y, width, height);
+        //unsupported();
     }
 
     /**
@@ -714,7 +612,7 @@ public class KlighdSVGGraphicsImpl extends Graphics2D implements KlighdSWTGraphi
      */
     @Override
     public Graphics create() {
-        return graphics.create();
+        return this.create();
     }
 
     /**
@@ -723,7 +621,8 @@ public class KlighdSVGGraphicsImpl extends Graphics2D implements KlighdSWTGraphi
     @Override
     public void dispose() {
         // TODO Auto-generated method stub
-        unsupported();
+        //unsupported();
+        super.dispose();
     }
 
     /**
@@ -880,6 +779,7 @@ public class KlighdSVGGraphicsImpl extends Graphics2D implements KlighdSWTGraphi
      */
     @Override
     public void fillRect(int x, int y, int width, int height) {
+        super.fillRect(x, y, width, height);
         graphics.fillRect(x, y, width, height);
     }
 
@@ -900,51 +800,14 @@ public class KlighdSVGGraphicsImpl extends Graphics2D implements KlighdSWTGraphi
         return graphics.getClip();
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Rectangle getClipBounds() {
-        // TODO Auto-generated method stub
-        unsupported();
-        return null;
-    }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Color getColor() {
-        // TODO Auto-generated method stub
-        unsupported();
-        return null;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Font getFont() {
-        // TODO Auto-generated method stub
-        unsupported();
-        return null;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public FontMetrics getFontMetrics(Font arg0) {
-        // TODO Auto-generated method stub
-        unsupported();
-        return null;
-    }
 
     /**
      * {@inheritDoc}
      */
     @Override
     public void setClip(Shape clip) {
+        super.setClip(clip);
         graphics.setClip(clip);
     }
 
@@ -962,6 +825,7 @@ public class KlighdSVGGraphicsImpl extends Graphics2D implements KlighdSWTGraphi
      */
     @Override
     public void setColor(Color color) {
+        super.setColor(color);
         graphics.setColor(color);
     }
 
@@ -983,12 +847,13 @@ public class KlighdSVGGraphicsImpl extends Graphics2D implements KlighdSWTGraphi
         unsupported();
     }
 
+
     /**
      * {@inheritDoc}
      */
     @Override
-    public void setFont(Font arg0) {
+    public Device getDevice() {
         // TODO Auto-generated method stub
-        unsupported();
+        return null;
     }
 }
