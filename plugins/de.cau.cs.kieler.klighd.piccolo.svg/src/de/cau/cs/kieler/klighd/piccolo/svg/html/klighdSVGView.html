@@ -27,6 +27,7 @@ svg {
 
 <body>
 
+    <input id="ip" value="localhost"/>
 	<button id="connect">Connect</button>
 
 	<div id="viewport"></div>
@@ -39,7 +40,7 @@ svg {
 	
     $('#connect').click(function() {
 
-      connection = new WebSocket('ws://localhost:8080/svg/', "protocol.svgws");
+      connection = new WebSocket('ws://' + $('#ip').val() + ':8080/svg/', "protocol.svgws");
 
       // When the connection is open, send some data to the server
       connection.onopen = function() {
