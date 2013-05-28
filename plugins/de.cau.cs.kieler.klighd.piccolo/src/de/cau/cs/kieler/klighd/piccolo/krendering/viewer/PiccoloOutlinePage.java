@@ -13,8 +13,12 @@
  */
 package de.cau.cs.kieler.klighd.piccolo.krendering.viewer;
 
+import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notification;
@@ -36,16 +40,20 @@ import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout;
 import de.cau.cs.kieler.klighd.piccolo.KlighdSWTGraphics;
 import de.cau.cs.kieler.klighd.piccolo.KlighdSWTGraphicsImpl;
 import de.cau.cs.kieler.klighd.piccolo.krendering.KNodeTopNode;
-
+import de.cau.cs.kieler.klighd.piccolo.nodes.PSWTAdvancedPath;
 import edu.umd.cs.piccolo.PCamera;
 import edu.umd.cs.piccolo.PLayer;
 import edu.umd.cs.piccolo.PNode;
+import edu.umd.cs.piccolo.event.PDragSequenceEventHandler;
+import edu.umd.cs.piccolo.event.PInputEvent;
+import edu.umd.cs.piccolo.util.PBounds;
 import edu.umd.cs.piccolox.swt.PSWTCanvas;
 
 /**
  * A content outline page for the Piccolo viewer.
- *
+ * 
  * @author msp
+ * @author uru
  */
 public class PiccoloOutlinePage implements IContentOutlinePage {
 
@@ -59,6 +67,15 @@ public class PiccoloOutlinePage implements IContentOutlinePage {
     private Adapter graphLayoutAdapter;
     /** the control listener reacting to canvas resizing. */
     private ControlListener canvasResizeListener;
+    /** the original camera of the editor part. */
+    private PCamera originalCamera;
+    /** the element that holds the outline rectangle. */
+    private PSWTAdvancedPath outlineRect;
+
+    // Properties for the appearance of the outline rectangle
+    private static final int OUTLINE_EDGE_ROUNDNESS = 5;
+    private static final int OUTLINE_EDGE_OPACITY = 25;
+    private static final Color OUTLINE_EDGE_COLOR = new Color(0, 0, 200);
 
     /**
      * {@inheritDoc}
@@ -76,7 +93,8 @@ public class PiccoloOutlinePage implements IContentOutlinePage {
                 return (Graphics2D) graphics;
             }
         };
-        canvas.setDoubleBuffered(false);
+        // reduce flickering
+        canvas.setDoubleBuffered(true);
         setContent(graphLayer);
     }
 
@@ -101,10 +119,40 @@ public class PiccoloOutlinePage implements IContentOutlinePage {
      *            the graph layer to display
      */
     public void setContent(final PLayer newLayer) {
+
         if (canvas != null) {
             if (this.graphLayer != null) {
+
+                if (graphLayer.getCameraCount() == 0) {
+                    throw new IllegalStateException(
+                            "The PLayer passed to the PiccoloOutlineView has "
+                                    + "to contain at least one camera.");
+                }
+                originalCamera = graphLayer.getCamera(0);
+
                 this.graphLayer.getRoot().removeChild(canvas.getCamera());
                 this.graphLayer.removeCamera(canvas.getCamera());
+
+                // listen to property changes of the root element
+                if (graphLayer.getChildrenCount() > 0) {
+                    graphLayer.getChild(0).addPropertyChangeListener(new PropertyChangeListener() {
+
+                        public void propertyChange(final PropertyChangeEvent evt) {
+                            adjustOutlineRect();
+                        }
+                    });
+                }
+
+                // listen to view transformations
+                originalCamera.addPropertyChangeListener(new PropertyChangeListener() {
+
+                    public void propertyChange(final PropertyChangeEvent evt) {
+                        if (evt.getPropertyName().equals("viewTransform")) {
+                            adjustOutlineRect();
+                        }
+
+                    }
+                });
             }
             if (graphLayout != null) {
                 graphLayout.eAdapters().remove(graphLayoutAdapter);
@@ -119,13 +167,31 @@ public class PiccoloOutlinePage implements IContentOutlinePage {
             final PCamera camera = new PCamera();
             newLayer.getRoot().addChild(camera);
             camera.addLayer(newLayer);
+
+            // add a new layer to the new camera that contains a rectangle indicating the visible
+            // part of the model
+            PLayer outlineLayer = new PLayer();
+            PBounds bounds = originalCamera.getBounds();
+            // configure the outline rectangle
+            outlineRect =
+                    PSWTAdvancedPath.createRoundRectangle((float) bounds.x, (float) bounds.y,
+                            (float) bounds.width, (float) bounds.height, OUTLINE_EDGE_ROUNDNESS,
+                            OUTLINE_EDGE_ROUNDNESS);
+            outlineRect.setPaint(OUTLINE_EDGE_COLOR);
+            outlineRect.setPaintAlpha(OUTLINE_EDGE_OPACITY);
+            camera.addLayer(outlineLayer);
+            outlineLayer.addChild(outlineRect);
+
             canvas.setCamera(camera);
+
+            // add a handler to the outline canvas to allow dragging
+            canvas.addInputEventListener(new OutlineDragHandler());
 
             // add listeners to layout changes and canvas resizing
             PNode childNode = newLayer.getChild(0);
             if (childNode instanceof KNodeTopNode) {
-                graphLayout = ((KNodeTopNode) childNode).getGraphElement().getData(
-                        KShapeLayout.class);
+                graphLayout =
+                        ((KNodeTopNode) childNode).getGraphElement().getData(KShapeLayout.class);
                 adjustCamera(camera);
                 graphLayoutAdapter = new AdapterImpl() {
                     public void notifyChanged(final Notification notification) {
@@ -171,6 +237,20 @@ public class PiccoloOutlinePage implements IContentOutlinePage {
     }
 
     /**
+     * Adjusts the displayed outline rectangle to the current view snippet.
+     */
+    private void adjustOutlineRect() {
+        // get the new bounds
+        PBounds bounds = originalCamera.getViewBounds();
+        outlineRect.setPathToRoundRectangle((float) bounds.x, (float) bounds.y,
+                (float) bounds.width, (float) bounds.height, OUTLINE_EDGE_ROUNDNESS,
+                OUTLINE_EDGE_ROUNDNESS);
+
+        // schedule a repaint
+        canvas.getCamera().invalidatePaint();
+    }
+
+    /**
      * {@inheritDoc}
      */
     public void dispose() {
@@ -213,4 +293,45 @@ public class PiccoloOutlinePage implements IContentOutlinePage {
         // selection is not supported by this outline page
     }
 
+    /**
+     * A drag handler that allows the user to drag the outline rectangle within the outline view and
+     * propagates the movement to the actual editor part.
+     * 
+     * @author uru
+     */
+    private class OutlineDragHandler extends PDragSequenceEventHandler {
+
+        /** reference point for the drag motion. */
+        private Point2D last = null;
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        protected void startDrag(final PInputEvent event) {
+            super.startDrag(event);
+            last = event.getPosition();
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        protected void drag(final PInputEvent event) {
+            super.drag(event);
+            Point2D pos = event.getPosition();
+            Point2D delta = new Point2D.Double(pos.getX() - last.getX(), pos.getY() - last.getY());
+            originalCamera.translateView(-delta.getX(), -delta.getY());
+            last = pos;
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        protected void endDrag(final PInputEvent event) {
+            super.endDrag(event);
+            last = null;
+        }
+    }
 }
