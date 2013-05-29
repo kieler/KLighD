@@ -172,6 +172,15 @@ public class KPositionImpl extends EObjectImpl implements KPosition {
      * <!-- end-user-doc -->
      * @generated
      */
+    public Boolean equals(KPosition other) {
+        return de.cau.cs.kieler.core.krendering.KRenderingUtil.equals(this,other);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
     @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
         switch (featureID) {

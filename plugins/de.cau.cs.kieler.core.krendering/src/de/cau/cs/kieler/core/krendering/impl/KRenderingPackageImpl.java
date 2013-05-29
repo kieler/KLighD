@@ -16,6 +16,7 @@ package de.cau.cs.kieler.core.krendering.impl;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EEnum;
+import org.eclipse.emf.ecore.EOperation;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.impl.EPackageImpl;
@@ -2289,6 +2290,9 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
         initEReference(getKPosition_X(), this.getKXPosition(), null, "x", null, 1, 1, KPosition.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEReference(getKPosition_Y(), this.getKYPosition(), null, "y", null, 1, 1, KPosition.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
+        EOperation op = addEOperation(kPositionEClass, ecorePackage.getEBooleanObject(), "equals", 0, 1, IS_UNIQUE, IS_ORDERED);
+        addEParameter(op, this.getKPosition(), "other", 0, 1, IS_UNIQUE, IS_ORDERED);
+
         initEClass(kRenderingEClass, KRendering.class, "KRendering", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         initEReference(getKRendering_Parent(), this.getKContainerRendering(), this.getKContainerRendering_Children(), "parent", null, 0, 1, KRendering.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEReference(getKRendering_PlacementData(), this.getKPlacementData(), null, "placementData", null, 0, 1, KRendering.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -2395,9 +2399,15 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
         initEAttribute(getKXPosition_Absolute(), ecorePackage.getEFloat(), "absolute", null, 0, 1, KXPosition.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEAttribute(getKXPosition_Relative(), ecorePackage.getEFloat(), "relative", null, 0, 1, KXPosition.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
+        op = addEOperation(kxPositionEClass, ecorePackage.getEBoolean(), "equals", 0, 1, IS_UNIQUE, IS_ORDERED);
+        addEParameter(op, ecorePackage.getEJavaObject(), "other", 0, 1, IS_UNIQUE, IS_ORDERED);
+
         initEClass(kyPositionEClass, KYPosition.class, "KYPosition", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         initEAttribute(getKYPosition_Absolute(), ecorePackage.getEFloat(), "absolute", null, 0, 1, KYPosition.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEAttribute(getKYPosition_Relative(), ecorePackage.getEFloat(), "relative", null, 0, 1, KYPosition.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+        op = addEOperation(kyPositionEClass, ecorePackage.getEBoolean(), "equals", 0, 1, IS_UNIQUE, IS_ORDERED);
+        addEParameter(op, ecorePackage.getEJavaObject(), "other", 0, 1, IS_UNIQUE, IS_ORDERED);
 
         initEClass(kLeftPositionEClass, KLeftPosition.class, "KLeftPosition", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 

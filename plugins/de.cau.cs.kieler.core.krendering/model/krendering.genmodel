@@ -55,6 +55,9 @@
     <genClasses image="false" ecoreClass="krendering.ecore#//KPosition">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference krendering.ecore#//KPosition/x"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference krendering.ecore#//KPosition/y"/>
+      <genOperations ecoreOperation="krendering.ecore#//KPosition/equals">
+        <genParameters ecoreParameter="krendering.ecore#//KPosition/equals/other"/>
+      </genOperations>
     </genClasses>
     <genClasses image="false" ecoreClass="krendering.ecore#//KRendering">
       <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference krendering.ecore#//KRendering/parent"/>
@@ -155,10 +158,16 @@
     <genClasses image="false" ecoreClass="krendering.ecore#//KXPosition">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute krendering.ecore#//KXPosition/absolute"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute krendering.ecore#//KXPosition/relative"/>
+      <genOperations ecoreOperation="krendering.ecore#//KXPosition/equals">
+        <genParameters ecoreParameter="krendering.ecore#//KXPosition/equals/other"/>
+      </genOperations>
     </genClasses>
     <genClasses image="false" ecoreClass="krendering.ecore#//KYPosition">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute krendering.ecore#//KYPosition/absolute"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute krendering.ecore#//KYPosition/relative"/>
+      <genOperations ecoreOperation="krendering.ecore#//KYPosition/equals">
+        <genParameters ecoreParameter="krendering.ecore#//KYPosition/equals/other"/>
+      </genOperations>
     </genClasses>
     <genClasses ecoreClass="krendering.ecore#//KLeftPosition"/>
     <genClasses ecoreClass="krendering.ecore#//KRightPosition"/>
