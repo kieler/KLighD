@@ -59,6 +59,7 @@ public abstract class PSWTTextController extends PNodeController<PSWTStyledText>
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setForegroundGradient(final RGBGradient gradient) {
         getNode().setPenColor(gradient);
     }
@@ -74,15 +75,9 @@ public abstract class PSWTTextController extends PNodeController<PSWTStyledText>
    /**
      * {@inheritDoc}
      */
+    @Override
     public void setBackgroundGradient(final RGBGradient gradient) {
         getNode().setPaint(gradient);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public void setRotation(final float rotation) {
-        getNode().setRotation(Math.toRadians(rotation));
     }
 
     /**
@@ -128,6 +123,7 @@ public abstract class PSWTTextController extends PNodeController<PSWTStyledText>
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setUnderline(final Underline underline, final RGB color) {
         if (underline != null) {
             switch (underline) {

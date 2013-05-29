@@ -13,12 +13,17 @@
  */
 package de.cau.cs.kieler.klighd.piccolo.krendering.controller;
 
+import java.awt.geom.Point2D;
+
 import org.eclipse.swt.graphics.RGB;
 
+import com.google.common.base.Function;
 import com.google.common.primitives.Floats;
 
 import de.cau.cs.kieler.core.krendering.KColor;
 import de.cau.cs.kieler.core.krendering.KColoring;
+import de.cau.cs.kieler.core.krendering.KPosition;
+import de.cau.cs.kieler.core.krendering.KRenderingFactory;
 import de.cau.cs.kieler.core.krendering.KRenderingPackage;
 import de.cau.cs.kieler.core.krendering.LineCap;
 import de.cau.cs.kieler.core.krendering.LineJoin;
@@ -26,6 +31,7 @@ import de.cau.cs.kieler.core.krendering.LineStyle;
 import de.cau.cs.kieler.core.krendering.Underline;
 import de.cau.cs.kieler.klighd.KlighdConstants;
 import de.cau.cs.kieler.klighd.microlayout.Bounds;
+import de.cau.cs.kieler.klighd.piccolo.krendering.util.PiccoloPlacementUtil;
 import de.cau.cs.kieler.klighd.piccolo.krendering.util.Styles;
 import de.cau.cs.kieler.klighd.piccolo.nodes.PAlignmentNode.HAlignment;
 import de.cau.cs.kieler.klighd.piccolo.nodes.PAlignmentNode.VAlignment;
@@ -182,14 +188,58 @@ public abstract class PNodeController<T extends PNode> {
         // do nothing
     }
 
+    private static final KPosition CENTER = new Function<Void, KPosition>() {
+        public KPosition apply(final Void v) {
+            KPosition res = KRenderingFactory.eINSTANCE.createKPosition();
+            res.setX(KRenderingFactory.eINSTANCE.createKLeftPosition());
+            res.getX().setRelative(0.5f);       // SUPPRESS CHECKSTYLE MagicNumber
+            res.setY(KRenderingFactory.eINSTANCE.createKTopPosition());
+            res.getY().setRelative(0.5f);       // SUPPRESS CHECKSTYLE MagicNumber
+            return res;
+        }
+    } .apply(null); 
+
+    private float prevRotation = 0f;
+    private KPosition prevRotationAnchor = CENTER;
+    private Point2D prevRotationPoint = new Point2D.Float();
+    
     /**
      * Sets the rotation of the associated node.
      * 
      * @param rotation
      *            the rotation
+     * @param anchor
+     *            the rotation anchor position
      */
-    public void setRotation(final float rotation) {
-        // do nothing
+    public void setRotation(final float rotation, final KPosition anchor) {
+        if (rotation == 0f && prevRotation == 0f) {
+            return;
+        }
+        
+        KPosition theAnchor = anchor != null ? anchor : CENTER;
+        
+        Point2D point;
+        if (prevRotationAnchor.equals(theAnchor)) {
+            point = PiccoloPlacementUtil.evaluateDirectPosition(theAnchor, getNode()
+                    .getBoundsReference());
+            getNode().getTransformReference(true).rotate(Math.toRadians(rotation - prevRotation),
+                    point.getX(), point.getY());
+        } else {
+            getNode().rotateAboutPoint(Math.toRadians(-prevRotation),
+                    prevRotationPoint.getX(), prevRotationPoint.getY());
+            
+            point = PiccoloPlacementUtil.evaluateDirectPosition(theAnchor, getNode()
+                    .getBoundsReference());
+            
+            getNode().getTransformReference(true).rotate(Math.toRadians(rotation),
+                    point.getX(), point.getY());
+        }
+
+        // Remember the rotation in this memory since this rotation needs to be reverted
+        //  (merged) with the subsequent rotation, since these rotations are absolute.
+        prevRotation = rotation;
+        prevRotationAnchor = theAnchor;
+        prevRotationPoint = point;
     }
 
     /**
@@ -381,9 +431,9 @@ public abstract class PNodeController<T extends PNode> {
 
         // apply rotation
         if (styles.rotation != null) {
-            this.setRotation(styles.rotation.getRotation());
+            this.setRotation(styles.rotation.getRotation(), styles.rotation.getRotationAnchor());
         } else {
-            this.setRotation(0);
+            this.setRotation(0, null);
         }
 
         // apply shadow
