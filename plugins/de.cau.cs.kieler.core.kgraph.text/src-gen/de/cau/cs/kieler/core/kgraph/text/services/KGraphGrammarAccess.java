@@ -1812,13 +1812,17 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 		private final Keyword cCommaKeyword_2_2 = (Keyword)cGroup_2.eContents().get(2);
 		private final Assignment cArcAngleAssignment_2_3 = (Assignment)cGroup_2.eContents().get(3);
 		private final RuleCall cArcAngleDEGREESTerminalRuleCall_2_3_0 = (RuleCall)cArcAngleAssignment_2_3.eContents().get(0);
-		private final Keyword cRightParenthesisKeyword_2_4 = (Keyword)cGroup_2.eContents().get(4);
+		private final Group cGroup_2_4 = (Group)cGroup_2.eContents().get(4);
+		private final Keyword cCommaKeyword_2_4_0 = (Keyword)cGroup_2_4.eContents().get(0);
+		private final Assignment cArcTypeAssignment_2_4_1 = (Assignment)cGroup_2_4.eContents().get(1);
+		private final RuleCall cArcTypeArcEnumRuleCall_2_4_1_0 = (RuleCall)cArcTypeAssignment_2_4_1.eContents().get(0);
+		private final Keyword cRightParenthesisKeyword_2_5 = (Keyword)cGroup_2.eContents().get(5);
 		
 		//KArc:
-		//	{KArc} "karc" ("(" startAngle=DEGREES "," arcAngle=DEGREES ")");
+		//	{KArc} "karc" ("(" startAngle=DEGREES "," arcAngle=DEGREES ("," arcType=Arc)? ")");
 		public ParserRule getRule() { return rule; }
 
-		//{KArc} "karc" ("(" startAngle=DEGREES "," arcAngle=DEGREES ")")
+		//{KArc} "karc" ("(" startAngle=DEGREES "," arcAngle=DEGREES ("," arcType=Arc)? ")")
 		public Group getGroup() { return cGroup; }
 
 		//{KArc}
@@ -1827,7 +1831,7 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 		//"karc"
 		public Keyword getKarcKeyword_1() { return cKarcKeyword_1; }
 
-		//"(" startAngle=DEGREES "," arcAngle=DEGREES ")"
+		//"(" startAngle=DEGREES "," arcAngle=DEGREES ("," arcType=Arc)? ")"
 		public Group getGroup_2() { return cGroup_2; }
 
 		//"("
@@ -1848,8 +1852,20 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 		//DEGREES
 		public RuleCall getArcAngleDEGREESTerminalRuleCall_2_3_0() { return cArcAngleDEGREESTerminalRuleCall_2_3_0; }
 
+		//("," arcType=Arc)?
+		public Group getGroup_2_4() { return cGroup_2_4; }
+
+		//","
+		public Keyword getCommaKeyword_2_4_0() { return cCommaKeyword_2_4_0; }
+
+		//arcType=Arc
+		public Assignment getArcTypeAssignment_2_4_1() { return cArcTypeAssignment_2_4_1; }
+
+		//Arc
+		public RuleCall getArcTypeArcEnumRuleCall_2_4_1_0() { return cArcTypeArcEnumRuleCall_2_4_1_0; }
+
 		//")"
-		public Keyword getRightParenthesisKeyword_2_4() { return cRightParenthesisKeyword_2_4; }
+		public Keyword getRightParenthesisKeyword_2_5() { return cRightParenthesisKeyword_2_5; }
 	}
 
 	public class KCustomRenderingElements extends AbstractParserRuleElementFinder {
@@ -2995,12 +3011,19 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 		private final Keyword cEqualsSignKeyword_2 = (Keyword)cGroup.eContents().get(2);
 		private final Assignment cRotationAssignment_3 = (Assignment)cGroup.eContents().get(3);
 		private final RuleCall cRotationFloatParserRuleCall_3_0 = (RuleCall)cRotationAssignment_3.eContents().get(0);
+		private final Group cGroup_4 = (Group)cGroup.eContents().get(4);
+		private final Keyword cLeftParenthesisKeyword_4_0 = (Keyword)cGroup_4.eContents().get(0);
+		private final Keyword cAnchorKeyword_4_1 = (Keyword)cGroup_4.eContents().get(1);
+		private final Keyword cEqualsSignKeyword_4_2 = (Keyword)cGroup_4.eContents().get(2);
+		private final Assignment cRotationAnchorAssignment_4_3 = (Assignment)cGroup_4.eContents().get(3);
+		private final RuleCall cRotationAnchorKPositionParserRuleCall_4_3_0 = (RuleCall)cRotationAnchorAssignment_4_3.eContents().get(0);
+		private final Keyword cRightParenthesisKeyword_4_4 = (Keyword)cGroup_4.eContents().get(4);
 		
 		//KRotation:
-		//	propagateToChildren?="propagate"? "rotation" "=" rotation=Float;
+		//	propagateToChildren?="propagate"? "rotation" "=" rotation=Float ("(" "anchor" "=" rotationAnchor=KPosition ")")?;
 		public ParserRule getRule() { return rule; }
 
-		//propagateToChildren?="propagate"? "rotation" "=" rotation=Float
+		//propagateToChildren?="propagate"? "rotation" "=" rotation=Float ("(" "anchor" "=" rotationAnchor=KPosition ")")?
 		public Group getGroup() { return cGroup; }
 
 		//propagateToChildren?="propagate"?
@@ -3020,6 +3043,27 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 
 		//Float
 		public RuleCall getRotationFloatParserRuleCall_3_0() { return cRotationFloatParserRuleCall_3_0; }
+
+		//("(" "anchor" "=" rotationAnchor=KPosition ")")?
+		public Group getGroup_4() { return cGroup_4; }
+
+		//"("
+		public Keyword getLeftParenthesisKeyword_4_0() { return cLeftParenthesisKeyword_4_0; }
+
+		//"anchor"
+		public Keyword getAnchorKeyword_4_1() { return cAnchorKeyword_4_1; }
+
+		//"="
+		public Keyword getEqualsSignKeyword_4_2() { return cEqualsSignKeyword_4_2; }
+
+		//rotationAnchor=KPosition
+		public Assignment getRotationAnchorAssignment_4_3() { return cRotationAnchorAssignment_4_3; }
+
+		//KPosition
+		public RuleCall getRotationAnchorKPositionParserRuleCall_4_3_0() { return cRotationAnchorKPositionParserRuleCall_4_3_0; }
+
+		//")"
+		public Keyword getRightParenthesisKeyword_4_4() { return cRightParenthesisKeyword_4_4; }
 	}
 
 	public class KShadowElements extends AbstractParserRuleElementFinder {
@@ -3473,33 +3517,45 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 		private final Assignment cReferencePointAssignment_3_0_2 = (Assignment)cGroup_3_0.eContents().get(2);
 		private final RuleCall cReferencePointKPositionParserRuleCall_3_0_2_0 = (RuleCall)cReferencePointAssignment_3_0_2.eContents().get(0);
 		private final Group cGroup_3_1 = (Group)cUnorderedGroup_3.eContents().get(1);
-		private final Keyword cHorizontalAlignmentKeyword_3_1_0 = (Keyword)cGroup_3_1.eContents().get(0);
+		private final Keyword cMinWidthKeyword_3_1_0 = (Keyword)cGroup_3_1.eContents().get(0);
 		private final Keyword cEqualsSignKeyword_3_1_1 = (Keyword)cGroup_3_1.eContents().get(1);
-		private final Assignment cHorizontalAlignmentAssignment_3_1_2 = (Assignment)cGroup_3_1.eContents().get(2);
-		private final RuleCall cHorizontalAlignmentHorizontalAlignmentEnumRuleCall_3_1_2_0 = (RuleCall)cHorizontalAlignmentAssignment_3_1_2.eContents().get(0);
+		private final Assignment cMinWidthAssignment_3_1_2 = (Assignment)cGroup_3_1.eContents().get(2);
+		private final RuleCall cMinWidthFloatParserRuleCall_3_1_2_0 = (RuleCall)cMinWidthAssignment_3_1_2.eContents().get(0);
 		private final Group cGroup_3_2 = (Group)cUnorderedGroup_3.eContents().get(2);
-		private final Keyword cVerticalAlignmentKeyword_3_2_0 = (Keyword)cGroup_3_2.eContents().get(0);
+		private final Keyword cMinHeightKeyword_3_2_0 = (Keyword)cGroup_3_2.eContents().get(0);
 		private final Keyword cEqualsSignKeyword_3_2_1 = (Keyword)cGroup_3_2.eContents().get(1);
-		private final Assignment cVerticalAlignmentAssignment_3_2_2 = (Assignment)cGroup_3_2.eContents().get(2);
-		private final RuleCall cVerticalAlignmentVerticalAlignmentEnumRuleCall_3_2_2_0 = (RuleCall)cVerticalAlignmentAssignment_3_2_2.eContents().get(0);
+		private final Assignment cMinHeightAssignment_3_2_2 = (Assignment)cGroup_3_2.eContents().get(2);
+		private final RuleCall cMinHeightFloatParserRuleCall_3_2_2_0 = (RuleCall)cMinHeightAssignment_3_2_2.eContents().get(0);
 		private final Group cGroup_3_3 = (Group)cUnorderedGroup_3.eContents().get(3);
-		private final Keyword cHorizontalMarginKeyword_3_3_0 = (Keyword)cGroup_3_3.eContents().get(0);
+		private final Keyword cHorizontalAlignmentKeyword_3_3_0 = (Keyword)cGroup_3_3.eContents().get(0);
 		private final Keyword cEqualsSignKeyword_3_3_1 = (Keyword)cGroup_3_3.eContents().get(1);
-		private final Assignment cHorizontalMarginAssignment_3_3_2 = (Assignment)cGroup_3_3.eContents().get(2);
-		private final RuleCall cHorizontalMarginFloatParserRuleCall_3_3_2_0 = (RuleCall)cHorizontalMarginAssignment_3_3_2.eContents().get(0);
+		private final Assignment cHorizontalAlignmentAssignment_3_3_2 = (Assignment)cGroup_3_3.eContents().get(2);
+		private final RuleCall cHorizontalAlignmentHorizontalAlignmentEnumRuleCall_3_3_2_0 = (RuleCall)cHorizontalAlignmentAssignment_3_3_2.eContents().get(0);
 		private final Group cGroup_3_4 = (Group)cUnorderedGroup_3.eContents().get(4);
-		private final Keyword cVerticalMarginKeyword_3_4_0 = (Keyword)cGroup_3_4.eContents().get(0);
+		private final Keyword cVerticalAlignmentKeyword_3_4_0 = (Keyword)cGroup_3_4.eContents().get(0);
 		private final Keyword cEqualsSignKeyword_3_4_1 = (Keyword)cGroup_3_4.eContents().get(1);
-		private final Assignment cVerticalMarginAssignment_3_4_2 = (Assignment)cGroup_3_4.eContents().get(2);
-		private final RuleCall cVerticalMarginFloatParserRuleCall_3_4_2_0 = (RuleCall)cVerticalMarginAssignment_3_4_2.eContents().get(0);
+		private final Assignment cVerticalAlignmentAssignment_3_4_2 = (Assignment)cGroup_3_4.eContents().get(2);
+		private final RuleCall cVerticalAlignmentVerticalAlignmentEnumRuleCall_3_4_2_0 = (RuleCall)cVerticalAlignmentAssignment_3_4_2.eContents().get(0);
+		private final Group cGroup_3_5 = (Group)cUnorderedGroup_3.eContents().get(5);
+		private final Keyword cHorizontalMarginKeyword_3_5_0 = (Keyword)cGroup_3_5.eContents().get(0);
+		private final Keyword cEqualsSignKeyword_3_5_1 = (Keyword)cGroup_3_5.eContents().get(1);
+		private final Assignment cHorizontalMarginAssignment_3_5_2 = (Assignment)cGroup_3_5.eContents().get(2);
+		private final RuleCall cHorizontalMarginFloatParserRuleCall_3_5_2_0 = (RuleCall)cHorizontalMarginAssignment_3_5_2.eContents().get(0);
+		private final Group cGroup_3_6 = (Group)cUnorderedGroup_3.eContents().get(6);
+		private final Keyword cVerticalMarginKeyword_3_6_0 = (Keyword)cGroup_3_6.eContents().get(0);
+		private final Keyword cEqualsSignKeyword_3_6_1 = (Keyword)cGroup_3_6.eContents().get(1);
+		private final Assignment cVerticalMarginAssignment_3_6_2 = (Assignment)cGroup_3_6.eContents().get(2);
+		private final RuleCall cVerticalMarginFloatParserRuleCall_3_6_2_0 = (RuleCall)cVerticalMarginAssignment_3_6_2.eContents().get(0);
 		
 		//KPointPlacementData:
-		//	{KPointPlacementData} "pointData" ":" (("referencePoint" "=" referencePoint=KPosition)? & ("horizontalAlignment" "="
+		//	{KPointPlacementData} "pointData" ":" (("referencePoint" "=" referencePoint=KPosition)? & ("minWidth" "="
+		//	minWidth=Float)? & ("minHeight" "=" minHeight=Float)? & ("horizontalAlignment" "="
 		//	horizontalAlignment=HorizontalAlignment)? & ("verticalAlignment" "=" verticalAlignment=VerticalAlignment)? &
 		//	("horizontalMargin" "=" horizontalMargin=Float)? & ("verticalMargin" "=" verticalMargin=Float)?);
 		public ParserRule getRule() { return rule; }
 
-		//{KPointPlacementData} "pointData" ":" (("referencePoint" "=" referencePoint=KPosition)? & ("horizontalAlignment" "="
+		//{KPointPlacementData} "pointData" ":" (("referencePoint" "=" referencePoint=KPosition)? & ("minWidth" "="
+		//minWidth=Float)? & ("minHeight" "=" minHeight=Float)? & ("horizontalAlignment" "="
 		//horizontalAlignment=HorizontalAlignment)? & ("verticalAlignment" "=" verticalAlignment=VerticalAlignment)? &
 		//("horizontalMargin" "=" horizontalMargin=Float)? & ("verticalMargin" "=" verticalMargin=Float)?)
 		public Group getGroup() { return cGroup; }
@@ -3513,9 +3569,10 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 		//":"
 		public Keyword getColonKeyword_2() { return cColonKeyword_2; }
 
-		//("referencePoint" "=" referencePoint=KPosition)? & ("horizontalAlignment" "=" horizontalAlignment=HorizontalAlignment)?
-		//& ("verticalAlignment" "=" verticalAlignment=VerticalAlignment)? & ("horizontalMargin" "=" horizontalMargin=Float)? &
-		//("verticalMargin" "=" verticalMargin=Float)?
+		//("referencePoint" "=" referencePoint=KPosition)? & ("minWidth" "=" minWidth=Float)? & ("minHeight" "=" minHeight=Float)?
+		//& ("horizontalAlignment" "=" horizontalAlignment=HorizontalAlignment)? & ("verticalAlignment" "="
+		//verticalAlignment=VerticalAlignment)? & ("horizontalMargin" "=" horizontalMargin=Float)? & ("verticalMargin" "="
+		//verticalMargin=Float)?
 		public UnorderedGroup getUnorderedGroup_3() { return cUnorderedGroup_3; }
 
 		//("referencePoint" "=" referencePoint=KPosition)?
@@ -3533,65 +3590,95 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 		//KPosition
 		public RuleCall getReferencePointKPositionParserRuleCall_3_0_2_0() { return cReferencePointKPositionParserRuleCall_3_0_2_0; }
 
-		//("horizontalAlignment" "=" horizontalAlignment=HorizontalAlignment)?
+		//("minWidth" "=" minWidth=Float)?
 		public Group getGroup_3_1() { return cGroup_3_1; }
 
-		//"horizontalAlignment"
-		public Keyword getHorizontalAlignmentKeyword_3_1_0() { return cHorizontalAlignmentKeyword_3_1_0; }
+		//"minWidth"
+		public Keyword getMinWidthKeyword_3_1_0() { return cMinWidthKeyword_3_1_0; }
 
 		//"="
 		public Keyword getEqualsSignKeyword_3_1_1() { return cEqualsSignKeyword_3_1_1; }
 
-		//horizontalAlignment=HorizontalAlignment
-		public Assignment getHorizontalAlignmentAssignment_3_1_2() { return cHorizontalAlignmentAssignment_3_1_2; }
+		//minWidth=Float
+		public Assignment getMinWidthAssignment_3_1_2() { return cMinWidthAssignment_3_1_2; }
 
-		//HorizontalAlignment
-		public RuleCall getHorizontalAlignmentHorizontalAlignmentEnumRuleCall_3_1_2_0() { return cHorizontalAlignmentHorizontalAlignmentEnumRuleCall_3_1_2_0; }
+		//Float
+		public RuleCall getMinWidthFloatParserRuleCall_3_1_2_0() { return cMinWidthFloatParserRuleCall_3_1_2_0; }
 
-		//("verticalAlignment" "=" verticalAlignment=VerticalAlignment)?
+		//("minHeight" "=" minHeight=Float)?
 		public Group getGroup_3_2() { return cGroup_3_2; }
 
-		//"verticalAlignment"
-		public Keyword getVerticalAlignmentKeyword_3_2_0() { return cVerticalAlignmentKeyword_3_2_0; }
+		//"minHeight"
+		public Keyword getMinHeightKeyword_3_2_0() { return cMinHeightKeyword_3_2_0; }
 
 		//"="
 		public Keyword getEqualsSignKeyword_3_2_1() { return cEqualsSignKeyword_3_2_1; }
 
-		//verticalAlignment=VerticalAlignment
-		public Assignment getVerticalAlignmentAssignment_3_2_2() { return cVerticalAlignmentAssignment_3_2_2; }
+		//minHeight=Float
+		public Assignment getMinHeightAssignment_3_2_2() { return cMinHeightAssignment_3_2_2; }
 
-		//VerticalAlignment
-		public RuleCall getVerticalAlignmentVerticalAlignmentEnumRuleCall_3_2_2_0() { return cVerticalAlignmentVerticalAlignmentEnumRuleCall_3_2_2_0; }
+		//Float
+		public RuleCall getMinHeightFloatParserRuleCall_3_2_2_0() { return cMinHeightFloatParserRuleCall_3_2_2_0; }
 
-		//("horizontalMargin" "=" horizontalMargin=Float)?
+		//("horizontalAlignment" "=" horizontalAlignment=HorizontalAlignment)?
 		public Group getGroup_3_3() { return cGroup_3_3; }
 
-		//"horizontalMargin"
-		public Keyword getHorizontalMarginKeyword_3_3_0() { return cHorizontalMarginKeyword_3_3_0; }
+		//"horizontalAlignment"
+		public Keyword getHorizontalAlignmentKeyword_3_3_0() { return cHorizontalAlignmentKeyword_3_3_0; }
 
 		//"="
 		public Keyword getEqualsSignKeyword_3_3_1() { return cEqualsSignKeyword_3_3_1; }
 
-		//horizontalMargin=Float
-		public Assignment getHorizontalMarginAssignment_3_3_2() { return cHorizontalMarginAssignment_3_3_2; }
+		//horizontalAlignment=HorizontalAlignment
+		public Assignment getHorizontalAlignmentAssignment_3_3_2() { return cHorizontalAlignmentAssignment_3_3_2; }
 
-		//Float
-		public RuleCall getHorizontalMarginFloatParserRuleCall_3_3_2_0() { return cHorizontalMarginFloatParserRuleCall_3_3_2_0; }
+		//HorizontalAlignment
+		public RuleCall getHorizontalAlignmentHorizontalAlignmentEnumRuleCall_3_3_2_0() { return cHorizontalAlignmentHorizontalAlignmentEnumRuleCall_3_3_2_0; }
 
-		//("verticalMargin" "=" verticalMargin=Float)?
+		//("verticalAlignment" "=" verticalAlignment=VerticalAlignment)?
 		public Group getGroup_3_4() { return cGroup_3_4; }
 
-		//"verticalMargin"
-		public Keyword getVerticalMarginKeyword_3_4_0() { return cVerticalMarginKeyword_3_4_0; }
+		//"verticalAlignment"
+		public Keyword getVerticalAlignmentKeyword_3_4_0() { return cVerticalAlignmentKeyword_3_4_0; }
 
 		//"="
 		public Keyword getEqualsSignKeyword_3_4_1() { return cEqualsSignKeyword_3_4_1; }
 
-		//verticalMargin=Float
-		public Assignment getVerticalMarginAssignment_3_4_2() { return cVerticalMarginAssignment_3_4_2; }
+		//verticalAlignment=VerticalAlignment
+		public Assignment getVerticalAlignmentAssignment_3_4_2() { return cVerticalAlignmentAssignment_3_4_2; }
+
+		//VerticalAlignment
+		public RuleCall getVerticalAlignmentVerticalAlignmentEnumRuleCall_3_4_2_0() { return cVerticalAlignmentVerticalAlignmentEnumRuleCall_3_4_2_0; }
+
+		//("horizontalMargin" "=" horizontalMargin=Float)?
+		public Group getGroup_3_5() { return cGroup_3_5; }
+
+		//"horizontalMargin"
+		public Keyword getHorizontalMarginKeyword_3_5_0() { return cHorizontalMarginKeyword_3_5_0; }
+
+		//"="
+		public Keyword getEqualsSignKeyword_3_5_1() { return cEqualsSignKeyword_3_5_1; }
+
+		//horizontalMargin=Float
+		public Assignment getHorizontalMarginAssignment_3_5_2() { return cHorizontalMarginAssignment_3_5_2; }
 
 		//Float
-		public RuleCall getVerticalMarginFloatParserRuleCall_3_4_2_0() { return cVerticalMarginFloatParserRuleCall_3_4_2_0; }
+		public RuleCall getHorizontalMarginFloatParserRuleCall_3_5_2_0() { return cHorizontalMarginFloatParserRuleCall_3_5_2_0; }
+
+		//("verticalMargin" "=" verticalMargin=Float)?
+		public Group getGroup_3_6() { return cGroup_3_6; }
+
+		//"verticalMargin"
+		public Keyword getVerticalMarginKeyword_3_6_0() { return cVerticalMarginKeyword_3_6_0; }
+
+		//"="
+		public Keyword getEqualsSignKeyword_3_6_1() { return cEqualsSignKeyword_3_6_1; }
+
+		//verticalMargin=Float
+		public Assignment getVerticalMarginAssignment_3_6_2() { return cVerticalMarginAssignment_3_6_2; }
+
+		//Float
+		public RuleCall getVerticalMarginFloatParserRuleCall_3_6_2_0() { return cVerticalMarginFloatParserRuleCall_3_6_2_0; }
 	}
 
 	public class KGridPlacementDataElements extends AbstractParserRuleElementFinder {
@@ -4360,6 +4447,42 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	}
 	
 	
+	public class ArcElements extends AbstractEnumRuleElementFinder {
+		private final EnumRule rule = (EnumRule) GrammarUtil.findRuleForName(getGrammar(), "Arc");
+		private final Alternatives cAlternatives = (Alternatives)rule.eContents().get(1);
+		private final EnumLiteralDeclaration cOPENEnumLiteralDeclaration_0 = (EnumLiteralDeclaration)cAlternatives.eContents().get(0);
+		private final Keyword cOPENOpenKeyword_0_0 = (Keyword)cOPENEnumLiteralDeclaration_0.eContents().get(0);
+		private final EnumLiteralDeclaration cCHORDEnumLiteralDeclaration_1 = (EnumLiteralDeclaration)cAlternatives.eContents().get(1);
+		private final Keyword cCHORDChordKeyword_1_0 = (Keyword)cCHORDEnumLiteralDeclaration_1.eContents().get(0);
+		private final EnumLiteralDeclaration cPIEEnumLiteralDeclaration_2 = (EnumLiteralDeclaration)cAlternatives.eContents().get(2);
+		private final Keyword cPIEPieKeyword_2_0 = (Keyword)cPIEEnumLiteralDeclaration_2.eContents().get(0);
+		
+		//enum Arc:
+		//	OPEN="open" | CHORD="chord" | PIE="pie";
+		public EnumRule getRule() { return rule; }
+
+		//OPEN="open" | CHORD="chord" | PIE="pie"
+		public Alternatives getAlternatives() { return cAlternatives; }
+
+		//OPEN="open"
+		public EnumLiteralDeclaration getOPENEnumLiteralDeclaration_0() { return cOPENEnumLiteralDeclaration_0; }
+
+		//"open"
+		public Keyword getOPENOpenKeyword_0_0() { return cOPENOpenKeyword_0_0; }
+
+		//CHORD="chord"
+		public EnumLiteralDeclaration getCHORDEnumLiteralDeclaration_1() { return cCHORDEnumLiteralDeclaration_1; }
+
+		//"chord"
+		public Keyword getCHORDChordKeyword_1_0() { return cCHORDChordKeyword_1_0; }
+
+		//PIE="pie"
+		public EnumLiteralDeclaration getPIEEnumLiteralDeclaration_2() { return cPIEEnumLiteralDeclaration_2; }
+
+		//"pie"
+		public Keyword getPIEPieKeyword_2_0() { return cPIEPieKeyword_2_0; }
+	}
+
 	public class HorizontalAlignmentElements extends AbstractEnumRuleElementFinder {
 		private final EnumRule rule = (EnumRule) GrammarUtil.findRuleForName(getGrammar(), "HorizontalAlignment");
 		private final Alternatives cAlternatives = (Alternatives)rule.eContents().get(1);
@@ -4718,6 +4841,7 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	private QualifiedIDElements pQualifiedID;
 	private PropertyValueElements pPropertyValue;
 	private FloatElements pFloat;
+	private ArcElements unknownRuleArc;
 	private HorizontalAlignmentElements unknownRuleHorizontalAlignment;
 	private VerticalAlignmentElements unknownRuleVerticalAlignment;
 	private UnderlineElements unknownRuleUnderline;
@@ -5050,7 +5174,7 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//KArc:
-	//	{KArc} "karc" ("(" startAngle=DEGREES "," arcAngle=DEGREES ")");
+	//	{KArc} "karc" ("(" startAngle=DEGREES "," arcAngle=DEGREES ("," arcType=Arc)? ")");
 	public KArcElements getKArcAccess() {
 		return (pKArc != null) ? pKArc : (pKArc = new KArcElements());
 	}
@@ -5297,7 +5421,7 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//KRotation:
-	//	propagateToChildren?="propagate"? "rotation" "=" rotation=Float;
+	//	propagateToChildren?="propagate"? "rotation" "=" rotation=Float ("(" "anchor" "=" rotationAnchor=KPosition ")")?;
 	public KRotationElements getKRotationAccess() {
 		return (pKRotation != null) ? pKRotation : (pKRotation = new KRotationElements());
 	}
@@ -5392,7 +5516,8 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//KPointPlacementData:
-	//	{KPointPlacementData} "pointData" ":" (("referencePoint" "=" referencePoint=KPosition)? & ("horizontalAlignment" "="
+	//	{KPointPlacementData} "pointData" ":" (("referencePoint" "=" referencePoint=KPosition)? & ("minWidth" "="
+	//	minWidth=Float)? & ("minHeight" "=" minHeight=Float)? & ("horizontalAlignment" "="
 	//	horizontalAlignment=HorizontalAlignment)? & ("verticalAlignment" "=" verticalAlignment=VerticalAlignment)? &
 	//	("horizontalMargin" "=" horizontalMargin=Float)? & ("verticalMargin" "=" verticalMargin=Float)?);
 	public KPointPlacementDataElements getKPointPlacementDataAccess() {
@@ -5546,6 +5671,16 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	
 	public ParserRule getFloatRule() {
 		return getFloatAccess().getRule();
+	}
+
+	//enum Arc:
+	//	OPEN="open" | CHORD="chord" | PIE="pie";
+	public ArcElements getArcAccess() {
+		return (unknownRuleArc != null) ? unknownRuleArc : (unknownRuleArc = new ArcElements());
+	}
+	
+	public EnumRule getArcRule() {
+		return getArcAccess().getRule();
 	}
 
 	//enum HorizontalAlignment:

@@ -67,8 +67,8 @@ public class KGraphProposalProvider extends AbstractKGraphProposalProvider {
     
     @Override
     public void complete_BOOLEAN(EObject model, RuleCall ruleCall, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
-        acceptor.accept(createCompletionProposal("false", "false", getImage(ruleCall), context));
-        acceptor.accept(createCompletionProposal("true", "true", getImage(ruleCall), context));
+        acceptor.accept(createCompletionProposal("\"false\"", "false", getImage(ruleCall), context));
+        acceptor.accept(createCompletionProposal("\"true\"", "true", getImage(ruleCall), context));
     }
     
     // In the following methods providing a proposal for the particular special number values

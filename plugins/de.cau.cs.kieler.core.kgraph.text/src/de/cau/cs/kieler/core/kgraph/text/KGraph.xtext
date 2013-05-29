@@ -148,7 +148,7 @@ KEllipse returns KEllipse:
 
 KArc returns KArc:
 	{KArc}
-	'karc' ('(' startAngle=DEGREES ',' arcAngle=DEGREES ')');
+	'karc' ('(' startAngle=DEGREES ',' arcAngle=DEGREES (',' arcType=Arc)? ')');
 
 KCustomRendering returns KCustomRendering:
 	{KCustomRendering}
@@ -251,7 +251,8 @@ KLineWidth returns KLineWidth:
 	(propagateToChildren?='propagate')? 'lineWidth' '=' lineWidth=Float;
 
 KRotation returns KRotation:
-	(propagateToChildren?='propagate')? 'rotation' '=' rotation=Float;
+	(propagateToChildren?='propagate')? 'rotation' '=' rotation=Float
+	('(' 'anchor' '=' rotationAnchor=KPosition ')')?;
 
 KShadow returns KShadow:
 	{KShadow}
@@ -300,6 +301,8 @@ KPointPlacementData returns KPointPlacementData:
 	{KPointPlacementData}
 	'pointData' ':'
 		(('referencePoint' '=' referencePoint=KPosition)?
+        & ('minWidth' '=' minWidth=Float)?
+        & ('minHeight' '=' minHeight=Float)?
 		& ('horizontalAlignment' '=' horizontalAlignment=HorizontalAlignment)?
 		& ('verticalAlignment' '=' verticalAlignment=VerticalAlignment)?
 		& ('horizontalMargin' '=' horizontalMargin=Float)?
@@ -372,6 +375,9 @@ PropertyValue returns ecore::EString:
 
 Float returns ecore::EFloat:
 	TFLOAT | NATURAL;
+
+enum Arc returns Arc:
+    OPEN='open' | CHORD='chord' | PIE='pie';
 
 enum HorizontalAlignment returns HorizontalAlignment:
 	LEFT='left' | CENTER='center' | RIGHT='right';

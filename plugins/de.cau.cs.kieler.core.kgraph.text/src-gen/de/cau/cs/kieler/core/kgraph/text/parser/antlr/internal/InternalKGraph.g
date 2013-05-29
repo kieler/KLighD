@@ -3237,9 +3237,31 @@ ruleKArc returns [EObject current=null]
 	    }
 
 )
-)	otherlv_6=')' 
+)(	otherlv_6=',' 
     {
-    	newLeafNode(otherlv_6, grammarAccess.getKArcAccess().getRightParenthesisKeyword_2_4());
+    	newLeafNode(otherlv_6, grammarAccess.getKArcAccess().getCommaKeyword_2_4_0());
+    }
+(
+(
+		{ 
+	        newCompositeNode(grammarAccess.getKArcAccess().getArcTypeArcEnumRuleCall_2_4_1_0()); 
+	    }
+		lv_arcType_7_0=ruleArc		{
+	        if ($current==null) {
+	            $current = createModelElementForParent(grammarAccess.getKArcRule());
+	        }
+       		set(
+       			$current, 
+       			"arcType",
+        		lv_arcType_7_0, 
+        		"Arc");
+	        afterParserOrEnumRuleCall();
+	    }
+
+)
+))?	otherlv_8=')' 
+    {
+    	newLeafNode(otherlv_8, grammarAccess.getKArcAccess().getRightParenthesisKeyword_2_5());
     }
 ))
 ;
@@ -5187,7 +5209,41 @@ ruleKRotation returns [EObject current=null]
 	    }
 
 )
-))
+)(	otherlv_4='(' 
+    {
+    	newLeafNode(otherlv_4, grammarAccess.getKRotationAccess().getLeftParenthesisKeyword_4_0());
+    }
+	otherlv_5='anchor' 
+    {
+    	newLeafNode(otherlv_5, grammarAccess.getKRotationAccess().getAnchorKeyword_4_1());
+    }
+	otherlv_6='=' 
+    {
+    	newLeafNode(otherlv_6, grammarAccess.getKRotationAccess().getEqualsSignKeyword_4_2());
+    }
+(
+(
+		{ 
+	        newCompositeNode(grammarAccess.getKRotationAccess().getRotationAnchorKPositionParserRuleCall_4_3_0()); 
+	    }
+		lv_rotationAnchor_7_0=ruleKPosition		{
+	        if ($current==null) {
+	            $current = createModelElementForParent(grammarAccess.getKRotationRule());
+	        }
+       		set(
+       			$current, 
+       			"rotationAnchor",
+        		lv_rotationAnchor_7_0, 
+        		"KPosition");
+	        afterParserOrEnumRuleCall();
+	    }
+
+)
+)	otherlv_8=')' 
+    {
+    	newLeafNode(otherlv_8, grammarAccess.getKRotationAccess().getRightParenthesisKeyword_4_4());
+    }
+)?)
 ;
 
 
@@ -6015,9 +6071,9 @@ ruleKPointPlacementData returns [EObject current=null]
 					{ 
 	 				  getUnorderedGroupHelper().select(grammarAccess.getKPointPlacementDataAccess().getUnorderedGroup_3(), 1);
 	 				}
-					({true}?=>(	otherlv_7='horizontalAlignment' 
+					({true}?=>(	otherlv_7='minWidth' 
     {
-    	newLeafNode(otherlv_7, grammarAccess.getKPointPlacementDataAccess().getHorizontalAlignmentKeyword_3_1_0());
+    	newLeafNode(otherlv_7, grammarAccess.getKPointPlacementDataAccess().getMinWidthKeyword_3_1_0());
     }
 	otherlv_8='=' 
     {
@@ -6026,17 +6082,17 @@ ruleKPointPlacementData returns [EObject current=null]
 (
 (
 		{ 
-	        newCompositeNode(grammarAccess.getKPointPlacementDataAccess().getHorizontalAlignmentHorizontalAlignmentEnumRuleCall_3_1_2_0()); 
+	        newCompositeNode(grammarAccess.getKPointPlacementDataAccess().getMinWidthFloatParserRuleCall_3_1_2_0()); 
 	    }
-		lv_horizontalAlignment_9_0=ruleHorizontalAlignment		{
+		lv_minWidth_9_0=ruleFloat		{
 	        if ($current==null) {
 	            $current = createModelElementForParent(grammarAccess.getKPointPlacementDataRule());
 	        }
        		set(
        			$current, 
-       			"horizontalAlignment",
-        		lv_horizontalAlignment_9_0, 
-        		"HorizontalAlignment");
+       			"minWidth",
+        		lv_minWidth_9_0, 
+        		"Float");
 	        afterParserOrEnumRuleCall();
 	    }
 
@@ -6053,9 +6109,9 @@ ruleKPointPlacementData returns [EObject current=null]
 					{ 
 	 				  getUnorderedGroupHelper().select(grammarAccess.getKPointPlacementDataAccess().getUnorderedGroup_3(), 2);
 	 				}
-					({true}?=>(	otherlv_10='verticalAlignment' 
+					({true}?=>(	otherlv_10='minHeight' 
     {
-    	newLeafNode(otherlv_10, grammarAccess.getKPointPlacementDataAccess().getVerticalAlignmentKeyword_3_2_0());
+    	newLeafNode(otherlv_10, grammarAccess.getKPointPlacementDataAccess().getMinHeightKeyword_3_2_0());
     }
 	otherlv_11='=' 
     {
@@ -6064,17 +6120,17 @@ ruleKPointPlacementData returns [EObject current=null]
 (
 (
 		{ 
-	        newCompositeNode(grammarAccess.getKPointPlacementDataAccess().getVerticalAlignmentVerticalAlignmentEnumRuleCall_3_2_2_0()); 
+	        newCompositeNode(grammarAccess.getKPointPlacementDataAccess().getMinHeightFloatParserRuleCall_3_2_2_0()); 
 	    }
-		lv_verticalAlignment_12_0=ruleVerticalAlignment		{
+		lv_minHeight_12_0=ruleFloat		{
 	        if ($current==null) {
 	            $current = createModelElementForParent(grammarAccess.getKPointPlacementDataRule());
 	        }
        		set(
        			$current, 
-       			"verticalAlignment",
-        		lv_verticalAlignment_12_0, 
-        		"VerticalAlignment");
+       			"minHeight",
+        		lv_minHeight_12_0, 
+        		"Float");
 	        afterParserOrEnumRuleCall();
 	    }
 
@@ -6091,9 +6147,9 @@ ruleKPointPlacementData returns [EObject current=null]
 					{ 
 	 				  getUnorderedGroupHelper().select(grammarAccess.getKPointPlacementDataAccess().getUnorderedGroup_3(), 3);
 	 				}
-					({true}?=>(	otherlv_13='horizontalMargin' 
+					({true}?=>(	otherlv_13='horizontalAlignment' 
     {
-    	newLeafNode(otherlv_13, grammarAccess.getKPointPlacementDataAccess().getHorizontalMarginKeyword_3_3_0());
+    	newLeafNode(otherlv_13, grammarAccess.getKPointPlacementDataAccess().getHorizontalAlignmentKeyword_3_3_0());
     }
 	otherlv_14='=' 
     {
@@ -6102,17 +6158,17 @@ ruleKPointPlacementData returns [EObject current=null]
 (
 (
 		{ 
-	        newCompositeNode(grammarAccess.getKPointPlacementDataAccess().getHorizontalMarginFloatParserRuleCall_3_3_2_0()); 
+	        newCompositeNode(grammarAccess.getKPointPlacementDataAccess().getHorizontalAlignmentHorizontalAlignmentEnumRuleCall_3_3_2_0()); 
 	    }
-		lv_horizontalMargin_15_0=ruleFloat		{
+		lv_horizontalAlignment_15_0=ruleHorizontalAlignment		{
 	        if ($current==null) {
 	            $current = createModelElementForParent(grammarAccess.getKPointPlacementDataRule());
 	        }
        		set(
        			$current, 
-       			"horizontalMargin",
-        		lv_horizontalMargin_15_0, 
-        		"Float");
+       			"horizontalAlignment",
+        		lv_horizontalAlignment_15_0, 
+        		"HorizontalAlignment");
 	        afterParserOrEnumRuleCall();
 	    }
 
@@ -6129,9 +6185,9 @@ ruleKPointPlacementData returns [EObject current=null]
 					{ 
 	 				  getUnorderedGroupHelper().select(grammarAccess.getKPointPlacementDataAccess().getUnorderedGroup_3(), 4);
 	 				}
-					({true}?=>(	otherlv_16='verticalMargin' 
+					({true}?=>(	otherlv_16='verticalAlignment' 
     {
-    	newLeafNode(otherlv_16, grammarAccess.getKPointPlacementDataAccess().getVerticalMarginKeyword_3_4_0());
+    	newLeafNode(otherlv_16, grammarAccess.getKPointPlacementDataAccess().getVerticalAlignmentKeyword_3_4_0());
     }
 	otherlv_17='=' 
     {
@@ -6140,16 +6196,92 @@ ruleKPointPlacementData returns [EObject current=null]
 (
 (
 		{ 
-	        newCompositeNode(grammarAccess.getKPointPlacementDataAccess().getVerticalMarginFloatParserRuleCall_3_4_2_0()); 
+	        newCompositeNode(grammarAccess.getKPointPlacementDataAccess().getVerticalAlignmentVerticalAlignmentEnumRuleCall_3_4_2_0()); 
 	    }
-		lv_verticalMargin_18_0=ruleFloat		{
+		lv_verticalAlignment_18_0=ruleVerticalAlignment		{
+	        if ($current==null) {
+	            $current = createModelElementForParent(grammarAccess.getKPointPlacementDataRule());
+	        }
+       		set(
+       			$current, 
+       			"verticalAlignment",
+        		lv_verticalAlignment_18_0, 
+        		"VerticalAlignment");
+	        afterParserOrEnumRuleCall();
+	    }
+
+)
+)))
+					{ 
+	 				  getUnorderedGroupHelper().returnFromSelection(grammarAccess.getKPointPlacementDataAccess().getUnorderedGroup_3());
+	 				}
+ 				)
+			)  |
+
+			( 
+				{getUnorderedGroupHelper().canSelect(grammarAccess.getKPointPlacementDataAccess().getUnorderedGroup_3(), 5)}?=>(
+					{ 
+	 				  getUnorderedGroupHelper().select(grammarAccess.getKPointPlacementDataAccess().getUnorderedGroup_3(), 5);
+	 				}
+					({true}?=>(	otherlv_19='horizontalMargin' 
+    {
+    	newLeafNode(otherlv_19, grammarAccess.getKPointPlacementDataAccess().getHorizontalMarginKeyword_3_5_0());
+    }
+	otherlv_20='=' 
+    {
+    	newLeafNode(otherlv_20, grammarAccess.getKPointPlacementDataAccess().getEqualsSignKeyword_3_5_1());
+    }
+(
+(
+		{ 
+	        newCompositeNode(grammarAccess.getKPointPlacementDataAccess().getHorizontalMarginFloatParserRuleCall_3_5_2_0()); 
+	    }
+		lv_horizontalMargin_21_0=ruleFloat		{
+	        if ($current==null) {
+	            $current = createModelElementForParent(grammarAccess.getKPointPlacementDataRule());
+	        }
+       		set(
+       			$current, 
+       			"horizontalMargin",
+        		lv_horizontalMargin_21_0, 
+        		"Float");
+	        afterParserOrEnumRuleCall();
+	    }
+
+)
+)))
+					{ 
+	 				  getUnorderedGroupHelper().returnFromSelection(grammarAccess.getKPointPlacementDataAccess().getUnorderedGroup_3());
+	 				}
+ 				)
+			)  |
+
+			( 
+				{getUnorderedGroupHelper().canSelect(grammarAccess.getKPointPlacementDataAccess().getUnorderedGroup_3(), 6)}?=>(
+					{ 
+	 				  getUnorderedGroupHelper().select(grammarAccess.getKPointPlacementDataAccess().getUnorderedGroup_3(), 6);
+	 				}
+					({true}?=>(	otherlv_22='verticalMargin' 
+    {
+    	newLeafNode(otherlv_22, grammarAccess.getKPointPlacementDataAccess().getVerticalMarginKeyword_3_6_0());
+    }
+	otherlv_23='=' 
+    {
+    	newLeafNode(otherlv_23, grammarAccess.getKPointPlacementDataAccess().getEqualsSignKeyword_3_6_1());
+    }
+(
+(
+		{ 
+	        newCompositeNode(grammarAccess.getKPointPlacementDataAccess().getVerticalMarginFloatParserRuleCall_3_6_2_0()); 
+	    }
+		lv_verticalMargin_24_0=ruleFloat		{
 	        if ($current==null) {
 	            $current = createModelElementForParent(grammarAccess.getKPointPlacementDataRule());
 	        }
        		set(
        			$current, 
        			"verticalMargin",
-        		lv_verticalMargin_18_0, 
+        		lv_verticalMargin_24_0, 
         		"Float");
 	        afterParserOrEnumRuleCall();
 	    }
@@ -7485,6 +7617,31 @@ ruleFloat returns [AntlrDatatypeRuleToken current=new AntlrDatatypeRuleToken()]
     ;
 
 
+
+
+
+// Rule Arc
+ruleArc returns [Enumerator current=null] 
+    @init { enterRule(); }
+    @after { leaveRule(); }:
+((	enumLiteral_0='open' 
+	{
+        $current = grammarAccess.getArcAccess().getOPENEnumLiteralDeclaration_0().getEnumLiteral().getInstance();
+        newLeafNode(enumLiteral_0, grammarAccess.getArcAccess().getOPENEnumLiteralDeclaration_0()); 
+    }
+)
+    |(	enumLiteral_1='chord' 
+	{
+        $current = grammarAccess.getArcAccess().getCHORDEnumLiteralDeclaration_1().getEnumLiteral().getInstance();
+        newLeafNode(enumLiteral_1, grammarAccess.getArcAccess().getCHORDEnumLiteralDeclaration_1()); 
+    }
+)
+    |(	enumLiteral_2='pie' 
+	{
+        $current = grammarAccess.getArcAccess().getPIEEnumLiteralDeclaration_2().getEnumLiteral().getInstance();
+        newLeafNode(enumLiteral_2, grammarAccess.getArcAccess().getPIEEnumLiteralDeclaration_2()); 
+    }
+));
 
 
 
