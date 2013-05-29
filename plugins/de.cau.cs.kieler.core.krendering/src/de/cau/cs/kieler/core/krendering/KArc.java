@@ -28,6 +28,7 @@ package de.cau.cs.kieler.core.krendering;
  * <ul>
  *   <li>{@link de.cau.cs.kieler.core.krendering.KArc#getStartAngle <em>Start Angle</em>}</li>
  *   <li>{@link de.cau.cs.kieler.core.krendering.KArc#getArcAngle <em>Arc Angle</em>}</li>
+ *   <li>{@link de.cau.cs.kieler.core.krendering.KArc#getArcType <em>Arc Type</em>}</li>
  * </ul>
  * </p>
  *
@@ -93,5 +94,34 @@ public interface KArc extends KContainerRendering {
      * @generated
      */
     void setArcAngle(float value);
+
+    /**
+     * Returns the value of the '<em><b>Arc Type</b></em>' attribute.
+     * The literals are from the enumeration {@link de.cau.cs.kieler.core.krendering.Arc}.
+     * <!-- begin-user-doc -->
+     * <p>
+     * If the meaning of the '<em>Arc Type</em>' attribute isn't clear,
+     * there really should be more of a description here...
+     * </p>
+     * <!-- end-user-doc -->
+     * @return the value of the '<em>Arc Type</em>' attribute.
+     * @see de.cau.cs.kieler.core.krendering.Arc
+     * @see #setArcType(Arc)
+     * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKArc_ArcType()
+     * @model
+     * @generated
+     */
+    Arc getArcType();
+
+    /**
+     * Sets the value of the '{@link de.cau.cs.kieler.core.krendering.KArc#getArcType <em>Arc Type</em>}' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @param value the new value of the '<em>Arc Type</em>' attribute.
+     * @see de.cau.cs.kieler.core.krendering.Arc
+     * @see #getArcType()
+     * @generated
+     */
+    void setArcType(Arc value);
 
 } // KArc

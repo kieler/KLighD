@@ -195,6 +195,7 @@
         <details key="documentation" value="the angle the arc should cover (counterclockwise)"/>
       </eAnnotations>
     </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="arcType" eType="#//Arc"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="KStyle" abstract="true">
     <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
@@ -517,6 +518,8 @@
     </eAnnotations>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="rotation" lowerBound="1"
         eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EFloat"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="rotationAnchor" eType="#//KPosition"
+        containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EEnum" name="LineCap">
     <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
@@ -658,5 +661,25 @@
         eType="#//LineJoin"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="miterLimit" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EFloat"
         defaultValueLiteral="10"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="Arc">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="The literals mirror the constants {@link java.awt.geom.Arc2D#OPEN}, {@link java.awt.geom.Arc2D#CHORD}, and {@link java.awt.geom.Arc2D#PIE}.&#xA;This is to be leveraged in implementation, so be careful while modifying this enumeration."/>
+    </eAnnotations>
+    <eLiterals name="OPEN" literal="OPEN">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="plain arc without any closing line connection from end to beginning&#xA;{@link Arc2D#OPEN}, {@link Arc2D#CHORD}, and&#xA;     *            {@link Arc2D#PIE}"/>
+      </eAnnotations>
+    </eLiterals>
+    <eLiterals name="CHORD" value="1" literal="CHORD">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="arc with a straight closing line connection from end to beginning via the arc's center"/>
+      </eAnnotations>
+    </eLiterals>
+    <eLiterals name="PIE" value="2" literal="PIE">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="arc with a straight closing line connection from end to beginning"/>
+      </eAnnotations>
+    </eLiterals>
   </eClassifiers>
 </ecore:EPackage>

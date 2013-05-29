@@ -47,6 +47,11 @@
       <genEnumLiterals ecoreEnumLiteral="krendering.ecore#//LineJoin/JOIN_ROUND"/>
       <genEnumLiterals ecoreEnumLiteral="krendering.ecore#//LineJoin/JOIN_BEVEL"/>
     </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="krendering.ecore#//Arc">
+      <genEnumLiterals ecoreEnumLiteral="krendering.ecore#//Arc/OPEN"/>
+      <genEnumLiterals ecoreEnumLiteral="krendering.ecore#//Arc/CHORD"/>
+      <genEnumLiterals ecoreEnumLiteral="krendering.ecore#//Arc/PIE"/>
+    </genEnums>
     <genClasses image="false" ecoreClass="krendering.ecore#//KPosition">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference krendering.ecore#//KPosition/x"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference krendering.ecore#//KPosition/y"/>
@@ -88,6 +93,7 @@
     <genClasses ecoreClass="krendering.ecore#//KArc">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute krendering.ecore#//KArc/startAngle"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute krendering.ecore#//KArc/arcAngle"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute krendering.ecore#//KArc/arcType"/>
     </genClasses>
     <genClasses ecoreClass="krendering.ecore#//KStyle">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute krendering.ecore#//KStyle/propagateToChildren"/>
@@ -186,6 +192,7 @@
     </genClasses>
     <genClasses ecoreClass="krendering.ecore#//KRotation">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute krendering.ecore#//KRotation/rotation"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference krendering.ecore#//KRotation/rotationAnchor"/>
     </genClasses>
     <genClasses ecoreClass="krendering.ecore#//KLineCap">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute krendering.ecore#//KLineCap/lineCap"/>
@@ -205,6 +212,7 @@
     </genClasses>
     <genClasses ecoreClass="krendering.ecore#//KStyleHolder">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference krendering.ecore#//KStyleHolder/styles"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute krendering.ecore#//KStyleHolder/id"/>
     </genClasses>
     <genClasses ecoreClass="krendering.ecore#//KInvisibility">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute krendering.ecore#//KInvisibility/invisible"/>
