@@ -301,8 +301,8 @@ KPointPlacementData returns KPointPlacementData:
 	{KPointPlacementData}
 	'pointData' ':'
 		(('referencePoint' '=' referencePoint=KPosition)?
-        & ('minWidth' '=' minWidth=Float)?
-        & ('minHeight' '=' minHeight=Float)?
+        & ('minimalWidth' '=' minWidth=Float)?
+        & ('minimalHeight' '=' minHeight=Float)?
 		& ('horizontalAlignment' '=' horizontalAlignment=HorizontalAlignment)?
 		& ('verticalAlignment' '=' verticalAlignment=VerticalAlignment)?
 		& ('horizontalMargin' '=' horizontalMargin=Float)?
@@ -371,7 +371,7 @@ QualifiedID returns ecore::EString:
     ID ('.' ID)*;
 
 PropertyValue returns ecore::EString:
-    STRING | Float | QualifiedID;
+    BOOLEAN | STRING | Float | QualifiedID;
 
 Float returns ecore::EFloat:
 	TFLOAT | NATURAL;

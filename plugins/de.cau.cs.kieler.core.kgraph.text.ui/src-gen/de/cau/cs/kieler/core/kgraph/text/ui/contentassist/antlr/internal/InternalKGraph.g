@@ -3065,21 +3065,27 @@ rule__PropertyValue__Alternatives
     }
 :
 (
-{ before(grammarAccess.getPropertyValueAccess().getSTRINGTerminalRuleCall_0()); }
+{ before(grammarAccess.getPropertyValueAccess().getBOOLEANTerminalRuleCall_0()); }
+	RULE_BOOLEAN
+{ after(grammarAccess.getPropertyValueAccess().getBOOLEANTerminalRuleCall_0()); }
+)
+
+    |(
+{ before(grammarAccess.getPropertyValueAccess().getSTRINGTerminalRuleCall_1()); }
 	RULE_STRING
-{ after(grammarAccess.getPropertyValueAccess().getSTRINGTerminalRuleCall_0()); }
+{ after(grammarAccess.getPropertyValueAccess().getSTRINGTerminalRuleCall_1()); }
 )
 
     |(
-{ before(grammarAccess.getPropertyValueAccess().getFloatParserRuleCall_1()); }
+{ before(grammarAccess.getPropertyValueAccess().getFloatParserRuleCall_2()); }
 	ruleFloat
-{ after(grammarAccess.getPropertyValueAccess().getFloatParserRuleCall_1()); }
+{ after(grammarAccess.getPropertyValueAccess().getFloatParserRuleCall_2()); }
 )
 
     |(
-{ before(grammarAccess.getPropertyValueAccess().getQualifiedIDParserRuleCall_2()); }
+{ before(grammarAccess.getPropertyValueAccess().getQualifiedIDParserRuleCall_3()); }
 	ruleQualifiedID
-{ after(grammarAccess.getPropertyValueAccess().getQualifiedIDParserRuleCall_2()); }
+{ after(grammarAccess.getPropertyValueAccess().getQualifiedIDParserRuleCall_3()); }
 )
 
 ;
@@ -16590,11 +16596,11 @@ rule__KPointPlacementData__Group_3_1__0__Impl
     }
 :
 (
-{ before(grammarAccess.getKPointPlacementDataAccess().getMinWidthKeyword_3_1_0()); }
+{ before(grammarAccess.getKPointPlacementDataAccess().getMinimalWidthKeyword_3_1_0()); }
 
-	'minWidth' 
+	'minimalWidth' 
 
-{ after(grammarAccess.getKPointPlacementDataAccess().getMinWidthKeyword_3_1_0()); }
+{ after(grammarAccess.getKPointPlacementDataAccess().getMinimalWidthKeyword_3_1_0()); }
 )
 
 ;
@@ -16686,11 +16692,11 @@ rule__KPointPlacementData__Group_3_2__0__Impl
     }
 :
 (
-{ before(grammarAccess.getKPointPlacementDataAccess().getMinHeightKeyword_3_2_0()); }
+{ before(grammarAccess.getKPointPlacementDataAccess().getMinimalHeightKeyword_3_2_0()); }
 
-	'minHeight' 
+	'minimalHeight' 
 
-{ after(grammarAccess.getKPointPlacementDataAccess().getMinHeightKeyword_3_2_0()); }
+{ after(grammarAccess.getKPointPlacementDataAccess().getMinimalHeightKeyword_3_2_0()); }
 )
 
 ;

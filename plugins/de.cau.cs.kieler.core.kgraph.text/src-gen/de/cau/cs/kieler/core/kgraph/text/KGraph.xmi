@@ -1510,14 +1510,14 @@
           </elements>
         </elements>
         <elements xsi:type="xtext:Group" cardinality="?">
-          <elements xsi:type="xtext:Keyword" value="minWidth"/>
+          <elements xsi:type="xtext:Keyword" value="minimalWidth"/>
           <elements xsi:type="xtext:Keyword" value="="/>
           <elements xsi:type="xtext:Assignment" feature="minWidth" operator="=">
             <terminal xsi:type="xtext:RuleCall" rule="//@rules.73"/>
           </elements>
         </elements>
         <elements xsi:type="xtext:Group" cardinality="?">
-          <elements xsi:type="xtext:Keyword" value="minHeight"/>
+          <elements xsi:type="xtext:Keyword" value="minimalHeight"/>
           <elements xsi:type="xtext:Keyword" value="="/>
           <elements xsi:type="xtext:Assignment" feature="minHeight" operator="=">
             <terminal xsi:type="xtext:RuleCall" rule="//@rules.73"/>
@@ -1866,6 +1866,7 @@
       <classifier xsi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     </type>
     <alternatives xsi:type="xtext:Alternatives">
+      <elements xsi:type="xtext:RuleCall" rule="//@rules.82"/>
       <elements xsi:type="xtext:RuleCall" rule="//@rules.93"/>
       <elements xsi:type="xtext:RuleCall" rule="//@rules.73"/>
       <elements xsi:type="xtext:RuleCall" rule="//@rules.71"/>

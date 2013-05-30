@@ -13,21 +13,26 @@
  */
 package de.cau.cs.kieler.core.kgraph.text;
 
+import java.util.Collections;
+import java.util.StringTokenizer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import javax.inject.Inject;
+
 import org.eclipse.xtext.conversion.IValueConverter;
+import org.eclipse.xtext.conversion.IValueConverterService;
 import org.eclipse.xtext.conversion.ValueConverter;
 import org.eclipse.xtext.conversion.ValueConverterException;
 import org.eclipse.xtext.conversion.impl.AbstractDeclarativeValueConverterService;
 import org.eclipse.xtext.conversion.impl.AbstractIDValueConverter;
 import org.eclipse.xtext.conversion.impl.AbstractNullSafeConverter;
+import org.eclipse.xtext.conversion.impl.IDValueConverter;
 import org.eclipse.xtext.conversion.impl.INTValueConverter;
 import org.eclipse.xtext.conversion.impl.STRINGValueConverter;
 import org.eclipse.xtext.nodemodel.INode;
 import org.eclipse.xtext.util.Strings;
 
-import com.google.inject.Inject;
 
 /**
  * Value converter for the KGraph grammar.
@@ -42,6 +47,14 @@ public class KGraphValueConverters extends AbstractDeclarativeValueConverterServ
     @ValueConverter(rule = "ID")
     public IValueConverter<String> ID() {
         return idValueConverter;
+    }
+    
+    @Inject
+    private QualifiedIDValueConverter qualifiedIdValueConverter;
+
+    @ValueConverter(rule = "QualifiedID")
+    public IValueConverter<String> QualifiedID() {
+        return qualifiedIdValueConverter;
     }
 
     @Inject
@@ -100,6 +113,26 @@ public class KGraphValueConverters extends AbstractDeclarativeValueConverterServ
     @ValueConverter(rule = "PERCENT")
     public IValueConverter<Float> PERCENT() {
         return new FloatUnitSuffixConverter(100, "%");
+    }
+    
+    
+    private static class QualifiedIDValueConverter extends IDValueConverter {
+
+        @Inject
+        private IValueConverterService valueConverter;
+
+        public String toString(String s) {
+            String res = "";
+            for (Object ss : Collections.list(new StringTokenizer(s, "."))) {
+                res += "." + valueConverter.toString(ss, "ID");
+            }            
+            return res.substring(1);
+        }
+        
+        public String toValue(String string, INode node) {
+            String res = super.toValue(string, node);
+            return res.replace(".^", ".");
+        }
     }
     
     private class IntUnitSuffixConverter extends AbstractNullSafeConverter<Integer> {

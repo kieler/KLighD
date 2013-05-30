@@ -6071,9 +6071,9 @@ ruleKPointPlacementData returns [EObject current=null]
 					{ 
 	 				  getUnorderedGroupHelper().select(grammarAccess.getKPointPlacementDataAccess().getUnorderedGroup_3(), 1);
 	 				}
-					({true}?=>(	otherlv_7='minWidth' 
+					({true}?=>(	otherlv_7='minimalWidth' 
     {
-    	newLeafNode(otherlv_7, grammarAccess.getKPointPlacementDataAccess().getMinWidthKeyword_3_1_0());
+    	newLeafNode(otherlv_7, grammarAccess.getKPointPlacementDataAccess().getMinimalWidthKeyword_3_1_0());
     }
 	otherlv_8='=' 
     {
@@ -6109,9 +6109,9 @@ ruleKPointPlacementData returns [EObject current=null]
 					{ 
 	 				  getUnorderedGroupHelper().select(grammarAccess.getKPointPlacementDataAccess().getUnorderedGroup_3(), 2);
 	 				}
-					({true}?=>(	otherlv_10='minHeight' 
+					({true}?=>(	otherlv_10='minimalHeight' 
     {
-    	newLeafNode(otherlv_10, grammarAccess.getKPointPlacementDataAccess().getMinHeightKeyword_3_2_0());
+    	newLeafNode(otherlv_10, grammarAccess.getKPointPlacementDataAccess().getMinimalHeightKeyword_3_2_0());
     }
 	otherlv_11='=' 
     {
@@ -7546,20 +7546,28 @@ rulePropertyValue returns [AntlrDatatypeRuleToken current=new AntlrDatatypeRuleT
     @init { enterRule(); 
     }
     @after { leaveRule(); }:
-(    this_STRING_0=RULE_STRING    {
-		$current.merge(this_STRING_0);
+(    this_BOOLEAN_0=RULE_BOOLEAN    {
+		$current.merge(this_BOOLEAN_0);
     }
 
     { 
-    newLeafNode(this_STRING_0, grammarAccess.getPropertyValueAccess().getSTRINGTerminalRuleCall_0()); 
+    newLeafNode(this_BOOLEAN_0, grammarAccess.getPropertyValueAccess().getBOOLEANTerminalRuleCall_0()); 
+    }
+
+    |    this_STRING_1=RULE_STRING    {
+		$current.merge(this_STRING_1);
+    }
+
+    { 
+    newLeafNode(this_STRING_1, grammarAccess.getPropertyValueAccess().getSTRINGTerminalRuleCall_1()); 
     }
 
     |
     { 
-        newCompositeNode(grammarAccess.getPropertyValueAccess().getFloatParserRuleCall_1()); 
+        newCompositeNode(grammarAccess.getPropertyValueAccess().getFloatParserRuleCall_2()); 
     }
-    this_Float_1=ruleFloat    {
-		$current.merge(this_Float_1);
+    this_Float_2=ruleFloat    {
+		$current.merge(this_Float_2);
     }
 
     { 
@@ -7568,10 +7576,10 @@ rulePropertyValue returns [AntlrDatatypeRuleToken current=new AntlrDatatypeRuleT
 
     |
     { 
-        newCompositeNode(grammarAccess.getPropertyValueAccess().getQualifiedIDParserRuleCall_2()); 
+        newCompositeNode(grammarAccess.getPropertyValueAccess().getQualifiedIDParserRuleCall_3()); 
     }
-    this_QualifiedID_2=ruleQualifiedID    {
-		$current.merge(this_QualifiedID_2);
+    this_QualifiedID_3=ruleQualifiedID    {
+		$current.merge(this_QualifiedID_3);
     }
 
     { 

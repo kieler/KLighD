@@ -28,6 +28,7 @@ import org.eclipse.xtext.ui.editor.contentassist.ICompletionProposalAcceptor;
 import org.eclipse.xtext.util.Strings;
 
 import de.cau.cs.kieler.core.kgraph.PersistentEntry;
+import de.cau.cs.kieler.core.kgraph.text.services.KGraphGrammarAccess;
 import de.cau.cs.kieler.core.kgraph.text.ui.contentassist.AbstractKGraphProposalProvider;
 import de.cau.cs.kieler.kiml.LayoutAlgorithmData;
 import de.cau.cs.kieler.kiml.LayoutDataService;
@@ -49,7 +50,10 @@ public class KGraphProposalProvider extends AbstractKGraphProposalProvider {
      * into {@link AbstractAnnotationsProposalProvider} (due to some terminal re-definitions).
      */
     @Inject
-    private TerminalsProposalProvider delegate;    
+    private TerminalsProposalProvider delegate;
+    
+    @Inject
+    private KGraphGrammarAccess grammarAccess;
     
     // ---------------------------------------------------------
     //  Terminal-specific annotation proposals
@@ -57,7 +61,7 @@ public class KGraphProposalProvider extends AbstractKGraphProposalProvider {
 
     @Override
     public void complete_QualifiedID(EObject model, RuleCall ruleCall, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
-        delegate.complete_ID(model, ruleCall, context, acceptor);
+        delegate.complete_ID(model, grammarAccess.getQualifiedIDAccess().getIDTerminalRuleCall_0(), context, acceptor);
     }
     
     @Override
@@ -67,8 +71,8 @@ public class KGraphProposalProvider extends AbstractKGraphProposalProvider {
     
     @Override
     public void complete_BOOLEAN(EObject model, RuleCall ruleCall, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
-        acceptor.accept(createCompletionProposal("\"false\"", "false", getImage(ruleCall), context));
-        acceptor.accept(createCompletionProposal("\"true\"", "true", getImage(ruleCall), context));
+        acceptor.accept(createCompletionProposal("false", "false", getImage(ruleCall), context));
+        acceptor.accept(createCompletionProposal("true", "true", getImage(ruleCall), context));
     }
     
     // In the following methods providing a proposal for the particular special number values
@@ -195,6 +199,9 @@ public class KGraphProposalProvider extends AbstractKGraphProposalProvider {
     // ---------------------------------------------------------
     //  Layout option proposals provided by KIML
     // ---------------------------------------------------------
+
+    @Inject
+    private KGraphGrammarAccess grammmarAccess;
     
     /**
      * Computes the property key proposals based on available layout options.
@@ -217,13 +224,20 @@ public class KGraphProposalProvider extends AbstractKGraphProposalProvider {
         /* create and register the completion proposal for every element in the list */
         for (LayoutOptionData<?> optionData : layoutServices.getOptionData()) {
             theStyle = (optionData.isAdvanced()) ? StyledString.COUNTER_STYLER : null;
+
             displayString = new StyledString(optionData.toString(), theStyle);
             displayString.append(" - " + optionData.getType().toString(),
                     StyledString.QUALIFIER_STYLER);
-            proposal = optionData.getId();
+
+            proposal = getValueConverter().toString(optionData.getId(),
+                    grammmarAccess.getQualifiedIDRule().getName());
+            
+            boolean escape = proposal.contains("^");
+
             completeProposal = createCompletionProposal(proposal, displayString, null,
                     getPriorityHelper().getDefaultPriority(),
-                    "de.cau.cs.kieler." + context.getPrefix(), context);
+                    "de.cau.cs.kieler." + (escape ? "^" : "") + context.getPrefix(), context);
+
             acceptor.accept((completeProposal != null) ? completeProposal
                     : createCompletionProposal(proposal, displayString, null, context));
         }
