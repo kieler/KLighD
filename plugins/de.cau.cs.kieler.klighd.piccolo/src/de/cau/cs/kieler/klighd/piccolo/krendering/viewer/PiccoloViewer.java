@@ -54,7 +54,6 @@ import edu.umd.cs.piccolo.PRoot;
 import edu.umd.cs.piccolo.event.PInputEventFilter;
 import edu.umd.cs.piccolo.util.PBounds;
 import edu.umd.cs.piccolox.swt.PSWTCanvas;
-//import java.util.List;
 
 /**
  * A viewer for Piccolo diagram contexts.
@@ -175,6 +174,11 @@ public class PiccoloViewer extends AbstractViewer<KNode> implements INodeSelecti
         // create the context menu
         Menu menu = menuManager.createContextMenu(composite);
         composite.setMenu(menu);
+        
+        // register the context menu in the current work bench part site
+        //  this enables the population with entries contributed via extension points
+        this.getContextViewer().getWorkbenchPart().getSite()
+                .registerContextMenu(menuManager, this.getContextViewer());
     }
 
     /**

@@ -837,6 +837,15 @@ public class ContextViewer extends AbstractViewer<Object> implements IViewerEven
     }
 
     /**
+     * Returns the {@link IWorkbenchPart} this viewer is attached to.
+     * 
+     * @return the workbench part
+     */
+    public IWorkbenchPart getWorkbenchPart() {
+        return workbenchPart;
+    }
+
+    /**
      * Returns the currently active viewer.
      * 
      * @return the viewer
