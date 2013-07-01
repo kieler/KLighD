@@ -17,6 +17,7 @@ import java.lang.reflect.Method;
 
 import de.cau.cs.kieler.core.kgraph.KGraphElement;
 import de.cau.cs.kieler.core.kgraph.KNode;
+import de.cau.cs.kieler.core.kgraph.KPort;
 import de.cau.cs.kieler.core.krendering.KRenderingFactory;
 import de.cau.cs.kieler.core.properties.IProperty;
 import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout;
@@ -111,8 +112,8 @@ public abstract class AbstractDiagramSynthesis<S> extends AbstractTransformation
     }
     
     /**
-     * Convenience method for defining collapse/expansion-dependent layout options for {@link KNode
-     * KNodes}.
+     * Convenience method for defining collapse/expand state dependent layout options for
+     * {@link KNode KNodes}.
      * 
      * @param <T>
      *            the property value type
@@ -140,5 +141,38 @@ public abstract class AbstractDiagramSynthesis<S> extends AbstractTransformation
         data.setProperty(option, collapsedValue, expandedValue);
         
         return node;
+    }
+
+    /**
+     * Convenience method for defining collapse/expand state dependent layout options for
+     * {@link KPort KPorts}. The collapse/expand state refers to that of the {@link KNode}
+     * containing the {@link KPort}.
+     * 
+     * @param <T>
+     *            the property value type
+     * @param port
+     *            the port to set the layout option on
+     * @param option
+     *            the particular layout option, e.g. one of
+     *            {@link de.cau.cs.kieler.kiml.options.LayoutOptions LayoutOptions}
+     * @param collapsedValue
+     *            the value in case <code>port</code>'s container node is collapsed
+     * @param expandedValue
+     *            the value in case <code>port</code>'s container node is expanded
+     * @return <code>node</code> allowing to perform multiple operations on it in one statement
+     */
+    protected <T> KPort setExpansionAwareLayoutOption(final KPort port, final IProperty<T> option,
+            final T collapsedValue, final T expandedValue) {
+        KShapeLayout sl = port.getData(KShapeLayout.class); 
+        ExpansionAwareLayoutOptionData data = sl.getProperty(ExpansionAwareLayoutOption.OPTION);
+        
+        if (data == null) {
+            data = new ExpansionAwareLayoutOptionData();
+            sl.setProperty(ExpansionAwareLayoutOption.OPTION, data);
+        }
+        
+        data.setProperty(option, collapsedValue, expandedValue);
+                
+        return port;
     }
 }

@@ -133,22 +133,29 @@ public class KGraphPropertyLayoutConfig implements ILayoutConfig {
         if (diagramPart instanceof KGraphElement) {
             KGraphElement element = (KGraphElement) diagramPart;
             KGraphData elementLayout;
+            
             if (element instanceof KEdge) {
                 elementLayout = element.getData(KEdgeLayout.class);
             } else {
                 elementLayout = element.getData(KShapeLayout.class);
             }
+            
             if (elementLayout != null) {
                 for (Map.Entry<IProperty<?>, Object> entry : elementLayout.getAllProperties()
                         .entrySet()) {
                     
-                    if (entry.getKey().equals(ExpansionAwareLayoutOption.OPTION)
-                            && element instanceof KNode) {
+                    if (entry.getKey().equals(ExpansionAwareLayoutOption.OPTION)) {
+                        KNode node = null;
+                        if (element instanceof KNode) {
+                            node = (KNode) element; 
+                        } else if (element instanceof KPort) {
+                            node = (KNode) element.eContainer();
+                        }
+                        
                         ExpansionAwareLayoutOptionData ealo =
                                 (ExpansionAwareLayoutOptionData) entry.getValue();
-                        RenderingContextData rcd = RenderingContextData.get(element);
+                        RenderingContextData rcd = RenderingContextData.get(node);
                         
-                        KNode node = (KNode) element;
                         graphData.copyProperties(ealo.getValues(!node.getChildren().isEmpty()
                                 && rcd.getProperty(KlighdConstants.POPULATED)));
                     } else {
