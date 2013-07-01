@@ -20,6 +20,12 @@ import de.cau.cs.kieler.core.properties.Property;
 import de.cau.cs.kieler.core.util.IDataObject;
 
 /**
+ * Contributes support for declarative layout option value definitions depending on the
+ * collapsed/expanded state of the {@link de.cau.cs.kieler.core.kgraph.KNode KNode}.<br>
+ * <br>
+ * TODO implementation of the {@link ExpansionAwareLayoutOptionData#parse(String)} and
+ * {@link ExpansionAwareLayoutOptionData#toString()}
+ * 
  * @author chsch
  */
 public final class ExpansionAwareLayoutOption {
@@ -28,13 +34,18 @@ public final class ExpansionAwareLayoutOption {
     }
     
     /**
-     * 
+     * The layout option singleton (similar to those in
+     * {@link de.cau.cs.kieler.kiml.options.LayoutOptions LayoutOptions}.<br>
+     * Its id is also registered in the plugin.xml. 
      */
     public static final IProperty<ExpansionAwareLayoutOptionData> OPTION =
             new Property<ExpansionAwareLayoutOption.ExpansionAwareLayoutOptionData>(
                     "de.cau.cs.kieler.klighd.expansionAwareLayoutOption");
 
     /**
+     * Dedicated implementation {@link IDataObject} of defining value type of
+     * {@link ExpansionAwareLayoutOption#OPTION}.
+     * 
      * @author chsch
      */
     public static class ExpansionAwareLayoutOptionData implements IDataObject {
@@ -106,7 +117,6 @@ public final class ExpansionAwareLayoutOption {
          * {@inheritDoc}
          */
         public void parse(final String string) {
-            // TODO
         }
 
         /**
