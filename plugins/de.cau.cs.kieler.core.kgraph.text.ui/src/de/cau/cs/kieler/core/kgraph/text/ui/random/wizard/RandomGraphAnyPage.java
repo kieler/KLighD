@@ -501,14 +501,16 @@ public class RandomGraphAnyPage extends WizardPage {
         if (options.getProperty(GeneratorOptions.NUMBER_OF_NODES_MIN)
                 > options.getProperty(GeneratorOptions.NUMBER_OF_NODES_MAX)) {
             setErrorMessage(Messages.RandomGraphAnyPage_number_of_nodes_error);
-            return;
-        }
-        if (options.getProperty(GeneratorOptions.MIN_OUTGOING_EDGES)
+            setPageComplete(false);
+        } else if (options.getProperty(GeneratorOptions.MIN_OUTGOING_EDGES)
                 > options.getProperty(GeneratorOptions.MAX_OUTGOING_EDGES)) {
             setErrorMessage(Messages.RandomGraphAnyPage_outgoing_edges_error);
+            setPageComplete(false);
             return;
+        } else {
+            setErrorMessage(null);
+            setPageComplete(true);
         }
-        setErrorMessage(null);
     }
     
 }

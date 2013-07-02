@@ -92,7 +92,7 @@ public class RandomGraphNewFilePage extends WizardNewFileCreationPage {
         timeSeedButton.setToolTipText(Messages.RandomGraphNewFilePage_time_seed_help);
         timeSeedButton.setSelection(options.getProperty(GeneratorOptions.TIME_BASED_RANDOMIZATION));
         
-        gridData = new GridData(SWT.LEFT, SWT.NONE, false, false);
+        gridData = new GridData(SWT.LEFT, SWT.TOP, false, false);
         gridData.horizontalSpan = 2;
         gridData.verticalIndent = 10;
         timeSeedButton.setLayoutData(gridData);
@@ -107,14 +107,14 @@ public class RandomGraphNewFilePage extends WizardNewFileCreationPage {
                 0, Integer.MAX_VALUE, 0, 1, 10);
         seedSpinner.setEnabled(!options.getProperty(GeneratorOptions.TIME_BASED_RANDOMIZATION));
         
-        gridData = new GridData(SWT.LEFT, SWT.NONE, false, false);
+        gridData = new GridData(SWT.LEFT, SWT.TOP, false, false);
         gridData.widthHint = 50;
         seedSpinner.setLayoutData(gridData);
         
         // create the advanced options and hide them
         Composite advanced = new Composite(group, SWT.NONE);
         advanced.setVisible(false);
-        gridData = new GridData(SWT.FILL, SWT.NONE, true, false);
+        gridData = new GridData(SWT.FILL, SWT.TOP, true, false);
         gridData.exclude = true;
         advanced.setLayoutData(gridData);
         layout = new GridLayout();

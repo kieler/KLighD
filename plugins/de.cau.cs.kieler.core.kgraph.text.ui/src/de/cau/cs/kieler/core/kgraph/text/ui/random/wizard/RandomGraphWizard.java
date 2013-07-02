@@ -155,6 +155,7 @@ public class RandomGraphWizard extends Wizard implements INewWizard {
     @Override
     public boolean performFinish() {
         // save all generation options into the plugin preferences
+        options.setProperty(GeneratorOptions.FILE_NAME, newFilePage.getFileName());
         options.savePreferences();
         
         // if necessary ask the user to verify his decisions on the number of generated graphs
@@ -188,7 +189,8 @@ public class RandomGraphWizard extends Wizard implements INewWizard {
                     new Status(IStatus.ERROR, KGraphActivator.DE_CAU_CS_KIELER_CORE_KGRAPH_TEXT_KGRAPH,
                             Messages.RandomGraphWizard_graph_generated_failed_error,
                             exception.getCause());
-            StatusManager.getManager().handle(status, StatusManager.BLOCK | StatusManager.SHOW);
+            StatusManager.getManager().handle(status, StatusManager.BLOCK | StatusManager.SHOW
+                    | StatusManager.LOG);
         }
 
         return true;
@@ -236,70 +238,59 @@ public class RandomGraphWizard extends Wizard implements INewWizard {
         RandomGraphGenerator generator = new RandomGraphGenerator(random);
         
         // do the generation
-        try {
-            if (numberOfGraphs == 1) {
-                final Maybe<IFile> file = new Maybe<IFile>();
-                PlatformUI.getWorkbench().getDisplay().syncExec(new Runnable() {
-                    public void run() {
-                        file.set(newFilePage.createNewFile());
-                    }
-                });
-                // generate and serialize the graph
-                try {
-                    KNode graph = generator.generate(options);
-                    serialize(graph, file.get());
-                    monitor.worked(1);
-                } catch (Throwable throwable) {
-                    throwable.printStackTrace();
+        if (numberOfGraphs == 1) {
+            final Maybe<IFile> file = new Maybe<IFile>();
+            PlatformUI.getWorkbench().getDisplay().syncExec(new Runnable() {
+                public void run() {
+                    file.set(newFilePage.createNewFile());
                 }
+            });
+            // generate and serialize the graph
+            KNode graph = generator.generate(options);
+            serialize(graph, file.get());
+            monitor.worked(1);
 
-            } else {
-                // prepare to build filenames
-                final Maybe<String> name = new Maybe<String>();
-                final Maybe<String> ext = new Maybe<String>();
-                final Maybe<IPath> containerPath = new Maybe<IPath>();
-                PlatformUI.getWorkbench().getDisplay().syncExec(new Runnable() {
-                    public void run() {
-                        name.set(newFilePage.getFileName());
-                        ext.set(newFilePage.getFileExtension());
-                        containerPath.set(newFilePage.getContainerFullPath());
-                    }
-                });
-                String nameWithoutExt = 
-                    name.get().substring(0, name.get().lastIndexOf(".")); //$NON-NLS-1$
-                // generate the desired number of graphs
-                int graphNumber = 1;
-                int decimalPlaces = (int) Math.log10(numberOfGraphs) + 1;
-                for (int i = 0; i < numberOfGraphs; i++) {
-                    if (monitor.isCanceled()) {
-                        throw new InterruptedException();
-                    }
-                    
-                    // construct the file path
-                    IFile file;
-                    do {
-                        int p = (int) Math.log10(graphNumber) + 1;
-                        String fileName = nameWithoutExt + generateZeros(decimalPlaces - p)
-                                + graphNumber + "." + ext.get();
-                        IWorkspaceRoot workspaceRoot = ResourcesPlugin.getWorkspace().getRoot();
-                        IPath path = containerPath.get().append(new Path(fileName));
-                        file = workspaceRoot.getFile(path);
-                        graphNumber++;
-                    } while (file.exists());
-                    
-                    // generate and serialize the graph
-                    try {
-                        KNode graph = generator.generate(options);
-                        serialize(graph, file);
-                        monitor.worked(1);
-                    } catch (Throwable throwable) {
-                        throwable.printStackTrace();
-                    }
+        } else {
+            // prepare to build filenames
+            final Maybe<String> name = new Maybe<String>();
+            final Maybe<String> ext = new Maybe<String>();
+            final Maybe<IPath> containerPath = new Maybe<IPath>();
+            PlatformUI.getWorkbench().getDisplay().syncExec(new Runnable() {
+                public void run() {
+                    name.set(newFilePage.getFileName());
+                    ext.set(newFilePage.getFileExtension());
+                    containerPath.set(newFilePage.getContainerFullPath());
                 }
+            });
+            String nameWithoutExt = 
+                name.get().substring(0, name.get().lastIndexOf(".")); //$NON-NLS-1$
+            // generate the desired number of graphs
+            int graphNumber = 1;
+            int decimalPlaces = (int) Math.log10(numberOfGraphs) + 1;
+            for (int i = 0; i < numberOfGraphs; i++) {
+                if (monitor.isCanceled()) {
+                    throw new InterruptedException();
+                }
+                
+                // construct the file path
+                IFile file;
+                do {
+                    int p = (int) Math.log10(graphNumber) + 1;
+                    String fileName = nameWithoutExt + generateZeros(decimalPlaces - p)
+                            + graphNumber + "." + ext.get();
+                    IWorkspaceRoot workspaceRoot = ResourcesPlugin.getWorkspace().getRoot();
+                    IPath path = containerPath.get().append(new Path(fileName));
+                    file = workspaceRoot.getFile(path);
+                    graphNumber++;
+                } while (file.exists());
+                
+                // generate and serialize the graph
+                KNode graph = generator.generate(options);
+                serialize(graph, file);
+                monitor.worked(1);
             }
-        } finally {
-            monitor.done();
         }
+        monitor.done();
     }
     
     /**
