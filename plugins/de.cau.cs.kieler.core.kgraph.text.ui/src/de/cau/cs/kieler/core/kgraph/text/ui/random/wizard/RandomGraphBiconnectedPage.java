@@ -13,7 +13,6 @@
  */
 package de.cau.cs.kieler.core.kgraph.text.ui.random.wizard;
 
-import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
@@ -24,8 +23,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Spinner;
 
-import de.cau.cs.kieler.core.kgraph.text.ui.internal.KGraphActivator;
-import de.cau.cs.kieler.core.kgraph.text.ui.random.RandomGraphGenerator;
+import de.cau.cs.kieler.core.kgraph.text.ui.random.GeneratorOptions;
 
 /**
  * The options page for the BICONNECTED graph type.
@@ -35,20 +33,19 @@ import de.cau.cs.kieler.core.kgraph.text.ui.random.RandomGraphGenerator;
  */
 public class RandomGraphBiconnectedPage extends WizardPage {
 
-    /** the selected number of nodes. */
-    private int numberOfNodes;
-    /** the selected number of edges. */
-    private int numberOfEdges;
+    /** the generator options. */
+    private GeneratorOptions options;
 
     /**
      * Constructs a RandomGraphBiconnectedPage.
+     * 
+     * @param options the generator options
      */
-    public RandomGraphBiconnectedPage() {
+    public RandomGraphBiconnectedPage(final GeneratorOptions options) {
         super("randomGraphBiconnectedPage"); //$NON-NLS-1$
         setTitle(Messages.RandomGraphBiconnectedPage_title);
         setDescription(Messages.RandomGraphBiconnectedPage_description);
-        setDefaultPreferences();
-        loadPreferences();
+        this.options = options;
     }
 
     /**
@@ -76,7 +73,8 @@ public class RandomGraphBiconnectedPage extends WizardPage {
         
         final Spinner nodesSpinner = new Spinner(composite, SWT.BORDER | SWT.SINGLE);
         nodesSpinner.setToolTipText(Messages.RandomGraphBiconnectedPage_number_of_nodes_help);
-        nodesSpinner.setValues(numberOfNodes, 1, Integer.MAX_VALUE, 0, 1, 10);
+        nodesSpinner.setValues(options.getProperty(GeneratorOptions.NUMBER_OF_NODES),
+                1, Integer.MAX_VALUE, 0, 1, 10);
         
         gridData = new GridData(SWT.LEFT, SWT.NONE, false, false);
         gridData.widthHint = 80;
@@ -84,7 +82,7 @@ public class RandomGraphBiconnectedPage extends WizardPage {
         
         nodesSpinner.addModifyListener(new ModifyListener() {
             public void modifyText(final ModifyEvent e) {
-                numberOfNodes = nodesSpinner.getSelection();
+                options.setProperty(GeneratorOptions.NUMBER_OF_NODES, nodesSpinner.getSelection());
             }
         });
         
@@ -94,7 +92,8 @@ public class RandomGraphBiconnectedPage extends WizardPage {
         
         final Spinner edgesSpinner = new Spinner(composite, SWT.BORDER | SWT.SINGLE);
         edgesSpinner.setToolTipText(Messages.RandomGraphBiconnectedPage_number_of_edges_help);
-        edgesSpinner.setValues(numberOfEdges, 0, Integer.MAX_VALUE, 0, 1, 10);
+        edgesSpinner.setValues(options.getProperty(GeneratorOptions.NUMBER_OF_EDGES),
+                0, Integer.MAX_VALUE, 0, 1, 10);
         
         gridData = new GridData(SWT.LEFT, SWT.NONE, false, false);
         gridData.widthHint = 80;
@@ -102,51 +101,9 @@ public class RandomGraphBiconnectedPage extends WizardPage {
         
         edgesSpinner.addModifyListener(new ModifyListener() {
             public void modifyText(final ModifyEvent e) {
-                numberOfEdges = edgesSpinner.getSelection();
+                options.setProperty(GeneratorOptions.NUMBER_OF_EDGES, edgesSpinner.getSelection());
             }
         });
     }
 
-    // CHECKSTYLEON MagicNumber
-
-    /**
-     * Saves the selected options to the preference store.
-     */
-    public void savePreferences() {
-        IPreferenceStore preferenceStore = KGraphActivator.getInstance().getPreferenceStore();
-        preferenceStore.setValue(RandomGraphGenerator.NUMBER_OF_NODES.getId(), numberOfNodes);
-        preferenceStore.setValue(RandomGraphGenerator.NUMBER_OF_EDGES.getId(), numberOfEdges);
-    }
-
-    private void loadPreferences() {
-        IPreferenceStore preferenceStore = KGraphActivator.getInstance().getPreferenceStore();
-        numberOfNodes = preferenceStore.getInt(RandomGraphGenerator.NUMBER_OF_NODES.getId());
-        numberOfEdges = preferenceStore.getInt(RandomGraphGenerator.NUMBER_OF_EDGES.getId());
-    }
-
-    private void setDefaultPreferences() {
-        IPreferenceStore preferenceStore = KGraphActivator.getInstance().getPreferenceStore();
-        preferenceStore.setDefault(RandomGraphGenerator.NUMBER_OF_NODES.getId(),
-                RandomGraphGenerator.NUMBER_OF_NODES.getDefault());
-        preferenceStore.setDefault(RandomGraphGenerator.NUMBER_OF_EDGES.getId(),
-                RandomGraphGenerator.NUMBER_OF_EDGES.getDefault());
-    }
-
-    /**
-     * Returns the selected number of nodes.
-     * 
-     * @return the number of nodes
-     */
-    public int getNumberOfNodes() {
-        return numberOfNodes;
-    }
-
-    /**
-     * Returns the selected number of edges.
-     * 
-     * @return the number of edges
-     */
-    public int getNumberOfEdges() {
-        return numberOfEdges;
-    }
 }

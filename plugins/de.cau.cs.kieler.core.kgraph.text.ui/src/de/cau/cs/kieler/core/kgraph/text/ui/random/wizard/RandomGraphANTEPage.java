@@ -13,13 +13,12 @@
  */
 package de.cau.cs.kieler.core.kgraph.text.ui.random.wizard;
 
-import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
+import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -27,33 +26,29 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Spinner;
 
-import de.cau.cs.kieler.core.kgraph.text.ui.internal.KGraphActivator;
-import de.cau.cs.kieler.core.kgraph.text.ui.random.RandomGraphGenerator;
+import de.cau.cs.kieler.core.kgraph.text.ui.random.GeneratorOptions;
 
 /**
- * The options page for the ACYCLIC_NO_TRANSITIV_EDGES graph type.
+ * The options page for the ACYCLIC_NO_TRANSITIVE_EDGES graph type.
  * 
  * @author mri
  * @author msp
  */
 public class RandomGraphANTEPage extends WizardPage {
 
-    /** the selected number of nodes. */
-    private int numberOfNodes;
-    /** the selected number of edges. */
-    private int numberOfEdges;
-    /** the selected planar restriction. */
-    private boolean planar;
+    /** the generator options. */
+    private GeneratorOptions options;
 
     /**
      * Constructs a RandomGraphANTEPage.
+     * 
+     * @param options the generator options
      */
-    public RandomGraphANTEPage() {
+    public RandomGraphANTEPage(final GeneratorOptions options) {
         super("randomGraphANTEPage"); //$NON-NLS-1$
         setTitle(Messages.RandomGraphANTEPage_title);
         setDescription(Messages.RandomGraphANTEPage_description);
-        setDefaultPreferences();
-        loadPreferences();
+        this.options = options;
     }
 
     /**
@@ -81,7 +76,8 @@ public class RandomGraphANTEPage extends WizardPage {
         
         final Spinner nodesSpinner = new Spinner(composite, SWT.BORDER | SWT.SINGLE);
         nodesSpinner.setToolTipText(Messages.RandomGraphANTEPage_number_of_nodes_help);
-        nodesSpinner.setValues(numberOfNodes, 1, Integer.MAX_VALUE, 0, 1, 10);
+        nodesSpinner.setValues(options.getProperty(GeneratorOptions.NUMBER_OF_NODES),
+                1, Integer.MAX_VALUE, 0, 1, 10);
         
         gridData = new GridData(SWT.LEFT, SWT.NONE, false, false);
         gridData.widthHint = 80;
@@ -89,7 +85,7 @@ public class RandomGraphANTEPage extends WizardPage {
         
         nodesSpinner.addModifyListener(new ModifyListener() {
             public void modifyText(final ModifyEvent e) {
-                numberOfNodes = nodesSpinner.getSelection();
+                options.setProperty(GeneratorOptions.NUMBER_OF_NODES, nodesSpinner.getSelection());
             }
         });
         
@@ -99,7 +95,8 @@ public class RandomGraphANTEPage extends WizardPage {
         
         final Spinner edgesSpinner = new Spinner(composite, SWT.BORDER | SWT.SINGLE);
         edgesSpinner.setToolTipText(Messages.RandomGraphANTEPage_number_of_edges_help);
-        edgesSpinner.setValues(numberOfEdges, 0, Integer.MAX_VALUE, 0, 1, 10);
+        edgesSpinner.setValues(options.getProperty(GeneratorOptions.NUMBER_OF_EDGES),
+                0, Integer.MAX_VALUE, 0, 1, 10);
         
         gridData = new GridData(SWT.LEFT, SWT.NONE, false, false);
         gridData.widthHint = 80;
@@ -107,7 +104,7 @@ public class RandomGraphANTEPage extends WizardPage {
         
         edgesSpinner.addModifyListener(new ModifyListener() {
             public void modifyText(final ModifyEvent e) {
-                numberOfEdges = edgesSpinner.getSelection();
+                options.setProperty(GeneratorOptions.NUMBER_OF_EDGES, edgesSpinner.getSelection());
             }
         });
         
@@ -115,73 +112,14 @@ public class RandomGraphANTEPage extends WizardPage {
         final Button planarButton = new Button(composite, SWT.CHECK);
         planarButton.setToolTipText(Messages.RandomGraphANTEPage_planarity_help);
         planarButton.setText(Messages.RandomGraphANTEPage_planarity_caption);
-        planarButton.setSelection(planar);
+        planarButton.setSelection(options.getProperty(GeneratorOptions.PLANAR));
         planarButton.setLayoutData(new GridData(SWT.LEFT, SWT.NONE, false, false, 2, 1));
         
-        planarButton.addSelectionListener(new SelectionListener() {
+        planarButton.addSelectionListener(new SelectionAdapter() {
             public void widgetSelected(final SelectionEvent e) {
-                planar = planarButton.getSelection();
-            }
-
-            public void widgetDefaultSelected(final SelectionEvent e) {
-                // do nothing
+                options.setProperty(GeneratorOptions.PLANAR, planarButton.getSelection());
             }
         });
     }
-
-    // CHECKSTYLEON MagicNumber
-
-    /**
-     * Saves the selected options to the preference store.
-     */
-    public void savePreferences() {
-        IPreferenceStore preferenceStore = KGraphActivator.getInstance().getPreferenceStore();
-        preferenceStore.setValue(RandomGraphGenerator.NUMBER_OF_NODES.getId(), numberOfNodes);
-        preferenceStore.setValue(RandomGraphGenerator.NUMBER_OF_EDGES.getId(), numberOfEdges);
-        preferenceStore.setValue(RandomGraphGenerator.PLANAR.getId(), planar);
-    }
-
-    private void loadPreferences() {
-        IPreferenceStore preferenceStore = KGraphActivator.getInstance().getPreferenceStore();
-        numberOfNodes = preferenceStore.getInt(RandomGraphGenerator.NUMBER_OF_NODES.getId());
-        numberOfEdges = preferenceStore.getInt(RandomGraphGenerator.NUMBER_OF_EDGES.getId());
-        planar = preferenceStore.getBoolean(RandomGraphGenerator.PLANAR.getId());
-    }
-
-    private void setDefaultPreferences() {
-        IPreferenceStore preferenceStore = KGraphActivator.getInstance().getPreferenceStore();
-        preferenceStore.setDefault(RandomGraphGenerator.NUMBER_OF_NODES.getId(),
-                RandomGraphGenerator.NUMBER_OF_NODES.getDefault());
-        preferenceStore.setDefault(RandomGraphGenerator.NUMBER_OF_EDGES.getId(),
-                RandomGraphGenerator.NUMBER_OF_EDGES.getDefault());
-        preferenceStore.setDefault(RandomGraphGenerator.PLANAR.getId(),
-                RandomGraphGenerator.PLANAR.getDefault());
-    }
-
-    /**
-     * Returns the selected number of nodes.
-     * 
-     * @return the number of nodes
-     */
-    public int getNumberOfNodes() {
-        return numberOfNodes;
-    }
-
-    /**
-     * Returns the selected number of edges.
-     * 
-     * @return the number of edges
-     */
-    public int getNumberOfEdges() {
-        return numberOfEdges;
-    }
-
-    /**
-     * Returns whether the generated graph should be planar.
-     * 
-     * @return true if the generated graph should be planar; false else
-     */
-    public boolean getPlanar() {
-        return planar;
-    }
+    
 }

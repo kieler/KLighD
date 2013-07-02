@@ -13,7 +13,6 @@
  */
 package de.cau.cs.kieler.core.kgraph.text.ui.random.wizard;
 
-import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
@@ -24,8 +23,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Spinner;
 
-import de.cau.cs.kieler.core.kgraph.text.ui.internal.KGraphActivator;
-import de.cau.cs.kieler.core.kgraph.text.ui.random.RandomGraphGenerator;
+import de.cau.cs.kieler.core.kgraph.text.ui.random.GeneratorOptions;
 
 /**
  * The options page for the TRICONNECTED graph type.
@@ -35,18 +33,19 @@ import de.cau.cs.kieler.core.kgraph.text.ui.random.RandomGraphGenerator;
  */
 public class RandomGraphTriconnectedPage extends WizardPage {
 
-    /** the selected number of nodes. */
-    private int numberOfNodes;
+    /** the generator options. */
+    private GeneratorOptions options;
 
     /**
      * Constructs a RandomGraphTriconnectedPage.
+     * 
+     * @param options the generator options
      */
-    public RandomGraphTriconnectedPage() {
+    public RandomGraphTriconnectedPage(final GeneratorOptions options) {
         super("randomGraphTriconnectedPage"); //$NON-NLS-1$
         setTitle(Messages.RandomGraphTriconnectedPage_title);
         setDescription(Messages.RandomGraphTriconnectedPage_description);
-        setDefaultPreferences();
-        loadPreferences();
+        this.options = options;
     }
 
     /**
@@ -72,7 +71,8 @@ public class RandomGraphTriconnectedPage extends WizardPage {
         
         final Spinner nodesSpinner = new Spinner(composite, SWT.BORDER | SWT.SINGLE);
         nodesSpinner.setToolTipText(Messages.RandomGraphTriconnectedPage_number_of_nodes_help);
-        nodesSpinner.setValues(numberOfNodes, 1, Integer.MAX_VALUE, 0, 1, 10);
+        nodesSpinner.setValues(options.getProperty(GeneratorOptions.NUMBER_OF_NODES),
+                1, Integer.MAX_VALUE, 0, 1, 10);
         
         GridData gridData = new GridData(SWT.LEFT, SWT.NONE, false, false);
         gridData.widthHint = 80;
@@ -80,38 +80,9 @@ public class RandomGraphTriconnectedPage extends WizardPage {
         
         nodesSpinner.addModifyListener(new ModifyListener() {
             public void modifyText(final ModifyEvent e) {
-                numberOfNodes = nodesSpinner.getSelection();
+                options.setProperty(GeneratorOptions.NUMBER_OF_NODES, nodesSpinner.getSelection());
             }
         });
     }
-
-    // CHECKSTYLEON MagicNumber
-
-    /**
-     * Saves the selected options to the preference store.
-     */
-    public void savePreferences() {
-        IPreferenceStore preferenceStore = KGraphActivator.getInstance().getPreferenceStore();
-        preferenceStore.setValue(RandomGraphGenerator.NUMBER_OF_NODES.getId(), numberOfNodes);
-    }
-
-    private void loadPreferences() {
-        IPreferenceStore preferenceStore = KGraphActivator.getInstance().getPreferenceStore();
-        numberOfNodes = preferenceStore.getInt(RandomGraphGenerator.NUMBER_OF_NODES.getId());
-    }
-
-    private void setDefaultPreferences() {
-        IPreferenceStore preferenceStore = KGraphActivator.getInstance().getPreferenceStore();
-        preferenceStore.setDefault(RandomGraphGenerator.NUMBER_OF_NODES.getId(),
-                RandomGraphGenerator.NUMBER_OF_NODES.getDefault());
-    }
-
-    /**
-     * Returns the selected number of nodes.
-     * 
-     * @return the number of nodes
-     */
-    public int getNumberOfNodes() {
-        return numberOfNodes;
-    }
+    
 }

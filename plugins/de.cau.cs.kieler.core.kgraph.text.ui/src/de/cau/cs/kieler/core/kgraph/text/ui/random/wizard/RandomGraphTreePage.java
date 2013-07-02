@@ -13,7 +13,6 @@
  */
 package de.cau.cs.kieler.core.kgraph.text.ui.random.wizard;
 
-import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
@@ -24,8 +23,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Spinner;
 
-import de.cau.cs.kieler.core.kgraph.text.ui.internal.KGraphActivator;
-import de.cau.cs.kieler.core.kgraph.text.ui.random.RandomGraphGenerator;
+import de.cau.cs.kieler.core.kgraph.text.ui.random.GeneratorOptions;
 
 /**
  * The options page for the TREE graph type.
@@ -35,22 +33,19 @@ import de.cau.cs.kieler.core.kgraph.text.ui.random.RandomGraphGenerator;
  */
 public class RandomGraphTreePage extends WizardPage {
 
-    /** the selected number of nodes. */
-    private int numberOfNodes;
-    /** the selected maximum degree. */
-    private int maxDegree;
-    /** the selected maximum width. */
-    private int maxWidth;
+    /** the generator options. */
+    private GeneratorOptions options;
 
     /**
      * Constructs a RandomGraphTreePage.
+     * 
+     * @param options the generator options
      */
-    public RandomGraphTreePage() {
+    public RandomGraphTreePage(final GeneratorOptions options) {
         super("randomGraphTreePage"); //$NON-NLS-1$
         setTitle(Messages.RandomGraphTreePage_title);
         setDescription(Messages.RandomGraphTreePage_description);
-        setDefaultPreferences();
-        loadPreferences();
+        this.options = options;
     }
 
     /**
@@ -78,7 +73,8 @@ public class RandomGraphTreePage extends WizardPage {
         
         final Spinner nodesSpinner = new Spinner(composite, SWT.BORDER | SWT.SINGLE);
         nodesSpinner.setToolTipText(Messages.RandomGraphTreePage_number_of_nodes_help);
-        nodesSpinner.setValues(numberOfNodes, 1, Integer.MAX_VALUE, 0, 1, 10);
+        nodesSpinner.setValues(options.getProperty(GeneratorOptions.NUMBER_OF_NODES),
+                1, Integer.MAX_VALUE, 0, 1, 10);
         
         gridData = new GridData(SWT.LEFT, SWT.NONE, false, false);
         gridData.widthHint = 80;
@@ -86,7 +82,7 @@ public class RandomGraphTreePage extends WizardPage {
         
         nodesSpinner.addModifyListener(new ModifyListener() {
             public void modifyText(final ModifyEvent e) {
-                numberOfNodes = nodesSpinner.getSelection();
+                options.setProperty(GeneratorOptions.NUMBER_OF_NODES, nodesSpinner.getSelection());
             }
         });
         
@@ -96,7 +92,8 @@ public class RandomGraphTreePage extends WizardPage {
         
         final Spinner degreeSpinner = new Spinner(composite, SWT.BORDER | SWT.SINGLE);
         degreeSpinner.setToolTipText(Messages.RandomGraphTreePage_max_degree_help);
-        degreeSpinner.setValues(maxDegree, 1, Integer.MAX_VALUE, 0, 1, 10);
+        degreeSpinner.setValues(options.getProperty(GeneratorOptions.MAX_DEGREE),
+                1, Integer.MAX_VALUE, 0, 1, 10);
         
         gridData = new GridData(SWT.LEFT, SWT.NONE, false, false);
         gridData.widthHint = 80;
@@ -104,7 +101,7 @@ public class RandomGraphTreePage extends WizardPage {
         
         degreeSpinner.addModifyListener(new ModifyListener() {
             public void modifyText(final ModifyEvent e) {
-                maxDegree = degreeSpinner.getSelection();
+                options.setProperty(GeneratorOptions.MAX_DEGREE, degreeSpinner.getSelection());
             }
         });
         
@@ -114,7 +111,8 @@ public class RandomGraphTreePage extends WizardPage {
         
         final Spinner widthSpinner = new Spinner(composite, SWT.BORDER | SWT.SINGLE);
         widthSpinner.setToolTipText(Messages.RandomGraphTreePage_max_width_help);
-        widthSpinner.setValues(maxWidth, 1, Integer.MAX_VALUE, 0, 1, 10);
+        widthSpinner.setValues(options.getProperty(GeneratorOptions.MAX_WIDTH),
+                1, Integer.MAX_VALUE, 0, 1, 10);
         
         gridData = new GridData(SWT.LEFT, SWT.NONE, false, false);
         gridData.widthHint = 80;
@@ -122,64 +120,9 @@ public class RandomGraphTreePage extends WizardPage {
         
         widthSpinner.addModifyListener(new ModifyListener() {
             public void modifyText(final ModifyEvent e) {
-                maxWidth = widthSpinner.getSelection();
+                options.setProperty(GeneratorOptions.MAX_WIDTH, widthSpinner.getSelection());
             }
         });
     }
-
-    // CHECKSTYLEON MagicNumber
-
-    /**
-     * Saves the selected options to the preference store.
-     */
-    public void savePreferences() {
-        IPreferenceStore preferenceStore = KGraphActivator.getInstance().getPreferenceStore();
-        preferenceStore.setValue(RandomGraphGenerator.NUMBER_OF_NODES.getId(), numberOfNodes);
-        preferenceStore.setValue(RandomGraphGenerator.MAX_DEGREE.getId(), maxDegree);
-        preferenceStore.setValue(RandomGraphGenerator.MAX_WIDTH.getId(), maxWidth);
-    }
-
-    private void loadPreferences() {
-        IPreferenceStore preferenceStore = KGraphActivator.getInstance().getPreferenceStore();
-        numberOfNodes = preferenceStore.getInt(RandomGraphGenerator.NUMBER_OF_NODES.getId());
-        preferenceStore.setValue(RandomGraphGenerator.MAX_DEGREE.getId(), maxDegree);
-        preferenceStore.setValue(RandomGraphGenerator.MAX_WIDTH.getId(), maxWidth);
-    }
-
-    private void setDefaultPreferences() {
-        IPreferenceStore preferenceStore = KGraphActivator.getInstance().getPreferenceStore();
-        preferenceStore.setDefault(RandomGraphGenerator.NUMBER_OF_NODES.getId(),
-                RandomGraphGenerator.NUMBER_OF_NODES.getDefault());
-        preferenceStore.setDefault(RandomGraphGenerator.MAX_DEGREE.getId(),
-                RandomGraphGenerator.MAX_DEGREE.getDefault());
-        preferenceStore.setDefault(RandomGraphGenerator.MAX_WIDTH.getId(),
-                RandomGraphGenerator.MAX_WIDTH.getDefault());
-    }
-
-    /**
-     * Returns the selected number of nodes.
-     * 
-     * @return the number of nodes
-     */
-    public int getNumberOfNodes() {
-        return numberOfNodes;
-    }
-
-    /**
-     * Returns the selected maximum node degree.
-     * 
-     * @return the maximum node degree
-     */
-    public int getMaxDegree() {
-        return maxDegree;
-    }
-
-    /**
-     * Returns the selected maximum tree width.
-     * 
-     * @return the maximum tree width
-     */
-    public int getMaxWidth() {
-        return maxWidth;
-    }
+    
 }

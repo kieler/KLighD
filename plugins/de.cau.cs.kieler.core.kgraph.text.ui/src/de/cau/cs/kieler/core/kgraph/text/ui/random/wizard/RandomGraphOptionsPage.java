@@ -13,14 +13,12 @@
  */
 package de.cau.cs.kieler.core.kgraph.text.ui.random.wizard;
 
-import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -29,8 +27,7 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Spinner;
 
-import de.cau.cs.kieler.core.kgraph.text.ui.internal.KGraphActivator;
-import de.cau.cs.kieler.core.kgraph.text.ui.random.RandomGraphGenerator;
+import de.cau.cs.kieler.core.kgraph.text.ui.random.GeneratorOptions;
 
 /**
  * The options page for utility settings.
@@ -40,43 +37,19 @@ import de.cau.cs.kieler.core.kgraph.text.ui.random.RandomGraphGenerator;
  */
 public class RandomGraphOptionsPage extends WizardPage {
     
-    /** ID of the Enable Hierarchy option. */
-    private static final String ENABLE_HIERARCHY = "basic.enableHierarchy"; //$NON-NLS-1$
-    /**
-     * Default percentage of hierarchichal nodes. We cannot take the default value defined in
-     * {@link RandomGraphGenerator#HIERARCHY_CHANCE} since that can be 0, which we don't allow
-     * here.
-     */
-    private static final int DEFAULT_HIERARCHY_CHANCE = 5;
-    /** A hundred percent as a float value. */
-    private static final float HUNDRED_PERCENT = 100.0f;
-    
-    /** if hierarchy is enabled. */
-    private boolean hierarchyEnabled;
-    /** the selected hierarchy chance. */
-    private int hierarchyChance;
-    /** the selected maximum hierarchy level. */
-    private int maxHierarchyLevel;
-    /** the selected hierarchy nodes factor. */
-    private float hierarchyNodesFactor;
-    /** the selected hypernode chance. */
-    private int hypernodeChance;
-    /** the selected port usage. */
-    private boolean ports;
-    /** chance for edges to use existing ports. */
-    private int useExistingPortsChance;
-    /** whether cross-hierarchy edges are allowed. */
-    private boolean crossHierarchyEdges;
+    /** the generator options. */
+    private GeneratorOptions options;
 
     /**
      * Constructs a RandomGraphOptionsPage.
+     * 
+     * @param options the generator options
      */
-    public RandomGraphOptionsPage() {
+    public RandomGraphOptionsPage(final GeneratorOptions options) {
         super("randomGraphUtilityPage"); //$NON-NLS-1$
         setTitle(Messages.RandomGraphUtilityPage_title);
         setDescription(Messages.RandomGraphUtilityPage_description);
-        setDefaultPreferences();
-        loadPreferences();
+        this.options = options;
     }
 
     /**
@@ -110,7 +83,8 @@ public class RandomGraphOptionsPage extends WizardPage {
         
         final Spinner hypernodeSpinner = new Spinner(composite, SWT.BORDER | SWT.SINGLE);
         hypernodeSpinner.setToolTipText(Messages.RandomGraphUtilityPage_hypernode_help);
-        hypernodeSpinner.setValues(hypernodeChance, 0, 100, 0, 1, 10);
+        hypernodeSpinner.setValues((int) (options.getProperty(GeneratorOptions.HYPERNODE_CHANCE) * 100),
+                0, 100, 0, 1, 10);
         
         gridData = new GridData(SWT.LEFT, SWT.NONE, false, false);
         gridData.widthHint = 80;
@@ -118,7 +92,8 @@ public class RandomGraphOptionsPage extends WizardPage {
         
         hypernodeSpinner.addModifyListener(new ModifyListener() {
             public void modifyText(final ModifyEvent e) {
-                hypernodeChance = hypernodeSpinner.getSelection();
+                options.setProperty(GeneratorOptions.HYPERNODE_CHANCE,
+                        hypernodeSpinner.getSelection() / 100.0f);
             }
         });
     }
@@ -139,6 +114,7 @@ public class RandomGraphOptionsPage extends WizardPage {
         hierarchyButton.setText(Messages.RandomGraphUtilityPage_hierarchy_enable_caption);
         hierarchyButton.setToolTipText(Messages.RandomGraphUtilityPage_hierarchy_enable_help);
         hierarchyButton.setLayoutData(new GridData(SWT.NONE, SWT.NONE, false, false, 2, 1));
+        hierarchyButton.setSelection(options.getProperty(GeneratorOptions.ENABLE_HIERARCHY));
         
         // Hierarchy Percentage option
         Label label = new Label(hierarchyGroup, SWT.NULL);
@@ -150,8 +126,9 @@ public class RandomGraphOptionsPage extends WizardPage {
         
         final Spinner hierarchySpinner = new Spinner(hierarchyGroup, SWT.BORDER | SWT.SINGLE);
         hierarchySpinner.setToolTipText(Messages.RandomGraphUtilityPage_hierarchy_help);
-        hierarchySpinner.setValues(hierarchyChance, 1, 100, 0, 1, 10);
-        hierarchySpinner.setEnabled(hierarchyEnabled);
+        hierarchySpinner.setValues((int) (options.getProperty(GeneratorOptions.HIERARCHY_CHANCE) * 100),
+                1, 100, 0, 1, 10);
+        hierarchySpinner.setEnabled(options.getProperty(GeneratorOptions.ENABLE_HIERARCHY));
         
         gridData = new GridData(SWT.LEFT, SWT.NONE, false, false);
         gridData.widthHint = 80;
@@ -167,8 +144,9 @@ public class RandomGraphOptionsPage extends WizardPage {
         
         final Spinner hierarchyLevelSpinner = new Spinner(hierarchyGroup, SWT.BORDER | SWT.SINGLE);
         hierarchyLevelSpinner.setToolTipText(Messages.RandomGraphUtilityPage_max_hierarchy_help);
-        hierarchyLevelSpinner.setValues(maxHierarchyLevel, 1, Integer.MAX_VALUE, 0, 1, 10);
-        hierarchyLevelSpinner.setEnabled(hierarchyEnabled);
+        hierarchyLevelSpinner.setValues(options.getProperty(GeneratorOptions.MAX_HIERARCHY_LEVEL),
+                1, Integer.MAX_VALUE, 0, 1, 10);
+        hierarchyLevelSpinner.setEnabled(options.getProperty(GeneratorOptions.ENABLE_HIERARCHY));
         
         gridData = new GridData(SWT.LEFT, SWT.NONE, false, false);
         gridData.widthHint = 80;
@@ -184,9 +162,10 @@ public class RandomGraphOptionsPage extends WizardPage {
         
         final Spinner hierarchyFactorSpinner = new Spinner(hierarchyGroup, SWT.BORDER | SWT.SINGLE);
         hierarchyFactorSpinner.setToolTipText(Messages.RandomGraphUtilityPage_hierarchy_factor_help);
-        hierarchyFactorSpinner.setValues((int) (hierarchyNodesFactor * 100), 0, Integer.MAX_VALUE,
-                2, 1, 10);
-        hierarchyFactorSpinner.setEnabled(hierarchyEnabled);
+        hierarchyFactorSpinner.setValues(
+                (int) (options.getProperty(GeneratorOptions.HIERARCHY_NODES_FACTOR) * 100),
+                0, Integer.MAX_VALUE, 2, 1, 10);
+        hierarchyFactorSpinner.setEnabled(options.getProperty(GeneratorOptions.ENABLE_HIERARCHY));
         
         gridData = new GridData(SWT.LEFT, SWT.NONE, false, false);
         gridData.widthHint = 80;
@@ -196,8 +175,8 @@ public class RandomGraphOptionsPage extends WizardPage {
         final Button hierarchyEdgesButton = new Button(hierarchyGroup, SWT.CHECK);
         hierarchyEdgesButton.setText(Messages.RandomGraphUtilityPage_hierarchy_edges_caption);
         hierarchyEdgesButton.setToolTipText(Messages.RandomGraphUtilityPage_hierarchy_edges_help);
-        hierarchyEdgesButton.setSelection(crossHierarchyEdges);
-        hierarchyEdgesButton.setEnabled(hierarchyEnabled);
+        hierarchyEdgesButton.setSelection(options.getProperty(GeneratorOptions.CROSS_HIERARCHY_EDGES));
+        hierarchyEdgesButton.setEnabled(options.getProperty(GeneratorOptions.ENABLE_HIERARCHY));
         
         gridData = new GridData(SWT.LEFT, SWT.NONE, false, false, 2, 1);
         gridData.horizontalIndent = 30;
@@ -207,8 +186,14 @@ public class RandomGraphOptionsPage extends WizardPage {
         hierarchyButton.addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(final SelectionEvent e) {
-                hierarchyEnabled = hierarchyButton.getSelection();
-                
+                boolean hierarchyEnabled = hierarchyButton.getSelection();
+                options.setProperty(GeneratorOptions.ENABLE_HIERARCHY, hierarchyEnabled);
+                if (hierarchyEnabled) {
+                    options.setProperty(GeneratorOptions.HIERARCHY_CHANCE,
+                            hierarchySpinner.getSelection() / 100.0f);
+                } else {
+                    options.setProperty(GeneratorOptions.HIERARCHY_CHANCE, 0.0f);
+                }
                 hierarchySpinner.setEnabled(hierarchyEnabled);
                 hierarchyLevelSpinner.setEnabled(hierarchyEnabled);
                 hierarchyFactorSpinner.setEnabled(hierarchyEnabled);
@@ -218,29 +203,29 @@ public class RandomGraphOptionsPage extends WizardPage {
         
         hierarchySpinner.addModifyListener(new ModifyListener() {
             public void modifyText(final ModifyEvent e) {
-                hierarchyChance = hierarchySpinner.getSelection();
+                options.setProperty(GeneratorOptions.HIERARCHY_CHANCE,
+                        hierarchySpinner.getSelection() / 100.0f);
             }
         });
         
         hierarchyLevelSpinner.addModifyListener(new ModifyListener() {
             public void modifyText(final ModifyEvent e) {
-                maxHierarchyLevel = hierarchyLevelSpinner.getSelection();
+                options.setProperty(GeneratorOptions.MAX_HIERARCHY_LEVEL,
+                        hierarchyLevelSpinner.getSelection());
             }
         });
         
         hierarchyFactorSpinner.addModifyListener(new ModifyListener() {
             public void modifyText(final ModifyEvent e) {
-                hierarchyNodesFactor = ((float) hierarchyFactorSpinner.getSelection()) / 100f;
+                options.setProperty(GeneratorOptions.HIERARCHY_NODES_FACTOR,
+                        hierarchyFactorSpinner.getSelection() / 100f);
             }
         });
         
-        hierarchyEdgesButton.addSelectionListener(new SelectionListener() {
+        hierarchyEdgesButton.addSelectionListener(new SelectionAdapter() {
             public void widgetSelected(final SelectionEvent e) {
-                crossHierarchyEdges = hierarchyEdgesButton.getSelection();
-            }
-
-            public void widgetDefaultSelected(final SelectionEvent e) {
-                // do nothing
+                options.setProperty(GeneratorOptions.CROSS_HIERARCHY_EDGES,
+                        hierarchyEdgesButton.getSelection());
             }
         });
     }
@@ -260,7 +245,7 @@ public class RandomGraphOptionsPage extends WizardPage {
         portsButton.setText(Messages.RandomGraphUtilityPage_ports_caption);
         portsButton.setToolTipText(Messages.RandomGraphUtilityPage_ports_help);
         portsButton.setLayoutData(new GridData(SWT.LEFT, SWT.NONE, false, false, 2, 1));
-        portsButton.setSelection(ports);
+        portsButton.setSelection(options.getProperty(GeneratorOptions.ENABLE_PORTS));
         
         // Use existing ports chance
         Label label = new Label(portsGroup, SWT.NULL);
@@ -272,8 +257,10 @@ public class RandomGraphOptionsPage extends WizardPage {
         
         final Spinner useExistingPortsChanceSpinner = new Spinner(portsGroup, SWT.BORDER | SWT.SINGLE);
         useExistingPortsChanceSpinner.setToolTipText(Messages.RandomGraphUtilityPage_port_reuse_help);
-        useExistingPortsChanceSpinner.setValues(useExistingPortsChance, 0, 100, 0, 1, 10);
-        useExistingPortsChanceSpinner.setEnabled(ports);
+        useExistingPortsChanceSpinner.setValues(
+                (int) (options.getProperty(GeneratorOptions.USE_EXISTING_PORTS_CHANCE) * 100),
+                0, 100, 0, 1, 10);
+        useExistingPortsChanceSpinner.setEnabled(options.getProperty(GeneratorOptions.ENABLE_PORTS));
         
         gridData = new GridData(SWT.LEFT, SWT.NONE, false, false);
         gridData.widthHint = 80;
@@ -281,155 +268,19 @@ public class RandomGraphOptionsPage extends WizardPage {
 
         // Event listeners
         portsButton.addSelectionListener(new SelectionAdapter() {
-            @Override
             public void widgetSelected(final SelectionEvent e) {
-                ports = portsButton.getSelection();
-                useExistingPortsChanceSpinner.setEnabled(ports);
+                boolean enablePorts = portsButton.getSelection();
+                options.setProperty(GeneratorOptions.ENABLE_PORTS, enablePorts);
+                useExistingPortsChanceSpinner.setEnabled(enablePorts);
             }
         });
         
         useExistingPortsChanceSpinner.addModifyListener(new ModifyListener() {
             public void modifyText(final ModifyEvent e) {
-                useExistingPortsChance = useExistingPortsChanceSpinner.getSelection();
+                options.setProperty(GeneratorOptions.USE_EXISTING_PORTS_CHANCE,
+                        useExistingPortsChanceSpinner.getSelection() / 100.0);
             }
         });
-    }
-
-    // CHECKSTYLEON MagicNumber
-
-    /**
-     * Saves the selected options to the preference store.
-     */
-    public void savePreferences() {
-        IPreferenceStore preferenceStore = KGraphActivator.getInstance().getPreferenceStore();
-        preferenceStore.setValue(ENABLE_HIERARCHY,
-                hierarchyEnabled);
-        preferenceStore.setValue(RandomGraphGenerator.HIERARCHY_CHANCE.getId(),
-                hierarchyChance);
-        preferenceStore.setValue(RandomGraphGenerator.MAX_HIERARCHY_LEVEL.getId(),
-                maxHierarchyLevel);
-        preferenceStore.setValue(RandomGraphGenerator.HIERARCHY_NODES_FACTOR.getId(),
-                hierarchyNodesFactor);
-        preferenceStore.setValue(RandomGraphGenerator.HYPERNODE_CHANCE.getId(),
-                hypernodeChance);
-        preferenceStore.setValue(RandomGraphGenerator.PORTS.getId(),
-                ports);
-        preferenceStore.setValue(RandomGraphGenerator.USE_EXISTING_PORTS_CHANCE.getId(),
-                useExistingPortsChance);
-        preferenceStore.setValue(RandomGraphGenerator.CROSS_HIERARCHY_EDGES.getId(),
-                crossHierarchyEdges);
-    }
-
-    private void loadPreferences() {
-        IPreferenceStore preferenceStore = KGraphActivator.getInstance().getPreferenceStore();
-        hierarchyEnabled = preferenceStore.getBoolean(
-                ENABLE_HIERARCHY);
-        hierarchyChance = preferenceStore.getInt(
-                RandomGraphGenerator.HIERARCHY_CHANCE.getId());
-        maxHierarchyLevel = preferenceStore.getInt(
-                RandomGraphGenerator.MAX_HIERARCHY_LEVEL.getId());
-        hierarchyNodesFactor = preferenceStore.getFloat(
-                RandomGraphGenerator.HIERARCHY_NODES_FACTOR.getId());
-        hypernodeChance = preferenceStore.getInt(
-                RandomGraphGenerator.HYPERNODE_CHANCE.getId());
-        ports = preferenceStore.getBoolean(
-                RandomGraphGenerator.PORTS.getId());
-        useExistingPortsChance = preferenceStore.getInt(
-                RandomGraphGenerator.USE_EXISTING_PORTS_CHANCE.getId());
-        crossHierarchyEdges = preferenceStore.getBoolean(
-                RandomGraphGenerator.CROSS_HIERARCHY_EDGES.getId());
-    }
-
-    private void setDefaultPreferences() {
-        IPreferenceStore preferenceStore = KGraphActivator.getInstance().getPreferenceStore();
-        preferenceStore.setDefault(ENABLE_HIERARCHY,
-                false);
-        preferenceStore.setDefault(RandomGraphGenerator.HIERARCHY_CHANCE.getId(),
-                DEFAULT_HIERARCHY_CHANCE);
-        preferenceStore.setDefault(RandomGraphGenerator.MAX_HIERARCHY_LEVEL.getId(),
-                RandomGraphGenerator.MAX_HIERARCHY_LEVEL.getDefault());
-        preferenceStore.setDefault(RandomGraphGenerator.HIERARCHY_NODES_FACTOR.getId(),
-                RandomGraphGenerator.HIERARCHY_NODES_FACTOR.getDefault());
-        preferenceStore.setDefault(RandomGraphGenerator.HYPERNODE_CHANCE.getId(),
-                (int) (RandomGraphGenerator.HYPERNODE_CHANCE.getDefault() * HUNDRED_PERCENT));
-        preferenceStore.setDefault(RandomGraphGenerator.PORTS.getId(),
-                RandomGraphGenerator.PORTS.getDefault());
-        preferenceStore.setDefault(RandomGraphGenerator.USE_EXISTING_PORTS_CHANCE.getId(),
-                (int) (RandomGraphGenerator.USE_EXISTING_PORTS_CHANCE.getDefault() * HUNDRED_PERCENT));
-        preferenceStore.setDefault(RandomGraphGenerator.CROSS_HIERARCHY_EDGES.getId(),
-                RandomGraphGenerator.CROSS_HIERARCHY_EDGES.getDefault());
-    }
-    
-    /**
-     * Checks if hierarchy is enabled.
-     * 
-     * @return {@code true} if hierarchy is enabled.
-     */
-    public boolean isHierarchyEnabled() {
-        return hierarchyEnabled;
-    }
-
-    /**
-     * Returns the hierarchy chance.
-     * 
-     * @return the hierarchy chance
-     */
-    public float getHierarchyChance() {
-        return hierarchyChance / HUNDRED_PERCENT;
-    }
-
-    /**
-     * Returns the maximum hierarchy level.
-     * 
-     * @return the maximum hierarchy level
-     */
-    public int getMaximumHierarchyLevel() {
-        return maxHierarchyLevel;
-    }
-
-    /**
-     * Returns the factor for computing the number of nodes in a compound node.
-     * 
-     * @return the factor
-     */
-    public float getHierarchyNodesFactor() {
-        return hierarchyNodesFactor;
-    }
-
-    /**
-     * Returns the hypernode chance.
-     * 
-     * @return the hypernode chance
-     */
-    public float getHypernodeChance() {
-        return hypernodeChance / HUNDRED_PERCENT;
-    }
-
-    /**
-     * Returns whether ports have to be used to connect nodes.
-     * 
-     * @return true if ports have to be used; false else
-     */
-    public boolean getPorts() {
-        return ports;
-    }
-    
-    /**
-     * Returns the chance for edges to use existing ports rather than newly created ones.
-     * 
-     * @return the chance to use existing ports.
-     */
-    public float getUseExistingPortsChance() {
-        return useExistingPortsChance / HUNDRED_PERCENT;
-    }
-    
-    /**
-     * Returns whether cross-hierarchy edges are allowed.
-     * 
-     * @return true if cross-hierarchy edges are allowed
-     */
-    public boolean getCrossHierarchyEdges() {
-        return crossHierarchyEdges;
     }
     
 }

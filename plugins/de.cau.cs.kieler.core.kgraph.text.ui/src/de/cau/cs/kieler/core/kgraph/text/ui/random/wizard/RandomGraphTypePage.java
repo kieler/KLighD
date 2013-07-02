@@ -13,19 +13,17 @@
  */
 package de.cau.cs.kieler.core.kgraph.text.ui.random.wizard;
 
-import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 
-import de.cau.cs.kieler.core.kgraph.text.ui.internal.KGraphActivator;
-import de.cau.cs.kieler.core.kgraph.text.ui.random.RandomGraphGenerator;
+import de.cau.cs.kieler.core.kgraph.text.ui.random.GeneratorOptions;
 
 /**
  * The random graph wizard page which lets the user select a graph type. The graph type implies what
@@ -36,18 +34,19 @@ import de.cau.cs.kieler.core.kgraph.text.ui.random.RandomGraphGenerator;
  */
 public class RandomGraphTypePage extends WizardPage {
 
-    /** the selected graph type. */
-    private RandomGraphGenerator.GraphType graphType = RandomGraphGenerator.GraphType.ANY;
+    /** the generator options. */
+    private GeneratorOptions options;
 
     /**
      * Constructs a RandomGraphTypePage.
+     * 
+     * @param options the generator options
      */
-    public RandomGraphTypePage() {
+    public RandomGraphTypePage(final GeneratorOptions options) {
         super("randomGraphTypePage"); //$NON-NLS-1$
         setTitle(Messages.RandomGraphTypePage_title);
         setDescription(Messages.RandomGraphTypePage_description);
-        setDefaultPreferences();
-        loadPreferences();
+        this.options = options;
     }
 
     /**
@@ -77,31 +76,26 @@ public class RandomGraphTypePage extends WizardPage {
                 composite,
                 Messages.RandomGraphTypePage_tree_graph_type_caption,
                 Messages.RandomGraphTypePage_tree_graph_type_help,
-                RandomGraphGenerator.GraphType.TREE,
-                graphType);
+                GeneratorOptions.GraphType.TREE);
         addRadioButton(
                 composite,
                 Messages.RandomGraphTypePage_biconnected_graph_type_caption,
                 Messages.RandomGraphTypePage_biconnected_graph_type_help,
-                RandomGraphGenerator.GraphType.BICONNECTED,
-                graphType);
+                GeneratorOptions.GraphType.BICONNECTED);
         addRadioButton(composite,
                 Messages.RandomGraphTypePage_triconnected_graph_type_caption,
                 Messages.RandomGraphTypePage_triconnected_graph_type_help,
-                RandomGraphGenerator.GraphType.TRICONNECTED,
-                graphType);
+                GeneratorOptions.GraphType.TRICONNECTED);
         addRadioButton(
                 composite,
                 Messages.RandomGraphTypePage_ante_graph_type_caption,
                 Messages.RandomGraphTypePage_ante_graph_type_help,
-                RandomGraphGenerator.GraphType.ACYCLIC_NO_TRANSITIVE_EDGES,
-                graphType);
+                GeneratorOptions.GraphType.ACYCLIC_NO_TRANSITIVE_EDGES);
         addRadioButton(
                 composite,
                 Messages.RandomGraphTypePage_any_graph_type_caption,
                 Messages.RandomGraphTypePage_any_graph_type_help,
-                RandomGraphGenerator.GraphType.ANY,
-                graphType);
+                GeneratorOptions.GraphType.ANY);
     }
     
     /**
@@ -111,68 +105,25 @@ public class RandomGraphTypePage extends WizardPage {
      * @param text the button's text.
      * @param toolTip the button's tool tip text.
      * @param type the graph type represented by the button.
-     * @param selected the currently selected graph type. If this is equal to the button's graph type,
-     *                 the button will be selected.
      */
     private void addRadioButton(final Composite parent, final String text, final String toolTip,
-            final RandomGraphGenerator.GraphType type, final RandomGraphGenerator.GraphType selected) {
+            final GeneratorOptions.GraphType type) {
         
         final Button radio = new Button(parent, SWT.RADIO | SWT.LEFT);
         radio.setText(text);
         radio.setToolTipText(toolTip);
         
-        if (type.equals(selected)) {
+        if (type.equals(options.getProperty(GeneratorOptions.GRAPH_TYPE))) {
             radio.setSelection(true);
         }
         
-        radio.addSelectionListener(new SelectionListener() {
-
+        radio.addSelectionListener(new SelectionAdapter() {
             public void widgetSelected(final SelectionEvent e) {
                 if (radio.getSelection()) {
-                    graphType = type;
+                    options.setProperty(GeneratorOptions.GRAPH_TYPE, type);
                 }
-            }
-
-            public void widgetDefaultSelected(final SelectionEvent e) {
-                // do nothing
             }
         });
     }
-
-    // CHECKSTYLEON MagicNumber
-
-    /**
-     * Saves the selected graph type to the preference store.
-     */
-    public void savePreferences() {
-        IPreferenceStore preferenceStore = KGraphActivator.getInstance().getPreferenceStore();
-        preferenceStore.setValue(RandomGraphGenerator.GRAPH_TYPE.getId(), graphType.toString());
-    }
     
-    /**
-     * Loads the previously selected graph type from the preference store.
-     */
-    private void loadPreferences() {
-        IPreferenceStore preferenceStore = KGraphActivator.getInstance().getPreferenceStore();
-        graphType = RandomGraphGenerator.GraphType.valueOf(
-                preferenceStore.getString(RandomGraphGenerator.GRAPH_TYPE.getId()));
-    }
-    
-    /**
-     * Sets the default graph type.
-     */
-    private void setDefaultPreferences() {
-        IPreferenceStore preferenceStore = KGraphActivator.getInstance().getPreferenceStore();
-        preferenceStore.setDefault(RandomGraphGenerator.GRAPH_TYPE.getId(),
-                RandomGraphGenerator.GraphType.ANY.toString());
-    }
-
-    /**
-     * Returns the selected graph type.
-     * 
-     * @return the graph type
-     */
-    public RandomGraphGenerator.GraphType getGraphType() {
-        return graphType;
-    }
 }

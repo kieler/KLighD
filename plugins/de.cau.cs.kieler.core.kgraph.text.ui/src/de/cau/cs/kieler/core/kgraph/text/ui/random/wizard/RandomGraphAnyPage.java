@@ -13,13 +13,12 @@
  */
 package de.cau.cs.kieler.core.kgraph.text.ui.random.wizard;
 
-import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
+import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.layout.RowLayout;
@@ -29,8 +28,7 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Spinner;
 
-import de.cau.cs.kieler.core.kgraph.text.ui.internal.KGraphActivator;
-import de.cau.cs.kieler.core.kgraph.text.ui.random.RandomGraphGenerator;
+import de.cau.cs.kieler.core.kgraph.text.ui.random.GeneratorOptions;
 
 /**
  * The options page for the custom graph type.
@@ -40,46 +38,19 @@ import de.cau.cs.kieler.core.kgraph.text.ui.random.RandomGraphGenerator;
  */
 public class RandomGraphAnyPage extends WizardPage {
     
-    /** the minimum number of nodes. */
-    private int numberOfNodesMin;
-    /** the maximum number of nodes. */
-    private int numberOfNodesMax;
-    /** the selected edge determination. */
-    private RandomGraphGenerator.EdgeDetermination edgeDetermination;
-    /** the selected number of edges. */
-    private int numberOfEdges;
-    /** variance for the number of edges. */
-    private int edgesVariance;
-    /** the selected density. */
-    private int density;
-    /** variance for the density. */
-    private int densityVariance;
-    /** the selected relative edge number. */
-    private int relativeEdgeNumber;
-    /** variance for the relative edge number. */
-    private int relativeEdgeNumberVariance;
-    /** the selected minimum number of outgoing edges. */
-    private int minOutgoingEdges;
-    /** the selected maximum number of outgoing edges. */
-    private int maxOutgoingEdges;
-    /** the selected self loop allowance. */
-    private boolean selfLoops;
-    /** the selected multi edges allowance. */
-    private boolean multiEdges;
-    /** the selected cycle allowance. */
-    private boolean cycles;
-    /** the selected isolated nodes allowance. */
-    private boolean isolatedNodes;
+    /** the generator options. */
+    private GeneratorOptions options;
 
     /**
      * Constructs a RandomGraphAnyPage.
+     * 
+     * @param options the generator options
      */
-    public RandomGraphAnyPage() {
+    public RandomGraphAnyPage(final GeneratorOptions options) {
         super("randomGraphAnyPage"); //$NON-NLS-1$
         setTitle(Messages.RandomGraphAnyPage_title);
         setDescription(Messages.RandomGraphAnyPage_description);
-        setDefaultPreferences();
-        loadPreferences();
+        this.options = options;
     }
 
     /**
@@ -132,7 +103,8 @@ public class RandomGraphAnyPage extends WizardPage {
         
         final Spinner nodesMinSpinner = new Spinner(nodesGroup, SWT.BORDER | SWT.SINGLE);
         nodesMinSpinner.setToolTipText(Messages.RandomGraphAnyPage_number_of_nodes_min_help);
-        nodesMinSpinner.setValues(numberOfNodesMin, 1, Integer.MAX_VALUE, 0, 1, 10);
+        nodesMinSpinner.setValues(options.getProperty(GeneratorOptions.NUMBER_OF_NODES_MIN),
+                1, Integer.MAX_VALUE, 0, 1, 10);
         
         gridData = new GridData(SWT.LEFT, SWT.NONE, false, false);
         gridData.widthHint = 80;
@@ -143,7 +115,8 @@ public class RandomGraphAnyPage extends WizardPage {
         
         final Spinner nodesMaxSpinner = new Spinner(nodesGroup, SWT.BORDER | SWT.SINGLE);
         nodesMaxSpinner.setToolTipText(Messages.RandomGraphAnyPage_number_of_nodes_max_help);
-        nodesMaxSpinner.setValues(numberOfNodesMax, 1, Integer.MAX_VALUE, 0, 1, 10);
+        nodesMaxSpinner.setValues(options.getProperty(GeneratorOptions.NUMBER_OF_NODES_MAX),
+                1, Integer.MAX_VALUE, 0, 1, 10);
         
         gridData = new GridData(SWT.LEFT, SWT.NONE, false, false);
         gridData.widthHint = 80;
@@ -152,19 +125,17 @@ public class RandomGraphAnyPage extends WizardPage {
         // Event Listeners
         nodesMinSpinner.addModifyListener(new ModifyListener() {
             public void modifyText(final ModifyEvent e) {
-                numberOfNodesMin = nodesMinSpinner.getSelection();
-                if (numberOfNodesMax < numberOfNodesMin) {
-                    nodesMaxSpinner.setSelection(numberOfNodesMin);
-                }
+                options.setProperty(GeneratorOptions.NUMBER_OF_NODES_MIN,
+                        nodesMinSpinner.getSelection());
+                validate();
             }
         });
 
         nodesMaxSpinner.addModifyListener(new ModifyListener() {
             public void modifyText(final ModifyEvent e) {
-                numberOfNodesMax = nodesMaxSpinner.getSelection();
-                if (numberOfNodesMin > numberOfNodesMax) {
-                    nodesMinSpinner.setSelection(numberOfNodesMax);
-                }
+                options.setProperty(GeneratorOptions.NUMBER_OF_NODES_MAX,
+                        nodesMaxSpinner.getSelection());
+                validate();
             }
         });
     }
@@ -195,7 +166,8 @@ public class RandomGraphAnyPage extends WizardPage {
         
         final Spinner edgesSpinner = new Spinner(edgeGroup, SWT.BORDER | SWT.SINGLE);
         edgesSpinner.setToolTipText(Messages.RandomGraphAnyPage_number_of_edges_help);
-        edgesSpinner.setValues(numberOfEdges, 0, Integer.MAX_VALUE, 0, 1, 10);
+        edgesSpinner.setValues(options.getProperty(GeneratorOptions.NUMBER_OF_EDGES),
+                0, Integer.MAX_VALUE, 0, 1, 10);
         edgesSpinner.setEnabled(false);
         
         gridData = new GridData(SWT.LEFT, SWT.NONE, false, false);
@@ -207,7 +179,8 @@ public class RandomGraphAnyPage extends WizardPage {
         
         final Spinner edgesVarianceSpinner = new Spinner(edgeGroup, SWT.BORDER | SWT.SINGLE);
         edgesVarianceSpinner.setToolTipText(Messages.RandomGraphAnyPage_number_of_edges_variance_help);
-        edgesVarianceSpinner.setValues(edgesVariance, 0, Integer.MAX_VALUE, 0, 1, 10);
+        edgesVarianceSpinner.setValues(options.getProperty(GeneratorOptions.EDGES_VARIANCE),
+                0, Integer.MAX_VALUE, 0, 1, 10);
         edgesVarianceSpinner.setEnabled(false);
         
         gridData = new GridData(SWT.LEFT, SWT.NONE, false, false);
@@ -221,7 +194,8 @@ public class RandomGraphAnyPage extends WizardPage {
         
         final Spinner edgesRelSpinner = new Spinner(edgeGroup, SWT.BORDER | SWT.SINGLE);
         edgesRelSpinner.setToolTipText(Messages.RandomGraphAnyPage_rel_number_of_edges_help);
-        edgesRelSpinner.setValues(relativeEdgeNumber, 0, Integer.MAX_VALUE, 2, 1, 10);
+        edgesRelSpinner.setValues((int) (options.getProperty(GeneratorOptions.EDGES_RELATIVE) * 100),
+                0, Integer.MAX_VALUE, 2, 1, 10);
         edgesRelSpinner.setEnabled(false);
         
         gridData = new GridData(SWT.LEFT, SWT.NONE, false, false);
@@ -234,7 +208,9 @@ public class RandomGraphAnyPage extends WizardPage {
         final Spinner edgesRelVarianceSpinner = new Spinner(edgeGroup, SWT.BORDER | SWT.SINGLE);
         edgesRelVarianceSpinner.setToolTipText(
                 Messages.RandomGraphAnyPage_rel_number_of_edges_variance_help);
-        edgesRelVarianceSpinner.setValues(relativeEdgeNumberVariance, 0, Integer.MAX_VALUE, 2, 1, 10);
+        edgesRelVarianceSpinner.setValues(
+                (int) (options.getProperty(GeneratorOptions.EDGES_REL_VARIANCE) * 100),
+                0, Integer.MAX_VALUE, 2, 1, 10);
         edgesRelVarianceSpinner.setEnabled(false);
         
         gridData = new GridData(SWT.LEFT, SWT.NONE, false, false);
@@ -248,7 +224,8 @@ public class RandomGraphAnyPage extends WizardPage {
         
         final Spinner densitySpinner = new Spinner(edgeGroup, SWT.BORDER | SWT.SINGLE);
         densitySpinner.setToolTipText(Messages.RandomGraphAnyPage_density_help);
-        densitySpinner.setValues(density, 0, 100, 0, 1, 10);
+        densitySpinner.setValues((int) (options.getProperty(GeneratorOptions.DENSITY) * 100),
+                0, 100, 0, 1, 10);
         densitySpinner.setEnabled(false);
         
         gridData = new GridData(SWT.LEFT, SWT.NONE, false, false);
@@ -260,7 +237,9 @@ public class RandomGraphAnyPage extends WizardPage {
         
         final Spinner densityVarianceSpinner = new Spinner(edgeGroup, SWT.BORDER | SWT.SINGLE);
         densityVarianceSpinner.setToolTipText(Messages.RandomGraphAnyPage_density_variance_help);
-        densityVarianceSpinner.setValues(densityVariance, 0, 100, 0, 1, 10);
+        densityVarianceSpinner.setValues(
+                (int) (options.getProperty(GeneratorOptions.DENSITY_VARIANCE) * 100),
+                0, 100, 0, 1, 10);
         densityVarianceSpinner.setEnabled(false);
         
         gridData = new GridData(SWT.LEFT, SWT.NONE, false, false);
@@ -283,7 +262,8 @@ public class RandomGraphAnyPage extends WizardPage {
         
         final Spinner minOutSpinner = new Spinner(edgeGroup, SWT.BORDER | SWT.SINGLE);
         minOutSpinner.setToolTipText(Messages.RandomGraphAnyPage_min_outgoing_help);
-        minOutSpinner.setValues(minOutgoingEdges, 0, Integer.MAX_VALUE, 0, 1, 10);
+        minOutSpinner.setValues(options.getProperty(GeneratorOptions.MIN_OUTGOING_EDGES),
+                0, Integer.MAX_VALUE, 0, 1, 10);
         minOutSpinner.setEnabled(false);
         
         gridData = new GridData(SWT.LEFT, SWT.NONE, false, false);
@@ -303,7 +283,8 @@ public class RandomGraphAnyPage extends WizardPage {
         
         final Spinner maxOutSpinner = new Spinner(edgeGroup, SWT.BORDER | SWT.SINGLE);
         maxOutSpinner.setToolTipText(Messages.RandomGraphAnyPage_max_outgoing_help);
-        maxOutSpinner.setValues(maxOutgoingEdges, 0, Integer.MAX_VALUE, 0, 1, 10);
+        maxOutSpinner.setValues(options.getProperty(GeneratorOptions.MAX_OUTGOING_EDGES),
+                0, Integer.MAX_VALUE, 0, 1, 10);
         maxOutSpinner.setEnabled(false);
         
         gridData = new GridData(SWT.LEFT, SWT.NONE, false, false);
@@ -316,62 +297,64 @@ public class RandomGraphAnyPage extends WizardPage {
         // Event listeners
         edgesSpinner.addModifyListener(new ModifyListener() {
             public void modifyText(final ModifyEvent e) {
-                numberOfEdges = edgesSpinner.getSelection();
+                options.setProperty(GeneratorOptions.NUMBER_OF_EDGES, edgesSpinner.getSelection());
             }
         });
         
         edgesVarianceSpinner.addModifyListener(new ModifyListener() {
             public void modifyText(final ModifyEvent e) {
-                edgesVariance = edgesVarianceSpinner.getSelection();
+                options.setProperty(GeneratorOptions.EDGES_VARIANCE,
+                        edgesVarianceSpinner.getSelection());
             }
         });
         
         edgesRelSpinner.addModifyListener(new ModifyListener() {
             public void modifyText(final ModifyEvent e) {
-                relativeEdgeNumber = edgesRelSpinner.getSelection();
+                options.setProperty(GeneratorOptions.EDGES_RELATIVE,
+                        edgesRelSpinner.getSelection() / 100.0);
             }
         });
         
         edgesRelVarianceSpinner.addModifyListener(new ModifyListener() {
             public void modifyText(final ModifyEvent e) {
-                relativeEdgeNumberVariance = edgesRelVarianceSpinner.getSelection();
+                options.setProperty(GeneratorOptions.EDGES_REL_VARIANCE,
+                        edgesRelVarianceSpinner.getSelection() / 100.0);
             }
         });
 
         densitySpinner.addModifyListener(new ModifyListener() {
             public void modifyText(final ModifyEvent e) {
-                density = densitySpinner.getSelection();
+                options.setProperty(GeneratorOptions.DENSITY,
+                        densitySpinner.getSelection() / 100.0);
             }
         });
 
         densityVarianceSpinner.addModifyListener(new ModifyListener() {
             public void modifyText(final ModifyEvent e) {
-                densityVariance = densityVarianceSpinner.getSelection();
+                options.setProperty(GeneratorOptions.DENSITY_VARIANCE,
+                        densityVarianceSpinner.getSelection() / 100.0);
             }
         });
 
         minOutSpinner.addModifyListener(new ModifyListener() {
             public void modifyText(final ModifyEvent e) {
-                minOutgoingEdges = minOutSpinner.getSelection();
-                if (maxOutgoingEdges < minOutgoingEdges) {
-                    maxOutSpinner.setSelection(minOutgoingEdges);
-                }
+                options.setProperty(GeneratorOptions.MIN_OUTGOING_EDGES, minOutSpinner.getSelection());
+                validate();
             }
         });
 
         maxOutSpinner.addModifyListener(new ModifyListener() {
             public void modifyText(final ModifyEvent e) {
-                maxOutgoingEdges = maxOutSpinner.getSelection();
-                if (minOutgoingEdges > maxOutgoingEdges) {
-                    minOutSpinner.setSelection(maxOutgoingEdges);
-                }
+                options.setProperty(GeneratorOptions.MAX_OUTGOING_EDGES, maxOutSpinner.getSelection());
+                validate();
             }
         });
         
         // Radio Button Controlling
-        edgesSwitch.addSelectionListener(new SelectionListenerAdapter() {
+        edgesSwitch.addSelectionListener(new SelectionAdapter() {
             public void widgetSelected(final SelectionEvent e) {
-                edgeDetermination = RandomGraphGenerator.EdgeDetermination.GRAPH_EDGES;
+                options.setProperty(GeneratorOptions.EDGE_DETERMINATION,
+                        GeneratorOptions.EdgeDetermination.GRAPH_EDGES);
                 edgesSpinner.setEnabled(true);
                 edgesVarianceSpinner.setEnabled(true);
                 edgesRelSpinner.setEnabled(false);
@@ -382,9 +365,10 @@ public class RandomGraphAnyPage extends WizardPage {
                 maxOutSpinner.setEnabled(false);
             }
         });
-        edgesRelSwitch.addSelectionListener(new SelectionListenerAdapter() {
+        edgesRelSwitch.addSelectionListener(new SelectionAdapter() {
             public void widgetSelected(final SelectionEvent e) {
-                edgeDetermination = RandomGraphGenerator.EdgeDetermination.RELATIVE;
+                options.setProperty(GeneratorOptions.EDGE_DETERMINATION,
+                        GeneratorOptions.EdgeDetermination.RELATIVE);
                 edgesSpinner.setEnabled(false);
                 edgesVarianceSpinner.setEnabled(false);
                 edgesRelSpinner.setEnabled(true);
@@ -395,9 +379,10 @@ public class RandomGraphAnyPage extends WizardPage {
                 maxOutSpinner.setEnabled(false);
             }
         });
-        densitySwitch.addSelectionListener(new SelectionListenerAdapter() {
+        densitySwitch.addSelectionListener(new SelectionAdapter() {
             public void widgetSelected(final SelectionEvent e) {
-                edgeDetermination = RandomGraphGenerator.EdgeDetermination.DENSITY;
+                options.setProperty(GeneratorOptions.EDGE_DETERMINATION,
+                        GeneratorOptions.EdgeDetermination.DENSITY);
                 edgesSpinner.setEnabled(false);
                 edgesVarianceSpinner.setEnabled(false);
                 edgesRelSpinner.setEnabled(false);
@@ -408,9 +393,10 @@ public class RandomGraphAnyPage extends WizardPage {
                 maxOutSpinner.setEnabled(false);
             }
         });
-        outgoingSwitch.addSelectionListener(new SelectionListenerAdapter() {
+        outgoingSwitch.addSelectionListener(new SelectionAdapter() {
             public void widgetSelected(final SelectionEvent e) {
-                edgeDetermination = RandomGraphGenerator.EdgeDetermination.OUTGOING_EDGES;
+                options.setProperty(GeneratorOptions.EDGE_DETERMINATION,
+                        GeneratorOptions.EdgeDetermination.OUTGOING_EDGES);
                 edgesSpinner.setEnabled(false);
                 edgesVarianceSpinner.setEnabled(false);
                 edgesRelSpinner.setEnabled(false);
@@ -421,7 +407,7 @@ public class RandomGraphAnyPage extends WizardPage {
                 maxOutSpinner.setEnabled(true);
             }
         });
-        switch (edgeDetermination) {
+        switch (options.getProperty(GeneratorOptions.EDGE_DETERMINATION)) {
         case DENSITY:
             densitySwitch.setSelection(true);
             densitySpinner.setEnabled(true);
@@ -462,273 +448,67 @@ public class RandomGraphAnyPage extends WizardPage {
         final Button selfLoopsButton = new Button(optionsGroup, SWT.CHECK);
         selfLoopsButton.setText(Messages.RandomGraphAnyPage_self_loops_caption);
         selfLoopsButton.setToolTipText(Messages.RandomGraphAnyPage_self_loops_help);
-        selfLoopsButton.setSelection(selfLoops);
+        selfLoopsButton.setSelection(options.getProperty(GeneratorOptions.SELF_LOOPS));
         
         // Multi Edges
         final Button multiEdgesButton = new Button(optionsGroup, SWT.CHECK);
         multiEdgesButton.setText(Messages.RandomGraphAnyPage_multi_edges_caption);
         multiEdgesButton.setToolTipText(Messages.RandomGraphAnyPage_multi_edges_help);
-        multiEdgesButton.setSelection(multiEdges);
+        multiEdgesButton.setSelection(options.getProperty(GeneratorOptions.MULTI_EDGES));
         
         // Cycles
         final Button cyclesButton = new Button(optionsGroup, SWT.CHECK);
         cyclesButton.setText(Messages.RandomGraphAnyPage_cycles_caption);
         cyclesButton.setToolTipText(Messages.RandomGraphAnyPage_cycles_help);
-        cyclesButton.setSelection(cycles);
+        cyclesButton.setSelection(options.getProperty(GeneratorOptions.CYCLES));
         
         // Isolated Nodes
         final Button isolatedButton = new Button(optionsGroup, SWT.CHECK);
         isolatedButton.setText(Messages.RandomGraphAnyPage_isolated_nodes_caption);
         isolatedButton.setToolTipText(Messages.RandomGraphAnyPage_isolated_nodes_help);
-        isolatedButton.setSelection(isolatedNodes);
+        isolatedButton.setSelection(options.getProperty(GeneratorOptions.ISOLATED_NODES));
         
         // Event listeners
-        selfLoopsButton.addSelectionListener(new SelectionListenerAdapter() {
+        selfLoopsButton.addSelectionListener(new SelectionAdapter() {
             public void widgetSelected(final SelectionEvent e) {
-                selfLoops = selfLoopsButton.getSelection();
+                options.setProperty(GeneratorOptions.SELF_LOOPS, selfLoopsButton.getSelection());
             }
         });
 
-        multiEdgesButton.addSelectionListener(new SelectionListenerAdapter() {
+        multiEdgesButton.addSelectionListener(new SelectionAdapter() {
             public void widgetSelected(final SelectionEvent e) {
-                multiEdges = multiEdgesButton.getSelection();
+                options.setProperty(GeneratorOptions.MULTI_EDGES, multiEdgesButton.getSelection());
             }
         });
 
-        cyclesButton.addSelectionListener(new SelectionListenerAdapter() {
+        cyclesButton.addSelectionListener(new SelectionAdapter() {
             public void widgetSelected(final SelectionEvent e) {
-                cycles = cyclesButton.getSelection();
+                options.setProperty(GeneratorOptions.CYCLES, cyclesButton.getSelection());
             }
         });
 
-        isolatedButton.addSelectionListener(new SelectionListenerAdapter() {
+        isolatedButton.addSelectionListener(new SelectionAdapter() {
             public void widgetSelected(final SelectionEvent e) {
-                isolatedNodes = isolatedButton.getSelection();
+                options.setProperty(GeneratorOptions.ISOLATED_NODES, isolatedButton.getSelection());
             }
         });
     }
-
-    /**
-     * Saves the selected options to the preference store.
-     */
-    public void savePreferences() {
-        IPreferenceStore preferenceStore = KGraphActivator.getInstance().getPreferenceStore();
-        preferenceStore.setValue(RandomGraphGenerator.NUMBER_OF_NODES_MIN.getId(), numberOfNodesMin);
-        preferenceStore.setValue(RandomGraphGenerator.NUMBER_OF_NODES_MAX.getId(), numberOfNodesMax);
-        preferenceStore.setValue(RandomGraphGenerator.EDGE_DETERMINATION.getId(),
-                edgeDetermination.ordinal());
-        preferenceStore.setValue(RandomGraphGenerator.NUMBER_OF_EDGES.getId(), numberOfEdges);
-        preferenceStore.setValue(RandomGraphGenerator.EDGES_VARIANCE.getId(), edgesVariance);
-        preferenceStore.setValue(RandomGraphGenerator.DENSITY.getId(), density);
-        preferenceStore.setValue(RandomGraphGenerator.DENSITY_VARIANCE.getId(), densityVariance);
-        preferenceStore.setValue(RandomGraphGenerator.EDGES_RELATIVE.getId(), relativeEdgeNumber);
-        preferenceStore.setValue(RandomGraphGenerator.EDGES_REL_VARIANCE.getId(),
-                relativeEdgeNumberVariance);
-        preferenceStore.setValue(RandomGraphGenerator.MIN_OUTGOING_EDGES.getId(), minOutgoingEdges);
-        preferenceStore.setValue(RandomGraphGenerator.MAX_OUTGOING_EDGES.getId(), maxOutgoingEdges);
-        preferenceStore.setValue(RandomGraphGenerator.SELF_LOOPS.getId(), selfLoops);
-        preferenceStore.setValue(RandomGraphGenerator.MULTI_EDGES.getId(), multiEdges);
-        preferenceStore.setValue(RandomGraphGenerator.CYCLES.getId(), cycles);
-        preferenceStore.setValue(RandomGraphGenerator.ISOLATED_NODES.getId(), isolatedNodes);
-    }
-
-    private void loadPreferences() {
-        IPreferenceStore preferenceStore = KGraphActivator.getInstance().getPreferenceStore();
-        numberOfNodesMin = preferenceStore.getInt(RandomGraphGenerator.NUMBER_OF_NODES_MIN.getId());
-        numberOfNodesMax = preferenceStore.getInt(RandomGraphGenerator.NUMBER_OF_NODES_MAX.getId());
-        edgeDetermination = RandomGraphGenerator.EdgeDetermination.values()
-                [preferenceStore.getInt(RandomGraphGenerator.EDGE_DETERMINATION.getId())];
-        numberOfEdges = preferenceStore.getInt(RandomGraphGenerator.NUMBER_OF_EDGES.getId());
-        edgesVariance = preferenceStore.getInt(RandomGraphGenerator.EDGES_VARIANCE.getId());
-        relativeEdgeNumber = preferenceStore.getInt(RandomGraphGenerator.EDGES_RELATIVE.getId());
-        relativeEdgeNumberVariance = preferenceStore.getInt(
-                RandomGraphGenerator.EDGES_REL_VARIANCE.getId());
-        density = preferenceStore.getInt(RandomGraphGenerator.DENSITY.getId());
-        densityVariance = preferenceStore.getInt(RandomGraphGenerator.DENSITY_VARIANCE.getId());
-        minOutgoingEdges = preferenceStore.getInt(RandomGraphGenerator.MIN_OUTGOING_EDGES.getId());
-        maxOutgoingEdges = preferenceStore.getInt(RandomGraphGenerator.MAX_OUTGOING_EDGES.getId());
-        selfLoops = preferenceStore.getBoolean(RandomGraphGenerator.SELF_LOOPS.getId());
-        multiEdges = preferenceStore.getBoolean(RandomGraphGenerator.MULTI_EDGES.getId());
-        cycles = preferenceStore.getBoolean(RandomGraphGenerator.CYCLES.getId());
-        isolatedNodes = preferenceStore.getBoolean(RandomGraphGenerator.ISOLATED_NODES.getId());
-    }
-
-    private void setDefaultPreferences() {
-        IPreferenceStore preferenceStore = KGraphActivator.getInstance().getPreferenceStore();
-        preferenceStore.setDefault(RandomGraphGenerator.NUMBER_OF_NODES_MIN.getId(),
-                RandomGraphGenerator.NUMBER_OF_NODES_MIN.getDefault());
-        preferenceStore.setDefault(RandomGraphGenerator.NUMBER_OF_NODES_MAX.getId(),
-                RandomGraphGenerator.NUMBER_OF_NODES_MAX.getDefault());
-        preferenceStore.setDefault(RandomGraphGenerator.EDGE_DETERMINATION.getId(),
-                RandomGraphGenerator.EdgeDetermination.GRAPH_EDGES.ordinal());
-        preferenceStore.setDefault(RandomGraphGenerator.NUMBER_OF_EDGES.getId(),
-                RandomGraphGenerator.NUMBER_OF_EDGES.getDefault());
-        preferenceStore.setDefault(RandomGraphGenerator.EDGES_VARIANCE.getId(),
-                RandomGraphGenerator.EDGES_VARIANCE.getDefault());
-        preferenceStore.setDefault(RandomGraphGenerator.EDGES_RELATIVE.getId(),
-                (int) (RandomGraphGenerator.EDGES_RELATIVE.getDefault() * 100));
-        preferenceStore.setDefault(RandomGraphGenerator.EDGES_REL_VARIANCE.getId(),
-                (int) (RandomGraphGenerator.EDGES_REL_VARIANCE.getDefault() * 100));
-        preferenceStore.setDefault(RandomGraphGenerator.DENSITY.getId(),
-                (int) (RandomGraphGenerator.DENSITY.getDefault() * 100));
-        preferenceStore.setDefault(RandomGraphGenerator.DENSITY_VARIANCE.getId(),
-                (int) (RandomGraphGenerator.DENSITY_VARIANCE.getDefault() * 100));
-        preferenceStore.setDefault(RandomGraphGenerator.MIN_OUTGOING_EDGES.getId(),
-                RandomGraphGenerator.MIN_OUTGOING_EDGES.getDefault());
-        preferenceStore.setDefault(RandomGraphGenerator.MAX_OUTGOING_EDGES.getId(),
-                RandomGraphGenerator.MAX_OUTGOING_EDGES.getDefault());
-        preferenceStore.setDefault(RandomGraphGenerator.SELF_LOOPS.getId(),
-                RandomGraphGenerator.SELF_LOOPS.getDefault());
-        preferenceStore.setDefault(RandomGraphGenerator.MULTI_EDGES.getId(),
-                RandomGraphGenerator.MULTI_EDGES.getDefault());
-        preferenceStore.setDefault(RandomGraphGenerator.CYCLES.getId(),
-                RandomGraphGenerator.CYCLES.getDefault());
-        preferenceStore.setDefault(RandomGraphGenerator.ISOLATED_NODES.getId(),
-                RandomGraphGenerator.ISOLATED_NODES.getDefault());
-    }
-
-    /**
-     * Returns the minimum number of nodes.
-     * 
-     * @return the minimum number of nodes
-     */
-    public int getMinNumberOfNodes() {
-        return numberOfNodesMin;
-    }
-
-    /**
-     * Returns the maximum number of nodes.
-     * 
-     * @return the maximum number of nodes
-     */
-    public int getMaxNumberOfNodes() {
-        return numberOfNodesMax;
-    }
-
-    /**
-     * Returns the selected edge determination.
-     * 
-     * @return the edge determination
-     */
-    public RandomGraphGenerator.EdgeDetermination getEdgeDetermination() {
-        return edgeDetermination;
-    }
-
-    /**
-     * Returns the selected number of edges.
-     * 
-     * @return the number of edges
-     */
-    public int getNumberOfEdges() {
-        return numberOfEdges;
-    }
     
     /**
-     * Returns the variance of the number of edges.
-     * 
-     * @return the edge number variance
+     * Check all values that can be configured through this wizard page.
      */
-    public int getEdgesVariance() {
-        return edgesVariance;
-    }
-    
-    /**
-     * Returns the relative number of edges.
-     * 
-     * @return the relative number of edges
-     */
-    public double getRelativeNumberOfEdges() {
-        return relativeEdgeNumber / 100.0;
-    }
-    
-    
-    /**
-     * Returns the variance of relative edge number.
-     * 
-     * @return the relative edge number variance
-     */
-    public double getRelativeEdgesVariance() {
-        return relativeEdgeNumberVariance / 100.0;
-    }
-    
-    /**
-     * Returns the selected density.
-     * 
-     * @return the density
-     */
-    public double getDensity() {
-        return density / 100.0;
-    }
-    
-    /**
-     * Returns the density variance.
-     * 
-     * @return the density variance
-     */
-    public double getDensityVariance() {
-        return densityVariance / 100.0;
-    }
-
-    /**
-     * Returns the selected minimum number of outgoing edges.
-     * 
-     * @return the minimum number of outgoing edges
-     */
-    public int getMinOutgoingEdges() {
-        return minOutgoingEdges;
-    }
-
-    /**
-     * Returns the selected maximum number of outgoing edges.
-     * 
-     * @return the maximum number of outgoing edges
-     */
-    public int getMaxOutgoingEdges() {
-        return maxOutgoingEdges;
-    }
-
-    /**
-     * Returns whether self-loops are allowed.
-     * 
-     * @return true if self-loops are allowed; false otherwise
-     */
-    public boolean getSelfLoops() {
-        return selfLoops;
-    }
-
-    /**
-     * Returns whether multi-edges are allowed.
-     * 
-     * @return true if multi-edges are allowed; false otherwise
-     */
-    public boolean getMultiEdges() {
-        return multiEdges;
-    }
-
-    /**
-     * Returns whether cycles are allowed.
-     * 
-     * @return true if cycles are allowed; false otherwise
-     */
-    public boolean getCycles() {
-        return cycles;
-    }
-    
-    /**
-     * Returns whether isolated nodes are allowed.
-     * 
-     * @return true if isolated nodes are allowed; false otherwise
-     */
-    public boolean getIsolatedNodes() {
-        return isolatedNodes;
-    }
-
-    /**
-     * An adapter class for the SelectionListener.
-     */
-    private abstract static class SelectionListenerAdapter implements SelectionListener {
-        public void widgetDefaultSelected(final SelectionEvent e) {
-            // do nothing
+    private void validate() {
+        if (options.getProperty(GeneratorOptions.NUMBER_OF_NODES_MIN)
+                > options.getProperty(GeneratorOptions.NUMBER_OF_NODES_MAX)) {
+            setErrorMessage(Messages.RandomGraphAnyPage_number_of_nodes_error);
+            return;
         }
+        if (options.getProperty(GeneratorOptions.MIN_OUTGOING_EDGES)
+                > options.getProperty(GeneratorOptions.MAX_OUTGOING_EDGES)) {
+            setErrorMessage(Messages.RandomGraphAnyPage_outgoing_edges_error);
+            return;
+        }
+        setErrorMessage(null);
     }
+    
 }

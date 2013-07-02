@@ -22,6 +22,7 @@ public class Messages extends NLS {
     
     private static final String BUNDLE_NAME =
             "de.cau.cs.kieler.core.kgraph.text.ui.random.wizard.messages"; //$NON-NLS-1$
+    
     public static String RandomGraphANTEPage_description;
     public static String RandomGraphANTEPage_number_of_edges_caption;
     public static String RandomGraphANTEPage_number_of_edges_help;
@@ -67,14 +68,14 @@ public class Messages extends NLS {
     public static String RandomGraphAnyPage_self_loops_caption;
     public static String RandomGraphAnyPage_self_loops_help;
     public static String RandomGraphAnyPage_title;
+    public static String RandomGraphAnyPage_number_of_nodes_error;
+    public static String RandomGraphAnyPage_outgoing_edges_error;
     public static String RandomGraphBiconnectedPage_description;
     public static String RandomGraphBiconnectedPage_number_of_edges_caption;
     public static String RandomGraphBiconnectedPage_number_of_edges_help;
     public static String RandomGraphBiconnectedPage_number_of_nodes_caption;
     public static String RandomGraphBiconnectedPage_number_of_nodes_help;
     public static String RandomGraphBiconnectedPage_title;
-    public static String RandomGraphNewFilePage_create_diagrams_caption;
-    public static String RandomGraphNewFilePage_create_diagrams_help;
     public static String RandomGraphNewFilePage_time_seed_caption;
     public static String RandomGraphNewFilePage_time_seed_help;
     public static String RandomGraphNewFilePage_description;
@@ -82,8 +83,6 @@ public class Messages extends NLS {
     public static String RandomGraphNewFilePage_number_of_graphs_help;
     public static String RandomGraphNewFilePage_random_seed_caption;
     public static String RandomGraphNewFilePage_random_seed_help;
-    public static String RandomGraphNewFilePage_open_diagrams_caption;
-    public static String RandomGraphNewFilePage_open_diagrams_help;
     public static String RandomGraphNewFilePage_options_group_caption;
     public static String RandomGraphNewFilePage_title;
     public static String RandomGraphTreePage_description;
@@ -112,8 +111,6 @@ public class Messages extends NLS {
     public static String RandomGraphTypePage_triconnected_graph_type_caption;
     public static String RandomGraphTypePage_triconnected_graph_type_help;
     public static String RandomGraphUtilityPage_description;
-    public static String RandomGraphUtilityPage_directed_caption;
-    public static String RandomGraphUtilityPage_directed_help;
     public static String RandomGraphUtilityPage_hierarchy_caption;
     public static String RandomGraphUtilityPage_hierarchy_factor_caption;
     public static String RandomGraphUtilityPage_hierarchy_factor_help;
@@ -141,6 +138,8 @@ public class Messages extends NLS {
     public static String RandomGraphWizard_soft_limit_graphs_message;
     public static String RandomGraphWizard_soft_limit_open_diagrams_message;
     public static String RandomGraphWizard_title;
+    public static String RandomGraphWizard_load_preferences_error;
+    public static String RandomGraphWizard_default_preferences_error;
     
     static {
         // initialize resource bundle

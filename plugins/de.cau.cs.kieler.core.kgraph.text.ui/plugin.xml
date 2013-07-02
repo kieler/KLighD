@@ -270,4 +270,10 @@
             name="KGraph">
       </category>
    </extension>
+   <extension
+         point="org.eclipse.core.runtime.preferences">
+      <initializer
+            class="de.cau.cs.kieler.core.kgraph.text.ui.random.GeneratorPreferenceInitializer">
+      </initializer>
+   </extension>
 </plugin>

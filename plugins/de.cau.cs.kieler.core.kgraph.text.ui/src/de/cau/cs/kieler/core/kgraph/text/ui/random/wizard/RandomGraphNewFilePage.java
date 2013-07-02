@@ -13,13 +13,12 @@
  */
 package de.cau.cs.kieler.core.kgraph.text.ui.random.wizard;
 
-import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
+import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -29,7 +28,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Spinner;
 import org.eclipse.ui.dialogs.WizardNewFileCreationPage;
 
-import de.cau.cs.kieler.core.kgraph.text.ui.internal.KGraphActivator;
+import de.cau.cs.kieler.core.kgraph.text.ui.random.GeneratorOptions;
 
 /**
  * The wizard page from which to select the file where the graph is generated into.
@@ -39,40 +38,23 @@ import de.cau.cs.kieler.core.kgraph.text.ui.internal.KGraphActivator;
  */
 public class RandomGraphNewFilePage extends WizardNewFileCreationPage {
 
-    /** the preference key for the number of graphs. */
-    private static final String PREFERENCE_NUMBER_OF_GRAPHS
-            = "randomWizard.numberOfGraphs"; //$NON-NLS-1$
-    /** the preference key for the filename. */
-    private static final String PREFERENCE_FILENAME
-            = "randomWizard.filename"; //$NON-NLS-1$
-    /** the preference key for the time-based randomization seed. */
-    private static final String PREFERENCE_TIME_BASED_SEED
-            = "randomWizard.timeBasedSeed"; //$NON-NLS-1$
-    /** the preference key for the randomization seed value. */
-    private static final String PREFERENCE_RANDOM_SEED
-            = "randomWizard.randomSeedValue"; //$NON-NLS-1$
-
-    /** the number of graphs to be created. */
-    private int numberOfGraphs;
-    /** whether to use a time-based randomization seed. */
-    private boolean timeBasedSeed;
-    /** fixed value for randomization seed. */
-    private int randomSeed;
+    /** the generator options. */
+    private GeneratorOptions options;
 
     /**
      * Constructs the new file wizard page.
      * 
-     * @param selection
-     *            the selection the wizard is called on
+     * @param selection the selection the wizard is called on
+     * @param options the generator options
      */
-    public RandomGraphNewFilePage(final IStructuredSelection selection) {
+    public RandomGraphNewFilePage(final IStructuredSelection selection,
+            final GeneratorOptions options) {
         super("randomGraphNewFilePage", selection); //$NON-NLS-1$
         setTitle(Messages.RandomGraphNewFilePage_title);
         setDescription(Messages.RandomGraphNewFilePage_description);
         setFileExtension("kgt"); //$NON-NLS-1$
         setAllowExistingResources(true);
-        setDefaultPreferences();
-        loadPreferences();
+        this.options = options;
     }
 
     /**
@@ -97,7 +79,8 @@ public class RandomGraphNewFilePage extends WizardNewFileCreationPage {
         
         final Spinner graphsSpinner = new Spinner(group, SWT.BORDER | SWT.SINGLE);
         graphsSpinner.setToolTipText(Messages.RandomGraphNewFilePage_number_of_graphs_help);
-        graphsSpinner.setValues(numberOfGraphs, 1, Integer.MAX_VALUE, 0, 1, 10);
+        graphsSpinner.setValues(options.getProperty(GeneratorOptions.NUMBER_OF_GRAPHS),
+                1, Integer.MAX_VALUE, 0, 1, 10);
         
         gridData = new GridData(SWT.LEFT, SWT.NONE, false, false);
         gridData.widthHint = 50;
@@ -107,7 +90,7 @@ public class RandomGraphNewFilePage extends WizardNewFileCreationPage {
         final Button timeSeedButton = new Button(group, SWT.CHECK);
         timeSeedButton.setText(Messages.RandomGraphNewFilePage_time_seed_caption);
         timeSeedButton.setToolTipText(Messages.RandomGraphNewFilePage_time_seed_help);
-        timeSeedButton.setSelection(timeBasedSeed);
+        timeSeedButton.setSelection(options.getProperty(GeneratorOptions.TIME_BASED_RANDOMIZATION));
         
         gridData = new GridData(SWT.LEFT, SWT.NONE, false, false);
         gridData.horizontalSpan = 2;
@@ -120,8 +103,9 @@ public class RandomGraphNewFilePage extends WizardNewFileCreationPage {
         
         final Spinner seedSpinner = new Spinner(group, SWT.BORDER | SWT.SINGLE);
         seedSpinner.setToolTipText(Messages.RandomGraphNewFilePage_random_seed_help);
-        seedSpinner.setValues(randomSeed, 0, Integer.MAX_VALUE, 0, 1, 10);
-        seedSpinner.setEnabled(!timeBasedSeed);
+        seedSpinner.setValues(options.getProperty(GeneratorOptions.RANDOMIZATION_SEED),
+                0, Integer.MAX_VALUE, 0, 1, 10);
+        seedSpinner.setEnabled(!options.getProperty(GeneratorOptions.TIME_BASED_RANDOMIZATION));
         
         gridData = new GridData(SWT.LEFT, SWT.NONE, false, false);
         gridData.widthHint = 50;
@@ -140,85 +124,21 @@ public class RandomGraphNewFilePage extends WizardNewFileCreationPage {
         // event listeners
         graphsSpinner.addModifyListener(new ModifyListener() {
             public void modifyText(final ModifyEvent e) {
-                numberOfGraphs = graphsSpinner.getSelection();
+                options.setProperty(GeneratorOptions.NUMBER_OF_GRAPHS, graphsSpinner.getSelection());
             }
         });
-        timeSeedButton.addSelectionListener(new SelectionListenerAdapter() {
+        timeSeedButton.addSelectionListener(new SelectionAdapter() {
             public void widgetSelected(final SelectionEvent e) {
-                timeBasedSeed = timeSeedButton.getSelection();
+                boolean timeBasedSeed = timeSeedButton.getSelection();
+                options.setProperty(GeneratorOptions.TIME_BASED_RANDOMIZATION, timeBasedSeed);
                 seedSpinner.setEnabled(!timeBasedSeed);
             }
         });
         seedSpinner.addModifyListener(new ModifyListener() {
             public void modifyText(final ModifyEvent e) {
-                randomSeed = seedSpinner.getSelection();
+                options.setProperty(GeneratorOptions.RANDOMIZATION_SEED, seedSpinner.getSelection());
             }
         });
     }
-
-    // CHECKSTYLEON MagicNumber
-
-    /**
-     * Saves the selected options to the preference store.
-     */
-    public void savePreferences() {
-        IPreferenceStore preferenceStore = KGraphActivator.getInstance().getPreferenceStore();
-        preferenceStore.setValue(PREFERENCE_NUMBER_OF_GRAPHS, numberOfGraphs);
-        preferenceStore.setValue(PREFERENCE_TIME_BASED_SEED, timeBasedSeed);
-        preferenceStore.setValue(PREFERENCE_RANDOM_SEED, randomSeed);
-        preferenceStore.setValue(PREFERENCE_FILENAME, getFileName());
-    }
-
-    private void loadPreferences() {
-        IPreferenceStore preferenceStore = KGraphActivator.getInstance().getPreferenceStore();
-        numberOfGraphs = preferenceStore.getInt(PREFERENCE_NUMBER_OF_GRAPHS);
-        timeBasedSeed = preferenceStore.getBoolean(PREFERENCE_TIME_BASED_SEED);
-        randomSeed = preferenceStore.getInt(PREFERENCE_RANDOM_SEED);
-        setFileName(preferenceStore.getString(PREFERENCE_FILENAME));
-    }
-
-    private void setDefaultPreferences() {
-        IPreferenceStore preferenceStore = KGraphActivator.getInstance().getPreferenceStore();
-        preferenceStore.setDefault(PREFERENCE_NUMBER_OF_GRAPHS, 1);
-        preferenceStore.setDefault(PREFERENCE_TIME_BASED_SEED, true);
-        preferenceStore.setDefault(PREFERENCE_RANDOM_SEED, 0);
-        preferenceStore.setDefault(PREFERENCE_FILENAME, "random.kgt"); //$NON-NLS-1$
-    }
-
-    /**
-     * Returns the number of graphs to be created.
-     * 
-     * @return the number of graphs
-     */
-    public int getNumberOfGraphs() {
-        return numberOfGraphs;
-    }
     
-    /**
-     * Returns whether a time-based randomization seed shall be used.
-     * 
-     * @return true if a time-based randomization seed shall be used
-     */
-    public boolean getTimeBasedSeed() {
-        return timeBasedSeed;
-    }
-    
-    /**
-     * Returns the randomization seed value.
-     * 
-     * @return the randomization seed
-     */
-    public int getRandomSeedValue() {
-        return randomSeed;
-    }
-
-    /**
-     * An adapter class for the SelectionListener.
-     */
-    private abstract static class SelectionListenerAdapter implements SelectionListener {
-
-        public void widgetDefaultSelected(final SelectionEvent e) {
-            // do nothing
-        }
-    }
 }

@@ -44,9 +44,8 @@ import org.eclipse.ui.statushandlers.StatusManager;
 
 import de.cau.cs.kieler.core.kgraph.KNode;
 import de.cau.cs.kieler.core.kgraph.text.ui.internal.KGraphActivator;
+import de.cau.cs.kieler.core.kgraph.text.ui.random.GeneratorOptions;
 import de.cau.cs.kieler.core.kgraph.text.ui.random.RandomGraphGenerator;
-import de.cau.cs.kieler.core.properties.IPropertyHolder;
-import de.cau.cs.kieler.core.properties.MapPropertyHolder;
 import de.cau.cs.kieler.core.util.Maybe;
 
 /**
@@ -60,9 +59,11 @@ public class RandomGraphWizard extends Wizard implements INewWizard {
     /** the soft-limit for the number of generated graphs. */
     private static final int SOFT_LIMIT_GRAPHS = 10000;
 
+    /** the generation options passed through the wizard pages to the generator. */
+    private GeneratorOptions options = new GeneratorOptions();
     /** the selection this wizard is invoked on. */
     private IStructuredSelection selection;
-
+    
     /** the new file page. */
     private RandomGraphNewFilePage newFilePage;
     /** the graph type page. */
@@ -94,14 +95,17 @@ public class RandomGraphWizard extends Wizard implements INewWizard {
      */
     @Override
     public void addPages() {
-        newFilePage = new RandomGraphNewFilePage(selection);
-        typePage = new RandomGraphTypePage();
-        anyPage = new RandomGraphAnyPage();
-        treePage = new RandomGraphTreePage();
-        biconnectedPage = new RandomGraphBiconnectedPage();
-        triconnectedPage = new RandomGraphTriconnectedPage();
-        antePage = new RandomGraphANTEPage();
-        optionsPage = new RandomGraphOptionsPage();
+        // load the generation options from the preferences
+        options.loadPreferences();
+        
+        newFilePage = new RandomGraphNewFilePage(selection, options);
+        typePage = new RandomGraphTypePage(options);
+        anyPage = new RandomGraphAnyPage(options);
+        treePage = new RandomGraphTreePage(options);
+        biconnectedPage = new RandomGraphBiconnectedPage(options);
+        triconnectedPage = new RandomGraphTriconnectedPage(options);
+        antePage = new RandomGraphANTEPage(options);
+        optionsPage = new RandomGraphOptionsPage(options);
         addPage(newFilePage);
         addPage(typePage);
         addPage(anyPage);
@@ -120,7 +124,7 @@ public class RandomGraphWizard extends Wizard implements INewWizard {
         if (page == newFilePage) {
             return typePage;
         } else if (page == typePage) {
-            switch (typePage.getGraphType()) {
+            switch (options.getProperty(GeneratorOptions.GRAPH_TYPE)) {
             case TREE:
                 return treePage;
             case BICONNECTED:
@@ -150,9 +154,11 @@ public class RandomGraphWizard extends Wizard implements INewWizard {
      */
     @Override
     public boolean performFinish() {
-        savePreferences();
+        // save all generation options into the plugin preferences
+        options.savePreferences();
+        
         // if necessary ask the user to verify his decisions on the number of generated graphs
-        if (newFilePage.getNumberOfGraphs() > SOFT_LIMIT_GRAPHS) {
+        if (options.getProperty(GeneratorOptions.NUMBER_OF_GRAPHS) > SOFT_LIMIT_GRAPHS) {
             if (!askUser(Messages.RandomGraphWizard_soft_limit_graphs_message)) {
                 getContainer().showPage(newFilePage);
                 return false;
@@ -217,16 +223,18 @@ public class RandomGraphWizard extends Wizard implements INewWizard {
      */
     private void doFinish(final IProgressMonitor monitor) throws IOException, CoreException,
             InterruptedException {
-        int numberOfGraphs = newFilePage.getNumberOfGraphs();
+        int numberOfGraphs = options.getProperty(GeneratorOptions.NUMBER_OF_GRAPHS);
         monitor.beginTask(Messages.RandomGraphWizard_generating_graphs_task, numberOfGraphs);
-        // retrieve options
-        IPropertyHolder options = getOptions();
+        
+        // create a random graph generator
         Random random;
-        if (newFilePage.getTimeBasedSeed()) {
+        if (options.getProperty(GeneratorOptions.TIME_BASED_RANDOMIZATION)) {
             random = new Random();
         } else {
-            random = new Random(newFilePage.getRandomSeedValue());
+            random = new Random(options.getProperty(GeneratorOptions.RANDOMIZATION_SEED));
         }
+        RandomGraphGenerator generator = new RandomGraphGenerator(random);
+        
         // do the generation
         try {
             if (numberOfGraphs == 1) {
@@ -238,7 +246,8 @@ public class RandomGraphWizard extends Wizard implements INewWizard {
                 });
                 // generate and serialize the graph
                 try {
-                    generateAndSerialize(file.get(), options, random);
+                    KNode graph = generator.generate(options);
+                    serialize(graph, file.get());
                     monitor.worked(1);
                 } catch (Throwable throwable) {
                     throwable.printStackTrace();
@@ -280,7 +289,8 @@ public class RandomGraphWizard extends Wizard implements INewWizard {
                     
                     // generate and serialize the graph
                     try {
-                        generateAndSerialize(file, options, random);
+                        KNode graph = generator.generate(options);
+                        serialize(graph, file);
                         monitor.worked(1);
                     } catch (Throwable throwable) {
                         throwable.printStackTrace();
@@ -309,18 +319,13 @@ public class RandomGraphWizard extends Wizard implements INewWizard {
     /**
      * Generate a random graph and serialize it to the given file.
      * 
+     * @param graph the graph to serialize
      * @param file target file for serialization
-     * @param options the generation options map
-     * @param random the random number generator
      * @throws IOException if the file cannot be written
      * @throws CoreException if the file cannot be refreshed
      */
-    private void generateAndSerialize(final IFile file, final IPropertyHolder options,
-            final Random random) throws IOException, CoreException {
-        // generate
-        RandomGraphGenerator generator = new RandomGraphGenerator(random);
-        KNode graph = generator.generate(options);
-        // serialize
+    private void serialize(final KNode graph, final IFile file)
+            throws IOException, CoreException {
         ResourceSet resourceSet = new ResourceSetImpl();
         Resource resource = resourceSet.createResource(URI.createURI(file.getLocationURI().toString()));
         resource.getContents().add(graph);
@@ -333,123 +338,6 @@ public class RandomGraphWizard extends Wizard implements INewWizard {
      */
     public void init(final IWorkbench workbench, final IStructuredSelection theselection) {
         this.selection = theselection;
-    }
-
-    /**
-     * Retrieve all necessary options in form of a property holder.
-     * 
-     * @return a property holder for all graph generation options
-     */
-    private IPropertyHolder getOptions() {
-        IPropertyHolder options = new MapPropertyHolder();
-        options.setProperty(RandomGraphGenerator.GRAPH_TYPE, typePage.getGraphType());
-        
-        // Graph-specific options
-        switch (typePage.getGraphType()) {
-        case ANY:
-            options.setProperty(RandomGraphGenerator.NUMBER_OF_NODES_MIN,
-                    anyPage.getMinNumberOfNodes());
-            options.setProperty(RandomGraphGenerator.NUMBER_OF_NODES_MAX,
-                    anyPage.getMaxNumberOfNodes());
-            options.setProperty(RandomGraphGenerator.EDGE_DETERMINATION,
-                    anyPage.getEdgeDetermination());
-            options.setProperty(RandomGraphGenerator.NUMBER_OF_EDGES,
-                    anyPage.getNumberOfEdges());
-            options.setProperty(RandomGraphGenerator.EDGES_VARIANCE,
-                    anyPage.getEdgesVariance());
-            options.setProperty(RandomGraphGenerator.EDGES_RELATIVE,
-                    anyPage.getRelativeNumberOfEdges());
-            options.setProperty(RandomGraphGenerator.EDGES_REL_VARIANCE,
-                    anyPage.getRelativeEdgesVariance());
-            options.setProperty(RandomGraphGenerator.DENSITY,
-                    anyPage.getDensity());
-            options.setProperty(RandomGraphGenerator.DENSITY_VARIANCE,
-                    anyPage.getDensityVariance());
-            options.setProperty(RandomGraphGenerator.MIN_OUTGOING_EDGES,
-                    anyPage.getMinOutgoingEdges());
-            options.setProperty(RandomGraphGenerator.MAX_OUTGOING_EDGES,
-                    anyPage.getMaxOutgoingEdges());
-            options.setProperty(RandomGraphGenerator.SELF_LOOPS,
-                    anyPage.getSelfLoops());
-            options.setProperty(RandomGraphGenerator.MULTI_EDGES,
-                    anyPage.getMultiEdges());
-            options.setProperty(RandomGraphGenerator.CYCLES,
-                    anyPage.getCycles());
-            options.setProperty(RandomGraphGenerator.ISOLATED_NODES,
-                    anyPage.getIsolatedNodes());
-            break;
-        case TREE:
-            options.setProperty(RandomGraphGenerator.NUMBER_OF_NODES,
-                    treePage.getNumberOfNodes());
-            options.setProperty(RandomGraphGenerator.MAX_DEGREE,
-                    treePage.getMaxDegree());
-            options.setProperty(RandomGraphGenerator.MAX_WIDTH,
-                    treePage.getMaxWidth());
-            break;
-        case BICONNECTED:
-            options.setProperty(RandomGraphGenerator.NUMBER_OF_NODES,
-                    biconnectedPage.getNumberOfNodes());
-            options.setProperty(RandomGraphGenerator.NUMBER_OF_EDGES,
-                    biconnectedPage.getNumberOfEdges());
-            break;
-        case TRICONNECTED:
-            options.setProperty(RandomGraphGenerator.NUMBER_OF_NODES,
-                    triconnectedPage.getNumberOfNodes());
-            break;
-        case ACYCLIC_NO_TRANSITIVE_EDGES:
-            options.setProperty(RandomGraphGenerator.NUMBER_OF_NODES,
-                    antePage.getNumberOfNodes());
-            options.setProperty(RandomGraphGenerator.NUMBER_OF_EDGES,
-                    antePage.getNumberOfEdges());
-            options.setProperty(RandomGraphGenerator.PLANAR,
-                    antePage.getPlanar());
-            break;
-        }
-        
-        // Common options
-        if (optionsPage.isHierarchyEnabled()) {
-            options.setProperty(RandomGraphGenerator.HIERARCHY_CHANCE, optionsPage.getHierarchyChance());
-        }
-        options.setProperty(RandomGraphGenerator.MAX_HIERARCHY_LEVEL,
-                optionsPage.getMaximumHierarchyLevel());
-        options.setProperty(RandomGraphGenerator.HIERARCHY_NODES_FACTOR,
-                optionsPage.getHierarchyNodesFactor());
-        options.setProperty(RandomGraphGenerator.HYPERNODE_CHANCE,
-                optionsPage.getHypernodeChance());
-        options.setProperty(RandomGraphGenerator.PORTS,
-                optionsPage.getPorts());
-        options.setProperty(RandomGraphGenerator.USE_EXISTING_PORTS_CHANCE,
-                optionsPage.getUseExistingPortsChance());
-        options.setProperty(RandomGraphGenerator.CROSS_HIERARCHY_EDGES,
-                optionsPage.getCrossHierarchyEdges());
-        
-        return options;
-    }
-
-    /**
-     * Save all preferences of the random graph wizard.
-     */
-    private void savePreferences() {
-        newFilePage.savePreferences();
-        typePage.savePreferences();
-        switch (typePage.getGraphType()) {
-        case ANY:
-            anyPage.savePreferences();
-            break;
-        case TREE:
-            treePage.savePreferences();
-            break;
-        case BICONNECTED:
-            biconnectedPage.savePreferences();
-            break;
-        case TRICONNECTED:
-            triconnectedPage.savePreferences();
-            break;
-        case ACYCLIC_NO_TRANSITIVE_EDGES:
-            antePage.savePreferences();
-            break;
-        }
-        optionsPage.savePreferences();
     }
     
 }
