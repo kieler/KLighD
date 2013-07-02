@@ -118,6 +118,8 @@ public class DiagramEditorPart extends EditorPart {
         
         // register the context viewer as selection provider on the workbench
         getSite().setSelectionProvider(viewer);
+        
+        // the initialization of the context menu is done in PiccoloViewer#addContextMenu()
     }
     
     /**

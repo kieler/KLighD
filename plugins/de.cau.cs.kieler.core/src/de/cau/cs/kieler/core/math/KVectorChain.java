@@ -170,11 +170,13 @@ public class KVectorChain extends LinkedList<KVector> implements IDataObject {
      * 
      * @param scale
      *            scaling factor
+     * @return this
      */
-    public final void scale(final double scale) {
+    public final KVectorChain scale(final double scale) {
         for (KVector vector : this) {
             vector.scale(scale);
         }
+        return this;
     }
     
     /**
@@ -184,11 +186,13 @@ public class KVectorChain extends LinkedList<KVector> implements IDataObject {
      *            the x scaling factor
      * @param scaley
      *            the y scaling factor
+     * @return this
      */
-    public final void scale(final double scalex, final double scaley) {
+    public final KVectorChain scale(final double scalex, final double scaley) {
         for (KVector vector : this) {
             vector.scale(scalex, scaley);
         }
+        return this;
     }
 
     /**
@@ -196,11 +200,13 @@ public class KVectorChain extends LinkedList<KVector> implements IDataObject {
      * 
      * @param offset
      *            the offset to add to the vectors.
+     * @return this
      */
-    public void translate(final KVector offset) {
+    public KVectorChain translate(final KVector offset) {
         for (KVector vector : this) {
             vector.add(offset);
         }
+        return this;
     }
 
     /**
@@ -210,11 +216,13 @@ public class KVectorChain extends LinkedList<KVector> implements IDataObject {
      *            x value to add.
      * @param dy
      *            y value to add.
+     * @return this
      */
-    public void translate(final double dx, final double dy) {
+    public KVectorChain translate(final double dx, final double dy) {
         for (KVector vector : this) {
             vector.translate(dx, dy);
         }
+        return this;
     }
 
     /**

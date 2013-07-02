@@ -15,9 +15,14 @@ package de.cau.cs.kieler.klighd.transformations;
 
 import java.lang.reflect.Method;
 
+import de.cau.cs.kieler.core.kgraph.KGraphElement;
 import de.cau.cs.kieler.core.kgraph.KNode;
 import de.cau.cs.kieler.core.krendering.KRenderingFactory;
+import de.cau.cs.kieler.core.properties.IProperty;
+import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout;
 import de.cau.cs.kieler.klighd.TransformationContext;
+import de.cau.cs.kieler.klighd.macrolayout.ExpansionAwareLayoutOption;
+import de.cau.cs.kieler.klighd.macrolayout.ExpansionAwareLayoutOption.ExpansionAwareLayoutOptionData;
 
 /**
  * This is a specialized {@link AbstractTransformation} with target model type {@link KNode}.<br>
@@ -82,5 +87,58 @@ public abstract class AbstractDiagramSynthesis<S> extends AbstractTransformation
             this.setSourceClass(transformMethod.getParameterTypes()[0]);
             this.setTargetClass(KNode.class);
         }
+    }
+
+
+    /**
+     * Convenience method for defining layout options for {@link KGraphElement KGraphElements}.
+     * 
+     * @param <T>
+     *            the property value type
+     * @param element
+     *            the element to set the layout option on
+     * @param option
+     *            the particular layout option, e.g. one of
+     *            {@link de.cau.cs.kieler.kiml.options.LayoutOptions LayoutOptions}
+     * @param value
+     *            the option value
+     * @return <code>node</code> allowing to perform multiple operations on it in one statement
+     */
+    protected <T> KGraphElement setLayoutOption(final KGraphElement element,
+            final IProperty<T> option, final T value) {
+        element.getData(KShapeLayout.class).setProperty(option, value);
+        return element;
+    }
+    
+    /**
+     * Convenience method for defining collapse/expansion-dependent layout options for {@link KNode
+     * KNodes}.
+     * 
+     * @param <T>
+     *            the property value type
+     * @param node
+     *            the node to set the layout option on
+     * @param option
+     *            the particular layout option, e.g. one of
+     *            {@link de.cau.cs.kieler.kiml.options.LayoutOptions LayoutOptions}
+     * @param collapsedValue
+     *            the value in case <code>node</code> is collapsed
+     * @param expandedValue
+     *            the value in case <code>node</code> is expanded
+     * @return <code>node</code> allowing to perform multiple operations on it in one statement
+     */
+    protected <T> KNode setExpansionAwareLayoutOption(final KNode node, final IProperty<T> option,
+            final T collapsedValue, final T expandedValue) {
+        KShapeLayout sl = node.getData(KShapeLayout.class); 
+        ExpansionAwareLayoutOptionData data = sl.getProperty(ExpansionAwareLayoutOption.OPTION);
+        
+        if (data == null) {
+            data = new ExpansionAwareLayoutOptionData();
+            sl.setProperty(ExpansionAwareLayoutOption.OPTION, data);
+        }
+        
+        data.setProperty(option, collapsedValue, expandedValue);
+        
+        return node;
     }
 }

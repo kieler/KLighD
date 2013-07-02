@@ -254,5 +254,26 @@
             </attribute>
         </markerResolutionGenerator>
     </extension>
-
+   <extension
+         point="org.eclipse.ui.newWizards">
+      <wizard
+            canFinishEarly="false"
+            category="de.cau.cs.kieler.kgraph"
+            class="de.cau.cs.kieler.core.kgraph.text.ui.random.wizard.RandomGraphWizard"
+            hasPages="true"
+            id="de.cau.cs.kieler.core.kgraph.text.random.wizard"
+            name="Random KGraph"
+            project="false">
+      </wizard>
+      <category
+            id="de.cau.cs.kieler.kgraph"
+            name="KGraph">
+      </category>
+   </extension>
+   <extension
+         point="org.eclipse.core.runtime.preferences">
+      <initializer
+            class="de.cau.cs.kieler.core.kgraph.text.ui.random.GeneratorPreferenceInitializer">
+      </initializer>
+   </extension>
 </plugin>

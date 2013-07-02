@@ -140,6 +140,8 @@ public class KRenderingFactoryImpl extends EFactoryImpl implements KRenderingFac
                 return createUnderlineFromString(eDataType, initialValue);
             case KRenderingPackage.LINE_JOIN:
                 return createLineJoinFromString(eDataType, initialValue);
+            case KRenderingPackage.ARC:
+                return createArcFromString(eDataType, initialValue);
             default:
                 throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
         }
@@ -167,6 +169,8 @@ public class KRenderingFactoryImpl extends EFactoryImpl implements KRenderingFac
                 return convertUnderlineToString(eDataType, instanceValue);
             case KRenderingPackage.LINE_JOIN:
                 return convertLineJoinToString(eDataType, instanceValue);
+            case KRenderingPackage.ARC:
+                return convertArcToString(eDataType, instanceValue);
             default:
                 throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
         }
@@ -759,6 +763,26 @@ public class KRenderingFactoryImpl extends EFactoryImpl implements KRenderingFac
      * @generated
      */
     public String convertLineJoinToString(EDataType eDataType, Object instanceValue) {
+        return instanceValue == null ? null : instanceValue.toString();
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public Arc createArcFromString(EDataType eDataType, String initialValue) {
+        Arc result = Arc.get(initialValue);
+        if (result == null) throw new IllegalArgumentException("The value '" + initialValue + "' is not a valid enumerator of '" + eDataType.getName() + "'");
+        return result;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public String convertArcToString(EDataType eDataType, Object instanceValue) {
         return instanceValue == null ? null : instanceValue.toString();
     }
 

@@ -55,6 +55,7 @@ public abstract class PSWTAdvancedPathController extends PNodeController<PSWTAdv
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setForegroundGradient(final RGBGradient gradient) {
         getNode().setStrokeColor(gradient);
     }
@@ -71,6 +72,7 @@ public abstract class PSWTAdvancedPathController extends PNodeController<PSWTAdv
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setBackgroundGradient(final RGBGradient gradient) {
         getNode().setPaint(gradient);
     }
@@ -137,6 +139,7 @@ public abstract class PSWTAdvancedPathController extends PNodeController<PSWTAdv
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setLineJoin(final LineJoin lineJoin, final float miterLimit) {
         final LineAttributes lineAttributes = getNode().getLineAttributes();
         switch(lineJoin) {
@@ -155,13 +158,7 @@ public abstract class PSWTAdvancedPathController extends PNodeController<PSWTAdv
     /**
      * {@inheritDoc}
      */
-    public void setRotation(final float rotation) {
-        getNode().setRotation(Math.toRadians(rotation));
-    }
-    
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public void setShadow(final KColor color) {
         getNode().setShadow(toRGB(color));
     }
@@ -169,6 +166,7 @@ public abstract class PSWTAdvancedPathController extends PNodeController<PSWTAdv
     /**
      * {@inheritDoc}
      */
+    @Override
     public void applyChanges(final Styles styles) {
         super.applyChanges(styles);
 

@@ -56,10 +56,11 @@ public class KLabelNode extends PEmptyNode implements IGraphElement<KLabel> {
      */
     public KLabelNode(final KLabel label) {
         this.label = label;
-        setPickable(true);
+
         Boolean b = label.getData(KShapeLayout.class).getProperty(
                 KlighdConstants.KLIGHD_SELECTION_UNPICKABLE);
         setPickable(b != null && b.equals(Boolean.TRUE) ? false : true);
+
         RenderingContextData.get(label).setProperty(LABEL_REP, this);
     }
 

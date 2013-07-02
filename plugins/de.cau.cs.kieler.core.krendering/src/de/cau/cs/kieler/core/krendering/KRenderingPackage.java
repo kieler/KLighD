@@ -1184,13 +1184,22 @@ public interface KRenderingPackage extends EPackage {
     int KARC__ARC_ANGLE = KCONTAINER_RENDERING_FEATURE_COUNT + 1;
 
     /**
+     * The feature id for the '<em><b>Arc Type</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KARC__ARC_TYPE = KCONTAINER_RENDERING_FEATURE_COUNT + 2;
+
+    /**
      * The number of structural features of the '<em>KArc</em>' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int KARC_FEATURE_COUNT = KCONTAINER_RENDERING_FEATURE_COUNT + 2;
+    int KARC_FEATURE_COUNT = KCONTAINER_RENDERING_FEATURE_COUNT + 3;
 
     /**
      * The meta object id for the '{@link de.cau.cs.kieler.core.krendering.impl.KStyleImpl <em>KStyle</em>}' class.
@@ -3051,13 +3060,22 @@ public interface KRenderingPackage extends EPackage {
     int KROTATION__ROTATION = KSTYLE_FEATURE_COUNT + 0;
 
     /**
+     * The feature id for the '<em><b>Rotation Anchor</b></em>' containment reference.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KROTATION__ROTATION_ANCHOR = KSTYLE_FEATURE_COUNT + 1;
+
+    /**
      * The number of structural features of the '<em>KRotation</em>' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int KROTATION_FEATURE_COUNT = KSTYLE_FEATURE_COUNT + 1;
+    int KROTATION_FEATURE_COUNT = KSTYLE_FEATURE_COUNT + 2;
 
     /**
      * The meta object id for the '{@link de.cau.cs.kieler.core.krendering.impl.KLineCapImpl <em>KLine Cap</em>}' class.
@@ -3662,6 +3680,16 @@ public interface KRenderingPackage extends EPackage {
     int LINE_JOIN = 59;
 
     /**
+     * The meta object id for the '{@link de.cau.cs.kieler.core.krendering.Arc <em>Arc</em>}' enum.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see de.cau.cs.kieler.core.krendering.Arc
+     * @see de.cau.cs.kieler.core.krendering.impl.KRenderingPackageImpl#getArc()
+     * @generated
+     */
+    int ARC = 60;
+
+    /**
      * Returns the meta object for class '{@link de.cau.cs.kieler.core.krendering.KPosition <em>KPosition</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -4023,6 +4051,17 @@ public interface KRenderingPackage extends EPackage {
      * @generated
      */
     EAttribute getKArc_ArcAngle();
+
+    /**
+     * Returns the meta object for the attribute '{@link de.cau.cs.kieler.core.krendering.KArc#getArcType <em>Arc Type</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the attribute '<em>Arc Type</em>'.
+     * @see de.cau.cs.kieler.core.krendering.KArc#getArcType()
+     * @see #getKArc()
+     * @generated
+     */
+    EAttribute getKArc_ArcType();
 
     /**
      * Returns the meta object for class '{@link de.cau.cs.kieler.core.krendering.KStyle <em>KStyle</em>}'.
@@ -4829,6 +4868,17 @@ public interface KRenderingPackage extends EPackage {
     EAttribute getKRotation_Rotation();
 
     /**
+     * Returns the meta object for the containment reference '{@link de.cau.cs.kieler.core.krendering.KRotation#getRotationAnchor <em>Rotation Anchor</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the containment reference '<em>Rotation Anchor</em>'.
+     * @see de.cau.cs.kieler.core.krendering.KRotation#getRotationAnchor()
+     * @see #getKRotation()
+     * @generated
+     */
+    EReference getKRotation_RotationAnchor();
+
+    /**
      * Returns the meta object for class '{@link de.cau.cs.kieler.core.krendering.KLineCap <em>KLine Cap</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -5263,6 +5313,16 @@ public interface KRenderingPackage extends EPackage {
     EEnum getLineJoin();
 
     /**
+     * Returns the meta object for enum '{@link de.cau.cs.kieler.core.krendering.Arc <em>Arc</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for enum '<em>Arc</em>'.
+     * @see de.cau.cs.kieler.core.krendering.Arc
+     * @generated
+     */
+    EEnum getArc();
+
+    /**
      * Returns the factory that creates the instances of the model.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -5577,6 +5637,14 @@ public interface KRenderingPackage extends EPackage {
          * @generated
          */
         EAttribute KARC__ARC_ANGLE = eINSTANCE.getKArc_ArcAngle();
+
+        /**
+         * The meta object literal for the '<em><b>Arc Type</b></em>' attribute feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EAttribute KARC__ARC_TYPE = eINSTANCE.getKArc_ArcType();
 
         /**
          * The meta object literal for the '{@link de.cau.cs.kieler.core.krendering.impl.KStyleImpl <em>KStyle</em>}' class.
@@ -6251,6 +6319,14 @@ public interface KRenderingPackage extends EPackage {
         EAttribute KROTATION__ROTATION = eINSTANCE.getKRotation_Rotation();
 
         /**
+         * The meta object literal for the '<em><b>Rotation Anchor</b></em>' containment reference feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EReference KROTATION__ROTATION_ANCHOR = eINSTANCE.getKRotation_RotationAnchor();
+
+        /**
          * The meta object literal for the '{@link de.cau.cs.kieler.core.krendering.impl.KLineCapImpl <em>KLine Cap</em>}' class.
          * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
@@ -6611,6 +6687,16 @@ public interface KRenderingPackage extends EPackage {
          * @generated
          */
         EEnum LINE_JOIN = eINSTANCE.getLineJoin();
+
+        /**
+         * The meta object literal for the '{@link de.cau.cs.kieler.core.krendering.Arc <em>Arc</em>}' enum.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @see de.cau.cs.kieler.core.krendering.Arc
+         * @see de.cau.cs.kieler.core.krendering.impl.KRenderingPackageImpl#getArc()
+         * @generated
+         */
+        EEnum ARC = eINSTANCE.getArc();
 
     }
 

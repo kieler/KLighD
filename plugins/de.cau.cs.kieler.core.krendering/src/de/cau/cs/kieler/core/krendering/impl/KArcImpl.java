@@ -13,6 +13,7 @@
  */
 package de.cau.cs.kieler.core.krendering.impl;
 
+import de.cau.cs.kieler.core.krendering.Arc;
 import de.cau.cs.kieler.core.krendering.KArc;
 import de.cau.cs.kieler.core.krendering.KRenderingPackage;
 
@@ -31,6 +32,7 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  * <ul>
  *   <li>{@link de.cau.cs.kieler.core.krendering.impl.KArcImpl#getStartAngle <em>Start Angle</em>}</li>
  *   <li>{@link de.cau.cs.kieler.core.krendering.impl.KArcImpl#getArcAngle <em>Arc Angle</em>}</li>
+ *   <li>{@link de.cau.cs.kieler.core.krendering.impl.KArcImpl#getArcType <em>Arc Type</em>}</li>
  * </ul>
  * </p>
  *
@@ -76,6 +78,26 @@ public class KArcImpl extends KContainerRenderingImpl implements KArc {
      * @ordered
      */
     protected float arcAngle = ARC_ANGLE_EDEFAULT;
+
+    /**
+     * The default value of the '{@link #getArcType() <em>Arc Type</em>}' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see #getArcType()
+     * @generated
+     * @ordered
+     */
+    protected static final Arc ARC_TYPE_EDEFAULT = Arc.OPEN;
+
+    /**
+     * The cached value of the '{@link #getArcType() <em>Arc Type</em>}' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see #getArcType()
+     * @generated
+     * @ordered
+     */
+    protected Arc arcType = ARC_TYPE_EDEFAULT;
 
     /**
      * <!-- begin-user-doc -->
@@ -143,6 +165,27 @@ public class KArcImpl extends KContainerRenderingImpl implements KArc {
      * <!-- end-user-doc -->
      * @generated
      */
+    public Arc getArcType() {
+        return arcType;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public void setArcType(Arc newArcType) {
+        Arc oldArcType = arcType;
+        arcType = newArcType == null ? ARC_TYPE_EDEFAULT : newArcType;
+        if (eNotificationRequired())
+            eNotify(new ENotificationImpl(this, Notification.SET, KRenderingPackage.KARC__ARC_TYPE, oldArcType, arcType));
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
@@ -150,6 +193,8 @@ public class KArcImpl extends KContainerRenderingImpl implements KArc {
                 return getStartAngle();
             case KRenderingPackage.KARC__ARC_ANGLE:
                 return getArcAngle();
+            case KRenderingPackage.KARC__ARC_TYPE:
+                return getArcType();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -167,6 +212,9 @@ public class KArcImpl extends KContainerRenderingImpl implements KArc {
                 return;
             case KRenderingPackage.KARC__ARC_ANGLE:
                 setArcAngle((Float)newValue);
+                return;
+            case KRenderingPackage.KARC__ARC_TYPE:
+                setArcType((Arc)newValue);
                 return;
         }
         super.eSet(featureID, newValue);
@@ -186,6 +234,9 @@ public class KArcImpl extends KContainerRenderingImpl implements KArc {
             case KRenderingPackage.KARC__ARC_ANGLE:
                 setArcAngle(ARC_ANGLE_EDEFAULT);
                 return;
+            case KRenderingPackage.KARC__ARC_TYPE:
+                setArcType(ARC_TYPE_EDEFAULT);
+                return;
         }
         super.eUnset(featureID);
     }
@@ -202,6 +253,8 @@ public class KArcImpl extends KContainerRenderingImpl implements KArc {
                 return startAngle != START_ANGLE_EDEFAULT;
             case KRenderingPackage.KARC__ARC_ANGLE:
                 return arcAngle != ARC_ANGLE_EDEFAULT;
+            case KRenderingPackage.KARC__ARC_TYPE:
+                return arcType != ARC_TYPE_EDEFAULT;
         }
         return super.eIsSet(featureID);
     }
@@ -220,6 +273,8 @@ public class KArcImpl extends KContainerRenderingImpl implements KArc {
         result.append(startAngle);
         result.append(", arcAngle: ");
         result.append(arcAngle);
+        result.append(", arcType: ");
+        result.append(arcType);
         result.append(')');
         return result.toString();
     }

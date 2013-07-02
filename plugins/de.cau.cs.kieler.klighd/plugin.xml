@@ -36,7 +36,7 @@
    <extension
          point="de.cau.cs.kieler.kiml.ui.layoutManagers">
       <manager
-            class="de.cau.cs.kieler.klighd.krendering.DiagramLayoutManager">
+            class="de.cau.cs.kieler.klighd.macrolayout.DiagramLayoutManager">
       </manager>
    </extension>
    <extension
@@ -71,12 +71,6 @@
       </combination>
    </extension>
    <extension
-         point="de.cau.cs.kieler.kiml.ui.layoutManagers">
-      <manager
-            class="de.cau.cs.kieler.klighd.krendering.DiagramLayoutManager">
-      </manager>
-   </extension>
-   <extension
          point="de.cau.cs.kieler.klighd.updateStrategies">
       <updateStrategy
             class="de.cau.cs.kieler.klighd.krendering.SimpleUpdateStrategy"
@@ -89,6 +83,17 @@
             class="de.cau.cs.kieler.klighd.actions.CollapseExpandAction"
             id="de.cau.cs.kieler.klighd.actions.CollapseExpandAction">
       </action>
+   </extension>
+   <extension
+         point="de.cau.cs.kieler.kiml.layoutProviders">
+      <layoutOption
+            appliesTo="nodes"
+            class="de.cau.cs.kieler.klighd.macrolayout.ExpansionAwareLayoutOption$ExpansionAwareLayoutOptionData"
+            description="Compound option containing pairs of layout option definitions for the collapsed and expanded state of a KNode"
+            id="de.cau.cs.kieler.klighd.expansionAwareLayoutOption"
+            name="ExpansionAwareLayoutOptions"
+            type="object">
+      </layoutOption>
    </extension>
 
 </plugin>

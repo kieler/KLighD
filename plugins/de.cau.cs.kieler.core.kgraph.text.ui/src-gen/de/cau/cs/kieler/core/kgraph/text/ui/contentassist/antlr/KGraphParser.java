@@ -65,6 +65,7 @@ public class KGraphParser extends AbstractContentAssistParser {
 					put(grammarAccess.getKColorAccess().getAlternatives(), "rule__KColor__Alternatives");
 					put(grammarAccess.getPropertyValueAccess().getAlternatives(), "rule__PropertyValue__Alternatives");
 					put(grammarAccess.getFloatAccess().getAlternatives(), "rule__Float__Alternatives");
+					put(grammarAccess.getArcAccess().getAlternatives(), "rule__Arc__Alternatives");
 					put(grammarAccess.getHorizontalAlignmentAccess().getAlternatives(), "rule__HorizontalAlignment__Alternatives");
 					put(grammarAccess.getVerticalAlignmentAccess().getAlternatives(), "rule__VerticalAlignment__Alternatives");
 					put(grammarAccess.getUnderlineAccess().getAlternatives(), "rule__Underline__Alternatives");
@@ -139,6 +140,7 @@ public class KGraphParser extends AbstractContentAssistParser {
 					put(grammarAccess.getKEllipseAccess().getGroup(), "rule__KEllipse__Group__0");
 					put(grammarAccess.getKArcAccess().getGroup(), "rule__KArc__Group__0");
 					put(grammarAccess.getKArcAccess().getGroup_2(), "rule__KArc__Group_2__0");
+					put(grammarAccess.getKArcAccess().getGroup_2_4(), "rule__KArc__Group_2_4__0");
 					put(grammarAccess.getKCustomRenderingAccess().getGroup(), "rule__KCustomRendering__Group__0");
 					put(grammarAccess.getKCustomRenderingAccess().getGroup_2(), "rule__KCustomRendering__Group_2__0");
 					put(grammarAccess.getKCustomRenderingAccess().getGroup_2_1(), "rule__KCustomRendering__Group_2_1__0");
@@ -182,6 +184,7 @@ public class KGraphParser extends AbstractContentAssistParser {
 					put(grammarAccess.getKLineStyleAccess().getGroup(), "rule__KLineStyle__Group__0");
 					put(grammarAccess.getKLineWidthAccess().getGroup(), "rule__KLineWidth__Group__0");
 					put(grammarAccess.getKRotationAccess().getGroup(), "rule__KRotation__Group__0");
+					put(grammarAccess.getKRotationAccess().getGroup_4(), "rule__KRotation__Group_4__0");
 					put(grammarAccess.getKShadowAccess().getGroup(), "rule__KShadow__Group__0");
 					put(grammarAccess.getKShadowAccess().getGroup_5(), "rule__KShadow__Group_5__0");
 					put(grammarAccess.getKShadowAccess().getGroup_5_4(), "rule__KShadow__Group_5_4__0");
@@ -202,6 +205,8 @@ public class KGraphParser extends AbstractContentAssistParser {
 					put(grammarAccess.getKPointPlacementDataAccess().getGroup_3_2(), "rule__KPointPlacementData__Group_3_2__0");
 					put(grammarAccess.getKPointPlacementDataAccess().getGroup_3_3(), "rule__KPointPlacementData__Group_3_3__0");
 					put(grammarAccess.getKPointPlacementDataAccess().getGroup_3_4(), "rule__KPointPlacementData__Group_3_4__0");
+					put(grammarAccess.getKPointPlacementDataAccess().getGroup_3_5(), "rule__KPointPlacementData__Group_3_5__0");
+					put(grammarAccess.getKPointPlacementDataAccess().getGroup_3_6(), "rule__KPointPlacementData__Group_3_6__0");
 					put(grammarAccess.getKGridPlacementDataAccess().getGroup(), "rule__KGridPlacementData__Group__0");
 					put(grammarAccess.getKGridPlacementDataAccess().getGroup_3_0(), "rule__KGridPlacementData__Group_3_0__0");
 					put(grammarAccess.getKGridPlacementDataAccess().getGroup_3_1(), "rule__KGridPlacementData__Group_3_1__0");
@@ -323,6 +328,7 @@ public class KGraphParser extends AbstractContentAssistParser {
 					put(grammarAccess.getKRoundedRectangleAccess().getCornerHeightAssignment_2_3(), "rule__KRoundedRectangle__CornerHeightAssignment_2_3");
 					put(grammarAccess.getKArcAccess().getStartAngleAssignment_2_1(), "rule__KArc__StartAngleAssignment_2_1");
 					put(grammarAccess.getKArcAccess().getArcAngleAssignment_2_3(), "rule__KArc__ArcAngleAssignment_2_3");
+					put(grammarAccess.getKArcAccess().getArcTypeAssignment_2_4_1(), "rule__KArc__ArcTypeAssignment_2_4_1");
 					put(grammarAccess.getKCustomRenderingAccess().getBundleNameAssignment_2_1_0(), "rule__KCustomRendering__BundleNameAssignment_2_1_0");
 					put(grammarAccess.getKCustomRenderingAccess().getClassNameAssignment_2_2(), "rule__KCustomRendering__ClassNameAssignment_2_2");
 					put(grammarAccess.getKImageAccess().getBundleNameAssignment_2_1_0(), "rule__KImage__BundleNameAssignment_2_1_0");
@@ -373,6 +379,7 @@ public class KGraphParser extends AbstractContentAssistParser {
 					put(grammarAccess.getKLineWidthAccess().getLineWidthAssignment_3(), "rule__KLineWidth__LineWidthAssignment_3");
 					put(grammarAccess.getKRotationAccess().getPropagateToChildrenAssignment_0(), "rule__KRotation__PropagateToChildrenAssignment_0");
 					put(grammarAccess.getKRotationAccess().getRotationAssignment_3(), "rule__KRotation__RotationAssignment_3");
+					put(grammarAccess.getKRotationAccess().getRotationAnchorAssignment_4_3(), "rule__KRotation__RotationAnchorAssignment_4_3");
 					put(grammarAccess.getKShadowAccess().getPropagateToChildrenAssignment_1(), "rule__KShadow__PropagateToChildrenAssignment_1");
 					put(grammarAccess.getKShadowAccess().getColorAssignment_4(), "rule__KShadow__ColorAssignment_4");
 					put(grammarAccess.getKShadowAccess().getXOffsetAssignment_5_1(), "rule__KShadow__XOffsetAssignment_5_1");
@@ -390,10 +397,12 @@ public class KGraphParser extends AbstractContentAssistParser {
 					put(grammarAccess.getKAreaPlacementDataAccess().getTopLeftAssignment_3_0_2(), "rule__KAreaPlacementData__TopLeftAssignment_3_0_2");
 					put(grammarAccess.getKAreaPlacementDataAccess().getBottomRightAssignment_3_1_2(), "rule__KAreaPlacementData__BottomRightAssignment_3_1_2");
 					put(grammarAccess.getKPointPlacementDataAccess().getReferencePointAssignment_3_0_2(), "rule__KPointPlacementData__ReferencePointAssignment_3_0_2");
-					put(grammarAccess.getKPointPlacementDataAccess().getHorizontalAlignmentAssignment_3_1_2(), "rule__KPointPlacementData__HorizontalAlignmentAssignment_3_1_2");
-					put(grammarAccess.getKPointPlacementDataAccess().getVerticalAlignmentAssignment_3_2_2(), "rule__KPointPlacementData__VerticalAlignmentAssignment_3_2_2");
-					put(grammarAccess.getKPointPlacementDataAccess().getHorizontalMarginAssignment_3_3_2(), "rule__KPointPlacementData__HorizontalMarginAssignment_3_3_2");
-					put(grammarAccess.getKPointPlacementDataAccess().getVerticalMarginAssignment_3_4_2(), "rule__KPointPlacementData__VerticalMarginAssignment_3_4_2");
+					put(grammarAccess.getKPointPlacementDataAccess().getMinWidthAssignment_3_1_2(), "rule__KPointPlacementData__MinWidthAssignment_3_1_2");
+					put(grammarAccess.getKPointPlacementDataAccess().getMinHeightAssignment_3_2_2(), "rule__KPointPlacementData__MinHeightAssignment_3_2_2");
+					put(grammarAccess.getKPointPlacementDataAccess().getHorizontalAlignmentAssignment_3_3_2(), "rule__KPointPlacementData__HorizontalAlignmentAssignment_3_3_2");
+					put(grammarAccess.getKPointPlacementDataAccess().getVerticalAlignmentAssignment_3_4_2(), "rule__KPointPlacementData__VerticalAlignmentAssignment_3_4_2");
+					put(grammarAccess.getKPointPlacementDataAccess().getHorizontalMarginAssignment_3_5_2(), "rule__KPointPlacementData__HorizontalMarginAssignment_3_5_2");
+					put(grammarAccess.getKPointPlacementDataAccess().getVerticalMarginAssignment_3_6_2(), "rule__KPointPlacementData__VerticalMarginAssignment_3_6_2");
 					put(grammarAccess.getKGridPlacementDataAccess().getTopLeftAssignment_3_0_2(), "rule__KGridPlacementData__TopLeftAssignment_3_0_2");
 					put(grammarAccess.getKGridPlacementDataAccess().getBottomRightAssignment_3_1_2(), "rule__KGridPlacementData__BottomRightAssignment_3_1_2");
 					put(grammarAccess.getKGridPlacementDataAccess().getMinCellWidthAssignment_3_2_2(), "rule__KGridPlacementData__MinCellWidthAssignment_3_2_2");

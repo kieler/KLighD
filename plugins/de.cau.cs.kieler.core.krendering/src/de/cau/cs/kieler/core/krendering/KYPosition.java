@@ -97,4 +97,12 @@ public interface KYPosition extends EObject {
      */
     void setRelative(float value);
 
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @model annotation="http://www.eclipse.org/emf/2002/GenModel body='return de.cau.cs.kieler.core.krendering.KRenderingUtil.equals(this,other);'"
+     * @generated
+     */
+    boolean equals(Object other);
+
 } // KYPosition

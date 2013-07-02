@@ -214,12 +214,15 @@ public class PSWTAdvancedPath extends PNode {
      *            angular start of the arc
      * @param angExtend
      *            angular extent of the arc
+     * @param type
+     *            one of the constants {@link Arc2D#OPEN}, {@link Arc2D#CHORD}, and
+     *            {@link Arc2D#PIE}
      * @return created arc
      */
     public static PSWTAdvancedPath createArc(final float x, final float y, final float width,
-            final float height, final float angStart, final float angExtend) {
+            final float height, final float angStart, final float angExtend, final int type) {
         final PSWTAdvancedPath result = new PSWTAdvancedPath();
-        result.setPathToArc(x, y, width, height, angStart, angExtend);
+        result.setPathToArc(x, y, width, height, angStart, angExtend, type);
         result.setPaint(Color.white);
         return result;
     }
@@ -866,10 +869,13 @@ public class PSWTAdvancedPath extends PNode {
      *            angular start of the arc
      * @param angExtend
      *            angular extent of the arc
+     * @param type
+     *            one of the constants {@link Arc2D#OPEN}, {@link Arc2D#CHORD}, and
+     *            {@link Arc2D#PIE}
      */
     public void setPathToArc(final float x, final float y, final float width, final float height,
-            final float angStart, final float angExtend) {
-        setShape(new Arc2D.Float(x, y, width, height, angStart, angExtend, Arc2D.OPEN));
+            final float angStart, final float angExtend, final int type) {
+        setShape(new Arc2D.Float(x, y, width, height, angStart, angExtend, type));
     }
 
 

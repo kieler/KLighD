@@ -144,6 +144,15 @@ public abstract class KXPositionImpl extends EObjectImpl implements KXPosition {
      * <!-- end-user-doc -->
      * @generated
      */
+    public boolean equals(Object other) {
+        return de.cau.cs.kieler.core.krendering.KRenderingUtil.equals(this,other);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {

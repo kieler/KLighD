@@ -668,7 +668,7 @@ public class KGraphSemanticSequencer extends AbstractDelegatingSemanticSequencer
 	
 	/**
 	 * Constraint:
-	 *     (startAngle=DEGREES arcAngle=DEGREES)
+	 *     (startAngle=DEGREES arcAngle=DEGREES arcType=Arc?)
 	 */
 	protected void sequence_KArc(EObject context, KArc semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
@@ -680,6 +680,7 @@ public class KGraphSemanticSequencer extends AbstractDelegatingSemanticSequencer
 	 *     (
 	 *         startAngle=DEGREES 
 	 *         arcAngle=DEGREES 
+	 *         arcType=Arc? 
 	 *         id=QualifiedID? 
 	 *         persistentEntries+=PersistentEntry* 
 	 *         (styles+=KStyle* actions+=KAction* placementData=KPlacementData? childPlacement=KPlacement? children+=KRendering*)?
@@ -1210,6 +1211,8 @@ public class KGraphSemanticSequencer extends AbstractDelegatingSemanticSequencer
 	 * Constraint:
 	 *     (
 	 *         referencePoint=KPosition? 
+	 *         minWidth=Float? 
+	 *         minHeight=Float? 
 	 *         horizontalAlignment=HorizontalAlignment? 
 	 *         verticalAlignment=VerticalAlignment? 
 	 *         horizontalMargin=Float? 
@@ -1414,7 +1417,7 @@ public class KGraphSemanticSequencer extends AbstractDelegatingSemanticSequencer
 	
 	/**
 	 * Constraint:
-	 *     (propagateToChildren?='propagate'? rotation=Float)
+	 *     (propagateToChildren?='propagate'? rotation=Float rotationAnchor=KPosition?)
 	 */
 	protected void sequence_KRotation(EObject context, KRotation semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
@@ -1423,7 +1426,7 @@ public class KGraphSemanticSequencer extends AbstractDelegatingSemanticSequencer
 	
 	/**
 	 * Constraint:
-	 *     (propagateToChildren?='propagate'? rotation=Float modifierId=QualifiedID?)
+	 *     (propagateToChildren?='propagate'? rotation=Float rotationAnchor=KPosition? modifierId=QualifiedID?)
 	 */
 	protected void sequence_KRotation_KStyle(EObject context, KRotation semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);

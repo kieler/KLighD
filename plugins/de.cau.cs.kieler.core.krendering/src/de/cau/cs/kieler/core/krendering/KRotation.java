@@ -27,6 +27,7 @@ package de.cau.cs.kieler.core.krendering;
  * The following features are supported:
  * <ul>
  *   <li>{@link de.cau.cs.kieler.core.krendering.KRotation#getRotation <em>Rotation</em>}</li>
+ *   <li>{@link de.cau.cs.kieler.core.krendering.KRotation#getRotationAnchor <em>Rotation Anchor</em>}</li>
  * </ul>
  * </p>
  *
@@ -60,5 +61,31 @@ public interface KRotation extends KStyle {
      * @generated
      */
     void setRotation(float value);
+
+    /**
+     * Returns the value of the '<em><b>Rotation Anchor</b></em>' containment reference.
+     * <!-- begin-user-doc -->
+     * <p>
+     * If the meaning of the '<em>Rotation Anchor</em>' containment reference isn't clear,
+     * there really should be more of a description here...
+     * </p>
+     * <!-- end-user-doc -->
+     * @return the value of the '<em>Rotation Anchor</em>' containment reference.
+     * @see #setRotationAnchor(KPosition)
+     * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKRotation_RotationAnchor()
+     * @model containment="true"
+     * @generated
+     */
+    KPosition getRotationAnchor();
+
+    /**
+     * Sets the value of the '{@link de.cau.cs.kieler.core.krendering.KRotation#getRotationAnchor <em>Rotation Anchor</em>}' containment reference.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @param value the new value of the '<em>Rotation Anchor</em>' containment reference.
+     * @see #getRotationAnchor()
+     * @generated
+     */
+    void setRotationAnchor(KPosition value);
 
 } // KRotation

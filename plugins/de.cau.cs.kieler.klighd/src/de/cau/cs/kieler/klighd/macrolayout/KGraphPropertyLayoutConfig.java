@@ -11,7 +11,9 @@
  * This code is provided under the terms of the Eclipse Public License (EPL).
  * See the file epl-v10.html for the license text.
  */
-package de.cau.cs.kieler.klighd.krendering;
+package de.cau.cs.kieler.klighd.macrolayout;
+
+import java.util.Map;
 
 import de.cau.cs.kieler.core.kgraph.KEdge;
 import de.cau.cs.kieler.core.kgraph.KGraphData;
@@ -19,6 +21,7 @@ import de.cau.cs.kieler.core.kgraph.KGraphElement;
 import de.cau.cs.kieler.core.kgraph.KLabel;
 import de.cau.cs.kieler.core.kgraph.KNode;
 import de.cau.cs.kieler.core.kgraph.KPort;
+import de.cau.cs.kieler.core.properties.IProperty;
 import de.cau.cs.kieler.kiml.LayoutContext;
 import de.cau.cs.kieler.kiml.LayoutOptionData;
 import de.cau.cs.kieler.kiml.config.DefaultLayoutConfig;
@@ -26,6 +29,9 @@ import de.cau.cs.kieler.kiml.config.ILayoutConfig;
 import de.cau.cs.kieler.kiml.klayoutdata.KEdgeLayout;
 import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout;
 import de.cau.cs.kieler.kiml.options.LayoutOptions;
+import de.cau.cs.kieler.klighd.KlighdConstants;
+import de.cau.cs.kieler.klighd.macrolayout.ExpansionAwareLayoutOption.ExpansionAwareLayoutOptionData;
+import de.cau.cs.kieler.klighd.util.RenderingContextData;
 
 /**
  * A layout configuration which derives layout options from properties attached to layout data of
@@ -133,9 +139,23 @@ public class KGraphPropertyLayoutConfig implements ILayoutConfig {
                 elementLayout = element.getData(KShapeLayout.class);
             }
             if (elementLayout != null) {
-                graphData.copyProperties(elementLayout);
+                for (Map.Entry<IProperty<?>, Object> entry : elementLayout.getAllProperties()
+                        .entrySet()) {
+                    
+                    if (entry.getKey().equals(ExpansionAwareLayoutOption.OPTION)
+                            && element instanceof KNode) {
+                        ExpansionAwareLayoutOptionData ealo =
+                                (ExpansionAwareLayoutOptionData) entry.getValue();
+                        RenderingContextData rcd = RenderingContextData.get(element);
+                        
+                        KNode node = (KNode) element;
+                        graphData.copyProperties(ealo.getValues(!node.getChildren().isEmpty()
+                                && rcd.getProperty(KlighdConstants.POPULATED)));
+                    } else {
+                        graphData.setProperty(entry.getKey(), entry.getValue());
+                    }
+                }
             }
         }
     }
-
 }

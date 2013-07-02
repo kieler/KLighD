@@ -64,8 +64,8 @@ import de.cau.cs.kieler.klighd.KlighdDataManager;
 import de.cau.cs.kieler.klighd.KlighdPlugin;
 import de.cau.cs.kieler.klighd.LightDiagramServices;
 import de.cau.cs.kieler.klighd.ViewContext;
-import de.cau.cs.kieler.klighd.krendering.DiagramLayoutManager;
 import de.cau.cs.kieler.klighd.krendering.SimpleUpdateStrategy;
+import de.cau.cs.kieler.klighd.macrolayout.DiagramLayoutManager;
 import de.cau.cs.kieler.klighd.piccolo.activities.ApplyBendPointsActivity;
 import de.cau.cs.kieler.klighd.piccolo.activities.ApplySmartBoundsActivity;
 import de.cau.cs.kieler.klighd.piccolo.activities.FadeEdgeInActivity;
@@ -89,7 +89,6 @@ import edu.umd.cs.piccolo.PCamera;
 import edu.umd.cs.piccolo.PLayer;
 import edu.umd.cs.piccolo.PNode;
 import edu.umd.cs.piccolo.activities.PInterpolatingActivity;
-import edu.umd.cs.piccolo.util.PAffineTransform;
 import edu.umd.cs.piccolo.util.PBounds;
 
 
@@ -1014,27 +1013,23 @@ public class GraphController {
                         }
 
                     } else {
-                        // each operation on PNodes have to be executed in the UI
-                        // otherwise it will have no effect
-                        // MonitoredOperation.runInUI(new Runnable() {
-                        // public void run() {
 
+                        final Point2D offset = nodeRep.getOffset();
+                        
                         switch (notification.getFeatureID(KShapeLayout.class)) {
                         case KLayoutDataPackage.KSHAPE_LAYOUT__XPOS: {
-                            PAffineTransform transform = nodeRep.getTransformReference(true);
-                            double oldX = transform.getTranslateX();
+                            double oldX = offset.getX();
                             double newX = shL.getXpos();
                             if (newX != oldX) {
-                                nodeRep.translate(newX - oldX, 0);
+                                nodeRep.setOffset(newX, offset.getY());
                             }
                             break;
                         }
                         case KLayoutDataPackage.KSHAPE_LAYOUT__YPOS: {
-                            PAffineTransform transform = nodeRep.getTransformReference(true);
-                            double oldY = transform.getTranslateY();
+                            double oldY = offset.getY();
                             double newY = shL.getYpos();
                             if (newY != oldY) {
-                                nodeRep.setOffset(0, newY);
+                                nodeRep.setOffset(offset.getX(), newY);
                             }
                             break;
                         }
@@ -1057,8 +1052,6 @@ public class GraphController {
                         default:
                             break;
                         }
-                        // }
-                        // }, true);
                     }
                 }
             }
@@ -1094,34 +1087,45 @@ public class GraphController {
                             break;
                         }
                     } else {
-                        // MonitoredOperation.runInUI(new Runnable() {
-                        // public void run() {
+                        
+                        final Point2D offset = portRep.getOffset();
+
                         switch (notification.getFeatureID(KShapeLayout.class)) {
                         case KLayoutDataPackage.KSHAPE_LAYOUT__XPOS: {
-                            PAffineTransform transform = portRep.getTransformReference(true);
-                            double oldX = transform.getTranslateX();
-                            portRep.translate(shL.getXpos() - oldX, 0);
+                            double oldX = offset.getX();
+                            double newX = shL.getXpos();
+                            if (newX != oldX) {
+                                portRep.setOffset(newX, offset.getY());
+                            }
                             break;
                         }
                         case KLayoutDataPackage.KSHAPE_LAYOUT__YPOS: {
-                            PAffineTransform transform = portRep.getTransformReference(true);
-                            double oldY = transform.getTranslateY();
-                            portRep.translate(0, shL.getYpos() - oldY);
+                            double oldY = offset.getY();
+                            double newY = shL.getYpos();
+                            if (newY != oldY) {
+                                portRep.setOffset(offset.getX(), newY);
+                            }
                             break;
                         }
                         case KLayoutDataPackage.KSHAPE_LAYOUT__WIDTH: {
-                            portRep.setWidth(shL.getWidth());
+                            double oldWidth = portRep.getWidth();
+                            double newWidth = shL.getWidth();
+                            if (oldWidth != newWidth) {
+                                portRep.setWidth(newWidth);
+                            }
                             break;
                         }
                         case KLayoutDataPackage.KSHAPE_LAYOUT__HEIGHT: {
-                            portRep.setHeight(shL.getHeight());
+                            double oldHeight = portRep.getHeight();
+                            double newHeight = shL.getHeight();
+                            if (oldHeight != newHeight) {
+                                portRep.setHeight(newHeight);
+                            }
                             break;
                         }
                         default:
                             break;
                         }
-                        // }
-                        // }, true);
                     }
                 }
             }
@@ -1162,34 +1166,45 @@ public class GraphController {
                             break;
                         }
                     } else {
-                        // MonitoredOperation.runInUI(new Runnable() {
-                        // public void run() {
+
+                        final Point2D offset = labelRep.getOffset();
+
                         switch (notification.getFeatureID(KShapeLayout.class)) {
                         case KLayoutDataPackage.KSHAPE_LAYOUT__XPOS: {
-                            PAffineTransform transform = labelRep.getTransformReference(true);
-                            double oldX = transform.getTranslateX();
-                            labelRep.translate(shL.getXpos() - oldX, 0);
+                            double oldX = offset.getX();
+                            double newX = shL.getXpos();
+                            if (newX != oldX) {
+                                labelRep.setOffset(newX, offset.getY());
+                            }
                             break;
                         }
                         case KLayoutDataPackage.KSHAPE_LAYOUT__YPOS: {
-                            PAffineTransform transform = labelRep.getTransformReference(true);
-                            double oldY = transform.getTranslateY();
-                            labelRep.translate(0, shL.getYpos() - oldY);
+                            double oldY = offset.getY();
+                            double newY = shL.getYpos();
+                            if (newY != oldY) {
+                                labelRep.setOffset(offset.getX(), newY);
+                            }
                             break;
                         }
                         case KLayoutDataPackage.KSHAPE_LAYOUT__WIDTH: {
-                            labelRep.setWidth(shL.getWidth());
+                            double oldWidth = labelRep.getWidth();
+                            double newWidth = shL.getWidth();
+                            if (oldWidth != newWidth) {
+                                labelRep.setWidth(newWidth);
+                            }
                             break;
                         }
                         case KLayoutDataPackage.KSHAPE_LAYOUT__HEIGHT: {
-                            labelRep.setHeight(shL.getHeight());
+                            double oldHeight = labelRep.getHeight();
+                            double newHeight = shL.getHeight();
+                            if (oldHeight != newHeight) {
+                                labelRep.setHeight(newHeight);
+                            }
                             break;
                         }
                         default:
                             break;
                         }
-                        // }
-                        // }, true);
                     }
                 }
             }
