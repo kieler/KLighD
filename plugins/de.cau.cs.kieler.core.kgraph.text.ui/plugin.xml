@@ -6,12 +6,13 @@
     <extension
             point="org.eclipse.ui.editors">
         <editor
-            class="de.cau.cs.kieler.core.kgraph.text.ui.KGraphExecutableExtensionFactory:org.eclipse.xtext.ui.editor.XtextEditor"
-            contributorClass="org.eclipse.ui.editors.text.TextEditorActionContributor"
-            default="true"
-            extensions="kgt"
-            id="de.cau.cs.kieler.core.kgraph.text.KGraph"
-            name="KGraph Editor">
+              class="de.cau.cs.kieler.core.kgraph.text.ui.KGraphExecutableExtensionFactory:org.eclipse.xtext.ui.editor.XtextEditor"
+              contributorClass="org.eclipse.ui.editors.text.TextEditorActionContributor"
+              default="true"
+              extensions="kgt"
+              icon="icons/kgraph.gif"
+              id="de.cau.cs.kieler.core.kgraph.text.KGraph"
+              name="KGraph Editor">
         </editor>
     </extension>
     <extension
@@ -261,6 +262,7 @@
             category="de.cau.cs.kieler.kgraph"
             class="de.cau.cs.kieler.core.kgraph.text.ui.random.wizard.RandomGraphWizard"
             hasPages="true"
+            icon="icons/kgraph-new.gif"
             id="de.cau.cs.kieler.core.kgraph.text.random.wizard"
             name="Random KGraph"
             project="false">

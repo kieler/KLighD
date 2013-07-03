@@ -119,6 +119,30 @@ public class GeneratorOptions extends MapPropertyHolder {
     /** option for the fixed randomization seed value. */
     public static final IProperty<Integer> RANDOMIZATION_SEED = new Property<Integer>(
             "basic.randomizationSeed", 0);
+    /** option for setting the size of nodes. */
+    public static final IProperty<Boolean> SET_NODE_SIZE = new Property<Boolean>(
+            "basic.setNodeSize", true);
+    /** option for the minimal width of nodes. */
+    public static final IProperty<Integer> MIN_NODE_WIDTH = new Property<Integer>(
+            "basic.minNodeWidth", 30, 0);
+    /** option for the maximal width of nodes. */
+    public static final IProperty<Integer> MAX_NODE_WIDTH = new Property<Integer>(
+            "basic.maxNodeWidth", 30, 0);
+    /** option for the minimal height of nodes. */
+    public static final IProperty<Integer> MIN_NODE_HEIGHT = new Property<Integer>(
+            "basic.minNodeHeight", 30, 0);
+    /** option for the maximal height of nodes. */
+    public static final IProperty<Integer> MAX_NODE_HEIGHT = new Property<Integer>(
+            "basic.maxNodeHeight", 30, 0);
+    /** option for creating node labels. */
+    public static final IProperty<Boolean> CREATE_NODE_LABELS = new Property<Boolean>(
+            "basic.createNodeLabels", true);
+    /** option for setting the size of ports. */
+    public static final IProperty<Boolean> SET_PORT_SIZE = new Property<Boolean>(
+            "basic.setPortSize", true);
+    /** option for creating port labels. */
+    public static final IProperty<Boolean> CREATE_PORT_LABELS = new Property<Boolean>(
+            "basic.createPortLabels", false);
 
     //~~~~~~~~~~~~~~~~ Options for GRAPH_TYPE ANY
 

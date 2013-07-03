@@ -42,6 +42,11 @@ import de.cau.cs.kieler.kiml.util.KimlUtil;
  * @author msp
  */
 public class RandomGraphGenerator {
+    
+    /** the fixed width of ports. */
+    public static final float PORT_WIDTH = 4.0f;
+    /** the fixed height of ports. */
+    public static final float PORT_HEIGHT = 4.0f;
 
     /** the generator options holder. */
     private GeneratorOptions options;
@@ -192,13 +197,7 @@ public class RandomGraphGenerator {
         
         // remove isolated nodes if requested
         if (!options.getProperty(GeneratorOptions.ISOLATED_NODES)) {
-            ListIterator<KNode> nodeIter = graph.getChildren().listIterator();
-            while (nodeIter.hasNext()) {
-                KNode node = nodeIter.next();
-                if (node.getIncomingEdges().isEmpty() && node.getOutgoingEdges().isEmpty()) {
-                    nodeIter.remove();
-                }
-            }
+            removeIsolatedNodes(graph);
         }
         
         return graph;
@@ -890,11 +889,22 @@ public class RandomGraphGenerator {
         
         // create label and identifier
         String nodeid = String.valueOf(nodeLabelCounter++);
-        KLabel label = KimlUtil.createInitializedLabel(node);
-        label.setText("N" + nodeid);
+        if (options.getProperty(GeneratorOptions.CREATE_NODE_LABELS)) {
+            KLabel label = KimlUtil.createInitializedLabel(node);
+            label.setText("N" + nodeid);
+        }
         KIdentifier identifier = KLayoutDataFactory.eINSTANCE.createKIdentifier();
         identifier.setId("n" + nodeid);
         node.getData().add(identifier);
+        
+        // set size of the node
+        if (options.getProperty(GeneratorOptions.SET_NODE_SIZE)) {
+            KShapeLayout nodeLayout = node.getData(KShapeLayout.class);
+            nodeLayout.setWidth(randomInt(options.getProperty(GeneratorOptions.MIN_NODE_WIDTH),
+                    options.getProperty(GeneratorOptions.MAX_NODE_WIDTH)));
+            nodeLayout.setHeight(randomInt(options.getProperty(GeneratorOptions.MIN_NODE_HEIGHT),
+                    options.getProperty(GeneratorOptions.MAX_NODE_HEIGHT)));
+        }
         
         parent.getChildren().add(node);
         return node;
@@ -979,9 +989,24 @@ public class RandomGraphGenerator {
         // We were unable to reuse an existing port, so create a new one and return that
         KPort port = KimlUtil.createInitializedPort();
         node.getPorts().add(port);
+        
+        // create label and identifier
+        String portId = String.valueOf(portLabelCounter++);
+        if (options.getProperty(GeneratorOptions.CREATE_PORT_LABELS)) {
+            KLabel label = KimlUtil.createInitializedLabel(port);
+            label.setText("P" + portId);
+        }
         KIdentifier identifier = KLayoutDataFactory.eINSTANCE.createKIdentifier();
-        identifier.setId("p" + (portLabelCounter++));
+        identifier.setId("p" + portId);
         port.getData().add(identifier);
+        
+        // set size of the port
+        if (options.getProperty(GeneratorOptions.SET_PORT_SIZE)) {
+            KShapeLayout portLayout = port.getData(KShapeLayout.class);
+            portLayout.setWidth(PORT_WIDTH);
+            portLayout.setHeight(PORT_HEIGHT);
+        }
+        
         return port;
     }
 
@@ -1166,6 +1191,24 @@ public class RandomGraphGenerator {
             ++outgoingEdges[i];
         }
         return outgoingEdges;
+    }
+    
+    /**
+     * Remove all nodes from the graph that have no incoming or outgoing connections and have
+     * no child nodes.
+     * 
+     * @param parent the parent node of the graph
+     */
+    private static void removeIsolatedNodes(final KNode parent) {
+        ListIterator<KNode> nodeIter = parent.getChildren().listIterator();
+        while (nodeIter.hasNext()) {
+            KNode node = nodeIter.next();
+            removeIsolatedNodes(node);
+            if (node.getIncomingEdges().isEmpty() && node.getOutgoingEdges().isEmpty()
+                    && node.getChildren().isEmpty()) {
+                nodeIter.remove();
+            }
+        }
     }
 
     /**

@@ -33,6 +33,8 @@ public class KGraphFormatter extends AbstractDeclarativeFormatter {
     @Override
     protected void configureFormatting(FormattingConfig c) {
         KGraphGrammarAccess f = (KGraphGrammarAccess) getGrammarAccess();
+        
+        // general formatting options relative to some delimiters
         for (Pair<Keyword, Keyword> pair : f.findKeywordPairs("{", "}")) {
             c.setIndentation(pair.getFirst(), pair.getSecond());
             c.setLinewrap(1).after(pair.getFirst());
@@ -59,15 +61,39 @@ public class KGraphFormatter extends AbstractDeclarativeFormatter {
             c.setNoLinewrap().after(star);
             c.setNoSpace().after(star);
         }
+        
+        // line wrapping for comments
         c.setLinewrap(0, 1, 2).before(f.getSL_COMMENTRule());
         c.setLinewrap(0, 1, 2).before(f.getML_COMMENTRule());
         c.setLinewrap(0, 1, 1).after(f.getML_COMMENTRule());
         
+        // line wrapping for main objects
         c.setLinewrap().before(f.getKNodeRule());
         c.setLinewrap().before(f.getKEdgeRule());
         c.setLinewrap().before(f.getKPortRule());
         c.setLinewrap().before(f.getKLabelRule());
         c.setLinewrap().before(f.getKRenderingRule());
+        c.setLinewrap().before(f.getKStyleHolderRule());
+        
+        // line wrapping for key-value sections
+        c.setLinewrap().before(f.getKNodeLayoutAccess().getPosKeyword_0_0_0());
+        c.setLinewrap().before(f.getKNodeLayoutAccess().getSizeKeyword_0_1_0());
+        c.setLinewrap().before(f.getKNodeLayoutAccess().getPropertiesKeyword_0_2_0());
+        c.setLinewrap().before(f.getKNodeLayoutAccess().getInsetsKeyword_1_0_0());
+        c.setLinewrap().before(f.getKShapeLayoutAccess().getPosKeyword_1_0_0());
+        c.setLinewrap().before(f.getKShapeLayoutAccess().getSizeKeyword_1_1_0());
+        c.setLinewrap().before(f.getKShapeLayoutAccess().getPropertiesKeyword_1_2_0());
+        c.setLinewrap().before(f.getKEdgeLayoutAccess().getPointsKeyword_0_0_0());
+        c.setLinewrap().before(f.getKEdgeLayoutAccess().getPropertiesKeyword_1_0());
+        c.setLinewrap().before(f.getKSimpleRenderingAccess().getStylesKeyword_3_1_0_0());
+        c.setLinewrap().before(f.getKSimpleRenderingAccess().getActionsKeyword_3_1_1_0());
+        c.setLinewrap().before(f.getKContainerRenderingAccess().getStylesKeyword_3_1_0_0());
+        c.setLinewrap().before(f.getKContainerRenderingAccess().getActionsKeyword_3_1_1_0());
+        c.setLinewrap().before(f.getKPolylineAccess().getPointsKeyword_3_1_0_0());
+        c.setLinewrap().before(f.getKPolylineAccess().getStylesKeyword_3_1_1_0());
+        c.setLinewrap().before(f.getKPolylineAccess().getActionsKeyword_3_1_2_0());
+        c.setLinewrap().before(f.getKPlacementRule());
+        c.setLinewrap().before(f.getKPlacementDataRule());
     }
 
 }
