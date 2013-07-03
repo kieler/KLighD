@@ -55,6 +55,7 @@ import edu.umd.cs.piccolo.nodes.PPath;
 import edu.umd.cs.piccolo.util.PBounds;
 import edu.umd.cs.piccolo.util.PPaintContext;
 import edu.umd.cs.piccolo.util.PPickPath;
+import edu.umd.cs.piccolox.swt.SWTGraphics2D;
 
 /**
  * The KLighD-specific {@link PNode} implementation for displaying primitive figures.<br>
@@ -682,7 +683,8 @@ public class PSWTAdvancedPath extends PNode {
         // }
 
         if (shadow != null) {
-            drawShadow(g2);
+            // drawShadow(g2);
+            drawShadowFast(g2);
         }
         final int currentAlpha = g2.getAlpha();
         final float currentAlphaFloat = (float) currentAlpha;
@@ -768,6 +770,28 @@ public class PSWTAdvancedPath extends PNode {
         g2.fill(shape);
 
         // reset the manipulated settings
+        g2.setAlpha(currentAlpha);
+        g2.setLineWidth(lineAttributes.width);
+    }
+
+    private void drawShadowFast(final KlighdSWTGraphics g2) {
+        Rectangle2D.Float bounds = (Rectangle2D.Float) shape.getBounds2D();
+
+        final int currentAlpha = g2.getAlpha();
+        g2.setAlpha(KlighdConstants.ALPHA_FULL_OPAQUE);
+
+        // FIXME somehow use a shape
+        SWTGraphics2D s2d = ((SWTGraphics2D) g2);
+        s2d.setBackground(Color.WHITE);
+        s2d.setColor(shadow);
+        s2d.fillGradientRectangle(bounds.x + bounds.width, bounds.y, shadowExtend / 2,
+                bounds.height + shadowExtend / 4, false);
+        s2d.fillGradientRectangle(bounds.x, bounds.y + bounds.height, bounds.width + shadowExtend
+                / 4, shadowExtend / 2, true);
+
+        g2.setBackground(KlighdConstants.WHITE);
+        g2.fill(shape);
+
         g2.setAlpha(currentAlpha);
         g2.setLineWidth(lineAttributes.width);
     }
