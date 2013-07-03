@@ -48,6 +48,7 @@ import org.eclipse.ui.statushandlers.StatusManager;
 import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 
 import de.cau.cs.kieler.core.properties.MapPropertyHolder;
+import de.cau.cs.kieler.kiml.ui.diagram.DiagramLayoutEngine;
 import de.cau.cs.kieler.klighd.KlighdPlugin;
 import de.cau.cs.kieler.klighd.LightDiagramServices;
 import de.cau.cs.kieler.klighd.ViewContext;
@@ -64,8 +65,10 @@ public class DiagramEditorPart extends EditorPart {
     
     /** the resource set managed by this editor part. */
     private ResourceSet resourceSet;
+    // CHECKSTYLEOFF Modifier
     /** the model represented by this editor part. */
-    private Object model;
+    protected Object model;
+    // CHECKSTYLEON Modifier
     /** the viewer for this editor part. */
     private ContextViewer viewer;
 
@@ -112,6 +115,8 @@ public class DiagramEditorPart extends EditorPart {
             // since no initial selection is set in the view context/context viewer implementation,
             // define some here by selection the root of the view model representing the diagram canvas!
             viewer.selection(null, Iterables2.singletonIterable((EObject) viewContext.getViewModel()));
+            
+            DiagramLayoutEngine.INSTANCE.layout(this, null, null);
         } else {
             viewer.setModel("The selected file does not contain any supported model.", false);
         }
@@ -199,7 +204,7 @@ public class DiagramEditorPart extends EditorPart {
      * 
      * @throws PartInitException if loading the model fails
      */
-    private void loadModel() throws PartInitException {
+    protected void loadModel() throws PartInitException {
         // get a URI or an input stream from the editor input
         URI uri = null;
         InputStream inputStream = null;
