@@ -17,7 +17,6 @@ import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
@@ -53,19 +52,11 @@ public class RandomGraphTypePage extends WizardPage {
      * {@inheritDoc}
      */
     public void createControl(final Composite parent) {
-        Composite composite = new Composite(parent, SWT.NULL);
-        GridLayout layout = new GridLayout();
-        composite.setLayout(layout);
-        createGraphTypeGroup(composite);
-        setControl(composite);
-    }
-
-    // CHECKSTYLEOFF MagicNumber
-    private void createGraphTypeGroup(final Composite parent) {
         Composite composite = new Composite(parent, SWT.NONE);
         RowLayout rowLayout = new RowLayout(SWT.VERTICAL);
         rowLayout.spacing = 5;
         composite.setLayout(rowLayout);
+        setControl(composite);
         
         // label
         Label label = new Label(composite, SWT.NULL);

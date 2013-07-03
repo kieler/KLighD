@@ -58,16 +58,8 @@ public class RandomGraphAnyPage extends WizardPage {
      */
     public void createControl(final Composite parent) {
         Composite composite = new Composite(parent, SWT.NONE);
-        GridLayout layout = new GridLayout();
-        composite.setLayout(layout);
-        createOptions(composite);
-        setControl(composite);
-    }
-
-    // CHECKSTYLEOFF MagicNumber
-    private void createOptions(final Composite parent) {
-        Composite composite = new Composite(parent, SWT.NONE);
         composite.setLayoutData(new GridData(SWT.FILL, SWT.NONE, true, false));
+        setControl(composite);
         
         GridLayout layout = new GridLayout(1, false);
         layout.verticalSpacing = 10;

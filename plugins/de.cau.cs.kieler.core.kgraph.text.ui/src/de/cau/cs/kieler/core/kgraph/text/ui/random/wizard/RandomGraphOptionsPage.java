@@ -57,17 +57,9 @@ public class RandomGraphOptionsPage extends WizardPage {
      */
     public void createControl(final Composite parent) {
         Composite composite = new Composite(parent, SWT.NULL);
-        GridLayout layout = new GridLayout();
-        composite.setLayout(layout);
-        createOptions(composite);
-        setControl(composite);
-    }
-
-    // CHECKSTYLEOFF MagicNumber
-    private void createOptions(final Composite parent) {
-        Composite composite = new Composite(parent, SWT.NULL);
         GridData gridData = new GridData(SWT.FILL, SWT.NONE, true, false);
         composite.setLayoutData(gridData);
+        setControl(composite);
         
         GridLayout layout = new GridLayout(2, false);
         layout.verticalSpacing = 10;

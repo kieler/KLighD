@@ -159,6 +159,31 @@ public class Messages extends NLS {
     public static String RandomGraphWizard_title;
     public static String RandomGraphWizard_load_preferences_error;
     public static String RandomGraphWizard_default_preferences_error;
+    public static String RandomGraphLayoutPage_title;
+    public static String RandomGraphLayoutPage_description;
+    public static String RandomGraphLayoutPage_ports_group_caption;
+    public static String RandomGraphLayoutPage_ports_none_caption;
+    public static String RandomGraphLayoutPage_ports_none_help;
+    public static String RandomGraphLayoutPage_ports_fixed_side_caption;
+    public static String RandomGraphLayoutPage_ports_fixed_side_help;
+    public static String RandomGraphLayoutPage_ports_fixed_pos_caption;
+    public static String RandomGraphLayoutPage_ports_fixed_pos_help;
+    public static String RandomGraphLayoutPage_ports_incoming_caption;
+    public static String RandomGraphLayoutPage_ports_outgoing_caption;
+    public static String RandomGraphLayoutPage_ports_north_caption;
+    public static String RandomGraphLayoutPage_ports_east_caption;
+    public static String RandomGraphLayoutPage_ports_south_caption;
+    public static String RandomGraphLayoutPage_ports_west_caption;
+    public static String RandomGraphLayoutPage_ports_incoming_north_help;
+    public static String RandomGraphLayoutPage_ports_incoming_east_help;
+    public static String RandomGraphLayoutPage_ports_incoming_south_help;
+    public static String RandomGraphLayoutPage_ports_incoming_west_help;
+    public static String RandomGraphLayoutPage_ports_outgoing_north_help;
+    public static String RandomGraphLayoutPage_ports_outgoing_east_help;
+    public static String RandomGraphLayoutPage_ports_outgoing_south_help;
+    public static String RandomGraphLayoutPage_ports_outgoing_west_help;
+    public static String RandomGraphLayoutPage_ports_incoming_error;
+    public static String RandomGraphLayoutPage_ports_outgoing_error;
     
     static {
         // initialize resource bundle

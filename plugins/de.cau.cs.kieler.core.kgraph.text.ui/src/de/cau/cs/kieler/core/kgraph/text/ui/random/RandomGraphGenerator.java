@@ -33,6 +33,8 @@ import de.cau.cs.kieler.kiml.klayoutdata.KIdentifier;
 import de.cau.cs.kieler.kiml.klayoutdata.KLayoutDataFactory;
 import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout;
 import de.cau.cs.kieler.kiml.options.LayoutOptions;
+import de.cau.cs.kieler.kiml.options.PortConstraints;
+import de.cau.cs.kieler.kiml.options.PortSide;
 import de.cau.cs.kieler.kiml.util.KimlUtil;
 
 /**
@@ -47,6 +49,8 @@ public class RandomGraphGenerator {
     public static final float PORT_WIDTH = 4.0f;
     /** the fixed height of ports. */
     public static final float PORT_HEIGHT = 4.0f;
+    /** minimal separation of ports. */
+    public static final float PORT_SEPARATION = 10.0f;
 
     /** the generator options holder. */
     private GeneratorOptions options;
@@ -198,6 +202,19 @@ public class RandomGraphGenerator {
         // remove isolated nodes if requested
         if (!options.getProperty(GeneratorOptions.ISOLATED_NODES)) {
             removeIsolatedNodes(graph);
+        }
+        
+        // if ports require a predefined position, assign it to all ports
+        if (options.getProperty(GeneratorOptions.ENABLE_PORTS)
+                && options.getProperty(GeneratorOptions.PORT_CONSTRAINTS)
+                == PortConstraints.FIXED_POS) {
+            LinkedList<KNode> nodeQueue = new LinkedList<KNode>();
+            nodeQueue.add(graph);
+            do {
+                KNode node = nodeQueue.removeFirst();
+                distributePorts(node);
+                nodeQueue.addAll(node.getChildren());
+            } while (!nodeQueue.isEmpty());
         }
         
         return graph;
@@ -876,15 +893,15 @@ public class RandomGraphGenerator {
     /**
      * Creates a node.
      * 
-     * @param parent
-     *            the parent node
+     * @param parent the parent node
      * @return the node
      */
     private KNode createNode(final KNode parent) {
         KNode node = KimlUtil.createInitializedNode();
+        KShapeLayout nodeLayout = node.getData(KShapeLayout.class);
         float hypernodeChance = options.getProperty(GeneratorOptions.HYPERNODE_CHANCE);
         if (hypernodeChance > 0.0f && random.nextFloat() < hypernodeChance) {
-            node.getData(KShapeLayout.class).setProperty(LayoutOptions.HYPERNODE, true);
+            nodeLayout.setProperty(LayoutOptions.HYPERNODE, true);
         }
         
         // create label and identifier
@@ -899,15 +916,80 @@ public class RandomGraphGenerator {
         
         // set size of the node
         if (options.getProperty(GeneratorOptions.SET_NODE_SIZE)) {
-            KShapeLayout nodeLayout = node.getData(KShapeLayout.class);
             nodeLayout.setWidth(randomInt(options.getProperty(GeneratorOptions.MIN_NODE_WIDTH),
                     options.getProperty(GeneratorOptions.MAX_NODE_WIDTH)));
             nodeLayout.setHeight(randomInt(options.getProperty(GeneratorOptions.MIN_NODE_HEIGHT),
                     options.getProperty(GeneratorOptions.MAX_NODE_HEIGHT)));
         }
         
+        // set port constraints
+        PortConstraints portConstraints = options.getProperty(GeneratorOptions.PORT_CONSTRAINTS);
+        if (portConstraints != PortConstraints.UNDEFINED) {
+            nodeLayout.setProperty(LayoutOptions.PORT_CONSTRAINTS, portConstraints);
+        }
+        
         parent.getChildren().add(node);
         return node;
+    }
+    
+    /**
+     * Creates a port.
+     * 
+     * @param node the containing node
+     * @param source {@code true} if the port will be used as a source port, {@code false} if it will
+     *               be used as a target port.
+     * @return the port
+     */
+    private KPort createPort(final KNode node, final boolean source) {
+        KPort port = KimlUtil.createInitializedPort();
+        node.getPorts().add(port);
+        KShapeLayout portLayout = port.getData(KShapeLayout.class);
+        
+        // create label and identifier
+        String portId = String.valueOf(portLabelCounter++);
+        if (options.getProperty(GeneratorOptions.CREATE_PORT_LABELS)) {
+            KLabel label = KimlUtil.createInitializedLabel(port);
+            label.setText("P" + portId);
+        }
+        KIdentifier identifier = KLayoutDataFactory.eINSTANCE.createKIdentifier();
+        identifier.setId("p" + portId);
+        port.getData().add(identifier);
+        
+        // set size of the port
+        if (options.getProperty(GeneratorOptions.SET_PORT_SIZE)) {
+            portLayout.setWidth(PORT_WIDTH);
+            portLayout.setHeight(PORT_HEIGHT);
+        }
+        
+        if (options.getProperty(GeneratorOptions.PORT_CONSTRAINTS) != PortConstraints.UNDEFINED) {
+            // determine a random node side
+            int northProb, eastProb, southProb, westProb;
+            if (source) {
+                northProb = options.getProperty(GeneratorOptions.OUTGOING_NORTH_SIDE);
+                eastProb = options.getProperty(GeneratorOptions.OUTGOING_EAST_SIDE);
+                southProb = options.getProperty(GeneratorOptions.OUTGOING_SOUTH_SIDE);
+                westProb = options.getProperty(GeneratorOptions.OUTGOING_WEST_SIDE);
+            } else {
+                northProb = options.getProperty(GeneratorOptions.INCOMING_NORTH_SIDE);
+                eastProb = options.getProperty(GeneratorOptions.INCOMING_EAST_SIDE);
+                southProb = options.getProperty(GeneratorOptions.INCOMING_SOUTH_SIDE);
+                westProb = options.getProperty(GeneratorOptions.INCOMING_WEST_SIDE);
+            }
+            int p = random.nextInt(northProb + eastProb + southProb + westProb);
+            PortSide portSide;
+            if (p < northProb) {
+                portSide = PortSide.NORTH;
+            } else if (p < northProb + eastProb) {
+                portSide = PortSide.EAST;
+            } else if (p < northProb + eastProb + southProb) {
+                portSide = PortSide.SOUTH;
+            } else {
+                portSide = PortSide.WEST;
+            }
+            portLayout.setProperty(LayoutOptions.PORT_SIDE, portSide);
+        }
+        
+        return port;
     }
 
     /**
@@ -987,27 +1069,7 @@ public class RandomGraphGenerator {
         }
         
         // We were unable to reuse an existing port, so create a new one and return that
-        KPort port = KimlUtil.createInitializedPort();
-        node.getPorts().add(port);
-        
-        // create label and identifier
-        String portId = String.valueOf(portLabelCounter++);
-        if (options.getProperty(GeneratorOptions.CREATE_PORT_LABELS)) {
-            KLabel label = KimlUtil.createInitializedLabel(port);
-            label.setText("P" + portId);
-        }
-        KIdentifier identifier = KLayoutDataFactory.eINSTANCE.createKIdentifier();
-        identifier.setId("p" + portId);
-        port.getData().add(identifier);
-        
-        // set size of the port
-        if (options.getProperty(GeneratorOptions.SET_PORT_SIZE)) {
-            KShapeLayout portLayout = port.getData(KShapeLayout.class);
-            portLayout.setWidth(PORT_WIDTH);
-            portLayout.setHeight(PORT_HEIGHT);
-        }
-        
-        return port;
+        return createPort(node, source);
     }
 
     /**
@@ -1258,6 +1320,79 @@ public class RandomGraphGenerator {
             }
         }
         return false;
+    }
+    
+    /**
+     * Distribute all ports on the border of the given node.
+     * 
+     * @param node a node
+     */
+    private static void distributePorts(final KNode node) {
+        // count the ports on each side of the node
+        int northCount = 0, eastCount = 0, southCount = 0, westCount = 0;
+        for (KPort port : node.getPorts()) {
+            switch (port.getData(KShapeLayout.class).getProperty(LayoutOptions.PORT_SIDE)) {
+            case NORTH:
+                northCount++;
+                break;
+            case EAST:
+                eastCount++;
+                break;
+            case SOUTH:
+                southCount++;
+                break;
+            case WEST:
+                westCount++;
+                break;
+            }
+        }
+        
+        // make sure the node is big enough to contain all ports
+        KShapeLayout nodeLayout = node.getData(KShapeLayout.class);
+        if (nodeLayout.getWidth() < (northCount + 1) * (PORT_WIDTH + PORT_SEPARATION)) {
+            nodeLayout.setWidth((northCount + 1) * (PORT_WIDTH + PORT_SEPARATION));
+        }
+        if (nodeLayout.getWidth() < (southCount + 1) * (PORT_WIDTH + PORT_SEPARATION)) {
+            nodeLayout.setWidth((southCount + 1) * (PORT_WIDTH + PORT_SEPARATION));
+        }
+        if (nodeLayout.getHeight() < (eastCount + 1) * (PORT_HEIGHT + PORT_SEPARATION)) {
+            nodeLayout.setHeight((eastCount + 1) * (PORT_HEIGHT + PORT_SEPARATION));
+        }
+        if (nodeLayout.getHeight() < (westCount + 1) * (PORT_HEIGHT + PORT_SEPARATION)) {
+            nodeLayout.setHeight((westCount + 1) * (PORT_HEIGHT + PORT_SEPARATION));
+        }
+        
+        // distribute the ports on each node side
+        float northDelta = nodeLayout.getWidth() / (northCount + 1);
+        float eastDelta = nodeLayout.getHeight() / (eastCount + 1);
+        float southDelta = nodeLayout.getWidth() / (southCount + 1);
+        float westDelta = nodeLayout.getHeight() / (westCount + 1);
+        float northPos = 0, eastPos = 0, southPos = 0, westPos = 0;
+        for (KPort port : node.getPorts()) {
+            KShapeLayout portLayout = port.getData(KShapeLayout.class);
+            switch (portLayout.getProperty(LayoutOptions.PORT_SIDE)) {
+            case NORTH:
+                northPos += northDelta;
+                portLayout.setXpos(northPos - portLayout.getWidth() / 2);
+                portLayout.setYpos(-portLayout.getHeight());
+                break;
+            case EAST:
+                eastPos += eastDelta;
+                portLayout.setXpos(nodeLayout.getWidth());
+                portLayout.setYpos(eastPos - portLayout.getHeight() / 2);
+                break;
+            case SOUTH:
+                southPos += southDelta;
+                portLayout.setXpos(southPos - portLayout.getWidth() / 2);
+                portLayout.setYpos(nodeLayout.getHeight());
+                break;
+            case WEST:
+                westPos += westDelta;
+                portLayout.setXpos(-portLayout.getWidth());
+                portLayout.setYpos(westPos - portLayout.getHeight() / 2);
+                break;
+            }
+        }
     }
 
     /**

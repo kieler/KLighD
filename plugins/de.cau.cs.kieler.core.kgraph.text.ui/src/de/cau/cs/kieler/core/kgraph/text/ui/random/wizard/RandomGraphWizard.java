@@ -78,8 +78,10 @@ public class RandomGraphWizard extends Wizard implements INewWizard {
     private RandomGraphTriconnectedPage triconnectedPage;
     /** the page for the ACYCLIC_NO_TRANSITIV_EDGES graph type. */
     private RandomGraphANTEPage antePage;
-    /** the options page. */
+    /** the general options page. */
     private RandomGraphOptionsPage optionsPage;
+    /** the layout options page. */
+    private RandomGraphLayoutPage layoutPage;
 
     /**
      * Creates a RandomGraphWizard.
@@ -106,6 +108,7 @@ public class RandomGraphWizard extends Wizard implements INewWizard {
         triconnectedPage = new RandomGraphTriconnectedPage(options);
         antePage = new RandomGraphANTEPage(options);
         optionsPage = new RandomGraphOptionsPage(options);
+        layoutPage = new RandomGraphLayoutPage(options);
         addPage(newFilePage);
         addPage(typePage);
         addPage(anyPage);
@@ -114,6 +117,7 @@ public class RandomGraphWizard extends Wizard implements INewWizard {
         addPage(triconnectedPage);
         addPage(antePage);
         addPage(optionsPage);
+        addPage(layoutPage);
     }
 
     /**
@@ -143,6 +147,42 @@ public class RandomGraphWizard extends Wizard implements INewWizard {
                 || page == antePage
                 || page == anyPage) {
             
+            return optionsPage;
+        } else if (page == optionsPage) {
+            return layoutPage;
+        } else {
+            return null;
+        }
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public IWizardPage getPreviousPage(final IWizardPage page) {
+        if (page == typePage) {
+            return newFilePage;
+        } else if (page == treePage
+                || page == biconnectedPage
+                || page == triconnectedPage
+                || page == antePage
+                || page == anyPage) {
+            return typePage;
+        } else if (page == optionsPage) {
+            switch (options.getProperty(GeneratorOptions.GRAPH_TYPE)) {
+            case TREE:
+                return treePage;
+            case BICONNECTED:
+                return biconnectedPage;
+            case TRICONNECTED:
+                return triconnectedPage;
+            case ACYCLIC_NO_TRANSITIVE_EDGES:
+                return antePage;
+            case ANY:
+            default:
+                return anyPage;
+            }
+        } else if (page == layoutPage) {
             return optionsPage;
         } else {
             return null;
