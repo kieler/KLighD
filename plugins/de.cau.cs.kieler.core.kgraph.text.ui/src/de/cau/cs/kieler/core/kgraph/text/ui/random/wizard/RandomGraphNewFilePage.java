@@ -54,6 +54,7 @@ public class RandomGraphNewFilePage extends WizardNewFileCreationPage {
         setDescription(Messages.RandomGraphNewFilePage_description);
         setFileExtension("kgt"); //$NON-NLS-1$
         setAllowExistingResources(true);
+        setFileName(options.getProperty(GeneratorOptions.FILE_NAME));
         this.options = options;
     }
 

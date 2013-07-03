@@ -24,12 +24,21 @@ import de.cau.cs.kieler.core.kgraph.KGraphData;
 import de.cau.cs.kieler.core.kgraph.KLabel;
 import de.cau.cs.kieler.core.kgraph.KNode;
 import de.cau.cs.kieler.core.kgraph.KPort;
+import de.cau.cs.kieler.core.kgraph.PersistentEntry;
 import de.cau.cs.kieler.core.kgraph.text.services.KGraphGrammarAccess;
+import de.cau.cs.kieler.core.kgraph.text.services.KGraphGrammarAccess.KEdgeElements;
+import de.cau.cs.kieler.core.kgraph.text.services.KGraphGrammarAccess.KEdgeLayoutElements;
+import de.cau.cs.kieler.core.kgraph.text.services.KGraphGrammarAccess.KLabelElements;
 import de.cau.cs.kieler.core.kgraph.text.services.KGraphGrammarAccess.KNodeElements;
+import de.cau.cs.kieler.core.kgraph.text.services.KGraphGrammarAccess.KNodeLayoutElements;
+import de.cau.cs.kieler.core.kgraph.text.services.KGraphGrammarAccess.KPortElements;
+import de.cau.cs.kieler.core.kgraph.text.services.KGraphGrammarAccess.KShapeLayoutElements;
 import de.cau.cs.kieler.core.krendering.KRendering;
 import de.cau.cs.kieler.core.krendering.KRenderingLibrary;
+import de.cau.cs.kieler.kiml.klayoutdata.KEdgeLayout;
 import de.cau.cs.kieler.kiml.klayoutdata.KIdentifier;
 import de.cau.cs.kieler.kiml.klayoutdata.KInsets;
+import de.cau.cs.kieler.kiml.klayoutdata.KPoint;
 import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout;
 
 /**
@@ -120,6 +129,9 @@ public class KGraphSemanticSequencer extends AbstractKGraphSemanticSequencer {
                 }
                 i++;
             }
+        } else if (nodeLayout != null) {
+            feeder.accept(knodeAccess.getDataEmptyKNodeLayoutParserRuleCall_3_1_0(), nodeLayout,
+                    knode.getData().indexOf(nodeLayout));
         }
         
         feeder.finish();
@@ -137,6 +149,343 @@ public class KGraphSemanticSequencer extends AbstractKGraphSemanticSequencer {
                 || layout.getHeight() != 0 || !layout.getPersistentEntries().isEmpty()
                 || insets != null && (insets.getLeft() != 0 || insets.getRight() != 0
                 || insets.getTop() != 0 || insets.getBottom() != 0);
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected void sequence_KNodeLayout(final EObject context, final KShapeLayout shapeLayout) {
+        INodesForEObjectProvider nodesProvider = createNodeProvider(shapeLayout);
+        SequenceFeeder feeder = createSequencerFeeder(shapeLayout, nodesProvider);
+        KNodeLayoutElements shapeLayoutAccess = grammarAccess.getKNodeLayoutAccess();
+        
+        // serialize the width and height
+        if (shapeLayout.getXpos() != 0) {
+            feeder.accept(shapeLayoutAccess.getXposFloatParserRuleCall_0_0_2_0_2_0(),
+                    shapeLayout.getXpos());
+        }
+        if (shapeLayout.getYpos() != 0) {
+            feeder.accept(shapeLayoutAccess.getYposFloatParserRuleCall_0_0_2_1_2_0(),
+                    shapeLayout.getYpos());
+        }
+        if (shapeLayout.getWidth() != 0) {
+            feeder.accept(shapeLayoutAccess.getWidthFloatParserRuleCall_0_1_2_0_2_0(),
+                    shapeLayout.getWidth());
+        }
+        if (shapeLayout.getHeight() != 0) {
+            feeder.accept(shapeLayoutAccess.getHeightFloatParserRuleCall_0_1_2_1_2_0(),
+                    shapeLayout.getHeight());
+        }
+        
+        // serialize the properties
+        int i = 0;
+        for (PersistentEntry entry : shapeLayout.getPersistentEntries()) {
+            feeder.accept(shapeLayoutAccess.getPersistentEntriesPersistentEntryParserRuleCall_0_2_2_0(),
+                    entry, i++);
+        }
+        
+        // serialize the insets
+        KInsets insets = shapeLayout.getInsets();
+        if (insets != null && insets.getLeft() != 0 || insets.getRight() != 0 || insets.getTop() != 0
+                || insets.getBottom() != 0) {
+            feeder.accept(shapeLayoutAccess.getInsetsKInsetsParserRuleCall_1_0_2_0(), insets);
+        } else if (insets != null) {
+            feeder.accept(shapeLayoutAccess.getInsetsEmptyKInsetsParserRuleCall_1_1_0(), insets);
+        }
+        
+        feeder.finish();
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected void sequence_KEdge(final EObject context, final KEdge kedge) {
+        KIdentifier identifier = null;
+        KEdgeLayout edgeLayout = null;
+        boolean hasRenderings = false;
+        for (KGraphData data : kedge.getData()) {
+            if (data instanceof KIdentifier) {
+                identifier = (KIdentifier) data;
+            } else if (data instanceof KEdgeLayout) {
+                edgeLayout = (KEdgeLayout) data;
+            } else if (data instanceof KRendering) {
+                hasRenderings = true;
+            }
+        }
+        
+        INodesForEObjectProvider nodesProvider = createNodeProvider(kedge);
+        SequenceFeeder feeder = createSequencerFeeder(kedge, nodesProvider);
+        KEdgeElements kedgeAccess = grammarAccess.getKEdgeAccess();
+        
+        // serialize the identifier
+        if (identifier != null && identifier.getId() != null && identifier.getId().length() > 0) {
+            feeder.accept(kedgeAccess.getDataKIdentifierParserRuleCall_1_0(), identifier,
+                    kedge.getData().indexOf(identifier));
+        }
+        
+        // serialize connected elements
+        if (kedge.getSourcePort() != null) {
+            feeder.accept(kedgeAccess.getSourcePortKPortQualifiedIDParserRuleCall_3_1_0_1(),
+                    kedge.getSourcePort());
+        }
+        if (kedge.getTarget() != null) {
+            feeder.accept(kedgeAccess.getTargetKNodeQualifiedIDParserRuleCall_5_0_1(),
+                    kedge.getTarget());
+        }
+        if (kedge.getTargetPort() != null) {
+            feeder.accept(kedgeAccess.getTargetPortKPortQualifiedIDParserRuleCall_6_1_0_1(),
+                    kedge.getTargetPort());
+        }
+        
+        if (edgeLayout != null && nonEmptyLayout(edgeLayout) || !kedge.getLabels().isEmpty()
+                || hasRenderings) {
+            int i;
+            
+            // serialize the edge layout
+            if (edgeLayout != null) {
+                feeder.accept(kedgeAccess.getDataKEdgeLayoutParserRuleCall_8_0_1_0(), edgeLayout,
+                        kedge.getData().indexOf(edgeLayout));
+            }
+            
+            // serialize the edge labels
+            i = 0;
+            for (KLabel label : kedge.getLabels()) {
+                feeder.accept(kedgeAccess.getLabelsKLabelParserRuleCall_8_0_2_0_0(), label, i++);
+            }
+            
+            // serialize the renderings
+            i = 0;
+            for (KGraphData data : kedge.getData()) {
+                if (data instanceof KRendering) {
+                    feeder.accept(kedgeAccess.getDataKRenderingParserRuleCall_8_0_2_1_0(), data, i);
+                }
+                i++;
+            }
+        } else if (edgeLayout != null) {
+            feeder.accept(kedgeAccess.getDataEmptyKEdgeLayoutParserRuleCall_8_1_0(), edgeLayout,
+                    kedge.getData().indexOf(edgeLayout));
+        }
+        
+        feeder.finish();
+    }
+    
+    /**
+     * Determine whether the given edge layout is empty, that is all features are set to zero.
+     * 
+     * @param layout an edge layout
+     * @return true if the shape layout is empty
+     */
+    private static boolean nonEmptyLayout(final KEdgeLayout layout) {
+        KPoint sourcePoint = layout.getSourcePoint();
+        KPoint targetPoint = layout.getTargetPoint();
+        return sourcePoint != null && (sourcePoint.getX() != 0 || sourcePoint.getY() != 0)
+                || targetPoint != null && (targetPoint.getX() != 0 || targetPoint.getY() != 0)
+                || !layout.getBendPoints().isEmpty() || !layout.getPersistentEntries().isEmpty();
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected void sequence_KEdgeLayout(final EObject context, final KEdgeLayout edgeLayout) {
+        INodesForEObjectProvider nodesProvider = createNodeProvider(edgeLayout);
+        SequenceFeeder feeder = createSequencerFeeder(edgeLayout, nodesProvider);
+        KEdgeLayoutElements edgeLayoutAccess = grammarAccess.getKEdgeLayoutAccess();
+        
+        // serialize the points
+        KPoint sourcePoint = edgeLayout.getSourcePoint();
+        KPoint targetPoint = edgeLayout.getTargetPoint();
+        if (sourcePoint != null && (sourcePoint.getX() != 0 || sourcePoint.getY() != 0)
+                || targetPoint != null && (targetPoint.getX() != 0 || targetPoint.getY() != 0)
+                || !edgeLayout.getBendPoints().isEmpty()) {
+            feeder.accept(edgeLayoutAccess.getSourcePointKPointParserRuleCall_0_0_2_0_0_0(),
+                    sourcePoint);
+            if (targetPoint != null && (targetPoint.getX() != 0 || targetPoint.getY() != 0)
+                || !edgeLayout.getBendPoints().isEmpty()) {
+                int i = 0;
+                for (KPoint bendPoint : edgeLayout.getBendPoints()) {
+                    feeder.accept(
+                            edgeLayoutAccess.getBendPointsKPointParserRuleCall_0_0_2_0_1_0_1_0_0(),
+                            bendPoint, i++);
+                }
+                feeder.accept(edgeLayoutAccess.getTargetPointKPointParserRuleCall_0_0_2_0_1_0_2_0(),
+                        targetPoint);
+            } else {
+                feeder.accept(edgeLayoutAccess.getTargetPointEmptyKPointParserRuleCall_0_0_2_0_1_1_0(),
+                        targetPoint);
+            }
+        } else {
+            feeder.accept(edgeLayoutAccess.getSourcePointEmptyKPointParserRuleCall_0_1_0_0(),
+                    sourcePoint);
+            feeder.accept(edgeLayoutAccess.getTargetPointEmptyKPointParserRuleCall_0_1_1_0(),
+                    targetPoint);
+        }
+        
+        // serialize the properties
+        int i = 0;
+        for (PersistentEntry entry : edgeLayout.getPersistentEntries()) {
+            feeder.accept(edgeLayoutAccess.getPersistentEntriesPersistentEntryParserRuleCall_1_2_0(),
+                    entry, i++);
+        }
+        
+        feeder.finish();
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected void sequence_KPort(final EObject context, final KPort kport) {
+        KIdentifier identifier = null;
+        KShapeLayout portLayout = null;
+        boolean hasRenderings = false;
+        for (KGraphData data : kport.getData()) {
+            if (data instanceof KIdentifier) {
+                identifier = (KIdentifier) data;
+            } else if (data instanceof KShapeLayout) {
+                portLayout = (KShapeLayout) data;
+            } else if (data instanceof KRendering) {
+                hasRenderings = true;
+            }
+        }
+        
+        INodesForEObjectProvider nodesProvider = createNodeProvider(kport);
+        SequenceFeeder feeder = createSequencerFeeder(kport, nodesProvider);
+        KPortElements kportAccess = grammarAccess.getKPortAccess();
+        
+        // serialize the identifier
+        if (identifier != null && identifier.getId() != null && identifier.getId().length() > 0) {
+            feeder.accept(kportAccess.getDataKIdentifierParserRuleCall_2_0(), identifier,
+                    kport.getData().indexOf(identifier));
+        }
+        
+        if (portLayout != null && nonEmptyLayout(portLayout) || !kport.getLabels().isEmpty()
+                || hasRenderings) {
+            int i;
+            
+            // serialize the port layout
+            if (portLayout != null) {
+                feeder.accept(kportAccess.getDataKShapeLayoutParserRuleCall_3_0_1_0(), portLayout,
+                        kport.getData().indexOf(portLayout));
+            }
+            
+            // serialize the port labels
+            i = 0;
+            for (KLabel label : kport.getLabels()) {
+                feeder.accept(kportAccess.getLabelsKLabelParserRuleCall_3_0_2_0_0(), label, i++);
+            }
+            
+            // serialize the renderings
+            i = 0;
+            for (KGraphData data : kport.getData()) {
+                if (data instanceof KRendering) {
+                    feeder.accept(kportAccess.getDataKRenderingParserRuleCall_3_0_2_1_0(), data, i);
+                }
+                i++;
+            }
+        } else if (portLayout != null) {
+            feeder.accept(kportAccess.getDataEmptyKShapeLayoutParserRuleCall_3_1_0(), portLayout,
+                    kport.getData().indexOf(portLayout));
+        }
+        
+        feeder.finish();
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected void sequence_KShapeLayout(final EObject context, final KShapeLayout shapeLayout) {
+        INodesForEObjectProvider nodesProvider = createNodeProvider(shapeLayout);
+        SequenceFeeder feeder = createSequencerFeeder(shapeLayout, nodesProvider);
+        KShapeLayoutElements shapeLayoutAccess = grammarAccess.getKShapeLayoutAccess();
+        
+        // serialize the width and height
+        if (shapeLayout.getXpos() != 0) {
+            feeder.accept(shapeLayoutAccess.getXposFloatParserRuleCall_1_0_2_0_2_0(),
+                    shapeLayout.getXpos());
+        }
+        if (shapeLayout.getYpos() != 0) {
+            feeder.accept(shapeLayoutAccess.getYposFloatParserRuleCall_1_0_2_1_2_0(),
+                    shapeLayout.getYpos());
+        }
+        if (shapeLayout.getWidth() != 0) {
+            feeder.accept(shapeLayoutAccess.getWidthFloatParserRuleCall_1_1_2_0_2_0(),
+                    shapeLayout.getWidth());
+        }
+        if (shapeLayout.getHeight() != 0) {
+            feeder.accept(shapeLayoutAccess.getHeightFloatParserRuleCall_1_1_2_1_2_0(),
+                    shapeLayout.getHeight());
+        }
+        
+        // serialize the properties
+        int i = 0;
+        for (PersistentEntry entry : shapeLayout.getPersistentEntries()) {
+            feeder.accept(shapeLayoutAccess.getPersistentEntriesPersistentEntryParserRuleCall_1_2_2_0(),
+                    entry, i++);
+        }
+        
+        feeder.finish();
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected void sequence_KLabel(final EObject context, final KLabel klabel) {
+        KIdentifier identifier = null;
+        KShapeLayout labelLayout = null;
+        boolean hasRenderings = false;
+        for (KGraphData data : klabel.getData()) {
+            if (data instanceof KIdentifier) {
+                identifier = (KIdentifier) data;
+            } else if (data instanceof KShapeLayout) {
+                labelLayout = (KShapeLayout) data;
+            } else if (data instanceof KRendering) {
+                hasRenderings = true;
+            }
+        }
+        
+        INodesForEObjectProvider nodesProvider = createNodeProvider(klabel);
+        SequenceFeeder feeder = createSequencerFeeder(klabel, nodesProvider);
+        KLabelElements klabelAccess = grammarAccess.getKLabelAccess();
+        
+        // serialize the identifier
+        if (identifier != null && identifier.getId() != null && identifier.getId().length() > 0) {
+            feeder.accept(klabelAccess.getDataKIdentifierParserRuleCall_2_0(), identifier,
+                    klabel.getData().indexOf(identifier));
+        }
+        
+        // serialize the text
+        if (klabel.getText() != null) {
+            feeder.accept(klabelAccess.getTextSTRINGTerminalRuleCall_3_0(), klabel.getText());
+        }
+        
+        if (labelLayout != null && nonEmptyLayout(labelLayout) || hasRenderings) {
+            int i;
+            
+            // serialize the label layout
+            if (labelLayout != null) {
+                feeder.accept(klabelAccess.getDataKShapeLayoutParserRuleCall_4_0_1_0(), labelLayout,
+                        klabel.getData().indexOf(labelLayout));
+            }
+            
+            // serialize the renderings
+            i = 0;
+            for (KGraphData data : klabel.getData()) {
+                if (data instanceof KRendering) {
+                    feeder.accept(klabelAccess.getDataKRenderingParserRuleCall_4_0_2_0(), data, i);
+                }
+                i++;
+            }
+        } else if (labelLayout != null) {
+            feeder.accept(klabelAccess.getDataEmptyKShapeLayoutParserRuleCall_4_1_0(), labelLayout,
+                    klabel.getData().indexOf(labelLayout));
+        }
+        
+        feeder.finish();
     }
     
 }

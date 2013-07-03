@@ -69,6 +69,10 @@ public class RandomGraphGenerator {
         nodeLabelCounter = 0;
         portLabelCounter = 0;
         this.options = options;
+        if (!options.getProperty(GeneratorOptions.ENABLE_HIERARCHY)) {
+            options.setProperty(GeneratorOptions.HIERARCHY_CHANCE, 0.0f);
+        }
+        
         // generate the graph
         KNode graph = KimlUtil.createInitializedNode();
         

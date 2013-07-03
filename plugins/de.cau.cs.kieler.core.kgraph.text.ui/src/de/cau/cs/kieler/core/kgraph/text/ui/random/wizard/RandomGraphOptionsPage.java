@@ -73,7 +73,7 @@ public class RandomGraphOptionsPage extends WizardPage {
         layout.verticalSpacing = 10;
         composite.setLayout(layout);
         
-        // Create and add the diffent option groups
+        // Create and add the different option groups
         createHierarchyGroup(composite);
         createPortsGroup(composite);
         
@@ -188,12 +188,6 @@ public class RandomGraphOptionsPage extends WizardPage {
             public void widgetSelected(final SelectionEvent e) {
                 boolean hierarchyEnabled = hierarchyButton.getSelection();
                 options.setProperty(GeneratorOptions.ENABLE_HIERARCHY, hierarchyEnabled);
-                if (hierarchyEnabled) {
-                    options.setProperty(GeneratorOptions.HIERARCHY_CHANCE,
-                            hierarchySpinner.getSelection() / 100.0f);
-                } else {
-                    options.setProperty(GeneratorOptions.HIERARCHY_CHANCE, 0.0f);
-                }
                 hierarchySpinner.setEnabled(hierarchyEnabled);
                 hierarchyLevelSpinner.setEnabled(hierarchyEnabled);
                 hierarchyFactorSpinner.setEnabled(hierarchyEnabled);
