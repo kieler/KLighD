@@ -60,11 +60,9 @@ import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout;
 import de.cau.cs.kieler.kiml.options.EdgeRouting;
 import de.cau.cs.kieler.kiml.options.LayoutOptions;
 import de.cau.cs.kieler.klighd.KlighdConstants;
-import de.cau.cs.kieler.klighd.KlighdDataManager;
 import de.cau.cs.kieler.klighd.KlighdPlugin;
 import de.cau.cs.kieler.klighd.LightDiagramServices;
 import de.cau.cs.kieler.klighd.ViewContext;
-import de.cau.cs.kieler.klighd.krendering.SimpleUpdateStrategy;
 import de.cau.cs.kieler.klighd.macrolayout.DiagramLayoutManager;
 import de.cau.cs.kieler.klighd.piccolo.activities.ApplyBendPointsActivity;
 import de.cau.cs.kieler.klighd.piccolo.activities.ApplySmartBoundsActivity;
@@ -82,6 +80,7 @@ import de.cau.cs.kieler.klighd.piccolo.krendering.KNodeTopNode;
 import de.cau.cs.kieler.klighd.piccolo.krendering.KPortNode;
 import de.cau.cs.kieler.klighd.piccolo.util.NodeUtil;
 import de.cau.cs.kieler.klighd.util.Iterables2;
+import de.cau.cs.kieler.klighd.util.KlighdSynthesisProperties;
 import de.cau.cs.kieler.klighd.util.LimitedKGraphContentAdapter;
 import de.cau.cs.kieler.klighd.util.ModelingUtil;
 import de.cau.cs.kieler.klighd.util.RenderingContextData;
@@ -349,9 +348,8 @@ public class GraphController {
                 try {
                     Resource res = new ResourceSetImpl().getResource(uri, true);
                     EObject model = res.getContents().get(0);
-                    ViewContext vc = LightDiagramServices.getInstance().createViewContext(model);
-                    vc.setUpdateStrategy(KlighdDataManager.getInstance().getUpdateStrategyById(
-                            SimpleUpdateStrategy.ID));
+                    ViewContext vc = LightDiagramServices.getInstance().createViewContext(model,
+                        new KlighdSynthesisProperties().useSimpleUpdateStrategy());
                     LightDiagramServices.getInstance().updateViewContext(vc, model);
                     res.unload();
                     result = (KNode) vc.getViewModel();
