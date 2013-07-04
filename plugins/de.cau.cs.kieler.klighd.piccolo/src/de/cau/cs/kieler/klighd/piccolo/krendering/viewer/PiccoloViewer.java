@@ -54,6 +54,7 @@ import edu.umd.cs.piccolo.PRoot;
 import edu.umd.cs.piccolo.event.PInputEventFilter;
 import edu.umd.cs.piccolo.util.PBounds;
 import edu.umd.cs.piccolox.swt.PSWTCanvas;
+
 //import java.util.List;
 
 /**
@@ -69,7 +70,7 @@ public class PiccoloViewer extends AbstractViewer<KNode> implements INodeSelecti
     private PSWTSimpleSelectionEventHandler selectionHandler = null;
     /** the content outline page. */
     private PiccoloOutlinePage outlinePage;
-    
+
     /** the parent viewer. */
     private ContextViewer parentViewer;
     /** the graph controller. */
@@ -100,13 +101,14 @@ public class PiccoloViewer extends AbstractViewer<KNode> implements INodeSelecti
     public PiccoloViewer(final ContextViewer theParentViewer, final Composite parent,
             final int style) {
         if (parent.isDisposed()) {
-            final String msg = "KLighD (piccolo): A 'PiccoloViewer' has been tried to attach to a"
-                    + "disposed 'Composite' widget.";
+            final String msg =
+                    "KLighD (piccolo): A 'PiccoloViewer' has been tried to attach to a"
+                            + "disposed 'Composite' widget.";
             throw new IllegalArgumentException(msg);
         }
         this.parentViewer = theParentViewer;
         this.canvas = new PSWTCanvas(parent, style) {
-            
+
             private KlighdSWTGraphics graphics = new KlighdSWTGraphicsImpl(null,
                     parent.getDisplay());
 
@@ -116,14 +118,14 @@ public class PiccoloViewer extends AbstractViewer<KNode> implements INodeSelecti
                 graphics.setGC(gc);
                 return (Graphics2D) graphics;
             }
-            
+
             // with this specialized implementation I register
-            //  customized event listeners that do not translate SWT events into AWT ones.
+            // customized event listeners that do not translate SWT events into AWT ones.
             protected void installInputSources() {
-                // TODO for the moment we need the original ones, too, as long as the the 
-                //  PSWTSimpleSelectionEventHandler is not migrated to the custom listeners
+                // TODO for the moment we need the original ones, too, as long as the the
+                // PSWTSimpleSelectionEventHandler is not migrated to the custom listeners
                 super.installInputSources();
-                
+
                 this.addKeyListener(new KlighdKeyEventListener(this));
                 KlighdMouseEventListener mouseListener = new KlighdMouseEventListener(this);
                 this.addMouseListener(mouseListener);
@@ -135,8 +137,8 @@ public class PiccoloViewer extends AbstractViewer<KNode> implements INodeSelecti
             /**
              * {@inheritDoc}.<br>
              * <br>
-             * This specialized method checks the validity of the canvas
-             * before something is painted in order to avoid the 'Widget is disposed' errors.
+             * This specialized method checks the validity of the canvas before something is painted
+             * in order to avoid the 'Widget is disposed' errors.
              */
             public void repaint(final PBounds bounds) {
                 if (!this.isDisposed()) {
@@ -144,7 +146,7 @@ public class PiccoloViewer extends AbstractViewer<KNode> implements INodeSelecti
                 }
             }
         };
-        
+
         // this reduces flickering drastically
         canvas.setDoubleBuffered(true);
         // canvas.setDefaultRenderQuality(PPaintContext.LOW_QUALITY_RENDERING);
@@ -157,6 +159,10 @@ public class PiccoloViewer extends AbstractViewer<KNode> implements INodeSelecti
         canvas.addInputEventListener(new PMouseWheelZoomEventHandler());
         // add a context menu
         addContextMenu(canvas);
+
+        // add a tooltip
+       new PiccoloTooltip(parent.getDisplay(), canvas.getCamera());
+
     }
 
     /**
@@ -183,7 +189,7 @@ public class PiccoloViewer extends AbstractViewer<KNode> implements INodeSelecti
     public Control getControl() {
         return canvas;
     }
-    
+
     /**
      * {@inheritDoc}
      */
@@ -200,7 +206,7 @@ public class PiccoloViewer extends AbstractViewer<KNode> implements INodeSelecti
             canvas.removeInputEventListener(selectionHandler);
             selectionHandler = null;
         }
-        
+
         // prepare the camera
         PCamera camera = canvas.getCamera();
         // resetCamera(camera);
@@ -209,7 +215,7 @@ public class PiccoloViewer extends AbstractViewer<KNode> implements INodeSelecti
         // create a controller for the graph
         controller = new GraphController(model, camera.getLayer(0), sync);
         controller.initialize();
-        
+
         // update the outline page
         if (outlinePage != null) {
             outlinePage.setContent(camera.getLayer(0));
@@ -389,21 +395,21 @@ public class PiccoloViewer extends AbstractViewer<KNode> implements INodeSelecti
             camera.animateViewToCenterBounds(node.getFullBounds(), false, duration);
         }
     }
-    
+
     /**
      * {@inheritDoc}
      */
     public void expand(final KNode diagramElement) {
         controller.expand(diagramElement);
     }
-    
+
     /**
      * {@inheritDoc}
      */
     public void toggleExpansion(final KNode diagramElement) {
         controller.toggleExpansion(diagramElement);
     }
-    
+
     /**
      * Returns the Piccolo representation for the given diagram element.
      * 
@@ -450,22 +456,22 @@ public class PiccoloViewer extends AbstractViewer<KNode> implements INodeSelecti
             notifyListenersUnselected(graphElement.getGraphElement());
         }
     }
-    
+
     /**
      * {@inheritDoc}
      */
-    public void selection(final PSWTSimpleSelectionEventHandler handler,
-            final Iterable<PNode> nodes) {
-        
+    public void selection(final PSWTSimpleSelectionEventHandler handler, final Iterable<PNode> nodes) {
+
         @SuppressWarnings("unchecked")
-        Iterable<ITracingElement<EObject>> elements = (Iterable<ITracingElement<EObject>>)
-                (Iterable<?>) Iterables.filter(nodes, ITracingElement.class);
-        
-//        List<EObject> graphElements = Lists.newLinkedList();
-//        for (ITracingElement<EObject> element : elements) {
-//            graphElements.add(element.getGraphElement());
-//        }
-        
+        Iterable<ITracingElement<EObject>> elements =
+                (Iterable<ITracingElement<EObject>>) (Iterable<?>) Iterables.filter(nodes,
+                        ITracingElement.class);
+
+        // List<EObject> graphElements = Lists.newLinkedList();
+        // for (ITracingElement<EObject> element : elements) {
+        // graphElements.add(element.getGraphElement());
+        // }
+
         notifyListenersSelection(Iterables.transform(elements,
                 new Function<ITracingElement<EObject>, EObject>() {
                     public EObject apply(final ITracingElement<EObject> element) {
