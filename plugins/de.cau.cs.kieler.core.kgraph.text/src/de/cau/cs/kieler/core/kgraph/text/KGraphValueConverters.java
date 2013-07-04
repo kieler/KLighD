@@ -40,6 +40,9 @@ import org.eclipse.xtext.util.Strings;
  * @author msp
  */
 public class KGraphValueConverters extends AbstractDeclarativeValueConverterService {
+    
+    /** precision of float outputs below which they are converted to integers. */
+    private static final float FLOAT_PREC = 1e-4f;
 
     @Inject
     private AbstractIDValueConverter idValueConverter;
@@ -80,6 +83,11 @@ public class KGraphValueConverters extends AbstractDeclarativeValueConverterServ
         return intValueConverter;
     }
     
+    @ValueConverter(rule = "Float")
+    public IValueConverter<Float> Float() {
+        return new FloatValueConverter();
+    }
+    
     @ValueConverter(rule = "RED")
     public IValueConverter<Integer> RED() {
         return new IntUnitSuffixConverter("r");
@@ -116,12 +124,15 @@ public class KGraphValueConverters extends AbstractDeclarativeValueConverterServ
     }
     
     
+    /**
+     * Value converter for qualified identifiers.
+     */
     private static class QualifiedIDValueConverter extends IDValueConverter {
 
         @Inject
         private IValueConverterService valueConverter;
 
-        public String toString(String s) {
+        public String toString(final String s) {
             String res = "";
             for (Object ss : Collections.list(new StringTokenizer(s, "."))) {
                 res += "." + valueConverter.toString(ss, "ID");
@@ -129,12 +140,15 @@ public class KGraphValueConverters extends AbstractDeclarativeValueConverterServ
             return res.substring(1);
         }
         
-        public String toValue(String string, INode node) {
+        public String toValue(final String string, final INode node) {
             String res = super.toValue(string, node);
             return res.replace(".^", ".");
         }
     }
     
+    /**
+     * Value converter for integer values with a unit suffix.
+     */
     private class IntUnitSuffixConverter extends AbstractNullSafeConverter<Integer> {
         private String suffix;
         
@@ -158,6 +172,9 @@ public class KGraphValueConverters extends AbstractDeclarativeValueConverterServ
         }
     }
     
+    /**
+     * Value converter for floating point values with a unit suffix.
+     */
     private class FloatUnitSuffixConverter extends AbstractNullSafeConverter<Float> {
         private float factor;
         private String suffix;
@@ -169,10 +186,13 @@ public class KGraphValueConverters extends AbstractDeclarativeValueConverterServ
         
         @Override
         protected String internalToString(final Float value) {
-            if (value == null) {
-                throw new ValueConverterException("Float value may not be null.", null, null);
+            float outputValue = value * factor;
+            int intOutputValue = Math.round(outputValue);
+            if (Math.abs(outputValue - intOutputValue) < FLOAT_PREC) {
+                return Integer.toString(intOutputValue) + suffix;
+            } else {
+                return Float.toString(outputValue) + suffix;
             }
-            return Float.toString(value * factor) + suffix;
         }
         
         @Override
@@ -188,6 +208,37 @@ public class KGraphValueConverters extends AbstractDeclarativeValueConverterServ
                     return Float.parseFloat(string.substring(0, i)) / factor;
                 }
                 return Float.parseFloat(string) / factor;
+            } catch (NumberFormatException e) {
+                throw new ValueConverterException("Couldn't convert '" + string + "' to a float value.",
+                        node, e);
+            }
+        }
+    }
+    
+    /**
+     * Value converter for floating point values.
+     */
+    private class FloatValueConverter extends AbstractNullSafeConverter<Float> {
+        
+        @Override
+        protected String internalToString(final Float value) {
+            int intValue = Math.round(value);
+            if (Math.abs(value - intValue) < FLOAT_PREC) {
+                return Integer.toString(intValue);
+            } else {
+                return Float.toString(value);
+            }
+        }
+        
+        @Override
+        protected Float internalToValue(final String string, final INode node)
+                throws ValueConverterException {
+            if (Strings.isEmpty(string)) {
+                throw new ValueConverterException("Couldn't convert empty string to a float value.",
+                        node, null);
+            }
+            try {
+                return Float.parseFloat(string);
             } catch (NumberFormatException e) {
                 throw new ValueConverterException("Couldn't convert '" + string + "' to a float value.",
                         node, e);
