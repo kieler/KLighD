@@ -76,9 +76,9 @@ import edu.umd.cs.piccolox.swt.SWTGraphics2D;
  * {@link #setBounds(double, double, double, double)} in case of layout changes, and in case of pure
  * style changes by the {@link de.cau.cs.kieler.core.kgraph.KGraphElement KGraphElement} rendering
  * controllers (
- * {@link de.cau.cs.kieler.klighd.piccolo.krendering.controller.AbstractKGERenderingController
- * #updateStyles() AbstractKGERenderingController#updateStyles()}) after all rendering and style
- * changes are performed.
+ * {@link de.cau.cs.kieler.klighd.piccolo.krendering.controller.AbstractKGERenderingController #updateStyles()
+ * AbstractKGERenderingController#updateStyles()}) after all rendering and style changes are
+ * performed.
  * 
  * The skeleton of the implementation was copied from {@link edu.umd.cs.piccolox.swt.PSWTPath},
  * therefore the original copyright header is retained.
@@ -113,16 +113,15 @@ public class PSWTAdvancedPath extends PNode {
     private Shape origShape = new Rectangle2D.Float();
     private Shape shape;
 
-    
     // A field to keep the list of points line points in mind. They are required while determining
     // the rotation of edge decorators. By remembering them a re-extraction from the {@link Path2D
     // Path2D} is avoided.
     private Point2D[] linePoints;
 
     // These deactivated internal affine transforms are kept here and later on in the code
-    //  for the potential case they are be required in future for realizing a certain feature.
+    // for the potential case they are be required in future for realizing a certain feature.
     // The deactivated statements illustrate how such transforms are employed correctly in
-    //  PNode implementations.
+    // PNode implementations.
     //
     // private PAffineTransform internalXForm;
     // private AffineTransform inverseXForm;
@@ -326,9 +325,10 @@ public class PSWTAdvancedPath extends PNode {
      */
     public void setLineAttributes(final LineAttributes theLineAttributes) {
         this.lineAttributes = theLineAttributes;
-        this.stroke = new BasicStroke(lineAttributes.width, lineAttributes.cap - 1,
-                lineAttributes.join - 1, lineAttributes.miterLimit, lineAttributes.dash,
-                lineAttributes.dashOffset);
+        this.stroke =
+                new BasicStroke(lineAttributes.width, lineAttributes.cap - 1,
+                        lineAttributes.join - 1, lineAttributes.miterLimit, lineAttributes.dash,
+                        lineAttributes.dashOffset);
         updateBoundsFromPath();
         updateShape();
     }
@@ -350,9 +350,10 @@ public class PSWTAdvancedPath extends PNode {
      */
     public void setLineWidth(final float width) {
         this.lineAttributes.width = width;
-        this.stroke = new BasicStroke(lineAttributes.width, lineAttributes.cap - 1,
-                lineAttributes.join - 1, lineAttributes.miterLimit, lineAttributes.dash,
-                lineAttributes.dashOffset);
+        this.stroke =
+                new BasicStroke(lineAttributes.width, lineAttributes.cap - 1,
+                        lineAttributes.join - 1, lineAttributes.miterLimit, lineAttributes.dash,
+                        lineAttributes.dashOffset);
         updateBoundsFromPath();
         updateShape();
     }
@@ -525,7 +526,6 @@ public class PSWTAdvancedPath extends PNode {
         }
     }
 
-
     /**
      * {@inheritDoc}
      */
@@ -533,9 +533,9 @@ public class PSWTAdvancedPath extends PNode {
     protected void internalUpdateBounds(final double x, final double y, final double width,
             final double height) {
         // unused (left it the for the case it might be helpful in future,
-        //  should not sink into obscurity) 
-        //  if it is used again one make sure that no recursive cycles occur with
-        //  #updateBoundsFromPath
+        // should not sink into obscurity)
+        // if it is used again one make sure that no recursive cycles occur with
+        // #updateBoundsFromPath
     }
 
     /**
@@ -551,18 +551,18 @@ public class PSWTAdvancedPath extends PNode {
             // see remark on the deactivated 'transform' code above
             //
             // if (internalXForm == null) {
-            //     srcBounds = aBounds;
+            // srcBounds = aBounds;
             // } else {
-            //     srcBounds = new PBounds(aBounds);
-            //     internalXForm.inverseTransform(srcBounds, srcBounds);
+            // srcBounds = new PBounds(aBounds);
+            // internalXForm.inverseTransform(srcBounds, srcBounds);
             // }
 
             if (!isLine()) {
                 // We changed the condition to treat "frame figures", i.e. non-filled closed shapes
-                //  without a given background color, like filled ones with a background color.
+                // without a given background color, like filled ones with a background color.
                 // The distinction w.r.t. to the line attribute abolishes b.t.w. the
-                //  picking issue of non-closed lines, which was a problem in the early days of
-                //  KLighD.
+                // picking issue of non-closed lines, which was a problem in the early days of
+                // KLighD.
                 return shape.intersects(srcBounds);
             } else if (strokePaint != null || strokePaintGradient != null) {
                 return stroke.createStrokedShape(shape).intersects(srcBounds);
@@ -571,12 +571,11 @@ public class PSWTAdvancedPath extends PNode {
         return false;
     }
 
-    
     /**
-     * This method realizes the adjustment of the shape bounds according to stroke line width.
-     * To this end, the initial shape definition, which is kept in {@link #origShape} is replicated
-     * with adjusted bounds. This replicate is stored in {@link #shape} and drawn on the canvas
-     * in {@link #paint(PPaintContext)}.<br>
+     * This method realizes the adjustment of the shape bounds according to stroke line width. To
+     * this end, the initial shape definition, which is kept in {@link #origShape} is replicated
+     * with adjusted bounds. This replicate is stored in {@link #shape} and drawn on the canvas in
+     * {@link #paint(PPaintContext)}.<br>
      * <br>
      * In case of lines and polygons the {@link #origShape} is put into {@link #shape}, too, and
      * thus used while drawing.
@@ -586,7 +585,7 @@ public class PSWTAdvancedPath extends PNode {
     private void updateShape() {
         if (isLine() || isPolygon) {
             shape = origShape;
-            
+
         } else {
             final float lW = lineAttributes.width;
             final float halfLW = lineAttributes.width / 2;
@@ -594,23 +593,26 @@ public class PSWTAdvancedPath extends PNode {
 
             if (origShape instanceof Arc2D) {
                 final Arc2D.Float arc = (Arc2D.Float) origShape;
-                shape = new Arc2D.Float(b.x + halfLW, b.y + halfLW, b.width - lW, b.height - lW,
-                        arc.start, arc.extent, arc.getArcType());
+                shape =
+                        new Arc2D.Float(b.x + halfLW, b.y + halfLW, b.width - lW, b.height - lW,
+                                arc.start, arc.extent, arc.getArcType());
             } else if (origShape instanceof Ellipse2D) {
-                shape = new Ellipse2D.Float(b.x + halfLW, b.y + halfLW, b.width - lW, b.height - lW);
+                shape =
+                        new Ellipse2D.Float(b.x + halfLW, b.y + halfLW, b.width - lW, b.height - lW);
             } else if (origShape instanceof Rectangle2D) {
-                shape = new Rectangle2D.Float(b.x + halfLW, b.y + halfLW, b.width - lW, b.height
-                        - lW);
+                shape =
+                        new Rectangle2D.Float(b.x + halfLW, b.y + halfLW, b.width - lW, b.height
+                                - lW);
             } else if (origShape instanceof RoundRectangle2D) {
                 final RoundRectangle2D.Float rect = (RoundRectangle2D.Float) origShape;
-                shape = new RoundRectangle2D.Float(b.x + halfLW, b.y + halfLW, b.width - lW,
-                        b.height - lW, rect.arcwidth, rect.archeight);
+                shape =
+                        new RoundRectangle2D.Float(b.x + halfLW, b.y + halfLW, b.width - lW,
+                                b.height - lW, rect.arcwidth, rect.archeight);
             }
         }
         firePropertyChange(PPath.PROPERTY_CODE_PATH, PPath.PROPERTY_PATH, null, shape);
         // invalidatePaint();
     }
-
 
     /**
      * Recalculates the path's bounds by examining it's associated shape.
@@ -619,19 +621,17 @@ public class PSWTAdvancedPath extends PNode {
         if (isLine() || isPolygon) {
             final Rectangle2D b = shape.getBounds2D();
             final float halfLW = lineAttributes.width / 2;
-            
+
             // By means of the following setting it's guaranteed that the line width is incorporated
-            //  in determining the bounding box of horizontal and vertical lines.
-            // This is important for being able to pick them, for instance. 
-            
-            super.setBounds(b.getX() - halfLW, b.getY() - halfLW,
-                    b.getWidth() + lineAttributes.width,
-                    b.getHeight() + lineAttributes.width);
+            // in determining the bounding box of horizontal and vertical lines.
+            // This is important for being able to pick them, for instance.
+
+            super.setBounds(b.getX() - halfLW, b.getY() - halfLW, b.getWidth()
+                    + lineAttributes.width, b.getHeight() + lineAttributes.width);
         } else {
             super.setBounds(origShape.getBounds2D());
         }
     }
-
 
     /**
      * {@inheritDoc}<br>
@@ -669,7 +669,6 @@ public class PSWTAdvancedPath extends PNode {
         return super.pick(pickPath);
     }
 
-
     /**
      * {@inheritDoc}
      */
@@ -677,9 +676,10 @@ public class PSWTAdvancedPath extends PNode {
     protected void paint(final PPaintContext paintContext) {
         KlighdSWTGraphics g2 = (KlighdSWTGraphics) paintContext.getGraphics();
         g2.setLineAttributes(lineAttributes);
-
+        g2.setLineWidth(lineAttributes.width);
+        
         // if (internalXForm != null) {
-        //    g2.transform(internalXForm);
+        // g2.transform(internalXForm);
         // }
 
         if (shadow != null) {
@@ -692,8 +692,7 @@ public class PSWTAdvancedPath extends PNode {
         if (!isLine()) {
             RGB p = getSWTPaint();
             if (p != null) {
-                g2.setAlpha(
-                        (int) (paintAlpha * (currentAlphaFloat / KlighdConstants.ALPHA_FULL_OPAQUE)));
+                g2.setAlpha((int) (paintAlpha * (currentAlphaFloat / KlighdConstants.ALPHA_FULL_OPAQUE)));
                 g2.setBackground(p);
                 g2.fill(shape);
             }
@@ -721,7 +720,7 @@ public class PSWTAdvancedPath extends PNode {
         }
 
         // if (inverseXForm != null) {
-        //    g2.transform(inverseXForm);
+        // g2.transform(inverseXForm);
         // }
 
         g2.setAlpha(currentAlpha);
@@ -782,20 +781,25 @@ public class PSWTAdvancedPath extends PNode {
 
         // FIXME somehow use a shape
         SWTGraphics2D s2d = ((SWTGraphics2D) g2);
-        s2d.setBackground(Color.WHITE);
+        s2d.setBackground(blendColor(KlighdConstants.WHITE, paint, paintAlpha));
         s2d.setColor(shadow);
         s2d.fillGradientRectangle(bounds.x + bounds.width, bounds.y, shadowExtend / 2,
                 bounds.height + shadowExtend / 4, false);
         s2d.fillGradientRectangle(bounds.x, bounds.y + bounds.height, bounds.width + shadowExtend
                 / 4, shadowExtend / 2, true);
 
-        g2.setBackground(KlighdConstants.WHITE);
-        g2.fill(shape);
-
         g2.setAlpha(currentAlpha);
         g2.setLineWidth(lineAttributes.width);
     }
 
+    private RGB blendColor(final RGB background, final RGB origColor, final int alpha) {
+        double normAlpha = alpha / 256d;
+        double newR = normAlpha * origColor.red + (1 - normAlpha) * background.red;
+        double newG = normAlpha * origColor.green + (1 - normAlpha) * background.green;
+        double newB = normAlpha * origColor.blue + (1 - normAlpha) * background.blue;
+
+        return new RGB((int) newR, (int) newG, (int) newB);
+    }
 
     /**
      * Changes the underlying shape of this PSWTPath.
@@ -809,7 +813,6 @@ public class PSWTAdvancedPath extends PNode {
         updateBoundsFromPath();
         invalidatePaint();
     }
-    
 
     /**
      * Returns the points of the shape.
@@ -819,7 +822,6 @@ public class PSWTAdvancedPath extends PNode {
     public Point2D[] getShapePoints() {
         return this.linePoints;
     }
-
 
     /**
      * Resets the path to a rectangle with the dimensions and position provided.
@@ -876,7 +878,6 @@ public class PSWTAdvancedPath extends PNode {
         setShape(new Ellipse2D.Float(x, y, width, height));
     }
 
-
     /**
      * Resets the path to an arc positioned at the coordinate provided with the dimensions, angular
      * start and angular extent provided.
@@ -902,7 +903,6 @@ public class PSWTAdvancedPath extends PNode {
         setShape(new Arc2D.Float(x, y, width, height, angStart, angExtend, type));
     }
 
-
     /**
      * Sets the path to a sequence of segments described by the points.
      * 
@@ -920,7 +920,6 @@ public class PSWTAdvancedPath extends PNode {
         setShape(spline);
     }
 
-
     /**
      * Sets the path to a sequence of segments described by the points.
      * 
@@ -933,12 +932,12 @@ public class PSWTAdvancedPath extends PNode {
         if (points.length == 0) {
             return;
         }
-        
+
         isRoundedBendsPolyline = true;
         this.linePoints = points;
-        setShape(PolylineUtil.createRoundedBendsPolylinePath(new Path2D.Float(), points, bendRadius));
+        setShape(PolylineUtil
+                .createRoundedBendsPolylinePath(new Path2D.Float(), points, bendRadius));
     }
-
 
     /**
      * Sets the path to a sequence of segments described by the points.
@@ -950,12 +949,11 @@ public class PSWTAdvancedPath extends PNode {
         if (points.length == 0) {
             return;
         }
-        
+
         this.isPolyline = true;
         this.linePoints = points;
         this.setShape(PolylineUtil.createPolylinePath(new Path2D.Float(), points));
     }
-
 
     /**
      * Sets the path to a sequence of segments described by the points.
@@ -967,7 +965,7 @@ public class PSWTAdvancedPath extends PNode {
         if (points.length == 0) {
             return;
         }
-        
+
         this.isPolygon = true;
         this.linePoints = points;
         this.setShape(PolylineUtil.createPolygonPath(new Path2D.Float(), points));
