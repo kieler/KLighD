@@ -13,12 +13,13 @@
  */
 package de.cau.cs.kieler.klighd.viewers;
 
-import java.util.EnumSet;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import org.eclipse.emf.ecore.EObject;
@@ -42,7 +43,9 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Resource;
 import org.eclipse.swt.layout.FillLayout;
-import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.FormAttachment;
+import org.eclipse.swt.layout.FormData;
+import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -72,8 +75,7 @@ import de.cau.cs.kieler.core.krendering.KRenderingPackage;
 import de.cau.cs.kieler.core.krendering.KStyle;
 import de.cau.cs.kieler.core.krendering.KText;
 import de.cau.cs.kieler.core.krendering.LineStyle;
-import de.cau.cs.kieler.kiml.options.Direction;
-import de.cau.cs.kieler.kiml.options.LayoutOptions;
+import de.cau.cs.kieler.core.properties.IProperty;
 import de.cau.cs.kieler.klighd.IViewer;
 import de.cau.cs.kieler.klighd.IViewerEventListener;
 import de.cau.cs.kieler.klighd.KlighdPlugin;
@@ -89,9 +91,12 @@ import de.cau.cs.kieler.klighd.views.DiagramViewManager;
 import de.cau.cs.kieler.klighd.views.DiagramViewPart;
 
 /**
- * A viewer for instances of type {@code ViewContext}. This viewer acts as a wrapper for the viewer
- * supplied by the current view context. The method {@code getControl} returns the control for that
- * viewer and all other methods are delegated to the wrapped viewer.<br>
+ * A viewer for instances of type {@code ViewContext}. It is instantiated by {@link DiagramViewPart}
+ * and {@link de.cau.cs.kieler.klighd.views.DiagramEditorPart DiagramEditorPart}
+ * 
+ * This viewer acts as a wrapper for the viewer supplied by the current view context. The method
+ * {@code getControl} returns the control for that viewer and all other methods are delegated to the
+ * wrapped viewer.<br>
  * <br>
  * In addition it is possible to set a message to be shown instead of a view context, the wrapped
  * viewer is then of type {@code StringViewer}.<br>
@@ -109,7 +114,7 @@ public class ContextViewer extends AbstractViewer<Object> implements IViewerEven
     /** the workbench part for which the viewer is created. */
     private IWorkbenchPart workbenchPart;
     /** the parent composite for diagram viewers. */
-    private Composite parent;
+    private Composite diagramComposite;
     /** the id of the view this viewer belongs to. */
     private String viewId;
     /** the current viewer. */
@@ -124,15 +129,13 @@ public class ContextViewer extends AbstractViewer<Object> implements IViewerEven
     
     /** the factory for option controls. */
     private OptionControlFactory optionControlFactory;
-    /** controller for the expanded options pane. */
-    private final PaneController expandedController = new PaneController();
-    /** controller for the collapsed options pane. */
-    private final PaneController collapsedController = new PaneController();
-    /** the form toolkit. */
+
+    /** the form toolkit, is only kept to properly dispose it finally. */
     private FormToolkit formToolkit;
     /** the set of resources to be disposed when the view is closed. */
     private final List<Resource> resources = new LinkedList<Resource>();
 
+    
     /**
      * Constructs a view context viewer.
      * 
@@ -145,19 +148,18 @@ public class ContextViewer extends AbstractViewer<Object> implements IViewerEven
      */
     public ContextViewer(final Composite parent, final String viewId,
             final IWorkbenchPart workbenchPart) {
-        Composite diagramContainer = new Composite(parent, SWT.NONE);
-        this.parent = diagramContainer;
         this.viewId = viewId;
         this.workbenchPart = workbenchPart;
-        showMessage("");
         
-        GridData gridData = new GridData(SWT.FILL, SWT.FILL, true, true);
-        gridData.verticalSpan = 2;
-        diagramContainer.setLayoutData(gridData);
-        diagramContainer.setLayout(new FillLayout());
-        
+        // introduce a new Composite that accommodates the visualized content
+        this.diagramComposite = new Composite(parent, SWT.NONE);
+        this.diagramComposite.setLayout(new FillLayout());
+
         // create the options pane
-        createOptionsContainer(parent);
+        createOptionsContainer(this.diagramComposite);
+
+        // initialize with the display of an empty string
+        showMessage("");
     }
     
     /**
@@ -175,21 +177,6 @@ public class ContextViewer extends AbstractViewer<Object> implements IViewerEven
     }
 
     /**
-     * {@inheritDoc}
-     */
-    public Control getControl() {
-        return currentViewer.getControl();
-    }
-    
-    /**
-     * {@inheritDoc}
-     */
-    public ContextViewer getContextViewer() {
-        return this;
-    }
-
-
-    /**
      * Update the options to be displayed in the options pane.
      * TODO make the selection of options configurable through method arguments
      */
@@ -199,17 +186,28 @@ public class ContextViewer extends AbstractViewer<Object> implements IViewerEven
         // initialize a layout configuration for retrieving default values
         optionControlFactory.initialize();
         
-        // TODO implement a generic interface for selecting layout options
-        // SUPPRESS CHECKSTYLE NEXT 5 MagicNumber 
-        optionControlFactory.createControl(LayoutOptions.ALGORITHM.getId());
-        optionControlFactory.createControl(LayoutOptions.SPACING.getId(), 3f, 200f);
-        optionControlFactory.createControl(LayoutOptions.RANDOM_SEED.getId(), 1f, 100f);
-        optionControlFactory.createControl(LayoutOptions.DIRECTION.getId(),
-                EnumSet.of(Direction.LEFT, Direction.RIGHT, Direction.UP, Direction.DOWN));
+        Map<IProperty<?>, Collection<?>> recommendedOptions =
+                currentViewContext.getRecommendedLayoutOptions();
         
-        // TODO make this configurable, too
-        collapsedController.setVisible(false);
-        expandedController.setVisible(true);
+        for (Entry<IProperty<?>, Collection<?>> entry : recommendedOptions.entrySet()) {
+            Collection<?> values = entry.getValue();
+            Object first = Iterables.get(values, 0, null);
+            Object second = Iterables.get(values, 1, null);
+            
+            if (values.size() == 2 && first instanceof Number && second instanceof Number) {
+                optionControlFactory.createControl(entry.getKey().getId(),
+                        ((Number) first).floatValue(), ((Number) second).floatValue());
+            } else if (values.size() == 0) {
+                optionControlFactory.createControl(entry.getKey().getId());
+            } else {
+                optionControlFactory.createControl(entry.getKey().getId(), values);
+            }
+        }
+        
+        if (!recommendedOptions.entrySet().isEmpty()) {
+            this.enableOptionsSideBar();
+        }
+
     }
     
     
@@ -273,7 +271,167 @@ public class ContextViewer extends AbstractViewer<Object> implements IViewerEven
             viewPart.getViewSite().getActionBars().updateActionBars();
         }
     }
+
+    /**
+     * A {@link Action Actions} representing view synthesis options in
+     * {@link org.eclipse.ui.IViewPart IViewParts}' menus.
+     * 
+     * @author chsch
+     */
+    private static class OptionEntryAction extends Action {
+     
+        public OptionEntryAction(final String text, final int style, final Boolean initiallyChecked) {
+            super(text, style);
+            this.setChecked(initiallyChecked);
+        }
+    }
+
+
+    /** The initial width (in %) of the option pane. */
+    private static final int DEFAULT_OPTIONS_FORM_WIDTH_RATIO = 20;
     
+    /** The minimal width of the option pane and the diagram viewer. */
+    private static final int MIN_OPTIONS_FORM_WIDTH = 150;
+    
+    /** The width of the separator. */
+    private static final int SASH_WIDTH = 7;
+    
+    /** Constant value denoting 100%. */
+    private static final int FULL = 100;
+    
+    private final List<Control> sideBarControls = Lists.newArrayListWithCapacity(5);
+    
+    private FormData sashLayoutData = null;
+    
+    /**
+     * Create the container for layout options, including controls for collapsing and expanding.
+     * 
+     * @param diagramContainer
+     *            the composite accommodating the diagram,<br>
+     *            its parent is assumed to be able to host the option form
+     */
+    private void createOptionsContainer(final Composite diagramContainer) {
+        final Composite partComposite = diagramContainer.getParent();
+        
+        partComposite.setLayout(new FormLayout());
+
+        // create the right arrow for collapsing the options pane
+        final Label rightArrowLabel = new Label(partComposite, SWT.NONE);
+        sideBarControls.add(rightArrowLabel);
+        final Image rightArrow = KlighdPlugin.getImageDescriptor("icons/arrow-right.gif").createImage();
+        resources.add(rightArrow);
+        rightArrowLabel.setImage(rightArrow);
+        rightArrowLabel.setVisible(false);
+        
+
+        // create the left arrow for expanding the options pane
+        final Label leftArrowLabel = new Label(partComposite, SWT.NONE);
+        final Image leftArrow = KlighdPlugin.getImageDescriptor("icons/arrow-left.gif").createImage();
+        resources.add(leftArrow);
+        leftArrowLabel.setImage(leftArrow);
+        leftArrowLabel.setVisible(false);
+        
+        // create the sash for resizing the options pane
+        final Sash sash = new Sash(partComposite, SWT.VERTICAL);
+        sideBarControls.add(sash);
+        sash.addPaintListener(new LinePainter());
+        sash.setVisible(false);
+        
+        // create container for options
+        formToolkit = new FormToolkit(partComposite.getDisplay());
+        final ScrolledForm form = formToolkit.createScrolledForm(partComposite);
+        sideBarControls.add(form);
+        form.setText("Options");
+        form.setVisible(false);
+        
+        final Composite optionsContainer = form.getBody();
+        optionsContainer.setLayout(new GridLayout(2, false));
+        
+        // create the factory for option controls to fill the options container
+        optionControlFactory = new OptionControlFactory(optionsContainer, workbenchPart, formToolkit);
+        
+        // prepare the form layout data for each of the above created widgets
+        final FormData diagramContainerLayoutData = new FormData();
+        diagramContainerLayoutData.top = new FormAttachment(0);
+        diagramContainerLayoutData.bottom = new FormAttachment(FULL);
+        diagramContainerLayoutData.left = new FormAttachment(0); 
+        diagramContainerLayoutData.right = new FormAttachment(sash); 
+        diagramContainer.setLayoutData(diagramContainerLayoutData);
+        
+        final FormData rightArrowLayoutData = new FormData();
+        rightArrowLayoutData.top = new FormAttachment(0);
+        rightArrowLayoutData.bottom = new FormAttachment(sash);
+        rightArrowLayoutData.left = new FormAttachment(diagramContainer); 
+        rightArrowLayoutData.right = new FormAttachment(form);
+        rightArrowLabel.setLayoutData(rightArrowLayoutData);
+        
+        final FormData leftArrowLayoutData = new FormData();
+        leftArrowLayoutData.top = new FormAttachment(0);
+        leftArrowLayoutData.bottom = new FormAttachment(sash);
+        leftArrowLayoutData.left = new FormAttachment(diagramContainer); 
+        leftArrowLayoutData.right = new FormAttachment(form);
+        leftArrowLabel.setLayoutData(leftArrowLayoutData);
+        
+        sashLayoutData = new FormData();
+        sashLayoutData.top = new FormAttachment(rightArrowLabel);
+        sashLayoutData.bottom = new FormAttachment(FULL);
+        sashLayoutData.left = new FormAttachment(FULL);
+        sashLayoutData.width = SASH_WIDTH;
+        sash.setLayoutData(sashLayoutData);
+        
+        final FormData formLayoutData = new FormData();        
+        formLayoutData.top = new FormAttachment(0);
+        formLayoutData.bottom = new FormAttachment(FULL);
+        formLayoutData.left = new FormAttachment(sash); 
+        formLayoutData.right = new FormAttachment(FULL); 
+        form.setLayoutData(formLayoutData);
+        
+        // register the sash moving handler for resizing the options pane
+        sash.addListener(SWT.Selection, new Listener() {
+            public void handleEvent(final Event event) {
+                final int maxDiagSize = partComposite.getClientArea().width - MIN_OPTIONS_FORM_WIDTH;
+                if (maxDiagSize > event.x) {
+                    sashLayoutData.left.numerator = 0;
+                    sashLayoutData.left.offset = event.x;
+                } else {
+                    sashLayoutData.left.numerator = 0;
+                    sashLayoutData.left.offset =
+                            partComposite.getClientArea().width - MIN_OPTIONS_FORM_WIDTH;
+                    // The following line appears to be evil, but this is required
+                    //  to let the sash respect the limit correctly.
+                    event.x = sashLayoutData.left.offset;
+                }
+                partComposite.layout(true);
+            }
+        });
+        
+        // a "peudo" field ;-)
+        final int[] lastXpos = new int[] { 0 };
+        
+        // register actions for the collapse / expand labels
+        rightArrowLabel.addMouseListener(new MouseAdapter() {
+            public void mouseUp(final MouseEvent event) {
+                sashLayoutData.left.numerator = FULL;
+                sashLayoutData.left.offset = -sashLayoutData.width;
+                lastXpos[0] = sash.getBounds().x;                
+                
+                rightArrowLabel.setVisible(false);
+                leftArrowLabel.setVisible(true);                
+                partComposite.layout(true);
+            }
+        });
+        leftArrowLabel.addMouseListener(new MouseAdapter() {
+            public void mouseUp(final MouseEvent event) {                
+                sashLayoutData.left.numerator = 0;
+                sashLayoutData.left.offset = lastXpos[0];
+                
+                rightArrowLabel.setVisible(true);
+                leftArrowLabel.setVisible(false);
+                partComposite.layout(true);
+            }
+        });
+    }
+
     /**
      * A simple paint listener that draws a vertical line.
      */
@@ -282,150 +440,32 @@ public class ContextViewer extends AbstractViewer<Object> implements IViewerEven
             Point size = ((Control) event.widget).getSize();
             event.gc.setForeground(Display.getCurrent().getSystemColor(
                     SWT.COLOR_WIDGET_NORMAL_SHADOW));
-            event.gc.drawLine(1, 0, 1, size.y);
+            event.gc.drawLine(event.width / 2, 0, event.width / 2, size.y);
         }
     }
     
     /**
-     * The initial width of the option pane.
+     * A simple enabler of the side bar controls.
+     * It is to be executed in case there are diagram options to provide in the side bar.
      */
-    private static final int DEFAULT_PALETTE_WIDTH = 150;
-    /**
-     * The minimal width of the option pane and the diagram viewer.
-     */
-    private static final int MIN_WIDTH = 60;
-    
-    /**
-     * Create the container for layout options, including controls for collapsing and expanding.
-     * 
-     * @param optParent the parent composite into which controls are created
-     */
-    private void createOptionsContainer(final Composite optParent) {
-        // create the right arrow for collapsing the options pane
-        Label rightArrowLabel = new Label(optParent, SWT.NONE);
-        GridData rightArrowLayoutData = new GridData(SWT.CENTER, SWT.TOP, false, false);
-        rightArrowLabel.setLayoutData(rightArrowLayoutData);
-        Image rightArrow = KlighdPlugin.getImageDescriptor("icons/arrow-right.gif").createImage();
-        resources.add(rightArrow);
-        rightArrowLabel.setImage(rightArrow);
-        
-        // create container for options
-        formToolkit = new FormToolkit(optParent.getDisplay());
-        ScrolledForm form = formToolkit.createScrolledForm(optParent);
-        form.setText("Options");
-        final GridData formLayoutData = new GridData(SWT.FILL, SWT.FILL, false, true);
-        formLayoutData.widthHint = DEFAULT_PALETTE_WIDTH;
-        formLayoutData.verticalSpan = 2;
-        form.setLayoutData(formLayoutData);
-        Composite optionsContainer = form.getBody();
-        optionsContainer.setLayout(new GridLayout(2, false));
-        
-        // create the factory for option controls to fill the options container
-        optionControlFactory = new OptionControlFactory(optionsContainer, workbenchPart, formToolkit);
-        
-        // create the left arrow for expanding the options pane
-        Label leftArrowLabel = new Label(optParent, SWT.NONE);
-        GridData leftArrowLayoutData = new GridData(SWT.CENTER, SWT.TOP, false, false);
-        leftArrowLayoutData.horizontalSpan = 2;
-        leftArrowLabel.setLayoutData(leftArrowLayoutData);
-        Image leftArrow = KlighdPlugin.getImageDescriptor("icons/arrow-left.gif").createImage();
-        resources.add(leftArrow);
-        leftArrowLabel.setImage(leftArrow);
-        
-        // create the sash for resizing the options pane
-        Sash sash = new Sash(optParent, SWT.VERTICAL);
-        GridData sashLayoutData = new GridData(SWT.CENTER, SWT.FILL, false, true);
-        sash.setLayoutData(sashLayoutData);
-        sash.addPaintListener(new LinePainter());
-        sash.addListener(SWT.Selection, new Listener() {
-            public void handleEvent(final Event event) {
-                // the following filter doesn't work on OSX, event.detail is always zero
-                // if (event.detail == SWT.DRAG) {
-                    // FIXME the "30" in the next line was determined experimentally
-                    // SUPPRESS CHECKSTYLE NEXT MagicNumber
-                    int newWidth = optParent.getClientArea().width - (event.x + 30);
-                    if (event.x > MIN_WIDTH && newWidth > MIN_WIDTH) {
-                        formLayoutData.widthHint = newWidth;
-                        optParent.layout();
-                    }
-                // }
-            }
-        });
-        
-        // create a line below the expansion arrow
-        Composite dummyLine = new Composite(optParent, SWT.NONE);
-        GridData dummyLineLayoutData = new GridData(SWT.CENTER, SWT.FILL, false, true);
-        dummyLineLayoutData.widthHint = 3;  // SUPPRESS CHECKSTYLE MagicNumber
-        dummyLineLayoutData.horizontalSpan = 2;
-        dummyLine.setLayoutData(dummyLineLayoutData);
-        dummyLine.addPaintListener(new LinePainter());
-        
-        // create controllers for collapsing and expanding
-        expandedController.controls = new Control[] {
-                rightArrowLabel, sash, form
-        };
-        expandedController.layoutData = new GridData[] {
-                rightArrowLayoutData, sashLayoutData, formLayoutData
-        };
-        expandedController.setVisible(false);
-        collapsedController.controls = new Control[] {
-                leftArrowLabel, dummyLine
-        };
-        collapsedController.layoutData = new GridData[] {
-                leftArrowLayoutData, dummyLineLayoutData
-        };
-        collapsedController.setVisible(false);
-        
-        // register actions for the collapse / expand labels
-        rightArrowLabel.addMouseListener(new MouseAdapter() {
-            public void mouseUp(final MouseEvent event) {
-                expandedController.setVisible(false);
-                collapsedController.setVisible(true);
-                optParent.layout();
-            }
-        });
-        leftArrowLabel.addMouseListener(new MouseAdapter() {
-            public void mouseUp(final MouseEvent event) {
-                collapsedController.setVisible(false);
-                expandedController.setVisible(true);
-                optParent.layout();
-            }
-        });
-        
-        // set the grid layout of the parent container
-        GridLayout gridLayout = new GridLayout(3, false); // SUPPRESS CHECKSTYLE MagicNumber
-        gridLayout.marginWidth = 0;
-        gridLayout.marginHeight = 0;
-        optParent.setLayout(gridLayout);
-    }
-    
-    /**
-     * A controller class for easy collapsing and expanding.
-     */
-    private class PaneController {
-        
-        /** the controls that are made visible or invisible. */
-        private Control[] controls;
-        /** the layout data of the controls, used to exclude the controls from the grid. */
-        private GridData[] layoutData;
-        
-        /**
-         * Make the contained controls visible or invisible.
-         * 
-         * @param visible {@code true} to make all controls visible, or {@code false} to make
-         *              them all invisible
-         */
-        void setVisible(final boolean visible) {
-            for (Control c : controls) {
-                c.setVisible(visible);
-            }
-            for (GridData ld : layoutData) {
-                ld.exclude = !visible;
-            }
+    private void enableOptionsSideBar() {
+        // define the controls (sash, right arrow, form) to be visible
+        for (Control c : this.sideBarControls) {
+            c.setVisible(true);
         }
+        // put the sash at the desired position according to DEFAULT_OPTIONS_FORM_WIDTH_RATIO
+        if (this.sashLayoutData != null) {
+            this.sashLayoutData.left.numerator = FULL - DEFAULT_OPTIONS_FORM_WIDTH_RATIO;
+            this.sashLayoutData.left.offset = 0;
+        }
+        // re-layout the view part's composite
+        this.diagramComposite.getParent().layout(true, true);        
+        // let the diagram fit the available space,
+        //  should be dependent on a preference setting in future (TODO)
+        this.currentViewer.zoomToFit(0);
     }
     
-
+    
     /**
      * {@inheritDoc}
      */
@@ -438,7 +478,7 @@ public class ContextViewer extends AbstractViewer<Object> implements IViewerEven
 
             // create the new viewer
             IViewer<?> viewer =
-                    LightDiagramServices.getInstance().createViewer(this, viewContext, parent);
+                    LightDiagramServices.getInstance().createViewer(this, viewContext, diagramComposite);
 
             // add the new viewer
             addViewer(viewer);
@@ -459,21 +499,21 @@ public class ContextViewer extends AbstractViewer<Object> implements IViewerEven
         updateOptionsMenu();
     }
     
-    
+
     /**
-     * A {@link Action Actions} representing view synthesis options in
-     * {@link org.eclipse.ui.IViewPart IViewParts}' menus.
-     * 
-     * @author chsch
+     * {@inheritDoc}
      */
-    private static class OptionEntryAction extends Action {
-     
-        public OptionEntryAction(final String text, final int style, final Boolean initiallyChecked) {
-            super(text, style);
-            this.setChecked(initiallyChecked);
-        }
+    public Control getControl() {
+        return currentViewer.getControl();
     }
     
+    /**
+     * {@inheritDoc}
+     */
+    public ContextViewer getContextViewer() {
+        return this;
+    }
+
 
     /**
      * {@inheritDoc}
@@ -494,7 +534,7 @@ public class ContextViewer extends AbstractViewer<Object> implements IViewerEven
     public synchronized void showMessage(final String message) {
         if (!((IViewer<?>) currentViewer instanceof StringViewer)) {
             removeViewer();
-            addViewer(new StringViewer(parent));
+            addViewer(new StringViewer(diagramComposite));
         }
         currentViewer.setModel(message, false);
     }
@@ -502,7 +542,7 @@ public class ContextViewer extends AbstractViewer<Object> implements IViewerEven
     @SuppressWarnings("unchecked")
     private synchronized void addViewer(final IViewer<?> viewer) {
         currentViewer = (IViewer<Object>) viewer;
-        parent.layout();
+        diagramComposite.layout();
         currentViewer.addEventListener(this);
     }
 

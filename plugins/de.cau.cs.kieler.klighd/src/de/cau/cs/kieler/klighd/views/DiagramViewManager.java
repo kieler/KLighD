@@ -45,6 +45,7 @@ import de.cau.cs.kieler.klighd.triggers.KlighdStatusTrigger.KlighdStatusState;
  * have to be called in the UI thread.
  * 
  * @author mri
+ * @author chsch
  */
 public final class DiagramViewManager implements IPartListener {
 
@@ -295,8 +296,7 @@ public final class DiagramViewManager implements IPartListener {
                 LightDiagramServices.getInstance().layoutDiagram(viewContext, animate, true);
 
                 // fill the options pane according to the the incorporated transformations
-                // TODO implement this (the following line is a placeholder)
-//                diagramView.getContextViewer().updateOptions();
+                diagramView.getContextViewer().updateOptions();
 
                 // make the view visible without giving it the focus
                 page.bringToTop(diagramView);
