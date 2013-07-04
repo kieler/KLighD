@@ -97,7 +97,7 @@ public class RandomGraphOptionsPage extends WizardPage {
         label.setLayoutData(gridData);
         Composite widthComposite = new Composite(nodesGroup, SWT.NONE);
         gridData = new GridData(SWT.LEFT, SWT.TOP, true, false, 2, 1);
-        gridData.horizontalIndent = 30;
+        gridData.horizontalIndent = 50;
         widthComposite.setLayoutData(gridData);
         widthComposite.setLayout(new GridLayout(4, false));
         
@@ -130,7 +130,7 @@ public class RandomGraphOptionsPage extends WizardPage {
         label.setLayoutData(gridData);
         Composite heightComposite = new Composite(nodesGroup, SWT.NONE);
         gridData = new GridData(SWT.LEFT, SWT.TOP, true, false, 2, 1);
-        gridData.horizontalIndent = 30;
+        gridData.horizontalIndent = 50;
         heightComposite.setLayoutData(gridData);
         heightComposite.setLayout(new GridLayout(4, false));
         

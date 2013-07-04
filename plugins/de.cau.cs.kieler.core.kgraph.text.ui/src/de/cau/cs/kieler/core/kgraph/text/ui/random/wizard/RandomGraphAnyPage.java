@@ -82,29 +82,20 @@ public class RandomGraphAnyPage extends WizardPage {
         nodesGroup.setLayout(new GridLayout(2, false));
         nodesGroup.setLayoutData(new GridData(SWT.FILL, SWT.NONE, true, false));
         
-        // Number of Nodes
+        // Minimum number of Nodes
         Label label = new Label(nodesGroup, SWT.NONE);
-        label.setText(Messages.RandomGraphAnyPage_number_of_nodes_caption);
-        label.setLayoutData(new GridData(SWT.LEFT, SWT.NONE, false, false, 2, 1));
-        
-        label = new Label(nodesGroup, SWT.NONE);
         label.setText(Messages.RandomGraphAnyPage_number_of_nodes_min);
-        GridData gridData = new GridData();
-        gridData.horizontalIndent = 30;
-        label.setLayoutData(gridData);
         final Spinner nodesMinSpinner = new Spinner(nodesGroup, SWT.BORDER | SWT.SINGLE);
         nodesMinSpinner.setToolTipText(Messages.RandomGraphAnyPage_number_of_nodes_min_help);
         nodesMinSpinner.setValues(options.getProperty(GeneratorOptions.NUMBER_OF_NODES_MIN),
                 1, Integer.MAX_VALUE, 0, 1, 10);
-        gridData = new GridData(SWT.LEFT, SWT.NONE, false, false);
+        GridData gridData = new GridData(SWT.LEFT, SWT.NONE, false, false);
         gridData.widthHint = 80;
         nodesMinSpinner.setLayoutData(gridData);
-        
+
+        // Maximum number of Nodes
         label = new Label(nodesGroup, SWT.NONE);
         label.setText(Messages.RandomGraphAnyPage_number_of_nodes_max);
-        gridData = new GridData();
-        gridData.horizontalIndent = 30;
-        label.setLayoutData(gridData);
         final Spinner nodesMaxSpinner = new Spinner(nodesGroup, SWT.BORDER | SWT.SINGLE);
         nodesMaxSpinner.setToolTipText(Messages.RandomGraphAnyPage_number_of_nodes_max_help);
         nodesMaxSpinner.setValues(options.getProperty(GeneratorOptions.NUMBER_OF_NODES_MAX),
