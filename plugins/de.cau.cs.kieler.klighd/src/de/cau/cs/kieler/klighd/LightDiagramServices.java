@@ -48,6 +48,7 @@ import de.cau.cs.kieler.klighd.views.DiagramViewPart;
  * Singleton for accessing basic KLighD services.
  * 
  * @author mri
+ * @author chsch
  */
 public final class LightDiagramServices {
 
@@ -195,9 +196,7 @@ public final class LightDiagramServices {
         }
 
         // clear out the mapping data of the involved transformation contexts
-        for (TransformationContext<?, ?> tContext : viewContext.getTransformationContexts()) {
-            tContext.clear();
-        }
+        viewContext.clearSourceTargetMappings();
 
         // re-run the involved transformations
         Object viewModel = performTransformations(viewContext, model);
@@ -436,6 +435,8 @@ public final class LightDiagramServices {
      * 
      * @param <T>
      *            the expected type of the result
+     * @param otherVC
+     *            the view context to merge mappings created while translating <code>model</code> into
      * @param model
      *            the model
      * @param propertyHolders
@@ -443,11 +444,13 @@ public final class LightDiagramServices {
      * @return the view context or null if the model and all possible transformations are
      *         unsupported by all viewer providers
      */
-    public static <T> T translateModel(final Object model, final IPropertyHolder... propertyHolders) {
+    public static <T> T translateModel(final ViewContext otherVC, final Object model,
+            final IPropertyHolder... propertyHolders) {
         ViewContext vc = LightDiagramServices.getInstance().createViewContext(model, propertyHolders);
         LightDiagramServices.getInstance().updateViewContext(vc, model);
         @SuppressWarnings("unchecked")
         T result = (T) vc.getViewModel();
+        otherVC.merge(vc);
         return result;
     }
 }
