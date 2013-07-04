@@ -38,6 +38,7 @@ import de.cau.cs.kieler.core.krendering.KRenderingLibrary;
 import de.cau.cs.kieler.core.krendering.KRenderingRef;
 import de.cau.cs.kieler.core.krendering.KRoundedRectangle;
 import de.cau.cs.kieler.core.krendering.KSpline;
+import de.cau.cs.kieler.core.krendering.KText;
 import de.cau.cs.kieler.kiml.klayoutdata.KEdgeLayout;
 import de.cau.cs.kieler.kiml.klayoutdata.KIdentifier;
 import de.cau.cs.kieler.kiml.klayoutdata.KPoint;
@@ -303,6 +304,16 @@ public class KGraphLabelProvider extends DefaultEObjectLabelProvider {
      */
     public ImageDescriptor image(final KSpline spline) {
         return imageDescriptor("icons/krendering/kspline.gif");
+    }
+    
+    /**
+     * Create an image path for a KText.
+     * 
+     * @param text a text
+     * @return the image descriptor
+     */
+    public ImageDescriptor image(final KText text) {
+        return imageDescriptor("icons/kgraph/klabel.gif");
     }
     
 }
