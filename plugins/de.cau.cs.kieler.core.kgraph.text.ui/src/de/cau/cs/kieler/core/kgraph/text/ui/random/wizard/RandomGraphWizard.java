@@ -43,7 +43,7 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.statushandlers.StatusManager;
 
 import de.cau.cs.kieler.core.kgraph.KNode;
-import de.cau.cs.kieler.core.kgraph.text.ui.internal.KGraphActivator;
+import de.cau.cs.kieler.core.kgraph.text.ui.KGraphUiModule;
 import de.cau.cs.kieler.core.kgraph.text.ui.random.GeneratorOptions;
 import de.cau.cs.kieler.core.kgraph.text.ui.random.RandomGraphGenerator;
 import de.cau.cs.kieler.core.util.Maybe;
@@ -226,7 +226,7 @@ public class RandomGraphWizard extends Wizard implements INewWizard {
             return false;
         } catch (InvocationTargetException exception) {
             IStatus status =
-                    new Status(IStatus.ERROR, KGraphActivator.DE_CAU_CS_KIELER_CORE_KGRAPH_TEXT_KGRAPH,
+                    new Status(IStatus.ERROR, KGraphUiModule.PLUGIN_ID,
                             Messages.RandomGraphWizard_graph_generated_failed_error,
                             exception.getCause());
             StatusManager.getManager().handle(status, StatusManager.BLOCK | StatusManager.SHOW

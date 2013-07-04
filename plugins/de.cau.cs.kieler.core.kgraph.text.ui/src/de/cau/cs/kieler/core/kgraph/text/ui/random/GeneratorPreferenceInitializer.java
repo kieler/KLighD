@@ -21,6 +21,7 @@ import org.eclipse.core.runtime.preferences.AbstractPreferenceInitializer;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.ui.statushandlers.StatusManager;
 
+import de.cau.cs.kieler.core.kgraph.text.ui.KGraphUiModule;
 import de.cau.cs.kieler.core.kgraph.text.ui.internal.KGraphActivator;
 import de.cau.cs.kieler.core.kgraph.text.ui.random.wizard.Messages;
 import de.cau.cs.kieler.core.properties.IProperty;
@@ -57,8 +58,7 @@ public class GeneratorPreferenceInitializer extends AbstractPreferenceInitialize
                 }
             }
         } catch (IllegalAccessException exception) {
-            IStatus status = new Status(IStatus.ERROR,
-                    KGraphActivator.DE_CAU_CS_KIELER_CORE_KGRAPH_TEXT_KGRAPH,
+            IStatus status = new Status(IStatus.ERROR, KGraphUiModule.PLUGIN_ID,
                     Messages.RandomGraphWizard_default_preferences_error, exception);
             StatusManager.getManager().handle(status);
         }

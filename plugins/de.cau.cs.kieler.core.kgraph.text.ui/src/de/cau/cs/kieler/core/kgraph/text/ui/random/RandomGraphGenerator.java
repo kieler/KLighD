@@ -50,7 +50,7 @@ public class RandomGraphGenerator {
     /** the fixed height of ports. */
     public static final float PORT_HEIGHT = 4.0f;
     /** minimal separation of ports. */
-    public static final float PORT_SEPARATION = 10.0f;
+    public static final float PORT_SEPARATION = 7.0f;
 
     /** the generator options holder. */
     private GeneratorOptions options;

@@ -132,7 +132,7 @@ public class KGraphValueConverters extends AbstractDeclarativeValueConverterServ
         @Inject
         private IValueConverterService valueConverter;
 
-        public String toString(String s) {
+        public String toString(final String s) {
             String res = "";
             for (Object ss : Collections.list(new StringTokenizer(s, "."))) {
                 res += "." + valueConverter.toString(ss, "ID");
@@ -140,7 +140,7 @@ public class KGraphValueConverters extends AbstractDeclarativeValueConverterServ
             return res.substring(1);
         }
         
-        public String toValue(String string, INode node) {
+        public String toValue(final String string, final INode node) {
             String res = super.toValue(string, node);
             return res.replace(".^", ".");
         }
@@ -186,11 +186,8 @@ public class KGraphValueConverters extends AbstractDeclarativeValueConverterServ
         
         @Override
         protected String internalToString(final Float value) {
-            if (value == null) {
-                throw new ValueConverterException("Float value may not be null.", null, null);
-            }
             float outputValue = value * factor;
-            int intOutputValue = (int) outputValue;
+            int intOutputValue = Math.round(outputValue);
             if (Math.abs(outputValue - intOutputValue) < FLOAT_PREC) {
                 return Integer.toString(intOutputValue) + suffix;
             } else {
@@ -225,10 +222,7 @@ public class KGraphValueConverters extends AbstractDeclarativeValueConverterServ
         
         @Override
         protected String internalToString(final Float value) {
-            if (value == null) {
-                throw new ValueConverterException("Float value may not be null.", null, null);
-            }
-            int intValue = value.intValue();
+            int intValue = Math.round(value);
             if (Math.abs(value - intValue) < FLOAT_PREC) {
                 return Integer.toString(intValue);
             } else {

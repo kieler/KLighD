@@ -10,7 +10,7 @@
               contributorClass="org.eclipse.ui.editors.text.TextEditorActionContributor"
               default="true"
               extensions="kgt"
-              icon="icons/kgraph.gif"
+              icon="icons/kgraph/kgraph.gif"
               id="de.cau.cs.kieler.core.kgraph.text.KGraph"
               name="KGraph Editor">
         </editor>
@@ -262,7 +262,7 @@
             category="de.cau.cs.kieler.kgraph"
             class="de.cau.cs.kieler.core.kgraph.text.ui.random.wizard.RandomGraphWizard"
             hasPages="true"
-            icon="icons/kgraph-new.gif"
+            icon="icons/kgraph/kgraph-new.gif"
             id="de.cau.cs.kieler.core.kgraph.text.random.wizard"
             name="Random KGraph"
             project="false">
