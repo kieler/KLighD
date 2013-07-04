@@ -82,7 +82,6 @@ public class SVGServer extends Server {
         /**
          * {@inheritDoc}
          */
-        @Override
         public void onOpen(Connection connection) {
             if (verbose) {
                 System.err.printf("%s#onOpen %s\n", this.getClass().getSimpleName(), connection);
@@ -96,7 +95,6 @@ public class SVGServer extends Server {
         /**
          * {@inheritDoc}
          */
-        @Override
         public void onMessage(String data) {
             if (verbose) {
                 System.err.printf("%s#onMessage     %s\n", this.getClass().getSimpleName(), data);
@@ -110,7 +108,6 @@ public class SVGServer extends Server {
             
             Display.getDefault().syncExec(new Runnable() {
                 
-                @Override
                 public void run() {
                     viewer.getCanvas().getCamera().invalidatePaint();
                     viewer.getCanvas().redraw();     
@@ -122,7 +119,6 @@ public class SVGServer extends Server {
         /**
          * {@inheritDoc}
          */
-        @Override
         public void onClose(int code, String message) {
             if (verbose) {
                 System.err.printf("%s#onDisonnect %d %s\n", this.getClass().getSimpleName(), code,

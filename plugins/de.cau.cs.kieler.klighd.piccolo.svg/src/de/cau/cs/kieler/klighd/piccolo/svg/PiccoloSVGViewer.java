@@ -205,7 +205,6 @@ public class PiccoloSVGViewer extends AbstractViewer<KNode> implements INodeSele
 
         parent.addDisposeListener(new DisposeListener() {
             
-            @Override
             public void widgetDisposed(DisposeEvent e) {
                 try {
                     server.stop();
