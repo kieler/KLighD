@@ -13,6 +13,7 @@
  */
 package de.cau.cs.kieler.klighd;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -23,30 +24,46 @@ import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.statushandlers.StatusManager;
 
+import com.google.common.collect.HashMultimap;
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.google.common.collect.Multimap;
 
 import de.cau.cs.kieler.core.properties.IProperty;
 import de.cau.cs.kieler.core.properties.MapPropertyHolder;
-import de.cau.cs.kieler.core.properties.Property;
 import de.cau.cs.kieler.core.util.RunnableWithResult;
+import de.cau.cs.kieler.klighd.util.KlighdProperties;
 
 /**
- * A view context contains a viewer provider and a model that is accepted by the viewer provider.
+ * A view context is a data record containing the required configuration information to translate a
+ * model into a diagram and draw it on the screen, as well as provide user operations on it.<br>
+ * <br>
+ * 
+ * ViewContexts contain information on
+ * <ul>
+ * <li>the business model (input model) that is to be shown,</li>
+ * <li>the source workbench part the business model stems from,</li>
+ * <li>the transformations that are involved in creating the diagram,</li>
+ * <li>the update strategy that is to be applied in case of diagram updates,</li>
+ * <li>the resulting view model describing the diagram,</li>
+ * <li>the {@link IViewerProvider} that wraps the instantiation of the viewer being used</li>
+ * </ul>
+ * 
+ * ViewContexts do currently provide no operations, related ones are outsourced into
+ * {@link LightDiagramServices}.<br>
+ * <br>
+ * <b>TODO</b>: Do we actually want to keep the "transformation chain" feature?<br>
+ * <br>
  * 
  * @author mri
+ * @author chsch
  */
 public final class ViewContext extends MapPropertyHolder {
 
     /** the serial version UID. */
     private static final long serialVersionUID = -431994394109554393L;
-
-    /** A pre-defined property to be used for handing over an {@link RunnableWithResult} to the
-     * KLighD view allowing to update the represented model. */
-    public static final IProperty<RunnableWithResult<?>> MODEL_ACCESS =
-            new Property<RunnableWithResult<?>>("modelAccess"); 
-
 
     /** the part the source model was selected from (if can reasonably be determined). */
     private transient IWorkbenchPart sourceWorkbenchPart = null;
@@ -61,9 +78,8 @@ public final class ViewContext extends MapPropertyHolder {
     private transient List<TransformationContext<?, ?>> transformationContextsRev = null;
     /** the business model to be represented by means of this context. */
     private Object businessModel = null;
-    /** the view model initiated while configuring an {@link IUpdateStrategy}
-     * and kept for the whole life-cycle of the view context,
-     * in order to enable proper incremental update. */
+    /** the view model is initiated while configuring the involved {@link IUpdateStrategy} and kept
+     * for the whole life-cycle of the view context, in order to enable proper incremental update. */
     private Object viewModel = null;
     
     /**
@@ -123,7 +139,7 @@ public final class ViewContext extends MapPropertyHolder {
      * @param model
      *            the input model
      */    
-    protected void setInputModel(final Object model) {
+    void setInputModel(final Object model) {
         this.businessModel = model; 
     }
 
@@ -133,7 +149,7 @@ public final class ViewContext extends MapPropertyHolder {
      * @return the current model to be represented.
      */
     public Object getInputModel() {
-        RunnableWithResult<?> modelAccess = this.getProperty(MODEL_ACCESS);
+        RunnableWithResult<?> modelAccess = this.getProperty(KlighdProperties.MODEL_ACCESS);
         if (modelAccess != null) {
             modelAccess.run();
             return modelAccess.getResult();
@@ -147,7 +163,7 @@ public final class ViewContext extends MapPropertyHolder {
      * @param viewerProvider
      *            the viewer provider
      */
-    protected void setViewerProvider(final IViewerProvider<?> viewerProvider) {
+    void setViewerProvider(final IViewerProvider<?> viewerProvider) {
         this.viewerProvider = viewerProvider;
     }
 
@@ -161,15 +177,14 @@ public final class ViewContext extends MapPropertyHolder {
     }
 
     /**
-     * Sets the update strategy used in this view context.
-     * In addition, it configures the view model root, which
-     * is kept for the whole life-cycle of the view context,
-     * in order to enable proper incremental update. 
+     * Sets the update strategy used in this view context.<br>
+     * In addition, it configures the view model root, which is kept for the whole life-cycle of the
+     * view context, in order to enable proper incremental update.
      * 
      * @param updateStrategy
      *            the update strategy
      */
-    public void setUpdateStrategy(final IUpdateStrategy<?> updateStrategy) {
+    void setUpdateStrategy(final IUpdateStrategy<?> updateStrategy) {
         this.updateStrategy = updateStrategy;
         if (updateStrategy != null) {
             viewModel = updateStrategy.getInitialBaseModel(this);
@@ -204,7 +219,7 @@ public final class ViewContext extends MapPropertyHolder {
      * @param transformationContext
      *            the transformation context
      */
-    protected void addTransformationContext(final TransformationContext<?, ?> transformationContext) {
+    void addTransformationContext(final TransformationContext<?, ?> transformationContext) {
         transformationContexts.add(transformationContext);
         transformationContext.setViewContext(this);
     }
@@ -215,7 +230,7 @@ public final class ViewContext extends MapPropertyHolder {
      * @param contexts
      *            the transformation contexts
      */
-    protected void addTransformationContexts(final List<TransformationContext<?, ?>> contexts) {
+    void addTransformationContexts(final List<TransformationContext<?, ?>> contexts) {
         for (TransformationContext<?, ?> transformationContext : contexts) {
             addTransformationContext(transformationContext);
         }
@@ -238,6 +253,18 @@ public final class ViewContext extends MapPropertyHolder {
     public Class<?> getTargetClass() {
         return viewerProvider.getModelClass();
     }
+    
+
+    // ---------------------------------------------------------------------------------- //
+    //  Source target element handling    
+
+    /**
+     * An additional map containing target source mappings that are contributed into this view
+     * context while merging another view context into this one. It is populated, e.g, when the
+     * diagram is incrementally extended. Usually such mappings are stored in the transformation
+     * contexts.
+     */
+    private Map<Object, Object> additionalTargetSourceElementMap = null;
 
     /**
      * Returns the element in the source model that translates to the given object in the context's
@@ -248,6 +275,14 @@ public final class ViewContext extends MapPropertyHolder {
      * @return the element in the source model or null if the link could not be made
      */
     public Object getSourceElement(final Object element) {
+        
+        if (additionalTargetSourceElementMap != null) {
+            Object source = additionalTargetSourceElementMap.get(element);
+            if (source != null) {
+                return source;
+            }
+        }
+        
         Object source = element;
         for (TransformationContext<?, ?> transformationContext : transformationContextsRev) {
             if (source == null) {
@@ -259,6 +294,14 @@ public final class ViewContext extends MapPropertyHolder {
     }
 
     /**
+     * An additional map containing source target mappings that are contributed into this view
+     * context while merging another view context into this one. It is populated, e.g, when the
+     * diagram is incrementally extended. Usually such mappings are stored in the transformation
+     * contexts.
+     */
+    private Multimap<Object, Object> additionalSourceTargetElementMap = null;
+
+    /**
      * Returns the element in the context's model that derives from the given element in the source
      * model by using the transformations invoked to obtain the context's model.
      * 
@@ -267,6 +310,13 @@ public final class ViewContext extends MapPropertyHolder {
      * @return the element in the context's model or null if the link could not be made
      */
     public Object getTargetElement(final Object element) {
+        if (additionalSourceTargetElementMap != null) {
+            Object target = additionalSourceTargetElementMap.get(element);
+            if (target != null) {
+                return target;
+            }
+        }
+        
         Object target = element;
         for (TransformationContext<?, ?> transformationContext : transformationContexts) {
             if (target == null) {
@@ -278,6 +328,48 @@ public final class ViewContext extends MapPropertyHolder {
     }
 
     /**
+     * Merges the source target mappings of <code>otherViewContext</code> into this one.
+     * 
+     * @param otherViewContext another view context to take source target mappings from
+     */
+    public void merge(final ViewContext otherViewContext) {
+        if (this.additionalTargetSourceElementMap == null) {
+            this.additionalTargetSourceElementMap = Maps.newHashMap();
+        }
+        if (this.additionalSourceTargetElementMap == null) {
+            this.additionalSourceTargetElementMap = HashMultimap.create();
+        }
+        
+        for (Object target : Iterables.getLast(otherViewContext.getTransformationContexts())
+                .getTargetElements()) {
+            Object source = otherViewContext.getSourceElement(target);
+            if (source != null) {
+                this.additionalTargetSourceElementMap.put(target, source);
+                this.additionalSourceTargetElementMap.put(source, target);
+            }
+        }
+    }
+
+    /**
+     * Clears out the mapping data of the involved transformation contexts and those of the
+     * additional maps that may contain mappings of lazily added diagram elements.<br>
+     * <br>
+     * <b>TODO</b>: Doing that this way is wrong in case of incremental updates. We need another
+     * solution for that situation.
+     */
+    public void clearSourceTargetMappings() {
+        if (additionalSourceTargetElementMap != null) {
+            additionalSourceTargetElementMap.clear();
+        }
+        if (additionalTargetSourceElementMap != null) {
+            additionalTargetSourceElementMap.clear();
+        }
+        for (TransformationContext<?, ?> tContext : this.transformationContexts) {
+            tContext.clear();
+        }
+    }
+
+    /**
      * Resets the view context.
      */
     protected void reset() {
@@ -286,8 +378,18 @@ public final class ViewContext extends MapPropertyHolder {
         updateStrategy = null;
         businessModel = null;
         viewModel = null;
+        if (additionalSourceTargetElementMap != null) {
+            additionalSourceTargetElementMap.clear();
+        }
+        if (additionalTargetSourceElementMap != null) {
+            additionalTargetSourceElementMap.clear();
+        }
     }
-    
+
+
+    // ---------------------------------------------------------------------------------- //
+    //  Transformation option handling    
+
     private Map<TransformationContext<?, ?>, Set<TransformationOption>> options = null;
     
     /**
@@ -309,5 +411,21 @@ public final class ViewContext extends MapPropertyHolder {
             this.options = ImmutableMap.copyOf(map);
         }
         return this.options;
+    }
+    
+
+    // ---------------------------------------------------------------------------------- //
+    //  Recommended layout option handling    
+    
+    /**
+     * Passes the recommended layout options and related values provided by the last transformation
+     * context in the chain of such contexts, i.e. the last transformation in the transformation
+     * chain.
+     * 
+     * @return a map of options (map keys) and related values (map values)
+     */
+    public Map<IProperty<?>, Collection<?>> getRecommendedLayoutOptions() {
+        return Iterables.getFirst(this.transformationContextsRev, null)
+                .getRecommendedLayoutOptions();
     }
 }

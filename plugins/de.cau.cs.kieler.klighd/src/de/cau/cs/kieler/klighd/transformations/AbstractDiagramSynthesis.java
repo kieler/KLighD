@@ -14,6 +14,9 @@
 package de.cau.cs.kieler.klighd.transformations;
 
 import java.lang.reflect.Method;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Map;
 
 import de.cau.cs.kieler.core.kgraph.KGraphElement;
 import de.cau.cs.kieler.core.kgraph.KNode;
@@ -90,6 +93,24 @@ public abstract class AbstractDiagramSynthesis<S> extends AbstractTransformation
         }
     }
 
+
+    // ---------------------------------------------------------------------------------- //
+    //  Recommended layout option handling    
+
+    /**
+     * Concrete implementations may provide a set of recommended layout options and optionally a
+     * restricted set of values to be provided in the user interface for configuring the layout of
+     * the displayed diagram.
+     * 
+     * @return a map of options (map keys) and related values (map values)
+     */
+    public Map<IProperty<?>, Collection<?>> getRecommendedLayoutOptions() {
+        return Collections.emptyMap();
+    }
+
+
+    // ---------------------------------------------------------------------------------- //
+    //  Convenience methods to be used in concrete implementations   
 
     /**
      * Convenience method for defining layout options for {@link KGraphElement KGraphElements}.
