@@ -18,6 +18,7 @@ import javax.inject.Inject;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jface.text.contentassist.ICompletionProposal;
 import org.eclipse.jface.viewers.StyledString;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.xtext.Assignment;
 import org.eclipse.xtext.GrammarUtil;
 import org.eclipse.xtext.RuleCall;
@@ -35,6 +36,7 @@ import de.cau.cs.kieler.kiml.LayoutDataService;
 import de.cau.cs.kieler.kiml.LayoutOptionData;
 import de.cau.cs.kieler.kiml.LayoutOptionData.Type;
 import de.cau.cs.kieler.kiml.options.LayoutOptions;
+import de.cau.cs.kieler.kiml.ui.LayoutOptionLabelProvider;
 
 /**
  * Custom proposal provider contributing KIELER Layout configuration proposals.
@@ -213,33 +215,30 @@ public class KGraphProposalProvider extends AbstractKGraphProposalProvider {
      */
     private void keyProposal(final ContentAssistContext context,
             final ICompletionProposalAcceptor acceptor) {
-        /* declare the plain proposal and get the option list */
-        String proposal;
-        StyledString.Styler theStyle;
-        StyledString displayString;
-        ICompletionProposal completeProposal;
-
         LayoutDataService layoutServices = LayoutDataService.getInstance();
 
-        /* create and register the completion proposal for every element in the list */
+        // create and register the completion proposal for every element in the list
         for (LayoutOptionData<?> optionData : layoutServices.getOptionData()) {
-            theStyle = (optionData.isAdvanced()) ? StyledString.COUNTER_STYLER : null;
+            StyledString displayString = new StyledString(optionData.toString(),
+                    (optionData.isAdvanced()) ? StyledString.COUNTER_STYLER : null);
+            displayString.append(" (" + optionData.getId() + ")", StyledString.QUALIFIER_STYLER);
 
-            displayString = new StyledString(optionData.toString(), theStyle);
-            displayString.append(" - " + optionData.getType().toString(),
-                    StyledString.QUALIFIER_STYLER);
-
-            proposal = getValueConverter().toString(optionData.getId(),
+            String proposal = getValueConverter().toString(optionData.getId(),
                     grammmarAccess.getQualifiedIDRule().getName());
             
+            LayoutOptionLabelProvider labelProvider = new LayoutOptionLabelProvider(optionData);
+            Image image = labelProvider.getImage(optionData.getDefault());
+            
             boolean escape = proposal.contains("^");
-
-            completeProposal = createCompletionProposal(proposal, displayString, null,
-                    getPriorityHelper().getDefaultPriority(),
+            ICompletionProposal completeProposal = createCompletionProposal(proposal, displayString,
+                    image, getPriorityHelper().getDefaultPriority(),
                     "de.cau.cs.kieler." + (escape ? "^" : "") + context.getPrefix(), context);
 
-            acceptor.accept((completeProposal != null) ? completeProposal
-                    : createCompletionProposal(proposal, displayString, null, context));
+            if (completeProposal != null) {
+                acceptor.accept(completeProposal);
+            } else {
+                acceptor.accept(createCompletionProposal(proposal, displayString, image, context));
+            }
         }
     }
 
@@ -253,7 +252,7 @@ public class KGraphProposalProvider extends AbstractKGraphProposalProvider {
      */
     private void valueProposal(final ContentAssistContext context,
             final ICompletionProposalAcceptor acceptor) {
-        /* check if the prefix is a KIELER annotation */
+        // check if the prefix is a KIELER annotation
         if (context.getCurrentModel() instanceof PersistentEntry) {
 
             String annotationName = ((PersistentEntry) context.getCurrentModel()).getKey();
