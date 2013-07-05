@@ -95,11 +95,15 @@ public class RandomGraphOptionsPage extends WizardPage {
         GridData gridData = new GridData(SWT.LEFT, SWT.TOP, false, false, 2, 1);
         gridData.horizontalIndent = 30;
         label.setLayoutData(gridData);
+        
         Composite widthComposite = new Composite(nodesGroup, SWT.NONE);
         gridData = new GridData(SWT.LEFT, SWT.TOP, true, false, 2, 1);
         gridData.horizontalIndent = 50;
         widthComposite.setLayoutData(gridData);
-        widthComposite.setLayout(new GridLayout(4, false));
+        
+        GridLayout gridLayout = new GridLayout(4, false);
+        gridLayout.marginHeight = 0;
+        widthComposite.setLayout(gridLayout);
         
         label = new Label(widthComposite, SWT.NONE);
         label.setText(Messages.RandomGraphUtilityPage_node_size_min);
@@ -127,12 +131,17 @@ public class RandomGraphOptionsPage extends WizardPage {
         label.setText(Messages.RandomGraphUtilityPage_node_height_caption);
         gridData = new GridData(SWT.LEFT, SWT.TOP, false, false, 2, 1);
         gridData.horizontalIndent = 30;
+        gridData.verticalIndent = 10;
         label.setLayoutData(gridData);
+        
         Composite heightComposite = new Composite(nodesGroup, SWT.NONE);
         gridData = new GridData(SWT.LEFT, SWT.TOP, true, false, 2, 1);
         gridData.horizontalIndent = 50;
         heightComposite.setLayoutData(gridData);
-        heightComposite.setLayout(new GridLayout(4, false));
+
+        gridLayout = new GridLayout(4, false);
+        gridLayout.marginHeight = 0;
+        heightComposite.setLayout(gridLayout);
         
         label = new Label(heightComposite, SWT.NONE);
         label.setText(Messages.RandomGraphUtilityPage_node_size_min);
