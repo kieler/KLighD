@@ -112,13 +112,13 @@ public class KGraphProposalProvider extends AbstractKGraphProposalProvider {
     @Override
     public void complete_DEGREES(EObject model, RuleCall ruleCall, ContentAssistContext context,
             ICompletionProposalAcceptor acceptor) {
-        createIntProposal(context, acceptor, ruleCall, getAssignedFeature(ruleCall), 0);
+        createFloatProposal(context, acceptor, ruleCall, getAssignedFeature(ruleCall), 0);
     }
     
     @Override
     public void complete_PERCENT(EObject model, RuleCall ruleCall, ContentAssistContext context,
             ICompletionProposalAcceptor acceptor) {
-        createIntProposal(context, acceptor, ruleCall, getAssignedFeature(ruleCall), 0);
+        createFloatProposal(context, acceptor, ruleCall, getAssignedFeature(ruleCall), 0);
     }
     
     @Override

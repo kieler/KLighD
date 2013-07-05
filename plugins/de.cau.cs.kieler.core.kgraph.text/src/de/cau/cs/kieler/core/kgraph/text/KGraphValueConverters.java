@@ -142,7 +142,10 @@ public class KGraphValueConverters extends AbstractDeclarativeValueConverterServ
         
         public String toValue(final String string, final INode node) {
             String res = super.toValue(string, node);
-            return res.replace(".^", ".");
+            if (res != null) {
+                return res.replace(".^", ".");
+            }
+            return null;
         }
     }
     

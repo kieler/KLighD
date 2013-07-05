@@ -68,11 +68,22 @@ public final class PiccoloPlacementUtil {
 
         // determine the top-left
         KPosition topLeft = dpd.getTopLeft();
-        Point2D.Float topLeftPoint = evaluateDirectPosition(topLeft, parentBounds);
+        Point2D.Float topLeftPoint;
+        if (topLeft == null) {
+            topLeftPoint = new Point2D.Float(0, 0);
+        } else {
+            topLeftPoint = evaluateDirectPosition(topLeft, parentBounds);
+        }
 
         // determine the bottom-right
         KPosition bottomRight = dpd.getBottomRight();
-        Point2D.Float bottomRightPoint = evaluateDirectPosition(bottomRight, parentBounds);
+        Point2D.Float bottomRightPoint;
+        if (bottomRight == null) {
+            bottomRightPoint = new Point2D.Float((float) parentBounds.getWidth(),
+                    (float) parentBounds.getHeight());
+        } else {
+            bottomRightPoint = evaluateDirectPosition(bottomRight, parentBounds);
+        }
 
         return new Bounds(topLeftPoint.x, topLeftPoint.y, bottomRightPoint.x
                 - topLeftPoint.x, bottomRightPoint.y - topLeftPoint.y);
@@ -120,7 +131,14 @@ public final class PiccoloPlacementUtil {
         float width = Math.max(ownBounds.getWidth(), ppd.getMinWidth());
         float height = Math.max(ownBounds.getHeight(), ppd.getMinHeight());
         KPosition ref = ppd.getReferencePoint();
-        Point2D.Float refPoint = evaluateDirectPosition(ref, parentBounds);
+        Point2D.Float refPoint;
+        if (ref == null) {
+            // if the reference point is missing, assume the center as reference
+            refPoint = new Point2D.Float((float) parentBounds.getWidth() / 2,
+                    (float) parentBounds.getHeight() / 2);
+        } else {
+            refPoint = evaluateDirectPosition(ref, parentBounds);
+        }
 
         float x0, y0;
 
