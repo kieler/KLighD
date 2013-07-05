@@ -179,8 +179,10 @@ public class ContextViewer extends AbstractViewer<Object> implements IViewerEven
     /**
      * Update the options to be displayed in the options pane.
      * TODO make the selection of options configurable through method arguments
+     * 
+     * @param fitSpace true if the diagram shall fit the available space
      */
-    public void updateOptions() {
+    public void updateOptions(final boolean fitSpace) {
         // remove any option controls that have been created before
         optionControlFactory.clear();
         // initialize a layout configuration for retrieving default values
@@ -205,7 +207,7 @@ public class ContextViewer extends AbstractViewer<Object> implements IViewerEven
         }
         
         if (!recommendedOptions.entrySet().isEmpty()) {
-            this.enableOptionsSideBar();
+            this.enableOptionsSideBar(fitSpace);
         }
 
     }
@@ -447,8 +449,10 @@ public class ContextViewer extends AbstractViewer<Object> implements IViewerEven
     /**
      * A simple enabler of the side bar controls.
      * It is to be executed in case there are diagram options to provide in the side bar.
+     * 
+     * @param zoomToFit true if the diagram shall fit the available space
      */
-    private void enableOptionsSideBar() {
+    private void enableOptionsSideBar(final boolean zoomToFit) {
         // define the controls (sash, right arrow, form) to be visible
         for (Control c : this.sideBarControls) {
             c.setVisible(true);
@@ -459,10 +463,13 @@ public class ContextViewer extends AbstractViewer<Object> implements IViewerEven
             this.sashLayoutData.left.offset = 0;
         }
         // re-layout the view part's composite
-        this.diagramComposite.getParent().layout(true, true);        
+        this.diagramComposite.getParent().layout(true, true);
+        
         // let the diagram fit the available space,
         //  should be dependent on a preference setting in future (TODO)
-        this.currentViewer.zoomToFit(0);
+        if (zoomToFit) {
+            this.currentViewer.zoomToFit(0);
+        }
     }
     
     

@@ -47,7 +47,9 @@ import org.eclipse.ui.part.EditorPart;
 import org.eclipse.ui.statushandlers.StatusManager;
 import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 
+import de.cau.cs.kieler.core.kgraph.KNode;
 import de.cau.cs.kieler.core.properties.MapPropertyHolder;
+import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout;
 import de.cau.cs.kieler.klighd.KlighdPlugin;
 import de.cau.cs.kieler.klighd.LightDiagramServices;
 import de.cau.cs.kieler.klighd.ViewContext;
@@ -108,6 +110,11 @@ public class DiagramEditorPart extends EditorPart {
             viewer.setModel(viewContext);
             // do an initial update of the view context
             LightDiagramServices.getInstance().updateViewContext(viewContext, model);
+            
+            if (requiresInitialLayout(viewContext)) {
+                LightDiagramServices.getInstance().layoutDiagram(viewContext, false, false);
+            }
+            viewer.updateOptions(false);
 
             // since no initial selection is set in the view context/context viewer implementation,
             // define some here by selection the root of the view model representing the diagram canvas!
@@ -120,6 +127,21 @@ public class DiagramEditorPart extends EditorPart {
         getSite().setSelectionProvider(viewer);
         
         // the initialization of the context menu is done in PiccoloViewer#addContextMenu()
+    }
+    
+    /**
+     * Tester that decides on the need for computing the diagram layout while opening the diagram.<br>
+     * May be overridden by subclasses.
+     * 
+     * @param viewContext
+     *            provides context data that might be incorporated in the decision
+     * @return true if the layout shall be (re-) computed while opening the diagram.
+     */
+    public boolean requiresInitialLayout(final ViewContext viewContext) {
+        final KNode viewModel = (KNode) viewContext.getViewModel();
+        final KShapeLayout diagramLayout = viewModel.getData(KShapeLayout.class);
+        
+        return diagramLayout.getWidth() == 0 && diagramLayout.getHeight() == 0;
     }
     
     /**
