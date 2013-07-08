@@ -48,6 +48,8 @@ public class RandomGraphBiconnectedPage extends WizardPage {
         this.options = options;
     }
 
+    // CHECKSTYLEOFF MagicNumber
+    
     /**
      * {@inheritDoc}
      */

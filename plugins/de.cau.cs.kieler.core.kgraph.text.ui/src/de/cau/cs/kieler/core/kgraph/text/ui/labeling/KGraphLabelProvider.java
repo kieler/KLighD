@@ -305,6 +305,7 @@ public class KGraphLabelProvider extends DefaultEObjectLabelProvider {
             } else {
                 text.append("top ");
             }
+            // SUPPRESS CHECKSTYLE NEXT MagicNumber
             text.append(position.getY().getRelative() * 100).append("% + ");
             text.append(position.getY().getAbsolute());
         }

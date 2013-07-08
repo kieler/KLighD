@@ -577,7 +577,10 @@ final class KGERenderingControllerHelper {
         } else {
 
             // get the bundle and actual image, trim the leading and trailing quotation marks
-            Bundle bundle = Platform.getBundle(image.getBundleName().replace("\"", ""));
+            Bundle bundle = null;
+            if (image.getBundleName() != null) {
+                bundle = Platform.getBundle(image.getBundleName().replace("\"", ""));
+            }
             if (bundle == null) {
                 return createDummy(parent, initialBounds);
             }

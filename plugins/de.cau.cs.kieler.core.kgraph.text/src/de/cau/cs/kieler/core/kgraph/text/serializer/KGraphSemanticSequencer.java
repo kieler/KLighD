@@ -52,6 +52,8 @@ public class KGraphSemanticSequencer extends AbstractKGraphSemanticSequencer {
     @Inject
     private KGraphGrammarAccess grammarAccess;
     
+    // CHECKSTYLEOFF MethodName
+    
     /**
      * {@inheritDoc}
      */

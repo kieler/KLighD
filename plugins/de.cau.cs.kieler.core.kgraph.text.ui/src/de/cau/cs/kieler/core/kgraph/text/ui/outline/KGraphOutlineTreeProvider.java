@@ -36,13 +36,15 @@ import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout;
  */
 public class KGraphOutlineTreeProvider extends DefaultOutlineTreeProvider {
     
+    // CHECKSTYLEOFF MethodName
+    
     /**
      * Create children for graph data instances.
      * 
      * @param parentNode the parent outline node
      * @param graphData a graph data instance
      */
-    protected void _createChildren(IOutlineNode parentNode, KGraphData graphData) {
+    protected void _createChildren(final IOutlineNode parentNode, final KGraphData graphData) {
         for (EObject childElement : graphData.eContents()) {
             // persistent entries are parsed to the properties map, so they don't need to be displayed
             if (!(childElement instanceof PersistentEntry)) {
@@ -67,7 +69,7 @@ public class KGraphOutlineTreeProvider extends DefaultOutlineTreeProvider {
      * @param parentNode the parent outline node
      * @param edgeLayout an edge layout
      */
-    protected void _createChildren(IOutlineNode parentNode, KEdgeLayout edgeLayout) {
+    protected void _createChildren(final IOutlineNode parentNode, final KEdgeLayout edgeLayout) {
         for (EObject childElement : edgeLayout.eContents()) {
             // persistent entries are parsed to the properties map, so they don't need to be displayed
             if (!(childElement instanceof PersistentEntry)
@@ -94,7 +96,7 @@ public class KGraphOutlineTreeProvider extends DefaultOutlineTreeProvider {
      * @param parentNode the parent outline node
      * @param graphElement a graph element
      */
-    protected void _createChildren(IOutlineNode parentNode, KGraphElement graphElement) {
+    protected void _createChildren(final IOutlineNode parentNode, final KGraphElement graphElement) {
         for (EObject childElement : graphElement.eContents()) {
             // the identifier is shown in the element's text, so it doesn't need to be displayed
             if (!(childElement instanceof KIdentifier)) {
