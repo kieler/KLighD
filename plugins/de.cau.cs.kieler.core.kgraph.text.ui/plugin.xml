@@ -267,6 +267,16 @@
             name="Random KGraph"
             project="false">
       </wizard>
+      <wizard
+            canFinishEarly="false"
+            category="de.cau.cs.kieler.kgraph"
+            class="de.cau.cs.kieler.core.kgraph.text.ui.EmptyGraphWizard"
+            hasPages="true"
+            icon="icons/kgraph/kgraph-new.gif"
+            id="de.cau.cs.kieler.core.kgraph.text.empty.wizard"
+            name="Empty KGraph"
+            project="false">
+      </wizard>
       <category
             id="de.cau.cs.kieler.kgraph"
             name="KGraph">
