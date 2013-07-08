@@ -288,4 +288,14 @@
             class="de.cau.cs.kieler.core.kgraph.text.ui.random.GeneratorPreferenceInitializer">
       </initializer>
    </extension>
+   <extension
+         point="de.cau.cs.kieler.kiml.service.graphTransformers">
+      <handler
+            class="de.cau.cs.kieler.core.kgraph.text.ui.KGraphExecutableExtensionFactory:de.cau.cs.kieler.core.kgraph.text.ui.KGraphTextHandler"
+            description="Xtext-based notation for the KGraph format."
+            extensions="kgt"
+            id="de.cau.cs.kieler.kgraph.text"
+            name="KGraph Text">
+      </handler>
+   </extension>
 </plugin>
