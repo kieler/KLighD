@@ -65,7 +65,7 @@ public class DiagramEditorPart extends EditorPart {
     /** the resource set managed by this editor part. */
     private ResourceSet resourceSet;
     /** the model represented by this editor part. */
-    private Object model;
+    protected Object model;
     /** the viewer for this editor part. */
     private ContextViewer viewer;
 
@@ -201,7 +201,7 @@ public class DiagramEditorPart extends EditorPart {
      * 
      * @throws PartInitException if loading the model fails
      */
-    private void loadModel() throws PartInitException {
+    protected void loadModel() throws PartInitException {
         // get a URI or an input stream from the editor input
         URI uri = null;
         InputStream inputStream = null;
