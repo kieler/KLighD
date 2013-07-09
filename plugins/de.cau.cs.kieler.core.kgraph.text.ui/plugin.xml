@@ -278,4 +278,59 @@
             class="de.cau.cs.kieler.core.kgraph.text.ui.random.GeneratorPreferenceInitializer">
       </initializer>
    </extension>
+    <extension point="org.eclipse.ui.menus">
+         <menuContribution
+            locationURI="popup:org.eclipse.ui.popup.any?after=additions">
+         <command
+               commandId="de.cau.cs.kieler.core.model.convert"
+               label="Convert to Textual Model (kgt)"
+               style="push"
+               tooltip="Convert the model to textual KGraph format">
+            <visibleWhen
+                  checkEnabled="false">
+               <iterate
+                     ifEmpty="false"
+                     operator="and">
+                  <adapt
+                        type="org.eclipse.core.resources.IResource">
+                     <test
+                           forcePluginActivation="false"
+                           property="org.eclipse.core.resources.extension"
+                           value="kgx">
+                     </test>
+                  </adapt>
+               </iterate>
+            </visibleWhen>
+            <parameter
+                  name="de.cau.cs.kieler.convert.targetExtension"
+                  value="kgt">
+            </parameter>
+         </command>
+                  <command
+               commandId="de.cau.cs.kieler.core.model.convert"
+               label="Convert to XMI Model (kgx)"
+               style="push"
+               tooltip="Convert the model to XMI-based KGraph format">
+            <visibleWhen
+                  checkEnabled="false">
+               <iterate
+                     ifEmpty="false"
+                     operator="and">
+                  <adapt
+                        type="org.eclipse.core.resources.IResource">
+                     <test
+                           forcePluginActivation="false"
+                           property="org.eclipse.core.resources.extension"
+                           value="kgt">
+                     </test>
+                  </adapt>
+               </iterate>
+            </visibleWhen>
+            <parameter
+                  name="de.cau.cs.kieler.convert.targetExtension"
+                  value="kgx">
+            </parameter>
+         </command>
+     </menuContribution>
+    </extension>
 </plugin>

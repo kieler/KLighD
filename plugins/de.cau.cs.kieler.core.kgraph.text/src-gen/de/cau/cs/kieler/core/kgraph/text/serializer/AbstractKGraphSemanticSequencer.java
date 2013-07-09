@@ -1597,7 +1597,7 @@ public abstract class AbstractKGraphSemanticSequencer extends AbstractDelegating
 	
 	/**
 	 * Constraint:
-	 *     ((relative=PERCENT? absolute=Float?) | relative=PERCENT)
+	 *     ((relative=PERCENT | (relative=PERCENT? absolute=Float))?)
 	 */
 	protected void sequence_KXPosition(EObject context, KLeftPosition semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
@@ -1606,7 +1606,7 @@ public abstract class AbstractKGraphSemanticSequencer extends AbstractDelegating
 	
 	/**
 	 * Constraint:
-	 *     ((relative=PERCENT? absolute=Float?) | relative=PERCENT)
+	 *     ((relative=PERCENT | (relative=PERCENT? absolute=Float))?)
 	 */
 	protected void sequence_KXPosition(EObject context, KRightPosition semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
@@ -1615,7 +1615,7 @@ public abstract class AbstractKGraphSemanticSequencer extends AbstractDelegating
 	
 	/**
 	 * Constraint:
-	 *     ((relative=PERCENT? absolute=Float?) | relative=PERCENT)
+	 *     ((relative=PERCENT | (relative=PERCENT? absolute=Float))?)
 	 */
 	protected void sequence_KYPosition(EObject context, KBottomPosition semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
@@ -1624,7 +1624,7 @@ public abstract class AbstractKGraphSemanticSequencer extends AbstractDelegating
 	
 	/**
 	 * Constraint:
-	 *     ((relative=PERCENT? absolute=Float?) | relative=PERCENT)
+	 *     ((relative=PERCENT | (relative=PERCENT? absolute=Float))?)
 	 */
 	protected void sequence_KYPosition(EObject context, KTopPosition semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
