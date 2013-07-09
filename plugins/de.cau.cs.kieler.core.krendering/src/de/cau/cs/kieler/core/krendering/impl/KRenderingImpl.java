@@ -166,7 +166,7 @@ public abstract class KRenderingImpl extends KGraphDataImpl implements KRenderin
      */
     public KContainerRendering getParent() {
         if (eContainerFeatureID() != KRenderingPackage.KRENDERING__PARENT) return null;
-        return (KContainerRendering)eContainer();
+        return (KContainerRendering)eInternalContainer();
     }
 
     /**

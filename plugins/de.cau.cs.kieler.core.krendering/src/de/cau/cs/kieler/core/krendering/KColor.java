@@ -41,6 +41,7 @@ import org.eclipse.emf.ecore.EObject;
 public interface KColor extends EObject {
     /**
      * Returns the value of the '<em><b>Red</b></em>' attribute.
+     * The default value is <code>"0"</code>.
      * <!-- begin-user-doc -->
      * <p>
      * If the meaning of the '<em>Red</em>' attribute isn't clear,
@@ -53,7 +54,7 @@ public interface KColor extends EObject {
      * @return the value of the '<em>Red</em>' attribute.
      * @see #setRed(int)
      * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKColor_Red()
-     * @model required="true"
+     * @model default="0" required="true"
      * @generated
      */
     int getRed();
@@ -70,6 +71,7 @@ public interface KColor extends EObject {
 
     /**
      * Returns the value of the '<em><b>Green</b></em>' attribute.
+     * The default value is <code>"0"</code>.
      * <!-- begin-user-doc -->
      * <p>
      * If the meaning of the '<em>Green</em>' attribute isn't clear,
@@ -82,7 +84,7 @@ public interface KColor extends EObject {
      * @return the value of the '<em>Green</em>' attribute.
      * @see #setGreen(int)
      * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKColor_Green()
-     * @model required="true"
+     * @model default="0" required="true"
      * @generated
      */
     int getGreen();
@@ -99,6 +101,7 @@ public interface KColor extends EObject {
 
     /**
      * Returns the value of the '<em><b>Blue</b></em>' attribute.
+     * The default value is <code>"0"</code>.
      * <!-- begin-user-doc -->
      * <p>
      * If the meaning of the '<em>Blue</em>' attribute isn't clear,
@@ -111,7 +114,7 @@ public interface KColor extends EObject {
      * @return the value of the '<em>Blue</em>' attribute.
      * @see #setBlue(int)
      * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKColor_Blue()
-     * @model required="true"
+     * @model default="0" required="true"
      * @generated
      */
     int getBlue();

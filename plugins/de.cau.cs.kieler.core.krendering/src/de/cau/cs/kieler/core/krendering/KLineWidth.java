@@ -37,6 +37,7 @@ package de.cau.cs.kieler.core.krendering;
 public interface KLineWidth extends KStyle {
     /**
      * Returns the value of the '<em><b>Line Width</b></em>' attribute.
+     * The default value is <code>"1.0"</code>.
      * <!-- begin-user-doc -->
      * <p>
      * If the meaning of the '<em>Line Width</em>' attribute isn't clear,
@@ -49,7 +50,7 @@ public interface KLineWidth extends KStyle {
      * @return the value of the '<em>Line Width</em>' attribute.
      * @see #setLineWidth(float)
      * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKLineWidth_LineWidth()
-     * @model required="true"
+     * @model default="1.0" required="true"
      * @generated
      */
     float getLineWidth();

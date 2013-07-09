@@ -45,7 +45,7 @@ public class KFontSizeImpl extends KStyleImpl implements KFontSize {
      * @generated
      * @ordered
      */
-    protected static final int SIZE_EDEFAULT = 0;
+    protected static final int SIZE_EDEFAULT = 10;
 
     /**
      * The cached value of the '{@link #getSize() <em>Size</em>}' attribute.
