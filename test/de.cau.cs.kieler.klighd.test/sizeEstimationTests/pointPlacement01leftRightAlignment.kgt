@@ -1,67 +1,40 @@
-KNode {
-	children:
-	// the red one
-	KNode {
-		data:
-		Rectangle {
-			styles:
-			background {
-				color 255 0 0
-			}
-			children:
-			Ellipse {
-				placementData:
-				PointPlacementData {
-					referencePoint
-					left 10.0 0.0 / top 10.0 0.0
-					horizontalMargin 10.0
-					verticalMargin 10.0
-				}
-				children:
-				Text T {
-					mapProperties:
-					"klighd.testing.height" = "10.0"
-					"klighd.testing.width" = "7.0"
-				}
-			}
-		}
-		KShapeLayout {
-			mapProperties:
-			"klighd.testing.expected.height" = "30.0"
-			"klighd.testing.expected.width" = "27.0"
+knode {
+	properties:
+		klighd.testing.expected.^height = 30.0
+		klighd.testing.expected.^width = 27.0
+	krectangle {
+		styles:
+			background = 255r
+		kellipse {
+			pointData:
+				referencePoint = left 10, top 10
+				horizontalMargin = 10
+				verticalMargin = 10
+			ktext ("T") [
+				klighd.testing.^height = 10.0
+				klighd.testing.^width = 7.0
+			]
 		}
 	}
-	// the green one
-	KNode {
-		data:
-		Rectangle {
-			styles:
-			background {
-				color 0 255 0
-			}
-			children:
-			Ellipse {
-				placementData:
-				PointPlacementData {
-					referencePoint
-					right 10.0 0.0 / bottom 10.0 0.0
-					horizontalAlignment RIGHT
-					verticalAlignment BOTTOM
-					horizontalMargin 10.0
-					verticalMargin 10.0
-				}
-				children:
-				Text T {
-					mapProperties:
-					"klighd.testing.height" = "10.0"
-					"klighd.testing.width" = "7.0"
-				}
-			}
-		}
-		KShapeLayout {
-			mapProperties:
-			"klighd.testing.expected.height" = "30.0"
-			"klighd.testing.expected.width" = "27.0"
+}
+knode {
+	properties:
+		klighd.testing.expected.^height = 30.0
+		klighd.testing.expected.^width = 27.0
+	krectangle {
+		styles:
+			background = 255g
+		kellipse {
+			pointData:
+				referencePoint = right 10, bottom 10
+				horizontalAlignment = right
+				horizontalMargin = 10
+				verticalAlignment = bottom
+				verticalMargin = 10
+			ktext ("T") [
+				klighd.testing.^height = 10.0
+				klighd.testing.^width = 7.0
+			]
 		}
 	}
 }

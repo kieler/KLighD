@@ -1,34 +1,14 @@
-//test with gridlayout and defined insets on children/cells
-KNode {
-	children
-KNode {
-	data:
-	Rectangle {
-		childPlacement:
-		gridPlacement 1
-		children:
-		Rectangle Text Hugo {
-			placementData:
-			GridPlacementData {
-				topLeft
-				left 0.0 0.5 / top 0.0 0.0
-				bottomRight
-				right 0.0 0.0 / bottom 0.0 0.0
-			}
-			mapProperties:
-			"klighd.testing.height" = "16.0"
-			"klighd.testing.width" = "31.0"
+
+knode {
+	properties: klighd.testing.expected.^height = 48.0
+	klighd.testing.expected.^width = 62.0
+	krectangle {
+		grid: columns = 1
+		krectangle
+		ktext ("Hugo") [klighd.testing.^height = 16.0 klighd.testing.^width = 31.0] {
+			gridData: topLeftAnchor = left 50%, top bottomRightAnchor = right, bottom
 		}
-		Text "Müller" {
-			mapProperties:
-			"klighd.testing.height" = "16.0"
-			"klighd.testing.width" = "35.0"
-		}
+		ktext ("Müller") [klighd.testing.^height = 16.0 klighd.testing.^width =
+		35.0]
 	}
-	KShapeLayout {
-		mapProperties:
-		"klighd.testing.expected.height" = "48.0"
-		"klighd.testing.expected.width" = "62.0"
-	}
-}
 }

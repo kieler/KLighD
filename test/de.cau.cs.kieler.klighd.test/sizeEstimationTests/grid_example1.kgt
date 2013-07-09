@@ -1,98 +1,40 @@
 
-KNode {
-	children
-	KNode {
-		data:
-		Rectangle {
-			styles:
-			foreground {
-				color 0 255 0
-			}
-			childPlacement:
-			gridPlacement 1
-			children:
-			Rectangle {
-				children:
-				Text "Einen ganz langenajajkgaskgakjsdgajksgdakjshdakj Text" {
-					mapProperties:
-					"klighd.testing.height" = "16.0"
-					"klighd.testing.width" = "329.0"
-				}
-			}
-			Rectangle {
-				childPlacement:
-				gridPlacement 2
-				children:
-				Rectangle {
-					placementData:
-					GridPlacementData {
-						maxCellWidth 90.0
-					}
-					children:
-					Text name {
-						mapProperties:
-						"klighd.testing.height" = "16.0"
-						"klighd.testing.width" = "32.0"
-					}
-				}
-				Rectangle {
-					children:
-					Text Hugo {
-						mapProperties:
-						"klighd.testing.height" = "16.0"
-						"klighd.testing.width" = "31.0"
-					}
-				}
-				Rectangle {
-					children:
-					Text value {
-						mapProperties:
-						"klighd.testing.height" = "16.0"
-						"klighd.testing.width" = "31.0"
-					}
-				}
-				Rectangle {
-					childPlacement:
-					gridPlacement 1
-					children:
-					Text "a)" {
-						mapProperties:
-						"klighd.testing.height" = "16.0"
-						"klighd.testing.width" = "11.0"
-					}
-					Text "b)" {
-						mapProperties:
-						"klighd.testing.height" = "16.0"
-						"klighd.testing.width" = "11.0"
-					}
-					Text "c)" {
-						mapProperties:
-						"klighd.testing.height" = "16.0"
-						"klighd.testing.width" = "11.0"
-					}
-				}
-				Rectangle {
-					children:
-					Text parent {
-						mapProperties:
-						"klighd.testing.height" = "16.0"
-						"klighd.testing.width" = "36.0"
-					}
-				}
-				Rectangle {
-					children:
-					Text "..." {
-						mapProperties:
-						"klighd.testing.height" = "16.0"
-						"klighd.testing.width" = "12.0"
-					}
-				}
-			}
+knode {
+	properties: klighd.testing.expected.^height = 96.0
+	klighd.testing.expected.^width = 329.0
+	krectangle {
+		styles: foreground = 255g
+		grid: columns = 1
+		krectangle {
+			ktext ("Einen ganz langenajajkgaskgakjsdgajksgdakjshdakj Text")
+			[klighd.testing.^height = 16.0 klighd.testing.^width = 329.0]
 		}
-		KShapeLayout {
-			mapProperties:
-			"klighd.testing.expected.height" = "96.0"
-			"klighd.testing.expected.width" = "329.0"
+		krectangle {
+			grid: columns = 2
+			krectangle {
+				gridData: maxCellWidth = 90
+				ktext ("name") [klighd.testing.^height = 16.0 klighd.testing.^width = 32.0]
+			}
+			krectangle {
+				ktext ("Hugo") [klighd.testing.^height = 16.0 klighd.testing.^width = 31.0]
+			}
+			krectangle {
+				ktext ("value") [klighd.testing.^height = 16.0 klighd.testing.^width =
+				31.0]
+			}
+			krectangle {
+				grid: columns = 1
+				ktext ("a)") [klighd.testing.^height = 16.0 klighd.testing.^width = 11.0]
+				ktext ("b)") [klighd.testing.^height = 16.0 klighd.testing.^width = 11.0]
+				ktext ("c)") [klighd.testing.^height = 16.0 klighd.testing.^width = 11.0]
+			}
+			krectangle {
+				ktext ("parent") [klighd.testing.^height = 16.0 klighd.testing.^width =
+				36.0]
+			}
+			krectangle {
+				ktext ("...") [klighd.testing.^height = 16.0 klighd.testing.^width = 12.0]
+			}
 		}
 	}
 }

@@ -1,27 +1,14 @@
-//test with grid layout and two text children
-KNode {
-	children
-KNode {
-	data:
-	Rectangle {
-		childPlacement:
-		gridPlacement 1
-		children:
-		Text Hugo {
-			mapProperties:
-			"klighd.testing.height" = "16.0"
-			"klighd.testing.width" = "31.0"
-		}
-		Text "Hugos" {
-			mapProperties:
-			"klighd.testing.height" = "16.0"
-			"klighd.testing.width" = "38.0"
-		}
+knode {
+	properties:
+		klighd.testing.expected.^height = 32.0
+		klighd.testing.expected.^width = 38.0
+	krectangle {
+		grid: columns = 1
+		ktext ("Hugo") [
+			klighd.testing.^height = 16.0 klighd.testing.^width = 31.0
+		]
+		ktext ("Hugos") [
+			klighd.testing.^height = 16.0 klighd.testing.^width = 38.0
+		]
 	}
-	KShapeLayout {
-		mapProperties:
-		"klighd.testing.expected.height" = "32.0"
-		"klighd.testing.expected.width" = "38.0"
-	}
-}
 }
