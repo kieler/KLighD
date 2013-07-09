@@ -46,7 +46,7 @@ public class KGraphQuickfixProvider extends DefaultQuickfixProvider {
     }
     
     /**
-     * Provide semantic modification that trains a KNode for being used as test case of the size
+     * Provides semantic modification that trains a KNode for being used as test case of the size
      * estimation test in de.cau.cs.kieler.klighd.test.
      * 
      * @param issue
@@ -68,12 +68,21 @@ public class KGraphQuickfixProvider extends DefaultQuickfixProvider {
                 });
     }
     
+    
+    /**
+     * Provides semantic modification that adds the ignore tag to the related KNode.
+     * 
+     * @param issue
+     *            the issue to be fixed
+     * @param acceptor
+     *            the acceptor taking the fix
+     */
     @Fix(KGraphJavaValidator.IGNORE_KNODE_INFO)
     public void addIgnoreTag(final Issue issue, final IssueResolutionAcceptor acceptor) {
         acceptor.accept(issue, "Add ignore tag", "Add ignore tag", null,
-                new ISemanticModification() {
 
-                    public void apply(EObject element, IModificationContext context)
+                new ISemanticModification() {
+                    public void apply(final EObject element, final IModificationContext context)
                             throws Exception {
                         if (c != null) {
                             c.getMethod("ignore", KNode.class).invoke(null, (KNode) element);

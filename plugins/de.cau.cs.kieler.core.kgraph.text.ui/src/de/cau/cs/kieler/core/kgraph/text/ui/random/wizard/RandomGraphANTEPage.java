@@ -50,6 +50,8 @@ public class RandomGraphANTEPage extends WizardPage {
         setDescription(Messages.RandomGraphANTEPage_description);
         this.options = options;
     }
+    
+    // CHECKSTYLEOFF MagicNumber
 
     /**
      * {@inheritDoc}

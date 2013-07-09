@@ -31,7 +31,7 @@ public class KGraphFormatter extends AbstractDeclarativeFormatter {
      * {@inheritDoc}
      */
     @Override
-    protected void configureFormatting(FormattingConfig c) {
+    protected void configureFormatting(final FormattingConfig c) {
         KGraphGrammarAccess f = (KGraphGrammarAccess) getGrammarAccess();
         
         // general formatting options relative to some delimiters

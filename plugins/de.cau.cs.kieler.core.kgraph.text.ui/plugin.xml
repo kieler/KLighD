@@ -267,6 +267,16 @@
             name="Random KGraph"
             project="false">
       </wizard>
+      <wizard
+            canFinishEarly="false"
+            category="de.cau.cs.kieler.kgraph"
+            class="de.cau.cs.kieler.core.kgraph.text.ui.EmptyGraphWizard"
+            hasPages="true"
+            icon="icons/kgraph/kgraph-new.gif"
+            id="de.cau.cs.kieler.core.kgraph.text.empty.wizard"
+            name="Empty KGraph"
+            project="false">
+      </wizard>
       <category
             id="de.cau.cs.kieler.kgraph"
             name="KGraph">
@@ -333,4 +343,14 @@
          </command>
      </menuContribution>
     </extension>
+   <extension
+         point="de.cau.cs.kieler.kiml.service.graphTransformers">
+      <handler
+            class="de.cau.cs.kieler.core.kgraph.text.ui.KGraphExecutableExtensionFactory:de.cau.cs.kieler.core.kgraph.text.ui.KGraphTextHandler"
+            description="Xtext-based notation for the KGraph format."
+            extensions="kgt"
+            id="de.cau.cs.kieler.kgraph.text"
+            name="KGraph Text">
+      </handler>
+   </extension>
 </plugin>
