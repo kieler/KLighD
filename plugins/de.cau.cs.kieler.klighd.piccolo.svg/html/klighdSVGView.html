@@ -27,20 +27,24 @@ svg {
 
 <body>
 
-    <input id="ip" value="localhost"/>
+    <input id="ip" value="localhost:8080"/>
 	<button id="connect">Connect</button>
 
 	<div id="viewport"></div>
 
 	<div id="messages"></div>
 
+    <button id="test">Test</button>
+
+    <div id="data"></div>
+    
 	<script>
-	
 	var connection = null;
 	
     $('#connect').click(function() {
 
-      connection = new WebSocket('ws://' + $('#ip').val() + ':8080/svg/', "protocol.svgws");
+      //connectionData = new WebSocket('ws://' + $('#ip').val() + '/', "protocol.data");
+      connection = new WebSocket('ws://' + $('#ip').val() + '/', "protocol.svgws");
 
       // When the connection is open, send some data to the server
       connection.onopen = function() {
@@ -102,6 +106,37 @@ svg {
       lastpos = null;
     });
 
+    
+    $('#test').click(function() {
+      $.ajax({
+        type: 'GET',
+        url: 'content/',
+        success: function(res){
+          $('#data').append(res);
+          console.log("Success " + res);
+          
+          
+          // register listener
+          $('.container').click(function() {
+            var path = $(this).attr("data-path");
+            $.ajax({
+              type: 'GET',
+              url: 'resource' + path,
+              success: function(res) {
+                console.log("Resurce: " + res);
+              }
+            });
+          });
+        }, 
+        error: function(e) {
+          console.log(e);
+        }
+      });
+      console.log("test");
+    });
+    
+    
+    
     // executed
     $(function() {
     });

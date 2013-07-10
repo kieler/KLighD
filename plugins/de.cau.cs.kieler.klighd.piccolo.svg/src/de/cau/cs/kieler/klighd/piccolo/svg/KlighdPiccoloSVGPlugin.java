@@ -3,6 +3,8 @@ package de.cau.cs.kieler.klighd.piccolo.svg;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 
+import de.cau.cs.kieler.klighd.piccolo.svg.browsing.BrowsingSVGServer;
+
 public class KlighdPiccoloSVGPlugin implements BundleActivator {
 
 	private static BundleContext context;
@@ -17,6 +19,9 @@ public class KlighdPiccoloSVGPlugin implements BundleActivator {
 	 */
 	public void start(BundleContext bundleContext) throws Exception {
 		KlighdPiccoloSVGPlugin.context = bundleContext;
+		
+		BrowsingSVGServer.getInstance();
+//		SVGServer.getInstance();
 	}
 
 	/*

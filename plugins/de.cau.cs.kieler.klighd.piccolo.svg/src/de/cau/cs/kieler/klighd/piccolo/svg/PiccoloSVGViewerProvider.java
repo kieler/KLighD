@@ -18,6 +18,7 @@ import org.eclipse.swt.widgets.Composite;
 import de.cau.cs.kieler.core.kgraph.KNode;
 import de.cau.cs.kieler.klighd.IViewer;
 import de.cau.cs.kieler.klighd.IViewerProvider;
+import de.cau.cs.kieler.klighd.piccolo.svg.browsing.PiccoloSVGBrowseViewer;
 import de.cau.cs.kieler.klighd.viewers.ContextViewer;
 
 /**
@@ -35,6 +36,7 @@ public class PiccoloSVGViewerProvider implements IViewerProvider<KNode> {
      */
     public IViewer<KNode> createViewer(final ContextViewer parentViewer, final Composite parent) {
         return new PiccoloSVGViewer(parentViewer, parent);
+//        return new PiccoloSVGBrowseViewer(parent);
     }
 
     /**

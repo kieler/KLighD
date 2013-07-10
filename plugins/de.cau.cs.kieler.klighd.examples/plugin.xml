@@ -19,6 +19,10 @@
             class="de.cau.cs.kieler.klighd.transformations.GuiceBasedTransformationFactory:de.cau.cs.kieler.klighd.examples.uml2.UML2UseCaseDiagramSynthesis"
             id="de.cau.cs.kieler.klighd.examples.uml2.UML2UseCaseDiagramSynthesis">
       </transformation>
+      <transformation
+            class="de.cau.cs.kieler.klighd.transformations.GuiceBasedTransformationFactory:de.cau.cs.kieler.klighd.examples.ecore.EcoreFileDiagramSynthesis"
+            id="de.cau.cs.kieler.klighd.examples.EcoreFileDiagramSynthesis">
+      </transformation>
    </extension>
 
 </plugin>

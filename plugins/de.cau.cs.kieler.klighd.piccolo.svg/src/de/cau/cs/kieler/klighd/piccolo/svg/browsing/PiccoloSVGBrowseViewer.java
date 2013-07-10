@@ -11,7 +11,7 @@
  * This code is provided under the terms of the Eclipse Public License (EPL).
  * See the file epl-v10.html for the license text.
  */
-package de.cau.cs.kieler.klighd.piccolo.svg;
+package de.cau.cs.kieler.klighd.piccolo.svg.browsing;
 
 import java.awt.Graphics2D;
 import java.awt.event.InputEvent;
@@ -32,7 +32,6 @@ import com.google.common.collect.Iterables;
 import de.cau.cs.kieler.core.kgraph.KGraphElement;
 import de.cau.cs.kieler.core.kgraph.KNode;
 import de.cau.cs.kieler.klighd.piccolo.INodeSelectionListener;
-import de.cau.cs.kieler.klighd.piccolo.KlighdSWTGraphics;
 import de.cau.cs.kieler.klighd.piccolo.PMouseWheelZoomEventHandler;
 import de.cau.cs.kieler.klighd.piccolo.PSWTSimpleSelectionEventHandler;
 import de.cau.cs.kieler.klighd.piccolo.activities.ZoomActivity;
@@ -40,9 +39,8 @@ import de.cau.cs.kieler.klighd.piccolo.krendering.ITracingElement;
 import de.cau.cs.kieler.klighd.piccolo.krendering.controller.GraphController;
 import de.cau.cs.kieler.klighd.piccolo.krendering.viewer.KlighdKeyEventListener;
 import de.cau.cs.kieler.klighd.piccolo.krendering.viewer.KlighdMouseEventListener;
-import de.cau.cs.kieler.klighd.piccolo.krendering.viewer.PiccoloOutlinePage;
 import de.cau.cs.kieler.klighd.piccolo.nodes.PEmptyNode;
-import de.cau.cs.kieler.klighd.piccolo.svg.browsing.BrowsingSVGServer;
+import de.cau.cs.kieler.klighd.piccolo.svg.KlighdSVGGraphicsImpl;
 import de.cau.cs.kieler.klighd.util.RenderingContextData;
 import de.cau.cs.kieler.klighd.viewers.AbstractViewer;
 import de.cau.cs.kieler.klighd.viewers.ContextViewer;
@@ -61,17 +59,13 @@ import edu.umd.cs.piccolox.swt.PSWTCanvas;
  * 
  * @author mri
  */
-public class PiccoloSVGViewer extends AbstractViewer<KNode> implements INodeSelectionListener {
+public class PiccoloSVGBrowseViewer extends AbstractViewer<KNode> implements INodeSelectionListener {
 
     /** the canvas used for drawing. */
     private PSWTCanvas canvas;
     /** the current selection event handler. */
     private PSWTSimpleSelectionEventHandler selectionHandler = null;
-    /** the content outline page. */
-    private PiccoloOutlinePage outlinePage;
 
-    /** the parent viewer. */
-    private ContextViewer parentViewer;
     /** the graph controller. */
     private GraphController controller;
 
@@ -85,8 +79,8 @@ public class PiccoloSVGViewer extends AbstractViewer<KNode> implements INodeSele
      * @param parent
      *            the parent composite
      */
-    public PiccoloSVGViewer(final ContextViewer parentViewer, final Composite parent) {
-        this(parentViewer, parent, SWT.NONE);
+    public PiccoloSVGBrowseViewer(final Composite parent) {
+        this(parent, SWT.NONE);
     }
 
     /**
@@ -99,24 +93,17 @@ public class PiccoloSVGViewer extends AbstractViewer<KNode> implements INodeSele
      * @param style
      *            the style attributes
      */
-    public PiccoloSVGViewer(final ContextViewer theParentViewer, final Composite parent,
-            final int style) {
-        // if (parent.isDisposed()) {
-        // final String msg =
-        // "KLighD (piccolo): A 'PiccoloViewer' has been tried to attach to a"
-        // + "disposed 'Composite' widget.";
-        // throw new IllegalArgumentException(msg);
-        // }
-        this.parentViewer = theParentViewer;
+    public PiccoloSVGBrowseViewer(final Composite parent, final int style) {
+        if (parent.isDisposed()) {
+            final String msg =
+                    "KLighD (piccolo): A 'PiccoloViewer' has been tried to attach to a"
+                            + "disposed 'Composite' widget.";
+            throw new IllegalArgumentException(msg);
+        }
 
-        graphics = new KlighdSVGGraphicsImpl( parent.getDisplay());
-        
+        graphics = new KlighdSVGGraphicsImpl(parent.getDisplay());
+
         this.canvas = new PSWTCanvas(parent, style) {
-
-//             private KlighdSWTGraphics graphics = new KlighdSWTGraphicsImpl(null,
-//             parent.getDisplay());
-
-            // TODO
 
             @Override
             protected Graphics2D getGraphics2D(final GC gc, final Device device) {
@@ -152,48 +139,13 @@ public class PiccoloSVGViewer extends AbstractViewer<KNode> implements INodeSele
                     super.repaint();
                 }
 
-//                SVGServer.getInstance().setViewer(graphics, PiccoloSVGViewer.this);
-//                SVGServer.getInstance().broadcastSVG();
-                
-                // System.out.println("Repaint " + PiccoloSVGViewer.this);
-
-//                 System.out.println(bounds);
-                WorkspaceContributor.getWorkspaceStructure();
+                // update the svg
+                BrowsingSVGServer.getInstance().setViewer(PiccoloSVGBrowseViewer.this);
+                BrowsingSVGServer.getInstance().broadcastSVG();
             }
 
-            //
-            // /**
-            // * {@inheritDoc}
-            // */
-            // @Override
-            // public void redraw() {
-            // // TODO Auto-generated method stub
-            // super.redraw();
-            //
-            // SVGServer.getInstance().setViewer(graphics, PiccoloSVGViewer.this);
-            // SVGServer.getInstance().broadcastSVG();
-            // System.out.println("Redraw " + PiccoloSVGViewer.this);
-            // }
-
-            /**
-             * {@inheritDoc}
-             */
-            @Override
-            public void dispose() {
-            }
         };
 
-        // parent.addDisposeListener(new DisposeListener() {
-        //
-        // public void widgetDisposed(DisposeEvent e) {
-        // try {
-        // server.stop();
-        // } catch (Exception ex) {
-        // ex.printStackTrace();
-        // }
-        //
-        // }
-        // });
         // this reduces flickering drastically
         canvas.setDoubleBuffered(true);
 
@@ -245,13 +197,6 @@ public class PiccoloSVGViewer extends AbstractViewer<KNode> implements INodeSele
     /**
      * {@inheritDoc}
      */
-    public ContextViewer getContextViewer() {
-        return this.parentViewer;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     public void setModel(final KNode model, final boolean sync) {
         // remove the old selection handler
         if (selectionHandler != null) {
@@ -267,11 +212,6 @@ public class PiccoloSVGViewer extends AbstractViewer<KNode> implements INodeSele
         // create a controller for the graph
         controller = new GraphController(model, camera.getLayer(0), sync);
         controller.initialize();
-
-        // update the outline page
-        if (outlinePage != null) {
-            outlinePage.setContent(camera.getLayer(0));
-        }
 
         // add a node for the marquee
         PEmptyNode marqueeParent = new PEmptyNode();
@@ -294,17 +234,6 @@ public class PiccoloSVGViewer extends AbstractViewer<KNode> implements INodeSele
             return controller.getNode().getGraphElement();
         }
         return null;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public IContentOutlinePage getOutlinePage() {
-        if (outlinePage == null) {
-            outlinePage = new PiccoloOutlinePage();
-            outlinePage.setContent(canvas.getCamera().getLayer(0));
-        }
-        return outlinePage;
     }
 
     /**
@@ -530,6 +459,20 @@ public class PiccoloSVGViewer extends AbstractViewer<KNode> implements INodeSele
                         return element.getGraphElement();
                     }
                 }));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public ContextViewer getContextViewer() {
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public IContentOutlinePage getOutlinePage() {
+        return null;
     }
 
 }
