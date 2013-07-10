@@ -130,7 +130,7 @@ class EcoreDiagramSynthesis extends AbstractDiagramSynthesis<EModelElementCollec
                        depictedClasses.addAll(it.ESuperTypes)
                    ];
                 ];
-                
+
                 depictedClasses.createElementFigures(it);
 
                 // each of the above given ones is highlighted in a special fashion
@@ -141,12 +141,14 @@ class EcoreDiagramSynthesis extends AbstractDiagramSynthesis<EModelElementCollec
                 ];
                 
 	        } else { // (CLASS_FILTER.optionValue == ALL)
+	            // depict all classes within the package of the first class in choice
+
                 val chosenClasse = Lists::newArrayList(depictedClasses);
                 
-                // the package is revealed by means of the first class, all of the contained classifiers ... 
-                depictedClasses += depictedClasses.head.EPackage.EClassifiers => [classes |
+                depictedClasses?.head?.EPackage?.EClassifiers?:emptyList => [classes |
                     // ... are depicted (it denotes the root node introduced above in this case)
                     classes.createElementFigures(it)
+                    depictedClasses += classes;
                 ];
 
                 // each of the above given ones is highlighted in a special fashion
