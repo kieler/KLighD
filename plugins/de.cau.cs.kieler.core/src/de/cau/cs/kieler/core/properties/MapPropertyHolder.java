@@ -14,7 +14,6 @@
 package de.cau.cs.kieler.core.properties;
 
 import java.io.Serializable;
-import java.lang.reflect.Method;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -60,29 +59,10 @@ public class MapPropertyHolder implements IPropertyHolder, Serializable {
             }
         }
         
-        // Get the property's default value and clone it if it's a Cloneable.
-        // We need to use reflection for this to work properly (classes implementing Clonable are
-        // not required to make their clone() method public, so we need to check if they have such
-        // a method and invoke it via reflection, which results in ugly and unchecked type casting)
+        // Retrieve the default value and memorize it for our property
         T defaultValue = property.getDefault();
-        
-        if (defaultValue instanceof Cloneable) {
-            try {
-                Method cloneMethod = defaultValue.getClass().getMethod("clone");
-                @SuppressWarnings("unchecked")
-                T clonedDefaultValue = (T) cloneMethod.invoke(defaultValue);
-                
-                // Set the cloned value on the property holder
-                setProperty(property, clonedDefaultValue);
-                
-                return clonedDefaultValue;
-            } catch (Exception e) {
-                // Give up cloning and return the default instance
-                return defaultValue;
-            }
-        } else {
-            return defaultValue;
-        }
+        propertyMap.put(property, defaultValue);
+        return defaultValue;
     }
     
     /**
