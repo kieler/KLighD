@@ -43,12 +43,17 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
 import de.cau.cs.kieler.core.alg.BasicProgressMonitor;
+import de.cau.cs.kieler.core.kgraph.KGraphElement;
 import de.cau.cs.kieler.core.kgraph.KNode;
 import de.cau.cs.kieler.core.properties.MapPropertyHolder;
 import de.cau.cs.kieler.kiml.RecursiveGraphLayoutEngine;
+import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout;
+import de.cau.cs.kieler.kiml.ui.diagram.DiagramLayoutEngine;
+import de.cau.cs.kieler.kiml.ui.diagram.LayoutMapping;
 import de.cau.cs.kieler.klighd.LightDiagramServices;
 import de.cau.cs.kieler.klighd.ViewContext;
 import de.cau.cs.kieler.klighd.krendering.SimpleUpdateStrategy;
+import de.cau.cs.kieler.klighd.macrolayout.DiagramLayoutManager;
 import de.cau.cs.kieler.klighd.piccolo.svg.HtmlGenerator;
 
 public class BrowsingSVGServer extends Server {
@@ -180,7 +185,7 @@ public class BrowsingSVGServer extends Server {
                     viewer.getCanvas().redraw();
                 }
             });
-             broadcastSVG();
+            broadcastSVG();
         }
 
         /**
@@ -199,13 +204,13 @@ public class BrowsingSVGServer extends Server {
     public void broadcastSVG() {
 
         String data = viewer.getGraphics().getSVG();
-//        System.out.println("sending data " + this + " " + data.length());
+        // System.out.println("sending data " + this + " " + data.length());
 
         if (data.length() < 1000) {
             return;
         }
 
-//        System.out.println(data);
+        // System.out.println(data);
 
         for (SVGSendingWebSocket ws : broadcast) {
             try {
@@ -269,17 +274,29 @@ public class BrowsingSVGServer extends Server {
                         // LightDiagramServices.getInstance().layoutDiagram(ctx, false, true);
 
                         System.out.println(r.getContents().get(0));
-                        
+
                         final KNode o = LightDiagramServices.translateModel(r.getContents().get(0));
 
                         // System.out.println(o);
+                        viewer.getCanvas().setBounds(0, 0, 870, 600);
+                        
+                        viewer.setModel(o, true);
+                        
+                        // ViewContext ctx =
+                        // LightDiagramServices.getInstance().createViewContext(r.getContents().get(0));
+                        // LightDiagramServices.getInstance().layoutDiagram(ctx, false, false);
 
-                        new RecursiveGraphLayoutEngine().layout(o, new BasicProgressMonitor())  ;
+                        DiagramLayoutManager mng = new DiagramLayoutManager();
+                        LayoutMapping<KGraphElement> mapping = mng.buildLayoutGraph(null, o);
+                         mapping.setProperty(DiagramLayoutManager.VIEWER, viewer);
+                        DiagramLayoutEngine.INSTANCE.layout(mapping, new BasicProgressMonitor());
+//                        viewer.setRecording(true);
+                        mng.applyLayout(mapping, true, 0);
+//                        viewer.setRecording(false);
+                        
+                        // new RecursiveGraphLayoutEngine().layout(o, new BasicProgressMonitor()) ;
 
                         // viewer.getCanvas().setVisible(true);
-                        viewer.getCanvas().setBounds(0, 0, 600, 600);
-
-                        viewer.setModel(o);
                         viewer.zoomToFit(0);
                         viewer.globalRedraw();
 

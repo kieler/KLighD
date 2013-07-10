@@ -17,8 +17,11 @@ import java.awt.Graphics2D;
 import java.awt.event.InputEvent;
 
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.DisposeEvent;
+import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.graphics.Device;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.widgets.Composite;
@@ -32,7 +35,6 @@ import com.google.common.collect.Iterables;
 import de.cau.cs.kieler.core.kgraph.KGraphElement;
 import de.cau.cs.kieler.core.kgraph.KNode;
 import de.cau.cs.kieler.klighd.piccolo.INodeSelectionListener;
-import de.cau.cs.kieler.klighd.piccolo.KlighdSWTGraphics;
 import de.cau.cs.kieler.klighd.piccolo.PMouseWheelZoomEventHandler;
 import de.cau.cs.kieler.klighd.piccolo.PSWTSimpleSelectionEventHandler;
 import de.cau.cs.kieler.klighd.piccolo.activities.ZoomActivity;
@@ -42,7 +44,8 @@ import de.cau.cs.kieler.klighd.piccolo.krendering.viewer.KlighdKeyEventListener;
 import de.cau.cs.kieler.klighd.piccolo.krendering.viewer.KlighdMouseEventListener;
 import de.cau.cs.kieler.klighd.piccolo.krendering.viewer.PiccoloOutlinePage;
 import de.cau.cs.kieler.klighd.piccolo.nodes.PEmptyNode;
-import de.cau.cs.kieler.klighd.piccolo.svg.browsing.BrowsingSVGServer;
+import de.cau.cs.kieler.klighd.piccolo.ui.Messages;
+import de.cau.cs.kieler.klighd.piccolo.ui.SaveAsImageAction;
 import de.cau.cs.kieler.klighd.util.RenderingContextData;
 import de.cau.cs.kieler.klighd.viewers.AbstractViewer;
 import de.cau.cs.kieler.klighd.viewers.ContextViewer;
@@ -75,8 +78,6 @@ public class PiccoloSVGViewer extends AbstractViewer<KNode> implements INodeSele
     /** the graph controller. */
     private GraphController controller;
 
-    private KlighdSVGGraphicsImpl graphics;
-
     /**
      * Creates a Piccolo viewer with default style.
      * 
@@ -89,6 +90,8 @@ public class PiccoloSVGViewer extends AbstractViewer<KNode> implements INodeSele
         this(parentViewer, parent, SWT.NONE);
     }
 
+    SVGServer server;
+    
     /**
      * Creates a Piccolo viewer with given style.
      * 
@@ -101,22 +104,23 @@ public class PiccoloSVGViewer extends AbstractViewer<KNode> implements INodeSele
      */
     public PiccoloSVGViewer(final ContextViewer theParentViewer, final Composite parent,
             final int style) {
-        // if (parent.isDisposed()) {
-        // final String msg =
-        // "KLighD (piccolo): A 'PiccoloViewer' has been tried to attach to a"
-        // + "disposed 'Composite' widget.";
-        // throw new IllegalArgumentException(msg);
-        // }
+        if (parent.isDisposed()) {
+            final String msg =
+                    "KLighD (piccolo): A 'PiccoloViewer' has been tried to attach to a"
+                            + "disposed 'Composite' widget.";
+            throw new IllegalArgumentException(msg);
+        }
         this.parentViewer = theParentViewer;
 
-        graphics = new KlighdSVGGraphicsImpl( parent.getDisplay());
-        
         this.canvas = new PSWTCanvas(parent, style) {
 
-//             private KlighdSWTGraphics graphics = new KlighdSWTGraphicsImpl(null,
-//             parent.getDisplay());
+            // private KlighdSWTGraphics graphics = new KlighdSWTGraphicsImpl(null,
+            // parent.getDisplay());
 
             // TODO
+            private KlighdSVGGraphicsImpl graphics = new KlighdSVGGraphicsImpl(
+                     parent.getDisplay());
+            
 
             @Override
             protected Graphics2D getGraphics2D(final GC gc, final Device device) {
@@ -152,28 +156,30 @@ public class PiccoloSVGViewer extends AbstractViewer<KNode> implements INodeSele
                     super.repaint();
                 }
 
-//                SVGServer.getInstance().setViewer(graphics, PiccoloSVGViewer.this);
-//                SVGServer.getInstance().broadcastSVG();
-                
-                // System.out.println("Repaint " + PiccoloSVGViewer.this);
+                if (server == null) {
+                    startServer();
+                }
 
-//                 System.out.println(bounds);
-                WorkspaceContributor.getWorkspaceStructure();
+                // String s = ((KlighdSVGGraphicsImpl) graphics).getSVG();
+
+//                server.broadcastSVG();
+                server.broadcastTranslate(20, 20);
             }
-
-            //
-            // /**
-            // * {@inheritDoc}
-            // */
-            // @Override
-            // public void redraw() {
-            // // TODO Auto-generated method stub
-            // super.redraw();
-            //
-            // SVGServer.getInstance().setViewer(graphics, PiccoloSVGViewer.this);
-            // SVGServer.getInstance().broadcastSVG();
-            // System.out.println("Redraw " + PiccoloSVGViewer.this);
-            // }
+            
+            /**
+             * {@inheritDoc}
+             */
+            @Override
+            public void redraw() {
+                // TODO Auto-generated method stub
+                super.redraw();
+                if (server == null) {
+                    startServer();
+                }
+                server.broadcastSVG();
+                
+//                server.broadcastTranslate(20, 20);
+            }
 
             /**
              * {@inheritDoc}
@@ -181,21 +187,38 @@ public class PiccoloSVGViewer extends AbstractViewer<KNode> implements INodeSele
             @Override
             public void dispose() {
             }
+
+            private void startServer() {
+                int port = 8080;
+                server = new SVGServer(port, graphics, PiccoloSVGViewer.this);
+
+                new Thread("Jetty") {
+                    public void run() {
+                        try {
+                            server.start();
+                            server.join();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    };
+                }.start();
+
+            }
         };
 
-        // parent.addDisposeListener(new DisposeListener() {
-        //
-        // public void widgetDisposed(DisposeEvent e) {
-        // try {
-        // server.stop();
-        // } catch (Exception ex) {
-        // ex.printStackTrace();
-        // }
-        //
-        // }
-        // });
+        parent.addDisposeListener(new DisposeListener() {
+            
+            public void widgetDisposed(DisposeEvent e) {
+                try {
+                    server.stop();
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+                
+            }
+        });
         // this reduces flickering drastically
-        canvas.setDoubleBuffered(true);
+         canvas.setDoubleBuffered(true);
 
         // canvas.setDefaultRenderQuality(PPaintContext.LOW_QUALITY_RENDERING);
         // canvas.removeInputEventListener(canvas.getPanEventHandler());
@@ -209,14 +232,6 @@ public class PiccoloSVGViewer extends AbstractViewer<KNode> implements INodeSele
         addContextMenu(canvas);
     }
 
-    public void globalRedraw() {
-        canvas.redraw();
-    }
-
-    public KlighdSVGGraphicsImpl getGraphics() {
-        return this.graphics;
-    }
-
     /**
      * Creates the context menu and adds the actions.
      * 
@@ -226,9 +241,9 @@ public class PiccoloSVGViewer extends AbstractViewer<KNode> implements INodeSele
     private void addContextMenu(final Composite composite) {
         MenuManager menuManager = new MenuManager();
         // add the 'save-as-image' action
-        // Action saveAsImageAction =
-        // new SaveAsImageAction(this, Messages.PiccoloViewer_save_as_image_text);
-        // menuManager.add(saveAsImageAction);
+//         Action saveAsImageAction =
+//         new SaveAsImageAction(this,"save as");
+//         menuManager.add(saveAsImageAction);
 
         // create the context menu
         Menu menu = menuManager.createContextMenu(composite);

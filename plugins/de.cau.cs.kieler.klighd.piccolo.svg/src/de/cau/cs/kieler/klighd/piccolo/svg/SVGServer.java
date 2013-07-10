@@ -20,40 +20,19 @@ package de.cau.cs.kieler.klighd.piccolo.svg;
 import java.io.IOException;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
-import org.eclipse.core.resources.IResource;
-import org.eclipse.core.resources.IWorkspaceRoot;
-import org.eclipse.core.resources.ResourcesPlugin;
-import org.eclipse.emf.common.util.URI;
-import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.emf.ecore.resource.ResourceSet;
-import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
-import org.eclipse.jetty.server.Request;
 import org.eclipse.jetty.server.Server;
-import org.eclipse.jetty.server.handler.AbstractHandler;
-import org.eclipse.jetty.server.handler.HandlerList;
 import org.eclipse.jetty.server.handler.ResourceHandler;
 import org.eclipse.jetty.server.nio.SelectChannelConnector;
+import org.eclipse.jetty.util.ajax.JSON;
 import org.eclipse.jetty.websocket.WebSocket;
 import org.eclipse.jetty.websocket.WebSocketHandler;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Shell;
 
-import de.cau.cs.kieler.core.alg.BasicProgressMonitor;
-import de.cau.cs.kieler.core.kgraph.KNode;
-import de.cau.cs.kieler.kiml.RecursiveGraphLayoutEngine;
-import de.cau.cs.kieler.klighd.LightDiagramServices;
-import de.cau.cs.kieler.klighd.ViewContext;
+import de.cau.cs.kieler.klighd.IViewer;
 
 public class SVGServer extends Server {
-
-    private static SVGServer INSTANCE;
-    private static final int PORT = 8080;
 
     private boolean verbose;
 
@@ -62,7 +41,10 @@ public class SVGServer extends Server {
     private KlighdSVGGraphicsImpl svgGenerator;
     private PiccoloSVGViewer viewer;
 
-    public SVGServer(int port) {
+    public SVGServer(int port, KlighdSVGGraphicsImpl theSvgGenerator, PiccoloSVGViewer viewer) {
+        svgGenerator = theSvgGenerator;
+        this.viewer = viewer;
+
         SelectChannelConnector connector = new SelectChannelConnector();
         connector.setPort(port);
         addConnector(connector);
@@ -76,51 +58,15 @@ public class SVGServer extends Server {
                 return ws;
             }
         };
-        WorkspaceContentHandler wcHandler = new WorkspaceContentHandler();
+        setHandler(wsHandler);
 
         ResourceHandler rHandler = new ResourceHandler();
         rHandler.setDirectoriesListed(true);
-        // rHandler.setResourceBase("html");
-        rHandler.setResourceBase("E:/Uni/ma/pragmatics/plugins/de.cau.cs.kieler.klighd.piccolo.svg/html");
-        System.out.println(rHandler.getBaseResource().getURI());
+        rHandler.setResourceBase("svg/");
         wsHandler.setHandler(rHandler);
-
-        HandlerList hlist = new HandlerList();
-        hlist.addHandler(wcHandler);
-        hlist.addHandler(wsHandler);
-        hlist.addHandler(rHandler);
-
-        setHandler(hlist);
 
         verbose = true;
 
-    }
-
-    public static SVGServer getInstance() {
-        if (INSTANCE == null) {
-            INSTANCE = new SVGServer(PORT);
-            startServer();
-        }
-        return INSTANCE;
-    }
-
-    private static void startServer() {
-        new Thread("Jetty") {
-            public void run() {
-                try {
-                    INSTANCE.start();
-                    INSTANCE.join();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            };
-        }.start();
-
-    }
-
-    public void setViewer(KlighdSVGGraphicsImpl theSvgGenerator, PiccoloSVGViewer viewer) {
-        svgGenerator = theSvgGenerator;
-        this.viewer = viewer;
     }
 
     class SVGSendingWebSocket implements WebSocket, WebSocket.OnTextMessage {
@@ -158,14 +104,14 @@ public class SVGServer extends Server {
             int x = Integer.valueOf(data.substring(5, data.indexOf(',')));
             int y =
                     Integer.valueOf(data.substring(data.lastIndexOf(':') + 1, data.lastIndexOf('}')));
-            System.out.println(x + " " + y);
+            System.out.println(x +" " +y);
             viewer.getCanvas().getCamera().translateView(-x, -y);
-
+            
             Display.getDefault().syncExec(new Runnable() {
-
+                
                 public void run() {
                     viewer.getCanvas().getCamera().invalidatePaint();
-                    viewer.getCanvas().redraw();
+                    viewer.getCanvas().redraw();     
                 }
             });
             // broadcastSVG();
@@ -184,16 +130,28 @@ public class SVGServer extends Server {
 
     }
 
+    public void broadcastTranslate(int x, int y) {
+        
+        String translate = "{ \"x\": \"" + x + "\", \"y\": \"" +y +"\" }";
+        
+        for (SVGSendingWebSocket ws : broadcast) {
+            try {
+                ws.getConnection().sendMessage(translate);
+            } catch (IOException e) {
+                broadcast.remove(ws);
+                e.printStackTrace();
+            }
+        }
+    }
+    
     public void broadcastSVG() {
 
         String data = svgGenerator.getSVG();
-        // System.out.println("sending data " + this + " " + data.length());
-
+        // System.out.println("sending data " + data.length());
+        
         if (data.length() < 1000) {
             return;
         }
-
-//        System.out.println(data);
 
         for (SVGSendingWebSocket ws : broadcast) {
             try {
@@ -203,82 +161,6 @@ public class SVGServer extends Server {
                 e.printStackTrace();
             }
         }
-    }
-
-    class WorkspaceContentHandler extends AbstractHandler {
-        /**
-         * {@inheritDoc}
-         */
-        public void handle(String target, Request baseRequest, HttpServletRequest request,
-                HttpServletResponse response) throws IOException, ServletException {
-            System.out.println(target + " " + request);
-
-            IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
-            if (target.startsWith("/content")) {
-
-                String html = new HtmlGenerator().toHtmlRoot(root);
-
-                response.setContentType("text/html;charset=utf8");
-                response.setStatus(HttpServletResponse.SC_OK);
-                baseRequest.setHandled(true);
-                response.getWriter().println(html);
-            } else if (target.startsWith("/resource")) {
-
-                String path = target.replace("/resource", "");
-                IResource res = root.findMember(path);
-
-                response.setContentType("text/html;charset=utf8");
-                response.setStatus(HttpServletResponse.SC_OK);
-                baseRequest.setHandled(true);
-                response.getWriter().println(res);
-
-                ResourceSet rs = new ResourceSetImpl();
-                final Resource r =
-                        rs.getResource(
-                                URI.createPlatformResourceURI(res.getFullPath().toString(), false),
-                                true);
-
-                final Object model = r.getContents().get(0);
-
-                Display.getDefault().asyncExec(new Runnable() {
-
-                    public void run() {
-                        shell.open();
-                        
-                        
-//                        final ViewContext ctx =
-//                                LightDiagramServices.getInstance().createViewContext(model);
-                         
-//                        viewer.setModel((KNode) ctx.getViewModel());
-
-                        final KNode o = LightDiagramServices.translateModel(r.getContents().get(0));
-                        
-                        System.out.println(o);
-
-                        new RecursiveGraphLayoutEngine().layout(o, new BasicProgressMonitor());
-                        
-                        
-                        viewer.getCanvas().setVisible(true);
-                        viewer.getCanvas().setBounds(0, 0, 600, 600);
-                        viewer.setModel(o);
-                        viewer.globalRedraw();
-                        
-//                        c.redraw();
-//                        shell.setVisible(false);
-                        
-//                        LightDiagramServices.getInstance().layoutDiagram(ctx, true, true);
-                        WorkspaceContributor.getWorkspaceStructure();
-                        
-                    }
-                });
-
-            }
-
-        }
-        
-        private Shell shell = new Shell();
-       private  PiccoloSVGViewer viewer = new PiccoloSVGViewer(null, shell);
-        
     }
 
 }

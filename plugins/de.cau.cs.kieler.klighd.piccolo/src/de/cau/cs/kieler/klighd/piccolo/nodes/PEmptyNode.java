@@ -31,7 +31,7 @@ public class PEmptyNode extends PNode {
     @Override
     protected void paint(final PPaintContext paintContext) {
         // do nothing
-        paintContext.getGraphics().setColor(new Color(255,0,0,100));
+//        paintContext.getGraphics().setColor(new Color(255,0,0,100));
     }
     
 }

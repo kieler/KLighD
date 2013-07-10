@@ -1,11 +1,9 @@
 package de.cau.cs.kieler.klighd.piccolo.svg
 
-import org.eclipse.core.resources.IWorkspaceRoot
-import org.eclipse.core.resources.IProject
-import org.eclipse.core.resources.IWorkspaceRoot
-import org.eclipse.core.resources.IFile
 import org.eclipse.core.resources.IContainer
+import org.eclipse.core.resources.IFile
 import org.eclipse.core.resources.IResource
+import org.eclipse.core.resources.IWorkspaceRoot
 
 class HtmlGenerator {
     
@@ -15,10 +13,10 @@ class HtmlGenerator {
         this.root = root
         
         val html = root.projects.map [ project |
-           "<li>" + project.name + "<ul>" + toHtml(project) + "</ul></li>" 
+            toHtml(project) 
         ].join("\n")
         
-        "<ul>" + html + "</ul>"
+        "<ul id='tree'>" + html + "</ul>"
     }
     
     
@@ -26,19 +24,22 @@ class HtmlGenerator {
      * IProject is a container
      */
     def dispatch String toHtml(IContainer container) {
-                
-        var html = container.members.map [ cont |
-            "<li><a href='#' class='container' data-path='"+ cont.fullPath + "'>" + cont.name + "</a></li>"
+            
+        var String html = "<li><a href='#' class='folder' data-path='"+ container.fullPath + "'>" + container.name + "</a>" 
+           
+        html = html + "<ul>" + container.members.map [ cont |
+            toHtml(cont)
         ].join("\n")
-              
+        html = html + "</ul></li>";
+
         html
     }
     
     def dispatch String toHtml(IFile file) {
         
-        println("IFILE: " + file)
-        
-        ""
+        val html = "<li><a href='#' class='file' data-path='"+ file.fullPath + "'>" + file.name + "</a></li>"
+              
+        html
     }
     
     def dispatch String toHtml(IResource r) {

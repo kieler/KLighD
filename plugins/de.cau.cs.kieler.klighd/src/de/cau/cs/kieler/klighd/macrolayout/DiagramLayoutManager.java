@@ -542,7 +542,7 @@ public class DiagramLayoutManager implements IDiagramLayoutManager<KGraphElement
 
         // apply the layout
         if (viewer != null) {
-            viewer.setRecording(true);
+            viewer.setRecording(true); 
             applyLayout(mapping);
             viewer.setZoomToFit(zoomToFit);
             viewer.setRecording(false);

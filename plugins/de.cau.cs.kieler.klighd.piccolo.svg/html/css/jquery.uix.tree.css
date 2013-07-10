@@ -1,0 +1,65 @@
+
+.uix-tree,
+.uix-tree .uix-tree-node,
+.uix-tree .uix-tree-leaf {
+    margin: 0;
+    display: block;
+    outline: none;
+}
+
+.uix-tree {
+    padding: 2px;
+}
+
+.uix-tree, .uix-tree ul {
+    list-style: none;
+}
+
+.uix-tree .uix-tree-node,
+.uix-tree .uix-tree-leaf {
+    padding: 0;
+}
+
+.uix-tree,
+.uix-tree .uix-tree-node ul {
+    padding-left: 20px;
+    margin: 0;
+}
+
+.uix-tree li {
+    position: relative;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+}
+
+.uix-tree li span.uix-tree-node-handle {
+    cursor: pointer;
+    position: absolute;
+    top: 1px;
+    left: -18px;
+}
+.uix-tree li a span.ui-icon {
+    position: absolute;
+    top: 1px;
+    left: 2px;
+
+}
+
+.uix-tree li a {
+    text-decoration: none;
+    display: inline-block;
+    padding: 2px .4em;
+    line-height: 1.5;
+    min-height: 0;
+    font-weight: normal;
+    white-space: nowrap;
+}
+
+.uix-tree li a.ui-state-focus,
+.uix-tree li a.ui-state-highlight,
+.uix-tree li a.ui-state-hover,
+.uix-tree li a.ui-state-active {
+    font-weight: normal;
+    margin: -1px;
+}

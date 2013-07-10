@@ -84,7 +84,8 @@ public class KlighdSVGGraphicsImpl extends KlighdSWTGraphicsImpl implements Klig
         this.graphics = new SVGGraphics2D(document);
         graphics.setColor(Color.WHITE);
         graphics.setBackground(Color.WHITE);
-
+        graphics.setPaint(Color.white);
+        
     }
 
     public String getSVG() {
@@ -215,8 +216,11 @@ public class KlighdSVGGraphicsImpl extends KlighdSWTGraphicsImpl implements Klig
     @Override
     public void setBackground(RGB backgroundColor) {
         super.setBackground(backgroundColor);
-        
         graphics.setBackground(rgb2Color(backgroundColor));
+        
+        // FIXME why?? It seems, that batik ignores the background color.
+        setColor(backgroundColor);
+        
     }
 
     /**
@@ -384,7 +388,6 @@ public class KlighdSVGGraphicsImpl extends KlighdSWTGraphicsImpl implements Klig
     @Override
     public void draw(Shape s) {
         super.draw(s);
-        
         graphics.draw(s);
     }
 
@@ -393,8 +396,20 @@ public class KlighdSVGGraphicsImpl extends KlighdSWTGraphicsImpl implements Klig
      */
     @Override
     public void fill(Shape s) {
-        super.fill(s);
         
+        if(s instanceof Rectangle2D) {
+//            System.out.println(super.getColor() + " " + super.getAlpha() + " "  + s);
+//            System.out.println(graphics.getColor() + " " + graphics.getColor().getAlpha() + " "  + s);
+//            System.out.println();
+//            setColor(Color.WHITE);
+            
+            if(((Rectangle2D) s).getHeight()==39 || ((Rectangle2D) s).getHeight()==35){
+                //return;
+            }
+        }
+        
+        
+        super.fill(s);
         graphics.fill(s);
     }
 
@@ -520,6 +535,7 @@ public class KlighdSVGGraphicsImpl extends KlighdSWTGraphicsImpl implements Klig
      */
     @Override
     public void setBackground(Color color) {
+        super.setBackground(color);
         graphics.setBackground(color);
     }
 
@@ -567,7 +583,8 @@ public class KlighdSVGGraphicsImpl extends KlighdSWTGraphicsImpl implements Klig
     public void translate(int x, int y) {
         super.translate(x, y);
         
-        graphics.translate(x, y);
+        // FIXME different translation ?!
+        graphics.translate(x-20, y+20);
     }
 
     /**
