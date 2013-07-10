@@ -69,8 +69,6 @@ import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout;
 @SuppressWarnings("restriction")
 public class KGraphSemanticSequencer extends AbstractKGraphSemanticSequencer {
     
-    private static final KRenderingPackage krenderingPackage = KRenderingPackage.eINSTANCE;
-    
     @Inject
     private KGraphGrammarAccess grammarAccess;
     
@@ -515,7 +513,12 @@ public class KGraphSemanticSequencer extends AbstractKGraphSemanticSequencer {
 
     // --------------------------------------------------------------------------------------- //
     // KRendering-specific rules
+
+    private static final KRenderingPackage KRENDERING_PACKAGE = KRenderingPackage.eINSTANCE;
     
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected void sequence_KPolyline(final EObject context, final KPolyline polyline) {
         INodesForEObjectProvider nodesProvider = createNodeProvider(polyline);
@@ -525,7 +528,7 @@ public class KGraphSemanticSequencer extends AbstractKGraphSemanticSequencer {
         if (polyline instanceof KRoundedBendsPolyline) {
             KRoundedBendsPolyline rbp = (KRoundedBendsPolyline) polyline;
             
-            if (rbp.eIsSet(krenderingPackage.getKRoundedBendsPolyline_BendRadius())) {
+            if (rbp.eIsSet(KRENDERING_PACKAGE.getKRoundedBendsPolyline_BendRadius())) {
                 feeder.accept(grammarAccess.getKRoundedBendsPolylineAccess()
                         .getBendRadiusFloatParserRuleCall_2_1_0(), rbp.getBendRadius());
             }
@@ -563,17 +566,17 @@ public class KGraphSemanticSequencer extends AbstractKGraphSemanticSequencer {
             feeder.accept(polylineAccess.getActionsKActionParserRuleCall_3_1_2_2_0(), entry, i++);
         }
 
-        if (polyline.eIsSet(krenderingPackage.getKRendering_PlacementData())) {
+        if (polyline.eIsSet(KRENDERING_PACKAGE.getKRendering_PlacementData())) {
             feeder.accept(polylineAccess.getPlacementDataKPlacementDataParserRuleCall_3_1_3_0(),
                     polyline.getPlacementData());
         }
 
-        if (polyline.eIsSet(krenderingPackage.getKContainerRendering_ChildPlacement())) {
+        if (polyline.eIsSet(KRENDERING_PACKAGE.getKContainerRendering_ChildPlacement())) {
             feeder.accept(polylineAccess.getChildPlacementKPlacementParserRuleCall_3_1_4_0(),
                     polyline.getChildPlacement());
         }
 
-        if (polyline.eIsSet(krenderingPackage.getKPolyline_JointPointRendering())) {
+        if (polyline.eIsSet(KRENDERING_PACKAGE.getKPolyline_JointPointRendering())) {
             feeder.accept(polylineAccess.getJointPointRenderingKRenderingParserRuleCall_3_2_1_0(),
                     polyline.getJointPointRendering());
         }
@@ -586,21 +589,34 @@ public class KGraphSemanticSequencer extends AbstractKGraphSemanticSequencer {
         feeder.finish();
     }
     
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected void sequence_KSimplePolyline(final EObject context, final KPolyline polyline) {
         sequence_KPolyline(context, polyline);
     }
     
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected void sequence_KPolygon(final EObject context, final KPolygon polyline) {
         sequence_KPolyline(context, polyline);
     }
     
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    protected void sequence_KRoundedBendsPolyline(final EObject context, final KRoundedBendsPolyline polyline) {
+    protected void sequence_KRoundedBendsPolyline(final EObject context,
+            final KRoundedBendsPolyline polyline) {
         sequence_KPolyline(context, polyline);
     }
     
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected void sequence_KSpline(final EObject context, final KSpline polyline) {
         sequence_KPolyline(context, polyline);
@@ -610,43 +626,51 @@ public class KGraphSemanticSequencer extends AbstractKGraphSemanticSequencer {
     // --------------------------------------------------------------------------------------- //
     // KRendering-specific rules
     
-    // The following rule is required due to the bug documented in
-    //  https://bugs.eclipse.org/bugs/show_bug.cgi?id=412578#c0
-    // This basically requires a custom sequence_ method for all styles.
-    // We, however, restrict to KFontBold, KFontItalic, and KInvisibility
-    //  as 'true' is the default of their attribute fields, other style instances
-    //  are used to have an attribute different from the related default value.
+    /**
+     * {@inheritDoc}
+     * The following rule is required due to the bug documented in
+     *     https://bugs.eclipse.org/bugs/show_bug.cgi?id=412578#c0
+     * This basically requires a custom sequence_ method for all styles.
+     * We, however, restrict to KFontBold, KFontItalic, and KInvisibility
+     * as 'true' is the default of their attribute fields, other style instances
+     * are used to have an attribute different from the related default value.
+     */
     @Override
-    protected void sequence_KInvisibility_KStyle(final EObject context, final KInvisibility invisibility) {
+    protected void sequence_KInvisibility_KStyle(final EObject context,
+            final KInvisibility invisibility) {
         SequenceFeeder feeder = createSequencerFeeder(invisibility,
                 createNodeProvider(invisibility));
         KInvisibilityElements invisibilityAccess = grammarAccess.getKInvisibilityAccess();
 
-        if (invisibility.eIsSet(krenderingPackage.getKStyle_PropagateToChildren())) {
+        if (invisibility.eIsSet(KRENDERING_PACKAGE.getKStyle_PropagateToChildren())) {
             feeder.accept(invisibilityAccess.getPropagateToChildrenPropagateKeyword_0_0());
         }
         
-        feeder.accept(invisibilityAccess.getInvisibleBOOLEANTerminalRuleCall_3_0(), invisibility.isInvisible());
+        feeder.accept(invisibilityAccess.getInvisibleBOOLEANTerminalRuleCall_3_0(),
+                invisibility.isInvisible());
         
-        if (invisibility.eIsSet(krenderingPackage.getKStyle_ModifierId())) {
+        if (invisibility.eIsSet(KRENDERING_PACKAGE.getKStyle_ModifierId())) {
             feeder.accept(grammarAccess.getKStyleAccess()
                     .getModifierIdQualifiedIDParserRuleCall_1_1_0(), invisibility.getModifierId());
         }
         feeder.finish();
     }
     
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected void sequence_KFontBold_KStyle(final EObject context, final KFontBold fontBold) {
         SequenceFeeder feeder = createSequencerFeeder(fontBold, createNodeProvider(fontBold));
         KFontBoldElements fontBoldAccess = grammarAccess.getKFontBoldAccess();
 
-        if (fontBold.eIsSet(krenderingPackage.getKStyle_PropagateToChildren())) {
+        if (fontBold.eIsSet(KRENDERING_PACKAGE.getKStyle_PropagateToChildren())) {
             feeder.accept(fontBoldAccess.getPropagateToChildrenPropagateKeyword_0_0());
         }
         
         feeder.accept(fontBoldAccess.getBoldBOOLEANTerminalRuleCall_3_0(), fontBold.isBold());
         
-        if (fontBold.eIsSet(krenderingPackage.getKStyle_ModifierId())) {
+        if (fontBold.eIsSet(KRENDERING_PACKAGE.getKStyle_ModifierId())) {
             feeder.accept(grammarAccess.getKStyleAccess()
                     .getModifierIdQualifiedIDParserRuleCall_1_1_0(), fontBold.getModifierId());
         }
@@ -654,18 +678,21 @@ public class KGraphSemanticSequencer extends AbstractKGraphSemanticSequencer {
         feeder.finish();
     }
     
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected void sequence_KFontItalic_KStyle(final EObject context, final KFontItalic fontItalic) {
         SequenceFeeder feeder = createSequencerFeeder(fontItalic, createNodeProvider(fontItalic));
         KFontItalicElements fontItalicAccess = grammarAccess.getKFontItalicAccess();
 
-        if (fontItalic.eIsSet(krenderingPackage.getKStyle_PropagateToChildren())) {
+        if (fontItalic.eIsSet(KRENDERING_PACKAGE.getKStyle_PropagateToChildren())) {
             feeder.accept(fontItalicAccess.getPropagateToChildrenPropagateKeyword_0_0());
         }
         
         feeder.accept(fontItalicAccess.getItalicBOOLEANTerminalRuleCall_3_0(), fontItalic.isItalic());
         
-        if (fontItalic.eIsSet(krenderingPackage.getKStyle_ModifierId())) {
+        if (fontItalic.eIsSet(KRENDERING_PACKAGE.getKStyle_ModifierId())) {
             feeder.accept(grammarAccess.getKStyleAccess()
                     .getModifierIdQualifiedIDParserRuleCall_1_1_0(), fontItalic.getModifierId());
         }
@@ -674,4 +701,3 @@ public class KGraphSemanticSequencer extends AbstractKGraphSemanticSequencer {
     }
     
 }
-
