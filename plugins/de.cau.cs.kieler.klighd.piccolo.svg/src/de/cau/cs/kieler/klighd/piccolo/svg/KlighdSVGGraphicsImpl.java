@@ -16,21 +16,12 @@ package de.cau.cs.kieler.klighd.piccolo.svg;
 import java.awt.Color;
 import java.awt.Composite;
 import java.awt.Font;
-import java.awt.FontMetrics;
 import java.awt.GradientPaint;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.GraphicsConfiguration;
 import java.awt.Image;
-import java.awt.Paint;
 import java.awt.Polygon;
-import java.awt.Rectangle;
-import java.awt.RenderingHints;
 import java.awt.RenderingHints.Key;
 import java.awt.Shape;
-import java.awt.Stroke;
-import java.awt.font.FontRenderContext;
-import java.awt.font.GlyphVector;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
@@ -39,8 +30,13 @@ import java.awt.image.ImageObserver;
 import java.awt.image.RenderedImage;
 import java.awt.image.renderable.RenderableImage;
 import java.io.StringWriter;
-import java.text.AttributedCharacterIterator;
 import java.util.Map;
+
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 
 import org.apache.batik.dom.GenericDOMImplementation;
 import org.apache.batik.svggen.SVGGraphics2D;
@@ -52,11 +48,12 @@ import org.eclipse.swt.graphics.LineAttributes;
 import org.eclipse.swt.graphics.RGB;
 import org.w3c.dom.DOMImplementation;
 import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 
 import de.cau.cs.kieler.klighd.piccolo.KlighdSWTGraphics;
 import de.cau.cs.kieler.klighd.piccolo.KlighdSWTGraphicsImpl;
 import de.cau.cs.kieler.klighd.piccolo.util.RGBGradient;
-import edu.umd.cs.piccolox.swt.SWTGraphics2D;
 
 /**
  * @author uru
@@ -65,27 +62,42 @@ import edu.umd.cs.piccolox.swt.SWTGraphics2D;
 public class KlighdSVGGraphicsImpl extends KlighdSWTGraphicsImpl implements KlighdSWTGraphics {
 
     private SVGGraphics2D graphics;
-    //private KlighdSWTGraphicsImpl origGraphics;
+    private Document document;
+
+    // private KlighdSWTGraphicsImpl origGraphics;
 
     /**
      * 
      */
     public KlighdSVGGraphicsImpl(Device d) {
         super(null, d);
-        //origGraphics = og;
+        // origGraphics = og;
         // Get a DOMImplementation.
         DOMImplementation domImpl = GenericDOMImplementation.getDOMImplementation();
 
         // Create an instance of org.w3c.dom.Document.
         String svgNS = "http://www.w3.org/2000/svg";
-        Document document = domImpl.createDocument(svgNS, "svg", null);
-
+        document = domImpl.createDocument(svgNS, "svg", null);
         // Create an instance of the SVG Generator.
         this.graphics = new SVGGraphics2D(document);
         graphics.setColor(Color.WHITE);
         graphics.setBackground(Color.WHITE);
         graphics.setPaint(Color.white);
-        
+
+    }
+
+    /**
+     * @return the graphics
+     */
+    public SVGGraphics2D getSVGGraphics() {
+        return graphics;
+    }
+
+    /**
+     * @return the document
+     */
+    public Document getDocument() {
+        return document;
     }
 
     public String getSVG() {
@@ -93,9 +105,30 @@ public class KlighdSVGGraphicsImpl extends KlighdSWTGraphicsImpl implements Klig
         try {
             graphics.stream(sw, true);
 
-            // System.out.println(sw.toString());
+//             FIXME otherwise ids are not generated
+//             TransformerFactory transfac = TransformerFactory.newInstance();
+//             Transformer trans = transfac.newTransformer();
+//             trans.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
+//             trans.setOutputProperty(OutputKeys.INDENT, "yes");
+//            
+//             //create string from xml tree
+//             // StringWriter sw = new StringWriter();
+//             sw = new StringWriter();
+//             StreamResult result = new StreamResult(sw);
+//            
+//             Node parent = graphics.getRoot();
+//             while(parent.getParentNode() != null) {
+//             parent = parent.getParentNode();
+//            
+//             }
+//            
+//             DOMSource source = new DOMSource(parent);
+//             trans.transform(source, result);
+//             String xmlString = sw.toString();
 
-        } catch (SVGGraphics2DIOException e) {
+//             System.out.println(sw.toString());
+
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return sw.toString();
@@ -137,7 +170,7 @@ public class KlighdSVGGraphicsImpl extends KlighdSWTGraphicsImpl implements Klig
     @Override
     public LineAttributes getLineAttributes() {
         // TODO Auto-generated method stub
-        //unsupported();
+        // unsupported();
         return super.getLineAttributes();
     }
 
@@ -147,7 +180,7 @@ public class KlighdSVGGraphicsImpl extends KlighdSWTGraphicsImpl implements Klig
     @Override
     public void setLineAttributes(LineAttributes attributes) {
         // TODO Auto-generated method stub
-        //unsupported();
+        // unsupported();
         super.setLineAttributes(attributes);
     }
 
@@ -157,11 +190,11 @@ public class KlighdSVGGraphicsImpl extends KlighdSWTGraphicsImpl implements Klig
     @Override
     public float getLineWidth() {
         return super.getLineWidth();
-        //return strokeWidth;
+        // return strokeWidth;
     }
 
     private int strokeWidth = 0;
-    
+
     /**
      * {@inheritDoc}
      */
@@ -184,7 +217,7 @@ public class KlighdSVGGraphicsImpl extends KlighdSWTGraphicsImpl implements Klig
     @Override
     public void setAlpha(int alpha) {
         super.setAlpha(alpha);
-        
+
         Color c = graphics.getColor();
         Color c2 = new Color(c.getRed(), c.getGreen(), c.getBlue(), alpha);
         graphics.setColor(c2);
@@ -196,7 +229,7 @@ public class KlighdSVGGraphicsImpl extends KlighdSWTGraphicsImpl implements Klig
     @Override
     public void setColor(RGB color) {
         super.setColor(color);
-        
+
         graphics.setColor(rgb2Color(color));
     }
 
@@ -206,7 +239,7 @@ public class KlighdSVGGraphicsImpl extends KlighdSWTGraphicsImpl implements Klig
     @Override
     public void setPattern(RGBGradient gradient, Rectangle2D bounds) {
         super.setPattern(gradient, bounds);
-        
+
         graphics.setPaint(rgb2Pattern(gradient, bounds));
     }
 
@@ -217,10 +250,10 @@ public class KlighdSVGGraphicsImpl extends KlighdSWTGraphicsImpl implements Klig
     public void setBackground(RGB backgroundColor) {
         super.setBackground(backgroundColor);
         graphics.setBackground(rgb2Color(backgroundColor));
-        
+
         // FIXME why?? It seems, that batik ignores the background color.
         setColor(backgroundColor);
-        
+
     }
 
     /**
@@ -229,7 +262,7 @@ public class KlighdSVGGraphicsImpl extends KlighdSWTGraphicsImpl implements Klig
     @Override
     public void setBackgroundPattern(RGBGradient backgroundGradient, Rectangle2D bounds) {
         super.setBackgroundPattern(backgroundGradient, bounds);
-        
+
         graphics.setPaint(rgb2Pattern(backgroundGradient, bounds));
     }
 
@@ -247,7 +280,7 @@ public class KlighdSVGGraphicsImpl extends KlighdSWTGraphicsImpl implements Klig
     @Override
     public void transform(AffineTransform transform) {
         super.transform(transform);
-        
+
         graphics.transform(transform);
     }
 
@@ -257,130 +290,129 @@ public class KlighdSVGGraphicsImpl extends KlighdSWTGraphicsImpl implements Klig
     @Override
     public void setTransform(AffineTransform transform) {
         super.setTransform(transform);
-        
+
         graphics.setTransform(transform);
     }
-    
-    
+
     /**
      * {@inheritDoc}
      */
     @Override
     public void drawText(String str, double x, double y) {
         super.drawText(str, x, y);
-        
+
         graphics.drawString(str, (float) x, (float) y);
     }
 
-//    /**
-//     * {@inheritDoc}
-//     */
-//    @Override
-//    public void drawRect(double x, double y, double width, double height) {
-//        graphics.drawRect((int) x, (int) y, (int) width, (int) height);
-//    }
-//
-//    /**
-//     * {@inheritDoc}
-//     */
-//    @Override
-//    public void fillRect(double x, double y, double width, double height) {
-//        graphics.fillRect((int) x, (int) y, (int) width, (int) height);
-//    }
-//
-//    /**
-//     * {@inheritDoc}
-//     */
-//    @Override
-//    public void drawOval(double x, double y, double width, double height) {
-//        graphics.drawOval((int) x, (int) y, (int) width, (int) height);
-//    }
-//
-//    /**
-//     * {@inheritDoc}
-//     */
-//    @Override
-//    public void fillOval(double x, double y, double width, double height) {
-//        graphics.fillOval((int) x, (int) y, (int) width, (int) height);
-//    }
-//
-//    /**
-//     * {@inheritDoc}
-//     */
-//    @Override
-//    public void drawArc(double x, double y, double width, double height, double startAngle,
-//            double extent) {
-//        graphics.drawArc((int) x, (int) y, (int) width, (int) height, (int) startAngle,
-//                (int) extent);
-//    }
-//
-//    /**
-//     * {@inheritDoc}
-//     */
-//    @Override
-//    public void fillArc(double x, double y, double width, double height, double startAngle,
-//            double extent) {
-//        graphics.fillArc((int) x, (int) y, (int) width, (int) height, (int) startAngle,
-//                (int) extent);
-//    }
-//
-//    /**
-//     * {@inheritDoc}
-//     */
-//    @Override
-//    public void drawRoundRect(double x, double y, double width, double height, double arcWidth,
-//            double arcHeight) {
-//        graphics.drawRect((int) x, (int) y, (int) width, (int) height);
-//    }
-//
-//    /**
-//     * {@inheritDoc}
-//     */
-//    @Override
-//    public void fillRoundRect(double x, double y, double width, double height, double arcWidth,
-//            double arcHeight) {
-//        graphics.fillRoundRect((int) x, (int) y, (int) width, (int) height, (int) arcWidth,
-//                (int) arcHeight);
-//    }
-//
-//    /**
-//     * {@inheritDoc}
-//     */
-//    @Override
-//    public void drawPolygon(double[] pts) {
-//        graphics.drawPolygon(getPolygon(pts));
-//    }
-//
-//    /**
-//     * {@inheritDoc}
-//     */
-//    @Override
-//    public void fillPolygon(double[] pts) {
-//        graphics.fillPolygon(getPolygon(pts));
-//    }
-//
-//    /**
-//     * {@inheritDoc}
-//     */
-//    @Override
-//    public void drawPolyline(double[] pts) {
-//        int[] xs = new int[pts.length / 2];
-//        int[] ys = new int[pts.length / 2];
-//        for (int i = 0; i < pts.length; i += 2) {
-//            xs[i / 2] = (int) pts[i];
-//            ys[i / 2] = (int) pts[i + 1];
-//        }
-//
-//        graphics.drawPolyline(xs, ys, pts.length / 2);
-//    }
-//
-//    /**
-//     * {@inheritDoc}
-//     */
-//    @Override
-//    public void drawGeneralPath(GeneralPath gp) {
-//        graphics.draw(gp);
-//    }
+    // /**
+    // * {@inheritDoc}
+    // */
+    // @Override
+    // public void drawRect(double x, double y, double width, double height) {
+    // graphics.drawRect((int) x, (int) y, (int) width, (int) height);
+    // }
+    //
+    // /**
+    // * {@inheritDoc}
+    // */
+    // @Override
+    // public void fillRect(double x, double y, double width, double height) {
+    // graphics.fillRect((int) x, (int) y, (int) width, (int) height);
+    // }
+    //
+    // /**
+    // * {@inheritDoc}
+    // */
+    // @Override
+    // public void drawOval(double x, double y, double width, double height) {
+    // graphics.drawOval((int) x, (int) y, (int) width, (int) height);
+    // }
+    //
+    // /**
+    // * {@inheritDoc}
+    // */
+    // @Override
+    // public void fillOval(double x, double y, double width, double height) {
+    // graphics.fillOval((int) x, (int) y, (int) width, (int) height);
+    // }
+    //
+    // /**
+    // * {@inheritDoc}
+    // */
+    // @Override
+    // public void drawArc(double x, double y, double width, double height, double startAngle,
+    // double extent) {
+    // graphics.drawArc((int) x, (int) y, (int) width, (int) height, (int) startAngle,
+    // (int) extent);
+    // }
+    //
+    // /**
+    // * {@inheritDoc}
+    // */
+    // @Override
+    // public void fillArc(double x, double y, double width, double height, double startAngle,
+    // double extent) {
+    // graphics.fillArc((int) x, (int) y, (int) width, (int) height, (int) startAngle,
+    // (int) extent);
+    // }
+    //
+    // /**
+    // * {@inheritDoc}
+    // */
+    // @Override
+    // public void drawRoundRect(double x, double y, double width, double height, double arcWidth,
+    // double arcHeight) {
+    // graphics.drawRect((int) x, (int) y, (int) width, (int) height);
+    // }
+    //
+    // /**
+    // * {@inheritDoc}
+    // */
+    // @Override
+    // public void fillRoundRect(double x, double y, double width, double height, double arcWidth,
+    // double arcHeight) {
+    // graphics.fillRoundRect((int) x, (int) y, (int) width, (int) height, (int) arcWidth,
+    // (int) arcHeight);
+    // }
+    //
+    // /**
+    // * {@inheritDoc}
+    // */
+    // @Override
+    // public void drawPolygon(double[] pts) {
+    // graphics.drawPolygon(getPolygon(pts));
+    // }
+    //
+    // /**
+    // * {@inheritDoc}
+    // */
+    // @Override
+    // public void fillPolygon(double[] pts) {
+    // graphics.fillPolygon(getPolygon(pts));
+    // }
+    //
+    // /**
+    // * {@inheritDoc}
+    // */
+    // @Override
+    // public void drawPolyline(double[] pts) {
+    // int[] xs = new int[pts.length / 2];
+    // int[] ys = new int[pts.length / 2];
+    // for (int i = 0; i < pts.length; i += 2) {
+    // xs[i / 2] = (int) pts[i];
+    // ys[i / 2] = (int) pts[i + 1];
+    // }
+    //
+    // graphics.drawPolyline(xs, ys, pts.length / 2);
+    // }
+    //
+    // /**
+    // * {@inheritDoc}
+    // */
+    // @Override
+    // public void drawGeneralPath(GeneralPath gp) {
+    // graphics.draw(gp);
+    // }
 
     /**
      * {@inheritDoc}
@@ -396,21 +428,39 @@ public class KlighdSVGGraphicsImpl extends KlighdSWTGraphicsImpl implements Klig
      */
     @Override
     public void fill(Shape s) {
-        
-        if(s instanceof Rectangle2D) {
-//            System.out.println(super.getColor() + " " + super.getAlpha() + " "  + s);
-//            System.out.println(graphics.getColor() + " " + graphics.getColor().getAlpha() + " "  + s);
-//            System.out.println();
-//            setColor(Color.WHITE);
-            
-            if(((Rectangle2D) s).getHeight()==39 || ((Rectangle2D) s).getHeight()==35){
-                //return;
+
+        if (s instanceof Rectangle2D) {
+            // System.out.println(super.getColor() + " " + super.getAlpha() + " " + s);
+            // System.out.println(graphics.getColor() + " " + graphics.getColor().getAlpha() + " " +
+            // s);
+            // System.out.println();
+            // setColor(Color.WHITE);
+
+            if (((Rectangle2D) s).getHeight() == 39 || ((Rectangle2D) s).getHeight() == 35) {
+                // return;
             }
         }
-        
-        
+
         super.fill(s);
         graphics.fill(s);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void drawRect(double x, double y, double width, double height) {
+        super.drawRect(x, y, width, height);
+        graphics.drawRect((int) x, (int) y, (int)width, (int)height);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void drawRect(int x, int y, int width, int height) {
+        super.drawRect(x, y, width, height);
+        graphics.drawRect(x, y, width, height);
     }
 
     /**
@@ -441,16 +491,15 @@ public class KlighdSVGGraphicsImpl extends KlighdSWTGraphicsImpl implements Klig
     @Override
     public void setFont(final FontData font) {
         super.setFont(font);
-        
+
         graphics.setFont(new Font(font.getName(), font.getStyle(), font.getHeight()));
     }
-
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void clip(Shape s) {        
+    public void clip(Shape s) {
         super.clip(s);
         graphics.clip(s);
     }
@@ -527,9 +576,6 @@ public class KlighdSVGGraphicsImpl extends KlighdSWTGraphicsImpl implements Klig
         return graphics.getComposite();
     }
 
-
-
-
     /**
      * {@inheritDoc}
      */
@@ -545,7 +591,7 @@ public class KlighdSVGGraphicsImpl extends KlighdSWTGraphicsImpl implements Klig
     @Override
     public void setComposite(Composite comp) {
         super.setComposite(comp);
-//        unsupported();
+        // unsupported();
     }
 
     /**
@@ -566,7 +612,6 @@ public class KlighdSVGGraphicsImpl extends KlighdSWTGraphicsImpl implements Klig
         graphics.setRenderingHints(hints);
     }
 
-
     /**
      * {@inheritDoc}
      */
@@ -582,9 +627,9 @@ public class KlighdSVGGraphicsImpl extends KlighdSWTGraphicsImpl implements Klig
     @Override
     public void translate(int x, int y) {
         super.translate(x, y);
-        
+
         // FIXME different translation ?!
-        graphics.translate(x-20, y+20);
+        graphics.translate(x - 20, y + 20);
     }
 
     /**
@@ -603,7 +648,7 @@ public class KlighdSVGGraphicsImpl extends KlighdSWTGraphicsImpl implements Klig
     public void clearRect(int x, int y, int width, int height) {
         super.clearRect(x, y, width, height);
         graphics.clearRect(x, y, width, height);
-        //unsupported();
+        // unsupported();
     }
 
     /**
@@ -638,7 +683,7 @@ public class KlighdSVGGraphicsImpl extends KlighdSWTGraphicsImpl implements Klig
     @Override
     public void dispose() {
         // TODO Auto-generated method stub
-        //unsupported();
+        // unsupported();
         super.dispose();
     }
 
@@ -817,8 +862,6 @@ public class KlighdSVGGraphicsImpl extends KlighdSWTGraphicsImpl implements Klig
         return graphics.getClip();
     }
 
-
-
     /**
      * {@inheritDoc}
      */
@@ -863,7 +906,6 @@ public class KlighdSVGGraphicsImpl extends KlighdSWTGraphicsImpl implements Klig
         // TODO Auto-generated method stub
         unsupported();
     }
-
 
     /**
      * {@inheritDoc}

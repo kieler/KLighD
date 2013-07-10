@@ -17,6 +17,7 @@ package de.cau.cs.kieler.klighd.piccolo.svg.browsing;
  * @author uru
  *
  */
+import java.awt.geom.Point2D;
 import java.io.IOException;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
@@ -55,6 +56,7 @@ import de.cau.cs.kieler.klighd.ViewContext;
 import de.cau.cs.kieler.klighd.krendering.SimpleUpdateStrategy;
 import de.cau.cs.kieler.klighd.macrolayout.DiagramLayoutManager;
 import de.cau.cs.kieler.klighd.piccolo.svg.HtmlGenerator;
+import edu.umd.cs.piccolo.PCamera;
 
 public class BrowsingSVGServer extends Server {
 
@@ -68,6 +70,8 @@ public class BrowsingSVGServer extends Server {
 
     private Shell shell = new Shell();
     private PiccoloSVGBrowseViewer viewer = new PiccoloSVGBrowseViewer(shell);
+
+    private KNode currentModel;
 
     public BrowsingSVGServer(int port) {
         SelectChannelConnector connector = new SelectChannelConnector();
@@ -275,29 +279,30 @@ public class BrowsingSVGServer extends Server {
 
                         System.out.println(r.getContents().get(0));
 
-                        final KNode o = LightDiagramServices.translateModel(r.getContents().get(0));
+                        currentModel = LightDiagramServices.translateModel(r.getContents().get(0));
 
                         // System.out.println(o);
                         viewer.getCanvas().setBounds(0, 0, 870, 600);
-                        
-                        viewer.setModel(o, true);
-                        
+
+                        viewer.setModel(currentModel, true);
+                        viewer.globalRedraw();
                         // ViewContext ctx =
                         // LightDiagramServices.getInstance().createViewContext(r.getContents().get(0));
                         // LightDiagramServices.getInstance().layoutDiagram(ctx, false, false);
 
                         DiagramLayoutManager mng = new DiagramLayoutManager();
-                        LayoutMapping<KGraphElement> mapping = mng.buildLayoutGraph(null, o);
-                         mapping.setProperty(DiagramLayoutManager.VIEWER, viewer);
+                        LayoutMapping<KGraphElement> mapping =
+                                mng.buildLayoutGraph(null, currentModel);
+                        mapping.setProperty(DiagramLayoutManager.VIEWER, viewer);
                         DiagramLayoutEngine.INSTANCE.layout(mapping, new BasicProgressMonitor());
-//                        viewer.setRecording(true);
+                        // viewer.setRecording(true);
                         mng.applyLayout(mapping, true, 0);
-//                        viewer.setRecording(false);
-                        
+                        // viewer.setRecording(false);
+
                         // new RecursiveGraphLayoutEngine().layout(o, new BasicProgressMonitor()) ;
 
                         // viewer.getCanvas().setVisible(true);
-                        viewer.zoomToFit(0);
+                        // viewer.zoomToFit(0);
                         viewer.globalRedraw();
 
                         // c.redraw();
@@ -309,6 +314,71 @@ public class BrowsingSVGServer extends Server {
                     }
                 });
 
+            } else if (target.startsWith("/expand/")) {
+
+                response.setContentType("text/html;charset=utf8");
+                response.setStatus(HttpServletResponse.SC_OK);
+                baseRequest.setHandled(true);
+
+                final String id = target.replace("/expand/", "");
+                System.out.println("Expand: " + id);
+
+                Display.getDefault().asyncExec(new Runnable() {
+
+                    public void run() {
+                        viewer.toggleExpansion(id);
+
+                        DiagramLayoutManager mng = new DiagramLayoutManager();
+                        LayoutMapping<KGraphElement> mapping =
+                                mng.buildLayoutGraph(null, currentModel);
+                        mapping.setProperty(DiagramLayoutManager.VIEWER, viewer);
+                        DiagramLayoutEngine.INSTANCE.layout(mapping, new BasicProgressMonitor());
+                        // viewer.setRecording(true);
+                        mng.applyLayout(mapping, true, 0);
+                        // viewer.setRecording(false);
+
+                        // new RecursiveGraphLayoutEngine().layout(o, new BasicProgressMonitor()) ;
+
+                        // viewer.getCanvas().setVisible(true);
+                        // viewer.zoomToFit(0);
+                        viewer.globalRedraw();
+                    }
+                });
+            } else if (target.startsWith("/zoom/")) {
+                response.setContentType("text/html;charset=utf8");
+                response.setStatus(HttpServletResponse.SC_OK);
+                baseRequest.setHandled(true);
+
+                try {
+                    final Integer delta = Integer.valueOf(target.replace("/zoom/", ""));
+
+                    Display.getDefault().asyncExec(new Runnable() {
+
+                        public void run() {
+                            final PCamera camera = viewer.getCanvas().getCamera();
+                            double scaleDelta = 1.0 + 0.05 * delta;
+
+                            final double currentScale = camera.getViewScale();
+                            final double newScale = currentScale * scaleDelta;
+
+                            // if (newScale < minScale) {
+                            // scaleDelta = minScale / currentScale;
+                            // }
+                            // if (maxScale > 0 && newScale > maxScale) {
+                            // scaleDelta = maxScale / currentScale;
+                            // }
+                            // Point2D viewZoomPoint = event.getPosition();
+                            // camera.scaleViewAboutPoint(scaleDelta, viewZoomPoint.getX(),
+                            // viewZoomPoint.getY());
+                            camera.scaleViewAboutPoint(scaleDelta, 0, 0);
+                            
+                            viewer.globalRedraw();
+
+                        }
+                    });
+                } catch (NumberFormatException ex) {
+                    // silent
+                }
             }
 
         }

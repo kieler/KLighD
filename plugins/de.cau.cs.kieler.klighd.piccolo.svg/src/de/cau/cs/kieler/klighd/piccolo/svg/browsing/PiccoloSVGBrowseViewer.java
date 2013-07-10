@@ -15,6 +15,8 @@ package de.cau.cs.kieler.klighd.piccolo.svg.browsing;
 
 import java.awt.Graphics2D;
 import java.awt.event.InputEvent;
+import java.util.List;
+import java.util.Map;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jface.action.MenuManager;
@@ -28,6 +30,8 @@ import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Iterables;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 
 import de.cau.cs.kieler.core.kgraph.KGraphElement;
 import de.cau.cs.kieler.core.kgraph.KNode;
@@ -36,6 +40,7 @@ import de.cau.cs.kieler.klighd.piccolo.PMouseWheelZoomEventHandler;
 import de.cau.cs.kieler.klighd.piccolo.PSWTSimpleSelectionEventHandler;
 import de.cau.cs.kieler.klighd.piccolo.activities.ZoomActivity;
 import de.cau.cs.kieler.klighd.piccolo.krendering.ITracingElement;
+import de.cau.cs.kieler.klighd.piccolo.krendering.KNodeNode;
 import de.cau.cs.kieler.klighd.piccolo.krendering.controller.GraphController;
 import de.cau.cs.kieler.klighd.piccolo.krendering.viewer.KlighdKeyEventListener;
 import de.cau.cs.kieler.klighd.piccolo.krendering.viewer.KlighdMouseEventListener;
@@ -70,6 +75,8 @@ public class PiccoloSVGBrowseViewer extends AbstractViewer<KNode> implements INo
     private GraphController controller;
 
     private KlighdSVGGraphicsImpl graphics;
+    
+    private Map<Integer, KNode> currentHashCodeMapping = Maps.newHashMap();
 
     /**
      * Creates a Piccolo viewer with default style.
@@ -162,7 +169,42 @@ public class PiccoloSVGBrowseViewer extends AbstractViewer<KNode> implements INo
     }
 
     public void globalRedraw() {
+
+        if (controller != null) {
+            currentHashCodeMapping.clear();
+            recurseNodes(controller.getNode());
+        }
+//        controller.getNode().invalidateFullBounds();
         canvas.redraw();
+    }
+
+    private void recurseNodes(PNode parent) {
+
+        List<WrappedKNodeNode> toAdd = Lists.newLinkedList();
+
+        for (int i = 0; i < parent.getChildrenCount(); i++) {
+            PNode child = parent.getChild(i);
+            recurseNodes(child);
+
+            if (child instanceof KNodeNode) {
+                // System.out.println(((KNodeNode) child).getGraphElement());
+                WrappedKNodeNode wrapper =
+                        new WrappedKNodeNode(child, ((KNodeNode) child).getGraphElement());
+                toAdd.add(wrapper);
+                child.addChild(wrapper);
+                
+                currentHashCodeMapping.put(((KNodeNode) child).getGraphElement().hashCode(), ((KNodeNode) child).getGraphElement());
+                //expand(((KNodeNode) child).getGraphElement());
+            }
+        }
+
+//        System.out.println("PRE " + parent.getChildrenCount());
+//        for (WrappedKNodeNode node : toAdd) {
+//            parent.addChild(node);
+//        }
+        
+//        System.out.println("AFTER " + parent.getChildrenCount());
+
     }
 
     public KlighdSVGGraphicsImpl getGraphics() {
@@ -384,6 +426,19 @@ public class PiccoloSVGBrowseViewer extends AbstractViewer<KNode> implements INo
         controller.expand(diagramElement);
     }
 
+    public void toggleExpansion(final String hashCode) {
+        try {
+            int hash = Integer.valueOf(hashCode);
+            KNode node = currentHashCodeMapping.get(hash);
+            toggleExpansion(node);
+//            controller.setRecording(true);
+//            expand(node);
+//            controller.setRecording(false);
+        } catch (NumberFormatException ex) {
+            // fail silent
+        }
+    }
+    
     /**
      * {@inheritDoc}
      */
