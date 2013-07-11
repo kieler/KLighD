@@ -65,7 +65,7 @@ public class DiagramEditorPart extends EditorPart {
     /** the resource set managed by this editor part. */
     private ResourceSet resourceSet;
     /** the model represented by this editor part. */
-    protected Object model;
+    private Object model;
     /** the viewer for this editor part. */
     private ContextViewer viewer;
 
@@ -128,7 +128,11 @@ public class DiagramEditorPart extends EditorPart {
     @Override
     public void dispose() {
         ResourcesPlugin.getWorkspace().removeResourceChangeListener(resourceChangeListener);
-        viewer.dispose();
+        
+        if (viewer != null) {
+            viewer.dispose();
+        }
+        
         super.dispose();
     }
     
@@ -230,6 +234,7 @@ public class DiagramEditorPart extends EditorPart {
         Resource resource;
         try {
             resourceSet = new ResourceSetImpl();
+            configureResourceSet(resourceSet);
             if (inputStream != null) {
                 // load a stream-based resource
                 uri = URI.createFileURI("temp.xmi");
@@ -237,8 +242,13 @@ public class DiagramEditorPart extends EditorPart {
                 resource.load(inputStream, Collections.EMPTY_MAP);
             } else {
                 // load a URI-based resource
-                resource = resourceSet.createResource(uri);
-                resource.load(Collections.EMPTY_MAP);
+                resource = resourceSet.getResource(uri, true);
+                
+                /* The following two lines used to be here instead of the preceding line. However,
+                 * this caused Ptolemy models to fail to load with strange exceptions.
+                 */
+//                resource = resourceSet.createResource(uri);
+//                resource.load(Collections.EMPTY_MAP);
             }
         } catch (IOException exception) {
             throw new PartInitException("An error occurred while loading the resource.", exception);
@@ -251,6 +261,15 @@ public class DiagramEditorPart extends EditorPart {
         model = resource.getContents().get(0);
     }
     
+    /**
+     * Configures the given resource set. The default implementation does nothing.
+     * 
+     * @param set the resource set to be configured.
+     */
+    protected void configureResourceSet(final ResourceSet set) {
+        
+    }
+
     /**
      * Update the viewed model using the given resource.
      * 
