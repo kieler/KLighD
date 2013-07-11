@@ -21,7 +21,7 @@ import edu.umd.cs.piccolo.PNode;
  * Abstract class of all Piccolo nodes that are supposed to wrap connection figures of other 2D
  * drawing frameworks. It is used to distinguish connection nodes, which require a method
  * {@link #setPoints(Point2D[])}, from non-connection node. (see e.g.
- * {@link de.cau.cs.kieler.klighd.piccolo.krendering.controller.KEdgeRenderingController
+ * {@link de.cau.cs.kieler.klighd.piccolo.internal.controller.KEdgeRenderingController
  * KEdgeRenderingController})
  * 
  * @author chsch

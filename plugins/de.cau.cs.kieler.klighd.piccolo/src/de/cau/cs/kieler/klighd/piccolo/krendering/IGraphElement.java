@@ -14,7 +14,7 @@
 package de.cau.cs.kieler.klighd.piccolo.krendering;
 
 import de.cau.cs.kieler.core.kgraph.KGraphElement;
-import de.cau.cs.kieler.klighd.piccolo.krendering.controller.AbstractKGERenderingController;
+import de.cau.cs.kieler.klighd.piccolo.internal.controller.AbstractKGERenderingController;
 
 /**
  * The interface for Piccolo nodes representing a {@code KGraphElement}.

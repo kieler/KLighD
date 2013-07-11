@@ -25,7 +25,7 @@ import de.cau.cs.kieler.klighd.IAction;
 import de.cau.cs.kieler.klighd.IAction.ActionContext;
 import de.cau.cs.kieler.klighd.KlighdDataManager;
 import de.cau.cs.kieler.klighd.LightDiagramServices;
-import de.cau.cs.kieler.klighd.piccolo.krendering.controller.AbstractKGERenderingController;
+import de.cau.cs.kieler.klighd.piccolo.internal.controller.AbstractKGERenderingController;
 import de.cau.cs.kieler.klighd.piccolo.krendering.viewer.KlighdMouseEventListener.KlighdMouseEvent;
 import de.cau.cs.kieler.klighd.piccolo.krendering.viewer.PiccoloViewer;
 import de.cau.cs.kieler.klighd.triggers.KlighdStatusTrigger;

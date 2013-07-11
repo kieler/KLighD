@@ -19,8 +19,8 @@ import de.cau.cs.kieler.core.properties.Property;
 import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout;
 import de.cau.cs.kieler.klighd.KlighdConstants;
 import de.cau.cs.kieler.klighd.util.RenderingContextData;
-import de.cau.cs.kieler.klighd.piccolo.krendering.controller.AbstractKGERenderingController;
-import de.cau.cs.kieler.klighd.piccolo.krendering.controller.KPortRenderingController;
+import de.cau.cs.kieler.klighd.piccolo.internal.controller.AbstractKGERenderingController;
+import de.cau.cs.kieler.klighd.piccolo.internal.controller.KPortRenderingController;
 import de.cau.cs.kieler.klighd.piccolo.nodes.PZIndexNode;
 
 /**

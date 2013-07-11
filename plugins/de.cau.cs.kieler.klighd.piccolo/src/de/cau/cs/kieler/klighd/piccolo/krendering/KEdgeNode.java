@@ -19,8 +19,8 @@ import de.cau.cs.kieler.core.kgraph.KEdge;
 import de.cau.cs.kieler.core.properties.IProperty;
 import de.cau.cs.kieler.core.properties.Property;
 import de.cau.cs.kieler.klighd.util.RenderingContextData;
-import de.cau.cs.kieler.klighd.piccolo.krendering.controller.AbstractKGERenderingController;
-import de.cau.cs.kieler.klighd.piccolo.krendering.controller.KEdgeRenderingController;
+import de.cau.cs.kieler.klighd.piccolo.internal.controller.AbstractKGERenderingController;
+import de.cau.cs.kieler.klighd.piccolo.internal.controller.KEdgeRenderingController;
 import de.cau.cs.kieler.klighd.piccolo.nodes.PChildRepresentedNode;
 import edu.umd.cs.piccolo.PNode;
 

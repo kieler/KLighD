@@ -11,7 +11,7 @@
  * This code is provided under the terms of the Eclipse Public License (EPL).
  * See the file epl-v10.html for the license text.
  */
-package de.cau.cs.kieler.klighd.piccolo.krendering.controller;
+package de.cau.cs.kieler.klighd.piccolo.internal.controller;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -201,7 +201,7 @@ public abstract class AbstractKGERenderingController
     
     /**
      * A predicate used to identify the KRendering of a KNode in case the node is collapsed.
-     * This predicate is also used by the {@link GraphController} and thus marked
+     * This predicate is also used by the {@link DiagramController} and thus marked
      * 'package protected' (no modifier).
      */
     static final Predicate<KRendering> IS_COLLAPSED_RENDERING = new Predicate<KRendering>() {
@@ -212,7 +212,7 @@ public abstract class AbstractKGERenderingController
     
     /**
      * A predicate used to identify the KRendering of a KNode in case the node is expanded.
-     * This predicate is also used by the {@link GraphController} and thus marked
+     * This predicate is also used by the {@link DiagramController} and thus marked
      * 'package protected' (no modifier).
      */
     static final Predicate<KRendering> IS_EXPANDED_RENDERING = new Predicate<KRendering>() {

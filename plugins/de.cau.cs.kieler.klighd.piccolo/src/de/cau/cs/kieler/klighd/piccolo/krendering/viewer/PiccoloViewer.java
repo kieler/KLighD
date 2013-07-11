@@ -40,8 +40,8 @@ import de.cau.cs.kieler.klighd.piccolo.PMouseWheelZoomEventHandler;
 import de.cau.cs.kieler.klighd.piccolo.PSWTSimpleSelectionEventHandler;
 import de.cau.cs.kieler.klighd.piccolo.activities.ZoomActivity;
 import de.cau.cs.kieler.klighd.piccolo.events.KlighdActionEventHandler;
+import de.cau.cs.kieler.klighd.piccolo.internal.controller.DiagramController;
 import de.cau.cs.kieler.klighd.piccolo.krendering.ITracingElement;
-import de.cau.cs.kieler.klighd.piccolo.krendering.controller.GraphController;
 import de.cau.cs.kieler.klighd.piccolo.nodes.PEmptyNode;
 import de.cau.cs.kieler.klighd.piccolo.ui.SaveAsImageAction;
 import de.cau.cs.kieler.klighd.util.RenderingContextData;
@@ -72,7 +72,7 @@ public class PiccoloViewer extends AbstractViewer<KNode> implements INodeSelecti
     /** the parent viewer. */
     private ContextViewer parentViewer;
     /** the graph controller. */
-    private GraphController controller;
+    private DiagramController controller;
 
     /**
      * Creates a Piccolo viewer with default style.
@@ -211,7 +211,7 @@ public class PiccoloViewer extends AbstractViewer<KNode> implements INodeSelecti
         resizeAndResetLayers(2);
 
         // create a controller for the graph
-        controller = new GraphController(model, camera.getLayer(0), sync);
+        controller = new DiagramController(model, camera.getLayer(0), sync);
         controller.initialize();
         
         // update the outline page
@@ -418,7 +418,7 @@ public class PiccoloViewer extends AbstractViewer<KNode> implements INodeSelecti
     private PNode getRepresentation(final Object diagramElement) {
         if (diagramElement instanceof KGraphElement) {
             KGraphElement element = (KGraphElement) diagramElement;
-            PNode node = RenderingContextData.get(element).getProperty(GraphController.REP);
+            PNode node = RenderingContextData.get(element).getProperty(DiagramController.REP);
             if (node != null && node.getRoot() == canvas.getRoot()) {
                 return node;
             }

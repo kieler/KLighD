@@ -11,7 +11,7 @@
  * This code is provided under the terms of the Eclipse Public License (EPL).
  * See the file epl-v10.html for the license text.
  */
-package de.cau.cs.kieler.klighd.piccolo.krendering.controller;
+package de.cau.cs.kieler.klighd.piccolo.internal.controller;
 
 import java.awt.geom.Point2D;
 import java.beans.PropertyChangeEvent;
@@ -100,7 +100,7 @@ import edu.umd.cs.piccolo.util.PBounds;
  * @kieler.design proposed by chsch
  * @kieler.rating proposed yellow by chsch
  */
-public class GraphController {
+public class DiagramController {
 
     /**
      * Property name of edge layout listeners updating the edge node. Listeners are attached to edge
@@ -155,7 +155,7 @@ public class GraphController {
      * 
      *            review hint: setting to false will prevent the application of automatic layout
      */
-    public GraphController(final KNode graph, final PNode parent, final boolean sync) {
+    public DiagramController(final KNode graph, final PNode parent, final boolean sync) {
         resetGraphElement(graph);
         this.topNode = new KNodeTopNode(graph);
         RenderingContextData.get(graph).setProperty(INode.NODE_REP, topNode);

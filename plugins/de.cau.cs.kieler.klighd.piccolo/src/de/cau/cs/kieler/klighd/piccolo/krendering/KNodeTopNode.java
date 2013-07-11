@@ -14,7 +14,7 @@
 package de.cau.cs.kieler.klighd.piccolo.krendering;
 
 import de.cau.cs.kieler.core.kgraph.KNode;
-import de.cau.cs.kieler.klighd.piccolo.krendering.controller.AbstractKGERenderingController;
+import de.cau.cs.kieler.klighd.piccolo.internal.controller.AbstractKGERenderingController;
 import de.cau.cs.kieler.klighd.piccolo.nodes.PEmptyNode;
 
 /**
