@@ -26,6 +26,7 @@ import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.impl.AdapterImpl;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.ui.statushandlers.StatusManager;
@@ -69,7 +70,6 @@ import de.cau.cs.kieler.klighd.piccolo.activities.ApplySmartBoundsActivity;
 import de.cau.cs.kieler.klighd.piccolo.activities.FadeEdgeInActivity;
 import de.cau.cs.kieler.klighd.piccolo.activities.FadeNodeInActivity;
 import de.cau.cs.kieler.klighd.piccolo.activities.IStartingAndFinishingActivity;
-import de.cau.cs.kieler.klighd.piccolo.krendering.IGraphElement;
 import de.cau.cs.kieler.klighd.piccolo.krendering.ILabeledGraphElement;
 import de.cau.cs.kieler.klighd.piccolo.krendering.INode;
 import de.cau.cs.kieler.klighd.piccolo.krendering.KChildAreaNode;
@@ -95,11 +95,10 @@ import edu.umd.cs.piccolo.util.PBounds;
  * The class which controls the transformation of a KGraph with attached KRendering data to Piccolo
  * nodes and the synchronization of these Piccolo nodes with the KGraph model.
  * 
- * TODO assess mri's assumption of performing changes in the PNode structure in the display thread,
- * since I couldn't see this in combination width KLighD. However, the KLighD view initialization
- * calls are performed in the display thread...
- * 
- * @author mri, chsch
+ * @author mri
+ * @author chsch
+ * @kieler.design proposed by chsch
+ * @kieler.rating proposed yellow by chsch
  */
 public class GraphController {
 
@@ -133,15 +132,15 @@ public class GraphController {
 
     /** whether to sync the representation with the graph model. */
     private boolean sync = false;
-    /** whether to record layout changes. */
-    // Right now: will be set to true by the DiagramLayoutManager.
+
+    /** whether to record layout changes, will be set to true by the KlighdLayoutManager. */
     private boolean record = false;
+
     /** whether to perform 'zoom to fit' while applying the layout. */
     private boolean zoomToFit = false;
 
     /** the layout changes to graph elements while recording. */
-    private Map<IGraphElement<? extends KGraphElement>, Object> recordedChanges = Maps
-            .newLinkedHashMap();
+    private Map<PNode, Object> recordedChanges = Maps.newLinkedHashMap();
 
     /**
      * Constructs a graph controller for the given graph. The Piccolo nodes created for the graph
@@ -157,10 +156,6 @@ public class GraphController {
      *            review hint: setting to false will prevent the application of automatic layout
      */
     public GraphController(final KNode graph, final PNode parent, final boolean sync) {
-        // Review: kgraph nodes maintain context information,
-        // these information is removed by this statement,
-        // mainly needed if textual kgraph editor is used
-        // shall be obsolete if an adequate update strategy is available
         resetGraphElement(graph);
         this.topNode = new KNodeTopNode(graph);
         RenderingContextData.get(graph).setProperty(INode.NODE_REP, topNode);
@@ -220,10 +215,12 @@ public class GraphController {
      * Initializes the graph controller.
      */
     public void initialize() {
-        // expand the top node
         addExpansionListener(topNode);
+
         RenderingContextData.get(topNode.getGraphElement()).setProperty(KlighdConstants.ACTIVE,
                 true);
+
+        // expand the top node
         topNode.getChildArea().setExpanded(true);
     }
 
@@ -756,7 +753,7 @@ public class GraphController {
         }
 
         // create activities to apply all recorded changes
-        for (Map.Entry<IGraphElement<? extends KGraphElement>, Object> recordedChange : recordedChanges
+        for (Map.Entry<PNode, Object> recordedChange : recordedChanges
                 .entrySet()) {
             // create the activity to apply the change
             PInterpolatingActivity activity;
@@ -972,8 +969,12 @@ public class GraphController {
         }
     }
 
+
+    // ---------------------------------------------------------------------------------- //
+    //  Layout data synchronization
+
     /**
-     * Installs an adapter on the represented node to synchronize new Shapelayouts with specified
+     * Installs an adapter on the represented node to synchronize new shape layouts with specified
      * layout.
      * 
      * @param nodeRep
@@ -983,77 +984,7 @@ public class GraphController {
         final KNode node = nodeRep.getGraphElement();
 
         // register adapter on the node to stay in sync
-        node.eAdapters().add(new LimitedKGraphContentAdapter(KShapeLayout.class) {
-
-            public void notifyChanged(final Notification notification) {
-                super.notifyChanged(notification);
-                
-                KShapeLayout shL = node.getData(KShapeLayout.class);
-                // check if a shape layout is exists
-                if (shL != null) {
-                    if (!(notification.getNotifier() instanceof KShapeLayout)
-                            && !(notification.getNotifier() instanceof KNode && notification
-                                    .getNewValue() instanceof KShapeLayout)) {
-                        return;
-                    }
-
-                    if (record) {
-
-                        switch (notification.getFeatureID(KShapeLayout.class)) {
-                        case KLayoutDataPackage.KSHAPE_LAYOUT__XPOS:
-                        case KLayoutDataPackage.KSHAPE_LAYOUT__YPOS:
-                        case KLayoutDataPackage.KSHAPE_LAYOUT__WIDTH:
-                        case KLayoutDataPackage.KSHAPE_LAYOUT__HEIGHT:
-                            recordedChanges.put(nodeRep, getBounds(shL));
-                            break;
-                        default:
-                            break;
-                        }
-
-                    } else {
-
-                        final Point2D offset = nodeRep.getOffset();
-                        
-                        switch (notification.getFeatureID(KShapeLayout.class)) {
-                        case KLayoutDataPackage.KSHAPE_LAYOUT__XPOS: {
-                            double oldX = offset.getX();
-                            double newX = shL.getXpos();
-                            if (newX != oldX) {
-                                nodeRep.setOffset(newX, offset.getY());
-                            }
-                            break;
-                        }
-                        case KLayoutDataPackage.KSHAPE_LAYOUT__YPOS: {
-                            double oldY = offset.getY();
-                            double newY = shL.getYpos();
-                            if (newY != oldY) {
-                                nodeRep.setOffset(offset.getX(), newY);
-                            }
-                            break;
-                        }
-                        case KLayoutDataPackage.KSHAPE_LAYOUT__WIDTH: {
-                            double oldWidth = nodeRep.getWidth();
-                            double newWidth = shL.getWidth();
-                            if (oldWidth != newWidth) {
-                                nodeRep.setWidth(newWidth);
-                            }
-                            break;
-                        }
-                        case KLayoutDataPackage.KSHAPE_LAYOUT__HEIGHT: {
-                            double oldHeight = nodeRep.getHeight();
-                            double newHeight = shL.getHeight();
-                            if (oldHeight != newHeight) {
-                                nodeRep.setHeight(newHeight);
-                            }
-                            break;
-                        }
-                        default:
-                            break;
-                        }
-                    }
-                }
-            }
-        });
+        node.eAdapters().add(new KGEShapeLayoutPNodeUpdater(nodeRep));
     }
 
     /**
@@ -1065,69 +996,9 @@ public class GraphController {
      */
     private void installLayoutSyncAdapter(final KPortNode portRep) {
         final KPort port = portRep.getGraphElement();
+
         // register adapter on the port to stay in sync
-        port.eAdapters().add(new LimitedKGraphContentAdapter(KShapeLayout.class) {
-
-            public void notifyChanged(final Notification notification) {
-
-                KShapeLayout shL = port.getData(KShapeLayout.class);
-                // check if a shape layout is exists
-                if (shL != null) {
-                    if (record) {
-                        switch (notification.getFeatureID(KShapeLayout.class)) {
-                        case KLayoutDataPackage.KSHAPE_LAYOUT__XPOS:
-                        case KLayoutDataPackage.KSHAPE_LAYOUT__YPOS:
-                        case KLayoutDataPackage.KSHAPE_LAYOUT__WIDTH:
-                        case KLayoutDataPackage.KSHAPE_LAYOUT__HEIGHT:
-                            recordedChanges.put(portRep, getBounds(shL));
-                            break;
-                        default:
-                            break;
-                        }
-                    } else {
-                        
-                        final Point2D offset = portRep.getOffset();
-
-                        switch (notification.getFeatureID(KShapeLayout.class)) {
-                        case KLayoutDataPackage.KSHAPE_LAYOUT__XPOS: {
-                            double oldX = offset.getX();
-                            double newX = shL.getXpos();
-                            if (newX != oldX) {
-                                portRep.setOffset(newX, offset.getY());
-                            }
-                            break;
-                        }
-                        case KLayoutDataPackage.KSHAPE_LAYOUT__YPOS: {
-                            double oldY = offset.getY();
-                            double newY = shL.getYpos();
-                            if (newY != oldY) {
-                                portRep.setOffset(offset.getX(), newY);
-                            }
-                            break;
-                        }
-                        case KLayoutDataPackage.KSHAPE_LAYOUT__WIDTH: {
-                            double oldWidth = portRep.getWidth();
-                            double newWidth = shL.getWidth();
-                            if (oldWidth != newWidth) {
-                                portRep.setWidth(newWidth);
-                            }
-                            break;
-                        }
-                        case KLayoutDataPackage.KSHAPE_LAYOUT__HEIGHT: {
-                            double oldHeight = portRep.getHeight();
-                            double newHeight = shL.getHeight();
-                            if (oldHeight != newHeight) {
-                                portRep.setHeight(newHeight);
-                            }
-                            break;
-                        }
-                        default:
-                            break;
-                        }
-                    }
-                }
-            }
-        });
+        port.eAdapters().add(new KGEShapeLayoutPNodeUpdater(portRep));
     }
 
     /**
@@ -1139,74 +1010,122 @@ public class GraphController {
      */
     private void installLayoutSyncAdapter(final KLabelNode labelRep) {
         final KLabel label = labelRep.getGraphElement();
+        
         // register adapter on the label to stay in sync
-        label.eAdapters().add(new LimitedKGraphContentAdapter(KShapeLayout.class) {
+        label.eAdapters().add(new KGEShapeLayoutPNodeUpdater(labelRep));
+    }
 
-            public void notifyChanged(final Notification notification) {
-                super.notifyChanged(notification);
+    /**
+     * A specialized {@link LimitedKGraphContentAdapter}, which is in charge of synchronizing the
+     * position the PNode that represents of the {@link KGraphElement} that this adapter is attached
+     * to. It is intended to be attached to {@link KNode KNodes}, {@link KPort KPorts}, and
+     * {@link KLabel KLabels}.<br>
+     * <br>
+     * Due to the fact that EMF Compare's standard mergers replace whole instances of
+     * {@link KShapeLayout} when some of the attribute values have changed, such updaters are
+     * attached to the {@link KGraphElement}. They propagate themselves to the available
+     * {@link KShapeLayout KShapeLayouts} or those that are added afterwards.
+     * 
+     * @author chsch
+     */
+    private class KGEShapeLayoutPNodeUpdater extends LimitedKGraphContentAdapter {
+        
+        public KGEShapeLayoutPNodeUpdater(final PNode theRepNode) {
+            super(KShapeLayout.class);
+            this.nodeRep = theRepNode;
+        }
+        
+        private PNode nodeRep = null;
+        
+        @Override 
+        public void notifyChanged(final Notification notification) {
+            super.notifyChanged(notification);
 
-                if (!(notification.getNotifier() instanceof KShapeLayout)) {
+            switch (notification.getEventType()) {
+            case Notification.ADD:
+            case Notification.SET:
+                // good cases - continue executing this method
+                break;                
+            case Notification.ADD_MANY:
+            case Notification.MOVE:
+            case Notification.REMOVE:
+            case Notification.REMOVE_MANY:
+            case Notification.REMOVING_ADAPTER:
+            case Notification.RESOLVE:
+            case Notification.UNSET:
+            default:
+                // uninteresting cases - stop executing here
+                return;
+            }
+            
+            KShapeLayout shL = null;
+            if (notification.getNotifier() instanceof KNode
+                    && notification.getNewValue() instanceof KShapeLayout) {
+                shL = (KShapeLayout) notification.getNewValue();
+
+            } else if (notification.getNotifier() instanceof KShapeLayout
+                    && notification.getNewValue() instanceof Number) {
+                
+                switch (((EStructuralFeature) notification.getFeature()).getFeatureID()) {
+                case KLayoutDataPackage.KSHAPE_LAYOUT__XPOS:
+                case KLayoutDataPackage.KSHAPE_LAYOUT__YPOS:
+                case KLayoutDataPackage.KSHAPE_LAYOUT__WIDTH:
+                case KLayoutDataPackage.KSHAPE_LAYOUT__HEIGHT:
+                    break;
+                default:
                     return;
                 }
+                
+                shL = (KShapeLayout) notification.getNotifier();
+                
+            } else {
+                return;
+            }
+            
+            if (record) {
+                recordedChanges.put(nodeRep, getBounds(shL));
 
-                KShapeLayout shL = label.getData(KShapeLayout.class);
-                // check if a shape layout exists
-                if (shL != null) {
-                    if (record) {
-                        switch (notification.getFeatureID(KShapeLayout.class)) {
-                        case KLayoutDataPackage.KSHAPE_LAYOUT__XPOS:
-                        case KLayoutDataPackage.KSHAPE_LAYOUT__YPOS:
-                        case KLayoutDataPackage.KSHAPE_LAYOUT__WIDTH:
-                        case KLayoutDataPackage.KSHAPE_LAYOUT__HEIGHT:
-                            recordedChanges.put(labelRep, getBounds(shL));
-                            break;
-                        default:
-                            break;
-                        }
-                    } else {
-
-                        final Point2D offset = labelRep.getOffset();
-
-                        switch (notification.getFeatureID(KShapeLayout.class)) {
-                        case KLayoutDataPackage.KSHAPE_LAYOUT__XPOS: {
-                            double oldX = offset.getX();
-                            double newX = shL.getXpos();
-                            if (newX != oldX) {
-                                labelRep.setOffset(newX, offset.getY());
-                            }
-                            break;
-                        }
-                        case KLayoutDataPackage.KSHAPE_LAYOUT__YPOS: {
-                            double oldY = offset.getY();
-                            double newY = shL.getYpos();
-                            if (newY != oldY) {
-                                labelRep.setOffset(offset.getX(), newY);
-                            }
-                            break;
-                        }
-                        case KLayoutDataPackage.KSHAPE_LAYOUT__WIDTH: {
-                            double oldWidth = labelRep.getWidth();
-                            double newWidth = shL.getWidth();
-                            if (oldWidth != newWidth) {
-                                labelRep.setWidth(newWidth);
-                            }
-                            break;
-                        }
-                        case KLayoutDataPackage.KSHAPE_LAYOUT__HEIGHT: {
-                            double oldHeight = labelRep.getHeight();
-                            double newHeight = shL.getHeight();
-                            if (oldHeight != newHeight) {
-                                labelRep.setHeight(newHeight);
-                            }
-                            break;
-                        }
-                        default:
-                            break;
-                        }
+            } else {
+                final Point2D offset = nodeRep.getOffset();
+                
+                switch (notification.getFeatureID(KShapeLayout.class)) {
+                case KLayoutDataPackage.KSHAPE_LAYOUT__XPOS: {
+                    double oldX = offset.getX();
+                    double newX = shL.getXpos();
+                    if (newX != oldX) {
+                        nodeRep.setOffset(newX, offset.getY());
                     }
+                    break;
+                }
+                case KLayoutDataPackage.KSHAPE_LAYOUT__YPOS: {
+                    double oldY = offset.getY();
+                    double newY = shL.getYpos();
+                    if (newY != oldY) {
+                        nodeRep.setOffset(offset.getX(), newY);
+                    }
+                    break;
+                }
+                case KLayoutDataPackage.KSHAPE_LAYOUT__WIDTH: {
+                    double oldWidth = nodeRep.getWidth();
+                    double newWidth = shL.getWidth();
+                    if (oldWidth != newWidth) {
+                        nodeRep.setWidth(newWidth);
+                    }
+                    break;
+                }
+                case KLayoutDataPackage.KSHAPE_LAYOUT__HEIGHT: {
+                    double oldHeight = nodeRep.getHeight();
+                    double newHeight = shL.getHeight();
+                    if (oldHeight != newHeight) {
+                        nodeRep.setHeight(newHeight);
+                    }
+                    break;
+                }
+                default:
+                    break;
                 }
             }
-        });
+        }
     }
 
     /**
@@ -1254,6 +1173,10 @@ public class GraphController {
         });
     }
 
+
+    // ---------------------------------------------------------------------------------- //
+    //  KGraphElement data synchronization
+
     /**
      * Installs an adapter on the represented node to synchronize the children of the representation
      * with the specified children in the model.
@@ -1263,36 +1186,30 @@ public class GraphController {
      */
     private void installChildrenSyncAdapter(final INode nodeRep) {
         KNode node = nodeRep.getGraphElement();
+        
         // add an adapter on the node's children
         node.eAdapters().add(new AdapterImpl() {
+            
             public void notifyChanged(final Notification notification) {
+
                 if (notification.getFeatureID(KNode.class) == KGraphPackage.KNODE__CHILDREN) {
                     switch (notification.getEventType()) {
                     case Notification.ADD: {
                         final KNode addedNode = (KNode) notification.getNewValue();
-                        // PlatformUI.getWorkbench().getDisplay().syncExec(new Runnable() {
-                        // public void run() {
                         addNode(nodeRep, addedNode);
-                        // }
-                        // });
                         break;
                     }
                     case Notification.ADD_MANY: {
                         @SuppressWarnings("unchecked")
                         final List<KNode> addedNodes = (List<KNode>) notification.getNewValue();
-                        // PlatformUI.getWorkbench().getDisplay().syncExec(new Runnable() {
-                        // public void run() {
+
                         for (KNode addedNode : addedNodes) {
                             addNode(nodeRep, addedNode);
                         }
-                        // }
-                        // });
                         break;
                     }
                     case Notification.REMOVE: {
                         final KNode removedNode = (KNode) notification.getOldValue();
-                        // PlatformUI.getWorkbench().getDisplay().syncExec(new Runnable() {
-                        // public void run() {
                         removeNode(removedNode);
 
                         // Removing all contained nodes is required to remove all outgoing or
@@ -1303,15 +1220,12 @@ public class GraphController {
                                 removedNode.eAllContents(), KNode.class))) {
                             removeNode(n);
                         }
-                        // }
-                        // });
                         break;
                     }
                     case Notification.REMOVE_MANY: {
                         @SuppressWarnings("unchecked")
                         final List<KNode> removedNodes = (List<KNode>) notification.getOldValue();
-                        // PlatformUI.getWorkbench().getDisplay().syncExec(new Runnable() {
-                        // public void run() {
+
                         for (KNode removedNode : removedNodes) {
                             removeNode(removedNode);
 
@@ -1324,8 +1238,6 @@ public class GraphController {
                                 removeNode(n);
                             }
                         }
-                        // }
-                        // });
                         break;
                     }
                     default:
@@ -1367,51 +1279,39 @@ public class GraphController {
 
         // create an adapter on the node's edges
         edgeSyncAdapter = new AdapterImpl() {
+
             public void notifyChanged(final Notification notification) {
                 int featureId = notification.getFeatureID(KNode.class);
                 if (featureId == KGraphPackage.KNODE__OUTGOING_EDGES
                         || featureId == KGraphPackage.KNODE__INCOMING_EDGES) {
+
                     switch (notification.getEventType()) {
                     case Notification.ADD: {
                         final KEdge addedEdge = (KEdge) notification.getNewValue();
-                        // PlatformUI.getWorkbench().getDisplay().syncExec(new Runnable() {
-                        // public void run() {
                         addEdge(addedEdge);
-                        // }
-                        // });
                         break;
                     }
                     case Notification.ADD_MANY: {
                         @SuppressWarnings("unchecked")
                         final List<KEdge> addedEdges = (List<KEdge>) notification.getNewValue();
-                        // PlatformUI.getWorkbench().getDisplay().syncExec(new Runnable() {
-                        // public void run() {
+
                         for (KEdge addedEdge : addedEdges) {
                             addEdge(addedEdge);
                         }
-                        // }
-                        // });
                         break;
                     }
                     case Notification.REMOVE: {
                         final KEdge removedEdge = (KEdge) notification.getOldValue();
-                        // PlatformUI.getWorkbench().getDisplay().syncExec(new Runnable() {
-                        // public void run() {
                         removeEdge(removedEdge);
-                        // }
-                        // });
                         break;
                     }
                     case Notification.REMOVE_MANY: {
                         @SuppressWarnings("unchecked")
                         final List<KEdge> removedEdges = (List<KEdge>) notification.getOldValue();
-                        // PlatformUI.getWorkbench().getDisplay().syncExec(new Runnable() {
-                        // public void run() {
+
                         for (KEdge removedEdge : removedEdges) {
                             removeEdge(removedEdge);
                         }
-                        // }
-                        // });
                         break;
                     }
                     default:
@@ -1452,49 +1352,37 @@ public class GraphController {
         KNode node = nodeRep.getGraphElement();
         // add an adapter on the node's ports
         node.eAdapters().add(new AdapterImpl() {
+
             public void notifyChanged(final Notification notification) {
                 if (notification.getFeatureID(KNode.class) == KGraphPackage.KNODE__PORTS) {
+
                     switch (notification.getEventType()) {
                     case Notification.ADD: {
                         final KPort addedPort = (KPort) notification.getNewValue();
-                        // PlatformUI.getWorkbench().getDisplay().syncExec(new Runnable() {
-                        // public void run() {
                         addPort(nodeRep, addedPort);
-                        // }
-                        // });
                         break;
                     }
                     case Notification.ADD_MANY: {
                         @SuppressWarnings("unchecked")
                         final List<KPort> addedPorts = (List<KPort>) notification.getNewValue();
-                        // PlatformUI.getWorkbench().getDisplay().syncExec(new Runnable() {
-                        // public void run() {
+
                         for (KPort addedPort : addedPorts) {
                             addPort(nodeRep, addedPort);
                         }
-                        // }
-                        // });
                         break;
                     }
                     case Notification.REMOVE: {
                         final KPort removedPort = (KPort) notification.getOldValue();
-                        // PlatformUI.getWorkbench().getDisplay().syncExec(new Runnable() {
-                        // public void run() {
                         removePort(removedPort);
-                        // }
-                        // });
                         break;
                     }
                     case Notification.REMOVE_MANY: {
                         @SuppressWarnings("unchecked")
                         final List<KPort> removedPorts = (List<KPort>) notification.getOldValue();
-                        // PlatformUI.getWorkbench().getDisplay().syncExec(new Runnable() {
-                        // public void run() {
+
                         for (KPort removedPort : removedPorts) {
                             removePort(removedPort);
                         }
-                        // }
-                        // });
                         break;
                     }
                     default:
@@ -1518,51 +1406,40 @@ public class GraphController {
             final KLabeledGraphElement labeledElement) {
         // add an adapter on the labeled element's labels
         labeledElement.eAdapters().add(new AdapterImpl() {
+            
             public void notifyChanged(final Notification notification) {
+                
                 if (notification.getFeatureID(KLabeledGraphElement.class)
                         == KGraphPackage.KLABELED_GRAPH_ELEMENT__LABELS) {
+                    
                     switch (notification.getEventType()) {
                     case Notification.ADD: {
                         final KLabel addedLabel = (KLabel) notification.getNewValue();
-                        // PlatformUI.getWorkbench().getDisplay().syncExec(new Runnable() {
-                        // public void run() {
                         addLabel(labeledNode, addedLabel);
-                        // }
-                        // });
                         break;
                     }
                     case Notification.ADD_MANY: {
                         @SuppressWarnings("unchecked")
                         final List<KLabel> addedLabels = (List<KLabel>) notification.getNewValue();
-                        // PlatformUI.getWorkbench().getDisplay().syncExec(new Runnable() {
-                        // public void run() {
+
                         for (KLabel addedLabel : addedLabels) {
                             addLabel(labeledNode, addedLabel);
                         }
-                        // }
-                        // });
                         break;
                     }
                     case Notification.REMOVE: {
                         final KLabel removedLabel = (KLabel) notification.getOldValue();
-                        // PlatformUI.getWorkbench().getDisplay().syncExec(new Runnable() {
-                        // public void run() {
                         removeLabel(removedLabel);
-                        // }
-                        // });
                         break;
                     }
                     case Notification.REMOVE_MANY: {
                         @SuppressWarnings("unchecked")
                         final List<KLabel> removedLabels = (List<KLabel>) notification
                                 .getOldValue();
-                        // PlatformUI.getWorkbench().getDisplay().syncExec(new Runnable() {
-                        // public void run() {
+
                         for (KLabel removedLabel : removedLabels) {
                             removeLabel(removedLabel);
                         }
-                        // }
-                        // });
                         break;
                     }
                     default:
@@ -1584,15 +1461,13 @@ public class GraphController {
         final KLabel node = labelRep.getGraphElement();
         // add an adapter on the node's ports
         node.eAdapters().add(new AdapterImpl() {
+
             public void notifyChanged(final Notification notification) {
                 if (notification.getFeatureID(KLabel.class) == KGraphPackage.KLABEL__TEXT) {
+
                     switch (notification.getEventType()) {
                     case Notification.SET:
-                        // PlatformUI.getWorkbench().getDisplay().syncExec(new Runnable() {
-                        // public void run() {
                         labelRep.setText(node.getText());
-                        // }
-                        // });
                         break;
                     default:
                         break;
@@ -1601,6 +1476,10 @@ public class GraphController {
             }
         });
     }
+
+
+    // ---------------------------------------------------------------------------------- //
+    //  Helper methods
 
     /**
      * Returns bounds from the given {@code KShapeLayout}.
@@ -1611,6 +1490,7 @@ public class GraphController {
      */
     private static PBounds getBounds(final KShapeLayout shapeLayout) {
         PBounds bounds = new PBounds();
+        
         bounds.setRect(shapeLayout.getXpos(), shapeLayout.getYpos(), shapeLayout.getWidth(),
                 shapeLayout.getHeight());
         return bounds;
@@ -1822,7 +1702,11 @@ public class GraphController {
     }
 
     /**
-     * Removes all rendering context data from the given graph element and all child elements.
+     * Removes all rendering context data from the given graph element and all child elements.<br>
+     * <br>
+     * Review: knodes maintain context information, these information is removed by this statement,
+     * mainly needed if textual kgraph editor is used shall be obsolete if an adequate update
+     * strategy is available
      * 
      * @param element
      *            the graph element
