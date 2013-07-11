@@ -11,7 +11,7 @@
  * This code is provided under the terms of the Eclipse Public License (EPL).
  * See the file epl-v10.html for the license text.
  */
-package de.cau.cs.kieler.klighd.piccolo.activities;
+package de.cau.cs.kieler.klighd.piccolo.internal.activities;
 
 /**
  * Interface to be implemented by custom {@link edu.umd.cs.piccolo.activities.PActivity PActivities}

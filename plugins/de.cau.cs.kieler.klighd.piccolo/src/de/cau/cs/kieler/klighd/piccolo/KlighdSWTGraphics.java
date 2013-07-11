@@ -137,8 +137,10 @@ public interface KlighdSWTGraphics {
     /**
      * Sets the alpha value to be used during the subsequent paint instructions.<br>
      * <b>Caution:</b> This value will also set by Piccolo for realizing the transparency. That
-     * feature is used in the {@link de.cau.cs.kieler.klighd.piccolo.activities.FadeNodeInActivity
-     * FadeNodeInActivity} and {@link de.cau.cs.kieler.klighd.piccolo.activities.FadeEdgeInActivity
+     * feature is used in the
+     * {@link de.cau.cs.kieler.klighd.piccolo.internal.activities.FadeNodeInActivity
+     * FadeNodeInActivity} and
+     * {@link de.cau.cs.kieler.klighd.piccolo.internal.activities.FadeEdgeInActivity
      * FadeEdgeInActivity} activities. Thus do <b>not</b> set the alpha to an absolute value, but to
      * a relative one. The current value can be obtain by {@link #getAlpha()}.
      * 
