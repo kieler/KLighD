@@ -13,20 +13,11 @@
  */
 package de.cau.cs.kieler.core.krendering.extensions
 
-import de.cau.cs.kieler.core.annotations.Annotatable
-import de.cau.cs.kieler.core.annotations.AnnotationsPackage
-import de.cau.cs.kieler.core.annotations.BooleanAnnotation
-import de.cau.cs.kieler.core.annotations.FloatAnnotation
-import de.cau.cs.kieler.core.annotations.IntAnnotation
-import de.cau.cs.kieler.core.annotations.StringAnnotation
 import de.cau.cs.kieler.core.kgraph.KNode
 import de.cau.cs.kieler.core.properties.IProperty
 import de.cau.cs.kieler.core.properties.Property
 import de.cau.cs.kieler.core.util.Pair
 
-import de.cau.cs.kieler.kiml.LayoutDataService
-import de.cau.cs.kieler.kiml.LayoutOptionData
-import de.cau.cs.kieler.kiml.LayoutOptionData$Type
 import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout
 import de.cau.cs.kieler.kiml.util.KimlUtil
 import java.util.ArrayList
@@ -38,8 +29,6 @@ import de.cau.cs.kieler.core.math.KVector
 @ViewSynthesisShared
 class KNodeExtensions {
     
-    private static val AnnotationsPackage annotationsPackage = AnnotationsPackage::eINSTANCE;
-
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////
     ////////////////////////                    KNodeExtensions
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -128,35 +117,4 @@ class KNodeExtensions {
         ];
     }
     
-    
-    /**
-     * Helper transferring Annotations to shapes or the diagram.
-     * 
-     * @author chsch
-     */
-    def void transferAnnotationsOf(KNode node, Annotatable a) {
-        val service = LayoutDataService::instance;
-        a.annotations.filter[!it.name.nullOrEmpty].forEach[
-            val LayoutOptionData<?> data =
-                service.getOptionData(it.name)?:
-                service.getOptionDataBySuffix(it.name);
-            
-            if (data != null) {
-                node.getData(typeof(KShapeLayout)).setProperty(data, switch(it.eClass) {
-                    case annotationsPackage.booleanAnnotation:
-                      (it as BooleanAnnotation).value
-                    case annotationsPackage.intAnnotation: {
-                      val value = (it as IntAnnotation).value;
-                      if (data.type == LayoutOptionData$Type::FLOAT) new Float(value) else value
-                    }
-                    case annotationsPackage.floatAnnotation:
-                     (it as FloatAnnotation).value
-                    case annotationsPackage.stringAnnotation:
-                     data.parseValue((it as StringAnnotation).value)
-                    default:
-                     null
-                });
-            }
-        ];
-    }
 }
