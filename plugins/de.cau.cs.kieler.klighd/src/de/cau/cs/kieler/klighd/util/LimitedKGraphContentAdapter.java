@@ -49,6 +49,8 @@ import de.cau.cs.kieler.core.kgraph.KGraphElement;
  * KRendering} objects only.
  * 
  * @author chsch
+ * @kieler.design proposed by chsch
+ * @kieler.rating proposed yellow by chsch
  */
 public class LimitedKGraphContentAdapter extends EContentAdapter {
     
@@ -70,6 +72,9 @@ public class LimitedKGraphContentAdapter extends EContentAdapter {
      * adding it to a {@link KGraphElement}.
      */
     protected void setTarget(final EObject target) {
+        if (this.target != null) {
+            return;
+        }
         if (target instanceof KGraphElement) {
             basicSetTarget(target);
             
@@ -87,9 +92,12 @@ public class LimitedKGraphContentAdapter extends EContentAdapter {
                     addAdapter(allElements.next());
                 }
             }
-        } else {
-            super.setTarget(target);
         }
+    }
+
+    @Override
+    public void unsetTarget(final EObject target) {
+        super.unsetTarget(target);
     }
 
     /**
@@ -103,7 +111,8 @@ public class LimitedKGraphContentAdapter extends EContentAdapter {
         if (getTarget().equals(n.getNotifier())) {
             switch (n.getEventType()) {
             case Notification.ADD:
-                if (n.getNewValue() != null && n.getNewValue().getClass().equals(this.layoutDataClass)) {
+                if (n.getNewValue() != null
+                        && this.layoutDataClass.isAssignableFrom(n.getNewValue().getClass())) {
                     super.handleContainment(n);
                 }
                 break;
