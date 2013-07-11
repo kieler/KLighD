@@ -371,14 +371,19 @@ public final class DiagramViewManager implements IPartListener {
             return false;
         }
         try {
-            IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
-
-            DiagramViewPart view = this.idPartMapping.get(id);
+            final DiagramViewPart view = this.idPartMapping.get(id);
             if (view != null) {
                 unregisterViewContexts(view);
                 view.getSite().getPage().hideView(view);
                 return true;
             } else {
+                
+                final IWorkbenchWindow window = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
+                if (window == null) {
+                    return false;
+                }
+                
+                final IWorkbenchPage page = window.getActivePage();
                 IViewReference viewRef = page.findViewReference(PRIMARY_VIEW_ID, id);
                 if (viewRef != null) {
                     page.hideView(viewRef);
