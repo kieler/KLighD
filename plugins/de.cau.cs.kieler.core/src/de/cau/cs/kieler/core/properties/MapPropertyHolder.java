@@ -61,7 +61,9 @@ public class MapPropertyHolder implements IPropertyHolder, Serializable {
         
         // Retrieve the default value and memorize it for our property
         T defaultValue = property.getDefault();
-        propertyMap.put(property, defaultValue);
+        if (defaultValue instanceof Cloneable) {
+            setProperty(property, defaultValue);
+        }
         return defaultValue;
     }
     
