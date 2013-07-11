@@ -35,7 +35,7 @@ import org.eclipse.ui.statushandlers.StatusManager;
 
 import de.cau.cs.kieler.klighd.piccolo.KlighdPiccoloPlugin;
 import de.cau.cs.kieler.klighd.piccolo.KlighdSWTGraphicsImpl;
-import de.cau.cs.kieler.klighd.piccolo.krendering.viewer.PiccoloViewer;
+import de.cau.cs.kieler.klighd.piccolo.viewer.PiccoloViewer;
 import edu.umd.cs.piccolo.PCamera;
 import edu.umd.cs.piccolo.PLayer;
 import edu.umd.cs.piccolo.util.PAffineTransform;
