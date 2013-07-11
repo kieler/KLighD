@@ -18,7 +18,7 @@ import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout;
 import de.cau.cs.kieler.klighd.KlighdConstants;
 import de.cau.cs.kieler.klighd.piccolo.internal.controller.AbstractKGERenderingController;
 import de.cau.cs.kieler.klighd.piccolo.internal.controller.KNodeRenderingController;
-import de.cau.cs.kieler.klighd.piccolo.nodes.PZIndexNode;
+import de.cau.cs.kieler.klighd.piccolo.internal.nodes.PZIndexNode;
 
 /**
  * The Piccolo node for representing a {@code KNode}.

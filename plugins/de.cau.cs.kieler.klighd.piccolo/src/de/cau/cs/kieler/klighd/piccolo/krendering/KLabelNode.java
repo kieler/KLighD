@@ -21,7 +21,7 @@ import de.cau.cs.kieler.klighd.KlighdConstants;
 import de.cau.cs.kieler.klighd.util.RenderingContextData;
 import de.cau.cs.kieler.klighd.piccolo.internal.controller.AbstractKGERenderingController;
 import de.cau.cs.kieler.klighd.piccolo.internal.controller.KLabelRenderingController;
-import de.cau.cs.kieler.klighd.piccolo.nodes.PEmptyNode;
+import de.cau.cs.kieler.klighd.piccolo.internal.nodes.PEmptyNode;
 import edu.umd.cs.piccolo.util.PPickPath;
 
 /**

@@ -21,8 +21,8 @@ import de.cau.cs.kieler.core.krendering.KColor;
 import de.cau.cs.kieler.core.krendering.LineCap;
 import de.cau.cs.kieler.core.krendering.LineJoin;
 import de.cau.cs.kieler.core.krendering.LineStyle;
+import de.cau.cs.kieler.klighd.piccolo.internal.nodes.PSWTAdvancedPath;
 import de.cau.cs.kieler.klighd.piccolo.krendering.util.Styles;
-import de.cau.cs.kieler.klighd.piccolo.nodes.PSWTAdvancedPath;
 import de.cau.cs.kieler.klighd.piccolo.util.RGBGradient;
 
 

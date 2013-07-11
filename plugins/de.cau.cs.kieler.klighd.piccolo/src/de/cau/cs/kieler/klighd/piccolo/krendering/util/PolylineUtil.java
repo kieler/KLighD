@@ -25,7 +25,7 @@ import org.eclipse.swt.widgets.Display;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 
-import de.cau.cs.kieler.klighd.piccolo.nodes.PSWTAdvancedPath;
+import de.cau.cs.kieler.klighd.piccolo.internal.nodes.PSWTAdvancedPath;
 
 /**
  * Some out-sourced calculations for rendering the different

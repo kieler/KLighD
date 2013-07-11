@@ -34,9 +34,9 @@ import de.cau.cs.kieler.core.krendering.KSpline;
 import de.cau.cs.kieler.core.krendering.KStyle;
 import de.cau.cs.kieler.klighd.microlayout.Bounds;
 import de.cau.cs.kieler.klighd.piccolo.KlighdPiccoloPlugin;
+import de.cau.cs.kieler.klighd.piccolo.internal.nodes.PSWTAdvancedPath;
 import de.cau.cs.kieler.klighd.piccolo.krendering.KCustomConnectionFigureNode;
 import de.cau.cs.kieler.klighd.piccolo.krendering.KEdgeNode;
-import de.cau.cs.kieler.klighd.piccolo.nodes.PSWTAdvancedPath;
 import edu.umd.cs.piccolo.PNode;
 
 /**

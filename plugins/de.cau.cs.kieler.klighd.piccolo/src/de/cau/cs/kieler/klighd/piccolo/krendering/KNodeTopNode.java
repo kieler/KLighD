@@ -15,7 +15,7 @@ package de.cau.cs.kieler.klighd.piccolo.krendering;
 
 import de.cau.cs.kieler.core.kgraph.KNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.controller.AbstractKGERenderingController;
-import de.cau.cs.kieler.klighd.piccolo.nodes.PEmptyNode;
+import de.cau.cs.kieler.klighd.piccolo.internal.nodes.PEmptyNode;
 
 /**
  * The Piccolo node for representing the top-level {@code KNode}.

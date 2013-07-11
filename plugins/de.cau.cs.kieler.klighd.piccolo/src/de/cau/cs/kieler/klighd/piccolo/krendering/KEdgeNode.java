@@ -21,7 +21,7 @@ import de.cau.cs.kieler.core.properties.Property;
 import de.cau.cs.kieler.klighd.util.RenderingContextData;
 import de.cau.cs.kieler.klighd.piccolo.internal.controller.AbstractKGERenderingController;
 import de.cau.cs.kieler.klighd.piccolo.internal.controller.KEdgeRenderingController;
-import de.cau.cs.kieler.klighd.piccolo.nodes.PChildRepresentedNode;
+import de.cau.cs.kieler.klighd.piccolo.internal.nodes.PChildRepresentedNode;
 import edu.umd.cs.piccolo.PNode;
 
 /**

@@ -14,7 +14,7 @@
 /**
  * 
  */
-package de.cau.cs.kieler.klighd.piccolo.nodes;
+package de.cau.cs.kieler.klighd.piccolo.internal.nodes;
 
 import java.util.LinkedList;
 import java.util.List;

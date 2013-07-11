@@ -27,7 +27,7 @@
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 // SUPPRESS CHECKSTYLE PREVIOUS 30 Header
-package de.cau.cs.kieler.klighd.piccolo.nodes;
+package de.cau.cs.kieler.klighd.piccolo.internal.nodes;
 
 import java.awt.BasicStroke;
 import java.awt.Color;

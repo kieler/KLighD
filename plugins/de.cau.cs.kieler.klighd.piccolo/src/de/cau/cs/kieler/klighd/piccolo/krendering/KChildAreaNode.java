@@ -16,7 +16,7 @@
  */
 package de.cau.cs.kieler.klighd.piccolo.krendering;
 
-import de.cau.cs.kieler.klighd.piccolo.nodes.PZIndexNode;
+import de.cau.cs.kieler.klighd.piccolo.internal.nodes.PZIndexNode;
 import edu.umd.cs.piccolo.PNode;
 import edu.umd.cs.piccolo.util.PPaintContext;
 import edu.umd.cs.piccolo.util.PPickPath;
