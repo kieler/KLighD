@@ -35,7 +35,7 @@ import org.eclipse.swt.graphics.Path;
 import org.eclipse.swt.graphics.Pattern;
 
 import de.cau.cs.kieler.klighd.piccolo.KlighdSWTGraphicsImpl;
-import de.cau.cs.kieler.klighd.piccolo.krendering.util.PolylineUtil;
+import de.cau.cs.kieler.klighd.piccolo.util.PolylineUtil;
 
 /**
  * A Draw2D graphics object bridging to a {@link de.cau.cs.kieler.klighd.piccolo.KlighdSWTGraphics

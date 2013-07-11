@@ -11,7 +11,7 @@
  * This code is provided under the terms of the Eclipse Public License (EPL).
  * See the file epl-v10.html for the license text.
  */
-package de.cau.cs.kieler.klighd.piccolo.krendering.util;
+package de.cau.cs.kieler.klighd.piccolo.util;
 
 import java.awt.geom.Point2D;
 
@@ -34,7 +34,6 @@ import de.cau.cs.kieler.core.properties.Property;
 import de.cau.cs.kieler.core.util.Pair;
 import de.cau.cs.kieler.klighd.microlayout.Bounds;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.PSWTAdvancedPath;
-import de.cau.cs.kieler.klighd.piccolo.util.MathUtil;
 import edu.umd.cs.piccolo.util.PBounds;
 
 /**
