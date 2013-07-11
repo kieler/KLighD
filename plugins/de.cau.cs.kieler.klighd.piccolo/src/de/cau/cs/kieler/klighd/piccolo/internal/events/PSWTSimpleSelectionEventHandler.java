@@ -11,7 +11,7 @@
  * This code is provided under the terms of the Eclipse Public License (EPL).
  * See the file epl-v10.html for the license text.
  */
-package de.cau.cs.kieler.klighd.piccolo;
+package de.cau.cs.kieler.klighd.piccolo.internal.events;
 
 import java.awt.event.InputEvent;
 import java.awt.geom.Point2D;
@@ -30,6 +30,7 @@ import com.google.common.collect.Sets;
 
 import de.cau.cs.kieler.klighd.KlighdConstants;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.PSWTAdvancedPath;
+import de.cau.cs.kieler.klighd.piccolo.viewer.INodeSelectionListener;
 import edu.umd.cs.piccolo.PCamera;
 import edu.umd.cs.piccolo.PLayer;
 import edu.umd.cs.piccolo.PNode;

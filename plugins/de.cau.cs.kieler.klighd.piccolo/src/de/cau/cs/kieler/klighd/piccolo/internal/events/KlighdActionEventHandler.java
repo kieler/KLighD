@@ -11,7 +11,7 @@
  * This code is provided under the terms of the Eclipse Public License (EPL).
  * See the file epl-v10.html for the license text.
  */
-package de.cau.cs.kieler.klighd.piccolo.events;
+package de.cau.cs.kieler.klighd.piccolo.internal.events;
 
 import com.google.common.base.Predicate;
 import com.google.common.base.Strings;
@@ -26,8 +26,8 @@ import de.cau.cs.kieler.klighd.IAction.ActionContext;
 import de.cau.cs.kieler.klighd.KlighdDataManager;
 import de.cau.cs.kieler.klighd.LightDiagramServices;
 import de.cau.cs.kieler.klighd.piccolo.internal.controller.AbstractKGERenderingController;
+import de.cau.cs.kieler.klighd.piccolo.internal.events.KlighdMouseEventListener.KlighdMouseEvent;
 import de.cau.cs.kieler.klighd.piccolo.viewer.PiccoloViewer;
-import de.cau.cs.kieler.klighd.piccolo.viewer.KlighdMouseEventListener.KlighdMouseEvent;
 import de.cau.cs.kieler.klighd.triggers.KlighdStatusTrigger;
 import de.cau.cs.kieler.klighd.triggers.KlighdStatusTrigger.KlighdStatusState;
 import edu.umd.cs.piccolo.event.PInputEvent;
