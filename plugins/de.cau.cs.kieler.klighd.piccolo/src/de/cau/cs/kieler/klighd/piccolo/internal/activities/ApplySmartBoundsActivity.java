@@ -13,7 +13,7 @@
  */
 package de.cau.cs.kieler.klighd.piccolo.internal.activities;
 
-import de.cau.cs.kieler.klighd.piccolo.util.NodeUtil;
+import de.cau.cs.kieler.klighd.piccolo.internal.util.NodeUtil;
 import edu.umd.cs.piccolo.PNode;
 import edu.umd.cs.piccolo.activities.PInterpolatingActivity;
 import edu.umd.cs.piccolo.util.PBounds;

@@ -48,8 +48,8 @@ import com.google.common.collect.Maps;
 
 import de.cau.cs.kieler.klighd.KlighdConstants;
 import de.cau.cs.kieler.klighd.piccolo.KlighdSWTGraphics;
-import de.cau.cs.kieler.klighd.piccolo.util.PolylineUtil;
-import de.cau.cs.kieler.klighd.piccolo.util.RGBGradient;
+import de.cau.cs.kieler.klighd.piccolo.internal.util.PolylineUtil;
+import de.cau.cs.kieler.klighd.piccolo.internal.util.RGBGradient;
 import edu.umd.cs.piccolo.PNode;
 import edu.umd.cs.piccolo.nodes.PPath;
 import edu.umd.cs.piccolo.util.PBounds;

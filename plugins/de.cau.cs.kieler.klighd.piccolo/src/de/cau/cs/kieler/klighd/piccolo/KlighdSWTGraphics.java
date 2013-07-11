@@ -22,7 +22,7 @@ import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.LineAttributes;
 import org.eclipse.swt.graphics.RGB;
 
-import de.cau.cs.kieler.klighd.piccolo.util.RGBGradient;
+import de.cau.cs.kieler.klighd.piccolo.internal.util.RGBGradient;
 
 /**
  * This interface defines methods to be used by custom {@link edu.umd.cs.piccolo.PNode PNode}

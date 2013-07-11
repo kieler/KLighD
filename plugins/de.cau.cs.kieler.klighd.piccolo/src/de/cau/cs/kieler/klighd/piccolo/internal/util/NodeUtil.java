@@ -14,7 +14,7 @@
 /**
  * 
  */
-package de.cau.cs.kieler.klighd.piccolo.util;
+package de.cau.cs.kieler.klighd.piccolo.internal.util;
 
 import java.awt.geom.Point2D;
 

@@ -31,7 +31,7 @@ import org.eclipse.ui.statushandlers.StatusManager;
 import de.cau.cs.kieler.klighd.KlighdConstants;
 import de.cau.cs.kieler.klighd.piccolo.KlighdPiccoloPlugin;
 import de.cau.cs.kieler.klighd.piccolo.KlighdSWTGraphics;
-import de.cau.cs.kieler.klighd.piccolo.util.RGBGradient;
+import de.cau.cs.kieler.klighd.piccolo.internal.util.RGBGradient;
 
 import edu.umd.cs.piccolo.util.PPaintContext;
 import edu.umd.cs.piccolox.swt.PSWTText;

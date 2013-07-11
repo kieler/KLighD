@@ -24,8 +24,8 @@ import de.cau.cs.kieler.core.krendering.KStyle;
 import de.cau.cs.kieler.klighd.microlayout.Bounds;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KChildAreaNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KNodeNode;
-import de.cau.cs.kieler.klighd.piccolo.util.NodeUtil;
-import de.cau.cs.kieler.klighd.piccolo.util.PiccoloPlacementUtil;
+import de.cau.cs.kieler.klighd.piccolo.internal.util.NodeUtil;
+import de.cau.cs.kieler.klighd.piccolo.internal.util.PiccoloPlacementUtil;
 import edu.umd.cs.piccolo.PNode;
 
 /**
