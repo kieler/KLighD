@@ -22,7 +22,7 @@ import de.cau.cs.kieler.core.krendering.KRectangle;
 import de.cau.cs.kieler.core.krendering.KRendering;
 import de.cau.cs.kieler.core.krendering.KRenderingFactory;
 import de.cau.cs.kieler.core.krendering.KStyle;
-import de.cau.cs.kieler.klighd.piccolo.krendering.KPortNode;
+import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KPortNode;
 import edu.umd.cs.piccolo.PNode;
 
 /**

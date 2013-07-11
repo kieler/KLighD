@@ -11,7 +11,7 @@
  * This code is provided under the terms of the Eclipse Public License (EPL).
  * See the file epl-v10.html for the license text.
  */
-package de.cau.cs.kieler.klighd.piccolo.krendering;
+package de.cau.cs.kieler.klighd.piccolo.internal.nodes;
 
 import java.awt.geom.Point2D;
 
@@ -21,7 +21,6 @@ import de.cau.cs.kieler.core.properties.Property;
 import de.cau.cs.kieler.klighd.util.RenderingContextData;
 import de.cau.cs.kieler.klighd.piccolo.internal.controller.AbstractKGERenderingController;
 import de.cau.cs.kieler.klighd.piccolo.internal.controller.KEdgeRenderingController;
-import de.cau.cs.kieler.klighd.piccolo.internal.nodes.PChildRepresentedNode;
 import edu.umd.cs.piccolo.PNode;
 
 /**

@@ -15,7 +15,6 @@ package de.cau.cs.kieler.klighd.piccolo.internal.nodes;
 
 import de.cau.cs.kieler.core.krendering.KText;
 import de.cau.cs.kieler.klighd.krendering.KTextUtil;
-import de.cau.cs.kieler.klighd.piccolo.krendering.ITracingElement;
 
 /**
  * An extend variant of {@link PSWTText} preserving the information on its KText source definition.
