@@ -1,12 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.4"?>
 <plugin>
-   <extension-point id="viewerProviders" name="ViewerProviders" schema="schema/viewerProviders.exsd"/>
-   <extension-point id="modelTransformations" name="ModelTransformations" schema="schema/modelTransformations.exsd"/>
-   <extension-point id="updateStrategies" name="UpdateStrategies" schema="schema/updateStrategies.exsd"/>
-   <extension-point id="customFigureWrapper" name="CustomFigureWrapper" schema="schema/customFigureWrapper.exsd"/>
-   <extension-point id="layoutPostProcessors" name="LayoutPostProcessors" schema="schema/layoutPostProcessors.exsd"/>
-   <extension-point id="actions" name="actions" schema="schema/actions.exsd"/>
+   <extension-point id="extensions" name="Compound extension point for all kinds of extensions" schema="schema/extensions.exsd"/>
+   <extension-point id="diagramSyntheses" name="Diagram syntheses registering point" schema="schema/diagramSyntheses.exsd"/>
    <extension
          point="org.eclipse.ui.views">
       <category
@@ -71,14 +67,11 @@
       </combination>
    </extension>
    <extension
-         point="de.cau.cs.kieler.klighd.updateStrategies">
+         point="de.cau.cs.kieler.klighd.extensions">
       <updateStrategy
             class="de.cau.cs.kieler.klighd.krendering.SimpleUpdateStrategy"
             id="de.cau.cs.kieler.klighd.krendering.SimpleUpdateStrategy">
       </updateStrategy>
-   </extension>
-   <extension
-         point="de.cau.cs.kieler.klighd.actions">
       <action
             class="de.cau.cs.kieler.klighd.actions.CollapseExpandAction"
             id="de.cau.cs.kieler.klighd.actions.CollapseExpandAction">

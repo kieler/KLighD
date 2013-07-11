@@ -3,10 +3,10 @@
 <schema targetNamespace="de.cau.cs.kieler.klighd" xmlns="http://www.w3.org/2001/XMLSchema">
 <annotation>
       <appinfo>
-         <meta.schema plugin="de.cau.cs.kieler.klighd" id="layoutPostProcessors" name="LayoutPostProcessors"/>
+         <meta.schema plugin="de.cau.cs.kieler.klighd" id="diagramSyntheses" name="Diagram syntheses registering point"/>
       </appinfo>
       <documentation>
-         [Enter description of this extension point.]
+         This extension point is to be used to register diagram synthesis implementations.
       </documentation>
    </annotation>
 
@@ -17,8 +17,8 @@
          </appinfo>
       </annotation>
       <complexType>
-         <sequence>
-            <element ref="styleModifier" minOccurs="0" maxOccurs="unbounded"/>
+         <sequence minOccurs="1" maxOccurs="unbounded">
+            <element ref="diagramSynthesis"/>
          </sequence>
          <attribute name="point" type="string" use="required">
             <annotation>
@@ -47,12 +47,7 @@
       </complexType>
    </element>
 
-   <element name="styleModifier">
-      <annotation>
-         <documentation>
-            Allows to register style modification implementations that are executed after the application of the automatic layout on a certain KStyle, if mentioned in that style.
-         </documentation>
-      </annotation>
+   <element name="diagramSynthesis">
       <complexType>
          <attribute name="id" type="string" use="required">
             <annotation>
@@ -64,10 +59,10 @@
          <attribute name="class" type="string" use="required">
             <annotation>
                <documentation>
-                  
+                  The implementation of the transformation. In case the transformation maintains a local memory or uses dependency injection by means of Google Guice the class is suggested to be prefixed with the string &quot;de.cau.cs.kieler.klighd/de.cau.cs.kieler.klighd.transformations.GuiceBasedTransformationFactory:&quot;. This causes the creation of a transformation proxy instance taking care about (re-)initializing the actual transformation properly.
                </documentation>
                <appinfo>
-                  <meta.attribute kind="java" basedOn=":de.cau.cs.kieler.klighd.IStyleModifier"/>
+                  <meta.attribute kind="java" basedOn="de.cau.cs.kieler.klighd.transformations.AbstractTransformation:de.cau.cs.kieler.klighd.IModelTransformation"/>
                </appinfo>
             </annotation>
          </attribute>
