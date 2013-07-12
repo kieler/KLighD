@@ -15,6 +15,7 @@ package de.cau.cs.kieler.klighd.internal.util;
 
 import de.cau.cs.kieler.core.properties.IProperty;
 import de.cau.cs.kieler.core.properties.Property;
+import de.cau.cs.kieler.klighd.IViewer;
 
 /**
  * A collection of internal KLighD-specific {@link de.cau.cs.kieler.core.properties.IProperty
@@ -49,6 +50,14 @@ public final class KlighdInternalProperties {
      */
     public static final IProperty<Boolean> ACTIVE = new Property<Boolean>("klighd.active", false);
 
+    /** the duration for applying the layout. */
+    public static final IProperty<Integer> APPLY_LAYOUT_DURATION = new Property<Integer>(
+            "krendering.layout.applyLayoutDuration", 0);
+    
+    /** the viewer visualizing the graph. */
+    public static final IProperty<IViewer<?>> VIEWER = new Property<IViewer<?>>(
+            "krendering.layout.viewer");
+    
     /**
      * Property to be attached to the {@link de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout
      * KShapeLayout} of a view model's nodes for properly performing regression tests.

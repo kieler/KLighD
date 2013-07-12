@@ -64,7 +64,6 @@ import de.cau.cs.kieler.klighd.KlighdPlugin;
 import de.cau.cs.kieler.klighd.LightDiagramServices;
 import de.cau.cs.kieler.klighd.ViewContext;
 import de.cau.cs.kieler.klighd.internal.util.KlighdInternalProperties;
-import de.cau.cs.kieler.klighd.macrolayout.DiagramLayoutManager;
 import de.cau.cs.kieler.klighd.piccolo.internal.activities.ApplyBendPointsActivity;
 import de.cau.cs.kieler.klighd.piccolo.internal.activities.ApplySmartBoundsActivity;
 import de.cau.cs.kieler.klighd.piccolo.internal.activities.FadeEdgeInActivity;
@@ -748,7 +747,7 @@ public class DiagramController {
         KShapeLayout shapeLayout = topNode.getGraphElement().getData(KShapeLayout.class);
         int duration;
         if (shapeLayout != null) {
-            duration = shapeLayout.getProperty(DiagramLayoutManager.APPLY_LAYOUT_DURATION);
+            duration = shapeLayout.getProperty(KlighdInternalProperties.APPLY_LAYOUT_DURATION);
         } else {
             duration = 0;
         }
