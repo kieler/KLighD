@@ -54,6 +54,7 @@ import de.cau.cs.kieler.kiml.util.KimlUtil;
 import de.cau.cs.kieler.klighd.IViewer;
 import de.cau.cs.kieler.klighd.KlighdConstants;
 import de.cau.cs.kieler.klighd.ViewContext;
+import de.cau.cs.kieler.klighd.internal.util.KlighdInternalProperties;
 import de.cau.cs.kieler.klighd.microlayout.Bounds;
 import de.cau.cs.kieler.klighd.microlayout.PlacementUtil;
 import de.cau.cs.kieler.klighd.util.KlighdProperties;
@@ -283,7 +284,8 @@ public class DiagramLayoutManager implements IDiagramLayoutManager<KGraphElement
         KShapeLayout layoutLayout = layoutNode.getData(KShapeLayout.class);
         KShapeLayout nodeLayout = node.getData(KShapeLayout.class);
         
-        boolean isCompoundNode = RenderingContextData.get(node).getProperty(KlighdConstants.POPULATED)
+        boolean isCompoundNode = RenderingContextData.get(node).getProperty(
+                KlighdInternalProperties.POPULATED)
                 && Iterables.any(node.getChildren(), RenderingContextData.CHILD_ACTIVE);
 
         Bounds size = null;
@@ -299,11 +301,11 @@ public class DiagramLayoutManager implements IDiagramLayoutManager<KGraphElement
             Bounds minSize = Bounds.of(KlighdConstants.MINIMAL_NODE_BOUNDS);
             // check the definition of the minimal size property
             boolean minNodeSizeIsSet = nodeLayout.getProperties().containsKey(
-                    KlighdConstants.MINIMAL_NODE_SIZE);
+                    KlighdProperties.MINIMAL_NODE_SIZE);
             
             if (minNodeSizeIsSet) {
                 // if the minimal node size is given in terms of the dedicated property, use its values
-                minSize = Bounds.of(nodeLayout.getProperty(KlighdConstants.MINIMAL_NODE_SIZE));
+                minSize = Bounds.of(nodeLayout.getProperty(KlighdProperties.MINIMAL_NODE_SIZE));
             } else if (!isCompoundNode || nodeLayout.getProperty(INITIAL_NODE_SIZE)) {
                 // otherwise, if the node is a non-compound one or the size is not yet modified by KIML
                 //  take the component-wise maximum of the standard bounds and 'nodelayout's values 
@@ -314,7 +316,7 @@ public class DiagramLayoutManager implements IDiagramLayoutManager<KGraphElement
             //  note that this information will be removed or overwritten by the update strategies
             boolean deliver = nodeLayout.eDeliver();
             nodeLayout.eSetDeliver(false);
-            nodeLayout.setProperty(KlighdConstants.MINIMAL_NODE_SIZE,
+            nodeLayout.setProperty(KlighdProperties.MINIMAL_NODE_SIZE,
                     new KVector(minSize.getWidth(), minSize.getHeight()));
             nodeLayout.eSetDeliver(deliver);
 

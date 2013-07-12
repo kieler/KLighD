@@ -60,10 +60,10 @@ import de.cau.cs.kieler.kiml.klayoutdata.KPoint;
 import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout;
 import de.cau.cs.kieler.kiml.options.EdgeRouting;
 import de.cau.cs.kieler.kiml.options.LayoutOptions;
-import de.cau.cs.kieler.klighd.KlighdConstants;
 import de.cau.cs.kieler.klighd.KlighdPlugin;
 import de.cau.cs.kieler.klighd.LightDiagramServices;
 import de.cau.cs.kieler.klighd.ViewContext;
+import de.cau.cs.kieler.klighd.internal.util.KlighdInternalProperties;
 import de.cau.cs.kieler.klighd.macrolayout.DiagramLayoutManager;
 import de.cau.cs.kieler.klighd.piccolo.internal.activities.ApplyBendPointsActivity;
 import de.cau.cs.kieler.klighd.piccolo.internal.activities.ApplySmartBoundsActivity;
@@ -80,6 +80,7 @@ import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KNodeTopNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KPortNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.util.NodeUtil;
 import de.cau.cs.kieler.klighd.util.Iterables2;
+import de.cau.cs.kieler.klighd.util.KlighdProperties;
 import de.cau.cs.kieler.klighd.util.KlighdSynthesisProperties;
 import de.cau.cs.kieler.klighd.util.LimitedKGraphContentAdapter;
 import de.cau.cs.kieler.klighd.util.ModelingUtil;
@@ -217,7 +218,7 @@ public class DiagramController {
     public void initialize() {
         addExpansionListener(topNode);
 
-        RenderingContextData.get(topNode.getGraphElement()).setProperty(KlighdConstants.ACTIVE,
+        RenderingContextData.get(topNode.getGraphElement()).setProperty(KlighdInternalProperties.ACTIVE,
                 true);
 
         // expand the top node
@@ -338,7 +339,7 @@ public class DiagramController {
             //  this currently indicates externalized child elements that
             //  are to be loaded and translated lazily, which has to be done now!
             URI uri = parent.getData(KShapeLayout.class)
-                    .getProperty(KlighdConstants.CHILD_URI);
+                    .getProperty(KlighdProperties.CHILD_URI);
             
             KNode result = null;
             if (uri != null) {
@@ -366,7 +367,7 @@ public class DiagramController {
             addNode(parentNode, child);
         }
 
-        RenderingContextData.get(parent).setProperty(KlighdConstants.POPULATED, true);
+        RenderingContextData.get(parent).setProperty(KlighdInternalProperties.POPULATED, true);
 
         if (sync) {
             installChildrenSyncAdapter(parentNode);
@@ -415,10 +416,10 @@ public class DiagramController {
 
                 // add the node
                 parent.getChildArea().addNode(nodeNode);
-                RenderingContextData.get(node).setProperty(KlighdConstants.ACTIVE, true);
+                RenderingContextData.get(node).setProperty(KlighdInternalProperties.ACTIVE, true);
 
                 KGraphData data = node.getData(KLayoutDataPackage.eINSTANCE.getKShapeLayout());
-                boolean expand = data == null || data.getProperty(KlighdConstants.EXPAND);
+                boolean expand = data == null || data.getProperty(KlighdProperties.EXPAND);
                 // in case the EXPAND property is not set the default value 'true' is returned
                 nodeNode.getChildArea().setExpanded(expand);
                 
@@ -429,7 +430,7 @@ public class DiagramController {
 
                 // add the node
                 parent.getChildArea().addNode(nodeNode);
-                RenderingContextData.get(node).setProperty(KlighdConstants.ACTIVE, true);
+                RenderingContextData.get(node).setProperty(KlighdInternalProperties.ACTIVE, true);
             }
 
             // add all incoming edges
@@ -460,7 +461,7 @@ public class DiagramController {
         for (KNode child : parentNode.getChildren()) {
             removeNode(child);
         }
-        RenderingContextData.get(parentNode).setProperty(KlighdConstants.POPULATED, false);
+        RenderingContextData.get(parentNode).setProperty(KlighdInternalProperties.POPULATED, false);
 
         if (sync) {
             uninstallChildrenSyncAdapter(parentNode);
@@ -504,7 +505,7 @@ public class DiagramController {
 
             // remove the node representation from the containing child area
             nodeNode.removeFromParent();
-            RenderingContextData.get(node).setProperty(KlighdConstants.ACTIVE, false);
+            RenderingContextData.get(node).setProperty(KlighdInternalProperties.ACTIVE, false);
             
             // release the objects kept in mind
             nodeNode.getRenderingController().removeAllPNodeControllers();
@@ -527,8 +528,8 @@ public class DiagramController {
             KNode source = edge.getSource();
             KNode target = edge.getTarget();
             if (source != null && target != null
-                    && RenderingContextData.get(source).getProperty(KlighdConstants.ACTIVE)
-                    && RenderingContextData.get(target).getProperty(KlighdConstants.ACTIVE)) {
+                    && RenderingContextData.get(source).getProperty(KlighdInternalProperties.ACTIVE)
+                    && RenderingContextData.get(target).getProperty(KlighdInternalProperties.ACTIVE)) {
                 // if there is no Piccolo representation for the edge create it
                 if (edgeRep == null) {
                     edgeRep = new KEdgeNode(edge);

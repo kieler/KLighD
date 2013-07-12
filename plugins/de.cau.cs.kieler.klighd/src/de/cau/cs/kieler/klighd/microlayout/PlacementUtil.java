@@ -58,6 +58,7 @@ import de.cau.cs.kieler.core.util.Pair;
 import de.cau.cs.kieler.kiml.klayoutdata.KInsets;
 import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout;
 import de.cau.cs.kieler.klighd.KlighdConstants;
+import de.cau.cs.kieler.klighd.internal.util.KlighdInternalProperties;
 import de.cau.cs.kieler.klighd.krendering.KTextUtil;
 
 /**
@@ -386,8 +387,10 @@ public final class PlacementUtil {
         KFontItalic kFontItalic = null;
 
         if (kText != null) {
-            Object testHeight = kText.getProperties().get(KlighdConstants.KLIGHD_TESTING_HEIGHT);
-            Object testWidth = kText.getProperties().get(KlighdConstants.KLIGHD_TESTING_WIDTH);
+            Object testHeight = kText.getProperties().get(
+                    KlighdInternalProperties.KLIGHD_TESTING_HEIGHT);
+            Object testWidth = kText.getProperties().get(
+                    KlighdInternalProperties.KLIGHD_TESTING_WIDTH);
             if (testHeight != null || testWidth != null) {
                 // code for the regression tests
                 //  (I don't trust in the different SWT implementations to

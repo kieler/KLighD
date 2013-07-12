@@ -16,15 +16,11 @@ package de.cau.cs.kieler.klighd;
 import java.awt.Font;
 
 import org.eclipse.core.runtime.Platform;
-import org.eclipse.emf.common.util.URI;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.graphics.LineAttributes;
 import org.eclipse.swt.graphics.RGB;
 
-import de.cau.cs.kieler.core.math.KVector;
-import de.cau.cs.kieler.core.properties.IProperty;
-import de.cau.cs.kieler.core.properties.Property;
 import de.cau.cs.kieler.klighd.actions.CollapseExpandAction;
 import de.cau.cs.kieler.klighd.microlayout.Bounds;
 
@@ -143,118 +139,6 @@ public final class KlighdConstants {
      */
     public static final Bounds MINIMAL_NODE_BOUNDS = Bounds.immutableCopy(new Bounds(10, 10));
     
-    /**
-     * Property to determine the minimal size of a node that has to hold for the node's whole
-     * "life time".<br>
-     * The {@link de.cau.cs.kieler.kiml.options.LayoutOptions#MIN_WIDTH LayoutOptions#MIN_WIDTH}/
-     * {@link de.cau.cs.kieler.kiml.options.LayoutOptions#MIN_HEIGHT LayoutOptions#MIN_HEIGHT}
-     * properties are not sufficient as they have to be modified for hierarchical diagrams before
-     * each automatic layout run.<br>
-     * <br>
-     * <b>Caution</b>: This property has been defined in
-     * {@link de.cau.cs.kieler.core.krendering.extensions.KNodeExtensions KNodeExtensions}, too, in
-     * order to enable the independence of both bundles. This is possible as {@link IProperty
-     * IProperties} are determined to be equal or unequal based on their id's.
-     */
-    public static final IProperty<KVector> MINIMAL_NODE_SIZE = new Property<KVector>(
-            "klighd.minimalNodeSize", new KVector(KlighdConstants.MINIMAL_NODE_BOUNDS.getWidth(),
-                    KlighdConstants.MINIMAL_NODE_BOUNDS.getHeight()));
-
-    /**
-     * Property to be attached to root {@link de.cau.cs.kieler.core.krendering.KRendering
-     * KRendering} objects of {@link de.cau.cs.kieler.core.kgraph.KNode KNodes} during the view
-     * synthesis process indicating that the {@link de.cau.cs.kieler.core.krendering.KRendering
-     * KRendering} is to be shown in the collapsed state of the node.
-     */
-    public static final IProperty<Boolean> COLLAPSED_RENDERING = new Property<Boolean>(
-            "de.cau.cs.kieler.klighd.collapsedRendering", false);
-
-    /**
-     * Property to be attached to root {@link de.cau.cs.kieler.core.krendering.KRendering
-     * KRendering} objects of {@link de.cau.cs.kieler.core.kgraph.KNode KNodes} during the view
-     * synthesis process indicating that the {@link de.cau.cs.kieler.core.krendering.KRendering
-     * KRendering} is to be shown in the expanded state of the node.
-     */
-    public static final IProperty<Boolean> EXPANDED_RENDERING = new Property<Boolean>(
-            "de.cau.cs.kieler.klighd.expandedRendering", false);
-    
-    /**
-     * Property indicating the auto expansion of a node if the value is true.<br>
-     * This is property is currently to be attached to the nodes shape layout data during the view
-     * synthesis process. If it is absent the node gets expanded, anyway.
-     */
-    public static final IProperty<Boolean> EXPAND = new Property<Boolean>("klighd.expand", true);
-
-    /**
-     * Property providing a URI to semantic elements to be depicted but that are to be loaded lazily.
-     * This is property is currently to be attached to the nodes shape layout data during the view
-     * synthesis process. 
-     */
-    public static final IProperty<URI> CHILD_URI = new Property<URI>("klighd.childURI");
-
-    /**
-     * Property indicating that the node has been populated. A node is populated, if and only if the
-     * node's child nodes are visible in the diagram.<br>
-     * <br>
-     * <b>It is intended for KLighD internal use only!</b> The property declaration has been moved
-     * here from klighd.piccolo's AbstractRenderingController.
-     */
-    public static final IProperty<Boolean> POPULATED = new Property<Boolean>("klighd.populated",
-            false);
-    
-    /**
-     * A property for identifying whether a node is currently active. A node is active if and only
-     * if it is visible.<br>
-     * <br>
-     * <b>It is intended for KLighD internal use only!</b> The property declaration has been moved
-     * here from klighd.piccolo's AbstractRenderingController.
-     */
-    public static final IProperty<Boolean> ACTIVE = new Property<Boolean>("klighd.active", false);
-
-    /**
-     * Property to be attached to the {@link de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout
-     * KShapeLayout} of a view model's nodes for properly performing regression tests.
-     */
-    public static final IProperty<Float> KLIGHD_TESTING_EXPECTED_HEIGHT = new Property<Float>(
-            "klighd.testing.expected.height");
-
-    /**
-     * Property to be attached to the {@link de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout
-     * KShapeLayout} of a view model's nodes for properly performing regression tests.
-     */
-    public static final IProperty<Float> KLIGHD_TESTING_EXPECTED_WIDTH = new Property<Float>(
-            "klighd.testing.expected.width");
-
-    /**
-     * Property to be attached to the {@link de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout
-     * KShapeLayout} of a view model's nodes in order to ignore those nodes.<br>
-     * <br>
-     * The id is also hard-coded in KGraphJavaValidator!
-     */
-    public static final IProperty<Boolean> KLIGHD_TESTING_IGNORE = new Property<Boolean>(
-            "klighd.testing.ignore", false);
-
-    /**
-     * Property to be attached to the {@link de.cau.cs.kieler.core.krendering.KText KTexts} of a
-     * view model for properly performing various regression tests.
-     */
-    public static final IProperty<Float> KLIGHD_TESTING_HEIGHT = new Property<Float>(
-            "klighd.testing.height");
-
-    /**
-     * Property to be attached to the {@link de.cau.cs.kieler.core.krendering.KText KTexts} of a
-     * view model for properly performing various regression tests.
-     */
-    public static final IProperty<Float> KLIGHD_TESTING_WIDTH = new Property<Float>(
-            "klighd.testing.width");
-    
-    /**
-     * Property of {@link de.cau.cs.kieler.core.kgraph.KNode KNodes} indicating that the containing
-     * node is not pickable in a KLighD diagram. Can be used to mask auxiliary encapsulating nodes.
-     */
-    public static final IProperty<Boolean> KLIGHD_SELECTION_UNPICKABLE = new Property<Boolean>(
-            "klighd.selection.unpickable");
-
     /**
      * Hidden default constructor.
      */
