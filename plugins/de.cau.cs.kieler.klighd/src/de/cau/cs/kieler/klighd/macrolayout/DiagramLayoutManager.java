@@ -60,8 +60,7 @@ import de.cau.cs.kieler.klighd.util.KlighdProperties;
 import de.cau.cs.kieler.klighd.util.RenderingContextData;
 import de.cau.cs.kieler.klighd.viewers.ContextViewer;
 import de.cau.cs.kieler.klighd.viewers.KlighdViewer;
-import de.cau.cs.kieler.klighd.views.DiagramEditorPart;
-import de.cau.cs.kieler.klighd.views.DiagramViewPart;
+import de.cau.cs.kieler.klighd.views.IDiagramWorkbenchPart;
 
 /**
  * A diagram layout manager for KLighD viewers which support instances of {@code KNode}.<br>
@@ -96,12 +95,9 @@ public class DiagramLayoutManager implements IDiagramLayoutManager<KGraphElement
         }
         // KGraph viewer are supported
         ViewContext viewContext = null;
-        if (object instanceof DiagramViewPart) {
-            DiagramViewPart view = (DiagramViewPart) object;
+        if (object instanceof IDiagramWorkbenchPart) {
+            IDiagramWorkbenchPart view = (IDiagramWorkbenchPart) object;
             viewContext = view.getContextViewer().getCurrentViewContext();
-        } else if (object instanceof DiagramEditorPart) {
-            DiagramEditorPart editor = (DiagramEditorPart) object;
-            viewContext = editor.getContextViewer().getCurrentViewContext();
         } else if (object instanceof ContextViewer) {
             ContextViewer contextViewer = (ContextViewer) object;
             viewContext = contextViewer.getCurrentViewContext();
@@ -130,6 +126,18 @@ public class DiagramLayoutManager implements IDiagramLayoutManager<KGraphElement
             if (object instanceof KGraphElement) {
                 return object;
             }
+            ContextViewer contextViewer = null;
+            if (object instanceof ContextViewer) {
+                contextViewer = (ContextViewer) object;
+            } else if (object instanceof IDiagramWorkbenchPart) {
+                contextViewer = ((IDiagramWorkbenchPart) object).getContextViewer();
+            }
+            if (contextViewer != null) {
+                Object model = contextViewer.getModel();
+                if (model instanceof KGraphElement) {
+                    return model;
+                }
+            }
         }
         if (object instanceof IAdaptable) {
             return ((IAdaptable) object).getAdapter(adapterType);
@@ -156,12 +164,9 @@ public class DiagramLayoutManager implements IDiagramLayoutManager<KGraphElement
         if (diagramPart instanceof KNode) {
             graph = (KNode) diagramPart;
         } else {
-            if (workbenchPart instanceof DiagramViewPart) {
-                DiagramViewPart view = (DiagramViewPart) workbenchPart;
+            if (workbenchPart instanceof IDiagramWorkbenchPart) {
+                IDiagramWorkbenchPart view = (IDiagramWorkbenchPart) workbenchPart;
                 viewer = view.getContextViewer().getActiveViewer();
-            } else if (workbenchPart instanceof DiagramEditorPart) {
-                DiagramEditorPart editor = (DiagramEditorPart) workbenchPart;
-                viewer = editor.getContextViewer().getActiveViewer();
             } else if (diagramPart instanceof ContextViewer) {
                 ContextViewer contextViewer = (ContextViewer) diagramPart;
                 viewer = contextViewer.getActiveViewer();

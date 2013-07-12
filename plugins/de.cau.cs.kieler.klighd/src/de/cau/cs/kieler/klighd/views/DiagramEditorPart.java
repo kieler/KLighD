@@ -62,7 +62,7 @@ import de.cau.cs.kieler.klighd.viewers.ContextViewer;
  *
  * @author msp
  */
-public class DiagramEditorPart extends EditorPart {
+public class DiagramEditorPart extends EditorPart implements IDiagramWorkbenchPart {
     
     /** the resource set managed by this editor part. */
     private ResourceSet resourceSet;
@@ -169,9 +169,7 @@ public class DiagramEditorPart extends EditorPart {
     }
 
     /**
-     * Returns the context viewer represented by this editor part.
-     * 
-     * @return the context viewer
+     * {@inheritDoc}
      */
     public ContextViewer getContextViewer() {
         return viewer;

@@ -54,7 +54,6 @@ import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Sash;
-import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.ScrolledForm;
 import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
@@ -89,6 +88,7 @@ import de.cau.cs.kieler.klighd.triggers.KlighdSelectionTrigger.KlighdSelectionSt
 import de.cau.cs.kieler.klighd.triggers.KlighdSelectionTrigger.KlighdSelectionState.SelectionElement;
 import de.cau.cs.kieler.klighd.views.DiagramViewManager;
 import de.cau.cs.kieler.klighd.views.DiagramViewPart;
+import de.cau.cs.kieler.klighd.views.IDiagramWorkbenchPart;
 
 /**
  * A viewer for instances of type {@code ViewContext}. It is instantiated by {@link DiagramViewPart}
@@ -112,7 +112,7 @@ public class ContextViewer extends AbstractViewer<Object> implements IViewerEven
         ISelectionProvider {
 
     /** the workbench part for which the viewer is created. */
-    private IWorkbenchPart workbenchPart;
+    private IDiagramWorkbenchPart workbenchPart;
     /** the parent composite for diagram viewers. */
     private Composite diagramComposite;
     /** the id of the view this viewer belongs to. */
@@ -147,7 +147,7 @@ public class ContextViewer extends AbstractViewer<Object> implements IViewerEven
      *            the workbench part this view is attached to
      */
     public ContextViewer(final Composite parent, final String viewId,
-            final IWorkbenchPart workbenchPart) {
+            final IDiagramWorkbenchPart workbenchPart) {
         this.viewId = viewId;
         this.workbenchPart = workbenchPart;
         
@@ -884,11 +884,11 @@ public class ContextViewer extends AbstractViewer<Object> implements IViewerEven
     }
 
     /**
-     * Returns the {@link IWorkbenchPart} this viewer is attached to.
+     * Returns the {@link IDiagramWorkbenchPart} this viewer is attached to.
      * 
      * @return the workbench part
      */
-    public IWorkbenchPart getWorkbenchPart() {
+    public IDiagramWorkbenchPart getWorkbenchPart() {
         return workbenchPart;
     }
 
