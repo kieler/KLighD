@@ -63,7 +63,7 @@ public class RenderingContextData extends KGraphDataImpl {
     /**
      * A predicate definition used to drop inactive nodes while processing the layout input graph.<br>
      * Currently all children of a node are active or non-active at a time, a selective filtering is
-     * not done so far (see e.g. GraphController#addExpansionListener). This might change in future.
+     * not done so far (see e.g. DiagramController#addExpansionListener). This might change in future.
      */
     public static final Predicate<KNode> CHILD_ACTIVE = new Predicate<KNode>() {
         public boolean apply(final KNode node) {
