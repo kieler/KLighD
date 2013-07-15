@@ -13,13 +13,7 @@
  */
 package de.cau.cs.kieler.klighd.piccolo.svg.browsing;
 
-import java.awt.Color;
-
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-
 import de.cau.cs.kieler.core.kgraph.KNode;
-import de.cau.cs.kieler.klighd.piccolo.nodes.PEmptyNode;
 import de.cau.cs.kieler.klighd.piccolo.svg.KlighdSVGGraphicsImpl;
 import edu.umd.cs.piccolo.PNode;
 import edu.umd.cs.piccolo.util.PPaintContext;

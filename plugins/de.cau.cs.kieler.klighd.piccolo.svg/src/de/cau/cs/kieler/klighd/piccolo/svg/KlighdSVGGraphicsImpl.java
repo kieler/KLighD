@@ -32,15 +32,8 @@ import java.awt.image.renderable.RenderableImage;
 import java.io.StringWriter;
 import java.util.Map;
 
-import javax.xml.transform.OutputKeys;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
-
 import org.apache.batik.dom.GenericDOMImplementation;
 import org.apache.batik.svggen.SVGGraphics2D;
-import org.apache.batik.svggen.SVGGraphics2DIOException;
 import org.eclipse.swt.graphics.Device;
 import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.graphics.GC;
@@ -48,12 +41,10 @@ import org.eclipse.swt.graphics.LineAttributes;
 import org.eclipse.swt.graphics.RGB;
 import org.w3c.dom.DOMImplementation;
 import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
 
 import de.cau.cs.kieler.klighd.piccolo.KlighdSWTGraphics;
 import de.cau.cs.kieler.klighd.piccolo.KlighdSWTGraphicsImpl;
-import de.cau.cs.kieler.klighd.piccolo.util.RGBGradient;
+import de.cau.cs.kieler.klighd.piccolo.internal.util.RGBGradient;
 
 /**
  * @author uru
@@ -105,28 +96,28 @@ public class KlighdSVGGraphicsImpl extends KlighdSWTGraphicsImpl implements Klig
         try {
             graphics.stream(sw, true);
 
-//             FIXME otherwise ids are not generated
-//             TransformerFactory transfac = TransformerFactory.newInstance();
-//             Transformer trans = transfac.newTransformer();
-//             trans.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
-//             trans.setOutputProperty(OutputKeys.INDENT, "yes");
-//            
-//             //create string from xml tree
-//             // StringWriter sw = new StringWriter();
-//             sw = new StringWriter();
-//             StreamResult result = new StreamResult(sw);
-//            
-//             Node parent = graphics.getRoot();
-//             while(parent.getParentNode() != null) {
-//             parent = parent.getParentNode();
-//            
-//             }
-//            
-//             DOMSource source = new DOMSource(parent);
-//             trans.transform(source, result);
-//             String xmlString = sw.toString();
+            // FIXME otherwise ids are not generated
+            // TransformerFactory transfac = TransformerFactory.newInstance();
+            // Transformer trans = transfac.newTransformer();
+            // trans.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
+            // trans.setOutputProperty(OutputKeys.INDENT, "yes");
+            //
+            // //create string from xml tree
+            // // StringWriter sw = new StringWriter();
+            // sw = new StringWriter();
+            // StreamResult result = new StreamResult(sw);
+            //
+            // Node parent = graphics.getRoot();
+            // while(parent.getParentNode() != null) {
+            // parent = parent.getParentNode();
+            //
+            // }
+            //
+            // DOMSource source = new DOMSource(parent);
+            // trans.transform(source, result);
+            // String xmlString = sw.toString();
 
-//             System.out.println(sw.toString());
+            // System.out.println(sw.toString());
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -451,7 +442,7 @@ public class KlighdSVGGraphicsImpl extends KlighdSWTGraphicsImpl implements Klig
     @Override
     public void drawRect(double x, double y, double width, double height) {
         super.drawRect(x, y, width, height);
-        graphics.drawRect((int) x, (int) y, (int)width, (int)height);
+        graphics.drawRect((int) x, (int) y, (int) width, (int) height);
     }
 
     /**

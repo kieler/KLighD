@@ -35,17 +35,17 @@ import com.google.common.collect.Maps;
 
 import de.cau.cs.kieler.core.kgraph.KGraphElement;
 import de.cau.cs.kieler.core.kgraph.KNode;
-import de.cau.cs.kieler.klighd.piccolo.INodeSelectionListener;
-import de.cau.cs.kieler.klighd.piccolo.PMouseWheelZoomEventHandler;
-import de.cau.cs.kieler.klighd.piccolo.PSWTSimpleSelectionEventHandler;
-import de.cau.cs.kieler.klighd.piccolo.activities.ZoomActivity;
-import de.cau.cs.kieler.klighd.piccolo.krendering.ITracingElement;
-import de.cau.cs.kieler.klighd.piccolo.krendering.KNodeNode;
-import de.cau.cs.kieler.klighd.piccolo.krendering.controller.GraphController;
-import de.cau.cs.kieler.klighd.piccolo.krendering.viewer.KlighdKeyEventListener;
-import de.cau.cs.kieler.klighd.piccolo.krendering.viewer.KlighdMouseEventListener;
-import de.cau.cs.kieler.klighd.piccolo.nodes.PEmptyNode;
+import de.cau.cs.kieler.klighd.piccolo.internal.activities.ZoomActivity;
+import de.cau.cs.kieler.klighd.piccolo.internal.controller.DiagramController;
+import de.cau.cs.kieler.klighd.piccolo.internal.events.KlighdKeyEventListener;
+import de.cau.cs.kieler.klighd.piccolo.internal.events.KlighdMouseEventListener;
+import de.cau.cs.kieler.klighd.piccolo.internal.events.PMouseWheelZoomEventHandler;
+import de.cau.cs.kieler.klighd.piccolo.internal.events.PSWTSimpleSelectionEventHandler;
+import de.cau.cs.kieler.klighd.piccolo.internal.nodes.ITracingElement;
+import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KNodeNode;
+import de.cau.cs.kieler.klighd.piccolo.internal.nodes.PEmptyNode;
 import de.cau.cs.kieler.klighd.piccolo.svg.KlighdSVGGraphicsImpl;
+import de.cau.cs.kieler.klighd.piccolo.viewer.INodeSelectionListener;
 import de.cau.cs.kieler.klighd.util.RenderingContextData;
 import de.cau.cs.kieler.klighd.viewers.AbstractViewer;
 import de.cau.cs.kieler.klighd.viewers.ContextViewer;
@@ -72,7 +72,7 @@ public class PiccoloSVGBrowseViewer extends AbstractViewer<KNode> implements INo
     private PSWTSimpleSelectionEventHandler selectionHandler = null;
 
     /** the graph controller. */
-    private GraphController controller;
+    private DiagramController controller;
 
     private KlighdSVGGraphicsImpl graphics;
     
@@ -252,7 +252,7 @@ public class PiccoloSVGBrowseViewer extends AbstractViewer<KNode> implements INo
         resizeAndResetLayers(2);
 
         // create a controller for the graph
-        controller = new GraphController(model, camera.getLayer(0), sync);
+        controller = new DiagramController(model, camera.getLayer(0), sync);
         controller.initialize();
 
         // add a node for the marquee
@@ -456,7 +456,7 @@ public class PiccoloSVGBrowseViewer extends AbstractViewer<KNode> implements INo
     private PNode getRepresentation(final Object diagramElement) {
         if (diagramElement instanceof KGraphElement) {
             KGraphElement element = (KGraphElement) diagramElement;
-            PNode node = RenderingContextData.get(element).getProperty(GraphController.REP);
+            PNode node = RenderingContextData.get(element).getProperty(DiagramController.REP);
             if (node != null && node.getRoot() == canvas.getRoot()) {
                 return node;
             }

@@ -17,7 +17,6 @@ import java.awt.Graphics2D;
 import java.awt.event.InputEvent;
 
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.DisposeEvent;
@@ -34,18 +33,16 @@ import com.google.common.collect.Iterables;
 
 import de.cau.cs.kieler.core.kgraph.KGraphElement;
 import de.cau.cs.kieler.core.kgraph.KNode;
-import de.cau.cs.kieler.klighd.piccolo.INodeSelectionListener;
-import de.cau.cs.kieler.klighd.piccolo.PMouseWheelZoomEventHandler;
-import de.cau.cs.kieler.klighd.piccolo.PSWTSimpleSelectionEventHandler;
-import de.cau.cs.kieler.klighd.piccolo.activities.ZoomActivity;
-import de.cau.cs.kieler.klighd.piccolo.krendering.ITracingElement;
-import de.cau.cs.kieler.klighd.piccolo.krendering.controller.GraphController;
-import de.cau.cs.kieler.klighd.piccolo.krendering.viewer.KlighdKeyEventListener;
-import de.cau.cs.kieler.klighd.piccolo.krendering.viewer.KlighdMouseEventListener;
-import de.cau.cs.kieler.klighd.piccolo.krendering.viewer.PiccoloOutlinePage;
-import de.cau.cs.kieler.klighd.piccolo.nodes.PEmptyNode;
-import de.cau.cs.kieler.klighd.piccolo.ui.Messages;
-import de.cau.cs.kieler.klighd.piccolo.ui.SaveAsImageAction;
+import de.cau.cs.kieler.klighd.piccolo.internal.activities.ZoomActivity;
+import de.cau.cs.kieler.klighd.piccolo.internal.controller.DiagramController;
+import de.cau.cs.kieler.klighd.piccolo.internal.events.KlighdKeyEventListener;
+import de.cau.cs.kieler.klighd.piccolo.internal.events.KlighdMouseEventListener;
+import de.cau.cs.kieler.klighd.piccolo.internal.events.PMouseWheelZoomEventHandler;
+import de.cau.cs.kieler.klighd.piccolo.internal.events.PSWTSimpleSelectionEventHandler;
+import de.cau.cs.kieler.klighd.piccolo.internal.nodes.ITracingElement;
+import de.cau.cs.kieler.klighd.piccolo.internal.nodes.PEmptyNode;
+import de.cau.cs.kieler.klighd.piccolo.viewer.INodeSelectionListener;
+import de.cau.cs.kieler.klighd.piccolo.viewer.PiccoloOutlinePage;
 import de.cau.cs.kieler.klighd.util.RenderingContextData;
 import de.cau.cs.kieler.klighd.viewers.AbstractViewer;
 import de.cau.cs.kieler.klighd.viewers.ContextViewer;
@@ -76,7 +73,7 @@ public class PiccoloSVGViewer extends AbstractViewer<KNode> implements INodeSele
     /** the parent viewer. */
     private ContextViewer parentViewer;
     /** the graph controller. */
-    private GraphController controller;
+    private DiagramController controller;
 
     /**
      * Creates a Piccolo viewer with default style.
@@ -280,7 +277,7 @@ public class PiccoloSVGViewer extends AbstractViewer<KNode> implements INodeSele
         resizeAndResetLayers(2);
 
         // create a controller for the graph
-        controller = new GraphController(model, camera.getLayer(0), sync);
+        controller = new DiagramController(model, camera.getLayer(0), sync);
         controller.initialize();
 
         // update the outline page
@@ -487,7 +484,7 @@ public class PiccoloSVGViewer extends AbstractViewer<KNode> implements INodeSele
     private PNode getRepresentation(final Object diagramElement) {
         if (diagramElement instanceof KGraphElement) {
             KGraphElement element = (KGraphElement) diagramElement;
-            PNode node = RenderingContextData.get(element).getProperty(GraphController.REP);
+            PNode node = RenderingContextData.get(element).getProperty(DiagramController.REP);
             if (node != null && node.getRoot() == canvas.getRoot()) {
                 return node;
             }

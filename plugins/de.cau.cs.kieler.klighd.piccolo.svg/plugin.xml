@@ -2,10 +2,10 @@
 <?eclipse version="3.4"?>
 <plugin>
    <extension
-         point="de.cau.cs.kieler.klighd.viewerProviders">
+         point="de.cau.cs.kieler.klighd.extensions">
       <viewer
             class="de.cau.cs.kieler.klighd.piccolo.svg.PiccoloSVGViewerProvider"
-            id="de.cau.cs.kieler.klighd.piccolo.svg.piccoloViewer">
+            id="de.cau.cs.kieler.klighd.piccolo.svg.viewer">
       </viewer>
    </extension>
 </plugin>

@@ -279,7 +279,9 @@ public class BrowsingSVGServer extends Server {
 
                         System.out.println(r.getContents().get(0));
 
-                        currentModel = LightDiagramServices.translateModel(r.getContents().get(0));
+                        currentModel =
+                                LightDiagramServices.translateModel(new ViewContext(), r
+                                        .getContents().get(0));
 
                         // System.out.println(o);
                         viewer.getCanvas().setBounds(0, 0, 870, 600);
@@ -371,7 +373,7 @@ public class BrowsingSVGServer extends Server {
                             // camera.scaleViewAboutPoint(scaleDelta, viewZoomPoint.getX(),
                             // viewZoomPoint.getY());
                             camera.scaleViewAboutPoint(scaleDelta, 0, 0);
-                            
+
                             viewer.globalRedraw();
 
                         }
