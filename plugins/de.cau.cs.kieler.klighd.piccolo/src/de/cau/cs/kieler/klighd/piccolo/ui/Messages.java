@@ -30,6 +30,7 @@ public class Messages extends NLS {
     public static String SaveAsImageDialog_is_workspace_path_caption;
     public static String SaveAsImageDialog_path_is_not_valid_error;
     public static String SaveAsImageDialog_save_as_caption;
+    public static String SaveAsImageDialog_scale_factor;
     public static String SaveAsImageDialog_title;
     public static String SaveAsImageDialog_use_camera_viewport_caption;
 

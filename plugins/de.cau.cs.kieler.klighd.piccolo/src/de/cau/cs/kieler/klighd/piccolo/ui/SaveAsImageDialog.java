@@ -40,6 +40,7 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.Slider;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.dialogs.SaveAsDialog;
 
@@ -69,10 +70,13 @@ public class SaveAsImageDialog extends Dialog {
     /** the preference key for the camera viewport. */
     private static final String PREFERENCE_CAMERA_VIEWPORT
         = "saveAsImageDialog.cameraViewport"; //$NON-NLS-1$
+    /** the preference key for the scale factor. */
+    private static final String PREFERENCE_SCALE_FACTOR
+        = "saveAsImageDialog.scaleFactor"; //$NON-NLS-1$
 
     /** the available image formats. */
     private static final String[] IMAGE_FORMATS
-        = { "BMP", "JPG", "PNG" }; //$NON-NLS-1$
+        = { "BMP", "JPG", "PNG" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
     /** the preference store. */
     private IPreferenceStore preferenceStore = null;
@@ -89,6 +93,8 @@ public class SaveAsImageDialog extends Dialog {
     private Label messageImageLabel;
     /** the message label. */
     private Label messageLabel;
+    
+    private Slider scaleSlider;
 
     /** the selected path. */
     private IPath path;
@@ -98,6 +104,8 @@ public class SaveAsImageDialog extends Dialog {
     private int swtImageFormat;
     /** whether to render through the camera viewport. */
     private boolean cameraViewport;
+    /** the selected scaleFactor. */
+    private int scaleFactor;
 
     /**
      * Constructs the dialog for saving a Piccolo scene graph as an image.
@@ -198,10 +206,13 @@ public class SaveAsImageDialog extends Dialog {
         });
     }
 
+    private static final int IMAGE_FORMAT_GROUP_COLUMNS = 3;
     private static final int IMAGE_FORMAT_COMBO_WIDTH_HINT = 210;
+    private static final int IMAGE_FORMAT_SLIDER_MAX = 16;
+    
 
     private void createImageFormatGroup(final Composite parent) {
-        Composite composite = createComposite(parent, 2);
+        final Composite composite = createComposite(parent, IMAGE_FORMAT_GROUP_COLUMNS);
 
         // label
         Label label = new Label(composite, SWT.NONE);
@@ -222,7 +233,37 @@ public class SaveAsImageDialog extends Dialog {
         });
         GridData gridData = new GridData(SWT.NONE);
         gridData.widthHint = IMAGE_FORMAT_COMBO_WIDTH_HINT;
+        gridData.horizontalSpan = 2;
         imageFormatCombo.setLayoutData(gridData);
+
+        label = new Label(composite, SWT.NONE);
+        label.setText(Messages.SaveAsImageDialog_scale_factor);
+
+        scaleSlider = new Slider(composite, SWT.NONE);
+        scaleSlider.setToolTipText("Scale factor"); //$NON-NLS-1$
+        scaleSlider.setMinimum(1);
+        scaleSlider.setMaximum(IMAGE_FORMAT_SLIDER_MAX);
+        scaleSlider.setThumb(1);
+        scaleSlider.setSelection(preferenceStore.getInt(PREFERENCE_SCALE_FACTOR));
+
+        gridData = new GridData(SWT.LEFT, SWT.CENTER, true, false);
+        gridData.minimumWidth = FILE_TEXT_WIDTH_HINT;
+        scaleSlider.setLayoutData(gridData);
+
+        final Label scaleVal = new Label(composite, SWT.BORDER);
+        scaleVal.setText(String.valueOf(scaleSlider.getSelection()));
+        gridData = new GridData(GridData.FILL_HORIZONTAL);
+        scaleVal.setLayoutData(gridData);
+
+        scaleSlider.addSelectionListener(new SelectionAdapter() {            
+            public void widgetSelected(final SelectionEvent e) {
+                Slider s = ((Slider) e.widget);
+                int n = s.getSelection();
+                scaleVal.setText(String.valueOf(n));
+                composite.layout();
+            }
+        });
+    
     }
 
     private void createOptionsGroup(final Composite parent) {
@@ -369,11 +410,10 @@ public class SaveAsImageDialog extends Dialog {
 
     private Composite createComposite(final Composite parent, final int columns) {
         Composite composite = new Composite(parent, SWT.NONE);
-        GridLayout gridLayout = new GridLayout();
-        gridLayout.numColumns = columns;
+        GridLayout gridLayout = new GridLayout(columns, false);
         gridLayout.marginHeight = 0;
         gridLayout.marginWidth = 0;
-        gridLayout.makeColumnsEqualWidth = false;
+
         GridData data = new GridData(SWT.FILL, SWT.NONE, true, false);
         composite.setLayoutData(data);
         composite.setLayout(gridLayout);
@@ -425,6 +465,15 @@ public class SaveAsImageDialog extends Dialog {
     }
 
     /**
+     * Returns the scale factor to apply to the image while saving.
+     * 
+     * @return the the scale factor in range of 1 to {@link #IMAGE_FORMAT_SLIDER_MAX}-1.
+     */
+    public int getScaleFactor() {
+        return scaleFactor;
+    }
+
+    /**
      * Returns whether to render the image through the camera viewport.
      * 
      * @return true to render the image through the camera viewport; false to render the whole scene
@@ -444,6 +493,7 @@ public class SaveAsImageDialog extends Dialog {
         preferenceStore.setValue(PREFERENCE_WORKSPACE_PATH, workspacePathCheckbox.getSelection());
         preferenceStore.setValue(PREFERENCE_IMAGE_FORMAT, imageFormatCombo.getSelectionIndex());
         preferenceStore.setValue(PREFERENCE_CAMERA_VIEWPORT, cameraViewportCheckbox.getSelection());
+        preferenceStore.setValue(PREFERENCE_SCALE_FACTOR, scaleSlider.getSelection());
         return super.close();
     }
 
@@ -460,6 +510,7 @@ public class SaveAsImageDialog extends Dialog {
         workspacePath = workspacePathCheckbox.getSelection();
         swtImageFormat = swtImageFormatByIndex(imageFormatCombo.getSelectionIndex());
         cameraViewport = cameraViewportCheckbox.getSelection();
+        scaleFactor = scaleSlider.getSelection();
         // has to be last because it disposes the dialog
         super.okPressed();
     }
