@@ -14,13 +14,17 @@
 package de.cau.cs.kieler.core.kgraph.text;
 
 /**
- * Initialization support for running Xtext languages 
- * without equinox extension registry
+ * Initialization support for running Xtext languages without equinox extension registry.
+ * 
+ * @author msp
  */
-public class KGraphStandaloneSetup extends KGraphStandaloneSetupGenerated{
+public class KGraphStandaloneSetup extends KGraphStandaloneSetupGenerated {
 
-	public static void doSetup() {
-		new KGraphStandaloneSetup().createInjectorAndDoEMFRegistration();
-	}
+    /**
+     * Create an injector and do EMF registration.
+     */
+    public static void doSetup() {
+        new KGraphStandaloneSetup().createInjectorAndDoEMFRegistration();
+    }
+    
 }
-

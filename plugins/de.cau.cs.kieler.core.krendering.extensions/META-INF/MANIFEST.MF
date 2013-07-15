@@ -7,14 +7,12 @@ Bundle-Activator: de.cau.cs.kieler.core.krendering.extensions.KRenderingExtensio
 Bundle-Vendor: Christian-Albrechts-Universität zu Kiel
 Require-Bundle: org.eclipse.core.runtime,
  javax.inject;bundle-version="1.0.0",
+ com.google.inject;bundle-version="3.0.0",
  org.eclipse.xtext.xbase.lib;bundle-version="2.3.0",
- org.eclipse.xtend.lib;bundle-version="2.3.0",
  de.cau.cs.kieler.core;bundle-version="0.8.0",
- de.cau.cs.kieler.core.annotations;bundle-version="0.3.0",
  de.cau.cs.kieler.core.kgraph;bundle-version="0.4.1",
  de.cau.cs.kieler.core.krendering;bundle-version="0.1.0",
- de.cau.cs.kieler.kiml;bundle-version="0.11.0",
- com.google.inject;bundle-version="3.0.0"
+ de.cau.cs.kieler.kiml;bundle-version="0.11.0"
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Bundle-ActivationPolicy: lazy
 Export-Package: de.cau.cs.kieler.core.krendering.extensions

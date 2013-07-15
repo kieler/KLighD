@@ -53,21 +53,15 @@ public class RandomGraphAnyPage extends WizardPage {
         this.options = options;
     }
 
+    // CHECKSTYLEOFF MagicNumber
+    
     /**
      * {@inheritDoc}
      */
     public void createControl(final Composite parent) {
         Composite composite = new Composite(parent, SWT.NONE);
-        GridLayout layout = new GridLayout();
-        composite.setLayout(layout);
-        createOptions(composite);
-        setControl(composite);
-    }
-
-    // CHECKSTYLEOFF MagicNumber
-    private void createOptions(final Composite parent) {
-        Composite composite = new Composite(parent, SWT.NONE);
         composite.setLayoutData(new GridData(SWT.FILL, SWT.NONE, true, false));
+        setControl(composite);
         
         GridLayout layout = new GridLayout(1, false);
         layout.verticalSpacing = 10;
@@ -85,39 +79,29 @@ public class RandomGraphAnyPage extends WizardPage {
      * @param composite the composite to add the group to.
      */
     private void createNodesGroup(final Composite composite) {
-        GridData gridData;
-        
-        // Nodes group
         Group nodesGroup = new Group(composite, SWT.NONE);
         nodesGroup.setText(Messages.RandomGraphAnyPage_nodes_group_caption);
         nodesGroup.setLayout(new GridLayout(2, false));
         nodesGroup.setLayoutData(new GridData(SWT.FILL, SWT.NONE, true, false));
         
-        // Number of Nodes
+        // Minimum number of Nodes
         Label label = new Label(nodesGroup, SWT.NONE);
-        label.setText(Messages.RandomGraphAnyPage_number_of_nodes_caption);
-        label.setLayoutData(new GridData(SWT.LEFT, SWT.NONE, false, false, 2, 1));
-        
-        label = new Label(nodesGroup, SWT.NONE);
         label.setText(Messages.RandomGraphAnyPage_number_of_nodes_min);
-        
         final Spinner nodesMinSpinner = new Spinner(nodesGroup, SWT.BORDER | SWT.SINGLE);
         nodesMinSpinner.setToolTipText(Messages.RandomGraphAnyPage_number_of_nodes_min_help);
         nodesMinSpinner.setValues(options.getProperty(GeneratorOptions.NUMBER_OF_NODES_MIN),
                 1, Integer.MAX_VALUE, 0, 1, 10);
-        
-        gridData = new GridData(SWT.LEFT, SWT.NONE, false, false);
+        GridData gridData = new GridData(SWT.LEFT, SWT.NONE, false, false);
         gridData.widthHint = 80;
         nodesMinSpinner.setLayoutData(gridData);
-        
+
+        // Maximum number of Nodes
         label = new Label(nodesGroup, SWT.NONE);
         label.setText(Messages.RandomGraphAnyPage_number_of_nodes_max);
-        
         final Spinner nodesMaxSpinner = new Spinner(nodesGroup, SWT.BORDER | SWT.SINGLE);
         nodesMaxSpinner.setToolTipText(Messages.RandomGraphAnyPage_number_of_nodes_max_help);
         nodesMaxSpinner.setValues(options.getProperty(GeneratorOptions.NUMBER_OF_NODES_MAX),
                 1, Integer.MAX_VALUE, 0, 1, 10);
-        
         gridData = new GridData(SWT.LEFT, SWT.NONE, false, false);
         gridData.widthHint = 80;
         nodesMaxSpinner.setLayoutData(gridData);
@@ -146,9 +130,6 @@ public class RandomGraphAnyPage extends WizardPage {
      * @param composite the composite to add the group to.
      */
     private void createEdgeGroup(final Composite composite) {
-        GridData gridData;
-        
-        // Edges Group
         Group edgeGroup = new Group(composite, SWT.NONE);
         edgeGroup.setText(Messages.RandomGraphAnyPage_edges_group_caption);
         edgeGroup.setLayout(new GridLayout(4, false));
@@ -170,7 +151,7 @@ public class RandomGraphAnyPage extends WizardPage {
                 0, Integer.MAX_VALUE, 0, 1, 10);
         edgesSpinner.setEnabled(false);
         
-        gridData = new GridData(SWT.LEFT, SWT.NONE, false, false);
+        GridData gridData = new GridData(SWT.LEFT, SWT.NONE, false, false);
         gridData.widthHint = 80;
         edgesSpinner.setLayoutData(gridData);
         
@@ -438,7 +419,6 @@ public class RandomGraphAnyPage extends WizardPage {
      * @param composite the composite to add the group to.
      */
     private void createGraphPropertiesGroup(final Composite composite) {
-        // Graph Properties Group
         Group optionsGroup = new Group(composite, SWT.NONE);
         optionsGroup.setText(Messages.RandomGraphAnyPage_options_group_caption);
         optionsGroup.setLayout(new RowLayout(SWT.VERTICAL));
@@ -501,14 +481,16 @@ public class RandomGraphAnyPage extends WizardPage {
         if (options.getProperty(GeneratorOptions.NUMBER_OF_NODES_MIN)
                 > options.getProperty(GeneratorOptions.NUMBER_OF_NODES_MAX)) {
             setErrorMessage(Messages.RandomGraphAnyPage_number_of_nodes_error);
-            return;
-        }
-        if (options.getProperty(GeneratorOptions.MIN_OUTGOING_EDGES)
+            setPageComplete(false);
+        } else if (options.getProperty(GeneratorOptions.MIN_OUTGOING_EDGES)
                 > options.getProperty(GeneratorOptions.MAX_OUTGOING_EDGES)) {
             setErrorMessage(Messages.RandomGraphAnyPage_outgoing_edges_error);
+            setPageComplete(false);
             return;
+        } else {
+            setErrorMessage(null);
+            setPageComplete(true);
         }
-        setErrorMessage(null);
     }
     
 }

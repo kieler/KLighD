@@ -24,7 +24,7 @@ import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.LineAttributes;
 import org.eclipse.swt.graphics.RGB;
 
-import de.cau.cs.kieler.klighd.piccolo.util.RGBGradient;
+import de.cau.cs.kieler.klighd.piccolo.internal.util.RGBGradient;
 
 /**
  * This interface defines methods to be used by custom {@link edu.umd.cs.piccolo.PNode PNode}
@@ -139,8 +139,10 @@ public interface KlighdSWTGraphics {
     /**
      * Sets the alpha value to be used during the subsequent paint instructions.<br>
      * <b>Caution:</b> This value will also set by Piccolo for realizing the transparency. That
-     * feature is used in the {@link de.cau.cs.kieler.klighd.piccolo.activities.FadeNodeInActivity
-     * FadeNodeInActivity} and {@link de.cau.cs.kieler.klighd.piccolo.activities.FadeEdgeInActivity
+     * feature is used in the
+     * {@link de.cau.cs.kieler.klighd.piccolo.internal.activities.FadeNodeInActivity
+     * FadeNodeInActivity} and
+     * {@link de.cau.cs.kieler.klighd.piccolo.internal.activities.FadeEdgeInActivity
      * FadeEdgeInActivity} activities. Thus do <b>not</b> set the alpha to an absolute value, but to
      * a relative one. The current value can be obtain by {@link #getAlpha()}.
      * 

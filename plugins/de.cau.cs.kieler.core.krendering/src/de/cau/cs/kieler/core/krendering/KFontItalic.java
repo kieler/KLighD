@@ -33,6 +33,7 @@ package de.cau.cs.kieler.core.krendering;
 public interface KFontItalic extends KStyle {
     /**
      * Returns the value of the '<em><b>Italic</b></em>' attribute.
+     * The default value is <code>"true"</code>.
      * <!-- begin-user-doc -->
      * <p>
      * If the meaning of the '<em>Italic</em>' attribute isn't clear,
@@ -42,7 +43,7 @@ public interface KFontItalic extends KStyle {
      * @return the value of the '<em>Italic</em>' attribute.
      * @see #setItalic(boolean)
      * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKFontItalic_Italic()
-     * @model required="true"
+     * @model default="true" required="true"
      * @generated
      */
     boolean isItalic();

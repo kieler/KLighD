@@ -25,13 +25,17 @@ import java.util.Random;
 import com.google.common.collect.Lists;
 
 import de.cau.cs.kieler.core.kgraph.KEdge;
-import de.cau.cs.kieler.core.kgraph.KGraphFactory;
 import de.cau.cs.kieler.core.kgraph.KLabel;
 import de.cau.cs.kieler.core.kgraph.KNode;
 import de.cau.cs.kieler.core.kgraph.KPort;
 import de.cau.cs.kieler.core.util.Pair;
+import de.cau.cs.kieler.kiml.klayoutdata.KIdentifier;
+import de.cau.cs.kieler.kiml.klayoutdata.KLayoutDataFactory;
 import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout;
 import de.cau.cs.kieler.kiml.options.LayoutOptions;
+import de.cau.cs.kieler.kiml.options.PortConstraints;
+import de.cau.cs.kieler.kiml.options.PortSide;
+import de.cau.cs.kieler.kiml.util.KimlUtil;
 
 /**
  * The random graph generator for KGraphs.
@@ -40,16 +44,22 @@ import de.cau.cs.kieler.kiml.options.LayoutOptions;
  * @author msp
  */
 public class RandomGraphGenerator {
-
-    /** the KGraph factory. */
-    private static KGraphFactory factory = KGraphFactory.eINSTANCE;
+    
+    /** the fixed width of ports. */
+    public static final float PORT_WIDTH = 4.0f;
+    /** the fixed height of ports. */
+    public static final float PORT_HEIGHT = 4.0f;
+    /** minimal separation of ports. */
+    public static final float PORT_SEPARATION = 7.0f;
 
     /** the generator options holder. */
     private GeneratorOptions options;
     /** the random number generator used to generate the graph. */
     private Random random;
-    /** the label counter used to generate labels. */
-    private int labelCounter = 0;
+    /** the counter used to generate node labels. */
+    private int nodeLabelCounter;
+    /** the counter used to generate port labels. */
+    private int portLabelCounter;
     
     /**
      * Create a random graph generator with given random number generator.
@@ -63,36 +73,41 @@ public class RandomGraphGenerator {
     /**
      * {@inheritDoc}
      */
-    public KNode generate(final GeneratorOptions options) {
+    public KNode generate(final GeneratorOptions genOptions) {
         // reset the generator
-        labelCounter = 0;
-        this.options = options;
-        // generate the graph
-        KNode graph = factory.createKNode();
+        nodeLabelCounter = 0;
+        portLabelCounter = 0;
+        this.options = genOptions;
+        if (!genOptions.getProperty(GeneratorOptions.ENABLE_HIERARCHY)) {
+            genOptions.setProperty(GeneratorOptions.HIERARCHY_CHANCE, 0.0f);
+        }
         
-        switch (options.getProperty(GeneratorOptions.GRAPH_TYPE)) {
+        // generate the graph
+        KNode graph = KimlUtil.createInitializedNode();
+        
+        switch (genOptions.getProperty(GeneratorOptions.GRAPH_TYPE)) {
         case ANY: {
-            int minNodes = options.getProperty(GeneratorOptions.NUMBER_OF_NODES_MIN);
-            int maxNodes = options.getProperty(GeneratorOptions.NUMBER_OF_NODES_MAX);
+            int minNodes = genOptions.getProperty(GeneratorOptions.NUMBER_OF_NODES_MIN);
+            int maxNodes = genOptions.getProperty(GeneratorOptions.NUMBER_OF_NODES_MAX);
             int n = randomInt(minNodes, maxNodes);
-            int m = options.getProperty(GeneratorOptions.NUMBER_OF_EDGES);
-            int minOut = options.getProperty(GeneratorOptions.MIN_OUTGOING_EDGES);
-            int maxOut = options.getProperty(GeneratorOptions.MAX_OUTGOING_EDGES);
-            switch (options.getProperty(GeneratorOptions.EDGE_DETERMINATION)) {
+            int m = genOptions.getProperty(GeneratorOptions.NUMBER_OF_EDGES);
+            int minOut = genOptions.getProperty(GeneratorOptions.MIN_OUTGOING_EDGES);
+            int maxOut = genOptions.getProperty(GeneratorOptions.MAX_OUTGOING_EDGES);
+            switch (genOptions.getProperty(GeneratorOptions.EDGE_DETERMINATION)) {
             case GRAPH_EDGES: {
-                int var = options.getProperty(GeneratorOptions.EDGES_VARIANCE);
+                int var = genOptions.getProperty(GeneratorOptions.EDGES_VARIANCE);
                 if (var > 0) {
                     m += Math.round(random.nextGaussian() * var);
                 }
                 if (m < 0) {
                     m = 0;
                 }
-                createAnyGraph(graph, n, m, 0);
+                generateAnyGraph(graph, n, m, 0);
                 break;
             }
             case RELATIVE: {
-                double rel = options.getProperty(GeneratorOptions.EDGES_RELATIVE);
-                double var = options.getProperty(GeneratorOptions.EDGES_REL_VARIANCE);
+                double rel = genOptions.getProperty(GeneratorOptions.EDGES_RELATIVE);
+                double var = genOptions.getProperty(GeneratorOptions.EDGES_REL_VARIANCE);
                 if (var > 0) {
                     rel += random.nextGaussian() * var;
                 }
@@ -100,12 +115,12 @@ public class RandomGraphGenerator {
                 if (m < 0) {
                     m = 0;
                 }
-                createAnyGraph(graph, n, m, 0);
+                generateAnyGraph(graph, n, m, 0);
                 break;
             }
             case DENSITY: {
-                double d = options.getProperty(GeneratorOptions.DENSITY);
-                double var = options.getProperty(GeneratorOptions.DENSITY_VARIANCE);
+                double d = genOptions.getProperty(GeneratorOptions.DENSITY);
+                double var = genOptions.getProperty(GeneratorOptions.DENSITY_VARIANCE);
                 if (var > 0) {
                     d += random.nextGaussian() * var;
                 }
@@ -113,17 +128,17 @@ public class RandomGraphGenerator {
                 if (m < 0) {
                     m = 0;
                 }
-                createAnyGraph(graph, n, m, 0);
+                generateAnyGraph(graph, n, m, 0);
                 break;
             }
             case OUTGOING_EDGES: {
-                createAnyGraph(graph, n, minOut, maxOut, 0);
+                generateAnyGraph(graph, n, minOut, maxOut, 0);
                 break;
             }
             default:
                 throw new IllegalArgumentException("Selected edge determination is not supported.");
             }
-            if (options.getProperty(GeneratorOptions.CROSS_HIERARCHY_EDGES)) {
+            if (genOptions.getProperty(GeneratorOptions.CROSS_HIERARCHY_EDGES)) {
                 // collect all created nodes and create edges arbitrarily
                 List<KNode> nodes = new LinkedList<KNode>();
                 LinkedList<KNode> nodeStack = new LinkedList<KNode>();
@@ -137,7 +152,7 @@ public class RandomGraphGenerator {
                 } while (!nodeStack.isEmpty());
                 
                 int[] outgoingEdges;
-                switch (options.getProperty(GeneratorOptions.EDGE_DETERMINATION)) {
+                switch (genOptions.getProperty(GeneratorOptions.EDGE_DETERMINATION)) {
                 case GRAPH_EDGES:
                     outgoingEdges = determineOutgoingEdges(nodes, m);
                     connectRandomlyAndConditional(nodes, outgoingEdges, basicCondition);
@@ -152,47 +167,54 @@ public class RandomGraphGenerator {
         }
         
         case TREE: {
-            int n = options.getProperty(GeneratorOptions.NUMBER_OF_NODES);
-            int maxDegree = options.getProperty(GeneratorOptions.MAX_DEGREE);
-            int maxWidth = options.getProperty(GeneratorOptions.MAX_WIDTH);
-            createTree(graph, n, maxDegree, maxWidth, 0);
+            int n = genOptions.getProperty(GeneratorOptions.NUMBER_OF_NODES);
+            int maxDegree = genOptions.getProperty(GeneratorOptions.MAX_DEGREE);
+            int maxWidth = genOptions.getProperty(GeneratorOptions.MAX_WIDTH);
+            generateTree(graph, n, maxDegree, maxWidth, 0);
             break;
         }
         
         case BICONNECTED: {
-            int n = options.getProperty(GeneratorOptions.NUMBER_OF_NODES);
-            int m = options.getProperty(GeneratorOptions.NUMBER_OF_EDGES);
-            createBiconnectedGraph(graph, n, m, 0);
+            int n = genOptions.getProperty(GeneratorOptions.NUMBER_OF_NODES);
+            int m = genOptions.getProperty(GeneratorOptions.NUMBER_OF_EDGES);
+            generateBiconnectedGraph(graph, n, m, 0);
             break;
         }
         
         case TRICONNECTED: {
-            int n = options.getProperty(GeneratorOptions.NUMBER_OF_NODES);
+            int n = genOptions.getProperty(GeneratorOptions.NUMBER_OF_NODES);
             float p1 = random.nextFloat();
             float p2 = 1.0f - p1;
-            createTriconnectedGraph(graph, n, p1, p2, 0);
+            generateTriconnectedGraph(graph, n, p1, p2, 0);
             break;
         }
         
         case ACYCLIC_NO_TRANSITIVE_EDGES: {
-            int n = options.getProperty(GeneratorOptions.NUMBER_OF_NODES);
-            int m = options.getProperty(GeneratorOptions.NUMBER_OF_EDGES);
-            boolean planar = options.getProperty(GeneratorOptions.PLANAR);
-            createANTEGraph(graph, n, m, planar, false, false, 0);
+            int n = genOptions.getProperty(GeneratorOptions.NUMBER_OF_NODES);
+            int m = genOptions.getProperty(GeneratorOptions.NUMBER_OF_EDGES);
+            boolean planar = genOptions.getProperty(GeneratorOptions.PLANAR);
+            generateANTEGraph(graph, n, m, planar, false, 0);
             break;
         }
         
         }
         
         // remove isolated nodes if requested
-        if (!options.getProperty(GeneratorOptions.ISOLATED_NODES)) {
-            ListIterator<KNode> nodeIter = graph.getChildren().listIterator();
-            while (nodeIter.hasNext()) {
-                KNode node = nodeIter.next();
-                if (node.getIncomingEdges().isEmpty() && node.getOutgoingEdges().isEmpty()) {
-                    nodeIter.remove();
-                }
-            }
+        if (!genOptions.getProperty(GeneratorOptions.ISOLATED_NODES)) {
+            removeIsolatedNodes(graph);
+        }
+        
+        // if ports require a predefined position, assign it to all ports
+        if (genOptions.getProperty(GeneratorOptions.ENABLE_PORTS)
+                && genOptions.getProperty(GeneratorOptions.PORT_CONSTRAINTS)
+                == PortConstraints.FIXED_POS) {
+            LinkedList<KNode> nodeQueue = new LinkedList<KNode>();
+            nodeQueue.add(graph);
+            do {
+                KNode node = nodeQueue.removeFirst();
+                distributePorts(node);
+                nodeQueue.addAll(node.getChildren());
+            } while (!nodeQueue.isEmpty());
         }
         
         return graph;
@@ -226,7 +248,7 @@ public class RandomGraphGenerator {
      * @param hierarchyLevel
      *            the current hierarchy level
      */
-    private void createAnyGraph(final KNode parent, final int n, final int m,
+    private void generateAnyGraph(final KNode parent, final int n, final int m,
             final int hierarchyLevel) {
         // create the nodes
         List<KNode> nodes = createIndependentSet(parent, n);
@@ -249,7 +271,7 @@ public class RandomGraphGenerator {
                     // preserve density for number of edges
                     float density = (float) m / (n * n);
                     int cm = (int) density * cn * cn;
-                    createAnyGraph(node, cn, cm, hierarchyLevel + 1);
+                    generateAnyGraph(node, cn, cm, hierarchyLevel + 1);
                 }
             }
         }
@@ -269,7 +291,7 @@ public class RandomGraphGenerator {
      * @param hierarchyLevel
      *            the current hierarchy level
      */
-    private void createAnyGraph(final KNode parent, final int n, final int minOut,
+    private void generateAnyGraph(final KNode parent, final int n, final int minOut,
             final int maxOut, final int hierarchyLevel) {
         // create the nodes
         List<KNode> nodes = createIndependentSet(parent, n);
@@ -289,7 +311,7 @@ public class RandomGraphGenerator {
                     float hierarchyNodesFactor = options.getProperty(
                             GeneratorOptions.HIERARCHY_NODES_FACTOR);
                     int cn = randomInt(1, (int) (hierarchyNodesFactor * n));
-                    createAnyGraph(node, cn, minOut, maxOut, hierarchyLevel + 1);
+                    generateAnyGraph(node, cn, minOut, maxOut, hierarchyLevel + 1);
                 }
             }
         }
@@ -309,7 +331,7 @@ public class RandomGraphGenerator {
      * @param hierarchyLevel
      *            the current hierarchy level
      */
-    private void createTree(final KNode parent, final int n, final int maxDeg, final int maxWidth,
+    private void generateTree(final KNode parent, final int n, final int maxDeg, final int maxWidth,
             final int hierarchyLevel) {
         int max = 0;
         int nodeIdCounter = 0;
@@ -357,7 +379,7 @@ public class RandomGraphGenerator {
                     float hierarchyNodesFactor = options.getProperty(
                             GeneratorOptions.HIERARCHY_NODES_FACTOR);
                     int cn = randomInt(1, (int) (hierarchyNodesFactor * n));
-                    createTree(node, cn, maxDeg, maxWidth, hierarchyLevel + 1);
+                    generateTree(node, cn, maxDeg, maxWidth, hierarchyLevel + 1);
                 }
             }
         }
@@ -377,7 +399,7 @@ public class RandomGraphGenerator {
      *            the current hierarchy level
      */
     // CHECKSTYLEOFF MagicNumber
-    private void createBiconnectedGraph(final KNode parent, final int n, final int m,
+    private void generateBiconnectedGraph(final KNode parent, final int n, final int m,
             final int hierarchyLevel) {
         int realN = Math.max(3, n);
         int realM = Math.max(m, realN);
@@ -427,7 +449,7 @@ public class RandomGraphGenerator {
                     // preserve density for number of edges
                     float density = (float) m / (n * n);
                     int cm = (int) density * cn * cn;
-                    createBiconnectedGraph(node, cn, cm, hierarchyLevel + 1);
+                    generateBiconnectedGraph(node, cn, cm, hierarchyLevel + 1);
                 }
             }
         }
@@ -451,7 +473,7 @@ public class RandomGraphGenerator {
      *            the current hierarchy level
      */
     // CHECKSTYLEOFF MagicNumber
-    private void createTriconnectedGraph(final KNode parent, final int n, final float p1,
+    private void generateTriconnectedGraph(final KNode parent, final int n, final float p1,
             final float p2, final int hierarchyLevel) {
         int realN = Math.max(n, 4);
         // start with a clique of size 4
@@ -555,7 +577,7 @@ public class RandomGraphGenerator {
                     float hierarchyNodesFactor = options.getProperty(
                             GeneratorOptions.HIERARCHY_NODES_FACTOR);
                     int cn = randomInt(1, (int) (hierarchyNodesFactor * n));
-                    createTriconnectedGraph(node, cn, p1, p2, hierarchyLevel + 1);
+                    generateTriconnectedGraph(node, cn, p1, p2, hierarchyLevel + 1);
                 }
             }
         }
@@ -575,14 +597,11 @@ public class RandomGraphGenerator {
      *            whether the generated graph should be planar
      * @param singleSource
      *            whether the graph is a single source graph
-     * @param longEdges
-     *            whether to allow transitiv edges (this causes the algorithm to fail)
      * @param hierarchyLevel
      *            the current hierarchy level
      */
-    private void createANTEGraph(final KNode parent, final int n, final int m,
-            final boolean planar, final boolean singleSource, final boolean longEdges,
-            final int hierarchyLevel) {
+    private void generateANTEGraph(final KNode parent, final int n, final int m,
+            final boolean planar, final boolean singleSource, final int hierarchyLevel) {
         KNode[] nnr = new KNode[3 * n];
         int[] vrt = new int[3 * n];
         int[] fst = new int[n + 1];
@@ -597,21 +616,15 @@ public class RandomGraphGenerator {
         int numberOfLayers = 0, totNumber = 0, realCount = 0;
         fst[0] = 0;
         for (KNode node : parent.getChildren()) {
-            if (longEdges && numberOfLayers != 0) {
-                vrt[totNumber++] = 1;
-            }
             nnr[totNumber] = node;
             vrt[totNumber++] = 0;
             realCount++;
             float r = random.nextFloat();
             if (totNumber == 1 && singleSource || realCount == n || r * r * n < 1) {
-                if (longEdges && numberOfLayers != 0) {
-                    vrt[totNumber++] = 1;
-                }
                 fst[++numberOfLayers] = totNumber;
             }
         }
-        // determine allowed neighbours
+        // determine allowed neighbors
         int[] leftN = new int[totNumber];
         int[] rightN = new int[totNumber];
         for (int l = 1; l < numberOfLayers; l++) {
@@ -717,7 +730,7 @@ public class RandomGraphGenerator {
                     // preserve density for number of edges
                     float density = (float) m / (n * n);
                     int cm = (int) density * cn * cn;
-                    createBiconnectedGraph(node, cn, cm, hierarchyLevel + 1);
+                    generateBiconnectedGraph(node, cn, cm, hierarchyLevel + 1);
                 }
             }
         }
@@ -880,19 +893,103 @@ public class RandomGraphGenerator {
     /**
      * Creates a node.
      * 
-     * @param parent
-     *            the parent node
+     * @param parent the parent node
      * @return the node
      */
     private KNode createNode(final KNode parent) {
-        KNode node = factory.createKNode();
+        KNode node = KimlUtil.createInitializedNode();
+        KShapeLayout nodeLayout = node.getData(KShapeLayout.class);
         float hypernodeChance = options.getProperty(GeneratorOptions.HYPERNODE_CHANCE);
         if (hypernodeChance > 0.0f && random.nextFloat() < hypernodeChance) {
-            node.getData(KShapeLayout.class).setProperty(LayoutOptions.HYPERNODE, true);
+            nodeLayout.setProperty(LayoutOptions.HYPERNODE, true);
         }
-        node.getLabels().add(generateLabel());
+        
+        // create label and identifier
+        String nodeid = String.valueOf(nodeLabelCounter++);
+        if (options.getProperty(GeneratorOptions.CREATE_NODE_LABELS)) {
+            KLabel label = KimlUtil.createInitializedLabel(node);
+            label.setText("N" + nodeid);
+        }
+        KIdentifier identifier = KLayoutDataFactory.eINSTANCE.createKIdentifier();
+        identifier.setId("n" + nodeid);
+        node.getData().add(identifier);
+        
+        // set size of the node
+        if (options.getProperty(GeneratorOptions.SET_NODE_SIZE)) {
+            nodeLayout.setWidth(randomInt(options.getProperty(GeneratorOptions.MIN_NODE_WIDTH),
+                    options.getProperty(GeneratorOptions.MAX_NODE_WIDTH)));
+            nodeLayout.setHeight(randomInt(options.getProperty(GeneratorOptions.MIN_NODE_HEIGHT),
+                    options.getProperty(GeneratorOptions.MAX_NODE_HEIGHT)));
+        }
+        
+        // set port constraints
+        PortConstraints portConstraints = options.getProperty(GeneratorOptions.PORT_CONSTRAINTS);
+        if (portConstraints != PortConstraints.UNDEFINED) {
+            nodeLayout.setProperty(LayoutOptions.PORT_CONSTRAINTS, portConstraints);
+        }
+        
         parent.getChildren().add(node);
         return node;
+    }
+    
+    /**
+     * Creates a port.
+     * 
+     * @param node the containing node
+     * @param source {@code true} if the port will be used as a source port, {@code false} if it will
+     *               be used as a target port.
+     * @return the port
+     */
+    private KPort createPort(final KNode node, final boolean source) {
+        KPort port = KimlUtil.createInitializedPort();
+        node.getPorts().add(port);
+        KShapeLayout portLayout = port.getData(KShapeLayout.class);
+        
+        // create label and identifier
+        String portId = String.valueOf(portLabelCounter++);
+        if (options.getProperty(GeneratorOptions.CREATE_PORT_LABELS)) {
+            KLabel label = KimlUtil.createInitializedLabel(port);
+            label.setText("P" + portId);
+        }
+        KIdentifier identifier = KLayoutDataFactory.eINSTANCE.createKIdentifier();
+        identifier.setId("p" + portId);
+        port.getData().add(identifier);
+        
+        // set size of the port
+        if (options.getProperty(GeneratorOptions.SET_PORT_SIZE)) {
+            portLayout.setWidth(PORT_WIDTH);
+            portLayout.setHeight(PORT_HEIGHT);
+        }
+        
+        if (options.getProperty(GeneratorOptions.PORT_CONSTRAINTS) != PortConstraints.UNDEFINED) {
+            // determine a random node side
+            int northProb, eastProb, southProb, westProb;
+            if (source) {
+                northProb = options.getProperty(GeneratorOptions.OUTGOING_NORTH_SIDE);
+                eastProb = options.getProperty(GeneratorOptions.OUTGOING_EAST_SIDE);
+                southProb = options.getProperty(GeneratorOptions.OUTGOING_SOUTH_SIDE);
+                westProb = options.getProperty(GeneratorOptions.OUTGOING_WEST_SIDE);
+            } else {
+                northProb = options.getProperty(GeneratorOptions.INCOMING_NORTH_SIDE);
+                eastProb = options.getProperty(GeneratorOptions.INCOMING_EAST_SIDE);
+                southProb = options.getProperty(GeneratorOptions.INCOMING_SOUTH_SIDE);
+                westProb = options.getProperty(GeneratorOptions.INCOMING_WEST_SIDE);
+            }
+            int p = random.nextInt(northProb + eastProb + southProb + westProb);
+            PortSide portSide;
+            if (p < northProb) {
+                portSide = PortSide.NORTH;
+            } else if (p < northProb + eastProb) {
+                portSide = PortSide.EAST;
+            } else if (p < northProb + eastProb + southProb) {
+                portSide = PortSide.SOUTH;
+            } else {
+                portSide = PortSide.WEST;
+            }
+            portLayout.setProperty(LayoutOptions.PORT_SIDE, portSide);
+        }
+        
+        return port;
     }
 
     /**
@@ -907,7 +1004,7 @@ public class RandomGraphGenerator {
      * @return the edge
      */
     private KEdge connect(final KNode source, final KNode target) {
-        KEdge edge = factory.createKEdge();
+        KEdge edge = KimlUtil.createInitializedEdge();
         
         edge.setSource(source);
         edge.setTarget(target);
@@ -972,9 +1069,7 @@ public class RandomGraphGenerator {
         }
         
         // We were unable to reuse an existing port, so create a new one and return that
-        KPort port = factory.createKPort();
-        node.getPorts().add(port);
-        return port;
+        return createPort(node, source);
     }
 
     /**
@@ -1159,6 +1254,24 @@ public class RandomGraphGenerator {
         }
         return outgoingEdges;
     }
+    
+    /**
+     * Remove all nodes from the graph that have no incoming or outgoing connections and have
+     * no child nodes.
+     * 
+     * @param parent the parent node of the graph
+     */
+    private static void removeIsolatedNodes(final KNode parent) {
+        ListIterator<KNode> nodeIter = parent.getChildren().listIterator();
+        while (nodeIter.hasNext()) {
+            KNode node = nodeIter.next();
+            removeIsolatedNodes(node);
+            if (node.getIncomingEdges().isEmpty() && node.getOutgoingEdges().isEmpty()
+                    && node.getChildren().isEmpty()) {
+                nodeIter.remove();
+            }
+        }
+    }
 
     /**
      * Returns whether a node can be reached from another node.
@@ -1208,16 +1321,78 @@ public class RandomGraphGenerator {
         }
         return false;
     }
-
+    
     /**
-     * Generates the next label used for labeling nodes.
+     * Distribute all ports on the border of the given node.
      * 
-     * @return the label
+     * @param node a node
      */
-    private KLabel generateLabel() {
-        KLabel label = factory.createKLabel();
-        label.setText("N" + String.valueOf(labelCounter++));
-        return label;
+    private static void distributePorts(final KNode node) {
+        // count the ports on each side of the node
+        int northCount = 0, eastCount = 0, southCount = 0, westCount = 0;
+        for (KPort port : node.getPorts()) {
+            switch (port.getData(KShapeLayout.class).getProperty(LayoutOptions.PORT_SIDE)) {
+            case NORTH:
+                northCount++;
+                break;
+            case EAST:
+                eastCount++;
+                break;
+            case SOUTH:
+                southCount++;
+                break;
+            case WEST:
+                westCount++;
+                break;
+            }
+        }
+        
+        // make sure the node is big enough to contain all ports
+        KShapeLayout nodeLayout = node.getData(KShapeLayout.class);
+        if (nodeLayout.getWidth() < (northCount + 1) * (PORT_WIDTH + PORT_SEPARATION)) {
+            nodeLayout.setWidth((northCount + 1) * (PORT_WIDTH + PORT_SEPARATION));
+        }
+        if (nodeLayout.getWidth() < (southCount + 1) * (PORT_WIDTH + PORT_SEPARATION)) {
+            nodeLayout.setWidth((southCount + 1) * (PORT_WIDTH + PORT_SEPARATION));
+        }
+        if (nodeLayout.getHeight() < (eastCount + 1) * (PORT_HEIGHT + PORT_SEPARATION)) {
+            nodeLayout.setHeight((eastCount + 1) * (PORT_HEIGHT + PORT_SEPARATION));
+        }
+        if (nodeLayout.getHeight() < (westCount + 1) * (PORT_HEIGHT + PORT_SEPARATION)) {
+            nodeLayout.setHeight((westCount + 1) * (PORT_HEIGHT + PORT_SEPARATION));
+        }
+        
+        // distribute the ports on each node side
+        float northDelta = nodeLayout.getWidth() / (northCount + 1);
+        float eastDelta = nodeLayout.getHeight() / (eastCount + 1);
+        float southDelta = nodeLayout.getWidth() / (southCount + 1);
+        float westDelta = nodeLayout.getHeight() / (westCount + 1);
+        float northPos = 0, eastPos = 0, southPos = 0, westPos = 0;
+        for (KPort port : node.getPorts()) {
+            KShapeLayout portLayout = port.getData(KShapeLayout.class);
+            switch (portLayout.getProperty(LayoutOptions.PORT_SIDE)) {
+            case NORTH:
+                northPos += northDelta;
+                portLayout.setXpos(northPos - portLayout.getWidth() / 2);
+                portLayout.setYpos(-portLayout.getHeight());
+                break;
+            case EAST:
+                eastPos += eastDelta;
+                portLayout.setXpos(nodeLayout.getWidth());
+                portLayout.setYpos(eastPos - portLayout.getHeight() / 2);
+                break;
+            case SOUTH:
+                southPos += southDelta;
+                portLayout.setXpos(southPos - portLayout.getWidth() / 2);
+                portLayout.setYpos(nodeLayout.getHeight());
+                break;
+            case WEST:
+                westPos += westDelta;
+                portLayout.setXpos(-portLayout.getWidth());
+                portLayout.setYpos(westPos - portLayout.getHeight() / 2);
+                break;
+            }
+        }
     }
 
     /**
@@ -1246,7 +1421,7 @@ public class RandomGraphGenerator {
     /**
      * An interface for expressing conditions for creating an edge between two nodes.
      */
-    private static interface EdgeCondition {
+    private interface EdgeCondition {
         /**
          * Returns whether the condition is met for an edge from the first to the second node.
          * 

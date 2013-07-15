@@ -14,6 +14,7 @@
 package de.cau.cs.kieler.klighd;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Map;
 import java.util.Set;
 
@@ -21,10 +22,18 @@ import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Multimap;
 
+import de.cau.cs.kieler.core.properties.IProperty;
+import de.cau.cs.kieler.klighd.transformations.AbstractDiagramSynthesis;
+import de.cau.cs.kieler.klighd.transformations.ReinitializingTransformationProxy;
+
 /**
- * The context in which a model transformation is executed.
+ * A data record that is used to keep information related to the execution of
+ * {@link ITransformation ITransformations}. Since such transformations are supposed to do not
+ * maintain memories beyond the end of their executions each information that is required later on,
+ * e.g. source target data mappings, shall be stored in transformation contexts.
  * 
  * @author mri
+ * @author chsch
  * 
  * @param <S>
  *            the type of the source model
@@ -33,7 +42,7 @@ import com.google.common.collect.Multimap;
  */
 public class TransformationContext<S, T> {
     // SUPPRESS CHECKSTYLE PREVIOUS FinalClass
-    //  chsch: Since I need a subclass of this one this class cannot be final.
+    //  chsch: Since I need a subclass of this one this class cannot be final (see #createAlias).
 
     /**
      * Creates a transformation context for a given transformation.
@@ -118,6 +127,31 @@ public class TransformationContext<S, T> {
         return transformation;
     }
     
+    /**
+     * Returns the view context this transformation context is part of.
+     * 
+     * @return the view context
+     */
+    public ViewContext getViewContext() {
+        return viewContext;
+    }
+
+    /**
+     * Sets the view context containing this transformation context.<br>
+     * <br>
+     * Invoked only by {@code ViewContext}.
+     * 
+     * @param viewContext
+     *            the view context
+     */
+    protected void setViewContext(final ViewContext viewContext) {
+        this.viewContext = viewContext;
+    }
+
+
+    // ---------------------------------------------------------------------------------- //
+    //  Transformation option handling    
+
     private Set<TransformationOption> transformationOptions = null;
     
     /**
@@ -176,27 +210,31 @@ public class TransformationContext<S, T> {
         return this.configuredOptions.get(option);
     }
 
-    /**
-     * Returns the view context this transformation context is part of.
-     * 
-     * @return the view context
-     */
-    public ViewContext getViewContext() {
-        return viewContext;
-    }
+
+    // ---------------------------------------------------------------------------------- //
+    //  Recommended layout option handling    
 
     /**
-     * Sets the view context containing this transformation context.<br>
-     * <br>
-     * Invoked only by {@code ViewContext}.
+     * Passes the recommended layout options and related values provided by the transformation.  
      * 
-     * @param viewContext
-     *            the view context
+     * @return a map of options (map keys) and related values (map values)
      */
-    protected void setViewContext(final ViewContext viewContext) {
-        this.viewContext = viewContext;
+    public Map<IProperty<?>, Collection<?>> getRecommendedLayoutOptions() {
+        ITransformation<?, ?> theTransformation = this.transformation;
+        if (this.transformation instanceof ReinitializingTransformationProxy<?, ?>) {
+            theTransformation =
+                    ((ReinitializingTransformationProxy<?, ?>) this.transformation).getDelegate();
+        }
+        if (theTransformation instanceof AbstractDiagramSynthesis<?>) {
+            return ((AbstractDiagramSynthesis<?>) theTransformation).getRecommendedLayoutOptions();
+        } else {
+            return Collections.emptyMap();
+        }
     }
 
+
+    // ---------------------------------------------------------------------------------- //
+    //  Source target element handling    
 
     /** The lookup tables maintaining the model-image-relation of the transformation. */
     private Multimap<Object, Object> sourceTargetElementMap = null;
@@ -218,6 +256,16 @@ public class TransformationContext<S, T> {
         this.targetSourceElementMap.put(derived, model);        
     }
 
+    /**
+     * Returns all target elements that are tracked in the source target mappings.<br>
+     * Must be used in {@link ViewContext} only, therefore it is "package protected".
+     * 
+     * @return an {@link Iterable} containing all tracked target elements
+     */
+    Iterable<?> getTargetElements() {
+        return this.targetSourceElementMap.keySet();
+    }
+    
     /**
      * Returns the element in the source model which is represented by the given element in the
      * target model.
@@ -259,5 +307,4 @@ public class TransformationContext<S, T> {
             this.targetSourceElementMap.clear();
         }
     }
-    
 }

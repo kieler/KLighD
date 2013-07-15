@@ -337,7 +337,7 @@ KPosition returns KPosition:
 
 KXPosition returns KXPosition:
 	(KLeftPosition | KRightPosition)
-	((relative=PERCENT '+')? (absolute=Float)? | relative=PERCENT);
+	(relative=PERCENT | (relative=PERCENT '+')? absolute=Float)?;
 
 KLeftPosition returns KLeftPosition:
 	{KLeftPosition}
@@ -349,7 +349,7 @@ KRightPosition returns KRightPosition:
 
 KYPosition returns KYPosition:
 	(KTopPosition | KBottomPosition)
-	((relative=PERCENT '+')? (absolute=Float)? | relative=PERCENT);
+	(relative=PERCENT | (relative=PERCENT '+')? absolute=Float)?;
 
 KTopPosition returns KTopPosition:
 	{KTopPosition}
@@ -429,8 +429,9 @@ terminal NATURAL returns ecore::EInt:
 terminal ID:
     // chsch: the optional leading '^' is the implicit keyword escape character
     '^'? ('a'..'z'|'A'..'Z'|'_') ('a'..'z'|'A'..'Z'|'_'|'0'..'9')*;
-terminal STRING : 
-    '"' ( '\\' ('b'|'t'|'n'|'f'|'r'|'u'|'"'|'\\') | !('\\'|'"') )* '"';
+terminal STRING :
+    // chsch: added '\'' alternative! 
+    '"' ( '\\' ('b'|'t'|'n'|'f'|'r'|'u'|'"'|'\''|'\\') | !('\\'|'"') )* '"';
 
 terminal ML_COMMENT    : '/*' -> '*/';
 terminal SL_COMMENT     : '//' !('\n'|'\r')* ('\r'? '\n')?;

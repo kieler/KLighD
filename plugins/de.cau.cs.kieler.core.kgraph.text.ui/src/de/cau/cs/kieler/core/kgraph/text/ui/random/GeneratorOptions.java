@@ -21,11 +21,13 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.ui.statushandlers.StatusManager;
 
+import de.cau.cs.kieler.core.kgraph.text.ui.KGraphUiModule;
 import de.cau.cs.kieler.core.kgraph.text.ui.internal.KGraphActivator;
 import de.cau.cs.kieler.core.kgraph.text.ui.random.wizard.Messages;
 import de.cau.cs.kieler.core.properties.IProperty;
 import de.cau.cs.kieler.core.properties.MapPropertyHolder;
 import de.cau.cs.kieler.core.properties.Property;
+import de.cau.cs.kieler.kiml.options.PortConstraints;
 
 /**
  * Property holder for random graph generator options.
@@ -119,7 +121,61 @@ public class GeneratorOptions extends MapPropertyHolder {
     /** option for the fixed randomization seed value. */
     public static final IProperty<Integer> RANDOMIZATION_SEED = new Property<Integer>(
             "basic.randomizationSeed", 0);
+    /** option for setting the size of nodes. */
+    public static final IProperty<Boolean> SET_NODE_SIZE = new Property<Boolean>(
+            "basic.setNodeSize", true);
+    /** option for the minimal width of nodes. */
+    public static final IProperty<Integer> MIN_NODE_WIDTH = new Property<Integer>(
+            "basic.minNodeWidth", 30, 0);
+    /** option for the maximal width of nodes. */
+    public static final IProperty<Integer> MAX_NODE_WIDTH = new Property<Integer>(
+            "basic.maxNodeWidth", 30, 0);
+    /** option for the minimal height of nodes. */
+    public static final IProperty<Integer> MIN_NODE_HEIGHT = new Property<Integer>(
+            "basic.minNodeHeight", 30, 0);
+    /** option for the maximal height of nodes. */
+    public static final IProperty<Integer> MAX_NODE_HEIGHT = new Property<Integer>(
+            "basic.maxNodeHeight", 30, 0);
+    /** option for creating node labels. */
+    public static final IProperty<Boolean> CREATE_NODE_LABELS = new Property<Boolean>(
+            "basic.createNodeLabels", true);
+    /** option for setting the size of ports. */
+    public static final IProperty<Boolean> SET_PORT_SIZE = new Property<Boolean>(
+            "basic.setPortSize", true);
+    /** option for creating port labels. */
+    public static final IProperty<Boolean> CREATE_PORT_LABELS = new Property<Boolean>(
+            "basic.createPortLabels", false);
 
+    //~~~~~~~~~~~~~~~~ Layout options
+
+    /** option for port constraints. */
+    public static final IProperty<PortConstraints> PORT_CONSTRAINTS = new Property<PortConstraints>(
+            "layout.portConstraints", PortConstraints.UNDEFINED);
+    /** option for relative probability of incoming edges on the north side. */
+    public static final IProperty<Integer> INCOMING_NORTH_SIDE = new Property<Integer>(
+            "layout.incomingNorthSide", 10);
+    /** option for relative probability of incoming edges on the east side. */
+    public static final IProperty<Integer> INCOMING_EAST_SIDE = new Property<Integer>(
+            "layout.incomingEastSide", 5);
+    /** option for relative probability of incoming edges on the south side. */
+    public static final IProperty<Integer> INCOMING_SOUTH_SIDE = new Property<Integer>(
+            "layout.incomingSouthSide", 10);
+    /** option for relative probability of incoming edges on the west side. */
+    public static final IProperty<Integer> INCOMING_WEST_SIDE = new Property<Integer>(
+            "layout.incomingWestSide", 75);
+    /** option for relative probability of outgoing edges on the north side. */
+    public static final IProperty<Integer> OUTGOING_NORTH_SIDE = new Property<Integer>(
+            "layout.outgoingNorthSide", 10);
+    /** option for relative probability of outgoing edges on the east side. */
+    public static final IProperty<Integer> OUTGOING_EAST_SIDE = new Property<Integer>(
+            "layout.outgoingEastSide", 75);
+    /** option for relative probability of outgoing edges on the south side. */
+    public static final IProperty<Integer> OUTGOING_SOUTH_SIDE = new Property<Integer>(
+            "layout.outgoingSouthSide", 10);
+    /** option for relative probability of outgoing edges on the west side. */
+    public static final IProperty<Integer> OUTGOING_WEST_SIDE = new Property<Integer>(
+            "layout.outgoingWestSide", 5);
+    
     //~~~~~~~~~~~~~~~~ Options for GRAPH_TYPE ANY
 
     /** option for specifying how to determine edges. */
@@ -238,8 +294,7 @@ public class GeneratorOptions extends MapPropertyHolder {
                 }
             }
         } catch (IllegalAccessException exception) {
-            IStatus status = new Status(IStatus.ERROR,
-                    KGraphActivator.DE_CAU_CS_KIELER_CORE_KGRAPH_TEXT_KGRAPH,
+            IStatus status = new Status(IStatus.ERROR, KGraphUiModule.PLUGIN_ID,
                     Messages.RandomGraphWizard_load_preferences_error, exception);
             StatusManager.getManager().handle(status);
         }

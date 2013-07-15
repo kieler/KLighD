@@ -35,27 +35,16 @@ import de.cau.cs.kieler.core.WrappedException;
 public final class KlighdDataManager {
 
     /** identifier of the extension point for viewer providers. */
-    public static final String EXTP_ID_VIEWER_PROVIDERS = "de.cau.cs.kieler.klighd.viewerProviders";
+    public static final String EXTP_ID_EXTENSIONS = "de.cau.cs.kieler.klighd.extensions";
     
     /** identifier of the extension point for model transformations. */
-    public static final String EXTP_ID_MODEL_TRANSFORMATIONS =
-            "de.cau.cs.kieler.klighd.modelTransformations";
-    
-    /** identifier of the extension point for update strategies. */
-    public static final String EXTP_ID_UPDATE_STRATEGIES = "de.cau.cs.kieler.klighd.updateStrategies";
-    
-    /** identifier of the extension point for layout post processors. */
-    public static final String EXTP_ID_LAYOUT_POST_PROCESSORS =
-            "de.cau.cs.kieler.klighd.layoutPostProcessors";
-
-    /** identifier of the extension point for actions. */
-    public static final String EXTP_ID_ACTION = "de.cau.cs.kieler.klighd.actions";
+    public static final String EXTP_ID_DIAGRAM_SYNTHESES = "de.cau.cs.kieler.klighd.diagramSyntheses";
 
     /** name of the 'viewer' element. */
     public static final String ELEMENT_VIEWER = "viewer";
     
     /** name of the 'transformation' element. */
-    public static final String ELEMENT_TRANSFORMATION = "transformation";
+    public static final String ELEMENT_DIAGRAM_SYNTHESIS = "diagramSynthesis";
     
     /** name of the 'updateStrategy' element. */
     public static final String ELEMENT_UPDATE_STRATEGY = "updateStrategy";
@@ -118,9 +107,6 @@ public final class KlighdDataManager {
                     new Status(IStatus.ERROR, KlighdPlugin.PLUGIN_ID,
                             "KLighD: Failure while loading registered transformations.", e));
         }
-        instance.loadUpdateStrategyExtension();
-        instance.loadLayoutPostProcessorExtension();
-        instance.loadActionExtension();
     }
 
     /**
@@ -158,7 +144,7 @@ public final class KlighdDataManager {
      */
     private void loadViewerProviderExtension() {
         IConfigurationElement[] extensions = Platform.getExtensionRegistry()
-                .getConfigurationElementsFor(EXTP_ID_VIEWER_PROVIDERS);
+                .getConfigurationElementsFor(EXTP_ID_EXTENSIONS);
         for (IConfigurationElement element : extensions) {
             try {
                 if (ELEMENT_VIEWER.equals(element.getName())) {
@@ -168,10 +154,47 @@ public final class KlighdDataManager {
                     if (viewerProvider != null) {
                         String id = element.getAttribute(ATTRIBUTE_ID);
                         if (id == null || id.length() == 0) {
-                            reportError(EXTP_ID_VIEWER_PROVIDERS, element, ATTRIBUTE_ID, null);
+                            reportError(EXTP_ID_EXTENSIONS, element, ATTRIBUTE_ID, null);
                         } else {
                             transformationsGraph.addViewerProvider(viewerProvider);
                             idViewerProviderMapping.put(id, viewerProvider);
+                        }
+                    }
+                } else if (ELEMENT_UPDATE_STRATEGY.equals(element.getName())) {
+                    // initialize update strategy from the extension point
+                    IUpdateStrategy<?> updateStrategy = (IUpdateStrategy<?>) element
+                            .createExecutableExtension(ATTRIBUTE_CLASS);
+                    if (updateStrategy != null) {
+                        String id = element.getAttribute(ATTRIBUTE_ID);
+                        if (id == null || id.length() == 0) {
+                            reportError(EXTP_ID_EXTENSIONS, element, ATTRIBUTE_ID, null);
+                        } else {
+                            transformationsGraph.addUpdateStrategy(updateStrategy);
+                            idUpdateStrategyMapping.put(id, updateStrategy);
+                        }
+                    }
+                } else if (ELEMENT_STYLE_MODIFIER.equals(element.getName())) {
+                    // initialize style modifier from the extension point
+                    IStyleModifier styleModifier = (IStyleModifier) element
+                            .createExecutableExtension(ATTRIBUTE_CLASS);
+                    if (styleModifier != null) {
+                        String id = element.getAttribute(ATTRIBUTE_ID);
+                        if (id == null || id.length() == 0) {
+                            reportError(EXTP_ID_EXTENSIONS, element, ATTRIBUTE_ID, null);
+                        } else {
+                            idStyleModifierMapping.put(id, styleModifier);
+                        }
+                    }
+                } else if (ELEMENT_ACTION.equals(element.getName())) {
+                    // initialize style modifier from the extension point
+                    IAction action = (IAction) element
+                            .createExecutableExtension(ATTRIBUTE_CLASS);
+                    if (action != null) {
+                        String id = element.getAttribute(ATTRIBUTE_ID);
+                        if (id == null || id.length() == 0) {
+                            reportError(EXTP_ID_EXTENSIONS, element, ATTRIBUTE_ID, null);
+                        } else {
+                            idActionMapping.put(id, action);
                         }
                     }
                 }
@@ -180,15 +203,15 @@ public final class KlighdDataManager {
             }
         }
     }
-
+    
     /**
      * Loads and registers all model transformations from the extension point.
      */
     private void loadModelTransformationsExtension() {
         IConfigurationElement[] extensions = Platform.getExtensionRegistry()
-                .getConfigurationElementsFor(EXTP_ID_MODEL_TRANSFORMATIONS);
+                .getConfigurationElementsFor(EXTP_ID_DIAGRAM_SYNTHESES);
         for (IConfigurationElement element : extensions) {
-            if (ELEMENT_TRANSFORMATION.equals(element.getName())) {
+            if (ELEMENT_DIAGRAM_SYNTHESIS.equals(element.getName())) {
                 // initialize model transformation from the extension point
                 ITransformation<Object, ?> modelTransformation = null;
                 try {
@@ -214,7 +237,7 @@ public final class KlighdDataManager {
                 if (modelTransformation != null) {
                     String id = element.getAttribute(ATTRIBUTE_ID);
                     if (id == null || id.length() == 0) {
-                        reportError(EXTP_ID_MODEL_TRANSFORMATIONS, element, ATTRIBUTE_ID, null);
+                        reportError(EXTP_ID_DIAGRAM_SYNTHESES, element, ATTRIBUTE_ID, null);
                     } else {
                         transformationsGraph.addTransformation(modelTransformation);
                         idTransformationMapping.put(id, modelTransformation);
@@ -224,88 +247,6 @@ public final class KlighdDataManager {
         }
     }
 
-    /**
-     * Loads and registers all update strategies from the extension point.
-     */
-    private void loadUpdateStrategyExtension() {
-        IConfigurationElement[] extensions = Platform.getExtensionRegistry()
-                .getConfigurationElementsFor(EXTP_ID_UPDATE_STRATEGIES);
-        for (IConfigurationElement element : extensions) {
-            try {
-                if (ELEMENT_UPDATE_STRATEGY.equals(element.getName())) {
-                    // initialize update strategy from the extension point
-                    IUpdateStrategy<?> updateStrategy = (IUpdateStrategy<?>) element
-                            .createExecutableExtension(ATTRIBUTE_CLASS);
-                    if (updateStrategy != null) {
-                        String id = element.getAttribute(ATTRIBUTE_ID);
-                        if (id == null || id.length() == 0) {
-                            reportError(EXTP_ID_UPDATE_STRATEGIES, element, ATTRIBUTE_ID, null);
-                        } else {
-                            transformationsGraph.addUpdateStrategy(updateStrategy);
-                            idUpdateStrategyMapping.put(id, updateStrategy);
-                        }
-                    }
-                }
-            } catch (CoreException exception) {
-                StatusManager.getManager().handle(exception, KlighdPlugin.PLUGIN_ID);
-            }
-        }
-    }
-    
-    /**
-     * Loads and registers all layout post processors from the extension point.
-     */
-    private void loadLayoutPostProcessorExtension() {
-        IConfigurationElement[] extensions = Platform.getExtensionRegistry()
-                .getConfigurationElementsFor(EXTP_ID_LAYOUT_POST_PROCESSORS);
-        for (IConfigurationElement element : extensions) {
-            try {
-                if (ELEMENT_STYLE_MODIFIER.equals(element.getName())) {
-                    // initialize style modifier from the extension point
-                    IStyleModifier styleModifier = (IStyleModifier) element
-                            .createExecutableExtension(ATTRIBUTE_CLASS);
-                    if (styleModifier != null) {
-                        String id = element.getAttribute(ATTRIBUTE_ID);
-                        if (id == null || id.length() == 0) {
-                            reportError(EXTP_ID_LAYOUT_POST_PROCESSORS, element, ATTRIBUTE_ID, null);
-                        } else {
-                            idStyleModifierMapping.put(id, styleModifier);
-                        }
-                    }
-                }
-            } catch (CoreException exception) {
-                StatusManager.getManager().handle(exception, KlighdPlugin.PLUGIN_ID);
-            }
-        }
-    }
-    
-    /**
-     * Loads and registers all actions from the extension point.
-     */
-    private void loadActionExtension() {
-        IConfigurationElement[] extensions = Platform.getExtensionRegistry()
-                .getConfigurationElementsFor(EXTP_ID_ACTION);
-        for (IConfigurationElement element : extensions) {
-            try {
-                if (ELEMENT_ACTION.equals(element.getName())) {
-                    // initialize style modifier from the extension point
-                    IAction action = (IAction) element
-                            .createExecutableExtension(ATTRIBUTE_CLASS);
-                    if (action != null) {
-                        String id = element.getAttribute(ATTRIBUTE_ID);
-                        if (id == null || id.length() == 0) {
-                            reportError(EXTP_ID_ACTION, element, ATTRIBUTE_ID, null);
-                        } else {
-                            idActionMapping.put(id, action);
-                        }
-                    }
-                }
-            } catch (CoreException exception) {
-                StatusManager.getManager().handle(exception, KlighdPlugin.PLUGIN_ID);
-            }
-        }
-    }
-    
     /**
      * Returns the graph containing the registered transformations.
      * 

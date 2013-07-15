@@ -39,7 +39,7 @@ public class KRenderingFactoryImpl extends EFactoryImpl implements KRenderingFac
      */
     public static KRenderingFactory init() {
         try {
-            KRenderingFactory theKRenderingFactory = (KRenderingFactory)EPackage.Registry.INSTANCE.getEFactory("http://kieler.cs.cau.de/KRendering"); 
+            KRenderingFactory theKRenderingFactory = (KRenderingFactory)EPackage.Registry.INSTANCE.getEFactory(KRenderingPackage.eNS_URI);
             if (theKRenderingFactory != null) {
                 return theKRenderingFactory;
             }

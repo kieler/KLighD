@@ -13,7 +13,10 @@
  */
 package de.cau.cs.kieler.core.kgraph.text;
 
+import org.eclipse.xtext.conversion.IValueConverterService;
+import org.eclipse.xtext.linking.ILinker;
 import org.eclipse.xtext.linking.impl.Linker;
+import org.eclipse.xtext.naming.IQualifiedNameProvider;
 import org.eclipse.xtext.resource.XtextResource;
 
 import de.cau.cs.kieler.core.kgraph.text.scoping.KGraphQualifiedNameProvider;
@@ -30,7 +33,7 @@ public class KGraphRuntimeModule extends AbstractKGraphRuntimeModule {
      * {@inheritDoc}
      */
     @Override
-    public Class<? extends org.eclipse.xtext.naming.IQualifiedNameProvider> bindIQualifiedNameProvider() {
+    public Class<? extends IQualifiedNameProvider> bindIQualifiedNameProvider() {
         return KGraphQualifiedNameProvider.class;
     }
 
@@ -38,7 +41,7 @@ public class KGraphRuntimeModule extends AbstractKGraphRuntimeModule {
      * {@inheritDoc}
      */
     @Override
-    public Class<? extends org.eclipse.xtext.conversion.IValueConverterService> bindIValueConverterService() {
+    public Class<? extends IValueConverterService> bindIValueConverterService() {
         return KGraphValueConverters.class;
     }
 
@@ -61,7 +64,7 @@ public class KGraphRuntimeModule extends AbstractKGraphRuntimeModule {
      * @return the {@link Linker} class
      */
     @Override
-    public Class<? extends org.eclipse.xtext.linking.ILinker> bindILinker() {
+    public Class<? extends ILinker> bindILinker() {
         return Linker.class;
     }
     

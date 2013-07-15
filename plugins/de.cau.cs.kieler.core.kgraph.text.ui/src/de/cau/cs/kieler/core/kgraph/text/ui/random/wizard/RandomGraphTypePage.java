@@ -17,8 +17,8 @@ import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
@@ -49,23 +49,16 @@ public class RandomGraphTypePage extends WizardPage {
         this.options = options;
     }
 
+    // CHECKSTYLEOFF MagicNumber
+    
     /**
      * {@inheritDoc}
      */
     public void createControl(final Composite parent) {
-        Composite composite = new Composite(parent, SWT.NULL);
-        GridLayout layout = new GridLayout();
-        composite.setLayout(layout);
-        createGraphTypeGroup(composite);
-        setControl(composite);
-    }
-
-    // CHECKSTYLEOFF MagicNumber
-    private void createGraphTypeGroup(final Composite parent) {
         Composite composite = new Composite(parent, SWT.NONE);
-        RowLayout rowLayout = new RowLayout(SWT.VERTICAL);
-        rowLayout.spacing = 5;
-        composite.setLayout(rowLayout);
+        GridLayout gridLayout = new GridLayout(1, false);
+        composite.setLayout(gridLayout);
+        setControl(composite);
         
         // label
         Label label = new Label(composite, SWT.NULL);
@@ -112,6 +105,10 @@ public class RandomGraphTypePage extends WizardPage {
         final Button radio = new Button(parent, SWT.RADIO | SWT.LEFT);
         radio.setText(text);
         radio.setToolTipText(toolTip);
+        
+        GridData gridData = new GridData(SWT.LEFT, SWT.TOP, false, false);
+        gridData.horizontalIndent = 10;
+        radio.setLayoutData(gridData);
         
         if (type.equals(options.getProperty(GeneratorOptions.GRAPH_TYPE))) {
             radio.setSelection(true);

@@ -57,7 +57,6 @@ public class Messages extends NLS {
     public static String RandomGraphAnyPage_rel_number_of_edges_help;
     public static String RandomGraphAnyPage_rel_number_of_edges_variance_caption;
     public static String RandomGraphAnyPage_rel_number_of_edges_variance_help;
-    public static String RandomGraphAnyPage_number_of_nodes_caption;
     public static String RandomGraphAnyPage_number_of_nodes_min;
     public static String RandomGraphAnyPage_number_of_nodes_max;
     public static String RandomGraphAnyPage_number_of_nodes_min_help;
@@ -78,11 +77,12 @@ public class Messages extends NLS {
     public static String RandomGraphBiconnectedPage_title;
     public static String RandomGraphNewFilePage_time_seed_caption;
     public static String RandomGraphNewFilePage_time_seed_help;
+    public static String RandomGraphNewFilePage_constant_seed_caption;
+    public static String RandomGraphNewFilePage_constant_seed_help;
+    public static String RandomGraphNewFilePage_constant_seed_spinner_help;
     public static String RandomGraphNewFilePage_description;
     public static String RandomGraphNewFilePage_number_of_graphs_caption;
     public static String RandomGraphNewFilePage_number_of_graphs_help;
-    public static String RandomGraphNewFilePage_random_seed_caption;
-    public static String RandomGraphNewFilePage_random_seed_help;
     public static String RandomGraphNewFilePage_options_group_caption;
     public static String RandomGraphNewFilePage_title;
     public static String RandomGraphTreePage_description;
@@ -111,6 +111,21 @@ public class Messages extends NLS {
     public static String RandomGraphTypePage_triconnected_graph_type_caption;
     public static String RandomGraphTypePage_triconnected_graph_type_help;
     public static String RandomGraphUtilityPage_description;
+    public static String RandomGraphUtilityPage_nodes_group_caption;
+    public static String RandomGraphUtilityPage_node_labels_caption;
+    public static String RandomGraphUtilityPage_node_labels_help;
+    public static String RandomGraphUtilityPage_node_size_caption;
+    public static String RandomGraphUtilityPage_node_size_help;
+    public static String RandomGraphUtilityPage_node_width_caption;
+    public static String RandomGraphUtilityPage_node_height_caption;
+    public static String RandomGraphUtilityPage_node_size_min;
+    public static String RandomGraphUtilityPage_node_size_max;
+    public static String RandomGraphUtilityPage_node_width_min_help;
+    public static String RandomGraphUtilityPage_node_width_max_help;
+    public static String RandomGraphUtilityPage_node_width_error;
+    public static String RandomGraphUtilityPage_node_height_min_help;
+    public static String RandomGraphUtilityPage_node_height_max_help;
+    public static String RandomGraphUtilityPage_node_height_error;
     public static String RandomGraphUtilityPage_hierarchy_caption;
     public static String RandomGraphUtilityPage_hierarchy_factor_caption;
     public static String RandomGraphUtilityPage_hierarchy_factor_help;
@@ -124,6 +139,10 @@ public class Messages extends NLS {
     public static String RandomGraphUtilityPage_ports_group_caption;
     public static String RandomGraphUtilityPage_ports_help;
     public static String RandomGraphUtilityPage_ports_reuse_caption;
+    public static String RandomGraphUtilityPage_port_size_caption;
+    public static String RandomGraphUtilityPage_port_size_help;
+    public static String RandomGraphUtilityPage_port_labels_caption;
+    public static String RandomGraphUtilityPage_port_labels_help;
     public static String RandomGraphUtilityPage_hierarchy_edges_caption;
     public static String RandomGraphUtilityPage_hierarchy_edges_help;
     public static String RandomGraphUtilityPage_hierarchy_enable_caption;
@@ -140,6 +159,31 @@ public class Messages extends NLS {
     public static String RandomGraphWizard_title;
     public static String RandomGraphWizard_load_preferences_error;
     public static String RandomGraphWizard_default_preferences_error;
+    public static String RandomGraphLayoutPage_title;
+    public static String RandomGraphLayoutPage_description;
+    public static String RandomGraphLayoutPage_ports_group_caption;
+    public static String RandomGraphLayoutPage_ports_none_caption;
+    public static String RandomGraphLayoutPage_ports_none_help;
+    public static String RandomGraphLayoutPage_ports_fixed_side_caption;
+    public static String RandomGraphLayoutPage_ports_fixed_side_help;
+    public static String RandomGraphLayoutPage_ports_fixed_pos_caption;
+    public static String RandomGraphLayoutPage_ports_fixed_pos_help;
+    public static String RandomGraphLayoutPage_ports_incoming_caption;
+    public static String RandomGraphLayoutPage_ports_outgoing_caption;
+    public static String RandomGraphLayoutPage_ports_north_caption;
+    public static String RandomGraphLayoutPage_ports_east_caption;
+    public static String RandomGraphLayoutPage_ports_south_caption;
+    public static String RandomGraphLayoutPage_ports_west_caption;
+    public static String RandomGraphLayoutPage_ports_incoming_north_help;
+    public static String RandomGraphLayoutPage_ports_incoming_east_help;
+    public static String RandomGraphLayoutPage_ports_incoming_south_help;
+    public static String RandomGraphLayoutPage_ports_incoming_west_help;
+    public static String RandomGraphLayoutPage_ports_outgoing_north_help;
+    public static String RandomGraphLayoutPage_ports_outgoing_east_help;
+    public static String RandomGraphLayoutPage_ports_outgoing_south_help;
+    public static String RandomGraphLayoutPage_ports_outgoing_west_help;
+    public static String RandomGraphLayoutPage_ports_incoming_error;
+    public static String RandomGraphLayoutPage_ports_outgoing_error;
     
     static {
         // initialize resource bundle

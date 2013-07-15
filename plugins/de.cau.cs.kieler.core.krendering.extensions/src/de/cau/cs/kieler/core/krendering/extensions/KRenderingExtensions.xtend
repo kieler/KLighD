@@ -706,7 +706,7 @@ class KRenderingExtensions {
         ];
     }
     
-    def KGridPlacementData setMaxCellHeight(KGridPlacementData placementData, float maxCellHeight) {
+    def KGridPlacementData setMaxCellHeightEx(KGridPlacementData placementData, float maxCellHeight) {
         return placementData => [
             placementData.maxCellHeight = maxCellHeight;
         ];

@@ -54,6 +54,7 @@ public class RandomGraphNewFilePage extends WizardNewFileCreationPage {
         setDescription(Messages.RandomGraphNewFilePage_description);
         setFileExtension("kgt"); //$NON-NLS-1$
         setAllowExistingResources(true);
+        setFileName(options.getProperty(GeneratorOptions.FILE_NAME));
         this.options = options;
     }
 
@@ -86,35 +87,48 @@ public class RandomGraphNewFilePage extends WizardNewFileCreationPage {
         gridData.widthHint = 50;
         graphsSpinner.setLayoutData(gridData);
         
+        // label for randomization seed section
+        label = new Label(group, SWT.NONE);
+        label.setText("Randomization seed:");
+        
+        gridData = new GridData(SWT.LEFT, SWT.NONE, false, false, 2, 1);
+        gridData.verticalIndent = 10;
+        label.setLayoutData(gridData);
+        
         // add option for time-based randomization seed
-        final Button timeSeedButton = new Button(group, SWT.CHECK);
+        final Button timeSeedButton = new Button(group, SWT.RADIO);
         timeSeedButton.setText(Messages.RandomGraphNewFilePage_time_seed_caption);
         timeSeedButton.setToolTipText(Messages.RandomGraphNewFilePage_time_seed_help);
         timeSeedButton.setSelection(options.getProperty(GeneratorOptions.TIME_BASED_RANDOMIZATION));
         
-        gridData = new GridData(SWT.LEFT, SWT.NONE, false, false);
-        gridData.horizontalSpan = 2;
-        gridData.verticalIndent = 10;
+        gridData = new GridData(SWT.LEFT, SWT.TOP, false, false, 2, 1);
+        gridData.horizontalIndent = 10;
         timeSeedButton.setLayoutData(gridData);
         
-        // add option for random number generator seed
-        label = new Label(group, SWT.NONE);
-        label.setText(Messages.RandomGraphNewFilePage_random_seed_caption);
+        // add option for constant randomization seed
+        final Button constantSeedButton = new Button(group, SWT.RADIO);
+        constantSeedButton.setText(Messages.RandomGraphNewFilePage_constant_seed_caption);
+        constantSeedButton.setToolTipText(Messages.RandomGraphNewFilePage_constant_seed_help);
+        constantSeedButton.setSelection(!options.getProperty(GeneratorOptions.TIME_BASED_RANDOMIZATION));
+        
+        gridData = new GridData(SWT.LEFT, SWT.TOP, false, false);
+        gridData.horizontalIndent = 10;
+        constantSeedButton.setLayoutData(gridData);
         
         final Spinner seedSpinner = new Spinner(group, SWT.BORDER | SWT.SINGLE);
-        seedSpinner.setToolTipText(Messages.RandomGraphNewFilePage_random_seed_help);
+        seedSpinner.setToolTipText(Messages.RandomGraphNewFilePage_constant_seed_spinner_help);
         seedSpinner.setValues(options.getProperty(GeneratorOptions.RANDOMIZATION_SEED),
                 0, Integer.MAX_VALUE, 0, 1, 10);
         seedSpinner.setEnabled(!options.getProperty(GeneratorOptions.TIME_BASED_RANDOMIZATION));
         
-        gridData = new GridData(SWT.LEFT, SWT.NONE, false, false);
+        gridData = new GridData(SWT.LEFT, SWT.TOP, false, false);
         gridData.widthHint = 50;
         seedSpinner.setLayoutData(gridData);
         
         // create the advanced options and hide them
         Composite advanced = new Composite(group, SWT.NONE);
         advanced.setVisible(false);
-        gridData = new GridData(SWT.FILL, SWT.NONE, true, false);
+        gridData = new GridData(SWT.FILL, SWT.TOP, true, false);
         gridData.exclude = true;
         advanced.setLayoutData(gridData);
         layout = new GridLayout();

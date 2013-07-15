@@ -13,33 +13,30 @@
  */
 package de.cau.cs.kieler.klighd.examples.ecore
 
-import com.google.common.collect.ImmutableList
+import javax.inject.Inject
 import com.google.common.collect.ImmutableSet
+import com.google.common.collect.ImmutableList
 import com.google.common.collect.Lists
+import static extension com.google.common.base.Strings.*
 import de.cau.cs.kieler.core.kgraph.KNode
-import de.cau.cs.kieler.core.krendering.extensions.KColorExtensions
-import de.cau.cs.kieler.core.krendering.extensions.KContainerRenderingExtensions
-import de.cau.cs.kieler.core.krendering.extensions.KEdgeExtensions
-import de.cau.cs.kieler.core.krendering.extensions.KNodeExtensions
-import de.cau.cs.kieler.core.krendering.extensions.KPolylineExtensions
-import de.cau.cs.kieler.core.krendering.extensions.KRenderingExtensions
 import de.cau.cs.kieler.core.util.Pair
+import de.cau.cs.kieler.core.krendering.extensions.KNodeExtensions
+import de.cau.cs.kieler.core.krendering.extensions.KEdgeExtensions
+import de.cau.cs.kieler.core.krendering.extensions.KRenderingExtensions
+import de.cau.cs.kieler.core.krendering.extensions.KPolylineExtensions
+import de.cau.cs.kieler.core.krendering.extensions.KColorExtensions
+import de.cau.cs.kieler.kiml.options.LayoutOptions
 import de.cau.cs.kieler.kiml.options.Direction
 import de.cau.cs.kieler.kiml.options.EdgeType
-import de.cau.cs.kieler.kiml.options.LayoutOptions
-import de.cau.cs.kieler.klighd.KlighdConstants
 import de.cau.cs.kieler.klighd.TransformationOption
+import de.cau.cs.kieler.klighd.examples.ecore.EModelElementCollection
 import de.cau.cs.kieler.klighd.transformations.AbstractDiagramSynthesis
-import javax.inject.Inject
-import java.util.Collections
-import org.eclipse.emf.ecore.EClass
 import org.eclipse.emf.ecore.EClassifier
 import org.eclipse.emf.ecore.EPackage
+import org.eclipse.emf.ecore.EClass
 import org.eclipse.emf.ecore.EReference
-
-import static de.cau.cs.kieler.klighd.examples.ecore.EcoreDiagramSynthesis.*
-
-import static extension com.google.common.base.Strings.*
+import de.cau.cs.kieler.klighd.KlighdConstants
+import de.cau.cs.kieler.core.krendering.extensions.KContainerRenderingExtensions
 
 /**
  * This diagram synthesis implementation demonstrates the usage of KLighD for the purpose of
@@ -119,7 +116,7 @@ class EcoreDiagramSynthesis extends AbstractDiagramSynthesis<EModelElementCollec
                 // create class and relation figures for each of the elements in the collection
                 depictedClasses.createElementFigures(it);
                 
-	        } else { // if (CLASS_FILTER.optionValue == CHOSEN_AND_RELATED) {
+	        } else if (CLASS_FILTER.optionValue == CHOSEN_AND_RELATED) {
                 
                 // The chosen classes ...
                 val chosenClasses = choice.filter(typeof(EClass)).toList => [
@@ -133,7 +130,7 @@ class EcoreDiagramSynthesis extends AbstractDiagramSynthesis<EModelElementCollec
                        depictedClasses.addAll(it.ESuperTypes)
                    ];
                 ];
-                
+
                 depictedClasses.createElementFigures(it);
 
                 // each of the above given ones is highlighted in a special fashion
@@ -143,26 +140,24 @@ class EcoreDiagramSynthesis extends AbstractDiagramSynthesis<EModelElementCollec
                     );
                 ];
                 
-	        } 
-//	        else { // (CLASS_FILTER.optionValue == ALL)
-//                val chosenClasse = Lists::newArrayList(depictedClasses);
-//                
-//                // the package is revealed by means of the first class, all of the contained classifiers ... 
-//                val collection = depictedClasses.head?.EPackage?.EClassifiers => [classes |
-//                    // ... are depicted (it denotes the root node introduced above in this case)
-//                    classes?.createElementFigures(it)
-//                ];
-//                if (collection != null) {
-//                    depictedClasses += collection
-//                }
-//
-//                // each of the above given ones is highlighted in a special fashion
-//                chosenClasse.forEach[
-//                    it.node.KRendering.setBackgroundGradient("white".color,
-//                        KlighdConstants::ALPHA_FULL_OPAQUE, "red".color, 150, 0
-//                    );
-//                ];
-//	        }
+	        } else { // (CLASS_FILTER.optionValue == ALL)
+	            // depict all classes within the package of the first class in choice
+
+                val chosenClasse = Lists::newArrayList(depictedClasses);
+                
+                depictedClasses?.head?.EPackage?.EClassifiers?:emptyList => [classes |
+                    // ... are depicted (it denotes the root node introduced above in this case)
+                    classes.createElementFigures(it)
+                    depictedClasses += classes;
+                ];
+
+                // each of the above given ones is highlighted in a special fashion
+                chosenClasse.forEach[
+                    it.node.KRendering.setBackgroundGradient("white".color,
+                        KlighdConstants::ALPHA_FULL_OPAQUE, "red".color, 150, 0
+                    );
+                ];
+	        }
 		
             choice.filter(typeof(EPackage)).forEach[ ePackage |
                 ePackage.EClassifiers => [ clazz |

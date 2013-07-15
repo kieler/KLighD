@@ -33,6 +33,7 @@ package de.cau.cs.kieler.core.krendering;
 public interface KFontBold extends KStyle {
     /**
      * Returns the value of the '<em><b>Bold</b></em>' attribute.
+     * The default value is <code>"true"</code>.
      * <!-- begin-user-doc -->
      * <p>
      * If the meaning of the '<em>Bold</em>' attribute isn't clear,
@@ -42,7 +43,7 @@ public interface KFontBold extends KStyle {
      * @return the value of the '<em>Bold</em>' attribute.
      * @see #setBold(boolean)
      * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKFontBold_Bold()
-     * @model required="true"
+     * @model default="true" required="true"
      * @generated
      */
     boolean isBold();
