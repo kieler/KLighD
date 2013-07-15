@@ -15,9 +15,9 @@ package de.cau.cs.kieler.klighd.piccolo.internal.nodes;
 
 import de.cau.cs.kieler.core.kgraph.KNode;
 import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout;
-import de.cau.cs.kieler.klighd.KlighdConstants;
 import de.cau.cs.kieler.klighd.piccolo.internal.controller.AbstractKGERenderingController;
 import de.cau.cs.kieler.klighd.piccolo.internal.controller.KNodeRenderingController;
+import de.cau.cs.kieler.klighd.util.KlighdProperties;
 
 /**
  * The Piccolo node for representing a {@code KNode}.
@@ -58,7 +58,7 @@ public class KNodeNode extends PZIndexNode implements INode, ILabeledGraphElemen
         this.node = node;
         this.parent = parent;
         Boolean b = node.getData(KShapeLayout.class).getProperty(
-                KlighdConstants.KLIGHD_SELECTION_UNPICKABLE);
+                KlighdProperties.KLIGHD_SELECTION_UNPICKABLE);
         setPickable(b != null && b.equals(Boolean.TRUE) ? false : true);
     }
 

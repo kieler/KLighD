@@ -11,7 +11,7 @@
  * This code is provided under the terms of the Eclipse Public License (EPL).
  * See the file epl-v10.html for the license text.
  */
-package de.cau.cs.kieler.klighd.macrolayout;
+package de.cau.cs.kieler.klighd.internal.macrolayout;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -54,6 +54,7 @@ import de.cau.cs.kieler.kiml.util.KimlUtil;
 import de.cau.cs.kieler.klighd.IViewer;
 import de.cau.cs.kieler.klighd.KlighdConstants;
 import de.cau.cs.kieler.klighd.ViewContext;
+import de.cau.cs.kieler.klighd.internal.util.KlighdInternalProperties;
 import de.cau.cs.kieler.klighd.microlayout.Bounds;
 import de.cau.cs.kieler.klighd.microlayout.PlacementUtil;
 import de.cau.cs.kieler.klighd.util.KlighdProperties;
@@ -70,21 +71,15 @@ import de.cau.cs.kieler.klighd.views.IDiagramWorkbenchPart;
  * 
  * @author mri
  */
-public class DiagramLayoutManager implements IDiagramLayoutManager<KGraphElement> {
+public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement> {
 
-    /** the duration for applying the layout. */
-    public static final IProperty<Integer> APPLY_LAYOUT_DURATION = new Property<Integer>(
-            "krendering.layout.applyLayoutDuration", 0);
-    /** the viewer visualizing the graph. */
-    public static final IProperty<IViewer<?>> VIEWER = new Property<IViewer<?>>(
-            "krendering.layout.viewer");
     /** the list of edges found in the graph. */
-    private static final IProperty<List<KEdge>> EDGES = new Property<List<KEdge>>(
+    public static final IProperty<List<KEdge>> EDGES = new Property<List<KEdge>>(
             "krendering.layout.edges");
 
     /** the property layout config. */
     private ILayoutConfig propertyLayoutConfig = new KGraphPropertyLayoutConfig();
-
+    
     /**
      * {@inheritDoc}
      */
@@ -197,7 +192,7 @@ public class DiagramLayoutManager implements IDiagramLayoutManager<KGraphElement
 
         // remember the viewer if any
         if (viewer != null) {
-            mapping.setProperty(VIEWER, viewer);
+            mapping.setProperty(KlighdInternalProperties.VIEWER, viewer);
         }
 
         // add the property layout config
@@ -283,7 +278,8 @@ public class DiagramLayoutManager implements IDiagramLayoutManager<KGraphElement
         KShapeLayout layoutLayout = layoutNode.getData(KShapeLayout.class);
         KShapeLayout nodeLayout = node.getData(KShapeLayout.class);
         
-        boolean isCompoundNode = RenderingContextData.get(node).getProperty(KlighdConstants.POPULATED)
+        boolean isCompoundNode = RenderingContextData.get(node).getProperty(
+                KlighdInternalProperties.POPULATED)
                 && Iterables.any(node.getChildren(), RenderingContextData.CHILD_ACTIVE);
 
         Bounds size = null;
@@ -299,11 +295,11 @@ public class DiagramLayoutManager implements IDiagramLayoutManager<KGraphElement
             Bounds minSize = Bounds.of(KlighdConstants.MINIMAL_NODE_BOUNDS);
             // check the definition of the minimal size property
             boolean minNodeSizeIsSet = nodeLayout.getProperties().containsKey(
-                    KlighdConstants.MINIMAL_NODE_SIZE);
+                    KlighdProperties.MINIMAL_NODE_SIZE);
             
             if (minNodeSizeIsSet) {
                 // if the minimal node size is given in terms of the dedicated property, use its values
-                minSize = Bounds.of(nodeLayout.getProperty(KlighdConstants.MINIMAL_NODE_SIZE));
+                minSize = Bounds.of(nodeLayout.getProperty(KlighdProperties.MINIMAL_NODE_SIZE));
             } else if (!isCompoundNode || nodeLayout.getProperty(INITIAL_NODE_SIZE)) {
                 // otherwise, if the node is a non-compound one or the size is not yet modified by KIML
                 //  take the component-wise maximum of the standard bounds and 'nodelayout's values 
@@ -314,7 +310,7 @@ public class DiagramLayoutManager implements IDiagramLayoutManager<KGraphElement
             //  note that this information will be removed or overwritten by the update strategies
             boolean deliver = nodeLayout.eDeliver();
             nodeLayout.eSetDeliver(false);
-            nodeLayout.setProperty(KlighdConstants.MINIMAL_NODE_SIZE,
+            nodeLayout.setProperty(KlighdProperties.MINIMAL_NODE_SIZE,
                     new KVector(minSize.getWidth(), minSize.getHeight()));
             nodeLayout.eSetDeliver(deliver);
 
@@ -539,11 +535,11 @@ public class DiagramLayoutManager implements IDiagramLayoutManager<KGraphElement
         // set the animation time as property on the root element
         KShapeLayout parentLayout = mapping.getParentElement().getData(KShapeLayout.class);
         if (parentLayout != null) {
-            parentLayout.setProperty(APPLY_LAYOUT_DURATION, animationTime);
+            parentLayout.setProperty(KlighdInternalProperties.APPLY_LAYOUT_DURATION, animationTime);
         }
 
         // get the visualizing viewer if any
-        IViewer<?> viewer = mapping.getProperty(VIEWER);
+        IViewer<?> viewer = mapping.getProperty(KlighdInternalProperties.VIEWER);
 
         // apply the layout
         if (viewer != null) {

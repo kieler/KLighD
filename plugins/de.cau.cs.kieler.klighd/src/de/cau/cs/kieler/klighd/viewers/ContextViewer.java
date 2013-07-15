@@ -611,18 +611,10 @@ public class ContextViewer extends AbstractViewer<Object> implements IViewerEven
         }
         
         // update the selection status for the ISelectionProvider interface
-        List<Object> selectedModelElements = Lists.newArrayList();
-        Object modelElement;
-        for (Object element : selectedElements) {            
-            modelElement = getCurrentViewContext().getSourceElement(element);
-            if (modelElement != null) {
-                selectedModelElements.add(modelElement);
-            }
-        }
-        updateSelection(selectedModelElements);
+        updateSelection(selectedElements);
         
         // propagate event to listeners on this viewer
-        notifyListenersSelection(selectedModelElements);  
+        notifyListenersSelection(selectedElements);  
     }
 
     /** a map used to track the highlighting styles, which have been attached to selected elements. */
@@ -677,10 +669,12 @@ public class ContextViewer extends AbstractViewer<Object> implements IViewerEven
         // end of selection highlighting stuff
     }
         
-    private void updateSelection(final List<?> selectedElements) {
+    private void updateSelection(final Iterable<?> selectedElements) {
         synchronized (selection) {
             selection.selectedElements.clear();
-            selection.selectedElements.addAll(selectedElements);
+            for (Object object : selectedElements) {
+                selection.selectedElements.add(object);
+            }
         }
         notifySelectionListeners();
     }
@@ -982,6 +976,34 @@ public class ContextViewer extends AbstractViewer<Object> implements IViewerEven
             Selection clone = new Selection();
             clone.selectedElements.addAll(selectedElements);
             return clone;
+        }
+        
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public String toString() {
+            return selectedElements.toString();
+        }
+        
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public boolean equals(final Object object) {
+            if (object instanceof IStructuredSelection) {
+                IStructuredSelection other = (IStructuredSelection) object;
+                return this.selectedElements.equals(other.toList());
+            }
+            return false;
+        }
+        
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public int hashCode() {
+            return selectedElements.hashCode();
         }
 
     }
