@@ -21,6 +21,7 @@ import java.util.List;
 
 import javax.swing.Timer;
 
+import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.widgets.Display;
 
 import com.google.common.base.Splitter;
@@ -30,6 +31,7 @@ import com.google.common.collect.Lists;
 import de.cau.cs.kieler.core.kgraph.KNode;
 import de.cau.cs.kieler.core.krendering.KRendering;
 import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout;
+import de.cau.cs.kieler.klighd.KlighdConstants;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.IGraphElement;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.PSWTAdvancedPath;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.PSWTStyledText;
@@ -74,8 +76,10 @@ public class PiccoloTooltip {
         this.camera = camera;
 
         // create the text element for the tooltip
-        this.tooltip = new PSWTStyledText(Lists.newArrayList(""));
+        tooltip = new PSWTStyledText(Lists.newArrayList(""));
         tooltip.setPickable(false);
+        tooltip.setFont(new FontData(KlighdConstants.DEFAULT_FONT_NAME,
+                KlighdConstants.DEFAULT_TOOL_TIP_FONT_SIZE, KlighdConstants.DEFAULT_FONT_STYLE));
 
         // create a rounded box where the tooltip will be displayed
         root = PSWTAdvancedPath.createRoundRectangle(0, 0, 0, 0, ROUNDNESS, ROUNDNESS);
