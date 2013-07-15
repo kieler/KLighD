@@ -99,7 +99,7 @@ public final class KlighdProperties {
      * KLighD view.
      */
     public static final IProperty<RunnableWithResult<?>> MODEL_ACCESS =
-            new Property<RunnableWithResult<?>>("klighd.modelAccess"); 
+            new Property<RunnableWithResult<?>>("klighd.modelAccess");
 
     /**
      * Property that is used to keep original port side data during the whole life cycle of a port,
@@ -122,4 +122,9 @@ public final class KlighdProperties {
      */
     public static final IProperty<PortSide> LAYOUT_PORT_SIDE = new Property<PortSide>(
             "klighd.layout.port.side");
+
+    /**
+     * The property holds a tooltip that is displayed upon a mouse hover of the respective element.
+     */
+    public static final IProperty<String> TOOLTIP = new Property<String>("klighd.tooltip", null);
 }
