@@ -299,7 +299,8 @@ public class KGraphPropertyLayoutConfig implements IMutableLayoutConfig {
         if (element != null) {
             KGraphData elementLayout = getLayoutData(element);
             if (elementLayout != null) {
-                return elementLayout.getProperty(optionData) != null;
+                Object value = elementLayout.getProperty(optionData);
+                return value != null && !value.equals(optionData.getDefault());
             }
         }
         return false;
