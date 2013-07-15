@@ -20,6 +20,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.swt.SWTException;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IWorkbenchPart;
 
 import de.cau.cs.kieler.core.kgraph.KEdge;
@@ -30,6 +31,7 @@ import de.cau.cs.kieler.core.kgraph.KLabeledGraphElement;
 import de.cau.cs.kieler.core.kgraph.KNode;
 import de.cau.cs.kieler.core.kgraph.KPort;
 import de.cau.cs.kieler.core.properties.IProperty;
+import de.cau.cs.kieler.core.properties.Property;
 import de.cau.cs.kieler.kiml.LayoutContext;
 import de.cau.cs.kieler.kiml.LayoutOptionData;
 import de.cau.cs.kieler.kiml.config.DefaultLayoutConfig;
@@ -38,14 +40,17 @@ import de.cau.cs.kieler.kiml.klayoutdata.KEdgeLayout;
 import de.cau.cs.kieler.kiml.klayoutdata.KLayoutDataFactory;
 import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout;
 import de.cau.cs.kieler.kiml.options.LayoutOptions;
+import de.cau.cs.kieler.kiml.ui.diagram.DiagramLayoutEngine;
 import de.cau.cs.kieler.kiml.ui.service.EclipseLayoutConfig;
+import de.cau.cs.kieler.klighd.LightDiagramServices;
 import de.cau.cs.kieler.klighd.ViewContext;
 import de.cau.cs.kieler.klighd.internal.macrolayout.ExpansionAwareLayoutOption.ExpansionAwareLayoutOptionData;
 import de.cau.cs.kieler.klighd.internal.util.KlighdInternalProperties;
 import de.cau.cs.kieler.klighd.util.RenderingContextData;
 import de.cau.cs.kieler.klighd.viewers.ContextViewer;
+import de.cau.cs.kieler.klighd.views.DiagramEditorPart;
 import de.cau.cs.kieler.klighd.views.IDiagramWorkbenchPart;
-//SUPPRESS CHECKSTYLE PREVIOUS 5 LineLength
+//SUPPRESS CHECKSTYLE PREVIOUS 6 LineLength
 
 /**
  * A layout configuration which derives layout options from properties attached to layout data of
@@ -56,6 +61,9 @@ import de.cau.cs.kieler.klighd.views.IDiagramWorkbenchPart;
  */
 public class KGraphPropertyLayoutConfig implements IMutableLayoutConfig {
 
+    /** layout context property for the context viewer. */
+    public static final IProperty<ContextViewer> CONTEXT_VIEWER = new Property<ContextViewer>(
+            "klighd.contextViewer");
     /** the priority for the property layout layout configuration. */
     public static final int PRIORITY = 20;
     
@@ -122,6 +130,7 @@ public class KGraphPropertyLayoutConfig implements IMutableLayoutConfig {
             IWorkbenchPart workbenchPart = context.getProperty(EclipseLayoutConfig.WORKBENCH_PART);
             if (workbenchPart instanceof IDiagramWorkbenchPart) {
                 contextViewer = ((IDiagramWorkbenchPart) workbenchPart).getContextViewer();
+                context.setProperty(CONTEXT_VIEWER, contextViewer);
             }
             
             // determine the domain model element
@@ -258,11 +267,10 @@ public class KGraphPropertyLayoutConfig implements IMutableLayoutConfig {
      * @return the graph element that shall be modified in the given context, or {@code null}
      */
     private KGraphElement getModificationModel(final LayoutContext context) {
-        // XXX this doesn't work yet
-//        EObject domainElement = context.getProperty(LayoutContext.DOMAIN_MODEL);
-//        if (domainElement instanceof KGraphElement) {
-//            return (KGraphElement) domainElement;
-//        }
+        EObject domainElement = context.getProperty(LayoutContext.DOMAIN_MODEL);
+        if (domainElement instanceof KGraphElement) {
+            return (KGraphElement) domainElement;
+        }
         
         Object diagramPart = context.getProperty(LayoutContext.DIAGRAM_PART);
         if (diagramPart instanceof KGraphElement) {
@@ -270,6 +278,42 @@ public class KGraphPropertyLayoutConfig implements IMutableLayoutConfig {
         }
         
         return null;
+    }
+    
+    /**
+     * Refresh the model in case the domain model was modified by this layout configurator.
+     * 
+     * @param element the affected model element
+     * @param layoutContext the layout context
+     */
+    private void refreshModel(final KGraphElement element, final LayoutContext layoutContext) {
+        if (element == layoutContext.getProperty(LayoutContext.DOMAIN_MODEL)) {
+            ContextViewer contextViewer = layoutContext.getProperty(CONTEXT_VIEWER);
+            if (contextViewer != null) {
+                final ViewContext viewContext = contextViewer.getCurrentViewContext();
+                if (viewContext != null) {
+                    // update the view context in order to re-apply the view synthesis
+                    LightDiagramServices.getInstance().updateViewContext(viewContext,
+                            viewContext.getInputModel());
+                    Display.getDefault().asyncExec(new Runnable() {
+                        public void run() {
+                            IWorkbenchPart workbenchPart = layoutContext.getProperty(
+                                    EclipseLayoutConfig.WORKBENCH_PART);
+                            if (workbenchPart != null) {
+                                // re-apply auto-layout with the new configuration
+                                DiagramLayoutEngine.INSTANCE.layout(workbenchPart, null,
+                                        true, false, false, false);
+                                if (workbenchPart instanceof DiagramEditorPart) {
+                                    DiagramEditorPart dep = (DiagramEditorPart) workbenchPart;
+                                    // mark the editor as dirty
+                                    dep.setDirty(true);
+                                }
+                            }
+                        }
+                    });
+                }
+            }
+        }
     }
 
     /**
@@ -289,6 +333,7 @@ public class KGraphPropertyLayoutConfig implements IMutableLayoutConfig {
                 element.getData().add(elementLayout);
             }
             elementLayout.setProperty(optionData, value);
+            refreshModel(element, context);
         }
     }
 
@@ -316,6 +361,7 @@ public class KGraphPropertyLayoutConfig implements IMutableLayoutConfig {
             KGraphData elementLayout = getLayoutData(element);
             if (elementLayout != null) {
                 elementLayout.getProperties().clear();
+                refreshModel(element, context);
             }
         }
     }
