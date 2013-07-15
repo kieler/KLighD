@@ -39,7 +39,6 @@ import de.cau.cs.kieler.kiml.klayoutdata.KLayoutDataFactory;
 import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout;
 import de.cau.cs.kieler.kiml.options.LayoutOptions;
 import de.cau.cs.kieler.kiml.ui.service.EclipseLayoutConfig;
-import de.cau.cs.kieler.klighd.KlighdConstants;
 import de.cau.cs.kieler.klighd.ViewContext;
 import de.cau.cs.kieler.klighd.internal.macrolayout.ExpansionAwareLayoutOption.ExpansionAwareLayoutOptionData;
 import de.cau.cs.kieler.klighd.internal.util.KlighdInternalProperties;
