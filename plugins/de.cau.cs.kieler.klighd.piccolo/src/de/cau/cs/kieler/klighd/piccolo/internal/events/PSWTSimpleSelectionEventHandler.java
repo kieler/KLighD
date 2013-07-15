@@ -306,7 +306,14 @@ public class PSWTSimpleSelectionEventHandler extends PDragSequenceEventHandler {
         point = event.getPosition();
         clickNode = event.getPath().getPickedNode();
         if (clickNode instanceof PCamera) {
-            clickNode = null;
+            // in case the camera has been picked
+            //  - this happens in case a click has been performed on white space around the diagram -
+            //  return the current KNodeTopNode, which is accessible via the following "address"
+            //  (btw. I don't like this kind of navigation through structures)
+            // setting the KNodeTopNode's 'pickable' flag to 'true' doesn't suffice in general as the
+            //  size of this node is usually just a little bit bigger than the bounding box of all
+            //  visible diagram elements
+            clickNode = ((PCamera) clickNode).getLayer(0).getChild(0);
         }
     }
 
