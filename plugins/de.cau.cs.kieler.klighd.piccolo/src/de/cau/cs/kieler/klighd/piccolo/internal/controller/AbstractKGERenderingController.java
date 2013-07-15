@@ -49,6 +49,7 @@ import de.cau.cs.kieler.core.krendering.KRenderingRef;
 import de.cau.cs.kieler.core.krendering.KStyle;
 import de.cau.cs.kieler.core.properties.IProperty;
 import de.cau.cs.kieler.core.util.Pair;
+import de.cau.cs.kieler.klighd.internal.util.KlighdInternalProperties;
 import de.cau.cs.kieler.klighd.microlayout.Bounds;
 import de.cau.cs.kieler.klighd.microlayout.GridPlacementUtil;
 import de.cau.cs.kieler.klighd.microlayout.PlacementUtil;
@@ -164,15 +165,29 @@ public abstract class AbstractKGERenderingController
         if (this.element instanceof KNode) {
             Iterable<KRendering> renderings = Iterables.filter(element.getData(), KRendering.class);
             
-            if (((KNodeNode) repNode).getChildArea().getChildrenCount() == 0) {
-                currentRendering = element.getData(KRendering.class);
+            // in case the node to be depicted has no children (yet - might be added lazily)
+            // look for a rendering marked as 'collapsed' one,
+            //  and if none exists simply take the first one
+            if (((KNodeNode) repNode).getGraphElement().getChildren().isEmpty()) {   
+                currentRendering = Iterables.getFirst(
+                        Iterables.filter(renderings, IS_COLLAPSED_RENDERING),
+                        Iterables.getFirst(renderings, null));
                 
-            } else if (Iterables.any(((KNode) this.element).getChildren(),
-                    RenderingContextData.CHILD_ACTIVE)) {
+            // in case the node to be depicted has children and is populated,
+            //  i.e. children are depicted in the diagram
+            // look for a rendering marked as 'expanded' one,
+            //  and if none exists take the first one that is not marked as 'collapsed' one
+            } else if (RenderingContextData.get(this.element).getProperty(
+                    KlighdInternalProperties.POPULATED)) {
                 currentRendering = Iterables.getFirst(
                         Iterables.filter(renderings, IS_EXPANDED_RENDERING),
                         Iterables.getFirst(Iterables.filter(renderings,
                                 Predicates.not(IS_COLLAPSED_RENDERING)), null));
+
+            // in case the node to be depicted has children and is not populated,
+            //  i.e. no children are visible in the diagram
+            // look for a rendering marked as 'collapsed' one,
+            //  and if none exists take the first one that is not marked as 'expanded' one
             } else {
                 currentRendering = Iterables.getFirst(
                         Iterables.filter(renderings, IS_COLLAPSED_RENDERING),
