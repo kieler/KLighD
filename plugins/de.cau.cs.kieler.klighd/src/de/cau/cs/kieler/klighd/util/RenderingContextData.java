@@ -22,7 +22,7 @@ import de.cau.cs.kieler.core.kgraph.KGraphElement;
 import de.cau.cs.kieler.core.kgraph.KNode;
 import de.cau.cs.kieler.core.kgraph.impl.KGraphDataImpl;
 import de.cau.cs.kieler.core.properties.IProperty;
-import de.cau.cs.kieler.klighd.KlighdConstants;
+import de.cau.cs.kieler.klighd.internal.util.KlighdInternalProperties;
 
 /**
  * A graph data implementation for storing context information about elements in a
@@ -67,8 +67,8 @@ public class RenderingContextData extends KGraphDataImpl {
      */
     public static final Predicate<KNode> CHILD_ACTIVE = new Predicate<KNode>() {
         public boolean apply(final KNode node) {
-            return !RenderingContextData.get(node).containsPoperty(KlighdConstants.ACTIVE)
-                    || RenderingContextData.get(node).getProperty(KlighdConstants.ACTIVE);
+            return !RenderingContextData.get(node).containsPoperty(KlighdInternalProperties.ACTIVE)
+                    || RenderingContextData.get(node).getProperty(KlighdInternalProperties.ACTIVE);
         }
     };
 }

@@ -49,7 +49,6 @@ import de.cau.cs.kieler.core.krendering.KRenderingRef;
 import de.cau.cs.kieler.core.krendering.KStyle;
 import de.cau.cs.kieler.core.properties.IProperty;
 import de.cau.cs.kieler.core.util.Pair;
-import de.cau.cs.kieler.klighd.KlighdConstants;
 import de.cau.cs.kieler.klighd.microlayout.Bounds;
 import de.cau.cs.kieler.klighd.microlayout.GridPlacementUtil;
 import de.cau.cs.kieler.klighd.microlayout.PlacementUtil;
@@ -58,9 +57,10 @@ import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KDecoratorNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KNodeNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.PSWTAdvancedPath;
 import de.cau.cs.kieler.klighd.piccolo.internal.util.PiccoloPlacementUtil;
-import de.cau.cs.kieler.klighd.piccolo.internal.util.Styles;
 import de.cau.cs.kieler.klighd.piccolo.internal.util.PiccoloPlacementUtil.Decoration;
+import de.cau.cs.kieler.klighd.piccolo.internal.util.Styles;
 import de.cau.cs.kieler.klighd.util.CrossDocumentContentAdapter;
+import de.cau.cs.kieler.klighd.util.KlighdProperties;
 import de.cau.cs.kieler.klighd.util.ModelingUtil;
 import de.cau.cs.kieler.klighd.util.RenderingContextData;
 import edu.umd.cs.piccolo.PNode;
@@ -206,7 +206,7 @@ public abstract class AbstractKGERenderingController
      */
     static final Predicate<KRendering> IS_COLLAPSED_RENDERING = new Predicate<KRendering>() {
         public boolean apply(final KRendering rendering) {
-            return rendering.getProperty(KlighdConstants.COLLAPSED_RENDERING);
+            return rendering.getProperty(KlighdProperties.COLLAPSED_RENDERING);
         }
     };
     
@@ -217,7 +217,7 @@ public abstract class AbstractKGERenderingController
      */
     static final Predicate<KRendering> IS_EXPANDED_RENDERING = new Predicate<KRendering>() {
         public boolean apply(final KRendering rendering) {
-            return rendering.getProperty(KlighdConstants.EXPANDED_RENDERING);
+            return rendering.getProperty(KlighdProperties.EXPANDED_RENDERING);
         }
     };
 

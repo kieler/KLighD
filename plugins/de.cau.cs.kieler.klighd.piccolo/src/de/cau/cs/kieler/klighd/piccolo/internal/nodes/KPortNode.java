@@ -17,10 +17,10 @@ import de.cau.cs.kieler.core.kgraph.KPort;
 import de.cau.cs.kieler.core.properties.IProperty;
 import de.cau.cs.kieler.core.properties.Property;
 import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout;
-import de.cau.cs.kieler.klighd.KlighdConstants;
-import de.cau.cs.kieler.klighd.util.RenderingContextData;
 import de.cau.cs.kieler.klighd.piccolo.internal.controller.AbstractKGERenderingController;
 import de.cau.cs.kieler.klighd.piccolo.internal.controller.KPortRenderingController;
+import de.cau.cs.kieler.klighd.util.KlighdProperties;
+import de.cau.cs.kieler.klighd.util.RenderingContextData;
 
 /**
  * The Piccolo node for representing a {@code KPort}.
@@ -56,7 +56,7 @@ public class KPortNode extends PZIndexNode implements ILabeledGraphElement<KPort
         this.port = port;
         RenderingContextData.get(port).setProperty(PORT_REP, this);
         Boolean b = port.getData(KShapeLayout.class).getProperty(
-                KlighdConstants.KLIGHD_SELECTION_UNPICKABLE);
+                KlighdProperties.KLIGHD_SELECTION_UNPICKABLE);
         setPickable(b != null && b.equals(Boolean.TRUE) ? false : true);
     }
     

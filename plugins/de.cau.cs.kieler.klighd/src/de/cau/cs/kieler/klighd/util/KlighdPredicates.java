@@ -16,7 +16,7 @@ package de.cau.cs.kieler.klighd.util;
 import com.google.common.base.Predicate;
 
 import de.cau.cs.kieler.core.kgraph.KNode;
-import de.cau.cs.kieler.klighd.KlighdConstants;
+import de.cau.cs.kieler.klighd.internal.util.KlighdInternalProperties;
 
 /**
  * Various convenience implementations of {@link Predicate}.<br>
@@ -56,7 +56,7 @@ public final class KlighdPredicates {
          */
         public boolean apply(final KNode node) {
             return !node.getChildren().isEmpty()
-                    && RenderingContextData.get(node).getProperty(KlighdConstants.POPULATED);
+                    && RenderingContextData.get(node).getProperty(KlighdInternalProperties.POPULATED);
         }
     }
 }

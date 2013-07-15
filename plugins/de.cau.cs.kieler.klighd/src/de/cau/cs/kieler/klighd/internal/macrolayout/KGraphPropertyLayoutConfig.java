@@ -11,7 +11,7 @@
  * This code is provided under the terms of the Eclipse Public License (EPL).
  * See the file epl-v10.html for the license text.
  */
-package de.cau.cs.kieler.klighd.macrolayout;
+package de.cau.cs.kieler.klighd.internal.macrolayout;
 
 import java.util.Map;
 import java.util.Set;
@@ -39,12 +39,13 @@ import de.cau.cs.kieler.kiml.klayoutdata.KLayoutDataFactory;
 import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout;
 import de.cau.cs.kieler.kiml.options.LayoutOptions;
 import de.cau.cs.kieler.kiml.ui.service.EclipseLayoutConfig;
-import de.cau.cs.kieler.klighd.KlighdConstants;
 import de.cau.cs.kieler.klighd.ViewContext;
-import de.cau.cs.kieler.klighd.macrolayout.ExpansionAwareLayoutOption.ExpansionAwareLayoutOptionData;
+import de.cau.cs.kieler.klighd.internal.macrolayout.ExpansionAwareLayoutOption.ExpansionAwareLayoutOptionData;
+import de.cau.cs.kieler.klighd.internal.util.KlighdInternalProperties;
 import de.cau.cs.kieler.klighd.util.RenderingContextData;
 import de.cau.cs.kieler.klighd.viewers.ContextViewer;
 import de.cau.cs.kieler.klighd.views.IDiagramWorkbenchPart;
+//SUPPRESS CHECKSTYLE PREVIOUS 5 LineLength
 
 /**
  * A layout configuration which derives layout options from properties attached to layout data of
@@ -241,7 +242,7 @@ public class KGraphPropertyLayoutConfig implements IMutableLayoutConfig {
                         RenderingContextData rcd = RenderingContextData.get(node);
                         
                         graphData.copyProperties(ealo.getValues(!node.getChildren().isEmpty()
-                                && rcd.getProperty(KlighdConstants.POPULATED)));
+                                && rcd.getProperty(KlighdInternalProperties.POPULATED)));
                     } else {
                         graphData.setProperty(entry.getKey(), entry.getValue());
                     }

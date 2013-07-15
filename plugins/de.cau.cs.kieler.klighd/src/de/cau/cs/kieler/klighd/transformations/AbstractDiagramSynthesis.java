@@ -25,8 +25,9 @@ import de.cau.cs.kieler.core.krendering.KRenderingFactory;
 import de.cau.cs.kieler.core.properties.IProperty;
 import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout;
 import de.cau.cs.kieler.klighd.TransformationContext;
-import de.cau.cs.kieler.klighd.macrolayout.ExpansionAwareLayoutOption;
-import de.cau.cs.kieler.klighd.macrolayout.ExpansionAwareLayoutOption.ExpansionAwareLayoutOptionData;
+import de.cau.cs.kieler.klighd.internal.macrolayout.ExpansionAwareLayoutOption;
+import de.cau.cs.kieler.klighd.internal.macrolayout.ExpansionAwareLayoutOption.ExpansionAwareLayoutOptionData;
+// SUPPRESS CHECKSTYLE PREVIOUS LineLength
 
 /**
  * This is a specialized {@link AbstractTransformation} with target model type {@link KNode}.<br>

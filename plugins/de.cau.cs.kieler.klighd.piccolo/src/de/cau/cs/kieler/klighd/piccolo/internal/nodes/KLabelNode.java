@@ -17,10 +17,10 @@ import de.cau.cs.kieler.core.kgraph.KLabel;
 import de.cau.cs.kieler.core.properties.IProperty;
 import de.cau.cs.kieler.core.properties.Property;
 import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout;
-import de.cau.cs.kieler.klighd.KlighdConstants;
-import de.cau.cs.kieler.klighd.util.RenderingContextData;
 import de.cau.cs.kieler.klighd.piccolo.internal.controller.AbstractKGERenderingController;
 import de.cau.cs.kieler.klighd.piccolo.internal.controller.KLabelRenderingController;
+import de.cau.cs.kieler.klighd.util.KlighdProperties;
+import de.cau.cs.kieler.klighd.util.RenderingContextData;
 import edu.umd.cs.piccolo.util.PPickPath;
 
 /**
@@ -57,7 +57,7 @@ public class KLabelNode extends PEmptyNode implements IGraphElement<KLabel> {
         this.label = label;
 
         Boolean b = label.getData(KShapeLayout.class).getProperty(
-                KlighdConstants.KLIGHD_SELECTION_UNPICKABLE);
+                KlighdProperties.KLIGHD_SELECTION_UNPICKABLE);
         setPickable(b != null && b.equals(Boolean.TRUE) ? false : true);
 
         RenderingContextData.get(label).setProperty(LABEL_REP, this);
