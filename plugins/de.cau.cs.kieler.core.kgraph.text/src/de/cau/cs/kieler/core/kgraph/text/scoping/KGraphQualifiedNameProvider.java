@@ -54,7 +54,7 @@ public class KGraphQualifiedNameProvider extends DefaultDeclarativeQualifiedName
      * @return a qualified name derived from the style holder's identifier
      */
     public QualifiedName qualifiedName(final KStyleHolder styleHolder) {
-    	return qualifiedNameConverter.toQualifiedName(styleHolder.getId());
+        return qualifiedNameConverter.toQualifiedName(styleHolder.getId());
     }
 
 }

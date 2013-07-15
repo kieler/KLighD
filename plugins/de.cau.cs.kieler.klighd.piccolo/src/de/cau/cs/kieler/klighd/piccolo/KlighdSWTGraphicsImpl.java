@@ -26,7 +26,7 @@ import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.graphics.TextLayout;
 
 import de.cau.cs.kieler.klighd.KlighdConstants;
-import de.cau.cs.kieler.klighd.piccolo.util.RGBGradient;
+import de.cau.cs.kieler.klighd.piccolo.internal.util.RGBGradient;
 import edu.umd.cs.piccolo.util.PAffineTransform;
 import edu.umd.cs.piccolox.swt.SWTGraphics2D;
 import edu.umd.cs.piccolox.swt.SWTShapeManager;

@@ -47,6 +47,13 @@ public class KGraphValueConverters extends AbstractDeclarativeValueConverterServ
     @Inject
     private AbstractIDValueConverter idValueConverter;
 
+    // CHECKSTYLEOFF MethodName
+    
+    /**
+     * Create a converter for the ID rule.
+     * 
+     * @return a value converter for ID
+     */
     @ValueConverter(rule = "ID")
     public IValueConverter<String> ID() {
         return idValueConverter;
@@ -55,6 +62,11 @@ public class KGraphValueConverters extends AbstractDeclarativeValueConverterServ
     @Inject
     private QualifiedIDValueConverter qualifiedIdValueConverter;
 
+    /**
+     * Create a converter for the QualifiedID rule.
+     * 
+     * @return a value converter for QualifiedID
+     */
     @ValueConverter(rule = "QualifiedID")
     public IValueConverter<String> QualifiedID() {
         return qualifiedIdValueConverter;
@@ -62,14 +74,24 @@ public class KGraphValueConverters extends AbstractDeclarativeValueConverterServ
 
     @Inject
     private STRINGValueConverter stringValueConverter;
-    
+
+    /**
+     * Create a converter for the STRING rule.
+     * 
+     * @return a value converter for STRING
+     */
     @ValueConverter(rule = "STRING")
     public IValueConverter<String> STRING() {
         return stringValueConverter;
     }
     
     private PropertyValueConverter propertyValueConverter = new PropertyValueConverter();
-    
+
+    /**
+     * Create a converter for the PropertyValue rule.
+     * 
+     * @return a value converter for PropertyValue
+     */
     @ValueConverter(rule = "PropertyValue")
     public IValueConverter<String> propertyValue() {
         return propertyValueConverter;
@@ -77,50 +99,95 @@ public class KGraphValueConverters extends AbstractDeclarativeValueConverterServ
 
     @Inject
     private INTValueConverter intValueConverter;
-    
+
+    /**
+     * Create a converter for the NATURAL rule.
+     * 
+     * @return a value converter for NATURAL
+     */
     @ValueConverter(rule = "NATURAL")
     public IValueConverter<Integer> NATURAL() {
         return intValueConverter;
     }
-    
+
+    /**
+     * Create a converter for the Float rule.
+     * 
+     * @return a value converter for Float
+     */
     @ValueConverter(rule = "Float")
     public IValueConverter<Float> Float() {
         return new FloatValueConverter();
     }
-    
+
+    /**
+     * Create a converter for the RED rule.
+     * 
+     * @return a value converter for RED
+     */
     @ValueConverter(rule = "RED")
     public IValueConverter<Integer> RED() {
         return new IntUnitSuffixConverter("r");
     }
-    
+
+    /**
+     * Create a converter for the GREEN rule.
+     * 
+     * @return a value converter for GREEN
+     */
     @ValueConverter(rule = "GREEN")
     public IValueConverter<Integer> GREEN() {
         return new IntUnitSuffixConverter("g");
     }
-    
+
+    /**
+     * Create a converter for the BLUE rule.
+     * 
+     * @return a value converter for BLUE
+     */
     @ValueConverter(rule = "BLUE")
     public IValueConverter<Integer> BLUE() {
         return new IntUnitSuffixConverter("b");
     }
-    
+
+    /**
+     * Create a converter for the ALPHA rule.
+     * 
+     * @return a value converter for ALPHA
+     */
     @ValueConverter(rule = "ALPHA")
     public IValueConverter<Integer> ALPHA() {
         return new IntUnitSuffixConverter("a");
     }
-    
+
+    /**
+     * Create a converter for the FSIZE rule.
+     * 
+     * @return a value converter for FSIZE
+     */
     @ValueConverter(rule = "FSIZE")
     public IValueConverter<Integer> FSIZE() {
         return new IntUnitSuffixConverter("pt");
     }
-    
+
+    /**
+     * Create a converter for the DEGREES rule.
+     * 
+     * @return a value converter for DEGREES
+     */
     @ValueConverter(rule = "DEGREES")
     public IValueConverter<Float> DEGREES() {
         return new FloatUnitSuffixConverter(1, "deg");
     }
-    
+
+    /**
+     * Create a converter for the PERCENT rule.
+     * 
+     * @return a value converter for PERCENT
+     */
     @ValueConverter(rule = "PERCENT")
     public IValueConverter<Float> PERCENT() {
-        return new FloatUnitSuffixConverter(100, "%");
+        return new FloatUnitSuffixConverter(100, "%"); // SUPPRESS CHECKSTYLE MagicNumber
     }
     
     
@@ -142,7 +209,10 @@ public class KGraphValueConverters extends AbstractDeclarativeValueConverterServ
         
         public String toValue(final String string, final INode node) {
             String res = super.toValue(string, node);
-            return res.replace(".^", ".");
+            if (res != null) {
+                return res.replace(".^", ".");
+            }
+            return null;
         }
     }
     
@@ -162,8 +232,7 @@ public class KGraphValueConverters extends AbstractDeclarativeValueConverterServ
         }
         
         @Override
-        protected Integer internalToValue(final String string, final INode node)
-                throws ValueConverterException {
+        protected Integer internalToValue(final String string, final INode node) {
             int i = (string == null) ? -1 : string.indexOf(suffix);
             if (i >= 0) {
                 return intValueConverter.toValue(string.substring(0, i), node);
@@ -196,8 +265,7 @@ public class KGraphValueConverters extends AbstractDeclarativeValueConverterServ
         }
         
         @Override
-        protected Float internalToValue(final String string, final INode node)
-                throws ValueConverterException {
+        protected Float internalToValue(final String string, final INode node) {
             if (Strings.isEmpty(string)) {
                 throw new ValueConverterException("Couldn't convert empty string to a float value.",
                         node, null);
@@ -231,8 +299,7 @@ public class KGraphValueConverters extends AbstractDeclarativeValueConverterServ
         }
         
         @Override
-        protected Float internalToValue(final String string, final INode node)
-                throws ValueConverterException {
+        protected Float internalToValue(final String string, final INode node) {
             if (Strings.isEmpty(string)) {
                 throw new ValueConverterException("Couldn't convert empty string to a float value.",
                         node, null);
@@ -258,11 +325,11 @@ public class KGraphValueConverters extends AbstractDeclarativeValueConverterServ
         /**
          * Regular expression pattern that matches instances of the QualifiedName rule.
          */
-        Pattern qualifiedNamePattern = Pattern.compile(
+        private Pattern qualifiedNamePattern = Pattern.compile(
                 "[a-zA-Z_][a-zA-Z0-9_]*(\\.[a-zA-Z_][a-zA-Z0-9_]*)*");
         
         @Override
-        protected String internalToString(String value) {
+        protected String internalToString(final String value) {
             // Check if the value can be parsed as a Float
             try {
                 Float.parseFloat(value);
@@ -283,7 +350,7 @@ public class KGraphValueConverters extends AbstractDeclarativeValueConverterServ
         }
 
         @Override
-        protected String internalToValue(String string, INode node) throws ValueConverterException {
+        protected String internalToValue(final String string, final INode node) {
             // Strip leading and trailing quotation mark, if any (this can be simplified if we assume
             // that the string passed to the method either has both, a leading and a trailing quotation
             // mark, or none; but even though we should be able to assume that, we decide to program

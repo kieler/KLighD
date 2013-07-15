@@ -90,6 +90,7 @@ public interface KShadow extends KStyle {
 
     /**
      * Returns the value of the '<em><b>Blur</b></em>' attribute.
+     * The default value is <code>"0.0"</code>.
      * <!-- begin-user-doc -->
      * <p>
      * If the meaning of the '<em>Blur</em>' attribute isn't clear,
@@ -99,7 +100,7 @@ public interface KShadow extends KStyle {
      * @return the value of the '<em>Blur</em>' attribute.
      * @see #setBlur(float)
      * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKShadow_Blur()
-     * @model
+     * @model default="0.0"
      * @generated
      */
     float getBlur();

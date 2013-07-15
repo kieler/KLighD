@@ -1,20 +1,12 @@
-KNode {
-	children:
-	KNode {
-		data:
-		RenderingRef "//@children.0/@data.1"
-		Rectangle {
-			children:
-			Text texttext {
-				mapProperties:
-				"klighd.testing.height" = "16.0"
-				"klighd.testing.width" = "44.0"
-			}
-		}
-		KShapeLayout {
-			mapProperties:
-			"klighd.testing.expected.height" = "16.0"
-			"klighd.testing.expected.width" = "44.0"
-		}
+knode {
+	properties:
+		klighd.testing.expected.^height = 16.0
+		klighd.testing.expected.^width = 44.0
+	krendering *rect
+	krectangle rect {
+		ktext ("texttext") [
+			klighd.testing.^height = 16.0
+			klighd.testing.^width = 44.0
+		]
 	}
 }

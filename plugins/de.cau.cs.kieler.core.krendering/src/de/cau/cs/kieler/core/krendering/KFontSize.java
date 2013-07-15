@@ -34,6 +34,7 @@ package de.cau.cs.kieler.core.krendering;
 public interface KFontSize extends KStyle {
     /**
      * Returns the value of the '<em><b>Size</b></em>' attribute.
+     * The default value is <code>"10"</code>.
      * <!-- begin-user-doc -->
      * <p>
      * If the meaning of the '<em>Size</em>' attribute isn't clear,
@@ -43,7 +44,7 @@ public interface KFontSize extends KStyle {
      * @return the value of the '<em>Size</em>' attribute.
      * @see #setSize(int)
      * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKFontSize_Size()
-     * @model required="true"
+     * @model default="10" required="true"
      * @generated
      */
     int getSize();

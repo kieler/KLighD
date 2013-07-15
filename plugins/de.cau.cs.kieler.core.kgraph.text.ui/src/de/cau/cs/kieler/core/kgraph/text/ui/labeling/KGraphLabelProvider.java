@@ -13,6 +13,7 @@
  */
 package de.cau.cs.kieler.core.kgraph.text.ui.labeling;
 
+import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.edit.ui.provider.AdapterFactoryLabelProvider;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
@@ -21,27 +22,38 @@ import org.eclipse.xtext.ui.label.DefaultEObjectLabelProvider;
 import com.google.inject.Inject;
 
 import de.cau.cs.kieler.core.kgraph.KEdge;
+import de.cau.cs.kieler.core.kgraph.KGraphElement;
 import de.cau.cs.kieler.core.kgraph.KLabel;
-import de.cau.cs.kieler.core.kgraph.KLabeledGraphElement;
 import de.cau.cs.kieler.core.kgraph.KNode;
 import de.cau.cs.kieler.core.kgraph.KPort;
-import de.cau.cs.kieler.core.kgraph.PersistentEntry;
 import de.cau.cs.kieler.core.kgraph.text.ui.KGraphUiModule;
 import de.cau.cs.kieler.core.krendering.KArc;
+import de.cau.cs.kieler.core.krendering.KBackground;
+import de.cau.cs.kieler.core.krendering.KBottomPosition;
 import de.cau.cs.kieler.core.krendering.KChildArea;
+import de.cau.cs.kieler.core.krendering.KColor;
+import de.cau.cs.kieler.core.krendering.KColoring;
+import de.cau.cs.kieler.core.krendering.KCustomRendering;
 import de.cau.cs.kieler.core.krendering.KEllipse;
+import de.cau.cs.kieler.core.krendering.KImage;
+import de.cau.cs.kieler.core.krendering.KPlacement;
+import de.cau.cs.kieler.core.krendering.KPlacementData;
 import de.cau.cs.kieler.core.krendering.KPolygon;
 import de.cau.cs.kieler.core.krendering.KPolyline;
+import de.cau.cs.kieler.core.krendering.KPosition;
 import de.cau.cs.kieler.core.krendering.KRectangle;
 import de.cau.cs.kieler.core.krendering.KRendering;
 import de.cau.cs.kieler.core.krendering.KRenderingLibrary;
 import de.cau.cs.kieler.core.krendering.KRenderingRef;
+import de.cau.cs.kieler.core.krendering.KRightPosition;
 import de.cau.cs.kieler.core.krendering.KRoundedRectangle;
 import de.cau.cs.kieler.core.krendering.KSpline;
+import de.cau.cs.kieler.core.krendering.KStyle;
+import de.cau.cs.kieler.core.krendering.KStyleHolder;
+import de.cau.cs.kieler.core.krendering.KStyleRef;
 import de.cau.cs.kieler.core.krendering.KText;
 import de.cau.cs.kieler.kiml.klayoutdata.KEdgeLayout;
 import de.cau.cs.kieler.kiml.klayoutdata.KIdentifier;
-import de.cau.cs.kieler.kiml.klayoutdata.KPoint;
 import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout;
 
 /**
@@ -65,37 +77,37 @@ public class KGraphLabelProvider extends DefaultEObjectLabelProvider {
     //~~~~~~~~~~~~~~~~ TEXT OUTPUT
     
     /**
-     * Create text for a KLabel.
+     * Create text for a graph element.
      * 
-     * @param label a label
+     * @param element a graph element
      * @return the displayed text
      */
-    public String text(final KLabel label) {
-        KIdentifier identifier = label.getData(KIdentifier.class);
-        if (identifier != null) {
-            return "KLabel " + identifier.getId();
+    public String text(final KGraphElement element) {
+        StringBuilder text = new StringBuilder();
+        if (element instanceof KNode && ((KNode) element).getParent() == null) {
+            text.append("KGraph");
+        } else {
+            text.append(element.eClass().getName());
         }
-        return "KLabel " + label.getText();
-    }
-    
-    /**
-     * Create text for a labeled graph element.
-     * 
-     * @param element a labeled graph element
-     * @return the displayed text
-     */
-    public String text(final KLabeledGraphElement element) {
-        String className = element.eClass().getName();
         KIdentifier identifier = element.getData(KIdentifier.class);
-        if (identifier != null) {
-            return className + " " + identifier.getId();
+        if (identifier != null && identifier.getId() != null && identifier.getId().length() > 0) {
+            text.append(" ").append(identifier.getId());
         }
-        for (KLabel label : element.getLabels()) {
-            if (label.getText() != null) {
-                return className + " " + label.getText();
+        if (element instanceof KEdge) {
+            KNode target = ((KEdge) element).getTarget();
+            if (target != null) {
+                KIdentifier targetId = target.getData(KIdentifier.class);
+                if (targetId != null && targetId.getId() != null && targetId.getId().length() > 0) {
+                    text.append(" -> ").append(targetId.getId());
+                }
+            }
+        } else if (element instanceof KLabel) {
+            String labelText = ((KLabel) element).getText();
+            if (labelText != null && labelText.length() > 0) {
+                text.append(" \"").append(labelText).append("\"");
             }
         }
-        return className;
+        return text.toString();
     }
     
     /**
@@ -105,8 +117,8 @@ public class KGraphLabelProvider extends DefaultEObjectLabelProvider {
      * @return the displayed text
      */
     public String text(final KShapeLayout shapeLayout) {
-        return "x=" + shapeLayout.getXpos() + ",y=" + shapeLayout.getYpos()
-                + " width=" + shapeLayout.getWidth() + ",height=" + shapeLayout.getHeight();
+        return "x=" + shapeLayout.getXpos() + ", y=" + shapeLayout.getYpos()
+                + ", w=" + shapeLayout.getWidth() + ", h=" + shapeLayout.getHeight();
     }
     
     /**
@@ -120,26 +132,184 @@ public class KGraphLabelProvider extends DefaultEObjectLabelProvider {
     }
     
     /**
-     * Create text for a persistent entry.
+     * Create text for a style holder.
      * 
-     * @param entry a persistent entry
+     * @param styleHolder a style holder
      * @return the displayed text
      */
-    public String text(final PersistentEntry entry) {
-        if (entry.getKey() != null && entry.getValue() != null) {
-            return entry.getKey() + "=" + entry.getValue();
+    public String text(final KStyleHolder styleHolder) {
+        StringBuilder text = new StringBuilder();
+        text.append(styleHolder.eClass().getName());
+        if (styleHolder.getId() != null && styleHolder.getId().length() > 0) {
+            text.append(" ").append(styleHolder.getId());
         }
-        return null;
+        if (styleHolder instanceof KRenderingRef) {
+            KRendering ref = ((KRenderingRef) styleHolder).getRendering();
+            if (ref != null && ref.getId() != null && ref.getId().length() > 0) {
+                text.append(" *").append(ref.getId());
+            }
+        } else if (styleHolder instanceof KText) {
+            String labelText = ((KText) styleHolder).getText();
+            if (labelText != null && labelText.length() > 0) {
+                text.append(" \"").append(labelText).append("\"");
+            }
+        } else if (styleHolder instanceof KRoundedRectangle) {
+            KRoundedRectangle roundedRectangle = (KRoundedRectangle) styleHolder;
+            text.append(" (").append(roundedRectangle.getCornerWidth()).append(", ");
+            text.append(roundedRectangle.getCornerHeight()).append(")");
+        } else if (styleHolder instanceof KArc) {
+            KArc arc = (KArc) styleHolder;
+            text.append(" (").append(arc.getStartAngle()).append(", ");
+            text.append(arc.getArcAngle()).append(")");
+        } else if (styleHolder instanceof KCustomRendering) {
+            KCustomRendering customRend = (KCustomRendering) styleHolder;
+            text.append(" (");
+            if (customRend.getBundleName() != null && customRend.getBundleName().length() > 0) {
+                text.append(customRend.getBundleName()).append(":");
+            }
+            text.append(customRend.getClassName()).append(")");
+        } else if (styleHolder instanceof KImage) {
+            KImage image = (KImage) styleHolder;
+            text.append(" (");
+            if (image.getBundleName() != null && image.getBundleName().length() > 0) {
+                text.append(image.getBundleName()).append(":");
+            }
+            text.append(image.getImagePath()).append(")");
+        }
+        return text.toString();
     }
     
     /**
-     * Create text for a KPoint.
+     * Create text for a KRendering library.
      * 
-     * @param point a point
+     * @param library a rendering library
      * @return the displayed text
      */
-    public String text(final KPoint point) {
-        return point.getX() + "," + point.getY();
+    public String text(final KRenderingLibrary library) {
+        return library.eClass().getName();
+    }
+    
+    /**
+     * Create generic text for a style.
+     * 
+     * @param style a style
+     * @return the displayed text
+     */
+    public String text(final KStyle style) {
+        StringBuilder text = new StringBuilder();
+        text.append(style.eClass().getName().toLowerCase());
+        boolean first = true;
+        for (EAttribute attribute : style.eClass().getEAttributes()) {
+            Object value = style.eGet(attribute);
+            if (value != null) {
+                if (first) {
+                    text.append(" = ");
+                    first = false;
+                } else {
+                    text.append(", ");
+                }
+                text.append(value.toString());
+            }
+        }
+        return text.toString();
+    }
+    
+    /**
+     * Create text for a coloring style.
+     * 
+     * @param coloring a coloring style
+     * @return the displayed text
+     */
+    public String text(final KColoring coloring) {
+        StringBuilder text = new StringBuilder();
+        if (coloring instanceof KBackground) {
+            text.append("background");
+        } else {
+            text.append("foreground");
+        }
+        if (coloring.getColor() != null) {
+            KColor color = coloring.getColor();
+            text.append(" = ").append(color.getRed()).append("r,");
+            text.append(color.getGreen()).append("g,");
+            text.append(color.getBlue()).append("b,");
+            text.append(coloring.getAlpha()).append("a");
+        }
+        if (coloring.getTargetColor() != null) {
+            KColor color = coloring.getTargetColor();
+            text.append(" -> ").append(color.getRed()).append("r,");
+            text.append(color.getGreen()).append("g,");
+            text.append(color.getBlue()).append("b,");
+            text.append(coloring.getTargetAlpha()).append("a");
+        }
+        return text.toString();
+    }
+    
+    /**
+     * Create text for a style reference.
+     * 
+     * @param styleRef a style reference
+     * @return the displayed text
+     */
+    public String text(final KStyleRef styleRef) {
+        if (styleRef.getStyleHolder() != null && styleRef.getStyleHolder().getId() != null) {
+            return "reference = " + styleRef.getStyleHolder().getId();
+        }
+        return "reference";
+    }
+    
+    /**
+     * Create text for a placement.
+     * 
+     * @param placement a placement
+     * @return the displayed text
+     */
+    public String text(final KPlacement placement) {
+        return placement.eClass().getName();
+    }
+    
+    /**
+     * Create text for a placement data.
+     * 
+     * @param placementData a placement data
+     * @return the displayed text
+     */
+    public String text(final KPlacementData placementData) {
+        return placementData.eClass().getName();
+    }
+    
+    /**
+     * Create text for a position.
+     * 
+     * @param position a position
+     * @return the displayed text
+     */
+    public String text(final KPosition position) {
+        StringBuilder text = new StringBuilder();
+        if (position.getX() != null) {
+            if (position.getX() instanceof KRightPosition) {
+                text.append("right ");
+            } else {
+                text.append("left ");
+            }
+            text.append(position.getX().getRelative()).append("% + ");
+            text.append(position.getX().getAbsolute());
+        }
+        if (position.getX() != null && position.getY() != null) {
+            text.append(", ");
+        } else {
+            text.append("<undefined position>");
+        }
+        if (position.getY() != null) {
+            if (position.getY() instanceof KBottomPosition) {
+                text.append("bottom ");
+            } else {
+                text.append("top ");
+            }
+            // SUPPRESS CHECKSTYLE NEXT MagicNumber
+            text.append(position.getY().getRelative() * 100).append("% + ");
+            text.append(position.getY().getAbsolute());
+        }
+        return text.toString();
     }
     
     

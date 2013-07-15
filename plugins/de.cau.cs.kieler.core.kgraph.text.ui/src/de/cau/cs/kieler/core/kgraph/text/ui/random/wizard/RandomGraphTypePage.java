@@ -49,6 +49,8 @@ public class RandomGraphTypePage extends WizardPage {
         this.options = options;
     }
 
+    // CHECKSTYLEOFF MagicNumber
+    
     /**
      * {@inheritDoc}
      */

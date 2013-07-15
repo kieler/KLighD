@@ -49,8 +49,8 @@ class KPolylineExtensions {
                 it.absolute = -2f;
                 it.width = 10;
                 it.height = 8;
-                it.xOffset = -8f;
-                it.yOffset = -4f;
+                it.setXOffset(-8f); // chsch: used the regular way here and below, as the alias 
+                it.setYOffset(-4f); //  name translation convention changed from Xtext 2.3 to 2.4.
             ];
         ];
     }
@@ -65,8 +65,8 @@ class KPolylineExtensions {
                 it.absolute = -7.5f * modifiedScale;
                 it.width = 15 * modifiedScale;
                 it.height = 15 * modifiedScale;
-                it.xOffset = -7.5f * modifiedScale;
-                it.yOffset = -it.height / 2;
+                it.setXOffset(-7.5f * modifiedScale);
+                it.setYOffset(-it.height / 2);
             ];
         ];
     }

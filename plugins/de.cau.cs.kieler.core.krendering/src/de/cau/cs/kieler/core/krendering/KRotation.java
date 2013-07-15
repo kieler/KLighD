@@ -38,6 +38,7 @@ package de.cau.cs.kieler.core.krendering;
 public interface KRotation extends KStyle {
     /**
      * Returns the value of the '<em><b>Rotation</b></em>' attribute.
+     * The default value is <code>"0.0"</code>.
      * <!-- begin-user-doc -->
      * <p>
      * If the meaning of the '<em>Rotation</em>' attribute isn't clear,
@@ -47,7 +48,7 @@ public interface KRotation extends KStyle {
      * @return the value of the '<em>Rotation</em>' attribute.
      * @see #setRotation(float)
      * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKRotation_Rotation()
-     * @model required="true"
+     * @model default="0.0" required="true"
      * @generated
      */
     float getRotation();

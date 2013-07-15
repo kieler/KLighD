@@ -1,28 +1,17 @@
-
-KNode {
-	children:KNode {
-	data:
-	RenderingRef "//@children.0/@data.1"
-	Rectangle {
-		childPlacement:
-		gridPlacement 1
-		children:
-		Text "Text" {
+knode {
+	properties:
+		klighd.testing.expected.^height = 46.0
+		klighd.testing.expected.^width = 73.0
+	krendering *rect1
+	krectangle rect1 {
+		grid: columns = 1
+		ktext ("Text") [
+			klighd.testing.^height = 46.0 klighd.testing.^width = 73.0
+		] {
 			styles:
-			foreground {
-				color 245 0 0 alpha 200
-			}
-			fontSize 30
-			horizontalAlignment LEFT
-			mapProperties:
-			"klighd.testing.height" = "46.0"
-			"klighd.testing.width" = "73.0"
+				foreground = 245r, 200a
+				fontSize = 30pt
+				propagate hAlign = left
 		}
 	}
-	KShapeLayout {
-		mapProperties:
-		"klighd.testing.expected.height" = "46.0"
-		"klighd.testing.expected.width" = "73.0"
-	}
-}
 }

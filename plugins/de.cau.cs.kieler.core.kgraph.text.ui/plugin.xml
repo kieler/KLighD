@@ -267,6 +267,16 @@
             name="Random KGraph"
             project="false">
       </wizard>
+      <wizard
+            canFinishEarly="false"
+            category="de.cau.cs.kieler.kgraph"
+            class="de.cau.cs.kieler.core.kgraph.text.ui.EmptyGraphWizard"
+            hasPages="true"
+            icon="icons/kgraph/kgraph-new.gif"
+            id="de.cau.cs.kieler.core.kgraph.text.empty.wizard"
+            name="Empty KGraph"
+            project="false">
+      </wizard>
       <category
             id="de.cau.cs.kieler.kgraph"
             name="KGraph">
@@ -277,5 +287,70 @@
       <initializer
             class="de.cau.cs.kieler.core.kgraph.text.ui.random.GeneratorPreferenceInitializer">
       </initializer>
+   </extension>
+    <extension point="org.eclipse.ui.menus">
+         <menuContribution
+            locationURI="popup:org.eclipse.ui.popup.any?after=additions">
+         <command
+               commandId="de.cau.cs.kieler.core.model.convert"
+               label="Convert to Textual Model (kgt)"
+               style="push"
+               tooltip="Convert the model to textual KGraph format">
+            <visibleWhen
+                  checkEnabled="false">
+               <iterate
+                     ifEmpty="false"
+                     operator="and">
+                  <adapt
+                        type="org.eclipse.core.resources.IResource">
+                     <test
+                           forcePluginActivation="false"
+                           property="org.eclipse.core.resources.extension"
+                           value="kgx">
+                     </test>
+                  </adapt>
+               </iterate>
+            </visibleWhen>
+            <parameter
+                  name="de.cau.cs.kieler.convert.targetExtension"
+                  value="kgt">
+            </parameter>
+         </command>
+                  <command
+               commandId="de.cau.cs.kieler.core.model.convert"
+               label="Convert to XMI Model (kgx)"
+               style="push"
+               tooltip="Convert the model to XMI-based KGraph format">
+            <visibleWhen
+                  checkEnabled="false">
+               <iterate
+                     ifEmpty="false"
+                     operator="and">
+                  <adapt
+                        type="org.eclipse.core.resources.IResource">
+                     <test
+                           forcePluginActivation="false"
+                           property="org.eclipse.core.resources.extension"
+                           value="kgt">
+                     </test>
+                  </adapt>
+               </iterate>
+            </visibleWhen>
+            <parameter
+                  name="de.cau.cs.kieler.convert.targetExtension"
+                  value="kgx">
+            </parameter>
+         </command>
+     </menuContribution>
+    </extension>
+   <extension
+         point="de.cau.cs.kieler.kiml.service.graphTransformers">
+      <handler
+            class="de.cau.cs.kieler.core.kgraph.text.ui.KGraphExecutableExtensionFactory:de.cau.cs.kieler.core.kgraph.text.ui.KGraphTextHandler"
+            description="Xtext-based notation for the KGraph format."
+            extensions="kgt"
+            id="de.cau.cs.kieler.kgraph.text"
+            name="KGraph Text">
+      </handler>
    </extension>
 </plugin>

@@ -53,6 +53,8 @@ public class RandomGraphLayoutPage extends WizardPage {
         this.options = options;
     }
 
+    // CHECKSTYLEOFF MagicNumber
+    
     /**
      * {@inheritDoc}
      */
@@ -212,7 +214,7 @@ public class RandomGraphLayoutPage extends WizardPage {
      * @param generatorOption the generator option affected by the created spinner
      * @return a spinner for port sides
      */
-    private Spinner createPortSideSpinner(final Composite composite, String labelText,
+    private Spinner createPortSideSpinner(final Composite composite, final String labelText,
             final IProperty<Integer> generatorOption) {
         Label label = new Label(composite, SWT.NONE);
         label.setText(labelText);

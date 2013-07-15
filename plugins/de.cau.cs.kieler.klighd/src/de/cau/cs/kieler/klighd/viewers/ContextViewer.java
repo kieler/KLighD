@@ -54,7 +54,6 @@ import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Sash;
-import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.ScrolledForm;
 import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
@@ -89,6 +88,7 @@ import de.cau.cs.kieler.klighd.triggers.KlighdSelectionTrigger.KlighdSelectionSt
 import de.cau.cs.kieler.klighd.triggers.KlighdSelectionTrigger.KlighdSelectionState.SelectionElement;
 import de.cau.cs.kieler.klighd.views.DiagramViewManager;
 import de.cau.cs.kieler.klighd.views.DiagramViewPart;
+import de.cau.cs.kieler.klighd.views.IDiagramWorkbenchPart;
 
 /**
  * A viewer for instances of type {@code ViewContext}. It is instantiated by {@link DiagramViewPart}
@@ -112,7 +112,7 @@ public class ContextViewer extends AbstractViewer<Object> implements IViewerEven
         ISelectionProvider {
 
     /** the workbench part for which the viewer is created. */
-    private IWorkbenchPart workbenchPart;
+    private IDiagramWorkbenchPart workbenchPart;
     /** the parent composite for diagram viewers. */
     private Composite diagramComposite;
     /** the id of the view this viewer belongs to. */
@@ -147,7 +147,7 @@ public class ContextViewer extends AbstractViewer<Object> implements IViewerEven
      *            the workbench part this view is attached to
      */
     public ContextViewer(final Composite parent, final String viewId,
-            final IWorkbenchPart workbenchPart) {
+            final IDiagramWorkbenchPart workbenchPart) {
         this.viewId = viewId;
         this.workbenchPart = workbenchPart;
         
@@ -179,8 +179,10 @@ public class ContextViewer extends AbstractViewer<Object> implements IViewerEven
     /**
      * Update the options to be displayed in the options pane.
      * TODO make the selection of options configurable through method arguments
+     * 
+     * @param fitSpace true if the diagram shall fit the available space
      */
-    public void updateOptions() {
+    public void updateOptions(final boolean fitSpace) {
         // remove any option controls that have been created before
         optionControlFactory.clear();
         // initialize a layout configuration for retrieving default values
@@ -205,7 +207,7 @@ public class ContextViewer extends AbstractViewer<Object> implements IViewerEven
         }
         
         if (!recommendedOptions.entrySet().isEmpty()) {
-            this.enableOptionsSideBar();
+            this.enableOptionsSideBar(fitSpace);
         }
 
     }
@@ -447,8 +449,10 @@ public class ContextViewer extends AbstractViewer<Object> implements IViewerEven
     /**
      * A simple enabler of the side bar controls.
      * It is to be executed in case there are diagram options to provide in the side bar.
+     * 
+     * @param zoomToFit true if the diagram shall fit the available space
      */
-    private void enableOptionsSideBar() {
+    private void enableOptionsSideBar(final boolean zoomToFit) {
         // define the controls (sash, right arrow, form) to be visible
         for (Control c : this.sideBarControls) {
             c.setVisible(true);
@@ -459,10 +463,13 @@ public class ContextViewer extends AbstractViewer<Object> implements IViewerEven
             this.sashLayoutData.left.offset = 0;
         }
         // re-layout the view part's composite
-        this.diagramComposite.getParent().layout(true, true);        
+        this.diagramComposite.getParent().layout(true, true);
+        
         // let the diagram fit the available space,
         //  should be dependent on a preference setting in future (TODO)
-        this.currentViewer.zoomToFit(0);
+        if (zoomToFit) {
+            this.currentViewer.zoomToFit(0);
+        }
     }
     
     
@@ -604,18 +611,10 @@ public class ContextViewer extends AbstractViewer<Object> implements IViewerEven
         }
         
         // update the selection status for the ISelectionProvider interface
-        List<Object> selectedModelElements = Lists.newArrayList();
-        Object modelElement;
-        for (Object element : selectedElements) {            
-            modelElement = getCurrentViewContext().getSourceElement(element);
-            if (modelElement != null) {
-                selectedModelElements.add(modelElement);
-            }
-        }
-        updateSelection(selectedModelElements);
+        updateSelection(selectedElements);
         
         // propagate event to listeners on this viewer
-        notifyListenersSelection(selectedModelElements);  
+        notifyListenersSelection(selectedElements);  
     }
 
     /** a map used to track the highlighting styles, which have been attached to selected elements. */
@@ -670,10 +669,12 @@ public class ContextViewer extends AbstractViewer<Object> implements IViewerEven
         // end of selection highlighting stuff
     }
         
-    private void updateSelection(final List<?> selectedElements) {
+    private void updateSelection(final Iterable<?> selectedElements) {
         synchronized (selection) {
             selection.selectedElements.clear();
-            selection.selectedElements.addAll(selectedElements);
+            for (Object object : selectedElements) {
+                selection.selectedElements.add(object);
+            }
         }
         notifySelectionListeners();
     }
@@ -877,11 +878,11 @@ public class ContextViewer extends AbstractViewer<Object> implements IViewerEven
     }
 
     /**
-     * Returns the {@link IWorkbenchPart} this viewer is attached to.
+     * Returns the {@link IDiagramWorkbenchPart} this viewer is attached to.
      * 
      * @return the workbench part
      */
-    public IWorkbenchPart getWorkbenchPart() {
+    public IDiagramWorkbenchPart getWorkbenchPart() {
         return workbenchPart;
     }
 
@@ -975,6 +976,34 @@ public class ContextViewer extends AbstractViewer<Object> implements IViewerEven
             Selection clone = new Selection();
             clone.selectedElements.addAll(selectedElements);
             return clone;
+        }
+        
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public String toString() {
+            return selectedElements.toString();
+        }
+        
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public boolean equals(final Object object) {
+            if (object instanceof IStructuredSelection) {
+                IStructuredSelection other = (IStructuredSelection) object;
+                return this.selectedElements.equals(other.toList());
+            }
+            return false;
+        }
+        
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public int hashCode() {
+            return selectedElements.hashCode();
         }
 
     }

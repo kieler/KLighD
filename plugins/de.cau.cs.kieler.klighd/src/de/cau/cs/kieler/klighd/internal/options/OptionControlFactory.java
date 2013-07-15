@@ -46,7 +46,7 @@ import de.cau.cs.kieler.kiml.ui.service.EclipseLayoutConfig;
 import de.cau.cs.kieler.kiml.ui.service.LayoutOptionManager;
 import de.cau.cs.kieler.klighd.IViewer;
 import de.cau.cs.kieler.klighd.ViewContext;
-import de.cau.cs.kieler.klighd.macrolayout.KGraphPropertyLayoutConfig;
+import de.cau.cs.kieler.klighd.internal.macrolayout.KGraphPropertyLayoutConfig;
 import de.cau.cs.kieler.klighd.views.DiagramViewPart;
 
 /**

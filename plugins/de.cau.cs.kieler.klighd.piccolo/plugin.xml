@@ -2,9 +2,9 @@
 <?eclipse version="3.4"?>
 <plugin>
    <extension
-         point="de.cau.cs.kieler.klighd.viewerProviders">
+         point="de.cau.cs.kieler.klighd.extensions">
       <viewer
-            class="de.cau.cs.kieler.klighd.piccolo.krendering.viewer.PiccoloViewerProvider"
+            class="de.cau.cs.kieler.klighd.piccolo.viewer.PiccoloViewerProvider"
             id="de.cau.cs.kieler.klighd.piccolo.piccoloViewer">
       </viewer>
    </extension>

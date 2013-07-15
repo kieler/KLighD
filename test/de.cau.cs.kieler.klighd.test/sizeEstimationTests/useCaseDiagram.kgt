@@ -1,221 +1,105 @@
-KNode {
-	data:
-	KShapeLayout {
-		mapProperties:
-		"de.cau.cs.kieler.klay.layered.nodePlace" = LINEAR_SEGMENTS
-	}
-	children:
-	KNode {
-		data:
-		KShapeLayout {
-			width 60.0 height 100.0
-			mapProperties:
-			"de.cau.cs.kieler.nodeLabelPlacement" = "[H_CENTER, V_BOTTOM, OUTSIDE]"
-			"klighd.testing.ignore" = "true"
-		}
-		Rectangle {
-			styles:
-			invisible
-			children:
-			Polyline {
-				points:
-				left -2.0 0.5 / top 34.0 0.0
-				left -2.0 0.5 / top -2.0 0.5
-				left 0.0 0.0 / top -2.0 0.5
-				left 0.0 0.0 / top 2.0 0.5
-				left -2.0 0.5 / top 2.0 0.5
-				left -2.0 0.5 / top -1.0 0.7
-				left 0.0 0.0 / top -3.0 1.0
-				left 3.0 0.0 / top 0.0 1.0
-				left 0.0 0.5 / top 2.0 0.7
-				right 3.0 0.0 / top 0.0 1.0
-				right 0.0 0.0 / top -3.0 1.0
-				right -2.0 0.5 / top -1.0 0.7
-				right -2.0 0.5 / top 2.0 0.5
-				right 0.0 0.0 / top 2.0 0.5
-				right 0.0 0.0 / top -2.0 0.5
-				right -2.0 0.5 / top -2.0 0.5
-				right -2.0 0.5 / top 34.0 0.0
-			}
-			Ellipse {
-				styles:
-				background {
-					color 255 255 255
-				}
-				placementData:
-				PointPlacementData {
-					referencePoint
-					left 0.0 0.5 / top 0.0 0.0
-					horizontalAlignment CENTER minWidth 35.0 minHeight 35.0
-				}
-			}
-		}
-		labels:
-		KLabel "Actor 2" {
-			data:
-			Text {
-				styles:
-				font SansSerif
-				fontSize 10
-			}
+
+properties: de.cau.cs.kieler.klay.layered.nodePlace = LINEAR_SEGMENTS
+knode Actor2 {
+	size: width = 60 height = 100
+	properties: de.cau.cs.kieler.nodeLabelPlacement =
+	"[H_CENTER, V_BOTTOM, OUTSIDE]" klighd.testing.ignore = true
+	klabel "Actor 2" {
+		ktext {
+			styles: fontName = "SansSerif" propagate scale fontSize = 10pt
 		}
 	}
-	--> "//@children.2" {
-		data:
-		Polyline
+	kedge (-> useCaseC) {
+		kpolyline
 	}
-	--> "//@children.3" {
-		data:
-		Polyline
+	kedge (-> useCaseB) {
+		kpolyline
 	}
-	KNode {
-		data:
-		KShapeLayout {
-			width 60.0 height 100.0
-			mapProperties:
-			"de.cau.cs.kieler.nodeLabelPlacement" = "[H_CENTER, V_BOTTOM, OUTSIDE]"
-            "klighd.testing.ignore" = "true"
+	krectangle {
+		styles: invisible = true 
+		kpolyline {
+			points: left 50% + -2, top 34 ; left 50% + -2, top 50% + -2 ; left, top 50%
+			+ -2 ; left, top 50% + 2 ; left 50% + -2, top 50% + 2 ; left 50% + -2, top
+			70% + -1 ; left, top 100% + -3 ; left 3, top 100% ; left 50%, top 70% + 2 ;
+			right 3, top 100% ; right, top 100% + -3 ; right 50% + -2, top 70% + -1 ;
+			right 50% + -2, top 50% + 2 ; right, top 50% + 2 ; right, top 50% + -2 ;
+			right 50% + -2, top 50% + -2 ; right 50% + -2, top 34
 		}
-		Rectangle {
-			styles:
-			invisible
-			children:
-			Polyline {
-				points:
-				left -2.0 0.5 / top 34.0 0.0
-				left -2.0 0.5 / top -2.0 0.5
-				left 0.0 0.0 / top -2.0 0.5
-				left 0.0 0.0 / top 2.0 0.5
-				left -2.0 0.5 / top 2.0 0.5
-				left -2.0 0.5 / top -1.0 0.7
-				left 0.0 0.0 / top -3.0 1.0
-				left 3.0 0.0 / top 0.0 1.0
-				left 0.0 0.5 / top 2.0 0.7
-				right 3.0 0.0 / top 0.0 1.0
-				right 0.0 0.0 / top -3.0 1.0
-				right -2.0 0.5 / top -1.0 0.7
-				right -2.0 0.5 / top 2.0 0.5
-				right 0.0 0.0 / top 2.0 0.5
-				right 0.0 0.0 / top -2.0 0.5
-				right -2.0 0.5 / top -2.0 0.5
-				right -2.0 0.5 / top 34.0 0.0
-			}
-			Ellipse {
-				styles:
-				background {
-					color 255 255 255
-				}
-				placementData:
-				PointPlacementData {
-					referencePoint
-					left 0.0 0.5 / top 0.0 0.0
-					horizontalAlignment CENTER minWidth 35.0 minHeight 35.0
-				}
-			}
-		}
-		labels:
-		KLabel "Actor 1" {
-			data:
-			Text {
-				styles:
-				font SansSerif
-				fontSize 10
-			}
+		kellipse {
+			styles: background = 255r, 255g, 255b
+			pointData: referencePoint = left 50%, top minimalWidth = 35 minimalHeight =
+			35 horizontalAlignment = center
 		}
 	}
-	--> "//@children.2" {
-		data:
-		Polyline
-	}
-	--> "//@children.4" {
-		data:
-		Polyline
-	}
-	KNode {
-		data:
-		Ellipse {
-			styles:
-			foreground {
-				color 105 105 105
-			}
-			children:
-			Text "Very important UseCase requiring lot\'s of attention" {
-				styles:
-				background {
-					color 255 255 255
-				}
-				placementData:
-				AreaPlacementData {
-					topLeft left 10.0 0.1 / top 10.0 0.1
-					bottomRight right 10.0 0.1 / bottom 10.0 0.1
-				}
-				mapProperties:
-				"klighd.testing.height" = "10.0"
-				"klighd.testing.width" = "248.0"
-			}
-		}
-		KShapeLayout {
-			mapProperties:
-			"klighd.testing.expected.height" = "32.5"
-			"klighd.testing.expected.width" = "330.0"
+}
+knode Actor1 {
+	size: width = 60 height = 100
+	properties: de.cau.cs.kieler.nodeLabelPlacement =
+	"[H_CENTER, V_BOTTOM, OUTSIDE]" klighd.testing.ignore = true
+	klabel "Actor 1" {
+		ktext {
+			styles: fontName = "SansSerif" propagate scale fontSize = 10pt
 		}
 	}
-	KNode {
-		data:
-		Ellipse {
-			styles:
-			foreground {
-				color 105 105 105
-			}
-			children:
-			Text "Simple UseCase B" {
-				styles:
-				background {
-					color 255 255 255
-				}
-				placementData:
-				AreaPlacementData {
-					topLeft left 10.0 0.1 / top 10.0 0.1
-					bottomRight right 10.0 0.1 / bottom 10.0 0.1
-				}
-				mapProperties:
-				"klighd.testing.height" = "10.0"
-				"klighd.testing.width" = "86.0"
-			}
+	kedge (-> useCaseC) {
+		kpolyline
+	}
+	kedge (-> useCaseA) {
+		kpolyline
+	}
+	krectangle {
+		styles: invisible = true
+		kpolyline {
+			points: left 50% + -2, top 34 ; left 50% + -2, top 50% + -2 ; left, top 50%
+			+ -2 ; left, top 50% + 2 ; left 50% + -2, top 50% + 2 ; left 50% + -2, top
+			70% + -1 ; left, top 100% + -3 ; left 3, top 100% ; left 50%, top 70% + 2 ;
+			right 3, top 100% ; right, top 100% + -3 ; right 50% + -2, top 70% + -1 ;
+			right 50% + -2, top 50% + 2 ; right, top 50% + 2 ; right, top 50% + -2 ;
+			right 50% + -2, top 50% + -2 ; right 50% + -2, top 34
 		}
-		KShapeLayout {
-			mapProperties:
-			"klighd.testing.expected.height" = "32.5"
-			"klighd.testing.expected.width" = "127.5"
+		kellipse {
+			styles: background = 255r, 255g, 255b
+			pointData: referencePoint = left 50%, top minimalWidth = 35 minimalHeight =
+			35 horizontalAlignment = center
 		}
 	}
-	KNode {
-		data:
-		Ellipse {
-			styles:
-			foreground {
-				color 105 105 105
-			}
-			children:
-			Text "Simple UseCase A" {
-				styles:
-				background {
-					color 255 255 255
-				}
-				placementData:
-				AreaPlacementData {
-					topLeft left 10.0 0.1 / top 10.0 0.1
-					bottomRight right 10.0 0.1 / bottom 10.0 0.1
-				}
-				mapProperties:
-				"klighd.testing.height" = "10.0"
-				"klighd.testing.width" = "87.0"
-			}
+}
+knode useCaseC {
+	properties: klighd.testing.expected.^height = 32.5
+	klighd.testing.expected.^width = 330.0
+	kellipse {
+		styles: foreground = 105r, 105g, 105b
+		ktext ("Very important UseCase requiring lot\'s of attention")
+		[klighd.testing.^height = 10.0 klighd.testing.^width = 248.0] {
+			styles: background = 255r, 255g, 255b
+			areaData: topLeftAnchor = left 10% + 10, top 10% + 10 bottomRightAnchor =
+			right 10% + 10, bottom 10% + 10
 		}
-		KShapeLayout {
-			mapProperties:
-			"klighd.testing.expected.height" = "32.5"
-			"klighd.testing.expected.width" = "128.75"
+	}
+}
+knode useCaseB {
+	properties: klighd.testing.expected.^height = 32.5
+	klighd.testing.expected.^width = 127.5
+	kellipse {
+		styles: foreground = 105r, 105g, 105b
+		ktext ("Simple UseCase B") [klighd.testing.^height = 10.0
+		klighd.testing.^width = 86.0] {
+			styles: background = 255r, 255g, 255b
+			areaData: topLeftAnchor = left 10% + 10, top 10% + 10 bottomRightAnchor =
+			right 10% + 10, bottom 10% + 10
+		}
+	}
+}
+knode useCaseA {
+	properties: klighd.testing.expected.^height = 32.5
+	klighd.testing.expected.^width = 128.75
+	kellipse {
+		styles: foreground = 105r, 105g, 105b
+		ktext ("Simple UseCase A") [klighd.testing.^height = 10.0
+		klighd.testing.^width = 87.0] {
+			styles: background = 255r, 255g, 255b
+			areaData: topLeftAnchor = left 10% + 10, top 10% + 10 bottomRightAnchor =
+			right 10% + 10, bottom 10% + 10
 		}
 	}
 }

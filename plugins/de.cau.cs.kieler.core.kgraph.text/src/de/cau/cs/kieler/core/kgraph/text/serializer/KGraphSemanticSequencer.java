@@ -17,6 +17,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.xtext.serializer.acceptor.SequenceFeeder;
 import org.eclipse.xtext.serializer.sequencer.ISemanticNodeProvider.INodesForEObjectProvider;
 
+import com.google.common.base.Strings;
 import com.google.inject.Inject;
 
 import de.cau.cs.kieler.core.kgraph.KEdge;
@@ -28,13 +29,28 @@ import de.cau.cs.kieler.core.kgraph.PersistentEntry;
 import de.cau.cs.kieler.core.kgraph.text.services.KGraphGrammarAccess;
 import de.cau.cs.kieler.core.kgraph.text.services.KGraphGrammarAccess.KEdgeElements;
 import de.cau.cs.kieler.core.kgraph.text.services.KGraphGrammarAccess.KEdgeLayoutElements;
+import de.cau.cs.kieler.core.kgraph.text.services.KGraphGrammarAccess.KFontBoldElements;
+import de.cau.cs.kieler.core.kgraph.text.services.KGraphGrammarAccess.KFontItalicElements;
+import de.cau.cs.kieler.core.kgraph.text.services.KGraphGrammarAccess.KInvisibilityElements;
 import de.cau.cs.kieler.core.kgraph.text.services.KGraphGrammarAccess.KLabelElements;
 import de.cau.cs.kieler.core.kgraph.text.services.KGraphGrammarAccess.KNodeElements;
 import de.cau.cs.kieler.core.kgraph.text.services.KGraphGrammarAccess.KNodeLayoutElements;
+import de.cau.cs.kieler.core.kgraph.text.services.KGraphGrammarAccess.KPolylineElements;
 import de.cau.cs.kieler.core.kgraph.text.services.KGraphGrammarAccess.KPortElements;
 import de.cau.cs.kieler.core.kgraph.text.services.KGraphGrammarAccess.KShapeLayoutElements;
+import de.cau.cs.kieler.core.krendering.KAction;
+import de.cau.cs.kieler.core.krendering.KFontBold;
+import de.cau.cs.kieler.core.krendering.KFontItalic;
+import de.cau.cs.kieler.core.krendering.KInvisibility;
+import de.cau.cs.kieler.core.krendering.KPolygon;
+import de.cau.cs.kieler.core.krendering.KPolyline;
+import de.cau.cs.kieler.core.krendering.KPosition;
 import de.cau.cs.kieler.core.krendering.KRendering;
 import de.cau.cs.kieler.core.krendering.KRenderingLibrary;
+import de.cau.cs.kieler.core.krendering.KRenderingPackage;
+import de.cau.cs.kieler.core.krendering.KRoundedBendsPolyline;
+import de.cau.cs.kieler.core.krendering.KSpline;
+import de.cau.cs.kieler.core.krendering.KStyle;
 import de.cau.cs.kieler.kiml.klayoutdata.KEdgeLayout;
 import de.cau.cs.kieler.kiml.klayoutdata.KIdentifier;
 import de.cau.cs.kieler.kiml.klayoutdata.KInsets;
@@ -43,14 +59,20 @@ import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout;
 
 /**
  * Semantic sequencer for KGraphs.
+ * 
+ * The problems addressed by this manually implemented rules might be due to
+ * https://bugs.eclipse.org/bugs/show_bug.cgi?id=369175, we'll see.
  *
  * @author msp
+ * @author chsch
  */
 @SuppressWarnings("restriction")
 public class KGraphSemanticSequencer extends AbstractKGraphSemanticSequencer {
     
     @Inject
     private KGraphGrammarAccess grammarAccess;
+    
+    // CHECKSTYLEOFF MethodName
     
     /**
      * {@inheritDoc}
@@ -483,6 +505,196 @@ public class KGraphSemanticSequencer extends AbstractKGraphSemanticSequencer {
         } else if (labelLayout != null) {
             feeder.accept(klabelAccess.getDataEmptyKShapeLayoutParserRuleCall_4_1_0(), labelLayout,
                     klabel.getData().indexOf(labelLayout));
+        }
+        
+        feeder.finish();
+    }
+
+
+    // --------------------------------------------------------------------------------------- //
+    // KRendering-specific rules
+
+    private static final KRenderingPackage KRENDERING_PACKAGE = KRenderingPackage.eINSTANCE;
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected void sequence_KPolyline(final EObject context, final KPolyline polyline) {
+        INodesForEObjectProvider nodesProvider = createNodeProvider(polyline);
+        SequenceFeeder feeder = createSequencerFeeder(polyline, nodesProvider);
+        KPolylineElements polylineAccess = grammarAccess.getKPolylineAccess();
+        
+        if (polyline instanceof KRoundedBendsPolyline) {
+            KRoundedBendsPolyline rbp = (KRoundedBendsPolyline) polyline;
+            
+            if (rbp.eIsSet(KRENDERING_PACKAGE.getKRoundedBendsPolyline_BendRadius())) {
+                feeder.accept(grammarAccess.getKRoundedBendsPolylineAccess()
+                        .getBendRadiusFloatParserRuleCall_2_1_0(), rbp.getBendRadius());
+            }
+        }
+        
+        if (!Strings.isNullOrEmpty(polyline.getId())) {
+            feeder.accept(polylineAccess.getIdQualifiedIDParserRuleCall_1_0(), polyline.getId());
+        }
+
+        // serialize the properties
+        int i = 0;
+        for (PersistentEntry entry : polyline.getPersistentEntries()) {
+            feeder.accept(polylineAccess.getPersistentEntriesPersistentEntryParserRuleCall_2_1_0(),
+                    entry, i++);
+        }
+
+        i = 0;
+        for (KPosition entry : polyline.getPoints()) {
+            if (i == 0) {
+                feeder.accept(polylineAccess.getPointsKPositionParserRuleCall_3_1_0_2_0_0(), entry,
+                        i++);
+            } else {
+                feeder.accept(polylineAccess.getPointsKPositionParserRuleCall_3_1_0_2_1_1_0(),
+                        entry, i++);
+            }
+        }
+
+        i = 0;
+        for (KStyle entry : polyline.getStyles()) {
+            feeder.accept(polylineAccess.getStylesKStyleParserRuleCall_3_1_1_2_0(), entry, i++);
+        }
+
+        i = 0;
+        for (KAction entry : polyline.getActions()) {
+            feeder.accept(polylineAccess.getActionsKActionParserRuleCall_3_1_2_2_0(), entry, i++);
+        }
+
+        if (polyline.eIsSet(KRENDERING_PACKAGE.getKRendering_PlacementData())) {
+            feeder.accept(polylineAccess.getPlacementDataKPlacementDataParserRuleCall_3_1_3_0(),
+                    polyline.getPlacementData());
+        }
+
+        if (polyline.eIsSet(KRENDERING_PACKAGE.getKContainerRendering_ChildPlacement())) {
+            feeder.accept(polylineAccess.getChildPlacementKPlacementParserRuleCall_3_1_4_0(),
+                    polyline.getChildPlacement());
+        }
+
+        if (polyline.eIsSet(KRENDERING_PACKAGE.getKPolyline_JointPointRendering())) {
+            feeder.accept(polylineAccess.getJointPointRenderingKRenderingParserRuleCall_3_2_1_0(),
+                    polyline.getJointPointRendering());
+        }
+
+        i = 0;
+        for (KRendering entry : polyline.getChildren()) {
+            feeder.accept(polylineAccess.getChildrenKRenderingParserRuleCall_3_3_0(), entry, i++);
+        }
+
+        feeder.finish();
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected void sequence_KSimplePolyline(final EObject context, final KPolyline polyline) {
+        sequence_KPolyline(context, polyline);
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected void sequence_KPolygon(final EObject context, final KPolygon polyline) {
+        sequence_KPolyline(context, polyline);
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected void sequence_KRoundedBendsPolyline(final EObject context,
+            final KRoundedBendsPolyline polyline) {
+        sequence_KPolyline(context, polyline);
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected void sequence_KSpline(final EObject context, final KSpline polyline) {
+        sequence_KPolyline(context, polyline);
+    }
+
+
+    // --------------------------------------------------------------------------------------- //
+    // KRendering-specific rules
+    
+    /**
+     * {@inheritDoc}
+     * The following rule is required due to the bug documented in
+     *     https://bugs.eclipse.org/bugs/show_bug.cgi?id=412578#c0
+     * This basically requires a custom sequence_ method for all styles.
+     * We, however, restrict to KFontBold, KFontItalic, and KInvisibility
+     * as 'true' is the default of their attribute fields, other style instances
+     * are used to have an attribute different from the related default value.
+     */
+    @Override
+    protected void sequence_KInvisibility_KStyle(final EObject context,
+            final KInvisibility invisibility) {
+        SequenceFeeder feeder = createSequencerFeeder(invisibility,
+                createNodeProvider(invisibility));
+        KInvisibilityElements invisibilityAccess = grammarAccess.getKInvisibilityAccess();
+
+        if (invisibility.eIsSet(KRENDERING_PACKAGE.getKStyle_PropagateToChildren())) {
+            feeder.accept(invisibilityAccess.getPropagateToChildrenPropagateKeyword_0_0());
+        }
+        
+        feeder.accept(invisibilityAccess.getInvisibleBOOLEANTerminalRuleCall_3_0(),
+                invisibility.isInvisible());
+        
+        if (invisibility.eIsSet(KRENDERING_PACKAGE.getKStyle_ModifierId())) {
+            feeder.accept(grammarAccess.getKStyleAccess()
+                    .getModifierIdQualifiedIDParserRuleCall_1_1_0(), invisibility.getModifierId());
+        }
+        feeder.finish();
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected void sequence_KFontBold_KStyle(final EObject context, final KFontBold fontBold) {
+        SequenceFeeder feeder = createSequencerFeeder(fontBold, createNodeProvider(fontBold));
+        KFontBoldElements fontBoldAccess = grammarAccess.getKFontBoldAccess();
+
+        if (fontBold.eIsSet(KRENDERING_PACKAGE.getKStyle_PropagateToChildren())) {
+            feeder.accept(fontBoldAccess.getPropagateToChildrenPropagateKeyword_0_0());
+        }
+        
+        feeder.accept(fontBoldAccess.getBoldBOOLEANTerminalRuleCall_3_0(), fontBold.isBold());
+        
+        if (fontBold.eIsSet(KRENDERING_PACKAGE.getKStyle_ModifierId())) {
+            feeder.accept(grammarAccess.getKStyleAccess()
+                    .getModifierIdQualifiedIDParserRuleCall_1_1_0(), fontBold.getModifierId());
+        }
+        
+        feeder.finish();
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected void sequence_KFontItalic_KStyle(final EObject context, final KFontItalic fontItalic) {
+        SequenceFeeder feeder = createSequencerFeeder(fontItalic, createNodeProvider(fontItalic));
+        KFontItalicElements fontItalicAccess = grammarAccess.getKFontItalicAccess();
+
+        if (fontItalic.eIsSet(KRENDERING_PACKAGE.getKStyle_PropagateToChildren())) {
+            feeder.accept(fontItalicAccess.getPropagateToChildrenPropagateKeyword_0_0());
+        }
+        
+        feeder.accept(fontItalicAccess.getItalicBOOLEANTerminalRuleCall_3_0(), fontItalic.isItalic());
+        
+        if (fontItalic.eIsSet(KRENDERING_PACKAGE.getKStyle_ModifierId())) {
+            feeder.accept(grammarAccess.getKStyleAccess()
+                    .getModifierIdQualifiedIDParserRuleCall_1_1_0(), fontItalic.getModifierId());
         }
         
         feeder.finish();

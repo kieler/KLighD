@@ -17824,28 +17824,28 @@ public class InternalKGraphParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleKXPosition"
-    // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7039:1: ruleKXPosition returns [EObject current=null] : ( (this_KLeftPosition_0= ruleKLeftPosition | this_KRightPosition_1= ruleKRightPosition ) ( ( ( ( (lv_relative_2_0= RULE_PERCENT ) ) otherlv_3= '+' )? ( (lv_absolute_4_0= ruleFloat ) )? ) | ( (lv_relative_5_0= RULE_PERCENT ) ) ) ) ;
+    // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7039:1: ruleKXPosition returns [EObject current=null] : ( (this_KLeftPosition_0= ruleKLeftPosition | this_KRightPosition_1= ruleKRightPosition ) ( ( (lv_relative_2_0= RULE_PERCENT ) ) | ( ( ( (lv_relative_3_0= RULE_PERCENT ) ) otherlv_4= '+' )? ( (lv_absolute_5_0= ruleFloat ) ) ) )? ) ;
     public final EObject ruleKXPosition() throws RecognitionException {
         EObject current = null;
 
         Token lv_relative_2_0=null;
-        Token otherlv_3=null;
-        Token lv_relative_5_0=null;
+        Token lv_relative_3_0=null;
+        Token otherlv_4=null;
         EObject this_KLeftPosition_0 = null;
 
         EObject this_KRightPosition_1 = null;
 
-        AntlrDatatypeRuleToken lv_absolute_4_0 = null;
+        AntlrDatatypeRuleToken lv_absolute_5_0 = null;
 
 
          enterRule(); 
             
         try {
-            // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7042:28: ( ( (this_KLeftPosition_0= ruleKLeftPosition | this_KRightPosition_1= ruleKRightPosition ) ( ( ( ( (lv_relative_2_0= RULE_PERCENT ) ) otherlv_3= '+' )? ( (lv_absolute_4_0= ruleFloat ) )? ) | ( (lv_relative_5_0= RULE_PERCENT ) ) ) ) )
-            // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7043:1: ( (this_KLeftPosition_0= ruleKLeftPosition | this_KRightPosition_1= ruleKRightPosition ) ( ( ( ( (lv_relative_2_0= RULE_PERCENT ) ) otherlv_3= '+' )? ( (lv_absolute_4_0= ruleFloat ) )? ) | ( (lv_relative_5_0= RULE_PERCENT ) ) ) )
+            // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7042:28: ( ( (this_KLeftPosition_0= ruleKLeftPosition | this_KRightPosition_1= ruleKRightPosition ) ( ( (lv_relative_2_0= RULE_PERCENT ) ) | ( ( ( (lv_relative_3_0= RULE_PERCENT ) ) otherlv_4= '+' )? ( (lv_absolute_5_0= ruleFloat ) ) ) )? ) )
+            // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7043:1: ( (this_KLeftPosition_0= ruleKLeftPosition | this_KRightPosition_1= ruleKRightPosition ) ( ( (lv_relative_2_0= RULE_PERCENT ) ) | ( ( ( (lv_relative_3_0= RULE_PERCENT ) ) otherlv_4= '+' )? ( (lv_absolute_5_0= ruleFloat ) ) ) )? )
             {
-            // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7043:1: ( (this_KLeftPosition_0= ruleKLeftPosition | this_KRightPosition_1= ruleKRightPosition ) ( ( ( ( (lv_relative_2_0= RULE_PERCENT ) ) otherlv_3= '+' )? ( (lv_absolute_4_0= ruleFloat ) )? ) | ( (lv_relative_5_0= RULE_PERCENT ) ) ) )
-            // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7043:2: (this_KLeftPosition_0= ruleKLeftPosition | this_KRightPosition_1= ruleKRightPosition ) ( ( ( ( (lv_relative_2_0= RULE_PERCENT ) ) otherlv_3= '+' )? ( (lv_absolute_4_0= ruleFloat ) )? ) | ( (lv_relative_5_0= RULE_PERCENT ) ) )
+            // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7043:1: ( (this_KLeftPosition_0= ruleKLeftPosition | this_KRightPosition_1= ruleKRightPosition ) ( ( (lv_relative_2_0= RULE_PERCENT ) ) | ( ( ( (lv_relative_3_0= RULE_PERCENT ) ) otherlv_4= '+' )? ( (lv_absolute_5_0= ruleFloat ) ) ) )? )
+            // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7043:2: (this_KLeftPosition_0= ruleKLeftPosition | this_KRightPosition_1= ruleKRightPosition ) ( ( (lv_relative_2_0= RULE_PERCENT ) ) | ( ( ( (lv_relative_3_0= RULE_PERCENT ) ) otherlv_4= '+' )? ( (lv_absolute_5_0= ruleFloat ) ) ) )?
             {
             // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7043:2: (this_KLeftPosition_0= ruleKLeftPosition | this_KRightPosition_1= ruleKRightPosition )
             int alt115=2;
@@ -17903,128 +17903,47 @@ public class InternalKGraphParser extends AbstractInternalAntlrParser {
 
             }
 
-            // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7062:2: ( ( ( ( (lv_relative_2_0= RULE_PERCENT ) ) otherlv_3= '+' )? ( (lv_absolute_4_0= ruleFloat ) )? ) | ( (lv_relative_5_0= RULE_PERCENT ) ) )
-            int alt118=2;
-            int LA118_0 = input.LA(1);
+            // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7062:2: ( ( (lv_relative_2_0= RULE_PERCENT ) ) | ( ( ( (lv_relative_3_0= RULE_PERCENT ) ) otherlv_4= '+' )? ( (lv_absolute_5_0= ruleFloat ) ) ) )?
+            int alt117=3;
+            int LA117_0 = input.LA(1);
 
-            if ( (LA118_0==RULE_PERCENT) ) {
-                int LA118_1 = input.LA(2);
+            if ( (LA117_0==RULE_PERCENT) ) {
+                int LA117_1 = input.LA(2);
 
-                if ( (LA118_1==EOF||LA118_1==47) ) {
-                    alt118=2;
+                if ( (LA117_1==114) ) {
+                    alt117=2;
                 }
-                else if ( (LA118_1==114) ) {
-                    alt118=1;
-                }
-                else {
-                    NoViableAltException nvae =
-                        new NoViableAltException("", 118, 1, input);
-
-                    throw nvae;
+                else if ( (LA117_1==EOF||LA117_1==47) ) {
+                    alt117=1;
                 }
             }
-            else if ( (LA118_0==EOF||LA118_0==RULE_NATURAL||LA118_0==RULE_TFLOAT||LA118_0==47) ) {
-                alt118=1;
+            else if ( (LA117_0==RULE_NATURAL||LA117_0==RULE_TFLOAT) ) {
+                alt117=2;
             }
-            else {
-                NoViableAltException nvae =
-                    new NoViableAltException("", 118, 0, input);
-
-                throw nvae;
-            }
-            switch (alt118) {
+            switch (alt117) {
                 case 1 :
-                    // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7062:3: ( ( ( (lv_relative_2_0= RULE_PERCENT ) ) otherlv_3= '+' )? ( (lv_absolute_4_0= ruleFloat ) )? )
+                    // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7062:3: ( (lv_relative_2_0= RULE_PERCENT ) )
                     {
-                    // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7062:3: ( ( ( (lv_relative_2_0= RULE_PERCENT ) ) otherlv_3= '+' )? ( (lv_absolute_4_0= ruleFloat ) )? )
-                    // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7062:4: ( ( (lv_relative_2_0= RULE_PERCENT ) ) otherlv_3= '+' )? ( (lv_absolute_4_0= ruleFloat ) )?
+                    // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7062:3: ( (lv_relative_2_0= RULE_PERCENT ) )
+                    // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7063:1: (lv_relative_2_0= RULE_PERCENT )
                     {
-                    // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7062:4: ( ( (lv_relative_2_0= RULE_PERCENT ) ) otherlv_3= '+' )?
-                    int alt116=2;
-                    int LA116_0 = input.LA(1);
+                    // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7063:1: (lv_relative_2_0= RULE_PERCENT )
+                    // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7064:3: lv_relative_2_0= RULE_PERCENT
+                    {
+                    lv_relative_2_0=(Token)match(input,RULE_PERCENT,FollowSets000.FOLLOW_RULE_PERCENT_in_ruleKXPosition16741); 
 
-                    if ( (LA116_0==RULE_PERCENT) ) {
-                        alt116=1;
-                    }
-                    switch (alt116) {
-                        case 1 :
-                            // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7062:5: ( (lv_relative_2_0= RULE_PERCENT ) ) otherlv_3= '+'
-                            {
-                            // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7062:5: ( (lv_relative_2_0= RULE_PERCENT ) )
-                            // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7063:1: (lv_relative_2_0= RULE_PERCENT )
-                            {
-                            // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7063:1: (lv_relative_2_0= RULE_PERCENT )
-                            // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7064:3: lv_relative_2_0= RULE_PERCENT
-                            {
-                            lv_relative_2_0=(Token)match(input,RULE_PERCENT,FollowSets000.FOLLOW_RULE_PERCENT_in_ruleKXPosition16743); 
+                    			newLeafNode(lv_relative_2_0, grammarAccess.getKXPositionAccess().getRelativePERCENTTerminalRuleCall_1_0_0()); 
+                    		
 
-                            			newLeafNode(lv_relative_2_0, grammarAccess.getKXPositionAccess().getRelativePERCENTTerminalRuleCall_1_0_0_0_0()); 
-                            		
-
-                            	        if (current==null) {
-                            	            current = createModelElement(grammarAccess.getKXPositionRule());
-                            	        }
-                                   		setWithLastConsumed(
-                                   			current, 
-                                   			"relative",
-                                    		lv_relative_2_0, 
-                                    		"PERCENT");
-                            	    
-
-                            }
-
-
-                            }
-
-                            otherlv_3=(Token)match(input,114,FollowSets000.FOLLOW_114_in_ruleKXPosition16760); 
-
-                                	newLeafNode(otherlv_3, grammarAccess.getKXPositionAccess().getPlusSignKeyword_1_0_0_1());
-                                
-
-                            }
-                            break;
-
-                    }
-
-                    // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7084:3: ( (lv_absolute_4_0= ruleFloat ) )?
-                    int alt117=2;
-                    int LA117_0 = input.LA(1);
-
-                    if ( (LA117_0==RULE_NATURAL||LA117_0==RULE_TFLOAT) ) {
-                        alt117=1;
-                    }
-                    switch (alt117) {
-                        case 1 :
-                            // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7085:1: (lv_absolute_4_0= ruleFloat )
-                            {
-                            // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7085:1: (lv_absolute_4_0= ruleFloat )
-                            // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7086:3: lv_absolute_4_0= ruleFloat
-                            {
-                             
-                            	        newCompositeNode(grammarAccess.getKXPositionAccess().getAbsoluteFloatParserRuleCall_1_0_1_0()); 
-                            	    
-                            pushFollow(FollowSets000.FOLLOW_ruleFloat_in_ruleKXPosition16783);
-                            lv_absolute_4_0=ruleFloat();
-
-                            state._fsp--;
-
-
-                            	        if (current==null) {
-                            	            current = createModelElementForParent(grammarAccess.getKXPositionRule());
-                            	        }
-                                   		set(
-                                   			current, 
-                                   			"absolute",
-                                    		lv_absolute_4_0, 
-                                    		"Float");
-                            	        afterParserOrEnumRuleCall();
-                            	    
-
-                            }
-
-
-                            }
-                            break;
+                    	        if (current==null) {
+                    	            current = createModelElement(grammarAccess.getKXPositionRule());
+                    	        }
+                           		setWithLastConsumed(
+                           			current, 
+                           			"relative",
+                            		lv_relative_2_0, 
+                            		"PERCENT");
+                    	    
 
                     }
 
@@ -18035,28 +17954,86 @@ public class InternalKGraphParser extends AbstractInternalAntlrParser {
                     }
                     break;
                 case 2 :
-                    // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7103:6: ( (lv_relative_5_0= RULE_PERCENT ) )
+                    // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7081:6: ( ( ( (lv_relative_3_0= RULE_PERCENT ) ) otherlv_4= '+' )? ( (lv_absolute_5_0= ruleFloat ) ) )
                     {
-                    // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7103:6: ( (lv_relative_5_0= RULE_PERCENT ) )
-                    // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7104:1: (lv_relative_5_0= RULE_PERCENT )
+                    // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7081:6: ( ( ( (lv_relative_3_0= RULE_PERCENT ) ) otherlv_4= '+' )? ( (lv_absolute_5_0= ruleFloat ) ) )
+                    // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7081:7: ( ( (lv_relative_3_0= RULE_PERCENT ) ) otherlv_4= '+' )? ( (lv_absolute_5_0= ruleFloat ) )
                     {
-                    // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7104:1: (lv_relative_5_0= RULE_PERCENT )
-                    // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7105:3: lv_relative_5_0= RULE_PERCENT
-                    {
-                    lv_relative_5_0=(Token)match(input,RULE_PERCENT,FollowSets000.FOLLOW_RULE_PERCENT_in_ruleKXPosition16808); 
+                    // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7081:7: ( ( (lv_relative_3_0= RULE_PERCENT ) ) otherlv_4= '+' )?
+                    int alt116=2;
+                    int LA116_0 = input.LA(1);
 
-                    			newLeafNode(lv_relative_5_0, grammarAccess.getKXPositionAccess().getRelativePERCENTTerminalRuleCall_1_1_0()); 
-                    		
+                    if ( (LA116_0==RULE_PERCENT) ) {
+                        alt116=1;
+                    }
+                    switch (alt116) {
+                        case 1 :
+                            // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7081:8: ( (lv_relative_3_0= RULE_PERCENT ) ) otherlv_4= '+'
+                            {
+                            // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7081:8: ( (lv_relative_3_0= RULE_PERCENT ) )
+                            // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7082:1: (lv_relative_3_0= RULE_PERCENT )
+                            {
+                            // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7082:1: (lv_relative_3_0= RULE_PERCENT )
+                            // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7083:3: lv_relative_3_0= RULE_PERCENT
+                            {
+                            lv_relative_3_0=(Token)match(input,RULE_PERCENT,FollowSets000.FOLLOW_RULE_PERCENT_in_ruleKXPosition16771); 
+
+                            			newLeafNode(lv_relative_3_0, grammarAccess.getKXPositionAccess().getRelativePERCENTTerminalRuleCall_1_1_0_0_0()); 
+                            		
+
+                            	        if (current==null) {
+                            	            current = createModelElement(grammarAccess.getKXPositionRule());
+                            	        }
+                                   		setWithLastConsumed(
+                                   			current, 
+                                   			"relative",
+                                    		lv_relative_3_0, 
+                                    		"PERCENT");
+                            	    
+
+                            }
+
+
+                            }
+
+                            otherlv_4=(Token)match(input,114,FollowSets000.FOLLOW_114_in_ruleKXPosition16788); 
+
+                                	newLeafNode(otherlv_4, grammarAccess.getKXPositionAccess().getPlusSignKeyword_1_1_0_1());
+                                
+
+                            }
+                            break;
+
+                    }
+
+                    // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7103:3: ( (lv_absolute_5_0= ruleFloat ) )
+                    // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7104:1: (lv_absolute_5_0= ruleFloat )
+                    {
+                    // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7104:1: (lv_absolute_5_0= ruleFloat )
+                    // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7105:3: lv_absolute_5_0= ruleFloat
+                    {
+                     
+                    	        newCompositeNode(grammarAccess.getKXPositionAccess().getAbsoluteFloatParserRuleCall_1_1_1_0()); 
+                    	    
+                    pushFollow(FollowSets000.FOLLOW_ruleFloat_in_ruleKXPosition16811);
+                    lv_absolute_5_0=ruleFloat();
+
+                    state._fsp--;
+
 
                     	        if (current==null) {
-                    	            current = createModelElement(grammarAccess.getKXPositionRule());
+                    	            current = createModelElementForParent(grammarAccess.getKXPositionRule());
                     	        }
-                           		setWithLastConsumed(
+                           		set(
                            			current, 
-                           			"relative",
-                            		lv_relative_5_0, 
-                            		"PERCENT");
+                           			"absolute",
+                            		lv_absolute_5_0, 
+                            		"Float");
+                    	        afterParserOrEnumRuleCall();
                     	    
+
+                    }
+
 
                     }
 
@@ -18300,46 +18277,46 @@ public class InternalKGraphParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleKYPosition"
-    // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7200:1: ruleKYPosition returns [EObject current=null] : ( (this_KTopPosition_0= ruleKTopPosition | this_KBottomPosition_1= ruleKBottomPosition ) ( ( ( ( (lv_relative_2_0= RULE_PERCENT ) ) otherlv_3= '+' )? ( (lv_absolute_4_0= ruleFloat ) )? ) | ( (lv_relative_5_0= RULE_PERCENT ) ) ) ) ;
+    // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7200:1: ruleKYPosition returns [EObject current=null] : ( (this_KTopPosition_0= ruleKTopPosition | this_KBottomPosition_1= ruleKBottomPosition ) ( ( (lv_relative_2_0= RULE_PERCENT ) ) | ( ( ( (lv_relative_3_0= RULE_PERCENT ) ) otherlv_4= '+' )? ( (lv_absolute_5_0= ruleFloat ) ) ) )? ) ;
     public final EObject ruleKYPosition() throws RecognitionException {
         EObject current = null;
 
         Token lv_relative_2_0=null;
-        Token otherlv_3=null;
-        Token lv_relative_5_0=null;
+        Token lv_relative_3_0=null;
+        Token otherlv_4=null;
         EObject this_KTopPosition_0 = null;
 
         EObject this_KBottomPosition_1 = null;
 
-        AntlrDatatypeRuleToken lv_absolute_4_0 = null;
+        AntlrDatatypeRuleToken lv_absolute_5_0 = null;
 
 
          enterRule(); 
             
         try {
-            // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7203:28: ( ( (this_KTopPosition_0= ruleKTopPosition | this_KBottomPosition_1= ruleKBottomPosition ) ( ( ( ( (lv_relative_2_0= RULE_PERCENT ) ) otherlv_3= '+' )? ( (lv_absolute_4_0= ruleFloat ) )? ) | ( (lv_relative_5_0= RULE_PERCENT ) ) ) ) )
-            // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7204:1: ( (this_KTopPosition_0= ruleKTopPosition | this_KBottomPosition_1= ruleKBottomPosition ) ( ( ( ( (lv_relative_2_0= RULE_PERCENT ) ) otherlv_3= '+' )? ( (lv_absolute_4_0= ruleFloat ) )? ) | ( (lv_relative_5_0= RULE_PERCENT ) ) ) )
+            // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7203:28: ( ( (this_KTopPosition_0= ruleKTopPosition | this_KBottomPosition_1= ruleKBottomPosition ) ( ( (lv_relative_2_0= RULE_PERCENT ) ) | ( ( ( (lv_relative_3_0= RULE_PERCENT ) ) otherlv_4= '+' )? ( (lv_absolute_5_0= ruleFloat ) ) ) )? ) )
+            // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7204:1: ( (this_KTopPosition_0= ruleKTopPosition | this_KBottomPosition_1= ruleKBottomPosition ) ( ( (lv_relative_2_0= RULE_PERCENT ) ) | ( ( ( (lv_relative_3_0= RULE_PERCENT ) ) otherlv_4= '+' )? ( (lv_absolute_5_0= ruleFloat ) ) ) )? )
             {
-            // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7204:1: ( (this_KTopPosition_0= ruleKTopPosition | this_KBottomPosition_1= ruleKBottomPosition ) ( ( ( ( (lv_relative_2_0= RULE_PERCENT ) ) otherlv_3= '+' )? ( (lv_absolute_4_0= ruleFloat ) )? ) | ( (lv_relative_5_0= RULE_PERCENT ) ) ) )
-            // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7204:2: (this_KTopPosition_0= ruleKTopPosition | this_KBottomPosition_1= ruleKBottomPosition ) ( ( ( ( (lv_relative_2_0= RULE_PERCENT ) ) otherlv_3= '+' )? ( (lv_absolute_4_0= ruleFloat ) )? ) | ( (lv_relative_5_0= RULE_PERCENT ) ) )
+            // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7204:1: ( (this_KTopPosition_0= ruleKTopPosition | this_KBottomPosition_1= ruleKBottomPosition ) ( ( (lv_relative_2_0= RULE_PERCENT ) ) | ( ( ( (lv_relative_3_0= RULE_PERCENT ) ) otherlv_4= '+' )? ( (lv_absolute_5_0= ruleFloat ) ) ) )? )
+            // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7204:2: (this_KTopPosition_0= ruleKTopPosition | this_KBottomPosition_1= ruleKBottomPosition ) ( ( (lv_relative_2_0= RULE_PERCENT ) ) | ( ( ( (lv_relative_3_0= RULE_PERCENT ) ) otherlv_4= '+' )? ( (lv_absolute_5_0= ruleFloat ) ) ) )?
             {
             // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7204:2: (this_KTopPosition_0= ruleKTopPosition | this_KBottomPosition_1= ruleKBottomPosition )
-            int alt119=2;
-            int LA119_0 = input.LA(1);
+            int alt118=2;
+            int LA118_0 = input.LA(1);
 
-            if ( (LA119_0==41) ) {
-                alt119=1;
+            if ( (LA118_0==41) ) {
+                alt118=1;
             }
-            else if ( (LA119_0==42) ) {
-                alt119=2;
+            else if ( (LA118_0==42) ) {
+                alt118=2;
             }
             else {
                 NoViableAltException nvae =
-                    new NoViableAltException("", 119, 0, input);
+                    new NoViableAltException("", 118, 0, input);
 
                 throw nvae;
             }
-            switch (alt119) {
+            switch (alt118) {
                 case 1 :
                     // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7205:5: this_KTopPosition_0= ruleKTopPosition
                     {
@@ -18379,128 +18356,47 @@ public class InternalKGraphParser extends AbstractInternalAntlrParser {
 
             }
 
-            // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7223:2: ( ( ( ( (lv_relative_2_0= RULE_PERCENT ) ) otherlv_3= '+' )? ( (lv_absolute_4_0= ruleFloat ) )? ) | ( (lv_relative_5_0= RULE_PERCENT ) ) )
-            int alt122=2;
-            int LA122_0 = input.LA(1);
+            // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7223:2: ( ( (lv_relative_2_0= RULE_PERCENT ) ) | ( ( ( (lv_relative_3_0= RULE_PERCENT ) ) otherlv_4= '+' )? ( (lv_absolute_5_0= ruleFloat ) ) ) )?
+            int alt120=3;
+            int LA120_0 = input.LA(1);
 
-            if ( (LA122_0==RULE_PERCENT) ) {
-                int LA122_1 = input.LA(2);
+            if ( (LA120_0==RULE_PERCENT) ) {
+                int LA120_1 = input.LA(2);
 
-                if ( (LA122_1==EOF||LA122_1==22||LA122_1==27||(LA122_1>=45 && LA122_1<=46)||(LA122_1>=48 && LA122_1<=50)||(LA122_1>=52 && LA122_1<=64)||(LA122_1>=89 && LA122_1<=107)) ) {
-                    alt122=2;
+                if ( (LA120_1==114) ) {
+                    alt120=2;
                 }
-                else if ( (LA122_1==114) ) {
-                    alt122=1;
-                }
-                else {
-                    NoViableAltException nvae =
-                        new NoViableAltException("", 122, 1, input);
-
-                    throw nvae;
+                else if ( (LA120_1==EOF||LA120_1==22||LA120_1==27||(LA120_1>=45 && LA120_1<=46)||(LA120_1>=48 && LA120_1<=50)||(LA120_1>=52 && LA120_1<=64)||(LA120_1>=89 && LA120_1<=107)) ) {
+                    alt120=1;
                 }
             }
-            else if ( (LA122_0==EOF||LA122_0==RULE_NATURAL||LA122_0==RULE_TFLOAT||LA122_0==22||LA122_0==27||(LA122_0>=45 && LA122_0<=46)||(LA122_0>=48 && LA122_0<=50)||(LA122_0>=52 && LA122_0<=64)||(LA122_0>=89 && LA122_0<=107)) ) {
-                alt122=1;
+            else if ( (LA120_0==RULE_NATURAL||LA120_0==RULE_TFLOAT) ) {
+                alt120=2;
             }
-            else {
-                NoViableAltException nvae =
-                    new NoViableAltException("", 122, 0, input);
-
-                throw nvae;
-            }
-            switch (alt122) {
+            switch (alt120) {
                 case 1 :
-                    // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7223:3: ( ( ( (lv_relative_2_0= RULE_PERCENT ) ) otherlv_3= '+' )? ( (lv_absolute_4_0= ruleFloat ) )? )
+                    // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7223:3: ( (lv_relative_2_0= RULE_PERCENT ) )
                     {
-                    // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7223:3: ( ( ( (lv_relative_2_0= RULE_PERCENT ) ) otherlv_3= '+' )? ( (lv_absolute_4_0= ruleFloat ) )? )
-                    // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7223:4: ( ( (lv_relative_2_0= RULE_PERCENT ) ) otherlv_3= '+' )? ( (lv_absolute_4_0= ruleFloat ) )?
+                    // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7223:3: ( (lv_relative_2_0= RULE_PERCENT ) )
+                    // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7224:1: (lv_relative_2_0= RULE_PERCENT )
                     {
-                    // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7223:4: ( ( (lv_relative_2_0= RULE_PERCENT ) ) otherlv_3= '+' )?
-                    int alt120=2;
-                    int LA120_0 = input.LA(1);
+                    // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7224:1: (lv_relative_2_0= RULE_PERCENT )
+                    // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7225:3: lv_relative_2_0= RULE_PERCENT
+                    {
+                    lv_relative_2_0=(Token)match(input,RULE_PERCENT,FollowSets000.FOLLOW_RULE_PERCENT_in_ruleKYPosition17137); 
 
-                    if ( (LA120_0==RULE_PERCENT) ) {
-                        alt120=1;
-                    }
-                    switch (alt120) {
-                        case 1 :
-                            // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7223:5: ( (lv_relative_2_0= RULE_PERCENT ) ) otherlv_3= '+'
-                            {
-                            // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7223:5: ( (lv_relative_2_0= RULE_PERCENT ) )
-                            // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7224:1: (lv_relative_2_0= RULE_PERCENT )
-                            {
-                            // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7224:1: (lv_relative_2_0= RULE_PERCENT )
-                            // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7225:3: lv_relative_2_0= RULE_PERCENT
-                            {
-                            lv_relative_2_0=(Token)match(input,RULE_PERCENT,FollowSets000.FOLLOW_RULE_PERCENT_in_ruleKYPosition17139); 
+                    			newLeafNode(lv_relative_2_0, grammarAccess.getKYPositionAccess().getRelativePERCENTTerminalRuleCall_1_0_0()); 
+                    		
 
-                            			newLeafNode(lv_relative_2_0, grammarAccess.getKYPositionAccess().getRelativePERCENTTerminalRuleCall_1_0_0_0_0()); 
-                            		
-
-                            	        if (current==null) {
-                            	            current = createModelElement(grammarAccess.getKYPositionRule());
-                            	        }
-                                   		setWithLastConsumed(
-                                   			current, 
-                                   			"relative",
-                                    		lv_relative_2_0, 
-                                    		"PERCENT");
-                            	    
-
-                            }
-
-
-                            }
-
-                            otherlv_3=(Token)match(input,114,FollowSets000.FOLLOW_114_in_ruleKYPosition17156); 
-
-                                	newLeafNode(otherlv_3, grammarAccess.getKYPositionAccess().getPlusSignKeyword_1_0_0_1());
-                                
-
-                            }
-                            break;
-
-                    }
-
-                    // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7245:3: ( (lv_absolute_4_0= ruleFloat ) )?
-                    int alt121=2;
-                    int LA121_0 = input.LA(1);
-
-                    if ( (LA121_0==RULE_NATURAL||LA121_0==RULE_TFLOAT) ) {
-                        alt121=1;
-                    }
-                    switch (alt121) {
-                        case 1 :
-                            // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7246:1: (lv_absolute_4_0= ruleFloat )
-                            {
-                            // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7246:1: (lv_absolute_4_0= ruleFloat )
-                            // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7247:3: lv_absolute_4_0= ruleFloat
-                            {
-                             
-                            	        newCompositeNode(grammarAccess.getKYPositionAccess().getAbsoluteFloatParserRuleCall_1_0_1_0()); 
-                            	    
-                            pushFollow(FollowSets000.FOLLOW_ruleFloat_in_ruleKYPosition17179);
-                            lv_absolute_4_0=ruleFloat();
-
-                            state._fsp--;
-
-
-                            	        if (current==null) {
-                            	            current = createModelElementForParent(grammarAccess.getKYPositionRule());
-                            	        }
-                                   		set(
-                                   			current, 
-                                   			"absolute",
-                                    		lv_absolute_4_0, 
-                                    		"Float");
-                            	        afterParserOrEnumRuleCall();
-                            	    
-
-                            }
-
-
-                            }
-                            break;
+                    	        if (current==null) {
+                    	            current = createModelElement(grammarAccess.getKYPositionRule());
+                    	        }
+                           		setWithLastConsumed(
+                           			current, 
+                           			"relative",
+                            		lv_relative_2_0, 
+                            		"PERCENT");
+                    	    
 
                     }
 
@@ -18511,28 +18407,86 @@ public class InternalKGraphParser extends AbstractInternalAntlrParser {
                     }
                     break;
                 case 2 :
-                    // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7264:6: ( (lv_relative_5_0= RULE_PERCENT ) )
+                    // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7242:6: ( ( ( (lv_relative_3_0= RULE_PERCENT ) ) otherlv_4= '+' )? ( (lv_absolute_5_0= ruleFloat ) ) )
                     {
-                    // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7264:6: ( (lv_relative_5_0= RULE_PERCENT ) )
-                    // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7265:1: (lv_relative_5_0= RULE_PERCENT )
+                    // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7242:6: ( ( ( (lv_relative_3_0= RULE_PERCENT ) ) otherlv_4= '+' )? ( (lv_absolute_5_0= ruleFloat ) ) )
+                    // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7242:7: ( ( (lv_relative_3_0= RULE_PERCENT ) ) otherlv_4= '+' )? ( (lv_absolute_5_0= ruleFloat ) )
                     {
-                    // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7265:1: (lv_relative_5_0= RULE_PERCENT )
-                    // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7266:3: lv_relative_5_0= RULE_PERCENT
-                    {
-                    lv_relative_5_0=(Token)match(input,RULE_PERCENT,FollowSets000.FOLLOW_RULE_PERCENT_in_ruleKYPosition17204); 
+                    // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7242:7: ( ( (lv_relative_3_0= RULE_PERCENT ) ) otherlv_4= '+' )?
+                    int alt119=2;
+                    int LA119_0 = input.LA(1);
 
-                    			newLeafNode(lv_relative_5_0, grammarAccess.getKYPositionAccess().getRelativePERCENTTerminalRuleCall_1_1_0()); 
-                    		
+                    if ( (LA119_0==RULE_PERCENT) ) {
+                        alt119=1;
+                    }
+                    switch (alt119) {
+                        case 1 :
+                            // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7242:8: ( (lv_relative_3_0= RULE_PERCENT ) ) otherlv_4= '+'
+                            {
+                            // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7242:8: ( (lv_relative_3_0= RULE_PERCENT ) )
+                            // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7243:1: (lv_relative_3_0= RULE_PERCENT )
+                            {
+                            // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7243:1: (lv_relative_3_0= RULE_PERCENT )
+                            // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7244:3: lv_relative_3_0= RULE_PERCENT
+                            {
+                            lv_relative_3_0=(Token)match(input,RULE_PERCENT,FollowSets000.FOLLOW_RULE_PERCENT_in_ruleKYPosition17167); 
+
+                            			newLeafNode(lv_relative_3_0, grammarAccess.getKYPositionAccess().getRelativePERCENTTerminalRuleCall_1_1_0_0_0()); 
+                            		
+
+                            	        if (current==null) {
+                            	            current = createModelElement(grammarAccess.getKYPositionRule());
+                            	        }
+                                   		setWithLastConsumed(
+                                   			current, 
+                                   			"relative",
+                                    		lv_relative_3_0, 
+                                    		"PERCENT");
+                            	    
+
+                            }
+
+
+                            }
+
+                            otherlv_4=(Token)match(input,114,FollowSets000.FOLLOW_114_in_ruleKYPosition17184); 
+
+                                	newLeafNode(otherlv_4, grammarAccess.getKYPositionAccess().getPlusSignKeyword_1_1_0_1());
+                                
+
+                            }
+                            break;
+
+                    }
+
+                    // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7264:3: ( (lv_absolute_5_0= ruleFloat ) )
+                    // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7265:1: (lv_absolute_5_0= ruleFloat )
+                    {
+                    // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7265:1: (lv_absolute_5_0= ruleFloat )
+                    // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7266:3: lv_absolute_5_0= ruleFloat
+                    {
+                     
+                    	        newCompositeNode(grammarAccess.getKYPositionAccess().getAbsoluteFloatParserRuleCall_1_1_1_0()); 
+                    	    
+                    pushFollow(FollowSets000.FOLLOW_ruleFloat_in_ruleKYPosition17207);
+                    lv_absolute_5_0=ruleFloat();
+
+                    state._fsp--;
+
 
                     	        if (current==null) {
-                    	            current = createModelElement(grammarAccess.getKYPositionRule());
+                    	            current = createModelElementForParent(grammarAccess.getKYPositionRule());
                     	        }
-                           		setWithLastConsumed(
+                           		set(
                            			current, 
-                           			"relative",
-                            		lv_relative_5_0, 
-                            		"PERCENT");
+                           			"absolute",
+                            		lv_absolute_5_0, 
+                            		"Float");
+                    	        afterParserOrEnumRuleCall();
                     	    
+
+                    }
+
 
                     }
 
@@ -18797,31 +18751,31 @@ public class InternalKGraphParser extends AbstractInternalAntlrParser {
             // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7365:1: ( ( ( (lv_red_0_0= RULE_RED ) ) (otherlv_1= ',' ( (lv_green_2_0= RULE_GREEN ) ) )? (otherlv_3= ',' ( (lv_blue_4_0= RULE_BLUE ) ) )? ) | ( ( (lv_green_5_0= RULE_GREEN ) ) (otherlv_6= ',' ( (lv_blue_7_0= RULE_BLUE ) ) )? ) | ( (lv_blue_8_0= RULE_BLUE ) ) )
             {
             // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7365:1: ( ( ( (lv_red_0_0= RULE_RED ) ) (otherlv_1= ',' ( (lv_green_2_0= RULE_GREEN ) ) )? (otherlv_3= ',' ( (lv_blue_4_0= RULE_BLUE ) ) )? ) | ( ( (lv_green_5_0= RULE_GREEN ) ) (otherlv_6= ',' ( (lv_blue_7_0= RULE_BLUE ) ) )? ) | ( (lv_blue_8_0= RULE_BLUE ) ) )
-            int alt126=3;
+            int alt124=3;
             switch ( input.LA(1) ) {
             case RULE_RED:
                 {
-                alt126=1;
+                alt124=1;
                 }
                 break;
             case RULE_GREEN:
                 {
-                alt126=2;
+                alt124=2;
                 }
                 break;
             case RULE_BLUE:
                 {
-                alt126=3;
+                alt124=3;
                 }
                 break;
             default:
                 NoViableAltException nvae =
-                    new NoViableAltException("", 126, 0, input);
+                    new NoViableAltException("", 124, 0, input);
 
                 throw nvae;
             }
 
-            switch (alt126) {
+            switch (alt124) {
                 case 1 :
                     // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7365:2: ( ( (lv_red_0_0= RULE_RED ) ) (otherlv_1= ',' ( (lv_green_2_0= RULE_GREEN ) ) )? (otherlv_3= ',' ( (lv_blue_4_0= RULE_BLUE ) ) )? )
                     {
@@ -18855,17 +18809,17 @@ public class InternalKGraphParser extends AbstractInternalAntlrParser {
                     }
 
                     // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7383:2: (otherlv_1= ',' ( (lv_green_2_0= RULE_GREEN ) ) )?
-                    int alt123=2;
-                    int LA123_0 = input.LA(1);
+                    int alt121=2;
+                    int LA121_0 = input.LA(1);
 
-                    if ( (LA123_0==47) ) {
-                        int LA123_1 = input.LA(2);
+                    if ( (LA121_0==47) ) {
+                        int LA121_1 = input.LA(2);
 
-                        if ( (LA123_1==RULE_GREEN) ) {
-                            alt123=1;
+                        if ( (LA121_1==RULE_GREEN) ) {
+                            alt121=1;
                         }
                     }
-                    switch (alt123) {
+                    switch (alt121) {
                         case 1 :
                             // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7383:4: otherlv_1= ',' ( (lv_green_2_0= RULE_GREEN ) )
                             {
@@ -18906,17 +18860,17 @@ public class InternalKGraphParser extends AbstractInternalAntlrParser {
                     }
 
                     // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7405:4: (otherlv_3= ',' ( (lv_blue_4_0= RULE_BLUE ) ) )?
-                    int alt124=2;
-                    int LA124_0 = input.LA(1);
+                    int alt122=2;
+                    int LA122_0 = input.LA(1);
 
-                    if ( (LA124_0==47) ) {
-                        int LA124_1 = input.LA(2);
+                    if ( (LA122_0==47) ) {
+                        int LA122_1 = input.LA(2);
 
-                        if ( (LA124_1==RULE_BLUE) ) {
-                            alt124=1;
+                        if ( (LA122_1==RULE_BLUE) ) {
+                            alt122=1;
                         }
                     }
-                    switch (alt124) {
+                    switch (alt122) {
                         case 1 :
                             // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7405:6: otherlv_3= ',' ( (lv_blue_4_0= RULE_BLUE ) )
                             {
@@ -18995,17 +18949,17 @@ public class InternalKGraphParser extends AbstractInternalAntlrParser {
                     }
 
                     // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7446:2: (otherlv_6= ',' ( (lv_blue_7_0= RULE_BLUE ) ) )?
-                    int alt125=2;
-                    int LA125_0 = input.LA(1);
+                    int alt123=2;
+                    int LA123_0 = input.LA(1);
 
-                    if ( (LA125_0==47) ) {
-                        int LA125_1 = input.LA(2);
+                    if ( (LA123_0==47) ) {
+                        int LA123_1 = input.LA(2);
 
-                        if ( (LA125_1==RULE_BLUE) ) {
-                            alt125=1;
+                        if ( (LA123_1==RULE_BLUE) ) {
+                            alt123=1;
                         }
                     }
-                    switch (alt125) {
+                    switch (alt123) {
                         case 1 :
                             // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7446:4: otherlv_6= ',' ( (lv_blue_7_0= RULE_BLUE ) )
                             {
@@ -19165,17 +19119,17 @@ public class InternalKGraphParser extends AbstractInternalAntlrParser {
                 newLeafNode(this_ID_0, grammarAccess.getQualifiedIDAccess().getIDTerminalRuleCall_0()); 
                 
             // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7515:1: (kw= '.' this_ID_2= RULE_ID )*
-            loop127:
+            loop125:
             do {
-                int alt127=2;
-                int LA127_0 = input.LA(1);
+                int alt125=2;
+                int LA125_0 = input.LA(1);
 
-                if ( (LA127_0==115) ) {
-                    alt127=1;
+                if ( (LA125_0==115) ) {
+                    alt125=1;
                 }
 
 
-                switch (alt127) {
+                switch (alt125) {
             	case 1 :
             	    // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7516:2: kw= '.' this_ID_2= RULE_ID
             	    {
@@ -19196,7 +19150,7 @@ public class InternalKGraphParser extends AbstractInternalAntlrParser {
             	    break;
 
             	default :
-            	    break loop127;
+            	    break loop125;
                 }
             } while (true);
 
@@ -19275,37 +19229,37 @@ public class InternalKGraphParser extends AbstractInternalAntlrParser {
             // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7549:1: (this_BOOLEAN_0= RULE_BOOLEAN | this_STRING_1= RULE_STRING | this_Float_2= ruleFloat | this_QualifiedID_3= ruleQualifiedID )
             {
             // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7549:1: (this_BOOLEAN_0= RULE_BOOLEAN | this_STRING_1= RULE_STRING | this_Float_2= ruleFloat | this_QualifiedID_3= ruleQualifiedID )
-            int alt128=4;
+            int alt126=4;
             switch ( input.LA(1) ) {
             case RULE_BOOLEAN:
                 {
-                alt128=1;
+                alt126=1;
                 }
                 break;
             case RULE_STRING:
                 {
-                alt128=2;
+                alt126=2;
                 }
                 break;
             case RULE_NATURAL:
             case RULE_TFLOAT:
                 {
-                alt128=3;
+                alt126=3;
                 }
                 break;
             case RULE_ID:
                 {
-                alt128=4;
+                alt126=4;
                 }
                 break;
             default:
                 NoViableAltException nvae =
-                    new NoViableAltException("", 128, 0, input);
+                    new NoViableAltException("", 126, 0, input);
 
                 throw nvae;
             }
 
-            switch (alt128) {
+            switch (alt126) {
                 case 1 :
                     // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7549:6: this_BOOLEAN_0= RULE_BOOLEAN
                     {
@@ -19443,22 +19397,22 @@ public class InternalKGraphParser extends AbstractInternalAntlrParser {
             // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7609:1: (this_TFLOAT_0= RULE_TFLOAT | this_NATURAL_1= RULE_NATURAL )
             {
             // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7609:1: (this_TFLOAT_0= RULE_TFLOAT | this_NATURAL_1= RULE_NATURAL )
-            int alt129=2;
-            int LA129_0 = input.LA(1);
+            int alt127=2;
+            int LA127_0 = input.LA(1);
 
-            if ( (LA129_0==RULE_TFLOAT) ) {
-                alt129=1;
+            if ( (LA127_0==RULE_TFLOAT) ) {
+                alt127=1;
             }
-            else if ( (LA129_0==RULE_NATURAL) ) {
-                alt129=2;
+            else if ( (LA127_0==RULE_NATURAL) ) {
+                alt127=2;
             }
             else {
                 NoViableAltException nvae =
-                    new NoViableAltException("", 129, 0, input);
+                    new NoViableAltException("", 127, 0, input);
 
                 throw nvae;
             }
-            switch (alt129) {
+            switch (alt127) {
                 case 1 :
                     // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7609:6: this_TFLOAT_0= RULE_TFLOAT
                     {
@@ -19520,31 +19474,31 @@ public class InternalKGraphParser extends AbstractInternalAntlrParser {
             // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7635:1: ( (enumLiteral_0= 'open' ) | (enumLiteral_1= 'chord' ) | (enumLiteral_2= 'pie' ) )
             {
             // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7635:1: ( (enumLiteral_0= 'open' ) | (enumLiteral_1= 'chord' ) | (enumLiteral_2= 'pie' ) )
-            int alt130=3;
+            int alt128=3;
             switch ( input.LA(1) ) {
             case 116:
                 {
-                alt130=1;
+                alt128=1;
                 }
                 break;
             case 117:
                 {
-                alt130=2;
+                alt128=2;
                 }
                 break;
             case 118:
                 {
-                alt130=3;
+                alt128=3;
                 }
                 break;
             default:
                 NoViableAltException nvae =
-                    new NoViableAltException("", 130, 0, input);
+                    new NoViableAltException("", 128, 0, input);
 
                 throw nvae;
             }
 
-            switch (alt130) {
+            switch (alt128) {
                 case 1 :
                     // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7635:2: (enumLiteral_0= 'open' )
                     {
@@ -19631,31 +19585,31 @@ public class InternalKGraphParser extends AbstractInternalAntlrParser {
             // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7660:1: ( (enumLiteral_0= 'left' ) | (enumLiteral_1= 'center' ) | (enumLiteral_2= 'right' ) )
             {
             // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7660:1: ( (enumLiteral_0= 'left' ) | (enumLiteral_1= 'center' ) | (enumLiteral_2= 'right' ) )
-            int alt131=3;
+            int alt129=3;
             switch ( input.LA(1) ) {
             case 43:
                 {
-                alt131=1;
+                alt129=1;
                 }
                 break;
             case 119:
                 {
-                alt131=2;
+                alt129=2;
                 }
                 break;
             case 44:
                 {
-                alt131=3;
+                alt129=3;
                 }
                 break;
             default:
                 NoViableAltException nvae =
-                    new NoViableAltException("", 131, 0, input);
+                    new NoViableAltException("", 129, 0, input);
 
                 throw nvae;
             }
 
-            switch (alt131) {
+            switch (alt129) {
                 case 1 :
                     // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7660:2: (enumLiteral_0= 'left' )
                     {
@@ -19742,31 +19696,31 @@ public class InternalKGraphParser extends AbstractInternalAntlrParser {
             // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7685:1: ( (enumLiteral_0= 'top' ) | (enumLiteral_1= 'center' ) | (enumLiteral_2= 'bottom' ) )
             {
             // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7685:1: ( (enumLiteral_0= 'top' ) | (enumLiteral_1= 'center' ) | (enumLiteral_2= 'bottom' ) )
-            int alt132=3;
+            int alt130=3;
             switch ( input.LA(1) ) {
             case 41:
                 {
-                alt132=1;
+                alt130=1;
                 }
                 break;
             case 119:
                 {
-                alt132=2;
+                alt130=2;
                 }
                 break;
             case 42:
                 {
-                alt132=3;
+                alt130=3;
                 }
                 break;
             default:
                 NoViableAltException nvae =
-                    new NoViableAltException("", 132, 0, input);
+                    new NoViableAltException("", 130, 0, input);
 
                 throw nvae;
             }
 
-            switch (alt132) {
+            switch (alt130) {
                 case 1 :
                     // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7685:2: (enumLiteral_0= 'top' )
                     {
@@ -19856,46 +19810,46 @@ public class InternalKGraphParser extends AbstractInternalAntlrParser {
             // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7710:1: ( (enumLiteral_0= 'none' ) | (enumLiteral_1= 'single' ) | (enumLiteral_2= 'double' ) | (enumLiteral_3= 'error' ) | (enumLiteral_4= 'squiggle' ) | (enumLiteral_5= 'link' ) )
             {
             // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7710:1: ( (enumLiteral_0= 'none' ) | (enumLiteral_1= 'single' ) | (enumLiteral_2= 'double' ) | (enumLiteral_3= 'error' ) | (enumLiteral_4= 'squiggle' ) | (enumLiteral_5= 'link' ) )
-            int alt133=6;
+            int alt131=6;
             switch ( input.LA(1) ) {
             case 120:
                 {
-                alt133=1;
+                alt131=1;
                 }
                 break;
             case 121:
                 {
-                alt133=2;
+                alt131=2;
                 }
                 break;
             case 122:
                 {
-                alt133=3;
+                alt131=3;
                 }
                 break;
             case 123:
                 {
-                alt133=4;
+                alt131=4;
                 }
                 break;
             case 124:
                 {
-                alt133=5;
+                alt131=5;
                 }
                 break;
             case 125:
                 {
-                alt133=6;
+                alt131=6;
                 }
                 break;
             default:
                 NoViableAltException nvae =
-                    new NoViableAltException("", 133, 0, input);
+                    new NoViableAltException("", 131, 0, input);
 
                 throw nvae;
             }
 
-            switch (alt133) {
+            switch (alt131) {
                 case 1 :
                     // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7710:2: (enumLiteral_0= 'none' )
                     {
@@ -20035,41 +19989,41 @@ public class InternalKGraphParser extends AbstractInternalAntlrParser {
             // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7753:1: ( (enumLiteral_0= 'solid' ) | (enumLiteral_1= 'dash' ) | (enumLiteral_2= 'dot' ) | (enumLiteral_3= 'dash-dot' ) | (enumLiteral_4= 'dash-dot-dot' ) )
             {
             // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7753:1: ( (enumLiteral_0= 'solid' ) | (enumLiteral_1= 'dash' ) | (enumLiteral_2= 'dot' ) | (enumLiteral_3= 'dash-dot' ) | (enumLiteral_4= 'dash-dot-dot' ) )
-            int alt134=5;
+            int alt132=5;
             switch ( input.LA(1) ) {
             case 126:
                 {
-                alt134=1;
+                alt132=1;
                 }
                 break;
             case 127:
                 {
-                alt134=2;
+                alt132=2;
                 }
                 break;
             case 128:
                 {
-                alt134=3;
+                alt132=3;
                 }
                 break;
             case 129:
                 {
-                alt134=4;
+                alt132=4;
                 }
                 break;
             case 130:
                 {
-                alt134=5;
+                alt132=5;
                 }
                 break;
             default:
                 NoViableAltException nvae =
-                    new NoViableAltException("", 134, 0, input);
+                    new NoViableAltException("", 132, 0, input);
 
                 throw nvae;
             }
 
-            switch (alt134) {
+            switch (alt132) {
                 case 1 :
                     // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7753:2: (enumLiteral_0= 'solid' )
                     {
@@ -20190,31 +20144,31 @@ public class InternalKGraphParser extends AbstractInternalAntlrParser {
             // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7790:1: ( (enumLiteral_0= 'flat' ) | (enumLiteral_1= 'round' ) | (enumLiteral_2= 'square' ) )
             {
             // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7790:1: ( (enumLiteral_0= 'flat' ) | (enumLiteral_1= 'round' ) | (enumLiteral_2= 'square' ) )
-            int alt135=3;
+            int alt133=3;
             switch ( input.LA(1) ) {
             case 131:
                 {
-                alt135=1;
+                alt133=1;
                 }
                 break;
             case 132:
                 {
-                alt135=2;
+                alt133=2;
                 }
                 break;
             case 133:
                 {
-                alt135=3;
+                alt133=3;
                 }
                 break;
             default:
                 NoViableAltException nvae =
-                    new NoViableAltException("", 135, 0, input);
+                    new NoViableAltException("", 133, 0, input);
 
                 throw nvae;
             }
 
-            switch (alt135) {
+            switch (alt133) {
                 case 1 :
                     // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7790:2: (enumLiteral_0= 'flat' )
                     {
@@ -20301,31 +20255,31 @@ public class InternalKGraphParser extends AbstractInternalAntlrParser {
             // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7815:1: ( (enumLiteral_0= 'miter' ) | (enumLiteral_1= 'round' ) | (enumLiteral_2= 'bevel' ) )
             {
             // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7815:1: ( (enumLiteral_0= 'miter' ) | (enumLiteral_1= 'round' ) | (enumLiteral_2= 'bevel' ) )
-            int alt136=3;
+            int alt134=3;
             switch ( input.LA(1) ) {
             case 134:
                 {
-                alt136=1;
+                alt134=1;
                 }
                 break;
             case 132:
                 {
-                alt136=2;
+                alt134=2;
                 }
                 break;
             case 135:
                 {
-                alt136=3;
+                alt134=3;
                 }
                 break;
             default:
                 NoViableAltException nvae =
-                    new NoViableAltException("", 136, 0, input);
+                    new NoViableAltException("", 134, 0, input);
 
                 throw nvae;
             }
 
-            switch (alt136) {
+            switch (alt134) {
                 case 1 :
                     // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7815:2: (enumLiteral_0= 'miter' )
                     {
@@ -20411,22 +20365,22 @@ public class InternalKGraphParser extends AbstractInternalAntlrParser {
             // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7840:1: ( (enumLiteral_0= 'singleClick' ) | (enumLiteral_1= 'doubleClick' ) )
             {
             // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7840:1: ( (enumLiteral_0= 'singleClick' ) | (enumLiteral_1= 'doubleClick' ) )
-            int alt137=2;
-            int LA137_0 = input.LA(1);
+            int alt135=2;
+            int LA135_0 = input.LA(1);
 
-            if ( (LA137_0==136) ) {
-                alt137=1;
+            if ( (LA135_0==136) ) {
+                alt135=1;
             }
-            else if ( (LA137_0==137) ) {
-                alt137=2;
+            else if ( (LA135_0==137) ) {
+                alt135=2;
             }
             else {
                 NoViableAltException nvae =
-                    new NoViableAltException("", 137, 0, input);
+                    new NoViableAltException("", 135, 0, input);
 
                 throw nvae;
             }
-            switch (alt137) {
+            switch (alt135) {
                 case 1 :
                     // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7840:2: (enumLiteral_0= 'singleClick' )
                     {
@@ -20494,16 +20448,16 @@ public class InternalKGraphParser extends AbstractInternalAntlrParser {
     static final String DFA58_maxS =
         "\1\16\1\163\1\16\2\uffff\1\163";
     static final String DFA58_acceptS =
-        "\3\uffff\1\1\1\2\1\uffff";
+        "\3\uffff\1\2\1\1\1\uffff";
     static final String DFA58_specialS =
         "\6\uffff}>";
     static final String[] DFA58_transitionS = {
             "\1\1",
-            "\1\3\1\uffff\1\4\127\uffff\1\2",
+            "\1\4\1\uffff\1\3\127\uffff\1\2",
             "\1\5",
             "",
             "",
-            "\1\3\1\uffff\1\4\127\uffff\1\2"
+            "\1\4\1\uffff\1\3\127\uffff\1\2"
     };
 
     static final short[] DFA58_eot = DFA.unpackEncodedString(DFA58_eotS);
@@ -21205,10 +21159,10 @@ public class InternalKGraphParser extends AbstractInternalAntlrParser {
         public static final BitSet FOLLOW_EOF_in_entryRuleKXPosition16648 = new BitSet(new long[]{0x0000000000000002L});
         public static final BitSet FOLLOW_ruleKLeftPosition_in_ruleKXPosition16696 = new BitSet(new long[]{0x0000000000008602L});
         public static final BitSet FOLLOW_ruleKRightPosition_in_ruleKXPosition16723 = new BitSet(new long[]{0x0000000000008602L});
-        public static final BitSet FOLLOW_RULE_PERCENT_in_ruleKXPosition16743 = new BitSet(new long[]{0x0000000000000000L,0x0004000000000000L});
-        public static final BitSet FOLLOW_114_in_ruleKXPosition16760 = new BitSet(new long[]{0x0000000000008202L});
-        public static final BitSet FOLLOW_ruleFloat_in_ruleKXPosition16783 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_RULE_PERCENT_in_ruleKXPosition16808 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_RULE_PERCENT_in_ruleKXPosition16741 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_RULE_PERCENT_in_ruleKXPosition16771 = new BitSet(new long[]{0x0000000000000000L,0x0004000000000000L});
+        public static final BitSet FOLLOW_114_in_ruleKXPosition16788 = new BitSet(new long[]{0x0000000000008200L});
+        public static final BitSet FOLLOW_ruleFloat_in_ruleKXPosition16811 = new BitSet(new long[]{0x0000000000000002L});
         public static final BitSet FOLLOW_ruleKLeftPosition_in_entryRuleKLeftPosition16850 = new BitSet(new long[]{0x0000000000000000L});
         public static final BitSet FOLLOW_EOF_in_entryRuleKLeftPosition16860 = new BitSet(new long[]{0x0000000000000002L});
         public static final BitSet FOLLOW_43_in_ruleKLeftPosition16906 = new BitSet(new long[]{0x0000000000000002L});
@@ -21219,10 +21173,10 @@ public class InternalKGraphParser extends AbstractInternalAntlrParser {
         public static final BitSet FOLLOW_EOF_in_entryRuleKYPosition17044 = new BitSet(new long[]{0x0000000000000002L});
         public static final BitSet FOLLOW_ruleKTopPosition_in_ruleKYPosition17092 = new BitSet(new long[]{0x0000000000008602L});
         public static final BitSet FOLLOW_ruleKBottomPosition_in_ruleKYPosition17119 = new BitSet(new long[]{0x0000000000008602L});
-        public static final BitSet FOLLOW_RULE_PERCENT_in_ruleKYPosition17139 = new BitSet(new long[]{0x0000000000000000L,0x0004000000000000L});
-        public static final BitSet FOLLOW_114_in_ruleKYPosition17156 = new BitSet(new long[]{0x0000000000008202L});
-        public static final BitSet FOLLOW_ruleFloat_in_ruleKYPosition17179 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_RULE_PERCENT_in_ruleKYPosition17204 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_RULE_PERCENT_in_ruleKYPosition17137 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_RULE_PERCENT_in_ruleKYPosition17167 = new BitSet(new long[]{0x0000000000000000L,0x0004000000000000L});
+        public static final BitSet FOLLOW_114_in_ruleKYPosition17184 = new BitSet(new long[]{0x0000000000008200L});
+        public static final BitSet FOLLOW_ruleFloat_in_ruleKYPosition17207 = new BitSet(new long[]{0x0000000000000002L});
         public static final BitSet FOLLOW_ruleKTopPosition_in_entryRuleKTopPosition17246 = new BitSet(new long[]{0x0000000000000000L});
         public static final BitSet FOLLOW_EOF_in_entryRuleKTopPosition17256 = new BitSet(new long[]{0x0000000000000002L});
         public static final BitSet FOLLOW_41_in_ruleKTopPosition17302 = new BitSet(new long[]{0x0000000000000002L});

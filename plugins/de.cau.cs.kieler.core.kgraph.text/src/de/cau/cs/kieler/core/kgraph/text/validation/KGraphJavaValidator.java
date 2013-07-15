@@ -109,7 +109,7 @@ public class KGraphJavaValidator extends AbstractKGraphJavaValidator {
             boolean ignored = Iterables.any(
                     node.getData(KShapeLayout.class).getPersistentEntries(),
                     new Predicate<PersistentEntry>() {
-                        public boolean apply(PersistentEntry pe) {
+                        public boolean apply(final PersistentEntry pe) {
                             return pe.getKey().equals("klighd.testing.ignore");
                         }
                     });
