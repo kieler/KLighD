@@ -1,88 +1,40 @@
-//grid placement nested
-KNode {
-	children
-	KNode {
-		data:
-		Rectangle {
-			childPlacement:
-			gridPlacement 3
-			children:
-			Rectangle {
-				styles foreground {
-					color 255 0 0
-				}
-				placementData GridPlacementData {
-					minCellWidth 50.0
-				}
-			}
-			RoundedRectangle 10.0 10.0 {
-				styles foreground {
-					color 0 255 0
-				}
-				placementData GridPlacementData {
-				//					minCellWidth 100
 
-				}
-				children ChildArea
-			}
-			Rectangle {
-				styles foreground {
-					color 0 0 255
-				}
-				placementData GridPlacementData {
-				//					minCellWidth 30
-				//					maxCellWidth 0
-
-				}
+knode {
+	knode {
+		size: width = 40 height = 50 knode {
+			size: width = 30 height = 70
+			kroundedRectangle (10, 10) {
+				styles: lineStyle = dash-dot-dot
 			}
 		}
-		children
-		KNode {
-			data KShapeLayout {
-				width 40.0 height 50.0
+		krectangle {
+			grid: columns = 1
+			krectangle {
+				styles: lineStyle = dash-dot foreground = 122g, 122b
+				gridData: topLeftAnchor = left 10, top bottomRightAnchor = right 50%,
+				bottom maxCellHeight = 30
 			}
-			Rectangle {
-				childPlacement gridPlacement 1
-				children Rectangle {
-					styles
-					lineStyle DASHDOT foreground {
-					//blue-green
-						color 0 122 122
-					}
-					placementData GridPlacementData {
-						maxCellHeight 30.0
-						topLeft
-						left 10.0 0.0 / top 0.0 0.0
-						bottomRight
-						right 0.0 0.5 / bottom 0.0 0.0
-					}
-				}
-				Rectangle {
-					styles
-					lineStyle DASHDOT foreground {
-					//yellow
-						color 122 122 0
-					}
-					placementData GridPlacementData {
-					//									minCellWidth 20
-					//									maxCellWidth 20
-
-						topLeft
-						left 10.0 0.0 / top 0.0 0.0
-					}
-					children ChildArea
-				}
+			krectangle {
+				styles: lineStyle = dash-dot foreground = 122r, 122g
+				gridData: topLeftAnchor = left 10, top
+				kchildArea
 			}
-			children
-			KNode {
-				data KShapeLayout {
-					width 30.0 height 70.0
-				}
-				RoundedRectangle 10.0 10.0 {
-					styles
-					lineStyle DASHDOTDOT
-				}
-			}
+		}
+	}
+	krectangle {
+		grid: columns = 3
+		krectangle {
+			styles: foreground = 255r
+			gridData: minCellWidth = 50
+		}
+		kroundedRectangle (10, 10) {
+			styles: foreground = 255g
+			gridData:
+			kchildArea
+		}
+		krectangle {
+			styles: foreground = 255b
+			gridData:
 		}
 	}
 }

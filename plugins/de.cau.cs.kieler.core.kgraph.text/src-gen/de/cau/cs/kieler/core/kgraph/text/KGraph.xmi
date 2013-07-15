@@ -1714,7 +1714,10 @@
         <elements xsi:type="xtext:RuleCall" rule="//@rules.65"/>
         <elements xsi:type="xtext:RuleCall" rule="//@rules.66"/>
       </elements>
-      <elements xsi:type="xtext:Alternatives">
+      <elements xsi:type="xtext:Alternatives" cardinality="?">
+        <elements xsi:type="xtext:Assignment" feature="relative" operator="=">
+          <terminal xsi:type="xtext:RuleCall" rule="//@rules.89"/>
+        </elements>
         <elements xsi:type="xtext:Group">
           <elements xsi:type="xtext:Group" cardinality="?">
             <elements xsi:type="xtext:Assignment" feature="relative" operator="=">
@@ -1722,12 +1725,9 @@
             </elements>
             <elements xsi:type="xtext:Keyword" value="+"/>
           </elements>
-          <elements xsi:type="xtext:Assignment" cardinality="?" feature="absolute" operator="=">
+          <elements xsi:type="xtext:Assignment" feature="absolute" operator="=">
             <terminal xsi:type="xtext:RuleCall" rule="//@rules.73"/>
           </elements>
-        </elements>
-        <elements xsi:type="xtext:Assignment" feature="relative" operator="=">
-          <terminal xsi:type="xtext:RuleCall" rule="//@rules.89"/>
         </elements>
       </elements>
     </alternatives>
@@ -1767,7 +1767,10 @@
         <elements xsi:type="xtext:RuleCall" rule="//@rules.68"/>
         <elements xsi:type="xtext:RuleCall" rule="//@rules.69"/>
       </elements>
-      <elements xsi:type="xtext:Alternatives">
+      <elements xsi:type="xtext:Alternatives" cardinality="?">
+        <elements xsi:type="xtext:Assignment" feature="relative" operator="=">
+          <terminal xsi:type="xtext:RuleCall" rule="//@rules.89"/>
+        </elements>
         <elements xsi:type="xtext:Group">
           <elements xsi:type="xtext:Group" cardinality="?">
             <elements xsi:type="xtext:Assignment" feature="relative" operator="=">
@@ -1775,12 +1778,9 @@
             </elements>
             <elements xsi:type="xtext:Keyword" value="+"/>
           </elements>
-          <elements xsi:type="xtext:Assignment" cardinality="?" feature="absolute" operator="=">
+          <elements xsi:type="xtext:Assignment" feature="absolute" operator="=">
             <terminal xsi:type="xtext:RuleCall" rule="//@rules.73"/>
           </elements>
-        </elements>
-        <elements xsi:type="xtext:Assignment" feature="relative" operator="=">
-          <terminal xsi:type="xtext:RuleCall" rule="//@rules.89"/>
         </elements>
       </elements>
     </alternatives>
@@ -2373,6 +2373,7 @@
             <elements xsi:type="xtext:Keyword" value="r"/>
             <elements xsi:type="xtext:Keyword" value="u"/>
             <elements xsi:type="xtext:Keyword" value="&quot;"/>
+            <elements xsi:type="xtext:Keyword" value="'"/>
             <elements xsi:type="xtext:Keyword" value="\"/>
           </elements>
         </elements>

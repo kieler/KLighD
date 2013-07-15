@@ -44,7 +44,7 @@ public class KFontItalicImpl extends KStyleImpl implements KFontItalic {
      * @generated
      * @ordered
      */
-    protected static final boolean ITALIC_EDEFAULT = false;
+    protected static final boolean ITALIC_EDEFAULT = true;
 
     /**
      * The cached value of the '{@link #isItalic() <em>Italic</em>}' attribute.

@@ -24,6 +24,7 @@ import de.cau.cs.kieler.core.krendering.KStyleHolder;
 import de.cau.cs.kieler.kiml.klayoutdata.KIdentifier;
 
 /**
+ * Qualified name provider for the KGraph language.
  *
  * @author msp
  */
@@ -32,6 +33,12 @@ public class KGraphQualifiedNameProvider extends DefaultDeclarativeQualifiedName
     @Inject
     private IQualifiedNameConverter qualifiedNameConverter;
     
+    /**
+     * Generate a qualified name for graph elements from their identifier.
+     * 
+     * @param element a graph element
+     * @return a qualified name derived from the element's identifier
+     */
     public QualifiedName qualifiedName(final KGraphElement element) {
         KIdentifier identifier = element.getData(KIdentifier.class);
         if (identifier != null) {
@@ -40,8 +47,14 @@ public class KGraphQualifiedNameProvider extends DefaultDeclarativeQualifiedName
         return null;
     }
     
+    /**
+     * Generate a qualified name for style holders from their identifier.
+     * 
+     * @param styleHolder a style holder
+     * @return a qualified name derived from the style holder's identifier
+     */
     public QualifiedName qualifiedName(final KStyleHolder styleHolder) {
-    	return qualifiedNameConverter.toQualifiedName(styleHolder.getId());
+        return qualifiedNameConverter.toQualifiedName(styleHolder.getId());
     }
 
 }

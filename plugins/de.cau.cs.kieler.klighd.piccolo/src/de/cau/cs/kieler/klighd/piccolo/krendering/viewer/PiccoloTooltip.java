@@ -21,6 +21,7 @@ import java.util.List;
 
 import javax.swing.Timer;
 
+import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.widgets.Display;
 
 import com.google.common.base.Splitter;
@@ -28,11 +29,13 @@ import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 
 import de.cau.cs.kieler.core.kgraph.KNode;
+import de.cau.cs.kieler.core.krendering.KRendering;
 import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout;
-import de.cau.cs.kieler.kiml.options.LayoutOptions;
-import de.cau.cs.kieler.klighd.piccolo.krendering.ITracingElement;
-import de.cau.cs.kieler.klighd.piccolo.nodes.PSWTAdvancedPath;
-import de.cau.cs.kieler.klighd.piccolo.nodes.PSWTStyledText;
+import de.cau.cs.kieler.klighd.KlighdConstants;
+import de.cau.cs.kieler.klighd.piccolo.internal.nodes.IGraphElement;
+import de.cau.cs.kieler.klighd.piccolo.internal.nodes.PSWTAdvancedPath;
+import de.cau.cs.kieler.klighd.piccolo.internal.nodes.PSWTStyledText;
+import de.cau.cs.kieler.klighd.util.KlighdProperties;
 import edu.umd.cs.piccolo.PCamera;
 import edu.umd.cs.piccolo.PNode;
 import edu.umd.cs.piccolo.event.PBasicInputEventHandler;
@@ -41,71 +44,95 @@ import edu.umd.cs.piccolo.util.PBounds;
 import edu.umd.cs.piccolox.swt.SWTTimer;
 
 /**
- * @author uru
+ * The class realizes a tooltip for the {@link PCanvas}. Tooltips are either retrieved from a
+ * {@link PNode}'s root {@link KRendering} or, if this is not available, from the corresponding
+ * {@link KNode}'s {@link KShapeLayout}.
  * 
+ * @author uru
  */
 public class PiccoloTooltip {
 
+    private Display display;
     private PCamera camera;
+
+    // graphic elements representing the tooltip
     private PSWTAdvancedPath root;
     private PSWTStyledText tooltip;
-    private Display display;
 
-    private int tooltipDelay = 500;
-
+    // configuration constants
+    private static final int TOOLTIP_DELAY = 750;
     private static final int ROUNDNESS = 5;
     private static final int OPACITY = 220;
     private static final int INSETS = 5;
 
     /**
-     * 
+     * @param display
+     *            the current display of the {@link KlighdViewer}.
+     * @param camera
+     *            the camera of the current {@link KlighdViewer}'s canvas.
      */
     public PiccoloTooltip(final Display display, final PCamera camera) {
         this.display = display;
         this.camera = camera;
-        this.tooltip = new PSWTStyledText(Lists.newArrayList("foobar"));
 
+        // create the text element for the tooltip
+        tooltip = new PSWTStyledText(Lists.newArrayList(""));
         tooltip.setPickable(false);
+        tooltip.setFont(new FontData(KlighdConstants.DEFAULT_FONT_NAME,
+                KlighdConstants.DEFAULT_TOOL_TIP_FONT_SIZE, KlighdConstants.DEFAULT_FONT_STYLE));
 
+        // create a rounded box where the tooltip will be displayed
         root = PSWTAdvancedPath.createRoundRectangle(0, 0, 0, 0, ROUNDNESS, ROUNDNESS);
         root.setPaint(Color.WHITE);
         root.setPaintAlpha(OPACITY);
         root.addChild(tooltip);
 
+        // add to the camera
         camera.addChild(root);
-
         camera.addInputEventListener(new TooltipListener());
 
     }
 
     /**
-     * 
-     * @author uru
+     * Listens to the {@link PCanvas} and reacts to mouse move events in order to display a tooltip
+     * where available.
      */
-    class TooltipListener extends PBasicInputEventHandler {
+    private class TooltipListener extends PBasicInputEventHandler {
 
+        /** The last mouseover's KRendering. */
+        private KRendering rendering;
+        /** The last mouseover's KNode (only used if no rendering is available). */
         private KNode knode;
-        private Point2D p;
+        /** Position at which the tooltip is displayed. */
+        private Point2D mousePos;
 
-        boolean visible = false;
+        private boolean visible = false;
 
-        Timer timer = new SWTTimer(display, tooltipDelay, new ActionListener() {
+        private Timer timer = new SWTTimer(display, TOOLTIP_DELAY, new ActionListener() {
 
             public void actionPerformed(final ActionEvent e) {
 
+                // retrieve the tooltip
+                String tooltipText = "";
+                if (rendering != null) {
+                    tooltipText = rendering.getProperty(KlighdProperties.TOOLTIP);
+                } else if (knode != null) {
+                    KShapeLayout l = knode.getData(KShapeLayout.class);
+                    tooltipText = l.getProperty(KlighdProperties.TOOLTIP);
+                } else {
+                    return;
+                }
+
+                // return if no toiltip was assembled
+                if (Strings.isNullOrEmpty(tooltipText)) {
+                    return;
+                }
+
+                // prepare the tooltip element
                 List<String> tooltipStrings = Lists.newLinkedList();
-                if (!knode.getLabels().isEmpty()) {
-                    tooltipStrings.add(knode.getLabels().get(0).getText());
-                }
-
-                KShapeLayout l = knode.getData(KShapeLayout.class);
-                String tt = l.getProperty(LayoutOptions.TOOLTIP);
-                if (!Strings.isNullOrEmpty(tt)) {
-                    tooltipStrings.addAll(Lists.newLinkedList(Splitter.on("\n").split(tt)));
-                }
-
-                tooltip.setText(Lists.newArrayList(tooltipStrings));
-                root.setOffset(p.getX() + 2 * INSETS, p.getY() + 2 * INSETS);
+                tooltipStrings.addAll(Lists.newLinkedList(Splitter.on("\n").split(tooltipText)));
+                tooltip.setText(tooltipStrings);
+                root.setOffset(mousePos.getX() + 2 * INSETS, mousePos.getY() + 2 * INSETS);
 
                 // adapt bounds to the text
                 PBounds tooltipBounds = tooltip.getBounds();
@@ -113,6 +140,7 @@ public class PiccoloTooltip {
                         (float) tooltipBounds.y - INSETS, (float) tooltipBounds.width + 2 * INSETS,
                         (float) tooltipBounds.height + 2 * INSETS, ROUNDNESS, ROUNDNESS);
 
+                // set visible and repaint
                 root.setVisible(visible);
                 root.invalidatePaint();
                 root.invalidateLayout();
@@ -129,30 +157,40 @@ public class PiccoloTooltip {
         }
 
         public void updateToolTip(final PInputEvent event) {
+
+            // retrieve the mouse we are over
             PNode n = event.getInputManager().getMouseOver().getPickedNode();
 
-            if (n instanceof ITracingElement<?>) {
+            if (n instanceof IGraphElement<?>) {
                 visible = true;
-                ITracingElement<?> graphElement = (ITracingElement<?>) n;
-                Object ge = graphElement.getGraphElement();
+                IGraphElement<?> graphElement = (IGraphElement<?>) n;
+                rendering = graphElement.getRenderingController().getCurrentRendering();
 
-                if (ge instanceof KNode) {
-                    knode = (KNode) ge;
-
-                    // get the mouse position
-                    p = event.getCanvasPosition();
-                    event.getPath().canvasToLocal(p, camera);
-
-                    // start the timer
-                    timer.setRepeats(false);
-                    timer.start();
+                // fallback to the KNode if no rendering is specified
+                if (rendering == null) {
+                    Object ge = graphElement.getGraphElement();
+                    if (ge instanceof KNode) {
+                        knode = (KNode) ge;
+                    }
                 }
+
+                // only start the timer if we retrieved an element
+                if (rendering == null && knode == null) {
+                    return;
+                }
+                // get the mouse position
+                mousePos = event.getCanvasPosition();
+                event.getPath().canvasToLocal(mousePos, camera);
+
+                // start the timer
+                timer.setRepeats(false);
+                timer.start();
+                // }
             } else {
                 visible = false;
                 timer.stop();
                 root.setVisible(visible);
             }
-
         }
     }
 

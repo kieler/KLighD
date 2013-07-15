@@ -58,7 +58,7 @@ import de.cau.cs.kieler.klighd.viewers.ContextViewer;
  * @author mri, chsch
  * @author msp
  */
-public class DiagramViewPart extends ViewPart {
+public class DiagramViewPart extends ViewPart implements IDiagramWorkbenchPart {
 
     /** the default name for this view. */
     public static final String DEFAULT_NAME = "Light Diagram";
@@ -94,6 +94,8 @@ public class DiagramViewPart extends ViewPart {
         
         // register the context viewer as selection provider on the workbench
         getSite().setSelectionProvider(viewer);
+        
+        // the initialization of the context menu is done in PiccoloViewer#addContextMenu()
     }
     
     /**
@@ -137,9 +139,7 @@ public class DiagramViewPart extends ViewPart {
     }
 
     /**
-     * Returns the context viewer represented by this view part.
-     * 
-     * @return the context viewer
+     * {@inheritDoc}
      */
     public ContextViewer getContextViewer() {
         return viewer;

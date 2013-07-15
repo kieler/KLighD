@@ -45,6 +45,7 @@ import de.cau.cs.kieler.klighd.triggers.KlighdStatusTrigger.KlighdStatusState;
  * have to be called in the UI thread.
  * 
  * @author mri
+ * @author chsch
  */
 public final class DiagramViewManager implements IPartListener {
 
@@ -295,8 +296,7 @@ public final class DiagramViewManager implements IPartListener {
                 LightDiagramServices.getInstance().layoutDiagram(viewContext, animate, true);
 
                 // fill the options pane according to the the incorporated transformations
-                // TODO implement this (the following line is a placeholder)
-//                diagramView.getContextViewer().updateOptions();
+                diagramView.getContextViewer().updateOptions(true);
 
                 // make the view visible without giving it the focus
                 page.bringToTop(diagramView);
@@ -371,14 +371,19 @@ public final class DiagramViewManager implements IPartListener {
             return false;
         }
         try {
-            IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
-
-            DiagramViewPart view = this.idPartMapping.get(id);
+            final DiagramViewPart view = this.idPartMapping.get(id);
             if (view != null) {
                 unregisterViewContexts(view);
                 view.getSite().getPage().hideView(view);
                 return true;
             } else {
+                
+                final IWorkbenchWindow window = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
+                if (window == null) {
+                    return false;
+                }
+                
+                final IWorkbenchPage page = window.getActivePage();
                 IViewReference viewRef = page.findViewReference(PRIMARY_VIEW_ID, id);
                 if (viewRef != null) {
                     page.hideView(viewRef);

@@ -44,7 +44,7 @@ public class KLineWidthImpl extends KStyleImpl implements KLineWidth {
      * @generated
      * @ordered
      */
-    protected static final float LINE_WIDTH_EDEFAULT = 0.0F;
+    protected static final float LINE_WIDTH_EDEFAULT = 1.0F;
 
     /**
      * The cached value of the '{@link #getLineWidth() <em>Line Width</em>}' attribute.

@@ -1,62 +1,28 @@
-KNode {
-	children
-KNode {
-	data:
-	Rectangle {
-		styles:
-		foreground {
-			color 0 255 0
+
+knode {
+	properties: klighd.testing.expected.^height = 96.0
+	klighd.testing.expected.^width = 329.0
+	krectangle {
+		styles: foreground = 255g
+		grid: columns = 1
+		krectangle {
+			ktext ("Einen ganz langenajajkgaskgakjsdgajksgdakjshdakj Text")
+			[klighd.testing.^height = 16.0 klighd.testing.^width = 329.0]
 		}
-		childPlacement:
-		gridPlacement 1
-		children:
-		Rectangle {
-			children:
-			Text "Einen ganz langenajajkgaskgakjsdgajksgdakjshdakj Text" {
-				mapProperties:
-				"klighd.testing.height" = "16.0"
-				"klighd.testing.width" = "329.0"
+		krectangle {
+			grid: columns = 2
+			krectangle {
+				gridData: maxCellWidth = 90
+				ktext ("name") [klighd.testing.^height = 16.0 klighd.testing.^width = 32.0]
 			}
-		}
-		Rectangle {
-			childPlacement:
-			gridPlacement 2
-			children:
-			Rectangle {
-				placementData:
-				GridPlacementData {
-					maxCellWidth 90
-				}
-				children:
-				Text name {
-					mapProperties:
-					"klighd.testing.height" = "16.0"
-					"klighd.testing.width" = "32.0"
-				}
+			krectangle {
+				ktext ("Hugo") [klighd.testing.^height = 16.0 klighd.testing.^width = 31.0]
 			}
-			Rectangle {
-				children:
-				Text Hugo {
-					mapProperties:
-					"klighd.testing.height" = "16.0"
-					"klighd.testing.width" = "31.0"
-				}
+			krectangle {
+				ktext ("dr√ºben\n ist \n eine \n childArea") [klighd.testing.^height = 64.0
+				klighd.testing.^width = 54.0]
 			}
-			Rectangle {
-				children:
-				Text "drüben\n ist \n eine \n childArea" {
-					mapProperties:
-					"klighd.testing.height" = "64.0"
-					"klighd.testing.width" = "54.0"
-				}
-			}
-			ChildArea
+			kchildArea
 		}
 	}
-	KShapeLayout {
-		mapProperties:
-		"klighd.testing.expected.height" = "96.0"
-		"klighd.testing.expected.width" = "329.0"
-	}
-}
 }

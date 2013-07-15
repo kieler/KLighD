@@ -1,6 +1,6 @@
 /*
  * KIELER - Kiel Integrated Environment for Layout Eclipse RichClient
- *
+ * 
  * http://www.informatik.uni-kiel.de/rtsys/kieler/
  * 
  * Copyright 2013 by
@@ -13,23 +13,81 @@
  */
 package de.cau.cs.kieler.core.kgraph.text.ui.quickfix;
 
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.xtext.ui.editor.model.edit.IModificationContext;
+import org.eclipse.xtext.ui.editor.model.edit.ISemanticModification;
 import org.eclipse.xtext.ui.editor.quickfix.DefaultQuickfixProvider;
+import org.eclipse.xtext.ui.editor.quickfix.Fix;
+import org.eclipse.xtext.ui.editor.quickfix.IssueResolutionAcceptor;
+import org.eclipse.xtext.validation.Issue;
+
+import de.cau.cs.kieler.core.kgraph.KNode;
+import de.cau.cs.kieler.core.kgraph.text.validation.KGraphJavaValidator;
 
 /**
- * Customization of the quick fix provider.
+ * The KGraph/KRendering-specific
+ * {@link org.eclipse.xtext.ui.editor.quickfix.IssueResolutionProvider IssueResolutionProvider}.<br>
+ * <br>
+ * Currently, it provides 'Train KNode' and 'Add ignore tag' quick fixes. 
  * 
+ * @author chsch
  */
 public class KGraphQuickfixProvider extends DefaultQuickfixProvider {
 
-//	@Fix(MyJavaValidator.INVALID_NAME)
-//	public void capitalizeName(final Issue issue, IssueResolutionAcceptor acceptor) {
-//		acceptor.accept(issue, "Capitalize name", "Capitalize the name.", "upcase.png", new IModification() {
-//			public void apply(IModificationContext context) throws BadLocationException {
-//				IXtextDocument xtextDocument = context.getXtextDocument();
-//				String firstLetter = xtextDocument.get(issue.getOffset(), 1);
-//				xtextDocument.replace(issue.getOffset(), 1, firstLetter.toUpperCase());
-//			}
-//		});
-//	}
+    private Class<?> c = null;
+    
+    { // static part executed after the class has been loaded
+        try {
+            this.c = Class.forName("de.cau.cs.kieler.klighd.test.SizeEstimationTrainer");
+        } catch (ClassNotFoundException e) {
+            // in case the size estimation trainer is not available don't try
+            // anything
+        }
+    }
+    
+    /**
+     * Provides semantic modification that trains a KNode for being used as test case of the size
+     * estimation test in de.cau.cs.kieler.klighd.test.
+     * 
+     * @param issue
+     *            the issue to be fixed
+     * @param acceptor
+     *            the acceptor taking the fix
+     */
+    @Fix(KGraphJavaValidator.TRAIN_KNODE_INFO)
+    public void trainKNode(final Issue issue, final IssueResolutionAcceptor acceptor) {
+        acceptor.accept(issue, "Train KNode", "Train KNode", null,
+                new ISemanticModification() {
 
+                    public void apply(final EObject element, final IModificationContext context)
+                            throws Exception {
+                        if (c != null) {
+                            c.getMethod("train", KNode.class).invoke(null, (KNode) element);
+                        }
+                    }
+                });
+    }
+    
+    
+    /**
+     * Provides semantic modification that adds the ignore tag to the related KNode.
+     * 
+     * @param issue
+     *            the issue to be fixed
+     * @param acceptor
+     *            the acceptor taking the fix
+     */
+    @Fix(KGraphJavaValidator.IGNORE_KNODE_INFO)
+    public void addIgnoreTag(final Issue issue, final IssueResolutionAcceptor acceptor) {
+        acceptor.accept(issue, "Add ignore tag", "Add ignore tag", null,
+
+                new ISemanticModification() {
+                    public void apply(final EObject element, final IModificationContext context)
+                            throws Exception {
+                        if (c != null) {
+                            c.getMethod("ignore", KNode.class).invoke(null, (KNode) element);
+                        }
+                    }
+                });
+    }
 }

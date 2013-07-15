@@ -44,7 +44,7 @@ public class KFontBoldImpl extends KStyleImpl implements KFontBold {
      * @generated
      * @ordered
      */
-    protected static final boolean BOLD_EDEFAULT = false;
+    protected static final boolean BOLD_EDEFAULT = true;
 
     /**
      * The cached value of the '{@link #isBold() <em>Bold</em>}' attribute.

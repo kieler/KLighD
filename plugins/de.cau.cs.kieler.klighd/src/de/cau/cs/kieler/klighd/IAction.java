@@ -78,6 +78,13 @@ public interface IAction {
         public IViewer<?> getViewer() {
             return viewer;
         }
+        
+        /**
+         * @return the view context related to the current diagram
+         */
+        public ViewContext getViewContext() {
+            return viewer.getContextViewer().getCurrentViewContext();
+        }
 
         /**
          * @return the trigger

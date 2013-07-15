@@ -13,6 +13,8 @@
  */
 package de.cau.cs.kieler.klighd.util;
 
+import java.util.Iterator;
+
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 
@@ -154,6 +156,50 @@ public final class ModelingUtil {
             return res;
         } else {
             return eContainerOfType(eObject, clazz);
+        }
+    }
+
+    /**
+     * Creates an iterator traversing along the 'eContainer' chain of an {@link EObject}.
+     * 
+     * @param eObject
+     *            the element to start with
+     * @return the an {@link Iterator} visiting all eContainers.
+     */
+    public static Iterator<EObject> eAllContainers(final EObject eObject) {
+        return new EContainerIterator(eObject);
+    }
+    
+    /**
+     * A simple implementation of the {@link Iterator} interface allowing to traverse the
+     * 'eContainer' chain of {@link EObject EObjects}.
+     * 
+     * @author chsch
+     */
+    private static class EContainerIterator implements Iterator<EObject> {
+
+        private EObject element;
+        
+        public EContainerIterator(final EObject theElement) {
+            if (theElement == null) {
+                throw new IllegalArgumentException(
+                        "Constructor of EContainerIterator requires a non-null input.");
+            }
+            this.element = theElement;
+        }
+        
+        public boolean hasNext() {
+            return element.eContainer() != null;
+        }
+
+        public EObject next() {
+            element = element.eContainer();
+            return element;
+        }
+
+        public void remove() {
+            throw new UnsupportedOperationException(
+                    "Removing elements from a containment hierarchy is not allowed!");
         }
     }
 

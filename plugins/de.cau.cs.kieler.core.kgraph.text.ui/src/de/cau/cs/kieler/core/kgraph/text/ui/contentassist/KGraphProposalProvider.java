@@ -18,6 +18,7 @@ import javax.inject.Inject;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jface.text.contentassist.ICompletionProposal;
 import org.eclipse.jface.viewers.StyledString;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.xtext.Assignment;
 import org.eclipse.xtext.GrammarUtil;
 import org.eclipse.xtext.RuleCall;
@@ -29,12 +30,12 @@ import org.eclipse.xtext.util.Strings;
 
 import de.cau.cs.kieler.core.kgraph.PersistentEntry;
 import de.cau.cs.kieler.core.kgraph.text.services.KGraphGrammarAccess;
-import de.cau.cs.kieler.core.kgraph.text.ui.contentassist.AbstractKGraphProposalProvider;
 import de.cau.cs.kieler.kiml.LayoutAlgorithmData;
 import de.cau.cs.kieler.kiml.LayoutDataService;
 import de.cau.cs.kieler.kiml.LayoutOptionData;
 import de.cau.cs.kieler.kiml.LayoutOptionData.Type;
 import de.cau.cs.kieler.kiml.options.LayoutOptions;
+import de.cau.cs.kieler.kiml.ui.LayoutOptionLabelProvider;
 
 /**
  * Custom proposal provider contributing KIELER Layout configuration proposals.
@@ -55,22 +56,28 @@ public class KGraphProposalProvider extends AbstractKGraphProposalProvider {
     @Inject
     private KGraphGrammarAccess grammarAccess;
     
+    // CHECKSTYLEOFF MethodName
+    
     // ---------------------------------------------------------
     //  Terminal-specific annotation proposals
     // ---------------------------------------------------------
 
     @Override
-    public void complete_QualifiedID(EObject model, RuleCall ruleCall, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
-        delegate.complete_ID(model, grammarAccess.getQualifiedIDAccess().getIDTerminalRuleCall_0(), context, acceptor);
+    public void complete_QualifiedID(final EObject model, final RuleCall ruleCall,
+            final ContentAssistContext context, final ICompletionProposalAcceptor acceptor) {
+        delegate.complete_ID(model, grammarAccess.getQualifiedIDAccess().getIDTerminalRuleCall_0(),
+                context, acceptor);
     }
     
     @Override
-    public void complete_Float(EObject model, RuleCall ruleCall, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+    public void complete_Float(final EObject model, final RuleCall ruleCall,
+            final ContentAssistContext context, final ICompletionProposalAcceptor acceptor) {
         createFloatProposal(context, acceptor, ruleCall, getAssignedFeature(ruleCall), 1f);
     }
     
     @Override
-    public void complete_BOOLEAN(EObject model, RuleCall ruleCall, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+    public void complete_BOOLEAN(final EObject model, final RuleCall ruleCall,
+            final ContentAssistContext context, final ICompletionProposalAcceptor acceptor) {
         acceptor.accept(createCompletionProposal("false", "false", getImage(ruleCall), context));
         acceptor.accept(createCompletionProposal("true", "true", getImage(ruleCall), context));
     }
@@ -80,55 +87,56 @@ public class KGraphProposalProvider extends AbstractKGraphProposalProvider {
     //  get the required string representation.
     
     @Override
-    public void complete_RED(EObject model, RuleCall ruleCall, ContentAssistContext context,
-            ICompletionProposalAcceptor acceptor) {
+    public void complete_RED(final EObject model, final RuleCall ruleCall,
+            final ContentAssistContext context, final ICompletionProposalAcceptor acceptor) {
         createIntProposal(context, acceptor, ruleCall, getAssignedFeature(ruleCall), 0);
     }
     
     @Override
-    public void complete_GREEN(EObject model, RuleCall ruleCall, ContentAssistContext context,
-            ICompletionProposalAcceptor acceptor) {
+    public void complete_GREEN(final EObject model, final RuleCall ruleCall,
+            final ContentAssistContext context, final ICompletionProposalAcceptor acceptor) {
         createIntProposal(context, acceptor, ruleCall, getAssignedFeature(ruleCall), 0);
     }
 
     @Override
-    public void complete_BLUE(EObject model, RuleCall ruleCall, ContentAssistContext context,
-            ICompletionProposalAcceptor acceptor) {
+    public void complete_BLUE(final EObject model, final RuleCall ruleCall,
+            final ContentAssistContext context, final ICompletionProposalAcceptor acceptor) {
         createIntProposal(context, acceptor, ruleCall, getAssignedFeature(ruleCall), 0);
     }
     
     @Override
-    public void complete_ALPHA(EObject model, RuleCall ruleCall, ContentAssistContext context,
-            ICompletionProposalAcceptor acceptor) {
+    public void complete_ALPHA(final EObject model, final RuleCall ruleCall,
+            final ContentAssistContext context, final ICompletionProposalAcceptor acceptor) {
         createIntProposal(context, acceptor, ruleCall, getAssignedFeature(ruleCall), 0);
     }
     
     @Override
-    public void complete_FSIZE(EObject model, RuleCall ruleCall, ContentAssistContext context,
-            ICompletionProposalAcceptor acceptor) {
+    public void complete_FSIZE(final EObject model, final RuleCall ruleCall,
+            final ContentAssistContext context, final ICompletionProposalAcceptor acceptor) {
         createIntProposal(context, acceptor, ruleCall, getAssignedFeature(ruleCall), 0);
     }
     
     @Override
-    public void complete_DEGREES(EObject model, RuleCall ruleCall, ContentAssistContext context,
-            ICompletionProposalAcceptor acceptor) {
-        createIntProposal(context, acceptor, ruleCall, getAssignedFeature(ruleCall), 0);
+    public void complete_DEGREES(final EObject model, final RuleCall ruleCall,
+            final ContentAssistContext context, final ICompletionProposalAcceptor acceptor) {
+        createFloatProposal(context, acceptor, ruleCall, getAssignedFeature(ruleCall), 0);
     }
     
     @Override
-    public void complete_PERCENT(EObject model, RuleCall ruleCall, ContentAssistContext context,
-            ICompletionProposalAcceptor acceptor) {
-        createIntProposal(context, acceptor, ruleCall, getAssignedFeature(ruleCall), 0);
+    public void complete_PERCENT(final EObject model, final RuleCall ruleCall,
+            final ContentAssistContext context, final ICompletionProposalAcceptor acceptor) {
+        createFloatProposal(context, acceptor, ruleCall, getAssignedFeature(ruleCall), 0);
     }
     
     @Override
-    public void complete_NATURAL(EObject model, RuleCall ruleCall, ContentAssistContext context,
-            ICompletionProposalAcceptor acceptor) {
+    public void complete_NATURAL(final EObject model, final RuleCall ruleCall,
+            final ContentAssistContext context, final ICompletionProposalAcceptor acceptor) {
         createIntProposal(context, acceptor, ruleCall, getAssignedFeature(ruleCall), 1);
     }
     
     @Override
-    public void complete_STRING(EObject model, RuleCall ruleCall, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+    public void complete_STRING(final EObject model, final RuleCall ruleCall,
+            final ContentAssistContext context, final ICompletionProposalAcceptor acceptor) {
         delegate.complete_STRING(model, ruleCall, context, acceptor);
     }    
     
@@ -136,12 +144,13 @@ public class KGraphProposalProvider extends AbstractKGraphProposalProvider {
      * This method has been copied from
      * {@link org.eclipse.xtext.common.ui.contentassist.TerminalsProposalProvider}.
      */
-    private String getAssignedFeature(RuleCall call) {
+    private String getAssignedFeature(final RuleCall call) {
         Assignment ass = GrammarUtil.containingAssignment(call);
         if (ass != null) {
             String result = ass.getFeature();
-            if (result.equals(result.toLowerCase()))
+            if (result.equals(result.toLowerCase())) {
                 result = Strings.toFirstUpper(result);
+            }
             return result;
         }
         return null;
@@ -153,12 +162,14 @@ public class KGraphProposalProvider extends AbstractKGraphProposalProvider {
      * 
      * @author Xtext developers
      */
-    private void createIntProposal(ContentAssistContext context,
-            ICompletionProposalAcceptor acceptor, RuleCall ruleCall, String feature, int i) {
+    private void createIntProposal(final ContentAssistContext context,
+            final ICompletionProposalAcceptor acceptor, final RuleCall ruleCall,
+            final String feature, final int i) {
         String proposalText = getValueConverter().toString(i, ruleCall.getRule().getName());
         String displayText = proposalText + " - " + ruleCall.getRule().getName();
-        if (feature != null)
+        if (feature != null) {
             displayText = proposalText + " - " + feature;
+        }
         ICompletionProposal proposal = createCompletionProposal(proposalText, displayText, null,
                 context);
         if (proposal instanceof ConfigurableCompletionProposal) {
@@ -178,11 +189,13 @@ public class KGraphProposalProvider extends AbstractKGraphProposalProvider {
      * @author Xtext developers
      */
     private void createFloatProposal(final ContentAssistContext context,
-            final ICompletionProposalAcceptor acceptor, final RuleCall ruleCall, final String feature, float i) {
+            final ICompletionProposalAcceptor acceptor, final RuleCall ruleCall,
+            final String feature, final float i) {
         String proposalText = getValueConverter().toString(i, ruleCall.getRule().getName());
         String displayText = proposalText + " - " + ruleCall.getRule().getName();
-        if (feature != null)
+        if (feature != null) {
             displayText = proposalText + " - " + feature;
+        }
         ICompletionProposal proposal = createCompletionProposal(proposalText, displayText, null,
                 context);
         if (proposal instanceof ConfigurableCompletionProposal) {
@@ -213,33 +226,30 @@ public class KGraphProposalProvider extends AbstractKGraphProposalProvider {
      */
     private void keyProposal(final ContentAssistContext context,
             final ICompletionProposalAcceptor acceptor) {
-        /* declare the plain proposal and get the option list */
-        String proposal;
-        StyledString.Styler theStyle;
-        StyledString displayString;
-        ICompletionProposal completeProposal;
-
         LayoutDataService layoutServices = LayoutDataService.getInstance();
 
-        /* create and register the completion proposal for every element in the list */
+        // create and register the completion proposal for every element in the list
         for (LayoutOptionData<?> optionData : layoutServices.getOptionData()) {
-            theStyle = (optionData.isAdvanced()) ? StyledString.COUNTER_STYLER : null;
+            StyledString displayString = new StyledString(optionData.toString(),
+                    (optionData.isAdvanced()) ? StyledString.COUNTER_STYLER : null);
+            displayString.append(" (" + optionData.getId() + ")", StyledString.QUALIFIER_STYLER);
 
-            displayString = new StyledString(optionData.toString(), theStyle);
-            displayString.append(" - " + optionData.getType().toString(),
-                    StyledString.QUALIFIER_STYLER);
-
-            proposal = getValueConverter().toString(optionData.getId(),
+            String proposal = getValueConverter().toString(optionData.getId(),
                     grammmarAccess.getQualifiedIDRule().getName());
             
+            LayoutOptionLabelProvider labelProvider = new LayoutOptionLabelProvider(optionData);
+            Image image = labelProvider.getImage(optionData.getDefault());
+            
             boolean escape = proposal.contains("^");
-
-            completeProposal = createCompletionProposal(proposal, displayString, null,
-                    getPriorityHelper().getDefaultPriority(),
+            ICompletionProposal completeProposal = createCompletionProposal(proposal, displayString,
+                    image, getPriorityHelper().getDefaultPriority(),
                     "de.cau.cs.kieler." + (escape ? "^" : "") + context.getPrefix(), context);
 
-            acceptor.accept((completeProposal != null) ? completeProposal
-                    : createCompletionProposal(proposal, displayString, null, context));
+            if (completeProposal != null) {
+                acceptor.accept(completeProposal);
+            } else {
+                acceptor.accept(createCompletionProposal(proposal, displayString, image, context));
+            }
         }
     }
 
@@ -253,7 +263,7 @@ public class KGraphProposalProvider extends AbstractKGraphProposalProvider {
      */
     private void valueProposal(final ContentAssistContext context,
             final ICompletionProposalAcceptor acceptor) {
-        /* check if the prefix is a KIELER annotation */
+        // check if the prefix is a KIELER annotation
         if (context.getCurrentModel() instanceof PersistentEntry) {
 
             String annotationName = ((PersistentEntry) context.getCurrentModel()).getKey();
@@ -289,7 +299,8 @@ public class KGraphProposalProvider extends AbstractKGraphProposalProvider {
                         for (LayoutAlgorithmData data : layoutServices.getAlgorithmData()) {
                             proposal = '"' + data.getId() + '"';
                             displayString = data.getName();
-                            acceptor.accept(createCompletionProposal(proposal, displayString, null, context));
+                            acceptor.accept(createCompletionProposal(proposal, displayString, null,
+                                    context));
                         }
                         break;
                     }

@@ -28,7 +28,7 @@ import de.cau.cs.kieler.core.krendering.KText;
 import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout;
 import de.cau.cs.kieler.kiml.util.KimlUtil;
 import de.cau.cs.kieler.kiml.util.LayoutOptionProxy;
-import de.cau.cs.kieler.klighd.KlighdConstants;
+import de.cau.cs.kieler.klighd.internal.util.KlighdInternalProperties;
 import de.cau.cs.kieler.klighd.microlayout.Bounds;
 import de.cau.cs.kieler.klighd.microlayout.PlacementUtil;
 
@@ -54,7 +54,7 @@ public final class SizeEstimationTrainer {
      */
     public static void ignore(final KNode node) {
         PersistentEntry pe = KGraphFactory.eINSTANCE.createPersistentEntry();
-        pe.setKey(KlighdConstants.KLIGHD_TESTING_IGNORE.getId());
+        pe.setKey(KlighdInternalProperties.KLIGHD_TESTING_IGNORE.getId());
         pe.setValue(Boolean.valueOf(true).toString());
         node.getData(KShapeLayout.class).getPersistentEntries().add(pe);
     }
@@ -84,16 +84,16 @@ public final class SizeEstimationTrainer {
         }) {
             textsPresent = true;
 
-            LayoutOptionProxy.setProxyValue(text, KlighdConstants.KLIGHD_TESTING_HEIGHT.getId(),
+            LayoutOptionProxy.setProxyValue(text, KlighdInternalProperties.KLIGHD_TESTING_HEIGHT.getId(),
                     "0.0");
-            LayoutOptionProxy.setProxyValue(text, KlighdConstants.KLIGHD_TESTING_WIDTH.getId(),
+            LayoutOptionProxy.setProxyValue(text, KlighdInternalProperties.KLIGHD_TESTING_WIDTH.getId(),
                     "0.0");
 
             Bounds b = PlacementUtil.estimateTextSize(text);
 
-            getPE(text, KlighdConstants.KLIGHD_TESTING_HEIGHT.getId()).setValue(
+            getPE(text, KlighdInternalProperties.KLIGHD_TESTING_HEIGHT.getId()).setValue(
                     Float.toString(b.getHeight()));
-            getPE(text, KlighdConstants.KLIGHD_TESTING_WIDTH.getId()).setValue(
+            getPE(text, KlighdInternalProperties.KLIGHD_TESTING_WIDTH.getId()).setValue(
                     Float.toString(b.getWidth()));
         }
 
@@ -105,9 +105,9 @@ public final class SizeEstimationTrainer {
                 sl = node.getData(KShapeLayout.class);
             }
             Bounds b = PlacementUtil.estimateSize(node);
-            getPE(sl, KlighdConstants.KLIGHD_TESTING_EXPECTED_HEIGHT.getId()).setValue(
+            getPE(sl, KlighdInternalProperties.KLIGHD_TESTING_EXPECTED_HEIGHT.getId()).setValue(
                     Float.toString(b.getHeight()));
-            getPE(sl, KlighdConstants.KLIGHD_TESTING_EXPECTED_WIDTH.getId()).setValue(
+            getPE(sl, KlighdInternalProperties.KLIGHD_TESTING_EXPECTED_WIDTH.getId()).setValue(
                     Float.toString(b.getWidth()));
         }
     }

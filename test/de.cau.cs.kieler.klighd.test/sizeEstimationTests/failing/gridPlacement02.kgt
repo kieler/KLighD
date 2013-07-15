@@ -1,0 +1,21 @@
+knode {
+	properties:
+		klighd.testing.expected.^height = 52.0
+		klighd.testing.expected.^width = 62.0
+	krectangle {
+		grid: columns = 1
+		ktext ("Hugo") [
+			klighd.testing.^height = 16.0
+			klighd.testing.^width = 31.0
+		] {
+			gridData:
+				topLeftAnchor = right 50%, top 10
+				bottomRightAnchor = right, bottom 10
+//				minCellWidth = 51 minCellHeight = 36
+		}
+		ktext ("Müller") [
+			klighd.testing.^height = 16.0
+			klighd.testing.^width = 35.0
+		]
+	}
+}

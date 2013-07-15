@@ -13,11 +13,12 @@
  */
 package de.cau.cs.kieler.klighd.test;
 
-import static de.cau.cs.kieler.klighd.KlighdConstants.KLIGHD_TESTING_EXPECTED_HEIGHT;
-import static de.cau.cs.kieler.klighd.KlighdConstants.KLIGHD_TESTING_EXPECTED_WIDTH;
-import static de.cau.cs.kieler.klighd.KlighdConstants.KLIGHD_TESTING_IGNORE;
-import static de.cau.cs.kieler.klighd.KlighdConstants.KLIGHD_TESTING_HEIGHT;
-import static de.cau.cs.kieler.klighd.KlighdConstants.KLIGHD_TESTING_WIDTH;
+// SUPPRESS CHECKSTYLE NEXT 2 LineLength
+import static de.cau.cs.kieler.klighd.internal.util.KlighdInternalProperties.KLIGHD_TESTING_EXPECTED_HEIGHT;
+import static de.cau.cs.kieler.klighd.internal.util.KlighdInternalProperties.KLIGHD_TESTING_EXPECTED_WIDTH;
+import static de.cau.cs.kieler.klighd.internal.util.KlighdInternalProperties.KLIGHD_TESTING_IGNORE;
+import static de.cau.cs.kieler.klighd.internal.util.KlighdInternalProperties.KLIGHD_TESTING_HEIGHT;
+import static de.cau.cs.kieler.klighd.internal.util.KlighdInternalProperties.KLIGHD_TESTING_WIDTH;
 
 import java.util.Iterator;
 

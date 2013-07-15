@@ -1,71 +1,32 @@
 
-KNode {
-	children
-	KNode {
-		data:
-		Rectangle {
-			childPlacement:
-			gridPlacement 1
-			children:
-			Text Label {
-				mapProperties:
-				"klighd.testing.height" = "16.0"
-				"klighd.testing.width" = "31.0"
-			}
-			Polyline {
-				points:
-				left 0.0 0.0 / top 0.0 0.0
-				right 0.0 0.0 / top 0.0 0.0
-			}
-			ChildArea Rectangle {
-				childPlacement:
-				gridPlacement -1
-				children:
-				Rectangle {
-					children:
-					Text status {
-						mapProperties:
-						"klighd.testing.height" = "16.0"
-						"klighd.testing.width" = "36.0"
-					}
-				}
-				Rectangle {
-					placementData:
-					GridPlacementData {
-						maxCellWidth 30.0
-					}
-					children:
-					Text C {
-						mapProperties:
-						"klighd.testing.height" = "16.0"
-						"klighd.testing.width" = "10.0"
-					}
-				}
-				Rectangle {
-					children:
-					Text R {
-						mapProperties:
-						"klighd.testing.height" = "16.0"
-						"klighd.testing.width" = "10.0"
-					}
-				}
-			}
+knode {
+	properties: klighd.testing.expected.^height = 32.0
+	klighd.testing.expected.^width = 56.0 knode {
+		size: width = 300 height = 200
+		properties: klighd.testing.expected.^height = 200.0
+		klighd.testing.expected.^width = 300.0
+		kroundedRectangle (20, 20)
+	}
+	krectangle {
+		grid: columns = 1
+		ktext ("Label") [klighd.testing.^height = 16.0 klighd.testing.^width = 31.0]
+		kpolyline {
+			points: left, top ; right, top
 		}
-		KShapeLayout {
-			mapProperties:
-			"klighd.testing.expected.height" = "32.0"
-			"klighd.testing.expected.width" = "56.0"
-		}
-		children:
-		KNode {
-			data:
-			KShapeLayout {
-				width 300.0 height 200.0
-				mapProperties:
-				"klighd.testing.expected.height" = "200.0"
-				"klighd.testing.expected.width" = "300.0"
+		kchildArea
+		krectangle {
+			grid: columns = 3
+			krectangle {
+				ktext ("status") [klighd.testing.^height = 16.0 klighd.testing.^width =
+				36.0]
 			}
-			RoundedRectangle 20.0 20.0
+			krectangle {
+				gridData: maxCellWidth = 30
+				ktext ("C") [klighd.testing.^height = 16.0 klighd.testing.^width = 10.0]
+			}
+			krectangle {
+				ktext ("R") [klighd.testing.^height = 16.0 klighd.testing.^width = 10.0]
+			}
 		}
 	}
-} 
+}

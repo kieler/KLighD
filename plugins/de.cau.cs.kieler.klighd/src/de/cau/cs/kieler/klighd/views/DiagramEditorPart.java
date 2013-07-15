@@ -47,8 +47,9 @@ import org.eclipse.ui.part.EditorPart;
 import org.eclipse.ui.statushandlers.StatusManager;
 import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 
+import de.cau.cs.kieler.core.kgraph.KNode;
 import de.cau.cs.kieler.core.properties.MapPropertyHolder;
-import de.cau.cs.kieler.kiml.ui.diagram.DiagramLayoutEngine;
+import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout;
 import de.cau.cs.kieler.klighd.KlighdPlugin;
 import de.cau.cs.kieler.klighd.LightDiagramServices;
 import de.cau.cs.kieler.klighd.ViewContext;
@@ -61,14 +62,12 @@ import de.cau.cs.kieler.klighd.viewers.ContextViewer;
  *
  * @author msp
  */
-public class DiagramEditorPart extends EditorPart {
+public class DiagramEditorPart extends EditorPart implements IDiagramWorkbenchPart {
     
     /** the resource set managed by this editor part. */
     private ResourceSet resourceSet;
-    // CHECKSTYLEOFF Modifier
     /** the model represented by this editor part. */
-    protected Object model;
-    // CHECKSTYLEON Modifier
+    private Object model;
     /** the viewer for this editor part. */
     private ContextViewer viewer;
 
@@ -111,18 +110,38 @@ public class DiagramEditorPart extends EditorPart {
             viewer.setModel(viewContext);
             // do an initial update of the view context
             LightDiagramServices.getInstance().updateViewContext(viewContext, model);
+            
+            if (requiresInitialLayout(viewContext)) {
+                LightDiagramServices.getInstance().layoutDiagram(viewContext, false, false);
+            }
+            viewer.updateOptions(false);
 
             // since no initial selection is set in the view context/context viewer implementation,
             // define some here by selection the root of the view model representing the diagram canvas!
             viewer.selection(null, Iterables2.singletonIterable((EObject) viewContext.getViewModel()));
-            
-            DiagramLayoutEngine.INSTANCE.layout(this, null, null);
         } else {
             viewer.setModel("The selected file does not contain any supported model.", false);
         }
         
         // register the context viewer as selection provider on the workbench
         getSite().setSelectionProvider(viewer);
+        
+        // the initialization of the context menu is done in PiccoloViewer#addContextMenu()
+    }
+    
+    /**
+     * Tester that decides on the need for computing the diagram layout while opening the diagram.<br>
+     * May be overridden by subclasses.
+     * 
+     * @param viewContext
+     *            provides context data that might be incorporated in the decision
+     * @return true if the layout shall be (re-) computed while opening the diagram.
+     */
+    public boolean requiresInitialLayout(final ViewContext viewContext) {
+        final KNode viewModel = (KNode) viewContext.getViewModel();
+        final KShapeLayout diagramLayout = viewModel.getData(KShapeLayout.class);
+        
+        return diagramLayout.getWidth() == 0 && diagramLayout.getHeight() == 0;
     }
     
     /**
@@ -131,7 +150,11 @@ public class DiagramEditorPart extends EditorPart {
     @Override
     public void dispose() {
         ResourcesPlugin.getWorkspace().removeResourceChangeListener(resourceChangeListener);
-        viewer.dispose();
+        
+        if (viewer != null) {
+            viewer.dispose();
+        }
+        
         super.dispose();
     }
     
@@ -150,9 +173,7 @@ public class DiagramEditorPart extends EditorPart {
     }
 
     /**
-     * Returns the context viewer represented by this editor part.
-     * 
-     * @return the context viewer
+     * {@inheritDoc}
      */
     public ContextViewer getContextViewer() {
         return viewer;
@@ -233,6 +254,7 @@ public class DiagramEditorPart extends EditorPart {
         Resource resource;
         try {
             resourceSet = new ResourceSetImpl();
+            configureResourceSet(resourceSet);
             if (inputStream != null) {
                 // load a stream-based resource
                 uri = URI.createFileURI("temp.xmi");
@@ -240,8 +262,13 @@ public class DiagramEditorPart extends EditorPart {
                 resource.load(inputStream, Collections.EMPTY_MAP);
             } else {
                 // load a URI-based resource
-                resource = resourceSet.createResource(uri);
-                resource.load(Collections.EMPTY_MAP);
+                resource = resourceSet.getResource(uri, true);
+                
+                /* The following two lines used to be here instead of the preceding line. However,
+                 * this caused Ptolemy models to fail to load with strange exceptions.
+                 */
+//                resource = resourceSet.createResource(uri);
+//                resource.load(Collections.EMPTY_MAP);
             }
         } catch (IOException exception) {
             throw new PartInitException("An error occurred while loading the resource.", exception);
@@ -254,6 +281,15 @@ public class DiagramEditorPart extends EditorPart {
         model = resource.getContents().get(0);
     }
     
+    /**
+     * Configures the given resource set. The default implementation does nothing.
+     * 
+     * @param set the resource set to be configured.
+     */
+    protected void configureResourceSet(final ResourceSet set) {
+        
+    }
+
     /**
      * Update the viewed model using the given resource.
      * 

@@ -17,10 +17,20 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 /**
  * Use this class to register components to be used within the IDE.
+ * 
+ * @author msp
  */
-public class KGraphUiModule extends de.cau.cs.kieler.core.kgraph.text.ui.AbstractKGraphUiModule {
+public class KGraphUiModule extends AbstractKGraphUiModule {
+    
+    /** Identifier of the KGraph Text UI plugin. */
+    public static final String PLUGIN_ID = "de.cau.cs.kieler.core.kgraph.text.ui";
 
-    public KGraphUiModule(AbstractUIPlugin plugin) {
+    /**
+     * Create a KGraph UI module.
+     * 
+     * @param plugin the plugin
+     */
+    public KGraphUiModule(final AbstractUIPlugin plugin) {
         super(plugin);
     }
 

@@ -1,20 +1,13 @@
-KNode {
-	children:KNode {
-	data:
-	Rectangle {
-		children:
-		Text Hello {
+knode {
+	properties:
+		klighd.testing.expected.^height = 76.0
+		klighd.testing.expected.^width = 152.0
+	krectangle {
+		ktext ("Hello") [
+			klighd.testing.^height = 76.0 klighd.testing.^width = 152.0
+		] {
 			styles:
-			fontSize 50
-			mapProperties:
-			"klighd.testing.height" = "76.0"
-			"klighd.testing.width" = "152.0"
+				fontSize = 50pt
 		}
 	}
-	KShapeLayout {
-		mapProperties:
-		"klighd.testing.expected.height" = "76.0"
-		"klighd.testing.expected.width" = "152.0"
-	}
-}
 }

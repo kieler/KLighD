@@ -30,7 +30,7 @@ import com.google.common.collect.Iterables;
 import de.cau.cs.kieler.klighd.KlighdPlugin;
 import de.cau.cs.kieler.klighd.piccolo.KlighdSWTGraphicsImpl;
 import de.cau.cs.kieler.klighd.piccolo.draw2d.Draw2DNode.WrappingUpdateManager;
-import de.cau.cs.kieler.klighd.piccolo.krendering.KCustomConnectionFigureNode;
+import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KCustomConnectionFigureNode;
 import edu.umd.cs.piccolo.util.PPaintContext;
 
 /**

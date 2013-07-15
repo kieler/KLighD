@@ -2,7 +2,7 @@
 <?eclipse version="3.4"?>
 <fragment>
    <extension
-         point="de.cau.cs.kieler.klighd.customFigureWrapper">
+         point="de.cau.cs.kieler.klighd.extensions">
       <wrapper
             figureClass="org.eclipse.draw2d.Figure"
             wrapperClass="de.cau.cs.kieler.klighd.piccolo.draw2d.Draw2DNode">

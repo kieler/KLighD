@@ -353,17 +353,20 @@
     <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
       <details key="documentation" value="Specifies an RGB color. "/>
     </eAnnotations>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="red" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="red" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"
+        defaultValueLiteral="0">
       <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
         <details key="documentation" value="the red component of a color"/>
       </eAnnotations>
     </eStructuralFeatures>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="green" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="green" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"
+        defaultValueLiteral="0">
       <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
         <details key="documentation" value="the green component of a color"/>
       </eAnnotations>
     </eStructuralFeatures>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="blue" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="blue" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"
+        defaultValueLiteral="0">
       <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
         <details key="documentation" value="the blue component of a color"/>
       </eAnnotations>
@@ -374,7 +377,7 @@
       <details key="documentation" value="specifies a lineWidth for a rendering. "/>
     </eAnnotations>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="lineWidth" lowerBound="1"
-        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EFloat">
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EFloat" defaultValueLiteral="1.0">
       <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
         <details key="documentation" value="the line width of the element"/>
       </eAnnotations>
@@ -509,17 +512,19 @@
     </eAnnotations>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="KFontBold" eSuperTypes="#//KStyle">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="bold" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="bold" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"
+        defaultValueLiteral="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="KFontItalic" eSuperTypes="#//KStyle">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="italic" lowerBound="1"
-        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean" defaultValueLiteral="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="KFontName" eSuperTypes="#//KStyle">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="KFontSize" eSuperTypes="#//KStyle">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="size" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="size" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"
+        defaultValueLiteral="10"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="scaleWithZoom" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"
         defaultValueLiteral="false">
       <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
@@ -535,7 +540,7 @@
       <details key="documentation" value="rotates element clockwise around the top left point of a parent rendering"/>
     </eAnnotations>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="rotation" lowerBound="1"
-        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EFloat"/>
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EFloat" defaultValueLiteral="0.0"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="rotationAnchor" eType="#//KPosition"
         containment="true"/>
   </eClassifiers>
@@ -637,7 +642,8 @@
         defaultValueLiteral="3"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="yOffset" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EFloat"
         defaultValueLiteral="3"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="blur" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EFloat"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="blur" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EFloat"
+        defaultValueLiteral="0.0"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="color" eType="#//KColor"
         containment="true"/>
   </eClassifiers>
