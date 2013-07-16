@@ -44,7 +44,6 @@ import de.cau.cs.kieler.klighd.piccolo.internal.events.PMouseWheelZoomEventHandl
 import de.cau.cs.kieler.klighd.piccolo.internal.events.PSWTSimpleSelectionEventHandler;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.ITracingElement;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.PEmptyNode;
-import de.cau.cs.kieler.klighd.piccolo.krendering.viewer.PiccoloTooltip;
 import de.cau.cs.kieler.klighd.piccolo.ui.SaveAsImageAction;
 import de.cau.cs.kieler.klighd.util.RenderingContextData;
 import de.cau.cs.kieler.klighd.viewers.AbstractViewer;
