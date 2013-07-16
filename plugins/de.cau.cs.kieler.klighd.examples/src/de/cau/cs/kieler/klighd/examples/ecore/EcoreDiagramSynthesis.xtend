@@ -98,7 +98,7 @@ class EcoreDiagramSynthesis extends AbstractDiagramSynthesis<EModelElementCollec
     }
     
     override public getRecommendedLayoutOptions() {
-        return ImmutableMap.<IProperty<?>, Collection<?>>of(LayoutOptions::SPACING, newArrayList(0, 255));
+        return ImmutableMap::<IProperty<?>, Collection<?>>of(LayoutOptions::SPACING, newArrayList(0, 255));
     }
 
 
