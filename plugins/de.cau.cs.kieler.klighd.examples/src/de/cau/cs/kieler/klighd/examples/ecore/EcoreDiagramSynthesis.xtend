@@ -14,6 +14,7 @@
 package de.cau.cs.kieler.klighd.examples.ecore
 
 import com.google.common.collect.ImmutableList
+import com.google.common.collect.ImmutableMap
 import com.google.common.collect.ImmutableSet
 import com.google.common.collect.Lists
 import de.cau.cs.kieler.core.kgraph.KNode
@@ -23,6 +24,7 @@ import de.cau.cs.kieler.core.krendering.extensions.KEdgeExtensions
 import de.cau.cs.kieler.core.krendering.extensions.KNodeExtensions
 import de.cau.cs.kieler.core.krendering.extensions.KPolylineExtensions
 import de.cau.cs.kieler.core.krendering.extensions.KRenderingExtensions
+import de.cau.cs.kieler.core.properties.IProperty
 import de.cau.cs.kieler.core.util.Pair
 import de.cau.cs.kieler.kiml.options.Direction
 import de.cau.cs.kieler.kiml.options.EdgeType
@@ -30,14 +32,15 @@ import de.cau.cs.kieler.kiml.options.LayoutOptions
 import de.cau.cs.kieler.klighd.KlighdConstants
 import de.cau.cs.kieler.klighd.TransformationOption
 import de.cau.cs.kieler.klighd.transformations.AbstractDiagramSynthesis
+
+import java.util.List
+import java.util.Collection
 import javax.inject.Inject
+
 import org.eclipse.emf.ecore.EClass
 import org.eclipse.emf.ecore.EClassifier
 import org.eclipse.emf.ecore.EPackage
 import org.eclipse.emf.ecore.EReference
-import java.util.List
-
-import static de.cau.cs.kieler.klighd.examples.ecore.EcoreDiagramSynthesis.*
 
 import static extension com.google.common.base.Strings.*
 
@@ -92,7 +95,11 @@ class EcoreDiagramSynthesis extends AbstractDiagramSynthesis<EModelElementCollec
      */
     override public getTransformationOptions() {
         return ImmutableSet::of(CLASS_FILTER);
-    }   
+    }
+    
+    override public getRecommendedLayoutOptions() {
+        return ImmutableMap.<IProperty<?>, Collection<?>>of(LayoutOptions::SPACING, newArrayList(0, 255));
+    }
 
 
     /**
