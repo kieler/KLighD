@@ -21,6 +21,7 @@ import java.util.Set;
 
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.emf.common.notify.Notification;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.ui.IWorkbenchPart;
@@ -117,6 +118,22 @@ public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement>
     public Object getAdapter(final Object object, final Class adapterType) {
         if (adapterType.isAssignableFrom(KGraphPropertyLayoutConfig.class)) {
             return propertyLayoutConfig;
+        } else if (adapterType.isAssignableFrom(EObject.class)) {
+            ContextViewer contextViewer = null;
+            if (object instanceof ContextViewer) {
+                contextViewer = (ContextViewer) object;
+            } else if (object instanceof IDiagramWorkbenchPart) {
+                contextViewer = ((IDiagramWorkbenchPart) object).getContextViewer();
+            }
+            if (contextViewer != null) {
+                ViewContext viewContext = contextViewer.getCurrentViewContext();
+                if (viewContext != null) {
+                    Object model = viewContext.getInputModel();
+                    if (model instanceof EObject) {
+                        return model;
+                    }
+                }
+            }
         } else if (adapterType.isAssignableFrom(KGraphElement.class)) {
             if (object instanceof KGraphElement) {
                 return object;

@@ -11,7 +11,7 @@
  * This code is provided under the terms of the Eclipse Public License (EPL).
  * See the file epl-v10.html for the license text.
  */
-package de.cau.cs.kieler.klighd.piccolo.krendering.viewer;
+package de.cau.cs.kieler.klighd.piccolo.viewer;
 
 import java.awt.Color;
 import java.awt.event.ActionEvent;
@@ -32,6 +32,7 @@ import de.cau.cs.kieler.core.kgraph.KNode;
 import de.cau.cs.kieler.core.krendering.KRendering;
 import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout;
 import de.cau.cs.kieler.klighd.KlighdConstants;
+import de.cau.cs.kieler.klighd.piccolo.internal.controller.AbstractKGERenderingController;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.IGraphElement;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.PSWTAdvancedPath;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.PSWTStyledText;
@@ -164,7 +165,12 @@ public class PiccoloTooltip {
             if (n instanceof IGraphElement<?>) {
                 visible = true;
                 IGraphElement<?> graphElement = (IGraphElement<?>) n;
-                rendering = graphElement.getRenderingController().getCurrentRendering();
+                AbstractKGERenderingController<?, ?> ctr = graphElement.getRenderingController();
+                if (ctr == null) {
+                    // FIXME the ctr is not supposed to be null, needs to be fixed in KLighD itself
+                    return;
+                }
+                rendering = ctr.getCurrentRendering();
 
                 // fallback to the KNode if no rendering is specified
                 if (rendering == null) {

@@ -37,6 +37,7 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.IEditorInput;
+import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IEditorSite;
 import org.eclipse.ui.IFileEditorInput;
 import org.eclipse.ui.IPathEditorInput;
@@ -47,6 +48,7 @@ import org.eclipse.ui.part.EditorPart;
 import org.eclipse.ui.statushandlers.StatusManager;
 import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 
+import de.cau.cs.kieler.core.WrappedException;
 import de.cau.cs.kieler.core.kgraph.KNode;
 import de.cau.cs.kieler.core.properties.MapPropertyHolder;
 import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout;
@@ -70,6 +72,8 @@ public class DiagramEditorPart extends EditorPart implements IDiagramWorkbenchPa
     private Object model;
     /** the viewer for this editor part. */
     private ContextViewer viewer;
+    /** the dirty status of the editor. */
+    private boolean dirty;
 
     /**
      * Creates a diagram editor part.
@@ -86,8 +90,7 @@ public class DiagramEditorPart extends EditorPart implements IDiagramWorkbenchPa
         setSite(site);
         setInput(input);
         loadModel();
-        ResourcesPlugin.getWorkspace().addResourceChangeListener(resourceChangeListener,
-                IResourceChangeEvent.POST_CHANGE);
+        registerResourceChangeListener();
     }
 
     /**
@@ -149,7 +152,7 @@ public class DiagramEditorPart extends EditorPart implements IDiagramWorkbenchPa
      */
     @Override
     public void dispose() {
-        ResourcesPlugin.getWorkspace().removeResourceChangeListener(resourceChangeListener);
+        unregisterResourceChangeListener();
         
         if (viewer != null) {
             viewer.dispose();
@@ -192,8 +195,17 @@ public class DiagramEditorPart extends EditorPart implements IDiagramWorkbenchPa
      */
     @Override
     public boolean isDirty() {
-        // this is merely a viewer, so the content is never dirty
-        return false;
+        return dirty;
+    }
+    
+    /**
+     * Set the dirty status of the editor.
+     * 
+     * @param dirty the new dirty status
+     */
+    public void setDirty(final boolean dirty) {
+        this.dirty = dirty;
+        firePropertyChange(IEditorPart.PROP_DIRTY);
     }
 
     /**
@@ -201,7 +213,23 @@ public class DiagramEditorPart extends EditorPart implements IDiagramWorkbenchPa
      */
     @Override
     public void doSave(final IProgressMonitor monitor) {
-        // this is merely a viewer, so we have nothing to save
+        try {
+            
+            // stop listening so the resource saving won't cause a model update
+            unregisterResourceChangeListener();
+            
+            // save all opened resources
+            for (Resource resource : resourceSet.getResources()) {
+                resource.save(Collections.emptyMap());
+            }
+            
+            // restart listening to future resource updates
+            registerResourceChangeListener();
+            
+            setDirty(false);
+        } catch (IOException exception) {
+            throw new WrappedException(exception);
+        }
     }
 
     /**
@@ -263,12 +291,6 @@ public class DiagramEditorPart extends EditorPart implements IDiagramWorkbenchPa
             } else {
                 // load a URI-based resource
                 resource = resourceSet.getResource(uri, true);
-                
-                /* The following two lines used to be here instead of the preceding line. However,
-                 * this caused Ptolemy models to fail to load with strange exceptions.
-                 */
-//                resource = resourceSet.createResource(uri);
-//                resource.load(Collections.EMPTY_MAP);
             }
         } catch (IOException exception) {
             throw new PartInitException("An error occurred while loading the resource.", exception);
@@ -312,6 +334,21 @@ public class DiagramEditorPart extends EditorPart implements IDiagramWorkbenchPa
                 StatusManager.getManager().handle(status);
             }
         }
+    }
+    
+    /**
+     * Register the resource change listener.
+     */
+    private void registerResourceChangeListener() {
+        ResourcesPlugin.getWorkspace().addResourceChangeListener(resourceChangeListener,
+                IResourceChangeEvent.POST_CHANGE);
+    }
+    
+    /**
+     * Unregister the resource change listener.
+     */
+    private void unregisterResourceChangeListener() {
+        ResourcesPlugin.getWorkspace().removeResourceChangeListener(resourceChangeListener);
     }
     
     /**
