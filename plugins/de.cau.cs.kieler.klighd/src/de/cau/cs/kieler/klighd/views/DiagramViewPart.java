@@ -55,7 +55,8 @@ import de.cau.cs.kieler.klighd.viewers.ContextViewer;
 /**
  * A view which is able to display models in light-weight diagrams.
  * 
- * @author mri, chsch
+ * @author mri
+ * @author chsch
  * @author msp
  */
 public class DiagramViewPart extends ViewPart implements IDiagramWorkbenchPart {
@@ -225,19 +226,7 @@ public class DiagramViewPart extends ViewPart implements IDiagramWorkbenchPart {
                         DiagramViewManager.getInstance().updateView(viewer.getViewPartId());
                     }
                 });
-//        DiagramViewPart.this.getViewSite().getActionBars().getToolBarManager()
-//                .add(new Action("Zoom to fit", IAction.AS_CHECK_BOX) {
-//                    public void run() {
-//                    }
-//                });
         new LayoutAction("Arrange", KimlUiPlugin.getImageDescriptor("icons/menu16/kieler-arrange.gif"));
-        new LayoutAction("Arrange rightward", Direction.RIGHT, "icons/full/elcl16/forward_nav.gif");
-        new LayoutAction("Arrange downward", Direction.DOWN, "icons/full/elcl16/downward_nav.gif");
-        new LayoutAction("Arrange upward", Direction.UP, "icons/full/elcl16/upward_nav.gif");
-        new LayoutAction("Arrange leftward", Direction.LEFT, "icons/full/elcl16/backward_nav.gif");
-        new LayoutAction("Arrange circular",
-                "de.cau.cs.kieler.algorithm=de.cau.cs.kieler.graphviz.circo",
-                "icons/full/elcl16/refresh.gif");
     }
 
     /**
@@ -254,26 +243,6 @@ public class DiagramViewPart extends ViewPart implements IDiagramWorkbenchPart {
 
         public LayoutAction(final String text, final ImageDescriptor image) {
             super(text, image);
-            DiagramViewPart.this.getViewSite().getActionBars().getToolBarManager().add(this);
-        }
-
-        public LayoutAction(final String text, final String keyValue, final String imagePath) {
-            this(text, keyValue, KlighdPlugin.getImageDescriptor(imagePath));
-        }
-        
-        public LayoutAction(final String text, final String keyValue, final ImageDescriptor image) {
-            super(text, image);
-            this.keyValue = keyValue;
-            DiagramViewPart.this.getViewSite().getActionBars().getToolBarManager().add(this);
-        }
-
-        public LayoutAction(final String text, final Direction d, final String imagePath) {
-            this(text, d, KlighdPlugin.getImageDescriptor(imagePath));
-        }
-
-        public LayoutAction(final String text, final Direction d, final ImageDescriptor image) {
-            super(text, image);
-            this.dir = d;
             DiagramViewPart.this.getViewSite().getActionBars().getToolBarManager().add(this);
         }
 
