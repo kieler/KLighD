@@ -31,6 +31,7 @@ import de.cau.cs.kieler.core.kgraph.KLabeledGraphElement;
 import de.cau.cs.kieler.core.kgraph.KNode;
 import de.cau.cs.kieler.core.kgraph.KPort;
 import de.cau.cs.kieler.core.properties.IProperty;
+import de.cau.cs.kieler.core.properties.IPropertyValueProxy;
 import de.cau.cs.kieler.core.properties.Property;
 import de.cau.cs.kieler.kiml.LayoutContext;
 import de.cau.cs.kieler.kiml.LayoutOptionData;
@@ -220,7 +221,29 @@ public class KGraphPropertyLayoutConfig implements IMutableLayoutConfig {
         if (diagramPart instanceof KGraphElement) {
             KGraphData elementLayout = getLayoutData((KGraphElement) diagramPart);
             if (elementLayout != null) {
-                return elementLayout.getProperty(optionData);
+                Object value = elementLayout.getProperties().get(optionData);
+                if (value instanceof IPropertyValueProxy) {
+                    return ((IPropertyValueProxy) value).resolveValue(optionData);
+                } else if (value == null) {
+                    
+                    // check whether an expansion aware layout option set is present
+                    ExpansionAwareLayoutOptionData ealo = elementLayout.getProperty(
+                            ExpansionAwareLayoutOption.OPTION);
+                    if (ealo != null) {
+                        KNode node = null;
+                        if (diagramPart instanceof KNode) {
+                            node = (KNode) diagramPart; 
+                        } else if (diagramPart instanceof KPort) {
+                            node = ((KPort) diagramPart).getNode();
+                        }
+                        RenderingContextData rcd = RenderingContextData.get(node);
+                        boolean expanded = !node.getChildren().isEmpty()
+                                && rcd.getProperty(KlighdInternalProperties.POPULATED);
+                        return ealo.getValue(optionData, expanded);
+                    }
+                    
+                }
+                return value;
             }
         }
         return null;
@@ -235,9 +258,11 @@ public class KGraphPropertyLayoutConfig implements IMutableLayoutConfig {
             KGraphElement element = (KGraphElement) diagramPart;
             KGraphData elementLayout = getLayoutData(element);
             if (elementLayout != null) {
-                for (Map.Entry<IProperty<?>, Object> entry : elementLayout.getAllProperties()
-                        .entrySet()) {
-                    
+                Set<Map.Entry<IProperty<?>, Object>> entrySet = elementLayout.getAllProperties()
+                        .entrySet();
+                
+                // first handle all expansion aware layout option sets
+                for (Map.Entry<IProperty<?>, Object> entry : entrySet) {
                     if (entry.getKey().equals(ExpansionAwareLayoutOption.OPTION)) {
                         KNode node = null;
                         if (element instanceof KNode) {
@@ -250,9 +275,15 @@ public class KGraphPropertyLayoutConfig implements IMutableLayoutConfig {
                                 (ExpansionAwareLayoutOptionData) entry.getValue();
                         RenderingContextData rcd = RenderingContextData.get(node);
                         
-                        graphData.copyProperties(ealo.getValues(!node.getChildren().isEmpty()
-                                && rcd.getProperty(KlighdInternalProperties.POPULATED)));
-                    } else {
+                        boolean expanded = !node.getChildren().isEmpty()
+                                && rcd.getProperty(KlighdInternalProperties.POPULATED);
+                        graphData.copyProperties(ealo.getValues(expanded));
+                    }
+                }
+                
+                // then handle all normal layout options
+                for (Map.Entry<IProperty<?>, Object> entry : entrySet) {
+                    if (!entry.getKey().equals(ExpansionAwareLayoutOption.OPTION)) {
                         graphData.setProperty(entry.getKey(), entry.getValue());
                     }
                 }
@@ -345,8 +376,7 @@ public class KGraphPropertyLayoutConfig implements IMutableLayoutConfig {
         if (element != null) {
             KGraphData elementLayout = getLayoutData(element);
             if (elementLayout != null) {
-                Object value = elementLayout.getProperty(optionData);
-                return value != null && !value.equals(optionData.getDefault());
+                return elementLayout.getProperties().containsKey(optionData);
             }
         }
         return false;
