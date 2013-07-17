@@ -19,6 +19,9 @@ import java.util.Iterator;
 import java.util.LinkedList;
 
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.jface.viewers.ISelectionChangedListener;
+import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
@@ -34,6 +37,7 @@ import org.eclipse.ui.forms.widgets.FormToolkit;
 
 import com.google.common.collect.ImmutableList;
 
+import de.cau.cs.kieler.kiml.ILayoutData;
 import de.cau.cs.kieler.kiml.LayoutContext;
 import de.cau.cs.kieler.kiml.LayoutDataService;
 import de.cau.cs.kieler.kiml.LayoutOptionData;
@@ -460,12 +464,26 @@ public class OptionControlFactory {
          * {@inheritDoc}
          */
         public void widgetSelected(final SelectionEvent event) {
-            LayoutOptionData<?> optionData = LayoutDataService.getInstance().getOptionData(
+            final LayoutOptionData<?> optionData = LayoutDataService.getInstance().getOptionData(
                     LayoutOptions.ALGORITHM.getId());
+            String initialValue = (String) lightLayoutConfig.getOption(optionData);
             AlgorithmSelectionDialog dialog = new AlgorithmSelectionDialog(parent.getShell(),
-                    (String) lightLayoutConfig.getOption(optionData));
+                    initialValue);
+            dialog.addAlgorithmSelectionListener(new ISelectionChangedListener() {
+                public void selectionChanged(final SelectionChangedEvent event) {
+                    // instantly update the layout when an algorithm is selected
+                    IStructuredSelection selection = (IStructuredSelection) event.getSelection();
+                    if (!selection.isEmpty() && selection.getFirstElement() instanceof ILayoutData) {
+                        ILayoutData layoutData = (ILayoutData) selection.getFirstElement();
+                        lightLayoutConfig.setOption(optionData, layoutData.getId());
+                        refreshLayout(true);
+                    }
+                }
+            });
             if (dialog.open() == AlgorithmSelectionDialog.OK) {
                 lightLayoutConfig.setOption(optionData, dialog.getSelectedHint());
+            } else {
+                lightLayoutConfig.setOption(optionData, initialValue);
             }
             
             // trigger a new layout on the displayed diagram
