@@ -288,14 +288,28 @@
             class="de.cau.cs.kieler.core.kgraph.text.ui.random.GeneratorPreferenceInitializer">
       </initializer>
    </extension>
+   <extension
+         point="org.eclipse.ui.commands">
+      <command
+            categoryId="org.eclipse.ui.category.file"
+            defaultHandler="de.cau.cs.kieler.core.kgraph.text.ui.ConvertGraphHandler"
+            id="de.cau.cs.kieler.core.model.convert"
+            name="Convert Graph">
+         <commandParameter
+               id="de.cau.cs.kieler.convert.targetExtension"
+               name="Target Extension"
+               optional="false">
+         </commandParameter>
+      </command>
+   </extension>
     <extension point="org.eclipse.ui.menus">
          <menuContribution
             locationURI="popup:org.eclipse.ui.popup.any?after=additions">
          <command
                commandId="de.cau.cs.kieler.core.model.convert"
-               label="Convert to Textual Model (kgt)"
+               label="Convert to Textual Graph (kgt)"
                style="push"
-               tooltip="Convert the model to textual KGraph format">
+               tooltip="Convert the graph to textual KGraph format">
             <visibleWhen
                   checkEnabled="false">
                <iterate
@@ -303,11 +317,18 @@
                      operator="and">
                   <adapt
                         type="org.eclipse.core.resources.IResource">
-                     <test
-                           forcePluginActivation="false"
-                           property="org.eclipse.core.resources.extension"
-                           value="kgx">
-                     </test>
+                     <or>
+                        <test
+                              forcePluginActivation="false"
+                              property="org.eclipse.core.resources.extension"
+                              value="kgx">
+                        </test>
+                        <test
+                              forcePluginActivation="false"
+                              property="org.eclipse.core.resources.extension"
+                              value="kgraph">
+                        </test>
+                     </or>
                   </adapt>
                </iterate>
             </visibleWhen>
@@ -318,9 +339,9 @@
          </command>
                   <command
                commandId="de.cau.cs.kieler.core.model.convert"
-               label="Convert to XMI Model (kgx)"
+               label="Convert to XMI Graph (kgx)"
                style="push"
-               tooltip="Convert the model to XMI-based KGraph format">
+               tooltip="Convert the graph to XMI-based KGraph format">
             <visibleWhen
                   checkEnabled="false">
                <iterate
