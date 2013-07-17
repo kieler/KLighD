@@ -81,7 +81,7 @@ public class SaveAsImageAction extends Action {
                         createOutputStream(dialog.getFilePath(), dialog.isWorkspacePath());
                 // render the canvas to an image and write it to the stream
                 toImage(stream, viewer.getCanvas(), dialog.isCameraViewport(),
-                        dialog.getSWTImageFormat());
+                        dialog.getSWTImageFormat(), dialog.getScaleFactor());
                 stream.close();
             } catch (IOException exception) {
                 Status myStatus =
@@ -122,10 +122,13 @@ public class SaveAsImageAction extends Action {
      *            what is visible on the canvas; false to render the whole scene graph
      * @param format
      *            the file format, see {@code FileLoader}
+     * @param scale
+     *            the scale factor to apply while constructing the image
      */
     public static void toImage(final OutputStream stream, final PSWTCanvas canvas,
-            final boolean cameraViewport, final int format) {
+            final boolean cameraViewport, final int format, final int scale) {
         PCamera camera = canvas.getCamera();
+        
         // create the target image and a linked graphics context
         PBounds bounds;
         if (cameraViewport) {
@@ -134,25 +137,34 @@ public class SaveAsImageAction extends Action {
             bounds = camera.getUnionOfLayerFullBounds();
         }
         
-        // reveal the size and add some space in order to fully print out bounding strokes
-        //  (half width might get clipped otherwise)
-        int width = (int) bounds.getWidth() + 2;
-        int height = (int) bounds.getHeight() + 2;
+        // construct an affine transform for applying the scale factor
+        //  and apply it to the camera's bounds
+        PAffineTransform transform = new PAffineTransform();
+        transform.scale(scale, scale);
+        transform.transform(bounds, bounds);
+        
+        // reveal the size and respect the indentation imposed by x/y on both sides 
+        //  in order to avoid clippings of root figure drawings
+        int width = (int) (bounds.width + 2 * bounds.x);
+        int height = (int) (bounds.height + 2 * bounds.y);
+
+        // let Piccolo render onto a image GC
         Image image = new Image(canvas.getDisplay(), width, height);
         GC gc = new GC(image);
-        // let Piccolo render onto the image GC
+        
         PPaintContext paintContext = new PPaintContext(new KlighdSWTGraphicsImpl(gc,
                 canvas.getDisplay()));
+        
+        // apply scaling translation to the paint context, too, for actually scaling the diagram
+        paintContext.pushTransform(transform);
+        
         if (cameraViewport) {
             camera.fullPaint(paintContext);
         } else {
-            // apply a translation to fit the bounds
-            PAffineTransform transform = new PAffineTransform();
-            transform.setToTranslation(-bounds.getX(), -bounds.getY());
-            paintContext.pushTransform(transform);
             fullPaintLayers(paintContext, camera);
-            paintContext.popTransform(transform);
         }
+        paintContext.popTransform(transform);
+        
         // create an image loader to save the image
         ImageLoader loader = new ImageLoader();
         loader.data = new ImageData[] { image.getImageData() };

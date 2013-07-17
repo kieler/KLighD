@@ -43,7 +43,7 @@ public class KNodeTopNode extends PEmptyNode implements INode {
         childArea.setPickable(false);
         childArea.setClip(false);
         addChild(childArea);
-        setPickable(false);
+        setPickable(true);
     }
 
     /**

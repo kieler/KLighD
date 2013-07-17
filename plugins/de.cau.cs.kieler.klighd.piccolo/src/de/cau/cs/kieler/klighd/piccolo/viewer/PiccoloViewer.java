@@ -157,6 +157,9 @@ public class PiccoloViewer extends AbstractViewer<KNode> implements INodeSelecti
         canvas.addInputEventListener(new PMouseWheelZoomEventHandler());
         // add a context menu
         addContextMenu(canvas);
+        
+        // add a tooltip element
+        new PiccoloTooltip(parent.getDisplay(), canvas.getCamera());
     }
 
     /**

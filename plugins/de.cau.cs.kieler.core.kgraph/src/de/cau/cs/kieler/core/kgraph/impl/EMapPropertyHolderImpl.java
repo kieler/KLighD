@@ -189,7 +189,13 @@ public abstract class EMapPropertyHolderImpl extends EObjectImpl implements EMap
         } else if (value != null) {
             return (T) value;
         }
-        return property.getDefault();
+        
+        T defaultValue = property.getDefault();
+        if (defaultValue instanceof Cloneable) {
+            setProperty(property, defaultValue);
+        }
+        
+        return defaultValue;
     }
 
     /**

@@ -15,6 +15,8 @@ package de.cau.cs.kieler.klighd.piccolo.viewer;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.beans.PropertyChangeEvent;
@@ -48,6 +50,7 @@ import edu.umd.cs.piccolo.event.PDragSequenceEventHandler;
 import edu.umd.cs.piccolo.event.PInputEvent;
 import edu.umd.cs.piccolo.util.PBounds;
 import edu.umd.cs.piccolox.swt.PSWTCanvas;
+import edu.umd.cs.piccolox.swt.SWTTimer;
 
 /**
  * A content outline page for the Piccolo viewer.
@@ -69,18 +72,52 @@ public class PiccoloOutlinePage implements IContentOutlinePage {
     private ControlListener canvasResizeListener;
     /** the original camera of the editor part. */
     private PCamera originalCamera;
+    /** the outline camera. */
+    private PCamera outlineCamera;
     /** the element that holds the outline rectangle. */
     private PSWTAdvancedPath outlineRect;
 
-    // Properties for the appearance of the outline rectangle
+    // Properties for the appearance of the outline rectangle.
     private static final int OUTLINE_EDGE_ROUNDNESS = 5;
     private static final int OUTLINE_EDGE_OPACITY = 25;
     private static final Color OUTLINE_EDGE_COLOR = new Color(0, 0, 200);
+
+    // Delay of the timed repaint.
+    private static final int REPAINT_DELAY = 200;
+
+    /** Indicates whether a drag action on the outline canvas is in progress. */
+    private boolean isDragging = false;
+    /** A timer to reduce the load during panning of the original canvas. */
+    private SWTTimer outlineRectTimer;
+
+    /**
+     * Property Listener that listens to changes on the original canvas and triggers a redraw of the
+     * outline rectangle.
+     */
+    private PropertyChangeListener propertyListener = new PropertyChangeListener() {
+
+        public void propertyChange(final PropertyChangeEvent evt) {
+            if (evt.getPropertyName().equals("viewTransform")) {
+
+                // only use the timer if we are not dragging
+                if (isDragging) {
+                    adjustOutlineRect();
+                } else {
+                    if (outlineRectTimer != null) {
+                        outlineRectTimer.restart();
+                    }
+                }
+            }
+
+        }
+    };
 
     /**
      * {@inheritDoc}
      */
     public void createControl(final Composite parent) {
+        // FIXME remove after KIELER-2405
+        PSWTCanvas oldCanvas = PSWTCanvas.CURRENT_CANVAS;
         canvas = new PSWTCanvas(parent, SWT.NONE) {
 
             private KlighdSWTGraphics graphics = new KlighdSWTGraphicsImpl(null,
@@ -92,9 +129,34 @@ public class PiccoloOutlinePage implements IContentOutlinePage {
                 graphics.setGC(gc);
                 return (Graphics2D) graphics;
             }
+
+            /**
+             * {@inheritDoc}
+             */
+            @Override
+            public void repaint(final PBounds bounds) {
+                if (!this.isDisposed()) {
+                    super.repaint(bounds);
+                }
+            }
         };
+        // FIXME
+        PSWTCanvas.CURRENT_CANVAS = oldCanvas;
+
         // reduce flickering
         canvas.setDoubleBuffered(true);
+
+        // initialize the timers to redraw the outline rect
+        outlineRectTimer = new SWTTimer(parent.getDisplay(), REPAINT_DELAY, new ActionListener() {
+
+            public void actionPerformed(final ActionEvent e) {
+                adjustOutlineRect();
+            }
+        });
+        outlineRectTimer.setRepeats(false);
+        outlineRectTimer.start();
+
+        // create the actual outline view elements
         setContent(graphLayer);
     }
 
@@ -119,10 +181,9 @@ public class PiccoloOutlinePage implements IContentOutlinePage {
      *            the graph layer to display
      */
     public void setContent(final PLayer newLayer) {
-
         if (canvas != null) {
-            if (this.graphLayer != null) {
 
+            if (graphLayer != null) {
                 if (graphLayer.getCameraCount() == 0) {
                     throw new IllegalStateException(
                             "The PLayer passed to the PiccoloOutlineView has "
@@ -135,32 +196,11 @@ public class PiccoloOutlinePage implements IContentOutlinePage {
 
                 // listen to property changes of the root element
                 if (graphLayer.getChildrenCount() > 0) {
-                    graphLayer.getChild(0).addPropertyChangeListener(new PropertyChangeListener() {
-
-                        public void propertyChange(final PropertyChangeEvent evt) {
-                            adjustOutlineRect();
-                        }
-                    });
+                    graphLayer.getChild(0).addPropertyChangeListener(propertyListener);
                 }
 
                 // listen to view transformations
-                originalCamera.addPropertyChangeListener(new PropertyChangeListener() {
-
-                    public void propertyChange(final PropertyChangeEvent evt) {
-                        if (evt.getPropertyName().equals("viewTransform")) {
-                            adjustOutlineRect();
-                        }
-
-                    }
-                });
-            }
-            if (graphLayout != null) {
-                graphLayout.eAdapters().remove(graphLayoutAdapter);
-                graphLayout = null;
-            }
-            if (canvasResizeListener != null) {
-                canvas.removeControlListener(canvasResizeListener);
-                canvasResizeListener = null;
+                originalCamera.addPropertyChangeListener(propertyListener);
             }
 
             // install a new camera into the given layer
@@ -183,6 +223,7 @@ public class PiccoloOutlinePage implements IContentOutlinePage {
             outlineLayer.addChild(outlineRect);
 
             canvas.setCamera(camera);
+            outlineCamera = camera;
 
             // add a handler to the outline canvas to allow dragging
             canvas.addInputEventListener(new OutlineDragHandler());
@@ -200,23 +241,24 @@ public class PiccoloOutlinePage implements IContentOutlinePage {
                                 || featureId == KLayoutDataPackage.KSHAPE_LAYOUT__HEIGHT
                                 || featureId == KLayoutDataPackage.KSHAPE_LAYOUT__XPOS
                                 || featureId == KLayoutDataPackage.KSHAPE_LAYOUT__YPOS) {
-                            adjustCamera(camera);
+                            adjustCamera();
                         }
                     }
                 };
                 graphLayout.eAdapters().add(graphLayoutAdapter);
                 canvasResizeListener = new ControlListener() {
                     public void controlMoved(final ControlEvent e) {
-                        adjustCamera(camera);
+                        adjustCamera();
                     }
 
                     public void controlResized(final ControlEvent e) {
-                        adjustCamera(camera);
+                        adjustCamera();
                     }
                 };
                 canvas.addControlListener(canvasResizeListener);
             }
         }
+
         this.graphLayer = newLayer;
     }
 
@@ -237,6 +279,13 @@ public class PiccoloOutlinePage implements IContentOutlinePage {
     }
 
     /**
+     * @see #adjustCamera(PCamera)
+     */
+    private void adjustCamera() {
+        adjustCamera(outlineCamera);
+    }
+
+    /**
      * Adjusts the displayed outline rectangle to the current view snippet.
      */
     private void adjustOutlineRect() {
@@ -254,7 +303,26 @@ public class PiccoloOutlinePage implements IContentOutlinePage {
      * {@inheritDoc}
      */
     public void dispose() {
-        // nothing to do here
+
+        outlineRectTimer = null;
+
+        // remove all the listeners!
+        originalCamera.removePropertyChangeListener(propertyListener);
+
+        if (graphLayer.getChildrenCount() > 0) {
+            graphLayer.getChild(0).removePropertyChangeListener(propertyListener);
+        }
+
+        if (graphLayout != null) {
+            graphLayout.eAdapters().remove(graphLayoutAdapter);
+            graphLayout = null;
+        }
+        if (canvasResizeListener != null) {
+            if (!canvas.isDisposed()) {
+                canvas.removeControlListener(canvasResizeListener);
+            }
+            canvasResizeListener = null;
+        }
     }
 
     /**
@@ -309,6 +377,7 @@ public class PiccoloOutlinePage implements IContentOutlinePage {
          */
         @Override
         protected void startDrag(final PInputEvent event) {
+            isDragging = true;
             super.startDrag(event);
             last = event.getPosition();
         }
@@ -332,6 +401,7 @@ public class PiccoloOutlinePage implements IContentOutlinePage {
         protected void endDrag(final PInputEvent event) {
             super.endDrag(event);
             last = null;
+            isDragging = false;
         }
     }
 }
