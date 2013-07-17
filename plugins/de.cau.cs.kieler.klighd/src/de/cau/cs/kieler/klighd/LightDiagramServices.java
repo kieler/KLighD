@@ -450,7 +450,7 @@ public final class LightDiagramServices {
         LightDiagramServices.getInstance().updateViewContext(vc, model);
         @SuppressWarnings("unchecked")
         T result = (T) vc.getViewModel();
-        otherVC.merge(vc);
+//        otherVC.merge(vc);
         return result;
     }
 }

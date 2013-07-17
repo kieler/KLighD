@@ -17,8 +17,8 @@ package de.cau.cs.kieler.klighd.piccolo.svg.browsing;
  * @author uru
  *
  */
-import java.awt.geom.Point2D;
 import java.io.IOException;
+import java.util.Map;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 import javax.servlet.ServletException;
@@ -32,6 +32,8 @@ import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
+import org.eclipse.emf.ecore.xmi.XMIResource;
+import org.eclipse.emf.ecore.xmi.XMLResource;
 import org.eclipse.jetty.server.Request;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.handler.AbstractHandler;
@@ -42,20 +44,21 @@ import org.eclipse.jetty.websocket.WebSocket;
 import org.eclipse.jetty.websocket.WebSocketHandler;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
+import org.ptolemy.moml.util.MomlResourceFactoryImpl;
+
+import com.google.common.collect.Maps;
 
 import de.cau.cs.kieler.core.alg.BasicProgressMonitor;
 import de.cau.cs.kieler.core.kgraph.KGraphElement;
 import de.cau.cs.kieler.core.kgraph.KNode;
-import de.cau.cs.kieler.core.properties.MapPropertyHolder;
-import de.cau.cs.kieler.kiml.RecursiveGraphLayoutEngine;
-import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout;
 import de.cau.cs.kieler.kiml.ui.diagram.DiagramLayoutEngine;
 import de.cau.cs.kieler.kiml.ui.diagram.LayoutMapping;
+import de.cau.cs.kieler.klighd.KlighdConstants;
 import de.cau.cs.kieler.klighd.LightDiagramServices;
 import de.cau.cs.kieler.klighd.ViewContext;
-import de.cau.cs.kieler.klighd.krendering.SimpleUpdateStrategy;
-import de.cau.cs.kieler.klighd.macrolayout.DiagramLayoutManager;
+import de.cau.cs.kieler.klighd.internal.macrolayout.KlighdLayoutManager;
 import de.cau.cs.kieler.klighd.piccolo.svg.HtmlGenerator;
+import de.cau.cs.kieler.klighd.util.KlighdProperties;
 import edu.umd.cs.piccolo.PCamera;
 
 public class BrowsingSVGServer extends Server {
@@ -254,6 +257,25 @@ public class BrowsingSVGServer extends Server {
                 response.getWriter().println(res);
 
                 ResourceSet rs = new ResourceSetImpl();
+                
+                // MOML 
+                Map<String, Boolean> parserFeatures = Maps.newHashMap();
+                parserFeatures.put(
+                        "http://xml.org/sax/features/validation", //$NON-NLS-1$
+                        Boolean.FALSE);
+                parserFeatures.put(
+                        "http://apache.org/xml/features/nonvalidating/load-dtd-grammar", //$NON-NLS-1$
+                        Boolean.FALSE);
+                parserFeatures.put(
+                        "http://apache.org/xml/features/nonvalidating/load-external-dtd", //$NON-NLS-1$
+                        Boolean.FALSE);
+                
+                rs.getLoadOptions().put(XMIResource.OPTION_RECORD_UNKNOWN_FEATURE, true);
+                rs.getLoadOptions().put(XMLResource.OPTION_PARSER_FEATURES, parserFeatures);
+                rs.getResourceFactoryRegistry().getExtensionToFactoryMap()
+                        .put("xml", new MomlResourceFactoryImpl());
+                
+                
                 final Resource r =
                         rs.getResource(
                                 URI.createPlatformResourceURI(res.getFullPath().toString(), false),
@@ -292,10 +314,12 @@ public class BrowsingSVGServer extends Server {
                         // LightDiagramServices.getInstance().createViewContext(r.getContents().get(0));
                         // LightDiagramServices.getInstance().layoutDiagram(ctx, false, false);
 
-                        DiagramLayoutManager mng = new DiagramLayoutManager();
+                        KlighdLayoutManager mng = new KlighdLayoutManager();
                         LayoutMapping<KGraphElement> mapping =
-                                mng.buildLayoutGraph(null, currentModel);
-                        mapping.setProperty(DiagramLayoutManager.VIEWER, viewer);
+                                mng.buildLayoutGraph(currentModel);
+                        // FIXME reactovate!
+//                        mapping.setProperty(KlighdProperties.VIEWER, viewer);
+                        
                         DiagramLayoutEngine.INSTANCE.layout(mapping, new BasicProgressMonitor());
                         // viewer.setRecording(true);
                         mng.applyLayout(mapping, true, 0);
@@ -330,10 +354,10 @@ public class BrowsingSVGServer extends Server {
                     public void run() {
                         viewer.toggleExpansion(id);
 
-                        DiagramLayoutManager mng = new DiagramLayoutManager();
+                        KlighdLayoutManager mng = new KlighdLayoutManager();
                         LayoutMapping<KGraphElement> mapping =
-                                mng.buildLayoutGraph(null, currentModel);
-                        mapping.setProperty(DiagramLayoutManager.VIEWER, viewer);
+                                mng.buildLayoutGraph(currentModel);
+//                        mapping.setProperty(KlighdLayoutManager.VIEWER, viewer);
                         DiagramLayoutEngine.INSTANCE.layout(mapping, new BasicProgressMonitor());
                         // viewer.setRecording(true);
                         mng.applyLayout(mapping, true, 0);
