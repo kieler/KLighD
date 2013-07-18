@@ -191,7 +191,7 @@ public class BrowsingSVGServer extends Server {
             System.out.println(x + " " + y);
             viewer.getCanvas().getCamera().translateView(-x, -y);
 
-            shell.getDisplay().syncExec(new Runnable() {
+            shell.getDisplay().asyncExec(new Runnable() {
 
                 public void run() {
                     // viewer.getCanvas().getCamera().invalidatePaint();
@@ -225,10 +225,16 @@ public class BrowsingSVGServer extends Server {
         }
 
         // System.out.println(data);
+        
+        // insert an id for the first group element
+        StringBuffer sb = new StringBuffer(data);
+        sb.insert(sb.indexOf("<g") + 2, " id=\"group\"");
 
+        System.out.println("Broadcast");
+        
         for (SVGSendingWebSocket ws : broadcast) {
             try {
-                ws.getConnection().sendMessage(data);
+                ws.getConnection().sendMessage(sb.toString()    );
             } catch (IOException e) {
                 broadcast.remove(ws);
                 e.printStackTrace();

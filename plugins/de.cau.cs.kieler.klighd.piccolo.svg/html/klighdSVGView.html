@@ -15,6 +15,9 @@
 <script src="http://code.jquery.com/ui/1.9.2/jquery-ui.js"></script>
 <script src="js/jquery.uix.tree.js"></script>
 <script src="js/jquery.mousewheel.js"></script>
+<script src="js/jquery.svg.js"></script>
+<script src="js/jquery.svg.extras.js"></script>
+<script src="js/jquery.event.drag-2.2.js"></script>
 <script
 	src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/js/bootstrap.min.js"></script>
 <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
@@ -73,6 +76,20 @@ svg {
 	<script>
     var connection = null;
 
+	// init svg
+	$('#viewport').svg();
+	$('#viewport').addScalability();
+	$('#viewport').addDraggable();
+
+
+	function resetSize(svg, width, height) {
+		svg.configure({
+			width : width || $(svg._container).width(),
+			height : height || $(svg._container).height()
+		});
+		//window.alert("foo");
+	}	
+
     $('#connect').click(function() {
 
       //connectionData = new WebSocket('ws://' + $('#ip').val() + '/', "protocol.data");
@@ -95,7 +112,13 @@ svg {
         $('#viewport').html();
         $('#viewport').html(e.data);
 
-        var svg = d3.select("svg");
+		var svg = $('#viewport').svg('get');
+		svg.clear();
+        svg.add(e.data);
+        resetSize(svg);
+
+
+       /* var svg = d3.select("svg");
         svg.selectAll("text").on("mousedown", function(d) {
           // get the id
           var text = this.textContent;
@@ -111,7 +134,7 @@ svg {
             });
 
           }
-        });
+        });*/
 
         var zoom = d3.behavior.zoom().on("zoom", function() {
           console.log(JSON.stringify(d3.event));
@@ -127,13 +150,13 @@ svg {
         //    "translate(" + 0 + "," + 0 + ")");
         //svg.call(zoom);
 
-        $("svg").bind('mousewheel', function(event, delta) {
+        /*$("svg").bind('mousewheel', function(event, delta) {
           var deltaNorm = delta > 0 ? 3 : -3;
           $.ajax({
             type : 'PUT',
             url : 'zoom/' + deltaNorm
           });
-        });
+        });*/
 
         /*$('text').each(function(i,e) {
           //var parent = e.parent();
@@ -159,7 +182,7 @@ svg {
 
     var lastpos = null;
 
-    $('#viewport').mousedown(function(d) {
+ /*   $('#viewport').mousedown(function(d) {
       console.log(d.screenX + " " + d.screenY);
       lastpos = {
         x : d.screenX,
@@ -188,7 +211,7 @@ svg {
     $('#viewport').mouseup(function(d) {
       lastpos = null;
     });
-
+*/
     // executed
     $(function() {
 
