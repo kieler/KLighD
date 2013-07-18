@@ -61,6 +61,7 @@ svg {
 				<!--input id="ip" value="localhost:8080" /-->
 				<button class="btn" id="connect">Connect</button>
 				<div id="messages">Unconnected</div>
+				<div id="errors"></div>
 				<div id="data"></div>
 			</div>
 
@@ -231,6 +232,12 @@ svg {
               url : 'resource' + path,
               success : function(res) {
                 console.log("Resource: " + res);
+                // clear any old error
+                $('#errors').html("");
+              },
+              error: function(err) {
+              	console.log("error:" + JSON.stringify(err));
+              	$('#errors').html(err.responseText);
               }
             });
           });

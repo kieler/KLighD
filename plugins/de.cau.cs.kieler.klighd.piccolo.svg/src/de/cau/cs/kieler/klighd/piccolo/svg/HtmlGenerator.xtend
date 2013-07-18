@@ -43,7 +43,7 @@ class HtmlGenerator {
 
         return html
     	} else {
-    		 val html = "<li><a href='#' class='file' data-path='"+ f.relative + "'>" + f.name + "</a></li>"
+    		 val html = "<li><a href='/resource" + f.relative + "' class='file' data-path='"+ f.relative + "'>" + f.name + "</a></li>"
               
         html
     	}
@@ -78,7 +78,26 @@ class HtmlGenerator {
     
     
     def String relative(File child) {
-    	child.absolutePath.replace(rootFile.absolutePath, "")
+    	child.absolutePath.replace(rootFile.absolutePath, "").replace(File::separator, "/")
     }
+    
+    
+    
+    def String permaLink(String svgData) {
+	'''
+	<html encoding='UTF8'>
+		<head>
+			<meta charset='utf-8'>
+			<style type='text/css'> 
+				svg { width:100%; height:100%; } body { width:100%; height:100%; } 
+			</style>
+		</head>
+		<body>
+		«svgData»
+		</body>
+	</html>
+	'''
+    }
+    	
     
 }

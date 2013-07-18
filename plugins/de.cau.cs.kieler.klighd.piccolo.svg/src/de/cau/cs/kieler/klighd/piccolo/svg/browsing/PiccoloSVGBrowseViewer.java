@@ -75,7 +75,7 @@ public class PiccoloSVGBrowseViewer extends AbstractViewer<KNode> implements INo
     private DiagramController controller;
 
     private KlighdSVGGraphicsImpl graphics;
-    
+
     private Map<Integer, KNode> currentHashCodeMapping = Maps.newHashMap();
 
     /**
@@ -147,7 +147,7 @@ public class PiccoloSVGBrowseViewer extends AbstractViewer<KNode> implements INo
                 }
 
                 // update the svg
-                BrowsingSVGServer.getInstance().broadcastSVG();
+                // BrowsingSVGServer.getInstance().broadcastSVG();
             }
 
         };
@@ -173,9 +173,9 @@ public class PiccoloSVGBrowseViewer extends AbstractViewer<KNode> implements INo
             currentHashCodeMapping.clear();
             recurseNodes(controller.getNode());
         }
-//        controller.getNode().invalidateFullBounds();
-//        canvas.redraw();
-//        canvas.repaint();
+        // controller.getNode().invalidateFullBounds();
+        // canvas.redraw();
+        // canvas.repaint();
         canvas.paintComponent(new GC(canvas), 0, 0, canvas.getSize().x, canvas.getSize().y);
     }
 
@@ -193,18 +193,19 @@ public class PiccoloSVGBrowseViewer extends AbstractViewer<KNode> implements INo
                         new WrappedKNodeNode(child, ((KNodeNode) child).getGraphElement());
                 toAdd.add(wrapper);
                 child.addChild(wrapper);
-                
-                currentHashCodeMapping.put(((KNodeNode) child).getGraphElement().hashCode(), ((KNodeNode) child).getGraphElement());
-                //expand(((KNodeNode) child).getGraphElement());
+
+                currentHashCodeMapping.put(((KNodeNode) child).getGraphElement().hashCode(),
+                        ((KNodeNode) child).getGraphElement());
+                // expand(((KNodeNode) child).getGraphElement());
             }
         }
 
-//        System.out.println("PRE " + parent.getChildrenCount());
-//        for (WrappedKNodeNode node : toAdd) {
-//            parent.addChild(node);
-//        }
-        
-//        System.out.println("AFTER " + parent.getChildrenCount());
+        // System.out.println("PRE " + parent.getChildrenCount());
+        // for (WrappedKNodeNode node : toAdd) {
+        // parent.addChild(node);
+        // }
+
+        // System.out.println("AFTER " + parent.getChildrenCount());
 
     }
 
@@ -432,14 +433,14 @@ public class PiccoloSVGBrowseViewer extends AbstractViewer<KNode> implements INo
             int hash = Integer.valueOf(hashCode);
             KNode node = currentHashCodeMapping.get(hash);
             toggleExpansion(node);
-//            controller.setRecording(true);
-//            expand(node);
-//            controller.setRecording(false);
+            // controller.setRecording(true);
+            // expand(node);
+            // controller.setRecording(false);
         } catch (NumberFormatException ex) {
             // fail silent
         }
     }
-    
+
     /**
      * {@inheritDoc}
      */

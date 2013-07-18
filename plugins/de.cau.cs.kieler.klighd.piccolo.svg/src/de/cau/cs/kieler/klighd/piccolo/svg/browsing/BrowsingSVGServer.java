@@ -26,7 +26,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.emf.common.util.URI;
@@ -60,8 +59,6 @@ import de.cau.cs.kieler.klighd.ViewContext;
 import de.cau.cs.kieler.klighd.internal.macrolayout.KlighdLayoutManager;
 import de.cau.cs.kieler.klighd.internal.util.KlighdInternalProperties;
 import de.cau.cs.kieler.klighd.piccolo.svg.HtmlGenerator;
-import de.cau.cs.kieler.klighd.piccolo.svg.KlighdSVGGraphicsImpl;
-import de.cau.cs.kieler.klighd.piccolo.svg.PiccoloSVGViewer;
 import edu.umd.cs.piccolo.PCamera;
 
 @SuppressWarnings("restriction")
@@ -80,7 +77,9 @@ public class BrowsingSVGServer extends Server {
 
     // KlighD and Layout facilities
     private PiccoloSVGBrowseViewer viewer;
-    private KlighdLayoutManager mng = new KlighdLayoutManager();
+    private KlighdLayoutManager mng;
+
+    private HtmlGenerator gen = new HtmlGenerator();
 
     // currently shown model per connection
     // TODO
@@ -136,7 +135,6 @@ public class BrowsingSVGServer extends Server {
     public static BrowsingSVGServer getInstance() {
         return INSTANCE;
     }
-
 
     private static void startServer() {
         System.out.println("Starting browsing server ...");
@@ -215,26 +213,37 @@ public class BrowsingSVGServer extends Server {
 
     }
 
-    public void broadcastSVG() {
-
+    private String getSVG() {
         String data = viewer.getGraphics().getSVG();
         // System.out.println("sending data " + this + " " + data.length());
+
+        // System.out.println(data);
+
+        // insert an id for the first group element
+
+        String res3 = data.substring(data.indexOf("<svg") - 1, data.length());
+        String res4 = res3.replaceFirst("width=", "w=");
+        String res5 = res4.replaceFirst("height=", "w=");
+
+        StringBuffer sb = new StringBuffer(res5);
+        sb.insert(sb.indexOf("<g") + 2, " id=\"group\"");
+
+        System.out.println("Broadcast");
+
+        return sb.toString();
+    }
+
+    public void broadcastSVG() {
+
+        String data = getSVG();
 
         if (data.length() < 1000) {
             return;
         }
 
-        // System.out.println(data);
-        
-        // insert an id for the first group element
-        StringBuffer sb = new StringBuffer(data);
-        sb.insert(sb.indexOf("<g") + 2, " id=\"group\"");
-
-        System.out.println("Broadcast");
-        
         for (SVGSendingWebSocket ws : broadcast) {
             try {
-                ws.getConnection().sendMessage(sb.toString()    );
+                ws.getConnection().sendMessage(data);
             } catch (IOException e) {
                 broadcast.remove(ws);
                 e.printStackTrace();
@@ -246,8 +255,9 @@ public class BrowsingSVGServer extends Server {
         /**
          * {@inheritDoc}
          */
-        public void handle(String target, Request baseRequest, HttpServletRequest request,
-                HttpServletResponse response) throws IOException, ServletException {
+        public void handle(String target, final Request baseRequest,
+                final HttpServletRequest request, final HttpServletResponse response)
+                throws IOException, ServletException {
             System.out.println(target + " " + request);
 
             IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
@@ -257,7 +267,7 @@ public class BrowsingSVGServer extends Server {
             if (target.startsWith("/content")) {
 
                 // String html = new HtmlGenerator().toHtmlRoot(root);
-                String html = new HtmlGenerator().toHtmlRoot(docRoot);
+                String html = gen.toHtmlRoot(docRoot);
 
                 response.setContentType("text/html;charset=utf8");
                 response.setStatus(HttpServletResponse.SC_OK);
@@ -267,12 +277,14 @@ public class BrowsingSVGServer extends Server {
             } else if (target.startsWith("/resource")) {
 
                 String path = target.replace("/resource", "");
-                IResource res = root.findMember(path);
+                // IResource res = root.findMember(path);
+
+                // response.getWriter().println(res);
 
                 response.setContentType("text/html;charset=utf8");
+                response.setCharacterEncoding("utf8");
                 response.setStatus(HttpServletResponse.SC_OK);
                 baseRequest.setHandled(true);
-                response.getWriter().println(res);
 
                 ResourceSet rs = new ResourceSetImpl();
 
@@ -302,20 +314,40 @@ public class BrowsingSVGServer extends Server {
 
                 System.out.println(r);
 
-                shell.getDisplay().asyncExec(new Runnable() {
+                shell.getDisplay().syncExec(new Runnable() {
 
                     public void run() {
                         viewer.getCanvas().setBounds(0, 0, 870, 600);
 
                         // translate and set the model
-                        currentModel =
-                                LightDiagramServices.translateModel(new ViewContext(), r
-                                        .getContents().get(0));
-                        viewer.setModel(currentModel, true);
+                        try {
+                            currentModel =
+                                    LightDiagramServices.translateModel(new ViewContext(), r
+                                            .getContents().get(0));
+                            viewer.setModel(currentModel, true);
+                            applyLayout();
+                        } catch (Exception e) {
+                            // catch any error
+                            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+                            try {
+                                response.getWriter().println("ERROR: Unable to handle the selected model.");
+                            } catch (IOException e1) {
+                                e1.printStackTrace();
+                            }
+                        }
 
-                        applyLayout();
+                        System.out.println(request);
+
                     }
                 });
+
+                if (request != null) {
+                    if (baseRequest.getMethod().equals("PUT")) {
+                        broadcastSVG();
+                    } else if (request.getMethod().equals("GET")) {
+                        response.getWriter().println(gen.permaLink(getSVG()));
+                    }
+                }
 
             } else if (target.startsWith("/expand/")) {
 
@@ -332,6 +364,7 @@ public class BrowsingSVGServer extends Server {
                         // expand and layout
                         viewer.toggleExpansion(id);
                         applyLayout();
+                        broadcastSVG();
                     }
                 });
             } else if (target.startsWith("/zoom/")) {
@@ -363,7 +396,7 @@ public class BrowsingSVGServer extends Server {
                             camera.scaleViewAboutPoint(scaleDelta, 0, 0);
 
                             viewer.globalRedraw();
-
+                            broadcastSVG();
                         }
                     });
                 } catch (NumberFormatException ex) {
@@ -375,6 +408,10 @@ public class BrowsingSVGServer extends Server {
     }
 
     private void applyLayout() {
+
+        if (mng == null) {
+            mng = new KlighdLayoutManager();
+        }
 
         LayoutMapping<KGraphElement> mapping = mng.buildLayoutGraph(null, currentModel);
         // FIXME reactovate!
