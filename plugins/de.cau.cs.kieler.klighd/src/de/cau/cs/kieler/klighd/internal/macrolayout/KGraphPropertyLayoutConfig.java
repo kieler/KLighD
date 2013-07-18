@@ -24,7 +24,6 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IWorkbenchPart;
 
 import de.cau.cs.kieler.core.kgraph.KEdge;
-import de.cau.cs.kieler.core.kgraph.KGraphData;
 import de.cau.cs.kieler.core.kgraph.KGraphElement;
 import de.cau.cs.kieler.core.kgraph.KLabel;
 import de.cau.cs.kieler.core.kgraph.KLabeledGraphElement;
@@ -37,7 +36,7 @@ import de.cau.cs.kieler.kiml.LayoutContext;
 import de.cau.cs.kieler.kiml.LayoutOptionData;
 import de.cau.cs.kieler.kiml.config.DefaultLayoutConfig;
 import de.cau.cs.kieler.kiml.config.IMutableLayoutConfig;
-import de.cau.cs.kieler.kiml.klayoutdata.KEdgeLayout;
+import de.cau.cs.kieler.kiml.klayoutdata.KLayoutData;
 import de.cau.cs.kieler.kiml.klayoutdata.KLayoutDataFactory;
 import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout;
 import de.cau.cs.kieler.kiml.options.LayoutOptions;
@@ -70,20 +69,6 @@ public class KGraphPropertyLayoutConfig implements IMutableLayoutConfig {
     
     /** The aspect ratio is rounded at two decimal places. */
     private static final float ASPECT_RATIO_ROUND = 100;
-    
-    /**
-     * Returns the layout data instance of the given graph element.
-     * 
-     * @param graphElement a graph element
-     * @return a shape layout or edge layout
-     */
-    private static KGraphData getLayoutData(final KGraphElement graphElement) {
-        if (graphElement instanceof KEdge) {
-            return graphElement.getData(KEdgeLayout.class);
-        } else {
-            return graphElement.getData(KShapeLayout.class);
-        }
-    }
     
     /**
      * Returns the parent node of the given graph element.
@@ -125,7 +110,7 @@ public class KGraphPropertyLayoutConfig implements IMutableLayoutConfig {
         Object diagramPart = context.getProperty(LayoutContext.DIAGRAM_PART);
         if (diagramPart instanceof KGraphElement) {
             KGraphElement element = (KGraphElement) diagramPart;
-            KGraphData elementLayout = getLayoutData(element);
+            KLayoutData elementLayout = element.getData(KLayoutData.class);
 
             ContextViewer contextViewer = null;
             IWorkbenchPart workbenchPart = context.getProperty(EclipseLayoutConfig.WORKBENCH_PART);
@@ -219,7 +204,7 @@ public class KGraphPropertyLayoutConfig implements IMutableLayoutConfig {
     public Object getValue(final LayoutOptionData<?> optionData, final LayoutContext context) {
         Object diagramPart = context.getProperty(LayoutContext.DIAGRAM_PART);
         if (diagramPart instanceof KGraphElement) {
-            KGraphData elementLayout = getLayoutData((KGraphElement) diagramPart);
+            KLayoutData elementLayout = ((KGraphElement) diagramPart).getData(KLayoutData.class);
             if (elementLayout != null) {
                 Object value = elementLayout.getProperties().get(optionData);
                 if (value instanceof IPropertyValueProxy) {
@@ -252,11 +237,11 @@ public class KGraphPropertyLayoutConfig implements IMutableLayoutConfig {
     /**
      * {@inheritDoc}
      */
-    public void transferValues(final KGraphData graphData, final LayoutContext context) {
+    public void transferValues(final KLayoutData graphData, final LayoutContext context) {
         Object diagramPart = context.getProperty(LayoutContext.DIAGRAM_PART);
         if (diagramPart instanceof KGraphElement) {
             KGraphElement element = (KGraphElement) diagramPart;
-            KGraphData elementLayout = getLayoutData(element);
+            KLayoutData elementLayout = element.getData(KLayoutData.class);
             if (elementLayout != null) {
                 Set<Map.Entry<IProperty<?>, Object>> entrySet = elementLayout.getAllProperties()
                         .entrySet();
@@ -354,7 +339,7 @@ public class KGraphPropertyLayoutConfig implements IMutableLayoutConfig {
             final Object value) {
         KGraphElement element = getModificationModel(context);
         if (element != null) {
-            KGraphData elementLayout = getLayoutData(element);
+            KLayoutData elementLayout = element.getData(KLayoutData.class);
             if (elementLayout == null) {
                 if (element instanceof KEdge) {
                     elementLayout = KLayoutDataFactory.eINSTANCE.createKEdgeLayout();
@@ -374,7 +359,7 @@ public class KGraphPropertyLayoutConfig implements IMutableLayoutConfig {
     public boolean isSet(final LayoutOptionData<?> optionData, final LayoutContext context) {
         KGraphElement element = getModificationModel(context);
         if (element != null) {
-            KGraphData elementLayout = getLayoutData(element);
+            KLayoutData elementLayout = element.getData(KLayoutData.class);
             if (elementLayout != null) {
                 return elementLayout.getProperties().containsKey(optionData);
             }
@@ -388,7 +373,7 @@ public class KGraphPropertyLayoutConfig implements IMutableLayoutConfig {
     public void clearValues(final LayoutContext context) {
         KGraphElement element = getModificationModel(context);
         if (element != null) {
-            KGraphData elementLayout = getLayoutData(element);
+            KLayoutData elementLayout = element.getData(KLayoutData.class);
             if (elementLayout != null) {
                 elementLayout.getProperties().clear();
                 refreshModel(element, context);

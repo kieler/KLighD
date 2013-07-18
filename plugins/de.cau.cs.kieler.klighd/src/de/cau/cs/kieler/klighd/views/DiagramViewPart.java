@@ -36,13 +36,13 @@ import org.eclipse.ui.statushandlers.StatusManager;
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableList;
 
-import de.cau.cs.kieler.core.kgraph.KGraphData;
 import de.cau.cs.kieler.core.kgraph.KGraphPackage;
 import de.cau.cs.kieler.core.kgraph.KNode;
 import de.cau.cs.kieler.kiml.LayoutContext;
 import de.cau.cs.kieler.kiml.LayoutDataService;
 import de.cau.cs.kieler.kiml.LayoutOptionData;
 import de.cau.cs.kieler.kiml.config.ILayoutConfig;
+import de.cau.cs.kieler.kiml.klayoutdata.KLayoutData;
 import de.cau.cs.kieler.kiml.options.Direction;
 import de.cau.cs.kieler.kiml.options.LayoutOptions;
 import de.cau.cs.kieler.kiml.ui.KimlUiPlugin;
@@ -313,7 +313,7 @@ public class DiagramViewPart extends ViewPart implements IDiagramWorkbenchPart {
             // method appears to be effectless in this case
         }
 
-        public void transferValues(final KGraphData graphData, final LayoutContext context) {
+        public void transferValues(final KLayoutData graphData, final LayoutContext context) {
             Object diagramPart = context.getProperty(LayoutContext.DIAGRAM_PART);
               // This is the old Pictogram-Piccolo-based version:
               //  if (diagramPart.getClass().getCanonicalName().endsWith("DiagramNode")) {
