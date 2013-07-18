@@ -17,6 +17,7 @@ package de.cau.cs.kieler.klighd.piccolo.svg.browsing;
  * @author uru
  *
  */
+import java.io.File;
 import java.io.IOException;
 import java.util.Map;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -41,6 +42,7 @@ import org.eclipse.jetty.server.handler.HandlerList;
 import org.eclipse.jetty.server.handler.ResourceHandler;
 import org.eclipse.jetty.server.nio.SelectChannelConnector;
 import org.eclipse.jetty.websocket.WebSocket;
+import org.eclipse.jetty.websocket.WebSocket.Connection;
 import org.eclipse.jetty.websocket.WebSocketHandler;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
@@ -53,30 +55,49 @@ import de.cau.cs.kieler.core.kgraph.KGraphElement;
 import de.cau.cs.kieler.core.kgraph.KNode;
 import de.cau.cs.kieler.kiml.ui.diagram.DiagramLayoutEngine;
 import de.cau.cs.kieler.kiml.ui.diagram.LayoutMapping;
-import de.cau.cs.kieler.klighd.KlighdConstants;
 import de.cau.cs.kieler.klighd.LightDiagramServices;
 import de.cau.cs.kieler.klighd.ViewContext;
 import de.cau.cs.kieler.klighd.internal.macrolayout.KlighdLayoutManager;
+import de.cau.cs.kieler.klighd.internal.util.KlighdInternalProperties;
 import de.cau.cs.kieler.klighd.piccolo.svg.HtmlGenerator;
-import de.cau.cs.kieler.klighd.util.KlighdProperties;
+import de.cau.cs.kieler.klighd.piccolo.svg.KlighdSVGGraphicsImpl;
+import de.cau.cs.kieler.klighd.piccolo.svg.PiccoloSVGViewer;
 import edu.umd.cs.piccolo.PCamera;
 
+@SuppressWarnings("restriction")
 public class BrowsingSVGServer extends Server {
 
     private static BrowsingSVGServer INSTANCE;
-    private static final int PORT = 8081;
+
+    private Shell shell;
+    private File docRoot;
 
     private boolean verbose;
 
+    // WebSocket Queue
     private ConcurrentLinkedQueue<SVGSendingWebSocket> broadcast =
             new ConcurrentLinkedQueue<SVGSendingWebSocket>();
 
-    private Shell shell = new Shell();
-    private PiccoloSVGBrowseViewer viewer = new PiccoloSVGBrowseViewer(shell);
+    // KlighD and Layout facilities
+    private PiccoloSVGBrowseViewer viewer;
+    private KlighdLayoutManager mng = new KlighdLayoutManager();
 
+    // currently shown model per connection
+    // TODO
+    private Map<Connection, KNode> currentModels = Maps.newHashMap();
     private KNode currentModel;
 
-    public BrowsingSVGServer(int port) {
+    public BrowsingSVGServer(final Shell shell, final String docRoot, int port) {
+
+        if (INSTANCE != null) {
+            throw new IllegalStateException("Only one server instance allowed.");
+        }
+        INSTANCE = this;
+
+        this.shell = shell;
+        this.docRoot = new File(docRoot);
+        viewer = new PiccoloSVGBrowseViewer(shell);
+
         SelectChannelConnector connector = new SelectChannelConnector();
         connector.setPort(port);
         addConnector(connector);
@@ -95,8 +116,8 @@ public class BrowsingSVGServer extends Server {
         ResourceHandler rHandler = new ResourceHandler();
         rHandler.setDirectoriesListed(true);
         // rHandler.setResourceBase("html");
+        // local html folder
         rHandler.setResourceBase("E:/Uni/ma/pragmatics/plugins/de.cau.cs.kieler.klighd.piccolo.svg/html");
-        System.out.println(rHandler.getBaseResource().getURI());
         wsHandler.setHandler(rHandler);
 
         HandlerList hlist = new HandlerList();
@@ -108,24 +129,14 @@ public class BrowsingSVGServer extends Server {
 
         verbose = true;
 
-        shell.open();
+        // finally start the server
+        startServer();
     }
 
     public static BrowsingSVGServer getInstance() {
-        if (INSTANCE == null) {
-            INSTANCE = new BrowsingSVGServer(PORT);
-            startServer();
-        }
         return INSTANCE;
     }
 
-    /**
-     * @param viewer
-     *            the viewer to set
-     */
-    public void setViewer(PiccoloSVGBrowseViewer viewer) {
-        this.viewer = viewer;
-    }
 
     private static void startServer() {
         System.out.println("Starting browsing server ...");
@@ -141,11 +152,6 @@ public class BrowsingSVGServer extends Server {
         }.start();
 
     }
-
-    // public void setViewer(KlighdSVGGraphicsImpl theSvgGenerator, PiccoloSVGViewer viewer) {
-    // svgGenerator = theSvgGenerator;
-    // this.viewer = viewer;
-    // }
 
     class SVGSendingWebSocket implements WebSocket, WebSocket.OnTextMessage {
 
@@ -185,11 +191,12 @@ public class BrowsingSVGServer extends Server {
             System.out.println(x + " " + y);
             viewer.getCanvas().getCamera().translateView(-x, -y);
 
-            Display.getDefault().syncExec(new Runnable() {
+            shell.getDisplay().syncExec(new Runnable() {
 
                 public void run() {
-                    viewer.getCanvas().getCamera().invalidatePaint();
-                    viewer.getCanvas().redraw();
+                    // viewer.getCanvas().getCamera().invalidatePaint();
+                    // viewer.getCanvas().redraw();
+                    viewer.globalRedraw();
                 }
             });
             broadcastSVG();
@@ -238,14 +245,19 @@ public class BrowsingSVGServer extends Server {
             System.out.println(target + " " + request);
 
             IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
+
+            System.out.println(docRoot.getPath());
+
             if (target.startsWith("/content")) {
 
-                String html = new HtmlGenerator().toHtmlRoot(root);
+                // String html = new HtmlGenerator().toHtmlRoot(root);
+                String html = new HtmlGenerator().toHtmlRoot(docRoot);
 
                 response.setContentType("text/html;charset=utf8");
                 response.setStatus(HttpServletResponse.SC_OK);
                 baseRequest.setHandled(true);
                 response.getWriter().println(html);
+
             } else if (target.startsWith("/resource")) {
 
                 String path = target.replace("/resource", "");
@@ -257,86 +269,45 @@ public class BrowsingSVGServer extends Server {
                 response.getWriter().println(res);
 
                 ResourceSet rs = new ResourceSetImpl();
-                
-                // MOML 
+
+                // MOML
                 Map<String, Boolean> parserFeatures = Maps.newHashMap();
-                parserFeatures.put(
-                        "http://xml.org/sax/features/validation", //$NON-NLS-1$
+                parserFeatures.put("http://xml.org/sax/features/validation", //$NON-NLS-1$
                         Boolean.FALSE);
-                parserFeatures.put(
-                        "http://apache.org/xml/features/nonvalidating/load-dtd-grammar", //$NON-NLS-1$
+                parserFeatures.put("http://apache.org/xml/features/nonvalidating/load-dtd-grammar", //$NON-NLS-1$
                         Boolean.FALSE);
                 parserFeatures.put(
                         "http://apache.org/xml/features/nonvalidating/load-external-dtd", //$NON-NLS-1$
                         Boolean.FALSE);
-                
+
                 rs.getLoadOptions().put(XMIResource.OPTION_RECORD_UNKNOWN_FEATURE, true);
                 rs.getLoadOptions().put(XMLResource.OPTION_PARSER_FEATURES, parserFeatures);
                 rs.getResourceFactoryRegistry().getExtensionToFactoryMap()
                         .put("xml", new MomlResourceFactoryImpl());
-                
-                
+
+                // final Resource r =
+                // rs.getResource(
+                // URI.createPlatformResourceURI(res.getFullPath().toString(), false),
+                // true);
+
                 final Resource r =
                         rs.getResource(
-                                URI.createPlatformResourceURI(res.getFullPath().toString(), false),
-                                true);
+                                URI.createFileURI(new File(docRoot, path).getAbsolutePath()), true);
 
-                final Object model = r.getContents().get(0);
+                System.out.println(r);
 
-                Display.getDefault().asyncExec(new Runnable() {
+                shell.getDisplay().asyncExec(new Runnable() {
 
                     public void run() {
-                        // MapPropertyHolder props = new MapPropertyHolder();
-                        // props.setProperty(LightDiagramServices.REQUESTED_UPDATE_STRATEGY,
-                        // SimpleUpdateStrategy.ID);
-                        //
-                        // final ViewContext ctx =
-                        // LightDiagramServices.getInstance().createViewContext(model, props);
-                        // viewer.setModel((KNode) ctx.getViewModel());
-                        //
-                        // System.out.println(LightDiagramServices.getInstance().updateViewContext(ctx,
-                        // model));
+                        viewer.getCanvas().setBounds(0, 0, 870, 600);
 
-                        // LightDiagramServices.getInstance().layoutDiagram(ctx, false, true);
-
-                        System.out.println(r.getContents().get(0));
-
+                        // translate and set the model
                         currentModel =
                                 LightDiagramServices.translateModel(new ViewContext(), r
                                         .getContents().get(0));
-
-                        // System.out.println(o);
-                        viewer.getCanvas().setBounds(0, 0, 870, 600);
-
                         viewer.setModel(currentModel, true);
-                        viewer.globalRedraw();
-                        // ViewContext ctx =
-                        // LightDiagramServices.getInstance().createViewContext(r.getContents().get(0));
-                        // LightDiagramServices.getInstance().layoutDiagram(ctx, false, false);
 
-                        KlighdLayoutManager mng = new KlighdLayoutManager();
-                        LayoutMapping<KGraphElement> mapping =
-                                mng.buildLayoutGraph(currentModel);
-                        // FIXME reactovate!
-//                        mapping.setProperty(KlighdProperties.VIEWER, viewer);
-                        
-                        DiagramLayoutEngine.INSTANCE.layout(mapping, new BasicProgressMonitor());
-                        // viewer.setRecording(true);
-                        mng.applyLayout(mapping, true, 0);
-                        // viewer.setRecording(false);
-
-                        // new RecursiveGraphLayoutEngine().layout(o, new BasicProgressMonitor()) ;
-
-                        // viewer.getCanvas().setVisible(true);
-                        // viewer.zoomToFit(0);
-                        viewer.globalRedraw();
-
-                        // c.redraw();
-                        // shell.setVisible(false);
-
-                        // LightDiagramServices.getInstance().layoutDiagram(ctx, true, true);
-                        // WorkspaceContributor.getWorkspaceStructure();
-
+                        applyLayout();
                     }
                 });
 
@@ -352,22 +323,9 @@ public class BrowsingSVGServer extends Server {
                 Display.getDefault().asyncExec(new Runnable() {
 
                     public void run() {
+                        // expand and layout
                         viewer.toggleExpansion(id);
-
-                        KlighdLayoutManager mng = new KlighdLayoutManager();
-                        LayoutMapping<KGraphElement> mapping =
-                                mng.buildLayoutGraph(currentModel);
-//                        mapping.setProperty(KlighdLayoutManager.VIEWER, viewer);
-                        DiagramLayoutEngine.INSTANCE.layout(mapping, new BasicProgressMonitor());
-                        // viewer.setRecording(true);
-                        mng.applyLayout(mapping, true, 0);
-                        // viewer.setRecording(false);
-
-                        // new RecursiveGraphLayoutEngine().layout(o, new BasicProgressMonitor()) ;
-
-                        // viewer.getCanvas().setVisible(true);
-                        // viewer.zoomToFit(0);
-                        viewer.globalRedraw();
+                        applyLayout();
                     }
                 });
             } else if (target.startsWith("/zoom/")) {
@@ -378,14 +336,14 @@ public class BrowsingSVGServer extends Server {
                 try {
                     final Integer delta = Integer.valueOf(target.replace("/zoom/", ""));
 
-                    Display.getDefault().asyncExec(new Runnable() {
+                    shell.getDisplay().asyncExec(new Runnable() {
 
                         public void run() {
                             final PCamera camera = viewer.getCanvas().getCamera();
                             double scaleDelta = 1.0 + 0.05 * delta;
 
-                            final double currentScale = camera.getViewScale();
-                            final double newScale = currentScale * scaleDelta;
+                            // final double currentScale = camera.getViewScale();
+                            // final double newScale = currentScale * scaleDelta;
 
                             // if (newScale < minScale) {
                             // scaleDelta = minScale / currentScale;
@@ -408,7 +366,17 @@ public class BrowsingSVGServer extends Server {
             }
 
         }
+    }
 
+    private void applyLayout() {
+
+        LayoutMapping<KGraphElement> mapping = mng.buildLayoutGraph(null, currentModel);
+        // FIXME reactovate!
+        mapping.setProperty(KlighdInternalProperties.VIEWER, viewer);
+
+        DiagramLayoutEngine.INSTANCE.layout(mapping, new BasicProgressMonitor());
+        mng.applyLayout(mapping, true, 0);
+        viewer.globalRedraw();
     }
 
 }

@@ -147,7 +147,6 @@ public class PiccoloSVGBrowseViewer extends AbstractViewer<KNode> implements INo
                 }
 
                 // update the svg
-                BrowsingSVGServer.getInstance().setViewer(PiccoloSVGBrowseViewer.this);
                 BrowsingSVGServer.getInstance().broadcastSVG();
             }
 
@@ -175,7 +174,9 @@ public class PiccoloSVGBrowseViewer extends AbstractViewer<KNode> implements INo
             recurseNodes(controller.getNode());
         }
 //        controller.getNode().invalidateFullBounds();
-        canvas.redraw();
+//        canvas.redraw();
+//        canvas.repaint();
+        canvas.paintComponent(new GC(canvas), 0, 0, canvas.getSize().x, canvas.getSize().y);
     }
 
     private void recurseNodes(PNode parent) {

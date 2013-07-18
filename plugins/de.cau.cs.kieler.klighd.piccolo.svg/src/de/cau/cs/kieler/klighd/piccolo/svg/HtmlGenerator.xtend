@@ -4,10 +4,12 @@ import org.eclipse.core.resources.IContainer
 import org.eclipse.core.resources.IFile
 import org.eclipse.core.resources.IResource
 import org.eclipse.core.resources.IWorkspaceRoot
+import java.io.File
 
 class HtmlGenerator {
     
     var IWorkspaceRoot root = null;
+    var File rootFile = null;
     
     def String toHtmlRoot(IWorkspaceRoot root) {
         this.root = root
@@ -19,6 +21,34 @@ class HtmlGenerator {
         "<ul id='tree'>" + html + "</ul>"
     }
     
+    def String toHtmlRoot(File root) {
+        this.rootFile = root 
+           
+        val html = root.listFiles.map [ project |
+            toHtml(project) 
+        ].join("\n")
+        
+        "<ul id='tree'>" + html + "</ul>"
+    }
+    
+    def dispatch String toHtml(File f) {
+    	
+    	if(f.directory) {
+    		var String html = "<li><a href='#' class='folder' data-path='"+ f.relative + "'>" + f.name + "</a>" 
+           
+        html = html + "<ul>" + f.listFiles.map [ cont |
+            toHtml(cont)
+        ].join("\n")
+        html = html + "</ul></li>";
+
+        return html
+    	} else {
+    		 val html = "<li><a href='#' class='file' data-path='"+ f.relative + "'>" + f.name + "</a></li>"
+              
+        html
+    	}
+    	
+    }
     
     /**
      * IProject is a container
@@ -47,5 +77,8 @@ class HtmlGenerator {
     }
     
     
+    def String relative(File child) {
+    	child.absolutePath.replace(rootFile.absolutePath, "")
+    }
     
 }

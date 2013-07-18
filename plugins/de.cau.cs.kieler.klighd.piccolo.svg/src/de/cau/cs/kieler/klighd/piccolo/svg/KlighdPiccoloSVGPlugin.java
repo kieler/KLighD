@@ -20,7 +20,7 @@ public class KlighdPiccoloSVGPlugin implements BundleActivator {
 	public void start(BundleContext bundleContext) throws Exception {
 		KlighdPiccoloSVGPlugin.context = bundleContext;
 		
-		BrowsingSVGServer.getInstance();
+//		BrowsingSVGServer.getInstance();
 //		SVGServer.getInstance();
 	}
 
