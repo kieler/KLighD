@@ -13,6 +13,7 @@
  */
 package de.cau.cs.kieler.klighd.piccolo.svg;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Composite;
 import java.awt.Font;
@@ -22,6 +23,7 @@ import java.awt.Image;
 import java.awt.Polygon;
 import java.awt.RenderingHints.Key;
 import java.awt.Shape;
+import java.awt.Stroke;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
@@ -179,6 +181,12 @@ public class KlighdSVGGraphicsImpl extends KlighdSWTGraphicsImpl implements Klig
         // TODO Auto-generated method stub
         // unsupported();
         super.setLineAttributes(attributes);
+
+        Stroke s =
+                new BasicStroke(attributes.width, attributes.cap - 1, attributes.join - 1,
+                        attributes.miterLimit, attributes.dash, attributes.dashOffset);
+        graphics.setStroke(s);
+
     }
 
     /**
@@ -190,14 +198,17 @@ public class KlighdSVGGraphicsImpl extends KlighdSWTGraphicsImpl implements Klig
         // return strokeWidth;
     }
 
-    private int strokeWidth = 0;
-
     /**
      * {@inheritDoc}
      */
     @Override
     public void setLineWidth(float lineWidth) {
         super.setLineWidth(lineWidth);
+        LineAttributes lineAttributes = getLineAttributes();
+        Stroke s =
+                new BasicStroke(lineWidth, lineAttributes.cap - 1, lineAttributes.join - 1,
+                        lineAttributes.miterLimit, lineAttributes.dash, lineAttributes.dashOffset);
+        graphics.setStroke(s);
     }
 
     /**
@@ -507,7 +518,7 @@ public class KlighdSVGGraphicsImpl extends KlighdSWTGraphicsImpl implements Klig
     @Override
     public void drawImage(org.eclipse.swt.graphics.Image image, double x, double y) {
         Image img = convertToAWT(image.getImageData());
-        graphics.drawImage(img,  (int) x, (int) y, null);
+        graphics.drawImage(img, (int) x, (int) y, null);
         super.drawImage(image, x, y);
     }
 
@@ -635,8 +646,10 @@ public class KlighdSVGGraphicsImpl extends KlighdSWTGraphicsImpl implements Klig
     public void translate(int x, int y) {
         super.translate(x, y);
 
-        // FIXME different translation ?!
-        graphics.translate(x - 20, y + 20);
+        // FIXME probably only for font drawing ...
+        // add the font height to the translation
+        int height = graphics.getFontMetrics(graphics.getFont()).getHeight();
+        graphics.translate(x, y + height);
     }
 
     /**
