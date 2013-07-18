@@ -225,7 +225,7 @@ public class KlighdSVGGraphicsImpl extends KlighdSWTGraphicsImpl implements Klig
     @Override
     public void setAlpha(int alpha) {
         super.setAlpha(alpha);
-
+System.out.println(alpha);
         Color c = graphics.getColor();
         Color c2 = new Color(c.getRed(), c.getGreen(), c.getBlue(), alpha);
         graphics.setColor(c2);
@@ -240,6 +240,8 @@ public class KlighdSVGGraphicsImpl extends KlighdSWTGraphicsImpl implements Klig
 
         graphics.setColor(rgb2Color(color));
     }
+    
+    
 
     /**
      * {@inheritDoc}
