@@ -108,8 +108,8 @@ public abstract class AbstractTransformation<S, T> implements ITransformation<S,
      * Method to put a pair of source target into the lookup table.<br>
      * Name, Parameter ordering, and return value (the target) are optimized for
      * calling in Xtend2 based transformations in a fluent interface fashion, like
-     * "model.createShape().putToSourceTargetLookUpWith(model);"<br><br>
-     * 
+     * "model.createShape().putToLookUpWith(model);"<br>
+     * <br>
      * Usage requires to perform 'use(TransformationContext)' at the beginning of
      * {@link ITransformation#transform(Object, TransformationContext)}.
      * 
