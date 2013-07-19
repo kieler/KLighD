@@ -20,6 +20,7 @@ import java.awt.Font;
 import java.awt.GradientPaint;
 import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.Paint;
 import java.awt.Polygon;
 import java.awt.RenderingHints.Key;
 import java.awt.Shape;
@@ -136,6 +137,10 @@ public class KlighdSVGGraphicsImpl extends KlighdSWTGraphicsImpl implements Klig
     private Color rgb2Color(final RGB color) {
         return new Color(color.red, color.green, color.blue);
     }
+    
+    private Color rgb2Color(final RGB color, int alpha) {
+        return new Color(color.red, color.green, color.blue, alpha);
+    }
 
     private GradientPaint rgb2Pattern(final RGBGradient gradient, Rectangle2D bounds) {
         GradientPaint gp =
@@ -216,19 +221,28 @@ public class KlighdSVGGraphicsImpl extends KlighdSWTGraphicsImpl implements Klig
      */
     @Override
     public int getAlpha() {
-        return graphics.getColor().getAlpha();
+        return super.getAlpha();
     }
-
+    
     /**
      * {@inheritDoc}
      */
     @Override
     public void setAlpha(int alpha) {
         super.setAlpha(alpha);
-System.out.println(alpha);
+        
         Color c = graphics.getColor();
         Color c2 = new Color(c.getRed(), c.getGreen(), c.getBlue(), alpha);
         graphics.setColor(c2);
+        
+        // set alpha of background
+//        Paint p = graphics.getPaint();
+//        if(p instanceof Color) {
+//            graphics.setPaint(new Color(((Color) p).getRed(), ((Color) p).getGreen(), ((Color) p).getBlue(), alpha));
+//        }
+
+//        Color bg = graphics.getBackground();
+//        graphics.setBackground(new Color(((Color) bg).getRed(), ((Color) bg).getGreen(), ((Color) bg).getBlue(), alpha));
     }
 
     /**
@@ -240,8 +254,6 @@ System.out.println(alpha);
 
         graphics.setColor(rgb2Color(color));
     }
-    
-    
 
     /**
      * {@inheritDoc}
@@ -259,10 +271,12 @@ System.out.println(alpha);
     @Override
     public void setBackground(RGB backgroundColor) {
         super.setBackground(backgroundColor);
-        graphics.setBackground(rgb2Color(backgroundColor));
+//        graphics.setBackground(rgb2Color(backgroundColor));
 
         // FIXME why?? It seems, that batik ignores the background color.
-        setColor(backgroundColor);
+//        setColor(backgroundColor);
+
+        graphics.setPaint(rgb2Color(backgroundColor, getAlpha()));
 
     }
 

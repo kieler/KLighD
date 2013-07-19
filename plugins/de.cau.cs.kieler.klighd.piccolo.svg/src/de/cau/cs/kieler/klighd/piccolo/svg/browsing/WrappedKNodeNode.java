@@ -56,9 +56,11 @@ public class WrappedKNodeNode extends PNode {
             
             KlighdSVGGraphicsImpl g = (KlighdSVGGraphicsImpl) paintContext.getGraphics();
 //            g.setColor(Color.BLACK);
+            int oldAlpha = g.getAlpha();
             g.setAlpha(0);
             //g.drawRect(view.getX(), view.getY(), view.getWidth(), view.getHeight());
             g.drawText("de.cau.cs.kieler.id:" + node.hashCode(), 0, 0);
+            g.setAlpha(oldAlpha);
             
 //            Element root = g.getDocument().getDocumentElement();
 ////            Node elem = g.getDocument().getDocumentElement();
