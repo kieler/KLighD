@@ -34,6 +34,6 @@ Require-Bundle: org.eclipse.core.runtime;bundle-version="3.6.0",
  org.ptolemy.moml;bundle-version="1.0.1",
  javax.servlet;bundle-version="3.0.0"
 Bundle-ActivationPolicy: lazy
-Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Export-Package: de.cau.cs.kieler.klighd.piccolo.svg
 
