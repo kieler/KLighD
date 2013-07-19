@@ -13,6 +13,9 @@
  */
 package de.cau.cs.kieler.klighd.piccolo.svg.browsing;
 
+import java.io.File;
+
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.equinox.app.IApplication;
 import org.eclipse.equinox.app.IApplicationContext;
 import org.eclipse.swt.widgets.Shell;
@@ -23,12 +26,10 @@ import org.eclipse.swt.widgets.Shell;
  */
 public class BrowseServerApplication implements IApplication {
 
-    // private boolean termRequested = false;
-    // private Object termSync = new Object();
-
+    // A dummy shell is required to obey to piccolos class hierarchy.
     private final Shell shell = new Shell();
 
-    String rootFolder = "E:/Uni/ma/models";
+    private String rootFolder = null;
 
     /**
      * {@inheritDoc}
@@ -36,28 +37,39 @@ public class BrowseServerApplication implements IApplication {
     @Override
     public Object start(IApplicationContext context) throws Exception {
 
+        // parse arguments
+        String[] args = Platform.getCommandLineArgs();
+
+        int i = 0;
+        while (i < args.length) {
+            if (args[i].equals("-rootFolder")) {
+                i++;
+                File f = new File(args[i]);
+                if (f.exists()) {
+                    rootFolder = f.getAbsolutePath();
+                } else {
+                    throw new IllegalArgumentException("Cannot locate specified root folder " + f
+                            + ".");
+                }
+            }
+            i++;
+        }
+        
+        if(rootFolder == null) {
+            throw new IllegalArgumentException("No -rootFolder specified.");
+        }
+
         new BrowsingSVGServer(shell, rootFolder, 8081);
 
+        // start the shell's event loop
         while (!shell.isDisposed()) {
             if (!shell.getDisplay().readAndDispatch()) {
                 shell.getDisplay().sleep();
             }
         }
 
-        // synchronized (termSync) {
-        // while (!termRequested) {
-        // try {
-        // termSync.wait();
-        // } catch (InterruptedException e) {
-        // // Nothing to do, simply wait on synchronization
-        // // object again.
-        // }
-        // }
-        // }
-
         try {
             BrowsingSVGServer.getInstance().stop();
-
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -71,10 +83,6 @@ public class BrowseServerApplication implements IApplication {
     @Override
     public void stop() {
         shell.dispose();
-        // termRequested = true;
-        // synchronized (termSync) {
-        // termSync.notify();
-        // }
     }
 
 }

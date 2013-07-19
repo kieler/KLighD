@@ -9,7 +9,7 @@
       </viewer>
    </extension>
    <extension
-         id="id1"
+         id="Browser"
          point="org.eclipse.core.runtime.applications">
       <application
             cardinality="singleton-global"
@@ -19,5 +19,17 @@
                class="de.cau.cs.kieler.klighd.piccolo.svg.browsing.BrowseServerApplication">
          </run>
       </application>
+   </extension>
+   <extension
+         id="product"
+         point="org.eclipse.core.runtime.products">
+      <product
+            application="de.cau.cs.kieler.klighd.piccolo.svg.Browser"
+            name="KlighD SVG Browser">
+         <property
+               name="appName"
+               value="KlighD SVG Browser">
+         </property>
+      </product>
    </extension>
 </plugin>

@@ -19,6 +19,7 @@ package de.cau.cs.kieler.klighd.piccolo.svg.browsing;
  */
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.util.Map;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
@@ -28,6 +29,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.FileLocator;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
@@ -45,6 +48,7 @@ import org.eclipse.jetty.websocket.WebSocket.Connection;
 import org.eclipse.jetty.websocket.WebSocketHandler;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
+import org.osgi.framework.Bundle;
 import org.ptolemy.moml.util.MomlResourceFactoryImpl;
 
 import com.google.common.collect.Maps;
@@ -59,6 +63,7 @@ import de.cau.cs.kieler.klighd.ViewContext;
 import de.cau.cs.kieler.klighd.internal.macrolayout.KlighdLayoutManager;
 import de.cau.cs.kieler.klighd.internal.util.KlighdInternalProperties;
 import de.cau.cs.kieler.klighd.piccolo.svg.HtmlGenerator;
+import de.cau.cs.kieler.klighd.piccolo.svg.KlighdPiccoloSVGPlugin;
 import edu.umd.cs.piccolo.PCamera;
 
 @SuppressWarnings("restriction")
@@ -114,9 +119,18 @@ public class BrowsingSVGServer extends Server {
 
         ResourceHandler rHandler = new ResourceHandler();
         rHandler.setDirectoriesListed(true);
-        // rHandler.setResourceBase("html");
-        // local html folder
-        rHandler.setResourceBase("E:/Uni/ma/pragmatics/plugins/de.cau.cs.kieler.klighd.piccolo.svg/html");
+        
+        // locate the bundle during runtime
+        try {
+            Bundle bundle = Platform.getBundle(KlighdPiccoloSVGPlugin.PLUGIN_ID);
+            URL htmlURL = bundle.getEntry("html/");
+            URL path = FileLocator.resolve(htmlURL);
+            File location = new File(path.toURI());
+            rHandler.setResourceBase(location.getAbsolutePath());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         wsHandler.setHandler(rHandler);
 
         HandlerList hlist = new HandlerList();
@@ -330,7 +344,8 @@ public class BrowsingSVGServer extends Server {
                             // catch any error
                             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
                             try {
-                                response.getWriter().println("ERROR: Unable to handle the selected model.");
+                                response.getWriter().println(
+                                        "ERROR: Unable to handle the selected model.");
                             } catch (IOException e1) {
                                 e1.printStackTrace();
                             }
