@@ -34,7 +34,6 @@ public class BrowseServerApplication implements IApplication {
     /**
      * {@inheritDoc}
      */
-    @Override
     public Object start(IApplicationContext context) throws Exception {
 
         // parse arguments
@@ -80,7 +79,6 @@ public class BrowseServerApplication implements IApplication {
     /**
      * {@inheritDoc}
      */
-    @Override
     public void stop() {
         shell.dispose();
     }
