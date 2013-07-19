@@ -75,9 +75,12 @@ import de.cau.cs.kieler.klighd.views.IDiagramWorkbenchPart;
 public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement> {
 
     /** the list of edges found in the graph. */
-    public static final IProperty<List<KEdge>> EDGES = new Property<List<KEdge>>(
+    private static final IProperty<List<KEdge>> EDGES = new Property<List<KEdge>>(
             "krendering.layout.edges");
 
+    private static final IProperty<IWorkbenchPart> WORKBENCH_PART = new Property<IWorkbenchPart>(
+            "klighd.workbenchPart");
+    
     /** the property layout config. */
     private ILayoutConfig propertyLayoutConfig = new KGraphPropertyLayoutConfig();
     
@@ -119,12 +122,22 @@ public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement>
         if (adapterType.isAssignableFrom(KGraphPropertyLayoutConfig.class)) {
             return propertyLayoutConfig;
         } else if (adapterType.isAssignableFrom(EObject.class)) {
+            
+            if (object instanceof KEdge) {
+                return ((KEdge) object).getData(KEdgeLayout.class).getProperty(
+                        KlighdInternalProperties.MODEL_ELEMEMT);
+            } else if (object instanceof KGraphElement) {
+                return ((KGraphElement) object).getData(KShapeLayout.class).getProperty(
+                        KlighdInternalProperties.MODEL_ELEMEMT);
+            }
+            
             ContextViewer contextViewer = null;
             if (object instanceof ContextViewer) {
                 contextViewer = (ContextViewer) object;
             } else if (object instanceof IDiagramWorkbenchPart) {
                 contextViewer = ((IDiagramWorkbenchPart) object).getContextViewer();
             }
+            
             if (contextViewer != null) {
                 ViewContext viewContext = contextViewer.getCurrentViewContext();
                 if (viewContext != null) {
@@ -171,14 +184,15 @@ public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement>
             final Object diagramPart) {
         KNode graph = null;
         IViewer<?> viewer = null;
+        IDiagramWorkbenchPart diagramWorkbenchPart = null;
 
         // search for the root node
         if (diagramPart instanceof KNode) {
             graph = (KNode) diagramPart;
         } else {
             if (workbenchPart instanceof IDiagramWorkbenchPart) {
-                IDiagramWorkbenchPart view = (IDiagramWorkbenchPart) workbenchPart;
-                viewer = view.getContextViewer().getActiveViewer();
+                diagramWorkbenchPart = (IDiagramWorkbenchPart) workbenchPart;
+                viewer = diagramWorkbenchPart.getContextViewer().getActiveViewer();
             } else if (diagramPart instanceof ContextViewer) {
                 ContextViewer contextViewer = (ContextViewer) diagramPart;
                 viewer = contextViewer.getActiveViewer();
@@ -206,6 +220,7 @@ public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement>
         // create the mapping
         LayoutMapping<KGraphElement> mapping = buildLayoutGraph(graph);
         mapping.setProperty(EclipseLayoutConfig.ACTIVATION, false);
+        mapping.setProperty(WORKBENCH_PART, diagramWorkbenchPart);
 
         // remember the viewer if any
         if (viewer != null) {
@@ -599,6 +614,8 @@ public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement>
                     KEdgeLayout edgeLayout = element.getData(KEdgeLayout.class);
                     if (edgeLayout != null) {
                         transferEdgeLayout(edgeLayout, layoutLayout, false);
+                        edgeLayout.setProperty(LayoutOptions.JUNCTION_POINTS,
+                                layoutLayout.getProperty(LayoutOptions.JUNCTION_POINTS));
                     }
                     return true;
                 }

@@ -13,6 +13,8 @@
  */
 package de.cau.cs.kieler.klighd.internal.util;
 
+import org.eclipse.emf.ecore.EObject;
+
 import de.cau.cs.kieler.core.properties.IProperty;
 import de.cau.cs.kieler.core.properties.Property;
 import de.cau.cs.kieler.klighd.IViewer;
@@ -30,6 +32,14 @@ public final class KlighdInternalProperties {
      */
     private KlighdInternalProperties() {
     }
+    
+    /**
+     * Property for preserving the domain model element being represented by a diagram element or
+     * diagram figure element. Is to be attached to {@link de.cau.cs.kieler.core.kgraph.KGraphData
+     * KGraphData}, for {@link de.cau.cs.kieler.core.kgraph.KGraphElement KGraphElements} it is to
+     * be attached to their layout data.
+     */
+    public static final IProperty<EObject> MODEL_ELEMEMT = new Property<EObject>("klighd.modelElement");
 
     /**
      * Property indicating that the node has been populated. A node is populated, if and only if the
