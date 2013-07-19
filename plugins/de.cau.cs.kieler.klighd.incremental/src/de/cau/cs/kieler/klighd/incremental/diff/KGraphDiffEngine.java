@@ -32,7 +32,6 @@ import de.cau.cs.kieler.core.krendering.KRenderingPackage;
 import de.cau.cs.kieler.core.properties.IProperty;
 import de.cau.cs.kieler.kiml.klayoutdata.KLayoutDataPackage;
 import de.cau.cs.kieler.klighd.internal.util.KlighdInternalProperties;
-import de.cau.cs.kieler.klighd.util.KlighdProperties;
 
 /**
  * A customized {@link org.eclipse.emf.compare.diff.engine.IDiffEngine2 IDiffEngine2} that realizes
@@ -51,9 +50,9 @@ import de.cau.cs.kieler.klighd.util.KlighdProperties;
  * In addition the treatment of {@link IProperty} definitions on
  * {@link de.cau.cs.kieler.core.krendering.KRendering KRendering} data is tailored.
  * 
- * TODO: This implementation is assumed to not work properly with pre-defined layout data.
- * 
  * @author chsch
+ * @kieler.design proposed by chsch
+ * @kieler.rating proposed yellow by chsch
  */
 public class KGraphDiffEngine extends GenericDiffEngine {
 
@@ -72,6 +71,18 @@ public class KGraphDiffEngine extends GenericDiffEngine {
     }
 
     /**
+     * {@inheritDoc}<br>
+     * <br>
+     * This customized implementation applies {@link #FILTER} to the provided <code>unmatched</code>
+     * elements and passes that modified list to the <code>super</code> implementation.
+     */
+    protected void processUnmatchedElements(final DiffGroup diffRoot,
+            final List<UnmatchElement> unmatched) {
+        List<UnmatchElement> filteredList = Lists.newLinkedList(Iterables.filter(unmatched, FILTER));
+        super.processUnmatchedElements(diffRoot, filteredList);
+    }
+
+    /**
      * A list of {@link IProperty IProperties} whose occurrences on KRendering data are to be merged
      * during the merge step. This list acts as a "white list", it is incorporated during the
      * pre-processing of unmatched elements being identified during the match step. That
@@ -81,11 +92,11 @@ public class KGraphDiffEngine extends GenericDiffEngine {
      * Property definitions on KRendering data beyond these ones are ignored while processing
      * unmatched elements and, thus, won't be deleted.<br>
      * <br>
-     * Note that property definitions on layout data are not considered here!
+     * Note that property definitions on {@link de.cau.cs.kieler.kiml.klayoutdata.KLayoutData
+     * KLayoutData} are not considered here! See {@link #FILTER} for that restriction.
      */
-    private static final List<IProperty<?>> MERGE_PROPERTIES = ImmutableList.of(
-            KlighdInternalProperties.MODEL_ELEMEMT,
-            KlighdProperties.MINIMAL_NODE_SIZE);
+    private static final List<IProperty<?>> MERGE_PROPERTIES = ImmutableList.<IProperty<?>>of(
+            KlighdInternalProperties.MODEL_ELEMEMT);
     
     /**
      * This predicate defines the conditions for dropping elements of the list of unmatched ones. An
@@ -100,11 +111,11 @@ public class KGraphDiffEngine extends GenericDiffEngine {
             res &= !(KLayoutDataPackage.eINSTANCE.getKPoint().isInstance(element.getElement()));
             
             // Omit all IPropertyToObjectMapImpls that are attached to KRendering-related
-            //  data structures except for those mentioned in mergeProperties
-            //  that are set by the KLighD translation infrastructure rather than the
-            //  Piccolo-based rendering binding; must be updated/replaced during the merge!
-            // They remaining ones are attached to the displayed model to cache information
-            //  and shall be preserved!
+            //  data structures except for those mentioned in MERGE_PROPERTIES.
+            // Those are set by the KLighD translation infrastructure rather than the
+            //  Piccolo-based rendering binding; they must be updated/replaced during the merge!
+            // The remaining ones have been attached to the displayed view model to cache
+            //  information and shall be preserved!
             res &= !(element.getSide().equals(Side.LEFT)
                     && element.getElement() instanceof IPropertyToObjectMapImpl
                     && element.getElement().eContainer().eClass().getEPackage()
@@ -114,13 +125,4 @@ public class KGraphDiffEngine extends GenericDiffEngine {
             return res; 
         }
     };
-    
-    /**
-     * {@inheritDoc}
-     */
-    protected void processUnmatchedElements(final DiffGroup diffRoot,
-            final List<UnmatchElement> unmatched) {
-        List<UnmatchElement> filteredList = Lists.newLinkedList(Iterables.filter(unmatched, FILTER));
-        super.processUnmatchedElements(diffRoot, filteredList);
-    }
 }

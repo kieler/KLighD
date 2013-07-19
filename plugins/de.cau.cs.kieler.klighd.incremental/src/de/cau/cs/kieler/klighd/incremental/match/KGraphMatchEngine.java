@@ -23,6 +23,7 @@ import org.eclipse.emf.ecore.resource.Resource;
 
 import de.cau.cs.kieler.core.kgraph.KGraphPackage;
 import de.cau.cs.kieler.core.kgraph.impl.IPropertyToObjectMapImpl;
+import de.cau.cs.kieler.kiml.klayoutdata.KLayoutDataPackage;
 
 /**
  * I customized {@link org.eclipse.emf.compare.match.engine.IMatchEngine IMatchEngine} that realizes
@@ -30,11 +31,14 @@ import de.cau.cs.kieler.core.kgraph.impl.IPropertyToObjectMapImpl;
  * <br>
  * Currently, it solely contributes a custom similarity checker by overriding
  * {@link #prepareChecker()}. That checker refines the checking of
+ * {@link de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout KShapeLayouts} and
  * {@link de.cau.cs.kieler.core.properties.IProperty IProperty} definitions on
- * {@link de.cau.cs.kieler.core.kgraph.KGraphData KGraphData} and delegates to the generic one for
- * other data.
+ * {@link de.cau.cs.kieler.core.kgraph.KGraphData KGraphData}, and delegates to the generic standard
+ * checker for other data. See {@link KGraphSimilarityChecker} for details.
  * 
  * @author chsch
+ * @kieler.design proposed by chsch
+ * @kieler.rating proposed yellow by chsch
  */
 public class KGraphMatchEngine extends GenericMatchEngine {
 
@@ -47,17 +51,34 @@ public class KGraphMatchEngine extends GenericMatchEngine {
 
 
     /**
-     * Specialized similarity checker that is in charge of determining the similarity of
+     * Specialized similarity checker that is in charge of determining the (un-)similarity of
+     * {@link de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout KShapeLayouts} and
      * {@link de.cau.cs.kieler.core.properties.IProperty IProperty} definitions on
-     * {@link de.cau.cs.kieler.core.kgraph.KGraphData KGraphData}.
+     * {@link de.cau.cs.kieler.core.kgraph.KGraphData KGraphData}.<br>
+     * <br>
+     * While the similarity of IProperty definitions is determined according to some natural
+     * function, {@link de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout KShapeLayouts} are stated to
+     * be dissimilar with respect to any other object.<br>
+     * <br>
+     * This implies that shape layouts are always treated as unmatched elements, which in turn leads
+     * to the removal of the instance in the target model, in our case the view's base view model,
+     * and the addition of a copy of the newly created view model's shape layout instance. This way
+     * out-dated memories created by the diagram rendering infrastructure in form of IProperties,
+     * mainly the <code>KlighdLayoutManager</code>, are disposed properly.
      * 
      * @author chsch
      */
     private static class KGraphSimilarityChecker extends AbstractSimilarityChecker {
 
         /**
+         * Constructor.
+         * 
          * @param mmFilter
-         * @param bridge
+         *            a meta model filter the checker can use to know whether a feature always has
+         *            the same value or not in the models.
+         * @param theDelegate
+         *            the {@link AbstractSimilarityChecker} to delegate all requests to that are not
+         *            "in scope" of this checker implementation
          */
         public KGraphSimilarityChecker(final MetamodelFilter mmFilter,
                 final AbstractSimilarityChecker theDelegate) {
@@ -65,22 +86,41 @@ public class KGraphMatchEngine extends GenericMatchEngine {
             this.delegate = theDelegate;
         }
         
+        /** The generic standard checker that is referred to for most input data. */
         private AbstractSimilarityChecker delegate = null;
 
-        private static final EClass IPROPERTY_TO_OBJECT_MAP_CLASS
-                = KGraphPackage.eINSTANCE.getIPropertyToObjectMap();
-        
+        // Some "equality" values that are returned for IProperty definitions,
+        //  I just guessed those values - I'm not aware of any policy for such values
         private static final double VALUES_EQUAL = 1d;
         private static final double VALUE_TYPES_EQUAL = 0.66d;
         private static final double IDS_EQUAL = 0.33d;
         private static final double FULLY_UNEQUAL = 0d;
 
+        private static final EClass KSHAPE_LAYOUT_CLASS
+            = KLayoutDataPackage.eINSTANCE.getKShapeLayout();
+        
+        private static final EClass IPROPERTY_TO_OBJECT_MAP_CLASS
+            = KGraphPackage.eINSTANCE.getIPropertyToObjectMap();
+        
 
         /**
-         * {@inheritDoc}
+         * {@inheritDoc}<br>
+         * <br>
+         * This customization states that instances of
+         * {@link de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout KShapeLayout} are always dissimilar
+         * to other objects, which results in a replacement (and re-initialization) of the instance
+         * in the target model under all circumstances.<br>
+         * <br>
+         * The similarity of {@link IPropertyToObjectMapImpl IPropertyToObjectMapImpls}, i.e.
+         * IProperty definitions, is determined based on the property's id, value type, and concrete
+         * value.
          */
         public double absoluteMetric(final EObject obj1, final EObject obj2)
                 throws FactoryException {
+            
+            if (KSHAPE_LAYOUT_CLASS.isInstance(obj1) || KSHAPE_LAYOUT_CLASS.isInstance(obj2)) {
+                return FULLY_UNEQUAL;
+            }
             
             if (IPROPERTY_TO_OBJECT_MAP_CLASS.isInstance(obj1)
                     && IPROPERTY_TO_OBJECT_MAP_CLASS.isInstance(obj2)) {
@@ -106,11 +146,24 @@ public class KGraphMatchEngine extends GenericMatchEngine {
         }
 
         /**
+         * {@inheritDoc}<br>
+         * <br>
          * I didn't get the actual meaning of this method, I hope I did it the right way.<br>
          * <br>
-         * {@inheritDoc}
+         * This customization states that instances of
+         * {@link de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout KShapeLayout} are always dissimilar
+         * to other objects, which results in a replacement (and re-initialization) of the instance
+         * in the target model under all circumstances.<br>
+         * <br>
+         * The similarity of {@link IPropertyToObjectMapImpl IPropertyToObjectMapImpls}, i.e.
+         * IProperty definitions, is determined based on the property's id and concrete value.
          */
         public boolean isSimilar(final EObject obj1, final EObject obj2) throws FactoryException {
+            
+            if (KSHAPE_LAYOUT_CLASS.isInstance(obj1) || KSHAPE_LAYOUT_CLASS.isInstance(obj2)) {
+                return false;
+            }
+            
             if (IPROPERTY_TO_OBJECT_MAP_CLASS.isInstance(obj1)
                     && IPROPERTY_TO_OBJECT_MAP_CLASS.isInstance(obj2)) {
                 final IPropertyToObjectMapImpl p1 = (IPropertyToObjectMapImpl) obj1;

@@ -25,9 +25,12 @@ import de.cau.cs.kieler.core.kgraph.KGraphPackage;
  * <br>
  * This concrete {@link ReferencesCheck} excludes the checking of the
  * {@link de.cau.cs.kieler.core.kgraph.KNode#getIncomingEdges() KNode#getIncomingEdges} association
- * while deriving a diff model based on a given match model.
+ * while deriving a {@link org.eclipse.emf.compare.diff.metamodel.DiffModel DiffModel} based on a
+ * given match model.
  * 
  * @author chsch
+ * @kieler.design proposed by chsch
+ * @kieler.rating proposed yellow by chsch
  */
 public class KGraphReferencesCheck extends ReferencesCheck {
 

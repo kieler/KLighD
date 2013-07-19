@@ -17,7 +17,8 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.Map;
 
-import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.compare.diff.merge.service.MergeService;
 import org.eclipse.emf.compare.diff.metamodel.DiffModel;
@@ -33,7 +34,9 @@ import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
-import com.google.common.collect.Maps;
+import org.eclipse.ui.statushandlers.StatusManager;
+
+import com.google.common.collect.ImmutableMap;
 
 import de.cau.cs.kieler.core.kgraph.KGraphPackage;
 import de.cau.cs.kieler.core.kgraph.KNode;
@@ -44,80 +47,25 @@ import de.cau.cs.kieler.klighd.IUpdateStrategy;
 import de.cau.cs.kieler.klighd.ViewContext;
 
 /**
- * The update strategy for KGraph models with attached KRendering data.
+ * The incremental update strategy for KGraph models with attached KRendering data that is based on
+ * EMF Compare.
  * 
- * @author mri, chsch
+ * @author mri
+ * @author chsch
+ * @kieler.design proposed by chsch
+ * @kieler.rating proposed yellow by chsch
  */
 public class UpdateStrategy implements IUpdateStrategy<KNode> {
 
-    /** The id used at registration of the strategy in the plugin.xml. */
+    /** The id used at registration of this strategy in the plugin.xml. */
     public static final String ID = UpdateStrategy.class.getCanonicalName();
+    
+    /** This plugin's id. */
+    public static final String PLUGIN_ID = "de.cau.cs.kieler.klighd.incremental";
     
     /** the priority for this update strategy. */
     public static final int PRIORITY = 20;
     
-    /**
-     * {@inheritDoc}
-     */
-    public int getPriority() {
-        return PRIORITY;
-    }
-    
-    /** the match scope provider for the EMF compare matching. */
-    private MatchScopeProvider scopeProvider = new MatchScopeProvider();
-    
-    /**
-     * {@inheritDoc}
-     */
-    public KNode getInitialBaseModel(final ViewContext viewContext) {
-        KNode baseModel = KimlUtil.createInitializedNode();
-        ResourceSet resourceSet = new ResourceSetImpl();
-        Resource resource = resourceSet.createResource(URI.createURI("dummy.kgraph"));
-        resource.getContents().add(baseModel);
-        return baseModel;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public void update(final KNode baseModel, final KNode newModel, final ViewContext viewContext) {
-        try {
-            //TODO RESOURCE HACK
-            ResourceSet resourceSet = new ResourceSetImpl();
-            Resource resource = resourceSet.createResource(URI.createURI("newDummy.kgraph"));
-            resource.getContents().add(newModel);
-
-            // DEBUG
-            //Path path = new Path("/test2/diff.xmi");
-            //System.out.println("baseModel begin");
-            //serialize(path, EcoreUtil.copy(baseModel));
-            //System.out.println("baseModel end\n");
-            //System.out.println("newModel begin");
-            //serialize(path, EcoreUtil.copy(newModel));
-            //System.out.println("newModel end\n");
-            
-            // match the base and the new model
-            Map<String, Object> matchOptions = Maps.newHashMap();
-            //matchOptions.put(MatchOptions.OPTION_DISTINCT_METAMODELS, false);
-            matchOptions.put(MatchOptions.OPTION_MATCH_SCOPE_PROVIDER, scopeProvider);
-            MatchModel match = MatchService.doMatch(baseModel, newModel, matchOptions);
-            
-            // compute differences
-            DiffModel diff = DiffService.doDiff(match, false);
-            
-            // DEBUG           
-            //System.out.println("Diff begin");
-            //serialize(path, EcoreUtil.copy(diff));
-            //System.out.println("Diff end\n");
-            
-            // merge differences
-            MergeService.merge(diff.getOwnedElements(), false);
-
-        } catch (InterruptedException e) {
-            throw new RuntimeException("Failed to update KGraph");
-        }
-    }
-
     /**
      * {@inheritDoc}
      */
@@ -126,26 +74,89 @@ public class UpdateStrategy implements IUpdateStrategy<KNode> {
     }
     
     /**
-     * The match scope provider for the KGraph with KRendering and KLayoutData matching.
+     * {@inheritDoc}
      */
-    private static class MatchScopeProvider implements IMatchScopeProvider {
+    public int getPriority() {
+        return PRIORITY;
+    }
+    
+    private Resource updateResource = null;
+    
+    /**
+     * {@inheritDoc}<br>
+     * <br>
+     * Beyond the view model's root element two resources are created within the same resource set.
+     * They are required by EMF Compare as that uses fragmentURIs for identifying similar elements,
+     * for example.
+     */
+    public KNode getInitialBaseModel(final ViewContext viewContext) {
+        final KNode baseModel = KimlUtil.createInitializedNode();
+        final ResourceSet resourceSet = new ResourceSetImpl();
+        final Resource resource = resourceSet.createResource(URI.createURI("baseModel.kgraph"));
+        updateResource = resourceSet.createResource(URI.createURI("newModel.kgraph"));
+        resource.getContents().add(baseModel);
+        return baseModel;
+    }
+
+
+    /** The match option definition, they lead to reduced number of incorporated similarity checkers. */
+    private static final Map<String, Object> MATCH_OPTIONS = ImmutableMap.<String, Object>of(
+            MatchOptions.OPTION_DISTINCT_METAMODELS, false,
+            MatchOptions.OPTION_IGNORE_XMI_ID, true,
+            MatchOptions.OPTION_IGNORE_ID, true,
+            MatchOptions.OPTION_MATCH_SCOPE_PROVIDER, new KGraphMatchScopeProvider());
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public void update(final KNode baseModel, final KNode newModel, final ViewContext viewContext) {
+        try {
+            updateResource.getContents().add(newModel);
+
+            // match the base and the new model
+            MatchModel match = MatchService.doMatch(baseModel, newModel, MATCH_OPTIONS);
+            
+            // compute differences
+            DiffModel diff = DiffService.doDiff(match, false);
+            
+            // DEBUG           
+            // serialize("/test/diff.xmi", diff);
+            
+            // merge differences
+            MergeService.merge(diff.getOwnedElements(), false);
+            
+            updateResource.getContents().clear();
+
+        } catch (InterruptedException e) {
+            final String msg = "KLighD: Incremental update of diagram by means of the EMF"
+                    + "Compare-based update strategy failed.";
+            StatusManager.getManager().handle(new Status(IStatus.ERROR, PLUGIN_ID, msg, e),
+                    StatusManager.SHOW);
+        }
+    }
+
+
+    /**
+     * A match scope provider contributing the {@link KGraphMatchScope}.
+     */
+    private static class KGraphMatchScopeProvider implements IMatchScopeProvider {
 
         /** the match scope. */
-        private IMatchScope leftScope = new MatchScope();
-        private IMatchScope rightScope = new MatchScope();
+        private IMatchScope scope = new KGraphMatchScope();
         
         /**
          * {@inheritDoc}
          */
         public IMatchScope getLeftScope() {
-            return leftScope;
+            return scope;
         }
 
         /**
          * {@inheritDoc}
          */
         public IMatchScope getRightScope() {
-            return rightScope;
+            return scope;
         }
 
         /**
@@ -162,34 +173,44 @@ public class UpdateStrategy implements IUpdateStrategy<KNode> {
         public void applyResourceFilter(final IResourceFilter filter) {
             // no resources involved
         }
-        
     }
-    
+
+
     /**
-     * The match scope for the KGraph with KRendering and KLayoutData matching.
+     * A KGraph-specific {@link IMatchScope}, which behaves like a white list of
+     * {@link org.eclipse.emf.ecore.EClass EClasses} that are to be incorporated while matching two
+     * KGraph model with potentially attached KRendering and KLayoutData data.<br>
+     * <br>
+     * Currently, pure {@link de.cau.cs.kieler.core.kgraph.impl.KGraphDataImpl KGraphDataImpls} or
+     * Java subclasses like {@link de.cau.cs.kieler.klighd.util.RenderingContextData
+     * RenderingContextData} are dropped by this filter.
      */
-    private static class MatchScope implements IMatchScope {
+    private static class KGraphMatchScope implements IMatchScope {
 
         /**
          * {@inheritDoc}
          */        
         public boolean isInScope(final EObject eObject) {
-            int id = eObject.eClass().getClassifierID();
-
-            EPackage p = eObject.eClass().getEPackage();
-
-            if (p == KGraphPackage.eINSTANCE) {
+            final EPackage ePackage = eObject.eClass().getEPackage();
+            final int id = eObject.eClass().getClassifierID();
+            
+            if (ePackage == KGraphPackage.eINSTANCE) {
 
                 switch (id) {
                 case KGraphPackage.KLABEL:
                 case KGraphPackage.KNODE:
                 case KGraphPackage.KEDGE:
                 case KGraphPackage.KPORT:
+                    return true;
                 case KGraphPackage.IPROPERTY_TO_OBJECT_MAP:
                     return true;
-                default: /* nothing */
+                default:
+                    // e.g. instances of RenderingContextData,
+                    //  which is a pure Java subclass of KGraphDataImpl
+                    return false;
                 }
-            } else if (p == KLayoutDataPackage.eINSTANCE) {
+
+            } else if (ePackage == KLayoutDataPackage.eINSTANCE) {
 
                 switch (id) {
                 case KLayoutDataPackage.KSHAPE_LAYOUT:
@@ -197,14 +218,19 @@ public class UpdateStrategy implements IUpdateStrategy<KNode> {
                 case KLayoutDataPackage.KINSETS:
                     return true;
                 case KLayoutDataPackage.KPOINT:
-                    // KPoint point = (KPoint) eObject;
-                    return true; //(point.getX() == 0 && point.getY() == 0);
-                default: /* nothing */
+                    return true;
+                default:
+                    return false;
                 }
-            } else if (p == KRenderingPackage.eINSTANCE) {
+
+            } else if (ePackage == KRenderingPackage.eINSTANCE) {
+                // SUPPRESS CHECKSTYLE PREVIOUS SimplifyBooleanReturn
+                //  That hint is valid but I want to have the code in a canonical form here.
                 return true;
+
+            } else {
+                return false;
             }
-            return false;
         }
 
         /**
@@ -213,12 +239,13 @@ public class UpdateStrategy implements IUpdateStrategy<KNode> {
         public boolean isInScope(final Resource resource) {
             return true;
         }
-        
     }
-    
-    @SuppressWarnings("unused") // helper for debugging purposes!
-    private void serialize(final IPath path, final EObject... objects) {
-        URI fileURI = URI.createPlatformResourceURI(path.toOSString(), true);
+
+
+    /** A helper for debugging purposes! */
+    @SuppressWarnings("unused")
+    private void serialize(final String path, final EObject... objects) {
+        URI fileURI = URI.createPlatformResourceURI(path, true);
         
         ResourceSet set = new ResourceSetImpl();
         Resource resource = set.createResource(fileURI);
@@ -237,5 +264,4 @@ public class UpdateStrategy implements IUpdateStrategy<KNode> {
         }
         resource.unload();
     }
-
 }
