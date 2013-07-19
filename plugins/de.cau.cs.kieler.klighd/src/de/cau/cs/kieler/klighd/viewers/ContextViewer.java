@@ -183,6 +183,10 @@ public class ContextViewer extends AbstractViewer<Object> implements IViewerEven
      * @param fitSpace true if the diagram shall fit the available space
      */
     public void updateOptions(final boolean fitSpace) {
+        if (this.diagramComposite.isDisposed()) {
+            return;
+        }
+        
         // remove any option controls that have been created before
         optionControlFactory.clear();
         // initialize a layout configuration for retrieving default values
@@ -657,7 +661,7 @@ public class ContextViewer extends AbstractViewer<Object> implements IViewerEven
                     
                     if (KGraphPackage.eINSTANCE.getKEdge().isInstance(element)) {
                         for (KStyle s: styles) {
-                            s.setPropagateToChildren(true);
+                            s.setPropagateToChildren(false);
                         }
                     }
                 }
