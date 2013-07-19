@@ -43,6 +43,7 @@ import de.cau.cs.kieler.core.properties.Property;
 import de.cau.cs.kieler.kiml.config.ILayoutConfig;
 import de.cau.cs.kieler.kiml.klayoutdata.KEdgeLayout;
 import de.cau.cs.kieler.kiml.klayoutdata.KInsets;
+import de.cau.cs.kieler.kiml.klayoutdata.KLayoutData;
 import de.cau.cs.kieler.kiml.klayoutdata.KLayoutDataFactory;
 import de.cau.cs.kieler.kiml.klayoutdata.KLayoutDataPackage;
 import de.cau.cs.kieler.kiml.klayoutdata.KPoint;
@@ -65,12 +66,15 @@ import de.cau.cs.kieler.klighd.viewers.KlighdViewer;
 import de.cau.cs.kieler.klighd.views.IDiagramWorkbenchPart;
 
 /**
- * A diagram layout manager for KLighD viewers which support instances of {@code KNode}.<br>
+ * A diagram layout manager for KLighD viewers that supports instances of {@code KNode}, as well as
+ * the parts and viewers provided by KLighD.<br>
  * <br>
- * If the {@code KNode} instances have attached {@code KRendering} data the manager uses it to
- * compute the node insets.
+ * If the {@code KNode} instances have attached {@code KRendering} data the manager uses them to
+ * compute the node insets as well as the minimal node size.
  * 
  * @author mri
+ * @author chsch
+ * @author msp
  */
 public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement> {
 
@@ -78,8 +82,14 @@ public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement>
     private static final IProperty<List<KEdge>> EDGES = new Property<List<KEdge>>(
             "krendering.layout.edges");
 
+    /**
+     * A property that is used to tell KIML about the workbench part this layout manager is
+     * responsible for. Note that this property is not referred to by KIML immediately, it rather
+     * filters given property definitions by their value types and looks for one of
+     * {@link IWorkbenchPart}.
+     */
     private static final IProperty<IWorkbenchPart> WORKBENCH_PART = new Property<IWorkbenchPart>(
-            "klighd.workbenchPart");
+            "klighd.layout.workbenchPart");
     
     /** the property layout config. */
     private ILayoutConfig propertyLayoutConfig = new KGraphPropertyLayoutConfig();
@@ -123,11 +133,8 @@ public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement>
             return propertyLayoutConfig;
         } else if (adapterType.isAssignableFrom(EObject.class)) {
             
-            if (object instanceof KEdge) {
-                return ((KEdge) object).getData(KEdgeLayout.class).getProperty(
-                        KlighdInternalProperties.MODEL_ELEMEMT);
-            } else if (object instanceof KGraphElement) {
-                return ((KGraphElement) object).getData(KShapeLayout.class).getProperty(
+            if (object instanceof KGraphElement) {
+                return ((KGraphElement) object).getData(KLayoutData.class).getProperty(
                         KlighdInternalProperties.MODEL_ELEMEMT);
             }
             

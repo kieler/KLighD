@@ -32,15 +32,13 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Multimap;
 
-import de.cau.cs.kieler.core.kgraph.KEdge;
 import de.cau.cs.kieler.core.kgraph.KGraphData;
 import de.cau.cs.kieler.core.kgraph.KGraphElement;
 import de.cau.cs.kieler.core.kgraph.KGraphPackage;
 import de.cau.cs.kieler.core.properties.IProperty;
 import de.cau.cs.kieler.core.properties.MapPropertyHolder;
 import de.cau.cs.kieler.core.util.RunnableWithResult;
-import de.cau.cs.kieler.kiml.klayoutdata.KEdgeLayout;
-import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout;
+import de.cau.cs.kieler.kiml.klayoutdata.KLayoutData;
 import de.cau.cs.kieler.klighd.internal.util.KlighdInternalProperties;
 import de.cau.cs.kieler.klighd.util.KlighdProperties;
 
@@ -286,11 +284,8 @@ public final class ViewContext extends MapPropertyHolder {
         EObject model;
         if (KGraphPackage.eINSTANCE.getKGraphData().isInstance(element)) {
             model = ((KGraphData) element).getProperty(KlighdInternalProperties.MODEL_ELEMEMT);
-        } else if (KGraphPackage.eINSTANCE.getKEdge().isInstance(element)) {
-            model = ((KEdge) element).getData(KEdgeLayout.class).getProperty(
-                    KlighdInternalProperties.MODEL_ELEMEMT);
         } else if (KGraphPackage.eINSTANCE.getKGraphElement().isInstance(element)) {
-            model = ((KGraphElement) element).getData(KShapeLayout.class).getProperty(
+            model = ((KGraphElement) element).getData(KLayoutData.class).getProperty(
                     KlighdInternalProperties.MODEL_ELEMEMT);
         } else {
             model = null;
