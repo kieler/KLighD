@@ -23,8 +23,6 @@ import org.eclipse.emf.compare.match.metamodel.Match2Elements;
 import org.eclipse.emf.ecore.EAttribute;
 import com.google.common.collect.ImmutableList;
 
-import de.cau.cs.kieler.core.kgraph.KGraphPackage;
-import de.cau.cs.kieler.core.krendering.KRendering;
 import de.cau.cs.kieler.kiml.klayoutdata.KLayoutDataPackage;
 
 /**
@@ -85,13 +83,6 @@ public class KGraphAttributesCheck extends AttributesCheck {
      */
     protected void checkAttributeUpdates(final DiffGroup root, final Match2Elements mapping,
             final EAttribute attribute) throws FactoryException {
-
-        // this case covers any property data that are introduced by 2D graphics framework bindings
-        // like that based on Piccolo2d; those properties are to be excluded from being merged/deleted
-        if (attribute == KGraphPackage.eINSTANCE.getEMapPropertyHolder_Properties()
-                && mapping.getLeftElement() instanceof KRendering) {
-            return;
-        }
 
         // this case covers the layout data mentioned in #attributes, see class documentation.
         if (attributes.contains(attribute)
