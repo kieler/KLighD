@@ -122,10 +122,7 @@ public class BrowsingSVGServer extends Server {
         
         // locate the bundle during runtime
         try {
-            Bundle bundle = Platform.getBundle(KlighdPiccoloSVGPlugin.PLUGIN_ID);
-            URL htmlURL = bundle.getEntry("html/");
-            URL path = FileLocator.resolve(htmlURL);
-            File location = new File(path.toURI());
+            File location = new File("html/");
             rHandler.setResourceBase(location.getAbsolutePath());
         } catch (Exception e) {
             e.printStackTrace();
