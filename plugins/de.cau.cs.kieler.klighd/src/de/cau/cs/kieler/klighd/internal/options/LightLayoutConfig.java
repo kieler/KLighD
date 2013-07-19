@@ -19,13 +19,13 @@ import java.util.Set;
 import com.google.common.collect.Maps;
 
 import de.cau.cs.kieler.core.kgraph.KEdge;
-import de.cau.cs.kieler.core.kgraph.KGraphData;
 import de.cau.cs.kieler.core.kgraph.KLabel;
 import de.cau.cs.kieler.core.kgraph.KNode;
 import de.cau.cs.kieler.core.kgraph.KPort;
 import de.cau.cs.kieler.kiml.LayoutContext;
 import de.cau.cs.kieler.kiml.LayoutOptionData;
 import de.cau.cs.kieler.kiml.config.ILayoutConfig;
+import de.cau.cs.kieler.kiml.klayoutdata.KLayoutData;
 
 /**
  * Layout configurator for Light Diagrams. The configuration is derived from widgets created
@@ -99,7 +99,7 @@ public class LightLayoutConfig implements ILayoutConfig {
     /**
      * {@inheritDoc}
      */
-    public void transferValues(final KGraphData graphData, final LayoutContext context) {
+    public void transferValues(final KLayoutData graphData, final LayoutContext context) {
         Object diagramPart = context.getProperty(LayoutContext.DIAGRAM_PART);
         for (Map.Entry<LayoutOptionData<?>, Object> entry : optionMap.entrySet()) {
             if (matchesTargetType(entry.getKey(), diagramPart)) {

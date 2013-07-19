@@ -26,8 +26,8 @@ import de.cau.cs.kieler.core.krendering.KPosition;
 import de.cau.cs.kieler.core.krendering.KStyle;
 import de.cau.cs.kieler.kiml.klayoutdata.KEdgeLayout;
 import de.cau.cs.kieler.kiml.klayoutdata.KIdentifier;
+import de.cau.cs.kieler.kiml.klayoutdata.KLayoutData;
 import de.cau.cs.kieler.kiml.klayoutdata.KPoint;
-import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout;
 
 /**
  * Customization of the default outline structure.
@@ -54,13 +54,13 @@ public class KGraphOutlineTreeProvider extends DefaultOutlineTreeProvider {
     }
     
     /**
-     * If a shape layout has no properties, it is regarded as a leaf.
+     * If a layout data instance has no properties, it is regarded as a leaf.
      * 
-     * @param shapeLayout a shape layout
-     * @return true if the shape layout has no properties
+     * @param layoutData a shape layout or edge layout
+     * @return true if the layout data has no properties
      */
-    protected boolean _isLeaf(final KShapeLayout shapeLayout) {
-        return shapeLayout.getProperties().isEmpty();
+    protected boolean _isLeaf(final KLayoutData layoutData) {
+        return layoutData.getProperties().isEmpty();
     }
     
     /**
@@ -78,16 +78,6 @@ public class KGraphOutlineTreeProvider extends DefaultOutlineTreeProvider {
                 createNode(parentNode, childElement);
             }
         }
-    }
-    
-    /**
-     * If an edge layout has no properties, it is regarded as a leaf.
-     * 
-     * @param edgeLayout an edge layout
-     * @return true if the edge layout has no properties
-     */
-    protected boolean _isLeaf(final KEdgeLayout edgeLayout) {
-        return edgeLayout.getProperties().isEmpty();
     }
     
     /**

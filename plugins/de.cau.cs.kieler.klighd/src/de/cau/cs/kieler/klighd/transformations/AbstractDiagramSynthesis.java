@@ -28,6 +28,7 @@ import de.cau.cs.kieler.core.kgraph.KPort;
 import de.cau.cs.kieler.core.krendering.KRenderingFactory;
 import de.cau.cs.kieler.core.properties.IProperty;
 import de.cau.cs.kieler.kiml.klayoutdata.KEdgeLayout;
+import de.cau.cs.kieler.kiml.klayoutdata.KLayoutData;
 import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout;
 import de.cau.cs.kieler.klighd.TransformationContext;
 import de.cau.cs.kieler.klighd.internal.macrolayout.ExpansionAwareLayoutOption;
@@ -153,7 +154,7 @@ public abstract class AbstractDiagramSynthesis<S> extends AbstractTransformation
      */
     protected <T> KGraphElement setLayoutOption(final KGraphElement element,
             final IProperty<T> option, final T value) {
-        element.getData(KShapeLayout.class).setProperty(option, value);
+        element.getData(KLayoutData.class).setProperty(option, value);
         return element;
     }
     
