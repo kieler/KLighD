@@ -31,6 +31,8 @@ public class BrowseServerApplication implements IApplication {
 
     private String rootFolder = null;
 
+    private int port = 8081;
+
     /**
      * {@inheritDoc}
      */
@@ -50,15 +52,22 @@ public class BrowseServerApplication implements IApplication {
                     throw new IllegalArgumentException("Cannot locate specified root folder " + f
                             + ".");
                 }
+            } else if (args[i].equals("-port")) {
+                i++;
+                try {
+                    port = Integer.valueOf(args[i]);
+                } catch (NumberFormatException ex) {
+                    // silent
+                }
             }
             i++;
         }
-        
-        if(rootFolder == null) {
+
+        if (rootFolder == null) {
             throw new IllegalArgumentException("No -rootFolder specified.");
         }
 
-        new BrowsingSVGServer(shell, rootFolder, 8081);
+        new BrowsingSVGServer(shell, rootFolder, port);
 
         // start the shell's event loop
         while (!shell.isDisposed()) {
