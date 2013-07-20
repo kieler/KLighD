@@ -14,7 +14,6 @@
 package de.cau.cs.kieler.klighd;
 
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -24,14 +23,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.statushandlers.StatusManager;
 
-import com.google.common.base.Predicate;
-import com.google.common.base.Strings;
-import com.google.common.collect.Iterables;
-import com.google.common.collect.Iterators;
-import com.google.common.collect.Lists;
-
 import de.cau.cs.kieler.core.kgraph.KNode;
-import de.cau.cs.kieler.core.krendering.KStyle;
 import de.cau.cs.kieler.core.properties.IProperty;
 import de.cau.cs.kieler.core.properties.IPropertyHolder;
 import de.cau.cs.kieler.core.properties.Property;
@@ -409,23 +401,6 @@ public final class LightDiagramServices {
         } else {
             diagramViewer.setRecording(false);
             
-        }
-
-        final List<KStyle> styles = Lists.newLinkedList();
-        Iterables.addAll(styles, new Iterable<KStyle>() {
-            public Iterator<KStyle> iterator() {
-                Iterator<EObject> it = diagramViewer.getModel().eAllContents();
-                return Iterators.filter(Iterators.filter(it, KStyle.class),
-                        new Predicate<KStyle>() {
-                            public boolean apply(final KStyle style) {
-                                return !Strings.isNullOrEmpty(style.getModifierId());
-                            }
-                        });
-            }
-        });
-        for (KStyle s : styles) {
-            KlighdDataManager.getInstance().getStyleModifierById(s.getModifierId())
-                    .modify(new StyleModificationContext(s));
         }
     }
     

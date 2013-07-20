@@ -13,6 +13,9 @@
  */
 package de.cau.cs.kieler.klighd;
 
+import de.cau.cs.kieler.core.krendering.KStyle;
+import de.cau.cs.kieler.kiml.klayoutdata.KLayoutData;
+
 /**
  * The interface for classes implementing a style modifier updating
  * {@link de.cau.cs.kieler.core.krendering.KStyle KStyles} after the automatic layout application.
@@ -37,4 +40,51 @@ public interface IStyleModifier {
      */
     boolean modify(final StyleModificationContext context);
 
+    /**
+     * Instances of this class comprises various useful data required for performing things in diagrams.
+     * @author chsch
+     */
+    public static class StyleModificationContext {
+
+        private KStyle style;
+        private KLayoutData layoutData;
+        
+        
+        /**
+         * Standard Constructor.
+         */
+        public StyleModificationContext() {
+        }
+
+        /**
+         * Convenience method for configuring <code>this</code> StyleModificationContext.
+         * 
+         * @param theStyle
+         *            the style to be modified
+         * @param theLayoutData
+         *            the layout data to be examined during the modification
+         * @return <code>this</code> StyleModificationContext
+         */
+        public StyleModificationContext configure(final KStyle theStyle,
+                final KLayoutData theLayoutData) {
+            this.style = theStyle;
+            this.layoutData = theLayoutData;
+            return this;
+        }
+        
+        /**
+         * @return the {@link KStyle} to be modified
+         */
+        public KStyle getStyle() {
+            return this.style;
+        }
+        
+        /**
+         * @return the {@link KLayoutData} of the {@link de.cau.cs.kieler.core.kgraph.KGraphElement
+         *         KGraphElement} the {@link KStyle} to be modified belongs to
+         */
+        public KLayoutData getLayoutData() {
+            return this.layoutData;
+        }
+    }
 }
