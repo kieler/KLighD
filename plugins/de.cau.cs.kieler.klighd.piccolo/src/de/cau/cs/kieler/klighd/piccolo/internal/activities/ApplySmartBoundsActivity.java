@@ -13,6 +13,7 @@
  */
 package de.cau.cs.kieler.klighd.piccolo.internal.activities;
 
+import de.cau.cs.kieler.klighd.piccolo.internal.nodes.IGraphElement;
 import de.cau.cs.kieler.klighd.piccolo.internal.util.NodeUtil;
 import edu.umd.cs.piccolo.PNode;
 import edu.umd.cs.piccolo.activities.PInterpolatingActivity;
@@ -35,6 +36,9 @@ public class ApplySmartBoundsActivity extends PInterpolatingActivity implements
     private PBounds targetBounds;
     /** the delta bounds. */
     private PBounds deltaBounds;
+
+    /** a local memory indicating whether a style update took place already. */
+    private boolean stylesModified = false;
     
     /**
      * Constructs an activity to apply smart bounds to a Piccolo node over a duration.
@@ -78,6 +82,13 @@ public class ApplySmartBoundsActivity extends PInterpolatingActivity implements
                     sourceBounds.getY() + zeroToOne * deltaBounds.getY(), sourceBounds.getWidth()
                             + zeroToOne * deltaBounds.getWidth(), sourceBounds.getHeight()
                             + zeroToOne * deltaBounds.getHeight());
+        }
+        if (!stylesModified && zeroToOne > 1f / 2f) {
+            stylesModified = true;
+            IGraphElement<?> gE = NodeUtil.asIGraphElement(node);
+            if (gE.getRenderingController() != null) {
+                gE.getRenderingController().modifyStyles();
+            }
         }
         super.setRelativeTargetValue(zeroToOne);
     }
