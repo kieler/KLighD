@@ -25,9 +25,28 @@ function sendJson(obj) {
 }
 
 /**
+ * Call this when the websocket is disconnected or the page is reloaded. 
+ */
+function initState() {
+	
+	// show the join room menu
+	$('#joinDiv').show();
+	$('#leaveDiv').hide();
+}
+
+/**
  * ----------------------------------------------------------------------------------------------------------
  * The WebSocket Connection
  */
+
+// make sure a close event is triggerd on page close
+window.onbeforeunload = function() {
+    websocket.onclose = function () {}; // disable onclose handler first
+    websocket.close()
+    initState();
+};
+
+// the actual connection
 var connection = null;
 
 $('#connect').click(function() {
@@ -42,6 +61,7 @@ $('#connect').click(function() {
 
 	// -- Log errors
 	connection.onerror = function(error) {
+		initState();
 		$('#messages').html('WebSocket Error ' + error);
 	};
 
@@ -51,7 +71,7 @@ $('#connect').click(function() {
 		// we receive a json obj
 		var json = JSON.parse(e.data);
 		
-		if(json.type === "SVG") {
+		if (json.type === "SVG") {
 			// set the svg
 			$('#viewport').html(json.data);
 
@@ -71,12 +91,24 @@ $('#connect').click(function() {
 				}
 			};
 			d3.select("svg").selectAll("text").on("mousedown", expandFun);
-			// for the browser
+			// for the mobile browser
 			d3.select("svg").selectAll("text").on("tap", expandFun);
 			
-		} else if(json.type === "ERROR") {
+			// translate events
+			$('#group').change(function(e) {
+				console.log("change " + e);
+				sendJson({
+					type: 'TRANSFORM',
+					transform: $(this).attr('transform')
+				});
+			});
+			
+		} else if (json.type === "TRANSFORM"){
+			$('#group').attr("transform", json.transform);
+			
+		} else if (json.type === "ERROR") {
 			error(json.data);
-		}
+		} 
 		
 		
 	};
@@ -98,6 +130,17 @@ $('#connect').click(function() {
  * ----------------------------------------------------------------------------------------------------------
  * Rooms
  */
+function joined(name) {
+	$('#currentRoom').html("You are in room " + name + ".");
+	$('#joinDiv').hide();
+	$('#leaveDiv').show();
+}
+
+function left() {
+	$('#joinDiv').show();
+	$('#leaveDiv').hide();
+}
+
 $('#join').click(function() {
 	var room = $('#room').val();
 	if(room === undefined || room === "") {
@@ -109,7 +152,16 @@ $('#join').click(function() {
 		room: room
 	});
 	
-	$(this).text("Leave");
+	joined(room);
+});
+
+$('#leave').click(function() {
+	
+	sendJson({
+		type: "LEAVE"
+	});
+	
+	left();
 });
 
 /**

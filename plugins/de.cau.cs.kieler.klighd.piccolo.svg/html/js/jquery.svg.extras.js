@@ -57,6 +57,8 @@ $.fn.addDraggable = function() {
 
             var translate = 'translate(' + xTrans + ', ' + yTrans + ')';
             g.setAttribute('transform', (scale || "") + " " + translate);
+            // fire a change event
+            $('g#group').change();
         });
         
         
@@ -131,6 +133,8 @@ $.fn.addScalability = function() {
             
             // set the new transform
             g.setAttribute('transform', 'scale(' + g._scale + ')' + " " + (translate || ""));
+            // fire a change event
+            $('g#group').change();
 
             svg._scale = g._scale;
             // dont scroll the window itself, just the scrollable area
