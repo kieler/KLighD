@@ -37,10 +37,14 @@ $('#connect').click(function() {
 			if (text.indexOf("de.cau.cs.kieler.id:") === 0) {
 				var id = text.substring(20, text.length);
 				// send expand toggle command
-				$.ajax({
+				/*$.ajax({
 					type : 'PUT',
 					url : 'expand/' + id
-				});
+				});*/
+				connection.send(JSON.stringify({
+					type: 'EXPAND',
+					id: id
+				}));
 
 			}
 		};
@@ -78,9 +82,10 @@ $(function() {
 			$('#data').append(res);
 
 			// register listener if a file is clicked
-			$('.file').click(function() {
+			$('.file').click(function(e) {
+				e.preventDefault();
 				var path = $(this).attr("data-path");
-				$.ajax({
+				/*$.ajax({
 					type : 'PUT',
 					url : 'resource' + path,
 					success : function(res) {
@@ -92,9 +97,13 @@ $(function() {
 						$('#errors').html(err.responseText);
 						$('#errors').show();
 					}
-				});
+				});*/
+				connection.send(JSON.stringify({
+					type: 'RESOURCE',
+					path: path
+				}));
 			});
-
+			
 			/*
 			 * TODO implement load on demand for folders
 			$('.folder').click(function() {

@@ -19,7 +19,7 @@ package de.cau.cs.kieler.klighd.piccolo.svg.browsing;
  */
 import java.io.File;
 import java.io.IOException;
-import java.net.URL;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
@@ -29,8 +29,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
-import org.eclipse.core.runtime.FileLocator;
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
@@ -43,12 +41,16 @@ import org.eclipse.jetty.server.handler.AbstractHandler;
 import org.eclipse.jetty.server.handler.HandlerList;
 import org.eclipse.jetty.server.handler.ResourceHandler;
 import org.eclipse.jetty.server.nio.SelectChannelConnector;
+import org.eclipse.jetty.util.MultiMap;
+import org.eclipse.jetty.util.ajax.JSON;
+import org.eclipse.jetty.util.ajax.JSON.Convertible;
+import org.eclipse.jetty.util.ajax.JSON.Output;
 import org.eclipse.jetty.websocket.WebSocket;
 import org.eclipse.jetty.websocket.WebSocket.Connection;
 import org.eclipse.jetty.websocket.WebSocketHandler;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
-import org.osgi.framework.Bundle;
+import org.ietf.jgss.Oid;
 import org.ptolemy.moml.util.MomlResourceFactoryImpl;
 
 import com.google.common.collect.Maps;
@@ -56,6 +58,7 @@ import com.google.common.collect.Maps;
 import de.cau.cs.kieler.core.alg.BasicProgressMonitor;
 import de.cau.cs.kieler.core.kgraph.KGraphElement;
 import de.cau.cs.kieler.core.kgraph.KNode;
+import de.cau.cs.kieler.core.util.Maybe;
 import de.cau.cs.kieler.kiml.ui.diagram.DiagramLayoutEngine;
 import de.cau.cs.kieler.kiml.ui.diagram.LayoutMapping;
 import de.cau.cs.kieler.klighd.LightDiagramServices;
@@ -63,7 +66,6 @@ import de.cau.cs.kieler.klighd.ViewContext;
 import de.cau.cs.kieler.klighd.internal.macrolayout.KlighdLayoutManager;
 import de.cau.cs.kieler.klighd.internal.util.KlighdInternalProperties;
 import de.cau.cs.kieler.klighd.piccolo.svg.HtmlGenerator;
-import de.cau.cs.kieler.klighd.piccolo.svg.KlighdPiccoloSVGPlugin;
 import edu.umd.cs.piccolo.PCamera;
 
 @SuppressWarnings("restriction")
@@ -90,6 +92,12 @@ public class BrowsingSVGServer extends Server {
     // TODO
     private Map<Connection, KNode> currentModels = Maps.newHashMap();
     private KNode currentModel;
+
+    private Map<String, PiccoloSVGBrowseViewer> roomViewerMap = Maps.newConcurrentMap();
+    private MultiMap<String> roomConnectionMap = new MultiMap<String>();
+
+    private Map<Connection, PiccoloSVGBrowseViewer> individualConnectionMap = Maps
+            .newConcurrentMap();
 
     public BrowsingSVGServer(final Shell shell, final String docRoot, int port) {
 
@@ -119,10 +127,13 @@ public class BrowsingSVGServer extends Server {
 
         ResourceHandler rHandler = new ResourceHandler();
         rHandler.setDirectoriesListed(true);
-        
+
         // locate the bundle during runtime
         try {
-            File location = new File("html/");
+            //File location = new File("html/");
+            File location = new File("../pragmatics/plugins/de.cau.cs.kieler.klighd.piccolo.svg/html/");
+            
+            System.out.println(location.getAbsolutePath());
             rHandler.setResourceBase(location.getAbsolutePath());
         } catch (Exception e) {
             e.printStackTrace();
@@ -164,6 +175,7 @@ public class BrowsingSVGServer extends Server {
 
     class SVGSendingWebSocket implements WebSocket, WebSocket.OnTextMessage {
 
+        private String currentRoom = null;
         private Connection connection;
 
         /**
@@ -173,17 +185,120 @@ public class BrowsingSVGServer extends Server {
             return connection;
         }
 
+        private void joinRoom(final String room) {
+
+            // remove from the individual list
+            PiccoloSVGBrowseViewer viewer = individualConnectionMap.get(connection);
+            viewer.getControl().dispose();
+            individualConnectionMap.remove(connection);
+
+            // join the new room
+            currentRoom = room;
+
+            // check if there exists a viewer for this room
+            if (!roomViewerMap.containsKey(room)) {
+                roomViewerMap.put(room, createViewer());
+            }
+
+            // add this connection to the room map
+            roomConnectionMap.add(room, connection);
+        }
+
+        private void leaveCurrentRoom(boolean addToIndividuals) {
+            // remove this connection from the room
+            roomConnectionMap.remove(currentRoom, connection);
+
+            // if the room is empty delete the viewer as well
+            if (roomConnectionMap.getValues(currentRoom).isEmpty()) {
+                PiccoloSVGBrowseViewer viewer = roomViewerMap.get(currentRoom);
+                viewer.getControl().dispose();
+                roomViewerMap.remove(currentRoom);
+            }
+
+            currentRoom = null;
+
+            // add this connection to the individual ones
+            if (addToIndividuals) {
+                individualConnectionMap.put(connection, createViewer());
+            }
+        }
+
+        private PiccoloSVGBrowseViewer getCurrentViewer() {
+            if (currentRoom != null) {
+                return roomViewerMap.get(currentRoom);
+            } else {
+                return individualConnectionMap.get(connection);
+            }
+        }
+        
+        /**
+         * Make sure to call this method from the display thread!
+         */
+        private void broadcastUpdate() {
+            // TODO sent the svgs !! or translate to the other viewers!
+            if (mng == null) {
+                mng = new KlighdLayoutManager();
+            }
+
+            PiccoloSVGBrowseViewer viewer = getCurrentViewer();
+            // build the layout mapping
+            KNode model = viewer.getModel();
+            LayoutMapping<KGraphElement> mapping = mng.buildLayoutGraph(null, model);
+            mapping.setProperty(KlighdInternalProperties.VIEWER, viewer);
+
+            // perform the layout
+            DiagramLayoutEngine.INSTANCE.layout(mapping, new BasicProgressMonitor());
+            mng.applyLayout(mapping, true, 0);
+            
+            // redraw
+            viewer.globalRedraw();
+            
+            // get the new SVG
+            String svg = getSVG(viewer);
+            
+            // send the new svg to all corresponding connections
+            try {
+            if(currentRoom != null) {
+                @SuppressWarnings("unchecked")
+                List<Connection> cons = roomConnectionMap.getValues(currentRoom);
+                
+                // send svg to every connection
+                for(Connection c : cons) {
+                    c.sendMessage(svg);
+                }
+            } else {
+                connection.sendMessage(svg);
+            }
+            } catch(IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        private PiccoloSVGBrowseViewer createViewer() {
+            final Maybe<PiccoloSVGBrowseViewer> viewer = new Maybe<PiccoloSVGBrowseViewer>();
+            shell.getDisplay().syncExec(new Runnable() {
+                
+                public void run() {
+                    viewer.set(new PiccoloSVGBrowseViewer(shell));
+                }
+            });
+            return viewer.get();
+        }
         /**
          * {@inheritDoc}
          */
         public void onOpen(Connection connection) {
+
             if (verbose) {
                 System.err.printf("%s#onOpen %s\n", this.getClass().getSimpleName(), connection);
             }
             this.connection = connection;
-            broadcast.add(this);
+            // broadcast.add(this);
 
-            broadcastSVG();
+            // initially add to the individual list
+            individualConnectionMap.put(connection,createViewer());
+
+            //broadcastSVG();
         }
 
         /**
@@ -194,21 +309,130 @@ public class BrowsingSVGServer extends Server {
                 System.err.printf("%s#onMessage     %s\n", this.getClass().getSimpleName(), data);
             }
 
-            int x = Integer.valueOf(data.substring(5, data.indexOf(',')));
-            int y =
-                    Integer.valueOf(data.substring(data.lastIndexOf(':') + 1, data.lastIndexOf('}')));
-            System.out.println(x + " " + y);
-            viewer.getCanvas().getCamera().translateView(-x, -y);
+            // we expect json
+            @SuppressWarnings("unchecked")
+            Map<String, Object> json = (Map<String, Object>) JSON.parse(data);
+            String type = (String) json.get("type");
 
-            shell.getDisplay().asyncExec(new Runnable() {
-
-                public void run() {
-                    // viewer.getCanvas().getCamera().invalidatePaint();
-                    // viewer.getCanvas().redraw();
-                    viewer.globalRedraw();
+            if (type.equals("JOIN")) {
+                /*
+                 * JOIN -------------------------------------------------------------------
+                 */
+                // if already in a room
+                if (currentRoom != null) {
+                    throw new IllegalStateException("Already in a room, cannot join another one.");
                 }
-            });
-            broadcastSVG();
+
+                // add to the room
+                String room = (String) json.get("room");
+                joinRoom(room);
+
+                // TODO send current svg
+            } else if (type.equals("LEAVE")) {
+                /*
+                 * LEAVE -------------------------------------------------------------------
+                 */
+                leaveCurrentRoom(true);
+
+            } else if (type.equals("RESOURCE")) {
+                /*
+                 * RESOURCE -------------------------------------------------------------------
+                 */
+                String path = (String) json.get("path");
+
+                ResourceSet rs = new ResourceSetImpl();
+
+                // MOML
+                Map<String, Boolean> parserFeatures = Maps.newHashMap();
+                parserFeatures.put("http://xml.org/sax/features/validation", //$NON-NLS-1$
+                        Boolean.FALSE);
+                parserFeatures.put("http://apache.org/xml/features/nonvalidating/load-dtd-grammar", //$NON-NLS-1$
+                        Boolean.FALSE);
+                parserFeatures.put(
+                        "http://apache.org/xml/features/nonvalidating/load-external-dtd", //$NON-NLS-1$
+                        Boolean.FALSE);
+
+                rs.getLoadOptions().put(XMIResource.OPTION_RECORD_UNKNOWN_FEATURE, true);
+                rs.getLoadOptions().put(XMLResource.OPTION_PARSER_FEATURES, parserFeatures);
+                rs.getResourceFactoryRegistry().getExtensionToFactoryMap()
+                        .put("xml", new MomlResourceFactoryImpl());
+
+                final Resource r =
+                        rs.getResource(
+                                URI.createFileURI(new File(docRoot, path).getAbsolutePath()), true);
+
+                System.out.println(r);
+
+                shell.getDisplay().syncExec(new Runnable() {
+
+                    public void run() {
+                        PiccoloSVGBrowseViewer viewer = getCurrentViewer();
+                        viewer.getCanvas().setBounds(0, 0, 870, 600);
+
+                        // translate and set the model
+                        try {
+                            KNode currentModel =
+                                    LightDiagramServices.translateModel(new ViewContext(), r
+                                            .getContents().get(0));
+                            viewer.setModel(currentModel, true);
+                            //applyLayout();
+                            
+                            broadcastUpdate();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            // catch any error
+                            // response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+                            // try {
+                            // response.getWriter().println(
+                            // "ERROR: Unable to handle the selected model.");
+                            // } catch (IOException e1) {
+                            // e1.printStackTrace();
+                            // }
+                        }
+                    }
+                });
+                
+            } else if (type.equals("EXPAND")) {
+                /*
+                 * EXPAND -------------------------------------------------------------------
+                 */
+                final String id = (String) json.get("id");
+                shell.getDisplay().asyncExec(new Runnable() {
+
+                    public void run() {
+                        // expand and layout
+                        getCurrentViewer().toggleExpansion(id);
+//                        applyLayout();
+//                        broadcastSVG();
+                        
+                        broadcastUpdate();
+                    }
+                });
+            } else if (type.equals("TRANSLATE")) {
+                /*
+                 * TRANSLATE -------------------------------------------------------------------
+                 */
+            } else if (type.equals("ZOOM")) {
+                /*
+                 * ZOOM -------------------------------------------------------------------
+                 */
+            }
+
+            // int x = Integer.valueOf(data.substring(5, data.indexOf(',')));
+            // int y =
+            // Integer.valueOf(data.substring(data.lastIndexOf(':') + 1, data.lastIndexOf('}')));
+            // System.out.println(x + " " + y);
+            // viewer.getCanvas().getCamera().translateView(-x, -y);
+            //
+            // shell.getDisplay().asyncExec(new Runnable() {
+            //
+            // public void run() {
+            // // viewer.getCanvas().getCamera().invalidatePaint();
+            // // viewer.getCanvas().redraw();
+            // viewer.globalRedraw();
+            // }
+            // });
+            // broadcastSVG();
         }
 
         /**
@@ -220,6 +444,20 @@ public class BrowsingSVGServer extends Server {
                         message);
             }
             broadcast.remove(this);
+
+            // remove either from the room list, or from individual list
+            if (currentRoom != null) {
+                leaveCurrentRoom(false);
+            } else {
+                shell.getDisplay().asyncExec(new Runnable() {
+                    
+                    public void run() {
+                        PiccoloSVGBrowseViewer viewer = individualConnectionMap.get(connection);
+                        viewer.getControl().dispose();
+                        individualConnectionMap.remove(connection);
+                    }
+                });
+            }
         }
 
     }
@@ -243,24 +481,39 @@ public class BrowsingSVGServer extends Server {
 
         return sb.toString();
     }
+    
+    private String getSVG(final PiccoloSVGBrowseViewer viewer) {
+        String data = viewer.getGraphics().getSVG();
+        
+        // insert an id for the first group element
+        String res3 = data.substring(data.indexOf("<svg") - 1, data.length());
+        String res4 = res3.replaceFirst("width=", "w=");
+        String res5 = res4.replaceFirst("height=", "w=");
 
-    public void broadcastSVG() {
+        StringBuffer sb = new StringBuffer(res5);
+        sb.insert(sb.indexOf("<g") + 2, " id=\"group\"");
 
-        String data = getSVG();
-
-        if (data.length() < 1000) {
-            return;
-        }
-
-        for (SVGSendingWebSocket ws : broadcast) {
-            try {
-                ws.getConnection().sendMessage(data);
-            } catch (IOException e) {
-                broadcast.remove(ws);
-                e.printStackTrace();
-            }
-        }
+        return sb.toString();
     }
+
+//    public void broadcastSVG() {
+//
+//        throw new RuntimeException("DONT USE");
+//        String data = getSVG();
+//
+//        if (data.length() < 1000) {
+//            return;
+//        }
+//
+//        for (SVGSendingWebSocket ws : broadcast) {
+//            try {
+//                ws.getConnection().sendMessage(data);
+//            } catch (IOException e) {
+//                broadcast.remove(ws);
+//                e.printStackTrace();
+//            }
+//        }
+//    }
 
     class WorkspaceContentHandler extends AbstractHandler {
         /**
@@ -355,7 +608,7 @@ public class BrowsingSVGServer extends Server {
 
                 if (request != null) {
                     if (baseRequest.getMethod().equals("PUT")) {
-                        broadcastSVG();
+                        //broadcastSVG();
                     } else if (request.getMethod().equals("GET")) {
                         response.getWriter().println(gen.permaLink(getSVG()));
                     }
@@ -376,7 +629,7 @@ public class BrowsingSVGServer extends Server {
                         // expand and layout
                         viewer.toggleExpansion(id);
                         applyLayout();
-                        broadcastSVG();
+                        //broadcastSVG();
                     }
                 });
             } else if (target.startsWith("/zoom/")) {
@@ -408,7 +661,7 @@ public class BrowsingSVGServer extends Server {
                             camera.scaleViewAboutPoint(scaleDelta, 0, 0);
 
                             viewer.globalRedraw();
-                            broadcastSVG();
+                            //broadcastSVG();
                         }
                     });
                 } catch (NumberFormatException ex) {
@@ -434,4 +687,27 @@ public class BrowsingSVGServer extends Server {
         viewer.globalRedraw();
     }
 
+    private static class JsonMessage implements Convertible {
+
+        public enum Type {
+            JOIN_ROOM, LEAVE_ROOM, TRANSLATE
+        }
+
+        private Type type;
+
+        /**
+         * {@inheritDoc}
+         */
+        public void fromJSON(final Map map) {
+            map.get("type");
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        public void toJSON(Output arg0) {
+            // TODO Auto-generated method stub
+
+        }
+    }
 }
