@@ -5,6 +5,27 @@ $('#viewport').addDraggable();
 
 /**
  * ----------------------------------------------------------------------------------------------------------
+ * Utilities
+ */
+function error(error) {
+	$('#errors').html(error);
+	$('#errors').show();
+}
+
+function hideErrors() {
+	$('errors').hide();
+}
+
+function sendJson(obj) {
+	if(connection.readyState === WebSocket.OPEN) {
+		connection.send(JSON.stringify(obj));
+	} else {
+		error("Web Socket closed, please reconnect");
+	}
+}
+
+/**
+ * ----------------------------------------------------------------------------------------------------------
  * The WebSocket Connection
  */
 var connection = null;
@@ -26,31 +47,38 @@ $('#connect').click(function() {
 
 	// -- Received message from server
 	connection.onmessage = function(e) {
-		// set the svg
-		$('#viewport').html(e.data);
+		
+		// we receive a json obj
+		var json = JSON.parse(e.data);
+		
+		if(json.type === "SVG") {
+			// set the svg
+			$('#viewport').html(json.data);
 
-		// attach a mousedown listener to handle expanding of hierarchical nodes
-		var expandFun = function(d) {
-			// get the id
-			var text = this.textContent;
-			// if starts with id
-			if (text.indexOf("de.cau.cs.kieler.id:") === 0) {
-				var id = text.substring(20, text.length);
-				// send expand toggle command
-				/*$.ajax({
-					type : 'PUT',
-					url : 'expand/' + id
-				});*/
-				connection.send(JSON.stringify({
-					type: 'EXPAND',
-					id: id
-				}));
+			// attach a mousedown listener to handle expanding of hierarchical nodes
+			var expandFun = function(d) {
+				// get the id
+				var text = this.textContent;
+				// if starts with id
+				if (text.indexOf("de.cau.cs.kieler.id:") === 0) {
+					var id = text.substring(20, text.length);
+					// send expand toggle command
+					sendJson({
+						type: 'EXPAND',
+						id: id
+					});
 
-			}
-		};
-		d3.select("svg").selectAll("text").on("mousedown", expandFun);
-		// for the browser
-		d3.select("svg").selectAll("text").on("tap", expandFun);
+				}
+			};
+			d3.select("svg").selectAll("text").on("mousedown", expandFun);
+			// for the browser
+			d3.select("svg").selectAll("text").on("tap", expandFun);
+			
+		} else if(json.type === "ERROR") {
+			error(json.data);
+		}
+		
+		
 	};
 
 	// -- Try to connect
@@ -68,12 +96,30 @@ $('#connect').click(function() {
 
 /**
  * ----------------------------------------------------------------------------------------------------------
+ * Rooms
+ */
+$('#join').click(function() {
+	var room = $('#room').val();
+	if(room === undefined || room === "") {
+		return;
+	}
+	
+	sendJson({
+		type: "JOIN",
+		room: room
+	});
+	
+	$(this).text("Leave");
+});
+
+/**
+ * ----------------------------------------------------------------------------------------------------------
  * Initial Setup
  */
 
 // executed
 $(function() {
-
+	
 	// get the initial content
 	$.ajax({
 		type : 'GET',

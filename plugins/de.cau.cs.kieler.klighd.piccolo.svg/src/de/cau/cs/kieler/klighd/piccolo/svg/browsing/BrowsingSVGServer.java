@@ -130,9 +130,10 @@ public class BrowsingSVGServer extends Server {
 
         // locate the bundle during runtime
         try {
-            //File location = new File("html/");
-            File location = new File("../pragmatics/plugins/de.cau.cs.kieler.klighd.piccolo.svg/html/");
-            
+            // File location = new File("html/");
+            File location =
+                    new File("../pragmatics/plugins/de.cau.cs.kieler.klighd.piccolo.svg/html/");
+
             System.out.println(location.getAbsolutePath());
             rHandler.setResourceBase(location.getAbsolutePath());
         } catch (Exception e) {
@@ -185,12 +186,22 @@ public class BrowsingSVGServer extends Server {
             return connection;
         }
 
+        private void leaveIndividualConnections() {
+            shell.getDisplay().syncExec(new Runnable() {
+
+                public void run() {
+                    // remove from the individual list
+                    PiccoloSVGBrowseViewer viewer = individualConnectionMap.get(connection);
+                    //viewer.getControl().dispose();
+                    individualConnectionMap.remove(connection);
+                }
+            });
+        }
+
         private void joinRoom(final String room) {
 
             // remove from the individual list
-            PiccoloSVGBrowseViewer viewer = individualConnectionMap.get(connection);
-            viewer.getControl().dispose();
-            individualConnectionMap.remove(connection);
+            leaveIndividualConnections();
 
             // join the new room
             currentRoom = room;
@@ -230,11 +241,11 @@ public class BrowsingSVGServer extends Server {
                 return individualConnectionMap.get(connection);
             }
         }
-        
+
         /**
          * Make sure to call this method from the display thread!
          */
-        private void broadcastUpdate() {
+        private void layoutBroadcastSVG() {
             // TODO sent the svgs !! or translate to the other viewers!
             if (mng == null) {
                 mng = new KlighdLayoutManager();
@@ -249,27 +260,50 @@ public class BrowsingSVGServer extends Server {
             // perform the layout
             DiagramLayoutEngine.INSTANCE.layout(mapping, new BasicProgressMonitor());
             mng.applyLayout(mapping, true, 0);
-            
+
             // redraw
             viewer.globalRedraw();
-            
+
             // get the new SVG
             String svg = getSVG(viewer);
-            
+
+            // assemble json
+            Map<String, String> jsonMap = Maps.newHashMap();
+            jsonMap.put("type", "SVG");
+            jsonMap.put("data", svg);
+
+            String json = JSON.toString(jsonMap);
+
             // send the new svg to all corresponding connections
             try {
-            if(currentRoom != null) {
-                @SuppressWarnings("unchecked")
-                List<Connection> cons = roomConnectionMap.getValues(currentRoom);
-                
-                // send svg to every connection
-                for(Connection c : cons) {
-                    c.sendMessage(svg);
+                if (currentRoom != null) {
+                    @SuppressWarnings("unchecked")
+                    List<Connection> cons = roomConnectionMap.getValues(currentRoom);
+
+                    // send svg to every connection
+                    for (Connection c : cons) {
+                        c.sendMessage(json);
+                    }
+                } else {
+                    connection.sendMessage(json);
                 }
-            } else {
-                connection.sendMessage(svg);
+            } catch (IOException e) {
+                // TODO check why on F5 no close signal is send, remove the connection here 
+                e.printStackTrace();
             }
-            } catch(IOException e) {
+        }
+
+        private void sendError(String error) {
+            // assemble json
+            Map<String, String> jsonMap = Maps.newHashMap();
+            jsonMap.put("type", "ERROR");
+            jsonMap.put("data", error);
+
+            String json = JSON.toString(jsonMap);
+
+            try {
+                connection.sendMessage(json);
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
@@ -277,13 +311,14 @@ public class BrowsingSVGServer extends Server {
         private PiccoloSVGBrowseViewer createViewer() {
             final Maybe<PiccoloSVGBrowseViewer> viewer = new Maybe<PiccoloSVGBrowseViewer>();
             shell.getDisplay().syncExec(new Runnable() {
-                
+
                 public void run() {
                     viewer.set(new PiccoloSVGBrowseViewer(shell));
                 }
             });
             return viewer.get();
         }
+
         /**
          * {@inheritDoc}
          */
@@ -296,9 +331,7 @@ public class BrowsingSVGServer extends Server {
             // broadcast.add(this);
 
             // initially add to the individual list
-            individualConnectionMap.put(connection,createViewer());
-
-            //broadcastSVG();
+            individualConnectionMap.put(connection, createViewer());
         }
 
         /**
@@ -309,113 +342,123 @@ public class BrowsingSVGServer extends Server {
                 System.err.printf("%s#onMessage     %s\n", this.getClass().getSimpleName(), data);
             }
 
-            // we expect json
-            @SuppressWarnings("unchecked")
-            Map<String, Object> json = (Map<String, Object>) JSON.parse(data);
-            String type = (String) json.get("type");
+            try {
+                // we expect json
+                @SuppressWarnings("unchecked")
+                Map<String, Object> json = (Map<String, Object>) JSON.parse(data);
+                String type = (String) json.get("type");
 
-            if (type.equals("JOIN")) {
-                /*
-                 * JOIN -------------------------------------------------------------------
-                 */
-                // if already in a room
-                if (currentRoom != null) {
-                    throw new IllegalStateException("Already in a room, cannot join another one.");
+                if (type.equals("JOIN")) {
+                    /*
+                     * JOIN -------------------------------------------------------------------
+                     */
+                    // if already in a room
+                    if (currentRoom != null) {
+                        throw new IllegalStateException(
+                                "Already in a room, cannot join another one.");
+                    }
+
+                    // add to the room
+                    String room = (String) json.get("room");
+                    joinRoom(room);
+
+                    // TODO send current svg
+                } else if (type.equals("LEAVE")) {
+                    /*
+                     * LEAVE -------------------------------------------------------------------
+                     */
+                    leaveCurrentRoom(true);
+
+                } else if (type.equals("RESOURCE")) {
+                    /*
+                     * RESOURCE -------------------------------------------------------------------
+                     */
+                    String path = (String) json.get("path");
+
+                    ResourceSet rs = new ResourceSetImpl();
+
+                    // MOML
+                    Map<String, Boolean> parserFeatures = Maps.newHashMap();
+                    parserFeatures.put("http://xml.org/sax/features/validation", //$NON-NLS-1$
+                            Boolean.FALSE);
+                    parserFeatures.put(
+                            "http://apache.org/xml/features/nonvalidating/load-dtd-grammar", //$NON-NLS-1$
+                            Boolean.FALSE);
+                    parserFeatures.put(
+                            "http://apache.org/xml/features/nonvalidating/load-external-dtd", //$NON-NLS-1$
+                            Boolean.FALSE);
+
+                    rs.getLoadOptions().put(XMIResource.OPTION_RECORD_UNKNOWN_FEATURE, true);
+                    rs.getLoadOptions().put(XMLResource.OPTION_PARSER_FEATURES, parserFeatures);
+                    rs.getResourceFactoryRegistry().getExtensionToFactoryMap()
+                            .put("xml", new MomlResourceFactoryImpl());
+
+                    final Resource r =
+                            rs.getResource(
+                                    URI.createFileURI(new File(docRoot, path).getAbsolutePath()),
+                                    true);
+
+                    System.out.println(r);
+
+                    shell.getDisplay().syncExec(new Runnable() {
+
+                        public void run() {
+                            PiccoloSVGBrowseViewer viewer = getCurrentViewer();
+                            viewer.getCanvas().setBounds(0, 0, 870, 600);
+
+                            // translate and set the model
+                            try {
+                                KNode currentModel =
+                                        LightDiagramServices.translateModel(new ViewContext(), r
+                                                .getContents().get(0));
+                                viewer.setModel(currentModel, true);
+                                // applyLayout();
+
+                                layoutBroadcastSVG();
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                                // TODO pass the exception to the outside
+                                // catch any error
+                                // response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+                                // try {
+                                // response.getWriter().println(
+                                // "ERROR: Unable to handle the selected model.");
+                                // } catch (IOException e1) {
+                                // e1.printStackTrace();
+                                // }
+                            }
+                        }
+                    });
+
+                } else if (type.equals("EXPAND")) {
+                    /*
+                     * EXPAND -------------------------------------------------------------------
+                     */
+                    final String id = (String) json.get("id");
+                    shell.getDisplay().asyncExec(new Runnable() {
+
+                        public void run() {
+                            // expand and layout
+                            getCurrentViewer().toggleExpansion(id);
+                            // applyLayout();
+                            // broadcastSVG();
+
+                            layoutBroadcastSVG();
+                        }
+                    });
+                } else if (type.equals("TRANSLATE")) {
+                    /*
+                     * TRANSLATE -------------------------------------------------------------------
+                     */
+                } else if (type.equals("ZOOM")) {
+                    /*
+                     * ZOOM -------------------------------------------------------------------
+                     */
                 }
 
-                // add to the room
-                String room = (String) json.get("room");
-                joinRoom(room);
-
-                // TODO send current svg
-            } else if (type.equals("LEAVE")) {
-                /*
-                 * LEAVE -------------------------------------------------------------------
-                 */
-                leaveCurrentRoom(true);
-
-            } else if (type.equals("RESOURCE")) {
-                /*
-                 * RESOURCE -------------------------------------------------------------------
-                 */
-                String path = (String) json.get("path");
-
-                ResourceSet rs = new ResourceSetImpl();
-
-                // MOML
-                Map<String, Boolean> parserFeatures = Maps.newHashMap();
-                parserFeatures.put("http://xml.org/sax/features/validation", //$NON-NLS-1$
-                        Boolean.FALSE);
-                parserFeatures.put("http://apache.org/xml/features/nonvalidating/load-dtd-grammar", //$NON-NLS-1$
-                        Boolean.FALSE);
-                parserFeatures.put(
-                        "http://apache.org/xml/features/nonvalidating/load-external-dtd", //$NON-NLS-1$
-                        Boolean.FALSE);
-
-                rs.getLoadOptions().put(XMIResource.OPTION_RECORD_UNKNOWN_FEATURE, true);
-                rs.getLoadOptions().put(XMLResource.OPTION_PARSER_FEATURES, parserFeatures);
-                rs.getResourceFactoryRegistry().getExtensionToFactoryMap()
-                        .put("xml", new MomlResourceFactoryImpl());
-
-                final Resource r =
-                        rs.getResource(
-                                URI.createFileURI(new File(docRoot, path).getAbsolutePath()), true);
-
-                System.out.println(r);
-
-                shell.getDisplay().syncExec(new Runnable() {
-
-                    public void run() {
-                        PiccoloSVGBrowseViewer viewer = getCurrentViewer();
-                        viewer.getCanvas().setBounds(0, 0, 870, 600);
-
-                        // translate and set the model
-                        try {
-                            KNode currentModel =
-                                    LightDiagramServices.translateModel(new ViewContext(), r
-                                            .getContents().get(0));
-                            viewer.setModel(currentModel, true);
-                            //applyLayout();
-                            
-                            broadcastUpdate();
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                            // catch any error
-                            // response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-                            // try {
-                            // response.getWriter().println(
-                            // "ERROR: Unable to handle the selected model.");
-                            // } catch (IOException e1) {
-                            // e1.printStackTrace();
-                            // }
-                        }
-                    }
-                });
-                
-            } else if (type.equals("EXPAND")) {
-                /*
-                 * EXPAND -------------------------------------------------------------------
-                 */
-                final String id = (String) json.get("id");
-                shell.getDisplay().asyncExec(new Runnable() {
-
-                    public void run() {
-                        // expand and layout
-                        getCurrentViewer().toggleExpansion(id);
-//                        applyLayout();
-//                        broadcastSVG();
-                        
-                        broadcastUpdate();
-                    }
-                });
-            } else if (type.equals("TRANSLATE")) {
-                /*
-                 * TRANSLATE -------------------------------------------------------------------
-                 */
-            } else if (type.equals("ZOOM")) {
-                /*
-                 * ZOOM -------------------------------------------------------------------
-                 */
+            } catch (Exception e) {
+                e.printStackTrace();
+                sendError("ERROR: " + e.getLocalizedMessage());
             }
 
             // int x = Integer.valueOf(data.substring(5, data.indexOf(',')));
@@ -449,14 +492,7 @@ public class BrowsingSVGServer extends Server {
             if (currentRoom != null) {
                 leaveCurrentRoom(false);
             } else {
-                shell.getDisplay().asyncExec(new Runnable() {
-                    
-                    public void run() {
-                        PiccoloSVGBrowseViewer viewer = individualConnectionMap.get(connection);
-                        viewer.getControl().dispose();
-                        individualConnectionMap.remove(connection);
-                    }
-                });
+                leaveIndividualConnections();
             }
         }
 
@@ -481,10 +517,10 @@ public class BrowsingSVGServer extends Server {
 
         return sb.toString();
     }
-    
+
     private String getSVG(final PiccoloSVGBrowseViewer viewer) {
         String data = viewer.getGraphics().getSVG();
-        
+
         // insert an id for the first group element
         String res3 = data.substring(data.indexOf("<svg") - 1, data.length());
         String res4 = res3.replaceFirst("width=", "w=");
@@ -496,24 +532,24 @@ public class BrowsingSVGServer extends Server {
         return sb.toString();
     }
 
-//    public void broadcastSVG() {
-//
-//        throw new RuntimeException("DONT USE");
-//        String data = getSVG();
-//
-//        if (data.length() < 1000) {
-//            return;
-//        }
-//
-//        for (SVGSendingWebSocket ws : broadcast) {
-//            try {
-//                ws.getConnection().sendMessage(data);
-//            } catch (IOException e) {
-//                broadcast.remove(ws);
-//                e.printStackTrace();
-//            }
-//        }
-//    }
+    // public void broadcastSVG() {
+    //
+    // throw new RuntimeException("DONT USE");
+    // String data = getSVG();
+    //
+    // if (data.length() < 1000) {
+    // return;
+    // }
+    //
+    // for (SVGSendingWebSocket ws : broadcast) {
+    // try {
+    // ws.getConnection().sendMessage(data);
+    // } catch (IOException e) {
+    // broadcast.remove(ws);
+    // e.printStackTrace();
+    // }
+    // }
+    // }
 
     class WorkspaceContentHandler extends AbstractHandler {
         /**
@@ -608,7 +644,7 @@ public class BrowsingSVGServer extends Server {
 
                 if (request != null) {
                     if (baseRequest.getMethod().equals("PUT")) {
-                        //broadcastSVG();
+                        // broadcastSVG();
                     } else if (request.getMethod().equals("GET")) {
                         response.getWriter().println(gen.permaLink(getSVG()));
                     }
@@ -629,7 +665,7 @@ public class BrowsingSVGServer extends Server {
                         // expand and layout
                         viewer.toggleExpansion(id);
                         applyLayout();
-                        //broadcastSVG();
+                        // broadcastSVG();
                     }
                 });
             } else if (target.startsWith("/zoom/")) {
@@ -661,7 +697,7 @@ public class BrowsingSVGServer extends Server {
                             camera.scaleViewAboutPoint(scaleDelta, 0, 0);
 
                             viewer.globalRedraw();
-                            //broadcastSVG();
+                            // broadcastSVG();
                         }
                     });
                 } catch (NumberFormatException ex) {
