@@ -31,7 +31,7 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Slider;
+import org.eclipse.swt.widgets.Scale;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 
@@ -201,10 +201,8 @@ public class LayoutOptionControlFactory {
         }
     }
     
-    /** minimal width of sliders. */
-    private static final int SLIDER_MIN_WIDTH = 80;
     /** number of columns in the grid for enumeration value selection. */
-    private static final int ENUM_GRID_COLS = 3;
+    private static final int ENUM_GRID_COLS = 2;
     
     /**
      * Create a control for the given layout option data instance with given bounds.
@@ -240,12 +238,11 @@ public class LayoutOptionControlFactory {
             switch (optionData.getType()) {
             case INT:
             case FLOAT: {
-                Slider slider = new Slider(parent, SWT.NONE);
+                Scale slider = new Scale(parent, SWT.NONE);
                 slider.setToolTipText(optionData.getDescription());
                 SliderListener sliderListener = new SliderListener(optionData,
                         getMinValue(optionData, minValue), getMaxValue(optionData, maxValue));
                 GridData gridData = new GridData(SWT.FILL, SWT.TOP, true, false);
-                gridData.minimumWidth = SLIDER_MIN_WIDTH;
                 slider.setLayoutData(gridData);
                 controls.add(slider);
                 // set initial value for the slider
@@ -426,7 +423,7 @@ public class LayoutOptionControlFactory {
          * {@inheritDoc}
          */
         public void widgetSelected(final SelectionEvent event) {
-            Slider slider = (Slider) event.widget;
+            Scale slider = (Scale) event.widget;
             float sliderValue = (float) (slider.getSelection() - slider.getMinimum())
                     / (slider.getMaximum() - slider.getMinimum());
             float optionValue = minFloat + sliderValue * (maxFloat - minFloat);

@@ -237,11 +237,11 @@ public class ContextViewer extends AbstractViewer<Object> implements IViewerEven
         }
     }
     
-    /** The initial width (in %) of the option pane. */
-    private static final int DEFAULT_OPTIONS_FORM_WIDTH_RATIO = 20;
+    /** The initial width of the option pane and the diagram viewer. */
+    private static final int INITIAL_OPTIONS_FORM_WIDTH = 230;
     
     /** The minimal width of the option pane and the diagram viewer. */
-    private static final int MIN_OPTIONS_FORM_WIDTH = 175;
+    private static final int MINIMAL_OPTIONS_FORM_WIDTH = 100;
     
     /** The space left between the 'Diagram options' and 'Layout options' sub forms. */
     private static final int SYNTHESIS_LAYOUT_OPTIONS_SPACE = 20;
@@ -371,14 +371,14 @@ public class ContextViewer extends AbstractViewer<Object> implements IViewerEven
         // register the sash moving handler for resizing the options pane
         sash.addListener(SWT.Selection, new Listener() {
             public void handleEvent(final Event event) {
-                final int maxDiagSize = partComposite.getClientArea().width - MIN_OPTIONS_FORM_WIDTH;
+                final int maxDiagSize = partComposite.getClientArea().width - MINIMAL_OPTIONS_FORM_WIDTH;
                 if (maxDiagSize > event.x) {
                     sashLayoutData.left.numerator = 0;
                     sashLayoutData.left.offset = event.x;
                 } else {
                     sashLayoutData.left.numerator = 0;
                     sashLayoutData.left.offset =
-                            partComposite.getClientArea().width - MIN_OPTIONS_FORM_WIDTH;
+                            partComposite.getClientArea().width - MINIMAL_OPTIONS_FORM_WIDTH;
                     // The following line appears to be evil, but this is required
                     //  to let the sash respect the limit correctly.
                     event.x = sashLayoutData.left.offset;
@@ -437,10 +437,10 @@ public class ContextViewer extends AbstractViewer<Object> implements IViewerEven
         for (Control c : this.sideBarControls) {
             c.setVisible(true);
         }
-        // put the sash at the desired position according to DEFAULT_OPTIONS_FORM_WIDTH_RATIO
+        // put the sash at the desired position according to MIN_OPTIONS_FORM_WIDTH
         if (this.sashLayoutData != null) {
-            this.sashLayoutData.left.numerator = FULL - DEFAULT_OPTIONS_FORM_WIDTH_RATIO;
-            this.sashLayoutData.left.offset = 0;
+            this.sashLayoutData.left.numerator = FULL;
+            this.sashLayoutData.left.offset = -INITIAL_OPTIONS_FORM_WIDTH;
         }
         // re-layout the view part's composite
         this.diagramComposite.getParent().layout(true, true);

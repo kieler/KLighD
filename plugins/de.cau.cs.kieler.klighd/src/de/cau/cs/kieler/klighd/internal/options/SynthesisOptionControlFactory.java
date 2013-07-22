@@ -65,9 +65,9 @@ public class SynthesisOptionControlFactory {
         this.parent = parent;
         this.formToolkit = formToolkit;
         
+        // configure the parent's layout
         GridLayout gl = new GridLayout(1, false);
         gl.verticalSpacing = MAJOR_VERTICAL_SPACING;
-        
         this.parent.setLayout(gl);
     }
     
@@ -188,6 +188,7 @@ public class SynthesisOptionControlFactory {
         // create a container composite in order to group the label and the scaler
         final Composite container = formToolkit.createComposite(parent);
         //  ... and determine its layout
+        container.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
         container.setLayout(gl);
         controls.add(container);
         
@@ -223,6 +224,7 @@ public class SynthesisOptionControlFactory {
             public void widgetSelected(final SelectionEvent event) {
                 final int value = ((Scale) event.widget).getSelection();
                 label.setText(labelString + value);
+                container.layout(true);
                 
                 if (value == currentValue) {
                     return;
