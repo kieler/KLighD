@@ -130,9 +130,16 @@ public class UpdateStrategy implements IUpdateStrategy<KNode> {
 
         } catch (InterruptedException e) {
             final String msg = "KLighD: Incremental update of diagram by means of the EMF"
+                    + "Compare-based update strategy failed due to some unexpected execution"
+                    + "interruption.";
+            StatusManager.getManager().handle(new Status(IStatus.ERROR, PLUGIN_ID, msg, e),
+                    StatusManager.SHOW);
+        } catch (RuntimeException e) {
+            final String msg = "KLighD: Incremental update of diagram by means of the EMF"
                     + "Compare-based update strategy failed.";
             StatusManager.getManager().handle(new Status(IStatus.ERROR, PLUGIN_ID, msg, e),
                     StatusManager.SHOW);
+            e.printStackTrace();
         }
     }
 

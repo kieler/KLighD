@@ -18,7 +18,9 @@ package de.cau.cs.kieler.klighd.piccolo.internal.util;
 
 import java.awt.geom.Point2D;
 
+import de.cau.cs.kieler.core.kgraph.KGraphElement;
 import de.cau.cs.kieler.klighd.microlayout.Bounds;
+import de.cau.cs.kieler.klighd.piccolo.internal.nodes.IGraphElement;
 
 import edu.umd.cs.piccolo.PNode;
 import edu.umd.cs.piccolo.activities.PActivity;
@@ -44,6 +46,20 @@ public final class NodeUtil {
      */
     private NodeUtil() {
         // do nothing
+    }
+    
+    /**
+     * Casts a custom {@link PNode} object that implements {@link IGraphElement} to
+     * {@link IGraphElement}, the <b>type check is omitted for performance reasons</b>.
+     * 
+     * @param node
+     *            a custom {@link PNode} implementing {@link IGraphElement}
+     * @return node typed as {@link IGraphElement}
+     */
+    public static IGraphElement<KGraphElement> asIGraphElement(final PNode node) {
+        @SuppressWarnings("unchecked")
+        final IGraphElement<KGraphElement> graphNode = (IGraphElement<KGraphElement>) node;
+        return graphNode;
     }
 
     /**
