@@ -29,6 +29,7 @@ import com.google.common.collect.Lists;
 
 import de.cau.cs.kieler.core.kgraph.KLabel;
 import de.cau.cs.kieler.core.kgraph.KNode;
+import de.cau.cs.kieler.core.kgraph.PersistentEntry;
 import de.cau.cs.kieler.core.krendering.KAreaPlacementData;
 import de.cau.cs.kieler.core.krendering.KChildArea;
 import de.cau.cs.kieler.core.krendering.KContainerRendering;
@@ -387,17 +388,17 @@ public final class PlacementUtil {
         KFontItalic kFontItalic = null;
 
         if (kText != null) {
-            Object testHeight = Iterables.find(kText.getPersistentEntries(), 
-                    KlighdInternalProperties.PRED_TESTING_HEIGHT).getValue();
-            Object testWidth = Iterables.find(kText.getPersistentEntries(), 
-                    KlighdInternalProperties.PRED_TESTING_WIDTH).getValue();
+            PersistentEntry testHeight = Iterables.find(kText.getPersistentEntries(), 
+                    KlighdInternalProperties.PRED_TESTING_HEIGHT, null);
+            PersistentEntry testWidth = Iterables.find(kText.getPersistentEntries(), 
+                    KlighdInternalProperties.PRED_TESTING_WIDTH, null);
             if (testHeight != null || testWidth != null) {
                 // code for the regression tests
                 //  (I don't trust in the different SWT implementations to
                 //   provide the same size of a text on different platforms
                 //   so given data are to be used)
-                float height = testHeight != null ? Float.parseFloat(testHeight.toString()) : 0f;
-                float width = testWidth != null ? Float.parseFloat(testWidth.toString()) : 0f;
+                float height = testHeight != null ? Float.parseFloat(testHeight.getValue()) : 0f;
+                float width = testWidth != null ? Float.parseFloat(testWidth.getValue()) : 0f;
                 if (height != 0f || width != 0f) {
                     return new Bounds(width, height);
                 }
