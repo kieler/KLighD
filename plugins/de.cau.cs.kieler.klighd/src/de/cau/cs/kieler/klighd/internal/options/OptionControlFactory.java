@@ -87,6 +87,10 @@ public class OptionControlFactory {
         this.parent = parent;
         this.workbenchPart = workbenchPart;
         this.formToolkit = formToolkit;
+
+        // configure the parent's layout
+        this.parent.setLayout(new GridLayout(2, false));
+
         // set a dummy configurator with default values
         defaultLayoutConfig = new DefaultLayoutConfig();
         defaultLayoutContext = new LayoutContext();
