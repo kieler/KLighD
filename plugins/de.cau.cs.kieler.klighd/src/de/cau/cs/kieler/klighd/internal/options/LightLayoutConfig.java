@@ -29,7 +29,7 @@ import de.cau.cs.kieler.kiml.klayoutdata.KLayoutData;
 
 /**
  * Layout configurator for Light Diagrams. The configuration is derived from widgets created
- * by the {@link OptionControlFactory}.
+ * by the {@link LayoutOptionControlFactory}.
  *
  * @author msp
  */

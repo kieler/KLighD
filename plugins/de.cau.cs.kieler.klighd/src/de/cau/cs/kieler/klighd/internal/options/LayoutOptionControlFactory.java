@@ -58,7 +58,7 @@ import de.cau.cs.kieler.klighd.views.DiagramViewPart;
  *
  * @author msp
  */
-public class OptionControlFactory {
+public class LayoutOptionControlFactory {
     
     /** The parent composite into which controls are created. */
     private Composite parent;
@@ -82,7 +82,7 @@ public class OptionControlFactory {
      * @param workbenchPart the workbench part containing the diagram viewer
      * @param formToolkit the form toolkit used to create controls
      */
-    public OptionControlFactory(final Composite parent, final IWorkbenchPart workbenchPart,
+    public LayoutOptionControlFactory(final Composite parent, final IWorkbenchPart workbenchPart,
             final FormToolkit formToolkit) {
         this.parent = parent;
         this.workbenchPart = workbenchPart;

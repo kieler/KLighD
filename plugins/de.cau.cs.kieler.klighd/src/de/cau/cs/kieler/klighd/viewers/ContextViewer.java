@@ -77,7 +77,7 @@ import de.cau.cs.kieler.klighd.LightDiagramServices;
 import de.cau.cs.kieler.klighd.TransformationContext;
 import de.cau.cs.kieler.klighd.TransformationOption;
 import de.cau.cs.kieler.klighd.ViewContext;
-import de.cau.cs.kieler.klighd.internal.options.OptionControlFactory;
+import de.cau.cs.kieler.klighd.internal.options.LayoutOptionControlFactory;
 import de.cau.cs.kieler.klighd.internal.options.SynthesisOptionControlFactory;
 import de.cau.cs.kieler.klighd.triggers.KlighdSelectionTrigger;
 import de.cau.cs.kieler.klighd.triggers.KlighdSelectionTrigger.KlighdSelectionState;
@@ -124,7 +124,7 @@ public class ContextViewer extends AbstractViewer<Object> implements IViewerEven
     /** the factory for diagram synthesis option controls. */
     private SynthesisOptionControlFactory synthesisOptionControlFactory;
     /** the factory for layout option controls. */
-    private OptionControlFactory layoutOptionControlFactory;
+    private LayoutOptionControlFactory layoutOptionControlFactory;
     /** the form toolkit, is only kept to properly dispose it finally. */
     private FormToolkit optionsformToolkit;
     /** the set of resources to be disposed when the view is closed. */
@@ -316,8 +316,8 @@ public class ContextViewer extends AbstractViewer<Object> implements IViewerEven
         final Composite layoutOptionsContainer = lform.getBody();
         
         // create the factory for layout option controls to fill the options container
-        layoutOptionControlFactory = new OptionControlFactory(layoutOptionsContainer, workbenchPart,
-                optionsformToolkit);
+        layoutOptionControlFactory = new LayoutOptionControlFactory(layoutOptionsContainer,
+                workbenchPart, optionsformToolkit);
         
         // prepare the form layout data for each of the above created widgets
         final FormData diagramContainerLayoutData = new FormData();
