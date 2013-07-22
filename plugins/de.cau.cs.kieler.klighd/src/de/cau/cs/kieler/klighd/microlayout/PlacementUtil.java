@@ -387,10 +387,10 @@ public final class PlacementUtil {
         KFontItalic kFontItalic = null;
 
         if (kText != null) {
-            Object testHeight = kText.getProperties().get(
-                    KlighdInternalProperties.KLIGHD_TESTING_HEIGHT);
-            Object testWidth = kText.getProperties().get(
-                    KlighdInternalProperties.KLIGHD_TESTING_WIDTH);
+            Object testHeight = Iterables.find(kText.getPersistentEntries(), 
+                    KlighdInternalProperties.PRED_TESTING_HEIGHT).getValue();
+            Object testWidth = Iterables.find(kText.getPersistentEntries(), 
+                    KlighdInternalProperties.PRED_TESTING_WIDTH).getValue();
             if (testHeight != null || testWidth != null) {
                 // code for the regression tests
                 //  (I don't trust in the different SWT implementations to
