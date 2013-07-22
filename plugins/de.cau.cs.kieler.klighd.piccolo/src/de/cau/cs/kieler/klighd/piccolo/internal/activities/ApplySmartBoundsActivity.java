@@ -100,6 +100,13 @@ public class ApplySmartBoundsActivity extends PInterpolatingActivity implements
      */
     public void activityFinished() {
         NodeUtil.applySmartBounds(node, targetBounds);
+        if (!stylesModified) {
+            stylesModified = true;
+            IGraphElement<?> gE = NodeUtil.asIGraphElement(node);
+            if (gE.getRenderingController() != null) {
+                gE.getRenderingController().modifyStyles();
+            }
+        }
         super.activityFinished();
     }
 

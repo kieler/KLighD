@@ -102,6 +102,12 @@ public class ApplyBendPointsActivity extends PInterpolatingActivity implements
      */
     public void activityFinished() {
         edgeNode.setBendPoints(targetBends);
+        if (!stylesModified) {
+            stylesModified = true;
+            if (edgeNode.getRenderingController() != null) {
+                edgeNode.getRenderingController().modifyStyles();
+            }
+        }
         super.activityFinished();
     }
 
