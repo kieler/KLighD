@@ -730,14 +730,15 @@ public abstract class AbstractKGERenderingController
                 new PropertyChangeListener() {
                     public void propertyChange(final PropertyChangeEvent e) {
                         // calculate the new bounds of the rendering
-                        Bounds[] bounds = gridPlacer.evaluate(Bounds.of(parent.getBoundsReference()));
+                        final Bounds parentBounds = Bounds.of(parent.getBoundsReference());
+                        final Bounds[] bounds = gridPlacer.evaluate(parentBounds);
 
                         // use the controllers to apply the new bounds
                         int i = 0;
                         Bounds currentBounds;
                         for (PNodeController<?> controller : controllers) {
                             currentBounds = bounds[i++];
-                            controller.setBounds(currentBounds);
+                            controller.setBounds(Bounds.min(currentBounds, parentBounds));
                         }
                     }
                 });

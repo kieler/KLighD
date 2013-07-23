@@ -104,6 +104,12 @@ public final class GridPlacementUtil {
             float availableParentWidth = parentBounds.width;
             float availableParentHeight = parentBounds.height;
 
+            // in case there is actually no space - skip the costly computations
+            if (availableParentHeight == 0f || availableParentWidth == 0f) {
+                Arrays.fill(bounds, new Bounds(0, 0));
+                return bounds;
+            }
+
             GridSpacing estimatedGrid = parent.getProperty(ESTIMATED_GRID_DATA);
             Pair<Integer, Integer> childAreaPosition = parent.getProperty(CHILD_AREA_POSITION);
             
@@ -183,7 +189,7 @@ public final class GridPlacementUtil {
             float currentX = startX;
             float currentY = startY;
             
-            for (int i = 0; i < children.size() && i < calculatedRowHeight.length; i++) {
+            for (int i = 0; i < children.size(); i++) {
                 KGridPlacementData gpd = asGridPlacementData(children.get(i).getPlacementData());
                 int column = i % numColumns;
                 int row = i / numColumns;
