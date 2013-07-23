@@ -102,7 +102,7 @@ public class DiagramEditorPart extends EditorPart implements IDiagramWorkbenchPa
         setPartName(getEditorInput().getName());
         
         // create a context viewer
-        viewer = new ContextViewer(parent, getEditorInput().getName(), this);
+        viewer = new ContextViewer(parent, "diagramEditor:" + getEditorInput().toString(), this);
         
         MapPropertyHolder props = new MapPropertyHolder();
         props.setProperty(LightDiagramServices.REQUESTED_UPDATE_STRATEGY, SimpleUpdateStrategy.ID);
@@ -113,6 +113,8 @@ public class DiagramEditorPart extends EditorPart implements IDiagramWorkbenchPa
             viewer.setModel(viewContext);
             // do an initial update of the view context
             LightDiagramServices.getInstance().updateViewContext(viewContext, model);
+            
+            DiagramViewManager.getInstance().registerView(this);
             
             if (requiresInitialLayout(viewContext)) {
                 LightDiagramServices.getInstance().layoutDiagram(viewContext, false, false);

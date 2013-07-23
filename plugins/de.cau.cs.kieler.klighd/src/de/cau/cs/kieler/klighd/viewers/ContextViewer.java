@@ -187,6 +187,9 @@ public class ContextViewer extends AbstractViewer<Object> implements IViewerEven
         }
         
         // remove any option controls that have been created before
+        synthesisOptionControlFactory.clear();
+        
+        // remove any option controls that have been created before
         layoutOptionControlFactory.clear();
         // initialize a layout configuration for retrieving default values
         layoutOptionControlFactory.initialize();
@@ -383,6 +386,7 @@ public class ContextViewer extends AbstractViewer<Object> implements IViewerEven
                     //  to let the sash respect the limit correctly.
                     event.x = sashLayoutData.left.offset;
                 }
+                System.out.println(event.x);
                 partComposite.layout(true);
             }
         });
@@ -413,6 +417,8 @@ public class ContextViewer extends AbstractViewer<Object> implements IViewerEven
             }
         });
     }
+    
+    private boolean sideBarInitialized = false;
 
     /**
      * A simple paint listener that draws a vertical line.
@@ -433,15 +439,20 @@ public class ContextViewer extends AbstractViewer<Object> implements IViewerEven
      * @param zoomToFit true if the diagram shall fit the available space
      */
     private void enableOptionsSideBar(final boolean zoomToFit) {
-        // define the controls (sash, right arrow, form) to be visible
-        for (Control c : this.sideBarControls) {
-            c.setVisible(true);
+        if (!sideBarInitialized) {
+            sideBarInitialized = true;
+            
+            // define the controls (sash, right arrow, form) to be visible
+            for (Control c : this.sideBarControls) {
+                c.setVisible(true);
+            }
+            // put the sash at the desired position according to MIN_OPTIONS_FORM_WIDTH
+            if (this.sashLayoutData != null) {
+                this.sashLayoutData.left.numerator = FULL;
+                this.sashLayoutData.left.offset = -INITIAL_OPTIONS_FORM_WIDTH;
+            }
         }
-        // put the sash at the desired position according to MIN_OPTIONS_FORM_WIDTH
-        if (this.sashLayoutData != null) {
-            this.sashLayoutData.left.numerator = FULL;
-            this.sashLayoutData.left.offset = -INITIAL_OPTIONS_FORM_WIDTH;
-        }
+        
         // re-layout the view part's composite
         this.diagramComposite.getParent().layout(true, true);
         

@@ -183,7 +183,7 @@ public final class GridPlacementUtil {
             float currentX = startX;
             float currentY = startY;
             
-            for (int i = 0; i < children.size(); i++) {
+            for (int i = 0; i < children.size() && i < calculatedRowHeight.length; i++) {
                 KGridPlacementData gpd = asGridPlacementData(children.get(i).getPlacementData());
                 int column = i % numColumns;
                 int row = i / numColumns;
