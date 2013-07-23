@@ -32,6 +32,7 @@ import de.cau.cs.kieler.core.krendering.KRenderingPackage;
 import de.cau.cs.kieler.core.properties.IProperty;
 import de.cau.cs.kieler.kiml.klayoutdata.KLayoutDataPackage;
 import de.cau.cs.kieler.klighd.internal.util.KlighdInternalProperties;
+import de.cau.cs.kieler.klighd.microlayout.PlacementUtil;
 
 /**
  * A customized {@link org.eclipse.emf.compare.diff.engine.IDiffEngine2 IDiffEngine2} that realizes
@@ -96,6 +97,8 @@ public class KGraphDiffEngine extends GenericDiffEngine {
      * KLayoutData} are not considered here! See {@link #FILTER} for that restriction.
      */
     private static final List<IProperty<?>> MERGE_PROPERTIES = ImmutableList.<IProperty<?>>of(
+            PlacementUtil.CHILD_AREA_POSITION,
+            PlacementUtil.ESTIMATED_GRID_DATA,
             KlighdInternalProperties.MODEL_ELEMEMT);
     
     /**
