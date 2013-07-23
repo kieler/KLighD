@@ -30,9 +30,12 @@ Bundle-ActivationPolicy: lazy
 Bundle-Activator: de.cau.cs.kieler.klighd.KlighdPlugin
 Export-Package: de.cau.cs.kieler.klighd,
  de.cau.cs.kieler.klighd.actions,
+ de.cau.cs.kieler.klighd.combinations,
  de.cau.cs.kieler.klighd.effects,
+ de.cau.cs.kieler.klighd.internal;x-internal:=true,
  de.cau.cs.kieler.klighd.internal.macrolayout;x-internal:=true,
  de.cau.cs.kieler.klighd.internal.options;x-internal:=true,
+ de.cau.cs.kieler.klighd.internal.preferences;x-internal:=true,
  de.cau.cs.kieler.klighd.internal.util;x-friends:="de.cau.cs.kieler.klighd.piccolo,de.cau.cs.kieler.klighd.test,de.cau.cs.kieler.klighd.incremental",
  de.cau.cs.kieler.klighd.krendering,
  de.cau.cs.kieler.klighd.microlayout,

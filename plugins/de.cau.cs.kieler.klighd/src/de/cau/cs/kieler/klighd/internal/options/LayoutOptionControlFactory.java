@@ -75,6 +75,9 @@ public class LayoutOptionControlFactory {
     /** The set of controls to be disposed when {@link #clear()} is called. */
     private final Collection<Control> controls = new LinkedList<Control>();
     
+    /** number of columns in the grid for enumeration value selection. */
+    private static final int ENUM_GRID_COLS = 2;
+    
     /**
      * Create an option control factory.
      * 
@@ -89,7 +92,7 @@ public class LayoutOptionControlFactory {
         this.formToolkit = formToolkit;
 
         // configure the parent's layout
-        this.parent.setLayout(new GridLayout(2, false));
+        this.parent.setLayout(new GridLayout(1, false)); // chsch: changed this from 2 to 1
 
         // set a dummy configurator with default values
         defaultLayoutConfig = new DefaultLayoutConfig();
@@ -201,9 +204,6 @@ public class LayoutOptionControlFactory {
         }
     }
     
-    /** number of columns in the grid for enumeration value selection. */
-    private static final int ENUM_GRID_COLS = 2;
-    
     /**
      * Create a control for the given layout option data instance with given bounds.
      * 
@@ -221,7 +221,7 @@ public class LayoutOptionControlFactory {
             button.setToolTipText(optionData.getDescription());
             button.addSelectionListener(new AlgorithmListener());
             GridData gridData = new GridData(SWT.LEFT, SWT.TOP, false, false);
-            gridData.horizontalSpan = 2;
+            // gridData.horizontalSpan = 2;
             button.setLayoutData(gridData);
             controls.add(button);
             // set initial value for the algorithm selection dialog
@@ -230,9 +230,13 @@ public class LayoutOptionControlFactory {
                 lightLayoutConfig.setOption(optionData, algorithmHint);
             }
             
+            // chsch: via this tweak we get more space below the 'Select ...' button as in GridData
+            //  one can only specify vertical indentation on the top side of the widget
+            new Composite(parent, SWT.NONE | SWT.NO_BACKGROUND).setLayoutData(new GridData(1, 1));
+            
         } else {
-            Label label = formToolkit.createLabel(parent, optionData.getName());
-            label.setLayoutData(new GridData(SWT.LEFT, SWT.TOP, false, false));
+            Label label = formToolkit.createLabel(parent, optionData.getName() + ":");
+            label.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false));
             controls.add(label);
             
             switch (optionData.getType()) {
