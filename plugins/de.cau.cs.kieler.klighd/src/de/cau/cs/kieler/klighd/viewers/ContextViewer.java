@@ -127,6 +127,10 @@ public class ContextViewer extends AbstractViewer<Object> implements IViewerEven
     private LayoutOptionControlFactory layoutOptionControlFactory;
     /** the form toolkit, is only kept to properly dispose it finally. */
     private FormToolkit optionsformToolkit;
+    /** The form that holds synthesis options. */
+    private Form synthesisOptionsForm;
+    /** The form that holds layout options. */
+    private Form layoutOptionsForm;
     /** the set of resources to be disposed when the view is closed. */
     private final List<Resource> resources = new LinkedList<Resource>();
 
@@ -165,10 +169,6 @@ public class ContextViewer extends AbstractViewer<Object> implements IViewerEven
             optionsformToolkit.dispose();
             optionsformToolkit = null;
         }
-        if (optionsformToolkit != null) {
-            optionsformToolkit.dispose();
-            optionsformToolkit = null;
-        }
         for (Resource res : resources) {
             res.dispose();
         }
@@ -197,7 +197,7 @@ public class ContextViewer extends AbstractViewer<Object> implements IViewerEven
         Map<IProperty<?>, Collection<?>> recommendedOptions =
                 currentViewContext.getRecommendedLayoutOptions();
         
-        boolean optionsAvailable = false;
+        boolean layoutOptionsAvailable = false;
         for (Entry<IProperty<?>, Collection<?>> entry : recommendedOptions.entrySet()) {
             Collection<?> values = entry.getValue();
             Object first = Iterables.get(values, 0, null);
@@ -206,38 +206,37 @@ public class ContextViewer extends AbstractViewer<Object> implements IViewerEven
             if (values.size() == 2 && first instanceof Number && second instanceof Number) {
                 layoutOptionControlFactory.createControl(entry.getKey().getId(),
                         ((Number) first).floatValue(), ((Number) second).floatValue());
-                optionsAvailable = true;
+                layoutOptionsAvailable = true;
             } else if (values.size() == 0) {
                 layoutOptionControlFactory.createControl(entry.getKey().getId());
-                optionsAvailable = true;
+                layoutOptionsAvailable = true;
             } else {
                 layoutOptionControlFactory.createControl(entry.getKey().getId(), values);
-                optionsAvailable = true;
+                layoutOptionsAvailable = true;
             }
         }
         
+        boolean synthesisOptionsAvailable = false;
         for (final Map.Entry<TransformationContext<?, ?>, Set<TransformationOption>> entry
                 : this.getCurrentViewContext().getTransformationOptions().entrySet()) {
             for (final TransformationOption option : entry.getValue()) {
                 if (option.isCheckOption()) {
                     synthesisOptionControlFactory.createCheckOptionControl(option, entry.getKey(),
                             viewId);
-                    optionsAvailable = true;
+                    synthesisOptionsAvailable = true;
                 } else if (option.isChoiceOption()) {
                     synthesisOptionControlFactory.createChoiceOptionControl(option, entry.getKey(),
                             viewId);
-                    optionsAvailable = true;
+                    synthesisOptionsAvailable = true;
                 } else if (option.isRangeOption()) {
                     synthesisOptionControlFactory.createRangeOptionControl(option, entry.getKey(),
                             viewId);
-                    optionsAvailable = true;
+                    synthesisOptionsAvailable = true;
                 }
             }
         }
         
-        if (optionsAvailable) {
-            this.enableOptionsSideBar(fitSpace);
-        }
+        this.enableOptionsSideBar(fitSpace, synthesisOptionsAvailable, layoutOptionsAvailable);
     }
     
     /** The initial width of the option pane and the diagram viewer. */
@@ -301,22 +300,22 @@ public class ContextViewer extends AbstractViewer<Object> implements IViewerEven
         formRoot.setLayout(new FormLayout());
 
         // create container for diagram synthesis options
-        final Form sform = optionsformToolkit.createForm(formRoot);
-        sideBarControls.add(sform);
-        sform.setText("Diagam options");
-        sform.setVisible(false);
-        final Composite synthesisOptionsContainer = sform.getBody();
+        synthesisOptionsForm = optionsformToolkit.createForm(formRoot);
+        sideBarControls.add(synthesisOptionsForm);
+        synthesisOptionsForm.setText("Diagam options");
+        synthesisOptionsForm.setVisible(false);
+        final Composite synthesisOptionsContainer = synthesisOptionsForm.getBody();
         
         // create the factory for diagram synthesis option controls to fill the options container
         synthesisOptionControlFactory = new SynthesisOptionControlFactory(
                 synthesisOptionsContainer, optionsformToolkit);
         
         // create container for layout options
-        final Form lform = optionsformToolkit.createForm(formRoot);
-        sideBarControls.add(lform);
-        lform.setText("Layout options");
-        lform.setVisible(false);
-        final Composite layoutOptionsContainer = lform.getBody();
+        layoutOptionsForm = optionsformToolkit.createForm(formRoot);
+        sideBarControls.add(layoutOptionsForm);
+        layoutOptionsForm.setText("Layout options");
+        layoutOptionsForm.setVisible(false);
+        final Composite layoutOptionsContainer = layoutOptionsForm.getBody();
         
         // create the factory for layout option controls to fill the options container
         layoutOptionControlFactory = new LayoutOptionControlFactory(layoutOptionsContainer,
@@ -358,18 +357,19 @@ public class ContextViewer extends AbstractViewer<Object> implements IViewerEven
         formRootLayoutData.right = new FormAttachment(FULL); 
         formRootScroller.setLayoutData(formRootLayoutData);
         
-        final FormData sformLayoutData = new FormData();        
-        sformLayoutData.top = new FormAttachment(0);
-        sformLayoutData.left = new FormAttachment(0); 
-        sformLayoutData.right = new FormAttachment(FULL); 
-        sform.setLayoutData(sformLayoutData);
+        final FormData synthesisOptionsFormLayoutData = new FormData();        
+        synthesisOptionsFormLayoutData.top = new FormAttachment(0);
+        synthesisOptionsFormLayoutData.left = new FormAttachment(0); 
+        synthesisOptionsFormLayoutData.right = new FormAttachment(FULL); 
+        synthesisOptionsForm.setLayoutData(synthesisOptionsFormLayoutData);
         
-        final FormData lformLayoutData = new FormData();        
-        lformLayoutData.top = new FormAttachment(sform, SYNTHESIS_LAYOUT_OPTIONS_SPACE);
-        lformLayoutData.bottom = new FormAttachment(FULL);
-        lformLayoutData.left = new FormAttachment(0); 
-        lformLayoutData.right = new FormAttachment(FULL); 
-        lform.setLayoutData(lformLayoutData);
+        final FormData layoutOptionsFormLayoutData = new FormData();        
+        layoutOptionsFormLayoutData.top = new FormAttachment(
+                synthesisOptionsForm, SYNTHESIS_LAYOUT_OPTIONS_SPACE);
+        layoutOptionsFormLayoutData.bottom = new FormAttachment(FULL);
+        layoutOptionsFormLayoutData.left = new FormAttachment(0); 
+        layoutOptionsFormLayoutData.right = new FormAttachment(FULL); 
+        layoutOptionsForm.setLayoutData(layoutOptionsFormLayoutData);
 
         // register the sash moving handler for resizing the options pane
         sash.addListener(SWT.Selection, new Listener() {
@@ -386,7 +386,6 @@ public class ContextViewer extends AbstractViewer<Object> implements IViewerEven
                     //  to let the sash respect the limit correctly.
                     event.x = sashLayoutData.left.offset;
                 }
-                System.out.println(event.x);
                 partComposite.layout(true);
             }
         });
@@ -436,15 +435,25 @@ public class ContextViewer extends AbstractViewer<Object> implements IViewerEven
      * A simple enabler of the side bar controls.
      * It is to be executed in case there are diagram options to provide in the side bar.
      * 
-     * @param zoomToFit true if the diagram shall fit the available space
+     * @param zoomToFit {@code true} if the diagram shall fit the available space
+     * @param showSynthesisOptions {@code true} if the synthesis options group should be displayed.
+     * @param showLayoutOptions {@code true} if the layout options group should be displayed.
      */
-    private void enableOptionsSideBar(final boolean zoomToFit) {
+    private void enableOptionsSideBar(final boolean zoomToFit, final boolean showSynthesisOptions,
+            final boolean showLayoutOptions) {
+        
         if (!sideBarInitialized) {
             sideBarInitialized = true;
             
             // define the controls (sash, right arrow, form) to be visible
             for (Control c : this.sideBarControls) {
-                c.setVisible(true);
+                if (c == synthesisOptionsForm) {
+                    c.setVisible(showSynthesisOptions);
+                } else if (c == layoutOptionsForm) {
+                    c.setVisible(showLayoutOptions);
+                } else {
+                    c.setVisible(showSynthesisOptions || showLayoutOptions);
+                }
             }
             // put the sash at the desired position according to MIN_OPTIONS_FORM_WIDTH
             if (this.sashLayoutData != null) {
