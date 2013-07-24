@@ -26,6 +26,11 @@
     margin: 0;
 }
 
+.uix-tree .uix-tree-node ul {
+    padding-left: 3px;
+    margin: 0;
+}
+
 .uix-tree li {
     position: relative;
     margin: 0;

@@ -30,7 +30,11 @@ svg {
 #tree {
     width: 100%;
     box-shadow: 0 1px 4px rgba(0, 0, 0, 0.067);
+    overflow-y: auto;
+    overflow-x: auto;
+    height: 100%;
 }
+
 
 [class*="span"] {
     margin-left: 0px;
