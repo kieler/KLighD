@@ -20,7 +20,6 @@ import java.util.Set;
 
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.statushandlers.StatusManager;
@@ -281,7 +280,7 @@ public final class ViewContext extends MapPropertyHolder {
      * @return the element in the source model or null if the link could not be made
      */
     public Object getSourceElement(final Object element) {
-        EObject model;
+        Object model;
         if (KGraphPackage.eINSTANCE.getKGraphData().isInstance(element)) {
             model = ((KGraphData) element).getProperty(KlighdInternalProperties.MODEL_ELEMEMT);
         } else if (KGraphPackage.eINSTANCE.getKGraphElement().isInstance(element)) {
