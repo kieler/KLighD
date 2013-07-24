@@ -57,6 +57,9 @@ public class FadeEdgeInActivity extends PInterpolatingActivity implements IStart
      * invisibility.
      */
     public void activityStarted() {
+        if (edgeNode.getRenderingController() != null) {
+            edgeNode.getRenderingController().modifyStyles();
+        }
         edgeNode.setBendPoints(targetBends);
         edgeNode.setTransparency(0);
         edgeNode.setVisible(true);

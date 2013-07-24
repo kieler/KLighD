@@ -14,24 +14,17 @@
 package de.cau.cs.kieler.klighd;
 
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.statushandlers.StatusManager;
 
-import com.google.common.base.Predicate;
-import com.google.common.base.Strings;
-import com.google.common.collect.Iterables;
-import com.google.common.collect.Iterators;
-import com.google.common.collect.Lists;
-
 import de.cau.cs.kieler.core.kgraph.KNode;
-import de.cau.cs.kieler.core.krendering.KStyle;
 import de.cau.cs.kieler.core.properties.IProperty;
 import de.cau.cs.kieler.core.properties.IPropertyHolder;
 import de.cau.cs.kieler.core.properties.Property;
@@ -39,10 +32,12 @@ import de.cau.cs.kieler.kiml.config.ILayoutConfig;
 import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout;
 import de.cau.cs.kieler.kiml.options.LayoutOptions;
 import de.cau.cs.kieler.kiml.ui.diagram.DiagramLayoutEngine;
+import de.cau.cs.kieler.klighd.internal.preferences.KlighdPreferences;
 import de.cau.cs.kieler.klighd.transformations.ReinitializingTransformationProxy;
 import de.cau.cs.kieler.klighd.viewers.ContextViewer;
 import de.cau.cs.kieler.klighd.views.DiagramViewManager;
 import de.cau.cs.kieler.klighd.views.DiagramViewPart;
+import de.cau.cs.kieler.klighd.views.IDiagramWorkbenchPart;
 
 /**
  * Singleton for accessing basic KLighD services.
@@ -383,8 +378,8 @@ public final class LightDiagramServices {
     }
     
     /**
-     * Performs the automatic layout on the diagram represented by the given {@link DiagramViewPart}
-     * /diagram viewer.
+     * Performs the automatic layout on the diagram represented by the given
+     * {@link IDiagramWorkbenchPart} / {@link IViewer}.
      * 
      * @param viewPart
      *            the diagram view part showing the diagram to layout
@@ -397,35 +392,34 @@ public final class LightDiagramServices {
      * @param options
      *            an optional list of layout options
      */
-    public void layoutDiagram(final DiagramViewPart viewPart,
+    public void layoutDiagram(final IDiagramWorkbenchPart viewPart,
             final IViewer<? extends EObject> diagramViewer, final boolean animate,
             final boolean zoomToFit, final List<ILayoutConfig> options) {
-        final KNode viewModel = (KNode) diagramViewer.getContextViewer().getCurrentViewContext()
+        
+        final IPreferenceStore preferenceStore = KlighdPlugin.getDefault().getPreferenceStore();
+        final boolean doZoom = zoomToFit
+                || preferenceStore.getBoolean(KlighdPreferences.ZOOM_TO_FIT);
+        final boolean doAnimate = animate
+                || preferenceStore.getBoolean(KlighdPreferences.ANIMATE_LAYOUT);
+        
+        final KNode viewModel;
+        if (viewPart != null) {
+            viewModel = (KNode) viewPart.getContextViewer().getCurrentViewContext()
                 .getViewModel();
+        } else if (diagramViewer != null) {
+            viewModel = (KNode) diagramViewer.getContextViewer().getCurrentViewContext()
+                    .getViewModel();
+        } else {
+            viewModel = null;
+        }
+        
         if (viewModel != null
                 && !viewModel.getData(KShapeLayout.class).getProperty(LayoutOptions.NO_LAYOUT)) {
-            DiagramLayoutEngine.INSTANCE.layout(viewPart, diagramViewer, animate, false, false,
-                    zoomToFit, options);            
+            DiagramLayoutEngine.INSTANCE.layout(viewPart, diagramViewer, doAnimate, false, false,
+                    doZoom, options);            
         } else {
             diagramViewer.setRecording(false);
             
-        }
-
-        final List<KStyle> styles = Lists.newLinkedList();
-        Iterables.addAll(styles, new Iterable<KStyle>() {
-            public Iterator<KStyle> iterator() {
-                Iterator<EObject> it = diagramViewer.getModel().eAllContents();
-                return Iterators.filter(Iterators.filter(it, KStyle.class),
-                        new Predicate<KStyle>() {
-                            public boolean apply(final KStyle style) {
-                                return !Strings.isNullOrEmpty(style.getModifierId());
-                            }
-                        });
-            }
-        });
-        for (KStyle s : styles) {
-            KlighdDataManager.getInstance().getStyleModifierById(s.getModifierId())
-                    .modify(new StyleModificationContext(s));
         }
     }
     

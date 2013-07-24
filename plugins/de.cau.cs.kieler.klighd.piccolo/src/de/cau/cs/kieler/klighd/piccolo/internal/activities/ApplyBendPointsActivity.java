@@ -39,6 +39,9 @@ public class ApplyBendPointsActivity extends PInterpolatingActivity implements
     /** the temporary bends. */
     private Point2D[] tempBends;
 
+    /** a local memory indicating whether a style update took place already. */
+    private boolean stylesModified = false;
+
     /**
      * Constructs an activity to apply new bend points to an edge node over a specified duration.
      * 
@@ -83,6 +86,12 @@ public class ApplyBendPointsActivity extends PInterpolatingActivity implements
             }
             edgeNode.setBendPoints(tempBends);
         }
+        if (!stylesModified && zeroToOne > 1f / 2f) {
+            stylesModified = true;
+            if (edgeNode.getRenderingController() != null) {
+                edgeNode.getRenderingController().modifyStyles();
+            }
+        }
         super.setRelativeTargetValue(zeroToOne);
     }
 
@@ -93,6 +102,12 @@ public class ApplyBendPointsActivity extends PInterpolatingActivity implements
      */
     public void activityFinished() {
         edgeNode.setBendPoints(targetBends);
+        if (!stylesModified) {
+            stylesModified = true;
+            if (edgeNode.getRenderingController() != null) {
+                edgeNode.getRenderingController().modifyStyles();
+            }
+        }
         super.activityFinished();
     }
 

@@ -18,17 +18,21 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
 
+import com.google.common.collect.Iterables;
+
+import de.cau.cs.kieler.core.kgraph.KGraphData;
 import de.cau.cs.kieler.core.kgraph.KGraphElement;
+import de.cau.cs.kieler.core.kgraph.KGraphPackage;
 import de.cau.cs.kieler.core.kgraph.KNode;
 import de.cau.cs.kieler.core.kgraph.KPort;
 import de.cau.cs.kieler.core.krendering.KRenderingFactory;
 import de.cau.cs.kieler.core.properties.IProperty;
 import de.cau.cs.kieler.kiml.klayoutdata.KLayoutData;
-import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout;
 import de.cau.cs.kieler.klighd.TransformationContext;
 import de.cau.cs.kieler.klighd.internal.macrolayout.ExpansionAwareLayoutOption;
 import de.cau.cs.kieler.klighd.internal.macrolayout.ExpansionAwareLayoutOption.ExpansionAwareLayoutOptionData;
 // SUPPRESS CHECKSTYLE PREVIOUS LineLength
+import de.cau.cs.kieler.klighd.internal.util.KlighdInternalProperties;
 
 /**
  * This is a specialized {@link AbstractTransformation} with target model type {@link KNode}.<br>
@@ -67,6 +71,22 @@ public abstract class AbstractDiagramSynthesis<S> extends AbstractTransformation
      */
     public abstract KNode transform(S model);
 
+    
+    @Override 
+    @SuppressWarnings("unchecked")
+    public <D> D putToLookUpWith(final D derived, final Object source) {
+        if (KGraphPackage.eINSTANCE.getKGraphData().isInstance(derived)) {
+            ((KGraphData) derived).setProperty(KlighdInternalProperties.MODEL_ELEMEMT, source);
+        } else if (KGraphPackage.eINSTANCE.getKGraphElement().isInstance(derived)) {
+            Iterables.getFirst(
+                    (Iterable<KGraphData>) (Iterable<?>) Iterables.filter(
+                            ((KGraphElement) derived).getData(), KLayoutData.class), null)
+                    .setProperty(KlighdInternalProperties.MODEL_ELEMEMT, source);
+        }
+        
+        return super.putToLookUpWith(derived, source);
+    }
+    
     /**
      * {@inheritDoc}
      */
@@ -153,7 +173,7 @@ public abstract class AbstractDiagramSynthesis<S> extends AbstractTransformation
      */
     protected <T> KNode setExpansionAwareLayoutOption(final KNode node, final IProperty<T> option,
             final T collapsedValue, final T expandedValue) {
-        KShapeLayout sl = node.getData(KShapeLayout.class); 
+        KLayoutData sl = node.getData(KLayoutData.class); 
         ExpansionAwareLayoutOptionData data = sl.getProperty(ExpansionAwareLayoutOption.OPTION);
         
         if (data == null) {
@@ -186,7 +206,7 @@ public abstract class AbstractDiagramSynthesis<S> extends AbstractTransformation
      */
     protected <T> KPort setExpansionAwareLayoutOption(final KPort port, final IProperty<T> option,
             final T collapsedValue, final T expandedValue) {
-        KShapeLayout sl = port.getData(KShapeLayout.class); 
+        KLayoutData sl = port.getData(KLayoutData.class); 
         ExpansionAwareLayoutOptionData data = sl.getProperty(ExpansionAwareLayoutOption.OPTION);
         
         if (data == null) {

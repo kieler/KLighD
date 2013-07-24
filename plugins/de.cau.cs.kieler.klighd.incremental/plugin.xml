@@ -14,8 +14,17 @@
             engineClass="de.cau.cs.kieler.klighd.incremental.diff.KGraphDiffEngine"
             label="KgtDiffEngine"
             namespace="http://kieler.cs.cau.de/KGraph"
-            priority="normal">
+            priority="high">
       </diffengine>
+   </extension>
+   <extension
+         point="org.eclipse.emf.compare.match.engine">
+      <matchengine
+            engineClass="de.cau.cs.kieler.klighd.incremental.match.KGraphMatchEngine"
+            label="KgtMatchEngine"
+            namespace="http://kieler.cs.cau.de/KGraph"
+            priority="high">
+      </matchengine>
    </extension>
 
 </fragment>

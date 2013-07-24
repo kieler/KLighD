@@ -29,6 +29,7 @@ import org.eclipse.ui.PlatformUI;
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
+import com.google.common.base.Strings;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -49,6 +50,9 @@ import de.cau.cs.kieler.core.krendering.KRenderingRef;
 import de.cau.cs.kieler.core.krendering.KStyle;
 import de.cau.cs.kieler.core.properties.IProperty;
 import de.cau.cs.kieler.core.util.Pair;
+import de.cau.cs.kieler.kiml.klayoutdata.KLayoutData;
+import de.cau.cs.kieler.klighd.KlighdDataManager;
+import de.cau.cs.kieler.klighd.IStyleModifier.StyleModificationContext;
 import de.cau.cs.kieler.klighd.internal.util.KlighdInternalProperties;
 import de.cau.cs.kieler.klighd.microlayout.Bounds;
 import de.cau.cs.kieler.klighd.microlayout.GridPlacementUtil;
@@ -70,9 +74,9 @@ import edu.umd.cs.piccolo.nodes.PPath;
 /**
  * The abstract base class for controllers that manages the transformation of a dedicated
  * {@link KGraphElement}'s KRendering data to Piccolo nodes and the synchronization of those Piccolo
- * nodes with the KRendering specification .
+ * nodes with the KRendering specification.
  * 
- * @author mri,chsch
+ * @author mri, chsch
  * 
  * @param <S>
  *            the type of the underlying graph element
@@ -123,6 +127,12 @@ public abstract class AbstractKGERenderingController
     /** whether to synchronize the rendering with the model. */
     private boolean syncRendering = false;
 
+    /**
+     * A flag indicating the availability of {@link KStyle KStyles} with valid modifier ids in
+     * {@link #currentRendering}.
+     */
+    private boolean modifiableStylesPresent = false;
+    
     /**
      * Constructs a rendering controller.
      * 
@@ -215,6 +225,22 @@ public abstract class AbstractKGERenderingController
     }
     
     /**
+     * Fires a run of the {@link de.cau.cs.kieler.klighd.IStyleModifier IStyleModifiers} referenced
+     * by the {@link KStyle KStyles} attached to this {@link KGraphElement}'s rendering and updates
+     * the diagram figure, both if and only if {@link KStyles} with valid modifiers are present in
+     * this {@link KGraphElement}'s rendering.
+     */
+    public void modifyStyles() {
+        if (modifiableStylesPresent) {
+            updateStyles();
+        }
+    };
+    
+
+    // ---------------------------------------------------------------------------------- //
+    //  internal part
+    
+    /**
      * A predicate used to identify the KRendering of a KNode in case the node is collapsed.
      * This predicate is also used by the {@link DiagramController} and thus marked
      * 'package protected' (no modifier).
@@ -258,6 +284,9 @@ public abstract class AbstractKGERenderingController
         // get the current rendering
         //  this call updates the 'currentRendering' field
         getCurrentRendering();
+        
+        // reset that flag as potentially available styles with a modifier might be removed now
+        modifiableStylesPresent = false;
 
         // update the rendering
         renderingNode = internalUpdateRendering();
@@ -429,7 +458,7 @@ public abstract class AbstractKGERenderingController
     }
 
     /**
-     * A little help to reduce the syncExec calls if possible.
+     * A little helper reducing the 'syncExec' calls if possible.
      * 
      * @param r
      *            the runnable to be performed in the UI context.
@@ -442,31 +471,45 @@ public abstract class AbstractKGERenderingController
         }
     }
 
+    /**
+     * A re-usable {@link Runnable} to be executed in UI context wrapping {@link #updateRendering()}.
+     */
     private Runnable updateRenderingRunnable = new Runnable() {
         public void run() {
             updateRendering();
         }
     };
 
+    /**
+     * A short convenience method for invoking {@link #updateRendering()} in UI context.
+     */
     private void updateRenderingInUi() {
         runInUI(this.updateRenderingRunnable);
     }
 
+    /**
+     * A re-usable {@link Runnable} to be executed in UI context wrapping {@link #updateStyles()}.
+     */
     private Runnable updateStylesRunnable = new Runnable() {
         public void run() {
             updateStyles();
         }
     };
 
+    /**
+     * A short convenience method for invoking {@link #updateStyles()} in UI context.
+     */
     private void updateStylesInUi() {
         runInUI(this.updateStylesRunnable);
     }
 
-
     /**
-     * Updates the styles of the current rendering.
+     * Updates the styles of the {@link PNode PNodes} representing {@link #currentRendering}.
      */
     private void updateStyles() {
+        // reset that flag as potentially available styles with a modifier might be removed now
+        modifiableStylesPresent = false;
+
         // update using the recursive method
         updateStyles(currentRendering, new Styles(), new ArrayList<KStyle>(0));
 
@@ -481,7 +524,10 @@ public abstract class AbstractKGERenderingController
             }
         }
     }
-
+    
+    /**
+     * Recursively updates the styles of the {@link PNode PNodes} representing <code>rendering</code>.
+     */
     private void updateStyles(final KRendering rendering, final Styles styles,
             final List<KStyle> propagatedStyles) {
 
@@ -502,7 +548,9 @@ public abstract class AbstractKGERenderingController
         }
         
         List<KStyle> renderingStyles = rendering.getStyles();
-
+        
+        processModifiableStyles(renderingStyles);
+        
         // determine the styles for this rendering
         styles.deriveStyles(determineRenderingStyles(renderingStyles, propagatedStyles));
         
@@ -525,6 +573,39 @@ public abstract class AbstractKGERenderingController
         }
     }
 
+    /** 
+     * A filter that lets only styles with a valid modifier id pass.  
+     */
+    private static final Predicate<KStyle> MODIFIED_STYLE_FILTER = new Predicate<KStyle>() {
+        public boolean apply(final KStyle style) {
+            return !Strings.isNullOrEmpty(style.getModifierId())
+                    && KlighdDataManager.getInstance()
+                        .getStyleModifierById(style.getModifierId()) != null;
+        }
+    };
+    
+    private final StyleModificationContext singletonModContext = new StyleModificationContext();
+
+    private void processModifiableStyles(final List<KStyle> styles) {
+        final Iterable<KStyle> localModifiedStyles = Iterables.filter(styles,
+                MODIFIED_STYLE_FILTER);
+        modifiableStylesPresent |= !localModifiedStyles.iterator().hasNext();
+
+        final KLayoutData layoutData = getGraphElement().getData(KLayoutData.class);
+        if (layoutData == null) {
+            return;
+        }
+        
+        boolean deliver;
+        for (KStyle s: localModifiedStyles) {
+            deliver  = s.eDeliver();
+            s.eSetDeliver(false);
+            KlighdDataManager.getInstance().getStyleModifierById(s.getModifierId()).modify(
+                    singletonModContext.configure(s, layoutData));
+            s.eSetDeliver(deliver);
+        }
+    }
+    
     /**
      * Creates the Piccolo nodes for a list of renderings inside a parent Piccolo node for the given
      * placement.
@@ -565,7 +646,7 @@ public abstract class AbstractKGERenderingController
     protected PNode handleAreaPlacementRendering(final KRendering rendering,
             final List<KStyle> styles, final PNode parent) {
         final KPlacementData pcd = rendering.getPlacementData();
-        Bounds bounds = null;
+        final Bounds bounds;
         if (pcd instanceof KPointPlacementData) {
             bounds = PiccoloPlacementUtil.evaluatePointPlacement((KPointPlacementData) pcd,
                     PlacementUtil.estimateSize(rendering, new Bounds(0.0f, 0.0f)),
@@ -579,6 +660,7 @@ public abstract class AbstractKGERenderingController
         // create the rendering and receive its controller
         final PNodeController<?> controller = createRendering(rendering, styles, parent, bounds);
 
+        // add a listener on the parent's bounds
         if (pcd instanceof KPointPlacementData) {
             addListener(PNode.PROPERTY_BOUNDS, parent, controller.getNode(),
                     new PropertyChangeListener() {
@@ -607,8 +689,6 @@ public abstract class AbstractKGERenderingController
                     });
         }
 
-        // add a listener on the parent's bounds
-
         return controller.getNode();
     }
 
@@ -635,8 +715,8 @@ public abstract class AbstractKGERenderingController
         final GridPlacementUtil.GridPlacer gridPlacer = GridPlacementUtil.getGridPlacementObject(
                 gridPlacement, renderings);
 
-        Bounds parentBounds = new Bounds(parent.getBoundsReference());
-        Bounds[] elementBounds = gridPlacer.evaluate(parentBounds);
+        final Bounds parentBounds = new Bounds(parent.getBoundsReference());
+        final Bounds[] elementBounds = gridPlacer.evaluate(parentBounds);
         
         // create the renderings and collect the controllers
         final PNodeController<?>[] controllers = new PNodeController<?>[renderings.size()];
@@ -650,14 +730,15 @@ public abstract class AbstractKGERenderingController
                 new PropertyChangeListener() {
                     public void propertyChange(final PropertyChangeEvent e) {
                         // calculate the new bounds of the rendering
-                        Bounds[] bounds = gridPlacer.evaluate(Bounds.of(parent.getBoundsReference()));
+                        final Bounds parentBounds = Bounds.of(parent.getBoundsReference());
+                        final Bounds[] bounds = gridPlacer.evaluate(parentBounds);
 
                         // use the controllers to apply the new bounds
                         int i = 0;
                         Bounds currentBounds;
                         for (PNodeController<?> controller : controllers) {
                             currentBounds = bounds[i++];
-                            controller.setBounds(currentBounds);
+                            controller.setBounds(Bounds.min(currentBounds, parentBounds));
                         }
                     }
                 });
@@ -762,6 +843,8 @@ public abstract class AbstractKGERenderingController
             final List<KStyle> propagatedStyles, final PNode parent, final Bounds initialBounds,
             final Styles styles) {
         final List<KStyle> renderingStyles = rendering.getStyles();
+        
+        processModifiableStyles(renderingStyles);
 
         // determine the styles for propagation to child nodes
         final List<KStyle> childPropagatedStyles = determinePropagationStyles(renderingStyles,
@@ -769,7 +852,7 @@ public abstract class AbstractKGERenderingController
 
         // create the rendering and return its controller
         kSwitch.configure(styles, childPropagatedStyles, parent, initialBounds);
-        PNodeController<?> controller = kSwitch.doSwitch(rendering);
+        final PNodeController<?> controller = kSwitch.doSwitch(rendering);
         
         // determine the styles for this rendering
         styles.deriveStyles(determineRenderingStyles(renderingStyles, propagatedStyles));

@@ -65,9 +65,9 @@ public final class DiagramViewManager implements IPartListener {
 
     /** the mapping of workbench parts on associated view contexts. */
     // Note: list instead of single value to enable multi-context views
-    private Map<DiagramViewPart, List<ViewContext>> partContextMapping = Maps.newHashMap();
+    private Map<IDiagramWorkbenchPart, List<ViewContext>> partContextMapping = Maps.newHashMap();
     /** the mapping of diagram view identifiers on workbench parts. */
-    private Map<String, DiagramViewPart> idPartMapping = Maps.newHashMap();
+    private Map<String, IDiagramWorkbenchPart> idPartMapping = Maps.newHashMap();
     /** the mapping of diagram view identifiers on view contexts. */
     private Map<String, ViewContext> idContextMapping = Maps.newHashMap();
 
@@ -97,15 +97,36 @@ public final class DiagramViewManager implements IPartListener {
      * @return the diagram view or null if no view with the given identifier exists
      */
     public DiagramViewPart getView(final String id) {
-        DiagramViewPart view = idPartMapping.get(id);
-        if (view != null && view.isDisposed()) {
-            // actually this branch should not be taken due to DiagramViewPart#dispose();
-            // however, there're still those ugly exceptions after a view is closed and
-            //  tried to be re-opened...
-            this.unregisterViewContexts(view);
-            return null;
+        IDiagramWorkbenchPart view = idPartMapping.get(id);
+        if (view != null && view instanceof DiagramViewPart) {
+            if (((DiagramViewPart) view).isDisposed()) {
+                // actually this branch should not be taken due to DiagramViewPart#dispose();
+                // however, there're still those ugly exceptions after a view is closed and
+                //  tried to be re-opened...
+                this.unregisterViewContexts(view);
+                return null;
+            } else {
+                return (DiagramViewPart) view;
+            }
         } else {
-            return view;
+            return null;
+        }
+    }
+
+    
+    /**
+     * Returns the diagram editor part with the given identifier if available. Does not create any views.
+     * 
+     * @param id
+     *            the diagram view identifier (can be null for the default view)
+     * @return the diagram editor part or null if no view with the given identifier exists
+     */
+    public DiagramEditorPart getEditor(final String id) {
+        IDiagramWorkbenchPart part = idPartMapping.get(id);
+        if (part != null && part instanceof DiagramEditorPart) {
+            return (DiagramEditorPart) part;
+        } else {
+            return null;
         }
     }
 
@@ -122,8 +143,28 @@ public final class DiagramViewManager implements IPartListener {
      * 
      * @author chsch
      */
-    public DiagramViewPart updateView(final String id) {
+    public IDiagramWorkbenchPart updateView(final String id) {
         return updateView(id, null, null, null);
+    }
+    
+    
+    /**
+     * Updates the diagram view with the given identifier.<br>
+     * <br>
+     * The model has to be of the type of the old model, i.e. the view context associated with the
+     * identifier must support the model.
+     * 
+     * @param id
+     *            the diagram identifier (can be null for the default view)
+     * @param propertyHolder
+     *            the property holder containing properties for the view context or null to attach
+     *            no properties
+     * @return the view with the identifier or null on failure
+     * 
+     * @author chsch
+     */
+    public IDiagramWorkbenchPart updateView(final String id, final IPropertyHolder propertyHolder) {
+        return updateView(id, null, null, propertyHolder);
     }
     
     
@@ -144,7 +185,7 @@ public final class DiagramViewManager implements IPartListener {
      *            no properties
      * @return the view with the identifier or null on failure
      */
-    public DiagramViewPart updateView(final String id, final String name, final Object model,
+    public IDiagramWorkbenchPart updateView(final String id, final String name, final Object model,
             final IPropertyHolder propertyHolder) {
         // register the manager as part listener if necessary
         registerPartListener();
@@ -152,41 +193,54 @@ public final class DiagramViewManager implements IPartListener {
         // get the view
         IWorkbenchWindow window = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
         IWorkbenchPage page = window.getActivePage();
-        DiagramViewPart diagramView = getView(id);
         ViewContext viewContext = idContextMapping.get(id);
-        if (diagramView != null && viewContext != null) {
+        
+        IDiagramWorkbenchPart diagramView = getView(id);
+        
+        if (diagramView != null) {
             // set the view name
             if (name != null) {
-                diagramView.setName(name);
+                ((DiagramViewPart) diagramView).setName(name);
             }
-
-            // update the view context
-            Object currentInputModel = viewContext.getInputModel(); 
-            if (model != null || currentInputModel != null) {
-                page.bringToTop(diagramView);
-                // update the view context and viewer
-                Object theModel = (model != null ? model : currentInputModel);
-                
-                viewContext.getProperty(LightDiagramServices.VIEWER).setRecording(true);
-                if (!LightDiagramServices.getInstance().updateViewContext(viewContext, theModel,
-                        propertyHolder)) {
-                    return null;
-                }
-                LightDiagramServices.getInstance().layoutDiagram(viewContext, true, true);
+        } else {
+            diagramView = getEditor(id);
+            if (diagramView == null) {
+                return null;
             }
-            
-            
-            // trigger the update status
-            KlighdStatusState state =
-                    new KlighdStatusState(KlighdStatusState.Status.UPDATE, id, viewContext,
-                            viewContext.getProperty(LightDiagramServices.VIEWER));
-            if (KlighdStatusTrigger.getInstance() != null) {
-                KlighdStatusTrigger.getInstance().trigger(state);
-            }
-            
-            return diagramView;
         }
-        return null;
+        
+        if (viewContext == null) {
+            viewContext = diagramView.getContextViewer().getCurrentViewContext();
+            if (viewContext == null) {
+                return null;
+            }
+        }
+        
+        // update the view context
+        Object currentInputModel = viewContext.getInputModel(); 
+        if (model != null || currentInputModel != null) {
+            page.bringToTop(diagramView);
+            // update the view context and viewer
+            Object theModel = (model != null ? model : currentInputModel);
+            
+            viewContext.getProperty(LightDiagramServices.VIEWER).setRecording(true);
+            if (!LightDiagramServices.getInstance().updateViewContext(viewContext, theModel,
+                    propertyHolder)) {
+                return null;
+            }
+            LightDiagramServices.getInstance().layoutDiagram(viewContext, true, true);
+        }
+        
+        
+        // trigger the update status
+        KlighdStatusState state =
+                new KlighdStatusState(KlighdStatusState.Status.UPDATE, id, viewContext,
+                        viewContext.getProperty(LightDiagramServices.VIEWER));
+        if (KlighdStatusTrigger.getInstance() != null) {
+            KlighdStatusTrigger.getInstance().trigger(state);
+        }
+        
+        return diagramView;
     }
     
 
@@ -313,7 +367,7 @@ public final class DiagramViewManager implements IPartListener {
         return diagramView;
     }
 
-    private void registerViewContext(final DiagramViewPart view, final String id,
+    private void registerViewContext(final IDiagramWorkbenchPart view, final String id,
             final ViewContext context) {
         // remember the id in the view context
         context.setProperty(DIAGRAM_ID, id);
@@ -328,15 +382,33 @@ public final class DiagramViewManager implements IPartListener {
         idPartMapping.put(id, view);
         idContextMapping.put(id, context);
     }
+    
+    /**
+     * Allows {@link IDiagramWorkbenchPart}s that are not created via this manager to be registered,
+     * e.g. {@link DiagramEditorPart DiagramEditorParts}. This is (currently) necessary in order to
+     * let the side bar work correctly (diagram refresh), since those event listener call
+     * {@link DiagramViewManager#updateView(String, IPropertyHolder)}.
+     * 
+     * Is package protected since it is only called from
+     * {@link DiagramEditorPart#createPartControl(org.eclipse.swt.widgets.Composite)} at the moment.
+     * 
+     * @param part
+     *            the {@link IDiagramWorkbenchPart} to register
+     */
+    void registerView(final IDiagramWorkbenchPart part) {
+        final String id = part.getContextViewer().getViewPartId();
+        this.idPartMapping.put(id, part);
+        this.idContextMapping.put(id, part.getContextViewer().getCurrentViewContext());
+    }
 
     /**
      * Is package protected in order to be callable from {@link DiagramViewPart#dispose()}.
      * 
      * @param view the view to close
      */
-    void unregisterViewContexts(final DiagramViewPart view) {
+    void unregisterViewContexts(final IDiagramWorkbenchPart part) {
         // unmap the id from the view
-        List<ViewContext> viewContexts = partContextMapping.get(view);
+        List<ViewContext> viewContexts = partContextMapping.get(part);
         if (viewContexts != null) {
             for (ViewContext viewContext : viewContexts) {
                 String id = viewContext.getProperty(DIAGRAM_ID);
@@ -353,7 +425,7 @@ public final class DiagramViewManager implements IPartListener {
             }
         }
         // unmap the view from all contexts
-        partContextMapping.remove(view);
+        partContextMapping.remove(part);
     }
 
     /**
@@ -371,7 +443,16 @@ public final class DiagramViewManager implements IPartListener {
             return false;
         }
         try {
-            final DiagramViewPart view = this.idPartMapping.get(id);
+            final DiagramViewPart view;
+            final IDiagramWorkbenchPart part = this.idPartMapping.get(id);
+            if (part instanceof DiagramEditorPart) {
+                return false;
+            } else if (part instanceof DiagramViewPart) {
+                view = (DiagramViewPart) part;
+            } else {
+                view = null;
+            }
+            
             if (view != null) {
                 unregisterViewContexts(view);
                 view.getSite().getPage().hideView(view);

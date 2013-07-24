@@ -117,10 +117,10 @@ public class BrowsingSVGServer extends Server {
 
         // locate the bundle during runtime
         try {
-            File location = new File("html/");
+//            File location = new File("html/");
             // FIXME required during local development
-            // File location =
-            // new File("../pragmatics/plugins/de.cau.cs.kieler.klighd.piccolo.svg/html/");
+             File location =
+             new File("../pragmatics/plugins/de.cau.cs.kieler.klighd.piccolo.svg/html/");
 
             System.out.println(location.getAbsolutePath());
             rHandler.setResourceBase(location.getAbsolutePath());

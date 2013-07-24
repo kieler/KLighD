@@ -31,7 +31,7 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Slider;
+import org.eclipse.swt.widgets.Scale;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 
@@ -58,7 +58,7 @@ import de.cau.cs.kieler.klighd.views.DiagramViewPart;
  *
  * @author msp
  */
-public class OptionControlFactory {
+public class LayoutOptionControlFactory {
     
     /** The parent composite into which controls are created. */
     private Composite parent;
@@ -75,6 +75,9 @@ public class OptionControlFactory {
     /** The set of controls to be disposed when {@link #clear()} is called. */
     private final Collection<Control> controls = new LinkedList<Control>();
     
+    /** number of columns in the grid for enumeration value selection. */
+    private static final int ENUM_GRID_COLS = 2;
+    
     /**
      * Create an option control factory.
      * 
@@ -82,11 +85,15 @@ public class OptionControlFactory {
      * @param workbenchPart the workbench part containing the diagram viewer
      * @param formToolkit the form toolkit used to create controls
      */
-    public OptionControlFactory(final Composite parent, final IWorkbenchPart workbenchPart,
+    public LayoutOptionControlFactory(final Composite parent, final IWorkbenchPart workbenchPart,
             final FormToolkit formToolkit) {
         this.parent = parent;
         this.workbenchPart = workbenchPart;
         this.formToolkit = formToolkit;
+
+        // configure the parent's layout
+        this.parent.setLayout(new GridLayout(1, false)); // chsch: changed this from 2 to 1
+
         // set a dummy configurator with default values
         defaultLayoutConfig = new DefaultLayoutConfig();
         defaultLayoutContext = new LayoutContext();
@@ -197,11 +204,6 @@ public class OptionControlFactory {
         }
     }
     
-    /** minimal width of sliders. */
-    private static final int SLIDER_MIN_WIDTH = 80;
-    /** number of columns in the grid for enumeration value selection. */
-    private static final int ENUM_GRID_COLS = 3;
-    
     /**
      * Create a control for the given layout option data instance with given bounds.
      * 
@@ -219,7 +221,7 @@ public class OptionControlFactory {
             button.setToolTipText(optionData.getDescription());
             button.addSelectionListener(new AlgorithmListener());
             GridData gridData = new GridData(SWT.LEFT, SWT.TOP, false, false);
-            gridData.horizontalSpan = 2;
+            // gridData.horizontalSpan = 2;
             button.setLayoutData(gridData);
             controls.add(button);
             // set initial value for the algorithm selection dialog
@@ -228,20 +230,23 @@ public class OptionControlFactory {
                 lightLayoutConfig.setOption(optionData, algorithmHint);
             }
             
+            // chsch: via this tweak we get more space below the 'Select ...' button as in GridData
+            //  one can only specify vertical indentation on the top side of the widget
+            new Composite(parent, SWT.NONE | SWT.NO_BACKGROUND).setLayoutData(new GridData(1, 1));
+            
         } else {
-            Label label = formToolkit.createLabel(parent, optionData.getName());
-            label.setLayoutData(new GridData(SWT.LEFT, SWT.TOP, false, false));
+            Label label = formToolkit.createLabel(parent, optionData.getName() + ":");
+            label.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false));
             controls.add(label);
             
             switch (optionData.getType()) {
             case INT:
             case FLOAT: {
-                Slider slider = new Slider(parent, SWT.NONE);
+                Scale slider = new Scale(parent, SWT.NONE);
                 slider.setToolTipText(optionData.getDescription());
                 SliderListener sliderListener = new SliderListener(optionData,
                         getMinValue(optionData, minValue), getMaxValue(optionData, maxValue));
                 GridData gridData = new GridData(SWT.FILL, SWT.TOP, true, false);
-                gridData.minimumWidth = SLIDER_MIN_WIDTH;
                 slider.setLayoutData(gridData);
                 controls.add(slider);
                 // set initial value for the slider
@@ -422,7 +427,7 @@ public class OptionControlFactory {
          * {@inheritDoc}
          */
         public void widgetSelected(final SelectionEvent event) {
-            Slider slider = (Slider) event.widget;
+            Scale slider = (Scale) event.widget;
             float sliderValue = (float) (slider.getSelection() - slider.getMinimum())
                     / (slider.getMaximum() - slider.getMinimum());
             float optionValue = minFloat + sliderValue * (maxFloat - minFloat);

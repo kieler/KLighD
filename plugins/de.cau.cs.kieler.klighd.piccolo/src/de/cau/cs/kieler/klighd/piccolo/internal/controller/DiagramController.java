@@ -1084,6 +1084,7 @@ public class DiagramController {
             
             if (record) {
                 recordedChanges.put(nodeRep, getBounds(shL));
+                return;
 
             } else {
                 final Point2D offset = nodeRep.getOffset();
@@ -1123,6 +1124,12 @@ public class DiagramController {
                 }
                 default:
                     break;
+                }
+
+                final AbstractKGERenderingController<?, ?> controller = NodeUtil.asIGraphElement(
+                        nodeRep).getRenderingController();
+                if (controller != null) {
+                    controller.modifyStyles();
                 }
             }
         }
