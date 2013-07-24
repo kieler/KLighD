@@ -19,6 +19,7 @@ package de.cau.cs.kieler.klighd.piccolo.svg.browsing;
  */
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.List;
 import java.util.Map;
 
@@ -48,7 +49,9 @@ import org.eclipse.jetty.websocket.WebSocketHandler;
 import org.eclipse.swt.widgets.Shell;
 import org.ptolemy.moml.util.MomlResourceFactoryImpl;
 
+import com.google.common.base.Strings;
 import com.google.common.collect.Maps;
+import com.google.common.io.CharStreams;
 
 import de.cau.cs.kieler.core.alg.BasicProgressMonitor;
 import de.cau.cs.kieler.core.kgraph.KGraphElement;
@@ -119,8 +122,8 @@ public class BrowsingSVGServer extends Server {
         try {
             File location = new File("html/");
             // FIXME required during local development
-//             File location =
-//             new File("../pragmatics/plugins/de.cau.cs.kieler.klighd.piccolo.svg/html/");
+            // File location =
+            // new File("../pragmatics/plugins/de.cau.cs.kieler.klighd.piccolo.svg/html/");
 
             System.out.println(location.getAbsolutePath());
             rHandler.setResourceBase(location.getAbsolutePath());
@@ -625,6 +628,39 @@ public class BrowsingSVGServer extends Server {
 
                 // pass the svg
                 response.getWriter().println(gen.permaLink(getSVG(getViewer)));
+
+            } else if (target.startsWith("/refreshGit")) {
+
+                // create a process that executes git pull
+                // the git bin has to be within the system path
+                ProcessBuilder pb = new ProcessBuilder("git", "pull");
+                pb.directory(docRoot);
+
+                Process run = pb.start();
+                try {
+                    // wait for the git process to finish
+                    run.waitFor();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+                // answer the request
+                String success = CharStreams.toString(new InputStreamReader(run.getInputStream()));
+                if (!Strings.isNullOrEmpty(success)) {
+                    // send the error
+                    response.getWriter().println(success);
+                    response.setStatus(HttpServletResponse.SC_OK);
+                } else {
+                    String error =
+                            CharStreams.toString(new InputStreamReader(run.getErrorStream()));
+                    response.getWriter().println(error);
+                    response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+                }
+
+                // general info
+                response.setContentType("text/html;charset=utf8");
+                response.setCharacterEncoding("utf8");
+                baseRequest.setHandled(true);
             }
 
         }
