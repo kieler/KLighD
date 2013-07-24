@@ -35,6 +35,12 @@ public final class KlighdInternalProperties {
      */
     private KlighdInternalProperties() {
     }
+
+    /**
+     * Bla.
+     */
+    public static final IProperty<Boolean> USE_LIGHT_LAYOUT_CONFIG = new Property<Boolean>(
+            "klighd.use.lightLayoutConfig", false);
     
     /**
      * Property for preserving the domain model element being represented by a diagram element or
