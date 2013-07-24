@@ -251,6 +251,19 @@ public class DiagramController {
             nodeRep.getChildArea().setExpanded(true);
         }
     }
+    
+    /**
+     * @param node
+     *            the node
+     * @return true if this node is expanded.
+     */
+    public boolean isExpanded(final KNode node) {
+        INode nodeRep = RenderingContextData.get(node).getProperty(INode.NODE_REP);
+        if (nodeRep != null) {
+            return nodeRep.getChildArea().isExpanded();
+        }
+        return false;
+    }
 
     /**
      * Changes the representation of the given node.
