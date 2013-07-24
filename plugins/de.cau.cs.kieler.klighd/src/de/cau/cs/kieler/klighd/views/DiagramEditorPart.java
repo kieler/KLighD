@@ -50,6 +50,7 @@ import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 
 import de.cau.cs.kieler.core.WrappedException;
 import de.cau.cs.kieler.core.kgraph.KNode;
+import de.cau.cs.kieler.core.properties.IPropertyHolder;
 import de.cau.cs.kieler.core.properties.MapPropertyHolder;
 import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout;
 import de.cau.cs.kieler.klighd.KlighdPlugin;
@@ -104,11 +105,9 @@ public class DiagramEditorPart extends EditorPart implements IDiagramWorkbenchPa
         // create a context viewer
         viewer = new ContextViewer(parent, "diagramEditor:" + getEditorInput().toString(), this);
         
-        MapPropertyHolder props = new MapPropertyHolder();
-        props.setProperty(LightDiagramServices.REQUESTED_UPDATE_STRATEGY, SimpleUpdateStrategy.ID);
-        
         // create a view context for the viewer
-        ViewContext viewContext = LightDiagramServices.getInstance().createViewContext(model, props);
+        ViewContext viewContext = LightDiagramServices.getInstance().createViewContext(
+                model, configureKlighdProperties());
         if (viewContext != null) {
             viewer.setModel(viewContext);
             // do an initial update of the view context
@@ -312,6 +311,18 @@ public class DiagramEditorPart extends EditorPart implements IDiagramWorkbenchPa
      */
     protected void configureResourceSet(final ResourceSet set) {
         
+    }
+
+    /**
+     * Returns a configuration for the KLighD view. Override this method to use a custom configuration.
+     * The default implementation configures KLighD to use the simple update strategy.
+     * 
+     * @return KLighD configuration.
+     */
+    protected IPropertyHolder configureKlighdProperties() {
+        MapPropertyHolder props = new MapPropertyHolder();
+        props.setProperty(LightDiagramServices.REQUESTED_UPDATE_STRATEGY, SimpleUpdateStrategy.ID);
+        return props;
     }
 
     /**
