@@ -11,7 +11,7 @@
  * This code is provided under the terms of the Eclipse Public License (EPL).
  * See the file epl-v10.html for the license text.
  */
-package de.cau.cs.kieler.klighd.piccolo.svg;
+package de.cau.cs.kieler.klighd.piccolo.svg.legacy;
 
 import java.awt.Graphics2D;
 import java.awt.event.InputEvent;
@@ -41,6 +41,7 @@ import de.cau.cs.kieler.klighd.piccolo.internal.events.PMouseWheelZoomEventHandl
 import de.cau.cs.kieler.klighd.piccolo.internal.events.PSWTSimpleSelectionEventHandler;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.ITracingElement;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.PEmptyNode;
+import de.cau.cs.kieler.klighd.piccolo.svg.KlighdSVGGraphicsImpl;
 import de.cau.cs.kieler.klighd.piccolo.viewer.INodeSelectionListener;
 import de.cau.cs.kieler.klighd.piccolo.viewer.PiccoloOutlinePage;
 import de.cau.cs.kieler.klighd.util.RenderingContextData;

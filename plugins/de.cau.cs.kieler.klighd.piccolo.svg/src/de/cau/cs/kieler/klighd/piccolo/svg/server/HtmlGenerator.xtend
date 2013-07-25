@@ -1,4 +1,4 @@
-package de.cau.cs.kieler.klighd.piccolo.svg
+package de.cau.cs.kieler.klighd.piccolo.svg.server
 
 import org.eclipse.core.resources.IContainer
 import org.eclipse.core.resources.IFile

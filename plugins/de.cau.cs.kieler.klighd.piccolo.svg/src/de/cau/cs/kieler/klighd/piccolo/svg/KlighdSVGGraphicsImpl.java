@@ -20,7 +20,6 @@ import java.awt.Font;
 import java.awt.GradientPaint;
 import java.awt.Graphics;
 import java.awt.Image;
-import java.awt.Paint;
 import java.awt.Polygon;
 import java.awt.RenderingHints.Key;
 import java.awt.Shape;

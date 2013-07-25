@@ -11,14 +11,14 @@
  * This code is provided under the terms of the Eclipse Public License (EPL).
  * See the file epl-v10.html for the license text.
  */
-package de.cau.cs.kieler.klighd.piccolo.svg;
+package de.cau.cs.kieler.klighd.piccolo.svg.legacy;
 
 import org.eclipse.swt.widgets.Composite;
 
 import de.cau.cs.kieler.core.kgraph.KNode;
 import de.cau.cs.kieler.klighd.IViewer;
 import de.cau.cs.kieler.klighd.IViewerProvider;
-import de.cau.cs.kieler.klighd.piccolo.svg.browsing.PiccoloSVGBrowseViewer;
+import de.cau.cs.kieler.klighd.piccolo.svg.PiccoloSVGBrowseViewer;
 import de.cau.cs.kieler.klighd.viewers.ContextViewer;
 
 /**

@@ -4,7 +4,7 @@
    <extension
          point="de.cau.cs.kieler.klighd.extensions">
       <viewer
-            class="de.cau.cs.kieler.klighd.piccolo.svg.PiccoloSVGViewerProvider"
+            class="de.cau.cs.kieler.klighd.piccolo.svg.legacy.PiccoloSVGViewerProvider"
             id="de.cau.cs.kieler.klighd.piccolo.svg.viewer">
       </viewer>
    </extension>
@@ -16,7 +16,7 @@
             thread="main"
             visible="true">
          <run
-               class="de.cau.cs.kieler.klighd.piccolo.svg.browsing.BrowseServerApplication">
+               class="de.cau.cs.kieler.klighd.piccolo.svg.BrowseServerApplication">
          </run>
       </application>
    </extension>

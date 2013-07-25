@@ -11,7 +11,7 @@
  * This code is provided under the terms of the Eclipse Public License (EPL).
  * See the file epl-v10.html for the license text.
  */
-package de.cau.cs.kieler.klighd.piccolo.svg.browsing;
+package de.cau.cs.kieler.klighd.piccolo.svg;
 
 import java.io.File;
 
@@ -19,6 +19,8 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.equinox.app.IApplication;
 import org.eclipse.equinox.app.IApplicationContext;
 import org.eclipse.swt.widgets.Shell;
+
+import de.cau.cs.kieler.klighd.piccolo.svg.server.BrowsingSVGServer;
 
 /**
  * @author uru

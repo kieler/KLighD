@@ -11,7 +11,7 @@
  * This code is provided under the terms of the Eclipse Public License (EPL).
  * See the file epl-v10.html for the license text.
  */
-package de.cau.cs.kieler.klighd.piccolo.svg;
+package de.cau.cs.kieler.klighd.piccolo.svg.legacy;
 
 /**
  * @author uru
@@ -31,6 +31,7 @@ import org.eclipse.jetty.websocket.WebSocketHandler;
 import org.eclipse.swt.widgets.Display;
 
 import de.cau.cs.kieler.klighd.IViewer;
+import de.cau.cs.kieler.klighd.piccolo.svg.KlighdSVGGraphicsImpl;
 
 public class SVGServer extends Server {
 
