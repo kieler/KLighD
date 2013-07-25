@@ -15,10 +15,15 @@ package de.cau.cs.kieler.klighd.piccolo.svg.browsing;
 
 import java.awt.Graphics2D;
 import java.awt.event.InputEvent;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Device;
@@ -29,6 +34,7 @@ import org.eclipse.swt.widgets.Menu;
 import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 
 import com.google.common.base.Function;
+import com.google.common.base.Joiner;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -77,6 +83,9 @@ public class PiccoloSVGBrowseViewer extends AbstractViewer<KNode> implements INo
     private KlighdSVGGraphicsImpl graphics;
 
     private Map<Integer, KNode> currentHashCodeMapping = Maps.newHashMap();
+
+    private String resourcePath;
+    private String svgTransform;
 
     /**
      * Creates a Piccolo viewer with default style.
@@ -167,20 +176,27 @@ public class PiccoloSVGBrowseViewer extends AbstractViewer<KNode> implements INo
         addContextMenu(canvas);
     }
 
+    /*
+     * ------------------------------------ SVG related implementations
+     */
+    /**
+     * Repaints the whole canvas.
+     */
     public void globalRedraw() {
 
+        // wrap all expandable nodes
         if (controller != null) {
             currentHashCodeMapping.clear();
             recurseNodes(controller.getNode());
         }
-        // controller.getNode().invalidateFullBounds();
-        // canvas.redraw();
-        // canvas.repaint();
+
         canvas.paintComponent(new GC(canvas), 0, 0, canvas.getSize().x, canvas.getSize().y);
     }
 
+    /**
+     * Adds a wrapper to all expandable nodes that is uniquely identifyable within the svg.
+     */
     private void recurseNodes(PNode parent) {
-
         List<WrappedKNodeNode> toAdd = Lists.newLinkedList();
 
         for (int i = 0; i < parent.getChildrenCount(); i++) {
@@ -188,7 +204,6 @@ public class PiccoloSVGBrowseViewer extends AbstractViewer<KNode> implements INo
             recurseNodes(child);
 
             if (child instanceof KNodeNode) {
-                // System.out.println(((KNodeNode) child).getGraphElement());
                 WrappedKNodeNode wrapper =
                         new WrappedKNodeNode(child, ((KNodeNode) child).getGraphElement());
                 toAdd.add(wrapper);
@@ -196,17 +211,99 @@ public class PiccoloSVGBrowseViewer extends AbstractViewer<KNode> implements INo
 
                 currentHashCodeMapping.put(((KNodeNode) child).getGraphElement().hashCode(),
                         ((KNodeNode) child).getGraphElement());
-                // expand(((KNodeNode) child).getGraphElement());
             }
         }
+    }
 
-        // System.out.println("PRE " + parent.getChildrenCount());
-        // for (WrappedKNodeNode node : toAdd) {
-        // parent.addChild(node);
-        // }
+    /**
+     * @param currentResourcePath
+     *            the currentResourcePath to set
+     */
+    public void setResourcePath(String currentResourcePath) {
+        this.resourcePath = currentResourcePath;
+    }
 
-        // System.out.println("AFTER " + parent.getChildrenCount());
+    /**
+     * @param svgTransform
+     *            the svgTransform to set
+     */
+    public void setSvgTransform(String svgTransform) {
+        this.svgTransform = svgTransform;
+    }
+    
+    /**
+     * @return the svgTransform
+     */
+    public String getSvgTransform() {
+        return svgTransform;
+    }
+    
+    /**
+     * @return
+     */
+    public String assemblePermaLink() {
+        Set<String> expanded = new HashSet<String>();
+        assemblePermaLink(getModel(), expanded);
 
+        try {
+            String joined = Joiner.on("$").join(expanded);
+            String permaLink = resourcePath + "?perma=" + URLEncoder.encode(joined, "utf8");
+            if (svgTransform != null) {
+                permaLink += "&transform=" + URLEncoder.encode(svgTransform, "utf8");
+            }
+
+            return permaLink;
+        } catch (UnsupportedEncodingException uee) {
+            return null;
+        }
+    }
+
+    private void assemblePermaLink(final KNode parent, final Set<String> expanded) {
+        for (KNode node : parent.getChildren()) {
+
+            if (!node.getChildren().isEmpty()) {
+                assemblePermaLink(node, expanded);
+
+                if (node != getModel() && controller.isExpanded(node)) {
+                    expanded.add(EcoreUtil.getURI(node).toString());
+                }
+            }
+        }
+    }
+
+    public boolean applyPermalink(final Set<String> expanded) {
+
+        applyPermalink(getModel(), expanded);
+
+        return expanded.isEmpty();
+    }
+
+    private void applyPermalink(final KNode parent, final Set<String> expanded) {
+
+        for (KNode node : parent.getChildren()) {
+
+            // possibly expand
+            String thisFragment = EcoreUtil.getURI(node).toString();
+
+            // System.out.println("Looking for: " + thisFragment + " contained: " +
+            // expanded.contains(thisFragment));
+
+            if (expanded.contains(thisFragment)) {
+                System.out.println("Expanding: " + thisFragment + " contained: "
+                        + expanded.contains(thisFragment));
+                controller.expand(node);
+                // controller.toggleExpansion(node);
+                expanded.remove(thisFragment);
+            }
+
+            // controller.expand(node);
+            // System.out.println(controller.isExpanded(node));
+
+            // recurse
+            if (!node.getChildren().isEmpty()) {
+                applyPermalink(node, expanded);
+            }
+        }
     }
 
     public KlighdSVGGraphicsImpl getGraphics() {

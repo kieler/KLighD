@@ -52,6 +52,9 @@ window.onbeforeunload = function() {
 var connection = null;
 
 $('#connect').click(function() {
+  
+  // remove possibly old svg
+  $('#viewport').html();
 
   var host = window.location.host;
   connection = new WebSocket('ws://' + host + '/', "protocol.svgws");

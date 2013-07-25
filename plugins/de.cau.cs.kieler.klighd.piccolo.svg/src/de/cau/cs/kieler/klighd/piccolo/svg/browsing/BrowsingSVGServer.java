@@ -22,13 +22,12 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.eclipse.core.resources.IWorkspaceRoot;
-import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
@@ -49,8 +48,10 @@ import org.eclipse.jetty.websocket.WebSocketHandler;
 import org.eclipse.swt.widgets.Shell;
 import org.ptolemy.moml.util.MomlResourceFactoryImpl;
 
+import com.google.common.base.Splitter;
 import com.google.common.base.Strings;
 import com.google.common.collect.Maps;
+import com.google.common.collect.Sets;
 import com.google.common.io.CharStreams;
 
 import de.cau.cs.kieler.core.alg.BasicProgressMonitor;
@@ -120,10 +121,10 @@ public class BrowsingSVGServer extends Server {
 
         // locate the bundle during runtime
         try {
-            File location = new File("html/");
+             File location = new File("html/");
             // FIXME required during local development
-            // File location =
-            // new File("../pragmatics/plugins/de.cau.cs.kieler.klighd.piccolo.svg/html/");
+//            File location =
+//                    new File("../pragmatics/plugins/de.cau.cs.kieler.klighd.piccolo.svg/html/");
 
             System.out.println(location.getAbsolutePath());
             rHandler.setResourceBase(location.getAbsolutePath());
@@ -302,6 +303,11 @@ public class BrowsingSVGServer extends Server {
                 throw new IllegalArgumentException("The json object requires a 'type' field.");
             }
 
+            // add perma link
+            String perma = getCurrentViewer().assemblePermaLink();
+            System.out.println("PERMA LINK: " + perma);
+            jsonMap.put("perma", perma);
+
             String json = JSON.toString(jsonMap);
             broadcastJson(json, broadcastType);
         }
@@ -416,7 +422,7 @@ public class BrowsingSVGServer extends Server {
                     /*
                      * RESOURCE -------------------------------------------------------------------
                      */
-                    String path = (String) json.get("path");
+                    final String path = (String) json.get("path");
 
                     ResourceSet rs = new ResourceSetImpl();
 
@@ -441,7 +447,7 @@ public class BrowsingSVGServer extends Server {
                                     URI.createFileURI(new File(docRoot, path).getAbsolutePath()),
                                     true);
 
-                    System.out.println(r);
+                    System.out.println("Loading resource: " + r);
 
                     shell.getDisplay().asyncExec(new Runnable() {
 
@@ -455,6 +461,7 @@ public class BrowsingSVGServer extends Server {
                                         LightDiagramServices.translateModel(new ViewContext(), r
                                                 .getContents().get(0));
                                 viewer.setModel(currentModel, true);
+                                viewer.setResourcePath(path);
                                 // applyLayout();
 
                                 layoutBroadcastSVG();
@@ -493,7 +500,14 @@ public class BrowsingSVGServer extends Server {
                     /*
                      * TRANSLATE -------------------------------------------------------------------
                      */
-                    String transform = (String) json.get("transform");
+                    final String transform = (String) json.get("transform");
+                    shell.getDisplay().syncExec(new Runnable() {
+
+                        public void run() {
+                            // set the transform
+                            getCurrentViewer().setSvgTransform(transform);
+                        }
+                    });
 
                     broadcastJson(Broadcast.AllButThis, "type", "TRANSFORM", "transform", transform);
 
@@ -535,6 +549,10 @@ public class BrowsingSVGServer extends Server {
         StringBuffer sb = new StringBuffer(res5);
         sb.insert(sb.indexOf("<g") + 2, " id=\"group\"");
 
+        if (viewer.getSvgTransform() != null) {
+            sb.insert(sb.indexOf("<g") + 2, " transform=\"" + viewer.getSvgTransform() + "\"");
+        }
+
         return sb.toString();
     }
 
@@ -548,10 +566,11 @@ public class BrowsingSVGServer extends Server {
         public void handle(String target, final Request baseRequest,
                 final HttpServletRequest request, final HttpServletResponse response)
                 throws IOException, ServletException {
-            System.out.println(target + " " + request);
 
-            IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
-            System.out.println(docRoot.getPath());
+            // System.out.println(target + " " + request);
+
+            // IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
+            // System.out.println(docRoot.getPath());
 
             if (target.startsWith("/content")) {
 
@@ -584,15 +603,18 @@ public class BrowsingSVGServer extends Server {
                 rs.getResourceFactoryRegistry().getExtensionToFactoryMap()
                         .put("xml", new MomlResourceFactoryImpl());
 
+                System.out.println(path);
                 final Resource r =
                         rs.getResource(
                                 URI.createFileURI(new File(docRoot, path).getAbsolutePath()), true);
 
                 System.out.println(r);
 
+                System.out.println("PRE");
                 shell.getDisplay().syncExec(new Runnable() {
 
                     public void run() {
+                        System.out.println("INNER");
                         getViewer.getCanvas().setBounds(0, 0, 870, 600);
 
                         // translate and set the model
@@ -601,6 +623,19 @@ public class BrowsingSVGServer extends Server {
                                     LightDiagramServices.translateModel(new ViewContext(), r
                                             .getContents().get(0));
                             getViewer.setModel(model, true);
+
+                            // apply the perma link infos
+                            String perma = request.getParameterMap().get("perma")[0];
+                            Set<String> fragments = Sets.newHashSet(Splitter.on("$").split(perma));
+                            System.out.println(fragments);
+                            getViewer.applyPermalink(fragments);
+                            // FIXME perma is not coming through
+                            // request:
+                            // /resource/ptolemy/ci/ci_queuetest1.moml?perma=baseModel.kgraph%23//@children.0$baseModel.kgraph%23//@children.2
+
+                            String transform = request.getParameterMap().get("transform")[0];
+                            System.out.println(transform);
+                            getViewer.setSvgTransform(transform);
 
                             layout(getViewer);
 
@@ -615,10 +650,9 @@ public class BrowsingSVGServer extends Server {
                             }
                         }
 
-                        System.out.println(request);
-
                     }
                 });
+                System.out.println("AFTER");
 
                 // answer the request
                 response.setContentType("text/html;charset=utf8");

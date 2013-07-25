@@ -88,12 +88,24 @@ class HtmlGenerator {
 	<html encoding='UTF8'>
 		<head>
 			<meta charset='utf-8'>
+			<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
+			<script src="/js/jquery.mousewheel.js"></script>
+			<script src="/js/jquery.svg.js"></script>
+			<script src="/js/jquery.svg.extras.js"></script>
+			<script src="/js/jquery.event.drag-2.2.js"></script>
 			<style type='text/css'> 
 				svg { width:100%; height:100%; } body { width:100%; height:100%; } 
 			</style>
 		</head>
 		<body>
-		«svgData»
+			<div id="data">
+				«svgData»
+			</div>
+			<script>
+				$('#data').svg();
+				$('#data').addScalability();
+				$('#data').addDraggable();
+			</script>
 		</body>
 	</html>
 	'''
