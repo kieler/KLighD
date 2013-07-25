@@ -302,7 +302,7 @@ public class ContextViewer extends AbstractViewer<Object> implements IViewerEven
         // create container for diagram synthesis options
         synthesisOptionsForm = optionsformToolkit.createForm(formRoot);
         sideBarControls.add(synthesisOptionsForm);
-        synthesisOptionsForm.setText("Diagam options");
+        synthesisOptionsForm.setText("Diagram Options");
         synthesisOptionsForm.setVisible(false);
         final Composite synthesisOptionsContainer = synthesisOptionsForm.getBody();
         
@@ -313,7 +313,7 @@ public class ContextViewer extends AbstractViewer<Object> implements IViewerEven
         // create container for layout options
         layoutOptionsForm = optionsformToolkit.createForm(formRoot);
         sideBarControls.add(layoutOptionsForm);
-        layoutOptionsForm.setText("Layout options");
+        layoutOptionsForm.setText("Layout Options");
         layoutOptionsForm.setVisible(false);
         final Composite layoutOptionsContainer = layoutOptionsForm.getBody();
         
