@@ -29,7 +29,11 @@ public class KChildAreaNode extends PZIndexNode {
 
     private static final long serialVersionUID = -403773990520864787L;
     
-    /** the property name for changes of the child areas expansion status. */
+    /**
+     * The property name for changes of the child areas expansion status.<br>
+     * <b>Caution!</b> Don't let listeners rely on the propagated old value as that might not be
+     * correct in case they are fired via {@link #touchExpanded()}.
+     */
     public static final String PROPERTY_EXPANSION = "expansion";
 
     /** the number of z-layers (nodes and edges). */
@@ -96,6 +100,18 @@ public class KChildAreaNode extends PZIndexNode {
             this.expanded = expanded;
             firePropertyChange(-1, PROPERTY_EXPANSION, !expanded, expanded);   
         }
+    }
+
+    /**
+     * Touches the expansion state, i.e. fires the listeners on {@link #PROPERTY_EXPANSION} without
+     * changing the value. This is required in combination with EMF Compare in case parts of the
+     * model have been moved (and EMF Compare noticed that as such). In this case the
+     * RenderingContextData are preserved but the diagram needs to be updated accordingly.<br>
+     * <br>
+     * Unfortunately old and new value must be different, so I set the old value to the inverse.
+     */
+    public void touchExpanded() {
+        firePropertyChange(-1, PROPERTY_EXPANSION, !expanded, expanded);   
     }
 
     /**

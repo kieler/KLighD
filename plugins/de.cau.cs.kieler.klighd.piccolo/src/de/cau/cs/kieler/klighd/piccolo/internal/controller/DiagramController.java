@@ -430,6 +430,9 @@ public class DiagramController {
                 // add the node
                 parent.getChildArea().addNode(nodeNode);
                 RenderingContextData.get(node).setProperty(KlighdInternalProperties.ACTIVE, true);
+
+                // touch the expansion state, see the methods javadoc for details
+                nodeNode.getChildArea().touchExpanded();
             }
 
             // add all incoming edges
