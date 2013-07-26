@@ -57,14 +57,7 @@ public final class KlighdPreferencePage extends PreferencePage implements IWorkb
      * {@inheritDoc}
      */
     public void init(final IWorkbench workbench) {
-        IPreferenceStore preferenceStore = KlighdPlugin.getDefault().getPreferenceStore();
-        setPreferenceStore(preferenceStore);
-        
-        // Set default option values
-        preferenceStore.setDefault(
-                KlighdPreferences.ANIMATE_LAYOUT, KlighdPreferences.ANIMATE_LAYOUT_DEFAULT);
-        preferenceStore.setDefault(
-                KlighdPreferences.ZOOM_TO_FIT, KlighdPreferences.ZOOM_TO_FIT_DEFAULT);
+        setPreferenceStore(KlighdPlugin.getDefault().getPreferenceStore());
     }
 
     @Override
