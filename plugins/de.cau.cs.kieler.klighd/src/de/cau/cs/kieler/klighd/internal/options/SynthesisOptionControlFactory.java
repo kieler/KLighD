@@ -200,6 +200,8 @@ public class SynthesisOptionControlFactory {
         
         // ... and the scaler for choosing the value
         final Scale scaler = new Scale(container, SWT.NONE);
+        // the following setting is needed on windows
+        scaler.setBackground(container.getBackground());
         scaler.setToolTipText(option.getName());
 
         // configure its layout, esp. the minimal width and the 'grab additional space' 

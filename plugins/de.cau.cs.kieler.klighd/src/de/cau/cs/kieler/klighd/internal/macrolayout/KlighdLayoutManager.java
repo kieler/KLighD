@@ -134,8 +134,11 @@ public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement>
         } else if (adapterType.isAssignableFrom(EObject.class)) {
             
             if (object instanceof KGraphElement) {
-                return ((KGraphElement) object).getData(KLayoutData.class).getProperty(
+                Object model = ((KGraphElement) object).getData(KLayoutData.class).getProperty(
                         KlighdInternalProperties.MODEL_ELEMEMT);
+                if (adapterType.isInstance(model)) {
+                    return model;
+                }
             }
             
             ContextViewer contextViewer = null;
@@ -149,7 +152,7 @@ public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement>
                 ViewContext viewContext = contextViewer.getCurrentViewContext();
                 if (viewContext != null) {
                     Object model = viewContext.getInputModel();
-                    if (model instanceof EObject) {
+                    if (adapterType.isInstance(model)) {
                         return model;
                     }
                 }

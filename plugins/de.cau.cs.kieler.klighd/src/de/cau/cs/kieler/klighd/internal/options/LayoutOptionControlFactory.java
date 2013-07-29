@@ -243,6 +243,8 @@ public class LayoutOptionControlFactory {
             case INT:
             case FLOAT: {
                 Scale slider = new Scale(parent, SWT.NONE);
+                // the following setting is needed on windows
+                slider.setBackground(parent.getBackground());
                 slider.setToolTipText(optionData.getDescription());
                 SliderListener sliderListener = new SliderListener(optionData,
                         getMinValue(optionData, minValue), getMaxValue(optionData, maxValue));
