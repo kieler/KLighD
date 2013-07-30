@@ -1771,7 +1771,8 @@ public class DiagramController {
         if (shapeLayout != null && shapeLayout.getProperty(LayoutOptions.NO_LAYOUT)) {
             return false;
         }
-        shapeLayout = ModelingUtil.eContainerOfType(element, KNode.class).getData(KShapeLayout.class);
+        final KNode container = ModelingUtil.eContainerOfType(element, KNode.class);
+        shapeLayout = container == null ? null : container.getData(KShapeLayout.class);
         if (shapeLayout != null && shapeLayout.getProperty(LayoutOptions.NO_LAYOUT)) {
             return false;
         }
