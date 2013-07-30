@@ -20,7 +20,10 @@ import java.awt.Font;
 import java.awt.GradientPaint;
 import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.Paint;
 import java.awt.Polygon;
+import java.awt.Rectangle;
+import java.awt.RenderingHints;
 import java.awt.RenderingHints.Key;
 import java.awt.Shape;
 import java.awt.Stroke;
@@ -39,7 +42,15 @@ import java.io.StringWriter;
 import java.util.Map;
 
 import org.apache.batik.dom.GenericDOMImplementation;
+import org.apache.batik.svggen.DefaultExtensionHandler;
+import org.apache.batik.svggen.ExtensionHandler;
+import org.apache.batik.svggen.SVGCompositeDescriptor;
+import org.apache.batik.svggen.SVGFilterDescriptor;
+import org.apache.batik.svggen.SVGGeneratorContext;
 import org.apache.batik.svggen.SVGGraphics2D;
+import org.apache.batik.svggen.SVGIDGenerator;
+import org.apache.batik.svggen.SVGPaintDescriptor;
+import org.apache.batik.svggen.SVGRenderingHints;
 import org.eclipse.swt.graphics.Device;
 import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.graphics.GC;
@@ -77,12 +88,75 @@ public class KlighdSVGGraphicsImpl extends KlighdSWTGraphicsImpl implements Klig
         // Create an instance of org.w3c.dom.Document.
         String svgNS = "http://www.w3.org/2000/svg";
         document = domImpl.createDocument(svgNS, "svg", null);
+        
+        // 
+        SVGGeneratorContext ctx = SVGGeneratorContext.createDefault(document);
+        ctx.setEmbeddedFontsOn(false);
+        ctx.setPrecision(2);
+        ctx.setExtensionHandler(new DefaultExtensionHandler(){
+            /**
+             * {@inheritDoc}
+             */
+            @Override
+            public SVGPaintDescriptor handlePaint(Paint paint, SVGGeneratorContext generatorContext) {
+//                System.out.println(paint);
+                return super.handlePaint(paint, generatorContext);
+            }
+            
+            /**
+             * {@inheritDoc}
+             */
+            @Override
+            public SVGCompositeDescriptor handleComposite(Composite composite,
+                    SVGGeneratorContext generatorContext) {
+                System.out.println(composite);
+                return super.handleComposite(composite, generatorContext);
+            }
+            
+            /**
+             * {@inheritDoc}
+             */
+            @Override
+            public SVGFilterDescriptor handleFilter(BufferedImageOp filter, Rectangle filterRect,
+                    SVGGeneratorContext generatorContext) {
+                // TODO Auto-generated method stub
+                return super.handleFilter(filter, filterRect, generatorContext);
+            }
+        });
+        //ctx.set
+        ctx.setIDGenerator(new SVGIDGenerator(){
+
+            
+            /**
+             * {@inheritDoc}
+             */
+            @Override
+            public String generateID(String prefix) {
+//             System.out.println(prefix);
+                return super.generateID(prefix);
+            }
+        });
+        
         // Create an instance of the SVG Generator.
-        this.graphics = new SVGGraphics2D(document);
+        this.graphics = new SVGGraphics2D(ctx, false);
         graphics.setColor(Color.WHITE);
         graphics.setBackground(Color.WHITE);
         graphics.setPaint(Color.white);
-
+        
+        //graphics.setRenderingHint(SVGRenderingHints.SVG_COLOR_RENDERING_ATTRIBUTE, "optimizeSpeed");
+        
+        // + RENDERING -> sets all other hints to initial value.
+        graphics.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_SPEED);
+        // + FRACTIONAL_METRICS -> sets initial values for text-rendering and shape-rendering.
+        graphics.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS, RenderingHints.VALUE_FRACTIONALMETRICS_OFF);
+        // + ANTIALIASING -> shape-rendering and text-rendering
+        graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
+        // + COLOR_RENDERING -> color-rendering
+        graphics.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING, RenderingHints.VALUE_COLOR_RENDER_SPEED);
+        // + INTERPOLATION -> image-rendering
+        graphics.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR);
+        // + TEXT_ANTIALIASING -> text-rendering
+        graphics.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_OFF);
     }
 
     /**
