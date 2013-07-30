@@ -229,7 +229,7 @@ public final class DiagramViewManager implements IPartListener {
                     propertyHolder)) {
                 return null;
             }
-            LightDiagramServices.getInstance().layoutDiagram(viewContext, true, true);
+            LightDiagramServices.getInstance().layoutDiagram(viewContext);
         }
         
         
@@ -347,7 +347,7 @@ public final class DiagramViewManager implements IPartListener {
                 viewContext.getProperty(LightDiagramServices.VIEWER).setRecording(true);
                 LightDiagramServices.getInstance().updateViewContext(viewContext, model);
                 
-                LightDiagramServices.getInstance().layoutDiagram(viewContext, false, true);
+                LightDiagramServices.getInstance().layoutDiagram(viewContext, false);
 
                 // fill the options pane according to the the incorporated transformations
                 diagramView.getContextViewer().updateOptions(true);

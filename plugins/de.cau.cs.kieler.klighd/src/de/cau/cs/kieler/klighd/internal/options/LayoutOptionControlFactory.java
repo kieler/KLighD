@@ -34,8 +34,6 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Scale;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 
-import com.google.common.collect.ImmutableList;
-
 import de.cau.cs.kieler.kiml.ILayoutData;
 import de.cau.cs.kieler.kiml.LayoutContext;
 import de.cau.cs.kieler.kiml.LayoutDataService;
@@ -170,10 +168,7 @@ public class LayoutOptionControlFactory {
      * @param animate whether the new layout shall be animated
      */
     private void refreshLayout(final boolean animate) {
-        LightDiagramServices.getInstance().layoutDiagram(workbenchPart, null, animate, false,
-                ImmutableList.<ILayoutConfig>of(lightLayoutConfig));
-        // DiagramLayoutEngine.INSTANCE.layout(workbenchPart, null, animate, false, false, false,
-        //         ImmutableList.<ILayoutConfig>of(lightLayoutConfig));
+        LightDiagramServices.getInstance().layoutDiagram(workbenchPart);
     }
     
     /**

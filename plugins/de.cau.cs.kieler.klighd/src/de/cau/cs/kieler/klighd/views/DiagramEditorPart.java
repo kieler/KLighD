@@ -116,7 +116,7 @@ public class DiagramEditorPart extends EditorPart implements IDiagramWorkbenchPa
             DiagramViewManager.getInstance().registerView(this);
             
             if (requiresInitialLayout(viewContext)) {
-                LightDiagramServices.getInstance().layoutDiagram(viewContext, false, false);
+                LightDiagramServices.getInstance().layoutDiagram(viewContext, false);
             }
             viewer.updateOptions(false);
 
