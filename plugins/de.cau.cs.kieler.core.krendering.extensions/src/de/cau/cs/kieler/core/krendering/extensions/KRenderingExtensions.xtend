@@ -700,6 +700,13 @@ class KRenderingExtensions {
         ];
     }
 
+    def KGridPlacementData setSurroundingSpaceGrid(KRendering rendering, float abs, float rel) {
+        return rendering.setGridPlacementData(0f, 0f,
+            createKPosition(LEFT, abs, rel, TOP, abs, rel),
+            createKPosition(RIGHT, abs, rel, BOTTOM, abs, rel)
+        );
+    }
+
     def KGridPlacementData setGridPlacementData(KRendering rendering) {
         return renderingFactory.createKGridPlacementData() => [
             rendering.placementData = it;

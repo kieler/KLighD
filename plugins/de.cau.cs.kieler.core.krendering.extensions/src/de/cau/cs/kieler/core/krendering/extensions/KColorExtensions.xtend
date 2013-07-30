@@ -88,6 +88,16 @@ class KColorExtensions {
                 color.setGreen(190);
                 color.setBlue(190);
             }
+            case "gray20" : {
+                color.setRed(51);
+                color.setGreen(51);
+                color.setBlue(51);
+            }
+            case "gray25" : {
+                color.setRed(64);
+                color.setGreen(64);
+                color.setBlue(64);
+            }
             case "green" : {
                 color.setRed(0);
                 color.setGreen(255);
