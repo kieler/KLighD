@@ -16,6 +16,7 @@ package de.cau.cs.kieler.core.math;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.ListIterator;
 import java.util.StringTokenizer;
 
@@ -163,6 +164,21 @@ public class KVectorChain extends LinkedList<KVector> implements IDataObject {
         for (KVector vector : vectors) {
             add(vector);
         }
+    }
+    
+    /**
+     * Add copies of all the vectors to this chain, starting at the given index.
+     * 
+     * @param index where to start adding the vectors.
+     * @param chain the vector chain whose vectors to copy here.
+     */
+    public void addAllAsCopies(final int index, final Iterable<KVector> chain) {
+        List<KVector> copies = new LinkedList<KVector>();
+        for (KVector v : chain) {
+            copies.add(new KVector(v));
+        }
+        
+        this.addAll(index, copies);
     }
     
     /**
@@ -394,6 +410,7 @@ public class KVectorChain extends LinkedList<KVector> implements IDataObject {
             throw new IllegalStateException("Need at least two points to determine an angle.");
         }
     }
+    
 
     /**
      * Returns a new vector chain that is the reverse of the given vector chain. The returned vector
@@ -413,5 +430,5 @@ public class KVectorChain extends LinkedList<KVector> implements IDataObject {
 
         return result;
     }
-
+    
 }

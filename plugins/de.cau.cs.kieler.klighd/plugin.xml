@@ -20,6 +20,12 @@
       </view>
    </extension>
    <extension
+         point="org.eclipse.core.runtime.preferences">
+      <initializer
+            class="de.cau.cs.kieler.klighd.internal.preferences.PreferenceInitializer">
+      </initializer>
+   </extension>
+   <extension
          point="org.eclipse.ui.editors">
       <editor
             class="de.cau.cs.kieler.klighd.views.DiagramEditorPart"
