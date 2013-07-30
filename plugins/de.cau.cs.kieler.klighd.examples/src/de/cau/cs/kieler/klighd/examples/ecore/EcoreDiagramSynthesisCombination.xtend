@@ -30,10 +30,15 @@ class EcoreDiagramSynthesisCombination extends AbstractCombination {
 	/**
 	 * The 'execute()' method, see doc of {@link AbstractCombination}.
 	 */
-	def public void execute(PartTrigger$EditorState es, SelectionTrigger$SelectionState selectionState,
+	def public void execute(PartTrigger$PartState es, SelectionTrigger$SelectionState selectionState,
 	    KlighdSelectionTrigger$KlighdSelectionState klighdSelectionState) {
 		
-		if (this.latestState() == es) {
+		// do not react on partStates as well as on selectionStates in case
+		//  a view part has been deactivated recently, as an potentially out-dated selection
+		//  is currently about to be processed
+		// most certainly a "part activated" event will follow and subsequently a further
+		//  selection event if the selection of the newly active part is changed, too! 
+		if (this.latestState() == es || es.eventType == PartTrigger$EventType::VIEW_DEACTIVATED) {
 		   //inputPath = es.getProperty(PartTrigger::EDITOR_INPUT_PATH) as IPath;
 		   return; // do only react on selectionState
 		}
