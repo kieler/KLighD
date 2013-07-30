@@ -30,6 +30,7 @@ import org.eclipse.jface.viewers.ISelectionProvider;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.StackLayout;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.PaintEvent;
@@ -88,17 +89,21 @@ import de.cau.cs.kieler.klighd.views.IDiagramWorkbenchPart;
 /**
  * A viewer for instances of type {@code ViewContext}. It is instantiated by
  * {@link de.cau.cs.kieler.klighd.views.DiagramViewPart DiagramViewPart} and
- * {@link de.cau.cs.kieler.klighd.views.DiagramEditorPart DiagramEditorPart}
- * 
- * This viewer acts as a wrapper for the viewer supplied by the current view context. The method
- * {@code getControl} returns the control for that viewer and all other methods are delegated to the
+ * {@link de.cau.cs.kieler.klighd.views.DiagramEditorPart DiagramEditorPart}.<br>
+ * <br>
+ * This class acts as a wrapper for the viewer supplied by the current view context. The method
+ * {@code getControl} returns the control of that viewer, all other methods are delegated to the
  * wrapped viewer.<br>
  * <br>
- * In addition it is possible to set a message to be shown instead of a view context, the wrapped
- * viewer is then of type {@code StringViewer}.<br>
+ * The motivation of this class is the intended multiformity of model viewers (although only the
+ * Piccolo2D-based one has been realized). In addition, multiple diagram viewers, i.e. diagram
+ * exhibiting controls, might be hosted and unified within a {@link ContextViewer}.<br>
  * <br>
- * This viewer also implements the {@code ISelectionProvider} interface and acts as the KLighD view
- * provider for selection events.
+ * During the initialization it is possible to set a message to be shown instead of a view context,
+ * the wrapped viewer is then of type {@code StringViewer}.<br>
+ * <br>
+ * This viewer also implements the {@code ISelectionProvider} interface and acts as KLighD's
+ * provider of selection events.
  * 
  * @author mri
  * @author chsch
@@ -261,7 +266,14 @@ public class ContextViewer extends AbstractViewer<Object> implements IViewerEven
     private final List<Control> sideBarControls = Lists.newArrayListWithCapacity(5);
     
     private FormData sashLayoutData = null;
-        
+
+    /**
+     * The horizontal position of the side bar's sash in terms of the (negative) offset wrt. the
+     * workbenchPart's right side. Its kept as an attribute in order to avoid the re-initialization
+     * of the side bar's size in case a different model has been assigned to the current view.
+     */
+    private int horizontalPos = -INITIAL_OPTIONS_FORM_WIDTH;
+    
     /**
      * Create the container for layout options, including controls for collapsing and expanding.
      * 
@@ -273,22 +285,28 @@ public class ContextViewer extends AbstractViewer<Object> implements IViewerEven
         final Composite partComposite = diagramContainer.getParent();
         partComposite.setLayout(new FormLayout());
         
-        this.sideBarInitialized = false;
+        // for easier managing the visibility of the side bar's collapse/expand arrows
+        //  let's put them in a dedicated container, this is advantageous below
+        final Composite arrowsContainer = new Composite(partComposite, SWT.NONE);
+        sideBarControls.add(arrowsContainer);
+        arrowsContainer.setVisible(false);
+        final StackLayout arrowLabelContainerLayout = new StackLayout(); 
+        arrowsContainer.setLayout(arrowLabelContainerLayout);
 
         // create the right arrow for collapsing the options pane
-        final Label rightArrowLabel = new Label(partComposite, SWT.NONE);
-        sideBarControls.add(rightArrowLabel);
+        final Label rightArrowLabel = new Label(arrowsContainer, SWT.NONE);
         final Image rightArrow = KlighdPlugin.getImageDescriptor("icons/arrow-right.gif").createImage();
         resources.add(rightArrow);
         rightArrowLabel.setImage(rightArrow);
-        rightArrowLabel.setVisible(false);
+        rightArrowLabel.setVisible(true);
+        arrowLabelContainerLayout.topControl = rightArrowLabel;
 
         // create the left arrow for expanding the options pane
-        final Label leftArrowLabel = new Label(partComposite, SWT.NONE);
+        final Label leftArrowLabel = new Label(arrowsContainer, SWT.NONE);
         final Image leftArrow = KlighdPlugin.getImageDescriptor("icons/arrow-left.gif").createImage();
         resources.add(leftArrow);
         leftArrowLabel.setImage(leftArrow);
-        leftArrowLabel.setVisible(false);
+        leftArrowLabel.setVisible(true);
         
         // create the sash for resizing the options pane
         final Sash sash = new Sash(partComposite, SWT.VERTICAL);
@@ -335,22 +353,15 @@ public class ContextViewer extends AbstractViewer<Object> implements IViewerEven
         diagramContainerLayoutData.right = new FormAttachment(sash); 
         diagramContainer.setLayoutData(diagramContainerLayoutData);
         
-        final FormData rightArrowLayoutData = new FormData();
-        rightArrowLayoutData.top = new FormAttachment(0);
-        rightArrowLayoutData.bottom = new FormAttachment(sash);
-        rightArrowLayoutData.left = new FormAttachment(diagramContainer); 
-        rightArrowLayoutData.right = new FormAttachment(formRootScroller);
-        rightArrowLabel.setLayoutData(rightArrowLayoutData);
-        
-        final FormData leftArrowLayoutData = new FormData();
-        leftArrowLayoutData.top = new FormAttachment(0);
-        leftArrowLayoutData.bottom = new FormAttachment(sash);
-        leftArrowLayoutData.left = new FormAttachment(diagramContainer); 
-        leftArrowLayoutData.right = new FormAttachment(formRootScroller);
-        leftArrowLabel.setLayoutData(leftArrowLayoutData);
+        final FormData arrowsContainerLayoutData = new FormData();
+        arrowsContainerLayoutData.top = new FormAttachment(0);
+        arrowsContainerLayoutData.bottom = new FormAttachment(sash);
+        arrowsContainerLayoutData.left = new FormAttachment(diagramContainer); 
+        arrowsContainerLayoutData.right = new FormAttachment(formRootScroller);
+        arrowsContainer.setLayoutData(arrowsContainerLayoutData);
         
         sashLayoutData = new FormData();
-        sashLayoutData.top = new FormAttachment(rightArrowLabel);
+        sashLayoutData.top = new FormAttachment(arrowsContainer);
         sashLayoutData.bottom = new FormAttachment(FULL);
         sashLayoutData.left = new FormAttachment(FULL);
         sashLayoutData.width = SASH_WIDTH;
@@ -391,6 +402,7 @@ public class ContextViewer extends AbstractViewer<Object> implements IViewerEven
                     //  to let the sash respect the limit correctly.
                     event.x = maxDiagSize;
                 }
+                horizontalPos = sashLayoutData.left.offset;
                 partComposite.layout(true);
             }
         });
@@ -403,27 +415,23 @@ public class ContextViewer extends AbstractViewer<Object> implements IViewerEven
             public void mouseUp(final MouseEvent event) {
                 sashLayoutData.left.numerator = FULL;
                 sashLayoutData.left.offset = -sashLayoutData.width;
-                lastXpos[0] = sash.getBounds().x;                
-                
-                rightArrowLabel.setVisible(false);
-                leftArrowLabel.setVisible(true);                
-                partComposite.layout(true);
+                lastXpos[0] = partComposite.getClientArea().width - sash.getBounds().x;                
+                horizontalPos = sashLayoutData.left.offset;
+                arrowLabelContainerLayout.topControl = leftArrowLabel;
+                partComposite.layout(true, true);
             }
         });
         leftArrowLabel.addMouseListener(new MouseAdapter() {
             public void mouseUp(final MouseEvent event) {                
-                sashLayoutData.left.numerator = 0;
-                sashLayoutData.left.offset = lastXpos[0];
-                
-                rightArrowLabel.setVisible(true);
-                leftArrowLabel.setVisible(false);
-                partComposite.layout(true);
+                sashLayoutData.left.numerator = FULL;
+                sashLayoutData.left.offset = -lastXpos[0];
+                horizontalPos = sashLayoutData.left.offset;
+                arrowLabelContainerLayout.topControl = rightArrowLabel;
+                partComposite.layout(true, true);
             }
         });
     }
     
-    private boolean sideBarInitialized = false;
-
     /**
      * A simple paint listener that draws a vertical line.
      */
@@ -437,18 +445,19 @@ public class ContextViewer extends AbstractViewer<Object> implements IViewerEven
     }
     
     /**
-     * A simple enabler of the side bar controls.
-     * It is to be executed in case there are diagram options to provide in the side bar.
+     * A simple enabler of the side bar controls. It is to be executed in case there are diagram
+     * options to provide in the side bar.
      * 
-     * @param zoomToFit {@code true} if the diagram shall fit the available space
-     * @param showSynthesisOptions {@code true} if the synthesis options group should be displayed.
-     * @param showLayoutOptions {@code true} if the layout options group should be displayed.
+     * @param zoomToFit
+     *            {@code true} if the diagram shall fit the available space
+     * @param showSynthesisOptions
+     *            {@code true} if the synthesis options group should be displayed.
+     * @param showLayoutOptions
+     *            {@code true} if the layout options group should be displayed.
      */
     private void enableOptionsSideBar(final boolean zoomToFit, final boolean showSynthesisOptions,
-            final boolean showLayoutOptions) {
-        
-        if (!this.sideBarInitialized && (showSynthesisOptions || showLayoutOptions)) {
-            
+            final boolean showLayoutOptions) {       
+        if (showSynthesisOptions || showLayoutOptions) {
             // define the controls (sash, right arrow, form) to be visible
             for (Control c : this.sideBarControls) {
                 if (c == synthesisOptionsForm) {
@@ -470,18 +479,21 @@ public class ContextViewer extends AbstractViewer<Object> implements IViewerEven
                         synthesisOptionsForm, SYNTHESIS_LAYOUT_OPTIONS_SPACE);
             }
             
-            // put the sash at the desired position according to MIN_OPTIONS_FORM_WIDTH
             if (this.sashLayoutData != null) {
                 this.sashLayoutData.left.numerator = FULL;
-                this.sashLayoutData.left.offset = -INITIAL_OPTIONS_FORM_WIDTH;
+                this.sashLayoutData.left.offset = horizontalPos;
             }
+            
         } else {
             for (Control c : this.sideBarControls) {
                 c.setVisible(false);
             }
+            if (this.sashLayoutData != null) {
+                this.horizontalPos = this.sashLayoutData.left.offset;
+                this.sashLayoutData.left.numerator = FULL;
+                this.sashLayoutData.left.offset = 0;
+            }
         }
-
-        this.sideBarInitialized = true;
         
         // re-layout the view part's composite
         this.diagramComposite.getParent().layout(true, true);

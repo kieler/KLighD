@@ -347,8 +347,7 @@ public final class DiagramViewManager implements IPartListener {
                 viewContext.getProperty(LightDiagramServices.VIEWER).setRecording(true);
                 LightDiagramServices.getInstance().updateViewContext(viewContext, model);
                 
-                boolean animate = false;
-                LightDiagramServices.getInstance().layoutDiagram(viewContext, animate, true);
+                LightDiagramServices.getInstance().layoutDiagram(viewContext, false, true);
 
                 // fill the options pane according to the the incorporated transformations
                 diagramView.getContextViewer().updateOptions(true);
