@@ -37,12 +37,14 @@ import java.util.List
 import java.util.Collection
 import javax.inject.Inject
 
+import org.eclipse.emf.ecore.EcorePackage
 import org.eclipse.emf.ecore.EClass
 import org.eclipse.emf.ecore.EClassifier
 import org.eclipse.emf.ecore.EPackage
 import org.eclipse.emf.ecore.EReference
 
 import static extension com.google.common.base.Strings.*
+import org.eclipse.emf.ecore.EAttribute
 
 /**
  * This diagram synthesis implementation demonstrates the usage of KLighD for the purpose of
@@ -53,6 +55,7 @@ import static extension com.google.common.base.Strings.*
  *  <li>Depicting the selected classes only.</li>
  *  <li>Depicting the selected classes, and directly related ones.</li>
  *  <li>Depicting all classes of the Ecore model, the selected ones are highlighted.</li>
+ *  <li>Depicting the attributes of the classes</li>
  * <ol>
  */
 class EcoreDiagramSynthesis extends AbstractDiagramSynthesis<EModelElementCollection> {
@@ -87,6 +90,10 @@ class EcoreDiagramSynthesis extends AbstractDiagramSynthesis<EModelElementCollec
     private static val TransformationOption CLASS_FILTER = TransformationOption::createChoiceOption(CLASS_FILTER_NAME,
        ImmutableList::of(CHOSEN, CHOSEN_AND_RELATED, ALL), CHOSEN_AND_RELATED);
 
+    /**
+     * Option to activate/deactivate the attribute lists.
+     */
+    private static val TransformationOption ATTRIBUTES = TransformationOption::createCheckOption("Class Attributes", false);
     
     /**
      * {@inheritDoc}<br>
@@ -94,7 +101,7 @@ class EcoreDiagramSynthesis extends AbstractDiagramSynthesis<EModelElementCollec
      * Registers the diagram filter option declared above, which allow users to tailor the constructed diagrams.
      */
     override public getTransformationOptions() {
-        return ImmutableSet::of(CLASS_FILTER);
+        return ImmutableSet::of(CLASS_FILTER, ATTRIBUTES);
     }
     
     /**
@@ -138,21 +145,31 @@ class EcoreDiagramSynthesis extends AbstractDiagramSynthesis<EModelElementCollec
                 // The chosen classes ...
                 val chosenClasses = choice.filter(typeof(EClass)).toList => [
                    // ... are inspected, and ...
+                   val ePackage = choice.filter(typeof(EClass))?.head?.eContainer as EPackage;
 	               it.forEach[
-	                   // .. their referenced classes ...
-	                   depictedClasses.addAll(it.EStructuralFeatures.filter(typeof(EReference)).map[it.EType])
+	                   // ... their referenced classes ...
+                       depictedClasses.addAll(it.EStructuralFeatures.filter(typeof(EReference)).map[it.EType])
+                       // ... the classes referenced by their attributes (those contained in the current package)
+                       depictedClasses.addAll(it.EStructuralFeatures.filter(typeof(EAttribute)).map[it.EType]
+                                                .filter[it.eContainer == ePackage]
+                       )
 	               ];
                    it.forEach[
                        // ... as well as there super classes are put into the list of depicted classes, too.
                        depictedClasses.addAll(it.ESuperTypes)
                    ];
+
                    depictedClasses.addAll(
-                       ((choice.filter(typeof(EClass))?.head?.eContainer as EPackage)?.EClassifiers?:emptyList).filter(typeof(EClass)).filter[
+                       (ePackage?.EClassifiers?:emptyList).filter(typeof(EClass)).filter[
+                           // look for candidates whose super types are in the choice
                            val l = Lists::newArrayList(it.ESuperTypes);
+                           // look for candidates whose reference types are in the choice
                            l.retainAll(choice);
-                           !l.empty
+                           val l2 = Lists::newArrayList(it.EReferences).map[it.EType];
+                           l2.retainAll(choice);
+                           !l.empty || !l2.empty
                        ]
-                   )
+                   );
                 ];
 
                 depictedClasses.createElementFigures(it);
@@ -200,16 +217,50 @@ class EcoreDiagramSynthesis extends AbstractDiagramSynthesis<EModelElementCollec
 	def createClassifierFigures(Iterable<EClassifier> classes, KNode rootNode) {
 		classes.filterNull.forEach[ EClassifier clazz |
             rootNode.children += clazz.createNode().putToLookUpWith(clazz) => [
-                it.addRectangle /*(30, 30, 2)*/ => [
+                it.addRectangle => [
+                    it.gridPlacement = 1;
                     it.lineWidth = 2;
                     it.setBackgroundGradient("white".color, KlighdConstants::ALPHA_FULL_OPAQUE, "lemon".color, 255, 0)
                     it.shadow = "black".color;
-                    it.addText(clazz.name.nullToEmpty).putToLookUpWith(clazz) => [
-                        it.setFontSize(20);
-                        it.setFontBold(true);
-                        it.setSurroundingSpace(20, 0);
+                    it.addRectangle => [
+                        it.lineWidth = 2;
+                        val typeText = if (EcorePackage::eINSTANCE.getEEnum.isInstance(clazz))
+                            it.addText("<<Enum>>") => [
+                                it.fontSize = 13;
+                                it.fontItalic = true;
+                                it.verticalAlignment = V_BOTTOM; 
+                                it.setGridPlacementData().from(LEFT, 20, 0, TOP, 20, 0)
+                                                         .to(RIGHT, 20, 0, BOTTOM, 40, 0);
+                            ];
+                        
+                        it.addText(clazz.name.nullToEmpty).putToLookUpWith(clazz) => [
+                            it.fontSize = 15;
+                            it.fontBold = true;
+                            it.setSurroundingSpace(20, 0);
+                            if (typeText != null) {
+                                it.setGridPlacementData().from(LEFT, 20, 0, TOP, 40, 0)
+                                                         .to(RIGHT, 20, 0, BOTTOM, 20, 0);
+                                
+                            }
+                        ];
+                        
                     ];
-                ];         
+                    if (!EcorePackage::eINSTANCE.getEClass.isInstance(clazz)
+                        || !ATTRIBUTES.optionBooleanValue) {
+                        return;
+                    }
+                    it.addRectangle => [ rect |
+                        rect.invisible = true;
+                        rect.setSurroundingSpaceGrid(5, 0)
+                        rect.gridPlacement = 1;
+                        (clazz as EClass).EAttributes.forEach[
+                            rect.addText(it.name + " : " + it.EAttributeType.name) => [
+                                it.horizontalAlignment = H_LEFT
+                                it.setSurroundingSpaceGrid(3, 0);
+                            ]
+                        ];
+                    ];
+                ];
             ];
 		];
 	}
@@ -229,6 +280,7 @@ class EcoreDiagramSynthesis extends AbstractDiagramSynthesis<EModelElementCollec
 	       	it.target = ref.EType.node;
 	        it.addPolyline() => [
 	            it.lineWidth = 2;
+	            it.foreground = "gray25".color
 	            it.addArrowDecorator();
 	            if (ref.containment) {
     	            it.addPolygon() => [
@@ -237,7 +289,8 @@ class EcoreDiagramSynthesis extends AbstractDiagramSynthesis<EModelElementCollec
                         it.points += createKPosition(RIGHT, 0, 0, TOP, 0, 0.5f);
                         it.points += createKPosition(LEFT, 0, 0.5f, BOTTOM, 0, 0);
                         it.setDecoratorPlacementData(24, 12, 12, 0, true);
-                        it.background = "black".color;
+                        it.foreground = "gray25".color
+                        it.background = "gray25".color;
     	            ];
 	            }
 	        ];
@@ -259,6 +312,7 @@ class EcoreDiagramSynthesis extends AbstractDiagramSynthesis<EModelElementCollec
 	        it.target = parent.node;
 	        it.data addPolyline() => [
                 it.lineWidth = 2;
+                it.foreground = "gray25".color
                 it.addInheritanceTriangleArrowDecorator();
 	        ];		    
 		];
