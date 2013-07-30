@@ -20,5 +20,40 @@
             id="de.cau.cs.kieler.klighd.examples.uml2.UML2UseCaseDiagramSynthesis">
       </diagramSynthesis -->
    </extension>
+   <extension
+         point="org.eclipse.ui.commands">
+      <command
+            defaultHandler="de.cau.cs.kieler.klighd.examples.ecore.RemoveNodeHandler"
+            id="de.cau.cs.kieler.klighd.command1"
+            name="Shoot class away">
+      </command>
+   </extension>
+   <extension
+         point="org.eclipse.ui.menus">
+      <menuContribution
+            allPopups="false"
+            locationURI="popup:org.eclipse.ui.popup.any?after=additions">
+         <command
+               commandId="de.cau.cs.kieler.klighd.command1"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="selection">
+                  <and>
+                     <instanceof
+                           value="java.lang.Iterable">
+                     </instanceof>
+                     <iterate>
+                        <instanceof
+                              value="de.cau.cs.kieler.core.kgraph.KNode">
+                        </instanceof>
+                     </iterate>
+                  </and>
+               </with>
+            </visibleWhen>
+         </command>
+      </menuContribution>
+   </extension>
 
 </plugin>

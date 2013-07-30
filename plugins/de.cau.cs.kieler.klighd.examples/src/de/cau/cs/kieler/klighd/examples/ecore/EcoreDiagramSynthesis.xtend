@@ -97,10 +97,17 @@ class EcoreDiagramSynthesis extends AbstractDiagramSynthesis<EModelElementCollec
         return ImmutableSet::of(CLASS_FILTER);
     }
     
+    /**
+     * {@inheritDoc}<br>
+     * <br>
+     * Registers reasonable layout options that are recommended to users to tailor the constructed diagram layouts.
+     */
     override public getRecommendedLayoutOptions() {
-        return ImmutableMap::<IProperty<?>, Collection<?>>of(LayoutOptions::SPACING, newArrayList(0, 255));
+        return ImmutableMap::<IProperty<?>, Collection<?>>of(
+            LayoutOptions::DIRECTION, Direction::values().drop(1).sortBy[ it.name ],
+            LayoutOptions::SPACING, newArrayList(0, 255)
+        );
     }
-
 
     /**
      * {@inheritDoc}<br>
@@ -139,6 +146,13 @@ class EcoreDiagramSynthesis extends AbstractDiagramSynthesis<EModelElementCollec
                        // ... as well as there super classes are put into the list of depicted classes, too.
                        depictedClasses.addAll(it.ESuperTypes)
                    ];
+                   depictedClasses.addAll(
+                       ((choice.filter(typeof(EClass))?.head?.eContainer as EPackage)?.EClassifiers?:emptyList).filter(typeof(EClass)).filter[
+                           val l = Lists::newArrayList(it.ESuperTypes);
+                           l.retainAll(choice);
+                           !l.empty
+                       ]
+                   )
                 ];
 
                 depictedClasses.createElementFigures(it);
