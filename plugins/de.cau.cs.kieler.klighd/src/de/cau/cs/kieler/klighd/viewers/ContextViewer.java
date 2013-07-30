@@ -456,16 +456,16 @@ public class ContextViewer extends AbstractViewer<Object> implements IViewerEven
                 } else if (c == layoutOptionsForm) {
                     c.setVisible(showLayoutOptions);
                 } else {
-                    c.setVisible(showSynthesisOptions || showLayoutOptions);
+                    c.setVisible(true);
                 }
             }
             
             if (!showSynthesisOptions) {
-                // in case no diagram synthesis option are available
+                // in case no diagram synthesis options are available
                 //  put the layout options form at the top
                 ((FormData) layoutOptionsForm.getLayoutData()).top = new FormAttachment(0);
             } else {
-                // restore the initial data in case such option are available again
+                // restore the initial configuration in case such options are available again
                 ((FormData) layoutOptionsForm.getLayoutData()).top = new FormAttachment(
                         synthesisOptionsForm, SYNTHESIS_LAYOUT_OPTIONS_SPACE);
             }
