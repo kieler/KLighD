@@ -209,6 +209,7 @@ public final class DiagramViewManager implements IPartListener {
             }
         }
         
+        // 'diagramView' is supposed to be non-null here
         if (viewContext == null) {
             viewContext = diagramView.getContextViewer().getCurrentViewContext();
             if (viewContext == null) {

@@ -32,7 +32,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Scale;
-import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 
 import com.google.common.collect.ImmutableList;
@@ -49,9 +48,11 @@ import de.cau.cs.kieler.kiml.ui.diagram.DiagramLayoutEngine;
 import de.cau.cs.kieler.kiml.ui.service.EclipseLayoutConfig;
 import de.cau.cs.kieler.kiml.ui.service.LayoutOptionManager;
 import de.cau.cs.kieler.klighd.IViewer;
+import de.cau.cs.kieler.klighd.LightDiagramServices;
 import de.cau.cs.kieler.klighd.ViewContext;
 import de.cau.cs.kieler.klighd.internal.macrolayout.KGraphPropertyLayoutConfig;
 import de.cau.cs.kieler.klighd.views.DiagramViewPart;
+import de.cau.cs.kieler.klighd.views.IDiagramWorkbenchPart;
 
 /**
  * A factory for controls for layout options.
@@ -63,7 +64,7 @@ public class LayoutOptionControlFactory {
     /** The parent composite into which controls are created. */
     private Composite parent;
     /** The workbench part containing the diagram viewer. */
-    private IWorkbenchPart workbenchPart;
+    private IDiagramWorkbenchPart workbenchPart;
     /** the form toolkit used to create controls. */
     private FormToolkit formToolkit;
     /** The layout configurator for retrieving initial values of controls. */
@@ -71,7 +72,7 @@ public class LayoutOptionControlFactory {
     /** The layout context for retrieving initial values of controls. */
     private LayoutContext defaultLayoutContext;
     /** The layout configurator that stores the values set by option controls. */
-    private final LightLayoutConfig lightLayoutConfig = new LightLayoutConfig();
+    private LightLayoutConfig lightLayoutConfig;
     /** The set of controls to be disposed when {@link #clear()} is called. */
     private final Collection<Control> controls = new LinkedList<Control>();
     
@@ -81,16 +82,24 @@ public class LayoutOptionControlFactory {
     /**
      * Create an option control factory.
      * 
-     * @param parent the parent container
-     * @param workbenchPart the workbench part containing the diagram viewer
-     * @param formToolkit the form toolkit used to create controls
+     * @param parent
+     *            the parent container
+     * @param workbenchPart
+     *            the workbench part containing the diagram viewer
+     * @param formToolkit
+     *            the form toolkit used to create controls
+     * @param theLightLayoutConfig
+     *            the layout configuration to the user-chosen values in
      */
-    public LayoutOptionControlFactory(final Composite parent, final IWorkbenchPart workbenchPart,
-            final FormToolkit formToolkit) {
+    public LayoutOptionControlFactory(final Composite parent,
+            final IDiagramWorkbenchPart workbenchPart, final FormToolkit formToolkit,
+            final LightLayoutConfig theLightLayoutConfig) {
         this.parent = parent;
         this.workbenchPart = workbenchPart;
         this.formToolkit = formToolkit;
 
+        this.lightLayoutConfig = theLightLayoutConfig;
+        
         // configure the parent's layout
         this.parent.setLayout(new GridLayout(1, false)); // chsch: changed this from 2 to 1
 
@@ -161,8 +170,10 @@ public class LayoutOptionControlFactory {
      * @param animate whether the new layout shall be animated
      */
     private void refreshLayout(final boolean animate) {
-        DiagramLayoutEngine.INSTANCE.layout(workbenchPart, null, animate, false, false, false,
+        LightDiagramServices.getInstance().layoutDiagram(workbenchPart, null, animate, false,
                 ImmutableList.<ILayoutConfig>of(lightLayoutConfig));
+        // DiagramLayoutEngine.INSTANCE.layout(workbenchPart, null, animate, false, false, false,
+        //         ImmutableList.<ILayoutConfig>of(lightLayoutConfig));
     }
     
     /**
@@ -232,7 +243,9 @@ public class LayoutOptionControlFactory {
             
             // chsch: via this tweak we get more space below the 'Select ...' button as in GridData
             //  one can only specify vertical indentation on the top side of the widget
-            new Composite(parent, SWT.NONE | SWT.NO_BACKGROUND).setLayoutData(new GridData(1, 1));
+            Composite dummy = new Composite(parent, SWT.NONE | SWT.NO_BACKGROUND);
+            dummy.setLayoutData(new GridData(1, 1));
+            controls.add(dummy);
             
         } else {
             Label label = formToolkit.createLabel(parent, optionData.getName() + ":");

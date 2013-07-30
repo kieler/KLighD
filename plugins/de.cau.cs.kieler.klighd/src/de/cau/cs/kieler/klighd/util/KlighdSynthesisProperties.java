@@ -15,7 +15,6 @@ package de.cau.cs.kieler.klighd.util;
 
 import de.cau.cs.kieler.core.properties.MapPropertyHolder;
 import de.cau.cs.kieler.klighd.LightDiagramServices;
-import de.cau.cs.kieler.klighd.internal.util.KlighdInternalProperties;
 import de.cau.cs.kieler.klighd.krendering.SimpleUpdateStrategy;
 
 /**
@@ -46,16 +45,6 @@ public class KlighdSynthesisProperties extends MapPropertyHolder {
      */
     public KlighdSynthesisProperties useSimpleUpdateStrategy() {
         this.setProperty(LightDiagramServices.REQUESTED_UPDATE_STRATEGY, SimpleUpdateStrategy.ID);
-        return this;
-    }
-    
-    /**
-     * Configures a 'use light layout configuration' setting.
-     * 
-     * @return <code>this<code> {@link KlighdSynthesisProperties} object.
-     */
-    public KlighdSynthesisProperties useLightLayoutConfig() {
-        this.setProperty(KlighdInternalProperties.USE_LIGHT_LAYOUT_CONFIG, true);
         return this;
     }
 }

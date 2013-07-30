@@ -78,6 +78,7 @@ import de.cau.cs.kieler.klighd.TransformationContext;
 import de.cau.cs.kieler.klighd.TransformationOption;
 import de.cau.cs.kieler.klighd.ViewContext;
 import de.cau.cs.kieler.klighd.internal.options.LayoutOptionControlFactory;
+import de.cau.cs.kieler.klighd.internal.options.LightLayoutConfig;
 import de.cau.cs.kieler.klighd.internal.options.SynthesisOptionControlFactory;
 import de.cau.cs.kieler.klighd.triggers.KlighdSelectionTrigger;
 import de.cau.cs.kieler.klighd.triggers.KlighdSelectionTrigger.KlighdSelectionState;
@@ -133,6 +134,9 @@ public class ContextViewer extends AbstractViewer<Object> implements IViewerEven
     private Form layoutOptionsForm;
     /** the set of resources to be disposed when the view is closed. */
     private final List<Resource> resources = new LinkedList<Resource>();
+
+    /** The layout configurator that stores the values set by the layout option controls. */
+    private LightLayoutConfig lightLayoutConfig = new LightLayoutConfig();
 
     
     /**
@@ -319,7 +323,7 @@ public class ContextViewer extends AbstractViewer<Object> implements IViewerEven
         
         // create the factory for layout option controls to fill the options container
         layoutOptionControlFactory = new LayoutOptionControlFactory(layoutOptionsContainer,
-                workbenchPart, optionsformToolkit);
+                workbenchPart, optionsformToolkit, lightLayoutConfig);
         
         // prepare the form layout data for each of the above created widgets
         final FormData diagramContainerLayoutData = new FormData();
@@ -527,6 +531,17 @@ public class ContextViewer extends AbstractViewer<Object> implements IViewerEven
             return currentViewer.getModel();
         }
         return null;
+    }
+    
+    
+    /**
+     * Returns the {@link LightLayoutConfig} that contains the configuration values set via the
+     * layout options controls in the side bar.
+     * 
+     * @return the lightLayoutConfig
+     */
+    public LightLayoutConfig getLightLayoutConfig() {
+        return lightLayoutConfig;
     }
 
     /**
@@ -913,12 +928,29 @@ public class ContextViewer extends AbstractViewer<Object> implements IViewerEven
     /**
      * An implementation of {@code IStructuredSelection} for the {@code ISelectionProvider}.
      */
-    private class Selection implements IStructuredSelection, Iterable<Object>, Cloneable {
+    public class Selection implements IStructuredSelection, Iterable<Object>, Cloneable {
         // TODO chsch: IMO implementing ITreeSelection is reasonable and helpful 
 
         /** the objects which make up the selection. */
         private List<Object> selectedElements = new LinkedList<Object>();
 
+        /**
+         * 
+         * @return the {@link ContextViewer} of the view that provided the current selection.
+         */
+        public ContextViewer getContextViewer() {
+            return ContextViewer.this;
+        }
+        
+        /**
+         * 
+         * @param selectedElement a
+         * @return b
+         */
+        public Object getSourceElement(final EObject selectedElement) {
+            return ContextViewer.this.getCurrentViewContext().getSourceElement(selectedElement);
+        }
+        
         /**
          * {@inheritDoc}
          */

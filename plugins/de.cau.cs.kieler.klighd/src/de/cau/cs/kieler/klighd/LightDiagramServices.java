@@ -24,12 +24,14 @@ import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.statushandlers.StatusManager;
 
+import com.google.common.collect.ImmutableList;
+
 import de.cau.cs.kieler.core.kgraph.KNode;
 import de.cau.cs.kieler.core.properties.IProperty;
 import de.cau.cs.kieler.core.properties.IPropertyHolder;
 import de.cau.cs.kieler.core.properties.Property;
 import de.cau.cs.kieler.kiml.config.ILayoutConfig;
-import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout;
+import de.cau.cs.kieler.kiml.klayoutdata.KLayoutData;
 import de.cau.cs.kieler.kiml.options.LayoutOptions;
 import de.cau.cs.kieler.kiml.ui.diagram.DiagramLayoutEngine;
 import de.cau.cs.kieler.klighd.internal.preferences.KlighdPreferences;
@@ -402,24 +404,27 @@ public final class LightDiagramServices {
         final boolean doAnimate = animate
                 || preferenceStore.getBoolean(KlighdPreferences.ANIMATE_LAYOUT);
         
-        final KNode viewModel;
+        final ContextViewer contextViewer;
         if (viewPart != null) {
-            viewModel = (KNode) viewPart.getContextViewer().getCurrentViewContext()
-                .getViewModel();
+            contextViewer = viewPart.getContextViewer();
         } else if (diagramViewer != null) {
-            viewModel = (KNode) diagramViewer.getContextViewer().getCurrentViewContext()
-                    .getViewModel();
+            contextViewer = diagramViewer.getContextViewer();
         } else {
-            viewModel = null;
+            return;
         }
         
-        if (viewModel != null
-                && !viewModel.getData(KShapeLayout.class).getProperty(LayoutOptions.NO_LAYOUT)) {
-            DiagramLayoutEngine.INSTANCE.layout(viewPart, diagramViewer, doAnimate, false, false,
-                    doZoom, options);            
+        final KNode viewModel = (KNode) contextViewer.getCurrentViewContext().getViewModel();
+        final KLayoutData layoutData = viewModel != null ? viewModel.getData(KLayoutData.class) : null;
+
+        if (layoutData != null && !layoutData.getProperty(LayoutOptions.NO_LAYOUT)) {
+            final List<ILayoutConfig> extendedOptions = options == null ? Collections
+                    .<ILayoutConfig>singletonList(contextViewer.getLightLayoutConfig())
+                    : ImmutableList.<ILayoutConfig>builder().addAll(options)
+                            .add(contextViewer.getLightLayoutConfig()).build();
+            DiagramLayoutEngine.INSTANCE.layout(viewPart, diagramViewer, doAnimate,
+                    false, false, doZoom, extendedOptions);
         } else {
             diagramViewer.setRecording(false);
-            
         }
     }
     
