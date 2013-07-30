@@ -272,6 +272,8 @@ public class ContextViewer extends AbstractViewer<Object> implements IViewerEven
     private void createOptionsContainer(final Composite diagramContainer) {
         final Composite partComposite = diagramContainer.getParent();
         partComposite.setLayout(new FormLayout());
+        
+        this.sideBarInitialized = false;
 
         // create the right arrow for collapsing the options pane
         final Label rightArrowLabel = new Label(partComposite, SWT.NONE);
@@ -380,15 +382,14 @@ public class ContextViewer extends AbstractViewer<Object> implements IViewerEven
             public void handleEvent(final Event event) {
                 final int maxDiagSize = partComposite.getClientArea().width - MINIMAL_OPTIONS_FORM_WIDTH;
                 if (maxDiagSize > event.x) {
-                    sashLayoutData.left.numerator = 0;
-                    sashLayoutData.left.offset = event.x;
+                    sashLayoutData.left.numerator = FULL;
+                    sashLayoutData.left.offset = -(partComposite.getClientArea().width - event.x);
                 } else {
-                    sashLayoutData.left.numerator = 0;
-                    sashLayoutData.left.offset =
-                            partComposite.getClientArea().width - MINIMAL_OPTIONS_FORM_WIDTH;
+                    sashLayoutData.left.numerator = FULL;
+                    sashLayoutData.left.offset = -MINIMAL_OPTIONS_FORM_WIDTH;
                     // The following line appears to be evil, but this is required
                     //  to let the sash respect the limit correctly.
-                    event.x = sashLayoutData.left.offset;
+                    event.x = maxDiagSize;
                 }
                 partComposite.layout(true);
             }
@@ -446,8 +447,7 @@ public class ContextViewer extends AbstractViewer<Object> implements IViewerEven
     private void enableOptionsSideBar(final boolean zoomToFit, final boolean showSynthesisOptions,
             final boolean showLayoutOptions) {
         
-        if (!sideBarInitialized) {
-            sideBarInitialized = true;
+        if (!this.sideBarInitialized && (showSynthesisOptions || showLayoutOptions)) {
             
             // define the controls (sash, right arrow, form) to be visible
             for (Control c : this.sideBarControls) {
@@ -459,12 +459,29 @@ public class ContextViewer extends AbstractViewer<Object> implements IViewerEven
                     c.setVisible(showSynthesisOptions || showLayoutOptions);
                 }
             }
+            
+            if (!showSynthesisOptions) {
+                // in case no diagram synthesis option are available
+                //  put the layout options form at the top
+                ((FormData) layoutOptionsForm.getLayoutData()).top = new FormAttachment(0);
+            } else {
+                // restore the initial data in case such option are available again
+                ((FormData) layoutOptionsForm.getLayoutData()).top = new FormAttachment(
+                        synthesisOptionsForm, SYNTHESIS_LAYOUT_OPTIONS_SPACE);
+            }
+            
             // put the sash at the desired position according to MIN_OPTIONS_FORM_WIDTH
             if (this.sashLayoutData != null) {
                 this.sashLayoutData.left.numerator = FULL;
                 this.sashLayoutData.left.offset = -INITIAL_OPTIONS_FORM_WIDTH;
             }
+        } else {
+            for (Control c : this.sideBarControls) {
+                c.setVisible(false);
+            }
         }
+
+        this.sideBarInitialized = true;
         
         // re-layout the view part's composite
         this.diagramComposite.getParent().layout(true, true);
