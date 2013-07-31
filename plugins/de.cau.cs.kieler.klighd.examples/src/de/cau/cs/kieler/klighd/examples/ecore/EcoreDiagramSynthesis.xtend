@@ -160,14 +160,14 @@ class EcoreDiagramSynthesis extends AbstractDiagramSynthesis<EModelElementCollec
                    ];
 
                    depictedClasses.addAll(
-                       (ePackage?.EClassifiers?:emptyList).filter(typeof(EClass)).filter[
+                       ((ePackage?.EClassifiers as List<EClassifier>)?:emptyList).filter(typeof(EClass)).filter[
                            // look for candidates whose super types are in the choice
-                           val l = Lists::newArrayList(it.ESuperTypes);
+                           val sts = Lists::newArrayList(it.ESuperTypes as Iterable<EClass>);
                            // look for candidates whose reference types are in the choice
-                           l.retainAll(choice);
-                           val l2 = Lists::newArrayList(it.EReferences).map[it.EType];
-                           l2.retainAll(choice);
-                           !l.empty || !l2.empty
+                           sts.retainAll(choice);
+                           val rts = Lists::newArrayList(it.EReferences as Iterable<EReference>).map[it.EType];
+                           rts.retainAll(choice);
+                           !sts.empty || !rts.empty
                        ]
                    );
                 ];
