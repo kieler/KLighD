@@ -19,6 +19,7 @@ import java.util.Map;
 
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.ui.IPartListener;
 import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.IViewReference;
@@ -37,6 +38,7 @@ import de.cau.cs.kieler.core.properties.Property;
 import de.cau.cs.kieler.klighd.KlighdPlugin;
 import de.cau.cs.kieler.klighd.LightDiagramServices;
 import de.cau.cs.kieler.klighd.ViewContext;
+import de.cau.cs.kieler.klighd.internal.preferences.KlighdPreferences;
 import de.cau.cs.kieler.klighd.triggers.KlighdStatusTrigger;
 import de.cau.cs.kieler.klighd.triggers.KlighdStatusTrigger.KlighdStatusState;
 
@@ -349,8 +351,11 @@ public final class DiagramViewManager implements IPartListener {
                 
                 LightDiagramServices.getInstance().layoutDiagram(viewContext, false);
 
+                final IPreferenceStore preferenceStore = KlighdPlugin.getDefault().getPreferenceStore();
+                final boolean zoomToFit = preferenceStore.getBoolean(KlighdPreferences.ZOOM_TO_FIT);
+
                 // fill the options pane according to the the incorporated transformations
-                diagramView.getContextViewer().updateOptions(true);
+                diagramView.getContextViewer().updateOptions(zoomToFit);
 
                 // make the view visible without giving it the focus
                 page.bringToTop(diagramView);
