@@ -58,6 +58,7 @@ import de.cau.cs.kieler.core.krendering.LineJoin
 import de.cau.cs.kieler.core.krendering.KLineJoin
 import de.cau.cs.kieler.core.kgraph.KPort
 import de.cau.cs.kieler.core.krendering.KPolygon
+import de.cau.cs.kieler.core.krendering.KGridPlacement
 
 /**
  * This utility class contains various methods that are convenient while composing KRendering data.
@@ -665,13 +666,6 @@ class KRenderingExtensions {
         return placementData.eContainer() as KRendering;
     }
     
-    def <T extends KRendering> T setSurroundingSpace(T rendering, float abs, float rel) {
-        return rendering.setAreaPlacementData(
-            createKPosition(LEFT, abs, rel, TOP, abs, rel),
-            createKPosition(RIGHT, abs, rel, BOTTOM, abs, rel)
-        );
-    }
-
     def KRendering to(KAreaPlacementData placementData, 
                     PositionReferenceX px, float absoluteLR, float relativeLR,
                     PositionReferenceY py, float absoluteTB, float relativeTB) {
@@ -680,6 +674,20 @@ class KRenderingExtensions {
         ));
     }
     
+    def <T extends KRendering> T setSurroundingSpace(T rendering, float abs, float rel) {
+        return rendering.setAreaPlacementData(
+            createKPosition(LEFT, abs, rel, TOP, abs, rel),
+            createKPosition(RIGHT, abs, rel, BOTTOM, abs, rel)
+        );
+    }
+
+    def <T extends KRendering> T setSurroundingSpace(T rendering, float hAbs, float hRel, float vAbs, float vRel) {
+        return rendering.setAreaPlacementData(
+            createKPosition(LEFT, hAbs, hRel, TOP, vAbs, vRel),
+            createKPosition(RIGHT, hAbs, hRel, BOTTOM, vAbs, vRel)
+        );
+    }
+
     def KGridPlacementData setGridPlacementData(KRendering rendering, float minCellWidth,
             float minCellHeight, KPosition topLeft, KPosition bottomRight) {
         return renderingFactory.createKGridPlacementData() => [
@@ -700,6 +708,34 @@ class KRenderingExtensions {
         ];
     }
 
+    def KGridPlacement from(KGridPlacement placement, KPosition topLeft) {
+        placement.topLeft = topLeft;
+        return placement;
+    }
+    
+    def KGridPlacement from(KGridPlacement placement, 
+                    PositionReferenceX px, float absoluteLR, float relativeLR,
+                    PositionReferenceY py, float absoluteTB, float relativeTB) {
+        placement.from(createKPosition(
+            px, absoluteLR, relativeLR, py, absoluteTB, relativeTB
+        ));
+        return placement;
+    }
+    
+    def KGridPlacement to(KGridPlacement placement, KPosition bottomRight) {
+        placement.bottomRight = bottomRight; 
+        return placement;
+    }
+    
+    def KGridPlacement to(KGridPlacement placement, 
+                    PositionReferenceX px, float absoluteLR, float relativeLR,
+                    PositionReferenceY py, float absoluteTB, float relativeTB) {
+        placement.to(createKPosition(
+            px, absoluteLR, relativeLR, py, absoluteTB, relativeTB
+        ));
+        return placement;
+    }
+    
     def KGridPlacementData setSurroundingSpaceGrid(KRendering rendering, float abs, float rel) {
         return rendering.setGridPlacementData(0f, 0f,
             createKPosition(LEFT, abs, rel, TOP, abs, rel),
