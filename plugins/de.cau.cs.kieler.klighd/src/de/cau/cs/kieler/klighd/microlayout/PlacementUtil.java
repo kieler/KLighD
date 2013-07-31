@@ -702,7 +702,7 @@ public final class PlacementUtil {
             pCAPos.setFirst(childAreaColId);
             pCAPos.setSecond(childAreaRowId);
         } else {
-            container.setProperty(CHILD_AREA_POSITION, Pair.create(childAreaColId, childAreaRowId));
+            container.setProperty(CHILD_AREA_POSITION, Pair.of(childAreaColId, childAreaRowId));
         }
         container.eSetDeliver(deliver);
         
