@@ -19,16 +19,19 @@ import java.beans.PropertyChangeListener;
 import java.io.IOException;
 import java.net.URL;
 import java.util.List;
+import java.util.Map;
 
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.graphics.ImageData;
 import org.eclipse.swt.graphics.RGB;
 import org.eclipse.ui.statushandlers.StatusManager;
 import org.osgi.framework.Bundle;
 
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 
 import de.cau.cs.kieler.core.krendering.KArc;
 import de.cau.cs.kieler.core.krendering.KCustomRendering;
@@ -49,6 +52,7 @@ import de.cau.cs.kieler.klighd.krendering.KCustomRenderingWrapperFactory;
 import de.cau.cs.kieler.klighd.microlayout.Bounds;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KCustomConnectionFigureNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KEdgeNode;
+import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdImage;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.PAlignmentNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.PAlignmentNode.HAlignment;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.PAlignmentNode.VAlignment;
@@ -61,8 +65,6 @@ import de.cau.cs.kieler.klighd.piccolo.internal.util.PiccoloPlacementUtil;
 import de.cau.cs.kieler.klighd.piccolo.internal.util.Styles;
 import de.cau.cs.kieler.klighd.util.KlighdProperties;
 import edu.umd.cs.piccolo.PNode;
-import edu.umd.cs.piccolox.swt.PSWTCanvas;
-import edu.umd.cs.piccolox.swt.PSWTImage;
 
 /**
  * Collection of KRendering-related figure creation methods.<br>
@@ -546,11 +548,11 @@ final class KGERenderingControllerHelper {
             }
         };
     }
+    
+    private static final Map<String, ImageData> IMAGE_BUFFER = Maps.newHashMap();
 
     /**
      * Creates a representation for the {@link KImage}.
-     * 
-     * @author uru, chsch
      * 
      * @param image
      *            the image rendering
@@ -568,52 +570,63 @@ final class KGERenderingControllerHelper {
             final KImage image, final List<KStyle> propagatedStyles, final PNode parent,
             final Bounds initialBounds) {
 
-        PSWTImage pImage = null;
+        final KlighdImage imageNode;
 
         if (image.getImageObject() instanceof Image) {
+            imageNode = new KlighdImage((Image) image.getImageObject());
 
-            pImage = new PSWTImage(PSWTCanvas.CURRENT_CANVAS, (Image) image.getImageObject());
+        } else if (image.getImageObject() instanceof ImageData) {
+            imageNode = new KlighdImage((ImageData) image.getImageObject());
 
         } else {
-
-            // get the bundle and actual image, trim the leading and trailing quotation marks
-            Bundle bundle = null;
-            if (image.getBundleName() != null) {
-                bundle = Platform.getBundle(image.getBundleName().replace("\"", ""));
+            
+            final String id = image.getBundleName() + "#" + image.getImagePath();
+            ImageData imageData = IMAGE_BUFFER.get(id);
+            
+            if (imageData == null) {
+                Bundle bundle = null;
+                if (image.getBundleName() != null) {
+                    // determine the containing bundle,
+                    //  trim potentially leading and trailing quotation marks
+                    bundle = Platform.getBundle(image.getBundleName().replace("\"", ""));
+                }
+                if (bundle == null) {
+                    return createDummy(parent, initialBounds);
+                }
+                
+                // get the bundle and actual image,
+                //  trim potentially leading and trailing quotation marks
+                final URL entry = bundle.getEntry(image.getImagePath().replace("\"", ""));
+                try {
+                    imageData = new ImageData(entry.openStream());
+                    IMAGE_BUFFER.put(id, imageData);
+                } catch (IOException e) {
+                    final String msg = "KLighD: Error occurred while loading the image "
+                            + image.getImagePath() + " in bundle " + image.getBundleName();
+                    StatusManager.getManager().handle(
+                            new Status(IStatus.ERROR, KlighdPlugin.PLUGIN_ID, msg, e),
+                            StatusManager.LOG);
+                    return createDummy(parent, initialBounds);
+                }
             }
-            if (bundle == null) {
-                return createDummy(parent, initialBounds);
-            }
 
-            URL entry = bundle.getEntry(image.getImagePath().replace("\"", ""));
-
-            try {
-                // create the image
-                // the bounds of pImage are set within the PSWTImage implementation
-                pImage = new PSWTImage(PSWTCanvas.CURRENT_CANVAS, entry.openStream());
-            } catch (IOException e) {
-                final String msg = "KLighD: Error occurred while loading the image "
-                        + image.getImagePath() + " in bundle " + image.getBundleName();
-                StatusManager.getManager().handle(
-                        new Status(IStatus.ERROR, KlighdPlugin.PLUGIN_ID, msg, e),
-                        StatusManager.LOG);
-                return createDummy(parent, initialBounds);
-            }
+            // create the image, the bounds of imageNode are set within the KlighdImage implementation
+            imageNode = new KlighdImage(imageData);
         }
 
         // initialize the node
-        controller.initializeRenderingNode(pImage);
-        pImage.translate(initialBounds.getX(), initialBounds.getY());
-        parent.addChild(pImage);
+        controller.initializeRenderingNode(imageNode);
+        imageNode.translate(initialBounds.getX(), initialBounds.getY());
+        parent.addChild(imageNode);
 
         // handle children
         if (image.getChildren().size() > 0) {
             controller.handleChildren(image.getChildren(), image.getChildPlacement(),
-                    propagatedStyles, pImage);
+                    propagatedStyles, imageNode);
         }
 
         // create a standard default node controller
-        return new PNodeController<PNode>(pImage) {
+        return new PNodeController<PNode>(imageNode) {
             public void setBounds(final Bounds bounds) {
                 // apply the bounds
                 NodeUtil.applyTranslation(getNode(), bounds.getX(), bounds.getY());
