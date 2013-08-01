@@ -22,7 +22,7 @@ import de.cau.cs.kieler.klighd.krendering.KTextUtil;
  * 
  * @author chsch
  */
-public class PSWTTracingText extends KlighdStyledText implements ITracingElement<KText> {
+public class KlighdTracingText extends KlighdStyledText implements ITracingElement<KText> {
 
     /** The default serialVersionUID. */
     private static final long serialVersionUID = 1L;
@@ -35,7 +35,7 @@ public class PSWTTracingText extends KlighdStyledText implements ITracingElement
      * 
      * @param theKText The KText rendering model.
      */
-    public PSWTTracingText(final KText theKText) {
+    public KlighdTracingText(final KText theKText) {
         super(KTextUtil.getTextLines(theKText));
         this.kText = theKText;
     }

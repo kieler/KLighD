@@ -59,7 +59,7 @@ import de.cau.cs.kieler.klighd.piccolo.internal.nodes.PAlignmentNode.VAlignment;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.PEmptyNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdPath;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdStyledText;
-import de.cau.cs.kieler.klighd.piccolo.internal.nodes.PSWTTracingText;
+import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdTracingText;
 import de.cau.cs.kieler.klighd.piccolo.internal.util.NodeUtil;
 import de.cau.cs.kieler.klighd.piccolo.internal.util.PiccoloPlacementUtil;
 import de.cau.cs.kieler.klighd.piccolo.internal.util.Styles;
@@ -287,7 +287,7 @@ final class KGERenderingControllerHelper {
             final AbstractKGERenderingController<?, ?> controller, final KText text,
             final List<KStyle> propagatedStyles, final PNode parent, final Bounds initialBounds) {
         // create the text
-        PSWTTracingText textNode = new PSWTTracingText(text);
+        KlighdTracingText textNode = new KlighdTracingText(text);
         textNode.setGreekColor(null);
         controller.initializeRenderingNode(textNode);
 
