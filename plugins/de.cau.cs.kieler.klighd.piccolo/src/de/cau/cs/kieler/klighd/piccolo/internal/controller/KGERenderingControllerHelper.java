@@ -57,7 +57,7 @@ import de.cau.cs.kieler.klighd.piccolo.internal.nodes.PAlignmentNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.PAlignmentNode.HAlignment;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.PAlignmentNode.VAlignment;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.PEmptyNode;
-import de.cau.cs.kieler.klighd.piccolo.internal.nodes.PSWTAdvancedPath;
+import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdPath;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.PSWTStyledText;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.PSWTTracingText;
 import de.cau.cs.kieler.klighd.piccolo.internal.util.NodeUtil;
@@ -99,12 +99,12 @@ final class KGERenderingControllerHelper {
      *            the initial bounds
      * @return the controller for the created Piccolo node
      */
-    static PNodeController<PSWTAdvancedPath> createEllipse(
+    static PNodeController<KlighdPath> createEllipse(
             final AbstractKGERenderingController<?, ?> controller, final KEllipse ellipse,
             final List<KStyle> propagatedStyles, final PNode parent, final Bounds initialBounds) {
 
-        final PSWTAdvancedPath path = PSWTAdvancedPath.createEllipse(0, 0,
-                initialBounds.getWidth(), initialBounds.getHeight());
+        final KlighdPath path = KlighdPath.createEllipse(0, 0, initialBounds.getWidth(),
+                initialBounds.getHeight());
         controller.initializeRenderingNode(path);
         path.translate(initialBounds.getX(), initialBounds.getY());
         parent.addChild(path);
@@ -143,12 +143,12 @@ final class KGERenderingControllerHelper {
      *            the initial bounds
      * @return the controller for the created Piccolo node
      */
-    static PNodeController<PSWTAdvancedPath> createRectangle(
+    static PNodeController<KlighdPath> createRectangle(
             final AbstractKGERenderingController<?, ?> controller, final KRectangle rect,
             final List<KStyle> propagatedStyles, final PNode parent, final Bounds initialBounds) {
         // create the rectangle
-        final PSWTAdvancedPath path = PSWTAdvancedPath.createRectangle(0, 0,
-                initialBounds.getWidth(), initialBounds.getHeight());
+        final KlighdPath path = KlighdPath.createRectangle(0, 0, initialBounds.getWidth(),
+                initialBounds.getHeight());
         controller.initializeRenderingNode(path);
         path.translate(initialBounds.getX(), initialBounds.getY());
         parent.addChild(path);
@@ -187,15 +187,15 @@ final class KGERenderingControllerHelper {
      *            the initial bounds
      * @return the controller for the created Piccolo node
      */
-    static PNodeController<PSWTAdvancedPath> createRoundedRectangle(
+    static PNodeController<KlighdPath> createRoundedRectangle(
             final AbstractKGERenderingController<?, ?> controller, final KRoundedRectangle rect,
             final List<KStyle> propagatedStyles, final PNode parent, final Bounds initialBounds) {
         final float cornerWidth = 2 * rect.getCornerWidth();
         final float cornerHeight = 2 * rect.getCornerHeight();
         
         // create the rounded rectangle
-        final PSWTAdvancedPath path = PSWTAdvancedPath.createRoundRectangle(0, 0,
-                initialBounds.getWidth(), initialBounds.getHeight(), cornerWidth, cornerHeight);
+        final KlighdPath path = KlighdPath.createRoundRectangle(0, 0, initialBounds.getWidth(),
+                initialBounds.getHeight(), cornerWidth, cornerHeight);
         controller.initializeRenderingNode(path);
         path.translate(initialBounds.getX(), initialBounds.getY());
         parent.addChild(path);
@@ -235,14 +235,13 @@ final class KGERenderingControllerHelper {
      *            the initial bounds
      * @return the controller for the created Piccolo node
      */
-    static PNodeController<PSWTAdvancedPath> createArc(
+    static PNodeController<KlighdPath> createArc(
             final AbstractKGERenderingController<?, ?> controller, final KArc arc,
             final List<KStyle> propagatedStyles, final PNode parent, final Bounds initialBounds) {
 
         // create the arc
-        final PSWTAdvancedPath path = PSWTAdvancedPath.createArc(0, 0, initialBounds.getWidth(),
-                initialBounds.getHeight(), arc.getStartAngle(), arc.getArcAngle(), arc.getArcType()
-                        .getValue());
+        final KlighdPath path = KlighdPath.createArc(0, 0, initialBounds.getWidth(), initialBounds
+                .getHeight(), arc.getStartAngle(), arc.getArcAngle(), arc.getArcType().getValue());
 
         path.setPaint((RGB) null);
         controller.initializeRenderingNode(path);
@@ -341,23 +340,23 @@ final class KGERenderingControllerHelper {
      *            the initial bounds
      * @return the controller for the created Piccolo node
      */
-    static PNodeController<PSWTAdvancedPath> createLine(
+    static PNodeController<KlighdPath> createLine(
             final AbstractKGERenderingController<?, ?> controller, final KPolyline line,
             final List<KStyle> propagatedStyles, final PNode parent, final Bounds initialBounds) {
 
         Point2D[] points = PiccoloPlacementUtil.evaluatePolylinePlacement(line, initialBounds);
 
-        final PSWTAdvancedPath path;
+        final KlighdPath path;
         if (line instanceof KSpline) {
             // create the spline
-            path = PSWTAdvancedPath.createSpline(points);
+            path = KlighdPath.createSpline(points);
         } else if (line instanceof KRoundedBendsPolyline) {
             // create the rounded bends polyline
-            path = PSWTAdvancedPath.createRoundedBendPolyline(points,
+            path = KlighdPath.createRoundedBendPolyline(points,
                     ((KRoundedBendsPolyline) line).getBendRadius());
         } else {
             // create the polyline
-            path = PSWTAdvancedPath.createPolyline(points);
+            path = KlighdPath.createPolyline(points);
         }
 
         controller.initializeRenderingNode(path);
@@ -436,11 +435,11 @@ final class KGERenderingControllerHelper {
      *            the initial bounds
      * @return the controller for the created Piccolo node
      */
-    static PNodeController<PSWTAdvancedPath> createPolygon(
+    static PNodeController<KlighdPath> createPolygon(
             final AbstractKGERenderingController<?, ?> controller, final KPolygon polygon,
             final List<KStyle> propagatedStyles, final PNode parent, final Bounds initialBounds) {
         // create the polygon
-        final PSWTAdvancedPath path = PSWTAdvancedPath.createPolygon(PiccoloPlacementUtil
+        final KlighdPath path = KlighdPath.createPolygon(PiccoloPlacementUtil
                 .evaluatePolylinePlacement(polygon, initialBounds));
         controller.initializeRenderingNode(path);
         path.translate(initialBounds.getX(), initialBounds.getY());
@@ -723,5 +722,4 @@ final class KGERenderingControllerHelper {
             }
         };
     }
-
 }

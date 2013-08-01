@@ -21,7 +21,7 @@ import de.cau.cs.kieler.core.krendering.KColor;
 import de.cau.cs.kieler.core.krendering.LineCap;
 import de.cau.cs.kieler.core.krendering.LineJoin;
 import de.cau.cs.kieler.core.krendering.LineStyle;
-import de.cau.cs.kieler.klighd.piccolo.internal.nodes.PSWTAdvancedPath;
+import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdPath;
 import de.cau.cs.kieler.klighd.piccolo.internal.util.RGBGradient;
 import de.cau.cs.kieler.klighd.piccolo.internal.util.Styles;
 
@@ -31,7 +31,7 @@ import de.cau.cs.kieler.klighd.piccolo.internal.util.Styles;
  * 
  * @author mri, chsch
  */
-public abstract class PSWTAdvancedPathController extends PNodeController<PSWTAdvancedPath> {
+public abstract class PSWTAdvancedPathController extends PNodeController<KlighdPath> {
 
     /**
      * Constructs a node controller for a {@code PSWTAdvancedPath}.
@@ -39,7 +39,7 @@ public abstract class PSWTAdvancedPathController extends PNodeController<PSWTAdv
      * @param node
      *            the path
      */
-    public PSWTAdvancedPathController(final PSWTAdvancedPath node) {
+    public PSWTAdvancedPathController(final KlighdPath node) {
         super(node);
     }
 

@@ -38,7 +38,7 @@ import de.cau.cs.kieler.kiml.klayoutdata.KLayoutDataPackage;
 import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KNodeTopNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdCanvas;
-import de.cau.cs.kieler.klighd.piccolo.internal.nodes.PSWTAdvancedPath;
+import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdPath;
 import edu.umd.cs.piccolo.PCamera;
 import edu.umd.cs.piccolo.PLayer;
 import edu.umd.cs.piccolo.PNode;
@@ -70,7 +70,7 @@ public class PiccoloOutlinePage implements IContentOutlinePage {
     /** the outline camera. */
     private PCamera outlineCamera;
     /** the element that holds the outline rectangle. */
-    private PSWTAdvancedPath outlineRect;
+    private KlighdPath outlineRect;
 
     // Properties for the appearance of the outline rectangle.
     private static final int OUTLINE_EDGE_ROUNDNESS = 5;
@@ -181,7 +181,7 @@ public class PiccoloOutlinePage implements IContentOutlinePage {
             PBounds bounds = originalCamera.getBounds();
             // configure the outline rectangle
             outlineRect =
-                    PSWTAdvancedPath.createRoundRectangle((float) bounds.x, (float) bounds.y,
+                    KlighdPath.createRoundRectangle((float) bounds.x, (float) bounds.y,
                             (float) bounds.width, (float) bounds.height, OUTLINE_EDGE_ROUNDNESS,
                             OUTLINE_EDGE_ROUNDNESS);
             outlineRect.setPaint(OUTLINE_EDGE_COLOR);

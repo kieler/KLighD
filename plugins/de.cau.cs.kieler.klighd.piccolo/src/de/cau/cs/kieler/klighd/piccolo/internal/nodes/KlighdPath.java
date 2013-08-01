@@ -84,7 +84,7 @@ import edu.umd.cs.piccolo.util.PPickPath;
  * 
  * @author mri, chsch
  */
-public class PSWTAdvancedPath extends PNode {
+public class KlighdPath extends PNode {
 
     private static final long serialVersionUID = 8034306769936734586L;
 
@@ -144,9 +144,9 @@ public class PSWTAdvancedPath extends PNode {
      *            height of rectangle
      * @return created rectangle
      */
-    public static PSWTAdvancedPath createRectangle(final float x, final float y, final float width,
+    public static KlighdPath createRectangle(final float x, final float y, final float width,
             final float height) {
-        final PSWTAdvancedPath result = new PSWTAdvancedPath();
+        final KlighdPath result = new KlighdPath();
         result.setPathToRectangle(x, y, width, height);
         result.setPaint(Color.white);
         return result;
@@ -169,9 +169,9 @@ public class PSWTAdvancedPath extends PNode {
      *            height of arc at the corners
      * @return created rounded rectangle
      */
-    public static PSWTAdvancedPath createRoundRectangle(final float x, final float y,
+    public static KlighdPath createRoundRectangle(final float x, final float y,
             final float width, final float height, final float arcWidth, final float arcHeight) {
-        final PSWTAdvancedPath result = new PSWTAdvancedPath();
+        final KlighdPath result = new KlighdPath();
         result.setPathToRoundRectangle(x, y, width, height, arcWidth, arcHeight);
         result.setPaint(Color.white);
         return result;
@@ -190,9 +190,9 @@ public class PSWTAdvancedPath extends PNode {
      *            height of rectangle
      * @return created ellipse
      */
-    public static PSWTAdvancedPath createEllipse(final float x, final float y, final float width,
+    public static KlighdPath createEllipse(final float x, final float y, final float width,
             final float height) {
-        final PSWTAdvancedPath result = new PSWTAdvancedPath();
+        final KlighdPath result = new KlighdPath();
         result.setPathToEllipse(x, y, width, height);
         result.setPaint(Color.white);
         return result;
@@ -219,9 +219,9 @@ public class PSWTAdvancedPath extends PNode {
      *            {@link Arc2D#PIE}
      * @return created arc
      */
-    public static PSWTAdvancedPath createArc(final float x, final float y, final float width,
+    public static KlighdPath createArc(final float x, final float y, final float width,
             final float height, final float angStart, final float angExtend, final int type) {
-        final PSWTAdvancedPath result = new PSWTAdvancedPath();
+        final KlighdPath result = new KlighdPath();
         result.setPathToArc(x, y, width, height, angStart, angExtend, type);
         result.setPaint(Color.white);
         return result;
@@ -236,8 +236,8 @@ public class PSWTAdvancedPath extends PNode {
      *            array of points for the point lines
      * @return created spline for the given points
      */
-    public static PSWTAdvancedPath createSpline(final Point2D[] points) {
-        final PSWTAdvancedPath result = new PSWTAdvancedPath();
+    public static KlighdPath createSpline(final Point2D[] points) {
+        final KlighdPath result = new KlighdPath();
         result.setPathToSpline(points);
         return result;
     }
@@ -254,9 +254,9 @@ public class PSWTAdvancedPath extends PNode {
      * 
      * @return created polyline with rounded bend points for the given points
      */
-    public static PSWTAdvancedPath createRoundedBendPolyline(final Point2D[] points,
+    public static KlighdPath createRoundedBendPolyline(final Point2D[] points,
             final float bendRadius) {
-        final PSWTAdvancedPath result = new PSWTAdvancedPath();
+        final KlighdPath result = new KlighdPath();
         result.setPathToRoundedBendPolyline(points, bendRadius);
         return result;
     }
@@ -269,8 +269,8 @@ public class PSWTAdvancedPath extends PNode {
      * 
      * @return created polyline for the given points
      */
-    public static PSWTAdvancedPath createPolyline(final Point2D[] points) {
-        final PSWTAdvancedPath result = new PSWTAdvancedPath();
+    public static KlighdPath createPolyline(final Point2D[] points) {
+        final KlighdPath result = new KlighdPath();
         result.setPathToPolyline(points);
         return result;
     }
@@ -283,8 +283,8 @@ public class PSWTAdvancedPath extends PNode {
      * 
      * @return created polygon for the given points
      */
-    public static PSWTAdvancedPath createPolygon(final Point2D[] points) {
-        final PSWTAdvancedPath result = new PSWTAdvancedPath();
+    public static KlighdPath createPolygon(final Point2D[] points) {
+        final KlighdPath result = new KlighdPath();
         result.setPathToPolygon(points);
         result.setPaint(Color.white);
         return result;
@@ -293,7 +293,7 @@ public class PSWTAdvancedPath extends PNode {
     /**
      * Creates an empty PSWTAdvancedPath.
      */
-    public PSWTAdvancedPath() {
+    public KlighdPath() {
         strokePaint = DEFAULT_STROKE_PAINT;
     }
 

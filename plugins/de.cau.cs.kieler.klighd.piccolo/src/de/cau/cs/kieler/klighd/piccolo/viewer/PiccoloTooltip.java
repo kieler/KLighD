@@ -34,7 +34,7 @@ import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout;
 import de.cau.cs.kieler.klighd.KlighdConstants;
 import de.cau.cs.kieler.klighd.piccolo.internal.controller.AbstractKGERenderingController;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.IGraphElement;
-import de.cau.cs.kieler.klighd.piccolo.internal.nodes.PSWTAdvancedPath;
+import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdPath;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.PSWTStyledText;
 import de.cau.cs.kieler.klighd.util.KlighdProperties;
 import edu.umd.cs.piccolo.PCamera;
@@ -57,7 +57,7 @@ public class PiccoloTooltip {
     private PCamera camera;
 
     // graphic elements representing the tooltip
-    private PSWTAdvancedPath root;
+    private KlighdPath root;
     private PSWTStyledText tooltip;
 
     // configuration constants
@@ -83,7 +83,7 @@ public class PiccoloTooltip {
                 KlighdConstants.DEFAULT_TOOL_TIP_FONT_SIZE, KlighdConstants.DEFAULT_FONT_STYLE));
 
         // create a rounded box where the tooltip will be displayed
-        root = PSWTAdvancedPath.createRoundRectangle(0, 0, 0, 0, ROUNDNESS, ROUNDNESS);
+        root = KlighdPath.createRoundRectangle(0, 0, 0, 0, ROUNDNESS, ROUNDNESS);
         root.setPaint(Color.WHITE);
         root.setPaintAlpha(OPACITY);
         root.addChild(tooltip);

@@ -29,7 +29,7 @@ import org.eclipse.swt.graphics.RGB;
 import com.google.common.collect.Sets;
 
 import de.cau.cs.kieler.klighd.KlighdConstants;
-import de.cau.cs.kieler.klighd.piccolo.internal.nodes.PSWTAdvancedPath;
+import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdPath;
 import de.cau.cs.kieler.klighd.piccolo.viewer.INodeSelectionListener;
 import edu.umd.cs.piccolo.PCamera;
 import edu.umd.cs.piccolo.PLayer;
@@ -59,7 +59,7 @@ public class PSWTSimpleSelectionEventHandler extends PDragSequenceEventHandler {
     private List<INodeSelectionListener> listeners = new LinkedList<INodeSelectionListener>();
 
     /** the marquee selection rectangle. */
-    private PSWTAdvancedPath marquee = null;
+    private KlighdPath marquee = null;
     /** the point on the canvas the last press occurred. */
     private Point2D canvasPoint;
     /** the point in transformed coordinates where the last press occurred. */
@@ -319,7 +319,7 @@ public class PSWTSimpleSelectionEventHandler extends PDragSequenceEventHandler {
 
     private void initializeMarquee(final PInputEvent event) {
         marquee =
-                PSWTAdvancedPath.createRectangle((float) point.getX(), (float) point.getY(), 0, 0);
+                KlighdPath.createRectangle((float) point.getX(), (float) point.getY(), 0, 0);
         marquee.setLineAttributes(new LineAttributes(1, SWT.CAP_FLAT, SWT.JOIN_MITER));
         marquee.getLineAttributes().style = SWT.LINE_DASH;
         marquee.setStrokeColor(KlighdConstants.BLACK);
