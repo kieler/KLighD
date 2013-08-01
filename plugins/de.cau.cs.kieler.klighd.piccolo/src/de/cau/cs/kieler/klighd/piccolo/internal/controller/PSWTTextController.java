@@ -19,7 +19,7 @@ import org.eclipse.swt.graphics.RGB;
 
 import de.cau.cs.kieler.core.krendering.Underline;
 import de.cau.cs.kieler.klighd.KlighdConstants;
-import de.cau.cs.kieler.klighd.piccolo.internal.nodes.PSWTStyledText;
+import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdStyledText;
 import de.cau.cs.kieler.klighd.piccolo.internal.util.RGBGradient;
 import de.cau.cs.kieler.klighd.piccolo.internal.util.Styles;
 
@@ -28,7 +28,7 @@ import de.cau.cs.kieler.klighd.piccolo.internal.util.Styles;
  * 
  * @author mri, chsch
  */
-public abstract class PSWTTextController extends PNodeController<PSWTStyledText> {
+public abstract class PSWTTextController extends PNodeController<KlighdStyledText> {
 
     /** the name of the currently used font. */
     private String fontName = KlighdConstants.DEFAULT_FONT_NAME;
@@ -43,7 +43,7 @@ public abstract class PSWTTextController extends PNodeController<PSWTStyledText>
      * @param node
      *            the text
      */
-    public PSWTTextController(final PSWTStyledText node) {
+    public PSWTTextController(final KlighdStyledText node) {
         super(node);
     }
 

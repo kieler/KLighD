@@ -17,12 +17,12 @@ import de.cau.cs.kieler.core.krendering.KText;
 import de.cau.cs.kieler.klighd.krendering.KTextUtil;
 
 /**
- * An extend variant of {@link PSWTText} preserving the information on its KText source definition.
- * It enables proper view-model-tracing with text fields in compound figures.
+ * An extended variant of {@link KlighdStyledText} preserving the information on its KText source
+ * definition. It enables proper view-model-tracing with text fields in compound figures.
  * 
  * @author chsch
  */
-public class PSWTTracingText extends PSWTStyledText implements ITracingElement<KText> {
+public class PSWTTracingText extends KlighdStyledText implements ITracingElement<KText> {
 
     /** The default serialVersionUID. */
     private static final long serialVersionUID = 1L;

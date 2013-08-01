@@ -43,7 +43,7 @@ import edu.umd.cs.piccolox.swt.SWTGraphics2D;
  * 
  * @author chsch
  */
-public class PSWTStyledText extends PSWTText {
+public class KlighdStyledText extends PSWTText {
 
     private static final long serialVersionUID = -4463204146476543138L;
 
@@ -67,7 +67,7 @@ public class PSWTStyledText extends PSWTText {
      * @param theLines
      *            The initial text.
      */
-    public PSWTStyledText(final List<String> theLines) {
+    public KlighdStyledText(final List<String> theLines) {
         this(theLines, KlighdConstants.DEFAULT_FONT);
     }
 
@@ -79,7 +79,7 @@ public class PSWTStyledText extends PSWTText {
      * @param theFont
      *            The SWT font configuration for this text component.
      */
-    public PSWTStyledText(final List<String> theLines, final FontData theFont) {
+    public KlighdStyledText(final List<String> theLines, final FontData theFont) {
         super(theLines, new SWTFontWrappingFont(theFont != null ? theFont
                 : KlighdConstants.DEFAULT_FONT));
         this.fontData = theFont != null ? theFont : KlighdConstants.DEFAULT_FONT;

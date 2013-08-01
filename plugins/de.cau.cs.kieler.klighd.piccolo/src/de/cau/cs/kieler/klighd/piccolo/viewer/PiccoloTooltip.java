@@ -35,7 +35,7 @@ import de.cau.cs.kieler.klighd.KlighdConstants;
 import de.cau.cs.kieler.klighd.piccolo.internal.controller.AbstractKGERenderingController;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.IGraphElement;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdPath;
-import de.cau.cs.kieler.klighd.piccolo.internal.nodes.PSWTStyledText;
+import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdStyledText;
 import de.cau.cs.kieler.klighd.util.KlighdProperties;
 import edu.umd.cs.piccolo.PCamera;
 import edu.umd.cs.piccolo.PNode;
@@ -58,7 +58,7 @@ public class PiccoloTooltip {
 
     // graphic elements representing the tooltip
     private KlighdPath root;
-    private PSWTStyledText tooltip;
+    private KlighdStyledText tooltip;
 
     // configuration constants
     private static final int TOOLTIP_DELAY = 750;
@@ -77,7 +77,7 @@ public class PiccoloTooltip {
         this.camera = camera;
 
         // create the text element for the tooltip
-        tooltip = new PSWTStyledText(Lists.newArrayList(""));
+        tooltip = new KlighdStyledText(Lists.newArrayList(""));
         tooltip.setPickable(false);
         tooltip.setFont(new FontData(KlighdConstants.DEFAULT_FONT_NAME,
                 KlighdConstants.DEFAULT_TOOL_TIP_FONT_SIZE, KlighdConstants.DEFAULT_FONT_STYLE));

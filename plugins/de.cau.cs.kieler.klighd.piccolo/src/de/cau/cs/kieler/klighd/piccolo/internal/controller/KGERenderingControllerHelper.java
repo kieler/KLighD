@@ -58,7 +58,7 @@ import de.cau.cs.kieler.klighd.piccolo.internal.nodes.PAlignmentNode.HAlignment;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.PAlignmentNode.VAlignment;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.PEmptyNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdPath;
-import de.cau.cs.kieler.klighd.piccolo.internal.nodes.PSWTStyledText;
+import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdStyledText;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.PSWTTracingText;
 import de.cau.cs.kieler.klighd.piccolo.internal.util.NodeUtil;
 import de.cau.cs.kieler.klighd.piccolo.internal.util.PiccoloPlacementUtil;
@@ -283,7 +283,7 @@ final class KGERenderingControllerHelper {
      *            the initial bounds
      * @return the controller for the created Piccolo node
      */
-    static PNodeController<PSWTStyledText> createText(
+    static PNodeController<KlighdStyledText> createText(
             final AbstractKGERenderingController<?, ?> controller, final KText text,
             final List<KStyle> propagatedStyles, final PNode parent, final Bounds initialBounds) {
         // create the text
