@@ -49,7 +49,7 @@ import edu.umd.cs.piccolo.util.PNodeFilter;
  * 
  * @author mri
  */
-public class PSWTSimpleSelectionEventHandler extends PDragSequenceEventHandler {
+public class KlighdSimpleSelectionEventHandler extends PDragSequenceEventHandler {
 
     /** the camera this handler references. */
     private PCamera camera;
@@ -84,7 +84,7 @@ public class PSWTSimpleSelectionEventHandler extends PDragSequenceEventHandler {
      * @param marqueeParent
      *            the parent node to that the handler adds the temporary marquee selection rectangle
      */
-    public PSWTSimpleSelectionEventHandler(final PCamera camera, final PNode marqueeParent) {
+    public KlighdSimpleSelectionEventHandler(final PCamera camera, final PNode marqueeParent) {
         this.camera = camera;
         this.marqueeParent = marqueeParent;
         setEventFilter(new PInputEventFilter(InputEvent.BUTTON1_MASK));

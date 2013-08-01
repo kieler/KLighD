@@ -34,7 +34,7 @@ import de.cau.cs.kieler.klighd.piccolo.internal.activities.ZoomActivity;
 import de.cau.cs.kieler.klighd.piccolo.internal.controller.DiagramController;
 import de.cau.cs.kieler.klighd.piccolo.internal.events.KlighdActionEventHandler;
 import de.cau.cs.kieler.klighd.piccolo.internal.events.PMouseWheelZoomEventHandler;
-import de.cau.cs.kieler.klighd.piccolo.internal.events.PSWTSimpleSelectionEventHandler;
+import de.cau.cs.kieler.klighd.piccolo.internal.events.KlighdSimpleSelectionEventHandler;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.ITracingElement;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdCanvas;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.PEmptyNode;
@@ -59,7 +59,7 @@ public class PiccoloViewer extends AbstractViewer<KNode> implements INodeSelecti
     /** the canvas used for drawing. */
     private KlighdCanvas canvas;
     /** the current selection event handler. */
-    private PSWTSimpleSelectionEventHandler selectionHandler = null;
+    private KlighdSimpleSelectionEventHandler selectionHandler = null;
     /** the content outline page. */
     private PiccoloOutlinePage outlinePage;
     
@@ -181,7 +181,7 @@ public class PiccoloViewer extends AbstractViewer<KNode> implements INodeSelecti
         camera.getLayer(1).addChild(marqueeParent);
 
         // add a selection handler
-        selectionHandler = new PSWTSimpleSelectionEventHandler(camera, marqueeParent);
+        selectionHandler = new KlighdSimpleSelectionEventHandler(camera, marqueeParent);
         canvas.addInputEventListener(selectionHandler);
         canvas.addInputEventListener(new KlighdActionEventHandler(this));
 
@@ -395,7 +395,7 @@ public class PiccoloViewer extends AbstractViewer<KNode> implements INodeSelecti
     /**
      * {@inheritDoc}
      */
-    public void selected(final PSWTSimpleSelectionEventHandler handler, final PNode node) {
+    public void selected(final KlighdSimpleSelectionEventHandler handler, final PNode node) {
         if (node instanceof ITracingElement<?>) {
             ITracingElement<?> graphElement = (ITracingElement<?>) node;
             notifyListenersSelected(graphElement.getGraphElement());
@@ -405,7 +405,7 @@ public class PiccoloViewer extends AbstractViewer<KNode> implements INodeSelecti
     /**
      * {@inheritDoc}
      */
-    public void unselected(final PSWTSimpleSelectionEventHandler handler, final PNode node) {
+    public void unselected(final KlighdSimpleSelectionEventHandler handler, final PNode node) {
         if (node instanceof ITracingElement<?>) {
             ITracingElement<?> graphElement = (ITracingElement<?>) node;
             notifyListenersUnselected(graphElement.getGraphElement());
@@ -415,7 +415,7 @@ public class PiccoloViewer extends AbstractViewer<KNode> implements INodeSelecti
     /**
      * {@inheritDoc}
      */
-    public void selection(final PSWTSimpleSelectionEventHandler handler,
+    public void selection(final KlighdSimpleSelectionEventHandler handler,
             final Iterable<PNode> nodes) {
         
         @SuppressWarnings("unchecked")
