@@ -19,6 +19,7 @@ import java.awt.geom.Rectangle2D;
 
 import org.eclipse.swt.graphics.Device;
 import org.eclipse.swt.graphics.GC;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.LineAttributes;
 import org.eclipse.swt.graphics.RGB;
 
@@ -266,4 +267,15 @@ public interface KlighdSWTGraphics {
      */
     void fill(final Shape s);
     
+    /**
+     * Draws the provided image at the specified position.
+     * 
+     * @param image
+     *            {@link Image} to draw
+     * @param x
+     *            x component of the position
+     * @param y
+     *            y component of the position
+     */
+    void drawImage(final Image image, final double x, final double y);
 }
