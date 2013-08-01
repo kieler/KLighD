@@ -14,7 +14,6 @@
 package de.cau.cs.kieler.klighd.piccolo.viewer;
 
 import java.awt.Color;
-import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.geom.Point2D;
@@ -30,8 +29,6 @@ import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ControlEvent;
 import org.eclipse.swt.events.ControlListener;
-import org.eclipse.swt.graphics.Device;
-import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.IActionBars;
@@ -39,9 +36,8 @@ import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 
 import de.cau.cs.kieler.kiml.klayoutdata.KLayoutDataPackage;
 import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout;
-import de.cau.cs.kieler.klighd.piccolo.KlighdSWTGraphics;
-import de.cau.cs.kieler.klighd.piccolo.KlighdSWTGraphicsImpl;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KNodeTopNode;
+import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdCanvas;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.PSWTAdvancedPath;
 import edu.umd.cs.piccolo.PCamera;
 import edu.umd.cs.piccolo.PLayer;
@@ -49,7 +45,6 @@ import edu.umd.cs.piccolo.PNode;
 import edu.umd.cs.piccolo.event.PDragSequenceEventHandler;
 import edu.umd.cs.piccolo.event.PInputEvent;
 import edu.umd.cs.piccolo.util.PBounds;
-import edu.umd.cs.piccolox.swt.PSWTCanvas;
 import edu.umd.cs.piccolox.swt.SWTTimer;
 
 /**
@@ -61,7 +56,7 @@ import edu.umd.cs.piccolox.swt.SWTTimer;
 public class PiccoloOutlinePage implements IContentOutlinePage {
 
     /** the canvas used for drawing. */
-    private PSWTCanvas canvas;
+    private KlighdCanvas canvas;
     /** the graph layer to display. */
     private PLayer graphLayer;
     /** the layout data of the observed parent node. */
@@ -116,35 +111,7 @@ public class PiccoloOutlinePage implements IContentOutlinePage {
      * {@inheritDoc}
      */
     public void createControl(final Composite parent) {
-        // FIXME remove after KIELER-2405
-        PSWTCanvas oldCanvas = PSWTCanvas.CURRENT_CANVAS;
-        canvas = new PSWTCanvas(parent, SWT.NONE) {
-
-            private KlighdSWTGraphics graphics = new KlighdSWTGraphicsImpl(null,
-                    parent.getDisplay());
-
-            @Override
-            protected Graphics2D getGraphics2D(final GC gc, final Device device) {
-                graphics.setDevice(device);
-                graphics.setGC(gc);
-                return (Graphics2D) graphics;
-            }
-
-            /**
-             * {@inheritDoc}
-             */
-            @Override
-            public void repaint(final PBounds bounds) {
-                if (!this.isDisposed()) {
-                    super.repaint(bounds);
-                }
-            }
-        };
-        // FIXME
-        PSWTCanvas.CURRENT_CANVAS = oldCanvas;
-
-        // reduce flickering
-        canvas.setDoubleBuffered(true);
+        canvas = new KlighdCanvas(parent, SWT.NONE);
 
         // initialize the timers to redraw the outline rect
         outlineRectTimer = new SWTTimer(parent.getDisplay(), REPAINT_DELAY, new ActionListener() {

@@ -16,7 +16,7 @@ package de.cau.cs.kieler.klighd.piccolo.internal.events;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.KeyListener;
 
-import edu.umd.cs.piccolox.swt.PSWTCanvas;
+import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdCanvas;
 
 /**
  * Custom key listener implementation that is supposed to avoid the translation of SWT to AWT events.
@@ -28,7 +28,7 @@ import edu.umd.cs.piccolox.swt.PSWTCanvas;
 public class KlighdKeyEventListener implements KeyListener {
 
     @SuppressWarnings("unused")
-    private PSWTCanvas canvas = null;
+    private KlighdCanvas canvas = null;
     
     /**
      * Constructor.
@@ -36,7 +36,7 @@ public class KlighdKeyEventListener implements KeyListener {
      * @param theCanvas
      *          the canvas it delegates the events to
      */
-    public KlighdKeyEventListener(final PSWTCanvas theCanvas) {
+    public KlighdKeyEventListener(final KlighdCanvas theCanvas) {
         this.canvas = theCanvas;
     }
 
