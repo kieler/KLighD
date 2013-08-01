@@ -28,7 +28,7 @@ import de.cau.cs.kieler.klighd.piccolo.internal.util.Styles;
  * 
  * @author mri, chsch
  */
-public abstract class PSWTTextController extends PNodeController<KlighdStyledText> {
+public abstract class KlighdTextController extends PNodeController<KlighdStyledText> {
 
     /** the name of the currently used font. */
     private String fontName = KlighdConstants.DEFAULT_FONT_NAME;
@@ -43,7 +43,7 @@ public abstract class PSWTTextController extends PNodeController<KlighdStyledTex
      * @param node
      *            the text
      */
-    public PSWTTextController(final KlighdStyledText node) {
+    public KlighdTextController(final KlighdStyledText node) {
         super(node);
     }
 

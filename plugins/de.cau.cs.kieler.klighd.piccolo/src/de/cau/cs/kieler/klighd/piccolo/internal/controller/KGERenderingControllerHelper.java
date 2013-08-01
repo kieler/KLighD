@@ -306,7 +306,7 @@ final class KGERenderingControllerHelper {
         parent.addChild(alignmentNode);
 
         // create a controller for the text and return it
-        return new PSWTTextController(textNode) {
+        return new KlighdTextController(textNode) {
             public void setBounds(final Bounds bounds) {
                 NodeUtil.applySmartBounds(alignmentNode, bounds);
             }
