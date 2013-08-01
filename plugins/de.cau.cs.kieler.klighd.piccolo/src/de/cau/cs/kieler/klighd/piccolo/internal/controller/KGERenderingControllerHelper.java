@@ -116,7 +116,7 @@ final class KGERenderingControllerHelper {
         }
 
         // return a controller for the ellipse
-        return new PSWTAdvancedPathController(path) {
+        return new KlighdPathController(path) {
             public void setBounds(final Bounds bounds) {
                 // apply the bounds
                 getNode().setPathToEllipse(0, 0, bounds.getWidth(), bounds.getHeight());
@@ -160,7 +160,7 @@ final class KGERenderingControllerHelper {
         }
 
         // create a controller for the rectangle and return it
-        return new PSWTAdvancedPathController(path) {
+        return new KlighdPathController(path) {
             public void setBounds(final Bounds bounds) {
                 // apply the bounds
                 getNode().setPathToRectangle(0, 0, bounds.getWidth(), bounds.getHeight());
@@ -207,7 +207,7 @@ final class KGERenderingControllerHelper {
         }
 
         // create a controller for the rounded rectangle and return it
-        return new PSWTAdvancedPathController(path) {
+        return new KlighdPathController(path) {
             public void setBounds(final Bounds bounds) {
                 // apply the bounds
                 getNode().setPathToRoundRectangle(0, 0, bounds.getWidth(), bounds.getHeight(),
@@ -255,7 +255,7 @@ final class KGERenderingControllerHelper {
         }
 
         // create a controller for the rounded rectangle and return it
-        return new PSWTAdvancedPathController(path) {
+        return new KlighdPathController(path) {
             public void setBounds(final Bounds bounds) {
                 // apply the bounds
                 getNode().setPathToArc(0, 0, bounds.getWidth(), bounds.getHeight(),
@@ -394,7 +394,7 @@ final class KGERenderingControllerHelper {
         }
 
         // create a controller for the polyline and return it
-        return new PSWTAdvancedPathController(path) {
+        return new KlighdPathController(path) {
             public void setBounds(final Bounds bounds) {
                 // apply the bounds
 
@@ -477,7 +477,7 @@ final class KGERenderingControllerHelper {
         }
 
         // create a controller for the polyline and return it
-        return new PSWTAdvancedPathController(path) {
+        return new KlighdPathController(path) {
             public void setBounds(final Bounds bounds) {
                 // apply the bounds
                 getNode().setPathToPolygon(

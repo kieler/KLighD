@@ -31,7 +31,7 @@ import de.cau.cs.kieler.klighd.piccolo.internal.util.Styles;
  * 
  * @author mri, chsch
  */
-public abstract class PSWTAdvancedPathController extends PNodeController<KlighdPath> {
+public abstract class KlighdPathController extends PNodeController<KlighdPath> {
 
     /**
      * Constructs a node controller for a {@code PSWTAdvancedPath}.
@@ -39,7 +39,7 @@ public abstract class PSWTAdvancedPathController extends PNodeController<KlighdP
      * @param node
      *            the path
      */
-    public PSWTAdvancedPathController(final KlighdPath node) {
+    public KlighdPathController(final KlighdPath node) {
         super(node);
     }
 
