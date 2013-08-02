@@ -402,7 +402,7 @@ public final class LightDiagramServices {
      * @param options
      *            an optional list of layout options
      */
-    public void layout2Diagram(final ViewContext viewContext, final List<ILayoutConfig> options) {
+    public void layoutDiagram(final ViewContext viewContext, final List<ILayoutConfig> options) {
         final IPreferenceStore preferenceStore = KlighdPlugin.getDefault().getPreferenceStore();
         final boolean animate = preferenceStore.getBoolean(KlighdPreferences.ANIMATE_LAYOUT);
         final boolean zoomToFit = preferenceStore.getBoolean(KlighdPreferences.ZOOM_TO_FIT);
