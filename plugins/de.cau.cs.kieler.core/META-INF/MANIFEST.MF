@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: KIELER Core
 Bundle-SymbolicName: de.cau.cs.kieler.core
-Bundle-Version: 0.8.1.qualifier
+Bundle-Version: 0.9.0.qualifier
 Bundle-Vendor: Christian-Albrechts-Universität zu Kiel
 Export-Package: de.cau.cs.kieler.core,
  de.cau.cs.kieler.core.alg,
