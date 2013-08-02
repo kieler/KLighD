@@ -40,6 +40,7 @@ import javax.inject.Inject
 import org.eclipse.emf.ecore.EcorePackage
 import org.eclipse.emf.ecore.EClass
 import org.eclipse.emf.ecore.EClassifier
+import org.eclipse.emf.ecore.EEnum
 import org.eclipse.emf.ecore.EPackage
 import org.eclipse.emf.ecore.EReference
 
@@ -93,7 +94,7 @@ class EcoreDiagramSynthesis extends AbstractDiagramSynthesis<EModelElementCollec
     /**
      * Option to activate/deactivate the attribute lists.
      */
-    private static val TransformationOption ATTRIBUTES = TransformationOption::createCheckOption("Class Attributes", false);
+    private static val TransformationOption ATTRIBUTES = TransformationOption::createCheckOption("Attributes/Literals", false);
     
     /**
      * {@inheritDoc}<br>
@@ -228,38 +229,52 @@ class EcoreDiagramSynthesis extends AbstractDiagramSynthesis<EModelElementCollec
                             it.addText("<<Enum>>") => [
                                 it.fontSize = 13;
                                 it.fontItalic = true;
-                                it.verticalAlignment = V_BOTTOM; 
-                                it.setGridPlacementData().from(LEFT, 20, 0, TOP, 20, 0)
-                                                         .to(RIGHT, 20, 0, BOTTOM, 40, 0);
+                                it.verticalAlignment = V_CENTRAL; 
+                                it.setGridPlacementData().from(LEFT, 15, 0, TOP, 15, 0)
+                                                         .to(RIGHT, 15, 0, BOTTOM, 35, 0);
                             ];
-                        
                         it.addText(clazz.name.nullToEmpty).putToLookUpWith(clazz) => [
                             it.fontSize = 15;
                             it.fontBold = true;
-                            it.setSurroundingSpace(20, 0);
-                            if (typeText != null) {
-                                it.setGridPlacementData().from(LEFT, 20, 0, TOP, 40, 0)
-                                                         .to(RIGHT, 20, 0, BOTTOM, 20, 0);
-                                
+                            if (typeText == null) {
+                                it.setSurroundingSpace(20, 0, 15, 0);
+                            } else {
+                                it.setGridPlacementData().from(LEFT, 20, 0, TOP, 35, 0)
+                                                         .to(RIGHT, 20, 0, BOTTOM, 15, 0);
                             }
                         ];
-                        
                     ];
-                    if (!EcorePackage::eINSTANCE.getEClass.isInstance(clazz)
-                        || !ATTRIBUTES.optionBooleanValue) {
+                    if (!ATTRIBUTES.optionBooleanValue) {
                         return;
                     }
-                    it.addRectangle => [ rect |
-                        rect.invisible = true;
-                        rect.setSurroundingSpaceGrid(5, 0)
-                        rect.gridPlacement = 1;
-                        (clazz as EClass).EAttributes.forEach[
-                            rect.addText(it.name + " : " + it.EAttributeType.name) => [
-                                it.horizontalAlignment = H_LEFT
-                                it.setSurroundingSpaceGrid(3, 0);
-                            ]
+                    if (EcorePackage::eINSTANCE.getEClass.isInstance(clazz)) {
+                        it.addRectangle => [ rect |
+                            rect.invisible = true;
+                            rect.setSurroundingSpaceGrid(5, 0)
+                            rect.setGridPlacement(1).to(RIGHT, 0, 0, BOTTOM, 2, 0);
+                            (clazz as EClass).EAttributes.forEach[
+                                rect.addText(it.name + " : " + it.EAttributeType.name) => [
+                                    it.horizontalAlignment = H_LEFT
+                                    it.verticalAlignment = V_CENTRAL
+                                    it.setSurroundingSpaceGrid(3, 0);
+                                ];
+                            ];
                         ];
-                    ];
+                    }
+                    if (EcorePackage::eINSTANCE.getEEnum.isInstance(clazz)) {
+                        it.addRectangle => [ rect |
+                            rect.invisible = true;
+                            rect.setSurroundingSpaceGrid(5, 0)
+                            rect.setGridPlacement(1).to(RIGHT, 0, 0, BOTTOM, 2, 0);
+                            (clazz as EEnum).ELiterals.forEach[
+                                rect.addText(it.name + " (" + it.literal + ")") => [
+                                    it.horizontalAlignment = H_LEFT
+                                    it.verticalAlignment = V_CENTRAL
+                                    it.setSurroundingSpaceGrid(3, 0);
+                                ];
+                            ];
+                        ];
+                    }
                 ];
             ];
 		];

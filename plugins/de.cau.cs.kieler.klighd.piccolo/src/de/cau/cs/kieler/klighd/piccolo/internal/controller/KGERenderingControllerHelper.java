@@ -19,16 +19,19 @@ import java.beans.PropertyChangeListener;
 import java.io.IOException;
 import java.net.URL;
 import java.util.List;
+import java.util.Map;
 
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.graphics.ImageData;
 import org.eclipse.swt.graphics.RGB;
 import org.eclipse.ui.statushandlers.StatusManager;
 import org.osgi.framework.Bundle;
 
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 
 import de.cau.cs.kieler.core.krendering.KArc;
 import de.cau.cs.kieler.core.krendering.KCustomRendering;
@@ -49,20 +52,19 @@ import de.cau.cs.kieler.klighd.krendering.KCustomRenderingWrapperFactory;
 import de.cau.cs.kieler.klighd.microlayout.Bounds;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KCustomConnectionFigureNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KEdgeNode;
+import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdImage;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.PAlignmentNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.PAlignmentNode.HAlignment;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.PAlignmentNode.VAlignment;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.PEmptyNode;
-import de.cau.cs.kieler.klighd.piccolo.internal.nodes.PSWTAdvancedPath;
-import de.cau.cs.kieler.klighd.piccolo.internal.nodes.PSWTStyledText;
-import de.cau.cs.kieler.klighd.piccolo.internal.nodes.PSWTTracingText;
+import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdPath;
+import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdStyledText;
+import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdTracingText;
 import de.cau.cs.kieler.klighd.piccolo.internal.util.NodeUtil;
 import de.cau.cs.kieler.klighd.piccolo.internal.util.PiccoloPlacementUtil;
 import de.cau.cs.kieler.klighd.piccolo.internal.util.Styles;
 import de.cau.cs.kieler.klighd.util.KlighdProperties;
 import edu.umd.cs.piccolo.PNode;
-import edu.umd.cs.piccolox.swt.PSWTCanvas;
-import edu.umd.cs.piccolox.swt.PSWTImage;
 
 /**
  * Collection of KRendering-related figure creation methods.<br>
@@ -97,12 +99,12 @@ final class KGERenderingControllerHelper {
      *            the initial bounds
      * @return the controller for the created Piccolo node
      */
-    static PNodeController<PSWTAdvancedPath> createEllipse(
+    static PNodeController<KlighdPath> createEllipse(
             final AbstractKGERenderingController<?, ?> controller, final KEllipse ellipse,
             final List<KStyle> propagatedStyles, final PNode parent, final Bounds initialBounds) {
 
-        final PSWTAdvancedPath path = PSWTAdvancedPath.createEllipse(0, 0,
-                initialBounds.getWidth(), initialBounds.getHeight());
+        final KlighdPath path = KlighdPath.createEllipse(0, 0, initialBounds.getWidth(),
+                initialBounds.getHeight());
         controller.initializeRenderingNode(path);
         path.translate(initialBounds.getX(), initialBounds.getY());
         parent.addChild(path);
@@ -114,7 +116,7 @@ final class KGERenderingControllerHelper {
         }
 
         // return a controller for the ellipse
-        return new PSWTAdvancedPathController(path) {
+        return new KlighdPathController(path) {
             public void setBounds(final Bounds bounds) {
                 // apply the bounds
                 getNode().setPathToEllipse(0, 0, bounds.getWidth(), bounds.getHeight());
@@ -141,12 +143,12 @@ final class KGERenderingControllerHelper {
      *            the initial bounds
      * @return the controller for the created Piccolo node
      */
-    static PNodeController<PSWTAdvancedPath> createRectangle(
+    static PNodeController<KlighdPath> createRectangle(
             final AbstractKGERenderingController<?, ?> controller, final KRectangle rect,
             final List<KStyle> propagatedStyles, final PNode parent, final Bounds initialBounds) {
         // create the rectangle
-        final PSWTAdvancedPath path = PSWTAdvancedPath.createRectangle(0, 0,
-                initialBounds.getWidth(), initialBounds.getHeight());
+        final KlighdPath path = KlighdPath.createRectangle(0, 0, initialBounds.getWidth(),
+                initialBounds.getHeight());
         controller.initializeRenderingNode(path);
         path.translate(initialBounds.getX(), initialBounds.getY());
         parent.addChild(path);
@@ -158,7 +160,7 @@ final class KGERenderingControllerHelper {
         }
 
         // create a controller for the rectangle and return it
-        return new PSWTAdvancedPathController(path) {
+        return new KlighdPathController(path) {
             public void setBounds(final Bounds bounds) {
                 // apply the bounds
                 getNode().setPathToRectangle(0, 0, bounds.getWidth(), bounds.getHeight());
@@ -185,15 +187,15 @@ final class KGERenderingControllerHelper {
      *            the initial bounds
      * @return the controller for the created Piccolo node
      */
-    static PNodeController<PSWTAdvancedPath> createRoundedRectangle(
+    static PNodeController<KlighdPath> createRoundedRectangle(
             final AbstractKGERenderingController<?, ?> controller, final KRoundedRectangle rect,
             final List<KStyle> propagatedStyles, final PNode parent, final Bounds initialBounds) {
         final float cornerWidth = 2 * rect.getCornerWidth();
         final float cornerHeight = 2 * rect.getCornerHeight();
         
         // create the rounded rectangle
-        final PSWTAdvancedPath path = PSWTAdvancedPath.createRoundRectangle(0, 0,
-                initialBounds.getWidth(), initialBounds.getHeight(), cornerWidth, cornerHeight);
+        final KlighdPath path = KlighdPath.createRoundRectangle(0, 0, initialBounds.getWidth(),
+                initialBounds.getHeight(), cornerWidth, cornerHeight);
         controller.initializeRenderingNode(path);
         path.translate(initialBounds.getX(), initialBounds.getY());
         parent.addChild(path);
@@ -205,7 +207,7 @@ final class KGERenderingControllerHelper {
         }
 
         // create a controller for the rounded rectangle and return it
-        return new PSWTAdvancedPathController(path) {
+        return new KlighdPathController(path) {
             public void setBounds(final Bounds bounds) {
                 // apply the bounds
                 getNode().setPathToRoundRectangle(0, 0, bounds.getWidth(), bounds.getHeight(),
@@ -233,14 +235,13 @@ final class KGERenderingControllerHelper {
      *            the initial bounds
      * @return the controller for the created Piccolo node
      */
-    static PNodeController<PSWTAdvancedPath> createArc(
+    static PNodeController<KlighdPath> createArc(
             final AbstractKGERenderingController<?, ?> controller, final KArc arc,
             final List<KStyle> propagatedStyles, final PNode parent, final Bounds initialBounds) {
 
         // create the arc
-        final PSWTAdvancedPath path = PSWTAdvancedPath.createArc(0, 0, initialBounds.getWidth(),
-                initialBounds.getHeight(), arc.getStartAngle(), arc.getArcAngle(), arc.getArcType()
-                        .getValue());
+        final KlighdPath path = KlighdPath.createArc(0, 0, initialBounds.getWidth(), initialBounds
+                .getHeight(), arc.getStartAngle(), arc.getArcAngle(), arc.getArcType().getValue());
 
         path.setPaint((RGB) null);
         controller.initializeRenderingNode(path);
@@ -254,7 +255,7 @@ final class KGERenderingControllerHelper {
         }
 
         // create a controller for the rounded rectangle and return it
-        return new PSWTAdvancedPathController(path) {
+        return new KlighdPathController(path) {
             public void setBounds(final Bounds bounds) {
                 // apply the bounds
                 getNode().setPathToArc(0, 0, bounds.getWidth(), bounds.getHeight(),
@@ -282,11 +283,11 @@ final class KGERenderingControllerHelper {
      *            the initial bounds
      * @return the controller for the created Piccolo node
      */
-    static PNodeController<PSWTStyledText> createText(
+    static PNodeController<KlighdStyledText> createText(
             final AbstractKGERenderingController<?, ?> controller, final KText text,
             final List<KStyle> propagatedStyles, final PNode parent, final Bounds initialBounds) {
         // create the text
-        PSWTTracingText textNode = new PSWTTracingText(text);
+        KlighdTracingText textNode = new KlighdTracingText(text);
         textNode.setGreekColor(null);
         controller.initializeRenderingNode(textNode);
 
@@ -305,7 +306,7 @@ final class KGERenderingControllerHelper {
         parent.addChild(alignmentNode);
 
         // create a controller for the text and return it
-        return new PSWTTextController(textNode) {
+        return new KlighdTextController(textNode) {
             public void setBounds(final Bounds bounds) {
                 NodeUtil.applySmartBounds(alignmentNode, bounds);
             }
@@ -339,23 +340,23 @@ final class KGERenderingControllerHelper {
      *            the initial bounds
      * @return the controller for the created Piccolo node
      */
-    static PNodeController<PSWTAdvancedPath> createLine(
+    static PNodeController<KlighdPath> createLine(
             final AbstractKGERenderingController<?, ?> controller, final KPolyline line,
             final List<KStyle> propagatedStyles, final PNode parent, final Bounds initialBounds) {
 
         Point2D[] points = PiccoloPlacementUtil.evaluatePolylinePlacement(line, initialBounds);
 
-        final PSWTAdvancedPath path;
+        final KlighdPath path;
         if (line instanceof KSpline) {
             // create the spline
-            path = PSWTAdvancedPath.createSpline(points);
+            path = KlighdPath.createSpline(points);
         } else if (line instanceof KRoundedBendsPolyline) {
             // create the rounded bends polyline
-            path = PSWTAdvancedPath.createRoundedBendPolyline(points,
+            path = KlighdPath.createRoundedBendPolyline(points,
                     ((KRoundedBendsPolyline) line).getBendRadius());
         } else {
             // create the polyline
-            path = PSWTAdvancedPath.createPolyline(points);
+            path = KlighdPath.createPolyline(points);
         }
 
         controller.initializeRenderingNode(path);
@@ -393,7 +394,7 @@ final class KGERenderingControllerHelper {
         }
 
         // create a controller for the polyline and return it
-        return new PSWTAdvancedPathController(path) {
+        return new KlighdPathController(path) {
             public void setBounds(final Bounds bounds) {
                 // apply the bounds
 
@@ -434,11 +435,11 @@ final class KGERenderingControllerHelper {
      *            the initial bounds
      * @return the controller for the created Piccolo node
      */
-    static PNodeController<PSWTAdvancedPath> createPolygon(
+    static PNodeController<KlighdPath> createPolygon(
             final AbstractKGERenderingController<?, ?> controller, final KPolygon polygon,
             final List<KStyle> propagatedStyles, final PNode parent, final Bounds initialBounds) {
         // create the polygon
-        final PSWTAdvancedPath path = PSWTAdvancedPath.createPolygon(PiccoloPlacementUtil
+        final KlighdPath path = KlighdPath.createPolygon(PiccoloPlacementUtil
                 .evaluatePolylinePlacement(polygon, initialBounds));
         controller.initializeRenderingNode(path);
         path.translate(initialBounds.getX(), initialBounds.getY());
@@ -476,7 +477,7 @@ final class KGERenderingControllerHelper {
         }
 
         // create a controller for the polyline and return it
-        return new PSWTAdvancedPathController(path) {
+        return new KlighdPathController(path) {
             public void setBounds(final Bounds bounds) {
                 // apply the bounds
                 getNode().setPathToPolygon(
@@ -546,11 +547,11 @@ final class KGERenderingControllerHelper {
             }
         };
     }
+    
+    private static final Map<String, ImageData> IMAGE_BUFFER = Maps.newHashMap();
 
     /**
      * Creates a representation for the {@link KImage}.
-     * 
-     * @author uru, chsch
      * 
      * @param image
      *            the image rendering
@@ -568,52 +569,63 @@ final class KGERenderingControllerHelper {
             final KImage image, final List<KStyle> propagatedStyles, final PNode parent,
             final Bounds initialBounds) {
 
-        PSWTImage pImage = null;
+        final KlighdImage imageNode;
 
         if (image.getImageObject() instanceof Image) {
+            imageNode = new KlighdImage((Image) image.getImageObject());
 
-            pImage = new PSWTImage(PSWTCanvas.CURRENT_CANVAS, (Image) image.getImageObject());
+        } else if (image.getImageObject() instanceof ImageData) {
+            imageNode = new KlighdImage((ImageData) image.getImageObject());
 
         } else {
-
-            // get the bundle and actual image, trim the leading and trailing quotation marks
-            Bundle bundle = null;
-            if (image.getBundleName() != null) {
-                bundle = Platform.getBundle(image.getBundleName().replace("\"", ""));
+            
+            final String id = image.getBundleName() + "#" + image.getImagePath();
+            ImageData imageData = IMAGE_BUFFER.get(id);
+            
+            if (imageData == null) {
+                Bundle bundle = null;
+                if (image.getBundleName() != null) {
+                    // determine the containing bundle,
+                    //  trim potentially leading and trailing quotation marks
+                    bundle = Platform.getBundle(image.getBundleName().replace("\"", ""));
+                }
+                if (bundle == null) {
+                    return createDummy(parent, initialBounds);
+                }
+                
+                // get the bundle and actual image,
+                //  trim potentially leading and trailing quotation marks
+                final URL entry = bundle.getEntry(image.getImagePath().replace("\"", ""));
+                try {
+                    imageData = new ImageData(entry.openStream());
+                    IMAGE_BUFFER.put(id, imageData);
+                } catch (IOException e) {
+                    final String msg = "KLighD: Error occurred while loading the image "
+                            + image.getImagePath() + " in bundle " + image.getBundleName();
+                    StatusManager.getManager().handle(
+                            new Status(IStatus.ERROR, KlighdPlugin.PLUGIN_ID, msg, e),
+                            StatusManager.LOG);
+                    return createDummy(parent, initialBounds);
+                }
             }
-            if (bundle == null) {
-                return createDummy(parent, initialBounds);
-            }
 
-            URL entry = bundle.getEntry(image.getImagePath().replace("\"", ""));
-
-            try {
-                // create the image
-                // the bounds of pImage are set within the PSWTImage implementation
-                pImage = new PSWTImage(PSWTCanvas.CURRENT_CANVAS, entry.openStream());
-            } catch (IOException e) {
-                final String msg = "KLighD: Error occurred while loading the image "
-                        + image.getImagePath() + " in bundle " + image.getBundleName();
-                StatusManager.getManager().handle(
-                        new Status(IStatus.ERROR, KlighdPlugin.PLUGIN_ID, msg, e),
-                        StatusManager.LOG);
-                return createDummy(parent, initialBounds);
-            }
+            // create the image, the bounds of imageNode are set within the KlighdImage implementation
+            imageNode = new KlighdImage(imageData);
         }
 
         // initialize the node
-        controller.initializeRenderingNode(pImage);
-        pImage.translate(initialBounds.getX(), initialBounds.getY());
-        parent.addChild(pImage);
+        controller.initializeRenderingNode(imageNode);
+        imageNode.translate(initialBounds.getX(), initialBounds.getY());
+        parent.addChild(imageNode);
 
         // handle children
         if (image.getChildren().size() > 0) {
             controller.handleChildren(image.getChildren(), image.getChildPlacement(),
-                    propagatedStyles, pImage);
+                    propagatedStyles, imageNode);
         }
 
         // create a standard default node controller
-        return new PNodeController<PNode>(pImage) {
+        return new PNodeController<PNode>(imageNode) {
             public void setBounds(final Bounds bounds) {
                 // apply the bounds
                 NodeUtil.applyTranslation(getNode(), bounds.getX(), bounds.getY());
@@ -710,5 +722,4 @@ final class KGERenderingControllerHelper {
             }
         };
     }
-
 }

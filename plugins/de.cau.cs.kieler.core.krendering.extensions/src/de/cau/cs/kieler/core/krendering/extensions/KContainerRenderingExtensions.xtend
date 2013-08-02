@@ -24,6 +24,7 @@ import de.cau.cs.kieler.core.krendering.KRectangle
 import de.cau.cs.kieler.core.krendering.KRenderingFactory
 import de.cau.cs.kieler.core.krendering.KPolygon
 import de.cau.cs.kieler.core.krendering.KGridPlacement
+import de.cau.cs.kieler.core.krendering.KImage
 import de.cau.cs.kieler.core.krendering.KPosition
 import de.cau.cs.kieler.core.krendering.KRoundedRectangle
 import de.cau.cs.kieler.core.krendering.KRendering
@@ -109,6 +110,14 @@ class KContainerRenderingExtensions {
         return renderingFactory.createKText() => [
             cr.children += it;
             it.text = text;
+        ];
+    }
+
+    def KImage addImage(KContainerRendering cr, String bundleId, String imagePath) {
+        return renderingFactory.createKImage() => [
+            cr.children += it;
+            it.bundleName = bundleId;
+            it.imagePath = imagePath;
         ];
     }
 

@@ -23,8 +23,7 @@ import org.eclipse.swt.events.MouseTrackListener;
 import org.eclipse.swt.events.MouseWheelListener;
 
 import de.cau.cs.kieler.core.krendering.Trigger;
-
-import edu.umd.cs.piccolox.swt.PSWTCanvas;
+import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdCanvas;
 
 /**
  * Custom mouse listener implementation that is supposed to avoid the translation of SWT to AWT events.
@@ -35,7 +34,7 @@ import edu.umd.cs.piccolox.swt.PSWTCanvas;
 public class KlighdMouseEventListener implements MouseListener, MouseMoveListener, MouseTrackListener,
         MouseWheelListener {
         
-    private PSWTCanvas canvas = null;
+    private KlighdCanvas canvas = null;
     
     /**
      * Constructor.
@@ -43,7 +42,7 @@ public class KlighdMouseEventListener implements MouseListener, MouseMoveListene
      * @param theCanvas
      *          the canvas it delegates the events to
      */
-    public KlighdMouseEventListener(final PSWTCanvas theCanvas) {
+    public KlighdMouseEventListener(final KlighdCanvas theCanvas) {
         this.canvas = theCanvas;
     }
 

@@ -13,6 +13,10 @@
  */
 package de.cau.cs.kieler.core.util;
 
+import java.util.AbstractCollection;
+import java.util.Iterator;
+import java.util.NoSuchElementException;
+
 /**
  * Object that may contain another object, inspired by the Haskell type <i>Maybe</i>.
  * <p>
@@ -57,7 +61,7 @@ package de.cau.cs.kieler.core.util;
  * @param <T> type of contained object
  * @author msp
  */
-public class Maybe<T> {
+public class Maybe<T> extends AbstractCollection<T> {
     
     /**
      * Create a maybe with inferred generic type.
@@ -142,6 +146,73 @@ public class Maybe<T> {
      */
     public T get() {
         return object;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public int size() {
+        return object == null ? 0 : 1;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public Iterator<T> iterator() {
+        return new Iterator<T>() {
+            private boolean visited = false;
+            public boolean hasNext() {
+                return !visited && object != null;
+            }
+            public T next() {
+                if (visited || object == null) {
+                    throw new NoSuchElementException();
+                }
+                visited = true;
+                return object;
+            }
+            public void remove() {
+                if (!visited || object == null) {
+                    throw new IllegalStateException();
+                }
+                object = null;
+            }
+        };
+    }
+
+     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean add(final T e) {
+        if (object != null) {
+            throw new IllegalStateException();
+        }
+        if (e == null) {
+            throw new NullPointerException();
+        }
+        object = e;
+        return true;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean remove(final Object o) {
+        if (object != null && o.equals(object)) {
+            object = null;
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void clear() {
+        object = null;
     }
     
 }

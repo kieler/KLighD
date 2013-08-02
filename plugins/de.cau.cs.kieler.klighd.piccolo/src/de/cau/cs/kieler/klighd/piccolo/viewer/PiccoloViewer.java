@@ -13,15 +13,12 @@
  */
 package de.cau.cs.kieler.klighd.piccolo.viewer;
 
-import java.awt.Graphics2D;
 import java.awt.event.InputEvent;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.Device;
-import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Menu;
@@ -32,17 +29,14 @@ import com.google.common.collect.Iterables;
 
 import de.cau.cs.kieler.core.kgraph.KGraphElement;
 import de.cau.cs.kieler.core.kgraph.KNode;
-import de.cau.cs.kieler.klighd.piccolo.KlighdSWTGraphics;
-import de.cau.cs.kieler.klighd.piccolo.KlighdSWTGraphicsImpl;
 import de.cau.cs.kieler.klighd.piccolo.Messages;
 import de.cau.cs.kieler.klighd.piccolo.internal.activities.ZoomActivity;
 import de.cau.cs.kieler.klighd.piccolo.internal.controller.DiagramController;
 import de.cau.cs.kieler.klighd.piccolo.internal.events.KlighdActionEventHandler;
-import de.cau.cs.kieler.klighd.piccolo.internal.events.KlighdKeyEventListener;
-import de.cau.cs.kieler.klighd.piccolo.internal.events.KlighdMouseEventListener;
 import de.cau.cs.kieler.klighd.piccolo.internal.events.PMouseWheelZoomEventHandler;
-import de.cau.cs.kieler.klighd.piccolo.internal.events.PSWTSimpleSelectionEventHandler;
+import de.cau.cs.kieler.klighd.piccolo.internal.events.KlighdSimpleSelectionEventHandler;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.ITracingElement;
+import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdCanvas;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.PEmptyNode;
 import de.cau.cs.kieler.klighd.piccolo.ui.SaveAsImageAction;
 import de.cau.cs.kieler.klighd.util.RenderingContextData;
@@ -53,20 +47,19 @@ import edu.umd.cs.piccolo.PLayer;
 import edu.umd.cs.piccolo.PNode;
 import edu.umd.cs.piccolo.PRoot;
 import edu.umd.cs.piccolo.event.PInputEventFilter;
-import edu.umd.cs.piccolo.util.PBounds;
-import edu.umd.cs.piccolox.swt.PSWTCanvas;
 
 /**
  * A viewer for Piccolo diagram contexts.
  * 
  * @author mri
+ * @author chsch
  */
 public class PiccoloViewer extends AbstractViewer<KNode> implements INodeSelectionListener {
 
     /** the canvas used for drawing. */
-    private PSWTCanvas canvas;
+    private KlighdCanvas canvas;
     /** the current selection event handler. */
-    private PSWTSimpleSelectionEventHandler selectionHandler = null;
+    private KlighdSimpleSelectionEventHandler selectionHandler = null;
     /** the content outline page. */
     private PiccoloOutlinePage outlinePage;
     
@@ -105,48 +98,8 @@ public class PiccoloViewer extends AbstractViewer<KNode> implements INodeSelecti
             throw new IllegalArgumentException(msg);
         }
         this.parentViewer = theParentViewer;
-        this.canvas = new PSWTCanvas(parent, style) {
-            
-            private KlighdSWTGraphics graphics = new KlighdSWTGraphicsImpl(null,
-                    parent.getDisplay());
-
-            @Override
-            protected Graphics2D getGraphics2D(final GC gc, final Device device) {
-                graphics.setDevice(device);
-                graphics.setGC(gc);
-                return (Graphics2D) graphics;
-            }
-            
-            // with this specialized implementation I register
-            //  customized event listeners that do not translate SWT events into AWT ones.
-            protected void installInputSources() {
-                // TODO for the moment we need the original ones, too, as long as the the 
-                //  PSWTSimpleSelectionEventHandler is not migrated to the custom listeners
-                super.installInputSources();
-                
-                this.addKeyListener(new KlighdKeyEventListener(this));
-                KlighdMouseEventListener mouseListener = new KlighdMouseEventListener(this);
-                this.addMouseListener(mouseListener);
-                this.addMouseMoveListener(mouseListener);
-                this.addMouseTrackListener(mouseListener);
-                this.addMouseWheelListener(mouseListener);
-            }
-
-            /**
-             * {@inheritDoc}.<br>
-             * <br>
-             * This specialized method checks the validity of the canvas
-             * before something is painted in order to avoid the 'Widget is disposed' errors.
-             */
-            public void repaint(final PBounds bounds) {
-                if (!this.isDisposed()) {
-                    super.repaint(bounds);
-                }
-            }
-        };
+        this.canvas = new KlighdCanvas(parent, style);
         
-        // this reduces flickering drastically
-        canvas.setDoubleBuffered(true);
         // canvas.setDefaultRenderQuality(PPaintContext.LOW_QUALITY_RENDERING);
         // canvas.removeInputEventListener(canvas.getPanEventHandler());
         // prevent conflicts with selection handler
@@ -228,7 +181,7 @@ public class PiccoloViewer extends AbstractViewer<KNode> implements INodeSelecti
         camera.getLayer(1).addChild(marqueeParent);
 
         // add a selection handler
-        selectionHandler = new PSWTSimpleSelectionEventHandler(camera, marqueeParent);
+        selectionHandler = new KlighdSimpleSelectionEventHandler(camera, marqueeParent);
         canvas.addInputEventListener(selectionHandler);
         canvas.addInputEventListener(new KlighdActionEventHandler(this));
 
@@ -435,14 +388,14 @@ public class PiccoloViewer extends AbstractViewer<KNode> implements INodeSelecti
      * 
      * @return the canvas
      */
-    public PSWTCanvas getCanvas() {
+    public KlighdCanvas getCanvas() {
         return canvas;
     }
 
     /**
      * {@inheritDoc}
      */
-    public void selected(final PSWTSimpleSelectionEventHandler handler, final PNode node) {
+    public void selected(final KlighdSimpleSelectionEventHandler handler, final PNode node) {
         if (node instanceof ITracingElement<?>) {
             ITracingElement<?> graphElement = (ITracingElement<?>) node;
             notifyListenersSelected(graphElement.getGraphElement());
@@ -452,7 +405,7 @@ public class PiccoloViewer extends AbstractViewer<KNode> implements INodeSelecti
     /**
      * {@inheritDoc}
      */
-    public void unselected(final PSWTSimpleSelectionEventHandler handler, final PNode node) {
+    public void unselected(final KlighdSimpleSelectionEventHandler handler, final PNode node) {
         if (node instanceof ITracingElement<?>) {
             ITracingElement<?> graphElement = (ITracingElement<?>) node;
             notifyListenersUnselected(graphElement.getGraphElement());
@@ -462,7 +415,7 @@ public class PiccoloViewer extends AbstractViewer<KNode> implements INodeSelecti
     /**
      * {@inheritDoc}
      */
-    public void selection(final PSWTSimpleSelectionEventHandler handler,
+    public void selection(final KlighdSimpleSelectionEventHandler handler,
             final Iterable<PNode> nodes) {
         
         @SuppressWarnings("unchecked")

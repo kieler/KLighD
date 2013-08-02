@@ -36,7 +36,7 @@ import de.cau.cs.kieler.klighd.microlayout.Bounds;
 import de.cau.cs.kieler.klighd.piccolo.KlighdPiccoloPlugin;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KCustomConnectionFigureNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KEdgeNode;
-import de.cau.cs.kieler.klighd.piccolo.internal.nodes.PSWTAdvancedPath;
+import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdPath;
 import edu.umd.cs.piccolo.PNode;
 
 /**
@@ -121,10 +121,8 @@ public class KEdgeRenderingController extends AbstractKGERenderingController<KEd
     private PNode handleEdgeRendering(final KPolyline rendering, final KEdgeNode parent) {
         // create the rendering
         @SuppressWarnings("unchecked")
-        final PNodeController<PSWTAdvancedPath> controller =
-                (PNodeController<PSWTAdvancedPath>) 
-                createRendering(rendering,
-                        new ArrayList<KStyle>(0), parent, new Bounds(1, 1));
+        final PNodeController<KlighdPath> controller = (PNodeController<KlighdPath>) createRendering(
+                rendering, new ArrayList<KStyle>(0), parent, new Bounds(1, 1));
         if (rendering instanceof KSpline) {
             controller.getNode().setPathToSpline(parent.getBendPoints());
         } else if (rendering instanceof KRoundedBendsPolyline) {
