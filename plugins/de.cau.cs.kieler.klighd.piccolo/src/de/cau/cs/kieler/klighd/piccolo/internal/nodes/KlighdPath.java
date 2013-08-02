@@ -1,32 +1,16 @@
 /*
- * Copyright (c) 2008-2011, Piccolo2D project, http://piccolo2d.org
- * Copyright (c) 1998-2008, University of Maryland
- * All rights reserved.
+ * KIELER - Kiel Integrated Environment for Layout Eclipse RichClient
  *
- * Redistribution and use in source and binary forms, with or without modification, are permitted
- * provided that the following conditions are met:
- *
- * Redistributions of source code must retain the above copyright notice, this list of conditions
- * and the following disclaimer.
- *
- * Redistributions in binary form must reproduce the above copyright notice, this list of conditions
- * and the following disclaimer in the documentation and/or other materials provided with the
- * distribution.
- *
- * None of the name of the University of Maryland, the name of the Piccolo2D project, or the names of its
- * contributors may be used to endorse or promote products derived from this software without specific
- * prior written permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED
- * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
- * PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
- * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
- * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
- * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR
- * TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
- * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ * http://www.informatik.uni-kiel.de/rtsys/kieler/
+ * 
+ * Copyright 2012 by
+ * + Christian-Albrechts-University of Kiel
+ *   + Department of Computer Science
+ *     + Real-Time and Embedded Systems Group
+ * 
+ * This code is provided under the terms of the Eclipse Public License (EPL).
+ * See the file epl-v10.html for the license text.
  */
-// SUPPRESS CHECKSTYLE PREVIOUS 30 Header
 package de.cau.cs.kieler.klighd.piccolo.internal.nodes;
 
 import java.awt.BasicStroke;
@@ -58,8 +42,8 @@ import edu.umd.cs.piccolo.util.PPickPath;
 
 /**
  * The KLighD-specific {@link PNode} implementation for displaying primitive figures.<br>
- * It has been built-up based on the Piccolo {@link edu.umd.cs.piccolox.swt.PSWTPath PSWTPath} and
- * is restricted to those features required by KLighD.<br>
+ * It is inspired by the Piccolo2D {@link edu.umd.cs.piccolox.swt.PSWTPath PSWTPath} and
+ * is tailored/extended to those features required by KLighD.<br>
  * <br>
  * The stroke lines of closed figures like rectangles, ellipses, and arcs (although arcs are usually
  * not closed), i.e. those whose size is determined by a rectangular bounding box, do not violate
@@ -662,7 +646,6 @@ public class KlighdPath extends PNode {
     @Override
     public boolean pick(final PPickPath pickPath) {
         if (this.getPickable()) {
-
             return super.pickAfterChildren(pickPath);
         }
         return super.pick(pickPath);
