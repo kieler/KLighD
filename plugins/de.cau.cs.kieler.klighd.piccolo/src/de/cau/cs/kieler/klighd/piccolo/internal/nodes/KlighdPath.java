@@ -63,9 +63,6 @@ import edu.umd.cs.piccolo.util.PPickPath;
  * #updateStyles() AbstractKGERenderingController#updateStyles()}) after all rendering and style
  * changes are performed.
  * 
- * The skeleton of the implementation was copied from {@link edu.umd.cs.piccolox.swt.PSWTPath},
- * therefore the original copyright header is retained.
- * 
  * @author mri, chsch
  */
 public class KlighdPath extends PNode {
