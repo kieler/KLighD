@@ -98,7 +98,7 @@ public final class KlighdConstants {
     /**
      * This font size is used for Tooltips.
      */
-    public static final int DEFAULT_TOOL_TIP_FONT_SIZE = 8;
+    public static final int DEFAULT_TOOL_TIP_FONT_SIZE = 9;
     
     /**
      * This font style used for {@link de.cau.cs.kieler.core.krendering.KText KTexts}, if no related
