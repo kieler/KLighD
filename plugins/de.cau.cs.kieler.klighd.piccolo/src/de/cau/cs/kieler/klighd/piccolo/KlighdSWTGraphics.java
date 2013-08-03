@@ -268,14 +268,19 @@ public interface KlighdSWTGraphics {
     void fill(final Shape s);
     
     /**
-     * Draws the provided image at the specified position.
+     * Draws the provided image at the specified position with the specified width and height.
      * 
      * @param image
      *            {@link Image} to draw
      * @param x
-     *            x component of the position
+     *            x component of the image drawing's position
      * @param y
-     *            y component of the position
+     *            y component of the image drawing's position
+     * @param width
+     *            the width of the image drawing
+     * @param height
+     *            the height of the image drawing
      */
-    void drawImage(final Image image, final double x, final double y);
+    void drawImage(final Image image, final double x, final double y, final double width,
+            final double height);
 }
