@@ -84,6 +84,7 @@ public class PiccoloTooltip {
 
         // create a rounded box where the tooltip will be displayed
         root = KlighdPath.createRoundRectangle(0, 0, 0, 0, ROUNDNESS, ROUNDNESS);
+        root.setVisible(false);
         root.setPaint(Color.WHITE);
         root.setPaintAlpha(OPACITY);
         root.addChild(tooltip);
