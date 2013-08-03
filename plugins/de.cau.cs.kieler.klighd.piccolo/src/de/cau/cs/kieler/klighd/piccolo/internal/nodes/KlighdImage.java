@@ -171,7 +171,7 @@ public class KlighdImage extends PNode {
         if (image != null) {
             final PBounds b = getBoundsReference();
             final KlighdSWTGraphics graphics = (KlighdSWTGraphics) paintContext.getGraphics();
-            graphics.drawImage(image, b.x, b.y, b.width, b.height);
+            graphics.drawImage(image, b.width, b.height);
         }
     }
 }

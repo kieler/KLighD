@@ -18,6 +18,7 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
 
 import org.eclipse.swt.graphics.Device;
+import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.LineAttributes;
@@ -27,9 +28,10 @@ import de.cau.cs.kieler.klighd.piccolo.internal.util.RGBGradient;
 
 /**
  * This interface defines methods to be used by custom {@link edu.umd.cs.piccolo.PNode PNode}
- * implementations to draw there shapes. Its aim is to abstract the concrete
- * {@link edu.umd.cs.piccolox.swt.SWTGraphics2D SWTGraphics2D} implementation contributed by the
- * <code>edu.umd.cs.piccolo</code> packages.<br>
+ * implementations to draw there shapes. Its aim is to abstract the concrete implementation of
+ * {@link java.awt.Graphics2D Graphics2D} like {@link edu.umd.cs.piccolox.swt.SWTGraphics2D
+ * SWTGraphics2D} contributed by the <code>edu.umd.cs.piccolox.swt</code> package. Instead a
+ * <i>Graphics</i> layer realizing e.g. an SVG output shall be supported interchangeably.<br>
  * <br>
  * For drawing basic figures (except text fields) only {@link #draw(Shape)} and {@link #fill(Shape)}
  * are provided, since drawing and coloring such elements is to be performed by means of
@@ -49,13 +51,11 @@ import de.cau.cs.kieler.klighd.piccolo.internal.util.RGBGradient;
  * the path object must be inspected and the segment values updated. This is task is, fortunately,
  * also performed by the {@link java.awt.geom.PathIterator PathIterators}.<br>
  * <br>
- * A further of this approach is an easier support of rotation of basic figures. This requires the
- * rotation of the coordinates while drawing the figures on the one hand, and the incorporation of
- * the rotation for determining the currently picked figure while processing mouse input events.
- * Relying on the AWT Geometry {@link java.awt.geom.PathIterator PathIterators} enables consistent
- * and homogeneous calculations for both use cases.<br>
- * <br>
- * To be continued for text stuff.
+ * A further advantage of this approach is an easier support of rotation of basic figures. This
+ * requires the rotation of the coordinates while drawing the figures on the one hand, and the
+ * incorporation of the rotation for determining the currently picked figure while processing mouse
+ * input events. Relying on the AWT Geometry {@link java.awt.geom.PathIterator PathIterators}
+ * enables consistent and homogeneous calculations for both use cases.<br>
  * 
  * @author chsch
  */
@@ -66,7 +66,6 @@ public interface KlighdSWTGraphics {
      * @return the {@link Device} to work with
      */
     Device getDevice();
-
     
     /**
      * This setter allows to (re-) use an object adhering to this interface for multiple paint runs.
@@ -196,7 +195,38 @@ public interface KlighdSWTGraphics {
      */
     void setBackgroundPattern(final RGBGradient backgroundGradient, final Rectangle2D bounds);
 
+    /*----------------------------------------------*/
+    /* Desired font & text style getter and setter. */
+    /*----------------------------------------------*/
+    
+    /**
+     * Set the font by means of a {@link FontData}.
+     * 
+     * @param fontData
+     *            font configuration to be applied while drawing text
+     */
+    void setFont(final FontData fontData);
+    
+    /**
+     * Sets the underline for next text to be drawn.
+     * 
+     * @param theUnderlining
+     *            the underline style constant, see {@link org.eclipse.swt.SWT SWT} class
+     * @param color
+     *            the underline color
+     */
+    void setUnderline(final int theUnderlining, final RGB color);
 
+    /**
+     * Sets the strikeout flag for next text to be drawn.
+     * 
+     * @param theStrikeout
+     *            indicate whether to strike out
+     * @param color
+     *            the underline color
+     */
+    void setStrikeout(final boolean theStrikeout, final RGB color);
+    
     /*-----------------------------------------------------------------------*/
     /* Some AffineTransform-related methods required by the PSWTAdvancedPath */
     /* for properly applying the translation and scaling of related shape.   */
@@ -268,19 +298,24 @@ public interface KlighdSWTGraphics {
     void fill(final Shape s);
     
     /**
-     * Draws the provided image at the specified position with the specified width and height.
+     * Draws the provided image at the specified position with the specified width and height.<br>
+     * Its position can be determined by means of {@link #setTransform(AffineTransform)}.
      * 
      * @param image
      *            {@link Image} to draw
-     * @param x
-     *            x component of the image drawing's position
-     * @param y
-     *            y component of the image drawing's position
      * @param width
      *            the width of the image drawing
      * @param height
      *            the height of the image drawing
      */
-    void drawImage(final Image image, final double x, final double y, final double width,
-            final double height);
+    void drawImage(final Image image, final double width, final double height);
+    
+    /**
+     * Draws the provided string while respecting the recently set font & text style settings.<br>
+     * Its position can be determined by means of {@link #setTransform(AffineTransform)}.
+     * 
+     * @param string
+     *            the text to be drawn on the canvas
+     */
+    void drawText(final String string);
 }

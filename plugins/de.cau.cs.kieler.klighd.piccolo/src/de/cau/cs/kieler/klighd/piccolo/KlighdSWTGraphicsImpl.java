@@ -201,10 +201,17 @@ public class KlighdSWTGraphicsImpl extends SWTGraphics2D implements KlighdSWTGra
     /**
      * {@inheritDoc}
      */
-    public void drawImage(final org.eclipse.swt.graphics.Image image, final double x,
-            final double y, final double width, final double height) {
+    public void drawImage(final org.eclipse.swt.graphics.Image image, final double width,
+            final double height) {
         final org.eclipse.swt.graphics.Rectangle bounds = image.getBounds();
-        drawImage(image, 0, 0, bounds.width, bounds.height, x, y, width, height);
+        drawImage(image, 0, 0, bounds.width, bounds.height, 0, 0, width, height);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void drawText(final String text) {
+        drawText(text, 0, 0, SWT.DRAW_DELIMITER | SWT.DRAW_TRANSPARENT);
     }
 
     /*-------------------------*/
