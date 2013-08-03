@@ -13,48 +13,61 @@
  */
 package de.cau.cs.kieler.klighd.piccolo.internal.nodes;
 
-import java.awt.Graphics2D;
-import java.awt.geom.AffineTransform;
-import java.text.AttributedCharacterIterator.Attribute;
-import java.util.Collections;
-import java.util.List;
+import java.awt.geom.Rectangle2D;
 
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.swt.graphics.FontData;
-import org.eclipse.swt.graphics.FontMetrics;
-import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.RGB;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.statushandlers.StatusManager;
 
+import com.google.common.base.Strings;
+
+import de.cau.cs.kieler.core.krendering.KText;
 import de.cau.cs.kieler.klighd.KlighdConstants;
+import de.cau.cs.kieler.klighd.microlayout.PlacementUtil;
 import de.cau.cs.kieler.klighd.piccolo.KlighdPiccoloPlugin;
 import de.cau.cs.kieler.klighd.piccolo.KlighdSWTGraphics;
 import de.cau.cs.kieler.klighd.piccolo.internal.util.RGBGradient;
-
+import edu.umd.cs.piccolo.PNode;
 import edu.umd.cs.piccolo.util.PPaintContext;
-import edu.umd.cs.piccolox.swt.PSWTText;
-import edu.umd.cs.piccolox.swt.SWTGraphics2D;
 
 /**
- * A specialization of {@link PSWTText} supporting {@link org.eclipse.swt.graphics.TextStyle
- * TextStyles}.
+ * The KLighD-specific {@link PNode} implementation for displaying text strings supporting
+ * {@link org.eclipse.swt.graphics.TextStyle TextStyles}.<br>
+ * It is inspired by the Piccolo2D {@link edu.umd.cs.piccolox.swt.PSWTText PSWTText} and is
+ * tailored/extended to those features required by KLighD.<br>
+ * <br>
+ * It enables proper view-model-tracing by preserving the related {@link KText} view model element
+ * and implementing {@link ITracingElement}.<br>
+ * <br>
+ * <b>Note:</b> All <code>invalidate...</code> and <code>repaint</code> calls are deactivated in
+ * order to avoid superfluous repaint activities. The repaint events are fired by
+ * {@link #addChild(PNode)}/{@link #removeChild(PNode)} in case of rendering changes, by
+ * {@link #setBounds(double, double, double, double)} in case of layout changes, and in case of pure
+ * style changes by the {@link de.cau.cs.kieler.core.kgraph.KGraphElement KGraphElement} rendering
+ * controllers ({@link de.cau.cs.kieler.klighd.piccolo.internal.controller.AbstractKGERenderingController
+ * #updateStyles() AbstractKGERenderingController#updateStyles()}) after all rendering and style
+ * changes are performed.
  * 
  * @author chsch
  */
-public class KlighdStyledText extends PSWTText {
+public class KlighdStyledText extends PNode implements ITracingElement<KText> {
 
     private static final long serialVersionUID = -4463204146476543138L;
 
+    private KText kText = null;
+
+    private String text = "";
+    
     private FontData fontData = null;
     
     private int penAlpha = KlighdConstants.ALPHA_FULL_OPAQUE;
     private RGB penColor = KlighdConstants.BLACK;
     
-    private int penPaintAlpha = KlighdConstants.ALPHA_FULL_OPAQUE;
-    private RGB penPaint = null;
-    private RGBGradient penPaintGradient = null;
+    private int paintAlpha = KlighdConstants.ALPHA_FULL_OPAQUE;
+    private RGB paint = null;
+    private RGBGradient paintGradient = null;
     
     private int underlining = KlighdConstants.NO_FONT_UNDERLINING;
     private RGB underlineColor = KlighdConstants.BLACK;
@@ -62,45 +75,56 @@ public class KlighdStyledText extends PSWTText {
     private RGB strikeoutColor = KlighdConstants.BLACK;
 
     /**
-     * PSWTStyledText constructor taking the initial text lines.
+     * Constructor taking the related {@link KText} view model element.
      * 
-     * @param theLines
-     *            The initial text.
+     * @param theKText
+     *            The KText view model element containing the string to be displayed.
      */
-    public KlighdStyledText(final List<String> theLines) {
-        this(theLines, KlighdConstants.DEFAULT_FONT);
+    public KlighdStyledText(final KText theKText) {
+        this(theKText.getText(), KlighdConstants.DEFAULT_FONT);
+        this.kText = theKText;
     }
 
     /**
-     * PSWTStyledText constructor taking the initial text lines and font configuration.
+     * Constructor taking the initial text.
      * 
-     * @param theLines
+     * @param theText
+     *            The initial text.
+     */
+    public KlighdStyledText(final String theText) {
+        this(theText, KlighdConstants.DEFAULT_FONT);
+    }
+
+    /**
+     * Constructor taking the initial text and font configuration.
+     * 
+     * @param theText
      *            The initial text.
      * @param theFont
-     *            The SWT font configuration for this text component.
+     *            The SWT {@link FontData} configuration for this text component.
      */
-    public KlighdStyledText(final List<String> theLines, final FontData theFont) {
-        super(theLines, new SWTFontWrappingFont(theFont != null ? theFont
-                : KlighdConstants.DEFAULT_FONT));
-        this.fontData = theFont != null ? theFont : KlighdConstants.DEFAULT_FONT;
+    public KlighdStyledText(final String theText, final FontData theFont) {
+        this.text = theText;
+        this.setFont(theFont != null ? theFont : KlighdConstants.DEFAULT_FONT);
     }
 
     /**
-     * Returns the current pen color.
+     * Updates the text string to be displayed by this node.<br>
+     * <code>theText</code> may be empty or contain line breaks.
      * 
-     * @return current pen color
+     * @param theText
+     *            The text string to be displayed.
      */
-    public RGB getSWTPenColor() {
-        return penColor;
+    public void setText(final String theText) {
+        this.text = theText;
+        updateBounds();
     }
 
     /**
-     * Returns the current pen color gradient.
-     * 
-     * @return current pen color gradient
+     * {@inheritDoc}
      */
-    public RGBGradient getSWTPenColorGradient() {
-        return null;
+    public KText getGraphElement() {
+        return this.kText;
     }
 
     /**
@@ -113,10 +137,10 @@ public class KlighdStyledText extends PSWTText {
         if (penColor.equals(color)) {
             return;
         }        
-//        Object oldPaint = penColor;
+        // Object oldPaint = penColor;
         penColor = color;
-//        repaint();
-//        firePropertyChange(PText.PROPERTY_CODE_TEXT_PAINT, PROPERTY_PAINT, oldPaint, penColor);
+        // repaint();
+        // firePropertyChange(PText.PROPERTY_CODE_TEXT_PAINT, PROPERTY_PAINT, oldPaint, penColor);
     }
 
     /**
@@ -127,7 +151,7 @@ public class KlighdStyledText extends PSWTText {
      */
     public void setPenAlpha(final int alpha) {
         penAlpha = alpha;
-//        repaint();
+        // repaint();
     }
 
     private static final String TEXT_GRADIENT_MESSAGE = "KLighD (Piccolo2D): A color gradient has been"
@@ -147,38 +171,20 @@ public class KlighdStyledText extends PSWTText {
     }
     
     /**
-     * Returns the current pen color.
-     * 
-     * @return current pen color
-     */
-    public RGB getSWTPenPaint() {
-        return penPaint;
-    }
-
-    /**
-     * Returns the paint gradient used while painting this node. This value may be null.
-     * 
-     * @return the paint gradient used while painting this node.
-     */
-    public RGBGradient getSWTPaintGradient() {
-        return penPaintGradient;
-    }
-
-    /**
      * Sets the current pen paint.
      * 
      * @param color
      *            use this color.
      */
-    public void setPenPaint(final RGB color) {
-        if (penPaint != null && penPaint.equals(color)) {
+    public void setPaint(final RGB color) {
+        if (paint != null && paint.equals(color)) {
             return;
         }        
-//        Object oldPaint = penPaint;
-        penPaintGradient = null;
-        penPaint = color;
-//        repaint();
-//        firePropertyChange(PROPERTY_CODE_PAINT, PROPERTY_PAINT, oldPaint, penPaint);
+        // Object oldPaint = penPaint;
+        paintGradient = null;
+        paint = color;
+        // repaint();
+        // firePropertyChange(PROPERTY_CODE_PAINT, PROPERTY_PAINT, oldPaint, penPaint);
     }
 
     /**
@@ -187,9 +193,9 @@ public class KlighdStyledText extends PSWTText {
      * @param alpha
      *            use this alpha.
      */
-    public void setPenPaintAlpha(final int alpha) {
-        penPaintAlpha = alpha;
-//        repaint();
+    public void setPaintAlpha(final int alpha) {
+        paintAlpha = alpha;
+        // repaint();
     }
     
     /**
@@ -198,40 +204,30 @@ public class KlighdStyledText extends PSWTText {
      * @param newPaint paint that this node should use when painting itself.
      */
     public void setPaint(final RGBGradient newPaint) {        
-        if (penPaintGradient != null && penPaintGradient.equals(newPaint)) {
+        if (paintGradient != null && paintGradient.equals(newPaint)) {
             return;
         }
-//        Object oldPaint = null;
-//        if (penPaintGradient != null) {
-//            oldPaint = penPaintGradient;   
-//        } else if (penPaint != null) {
-//            oldPaint = penPaint;
-            penPaint = null;
-//        }
-        penPaintGradient = newPaint;
-//        repaint();
-//        firePropertyChange(PROPERTY_CODE_PAINT, PROPERTY_PAINT, oldPaint, penPaintGradient);
+        // Object oldPaint = null;
+        // if (penPaintGradient != null) {
+        //      oldPaint = penPaintGradient;   
+        // } else if (penPaint != null) {
+        //      oldPaint = penPaint;
+        paint = null;
+        // }
+        paintGradient = newPaint;
+        // repaint();
+        // firePropertyChange(PROPERTY_CODE_PAINT, PROPERTY_PAINT, oldPaint, penPaintGradient);
     }
 
     /**
-     * Configures the text node width a {@link Font}.
+     * Configures the text node width a {@link FontData}.
      * 
      * @param theFont
-     *            the desired {@link Font}, must not be <code>null<code>
+     *            the desired {@link FontData}, must not be <code>null<code>
      */
     public void setFont(final FontData theFont) {
         this.fontData = theFont;
-        super.setFont(new SWTFontWrappingFont(theFont));
-    }
-
-    /**
-     * {@inheritDoc}
-     * 
-     * @deprecated chsch: Don't use this setter within KLighD - use {@link #setFont(FontData)}
-     *             instead!
-     */
-    public void setFont(final java.awt.Font aFont) {
-        super.setFont(aFont);
+        this.updateBounds();
     }
 
     /**
@@ -245,7 +241,7 @@ public class KlighdStyledText extends PSWTText {
     public void setUnderline(final int theUnderlining, final RGB color) {
         this.underlining = theUnderlining;
         this.underlineColor = color != null ? color : this.penColor;
-//        repaint();
+        // repaint();
     }
 
     /**
@@ -259,129 +255,66 @@ public class KlighdStyledText extends PSWTText {
     public void setStrikeout(final boolean theStrikeout, final RGB color) {
         this.strikeout = theStrikeout;
         this.strikeoutColor = color != null ? color : this.penColor;
-//        repaint();
+        // repaint();
     }
+
+    /**
+     * Updates the bounds of <code>this</code> node based on the current {@link #text} and
+     * {@link #fontData} by delegating to {@link PlacementUtil#estimateTextSize(FontData, String)}.
+     */
+    protected void updateBounds() {
+        this.setBounds(PlacementUtil.estimateTextSize(this.fontData, this.text).toRectangle2D());
+    }
+    
+    /**
+     * A singleton {@link Rectangle2D} that is used for drawing the text background by means of
+     * {@link KlighdSWTGraphics#fill(java.awt.Shape)}.
+     */
+    private static final Rectangle2D BACKGROUND = new Rectangle2D.Double();
 
     @Override
     public void paint(final PPaintContext ppc) {
-        if (lines.isEmpty()) {
+        if (Strings.isNullOrEmpty(this.text)) {
             return;
         }
 
-        final Graphics2D g2 = ppc.getGraphics();
-        AffineTransform at = null;
-        boolean translated = false;
+        final KlighdSWTGraphics graphics = (KlighdSWTGraphics) ppc.getGraphics();
 
-        if (translateX != 0.0 || translateY != 0.0) {
-            at = g2.getTransform();
-            g2.translate(translateX, translateY);
-            translated = true;
-        }
-
-        paintAsText(ppc);
-
-        if (translated) {
-            g2.setTransform(at);
-        }
-    }
-
-    @Override
-    public void paintAsText(final PPaintContext ppc) {
-        final SWTGraphics2D g2 = (SWTGraphics2D) ppc.getGraphics();
-
-        final int currentAlpha = g2.getAlpha();
+        final int currentAlpha = graphics.getAlpha();
         final float currentAlphaFloat = (float) currentAlpha;
 
-        if (!isTransparent()) {
-            RGB p = getSWTPenPaint();
-            RGBGradient pg = getSWTPaintGradient();
-            if (pg != null && g2 instanceof KlighdSWTGraphics) {
-                ((KlighdSWTGraphics) g2).setBackgroundPattern(pg, getBounds());
-                
-            } else if (p != null) {
-                g2.setAlpha((int) (penPaintAlpha
-                        * (currentAlphaFloat / KlighdConstants.ALPHA_FULL_OPAQUE)));
-                g2.setBackground(getSWTPenPaint());
-            }
-
-            if (p != null || pg != null) {
-                g2.fillRect(0, 0, getWidth(), getHeight());
-            }
+        if (this.paintGradient != null) {
+            graphics.setBackgroundPattern(this.paintGradient, getBounds());
+        } else if (this.paint != null) {
+            graphics.setAlpha((int) (paintAlpha
+                    * (currentAlphaFloat / KlighdConstants.ALPHA_FULL_OPAQUE)));
+            graphics.setBackground(this.paint);
         }
 
-        g2.translate(padding, padding);
-        g2.setUnderline(underlining, underlineColor);
-        g2.setStrikeout(strikeout, strikeoutColor);
+        if (this.paint != null || this.paintGradient != null) {
+            BACKGROUND.setFrame(0, 0, getWidth(), getHeight());
+            graphics.setLineAttributes(KlighdConstants.DEFAULT_LINE_ATTRIBUTES);
+            graphics.fill(BACKGROUND);
+        }
+
+        graphics.setUnderline(underlining, underlineColor);
+        graphics.setStrikeout(strikeout, strikeoutColor);
         
-        RGB c = getSWTPenColor();
-        RGBGradient cg = getSWTPenColorGradient();
-        if (cg != null && g2 instanceof KlighdSWTGraphics) {
-            ((KlighdSWTGraphics) g2).setPattern(cg, getBounds());
-            
-        } else if (c != null) {
-            g2.setAlpha((int) (penAlpha * (currentAlphaFloat / KlighdConstants.ALPHA_FULL_OPAQUE)));
-            g2.setColor(c);
+        if (this.penColor != null) {
+            graphics.setAlpha(
+                    (int) (penAlpha * (currentAlphaFloat / KlighdConstants.ALPHA_FULL_OPAQUE)));
+            graphics.setColor(this.penColor);
 
         } else {
-            g2.setColor(KlighdConstants.BLACK);
+            graphics.setColor(KlighdConstants.BLACK);
         }
         
         if (fontData != null) {
-            g2.setFont(fontData);
+            graphics.setFont(fontData);
         }        
 
-        double y = 0;
-        final FontMetrics fontMetrics = g2.getSWTFontMetrics();
-
-        for (String line : lines) {
-            if (line.length() != 0) {
-                g2.drawText(line, 0, y);
-            }
-            y += fontMetrics.getHeight();
-        }
-
-        g2.translate(-padding, -padding);
-        g2.setAlpha(currentAlpha);
+        graphics.drawText(text);
+        
+        graphics.setAlpha(currentAlpha);
     }
-
-    /**
-     * {@inheritDoc}.<br>
-     * <br>
-     * In this case the method is overridden in order to reveal the SWT font from the custom AWT
-     * font in order avoid the lousy AWT/SWT font conversion.
-     */
-    protected SWTGraphics2D createtemporayGraphics(final GC gc) {
-        return new SWTGraphics2D(gc, Display.getDefault()) {
-
-            @Override
-            public void setFont(final java.awt.Font theFont) {
-                if (theFont instanceof SWTFontWrappingFont) {
-                    this.setFont(((SWTFontWrappingFont) theFont).getSWTFontData());
-                } else {
-                    super.setFont(theFont);
-                }
-            }
-        };
-    }
-
-    /**
-     * 
-     * @author chsch
-     */
-    private static class SWTFontWrappingFont extends java.awt.Font {
-
-        private static final long serialVersionUID = 1L;
-
-        private FontData fontData = null;
-
-        public SWTFontWrappingFont(final FontData theFont) {
-            super(Collections.<Attribute, Object>emptyMap());
-            this.fontData = theFont;
-        }
-
-        public FontData getSWTFontData() {
-            return this.fontData;
-        }
-    }
-
 }

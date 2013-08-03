@@ -69,8 +69,8 @@ public abstract class KlighdTextController extends PNodeController<KlighdStyledT
      */
     @Override
     public void setBackgroundColor(final RGB color, final int alpha) {
-        getNode().setPenPaintAlpha(alpha);
-        getNode().setPenPaint(color);
+        getNode().setPaintAlpha(alpha);
+        getNode().setPaint(color);
     }
    /**
      * {@inheritDoc}
