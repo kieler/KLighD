@@ -16,7 +16,6 @@ package de.cau.cs.kieler.klighd.piccolo.internal.controller;
 import java.awt.geom.Point2D;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.io.IOException;
 import java.net.URL;
 import java.util.List;
 import java.util.Map;
@@ -553,10 +552,11 @@ final class KGERenderingControllerHelper {
     /**
      * Creates a representation for the {@link KImage}.
      * 
+     * @param controller
+     *            the {@link AbstractKGERenderingController} that is delegated to in this method (and
+     *            should be the caller of this method)
      * @param image
      *            the image rendering
-     * @param styles
-     *            the styles container for the rendering
      * @param propagatedStyles
      *            the styles propagated to the rendering's children
      * @param parent
@@ -599,7 +599,7 @@ final class KGERenderingControllerHelper {
                 try {
                     imageData = new ImageData(entry.openStream());
                     IMAGE_BUFFER.put(id, imageData);
-                } catch (IOException e) {
+                } catch (Exception e) {
                     final String msg = "KLighD: Error occurred while loading the image "
                             + image.getImagePath() + " in bundle " + image.getBundleName();
                     StatusManager.getManager().handle(
@@ -616,6 +616,7 @@ final class KGERenderingControllerHelper {
         // initialize the node
         controller.initializeRenderingNode(imageNode);
         imageNode.translate(initialBounds.getX(), initialBounds.getY());
+        imageNode.setBounds(0, 0, initialBounds.getWidth(), initialBounds.getHeight());
         parent.addChild(imageNode);
 
         // handle children
@@ -628,7 +629,7 @@ final class KGERenderingControllerHelper {
         return new PNodeController<PNode>(imageNode) {
             public void setBounds(final Bounds bounds) {
                 // apply the bounds
-                NodeUtil.applyTranslation(getNode(), bounds.getX(), bounds.getY());
+                NodeUtil.applySmartBounds(getNode(), bounds);
             }
         };
     }

@@ -13,7 +13,6 @@
  */
 package de.cau.cs.kieler.klighd.piccolo.internal.nodes;
 
-import java.awt.geom.AffineTransform;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.InputStream;
@@ -21,7 +20,6 @@ import java.io.InputStream;
 import org.eclipse.swt.graphics.Device;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.ImageData;
-import org.eclipse.swt.graphics.Rectangle;
 
 import de.cau.cs.kieler.klighd.piccolo.KlighdSWTGraphics;
 import edu.umd.cs.piccolo.PNode;
@@ -34,7 +32,22 @@ import edu.umd.cs.piccolo.util.PPaintContext;
  * by that of {@link edu.umd.cs.piccolox.swt.PSWTImage}, some major differences wrt to design
  * requirements led to this new implementation. These differences involve the non-dependency to any
  * specific canvas implementation as well as to {@link org.eclipse.swt.widgets.Display Display}
- * being a specific {@link Device}.
+ * being a specific {@link Device}.<br>
+ * <br>
+ * In contrast to {@link edu.umd.cs.piccolox.swt.PSWTImage} the bounds of nodes of this type are not
+ * set while setting the image object to be displayed. Doing so results in flickering, at least
+ * while drawing diagrams without animation. Instead the bounds are set top down by KlighD, see
+ * {@link de.cau.cs.kieler.klighd.piccolo.internal.controller.KGERenderingControllerHelper#createImage(
+ * de.cau.cs.kieler.klighd.piccolo.internal.controller.AbstractKGERenderingController,
+ * de.cau.cs.kieler.core.krendering.KImage, java.util.List, PNode,
+ * de.cau.cs.kieler.klighd.microlayout.Bounds) KGERenderingControllerHelper#createImage(...)}.<br>
+ * <br>
+ * If the amount of instances of {@link Image} created while drawing diagrams, e.g. such with lots
+ * of copies of the same icon will lead to performance/memory issues, one might introduce a further
+ * caching mechanism beyond that in
+ * {@link de.cau.cs.kieler.klighd.piccolo.internal.controller.KGERenderingControllerHelper#IMAGE_BUFFER
+ * KGERenderingControllerHelper#IMAGE_BUFFER}. This could be done like for colors and fonts.
+ * However, keeping every image in a lookup for the whole JVM life cycle sounds problematic...
  * 
  * @author chsch
  * @kieler.design proposed by chsch
@@ -125,11 +138,6 @@ public class KlighdImage extends PNode {
             old.dispose();
         }
 
-        if (this.imageData != null) {
-            setBounds(0, 0, this.imageData.width, this.imageData.height);
-            invalidatePaint();
-        }
-        
         firePropertyChange(PImage.PROPERTY_CODE_IMAGE, PImage.PROPERTY_IMAGE, old, imageData);
     }
 
@@ -147,12 +155,6 @@ public class KlighdImage extends PNode {
             old.dispose();
         }
 
-        if (this.image != null) {
-            final Rectangle bounds = getImage().getBounds();
-            setBounds(0, 0, bounds.width, bounds.height);
-            invalidatePaint();
-        }
-        
         firePropertyChange(PImage.PROPERTY_CODE_IMAGE, PImage.PROPERTY_IMAGE, old, image);
     }
 
@@ -167,21 +169,9 @@ public class KlighdImage extends PNode {
         }
 
         if (image != null) {
-            final Rectangle r = image.getBounds();
             final PBounds b = getBoundsReference();
             final KlighdSWTGraphics graphics = (KlighdSWTGraphics) paintContext.getGraphics();
-
-            if (b.x == 0 && b.y == 0 && b.width == r.width && b.height == r.height) {
-                graphics.drawImage(image, 0, 0);
-            } else {
-                final AffineTransform original = graphics.getTransform();
-                final AffineTransform copy = graphics.getTransform();
-                copy.translate(b.x, b.y);
-                copy.scale(b.width / r.width, b.height / r.height);
-                graphics.setTransform(copy);
-                graphics.drawImage(image, 0, 0);
-                graphics.setTransform(original);
-            }
+            graphics.drawImage(image, b.x, b.y, b.width, b.height);
         }
     }
 }
