@@ -99,7 +99,9 @@ public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement>
      */
     public boolean supports(final Object object) {
         // KGraph instances are supported
-        if (object instanceof KNode) {
+        //  Tests here for KGraphElement rather than KNode since this method e.g. invoked while
+        //  populating the layout view, which provides also port, edge, and label properties.
+        if (object instanceof KGraphElement) {
             return true;
         }
         // KGraph viewer are supported
