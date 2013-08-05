@@ -418,14 +418,19 @@ public class PiccoloViewer extends AbstractViewer<KNode> implements INodeSelecti
     public void selection(final KlighdSimpleSelectionEventHandler handler,
             final Iterable<PNode> nodes) {
         
-        @SuppressWarnings("unchecked")
-        Iterable<ITracingElement<EObject>> elements = (Iterable<ITracingElement<EObject>>)
-                (Iterable<?>) Iterables.filter(nodes, ITracingElement.class);
-        
-//        List<EObject> graphElements = Lists.newLinkedList();
-//        for (ITracingElement<EObject> element : elements) {
-//            graphElements.add(element.getGraphElement());
-//        }
+        Iterable<ITracingElement<EObject>> elements = Iterables.transform(nodes,
+                new Function<PNode, ITracingElement<EObject>>() {
+                    public ITracingElement<EObject> apply(final PNode node) {
+                        PNode element = node;
+                        while (!ITracingElement.class.isAssignableFrom(element.getClass())) {
+                            element = node.getParent();
+                        }
+                        @SuppressWarnings("unchecked")
+                        ITracingElement<EObject> result =
+                            (ITracingElement<EObject>) ITracingElement.class.cast(element);
+                        return result;
+                    }
+                });
         
         notifyListenersSelection(Iterables.transform(elements,
                 new Function<ITracingElement<EObject>, EObject>() {
