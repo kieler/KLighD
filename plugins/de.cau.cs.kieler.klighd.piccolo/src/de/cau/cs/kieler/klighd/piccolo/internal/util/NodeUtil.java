@@ -21,7 +21,6 @@ import java.awt.geom.Point2D;
 import de.cau.cs.kieler.core.kgraph.KGraphElement;
 import de.cau.cs.kieler.klighd.microlayout.Bounds;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.IGraphElement;
-
 import edu.umd.cs.piccolo.PNode;
 import edu.umd.cs.piccolo.activities.PActivity;
 import edu.umd.cs.piccolo.activities.PActivity.PActivityDelegate;
@@ -37,6 +36,21 @@ import edu.umd.cs.piccolo.util.PBounds;
  * @author mri
  */
 public final class NodeUtil {
+    
+    /**
+     * A {@link PNode} property change event key indicating dispose
+     * {@link org.eclipse.swt.graphics.Device}-dependent SWT objects.
+     */
+    public static final String DISPOSE = "dispose";
+    
+    /**
+     * The property change event code related to {@link #DISPOSE} events.<br>
+     * It is set to zero since this code is only used for deciding whether to propagate such events
+     * to the parent nodes, too. This, however, is not necessary and even not valid in context of
+     * {@link #DISPOSE} events. (see {@link PNode#firePropertyChange(int, String, Object, Object)}
+     * for details).
+     */
+    public static final int DISPOSE_CODE = 0;
 
     /** the attribute key for the activity. */
     private static final Object ACTIVITY_KEY = "activity";
