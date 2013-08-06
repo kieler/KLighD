@@ -17,6 +17,7 @@ import com.google.common.collect.ImmutableList
 import com.google.common.collect.ImmutableMap
 import com.google.common.collect.ImmutableSet
 import com.google.common.collect.Lists
+
 import de.cau.cs.kieler.core.kgraph.KNode
 import de.cau.cs.kieler.core.krendering.extensions.KColorExtensions
 import de.cau.cs.kieler.core.krendering.extensions.KContainerRenderingExtensions
@@ -29,7 +30,6 @@ import de.cau.cs.kieler.core.util.Pair
 import de.cau.cs.kieler.kiml.options.Direction
 import de.cau.cs.kieler.kiml.options.EdgeType
 import de.cau.cs.kieler.kiml.options.LayoutOptions
-import de.cau.cs.kieler.klighd.KlighdConstants
 import de.cau.cs.kieler.klighd.TransformationOption
 import de.cau.cs.kieler.klighd.transformations.AbstractDiagramSynthesis
 
@@ -37,15 +37,17 @@ import java.util.List
 import java.util.Collection
 import javax.inject.Inject
 
-import org.eclipse.emf.ecore.EcorePackage
+import org.eclipse.emf.ecore.EAttribute
 import org.eclipse.emf.ecore.EClass
 import org.eclipse.emf.ecore.EClassifier
+import org.eclipse.emf.ecore.EcorePackage
 import org.eclipse.emf.ecore.EEnum
 import org.eclipse.emf.ecore.EPackage
 import org.eclipse.emf.ecore.EReference
 
 import static extension com.google.common.base.Strings.*
-import org.eclipse.emf.ecore.EAttribute
+import static de.cau.cs.kieler.klighd.KlighdConstants.*
+import de.cau.cs.kieler.core.krendering.KContainerRendering
 
 /**
  * This diagram synthesis implementation demonstrates the usage of KLighD for the purpose of
@@ -177,9 +179,7 @@ class EcoreDiagramSynthesis extends AbstractDiagramSynthesis<EModelElementCollec
 
                 // each of the above given ones is highlighted in a special fashion
                 chosenClasses.forEach[
-                    it.node.KRendering.setBackgroundGradient("white".color,
-                        KlighdConstants::ALPHA_FULL_OPAQUE, "red".color, 150, 0
-                    );
+                    it.node.KRendering.setBackgroundGradient("white".color, ALPHA_FULL_OPAQUE, "red".color, 150, 0);
                 ];
                 
 	        } else { // (CLASS_FILTER.optionValue == ALL)
@@ -195,9 +195,7 @@ class EcoreDiagramSynthesis extends AbstractDiagramSynthesis<EModelElementCollec
 
                 // each of the above given ones is highlighted in a special fashion
                 chosenClasse.forEach[
-                    it.node.KRendering.setBackgroundGradient("white".color,
-                        KlighdConstants::ALPHA_FULL_OPAQUE, "red".color, 150, 0
-                    );
+                    it.node.KRendering.setBackgroundGradient("white".color, ALPHA_FULL_OPAQUE, "red".color, 150, 0);
                 ];
 	        }
 		
@@ -219,56 +217,80 @@ class EcoreDiagramSynthesis extends AbstractDiagramSynthesis<EModelElementCollec
 		classes.filterNull.forEach[ EClassifier clazz |
             rootNode.children += clazz.createNode().putToLookUpWith(clazz) => [
                 it.addRectangle => [
-                    it.gridPlacement = 1;
                     it.lineWidth = 2;
-                    it.setBackgroundGradient("white".color, KlighdConstants::ALPHA_FULL_OPAQUE, "lemon".color, 255, 0)
+                    it.setBackgroundGradient("white".color, "lemon".color, 0)
                     it.shadow = "black".color;
+                    it.setGridPlacement(1).from(LEFT, 2, 0, TOP, 2, 0).to(RIGHT, 2, 0, BOTTOM, 2, 0);
                     it.addRectangle => [
-                        it.lineWidth = 2;
-                        val typeText = if (EcorePackage::eINSTANCE.getEEnum.isInstance(clazz))
-                            it.addText("<<Enum>>") => [
-                                it.fontSize = 13;
-                                it.fontItalic = true;
-                                it.verticalAlignment = V_CENTRAL; 
-                                it.setGridPlacementData().from(LEFT, 15, 0, TOP, 15, 0)
-                                                         .to(RIGHT, 15, 0, BOTTOM, 35, 0);
-                            ];
-                        it.addText(clazz.name.nullToEmpty).putToLookUpWith(clazz) => [
-                            it.fontSize = 15;
-                            it.fontBold = true;
-                            if (typeText == null) {
-                                it.setSurroundingSpace(20, 0, 15, 0);
+                        // this rectangle represents the grid cell ... 
+                        it.invisible = true;
+                        it.addRectangle => [
+                            // ... and this one a "free floating" centrally aligned rendering container
+                            //  hosting the actual title image and/or text(s)  
+                            it.invisible = true;
+                            it.setPointPlacementData(LEFT, 0, 0.5f, TOP, 0, 0.5f, H_CENTRAL, V_CENTRAL, 0, 0, 0, 0);
+                            
+                            if (EcorePackage::eINSTANCE.getEEnum.isInstance(clazz)) {
+                                it.addText("<<Enum>>") => [
+                                    it.fontSize = 13;
+                                    it.fontItalic = true;
+                                    it.verticalAlignment = V_CENTRAL;
+                                    it.setAreaPlacementData.from(LEFT, 20, 0, TOP, 10, 0).to(RIGHT, 20, 0, BOTTOM, 1, 0.5f);
+                                ];
+                                it.addText(clazz.name.nullToEmpty).putToLookUpWith(clazz) => [
+                                    it.fontSize = 15;
+                                    it.fontBold = true;
+                                    it.setAreaPlacementData.from(LEFT, 20, 0, TOP, 1, 0.5f).to(RIGHT, 20, 0, BOTTOM, 10, 0);
+                                ];
                             } else {
-                                it.setGridPlacementData().from(LEFT, 20, 0, TOP, 35, 0)
-                                                         .to(RIGHT, 20, 0, BOTTOM, 15, 0);
-                            }
+                                it.addImage("de.cau.cs.kieler.klighd.examples", "icons/Class.png")
+                                    .setPointPlacementData(LEFT, 20, 0, TOP, 0, 0.5f, H_CENTRAL, V_CENTRAL, 10, 10, 20, 20);
+                                it.addText(clazz.name.nullToEmpty).putToLookUpWith(clazz) => [
+                                    it.fontSize = 15;
+                                    it.fontBold = true;
+                                    it.setPointPlacementData(LEFT, 40, 0, TOP, 0, 0.5f, H_LEFT, V_CENTRAL, 20, 10, 0, 0);
+                                ];
+                            };
                         ];
                     ];
                     if (!ATTRIBUTES.optionBooleanValue) {
                         return;
                     }
-                    if (EcorePackage::eINSTANCE.getEClass.isInstance(clazz)) {
-                        it.addRectangle => [ rect |
-                            rect.invisible = true;
-                            rect.setSurroundingSpaceGrid(5, 0)
-                            rect.setGridPlacement(1).to(RIGHT, 0, 0, BOTTOM, 2, 0);
-                            (clazz as EClass).EAttributes.forEach[
-                                rect.addText(it.name + " : " + it.EAttributeType.name) => [
-                                    it.horizontalAlignment = H_LEFT
-                                    it.verticalAlignment = V_CENTRAL
-                                    it.setSurroundingSpaceGrid(3, 0);
+                    if (EcorePackage::eINSTANCE.getEClass.isInstance(clazz) && !(clazz as EClass).EAttributes.empty) {
+                        it.addHorizontalLine(1,1.5f).setGridPlacementData.maxCellHeight = 2;
+                        it.addRectangle => [
+                            it.invisible = true;
+                            it.foreground = "red".color;
+                            it.setSurroundingSpaceGrid(7, 0)
+                            it.setGridPlacement(1).from(LEFT, 0, 0, TOP, -2, 0);
+                            
+                            (clazz as EClass).EAttributes.forEach[ attr |
+                                it.addRectangle => [
+                                    it.invisible = true;
+                                    // it.addImage("org.eclipse.emf.ecoretools.diagram", "icons/EAttribute.gif")
+                                    // .setGridPlacementData(16, 16);
+                                    it.addAttributeIcon()
+                                        .setPointPlacementData(LEFT, 10, 0, TOP, 1.5f, 0.5f, H_CENTRAL, V_CENTRAL, 0, 0, 15f, 7.5f);
+                                    it.addText(attr.name + " : " + attr.EAttributeType.name) => [
+                                        it.fontSize = 13;
+                                        it.horizontalAlignment = H_LEFT
+                                        it.verticalAlignment = V_CENTRAL
+                                        it.setPointPlacementData(LEFT, 25, 0, TOP, 0, 0.5f, H_LEFT, V_CENTRAL, 20, 5, 0, 0);
+                                    ];
                                 ];
                             ];
                         ];
                     }
                     if (EcorePackage::eINSTANCE.getEEnum.isInstance(clazz)) {
+                        it.addHorizontalLine(1,1.5f).setGridPlacementData.maxCellHeight = 2;
                         it.addRectangle => [ rect |
                             rect.invisible = true;
+                            rect.foreground = "red".color;
                             rect.setSurroundingSpaceGrid(5, 0)
-                            rect.setGridPlacement(1).to(RIGHT, 0, 0, BOTTOM, 2, 0);
+                            rect.setGridPlacement(1).to(RIGHT, 0, 0, BOTTOM, 0, 0);
                             (clazz as EEnum).ELiterals.forEach[
                                 rect.addText(it.name + " (" + it.literal + ")") => [
-                                    it.horizontalAlignment = H_LEFT
+                                    it.horizontalAlignment = H_CENTRAL
                                     it.verticalAlignment = V_CENTRAL
                                     it.setSurroundingSpaceGrid(3, 0);
                                 ];
@@ -331,5 +353,13 @@ class EcoreDiagramSynthesis extends AbstractDiagramSynthesis<EModelElementCollec
                 it.addInheritanceTriangleArrowDecorator();
 	        ];		    
 		];
+	}
+	
+	def addAttributeIcon(KContainerRendering parent) {
+	    return parent.addRectangle() => [
+	        it.lineWidth = 1.75f;
+	        it.setForegroundGradient("goldenrod4".color, 255, "darkGray".color, 255, 90);
+	        it.background = "lemon".color;
+	    ];
 	}
 }
