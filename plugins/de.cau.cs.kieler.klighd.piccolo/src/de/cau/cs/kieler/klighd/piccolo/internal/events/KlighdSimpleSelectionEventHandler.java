@@ -30,6 +30,7 @@ import com.google.common.collect.Sets;
 
 import de.cau.cs.kieler.klighd.KlighdConstants;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdPath;
+import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdPaths;
 import de.cau.cs.kieler.klighd.piccolo.viewer.INodeSelectionListener;
 import edu.umd.cs.piccolo.PCamera;
 import edu.umd.cs.piccolo.PLayer;
@@ -319,7 +320,7 @@ public class KlighdSimpleSelectionEventHandler extends PDragSequenceEventHandler
 
     private void initializeMarquee(final PInputEvent event) {
         marquee =
-                KlighdPath.createRectangle((float) point.getX(), (float) point.getY(), 0, 0);
+            KlighdPaths.createRectangle((float) point.getX(), (float) point.getY(), 0, 0);
         marquee.setLineAttributes(new LineAttributes(1, SWT.CAP_FLAT, SWT.JOIN_MITER));
         marquee.getLineAttributes().style = SWT.LINE_DASH;
         marquee.setStrokeColor(KlighdConstants.BLACK);

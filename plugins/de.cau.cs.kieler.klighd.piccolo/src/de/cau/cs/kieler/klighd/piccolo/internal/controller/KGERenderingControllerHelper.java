@@ -53,6 +53,7 @@ import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KCustomConnectionFigureNod
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KEdgeNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdImage;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdPath;
+import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdPaths;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdStyledText;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.PAlignmentNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.PAlignmentNode.HAlignment;
@@ -101,7 +102,7 @@ final class KGERenderingControllerHelper {
             final AbstractKGERenderingController<?, ?> controller, final KEllipse ellipse,
             final List<KStyle> propagatedStyles, final PNode parent, final Bounds initialBounds) {
 
-        final KlighdPath path = KlighdPath.createEllipse(0, 0, initialBounds.getWidth(),
+        final KlighdPath path = KlighdPaths.createEllipse(0, 0, initialBounds.getWidth(),
                 initialBounds.getHeight());
         controller.initializeRenderingNode(path);
         path.translate(initialBounds.getX(), initialBounds.getY());
@@ -145,7 +146,7 @@ final class KGERenderingControllerHelper {
             final AbstractKGERenderingController<?, ?> controller, final KRectangle rect,
             final List<KStyle> propagatedStyles, final PNode parent, final Bounds initialBounds) {
         // create the rectangle
-        final KlighdPath path = KlighdPath.createRectangle(0, 0, initialBounds.getWidth(),
+        final KlighdPath path = KlighdPaths.createRectangle(0, 0, initialBounds.getWidth(),
                 initialBounds.getHeight());
         controller.initializeRenderingNode(path);
         path.translate(initialBounds.getX(), initialBounds.getY());
@@ -192,7 +193,7 @@ final class KGERenderingControllerHelper {
         final float cornerHeight = 2 * rect.getCornerHeight();
         
         // create the rounded rectangle
-        final KlighdPath path = KlighdPath.createRoundRectangle(0, 0, initialBounds.getWidth(),
+        final KlighdPath path = KlighdPaths.createRoundRectangle(0, 0, initialBounds.getWidth(),
                 initialBounds.getHeight(), cornerWidth, cornerHeight);
         controller.initializeRenderingNode(path);
         path.translate(initialBounds.getX(), initialBounds.getY());
@@ -238,7 +239,7 @@ final class KGERenderingControllerHelper {
             final List<KStyle> propagatedStyles, final PNode parent, final Bounds initialBounds) {
 
         // create the arc
-        final KlighdPath path = KlighdPath.createArc(0, 0, initialBounds.getWidth(), initialBounds
+        final KlighdPath path = KlighdPaths.createArc(0, 0, initialBounds.getWidth(), initialBounds
                 .getHeight(), arc.getStartAngle(), arc.getArcAngle(), arc.getArcType().getValue());
 
         path.setPaint((RGB) null);
@@ -346,14 +347,14 @@ final class KGERenderingControllerHelper {
         final KlighdPath path;
         if (line instanceof KSpline) {
             // create the spline
-            path = KlighdPath.createSpline(points);
+            path = KlighdPaths.createSpline(points);
         } else if (line instanceof KRoundedBendsPolyline) {
             // create the rounded bends polyline
-            path = KlighdPath.createRoundedBendPolyline(points,
+            path = KlighdPaths.createRoundedBendPolyline(points,
                     ((KRoundedBendsPolyline) line).getBendRadius());
         } else {
             // create the polyline
-            path = KlighdPath.createPolyline(points);
+            path = KlighdPaths.createPolyline(points);
         }
 
         controller.initializeRenderingNode(path);
@@ -436,7 +437,7 @@ final class KGERenderingControllerHelper {
             final AbstractKGERenderingController<?, ?> controller, final KPolygon polygon,
             final List<KStyle> propagatedStyles, final PNode parent, final Bounds initialBounds) {
         // create the polygon
-        final KlighdPath path = KlighdPath.createPolygon(PiccoloPlacementUtil
+        final KlighdPath path = KlighdPaths.createPolygon(PiccoloPlacementUtil
                 .evaluatePolylinePlacement(polygon, initialBounds));
         controller.initializeRenderingNode(path);
         path.translate(initialBounds.getX(), initialBounds.getY());

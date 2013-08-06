@@ -32,6 +32,7 @@ import de.cau.cs.kieler.klighd.KlighdConstants;
 import de.cau.cs.kieler.klighd.piccolo.internal.controller.AbstractKGERenderingController;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.IGraphElement;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdPath;
+import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdPaths;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdStyledText;
 import de.cau.cs.kieler.klighd.util.KlighdProperties;
 import edu.umd.cs.piccolo.PCamera;
@@ -83,7 +84,7 @@ public class PiccoloTooltip {
                 KlighdConstants.DEFAULT_TOOL_TIP_FONT_SIZE, KlighdConstants.DEFAULT_FONT_STYLE));
 
         // create a rounded box where the tooltip will be displayed
-        root = KlighdPath.createRoundRectangle(0, 0, 0, 0, ROUNDNESS, ROUNDNESS);
+        root = KlighdPaths.createRoundRectangle(0, 0, 0, 0, ROUNDNESS, ROUNDNESS);
         root.setVisible(false);
         root.setPaint(Color.WHITE);
         root.setPaintAlpha(OPACITY);

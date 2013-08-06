@@ -39,6 +39,7 @@ import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KNodeTopNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdCanvas;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdPath;
+import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdPaths;
 import edu.umd.cs.piccolo.PCamera;
 import edu.umd.cs.piccolo.PLayer;
 import edu.umd.cs.piccolo.PNode;
@@ -181,7 +182,7 @@ public class PiccoloOutlinePage implements IContentOutlinePage {
             PBounds bounds = originalCamera.getBounds();
             // configure the outline rectangle
             outlineRect =
-                    KlighdPath.createRoundRectangle((float) bounds.x, (float) bounds.y,
+                    KlighdPaths.createRoundRectangle((float) bounds.x, (float) bounds.y,
                             (float) bounds.width, (float) bounds.height, OUTLINE_EDGE_ROUNDNESS,
                             OUTLINE_EDGE_ROUNDNESS);
             outlineRect.setPaint(OUTLINE_EDGE_COLOR);
