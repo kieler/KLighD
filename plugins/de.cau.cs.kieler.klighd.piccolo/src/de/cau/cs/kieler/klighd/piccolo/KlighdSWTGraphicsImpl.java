@@ -129,46 +129,48 @@ public class KlighdSWTGraphicsImpl extends SWTGraphics2D implements KlighdSWTGra
         return super.getLineWidth();
     }
     
-    // private static final Rectangle2D.Float TEMP_RECT = new Rectangle2D.Float();
+    private Pattern lastPattern = null;
 
     /**
      * {@inheritDoc}
      */
     public void setPattern(final RGBGradient gradient, final Rectangle2D bounds) {
-        // TEMP_RECT.setRect(bounds);
-        // SWTShapeManager.transform(TEMP_RECT, this.getTransform());
-
-        // Point2D[] points = computePatternPoints(TEMP_RECT, Math.toRadians(gradient.getAngle()));
-        Point2D[] points = computePatternPoints(bounds, Math.toRadians(gradient.getAngle()));
+        final Point2D[] points = computePatternPoints(bounds, Math.toRadians(gradient.getAngle()));
 
         final float curAlpha = (float) this.getAlpha();
         final int alpha1 = (int) (gradient.getAlpha1() * (curAlpha / KlighdConstants.ALPHA_FULL_OPAQUE));
         final int alpha2 = (int) (gradient.getAlpha2() * (curAlpha / KlighdConstants.ALPHA_FULL_OPAQUE));
 
-        this.setPattern(new Pattern(this.getGraphicsContext().getDevice(), (float) points[0]
-                .getX(), (float) points[0].getY(), (float) points[1].getX(), (float) points[1]
-                .getY(), this.getColor(gradient.getColor1()), alpha1, this.getColor(gradient
-                .getColor2()), alpha2));
+        if (this.lastPattern != null) {
+            this.lastPattern.dispose();
+        }
+
+        this.lastPattern = new Pattern(this.getGraphicsContext().getDevice(),
+                (float) points[0].getX(), (float) points[0].getY(), (float) points[1].getX(),
+                (float) points[1].getY(), this.getColor(gradient.getColor1()), alpha1,
+                this.getColor(gradient.getColor2()), alpha2);
+        this.setPattern(this.lastPattern);
     }
 
     /**
      * {@inheritDoc}
      */
     public void setBackgroundPattern(final RGBGradient gradient, final Rectangle2D bounds) {
-        // TEMP_RECT.setRect(bounds);
-        // SWTShapeManager.transform(TEMP_RECT, this.getTransform());
-
-        // Point2D[] points = computePatternPoints(TEMP_RECT, Math.toRadians(gradient.getAngle()));
-        Point2D[] points = computePatternPoints(bounds, Math.toRadians(gradient.getAngle()));
+        final Point2D[] points = computePatternPoints(bounds, Math.toRadians(gradient.getAngle()));
 
         final float curAlpha = (float) this.getAlpha();
         final int alpha1 = (int) (gradient.getAlpha1() * (curAlpha / KlighdConstants.ALPHA_FULL_OPAQUE));
         final int alpha2 = (int) (gradient.getAlpha2() * (curAlpha / KlighdConstants.ALPHA_FULL_OPAQUE));
 
-        this.setBackgoundPattern(new Pattern(this.getGraphicsContext().getDevice(),
+        if (this.lastPattern != null) {
+            this.lastPattern.dispose();
+        }
+        
+        this.lastPattern = new Pattern(this.getGraphicsContext().getDevice(),
                 (float) points[0].getX(), (float) points[0].getY(), (float) points[1].getX(),
-                (float) points[1].getY(), this.getColor(gradient.getColor1()), alpha1, this
-                        .getColor(gradient.getColor2()), alpha2));
+                (float) points[1].getY(), this.getColor(gradient.getColor1()), alpha1,
+                this.getColor(gradient.getColor2()), alpha2);
+        this.setBackgoundPattern(this.lastPattern);
     }
 
 
@@ -288,19 +290,56 @@ public class KlighdSWTGraphicsImpl extends SWTGraphics2D implements KlighdSWTGra
         }
     }
     
+    // the following field with singleton values
+    //  that serve the purpose of avoiding unnecessary object creation and dismiss 
+    private final PAffineTransform rotation = new PAffineTransform();
+    private final Rectangle2D transformedBounds = new Rectangle2D.Double();
+    private final Point2D[] patternPoints = new Point2D[] {
+            new Point2D.Double(), new Point2D.Double()
+    };
+
+    /**
+     * Compute the pattern points required by
+     * {@link Pattern#Pattern(Device, float, float, float, float, Color, int, Color, int)}.
+     * 
+     * @param bounds
+     *            the bounds of the shape to be drawn with a gradient
+     * @param angle
+     *            the gradients angle
+     * @return the {@link #patternPoints} array providing the desired gradient points
+     */
     private Point2D[] computePatternPoints(final Rectangle2D bounds, final double angle) {
 
-        PAffineTransform t = new PAffineTransform();
-        t.rotate(-angle, bounds.getCenterX(), bounds.getCenterY());
-        t.transform(bounds, bounds);
+        if (angle != 0d) {
+            // set 'rotation' to rotate its input counterclockwise around the center of 'bounds'
+            this.rotation.rotate(-angle, bounds.getCenterX(), bounds.getCenterY());
+            
+            // create a copy of 'bounds' and apply 't' to that copy, i.e. rotate the copy
+            //  counterclockwise according to 'angle';
+            // note that transforming a rectangle will lead to a new rectangle resembling
+            //  the bounding box of the imaginary rotated original one;
+            // there will be no Path2D created containing the rotated corner points!
+            this.rotation.transform(bounds, this.transformedBounds);
+        } else {
+            this.transformedBounds.setRect(bounds);
+        }
+        
+        // now determine two points forming a horizontal line through the center of 'bounds'
+        //  (which is equal to the center of 'transformedBounds' as we rotated around the center) 
+        //  from 'transformedBounds''s left most 'x' value to its right most one
+        this.patternPoints[0].setLocation(this.transformedBounds.getMinX(), bounds.getCenterY());
+        this.patternPoints[1].setLocation(this.transformedBounds.getMaxX(), bounds.getCenterY());
 
-        Rectangle2D incBounds = bounds.getBounds2D();
-        Point2D p1 = new Point2D.Double(incBounds.getMinX(), incBounds.getCenterY());
-        Point2D p2 = new Point2D.Double(incBounds.getMaxX(), incBounds.getCenterY());
-
-        t.inverseTransform(p1, p1);
-        t.inverseTransform(p2, p2);
-
-        return new Point2D[] { p1, p2 };
+        // the gradient will be realized along that imaginary line,
+        //  lines of points of equal color will run orthogonally to that line
+        if (!this.rotation.isIdentity()) {
+            // in order to let the imaginary line respect our desired angle,
+            //  simply rotate the points back :-)
+            this.rotation.inverseTransform(this.patternPoints[0], this.patternPoints[0]);
+            this.rotation.inverseTransform(this.patternPoints[1], this.patternPoints[1]);
+            this.rotation.setToIdentity();
+        }
+        
+        return this.patternPoints;
     }
 }
