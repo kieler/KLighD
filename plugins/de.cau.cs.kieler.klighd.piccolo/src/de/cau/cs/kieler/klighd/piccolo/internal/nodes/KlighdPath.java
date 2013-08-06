@@ -169,7 +169,7 @@ public class KlighdPath extends PNode {
      * @return the points or <code>null</code> if path is not a line or is not initialized properly.
      */
     public Point2D[] getShapePoints() {
-        return this.linePoints;
+        return linePoints;
     }
 
     /**
@@ -194,7 +194,7 @@ public class KlighdPath extends PNode {
      * @return the line related {@link LineAttributes}.
      */
     public LineAttributes getLineAttributes() {
-        return this.lineAttributes;
+        return lineAttributes;
     }
 
     /**
@@ -577,8 +577,8 @@ public class KlighdPath extends PNode {
 
         // take care about the shadow
         if (shadow != null) {
-            if (swt && this.shapePath == null) {
-                this.shapePath = createSWTPath(shape.getPathIterator(null), device);
+            if (swt && shapePath == null) {
+                shapePath = createSWTPath(shape.getPathIterator(null), device);
             }
             drawShadow(graphics, swt);
         }
@@ -587,27 +587,27 @@ public class KlighdPath extends PNode {
 
         // draw the background if possible and required
         if (!isLine()) {
-            if (swt && shapePath == null && (this.paint != null || this.paintGradient != null)) {
-                this.shapePath = createSWTPath(shape.getPathIterator(null), device);
+            if (swt && shapePath == null && (paint != null || paintGradient != null)) {
+                shapePath = createSWTPath(shape.getPathIterator(null), device);
             }
             
-            if (this.paint != null) {
+            if (paint != null) {
                 graphics.setAlpha(
                         (int) (paintAlpha * (currentAlphaFloat / KlighdConstants.ALPHA_FULL_OPAQUE)));
-                graphics.setBackground(this.paint);
+                graphics.setBackground(paint);
                 if (swt) {
-                    graphics.fill(this.shapePath);
+                    graphics.fill(shapePath);
                 } else {
-                    graphics.fill(this.shape);
+                    graphics.fill(shape);
                 }
             }
 
-            if (this.paintGradient != null) {
-                graphics.setBackgroundPattern(this.paintGradient, getBoundsReference());
+            if (paintGradient != null) {
+                graphics.setBackgroundPattern(paintGradient, getBoundsReference());
                 if (swt) {
-                    graphics.fill(this.shapePath);
+                    graphics.fill(shapePath);
                 } else {
-                    graphics.fill(this.shape);
+                    graphics.fill(shape);
                 }
             }
         }
@@ -618,7 +618,7 @@ public class KlighdPath extends PNode {
             graphics.setLineAttributes(lineAttributes);
             
             if (swt && shapePath == null && (strokePaint != null || strokePaintGradient != null)) {
-                this.shapePath = createSWTPath(shape.getPathIterator(null), graphics.getDevice());
+                shapePath = createSWTPath(shape.getPathIterator(null), graphics.getDevice());
             }
             
             if (strokePaint != null) {
@@ -626,18 +626,18 @@ public class KlighdPath extends PNode {
                         (int) (strokeAlpha * (currentAlphaFloat / KlighdConstants.ALPHA_FULL_OPAQUE)));
                 graphics.setColor(strokePaint);
                 if (swt) {
-                    graphics.draw(this.shapePath);
+                    graphics.draw(shapePath);
                 } else {
-                    graphics.draw(this.shape);
+                    graphics.draw(shape);
                 }
             }
     
             if (strokePaintGradient != null) {
-                graphics.setPattern(strokePaintGradient, this.getBoundsReference());
+                graphics.setPattern(strokePaintGradient, getBoundsReference());
                 if (swt) {
-                    graphics.draw(this.shapePath);
+                    graphics.draw(shapePath);
                 } else {
-                    graphics.draw(this.shape);
+                    graphics.draw(shape);
                 }
             }
         }
@@ -669,7 +669,7 @@ public class KlighdPath extends PNode {
         tc.translate(shadowExtend, shadowExtend);
 
         // configure the graphics layer
-        graphics.setBackground(this.shadow);
+        graphics.setBackground(shadow);
         
         // a sufficiently small number unequal to 0
         graphics.setLineWidth(0.0001f); // SUPPRESS CHECKSTYLE MagicNumber
@@ -680,9 +680,9 @@ public class KlighdPath extends PNode {
         for (int i = 0; i < shadowExtend; i++) {
             graphics.setTransform(tc);
             if (swt) {
-                graphics.fill(this.shapePath);
+                graphics.fill(shapePath);
             } else {
-                graphics.fill(this.shape);
+                graphics.fill(shape);
             }
             tc.translate(-1, -1);
         }
@@ -696,9 +696,9 @@ public class KlighdPath extends PNode {
         graphics.setAlpha(KlighdConstants.ALPHA_FULL_OPAQUE);
         graphics.setBackground(KlighdConstants.WHITE);
         if (swt) {
-            graphics.fill(this.shapePath);
+            graphics.fill(shapePath);
         } else {
-            graphics.fill(this.shape);
+            graphics.fill(shape);
         }
 
         // reset the manipulated settings
@@ -754,9 +754,9 @@ public class KlighdPath extends PNode {
      * {@link #shapePath}. (see {@link Path#Path(Device)} for details)
      */
     private void disposeSWTPath() {
-        if (shapePath != null) {
-            shapePath.dispose();
-            shapePath = null;
+        if (this.shapePath != null) {
+            this.shapePath.dispose();
+            this.shapePath = null;
         }
     }
 
@@ -779,7 +779,7 @@ public class KlighdPath extends PNode {
      */
     public void setPathToRectangle(final float x, final float y, final float width,
             final float height) {
-        setShape(new Rectangle2D.Float(x, y, width, height));
+        this.setShape(new Rectangle2D.Float(x, y, width, height));
     }
 
     /**
@@ -800,7 +800,7 @@ public class KlighdPath extends PNode {
      */
     public void setPathToRoundRectangle(final float x, final float y, final float width,
             final float height, final float arcWidth, final float arcHeight) {
-        setShape(new RoundRectangle2D.Float(x, y, width, height, arcWidth, arcHeight));
+        this.setShape(new RoundRectangle2D.Float(x, y, width, height, arcWidth, arcHeight));
     }
 
     /**
@@ -817,7 +817,7 @@ public class KlighdPath extends PNode {
      *            height of the ellipse
      */
     public void setPathToEllipse(final float x, final float y, final float width, final float height) {
-        setShape(new Ellipse2D.Float(x, y, width, height));
+        this.setShape(new Ellipse2D.Float(x, y, width, height));
     }
 
 
@@ -843,7 +843,7 @@ public class KlighdPath extends PNode {
      */
     public void setPathToArc(final float x, final float y, final float width, final float height,
             final float angStart, final float angExtend, final int type) {
-        setShape(new Arc2D.Float(x, y, width, height, angStart, angExtend, type));
+        this.setShape(new Arc2D.Float(x, y, width, height, angStart, angExtend, type));
     }
 
 
@@ -858,10 +858,10 @@ public class KlighdPath extends PNode {
             return;
         }
 
-        isSpline = true;
+        this.isSpline = true;
         Path2D spline = PolylineUtil.createSplinePath(new Path2D.Float(), points);
         this.linePoints = PolylineUtil.createSplineApproximationPath(spline);
-        setShape(spline);
+        this.setShape(spline);
     }
 
 
@@ -878,9 +878,10 @@ public class KlighdPath extends PNode {
             return;
         }
         
-        isRoundedBendsPolyline = true;
+        this.isRoundedBendsPolyline = true;
         this.linePoints = points;
-        setShape(PolylineUtil.createRoundedBendsPolylinePath(new Path2D.Float(), points, bendRadius));
+        this.setShape(
+                PolylineUtil.createRoundedBendsPolylinePath(new Path2D.Float(), points, bendRadius));
     }
 
 
