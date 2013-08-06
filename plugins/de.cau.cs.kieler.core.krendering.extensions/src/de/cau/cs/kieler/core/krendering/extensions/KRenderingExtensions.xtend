@@ -15,50 +15,51 @@ package de.cau.cs.kieler.core.krendering.extensions
 
 import de.cau.cs.kieler.core.kgraph.KGraphElement
 import de.cau.cs.kieler.core.kgraph.KNode
+import de.cau.cs.kieler.core.kgraph.KPort
 import de.cau.cs.kieler.core.krendering.HorizontalAlignment
+import de.cau.cs.kieler.core.krendering.KAreaPlacementData
+import de.cau.cs.kieler.core.krendering.KBackground
+import de.cau.cs.kieler.core.krendering.KColor
+import de.cau.cs.kieler.core.krendering.KColoring
+import de.cau.cs.kieler.core.krendering.KEllipse
 import de.cau.cs.kieler.core.krendering.KFontBold
 import de.cau.cs.kieler.core.krendering.KFontItalic
-import de.cau.cs.kieler.core.krendering.KFontSize
-import de.cau.cs.kieler.core.krendering.KHorizontalAlignment
-import de.cau.cs.kieler.core.krendering.KLineWidth
-import de.cau.cs.kieler.core.krendering.KPosition
-import de.cau.cs.kieler.core.krendering.KRendering
-import de.cau.cs.kieler.core.krendering.KRenderingFactory
-import de.cau.cs.kieler.core.krendering.KVerticalAlignment
-import de.cau.cs.kieler.core.krendering.VerticalAlignment
-import de.cau.cs.kieler.core.krendering.KStyle
-import de.cau.cs.kieler.core.krendering.KPlacementData
-import de.cau.cs.kieler.core.krendering.KRoundedRectangle
-import de.cau.cs.kieler.core.krendering.LineStyle
-import de.cau.cs.kieler.core.krendering.KLineStyle
 import de.cau.cs.kieler.core.krendering.KFontName
-import de.cau.cs.kieler.core.krendering.KRotation
+import de.cau.cs.kieler.core.krendering.KFontSize
 import de.cau.cs.kieler.core.krendering.KForeground
-import de.cau.cs.kieler.core.krendering.KBackground
-import de.cau.cs.kieler.core.krendering.KColoring
-import de.cau.cs.kieler.core.krendering.KColor
+import de.cau.cs.kieler.core.krendering.KGridPlacement
+import de.cau.cs.kieler.core.krendering.KGridPlacementData
+import de.cau.cs.kieler.core.krendering.KHorizontalAlignment
 import de.cau.cs.kieler.core.krendering.KInvisibility
 import de.cau.cs.kieler.core.krendering.KLineCap
+import de.cau.cs.kieler.core.krendering.KLineJoin
+import de.cau.cs.kieler.core.krendering.KLineStyle
+import de.cau.cs.kieler.core.krendering.KLineWidth
+import de.cau.cs.kieler.core.krendering.KPlacementData
+import de.cau.cs.kieler.core.krendering.KPolygon
+import de.cau.cs.kieler.core.krendering.KPolyline
+import de.cau.cs.kieler.core.krendering.KPosition
+import de.cau.cs.kieler.core.krendering.KRectangle
+import de.cau.cs.kieler.core.krendering.KRendering
+import de.cau.cs.kieler.core.krendering.KRenderingFactory
+import de.cau.cs.kieler.core.krendering.KRotation
+import de.cau.cs.kieler.core.krendering.KRoundedRectangle
+import de.cau.cs.kieler.core.krendering.KShadow
+import de.cau.cs.kieler.core.krendering.KStyle
+import de.cau.cs.kieler.core.krendering.KStyleHolder
+import de.cau.cs.kieler.core.krendering.KStyleRef
+import de.cau.cs.kieler.core.krendering.KText
+import de.cau.cs.kieler.core.krendering.KTextStrikeout
+import de.cau.cs.kieler.core.krendering.KTextUnderline
+import de.cau.cs.kieler.core.krendering.KVerticalAlignment
 import de.cau.cs.kieler.core.krendering.LineCap
+import de.cau.cs.kieler.core.krendering.LineJoin
+import de.cau.cs.kieler.core.krendering.LineStyle
+import de.cau.cs.kieler.core.krendering.Trigger
+import de.cau.cs.kieler.core.krendering.Underline
+import de.cau.cs.kieler.core.krendering.VerticalAlignment
 
 import static extension org.eclipse.emf.ecore.util.EcoreUtil.*
-import de.cau.cs.kieler.core.krendering.KStyleRef
-import de.cau.cs.kieler.core.krendering.KStyleHolder
-import de.cau.cs.kieler.core.krendering.KAreaPlacementData
-import de.cau.cs.kieler.core.krendering.KGridPlacementData
-import de.cau.cs.kieler.core.krendering.Underline
-import de.cau.cs.kieler.core.krendering.KTextUnderline
-import de.cau.cs.kieler.core.krendering.KTextStrikeout
-import de.cau.cs.kieler.core.krendering.KEllipse
-import de.cau.cs.kieler.core.krendering.KRectangle
-import de.cau.cs.kieler.core.krendering.KText
-import de.cau.cs.kieler.core.krendering.KShadow
-import de.cau.cs.kieler.core.krendering.Trigger
-import de.cau.cs.kieler.core.krendering.LineJoin
-import de.cau.cs.kieler.core.krendering.KLineJoin
-import de.cau.cs.kieler.core.kgraph.KPort
-import de.cau.cs.kieler.core.krendering.KPolygon
-import de.cau.cs.kieler.core.krendering.KGridPlacement
 
 /**
  * This utility class contains various methods that are convenient while composing KRendering data.
@@ -632,6 +633,22 @@ class KRenderingExtensions {
     }
     
     
+    def KPolyline from(KPolyline polyline, 
+                    PositionReferenceX px, float absoluteLR, float relativeLR,
+                    PositionReferenceY py, float absoluteTB, float relativeTB) {
+        return polyline => [
+            it.points += createKPosition(px, absoluteLR, relativeLR, py, absoluteTB, relativeTB);
+        ];
+    }
+
+    def KPolyline to(KPolyline polyline, 
+                    PositionReferenceX px, float absoluteLR, float relativeLR,
+                    PositionReferenceY py, float absoluteTB, float relativeTB) {
+        return polyline => [
+            it.points += createKPosition(px, absoluteLR, relativeLR, py, absoluteTB, relativeTB);
+        ];
+    }
+
     def <T extends KRendering> T setAreaPlacementData(T rendering, KPosition topLeft, KPosition bottomRight){
         return rendering => [
             rendering.placementData = renderingFactory.createKAreaPlacementData() => [
@@ -752,6 +769,24 @@ class KRenderingExtensions {
     def KGridPlacementData setMaxCellHeightEx(KGridPlacementData placementData, float maxCellHeight) {
         return placementData => [
             placementData.maxCellHeight = maxCellHeight;
+        ];
+    }
+
+    def <T extends KRendering> T setPointPlacementData(T rendering,
+        PositionReferenceX px, float absoluteLR, float relativeLR,
+        PositionReferenceY py, float absoluteTB, float relativeTB,
+        HorizontalAlignment horizontalAlignment, VerticalAlignment verticalAlignment,
+        float horizontalMargin, float verticalMargin, float minWidth, float minHeight) {
+        return rendering => [
+            rendering.placementData = renderingFactory.createKPointPlacementData => [
+                it.referencePoint = createKPosition(px, absoluteLR, relativeLR, py, absoluteTB, relativeTB);
+                it.horizontalAlignment = horizontalAlignment;
+                it.verticalAlignment = verticalAlignment;
+                it.horizontalMargin = horizontalMargin;
+                it.verticalMargin = verticalMargin;
+                it.minWidth = minWidth;
+                it.minHeight = minHeight;
+            ];
         ];
     }
 
