@@ -27,7 +27,7 @@ import edu.umd.cs.piccolo.event.PInputEvent;
 public class PMouseWheelZoomEventHandler extends PBasicInputEventHandler {
 
     /** the zoom sensitivity. */
-    private static final double ZOOM_SENSITIVITY = 0.05;
+    private static final double ZOOM_SENSITIVITY = 0.10;
     /** the minimum scale. */
     private double minScale = 0;
     /** the maximum scale. */
