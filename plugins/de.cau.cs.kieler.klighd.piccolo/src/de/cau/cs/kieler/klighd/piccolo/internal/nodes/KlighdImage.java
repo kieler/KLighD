@@ -16,12 +16,14 @@ package de.cau.cs.kieler.klighd.piccolo.internal.nodes;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.InputStream;
+import java.util.List;
 
 import org.eclipse.swt.graphics.Device;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.ImageData;
 
 import de.cau.cs.kieler.klighd.piccolo.KlighdSWTGraphics;
+import de.cau.cs.kieler.klighd.piccolo.internal.util.NodeUtil;
 import edu.umd.cs.piccolo.PNode;
 import edu.umd.cs.piccolo.nodes.PImage;
 import edu.umd.cs.piccolo.util.PBounds;
@@ -95,13 +97,24 @@ public class KlighdImage extends PNode {
      * has been removed.
      */
     private void addDisposeListener() {
-        this.addPropertyChangeListener(PNode.PROPERTY_PARENT, new PropertyChangeListener() {
+        final PropertyChangeListener disposeListener = new PropertyChangeListener() {
             public void propertyChange(final PropertyChangeEvent event) {
-                if (event.getNewValue() == null && image != null) {
-                    image.dispose();
+                if (event.getNewValue() == null) {
+                    if (event.getNewValue() == null && image != null) {
+                        image.dispose();
+                        image = null;
+                    }
+                    
+                    @SuppressWarnings("unchecked")
+                    final List<PNode> children = KlighdImage.this.getChildrenReference();
+                    for (PNode p : children) {
+                        p.firePropertyChange(NodeUtil.DISPOSE_CODE, NodeUtil.DISPOSE, this, null);
+                    }
                 }
             }
-        });
+        };
+        this.addPropertyChangeListener(PNode.PROPERTY_PARENT, disposeListener);
+        this.addPropertyChangeListener(NodeUtil.DISPOSE, disposeListener);
     }
 
     /**
