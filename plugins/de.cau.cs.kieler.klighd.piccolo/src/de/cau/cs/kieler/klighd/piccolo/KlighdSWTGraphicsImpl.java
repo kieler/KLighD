@@ -21,6 +21,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Device;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.LineAttributes;
+import org.eclipse.swt.graphics.Path;
 import org.eclipse.swt.graphics.Pattern;
 import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.graphics.TextLayout;
@@ -128,16 +129,17 @@ public class KlighdSWTGraphicsImpl extends SWTGraphics2D implements KlighdSWTGra
         return super.getLineWidth();
     }
     
-    private static final Rectangle2D.Float TEMP_RECT = new Rectangle2D.Float();
+    // private static final Rectangle2D.Float TEMP_RECT = new Rectangle2D.Float();
 
     /**
      * {@inheritDoc}
      */
     public void setPattern(final RGBGradient gradient, final Rectangle2D bounds) {
-        TEMP_RECT.setRect(bounds);
-        SWTShapeManager.transform(TEMP_RECT, this.getTransform());
+        // TEMP_RECT.setRect(bounds);
+        // SWTShapeManager.transform(TEMP_RECT, this.getTransform());
 
-        Point2D[] points = computePatternPoints(TEMP_RECT, Math.toRadians(gradient.getAngle()));
+        // Point2D[] points = computePatternPoints(TEMP_RECT, Math.toRadians(gradient.getAngle()));
+        Point2D[] points = computePatternPoints(bounds, Math.toRadians(gradient.getAngle()));
 
         final float curAlpha = (float) this.getAlpha();
         final int alpha1 = (int) (gradient.getAlpha1() * (curAlpha / KlighdConstants.ALPHA_FULL_OPAQUE));
@@ -153,10 +155,11 @@ public class KlighdSWTGraphicsImpl extends SWTGraphics2D implements KlighdSWTGra
      * {@inheritDoc}
      */
     public void setBackgroundPattern(final RGBGradient gradient, final Rectangle2D bounds) {
-        TEMP_RECT.setRect(bounds);
-        SWTShapeManager.transform(TEMP_RECT, this.getTransform());
+        // TEMP_RECT.setRect(bounds);
+        // SWTShapeManager.transform(TEMP_RECT, this.getTransform());
 
-        Point2D[] points = computePatternPoints(TEMP_RECT, Math.toRadians(gradient.getAngle()));
+        // Point2D[] points = computePatternPoints(TEMP_RECT, Math.toRadians(gradient.getAngle()));
+        Point2D[] points = computePatternPoints(bounds, Math.toRadians(gradient.getAngle()));
 
         final float curAlpha = (float) this.getAlpha();
         final int alpha1 = (int) (gradient.getAlpha1() * (curAlpha / KlighdConstants.ALPHA_FULL_OPAQUE));
@@ -167,36 +170,57 @@ public class KlighdSWTGraphicsImpl extends SWTGraphics2D implements KlighdSWTGra
                 (float) points[1].getY(), this.getColor(gradient.getColor1()), alpha1, this
                         .getColor(gradient.getColor2()), alpha2));
     }
-    
-    
-    /*-----------------------------*/
-    /* overrides of legacy methods */
-    /*-----------------------------*/
-    
+
+
+    /*-----------------*/
+    /* drawing methods */
+    /*-----------------*/
+
     /**
      * {@inheritDoc}
      */
     public void draw(final Shape shape) {
         int alpha = getAlpha();
         antiAliase();
-        updateCustomLineStyle(); 
-        
-        gc.getGCData().lineWidth = getTransformedLineWidthFloat();
 
-        gc.drawPath(pathIterator2Path(shape.getPathIterator(transform)));
-        
+        final Path path = pathIterator2Path(shape.getPathIterator(null));
+
+        gc.setTransform(swtTransform);
+        gc.drawPath(path);
+
+        path.dispose();
+
         setAlpha(alpha);
     }
     
     /**
      * {@inheritDoc}
      */
+    public void draw(final Path path) {
+        gc.setTransform(swtTransform);
+        gc.drawPath(path);
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
     public void fill(final Shape shape) {
-        gc.getGCData().lineWidth = getTransformedLineWidthFloat();
+        final Path path = pathIterator2Path(shape.getPathIterator(null));
 
-        gc.fillPath(pathIterator2Path(shape.getPathIterator(transform)));
+        gc.setTransform(swtTransform);
+        gc.fillPath(path);
+        
+        path.dispose();
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    public void fill(final Path path) {
+        gc.setTransform(swtTransform);
+        gc.fillPath(path);
+    }
+    
 
     /**
      * {@inheritDoc}
@@ -204,6 +228,7 @@ public class KlighdSWTGraphicsImpl extends SWTGraphics2D implements KlighdSWTGra
     public void drawImage(final org.eclipse.swt.graphics.Image image, final double width,
             final double height) {
         final org.eclipse.swt.graphics.Rectangle bounds = image.getBounds();
+        gc.setTransform(null);
         drawImage(image, 0, 0, bounds.width, bounds.height, 0, 0, width, height);
     }
 
@@ -243,6 +268,7 @@ public class KlighdSWTGraphicsImpl extends SWTGraphics2D implements KlighdSWTGra
      * i.e. the zoom factor
      * 
      */
+    @SuppressWarnings("unused")
     private void updateCustomLineStyle() {
         if (this.gc.getGCData().lineStyle == SWT.LINE_CUSTOM) {
             
@@ -268,7 +294,7 @@ public class KlighdSWTGraphicsImpl extends SWTGraphics2D implements KlighdSWTGra
         t.rotate(-angle, bounds.getCenterX(), bounds.getCenterY());
         t.transform(bounds, bounds);
 
-        Rectangle2D.Float incBounds = (Rectangle2D.Float) bounds.getBounds2D();
+        Rectangle2D incBounds = bounds.getBounds2D();
         Point2D p1 = new Point2D.Double(incBounds.getMinX(), incBounds.getCenterY());
         Point2D p2 = new Point2D.Double(incBounds.getMaxX(), incBounds.getCenterY());
 

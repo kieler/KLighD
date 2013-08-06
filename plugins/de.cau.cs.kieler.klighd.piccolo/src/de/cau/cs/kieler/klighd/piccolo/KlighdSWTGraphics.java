@@ -22,6 +22,7 @@ import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.LineAttributes;
+import org.eclipse.swt.graphics.Path;
 import org.eclipse.swt.graphics.RGB;
 
 import de.cau.cs.kieler.klighd.piccolo.internal.util.RGBGradient;
@@ -33,37 +34,41 @@ import de.cau.cs.kieler.klighd.piccolo.internal.util.RGBGradient;
  * SWTGraphics2D} contributed by the <code>edu.umd.cs.piccolox.swt</code> package. Instead a
  * <i>Graphics</i> layer realizing e.g. an SVG output shall be supported interchangeably.<br>
  * <br>
- * For drawing basic figures (except text fields) only {@link #draw(Shape)} and {@link #fill(Shape)}
- * are provided, since drawing and coloring such elements is to be performed by means of
- * {@link java.awt.geom.PathIterator PathIterators}, which are provided by AWT {@link Shape Shapes}
- * via {@link Shape#getPathIterator(AffineTransform)}.<br>
+ * For drawing basic figures (i.e. no text fields and images) {@link #draw(Path)} and
+ * {@link #fill(Path)} as well as {@link #draw(Shape)} and {@link #fill(Shape)} are provided. If an
+ * implementation is dedicated to draw on an SWT {@link Device}, indicated by {@link #getDevice()}
+ * <code>!= null</code> the former <code>draw()</code> and <code>fill()</code> methods shall be used
+ * by clients. This way clients can control the life cycle of the {@link Path} objects in order to
+ * reduce waste of performance due to continuous object creation and dismiss. Otherwise the latter
+ * pair of methods is to be used, e.g. for drawing on an SVG graphics.<br>
  * <br>
- * The rational of this approach is the decision to draw all basic figures by means of SWT
- * {@link org.eclipse.swt.graphics.Path Path} objects. This is currently the only way of passing
- * floating-point-based coordinates to the {@link org.eclipse.swt.graphics.GC GC}. Such SWT
- * {@link org.eclipse.swt.graphics.Path Paths} can be easily built-up by means of AWT Geometry
- * {@link java.awt.geom.PathIterator PathIterators}, see
+ * The rational of using Paths/Shapes for drawing is the decision to draw all basic figures by means
+ * of SWT {@link Path Paths} objects. This is currently the only way of passing floating-point-based
+ * coordinates to the {@link org.eclipse.swt.graphics.GC GC}, and thus to get rid of rounding
+ * issues. Such SWT {@link Path Paths} can be easily built-up from {@link Shape Shapes} by means of
+ * AWT Geometry {@link java.awt.geom.PathIterator PathIterators}, see
  * {@link edu.umd.cs.piccolox.swt.SWTGraphics2D#pathIterator2Path(java.awt.geom.PathIterator)
  * SWTGraphics2D#pathIterator2Path(PathIterator)}.<br>
  * <br>
- * Since the coordinates of the particular figures are relative to their parent figures, all
- * coordinates must be adjusted by the currently visible area and zoom factor. In order to do that
- * the path object must be inspected and the segment values updated. This is task is, fortunately,
- * also performed by the {@link java.awt.geom.PathIterator PathIterators}.<br>
- * <br>
- * A further advantage of this approach is an easier support of rotation of basic figures. This
- * requires the rotation of the coordinates while drawing the figures on the one hand, and the
- * incorporation of the rotation for determining the currently picked figure while processing mouse
- * input events. Relying on the AWT Geometry {@link java.awt.geom.PathIterator PathIterators}
- * enables consistent and homogeneous calculations for both use cases.<br>
+ * Consequently, we can delegate the application of {@link AffineTransform AffineTransforms} to SWT
+ * by simply transforming them into an SWT {@link org.eclipse.swt.graphics.Transform Transform} and
+ * calling {@link org.eclipse.swt.graphics.GC#setTransform(org.eclipse.swt.graphics.Transform)
+ * GC#setTransform(Transform)}.
  * 
  * @author chsch
  */
 public interface KlighdSWTGraphics {
 
     /**
+     * Returns the SWT {@link Device} to draw on. This method is to be used for creating
+     * {@link Device}-dependent objects like {@link org.eclipse.swt.graphics.Color Colors},
+     * {@link org.eclipse.swt.graphics.Font Fonts}, {@link Image Images}, and {@link Path Paths}.<br>
+     * <br>
+     * If the return value is <code>null</code> the current canvas is not an SWT-based one.<br>
+     * In that case only the AWT {@link Shape}-based <code>draw()</code> and <code>fill()</code>
+     * methods are supported.
      * 
-     * @return the {@link Device} to work with
+     * @return the {@link Device} to work with, or <code>null</code>, if a non-SWT canvas is used
      */
     Device getDevice();
     
@@ -282,9 +287,17 @@ public interface KlighdSWTGraphics {
      * any caching.
      * 
      * @param s
-     *            the <code>Shape</code> to be rendered
+     *            the {@link Shape} to be rendered
      */
     void draw(final Shape s);
+
+    /**
+     * Draws the provided SWT {@link Path}.
+     * 
+     * @param p
+     *            the {@link Path} to be rendered
+     */
+    void draw(final Path p);
     
     /**
      * Fills the provided AWT {@link Shape} by relying on the provided
@@ -296,6 +309,14 @@ public interface KlighdSWTGraphics {
      *            the <code>Shape</code> to be filled
      */
     void fill(final Shape s);
+    
+    /**
+     * Fills the provided SWT {@link Path}.
+     * 
+     * @param p
+     *            the {@link Path} to be rendered
+     */
+    void fill(final Path p);
     
     /**
      * Draws the provided image at the specified position with the specified width and height.<br>
