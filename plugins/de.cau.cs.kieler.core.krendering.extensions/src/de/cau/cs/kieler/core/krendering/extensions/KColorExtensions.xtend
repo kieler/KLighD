@@ -93,6 +93,11 @@ class KColorExtensions {
                 color.setGreen(215);
                 color.setBlue(000);
             }
+            case "goldenrod4" : {
+                color.setRed(109);
+                color.setGreen(105);
+                color.setBlue(20);
+            }
             case "gray" : {
                 color.setRed(190);
                 color.setGreen(190);
