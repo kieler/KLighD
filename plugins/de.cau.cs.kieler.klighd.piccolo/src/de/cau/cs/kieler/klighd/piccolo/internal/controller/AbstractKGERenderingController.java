@@ -589,7 +589,7 @@ public abstract class AbstractKGERenderingController
     private void processModifiableStyles(final List<KStyle> styles) {
         final Iterable<KStyle> localModifiedStyles = Iterables.filter(styles,
                 MODIFIED_STYLE_FILTER);
-        modifiableStylesPresent |= !localModifiedStyles.iterator().hasNext();
+        modifiableStylesPresent |= localModifiedStyles.iterator().hasNext();
 
         final KLayoutData layoutData = getGraphElement().getData(KLayoutData.class);
         if (layoutData == null) {
