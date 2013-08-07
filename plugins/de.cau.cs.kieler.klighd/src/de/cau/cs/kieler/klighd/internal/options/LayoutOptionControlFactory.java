@@ -168,7 +168,7 @@ public class LayoutOptionControlFactory {
      * @param animate whether the new layout shall be animated
      */
     private void refreshLayout(final boolean animate) {
-        LightDiagramServices.getInstance().layoutDiagram(workbenchPart);
+        LightDiagramServices.getInstance().layoutDiagram(workbenchPart, animate);
     }
     
     /**

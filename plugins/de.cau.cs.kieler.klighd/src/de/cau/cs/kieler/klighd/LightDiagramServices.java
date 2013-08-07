@@ -463,7 +463,45 @@ public final class LightDiagramServices {
      *            the diagram view part showing the diagram to layout
      */
     public void layoutDiagram(final IDiagramWorkbenchPart viewPart) {
-        layoutDiagram(viewPart, Collections.<ILayoutConfig>emptyList());
+        final IPreferenceStore preferenceStore = KlighdPlugin.getDefault().getPreferenceStore();
+        final boolean animate = preferenceStore.getBoolean(KlighdPreferences.ANIMATE_LAYOUT);
+        final boolean zoomToFit = preferenceStore.getBoolean(KlighdPreferences.ZOOM_TO_FIT);
+        
+        layoutDiagram(viewPart, animate, zoomToFit, Collections.<ILayoutConfig>emptyList());
+    }
+    
+    /**
+     * Performs the automatic layout on the diagram represented by the given
+     * {@link IDiagramWorkbenchPart}.<br>
+     * <br>
+     * The configuration of 'zoomToFit' is taken from the preference settings. 
+     * 
+     * @param viewPart
+     *            the diagram view part showing the diagram to layout
+     * @param animate
+     *            layout with or without animation
+     */
+    public void layoutDiagram(final IDiagramWorkbenchPart viewPart, final boolean animate) {
+        final IPreferenceStore preferenceStore = KlighdPlugin.getDefault().getPreferenceStore();
+        final boolean zoomToFit = preferenceStore.getBoolean(KlighdPreferences.ZOOM_TO_FIT);
+        
+        layoutDiagram(viewPart, animate, zoomToFit, Collections.<ILayoutConfig>emptyList());
+    }
+    
+    /**
+     * Performs the automatic layout on the diagram represented by the given
+     * {@link IDiagramWorkbenchPart}.
+     * 
+     * @param viewPart
+     *            the diagram view part showing the diagram to layout
+     * @param animate
+     *            layout with or without animation
+     * @param zoomToFit
+     *            layout with or without animation
+     */
+    public void layoutDiagram(final IDiagramWorkbenchPart viewPart, final boolean animate,
+            final boolean zoomToFit) {
+        layoutDiagram(viewPart, animate, zoomToFit, Collections.<ILayoutConfig>emptyList());
     }
     
     /**
@@ -483,7 +521,47 @@ public final class LightDiagramServices {
         final boolean animate = preferenceStore.getBoolean(KlighdPreferences.ANIMATE_LAYOUT);
         final boolean zoomToFit = preferenceStore.getBoolean(KlighdPreferences.ZOOM_TO_FIT);
         
-        layoutDiagram(viewPart, null, animate, zoomToFit, Collections.<ILayoutConfig>emptyList());
+        layoutDiagram(viewPart, animate, zoomToFit, options);
+    }
+    
+    /**
+     * Performs the automatic layout on the diagram represented by the given
+     * {@link IDiagramWorkbenchPart}.<br>
+     * <br>
+     * The configuration of 'zoomToFit' is taken from the preference settings. 
+     * 
+     * @param viewPart
+     *            the diagram view part showing the diagram to layout
+     * @param animate
+     *            layout with or without animation
+     * @param options
+     *            an optional list of layout options
+     */
+    public void layoutDiagram(final IDiagramWorkbenchPart viewPart, final boolean animate,
+            final List<ILayoutConfig> options) {
+        final IPreferenceStore preferenceStore = KlighdPlugin.getDefault().getPreferenceStore();
+        final boolean zoomToFit = preferenceStore.getBoolean(KlighdPreferences.ZOOM_TO_FIT);
+        
+        layoutDiagram(viewPart, animate, zoomToFit, Collections.<ILayoutConfig>emptyList());
+    }
+    
+    /**
+     * Performs the automatic layout on the diagram represented by the given
+     * {@link IDiagramWorkbenchPart}.
+     * 
+     * @param viewPart
+     *            the diagram view part showing the diagram to layout
+     * @param animate
+     *            layout with or without animation
+     * @param zoomToFit
+     *            layout with or without animation
+     * @param options
+     *            an optional list of layout options
+     */
+    public void layoutDiagram(final IDiagramWorkbenchPart viewPart, final boolean animate,
+            final boolean zoomToFit, final List<ILayoutConfig> options) {
+        layoutDiagram(viewPart, viewPart.getContextViewer(), animate, zoomToFit,
+                Collections.<ILayoutConfig>emptyList());
     }
     
     /**
@@ -502,7 +580,7 @@ public final class LightDiagramServices {
      *            an optional list of layout options
      */
     public void layoutDiagram(final IDiagramWorkbenchPart viewPart,
-            final IViewer<? extends EObject> diagramViewer, final boolean animate,
+            final IViewer<?> diagramViewer, final boolean animate,
             final boolean zoomToFit, final List<ILayoutConfig> options) {
         
         final ContextViewer contextViewer;
