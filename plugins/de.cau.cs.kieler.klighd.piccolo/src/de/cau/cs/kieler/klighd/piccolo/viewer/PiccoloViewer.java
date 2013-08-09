@@ -25,6 +25,7 @@ import org.eclipse.swt.widgets.Menu;
 import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 
 import com.google.common.base.Function;
+import com.google.common.base.Predicates;
 import com.google.common.collect.Iterables;
 
 import de.cau.cs.kieler.core.kgraph.KGraphElement;
@@ -33,8 +34,8 @@ import de.cau.cs.kieler.klighd.piccolo.Messages;
 import de.cau.cs.kieler.klighd.piccolo.internal.activities.ZoomActivity;
 import de.cau.cs.kieler.klighd.piccolo.internal.controller.DiagramController;
 import de.cau.cs.kieler.klighd.piccolo.internal.events.KlighdActionEventHandler;
-import de.cau.cs.kieler.klighd.piccolo.internal.events.PMouseWheelZoomEventHandler;
 import de.cau.cs.kieler.klighd.piccolo.internal.events.KlighdSimpleSelectionEventHandler;
+import de.cau.cs.kieler.klighd.piccolo.internal.events.PMouseWheelZoomEventHandler;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.ITracingElement;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdCanvas;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.PEmptyNode;
@@ -418,26 +419,25 @@ public class PiccoloViewer extends AbstractViewer<KNode> implements INodeSelecti
     public void selection(final KlighdSimpleSelectionEventHandler handler,
             final Iterable<PNode> nodes) {
         
-        Iterable<ITracingElement<EObject>> elements = Iterables.transform(nodes,
-                new Function<PNode, ITracingElement<EObject>>() {
-                    public ITracingElement<EObject> apply(final PNode node) {
-                        PNode element = node;
-                        while (!ITracingElement.class.isAssignableFrom(element.getClass())) {
-                            element = node.getParent();
-                        }
-                        @SuppressWarnings("unchecked")
-                        ITracingElement<EObject> result =
-                            (ITracingElement<EObject>) ITracingElement.class.cast(element);
-                        return result;
-                    }
-                });
-        
-        notifyListenersSelection(Iterables.transform(elements,
-                new Function<ITracingElement<EObject>, EObject>() {
-                    public EObject apply(final ITracingElement<EObject> element) {
-                        return element.getGraphElement();
-                    }
-                }));
+        Iterable<EObject> elements = Iterables.transform(nodes, new Function<PNode, EObject>() {
+
+            public EObject apply(final PNode node) {
+
+                PNode element = node;
+                while (element != null
+                        && !ITracingElement.class.isAssignableFrom(element.getClass())) {
+                    element = element.getParent();
+                }
+
+                if (element == null) {
+                    return null;
+                } else {
+                    return ITracingElement.class.cast(element).getGraphElement();
+                }
+            }
+        });
+
+        notifyListenersSelection(Iterables.filter(elements, Predicates.notNull()));
     }
 
 }
