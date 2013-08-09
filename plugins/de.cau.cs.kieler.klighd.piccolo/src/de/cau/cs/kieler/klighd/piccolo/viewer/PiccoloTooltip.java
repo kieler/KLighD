@@ -48,7 +48,11 @@ import edu.umd.cs.piccolox.swt.SWTTimer;
  * either retrieved from a {@link PNode}'s root {@link KRendering} or, if this is not available,
  * from the corresponding {@link KNode}'s {@link KShapeLayout}.
  * 
+ * TODO: Evaluate the realization of the tooltip by means of an SWT Widget, too, although that won't
+ *  be available for the web-based approach.
+ * 
  * @author uru
+ * @author chsch
  */
 public class PiccoloTooltip {
 
@@ -96,71 +100,60 @@ public class PiccoloTooltip {
 
     }
 
+    
     /**
      * Listens to the {@link PCamera} and reacts to mouse move events in order to display a tooltip
      * where available.
      */
     private class TooltipListener extends PBasicInputEventHandler {
-
+        
         /** The last mouseover's KRendering. */
         private KRendering rendering;
+        
         /** The last mouseover's KNode (only used if no rendering is available). */
         private KNode knode;
+        
         /** Position at which the tooltip is displayed. */
         private Point2D mousePos;
-
+        
+        /** The timer used to realize the delay of the tooltip occurrence. */ 
+        private Timer timer = null;
+        
+        /** Flag indicating whether the tooltip is valid and can be shown. */
         private boolean visible = false;
 
-        private Timer timer = new SWTTimer(display, TOOLTIP_DELAY, new ActionListener() {
-
-            public void actionPerformed(final ActionEvent e) {
-
-                // retrieve the tooltip
-                String tooltipText = "";
-                if (rendering != null) {
-                    tooltipText = rendering.getProperty(KlighdProperties.TOOLTIP);
-                } else if (knode != null) {
-                    KShapeLayout l = knode.getData(KShapeLayout.class);
-                    tooltipText = l.getProperty(KlighdProperties.TOOLTIP);
-                } else {
-                    return;
-                }
-
-                // return if no toiltip was assembled
-                if (Strings.isNullOrEmpty(tooltipText)) {
-                    return;
-                }
-
-                // prepare the tooltip element
-                tooltip.setText(tooltipText);
-                root.setOffset(mousePos.getX() + 2 * INSETS, mousePos.getY() + 2 * INSETS);
-
-                // adapt bounds to the text
-                PBounds tooltipBounds = tooltip.getBounds();
-                root.setPathToRoundRectangle((float) tooltipBounds.x - INSETS,
-                        (float) tooltipBounds.y - INSETS, (float) tooltipBounds.width + 2 * INSETS,
-                        (float) tooltipBounds.height + 2 * INSETS, ROUNDNESS, ROUNDNESS);
-
-                // set visible and repaint
-                root.setVisible(visible);
-                root.invalidatePaint();
-                root.invalidateLayout();
-            }
-        });
-
-        public void mouseMoved(final PInputEvent event) {
-            updateToolTip(event);
-
+        /**
+         * Constructor.
+         */
+        public TooltipListener() {
+            timer = new SWTTimer(display, TOOLTIP_DELAY, timeOutListener);
+            timer.setRepeats(false);
         }
 
+        /**
+         * {@inheritDoc}
+         */
+        public void mouseMoved(final PInputEvent event) {
+            updateToolTip(event);
+        }
+
+        /**
+         * {@inheritDoc}
+         */
         public void mouseDragged(final PInputEvent event) {
             updateToolTip(event);
         }
 
-        public void updateToolTip(final PInputEvent event) {
+        private void updateToolTip(final PInputEvent event) {
 
+            // first reset the tooltip timer and configuration
+            timer.stop();
+            visible = false;
+            root.setVisible(visible);
+            
             // retrieve the mouse we are over
-            PNode n = event.getInputManager().getMouseOver().getPickedNode();
+            // PNode n = event.getInputManager().getMouseOver().getPickedNode();
+            PNode n = event.getPickedNode();
 
             if (n instanceof IGraphElement<?>) {
                 visible = true;
@@ -189,15 +182,46 @@ public class PiccoloTooltip {
                 event.getPath().canvasToLocal(mousePos, camera);
 
                 // start the timer
-                timer.setRepeats(false);
                 timer.start();
-                // }
-            } else {
-                visible = false;
-                timer.stop();
-                root.setVisible(visible);
             }
         }
-    }
 
+        /** The {@link ActionListener} called once the timer expired, lets the tooltip appear. */
+        private ActionListener timeOutListener = new ActionListener() {
+
+            public void actionPerformed(final ActionEvent e) {
+
+                // retrieve the tooltip
+                String tooltipText = "";
+                if (rendering != null) {
+                    tooltipText = rendering.getProperty(KlighdProperties.TOOLTIP);
+                } else if (knode != null) {
+                    KShapeLayout l = knode.getData(KShapeLayout.class);
+                    tooltipText = l.getProperty(KlighdProperties.TOOLTIP);
+                } else {
+                    return;
+                }
+
+                // return if no tooltip was assembled
+                if (Strings.isNullOrEmpty(tooltipText)) {
+                    return;
+                }
+
+                // prepare the tooltip element
+                tooltip.setText(tooltipText);
+                root.setOffset(mousePos.getX() + 2 * INSETS, mousePos.getY() + 2 * INSETS);
+
+                // adapt bounds to the text
+                PBounds tooltipBounds = tooltip.getBounds();
+                root.setPathToRoundRectangle((float) tooltipBounds.x - INSETS,
+                        (float) tooltipBounds.y - INSETS, (float) tooltipBounds.width + 2 * INSETS,
+                        (float) tooltipBounds.height + 2 * INSETS, ROUNDNESS, ROUNDNESS);
+
+                // set visible and repaint
+                root.setVisible(visible);
+                root.invalidatePaint();
+                root.invalidateLayout();
+            }
+        };
+    }
 }
