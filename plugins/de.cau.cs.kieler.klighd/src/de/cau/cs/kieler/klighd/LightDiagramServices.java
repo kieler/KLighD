@@ -24,12 +24,11 @@ import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.statushandlers.StatusManager;
 
-import com.google.common.collect.ImmutableList;
-
 import de.cau.cs.kieler.core.kgraph.KNode;
 import de.cau.cs.kieler.core.properties.IProperty;
 import de.cau.cs.kieler.core.properties.IPropertyHolder;
 import de.cau.cs.kieler.core.properties.Property;
+import de.cau.cs.kieler.kiml.config.CompoundLayoutConfig;
 import de.cau.cs.kieler.kiml.config.ILayoutConfig;
 import de.cau.cs.kieler.kiml.klayoutdata.KLayoutData;
 import de.cau.cs.kieler.kiml.options.LayoutOptions;
@@ -596,12 +595,18 @@ public final class LightDiagramServices {
         final KLayoutData layoutData = viewModel != null ? viewModel.getData(KLayoutData.class) : null;
 
         if (layoutData != null && !layoutData.getProperty(LayoutOptions.NO_LAYOUT)) {
-            final List<ILayoutConfig> extendedOptions = options == null ? Collections
-                    .<ILayoutConfig>singletonList(contextViewer.getLightLayoutConfig())
-                    : ImmutableList.<ILayoutConfig>builder().addAll(options)
-                            .add(contextViewer.getLightLayoutConfig()).build();
-            DiagramLayoutEngine.INSTANCE.layout(viewPart, diagramViewer, animate,
-                    false, false, zoomToFit, extendedOptions);
+            final List<ILayoutConfig> extendedOptions;
+            if (options == null || options.isEmpty()) {
+                extendedOptions = Collections.<ILayoutConfig>singletonList(
+                        contextViewer.getLightLayoutConfig());
+            } else {
+                CompoundLayoutConfig compound = new CompoundLayoutConfig();
+                compound.addAll(options);
+                compound.add(contextViewer.getLightLayoutConfig());
+                extendedOptions = Collections.<ILayoutConfig>singletonList(compound);
+            }
+            DiagramLayoutEngine.INSTANCE.layout(viewPart, diagramViewer, animate, false, false,
+                    zoomToFit, extendedOptions);
         } else {
             diagramViewer.setRecording(false);
         }
