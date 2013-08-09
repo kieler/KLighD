@@ -173,16 +173,10 @@ public abstract class AbstractDiagramSynthesis<S> extends AbstractTransformation
      */
     protected <T> KNode setExpansionAwareLayoutOption(final KNode node, final IProperty<T> option,
             final T collapsedValue, final T expandedValue) {
-        KLayoutData sl = node.getData(KLayoutData.class); 
-        ExpansionAwareLayoutOptionData data = sl.getProperty(ExpansionAwareLayoutOption.OPTION);
-        
-        if (data == null) {
-            data = new ExpansionAwareLayoutOptionData();
-            sl.setProperty(ExpansionAwareLayoutOption.OPTION, data);
+        KLayoutData sl = node.getData(KLayoutData.class);
+        if (sl != null) {
+            ExpansionAwareLayoutOption.setProperty(sl, option, collapsedValue, expandedValue);
         }
-        
-        data.setProperty(option, collapsedValue, expandedValue);
-        
         return node;
     }
 
