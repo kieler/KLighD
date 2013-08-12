@@ -30,27 +30,27 @@ import de.cau.cs.kieler.klighd.microlayout.Bounds;
  * @author chsch
  */
 public final class KlighdConstants {
-    
+
     /**
      * Constant definition of the black {@link RGB} color constant.
      */
     public static final RGB BLACK = new RGB(0, 0, 0);
-    
+
     /**
      * Constant definition of the red {@link RGB} color constant.
      */
     public static final RGB BLUE = new RGB(0, 0, 255);
-    
+
     /**
      * Constant definition of the red {@link RGB} color constant.
      */
     public static final RGB GREEN = new RGB(0, 255, 0);
-    
+
     /**
      * Constant definition of the red {@link RGB} color constant.
      */
     public static final RGB RED = new RGB(255, 0, 0);
-    
+
     /**
      * Constant definition of the white {@link RGB} color constant.
      */
@@ -67,45 +67,45 @@ public final class KlighdConstants {
      * @see #ALPHA_FULL_OPAQUE
      */
     public static final int ALPHA_FULL_TRANSPARENT = 0;
-    
+
     /**
      * Constant definition of the <i>full opaque</i> SWT alpha value.
      * 
      * @see #ALPHA_FULL_TRANSPARENT
      */
     public static final int ALPHA_FULL_OPAQUE = 255;
-    
+
     /**
      * Constant definition denoting the standard line drawing attributes.
      */
     public static final LineAttributes DEFAULT_LINE_ATTRIBUTES = new LineAttributes(1f);
-    
+
     /**
-     * This font name is used for {@link de.cau.cs.kieler.core.krendering.KText KTexts}, if no related
-     * {@link de.cau.cs.kieler.core.krendering.KFontName KFontName} style is attached.
+     * This font name is used for {@link de.cau.cs.kieler.core.krendering.KText KTexts}, if no
+     * related {@link de.cau.cs.kieler.core.krendering.KFontName KFontName} style is attached.
      * 
-     * Note: This is a AWT constant! 
+     * Note: This is a AWT constant!
      */
-    public static final String DEFAULT_FONT_NAME = Platform.getOS().equals(Platform.OS_WIN32) ? "Arial"
-            : Font.SANS_SERIF;
-    
+    public static final String DEFAULT_FONT_NAME =
+            Platform.getOS().equals(Platform.OS_WIN32) ? "Arial" : Font.SANS_SERIF;
+
     /**
-     * This font size is used for {@link de.cau.cs.kieler.core.krendering.KText KTexts}, if no related
-     * {@link de.cau.cs.kieler.core.krendering.KFontSize KFontSize} style is attached.
+     * This font size is used for {@link de.cau.cs.kieler.core.krendering.KText KTexts}, if no
+     * related {@link de.cau.cs.kieler.core.krendering.KFontSize KFontSize} style is attached.
      */
     public static final int DEFAULT_FONT_SIZE = 10;
-    
+
     /**
      * This font size is used for Tooltips.
      */
     public static final int DEFAULT_TOOL_TIP_FONT_SIZE = 9;
-    
+
     /**
      * This font style used for {@link de.cau.cs.kieler.core.krendering.KText KTexts}, if no related
      * {@link de.cau.cs.kieler.core.krendering.KFontBold KFontBold} and/or
      * {@link de.cau.cs.kieler.core.krendering.KFontItalic KFontItalic} style is attached.
      * 
-     * Note: This is a AWT constant! 
+     * Note: This is a AWT constant!
      */
     public static final int DEFAULT_FONT_STYLE = Font.PLAIN;
 
@@ -114,11 +114,11 @@ public final class KlighdConstants {
      * {@link de.cau.cs.kieler.core.krendering.KFontBold KFontBold} and/or
      * {@link de.cau.cs.kieler.core.krendering.KFontItalic KFontItalic} style is attached.
      * 
-     * Note: SWT font styles are composed by performing 'style |= SWT.BOLD' and/or 'style |= SWT.ITALIC'
-     *  while 'style' is the style integer. 
+     * Note: SWT font styles are composed by performing 'style |= SWT.BOLD' and/or 'style |=
+     * SWT.ITALIC' while 'style' is the style integer.
      */
     public static final int DEFAULT_FONT_STYLE_SWT = SWT.NORMAL;
-    
+
     /**
      * This font configuration used for {@link de.cau.cs.kieler.core.krendering.KText KTexts}.
      */
@@ -131,7 +131,7 @@ public final class KlighdConstants {
      * an extra boolean flag for that.
      */
     public static final int NO_FONT_UNDERLINING = -1;
-    
+
     /**
      * Identifier of the built-in collapse expand action to be mentioned in instances of
      * {@link de.cau.cs.kieler.core.krendering.KAction KAction}.
@@ -143,7 +143,12 @@ public final class KlighdConstants {
      * no definition is given for a particular node.
      */
     public static final Bounds MINIMAL_NODE_BOUNDS = Bounds.immutableCopy(new Bounds(10, 10));
-    
+
+    /**
+     * An identifier for the SVG image format.
+     */
+    public static final int IMAGE_SVG = 1337;
+
     /**
      * Hidden default constructor.
      */

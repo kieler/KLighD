@@ -43,14 +43,12 @@ import java.util.Map;
 
 import org.apache.batik.dom.GenericDOMImplementation;
 import org.apache.batik.svggen.DefaultExtensionHandler;
-import org.apache.batik.svggen.ExtensionHandler;
 import org.apache.batik.svggen.SVGCompositeDescriptor;
 import org.apache.batik.svggen.SVGFilterDescriptor;
 import org.apache.batik.svggen.SVGGeneratorContext;
 import org.apache.batik.svggen.SVGGraphics2D;
 import org.apache.batik.svggen.SVGIDGenerator;
 import org.apache.batik.svggen.SVGPaintDescriptor;
-import org.apache.batik.svggen.SVGRenderingHints;
 import org.eclipse.swt.graphics.Device;
 import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.graphics.GC;
@@ -88,21 +86,21 @@ public class KlighdSVGGraphicsImpl extends KlighdSWTGraphicsImpl implements Klig
         // Create an instance of org.w3c.dom.Document.
         String svgNS = "http://www.w3.org/2000/svg";
         document = domImpl.createDocument(svgNS, "svg", null);
-        
-        // 
+
+        //
         SVGGeneratorContext ctx = SVGGeneratorContext.createDefault(document);
         ctx.setEmbeddedFontsOn(false);
         ctx.setPrecision(2);
-        ctx.setExtensionHandler(new DefaultExtensionHandler(){
+        ctx.setExtensionHandler(new DefaultExtensionHandler() {
             /**
              * {@inheritDoc}
              */
             @Override
             public SVGPaintDescriptor handlePaint(Paint paint, SVGGeneratorContext generatorContext) {
-//                System.out.println(paint);
+                // System.out.println(paint);
                 return super.handlePaint(paint, generatorContext);
             }
-            
+
             /**
              * {@inheritDoc}
              */
@@ -112,7 +110,7 @@ public class KlighdSVGGraphicsImpl extends KlighdSWTGraphicsImpl implements Klig
                 System.out.println(composite);
                 return super.handleComposite(composite, generatorContext);
             }
-            
+
             /**
              * {@inheritDoc}
              */
@@ -123,40 +121,45 @@ public class KlighdSVGGraphicsImpl extends KlighdSWTGraphicsImpl implements Klig
                 return super.handleFilter(filter, filterRect, generatorContext);
             }
         });
-        //ctx.set
-        ctx.setIDGenerator(new SVGIDGenerator(){
+        // ctx.set
+        ctx.setIDGenerator(new SVGIDGenerator() {
 
-            
             /**
              * {@inheritDoc}
              */
             @Override
             public String generateID(String prefix) {
-//             System.out.println(prefix);
+                // System.out.println(prefix);
                 return super.generateID(prefix);
             }
         });
-        
+
         // Create an instance of the SVG Generator.
         this.graphics = new SVGGraphics2D(ctx, false);
         graphics.setColor(Color.WHITE);
         graphics.setBackground(Color.WHITE);
         graphics.setPaint(Color.white);
-        
-        //graphics.setRenderingHint(SVGRenderingHints.SVG_COLOR_RENDERING_ATTRIBUTE, "optimizeSpeed");
-        
+
+        // graphics.setRenderingHint(SVGRenderingHints.SVG_COLOR_RENDERING_ATTRIBUTE,
+        // "optimizeSpeed");
+
         // + RENDERING -> sets all other hints to initial value.
         graphics.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_SPEED);
         // + FRACTIONAL_METRICS -> sets initial values for text-rendering and shape-rendering.
-        graphics.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS, RenderingHints.VALUE_FRACTIONALMETRICS_OFF);
+        graphics.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS,
+                RenderingHints.VALUE_FRACTIONALMETRICS_OFF);
         // + ANTIALIASING -> shape-rendering and text-rendering
-        graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
+        graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+                RenderingHints.VALUE_ANTIALIAS_OFF);
         // + COLOR_RENDERING -> color-rendering
-        graphics.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING, RenderingHints.VALUE_COLOR_RENDER_SPEED);
+        graphics.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING,
+                RenderingHints.VALUE_COLOR_RENDER_SPEED);
         // + INTERPOLATION -> image-rendering
-        graphics.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR);
+        graphics.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
+                RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR);
         // + TEXT_ANTIALIASING -> text-rendering
-        graphics.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_OFF);
+        graphics.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,
+                RenderingHints.VALUE_TEXT_ANTIALIAS_OFF);
     }
 
     /**
@@ -210,7 +213,7 @@ public class KlighdSVGGraphicsImpl extends KlighdSWTGraphicsImpl implements Klig
     private Color rgb2Color(final RGB color) {
         return new Color(color.red, color.green, color.blue);
     }
-    
+
     private Color rgb2Color(final RGB color, int alpha) {
         return new Color(color.red, color.green, color.blue, alpha);
     }
@@ -296,26 +299,28 @@ public class KlighdSVGGraphicsImpl extends KlighdSWTGraphicsImpl implements Klig
     public int getAlpha() {
         return super.getAlpha();
     }
-    
+
     /**
      * {@inheritDoc}
      */
     @Override
     public void setAlpha(int alpha) {
         super.setAlpha(alpha);
-        
+
         Color c = graphics.getColor();
         Color c2 = new Color(c.getRed(), c.getGreen(), c.getBlue(), alpha);
         graphics.setColor(c2);
-        
-        // set alpha of background
-//        Paint p = graphics.getPaint();
-//        if(p instanceof Color) {
-//            graphics.setPaint(new Color(((Color) p).getRed(), ((Color) p).getGreen(), ((Color) p).getBlue(), alpha));
-//        }
 
-//        Color bg = graphics.getBackground();
-//        graphics.setBackground(new Color(((Color) bg).getRed(), ((Color) bg).getGreen(), ((Color) bg).getBlue(), alpha));
+        // set alpha of background
+        // Paint p = graphics.getPaint();
+        // if(p instanceof Color) {
+        // graphics.setPaint(new Color(((Color) p).getRed(), ((Color) p).getGreen(), ((Color)
+        // p).getBlue(), alpha));
+        // }
+
+        // Color bg = graphics.getBackground();
+        // graphics.setBackground(new Color(((Color) bg).getRed(), ((Color) bg).getGreen(), ((Color)
+        // bg).getBlue(), alpha));
     }
 
     /**
@@ -344,10 +349,10 @@ public class KlighdSVGGraphicsImpl extends KlighdSWTGraphicsImpl implements Klig
     @Override
     public void setBackground(RGB backgroundColor) {
         super.setBackground(backgroundColor);
-//        graphics.setBackground(rgb2Color(backgroundColor));
+        // graphics.setBackground(rgb2Color(backgroundColor));
 
         // FIXME why?? It seems, that batik ignores the background color.
-//        setColor(backgroundColor);
+        // setColor(backgroundColor);
 
         graphics.setPaint(rgb2Color(backgroundColor, getAlpha()));
 
@@ -391,14 +396,24 @@ public class KlighdSVGGraphicsImpl extends KlighdSWTGraphicsImpl implements Klig
         graphics.setTransform(transform);
     }
 
+    // /**
+    // * {@inheritDoc}
+    // */
+    // @Override
+    // public void drawText(String str, double x, double y) {
+    // super.drawText(str, x, y);
+    //
+    // graphics.drawString(str, (float) x, (float) y);
+    // }
+
     /**
      * {@inheritDoc}
      */
     @Override
-    public void drawText(String str, double x, double y) {
-        super.drawText(str, x, y);
+    public void drawText(String text) {
+        super.drawText(text);
 
-        graphics.drawString(str, (float) x, (float) y);
+        graphics.drawString(text, 0, 0);
     }
 
     // /**
@@ -542,14 +557,14 @@ public class KlighdSVGGraphicsImpl extends KlighdSWTGraphicsImpl implements Klig
         graphics.fill(s);
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void drawRect(double x, double y, double width, double height) {
-        super.drawRect(x, y, width, height);
-        graphics.drawRect((int) x, (int) y, (int) width, (int) height);
-    }
+    // /**
+    // * {@inheritDoc}
+    // */
+    // // @Override
+    // public void drawRect(double x, double y, double width, double height) {
+    // super.drawRect(x, y, width, height);
+    // graphics.drawRect((int) x, (int) y, (int) width, (int) height);
+    // }
 
     /**
      * {@inheritDoc}

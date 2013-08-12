@@ -176,9 +176,10 @@ public class KlighdImage extends PNode {
      */
     protected void paint(final PPaintContext paintContext) {
         if (this.imageData != null) {
-            final Device device = ((KlighdSWTGraphics) paintContext.getGraphics()).getDevice();
-            this.image = new Image(device, this.imageData);
-            this.imageData = null;
+            // FIXME reactivate
+//            final Device device = ((KlighdSWTGraphics) paintContext.getGraphics()).getDevice();
+//            this.image = new Image(device, this.imageData);
+//            this.imageData = null;
         }
 
         if (image != null) {

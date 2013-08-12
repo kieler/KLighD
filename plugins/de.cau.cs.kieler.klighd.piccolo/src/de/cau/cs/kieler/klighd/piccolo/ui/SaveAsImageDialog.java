@@ -44,6 +44,7 @@ import org.eclipse.swt.widgets.Slider;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.dialogs.SaveAsDialog;
 
+import de.cau.cs.kieler.klighd.KlighdConstants;
 import de.cau.cs.kieler.klighd.piccolo.KlighdPiccoloPlugin;
 
 /**
@@ -76,7 +77,7 @@ public class SaveAsImageDialog extends Dialog {
 
     /** the available image formats. */
     private static final String[] IMAGE_FORMATS
-        = { "BMP", "JPG", "PNG" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        = { "BMP", "JPG", "PNG", "SVG" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
     /** the preference store. */
     private IPreferenceStore preferenceStore = null;
@@ -522,6 +523,8 @@ public class SaveAsImageDialog extends Dialog {
             return SWT.IMAGE_JPEG;
         case 2:
             return SWT.IMAGE_PNG;
+        case 3:
+            return KlighdConstants.IMAGE_SVG;
         case 0:
         default:
             return SWT.IMAGE_BMP;

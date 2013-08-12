@@ -17,6 +17,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.lang.reflect.Method;
 import java.util.List;
 
 import org.eclipse.core.runtime.IPath;
@@ -33,6 +34,7 @@ import org.eclipse.swt.graphics.ImageData;
 import org.eclipse.swt.graphics.ImageLoader;
 import org.eclipse.ui.statushandlers.StatusManager;
 
+import de.cau.cs.kieler.klighd.KlighdConstants;
 import de.cau.cs.kieler.klighd.piccolo.KlighdPiccoloPlugin;
 import de.cau.cs.kieler.klighd.piccolo.KlighdSWTGraphicsImpl;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdCanvas;
@@ -128,7 +130,21 @@ public class SaveAsImageAction extends Action {
     public static void toImage(final OutputStream stream, final KlighdCanvas canvas,
             final boolean cameraViewport, final int format, final int scale) {
         PCamera camera = canvas.getCamera();
-        
+
+        // if svg handle differently and stop
+        if (format == KlighdConstants.IMAGE_SVG) {
+            try {
+                Method m =
+                        Class.forName("de.cau.cs.kieler.klighd.piccolo.svg.KlighdSVGCanvas")
+                                .getMethod("staticRenderStream", PCamera.class, Boolean.class,
+                                        OutputStream.class);
+                m.invoke(null, camera, cameraViewport, stream);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return;
+        }
+
         // create the target image and a linked graphics context
         PBounds bounds;
         if (cameraViewport) {
@@ -136,35 +152,35 @@ public class SaveAsImageAction extends Action {
         } else {
             bounds = camera.getUnionOfLayerFullBounds();
         }
-        
+
         // construct an affine transform for applying the scale factor
-        //  and apply it to the camera's bounds
+        // and apply it to the camera's bounds
         PAffineTransform transform = new PAffineTransform();
         transform.scale(scale, scale);
         transform.transform(bounds, bounds);
-        
-        // reveal the size and respect the indentation imposed by x/y on both sides 
-        //  in order to avoid clippings of root figure drawings
+
+        // reveal the size and respect the indentation imposed by x/y on both sides
+        // in order to avoid clippings of root figure drawings
         int width = (int) (bounds.width + 2 * bounds.x);
         int height = (int) (bounds.height + 2 * bounds.y);
 
         // let Piccolo render onto a image GC
         Image image = new Image(canvas.getDisplay(), width, height);
         GC gc = new GC(image);
-        
-        PPaintContext paintContext = new PPaintContext(new KlighdSWTGraphicsImpl(gc,
-                canvas.getDisplay()));
-        
+
+        PPaintContext paintContext =
+                new PPaintContext(new KlighdSWTGraphicsImpl(gc, canvas.getDisplay()));
+
         // apply scaling translation to the paint context, too, for actually scaling the diagram
         paintContext.pushTransform(transform);
-        
+
         if (cameraViewport) {
             camera.fullPaint(paintContext);
         } else {
             fullPaintLayers(paintContext, camera);
         }
         paintContext.popTransform(transform);
-        
+
         // create an image loader to save the image
         ImageLoader loader = new ImageLoader();
         loader.data = new ImageData[] { image.getImageData() };
