@@ -311,7 +311,9 @@ public class KlighdStyledText extends PNode implements ITracingElement<KText> {
         
         if (fontData != null) {
             graphics.setFont(fontData);
-        }        
+        } else {
+            graphics.setFont(KlighdConstants.DEFAULT_FONT);
+        }
 
         graphics.drawText(text);
         

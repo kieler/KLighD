@@ -13,7 +13,11 @@
  */
 package de.cau.cs.kieler.klighd.piccolo.internal.nodes;
 
+import java.awt.geom.PathIterator;
 import java.awt.geom.Point2D;
+
+import org.eclipse.swt.graphics.Device;
+import org.eclipse.swt.graphics.Path;
 
 import de.cau.cs.kieler.klighd.KlighdConstants;
 
@@ -187,5 +191,46 @@ public final class KlighdPaths {
         result.setPathToPolygon(points);
         result.setPaint(KlighdConstants.WHITE);
         return result;
+    }
+
+
+    /**
+     * Builds up a SWT {@link Path} according to a given AWT Geometry {@link PathIterator}.
+     * 
+     * @param pathIterator
+     *            provides the segments the new path shall contain.
+     * @param device
+     *            the device to create the path on
+     * @return the desired {@link Path} object.
+     */
+    public static Path createSWTPath(final PathIterator pathIterator, final Device device) {
+        // SUPPRESS CHECKSTYLE NEXT 30 MagicNumber
+
+        final Path path = new Path(device);
+
+        final float[] coords = new float[6];
+
+        while (!pathIterator.isDone()) {
+            switch (pathIterator.currentSegment(coords)) {
+            case PathIterator.SEG_MOVETO:
+                path.moveTo(coords[0], coords[1]);
+                break;
+            case PathIterator.SEG_LINETO:
+                path.lineTo(coords[0], coords[1]);
+                break;
+            case PathIterator.SEG_CLOSE:
+                path.close();
+                break;
+            case PathIterator.SEG_QUADTO:
+                path.quadTo(coords[0], coords[1], coords[2], coords[3]);
+                break;
+            case PathIterator.SEG_CUBICTO:
+                path.cubicTo(coords[0], coords[1], coords[2], coords[3], coords[4], coords[5]);
+                break;
+            default:
+            }
+            pathIterator.next();
+        }
+        return path;
     }
 }

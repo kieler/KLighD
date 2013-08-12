@@ -20,7 +20,6 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.Arc2D;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Path2D;
-import java.awt.geom.PathIterator;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
@@ -578,7 +577,7 @@ public class KlighdPath extends PNode {
         // take care about the shadow
         if (shadow != null) {
             if (swt && shapePath == null) {
-                shapePath = createSWTPath(shape.getPathIterator(null), device);
+                shapePath = KlighdPaths.createSWTPath(shape.getPathIterator(null), device);
             }
             drawShadow(graphics, swt);
         }
@@ -588,7 +587,7 @@ public class KlighdPath extends PNode {
         // draw the background if possible and required
         if (!isLine()) {
             if (swt && shapePath == null && (paint != null || paintGradient != null)) {
-                shapePath = createSWTPath(shape.getPathIterator(null), device);
+                shapePath = KlighdPaths.createSWTPath(shape.getPathIterator(null), device);
             }
             
             if (paint != null) {
@@ -618,7 +617,7 @@ public class KlighdPath extends PNode {
             graphics.setLineAttributes(lineAttributes);
             
             if (swt && shapePath == null && (strokePaint != null || strokePaintGradient != null)) {
-                shapePath = createSWTPath(shape.getPathIterator(null), graphics.getDevice());
+                shapePath = KlighdPaths.createSWTPath(shape.getPathIterator(null), graphics.getDevice());
             }
             
             if (strokePaint != null) {
@@ -704,47 +703,6 @@ public class KlighdPath extends PNode {
         // reset the manipulated settings
         graphics.setAlpha(currentAlpha);
         graphics.setLineWidth(lineAttributes.width);
-    }
-
-
-    /**
-     * Builds up a SWT {@link Path} according to a given AWT Geometry {@link PathIterator}.
-     * 
-     * @param pathIterator
-     *            provides the segments the new path shall contain.
-     * @param device
-     *            the device to create the path on
-     * @return the desired {@link Path} object.
-     */
-    private Path createSWTPath(final PathIterator pathIterator, final Device device) {
-        // SUPPRESS CHECKSTYLE NEXT 30 MagicNumber
-
-        final Path path = new Path(device);
-
-        final float[] coords = new float[6];
-
-        while (!pathIterator.isDone()) {
-            switch (pathIterator.currentSegment(coords)) {
-            case PathIterator.SEG_MOVETO:
-                path.moveTo(coords[0], coords[1]);
-                break;
-            case PathIterator.SEG_LINETO:
-                path.lineTo(coords[0], coords[1]);
-                break;
-            case PathIterator.SEG_CLOSE:
-                path.close();
-                break;
-            case PathIterator.SEG_QUADTO:
-                path.quadTo(coords[0], coords[1], coords[2], coords[3]);
-                break;
-            case PathIterator.SEG_CUBICTO:
-                path.cubicTo(coords[0], coords[1], coords[2], coords[3], coords[4], coords[5]);
-                break;
-            default:
-            }
-            pathIterator.next();
-        }
-        return path;
     }
 
 
