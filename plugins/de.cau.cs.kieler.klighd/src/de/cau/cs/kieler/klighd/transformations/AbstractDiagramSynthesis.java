@@ -29,10 +29,10 @@ import de.cau.cs.kieler.core.krendering.KRenderingFactory;
 import de.cau.cs.kieler.core.properties.IProperty;
 import de.cau.cs.kieler.kiml.klayoutdata.KLayoutData;
 import de.cau.cs.kieler.klighd.TransformationContext;
-import de.cau.cs.kieler.klighd.internal.macrolayout.ExpansionAwareLayoutOption;
-import de.cau.cs.kieler.klighd.internal.macrolayout.ExpansionAwareLayoutOption.ExpansionAwareLayoutOptionData;
 // SUPPRESS CHECKSTYLE PREVIOUS LineLength
 import de.cau.cs.kieler.klighd.internal.util.KlighdInternalProperties;
+import de.cau.cs.kieler.klighd.util.ExpansionAwareLayoutOption;
+import de.cau.cs.kieler.klighd.util.ExpansionAwareLayoutOption.ExpansionAwareLayoutOptionData;
 
 /**
  * This is a specialized {@link AbstractTransformation} with target model type {@link KNode}.<br>
@@ -173,16 +173,10 @@ public abstract class AbstractDiagramSynthesis<S> extends AbstractTransformation
      */
     protected <T> KNode setExpansionAwareLayoutOption(final KNode node, final IProperty<T> option,
             final T collapsedValue, final T expandedValue) {
-        KLayoutData sl = node.getData(KLayoutData.class); 
-        ExpansionAwareLayoutOptionData data = sl.getProperty(ExpansionAwareLayoutOption.OPTION);
-        
-        if (data == null) {
-            data = new ExpansionAwareLayoutOptionData();
-            sl.setProperty(ExpansionAwareLayoutOption.OPTION, data);
+        KLayoutData sl = node.getData(KLayoutData.class);
+        if (sl != null) {
+            ExpansionAwareLayoutOption.setProperty(sl, option, collapsedValue, expandedValue);
         }
-        
-        data.setProperty(option, collapsedValue, expandedValue);
-        
         return node;
     }
 

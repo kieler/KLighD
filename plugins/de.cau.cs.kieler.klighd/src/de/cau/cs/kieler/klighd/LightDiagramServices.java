@@ -28,8 +28,9 @@ import de.cau.cs.kieler.core.kgraph.KNode;
 import de.cau.cs.kieler.core.properties.IProperty;
 import de.cau.cs.kieler.core.properties.IPropertyHolder;
 import de.cau.cs.kieler.core.properties.Property;
+import de.cau.cs.kieler.kiml.config.CompoundLayoutConfig;
 import de.cau.cs.kieler.kiml.config.ILayoutConfig;
-import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout;
+import de.cau.cs.kieler.kiml.klayoutdata.KLayoutData;
 import de.cau.cs.kieler.kiml.options.LayoutOptions;
 import de.cau.cs.kieler.kiml.ui.diagram.DiagramLayoutEngine;
 import de.cau.cs.kieler.klighd.internal.preferences.KlighdPreferences;
@@ -340,6 +341,40 @@ public final class LightDiagramServices {
         return currentModel;
     }
 
+    
+    /**
+     * Performs the automatic layout on the diagram represented by the given view context.<br>
+     * <br>
+     * The configurations of 'animate' and 'zoomToFit' are taken from the preference settings. 
+     * 
+     * @param viewContext
+     *            the viewContext whose diagram diagram is to be arranged
+     */
+    public void layoutDiagram(final ViewContext viewContext) {
+        final IPreferenceStore preferenceStore = KlighdPlugin.getDefault().getPreferenceStore();
+        final boolean animate = preferenceStore.getBoolean(KlighdPreferences.ANIMATE_LAYOUT);
+        final boolean zoomToFit = preferenceStore.getBoolean(KlighdPreferences.ZOOM_TO_FIT);
+        
+        layoutDiagram(viewContext, animate, zoomToFit, Collections.<ILayoutConfig>emptyList());
+    }
+
+    /**
+     * Performs the automatic layout on the diagram represented by the given view context.<br>
+     * <br>
+     * The configuration of 'zoomToFit' is taken from the preference settings. 
+     * 
+     * @param viewContext
+     *            the viewContext whose diagram diagram is to be arranged
+     * @param animate
+     *            layout with or without animation
+     */
+    public void layoutDiagram(final ViewContext viewContext, final boolean animate) {
+        final IPreferenceStore preferenceStore = KlighdPlugin.getDefault().getPreferenceStore();
+        final boolean zoomToFit = preferenceStore.getBoolean(KlighdPreferences.ZOOM_TO_FIT);
+
+        layoutDiagram(viewContext, animate, zoomToFit, Collections.<ILayoutConfig>emptyList());
+    }
+
     /**
      * Performs the automatic layout on the diagram represented by the given view context.
      * 
@@ -355,6 +390,46 @@ public final class LightDiagramServices {
         layoutDiagram(viewContext, animate, zoomToFit, Collections.<ILayoutConfig>emptyList());
     }
 
+    /**
+     * Performs the automatic layout on the diagram represented by the given view context.<br>
+     * <br>
+     * The configurations of 'animate' and 'zoomToFit' are taken from the preference settings.
+     * 
+     * 
+     * @param viewContext
+     *            the viewContext whose diagram diagram is to be arranged
+     * @param options
+     *            an optional list of layout options
+     */
+    public void layoutDiagram(final ViewContext viewContext, final List<ILayoutConfig> options) {
+        final IPreferenceStore preferenceStore = KlighdPlugin.getDefault().getPreferenceStore();
+        final boolean animate = preferenceStore.getBoolean(KlighdPreferences.ANIMATE_LAYOUT);
+        final boolean zoomToFit = preferenceStore.getBoolean(KlighdPreferences.ZOOM_TO_FIT);
+        
+        layoutDiagram(viewContext, animate, zoomToFit, options);
+    }
+    
+    /**
+     * Performs the automatic layout on the diagram represented by the given view context.<br>
+     * <br>
+     * The configuration of 'zoomToFit' is taken from the preference settings. 
+     * 
+     * 
+     * @param viewContext
+     *            the viewContext whose diagram diagram is to be arranged
+     * @param animate
+     *            layout with or without animation
+     * @param options
+     *            an optional list of layout options
+     */
+    public void layoutDiagram(final ViewContext viewContext, final boolean animate,
+           final List<ILayoutConfig> options) {
+        final IPreferenceStore preferenceStore = KlighdPlugin.getDefault().getPreferenceStore();
+        final boolean zoomToFit = preferenceStore.getBoolean(KlighdPreferences.ZOOM_TO_FIT);
+        
+        layoutDiagram(viewContext, animate, zoomToFit, options);
+    }
+    
     /**
      * Performs the automatic layout on the diagram represented by the given view context.
      * 
@@ -379,6 +454,117 @@ public final class LightDiagramServices {
     
     /**
      * Performs the automatic layout on the diagram represented by the given
+     * {@link IDiagramWorkbenchPart}.<br>
+     * <br>
+     * The configurations of 'animate' and 'zoomToFit' are taken from the preference settings.
+     * 
+     * @param viewPart
+     *            the diagram view part showing the diagram to layout
+     */
+    public void layoutDiagram(final IDiagramWorkbenchPart viewPart) {
+        final IPreferenceStore preferenceStore = KlighdPlugin.getDefault().getPreferenceStore();
+        final boolean animate = preferenceStore.getBoolean(KlighdPreferences.ANIMATE_LAYOUT);
+        final boolean zoomToFit = preferenceStore.getBoolean(KlighdPreferences.ZOOM_TO_FIT);
+        
+        layoutDiagram(viewPart, animate, zoomToFit, Collections.<ILayoutConfig>emptyList());
+    }
+    
+    /**
+     * Performs the automatic layout on the diagram represented by the given
+     * {@link IDiagramWorkbenchPart}.<br>
+     * <br>
+     * The configuration of 'zoomToFit' is taken from the preference settings. 
+     * 
+     * @param viewPart
+     *            the diagram view part showing the diagram to layout
+     * @param animate
+     *            layout with or without animation
+     */
+    public void layoutDiagram(final IDiagramWorkbenchPart viewPart, final boolean animate) {
+        final IPreferenceStore preferenceStore = KlighdPlugin.getDefault().getPreferenceStore();
+        final boolean zoomToFit = preferenceStore.getBoolean(KlighdPreferences.ZOOM_TO_FIT);
+        
+        layoutDiagram(viewPart, animate, zoomToFit, Collections.<ILayoutConfig>emptyList());
+    }
+    
+    /**
+     * Performs the automatic layout on the diagram represented by the given
+     * {@link IDiagramWorkbenchPart}.
+     * 
+     * @param viewPart
+     *            the diagram view part showing the diagram to layout
+     * @param animate
+     *            layout with or without animation
+     * @param zoomToFit
+     *            layout with or without animation
+     */
+    public void layoutDiagram(final IDiagramWorkbenchPart viewPart, final boolean animate,
+            final boolean zoomToFit) {
+        layoutDiagram(viewPart, animate, zoomToFit, Collections.<ILayoutConfig>emptyList());
+    }
+    
+    /**
+     * Performs the automatic layout on the diagram represented by the given
+     * {@link IDiagramWorkbenchPart}.<br>
+     * <br>
+     * The configurations of 'animate' and 'zoomToFit' are taken from the preference settings.
+     * 
+     * @param viewPart
+     *            the diagram view part showing the diagram to layout
+     * @param options
+     *            an optional list of layout options
+     */
+    public void layoutDiagram(final IDiagramWorkbenchPart viewPart,
+            final List<ILayoutConfig> options) {
+        final IPreferenceStore preferenceStore = KlighdPlugin.getDefault().getPreferenceStore();
+        final boolean animate = preferenceStore.getBoolean(KlighdPreferences.ANIMATE_LAYOUT);
+        final boolean zoomToFit = preferenceStore.getBoolean(KlighdPreferences.ZOOM_TO_FIT);
+        
+        layoutDiagram(viewPart, animate, zoomToFit, options);
+    }
+    
+    /**
+     * Performs the automatic layout on the diagram represented by the given
+     * {@link IDiagramWorkbenchPart}.<br>
+     * <br>
+     * The configuration of 'zoomToFit' is taken from the preference settings. 
+     * 
+     * @param viewPart
+     *            the diagram view part showing the diagram to layout
+     * @param animate
+     *            layout with or without animation
+     * @param options
+     *            an optional list of layout options
+     */
+    public void layoutDiagram(final IDiagramWorkbenchPart viewPart, final boolean animate,
+            final List<ILayoutConfig> options) {
+        final IPreferenceStore preferenceStore = KlighdPlugin.getDefault().getPreferenceStore();
+        final boolean zoomToFit = preferenceStore.getBoolean(KlighdPreferences.ZOOM_TO_FIT);
+        
+        layoutDiagram(viewPart, animate, zoomToFit, Collections.<ILayoutConfig>emptyList());
+    }
+    
+    /**
+     * Performs the automatic layout on the diagram represented by the given
+     * {@link IDiagramWorkbenchPart}.
+     * 
+     * @param viewPart
+     *            the diagram view part showing the diagram to layout
+     * @param animate
+     *            layout with or without animation
+     * @param zoomToFit
+     *            layout with or without animation
+     * @param options
+     *            an optional list of layout options
+     */
+    public void layoutDiagram(final IDiagramWorkbenchPart viewPart, final boolean animate,
+            final boolean zoomToFit, final List<ILayoutConfig> options) {
+        layoutDiagram(viewPart, viewPart.getContextViewer(), animate, zoomToFit,
+                Collections.<ILayoutConfig>emptyList());
+    }
+    
+    /**
+     * Performs the automatic layout on the diagram represented by the given
      * {@link IDiagramWorkbenchPart} / {@link IViewer}.
      * 
      * @param viewPart
@@ -393,58 +579,64 @@ public final class LightDiagramServices {
      *            an optional list of layout options
      */
     public void layoutDiagram(final IDiagramWorkbenchPart viewPart,
-            final IViewer<? extends EObject> diagramViewer, final boolean animate,
+            final IViewer<?> diagramViewer, final boolean animate,
             final boolean zoomToFit, final List<ILayoutConfig> options) {
         
-        final IPreferenceStore preferenceStore = KlighdPlugin.getDefault().getPreferenceStore();
-        final boolean doZoom = zoomToFit
-                || preferenceStore.getBoolean(KlighdPreferences.ZOOM_TO_FIT);
-        final boolean doAnimate = animate
-                || preferenceStore.getBoolean(KlighdPreferences.ANIMATE_LAYOUT);
-        
-        final KNode viewModel;
+        final ContextViewer contextViewer;
         if (viewPart != null) {
-            viewModel = (KNode) viewPart.getContextViewer().getCurrentViewContext()
-                .getViewModel();
+            contextViewer = viewPart.getContextViewer();
         } else if (diagramViewer != null) {
-            viewModel = (KNode) diagramViewer.getContextViewer().getCurrentViewContext()
-                    .getViewModel();
+            contextViewer = diagramViewer.getContextViewer();
         } else {
-            viewModel = null;
+            return;
         }
         
-        if (viewModel != null
-                && !viewModel.getData(KShapeLayout.class).getProperty(LayoutOptions.NO_LAYOUT)) {
-            DiagramLayoutEngine.INSTANCE.layout(viewPart, diagramViewer, doAnimate, false, false,
-                    doZoom, options);            
+        final KNode viewModel = (KNode) contextViewer.getCurrentViewContext().getViewModel();
+        final KLayoutData layoutData = viewModel != null ? viewModel.getData(KLayoutData.class) : null;
+
+        if (layoutData != null && !layoutData.getProperty(LayoutOptions.NO_LAYOUT)) {
+            final List<ILayoutConfig> extendedOptions;
+            if (options == null || options.isEmpty()) {
+                extendedOptions = Collections.<ILayoutConfig>singletonList(
+                        contextViewer.getLightLayoutConfig());
+            } else {
+                CompoundLayoutConfig compound = new CompoundLayoutConfig();
+                compound.addAll(options);
+                compound.add(contextViewer.getLightLayoutConfig());
+                extendedOptions = Collections.<ILayoutConfig>singletonList(compound);
+            }
+            DiagramLayoutEngine.INSTANCE.layout(viewPart, diagramViewer, animate, false, false,
+                    zoomToFit, extendedOptions);
         } else {
             diagramViewer.setRecording(false);
-            
         }
     }
-    
+
+
     /**
      * Translates the given <code>model</code> by means of the known diagram synthesis translations.
      * Incorporates constraints given in the <code>propertyHolders</code>.
+     * @param model
+     *            the model
+     * @param otherVC
+     *            the view context to merge mappings created while translating <code>model</code> into
+     * @param propertyHolders
+     *            the property holders
      * 
      * @param <T>
      *            the expected type of the result
-     * @param otherVC
-     *            the view context to merge mappings created while translating <code>model</code> into
-     * @param model
-     *            the model
-     * @param propertyHolders
-     *            the property holders
      * @return the view context or null if the model and all possible transformations are
      *         unsupported by all viewer providers
      */
-    public static <T> T translateModel(final ViewContext otherVC, final Object model,
+    public static <T> T translateModel(final Object model, final ViewContext otherVC,
             final IPropertyHolder... propertyHolders) {
         ViewContext vc = LightDiagramServices.getInstance().createViewContext(model, propertyHolders);
         LightDiagramServices.getInstance().updateViewContext(vc, model);
         @SuppressWarnings("unchecked")
         T result = (T) vc.getViewModel();
-//        otherVC.merge(vc);
+        if (otherVC != null) {
+            otherVC.merge(vc);
+        }
         return result;
     }
 }

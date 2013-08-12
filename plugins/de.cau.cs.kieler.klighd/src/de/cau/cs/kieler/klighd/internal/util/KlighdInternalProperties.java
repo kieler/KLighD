@@ -37,12 +37,6 @@ public final class KlighdInternalProperties {
     }
 
     /**
-     * Bla.
-     */
-    public static final IProperty<Boolean> USE_LIGHT_LAYOUT_CONFIG = new Property<Boolean>(
-            "klighd.use.lightLayoutConfig", false);
-    
-    /**
      * Property for preserving the domain model element being represented by a diagram element or
      * diagram figure element. Is to be attached to {@link de.cau.cs.kieler.core.kgraph.KGraphData
      * KGraphData}, for {@link de.cau.cs.kieler.core.kgraph.KGraphElement KGraphElements} it is to

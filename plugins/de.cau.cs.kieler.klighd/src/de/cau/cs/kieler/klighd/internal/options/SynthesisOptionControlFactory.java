@@ -30,7 +30,6 @@ import org.eclipse.ui.forms.widgets.FormToolkit;
 
 import de.cau.cs.kieler.klighd.TransformationContext;
 import de.cau.cs.kieler.klighd.TransformationOption;
-import de.cau.cs.kieler.klighd.util.KlighdSynthesisProperties;
 import de.cau.cs.kieler.klighd.views.DiagramViewManager;
 
 /**
@@ -105,8 +104,7 @@ public class SynthesisOptionControlFactory {
             public void widgetSelected(final SelectionEvent event) {
                 // set the new option value and trigger the diagram update
                 context.configureOption(option, ((Button) event.widget).getSelection());
-                DiagramViewManager.getInstance().updateView(viewId,
-                        KlighdSynthesisProperties.newInstance().useLightLayoutConfig());
+                DiagramViewManager.getInstance().updateView(viewId);
             }
             
             public void widgetDefaultSelected(final SelectionEvent e) {
@@ -157,8 +155,7 @@ public class SynthesisOptionControlFactory {
                     if (((Button) event.widget).getSelection()) {
                         // set the new option value and trigger the diagram update
                         context.configureOption(option, value);
-                        DiagramViewManager.getInstance().updateView(viewId,
-                                KlighdSynthesisProperties.newInstance().useLightLayoutConfig());
+                        DiagramViewManager.getInstance().updateView(viewId);
                     }
                 }
 
@@ -239,8 +236,7 @@ public class SynthesisOptionControlFactory {
                 
                 // set the new option value and trigger the diagram update
                 context.configureOption(option, value);
-                DiagramViewManager.getInstance().updateView(viewId,
-                        KlighdSynthesisProperties.newInstance().useLightLayoutConfig());
+                DiagramViewManager.getInstance().updateView(viewId);
             }
             
             public void widgetDefaultSelected(final SelectionEvent e) {

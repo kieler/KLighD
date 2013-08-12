@@ -25,10 +25,11 @@ import org.eclipse.swt.widgets.Display;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 
-import de.cau.cs.kieler.klighd.piccolo.internal.nodes.PSWTAdvancedPath;
+import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdPath;
+import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdPaths;
 
 /**
- * Some out-sourced calculations for rendering the different
+ * Some outsourced calculations for rendering the different
  * {@link de.cau.cs.kieler.core.krendering.KPolyline KPolylines}. Unfortunately, AWT Geometry itself
  * does not provide related classes for line paths with initialization methods taking arrays of
  * points.
@@ -267,7 +268,7 @@ public final class PolylineUtil {
      *            attaching debug visualization points)
      */
     public static void createRoundedBendPoints(final Path2D path, final Point2D[] points,
-            final float bendRadius, final PSWTAdvancedPath pnode) {
+            final float bendRadius, final KlighdPath pnode) {
 
         if (DEBUG) {
             if (pnode != null) {
@@ -459,23 +460,23 @@ public final class PolylineUtil {
      *            by {@link #getRoundedBendControlPoints(double, double, double, double, double,
      *            double, double)}
      */
-    public static void visualizeRoundedBendControlPoints(final PSWTAdvancedPath path,
+    public static void visualizeRoundedBendControlPoints(final KlighdPath path,
             final double px, final double py, final double[] cPoints) {
-        PSWTAdvancedPath e = PSWTAdvancedPath.createEllipse((float) px, (float) py, 2, 2);
+        KlighdPath e = KlighdPaths.createEllipse((float) px, (float) py, 2, 2);
         path.addChild(e);
-        PSWTAdvancedPath a = PSWTAdvancedPath.createEllipse((float) cPoints[0], (float) cPoints[1],
+        KlighdPath a = KlighdPaths.createEllipse((float) cPoints[0], (float) cPoints[1],
                 2, 2);
         a.setStrokeColor(Display.getDefault().getSystemColor(SWT.COLOR_RED).getRGB());
         path.addChild(a);
-        PSWTAdvancedPath b = PSWTAdvancedPath.createEllipse((float) cPoints[2], (float) cPoints[3],
+        KlighdPath b = KlighdPaths.createEllipse((float) cPoints[2], (float) cPoints[3],
                 2, 2);
         b.setStrokeColor(Display.getDefault().getSystemColor(SWT.COLOR_GREEN).getRGB());
         path.addChild(b);
-        PSWTAdvancedPath c = PSWTAdvancedPath.createEllipse((float) cPoints[4], (float) cPoints[5],
+        KlighdPath c = KlighdPaths.createEllipse((float) cPoints[4], (float) cPoints[5],
                 2, 2);
         c.setStrokeColor(Display.getDefault().getSystemColor(SWT.COLOR_BLUE).getRGB());
         path.addChild(c);
-        PSWTAdvancedPath d = PSWTAdvancedPath.createEllipse((float) cPoints[6], (float) cPoints[7],
+        KlighdPath d = KlighdPaths.createEllipse((float) cPoints[6], (float) cPoints[7],
                 2, 2);
         d.setStrokeColor(Display.getDefault().getSystemColor(SWT.COLOR_YELLOW).getRGB());
         path.addChild(d);
@@ -595,21 +596,21 @@ public final class PolylineUtil {
      *            by {@link #getShortDistanceRoundedBendControlPoints(double, double, double, double,
      *            double, double, double, double)}
      */
-    public static void visualizeShortDistanceApproximationPoints(final PSWTAdvancedPath path,
+    public static void visualizeShortDistanceApproximationPoints(final KlighdPath path,
             final double[] cPoints) {
-        PSWTAdvancedPath a = PSWTAdvancedPath.createEllipse((float) cPoints[0], (float) cPoints[1],
+        KlighdPath a = KlighdPaths.createEllipse((float) cPoints[0], (float) cPoints[1],
                 2, 2);
         a.setStrokeColor(Display.getDefault().getSystemColor(SWT.COLOR_RED).getRGB());
         path.addChild(a);
-        PSWTAdvancedPath b = PSWTAdvancedPath.createEllipse((float) cPoints[2], (float) cPoints[3],
+        KlighdPath b = KlighdPaths.createEllipse((float) cPoints[2], (float) cPoints[3],
                 2, 2);
         b.setStrokeColor(Display.getDefault().getSystemColor(SWT.COLOR_GREEN).getRGB());
         path.addChild(b);
-        PSWTAdvancedPath c = PSWTAdvancedPath.createEllipse((float) cPoints[4], (float) cPoints[5],
+        KlighdPath c = KlighdPaths.createEllipse((float) cPoints[4], (float) cPoints[5],
                 2, 2);
         c.setStrokeColor(Display.getDefault().getSystemColor(SWT.COLOR_BLUE).getRGB());
         path.addChild(c);
-        PSWTAdvancedPath d = PSWTAdvancedPath.createEllipse((float) cPoints[6], (float) cPoints[7],
+        KlighdPath d = KlighdPaths.createEllipse((float) cPoints[6], (float) cPoints[7],
                 2, 2);
         d.setStrokeColor(Display.getDefault().getSystemColor(SWT.COLOR_YELLOW).getRGB());
         path.addChild(d);

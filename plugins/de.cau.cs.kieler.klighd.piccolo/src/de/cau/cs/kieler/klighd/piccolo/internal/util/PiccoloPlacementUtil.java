@@ -33,7 +33,7 @@ import de.cau.cs.kieler.core.properties.IProperty;
 import de.cau.cs.kieler.core.properties.Property;
 import de.cau.cs.kieler.core.util.Pair;
 import de.cau.cs.kieler.klighd.microlayout.Bounds;
-import de.cau.cs.kieler.klighd.piccolo.internal.nodes.PSWTAdvancedPath;
+import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdPath;
 import edu.umd.cs.piccolo.util.PBounds;
 
 /**
@@ -211,7 +211,7 @@ public final class PiccoloPlacementUtil {
      * @return the origin, bounds and rotation for the decorator
      */
     public static Decoration evaluateDecoratorPlacement(final KDecoratorPlacementData dpd,
-            final PSWTAdvancedPath path) {
+            final KlighdPath path) {
         Decoration decoration = new Decoration();
 
         Point2D[] points = null; 

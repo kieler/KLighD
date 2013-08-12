@@ -14,6 +14,7 @@
 package de.cau.cs.kieler.klighd.util;
 
 import java.util.Iterator;
+import java.util.List;
 
 import com.google.common.collect.ImmutableList;
 
@@ -50,13 +51,27 @@ public final class Iterables2 {
     
     /**
      * Returns an {@link Iterable} containing only {@code value}.<br>
-     * This is a counterpart to {@link Iterators#singletonIterator(Object)}.
+     * This is a counterpart to {@link Iterators#singletonIterator(Object)}.<br>
+     * In case {@code value} is {@code null} an empty {@link Iterable} is returned.
      *
      * @param <T> the type of value
      * @param value the value to be encapsulated
      * @return the required {@link Iterable}
      */
     public static <T> Iterable<T> singletonIterable(final T value) {
-        return ImmutableList.of(value);
+        return singletonList(value);
+    }
+
+    /**
+     * Returns a {@link List} containing only {@code value}.<br>
+     * This is a counterpart to {@link Iterators#singletonIterator(Object)}.<br>
+     * In case {@code value} is {@code null} an empty {@link List} is returned.
+     *
+     * @param <T> the type of value
+     * @param value the value to be encapsulated, may be null
+     * @return the required {@link Iterable}
+     */
+    public static <T> List<T> singletonList(final T value) {
+        return value != null ? ImmutableList.of(value) : ImmutableList.<T>of();
     }
 }

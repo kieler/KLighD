@@ -284,8 +284,12 @@ public final class ViewContext extends MapPropertyHolder {
         if (KGraphPackage.eINSTANCE.getKGraphData().isInstance(element)) {
             model = ((KGraphData) element).getProperty(KlighdInternalProperties.MODEL_ELEMEMT);
         } else if (KGraphPackage.eINSTANCE.getKGraphElement().isInstance(element)) {
-            model = ((KGraphElement) element).getData(KLayoutData.class).getProperty(
-                    KlighdInternalProperties.MODEL_ELEMEMT);
+            KLayoutData layoutData = ((KGraphElement) element).getData(KLayoutData.class);
+            if (layoutData != null) {
+                model = layoutData.getProperty(KlighdInternalProperties.MODEL_ELEMEMT);
+            } else {
+                model = null;
+            }
         } else {
             model = null;
         }

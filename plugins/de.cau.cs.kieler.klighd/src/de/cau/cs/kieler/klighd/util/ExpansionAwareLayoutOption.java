@@ -11,7 +11,7 @@
  * This code is provided under the terms of the Eclipse Public License (EPL).
  * See the file epl-v10.html for the license text.
  */
-package de.cau.cs.kieler.klighd.internal.macrolayout;
+package de.cau.cs.kieler.klighd.util;
 
 import de.cau.cs.kieler.core.properties.IProperty;
 import de.cau.cs.kieler.core.properties.IPropertyHolder;
@@ -41,6 +41,34 @@ public final class ExpansionAwareLayoutOption {
     public static final IProperty<ExpansionAwareLayoutOptionData> OPTION =
             new Property<ExpansionAwareLayoutOption.ExpansionAwareLayoutOptionData>(
                     "de.cau.cs.kieler.klighd.expansionAwareLayoutOption");
+
+    /**
+     * Convenience method for defining {@link ExpansionAwareLayoutOption
+     * ExpansionAwareLayoutOptions} on {@link IPropertyHolder IPropertyHolders}.<br>
+     * Adds the property definition to existing {@link ExpansionAwareLayoutOptionData} if present,
+     * and attaches a new instance otherwise.
+     * 
+     * @param <T>
+     *            the property value type
+     * @param holder
+     *            an {@link IPropertyHolder} to define the property on
+     * @param property
+     *            the particular layout option, e.g. one of
+     *            {@link de.cau.cs.kieler.kiml.options.LayoutOptions LayoutOptions}
+     * @param collapsedValue
+     *            the value in case <code>node</code> is collapsed
+     * @param expandedValue
+     *            the value in case <code>node</code> is expanded
+     */
+    public static <T> void setProperty(final IPropertyHolder holder, final IProperty<T> property,
+            final T collapsedValue, final T expandedValue) {
+        ExpansionAwareLayoutOptionData data = holder.getProperty(OPTION);
+        if (data == null) {
+            data = new ExpansionAwareLayoutOptionData();
+            holder.setProperty(OPTION, data);
+        }
+        data.setProperty(property, collapsedValue, expandedValue);
+    }
 
     /**
      * Dedicated implementation {@link IDataObject} of defining value type of
@@ -75,11 +103,13 @@ public final class ExpansionAwareLayoutOption {
          *            the value in case <code>node</code> is collapsed
          * @param expandedValue
          *            the value in case <code>node</code> is expanded
+         * @return <code>this</code> ExpansionAwareLayoutOptionData object for convenience
          */
-        public <T> void setProperty(final IProperty<T> property, final T collapsedValue,
-                final T expandedValue) {
+        public <T> ExpansionAwareLayoutOptionData setProperty(final IProperty<T> property,
+                final T collapsedValue, final T expandedValue) {
             this.collapsedValues.setProperty(property, collapsedValue);
             this.expandedValues.setProperty(property, expandedValue);
+            return this;
         }
 
         /**

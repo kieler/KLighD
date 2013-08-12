@@ -35,13 +35,13 @@ import org.eclipse.ui.statushandlers.StatusManager;
 
 import de.cau.cs.kieler.klighd.piccolo.KlighdPiccoloPlugin;
 import de.cau.cs.kieler.klighd.piccolo.KlighdSWTGraphicsImpl;
+import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdCanvas;
 import de.cau.cs.kieler.klighd.piccolo.viewer.PiccoloViewer;
 import edu.umd.cs.piccolo.PCamera;
 import edu.umd.cs.piccolo.PLayer;
 import edu.umd.cs.piccolo.util.PAffineTransform;
 import edu.umd.cs.piccolo.util.PBounds;
 import edu.umd.cs.piccolo.util.PPaintContext;
-import edu.umd.cs.piccolox.swt.PSWTCanvas;
 
 /**
  * An action which invokes the 'save-as-image' dialog and performs the save for Piccolo.
@@ -125,7 +125,7 @@ public class SaveAsImageAction extends Action {
      * @param scale
      *            the scale factor to apply while constructing the image
      */
-    public static void toImage(final OutputStream stream, final PSWTCanvas canvas,
+    public static void toImage(final OutputStream stream, final KlighdCanvas canvas,
             final boolean cameraViewport, final int format, final int scale) {
         PCamera camera = canvas.getCamera();
         

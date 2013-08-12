@@ -68,6 +68,11 @@ class KColorExtensions {
                 color.setGreen(105);
                 color.setBlue(105);
             }
+            case "darkGreen" : {
+                color.setRed(0);
+                color.setGreen(100);
+                color.setBlue(0);
+            }
             case "darkOrange" : {
                 color.setRed(248);
                 color.setGreen(179);
@@ -78,15 +83,35 @@ class KColorExtensions {
                 color.setGreen(0);
                 color.setBlue(112);
             }
+            case "forestGreen" : {
+                color.setRed(34);
+                color.setGreen(139);
+                color.setBlue(34);
+            }
             case "gold" : {
                 color.setRed(255);
                 color.setGreen(215);
                 color.setBlue(000);
             }
+            case "goldenrod4" : {
+                color.setRed(109);
+                color.setGreen(105);
+                color.setBlue(20);
+            }
             case "gray" : {
                 color.setRed(190);
                 color.setGreen(190);
                 color.setBlue(190);
+            }
+            case "gray20" : {
+                color.setRed(51);
+                color.setGreen(51);
+                color.setBlue(51);
+            }
+            case "gray25" : {
+                color.setRed(64);
+                color.setGreen(64);
+                color.setBlue(64);
             }
             case "green" : {
                 color.setRed(0);

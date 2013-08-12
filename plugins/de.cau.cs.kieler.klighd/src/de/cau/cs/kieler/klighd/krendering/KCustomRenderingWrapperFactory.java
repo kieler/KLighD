@@ -32,6 +32,7 @@ import com.google.common.collect.Iterables;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Maps;
 
+import de.cau.cs.kieler.klighd.KlighdDataManager;
 import de.cau.cs.kieler.klighd.KlighdPlugin;
 
 /**
@@ -50,8 +51,6 @@ import de.cau.cs.kieler.klighd.KlighdPlugin;
  */
 public final class KCustomRenderingWrapperFactory {
     
-    /** The related extension point's id. */
-    private static final String EXTENSION_POINT_ID = "de.cau.cs.kieler.klighd.customFigureWrapper";
     /** The related extensions' name. */
     private static final String EXTENSION_NAME = "wrapper";
     /** The wrapped type field's name. */
@@ -89,7 +88,7 @@ public final class KCustomRenderingWrapperFactory {
     private KCustomRenderingWrapperFactory() {
         // get the extensions
         final IConfigurationElement[] configurations = Platform.getExtensionRegistry()
-                .getConfigurationElementsFor(EXTENSION_POINT_ID);
+                .getConfigurationElementsFor(KlighdDataManager.EXTP_ID_EXTENSIONS);
 
         // filter them, retain the ones named like EXTENSION_NAME
         //  this is actually not necessary right now but might be
@@ -121,8 +120,8 @@ public final class KCustomRenderingWrapperFactory {
 
             } catch (InvalidRegistryObjectException e) {
                 // I hope this will never happen ;-)
-                final String msg = "An extension of " + EXTENSION_POINT_ID + " in " + host
-                        + " could not be examined properly and appears to be invalid in some way.";
+                final String msg = "An extension of " + KlighdDataManager.EXTP_ID_EXTENSIONS + " in "
+                    + host + " could not be examined properly and appears to be invalid in some way.";
                 StatusManager.getManager().handle(
                         new Status(IStatus.ERROR, KlighdPlugin.PLUGIN_ID, msg, e),
                         StatusManager.LOG);

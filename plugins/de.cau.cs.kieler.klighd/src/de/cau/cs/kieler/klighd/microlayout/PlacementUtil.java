@@ -16,16 +16,18 @@ package de.cau.cs.kieler.klighd.microlayout;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Font;
-import org.eclipse.swt.graphics.FontMetrics;
+import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.widgets.Display;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 
 import de.cau.cs.kieler.core.kgraph.KLabel;
 import de.cau.cs.kieler.core.kgraph.KNode;
@@ -60,7 +62,6 @@ import de.cau.cs.kieler.kiml.klayoutdata.KInsets;
 import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout;
 import de.cau.cs.kieler.klighd.KlighdConstants;
 import de.cau.cs.kieler.klighd.internal.util.KlighdInternalProperties;
-import de.cau.cs.kieler.klighd.krendering.KTextUtil;
 
 /**
  * A utility class for evaluating the micro layout of KRenderings.
@@ -381,7 +382,6 @@ public final class PlacementUtil {
      * @return the minimal bounds for the string
      */
     public static Bounds estimateTextSize(final KText kText, final String text) {
-
         KFontName kFontName = null;
         KFontSize kFontSize = null;
         KFontBold kFontBold = null;
@@ -421,37 +421,52 @@ public final class PlacementUtil {
         fontStyle = kFontItalic != null && kFontItalic.isItalic() ? fontStyle | SWT.ITALIC
                 : fontStyle;
 
+        return estimateTextSize(new FontData(fontName, fontSize, fontStyle), text);
+    }
+
+    /**
+     * A font cache preserving requested font configurations in order to avoid re-instantiation of
+     * {@link Font}, which is assumed to be much more expensive than {@link FontData}.
+     */
+    private static final Map<FontData, Font> FONT_CACHE = Maps.newHashMap();
+    
+    /**
+     * A singleton instance of {@link GC} that the text size estimation is delegated to. 
+     */
+    private static GC gc = null; 
+    
+    /**
+     * Returns the minimal bounds required by a drawing of the string <code>text</code> while
+     * respecting the given <code>fontData</code>.
+     * 
+     * @param fontData
+     *            an SWT {@link FontData} record describing font name, size, and style
+     * @param text
+     *            the text string whose size is to be estimated; maybe <code>null</code>
+     * @return the minimal bounds for the string
+     */
+    public static Bounds estimateTextSize(final FontData fontData, final String text) {
         // In order to estimate the required size of a given string according to the determined
-        // font, style, and size a GC is instantiated, configured, and queried for each line of the
-        // text. This code has basically taken from PSWTText and condensed.
-        final GC gc = new GC(Display.getDefault());
-        final Font font = new Font(Display.getDefault(), fontName, fontSize, fontStyle);
-        gc.setAntialias(SWT.ON);
+        // font, style, and size a GC is instantiated, configured, and queried.
+        if (gc == null) {
+            gc = new GC(Display.getDefault());
+            gc.setAntialias(SWT.OFF);
+        }
+        Font font = FONT_CACHE.get(fontData); 
+        if (font == null) {
+            font = new Font(Display.getDefault(), fontData);
+            FONT_CACHE.put(fontData, font);
+        }
         gc.setFont(font);
-        final FontMetrics fm = gc.getFontMetrics();
 
         Bounds textBounds = new Bounds(0, 0);
 
         if (Strings.isNullOrEmpty(text)) {
             // if no text string is given, take the bounds of a space character,
-            textBounds = new Bounds(gc.stringExtent(" "));
+            textBounds = new Bounds(gc.textExtent(" "));
         } else {
-            // else calculate the bounds (according to
-            boolean firstLine = true;
-            for (String line : KTextUtil.getTextLines(text)) {
-                Bounds lineBounds = new Bounds(gc.stringExtent(line));
-                if (firstLine) {
-                    textBounds.width = lineBounds.width;
-                    textBounds.height += fm.getLeading() + fm.getAscent(); // + fm.getDescent() + ;
-                    firstLine = false;
-                } else {
-                    textBounds.width = Math.max(lineBounds.width, textBounds.width);
-                    textBounds.height += fm.getHeight();
-                }
-            }
+            textBounds = new Bounds(gc.textExtent(text));
         }
-        font.dispose();
-        gc.dispose();
         return textBounds;
     }
 
@@ -702,7 +717,7 @@ public final class PlacementUtil {
             pCAPos.setFirst(childAreaColId);
             pCAPos.setSecond(childAreaRowId);
         } else {
-            container.setProperty(CHILD_AREA_POSITION, Pair.create(childAreaColId, childAreaRowId));
+            container.setProperty(CHILD_AREA_POSITION, Pair.of(childAreaColId, childAreaRowId));
         }
         container.eSetDeliver(deliver);
         

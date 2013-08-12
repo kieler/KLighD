@@ -21,7 +21,12 @@ Require-Bundle: org.eclipse.core.resources,
  de.cau.cs.kieler.core.kivi
 Bundle-Activator: de.cau.cs.kieler.klighd.piccolo.KlighdPiccoloPlugin
 Export-Package: de.cau.cs.kieler.klighd.piccolo,
- de.cau.cs.kieler.klighd.piccolo.internal.activities;x-friends:="de.cau.cs.kieler.klighd.piccolo.svg",
+ de.cau.cs.kieler.klighd.piccolo.internal;x-internal:=true,
+ de.cau.cs.kieler.klighd.piccolo.internal.activities;x-internal:=true,
+ de.cau.cs.kieler.klighd.piccolo.internal.controller;x-internal:=true,
+ de.cau.cs.kieler.klighd.piccolo.internal.events;x-internal:=true,
+ de.cau.cs.kieler.klighd.piccolo.internal.nodes;x-internal:=true,
+ de.cau.cs.kieler.klighd.piccolo.internal.util;x-internal:=true, de.cau.cs.kieler.klighd.piccolo.internal.activities;x-friends:="de.cau.cs.kieler.klighd.piccolo.svg",
  de.cau.cs.kieler.klighd.piccolo.internal.controller;x-friends:="de.cau.cs.kieler.klighd.piccolo.svg",
  de.cau.cs.kieler.klighd.piccolo.internal.events;x-friends:="de.cau.cs.kieler.klighd.piccolo.svg",
  de.cau.cs.kieler.klighd.piccolo.internal.nodes;x-friends:="de.cau.cs.kieler.klighd.piccolo.svg",

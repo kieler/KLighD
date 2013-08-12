@@ -14,14 +14,17 @@
 package de.cau.cs.kieler.core.util;
 
 import java.io.Serializable;
+import java.util.AbstractCollection;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.Map.Entry;
 
 /**
- * A simple pair implementation.
+ * A useful pair implementation.
  * 
  * @kieler.design 2011-03-14 reviewed by cmot, cds
  * @kieler.rating proposed yellow 2012-07-10 msp
@@ -29,12 +32,7 @@ import java.util.Map.Entry;
  * @param <S> type of second contained object
  * @author msp
  */
-public class Pair<F, S> {
-
-    /** the first element. */
-    private F first;
-    /** the second element. */
-    private S second;
+public class Pair<F, S> extends AbstractCollection<Object> {
     
     /**
      * Constructs a pair with {@code null} elements.
@@ -56,48 +54,8 @@ public class Pair<F, S> {
      * @param <T2> type of second element
      * @return a new pair
      */
-    public static <T1, T2> Pair<T1, T2> create(final T1 first, final T2 second) {
+    public static <T1, T2> Pair<T1, T2> of(final T1 first, final T2 second) {
         return new Pair<T1, T2>(first, second);
-    }
-    
-    /**
-     * Constructs a pair with {@code null} elements.
-     */
-    public Pair() {
-    }
-
-    /**
-     * Constructs a pair given both elements.
-     * 
-     * @param thefirst the first element
-     * @param thesecond the second element
-     */
-    public Pair(final F thefirst, final S thesecond) {
-        this.first = thefirst;
-        this.second = thesecond;
-    }
-    
-    /**
-     * Constructs a pair from a map entry.
-     * 
-     * @param entry an entry of a map
-     */
-    public Pair(final Entry<F, S> entry) {
-        this.first = entry.getKey();
-        this.second = entry.getValue();
-    }
-    
-    /**
-     * Constructs a pair of given elements.
-     * 
-     * @param <F> type of first contained object
-     * @param thefirst the first element
-     * @param <S> type of second contained object
-     * @param thesecond the second element
-     * @return the {@link Pair}
-     */
-    public static <F, S> Pair<F, S> of(final F thefirst, final S thesecond) {
-        return new Pair<F, S>(thefirst, thesecond);
     }
     
     /**
@@ -144,6 +102,38 @@ public class Pair<F, S> {
         public int compare(final Pair<F, S> o1, final Pair<F, S> o2) {
             return o1.second.compareTo(o2.second);
         }
+    }
+
+    /** the first element. */
+    private F first;
+    /** the second element. */
+    private S second;
+    
+    /**
+     * Constructs a pair with {@code null} elements.
+     */
+    public Pair() {
+    }
+
+    /**
+     * Constructs a pair given both elements.
+     * 
+     * @param thefirst the first element
+     * @param thesecond the second element
+     */
+    public Pair(final F thefirst, final S thesecond) {
+        this.first = thefirst;
+        this.second = thesecond;
+    }
+    
+    /**
+     * Constructs a pair from a map entry.
+     * 
+     * @param entry an entry of a map
+     */
+    public Pair(final Entry<F, S> entry) {
+        this.first = entry.getKey();
+        this.second = entry.getValue();
     }
 
     /**
@@ -232,6 +222,75 @@ public class Pair<F, S> {
      */
     public S getSecond() {
         return second;
+    }
+    
+
+    /**
+     * {@inheritDoc}
+     */
+    public int size() {
+        if (first == null && second == null) {
+            return 0;
+        } else if (first == null || second == null) {
+            return 1;
+        }
+        return 2;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public Iterator<Object> iterator() {
+        return new Iterator<Object>() {
+            private boolean visitedFirst = false;
+            private boolean visitedSecond = false;
+            public boolean hasNext() {
+                return !visitedSecond && (!visitedFirst && first != null || second != null);
+            }
+            public Object next() {
+                if (!visitedSecond && !visitedFirst && first != null) {
+                    visitedFirst = true;
+                    return first;
+                } else if (!visitedSecond && second != null) {
+                    visitedSecond = true;
+                    return second;
+                }
+                throw new NoSuchElementException();
+            }
+            public void remove() {
+                if (visitedSecond && second != null) {
+                    second = null;
+                } else if (visitedFirst && first != null) {
+                    first = null;
+                }
+                throw new IllegalStateException();
+            }
+        };
+    }
+
+     /**
+     * {@inheritDoc}
+     */
+    @SuppressWarnings("unchecked")
+    @Override
+    public boolean add(final Object e) {
+        if (first != null) {
+            first = (F) e;
+            return true;
+        } else if (second != null) {
+            second = (S) e;
+            return true;
+        }
+        throw new IllegalStateException();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void clear() {
+        first = null;
+        second = null;
     }
 
 }

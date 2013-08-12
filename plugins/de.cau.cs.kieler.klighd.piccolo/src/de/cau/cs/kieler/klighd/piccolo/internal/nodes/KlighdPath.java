@@ -1,32 +1,16 @@
 /*
- * Copyright (c) 2008-2011, Piccolo2D project, http://piccolo2d.org
- * Copyright (c) 1998-2008, University of Maryland
- * All rights reserved.
+ * KIELER - Kiel Integrated Environment for Layout Eclipse RichClient
  *
- * Redistribution and use in source and binary forms, with or without modification, are permitted
- * provided that the following conditions are met:
- *
- * Redistributions of source code must retain the above copyright notice, this list of conditions
- * and the following disclaimer.
- *
- * Redistributions in binary form must reproduce the above copyright notice, this list of conditions
- * and the following disclaimer in the documentation and/or other materials provided with the
- * distribution.
- *
- * None of the name of the University of Maryland, the name of the Piccolo2D project, or the names of its
- * contributors may be used to endorse or promote products derived from this software without specific
- * prior written permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED
- * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
- * PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
- * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
- * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
- * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR
- * TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
- * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ * http://www.informatik.uni-kiel.de/rtsys/kieler/
+ * 
+ * Copyright 2012 by
+ * + Christian-Albrechts-University of Kiel
+ *   + Department of Computer Science
+ *     + Real-Time and Embedded Systems Group
+ * 
+ * This code is provided under the terms of the Eclipse Public License (EPL).
+ * See the file epl-v10.html for the license text.
  */
-// SUPPRESS CHECKSTYLE PREVIOUS 30 Header
 package de.cau.cs.kieler.klighd.piccolo.internal.nodes;
 
 import java.awt.BasicStroke;
@@ -36,18 +20,25 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.Arc2D;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Path2D;
+import java.awt.geom.PathIterator;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.util.List;
 import java.util.Map;
 
+import org.eclipse.swt.graphics.Device;
 import org.eclipse.swt.graphics.LineAttributes;
+import org.eclipse.swt.graphics.Path;
 import org.eclipse.swt.graphics.RGB;
 
 import com.google.common.collect.Maps;
 
 import de.cau.cs.kieler.klighd.KlighdConstants;
 import de.cau.cs.kieler.klighd.piccolo.KlighdSWTGraphics;
+import de.cau.cs.kieler.klighd.piccolo.internal.util.NodeUtil;
 import de.cau.cs.kieler.klighd.piccolo.internal.util.PolylineUtil;
 import de.cau.cs.kieler.klighd.piccolo.internal.util.RGBGradient;
 import edu.umd.cs.piccolo.PNode;
@@ -58,8 +49,13 @@ import edu.umd.cs.piccolo.util.PPickPath;
 
 /**
  * The KLighD-specific {@link PNode} implementation for displaying primitive figures.<br>
- * It has been built-up based on the Piccolo {@link edu.umd.cs.piccolox.swt.PSWTPath PSWTPath} and
- * is restricted to those features required by KLighD.<br>
+ * It is inspired by the Piccolo2D {@link edu.umd.cs.piccolox.swt.PSWTPath PSWTPath} and is
+ * tailored/extended to those features required by KLighD.<br>
+ * <br>
+ * {@link KlighdPath} instances require a {@link KlighdSWTGraphics} while drawing (i.e. in
+ * {@link #paint(PPaintContext)}). In case the available implementation provides an SWT
+ * {@link Device} SWT {@link Path} objects are created and drawn, and disposed if they got out-dated.
+ * Otherwise the internally used AWT {@link Shape Shapes} are used for drawing.<br>
  * <br>
  * The stroke lines of closed figures like rectangles, ellipses, and arcs (although arcs are usually
  * not closed), i.e. those whose size is determined by a rectangular bounding box, do not violate
@@ -74,17 +70,13 @@ import edu.umd.cs.piccolo.util.PPickPath;
  * {@link #addChild(PNode)}/{@link #removeChild(PNode)} in case of rendering changes, by
  * {@link #setBounds(double, double, double, double)} in case of layout changes, and in case of pure
  * style changes by the {@link de.cau.cs.kieler.core.kgraph.KGraphElement KGraphElement} rendering
- * controllers (
- * {@link de.cau.cs.kieler.klighd.piccolo.internal.controller.AbstractKGERenderingController
- * #updateStyles() AbstractKGERenderingController#updateStyles()}) after all rendering and style
- * changes are performed.
+ * controllers ({@link de.cau.cs.kieler.klighd.piccolo.internal.controller.AbstractKGERenderingController
+ * #updateStyles() AbstractKGERenderingController#updateStyles()}) after all rendering and style changes
+ * are performed.
  * 
- * The skeleton of the implementation was copied from {@link edu.umd.cs.piccolox.swt.PSWTPath},
- * therefore the original copyright header is retained.
- * 
- * @author mri, chsch
+ * @author chsch, mri
  */
-public class PSWTAdvancedPath extends PNode {
+public class KlighdPath extends PNode {
 
     private static final long serialVersionUID = 8034306769936734586L;
 
@@ -110,12 +102,14 @@ public class PSWTAdvancedPath extends PNode {
 
     // default initialization that avoids null pointer faults in case of failing setPathTo... calls
     private Shape origShape = new Rectangle2D.Float();
-    private Shape shape;
+    private Shape shape = null;
+    
+    private Path shapePath = null;
 
     
     // A field to keep the list of points line points in mind. They are required while determining
-    // the rotation of edge decorators. By remembering them a re-extraction from the {@link Path2D
-    // Path2D} is avoided.
+    //  the rotation of edge decorators. By remembering them a re-extraction from the {@link Path2D
+    //  Path2D} is avoided.
     private Point2D[] linePoints;
 
     // These deactivated internal affine transforms are kept here and later on in the code
@@ -132,169 +126,50 @@ public class PSWTAdvancedPath extends PNode {
     private boolean isSpline = false;
 
     /**
-     * Creates a path representing the rectangle provided.
-     * 
-     * @param x
-     *            left of rectangle
-     * @param y
-     *            top of rectangle
-     * @param width
-     *            width of rectangle
-     * @param height
-     *            height of rectangle
-     * @return created rectangle
+     * Creates an empty {@link KlighdPath}.
      */
-    public static PSWTAdvancedPath createRectangle(final float x, final float y, final float width,
-            final float height) {
-        final PSWTAdvancedPath result = new PSWTAdvancedPath();
-        result.setPathToRectangle(x, y, width, height);
-        result.setPaint(Color.white);
-        return result;
+    public KlighdPath() {
+        final PropertyChangeListener disposeListener = new PropertyChangeListener() {
+            public void propertyChange(final PropertyChangeEvent event) {
+                if (event.getNewValue() == null) {
+                    disposeSWTPath();
+                    
+                    @SuppressWarnings("unchecked")
+                    final List<PNode> children = KlighdPath.this.getChildrenReference();
+                    for (PNode p : children) {
+                        p.firePropertyChange(NodeUtil.DISPOSE_CODE, NodeUtil.DISPOSE, this, null);
+                    }
+                }
+            }
+        };
+        this.addPropertyChangeListener(PROPERTY_PARENT, disposeListener);
+        this.addPropertyChangeListener(NodeUtil.DISPOSE, disposeListener);
+        // reacting on event of PROPERTY_BOUNDS seems to be not necessary as that will lead to
+        //  a call of one of the 'setPathTo...' methods below that in turn will lead to a call of
+        //  'updateShape', which calls 'disposeSWTPath', too!
     }
 
     /**
-     * Creates a path representing the rounded rectangle provided.
+     * Changes the underlying shape of this {@link KlighdPath}.
      * 
-     * @param x
-     *            left of rectangle
-     * @param y
-     *            top of rectangle
-     * @param width
-     *            width of rectangle
-     * @param height
-     *            height of rectangle
-     * @param arcWidth
-     *            width of the arc at the corners
-     * @param arcHeight
-     *            height of arc at the corners
-     * @return created rounded rectangle
+     * @param newShape
+     *            new associated shape of this {@link KlighdPath}
      */
-    public static PSWTAdvancedPath createRoundRectangle(final float x, final float y,
-            final float width, final float height, final float arcWidth, final float arcHeight) {
-        final PSWTAdvancedPath result = new PSWTAdvancedPath();
-        result.setPathToRoundRectangle(x, y, width, height, arcWidth, arcHeight);
-        result.setPaint(Color.white);
-        return result;
+    private void setShape(final Shape newShape) {
+        origShape = newShape;
+        updateShape();
+        updateBoundsFromPath();
+        invalidatePaint();
     }
+    
 
     /**
-     * Creates a path representing an ellipse that covers the rectangle provided.
+     * Returns the points of the shape.
      * 
-     * @param x
-     *            left of rectangle
-     * @param y
-     *            top of rectangle
-     * @param width
-     *            width of rectangle
-     * @param height
-     *            height of rectangle
-     * @return created ellipse
+     * @return the points or <code>null</code> if path is not a line or is not initialized properly.
      */
-    public static PSWTAdvancedPath createEllipse(final float x, final float y, final float width,
-            final float height) {
-        final PSWTAdvancedPath result = new PSWTAdvancedPath();
-        result.setPathToEllipse(x, y, width, height);
-        result.setPaint(Color.white);
-        return result;
-    }
-
-    /**
-     * Creates a path representing an arc positioned at the coordinate provided with the dimensions,
-     * angular start and angular extent provided.
-     * 
-     * @param x
-     *            left of the arc
-     * @param y
-     *            top of the arc
-     * @param width
-     *            width of the arc
-     * @param height
-     *            height of the arc
-     * @param angStart
-     *            angular start of the arc
-     * @param angExtend
-     *            angular extent of the arc
-     * @param type
-     *            one of the constants {@link Arc2D#OPEN}, {@link Arc2D#CHORD}, and
-     *            {@link Arc2D#PIE}
-     * @return created arc
-     */
-    public static PSWTAdvancedPath createArc(final float x, final float y, final float width,
-            final float height, final float angStart, final float angExtend, final int type) {
-        final PSWTAdvancedPath result = new PSWTAdvancedPath();
-        result.setPathToArc(x, y, width, height, angStart, angExtend, type);
-        result.setPaint(Color.white);
-        return result;
-    }
-
-    /**
-     * Creates a path for the spline for the given points.
-     * 
-     * @author chsch
-     * 
-     * @param points
-     *            array of points for the point lines
-     * @return created spline for the given points
-     */
-    public static PSWTAdvancedPath createSpline(final Point2D[] points) {
-        final PSWTAdvancedPath result = new PSWTAdvancedPath();
-        result.setPathToSpline(points);
-        return result;
-    }
-
-    /**
-     * Creates a path for the poly-line with rounded bend points for the given points.
-     * 
-     * @author chsch
-     * 
-     * @param points
-     *            array of points for the point lines
-     * @param bendRadius
-     *            the radius of the bend points
-     * 
-     * @return created polyline with rounded bend points for the given points
-     */
-    public static PSWTAdvancedPath createRoundedBendPolyline(final Point2D[] points,
-            final float bendRadius) {
-        final PSWTAdvancedPath result = new PSWTAdvancedPath();
-        result.setPathToRoundedBendPolyline(points, bendRadius);
-        return result;
-    }
-
-    /**
-     * Creates a path for the poly-line for the given points.
-     * 
-     * @param points
-     *            array of points for the point lines
-     * 
-     * @return created polyline for the given points
-     */
-    public static PSWTAdvancedPath createPolyline(final Point2D[] points) {
-        final PSWTAdvancedPath result = new PSWTAdvancedPath();
-        result.setPathToPolyline(points);
-        return result;
-    }
-
-    /**
-     * Creates a path for the polygon for the given points.
-     * 
-     * @param points
-     *            array of points for the point lines
-     * 
-     * @return created polygon for the given points
-     */
-    public static PSWTAdvancedPath createPolygon(final Point2D[] points) {
-        final PSWTAdvancedPath result = new PSWTAdvancedPath();
-        result.setPathToPolygon(points);
-        result.setPaint(Color.white);
-        return result;
-    }
-
-    /**
-     * Creates an empty PSWTAdvancedPath.
-     */
-    public PSWTAdvancedPath() {
-        strokePaint = DEFAULT_STROKE_PAINT;
+    public Point2D[] getShapePoints() {
+        return linePoints;
     }
 
     /**
@@ -303,9 +178,14 @@ public class PSWTAdvancedPath extends PNode {
      * @return true if the path is a polyline, rounded bend point polyline, or a spline; false
      *         otherwise.
      */
-    public boolean isLine() {
+    private boolean isLine() {
         return isPolyline || isRoundedBendsPolyline || isSpline;
     }
+
+
+    /* --------------------- */
+    /*  style related stuff  */
+    /* --------------------- */
 
     /**
      * Returns the attached line attributes record denoting stroke configuration w.r.t. line cap,
@@ -314,7 +194,7 @@ public class PSWTAdvancedPath extends PNode {
      * @return the line related {@link LineAttributes}.
      */
     public LineAttributes getLineAttributes() {
-        return this.lineAttributes;
+        return lineAttributes;
     }
 
     /**
@@ -525,6 +405,10 @@ public class PSWTAdvancedPath extends PNode {
     }
 
 
+    /* ---------------------- */
+    /*  bounds related stuff  */
+    /* ---------------------- */
+
     /**
      * {@inheritDoc}
      */
@@ -533,7 +417,7 @@ public class PSWTAdvancedPath extends PNode {
             final double height) {
         // unused (left it the for the case it might be helpful in future,
         //  should not sink into obscurity) 
-        //  if it is used again one make sure that no recursive cycles occur with
+        // if it is used again one have to make sure that no recursive cycles occur with
         //  #updateBoundsFromPath
     }
 
@@ -583,6 +467,8 @@ public class PSWTAdvancedPath extends PNode {
      * @author chsch
      */
     private void updateShape() {
+        disposeSWTPath();
+
         if (isLine() || isPolygon) {
             shape = origShape;
             
@@ -654,6 +540,11 @@ public class PSWTAdvancedPath extends PNode {
         return curBounds;
     }
 
+
+    /* ----------------------- */
+    /*  picking related stuff  */
+    /* ----------------------- */
+
     @Override
     public boolean fullPick(final PPickPath pickPath) {
         return super.fullPick(pickPath);
@@ -662,98 +553,137 @@ public class PSWTAdvancedPath extends PNode {
     @Override
     public boolean pick(final PPickPath pickPath) {
         if (this.getPickable()) {
-
             return super.pickAfterChildren(pickPath);
         }
         return super.pick(pickPath);
     }
 
 
+    /* ----------------------- */
+    /*  drawing related stuff  */
+    /* ----------------------- */
+
     /**
      * {@inheritDoc}
      */
     @Override
     protected void paint(final PPaintContext paintContext) {
-        KlighdSWTGraphics g2 = (KlighdSWTGraphics) paintContext.getGraphics();
-        g2.setLineAttributes(lineAttributes);
+        final KlighdSWTGraphics graphics = (KlighdSWTGraphics) paintContext.getGraphics();
+        final Device device = graphics.getDevice();
+        
+        // flag indicating whether we can construct SWT Paths and rely on
+        //  KlighdSWTGraphics#draw(Path) & KlighdSWTGraphics#fill(Path)
+        final boolean swt = device != null;
 
-        // if (internalXForm != null) {
-        //    g2.transform(internalXForm);
-        // }
-
+        // take care about the shadow
         if (shadow != null) {
-            drawShadow(g2);
+            if (swt && shapePath == null) {
+                shapePath = createSWTPath(shape.getPathIterator(null), device);
+            }
+            drawShadow(graphics, swt);
         }
-        final int currentAlpha = g2.getAlpha();
+        final int currentAlpha = graphics.getAlpha();
         final float currentAlphaFloat = (float) currentAlpha;
 
+        // draw the background if possible and required
         if (!isLine()) {
-            RGB p = getSWTPaint();
-            if (p != null) {
-                g2.setAlpha(
+            if (swt && shapePath == null && (paint != null || paintGradient != null)) {
+                shapePath = createSWTPath(shape.getPathIterator(null), device);
+            }
+            
+            if (paint != null) {
+                graphics.setAlpha(
                         (int) (paintAlpha * (currentAlphaFloat / KlighdConstants.ALPHA_FULL_OPAQUE)));
-                g2.setBackground(p);
-                g2.fill(shape);
+                graphics.setBackground(paint);
+                if (swt) {
+                    graphics.fill(shapePath);
+                } else {
+                    graphics.fill(shape);
+                }
             }
 
-            RGBGradient pg = getSWTPaintGradient();
-            if (pg != null) {
-                g2.setBackgroundPattern(pg, getBounds());
-                g2.fill(shape);
+            if (paintGradient != null) {
+                graphics.setBackgroundPattern(paintGradient, getBoundsReference());
+                if (swt) {
+                    graphics.fill(shapePath);
+                } else {
+                    graphics.fill(shape);
+                }
             }
         }
 
-        if (strokePaint != null) {
-            g2.setAlpha((int) (strokeAlpha * (currentAlphaFloat / KlighdConstants.ALPHA_FULL_OPAQUE)));
-            g2.setColor(strokePaint);
-            g2.draw(shape);
+        // draw the foreground if required
+        //  in case of a line width of zero we can skip this  
+        if (lineAttributes.width != 0f) {
+            graphics.setLineAttributes(lineAttributes);
+            
+            if (swt && shapePath == null && (strokePaint != null || strokePaintGradient != null)) {
+                shapePath = createSWTPath(shape.getPathIterator(null), graphics.getDevice());
+            }
+            
+            if (strokePaint != null) {
+                graphics.setAlpha(
+                        (int) (strokeAlpha * (currentAlphaFloat / KlighdConstants.ALPHA_FULL_OPAQUE)));
+                graphics.setColor(strokePaint);
+                if (swt) {
+                    graphics.draw(shapePath);
+                } else {
+                    graphics.draw(shape);
+                }
+            }
+    
+            if (strokePaintGradient != null) {
+                graphics.setPattern(strokePaintGradient, getBoundsReference());
+                if (swt) {
+                    graphics.draw(shapePath);
+                } else {
+                    graphics.draw(shape);
+                }
+            }
         }
 
-        if (strokePaintGradient != null) {
-            Rectangle2D bounds = getBounds();
-            g2.setPattern(
-                    strokePaintGradient,
-                    new Rectangle2D.Double(bounds.getMinX() - 1, bounds.getMinY() - 1, bounds
-                            .getMaxX() + 1, bounds.getMaxY() + 2));
-            g2.draw(shape);
-        }
-
-        // if (inverseXForm != null) {
-        //    g2.transform(inverseXForm);
-        // }
-
-        g2.setAlpha(currentAlpha);
-        g2.setLineAttributes(KlighdConstants.DEFAULT_LINE_ATTRIBUTES);
+        graphics.setAlpha(currentAlpha);
+        graphics.setLineAttributes(KlighdConstants.DEFAULT_LINE_ATTRIBUTES);
     }
 
     /**
      * Draws the shadow of the current shape.
      * 
-     * @param g2
+     * @param graphics
      *            the {@link KlighdSWTGraphics} to draw on.
+     * @param swt
+     *            flag indicating whether we can construct SWT Paths and rely on
+     *            {@link KlighdSWTGraphics#draw(Path)} & {@link KlighdSWTGraphics#fill(Path)}
      */
-    private void drawShadow(final KlighdSWTGraphics g2) {
+    private void drawShadow(final KlighdSWTGraphics graphics, final boolean swt) {
 
-        final int currentAlpha = g2.getAlpha();
+        final int currentAlpha = graphics.getAlpha();
 
         // the alpha value of the particular shadow shapes
         // note that the alpha values of stacked shapes will kind of accumulate
         final float shadowAlpha = 25f;
 
         // determine the movement of the shape coordinates by means of an affine transform
-        AffineTransform t = g2.getTransform();
+        AffineTransform t = graphics.getTransform();
         AffineTransform tc = new AffineTransform(t);
         tc.translate(shadowExtend, shadowExtend);
 
         // configure the graphics layer
-        g2.setBackground(this.shadow);
-        g2.setLineWidth(0);
-        g2.setAlpha((int) ((float) currentAlpha * shadowAlpha / KlighdConstants.ALPHA_FULL_OPAQUE));
+        graphics.setBackground(shadow);
+        
+        // a sufficiently small number unequal to 0
+        graphics.setLineWidth(0.0001f); // SUPPRESS CHECKSTYLE MagicNumber
+        graphics.setAlpha(
+                (int) ((float) currentAlpha * shadowAlpha / KlighdConstants.ALPHA_FULL_OPAQUE));
 
         // draw a bunch of shape copies, each of them is moved a bit towards the original position
         for (int i = 0; i < shadowExtend; i++) {
-            g2.setTransform(tc);
-            g2.fill(shape);
+            graphics.setTransform(tc);
+            if (swt) {
+                graphics.fill(shapePath);
+            } else {
+                graphics.fill(shape);
+            }
             tc.translate(-1, -1);
         }
 
@@ -761,41 +691,79 @@ public class PSWTAdvancedPath extends PNode {
         // and draw a fresh white background on the shadow shape stack at the original position
         // Note, that we accept the incompatibility of transparent shapes and shadow, and thus
         // dismiss the transparency.
-        g2.setTransform(t);
-        g2.setLineWidth(1);
-        g2.setAlpha(KlighdConstants.ALPHA_FULL_OPAQUE);
-        g2.setBackground(KlighdConstants.WHITE);
-        g2.fill(shape);
+        graphics.setTransform(t);
+        graphics.setLineWidth(1);
+        graphics.setAlpha(KlighdConstants.ALPHA_FULL_OPAQUE);
+        graphics.setBackground(KlighdConstants.WHITE);
+        if (swt) {
+            graphics.fill(shapePath);
+        } else {
+            graphics.fill(shape);
+        }
 
         // reset the manipulated settings
-        g2.setAlpha(currentAlpha);
-        g2.setLineWidth(lineAttributes.width);
+        graphics.setAlpha(currentAlpha);
+        graphics.setLineWidth(lineAttributes.width);
     }
 
 
     /**
-     * Changes the underlying shape of this PSWTPath.
+     * Builds up a SWT {@link Path} according to a given AWT Geometry {@link PathIterator}.
      * 
-     * @param newShape
-     *            new associated shape of this PSWTPath
+     * @param pathIterator
+     *            provides the segments the new path shall contain.
+     * @param device
+     *            the device to create the path on
+     * @return the desired {@link Path} object.
      */
-    private void setShape(final Shape newShape) {
-        origShape = newShape;
-        updateShape();
-        updateBoundsFromPath();
-        invalidatePaint();
+    private Path createSWTPath(final PathIterator pathIterator, final Device device) {
+        // SUPPRESS CHECKSTYLE NEXT 30 MagicNumber
+
+        final Path path = new Path(device);
+
+        final float[] coords = new float[6];
+
+        while (!pathIterator.isDone()) {
+            switch (pathIterator.currentSegment(coords)) {
+            case PathIterator.SEG_MOVETO:
+                path.moveTo(coords[0], coords[1]);
+                break;
+            case PathIterator.SEG_LINETO:
+                path.lineTo(coords[0], coords[1]);
+                break;
+            case PathIterator.SEG_CLOSE:
+                path.close();
+                break;
+            case PathIterator.SEG_QUADTO:
+                path.quadTo(coords[0], coords[1], coords[2], coords[3]);
+                break;
+            case PathIterator.SEG_CUBICTO:
+                path.cubicTo(coords[0], coords[1], coords[2], coords[3], coords[4], coords[5]);
+                break;
+            default:
+            }
+            pathIterator.next();
+        }
+        return path;
     }
-    
+
 
     /**
-     * Returns the points of the shape.
-     * 
-     * @return the points or <code>null</code> if path is not a line or is not initialized properly.
+     * Disposes the current {@link #shapePath} if any one is available. This is suggested in order
+     * to tidy up the native drawing objects, which have been created while constructing
+     * {@link #shapePath}. (see {@link Path#Path(Device)} for details)
      */
-    public Point2D[] getShapePoints() {
-        return this.linePoints;
+    private void disposeSWTPath() {
+        if (this.shapePath != null) {
+            this.shapePath.dispose();
+            this.shapePath = null;
+        }
     }
 
+
+    /* --------------------- */
+    /*  initializer methods  */
+    /* --------------------- */
 
     /**
      * Resets the path to a rectangle with the dimensions and position provided.
@@ -811,7 +779,7 @@ public class PSWTAdvancedPath extends PNode {
      */
     public void setPathToRectangle(final float x, final float y, final float width,
             final float height) {
-        setShape(new Rectangle2D.Float(x, y, width, height));
+        this.setShape(new Rectangle2D.Float(x, y, width, height));
     }
 
     /**
@@ -832,7 +800,7 @@ public class PSWTAdvancedPath extends PNode {
      */
     public void setPathToRoundRectangle(final float x, final float y, final float width,
             final float height, final float arcWidth, final float arcHeight) {
-        setShape(new RoundRectangle2D.Float(x, y, width, height, arcWidth, arcHeight));
+        this.setShape(new RoundRectangle2D.Float(x, y, width, height, arcWidth, arcHeight));
     }
 
     /**
@@ -849,7 +817,7 @@ public class PSWTAdvancedPath extends PNode {
      *            height of the ellipse
      */
     public void setPathToEllipse(final float x, final float y, final float width, final float height) {
-        setShape(new Ellipse2D.Float(x, y, width, height));
+        this.setShape(new Ellipse2D.Float(x, y, width, height));
     }
 
 
@@ -875,7 +843,7 @@ public class PSWTAdvancedPath extends PNode {
      */
     public void setPathToArc(final float x, final float y, final float width, final float height,
             final float angStart, final float angExtend, final int type) {
-        setShape(new Arc2D.Float(x, y, width, height, angStart, angExtend, type));
+        this.setShape(new Arc2D.Float(x, y, width, height, angStart, angExtend, type));
     }
 
 
@@ -890,10 +858,10 @@ public class PSWTAdvancedPath extends PNode {
             return;
         }
 
-        isSpline = true;
+        this.isSpline = true;
         Path2D spline = PolylineUtil.createSplinePath(new Path2D.Float(), points);
         this.linePoints = PolylineUtil.createSplineApproximationPath(spline);
-        setShape(spline);
+        this.setShape(spline);
     }
 
 
@@ -910,9 +878,10 @@ public class PSWTAdvancedPath extends PNode {
             return;
         }
         
-        isRoundedBendsPolyline = true;
+        this.isRoundedBendsPolyline = true;
         this.linePoints = points;
-        setShape(PolylineUtil.createRoundedBendsPolylinePath(new Path2D.Float(), points, bendRadius));
+        this.setShape(
+                PolylineUtil.createRoundedBendsPolylinePath(new Path2D.Float(), points, bendRadius));
     }
 
 

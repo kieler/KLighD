@@ -15,7 +15,6 @@ package de.cau.cs.kieler.klighd.piccolo.internal.events;
 
 import com.google.common.base.Predicate;
 import com.google.common.base.Strings;
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
 
 import de.cau.cs.kieler.core.krendering.KAction;
@@ -30,6 +29,7 @@ import de.cau.cs.kieler.klighd.piccolo.internal.events.KlighdMouseEventListener.
 import de.cau.cs.kieler.klighd.piccolo.viewer.PiccoloViewer;
 import de.cau.cs.kieler.klighd.triggers.KlighdStatusTrigger;
 import de.cau.cs.kieler.klighd.triggers.KlighdStatusTrigger.KlighdStatusState;
+import de.cau.cs.kieler.klighd.util.Iterables2;
 import edu.umd.cs.piccolo.event.PInputEvent;
 import edu.umd.cs.piccolo.event.PInputEventListener;
 
@@ -112,8 +112,8 @@ public class KlighdActionEventHandler implements PInputEventListener {
             }
 
             LightDiagramServices.getInstance().layoutDiagram(
-                    viewer.getContextViewer().getCurrentViewContext(), true, true,
-                    config != null ? ImmutableList.of(config) : null);
+                    viewer.getContextViewer().getCurrentViewContext(),
+                    Iterables2.singletonList(config));
             
             KlighdStatusState state = new KlighdStatusState(KlighdStatusState.Status.UPDATE, viewer
                     .getContextViewer().getViewPartId(), viewer.getContextViewer()

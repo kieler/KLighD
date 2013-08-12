@@ -60,7 +60,7 @@ import de.cau.cs.kieler.klighd.microlayout.PlacementUtil;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.IGraphElement;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KDecoratorNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KNodeNode;
-import de.cau.cs.kieler.klighd.piccolo.internal.nodes.PSWTAdvancedPath;
+import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdPath;
 import de.cau.cs.kieler.klighd.piccolo.internal.util.PiccoloPlacementUtil;
 import de.cau.cs.kieler.klighd.piccolo.internal.util.PiccoloPlacementUtil.Decoration;
 import de.cau.cs.kieler.klighd.piccolo.internal.util.Styles;
@@ -589,7 +589,7 @@ public abstract class AbstractKGERenderingController
     private void processModifiableStyles(final List<KStyle> styles) {
         final Iterable<KStyle> localModifiedStyles = Iterables.filter(styles,
                 MODIFIED_STYLE_FILTER);
-        modifiableStylesPresent |= !localModifiedStyles.iterator().hasNext();
+        modifiableStylesPresent |= localModifiedStyles.iterator().hasNext();
 
         final KLayoutData layoutData = getGraphElement().getData(KLayoutData.class);
         if (layoutData == null) {
@@ -757,7 +757,7 @@ public abstract class AbstractKGERenderingController
      * @return the Piccolo node representing the rendering
      */
     protected PNode handleDecoratorPlacementRendering(final KRendering rendering,
-            final List<KStyle> styles, final PSWTAdvancedPath parent) {
+            final List<KStyle> styles, final KlighdPath parent) {
         // determine the initial bounds and rotation
         final Decoration decoration = PiccoloPlacementUtil.evaluateDecoratorPlacement(
                 PiccoloPlacementUtil.getDecoratorPlacementData(rendering), parent);

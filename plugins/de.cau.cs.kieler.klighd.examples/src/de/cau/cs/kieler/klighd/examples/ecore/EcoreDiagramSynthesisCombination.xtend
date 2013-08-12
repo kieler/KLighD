@@ -1,6 +1,5 @@
 package de.cau.cs.kieler.klighd.examples.ecore
 
-import java.util.Collection
 import java.util.List
 
 import de.cau.cs.kieler.core.kivi.AbstractCombination
@@ -19,7 +18,7 @@ import org.eclipse.emf.ecore.EClassifier
 import org.eclipse.emf.ecore.EModelElement
 import org.eclipse.emf.ecoretools.diagram.navigator.EcoreDomainNavigatorItem
 import org.eclipse.ui.part.FileEditorInput;
-
+import de.cau.cs.kieler.klighd.util.KlighdProperties
 
 /**
  * Combination that triggers the synthesis of Ecore diagrams.
@@ -31,10 +30,15 @@ class EcoreDiagramSynthesisCombination extends AbstractCombination {
 	/**
 	 * The 'execute()' method, see doc of {@link AbstractCombination}.
 	 */
-	def public void execute(PartTrigger$EditorState es, SelectionTrigger$SelectionState selectionState,
+	def public void execute(PartTrigger$PartState es, SelectionTrigger$SelectionState selectionState,
 	    KlighdSelectionTrigger$KlighdSelectionState klighdSelectionState) {
 		
-		if (this.latestState() == es) {
+		// do not react on partStates as well as on selectionStates in case
+		//  a view part has been deactivated recently, as an potentially out-dated selection
+		//  is currently about to be processed
+		// most certainly a "part activated" event will follow and subsequently a further
+		//  selection event if the selection of the newly active part is changed, too! 
+		if (this.latestState() == es || es.eventType == PartTrigger$EventType::VIEW_DEACTIVATED) {
 		   //inputPath = es.getProperty(PartTrigger::EDITOR_INPUT_PATH) as IPath;
 		   return; // do only react on selectionState
 		}
@@ -68,7 +72,7 @@ class EcoreDiagramSynthesisCombination extends AbstractCombination {
                 if (editorInputPath != null) {
                     val id = editorInputPath.toPortableString().replace(":", "") as String;
                     this.schedule(new KlighdUpdateDiagramEffect(id, editorInputPath.lastSegment,
-                            EModelElementCollection::of(selectionState.selection as Collection),
+                            EModelElementCollection::of(selectionState.selection.filter(typeof(EModelElement)).toList),
                             es.editorPart
                         )
                     );
@@ -76,9 +80,9 @@ class EcoreDiagramSynthesisCombination extends AbstractCombination {
             } else {
                 // this case covers the situation of depicting classes selected in the Project Explorer               
                 if (selection.forall[typeof(EcoreDomainNavigatorItem).isInstance(it)]) {
-                    val elements = selectionState.selection.map[
-                        (it as EcoreDomainNavigatorItem).EObject as EModelElement
-                    ].toList;
+                    val elements = selectionState.selection.filter(typeof(EcoreDomainNavigatorItem)).map[
+                        it.EObject
+                    ].filter(typeof(EModelElement)).toList;
                     
                     // By means of this construction we reduced the conversion of nodes the result from the
                     //  insertion of further element between the head and tail of the selection list.
@@ -94,6 +98,7 @@ class EcoreDiagramSynthesisCombination extends AbstractCombination {
                             "KLighD Class Diagram", EModelElementCollection::of(selectedModelElements)
         		        ) => [
                         it.setProperty(LightDiagramServices::REQUESTED_UPDATE_STRATEGY, UpdateStrategy::ID);
+                        it.setProperty(KlighdProperties::MODEL_ACCESS, new EcoreModelAccess(this.selectedModelElements));
                     ]);
                 }
             } 

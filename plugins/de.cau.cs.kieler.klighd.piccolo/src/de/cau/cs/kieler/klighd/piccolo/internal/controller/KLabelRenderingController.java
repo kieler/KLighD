@@ -23,16 +23,15 @@ import de.cau.cs.kieler.core.krendering.KRendering;
 import de.cau.cs.kieler.core.krendering.KRenderingFactory;
 import de.cau.cs.kieler.core.krendering.KStyle;
 import de.cau.cs.kieler.core.krendering.KText;
-import de.cau.cs.kieler.klighd.krendering.KTextUtil;
-import de.cau.cs.kieler.klighd.microlayout.PlacementUtil;
 import de.cau.cs.kieler.klighd.microlayout.Bounds;
+import de.cau.cs.kieler.klighd.microlayout.PlacementUtil;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KLabelNode;
+import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdStyledText;
 import de.cau.cs.kieler.klighd.piccolo.internal.util.PiccoloPlacementUtil;
 import edu.umd.cs.piccolo.PNode;
-import edu.umd.cs.piccolox.swt.PSWTText;
 
 /**
- * @author mri
+ * @author mri, chsch
  */
 public class KLabelRenderingController extends AbstractKGERenderingController<KLabel, KLabelNode> {
 
@@ -86,16 +85,16 @@ public class KLabelRenderingController extends AbstractKGERenderingController<KL
 
         // create the rendering
         @SuppressWarnings("unchecked")
-        final PNodeController<PSWTText> controller =
-                (PNodeController<PSWTText>) createRendering(rendering, new ArrayList<KStyle>(0),
-                        parent, Bounds.of(parent.getBoundsReference()));
-        controller.getNode().setText(KTextUtil.getTextLines(parent.getText()));
+        final PNodeController<KlighdStyledText> controller =
+                (PNodeController<KlighdStyledText>) createRendering(rendering,
+                        new ArrayList<KStyle>(0), parent, Bounds.of(parent.getBoundsReference()));
+        controller.getNode().setText(parent.getText());
 
         // add a listener on the parent's bend points
         addListener(KLabelNode.PROPERTY_TEXT, parent, controller.getNode(),
                 new PropertyChangeListener() {
                     public void propertyChange(final PropertyChangeEvent e) {
-                        controller.getNode().setText(KTextUtil.getTextLines(parent.getText()));
+                        controller.getNode().setText(parent.getText());
                         controller.getNode().repaint();
                     }
                 });
