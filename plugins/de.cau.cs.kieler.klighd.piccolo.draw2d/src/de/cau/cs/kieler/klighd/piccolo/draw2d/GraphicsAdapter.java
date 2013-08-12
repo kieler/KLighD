@@ -14,26 +14,32 @@
 package de.cau.cs.kieler.klighd.piccolo.draw2d;
 
 import java.awt.BasicStroke;
+import java.awt.Rectangle;
 import java.awt.Shape;
 import java.awt.Stroke;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Arc2D;
 import java.awt.geom.Ellipse2D;
-import java.awt.geom.GeneralPath;
 import java.awt.geom.Line2D;
+import java.awt.geom.Path2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
 import java.util.LinkedList;
 
 import org.eclipse.draw2d.Graphics;
 import org.eclipse.draw2d.geometry.PointList;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.FontMetrics;
+import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.LineAttributes;
 import org.eclipse.swt.graphics.Path;
 import org.eclipse.swt.graphics.Pattern;
+import org.eclipse.swt.widgets.Display;
 
+import de.cau.cs.kieler.klighd.piccolo.KlighdSWTGraphics;
 import de.cau.cs.kieler.klighd.piccolo.KlighdSWTGraphicsImpl;
 import de.cau.cs.kieler.klighd.piccolo.internal.util.PolylineUtil;
 
@@ -46,7 +52,7 @@ import de.cau.cs.kieler.klighd.piccolo.internal.util.PolylineUtil;
 public class GraphicsAdapter extends Graphics {
     
     /** The state data class. */
-    private static class State {
+    private class State {
         private Shape clip;
         private AffineTransform transform;
         private int alpha;
@@ -62,20 +68,22 @@ public class GraphicsAdapter extends Graphics {
          * 
          * @param g an SWT graphics wrapper
          */
-        State(final KlighdSWTGraphicsImpl g) {
+        State(final KlighdSWTGraphics g) {
             this.clip = g.getClip();
             this.transform = g.getTransform();
-            this.alpha = g.getGraphicsContext().getAlpha();
-            this.foreground = g.getGraphicsContext().getForeground();
-            this.background = g.getGraphicsContext().getBackground();
-            this.foregroundPattern = g.getGraphicsContext().getForegroundPattern();
-            this.backgroundPattern = g.getGraphicsContext().getBackgroundPattern();
-            this.font = g.getSWTFont();
+            this.alpha = g.getAlpha();
+            this.foreground = g.getGC().getForeground();
+            this.background = g.getGC().getBackground();
+            this.foregroundPattern = g.getGC().getForegroundPattern();
+            this.backgroundPattern = g.getGC().getBackgroundPattern();
+            this.font = g.getGC().getFont();
             this.lineAttributes = g.getLineAttributes();
         }
     }
     
-    private static final GeneralPath SINGLETON_PATH = new GeneralPath();
+    private AffineTransform awtTransform = new AffineTransform();
+    
+    private static final Path2D.Float SINGLETON_PATH = new Path2D.Float();
     private static final Line2D.Float SINGLETON_LINE = new Line2D.Float();
     private static final Arc2D.Float SINGLETON_ARC = new Arc2D.Float(); 
     private static final Ellipse2D.Float SINGLETON_ELLIPSE = new Ellipse2D.Float(); 
@@ -129,7 +137,7 @@ public class GraphicsAdapter extends Graphics {
      * The specialized AWT {@link java.awt.Graphics2D Graphics2D} graphics facading SWT's
      * {@link org.eclipse.swt.graphics.GC GC}.
      */
-    private KlighdSWTGraphicsImpl pg;
+    private KlighdSWTGraphics pg;
     
     /** The stack of graphics states. */
     private LinkedList<State> stack = new LinkedList<State>();
@@ -165,8 +173,9 @@ public class GraphicsAdapter extends Graphics {
      *            a specialized AWT {@link java.awt.Graphics2D Graphics2D} graphics facading SWT's
      *            {@link org.eclipse.swt.graphics.GC GC}
      */
-    void setKlighdSWTGraphics(final KlighdSWTGraphicsImpl thePg) {
+    void setKlighdSWTGraphics(final KlighdSWTGraphics thePg) {
         this.pg = thePg;
+        this.stack.clear();
     }
     
 
@@ -203,7 +212,8 @@ public class GraphicsAdapter extends Graphics {
     public void drawImage(final Image srcImage, final int x1, final int y1, final int w1, final int h1,
             final int x2, final int y2, final int w2, final int h2) {
         // SUPPRESS CHECKSTYLE PREVIOUS 2 Parameter: This is API!
-        pg.drawImage(srcImage, x1, y1, w1, h1, x2, y2, w2, h2);
+        throw new UnsupportedOperationException();
+//        pg.drawImage(srcImage, x1, y1, w1, h1, x2, y2, w2, h2);
     }
 
     /**
@@ -227,10 +237,9 @@ public class GraphicsAdapter extends Graphics {
     /**
      * {@inheritDoc}
      */
-    @SuppressWarnings("deprecation")
     @Override
     public void drawPath(final Path path) {
-        pg.drawPath(path);
+        pg.draw(path);
     }
 
     /**
@@ -273,7 +282,9 @@ public class GraphicsAdapter extends Graphics {
      */
     @Override
     public void drawString(final String s, final int x, final int y) {
-        pg.drawString(s, x, y);
+        translate(x, y);
+        pg.drawText(s);
+        translate(-x, -y);
     }
 
     /**
@@ -281,7 +292,9 @@ public class GraphicsAdapter extends Graphics {
      */
     @Override
     public void drawText(final String s, final int x, final int y) {
-        pg.drawText(s, x, y);
+        translate(x, y);
+        pg.drawText(s);
+        translate(-x, -y);
     }
     
     /**
@@ -289,7 +302,9 @@ public class GraphicsAdapter extends Graphics {
      */
     @Override
     public void drawText(final String s, final int x, final int y, final int style) {
-        pg.drawText(s, x, y, style);
+        translate(x, y);
+        pg.drawText(s);
+        translate(-x, -y);
     }
 
     /**
@@ -308,7 +323,8 @@ public class GraphicsAdapter extends Graphics {
     @Override
     public void fillGradient(final int x, final int y, final int w, final int h,
             final boolean vertical) {
-        pg.fillGradientRectangle(x, y, w, h, vertical);
+        throw new UnsupportedOperationException();
+//        pg.fillGradientRectangle(x, y, w, h, vertical);
     }
 
     /**
@@ -323,10 +339,9 @@ public class GraphicsAdapter extends Graphics {
     /**
      * {@inheritDoc}
      */
-    @SuppressWarnings("deprecation")
     @Override
     public void fillPath(final Path path) {
-        pg.fillPath(path);
+        pg.fill(path);
     }
 
     /**
@@ -361,9 +376,10 @@ public class GraphicsAdapter extends Graphics {
      */
     @Override
     public void fillString(final String s, final int x, final int y) {
-        org.eclipse.swt.graphics.Point extent = pg.stringExtent(s);
-        pg.fillRect(x, y, extent.x, extent.y);
-        pg.drawString(s, x, y);
+        throw new UnsupportedOperationException();
+//        org.eclipse.swt.graphics.Point extent = pg.stringExtent(s);
+//        pg.fillRect(x, y, extent.x, extent.y);
+//        pg.drawString(s, x, y);
     }
 
     /**
@@ -371,9 +387,10 @@ public class GraphicsAdapter extends Graphics {
      */
     @Override
     public void fillText(final String s, final int x, final int y) {
-        org.eclipse.swt.graphics.Point extent = pg.textExtent(s);
-        pg.fillRect(x, y, extent.x, extent.y);
-        pg.drawText(s, x, y);
+        throw new UnsupportedOperationException();
+//        org.eclipse.swt.graphics.Point extent = pg.textExtent(s);
+//        pg.fillRect(x, y, extent.x, extent.y);
+//        pg.drawText(s, x, y);
     }
 
     /**
@@ -382,7 +399,9 @@ public class GraphicsAdapter extends Graphics {
     @Override
     public org.eclipse.draw2d.geometry.Rectangle getClip(
             final org.eclipse.draw2d.geometry.Rectangle rect) {
-        return rect.setBounds(toRectangle(pg.getClip()));
+        Rectangle clip = pg.getClip().getBounds();
+        rect.setBounds(clip.x, clip.y, clip.width, clip.height);
+        return rect; 
     }
 
     /**
@@ -406,7 +425,7 @@ public class GraphicsAdapter extends Graphics {
      */
     @Override
     public Font getFont() {
-        return pg.getSWTFont();
+        return pg.getGC().getFont();
     }
 
     /**
@@ -414,7 +433,7 @@ public class GraphicsAdapter extends Graphics {
      */
     @Override
     public FontMetrics getFontMetrics() {
-        return pg.getSWTFontMetrics();
+        return pg.getGC().getFontMetrics();
     }
 
     /**
@@ -422,7 +441,7 @@ public class GraphicsAdapter extends Graphics {
      */
     @Override
     public org.eclipse.swt.graphics.Color getForegroundColor() {
-        return pg.getGraphicsContext().getForeground();
+        return pg.getGC().getForeground();
     }
     
     /**
@@ -430,7 +449,7 @@ public class GraphicsAdapter extends Graphics {
      */
     @Override
     public void setForegroundColor(final org.eclipse.swt.graphics.Color rgb) {
-        pg.setColor(rgb);
+        pg.getGC().setForeground(rgb);
     }
     
     /**
@@ -438,7 +457,7 @@ public class GraphicsAdapter extends Graphics {
      */
     @Override
     public void setForegroundPattern(final Pattern pattern) {
-        pg.setPattern(pattern);
+        pg.getGC().setForegroundPattern(pattern);
     }
 
      /**
@@ -446,7 +465,7 @@ public class GraphicsAdapter extends Graphics {
      */
     @Override
     public org.eclipse.swt.graphics.Color getBackgroundColor() {
-        return pg.getGraphicsContext().getBackground();
+        return pg.getGC().getBackground();
     }
 
     /**
@@ -454,7 +473,7 @@ public class GraphicsAdapter extends Graphics {
      */
     @Override
     public void setBackgroundColor(final org.eclipse.swt.graphics.Color rgb) {
-        pg.setBackground(rgb);
+        pg.getGC().setBackground(rgb);
     }
 
     /**
@@ -462,7 +481,7 @@ public class GraphicsAdapter extends Graphics {
      */
     @Override
     public void setBackgroundPattern(final Pattern pattern) {
-        pg.setBackgoundPattern(pattern);
+        pg.getGC().setBackgroundPattern(pattern);
     }
 
     /**
@@ -470,7 +489,9 @@ public class GraphicsAdapter extends Graphics {
      */
     @Override
     public void rotate(final float degrees) {
-        pg.rotate(degrees);
+        this.awtTransform.setToIdentity();
+        this.awtTransform.rotate(degrees);
+        pg.transform(this.awtTransform);
     }
 
     /**
@@ -478,7 +499,9 @@ public class GraphicsAdapter extends Graphics {
      */
     @Override
     public void scale(final double amount) {
-        pg.scale(amount, amount);
+        this.awtTransform.setToIdentity();
+        this.awtTransform.scale(amount, amount);
+        pg.transform(this.awtTransform);
     }
 
     /**
@@ -486,15 +509,14 @@ public class GraphicsAdapter extends Graphics {
      */
     @Override
     public void setClip(final org.eclipse.draw2d.geometry.Rectangle r) {
-        pg.setClip(toShape(r));
+        pg.setClip(new Rectangle(r.x, r.y, r.width, r.height));
     }
     
     /**
      * {@inheritDoc}
      */
-    @Override
     public void clipRect(final org.eclipse.draw2d.geometry.Rectangle r) {
-        setClip(r);
+        pg.clip(new Rectangle(r.x, r.y, r.width, r.height));
     }
 
     /**
@@ -502,7 +524,7 @@ public class GraphicsAdapter extends Graphics {
      */
     @Override
     public void setFont(final Font f) {
-        pg.setFont(f);
+        pg.setFont(f.getFontData()[0]);
     }
 
     /**
@@ -511,7 +533,7 @@ public class GraphicsAdapter extends Graphics {
     @Override
     public void setLineAttributes(final LineAttributes attributes) {
         pg.setLineAttributes(attributes);
-        pg.updateClip();
+        updateClip();
     }
 
     /**
@@ -520,7 +542,7 @@ public class GraphicsAdapter extends Graphics {
     @Override
     public void setLineWidth(final int width) {
         pg.setLineWidth(width);
-        pg.updateClip();
+        updateClip();
     }
 
     /**
@@ -529,7 +551,7 @@ public class GraphicsAdapter extends Graphics {
     @Override
     public void setLineWidthFloat(final float width) {
         pg.setLineWidth(width);
-        pg.updateClip();
+        updateClip();
     }
 
     /**
@@ -537,7 +559,9 @@ public class GraphicsAdapter extends Graphics {
      */
     @Override
     public void translate(final int dx, final int dy) {
-        pg.translate(dx, dy);
+        this.awtTransform.setToIdentity();
+        this.awtTransform.translate(dx, dy);
+        pg.transform(this.awtTransform);
     }
 
     /**
@@ -569,7 +593,7 @@ public class GraphicsAdapter extends Graphics {
      */
     @Override
     public int getAntialias() {
-        return pg.getGraphicsContext().getAntialias();
+        return pg.getGC().getAntialias();
     }
     
     /**
@@ -577,7 +601,7 @@ public class GraphicsAdapter extends Graphics {
      */
     @Override
     public void setAntialias(final int value) {
-        pg.getGraphicsContext().setAntialias(value);
+        pg.getGC().setAntialias(value);
     }
 
     /**
@@ -585,7 +609,7 @@ public class GraphicsAdapter extends Graphics {
      */
     @Override
     public boolean getXORMode() {
-        return pg.getGraphicsContext().getXORMode();
+        return pg.getGC().getXORMode();
     }
 
     /**
@@ -594,7 +618,7 @@ public class GraphicsAdapter extends Graphics {
     @SuppressWarnings("deprecation")
     @Override
     public void setXORMode(final boolean b) {
-        pg.getGraphicsContext().setXORMode(b);
+        pg.getGC().setXORMode(b);
     }
 
     /**
@@ -602,7 +626,7 @@ public class GraphicsAdapter extends Graphics {
      */
     @Override
     public int getLineStyle() {
-        return pg.getGraphicsContext().getLineStyle();
+        return pg.getGC().getLineStyle();
     }
 
     /**
@@ -610,7 +634,7 @@ public class GraphicsAdapter extends Graphics {
      */
     @Override
     public void setLineStyle(final int style) {
-        pg.getGraphicsContext().setLineStyle(style);
+        pg.getGC().setLineStyle(style);
     }
 
     /**
@@ -618,7 +642,7 @@ public class GraphicsAdapter extends Graphics {
      */
     @Override
     public LineAttributes getLineAttributes() {
-       return pg.getLineAttributes(); 
+       return pg.getGC().getLineAttributes(); 
     }
 
     /**
@@ -626,7 +650,7 @@ public class GraphicsAdapter extends Graphics {
      */
     @Override
     public int getLineCap() {
-        return pg.getGraphicsContext().getLineCap();
+        return pg.getGC().getLineCap();
     }
     
     /**
@@ -634,7 +658,7 @@ public class GraphicsAdapter extends Graphics {
      */
     @Override
     public void setLineCap(final int cap) {
-        pg.getGraphicsContext().setLineCap(cap);
+        pg.getGC().setLineCap(cap);
     }
     
     /**
@@ -642,7 +666,7 @@ public class GraphicsAdapter extends Graphics {
      */
     @Override
     public void setLineDash(final int[] dash) {
-        pg.getGraphicsContext().setLineDash(dash);
+        pg.getGC().setLineDash(dash);
     }
 
     /**
@@ -650,7 +674,7 @@ public class GraphicsAdapter extends Graphics {
      */
     @Override
     public void setLineDash(final float[] value) {
-        pg.getGraphicsContext().getGCData().lineDashes = value;
+        pg.getGC().getGCData().lineDashes = value;
     }
 
     /**
@@ -658,7 +682,7 @@ public class GraphicsAdapter extends Graphics {
      */
     @Override
     public void setLineDashOffset(final float value) {
-        pg.getGraphicsContext().getGCData().lineDashesOffset = value;
+        pg.getGC().getGCData().lineDashesOffset = value;
     }
 
     /**
@@ -666,7 +690,7 @@ public class GraphicsAdapter extends Graphics {
      */
     @Override
     public int getLineJoin() {
-        return pg.getGraphicsContext().getLineJoin();
+        return pg.getGC().getLineJoin();
     }
     
     /**
@@ -674,7 +698,7 @@ public class GraphicsAdapter extends Graphics {
      */
     @Override
     public void setLineJoin(final int join) {
-        pg.getGraphicsContext().setLineJoin(join);
+        pg.getGC().setLineJoin(join);
     }
 
     /**
@@ -682,7 +706,7 @@ public class GraphicsAdapter extends Graphics {
      */
     @Override
     public float getLineMiterLimit() {
-        return pg.getGraphicsContext().getGCData().lineMiterLimit;
+        return pg.getGC().getGCData().lineMiterLimit;
     }
     
     /**
@@ -690,7 +714,7 @@ public class GraphicsAdapter extends Graphics {
      */
     @Override
     public void setLineMiterLimit(final float miterLimit) {
-        pg.getGraphicsContext().getGCData().lineMiterLimit = miterLimit;
+        pg.getGC().getGCData().lineMiterLimit = miterLimit;
     }
 
     /**
@@ -699,6 +723,16 @@ public class GraphicsAdapter extends Graphics {
     @Override
     public void pushState() {
         stack.push(new State(pg));
+//        Rectangle2D clip =
+//                stack.peek().transform.createTransformedShape(stack.peek().clip).getBounds2D();
+//        System.out.println("Push :" + clip);
+//        String s = Joiner.on("\n  ").join(
+//                Lists.transform(Lists.newArrayList(stack), new Function<State, Shape>() {
+//                    public Shape apply(final State s) {
+//                        return s.clip;
+//                    }
+//                }));
+//        System.out.println(s);
     }
 
     /**
@@ -715,19 +749,62 @@ public class GraphicsAdapter extends Graphics {
     /**
      * {@inheritDoc}
      */
+
     @Override
     public void restoreState() {
-        State lastState = stack.peek();
+        final State lastState = stack.peek();
         if (lastState != null) {
-            pg.setClip(lastState.clip);
             pg.setTransform(lastState.transform);
+            pg.setClip(lastState.clip.getBounds2D());
             pg.setAlpha(lastState.alpha);
-            pg.setColor(lastState.foreground);
-            pg.setPattern(lastState.foregroundPattern);
-            pg.setBackgoundPattern(lastState.backgroundPattern);
-            pg.setBackground(lastState.background);
-            pg.setFont(lastState.font);
-            pg.setLineAttributes(lastState.lineAttributes);
+            pg.getGC().setForeground(lastState.foreground);
+            pg.getGC().setForegroundPattern(lastState.foregroundPattern);
+            pg.getGC().setBackgroundPattern(lastState.backgroundPattern);
+            pg.getGC().setBackground(lastState.background);
+            pg.getGC().setFont(lastState.font);
+            pg.getGC().setLineAttributes(lastState.lineAttributes);
         }
+    }
+
+    /**
+     * This method widens the currently set clipping mask. It supposed to be called after changing
+     * the line width, if necessary.<br>
+     * <br>
+     * Rational: At least on OSX GC#setClipping(...) appears to treat the pixel line forming the
+     * bounding box multiplied with the currently set line width that has been corrected by the zoom
+     * factor as part of the clipped area. Hence, for some non-empty rectangle 'someRect' the
+     * following code
+     * 
+     * <pre>
+     * gc.drawRect(someRect);
+     * gc.setClipping(someRect);
+     * gc.drawRect(someRect);
+     * </pre>
+     * 
+     * results in two differently sized rectangles on the screen with the second one not covering
+     * the first one completely (which I however expected). Thus the method takes the last
+     * configured clipping area (which will also be kept in mind in the @code{setClip(...)} &&
+     * @code{clip} methods) and increases that bounding box by a surrounding line of the
+     * (zoom factor correct) line width.
+     * 
+     * @author chsch
+     */
+    public void updateClip() {
+        Rectangle2D clip = pg.getClip().getBounds2D();
+        final float lineWidth = pg.getLineWidth();
+        final float hLineWidth = lineWidth / 2;
+        clip.setRect(clip.getX() - hLineWidth, clip.getY() - hLineWidth,
+                     clip.getWidth() + lineWidth, clip.getHeight() + lineWidth);
+        pg.setClip(clip);
+    }
+    
+    @SuppressWarnings("unused")
+    private void drawClip(final org.eclipse.swt.graphics.Rectangle clip) {
+        final GC gc = pg.getGC();
+        final Color c = gc.getForeground();
+        gc.setClipping((org.eclipse.swt.graphics.Rectangle) null);
+        gc.setForeground(Display.getDefault().getSystemColor(SWT.COLOR_BLUE));
+        gc.drawRectangle(clip);
+        gc.setForeground(c);
     }
 }
