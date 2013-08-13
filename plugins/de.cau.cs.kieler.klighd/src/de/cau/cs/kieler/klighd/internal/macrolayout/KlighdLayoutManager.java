@@ -239,9 +239,6 @@ public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement>
             mapping.setProperty(KlighdInternalProperties.VIEWER, viewer);
         }
 
-        // add the property layout config
-        mapping.getLayoutConfigs().add(propertyLayoutConfig);
-
         return mapping;
     }
 
@@ -255,9 +252,12 @@ public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement>
     public LayoutMapping<KGraphElement> buildLayoutGraph(final KNode graph) {
         LayoutMapping<KGraphElement> mapping = new LayoutMapping<KGraphElement>(this);
         mapping.setProperty(EDGES, new LinkedList<KEdge>());
-
+        
         // set the parent element
         mapping.setParentElement(graph);
+        
+        // add the property layout config
+        mapping.getLayoutConfigs().add(propertyLayoutConfig);
 
         KNode layoutGraph = KimlUtil.createInitializedNode();
         KShapeLayout layoutGraphShapeLayout = layoutGraph.getData(KShapeLayout.class);
