@@ -631,6 +631,12 @@ public final class LightDiagramServices {
     public static <T> T translateModel(final Object model, final ViewContext otherVC,
             final IPropertyHolder... propertyHolders) {
         ViewContext vc = LightDiagramServices.getInstance().createViewContext(model, propertyHolders);
+        
+        if (vc == null) {
+            throw new IllegalStateException("Could not create a View Context for the model "
+                    + ". This might be due to a missing transformation.");
+        }
+
         LightDiagramServices.getInstance().updateViewContext(vc, model);
         @SuppressWarnings("unchecked")
         T result = (T) vc.getViewModel();
