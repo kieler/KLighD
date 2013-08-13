@@ -46,6 +46,7 @@ import org.eclipse.swt.graphics.Device;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.graphics.GC;
+import org.eclipse.swt.graphics.ImageData;
 import org.eclipse.swt.graphics.LineAttributes;
 import org.eclipse.swt.graphics.Path;
 import org.eclipse.swt.graphics.Pattern;
@@ -422,6 +423,17 @@ public class KlighdSWTGraphicsImpl extends Graphics2D implements KlighdSWTGraphi
      */
     public void drawImage(final org.eclipse.swt.graphics.Image image, final double width,
             final double height) {
+        final org.eclipse.swt.graphics.Rectangle bounds = image.getBounds();
+        gc.setTransform(swtTransform);
+        gc.drawImage(image, 0, 0, bounds.width, bounds.height, 0, 0, (int) width, (int) height);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void drawImage(final ImageData imageData, final double width, final double height) {
+        final org.eclipse.swt.graphics.Image image =
+                new org.eclipse.swt.graphics.Image(this.device, imageData);
         final org.eclipse.swt.graphics.Rectangle bounds = image.getBounds();
         gc.setTransform(swtTransform);
         gc.drawImage(image, 0, 0, bounds.width, bounds.height, 0, 0, (int) width, (int) height);

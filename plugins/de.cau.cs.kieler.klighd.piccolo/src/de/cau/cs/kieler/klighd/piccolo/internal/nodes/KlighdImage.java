@@ -18,7 +18,6 @@ import java.beans.PropertyChangeListener;
 import java.io.InputStream;
 import java.util.List;
 
-import org.eclipse.swt.graphics.Device;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.ImageData;
 
@@ -175,16 +174,23 @@ public class KlighdImage extends PNode {
      * {@inheritDoc}
      */
     protected void paint(final PPaintContext paintContext) {
-        if (this.imageData != null) {
-            final Device device = ((KlighdSWTGraphics) paintContext.getGraphics()).getDevice();
-            this.image = new Image(device, this.imageData);
-            this.imageData = null;
-        }
+        final KlighdSWTGraphics graphics = (KlighdSWTGraphics) paintContext.getGraphics();
+        final PBounds b = getBoundsReference();
 
-        if (image != null) {
-            final PBounds b = getBoundsReference();
-            final KlighdSWTGraphics graphics = (KlighdSWTGraphics) paintContext.getGraphics();
+        if (graphics.getDevice() != null) {
+            // within an SWT environment
+            if (this.image == null && this.imageData != null) {
+                this.image = new Image(graphics.getDevice(), this.imageData);
+                this.imageData = null;
+            }
             graphics.drawImage(image, b.width, b.height);
+        } else {
+            // without any device we have to draw the raw image data
+            if (image != null) {
+                graphics.drawImage(image.getImageData(), b.width, b.height);
+            } else if (imageData != null) {
+                graphics.drawImage(imageData, b.width, b.height);
+            }
         }
     }
 }

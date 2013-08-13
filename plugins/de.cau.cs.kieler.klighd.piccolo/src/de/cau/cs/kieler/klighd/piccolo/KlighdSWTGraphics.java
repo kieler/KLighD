@@ -21,6 +21,7 @@ import org.eclipse.swt.graphics.Device;
 import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.graphics.ImageData;
 import org.eclipse.swt.graphics.LineAttributes;
 import org.eclipse.swt.graphics.Path;
 import org.eclipse.swt.graphics.RGB;
@@ -336,11 +337,15 @@ public interface KlighdSWTGraphics {
     /**
      * Draws the provided SWT {@link Path}.
      * 
+     * <b>Care</b> this method can only be used if you are sure that an SWT environment is
+     * available, i.e., the {@link #getDevice()} method does not return <code>null</code>. Otherwise
+     * use {@link #draw(Shape)}.
+     * 
      * @param p
      *            the {@link Path} to be rendered
      */
     void draw(final Path p);
-    
+
     /**
      * Fills the provided AWT {@link Shape} by relying on the provided
      * {@link java.awt.geom.PathIterator PathIterator} (
@@ -351,9 +356,13 @@ public interface KlighdSWTGraphics {
      *            the <code>Shape</code> to be filled
      */
     void fill(final Shape s);
-    
+
     /**
      * Fills the provided SWT {@link Path}.
+     * 
+     * <b>Care</b> this method can only be used if you are sure that an SWT environment is
+     * available, i.e., the {@link #getDevice()} method does not return <code>null</code>. Otherwise
+     * use {@link #fill(Shape)}.
      * 
      * @param p
      *            the {@link Path} to be rendered
@@ -364,6 +373,10 @@ public interface KlighdSWTGraphics {
      * Draws the provided image at the specified position with the specified width and height.<br>
      * Its position can be determined by means of {@link #setTransform(AffineTransform)}.
      * 
+     * <b>Care</b> this method can only be used if you are sure that an SWT environment is
+     * available, i.e., the {@link #getDevice()} method does not return <code>null</code>. Otherwise
+     * use {@link #drawImage(ImageData, double, double)}.
+     * 
      * @param image
      *            {@link Image} to draw
      * @param width
@@ -373,6 +386,19 @@ public interface KlighdSWTGraphics {
      */
     void drawImage(final Image image, final double width, final double height);
     
+    /**
+     * Draws the provided image at the specified position with the specified width and height.<br>
+     * Its position can be determined by means of {@link #setTransform(AffineTransform)}.
+     * 
+     * @param imageData
+     *            {@link ImageData} to draw
+     * @param width
+     *            the width of the image drawing
+     * @param height
+     *            the height of the image drawing
+     */
+    void drawImage(final ImageData imageData, final double width, final double height);
+
     /**
      * Draws the provided string while respecting the recently set font & text style settings.<br>
      * Its position can be determined by means of {@link #setTransform(AffineTransform)}.
