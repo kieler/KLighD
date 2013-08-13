@@ -13,27 +13,30 @@
  */
 package de.cau.cs.kieler.klighd.piccolo.draw2d;
 
+import java.awt.geom.Rectangle2D;
+
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.draw2d.DeferredUpdateManager;
 import org.eclipse.draw2d.Figure;
 import org.eclipse.draw2d.Graphics;
-import org.eclipse.draw2d.IClippingStrategy;
-import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.StackLayout;
 import org.eclipse.draw2d.UpdateManager;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.ui.statushandlers.StatusManager;
 
 import de.cau.cs.kieler.klighd.KlighdPlugin;
-import de.cau.cs.kieler.klighd.piccolo.KlighdSWTGraphicsImpl;
+import de.cau.cs.kieler.klighd.piccolo.KlighdSWTGraphics;
 import edu.umd.cs.piccolo.PNode;
 import edu.umd.cs.piccolo.util.PPaintContext;
 
 /**
  * A Piccolo2D node implementation wrapping a Draw2d figure.
  *
- * @author msp, chsch
+ * @author msp
+ * @author chsch
+ * @kieler.design proposed by chsch
+ * @kieler.rating proposed yellow by chsch
  */
 public class Draw2DNode extends PNode {
 
@@ -44,7 +47,7 @@ public class Draw2DNode extends PNode {
     private Figure figure;
     
     /**
-     * This update manager is in charge of propagating repaint requests the Piccolo nodes if
+     * This update manager is in charge of propagating repaint requests the Piccolo2D nodes if
      * necessary.
      */
     private UpdateManager updateManager;
@@ -61,40 +64,21 @@ public class Draw2DNode extends PNode {
         this.graphics = new GraphicsAdapter();
         this.updateManager = new WrappingUpdateManager(this);   
         this.figure = new Figure() {
-            {
-                this.setClippingStrategy(new IClippingStrategy() {
-                    public Rectangle[] getClip(final IFigure childFigure) {
-                        Rectangle bounds = childFigure.getBounds();
-                        // some experimental extension of the clip area in
-                        //  order to avoid artifacts of partially clipped
-                        //  polylines and polygones of the childFigure
-                        //  (the actual figure to be depicted)
-                        // SUPPRESS CHECKSTYLE NEXT 2 MagicNumber
-                        Rectangle extBounds = new Rectangle(bounds.x - 20, bounds.y - 20,
-                                bounds.width + 40, bounds.height + 40);
-                        return new Rectangle[] { extBounds };
-                    }
-                });
-            }
-            
+
             @Override
             public UpdateManager getUpdateManager() {
                 return Draw2DNode.this.updateManager;
             }
-            
+
             @Override
             public boolean useLocalCoordinates() {
                 // the displacement of this figure is realized by the wrapping PNodes
                 return true;
             }
-            
-            @Override
-            public void setBounds(final Rectangle r) {
-                super.setBounds(r);
-            }
-            
+
             @Override
             public void paintFigure(final Graphics theGraphics) {
+                // this overriding method is just for debugging purposes
                 super.paintFigure(theGraphics);
             }
         };
@@ -103,6 +87,9 @@ public class Draw2DNode extends PNode {
         this.figure.setLayoutManager(new StackLayout());
     }
     
+    private final Rectangle2D singletonRectDouble = new Rectangle2D.Double();
+    private final Rectangle singletonRectDraw2d = new Rectangle();
+    
     /**
      * {@inheritDoc}<br>
      * <br>
@@ -110,8 +97,16 @@ public class Draw2DNode extends PNode {
      * super implementation as required.
      */
     public boolean setBounds(final double x, final double y, final double width, final double height) {
-        this.figure.setBounds(new Rectangle((int) (x), (int) (y), (int) (width), (int) (height)));
+        // convert the bounds to integer-based ones by means of the smart method
+        //  RectangularShape#getBounds() and store them in the Draw2d Rectangle 'singletonRectDraw2d'
+        this.singletonRectDouble.setRect(x, y, width, height);
+        final java.awt.Rectangle intRect = this.singletonRectDouble.getBounds();
+        this.singletonRectDraw2d.setBounds(intRect.x, intRect.y, intRect.width, intRect.height);
+        
+        // now put them into the custom Draw2d figure and re-validate it
+        this.figure.setBounds(this.singletonRectDraw2d);
         this.figure.revalidate();
+        
         return super.setBounds(x, y, width, height);
     }
     
@@ -120,7 +115,9 @@ public class Draw2DNode extends PNode {
      */
     @Override
     protected void paint(final PPaintContext paintContext) {
-        this.graphics.setKlighdSWTGraphics((KlighdSWTGraphicsImpl) paintContext.getGraphics());
+        // paintContext.pushClip(getBounds());
+        
+        this.graphics.setKlighdSWTGraphics((KlighdSWTGraphics) paintContext.getGraphics());
         try {
             figure.paint(this.graphics);
         } catch (Throwable throwable) {
@@ -130,11 +127,13 @@ public class Draw2DNode extends PNode {
                     new Status(IStatus.ERROR, KlighdPlugin.PLUGIN_ID, msg, throwable),
                     StatusManager.LOG);
         }
+        
+        // paintContext.popClip(null);
     }
 
     /**
      * A custom {@link UpdateManager} that might realize the escalating of repaint requests to the
-     * wrapping Piccolo nodes.
+     * wrapping Piccolo2D nodes.
      * 
      * @author chsch
      */
@@ -162,7 +161,7 @@ public class Draw2DNode extends PNode {
         protected Graphics getGraphics(final Rectangle region) {
             // We do not allow the update manager to directly access the
             //  graphics object, redraw requests shall be somehow escalated
-            //  to the Piccolo2D node in future (TODO).
+            //  to the Piccolo2D node in future if necessary (TODO).
             return null;
         }
     }
