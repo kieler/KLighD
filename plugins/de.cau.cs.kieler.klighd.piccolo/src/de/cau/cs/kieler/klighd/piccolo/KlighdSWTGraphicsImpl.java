@@ -46,6 +46,7 @@ import org.eclipse.swt.graphics.Device;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.graphics.GC;
+import org.eclipse.swt.graphics.ImageData;
 import org.eclipse.swt.graphics.LineAttributes;
 import org.eclipse.swt.graphics.Path;
 import org.eclipse.swt.graphics.Pattern;
@@ -430,6 +431,17 @@ public class KlighdSWTGraphicsImpl extends Graphics2D implements KlighdSWTGraphi
     /**
      * {@inheritDoc}
      */
+    public void drawImage(final ImageData imageData, final double width, final double height) {
+        final org.eclipse.swt.graphics.Image image =
+                new org.eclipse.swt.graphics.Image(this.device, imageData);
+        final org.eclipse.swt.graphics.Rectangle bounds = image.getBounds();
+        gc.setTransform(swtTransform);
+        gc.drawImage(image, 0, 0, bounds.width, bounds.height, 0, 0, (int) width, (int) height);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public void drawText(final String text) {
         if (!useTextStyle) {
             gc.setFont(curFont);
@@ -655,7 +667,7 @@ public class KlighdSWTGraphicsImpl extends Graphics2D implements KlighdSWTGraphi
             this.gc.setClipping((Rectangle) null);
 
         } else if (clip instanceof Rectangle2D) {
-            Rectangle2D rect = (Rectangle2D) clip;
+            java.awt.Rectangle rect = clip.getBounds();
 
             // chsch: I would appreciate so much if we could get rid of the following 2(7) lines!
             //  (as well as the first line of the 'else' branch)
@@ -664,10 +676,10 @@ public class KlighdSWTGraphicsImpl extends Graphics2D implements KlighdSWTGraphi
             this.gc.setTransform(null);
             SWTShapeManager.transform(rect, transform);
 
-            this.swtClipRect.x = (int) rect.getX();
-            this.swtClipRect.y = (int) rect.getY();
-            this.swtClipRect.width = (int) rect.getWidth();
-            this.swtClipRect.height = (int) rect.getHeight();
+            this.swtClipRect.x = rect.x;
+            this.swtClipRect.y = rect.y;
+            this.swtClipRect.width = rect.width;
+            this.swtClipRect.height = rect.height;
             this.gc.setClipping(this.swtClipRect);
 
         } else {
@@ -689,29 +701,37 @@ public class KlighdSWTGraphicsImpl extends Graphics2D implements KlighdSWTGraphi
             
         } else if (clip instanceof Rectangle2D) {
             final Rectangle2D rect = (Rectangle2D) clip;
+            Rectangle2D.intersect(this.getClip().getBounds2D(), rect, rect);
+            this.setClip(rect);
             
-            // chsch: I would appreciate so much if we could get rid of the following 2(7) lines!
-            // however, due to the required coordinate roundings their errors will also be scaled up
-            //  leading to unacceptable results; see also #getClip() and #clip(Shape) 
-            this.gc.setTransform(null);
-            SWTShapeManager.transform(rect, transform);
-            
-            this.swtClipRect.x = (int) rect.getX();
-            this.swtClipRect.y = (int) rect.getY();
-            this.swtClipRect.width = (int) rect.getWidth();
-            this.swtClipRect.height = (int) rect.getHeight();
-            
-            final Rectangle clipping = gc.getClipping();
-            this.swtClipRect.intersect(clipping);
-            this.gc.setClipping(this.swtClipRect);
-
-            drawClip(this.swtClipRect);
-            
+            // alternatively:
+            //
+            // // chsch: I would appreciate so much if we could get rid of the following 2(7) lines!
+            // // however, due to the required coordinate roundings their errors will also be scaled up
+            // //  leading to unacceptable results; see also #getClip() and #clip(Shape)
+            // this.gc.setTransform(null);
+            // SWTShapeManager.transform(rect, transform);
+            //
+            // this.swtClipRect.x = (int) rect.getX();
+            // this.swtClipRect.y = (int) rect.getY();
+            // this.swtClipRect.width = (int) (rect.getWidth() + 0.5);
+            // this.swtClipRect.height = (int) (rect.getHeight() + 0.5);
+            //
+            // final Rectangle clipping = gc.getClipping();
+            // this.swtClipRect.intersect(clipping);
+            // this.gc.setClipping(this.swtClipRect);
         } else {
             throw new UnsupportedOperationException();
         }
     }
 
+    /**
+     * Helper for debugging purposes.
+     * 
+     * @param clip
+     *            the clip SWT {@link Rectangle} to be visualized
+     */
+    @SuppressWarnings("unused")
     private void drawClip(final Rectangle clip) {
         final Color c = gc.getForeground();
         gc.setClipping((Rectangle) null);
