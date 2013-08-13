@@ -101,43 +101,16 @@ public interface KlighdSWTGraphics {
     void setGC(GC theGc);
 
     /**
-     * Returns the currently configured line attributes in a {@link LineAttributes} record
-     * structure.
-     * 
-     * @return a {@link LineAttributes} object reflecting the currently set line attributes.
-     */
-    LineAttributes getLineAttributes();
-    
-    /**
      * Sets the line attributes to use when drawing shapes.
      * 
      * @param attributes of lines when drawing shapes
      */
     void setLineAttributes(LineAttributes attributes);
-    
-    /**
-     * Returns the line width to use when drawing shapes.
-     * 
-     * @author chsch
-     * 
-     * @return width of lines when drawing shapes
-     */
-    float getLineWidth();
-
-    /**
-     * Sets the line width to use when drawing shapes.
-     * 
-     * @author chsch
-     * 
-     * @param lineWidth
-     *            width of lines when drawing shapes
-     */
-    void setLineWidth(final float lineWidth);
 
 
-    /*-----------------------------------------*/
-    /* The coloring & style getter and setter. */
-    /*-----------------------------------------*/
+    /*------------------------------*/
+    /* The coloring & style setter. */
+    /*------------------------------*/
     
     /**
      * Returns the alpha value currently used by the current {@link GC}.
@@ -150,13 +123,16 @@ public interface KlighdSWTGraphics {
 
     /**
      * Sets the alpha value to be used during the subsequent paint instructions.<br>
-     * <b>Caution:</b> This value will also set by Piccolo for realizing the transparency. That
+     * <b>Caution:</b> This value will also set by Piccolo2D for realizing the transparency. That
      * feature is used in the
      * {@link de.cau.cs.kieler.klighd.piccolo.internal.activities.FadeNodeInActivity
      * FadeNodeInActivity} and
      * {@link de.cau.cs.kieler.klighd.piccolo.internal.activities.FadeEdgeInActivity
-     * FadeEdgeInActivity} activities. Thus do <b>not</b> set the alpha to an absolute value, but to
-     * a relative one. The current value can be obtain by {@link #getAlpha()}.
+     * FadeEdgeInActivity} activities. Thus do <b>not</b> set the alpha to an absolute value, but
+     * only to someone relative to the current value. The current value can be obtained by
+     * {@link #getAlpha()}, the denominator is
+     * {@link de.cau.cs.kieler.klighd.KlighdConstants#ALPHA_FULL_OPAQUE
+     * KlighdConstants#ALPHA_FULL_OPAQUE}.
      * 
      * @author chsch
      * 
@@ -173,7 +149,7 @@ public interface KlighdSWTGraphics {
      * @param color
      *            new stroke color
      */
-    void setColor(final RGB color);
+    void setStrokeColor(final RGB color);
 
     /**
      * Sets the stroke color gradient to the provided {@link RGBGradient} descriptor.
@@ -185,7 +161,7 @@ public interface KlighdSWTGraphics {
      * @param bounds
      *            the local (non-adjusted) bounds within the gradient is to be applied
      */
-    void setPattern(final RGBGradient gradient, final Rectangle2D bounds);
+    void setStrokePattern(final RGBGradient gradient, final Rectangle2D bounds);
 
     /**
      * Sets the background color to the provided {@link RGB} color descriptor.
@@ -195,7 +171,7 @@ public interface KlighdSWTGraphics {
      * @param backgroundColor
      *            new background color
      */
-    void setBackground(final RGB backgroundColor);
+    void setFillColor(final RGB backgroundColor);
 
     /**
      * Sets the background color gradient to the provided {@link RGBGradient} descriptor.
@@ -207,12 +183,12 @@ public interface KlighdSWTGraphics {
      * @param bounds
      *            the local (non-adjusted) bounds within the gradient is to be applied
      */
-    void setBackgroundPattern(final RGBGradient backgroundGradient, final Rectangle2D bounds);
+    void setFillPattern(final RGBGradient backgroundGradient, final Rectangle2D bounds);
 
 
-    /*------------------------------------------*/
-    /* The font & text style getter and setter. */
-    /*------------------------------------------*/
+    /*-------------------------------*/
+    /* The font & text style setter. */
+    /*-------------------------------*/
     
     /**
      * Set the font by means of a {@link FontData}.

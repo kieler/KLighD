@@ -593,7 +593,7 @@ public class KlighdPath extends PNode {
             if (paint != null) {
                 graphics.setAlpha(
                         (int) (paintAlpha * (currentAlphaFloat / KlighdConstants.ALPHA_FULL_OPAQUE)));
-                graphics.setBackground(paint);
+                graphics.setFillColor(paint);
                 if (swt) {
                     graphics.fill(shapePath);
                 } else {
@@ -602,7 +602,7 @@ public class KlighdPath extends PNode {
             }
 
             if (paintGradient != null) {
-                graphics.setBackgroundPattern(paintGradient, getBoundsReference());
+                graphics.setFillPattern(paintGradient, getBoundsReference());
                 if (swt) {
                     graphics.fill(shapePath);
                 } else {
@@ -623,7 +623,7 @@ public class KlighdPath extends PNode {
             if (strokePaint != null) {
                 graphics.setAlpha(
                         (int) (strokeAlpha * (currentAlphaFloat / KlighdConstants.ALPHA_FULL_OPAQUE)));
-                graphics.setColor(strokePaint);
+                graphics.setStrokeColor(strokePaint);
                 if (swt) {
                     graphics.draw(shapePath);
                 } else {
@@ -632,7 +632,7 @@ public class KlighdPath extends PNode {
             }
     
             if (strokePaintGradient != null) {
-                graphics.setPattern(strokePaintGradient, getBoundsReference());
+                graphics.setStrokePattern(strokePaintGradient, getBoundsReference());
                 if (swt) {
                     graphics.draw(shapePath);
                 } else {
@@ -668,10 +668,10 @@ public class KlighdPath extends PNode {
         tc.translate(shadowExtend, shadowExtend);
 
         // configure the graphics layer
-        graphics.setBackground(shadow);
+        graphics.setFillColor(shadow);
         
         // a sufficiently small number unequal to 0
-        graphics.setLineWidth(0.0001f); // SUPPRESS CHECKSTYLE MagicNumber
+        graphics.setLineAttributes(new LineAttributes(0.0001f)); // SUPPRESS CHECKSTYLE MagicNumber
         graphics.setAlpha(
                 (int) ((float) currentAlpha * shadowAlpha / KlighdConstants.ALPHA_FULL_OPAQUE));
 
@@ -691,9 +691,9 @@ public class KlighdPath extends PNode {
         // Note, that we accept the incompatibility of transparent shapes and shadow, and thus
         // dismiss the transparency.
         graphics.setTransform(t);
-        graphics.setLineWidth(1);
+        // graphics.setLineWidth(1);
         graphics.setAlpha(KlighdConstants.ALPHA_FULL_OPAQUE);
-        graphics.setBackground(KlighdConstants.WHITE);
+        graphics.setFillColor(KlighdConstants.WHITE);
         if (swt) {
             graphics.fill(shapePath);
         } else {
@@ -702,7 +702,7 @@ public class KlighdPath extends PNode {
 
         // reset the manipulated settings
         graphics.setAlpha(currentAlpha);
-        graphics.setLineWidth(lineAttributes.width);
+        // graphics.setLineWidth(lineAttributes.width);
     }
 
 
