@@ -26,7 +26,7 @@ import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.ui.statushandlers.StatusManager;
 
 import de.cau.cs.kieler.klighd.KlighdPlugin;
-import de.cau.cs.kieler.klighd.piccolo.KlighdSWTGraphics;
+import de.cau.cs.kieler.klighd.piccolo.internal.KlighdSWTGraphicsEx;
 import edu.umd.cs.piccolo.PNode;
 import edu.umd.cs.piccolo.util.PPaintContext;
 
@@ -117,7 +117,7 @@ public class Draw2DNode extends PNode {
     protected void paint(final PPaintContext paintContext) {
         // paintContext.pushClip(getBounds());
         
-        this.graphics.setKlighdSWTGraphics((KlighdSWTGraphics) paintContext.getGraphics());
+        this.graphics.setKlighdSWTGraphics((KlighdSWTGraphicsEx) paintContext.getGraphics());
         try {
             figure.paint(this.graphics);
         } catch (Throwable throwable) {
