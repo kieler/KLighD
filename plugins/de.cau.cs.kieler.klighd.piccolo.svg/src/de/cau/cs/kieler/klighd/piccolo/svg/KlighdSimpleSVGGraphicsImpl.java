@@ -60,6 +60,7 @@ import org.w3c.dom.DOMImplementation;
 import org.w3c.dom.Document;
 
 import de.cau.cs.kieler.klighd.KlighdConstants;
+import de.cau.cs.kieler.klighd.krendering.KTextUtil;
 import de.cau.cs.kieler.klighd.piccolo.KlighdSWTGraphics;
 import de.cau.cs.kieler.klighd.piccolo.internal.util.RGBGradient;
 
@@ -279,7 +280,8 @@ public class KlighdSimpleSVGGraphicsImpl extends Graphics2D implements KlighdSWT
      */
     @Override
     public void setFont(final FontData fontData) {
-        graphics.setFont(new Font(fontData.getName(), fontData.getStyle(), fontData.getHeight()));
+        graphics.setFont(new Font(fontData.getName(), KTextUtil.swtFontStyle2Awt(fontData
+                .getStyle()), fontData.getHeight()));
     }
 
     /**
@@ -406,12 +408,13 @@ public class KlighdSimpleSVGGraphicsImpl extends Graphics2D implements KlighdSWT
         // SVG 1.2 supports a textArea with automatic wrapping, however this is not supported by all
         // browsers.
         int y = 0;
-        int fontHeight = graphics.getFontMetrics().getHeight();
+        int fontHeight =
+                graphics.getFontMetrics().getHeight() - graphics.getFontMetrics().getDescent();
 
         // translate by the font height as the reference point for drawing text in svg seems to be
         // at the bottom left corner, SWT has it as the top left corner.
-        translate(0, fontHeight);       
-        
+        translate(0, fontHeight);
+
         for (String line : string.split("\\r?\\n|\\r")) {
             graphics.drawString(line, 0, y);
             y += fontHeight;

@@ -39,18 +39,18 @@ import de.cau.cs.kieler.klighd.microlayout.PlacementUtil;
  * @author chsch
  */
 public final class KTextUtil {
-    
+
     /**
      * Hidden default constructor.
      */
     private KTextUtil() {
     }
-    
+
     /**
      * Method is supposed to realize the platform independent splitting of the (potentially)
      * multi-lined strings of KText renderings into lists of the separate lines.<br>
-     * In addition, leading or trailing spaces of each line are removed.
-     * Delegates to {@link #getTextLines(String)}.
+     * In addition, leading or trailing spaces of each line are removed. Delegates to
+     * {@link #getTextLines(String)}.
      * 
      * @param kText
      *            the KText rendering whose separate lines are queried
@@ -62,21 +62,21 @@ public final class KTextUtil {
         }
         return getTextLines(kText.getText());
     }
-    
+
     /**
-     * Method is supposed to realize the platform independent splitting of
-     * (potentially) multi-lined strings into lists of the separate lines.<br>
+     * Method is supposed to realize the platform independent splitting of (potentially) multi-lined
+     * strings into lists of the separate lines.<br>
      * In addition, leading or trailing spaces of each line are removed.
      * 
-     * @param text the String whose separate lines are queried
-     * @return the lines split up at all known valid line separators 
+     * @param text
+     *            the String whose separate lines are queried
+     * @return the lines split up at all known valid line separators
      */
     public static List<String> getTextLines(final String text) {
         if (Strings.isNullOrEmpty(text)) {
             return Arrays.asList("");
         }
-        return Lists.newArrayList(IterableExtensions.map(
-                Arrays.asList(text.split("\\r?\\n|\\r")),
+        return Lists.newArrayList(IterableExtensions.map(Arrays.asList(text.split("\\r?\\n|\\r")),
                 new Functions.Function1<String, String>() {
                     public String apply(final String line) {
                         return line.trim();
@@ -108,5 +108,15 @@ public final class KTextUtil {
                                 .getWidth());
             }
         });
+    }
+
+    /**
+     * @param style
+     *            the SWT bitwise pattern of NORMAL, ITALIC and BOLD.
+     * @return the corresponding AWT pattern.
+     */
+    public static int swtFontStyle2Awt(final int style) {
+        // the constants in SWT and AWT are the same, hence just return it.
+        return style;
     }
 }
