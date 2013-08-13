@@ -45,6 +45,7 @@ import java.text.AttributedCharacterIterator;
 import java.util.Map;
 
 import org.apache.batik.dom.GenericDOMImplementation;
+import org.apache.batik.svggen.SVGGeneratorContext;
 import org.apache.batik.svggen.SVGGraphics2D;
 import org.eclipse.swt.graphics.Device;
 import org.eclipse.swt.graphics.FontData;
@@ -64,10 +65,10 @@ import de.cau.cs.kieler.klighd.piccolo.internal.util.RGBGradient;
 
 /**
  * A wrapper for batik's {@link SVGGraphics2D} svg generator. Allows to render the contents of
- * KlighD views as svgs.
+ * KlighD views as SVGs.
  * 
  * After painting to the graphics object, the {@link #getSVG()} method can be used to retrieve the
- * svg as String.
+ * SVG as String.
  * 
  * @author uru
  */
@@ -79,28 +80,62 @@ public class KlighdSimpleSVGGraphicsImpl extends Graphics2D implements KlighdSWT
 
     // Internal attributes
     private LineAttributes lineAttributes = new LineAttributes(1f);
-    private int alpha = 255;
+    private int alpha = KlighdConstants.ALPHA_FULL_OPAQUE;
+    
+    private static final String SVG_NS =  "http://www.w3.org/2000/svg";
 
     /**
      * 
      */
     public KlighdSimpleSVGGraphicsImpl() {
+        this(false);
+    }
+
+    /**
+     * @param textAsShapes
+     *            whether text should be rendered as shapes
+     */
+    public KlighdSimpleSVGGraphicsImpl(final boolean textAsShapes) {
 
         // Get a DOMImplementation.
         DOMImplementation domImpl = GenericDOMImplementation.getDOMImplementation();
 
         // Create an instance of org.w3c.dom.Document.
-        String svgNS = "http://www.w3.org/2000/svg";
-        document = domImpl.createDocument(svgNS, "svg", null);
+        document = domImpl.createDocument(SVG_NS, "svg", null);
 
-        this.graphics = new SVGGraphics2D(document);
+        // assemble context
+        SVGGeneratorContext ctx = SVGGeneratorContext.createDefault(document);
+
+        // create and configure the graphics object
+        graphics = new SVGGraphics2D(ctx, textAsShapes);
         graphics.setColor(Color.WHITE);
         graphics.setBackground(Color.WHITE);
         graphics.setPaint(Color.white);
         graphics.setFont(new Font(KlighdConstants.DEFAULT_FONT_NAME,
                 KlighdConstants.DEFAULT_FONT_STYLE, KlighdConstants.DEFAULT_FONT_SIZE));
+
+        // + RENDERING -> sets all other hints to initial value.
+        graphics.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_SPEED);
+        // + FRACTIONAL_METRICS -> sets initial values for text-rendering and shape-rendering.
+        graphics.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS,
+                RenderingHints.VALUE_FRACTIONALMETRICS_OFF);
+        // + ANTIALIASING -> shape-rendering and text-rendering
+        graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+                RenderingHints.VALUE_ANTIALIAS_OFF);
+        // + COLOR_RENDERING -> color-rendering
+        graphics.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING,
+                RenderingHints.VALUE_COLOR_RENDER_SPEED);
+        // + INTERPOLATION -> image-rendering
+        graphics.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
+                RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR);
+        // + TEXT_ANTIALIASING -> text-rendering
+        graphics.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,
+                RenderingHints.VALUE_TEXT_ANTIALIAS_OFF);
     }
 
+    /**
+     * @return the currently rendered SVG.
+     */
     public String getSVG() {
         StringWriter sw = new StringWriter();
         try {
@@ -123,7 +158,7 @@ public class KlighdSimpleSVGGraphicsImpl extends Graphics2D implements KlighdSWT
      * {@inheritDoc}
      */
     @Override
-    public void setDevice(Device theDevice) {
+    public void setDevice(final Device theDevice) {
         throw new UnsupportedOperationException();
     }
 
@@ -139,7 +174,7 @@ public class KlighdSimpleSVGGraphicsImpl extends Graphics2D implements KlighdSWT
      * {@inheritDoc}
      */
     @Override
-    public void setGC(GC theGc) {
+    public void setGC(final GC theGc) {
         throw new UnsupportedOperationException();
     }
 
@@ -155,7 +190,7 @@ public class KlighdSimpleSVGGraphicsImpl extends Graphics2D implements KlighdSWT
      * {@inheritDoc}
      */
     @Override
-    public void setLineAttributes(LineAttributes attributes) {
+    public void setLineAttributes(final LineAttributes attributes) {
         lineAttributes = attributes;
     }
 
@@ -171,7 +206,7 @@ public class KlighdSimpleSVGGraphicsImpl extends Graphics2D implements KlighdSWT
      * {@inheritDoc}
      */
     @Override
-    public void setLineWidth(float lineWidth) {
+    public void setLineWidth(final float lineWidth) {
         lineAttributes.width = lineWidth;
 
         // in awt we need to set a stroke
@@ -193,7 +228,7 @@ public class KlighdSimpleSVGGraphicsImpl extends Graphics2D implements KlighdSWT
      * {@inheritDoc}
      */
     @Override
-    public void setAlpha(int alpha) {
+    public void setAlpha(final int alpha) {
         this.alpha = alpha;
 
         // in awt the alpha is encoded in the color
@@ -206,7 +241,7 @@ public class KlighdSimpleSVGGraphicsImpl extends Graphics2D implements KlighdSWT
      * {@inheritDoc}
      */
     @Override
-    public void setColor(RGB color) {
+    public void setColor(final RGB color) {
         graphics.setColor(rgb2Color(color));
     }
 
@@ -214,7 +249,7 @@ public class KlighdSimpleSVGGraphicsImpl extends Graphics2D implements KlighdSWT
      * {@inheritDoc}
      */
     @Override
-    public void setPattern(RGBGradient gradient, Rectangle2D bounds) {
+    public void setPattern(final RGBGradient gradient, final Rectangle2D bounds) {
         graphics.setPaint(rgb2Pattern(gradient, bounds));
     }
 
@@ -222,7 +257,7 @@ public class KlighdSimpleSVGGraphicsImpl extends Graphics2D implements KlighdSWT
      * {@inheritDoc}
      */
     @Override
-    public void setBackground(RGB backgroundColor) {
+    public void setBackground(final RGB backgroundColor) {
 
         // FIXME why?? It seems, that batik ignores the background color.
         // graphics.setBackground(rgb2Color(backgroundColor));
@@ -234,7 +269,7 @@ public class KlighdSimpleSVGGraphicsImpl extends Graphics2D implements KlighdSWT
      * {@inheritDoc}
      */
     @Override
-    public void setBackgroundPattern(RGBGradient backgroundGradient, Rectangle2D bounds) {
+    public void setBackgroundPattern(final RGBGradient backgroundGradient, final Rectangle2D bounds) {
         graphics.setPaint(rgb2Pattern(backgroundGradient, bounds));
     }
 
@@ -242,7 +277,7 @@ public class KlighdSimpleSVGGraphicsImpl extends Graphics2D implements KlighdSWT
      * {@inheritDoc}
      */
     @Override
-    public void setFont(FontData fontData) {
+    public void setFont(final FontData fontData) {
         graphics.setFont(new Font(fontData.getName(), fontData.getStyle(), fontData.getHeight()));
     }
 
@@ -250,7 +285,7 @@ public class KlighdSimpleSVGGraphicsImpl extends Graphics2D implements KlighdSWT
      * {@inheritDoc}
      */
     @Override
-    public void setUnderline(int theUnderlining, RGB color) {
+    public void setUnderline(final int theUnderlining, final RGB color) {
         // TODO Auto-generated method stub
     }
 
@@ -258,7 +293,7 @@ public class KlighdSimpleSVGGraphicsImpl extends Graphics2D implements KlighdSWT
      * {@inheritDoc}
      */
     @Override
-    public void setStrikeout(boolean theStrikeout, RGB color) {
+    public void setStrikeout(final boolean theStrikeout, final RGB color) {
         // TODO Auto-generated method stub
     }
 
@@ -274,7 +309,7 @@ public class KlighdSimpleSVGGraphicsImpl extends Graphics2D implements KlighdSWT
      * {@inheritDoc}
      */
     @Override
-    public void setTransform(AffineTransform transform) {
+    public void setTransform(final AffineTransform transform) {
         graphics.setTransform(transform);
     }
 
@@ -282,7 +317,7 @@ public class KlighdSimpleSVGGraphicsImpl extends Graphics2D implements KlighdSWT
      * {@inheritDoc}
      */
     @Override
-    public void transform(AffineTransform transform) {
+    public void transform(final AffineTransform transform) {
         graphics.transform(transform);
     }
 
@@ -298,7 +333,7 @@ public class KlighdSimpleSVGGraphicsImpl extends Graphics2D implements KlighdSWT
      * {@inheritDoc}
      */
     @Override
-    public void setClip(Shape clip) {
+    public void setClip(final Shape clip) {
         graphics.setClip(clip);
     }
 
@@ -306,7 +341,7 @@ public class KlighdSimpleSVGGraphicsImpl extends Graphics2D implements KlighdSWT
      * {@inheritDoc}
      */
     @Override
-    public void clip(Shape clip) {
+    public void clip(final Shape clip) {
         graphics.clip(clip);
     }
 
@@ -314,7 +349,7 @@ public class KlighdSimpleSVGGraphicsImpl extends Graphics2D implements KlighdSWT
      * {@inheritDoc}
      */
     @Override
-    public void draw(Shape s) {
+    public void draw(final Shape s) {
         graphics.draw(s);
     }
 
@@ -322,7 +357,7 @@ public class KlighdSimpleSVGGraphicsImpl extends Graphics2D implements KlighdSWT
      * {@inheritDoc}
      */
     @Override
-    public void draw(Path p) {
+    public void draw(final Path p) {
         throw new UnsupportedOperationException();
     }
 
@@ -330,7 +365,7 @@ public class KlighdSimpleSVGGraphicsImpl extends Graphics2D implements KlighdSWT
      * {@inheritDoc}
      */
     @Override
-    public void fill(Shape s) {
+    public void fill(final Shape s) {
         graphics.fill(s);
     }
 
@@ -338,7 +373,7 @@ public class KlighdSimpleSVGGraphicsImpl extends Graphics2D implements KlighdSWT
      * {@inheritDoc}
      */
     @Override
-    public void fill(Path p) {
+    public void fill(final Path p) {
         throw new UnsupportedOperationException();
     }
 
@@ -346,7 +381,7 @@ public class KlighdSimpleSVGGraphicsImpl extends Graphics2D implements KlighdSWT
      * {@inheritDoc}
      */
     @Override
-    public void drawImage(Image image, double width, double height) {
+    public void drawImage(final Image image, final double width, final double height) {
         java.awt.Image img = convertToAWT(image.getImageData());
         graphics.drawImage(img, 0, 0, null);
     }
@@ -355,7 +390,16 @@ public class KlighdSimpleSVGGraphicsImpl extends Graphics2D implements KlighdSWT
      * {@inheritDoc}
      */
     @Override
-    public void drawText(String string) {
+    public void drawImage(final ImageData imageData, final double width, final double height) {
+        java.awt.Image img = convertToAWT(imageData);
+        graphics.drawImage(img, 0, 0, null);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void drawText(final String string) {
         // SVG 1.1 does not support automatic line wrapping, thus each line has to be drawn
         // individually.
         // SVG 1.2 supports a textArea with automatic wrapping, however this is not supported by all
@@ -364,7 +408,8 @@ public class KlighdSimpleSVGGraphicsImpl extends Graphics2D implements KlighdSWT
         int fontHeight = graphics.getFontMetrics().getHeight();
         int leading = graphics.getFontMetrics().getLeading();
         for (String line : string.split("\n")) {
-            graphics.drawString(line, 0, y += fontHeight + leading);
+            graphics.drawString(line, 0, y);
+            y += fontHeight + leading;
         }
     }
 
@@ -375,11 +420,11 @@ public class KlighdSimpleSVGGraphicsImpl extends Graphics2D implements KlighdSWT
         return new Color(color.red, color.green, color.blue);
     }
 
-    private static Color rgb2Color(final RGB color, int alpha) {
+    private static Color rgb2Color(final RGB color, final int alpha) {
         return new Color(color.red, color.green, color.blue, alpha);
     }
 
-    private static GradientPaint rgb2Pattern(final RGBGradient gradient, Rectangle2D bounds) {
+    private static GradientPaint rgb2Pattern(final RGBGradient gradient, final Rectangle2D bounds) {
         GradientPaint gp =
                 new GradientPaint((float) bounds.getMinX(), (float) bounds.getMinY(),
                         rgb2Color(gradient.getColor1()), (float) bounds.getMaxX(),
@@ -388,7 +433,7 @@ public class KlighdSimpleSVGGraphicsImpl extends Graphics2D implements KlighdSWT
         return gp;
     }
 
-    private static BufferedImage convertToAWT(ImageData data) {
+    private static BufferedImage convertToAWT(final ImageData data) {
         ColorModel colorModel = null;
         PaletteData palette = data.palette;
         if (palette.isDirect) {
@@ -402,7 +447,9 @@ public class KlighdSimpleSVGGraphicsImpl extends Graphics2D implements KlighdSWT
                 for (int x = 0; x < data.width; x++) {
                     int pixel = data.getPixel(x, y);
                     RGB rgb = palette.getRGB(pixel);
+                    // CHECKSTYLEOFF Magic Numbers
                     bufferedImage.setRGB(x, y, rgb.red << 16 | rgb.green << 8 | rgb.blue);
+                    // CHECKSTYLEON Magic Numbers
                 }
             }
             return bufferedImage;

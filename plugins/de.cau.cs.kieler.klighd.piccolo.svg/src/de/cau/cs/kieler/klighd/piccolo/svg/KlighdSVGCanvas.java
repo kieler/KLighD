@@ -18,15 +18,12 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.List;
 
-import org.apache.batik.svggen.SVGGraphics2D;
-
 import de.cau.cs.kieler.core.kgraph.KNode;
 import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout;
 import de.cau.cs.kieler.klighd.piccolo.internal.controller.DiagramController;
 import edu.umd.cs.piccolo.PCamera;
 import edu.umd.cs.piccolo.PComponent;
 import edu.umd.cs.piccolo.PLayer;
-import edu.umd.cs.piccolo.POffscreenCanvas;
 import edu.umd.cs.piccolo.util.PBounds;
 import edu.umd.cs.piccolo.util.PPaintContext;
 import edu.umd.cs.piccolo.util.PUtil;
@@ -61,8 +58,9 @@ public class KlighdSVGCanvas implements PComponent {
     /**
      * Render this offscreen canvas to the specified graphics.
      * 
-     * @param graphics
-     *            graphics to render this offscreen canvas to, must not be null
+     * @param model
+     *            the {@link KNode} model to be rendered.
+     * @return the rendered svg.
      */
     public String render(final KNode model) {
 
@@ -144,7 +142,7 @@ public class KlighdSVGCanvas implements PComponent {
     /**
      * @param camera
      *            the camera to render.
-     * @param viewPort
+     * @param viewport
      *            whether to render only the camera's viewport or the whole diagram.
      * @param stream
      *            the stream to which the svg is written.
@@ -159,6 +157,7 @@ public class KlighdSVGCanvas implements PComponent {
     }
 
     // HACKING for testing
+    // CHECKSTYLEOFF Javadoc
     public static void staticRenderStream(final PCamera camera, final Boolean viewport,
             final OutputStream stream) {
         new KlighdSVGCanvas().render(camera, viewport, stream);
@@ -180,7 +179,7 @@ public class KlighdSVGCanvas implements PComponent {
      * @deprecated not implemented for this offscreen canvas.
      */
     @Override
-    public void repaint(PBounds bounds) {
+    public void repaint(final PBounds bounds) {
     }
 
     /**
@@ -198,7 +197,7 @@ public class KlighdSVGCanvas implements PComponent {
      * @deprecated not implemented for this offscreen canvas.
      */
     @Override
-    public void pushCursor(Cursor cursor) {
+    public void pushCursor(final Cursor cursor) {
     }
 
     /**
@@ -216,7 +215,7 @@ public class KlighdSVGCanvas implements PComponent {
      * @deprecated not implemented for this offscreen canvas.
      */
     @Override
-    public void setInteracting(boolean interacting) {
+    public void setInteracting(final boolean interacting) {
     }
 
 }
