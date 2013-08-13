@@ -151,7 +151,6 @@ public class KlighdSimpleSVGGraphicsImpl extends Graphics2D implements KlighdSWT
     /**
      * {@inheritDoc}
      */
-    @Override
     public Device getDevice() {
         return null;
     }
@@ -159,7 +158,6 @@ public class KlighdSimpleSVGGraphicsImpl extends Graphics2D implements KlighdSWT
     /**
      * {@inheritDoc}
      */
-    @Override
     public void setDevice(final Device theDevice) {
         throw new UnsupportedOperationException();
     }
@@ -167,7 +165,6 @@ public class KlighdSimpleSVGGraphicsImpl extends Graphics2D implements KlighdSWT
     /**
      * {@inheritDoc}
      */
-    @Override
     public GC getGC() {
         throw new UnsupportedOperationException();
     }
@@ -175,7 +172,6 @@ public class KlighdSimpleSVGGraphicsImpl extends Graphics2D implements KlighdSWT
     /**
      * {@inheritDoc}
      */
-    @Override
     public void setGC(final GC theGc) {
         throw new UnsupportedOperationException();
     }
@@ -183,7 +179,6 @@ public class KlighdSimpleSVGGraphicsImpl extends Graphics2D implements KlighdSWT
     /**
      * {@inheritDoc}
      */
-    @Override
     public LineAttributes getLineAttributes() {
         return lineAttributes;
     }
@@ -191,7 +186,6 @@ public class KlighdSimpleSVGGraphicsImpl extends Graphics2D implements KlighdSWT
     /**
      * {@inheritDoc}
      */
-    @Override
     public void setLineAttributes(final LineAttributes attributes) {
         lineAttributes = attributes;
     }
@@ -199,7 +193,6 @@ public class KlighdSimpleSVGGraphicsImpl extends Graphics2D implements KlighdSWT
     /**
      * {@inheritDoc}
      */
-    @Override
     public float getLineWidth() {
         return lineAttributes.width;
     }
@@ -207,7 +200,6 @@ public class KlighdSimpleSVGGraphicsImpl extends Graphics2D implements KlighdSWT
     /**
      * {@inheritDoc}
      */
-    @Override
     public void setLineWidth(final float lineWidth) {
         lineAttributes.width = lineWidth;
 
@@ -221,7 +213,6 @@ public class KlighdSimpleSVGGraphicsImpl extends Graphics2D implements KlighdSWT
     /**
      * {@inheritDoc}
      */
-    @Override
     public int getAlpha() {
         return alpha;
     }
@@ -229,7 +220,6 @@ public class KlighdSimpleSVGGraphicsImpl extends Graphics2D implements KlighdSWT
     /**
      * {@inheritDoc}
      */
-    @Override
     public void setAlpha(final int alpha) {
         this.alpha = alpha;
 
@@ -242,7 +232,6 @@ public class KlighdSimpleSVGGraphicsImpl extends Graphics2D implements KlighdSWT
     /**
      * {@inheritDoc}
      */
-    @Override
     public void setColor(final RGB color) {
         graphics.setColor(rgb2Color(color));
     }
@@ -250,7 +239,6 @@ public class KlighdSimpleSVGGraphicsImpl extends Graphics2D implements KlighdSWT
     /**
      * {@inheritDoc}
      */
-    @Override
     public void setPattern(final RGBGradient gradient, final Rectangle2D bounds) {
         graphics.setPaint(rgb2Pattern(gradient, bounds));
     }
@@ -258,7 +246,6 @@ public class KlighdSimpleSVGGraphicsImpl extends Graphics2D implements KlighdSWT
     /**
      * {@inheritDoc}
      */
-    @Override
     public void setBackground(final RGB backgroundColor) {
 
         // FIXME why?? It seems, that batik ignores the background color.
@@ -270,7 +257,6 @@ public class KlighdSimpleSVGGraphicsImpl extends Graphics2D implements KlighdSWT
     /**
      * {@inheritDoc}
      */
-    @Override
     public void setBackgroundPattern(final RGBGradient backgroundGradient, final Rectangle2D bounds) {
         graphics.setPaint(rgb2Pattern(backgroundGradient, bounds));
     }
@@ -278,7 +264,6 @@ public class KlighdSimpleSVGGraphicsImpl extends Graphics2D implements KlighdSWT
     /**
      * {@inheritDoc}
      */
-    @Override
     public void setFont(final FontData fontData) {
         graphics.setFont(new Font(fontData.getName(), KTextUtil.swtFontStyle2Awt(fontData
                 .getStyle()), fontData.getHeight()));
@@ -287,7 +272,6 @@ public class KlighdSimpleSVGGraphicsImpl extends Graphics2D implements KlighdSWT
     /**
      * {@inheritDoc}
      */
-    @Override
     public void setUnderline(final int theUnderlining, final RGB color) {
         // TODO Auto-generated method stub
     }
@@ -295,7 +279,6 @@ public class KlighdSimpleSVGGraphicsImpl extends Graphics2D implements KlighdSWT
     /**
      * {@inheritDoc}
      */
-    @Override
     public void setStrikeout(final boolean theStrikeout, final RGB color) {
         // TODO Auto-generated method stub
     }
@@ -359,7 +342,6 @@ public class KlighdSimpleSVGGraphicsImpl extends Graphics2D implements KlighdSWT
     /**
      * {@inheritDoc}
      */
-    @Override
     public void draw(final Path p) {
         throw new UnsupportedOperationException();
     }
@@ -367,7 +349,6 @@ public class KlighdSimpleSVGGraphicsImpl extends Graphics2D implements KlighdSWT
     /**
      * {@inheritDoc}
      */
-    @Override
     public void fill(final Shape s) {
         graphics.fill(s);
     }
@@ -375,7 +356,6 @@ public class KlighdSimpleSVGGraphicsImpl extends Graphics2D implements KlighdSWT
     /**
      * {@inheritDoc}
      */
-    @Override
     public void fill(final Path p) {
         throw new UnsupportedOperationException();
     }
@@ -383,7 +363,6 @@ public class KlighdSimpleSVGGraphicsImpl extends Graphics2D implements KlighdSWT
     /**
      * {@inheritDoc}
      */
-    @Override
     public void drawImage(final Image image, final double width, final double height) {
         java.awt.Image img = convertToAWT(image.getImageData());
         graphics.drawImage(img, 0, 0, null);
@@ -392,7 +371,6 @@ public class KlighdSimpleSVGGraphicsImpl extends Graphics2D implements KlighdSWT
     /**
      * {@inheritDoc}
      */
-    @Override
     public void drawImage(final ImageData imageData, final double width, final double height) {
         java.awt.Image img = convertToAWT(imageData);
         graphics.drawImage(img, 0, 0, null);
@@ -401,7 +379,6 @@ public class KlighdSimpleSVGGraphicsImpl extends Graphics2D implements KlighdSWT
     /**
      * {@inheritDoc}
      */
-    @Override
     public void drawText(final String string) {
         // SVG 1.1 does not support automatic line wrapping, thus each line has to be drawn
         // individually.

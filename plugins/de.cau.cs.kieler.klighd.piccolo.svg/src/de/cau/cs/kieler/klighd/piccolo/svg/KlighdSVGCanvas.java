@@ -35,10 +35,7 @@ import edu.umd.cs.piccolo.util.PUtil;
  * {@link org.apache.batik.svggen.SVGGraphics2D SVGGraphics2D} generator, an SVG is created.
  * 
  * Basic usage: <code>
- *      KNode model = getLayoutedModel();
- *      KlighdSVGCanvas canvas = new KlighdSVGCanvas(model);
- *      
- *      String svg = canvas.render();
+ *  TODO
  * </code>
  * 
  * Inspired by the {@link edu.umd.cs.piccolo.POffscreenCanvas POffscreenCanvas} class.
@@ -241,7 +238,6 @@ public class KlighdSVGCanvas implements PComponent {
      * 
      * @deprecated not implemented for this offscreen canvas.
      */
-    @Override
     public void repaint(final PBounds bounds) {
     }
 
@@ -250,7 +246,6 @@ public class KlighdSVGCanvas implements PComponent {
      * 
      * @deprecated not implemented for this offscreen canvas.
      */
-    @Override
     public void paintImmediately() {
     }
 
@@ -259,7 +254,6 @@ public class KlighdSVGCanvas implements PComponent {
      * 
      * @deprecated not implemented for this offscreen canvas.
      */
-    @Override
     public void pushCursor(final Cursor cursor) {
     }
 
@@ -268,7 +262,6 @@ public class KlighdSVGCanvas implements PComponent {
      * 
      * @deprecated not implemented for this offscreen canvas.
      */
-    @Override
     public void popCursor() {
     }
 
@@ -277,7 +270,6 @@ public class KlighdSVGCanvas implements PComponent {
      * 
      * @deprecated not implemented for this offscreen canvas.
      */
-    @Override
     public void setInteracting(final boolean interacting) {
     }
 
