@@ -131,14 +131,15 @@ public class SaveAsImageAction extends Action {
             final boolean cameraViewport, final int format, final int scale) {
         PCamera camera = canvas.getCamera();
 
+        // FIXME do this properly! Best way seems to be an extension point.
         // if svg handle differently and stop
         if (format == KlighdConstants.IMAGE_SVG) {
             try {
                 Method m =
                         Class.forName("de.cau.cs.kieler.klighd.piccolo.svg.KlighdSVGCanvas")
                                 .getMethod("staticRenderStream", PCamera.class, Boolean.class,
-                                        OutputStream.class);
-                m.invoke(null, camera, cameraViewport, stream);
+                                        Boolean.class, OutputStream.class);
+                m.invoke(null, camera, cameraViewport, false, stream);
             } catch (Exception e) {
                 e.printStackTrace();
             }

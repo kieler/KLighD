@@ -81,8 +81,8 @@ public class KlighdSimpleSVGGraphicsImpl extends Graphics2D implements KlighdSWT
     // Internal attributes
     private LineAttributes lineAttributes = new LineAttributes(1f);
     private int alpha = KlighdConstants.ALPHA_FULL_OPAQUE;
-    
-    private static final String SVG_NS =  "http://www.w3.org/2000/svg";
+
+    private static final String SVG_NS = "http://www.w3.org/2000/svg";
 
     /**
      * 
@@ -105,6 +105,7 @@ public class KlighdSimpleSVGGraphicsImpl extends Graphics2D implements KlighdSWT
 
         // assemble context
         SVGGeneratorContext ctx = SVGGeneratorContext.createDefault(document);
+        ctx.setEmbeddedFontsOn(true);
 
         // create and configure the graphics object
         graphics = new SVGGraphics2D(ctx, textAsShapes);
@@ -406,11 +407,16 @@ public class KlighdSimpleSVGGraphicsImpl extends Graphics2D implements KlighdSWT
         // browsers.
         int y = 0;
         int fontHeight = graphics.getFontMetrics().getHeight();
-        int leading = graphics.getFontMetrics().getLeading();
-        for (String line : string.split("\n")) {
+
+        // translate by the font height as the reference point for drawing text in svg seems to be
+        // at the bottom left corner, SWT has it as the top left corner.
+        translate(0, fontHeight);       
+        
+        for (String line : string.split("\\r?\\n|\\r")) {
             graphics.drawString(line, 0, y);
-            y += fontHeight + leading;
+            y += fontHeight;
         }
+        translate(0, -fontHeight);
     }
 
     /*------------------------------------------------ 
@@ -612,12 +618,12 @@ public class KlighdSimpleSVGGraphicsImpl extends Graphics2D implements KlighdSWT
 
     @Override
     public void translate(int x, int y) {
-        throw new UnsupportedOperationException();
+        graphics.translate(x, y);
     }
 
     @Override
     public void translate(double tx, double ty) {
-        throw new UnsupportedOperationException();
+        graphics.translate(tx, ty);
     }
 
     @Override

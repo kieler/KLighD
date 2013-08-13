@@ -14,6 +14,7 @@
 package de.cau.cs.kieler.klighd.piccolo.svg;
 
 import java.awt.Cursor;
+import java.awt.geom.Rectangle2D;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.List;
@@ -31,7 +32,7 @@ import edu.umd.cs.piccolo.util.PUtil;
 /**
  * This class can be used to render a {@link KNode} model to an SVG. The piccolo infrastructure is
  * used to create piccolo elements for the respective KGraph model. Using batik's
- * {@link SVGGraphics2D} generator, an SVG is created.
+ * {@link org.apache.batik.svggen.SVGGraphics2D SVGGraphics2D} generator, an SVG is created.
  * 
  * Basic usage: <code>
  *      KNode model = getLayoutedModel();
@@ -40,20 +41,77 @@ import edu.umd.cs.piccolo.util.PUtil;
  *      String svg = canvas.render();
  * </code>
  * 
- * Inspired by the {@link POffscreenCanvas} class.
+ * Inspired by the {@link edu.umd.cs.piccolo.POffscreenCanvas POffscreenCanvas} class.
  * 
  * @author uru
  * 
  */
 public class KlighdSVGCanvas implements PComponent {
 
-    private KlighdSimpleSVGGraphicsImpl graphics = new KlighdSimpleSVGGraphicsImpl();
+    private KlighdSimpleSVGGraphicsImpl graphics;
+
+    private PCamera camera;
+    private PPaintContext paintContext;
+
+    private static final PBounds INITIAL_BOUNDS = new PBounds(0, 0, 800, 600);
 
     /**
      * 
      */
     public KlighdSVGCanvas() {
+        this(INITIAL_BOUNDS);
     }
+
+    /**
+     * @param bounds
+     *            the initial bounds of this canvas
+     */
+    public KlighdSVGCanvas(final Rectangle2D bounds) {
+        // create a graphics object
+        graphics = new KlighdSimpleSVGGraphicsImpl();
+        // create a new camera
+        camera = PUtil.createBasicScenegraph();
+        camera.setBounds(bounds);
+        camera.setComponent(this);
+    }
+
+    /**
+     * @return the rendered SVG.
+     */
+    public String render() {
+
+        // set up the paint context
+        paintContext = new PPaintContext(graphics);
+        paintContext.setRenderQuality(PPaintContext.HIGH_QUALITY_RENDERING);
+
+        camera.validateFullPaint();
+
+        // perform the painting
+        camera.fullPaint(paintContext);
+
+        // return the created svg
+        String svg = graphics.getSVG();
+        return svg;
+    }
+
+    /**
+     * @return the camera
+     */
+    public PCamera getCamera() {
+        return camera;
+    }
+
+    /**
+     * @param bounds
+     *            new bounds forwarded to the camera.
+     */
+    public void setBounds(final Rectangle2D bounds) {
+        camera.setBounds(bounds);
+    }
+
+    /*---------------------------------------------------------------------
+     * Static convenient methods for rendering existing models and cameras.
+     */
 
     /**
      * Render this offscreen canvas to the specified graphics.
@@ -62,7 +120,7 @@ public class KlighdSVGCanvas implements PComponent {
      *            the {@link KNode} model to be rendered.
      * @return the rendered svg.
      */
-    public String render(final KNode model) {
+    public static String render(final KNode model) {
 
         if (model == null) {
             throw new IllegalArgumentException("model must not be null");
@@ -74,15 +132,14 @@ public class KlighdSVGCanvas implements PComponent {
 
         // init a new camera
         PCamera camera = PUtil.createBasicScenegraph();
-        camera.setComponent(this);
         camera.setBounds((PBounds) bounds.clone());
 
-        // TODO require sync?
         // create the piccolo elements for the kgraph model
         DiagramController controller = new DiagramController(model, camera.getLayer(0), true);
         controller.initialize();
 
         // set up the paint context
+        KlighdSimpleSVGGraphicsImpl graphics = new KlighdSimpleSVGGraphicsImpl();
         final PPaintContext paintContext = new PPaintContext(graphics);
         paintContext.setRenderQuality(PPaintContext.HIGH_QUALITY_RENDERING);
 
@@ -94,9 +151,8 @@ public class KlighdSVGCanvas implements PComponent {
         return svg;
     }
 
-    /*
-     * ------------------------------------- Rendering from a PCamera
-     * -------------------------------------
+    /*---------------------------------------------------------------------
+     * Render from a PCamera.
      */
 
     /**
@@ -105,8 +161,8 @@ public class KlighdSVGCanvas implements PComponent {
      * @return the rendered svg of the camera's viewport, to render the whole svg use the
      *         {@link #render(PCamera, boolean)} method and pass true as second argument.
      */
-    public String render(final PCamera camera) {
-        return render(camera, true);
+    public static String render(final PCamera camera) {
+        return render(camera, true, false);
     }
 
     /**
@@ -114,10 +170,14 @@ public class KlighdSVGCanvas implements PComponent {
      *            the camera to render.
      * @param viewPort
      *            whether to render only the camera's viewport or the whole diagram.
+     * @param textAsShapes
+     *            whether text should be rendered as shapes
      * @return the SVG string.
      */
-    public String render(final PCamera camera, final boolean viewPort) {
+    public static String render(final PCamera camera, final boolean viewPort,
+            final boolean textAsShapes) {
         // set up the paint context
+        KlighdSimpleSVGGraphicsImpl graphics = new KlighdSimpleSVGGraphicsImpl(textAsShapes);
         final PPaintContext paintContext = new PPaintContext(graphics);
         paintContext.setRenderQuality(PPaintContext.HIGH_QUALITY_RENDERING);
 
@@ -144,11 +204,14 @@ public class KlighdSVGCanvas implements PComponent {
      *            the camera to render.
      * @param viewport
      *            whether to render only the camera's viewport or the whole diagram.
+     * @param textAsShapes
+     *            whether text should be rendered as shapes
      * @param stream
      *            the stream to which the svg is written.
      */
-    public void render(final PCamera camera, final boolean viewport, final OutputStream stream) {
-        String svg = render(camera, viewport);
+    public static void render(final PCamera camera, final boolean viewport,
+            final boolean textAsShapes, final OutputStream stream) {
+        String svg = render(camera, viewport, textAsShapes);
         try {
             stream.write(svg.getBytes());
         } catch (IOException ex) {
@@ -159,16 +222,16 @@ public class KlighdSVGCanvas implements PComponent {
     // HACKING for testing
     // CHECKSTYLEOFF Javadoc
     public static void staticRenderStream(final PCamera camera, final Boolean viewport,
-            final OutputStream stream) {
-        new KlighdSVGCanvas().render(camera, viewport, stream);
+            final Boolean textAsShapes, final OutputStream stream) {
+        KlighdSVGCanvas.render(camera, viewport, textAsShapes, stream);
     }
 
     public static String staticRender(final KNode aModel) {
-        return new KlighdSVGCanvas().render(aModel);
+        return KlighdSVGCanvas.render(aModel);
     }
 
     public static String staticRender(final PCamera camera) {
-        return new KlighdSVGCanvas().render(camera);
+        return KlighdSVGCanvas.render(camera);
     }
 
     // STOP hacking!
