@@ -82,17 +82,6 @@ public interface KlighdSWTGraphics {
     void setDevice(Device theDevice);
     
     /**
-     * Returns the SWT {@link GC} to draw on.<br>
-     * <br>
-     * If the return value is <code>null</code> the current canvas is not an SWT-based one.<br>
-     * In that case only the AWT {@link Shape}-based <code>draw()</code> and <code>fill()</code>
-     * methods are supported.
-     * 
-     * @return the {@link GC} to work with, or <code>null</code>, if a non-SWT canvas is used
-     */
-    GC getGC();
-
-    /**
      * This setter allows to (re-) use an object adhering to this interface for multiple paint runs.
      * 
      * @param theGc
