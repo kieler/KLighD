@@ -14,6 +14,7 @@
 package de.cau.cs.kieler.klighd.piccolo.internal;
 
 import org.eclipse.swt.graphics.FontData;
+import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.LineAttributes;
 import org.eclipse.swt.graphics.RGB;
 
@@ -38,6 +39,13 @@ import de.cau.cs.kieler.klighd.piccolo.KlighdSWTGraphics;
  * @author chsch
  */
 public interface KlighdSWTGraphicsEx extends KlighdSWTGraphics {
+
+    /**
+     * Returns the SWT {@link GC} to draw on.
+     * 
+     * @return the {@link GC} to work with, or <code>null</code>, if a non-SWT canvas is used
+     */
+    GC getGC();
 
     /**
      * Returns the currently configured font attributes in form of a {@link FontData} record
