@@ -201,8 +201,12 @@ public class GraphicsAdapter extends Graphics {
             pg.setFillColor(lastState.background);
             final GC gc = pg.getGC();
             if (gc != null) {
-                gc.setForegroundPattern(lastState.foregroundPattern);
-                gc.setBackgroundPattern(lastState.backgroundPattern);
+                if (lastState.foregroundPattern != null) {
+                    gc.setForegroundPattern(lastState.foregroundPattern);
+                }
+                if (lastState.backgroundPattern != null) {
+                    gc.setBackgroundPattern(lastState.backgroundPattern);
+                }
             }
         }
     }
@@ -426,9 +430,14 @@ public class GraphicsAdapter extends Graphics {
     @Override
     public org.eclipse.draw2d.geometry.Rectangle getClip(
             final org.eclipse.draw2d.geometry.Rectangle rect) {
-        Rectangle clip = pg.getClip().getBounds();
-        rect.setBounds(clip.x, clip.y, clip.width, clip.height);
-        return rect; 
+        Shape clip = pg.getClip();
+        if (clip == null) {
+            return null;
+        } else {
+            Rectangle bounds = clip.getBounds();
+            rect.setBounds(bounds.x, bounds.y, bounds.width, bounds.height);
+            return rect; 
+        }
     }
 
     /**
