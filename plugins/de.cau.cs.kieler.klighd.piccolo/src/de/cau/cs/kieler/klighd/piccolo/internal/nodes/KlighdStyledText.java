@@ -284,11 +284,11 @@ public class KlighdStyledText extends PNode implements ITracingElement<KText> {
         final float currentAlphaFloat = (float) currentAlpha;
 
         if (this.paintGradient != null) {
-            graphics.setBackgroundPattern(this.paintGradient, getBounds());
+            graphics.setFillPattern(this.paintGradient, getBounds());
         } else if (this.paint != null) {
             graphics.setAlpha((int) (paintAlpha
                     * (currentAlphaFloat / KlighdConstants.ALPHA_FULL_OPAQUE)));
-            graphics.setBackground(this.paint);
+            graphics.setFillColor(this.paint);
         }
 
         if (this.paint != null || this.paintGradient != null) {
@@ -303,10 +303,10 @@ public class KlighdStyledText extends PNode implements ITracingElement<KText> {
         if (this.penColor != null) {
             graphics.setAlpha(
                     (int) (penAlpha * (currentAlphaFloat / KlighdConstants.ALPHA_FULL_OPAQUE)));
-            graphics.setColor(this.penColor);
+            graphics.setStrokeColor(this.penColor);
 
         } else {
-            graphics.setColor(KlighdConstants.BLACK);
+            graphics.setStrokeColor(KlighdConstants.BLACK);
         }
         
         if (fontData != null) {
