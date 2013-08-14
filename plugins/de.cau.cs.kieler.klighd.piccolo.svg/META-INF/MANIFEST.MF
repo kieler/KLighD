@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: KlighD SVG
 Bundle-SymbolicName: de.cau.cs.kieler.klighd.piccolo.svg;singleton:=true
 Bundle-Version: 0.1.0.qualifier
-Require-Bundle: org.eclipse.swt;bundle-version="3.100.0",
+Require-Bundle: org.eclipse.swt;bundle-version="3.8.0",
  org.apache.batik.svggen;bundle-version="1.6.0",
  org.apache.batik.dom;bundle-version="1.6.0",
  org.apache.batik.ext.awt;bundle-version="1.6.0",
