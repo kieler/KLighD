@@ -37,6 +37,7 @@ import org.eclipse.ui.statushandlers.StatusManager;
 import de.cau.cs.kieler.klighd.KlighdConstants;
 import de.cau.cs.kieler.klighd.piccolo.KlighdPiccoloPlugin;
 import de.cau.cs.kieler.klighd.piccolo.KlighdSWTGraphicsImpl;
+import de.cau.cs.kieler.klighd.piccolo.internal.Constants;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdCanvas;
 import de.cau.cs.kieler.klighd.piccolo.viewer.PiccoloViewer;
 import edu.umd.cs.piccolo.PCamera;
@@ -131,17 +132,21 @@ public class SaveAsImageAction extends Action {
             final boolean cameraViewport, final int format, final int scale) {
         PCamera camera = canvas.getCamera();
 
-        // FIXME do this properly! Best way seems to be an extension point.
-        // if svg handle differently and stop
+        // in case of the SVG format invoke the SVG exporter and return
         if (format == KlighdConstants.IMAGE_SVG) {
+            
+            // TODO The following call could be replaced by an extension point in future.
             try {
-                Method m =
-                        Class.forName("de.cau.cs.kieler.klighd.piccolo.svg.KlighdSVGCanvas")
-                                .getMethod("staticRenderStream", PCamera.class, Boolean.class,
-                                        Boolean.class, OutputStream.class);
+                Method m = Class.forName(Constants.KLIGHD_SVG_CANVAS).getMethod(
+                        Constants.KLIGHD_SVG_RENDER_METHOD, PCamera.class, Boolean.class,
+                        Boolean.class, OutputStream.class);
                 m.invoke(null, camera, cameraViewport, false, stream);
             } catch (Exception e) {
-                e.printStackTrace();
+                final String msg = "KLighD: Creation of desired SVG diagram failed,"
+                        + "most probably due to unavailability of the plug-in \""
+                        + KlighdPiccoloPlugin.PLUGIN_ID + ".svg\".";
+                StatusManager.getManager().handle(
+                    new Status(IStatus.INFO, KlighdPiccoloPlugin.PLUGIN_ID, msg), StatusManager.SHOW);
             }
             return;
         }
