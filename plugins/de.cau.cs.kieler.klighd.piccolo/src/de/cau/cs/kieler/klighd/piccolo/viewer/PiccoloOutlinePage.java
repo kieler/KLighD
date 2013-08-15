@@ -93,7 +93,8 @@ public class PiccoloOutlinePage implements IContentOutlinePage {
     private PropertyChangeListener propertyListener = new PropertyChangeListener() {
 
         public void propertyChange(final PropertyChangeEvent evt) {
-            if (evt.getPropertyName().equals("viewTransform")) {
+            if (evt.getPropertyName().equals(PCamera.PROPERTY_VIEW_TRANSFORM)
+                    || evt.getPropertyName().equals(PNode.PROPERTY_FULL_BOUNDS)) {
 
                 // only use the timer if we are not dragging
                 if (isDragging) {
