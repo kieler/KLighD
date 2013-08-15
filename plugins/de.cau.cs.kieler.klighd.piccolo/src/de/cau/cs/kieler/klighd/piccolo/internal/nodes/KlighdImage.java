@@ -57,6 +57,10 @@ import edu.umd.cs.piccolo.util.PPaintContext;
 public class KlighdImage extends PNode {
 
     private static final long serialVersionUID = 7201328608113593385L;
+    
+    // These two fields are to be kept consistent,
+    //  i.e. both shall denote the same image.
+    // This is useful for efficient drawing on SWT and non-SWT-based canvases.
     private transient Image image;
     private transient ImageData imageData;
 
@@ -161,7 +165,7 @@ public class KlighdImage extends PNode {
     public void setImage(final Image newImage) {
         final Image old = this.image;
         this.image = newImage;
-        this.imageData = null;
+        this.imageData = newImage.getImageData();
 
         if (old != null) {
             old.dispose();
@@ -181,14 +185,16 @@ public class KlighdImage extends PNode {
             // within an SWT environment
             if (this.image == null && this.imageData != null) {
                 this.image = new Image(graphics.getDevice(), this.imageData);
-                this.imageData = null;
             }
-            graphics.drawImage(image, b.width, b.height);
+            if (image != null) {
+                graphics.drawImage(image, b.width, b.height);
+            }
         } else {
             // without any device we have to draw the raw image data
-            if (image != null) {
-                graphics.drawImage(image.getImageData(), b.width, b.height);
-            } else if (imageData != null) {
+            if (image != null && imageData == null) {
+                this.imageData = image.getImageData();
+            }
+            if (imageData != null) {
                 graphics.drawImage(imageData, b.width, b.height);
             }
         }
