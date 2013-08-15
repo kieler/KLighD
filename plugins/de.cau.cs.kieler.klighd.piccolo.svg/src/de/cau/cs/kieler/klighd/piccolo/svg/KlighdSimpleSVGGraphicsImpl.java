@@ -86,23 +86,31 @@ public class KlighdSimpleSVGGraphicsImpl extends Graphics2D implements KlighdSWT
     // Internal attributes
     private LineAttributes lineAttributes = new LineAttributes(1f);
     private int alpha = KlighdConstants.ALPHA_FULL_OPAQUE;
-    private RGB fillColor = null;
-    private Pair<RGBGradient, Rectangle2D> fillPattern = null;
-    private FontData fontData = null;
 
-    private static final String SVG_NS = "http://www.w3.org/2000/svg";
+    private RGB strokeColor = KlighdConstants.BLACK;
+    private Pair<RGBGradient, Rectangle2D> strokePattern = null;
+
+    private RGB fillColor = KlighdConstants.WHITE;
+    private Pair<RGBGradient, Rectangle2D> fillPattern = null;
+
+    private FontData fontData = KlighdConstants.DEFAULT_FONT;
 
     private final Map<ImageData, BufferedImage> imageBuffer = Maps.newHashMap();
     private final Rectangle2D imageBoundsRect = new Rectangle2D.Double();
+    
+    private static final String SVG_NS = "http://www.w3.org/2000/svg";
 
     /**
-     * 
+     * Constructor.<br>
+     * Delegates to {@link #KlighdSimpleSVGGraphicsImpl(boolean) #KlighdSimpleSVGGraphicsImpl(false)}.
      */
     public KlighdSimpleSVGGraphicsImpl() {
         this(false);
     }
 
     /**
+     * Constructor.
+     * 
      * @param textAsShapes
      *            whether text should be rendered as shapes
      */
@@ -224,14 +232,11 @@ public class KlighdSimpleSVGGraphicsImpl extends Graphics2D implements KlighdSWT
         graphics.setColor(c2);
     }
 
-    private RGB strokeColor = null;
-    private Pair<RGBGradient, Rectangle2D> strokePattern = null;
-
     /**
      * {@inheritDoc}
      */
     public RGB getStrokeColor() {
-        return color2rgb(graphics.getColor());
+        return this.strokeColor;
     }
 
     /**
@@ -254,7 +259,7 @@ public class KlighdSimpleSVGGraphicsImpl extends Graphics2D implements KlighdSWT
      * {@inheritDoc}
      */
     public RGB getFillColor() {
-        return color2rgb(graphics.getColor());
+        return this.fillColor;
     }
 
     /**
@@ -277,7 +282,7 @@ public class KlighdSimpleSVGGraphicsImpl extends Graphics2D implements KlighdSWT
      * {@inheritDoc}
      */
     public FontData getFontData() {
-        return fontData;
+        return this.fontData;
     }
 
     /**
@@ -361,10 +366,11 @@ public class KlighdSimpleSVGGraphicsImpl extends Graphics2D implements KlighdSWT
     public void draw(final Shape s) {
         final Paint p =
                 this.strokeColor != null ? rgb2Color(this.strokeColor, this.alpha)
-                        : this.strokePattern != null ? rgb2Pattern(this.strokePattern)
-                                : Color.black;
-        graphics.setPaint(p);
-        graphics.draw(s);
+                        : this.strokePattern != null ? rgb2Pattern(this.strokePattern) : null;
+        if (p != null) {
+            graphics.setPaint(p);
+            graphics.draw(s);
+        }
     }
 
     /**
@@ -380,9 +386,11 @@ public class KlighdSimpleSVGGraphicsImpl extends Graphics2D implements KlighdSWT
     public void fill(final Shape s) {
         final Paint p =
                 this.fillColor != null ? rgb2Color(this.fillColor, this.alpha)
-                        : this.fillPattern != null ? rgb2Pattern(this.fillPattern) : Color.black;
-        graphics.setPaint(p);
-        graphics.fill(s);
+                        : this.fillPattern != null ? rgb2Pattern(this.fillPattern) : null;
+        if (p != null) {
+            graphics.setPaint(p);
+            graphics.fill(s);
+        }
     }
 
     /**
