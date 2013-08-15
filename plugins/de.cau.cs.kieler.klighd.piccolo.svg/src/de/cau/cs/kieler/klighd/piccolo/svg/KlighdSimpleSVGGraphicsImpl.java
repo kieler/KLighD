@@ -192,8 +192,10 @@ public class KlighdSimpleSVGGraphicsImpl extends Graphics2D implements KlighdSWT
      */
     public void setLineAttributes(final LineAttributes attributes) {
         lineAttributes = attributes;
-        Stroke s = new BasicStroke(lineAttributes.width, lineAttributes.cap - 1, lineAttributes.join - 1,
-                        lineAttributes.miterLimit, lineAttributes.dash, lineAttributes.dashOffset);
+        Stroke s =
+                new BasicStroke(lineAttributes.width, lineAttributes.cap - 1,
+                        lineAttributes.join - 1, lineAttributes.miterLimit, lineAttributes.dash,
+                        lineAttributes.dashOffset);
         graphics.setStroke(s);
     }
 
@@ -215,7 +217,7 @@ public class KlighdSimpleSVGGraphicsImpl extends Graphics2D implements KlighdSWT
         Color c2 = new Color(c.getRed(), c.getGreen(), c.getBlue(), alpha);
         graphics.setColor(c2);
     }
-    
+
     private RGB strokeColor = null;
     private Pair<RGBGradient, Rectangle2D> strokePattern = null;
 
@@ -225,7 +227,7 @@ public class KlighdSimpleSVGGraphicsImpl extends Graphics2D implements KlighdSWT
     public RGB getStrokeColor() {
         return color2rgb(graphics.getColor());
     }
-    
+
     /**
      * {@inheritDoc}
      */
@@ -248,7 +250,7 @@ public class KlighdSimpleSVGGraphicsImpl extends Graphics2D implements KlighdSWT
     public RGB getFillColor() {
         return color2rgb(graphics.getColor());
     }
-    
+
     /**
      * {@inheritDoc}
      */
@@ -372,8 +374,7 @@ public class KlighdSimpleSVGGraphicsImpl extends Graphics2D implements KlighdSWT
     public void fill(final Shape s) {
         final Paint p =
                 this.fillColor != null ? rgb2Color(this.fillColor, this.alpha)
-                        : this.fillPattern != null ? rgb2Pattern(this.fillPattern)
-                                : Color.black;
+                        : this.fillPattern != null ? rgb2Pattern(this.fillPattern) : Color.black;
         graphics.setPaint(p);
         graphics.fill(s);
     }
@@ -405,6 +406,9 @@ public class KlighdSimpleSVGGraphicsImpl extends Graphics2D implements KlighdSWT
      * {@inheritDoc}
      */
     public void drawText(final String string) {
+        // make sure that the color for text drawing is set
+        graphics.setColor(strokeColor != null ? rgb2Color(strokeColor) : Color.black);
+
         // SVG 1.1 does not support automatic line wrapping, thus each line has to be drawn
         // individually.
         // SVG 1.2 supports a textArea with automatic wrapping, however this is not supported by all
@@ -431,7 +435,6 @@ public class KlighdSimpleSVGGraphicsImpl extends Graphics2D implements KlighdSWT
         return new RGB(color.getRed(), color.getGreen(), color.getBlue());
     }
 
-    @SuppressWarnings("unused")
     private static Color rgb2Color(final RGB color) {
         return new Color(color.red, color.green, color.blue);
     }
@@ -446,9 +449,10 @@ public class KlighdSimpleSVGGraphicsImpl extends Graphics2D implements KlighdSWT
 
     private static GradientPaint rgb2Pattern(final RGBGradient gradient, final Rectangle2D bounds) {
         GradientPaint gp =
-                new GradientPaint((float) bounds.getMinX(), (float) bounds.getMinY(),
-                        rgb2Color(gradient.getColor1(), gradient.getAlpha1()), (float) bounds.getMaxX(),
-                        (float) bounds.getMaxY(), rgb2Color(gradient.getColor2(), gradient.getAlpha2()));
+                new GradientPaint((float) bounds.getMinX(), (float) bounds.getMinY(), rgb2Color(
+                        gradient.getColor1(), gradient.getAlpha1()), (float) bounds.getMaxX(),
+                        (float) bounds.getMaxY(), rgb2Color(gradient.getColor2(),
+                                gradient.getAlpha2()));
 
         return gp;
     }
