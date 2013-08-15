@@ -42,5 +42,16 @@ public final class Constants {
      * each {@link edu.umd.cs.piccolo.PNode PNode}.
      */
     public static final Object MAIN_CAMERA = new Object();
+    
+    /**
+     * The full qualified name of the class realizing an SVG export canvas.
+     */
+    public static final String KLIGHD_SVG_CANVAS = "de.cau.cs.kieler.klighd.piccolo.svg.KlighdSVGCanvas";
+    
+    /**
+     * The name of the (static root) method in {@link #KLIGHD_SVG_CANVAS} to be called via
+     * reflection in order to avoid cyclic dependencies.
+     */
+    public static final String KLIGHD_SVG_RENDER_METHOD = "staticRenderStream";
 
 }

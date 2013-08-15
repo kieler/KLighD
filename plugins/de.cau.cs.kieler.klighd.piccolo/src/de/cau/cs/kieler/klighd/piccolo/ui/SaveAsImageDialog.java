@@ -46,6 +46,7 @@ import org.eclipse.ui.dialogs.SaveAsDialog;
 
 import de.cau.cs.kieler.klighd.KlighdConstants;
 import de.cau.cs.kieler.klighd.piccolo.KlighdPiccoloPlugin;
+import de.cau.cs.kieler.klighd.piccolo.internal.Constants;
 
 /**
  * The 'save-as-image' dialog for Piccolo.
@@ -53,6 +54,25 @@ import de.cau.cs.kieler.klighd.piccolo.KlighdPiccoloPlugin;
  * @author mri
  */
 public class SaveAsImageDialog extends Dialog {
+    
+    /** a flag indicating the availability of the SVG export. */
+    private static final boolean SVG_EXPORT_AVAILABLE;
+    
+    /** initialization code executed while loading the class. */
+    static {
+        Class<?> clazz = null;
+        try {            
+            clazz = Class.forName(Constants.KLIGHD_SVG_CANVAS);
+        } catch (Exception e) {
+            // nothing
+        } finally {
+            if (clazz == null) {
+                SVG_EXPORT_AVAILABLE = false;
+            } else {
+                SVG_EXPORT_AVAILABLE = true;
+            }
+        }
+    }
 
     /** the default dialog width. */
     private static final int DEFAULT_WIDTH = 500;
@@ -76,8 +96,9 @@ public class SaveAsImageDialog extends Dialog {
         = "saveAsImageDialog.scaleFactor"; //$NON-NLS-1$
 
     /** the available image formats. */
-    private static final String[] IMAGE_FORMATS
-        = { "BMP", "JPG", "PNG", "SVG" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+    private static final String[] IMAGE_FORMATS = SVG_EXPORT_AVAILABLE
+            ? new String[] { "BMP", "JPG", "PNG", "SVG" }
+                : new String[] { "BMP", "JPG", "PNG" };
 
     /** the preference store. */
     private IPreferenceStore preferenceStore = null;
@@ -524,7 +545,7 @@ public class SaveAsImageDialog extends Dialog {
         case 2:
             return SWT.IMAGE_PNG;
         case 3:
-            return KlighdConstants.IMAGE_SVG;
+            return SVG_EXPORT_AVAILABLE ? KlighdConstants.IMAGE_SVG : SWT.IMAGE_PNG;
         case 0:
         default:
             return SWT.IMAGE_BMP;
