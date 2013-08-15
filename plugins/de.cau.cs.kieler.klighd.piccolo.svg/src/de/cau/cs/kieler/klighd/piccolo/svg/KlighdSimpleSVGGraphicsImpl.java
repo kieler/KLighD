@@ -59,9 +59,10 @@ import org.eclipse.swt.graphics.RGB;
 import org.w3c.dom.DOMImplementation;
 import org.w3c.dom.Document;
 
+import de.cau.cs.kieler.core.util.Pair;
 import de.cau.cs.kieler.klighd.KlighdConstants;
 import de.cau.cs.kieler.klighd.krendering.KTextUtil;
-import de.cau.cs.kieler.klighd.piccolo.KlighdSWTGraphics;
+import de.cau.cs.kieler.klighd.piccolo.internal.KlighdSWTGraphicsEx;
 import de.cau.cs.kieler.klighd.piccolo.internal.util.RGBGradient;
 
 /**
@@ -73,7 +74,7 @@ import de.cau.cs.kieler.klighd.piccolo.internal.util.RGBGradient;
  * 
  * @author uru
  */
-public class KlighdSimpleSVGGraphicsImpl extends Graphics2D implements KlighdSWTGraphics {
+public class KlighdSimpleSVGGraphicsImpl extends Graphics2D implements KlighdSWTGraphicsEx {
 
     // The svg generator element
     private SVGGraphics2D graphics;
@@ -166,7 +167,7 @@ public class KlighdSimpleSVGGraphicsImpl extends Graphics2D implements KlighdSWT
      * {@inheritDoc}
      */
     public GC getGC() {
-        throw new UnsupportedOperationException();
+        return null;
     }
 
     /**
@@ -188,24 +189,7 @@ public class KlighdSimpleSVGGraphicsImpl extends Graphics2D implements KlighdSWT
      */
     public void setLineAttributes(final LineAttributes attributes) {
         lineAttributes = attributes;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public float getLineWidth() {
-        return lineAttributes.width;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public void setLineWidth(final float lineWidth) {
-        lineAttributes.width = lineWidth;
-
-        // in awt we need to set a stroke
-        Stroke s =
-                new BasicStroke(lineWidth, lineAttributes.cap - 1, lineAttributes.join - 1,
+        Stroke s = new BasicStroke(lineAttributes.width, lineAttributes.cap - 1, lineAttributes.join - 1,
                         lineAttributes.miterLimit, lineAttributes.dash, lineAttributes.dashOffset);
         graphics.setStroke(s);
     }
@@ -228,43 +212,74 @@ public class KlighdSimpleSVGGraphicsImpl extends Graphics2D implements KlighdSWT
         Color c2 = new Color(c.getRed(), c.getGreen(), c.getBlue(), alpha);
         graphics.setColor(c2);
     }
+    
+    private RGB strokeColor = null;
+    private Pair<RGBGradient, Rectangle2D> strokePattern = null;
 
     /**
      * {@inheritDoc}
      */
-    public void setColor(final RGB color) {
-        graphics.setColor(rgb2Color(color));
+    public RGB getStrokeColor() {
+        return color2rgb(graphics.getColor());
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public void setStrokeColor(final RGB color) {
+        this.strokeColor = color;
+        this.strokePattern = null;
     }
 
     /**
      * {@inheritDoc}
      */
-    public void setPattern(final RGBGradient gradient, final Rectangle2D bounds) {
-        graphics.setPaint(rgb2Pattern(gradient, bounds));
+    public void setStrokePattern(final RGBGradient gradient, final Rectangle2D bounds) {
+        this.strokePattern = Pair.of(gradient, bounds);
+        this.strokeColor = null;
+    }
+
+    private RGB fillColor = null;
+    private Pair<RGBGradient, Rectangle2D> fillPattern = null;
+
+    /**
+     * {@inheritDoc}
+     */
+    public RGB getFillColor() {
+        return color2rgb(graphics.getColor());
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public void setFillColor(final RGB backgroundColor) {
+        this.fillColor = backgroundColor;
+        this.fillPattern = null;
     }
 
     /**
      * {@inheritDoc}
      */
-    public void setBackground(final RGB backgroundColor) {
-
-        // FIXME why?? It seems, that batik ignores the background color.
-        // graphics.setBackground(rgb2Color(backgroundColor));
-
-        graphics.setPaint(rgb2Color(backgroundColor, getAlpha()));
+    public void setFillPattern(final RGBGradient backgroundGradient, final Rectangle2D bounds) {
+        this.fillPattern = Pair.of(backgroundGradient, bounds);
+        this.fillColor = null;
     }
 
     /**
      * {@inheritDoc}
      */
-    public void setBackgroundPattern(final RGBGradient backgroundGradient, final Rectangle2D bounds) {
-        graphics.setPaint(rgb2Pattern(backgroundGradient, bounds));
+    public FontData getFontData() {
+        // TODO Auto-generated method stub
+        return null;
     }
 
     /**
      * {@inheritDoc}
      */
     public void setFont(final FontData fontData) {
+        if (fontData == null) {
+            return;
+        }
         graphics.setFont(new Font(fontData.getName(), KTextUtil.swtFontStyle2Awt(fontData
                 .getStyle()), fontData.getHeight()));
     }
@@ -336,6 +351,11 @@ public class KlighdSimpleSVGGraphicsImpl extends Graphics2D implements KlighdSWT
      */
     @Override
     public void draw(final Shape s) {
+        final Paint p =
+                this.strokeColor != null ? rgb2Color(this.strokeColor, this.alpha)
+                        : this.strokePattern != null ? rgb2Pattern(this.strokePattern)
+                                : Color.black;
+        graphics.setPaint(p);
         graphics.draw(s);
     }
 
@@ -350,6 +370,11 @@ public class KlighdSimpleSVGGraphicsImpl extends Graphics2D implements KlighdSWT
      * {@inheritDoc}
      */
     public void fill(final Shape s) {
+        final Paint p =
+                this.fillColor != null ? rgb2Color(this.fillColor, this.alpha)
+                        : this.fillPattern != null ? rgb2Pattern(this.fillPattern)
+                                : Color.black;
+        graphics.setPaint(p);
         graphics.fill(s);
     }
 
@@ -402,6 +427,11 @@ public class KlighdSimpleSVGGraphicsImpl extends Graphics2D implements KlighdSWT
     /*------------------------------------------------ 
      * Internal conversion methods.
      * ------------------------------------------------ */
+    private static RGB color2rgb(final Color color) {
+        return new RGB(color.getRed(), color.getGreen(), color.getBlue());
+    }
+
+    @SuppressWarnings("unused")
     private static Color rgb2Color(final RGB color) {
         return new Color(color.red, color.green, color.blue);
     }
@@ -410,11 +440,15 @@ public class KlighdSimpleSVGGraphicsImpl extends Graphics2D implements KlighdSWT
         return new Color(color.red, color.green, color.blue, alpha);
     }
 
+    private static GradientPaint rgb2Pattern(final Pair<RGBGradient, Rectangle2D> gradient) {
+        return rgb2Pattern(gradient.getFirst(), gradient.getSecond());
+    }
+
     private static GradientPaint rgb2Pattern(final RGBGradient gradient, final Rectangle2D bounds) {
         GradientPaint gp =
                 new GradientPaint((float) bounds.getMinX(), (float) bounds.getMinY(),
-                        rgb2Color(gradient.getColor1()), (float) bounds.getMaxX(),
-                        (float) bounds.getMaxY(), rgb2Color(gradient.getColor2()));
+                        rgb2Color(gradient.getColor1(), gradient.getAlpha1()), (float) bounds.getMaxX(),
+                        (float) bounds.getMaxY(), rgb2Color(gradient.getColor2(), gradient.getAlpha2()));
 
         return gp;
     }
@@ -799,5 +833,4 @@ public class KlighdSimpleSVGGraphicsImpl extends Graphics2D implements KlighdSWT
     public void dispose() {
         throw new UnsupportedOperationException();
     }
-
 }
