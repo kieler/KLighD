@@ -83,6 +83,9 @@ public class KlighdSimpleSVGGraphicsImpl extends Graphics2D implements KlighdSWT
     // Internal attributes
     private LineAttributes lineAttributes = new LineAttributes(1f);
     private int alpha = KlighdConstants.ALPHA_FULL_OPAQUE;
+    private RGB fillColor = null;
+    private Pair<RGBGradient, Rectangle2D> fillPattern = null;
+    private FontData fontData = null;
 
     private static final String SVG_NS = "http://www.w3.org/2000/svg";
 
@@ -239,9 +242,6 @@ public class KlighdSimpleSVGGraphicsImpl extends Graphics2D implements KlighdSWT
         this.strokeColor = null;
     }
 
-    private RGB fillColor = null;
-    private Pair<RGBGradient, Rectangle2D> fillPattern = null;
-
     /**
      * {@inheritDoc}
      */
@@ -269,19 +269,19 @@ public class KlighdSimpleSVGGraphicsImpl extends Graphics2D implements KlighdSWT
      * {@inheritDoc}
      */
     public FontData getFontData() {
-        // TODO Auto-generated method stub
-        return null;
+        return fontData;
     }
 
     /**
      * {@inheritDoc}
      */
-    public void setFont(final FontData fontData) {
-        if (fontData == null) {
+    public void setFont(final FontData theFontData) {
+        this.fontData = theFontData;
+        if (theFontData == null) {
             return;
         }
-        graphics.setFont(new Font(fontData.getName(), KTextUtil.swtFontStyle2Awt(fontData
-                .getStyle()), fontData.getHeight()));
+        graphics.setFont(new Font(theFontData.getName(), KTextUtil.swtFontStyle2Awt(theFontData
+                .getStyle()), theFontData.getHeight()));
     }
 
     /**
@@ -525,17 +525,17 @@ public class KlighdSimpleSVGGraphicsImpl extends Graphics2D implements KlighdSWT
 
     @Override
     public void setColor(final java.awt.Color c) {
-        graphics.setColor(c);
+        setStrokeColor(color2rgb(c));
     }
 
     @Override
     public void setBackground(final java.awt.Color c) {
-        graphics.setBackground(c);
+        setFillColor(color2rgb(c));
     }
 
     @Override
     public void fillRect(final int x, final int y, final int width, final int height) {
-        graphics.fillRect(x, y, width, height);
+        fill(new Rectangle2D.Double(x, y, width, height));
     }
 
     @Override
