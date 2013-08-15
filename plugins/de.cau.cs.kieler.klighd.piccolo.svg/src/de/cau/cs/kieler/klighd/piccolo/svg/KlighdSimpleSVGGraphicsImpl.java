@@ -406,8 +406,9 @@ public class KlighdSimpleSVGGraphicsImpl extends Graphics2D implements KlighdSWT
      * {@inheritDoc}
      */
     public void drawText(final String string) {
-        // make sure that the color for text drawing is set
-        graphics.setColor(strokeColor != null ? rgb2Color(strokeColor) : Color.black);
+        // make sure that the color for text drawing is set (defaults to black)
+        graphics.setColor(strokeColor != null ? rgb2Color(strokeColor, alpha) : new Color(0, 0, 0,
+                alpha));
 
         // SVG 1.1 does not support automatic line wrapping, thus each line has to be drawn
         // individually.
@@ -435,6 +436,7 @@ public class KlighdSimpleSVGGraphicsImpl extends Graphics2D implements KlighdSWT
         return new RGB(color.getRed(), color.getGreen(), color.getBlue());
     }
 
+    @SuppressWarnings("unused")
     private static Color rgb2Color(final RGB color) {
         return new Color(color.red, color.green, color.blue);
     }
