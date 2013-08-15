@@ -11,7 +11,7 @@
  * This code is provided under the terms of the Eclipse Public License (EPL).
  * See the file epl-v10.html for the license text.
  */
-package de.cau.cs.kieler.klighd.piccolo;
+package de.cau.cs.kieler.klighd.piccolo.internal;
 
 import java.awt.AlphaComposite;
 import java.awt.Composite;
@@ -58,15 +58,15 @@ import org.eclipse.swt.graphics.Transform;
 import org.eclipse.swt.widgets.Display;
 
 import de.cau.cs.kieler.klighd.KlighdConstants;
-import de.cau.cs.kieler.klighd.piccolo.internal.KlighdSWTGraphicsEx;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdPaths;
 import de.cau.cs.kieler.klighd.piccolo.internal.util.RGBGradient;
 import edu.umd.cs.piccolo.util.PAffineTransform;
 import edu.umd.cs.piccolox.swt.SWTShapeManager;
 
 /**
- * Standard implementation of {@link KlighdSWTGraphics}. It's aim is to get independent from
- * Piccolo2Ds {@link edu.umd.cs.piccolox.swt.SWTGraphics2D SWTGraphics2D}.
+ * Standard implementation of {@link de.cau.cs.kieler.klighd.piccolo.KlighdSWTGraphics
+ * KlighdSWTGraphics}. It's aim is to get independent from Piccolo2Ds
+ * {@link edu.umd.cs.piccolox.swt.SWTGraphics2D SWTGraphics2D}.
  * 
  * @author chsch
  */
