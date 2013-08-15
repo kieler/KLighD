@@ -56,16 +56,25 @@ public class KlighdSVGCanvas implements PComponent {
      * 
      */
     public KlighdSVGCanvas() {
-        this(INITIAL_BOUNDS);
+        this(INITIAL_BOUNDS, false);
+    }
+
+    /**
+     * @param textAsShapes
+     *            whether text should be rendered as a shape.
+     */
+    public KlighdSVGCanvas(final boolean textAsShapes) {
+        this(INITIAL_BOUNDS, textAsShapes);
     }
 
     /**
      * @param bounds
-     *            the initial bounds of this canvas
+     *            the initial bounds of this canvas * @param textAsShapes whether text should be
+     *            rendered as a shape.
      */
-    public KlighdSVGCanvas(final Rectangle2D bounds) {
+    public KlighdSVGCanvas(final Rectangle2D bounds, final boolean textAsShapes) {
         // create a graphics object
-        graphics = new KlighdSimpleSVGGraphicsImpl();
+        graphics = new KlighdSimpleSVGGraphicsImpl(textAsShapes);
         // create a new camera
         camera = PUtil.createBasicScenegraph();
         camera.setBounds(bounds);
@@ -81,7 +90,7 @@ public class KlighdSVGCanvas implements PComponent {
         paintContext = new PPaintContext(graphics);
 
         // the following clip sit is required in order to get rid of the one set in
-        //  the constructor call above, which lets Inkscape & browsers go crazy
+        // the constructor call above, which lets Inkscape & browsers go crazy
         graphics.setClip(camera.getBounds());
         paintContext.setRenderQuality(PPaintContext.HIGH_QUALITY_RENDERING);
 
@@ -142,9 +151,9 @@ public class KlighdSVGCanvas implements PComponent {
         // set up the paint context
         KlighdSimpleSVGGraphicsImpl graphics = new KlighdSimpleSVGGraphicsImpl();
         final PPaintContext paintContext = new PPaintContext(graphics);
-        
+
         // the following clip sit is required in order to get rid of the one set in
-        //  the constructor call above, which lets Inkscape & browsers go crazy
+        // the constructor call above, which lets Inkscape & browsers go crazy
         graphics.setClip(camera.getBounds());
         paintContext.setRenderQuality(PPaintContext.HIGH_QUALITY_RENDERING);
 
@@ -184,9 +193,9 @@ public class KlighdSVGCanvas implements PComponent {
         // set up the paint context
         KlighdSimpleSVGGraphicsImpl graphics = new KlighdSimpleSVGGraphicsImpl(textAsShapes);
         final PPaintContext paintContext = new PPaintContext(graphics);
-        
+
         // the following clip sit is required in order to get rid of the one set in
-        //  the constructor call above, which lets Inkscape & browsers go crazy
+        // the constructor call above, which lets Inkscape & browsers go crazy
         graphics.setClip(camera.getBounds());
         paintContext.setRenderQuality(PPaintContext.HIGH_QUALITY_RENDERING);
 
