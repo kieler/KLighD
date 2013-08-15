@@ -23,6 +23,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.GraphicsConfiguration;
 import java.awt.Paint;
+import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.RenderingHints.Key;
 import java.awt.Shape;
@@ -59,6 +60,8 @@ import org.eclipse.swt.graphics.RGB;
 import org.w3c.dom.DOMImplementation;
 import org.w3c.dom.Document;
 
+import com.google.common.collect.Maps;
+
 import de.cau.cs.kieler.core.util.Pair;
 import de.cau.cs.kieler.klighd.KlighdConstants;
 import de.cau.cs.kieler.klighd.krendering.KTextUtil;
@@ -88,6 +91,9 @@ public class KlighdSimpleSVGGraphicsImpl extends Graphics2D implements KlighdSWT
     private FontData fontData = null;
 
     private static final String SVG_NS = "http://www.w3.org/2000/svg";
+
+    private final Map<ImageData, BufferedImage> imageBuffer = Maps.newHashMap();
+    private final Rectangle2D imageBoundsRect = new Rectangle2D.Double();
 
     /**
      * 
@@ -390,16 +396,28 @@ public class KlighdSimpleSVGGraphicsImpl extends Graphics2D implements KlighdSWT
      * {@inheritDoc}
      */
     public void drawImage(final Image image, final double width, final double height) {
-        java.awt.Image img = convertToAWT(image.getImageData());
-        graphics.drawImage(img, 0, 0, null);
+        this.imageBoundsRect.setRect(0, 0, width, height);
+        final Rectangle bounds = imageBoundsRect.getBounds();
+        
+        // don't use the buffer in this case
+        //  as Image#getImageData() returns always a new instance
+        final java.awt.Image img = convertToAWT(image.getImageData());
+        graphics.drawImage(img, 0, 0, bounds.width, bounds.height, null);
     }
 
     /**
      * {@inheritDoc}
      */
     public void drawImage(final ImageData imageData, final double width, final double height) {
-        java.awt.Image img = convertToAWT(imageData);
-        graphics.drawImage(img, 0, 0, null);
+        this.imageBoundsRect.setRect(0, 0, width, height);
+        final Rectangle bounds = imageBoundsRect.getBounds();
+
+        java.awt.Image image = imageBuffer.get(imageData);
+        if (image == null) {
+            image = convertToAWT(imageData);
+        }
+        
+        graphics.drawImage(image, 0, 0, bounds.width, bounds.height, null);
     }
 
     /**
@@ -459,16 +477,17 @@ public class KlighdSimpleSVGGraphicsImpl extends Graphics2D implements KlighdSWT
         return gp;
     }
 
-    private static BufferedImage convertToAWT(final ImageData data) {
+    private BufferedImage convertToAWT(final ImageData data) {
+        final BufferedImage bufferedImage;
+
         ColorModel colorModel = null;
         PaletteData palette = data.palette;
         if (palette.isDirect) {
             colorModel =
                     new DirectColorModel(data.depth, palette.redMask, palette.greenMask,
                             palette.blueMask);
-            BufferedImage bufferedImage =
-                    new BufferedImage(colorModel, colorModel.createCompatibleWritableRaster(
-                            data.width, data.height), false, null);
+            bufferedImage = new BufferedImage(colorModel,
+                    colorModel.createCompatibleWritableRaster(data.width, data.height), false, null);
             for (int y = 0; y < data.height; y++) {
                 for (int x = 0; x < data.width; x++) {
                     int pixel = data.getPixel(x, y);
@@ -478,7 +497,6 @@ public class KlighdSimpleSVGGraphicsImpl extends Graphics2D implements KlighdSWT
                     // CHECKSTYLEON Magic Numbers
                 }
             }
-            return bufferedImage;
         } else {
             RGB[] rgbs = palette.getRGBs();
             byte[] red = new byte[rgbs.length];
@@ -497,9 +515,8 @@ public class KlighdSimpleSVGGraphicsImpl extends Graphics2D implements KlighdSWT
             } else {
                 colorModel = new IndexColorModel(data.depth, rgbs.length, red, green, blue);
             }
-            BufferedImage bufferedImage =
-                    new BufferedImage(colorModel, colorModel.createCompatibleWritableRaster(
-                            data.width, data.height), false, null);
+            bufferedImage = new BufferedImage(colorModel,
+                    colorModel.createCompatibleWritableRaster(data.width, data.height), false, null);
             WritableRaster raster = bufferedImage.getRaster();
             int[] pixelArray = new int[1];
             for (int y = 0; y < data.height; y++) {
@@ -509,8 +526,10 @@ public class KlighdSimpleSVGGraphicsImpl extends Graphics2D implements KlighdSWT
                     raster.setPixel(x, y, pixelArray);
                 }
             }
-            return bufferedImage;
         }
+
+        this.imageBuffer.put(data, bufferedImage);
+        return bufferedImage;
     }
 
     /* ------------------------------------------------ */
