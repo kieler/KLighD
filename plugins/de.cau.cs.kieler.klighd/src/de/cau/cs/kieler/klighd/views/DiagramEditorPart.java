@@ -295,6 +295,9 @@ public class DiagramEditorPart extends EditorPart implements IDiagramWorkbenchPa
             }
         } catch (IOException exception) {
             throw new PartInitException("An error occurred while loading the resource.", exception);
+        } catch (WrappedException exception) {
+            throw new PartInitException("An error occurred while loading the resource.",
+                    exception.getCause());
         }
         
         if (resource.getContents().isEmpty()) {
