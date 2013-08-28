@@ -17,6 +17,7 @@ import com.google.common.collect.ImmutableList
 import com.google.common.collect.ImmutableMap
 import com.google.common.collect.ImmutableSet
 import com.google.common.collect.Lists
+import com.google.common.collect.Sets
 
 import de.cau.cs.kieler.core.kgraph.KNode
 import de.cau.cs.kieler.core.krendering.extensions.KColorExtensions
@@ -96,6 +97,11 @@ class EcoreDiagramSynthesis extends AbstractDiagramSynthesis<EModelElementCollec
     /**
      * Option to activate/deactivate the attribute lists.
      */
+    private static val TransformationOption RELATED_CLASSES_DEPTH = TransformationOption::createRangeOption("Reference depth", Pair::of(1, 3), 1, 1);
+    
+    /**
+     * Option choose the reference depth while determining the classes related to the selected ones.
+     */
     private static val TransformationOption ATTRIBUTES = TransformationOption::createCheckOption("Attributes/Literals", false);
     
     /**
@@ -104,7 +110,7 @@ class EcoreDiagramSynthesis extends AbstractDiagramSynthesis<EModelElementCollec
      * Registers the diagram filter option declared above, which allow users to tailor the constructed diagrams.
      */
     override public getTransformationOptions() {
-        return ImmutableSet::of(CLASS_FILTER, ATTRIBUTES);
+        return ImmutableSet::of(CLASS_FILTER, RELATED_CLASSES_DEPTH, ATTRIBUTES);
     }
     
     /**
@@ -144,41 +150,45 @@ class EcoreDiagramSynthesis extends AbstractDiagramSynthesis<EModelElementCollec
                 depictedClasses.createElementFigures(it);
                 
 	        } else if (CLASS_FILTER.optionValue == CHOSEN_AND_RELATED) {
+	            
+                val ePackage = choice.filter(typeof(EClass))?.head?.eContainer as EPackage;
                 
-                // The chosen classes ...
-                val chosenClasses = choice.filter(typeof(EClass)).toList => [
-                   // ... are inspected, and ...
-                   val ePackage = choice.filter(typeof(EClass))?.head?.eContainer as EPackage;
-	               it.forEach[
-	                   // ... their referenced classes ...
-                       depictedClasses.addAll(it.EStructuralFeatures.filter(typeof(EReference)).map[it.EType])
-                       // ... the classes referenced by their attributes (those contained in the current package)
-                       depictedClasses.addAll(it.EStructuralFeatures.filter(typeof(EAttribute)).map[it.EType]
+                val classesCopy = Sets::newHashSet(depictedClasses);
+                
+                (1..RELATED_CLASSES_DEPTH.optionIntValue).forEach[
+                    classesCopy.filter(typeof(EClass)) => [
+                        // ... are inspected, and ...
+	                    it.forEach[
+	                        // ... their referenced classes ...
+                            depictedClasses.addAll(it.EStructuralFeatures.filter(typeof(EReference)).map[it.EType])
+                            // ... the classes referenced by their attributes (those contained in the current package)
+                            depictedClasses.addAll(it.EStructuralFeatures.filter(typeof(EAttribute)).map[it.EType]
                                                 .filter[it.eContainer == ePackage]
-                       )
-	               ];
-                   it.forEach[
-                       // ... as well as there super classes are put into the list of depicted classes, too.
-                       depictedClasses.addAll(it.ESuperTypes)
-                   ];
-
-                   depictedClasses.addAll(
-                       ((ePackage?.EClassifiers as List<EClassifier>)?:emptyList).filter(typeof(EClass)).filter[
-                           // look for candidates whose super types are in the choice
-                           val sts = Lists::newArrayList(it.ESuperTypes as Iterable<EClass>);
-                           // look for candidates whose reference types are in the choice
-                           sts.retainAll(choice);
-                           val rts = Lists::newArrayList(it.EReferences as Iterable<EReference>).map[it.EType];
-                           rts.retainAll(choice);
-                           !sts.empty || !rts.empty
-                       ]
-                   );
+                            )
+	                    ];
+                        it.forEach[
+                            // ... as well as there super classes are put into the list of depicted classes, too.
+                            depictedClasses.addAll(it.ESuperTypes)
+                        ];
+                        depictedClasses.addAll(
+                            ((ePackage?.EClassifiers as List<EClassifier>)?:emptyList).filter(typeof(EClass)).filter[
+                                // look for candidates whose super types are in the choice
+                                val sts = Lists::newArrayList(it.ESuperTypes as Iterable<EClass>);
+                                // look for candidates whose reference types are in the choice
+                                sts.retainAll(classesCopy);
+                                val rts = Lists::newArrayList(it.EReferences as Iterable<EReference>).map[it.EType];
+                                rts.retainAll(classesCopy);
+                                !sts.empty || !rts.empty
+                            ]
+                        );
+                    ];
+                    classesCopy.addAll(depictedClasses);
                 ];
-
+                
                 depictedClasses.createElementFigures(it);
 
                 // each of the above given ones is highlighted in a special fashion
-                chosenClasses.forEach[
+                choice.filter(typeof(EClass)).forEach[
                     it.node.KRendering.setBackgroundGradient("white".color, ALPHA_FULL_OPAQUE, "red".color, 150, 0);
                 ];
                 
