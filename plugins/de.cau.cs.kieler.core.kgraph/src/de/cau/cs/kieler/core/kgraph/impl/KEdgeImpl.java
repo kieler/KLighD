@@ -232,7 +232,7 @@ public class KEdgeImpl extends KLabeledGraphElementImpl implements KEdge {
     public void setSourcePort(KPort newSourcePort) {
         KPort oldSourcePort = sourcePort;
         sourcePort = newSourcePort;
-        if (oldSourcePort != null) {
+        if (oldSourcePort != null && oldSourcePort != targetPort) {
             oldSourcePort.getEdges().remove(this);
         }
         if (newSourcePort != null && !newSourcePort.getEdges().contains(this)) {
@@ -278,7 +278,7 @@ public class KEdgeImpl extends KLabeledGraphElementImpl implements KEdge {
     public void setTargetPort(KPort newTargetPort) {
         KPort oldTargetPort = targetPort;
         targetPort = newTargetPort;
-        if (oldTargetPort != null) {
+        if (oldTargetPort != null && oldTargetPort != sourcePort) {
             oldTargetPort.getEdges().remove(this);
         }
         if (newTargetPort != null && !newTargetPort.getEdges().contains(this)) {
