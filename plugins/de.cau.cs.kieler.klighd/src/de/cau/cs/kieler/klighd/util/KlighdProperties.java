@@ -127,4 +127,10 @@ public final class KlighdProperties {
      * The property holds a tooltip that is displayed upon a mouse hover of the respective element.
      */
     public static final IProperty<String> TOOLTIP = new Property<String>("klighd.tooltip", null);
+    
+    /**
+     * Determines whether a node should be ignored during the layout process.
+     */
+    public static final IProperty<Boolean> LAYOUT_IGNORE = new Property<Boolean>(
+            "klighd.layoutIgnore", false);
 }
