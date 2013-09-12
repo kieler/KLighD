@@ -107,6 +107,19 @@ public class KlighdStyledText extends PNode implements ITracingElement<KText> {
         this.text = theText;
         this.setFont(theFont != null ? theFont : KlighdConstants.DEFAULT_FONT);
     }
+    
+    
+    public FontData getFontData() {
+        return fontData;
+    }
+    
+    /**
+     * Get the text that is displayed by this node.
+     * @return The text that is displayed.
+     */
+    public String getText() {
+        return text;
+    }
 
     /**
      * Updates the text string to be displayed by this node.<br>
@@ -141,6 +154,14 @@ public class KlighdStyledText extends PNode implements ITracingElement<KText> {
         penColor = color;
         // repaint();
         // firePropertyChange(PText.PROPERTY_CODE_TEXT_PAINT, PROPERTY_PAINT, oldPaint, penColor);
+    }
+    
+    /**
+     * Gets the current pen color.
+     * @return the pen color.
+     */
+    public RGB getPenColor() {
+        return penColor;
     }
 
     /**

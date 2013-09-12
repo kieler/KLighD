@@ -14,14 +14,23 @@
 package de.cau.cs.kieler.klighd.piccolo.viewer;
 
 import java.awt.event.InputEvent;
+import java.awt.geom.Rectangle2D;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.VerifyEvent;
+import org.eclipse.swt.events.VerifyListener;
+import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.Font;
+import org.eclipse.swt.graphics.FontData;
+import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Menu;
+import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 
 import com.google.common.base.Function;
@@ -30,14 +39,20 @@ import com.google.common.collect.Iterables;
 
 import de.cau.cs.kieler.core.kgraph.KGraphElement;
 import de.cau.cs.kieler.core.kgraph.KNode;
+import de.cau.cs.kieler.core.krendering.KRendering;
+import de.cau.cs.kieler.core.krendering.KText;
+import de.cau.cs.kieler.core.krendering.impl.KTextImpl;
 import de.cau.cs.kieler.klighd.piccolo.Messages;
 import de.cau.cs.kieler.klighd.piccolo.internal.activities.ZoomActivity;
+import de.cau.cs.kieler.klighd.piccolo.internal.controller.AbstractKGERenderingController;
 import de.cau.cs.kieler.klighd.piccolo.internal.controller.DiagramController;
 import de.cau.cs.kieler.klighd.piccolo.internal.events.KlighdActionEventHandler;
 import de.cau.cs.kieler.klighd.piccolo.internal.events.KlighdSimpleSelectionEventHandler;
 import de.cau.cs.kieler.klighd.piccolo.internal.events.PMouseWheelZoomEventHandler;
+import de.cau.cs.kieler.klighd.piccolo.internal.nodes.IGraphElement;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.ITracingElement;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdCanvas;
+import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdStyledText;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.PEmptyNode;
 import de.cau.cs.kieler.klighd.piccolo.ui.SaveAsImageAction;
 import de.cau.cs.kieler.klighd.util.RenderingContextData;
@@ -47,6 +62,8 @@ import edu.umd.cs.piccolo.PCamera;
 import edu.umd.cs.piccolo.PLayer;
 import edu.umd.cs.piccolo.PNode;
 import edu.umd.cs.piccolo.PRoot;
+import edu.umd.cs.piccolo.event.PBasicInputEventHandler;
+import edu.umd.cs.piccolo.event.PInputEvent;
 import edu.umd.cs.piccolo.event.PInputEventFilter;
 
 /**
@@ -69,6 +86,9 @@ public class PiccoloViewer extends AbstractViewer<KNode> implements INodeSelecti
     /** the graph controller. */
     private DiagramController controller;
 
+    private Text textinput;
+    private KlighdTextInputVerifyListener textinputlistener = new KlighdTextInputVerifyListener();
+    
     /**
      * Creates a Piccolo viewer with default style.
      * 
@@ -100,15 +120,23 @@ public class PiccoloViewer extends AbstractViewer<KNode> implements INodeSelecti
         }
         this.parentViewer = theParentViewer;
         this.canvas = new KlighdCanvas(parent, style);
+        //canvas.getCamera().getViewScale()
+        textinput = new Text(canvas, SWT.NONE);
+        textinput.addVerifyListener(textinputlistener);
+        //textinput.setBackground(new Color(null, 96, 255, 96));
+        //textinput.setVisible(false);
         
         // canvas.setDefaultRenderQuality(PPaintContext.LOW_QUALITY_RENDERING);
         // canvas.removeInputEventListener(canvas.getPanEventHandler());
         // prevent conflicts with selection handler
         canvas.getPanEventHandler().setEventFilter(
                 new PInputEventFilter(InputEvent.BUTTON1_MASK, InputEvent.CTRL_MASK));
+        
         // exchange the zoom event handler
         canvas.removeInputEventListener(canvas.getZoomEventHandler());
         canvas.addInputEventListener(new PMouseWheelZoomEventHandler());
+        
+        canvas.addInputEventListener(new KlighdTextInputHandler());
         // add a context menu
         addContextMenu(canvas);
         
@@ -116,6 +144,110 @@ public class PiccoloViewer extends AbstractViewer<KNode> implements INodeSelecti
         new PiccoloTooltip(parent.getDisplay(), canvas.getCamera());
     }
 
+    
+    /**
+     * 
+     * Listens to committed text inputs.
+     * 
+     * @author ckru
+     *
+     */
+    private class KlighdTextInputVerifyListener implements VerifyListener {
+
+        /**
+         * node the committed text is linked to.
+         */
+        private PNode node;
+        
+        /**
+         * {@inheritDoc}
+         */
+        public void verifyText(final VerifyEvent e) {
+            // TODO Auto-generated method stub
+            
+        }
+        
+        /**
+         * Set node currently linked to the textinput.
+         * @param n node currently linked to the textinput.
+         */
+        public void setNode(final PNode n) {
+            node = n;
+        }
+        
+    }
+    
+    /**
+     * 
+     * Handles mouseover on a text element and displays a text input dialog in that case.
+     * 
+     * @author ckru
+     *
+     */
+    private class KlighdTextInputHandler extends PBasicInputEventHandler {
+        
+        public KlighdTextInputHandler() {
+            super();
+        }
+        
+        /**
+         * {@inheritDoc}
+         */
+        public void mouseMoved(final PInputEvent event) {
+            updateTextInput(event);
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        public void mouseDragged(final PInputEvent event) {
+            updateTextInput(event);
+        }
+        
+        /**
+         * Sets position, style and text of the textinput widget to the text 
+         * element the mouse currently hovers over.
+         * @param event the event that triggered this update.
+         */
+        private void updateTextInput(final PInputEvent event) {
+            PNode n = event.getPickedNode();
+            
+            if (n instanceof KlighdStyledText) {
+                KlighdStyledText styledText = (KlighdStyledText) n;
+                textinput.setVisible(true);
+                
+                //determine text value
+                String text = styledText.getText();
+                textinput.setText(text);
+                
+                //determine global position of the text element
+                Rectangle2D bounds = n.getGlobalBounds();
+                canvas.getCamera().getViewTransformReference().transform(bounds, bounds);
+                textinput.setLocation((int) bounds.getX(), (int) bounds.getY());
+                
+                //determine font data (i.e. font size)
+                FontData fd = new FontData(styledText.getFontData().toString());
+                fd.setHeight((int) Math.round((styledText.getFontData().getHeight()
+                        * canvas.getCamera().getViewScale())));
+                textinput.setSize(textinput.computeSize(SWT.DEFAULT, SWT.DEFAULT));
+                textinput.setFont(new Font(textinput.getDisplay(), fd));
+                
+                //determine text color
+                Color textColor = new Color(null, styledText.getPenColor());
+                textinput.setForeground(textColor);
+                
+                // link this currently selected node to verify listener
+                textinputlistener.setNode(n);
+            } else {
+                // set input widget invisible if mouse is not over a text element
+                textinput.setVisible(false);
+            }
+            
+        }
+        
+        
+    }
+    
     /**
      * Creates the context menu and adds the actions.
      * 
@@ -436,7 +568,6 @@ public class PiccoloViewer extends AbstractViewer<KNode> implements INodeSelecti
                 }
             }
         });
-
         notifyListenersSelection(Iterables.filter(elements, Predicates.notNull()));
     }
 

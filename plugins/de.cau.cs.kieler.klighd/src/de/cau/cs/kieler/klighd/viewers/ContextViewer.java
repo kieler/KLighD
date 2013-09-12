@@ -35,6 +35,7 @@ import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
+import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Resource;
@@ -49,6 +50,7 @@ import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Sash;
+import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.forms.widgets.Form;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.ScrolledForm;
@@ -162,10 +164,16 @@ public class ContextViewer extends AbstractViewer<Object> implements IViewerEven
         // introduce a new Composite that accommodates the visualized content
         this.diagramComposite = new Composite(parent, SWT.NONE);
         this.diagramComposite.setLayout(new FillLayout());
-
+        
         // create the options pane
         createOptionsContainer(this.diagramComposite);
+        /*
+        Composite cache = new Composite(diagramComposite, SWT.NONE);
 
+        Text textinput = new Text(cache, SWT.NONE);
+        textinput.setBounds(20, 20, 100, 10);
+        textinput.setBackground(new Color(null, 96, 255, 96));
+        */
         // initialize with the display of an empty string
         showMessage("");
     }
