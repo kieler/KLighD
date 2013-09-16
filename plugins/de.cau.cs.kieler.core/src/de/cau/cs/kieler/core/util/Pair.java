@@ -24,12 +24,23 @@ import java.util.NoSuchElementException;
 import java.util.Map.Entry;
 
 /**
- * A useful pair implementation.
+ * A useful pair implementation.<p>
+ * 
+ * <b>CARE:</b> Take care when using the pair in conjunction with xtend's "+=" operator. The +=
+ * operator allows to have iterables on both sides, hence a pair where no generics are specified
+ * would be treated as an iterable and both elements are added to the left side iterable despite the
+ * pair itself. Example: <p>
+ * <code>
+ *      // heuristicAttachments += new Pair(commentNode, heuristicAttachment) WRONG !!
+ *      heuristicAttachments.add(new Pair(commentNode, heuristicAttachment)) // correct
+ * </code>
  * 
  * @kieler.design 2011-03-14 reviewed by cmot, cds
  * @kieler.rating proposed yellow 2012-07-10 msp
- * @param <F> type of first contained object
- * @param <S> type of second contained object
+ * @param <F>
+ *            type of first contained object
+ * @param <S>
+ *            type of second contained object
  * @author msp
  */
 public class Pair<F, S> extends AbstractCollection<Object> {
