@@ -96,7 +96,9 @@ public class KlighdPath extends PNode {
     private RGBGradient paintGradient = null;
 
     // the amount of pixels the shadow will cover in horizontal and vertical direction
-    private final int shadowExtend = 8;
+    private static final float DEFAULT_SHADOW_EXTEND = 4;
+    private float shadowExtendX = DEFAULT_SHADOW_EXTEND;
+    private float shadowExtendY = DEFAULT_SHADOW_EXTEND;
     private RGB shadow = null;
 
     // default initialization that avoids null pointer faults in case of failing setPathTo... calls
@@ -394,14 +396,21 @@ public class KlighdPath extends PNode {
      * 
      * @param color
      *            the color of the attached shadow
+     * @param xOffset
+     *            the x offset of the shadow
+     * @param yOffset
+     *            the y offset of the shadow
      */
-    public void setShadow(final RGB color) {
+    public void setShadow(final RGB color, final float xOffset, final float yOffset) {
         if (!isLine() && color != null) {
             this.shadow = color;
         } else {
             this.shadow = null;
         }
+        this.shadowExtendX = xOffset;
+        this.shadowExtendY = yOffset;
     }
+   
 
 
     /* ---------------------- */
@@ -533,8 +542,8 @@ public class KlighdPath extends PNode {
         PBounds curBounds = super.getFullBoundsReference();
         if (shadow != null) {
             curBounds = new PBounds(super.getFullBoundsReference());
-            curBounds.width += shadowExtend;
-            curBounds.height += shadowExtend;
+            curBounds.width += shadowExtendX;
+            curBounds.height += shadowExtendY;
         }
         return curBounds;
     }
@@ -662,10 +671,14 @@ public class KlighdPath extends PNode {
         // note that the alpha values of stacked shapes will kind of accumulate
         final float shadowAlpha = 25f;
 
+        // FIXME currently the maximum between the two extends is used, fix this to draw proper
+        // shadows!
+        int maxShadowExtend = (int) Math.ceil(Math.max(shadowExtendX, shadowExtendY));
+        
         // determine the movement of the shape coordinates by means of an affine transform
         AffineTransform t = graphics.getTransform();
         AffineTransform tc = new AffineTransform(t);
-        tc.translate(shadowExtend, shadowExtend);
+        tc.translate(maxShadowExtend, maxShadowExtend);
 
         // configure the graphics layer
         graphics.setFillColor(shadow);
@@ -676,7 +689,7 @@ public class KlighdPath extends PNode {
                 (int) ((float) currentAlpha * shadowAlpha / KlighdConstants.ALPHA_FULL_OPAQUE));
 
         // draw a bunch of shape copies, each of them is moved a bit towards the original position
-        for (int i = 0; i < shadowExtend; i++) {
+        for (int i = 0; i < maxShadowExtend; i++) {
             graphics.setTransform(tc);
             if (swt) {
                 graphics.fill(shapePath);
