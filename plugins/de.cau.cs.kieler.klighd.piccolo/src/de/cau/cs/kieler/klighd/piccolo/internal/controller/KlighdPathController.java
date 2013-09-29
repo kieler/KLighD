@@ -160,7 +160,9 @@ public abstract class KlighdPathController extends PNodeController<KlighdPath> {
      */
     @Override
     public void setShadow(final KShadow shadow) {
-        getNode().setShadow(toRGB(shadow.getColor()), shadow.getXOffset(), shadow.getYOffset());
+        float xOff = shadow != null ? shadow.getXOffset() : 0;
+        float yOff = shadow != null ? shadow.getYOffset() : 0;
+        getNode().setShadow(toRGB(shadow.getColor()), xOff, yOff);
     }
     
     /**
