@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.ui.newWizards">
+      <wizard
+            class="de.cau.cs.kieler.klighd.ui.wizard.KlighdExecutableExtensionFactory:de.cau.cs.kieler.klighd.ui.wizard.KlighdNewProjectWizard"
+            id="de.cau.cs.kieler.klighd.ui.wizard1"
+            name="New KlighD Project"
+            project="false">
+      </wizard>
+   </extension>
+
+</plugin>
