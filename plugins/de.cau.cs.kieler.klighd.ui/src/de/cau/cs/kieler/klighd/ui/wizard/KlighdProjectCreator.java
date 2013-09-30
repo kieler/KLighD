@@ -1,97 +1,164 @@
+/*
+ * KIELER - Kiel Integrated Environment for Layout Eclipse RichClient
+ *
+ * http://www.informatik.uni-kiel.de/rtsys/kieler/
+ * 
+ * Copyright 2013 by
+ * + Christian-Albrechts-University of Kiel
+ *   + Department of Computer Science
+ *     + Real-Time and Embedded Systems Group
+ * 
+ * This code is provided under the terms of the Eclipse Public License (EPL).
+ * See the file epl-v10.html for the license text.
+ */
 package de.cau.cs.kieler.klighd.ui.wizard;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.Collections;
 import java.util.List;
 
+import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
-import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.xpand2.XpandExecutionContextImpl;
-import org.eclipse.xpand2.XpandFacade;
-import org.eclipse.xpand2.output.Outlet;
-import org.eclipse.xpand2.output.OutputImpl;
-import org.eclipse.xtend.type.impl.java.JavaBeansMetaModel;
-import org.eclipse.xtext.ui.util.IProjectFactoryContributor;
+import org.eclipse.core.runtime.SubMonitor;
+import org.eclipse.jdt.core.JavaCore;
+import org.eclipse.ui.actions.WorkspaceModifyOperation;
+import org.eclipse.xtext.ui.XtextProjectHelper;
 import org.eclipse.xtext.ui.util.PluginProjectFactory;
 import org.eclipse.xtext.ui.util.ProjectFactory;
 import org.eclipse.xtext.ui.wizard.AbstractProjectCreator;
+import org.eclipse.xtext.ui.wizard.IProjectCreator;
+import org.eclipse.xtext.ui.wizard.IProjectInfo;
 
 import com.google.common.collect.Lists;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 
-public class KlighdProjectCreator extends AbstractProjectCreator {
+/**
+ * Inspired by the {@link AbstractProjectCreator} class. Responsible to create
+ * and configure the actual project, e.g., determines the required bundles, what
+ * code to generate, and which extension points to create.
+ * 
+ * @author uru
+ */
+public class KlighdProjectCreator extends WorkspaceModifyOperation implements
+		IProjectCreator {
 
-    @Inject
-    private Provider<PluginProjectFactory> projectFactoryProvider;
+	@Inject
+	private Provider<PluginProjectFactory> projectFactoryProvider;
 
-    @Override
-    protected ProjectFactory configureProjectFactory(final ProjectFactory factory) {
-        PluginProjectFactory ppf = (PluginProjectFactory) factory;
+	private IFile result;
+	private IProjectInfo projectInfo;
 
-        ppf.setProjectName(getProjectInfo().getProjectName());
-        ppf.addFolders(getAllFolders());
-        // ppf.addReferencedProjects(getReferencedProjects());
-        ppf.addProjectNatures(getProjectNatures());
-        ppf.addBuilderIds(getBuilders());
+	/**
+	 * {@inheritDoc}
+	 */
+	public void setProjectInfo(IProjectInfo projectInfo) {
+		this.projectInfo = projectInfo;
+	}
 
-        ppf.addRequiredBundles(getRequiredBundles());
-        ppf.addExportedPackages(getExportedPackages());
-        ppf.addImportedPackages(getImportedPackages());
-        ppf.setActivatorClassName(getActivatorClassName());
+	protected IProjectInfo getProjectInfo() {
+		return projectInfo;
+	}
 
-        factory.addContributor(new KlighdProjectContributor((KlighdProjectInfo) getProjectInfo()));
+	@Override
+	protected void execute(final IProgressMonitor monitor)
+			throws CoreException, InvocationTargetException,
+			InterruptedException {
+		SubMonitor subMonitor = SubMonitor.convert(monitor, getProjectInfo()
+				.getProjectName(), 2);
+		try {
+			final IProject project = createProject(subMonitor.newChild(1));
+			if (project == null)
+				return;
+			IFile modelFile = getFileToOpen(project);
+			this.result = modelFile;
+		} finally {
+			subMonitor.done();
+		}
+	}
 
-        return factory;
-    }
+	protected PluginProjectFactory createProjectFactory() {
+		return projectFactoryProvider.get();
+	}
 
-    @Override
-    protected PluginProjectFactory createProjectFactory() {
-        return projectFactoryProvider.get();
-        // return new PluginProjectFactory();
-    }
+	protected IProject createProject(IProgressMonitor monitor) {
+		ProjectFactory factory = createProjectFactory();
+		configureProjectFactory(factory);
+		return factory.createProject(monitor, null);
+	}
 
-    /**
-     * @return the names of the exported packages. May not be <code>null</code>
-     */
-    protected List<String> getExportedPackages() {
-        return Collections.emptyList();
-    }
+	protected ProjectFactory configureProjectFactory(
+			final ProjectFactory factory) {
+		PluginProjectFactory ppf = (PluginProjectFactory) factory;
 
-    /**
-     * @return the names of the imported packages that a new project requires. May not be
-     *         <code>null</code>
-     */
-    protected List<String> getImportedPackages() {
-        return Lists.newArrayList("org.apache.log4j", "org.apache.commons.logging");
-    }
+		ppf.setProjectName(getProjectInfo().getProjectName());
+		ppf.addFolders(getAllFolders());
+		ppf.addReferencedProjects(getReferencedProjects());
+		ppf.addProjectNatures(getProjectNatures());
+		ppf.addBuilderIds(getBuilders());
 
-    /**
-     * @return the class-name of the bundle-activator or <code>null</code>
-     */
-    protected String getActivatorClassName() {
-        return "TESTACTIVATOR";
-    }
+		ppf.addRequiredBundles(getRequiredBundles());
+		ppf.addExportedPackages(getExportedPackages());
+		ppf.addImportedPackages(getImportedPackages());
+		ppf.setActivatorClassName(getActivatorClassName());
 
-    /**
-     * @return the names of the bundles that a new project requires. May not be <code>null</code>
-     */
-    protected List<String> getRequiredBundles() {
-        return Lists.newArrayList("com.google.guava", "com.google.inject", "org.eclipse.xtend.lib",
-                "org.eclipse.xtext.xbase.lib", "de.cau.cs.kieler.klighd",
-                "de.cau.cs.kieler.core.krendering", "de.cau.cs.kieler.core.krendering.extensions",
-                "de.cau.cs.kieler.kiml");
-    }
+		factory.addContributor(new KlighdProjectContributor(
+				(KlighdProjectInfo) getProjectInfo()));
 
-    @Override
-    protected String getModelFolderName() {
-        return "MODELFOLDER";
-    }
+		return factory;
+	}
 
-    @Override
-    protected List<String> getAllFolders() {
-        return Lists.newArrayList("src");
-    }
+	protected List<IProject> getReferencedProjects() {
+		return Collections.emptyList();
+	}
+
+	protected String[] getProjectNatures() {
+		return new String[] { JavaCore.NATURE_ID,
+				"org.eclipse.pde.PluginNature", //$NON-NLS-1$
+				XtextProjectHelper.NATURE_ID };
+	}
+
+	protected String[] getBuilders() {
+		return new String[] { JavaCore.BUILDER_ID,
+				"org.eclipse.pde.ManifestBuilder", //$NON-NLS-1$
+				"org.eclipse.pde.SchemaBuilder", //$NON-NLS-1$
+				XtextProjectHelper.BUILDER_ID };
+	}
+
+	protected List<String> getExportedPackages() {
+		return Collections.emptyList();
+	}
+
+	protected List<String> getImportedPackages() {
+		return Lists.newArrayList();
+	}
+
+	protected String getActivatorClassName() {
+		return null;
+	}
+
+	protected IFile getFileToOpen(IProject project) {
+		KlighdProjectInfo info = (KlighdProjectInfo) getProjectInfo();
+		IFolder folder = project.getFolder(KlighdWizardSetup.SRC_FOLDER
+				+ info.getTransformationPackage().replace(".", "/"));
+		IFile file = folder.getFile(info.getTransformationName()
+				+ (info.isCreateXtendFile() ? ".xtend" : ".java"));
+		return file;
+	}
+
+	protected List<String> getRequiredBundles() {
+		return KlighdWizardSetup.REQUIRED_BULDES;
+	}
+
+	protected List<String> getAllFolders() {
+		return Lists.newArrayList(KlighdWizardSetup.SRC_FOLDER);
+	}
+
+	public IFile getResult() {
+		return result;
+	}
 
 }

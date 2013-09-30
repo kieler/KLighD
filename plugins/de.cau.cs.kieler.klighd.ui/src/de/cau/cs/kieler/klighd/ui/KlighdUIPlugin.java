@@ -110,9 +110,6 @@ public class KlighdUIPlugin extends AbstractUIPlugin {
 				public void configure(Binder binder) {
 					super.configure(binder);
 
-					binder.bind(String.class)
-							.annotatedWith(Names.named("file.extensions"))
-							.toInstance("xtend");
 					binder.bind(IProjectCreator.class).to(
 							KlighdProjectCreator.class);
 					binder.bind(IWorkspace.class).toProvider(new Provider<IWorkspace>() {

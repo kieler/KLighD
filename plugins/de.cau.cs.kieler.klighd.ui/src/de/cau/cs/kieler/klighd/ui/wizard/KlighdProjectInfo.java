@@ -13,104 +13,91 @@
  */
 package de.cau.cs.kieler.klighd.ui.wizard;
 
-import org.eclipse.emf.ecore.EObject;
 import org.eclipse.xtext.ui.wizard.IProjectInfo;
 
+import com.google.common.base.Strings;
+
 /**
- * @author uru
+ * An container for information required to create a new KlighD project.
  * 
+ * @author uru
  */
 public class KlighdProjectInfo implements IProjectInfo {
 
-    private String projectName = "de.cau.default.project";
+	private String projectName;
+	private String transformationPackage;
+	private String transformationName;
+	private String sourceModelClassFullyQualified;
+	private boolean createXtendFile = false;
 
-    private String transformationPackage = "de.cau.cs.kieler.klighd.test.trans";
-    private String transformationName = "MyTransformation";
+	public void setProjectName(String projectName) {
+		this.projectName = projectName;
+	}
 
-//    private String className = "org.eclipse.ecore.EObject";
-    private Class<?> clazz = EObject.class;
+	public String getProjectName() {
+		return projectName;
+	}
 
-    private boolean createXtendFile = false;
+	/**
+	 * @return the transformationName
+	 */
+	public String getTransformationName() {
+		return transformationName;
+	}
 
-    public void setProjectName(String projectName) {
-        this.projectName = projectName;
+	/**
+	 * @param transformationName
+	 *            the transformationName to set
+	 */
+	public void setTransformationName(String transformationName) {
+		this.transformationName = transformationName;
+	}
 
-    }
+	public void setSourceModelClassFullyQualified(
+			String sourceModelClassFullyQualified) {
+		this.sourceModelClassFullyQualified = sourceModelClassFullyQualified;
+	}
 
-    public String getProjectName() {
-        return projectName;
-    }
+	public String getSourceModelClassFullyQualified() {
+		return sourceModelClassFullyQualified;
+	}
 
-    /**
-     * @return the transformationName
-     */
-    public String getTransformationName() {
-        return transformationName;
-    }
+	public String getSourceModelClassSimple() {
+		if (Strings.isNullOrEmpty(sourceModelClassFullyQualified)) {
+			return "";
+		}
+		return sourceModelClassFullyQualified.substring(
+				sourceModelClassFullyQualified.lastIndexOf(".") + 1,
+				sourceModelClassFullyQualified.length());
+	}
 
-    /**
-     * @param transformationName
-     *            the transformationName to set
-     */
-    public void setTransformationName(String transformationName) {
-        this.transformationName = transformationName;
-    }
+	/**
+	 * @return the transformationPackage
+	 */
+	public String getTransformationPackage() {
+		return transformationPackage;
+	}
 
-    /**
-     * @return the clazz
-     */
-    public Class<?> getClazz() {
-        return clazz;
-    }
-    
-    /**
-     * @param clazz the clazz to set
-     */
-    public void setClazz(Class<?> clazz) {
-        this.clazz = clazz;
-    }
-//    /**
-//     * @return the className
-//     */
-//    public String getClassName() {
-//        return className;
-//    }
-//
-//    /**
-//     * @param className
-//     *            the className to set
-//     */
-//    public void setClassName(String className) {
-//        this.className = className;
-//    }
+	/**
+	 * @param transformationPackage
+	 *            the transformationPackage to set
+	 */
+	public void setTransformationPackage(String transformationPackage) {
+		this.transformationPackage = transformationPackage;
+	}
 
-    /**
-     * @return the transformationPackage
-     */
-    public String getTransformationPackage() {
-        return transformationPackage;
-    }
+	/**
+	 * @return the createXtendFile
+	 */
+	public boolean isCreateXtendFile() {
+		return createXtendFile;
+	}
 
-    /**
-     * @param transformationPackage
-     *            the transformationPackage to set
-     */
-    public void setTransformationPackage(String transformationPackage) {
-        this.transformationPackage = transformationPackage;
-    }
-
-    /**
-     * @return the createXtendFile
-     */
-    public boolean isCreateXtendFile() {
-        return createXtendFile;
-    }
-
-    /**
-     * @param createXtendFile
-     *            the createXtendFile to set
-     */
-    public void setCreateXtendFile(boolean createXtendFile) {
-        this.createXtendFile = createXtendFile;
-    }
+	/**
+	 * @param createXtendFile
+	 *            the createXtendFile to set
+	 */
+	public void setCreateXtendFile(boolean createXtendFile) {
+		this.createXtendFile = createXtendFile;
+	}
 }

@@ -1,3 +1,16 @@
+/*
+ * KIELER - Kiel Integrated Environment for Layout Eclipse RichClient
+ *
+ * http://www.informatik.uni-kiel.de/rtsys/kieler/
+ * 
+ * Copyright 2013 by
+ * + Christian-Albrechts-University of Kiel
+ *   + Department of Computer Science
+ *     + Real-Time and Embedded Systems Group
+ * 
+ * This code is provided under the terms of the Eclipse Public License (EPL).
+ * See the file epl-v10.html for the license text.
+ */
 package de.cau.cs.kieler.klighd.ui.wizard;
 
 import org.eclipse.xtext.ui.wizard.IProjectCreator;
@@ -6,6 +19,12 @@ import org.eclipse.xtext.ui.wizard.XtextNewProjectWizard;
 
 import com.google.inject.Inject;
 
+/**
+ * New wizard for KlighD projects that leverages existing infrastructure
+ * provided by Xtext's {@link XtextNewProjectWizard}.
+ * 
+ * @author uru
+ */
 public class KlighdNewProjectWizard extends XtextNewProjectWizard {
 
 	private KlighdNewProjectCreationPage mainPage;
@@ -13,41 +32,31 @@ public class KlighdNewProjectWizard extends XtextNewProjectWizard {
 	@Inject
 	public KlighdNewProjectWizard(IProjectCreator creator) {
 		super(creator);
-		 setWindowTitle("fooo");
-		//		setDefaultPageImageDescriptor(Activator.getImageDescriptor("icons/wizban/newxprj_wiz.gif")); //$NON-NLS-1$
+		setWindowTitle("New KlighD Project");
 	}
 
 	@Override
 	public void addPages() {
 		super.addPages();
-		mainPage = new KlighdNewProjectCreationPage("mainPage", this.selection); //$NON-NLS-1$
+		// we just use one wizard page
+		mainPage = new KlighdNewProjectCreationPage("mainPage");
 		addPage(mainPage);
 	}
 
 	@Override
 	protected IProjectInfo getProjectInfo() {
+
 		KlighdProjectInfo projectInfo = new KlighdProjectInfo();
-		// projectInfo.setCreateTestProject(true);
-		// projectInfo.setCreateFeatureProject(mainPage.isCreateFeatureProject());
-		// projectInfo.setFileExtension(mainPage.getFileExtensions());
-		// projectInfo.setLanguageName(mainPage.getLanguageName());
-		// projectInfo.setProjectName(mainPage.getProjectName());
-		// projectInfo.setWorkingSets(mainPage.getSelectedWorkingSets());
-		// Map<String, WizardContribution> contributions =
-		// WizardContribution.getFromRegistry();
-		// projectInfo.setWizardContribution(contributions.get(mainPage.getGeneratorConfig()));
-		// projectInfo.setProjectsRootLocation(mainPage.getLocationPath());
-		// projectInfo.setWorkbench(getWorkbench());
-		// projectInfo.setCreateEclipseRuntimeLaunchConfig(!existsEclipseRuntimeLaunchConfig());
-		// String encoding = null;
-		// try {
-		// encoding =
-		// ResourcesPlugin.getWorkspace().getRoot().getDefaultCharset();
-		// }
-		// catch (final CoreException e) {
-		// encoding = System.getProperty("file.encoding");
-		// }
-		// projectInfo.setEncoding(encoding);
+
+		// gather all information required to create the project
+		projectInfo.setProjectName(mainPage.getProjectName());
+		projectInfo.setTransformationName(mainPage.getTransformationName());
+		projectInfo.setTransformationPackage(mainPage
+				.getTransformationPackage());
+		projectInfo
+				.setSourceModelClassFullyQualified(mainPage.getSourceModel());
+		projectInfo.setCreateXtendFile(mainPage.isCreateXtendFile());
+
 		return projectInfo;
 	}
 }

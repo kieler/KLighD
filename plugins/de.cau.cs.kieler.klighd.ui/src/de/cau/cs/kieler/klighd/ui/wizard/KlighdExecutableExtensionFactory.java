@@ -16,7 +16,7 @@ public class KlighdExecutableExtensionFactory extends AbstractGuiceAwareExecutab
 	
 	@Override
 	protected Injector getInjector() {
-		return KlighdUIPlugin.getInstance().getInjector("foo");
+		return KlighdUIPlugin.getInstance().getInjector("bar");
 	}
 	
 }
