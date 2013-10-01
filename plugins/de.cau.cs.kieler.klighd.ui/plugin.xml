@@ -4,9 +4,12 @@
    <extension
          point="org.eclipse.ui.newWizards">
       <wizard
+            category="de.cau.cs.kieler"
             class="de.cau.cs.kieler.klighd.ui.wizard.KlighdExecutableExtensionFactory:de.cau.cs.kieler.klighd.ui.wizard.KlighdNewProjectWizard"
-            id="de.cau.cs.kieler.klighd.ui.wizard1"
-            name="New KlighD Project"
+            hasPages="true"
+            icon="icons/new_kproj.gif"
+            id="de.cau.cs.kieler.klighd.ui.newKlighdProjectWizard"
+            name="KLighD Project"
             project="false">
       </wizard>
    </extension>

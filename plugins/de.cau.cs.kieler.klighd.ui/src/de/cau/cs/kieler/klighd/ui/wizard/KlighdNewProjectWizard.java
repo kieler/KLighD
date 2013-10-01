@@ -20,43 +20,51 @@ import org.eclipse.xtext.ui.wizard.XtextNewProjectWizard;
 import com.google.inject.Inject;
 
 /**
- * New wizard for KlighD projects that leverages existing infrastructure
- * provided by Xtext's {@link XtextNewProjectWizard}.
+ * New wizard for KlighD projects that leverages existing infrastructure provided by Xtext's
+ * {@link XtextNewProjectWizard}.
  * 
  * @author uru
  */
 public class KlighdNewProjectWizard extends XtextNewProjectWizard {
 
-	private KlighdNewProjectCreationPage mainPage;
+    private KlighdNewProjectCreationPage mainPage;
 
-	@Inject
-	public KlighdNewProjectWizard(IProjectCreator creator) {
-		super(creator);
-		setWindowTitle("New KlighD Project");
-	}
+    /**
+     * @param creator
+     *            class responsible to create the actual project
+     */
+    @Inject
+    public KlighdNewProjectWizard(final IProjectCreator creator) {
+        super(creator);
+        setWindowTitle("New KlighD Project");
+    }
 
-	@Override
-	public void addPages() {
-		super.addPages();
-		// we just use one wizard page
-		mainPage = new KlighdNewProjectCreationPage("mainPage");
-		addPage(mainPage);
-	}
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void addPages() {
+        super.addPages();
+        // we just use one wizard page
+        mainPage = new KlighdNewProjectCreationPage("mainPage");
+        addPage(mainPage);
+    }
 
-	@Override
-	protected IProjectInfo getProjectInfo() {
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected IProjectInfo getProjectInfo() {
 
-		KlighdProjectInfo projectInfo = new KlighdProjectInfo();
+        KlighdProjectInfo projectInfo = new KlighdProjectInfo();
 
-		// gather all information required to create the project
-		projectInfo.setProjectName(mainPage.getProjectName());
-		projectInfo.setTransformationName(mainPage.getTransformationName());
-		projectInfo.setTransformationPackage(mainPage
-				.getTransformationPackage());
-		projectInfo
-				.setSourceModelClassFullyQualified(mainPage.getSourceModel());
-		projectInfo.setCreateXtendFile(mainPage.isCreateXtendFile());
+        // gather all information required to create the project
+        projectInfo.setProjectName(mainPage.getProjectName());
+        projectInfo.setTransformationName(mainPage.getTransformationName());
+        projectInfo.setTransformationPackage(mainPage.getTransformationPackage());
+        projectInfo.setSourceModelClassFullyQualified(mainPage.getSourceModel());
+        projectInfo.setCreateXtendFile(mainPage.isCreateXtendFile());
 
-		return projectInfo;
-	}
+        return projectInfo;
+    }
 }

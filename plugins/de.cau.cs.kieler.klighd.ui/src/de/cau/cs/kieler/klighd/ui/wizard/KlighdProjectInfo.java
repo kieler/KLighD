@@ -24,80 +24,95 @@ import com.google.common.base.Strings;
  */
 public class KlighdProjectInfo implements IProjectInfo {
 
-	private String projectName;
-	private String transformationPackage;
-	private String transformationName;
-	private String sourceModelClassFullyQualified;
-	private boolean createXtendFile = false;
+    private String projectName;
+    private String transformationPackage;
+    private String transformationName;
+    private String sourceModelClassFullyQualified;
+    private boolean createXtendFile = false;
 
-	public void setProjectName(String projectName) {
-		this.projectName = projectName;
-	}
+    /**
+     * {@inheritDoc}
+     */
+    public void setProjectName(final String projectName) {
+        this.projectName = projectName;
+    }
 
-	public String getProjectName() {
-		return projectName;
-	}
+    /**
+     * {@inheritDoc}
+     */
+    public String getProjectName() {
+        return projectName;
+    }
 
-	/**
-	 * @return the transformationName
-	 */
-	public String getTransformationName() {
-		return transformationName;
-	}
+    /**
+     * @return the transformationName
+     */
+    public String getTransformationName() {
+        return transformationName;
+    }
 
-	/**
-	 * @param transformationName
-	 *            the transformationName to set
-	 */
-	public void setTransformationName(String transformationName) {
-		this.transformationName = transformationName;
-	}
+    /**
+     * @param transformationName
+     *            the transformationName to set
+     */
+    public void setTransformationName(final String transformationName) {
+        this.transformationName = transformationName;
+    }
 
-	public void setSourceModelClassFullyQualified(
-			String sourceModelClassFullyQualified) {
-		this.sourceModelClassFullyQualified = sourceModelClassFullyQualified;
-	}
+    /**
+     * @param sourceModelClassFullyQualified
+     *            fully qualified name of the source model
+     */
+    public void setSourceModelClassFullyQualified(final String sourceModelClassFullyQualified) {
+        this.sourceModelClassFullyQualified = sourceModelClassFullyQualified;
+    }
 
-	public String getSourceModelClassFullyQualified() {
-		return sourceModelClassFullyQualified;
-	}
+    /**
+     * @return the fully qualified name of the source model
+     */
+    public String getSourceModelClassFullyQualified() {
+        return sourceModelClassFullyQualified;
+    }
 
-	public String getSourceModelClassSimple() {
-		if (Strings.isNullOrEmpty(sourceModelClassFullyQualified)) {
-			return "";
-		}
-		return sourceModelClassFullyQualified.substring(
-				sourceModelClassFullyQualified.lastIndexOf(".") + 1,
-				sourceModelClassFullyQualified.length());
-	}
+    /**
+     * @return simple name of the source model
+     */
+    public String getSourceModelClassSimple() {
+        if (Strings.isNullOrEmpty(sourceModelClassFullyQualified)) {
+            return "";
+        }
+        return sourceModelClassFullyQualified.substring(
+                sourceModelClassFullyQualified.lastIndexOf(".") + 1,
+                sourceModelClassFullyQualified.length());
+    }
 
-	/**
-	 * @return the transformationPackage
-	 */
-	public String getTransformationPackage() {
-		return transformationPackage;
-	}
+    /**
+     * @return the transformationPackage
+     */
+    public String getTransformationPackage() {
+        return transformationPackage;
+    }
 
-	/**
-	 * @param transformationPackage
-	 *            the transformationPackage to set
-	 */
-	public void setTransformationPackage(String transformationPackage) {
-		this.transformationPackage = transformationPackage;
-	}
+    /**
+     * @param transformationPackage
+     *            the transformationPackage to set
+     */
+    public void setTransformationPackage(final String transformationPackage) {
+        this.transformationPackage = transformationPackage;
+    }
 
-	/**
-	 * @return the createXtendFile
-	 */
-	public boolean isCreateXtendFile() {
-		return createXtendFile;
-	}
+    /**
+     * @return the createXtendFile
+     */
+    public boolean isCreateXtendFile() {
+        return createXtendFile;
+    }
 
-	/**
-	 * @param createXtendFile
-	 *            the createXtendFile to set
-	 */
-	public void setCreateXtendFile(boolean createXtendFile) {
-		this.createXtendFile = createXtendFile;
-	}
+    /**
+     * @param createXtendFile
+     *            the createXtendFile to set
+     */
+    public void setCreateXtendFile(final boolean createXtendFile) {
+        this.createXtendFile = createXtendFile;
+    }
 }

@@ -25,7 +25,7 @@ import org.eclipse.xtext.ui.util.IProjectFactoryContributor.IFileCreator
  */
 class KlighdProjectContributor implements IProjectFactoryContributor {
 
-	KlighdProjectInfo projectInfo
+	var KlighdProjectInfo projectInfo
 
 	new(KlighdProjectInfo projectInfo) {
 		this.projectInfo = projectInfo
@@ -87,8 +87,8 @@ class KlighdProjectContributor implements IProjectFactoryContributor {
 
 	def private contributeBuildProperties(IFileCreator fileWriter) {
 		'''
-			source.. = src/,\
-			          «IF projectInfo.createXtendFile»xtend-gen/«ENDIF»
+			source.. = «IF projectInfo.createXtendFile»xtend-gen/,\«ENDIF»
+			          src/
 			bin.includes = META-INF/,\
 					plugin.xml,\
 					     .

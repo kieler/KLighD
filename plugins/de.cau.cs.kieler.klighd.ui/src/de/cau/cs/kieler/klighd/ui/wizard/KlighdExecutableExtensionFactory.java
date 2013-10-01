@@ -9,14 +9,14 @@ import de.cau.cs.kieler.klighd.ui.KlighdUIPlugin;
 
 public class KlighdExecutableExtensionFactory extends AbstractGuiceAwareExecutableExtensionFactory {
 
-	@Override
-	protected Bundle getBundle() {
-		return KlighdUIPlugin.getInstance().getBundle();
-	}
-	
-	@Override
-	protected Injector getInjector() {
-		return KlighdUIPlugin.getInstance().getInjector("bar");
-	}
-	
+    @Override
+    protected Bundle getBundle() {
+        return KlighdUIPlugin.getInstance().getBundle();
+    }
+
+    @Override
+    protected Injector getInjector() {
+        return KlighdUIPlugin.getInstance().getInjector("bar");
+    }
+
 }
