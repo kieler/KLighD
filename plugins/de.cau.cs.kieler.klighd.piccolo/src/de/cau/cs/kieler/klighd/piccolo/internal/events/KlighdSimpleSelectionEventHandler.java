@@ -124,7 +124,7 @@ public class KlighdSimpleSelectionEventHandler extends PDragSequenceEventHandler
      * @param nodes
      *            the nodes
      */
-    public void select(final Collection<PNode> nodes) {
+    private void select(final Collection<PNode> nodes) {
         boolean selected = false;
         for (PNode node : nodes) {
             if (internalSelect(node)) {
@@ -258,28 +258,38 @@ public class KlighdSimpleSelectionEventHandler extends PDragSequenceEventHandler
     @Override
     protected void startDrag(final PInputEvent event) {
         super.startDrag(event);
-        initializeSelection(event);
+        this.dragged = false;
+
+        // initializeSelection(event);
         if (isMarqueeSelection(event)) {
             marqueeSelection = true;
             initializeMarquee(event);
             startMarqueeSelection(event);
         } else {
             marqueeSelection = false;
-            startSelection(event);
+            // startSelection(event);
         }
     }
 
+    /**
+     * Flag for tracing whether the user dragged on the canvas,
+     *  in this case don't select anything.
+     */
+    private boolean dragged = false;
+    
     /**
      * {@inheritDoc}
      */
     @Override
     protected void drag(final PInputEvent event) {
         super.drag(event);
+        this.dragged = true;
+
         if (marqueeSelection) {
             if (isMarqueeSelection(event)) {
                 updateMarquee(event);
-            } else {
-                endDrag(event);
+            // } else {
+            //    endDrag(event);
             }
         }
     }
@@ -297,7 +307,9 @@ public class KlighdSimpleSelectionEventHandler extends PDragSequenceEventHandler
             } else {
                 endMarqueeSelection(event);
             }
-        } else {
+        } else if (!this.dragged) {
+            initializeSelection(event);
+            startSelection(event);
             endSelection(event);
         }
     }
@@ -438,7 +450,5 @@ public class KlighdSimpleSelectionEventHandler extends PDragSequenceEventHandler
             // always consider all nodes in the marquee
             return true;
         }
-
     }
-
 }
