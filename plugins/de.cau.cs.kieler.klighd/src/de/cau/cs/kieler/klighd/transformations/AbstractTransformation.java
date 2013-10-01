@@ -92,7 +92,7 @@ public abstract class AbstractTransformation<S, T> implements ITransformation<S,
      * @param option the option to evaluate the configuration state / the configured value.
      * @return the configured value of {@link TransformationOption} option.
      */
-    public Boolean getOptionBooleanValue(final TransformationOption option) {
+    public boolean getOptionBooleanValue(final TransformationOption option) {
         Object result = this.getUsedContext().getOptionValue(option);
         if (result instanceof Boolean) {
             return (Boolean) result; 
@@ -101,6 +101,42 @@ public abstract class AbstractTransformation<S, T> implements ITransformation<S,
                     + "The transformation " + this
                     + " attempted to evaluate the non-Boolean valued transformation option "
                     + option.getName() + " expecting a Boolean value.");
+        }
+    }
+    
+    /**
+     * Convenience getter.
+     * 
+     * @param option the option to evaluate the configuration state / the configured value.
+     * @return the configured value of {@link TransformationOption} option.
+     */
+    public int getOptionIntValue(final TransformationOption option) {
+        Object result = this.getUsedContext().getOptionValue(option);
+        if (result instanceof Integer) {
+            return (Integer) result; 
+        } else {
+            throw new IllegalArgumentException("KLighD transformation option handling: "
+                    + "The transformation " + this
+                    + " attempted to evaluate the non-Integer valued transformation option "
+                    + option.getName() + " expecting a int value.");
+        }
+    }
+    
+    /**
+     * Convenience getter.
+     * 
+     * @param option the option to evaluate the configuration state / the configured value.
+     * @return the configured value of {@link TransformationOption} option.
+     */
+    public float getOptionFloatValue(final TransformationOption option) {
+        Object result = this.getUsedContext().getOptionValue(option);
+        if (result instanceof Float) {
+            return (Float) result; 
+        } else {
+            throw new IllegalArgumentException("KLighD transformation option handling: "
+                    + "The transformation " + this
+                    + " attempted to evaluate the non-Float valued transformation option "
+                    + option.getName() + " expecting a float value.");
         }
     }
     

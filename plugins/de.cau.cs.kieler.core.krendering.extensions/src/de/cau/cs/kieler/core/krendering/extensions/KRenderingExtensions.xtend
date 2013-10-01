@@ -497,16 +497,28 @@ class KRenderingExtensions {
 //that allows sticking additional Foreground/Background information to the list without removing 
 //already defined styles first        
     
+    val defaultShadowSize = 4;
+    
     def KShadow getShadow(KRendering rendering){
         return rendering.styles.filter(typeof(KShadow)).last?:null;
     }
 
     def <T extends KRendering> T setShadow(T rendering, KColor color) {
+    	setShadow(rendering, color, defaultShadowSize)
+    }
+    
+    def <T extends KRendering> T setShadow(T rendering, KColor color, float size) {
+    	setShadow(rendering, color, size, size)	
+    }
+
+    def <T extends KRendering> T setShadow(T rendering, KColor color, float xOffset, float yOffset) {
         rendering.styles.removeAll(rendering.styles.filter(typeof(KShadow)).toList);
         return rendering => [
             it.styles += renderingFactory.createKShadow() => [
                 rendering.styles += it; 
                 it.color = color;
+                it.XOffset = xOffset;
+                it.YOffset = yOffset;
             ];
         ];
     }

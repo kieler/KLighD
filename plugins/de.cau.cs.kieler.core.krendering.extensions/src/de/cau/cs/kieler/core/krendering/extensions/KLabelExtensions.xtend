@@ -153,6 +153,26 @@ class KLabelExtensions {
         return node.createLabel().configureOutsideCentralBottomNodeLabel(labelText, fontSize, fontName);
     }
     
+    /**
+     * Configures a central node label!
+     */
+    def KLabel configureOutsideBottomRightNodeLabel(KLabel label, String labelText, int fontSize, String fontName) {
+        return label => [
+            it.text = labelText;
+            it.data += renderingFactory.createKText().setFontName(fontName).setFontSize(fontSize);
+            it.addLayoutParam(LayoutOptions::FONT_NAME, fontName);
+            it.addLayoutParam(LayoutOptions::FONT_SIZE, fontSize);
+            (it.parent as KNode).addLayoutParam(LayoutOptions::NODE_LABEL_PLACEMENT,
+                        NodeLabelPlacement::outsideBottomRight);
+        ];
+    }
+    
+     /**
+     * Adds a central node label to KNode 'node'!
+     */
+    def KLabel addOutsideBottomRightNodeLabel(KNode node, String labelText, int fontSize, String fontName) {
+        return node.createLabel().configureOutsideBottomRightNodeLabel(labelText, fontSize, fontName);
+    }
 
     /**
      * Configures an inside port label!

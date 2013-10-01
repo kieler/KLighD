@@ -25,6 +25,7 @@ import de.cau.cs.kieler.core.krendering.KColoring;
 import de.cau.cs.kieler.core.krendering.KPosition;
 import de.cau.cs.kieler.core.krendering.KRenderingFactory;
 import de.cau.cs.kieler.core.krendering.KRenderingPackage;
+import de.cau.cs.kieler.core.krendering.KShadow;
 import de.cau.cs.kieler.core.krendering.LineCap;
 import de.cau.cs.kieler.core.krendering.LineJoin;
 import de.cau.cs.kieler.core.krendering.LineStyle;
@@ -248,7 +249,7 @@ public abstract class PNodeController<T extends PNode> {
      * @param color
      *            the shadow color
      */
-    public void setShadow(final KColor color) {
+    public void setShadow(final KShadow color) {
         // do nothing
     }
 
@@ -438,7 +439,7 @@ public abstract class PNodeController<T extends PNode> {
 
         // apply shadow
         if (styles.shadow != null) {
-            this.setShadow(styles.shadow.getColor());
+            this.setShadow(styles.shadow);
         } else {
             this.setShadow(null);
         }

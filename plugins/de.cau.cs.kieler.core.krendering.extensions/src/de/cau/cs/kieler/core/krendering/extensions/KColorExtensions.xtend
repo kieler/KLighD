@@ -30,8 +30,23 @@ class KColorExtensions {
      * Creation of the color elements
      *  allows to refer to colors by name
      *  adds them to the diagram on demand
+     * 
+     * Also allows to pass in RGB hex strings, e.g. #FF0000 for red.
      */
     def private setColor(KColor color, String name) {
+    	// if a rgb color is given, convert it 
+		if (name.startsWith("#")) {
+			try {
+				color.setRed(Integer::valueOf(name.substring(1, 3), 16))
+				color.setGreen(Integer::valueOf(name.substring(3, 5), 16))
+				color.setBlue(Integer::valueOf(name.substring(5, 7), 16))
+				return color
+			} catch (Exception nfe) {
+				// silent
+			}
+		} 
+    	
+    	// otherwise try to find the name
         switch (name) {
             case "black" : {
                 color.setRed(0);
@@ -168,6 +183,9 @@ class KColorExtensions {
                 color.setGreen(255);
                 color.setBlue(0);
             }
-        }      
+        }   
+        
+        return color   
     }
+    
 }

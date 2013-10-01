@@ -188,7 +188,7 @@ public class SynthesisOptionControlFactory {
         // create a container composite in order to group the label and the scaler
         final Composite container = formToolkit.createComposite(parent);
         //  ... and determine its layout
-        container.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+        container.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false));
         container.setLayout(gl);
         controls.add(container);
         
@@ -196,46 +196,78 @@ public class SynthesisOptionControlFactory {
         final Label label = formToolkit.createLabel(container, "");
         
         // ... and the scaler for choosing the value
-        final Scale scaler = new Scale(container, SWT.NONE);
+        final Scale scale = new Scale(container, SWT.NONE);
         // the following setting is needed on windows
-        scaler.setBackground(container.getBackground());
-        scaler.setToolTipText(option.getName());
+        scale.setBackground(container.getBackground());
+        scale.setToolTipText(option.getName());
 
         // configure its layout, esp. the minimal width and the 'grab additional space' 
         final GridData gridData = new GridData(SWT.FILL, SWT.CENTER, true, false);
         gridData.minimumWidth = SLIDER_MIN_WIDTH;
-        scaler.setLayoutData(gridData);
+        scale.setLayoutData(gridData);
 
         // ... and its provided range
-        final int min = (int) Math.floor(option.getRange().getFirst().floatValue());
-        final int max = (int) Math.ceil(option.getRange().getSecond().floatValue());
-        scaler.setMinimum(min);
-        scaler.setMaximum(max);
-        scaler.setSelection(((Number) context.getOptionValue(option)).intValue());
+        final double min = option.getRange().getFirst().doubleValue();
+        final double max = option.getRange().getSecond().doubleValue();
+        final double stepSize = option.getStepSize().doubleValue();
+        final double init = ((Number) context.getOptionValue(option)).doubleValue();
+        
+        final double minShifted = min + stepSize / 2;
+        
+        final boolean floatSteps = (option.getStepSize() instanceof Float
+                || option.getStepSize() instanceof Double);
+        
+        final int scalerMax = 255;
+        final double scalerStepSize = (max - min) / scalerMax;
+        
+        scale.setMinimum(0);
+        scale.setMaximum(scalerMax);
+        
+        final int scaleInit = (int) Math.ceil((init - min) / scalerStepSize);
+        scale.setSelection(scaleInit);
         
         // configure the label's text in terms of a fixed string and the initial value
-        final String labelString = option.getName() + ": ";        
-        label.setText(labelString + scaler.getSelection());
+        final String labelString = option.getName() + ": ";
+        label.setText(labelString + context.getOptionValue(option));
 
         // and finally add a selection listener for instant diagram updates
-        scaler.addSelectionListener(new SelectionListener() {
+        scale.addSelectionListener(new SelectionListener() {
             
             // a little buffer used for dropping unnecessary events
-            private int currentValue = scaler.getSelection();
+            private double currentValue = scale.getSelection();
             
             public void widgetSelected(final SelectionEvent event) {
-                final int value = ((Scale) event.widget).getSelection();
-                label.setText(labelString + value);
-                container.layout(true);
+                final Scale scale = (Scale) event.widget;
                 
+                // determine the actually selected value
+                Double value = minShifted + scalerStepSize * ((double) scale.getSelection());
+                
+                // round it wrt the required step size
+                value = min + Math.floor((value - min) / stepSize) * stepSize;
+                
+                // configure the adjusted selection
+                //  lets the the scaler snap to the closest possible value
+                scale.setSelection((int) Math.floor((value - min) / scalerStepSize));
+
+                // check whether the value actually changed
                 if (value == currentValue) {
                     return;
                 } else {
                     currentValue = value;
                 }
                 
-                // set the new option value and trigger the diagram update
-                context.configureOption(option, value);
+                // update the value in the label
+                //  and configure the new option value in the view context
+                if (floatSteps) {
+                    label.setText(labelString + value);
+                    context.configureOption(option, value.floatValue());
+                } else {
+                    label.setText(labelString + value.intValue());
+                    context.configureOption(option, value.intValue());
+                }
+                container.layout(true);
+                
+                // trigger the diagram update
                 DiagramViewManager.getInstance().updateView(viewId);
             }
             

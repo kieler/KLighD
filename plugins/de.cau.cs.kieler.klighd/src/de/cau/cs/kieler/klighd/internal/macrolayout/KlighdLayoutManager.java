@@ -26,6 +26,7 @@ import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.ui.IWorkbenchPart;
 
+import com.google.common.base.Predicates;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.Iterables;
 
@@ -59,6 +60,7 @@ import de.cau.cs.kieler.klighd.ViewContext;
 import de.cau.cs.kieler.klighd.internal.util.KlighdInternalProperties;
 import de.cau.cs.kieler.klighd.microlayout.Bounds;
 import de.cau.cs.kieler.klighd.microlayout.PlacementUtil;
+import de.cau.cs.kieler.klighd.util.KlighdPredicates;
 import de.cau.cs.kieler.klighd.util.KlighdProperties;
 import de.cau.cs.kieler.klighd.util.RenderingContextData;
 import de.cau.cs.kieler.klighd.viewers.ContextViewer;
@@ -292,7 +294,10 @@ public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement>
         // iterate through the parent's active children and put copies in the layout graph;
         //  a child is active if it contains RenderingContextData and the 'true' value wrt.
         //  the property KlighdConstants.ACTIVE, see the predicate definition below
-        for (KNode node : Iterables.filter(parent.getChildren(), RenderingContextData.CHILD_ACTIVE)) {
+        // furthermore, all nodes that have the LAYOUT_IGNORE property set are ignored
+        for (KNode node : Iterables.filter(parent.getChildren(), Predicates.and(
+                RenderingContextData.CHILD_ACTIVE,
+                KlighdPredicates.propertyPredicate(KlighdProperties.LAYOUT_IGNORE, false, true)))) {
             createNode(mapping, node, layoutParent);
         }
     }
@@ -315,7 +320,7 @@ public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement>
      *            the layout parent node
      */
     private static void createNode(final LayoutMapping<KGraphElement> mapping, final KNode node,
-            final KNode layoutParent) {
+            final KNode layoutParent) {        
         KNode layoutNode = KimlUtil.createInitializedNode();
         // set the node layout
         // initialize with defaultLayout and try to get specific layout attached to the node

@@ -49,48 +49,70 @@ public class KGraphTextHandler extends AbstractEmfHandler<KNode> {
     /** The KGraph Text format identifier. */
     public static final String FORMAT = "de.cau.cs.kieler.kgraph.text";
     
+    
     /**
      * Check all cross-references of the given graph and generate identifiers where necessary.
      * 
-     * @param node the parent node of the graph
+     * @param node the parent node of the graph.
      */
     public static void generateMissingIdentifiers(final KNode node) {
-        checkRenderings(node);
+        IdentifierGenerator idGenerator = new IdentifierGenerator();
+        generateMissingIdentifiers(node, idGenerator);
+    }
+    
+    /**
+     * Check all cross-references of the given graph and generate identifiers where necessary using the
+     * given identifier generator.
+     * 
+     * @param node the parent node of the graph.
+     * @param idGenerator the generator to use for generating object identifiers.
+     */
+    private static void generateMissingIdentifiers(final KNode node,
+            final IdentifierGenerator idGenerator) {
+        
+        checkRenderings(node, idGenerator);
         for (KLabel label : node.getLabels()) {
-            checkRenderings(label);
-        }
-        for (KEdge edge : node.getOutgoingEdges()) {
-            checkIdentifier(edge.getTarget());
-            checkIdentifier(edge.getSourcePort());
-            checkIdentifier(edge.getTargetPort());
-            checkRenderings(edge);
-            for (KLabel label : edge.getLabels()) {
-                checkRenderings(label);
-            }
+            checkRenderings(label, idGenerator);
         }
         for (KPort port : node.getPorts()) {
-            checkRenderings(port);
+            checkRenderings(port, idGenerator);
             for (KLabel label : port.getLabels()) {
-                checkRenderings(label);
+                checkRenderings(label, idGenerator);
+            }
+        }
+        for (KEdge edge : node.getOutgoingEdges()) {
+            checkIdentifier(edge.getTarget(), idGenerator);
+            checkIdentifier(edge.getSourcePort(), idGenerator);
+            checkIdentifier(edge.getTargetPort(), idGenerator);
+            checkRenderings(edge, idGenerator);
+            for (KLabel label : edge.getLabels()) {
+                checkRenderings(label, idGenerator);
             }
         }
         for (KNode child : node.getChildren()) {
-            generateMissingIdentifiers(child);
+            generateMissingIdentifiers(child, idGenerator);
         }
     }
+    
+    
+    ////////////////////////////////////////////////////////////////////////////////////////////////////
+    // KRendering Identifiers
     
     /**
      * Check rendering and style references and create identifiers if necessary.
      * 
      * @param graphElement a graph element
+     * @param idGenerator the ID generator to use for generating IDs.
      */
-    private static void checkRenderings(final KGraphElement graphElement) {
+    private static void checkRenderings(final KGraphElement graphElement,
+            final IdentifierGenerator idGenerator) {
+        
         for (KGraphData graphData : graphElement.getData()) {
             if (graphData instanceof KRendering) {
-                checkRenderings((KRendering) graphData);
+                checkRenderings((KRendering) graphData, idGenerator);
             } else if (graphData instanceof KRenderingLibrary) {
                 for (KStyleHolder styleHolder : ((KRenderingLibrary) graphData).getRenderings()) {
-                    checkRenderings(styleHolder);
+                    checkRenderings(styleHolder, idGenerator);
                 }
             }
         }
@@ -100,35 +122,45 @@ public class KGraphTextHandler extends AbstractEmfHandler<KNode> {
      * Check rendering and style references and create identifiers if necessary.
      * 
      * @param styleHolder a style holder
+     * @param idGenerator the ID generator to use for generating IDs.
      */
-    private static void checkRenderings(final KStyleHolder styleHolder) {
+    private static void checkRenderings(final KStyleHolder styleHolder,
+            final IdentifierGenerator idGenerator) {
+        
         if (styleHolder instanceof KRenderingRef) {
             KRendering target = ((KRenderingRef) styleHolder).getRendering();
             if (target != null && (target.getId() == null || target.getId().length() == 0)) {
-                target.setId("R" + Integer.toHexString(target.hashCode()));
+                target.setId(idGenerator.generateID(target));
             }
         }
         for (KStyle style : styleHolder.getStyles()) {
             if (style instanceof KStyleRef) {
                 KStyleHolder target = ((KStyleRef) style).getStyleHolder();
                 if (target != null && (target.getId() == null || target.getId().length() == 0)) {
-                    target.setId("R" + Integer.toHexString(target.hashCode()));
+                    target.setId(idGenerator.generateID(target));
                 }
             }
         }
         if (styleHolder instanceof KContainerRendering) {
             for (KRendering containedRendering : ((KContainerRendering) styleHolder).getChildren()) {
-                checkRenderings(containedRendering);
+                checkRenderings(containedRendering, idGenerator);
             }
         }
     }
+    
+    
+    ////////////////////////////////////////////////////////////////////////////////////////////////////
+    // KGraph Element Identifiers
     
     /**
      * Check the identifier of a graph element and create it if necessary.
      * 
      * @param graphElement a graph element
+     * @param idGenerator the ID generator to use for generating IDs.
      */
-    private static void checkIdentifier(final KGraphElement graphElement) {
+    private static void checkIdentifier(final KGraphElement graphElement,
+            final IdentifierGenerator idGenerator) {
+        
         if (graphElement != null) {
             KIdentifier identifier = graphElement.getData(KIdentifier.class);
             if (identifier == null) {
@@ -136,10 +168,14 @@ public class KGraphTextHandler extends AbstractEmfHandler<KNode> {
                 graphElement.getData().add(identifier);
             }
             if (identifier.getId() == null || identifier.getId().length() == 0) {
-                identifier.setId("E" + Integer.toHexString(graphElement.hashCode()));
+                identifier.setId(idGenerator.generateID(graphElement));
             }
         }
     }
+    
+    
+    ////////////////////////////////////////////////////////////////////////////////////////////////////
+    // Resource Set Stuff
     
     /** the resource set provider injected by the KGraphExecutableExtensionFactory. */
     @Inject private Provider<XtextResourceSet> resourceSetProvider;
@@ -188,6 +224,63 @@ public class KGraphTextHandler extends AbstractEmfHandler<KNode> {
      */
     public IGraphTransformer<KNode, KNode> getExporter() {
         return TRANSFORMER;
+    }
+    
+    
+    ////////////////////////////////////////////////////////////////////////////////////////////////////
+    // IdentifierGenerator
+    
+    /**
+     * Generates identifiers for the different components of a graph. One instance per graph, since this
+     * will ensure IDs to be unique.
+     * 
+     * @author cds
+     */
+    private static class IdentifierGenerator {
+        /** the highest ID generated for a node so far. */
+        private int currNodeId = 0;
+        /** the highest ID generated for a port so far. */
+        private int currPortId = 0;
+        /** the highest ID generated for an edge so far. */
+        private int currEdgeId = 0;
+        /** the highest ID generated for a label so far. */
+        private int currLabelId = 0;
+        /** the highest ID generated for a style holder so far. */
+        private int currStyleHolderId = 0;
+        /** the highest ID generated for other graph elements so far. */
+        private int currGenericId = 0;
+        
+        /**
+         * Generates a unique ID for the given graph element. A new ID is generated on each call, even
+         * if the method was already called before with the same argument.
+         * 
+         * @param element the element to generate the ID for.
+         * @return a new ID for the element.
+         */
+        public String generateID(final KGraphElement element) {
+            if (element instanceof KNode) {
+                return "N" + (++currNodeId);
+            } else if (element instanceof KPort) {
+                return "P" + (++currPortId);
+            } else if (element instanceof KEdge) {
+                return "E" + (++currEdgeId);
+            } else if (element instanceof KLabel) {
+                return "L" + (++currLabelId);
+            } else {
+                return "K" + (++currGenericId);
+            }
+        }
+        
+        /**
+         * Generates a unique ID for the given style holder. A new ID is generated on each call, even
+         * if the method was already called before with the same argument.
+         * 
+         * @param styleHolder the rendering to generate the ID for.
+         * @return a new ID for the rendering.
+         */
+        public String generateID(final KStyleHolder styleHolder) {
+            return "R" + (++currStyleHolderId);
+        }
     }
 
 }

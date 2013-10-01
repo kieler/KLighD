@@ -17,7 +17,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.LineAttributes;
 import org.eclipse.swt.graphics.RGB;
 
-import de.cau.cs.kieler.core.krendering.KColor;
+import de.cau.cs.kieler.core.krendering.KShadow;
 import de.cau.cs.kieler.core.krendering.LineCap;
 import de.cau.cs.kieler.core.krendering.LineJoin;
 import de.cau.cs.kieler.core.krendering.LineStyle;
@@ -159,8 +159,12 @@ public abstract class KlighdPathController extends PNodeController<KlighdPath> {
      * {@inheritDoc}
      */
     @Override
-    public void setShadow(final KColor color) {
-        getNode().setShadow(toRGB(color));
+    public void setShadow(final KShadow shadow) {
+        if (shadow != null) {
+            getNode().setShadow(toRGB(shadow.getColor()), shadow.getXOffset(), shadow.getYOffset());
+        } else {
+            getNode().setShadow(toRGB(null), 0, 0);
+        }
     }
     
     /**

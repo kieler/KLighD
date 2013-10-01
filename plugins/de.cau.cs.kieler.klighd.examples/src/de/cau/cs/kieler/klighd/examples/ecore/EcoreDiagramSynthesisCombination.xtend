@@ -9,7 +9,6 @@ import de.cau.cs.kieler.klighd.effects.KlighdUpdateDiagramEffect
 import de.cau.cs.kieler.klighd.examples.ecore.EModelElementCollection
 import de.cau.cs.kieler.klighd.triggers.KlighdSelectionTrigger$KlighdSelectionState
 import de.cau.cs.kieler.klighd.LightDiagramServices
-import de.cau.cs.kieler.klighd.incremental.UpdateStrategy
 
 import org.eclipse.core.runtime.IPath
 import org.eclipse.emf.ecore.EPackage
@@ -18,7 +17,7 @@ import org.eclipse.emf.ecore.EClassifier
 import org.eclipse.emf.ecore.EModelElement
 import org.eclipse.emf.ecoretools.diagram.navigator.EcoreDomainNavigatorItem
 import org.eclipse.ui.part.FileEditorInput;
-import de.cau.cs.kieler.klighd.util.KlighdProperties
+import de.cau.cs.kieler.klighd.util.KlighdPropertiesimport de.cau.cs.kieler.klighd.krendering.SimpleUpdateStrategy
 
 /**
  * Combination that triggers the synthesis of Ecore diagrams.
@@ -97,7 +96,9 @@ class EcoreDiagramSynthesisCombination extends AbstractCombination {
                     this.schedule(new KlighdUpdateDiagramEffect("de.cau.cs.kieler.klighd.examples.ecore.explorer",
                             "KLighD Class Diagram", EModelElementCollection::of(selectedModelElements)
         		        ) => [
-                        it.setProperty(LightDiagramServices::REQUESTED_UPDATE_STRATEGY, UpdateStrategy::ID);
+        		       	// FIXME reactivate incremental update
+                        // it.setProperty(LightDiagramServices::REQUESTED_UPDATE_STRATEGY, UpdateStrategy::ID);
+                        it.setProperty(LightDiagramServices::REQUESTED_UPDATE_STRATEGY, SimpleUpdateStrategy::ID);
                         it.setProperty(KlighdProperties::MODEL_ACCESS, new EcoreModelAccess(this.selectedModelElements));
                     ]);
                 }

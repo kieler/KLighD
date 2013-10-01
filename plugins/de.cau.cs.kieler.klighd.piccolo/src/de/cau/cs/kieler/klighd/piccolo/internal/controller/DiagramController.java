@@ -1776,17 +1776,20 @@ public class DiagramController {
     }
     
     private boolean isAutomaticallyArranged(final KGraphElement element) {
-        KShapeLayout shapeLayout = this.topNode.getGraphElement().getData(KShapeLayout.class); 
-        if (shapeLayout == null || shapeLayout.getProperty(LayoutOptions.NO_LAYOUT)) {
+        KShapeLayout shapeLayout = this.topNode.getGraphElement().getData(KShapeLayout.class);
+        if (shapeLayout == null || shapeLayout.getProperty(LayoutOptions.NO_LAYOUT)
+                || shapeLayout.getProperty(KlighdProperties.LAYOUT_IGNORE)) {
             return false;
         }
         shapeLayout = element.getData(KShapeLayout.class);
-        if (shapeLayout != null && shapeLayout.getProperty(LayoutOptions.NO_LAYOUT)) {
+        if (shapeLayout != null && (shapeLayout.getProperty(LayoutOptions.NO_LAYOUT)
+                || shapeLayout.getProperty(KlighdProperties.LAYOUT_IGNORE))) {
             return false;
         }
         final KNode container = ModelingUtil.eContainerOfType(element, KNode.class);
         shapeLayout = container == null ? null : container.getData(KShapeLayout.class);
-        if (shapeLayout != null && shapeLayout.getProperty(LayoutOptions.NO_LAYOUT)) {
+        if (shapeLayout != null && (shapeLayout.getProperty(LayoutOptions.NO_LAYOUT)
+                || shapeLayout.getProperty(KlighdProperties.LAYOUT_IGNORE))) {
             return false;
         }
         return true;

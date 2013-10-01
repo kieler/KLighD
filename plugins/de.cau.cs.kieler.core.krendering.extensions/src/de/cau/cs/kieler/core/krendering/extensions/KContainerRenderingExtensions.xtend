@@ -120,6 +120,13 @@ class KContainerRenderingExtensions {
             it.imagePath = imagePath;
         ];
     }
+    
+    def KImage addImage(KContainerRendering cr, Object imageObj) {
+    	return renderingFactory.createKImage() => [
+            cr.children += it;
+          	it.imageObject = imageObj
+        ];
+    }
 
     def KGridPlacement setGridPlacement(KContainerRendering cr, int cols) {
         return renderingFactory.createKGridPlacement => [
