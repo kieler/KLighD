@@ -112,6 +112,9 @@ public abstract class AbstractTransformation<S, T> implements ITransformation<S,
      */
     public int getOptionIntValue(final TransformationOption option) {
         Object result = this.getUsedContext().getOptionValue(option);
+        if (result instanceof Float) {
+            return ((Float) result).intValue();
+        }
         if (result instanceof Integer) {
             return (Integer) result; 
         } else {
