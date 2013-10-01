@@ -17,6 +17,8 @@ import java.util.Iterator;
 import java.util.List;
 
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Iterables;
+import com.google.common.collect.Lists;
 
 /**
  * This class provides some convenience methods that I miss in
@@ -51,11 +53,15 @@ public final class Iterables2 {
     
     /**
      * Returns an {@link Iterable} containing only {@code value}.<br>
-     * This is a counterpart to {@link Iterators#singletonIterator(Object)}.<br>
+     * This is a counterpart to {@link link
+     * com.google.common.collect.Iterators#singletonIterator(Object)
+     * Iterators#singletonIterator(Object)}.<br>
      * In case {@code value} is {@code null} an empty {@link Iterable} is returned.
-     *
-     * @param <T> the type of value
-     * @param value the value to be encapsulated
+     * 
+     * @param <T>
+     *            the type of value
+     * @param value
+     *            the value to be encapsulated
      * @return the required {@link Iterable}
      */
     public static <T> Iterable<T> singletonIterable(final T value) {
@@ -64,14 +70,50 @@ public final class Iterables2 {
 
     /**
      * Returns a {@link List} containing only {@code value}.<br>
-     * This is a counterpart to {@link Iterators#singletonIterator(Object)}.<br>
+     * This is a counterpart to
+     * {@link com.google.common.collect.Iterators#singletonIterator(Object)
+     * Iterators#singletonIterator(Object)}.<br>
      * In case {@code value} is {@code null} an empty {@link List} is returned.
-     *
-     * @param <T> the type of value
-     * @param value the value to be encapsulated, may be null
+     * 
+     * @param <T>
+     *            the type of value
+     * @param value
+     *            the value to be encapsulated, may be null
      * @return the required {@link Iterable}
      */
     public static <T> List<T> singletonList(final T value) {
         return value != null ? ImmutableList.of(value) : ImmutableList.<T>of();
+    }
+    
+    /**
+     * Constructs a new {@link Iterable} containing all elements of <code>iterable</code> except the
+     * last <code>count</code> ones.
+     * 
+     * @param <T> the type of value
+     * @param iterable
+     *            the source {@link Iterable}
+     * @param count
+     *            number elements to drop
+     * @return a new {@link Iterable} containing all elements of <code>iterable</code> except the
+     *         last <code>count</code> ones.
+     */
+    public static <T> Iterable<T> dropLast(final Iterable<T> iterable, final int count) {
+        if (iterable == null) {
+            throw new NullPointerException("The provided 'iterable' is 'null'!");
+        } else if (count == 0) {
+            return iterable;
+        } else if (count < 0) {
+            throw new IllegalArgumentException(
+                    "Cannot drop a negative number of elements. Argument 'count' was: " + count);
+        }
+        return new Iterable<T>() {
+            public Iterator<T> iterator() {
+                return Lists.reverse(
+                        Lists.newLinkedList(
+                                Iterables.skip(
+                                        Lists.reverse(
+                                                Lists.newLinkedList(iterable)), count))).iterator();
+            }
+        };
     }
 }
