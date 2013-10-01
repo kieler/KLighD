@@ -122,9 +122,9 @@ class KContainerRenderingExtensions {
     }
     
     def KImage addImage(KContainerRendering cr, Object imageObj) {
-    	return renderingFactory.createKImage() => [
+        return renderingFactory.createKImage() => [
             cr.children += it;
-          	it.imageObject = imageObj
+            it.imageObject = imageObj
         ];
     }
 
