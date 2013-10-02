@@ -127,8 +127,9 @@ public final class PiccoloPlacementUtil {
             return new Bounds(parentBounds.getWidth(), parentBounds.getHeight());
         }
 
-        float width = Math.max(ownBounds.getWidth(), ppd.getMinWidth());
-        float height = Math.max(ownBounds.getHeight(), ppd.getMinHeight());
+        float width = Math.max(ownBounds.getWidth() + ppd.getHorizontalMargin(), ppd.getMinWidth());
+        float height =
+                Math.max(ownBounds.getHeight() + ppd.getVerticalMargin(), ppd.getMinHeight());
         KPosition ref = ppd.getReferencePoint();
         Point2D.Float refPoint;
         if (ref == null) {
