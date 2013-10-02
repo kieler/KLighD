@@ -14,9 +14,10 @@
             icon="icons/new_kproj.gif"
             id="de.cau.cs.kieler.klighd.ui.newKlighdProjectWizard"
             name="KLighD Project"
-            project="false">
+            project="true">
       </wizard>
    </extension>
+
    <extension
          point="org.eclipse.ui.navigator.navigatorContent">
       <commonWizard
@@ -40,4 +41,31 @@
       </commonWizard>
    </extension>
 
+   <extension
+         point="org.eclipse.ui.perspectiveExtensions">
+      <perspectiveExtension
+            targetID="org.eclipse.ui.resourcePerspective">
+         <newWizardShortcut
+               id="de.cau.cs.kieler.klighd.ui.newKlighdProjectWizard">
+         </newWizardShortcut>
+      </perspectiveExtension>
+      <perspectiveExtension
+            targetID="org.eclipse.jdt.ui.JavaPerspective">
+         <newWizardShortcut
+               id="de.cau.cs.kieler.klighd.ui.newKlighdProjectWizard">
+         </newWizardShortcut>
+      </perspectiveExtension>
+      <perspectiveExtension
+            targetID="org.eclipse.jdt.ui.JavaBrowsingPerspective">
+         <newWizardShortcut
+               id="de.cau.cs.kieler.klighd.ui.newKlighdProjectWizard">
+         </newWizardShortcut>
+      </perspectiveExtension>
+      <perspectiveExtension
+            targetID="org.eclipse.pde.ui.PDEPerspective">
+         <newWizardShortcut
+               id="de.cau.cs.kieler.klighd.ui.newKlighdProjectWizard">
+         </newWizardShortcut>
+      </perspectiveExtension>
+   </extension>
 </plugin>
