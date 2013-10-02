@@ -25,95 +25,95 @@ import org.eclipse.xtext.ui.util.IProjectFactoryContributor.IFileCreator
  */
 class KlighdProjectContributor implements IProjectFactoryContributor {
 
-	var KlighdProjectInfo projectInfo
+    var KlighdProjectInfo projectInfo
 
-	new(KlighdProjectInfo projectInfo) {
-		this.projectInfo = projectInfo
-	}
+    new(KlighdProjectInfo projectInfo) {
+        this.projectInfo = projectInfo
+    }
 
-	override def contributeFiles(IProject project, IFileCreator fileWriter) {
-		contributeBuildProperties(fileWriter)
-		contributePluginExtensions(fileWriter)
+    override def contributeFiles(IProject project, IFileCreator fileWriter) {
+        contributeBuildProperties(fileWriter)
+        contributePluginExtensions(fileWriter)
 
-		if (projectInfo.createXtendFile) {
-			contributeXtendTransformationFile(fileWriter)
-		} else {
-			contributeJavaTransformationFile(fileWriter)
-		}
-	}
+        if (projectInfo.createXtendFile) {
+            contributeXtendTransformationFile(fileWriter)
+        } else {
+            contributeJavaTransformationFile(fileWriter)
+        }
+    }
 
-	def private contributeXtendTransformationFile(IFileCreator fileWriter) {
+    def private contributeXtendTransformationFile(IFileCreator fileWriter) {
 
-		'''
-			package «projectInfo.transformationPackage»
-			
-			import de.cau.cs.kieler.klighd.transformations.AbstractDiagramSynthesis
-			import «projectInfo.sourceModelClassFullyQualified»
-			
-			class «projectInfo.transformationName» extends AbstractDiagramSynthesis<«projectInfo.sourceModelClassSimple»> {
-				
-				override transform(«projectInfo.sourceModelClassSimple» model) {
-					throw new UnsupportedOperationException("TODO: auto-generated method stub")
-				}
-				
-			}
-		'''.writeToFile(fileWriter, getTransformationPath() + ".xtend")
+        '''
+            package «projectInfo.transformationPackage»
+            
+            import de.cau.cs.kieler.klighd.transformations.AbstractDiagramSynthesis
+            import «projectInfo.sourceModelClassFullyQualified»
+            
+            class «projectInfo.transformationName» extends AbstractDiagramSynthesis<«projectInfo.sourceModelClassSimple»> {
+                
+                override transform(«projectInfo.sourceModelClassSimple» model) {
+                    throw new UnsupportedOperationException("TODO: auto-generated method stub")
+                }
+                
+            }
+        '''.writeToFile(fileWriter, getTransformationPath() + ".xtend")
 
-	}
+    }
 
-	def private contributeJavaTransformationFile(IFileCreator fileWriter) {
+    def private contributeJavaTransformationFile(IFileCreator fileWriter) {
 
-		'''
-			package «projectInfo.transformationPackage»;
-			
-			import de.cau.cs.kieler.core.kgraph.KNode;
-			import de.cau.cs.kieler.klighd.transformations.AbstractDiagramSynthesis;
-			import «projectInfo.sourceModelClassFullyQualified»;
-			
-			public class «projectInfo.transformationName» extends AbstractDiagramSynthesis<«projectInfo.sourceModelClassSimple»> {
-			
-			    public KNode transform(final «projectInfo.sourceModelClassSimple» model) {
-			        throw new UnsupportedOperationException("TODO: auto-generated method stub");
-			    }
-			}
-		'''.writeToFile(fileWriter, getTransformationPath() + ".java")
+        '''
+            package «projectInfo.transformationPackage»;
+            
+            import de.cau.cs.kieler.core.kgraph.KNode;
+            import de.cau.cs.kieler.klighd.transformations.AbstractDiagramSynthesis;
+            import «projectInfo.sourceModelClassFullyQualified»;
+            
+            public class «projectInfo.transformationName» extends AbstractDiagramSynthesis<«projectInfo.sourceModelClassSimple»> {
+            
+                public KNode transform(final «projectInfo.sourceModelClassSimple» model) {
+                    throw new UnsupportedOperationException("TODO: auto-generated method stub");
+                }
+            }
+        '''.writeToFile(fileWriter, getTransformationPath() + ".java")
 
-	}
+    }
 
-	def private getTransformationPath() {
-		KlighdWizardSetup.SRC_FOLDER + projectInfo.transformationPackage.replace(".", "/") + "/" +
-			projectInfo.transformationName
-	}
+    def private getTransformationPath() {
+        KlighdWizardSetup.SRC_FOLDER + projectInfo.transformationPackage.replace(".", "/") + "/" +
+            projectInfo.transformationName
+    }
 
-	def private contributeBuildProperties(IFileCreator fileWriter) {
-		'''
-			source.. = «IF projectInfo.createXtendFile»xtend-gen/,\«ENDIF»
-			          src/
-			bin.includes = META-INF/,\
-					plugin.xml,\
-					     .
-		'''.writeToFile(fileWriter, "build.properties")
-	}
+    def private contributeBuildProperties(IFileCreator fileWriter) {
+        '''
+            source.. = «IF projectInfo.createXtendFile»xtend-gen/,\«ENDIF»
+                      src/
+            bin.includes = META-INF/,\
+                    plugin.xml,\
+                         .
+        '''.writeToFile(fileWriter, "build.properties")
+    }
 
-	def private contributePluginExtensions(IFileCreator fileWriter) {
-		'''
-			<?xml version="1.0" encoding="UTF-8"?>
-			<?eclipse version="3.4"?>
-			<plugin>
-			   <extension
-			         point="de.cau.cs.kieler.klighd.diagramSyntheses">
-			   <diagramSynthesis
-			         class="de.cau.cs.kieler.klighd.transformations.GuiceBasedTransformationFactory:«projectInfo.
-				transformationPackage + "." + projectInfo.transformationName»"
-			         id="«projectInfo.transformationPackage + "." + projectInfo.transformationName»">
-			   </diagramSynthesis>
-			   </extension>
-			
-			</plugin> 
-		'''.writeToFile(fileWriter, "plugin.xml")
-	}
+    def private contributePluginExtensions(IFileCreator fileWriter) {
+        '''
+            <?xml version="1.0" encoding="UTF-8"?>
+            <?eclipse version="3.4"?>
+            <plugin>
+               <extension
+                     point="de.cau.cs.kieler.klighd.diagramSyntheses">
+               <diagramSynthesis
+                     class="de.cau.cs.kieler.klighd.transformations.GuiceBasedTransformationFactory:«projectInfo.
+                transformationPackage + "." + projectInfo.transformationName»"
+                     id="«projectInfo.transformationPackage + "." + projectInfo.transformationName»">
+               </diagramSynthesis>
+               </extension>
+            
+            </plugin> 
+        '''.writeToFile(fileWriter, "plugin.xml")
+    }
 
-	def protected IFile writeToFile(CharSequence chrSeq, IFileCreator fCreator, String fileName) {
-		return fCreator.writeToFile(chrSeq, fileName);
-	}
+    def protected IFile writeToFile(CharSequence chrSeq, IFileCreator fCreator, String fileName) {
+        return fCreator.writeToFile(chrSeq, fileName);
+    }
 }

@@ -1,3 +1,16 @@
+/*
+ * KIELER - Kiel Integrated Environment for Layout Eclipse RichClient
+ *
+ * http://www.informatik.uni-kiel.de/rtsys/kieler/
+ * 
+ * Copyright 2013 by
+ * + Christian-Albrechts-University of Kiel
+ *   + Department of Computer Science
+ *     + Real-Time and Embedded Systems Group
+ * 
+ * This code is provided under the terms of the Eclipse Public License (EPL).
+ * See the file epl-v10.html for the license text.
+ */
 package de.cau.cs.kieler.klighd.ui;
 
 import java.util.Collections;
@@ -25,24 +38,26 @@ import com.google.inject.Provider;
 import de.cau.cs.kieler.klighd.ui.wizard.KlighdProjectCreator;
 
 /**
- * The activator class controls the plug-in life cycle
+ * The activator class controls the plug-in life cycle.
+ * 
+ * @author uru
  */
 public class KlighdUIPlugin extends AbstractUIPlugin {
 
-    // The plug-in ID
+    /** The plug-in ID. */
     public static final String PLUGIN_ID = "de.cau.cs.kieler.klighd.ui"; //$NON-NLS-1$
 
     // The shared instance
     private static KlighdUIPlugin plugin;
 
     /**
-     * The constructor
+     * The constructor.
      */
     public KlighdUIPlugin() {
     }
 
     /**
-     * Returns the shared instance
+     * Returns the shared instance.
      * 
      * @return the shared instance
      */
@@ -50,19 +65,19 @@ public class KlighdUIPlugin extends AbstractUIPlugin {
         return plugin;
     }
 
-    private static final Logger logger = Logger.getLogger(KlighdUIPlugin.class);
+    private static final Logger LOGGER = Logger.getLogger(KlighdUIPlugin.class);
 
     private Map<String, Injector> injectors = Collections.synchronizedMap(Maps
-            .<String, Injector> newHashMapWithExpectedSize(1));
+            .<String, Injector>newHashMapWithExpectedSize(1));
 
     @Override
-    public void start(BundleContext context) throws Exception {
+    public void start(final BundleContext context) throws Exception {
         super.start(context);
         plugin = this;
     }
 
     @Override
-    public void stop(BundleContext context) throws Exception {
+    public void stop(final BundleContext context) throws Exception {
         injectors.clear();
         plugin = null;
         super.stop(context);
@@ -120,8 +135,8 @@ public class KlighdUIPlugin extends AbstractUIPlugin {
             Module mergedModule = Modules2.mixin(runtimeModule, sharedStateModule);
             return Guice.createInjector(mergedModule);
         } catch (Exception e) {
-            logger.error("Failed to create injector for " + language);
-            logger.error(e.getMessage(), e);
+            LOGGER.error("Failed to create injector for " + language);
+            LOGGER.error(e.getMessage(), e);
             throw new RuntimeException("Failed to create injector for " + language, e);
         }
     }

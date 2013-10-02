@@ -127,25 +127,40 @@ public class KlighdProjectCreator extends WorkspaceModifyOperation implements IP
         return factory;
     }
 
+    /**
+     * @return the projects to be referenced
+     */
     protected List<IProject> getReferencedProjects() {
         return Collections.emptyList();
     }
 
+    /**
+     * @return the required project natures
+     */
     protected String[] getProjectNatures() {
         return new String[] { JavaCore.NATURE_ID, "org.eclipse.pde.PluginNature", //$NON-NLS-1$
                 XtextProjectHelper.NATURE_ID };
     }
 
+    /**
+     * @return the required builders
+     */
     protected String[] getBuilders() {
         return new String[] { JavaCore.BUILDER_ID, "org.eclipse.pde.ManifestBuilder", //$NON-NLS-1$
                 "org.eclipse.pde.SchemaBuilder", //$NON-NLS-1$
                 XtextProjectHelper.BUILDER_ID };
     }
 
+    /**
+     * @return the exported packages
+     */
     protected List<String> getExportedPackages() {
         return Collections.emptyList();
     }
 
+    /**
+     * @return the imported packages
+     */
     protected List<String> getImportedPackages() {
         KlighdProjectInfo info = (KlighdProjectInfo) getProjectInfo();
         String packageString =
@@ -153,12 +168,21 @@ public class KlighdProjectCreator extends WorkspaceModifyOperation implements IP
                         info.getSourceModelClassFullyQualified().lastIndexOf('.'));
         return Lists.newArrayList(packageString);
     }
-
+    
+    /**
+     * @return the name of the activator class
+     */
     protected String getActivatorClassName() {
         return null;
     }
 
-    protected IFile getFileToOpen(IProject project) {
+    /**
+     * @param project
+     *            the project meta data
+     * 
+     * @return the file to be opened after project creation
+     */
+    protected IFile getFileToOpen(final IProject project) {
         KlighdProjectInfo info = (KlighdProjectInfo) getProjectInfo();
         IFolder folder =
                 project.getFolder(KlighdWizardSetup.SRC_FOLDER
@@ -169,14 +193,23 @@ public class KlighdProjectCreator extends WorkspaceModifyOperation implements IP
         return file;
     }
 
+    /**
+     * @return the required bundles
+     */
     protected List<String> getRequiredBundles() {
         return KlighdWizardSetup.REQUIRED_BULDES;
     }
 
+    /**
+     * @return the folders being created within the project
+     */
     protected List<String> getAllFolders() {
         return Lists.newArrayList(KlighdWizardSetup.SRC_FOLDER);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public IFile getResult() {
         return result;
     }
