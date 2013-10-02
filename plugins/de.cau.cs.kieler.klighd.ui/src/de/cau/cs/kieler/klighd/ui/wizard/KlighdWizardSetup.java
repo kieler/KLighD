@@ -37,9 +37,11 @@ public final class KlighdWizardSetup {
     public static final String DEFAULT_TRANSFORMATION_NAME = "MyTransformation";
 
     /** required bundles for each klighd project. */
-    public static final List<String> REQUIRED_BULDES = ImmutableList.of("com.google.guava",
-            "com.google.inject", "org.eclipse.xtend.lib", "org.eclipse.xtext.xbase.lib",
-            "de.cau.cs.kieler.klighd", "de.cau.cs.kieler.core.krendering",
-            "de.cau.cs.kieler.core.krendering.extensions", "de.cau.cs.kieler.kiml");
+    public static final List<String> REQUIRED_BUNDLES = ImmutableList.of(
+            "javax.inject", "com.google.guava", "com.google.inject", "org.eclipse.xtext.xbase.lib",
+            "de.cau.cs.kieler.core.krendering", "de.cau.cs.kieler.core.krendering.extensions",
+            "de.cau.cs.kieler.kiml", "de.cau.cs.kieler.klighd", "de.cau.cs.kieler.klighd.piccolo",
+            "org.eclipse.ui.ide.application", "org.eclipse.ui.navigator.resources",
+            "org.eclipse.ui.views.log");
 
 }
