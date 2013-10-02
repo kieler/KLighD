@@ -147,7 +147,11 @@ public class KlighdProjectCreator extends WorkspaceModifyOperation implements IP
     }
 
     protected List<String> getImportedPackages() {
-        return Lists.newArrayList();
+        KlighdProjectInfo info = (KlighdProjectInfo) getProjectInfo();
+        String packageString =
+                info.getSourceModelClassFullyQualified().substring(0,
+                        info.getSourceModelClassFullyQualified().lastIndexOf('.'));
+        return Lists.newArrayList(packageString);
     }
 
     protected String getActivatorClassName() {
