@@ -31,6 +31,19 @@ import de.cau.cs.kieler.core.util.Pair;
  */
 public final class TransformationOption {
     
+    
+    /**
+     * Static factory method providing a 'Separator' pseudo {@link TransformationOption}.<br>
+     * 
+     * This option has no semantic meaning, it will result in a separator line within the options
+     * view.
+     * 
+     * @return a 'Separator' {@link TransformationOption}.
+     */
+    public static TransformationOption createSeparator() {
+        return new TransformationOption("", TransformationOptionType.SEPARATOR, true);
+    }
+    
     /**
      * Static factory method providing an 'OnOff' {@link TransformationOption}.<br>
      * <br>
@@ -146,7 +159,6 @@ public final class TransformationOption {
         return option;
     }
     
-    
     /* -- the internal part -- */
 
     
@@ -162,7 +174,9 @@ public final class TransformationOption {
         /** Options of this type provide a set of possible disjoint values. */
         CHOICE,
         /** Options of this type provide a range of possible continuous values. */
-        RANGE;
+        RANGE,
+        /** Pseudo option representing a separator. */
+        SEPARATOR;
     }
     
     private String name;    
@@ -208,6 +222,13 @@ public final class TransformationOption {
      */
     public Boolean isRangeOption() {
         return type.equals(TransformationOptionType.RANGE);
+    }
+    
+    /**
+     * @return the type
+     */
+    public Boolean isSeparator() {
+        return type.equals(TransformationOptionType.SEPARATOR);
     }
 
     /**

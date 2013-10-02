@@ -671,14 +671,11 @@ public class KlighdPath extends PNode {
         // note that the alpha values of stacked shapes will kind of accumulate
         final float shadowAlpha = 25f;
 
-        // FIXME currently the maximum between the two extends is used, fix this to draw proper
-        // shadows!
-        int maxShadowExtend = (int) Math.ceil(Math.max(shadowExtendX, shadowExtendY));
         
         // determine the movement of the shape coordinates by means of an affine transform
         AffineTransform t = graphics.getTransform();
         AffineTransform tc = new AffineTransform(t);
-        tc.translate(maxShadowExtend, maxShadowExtend);
+        tc.translate(shadowExtendX, shadowExtendY);
 
         // configure the graphics layer
         graphics.setFillColor(shadow);
@@ -688,6 +685,11 @@ public class KlighdPath extends PNode {
         graphics.setAlpha(
                 (int) ((float) currentAlpha * shadowAlpha / KlighdConstants.ALPHA_FULL_OPAQUE));
 
+        // use the maximal value for the loop
+        int maxShadowExtend = (int) Math.ceil(Math.max(shadowExtendX, shadowExtendY));
+        boolean xIsBigger = shadowExtendX > shadowExtendY;
+        double ratio =
+                xIsBigger ? (shadowExtendY / shadowExtendX) : (shadowExtendX / shadowExtendY);
         // draw a bunch of shape copies, each of them is moved a bit towards the original position
         for (int i = 0; i < maxShadowExtend; i++) {
             graphics.setTransform(tc);
@@ -696,7 +698,11 @@ public class KlighdPath extends PNode {
             } else {
                 graphics.fill(shape);
             }
-            tc.translate(-1, -1);
+            if (xIsBigger) {
+                tc.translate(-1, -ratio);
+            } else {
+                tc.translate(-ratio, -1);
+            }
         }
 
         // re-set the original transform to the graphics layer

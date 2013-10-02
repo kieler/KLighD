@@ -82,6 +82,17 @@ public class SynthesisOptionControlFactory {
     }
     
     /**
+     * Factory method for creating a horizontal spacer.
+     */
+    public void createSeparator() {
+        Label separator = formToolkit.createSeparator(parent, SWT.HORIZONTAL);
+        controls.add(separator);
+        
+        final GridData gridData = new GridData(SWT.FILL, SWT.CENTER, true, false);
+        separator.setLayoutData(gridData);
+    }
+    
+    /**
      * Factory method for creating a check button related to a 'check' option.  
      * 
      * @param option the 'check' option
