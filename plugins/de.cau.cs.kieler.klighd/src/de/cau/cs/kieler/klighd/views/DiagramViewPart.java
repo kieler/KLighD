@@ -31,6 +31,7 @@ import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Menu;
+import org.eclipse.ui.actions.ActionFactory;
 import org.eclipse.ui.part.ResourceTransfer;
 import org.eclipse.ui.part.ViewPart;
 
@@ -85,6 +86,9 @@ public class DiagramViewPart extends ViewPart implements IDiagramWorkbenchPart {
         
         // register the context viewer as selection provider on the workbench
         getSite().setSelectionProvider(viewer);
+        
+        // register print action
+        getViewSite().getActionBars().setGlobalActionHandler(ActionFactory.PRINT.getId(), new PrintAction(this));
         
         // the initialization of the context menu is done in PiccoloViewer#addContextMenu()
     }
