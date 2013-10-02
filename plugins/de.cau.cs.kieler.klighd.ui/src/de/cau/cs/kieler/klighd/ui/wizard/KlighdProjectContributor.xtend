@@ -56,9 +56,9 @@ class KlighdProjectContributor implements IProjectFactoryContributor {
             import de.cau.cs.kieler.core.krendering.extensions.KRenderingExtensions
             import de.cau.cs.kieler.core.krendering.extensions.KContainerRenderingExtensions
             import de.cau.cs.kieler.core.krendering.extensions.KPolylineExtensions
-            import de.cau.cs.kieler.core.krendering.extensions.KColorExtensions
-            
+            import de.cau.cs.kieler.core.krendering.extensions.KColorExtensions            
             import de.cau.cs.kieler.klighd.transformations.AbstractDiagramSynthesis
+            
             import «projectInfo.sourceModelClassFullyQualified»
             
             class «projectInfo.transformationName» extends AbstractDiagramSynthesis<«projectInfo.sourceModelClassSimple»> {
