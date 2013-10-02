@@ -192,11 +192,14 @@ public class KlighdSVGCanvas implements PComponent {
             final boolean textAsShapes) {
         // set up the paint context
         KlighdSimpleSVGGraphicsImpl graphics = new KlighdSimpleSVGGraphicsImpl(textAsShapes);
-        final PPaintContext paintContext = new PPaintContext(graphics);
-
+        
         // the following clip sit is required in order to get rid of the one set in
         // the constructor call above, which lets Inkscape & browsers go crazy
-        graphics.setClip(camera.getBounds());
+        if (viewPort) {
+            graphics.setClip(camera.getBounds());
+        }
+        
+        final PPaintContext paintContext = new PPaintContext(graphics);
         paintContext.setRenderQuality(PPaintContext.HIGH_QUALITY_RENDERING);
 
         // perform the painting

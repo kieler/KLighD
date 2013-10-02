@@ -140,7 +140,7 @@ public class SaveAsImageAction extends Action {
                 Method m = Class.forName(Constants.KLIGHD_SVG_CANVAS).getMethod(
                         Constants.KLIGHD_SVG_RENDER_METHOD, PCamera.class, Boolean.class,
                         Boolean.class, OutputStream.class);
-                m.invoke(null, camera, cameraViewport, false, stream);
+                m.invoke(null, camera, cameraViewport, true, stream);
             } catch (Exception e) {
                 final String msg = "KLighD: Creation of desired SVG diagram failed,"
                         + "most probably due to unavailability of the plug-in \""
