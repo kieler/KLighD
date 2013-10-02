@@ -47,7 +47,7 @@ class KlighdProjectContributor implements IProjectFactoryContributor {
         '''
             package «projectInfo.transformationPackage»
             
-            import javax.Inject
+            import javax.inject.Inject
             
             import de.cau.cs.kieler.core.krendering.extensions.KNodeExtensions
             import de.cau.cs.kieler.core.krendering.extensions.KEdgeExtensions
