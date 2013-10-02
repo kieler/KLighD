@@ -49,6 +49,7 @@ class KlighdProjectContributor implements IProjectFactoryContributor {
             
             import javax.inject.Inject
             
+            import de.cau.cs.kieler.core.kgraph.KNode
             import de.cau.cs.kieler.core.krendering.extensions.KNodeExtensions
             import de.cau.cs.kieler.core.krendering.extensions.KEdgeExtensions
             import de.cau.cs.kieler.core.krendering.extensions.KPortExtensions
