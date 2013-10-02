@@ -241,6 +241,8 @@ public class ContextViewer extends AbstractViewer<Object> implements IViewerEven
                     synthesisOptionControlFactory.createRangeOptionControl(option, entry.getKey(),
                             viewId);
                     synthesisOptionsAvailable = true;
+                } else if (option.isSeparator()) {
+                    synthesisOptionControlFactory.createSeparator();
                 }
             }
         }
