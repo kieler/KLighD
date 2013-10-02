@@ -47,13 +47,53 @@ class KlighdProjectContributor implements IProjectFactoryContributor {
         '''
             package «projectInfo.transformationPackage»
             
+            import javax.inject.Inject
+            
+            import de.cau.cs.kieler.core.kgraph.KNode
+            import de.cau.cs.kieler.core.krendering.extensions.KNodeExtensions
+            import de.cau.cs.kieler.core.krendering.extensions.KEdgeExtensions
+            import de.cau.cs.kieler.core.krendering.extensions.KPortExtensions
+            import de.cau.cs.kieler.core.krendering.extensions.KLabelExtensions
+            import de.cau.cs.kieler.core.krendering.extensions.KRenderingExtensions
+            import de.cau.cs.kieler.core.krendering.extensions.KContainerRenderingExtensions
+            import de.cau.cs.kieler.core.krendering.extensions.KPolylineExtensions
+            import de.cau.cs.kieler.core.krendering.extensions.KColorExtensions            
             import de.cau.cs.kieler.klighd.transformations.AbstractDiagramSynthesis
+            
             import «projectInfo.sourceModelClassFullyQualified»
             
             class «projectInfo.transformationName» extends AbstractDiagramSynthesis<«projectInfo.sourceModelClassSimple»> {
                 
-                override transform(«projectInfo.sourceModelClassSimple» model) {
-                    throw new UnsupportedOperationException("TODO: auto-generated method stub")
+                @Inject
+                extension KNodeExtensions
+                
+                @Inject
+                extension KEdgeExtensions
+                
+                @Inject
+                extension KPortExtensions
+                
+                @Inject
+                extension KLabelExtensions
+                
+                @Inject
+                extension KRenderingExtensions
+                
+                @Inject
+                extension KContainerRenderingExtensions
+                
+                @Inject
+                extension KPolylineExtensions
+                
+                @Inject
+                extension KColorExtensions
+                
+                override KNode transform(«projectInfo.sourceModelClassSimple» model) {
+                    val root = model.createNode().putToLookUpWith(model);
+                    
+                    // Your dsl element <-> diagram figure mapping goes here!!
+                    
+                    return root;
                 }
                 
             }

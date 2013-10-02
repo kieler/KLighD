@@ -3,15 +3,69 @@
 <plugin>
    <extension
          point="org.eclipse.ui.newWizards">
+      <category
+            id="de.cau.cs.kieler.klighd"
+            name="KIELER Light-weight Diagrams">
+      </category>
       <wizard
-            category="de.cau.cs.kieler"
+            category="de.cau.cs.kieler.klighd"
             class="de.cau.cs.kieler.klighd.ui.wizard.KlighdExecutableExtensionFactory:de.cau.cs.kieler.klighd.ui.wizard.KlighdNewProjectWizard"
             hasPages="true"
             icon="icons/new_kproj.gif"
             id="de.cau.cs.kieler.klighd.ui.newKlighdProjectWizard"
             name="KLighD Project"
-            project="false">
+            project="true">
       </wizard>
    </extension>
 
+   <extension
+         point="org.eclipse.ui.navigator.navigatorContent">
+      <commonWizard
+            type="new"
+            wizardId="de.cau.cs.kieler.klighd.ui.newKlighdProjectWizard">
+         <enablement>
+            <not>
+               <or>
+                  <adapt
+                        type="org.eclipse.core.resources.IFile">
+                  </adapt>
+                  <adapt
+                        type="org.eclipse.core.resources.IFolder">
+                  </adapt>
+                  <adapt
+                        type="org.eclipse.core.resources.IProject">
+                  </adapt>
+               </or>
+            </not>
+         </enablement>
+      </commonWizard>
+   </extension>
+
+   <extension
+         point="org.eclipse.ui.perspectiveExtensions">
+      <perspectiveExtension
+            targetID="org.eclipse.ui.resourcePerspective">
+         <newWizardShortcut
+               id="de.cau.cs.kieler.klighd.ui.newKlighdProjectWizard">
+         </newWizardShortcut>
+      </perspectiveExtension>
+      <perspectiveExtension
+            targetID="org.eclipse.jdt.ui.JavaPerspective">
+         <newWizardShortcut
+               id="de.cau.cs.kieler.klighd.ui.newKlighdProjectWizard">
+         </newWizardShortcut>
+      </perspectiveExtension>
+      <perspectiveExtension
+            targetID="org.eclipse.jdt.ui.JavaBrowsingPerspective">
+         <newWizardShortcut
+               id="de.cau.cs.kieler.klighd.ui.newKlighdProjectWizard">
+         </newWizardShortcut>
+      </perspectiveExtension>
+      <perspectiveExtension
+            targetID="org.eclipse.pde.ui.PDEPerspective">
+         <newWizardShortcut
+               id="de.cau.cs.kieler.klighd.ui.newKlighdProjectWizard">
+         </newWizardShortcut>
+      </perspectiveExtension>
+   </extension>
 </plugin>

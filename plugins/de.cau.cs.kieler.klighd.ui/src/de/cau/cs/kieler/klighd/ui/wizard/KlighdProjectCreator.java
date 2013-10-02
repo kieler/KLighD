@@ -197,7 +197,7 @@ public class KlighdProjectCreator extends WorkspaceModifyOperation implements IP
      * @return the required bundles
      */
     protected List<String> getRequiredBundles() {
-        return KlighdWizardSetup.REQUIRED_BULDES;
+        return KlighdWizardSetup.REQUIRED_BUNDLES;
     }
 
     /**
