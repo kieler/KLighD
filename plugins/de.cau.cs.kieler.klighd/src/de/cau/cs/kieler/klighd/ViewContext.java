@@ -34,10 +34,12 @@ import com.google.common.collect.Multimap;
 import de.cau.cs.kieler.core.kgraph.KGraphData;
 import de.cau.cs.kieler.core.kgraph.KGraphElement;
 import de.cau.cs.kieler.core.kgraph.KGraphPackage;
+import de.cau.cs.kieler.core.kgraph.KNode;
 import de.cau.cs.kieler.core.properties.IProperty;
 import de.cau.cs.kieler.core.properties.MapPropertyHolder;
 import de.cau.cs.kieler.core.util.RunnableWithResult;
 import de.cau.cs.kieler.kiml.klayoutdata.KLayoutData;
+import de.cau.cs.kieler.klighd.internal.preferences.KlighdPreferences;
 import de.cau.cs.kieler.klighd.internal.util.KlighdInternalProperties;
 import de.cau.cs.kieler.klighd.util.KlighdProperties;
 
@@ -74,9 +76,9 @@ public final class ViewContext extends MapPropertyHolder {
     private transient IWorkbenchPart sourceWorkbenchPart = null;
     
     /** the viewer provider. */
-    private transient IViewerProvider<?> viewerProvider = null;
+    private transient IViewerProvider<KNode> viewerProvider = null;
     /** the update strategy. */
-    private transient IUpdateStrategy<?> updateStrategy = null;
+    private transient IUpdateStrategy<KNode> updateStrategy = null;
     /** the list of transformation contexts in this view context. */
     private transient List<TransformationContext<?, ?>> transformationContexts = null;
     /** the reversed list of transformation contexts. */
@@ -85,8 +87,15 @@ public final class ViewContext extends MapPropertyHolder {
     private Object businessModel = null;
     /** the view model is initiated while configuring the involved {@link IUpdateStrategy} and kept
      * for the whole life-cycle of the view context, in order to enable proper incremental update. */
-    private Object viewModel = null;
+    private KNode viewModel = null;
     
+    /** the {@link IViewer} being in charge of showing this {@link ViewContext}. */
+    private IViewer<KNode> viewer = null;
+    
+    /** the view-specific zoomToFit setting. */
+    private boolean zoomToFit = KlighdPlugin.getDefault().getPreferenceStore()
+            .getBoolean(KlighdPreferences.ZOOM_TO_FIT);
+
     /**
      * Default constructor.
      */
@@ -168,7 +177,7 @@ public final class ViewContext extends MapPropertyHolder {
      * @param viewerProvider
      *            the viewer provider
      */
-    void setViewerProvider(final IViewerProvider<?> viewerProvider) {
+    void setViewerProvider(final IViewerProvider<KNode> viewerProvider) {
         this.viewerProvider = viewerProvider;
     }
 
@@ -177,7 +186,7 @@ public final class ViewContext extends MapPropertyHolder {
      * 
      * @return the viewer provider
      */
-    public IViewerProvider<?> getViewerProvider() {
+    public IViewerProvider<KNode> getViewerProvider() {
         return viewerProvider;
     }
 
@@ -189,7 +198,7 @@ public final class ViewContext extends MapPropertyHolder {
      * @param updateStrategy
      *            the update strategy
      */
-    void setUpdateStrategy(final IUpdateStrategy<?> updateStrategy) {
+    void setUpdateStrategy(final IUpdateStrategy<KNode> updateStrategy) {
         this.updateStrategy = updateStrategy;
         if (updateStrategy != null) {
             viewModel = updateStrategy.getInitialBaseModel(this);
@@ -214,9 +223,43 @@ public final class ViewContext extends MapPropertyHolder {
      * 
      * @return the base model or null if no update strategy is set
      */
-    public Object getViewModel() {
+    public KNode getViewModel() {
         return viewModel;
     }
+    
+    /**
+     * Setter.
+     * 
+     * @param theViewer
+     *            the {@link IViewer} being in charge of showing this {@link ViewContext}.
+     */
+    void setViewer(final IViewer<KNode> theViewer) {
+        this.viewer = theViewer;
+    }
+    
+    /**
+     *  @return the {@link IViewer} being in charge of showing this {@link ViewContext}.
+     */
+    public IViewer<KNode> getViewer() {
+        return viewer;
+    }
+
+    /**
+     * Setter.
+     * 
+     * @param zoomToFit
+     *            the zoomToFit to set
+     */
+    public void setZoomToFit(final boolean zoomToFit) {
+        this.zoomToFit = zoomToFit;
+    }
+
+    /**
+     * @return the zoomToFit
+     */
+    public boolean isZoomToFit() {
+        return zoomToFit;
+    }    
 
     /**
      * Adds a transformation context to the view context.
