@@ -453,5 +453,17 @@ public class KEdgeImpl extends KLabeledGraphElementImpl implements KEdge {
         }
         return super.eIsSet(featureID);
     }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String toString() {
+        KNode source = getSource();
+        if (source != null && target != null) {
+            return "KEdge:" + source.toString() + "->" + target.toString();
+        }
+        return super.toString();
+    }
 
 } //KEdgeImpl
