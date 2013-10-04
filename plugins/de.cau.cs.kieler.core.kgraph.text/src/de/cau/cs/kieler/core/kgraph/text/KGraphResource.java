@@ -71,10 +71,12 @@ public class KGraphResource extends LazyLinkingResource {
         EObject refreshed = NodeModelUtils.findActualSemanticObjectFor(NodeModelUtils
                 .findLeafNodeAtOffset(this.getParseResult().getRootNode(), offset));
         KNode node = (KNode) EcoreUtil2.getRootContainer(refreshed);
-        // parse persisted key-value pairs using KIML's layout data service
-        KimlUtil.loadDataElements(node);
-        // validate layout data and references and fill in missing data
-        KimlUtil.validate(node);
+        if (node != null) {
+            // parse persisted key-value pairs using KIML's layout data service
+            KimlUtil.loadDataElements(node);
+            // validate layout data and references and fill in missing data
+            KimlUtil.validate(node);
+        }
     }
     
     /**
