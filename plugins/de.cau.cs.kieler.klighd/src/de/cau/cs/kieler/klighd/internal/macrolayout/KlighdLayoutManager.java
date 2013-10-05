@@ -297,7 +297,7 @@ public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement>
         // furthermore, all nodes that have the LAYOUT_IGNORE property set are ignored
         for (KNode node : Iterables.filter(parent.getChildren(), Predicates.and(
                 RenderingContextData.CHILD_ACTIVE,
-                KlighdPredicates.propertyPredicate(KlighdProperties.LAYOUT_IGNORE, false, true)))) {
+                KlighdPredicates.propertyPredicate(LayoutOptions.NO_LAYOUT, false, true)))) {
             createNode(mapping, node, layoutParent);
         }
     }
