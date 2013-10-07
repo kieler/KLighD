@@ -11,17 +11,18 @@
  * This code is provided under the terms of the Eclipse Public License (EPL).
  * See the file epl-v10.html for the license text.
  */
-package de.cau.cs.kieler.klighd.views;
+package de.cau.cs.kieler.klighd.piccolo.viewer;
 
 import org.eclipse.jface.action.Action;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.GC;
-import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.graphics.Transform;
 import org.eclipse.swt.printing.PrintDialog;
 import org.eclipse.swt.printing.Printer;
 import org.eclipse.swt.printing.PrinterData;
+
+import de.cau.cs.kieler.klighd.views.DiagramViewPart;
 
 /**
  * @author uru
@@ -29,13 +30,17 @@ import org.eclipse.swt.printing.PrinterData;
  */
 public class PrintAction extends Action {
 
+    private PiccoloViewer viewer;
     private DiagramViewPart viewPart;
 
     /**
+     * @param viewer
+     *            piccolo viewer we know how to print.
      * @param viewPart
      *            the parent viewpart to be printed.
      */
-    public PrintAction(final DiagramViewPart viewPart) {
+    public PrintAction(final PiccoloViewer viewer, final DiagramViewPart viewPart) {
+        this.viewer = viewer;
         this.viewPart = viewPart;
     }
 
@@ -59,19 +64,14 @@ public class PrintAction extends Action {
             clientArea =
                     p.computeTrim(clientArea.x, clientArea.y, clientArea.width, clientArea.height);
 
-            Point screenDPI = viewPart.getViewSite().getShell().getDisplay().getDPI();
-            Point printerDPI = p.getDPI();
-            // assume the dpi is equal for x and y
-            float scaleFactor = printerDPI.x / (float) screenDPI.x;
-
             // start the print job
             p.startJob("Print KlighD View");
             p.startPage();
 
             // create and scale the GC according to dpis
             GC gc = new GC(p);
+            // adjust to page's trim area
             Transform t = new Transform(gc.getDevice());
-            t.scale(scaleFactor, scaleFactor);
             t.translate(-trim.x, -trim.y);
             gc.setTransform(t);
 
@@ -79,15 +79,19 @@ public class PrintAction extends Action {
             if (printerData.scope != PrinterData.SELECTION) {
                 // print the whole diagram fitted into the page
 
+                // clet the piccolo viewer take care of the rendering
+                viewer.renderOffscreen(gc, clientArea);
+
             } else {
                 // only print the visible area
 
                 // fit it into the page dimensions
                 Rectangle controlArea = viewPart.getContextViewer().getControl().getBounds();
                 float scaleX = controlArea.width / (float) clientArea.width;
-                float scaleY = controlArea.height / (float) controlArea.height;
-                float minScale = Math.min(scaleX, scaleY);
+                float scaleY = controlArea.height / (float) clientArea.height;
+                float minScale = 1 / Math.max(scaleX, scaleY);
                 t.scale(minScale, minScale);
+
                 gc.setTransform(t);
 
                 viewPart.getContextViewer().getControl().print(gc);
@@ -100,7 +104,6 @@ public class PrintAction extends Action {
             p.dispose();
 
         }
-
     }
 
 }
