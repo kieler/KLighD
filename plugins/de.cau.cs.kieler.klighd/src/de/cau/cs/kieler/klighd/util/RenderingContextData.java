@@ -64,7 +64,7 @@ public class RenderingContextData extends KGraphDataImpl {
      * Currently all children of a node are active or non-active at a time, a selective filtering is
      * not done so far (see e.g. DiagramController#addExpansionListener). This might change in future.
      */
-    public static final Predicate<KGraphElement> CHILD_ACTIVE = new Predicate<KGraphElement>() {
+    public static final Predicate<KGraphElement> IS_ACTIVE = new Predicate<KGraphElement>() {
         public boolean apply(final KGraphElement node) {
             return !RenderingContextData.get(node).containsPoperty(KlighdInternalProperties.ACTIVE)
                     || RenderingContextData.get(node).getProperty(KlighdInternalProperties.ACTIVE);
