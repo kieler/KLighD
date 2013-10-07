@@ -45,7 +45,6 @@ import de.cau.cs.kieler.klighd.piccolo.internal.nodes.ITracingElement;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdCanvas;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.PEmptyNode;
 import de.cau.cs.kieler.klighd.piccolo.ui.SaveAsImageAction;
-import de.cau.cs.kieler.klighd.util.RenderingContextData;
 import de.cau.cs.kieler.klighd.viewers.AbstractViewer;
 import de.cau.cs.kieler.klighd.viewers.ContextViewer;
 import de.cau.cs.kieler.klighd.views.DiagramViewPart;
@@ -279,7 +278,7 @@ public class PiccoloViewer extends AbstractViewer<KNode> implements INodeSelecti
      * {@inheritDoc}
      */
     @Override
-    public void setSelection(final Iterable<EObject> diagramElements) {
+    public void setSelection(final Iterable<KGraphElement> diagramElements) {
         if (selectionHandler != null) {
             selectionHandler.unselectAll();
             select(diagramElements);
@@ -300,9 +299,9 @@ public class PiccoloViewer extends AbstractViewer<KNode> implements INodeSelecti
      * {@inheritDoc}
      */
     @Override
-    public void select(final Iterable<EObject> diagramElements) {
+    public void select(final Iterable<KGraphElement> diagramElements) {
         if (selectionHandler != null) {
-            for (Object diagramElement : diagramElements) {
+            for (KGraphElement diagramElement : diagramElements) {
                 PNode node = getRepresentation(diagramElement);
                 if (node != null) {
                     selectionHandler.select(node);
@@ -315,9 +314,9 @@ public class PiccoloViewer extends AbstractViewer<KNode> implements INodeSelecti
      * {@inheritDoc}
      */
     @Override
-    public void unselect(final Iterable<EObject> diagramElements) {
+    public void unselect(final Iterable<KGraphElement> diagramElements) {
         if (selectionHandler != null) {
-            for (Object diagramElement : diagramElements) {
+            for (KGraphElement diagramElement : diagramElements) {
                 PNode node = getRepresentation(diagramElement);
                 if (node != null) {
                     selectionHandler.unselect(node);
@@ -351,7 +350,7 @@ public class PiccoloViewer extends AbstractViewer<KNode> implements INodeSelecti
      * {@inheritDoc}
      */
     @Override
-    public void reveal(final EObject diagramElement, final int duration) {
+    public void reveal(final KGraphElement diagramElement, final int duration) {
         PNode node = getRepresentation(diagramElement);
         if (node != null) {
             // move the camera so it includes the bounds of the node
@@ -364,7 +363,7 @@ public class PiccoloViewer extends AbstractViewer<KNode> implements INodeSelecti
      * {@inheritDoc}
      */
     @Override
-    public void centerOn(final EObject diagramElement, final int duration) {
+    public void centerOn(final KGraphElement diagramElement, final int duration) {
         PNode node = getRepresentation(diagramElement);
         if (node != null) {
             // center the camera on the node
@@ -376,6 +375,7 @@ public class PiccoloViewer extends AbstractViewer<KNode> implements INodeSelecti
     /**
      * {@inheritDoc}
      */
+    @Override
     public void expand(final KNode diagramElement) {
         controller.expand(diagramElement);
     }
@@ -383,8 +383,25 @@ public class PiccoloViewer extends AbstractViewer<KNode> implements INodeSelecti
     /**
      * {@inheritDoc}
      */
+    @Override
     public void toggleExpansion(final KNode diagramElement) {
         controller.toggleExpansion(diagramElement);
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void hide(final KGraphElement diagramElement) {
+        controller.hide(diagramElement);
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void show(final KGraphElement diagramElement) {
+        controller.show(diagramElement);
     }
     
     /**
@@ -394,13 +411,10 @@ public class PiccoloViewer extends AbstractViewer<KNode> implements INodeSelecti
      *            the diagram element
      * @return the Piccolo representation
      */
-    private PNode getRepresentation(final Object diagramElement) {
-        if (diagramElement instanceof KGraphElement) {
-            KGraphElement element = (KGraphElement) diagramElement;
-            PNode node = RenderingContextData.get(element).getProperty(DiagramController.REP);
-            if (node != null && node.getRoot() == canvas.getRoot()) {
-                return node;
-            }
+    private PNode getRepresentation(final KGraphElement diagramElement) {
+        PNode node = (PNode) controller.getRepresentation(diagramElement);
+        if (node != null && node.getRoot() == canvas.getRoot()) {
+            return node;
         }
         return null;
     }
