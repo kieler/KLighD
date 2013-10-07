@@ -55,6 +55,7 @@ import de.cau.cs.kieler.core.math.KielerMath;
 import de.cau.cs.kieler.core.properties.IProperty;
 import de.cau.cs.kieler.core.properties.Property;
 import de.cau.cs.kieler.kiml.klayoutdata.KEdgeLayout;
+import de.cau.cs.kieler.kiml.klayoutdata.KLayoutData;
 import de.cau.cs.kieler.kiml.klayoutdata.KLayoutDataPackage;
 import de.cau.cs.kieler.kiml.klayoutdata.KPoint;
 import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout;
@@ -104,7 +105,7 @@ public class DiagramController {
 
     /**
      * Property name of edge layout listeners updating the edge node. Listeners are attached to edge
-     * nodes via this name allowing to detach the from the edge layout if the edge is removed from
+     * nodes via this name allowing to detach them from the edge layout if the edge is removed from
      * the KGraph.
      * 
      * @author chsch
@@ -112,7 +113,7 @@ public class DiagramController {
     private static final String K_EDGE_LAYOUT_LISTENER = "KEdgeLayoutListener";
 
     /** the property for the Piccolo representation of a node. */
-    public static final IProperty<PNode> REP = new Property<PNode>("klighd.piccolo.prepresentation");
+    public static final IProperty<INode> REP = new Property<INode>("klighd.piccolo.prepresentation");
     
     /** the property for remembering the edge sync adapter on a node. */
     private static final IProperty<AdapterImpl> CHILDREN_SYNC_ADAPTER = new Property<AdapterImpl>(
@@ -158,7 +159,7 @@ public class DiagramController {
     public DiagramController(final KNode graph, final PNode parent, final boolean sync) {
         resetGraphElement(graph);
         this.topNode = new KNodeTopNode(graph);
-        RenderingContextData.get(graph).setProperty(INode.NODE_REP, topNode);
+        RenderingContextData.get(graph).setProperty(REP, topNode);
         parent.addChild(topNode);
         this.sync = sync;
     }
@@ -231,7 +232,7 @@ public class DiagramController {
      *            the node
      */
     public void collapse(final KNode node) {
-        INode nodeRep = RenderingContextData.get(node).getProperty(INode.NODE_REP);
+        INode nodeRep = RenderingContextData.get(node).getProperty(REP);
         if (nodeRep != null) {
             // set the child area to be collapsed
             nodeRep.getChildArea().setExpanded(false);
@@ -245,7 +246,7 @@ public class DiagramController {
      *            the node
      */
     public void expand(final KNode node) {
-        INode nodeRep = RenderingContextData.get(node).getProperty(INode.NODE_REP);
+        INode nodeRep = RenderingContextData.get(node).getProperty(REP);
         if (nodeRep != null) {
             // set the child area to be expanded
             nodeRep.getChildArea().setExpanded(true);
@@ -258,7 +259,7 @@ public class DiagramController {
      * @return true if this node is expanded.
      */
     public boolean isExpanded(final KNode node) {
-        INode nodeRep = RenderingContextData.get(node).getProperty(INode.NODE_REP);
+        INode nodeRep = RenderingContextData.get(node).getProperty(REP);
         if (nodeRep != null) {
             return nodeRep.getChildArea().isExpanded();
         }
@@ -272,7 +273,7 @@ public class DiagramController {
      *            the node
      */
     public void toggleExpansion(final KNode node) {
-        INode nodeRep = RenderingContextData.get(node).getProperty(INode.NODE_REP);
+        INode nodeRep = RenderingContextData.get(node).getProperty(REP);
         if (nodeRep != null) {
             // set the child area to expanded
             nodeRep.getChildArea().setExpanded(!nodeRep.getChildArea().isExpanded());
@@ -350,7 +351,7 @@ public class DiagramController {
             // Look whether a URI is attached to the node's shape layout
             //  this currently indicates externalized child elements that
             //  are to be loaded and translated lazily, which has to be done now!
-            URI uri = parent.getData(KShapeLayout.class)
+            URI uri = parent.getData(KLayoutData.class)
                     .getProperty(KlighdProperties.CHILD_URI);
             
             KNode result = null;
@@ -396,7 +397,7 @@ public class DiagramController {
      * @return the created node representation
      */
     private KNodeNode addNode(final INode parent, final KNode node) {
-        INode nodeRep = RenderingContextData.get(node).getProperty(INode.NODE_REP);
+        INode nodeRep = RenderingContextData.get(node).getProperty(REP);
 
         KNodeNode nodeNode;
         if (nodeRep instanceof KNodeTopNode) {
@@ -414,7 +415,7 @@ public class DiagramController {
             // if there is no Piccolo representation for the node create it
             if (nodeNode == null) {
                 nodeNode = new KNodeNode(node, parent);
-                RenderingContextData.get(node).setProperty(INode.NODE_REP, nodeNode);
+                RenderingContextData.get(node).setProperty(REP, nodeNode);
                 if (record && isAutomaticallyArranged(node)) {
                     // this avoids flickering and denotes the application of fade-in,
                     //  see #handleRecordedChanges()
@@ -494,7 +495,7 @@ public class DiagramController {
      *            the node
      */
     private void removeNode(final KNode node) {
-        INode nodeRep = RenderingContextData.get(node).getProperty(INode.NODE_REP);
+        INode nodeRep = RenderingContextData.get(node).getProperty(REP);
         if (nodeRep != null) {
             KNodeNode nodeNode;
             if (nodeRep instanceof KNodeTopNode) {
@@ -559,10 +560,8 @@ public class DiagramController {
                 }
 
                 // the following is needed in case of interlevel edges:
-                // edges ending in an outer child area will be clipped
-                // by the inner childArea;
-                // the clipping is generally intended and is realized by
-                // KChildAreaNode
+                //  edges ending in an outer child area will be clipped by the inner childArea;
+                //  the clipping is generally intended and is realized by KChildAreaNode
 
                 // find and set the parent for the edge
                 updateEdgeParent(edgeRep);
@@ -571,7 +570,7 @@ public class DiagramController {
                 updateEdgeOffset(edgeRep);
             }            
         } else {
-            
+            // see comments above
             // find and set the parent for the edge
             updateEdgeParent(edgeRep);
 
@@ -1074,7 +1073,7 @@ public class DiagramController {
                 return;
             }
             
-            KShapeLayout shL = null;
+            final KShapeLayout shL;
             if (notification.getNotifier() instanceof KNode
                     && notification.getNewValue() instanceof KShapeLayout) {
                 shL = (KShapeLayout) notification.getNewValue();
@@ -1568,8 +1567,7 @@ public class DiagramController {
         KNode target = edge.getTarget();
         if (source != null && target != null) {
             KNode commonParent = findLowestCommonAncestor(source, target);
-            INode commonParentNode = RenderingContextData.get(commonParent).getProperty(
-                    INode.NODE_REP);
+            INode commonParentNode = RenderingContextData.get(commonParent).getProperty(REP);
             if (commonParentNode != null) {
                 KChildAreaNode childAreaNode = commonParentNode.getChildArea();
                 childAreaNode.addEdge(edgeRep);
@@ -1595,7 +1593,7 @@ public class DiagramController {
             // see page
             // http://rtsys.informatik.uni-kiel.de/confluence/display/KIELER/KLayoutData+Meta+Model
             INode sourceParentNode = RenderingContextData.get(determineReferenceNodeOf(edge))
-                    .getProperty(INode.NODE_REP);
+                    .getProperty(REP);
             final KChildAreaNode relativeChildArea = sourceParentNode.getChildArea();
 
             // chsch: The following listener updates the offset of the edge depending the parent
