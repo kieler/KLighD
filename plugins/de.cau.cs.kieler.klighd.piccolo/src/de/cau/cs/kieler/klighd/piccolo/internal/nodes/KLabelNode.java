@@ -14,13 +14,10 @@
 package de.cau.cs.kieler.klighd.piccolo.internal.nodes;
 
 import de.cau.cs.kieler.core.kgraph.KLabel;
-import de.cau.cs.kieler.core.properties.IProperty;
-import de.cau.cs.kieler.core.properties.Property;
 import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout;
 import de.cau.cs.kieler.klighd.piccolo.internal.controller.AbstractKGERenderingController;
 import de.cau.cs.kieler.klighd.piccolo.internal.controller.KLabelRenderingController;
 import de.cau.cs.kieler.klighd.util.KlighdProperties;
-import de.cau.cs.kieler.klighd.util.RenderingContextData;
 import edu.umd.cs.piccolo.util.PPickPath;
 
 /**
@@ -31,10 +28,6 @@ import edu.umd.cs.piccolo.util.PPickPath;
 public class KLabelNode extends PEmptyNode implements IGraphElement<KLabel> {
 
     private static final long serialVersionUID = -3999806360081871118L;
-
-    /** the property for the Piccolo representation of a label. */
-    public static final IProperty<KLabelNode> LABEL_REP = new Property<KLabelNode>(
-            "klighd.piccolo.prepresentation");
 
     /** the property name for changes of the label's text. */
     public static final String PROPERTY_TEXT = "labelText";
@@ -59,8 +52,6 @@ public class KLabelNode extends PEmptyNode implements IGraphElement<KLabel> {
         Boolean b = label.getData(KShapeLayout.class).getProperty(
                 KlighdProperties.KLIGHD_SELECTION_UNPICKABLE);
         setPickable(b != null && b.equals(Boolean.TRUE) ? false : true);
-
-        RenderingContextData.get(label).setProperty(LABEL_REP, this);
     }
 
     /**

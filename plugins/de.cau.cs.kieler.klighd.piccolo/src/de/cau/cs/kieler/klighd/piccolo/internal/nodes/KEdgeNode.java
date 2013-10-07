@@ -16,9 +16,6 @@ package de.cau.cs.kieler.klighd.piccolo.internal.nodes;
 import java.awt.geom.Point2D;
 
 import de.cau.cs.kieler.core.kgraph.KEdge;
-import de.cau.cs.kieler.core.properties.IProperty;
-import de.cau.cs.kieler.core.properties.Property;
-import de.cau.cs.kieler.klighd.util.RenderingContextData;
 import de.cau.cs.kieler.klighd.piccolo.internal.controller.AbstractKGERenderingController;
 import de.cau.cs.kieler.klighd.piccolo.internal.controller.KEdgeRenderingController;
 import edu.umd.cs.piccolo.PNode;
@@ -35,10 +32,6 @@ import edu.umd.cs.piccolo.PNode;
 public class KEdgeNode extends PChildRepresentedNode implements ILabeledGraphElement<KEdge> {
 
     private static final long serialVersionUID = -1867615197736299487L;
-
-    /** the property for the Piccolo representation of an edge. */
-    public static final IProperty<KEdgeNode> EDGE_REP = new Property<KEdgeNode>(
-            "klighd.piccolo.prepresentation");
 
     /** the property name for changes of the edge's bend points. */
     public static final String PROPERTY_BEND_POINTS = "bendPoints";
@@ -63,7 +56,6 @@ public class KEdgeNode extends PChildRepresentedNode implements ILabeledGraphEle
         setChildrenPickable(true);
         bendPoints[0] = new Point2D.Double();
         bendPoints[1] = new Point2D.Double();
-        RenderingContextData.get(edge).setProperty(EDGE_REP, this);
     }
 
     /**
