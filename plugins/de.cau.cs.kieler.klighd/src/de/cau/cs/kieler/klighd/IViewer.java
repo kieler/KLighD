@@ -13,10 +13,10 @@
  */
 package de.cau.cs.kieler.klighd;
 
-import org.eclipse.emf.ecore.EObject;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 
+import de.cau.cs.kieler.core.kgraph.KGraphElement;
 import de.cau.cs.kieler.core.kgraph.KNode;
 import de.cau.cs.kieler.klighd.viewers.ContextViewer;
 
@@ -26,6 +26,7 @@ import de.cau.cs.kieler.klighd.viewers.ContextViewer;
  * All method calls on this interface have to be made from the UI thread.
  * 
  * @author mri
+ * @author chsch
  * 
  * @param <T>
  *            the type of the model this viewer accepts
@@ -108,7 +109,7 @@ public interface IViewer<T> {
      * @param diagramElements
      *            the diagram elements
      */
-    void setSelection(Iterable<EObject> diagramElements);
+    void setSelection(Iterable<KGraphElement> diagramElements);
 
     /**
      * Clears the current selection.
@@ -121,7 +122,7 @@ public interface IViewer<T> {
      * @param diagramElements
      *            the diagram elements
      */
-    void select(Iterable<EObject> diagramElements);
+    void select(Iterable<KGraphElement> diagramElements);
 
     /**
      * Removes the given diagram elements from the current selection if possible.
@@ -129,7 +130,7 @@ public interface IViewer<T> {
      * @param diagramElements
      *            the diagram elements
      */
-    void unselect(Iterable<EObject> diagramElements);
+    void unselect(Iterable<KGraphElement> diagramElements);
 
     /**
      * Reveals the given diagram element over the specified duration.
@@ -139,7 +140,7 @@ public interface IViewer<T> {
      * @param duration
      *            the duration
      */
-    void reveal(EObject diagramElement, int duration);
+    void reveal(KGraphElement diagramElement, int duration);
 
     /**
      * Centers on the given diagram element over the specified duration.
@@ -149,7 +150,7 @@ public interface IViewer<T> {
      * @param duration
      *            the duration
      */
-    void centerOn(EObject diagramElement, int duration);
+    void centerOn(KGraphElement diagramElement, int duration);
 
     /**
      * Zooms to the given zoom level over the specified duration.
@@ -219,13 +220,54 @@ public interface IViewer<T> {
     void toggleExpansion(Object semanticElement);
     
     /**
-     * Toggles the expansion state of the given representation element.
-     * If it is expanded, it gets collapsed, and vice versa.
+     * Toggles the expansion state of the given representation element. If it is expanded, it gets
+     * collapsed, and vice versa.
      * 
-     * @param diagramElement the diagram element to be expanded
+     * @param diagramElement
+     *            the diagram element to be expanded
      */
     void toggleExpansion(KNode diagramElement);
 
+    /**
+     * Hides the representation of the given {@link Object} from the diagram. In combination with
+     * {@link #show(Object)} this method can be used for changing the diagram's amount of detail
+     * without changing the view model.
+     * 
+     * @param semanticElement
+     *            the semantic element to be hidden
+     */
+    void hide(Object semanticElement);
+    
+    /**
+     * Hides the given {@link KGraphElement} from the diagram. In combination with
+     * {@link #show(KGraphElement)} this method can be used for changing the diagram's amount of
+     * detail without changing the view model.
+     * 
+     * @param diagramElement
+     *            the diagram element to be hidden
+     */
+    void hide(KGraphElement diagramElement);
+    
+    /**
+     * Shows the representation of the given {@link Object} in the diagram. In combination with
+     * {@link #hide(Object)} this method can be used for changing the diagram's amount of detail
+     * without changing the view model.
+     * 
+     * @param semanticElement
+     *            the semantic element to show up
+     */
+    void show(Object semanticElement);
+    
+    /**
+     * Shows the given {@link KGraphElement} from the diagram. In combination with
+     * {@link #hide(KGraphElement)} this method can be used for changing the diagram's amount of
+     * detail without changing the view model.
+     * 
+     * @param diagramElement
+     *            the diagram element to show up
+     */
+    void show(KGraphElement diagramElement);
+    
     /**
      * Adds an event listener to the viewer.
      * 

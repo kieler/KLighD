@@ -762,6 +762,7 @@ public class ContextViewer extends AbstractViewer<Object> implements IViewerEven
     /**
      * {@inheritDoc}
      */
+    @Override
     public void collapse(final Object semanticElement) {
         Object diagramNode = getCurrentViewContext().getTargetElement(semanticElement);
         if (diagramNode instanceof KNode) {
@@ -772,6 +773,7 @@ public class ContextViewer extends AbstractViewer<Object> implements IViewerEven
     /**
      * {@inheritDoc}
      */
+    @Override
     public void collapse(final KNode diagramElement) {
         currentViewer.collapse(diagramElement);
     }
@@ -779,6 +781,7 @@ public class ContextViewer extends AbstractViewer<Object> implements IViewerEven
     /**
      * {@inheritDoc}
      */
+    @Override
     public void expand(final Object semanticElement) {
         Object diagramNode = getCurrentViewContext().getTargetElement(semanticElement);
         if (diagramNode instanceof KNode) {
@@ -789,6 +792,7 @@ public class ContextViewer extends AbstractViewer<Object> implements IViewerEven
     /**
      * {@inheritDoc}
      */
+    @Override
     public void expand(final KNode diagramElement) {
         currentViewer.expand(diagramElement);
     }
@@ -796,8 +800,9 @@ public class ContextViewer extends AbstractViewer<Object> implements IViewerEven
     /**
      * {@inheritDoc}
      */
+    @Override
     public void toggleExpansion(final Object semanticElement) {
-        Object diagramNode = getCurrentViewContext().getTargetElement(semanticElement);
+        final Object diagramNode = getCurrentViewContext().getTargetElement(semanticElement);
         if (diagramNode instanceof KNode) {
             currentViewer.toggleExpansion((KNode) diagramNode);
         }
@@ -806,8 +811,43 @@ public class ContextViewer extends AbstractViewer<Object> implements IViewerEven
     /**
      * {@inheritDoc}
      */
+    @Override
     public void toggleExpansion(final KNode diagramElement) {
         currentViewer.toggleExpansion(diagramElement);
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public void hide(final Object semanticElement) {
+        final Object diagramElement = getCurrentViewContext().getTargetElement(semanticElement);
+        if (diagramElement instanceof KGraphElement) {
+            currentViewer.hide(diagramElement);
+        }
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public void hide(final KGraphElement diagramElement) {
+        currentViewer.hide(diagramElement);
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public void show(final Object semanticElement) {
+        final Object diagramElement = getCurrentViewContext().getTargetElement(semanticElement);
+        if (diagramElement instanceof KGraphElement) {
+            currentViewer.show(diagramElement);
+        }
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public void show(final KGraphElement diagramElement) {
+        currentViewer.show(diagramElement);
     }
     
     /**
@@ -830,7 +870,7 @@ public class ContextViewer extends AbstractViewer<Object> implements IViewerEven
      * {@inheritDoc}
      */
     @Override
-    public void setSelection(final Iterable<EObject> diagramElements) {
+    public void setSelection(final Iterable<KGraphElement> diagramElements) {
         if (currentViewer != null) {
             currentViewer.setSelection(diagramElements);
         }
@@ -850,7 +890,7 @@ public class ContextViewer extends AbstractViewer<Object> implements IViewerEven
      * {@inheritDoc}
      */
     @Override
-    public void select(final Iterable<EObject> diagramElements) {
+    public void select(final Iterable<KGraphElement> diagramElements) {
         if (currentViewer != null) {
             currentViewer.select(diagramElements);
         }
@@ -860,7 +900,7 @@ public class ContextViewer extends AbstractViewer<Object> implements IViewerEven
      * {@inheritDoc}
      */
     @Override
-    public void unselect(final Iterable<EObject> diagramElements) {
+    public void unselect(final Iterable<KGraphElement> diagramElements) {
         if (currentViewer != null) {
             currentViewer.unselect(diagramElements);
         }
@@ -870,7 +910,7 @@ public class ContextViewer extends AbstractViewer<Object> implements IViewerEven
      * {@inheritDoc}
      */
     @Override
-    public void reveal(final EObject diagramElement, final int duration) {
+    public void reveal(final KGraphElement diagramElement, final int duration) {
         if (currentViewer != null) {
             currentViewer.reveal(diagramElement, duration);
         }
@@ -880,7 +920,7 @@ public class ContextViewer extends AbstractViewer<Object> implements IViewerEven
      * {@inheritDoc}
      */
     @Override
-    public void centerOn(final EObject diagramElement, final int duration) {
+    public void centerOn(final KGraphElement diagramElement, final int duration) {
         if (currentViewer != null) {
             currentViewer.centerOn(diagramElement, duration);
         }
