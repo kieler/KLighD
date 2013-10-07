@@ -111,8 +111,7 @@ public class KlighdActionEventHandler implements PInputEventListener {
                 return;
             }
 
-            LightDiagramServices.getInstance().layoutDiagram(
-                    viewer.getContextViewer().getCurrentViewContext(),
+            LightDiagramServices.layoutDiagram(viewer.getContextViewer().getCurrentViewContext(),
                     Iterables2.singletonList(config));
             
             KlighdStatusState state = new KlighdStatusState(KlighdStatusState.Status.UPDATE, viewer
