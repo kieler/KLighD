@@ -15,6 +15,7 @@ package de.cau.cs.kieler.klighd.util;
 
 import com.google.common.base.Predicate;
 
+import de.cau.cs.kieler.core.kgraph.KGraphElement;
 import de.cau.cs.kieler.core.kgraph.KNode;
 import de.cau.cs.kieler.core.properties.IProperty;
 import de.cau.cs.kieler.kiml.klayoutdata.KLayoutData;
@@ -63,6 +64,10 @@ public final class KlighdPredicates {
     }
 
     /**
+     * @param <S>
+     *            The actual type of the {@link KGraphElement} whose property <code>property</code>
+     *            is to be examined. This parameter is required to infer the most precise return type
+     *            in case a method call is part of a varArgs method parameter.
      * @param <T>
      *            The type of the properties value.
      * @param property
@@ -74,10 +79,10 @@ public final class KlighdPredicates {
      * @return a {@link Predicate} that tests if the specified property equals the expected value.
      *         If the property is not set, the predicate evaluates to false.
      */
-    public static <T> Predicate<KNode> propertyPredicate(final IProperty<T> property,
-            final T expected, final boolean unsetEqualsTrue) {
-        return new Predicate<KNode>() {
-            public boolean apply(final KNode node) {
+    public static <S extends KGraphElement, T> Predicate<S> propertyPredicate(
+            final IProperty<T> property, final T expected, final boolean unsetEqualsTrue) {
+        return new Predicate<S>() {
+            public boolean apply(final S node) {
 
                 KLayoutData data = node.getData(KLayoutData.class);
                 if (data != null) {
