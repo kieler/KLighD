@@ -444,7 +444,7 @@ public class RandomGraphOptionsPage extends WizardPage {
         useExistingPortsChanceSpinner.addModifyListener(new ModifyListener() {
             public void modifyText(final ModifyEvent e) {
                 options.setProperty(GeneratorOptions.USE_EXISTING_PORTS_CHANCE,
-                        useExistingPortsChanceSpinner.getSelection() / 100.0);
+                        useExistingPortsChanceSpinner.getSelection() / 100.0f);
             }
         });
         
