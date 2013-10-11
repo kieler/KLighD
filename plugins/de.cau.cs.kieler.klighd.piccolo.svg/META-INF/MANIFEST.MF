@@ -20,5 +20,11 @@ Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Export-Package: de.cau.cs.kieler.klighd.piccolo.svg
 Bundle-ClassPath: lib/VectorGraphics2D-0.9.1.jar,
- .
+ .,
+ lib/freehep-graphicsio-svg-2.1.1.jar,
+ lib/freehep-io-2.0.2.jar,
+ lib/freehep-xml-2.1.1.jar,
+ lib/freehep-graphicsio-2.1.1.jar,
+ lib/freehep-graphics2d-2.1.1.jar,
+ lib/freehep-util-2.0.2.jar
 

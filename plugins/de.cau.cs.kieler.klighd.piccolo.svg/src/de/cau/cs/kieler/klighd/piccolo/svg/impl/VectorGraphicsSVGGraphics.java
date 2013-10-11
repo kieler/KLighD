@@ -11,10 +11,11 @@
  * This code is provided under the terms of the Eclipse Public License (EPL).
  * See the file epl-v10.html for the license text.
  */
-package de.cau.cs.kieler.klighd.piccolo.svg;
+package de.cau.cs.kieler.klighd.piccolo.svg.impl;
 
 import java.awt.geom.Rectangle2D;
 
+import de.cau.cs.kieler.klighd.piccolo.svg.KlighdAbstractSVGGraphics;
 import de.erichseifert.vectorgraphics2d.SVGGraphics2D;
 
 /**

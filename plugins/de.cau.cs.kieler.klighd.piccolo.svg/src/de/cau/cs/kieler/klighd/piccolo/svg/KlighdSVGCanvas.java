@@ -22,6 +22,9 @@ import java.util.List;
 import de.cau.cs.kieler.core.kgraph.KNode;
 import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout;
 import de.cau.cs.kieler.klighd.piccolo.internal.controller.DiagramController;
+import de.cau.cs.kieler.klighd.piccolo.svg.impl.BatikSVGGraphics;
+import de.cau.cs.kieler.klighd.piccolo.svg.impl.FreeHEPSVGGraphics;
+import de.cau.cs.kieler.klighd.piccolo.svg.impl.VectorGraphicsSVGGraphics;
 import edu.umd.cs.piccolo.PCamera;
 import edu.umd.cs.piccolo.PComponent;
 import edu.umd.cs.piccolo.PLayer;
@@ -45,10 +48,16 @@ import edu.umd.cs.piccolo.util.PUtil;
  */
 public class KlighdSVGCanvas implements PComponent {
 
+    public enum SVGGenerator {
+        Batik, VectorGraphics, FreeHEP
+    }
+
     private KlighdAbstractSVGGraphics graphics;
 
     private PCamera camera;
     private PPaintContext paintContext;
+
+    private SVGGenerator svgGenerator = SVGGenerator.FreeHEP;
 
     private static final PBounds INITIAL_BOUNDS = new PBounds(0, 0, 800, 600);
 
@@ -74,17 +83,29 @@ public class KlighdSVGCanvas implements PComponent {
      */
     public KlighdSVGCanvas(final Rectangle2D bounds, final boolean textAsShapes) {
         // create a graphics object
-        graphics = createGraphics(textAsShapes);
+        graphics = createGraphics(textAsShapes, bounds);
 
         // create a new camera
         camera = PUtil.createBasicScenegraph();
-        camera.setBounds(bounds);
+        // camera.setBounds(bounds);
         camera.setComponent(this);
     }
 
-    private static KlighdAbstractSVGGraphics createGraphics(final boolean textAsShapes) {
-        return new BatikSVGGraphics(textAsShapes);
-        // return new VectorGraphicsSVGGraphics();
+    private static KlighdAbstractSVGGraphics createGraphics(final boolean textAsShapes,
+            final Rectangle2D bounds) {
+
+        SVGGenerator svgGen = SVGGenerator.FreeHEP;
+       
+        // TODO add textAsShapes and bounds to all graphics!
+        switch (svgGen) {
+        case VectorGraphics:
+            return new VectorGraphicsSVGGraphics();
+        case FreeHEP:
+            return new FreeHEPSVGGraphics(bounds);
+        default:
+            // batik
+            return new BatikSVGGraphics(textAsShapes);
+        }
     }
 
     /**
@@ -92,6 +113,13 @@ public class KlighdSVGCanvas implements PComponent {
      */
     public String render() {
 
+        // System.out.println(camera.getC);
+        System.out.println(camera.getFullBounds());
+        System.out.println(camera.getGlobalFullBounds());
+        System.out.println(camera.getRoot().getFullBounds());
+        camera.setBounds(camera.getRoot().getFullBounds());
+
+        graphics = createGraphics(false, camera.getRoot().getFullBounds());
         // initially clear the graphics object
         graphics.clear();
 
@@ -158,7 +186,7 @@ public class KlighdSVGCanvas implements PComponent {
         controller.initialize();
 
         // set up the paint context
-        KlighdAbstractSVGGraphics graphics = createGraphics(false);
+        KlighdAbstractSVGGraphics graphics = createGraphics(false, bounds);
         final PPaintContext paintContext = new PPaintContext(graphics);
 
         // the following clip sit is required in order to get rid of the one set in
@@ -175,7 +203,7 @@ public class KlighdSVGCanvas implements PComponent {
     }
 
     /*---------------------------------------------------------------------
-     * Static Rendering Facilities - Render from a PCamera.
+     * Render from a PCamera.
      */
 
     /**
@@ -199,8 +227,20 @@ public class KlighdSVGCanvas implements PComponent {
      */
     public static String render(final PCamera camera, final boolean viewPort,
             final boolean textAsShapes) {
+
+        Rectangle2D bounds = null;
+        if (viewPort) {
+            bounds = camera.getBounds();
+        } else {
+            bounds = camera.getRoot().getFullBounds();
+        }
+
         // set up the paint context
-        KlighdAbstractSVGGraphics graphics = createGraphics(textAsShapes);
+        System.out.println(bounds);
+        System.out.println(camera.getFullBounds());
+        System.out.println(camera.getGlobalFullBounds());
+        System.out.println(camera.getRoot().getFullBounds());
+        KlighdAbstractSVGGraphics graphics = createGraphics(textAsShapes, bounds);
 
         // the following clip sit is required in order to get rid of the one set in
         // the constructor call above, which lets Inkscape & browsers go crazy

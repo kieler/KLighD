@@ -11,11 +11,12 @@
  * This code is provided under the terms of the Eclipse Public License (EPL).
  * See the file epl-v10.html for the license text.
  */
-package de.cau.cs.kieler.klighd.piccolo.svg;
+package de.cau.cs.kieler.klighd.piccolo.svg.impl;
 
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.RenderingHints;
+import java.awt.geom.Rectangle2D;
 import java.io.StringWriter;
 
 import org.apache.batik.dom.GenericDOMImplementation;
@@ -25,6 +26,7 @@ import org.w3c.dom.DOMImplementation;
 import org.w3c.dom.Document;
 
 import de.cau.cs.kieler.klighd.KlighdConstants;
+import de.cau.cs.kieler.klighd.piccolo.svg.KlighdAbstractSVGGraphics;
 
 /**
  * A wrapper for batik's {@link SVGGraphics2D} svg generator. Allows to render the contents of
