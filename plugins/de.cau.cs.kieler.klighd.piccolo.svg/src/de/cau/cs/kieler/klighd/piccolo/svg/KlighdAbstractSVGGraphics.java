@@ -41,13 +41,9 @@ import java.awt.image.IndexColorModel;
 import java.awt.image.RenderedImage;
 import java.awt.image.WritableRaster;
 import java.awt.image.renderable.RenderableImage;
-import java.io.StringWriter;
 import java.text.AttributedCharacterIterator;
 import java.util.Map;
 
-import org.apache.batik.dom.GenericDOMImplementation;
-import org.apache.batik.svggen.SVGGeneratorContext;
-import org.apache.batik.svggen.SVGGraphics2D;
 import org.eclipse.swt.graphics.Device;
 import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.graphics.GC;
@@ -57,8 +53,6 @@ import org.eclipse.swt.graphics.LineAttributes;
 import org.eclipse.swt.graphics.PaletteData;
 import org.eclipse.swt.graphics.Path;
 import org.eclipse.swt.graphics.RGB;
-import org.w3c.dom.DOMImplementation;
-import org.w3c.dom.Document;
 
 import com.google.common.collect.Maps;
 
@@ -69,19 +63,14 @@ import de.cau.cs.kieler.klighd.piccolo.internal.KlighdSWTGraphicsEx;
 import de.cau.cs.kieler.klighd.piccolo.internal.util.RGBGradient;
 
 /**
- * A wrapper for batik's {@link SVGGraphics2D} svg generator. Allows to render the contents of
- * KlighD views as SVGs.
- * 
- * After painting to the graphics object, the {@link #getSVG()} method can be used to retrieve the
- * SVG as String.
+ * Common superclass for svg generators using a {@link Graphics2D} to produce svgs.
  * 
  * @author uru
  */
-public class KlighdSimpleSVGGraphicsImpl extends Graphics2D implements KlighdSWTGraphicsEx {
+public abstract class KlighdAbstractSVGGraphics extends Graphics2D implements KlighdSWTGraphicsEx {
 
     // The svg generator element
-    private SVGGraphics2D graphics;
-    private Document document;
+    private Graphics2D graphics;
 
     // Internal attributes
     private LineAttributes lineAttributes = new LineAttributes(1f);
@@ -97,75 +86,42 @@ public class KlighdSimpleSVGGraphicsImpl extends Graphics2D implements KlighdSWT
 
     private final Map<ImageData, BufferedImage> imageBuffer = Maps.newHashMap();
     private final Rectangle2D imageBoundsRect = new Rectangle2D.Double();
+
+    /**
+     * @param graphicsDelegate
+     *            the {@link Graphics2D} object to which all drawing requests are delegated. If
+     *            <code>null</code> is passed, make sure the
+     *            {@link #setGraphicsDelegate(Graphics2D)} method is called prior to any drawing!
+     */
+    public KlighdAbstractSVGGraphics(final Graphics2D graphicsDelegate) {
+        setGraphicsDelegate(graphicsDelegate);
+    }
+
+    /**
+     * @param graphicsDelegate
+     *            the {@link Graphics2D} object to which all drawing requests are delegated.
+     */
+    protected void setGraphicsDelegate(final Graphics2D graphicsDelegate) {
+        this.graphics = graphicsDelegate;
+    }
+
+    /**
+     * @return the internal graphics delegate.
+     */
+    protected Graphics2D getGraphicsDelegate() {
+        return graphics;
+    }
+
+    /**
+     * @return String representation of the svg.
+     */
+    public abstract String getSVG();
+
+    /**
+     * Clear the whole drawing area.
+     */
+    public abstract void clear();
     
-    private static final String SVG_NS = "http://www.w3.org/2000/svg";
-
-    /**
-     * Constructor.<br>
-     * Delegates to {@link #KlighdSimpleSVGGraphicsImpl(boolean) #KlighdSimpleSVGGraphicsImpl(false)}.
-     */
-    public KlighdSimpleSVGGraphicsImpl() {
-        this(false);
-    }
-
-    /**
-     * Constructor.
-     * 
-     * @param textAsShapes
-     *            whether text should be rendered as shapes
-     */
-    public KlighdSimpleSVGGraphicsImpl(final boolean textAsShapes) {
-
-        // Get a DOMImplementation.
-        DOMImplementation domImpl = GenericDOMImplementation.getDOMImplementation();
-
-        // Create an instance of org.w3c.dom.Document.
-        document = domImpl.createDocument(SVG_NS, "svg", null);
-
-        // assemble context
-        SVGGeneratorContext ctx = SVGGeneratorContext.createDefault(document);
-        ctx.setEmbeddedFontsOn(true);
-
-        // create and configure the graphics object
-        graphics = new SVGGraphics2D(ctx, textAsShapes);
-        graphics.setColor(Color.WHITE);
-        graphics.setBackground(Color.WHITE);
-        graphics.setPaint(Color.white);
-        graphics.setFont(new Font(KlighdConstants.DEFAULT_FONT_NAME,
-                KlighdConstants.DEFAULT_FONT_STYLE, KlighdConstants.DEFAULT_FONT_SIZE));
-
-        // + RENDERING -> sets all other hints to initial value.
-        graphics.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_SPEED);
-        // + FRACTIONAL_METRICS -> sets initial values for text-rendering and shape-rendering.
-        graphics.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS,
-                RenderingHints.VALUE_FRACTIONALMETRICS_OFF);
-        // + ANTIALIASING -> shape-rendering and text-rendering
-        graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-                RenderingHints.VALUE_ANTIALIAS_OFF);
-        // + COLOR_RENDERING -> color-rendering
-        graphics.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING,
-                RenderingHints.VALUE_COLOR_RENDER_SPEED);
-        // + INTERPOLATION -> image-rendering
-        graphics.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
-                RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR);
-        // + TEXT_ANTIALIASING -> text-rendering
-        graphics.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,
-                RenderingHints.VALUE_TEXT_ANTIALIAS_OFF);
-    }
-
-    /**
-     * @return the currently rendered SVG.
-     */
-    public String getSVG() {
-        StringWriter sw = new StringWriter();
-        try {
-            graphics.stream(sw, true);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return sw.toString();
-    }
-
     /**
      * {@inheritDoc}
      */
@@ -406,9 +362,9 @@ public class KlighdSimpleSVGGraphicsImpl extends Graphics2D implements KlighdSWT
     public void drawImage(final Image image, final double width, final double height) {
         this.imageBoundsRect.setRect(0, 0, width, height);
         final Rectangle bounds = imageBoundsRect.getBounds();
-        
+
         // don't use the buffer in this case
-        //  as Image#getImageData() returns always a new instance
+        // as Image#getImageData() returns always a new instance
         final java.awt.Image img = convertToAWT(image.getImageData());
         graphics.drawImage(img, 0, 0, bounds.width, bounds.height, null);
     }
@@ -424,7 +380,7 @@ public class KlighdSimpleSVGGraphicsImpl extends Graphics2D implements KlighdSWT
         if (image == null) {
             image = convertToAWT(imageData);
         }
-        
+
         graphics.drawImage(image, 0, 0, bounds.width, bounds.height, null);
     }
 
@@ -494,8 +450,9 @@ public class KlighdSimpleSVGGraphicsImpl extends Graphics2D implements KlighdSWT
             colorModel =
                     new DirectColorModel(data.depth, palette.redMask, palette.greenMask,
                             palette.blueMask);
-            bufferedImage = new BufferedImage(colorModel,
-                    colorModel.createCompatibleWritableRaster(data.width, data.height), false, null);
+            bufferedImage =
+                    new BufferedImage(colorModel, colorModel.createCompatibleWritableRaster(
+                            data.width, data.height), false, null);
             for (int y = 0; y < data.height; y++) {
                 for (int x = 0; x < data.width; x++) {
                     int pixel = data.getPixel(x, y);
@@ -523,8 +480,9 @@ public class KlighdSimpleSVGGraphicsImpl extends Graphics2D implements KlighdSWT
             } else {
                 colorModel = new IndexColorModel(data.depth, rgbs.length, red, green, blue);
             }
-            bufferedImage = new BufferedImage(colorModel,
-                    colorModel.createCompatibleWritableRaster(data.width, data.height), false, null);
+            bufferedImage =
+                    new BufferedImage(colorModel, colorModel.createCompatibleWritableRaster(
+                            data.width, data.height), false, null);
             WritableRaster raster = bufferedImage.getRaster();
             int[] pixelArray = new int[1];
             for (int y = 0; y < data.height; y++) {

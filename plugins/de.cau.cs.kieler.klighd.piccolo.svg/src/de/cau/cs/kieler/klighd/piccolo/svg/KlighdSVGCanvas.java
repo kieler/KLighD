@@ -45,7 +45,7 @@ import edu.umd.cs.piccolo.util.PUtil;
  */
 public class KlighdSVGCanvas implements PComponent {
 
-    private KlighdSimpleSVGGraphicsImpl graphics;
+    private KlighdAbstractSVGGraphics graphics;
 
     private PCamera camera;
     private PPaintContext paintContext;
@@ -74,17 +74,26 @@ public class KlighdSVGCanvas implements PComponent {
      */
     public KlighdSVGCanvas(final Rectangle2D bounds, final boolean textAsShapes) {
         // create a graphics object
-        graphics = new KlighdSimpleSVGGraphicsImpl(textAsShapes);
+        graphics = createGraphics(textAsShapes);
+
         // create a new camera
         camera = PUtil.createBasicScenegraph();
         camera.setBounds(bounds);
         camera.setComponent(this);
     }
 
+    private static KlighdAbstractSVGGraphics createGraphics(final boolean textAsShapes) {
+        return new BatikSVGGraphics(textAsShapes);
+        // return new VectorGraphicsSVGGraphics();
+    }
+
     /**
      * @return the rendered SVG.
      */
     public String render() {
+
+        // initially clear the graphics object
+        graphics.clear();
 
         // set up the paint context
         paintContext = new PPaintContext(graphics);
@@ -149,7 +158,7 @@ public class KlighdSVGCanvas implements PComponent {
         controller.initialize();
 
         // set up the paint context
-        KlighdSimpleSVGGraphicsImpl graphics = new KlighdSimpleSVGGraphicsImpl();
+        KlighdAbstractSVGGraphics graphics = createGraphics(false);
         final PPaintContext paintContext = new PPaintContext(graphics);
 
         // the following clip sit is required in order to get rid of the one set in
@@ -166,7 +175,7 @@ public class KlighdSVGCanvas implements PComponent {
     }
 
     /*---------------------------------------------------------------------
-     * Render from a PCamera.
+     * Static Rendering Facilities - Render from a PCamera.
      */
 
     /**
@@ -191,14 +200,14 @@ public class KlighdSVGCanvas implements PComponent {
     public static String render(final PCamera camera, final boolean viewPort,
             final boolean textAsShapes) {
         // set up the paint context
-        KlighdSimpleSVGGraphicsImpl graphics = new KlighdSimpleSVGGraphicsImpl(textAsShapes);
-        
+        KlighdAbstractSVGGraphics graphics = createGraphics(textAsShapes);
+
         // the following clip sit is required in order to get rid of the one set in
         // the constructor call above, which lets Inkscape & browsers go crazy
         if (viewPort) {
             graphics.setClip(camera.getBounds());
         }
-        
+
         final PPaintContext paintContext = new PPaintContext(graphics);
         paintContext.setRenderQuality(PPaintContext.HIGH_QUALITY_RENDERING);
 

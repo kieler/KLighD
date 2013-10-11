@@ -19,4 +19,6 @@ Require-Bundle: org.eclipse.swt;bundle-version="3.8.0",
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Export-Package: de.cau.cs.kieler.klighd.piccolo.svg
+Bundle-ClassPath: lib/VectorGraphics2D-0.9.1.jar,
+ .
 
