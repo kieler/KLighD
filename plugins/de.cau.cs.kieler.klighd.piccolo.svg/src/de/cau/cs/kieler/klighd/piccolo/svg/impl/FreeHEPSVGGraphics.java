@@ -17,7 +17,6 @@ import java.awt.Dimension;
 import java.awt.geom.Rectangle2D;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.util.Properties;
 
 import org.freehep.graphicsio.svg.SVGGraphics2D;
 import org.freehep.util.UserProperties;
@@ -25,40 +24,51 @@ import org.freehep.util.UserProperties;
 import de.cau.cs.kieler.klighd.piccolo.svg.KlighdAbstractSVGGraphics;
 
 /**
+ * 
+ * 
  * @author uru
  * 
+ * @see <a href="http://java.freehep.org/vectorgraphics/">
+ *      http://java.freehep.org/vectorgraphics/</a>
  */
 public class FreeHEPSVGGraphics extends KlighdAbstractSVGGraphics {
 
-    ByteArrayOutputStream baos;
-    SVGGraphics2D graphicsDelegate;
+    private ByteArrayOutputStream baos;
+    private SVGGraphics2D graphicsDelegate;
 
-    Rectangle2D bounds;
+    private Rectangle2D bounds;
+    private boolean textAsShapes;
 
     /**
-     * 
+     * @param bounds
+     *            the bounds will be set as viewport values for the resulting root <svg ..> tag.
+     * @param textAsShapes
+     *            whether text should be rendered as shapes
      */
-    public FreeHEPSVGGraphics(Rectangle2D bounds) {
+    public FreeHEPSVGGraphics(final Rectangle2D bounds, final boolean textAsShapes) {
         super(null);
         this.bounds = bounds;
-        System.out.println("Free!!");
-        init();
+        this.textAsShapes = textAsShapes;
 
+        init();
     }
 
     private void init() {
-        
-        System.out.println("Init with bounds " + bounds);
-        
         baos = new ByteArrayOutputStream();
-        // Dimension d = new Dimension(Integer.MAX_VALUE, Integer.MAX_VALUE);
+
+        // calc viewport
         int w = (int) (bounds.getWidth() - bounds.getX());
         int h = (int) (bounds.getHeight() - bounds.getY());
         Dimension d = new Dimension(w, h);
+        // create graphics object
         graphicsDelegate = new SVGGraphics2D(baos, d);
+
+        // some settings
         UserProperties props = new UserProperties();
-        props.setProperty(SVGGraphics2D.TEXT_AS_SHAPES, false);
+        props.setProperty(SVGGraphics2D.TEXT_AS_SHAPES, textAsShapes);
         graphicsDelegate.setProperties(props);
+
+        // start
         graphicsDelegate.startExport();
         graphicsDelegate.translate(bounds.getX(), bounds.getY());
 
@@ -70,20 +80,18 @@ public class FreeHEPSVGGraphics extends KlighdAbstractSVGGraphics {
      */
     @Override
     public String getSVG() {
-
-//        System.out.println("Getting Stream!");
-
         try {
+            // end stream and retrieve svg from stream
             graphicsDelegate.endExport();
             graphicsDelegate.closeStream();
 
             String s = new String(baos.toByteArray());
-//            System.out.println(s);
             return s;
+
         } catch (IOException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
+
         return null;
     }
 

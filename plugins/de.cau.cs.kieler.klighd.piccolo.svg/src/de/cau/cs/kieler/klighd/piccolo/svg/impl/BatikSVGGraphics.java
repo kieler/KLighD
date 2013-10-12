@@ -36,6 +36,8 @@ import de.cau.cs.kieler.klighd.piccolo.svg.KlighdAbstractSVGGraphics;
  * SVG as String.
  * 
  * @author uru
+ * 
+ * @see <a href="http://xmlgraphics.apache.org/batik/"> http://xmlgraphics.apache.org/batik/</a>
  */
 public class BatikSVGGraphics extends KlighdAbstractSVGGraphics {
 
@@ -44,22 +46,30 @@ public class BatikSVGGraphics extends KlighdAbstractSVGGraphics {
 
     private static final String SVG_NS = "http://www.w3.org/2000/svg";
 
+    private Rectangle2D bounds;
+
     /**
      * Constructor.<br>
      * Delegates to {@link #KlighdBatikSVGGraphics(boolean) #KlighdBatikSVGGraphics(false)}.
+     * 
+     * @param bounds
+     *            the bounds will be set as viewport values for the resulting root <svg ..> tag.
      */
-    public BatikSVGGraphics() {
-        this(false);
+    public BatikSVGGraphics(final Rectangle2D bounds) {
+        this(bounds, false);
     }
 
     /**
      * Constructor.
      * 
+     * @param bounds
+     *            the bounds will be set as viewport values for the resulting root <svg ..> tag.
      * @param textAsShapes
      *            whether text should be rendered as shapes
      */
-    public BatikSVGGraphics(final boolean textAsShapes) {
+    public BatikSVGGraphics(final Rectangle2D bounds, final boolean textAsShapes) {
         super(null);
+        this.bounds = bounds;
 
         // Get a DOMImplementation.
         DOMImplementation domImpl = GenericDOMImplementation.getDOMImplementation();
@@ -112,9 +122,18 @@ public class BatikSVGGraphics extends KlighdAbstractSVGGraphics {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return sw.toString();
+
+        // batik does not create any viewport elements, so we add them here
+        StringBuffer sb = new StringBuffer(sw.toString());
+        sb.insert(
+                sb.indexOf("<svg") + "<svg".length() + 1,
+                " x=\"" + (int) bounds.getX() + "px\" y=\"" + (int) bounds.getY() + "px\" "
+                        + "width=\"" + (int) bounds.getWidth() + "px\" height=\""
+                        + (int) bounds.getHeight() + "px\" ");
+
+        return sb.toString();
     }
-    
+
     /**
      * {@inheritDoc}
      */

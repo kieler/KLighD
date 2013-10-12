@@ -17,17 +17,49 @@ import java.awt.geom.Rectangle2D;
 
 import de.cau.cs.kieler.klighd.piccolo.svg.KlighdAbstractSVGGraphics;
 import de.erichseifert.vectorgraphics2d.SVGGraphics2D;
+import de.erichseifert.vectorgraphics2d.VectorGraphics2D.FontRendering;
 
 /**
  * @author uru
+ * 
+ * @see <a href="http://trac.erichseifert.de/vectorgraphics2d/">
+ *      http://trac.erichseifert.de/vectorgraphics2d/</a>
  */
 public class VectorGraphicsSVGGraphics extends KlighdAbstractSVGGraphics {
 
+    private Rectangle2D bounds;
+    private boolean textAsShapes;
+
     /**
-     * 
+     * @param bounds
+     *            the bounds will be set as viewport values for the resulting root <svg ..> tag.
+     * @param textAsShapes
+     *            whether text should be rendered as shapes
      */
-    public VectorGraphicsSVGGraphics() {
-        super(new CustomizedSVGGraphics2D());
+    public VectorGraphicsSVGGraphics(final Rectangle2D bounds, final boolean textAsShapes) {
+        super(null);
+        this.bounds = bounds;
+        this.textAsShapes = textAsShapes;
+
+        init();
+
+    }
+
+    private void init() {
+
+        CustomizedSVGGraphics2D g =
+                new CustomizedSVGGraphics2D(bounds.getX(), bounds.getY(), bounds.getWidth(),
+                        bounds.getHeight());
+
+        // set text handling
+        if (textAsShapes) {
+            g.setFontRendering(FontRendering.VECTORS);
+        } else {
+            g.setFontRendering(FontRendering.TEXT);
+        }
+
+        setGraphicsDelegate(g);
+
     }
 
     /**
@@ -51,11 +83,11 @@ public class VectorGraphicsSVGGraphics extends KlighdAbstractSVGGraphics {
      */
     @Override
     public void clear() {
-        setGraphicsDelegate(new CustomizedSVGGraphics2D());
+        init();
     }
 
     /**
-     * Slightly custamize the original svg generator.
+     * Slightly customize the original svg generator.
      * 
      * @author uru
      */
@@ -64,9 +96,9 @@ public class VectorGraphicsSVGGraphics extends KlighdAbstractSVGGraphics {
         /**
          * 
          */
-        public CustomizedSVGGraphics2D() {
-            super(0, 0, Integer.MAX_VALUE / 2, Integer.MAX_VALUE / 2);
-            // super(0, 0, 400, 400);
+        public CustomizedSVGGraphics2D(final double x, final double y, final double w,
+                final double h) {
+            super(x, y, w, h);
         }
 
         @Override
@@ -80,8 +112,11 @@ public class VectorGraphicsSVGGraphics extends KlighdAbstractSVGGraphics {
             writeln("<!DOCTYPE svg PUBLIC \"-//W3C//DTD SVG 1.1//EN\" ",
                     "\"http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd\">");
             writeln("<svg version=\"1.2\" xmlns=\"http://www.w3.org/2000/svg\" ",
-                    "xmlns:xlink=\"http://www.w3.org/1999/xlink\" ", "x=\"", x, "mm\" y=\"", y,
-                    "mm\" ", "width=\"", w, "mm\" height=\"", h, "mm\" "
+                    // changed the mm to px
+                    // "xmlns:xlink=\"http://www.w3.org/1999/xlink\" ", "x=\"", x, "mm\" y=\"", y,
+                    // "mm\" ", "width=\"", w, "mm\" height=\"", h, "mm\" "
+                    "xmlns:xlink=\"http://www.w3.org/1999/xlink\" ", "x=\"", x, "px\" y=\"", y,
+                    "px\" ", "width=\"", w, "px\" height=\"", h, "px\" "
                     // we dont want the viewBox
                     // + "viewBox=\"", x, " ", y, " ", w, " ", h, "\""
                     , ">");
