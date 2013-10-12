@@ -95,10 +95,13 @@ public class SaveAsImageDialog extends Dialog {
     private static final String PREFERENCE_SCALE_FACTOR
         = "saveAsImageDialog.scaleFactor"; //$NON-NLS-1$
 
-    /** the available image formats. */
-    private static final String[] IMAGE_FORMATS = SVG_EXPORT_AVAILABLE
-            ? new String[] { "BMP", "JPG", "PNG", "SVG" }
-                : new String[] { "BMP", "JPG", "PNG" };
+    /**
+     * The available image formats. Details can be added in parentheses (...), the parentheses are
+     * stripped when the file extension is added.
+     */
+    private static final String[] IMAGE_FORMATS = SVG_EXPORT_AVAILABLE ? new String[] { "BMP",
+            "JPG", "PNG", "SVG (Batik)", "SVG (VectorGraphics2D)", "SVG (FreeHEP)" }
+            : new String[] { "BMP", "JPG", "PNG" };
 
     /** the preference store. */
     private IPreferenceStore preferenceStore = null;
@@ -367,7 +370,12 @@ public class SaveAsImageDialog extends Dialog {
         // extension it does not check if that file exists
         fileDialog.setOverwrite(true);
         // extensions passed to the dialog have to include the '.'
-        String[] extensions = { "." + imageFormatCombo.getText().toLowerCase() }; //$NON-NLS-1$
+        String ext = imageFormatCombo.getText().toLowerCase();
+        // remove any details contained in parentheses
+        if (ext.contains("(")) {
+            ext = ext.substring(0, ext.indexOf("(")).trim();
+        }
+        String[] extensions = { "*." + ext }; //$NON-NLS-1$
         fileDialog.setFilterExtensions(extensions);
         fileDialog.setText(Messages.SaveAsImageDialog_save_as_caption);
         // open the dialog
@@ -392,8 +400,12 @@ public class SaveAsImageDialog extends Dialog {
                 fileText.setText(filePath.toString());
             } else {
                 // if no file extension was specified take the default one
+                String extDefault = imageFormatCombo.getText().toLowerCase();
+                if (extDefault.contains("(")) {
+                    extDefault = extDefault.substring(0, extDefault.indexOf("(")).trim();
+                }
                 fileText.setText(filePath.toString() + "." //$NON-NLS-1$
-                        + imageFormatCombo.getText().toLowerCase());
+                        + extDefault);
             }
         }
     }
@@ -402,6 +414,10 @@ public class SaveAsImageDialog extends Dialog {
         if (fileText.getText().length() > 0 && Path.ROOT.isValidPath(fileText.getText())) {
             IPath filePath = new Path(fileText.getText());
             String ext = imageFormatCombo.getText().toLowerCase();
+            // remove any details contained in parentheses
+            if (ext.contains("(")) {
+                ext = ext.substring(0, ext.indexOf("(")).trim();
+            }
             if (filePath.getFileExtension() != null) {
                 if (!filePath.getFileExtension().equals(ext)) {
                     fileText.setText(filePath.removeFileExtension().addFileExtension(ext)
@@ -545,7 +561,11 @@ public class SaveAsImageDialog extends Dialog {
         case 2:
             return SWT.IMAGE_PNG;
         case 3:
-            return SVG_EXPORT_AVAILABLE ? KlighdConstants.IMAGE_SVG : SWT.IMAGE_PNG;
+            return SVG_EXPORT_AVAILABLE ? KlighdConstants.IMAGE_SVG_BATIK : SWT.IMAGE_PNG;
+        case 4:
+            return SVG_EXPORT_AVAILABLE ? KlighdConstants.IMAGE_SVG_VG : SWT.IMAGE_PNG;
+        case 5:
+            return SVG_EXPORT_AVAILABLE ? KlighdConstants.IMAGE_SVG_FREEHEP : SWT.IMAGE_PNG;
         case 0:
         default:
             return SWT.IMAGE_BMP;

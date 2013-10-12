@@ -133,15 +133,18 @@ public class SaveAsImageAction extends Action {
         PCamera camera = canvas.getCamera();
 
         // in case of the SVG format invoke the SVG exporter and return
-        if (format == KlighdConstants.IMAGE_SVG) {
+        if (format == KlighdConstants.IMAGE_SVG_BATIK
+                || format == KlighdConstants.IMAGE_SVG_FREEHEP
+                || format == KlighdConstants.IMAGE_SVG_VG) {
             
             // TODO The following call could be replaced by an extension point in future.
             try {
                 Method m = Class.forName(Constants.KLIGHD_SVG_CANVAS).getMethod(
                         Constants.KLIGHD_SVG_RENDER_METHOD, PCamera.class, Boolean.class,
-                        Boolean.class, OutputStream.class);
-                m.invoke(null, camera, cameraViewport, true, stream);
+                        Boolean.class, OutputStream.class, Integer.class);
+                m.invoke(null, camera, cameraViewport, false, stream, format);
             } catch (Exception e) {
+                e.printStackTrace();
                 final String msg = "KLighD: Creation of desired SVG diagram failed,"
                         + "most probably due to unavailability of the plug-in \""
                         + KlighdPiccoloPlugin.PLUGIN_ID + ".svg\".";
