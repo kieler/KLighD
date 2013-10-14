@@ -648,12 +648,12 @@ public abstract class AbstractKGERenderingController
         final KPlacementData pcd = rendering.getPlacementData();
         final Bounds bounds;
         if (pcd instanceof KPointPlacementData) {
-            bounds = PiccoloPlacementUtil.evaluatePointPlacement((KPointPlacementData) pcd,
+            bounds = PlacementUtil.evaluatePointPlacement((KPointPlacementData) pcd,
                     PlacementUtil.estimateSize(rendering, new Bounds(0.0f, 0.0f)),
                     parent.getBoundsReference());
         } else {
             // determine the initial bounds
-            bounds = PiccoloPlacementUtil.evaluateAreaPlacement(
+            bounds = PlacementUtil.evaluateAreaPlacement(
                     PlacementUtil.asAreaPlacementData(rendering.getPlacementData()),
                     parent.getBoundsReference());
         }
@@ -666,7 +666,7 @@ public abstract class AbstractKGERenderingController
                     new PropertyChangeListener() {
                         public void propertyChange(final PropertyChangeEvent e) {
                             Bounds bounds = null;
-                            bounds = PiccoloPlacementUtil.evaluatePointPlacement(
+                            bounds = PlacementUtil.evaluatePointPlacement(
                                     (KPointPlacementData) pcd, PlacementUtil.estimateSize(
                                             rendering, new Bounds(0.0f, 0.0f)),
                                     parent.getBoundsReference());
@@ -680,7 +680,7 @@ public abstract class AbstractKGERenderingController
                         public void propertyChange(final PropertyChangeEvent e) {
                             Bounds bounds = null;
                             // calculate the new bounds of the rendering
-                            bounds = PiccoloPlacementUtil.evaluateAreaPlacement(
+                            bounds = PlacementUtil.evaluateAreaPlacement(
                                     PlacementUtil.asAreaPlacementData(rendering.getPlacementData()),
                                     parent.getBoundsReference());
                             // use the controller to apply the new bounds
@@ -717,7 +717,7 @@ public abstract class AbstractKGERenderingController
 
         final Bounds parentBounds = new Bounds(parent.getBoundsReference());
         final Bounds[] elementBounds = gridPlacer.evaluate(parentBounds);
-        
+
         // create the renderings and collect the controllers
         final PNodeController<?>[] controllers = new PNodeController<?>[renderings.size()];
         

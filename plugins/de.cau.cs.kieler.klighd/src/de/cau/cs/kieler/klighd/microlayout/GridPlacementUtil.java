@@ -359,7 +359,6 @@ public final class GridPlacementUtil {
                     childMinSize.width, gpd.getTopLeft(), gpd.getBottomRight());
             final float adjHeight = PlacementUtil.calculateParentHeight(
                     childMinSize.height, gpd.getTopLeft(), gpd.getBottomRight());
-            System.out.println(adjWidth + " " + adjHeight);
             
             // determine the maximum of the minimum column widths and row heights
             // e.g. how big must a column be to fit all the minSizes

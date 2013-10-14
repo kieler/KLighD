@@ -167,6 +167,20 @@ public class Bounds {
     }
 
     /**
+     * Takes the data of the given bounds.
+     * 
+     * @param bounds
+     *            the bounds to take the data from
+     */
+    void setBounds(final Rectangle2D bounds) {
+        this.x = (float) bounds.getX();
+        this.y = (float) bounds.getY();
+        this.width = (float) bounds.getWidth();
+        this.height = (float) bounds.getHeight();
+        this.insets = KLayoutDataFactory.eINSTANCE.createKInsets();
+    }
+
+    /**
      * Getter for X coordinate.
      * 
      * @return height
@@ -307,7 +321,7 @@ public class Bounds {
     }
    
     /**
-     * Constructs bounds with the given dimensions and (x,y) coordinates (0,0).
+     * Constructs bounds with the given dimensions and (width, height) coordinates (0,0).
      * 
      * @param width
      *            the width
@@ -317,6 +331,23 @@ public class Bounds {
      */
     public static Bounds of(final float width, final float height) {
         return new Bounds(width, height);
+    }
+   
+    /**
+     * Constructs bounds with the given coordinates and (x,y) dimensions (width, height).
+     * 
+     * @param x
+     *            the x-coordinate
+     * @param y
+     *            the y-coordinate
+     * @param width
+     *            the width
+     * @param height
+     *            the height
+     * @return the desired {@link Bounds} object
+     */
+    public static Bounds of(final float x, final float y, final float width, final float height) {
+        return new Bounds(x, y, width, height);
     }
    
     /**
