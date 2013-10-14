@@ -172,5 +172,13 @@ public class KlighdViewer extends AbstractViewer<Object> {
     public void centerOn(final KGraphElement diagramElement, final int duration) {
         contextViewer.centerOn(diagramElement, duration);
     }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void centerOn(final Object semanticElement, final int duration) {
+        contextViewer.centerOn(semanticElement, duration);
+    }
 
 }
