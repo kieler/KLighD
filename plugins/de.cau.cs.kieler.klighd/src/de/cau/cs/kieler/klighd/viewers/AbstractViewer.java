@@ -100,6 +100,13 @@ public abstract class AbstractViewer<T> implements IViewer<T> {
     public void centerOn(final KGraphElement diagramObject, final int duration) {
         // do nothing
     }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public void centerOn(final Object diagramObject, final int duration) {
+        // do nothing
+    }
 
     /**
      * {@inheritDoc}

@@ -13,6 +13,7 @@
  */
 package de.cau.cs.kieler.klighd;
 
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 
@@ -148,9 +149,19 @@ public interface IViewer<T> {
      * @param diagramElement
      *            the diagram element
      * @param duration
-     *            the duration
+     *            the duration over which the panning animation is done
      */
     void centerOn(KGraphElement diagramElement, int duration);
+    
+    /**
+     * Centers on the given semantic element over the specified duration.
+     * 
+     * @param semanticElement
+     *            the semantic element to center on
+     * @param duration
+     *            the duration over which the panning animation is done
+     */
+    void centerOn(Object semanticElement, int duration);
 
     /**
      * Zooms to the given zoom level over the specified duration.

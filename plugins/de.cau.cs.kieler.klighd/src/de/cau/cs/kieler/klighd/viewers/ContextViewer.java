@@ -925,7 +925,15 @@ public class ContextViewer extends AbstractViewer<Object> implements IViewerEven
             currentViewer.centerOn(diagramElement, duration);
         }
     }
-
+    
+    
+    public void centerOn(final Object semanticElement, final int duration) {
+	    final Object diagramElement = getCurrentViewContext().getTargetElement(semanticElement);
+	    if (diagramElement instanceof KGraphElement) {
+	        currentViewer.centerOn(diagramElement, duration);
+	    }
+    }
+    
     /**
      * {@inheritDoc}
      */
