@@ -13,6 +13,11 @@
  */
 package de.cau.cs.kieler.klighd.microlayout;
 
+import static de.cau.cs.kieler.core.krendering.KRenderingUtil.toNonNullBottomPosition;
+import static de.cau.cs.kieler.core.krendering.KRenderingUtil.toNonNullLeftPosition;
+import static de.cau.cs.kieler.core.krendering.KRenderingUtil.toNonNullRightPosition;
+import static de.cau.cs.kieler.core.krendering.KRenderingUtil.toNonNullTopPosition;
+
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.geom.Rectangle2D;
@@ -749,7 +754,7 @@ public final class PlacementUtil {
 
                 // take insets into consideration
                 elementWidth = calculateParentWidth(elementWidth, topLeft, bottomRight);
-                elementHeight = calculateParentWidth(elementHeight, topLeft, bottomRight);
+                elementHeight = calculateParentHeight(elementHeight, topLeft, bottomRight);
 
                 elementHeight = Math.max(gridData.getMinCellHeight(), elementHeight);
                 elementWidth = Math.max(gridData.getMinCellWidth(), elementWidth);
@@ -923,11 +928,11 @@ public final class PlacementUtil {
             rel0 = 0;
             posId0 = DIRECT;
         } else {
-            abs0 = tL.getX().getAbsolute();
-            rel0 = tL.getX().getRelative();
-            posId0 =
-                    tL.getX().eClass().getClassifierID() == KRenderingPackage.KLEFT_POSITION ? DIRECT
-                            : INDIRECT;
+            final KXPosition lPos = toNonNullLeftPosition(tL.getX());
+            abs0 = lPos.getAbsolute();
+            rel0 = lPos.getRelative();
+            posId0 = lPos.eClass().getClassifierID() == KRenderingPackage.KLEFT_POSITION ? DIRECT
+                    : INDIRECT;
         }
 
         if (bR == null) {
@@ -936,11 +941,11 @@ public final class PlacementUtil {
             rel1 = 0;
             posId1 = DIRECT;
         } else {
-            abs1 = bR.getX().getAbsolute();
-            rel1 = bR.getX().getRelative();
-            posId1 =
-                    bR.getX().eClass().getClassifierID() == KRenderingPackage.KRIGHT_POSITION ? DIRECT
-                            : INDIRECT;
+            final KXPosition rPos = toNonNullRightPosition(bR.getX());
+            abs1 = rPos.getAbsolute();
+            rel1 = rPos.getRelative();
+            posId1 = rPos.eClass().getClassifierID() == KRenderingPackage.KRIGHT_POSITION ? DIRECT
+                    : INDIRECT;
         }
 
         return getSizeAvailable(parentSize, abs0, rel0, posId0, abs1, rel1, posId1);
@@ -971,11 +976,11 @@ public final class PlacementUtil {
             rel0 = 0;
             posId0 = DIRECT;
         } else {
-            abs0 = tL.getY().getAbsolute();
-            rel0 = tL.getY().getRelative();
-            posId0 =
-                    tL.getY().eClass().getClassifierID() == KRenderingPackage.KTOP_POSITION ? DIRECT
-                            : INDIRECT;
+            final KYPosition tPos = toNonNullTopPosition(tL.getY());
+            abs0 = tPos.getAbsolute();
+            rel0 = tPos.getRelative();
+            posId0 = tPos.eClass().getClassifierID() == KRenderingPackage.KTOP_POSITION ? DIRECT
+                    : INDIRECT;
         }
 
         if (bR == null) {
@@ -984,11 +989,11 @@ public final class PlacementUtil {
             rel1 = 0;
             posId1 = DIRECT;
         } else {
-            abs1 = bR.getY().getAbsolute();
-            rel1 = bR.getY().getRelative();
-            posId1 =
-                    bR.getY().eClass().getClassifierID() == KRenderingPackage.KBOTTOM_POSITION ? DIRECT
-                            : INDIRECT;
+            final KYPosition bPos = toNonNullBottomPosition(bR.getY());
+            abs1 = bPos.getAbsolute();
+            rel1 = bPos.getRelative();
+            posId1 = bPos.eClass().getClassifierID() == KRenderingPackage.KBOTTOM_POSITION ? DIRECT
+                    : INDIRECT;
         }
 
         return getSizeAvailable(parentSize, abs0, rel0, posId0, abs1, rel1, posId1);
@@ -1048,7 +1053,7 @@ public final class PlacementUtil {
      *            the KPosition defining the bottom and right insets
      * @return the size needed for the parent to be able to place the element with the given size
      */
-    private static float calculateParentWidth(final float elementSize, final KPosition tL,
+    static float calculateParentWidth(final float elementSize, final KPosition tL,
             final KPosition bR) {
         Pair<Float, Float> normalizedSize = getHorizontalSize(tL, bR);
         float parentWidth = elementSize;
@@ -1079,7 +1084,7 @@ public final class PlacementUtil {
      *            the KPosition defining the bottom and right insets
      * @return the size needed for the parent to be able to place the element with the given size
      */
-    private static float calculateParentHeight(final float elementSize, final KPosition tL,
+    static float calculateParentHeight(final float elementSize, final KPosition tL,
             final KPosition bR) {
         Pair<Float, Float> normalizedSize = getVerticalSize(tL, bR);
         float parentHeight = elementSize;
@@ -1123,11 +1128,11 @@ public final class PlacementUtil {
             rel0 = 0;
             posId0 = DIRECT;
         } else {
-            abs0 = tL.getX().getAbsolute();
-            rel0 = tL.getX().getRelative();
-            posId0 =
-                    tL.getX().eClass().getClassifierID() == KRenderingPackage.KLEFT_POSITION ? DIRECT
-                            : INDIRECT;
+            final KXPosition lPos = toNonNullLeftPosition(tL.getX());
+            abs0 = lPos.getAbsolute();
+            rel0 = lPos.getRelative();
+            posId0 = lPos.eClass().getClassifierID() == KRenderingPackage.KLEFT_POSITION ? DIRECT
+                    : INDIRECT;
         }
 
         if (bR == null) {
@@ -1136,11 +1141,11 @@ public final class PlacementUtil {
             rel1 = 0;
             posId1 = DIRECT;
         } else {
-            abs1 = bR.getX().getAbsolute();
-            rel1 = bR.getX().getRelative();
-            posId1 =
-                    bR.getX().eClass().getClassifierID() == KRenderingPackage.KRIGHT_POSITION ? DIRECT
-                            : INDIRECT;
+            final KXPosition rPos = toNonNullRightPosition(bR.getX());
+            abs1 = rPos.getAbsolute();
+            rel1 = rPos.getRelative();
+            posId1 = rPos.eClass().getClassifierID() == KRenderingPackage.KRIGHT_POSITION ? DIRECT
+                    : INDIRECT;
         }
 
         return getSize(abs0, rel0, posId0, abs1, rel1, posId1);
@@ -1165,11 +1170,11 @@ public final class PlacementUtil {
             rel0 = 0;
             posId0 = DIRECT;
         } else {
-            abs0 = tL.getY().getAbsolute();
-            rel0 = tL.getY().getRelative();
-            posId0 =
-                    tL.getY().eClass().getClassifierID() == KRenderingPackage.KTOP_POSITION ? DIRECT
-                            : INDIRECT;
+            final KYPosition rPos = toNonNullTopPosition(tL.getY());
+            abs0 = rPos.getAbsolute();
+            rel0 = rPos.getRelative();
+            posId0 = rPos.eClass().getClassifierID() == KRenderingPackage.KTOP_POSITION ? DIRECT
+                    : INDIRECT;
         }
 
         if (bR == null) {
@@ -1178,11 +1183,11 @@ public final class PlacementUtil {
             rel1 = 0;
             posId1 = DIRECT;
         } else {
-            abs1 = bR.getY().getAbsolute();
-            rel1 = bR.getY().getRelative();
-            posId1 =
-                    bR.getY().eClass().getClassifierID() == KRenderingPackage.KBOTTOM_POSITION ? DIRECT
-                            : INDIRECT;
+            final KYPosition rPos = toNonNullBottomPosition(bR.getY());
+            abs1 = rPos.getAbsolute();
+            rel1 = rPos.getRelative();
+            posId1 = rPos.eClass().getClassifierID() == KRenderingPackage.KBOTTOM_POSITION ? DIRECT
+                    : INDIRECT;
         }
 
         return getSize(abs0, rel0, posId0, abs1, rel1, posId1);
