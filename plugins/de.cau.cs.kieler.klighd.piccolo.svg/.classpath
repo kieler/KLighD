@@ -1,18 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry exported="true" kind="lib" path="lib/freehep-util-2.0.2.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/freehep-graphics2d-2.1.1.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/freehep-graphicsio-2.1.1.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/freehep-graphicsio-svg-2.1.1.jar" sourcepath="C:/Users/orn/Desktop/tmp/freehep/freehep-graphicsio-svg/src/main/java"/>
-	<classpathentry exported="true" kind="lib" path="lib/freehep-io-2.0.2.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/freehep-xml-2.1.1.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/J2SE-1.5"/>
 	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
 	<classpathentry kind="src" path="src"/>
-	<classpathentry exported="true" kind="lib" path="lib/VectorGraphics2D-0.9.1.jar" sourcepath="lib/VectorGraphics2D-0.9.1-sources.jar">
-		<attributes>
-			<attribute name="javadoc_location" value="jar:platform:/resource/de.cau.cs.kieler.klighd.piccolo.svg/lib/VectorGraphics2D-0.9.1-javadoc.jar!/"/>
-		</attributes>
-	</classpathentry>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

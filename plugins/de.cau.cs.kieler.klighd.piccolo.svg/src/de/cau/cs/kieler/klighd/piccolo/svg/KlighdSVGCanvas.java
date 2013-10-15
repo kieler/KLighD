@@ -23,9 +23,6 @@ import de.cau.cs.kieler.core.kgraph.KNode;
 import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout;
 import de.cau.cs.kieler.klighd.KlighdConstants;
 import de.cau.cs.kieler.klighd.piccolo.internal.controller.DiagramController;
-import de.cau.cs.kieler.klighd.piccolo.svg.impl.BatikSVGGraphics;
-import de.cau.cs.kieler.klighd.piccolo.svg.impl.FreeHEPSVGGraphics;
-import de.cau.cs.kieler.klighd.piccolo.svg.impl.VectorGraphicsSVGGraphics;
 import edu.umd.cs.piccolo.PCamera;
 import edu.umd.cs.piccolo.PComponent;
 import edu.umd.cs.piccolo.PLayer;
@@ -52,29 +49,29 @@ public class KlighdSVGCanvas implements PComponent {
     /**
      * Enum describing known svg generators.
      */
-    public enum SVGGenerator {
-        /**
-         * Batik.
-         * 
-         * @see <a href="http://xmlgraphics.apache.org/batik/">
-         *      http://xmlgraphics.apache.org/batik/</a>
-         */
-        Batik,
-        /**
-         * VectorGraphics2D.
-         * 
-         * @see <a href="http://trac.erichseifert.de/vectorgraphics2d/">
-         *      http://trac.erichseifert.de/vectorgraphics2d/</a>
-         */
-        VectorGraphics,
-        /**
-         * FreeHEP.
-         * 
-         * @see <a href="http://java.freehep.org/vectorgraphics/">
-         *      http://java.freehep.org/vectorgraphics/</a>
-         */
-        FreeHEP
-    }
+    // public enum SVGGenerator {
+    // /**
+    // * Batik.
+    // *
+    // * @see <a href="http://xmlgraphics.apache.org/batik/">
+    // * http://xmlgraphics.apache.org/batik/</a>
+    // */
+    // Batik,
+    // /**
+    // * VectorGraphics2D.
+    // *
+    // * @see <a href="http://trac.erichseifert.de/vectorgraphics2d/">
+    // * http://trac.erichseifert.de/vectorgraphics2d/</a>
+    // */
+    // VectorGraphics,
+    // /**
+    // * FreeHEP.
+    // *
+    // * @see <a href="http://java.freehep.org/vectorgraphics/">
+    // * http://java.freehep.org/vectorgraphics/</a>
+    // */
+    // FreeHEP
+    // }
 
     // private KlighdAbstractSVGGraphics graphics;
 
@@ -120,23 +117,13 @@ public class KlighdSVGCanvas implements PComponent {
 
     private static KlighdAbstractSVGGraphics createGraphics(final boolean textAsShapes,
             final Rectangle2D bounds) {
-        // TODO
-        SVGGenerator svgGen = SVGGenerator.Batik;
-        return createGraphics(textAsShapes, bounds, svgGen);
+        return createGraphics(textAsShapes, bounds, DEFAULT_GENERATOR);
     }
 
     private static KlighdAbstractSVGGraphics createGraphics(final boolean textAsShapes,
-            final Rectangle2D bounds, final SVGGenerator svgGen) {
+            final Rectangle2D bounds, final String svgGen) {
 
-        switch (svgGen) {
-        case VectorGraphics:
-            return new VectorGraphicsSVGGraphics(bounds, textAsShapes);
-        case FreeHEP:
-            return new FreeHEPSVGGraphics(bounds, textAsShapes);
-        default:
-            // batik
-            return new BatikSVGGraphics(bounds, textAsShapes);
-        }
+        return SVGGeneratorManager.getInstance().createGraphics(svgGen, bounds, textAsShapes);
     }
 
     /**
@@ -251,7 +238,7 @@ public class KlighdSVGCanvas implements PComponent {
      */
 
     /** The default svg generator to use. */
-    public static final SVGGenerator DEFAULT_GENERATOR = SVGGenerator.Batik;
+    public static final String DEFAULT_GENERATOR = KlighdConstants.IMAGE_SVG_BATIK_ID;
 
     /**
      * @param camera
@@ -284,12 +271,12 @@ public class KlighdSVGCanvas implements PComponent {
      *            whether to render only the camera's viewport or the whole diagram.
      * @param textAsShapes
      *            whether text should be rendered as shapes
-     * @param generator
+     * @param generatorId
      *            which svg generator to use
      * @return the SVG string.
      */
     public static String render(final PCamera camera, final boolean viewPort,
-            final boolean textAsShapes, final SVGGenerator generator) {
+            final boolean textAsShapes, final String generatorId) {
 
         Rectangle2D bounds = null;
         if (viewPort) {
@@ -300,7 +287,7 @@ public class KlighdSVGCanvas implements PComponent {
         }
 
         // set up the paint context
-        KlighdAbstractSVGGraphics graphics = createGraphics(textAsShapes, bounds, generator);
+        KlighdAbstractSVGGraphics graphics = createGraphics(textAsShapes, bounds, generatorId);
 
         // the following clip set is required in order to get rid of the one set in
         // the constructor call above, which lets Inkscape & browsers go crazy
@@ -339,12 +326,12 @@ public class KlighdSVGCanvas implements PComponent {
      *            whether text should be rendered as shapes
      * @param stream
      *            the stream to which the svg is written.
-     * @param generator
+     * @param generatorId
      *            which svg generator to use
      */
     public static void render(final PCamera camera, final boolean viewport,
-            final boolean textAsShapes, final OutputStream stream, final SVGGenerator generator) {
-        String svg = render(camera, viewport, textAsShapes, generator);
+            final boolean textAsShapes, final OutputStream stream, final String generatorId) {
+        String svg = render(camera, viewport, textAsShapes, generatorId);
         try {
             stream.write(svg.getBytes());
         } catch (IOException ex) {
@@ -356,16 +343,16 @@ public class KlighdSVGCanvas implements PComponent {
     // CHECKSTYLEOFF Javadoc
     public static void staticRenderStream(final PCamera camera, final Boolean viewport,
             final Boolean textAsShapes, final OutputStream stream, final Integer generatorId) {
-        SVGGenerator gen = null;
+        String gen = null;
         switch (generatorId) {
         case KlighdConstants.IMAGE_SVG_BATIK:
-            gen = SVGGenerator.Batik;
+            gen = KlighdConstants.IMAGE_SVG_BATIK_ID;
             break;
         case KlighdConstants.IMAGE_SVG_VG:
-            gen = SVGGenerator.VectorGraphics;
+            gen = KlighdConstants.IMAGE_SVG_VG_ID;
             break;
         case KlighdConstants.IMAGE_SVG_FREEHEP:
-            gen = SVGGenerator.FreeHEP;
+            gen = KlighdConstants.IMAGE_SVG_FREEHEP_ID;
             break;
         default:
             gen = DEFAULT_GENERATOR;
@@ -374,7 +361,7 @@ public class KlighdSVGCanvas implements PComponent {
     }
 
     public static void staticRenderStream(final PCamera camera, final Boolean viewport,
-            final Boolean textAsShapes, final OutputStream stream, final SVGGenerator generator) {
+            final Boolean textAsShapes, final OutputStream stream, final String generator) {
         KlighdSVGCanvas.render(camera, viewport, textAsShapes, stream, generator);
     }
 

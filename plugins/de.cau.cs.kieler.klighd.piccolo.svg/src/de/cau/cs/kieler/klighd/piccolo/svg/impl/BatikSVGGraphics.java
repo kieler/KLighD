@@ -67,7 +67,7 @@ public class BatikSVGGraphics extends KlighdAbstractSVGGraphics {
      * @param textAsShapes
      *            whether text should be rendered as shapes
      */
-    public BatikSVGGraphics(final Rectangle2D bounds, final boolean textAsShapes) {
+    public BatikSVGGraphics(final Rectangle2D bounds, final Boolean textAsShapes) {
         super(null);
         this.bounds = bounds;
 

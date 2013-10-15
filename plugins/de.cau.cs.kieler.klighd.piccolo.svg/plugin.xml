@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension-point id="svgGenerators" name="SVG Generators" schema="schema/svgGenerators.exsd"/>
+   <extension
+         point="de.cau.cs.kieler.klighd.piccolo.svg.svgGenerators">
+      <svgGenerator
+            class="de.cau.cs.kieler.klighd.piccolo.svg.impl.BatikSVGGraphics"
+            id="de.cau.cs.kieler.klighd.piccolo.svg.batik">
+      </svgGenerator>
+   </extension>
+
+</plugin>

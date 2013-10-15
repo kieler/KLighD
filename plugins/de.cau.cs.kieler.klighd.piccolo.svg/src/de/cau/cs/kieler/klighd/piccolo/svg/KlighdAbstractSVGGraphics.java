@@ -63,7 +63,15 @@ import de.cau.cs.kieler.klighd.piccolo.internal.KlighdSWTGraphicsEx;
 import de.cau.cs.kieler.klighd.piccolo.internal.util.RGBGradient;
 
 /**
- * Common superclass for svg generators using a {@link Graphics2D} to produce svgs.
+ * Common superclass for SVG generators using a {@link Graphics2D} to produce svgs.
+ * 
+ * Subclasses are registered via the {@link SVGGeneratorManager#EXTP_ID_SVGGENERATORS} extension
+ * point. All implementing classes have to provide a two-argument constructor for {@code bounds} (
+ * {@link Rectangle2D}) and the {@code textAsShapes} ({@link Boolean}) flag.
+ * 
+ * Instances of one of the generators can be retrieved using the
+ * {@link SVGGeneratorManager#createGraphics(String, Rectangle2D, boolean)} method.
+ * 
  * 
  * @author uru
  */
@@ -121,7 +129,7 @@ public abstract class KlighdAbstractSVGGraphics extends Graphics2D implements Kl
      * Clear the whole drawing area.
      */
     public abstract void clear();
-    
+
     /**
      * {@inheritDoc}
      */

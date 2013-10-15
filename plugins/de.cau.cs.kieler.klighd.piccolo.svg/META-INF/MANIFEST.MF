@@ -15,16 +15,12 @@ Require-Bundle: org.eclipse.swt;bundle-version="3.8.0",
  de.cau.cs.kieler.klighd.piccolo;bundle-version="0.2.0",
  de.cau.cs.kieler.core.kgraph;bundle-version="0.4.0",
  de.cau.cs.kieler.core.krendering;bundle-version="0.1.0",
- edu.umd.cs.piccolo;bundle-version="1.3.1"
+ edu.umd.cs.piccolo;bundle-version="1.3.1",
+ org.eclipse.equinox.common,
+ org.eclipse.core.runtime
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Export-Package: de.cau.cs.kieler.klighd.piccolo.svg
-Bundle-ClassPath: lib/VectorGraphics2D-0.9.1.jar,
- .,
- lib/freehep-graphicsio-svg-2.1.1.jar,
- lib/freehep-io-2.0.2.jar,
- lib/freehep-xml-2.1.1.jar,
- lib/freehep-graphicsio-2.1.1.jar,
- lib/freehep-graphics2d-2.1.1.jar,
- lib/freehep-util-2.0.2.jar
+Bundle-ClassPath: .
+Bundle-Vendor: Christian-Albrechts-Universität zu Kiel
 
