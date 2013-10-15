@@ -1,0 +1,30 @@
+knode {
+    properties:
+        de.cau.cs.kieler.borderSpacing = 3.0
+        klighd.testing.expected.^height = 15.0
+        klighd.testing.expected.^width = 73.75
+    krectangle {
+        grid:
+		  columns = 1
+		kellipse {
+		    gridData:
+                topLeftAnchor = left 10%, top 10%
+                bottomRightAnchor = right 10%, bottom 10%
+			ktext ("HUGOHUGO") [
+			    klighd.testing.^height = 12.0
+			    klighd.testing.^width = 59.0
+		    ]
+        }
+		kroundedRectangle (2, 2) {
+			styles:
+                background = 255r
+			kchildArea
+		}
+	}
+    knode {
+        size: width = 10 height = 10
+        kroundedRectangle (10, 10) {
+            styles: foreground = 255r, 255g
+        }
+    }
+}
