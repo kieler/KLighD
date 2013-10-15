@@ -145,37 +145,6 @@ public final class KlighdConstants {
     public static final Bounds MINIMAL_NODE_BOUNDS = Bounds.immutableCopy(new Bounds(10, 10));
 
     /**
-     * An identifier for the SVG image format (Batik).
-     */
-    public static final int IMAGE_SVG_BATIK = 1337;
-
-    /**
-     * A textual identifier for the SVG image format (Batik).
-     */
-    public static final String IMAGE_SVG_BATIK_ID = "de.cau.cs.kieler.klighd.piccolo.svg.batik";
-
-    /**
-     * An identifier for the SVG image format (VectorGraphics2D).
-     */
-    public static final int IMAGE_SVG_VG = 1338;
-
-    /**
-     * A textual identifier for the SVG image format (VectorGraphics2D).
-     */
-    public static final String IMAGE_SVG_VG_ID =
-            "de.cau.cs.kieler.klighd.piccolo.svg.vectorGraphics2D";
-
-    /**
-     * An identifier for the SVG image format (FreeHEP).
-     */
-    public static final int IMAGE_SVG_FREEHEP = 1339;
-
-    /**
-     * A textual identifier for the SVG image format (FreeHEP).
-     */
-    public static final String IMAGE_SVG_FREEHEP_ID = "de.cau.cs.kieler.klighd.piccolo.svg.freeHEP";
-
-    /**
      * Hidden default constructor.
      */
     private KlighdConstants() {

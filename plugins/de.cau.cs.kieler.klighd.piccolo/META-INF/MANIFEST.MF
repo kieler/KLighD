@@ -21,6 +21,7 @@ Require-Bundle: org.eclipse.core.resources,
  de.cau.cs.kieler.core.kivi
 Bundle-Activator: de.cau.cs.kieler.klighd.piccolo.KlighdPiccoloPlugin
 Export-Package: de.cau.cs.kieler.klighd.piccolo,
+ de.cau.cs.kieler.klighd.piccolo.export,
  de.cau.cs.kieler.klighd.piccolo.internal;x-friends:="de.cau.cs.kieler.klighd.piccolo.svg,de.cau.cs.kieler.klighdning",
  de.cau.cs.kieler.klighd.piccolo.internal.activities;x-friends:="de.cau.cs.kieler.klighd.piccolo.svg,de.cau.cs.kieler.klighdning",
  de.cau.cs.kieler.klighd.piccolo.internal.controller;x-friends:="de.cau.cs.kieler.klighd.piccolo.svg,de.cau.cs.kieler.klighdning",

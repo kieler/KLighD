@@ -9,5 +9,15 @@
             id="de.cau.cs.kieler.klighd.piccolo.svg.batik">
       </svgGenerator>
    </extension>
+   <extension
+         point="de.cau.cs.kieler.klighd.piccolo.exporters">
+      <exporter
+            class="de.cau.cs.kieler.klighd.piccolo.svg.export.SVGExporter"
+            description="Batik"
+            extension="svg"
+            id="de.cau.cs.kieler.klighd.piccolo.svg.exporter.batik"
+            subFormat="de.cau.cs.kieler.klighd.piccolo.svg.batik">
+      </exporter>
+   </extension>
 
 </plugin>

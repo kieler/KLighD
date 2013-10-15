@@ -21,7 +21,6 @@ import java.util.List;
 
 import de.cau.cs.kieler.core.kgraph.KNode;
 import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout;
-import de.cau.cs.kieler.klighd.KlighdConstants;
 import de.cau.cs.kieler.klighd.piccolo.internal.controller.DiagramController;
 import edu.umd.cs.piccolo.PCamera;
 import edu.umd.cs.piccolo.PComponent;
@@ -46,37 +45,7 @@ import edu.umd.cs.piccolo.util.PUtil;
  */
 public class KlighdSVGCanvas implements PComponent {
 
-    /**
-     * Enum describing known svg generators.
-     */
-    // public enum SVGGenerator {
-    // /**
-    // * Batik.
-    // *
-    // * @see <a href="http://xmlgraphics.apache.org/batik/">
-    // * http://xmlgraphics.apache.org/batik/</a>
-    // */
-    // Batik,
-    // /**
-    // * VectorGraphics2D.
-    // *
-    // * @see <a href="http://trac.erichseifert.de/vectorgraphics2d/">
-    // * http://trac.erichseifert.de/vectorgraphics2d/</a>
-    // */
-    // VectorGraphics,
-    // /**
-    // * FreeHEP.
-    // *
-    // * @see <a href="http://java.freehep.org/vectorgraphics/">
-    // * http://java.freehep.org/vectorgraphics/</a>
-    // */
-    // FreeHEP
-    // }
-
-    // private KlighdAbstractSVGGraphics graphics;
-
     private PCamera camera;
-    // private PPaintContext paintContext;
 
     private static final PBounds INITIAL_BOUNDS = new PBounds(0, 0, 800, 600);
 
@@ -176,14 +145,6 @@ public class KlighdSVGCanvas implements PComponent {
         return camera;
     }
 
-    // /**
-    // * @param bounds
-    // * new bounds forwarded to the camera.
-    // */
-    // public void setBounds(final Rectangle2D bounds) {
-    // camera.setBounds(bounds);
-    // }
-
     /*---------------------------------------------------------------------
      * Static convenient methods for rendering existing models and cameras.
      */
@@ -238,7 +199,7 @@ public class KlighdSVGCanvas implements PComponent {
      */
 
     /** The default svg generator to use. */
-    public static final String DEFAULT_GENERATOR = KlighdConstants.IMAGE_SVG_BATIK_ID;
+    public static final String DEFAULT_GENERATOR = "de.cau.cs.kieler.klighd.piccolo.svg.batik";
 
     /**
      * @param camera
@@ -341,24 +302,6 @@ public class KlighdSVGCanvas implements PComponent {
 
     // HACKING for testing
     // CHECKSTYLEOFF Javadoc
-    public static void staticRenderStream(final PCamera camera, final Boolean viewport,
-            final Boolean textAsShapes, final OutputStream stream, final Integer generatorId) {
-        String gen = null;
-        switch (generatorId) {
-        case KlighdConstants.IMAGE_SVG_BATIK:
-            gen = KlighdConstants.IMAGE_SVG_BATIK_ID;
-            break;
-        case KlighdConstants.IMAGE_SVG_VG:
-            gen = KlighdConstants.IMAGE_SVG_VG_ID;
-            break;
-        case KlighdConstants.IMAGE_SVG_FREEHEP:
-            gen = KlighdConstants.IMAGE_SVG_FREEHEP_ID;
-            break;
-        default:
-            gen = DEFAULT_GENERATOR;
-        }
-        KlighdSVGCanvas.render(camera, viewport, textAsShapes, stream, gen);
-    }
 
     public static void staticRenderStream(final PCamera camera, final Boolean viewport,
             final Boolean textAsShapes, final OutputStream stream, final String generator) {
