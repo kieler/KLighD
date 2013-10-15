@@ -13,6 +13,15 @@
  */
 package de.cau.cs.kieler.klighd.microlayout;
 
+import static de.cau.cs.kieler.core.krendering.KRenderingUtil.toNonNullLeftPosition;
+import static de.cau.cs.kieler.core.krendering.KRenderingUtil.toNonNullTopPosition;
+import static de.cau.cs.kieler.klighd.microlayout.PlacementUtil.CHILD_AREA_POSITION;
+import static de.cau.cs.kieler.klighd.microlayout.PlacementUtil.ESTIMATED_GRID_DATA;
+import static de.cau.cs.kieler.klighd.microlayout.PlacementUtil.asGridPlacementData;
+import static de.cau.cs.kieler.klighd.microlayout.PlacementUtil.estimateSize;
+import static de.cau.cs.kieler.klighd.microlayout.PlacementUtil.getHorizontalSizeAvailable;
+import static de.cau.cs.kieler.klighd.microlayout.PlacementUtil.getVerticalSizeAvailable;
+
 import java.util.Arrays;
 import java.util.List;
 
@@ -22,8 +31,11 @@ import de.cau.cs.kieler.core.krendering.KPosition;
 import de.cau.cs.kieler.core.krendering.KRendering;
 import de.cau.cs.kieler.core.krendering.KRenderingFactory;
 import de.cau.cs.kieler.core.krendering.KRenderingPackage;
+import de.cau.cs.kieler.core.krendering.KXPosition;
+import de.cau.cs.kieler.core.krendering.KYPosition;
 import de.cau.cs.kieler.core.util.Pair;
-import static de.cau.cs.kieler.klighd.microlayout.PlacementUtil.*; // SUPPRESS CHECKSTYLE Import
+import de.cau.cs.kieler.klighd.microlayout.PlacementUtil.GridSpacing;
+// SUPPRESS CHECKSTYLE Import
 
 
 /**
@@ -100,7 +112,7 @@ public final class GridPlacementUtil {
                 return new Bounds[0];
             }
 
-            Bounds[] bounds = new Bounds[children.size()];
+            final Bounds[] bounds = new Bounds[children.size()];
             float availableParentWidth = parentBounds.width;
             float availableParentHeight = parentBounds.height;
 
@@ -181,11 +193,12 @@ public final class GridPlacementUtil {
             float startY = 0;
             // take insets into consideration
             if (topLeft != null) {
-                startX = parentBounds.width * topLeft.getX().getRelative()
-                        + topLeft.getX().getAbsolute();
-                startY = parentBounds.height * topLeft.getY().getRelative()
-                        + topLeft.getY().getAbsolute();
+                KXPosition x = toNonNullLeftPosition(topLeft.getX());
+                KYPosition y = toNonNullTopPosition(topLeft.getY());
+                startX = parentBounds.width * x.getRelative() + x.getAbsolute();
+                startY = parentBounds.height * y.getRelative() + y.getAbsolute();
             }
+            
             float currentX = startX;
             float currentY = startY;
             
@@ -336,22 +349,27 @@ public final class GridPlacementUtil {
             
             if (gpd == null) {
                 //no grid placement data present, create dummy to prevent null pointer exceptions
-                gpd = (KGridPlacementData) KRenderingFactory.eINSTANCE.create(
-                        KRenderingPackage.eINSTANCE.getKGridPlacementData());
+                gpd = KRenderingFactory.eINSTANCE.createKGridPlacementData();
             }
 
             int column = i % placer.numColumns;
             int row = i / placer.numColumns;
 
+            final float adjWidth = PlacementUtil.calculateParentWidth(
+                    childMinSize.width, gpd.getTopLeft(), gpd.getBottomRight());
+            final float adjHeight = PlacementUtil.calculateParentHeight(
+                    childMinSize.height, gpd.getTopLeft(), gpd.getBottomRight());
+            
             // determine the maximum of the minimum column widths and row heights
             // e.g. how big must a column be to fit all the minSizes
             placer.columnMaxMinWidth[column] = Math.max(
                     //size for this element is size of child elements or minSize
-                    Math.max(childMinSize.width, placer.columnMaxMinWidth[column]),
+                    Math.max(adjWidth, placer.columnMaxMinWidth[column]),
                     gpd.getMinCellWidth());
             placer.rowMaxMinHeight[row] = Math.max(
-                    Math.max(childMinSize.height, placer.rowMaxMinHeight[row]),
+                    Math.max(adjHeight, placer.rowMaxMinHeight[row]),
                     gpd.getMinCellHeight());
+
             if (gpd.getMaxCellWidth() >= placer.columnMaxMinWidth[column]) {
                 // We defined the "min width" to be stronger than the "max width" so  take the given max
                 //  width only if it is bigger than the current maximal "min width" in the same column

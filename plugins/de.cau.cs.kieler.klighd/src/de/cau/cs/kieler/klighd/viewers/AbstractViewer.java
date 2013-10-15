@@ -90,6 +90,13 @@ public abstract class AbstractViewer<T> implements IViewer<T> {
     /**
      * {@inheritDoc}
      */
+    public void reveal(final Object diagramObject, final int duration) {
+        // do nothing
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
     public void reveal(final KGraphElement diagramObject, final int duration) {
         // do nothing
     }
@@ -97,21 +104,28 @@ public abstract class AbstractViewer<T> implements IViewer<T> {
     /**
      * {@inheritDoc}
      */
-    public void centerOn(final KGraphElement diagramObject, final int duration) {
+    public void centerOn(final Object diagramObject, final int duration) {
         // do nothing
     }
-
+    
     /**
      * {@inheritDoc}
      */
-    public void collapse(final KNode diagramElement) {
+    public void centerOn(final KGraphElement diagramObject, final int duration) {
         // do nothing
     }
-
+    
     /**
      * {@inheritDoc}
      */
     public void collapse(final Object semanticElement) {
+        // do nothing
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public void collapse(final KNode diagramElement) {
         // do nothing
     }
 
@@ -132,14 +146,14 @@ public abstract class AbstractViewer<T> implements IViewer<T> {
     /**
      * {@inheritDoc}
      */
-    public void toggleExpansion(final KNode diagramElement) {
+    public void toggleExpansion(final Object semanticElement) {
         // do nothing
     }
-
+    
     /**
      * {@inheritDoc}
      */
-    public void toggleExpansion(final Object semanticElement) {
+    public void toggleExpansion(final KNode diagramElement) {
         // do nothing
     }
 

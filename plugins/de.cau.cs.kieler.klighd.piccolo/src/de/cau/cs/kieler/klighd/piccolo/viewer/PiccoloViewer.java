@@ -368,7 +368,7 @@ public class PiccoloViewer extends AbstractViewer<KNode> implements INodeSelecti
         if (node != null) {
             // center the camera on the node
             PCamera camera = canvas.getCamera();
-            camera.animateViewToCenterBounds(node.getFullBounds(), false, duration);
+            camera.animateViewToCenterBounds(node.getGlobalFullBounds(), false, duration);
         }
     }
     

@@ -13,8 +13,14 @@
  */
 package de.cau.cs.kieler.klighd.microlayout;
 
+import static de.cau.cs.kieler.core.krendering.KRenderingUtil.toNonNullBottomPosition;
+import static de.cau.cs.kieler.core.krendering.KRenderingUtil.toNonNullLeftPosition;
+import static de.cau.cs.kieler.core.krendering.KRenderingUtil.toNonNullRightPosition;
+import static de.cau.cs.kieler.core.krendering.KRenderingUtil.toNonNullTopPosition;
+
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
+import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.util.Arrays;
@@ -199,6 +205,16 @@ public final class PlacementUtil {
             this.x = point.x;
             this.y = point.y;
         }
+        
+        /**
+         * Constructs a new {@link Point2D} with <code>x</code> and <code>y</code> equal to those of
+         * <code>this</code> {@link Point}.
+         * 
+         * @return the {@link Point2D}
+         */
+        public Point2D.Float toPoint2D() {
+            return new Point2D.Float(x, y);
+        }
 
         /**
          * {@inheritDoc}
@@ -268,6 +284,199 @@ public final class PlacementUtil {
     // CHECKSTYLEON Visibility
 
     private static final KRenderingPackage KRENDERING_PACKAGE = KRenderingPackage.eINSTANCE;
+
+
+    /**
+     * Evaluates a position inside given parent bounds.
+     * 
+     * @param position
+     *            the position
+     * @param parentBounds
+     *            the parent bounds
+     * @param topLeft
+     *            in case position equals <code>null</code> assume a topLeft {@link KPosition},
+     *            and a bottomRight {@link KPosition} otherwise
+     * @return the evaluated position
+     */
+    public static Point2D.Float evaluateKPosition(final KPosition position,
+            final Rectangle2D parentBounds, final boolean topLeft) {
+        return evaluateKPosition(position, Bounds.of(parentBounds), topLeft).toPoint2D();
+    }
+
+    /**
+     * Evaluates a position inside given parent bounds.
+     * 
+     * @param position
+     *            the position
+     * @param parentBounds
+     *            the parent bounds
+     * @param topLeft
+     *            in case position equals <code>null</code> assume a topLeft {@link KPosition},
+     *            and a bottomRight {@link KPosition} otherwise
+     * @return the evaluated position
+     */
+    public static Point evaluateKPosition(final KPosition position,
+            final Bounds parentBounds, final boolean topLeft) {
+        float width = (float) parentBounds.getWidth();
+        float height = (float) parentBounds.getHeight();
+        
+        final Point point = new Point(0, 0);
+        final KXPosition xPos = topLeft ? toNonNullLeftPosition(position.getX())
+                : toNonNullRightPosition(position.getX());
+        final KYPosition yPos = topLeft ? toNonNullTopPosition(position.getY())
+                : toNonNullBottomPosition(position.getY());
+        
+        if (xPos instanceof KLeftPosition) {
+            point.x = xPos.getAbsolute() + xPos.getRelative() * width;
+        } else {
+            point.x = width - xPos.getAbsolute() - xPos.getRelative() * width;
+        }
+        
+        if (yPos instanceof KTopPosition) {
+            point.y = yPos.getAbsolute() + yPos.getRelative() * height;
+        } else {
+            point.y = height - yPos.getAbsolute() - yPos.getRelative() * height;
+        }
+        return point;
+    }
+
+
+    /**
+     * Returns the bounds for a direct placement data in given parent bounds.
+     * 
+     * @param dpd
+     *            the direct placement data
+     * @param parentBounds
+     *            the parent bounds
+     * @return the bounds
+     */
+    public static Bounds evaluateAreaPlacement(final KAreaPlacementData dpd,
+            final Rectangle2D parentBounds) {
+        return evaluateAreaPlacement(dpd, Bounds.of(parentBounds));
+    }
+
+
+    /**
+     * Returns the bounds for a direct placement data in given parent bounds.
+     * 
+     * @param dpd
+     *            the direct placement data
+     * @param parentBounds
+     *            the parent bounds
+     * @return the bounds
+     */
+    public static Bounds evaluateAreaPlacement(final KAreaPlacementData dpd,
+            final Bounds parentBounds) {
+        if (dpd == null) {
+            return new Bounds(parentBounds);
+        }
+
+        // determine the top-left
+        final Point topLeftPoint;
+        final KPosition topLeft = dpd.getTopLeft();
+        if (topLeft == null) {
+            topLeftPoint = new Point(0, 0);
+        } else {
+            topLeftPoint = evaluateKPosition(topLeft, parentBounds, true);
+        }
+
+        // determine the bottom-right
+        final KPosition bottomRight = dpd.getBottomRight();
+        final Point bottomRightPoint;
+        if (bottomRight == null) {
+            bottomRightPoint = new Point(parentBounds.getWidth(), parentBounds.getHeight());
+        } else {
+            bottomRightPoint = evaluateKPosition(bottomRight, parentBounds, false);
+        }
+
+
+        return new Bounds(topLeftPoint.x, topLeftPoint.y, bottomRightPoint.x - topLeftPoint.x,
+                bottomRightPoint.y - topLeftPoint.y);
+    }
+
+    /**
+     * Returns the bounds for a point placement data in given parent bounds.
+     * 
+     * @param ppd
+     *            the point placement data
+     * @param ownBounds
+     *            the size of the object to be placed
+     * @param parentBounds
+     *            the parent bounds
+     * @return the bounds
+     */
+    public static Bounds evaluatePointPlacement(final KPointPlacementData ppd, final Bounds ownBounds,
+            final Rectangle2D parentBounds) {
+        return evaluatePointPlacement(ppd, ownBounds, Bounds.of(parentBounds));
+    }
+
+    /**
+     * Returns the bounds for a point placement data in given parent bounds.
+     * 
+     * @param ppd
+     *            the point placement data
+     * @param ownBounds
+     *            the size of the object to be placed
+     * @param parentBounds
+     *            the parent bounds
+     * @return the bounds
+     */
+    public static Bounds evaluatePointPlacement(final KPointPlacementData ppd, final Bounds ownBounds,
+            final Bounds parentBounds) {
+        if (ppd == null) {
+            return new Bounds(parentBounds.getWidth(), parentBounds.getHeight());
+        }
+
+        final float width = Math.max(ownBounds.getWidth() + ppd.getHorizontalMargin(),
+                ppd.getMinWidth());
+        final float height = Math.max(ownBounds.getHeight() + ppd.getVerticalMargin(),
+                ppd.getMinHeight());
+        
+        final KPosition ref = ppd.getReferencePoint();
+        final Point refPoint;
+        if (ref == null) {
+            // if the reference point is missing, assume the center as reference
+            refPoint = new Point(parentBounds.getWidth() / 2, parentBounds.getHeight() / 2);
+        } else {
+            refPoint = evaluateKPosition(ref, parentBounds, true);
+        }
+
+        final float x0, y0;
+
+        switch (ppd.getHorizontalAlignment()) {
+        case CENTER:
+            x0 = refPoint.x - width / 2;
+            break;
+        case RIGHT:
+            x0 = refPoint.x - width;
+            break;
+        default:
+        case LEFT:
+            x0 = refPoint.x;
+        }
+        
+        switch (ppd.getVerticalAlignment()) {
+        case BOTTOM:
+            y0 = refPoint.y - height;
+            break;
+        case CENTER:
+            y0 = refPoint.y - height / 2;
+            break;
+        default:
+        case TOP:
+            y0 = refPoint.y;
+        }
+        
+        return Bounds.of(x0, y0, width, height);
+    }
+
+
+    /*--------------------------------------------------*/
+    /*                                                  */
+    /*  KPlacementData-based rendering size estimation  */
+    /*                                                  */
+    /*--------------------------------------------------*/
+
 
     /**
      * Returns the minimal size of a {@link KNode} based on the minimal size of contained
@@ -749,7 +958,7 @@ public final class PlacementUtil {
 
                 // take insets into consideration
                 elementWidth = calculateParentWidth(elementWidth, topLeft, bottomRight);
-                elementHeight = calculateParentWidth(elementHeight, topLeft, bottomRight);
+                elementHeight = calculateParentHeight(elementHeight, topLeft, bottomRight);
 
                 elementHeight = Math.max(gridData.getMinCellHeight(), elementHeight);
                 elementWidth = Math.max(gridData.getMinCellWidth(), elementWidth);
@@ -923,11 +1132,11 @@ public final class PlacementUtil {
             rel0 = 0;
             posId0 = DIRECT;
         } else {
-            abs0 = tL.getX().getAbsolute();
-            rel0 = tL.getX().getRelative();
-            posId0 =
-                    tL.getX().eClass().getClassifierID() == KRenderingPackage.KLEFT_POSITION ? DIRECT
-                            : INDIRECT;
+            final KXPosition lPos = toNonNullLeftPosition(tL.getX());
+            abs0 = lPos.getAbsolute();
+            rel0 = lPos.getRelative();
+            posId0 = lPos.eClass().getClassifierID() == KRenderingPackage.KLEFT_POSITION ? DIRECT
+                    : INDIRECT;
         }
 
         if (bR == null) {
@@ -936,11 +1145,11 @@ public final class PlacementUtil {
             rel1 = 0;
             posId1 = DIRECT;
         } else {
-            abs1 = bR.getX().getAbsolute();
-            rel1 = bR.getX().getRelative();
-            posId1 =
-                    bR.getX().eClass().getClassifierID() == KRenderingPackage.KRIGHT_POSITION ? DIRECT
-                            : INDIRECT;
+            final KXPosition rPos = toNonNullRightPosition(bR.getX());
+            abs1 = rPos.getAbsolute();
+            rel1 = rPos.getRelative();
+            posId1 = rPos.eClass().getClassifierID() == KRenderingPackage.KRIGHT_POSITION ? DIRECT
+                    : INDIRECT;
         }
 
         return getSizeAvailable(parentSize, abs0, rel0, posId0, abs1, rel1, posId1);
@@ -971,11 +1180,11 @@ public final class PlacementUtil {
             rel0 = 0;
             posId0 = DIRECT;
         } else {
-            abs0 = tL.getY().getAbsolute();
-            rel0 = tL.getY().getRelative();
-            posId0 =
-                    tL.getY().eClass().getClassifierID() == KRenderingPackage.KTOP_POSITION ? DIRECT
-                            : INDIRECT;
+            final KYPosition tPos = toNonNullTopPosition(tL.getY());
+            abs0 = tPos.getAbsolute();
+            rel0 = tPos.getRelative();
+            posId0 = tPos.eClass().getClassifierID() == KRenderingPackage.KTOP_POSITION ? DIRECT
+                    : INDIRECT;
         }
 
         if (bR == null) {
@@ -984,11 +1193,11 @@ public final class PlacementUtil {
             rel1 = 0;
             posId1 = DIRECT;
         } else {
-            abs1 = bR.getY().getAbsolute();
-            rel1 = bR.getY().getRelative();
-            posId1 =
-                    bR.getY().eClass().getClassifierID() == KRenderingPackage.KBOTTOM_POSITION ? DIRECT
-                            : INDIRECT;
+            final KYPosition bPos = toNonNullBottomPosition(bR.getY());
+            abs1 = bPos.getAbsolute();
+            rel1 = bPos.getRelative();
+            posId1 = bPos.eClass().getClassifierID() == KRenderingPackage.KBOTTOM_POSITION ? DIRECT
+                    : INDIRECT;
         }
 
         return getSizeAvailable(parentSize, abs0, rel0, posId0, abs1, rel1, posId1);
@@ -1048,7 +1257,7 @@ public final class PlacementUtil {
      *            the KPosition defining the bottom and right insets
      * @return the size needed for the parent to be able to place the element with the given size
      */
-    private static float calculateParentWidth(final float elementSize, final KPosition tL,
+    static float calculateParentWidth(final float elementSize, final KPosition tL,
             final KPosition bR) {
         Pair<Float, Float> normalizedSize = getHorizontalSize(tL, bR);
         float parentWidth = elementSize;
@@ -1079,7 +1288,7 @@ public final class PlacementUtil {
      *            the KPosition defining the bottom and right insets
      * @return the size needed for the parent to be able to place the element with the given size
      */
-    private static float calculateParentHeight(final float elementSize, final KPosition tL,
+    static float calculateParentHeight(final float elementSize, final KPosition tL,
             final KPosition bR) {
         Pair<Float, Float> normalizedSize = getVerticalSize(tL, bR);
         float parentHeight = elementSize;
@@ -1123,11 +1332,11 @@ public final class PlacementUtil {
             rel0 = 0;
             posId0 = DIRECT;
         } else {
-            abs0 = tL.getX().getAbsolute();
-            rel0 = tL.getX().getRelative();
-            posId0 =
-                    tL.getX().eClass().getClassifierID() == KRenderingPackage.KLEFT_POSITION ? DIRECT
-                            : INDIRECT;
+            final KXPosition lPos = toNonNullLeftPosition(tL.getX());
+            abs0 = lPos.getAbsolute();
+            rel0 = lPos.getRelative();
+            posId0 = lPos.eClass().getClassifierID() == KRenderingPackage.KLEFT_POSITION ? DIRECT
+                    : INDIRECT;
         }
 
         if (bR == null) {
@@ -1136,11 +1345,11 @@ public final class PlacementUtil {
             rel1 = 0;
             posId1 = DIRECT;
         } else {
-            abs1 = bR.getX().getAbsolute();
-            rel1 = bR.getX().getRelative();
-            posId1 =
-                    bR.getX().eClass().getClassifierID() == KRenderingPackage.KRIGHT_POSITION ? DIRECT
-                            : INDIRECT;
+            final KXPosition rPos = toNonNullRightPosition(bR.getX());
+            abs1 = rPos.getAbsolute();
+            rel1 = rPos.getRelative();
+            posId1 = rPos.eClass().getClassifierID() == KRenderingPackage.KRIGHT_POSITION ? DIRECT
+                    : INDIRECT;
         }
 
         return getSize(abs0, rel0, posId0, abs1, rel1, posId1);
@@ -1165,11 +1374,11 @@ public final class PlacementUtil {
             rel0 = 0;
             posId0 = DIRECT;
         } else {
-            abs0 = tL.getY().getAbsolute();
-            rel0 = tL.getY().getRelative();
-            posId0 =
-                    tL.getY().eClass().getClassifierID() == KRenderingPackage.KTOP_POSITION ? DIRECT
-                            : INDIRECT;
+            final KYPosition rPos = toNonNullTopPosition(tL.getY());
+            abs0 = rPos.getAbsolute();
+            rel0 = rPos.getRelative();
+            posId0 = rPos.eClass().getClassifierID() == KRenderingPackage.KTOP_POSITION ? DIRECT
+                    : INDIRECT;
         }
 
         if (bR == null) {
@@ -1178,11 +1387,11 @@ public final class PlacementUtil {
             rel1 = 0;
             posId1 = DIRECT;
         } else {
-            abs1 = bR.getY().getAbsolute();
-            rel1 = bR.getY().getRelative();
-            posId1 =
-                    bR.getY().eClass().getClassifierID() == KRenderingPackage.KBOTTOM_POSITION ? DIRECT
-                            : INDIRECT;
+            final KYPosition rPos = toNonNullBottomPosition(bR.getY());
+            abs1 = rPos.getAbsolute();
+            rel1 = rPos.getRelative();
+            posId1 = rPos.eClass().getClassifierID() == KRenderingPackage.KBOTTOM_POSITION ? DIRECT
+                    : INDIRECT;
         }
 
         return getSize(abs0, rel0, posId0, abs1, rel1, posId1);
@@ -1213,11 +1422,6 @@ public final class PlacementUtil {
             final int positionId0, final float abs1, final float rel1, final int positionId1) {
         float absOffset = 0;
         float relWidth = 1f;
-
-        // boolean absoluteLength = false;
-        // the idea of that variable is to provide an information whether the size of
-        // figure is influenced by the size of the parent or whether it's fully determined
-        // by the absolute positioning components; need thinking on that further
 
         int position = positionId0 * FIRST_OFFSET + positionId1;
 
@@ -1257,7 +1461,6 @@ public final class PlacementUtil {
             break;
         }
         return new Pair<Float, Float>(absOffset, relWidth);
-        // return new Triple<Float, Float, Boolean>(absXOffest, relWidth, absoluteLength);
     }
 
     /**
@@ -1384,33 +1587,6 @@ public final class PlacementUtil {
     }
 
     /**
-     * Returns the bounds for a direct placement data in given parent bounds.
-     * 
-     * @param dpd
-     *            the direct placement data
-     * @param parentBounds
-     *            the parent bounds
-     * @return the bounds
-     */
-    public static Bounds evaluateAreaPlacement(final KAreaPlacementData dpd,
-            final Bounds parentBounds) {
-        if (dpd == null) {
-            return new Bounds(parentBounds);
-        }
-
-        // determine the top-left
-        KPosition topLeft = dpd.getTopLeft();
-        Point topLeftPoint = evaluateFlexiblePosition(topLeft, parentBounds);
-
-        // determine the bottom-right
-        KPosition bottomRight = dpd.getBottomRight();
-        Point bottomRightPoint = evaluateFlexiblePosition(bottomRight, parentBounds);
-
-        return new Bounds(topLeftPoint.x, topLeftPoint.y, bottomRightPoint.x - topLeftPoint.x,
-                bottomRightPoint.y - topLeftPoint.y);
-    }
-
-    /**
      * Returns the bounds for a polyline placement data in given parent bounds.
      * 
      * @param line
@@ -1419,7 +1595,7 @@ public final class PlacementUtil {
      *            the parent bounds
      * @return the bounds
      */
-    public static Bounds evaluatePolylinePlacement(final KPolyline line, final Bounds parentBounds) {
+    private static Bounds evaluatePolylinePlacement(final KPolyline line, final Bounds parentBounds) {
         if (line == null || line.getPoints().isEmpty()) {
             return new Bounds(0, 0, parentBounds.width, parentBounds.height);
         }
@@ -1430,7 +1606,7 @@ public final class PlacementUtil {
         float minY = Float.MAX_VALUE;
         float maxY = Float.MIN_VALUE;
         for (KPosition polylinePoint : line.getPoints()) {
-            Point point = evaluateFlexiblePosition(polylinePoint, parentBounds);
+            Point point = evaluateKPosition(polylinePoint, parentBounds, true);
             if (point.x < minX) {
                 minX = point.x;
             }
@@ -1448,38 +1624,6 @@ public final class PlacementUtil {
         return new Bounds(minX, minY, parentBounds.width - maxX, parentBounds.height - maxY);
     }
 
-    /**
-     * Evaluates a position inside given parent bounds.
-     * 
-     * @param position
-     *            the position
-     * @param parentBounds
-     *            the parent bounds
-     * @return the evaluated position
-     */
-    public static Point evaluateFlexiblePosition(final KPosition position, final Bounds parentBounds) {
-        float width = (float) parentBounds.width;
-        float height = (float) parentBounds.height;
-        Point point = new Point(0.0f, 0.0f);
-
-        if (position == null) {
-            return point;
-        }
-
-        KXPosition xPos = position.getX();
-        KYPosition yPos = position.getY();
-        if (xPos instanceof KLeftPosition) {
-            point.x = xPos.getAbsolute() + xPos.getRelative() * width;
-        } else {
-            point.x = width - xPos.getAbsolute() - xPos.getRelative() * width;
-        }
-        if (yPos instanceof KTopPosition) {
-            point.y = yPos.getAbsolute() + yPos.getRelative() * height;
-        } else {
-            point.y = height - yPos.getAbsolute() - yPos.getRelative() * height;
-        }
-        return point;
-    }
 
     /**
      * Returns the given placement data as direct placement data.

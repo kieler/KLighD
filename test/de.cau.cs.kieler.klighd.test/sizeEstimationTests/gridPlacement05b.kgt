@@ -1,12 +1,12 @@
 knode {
     properties:
-        klighd.testing.expected.^height = 87.0
-        klighd.testing.expected.^width = 92.5
+        klighd.testing.expected.^height = 112.352936
+        klighd.testing.expected.^width = 118.823524
     kroundedRectangle (2, 2) {
         grid:
             columns = 1
-//            topLeftAnchor = left, top 30% + 10
-//            bottomRightAnchor = right, bottom 30% + 10
+                topLeftAnchor = left, top 15% + 10
+                bottomRightAnchor = right 15% + 10, bottom
         krendering *text1
         krendering *text1
         kellipse {
