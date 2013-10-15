@@ -1,6 +1,5 @@
 knode {
     properties:
-        de.cau.cs.kieler.borderSpacing = 3.0
         klighd.testing.expected.^height = 15.0
         klighd.testing.expected.^width = 73.75
     krectangle {
@@ -22,6 +21,8 @@ knode {
 		}
 	}
     knode {
+        properties:
+            klighd.testing.ignore = true
         size: width = 10 height = 10
         kroundedRectangle (10, 10) {
             styles: foreground = 255r, 255g

@@ -1,10 +1,10 @@
 knode {
 	properties:
-	   klighd.testing.expected.^height = 16.0
-	   klighd.testing.expected.^width = 30.0
+	    klighd.testing.expected.^height = 16.0
+	    klighd.testing.expected.^width = 30.0
 	krectangle {
 		styles:
-		  foreground = 255r
+		    foreground = 255r
 		ktext ("Hello") [
 		    klighd.testing.^height = 16.0
 		    klighd.testing.^width = 30.0

@@ -6,12 +6,12 @@ knode {
         styles: foreground = 255r 
         krectangle {
             areaData:
-                topLeftAnchor =  left 10%  + 10, top 10%  + 10
-                bottomRightAnchor = right 10% + 10, bottom 10%  + 10
+                topLeftAnchor =  left 20, top 20
+                bottomRightAnchor = right 20, bottom 20
             ktext ("Hello") [
                 klighd.testing.^height = 60.0
                 klighd.testing.^width = 60.0
             ]
         }
-	}
+    }
 }
