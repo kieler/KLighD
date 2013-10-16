@@ -72,7 +72,7 @@ public final class KRenderingUtil {
      * @return the {@link KPointPlacementData} or <code>null</code> otherwise
      */
     public static KPointPlacementData asPointPlacementData(final KPlacementData data) {
-        if (data instanceof KAreaPlacementData) {
+        if (data instanceof KPointPlacementData) {
             return (KPointPlacementData) data;
         }
         return null;
