@@ -30,4 +30,3 @@ Export-Package: de.cau.cs.kieler.klighd.piccolo,
  de.cau.cs.kieler.klighd.piccolo.internal.util;x-friends:="de.cau.cs.kieler.klighd.piccolo.svg,de.cau.cs.kieler.klighdning",
  de.cau.cs.kieler.klighd.piccolo.ui,
  de.cau.cs.kieler.klighd.piccolo.viewer
-DynamicImport-Package: de.cau.cs.kieler.klighd.piccolo.svg

@@ -250,16 +250,14 @@ public class KlighdSVGCanvas implements PComponent {
         // set up the paint context
         KlighdAbstractSVGGraphics graphics = createGraphics(textAsShapes, bounds, generatorId);
 
-        // the following clip set is required in order to get rid of the one set in
-        // the constructor call above, which lets Inkscape & browsers go crazy
-        if (viewPort) {
-            // graphics.setClip(camera.getBounds());
-            graphics.setClip(bounds);
-        }
-
         final PPaintContext paintContext = new PPaintContext(graphics);
         paintContext.setRenderQuality(PPaintContext.HIGH_QUALITY_RENDERING);
 
+        // remove the global clip!
+        // the following clip set is required in order to get rid of the one set in
+        // the constructor call above, which lets Inkscape & browsers go crazy (slower)
+        graphics.setClip(null);
+        
         // perform the painting
         if (viewPort) {
             // only render the current viewport
