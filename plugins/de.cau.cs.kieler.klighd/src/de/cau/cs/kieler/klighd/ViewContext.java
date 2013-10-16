@@ -374,9 +374,9 @@ public final class ViewContext extends MapPropertyHolder {
      *            the element in the source model
      * @return the element in the context's model or null if the link could not be made
      */
-    public Object getTargetElement(final Object element) {
+    public Collection<?> getTargetElement(final Object element) {
         if (additionalSourceTargetElementMap != null) {
-            Object target = additionalSourceTargetElementMap.get(element);
+            Collection<?> target = additionalSourceTargetElementMap.get(element);
             if (target != null) {
                 return target;
             }
@@ -389,7 +389,9 @@ public final class ViewContext extends MapPropertyHolder {
             }
             target = transformationContext.getTargetElement(element);
         }
-        return target;
+        // the following cast a hot fix, the above loops we be removed soon due to the planned
+        //  abolishment of the transformation chain feature
+        return (Collection<?>) target;
     }
 
     /**
