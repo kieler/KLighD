@@ -47,6 +47,7 @@ import de.cau.cs.kieler.core.krendering.KPointPlacementData;
 import de.cau.cs.kieler.core.krendering.KRendering;
 import de.cau.cs.kieler.core.krendering.KRenderingPackage;
 import de.cau.cs.kieler.core.krendering.KRenderingRef;
+import de.cau.cs.kieler.core.krendering.KRenderingUtil;
 import de.cau.cs.kieler.core.krendering.KStyle;
 import de.cau.cs.kieler.core.properties.IProperty;
 import de.cau.cs.kieler.core.util.Pair;
@@ -633,7 +634,8 @@ public abstract class AbstractKGERenderingController
     }
 
     /**
-     * Creates the Piccolo node for a rendering inside a parent Piccolo node using direct placement.
+     * Creates the Piccolo node for a rendering inside a parent Piccolo node using point- or
+     * area-based child placement.
      * 
      * @param rendering
      *            the rendering
@@ -647,21 +649,23 @@ public abstract class AbstractKGERenderingController
             final List<KStyle> styles, final PNode parent) {
         final KPlacementData pcd = rendering.getPlacementData();
         final Bounds bounds;
-        if (pcd instanceof KPointPlacementData) {
+        final boolean pointPlacement = pcd instanceof KPointPlacementData;
+
+        if (pointPlacement) {
             bounds = PlacementUtil.evaluatePointPlacement((KPointPlacementData) pcd,
                     PlacementUtil.estimateSize(rendering, new Bounds(0.0f, 0.0f)),
                     parent.getBoundsReference());
         } else {
             // determine the initial bounds
             bounds = PlacementUtil.evaluateAreaPlacement(
-                    PlacementUtil.asAreaPlacementData(rendering.getPlacementData()),
+                    KRenderingUtil.asAreaPlacementData(rendering.getPlacementData()),
                     parent.getBoundsReference());
         }
         // create the rendering and receive its controller
         final PNodeController<?> controller = createRendering(rendering, styles, parent, bounds);
 
         // add a listener on the parent's bounds
-        if (pcd instanceof KPointPlacementData) {
+        if (pointPlacement) {
             addListener(PNode.PROPERTY_BOUNDS, parent, controller.getNode(),
                     new PropertyChangeListener() {
                         public void propertyChange(final PropertyChangeEvent e) {
@@ -681,7 +685,7 @@ public abstract class AbstractKGERenderingController
                             Bounds bounds = null;
                             // calculate the new bounds of the rendering
                             bounds = PlacementUtil.evaluateAreaPlacement(
-                                    PlacementUtil.asAreaPlacementData(rendering.getPlacementData()),
+                                    KRenderingUtil.asAreaPlacementData(rendering.getPlacementData()),
                                     parent.getBoundsReference());
                             // use the controller to apply the new bounds
                             controller.setBounds(bounds);

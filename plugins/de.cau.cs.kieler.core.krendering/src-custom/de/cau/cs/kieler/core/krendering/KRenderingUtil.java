@@ -51,6 +51,62 @@ public final class KRenderingUtil {
     }
     
     /**
+     * Casts the given {@link KPlacementData} to {@link KAreaPlacementData}.
+     * 
+     * @param data
+     *            the {@link KPlacement}
+     * @return the {@link KAreaPlacementData} or <code>null</code> otherwise
+     */
+    public static KAreaPlacementData asAreaPlacementData(final KPlacementData data) {
+        if (data instanceof KAreaPlacementData) {
+            return (KAreaPlacementData) data;
+        }
+        return null;
+    }
+
+    /**
+     * Casts the given {@link KPlacementData} to {@link KPointPlacementData}.
+     * 
+     * @param data
+     *            the {@link KPlacement}
+     * @return the {@link KPointPlacementData} or <code>null</code> otherwise
+     */
+    public static KPointPlacementData asPointPlacementData(final KPlacementData data) {
+        if (data instanceof KAreaPlacementData) {
+            return (KPointPlacementData) data;
+        }
+        return null;
+    }
+
+    /**
+     * Casts the given {@link KPlacementData} to {@link KGridPlacementData}.
+     * 
+     * @param data
+     *            the {@link KPlacement}
+     * @return the {@link KGridPlacementData} or <code>null</code> otherwise
+     */
+    public static KGridPlacementData asGridPlacementData(final KPlacementData data) {
+        if (data instanceof KGridPlacementData) {
+            return (KGridPlacementData) data;
+        }
+        return null;
+    }
+
+    /**
+     * Returns the given {@link KPlacement} as {@link KGridPlacement}.
+     * 
+     * @param placement
+     *            the {@link KPlacement}
+     * @return the {@link KGridPlacement} or <code>null</code> otherwise
+     */
+    public static KGridPlacement asGridPlacement(final KPlacement placement) {
+        if (placement instanceof KGridPlacement) {
+            return (KGridPlacement) placement;
+        }
+        return null;
+    }
+
+    /**
      * Singleton {@link KPosition} instance containing {@link KLeftPosition KLeft-} &
      * {@link KTopPosition} components.
      */

@@ -21,6 +21,7 @@ import de.cau.cs.kieler.core.kgraph.KLabel;
 import de.cau.cs.kieler.core.krendering.KForeground;
 import de.cau.cs.kieler.core.krendering.KRendering;
 import de.cau.cs.kieler.core.krendering.KRenderingFactory;
+import de.cau.cs.kieler.core.krendering.KRenderingUtil;
 import de.cau.cs.kieler.core.krendering.KStyle;
 import de.cau.cs.kieler.core.krendering.KText;
 import de.cau.cs.kieler.klighd.microlayout.Bounds;
@@ -104,7 +105,7 @@ public class KLabelRenderingController extends AbstractKGERenderingController<KL
                     public void propertyChange(final PropertyChangeEvent e) {
                         // calculate the new bounds of the rendering
                         Bounds bounds = PlacementUtil.evaluateAreaPlacement(
-                                PlacementUtil.asAreaPlacementData(rendering.getPlacementData()),
+                                KRenderingUtil.asAreaPlacementData(rendering.getPlacementData()),
                                 parent.getBoundsReference());
                         // use the controller to apply the new bounds
                         controller.setBounds(bounds);
