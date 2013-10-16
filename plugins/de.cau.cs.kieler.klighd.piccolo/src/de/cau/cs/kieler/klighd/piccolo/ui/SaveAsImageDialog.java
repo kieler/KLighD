@@ -14,6 +14,9 @@
 package de.cau.cs.kieler.klighd.piccolo.ui;
 
 import java.io.File;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IResource;
@@ -44,35 +47,21 @@ import org.eclipse.swt.widgets.Slider;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.dialogs.SaveAsDialog;
 
-import de.cau.cs.kieler.klighd.KlighdConstants;
 import de.cau.cs.kieler.klighd.piccolo.KlighdPiccoloPlugin;
-import de.cau.cs.kieler.klighd.piccolo.internal.Constants;
+import de.cau.cs.kieler.klighd.piccolo.export.ExporterManager;
+import de.cau.cs.kieler.klighd.piccolo.export.ExporterManager.ExporterDescriptor;
 
 /**
  * The 'save-as-image' dialog for Piccolo.
  * 
+ * The available image formats are retrieved from the {@link ExporterManager#EXTP_ID_EXPORTERS}
+ * extension point. An additional description of each format is added in parentheses (...), the
+ * parentheses are stripped when the file extension is added.
+ * 
  * @author mri
+ * @author uru
  */
 public class SaveAsImageDialog extends Dialog {
-    
-    /** a flag indicating the availability of the SVG export. */
-    private static final boolean SVG_EXPORT_AVAILABLE;
-    
-    /** initialization code executed while loading the class. */
-    static {
-        Class<?> clazz = null;
-        try {            
-            clazz = Class.forName(Constants.KLIGHD_SVG_CANVAS);
-        } catch (Exception e) {
-            // nothing
-        } finally {
-            if (clazz == null) {
-                SVG_EXPORT_AVAILABLE = false;
-            } else {
-                SVG_EXPORT_AVAILABLE = true;
-            }
-        }
-    }
 
     /** the default dialog width. */
     private static final int DEFAULT_WIDTH = 500;
@@ -80,25 +69,17 @@ public class SaveAsImageDialog extends Dialog {
     private static final int DEFAULT_HEIGHT = 270;
 
     /** the preference key for the file path. */
-    private static final String PREFERENCE_FILE_PATH
-        = "saveAsImageDialog.filePath"; //$NON-NLS-1$
+    private static final String PREFERENCE_FILE_PATH = "saveAsImageDialog.filePath"; //$NON-NLS-1$
     /** the preference key for the workspace path. */
-    private static final String PREFERENCE_WORKSPACE_PATH
-        = "saveAsImageDialog.workspacePath"; //$NON-NLS-1$
+    private static final String PREFERENCE_WORKSPACE_PATH 
+            = "saveAsImageDialog.workspacePath"; //$NON-NLS-1$
     /** the preference key for the image format. */
-    private static final String PREFERENCE_IMAGE_FORMAT
-        = "saveAsImageDialog.imageFormat"; //$NON-NLS-1$
+    private static final String PREFERENCE_IMAGE_FORMAT = "saveAsImageDialog.imageFormat"; //$NON-NLS-1$
     /** the preference key for the camera viewport. */
-    private static final String PREFERENCE_CAMERA_VIEWPORT
-        = "saveAsImageDialog.cameraViewport"; //$NON-NLS-1$
+    private static final String PREFERENCE_CAMERA_VIEWPORT = "saveAsImageDialog."
+            + "cameraViewport"; //$NON-NLS-1$
     /** the preference key for the scale factor. */
-    private static final String PREFERENCE_SCALE_FACTOR
-        = "saveAsImageDialog.scaleFactor"; //$NON-NLS-1$
-
-    /** the available image formats. */
-    private static final String[] IMAGE_FORMATS = SVG_EXPORT_AVAILABLE
-            ? new String[] { "BMP", "JPG", "PNG", "SVG" }
-                : new String[] { "BMP", "JPG", "PNG" };
+    private static final String PREFERENCE_SCALE_FACTOR = "saveAsImageDialog.scaleFactor"; //$NON-NLS-1$
 
     /** the preference store. */
     private IPreferenceStore preferenceStore = null;
@@ -115,19 +96,22 @@ public class SaveAsImageDialog extends Dialog {
     private Label messageImageLabel;
     /** the message label. */
     private Label messageLabel;
-    
+
     private Slider scaleSlider;
 
     /** the selected path. */
     private IPath path;
     /** whether the selected path is workspace relative. */
     private boolean workspacePath;
-    /** the selected SWT image format. */
-    private int swtImageFormat;
     /** whether to render through the camera viewport. */
     private boolean cameraViewport;
     /** the selected scaleFactor. */
     private int scaleFactor;
+
+    /** the list of available export descriptors. */
+    private List<ExporterDescriptor> descriptors;
+    /** currently selected exporter. */
+    private ExporterDescriptor currentExporter;
 
     /**
      * Constructs the dialog for saving a Piccolo scene graph as an image.
@@ -139,6 +123,18 @@ public class SaveAsImageDialog extends Dialog {
         super(parentShell);
         // receive the preference store
         preferenceStore = KlighdPiccoloPlugin.getDefault().getPreferenceStore();
+
+        // get the available descriptors
+        descriptors = ExporterManager.getInstance().getAvailableExporters();
+        // sort by name
+        Collections.sort(descriptors, new Comparator<ExporterDescriptor>() {
+            /**
+             * {@inheritDoc}
+             */
+            public int compare(final ExporterDescriptor e1, final ExporterDescriptor e2) {
+                return e1.getFileExtension().compareTo(e2.getFileExtension());
+            }
+        });
     }
 
     /**
@@ -231,7 +227,6 @@ public class SaveAsImageDialog extends Dialog {
     private static final int IMAGE_FORMAT_GROUP_COLUMNS = 3;
     private static final int IMAGE_FORMAT_COMBO_WIDTH_HINT = 210;
     private static final int IMAGE_FORMAT_SLIDER_MAX = 16;
-    
 
     private void createImageFormatGroup(final Composite parent) {
         final Composite composite = createComposite(parent, IMAGE_FORMAT_GROUP_COLUMNS);
@@ -240,13 +235,23 @@ public class SaveAsImageDialog extends Dialog {
         Label label = new Label(composite, SWT.NONE);
         label.setText(Messages.SaveAsImageDialog_image_format_caption);
 
+        // assemble the file extension descriptions
+        String[] imageFormats = new String[descriptors.size()];
+        int i = 0;
+        for (ExporterDescriptor descr : descriptors) {
+            String descrText =
+                    descr.getDescription() != null ? " (" + descr.getDescription() + ")" : "";
+            imageFormats[i++] = descr.getFileExtension() + descrText;
+        }
+        
         // image formats
         imageFormatCombo = new Combo(composite, SWT.DROP_DOWN | SWT.READ_ONLY);
-        imageFormatCombo.setItems(IMAGE_FORMATS);
+        imageFormatCombo.setItems(imageFormats);
+
         // load image format index from preference store
         int index = preferenceStore.getInt(PREFERENCE_IMAGE_FORMAT);
-        index = index < 0 || index >= IMAGE_FORMATS.length ? 0 : index;
-        imageFormatCombo.setText(IMAGE_FORMATS[index]);
+        index = index < 0 || index >= imageFormats.length ? 0 : index;
+        imageFormatCombo.setText(imageFormats[index]);
         imageFormatCombo.addSelectionListener(new SelectionAdapter() {
             public void widgetSelected(final SelectionEvent e) {
                 updateFileText();
@@ -277,7 +282,7 @@ public class SaveAsImageDialog extends Dialog {
         gridData = new GridData(GridData.FILL_HORIZONTAL);
         scaleVal.setLayoutData(gridData);
 
-        scaleSlider.addSelectionListener(new SelectionAdapter() {            
+        scaleSlider.addSelectionListener(new SelectionAdapter() {
             public void widgetSelected(final SelectionEvent e) {
                 Slider s = ((Slider) e.widget);
                 int n = s.getSelection();
@@ -285,7 +290,7 @@ public class SaveAsImageDialog extends Dialog {
                 composite.layout();
             }
         });
-    
+
     }
 
     private void createOptionsGroup(final Composite parent) {
@@ -367,7 +372,12 @@ public class SaveAsImageDialog extends Dialog {
         // extension it does not check if that file exists
         fileDialog.setOverwrite(true);
         // extensions passed to the dialog have to include the '.'
-        String[] extensions = { "." + imageFormatCombo.getText().toLowerCase() }; //$NON-NLS-1$
+        String ext = imageFormatCombo.getText().toLowerCase();
+        // remove any details contained in parentheses
+        if (ext.contains("(")) {
+            ext = ext.substring(0, ext.indexOf("(")).trim();
+        }
+        String[] extensions = { "*." + ext }; //$NON-NLS-1$
         fileDialog.setFilterExtensions(extensions);
         fileDialog.setText(Messages.SaveAsImageDialog_save_as_caption);
         // open the dialog
@@ -392,8 +402,12 @@ public class SaveAsImageDialog extends Dialog {
                 fileText.setText(filePath.toString());
             } else {
                 // if no file extension was specified take the default one
+                String extDefault = imageFormatCombo.getText().toLowerCase();
+                if (extDefault.contains("(")) {
+                    extDefault = extDefault.substring(0, extDefault.indexOf("(")).trim();
+                }
                 fileText.setText(filePath.toString() + "." //$NON-NLS-1$
-                        + imageFormatCombo.getText().toLowerCase());
+                        + extDefault);
             }
         }
     }
@@ -402,6 +416,10 @@ public class SaveAsImageDialog extends Dialog {
         if (fileText.getText().length() > 0 && Path.ROOT.isValidPath(fileText.getText())) {
             IPath filePath = new Path(fileText.getText());
             String ext = imageFormatCombo.getText().toLowerCase();
+            // remove any details contained in parentheses
+            if (ext.contains("(")) {
+                ext = ext.substring(0, ext.indexOf("(")).trim();
+            }
             if (filePath.getFileExtension() != null) {
                 if (!filePath.getFileExtension().equals(ext)) {
                     fileText.setText(filePath.removeFileExtension().addFileExtension(ext)
@@ -478,12 +496,10 @@ public class SaveAsImageDialog extends Dialog {
     }
 
     /**
-     * Returns the SWT code for the selected image format.
-     * 
-     * @return the SWT image format code
+     * @return the currentExporter
      */
-    public int getSWTImageFormat() {
-        return swtImageFormat;
+    public ExporterDescriptor getCurrentExporter() {
+        return currentExporter;
     }
 
     /**
@@ -526,31 +542,15 @@ public class SaveAsImageDialog extends Dialog {
     protected void okPressed() {
         // remember the dialog results
         // chsch: to make sure a valid extension is attached to the file name
-        //  in case the combo is untouched 
+        // in case the combo is untouched
         updateFileText();
         path = new Path(fileText.getText());
         workspacePath = workspacePathCheckbox.getSelection();
-        swtImageFormat = swtImageFormatByIndex(imageFormatCombo.getSelectionIndex());
+        currentExporter = descriptors.get(imageFormatCombo.getSelectionIndex()); 
         cameraViewport = cameraViewportCheckbox.getSelection();
         scaleFactor = scaleSlider.getSelection();
         // has to be last because it disposes the dialog
         super.okPressed();
-    }
-
-    private int swtImageFormatByIndex(final int index) {
-        // CHECKSTYLEOFF MagicNumber
-        switch (index) {
-        case 1:
-            return SWT.IMAGE_JPEG;
-        case 2:
-            return SWT.IMAGE_PNG;
-        case 3:
-            return SVG_EXPORT_AVAILABLE ? KlighdConstants.IMAGE_SVG : SWT.IMAGE_PNG;
-        case 0:
-        default:
-            return SWT.IMAGE_BMP;
-        }
-        // CHECKSTYLEON MagicNumber
     }
 
 }

@@ -45,6 +45,7 @@ import de.cau.cs.kieler.kiml.klayoutdata.KLayoutDataPackage;
 import de.cau.cs.kieler.kiml.util.KimlUtil;
 import de.cau.cs.kieler.klighd.IUpdateStrategy;
 import de.cau.cs.kieler.klighd.ViewContext;
+import de.cau.cs.kieler.klighd.krendering.SimpleUpdateStrategy;
 
 /**
  * The incremental update strategy for KGraph models with attached KRendering data that is based on
@@ -82,6 +83,8 @@ public class UpdateStrategy implements IUpdateStrategy<KNode> {
     
     private Resource updateResource = null;
     
+    private SimpleUpdateStrategy fallbackDelegate = null;
+    
     /**
      * {@inheritDoc}<br>
      * <br>
@@ -111,6 +114,8 @@ public class UpdateStrategy implements IUpdateStrategy<KNode> {
      * {@inheritDoc}
      */
     public void update(final KNode baseModel, final KNode newModel, final ViewContext viewContext) {
+        boolean ok = false;
+        
         try {
             updateResource.getContents().add(newModel);
 
@@ -127,6 +132,7 @@ public class UpdateStrategy implements IUpdateStrategy<KNode> {
             MergeService.merge(diff.getOwnedElements(), false);
             
             updateResource.getContents().clear();
+            ok = true;
 
         } catch (InterruptedException e) {
             final String msg = "KLighD: Incremental update of diagram by means of the EMF"
@@ -140,6 +146,14 @@ public class UpdateStrategy implements IUpdateStrategy<KNode> {
             StatusManager.getManager().handle(new Status(IStatus.ERROR, PLUGIN_ID, msg, e),
                     StatusManager.SHOW);
             e.printStackTrace();
+        }
+        
+        // if incremental updating failed, apply the SimpleUpdateStrategy
+        if (!ok) {
+            if (this.fallbackDelegate == null) {
+                this.fallbackDelegate = new SimpleUpdateStrategy();                
+            }
+            this.fallbackDelegate.update(baseModel, newModel, viewContext);
         }
     }
 

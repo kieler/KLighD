@@ -27,7 +27,6 @@ import de.cau.cs.kieler.klighd.microlayout.Bounds;
 import de.cau.cs.kieler.klighd.microlayout.PlacementUtil;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KLabelNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdStyledText;
-import de.cau.cs.kieler.klighd.piccolo.internal.util.PiccoloPlacementUtil;
 import edu.umd.cs.piccolo.PNode;
 
 /**
@@ -104,10 +103,9 @@ public class KLabelRenderingController extends AbstractKGERenderingController<KL
                 new PropertyChangeListener() {
                     public void propertyChange(final PropertyChangeEvent e) {
                         // calculate the new bounds of the rendering
-                        Bounds bounds =
-                                PiccoloPlacementUtil.evaluateAreaPlacement(PlacementUtil
-                                        .asAreaPlacementData(rendering.getPlacementData()),
-                                        parent.getBoundsReference());
+                        Bounds bounds = PlacementUtil.evaluateAreaPlacement(
+                                PlacementUtil.asAreaPlacementData(rendering.getPlacementData()),
+                                parent.getBoundsReference());
                         // use the controller to apply the new bounds
                         controller.setBounds(bounds);
                     }

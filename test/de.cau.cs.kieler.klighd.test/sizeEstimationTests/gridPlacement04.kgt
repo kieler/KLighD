@@ -1,14 +1,21 @@
-
 knode {
-	properties: klighd.testing.expected.^height = 48.0
-	klighd.testing.expected.^width = 62.0
-	krectangle {
-		grid: columns = 1
-		krectangle
-		ktext ("Hugo") [klighd.testing.^height = 16.0 klighd.testing.^width = 31.0] {
-			gridData: topLeftAnchor = left 50%, top bottomRightAnchor = right, bottom
-		}
-		ktext ("Müller") [klighd.testing.^height = 16.0 klighd.testing.^width =
-		35.0]
-	}
+    properties:
+        klighd.testing.expected.^height = 32.0
+        klighd.testing.expected.^width = 62.0
+    krectangle {
+        grid:
+            columns = 1
+        ktext ("Hugo") [
+        	klighd.testing.^height = 16.0
+        	klighd.testing.^width = 31.0
+        ] {
+            gridData:
+                topLeftAnchor = left 50%, top
+                bottomRightAnchor = right, bottom
+        }
+        ktext ("Müller") [
+        	klighd.testing.^height = 16.0
+        	klighd.testing.^width = 35.0
+        ]
+    }
 }

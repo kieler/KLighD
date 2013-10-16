@@ -1,0 +1,43 @@
+knode {
+    properties:
+        klighd.testing.expected.^height = 46.666664
+        klighd.testing.expected.^width = 130.75
+    krectangle {
+        grid:
+            columns = 1
+        kroundedRectangle (10, 10) {
+            gridData:
+                topLeftAnchor = left 10, top 10
+                bottomRightAnchor = right 10, bottom 10
+            grid:
+                columns = 3
+            kellipse {
+                gridData:
+                    topLeftAnchor = left 5, top
+                    bottomRightAnchor = right, bottom
+                ktext ("Hugo") [
+                    klighd.testing.^height = 16.0
+                    klighd.testing.^width = 31.0
+                ]
+            }
+            kellipse {
+                gridData:
+                    topLeftAnchor = left 10%, top 20%
+                    bottomRightAnchor = right 10%, bottom 20%
+                ktext ("Hugo") [
+                    klighd.testing.^height = 16.0
+                    klighd.testing.^width = 31.0
+                ]
+            }
+            kellipse {
+                gridData:
+                    topLeftAnchor = left, top
+                    bottomRightAnchor = right 5, bottom
+                ktext ("Hugo") [
+                    klighd.testing.^height = 16.0
+                    klighd.testing.^width = 31.0
+                ]
+            }
+        }
+    }
+}

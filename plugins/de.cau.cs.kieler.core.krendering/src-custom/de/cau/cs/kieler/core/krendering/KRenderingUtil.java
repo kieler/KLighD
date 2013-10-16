@@ -20,8 +20,115 @@ package de.cau.cs.kieler.core.krendering;
  */
 public final class KRenderingUtil {
 
+    private static final KRenderingFactory FACTORY = KRenderingFactory.eINSTANCE;
+    
     private KRenderingUtil() {
     }
+    
+    /**
+     * Singleton {@link KPosition} instance containing {@link KLeftPosition KLeft-} &
+     * {@link KTopPosition} components.
+     */
+    public static final KPosition LEFT_TOP_POS = createLeftTopKPosition();
+    
+    /**
+     * Singleton {@link KPosition} instance containing {@link KRightPosition KRight-} &
+     * {@link KBottomPosition} components.
+     */
+    public static final KPosition RIGHT_BOTTOM_POS = createRightBottomKPosition();
+    
+
+    /**
+     * Factory method creating a {@link KPosition} containing a {@link KLeftPosition} and {@link KTopPosition}.
+     * 
+     * @return the created {@link KPosition}
+     */
+    public static KPosition createLeftTopKPosition() {
+        final KPosition result = FACTORY.createKPosition();
+        result.setX(FACTORY.createKLeftPosition());
+        result.setY(FACTORY.createKTopPosition());
+        return result;
+    }
+    
+    /**
+     * Factory method creating a {@link KPosition} containing a {@link KRightPosition} and {@link KBottomPosition}.
+     * 
+     * @return the created {@link KPosition}
+     */
+    public static KPosition createRightBottomKPosition() {
+        final KPosition result = FACTORY.createKPosition();
+        result.setX(FACTORY.createKRightPosition());
+        result.setY(FACTORY.createKBottomPosition());
+        return result;
+    }
+
+
+    /**
+     * Convenience method ensuring a <code>null</code>-safe {@link KPosition} usage.
+     * 
+     * @param position
+     *            the {@link KPosition} to be evaluated
+     * @return the provided {@link KPosition} if non-<code>null</code> or {@link #LEFT_TOP_POS}
+     */
+    public static KPosition toNonNullLeftTopPosition(final KPosition position) {
+        return position != null ? position : LEFT_TOP_POS;
+    }
+
+    /**
+     * Convenience method ensuring a <code>null</code>-safe {@link KPosition} usage.
+     * 
+     * @param position
+     *            the {@link KPosition} to be evaluated
+     * @return the provided {@link KPosition} if non-<code>null</code> or {@link #RIGHT_BOTTOM_POS}
+     */
+    public static KPosition toNonNullRightBottomPosition(final KPosition position) {
+        return position != null ? position : RIGHT_BOTTOM_POS;
+    }
+    
+    /**
+     * Convenience method ensuring a <code>null</code>-safe {@link KXPosition} usage.
+     * 
+     * @param position
+     *            the {@link KXPosition} to be evaluated
+     * @return the provided {@link KXPosition} if non-<code>null</code> or {@link #LEFT_TOP_POS}'s X component.
+     */
+    public static KXPosition toNonNullLeftPosition(final KXPosition position) {
+        return position != null ? position : LEFT_TOP_POS.getX();
+    }
+
+    /**
+     * Convenience method ensuring a <code>null</code>-safe {@link KXPosition} usage.
+     * 
+     * @param position
+     *            the {@link KXPosition} to be evaluated
+     * @return the provided {@link KXPosition} if non-<code>null</code> or {@link #RIGHT_BOTTOM_POS}'s X component.
+     */
+    public static KXPosition toNonNullRightPosition(final KXPosition position) {
+        return position != null ? position : RIGHT_BOTTOM_POS.getX();
+    }
+
+    /**
+     * Convenience method ensuring a <code>null</code>-safe {@link KYPosition} usage.
+     * 
+     * @param position
+     *            the {@link KYPosition} to be evaluated
+     * @return the provided {@link KYPosition} if non-<code>null</code> or {@link #LEFT_TOP_POS}'s Y component.
+     */
+    public static KYPosition toNonNullTopPosition(final KYPosition position) {
+        return position != null ? position : LEFT_TOP_POS.getY();
+    }
+
+    /**
+     * Convenience method ensuring a <code>null</code>-safe {@link KYPosition} usage.
+     * 
+     * @param position
+     *            the {@link KYPosition} to be evaluated
+     * @return the provided {@link KYPosition} if non-<code>null</code> or {@link #RIGHT_BOTTOM_POS}'s Y component.
+     */
+    public static KYPosition toNonNullBottomPosition(final KYPosition position) {
+        return position != null ? position : RIGHT_BOTTOM_POS.getY();
+    }
+
 
     /**
      * Tests the deep equality of two {@link KXPosition} objects.
