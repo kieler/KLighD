@@ -31,8 +31,13 @@ import edu.umd.cs.piccolo.util.PUtil;
 
 /**
  * This class can be used to render a {@link KNode} model to an SVG. The piccolo infrastructure is
- * used to create piccolo elements for the respective KGraph model. Using batik's
- * {@link org.apache.batik.svggen.SVGGraphics2D SVGGraphics2D} generator, an SVG is created.
+ * used to create piccolo elements for the respective KGraph model.
+ * 
+ * Using an svg generator implementation (e.g., batik's
+ * {@link org.apache.batik.svggen.SVGGraphics2D SVGGraphics2D} generator), an SVG is created.
+ * 
+ * The canvas can either be instantiated and the {@link #render()} method used to retrieve the svg,
+ * or one of the static render methods can be used.
  * 
  * Basic usage: <code>
  *  TODO
@@ -257,7 +262,7 @@ public class KlighdSVGCanvas implements PComponent {
         // the following clip set is required in order to get rid of the one set in
         // the constructor call above, which lets Inkscape & browsers go crazy (slower)
         graphics.setClip(null);
-        
+
         // perform the painting
         if (viewPort) {
             // only render the current viewport
