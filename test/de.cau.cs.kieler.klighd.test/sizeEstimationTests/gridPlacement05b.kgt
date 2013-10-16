@@ -1,7 +1,7 @@
 knode {
     properties:
-        klighd.testing.expected.^height = 112.352936
-        klighd.testing.expected.^width = 118.823524
+        klighd.testing.expected.^height = 114.117645
+        klighd.testing.expected.^width = 120.588234
     kroundedRectangle (2, 2) {
         grid:
             columns = 1

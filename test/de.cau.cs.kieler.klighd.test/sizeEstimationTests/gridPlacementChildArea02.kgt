@@ -13,7 +13,8 @@ knode {
     		ktext ("Hans") [
     			klighd.testing.^height = 11.0
     			klighd.testing.^width = 24.0
-    		]
+    		] {
+            }
         }
         krectangle {
     		kchildArea {
