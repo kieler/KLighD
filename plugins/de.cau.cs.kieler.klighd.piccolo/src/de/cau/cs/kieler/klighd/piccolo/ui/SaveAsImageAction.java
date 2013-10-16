@@ -17,8 +17,6 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.lang.reflect.Method;
-import java.util.List;
 
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
@@ -28,28 +26,20 @@ import org.eclipse.emf.ecore.resource.URIConverter;
 import org.eclipse.emf.ecore.resource.impl.ExtensibleURIConverterImpl;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.dialogs.Dialog;
-import org.eclipse.swt.graphics.GC;
-import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.graphics.ImageData;
-import org.eclipse.swt.graphics.ImageLoader;
 import org.eclipse.ui.statushandlers.StatusManager;
 
-import de.cau.cs.kieler.klighd.KlighdConstants;
 import de.cau.cs.kieler.klighd.piccolo.KlighdPiccoloPlugin;
-import de.cau.cs.kieler.klighd.piccolo.internal.Constants;
-import de.cau.cs.kieler.klighd.piccolo.internal.KlighdSWTGraphicsImpl;
+import de.cau.cs.kieler.klighd.piccolo.export.ExporterManager;
+import de.cau.cs.kieler.klighd.piccolo.export.ExporterManager.ExporterDescriptor;
+import de.cau.cs.kieler.klighd.piccolo.export.IViewExporter;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdCanvas;
 import de.cau.cs.kieler.klighd.piccolo.viewer.PiccoloViewer;
-import edu.umd.cs.piccolo.PCamera;
-import edu.umd.cs.piccolo.PLayer;
-import edu.umd.cs.piccolo.util.PAffineTransform;
-import edu.umd.cs.piccolo.util.PBounds;
-import edu.umd.cs.piccolo.util.PPaintContext;
 
 /**
  * An action which invokes the 'save-as-image' dialog and performs the save for Piccolo.
  * 
  * @author mri
+ * @author uru
  */
 public class SaveAsImageAction extends Action {
 
@@ -84,7 +74,7 @@ public class SaveAsImageAction extends Action {
                         createOutputStream(dialog.getFilePath(), dialog.isWorkspacePath());
                 // render the canvas to an image and write it to the stream
                 toImage(stream, viewer.getCanvas(), dialog.isCameraViewport(),
-                        dialog.getSWTImageFormat(), dialog.getScaleFactor());
+                        dialog.getCurrentExporter(), dialog.getScaleFactor());
                 stream.close();
             } catch (IOException exception) {
                 Status myStatus =
@@ -123,84 +113,20 @@ public class SaveAsImageAction extends Action {
      * @param cameraViewport
      *            true if the scene graph should be rendered through the camera, i.e. only render
      *            what is visible on the canvas; false to render the whole scene graph
-     * @param format
-     *            the file format, see {@code FileLoader}
+     * @param exporterDescr
+     *            the descriptor of an {@link IViewExporter} selected by the user 
      * @param scale
      *            the scale factor to apply while constructing the image
      */
     public static void toImage(final OutputStream stream, final KlighdCanvas canvas,
-            final boolean cameraViewport, final int format, final int scale) {
-        PCamera camera = canvas.getCamera();
+            final boolean cameraViewport, final ExporterDescriptor exporterDescr, final int scale) {
 
-        // in case of the SVG format invoke the SVG exporter and return
-        if (format == KlighdConstants.IMAGE_SVG) {
-            
-            // TODO The following call could be replaced by an extension point in future.
-            try {
-                Method m = Class.forName(Constants.KLIGHD_SVG_CANVAS).getMethod(
-                        Constants.KLIGHD_SVG_RENDER_METHOD, PCamera.class, Boolean.class,
-                        Boolean.class, OutputStream.class);
-                m.invoke(null, camera, cameraViewport, true, stream);
-            } catch (Exception e) {
-                final String msg = "KLighD: Creation of desired SVG diagram failed,"
-                        + "most probably due to unavailability of the plug-in \""
-                        + KlighdPiccoloPlugin.PLUGIN_ID + ".svg\".";
-                StatusManager.getManager().handle(
-                    new Status(IStatus.INFO, KlighdPiccoloPlugin.PLUGIN_ID, msg), StatusManager.SHOW);
-            }
-            return;
-        }
+        // retrieve the exporter from the central registry  
+        IViewExporter exporter =
+                ExporterManager.getInstance().getExporter(exporterDescr.getExporterId());
+        // execute the export process
+        exporter.export(stream, canvas, cameraViewport, scale, exporterDescr.getSubFormatId());
 
-        // create the target image and a linked graphics context
-        PBounds bounds;
-        if (cameraViewport) {
-            bounds = camera.getFullBounds();
-        } else {
-            bounds = camera.getUnionOfLayerFullBounds();
-        }
-
-        // construct an affine transform for applying the scale factor
-        // and apply it to the camera's bounds
-        PAffineTransform transform = new PAffineTransform();
-        transform.scale(scale, scale);
-        transform.transform(bounds, bounds);
-
-        // reveal the size and respect the indentation imposed by x/y on both sides
-        // in order to avoid clippings of root figure drawings
-        int width = (int) (bounds.width + 2 * bounds.x);
-        int height = (int) (bounds.height + 2 * bounds.y);
-
-        // let Piccolo render onto a image GC
-        Image image = new Image(canvas.getDisplay(), width, height);
-        GC gc = new GC(image);
-
-        PPaintContext paintContext =
-                new PPaintContext(new KlighdSWTGraphicsImpl(gc, canvas.getDisplay()));
-
-        // apply scaling translation to the paint context, too, for actually scaling the diagram
-        paintContext.pushTransform(transform);
-
-        if (cameraViewport) {
-            camera.fullPaint(paintContext);
-        } else {
-            fullPaintLayers(paintContext, camera);
-        }
-        paintContext.popTransform(transform);
-
-        // create an image loader to save the image
-        ImageLoader loader = new ImageLoader();
-        loader.data = new ImageData[] { image.getImageData() };
-        loader.save(stream, format);
-        // release all native resources
-        gc.dispose();
-        image.dispose();
-    }
-
-    @SuppressWarnings("unchecked")
-    private static void fullPaintLayers(final PPaintContext paintContext, final PCamera camera) {
-        for (PLayer layer : (List<PLayer>) camera.getLayersReference()) {
-            layer.fullPaint(paintContext);
-        }
     }
 
 }
