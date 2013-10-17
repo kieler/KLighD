@@ -33,8 +33,8 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  *   <li>{@link de.cau.cs.kieler.core.krendering.impl.KGridPlacementDataImpl#getMaxCellWidth <em>Max Cell Width</em>}</li>
  *   <li>{@link de.cau.cs.kieler.core.krendering.impl.KGridPlacementDataImpl#getMinCellHeight <em>Min Cell Height</em>}</li>
  *   <li>{@link de.cau.cs.kieler.core.krendering.impl.KGridPlacementDataImpl#getMaxCellHeight <em>Max Cell Height</em>}</li>
- *   <li>{@link de.cau.cs.kieler.core.krendering.impl.KGridPlacementDataImpl#getFixedWidth <em>Fixed Width</em>}</li>
- *   <li>{@link de.cau.cs.kieler.core.krendering.impl.KGridPlacementDataImpl#getFixedHeight <em>Fixed Height</em>}</li>
+ *   <li>{@link de.cau.cs.kieler.core.krendering.impl.KGridPlacementDataImpl#getFlexibleWidth <em>Flexible Width</em>}</li>
+ *   <li>{@link de.cau.cs.kieler.core.krendering.impl.KGridPlacementDataImpl#getFlexibleHeight <em>Flexible Height</em>}</li>
  * </ul>
  * </p>
  *
@@ -122,44 +122,44 @@ public class KGridPlacementDataImpl extends KAreaPlacementDataImpl implements KG
     protected float maxCellHeight = MAX_CELL_HEIGHT_EDEFAULT;
 
     /**
-     * The default value of the '{@link #getFixedWidth() <em>Fixed Width</em>}' attribute.
+     * The default value of the '{@link #getFlexibleWidth() <em>Flexible Width</em>}' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see #getFixedWidth()
+     * @see #getFlexibleWidth()
      * @generated
      * @ordered
      */
-    protected static final Boolean FIXED_WIDTH_EDEFAULT = Boolean.TRUE;
+    protected static final Boolean FLEXIBLE_WIDTH_EDEFAULT = Boolean.FALSE;
 
     /**
-     * The cached value of the '{@link #getFixedWidth() <em>Fixed Width</em>}' attribute.
+     * The cached value of the '{@link #getFlexibleWidth() <em>Flexible Width</em>}' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see #getFixedWidth()
+     * @see #getFlexibleWidth()
      * @generated
      * @ordered
      */
-    protected Boolean fixedWidth = FIXED_WIDTH_EDEFAULT;
+    protected Boolean flexibleWidth = FLEXIBLE_WIDTH_EDEFAULT;
 
     /**
-     * The default value of the '{@link #getFixedHeight() <em>Fixed Height</em>}' attribute.
+     * The default value of the '{@link #getFlexibleHeight() <em>Flexible Height</em>}' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see #getFixedHeight()
+     * @see #getFlexibleHeight()
      * @generated
      * @ordered
      */
-    protected static final Boolean FIXED_HEIGHT_EDEFAULT = Boolean.TRUE;
+    protected static final Boolean FLEXIBLE_HEIGHT_EDEFAULT = Boolean.FALSE;
 
     /**
-     * The cached value of the '{@link #getFixedHeight() <em>Fixed Height</em>}' attribute.
+     * The cached value of the '{@link #getFlexibleHeight() <em>Flexible Height</em>}' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see #getFixedHeight()
+     * @see #getFlexibleHeight()
      * @generated
      * @ordered
      */
-    protected Boolean fixedHeight = FIXED_HEIGHT_EDEFAULT;
+    protected Boolean flexibleHeight = FLEXIBLE_HEIGHT_EDEFAULT;
 
     /**
      * <!-- begin-user-doc -->
@@ -269,8 +269,8 @@ public class KGridPlacementDataImpl extends KAreaPlacementDataImpl implements KG
      * <!-- end-user-doc -->
      * @generated
      */
-    public Boolean getFixedWidth() {
-        return fixedWidth;
+    public Boolean getFlexibleWidth() {
+        return flexibleWidth;
     }
 
     /**
@@ -278,11 +278,11 @@ public class KGridPlacementDataImpl extends KAreaPlacementDataImpl implements KG
      * <!-- end-user-doc -->
      * @generated
      */
-    public void setFixedWidth(Boolean newFixedWidth) {
-        Boolean oldFixedWidth = fixedWidth;
-        fixedWidth = newFixedWidth;
+    public void setFlexibleWidth(Boolean newFlexibleWidth) {
+        Boolean oldFlexibleWidth = flexibleWidth;
+        flexibleWidth = newFlexibleWidth;
         if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, KRenderingPackage.KGRID_PLACEMENT_DATA__FIXED_WIDTH, oldFixedWidth, fixedWidth));
+            eNotify(new ENotificationImpl(this, Notification.SET, KRenderingPackage.KGRID_PLACEMENT_DATA__FLEXIBLE_WIDTH, oldFlexibleWidth, flexibleWidth));
     }
 
     /**
@@ -290,8 +290,8 @@ public class KGridPlacementDataImpl extends KAreaPlacementDataImpl implements KG
      * <!-- end-user-doc -->
      * @generated
      */
-    public Boolean getFixedHeight() {
-        return fixedHeight;
+    public Boolean getFlexibleHeight() {
+        return flexibleHeight;
     }
 
     /**
@@ -299,11 +299,11 @@ public class KGridPlacementDataImpl extends KAreaPlacementDataImpl implements KG
      * <!-- end-user-doc -->
      * @generated
      */
-    public void setFixedHeight(Boolean newFixedHeight) {
-        Boolean oldFixedHeight = fixedHeight;
-        fixedHeight = newFixedHeight;
+    public void setFlexibleHeight(Boolean newFlexibleHeight) {
+        Boolean oldFlexibleHeight = flexibleHeight;
+        flexibleHeight = newFlexibleHeight;
         if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, KRenderingPackage.KGRID_PLACEMENT_DATA__FIXED_HEIGHT, oldFixedHeight, fixedHeight));
+            eNotify(new ENotificationImpl(this, Notification.SET, KRenderingPackage.KGRID_PLACEMENT_DATA__FLEXIBLE_HEIGHT, oldFlexibleHeight, flexibleHeight));
     }
 
     /**
@@ -322,10 +322,10 @@ public class KGridPlacementDataImpl extends KAreaPlacementDataImpl implements KG
                 return getMinCellHeight();
             case KRenderingPackage.KGRID_PLACEMENT_DATA__MAX_CELL_HEIGHT:
                 return getMaxCellHeight();
-            case KRenderingPackage.KGRID_PLACEMENT_DATA__FIXED_WIDTH:
-                return getFixedWidth();
-            case KRenderingPackage.KGRID_PLACEMENT_DATA__FIXED_HEIGHT:
-                return getFixedHeight();
+            case KRenderingPackage.KGRID_PLACEMENT_DATA__FLEXIBLE_WIDTH:
+                return getFlexibleWidth();
+            case KRenderingPackage.KGRID_PLACEMENT_DATA__FLEXIBLE_HEIGHT:
+                return getFlexibleHeight();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -350,11 +350,11 @@ public class KGridPlacementDataImpl extends KAreaPlacementDataImpl implements KG
             case KRenderingPackage.KGRID_PLACEMENT_DATA__MAX_CELL_HEIGHT:
                 setMaxCellHeight((Float)newValue);
                 return;
-            case KRenderingPackage.KGRID_PLACEMENT_DATA__FIXED_WIDTH:
-                setFixedWidth((Boolean)newValue);
+            case KRenderingPackage.KGRID_PLACEMENT_DATA__FLEXIBLE_WIDTH:
+                setFlexibleWidth((Boolean)newValue);
                 return;
-            case KRenderingPackage.KGRID_PLACEMENT_DATA__FIXED_HEIGHT:
-                setFixedHeight((Boolean)newValue);
+            case KRenderingPackage.KGRID_PLACEMENT_DATA__FLEXIBLE_HEIGHT:
+                setFlexibleHeight((Boolean)newValue);
                 return;
         }
         super.eSet(featureID, newValue);
@@ -380,11 +380,11 @@ public class KGridPlacementDataImpl extends KAreaPlacementDataImpl implements KG
             case KRenderingPackage.KGRID_PLACEMENT_DATA__MAX_CELL_HEIGHT:
                 setMaxCellHeight(MAX_CELL_HEIGHT_EDEFAULT);
                 return;
-            case KRenderingPackage.KGRID_PLACEMENT_DATA__FIXED_WIDTH:
-                setFixedWidth(FIXED_WIDTH_EDEFAULT);
+            case KRenderingPackage.KGRID_PLACEMENT_DATA__FLEXIBLE_WIDTH:
+                setFlexibleWidth(FLEXIBLE_WIDTH_EDEFAULT);
                 return;
-            case KRenderingPackage.KGRID_PLACEMENT_DATA__FIXED_HEIGHT:
-                setFixedHeight(FIXED_HEIGHT_EDEFAULT);
+            case KRenderingPackage.KGRID_PLACEMENT_DATA__FLEXIBLE_HEIGHT:
+                setFlexibleHeight(FLEXIBLE_HEIGHT_EDEFAULT);
                 return;
         }
         super.eUnset(featureID);
@@ -406,10 +406,10 @@ public class KGridPlacementDataImpl extends KAreaPlacementDataImpl implements KG
                 return minCellHeight != MIN_CELL_HEIGHT_EDEFAULT;
             case KRenderingPackage.KGRID_PLACEMENT_DATA__MAX_CELL_HEIGHT:
                 return maxCellHeight != MAX_CELL_HEIGHT_EDEFAULT;
-            case KRenderingPackage.KGRID_PLACEMENT_DATA__FIXED_WIDTH:
-                return FIXED_WIDTH_EDEFAULT == null ? fixedWidth != null : !FIXED_WIDTH_EDEFAULT.equals(fixedWidth);
-            case KRenderingPackage.KGRID_PLACEMENT_DATA__FIXED_HEIGHT:
-                return FIXED_HEIGHT_EDEFAULT == null ? fixedHeight != null : !FIXED_HEIGHT_EDEFAULT.equals(fixedHeight);
+            case KRenderingPackage.KGRID_PLACEMENT_DATA__FLEXIBLE_WIDTH:
+                return FLEXIBLE_WIDTH_EDEFAULT == null ? flexibleWidth != null : !FLEXIBLE_WIDTH_EDEFAULT.equals(flexibleWidth);
+            case KRenderingPackage.KGRID_PLACEMENT_DATA__FLEXIBLE_HEIGHT:
+                return FLEXIBLE_HEIGHT_EDEFAULT == null ? flexibleHeight != null : !FLEXIBLE_HEIGHT_EDEFAULT.equals(flexibleHeight);
         }
         return super.eIsSet(featureID);
     }
@@ -432,10 +432,10 @@ public class KGridPlacementDataImpl extends KAreaPlacementDataImpl implements KG
         result.append(minCellHeight);
         result.append(", maxCellHeight: ");
         result.append(maxCellHeight);
-        result.append(", fixedWidth: ");
-        result.append(fixedWidth);
-        result.append(", fixedHeight: ");
-        result.append(fixedHeight);
+        result.append(", flexibleWidth: ");
+        result.append(flexibleWidth);
+        result.append(", flexibleHeight: ");
+        result.append(flexibleHeight);
         result.append(')');
         return result.toString();
     }
