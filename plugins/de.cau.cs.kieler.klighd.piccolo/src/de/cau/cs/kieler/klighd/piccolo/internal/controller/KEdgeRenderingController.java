@@ -17,10 +17,13 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.ui.statushandlers.StatusManager;
+
+import com.google.common.collect.Lists;
 
 import de.cau.cs.kieler.core.kgraph.KEdge;
 import de.cau.cs.kieler.core.krendering.KCustomRendering;
@@ -32,6 +35,10 @@ import de.cau.cs.kieler.core.krendering.KRenderingPackage;
 import de.cau.cs.kieler.core.krendering.KRoundedBendsPolyline;
 import de.cau.cs.kieler.core.krendering.KSpline;
 import de.cau.cs.kieler.core.krendering.KStyle;
+import de.cau.cs.kieler.core.math.KVector;
+import de.cau.cs.kieler.core.math.KVectorChain;
+import de.cau.cs.kieler.kiml.klayoutdata.KEdgeLayout;
+import de.cau.cs.kieler.kiml.options.LayoutOptions;
 import de.cau.cs.kieler.klighd.microlayout.Bounds;
 import de.cau.cs.kieler.klighd.piccolo.KlighdPiccoloPlugin;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KCustomConnectionFigureNode;
@@ -43,6 +50,8 @@ import edu.umd.cs.piccolo.PNode;
  * @author mri
  */
 public class KEdgeRenderingController extends AbstractKGERenderingController<KEdge, KEdgeNode> {
+    
+    private final List<PNode> junctionPointNodes = Lists.newLinkedList();
 
     /**
      * Constructs a rendering controller for an edge.
@@ -182,6 +191,41 @@ public class KEdgeRenderingController extends AbstractKGERenderingController<KEd
                 });
 
         return controller.getNode();
+    }
+    
+    /**
+     * Clear all junction points that have been created by this controller.
+     */
+    public void clearJunctionPoints() {
+        for (PNode node : junctionPointNodes) {
+            node.getParent().removeChild(node);
+        }
+        junctionPointNodes.clear();
+    }
+    
+    /**
+     * Handle junction points for the given edge.
+     * 
+     * @param parent the parent PNode of the edge
+     */
+    public void handleJunctionPoints(final KEdgeNode parent) {
+        assert junctionPointNodes.isEmpty();
+        KEdge edge = parent.getGraphElement();
+        KRendering rendering = edge.getData(KRendering.class);
+        if (rendering instanceof KPolyline) {
+            KPolyline line = (KPolyline) rendering;
+            if (line.getJunctionPointRendering() != null) {
+                KVectorChain junctionPoints = edge.getData(KEdgeLayout.class)
+                        .getProperty(LayoutOptions.JUNCTION_POINTS);
+                if (junctionPoints != null && junctionPoints.size() > 0) {
+                    for (KVector point : junctionPoints) {
+                        PNode node = handleDirectPlacementRendering(line.getJunctionPointRendering(),
+                                point, Collections.<KStyle>emptyList(), parent);
+                        junctionPointNodes.add(node);
+                    }
+                }
+            }
+        }
     }
     
     /**

@@ -753,7 +753,7 @@ public class DiagramController {
                 // release the objects kept in mind
                 edgeNode.getRenderingController().removeAllPNodeControllers();
                 // release the node rendering controller
-                edgeNode.setRenderingController(null);
+//                edgeNode.setRenderingController(null);
             }
         }
     }
