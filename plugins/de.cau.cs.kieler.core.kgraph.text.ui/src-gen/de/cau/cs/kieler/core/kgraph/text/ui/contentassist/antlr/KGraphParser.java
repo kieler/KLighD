@@ -407,8 +407,8 @@ public class KGraphParser extends AbstractContentAssistParser {
 					put(grammarAccess.getKGridPlacementDataAccess().getBottomRightAssignment_3_1_2(), "rule__KGridPlacementData__BottomRightAssignment_3_1_2");
 					put(grammarAccess.getKGridPlacementDataAccess().getMinCellWidthAssignment_3_2_2(), "rule__KGridPlacementData__MinCellWidthAssignment_3_2_2");
 					put(grammarAccess.getKGridPlacementDataAccess().getMinCellHeightAssignment_3_3_2(), "rule__KGridPlacementData__MinCellHeightAssignment_3_3_2");
-					put(grammarAccess.getKGridPlacementDataAccess().getMaxCellWidthAssignment_3_4_2(), "rule__KGridPlacementData__MaxCellWidthAssignment_3_4_2");
-					put(grammarAccess.getKGridPlacementDataAccess().getMaxCellHeightAssignment_3_5_2(), "rule__KGridPlacementData__MaxCellHeightAssignment_3_5_2");
+					put(grammarAccess.getKGridPlacementDataAccess().getFlexibleWidthAssignment_3_4_2(), "rule__KGridPlacementData__FlexibleWidthAssignment_3_4_2");
+					put(grammarAccess.getKGridPlacementDataAccess().getFlexibleHeightAssignment_3_5_2(), "rule__KGridPlacementData__FlexibleHeightAssignment_3_5_2");
 					put(grammarAccess.getKDecoratorPlacementDataAccess().getXOffsetAssignment_3_0_2(), "rule__KDecoratorPlacementData__XOffsetAssignment_3_0_2");
 					put(grammarAccess.getKDecoratorPlacementDataAccess().getYOffsetAssignment_3_1_2(), "rule__KDecoratorPlacementData__YOffsetAssignment_3_1_2");
 					put(grammarAccess.getKDecoratorPlacementDataAccess().getWidthAssignment_3_2_2(), "rule__KDecoratorPlacementData__WidthAssignment_3_2_2");

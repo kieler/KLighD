@@ -17685,11 +17685,11 @@ rule__KGridPlacementData__Group_3_4__0__Impl
     }
 :
 (
-{ before(grammarAccess.getKGridPlacementDataAccess().getMaxCellWidthKeyword_3_4_0()); }
+{ before(grammarAccess.getKGridPlacementDataAccess().getFlexibleWidthKeyword_3_4_0()); }
 
-	'maxCellWidth' 
+	'flexibleWidth' 
 
-{ after(grammarAccess.getKGridPlacementDataAccess().getMaxCellWidthKeyword_3_4_0()); }
+{ after(grammarAccess.getKGridPlacementDataAccess().getFlexibleWidthKeyword_3_4_0()); }
 )
 
 ;
@@ -17746,9 +17746,9 @@ rule__KGridPlacementData__Group_3_4__2__Impl
     }
 :
 (
-{ before(grammarAccess.getKGridPlacementDataAccess().getMaxCellWidthAssignment_3_4_2()); }
-(rule__KGridPlacementData__MaxCellWidthAssignment_3_4_2)
-{ after(grammarAccess.getKGridPlacementDataAccess().getMaxCellWidthAssignment_3_4_2()); }
+{ before(grammarAccess.getKGridPlacementDataAccess().getFlexibleWidthAssignment_3_4_2()); }
+(rule__KGridPlacementData__FlexibleWidthAssignment_3_4_2)
+{ after(grammarAccess.getKGridPlacementDataAccess().getFlexibleWidthAssignment_3_4_2()); }
 )
 
 ;
@@ -17781,11 +17781,11 @@ rule__KGridPlacementData__Group_3_5__0__Impl
     }
 :
 (
-{ before(grammarAccess.getKGridPlacementDataAccess().getMaxCellHeightKeyword_3_5_0()); }
+{ before(grammarAccess.getKGridPlacementDataAccess().getFlexibleHeightKeyword_3_5_0()); }
 
-	'maxCellHeight' 
+	'flexibleHeight' 
 
-{ after(grammarAccess.getKGridPlacementDataAccess().getMaxCellHeightKeyword_3_5_0()); }
+{ after(grammarAccess.getKGridPlacementDataAccess().getFlexibleHeightKeyword_3_5_0()); }
 )
 
 ;
@@ -17842,9 +17842,9 @@ rule__KGridPlacementData__Group_3_5__2__Impl
     }
 :
 (
-{ before(grammarAccess.getKGridPlacementDataAccess().getMaxCellHeightAssignment_3_5_2()); }
-(rule__KGridPlacementData__MaxCellHeightAssignment_3_5_2)
-{ after(grammarAccess.getKGridPlacementDataAccess().getMaxCellHeightAssignment_3_5_2()); }
+{ before(grammarAccess.getKGridPlacementDataAccess().getFlexibleHeightAssignment_3_5_2()); }
+(rule__KGridPlacementData__FlexibleHeightAssignment_3_5_2)
+{ after(grammarAccess.getKGridPlacementDataAccess().getFlexibleHeightAssignment_3_5_2()); }
 )
 
 ;
@@ -24831,14 +24831,14 @@ finally {
 	restoreStackSize(stackSize);
 }
 
-rule__KGridPlacementData__MaxCellWidthAssignment_3_4_2
+rule__KGridPlacementData__FlexibleWidthAssignment_3_4_2
     @init {
 		int stackSize = keepStackSize();
     }
 :
 (
-{ before(grammarAccess.getKGridPlacementDataAccess().getMaxCellWidthFloatParserRuleCall_3_4_2_0()); }
-	ruleFloat{ after(grammarAccess.getKGridPlacementDataAccess().getMaxCellWidthFloatParserRuleCall_3_4_2_0()); }
+{ before(grammarAccess.getKGridPlacementDataAccess().getFlexibleWidthBOOLEANTerminalRuleCall_3_4_2_0()); }
+	RULE_BOOLEAN{ after(grammarAccess.getKGridPlacementDataAccess().getFlexibleWidthBOOLEANTerminalRuleCall_3_4_2_0()); }
 )
 
 ;
@@ -24846,14 +24846,14 @@ finally {
 	restoreStackSize(stackSize);
 }
 
-rule__KGridPlacementData__MaxCellHeightAssignment_3_5_2
+rule__KGridPlacementData__FlexibleHeightAssignment_3_5_2
     @init {
 		int stackSize = keepStackSize();
     }
 :
 (
-{ before(grammarAccess.getKGridPlacementDataAccess().getMaxCellHeightFloatParserRuleCall_3_5_2_0()); }
-	ruleFloat{ after(grammarAccess.getKGridPlacementDataAccess().getMaxCellHeightFloatParserRuleCall_3_5_2_0()); }
+{ before(grammarAccess.getKGridPlacementDataAccess().getFlexibleHeightBOOLEANTerminalRuleCall_3_5_2_0()); }
+	RULE_BOOLEAN{ after(grammarAccess.getKGridPlacementDataAccess().getFlexibleHeightBOOLEANTerminalRuleCall_3_5_2_0()); }
 )
 
 ;

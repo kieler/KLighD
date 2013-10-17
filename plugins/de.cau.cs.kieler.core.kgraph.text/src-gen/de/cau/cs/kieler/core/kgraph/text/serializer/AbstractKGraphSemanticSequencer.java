@@ -1002,8 +1002,8 @@ public abstract class AbstractKGraphSemanticSequencer extends AbstractDelegating
 	 *         bottomRight=KPosition? 
 	 *         minCellWidth=Float? 
 	 *         minCellHeight=Float? 
-	 *         maxCellWidth=Float? 
-	 *         maxCellHeight=Float?
+	 *         flexibleWidth=BOOLEAN? 
+	 *         flexibleHeight=BOOLEAN?
 	 *     )
 	 */
 	protected void sequence_KGridPlacementData(EObject context, KGridPlacementData semanticObject) {
