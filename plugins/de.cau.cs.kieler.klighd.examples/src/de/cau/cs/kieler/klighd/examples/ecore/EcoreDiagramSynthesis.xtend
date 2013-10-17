@@ -97,7 +97,7 @@ class EcoreDiagramSynthesis extends AbstractDiagramSynthesis<EModelElementCollec
     /**
      * Option to activate/deactivate the attribute lists.
      */
-    private static val TransformationOption RELATED_CLASSES_DEPTH = TransformationOption::createRangeOption("Reference depth", Pair::of(1, 3), 1, 1);
+    private static val TransformationOption RELATED_CLASSES_DEPTH = TransformationOption::createRangeOption("Reference depth", 1, 3, 1, 1);
     
     /**
      * Option choose the reference depth while determining the classes related to the selected ones.
