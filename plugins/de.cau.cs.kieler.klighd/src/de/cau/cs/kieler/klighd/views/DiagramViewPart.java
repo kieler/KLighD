@@ -15,9 +15,7 @@ package de.cau.cs.kieler.klighd.views;
 
 import org.eclipse.core.resources.IResource;
 import org.eclipse.jface.action.Action;
-import org.eclipse.jface.action.ActionContributionItem;
 import org.eclipse.jface.action.IAction;
-import org.eclipse.jface.action.IMenuCreator;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.preference.IPreferenceStore;
@@ -27,8 +25,6 @@ import org.eclipse.swt.dnd.DropTargetEvent;
 import org.eclipse.swt.dnd.DropTargetListener;
 import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Menu;
 import org.eclipse.ui.part.ResourceTransfer;
 import org.eclipse.ui.part.ViewPart;
 
@@ -141,7 +137,8 @@ public class DiagramViewPart extends ViewPart implements IDiagramWorkbenchPart {
             {
                 setImageDescriptor(KimlUiPlugin
                         .getImageDescriptor("icons/menu16/kieler-zoomtofit.gif"));
-                final ViewContext vc = DiagramViewPart.this.getContextViewer().getCurrentViewContext();
+                final ViewContext vc =
+                        DiagramViewPart.this.getContextViewer().getCurrentViewContext();
                 if (vc != null) {
                     setChecked(vc.isZoomToFit());
                 } else {
@@ -151,50 +148,26 @@ public class DiagramViewPart extends ViewPart implements IDiagramWorkbenchPart {
 
             @Override
             public void run() {
-                DiagramViewPart.this.getContextViewer().getCurrentViewContext()
-                        .setZoomToFit(this.isChecked());
+                final ViewContext vc =
+                        DiagramViewPart.this.getContextViewer().getCurrentViewContext();
+                if (vc != null) {
+                    vc.setZoomToFit(this.isChecked());
+
+                    // perform zoom to fit upon activation of the toggle button
+                    if (this.isChecked()) {
+                        LightDiagramServices.layoutAndZoomDiagram(DiagramViewPart.this);
+                    }
+
+                }
             }
         });
 
         // automatic layout button
-        toolBar.add(new Action("Arrange", IAction.AS_DROP_DOWN_MENU) {
-
-            private Menu menu;
-            
+        toolBar.add(new Action("Arrange", IAction.AS_PUSH_BUTTON) {
             // Constructor
             {
                 setImageDescriptor(KimlUiPlugin
                         .getImageDescriptor("icons/menu16/kieler-arrange.gif"));
-                
-                setMenuCreator(new IMenuCreator() {
-
-                    public Menu getMenu(final Menu parent) {
-                        // not used
-                        return null;
-                    }
-
-                    public Menu getMenu(final Control parent) {
-                        // create the menu
-                        if (menu == null) {
-                            menu = new Menu(parent);
-                            ActionContributionItem item = new ActionContributionItem(new Action(
-                                    "Force Zoom to Fit") {
-                                public void run() {
-                                    // force zoom to fit
-                                    LightDiagramServices.layoutAndZoomDiagram(DiagramViewPart.this);
-                                };
-                            });
-                            item.fill(menu, -1);
-                        }
-                        return menu;
-                    }
-
-                    public void dispose() {
-                        if (menu != null) {
-                            menu.dispose();
-                        }
-                    }
-                });
             }
 
             public void run() {
