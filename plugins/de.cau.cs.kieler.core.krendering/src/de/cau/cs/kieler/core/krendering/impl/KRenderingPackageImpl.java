@@ -715,7 +715,7 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
      * <!-- end-user-doc -->
      * @generated
      */
-    public EReference getKPolyline_JointPointRendering() {
+    public EReference getKPolyline_JunctionPointRendering() {
         return (EReference)kPolylineEClass.getEStructuralFeatures().get(1);
     }
 
@@ -2017,7 +2017,7 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
 
         kPolylineEClass = createEClass(KPOLYLINE);
         createEReference(kPolylineEClass, KPOLYLINE__POINTS);
-        createEReference(kPolylineEClass, KPOLYLINE__JOINT_POINT_RENDERING);
+        createEReference(kPolylineEClass, KPOLYLINE__JUNCTION_POINT_RENDERING);
 
         kPolygonEClass = createEClass(KPOLYGON);
 
@@ -2308,7 +2308,7 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
 
         initEClass(kPolylineEClass, KPolyline.class, "KPolyline", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         initEReference(getKPolyline_Points(), this.getKPosition(), null, "points", null, 0, -1, KPolyline.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        initEReference(getKPolyline_JointPointRendering(), this.getKRendering(), null, "jointPointRendering", null, 0, 1, KPolyline.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEReference(getKPolyline_JunctionPointRendering(), this.getKRendering(), null, "junctionPointRendering", null, 0, 1, KPolyline.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         initEClass(kPolygonEClass, KPolygon.class, "KPolygon", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 

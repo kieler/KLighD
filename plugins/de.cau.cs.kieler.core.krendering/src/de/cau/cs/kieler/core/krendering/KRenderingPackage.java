@@ -711,13 +711,13 @@ public interface KRenderingPackage extends EPackage {
     int KPOLYLINE__POINTS = KCONTAINER_RENDERING_FEATURE_COUNT + 0;
 
     /**
-     * The feature id for the '<em><b>Joint Point Rendering</b></em>' containment reference.
+     * The feature id for the '<em><b>Junction Point Rendering</b></em>' containment reference.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int KPOLYLINE__JOINT_POINT_RENDERING = KCONTAINER_RENDERING_FEATURE_COUNT + 1;
+    int KPOLYLINE__JUNCTION_POINT_RENDERING = KCONTAINER_RENDERING_FEATURE_COUNT + 1;
 
     /**
      * The number of structural features of the '<em>KPolyline</em>' class.
@@ -829,13 +829,13 @@ public interface KRenderingPackage extends EPackage {
     int KPOLYGON__POINTS = KPOLYLINE__POINTS;
 
     /**
-     * The feature id for the '<em><b>Joint Point Rendering</b></em>' containment reference.
+     * The feature id for the '<em><b>Junction Point Rendering</b></em>' containment reference.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int KPOLYGON__JOINT_POINT_RENDERING = KPOLYLINE__JOINT_POINT_RENDERING;
+    int KPOLYGON__JUNCTION_POINT_RENDERING = KPOLYLINE__JUNCTION_POINT_RENDERING;
 
     /**
      * The number of structural features of the '<em>KPolygon</em>' class.
@@ -2439,13 +2439,13 @@ public interface KRenderingPackage extends EPackage {
     int KSPLINE__POINTS = KPOLYLINE__POINTS;
 
     /**
-     * The feature id for the '<em><b>Joint Point Rendering</b></em>' containment reference.
+     * The feature id for the '<em><b>Junction Point Rendering</b></em>' containment reference.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int KSPLINE__JOINT_POINT_RENDERING = KPOLYLINE__JOINT_POINT_RENDERING;
+    int KSPLINE__JUNCTION_POINT_RENDERING = KPOLYLINE__JUNCTION_POINT_RENDERING;
 
     /**
      * The number of structural features of the '<em>KSpline</em>' class.
@@ -2996,13 +2996,13 @@ public interface KRenderingPackage extends EPackage {
     int KROUNDED_BENDS_POLYLINE__POINTS = KPOLYLINE__POINTS;
 
     /**
-     * The feature id for the '<em><b>Joint Point Rendering</b></em>' containment reference.
+     * The feature id for the '<em><b>Junction Point Rendering</b></em>' containment reference.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int KROUNDED_BENDS_POLYLINE__JOINT_POINT_RENDERING = KPOLYLINE__JOINT_POINT_RENDERING;
+    int KROUNDED_BENDS_POLYLINE__JUNCTION_POINT_RENDERING = KPOLYLINE__JUNCTION_POINT_RENDERING;
 
     /**
      * The feature id for the '<em><b>Bend Radius</b></em>' attribute.
@@ -3838,15 +3838,15 @@ public interface KRenderingPackage extends EPackage {
     EReference getKPolyline_Points();
 
     /**
-     * Returns the meta object for the containment reference '{@link de.cau.cs.kieler.core.krendering.KPolyline#getJointPointRendering <em>Joint Point Rendering</em>}'.
+     * Returns the meta object for the containment reference '{@link de.cau.cs.kieler.core.krendering.KPolyline#getJunctionPointRendering <em>Junction Point Rendering</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for the containment reference '<em>Joint Point Rendering</em>'.
-     * @see de.cau.cs.kieler.core.krendering.KPolyline#getJointPointRendering()
+     * @return the meta object for the containment reference '<em>Junction Point Rendering</em>'.
+     * @see de.cau.cs.kieler.core.krendering.KPolyline#getJunctionPointRendering()
      * @see #getKPolyline()
      * @generated
      */
-    EReference getKPolyline_JointPointRendering();
+    EReference getKPolyline_JunctionPointRendering();
 
     /**
      * Returns the meta object for class '{@link de.cau.cs.kieler.core.krendering.KPolygon <em>KPolygon</em>}'.
@@ -5469,12 +5469,12 @@ public interface KRenderingPackage extends EPackage {
         EReference KPOLYLINE__POINTS = eINSTANCE.getKPolyline_Points();
 
         /**
-         * The meta object literal for the '<em><b>Joint Point Rendering</b></em>' containment reference feature.
+         * The meta object literal for the '<em><b>Junction Point Rendering</b></em>' containment reference feature.
          * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
          * @generated
          */
-        EReference KPOLYLINE__JOINT_POINT_RENDERING = eINSTANCE.getKPolyline_JointPointRendering();
+        EReference KPOLYLINE__JUNCTION_POINT_RENDERING = eINSTANCE.getKPolyline_JunctionPointRendering();
 
         /**
          * The meta object literal for the '{@link de.cau.cs.kieler.core.krendering.impl.KPolygonImpl <em>KPolygon</em>}' class.
