@@ -30,9 +30,7 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  * The following features are implemented:
  * <ul>
  *   <li>{@link de.cau.cs.kieler.core.krendering.impl.KGridPlacementDataImpl#getMinCellWidth <em>Min Cell Width</em>}</li>
- *   <li>{@link de.cau.cs.kieler.core.krendering.impl.KGridPlacementDataImpl#getMaxCellWidth <em>Max Cell Width</em>}</li>
  *   <li>{@link de.cau.cs.kieler.core.krendering.impl.KGridPlacementDataImpl#getMinCellHeight <em>Min Cell Height</em>}</li>
- *   <li>{@link de.cau.cs.kieler.core.krendering.impl.KGridPlacementDataImpl#getMaxCellHeight <em>Max Cell Height</em>}</li>
  *   <li>{@link de.cau.cs.kieler.core.krendering.impl.KGridPlacementDataImpl#getFlexibleWidth <em>Flexible Width</em>}</li>
  *   <li>{@link de.cau.cs.kieler.core.krendering.impl.KGridPlacementDataImpl#getFlexibleHeight <em>Flexible Height</em>}</li>
  * </ul>
@@ -62,26 +60,6 @@ public class KGridPlacementDataImpl extends KAreaPlacementDataImpl implements KG
     protected float minCellWidth = MIN_CELL_WIDTH_EDEFAULT;
 
     /**
-     * The default value of the '{@link #getMaxCellWidth() <em>Max Cell Width</em>}' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @see #getMaxCellWidth()
-     * @generated
-     * @ordered
-     */
-    protected static final float MAX_CELL_WIDTH_EDEFAULT = -1.0F;
-
-    /**
-     * The cached value of the '{@link #getMaxCellWidth() <em>Max Cell Width</em>}' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @see #getMaxCellWidth()
-     * @generated
-     * @ordered
-     */
-    protected float maxCellWidth = MAX_CELL_WIDTH_EDEFAULT;
-
-    /**
      * The default value of the '{@link #getMinCellHeight() <em>Min Cell Height</em>}' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -100,26 +78,6 @@ public class KGridPlacementDataImpl extends KAreaPlacementDataImpl implements KG
      * @ordered
      */
     protected float minCellHeight = MIN_CELL_HEIGHT_EDEFAULT;
-
-    /**
-     * The default value of the '{@link #getMaxCellHeight() <em>Max Cell Height</em>}' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @see #getMaxCellHeight()
-     * @generated
-     * @ordered
-     */
-    protected static final float MAX_CELL_HEIGHT_EDEFAULT = -1.0F;
-
-    /**
-     * The cached value of the '{@link #getMaxCellHeight() <em>Max Cell Height</em>}' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @see #getMaxCellHeight()
-     * @generated
-     * @ordered
-     */
-    protected float maxCellHeight = MAX_CELL_HEIGHT_EDEFAULT;
 
     /**
      * The default value of the '{@link #getFlexibleWidth() <em>Flexible Width</em>}' attribute.
@@ -206,27 +164,6 @@ public class KGridPlacementDataImpl extends KAreaPlacementDataImpl implements KG
      * <!-- end-user-doc -->
      * @generated
      */
-    public float getMaxCellWidth() {
-        return maxCellWidth;
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    public void setMaxCellWidth(float newMaxCellWidth) {
-        float oldMaxCellWidth = maxCellWidth;
-        maxCellWidth = newMaxCellWidth;
-        if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, KRenderingPackage.KGRID_PLACEMENT_DATA__MAX_CELL_WIDTH, oldMaxCellWidth, maxCellWidth));
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
     public float getMinCellHeight() {
         return minCellHeight;
     }
@@ -241,27 +178,6 @@ public class KGridPlacementDataImpl extends KAreaPlacementDataImpl implements KG
         minCellHeight = newMinCellHeight;
         if (eNotificationRequired())
             eNotify(new ENotificationImpl(this, Notification.SET, KRenderingPackage.KGRID_PLACEMENT_DATA__MIN_CELL_HEIGHT, oldMinCellHeight, minCellHeight));
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    public float getMaxCellHeight() {
-        return maxCellHeight;
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    public void setMaxCellHeight(float newMaxCellHeight) {
-        float oldMaxCellHeight = maxCellHeight;
-        maxCellHeight = newMaxCellHeight;
-        if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, KRenderingPackage.KGRID_PLACEMENT_DATA__MAX_CELL_HEIGHT, oldMaxCellHeight, maxCellHeight));
     }
 
     /**
@@ -316,12 +232,8 @@ public class KGridPlacementDataImpl extends KAreaPlacementDataImpl implements KG
         switch (featureID) {
             case KRenderingPackage.KGRID_PLACEMENT_DATA__MIN_CELL_WIDTH:
                 return getMinCellWidth();
-            case KRenderingPackage.KGRID_PLACEMENT_DATA__MAX_CELL_WIDTH:
-                return getMaxCellWidth();
             case KRenderingPackage.KGRID_PLACEMENT_DATA__MIN_CELL_HEIGHT:
                 return getMinCellHeight();
-            case KRenderingPackage.KGRID_PLACEMENT_DATA__MAX_CELL_HEIGHT:
-                return getMaxCellHeight();
             case KRenderingPackage.KGRID_PLACEMENT_DATA__FLEXIBLE_WIDTH:
                 return getFlexibleWidth();
             case KRenderingPackage.KGRID_PLACEMENT_DATA__FLEXIBLE_HEIGHT:
@@ -341,14 +253,8 @@ public class KGridPlacementDataImpl extends KAreaPlacementDataImpl implements KG
             case KRenderingPackage.KGRID_PLACEMENT_DATA__MIN_CELL_WIDTH:
                 setMinCellWidth((Float)newValue);
                 return;
-            case KRenderingPackage.KGRID_PLACEMENT_DATA__MAX_CELL_WIDTH:
-                setMaxCellWidth((Float)newValue);
-                return;
             case KRenderingPackage.KGRID_PLACEMENT_DATA__MIN_CELL_HEIGHT:
                 setMinCellHeight((Float)newValue);
-                return;
-            case KRenderingPackage.KGRID_PLACEMENT_DATA__MAX_CELL_HEIGHT:
-                setMaxCellHeight((Float)newValue);
                 return;
             case KRenderingPackage.KGRID_PLACEMENT_DATA__FLEXIBLE_WIDTH:
                 setFlexibleWidth((Boolean)newValue);
@@ -371,14 +277,8 @@ public class KGridPlacementDataImpl extends KAreaPlacementDataImpl implements KG
             case KRenderingPackage.KGRID_PLACEMENT_DATA__MIN_CELL_WIDTH:
                 setMinCellWidth(MIN_CELL_WIDTH_EDEFAULT);
                 return;
-            case KRenderingPackage.KGRID_PLACEMENT_DATA__MAX_CELL_WIDTH:
-                setMaxCellWidth(MAX_CELL_WIDTH_EDEFAULT);
-                return;
             case KRenderingPackage.KGRID_PLACEMENT_DATA__MIN_CELL_HEIGHT:
                 setMinCellHeight(MIN_CELL_HEIGHT_EDEFAULT);
-                return;
-            case KRenderingPackage.KGRID_PLACEMENT_DATA__MAX_CELL_HEIGHT:
-                setMaxCellHeight(MAX_CELL_HEIGHT_EDEFAULT);
                 return;
             case KRenderingPackage.KGRID_PLACEMENT_DATA__FLEXIBLE_WIDTH:
                 setFlexibleWidth(FLEXIBLE_WIDTH_EDEFAULT);
@@ -400,12 +300,8 @@ public class KGridPlacementDataImpl extends KAreaPlacementDataImpl implements KG
         switch (featureID) {
             case KRenderingPackage.KGRID_PLACEMENT_DATA__MIN_CELL_WIDTH:
                 return minCellWidth != MIN_CELL_WIDTH_EDEFAULT;
-            case KRenderingPackage.KGRID_PLACEMENT_DATA__MAX_CELL_WIDTH:
-                return maxCellWidth != MAX_CELL_WIDTH_EDEFAULT;
             case KRenderingPackage.KGRID_PLACEMENT_DATA__MIN_CELL_HEIGHT:
                 return minCellHeight != MIN_CELL_HEIGHT_EDEFAULT;
-            case KRenderingPackage.KGRID_PLACEMENT_DATA__MAX_CELL_HEIGHT:
-                return maxCellHeight != MAX_CELL_HEIGHT_EDEFAULT;
             case KRenderingPackage.KGRID_PLACEMENT_DATA__FLEXIBLE_WIDTH:
                 return FLEXIBLE_WIDTH_EDEFAULT == null ? flexibleWidth != null : !FLEXIBLE_WIDTH_EDEFAULT.equals(flexibleWidth);
             case KRenderingPackage.KGRID_PLACEMENT_DATA__FLEXIBLE_HEIGHT:
@@ -426,12 +322,8 @@ public class KGridPlacementDataImpl extends KAreaPlacementDataImpl implements KG
         StringBuffer result = new StringBuffer(super.toString());
         result.append(" (minCellWidth: ");
         result.append(minCellWidth);
-        result.append(", maxCellWidth: ");
-        result.append(maxCellWidth);
         result.append(", minCellHeight: ");
         result.append(minCellHeight);
-        result.append(", maxCellHeight: ");
-        result.append(maxCellHeight);
         result.append(", flexibleWidth: ");
         result.append(flexibleWidth);
         result.append(", flexibleHeight: ");

@@ -1688,31 +1688,13 @@ public interface KRenderingPackage extends EPackage {
     int KGRID_PLACEMENT_DATA__MIN_CELL_WIDTH = KAREA_PLACEMENT_DATA_FEATURE_COUNT + 0;
 
     /**
-     * The feature id for the '<em><b>Max Cell Width</b></em>' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int KGRID_PLACEMENT_DATA__MAX_CELL_WIDTH = KAREA_PLACEMENT_DATA_FEATURE_COUNT + 1;
-
-    /**
      * The feature id for the '<em><b>Min Cell Height</b></em>' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int KGRID_PLACEMENT_DATA__MIN_CELL_HEIGHT = KAREA_PLACEMENT_DATA_FEATURE_COUNT + 2;
-
-    /**
-     * The feature id for the '<em><b>Max Cell Height</b></em>' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int KGRID_PLACEMENT_DATA__MAX_CELL_HEIGHT = KAREA_PLACEMENT_DATA_FEATURE_COUNT + 3;
+    int KGRID_PLACEMENT_DATA__MIN_CELL_HEIGHT = KAREA_PLACEMENT_DATA_FEATURE_COUNT + 1;
 
     /**
      * The feature id for the '<em><b>Flexible Width</b></em>' attribute.
@@ -1721,7 +1703,7 @@ public interface KRenderingPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int KGRID_PLACEMENT_DATA__FLEXIBLE_WIDTH = KAREA_PLACEMENT_DATA_FEATURE_COUNT + 4;
+    int KGRID_PLACEMENT_DATA__FLEXIBLE_WIDTH = KAREA_PLACEMENT_DATA_FEATURE_COUNT + 2;
 
     /**
      * The feature id for the '<em><b>Flexible Height</b></em>' attribute.
@@ -1730,7 +1712,7 @@ public interface KRenderingPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int KGRID_PLACEMENT_DATA__FLEXIBLE_HEIGHT = KAREA_PLACEMENT_DATA_FEATURE_COUNT + 5;
+    int KGRID_PLACEMENT_DATA__FLEXIBLE_HEIGHT = KAREA_PLACEMENT_DATA_FEATURE_COUNT + 3;
 
     /**
      * The number of structural features of the '<em>KGrid Placement Data</em>' class.
@@ -1739,7 +1721,7 @@ public interface KRenderingPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int KGRID_PLACEMENT_DATA_FEATURE_COUNT = KAREA_PLACEMENT_DATA_FEATURE_COUNT + 6;
+    int KGRID_PLACEMENT_DATA_FEATURE_COUNT = KAREA_PLACEMENT_DATA_FEATURE_COUNT + 4;
 
     /**
      * The meta object id for the '{@link de.cau.cs.kieler.core.krendering.impl.KCustomRenderingImpl <em>KCustom Rendering</em>}' class.
@@ -4253,17 +4235,6 @@ public interface KRenderingPackage extends EPackage {
     EAttribute getKGridPlacementData_MinCellWidth();
 
     /**
-     * Returns the meta object for the attribute '{@link de.cau.cs.kieler.core.krendering.KGridPlacementData#getMaxCellWidth <em>Max Cell Width</em>}'.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @return the meta object for the attribute '<em>Max Cell Width</em>'.
-     * @see de.cau.cs.kieler.core.krendering.KGridPlacementData#getMaxCellWidth()
-     * @see #getKGridPlacementData()
-     * @generated
-     */
-    EAttribute getKGridPlacementData_MaxCellWidth();
-
-    /**
      * Returns the meta object for the attribute '{@link de.cau.cs.kieler.core.krendering.KGridPlacementData#getMinCellHeight <em>Min Cell Height</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -4273,17 +4244,6 @@ public interface KRenderingPackage extends EPackage {
      * @generated
      */
     EAttribute getKGridPlacementData_MinCellHeight();
-
-    /**
-     * Returns the meta object for the attribute '{@link de.cau.cs.kieler.core.krendering.KGridPlacementData#getMaxCellHeight <em>Max Cell Height</em>}'.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @return the meta object for the attribute '<em>Max Cell Height</em>'.
-     * @see de.cau.cs.kieler.core.krendering.KGridPlacementData#getMaxCellHeight()
-     * @see #getKGridPlacementData()
-     * @generated
-     */
-    EAttribute getKGridPlacementData_MaxCellHeight();
 
     /**
      * Returns the meta object for the attribute '{@link de.cau.cs.kieler.core.krendering.KGridPlacementData#getFlexibleWidth <em>Flexible Width</em>}'.
@@ -5809,28 +5769,12 @@ public interface KRenderingPackage extends EPackage {
         EAttribute KGRID_PLACEMENT_DATA__MIN_CELL_WIDTH = eINSTANCE.getKGridPlacementData_MinCellWidth();
 
         /**
-         * The meta object literal for the '<em><b>Max Cell Width</b></em>' attribute feature.
-         * <!-- begin-user-doc -->
-         * <!-- end-user-doc -->
-         * @generated
-         */
-        EAttribute KGRID_PLACEMENT_DATA__MAX_CELL_WIDTH = eINSTANCE.getKGridPlacementData_MaxCellWidth();
-
-        /**
          * The meta object literal for the '<em><b>Min Cell Height</b></em>' attribute feature.
          * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
          * @generated
          */
         EAttribute KGRID_PLACEMENT_DATA__MIN_CELL_HEIGHT = eINSTANCE.getKGridPlacementData_MinCellHeight();
-
-        /**
-         * The meta object literal for the '<em><b>Max Cell Height</b></em>' attribute feature.
-         * <!-- begin-user-doc -->
-         * <!-- end-user-doc -->
-         * @generated
-         */
-        EAttribute KGRID_PLACEMENT_DATA__MAX_CELL_HEIGHT = eINSTANCE.getKGridPlacementData_MaxCellHeight();
 
         /**
          * The meta object literal for the '<em><b>Flexible Width</b></em>' attribute feature.

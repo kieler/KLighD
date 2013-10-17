@@ -778,12 +778,6 @@ class KRenderingExtensions {
         ];
     }
     
-    def KGridPlacementData setMaxCellHeightEx(KGridPlacementData placementData, float maxCellHeight) {
-        return placementData => [
-            placementData.maxCellHeight = maxCellHeight;
-        ];
-    }
-
     def <T extends KRendering> T setPointPlacementData(T rendering,
         PositionReferenceX px, float absoluteLR, float relativeLR,
         PositionReferenceY py, float absoluteTB, float relativeTB,
