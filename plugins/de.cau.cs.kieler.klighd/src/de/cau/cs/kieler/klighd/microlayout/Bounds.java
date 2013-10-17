@@ -217,6 +217,31 @@ public class Bounds {
     }
 
     /**
+     * @return true if <code>width</code> and <code>height</code> of <code>this</code> bounds equal
+     *         zero.
+     */
+    public boolean isEmpty() {
+        return this.width == 0f && this.height == 0f;
+    }
+    
+    /**
+     * Moves <code>this</code> {@link Bounds} object by adding the provided values to the
+     * <code>horDir</code> and <code>vertDir</code> components.
+     * 
+     * @param horDir
+     *            the horizontal part
+     * @param vertDir
+     *            the vertical part
+     * @return <code>this</code> {@link Bounds} for convenience
+     */
+    public Bounds move(final float horDir, final float vertDir) {
+        this.x += horDir;
+        this.y += vertDir;
+        return this;
+    }
+
+
+    /**
      * Transforms the current {@link Bounds} object in an AWT geometry {@link Rectangle2D}.
      * 
      * @return a related {@link Rectangle2D}
