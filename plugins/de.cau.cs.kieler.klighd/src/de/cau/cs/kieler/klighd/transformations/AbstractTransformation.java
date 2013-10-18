@@ -231,10 +231,10 @@ public abstract class AbstractTransformation<S, T> implements ITransformation<S,
     /**
      * {@inheritDoc}
      */
-    public boolean supports(final Object model) {
+    public boolean supports(final S model) {
         return true;
     }
-    
+
     /**
      * {@inheritDoc}
      * 

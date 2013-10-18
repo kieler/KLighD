@@ -66,15 +66,12 @@ import de.cau.cs.kieler.core.krendering.KTopPosition;
 import de.cau.cs.kieler.core.krendering.KXPosition;
 import de.cau.cs.kieler.core.krendering.KYPosition;
 import de.cau.cs.kieler.core.krendering.util.KRenderingSwitch;
-import de.cau.cs.kieler.core.properties.IProperty;
-import de.cau.cs.kieler.core.properties.Property;
 import de.cau.cs.kieler.core.util.Pair;
 import de.cau.cs.kieler.kiml.klayoutdata.KInsets;
 import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout;
 import de.cau.cs.kieler.klighd.KlighdConstants;
 import de.cau.cs.kieler.klighd.internal.util.KlighdInternalProperties;
 import de.cau.cs.kieler.klighd.krendering.KTextUtil;
-import de.cau.cs.kieler.klighd.microlayout.GridPlacementUtil.GridSpacing;
 
 /**
  * A utility class for evaluating the micro layout of KRenderings.
@@ -90,17 +87,6 @@ public final class PlacementUtil {
     }
 
     // CHECKSTYLEOFF Visibility
-
-    /**
-     * todo.
-     */
-    public static final IProperty<GridSpacing> ESTIMATED_GRID_DATA = new Property<GridSpacing>(
-            "klighd.grid.estimatedGridData");
-    /**
-     * 
-     */
-    public static final IProperty<Pair<Integer, Integer>> CHILD_AREA_POSITION =
-            new Property<Pair<Integer, Integer>>("klighd.grid.childAreaPosition");
 
     /**
      * A data holder class for points. This class and its fields are intentionally package
@@ -384,13 +370,12 @@ public final class PlacementUtil {
             return new Bounds(parentBounds.getWidth(), parentBounds.getHeight());
         }
 
-        final float width = Math.max(ownBounds.getWidth() + ppd.getHorizontalMargin(),
-                ppd.getMinWidth());
-        final float height = Math.max(ownBounds.getHeight() + ppd.getVerticalMargin(),
-                ppd.getMinHeight());
+        final float width = Math.max(ownBounds.getWidth(), ppd.getMinWidth());
+        final float height = Math.max(ownBounds.getHeight(), ppd.getMinHeight());
         
         final KPosition ref = ppd.getReferencePoint();
         final Point refPoint;
+        
         if (ref == null) {
             // if the reference point is missing, assume the center as reference
             refPoint = new Point(parentBounds.getWidth() / 2, parentBounds.getHeight() / 2);
@@ -736,8 +721,8 @@ public final class PlacementUtil {
             return minWidth;
         }
 
-        KPosition pos = ppd.getReferencePoint();
-        float abs = pos != null && pos.getX() != null ? pos.getX().getAbsolute() : 0f;
+        final KPosition pos = ppd.getReferencePoint();
+        final float abs = pos != null && pos.getX() != null ? pos.getX().getAbsolute() : 0f;
         float calculatedWidth = 0f;
 
         switch (ppd.getHorizontalAlignment()) {
@@ -775,8 +760,8 @@ public final class PlacementUtil {
             return minHeight;
         }
 
-        KPosition pos = ppd.getReferencePoint();
-        float abs = pos != null && pos.getY() != null ? pos.getY().getAbsolute() : 0f;
+        final KPosition pos = ppd.getReferencePoint();
+        final float abs = pos != null && pos.getY() != null ? pos.getY().getAbsolute() : 0f;
         float calculatedHeight = 0f;
 
         switch (ppd.getVerticalAlignment()) {
@@ -981,7 +966,7 @@ public final class PlacementUtil {
      * @return a pair informing about the absolute value the child size is smaller than the parent
      *         and the relative size of a child w.r.t. to the size of the parent
      */
-    static Pair<Float, Float> getSize(final float abs0, final float rel0,
+    private static Pair<Float, Float> getSize(final float abs0, final float rel0,
             final int positionId0, final float abs1, final float rel1, final int positionId1) {
         float absOffset = 0;
         float relWidth = 1f;
@@ -1159,11 +1144,14 @@ public final class PlacementUtil {
                 public Bounds caseKGridPlacement(final KGridPlacement gridPlacement) {
                     // evaluate grid based on the children, their placementData and size
                     // and get placement for current child
-                    Bounds[] childBounds =
-                            GridPlacementUtil.evaluateGridPlacement(gridPlacement, children,
-                                    parentBounds);
-                    int index = children.lastIndexOf(child);
-                    return childBounds[index];
+                    final Bounds[] childBounds = GridPlacementUtil.evaluateGridPlacement(
+                            gridPlacement, children, parentBounds);
+                    if (childBounds == null) {
+                        return Bounds.of(0, 0);
+                    } else {
+                        final int index = children.lastIndexOf(child);
+                        return childBounds[index];
+                    }
                 }
             }
             .doSwitch(placement);

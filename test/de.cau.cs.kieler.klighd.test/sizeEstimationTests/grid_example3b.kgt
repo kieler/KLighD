@@ -4,25 +4,26 @@ knode {
         klighd.testing.expected.^width = 150.0
     knode a {
         size:
-            width = 100
-            height = 60
+            width = 50
+            height = 40
         properties:
             klighd.testing.ignore = true
         kedge ( -> b)
-        kroundedRectangle (30, 30)
+        kroundedRectangle (25, 20)
     }
     knode b {
         size:
-            width = 100
-            height = 60
+            width = 50
+            height = 40
         properties:
             klighd.testing.ignore = true
         kedge ( -> a)
-        kroundedRectangle (30, 30)
+        kroundedRectangle (25, 20)
     }
     krectangle {
         styles: foreground = 255g
-		grid: columns = 1
+		grid:
+            columns = 1
 		krectangle {
 			ktext ("Einer ganz langer Text") [
 			    klighd.testing.^height = 16.0

@@ -65,6 +65,7 @@ import de.cau.cs.kieler.klighd.KlighdPlugin;
 import de.cau.cs.kieler.klighd.LightDiagramServices;
 import de.cau.cs.kieler.klighd.ViewContext;
 import de.cau.cs.kieler.klighd.internal.util.KlighdInternalProperties;
+import de.cau.cs.kieler.klighd.piccolo.KlighdPiccoloPlugin;
 import de.cau.cs.kieler.klighd.piccolo.internal.activities.ApplyBendPointsActivity;
 import de.cau.cs.kieler.klighd.piccolo.internal.activities.ApplySmartBoundsActivity;
 import de.cau.cs.kieler.klighd.piccolo.internal.activities.FadeEdgeInActivity;
@@ -338,6 +339,17 @@ public class DiagramController {
     public void zoomToFit(final int duration) {
         if (topNode.getParent() instanceof PLayer) {
             KShapeLayout topNodeLayout = topNode.getGraphElement().getData(KShapeLayout.class);
+            
+            if (topNodeLayout == null) {
+                String msg = "KLighD DiagramController: "
+                        + "Failed to apply 'zoom to fit' as the topNode's layout data are unavailable. "
+                        + "This is most likely due to a failed incremental update before.";
+                StatusManager.getManager().handle(
+                        new Status(IStatus.ERROR, KlighdPiccoloPlugin.PLUGIN_ID, msg),
+                        StatusManager.LOG);
+                return;
+            }
+            
             // chsch: I don't like this exploit of implicit knowledge!
             // Would an API change be reasonable here?
             // (leads to worse class structure, less encapsulation)
@@ -356,7 +368,7 @@ public class DiagramController {
      * @return the Piccolo representation
      */
     public IGraphElement<?> getRepresentation(final KGraphElement diagramElement) {
-        return RenderingContextData.get(diagramElement).getProperty(DiagramController.REP);
+        return RenderingContextData.get(diagramElement).getProperty(REP);
     }
 
     /* --------------------------------------------- */
@@ -412,9 +424,8 @@ public class DiagramController {
             return;
         }
         
-        final IGraphElement<?> parentRep = RenderingContextData.get(
-                (KGraphElement) element.eContainer()).getProperty(REP);
-        
+        final IGraphElement<?> parentRep = getRepresentation((KGraphElement) element.eContainer());
+                                           
         switch (element.eClass().getClassifierID()) {
         case KGraphPackage.KNODE:
             if (parentRep != null) {
@@ -1348,6 +1359,13 @@ public class DiagramController {
                             recordedChanges.put(edgeRep, getBendPoints(edL, renderedAsPolyline));
                         } else {
                             edgeRep.setBendPoints(getBendPoints(edL, renderedAsPolyline));
+                            
+                            final KEdgeRenderingController controller = edgeRep.getRenderingController();
+                            if (controller != null) {
+                                controller.clearJunctionPoints();
+                                controller.modifyStyles();
+                                controller.handleJunctionPoints();
+                            }
                         }
                     }
                 }

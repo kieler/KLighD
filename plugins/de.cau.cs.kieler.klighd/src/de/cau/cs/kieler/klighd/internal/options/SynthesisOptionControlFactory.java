@@ -17,8 +17,8 @@ import java.util.Collection;
 import java.util.LinkedList;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -110,16 +110,13 @@ public class SynthesisOptionControlFactory {
         checkButton.setSelection((Boolean) context.getOptionValue(option));
 
         // add a selection listener for instant diagram updates
-        checkButton.addSelectionListener(new SelectionListener() {
+        checkButton.addSelectionListener(new SelectionAdapter() {
             
+            @Override
             public void widgetSelected(final SelectionEvent event) {
                 // set the new option value and trigger the diagram update
                 context.configureOption(option, ((Button) event.widget).getSelection());
                 DiagramViewManager.getInstance().updateView(viewId);
-            }
-            
-            public void widgetDefaultSelected(final SelectionEvent e) {
-                // nothing
             }
         });
     }
@@ -160,18 +157,15 @@ public class SynthesisOptionControlFactory {
             button.setLayoutData(vGd);
 
             // ... add a selection listener for instant diagram updates ...
-            button.addSelectionListener(new SelectionListener() {
+            button.addSelectionListener(new SelectionAdapter() {
 
+                @Override
                 public void widgetSelected(final SelectionEvent event) {
                     if (((Button) event.widget).getSelection()) {
                         // set the new option value and trigger the diagram update
                         context.configureOption(option, value);
                         DiagramViewManager.getInstance().updateView(viewId);
                     }
-                }
-
-                public void widgetDefaultSelected(final SelectionEvent event) {
-                    // nothing
                 }
             });
 
@@ -242,11 +236,12 @@ public class SynthesisOptionControlFactory {
         label.setText(labelString + context.getOptionValue(option));
 
         // and finally add a selection listener for instant diagram updates
-        scale.addSelectionListener(new SelectionListener() {
+        scale.addSelectionListener(new SelectionAdapter() {
             
             // a little buffer used for dropping unnecessary events
             private double currentValue = scale.getSelection();
             
+            @Override
             public void widgetSelected(final SelectionEvent event) {
                 final Scale scale = (Scale) event.widget;
                 
@@ -280,10 +275,6 @@ public class SynthesisOptionControlFactory {
                 
                 // trigger the diagram update
                 DiagramViewManager.getInstance().updateView(viewId);
-            }
-            
-            public void widgetDefaultSelected(final SelectionEvent e) {
-                // nothing
             }
         });
     }

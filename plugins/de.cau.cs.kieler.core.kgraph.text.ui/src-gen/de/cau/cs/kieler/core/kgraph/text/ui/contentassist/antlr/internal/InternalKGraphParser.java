@@ -22,7 +22,7 @@ import java.util.ArrayList;
 @SuppressWarnings("all")
 public class InternalKGraphParser extends AbstractInternalContentAssistParser {
     public static final String[] tokenNames = new String[] {
-        "<invalid>", "<EOR>", "<DOWN>", "<UP>", "RULE_BOOLEAN", "RULE_STRING", "RULE_TFLOAT", "RULE_NATURAL", "RULE_ID", "RULE_DEGREES", "RULE_ALPHA", "RULE_FSIZE", "RULE_PERCENT", "RULE_RED", "RULE_GREEN", "RULE_BLUE", "RULE_ML_COMMENT", "RULE_SL_COMMENT", "RULE_WS", "'null'", "'open'", "'chord'", "'pie'", "'left'", "'center'", "'right'", "'top'", "'bottom'", "'none'", "'single'", "'double'", "'error'", "'squiggle'", "'link'", "'solid'", "'dash'", "'dot'", "'dash-dot'", "'dash-dot-dot'", "'flat'", "'round'", "'square'", "'miter'", "'bevel'", "'singleClick'", "'doubleClick'", "'kgraph'", "'knode'", "'{'", "'}'", "'kedge'", "'('", "'->'", "')'", "':'", "'klabel'", "'kport'", "'='", "'['", "']'", "'pos'", "'x'", "'y'", "'size'", "'width'", "'height'", "'properties'", "'insets'", "'points'", "';'", "','", "'styles'", "'actions'", "'krendering'", "'*'", "'kchildArea'", "'ktext'", "'krectangle'", "'kroundedRectangle'", "'kellipse'", "'karc'", "'kcustomRendering'", "'kimage'", "'junction'", "'kpolyline'", "'kpolygon'", "'kroundedPolyline'", "'kspline'", "'modifier'", "'foreground'", "'background'", "'bold'", "'italic'", "'fontName'", "'fontSize'", "'underline'", "'hAlign'", "'vAlign'", "'invisible'", "'lineCap'", "'lineJoin'", "'lineStyle'", "'lineWidth'", "'rotation'", "'anchor'", "'shadow'", "'reference'", "'krenderingLibrary'", "'kstylesTemplate'", "'grid'", "'topLeftAnchor'", "'bottomRightAnchor'", "'columns'", "'areaData'", "'pointData'", "'referencePoint'", "'minimalWidth'", "'minimalHeight'", "'horizontalAlignment'", "'verticalAlignment'", "'horizontalMargin'", "'verticalMargin'", "'gridData'", "'minCellWidth'", "'minCellHeight'", "'maxCellWidth'", "'maxCellHeight'", "'decoratorData'", "'xoffset'", "'yoffset'", "'relativePos'", "'absolutePos'", "'rotateWithLine'", "'=>'", "'+'", "'.'", "'propagate'", "'scale'"
+        "<invalid>", "<EOR>", "<DOWN>", "<UP>", "RULE_BOOLEAN", "RULE_STRING", "RULE_TFLOAT", "RULE_NATURAL", "RULE_ID", "RULE_DEGREES", "RULE_ALPHA", "RULE_FSIZE", "RULE_PERCENT", "RULE_RED", "RULE_GREEN", "RULE_BLUE", "RULE_ML_COMMENT", "RULE_SL_COMMENT", "RULE_WS", "'null'", "'open'", "'chord'", "'pie'", "'left'", "'center'", "'right'", "'top'", "'bottom'", "'none'", "'single'", "'double'", "'error'", "'squiggle'", "'link'", "'solid'", "'dash'", "'dot'", "'dash-dot'", "'dash-dot-dot'", "'flat'", "'round'", "'square'", "'miter'", "'bevel'", "'singleClick'", "'doubleClick'", "'kgraph'", "'knode'", "'{'", "'}'", "'kedge'", "'('", "'->'", "')'", "':'", "'klabel'", "'kport'", "'='", "'['", "']'", "'pos'", "'x'", "'y'", "'size'", "'width'", "'height'", "'properties'", "'insets'", "'points'", "';'", "','", "'styles'", "'actions'", "'krendering'", "'*'", "'kchildArea'", "'ktext'", "'krectangle'", "'kroundedRectangle'", "'kellipse'", "'karc'", "'kcustomRendering'", "'kimage'", "'junction'", "'kpolyline'", "'kpolygon'", "'kroundedPolyline'", "'kspline'", "'modifier'", "'foreground'", "'background'", "'bold'", "'italic'", "'fontName'", "'fontSize'", "'underline'", "'hAlign'", "'vAlign'", "'invisible'", "'lineCap'", "'lineJoin'", "'lineStyle'", "'lineWidth'", "'rotation'", "'anchor'", "'shadow'", "'reference'", "'krenderingLibrary'", "'kstylesTemplate'", "'grid'", "'topLeftAnchor'", "'bottomRightAnchor'", "'columns'", "'areaData'", "'pointData'", "'referencePoint'", "'minimalWidth'", "'minimalHeight'", "'horizontalAlignment'", "'verticalAlignment'", "'horizontalMargin'", "'verticalMargin'", "'gridData'", "'minCellWidth'", "'minCellHeight'", "'flexibleWidth'", "'flexibleHeight'", "'decoratorData'", "'xoffset'", "'yoffset'", "'relativePos'", "'absolutePos'", "'rotateWithLine'", "'=>'", "'+'", "'.'", "'propagate'", "'scale'"
     };
     public static final int RULE_ID=8;
     public static final int T__29=29;
@@ -9145,11 +9145,11 @@ public class InternalKGraphParser extends AbstractInternalContentAssistParser {
             if ( (LA25_0==RULE_PERCENT) ) {
                 int LA25_1 = input.LA(2);
 
-                if ( (LA25_1==134) ) {
-                    alt25=2;
-                }
-                else if ( (LA25_1==EOF||LA25_1==49||LA25_1==53||(LA25_1>=68 && LA25_1<=69)||(LA25_1>=71 && LA25_1<=73)||(LA25_1>=75 && LA25_1<=87)||(LA25_1>=109 && LA25_1<=127)) ) {
+                if ( (LA25_1==EOF||LA25_1==49||LA25_1==53||(LA25_1>=68 && LA25_1<=69)||(LA25_1>=71 && LA25_1<=73)||(LA25_1>=75 && LA25_1<=87)||(LA25_1>=109 && LA25_1<=127)) ) {
                     alt25=1;
+                }
+                else if ( (LA25_1==134) ) {
+                    alt25=2;
                 }
                 else {
                     NoViableAltException nvae =
@@ -46739,21 +46739,21 @@ public class InternalKGraphParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__KGridPlacementData__Group_3_4__0__Impl"
-    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/kgraph/text/ui/contentassist/antlr/internal/InternalKGraph.g:17682:1: rule__KGridPlacementData__Group_3_4__0__Impl : ( 'maxCellWidth' ) ;
+    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/kgraph/text/ui/contentassist/antlr/internal/InternalKGraph.g:17682:1: rule__KGridPlacementData__Group_3_4__0__Impl : ( 'flexibleWidth' ) ;
     public final void rule__KGridPlacementData__Group_3_4__0__Impl() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/kgraph/text/ui/contentassist/antlr/internal/InternalKGraph.g:17686:1: ( ( 'maxCellWidth' ) )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/kgraph/text/ui/contentassist/antlr/internal/InternalKGraph.g:17687:1: ( 'maxCellWidth' )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/kgraph/text/ui/contentassist/antlr/internal/InternalKGraph.g:17686:1: ( ( 'flexibleWidth' ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/kgraph/text/ui/contentassist/antlr/internal/InternalKGraph.g:17687:1: ( 'flexibleWidth' )
             {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/kgraph/text/ui/contentassist/antlr/internal/InternalKGraph.g:17687:1: ( 'maxCellWidth' )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/kgraph/text/ui/contentassist/antlr/internal/InternalKGraph.g:17688:1: 'maxCellWidth'
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/kgraph/text/ui/contentassist/antlr/internal/InternalKGraph.g:17687:1: ( 'flexibleWidth' )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/kgraph/text/ui/contentassist/antlr/internal/InternalKGraph.g:17688:1: 'flexibleWidth'
             {
-             before(grammarAccess.getKGridPlacementDataAccess().getMaxCellWidthKeyword_3_4_0()); 
+             before(grammarAccess.getKGridPlacementDataAccess().getFlexibleWidthKeyword_3_4_0()); 
             match(input,125,FollowSets001.FOLLOW_125_in_rule__KGridPlacementData__Group_3_4__0__Impl35520); 
-             after(grammarAccess.getKGridPlacementDataAccess().getMaxCellWidthKeyword_3_4_0()); 
+             after(grammarAccess.getKGridPlacementDataAccess().getFlexibleWidthKeyword_3_4_0()); 
 
             }
 
@@ -46884,31 +46884,31 @@ public class InternalKGraphParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__KGridPlacementData__Group_3_4__2__Impl"
-    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/kgraph/text/ui/contentassist/antlr/internal/InternalKGraph.g:17743:1: rule__KGridPlacementData__Group_3_4__2__Impl : ( ( rule__KGridPlacementData__MaxCellWidthAssignment_3_4_2 ) ) ;
+    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/kgraph/text/ui/contentassist/antlr/internal/InternalKGraph.g:17743:1: rule__KGridPlacementData__Group_3_4__2__Impl : ( ( rule__KGridPlacementData__FlexibleWidthAssignment_3_4_2 ) ) ;
     public final void rule__KGridPlacementData__Group_3_4__2__Impl() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/kgraph/text/ui/contentassist/antlr/internal/InternalKGraph.g:17747:1: ( ( ( rule__KGridPlacementData__MaxCellWidthAssignment_3_4_2 ) ) )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/kgraph/text/ui/contentassist/antlr/internal/InternalKGraph.g:17748:1: ( ( rule__KGridPlacementData__MaxCellWidthAssignment_3_4_2 ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/kgraph/text/ui/contentassist/antlr/internal/InternalKGraph.g:17747:1: ( ( ( rule__KGridPlacementData__FlexibleWidthAssignment_3_4_2 ) ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/kgraph/text/ui/contentassist/antlr/internal/InternalKGraph.g:17748:1: ( ( rule__KGridPlacementData__FlexibleWidthAssignment_3_4_2 ) )
             {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/kgraph/text/ui/contentassist/antlr/internal/InternalKGraph.g:17748:1: ( ( rule__KGridPlacementData__MaxCellWidthAssignment_3_4_2 ) )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/kgraph/text/ui/contentassist/antlr/internal/InternalKGraph.g:17749:1: ( rule__KGridPlacementData__MaxCellWidthAssignment_3_4_2 )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/kgraph/text/ui/contentassist/antlr/internal/InternalKGraph.g:17748:1: ( ( rule__KGridPlacementData__FlexibleWidthAssignment_3_4_2 ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/kgraph/text/ui/contentassist/antlr/internal/InternalKGraph.g:17749:1: ( rule__KGridPlacementData__FlexibleWidthAssignment_3_4_2 )
             {
-             before(grammarAccess.getKGridPlacementDataAccess().getMaxCellWidthAssignment_3_4_2()); 
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/kgraph/text/ui/contentassist/antlr/internal/InternalKGraph.g:17750:1: ( rule__KGridPlacementData__MaxCellWidthAssignment_3_4_2 )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/kgraph/text/ui/contentassist/antlr/internal/InternalKGraph.g:17750:2: rule__KGridPlacementData__MaxCellWidthAssignment_3_4_2
+             before(grammarAccess.getKGridPlacementDataAccess().getFlexibleWidthAssignment_3_4_2()); 
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/kgraph/text/ui/contentassist/antlr/internal/InternalKGraph.g:17750:1: ( rule__KGridPlacementData__FlexibleWidthAssignment_3_4_2 )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/kgraph/text/ui/contentassist/antlr/internal/InternalKGraph.g:17750:2: rule__KGridPlacementData__FlexibleWidthAssignment_3_4_2
             {
-            pushFollow(FollowSets001.FOLLOW_rule__KGridPlacementData__MaxCellWidthAssignment_3_4_2_in_rule__KGridPlacementData__Group_3_4__2__Impl35640);
-            rule__KGridPlacementData__MaxCellWidthAssignment_3_4_2();
+            pushFollow(FollowSets001.FOLLOW_rule__KGridPlacementData__FlexibleWidthAssignment_3_4_2_in_rule__KGridPlacementData__Group_3_4__2__Impl35640);
+            rule__KGridPlacementData__FlexibleWidthAssignment_3_4_2();
 
             state._fsp--;
 
 
             }
 
-             after(grammarAccess.getKGridPlacementDataAccess().getMaxCellWidthAssignment_3_4_2()); 
+             after(grammarAccess.getKGridPlacementDataAccess().getFlexibleWidthAssignment_3_4_2()); 
 
             }
 
@@ -46969,21 +46969,21 @@ public class InternalKGraphParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__KGridPlacementData__Group_3_5__0__Impl"
-    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/kgraph/text/ui/contentassist/antlr/internal/InternalKGraph.g:17778:1: rule__KGridPlacementData__Group_3_5__0__Impl : ( 'maxCellHeight' ) ;
+    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/kgraph/text/ui/contentassist/antlr/internal/InternalKGraph.g:17778:1: rule__KGridPlacementData__Group_3_5__0__Impl : ( 'flexibleHeight' ) ;
     public final void rule__KGridPlacementData__Group_3_5__0__Impl() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/kgraph/text/ui/contentassist/antlr/internal/InternalKGraph.g:17782:1: ( ( 'maxCellHeight' ) )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/kgraph/text/ui/contentassist/antlr/internal/InternalKGraph.g:17783:1: ( 'maxCellHeight' )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/kgraph/text/ui/contentassist/antlr/internal/InternalKGraph.g:17782:1: ( ( 'flexibleHeight' ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/kgraph/text/ui/contentassist/antlr/internal/InternalKGraph.g:17783:1: ( 'flexibleHeight' )
             {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/kgraph/text/ui/contentassist/antlr/internal/InternalKGraph.g:17783:1: ( 'maxCellHeight' )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/kgraph/text/ui/contentassist/antlr/internal/InternalKGraph.g:17784:1: 'maxCellHeight'
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/kgraph/text/ui/contentassist/antlr/internal/InternalKGraph.g:17783:1: ( 'flexibleHeight' )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/kgraph/text/ui/contentassist/antlr/internal/InternalKGraph.g:17784:1: 'flexibleHeight'
             {
-             before(grammarAccess.getKGridPlacementDataAccess().getMaxCellHeightKeyword_3_5_0()); 
+             before(grammarAccess.getKGridPlacementDataAccess().getFlexibleHeightKeyword_3_5_0()); 
             match(input,126,FollowSets001.FOLLOW_126_in_rule__KGridPlacementData__Group_3_5__0__Impl35707); 
-             after(grammarAccess.getKGridPlacementDataAccess().getMaxCellHeightKeyword_3_5_0()); 
+             after(grammarAccess.getKGridPlacementDataAccess().getFlexibleHeightKeyword_3_5_0()); 
 
             }
 
@@ -47114,31 +47114,31 @@ public class InternalKGraphParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__KGridPlacementData__Group_3_5__2__Impl"
-    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/kgraph/text/ui/contentassist/antlr/internal/InternalKGraph.g:17839:1: rule__KGridPlacementData__Group_3_5__2__Impl : ( ( rule__KGridPlacementData__MaxCellHeightAssignment_3_5_2 ) ) ;
+    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/kgraph/text/ui/contentassist/antlr/internal/InternalKGraph.g:17839:1: rule__KGridPlacementData__Group_3_5__2__Impl : ( ( rule__KGridPlacementData__FlexibleHeightAssignment_3_5_2 ) ) ;
     public final void rule__KGridPlacementData__Group_3_5__2__Impl() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/kgraph/text/ui/contentassist/antlr/internal/InternalKGraph.g:17843:1: ( ( ( rule__KGridPlacementData__MaxCellHeightAssignment_3_5_2 ) ) )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/kgraph/text/ui/contentassist/antlr/internal/InternalKGraph.g:17844:1: ( ( rule__KGridPlacementData__MaxCellHeightAssignment_3_5_2 ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/kgraph/text/ui/contentassist/antlr/internal/InternalKGraph.g:17843:1: ( ( ( rule__KGridPlacementData__FlexibleHeightAssignment_3_5_2 ) ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/kgraph/text/ui/contentassist/antlr/internal/InternalKGraph.g:17844:1: ( ( rule__KGridPlacementData__FlexibleHeightAssignment_3_5_2 ) )
             {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/kgraph/text/ui/contentassist/antlr/internal/InternalKGraph.g:17844:1: ( ( rule__KGridPlacementData__MaxCellHeightAssignment_3_5_2 ) )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/kgraph/text/ui/contentassist/antlr/internal/InternalKGraph.g:17845:1: ( rule__KGridPlacementData__MaxCellHeightAssignment_3_5_2 )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/kgraph/text/ui/contentassist/antlr/internal/InternalKGraph.g:17844:1: ( ( rule__KGridPlacementData__FlexibleHeightAssignment_3_5_2 ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/kgraph/text/ui/contentassist/antlr/internal/InternalKGraph.g:17845:1: ( rule__KGridPlacementData__FlexibleHeightAssignment_3_5_2 )
             {
-             before(grammarAccess.getKGridPlacementDataAccess().getMaxCellHeightAssignment_3_5_2()); 
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/kgraph/text/ui/contentassist/antlr/internal/InternalKGraph.g:17846:1: ( rule__KGridPlacementData__MaxCellHeightAssignment_3_5_2 )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/kgraph/text/ui/contentassist/antlr/internal/InternalKGraph.g:17846:2: rule__KGridPlacementData__MaxCellHeightAssignment_3_5_2
+             before(grammarAccess.getKGridPlacementDataAccess().getFlexibleHeightAssignment_3_5_2()); 
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/kgraph/text/ui/contentassist/antlr/internal/InternalKGraph.g:17846:1: ( rule__KGridPlacementData__FlexibleHeightAssignment_3_5_2 )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/kgraph/text/ui/contentassist/antlr/internal/InternalKGraph.g:17846:2: rule__KGridPlacementData__FlexibleHeightAssignment_3_5_2
             {
-            pushFollow(FollowSets001.FOLLOW_rule__KGridPlacementData__MaxCellHeightAssignment_3_5_2_in_rule__KGridPlacementData__Group_3_5__2__Impl35827);
-            rule__KGridPlacementData__MaxCellHeightAssignment_3_5_2();
+            pushFollow(FollowSets001.FOLLOW_rule__KGridPlacementData__FlexibleHeightAssignment_3_5_2_in_rule__KGridPlacementData__Group_3_5__2__Impl35827);
+            rule__KGridPlacementData__FlexibleHeightAssignment_3_5_2();
 
             state._fsp--;
 
 
             }
 
-             after(grammarAccess.getKGridPlacementDataAccess().getMaxCellHeightAssignment_3_5_2()); 
+             after(grammarAccess.getKGridPlacementDataAccess().getFlexibleHeightAssignment_3_5_2()); 
 
             }
 
@@ -66675,26 +66675,22 @@ public class InternalKGraphParser extends AbstractInternalContentAssistParser {
     // $ANTLR end "rule__KGridPlacementData__MinCellHeightAssignment_3_3_2"
 
 
-    // $ANTLR start "rule__KGridPlacementData__MaxCellWidthAssignment_3_4_2"
-    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/kgraph/text/ui/contentassist/antlr/internal/InternalKGraph.g:24834:1: rule__KGridPlacementData__MaxCellWidthAssignment_3_4_2 : ( ruleFloat ) ;
-    public final void rule__KGridPlacementData__MaxCellWidthAssignment_3_4_2() throws RecognitionException {
+    // $ANTLR start "rule__KGridPlacementData__FlexibleWidthAssignment_3_4_2"
+    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/kgraph/text/ui/contentassist/antlr/internal/InternalKGraph.g:24834:1: rule__KGridPlacementData__FlexibleWidthAssignment_3_4_2 : ( RULE_BOOLEAN ) ;
+    public final void rule__KGridPlacementData__FlexibleWidthAssignment_3_4_2() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/kgraph/text/ui/contentassist/antlr/internal/InternalKGraph.g:24838:1: ( ( ruleFloat ) )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/kgraph/text/ui/contentassist/antlr/internal/InternalKGraph.g:24839:1: ( ruleFloat )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/kgraph/text/ui/contentassist/antlr/internal/InternalKGraph.g:24838:1: ( ( RULE_BOOLEAN ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/kgraph/text/ui/contentassist/antlr/internal/InternalKGraph.g:24839:1: ( RULE_BOOLEAN )
             {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/kgraph/text/ui/contentassist/antlr/internal/InternalKGraph.g:24839:1: ( ruleFloat )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/kgraph/text/ui/contentassist/antlr/internal/InternalKGraph.g:24840:1: ruleFloat
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/kgraph/text/ui/contentassist/antlr/internal/InternalKGraph.g:24839:1: ( RULE_BOOLEAN )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/kgraph/text/ui/contentassist/antlr/internal/InternalKGraph.g:24840:1: RULE_BOOLEAN
             {
-             before(grammarAccess.getKGridPlacementDataAccess().getMaxCellWidthFloatParserRuleCall_3_4_2_0()); 
-            pushFollow(FollowSets002.FOLLOW_ruleFloat_in_rule__KGridPlacementData__MaxCellWidthAssignment_3_4_252773);
-            ruleFloat();
-
-            state._fsp--;
-
-             after(grammarAccess.getKGridPlacementDataAccess().getMaxCellWidthFloatParserRuleCall_3_4_2_0()); 
+             before(grammarAccess.getKGridPlacementDataAccess().getFlexibleWidthBOOLEANTerminalRuleCall_3_4_2_0()); 
+            match(input,RULE_BOOLEAN,FollowSets002.FOLLOW_RULE_BOOLEAN_in_rule__KGridPlacementData__FlexibleWidthAssignment_3_4_252773); 
+             after(grammarAccess.getKGridPlacementDataAccess().getFlexibleWidthBOOLEANTerminalRuleCall_3_4_2_0()); 
 
             }
 
@@ -66713,29 +66709,25 @@ public class InternalKGraphParser extends AbstractInternalContentAssistParser {
         }
         return ;
     }
-    // $ANTLR end "rule__KGridPlacementData__MaxCellWidthAssignment_3_4_2"
+    // $ANTLR end "rule__KGridPlacementData__FlexibleWidthAssignment_3_4_2"
 
 
-    // $ANTLR start "rule__KGridPlacementData__MaxCellHeightAssignment_3_5_2"
-    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/kgraph/text/ui/contentassist/antlr/internal/InternalKGraph.g:24849:1: rule__KGridPlacementData__MaxCellHeightAssignment_3_5_2 : ( ruleFloat ) ;
-    public final void rule__KGridPlacementData__MaxCellHeightAssignment_3_5_2() throws RecognitionException {
+    // $ANTLR start "rule__KGridPlacementData__FlexibleHeightAssignment_3_5_2"
+    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/kgraph/text/ui/contentassist/antlr/internal/InternalKGraph.g:24849:1: rule__KGridPlacementData__FlexibleHeightAssignment_3_5_2 : ( RULE_BOOLEAN ) ;
+    public final void rule__KGridPlacementData__FlexibleHeightAssignment_3_5_2() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/kgraph/text/ui/contentassist/antlr/internal/InternalKGraph.g:24853:1: ( ( ruleFloat ) )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/kgraph/text/ui/contentassist/antlr/internal/InternalKGraph.g:24854:1: ( ruleFloat )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/kgraph/text/ui/contentassist/antlr/internal/InternalKGraph.g:24853:1: ( ( RULE_BOOLEAN ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/kgraph/text/ui/contentassist/antlr/internal/InternalKGraph.g:24854:1: ( RULE_BOOLEAN )
             {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/kgraph/text/ui/contentassist/antlr/internal/InternalKGraph.g:24854:1: ( ruleFloat )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/kgraph/text/ui/contentassist/antlr/internal/InternalKGraph.g:24855:1: ruleFloat
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/kgraph/text/ui/contentassist/antlr/internal/InternalKGraph.g:24854:1: ( RULE_BOOLEAN )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/kgraph/text/ui/contentassist/antlr/internal/InternalKGraph.g:24855:1: RULE_BOOLEAN
             {
-             before(grammarAccess.getKGridPlacementDataAccess().getMaxCellHeightFloatParserRuleCall_3_5_2_0()); 
-            pushFollow(FollowSets002.FOLLOW_ruleFloat_in_rule__KGridPlacementData__MaxCellHeightAssignment_3_5_252804);
-            ruleFloat();
-
-            state._fsp--;
-
-             after(grammarAccess.getKGridPlacementDataAccess().getMaxCellHeightFloatParserRuleCall_3_5_2_0()); 
+             before(grammarAccess.getKGridPlacementDataAccess().getFlexibleHeightBOOLEANTerminalRuleCall_3_5_2_0()); 
+            match(input,RULE_BOOLEAN,FollowSets002.FOLLOW_RULE_BOOLEAN_in_rule__KGridPlacementData__FlexibleHeightAssignment_3_5_252804); 
+             after(grammarAccess.getKGridPlacementDataAccess().getFlexibleHeightBOOLEANTerminalRuleCall_3_5_2_0()); 
 
             }
 
@@ -66754,7 +66746,7 @@ public class InternalKGraphParser extends AbstractInternalContentAssistParser {
         }
         return ;
     }
-    // $ANTLR end "rule__KGridPlacementData__MaxCellHeightAssignment_3_5_2"
+    // $ANTLR end "rule__KGridPlacementData__FlexibleHeightAssignment_3_5_2"
 
 
     // $ANTLR start "rule__KDecoratorPlacementData__XOffsetAssignment_3_0_2"
@@ -69320,19 +69312,19 @@ public class InternalKGraphParser extends AbstractInternalContentAssistParser {
         public static final BitSet FOLLOW_rule__KGridPlacementData__Group_3_4__0__Impl_in_rule__KGridPlacementData__Group_3_4__035489 = new BitSet(new long[]{0x0200000000000000L});
         public static final BitSet FOLLOW_rule__KGridPlacementData__Group_3_4__1_in_rule__KGridPlacementData__Group_3_4__035492 = new BitSet(new long[]{0x0000000000000002L});
         public static final BitSet FOLLOW_125_in_rule__KGridPlacementData__Group_3_4__0__Impl35520 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_rule__KGridPlacementData__Group_3_4__1__Impl_in_rule__KGridPlacementData__Group_3_4__135551 = new BitSet(new long[]{0x00000000000000C0L});
+        public static final BitSet FOLLOW_rule__KGridPlacementData__Group_3_4__1__Impl_in_rule__KGridPlacementData__Group_3_4__135551 = new BitSet(new long[]{0x0000000000000010L});
         public static final BitSet FOLLOW_rule__KGridPlacementData__Group_3_4__2_in_rule__KGridPlacementData__Group_3_4__135554 = new BitSet(new long[]{0x0000000000000002L});
         public static final BitSet FOLLOW_57_in_rule__KGridPlacementData__Group_3_4__1__Impl35582 = new BitSet(new long[]{0x0000000000000002L});
         public static final BitSet FOLLOW_rule__KGridPlacementData__Group_3_4__2__Impl_in_rule__KGridPlacementData__Group_3_4__235613 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_rule__KGridPlacementData__MaxCellWidthAssignment_3_4_2_in_rule__KGridPlacementData__Group_3_4__2__Impl35640 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KGridPlacementData__FlexibleWidthAssignment_3_4_2_in_rule__KGridPlacementData__Group_3_4__2__Impl35640 = new BitSet(new long[]{0x0000000000000002L});
         public static final BitSet FOLLOW_rule__KGridPlacementData__Group_3_5__0__Impl_in_rule__KGridPlacementData__Group_3_5__035676 = new BitSet(new long[]{0x0200000000000000L});
         public static final BitSet FOLLOW_rule__KGridPlacementData__Group_3_5__1_in_rule__KGridPlacementData__Group_3_5__035679 = new BitSet(new long[]{0x0000000000000002L});
         public static final BitSet FOLLOW_126_in_rule__KGridPlacementData__Group_3_5__0__Impl35707 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_rule__KGridPlacementData__Group_3_5__1__Impl_in_rule__KGridPlacementData__Group_3_5__135738 = new BitSet(new long[]{0x00000000000000C0L});
+        public static final BitSet FOLLOW_rule__KGridPlacementData__Group_3_5__1__Impl_in_rule__KGridPlacementData__Group_3_5__135738 = new BitSet(new long[]{0x0000000000000010L});
         public static final BitSet FOLLOW_rule__KGridPlacementData__Group_3_5__2_in_rule__KGridPlacementData__Group_3_5__135741 = new BitSet(new long[]{0x0000000000000002L});
         public static final BitSet FOLLOW_57_in_rule__KGridPlacementData__Group_3_5__1__Impl35769 = new BitSet(new long[]{0x0000000000000002L});
         public static final BitSet FOLLOW_rule__KGridPlacementData__Group_3_5__2__Impl_in_rule__KGridPlacementData__Group_3_5__235800 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_rule__KGridPlacementData__MaxCellHeightAssignment_3_5_2_in_rule__KGridPlacementData__Group_3_5__2__Impl35827 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KGridPlacementData__FlexibleHeightAssignment_3_5_2_in_rule__KGridPlacementData__Group_3_5__2__Impl35827 = new BitSet(new long[]{0x0000000000000002L});
         public static final BitSet FOLLOW_rule__KDecoratorPlacementData__Group__0__Impl_in_rule__KDecoratorPlacementData__Group__035863 = new BitSet(new long[]{0x0000000000000000L,0x8406000000000180L});
         public static final BitSet FOLLOW_rule__KDecoratorPlacementData__Group__1_in_rule__KDecoratorPlacementData__Group__035866 = new BitSet(new long[]{0x0000000000000002L});
         public static final BitSet FOLLOW_rule__KDecoratorPlacementData__Group__1__Impl_in_rule__KDecoratorPlacementData__Group__135924 = new BitSet(new long[]{0x0040000000000000L});
@@ -69833,8 +69825,8 @@ public class InternalKGraphParser extends AbstractInternalContentAssistParser {
         public static final BitSet FOLLOW_ruleKPosition_in_rule__KGridPlacementData__BottomRightAssignment_3_1_252680 = new BitSet(new long[]{0x0000000000000002L});
         public static final BitSet FOLLOW_ruleFloat_in_rule__KGridPlacementData__MinCellWidthAssignment_3_2_252711 = new BitSet(new long[]{0x0000000000000002L});
         public static final BitSet FOLLOW_ruleFloat_in_rule__KGridPlacementData__MinCellHeightAssignment_3_3_252742 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_ruleFloat_in_rule__KGridPlacementData__MaxCellWidthAssignment_3_4_252773 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_ruleFloat_in_rule__KGridPlacementData__MaxCellHeightAssignment_3_5_252804 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_RULE_BOOLEAN_in_rule__KGridPlacementData__FlexibleWidthAssignment_3_4_252773 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_RULE_BOOLEAN_in_rule__KGridPlacementData__FlexibleHeightAssignment_3_5_252804 = new BitSet(new long[]{0x0000000000000002L});
         public static final BitSet FOLLOW_ruleFloat_in_rule__KDecoratorPlacementData__XOffsetAssignment_3_0_252835 = new BitSet(new long[]{0x0000000000000002L});
         public static final BitSet FOLLOW_ruleFloat_in_rule__KDecoratorPlacementData__YOffsetAssignment_3_1_252866 = new BitSet(new long[]{0x0000000000000002L});
         public static final BitSet FOLLOW_ruleFloat_in_rule__KDecoratorPlacementData__WidthAssignment_3_2_252897 = new BitSet(new long[]{0x0000000000000002L});

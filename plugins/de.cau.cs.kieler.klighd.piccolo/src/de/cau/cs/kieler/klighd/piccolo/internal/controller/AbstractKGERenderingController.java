@@ -53,8 +53,8 @@ import de.cau.cs.kieler.core.math.KVector;
 import de.cau.cs.kieler.core.properties.IProperty;
 import de.cau.cs.kieler.core.util.Pair;
 import de.cau.cs.kieler.kiml.klayoutdata.KLayoutData;
-import de.cau.cs.kieler.klighd.KlighdDataManager;
 import de.cau.cs.kieler.klighd.IStyleModifier.StyleModificationContext;
+import de.cau.cs.kieler.klighd.KlighdDataManager;
 import de.cau.cs.kieler.klighd.internal.util.KlighdInternalProperties;
 import de.cau.cs.kieler.klighd.microlayout.Bounds;
 import de.cau.cs.kieler.klighd.microlayout.GridPlacementUtil;
@@ -782,11 +782,9 @@ public abstract class AbstractKGERenderingController
         }
 
         // calculate the bounds
-        final GridPlacementUtil.GridPlacer gridPlacer = GridPlacementUtil.getGridPlacementObject(
-                gridPlacement, renderings);
-
         final Bounds parentBounds = new Bounds(parent.getBoundsReference());
-        final Bounds[] elementBounds = gridPlacer.evaluate(parentBounds);
+        final Bounds[] elementBounds = GridPlacementUtil.evaluateGridPlacement(gridPlacement,
+                renderings, parentBounds);
 
         // create the renderings and collect the controllers
         final PNodeController<?>[] controllers = new PNodeController<?>[renderings.size()];
@@ -801,14 +799,18 @@ public abstract class AbstractKGERenderingController
                     public void propertyChange(final PropertyChangeEvent e) {
                         // calculate the new bounds of the rendering
                         final Bounds parentBounds = Bounds.of(parent.getBoundsReference());
-                        final Bounds[] bounds = gridPlacer.evaluate(parentBounds);
+                        final Bounds[] bounds = GridPlacementUtil.evaluateGridPlacement(
+                                gridPlacement, renderings, parentBounds);
 
                         // use the controllers to apply the new bounds
                         int i = 0;
-                        Bounds currentBounds;
                         for (PNodeController<?> controller : controllers) {
-                            currentBounds = bounds[i++];
-                            controller.setBounds(Bounds.min(currentBounds, parentBounds));
+                            if (bounds[i] != null) {
+                                controller.setBounds(bounds[i++]);
+                                controller.getNode().setVisible(true);
+                            } else {
+                                controller.getNode().setVisible(false);
+                            }
                         }
                     }
                 });

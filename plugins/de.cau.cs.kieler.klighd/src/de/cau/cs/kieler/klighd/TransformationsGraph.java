@@ -25,6 +25,8 @@ import java.util.Set;
 
 import org.eclipse.emf.ecore.EObject;
 
+import com.google.common.base.Predicate;
+import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
@@ -325,8 +327,21 @@ public class TransformationsGraph {
     private boolean configureViewContext(final ViewContext viewContext, final List<Path> paths,
             final Object model, final IUpdateStrategy<KNode> updateStrategy) {
         viewContext.reset();
+        
+        Predicate<Path> pathFilter = new Predicate<Path>() {
+            public boolean apply(final Path path) {
+                // this line already assume that we have
+                //  only 1 transformation on the path to the view model
+                final TransformationEdge edge = path.edges.get(0);
+                @SuppressWarnings("unchecked")
+                final ITransformation<Object, ?> traFo =
+                        (ITransformation<Object, ?>) edge.transformation;
+                return traFo.supports(model);
+            }
+        };
+        
         // get the shortest path
-        Path path = getShortestPath(paths);
+        Path path = getShortestPath(paths, pathFilter);
         if (path != null) {
             // keep the current input business model in the view context
             // this allows to update the visual representation e.g. in case of a transformation
@@ -616,13 +631,15 @@ public class TransformationsGraph {
      * 
      * @param listOfPaths
      *            the list of paths
+     * @param filter
+     *            the filter
      */
-    private static Path getShortestPath(final List<Path> listOfPaths) {
+    private static Path getShortestPath(final List<Path> listOfPaths, final Predicate<Path> filter) {
         if (listOfPaths.size() == 0) {
             return null;
         }
         Path shortestPath = listOfPaths.get(0);
-        for (Path path : listOfPaths) {
+        for (Path path : Iterables.filter(listOfPaths, filter)) {
             if (path.edges.size() < shortestPath.edges.size()) {
                 shortestPath = path;
             }
