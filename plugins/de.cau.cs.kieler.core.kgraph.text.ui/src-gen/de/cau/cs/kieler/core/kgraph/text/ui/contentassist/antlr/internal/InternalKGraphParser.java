@@ -31211,31 +31211,31 @@ public class InternalKGraphParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__KPolyline__Group_3_2__1__Impl"
-    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/kgraph/text/ui/contentassist/antlr/internal/InternalKGraph.g:11463:1: rule__KPolyline__Group_3_2__1__Impl : ( ( rule__KPolyline__JointPointRenderingAssignment_3_2_1 ) ) ;
+    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/kgraph/text/ui/contentassist/antlr/internal/InternalKGraph.g:11463:1: rule__KPolyline__Group_3_2__1__Impl : ( ( rule__KPolyline__JunctionPointRenderingAssignment_3_2_1 ) ) ;
     public final void rule__KPolyline__Group_3_2__1__Impl() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/kgraph/text/ui/contentassist/antlr/internal/InternalKGraph.g:11467:1: ( ( ( rule__KPolyline__JointPointRenderingAssignment_3_2_1 ) ) )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/kgraph/text/ui/contentassist/antlr/internal/InternalKGraph.g:11468:1: ( ( rule__KPolyline__JointPointRenderingAssignment_3_2_1 ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/kgraph/text/ui/contentassist/antlr/internal/InternalKGraph.g:11467:1: ( ( ( rule__KPolyline__JunctionPointRenderingAssignment_3_2_1 ) ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/kgraph/text/ui/contentassist/antlr/internal/InternalKGraph.g:11468:1: ( ( rule__KPolyline__JunctionPointRenderingAssignment_3_2_1 ) )
             {
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/kgraph/text/ui/contentassist/antlr/internal/InternalKGraph.g:11468:1: ( ( rule__KPolyline__JointPointRenderingAssignment_3_2_1 ) )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/kgraph/text/ui/contentassist/antlr/internal/InternalKGraph.g:11469:1: ( rule__KPolyline__JointPointRenderingAssignment_3_2_1 )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/kgraph/text/ui/contentassist/antlr/internal/InternalKGraph.g:11468:1: ( ( rule__KPolyline__JunctionPointRenderingAssignment_3_2_1 ) )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/kgraph/text/ui/contentassist/antlr/internal/InternalKGraph.g:11469:1: ( rule__KPolyline__JunctionPointRenderingAssignment_3_2_1 )
             {
-             before(grammarAccess.getKPolylineAccess().getJointPointRenderingAssignment_3_2_1()); 
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/kgraph/text/ui/contentassist/antlr/internal/InternalKGraph.g:11470:1: ( rule__KPolyline__JointPointRenderingAssignment_3_2_1 )
-            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/kgraph/text/ui/contentassist/antlr/internal/InternalKGraph.g:11470:2: rule__KPolyline__JointPointRenderingAssignment_3_2_1
+             before(grammarAccess.getKPolylineAccess().getJunctionPointRenderingAssignment_3_2_1()); 
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/kgraph/text/ui/contentassist/antlr/internal/InternalKGraph.g:11470:1: ( rule__KPolyline__JunctionPointRenderingAssignment_3_2_1 )
+            // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/kgraph/text/ui/contentassist/antlr/internal/InternalKGraph.g:11470:2: rule__KPolyline__JunctionPointRenderingAssignment_3_2_1
             {
-            pushFollow(FollowSets001.FOLLOW_rule__KPolyline__JointPointRenderingAssignment_3_2_1_in_rule__KPolyline__Group_3_2__1__Impl23348);
-            rule__KPolyline__JointPointRenderingAssignment_3_2_1();
+            pushFollow(FollowSets001.FOLLOW_rule__KPolyline__JunctionPointRenderingAssignment_3_2_1_in_rule__KPolyline__Group_3_2__1__Impl23348);
+            rule__KPolyline__JunctionPointRenderingAssignment_3_2_1();
 
             state._fsp--;
 
 
             }
 
-             after(grammarAccess.getKPolylineAccess().getJointPointRenderingAssignment_3_2_1()); 
+             after(grammarAccess.getKPolylineAccess().getJunctionPointRenderingAssignment_3_2_1()); 
 
             }
 
@@ -63925,9 +63925,9 @@ public class InternalKGraphParser extends AbstractInternalContentAssistParser {
     // $ANTLR end "rule__KPolyline__ChildPlacementAssignment_3_1_4"
 
 
-    // $ANTLR start "rule__KPolyline__JointPointRenderingAssignment_3_2_1"
-    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/kgraph/text/ui/contentassist/antlr/internal/InternalKGraph.g:23704:1: rule__KPolyline__JointPointRenderingAssignment_3_2_1 : ( ruleKRendering ) ;
-    public final void rule__KPolyline__JointPointRenderingAssignment_3_2_1() throws RecognitionException {
+    // $ANTLR start "rule__KPolyline__JunctionPointRenderingAssignment_3_2_1"
+    // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/kgraph/text/ui/contentassist/antlr/internal/InternalKGraph.g:23704:1: rule__KPolyline__JunctionPointRenderingAssignment_3_2_1 : ( ruleKRendering ) ;
+    public final void rule__KPolyline__JunctionPointRenderingAssignment_3_2_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
@@ -63938,13 +63938,13 @@ public class InternalKGraphParser extends AbstractInternalContentAssistParser {
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/kgraph/text/ui/contentassist/antlr/internal/InternalKGraph.g:23709:1: ( ruleKRendering )
             // ../de.cau.cs.kieler.core.kgraph.text.ui/src-gen/de/cau/cs/kieler/core/kgraph/text/ui/contentassist/antlr/internal/InternalKGraph.g:23710:1: ruleKRendering
             {
-             before(grammarAccess.getKPolylineAccess().getJointPointRenderingKRenderingParserRuleCall_3_2_1_0()); 
-            pushFollow(FollowSets001.FOLLOW_ruleKRendering_in_rule__KPolyline__JointPointRenderingAssignment_3_2_150498);
+             before(grammarAccess.getKPolylineAccess().getJunctionPointRenderingKRenderingParserRuleCall_3_2_1_0()); 
+            pushFollow(FollowSets001.FOLLOW_ruleKRendering_in_rule__KPolyline__JunctionPointRenderingAssignment_3_2_150498);
             ruleKRendering();
 
             state._fsp--;
 
-             after(grammarAccess.getKPolylineAccess().getJointPointRenderingKRenderingParserRuleCall_3_2_1_0()); 
+             after(grammarAccess.getKPolylineAccess().getJunctionPointRenderingKRenderingParserRuleCall_3_2_1_0()); 
 
             }
 
@@ -63963,7 +63963,7 @@ public class InternalKGraphParser extends AbstractInternalContentAssistParser {
         }
         return ;
     }
-    // $ANTLR end "rule__KPolyline__JointPointRenderingAssignment_3_2_1"
+    // $ANTLR end "rule__KPolyline__JunctionPointRenderingAssignment_3_2_1"
 
 
     // $ANTLR start "rule__KPolyline__ChildrenAssignment_3_3"
@@ -68795,7 +68795,7 @@ public class InternalKGraphParser extends AbstractInternalContentAssistParser {
         public static final BitSet FOLLOW_rule__KPolyline__Group_3_2__1_in_rule__KPolyline__Group_3_2__023262 = new BitSet(new long[]{0x0000000000000002L});
         public static final BitSet FOLLOW_83_in_rule__KPolyline__Group_3_2__0__Impl23290 = new BitSet(new long[]{0x0000000000000002L});
         public static final BitSet FOLLOW_rule__KPolyline__Group_3_2__1__Impl_in_rule__KPolyline__Group_3_2__123321 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_rule__KPolyline__JointPointRenderingAssignment_3_2_1_in_rule__KPolyline__Group_3_2__1__Impl23348 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rule__KPolyline__JunctionPointRenderingAssignment_3_2_1_in_rule__KPolyline__Group_3_2__1__Impl23348 = new BitSet(new long[]{0x0000000000000002L});
         public static final BitSet FOLLOW_rule__KSimplePolyline__Group__0__Impl_in_rule__KSimplePolyline__Group__023382 = new BitSet(new long[]{0x0000000000000000L,0x0000000000100000L});
         public static final BitSet FOLLOW_rule__KSimplePolyline__Group__1_in_rule__KSimplePolyline__Group__023385 = new BitSet(new long[]{0x0000000000000002L});
         public static final BitSet FOLLOW_rule__KSimplePolyline__Group__1__Impl_in_rule__KSimplePolyline__Group__123443 = new BitSet(new long[]{0x0000000000000002L});
@@ -69756,7 +69756,7 @@ public class InternalKGraphParser extends AbstractInternalContentAssistParser {
         public static final BitSet FOLLOW_ruleKAction_in_rule__KPolyline__ActionsAssignment_3_1_2_250405 = new BitSet(new long[]{0x0000000000000002L});
         public static final BitSet FOLLOW_ruleKPlacementData_in_rule__KPolyline__PlacementDataAssignment_3_1_350436 = new BitSet(new long[]{0x0000000000000002L});
         public static final BitSet FOLLOW_ruleKPlacement_in_rule__KPolyline__ChildPlacementAssignment_3_1_450467 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_ruleKRendering_in_rule__KPolyline__JointPointRenderingAssignment_3_2_150498 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleKRendering_in_rule__KPolyline__JunctionPointRenderingAssignment_3_2_150498 = new BitSet(new long[]{0x0000000000000002L});
         public static final BitSet FOLLOW_ruleKRendering_in_rule__KPolyline__ChildrenAssignment_3_350529 = new BitSet(new long[]{0x0000000000000002L});
         public static final BitSet FOLLOW_ruleFloat_in_rule__KRoundedBendsPolyline__BendRadiusAssignment_2_150560 = new BitSet(new long[]{0x0000000000000002L});
         public static final BitSet FOLLOW_ruleQualifiedID_in_rule__KStyle__ModifierIdAssignment_1_150591 = new BitSet(new long[]{0x0000000000000002L});

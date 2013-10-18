@@ -1263,7 +1263,7 @@ public abstract class AbstractKGraphSemanticSequencer extends AbstractDelegating
 	 *             actions+=KAction* 
 	 *             placementData=KPlacementData? 
 	 *             childPlacement=KPlacement? 
-	 *             jointPointRendering=KRendering? 
+	 *             junctionPointRendering=KRendering? 
 	 *             children+=KRendering*
 	 *         )?
 	 *     )
@@ -1284,7 +1284,7 @@ public abstract class AbstractKGraphSemanticSequencer extends AbstractDelegating
 	 *             actions+=KAction* 
 	 *             placementData=KPlacementData? 
 	 *             childPlacement=KPlacement? 
-	 *             jointPointRendering=KRendering? 
+	 *             junctionPointRendering=KRendering? 
 	 *             children+=KRendering*
 	 *         )?
 	 *     )
@@ -1306,7 +1306,7 @@ public abstract class AbstractKGraphSemanticSequencer extends AbstractDelegating
 	 *             actions+=KAction* 
 	 *             placementData=KPlacementData? 
 	 *             childPlacement=KPlacement? 
-	 *             jointPointRendering=KRendering? 
+	 *             junctionPointRendering=KRendering? 
 	 *             children+=KRendering*
 	 *         )?
 	 *     )
@@ -1327,7 +1327,7 @@ public abstract class AbstractKGraphSemanticSequencer extends AbstractDelegating
 	 *             actions+=KAction* 
 	 *             placementData=KPlacementData? 
 	 *             childPlacement=KPlacement? 
-	 *             jointPointRendering=KRendering? 
+	 *             junctionPointRendering=KRendering? 
 	 *             children+=KRendering*
 	 *         )?
 	 *     )

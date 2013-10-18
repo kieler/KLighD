@@ -2023,8 +2023,8 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 		private final RuleCall cChildPlacementKPlacementParserRuleCall_3_1_4_0 = (RuleCall)cChildPlacementAssignment_3_1_4.eContents().get(0);
 		private final Group cGroup_3_2 = (Group)cGroup_3.eContents().get(2);
 		private final Keyword cJunctionKeyword_3_2_0 = (Keyword)cGroup_3_2.eContents().get(0);
-		private final Assignment cJointPointRenderingAssignment_3_2_1 = (Assignment)cGroup_3_2.eContents().get(1);
-		private final RuleCall cJointPointRenderingKRenderingParserRuleCall_3_2_1_0 = (RuleCall)cJointPointRenderingAssignment_3_2_1.eContents().get(0);
+		private final Assignment cJunctionPointRenderingAssignment_3_2_1 = (Assignment)cGroup_3_2.eContents().get(1);
+		private final RuleCall cJunctionPointRenderingKRenderingParserRuleCall_3_2_1_0 = (RuleCall)cJunctionPointRenderingAssignment_3_2_1.eContents().get(0);
 		private final Assignment cChildrenAssignment_3_3 = (Assignment)cGroup_3.eContents().get(3);
 		private final RuleCall cChildrenKRenderingParserRuleCall_3_3_0 = (RuleCall)cChildrenAssignment_3_3.eContents().get(0);
 		private final Keyword cRightCurlyBracketKeyword_3_4 = (Keyword)cGroup_3.eContents().get(4);
@@ -2033,13 +2033,13 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 		//	(KSimplePolyline | KPolygon | KRoundedBendsPolyline | KSpline) id=QualifiedID? ("["
 		//	persistentEntries+=PersistentEntry* "]")? ("{" (("points" ":" (points+=KPosition (";" points+=KPosition)*)?)? &
 		//	("styles" ":" styles+=KStyle*)? & ("actions" ":" actions+=KAction*)? & placementData=KPlacementData? &
-		//	childPlacement=KPlacement?) ("junction" jointPointRendering=KRendering)? children+=KRendering* "}")?;
+		//	childPlacement=KPlacement?) ("junction" junctionPointRendering=KRendering)? children+=KRendering* "}")?;
 		public ParserRule getRule() { return rule; }
 
 		//(KSimplePolyline | KPolygon | KRoundedBendsPolyline | KSpline) id=QualifiedID? ("[" persistentEntries+=PersistentEntry*
 		//"]")? ("{" (("points" ":" (points+=KPosition (";" points+=KPosition)*)?)? & ("styles" ":" styles+=KStyle*)? &
 		//("actions" ":" actions+=KAction*)? & placementData=KPlacementData? & childPlacement=KPlacement?) ("junction"
-		//jointPointRendering=KRendering)? children+=KRendering* "}")?
+		//junctionPointRendering=KRendering)? children+=KRendering* "}")?
 		public Group getGroup() { return cGroup; }
 
 		//KSimplePolyline | KPolygon | KRoundedBendsPolyline | KSpline
@@ -2080,7 +2080,7 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 
 		//("{" (("points" ":" (points+=KPosition (";" points+=KPosition)*)?)? & ("styles" ":" styles+=KStyle*)? & ("actions" ":"
 		//actions+=KAction*)? & placementData=KPlacementData? & childPlacement=KPlacement?) ("junction"
-		//jointPointRendering=KRendering)? children+=KRendering* "}")?
+		//junctionPointRendering=KRendering)? children+=KRendering* "}")?
 		public Group getGroup_3() { return cGroup_3; }
 
 		//"{"
@@ -2162,17 +2162,17 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 		//KPlacement
 		public RuleCall getChildPlacementKPlacementParserRuleCall_3_1_4_0() { return cChildPlacementKPlacementParserRuleCall_3_1_4_0; }
 
-		//("junction" jointPointRendering=KRendering)?
+		//("junction" junctionPointRendering=KRendering)?
 		public Group getGroup_3_2() { return cGroup_3_2; }
 
 		//"junction"
 		public Keyword getJunctionKeyword_3_2_0() { return cJunctionKeyword_3_2_0; }
 
-		//jointPointRendering=KRendering
-		public Assignment getJointPointRenderingAssignment_3_2_1() { return cJointPointRenderingAssignment_3_2_1; }
+		//junctionPointRendering=KRendering
+		public Assignment getJunctionPointRenderingAssignment_3_2_1() { return cJunctionPointRenderingAssignment_3_2_1; }
 
 		//KRendering
-		public RuleCall getJointPointRenderingKRenderingParserRuleCall_3_2_1_0() { return cJointPointRenderingKRenderingParserRuleCall_3_2_1_0; }
+		public RuleCall getJunctionPointRenderingKRenderingParserRuleCall_3_2_1_0() { return cJunctionPointRenderingKRenderingParserRuleCall_3_2_1_0; }
 
 		//children+=KRendering*
 		public Assignment getChildrenAssignment_3_3() { return cChildrenAssignment_3_3; }
@@ -5210,7 +5210,7 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	//	(KSimplePolyline | KPolygon | KRoundedBendsPolyline | KSpline) id=QualifiedID? ("["
 	//	persistentEntries+=PersistentEntry* "]")? ("{" (("points" ":" (points+=KPosition (";" points+=KPosition)*)?)? &
 	//	("styles" ":" styles+=KStyle*)? & ("actions" ":" actions+=KAction*)? & placementData=KPlacementData? &
-	//	childPlacement=KPlacement?) ("junction" jointPointRendering=KRendering)? children+=KRendering* "}")?;
+	//	childPlacement=KPlacement?) ("junction" junctionPointRendering=KRendering)? children+=KRendering* "}")?;
 	public KPolylineElements getKPolylineAccess() {
 		return (pKPolyline != null) ? pKPolyline : (pKPolyline = new KPolylineElements());
 	}

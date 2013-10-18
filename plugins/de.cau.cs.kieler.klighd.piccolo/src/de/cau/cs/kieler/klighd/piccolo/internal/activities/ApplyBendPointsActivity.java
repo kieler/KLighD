@@ -65,6 +65,10 @@ public class ApplyBendPointsActivity extends PInterpolatingActivity implements
     public void activityStarted() {
         prepareBendTransition();
         edgeNode.setVisible(true);
+        
+        if (edgeNode.getRenderingController() != null) {
+            edgeNode.getRenderingController().clearJunctionPoints();
+        }
         super.activityStarted();
     }
 
@@ -102,6 +106,10 @@ public class ApplyBendPointsActivity extends PInterpolatingActivity implements
      */
     public void activityFinished() {
         edgeNode.setBendPoints(targetBends);
+
+        if (edgeNode.getRenderingController() != null) {
+            edgeNode.getRenderingController().handleJunctionPoints(edgeNode);
+        }
         if (!stylesModified) {
             stylesModified = true;
             if (edgeNode.getRenderingController() != null) {

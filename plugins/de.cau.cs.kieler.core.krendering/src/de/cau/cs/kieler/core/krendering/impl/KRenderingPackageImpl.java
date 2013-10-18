@@ -715,7 +715,7 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
      * <!-- end-user-doc -->
      * @generated
      */
-    public EReference getKPolyline_JointPointRendering() {
+    public EReference getKPolyline_JunctionPointRendering() {
         return (EReference)kPolylineEClass.getEStructuralFeatures().get(1);
     }
 
@@ -1999,7 +1999,7 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
 
         kPolylineEClass = createEClass(KPOLYLINE);
         createEReference(kPolylineEClass, KPOLYLINE__POINTS);
-        createEReference(kPolylineEClass, KPOLYLINE__JOINT_POINT_RENDERING);
+        createEReference(kPolylineEClass, KPOLYLINE__JUNCTION_POINT_RENDERING);
 
         kPolygonEClass = createEClass(KPOLYGON);
 
@@ -2288,7 +2288,7 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
 
         initEClass(kPolylineEClass, KPolyline.class, "KPolyline", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         initEReference(getKPolyline_Points(), this.getKPosition(), null, "points", null, 0, -1, KPolyline.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        initEReference(getKPolyline_JointPointRendering(), this.getKRendering(), null, "jointPointRendering", null, 0, 1, KPolyline.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEReference(getKPolyline_JunctionPointRendering(), this.getKRendering(), null, "junctionPointRendering", null, 0, 1, KPolyline.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         initEClass(kPolygonEClass, KPolygon.class, "KPolygon", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
@@ -2436,9 +2436,9 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
         initEAttribute(getKAction_Trigger(), this.getTrigger(), "trigger", null, 1, 1, KAction.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         initEClass(kPointPlacementDataEClass, KPointPlacementData.class, "KPointPlacementData", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-        initEReference(getKPointPlacementData_ReferencePoint(), this.getKPosition(), null, "referencePoint", null, 1, 1, KPointPlacementData.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        initEAttribute(getKPointPlacementData_HorizontalAlignment(), this.getHorizontalAlignment(), "horizontalAlignment", null, 1, 1, KPointPlacementData.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        initEAttribute(getKPointPlacementData_VerticalAlignment(), this.getVerticalAlignment(), "verticalAlignment", null, 1, 1, KPointPlacementData.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEReference(getKPointPlacementData_ReferencePoint(), this.getKPosition(), null, "referencePoint", null, 0, 1, KPointPlacementData.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEAttribute(getKPointPlacementData_HorizontalAlignment(), this.getHorizontalAlignment(), "horizontalAlignment", "LEFT", 0, 1, KPointPlacementData.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEAttribute(getKPointPlacementData_VerticalAlignment(), this.getVerticalAlignment(), "verticalAlignment", "TOP", 0, 1, KPointPlacementData.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEAttribute(getKPointPlacementData_HorizontalMargin(), ecorePackage.getEFloat(), "horizontalMargin", null, 0, 1, KPointPlacementData.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEAttribute(getKPointPlacementData_VerticalMargin(), ecorePackage.getEFloat(), "verticalMargin", null, 0, 1, KPointPlacementData.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEAttribute(getKPointPlacementData_MinWidth(), ecorePackage.getEFloat(), "minWidth", null, 0, 1, KPointPlacementData.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);

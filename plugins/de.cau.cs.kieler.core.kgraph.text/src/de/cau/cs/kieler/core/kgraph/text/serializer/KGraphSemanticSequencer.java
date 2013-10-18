@@ -582,9 +582,9 @@ public class KGraphSemanticSequencer extends AbstractKGraphSemanticSequencer {
                     polyline.getChildPlacement());
         }
 
-        if (polyline.eIsSet(KRENDERING_PKG.getKPolyline_JointPointRendering())) {
-            feeder.accept(polylineAccess.getJointPointRenderingKRenderingParserRuleCall_3_2_1_0(),
-                    polyline.getJointPointRendering());
+        if (polyline.eIsSet(KRENDERING_PKG.getKPolyline_JunctionPointRendering())) {
+            feeder.accept(polylineAccess.getJunctionPointRenderingKRenderingParserRuleCall_3_2_1_0(),
+                    polyline.getJunctionPointRendering());
         }
 
         i = 0;
