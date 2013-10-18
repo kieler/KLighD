@@ -198,7 +198,8 @@ public class KEdgeRenderingController extends AbstractKGERenderingController<KEd
      */
     public void clearJunctionPoints() {
         for (PNode node : junctionPointNodes) {
-            node.getParent().removeChild(node);
+            node.removeFromParent();
+            removePNodeController((KRendering) node.getAttribute(ATTR_KRENDERING));
         }
         junctionPointNodes.clear();
     }

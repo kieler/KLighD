@@ -1086,7 +1086,7 @@ public abstract class AbstractKGERenderingController
      * @param key
      *            the key
      */
-    private <R> void removePNodeController(final KRendering key) {
+    protected void removePNodeController(final KRendering key) {
         this.pnodeControllers.remove(key);
     }
     
