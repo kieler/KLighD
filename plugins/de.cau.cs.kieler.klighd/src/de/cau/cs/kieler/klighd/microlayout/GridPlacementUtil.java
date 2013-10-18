@@ -69,81 +69,6 @@ public final class GridPlacementUtil {
 
 
     /**
-     * A data holder class for the spacing of the grid calculated during the size estimation. this
-     * class is intended to be used in the above defined IProperty ESTIMATED_GRID_DATA to be
-     * evaluated during the actual evaluation of parentBounds to place childElements
-     * 
-     * @author akoc
-     * @author chsch
-     */
-    public static class GridSizeAssignment {
-        private float[] calculatedColumnWidths;
-        private float[] calculatedRowHeights;
-
-        /**
-         * Copy constructor.
-         * 
-         * @param other
-         *            the copied one
-         */
-        public GridSizeAssignment(final GridSizeAssignment other) {
-            this.calculatedColumnWidths =
-                    other == null ? null : other.calculatedColumnWidths.clone();
-            this.calculatedRowHeights =
-                    other == null ? null : other.calculatedRowHeights.clone();
-        }
-
-        /**
-         * Constructor. Sets the attributes according to given parameters
-         * 
-         * @param cols
-         *            the column widths calculated during the size estimation
-         * @param rows
-         *            the row heights calculated during the size estimation
-         */
-        GridSizeAssignment(final float[] cols, final float[] rows) {
-            this.calculatedColumnWidths = cols;
-            this.calculatedRowHeights = rows;
-        }
-
-        /**
-         * Setter.
-         *  
-         * @param cols
-         *            the column widths calculated during the size estimation
-         * @param rows
-         *            the row heights calculated during the size estimation
-         */
-        public void setCalculatedSizes(final float[] cols, final float[] rows) {
-            this.calculatedColumnWidths = cols;
-            this.calculatedRowHeights = rows;
-        }
-        /**
-         * Getter.
-         * 
-         * @return the calculatedColumnWidths
-         */
-        public float[] getCalculatedColumnWidths() {
-            return calculatedColumnWidths;
-        }
-
-        /**
-         * Getter.
-         * 
-         * @return the calculatedRowHeights
-         */
-        public float[] getCalculatedRowHeights() {
-            return calculatedRowHeights;
-        }
-
-        @Override
-        public String toString() {
-            return "(Widths = " + Arrays.toString(this.calculatedColumnWidths) + ", Height = "
-                    + Arrays.toString(this.calculatedRowHeights) + ")";
-        }
-    }
-
-    /**
      * Returns the bounds for a gridPlacement data in given parent bounds.
      * 
      * @param gridPlacement
@@ -159,46 +84,164 @@ public final class GridPlacementUtil {
         if (parentBounds.isEmpty()) {
             return null;
         }
-        final GridPlacer placer = getGridPlacementObject(gridPlacement, children);
+        final GridPlacer placer = new GridPlacer(gridPlacement, children);
         return placer.evaluate(parentBounds);
     }
 
 
     /**
-     * A helper class to calculate bounds for elements placed on a grid.
+     * A helper class to calculate bounds for the elements placed in a grid.
      */
     public static class GridPlacer {
 
         private KRendering parent;
-        /** the associated grid placement data. */
-        private List<KRendering> children;
-        /** the number of columns. */
-        private int numColumns;
-        /** the number of rows. */
-        private int numRows;
-        
-        private boolean[] flexibleCols;
-        private boolean[] flexibleRows;
-        
-        private int countFlexibleCols = 0;
-        private int countFlexibleRows = 0;
-        
-        /** the column widths. */
-        private float[] columnMaxMinWidth;
-        /** the row heights. */
-        private float[] rowMaxMinHeight;
-
-        private float[] calculatedRowHeight;
-
-        private float[] calculatedColumnWidth;
-        /** the total width hinted. */
-        private float minTotalWidth = 0;
-        /** the total height hinted. */
-        private float minTotalHeight = 0;
         
         private KPosition topLeft = null;
         private KPosition bottomRight = null;
         
+        /** the associated grid placement data. */
+        private List<KRendering> children;
+        
+        /** the number of columns. */
+        private int numColumns;
+        
+        /** the number of rows. */
+        private int numRows;
+
+        /** the number of flexible columns (those additional space can be assigned). */
+        private int numFlexibleCols = 0;
+
+        /** the number of flexible columns (those additional space can be assigned). */
+        private int numFlexibleRows = 0;
+        
+        /** the distribution of flexible columns (those additional space can be assigned). */
+        private boolean[] flexibleCols;
+        
+        /** the distribution of flexible rows (those additional space can be assigned). */
+        private boolean[] flexibleRows;
+        
+        /** the minimal width required by the whole grid. */
+        private float minOverallWidth = 0;
+        
+        /** the minimal height required by the whole grid. */
+        private float minOverallHeight = 0;
+        
+        /** the minimal widths of the particular columns. */
+        private float[] columnMaxMinWidth;
+
+        /** the minimal heights of the particular rows. */
+        private float[] rowMaxMinHeight;
+
+        /** the finally calculated widths of the particular columns. */
+        private float[] calculatedRowHeight;
+
+        /** the finally calculated heights of the particular rows. */
+        private float[] calculatedColumnWidth;
+        
+        /**
+         * Constructor.
+             *  
+         * @param gridPlacement
+         *            the grid data
+         * @param children
+         *            the children to be placed inside the grid with their placementData
+         */
+        public GridPlacer(final KGridPlacement gridPlacement, final List<KRendering> children) {
+            this.parent = (KRendering) gridPlacement.eContainer();
+            this.children = children;
+        
+            if (children.size() == 0) {
+                // no elements to place
+                return;
+            }
+        
+            // the following prepares the placer
+        
+            // determine the required number of columns and rows
+            int setColumns = gridPlacement.getNumColumns();
+            this.topLeft = gridPlacement.getTopLeft();
+            this.bottomRight = gridPlacement.getBottomRight();
+            this.numColumns = setColumns == -1 ? children.size() : setColumns < 1 ? 1 : gridPlacement
+                    .getNumColumns();
+            this.numRows = (children.size() - 1) / this.numColumns + 1;
+            
+            
+            this.flexibleCols = new boolean[this.numColumns];
+            this.flexibleRows = new boolean[this.numRows];
+            
+            final GridSizeAssignment spacingProperty = this.parent.getProperty(ESTIMATED_GRID_DATA);
+            
+            final boolean gridSizingAvailable = spacingProperty != null;
+            
+            final GridSizeAssignment estimatedSpacing =
+                    !gridSizingAvailable ? null : new GridSizeAssignment(spacingProperty);
+            
+            if (gridSizingAvailable) {
+                //take the data already calculated during the size estimation
+                this.calculatedColumnWidth = estimatedSpacing.getCalculatedColumnWidths().clone();
+                this.calculatedRowHeight = estimatedSpacing.getCalculatedRowHeights().clone();
+            }
+            if (this.columnMaxMinWidth == null) {
+                //start from scratch
+                this.columnMaxMinWidth = new float[this.numColumns];
+                Arrays.fill(this.columnMaxMinWidth, 0);
+            }
+            if (this.rowMaxMinHeight == null) {
+                this.rowMaxMinHeight = new float[this.numRows];
+                Arrays.fill(this.rowMaxMinHeight, 0);
+            }
+            
+            Arrays.fill(this.flexibleCols, true);
+            Arrays.fill(this.flexibleRows, true);
+        
+            for (int i = 0; i < children.size(); i++) {
+                
+                final KRendering r = children.get(i);
+                final int column = i % this.numColumns;
+                final int row = i / this.numColumns;
+                
+                KGridPlacementData gpd = asGridPlacementData(getPlacementData(r));
+                if (gpd == null) {
+                    //no grid placement data present, create dummy to prevent null pointer exceptions
+                    gpd = KRenderingFactory.eINSTANCE.createKGridPlacementData();
+                }
+                
+                //determine size of the rendering to be able to size the colum/row accordingly
+                final Bounds childMinSize;
+                if (gridSizingAvailable) {
+                    childMinSize = Bounds.of(estimatedSpacing.calculatedColumnWidths[column],
+                            estimatedSpacing.calculatedRowHeights[row]);
+                } else {
+                    childMinSize = estimateSize(r, new Bounds(0, 0));
+        
+                    PlacementUtil.inverselyApplyBoundingBoxKPositions(
+                            childMinSize, gpd.getTopLeft(), gpd.getBottomRight());
+                }
+                
+                this.flexibleCols[column] &= gpd.getFlexibleWidth();
+                this.flexibleRows[row] &= gpd.getFlexibleHeight();
+        
+                // determine the maximum of the minimum column widths and row heights
+                // e.g. how big must a column be to fit all the minSizes
+                
+                // size for this element is size of child elements or minSize
+                this.columnMaxMinWidth[column] = KielerMath.maxf(
+                        gpd.getMinCellWidth(), childMinSize.width, this.columnMaxMinWidth[column]);
+                this.rowMaxMinHeight[row] = KielerMath.maxf(
+                        gpd.getMinCellHeight(), childMinSize.height, this.rowMaxMinHeight[row]);
+            }
+        
+            // calculate the total width and height
+            for (int i = 0; i < this.numColumns; i++) {
+                this.minOverallWidth += this.columnMaxMinWidth[i];
+                this.numFlexibleCols += this.flexibleCols[i] ? 1 : 0;
+            }
+            for (int i = 0; i < this.numRows; i++) {
+                this.minOverallHeight += this.rowMaxMinHeight[i];
+                this.numFlexibleRows += this.flexibleRows[i] ? 1 : 0;
+            }
+        }
+
         private static final float TOLERANCE = 0.1f;
 
         /**
@@ -270,21 +313,21 @@ public final class GridPlacementUtil {
                     final boolean[] tempFlexibleRows = new boolean[flexibleRows.length];
                     tempFlexibleRows[childAreaPosition.getSecond()] = true;
                     
-                    this.calculatedColumnWidth = computeCellSizes(gridBounds.width, minTotalWidth,
+                    this.calculatedColumnWidth = computeCellSizes(gridBounds.width, minOverallWidth,
                             columnMaxMinWidth, 1, tempFlexibleCols);
                     
-                    this.calculatedRowHeight = computeCellSizes(gridBounds.height, minTotalHeight,
+                    this.calculatedRowHeight = computeCellSizes(gridBounds.height, minOverallHeight,
                             rowMaxMinHeight, 1, tempFlexibleRows);
                 }
                 
             } else {
                 // we have to calculate the data for the single rows / cols
 
-                this.calculatedColumnWidth = computeCellSizes(gridBounds.width, minTotalWidth,
-                        columnMaxMinWidth, countFlexibleCols, flexibleCols);
+                this.calculatedColumnWidth = computeCellSizes(gridBounds.width, minOverallWidth,
+                        columnMaxMinWidth, numFlexibleCols, flexibleCols);
                 
-                this.calculatedRowHeight = computeCellSizes(gridBounds.height, minTotalHeight,
-                        rowMaxMinHeight, countFlexibleRows, flexibleRows);
+                this.calculatedRowHeight = computeCellSizes(gridBounds.height, minOverallHeight,
+                        rowMaxMinHeight, numFlexibleRows, flexibleRows);
             }
             
             // variables that are later on used to define the bounds of single objects
@@ -366,115 +409,6 @@ public final class GridPlacementUtil {
             }
             return result;
         }
-    }
-
-
-    /**
-     * returns a gridPlacer to calculate bounds of single elements inside the grid.
-     * 
-     * @param gridPlacement
-     *            the grid data
-     * @param children
-     *            the children to be placed inside the grid with their placementData
-     * @return the gridPlacer
-     */
-    public static GridPlacer getGridPlacementObject(final KGridPlacement gridPlacement,
-            final List<KRendering> children) {
-        GridPlacer placer = new GridPlacer();
-        placer.parent = (KRendering) gridPlacement.eContainer();
-        placer.children = children;
-
-        if (children.size() == 0) {
-            // no elements to place
-            return placer;
-        }
-
-        // the following prepares the placer
-
-        // determine the required number of columns and rows
-        int setColumns = gridPlacement.getNumColumns();
-        placer.topLeft = gridPlacement.getTopLeft();
-        placer.bottomRight = gridPlacement.getBottomRight();
-        placer.numColumns = setColumns == -1 ? children.size() : setColumns < 1 ? 1 : gridPlacement
-                .getNumColumns();
-        placer.numRows = (children.size() - 1) / placer.numColumns + 1;
-        
-        
-        placer.flexibleCols = new boolean[placer.numColumns];
-        placer.flexibleRows = new boolean[placer.numRows];
-        
-        final GridSizeAssignment spacingProperty = placer.parent.getProperty(ESTIMATED_GRID_DATA);
-        
-        final boolean gridSizingAvailable = spacingProperty != null;
-        
-        final GridSizeAssignment estimatedSpacing =
-                !gridSizingAvailable ? null : new GridSizeAssignment(spacingProperty);
-        
-        if (gridSizingAvailable) {
-            //take the data already calculated during the size estimation
-            placer.calculatedColumnWidth = estimatedSpacing.getCalculatedColumnWidths().clone();
-            placer.calculatedRowHeight = estimatedSpacing.getCalculatedRowHeights().clone();
-        }
-        if (placer.columnMaxMinWidth == null) {
-            //start from scratch
-            placer.columnMaxMinWidth = new float[placer.numColumns];
-            Arrays.fill(placer.columnMaxMinWidth, 0);
-        }
-        if (placer.rowMaxMinHeight == null) {
-            placer.rowMaxMinHeight = new float[placer.numRows];
-            Arrays.fill(placer.rowMaxMinHeight, 0);
-        }
-        
-        Arrays.fill(placer.flexibleCols, true);
-        Arrays.fill(placer.flexibleRows, true);
-
-        for (int i = 0; i < children.size(); i++) {
-            
-            final KRendering r = children.get(i);
-            final int column = i % placer.numColumns;
-            final int row = i / placer.numColumns;
-            
-            KGridPlacementData gpd = asGridPlacementData(getPlacementData(r));
-            if (gpd == null) {
-                //no grid placement data present, create dummy to prevent null pointer exceptions
-                gpd = KRenderingFactory.eINSTANCE.createKGridPlacementData();
-            }
-            
-            //determine size of the rendering to be able to size the colum/row accordingly
-            final Bounds childMinSize;
-            if (gridSizingAvailable) {
-                childMinSize = Bounds.of(estimatedSpacing.calculatedColumnWidths[column],
-                        estimatedSpacing.calculatedRowHeights[row]);
-            } else {
-                childMinSize = estimateSize(r, new Bounds(0, 0));
-
-                PlacementUtil.inverselyApplyBoundingBoxKPositions(
-                        childMinSize, gpd.getTopLeft(), gpd.getBottomRight());
-            }
-            
-            placer.flexibleCols[column] &= gpd.getFlexibleWidth();
-            placer.flexibleRows[row] &= gpd.getFlexibleHeight();
-
-            // determine the maximum of the minimum column widths and row heights
-            // e.g. how big must a column be to fit all the minSizes
-            
-            // size for this element is size of child elements or minSize
-            placer.columnMaxMinWidth[column] = KielerMath.maxf(
-                    gpd.getMinCellWidth(), childMinSize.width, placer.columnMaxMinWidth[column]);
-            placer.rowMaxMinHeight[row] = KielerMath.maxf(
-                    gpd.getMinCellHeight(), childMinSize.height, placer.rowMaxMinHeight[row]);
-        }
-
-        // calculate the total width and height
-        for (int i = 0; i < placer.numColumns; i++) {
-            placer.minTotalWidth += placer.columnMaxMinWidth[i];
-            placer.countFlexibleCols += placer.flexibleCols[i] ? 1 : 0;
-        }
-        for (int i = 0; i < placer.numRows; i++) {
-            placer.minTotalHeight += placer.rowMaxMinHeight[i];
-            placer.countFlexibleRows += placer.flexibleRows[i] ? 1 : 0;
-        }
-        return placer;
     }
 
 
@@ -603,5 +537,81 @@ public final class GridPlacementUtil {
                 placement.getBottomRight());
         
         return childBounds;
+    }
+
+
+    /**
+     * A data holder class for the spacing of the grid calculated during the size estimation. this
+     * class is intended to be used in the above defined IProperty ESTIMATED_GRID_DATA to be
+     * evaluated during the actual evaluation of parentBounds to place childElements
+     * 
+     * @author akoc
+     * @author chsch
+     */
+    public static class GridSizeAssignment {
+        private float[] calculatedColumnWidths;
+        private float[] calculatedRowHeights;
+    
+        /**
+         * Copy constructor.
+         * 
+         * @param other
+         *            the copied one
+         */
+        public GridSizeAssignment(final GridSizeAssignment other) {
+            this.calculatedColumnWidths =
+                    other == null ? null : other.calculatedColumnWidths.clone();
+            this.calculatedRowHeights =
+                    other == null ? null : other.calculatedRowHeights.clone();
+        }
+    
+        /**
+         * Constructor. Sets the attributes according to given parameters
+         * 
+         * @param cols
+         *            the column widths calculated during the size estimation
+         * @param rows
+         *            the row heights calculated during the size estimation
+         */
+        GridSizeAssignment(final float[] cols, final float[] rows) {
+            this.calculatedColumnWidths = cols;
+            this.calculatedRowHeights = rows;
+        }
+    
+        /**
+         * Setter.
+         *  
+         * @param cols
+         *            the column widths calculated during the size estimation
+         * @param rows
+         *            the row heights calculated during the size estimation
+         */
+        public void setCalculatedSizes(final float[] cols, final float[] rows) {
+            this.calculatedColumnWidths = cols;
+            this.calculatedRowHeights = rows;
+        }
+        /**
+         * Getter.
+         * 
+         * @return the calculatedColumnWidths
+         */
+        public float[] getCalculatedColumnWidths() {
+            return calculatedColumnWidths;
+        }
+    
+        /**
+         * Getter.
+         * 
+         * @return the calculatedRowHeights
+         */
+        public float[] getCalculatedRowHeights() {
+            return calculatedRowHeights;
+        }
+    
+        @Override
+        public String toString() {
+            return "(Widths = " + Arrays.toString(this.calculatedColumnWidths) + ", Height = "
+                    + Arrays.toString(this.calculatedRowHeights) + ")";
+        }
     }
 }
