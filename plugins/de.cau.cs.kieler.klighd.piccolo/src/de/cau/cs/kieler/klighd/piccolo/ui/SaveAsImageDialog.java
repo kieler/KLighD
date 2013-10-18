@@ -42,8 +42,8 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Scale;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.swt.widgets.Slider;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.dialogs.SaveAsDialog;
 
@@ -97,7 +97,7 @@ public class SaveAsImageDialog extends Dialog {
     /** the message label. */
     private Label messageLabel;
 
-    private Slider scaleSlider;
+    private Scale scaleSlider;
 
     /** the selected path. */
     private IPath path;
@@ -266,11 +266,10 @@ public class SaveAsImageDialog extends Dialog {
         label = new Label(composite, SWT.NONE);
         label.setText(Messages.SaveAsImageDialog_scale_factor);
 
-        scaleSlider = new Slider(composite, SWT.NONE);
+        scaleSlider = new Scale(composite, SWT.HORIZONTAL);
         scaleSlider.setToolTipText("Scale factor"); //$NON-NLS-1$
         scaleSlider.setMinimum(1);
         scaleSlider.setMaximum(IMAGE_FORMAT_SLIDER_MAX);
-        scaleSlider.setThumb(1);
         scaleSlider.setSelection(preferenceStore.getInt(PREFERENCE_SCALE_FACTOR));
 
         gridData = new GridData(SWT.LEFT, SWT.CENTER, true, false);
@@ -284,7 +283,7 @@ public class SaveAsImageDialog extends Dialog {
 
         scaleSlider.addSelectionListener(new SelectionAdapter() {
             public void widgetSelected(final SelectionEvent e) {
-                Slider s = ((Slider) e.widget);
+                Scale s = ((Scale) e.widget);
                 int n = s.getSelection();
                 scaleVal.setText(String.valueOf(n));
                 composite.layout();
