@@ -69,7 +69,9 @@ public final class GridPlacementUtil {
 
 
     /**
-     * Returns the bounds for a gridPlacement data in given parent bounds.
+     * Returns the bounds for a gridPlacement data in given parent bounds.<br>
+     * <br>
+     * TODO: Improve doc wrt. returned empty bounds or <code>null</code> values!!
      * 
      * @param gridPlacement
      *            the definition of the parent gridPlacement defining the column number
@@ -82,7 +84,9 @@ public final class GridPlacementUtil {
     public static Bounds[] evaluateGridPlacement(final KGridPlacement gridPlacement,
             final List<KRendering> children, final Bounds parentBounds) {
         if (parentBounds.isEmpty()) {
-            return null;
+            Bounds[] result = new Bounds[children.size()];
+            Arrays.fill(result, Bounds.of(0, 0));
+            return result;
         }
         final GridPlacer placer = new GridPlacer(gridPlacement, children);
         return placer.evaluate(parentBounds);
