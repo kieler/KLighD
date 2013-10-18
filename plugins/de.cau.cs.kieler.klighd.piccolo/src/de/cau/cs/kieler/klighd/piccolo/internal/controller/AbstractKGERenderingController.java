@@ -713,17 +713,24 @@ public abstract class AbstractKGERenderingController
      */
     protected PNode handleDirectPlacementRendering(final KRendering rendering, final KVector position,
             final List<KStyle> styles, final PNode parent) {
-        Bounds ownBounds = PlacementUtil.estimateSize(rendering, new Bounds(0.0f, 0.0f));
+        Bounds preferredSize = PlacementUtil.estimateSize(rendering, new Bounds(0.0f, 0.0f));
         float x = (float) position.x;
         float y = (float) position.y;
-        float width = ownBounds.getWidth();
-        float height = ownBounds.getHeight();
+        float width = preferredSize.getWidth();
+        float height = preferredSize.getHeight();
 
         KPlacementData pcd = rendering.getPlacementData();
+        if (pcd == null && rendering instanceof KRenderingRef) {
+            KRendering ref = ((KRenderingRef) rendering).getRendering();
+            if (ref != null) {
+                pcd = ref.getPlacementData();
+            }
+        }
+        
         if (pcd instanceof KPointPlacementData) {
             KPointPlacementData ppd = (KPointPlacementData) pcd;
-            width = Math.max(ownBounds.getWidth() + ppd.getHorizontalMargin(), ppd.getMinWidth());
-            height = Math.max(ownBounds.getHeight() + ppd.getVerticalMargin(), ppd.getMinHeight());
+            width = Math.max(preferredSize.getWidth() + ppd.getHorizontalMargin(), ppd.getMinWidth());
+            height = Math.max(preferredSize.getHeight() + ppd.getVerticalMargin(), ppd.getMinHeight());
 
             switch (ppd.getHorizontalAlignment()) {
             case CENTER:
