@@ -93,8 +93,8 @@
         <details key="documentation" value="points that are visited by the polyline in order of definition"/>
       </eAnnotations>
     </eStructuralFeatures>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="jointPointRendering" eType="#//KRendering"
-        containment="true">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="junctionPointRendering"
+        eType="#//KRendering" containment="true">
       <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
         <details key="documentation" value="Optional rendering defining the look of join point figures that are attached to the diagram for each edge join point computed by the automatic (macro) layout.&#xA;Setting is evaluated for KEdge renderings only, ignored for simple polylines being part of a complex rendering."/>
       </eAnnotations>
@@ -579,20 +579,20 @@
     <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
       <details key="documentation" value="with this placement it is possible to mount dynamic sized objects at a single point using the defined alignment"/>
     </eAnnotations>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="referencePoint" lowerBound="1"
-        eType="#//KPosition" containment="true">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="referencePoint" eType="#//KPosition"
+        containment="true">
       <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
         <details key="documentation" value="the point within the parent to use as reference to place element"/>
       </eAnnotations>
     </eStructuralFeatures>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="horizontalAlignment" lowerBound="1"
-        eType="#//HorizontalAlignment">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="horizontalAlignment" eType="#//HorizontalAlignment"
+        defaultValueLiteral="LEFT">
       <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
         <details key="documentation" value="Horizontal alignment of the child w.r.t. to the reference point that is based on the parent's bounds."/>
       </eAnnotations>
     </eStructuralFeatures>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="verticalAlignment" lowerBound="1"
-        eType="#//VerticalAlignment">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="verticalAlignment" eType="#//VerticalAlignment"
+        defaultValueLiteral="TOP">
       <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
         <details key="documentation" value="Vertical alignment of the child w.r.t. to the reference point that is based on the parent's bounds."/>
       </eAnnotations>

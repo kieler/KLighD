@@ -3748,16 +3748,16 @@ ruleKPolyline returns [EObject current=null]
 (
 (
 		{ 
-	        newCompositeNode(grammarAccess.getKPolylineAccess().getJointPointRenderingKRenderingParserRuleCall_3_2_1_0()); 
+	        newCompositeNode(grammarAccess.getKPolylineAccess().getJunctionPointRenderingKRenderingParserRuleCall_3_2_1_0()); 
 	    }
-		lv_jointPointRendering_24_0=ruleKRendering		{
+		lv_junctionPointRendering_24_0=ruleKRendering		{
 	        if ($current==null) {
 	            $current = createModelElementForParent(grammarAccess.getKPolylineRule());
 	        }
        		set(
        			$current, 
-       			"jointPointRendering",
-        		lv_jointPointRendering_24_0, 
+       			"junctionPointRendering",
+        		lv_junctionPointRendering_24_0, 
         		"KRendering");
 	        afterParserOrEnumRuleCall();
 	    }

@@ -341,7 +341,7 @@ public class KGraphParser extends AbstractContentAssistParser {
 					put(grammarAccess.getKPolylineAccess().getActionsAssignment_3_1_2_2(), "rule__KPolyline__ActionsAssignment_3_1_2_2");
 					put(grammarAccess.getKPolylineAccess().getPlacementDataAssignment_3_1_3(), "rule__KPolyline__PlacementDataAssignment_3_1_3");
 					put(grammarAccess.getKPolylineAccess().getChildPlacementAssignment_3_1_4(), "rule__KPolyline__ChildPlacementAssignment_3_1_4");
-					put(grammarAccess.getKPolylineAccess().getJointPointRenderingAssignment_3_2_1(), "rule__KPolyline__JointPointRenderingAssignment_3_2_1");
+					put(grammarAccess.getKPolylineAccess().getJunctionPointRenderingAssignment_3_2_1(), "rule__KPolyline__JunctionPointRenderingAssignment_3_2_1");
 					put(grammarAccess.getKPolylineAccess().getChildrenAssignment_3_3(), "rule__KPolyline__ChildrenAssignment_3_3");
 					put(grammarAccess.getKRoundedBendsPolylineAccess().getBendRadiusAssignment_2_1(), "rule__KRoundedBendsPolyline__BendRadiusAssignment_2_1");
 					put(grammarAccess.getKStyleAccess().getModifierIdAssignment_1_1(), "rule__KStyle__ModifierIdAssignment_1_1");

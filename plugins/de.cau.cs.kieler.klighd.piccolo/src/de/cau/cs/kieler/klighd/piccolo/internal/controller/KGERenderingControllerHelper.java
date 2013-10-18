@@ -365,8 +365,7 @@ final class KGERenderingControllerHelper {
         if (line.getChildren().size() > 0) {
             List<KRendering> restChildren = Lists.newLinkedList();
             for (final KRendering rendering : line.getChildren()) {
-                if (PiccoloPlacementUtil.getDecoratorPlacementData(rendering) != null)
-                {
+                if (PiccoloPlacementUtil.getDecoratorPlacementData(rendering) != null) {
                     controller.handleDecoratorPlacementRendering(rendering, propagatedStyles, path);
                 } else {
                     restChildren.add(rendering);

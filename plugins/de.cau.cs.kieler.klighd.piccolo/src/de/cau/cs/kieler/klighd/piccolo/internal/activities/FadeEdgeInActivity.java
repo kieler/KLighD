@@ -63,6 +63,10 @@ public class FadeEdgeInActivity extends PInterpolatingActivity implements IStart
         edgeNode.setBendPoints(targetBends);
         edgeNode.setTransparency(0);
         edgeNode.setVisible(true);
+        
+        if (edgeNode.getRenderingController() != null) {
+            edgeNode.getRenderingController().clearJunctionPoints();
+        }
         super.activityStarted();
     }
     
@@ -82,6 +86,10 @@ public class FadeEdgeInActivity extends PInterpolatingActivity implements IStart
      */
     public void activityFinished() {
         edgeNode.setTransparency(1);
+        
+        if (edgeNode.getRenderingController() != null) {
+            edgeNode.getRenderingController().handleJunctionPoints(edgeNode);
+        }
         super.activityFinished();
     }
 }

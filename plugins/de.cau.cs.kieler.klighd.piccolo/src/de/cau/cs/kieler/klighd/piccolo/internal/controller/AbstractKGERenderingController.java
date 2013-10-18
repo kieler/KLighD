@@ -49,6 +49,7 @@ import de.cau.cs.kieler.core.krendering.KRenderingPackage;
 import de.cau.cs.kieler.core.krendering.KRenderingRef;
 import de.cau.cs.kieler.core.krendering.KRenderingUtil;
 import de.cau.cs.kieler.core.krendering.KStyle;
+import de.cau.cs.kieler.core.math.KVector;
 import de.cau.cs.kieler.core.properties.IProperty;
 import de.cau.cs.kieler.core.util.Pair;
 import de.cau.cs.kieler.kiml.klayoutdata.KLayoutData;
@@ -696,6 +697,71 @@ public abstract class AbstractKGERenderingController
         return controller.getNode();
     }
 
+    /**
+     * Creates the Piccolo node for a rendering inside a parent Piccolo node using a given direct
+     * position.
+     * 
+     * @param rendering
+     *            the rendering
+     * @param position
+     *            the direct position
+     * @param styles
+     *            the styles propagated to the children
+     * @param parent
+     *            the parent Piccolo node
+     * @return the Piccolo node representing the rendering
+     */
+    protected PNode handleDirectPlacementRendering(final KRendering rendering, final KVector position,
+            final List<KStyle> styles, final PNode parent) {
+        Bounds preferredSize = PlacementUtil.estimateSize(rendering, new Bounds(0.0f, 0.0f));
+        float x = (float) position.x;
+        float y = (float) position.y;
+        float width = preferredSize.getWidth();
+        float height = preferredSize.getHeight();
+
+        KPlacementData pcd = rendering.getPlacementData();
+        if (pcd == null && rendering instanceof KRenderingRef) {
+            KRendering ref = ((KRenderingRef) rendering).getRendering();
+            if (ref != null) {
+                pcd = ref.getPlacementData();
+            }
+        }
+        
+        if (pcd instanceof KPointPlacementData) {
+            KPointPlacementData ppd = (KPointPlacementData) pcd;
+            width = Math.max(preferredSize.getWidth() + ppd.getHorizontalMargin(), ppd.getMinWidth());
+            height = Math.max(preferredSize.getHeight() + ppd.getVerticalMargin(), ppd.getMinHeight());
+
+            switch (ppd.getHorizontalAlignment()) {
+            case CENTER:
+                x -= width / 2;
+                break;
+            case RIGHT:
+                x -= width;
+                break;
+            default:
+                // leave the position at left alignment
+            }
+            
+            switch (ppd.getVerticalAlignment()) {
+            case BOTTOM:
+                y -= height;
+                break;
+            case CENTER:
+                y -= height / 2;
+                break;
+            default:
+                // leave the position at top alignment
+            }
+        }
+        
+        // create the rendering and receive its controller
+        final PNodeController<?> controller = createRendering(rendering, styles, parent,
+                Bounds.of(x, y, width, height));
+
+        return controller.getNode();
+    }
+    
     /**
      * Creates the Piccolo nodes for a list of renderings inside a parent Piccolo node using grid
      * placement.

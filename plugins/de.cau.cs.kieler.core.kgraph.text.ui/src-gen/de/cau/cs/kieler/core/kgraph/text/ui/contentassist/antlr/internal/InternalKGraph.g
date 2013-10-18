@@ -11466,9 +11466,9 @@ rule__KPolyline__Group_3_2__1__Impl
     }
 :
 (
-{ before(grammarAccess.getKPolylineAccess().getJointPointRenderingAssignment_3_2_1()); }
-(rule__KPolyline__JointPointRenderingAssignment_3_2_1)
-{ after(grammarAccess.getKPolylineAccess().getJointPointRenderingAssignment_3_2_1()); }
+{ before(grammarAccess.getKPolylineAccess().getJunctionPointRenderingAssignment_3_2_1()); }
+(rule__KPolyline__JunctionPointRenderingAssignment_3_2_1)
+{ after(grammarAccess.getKPolylineAccess().getJunctionPointRenderingAssignment_3_2_1()); }
 )
 
 ;
@@ -23701,14 +23701,14 @@ finally {
 	restoreStackSize(stackSize);
 }
 
-rule__KPolyline__JointPointRenderingAssignment_3_2_1
+rule__KPolyline__JunctionPointRenderingAssignment_3_2_1
     @init {
 		int stackSize = keepStackSize();
     }
 :
 (
-{ before(grammarAccess.getKPolylineAccess().getJointPointRenderingKRenderingParserRuleCall_3_2_1_0()); }
-	ruleKRendering{ after(grammarAccess.getKPolylineAccess().getJointPointRenderingKRenderingParserRuleCall_3_2_1_0()); }
+{ before(grammarAccess.getKPolylineAccess().getJunctionPointRenderingKRenderingParserRuleCall_3_2_1_0()); }
+	ruleKRendering{ after(grammarAccess.getKPolylineAccess().getJunctionPointRenderingKRenderingParserRuleCall_3_2_1_0()); }
 )
 
 ;
