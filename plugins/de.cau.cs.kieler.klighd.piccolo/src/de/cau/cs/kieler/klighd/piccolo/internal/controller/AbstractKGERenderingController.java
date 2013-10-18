@@ -716,11 +716,9 @@ public abstract class AbstractKGERenderingController
         }
 
         // calculate the bounds
-        final GridPlacementUtil.GridPlacer gridPlacer = GridPlacementUtil.getGridPlacementObject(
-                gridPlacement, renderings);
-
         final Bounds parentBounds = new Bounds(parent.getBoundsReference());
-        final Bounds[] elementBounds = gridPlacer.evaluate(parentBounds);
+        final Bounds[] elementBounds = GridPlacementUtil.evaluateGridPlacement(gridPlacement,
+                renderings, parentBounds);
 
         // create the renderings and collect the controllers
         final PNodeController<?>[] controllers = new PNodeController<?>[renderings.size()];
