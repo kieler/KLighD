@@ -523,63 +523,17 @@ class KRenderingExtensions {
         ];
     }
 
-
-    def <T extends KRendering> T setFontBold(T rendering, boolean bold) {
-        rendering.styles.removeAll(rendering.styles.filter(typeof(KFontBold)).toList);
-        return rendering => [
-            it.styles += renderingFactory.createKFontBold() => [
-                it.setBold(bold);
-            ];
-        ];        
-    }
-    
-    def <T extends KRendering> T setFontItalic(T rendering, boolean italic) {
-        rendering.styles.removeAll(rendering.styles.filter(typeof(KFontItalic)).toList);
-        return rendering => [
-            it.styles += renderingFactory.createKFontItalic => [
-                it.setItalic(italic);
-            ];
-        ];
-    }
-    
-    def <T extends KRendering> T setTextUnderline(T rendering, Underline underline) {
-        rendering.styles.removeAll(rendering.styles.filter(typeof(KTextUnderline)).toList);
-        return rendering => [
-            it.styles += renderingFactory.createKTextUnderline() => [
-                it.underline = underline;
-            ];
-        ];
-    }
-    
-    def <T extends KRendering> T setTextUnderlineColor(T rendering, KColor color) {
-        return rendering => [
-            (rendering.styles.filter(typeof(KTextUnderline)).last?:renderingFactory.createKTextUnderline()) => [
-                it.color = color;
-            ];
-        ];
-    }
-    
-    def <T extends KRendering> T setTextStrikeout(T rendering, boolean struckOut) {
-        rendering.styles.removeAll(rendering.styles.filter(typeof(KTextStrikeout)).toList);
-        return rendering => [
-            it.styles += renderingFactory.createKTextStrikeout() => [
-                it.struckOut = struckOut;
-            ];
-        ];
-    }
-    
-    def <T extends KRendering> T setTextStrikeoutColor(T rendering, KColor color) {
-        return rendering => [
-            (rendering.styles.filter(typeof(KTextStrikeout)).last?:renderingFactory.createKTextStrikeout()) => [
-                it.color = color;
-            ];
-        ];
-    }
     
     def KFontSize getFontSize(KRendering rendering) {
         return rendering.styles.filter(typeof(KFontSize)).last?:(renderingFactory.createKFontSize => [
             size = 10
         ]);
+    }
+ 
+    def int getFontSizeValue(KRendering rendering) {
+        return (rendering.styles.filter(typeof(KFontSize)).last?:(renderingFactory.createKFontSize => [
+            size = 10
+        ])).size;
     }
  
     def <T extends KRendering> T setFontSize(T rendering, int size) {
@@ -597,6 +551,12 @@ class KRenderingExtensions {
         ]);
     }
  
+    def String getFontNameValue(KRendering rendering) {
+        return (rendering.styles.filter(typeof(KFontName)).last?:(renderingFactory.createKFontName => [
+            name = "Arial"
+        ])).name;
+    }
+ 
     def <T extends KRendering> T setFontName(T rendering, String name) {
         rendering.styles.removeAll(rendering.styles.filter(typeof(KFontName)).toList);
         return rendering => [
@@ -605,7 +565,100 @@ class KRenderingExtensions {
             ];
         ];      
     }
+
+    def KFontBold getFontBold(KRendering rendering) {
+        return rendering.styles.filter(typeof(KFontBold)).last?:(renderingFactory.createKFontBold);
+    }
+ 
+    def boolean getFontBoldValue(KRendering rendering) {
+        return (rendering.styles.filter(typeof(KFontBold)).last?:(renderingFactory.createKFontBold)).bold;
+    }
+ 
+    def <T extends KRendering> T setFontBold(T rendering, boolean bold) {
+        rendering.styles.removeAll(rendering.styles.filter(typeof(KFontBold)).toList);
+        return rendering => [
+            it.styles += renderingFactory.createKFontBold() => [
+                it.setBold(bold);
+            ];
+        ];        
+    }
     
+    def KFontItalic geFontItalic(KRendering rendering) {
+        return rendering.styles.filter(typeof(KFontItalic)).last?:(renderingFactory.createKFontItalic);
+    }
+ 
+    def boolean getFontItalicValue(KRendering rendering) {
+        return (rendering.styles.filter(typeof(KFontItalic)).last?:(renderingFactory.createKFontItalic)).italic;
+    }
+ 
+    def <T extends KRendering> T setFontItalic(T rendering, boolean italic) {
+        rendering.styles.removeAll(rendering.styles.filter(typeof(KFontItalic)).toList);
+        return rendering => [
+            it.styles += renderingFactory.createKFontItalic => [
+                it.setItalic(italic);
+            ];
+        ];
+    }
+    
+    def KTextUnderline getTextUnderline(KRendering rendering) {
+        return rendering.styles.filter(typeof(KTextUnderline)).last?:(renderingFactory.createKTextUnderline);
+    }
+ 
+    def Underline getTextUnderlineValue(KRendering rendering) {
+        return (rendering.styles.filter(typeof(KTextUnderline)).last?:(renderingFactory.createKTextUnderline)).underline;
+    }
+ 
+    def KColor getTextUnderlineColorValue(KRendering rendering) {
+        return (rendering.styles.filter(typeof(KTextUnderline)).last?:(renderingFactory.createKTextUnderline)).color;
+    }
+ 
+    def <T extends KRendering> T setTextUnderline(T rendering, Underline underline) {
+        rendering.styles.removeAll(rendering.styles.filter(typeof(KTextUnderline)).toList);
+        return rendering => [
+            it.styles += renderingFactory.createKTextUnderline() => [
+                it.underline = underline;
+            ];
+        ];
+    }
+    
+    def <T extends KRendering> T setTextUnderlineColor(T rendering, KColor color) {
+        return rendering => [
+            (rendering.styles.filter(typeof(KTextUnderline)).last?:renderingFactory.createKTextUnderline()) => [
+                it.color = color;
+            ];
+        ];
+    }
+    
+    def KTextStrikeout getTextStrikeout(KRendering rendering) {
+        return rendering.styles.filter(typeof(KTextStrikeout)).last?:(renderingFactory.createKTextStrikeout);
+    }
+ 
+    def boolean getTextStrikeoutValue(KRendering rendering) {
+        return (rendering.styles.filter(typeof(KTextStrikeout)).last?:(renderingFactory.createKTextStrikeout)).struckOut;
+    }
+ 
+    def KColor getTextStrikeoutColorValue(KRendering rendering) {
+        return (rendering.styles.filter(typeof(KTextStrikeout)).last?:(renderingFactory.createKTextStrikeout)).color;
+    }
+ 
+    def <T extends KRendering> T setTextStrikeout(T rendering, boolean struckOut) {
+        rendering.styles.removeAll(rendering.styles.filter(typeof(KTextStrikeout)).toList);
+        return rendering => [
+            it.styles += renderingFactory.createKTextStrikeout() => [
+                it.struckOut = struckOut;
+            ];
+        ];
+    }
+    
+    def <T extends KRendering> T setTextStrikeoutColor(T rendering, KColor color) {
+        return rendering => [
+            (rendering.styles.filter(typeof(KTextStrikeout)).last?:renderingFactory.createKTextStrikeout()) => [
+                it.color = color;
+            ];
+        ];
+    }
+
+
     public val HorizontalAlignment H_LEFT = HorizontalAlignment::LEFT; 
     public val HorizontalAlignment H_CENTRAL = HorizontalAlignment::CENTER; 
     public val HorizontalAlignment H_RIGHT = HorizontalAlignment::RIGHT; 
