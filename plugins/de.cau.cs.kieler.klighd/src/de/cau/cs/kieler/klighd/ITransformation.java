@@ -34,6 +34,15 @@ import java.util.Set;
 public interface ITransformation<S, T> {
 
     /**
+     * Callback to the transformation for checking whether it supports the given <code>model</code>.
+     * 
+     * @param model
+     *            the model to test
+     * @return true if <code>this</code> transformation supports <code>model</code>, false otherwise
+     */
+    boolean supports(S model);
+    
+    /**
      * Performs the actual transformation from an object of type {@code S} to a model of type
      * {@code T} in a given transformation context.
      * 
