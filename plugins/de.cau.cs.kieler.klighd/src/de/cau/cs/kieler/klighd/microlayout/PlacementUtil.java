@@ -370,13 +370,12 @@ public final class PlacementUtil {
             return new Bounds(parentBounds.getWidth(), parentBounds.getHeight());
         }
 
-        final float width = Math.max(ownBounds.getWidth() + ppd.getHorizontalMargin(),
-                ppd.getMinWidth());
-        final float height = Math.max(ownBounds.getHeight() + ppd.getVerticalMargin(),
-                ppd.getMinHeight());
+        final float width = Math.max(ownBounds.getWidth(), ppd.getMinWidth());
+        final float height = Math.max(ownBounds.getHeight(), ppd.getMinHeight());
         
         final KPosition ref = ppd.getReferencePoint();
         final Point refPoint;
+        
         if (ref == null) {
             // if the reference point is missing, assume the center as reference
             refPoint = new Point(parentBounds.getWidth() / 2, parentBounds.getHeight() / 2);
@@ -722,8 +721,8 @@ public final class PlacementUtil {
             return minWidth;
         }
 
-        KPosition pos = ppd.getReferencePoint();
-        float abs = pos != null && pos.getX() != null ? pos.getX().getAbsolute() : 0f;
+        final KPosition pos = ppd.getReferencePoint();
+        final float abs = pos != null && pos.getX() != null ? pos.getX().getAbsolute() : 0f;
         float calculatedWidth = 0f;
 
         switch (ppd.getHorizontalAlignment()) {
@@ -761,8 +760,8 @@ public final class PlacementUtil {
             return minHeight;
         }
 
-        KPosition pos = ppd.getReferencePoint();
-        float abs = pos != null && pos.getY() != null ? pos.getY().getAbsolute() : 0f;
+        final KPosition pos = ppd.getReferencePoint();
+        final float abs = pos != null && pos.getY() != null ? pos.getY().getAbsolute() : 0f;
         float calculatedHeight = 0f;
 
         switch (ppd.getVerticalAlignment()) {
