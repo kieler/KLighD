@@ -205,7 +205,7 @@ public class KEdgeRenderingController extends AbstractKGERenderingController<KEd
     }
     
     /**
-     * Handle junction points for the given edge.
+     * Handle junction points for the represented edge.
      */
     public void handleJunctionPoints() {
         assert junctionPointNodes.isEmpty();

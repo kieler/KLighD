@@ -729,8 +729,8 @@ public abstract class AbstractKGERenderingController
         
         if (pcd instanceof KPointPlacementData) {
             KPointPlacementData ppd = (KPointPlacementData) pcd;
-            width = Math.max(preferredSize.getWidth() + ppd.getHorizontalMargin(), ppd.getMinWidth());
-            height = Math.max(preferredSize.getHeight() + ppd.getVerticalMargin(), ppd.getMinHeight());
+            width = Math.max(preferredSize.getWidth(), ppd.getMinWidth());
+            height = Math.max(preferredSize.getHeight(), ppd.getMinHeight());
 
             switch (ppd.getHorizontalAlignment()) {
             case CENTER:
