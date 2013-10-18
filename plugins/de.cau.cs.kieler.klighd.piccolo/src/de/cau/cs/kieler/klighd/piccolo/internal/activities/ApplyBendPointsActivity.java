@@ -108,7 +108,7 @@ public class ApplyBendPointsActivity extends PInterpolatingActivity implements
         edgeNode.setBendPoints(targetBends);
 
         if (edgeNode.getRenderingController() != null) {
-            edgeNode.getRenderingController().handleJunctionPoints(edgeNode);
+            edgeNode.getRenderingController().handleJunctionPoints();
         }
         if (!stylesModified) {
             stylesModified = true;

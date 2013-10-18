@@ -88,7 +88,7 @@ public class FadeEdgeInActivity extends PInterpolatingActivity implements IStart
         edgeNode.setTransparency(1);
         
         if (edgeNode.getRenderingController() != null) {
-            edgeNode.getRenderingController().handleJunctionPoints(edgeNode);
+            edgeNode.getRenderingController().handleJunctionPoints();
         }
         super.activityFinished();
     }

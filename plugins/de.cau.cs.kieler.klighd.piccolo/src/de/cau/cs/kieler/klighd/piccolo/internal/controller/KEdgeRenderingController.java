@@ -205,11 +205,10 @@ public class KEdgeRenderingController extends AbstractKGERenderingController<KEd
     
     /**
      * Handle junction points for the given edge.
-     * 
-     * @param parent the parent PNode of the edge
      */
-    public void handleJunctionPoints(final KEdgeNode parent) {
+    public void handleJunctionPoints() {
         assert junctionPointNodes.isEmpty();
+        final KEdgeNode parent = getRepresentation();
         KEdge edge = parent.getGraphElement();
         KRendering rendering = edge.getData(KRendering.class);
         if (rendering instanceof KPolyline) {
