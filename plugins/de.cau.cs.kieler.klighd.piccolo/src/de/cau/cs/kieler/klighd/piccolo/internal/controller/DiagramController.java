@@ -368,7 +368,7 @@ public class DiagramController {
      * @return the Piccolo representation
      */
     public IGraphElement<?> getRepresentation(final KGraphElement diagramElement) {
-        return RenderingContextData.get(diagramElement).getProperty(DiagramController.REP);
+        return RenderingContextData.get(diagramElement).getProperty(REP);
     }
 
     /* --------------------------------------------- */
@@ -424,9 +424,8 @@ public class DiagramController {
             return;
         }
         
-        final IGraphElement<?> parentRep = RenderingContextData.get(
-                (KGraphElement) element.eContainer()).getProperty(REP);
-        
+        final IGraphElement<?> parentRep = getRepresentation((KGraphElement) element.eContainer());
+                                           
         switch (element.eClass().getClassifierID()) {
         case KGraphPackage.KNODE:
             if (parentRep != null) {
@@ -1360,6 +1359,13 @@ public class DiagramController {
                             recordedChanges.put(edgeRep, getBendPoints(edL, renderedAsPolyline));
                         } else {
                             edgeRep.setBendPoints(getBendPoints(edL, renderedAsPolyline));
+                            
+                            final KEdgeRenderingController controller = edgeRep.getRenderingController();
+                            if (controller != null) {
+                                controller.clearJunctionPoints();
+                                controller.modifyStyles();
+                                controller.handleJunctionPoints();
+                            }
                         }
                     }
                 }
