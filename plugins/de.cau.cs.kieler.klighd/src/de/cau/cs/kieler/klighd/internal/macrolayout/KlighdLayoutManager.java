@@ -638,9 +638,9 @@ public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement>
                     KEdgeLayout layoutLayout = layoutEdge.getData(KEdgeLayout.class);
                     KEdgeLayout edgeLayout = element.getData(KEdgeLayout.class);
                     if (edgeLayout != null) {
-                        transferEdgeLayout(edgeLayout, layoutLayout, false);
                         edgeLayout.setProperty(LayoutOptions.JUNCTION_POINTS,
                                 layoutLayout.getProperty(LayoutOptions.JUNCTION_POINTS));
+                        transferEdgeLayout(edgeLayout, layoutLayout, false);
                     }
                     return true;
                 }

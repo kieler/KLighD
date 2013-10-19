@@ -39,6 +39,15 @@ public class ApplyBendPointsActivity extends PInterpolatingActivity implements
     /** the temporary bends. */
     private Point2D[] tempBends;
 
+    /** the source junctions. */
+    private Point2D[] sourceJunctions;
+    /** the target junctions. */
+    private Point2D[] targetJunctions;
+    /** the delta bends. */
+    private Point2D[] deltaJunctions;
+    /** the temporary bends. */
+    private Point2D[] tempJunctions;
+    
     /** a local memory indicating whether a style update took place already. */
     private boolean stylesModified = false;
 
@@ -49,14 +58,17 @@ public class ApplyBendPointsActivity extends PInterpolatingActivity implements
      *            the edge node
      * @param newBends
      *            the new bend points
+     * @param newJunctions
+     *            the new junction points
      * @param duration
      *            the duration
      */
     public ApplyBendPointsActivity(final KEdgeNode edgeNode, final Point2D[] newBends,
-            final long duration) {
+            final Point2D[] newJunctions, final long duration) {
         super(duration);
         this.edgeNode = edgeNode;
         this.targetBends = newBends;
+        this.targetJunctions = newJunctions;
     }
 
     /**
@@ -64,11 +76,9 @@ public class ApplyBendPointsActivity extends PInterpolatingActivity implements
      */
     public void activityStarted() {
         prepareBendTransition();
+        prepareJunctionTransition();
+
         edgeNode.setVisible(true);
-        
-        if (edgeNode.getRenderingController() != null) {
-            edgeNode.getRenderingController().clearJunctionPoints();
-        }
         super.activityStarted();
     }
 
@@ -80,6 +90,7 @@ public class ApplyBendPointsActivity extends PInterpolatingActivity implements
         if (zeroToOne == 1.0f) {
             // when the activity completes set the target bend points
             edgeNode.setBendPoints(targetBends);
+            edgeNode.setJunctionPoints(targetJunctions);
         } else {
             // as long as the activity is not completed use proxy bend points
             for (int i = 0; i < sourceBends.length; ++i) {
@@ -89,6 +100,15 @@ public class ApplyBendPointsActivity extends PInterpolatingActivity implements
                         sourceBend.getY() + zeroToOne * deltaBend.getY());
             }
             edgeNode.setBendPoints(tempBends);
+            
+            
+            for (int i = 0; i < targetJunctions.length; ++i) {
+                Point2D sourceJunction = sourceJunctions[i];
+                Point2D deltaJunction = deltaJunctions[i];
+                tempJunctions[i].setLocation(sourceJunction.getX() + zeroToOne * deltaJunction.getX(),
+                        sourceJunction.getY() + zeroToOne * deltaJunction.getY());
+            }
+            edgeNode.setJunctionPoints(tempJunctions);
         }
         if (!stylesModified && zeroToOne > 1f / 2f) {
             stylesModified = true;
@@ -106,10 +126,8 @@ public class ApplyBendPointsActivity extends PInterpolatingActivity implements
      */
     public void activityFinished() {
         edgeNode.setBendPoints(targetBends);
-
-        if (edgeNode.getRenderingController() != null) {
-            edgeNode.getRenderingController().handleJunctionPoints();
-        }
+        edgeNode.setJunctionPoints(targetJunctions);
+        
         if (!stylesModified) {
             stylesModified = true;
             if (edgeNode.getRenderingController() != null) {
@@ -125,24 +143,6 @@ public class ApplyBendPointsActivity extends PInterpolatingActivity implements
     @Override
     protected boolean isAnimation() {
         return true;
-    }
-
-    /**
-     * Getter.
-     * 
-     * @return the edgeNode
-     */
-    KEdgeNode getEdgeNode() {
-        return edgeNode;
-    }
-
-    /**
-     * Getter.
-     * 
-     * @return the targetBends
-     */
-    Point2D[] getTargetBends() {
-        return targetBends;
     }
 
     /**
@@ -179,6 +179,46 @@ public class ApplyBendPointsActivity extends PInterpolatingActivity implements
         tempBends = new Point2D[maxNumber];
         for (int i = 0; i < maxNumber; ++i) {
             tempBends[i] = new Point2D.Double();
+        }
+    }
+
+    /**
+     * a.
+     */
+    protected void prepareJunctionTransition() {
+        final Point2D[] originSourceJunctions = edgeNode.getJunctionPoints();
+        final int sourceNumber = originSourceJunctions.length;
+        final int targetNumber = targetJunctions.length;
+        
+        if (sourceNumber == 0 && targetNumber == 0) {
+            sourceJunctions = new Point2D[0];
+            deltaJunctions = new Point2D[0];
+            tempJunctions = new Point2D[0];
+            
+        } else {
+            sourceJunctions = new Point2D[targetNumber];
+            deltaJunctions = new Point2D[targetNumber];
+            tempJunctions = new Point2D[targetNumber];
+
+            for (int i = 0; i < targetNumber; ++i) {
+                final Point2D sourceJunction;
+                final Point2D targetJunction = targetJunctions[i];
+                if (i < sourceNumber) {
+                    sourceJunction = (Point2D) originSourceJunctions[i].clone();
+                } else if (i == 0) {
+                    sourceJunction = (Point2D) sourceBends[0].clone();
+                } else {
+                    sourceJunction = (Point2D) sourceJunctions[i - 1].clone();
+                }
+                sourceJunctions[i] = sourceJunction;
+                deltaJunctions[i] = new Point2D.Double(targetJunction.getX() - sourceJunction.getX(),
+                        targetJunction.getY() - sourceJunction.getY());
+            }
+
+            // prepare the bend point buffer
+            for (int i = 0; i < targetNumber; ++i) {
+                tempJunctions[i] = new Point2D.Double();
+            }
         }
     }
 
@@ -292,5 +332,5 @@ public class ApplyBendPointsActivity extends PInterpolatingActivity implements
         }
         return mapping;
     }
-
+    
 }

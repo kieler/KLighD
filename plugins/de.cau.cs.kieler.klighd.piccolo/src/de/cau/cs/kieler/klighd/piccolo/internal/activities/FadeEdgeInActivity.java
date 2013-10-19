@@ -33,6 +33,9 @@ public class FadeEdgeInActivity extends PInterpolatingActivity implements IStart
     /** the target bends. */
     private Point2D[] targetBends;
 
+    /** the target junctions. */
+    private Point2D[] targetJunctions;
+    
     /**
      * Constructs an activity that immediately applies new bend points to a Piccolo edge node and
      * fades it in over a duration.
@@ -41,13 +44,17 @@ public class FadeEdgeInActivity extends PInterpolatingActivity implements IStart
      *            the edge node
      * @param newBends
      *            the new bend points
+     * @param newJunctions
+     *            the new junction points
      * @param duration
      *            the duration
      */
-    public FadeEdgeInActivity(final KEdgeNode edgeNode, final Point2D[] newBends, final long duration) {
+    public FadeEdgeInActivity(final KEdgeNode edgeNode, final Point2D[] newBends,
+            final Point2D[] newJunctions, final long duration) {
         super(duration);
         this.edgeNode = edgeNode;
         this.targetBends = newBends;
+        this.targetJunctions = newJunctions;
     }
 
     /**
@@ -61,12 +68,10 @@ public class FadeEdgeInActivity extends PInterpolatingActivity implements IStart
             edgeNode.getRenderingController().modifyStyles();
         }
         edgeNode.setBendPoints(targetBends);
+        edgeNode.setJunctionPoints(targetJunctions);
         edgeNode.setTransparency(0);
         edgeNode.setVisible(true);
         
-        if (edgeNode.getRenderingController() != null) {
-            edgeNode.getRenderingController().clearJunctionPoints();
-        }
         super.activityStarted();
     }
     
@@ -86,10 +91,6 @@ public class FadeEdgeInActivity extends PInterpolatingActivity implements IStart
      */
     public void activityFinished() {
         edgeNode.setTransparency(1);
-        
-        if (edgeNode.getRenderingController() != null) {
-            edgeNode.getRenderingController().handleJunctionPoints();
-        }
         super.activityFinished();
     }
 }

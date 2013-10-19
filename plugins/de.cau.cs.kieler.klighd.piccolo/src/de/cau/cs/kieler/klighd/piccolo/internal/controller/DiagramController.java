@@ -54,6 +54,7 @@ import de.cau.cs.kieler.core.math.KVectorChain;
 import de.cau.cs.kieler.core.math.KielerMath;
 import de.cau.cs.kieler.core.properties.IProperty;
 import de.cau.cs.kieler.core.properties.Property;
+import de.cau.cs.kieler.core.util.Pair;
 import de.cau.cs.kieler.kiml.klayoutdata.KEdgeLayout;
 import de.cau.cs.kieler.kiml.klayoutdata.KLayoutData;
 import de.cau.cs.kieler.kiml.klayoutdata.KLayoutDataPackage;
@@ -237,7 +238,6 @@ public class DiagramController {
         RenderingContextData.get(topNode.getGraphElement()).setProperty(KlighdInternalProperties.ACTIVE,
                 true);
 
-        // expand the top node
         topNode.getChildArea().setExpanded(true);
     }
 
@@ -250,7 +250,6 @@ public class DiagramController {
     public void collapse(final KNode node) {
         INode nodeRep = RenderingContextData.get(node).getProperty(REP);
         if (nodeRep != null) {
-            // set the child area to be collapsed
             nodeRep.getChildArea().setExpanded(false);
         }
     }
@@ -264,7 +263,6 @@ public class DiagramController {
     public void expand(final KNode node) {
         INode nodeRep = RenderingContextData.get(node).getProperty(REP);
         if (nodeRep != null) {
-            // set the child area to be expanded
             nodeRep.getChildArea().setExpanded(true);
         }
     }
@@ -946,17 +944,24 @@ public class DiagramController {
             final PNode shapeNode;
             if (recordedChange.getKey() instanceof KEdgeNode) {
                 // edge layout changed
-                KEdgeNode edgeNode = (KEdgeNode) recordedChange.getKey();
+                
+                final KEdgeNode edgeNode = (KEdgeNode) recordedChange.getKey();
                 shapeNode = edgeNode;
-                Point2D[] bends = (Point2D[]) recordedChange.getValue();                
-                // Point2D[] curBends = (Point2D[]) edgeNode.getBendPoints();                
+                
+                @SuppressWarnings("unchecked")
+                final Pair<Point2D[], Point2D[]> value =
+                        (Pair<Point2D[], Point2D[]>) recordedChange.getValue();
+                final Point2D[] bends = (Point2D[]) value.getFirst();
+                final Point2D[] junctions = (Point2D[]) value.getSecond(); 
 
                 if (!edgeNode.getVisible()) {
                     // the visibility is set to false for newly introduced edges in #addEdge
                     //  for avoiding unnecessary flickering and indicating to fade it in
-                    activity = new FadeEdgeInActivity(edgeNode, bends, duration > 0 ? duration : 1);
+                    activity = new FadeEdgeInActivity(edgeNode, bends, junctions,
+                            duration > 0 ? duration : 1);
                 } else {
-                    activity = new ApplyBendPointsActivity(edgeNode, bends, duration > 0 ? duration : 1);
+                    activity = new ApplyBendPointsActivity(edgeNode, bends, junctions,
+                            duration > 0 ? duration : 1);
                 }
             } else {
                 // shape layout changed
@@ -1356,15 +1361,15 @@ public class DiagramController {
                     // check if a edge layout is exists
                     if (edL != null) {
                         if (record) {
-                            recordedChanges.put(edgeRep, getBendPoints(edL, renderedAsPolyline));
+                            recordedChanges.put(edgeRep, Pair.of(
+                                    getBendPoints(edL, renderedAsPolyline), getJunctionPoints(edL)));
                         } else {
                             edgeRep.setBendPoints(getBendPoints(edL, renderedAsPolyline));
+                            edgeRep.setJunctionPoints(getJunctionPoints(edL));
                             
                             final KEdgeRenderingController controller = edgeRep.getRenderingController();
                             if (controller != null) {
-                                controller.clearJunctionPoints();
                                 controller.modifyStyles();
-                                controller.handleJunctionPoints();
                             }
                         }
                     }
@@ -1731,6 +1736,30 @@ public class DiagramController {
     }
 
     /**
+     * Returns an array of junction points from the given {@code KEdgeLayout}.
+     * 
+     * @param edgeLayout
+     *            the edge layout
+     * @return the junction points or an empty Point2D[] if none exist
+     */
+    private static Point2D[] getJunctionPoints(final KEdgeLayout edgeLayout) {
+
+        final KVectorChain junctionPoints = edgeLayout.getProperty(LayoutOptions.JUNCTION_POINTS);
+        
+        if (junctionPoints == null || junctionPoints.isEmpty()) {
+            return new Point2D[0];
+        }
+        
+        // build the bend point array
+        Point2D[] points = new Point2D[junctionPoints.size()];
+        int i = 0;
+        for (KVector bend : junctionPoints) {
+            points[i++] = new Point2D.Double(bend.x, bend.y);
+        }
+        return points;
+    }
+
+    /**
      * Finds the parent node for the edge representation and adds the edge to that node
      * representations child area. This is needed since the clipping property of
      * {@link KChildAreaNode}s will clip the edges. Hence they are located in the
@@ -1768,16 +1797,14 @@ public class DiagramController {
             // chsch: change due to KIELER-1988; // SUPPRESS CHECKSTYLE NEXT 3 LineLength
             // edges uses different reference points as indicated by
             // http://rtsys.informatik.uni-kiel.de/~kieler/files/documentation/klayoutdata-reference-points.png
-            // see page
-            // http://rtsys.informatik.uni-kiel.de/confluence/display/KIELER/KLayoutData+Meta+Model
+            // see page http://rtsys.informatik.uni-kiel.de/confluence/display/KIELER/KLayoutData+Meta+Model
             INode sourceParentNode = RenderingContextData.get(determineReferenceNodeOf(edge))
                     .getProperty(REP);
             final KChildAreaNode relativeChildArea = sourceParentNode.getChildArea();
 
-            // chsch: The following listener updates the offset of the edge depending the parent
-            // nodes.
+            // chsch: The following listener updates the offset of the edge depending the parent nodes.
             // It is attached to all parent nodes that are part of the containment hierarchy,
-            //  i.e. PSWTAdvancedPaths, KChildAreas, KNodeNodes, ...!
+            //  i.e., KNodeNodes, KChildAreaNodes, KlighdPaths...!
             // The listener is sensitive to changes to the 'transform' of those elements.
             // It is important, in case of the change of a parent KNode's rendering,
             //  that its related KChildAreaNode is contained in any other PNode!
@@ -1847,9 +1874,8 @@ public class DiagramController {
 
     /**
      * Needed as edge coordinates uses different reference nodes as indicated by
-     * http://rtsys.informatik
-     * .uni-kiel.de/~kieler/files/documentation/klayoutdata-reference-points.png see page
-     * http://rtsys.informatik.uni-kiel.de/confluence/display/KIELER/KLayoutData+Meta+Model.
+     * http://rtsys.informatik.uni-kiel.de/~kieler/files/documentation/klayoutdata-reference-points.png
+     * see page http://rtsys.informatik.uni-kiel.de/confluence/display/KIELER/KLayoutData+Meta+Model.
      * 
      * @param edge
      *            the edge whose reference node is to be determined,

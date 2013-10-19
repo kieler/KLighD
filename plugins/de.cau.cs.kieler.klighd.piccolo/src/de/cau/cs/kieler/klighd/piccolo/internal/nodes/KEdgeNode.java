@@ -36,6 +36,9 @@ public class KEdgeNode extends PChildRepresentedNode implements ILabeledGraphEle
     /** the property name for changes of the edge's bend points. */
     public static final String PROPERTY_BEND_POINTS = "bendPoints";
 
+    /** the property name for changes of the edge's bend points. */
+    public static final String PROPERTY_JUNCTION_POINTS = "junctionPoints";
+
     /** the represented {@link KEdge}. */
     private transient KEdge edge;
     /** the edge rendering controller deployed to manage the rendering of {@link #edge}. */
@@ -43,6 +46,9 @@ public class KEdgeNode extends PChildRepresentedNode implements ILabeledGraphEle
 
     /** the bend points. */
     private Point2D[] bendPoints = new Point2D[2];
+    
+    /** the junction points. */
+    private Point2D[] junctionPoints = new Point2D[0];
 
     /**
      * Constructs a Piccolo node for representing a {@code KEdge}.
@@ -106,6 +112,27 @@ public class KEdgeNode extends PChildRepresentedNode implements ILabeledGraphEle
      */
     public Point2D[] getBendPoints() {
         return bendPoints;
+    }
+
+    /**
+     * Sets the junction points for the edge.
+     * 
+     * @param junctionPoints
+     *            the bend points
+     */
+    public void setJunctionPoints(final Point2D[] junctionPoints) {
+        // set the new bend points and fire a property change event
+        this.junctionPoints = junctionPoints;
+        firePropertyChange(-1, PROPERTY_JUNCTION_POINTS, null, junctionPoints);
+    }
+
+    /**
+     * Returns the junction points for the edge.
+     * 
+     * @return the junction points
+     */
+    public Point2D[] getJunctionPoints() {
+        return junctionPoints;
     }
 
     /**
