@@ -46,6 +46,9 @@ import de.cau.cs.kieler.klighd.viewers.ContextViewer;
  */
 public class DiagramViewPart extends ViewPart implements IDiagramWorkbenchPart {
 
+    /** The id this viewpart is registered with in the extension point. */
+    public static final String VIEW_ID = "de.cau.cs.kieler.klighd.lightDiagramView";
+    
     /** the default name for this view. */
     public static final String DEFAULT_NAME = "Light Diagram";
     /** the action identifier prefix for permanent menu contributions. */
