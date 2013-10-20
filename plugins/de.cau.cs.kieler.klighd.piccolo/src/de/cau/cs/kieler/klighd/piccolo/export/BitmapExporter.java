@@ -55,7 +55,8 @@ public class BitmapExporter implements IViewExporter {
      * {@inheritDoc}
      */
     public void export(final OutputStream stream, final KlighdCanvas canvas,
-            final boolean cameraViewport, final int scale, final String subFormatId) {
+            final boolean cameraViewport, final int scale, final boolean textAsShapes,
+            final String subFormatId) {
 
         // default format is bmp
         int format = SWT.IMAGE_BMP;

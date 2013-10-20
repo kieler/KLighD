@@ -80,6 +80,9 @@ public class SaveAsImageDialog extends Dialog {
             + "cameraViewport"; //$NON-NLS-1$
     /** the preference key for the scale factor. */
     private static final String PREFERENCE_SCALE_FACTOR = "saveAsImageDialog.scaleFactor"; //$NON-NLS-1$
+    /** the preference key for the text as shapes property. */
+    private static final String PREFERENCE_TEXT_AS_SHAPES 
+        = "saveAsImageDialog.textAsShapes"; //$NON-NLS-1$
 
     /** the preference store. */
     private IPreferenceStore preferenceStore = null;
@@ -92,6 +95,8 @@ public class SaveAsImageDialog extends Dialog {
     private Combo imageFormatCombo;
     /** the camera viewport checkbox. */
     private Button cameraViewportCheckbox;
+    /** the camera viewport checkbox. */
+    private Button textAsShapesCheckbox;
     /** the message image. */
     private Label messageImageLabel;
     /** the message label. */
@@ -105,6 +110,8 @@ public class SaveAsImageDialog extends Dialog {
     private boolean workspacePath;
     /** whether to render through the camera viewport. */
     private boolean cameraViewport;
+    /** whether to transform text to shapes in vector graphics. */
+    private boolean textAsShapes;
     /** the selected scaleFactor. */
     private int scaleFactor;
 
@@ -299,6 +306,11 @@ public class SaveAsImageDialog extends Dialog {
         cameraViewportCheckbox = new Button(composite, SWT.CHECK | SWT.LEFT);
         cameraViewportCheckbox.setText(Messages.SaveAsImageDialog_use_camera_viewport_caption);
         cameraViewportCheckbox.setSelection(preferenceStore.getBoolean(PREFERENCE_CAMERA_VIEWPORT));
+        
+        // text as shapes
+        textAsShapesCheckbox = new Button(composite, SWT.CHECK | SWT.LEFT);
+        textAsShapesCheckbox.setText(Messages.SaveAsImageDialog_text_as_shapes);
+        textAsShapesCheckbox.setSelection(preferenceStore.getBoolean(PREFERENCE_TEXT_AS_SHAPES)); 
     }
 
     private static final int MESSAGE_LABEL_WIDTH_HINT = 300;
@@ -519,6 +531,15 @@ public class SaveAsImageDialog extends Dialog {
     public boolean isCameraViewport() {
         return cameraViewport;
     }
+    
+    /**
+     * Returns whether text in vector graphics should be rendered as shapes.
+     * 
+     * @return true if text should be rendered as shapes in vector graphics.
+     */
+    public boolean isTextAsShapes() {
+        return textAsShapes;
+    }
 
     /**
      * {@inheritDoc}
@@ -531,6 +552,7 @@ public class SaveAsImageDialog extends Dialog {
         preferenceStore.setValue(PREFERENCE_IMAGE_FORMAT, imageFormatCombo.getSelectionIndex());
         preferenceStore.setValue(PREFERENCE_CAMERA_VIEWPORT, cameraViewportCheckbox.getSelection());
         preferenceStore.setValue(PREFERENCE_SCALE_FACTOR, scaleSlider.getSelection());
+        preferenceStore.setValue(PREFERENCE_TEXT_AS_SHAPES, textAsShapesCheckbox.getSelection());
         return super.close();
     }
 
@@ -547,6 +569,7 @@ public class SaveAsImageDialog extends Dialog {
         workspacePath = workspacePathCheckbox.getSelection();
         currentExporter = descriptors.get(imageFormatCombo.getSelectionIndex()); 
         cameraViewport = cameraViewportCheckbox.getSelection();
+        textAsShapes = textAsShapesCheckbox.getSelection();
         scaleFactor = scaleSlider.getSelection();
         // has to be last because it disposes the dialog
         super.okPressed();

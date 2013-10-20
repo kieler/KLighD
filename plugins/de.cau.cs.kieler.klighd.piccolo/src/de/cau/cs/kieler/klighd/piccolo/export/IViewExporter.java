@@ -43,10 +43,12 @@ public interface IViewExporter {
      *            should only the visible area be exported?
      * @param scale
      *            should the canvas be scaled before exporting
+     * @param textAsShapes
+     *            whether text in vector graphics should be rendered as shapes
      * @param subFormatId
      *            an id for a certain subformat
      */
     void export(final OutputStream stream, final KlighdCanvas canvas, final boolean cameraViewport,
-            final int scale, final String subFormatId);
+            final int scale, boolean textAsShapes, final String subFormatId);
 
 }

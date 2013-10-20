@@ -74,7 +74,7 @@ public class SaveAsImageAction extends Action {
                         createOutputStream(dialog.getFilePath(), dialog.isWorkspacePath());
                 // render the canvas to an image and write it to the stream
                 toImage(stream, viewer.getCanvas(), dialog.isCameraViewport(),
-                        dialog.getCurrentExporter(), dialog.getScaleFactor());
+                        dialog.getCurrentExporter(), dialog.getScaleFactor(), dialog.isTextAsShapes());
                 stream.close();
             } catch (IOException exception) {
                 Status myStatus =
@@ -114,18 +114,22 @@ public class SaveAsImageAction extends Action {
      *            true if the scene graph should be rendered through the camera, i.e. only render
      *            what is visible on the canvas; false to render the whole scene graph
      * @param exporterDescr
-     *            the descriptor of an {@link IViewExporter} selected by the user 
+     *            the descriptor of an {@link IViewExporter} selected by the user
      * @param scale
      *            the scale factor to apply while constructing the image
+     * @param textAsShapes
+     *            whether text in vector graphics should be rendered as shapes
      */
     public static void toImage(final OutputStream stream, final KlighdCanvas canvas,
-            final boolean cameraViewport, final ExporterDescriptor exporterDescr, final int scale) {
+            final boolean cameraViewport, final ExporterDescriptor exporterDescr, final int scale,
+            final boolean textAsShapes) {
 
-        // retrieve the exporter from the central registry  
+        // retrieve the exporter from the central registry
         IViewExporter exporter =
                 ExporterManager.getInstance().getExporter(exporterDescr.getExporterId());
         // execute the export process
-        exporter.export(stream, canvas, cameraViewport, scale, exporterDescr.getSubFormatId());
+        exporter.export(stream, canvas, cameraViewport, scale, textAsShapes,
+                exporterDescr.getSubFormatId());
 
     }
 
