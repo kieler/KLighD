@@ -110,7 +110,7 @@ public class KLabelImpl extends KGraphElementImpl implements KLabel {
      */
     public KLabeledGraphElement getParent() {
         if (eContainerFeatureID() != KGraphPackage.KLABEL__PARENT) return null;
-        return (KLabeledGraphElement)eContainer();
+        return (KLabeledGraphElement)eInternalContainer();
     }
 
     /**

@@ -103,7 +103,7 @@ public class KEdgeImpl extends KLabeledGraphElementImpl implements KEdge {
      */
     public KNode getSource() {
         if (eContainerFeatureID() != KGraphPackage.KEDGE__SOURCE) return null;
-        return (KNode)eContainer();
+        return (KNode)eInternalContainer();
     }
 
     /**
@@ -287,30 +287,6 @@ public class KEdgeImpl extends KLabeledGraphElementImpl implements KEdge {
         if (eNotificationRequired()) {
             eNotify(new ENotificationImpl(this, Notification.SET, KGraphPackage.KEDGE__TARGET_PORT, oldTargetPort, targetPort));
         }
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * {@inheritDoc}
-     * <!-- end-user-doc -->
-     * @generated NOT
-     * @deprecated See {@link KEdge#connectSourcePort(KPort)}
-     */
-    public void connectSourcePort(KPort port) {
-        setSource(port.getNode());
-        setSourcePort(port);
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * {@inheritDoc}
-     * <!-- end-user-doc -->
-     * @generated NOT
-     * @deprecated See {@link KEdge#connectTargetPort(KPort)}
-     */
-    public void connectTargetPort(KPort port) {
-        setTarget(port.getNode());
-        setTargetPort(port);
     }
 
     /**

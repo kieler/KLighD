@@ -80,12 +80,6 @@
     <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
       <details key="documentation" value="An edge must be assigned a source and a target node, but the source and target ports&#xA;are optional. The source and target references are opposite to the lists of outgoing and&#xA;incoming edges of nodes, respectively. The source and target port references are&#xA;not opposite to the ports' list of edges, but despite that, setting these references will&#xA;automatically update the edges reference of the corresponding port."/>
     </eAnnotations>
-    <eOperations name="connectSourcePort">
-      <eParameters name="port" lowerBound="1" eType="#//KPort"/>
-    </eOperations>
-    <eOperations name="connectTargetPort">
-      <eParameters name="port" lowerBound="1" eType="#//KPort"/>
-    </eOperations>
     <eStructuralFeatures xsi:type="ecore:EReference" name="source" lowerBound="1"
         eType="#//KNode" eOpposite="#//KNode/outgoingEdges">
       <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
