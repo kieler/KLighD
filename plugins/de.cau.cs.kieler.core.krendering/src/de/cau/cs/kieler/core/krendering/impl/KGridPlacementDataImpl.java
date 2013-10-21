@@ -87,7 +87,7 @@ public class KGridPlacementDataImpl extends KAreaPlacementDataImpl implements KG
      * @generated
      * @ordered
      */
-    protected static final Boolean FLEXIBLE_WIDTH_EDEFAULT = Boolean.FALSE;
+    protected static final Boolean FLEXIBLE_WIDTH_EDEFAULT = Boolean.TRUE;
 
     /**
      * The cached value of the '{@link #getFlexibleWidth() <em>Flexible Width</em>}' attribute.
@@ -107,7 +107,7 @@ public class KGridPlacementDataImpl extends KAreaPlacementDataImpl implements KG
      * @generated
      * @ordered
      */
-    protected static final Boolean FLEXIBLE_HEIGHT_EDEFAULT = Boolean.FALSE;
+    protected static final Boolean FLEXIBLE_HEIGHT_EDEFAULT = Boolean.TRUE;
 
     /**
      * The cached value of the '{@link #getFlexibleHeight() <em>Flexible Height</em>}' attribute.

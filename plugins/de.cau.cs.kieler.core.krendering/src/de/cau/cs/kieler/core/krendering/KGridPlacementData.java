@@ -101,7 +101,7 @@ public interface KGridPlacementData extends KAreaPlacementData {
 
     /**
      * Returns the value of the '<em><b>Flexible Width</b></em>' attribute.
-     * The default value is <code>"false"</code>.
+     * The default value is <code>"true"</code>.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * <!-- begin-model-doc -->
@@ -113,7 +113,7 @@ public interface KGridPlacementData extends KAreaPlacementData {
      * @return the value of the '<em>Flexible Width</em>' attribute.
      * @see #setFlexibleWidth(Boolean)
      * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKGridPlacementData_FlexibleWidth()
-     * @model default="false"
+     * @model default="true"
      * @generated
      */
     Boolean getFlexibleWidth();
@@ -130,7 +130,7 @@ public interface KGridPlacementData extends KAreaPlacementData {
 
     /**
      * Returns the value of the '<em><b>Flexible Height</b></em>' attribute.
-     * The default value is <code>"false"</code>.
+     * The default value is <code>"true"</code>.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * <!-- begin-model-doc -->
@@ -142,7 +142,7 @@ public interface KGridPlacementData extends KAreaPlacementData {
      * @return the value of the '<em>Flexible Height</em>' attribute.
      * @see #setFlexibleHeight(Boolean)
      * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKGridPlacementData_FlexibleHeight()
-     * @model default="false"
+     * @model default="true"
      * @generated
      */
     Boolean getFlexibleHeight();
