@@ -155,6 +155,12 @@ public class KGraphSwitch<T> extends Switch<T> {
                 if (result == null) result = defaultCase(theEObject);
                 return result;
             }
+            case KGraphPackage.IPROPERTY_HOLDER: {
+                IPropertyHolder iPropertyHolder = (IPropertyHolder)theEObject;
+                T result = caseIPropertyHolder(iPropertyHolder);
+                if (result == null) result = defaultCase(theEObject);
+                return result;
+            }
             case KGraphPackage.PERSISTENT_ENTRY: {
                 PersistentEntry persistentEntry = (PersistentEntry)theEObject;
                 T result = casePersistentEntry(persistentEntry);
