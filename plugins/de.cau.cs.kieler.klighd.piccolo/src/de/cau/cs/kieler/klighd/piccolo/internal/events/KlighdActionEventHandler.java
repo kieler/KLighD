@@ -19,9 +19,9 @@ import com.google.common.collect.Iterables;
 
 import de.cau.cs.kieler.core.krendering.KAction;
 import de.cau.cs.kieler.core.krendering.KRendering;
-import de.cau.cs.kieler.kiml.config.ILayoutConfig;
 import de.cau.cs.kieler.klighd.IAction;
 import de.cau.cs.kieler.klighd.IAction.ActionContext;
+import de.cau.cs.kieler.klighd.IAction.ActionResult;
 import de.cau.cs.kieler.klighd.KlighdDataManager;
 import de.cau.cs.kieler.klighd.LightDiagramServices;
 import de.cau.cs.kieler.klighd.piccolo.internal.controller.AbstractKGERenderingController;
@@ -29,7 +29,6 @@ import de.cau.cs.kieler.klighd.piccolo.internal.events.KlighdMouseEventListener.
 import de.cau.cs.kieler.klighd.piccolo.viewer.PiccoloViewer;
 import de.cau.cs.kieler.klighd.triggers.KlighdStatusTrigger;
 import de.cau.cs.kieler.klighd.triggers.KlighdStatusTrigger.KlighdStatusState;
-import de.cau.cs.kieler.klighd.util.Iterables2;
 import edu.umd.cs.piccolo.event.PInputEvent;
 import edu.umd.cs.piccolo.event.PInputEventListener;
 
@@ -77,7 +76,7 @@ public class KlighdActionEventHandler implements PInputEventListener {
             }
             
             ActionContext context = null; // construct the context lazily when it is required
-            ILayoutConfig config = null;
+            ActionResult result = null;
             
             // this flag is used to track the successful execution of actions
             //  in order to enable animated diagram changes, the viewer must be informed to
@@ -95,11 +94,20 @@ public class KlighdActionEventHandler implements PInputEventListener {
                         }
                         if (!anyActionPerformed) {
                             viewer.setRecording(true);
-                            // the related 'setRecording(false) will be performed after the layout
+                            // the related 'setRecording(false)' will be performed after the layout
                             // application
                         }
-                        config = actionImpl.execute(context);
-                        anyActionPerformed = true;
+                        result = actionImpl.execute(context);
+
+                        if (result == null) {
+                            viewer.setRecording(false);
+                            final String msg = "KLighD action event handler: Execution of "
+                                    + actionImpl.getClass()
+                                    + " returned 'null', expected an IAction.ActionResult.";
+                            throw new IllegalResultException(msg);
+                        }
+
+                        anyActionPerformed = result.getActionPerformed();
                     } else {
                         continue;
                     }
@@ -110,9 +118,12 @@ public class KlighdActionEventHandler implements PInputEventListener {
                 // if no action has been performed, skip the layout update and return
                 return;
             }
+            
+            final boolean zoomToFit = result.getZoomToFit() != null
+                    ? result.getZoomToFit() : context.getViewContext().isZoomToFit();
 
             LightDiagramServices.layoutDiagram(viewer.getContextViewer().getCurrentViewContext(),
-                    Iterables2.singletonList(config));
+                    result.getAnimateLayout(), zoomToFit, result.getLayoutConfigs());
             
             KlighdStatusState state = new KlighdStatusState(KlighdStatusState.Status.UPDATE, viewer
                     .getContextViewer().getViewPartId(), viewer.getContextViewer()
@@ -120,6 +131,30 @@ public class KlighdActionEventHandler implements PInputEventListener {
             if (KlighdStatusTrigger.getInstance() != null) {
                 KlighdStatusTrigger.getInstance().trigger(state);
             }
+        }
+    }
+
+
+    /**
+     * A dedicated exception indicating an illegal result of a method.<br>
+     * It is currently thrown if implementations of {@link IAction#execute(ActionContext)} returns
+     * <code>null</code>.
+     * 
+     * @author chsch
+     */
+    public class IllegalResultException extends RuntimeException {
+
+        private static final long serialVersionUID = -5838587904577606037L;
+
+        /**
+         * Constructor.
+         * 
+         * @param msg
+         *            the detail message. The detail message is saved for later retrieval by the
+         *            {@link #getMessage()} method.
+         */
+        public IllegalResultException(final String msg) {
+            super(msg);
         }
     }
 }

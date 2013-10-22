@@ -13,11 +13,18 @@
  */
 package de.cau.cs.kieler.klighd;
 
+import java.util.List;
+
+import org.eclipse.jface.preference.IPreferenceStore;
+
+import com.google.common.collect.ImmutableList;
+
 import de.cau.cs.kieler.core.kgraph.KGraphPackage;
 import de.cau.cs.kieler.core.kgraph.KNode;
 import de.cau.cs.kieler.core.krendering.KRendering;
 import de.cau.cs.kieler.core.krendering.Trigger;
 import de.cau.cs.kieler.kiml.config.ILayoutConfig;
+import de.cau.cs.kieler.klighd.internal.preferences.KlighdPreferences;
 import de.cau.cs.kieler.klighd.util.ModelingUtil;
 
 /**
@@ -36,10 +43,13 @@ public interface IAction {
      * 
      * @param context
      *            an {@link ActionContext} instance providing various useful data.
-     * @return a specific {@link ILayoutConfig} to be incorporated while updating the layout after
-     *         the action has been performed, or <code>null</code>.
+     * @return an {@link ActionResult} providing {@link ILayoutConfig layout config(s)} to be
+     *         incorporated while updating the layout after the action has been performed, as well
+     *         as configurations of 'animateLayout', 'zoomToFit', etc.<br>
+     *         Use {@link ActionResult#createResult(boolean, ILayoutConfig...)} for creation.
      */
-    ILayoutConfig execute(ActionContext context);
+    ActionResult execute(ActionContext context);
+
 
     /**
      * This class comprises various useful data required for performing things in diagrams.
@@ -124,6 +134,156 @@ public interface IAction {
         public <T> T getDomainElement(final KNode viewElement) {
             return (T) this.viewer.getContextViewer().getCurrentViewContext()
                     .getSourceElement(viewElement);
+        }
+    }
+
+
+    /**
+     * Return type being expected by implementations of {@link IAction#execute(ActionContext)}.
+     * Besides {@link ILayoutConfig ILayoutConfigs}
+     * 
+     * @author chsch
+     */
+    public static final class ActionResult {
+        
+        private static final IPreferenceStore STORE = KlighdPlugin.getDefault().getPreferenceStore();
+        
+        private List<ILayoutConfig> layoutConfigs = null;
+        
+        private boolean actionPerformed = true;
+        private Boolean animateLayout = null;
+        private Boolean zoomToFit = null;
+        private Boolean zoomToFocus = null;
+        
+        private ActionResult(final boolean theActionPerformed) {
+            this.actionPerformed = theActionPerformed;
+        }
+        
+        private ActionResult(final boolean theActionPerformed, final List<ILayoutConfig> theConfigs) {
+            this.actionPerformed = theActionPerformed;
+            this.layoutConfigs = theConfigs;
+        }
+
+        /**
+         * Creates a new {@link ActionResult} instance .
+         * 
+         * @param actionPerformed
+         *            flag indicating whether the action actually performed changes on the diagram
+         * @param config
+         *            an optional {@link ILayoutConfig}, may be <code>null</code>
+         * @return the requested {@link ActionResult}
+         */
+        public static ActionResult createResult(final boolean actionPerformed,
+                final ILayoutConfig... config) {
+            return new ActionResult(actionPerformed, ImmutableList.<ILayoutConfig>copyOf(config));
+        }
+        
+        /**
+         * Schedule animation during the subsequent automatic layout run. 
+         * 
+         * @return <code>this</code> {@link ActionResult}
+         */
+        public ActionResult doAnimateLayout() {
+            this.animateLayout = true;
+            return this;
+        }
+        
+        /**
+         * Suppress animation during the subsequent automatic layout run. 
+         * 
+         * @return <code>this</code> {@link ActionResult}
+         */
+        public ActionResult dontAnimateLayout() {
+            this.animateLayout = false;
+            return this;
+        }
+        
+        /**
+         * Schedule zoomToFit during the subsequent automatic layout run. 
+         * 
+         * @return <code>this</code> {@link ActionResult}
+         */
+        public ActionResult doZoomToFit() {
+            this.zoomToFit = true;
+            this.zoomToFocus = true;
+            return this;
+        }
+        
+        /**
+         * Suppress zoomToFit during the subsequent automatic layout run. 
+         * 
+         * @return <code>this</code> {@link ActionResult}
+         */
+        public ActionResult dontZoomToFit() {
+            this.zoomToFit = false;
+            return this;
+        }
+        
+        /**
+         * Schedule zoomToFocus during the subsequent automatic layout run. 
+         * 
+         * @return <code>this</code> {@link ActionResult}
+         */
+        public ActionResult doZoomToFocus() {
+            this.zoomToFit = true;
+            this.zoomToFocus = true;
+            return this;
+        }
+        
+        /**
+         * Suppress zoomToFocus during the subsequent automatic layout run. 
+         * 
+         * @return <code>this</code> {@link ActionResult}
+         */
+        public ActionResult dontZoomToFocus() {
+            this.zoomToFocus = false;
+            return this;
+        }
+        
+        /**
+         * Getter.
+         * 
+         * @return the attached {@link ILayoutConfig}
+         */
+        public List<ILayoutConfig> getLayoutConfigs() {
+            return this.layoutConfigs;
+        }
+        
+        /**
+         * Getter.
+         * 
+         * @return the {@link #actionPerformed} flag
+         */
+        public boolean getActionPerformed() {
+            return this.actionPerformed;
+        }
+        
+        /**
+         * Getter.
+         * 
+         * @return the {@link #animateLayout} flag
+         */
+        public boolean getAnimateLayout() {
+            return this.animateLayout != null
+                    ? this.animateLayout : STORE.getBoolean(KlighdPreferences.ANIMATE_LAYOUT);
+        }
+        
+        /**
+         * Getter.
+         * 
+         * @return the {@link #zoomToFit} flag
+         */
+        public Boolean getZoomToFit() {
+            return this.zoomToFit;
+        }
+        
+        /**
+         * Getter.
+         * 
+         * @return the {@link #zoomToFocus} flag
+         */
+        public Boolean getZoomToFocus() {
+            return this.zoomToFocus;
         }
     }
 }
