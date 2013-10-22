@@ -638,7 +638,7 @@ public class TransformationsGraph {
         if (listOfPaths.size() == 0) {
             return null;
         }
-        Path shortestPath = listOfPaths.get(0);
+        Path shortestPath = Iterables.getFirst(Iterables.filter(listOfPaths, filter), null);
         for (Path path : Iterables.filter(listOfPaths, filter)) {
             if (path.edges.size() < shortestPath.edges.size()) {
                 shortestPath = path;
