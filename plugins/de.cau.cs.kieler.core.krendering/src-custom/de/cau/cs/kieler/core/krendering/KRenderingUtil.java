@@ -38,12 +38,12 @@ public final class KRenderingUtil {
         if (rendering.getPlacementData() != null) {
             return rendering.getPlacementData();
         } else if (PACKAGE.getKRenderingRef().isInstance(rendering)) {
-            // ... and the ref doen't contain explicit placement data
+            // ... and the ref doesn't contain explicit placement data
             final KRenderingRef ref = (KRenderingRef) rendering;
             if (ref.getRendering() == null) {
                 return null;
             } else {
-                return ((KRenderingRef) rendering).getRendering().getPlacementData();
+                return getPlacementData(((KRenderingRef) rendering).getRendering());
             }
         } else {
             return null;

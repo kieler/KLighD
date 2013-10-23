@@ -51,10 +51,10 @@ public class KPortRenderingController extends AbstractKGERenderingController<KPo
         KRendering currentRendering = getCurrentRendering();
         PNode renderingNode;
         if (currentRendering != null) {
-            renderingNode = handleAreaPlacementRendering(currentRendering,
+            renderingNode = handleAreaAndPointPlacementRendering(currentRendering,
                     Collections.<KStyle>emptyList(), repNode);
         } else {
-            renderingNode = handleAreaPlacementRendering(createDefaultPortRendering(),
+            renderingNode = handleAreaAndPointPlacementRendering(createDefaultPortRendering(),
                     Collections.<KStyle>emptyList(), repNode);
         }
         

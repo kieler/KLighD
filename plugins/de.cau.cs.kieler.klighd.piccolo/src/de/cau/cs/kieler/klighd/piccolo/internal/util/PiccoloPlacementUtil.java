@@ -21,11 +21,11 @@ import de.cau.cs.kieler.core.krendering.KPolyline;
 import de.cau.cs.kieler.core.krendering.KPosition;
 import de.cau.cs.kieler.core.krendering.KRendering;
 import de.cau.cs.kieler.core.krendering.KRenderingRef;
+import de.cau.cs.kieler.core.krendering.KRenderingUtil;
 import de.cau.cs.kieler.core.util.Pair;
 import de.cau.cs.kieler.klighd.microlayout.Bounds;
 import de.cau.cs.kieler.klighd.microlayout.PlacementUtil;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdPath;
-import edu.umd.cs.piccolo.util.PBounds;
 
 /**
  * A utility class for evaluating the placement of KRenderings.
@@ -60,9 +60,8 @@ public final class PiccoloPlacementUtil {
         // evaluate the points of the polyline inside the parent bounds
         Point2D[] points = new Point2D[line.getPoints().size()];
         int i = 0;
-        PBounds parentPBounds = new PBounds(parentBounds.toRectangle2D());
         for (KPosition point : line.getPoints()) {
-            points[i++] = PlacementUtil.evaluateKPosition(point, parentPBounds, true);
+            points[i++] = PlacementUtil.evaluateKPosition(point, parentBounds, true).toPoint2D();
         }
 
         return points;
@@ -144,7 +143,8 @@ public final class PiccoloPlacementUtil {
      * @return the desired {@link KDecoratorPlacementData}, or <code>null</code> if none are given.
      */
     public static KDecoratorPlacementData getDecoratorPlacementData(final KRendering rendering) {
-        KDecoratorPlacementData data = asDecoratorPlacementData(rendering.getPlacementData());
+        final KDecoratorPlacementData data = asDecoratorPlacementData(
+                KRenderingUtil.getPlacementData(rendering));
         if (data == null && rendering instanceof KRenderingRef) {
             return getDecoratorPlacementData(((KRenderingRef) rendering).getRendering());
         } else {

@@ -29,6 +29,7 @@ import org.eclipse.swt.graphics.RGB;
 import org.eclipse.ui.statushandlers.StatusManager;
 import org.osgi.framework.Bundle;
 
+import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
@@ -513,11 +514,11 @@ final class KGERenderingControllerHelper {
             return createDummy(parent, initialBounds);
         }
 
-        List<KStyle> renderingStyles = renderingReference.getStyles();
+        final List<KStyle> renderingStyles = renderingReference.getStyles();
 
         // determine the styles for propagation to child nodes
-        final List<KStyle> childPropagatedStyles = controller.determinePropagationStyles(
-                renderingStyles, propagatedStyles);
+        final List<KStyle> childPropagatedStyles = //controller.determinePropagationStyles(
+                Lists.newLinkedList(Iterables.concat(renderingStyles, propagatedStyles));
 
         // dispatch the rendering
         final PNodeController<?> pnodeController = controller.createRendering(rendering,
@@ -536,7 +537,7 @@ final class KGERenderingControllerHelper {
         return new PNodeController<PNode>(pnodeController.getNode()) {
 
             public void applyChanges(final Styles styles) {
-                pnodeController.applyChanges(styles);
+                // the bunch of work of super.applyChanges(styles) is not required here  
             }
             
             public void setBounds(final Bounds bounds) {

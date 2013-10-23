@@ -76,10 +76,10 @@ public class KNodeRenderingController extends AbstractKGERenderingController<KNo
         PNode renderingNode;
         // KPlacementData pd;
         if (currentRendering != null) {
-            renderingNode = handleAreaPlacementRendering(currentRendering,
+            renderingNode = handleAreaAndPointPlacementRendering(currentRendering,
                     Collections.<KStyle>emptyList(), repNode);
         } else {
-            renderingNode = handleAreaPlacementRendering(createDefaultNodeRendering(),
+            renderingNode = handleAreaAndPointPlacementRendering(createDefaultNodeRendering(),
                     Collections.<KStyle>emptyList(), repNode);
         }
 

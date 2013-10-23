@@ -188,7 +188,7 @@ public class KEdgeRenderingController extends AbstractKGERenderingController<KEd
         final PLayer junctionParent = new PLayer();
         
         // Create the junction point figure the usual way
-        final PNode junctionFigure = handleAreaPlacementRendering(jpR,
+        final PNode junctionFigure = handleAreaAndPointPlacementRendering(jpR,
                 Lists.<KStyle>newArrayList(), junctionParent);
 
         // Create a layer accommodating the concrete camera instances ... 
@@ -248,26 +248,18 @@ public class KEdgeRenderingController extends AbstractKGERenderingController<KEd
         // add further ones respectively
         for (int i = 0; i < missingJuncts; i++) {
             final PCamera cam = new PCamera();
-            
+
             // set the camera non-pickable as the junction points can be panned locally :-) 
             cam.setPickable(false);
-            
+
             // add the layer to be shown by the camera
             cam.addLayer(junctionParent);
-            
+
             // set the camera's bounds to width and height of the junction figure and move that
             //  leftward half the width & upward half the height in order to centrally align the
             //  junction point figure based on the given junction point coordinates
-            cam.setBounds(
-                    -junctionFigure.getWidth() / 2, -junctionFigure.getHeight() / 2,
-                     junctionFigure.getWidth(), junctionFigure.getHeight());
-            
-            // adapt the view transform accordingly in order to move the junctionFigure into the
-            //  area shown by the camera (cameras clip!)
-            cam.getViewTransformReference().setOffset(
-                    -junctionFigure.getX() - junctionFigure.getWidth() / 2,
-                    -junctionFigure.getY() - junctionFigure.getHeight() / 2);
-            
+            cam.setBounds(junctionFigure.getFullBounds());
+
             // put the camera into the "camera container" -> invalidates the parent -> the polyline 
             displayedJunctions.addChild(cam);
         }

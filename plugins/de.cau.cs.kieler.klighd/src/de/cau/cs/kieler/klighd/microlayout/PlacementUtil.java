@@ -14,6 +14,8 @@
 package de.cau.cs.kieler.klighd.microlayout;
 
 import static de.cau.cs.kieler.core.krendering.KRenderingUtil.asAreaPlacementData;
+import static de.cau.cs.kieler.core.krendering.KRenderingUtil.asPointPlacementData;
+import static de.cau.cs.kieler.core.krendering.KRenderingUtil.getPlacementData;
 import static de.cau.cs.kieler.core.krendering.KRenderingUtil.toNonNullBottomPosition;
 import static de.cau.cs.kieler.core.krendering.KRenderingUtil.toNonNullLeftPosition;
 import static de.cau.cs.kieler.core.krendering.KRenderingUtil.toNonNullRightPosition;
@@ -60,7 +62,6 @@ import de.cau.cs.kieler.core.krendering.KPosition;
 import de.cau.cs.kieler.core.krendering.KRendering;
 import de.cau.cs.kieler.core.krendering.KRenderingPackage;
 import de.cau.cs.kieler.core.krendering.KRenderingRef;
-import de.cau.cs.kieler.core.krendering.KRenderingUtil;
 import de.cau.cs.kieler.core.krendering.KText;
 import de.cau.cs.kieler.core.krendering.KTopPosition;
 import de.cau.cs.kieler.core.krendering.KXPosition;
@@ -94,7 +95,7 @@ public final class PlacementUtil {
      * 
      * @author mri, chsch
      */
-    static class Point {
+    public static class Point {
 
         /** the x-coordinate. */
         float x;
@@ -493,10 +494,14 @@ public final class PlacementUtil {
                 // find the biggest rendering in width and height
                 Bounds maxSize = new Bounds(givenBounds);
                 for (KRendering child : container.getChildren()) {
-                    if (child.getPlacementData() instanceof KPointPlacementData) {
-                        Bounds.max(maxSize, estimatePointPlacedChildSize(child));
-                    } else if (child.getPlacementData() instanceof KAreaPlacementData) {
-                        Bounds.max(maxSize, estimateAreaPlacedChildSize(child, givenBounds));
+                    final KPlacementData pd = getPlacementData(child); 
+                    if (pd instanceof KPointPlacementData) {
+                        Bounds.max(maxSize,
+                                estimatePointPlacedChildSize(child, (KPointPlacementData) pd));
+                    } else if (pd instanceof KAreaPlacementData) {
+                        Bounds.max(maxSize,
+                                estimateAreaPlacedChildSize(child, (KAreaPlacementData) pd,
+                                        givenBounds));
                     } else {
                         // in case no valid placement data are given we assume the size of the
                         // parent by the size of the child
@@ -512,7 +517,7 @@ public final class PlacementUtil {
             return givenBounds;
         }
     }
-
+    
     /**
      * Returns the minimal bounds for a KText.
      * 
@@ -688,14 +693,14 @@ public final class PlacementUtil {
      * Returns the required minimal size of a {@link KRendering} width attached
      * {@link KPointPlacementData}.
      * 
-     * @param container
+     * @param rendering
      *            the {@link KRendering} to be evaluated
+     * @param ppd the {@link KPointPlacementData} to be applied
      * 
      * @return the minimal required size
      */
-    private static Bounds estimatePointPlacedChildSize(final KRendering rendering) {
-        KPointPlacementData ppd = (KPointPlacementData) rendering.getPlacementData();
-
+    public static Bounds estimatePointPlacedChildSize(final KRendering rendering,
+            final KPointPlacementData ppd) {
         // determine minimal needed size of the child
         // for point-based placement the parent size does not matter for the size!
         final Bounds minimalSize = Bounds.of(ppd.getMinWidth(), ppd.getMinHeight());
@@ -791,14 +796,15 @@ public final class PlacementUtil {
      * 
      * @param container
      *            the {@link KRendering} to be evaluated
+     * @param apd
+     *            the {@link KAreaPlacementData} to be applied
      * @param givenBounds
      *            the size that is currently assigned to <code>rendering</code>'s container.
      * 
      * @return the minimal required size
      */
     private static Bounds estimateAreaPlacedChildSize(final KRendering rendering,
-            final Bounds initialSize) {
-        final KAreaPlacementData apd = (KAreaPlacementData) rendering.getPlacementData();
+            final KAreaPlacementData apd, final Bounds initialSize) {
 
         final Bounds cSize = evaluateAreaPlacement(apd, initialSize);
         // determine minimal needed size of the child
@@ -1130,14 +1136,13 @@ public final class PlacementUtil {
             final List<KRendering> children, final KRendering child) {
         Bounds bounds = null;
         if (placement == null) {
-            final KPlacementData pd = KRenderingUtil.getPlacementData(child);
-            final KPointPlacementData ppd = KRenderingUtil.asPointPlacementData(pd);
+            final KPlacementData pd = getPlacementData(child);
+            final KPointPlacementData ppd = asPointPlacementData(pd);
             if (ppd != null) {
                 bounds = evaluatePointPlacement(ppd,
                         PlacementUtil.estimateSize(child, new Bounds(0.0f, 0.0f)), parentBounds);
             } else {
-                bounds = evaluateAreaPlacement(asAreaPlacementData(child.getPlacementData()),
-                        parentBounds);
+                bounds = evaluateAreaPlacement(asAreaPlacementData(pd), parentBounds);
             }
         } else {
             bounds = new KRenderingSwitch<Bounds>() {

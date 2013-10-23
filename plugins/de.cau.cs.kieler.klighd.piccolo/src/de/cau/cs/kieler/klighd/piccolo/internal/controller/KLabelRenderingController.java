@@ -104,8 +104,8 @@ public class KLabelRenderingController extends AbstractKGERenderingController<KL
                 new PropertyChangeListener() {
                     public void propertyChange(final PropertyChangeEvent e) {
                         // calculate the new bounds of the rendering
-                        Bounds bounds = PlacementUtil.evaluateAreaPlacement(
-                                KRenderingUtil.asAreaPlacementData(rendering.getPlacementData()),
+                        Bounds bounds = PlacementUtil.evaluateAreaPlacement(KRenderingUtil
+                                .asAreaPlacementData(KRenderingUtil.getPlacementData(rendering)),
                                 parent.getBoundsReference());
                         // use the controller to apply the new bounds
                         controller.setBounds(bounds);
