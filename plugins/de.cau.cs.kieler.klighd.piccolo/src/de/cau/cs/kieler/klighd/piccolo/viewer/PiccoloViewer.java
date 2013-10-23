@@ -15,6 +15,7 @@ package de.cau.cs.kieler.klighd.piccolo.viewer;
 
 import java.awt.event.InputEvent;
 import java.awt.geom.Rectangle2D;
+import java.util.Iterator;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jface.action.Action;
@@ -47,6 +48,7 @@ import de.cau.cs.kieler.klighd.piccolo.Messages;
 import de.cau.cs.kieler.klighd.piccolo.internal.KlighdSWTGraphicsImpl;
 import de.cau.cs.kieler.klighd.piccolo.internal.activities.ZoomActivity;
 import de.cau.cs.kieler.klighd.piccolo.internal.controller.DiagramController;
+import de.cau.cs.kieler.klighd.piccolo.internal.controller.PNodeController;
 import de.cau.cs.kieler.klighd.piccolo.internal.events.KlighdActionEventHandler;
 import de.cau.cs.kieler.klighd.piccolo.internal.events.KlighdSimpleSelectionEventHandler;
 import de.cau.cs.kieler.klighd.piccolo.internal.events.PMouseWheelZoomEventHandler;
@@ -241,8 +243,13 @@ public class PiccoloViewer extends AbstractViewer<KNode> implements INodeSelecti
                 kText = Iterables.getFirst(ModelingUtil.eAllContentsOfType(kLabel, KText.class), null);
                 
                 if (kText != null) {
-                    styledText = (KlighdStyledText) labelNode.getRenderingController()
-                            .getPNodeController(kText).getNode();
+                    Iterator<PNodeController<?>> controllers 
+                            = labelNode.getRenderingController().getPNodeController(kText).iterator();
+                    if (controllers.hasNext()) {
+                        styledText = (KlighdStyledText) controllers.next().getNode();
+                    } else {
+                        kText = null;
+                    }
                 }
                 
             } else if (n instanceof KlighdStyledText) {

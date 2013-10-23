@@ -16,6 +16,7 @@ package de.cau.cs.kieler.klighd.piccolo.internal.controller;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -30,9 +31,10 @@ import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
 import com.google.common.base.Strings;
+import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
+import com.google.common.collect.Multimap;
 
 import de.cau.cs.kieler.core.kgraph.KGraphElement;
 import de.cau.cs.kieler.core.kgraph.KGraphPackage;
@@ -98,7 +100,8 @@ public abstract class AbstractKGERenderingController
      * The map is cleared in when the whole node is removed and this controller is disposed, see
      * references of {@link #removeAllPNodeControllers()}.
      */
-    private final Map<KRendering, PNodeController<? extends PNode>> pnodeControllers = Maps.newHashMap();
+    private final Multimap<KRendering, PNodeController<? extends PNode>> pnodeControllers
+            = ArrayListMultimap.create();
     
     /**
      * This attribute key is used to let the PNodes be aware of their related KRenderings in their
@@ -519,9 +522,8 @@ public abstract class AbstractKGERenderingController
         // in case styles of a detached KRendering are modified, e.g. if selection highlighting
         //  is removed from renderings that are not part of the diagram in the meantime
         //  'null' values may occur here 
-        PNodeController<? extends PNode> nodeController = getPNodeController(currentRendering);
-        if (nodeController != null) {
-            PNode node = nodeController.getNode();
+        for (PNodeController<?> nodeController : getPNodeController(currentRendering)) {
+            final PNode node = nodeController.getNode();
             if (node != null) {
                 node.invalidatePaint();
             }
@@ -534,8 +536,8 @@ public abstract class AbstractKGERenderingController
     private void updateStyles(final KRendering rendering, final Styles styles,
             final List<KStyle> propagatedStyles) {
 
-        PNodeController<?> controller = getPNodeController(rendering);
-        if (controller == null) {
+        final Collection<PNodeController<?>> controllers = getPNodeController(rendering);
+        if (controllers == null || controllers.isEmpty()) {
             return;
         }
 
@@ -559,7 +561,9 @@ public abstract class AbstractKGERenderingController
         styles.deriveStyles(determineRenderingStyles(renderingStyles, propagatedStyles));
         
         // apply the styles to the rendering
-        controller.applyChanges(styles);
+        for (PNodeController<?> controller : controllers) {
+            controller.applyChanges(styles);
+        }
         
         if (rendering instanceof KContainerRendering) {
             List<KStyle> childPropagatedStyles = null;
@@ -1031,7 +1035,7 @@ public abstract class AbstractKGERenderingController
      *            the {@link KRendering} key
      * @return the related {@link PNodeController} value
      */
-    public PNodeController<?> getPNodeController(final KRendering key) {
+    public Collection<PNodeController<?>> getPNodeController(final KRendering key) {
         return this.pnodeControllers.get(key);
     }
 
@@ -1042,7 +1046,7 @@ public abstract class AbstractKGERenderingController
      *            the key
      */
     private void removePNodeController(final KRendering key) {
-        this.pnodeControllers.remove(key);
+        this.pnodeControllers.removeAll(key);
     }
     
     /**
