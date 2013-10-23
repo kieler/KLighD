@@ -478,11 +478,11 @@ public final class PlacementUtil {
             // calculate the size of the referenced Rendering instead
             return estimateSize(((KRenderingRef) rendering).getRendering(), givenBounds);
         case KRenderingPackage.KCONTAINER_RENDERING:
-            KContainerRendering container = (KContainerRendering) rendering;
 
-            int placementId =
-                    container.getChildPlacement() != null ? container.getChildPlacement().eClass()
-                            .getClassifierID() : -1;
+            final KContainerRendering container = (KContainerRendering) rendering;
+            final int placementId = container.getChildPlacement() != null
+                    ? container.getChildPlacement().eClass().getClassifierID() : -1;
+
             switch (placementId) {
             case KRenderingPackage.KGRID_PLACEMENT:
                 // in case of a GridPlacement calculate the number of columns and rows of the grid
