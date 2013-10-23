@@ -134,6 +134,7 @@ public class KGraphParser extends AbstractContentAssistParser {
 					put(grammarAccess.getKChildAreaAccess().getGroup(), "rule__KChildArea__Group__0");
 					put(grammarAccess.getKTextAccess().getGroup(), "rule__KText__Group__0");
 					put(grammarAccess.getKTextAccess().getGroup_2(), "rule__KText__Group_2__0");
+					put(grammarAccess.getKTextAccess().getGroup_2_2(), "rule__KText__Group_2_2__0");
 					put(grammarAccess.getKRectangleAccess().getGroup(), "rule__KRectangle__Group__0");
 					put(grammarAccess.getKRoundedRectangleAccess().getGroup(), "rule__KRoundedRectangle__Group__0");
 					put(grammarAccess.getKRoundedRectangleAccess().getGroup_2(), "rule__KRoundedRectangle__Group_2__0");
@@ -324,6 +325,7 @@ public class KGraphParser extends AbstractContentAssistParser {
 					put(grammarAccess.getKContainerRenderingAccess().getChildrenAssignment_3_2(), "rule__KContainerRendering__ChildrenAssignment_3_2");
 					put(grammarAccess.getKRenderingRefAccess().getRenderingAssignment_2(), "rule__KRenderingRef__RenderingAssignment_2");
 					put(grammarAccess.getKTextAccess().getTextAssignment_2_1(), "rule__KText__TextAssignment_2_1");
+					put(grammarAccess.getKTextAccess().getCursorSelectableAssignment_2_2_1(), "rule__KText__CursorSelectableAssignment_2_2_1");
 					put(grammarAccess.getKRoundedRectangleAccess().getCornerWidthAssignment_2_1(), "rule__KRoundedRectangle__CornerWidthAssignment_2_1");
 					put(grammarAccess.getKRoundedRectangleAccess().getCornerHeightAssignment_2_3(), "rule__KRoundedRectangle__CornerHeightAssignment_2_3");
 					put(grammarAccess.getKArcAccess().getStartAngleAssignment_2_1(), "rule__KArc__StartAngleAssignment_2_1");

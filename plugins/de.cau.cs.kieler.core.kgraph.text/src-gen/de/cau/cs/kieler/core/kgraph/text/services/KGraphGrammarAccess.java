@@ -1676,13 +1676,17 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 		private final Keyword cLeftParenthesisKeyword_2_0 = (Keyword)cGroup_2.eContents().get(0);
 		private final Assignment cTextAssignment_2_1 = (Assignment)cGroup_2.eContents().get(1);
 		private final RuleCall cTextSTRINGTerminalRuleCall_2_1_0 = (RuleCall)cTextAssignment_2_1.eContents().get(0);
-		private final Keyword cRightParenthesisKeyword_2_2 = (Keyword)cGroup_2.eContents().get(2);
+		private final Group cGroup_2_2 = (Group)cGroup_2.eContents().get(2);
+		private final Keyword cCommaKeyword_2_2_0 = (Keyword)cGroup_2_2.eContents().get(0);
+		private final Assignment cCursorSelectableAssignment_2_2_1 = (Assignment)cGroup_2_2.eContents().get(1);
+		private final RuleCall cCursorSelectableBOOLEANTerminalRuleCall_2_2_1_0 = (RuleCall)cCursorSelectableAssignment_2_2_1.eContents().get(0);
+		private final Keyword cRightParenthesisKeyword_2_3 = (Keyword)cGroup_2.eContents().get(3);
 		
 		//KText:
-		//	{KText} "ktext" ("(" text=STRING ")")?;
+		//	{KText} "ktext" ("(" text=STRING ("," cursorSelectable=BOOLEAN)? ")")?;
 		public ParserRule getRule() { return rule; }
 
-		//{KText} "ktext" ("(" text=STRING ")")?
+		//{KText} "ktext" ("(" text=STRING ("," cursorSelectable=BOOLEAN)? ")")?
 		public Group getGroup() { return cGroup; }
 
 		//{KText}
@@ -1691,7 +1695,7 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 		//"ktext"
 		public Keyword getKtextKeyword_1() { return cKtextKeyword_1; }
 
-		//("(" text=STRING ")")?
+		//("(" text=STRING ("," cursorSelectable=BOOLEAN)? ")")?
 		public Group getGroup_2() { return cGroup_2; }
 
 		//"("
@@ -1703,8 +1707,20 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 		//STRING
 		public RuleCall getTextSTRINGTerminalRuleCall_2_1_0() { return cTextSTRINGTerminalRuleCall_2_1_0; }
 
+		//("," cursorSelectable=BOOLEAN)?
+		public Group getGroup_2_2() { return cGroup_2_2; }
+
+		//","
+		public Keyword getCommaKeyword_2_2_0() { return cCommaKeyword_2_2_0; }
+
+		//cursorSelectable=BOOLEAN
+		public Assignment getCursorSelectableAssignment_2_2_1() { return cCursorSelectableAssignment_2_2_1; }
+
+		//BOOLEAN
+		public RuleCall getCursorSelectableBOOLEANTerminalRuleCall_2_2_1_0() { return cCursorSelectableBOOLEANTerminalRuleCall_2_2_1_0; }
+
 		//")"
-		public Keyword getRightParenthesisKeyword_2_2() { return cRightParenthesisKeyword_2_2; }
+		public Keyword getRightParenthesisKeyword_2_3() { return cRightParenthesisKeyword_2_3; }
 	}
 
 	public class KRectangleElements extends AbstractParserRuleElementFinder {
@@ -5137,7 +5153,7 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//KText:
-	//	{KText} "ktext" ("(" text=STRING ")")?;
+	//	{KText} "ktext" ("(" text=STRING ("," cursorSelectable=BOOLEAN)? ")")?;
 	public KTextElements getKTextAccess() {
 		return (pKText != null) ? pKText : (pKText = new KTextElements());
 	}

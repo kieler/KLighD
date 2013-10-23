@@ -1498,7 +1498,12 @@ public abstract class AbstractKGraphSemanticSequencer extends AbstractDelegating
 	
 	/**
 	 * Constraint:
-	 *     (text=STRING? id=QualifiedID? persistentEntries+=PersistentEntry* (styles+=KStyle* actions+=KAction* placementData=KPlacementData?)?)
+	 *     (
+	 *         (text=STRING cursorSelectable=BOOLEAN?)? 
+	 *         id=QualifiedID? 
+	 *         persistentEntries+=PersistentEntry* 
+	 *         (styles+=KStyle* actions+=KAction* placementData=KPlacementData?)?
+	 *     )
 	 */
 	protected void sequence_KSimpleRendering_KText(EObject context, KText semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
@@ -1570,7 +1575,7 @@ public abstract class AbstractKGraphSemanticSequencer extends AbstractDelegating
 	
 	/**
 	 * Constraint:
-	 *     (text=STRING?)
+	 *     ((text=STRING cursorSelectable=BOOLEAN?)?)
 	 */
 	protected void sequence_KText(EObject context, KText semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);

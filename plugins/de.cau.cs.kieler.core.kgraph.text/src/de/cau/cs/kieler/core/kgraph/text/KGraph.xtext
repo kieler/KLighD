@@ -132,7 +132,7 @@ KChildArea returns KChildArea:
 
 KText returns KText:
 	{KText}
-	'ktext' ('(' text=STRING ')')?;
+	'ktext' ('(' text=STRING (',' cursorSelectable=BOOLEAN)? ')')?;
 
 KRectangle returns KRectangle:
 	{KRectangle}

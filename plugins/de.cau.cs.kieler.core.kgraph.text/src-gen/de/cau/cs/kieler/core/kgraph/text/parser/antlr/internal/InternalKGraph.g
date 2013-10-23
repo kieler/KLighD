@@ -3017,9 +3017,31 @@ ruleKText returns [EObject current=null]
 	    }
 
 )
-)	otherlv_4=')' 
+)(	otherlv_4=',' 
     {
-    	newLeafNode(otherlv_4, grammarAccess.getKTextAccess().getRightParenthesisKeyword_2_2());
+    	newLeafNode(otherlv_4, grammarAccess.getKTextAccess().getCommaKeyword_2_2_0());
+    }
+(
+(
+		lv_cursorSelectable_5_0=RULE_BOOLEAN
+		{
+			newLeafNode(lv_cursorSelectable_5_0, grammarAccess.getKTextAccess().getCursorSelectableBOOLEANTerminalRuleCall_2_2_1_0()); 
+		}
+		{
+	        if ($current==null) {
+	            $current = createModelElement(grammarAccess.getKTextRule());
+	        }
+       		setWithLastConsumed(
+       			$current, 
+       			"cursorSelectable",
+        		lv_cursorSelectable_5_0, 
+        		"BOOLEAN");
+	    }
+
+)
+))?	otherlv_6=')' 
+    {
+    	newLeafNode(otherlv_6, grammarAccess.getKTextAccess().getRightParenthesisKeyword_2_3());
     }
 )?)
 ;
