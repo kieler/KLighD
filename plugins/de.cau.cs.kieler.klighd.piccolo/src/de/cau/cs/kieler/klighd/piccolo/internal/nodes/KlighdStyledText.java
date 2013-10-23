@@ -107,12 +107,7 @@ public class KlighdStyledText extends PNode implements ITracingElement<KText> {
         this.text = theText;
         this.setFont(theFont != null ? theFont : KlighdConstants.DEFAULT_FONT);
     }
-    
-    
-    public FontData getFontData() {
-        return fontData;
-    }
-    
+
     /**
      * Get the text that is displayed by this node.
      * @return The text that is displayed.
@@ -141,6 +136,19 @@ public class KlighdStyledText extends PNode implements ITracingElement<KText> {
     }
 
     /**
+     * Provides the currently set pen color.<br>
+     * It's currently used in order configure the text widget enabling the cursor-based text
+     * selection, see
+     * {@link de.cau.cs.kieler.klighd.piccolo.viewer.PiccoloViewer.KlighdTextInputHandler
+     * PiccoloViewer.KlighdTextInputHandler}.
+     * 
+     * @return the current pen color {@link RGB}.
+     */
+    public RGB getPenColor() {
+        return penColor;
+    }
+
+    /**
      * Sets the current pen color.
      * 
      * @param color
@@ -154,14 +162,6 @@ public class KlighdStyledText extends PNode implements ITracingElement<KText> {
         penColor = color;
         // repaint();
         // firePropertyChange(PText.PROPERTY_CODE_TEXT_PAINT, PROPERTY_PAINT, oldPaint, penColor);
-    }
-    
-    /**
-     * Gets the current pen color.
-     * @return the pen color.
-     */
-    public RGB getPenColor() {
-        return penColor;
     }
 
     /**
@@ -238,6 +238,19 @@ public class KlighdStyledText extends PNode implements ITracingElement<KText> {
         paintGradient = newPaint;
         // repaint();
         // firePropertyChange(PROPERTY_CODE_PAINT, PROPERTY_PAINT, oldPaint, penPaintGradient);
+    }
+
+    /**
+     * Provides the currently set {@link FontData}.<br>
+     * It's currently used in order configure the text widget enabling the cursor-based text
+     * selection, see
+     * {@link de.cau.cs.kieler.klighd.piccolo.viewer.PiccoloViewer.KlighdTextInputHandler
+     * PiccoloViewer.KlighdTextInputHandler}.
+     * 
+     * @return the current {@link FontData}
+     */
+    public FontData getFontData() {
+        return fontData;
     }
 
     /**
