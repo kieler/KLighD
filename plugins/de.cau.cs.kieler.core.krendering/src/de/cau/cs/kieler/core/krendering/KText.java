@@ -27,6 +27,7 @@ package de.cau.cs.kieler.core.krendering;
  * The following features are supported:
  * <ul>
  *   <li>{@link de.cau.cs.kieler.core.krendering.KText#getText <em>Text</em>}</li>
+ *   <li>{@link de.cau.cs.kieler.core.krendering.KText#isCursorSelectable <em>Cursor Selectable</em>}</li>
  * </ul>
  * </p>
  *
@@ -63,5 +64,32 @@ public interface KText extends KRendering {
      * @generated
      */
     void setText(String value);
+
+    /**
+     * Returns the value of the '<em><b>Cursor Selectable</b></em>' attribute.
+     * The default value is <code>"false"</code>.
+     * <!-- begin-user-doc -->
+     * <p>
+     * If the meaning of the '<em>Cursor Selectable</em>' attribute isn't clear,
+     * there really should be more of a description here...
+     * </p>
+     * <!-- end-user-doc -->
+     * @return the value of the '<em>Cursor Selectable</em>' attribute.
+     * @see #setCursorSelectable(boolean)
+     * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKText_CursorSelectable()
+     * @model default="false"
+     * @generated
+     */
+    boolean isCursorSelectable();
+
+    /**
+     * Sets the value of the '{@link de.cau.cs.kieler.core.krendering.KText#isCursorSelectable <em>Cursor Selectable</em>}' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @param value the new value of the '<em>Cursor Selectable</em>' attribute.
+     * @see #isCursorSelectable()
+     * @generated
+     */
+    void setCursorSelectable(boolean value);
 
 } // KText

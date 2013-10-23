@@ -36,6 +36,7 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.jface.action.Action;
+import org.eclipse.jface.action.ActionContributionItem;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.preference.IPreferenceStore;
@@ -44,9 +45,11 @@ import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IEditorSite;
 import org.eclipse.ui.IFileEditorInput;
+import org.eclipse.ui.IPartListener;
 import org.eclipse.ui.IPathEditorInput;
 import org.eclipse.ui.IStorageEditorInput;
 import org.eclipse.ui.IURIEditorInput;
+import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.part.EditorPart;
 import org.eclipse.ui.statushandlers.StatusManager;
@@ -70,6 +73,7 @@ import de.cau.cs.kieler.klighd.viewers.ContextViewer;
  * An editor which is able to display models in light-weight diagrams.
  *
  * @author msp
+ * @author uru
  */
 public class DiagramEditorPart extends EditorPart implements IDiagramWorkbenchPart {
     
@@ -81,6 +85,10 @@ public class DiagramEditorPart extends EditorPart implements IDiagramWorkbenchPa
     private ContextViewer viewer;
     /** the dirty status of the editor. */
     private boolean dirty;
+    /** the global, common toolbar for all editors. */
+    private IToolBarManager toolBar;
+    /** a zoomToFit toolbar button exclusively for one instance of this editor part. */
+    private ActionContributionItem zoomItem;
 
     /**
      * Creates a diagram editor part.
@@ -112,8 +120,13 @@ public class DiagramEditorPart extends EditorPart implements IDiagramWorkbenchPa
         viewer = new ContextViewer(parent, "diagramEditor:" + getEditorInput().toString(), this);
         
         // add buttons to the editor toolbar
-        //  requires non-null 'viewer' field 
-        addButtons();
+        // requires non-null 'viewer' field
+        if (toolBar == null) {
+            toolBar = this.getEditorSite().getActionBars().getToolBarManager();
+            createButtons();
+            this.getEditorSite().getWorkbenchWindow().getPartService()
+                    .addPartListener(toolBarListener);
+        }
         
         // create a view context for the viewer
         ViewContext viewContext = LightDiagramServices.getInstance().createViewContext(
@@ -164,6 +177,7 @@ public class DiagramEditorPart extends EditorPart implements IDiagramWorkbenchPa
     @Override
     public void dispose() {
         unregisterResourceChangeListener();
+        getEditorSite().getWorkbenchWindow().getPartService().removePartListener(toolBarListener);
         
         if (viewer != null) {
             viewer.dispose();
@@ -421,13 +435,10 @@ public class DiagramEditorPart extends EditorPart implements IDiagramWorkbenchPa
     /**
      * Add the buttons to the tool bar.
      */
-    private void addButtons() {
-        final IToolBarManager toolBar = this.getEditorSite().getActionBars().getToolBarManager();
-
+    private void createButtons() {
         final IPreferenceStore preferenceStore = KlighdPlugin.getDefault().getPreferenceStore();
 
-        // toggle zoom to fit behavior
-        toolBar.add(new Action("Toggle Zoom to Fit", IAction.AS_CHECK_BOX) {
+        Action zoomToFitAction = new Action("Toggle Zoom to Fit", IAction.AS_CHECK_BOX) {
             // Constructor
             {
                 setImageDescriptor(KimlUiPlugin
@@ -455,6 +466,45 @@ public class DiagramEditorPart extends EditorPart implements IDiagramWorkbenchPa
 
                 }
             }
-        });
+        };
+        zoomToFitAction.setId("de.cau.cs.kieler.klighd.editor.zoomToFit.h" + hashCode());
+        // create the contribution item
+        zoomItem = new ActionContributionItem(zoomToFitAction);
     }
+
+    /**
+     * For edit parts only one common toolbar exists, hence we have to remove the buttons of one
+     * editor as soon as a different editor is activated and add our own buttons.
+     */
+    private IPartListener toolBarListener = new IPartListener() {
+
+        public void partOpened(final IWorkbenchPart part) {
+        }
+
+        public void partDeactivated(final IWorkbenchPart part) {
+            remove(part);
+        }
+
+        public void partClosed(final IWorkbenchPart part) {
+            remove(part);
+        }
+
+        public void partBroughtToTop(final IWorkbenchPart part) {
+        }
+
+        public void partActivated(final IWorkbenchPart part) {
+            if (part.equals(DiagramEditorPart.this)) {
+                toolBar.add(zoomItem);
+                toolBar.update(true);
+            }
+        }
+        
+        private void remove(final IWorkbenchPart part) {
+            if (part.equals(DiagramEditorPart.this)) {
+                toolBar.remove(zoomItem);
+                toolBar.update(true);
+            }
+        }
+    };
+    
 }
