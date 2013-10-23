@@ -32,6 +32,24 @@ public final class ModelingUtil {
     
 
     /**
+     * Returns an {@link Iterable} containing all recursively contained elements of type
+     * {@code value}'s type.
+     * 
+     * @param <T>
+     *            the required type of {@code value}
+     * @param value
+     *            the value
+     * @param clazz
+     *            the required type
+     * @return the requested {@link Iterable}
+     */
+    public static <T extends EObject> Iterable<T> eAllContentsOfType(final EObject value,
+            final Class<T> clazz) {
+        return Iterables2.toIterable(Iterators.filter(value.eAllContents(), clazz));
+    }
+
+    
+    /**
      * Returns an {@link Iterable} containing {@code value} itself and all recursively contained
      * elements.
      * 
