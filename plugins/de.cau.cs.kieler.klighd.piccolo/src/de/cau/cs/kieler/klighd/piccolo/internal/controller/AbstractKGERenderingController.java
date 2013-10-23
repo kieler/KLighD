@@ -985,8 +985,8 @@ public abstract class AbstractKGERenderingController
     protected List<KStyle> determineRenderingStyles(final List<KStyle> renderingStyles,
             final List<KStyle> propagatedStyles) {
         List<KStyle> combinedStyles = Lists.newLinkedList();
-        combinedStyles.addAll(propagatedStyles);
         combinedStyles.addAll(renderingStyles);
+        combinedStyles.addAll(propagatedStyles);
         return combinedStyles;
     }
 
