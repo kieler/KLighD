@@ -1095,7 +1095,7 @@ public abstract class AbstractKGERenderingController
      *            the {@link KRendering} key
      * @return the related {@link PNodeController} value
      */
-    private PNodeController<?> getPNodeController(final KRendering key) {
+    public PNodeController<?> getPNodeController(final KRendering key) {
         return this.pnodeControllers.get(key);
     }
 

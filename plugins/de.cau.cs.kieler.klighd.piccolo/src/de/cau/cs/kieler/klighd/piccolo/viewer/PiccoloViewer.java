@@ -39,7 +39,9 @@ import com.google.common.base.Predicates;
 import com.google.common.collect.Iterables;
 
 import de.cau.cs.kieler.core.kgraph.KGraphElement;
+import de.cau.cs.kieler.core.kgraph.KLabel;
 import de.cau.cs.kieler.core.kgraph.KNode;
+import de.cau.cs.kieler.core.krendering.KText;
 import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout;
 import de.cau.cs.kieler.klighd.piccolo.Messages;
 import de.cau.cs.kieler.klighd.piccolo.internal.KlighdSWTGraphicsImpl;
@@ -49,10 +51,12 @@ import de.cau.cs.kieler.klighd.piccolo.internal.events.KlighdActionEventHandler;
 import de.cau.cs.kieler.klighd.piccolo.internal.events.KlighdSimpleSelectionEventHandler;
 import de.cau.cs.kieler.klighd.piccolo.internal.events.PMouseWheelZoomEventHandler;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.ITracingElement;
+import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KLabelNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdCanvas;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdStyledText;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.PEmptyNode;
 import de.cau.cs.kieler.klighd.piccolo.ui.SaveAsImageAction;
+import de.cau.cs.kieler.klighd.util.ModelingUtil;
 import de.cau.cs.kieler.klighd.viewers.AbstractViewer;
 import de.cau.cs.kieler.klighd.viewers.ContextViewer;
 import de.cau.cs.kieler.klighd.views.DiagramViewPart;
@@ -170,7 +174,8 @@ public class PiccoloViewer extends AbstractViewer<KNode> implements INodeSelecti
         /**
          * node the committed text is linked to.
          */
-        private PNode node;
+        @SuppressWarnings("unused")
+        private KText node;
         
         /**
          * {@inheritDoc}
@@ -184,7 +189,7 @@ public class PiccoloViewer extends AbstractViewer<KNode> implements INodeSelecti
          * Set node currently linked to the textinput.
          * @param n node currently linked to the textinput.
          */
-        public void setNode(final PNode n) {
+        public void setNode(final KText n) {
             node = n;
         }
         
@@ -218,47 +223,65 @@ public class PiccoloViewer extends AbstractViewer<KNode> implements INodeSelecti
         }
         
         /**
-         * Sets position, style and text of the textinput widget to the text 
-         * element the mouse currently hovers over.
-         * @param event the event that triggered this update.
+         * Sets position, style and text of the textinput widget to the text element the mouse
+         * currently hovers over.
+         * 
+         * @param event
+         *            the event that triggered this update.
          */
         private void updateTextInput(final PInputEvent event) {
             PNode n = event.getPickedNode();
             
-            if (n instanceof KlighdStyledText) {
-                KlighdStyledText styledText = (KlighdStyledText) n;
-                textinput.setVisible(true);
+            KText kText = null;
+            KlighdStyledText styledText = null;
+            
+            if (n instanceof KLabelNode) {
+                final KLabelNode labelNode = (KLabelNode) n;
+                KLabel kLabel = labelNode.getGraphElement();
+                kText = Iterables.getFirst(ModelingUtil.eAllContentsOfType(kLabel, KText.class), null);
                 
-                //determine text value
-                String text = styledText.getText();
-                textinput.setText(text);
+                if (kText != null) {
+                    styledText = (KlighdStyledText) labelNode.getRenderingController()
+                            .getPNodeController(kText).getNode();
+                }
                 
-                //determine global position of the text element
-                Rectangle2D bounds = n.getGlobalBounds();
-                canvas.getCamera().getViewTransformReference().transform(bounds, bounds);
-                textinput.setLocation((int) bounds.getX(), (int) bounds.getY());
-                
-                //determine font data (i.e. font size)
-                FontData fd = new FontData(styledText.getFontData().toString());
-                fd.setHeight((int) Math.round((styledText.getFontData().getHeight()
-                        * canvas.getCamera().getViewScale())));
-                textinput.setSize(textinput.computeSize(SWT.DEFAULT, SWT.DEFAULT));
-                textinput.setFont(new Font(textinput.getDisplay(), fd));
-                
-                //determine text color
-                Color textColor = new Color(null, styledText.getPenColor());
-                textinput.setForeground(textColor);
-                
-                // link this currently selected node to verify listener
-                textinputlistener.setNode(n);
-            } else {
-                // set input widget invisible if mouse is not over a text element
-                textinput.setVisible(false);
+            } else if (n instanceof KlighdStyledText) {
+                styledText = (KlighdStyledText) n;
+                kText = styledText.getGraphElement();
             }
             
+            if (kText == null || !kText.isCursorSelectable()) {
+                    // set input widget invisible if mouse is not over a text element
+                    textinput.setVisible(false);
+                    return;
+            }
+                
+            String text = styledText.getText();
+            
+            //determine text value
+            textinput.setText(text);
+            
+            //determine global position of the text element
+            Rectangle2D bounds = n.getGlobalBounds();
+            canvas.getCamera().getViewTransformReference().transform(bounds, bounds);
+            textinput.setLocation((int) bounds.getX(), (int) bounds.getY());
+            
+            //determine font data (i.e. font size)
+            FontData fd = new FontData(styledText.getFontData().toString());
+            fd.setHeight((int) Math.round((styledText.getFontData().getHeight()
+                    * canvas.getCamera().getViewScale())));
+            textinput.setSize(textinput.computeSize(SWT.DEFAULT, SWT.DEFAULT));
+            textinput.setFont(new Font(textinput.getDisplay(), fd));
+            
+            //determine text color
+            Color textColor = new Color(textinput.getDisplay(), styledText.getPenColor());
+            textinput.setForeground(textColor);
+            
+            // link this currently selected node to verify listener
+            textinputlistener.setNode(kText);
+            
+            textinput.setVisible(true);
         }
-        
-        
     }
     
     /**
