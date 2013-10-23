@@ -22,7 +22,7 @@ import java.util.ArrayList;
 @SuppressWarnings("all")
 public class InternalKGraphParser extends AbstractInternalAntlrParser {
     public static final String[] tokenNames = new String[] {
-        "<invalid>", "<EOR>", "<DOWN>", "<UP>", "RULE_STRING", "RULE_DEGREES", "RULE_ALPHA", "RULE_BOOLEAN", "RULE_FSIZE", "RULE_NATURAL", "RULE_PERCENT", "RULE_RED", "RULE_GREEN", "RULE_BLUE", "RULE_ID", "RULE_TFLOAT", "RULE_ML_COMMENT", "RULE_SL_COMMENT", "RULE_WS", "'kgraph'", "'knode'", "'{'", "'}'", "'kedge'", "'('", "':'", "'->'", "')'", "'klabel'", "'kport'", "'='", "'['", "']'", "'pos'", "'x'", "'y'", "'size'", "'width'", "'height'", "'properties'", "'insets'", "'top'", "'bottom'", "'left'", "'right'", "'points'", "';'", "','", "'styles'", "'actions'", "'krendering'", "'*'", "'kchildArea'", "'ktext'", "'krectangle'", "'kroundedRectangle'", "'kellipse'", "'karc'", "'kcustomRendering'", "'kimage'", "'junction'", "'kpolyline'", "'kpolygon'", "'kroundedPolyline'", "'kspline'", "'modifier'", "'null'", "'propagate'", "'foreground'", "'background'", "'bold'", "'italic'", "'fontName'", "'scale'", "'fontSize'", "'underline'", "'hAlign'", "'vAlign'", "'invisible'", "'lineCap'", "'lineJoin'", "'lineStyle'", "'lineWidth'", "'rotation'", "'anchor'", "'shadow'", "'reference'", "'krenderingLibrary'", "'kstylesTemplate'", "'grid'", "'topLeftAnchor'", "'bottomRightAnchor'", "'columns'", "'areaData'", "'pointData'", "'referencePoint'", "'minimalWidth'", "'minimalHeight'", "'horizontalAlignment'", "'verticalAlignment'", "'horizontalMargin'", "'verticalMargin'", "'gridData'", "'minCellWidth'", "'minCellHeight'", "'maxCellWidth'", "'maxCellHeight'", "'decoratorData'", "'xoffset'", "'yoffset'", "'relativePos'", "'absolutePos'", "'rotateWithLine'", "'=>'", "'+'", "'.'", "'open'", "'chord'", "'pie'", "'center'", "'none'", "'single'", "'double'", "'error'", "'squiggle'", "'link'", "'solid'", "'dash'", "'dot'", "'dash-dot'", "'dash-dot-dot'", "'flat'", "'round'", "'square'", "'miter'", "'bevel'", "'singleClick'", "'doubleClick'"
+        "<invalid>", "<EOR>", "<DOWN>", "<UP>", "RULE_STRING", "RULE_DEGREES", "RULE_ALPHA", "RULE_BOOLEAN", "RULE_FSIZE", "RULE_NATURAL", "RULE_PERCENT", "RULE_RED", "RULE_GREEN", "RULE_BLUE", "RULE_ID", "RULE_TFLOAT", "RULE_ML_COMMENT", "RULE_SL_COMMENT", "RULE_WS", "'kgraph'", "'knode'", "'{'", "'}'", "'kedge'", "'('", "':'", "'->'", "')'", "'klabel'", "'kport'", "'='", "'['", "']'", "'pos'", "'x'", "'y'", "'size'", "'width'", "'height'", "'properties'", "'insets'", "'top'", "'bottom'", "'left'", "'right'", "'points'", "';'", "','", "'styles'", "'actions'", "'krendering'", "'*'", "'kchildArea'", "'ktext'", "'krectangle'", "'kroundedRectangle'", "'kellipse'", "'karc'", "'kcustomRendering'", "'kimage'", "'junction'", "'kpolyline'", "'kpolygon'", "'kroundedPolyline'", "'kspline'", "'modifier'", "'null'", "'propagate'", "'foreground'", "'background'", "'bold'", "'italic'", "'fontName'", "'scale'", "'fontSize'", "'underline'", "'hAlign'", "'vAlign'", "'invisible'", "'lineCap'", "'lineJoin'", "'lineStyle'", "'lineWidth'", "'rotation'", "'anchor'", "'shadow'", "'reference'", "'krenderingLibrary'", "'kstylesTemplate'", "'grid'", "'topLeftAnchor'", "'bottomRightAnchor'", "'columns'", "'areaData'", "'pointData'", "'referencePoint'", "'minimalWidth'", "'minimalHeight'", "'horizontalAlignment'", "'verticalAlignment'", "'horizontalMargin'", "'verticalMargin'", "'gridData'", "'minCellWidth'", "'minCellHeight'", "'flexibleWidth'", "'flexibleHeight'", "'decoratorData'", "'xoffset'", "'yoffset'", "'relativePos'", "'absolutePos'", "'rotateWithLine'", "'=>'", "'+'", "'.'", "'open'", "'chord'", "'pie'", "'center'", "'none'", "'single'", "'double'", "'error'", "'squiggle'", "'link'", "'solid'", "'dash'", "'dot'", "'dash-dot'", "'dash-dot-dot'", "'flat'", "'round'", "'square'", "'miter'", "'bevel'", "'singleClick'", "'doubleClick'"
     };
     public static final int RULE_ID=14;
     public static final int T__29=29;
@@ -8991,7 +8991,7 @@ public class InternalKGraphParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleKPolyline"
-    // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:3441:1: ruleKPolyline returns [EObject current=null] : ( (this_KSimplePolyline_0= ruleKSimplePolyline | this_KPolygon_1= ruleKPolygon | this_KRoundedBendsPolyline_2= ruleKRoundedBendsPolyline | this_KSpline_3= ruleKSpline ) ( (lv_id_4_0= ruleQualifiedID ) )? (otherlv_5= '[' ( (lv_persistentEntries_6_0= rulePersistentEntry ) )* otherlv_7= ']' )? (otherlv_8= '{' ( ( ( ( ({...}? => ( ({...}? => (otherlv_10= 'points' otherlv_11= ':' ( ( (lv_points_12_0= ruleKPosition ) ) (otherlv_13= ';' ( (lv_points_14_0= ruleKPosition ) ) )* )? ) ) ) ) | ({...}? => ( ({...}? => (otherlv_15= 'styles' otherlv_16= ':' ( (lv_styles_17_0= ruleKStyle ) )* ) ) ) ) | ({...}? => ( ({...}? => (otherlv_18= 'actions' otherlv_19= ':' ( (lv_actions_20_0= ruleKAction ) )* ) ) ) ) | ({...}? => ( ({...}? => ( (lv_placementData_21_0= ruleKPlacementData ) ) ) ) ) | ({...}? => ( ({...}? => ( (lv_childPlacement_22_0= ruleKPlacement ) ) ) ) ) )* ) ) ) (otherlv_23= 'junction' ( (lv_jointPointRendering_24_0= ruleKRendering ) ) )? ( (lv_children_25_0= ruleKRendering ) )* otherlv_26= '}' )? ) ;
+    // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:3441:1: ruleKPolyline returns [EObject current=null] : ( (this_KSimplePolyline_0= ruleKSimplePolyline | this_KPolygon_1= ruleKPolygon | this_KRoundedBendsPolyline_2= ruleKRoundedBendsPolyline | this_KSpline_3= ruleKSpline ) ( (lv_id_4_0= ruleQualifiedID ) )? (otherlv_5= '[' ( (lv_persistentEntries_6_0= rulePersistentEntry ) )* otherlv_7= ']' )? (otherlv_8= '{' ( ( ( ( ({...}? => ( ({...}? => (otherlv_10= 'points' otherlv_11= ':' ( ( (lv_points_12_0= ruleKPosition ) ) (otherlv_13= ';' ( (lv_points_14_0= ruleKPosition ) ) )* )? ) ) ) ) | ({...}? => ( ({...}? => (otherlv_15= 'styles' otherlv_16= ':' ( (lv_styles_17_0= ruleKStyle ) )* ) ) ) ) | ({...}? => ( ({...}? => (otherlv_18= 'actions' otherlv_19= ':' ( (lv_actions_20_0= ruleKAction ) )* ) ) ) ) | ({...}? => ( ({...}? => ( (lv_placementData_21_0= ruleKPlacementData ) ) ) ) ) | ({...}? => ( ({...}? => ( (lv_childPlacement_22_0= ruleKPlacement ) ) ) ) ) )* ) ) ) (otherlv_23= 'junction' ( (lv_junctionPointRendering_24_0= ruleKRendering ) ) )? ( (lv_children_25_0= ruleKRendering ) )* otherlv_26= '}' )? ) ;
     public final EObject ruleKPolyline() throws RecognitionException {
         EObject current = null;
 
@@ -9031,7 +9031,7 @@ public class InternalKGraphParser extends AbstractInternalAntlrParser {
 
         EObject lv_childPlacement_22_0 = null;
 
-        EObject lv_jointPointRendering_24_0 = null;
+        EObject lv_junctionPointRendering_24_0 = null;
 
         EObject lv_children_25_0 = null;
 
@@ -9039,11 +9039,11 @@ public class InternalKGraphParser extends AbstractInternalAntlrParser {
          enterRule(); 
             
         try {
-            // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:3444:28: ( ( (this_KSimplePolyline_0= ruleKSimplePolyline | this_KPolygon_1= ruleKPolygon | this_KRoundedBendsPolyline_2= ruleKRoundedBendsPolyline | this_KSpline_3= ruleKSpline ) ( (lv_id_4_0= ruleQualifiedID ) )? (otherlv_5= '[' ( (lv_persistentEntries_6_0= rulePersistentEntry ) )* otherlv_7= ']' )? (otherlv_8= '{' ( ( ( ( ({...}? => ( ({...}? => (otherlv_10= 'points' otherlv_11= ':' ( ( (lv_points_12_0= ruleKPosition ) ) (otherlv_13= ';' ( (lv_points_14_0= ruleKPosition ) ) )* )? ) ) ) ) | ({...}? => ( ({...}? => (otherlv_15= 'styles' otherlv_16= ':' ( (lv_styles_17_0= ruleKStyle ) )* ) ) ) ) | ({...}? => ( ({...}? => (otherlv_18= 'actions' otherlv_19= ':' ( (lv_actions_20_0= ruleKAction ) )* ) ) ) ) | ({...}? => ( ({...}? => ( (lv_placementData_21_0= ruleKPlacementData ) ) ) ) ) | ({...}? => ( ({...}? => ( (lv_childPlacement_22_0= ruleKPlacement ) ) ) ) ) )* ) ) ) (otherlv_23= 'junction' ( (lv_jointPointRendering_24_0= ruleKRendering ) ) )? ( (lv_children_25_0= ruleKRendering ) )* otherlv_26= '}' )? ) )
-            // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:3445:1: ( (this_KSimplePolyline_0= ruleKSimplePolyline | this_KPolygon_1= ruleKPolygon | this_KRoundedBendsPolyline_2= ruleKRoundedBendsPolyline | this_KSpline_3= ruleKSpline ) ( (lv_id_4_0= ruleQualifiedID ) )? (otherlv_5= '[' ( (lv_persistentEntries_6_0= rulePersistentEntry ) )* otherlv_7= ']' )? (otherlv_8= '{' ( ( ( ( ({...}? => ( ({...}? => (otherlv_10= 'points' otherlv_11= ':' ( ( (lv_points_12_0= ruleKPosition ) ) (otherlv_13= ';' ( (lv_points_14_0= ruleKPosition ) ) )* )? ) ) ) ) | ({...}? => ( ({...}? => (otherlv_15= 'styles' otherlv_16= ':' ( (lv_styles_17_0= ruleKStyle ) )* ) ) ) ) | ({...}? => ( ({...}? => (otherlv_18= 'actions' otherlv_19= ':' ( (lv_actions_20_0= ruleKAction ) )* ) ) ) ) | ({...}? => ( ({...}? => ( (lv_placementData_21_0= ruleKPlacementData ) ) ) ) ) | ({...}? => ( ({...}? => ( (lv_childPlacement_22_0= ruleKPlacement ) ) ) ) ) )* ) ) ) (otherlv_23= 'junction' ( (lv_jointPointRendering_24_0= ruleKRendering ) ) )? ( (lv_children_25_0= ruleKRendering ) )* otherlv_26= '}' )? )
+            // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:3444:28: ( ( (this_KSimplePolyline_0= ruleKSimplePolyline | this_KPolygon_1= ruleKPolygon | this_KRoundedBendsPolyline_2= ruleKRoundedBendsPolyline | this_KSpline_3= ruleKSpline ) ( (lv_id_4_0= ruleQualifiedID ) )? (otherlv_5= '[' ( (lv_persistentEntries_6_0= rulePersistentEntry ) )* otherlv_7= ']' )? (otherlv_8= '{' ( ( ( ( ({...}? => ( ({...}? => (otherlv_10= 'points' otherlv_11= ':' ( ( (lv_points_12_0= ruleKPosition ) ) (otherlv_13= ';' ( (lv_points_14_0= ruleKPosition ) ) )* )? ) ) ) ) | ({...}? => ( ({...}? => (otherlv_15= 'styles' otherlv_16= ':' ( (lv_styles_17_0= ruleKStyle ) )* ) ) ) ) | ({...}? => ( ({...}? => (otherlv_18= 'actions' otherlv_19= ':' ( (lv_actions_20_0= ruleKAction ) )* ) ) ) ) | ({...}? => ( ({...}? => ( (lv_placementData_21_0= ruleKPlacementData ) ) ) ) ) | ({...}? => ( ({...}? => ( (lv_childPlacement_22_0= ruleKPlacement ) ) ) ) ) )* ) ) ) (otherlv_23= 'junction' ( (lv_junctionPointRendering_24_0= ruleKRendering ) ) )? ( (lv_children_25_0= ruleKRendering ) )* otherlv_26= '}' )? ) )
+            // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:3445:1: ( (this_KSimplePolyline_0= ruleKSimplePolyline | this_KPolygon_1= ruleKPolygon | this_KRoundedBendsPolyline_2= ruleKRoundedBendsPolyline | this_KSpline_3= ruleKSpline ) ( (lv_id_4_0= ruleQualifiedID ) )? (otherlv_5= '[' ( (lv_persistentEntries_6_0= rulePersistentEntry ) )* otherlv_7= ']' )? (otherlv_8= '{' ( ( ( ( ({...}? => ( ({...}? => (otherlv_10= 'points' otherlv_11= ':' ( ( (lv_points_12_0= ruleKPosition ) ) (otherlv_13= ';' ( (lv_points_14_0= ruleKPosition ) ) )* )? ) ) ) ) | ({...}? => ( ({...}? => (otherlv_15= 'styles' otherlv_16= ':' ( (lv_styles_17_0= ruleKStyle ) )* ) ) ) ) | ({...}? => ( ({...}? => (otherlv_18= 'actions' otherlv_19= ':' ( (lv_actions_20_0= ruleKAction ) )* ) ) ) ) | ({...}? => ( ({...}? => ( (lv_placementData_21_0= ruleKPlacementData ) ) ) ) ) | ({...}? => ( ({...}? => ( (lv_childPlacement_22_0= ruleKPlacement ) ) ) ) ) )* ) ) ) (otherlv_23= 'junction' ( (lv_junctionPointRendering_24_0= ruleKRendering ) ) )? ( (lv_children_25_0= ruleKRendering ) )* otherlv_26= '}' )? )
             {
-            // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:3445:1: ( (this_KSimplePolyline_0= ruleKSimplePolyline | this_KPolygon_1= ruleKPolygon | this_KRoundedBendsPolyline_2= ruleKRoundedBendsPolyline | this_KSpline_3= ruleKSpline ) ( (lv_id_4_0= ruleQualifiedID ) )? (otherlv_5= '[' ( (lv_persistentEntries_6_0= rulePersistentEntry ) )* otherlv_7= ']' )? (otherlv_8= '{' ( ( ( ( ({...}? => ( ({...}? => (otherlv_10= 'points' otherlv_11= ':' ( ( (lv_points_12_0= ruleKPosition ) ) (otherlv_13= ';' ( (lv_points_14_0= ruleKPosition ) ) )* )? ) ) ) ) | ({...}? => ( ({...}? => (otherlv_15= 'styles' otherlv_16= ':' ( (lv_styles_17_0= ruleKStyle ) )* ) ) ) ) | ({...}? => ( ({...}? => (otherlv_18= 'actions' otherlv_19= ':' ( (lv_actions_20_0= ruleKAction ) )* ) ) ) ) | ({...}? => ( ({...}? => ( (lv_placementData_21_0= ruleKPlacementData ) ) ) ) ) | ({...}? => ( ({...}? => ( (lv_childPlacement_22_0= ruleKPlacement ) ) ) ) ) )* ) ) ) (otherlv_23= 'junction' ( (lv_jointPointRendering_24_0= ruleKRendering ) ) )? ( (lv_children_25_0= ruleKRendering ) )* otherlv_26= '}' )? )
-            // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:3445:2: (this_KSimplePolyline_0= ruleKSimplePolyline | this_KPolygon_1= ruleKPolygon | this_KRoundedBendsPolyline_2= ruleKRoundedBendsPolyline | this_KSpline_3= ruleKSpline ) ( (lv_id_4_0= ruleQualifiedID ) )? (otherlv_5= '[' ( (lv_persistentEntries_6_0= rulePersistentEntry ) )* otherlv_7= ']' )? (otherlv_8= '{' ( ( ( ( ({...}? => ( ({...}? => (otherlv_10= 'points' otherlv_11= ':' ( ( (lv_points_12_0= ruleKPosition ) ) (otherlv_13= ';' ( (lv_points_14_0= ruleKPosition ) ) )* )? ) ) ) ) | ({...}? => ( ({...}? => (otherlv_15= 'styles' otherlv_16= ':' ( (lv_styles_17_0= ruleKStyle ) )* ) ) ) ) | ({...}? => ( ({...}? => (otherlv_18= 'actions' otherlv_19= ':' ( (lv_actions_20_0= ruleKAction ) )* ) ) ) ) | ({...}? => ( ({...}? => ( (lv_placementData_21_0= ruleKPlacementData ) ) ) ) ) | ({...}? => ( ({...}? => ( (lv_childPlacement_22_0= ruleKPlacement ) ) ) ) ) )* ) ) ) (otherlv_23= 'junction' ( (lv_jointPointRendering_24_0= ruleKRendering ) ) )? ( (lv_children_25_0= ruleKRendering ) )* otherlv_26= '}' )?
+            // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:3445:1: ( (this_KSimplePolyline_0= ruleKSimplePolyline | this_KPolygon_1= ruleKPolygon | this_KRoundedBendsPolyline_2= ruleKRoundedBendsPolyline | this_KSpline_3= ruleKSpline ) ( (lv_id_4_0= ruleQualifiedID ) )? (otherlv_5= '[' ( (lv_persistentEntries_6_0= rulePersistentEntry ) )* otherlv_7= ']' )? (otherlv_8= '{' ( ( ( ( ({...}? => ( ({...}? => (otherlv_10= 'points' otherlv_11= ':' ( ( (lv_points_12_0= ruleKPosition ) ) (otherlv_13= ';' ( (lv_points_14_0= ruleKPosition ) ) )* )? ) ) ) ) | ({...}? => ( ({...}? => (otherlv_15= 'styles' otherlv_16= ':' ( (lv_styles_17_0= ruleKStyle ) )* ) ) ) ) | ({...}? => ( ({...}? => (otherlv_18= 'actions' otherlv_19= ':' ( (lv_actions_20_0= ruleKAction ) )* ) ) ) ) | ({...}? => ( ({...}? => ( (lv_placementData_21_0= ruleKPlacementData ) ) ) ) ) | ({...}? => ( ({...}? => ( (lv_childPlacement_22_0= ruleKPlacement ) ) ) ) ) )* ) ) ) (otherlv_23= 'junction' ( (lv_junctionPointRendering_24_0= ruleKRendering ) ) )? ( (lv_children_25_0= ruleKRendering ) )* otherlv_26= '}' )? )
+            // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:3445:2: (this_KSimplePolyline_0= ruleKSimplePolyline | this_KPolygon_1= ruleKPolygon | this_KRoundedBendsPolyline_2= ruleKRoundedBendsPolyline | this_KSpline_3= ruleKSpline ) ( (lv_id_4_0= ruleQualifiedID ) )? (otherlv_5= '[' ( (lv_persistentEntries_6_0= rulePersistentEntry ) )* otherlv_7= ']' )? (otherlv_8= '{' ( ( ( ( ({...}? => ( ({...}? => (otherlv_10= 'points' otherlv_11= ':' ( ( (lv_points_12_0= ruleKPosition ) ) (otherlv_13= ';' ( (lv_points_14_0= ruleKPosition ) ) )* )? ) ) ) ) | ({...}? => ( ({...}? => (otherlv_15= 'styles' otherlv_16= ':' ( (lv_styles_17_0= ruleKStyle ) )* ) ) ) ) | ({...}? => ( ({...}? => (otherlv_18= 'actions' otherlv_19= ':' ( (lv_actions_20_0= ruleKAction ) )* ) ) ) ) | ({...}? => ( ({...}? => ( (lv_placementData_21_0= ruleKPlacementData ) ) ) ) ) | ({...}? => ( ({...}? => ( (lv_childPlacement_22_0= ruleKPlacement ) ) ) ) ) )* ) ) ) (otherlv_23= 'junction' ( (lv_junctionPointRendering_24_0= ruleKRendering ) ) )? ( (lv_children_25_0= ruleKRendering ) )* otherlv_26= '}' )?
             {
             // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:3445:2: (this_KSimplePolyline_0= ruleKSimplePolyline | this_KPolygon_1= ruleKPolygon | this_KRoundedBendsPolyline_2= ruleKRoundedBendsPolyline | this_KSpline_3= ruleKSpline )
             int alt62=4;
@@ -9267,7 +9267,7 @@ public class InternalKGraphParser extends AbstractInternalAntlrParser {
 
             }
 
-            // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:3528:3: (otherlv_8= '{' ( ( ( ( ({...}? => ( ({...}? => (otherlv_10= 'points' otherlv_11= ':' ( ( (lv_points_12_0= ruleKPosition ) ) (otherlv_13= ';' ( (lv_points_14_0= ruleKPosition ) ) )* )? ) ) ) ) | ({...}? => ( ({...}? => (otherlv_15= 'styles' otherlv_16= ':' ( (lv_styles_17_0= ruleKStyle ) )* ) ) ) ) | ({...}? => ( ({...}? => (otherlv_18= 'actions' otherlv_19= ':' ( (lv_actions_20_0= ruleKAction ) )* ) ) ) ) | ({...}? => ( ({...}? => ( (lv_placementData_21_0= ruleKPlacementData ) ) ) ) ) | ({...}? => ( ({...}? => ( (lv_childPlacement_22_0= ruleKPlacement ) ) ) ) ) )* ) ) ) (otherlv_23= 'junction' ( (lv_jointPointRendering_24_0= ruleKRendering ) ) )? ( (lv_children_25_0= ruleKRendering ) )* otherlv_26= '}' )?
+            // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:3528:3: (otherlv_8= '{' ( ( ( ( ({...}? => ( ({...}? => (otherlv_10= 'points' otherlv_11= ':' ( ( (lv_points_12_0= ruleKPosition ) ) (otherlv_13= ';' ( (lv_points_14_0= ruleKPosition ) ) )* )? ) ) ) ) | ({...}? => ( ({...}? => (otherlv_15= 'styles' otherlv_16= ':' ( (lv_styles_17_0= ruleKStyle ) )* ) ) ) ) | ({...}? => ( ({...}? => (otherlv_18= 'actions' otherlv_19= ':' ( (lv_actions_20_0= ruleKAction ) )* ) ) ) ) | ({...}? => ( ({...}? => ( (lv_placementData_21_0= ruleKPlacementData ) ) ) ) ) | ({...}? => ( ({...}? => ( (lv_childPlacement_22_0= ruleKPlacement ) ) ) ) ) )* ) ) ) (otherlv_23= 'junction' ( (lv_junctionPointRendering_24_0= ruleKRendering ) ) )? ( (lv_children_25_0= ruleKRendering ) )* otherlv_26= '}' )?
             int alt73=2;
             int LA73_0 = input.LA(1);
 
@@ -9276,7 +9276,7 @@ public class InternalKGraphParser extends AbstractInternalAntlrParser {
             }
             switch (alt73) {
                 case 1 :
-                    // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:3528:5: otherlv_8= '{' ( ( ( ( ({...}? => ( ({...}? => (otherlv_10= 'points' otherlv_11= ':' ( ( (lv_points_12_0= ruleKPosition ) ) (otherlv_13= ';' ( (lv_points_14_0= ruleKPosition ) ) )* )? ) ) ) ) | ({...}? => ( ({...}? => (otherlv_15= 'styles' otherlv_16= ':' ( (lv_styles_17_0= ruleKStyle ) )* ) ) ) ) | ({...}? => ( ({...}? => (otherlv_18= 'actions' otherlv_19= ':' ( (lv_actions_20_0= ruleKAction ) )* ) ) ) ) | ({...}? => ( ({...}? => ( (lv_placementData_21_0= ruleKPlacementData ) ) ) ) ) | ({...}? => ( ({...}? => ( (lv_childPlacement_22_0= ruleKPlacement ) ) ) ) ) )* ) ) ) (otherlv_23= 'junction' ( (lv_jointPointRendering_24_0= ruleKRendering ) ) )? ( (lv_children_25_0= ruleKRendering ) )* otherlv_26= '}'
+                    // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:3528:5: otherlv_8= '{' ( ( ( ( ({...}? => ( ({...}? => (otherlv_10= 'points' otherlv_11= ':' ( ( (lv_points_12_0= ruleKPosition ) ) (otherlv_13= ';' ( (lv_points_14_0= ruleKPosition ) ) )* )? ) ) ) ) | ({...}? => ( ({...}? => (otherlv_15= 'styles' otherlv_16= ':' ( (lv_styles_17_0= ruleKStyle ) )* ) ) ) ) | ({...}? => ( ({...}? => (otherlv_18= 'actions' otherlv_19= ':' ( (lv_actions_20_0= ruleKAction ) )* ) ) ) ) | ({...}? => ( ({...}? => ( (lv_placementData_21_0= ruleKPlacementData ) ) ) ) ) | ({...}? => ( ({...}? => ( (lv_childPlacement_22_0= ruleKPlacement ) ) ) ) ) )* ) ) ) (otherlv_23= 'junction' ( (lv_junctionPointRendering_24_0= ruleKRendering ) ) )? ( (lv_children_25_0= ruleKRendering ) )* otherlv_26= '}'
                     {
                     otherlv_8=(Token)match(input,21,FollowSets000.FOLLOW_21_in_ruleKPolyline7955); 
 
@@ -9825,7 +9825,7 @@ public class InternalKGraphParser extends AbstractInternalAntlrParser {
 
                     }
 
-                    // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:3744:2: (otherlv_23= 'junction' ( (lv_jointPointRendering_24_0= ruleKRendering ) ) )?
+                    // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:3744:2: (otherlv_23= 'junction' ( (lv_junctionPointRendering_24_0= ruleKRendering ) ) )?
                     int alt71=2;
                     int LA71_0 = input.LA(1);
 
@@ -9834,23 +9834,23 @@ public class InternalKGraphParser extends AbstractInternalAntlrParser {
                     }
                     switch (alt71) {
                         case 1 :
-                            // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:3744:4: otherlv_23= 'junction' ( (lv_jointPointRendering_24_0= ruleKRendering ) )
+                            // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:3744:4: otherlv_23= 'junction' ( (lv_junctionPointRendering_24_0= ruleKRendering ) )
                             {
                             otherlv_23=(Token)match(input,60,FollowSets000.FOLLOW_60_in_ruleKPolyline8493); 
 
                                 	newLeafNode(otherlv_23, grammarAccess.getKPolylineAccess().getJunctionKeyword_3_2_0());
                                 
-                            // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:3748:1: ( (lv_jointPointRendering_24_0= ruleKRendering ) )
-                            // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:3749:1: (lv_jointPointRendering_24_0= ruleKRendering )
+                            // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:3748:1: ( (lv_junctionPointRendering_24_0= ruleKRendering ) )
+                            // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:3749:1: (lv_junctionPointRendering_24_0= ruleKRendering )
                             {
-                            // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:3749:1: (lv_jointPointRendering_24_0= ruleKRendering )
-                            // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:3750:3: lv_jointPointRendering_24_0= ruleKRendering
+                            // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:3749:1: (lv_junctionPointRendering_24_0= ruleKRendering )
+                            // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:3750:3: lv_junctionPointRendering_24_0= ruleKRendering
                             {
                              
-                            	        newCompositeNode(grammarAccess.getKPolylineAccess().getJointPointRenderingKRenderingParserRuleCall_3_2_1_0()); 
+                            	        newCompositeNode(grammarAccess.getKPolylineAccess().getJunctionPointRenderingKRenderingParserRuleCall_3_2_1_0()); 
                             	    
                             pushFollow(FollowSets000.FOLLOW_ruleKRendering_in_ruleKPolyline8514);
-                            lv_jointPointRendering_24_0=ruleKRendering();
+                            lv_junctionPointRendering_24_0=ruleKRendering();
 
                             state._fsp--;
 
@@ -9860,8 +9860,8 @@ public class InternalKGraphParser extends AbstractInternalAntlrParser {
                             	        }
                                    		set(
                                    			current, 
-                                   			"jointPointRendering",
-                                    		lv_jointPointRendering_24_0, 
+                                   			"junctionPointRendering",
+                                    		lv_junctionPointRendering_24_0, 
                                     		"KRendering");
                             	        afterParserOrEnumRuleCall();
                             	    
@@ -16140,7 +16140,7 @@ public class InternalKGraphParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleKGridPlacementData"
-    // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:6321:1: ruleKGridPlacementData returns [EObject current=null] : ( () otherlv_1= 'gridData' otherlv_2= ':' ( ( ( ( ({...}? => ( ({...}? => (otherlv_4= 'topLeftAnchor' otherlv_5= '=' ( (lv_topLeft_6_0= ruleKPosition ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_7= 'bottomRightAnchor' otherlv_8= '=' ( (lv_bottomRight_9_0= ruleKPosition ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_10= 'minCellWidth' otherlv_11= '=' ( (lv_minCellWidth_12_0= ruleFloat ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_13= 'minCellHeight' otherlv_14= '=' ( (lv_minCellHeight_15_0= ruleFloat ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_16= 'maxCellWidth' otherlv_17= '=' ( (lv_maxCellWidth_18_0= ruleFloat ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_19= 'maxCellHeight' otherlv_20= '=' ( (lv_maxCellHeight_21_0= ruleFloat ) ) ) ) ) ) )* ) ) ) ) ;
+    // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:6321:1: ruleKGridPlacementData returns [EObject current=null] : ( () otherlv_1= 'gridData' otherlv_2= ':' ( ( ( ( ({...}? => ( ({...}? => (otherlv_4= 'topLeftAnchor' otherlv_5= '=' ( (lv_topLeft_6_0= ruleKPosition ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_7= 'bottomRightAnchor' otherlv_8= '=' ( (lv_bottomRight_9_0= ruleKPosition ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_10= 'minCellWidth' otherlv_11= '=' ( (lv_minCellWidth_12_0= ruleFloat ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_13= 'minCellHeight' otherlv_14= '=' ( (lv_minCellHeight_15_0= ruleFloat ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_16= 'flexibleWidth' otherlv_17= '=' ( (lv_flexibleWidth_18_0= RULE_BOOLEAN ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_19= 'flexibleHeight' otherlv_20= '=' ( (lv_flexibleHeight_21_0= RULE_BOOLEAN ) ) ) ) ) ) )* ) ) ) ) ;
     public final EObject ruleKGridPlacementData() throws RecognitionException {
         EObject current = null;
 
@@ -16156,8 +16156,10 @@ public class InternalKGraphParser extends AbstractInternalAntlrParser {
         Token otherlv_14=null;
         Token otherlv_16=null;
         Token otherlv_17=null;
+        Token lv_flexibleWidth_18_0=null;
         Token otherlv_19=null;
         Token otherlv_20=null;
+        Token lv_flexibleHeight_21_0=null;
         EObject lv_topLeft_6_0 = null;
 
         EObject lv_bottomRight_9_0 = null;
@@ -16166,19 +16168,15 @@ public class InternalKGraphParser extends AbstractInternalAntlrParser {
 
         AntlrDatatypeRuleToken lv_minCellHeight_15_0 = null;
 
-        AntlrDatatypeRuleToken lv_maxCellWidth_18_0 = null;
-
-        AntlrDatatypeRuleToken lv_maxCellHeight_21_0 = null;
-
 
          enterRule(); 
             
         try {
-            // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:6324:28: ( ( () otherlv_1= 'gridData' otherlv_2= ':' ( ( ( ( ({...}? => ( ({...}? => (otherlv_4= 'topLeftAnchor' otherlv_5= '=' ( (lv_topLeft_6_0= ruleKPosition ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_7= 'bottomRightAnchor' otherlv_8= '=' ( (lv_bottomRight_9_0= ruleKPosition ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_10= 'minCellWidth' otherlv_11= '=' ( (lv_minCellWidth_12_0= ruleFloat ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_13= 'minCellHeight' otherlv_14= '=' ( (lv_minCellHeight_15_0= ruleFloat ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_16= 'maxCellWidth' otherlv_17= '=' ( (lv_maxCellWidth_18_0= ruleFloat ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_19= 'maxCellHeight' otherlv_20= '=' ( (lv_maxCellHeight_21_0= ruleFloat ) ) ) ) ) ) )* ) ) ) ) )
-            // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:6325:1: ( () otherlv_1= 'gridData' otherlv_2= ':' ( ( ( ( ({...}? => ( ({...}? => (otherlv_4= 'topLeftAnchor' otherlv_5= '=' ( (lv_topLeft_6_0= ruleKPosition ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_7= 'bottomRightAnchor' otherlv_8= '=' ( (lv_bottomRight_9_0= ruleKPosition ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_10= 'minCellWidth' otherlv_11= '=' ( (lv_minCellWidth_12_0= ruleFloat ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_13= 'minCellHeight' otherlv_14= '=' ( (lv_minCellHeight_15_0= ruleFloat ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_16= 'maxCellWidth' otherlv_17= '=' ( (lv_maxCellWidth_18_0= ruleFloat ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_19= 'maxCellHeight' otherlv_20= '=' ( (lv_maxCellHeight_21_0= ruleFloat ) ) ) ) ) ) )* ) ) ) )
+            // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:6324:28: ( ( () otherlv_1= 'gridData' otherlv_2= ':' ( ( ( ( ({...}? => ( ({...}? => (otherlv_4= 'topLeftAnchor' otherlv_5= '=' ( (lv_topLeft_6_0= ruleKPosition ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_7= 'bottomRightAnchor' otherlv_8= '=' ( (lv_bottomRight_9_0= ruleKPosition ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_10= 'minCellWidth' otherlv_11= '=' ( (lv_minCellWidth_12_0= ruleFloat ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_13= 'minCellHeight' otherlv_14= '=' ( (lv_minCellHeight_15_0= ruleFloat ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_16= 'flexibleWidth' otherlv_17= '=' ( (lv_flexibleWidth_18_0= RULE_BOOLEAN ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_19= 'flexibleHeight' otherlv_20= '=' ( (lv_flexibleHeight_21_0= RULE_BOOLEAN ) ) ) ) ) ) )* ) ) ) ) )
+            // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:6325:1: ( () otherlv_1= 'gridData' otherlv_2= ':' ( ( ( ( ({...}? => ( ({...}? => (otherlv_4= 'topLeftAnchor' otherlv_5= '=' ( (lv_topLeft_6_0= ruleKPosition ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_7= 'bottomRightAnchor' otherlv_8= '=' ( (lv_bottomRight_9_0= ruleKPosition ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_10= 'minCellWidth' otherlv_11= '=' ( (lv_minCellWidth_12_0= ruleFloat ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_13= 'minCellHeight' otherlv_14= '=' ( (lv_minCellHeight_15_0= ruleFloat ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_16= 'flexibleWidth' otherlv_17= '=' ( (lv_flexibleWidth_18_0= RULE_BOOLEAN ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_19= 'flexibleHeight' otherlv_20= '=' ( (lv_flexibleHeight_21_0= RULE_BOOLEAN ) ) ) ) ) ) )* ) ) ) )
             {
-            // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:6325:1: ( () otherlv_1= 'gridData' otherlv_2= ':' ( ( ( ( ({...}? => ( ({...}? => (otherlv_4= 'topLeftAnchor' otherlv_5= '=' ( (lv_topLeft_6_0= ruleKPosition ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_7= 'bottomRightAnchor' otherlv_8= '=' ( (lv_bottomRight_9_0= ruleKPosition ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_10= 'minCellWidth' otherlv_11= '=' ( (lv_minCellWidth_12_0= ruleFloat ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_13= 'minCellHeight' otherlv_14= '=' ( (lv_minCellHeight_15_0= ruleFloat ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_16= 'maxCellWidth' otherlv_17= '=' ( (lv_maxCellWidth_18_0= ruleFloat ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_19= 'maxCellHeight' otherlv_20= '=' ( (lv_maxCellHeight_21_0= ruleFloat ) ) ) ) ) ) )* ) ) ) )
-            // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:6325:2: () otherlv_1= 'gridData' otherlv_2= ':' ( ( ( ( ({...}? => ( ({...}? => (otherlv_4= 'topLeftAnchor' otherlv_5= '=' ( (lv_topLeft_6_0= ruleKPosition ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_7= 'bottomRightAnchor' otherlv_8= '=' ( (lv_bottomRight_9_0= ruleKPosition ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_10= 'minCellWidth' otherlv_11= '=' ( (lv_minCellWidth_12_0= ruleFloat ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_13= 'minCellHeight' otherlv_14= '=' ( (lv_minCellHeight_15_0= ruleFloat ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_16= 'maxCellWidth' otherlv_17= '=' ( (lv_maxCellWidth_18_0= ruleFloat ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_19= 'maxCellHeight' otherlv_20= '=' ( (lv_maxCellHeight_21_0= ruleFloat ) ) ) ) ) ) )* ) ) )
+            // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:6325:1: ( () otherlv_1= 'gridData' otherlv_2= ':' ( ( ( ( ({...}? => ( ({...}? => (otherlv_4= 'topLeftAnchor' otherlv_5= '=' ( (lv_topLeft_6_0= ruleKPosition ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_7= 'bottomRightAnchor' otherlv_8= '=' ( (lv_bottomRight_9_0= ruleKPosition ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_10= 'minCellWidth' otherlv_11= '=' ( (lv_minCellWidth_12_0= ruleFloat ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_13= 'minCellHeight' otherlv_14= '=' ( (lv_minCellHeight_15_0= ruleFloat ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_16= 'flexibleWidth' otherlv_17= '=' ( (lv_flexibleWidth_18_0= RULE_BOOLEAN ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_19= 'flexibleHeight' otherlv_20= '=' ( (lv_flexibleHeight_21_0= RULE_BOOLEAN ) ) ) ) ) ) )* ) ) ) )
+            // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:6325:2: () otherlv_1= 'gridData' otherlv_2= ':' ( ( ( ( ({...}? => ( ({...}? => (otherlv_4= 'topLeftAnchor' otherlv_5= '=' ( (lv_topLeft_6_0= ruleKPosition ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_7= 'bottomRightAnchor' otherlv_8= '=' ( (lv_bottomRight_9_0= ruleKPosition ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_10= 'minCellWidth' otherlv_11= '=' ( (lv_minCellWidth_12_0= ruleFloat ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_13= 'minCellHeight' otherlv_14= '=' ( (lv_minCellHeight_15_0= ruleFloat ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_16= 'flexibleWidth' otherlv_17= '=' ( (lv_flexibleWidth_18_0= RULE_BOOLEAN ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_19= 'flexibleHeight' otherlv_20= '=' ( (lv_flexibleHeight_21_0= RULE_BOOLEAN ) ) ) ) ) ) )* ) ) )
             {
             // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:6325:2: ()
             // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:6326:5: 
@@ -16199,19 +16197,19 @@ public class InternalKGraphParser extends AbstractInternalAntlrParser {
 
                 	newLeafNode(otherlv_2, grammarAccess.getKGridPlacementDataAccess().getColonKeyword_2());
                 
-            // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:6339:1: ( ( ( ( ({...}? => ( ({...}? => (otherlv_4= 'topLeftAnchor' otherlv_5= '=' ( (lv_topLeft_6_0= ruleKPosition ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_7= 'bottomRightAnchor' otherlv_8= '=' ( (lv_bottomRight_9_0= ruleKPosition ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_10= 'minCellWidth' otherlv_11= '=' ( (lv_minCellWidth_12_0= ruleFloat ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_13= 'minCellHeight' otherlv_14= '=' ( (lv_minCellHeight_15_0= ruleFloat ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_16= 'maxCellWidth' otherlv_17= '=' ( (lv_maxCellWidth_18_0= ruleFloat ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_19= 'maxCellHeight' otherlv_20= '=' ( (lv_maxCellHeight_21_0= ruleFloat ) ) ) ) ) ) )* ) ) )
-            // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:6341:1: ( ( ( ({...}? => ( ({...}? => (otherlv_4= 'topLeftAnchor' otherlv_5= '=' ( (lv_topLeft_6_0= ruleKPosition ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_7= 'bottomRightAnchor' otherlv_8= '=' ( (lv_bottomRight_9_0= ruleKPosition ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_10= 'minCellWidth' otherlv_11= '=' ( (lv_minCellWidth_12_0= ruleFloat ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_13= 'minCellHeight' otherlv_14= '=' ( (lv_minCellHeight_15_0= ruleFloat ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_16= 'maxCellWidth' otherlv_17= '=' ( (lv_maxCellWidth_18_0= ruleFloat ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_19= 'maxCellHeight' otherlv_20= '=' ( (lv_maxCellHeight_21_0= ruleFloat ) ) ) ) ) ) )* ) )
+            // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:6339:1: ( ( ( ( ({...}? => ( ({...}? => (otherlv_4= 'topLeftAnchor' otherlv_5= '=' ( (lv_topLeft_6_0= ruleKPosition ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_7= 'bottomRightAnchor' otherlv_8= '=' ( (lv_bottomRight_9_0= ruleKPosition ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_10= 'minCellWidth' otherlv_11= '=' ( (lv_minCellWidth_12_0= ruleFloat ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_13= 'minCellHeight' otherlv_14= '=' ( (lv_minCellHeight_15_0= ruleFloat ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_16= 'flexibleWidth' otherlv_17= '=' ( (lv_flexibleWidth_18_0= RULE_BOOLEAN ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_19= 'flexibleHeight' otherlv_20= '=' ( (lv_flexibleHeight_21_0= RULE_BOOLEAN ) ) ) ) ) ) )* ) ) )
+            // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:6341:1: ( ( ( ({...}? => ( ({...}? => (otherlv_4= 'topLeftAnchor' otherlv_5= '=' ( (lv_topLeft_6_0= ruleKPosition ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_7= 'bottomRightAnchor' otherlv_8= '=' ( (lv_bottomRight_9_0= ruleKPosition ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_10= 'minCellWidth' otherlv_11= '=' ( (lv_minCellWidth_12_0= ruleFloat ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_13= 'minCellHeight' otherlv_14= '=' ( (lv_minCellHeight_15_0= ruleFloat ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_16= 'flexibleWidth' otherlv_17= '=' ( (lv_flexibleWidth_18_0= RULE_BOOLEAN ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_19= 'flexibleHeight' otherlv_20= '=' ( (lv_flexibleHeight_21_0= RULE_BOOLEAN ) ) ) ) ) ) )* ) )
             {
-            // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:6341:1: ( ( ( ({...}? => ( ({...}? => (otherlv_4= 'topLeftAnchor' otherlv_5= '=' ( (lv_topLeft_6_0= ruleKPosition ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_7= 'bottomRightAnchor' otherlv_8= '=' ( (lv_bottomRight_9_0= ruleKPosition ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_10= 'minCellWidth' otherlv_11= '=' ( (lv_minCellWidth_12_0= ruleFloat ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_13= 'minCellHeight' otherlv_14= '=' ( (lv_minCellHeight_15_0= ruleFloat ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_16= 'maxCellWidth' otherlv_17= '=' ( (lv_maxCellWidth_18_0= ruleFloat ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_19= 'maxCellHeight' otherlv_20= '=' ( (lv_maxCellHeight_21_0= ruleFloat ) ) ) ) ) ) )* ) )
-            // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:6342:2: ( ( ({...}? => ( ({...}? => (otherlv_4= 'topLeftAnchor' otherlv_5= '=' ( (lv_topLeft_6_0= ruleKPosition ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_7= 'bottomRightAnchor' otherlv_8= '=' ( (lv_bottomRight_9_0= ruleKPosition ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_10= 'minCellWidth' otherlv_11= '=' ( (lv_minCellWidth_12_0= ruleFloat ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_13= 'minCellHeight' otherlv_14= '=' ( (lv_minCellHeight_15_0= ruleFloat ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_16= 'maxCellWidth' otherlv_17= '=' ( (lv_maxCellWidth_18_0= ruleFloat ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_19= 'maxCellHeight' otherlv_20= '=' ( (lv_maxCellHeight_21_0= ruleFloat ) ) ) ) ) ) )* )
+            // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:6341:1: ( ( ( ({...}? => ( ({...}? => (otherlv_4= 'topLeftAnchor' otherlv_5= '=' ( (lv_topLeft_6_0= ruleKPosition ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_7= 'bottomRightAnchor' otherlv_8= '=' ( (lv_bottomRight_9_0= ruleKPosition ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_10= 'minCellWidth' otherlv_11= '=' ( (lv_minCellWidth_12_0= ruleFloat ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_13= 'minCellHeight' otherlv_14= '=' ( (lv_minCellHeight_15_0= ruleFloat ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_16= 'flexibleWidth' otherlv_17= '=' ( (lv_flexibleWidth_18_0= RULE_BOOLEAN ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_19= 'flexibleHeight' otherlv_20= '=' ( (lv_flexibleHeight_21_0= RULE_BOOLEAN ) ) ) ) ) ) )* ) )
+            // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:6342:2: ( ( ({...}? => ( ({...}? => (otherlv_4= 'topLeftAnchor' otherlv_5= '=' ( (lv_topLeft_6_0= ruleKPosition ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_7= 'bottomRightAnchor' otherlv_8= '=' ( (lv_bottomRight_9_0= ruleKPosition ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_10= 'minCellWidth' otherlv_11= '=' ( (lv_minCellWidth_12_0= ruleFloat ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_13= 'minCellHeight' otherlv_14= '=' ( (lv_minCellHeight_15_0= ruleFloat ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_16= 'flexibleWidth' otherlv_17= '=' ( (lv_flexibleWidth_18_0= RULE_BOOLEAN ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_19= 'flexibleHeight' otherlv_20= '=' ( (lv_flexibleHeight_21_0= RULE_BOOLEAN ) ) ) ) ) ) )* )
             {
              
             	  getUnorderedGroupHelper().enter(grammarAccess.getKGridPlacementDataAccess().getUnorderedGroup_3());
             	
-            // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:6345:2: ( ( ({...}? => ( ({...}? => (otherlv_4= 'topLeftAnchor' otherlv_5= '=' ( (lv_topLeft_6_0= ruleKPosition ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_7= 'bottomRightAnchor' otherlv_8= '=' ( (lv_bottomRight_9_0= ruleKPosition ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_10= 'minCellWidth' otherlv_11= '=' ( (lv_minCellWidth_12_0= ruleFloat ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_13= 'minCellHeight' otherlv_14= '=' ( (lv_minCellHeight_15_0= ruleFloat ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_16= 'maxCellWidth' otherlv_17= '=' ( (lv_maxCellWidth_18_0= ruleFloat ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_19= 'maxCellHeight' otherlv_20= '=' ( (lv_maxCellHeight_21_0= ruleFloat ) ) ) ) ) ) )* )
-            // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:6346:3: ( ({...}? => ( ({...}? => (otherlv_4= 'topLeftAnchor' otherlv_5= '=' ( (lv_topLeft_6_0= ruleKPosition ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_7= 'bottomRightAnchor' otherlv_8= '=' ( (lv_bottomRight_9_0= ruleKPosition ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_10= 'minCellWidth' otherlv_11= '=' ( (lv_minCellWidth_12_0= ruleFloat ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_13= 'minCellHeight' otherlv_14= '=' ( (lv_minCellHeight_15_0= ruleFloat ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_16= 'maxCellWidth' otherlv_17= '=' ( (lv_maxCellWidth_18_0= ruleFloat ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_19= 'maxCellHeight' otherlv_20= '=' ( (lv_maxCellHeight_21_0= ruleFloat ) ) ) ) ) ) )*
+            // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:6345:2: ( ( ({...}? => ( ({...}? => (otherlv_4= 'topLeftAnchor' otherlv_5= '=' ( (lv_topLeft_6_0= ruleKPosition ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_7= 'bottomRightAnchor' otherlv_8= '=' ( (lv_bottomRight_9_0= ruleKPosition ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_10= 'minCellWidth' otherlv_11= '=' ( (lv_minCellWidth_12_0= ruleFloat ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_13= 'minCellHeight' otherlv_14= '=' ( (lv_minCellHeight_15_0= ruleFloat ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_16= 'flexibleWidth' otherlv_17= '=' ( (lv_flexibleWidth_18_0= RULE_BOOLEAN ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_19= 'flexibleHeight' otherlv_20= '=' ( (lv_flexibleHeight_21_0= RULE_BOOLEAN ) ) ) ) ) ) )* )
+            // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:6346:3: ( ({...}? => ( ({...}? => (otherlv_4= 'topLeftAnchor' otherlv_5= '=' ( (lv_topLeft_6_0= ruleKPosition ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_7= 'bottomRightAnchor' otherlv_8= '=' ( (lv_bottomRight_9_0= ruleKPosition ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_10= 'minCellWidth' otherlv_11= '=' ( (lv_minCellWidth_12_0= ruleFloat ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_13= 'minCellHeight' otherlv_14= '=' ( (lv_minCellHeight_15_0= ruleFloat ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_16= 'flexibleWidth' otherlv_17= '=' ( (lv_flexibleWidth_18_0= RULE_BOOLEAN ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_19= 'flexibleHeight' otherlv_20= '=' ( (lv_flexibleHeight_21_0= RULE_BOOLEAN ) ) ) ) ) ) )*
             {
-            // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:6346:3: ( ({...}? => ( ({...}? => (otherlv_4= 'topLeftAnchor' otherlv_5= '=' ( (lv_topLeft_6_0= ruleKPosition ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_7= 'bottomRightAnchor' otherlv_8= '=' ( (lv_bottomRight_9_0= ruleKPosition ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_10= 'minCellWidth' otherlv_11= '=' ( (lv_minCellWidth_12_0= ruleFloat ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_13= 'minCellHeight' otherlv_14= '=' ( (lv_minCellHeight_15_0= ruleFloat ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_16= 'maxCellWidth' otherlv_17= '=' ( (lv_maxCellWidth_18_0= ruleFloat ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_19= 'maxCellHeight' otherlv_20= '=' ( (lv_maxCellHeight_21_0= ruleFloat ) ) ) ) ) ) )*
+            // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:6346:3: ( ({...}? => ( ({...}? => (otherlv_4= 'topLeftAnchor' otherlv_5= '=' ( (lv_topLeft_6_0= ruleKPosition ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_7= 'bottomRightAnchor' otherlv_8= '=' ( (lv_bottomRight_9_0= ruleKPosition ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_10= 'minCellWidth' otherlv_11= '=' ( (lv_minCellWidth_12_0= ruleFloat ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_13= 'minCellHeight' otherlv_14= '=' ( (lv_minCellHeight_15_0= ruleFloat ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_16= 'flexibleWidth' otherlv_17= '=' ( (lv_flexibleWidth_18_0= RULE_BOOLEAN ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_19= 'flexibleHeight' otherlv_20= '=' ( (lv_flexibleHeight_21_0= RULE_BOOLEAN ) ) ) ) ) ) )*
             loop113:
             do {
                 int alt113=7;
@@ -16563,61 +16561,56 @@ public class InternalKGraphParser extends AbstractInternalAntlrParser {
             	    }
             	    break;
             	case 5 :
-            	    // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:6500:4: ({...}? => ( ({...}? => (otherlv_16= 'maxCellWidth' otherlv_17= '=' ( (lv_maxCellWidth_18_0= ruleFloat ) ) ) ) ) )
+            	    // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:6500:4: ({...}? => ( ({...}? => (otherlv_16= 'flexibleWidth' otherlv_17= '=' ( (lv_flexibleWidth_18_0= RULE_BOOLEAN ) ) ) ) ) )
             	    {
-            	    // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:6500:4: ({...}? => ( ({...}? => (otherlv_16= 'maxCellWidth' otherlv_17= '=' ( (lv_maxCellWidth_18_0= ruleFloat ) ) ) ) ) )
-            	    // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:6501:5: {...}? => ( ({...}? => (otherlv_16= 'maxCellWidth' otherlv_17= '=' ( (lv_maxCellWidth_18_0= ruleFloat ) ) ) ) )
+            	    // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:6500:4: ({...}? => ( ({...}? => (otherlv_16= 'flexibleWidth' otherlv_17= '=' ( (lv_flexibleWidth_18_0= RULE_BOOLEAN ) ) ) ) ) )
+            	    // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:6501:5: {...}? => ( ({...}? => (otherlv_16= 'flexibleWidth' otherlv_17= '=' ( (lv_flexibleWidth_18_0= RULE_BOOLEAN ) ) ) ) )
             	    {
             	    if ( ! getUnorderedGroupHelper().canSelect(grammarAccess.getKGridPlacementDataAccess().getUnorderedGroup_3(), 4) ) {
             	        throw new FailedPredicateException(input, "ruleKGridPlacementData", "getUnorderedGroupHelper().canSelect(grammarAccess.getKGridPlacementDataAccess().getUnorderedGroup_3(), 4)");
             	    }
-            	    // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:6501:115: ( ({...}? => (otherlv_16= 'maxCellWidth' otherlv_17= '=' ( (lv_maxCellWidth_18_0= ruleFloat ) ) ) ) )
-            	    // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:6502:6: ({...}? => (otherlv_16= 'maxCellWidth' otherlv_17= '=' ( (lv_maxCellWidth_18_0= ruleFloat ) ) ) )
+            	    // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:6501:115: ( ({...}? => (otherlv_16= 'flexibleWidth' otherlv_17= '=' ( (lv_flexibleWidth_18_0= RULE_BOOLEAN ) ) ) ) )
+            	    // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:6502:6: ({...}? => (otherlv_16= 'flexibleWidth' otherlv_17= '=' ( (lv_flexibleWidth_18_0= RULE_BOOLEAN ) ) ) )
             	    {
             	     
             	    	 				  getUnorderedGroupHelper().select(grammarAccess.getKGridPlacementDataAccess().getUnorderedGroup_3(), 4);
             	    	 				
-            	    // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:6505:6: ({...}? => (otherlv_16= 'maxCellWidth' otherlv_17= '=' ( (lv_maxCellWidth_18_0= ruleFloat ) ) ) )
-            	    // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:6505:7: {...}? => (otherlv_16= 'maxCellWidth' otherlv_17= '=' ( (lv_maxCellWidth_18_0= ruleFloat ) ) )
+            	    // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:6505:6: ({...}? => (otherlv_16= 'flexibleWidth' otherlv_17= '=' ( (lv_flexibleWidth_18_0= RULE_BOOLEAN ) ) ) )
+            	    // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:6505:7: {...}? => (otherlv_16= 'flexibleWidth' otherlv_17= '=' ( (lv_flexibleWidth_18_0= RULE_BOOLEAN ) ) )
             	    {
             	    if ( !((true)) ) {
             	        throw new FailedPredicateException(input, "ruleKGridPlacementData", "true");
             	    }
-            	    // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:6505:16: (otherlv_16= 'maxCellWidth' otherlv_17= '=' ( (lv_maxCellWidth_18_0= ruleFloat ) ) )
-            	    // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:6505:18: otherlv_16= 'maxCellWidth' otherlv_17= '=' ( (lv_maxCellWidth_18_0= ruleFloat ) )
+            	    // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:6505:16: (otherlv_16= 'flexibleWidth' otherlv_17= '=' ( (lv_flexibleWidth_18_0= RULE_BOOLEAN ) ) )
+            	    // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:6505:18: otherlv_16= 'flexibleWidth' otherlv_17= '=' ( (lv_flexibleWidth_18_0= RULE_BOOLEAN ) )
             	    {
             	    otherlv_16=(Token)match(input,105,FollowSets000.FOLLOW_105_in_ruleKGridPlacementData15334); 
 
-            	        	newLeafNode(otherlv_16, grammarAccess.getKGridPlacementDataAccess().getMaxCellWidthKeyword_3_4_0());
+            	        	newLeafNode(otherlv_16, grammarAccess.getKGridPlacementDataAccess().getFlexibleWidthKeyword_3_4_0());
             	        
             	    otherlv_17=(Token)match(input,30,FollowSets000.FOLLOW_30_in_ruleKGridPlacementData15346); 
 
             	        	newLeafNode(otherlv_17, grammarAccess.getKGridPlacementDataAccess().getEqualsSignKeyword_3_4_1());
             	        
-            	    // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:6513:1: ( (lv_maxCellWidth_18_0= ruleFloat ) )
-            	    // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:6514:1: (lv_maxCellWidth_18_0= ruleFloat )
+            	    // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:6513:1: ( (lv_flexibleWidth_18_0= RULE_BOOLEAN ) )
+            	    // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:6514:1: (lv_flexibleWidth_18_0= RULE_BOOLEAN )
             	    {
-            	    // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:6514:1: (lv_maxCellWidth_18_0= ruleFloat )
-            	    // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:6515:3: lv_maxCellWidth_18_0= ruleFloat
+            	    // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:6514:1: (lv_flexibleWidth_18_0= RULE_BOOLEAN )
+            	    // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:6515:3: lv_flexibleWidth_18_0= RULE_BOOLEAN
             	    {
-            	     
-            	    	        newCompositeNode(grammarAccess.getKGridPlacementDataAccess().getMaxCellWidthFloatParserRuleCall_3_4_2_0()); 
-            	    	    
-            	    pushFollow(FollowSets000.FOLLOW_ruleFloat_in_ruleKGridPlacementData15367);
-            	    lv_maxCellWidth_18_0=ruleFloat();
+            	    lv_flexibleWidth_18_0=(Token)match(input,RULE_BOOLEAN,FollowSets000.FOLLOW_RULE_BOOLEAN_in_ruleKGridPlacementData15363); 
 
-            	    state._fsp--;
-
+            	    			newLeafNode(lv_flexibleWidth_18_0, grammarAccess.getKGridPlacementDataAccess().getFlexibleWidthBOOLEANTerminalRuleCall_3_4_2_0()); 
+            	    		
 
             	    	        if (current==null) {
-            	    	            current = createModelElementForParent(grammarAccess.getKGridPlacementDataRule());
+            	    	            current = createModelElement(grammarAccess.getKGridPlacementDataRule());
             	    	        }
-            	           		set(
+            	           		setWithLastConsumed(
             	           			current, 
-            	           			"maxCellWidth",
-            	            		lv_maxCellWidth_18_0, 
-            	            		"Float");
-            	    	        afterParserOrEnumRuleCall();
+            	           			"flexibleWidth",
+            	            		lv_flexibleWidth_18_0, 
+            	            		"BOOLEAN");
             	    	    
 
             	    }
@@ -16644,61 +16637,56 @@ public class InternalKGraphParser extends AbstractInternalAntlrParser {
             	    }
             	    break;
             	case 6 :
-            	    // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:6538:4: ({...}? => ( ({...}? => (otherlv_19= 'maxCellHeight' otherlv_20= '=' ( (lv_maxCellHeight_21_0= ruleFloat ) ) ) ) ) )
+            	    // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:6538:4: ({...}? => ( ({...}? => (otherlv_19= 'flexibleHeight' otherlv_20= '=' ( (lv_flexibleHeight_21_0= RULE_BOOLEAN ) ) ) ) ) )
             	    {
-            	    // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:6538:4: ({...}? => ( ({...}? => (otherlv_19= 'maxCellHeight' otherlv_20= '=' ( (lv_maxCellHeight_21_0= ruleFloat ) ) ) ) ) )
-            	    // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:6539:5: {...}? => ( ({...}? => (otherlv_19= 'maxCellHeight' otherlv_20= '=' ( (lv_maxCellHeight_21_0= ruleFloat ) ) ) ) )
+            	    // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:6538:4: ({...}? => ( ({...}? => (otherlv_19= 'flexibleHeight' otherlv_20= '=' ( (lv_flexibleHeight_21_0= RULE_BOOLEAN ) ) ) ) ) )
+            	    // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:6539:5: {...}? => ( ({...}? => (otherlv_19= 'flexibleHeight' otherlv_20= '=' ( (lv_flexibleHeight_21_0= RULE_BOOLEAN ) ) ) ) )
             	    {
             	    if ( ! getUnorderedGroupHelper().canSelect(grammarAccess.getKGridPlacementDataAccess().getUnorderedGroup_3(), 5) ) {
             	        throw new FailedPredicateException(input, "ruleKGridPlacementData", "getUnorderedGroupHelper().canSelect(grammarAccess.getKGridPlacementDataAccess().getUnorderedGroup_3(), 5)");
             	    }
-            	    // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:6539:115: ( ({...}? => (otherlv_19= 'maxCellHeight' otherlv_20= '=' ( (lv_maxCellHeight_21_0= ruleFloat ) ) ) ) )
-            	    // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:6540:6: ({...}? => (otherlv_19= 'maxCellHeight' otherlv_20= '=' ( (lv_maxCellHeight_21_0= ruleFloat ) ) ) )
+            	    // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:6539:115: ( ({...}? => (otherlv_19= 'flexibleHeight' otherlv_20= '=' ( (lv_flexibleHeight_21_0= RULE_BOOLEAN ) ) ) ) )
+            	    // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:6540:6: ({...}? => (otherlv_19= 'flexibleHeight' otherlv_20= '=' ( (lv_flexibleHeight_21_0= RULE_BOOLEAN ) ) ) )
             	    {
             	     
             	    	 				  getUnorderedGroupHelper().select(grammarAccess.getKGridPlacementDataAccess().getUnorderedGroup_3(), 5);
             	    	 				
-            	    // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:6543:6: ({...}? => (otherlv_19= 'maxCellHeight' otherlv_20= '=' ( (lv_maxCellHeight_21_0= ruleFloat ) ) ) )
-            	    // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:6543:7: {...}? => (otherlv_19= 'maxCellHeight' otherlv_20= '=' ( (lv_maxCellHeight_21_0= ruleFloat ) ) )
+            	    // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:6543:6: ({...}? => (otherlv_19= 'flexibleHeight' otherlv_20= '=' ( (lv_flexibleHeight_21_0= RULE_BOOLEAN ) ) ) )
+            	    // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:6543:7: {...}? => (otherlv_19= 'flexibleHeight' otherlv_20= '=' ( (lv_flexibleHeight_21_0= RULE_BOOLEAN ) ) )
             	    {
             	    if ( !((true)) ) {
             	        throw new FailedPredicateException(input, "ruleKGridPlacementData", "true");
             	    }
-            	    // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:6543:16: (otherlv_19= 'maxCellHeight' otherlv_20= '=' ( (lv_maxCellHeight_21_0= ruleFloat ) ) )
-            	    // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:6543:18: otherlv_19= 'maxCellHeight' otherlv_20= '=' ( (lv_maxCellHeight_21_0= ruleFloat ) )
+            	    // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:6543:16: (otherlv_19= 'flexibleHeight' otherlv_20= '=' ( (lv_flexibleHeight_21_0= RULE_BOOLEAN ) ) )
+            	    // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:6543:18: otherlv_19= 'flexibleHeight' otherlv_20= '=' ( (lv_flexibleHeight_21_0= RULE_BOOLEAN ) )
             	    {
-            	    otherlv_19=(Token)match(input,106,FollowSets000.FOLLOW_106_in_ruleKGridPlacementData15435); 
+            	    otherlv_19=(Token)match(input,106,FollowSets000.FOLLOW_106_in_ruleKGridPlacementData15436); 
 
-            	        	newLeafNode(otherlv_19, grammarAccess.getKGridPlacementDataAccess().getMaxCellHeightKeyword_3_5_0());
+            	        	newLeafNode(otherlv_19, grammarAccess.getKGridPlacementDataAccess().getFlexibleHeightKeyword_3_5_0());
             	        
-            	    otherlv_20=(Token)match(input,30,FollowSets000.FOLLOW_30_in_ruleKGridPlacementData15447); 
+            	    otherlv_20=(Token)match(input,30,FollowSets000.FOLLOW_30_in_ruleKGridPlacementData15448); 
 
             	        	newLeafNode(otherlv_20, grammarAccess.getKGridPlacementDataAccess().getEqualsSignKeyword_3_5_1());
             	        
-            	    // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:6551:1: ( (lv_maxCellHeight_21_0= ruleFloat ) )
-            	    // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:6552:1: (lv_maxCellHeight_21_0= ruleFloat )
+            	    // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:6551:1: ( (lv_flexibleHeight_21_0= RULE_BOOLEAN ) )
+            	    // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:6552:1: (lv_flexibleHeight_21_0= RULE_BOOLEAN )
             	    {
-            	    // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:6552:1: (lv_maxCellHeight_21_0= ruleFloat )
-            	    // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:6553:3: lv_maxCellHeight_21_0= ruleFloat
+            	    // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:6552:1: (lv_flexibleHeight_21_0= RULE_BOOLEAN )
+            	    // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:6553:3: lv_flexibleHeight_21_0= RULE_BOOLEAN
             	    {
-            	     
-            	    	        newCompositeNode(grammarAccess.getKGridPlacementDataAccess().getMaxCellHeightFloatParserRuleCall_3_5_2_0()); 
-            	    	    
-            	    pushFollow(FollowSets000.FOLLOW_ruleFloat_in_ruleKGridPlacementData15468);
-            	    lv_maxCellHeight_21_0=ruleFloat();
+            	    lv_flexibleHeight_21_0=(Token)match(input,RULE_BOOLEAN,FollowSets000.FOLLOW_RULE_BOOLEAN_in_ruleKGridPlacementData15465); 
 
-            	    state._fsp--;
-
+            	    			newLeafNode(lv_flexibleHeight_21_0, grammarAccess.getKGridPlacementDataAccess().getFlexibleHeightBOOLEANTerminalRuleCall_3_5_2_0()); 
+            	    		
 
             	    	        if (current==null) {
-            	    	            current = createModelElementForParent(grammarAccess.getKGridPlacementDataRule());
+            	    	            current = createModelElement(grammarAccess.getKGridPlacementDataRule());
             	    	        }
-            	           		set(
+            	           		setWithLastConsumed(
             	           			current, 
-            	           			"maxCellHeight",
-            	            		lv_maxCellHeight_21_0, 
-            	            		"Float");
-            	    	        afterParserOrEnumRuleCall();
+            	           			"flexibleHeight",
+            	            		lv_flexibleHeight_21_0, 
+            	            		"BOOLEAN");
             	    	    
 
             	    }
@@ -16775,13 +16763,13 @@ public class InternalKGraphParser extends AbstractInternalAntlrParser {
             // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:6593:2: iv_ruleKDecoratorPlacementData= ruleKDecoratorPlacementData EOF
             {
              newCompositeNode(grammarAccess.getKDecoratorPlacementDataRule()); 
-            pushFollow(FollowSets000.FOLLOW_ruleKDecoratorPlacementData_in_entryRuleKDecoratorPlacementData15545);
+            pushFollow(FollowSets000.FOLLOW_ruleKDecoratorPlacementData_in_entryRuleKDecoratorPlacementData15547);
             iv_ruleKDecoratorPlacementData=ruleKDecoratorPlacementData();
 
             state._fsp--;
 
              current =iv_ruleKDecoratorPlacementData; 
-            match(input,EOF,FollowSets000.FOLLOW_EOF_in_entryRuleKDecoratorPlacementData15555); 
+            match(input,EOF,FollowSets000.FOLLOW_EOF_in_entryRuleKDecoratorPlacementData15557); 
 
             }
 
@@ -16853,11 +16841,11 @@ public class InternalKGraphParser extends AbstractInternalAntlrParser {
 
             }
 
-            otherlv_1=(Token)match(input,107,FollowSets000.FOLLOW_107_in_ruleKDecoratorPlacementData15601); 
+            otherlv_1=(Token)match(input,107,FollowSets000.FOLLOW_107_in_ruleKDecoratorPlacementData15603); 
 
                 	newLeafNode(otherlv_1, grammarAccess.getKDecoratorPlacementDataAccess().getDecoratorDataKeyword_1());
                 
-            otherlv_2=(Token)match(input,25,FollowSets000.FOLLOW_25_in_ruleKDecoratorPlacementData15613); 
+            otherlv_2=(Token)match(input,25,FollowSets000.FOLLOW_25_in_ruleKDecoratorPlacementData15615); 
 
                 	newLeafNode(otherlv_2, grammarAccess.getKDecoratorPlacementDataAccess().getColonKeyword_2());
                 
@@ -16927,11 +16915,11 @@ public class InternalKGraphParser extends AbstractInternalAntlrParser {
             	    // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:6632:16: (otherlv_4= 'xoffset' otherlv_5= '=' ( (lv_xOffset_6_0= ruleFloat ) ) )
             	    // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:6632:18: otherlv_4= 'xoffset' otherlv_5= '=' ( (lv_xOffset_6_0= ruleFloat ) )
             	    {
-            	    otherlv_4=(Token)match(input,108,FollowSets000.FOLLOW_108_in_ruleKDecoratorPlacementData15671); 
+            	    otherlv_4=(Token)match(input,108,FollowSets000.FOLLOW_108_in_ruleKDecoratorPlacementData15673); 
 
             	        	newLeafNode(otherlv_4, grammarAccess.getKDecoratorPlacementDataAccess().getXoffsetKeyword_3_0_0());
             	        
-            	    otherlv_5=(Token)match(input,30,FollowSets000.FOLLOW_30_in_ruleKDecoratorPlacementData15683); 
+            	    otherlv_5=(Token)match(input,30,FollowSets000.FOLLOW_30_in_ruleKDecoratorPlacementData15685); 
 
             	        	newLeafNode(otherlv_5, grammarAccess.getKDecoratorPlacementDataAccess().getEqualsSignKeyword_3_0_1());
             	        
@@ -16944,7 +16932,7 @@ public class InternalKGraphParser extends AbstractInternalAntlrParser {
             	     
             	    	        newCompositeNode(grammarAccess.getKDecoratorPlacementDataAccess().getXOffsetFloatParserRuleCall_3_0_2_0()); 
             	    	    
-            	    pushFollow(FollowSets000.FOLLOW_ruleFloat_in_ruleKDecoratorPlacementData15704);
+            	    pushFollow(FollowSets000.FOLLOW_ruleFloat_in_ruleKDecoratorPlacementData15706);
             	    lv_xOffset_6_0=ruleFloat();
 
             	    state._fsp--;
@@ -17008,11 +16996,11 @@ public class InternalKGraphParser extends AbstractInternalAntlrParser {
             	    // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:6670:16: (otherlv_7= 'yoffset' otherlv_8= '=' ( (lv_yOffset_9_0= ruleFloat ) ) )
             	    // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:6670:18: otherlv_7= 'yoffset' otherlv_8= '=' ( (lv_yOffset_9_0= ruleFloat ) )
             	    {
-            	    otherlv_7=(Token)match(input,109,FollowSets000.FOLLOW_109_in_ruleKDecoratorPlacementData15772); 
+            	    otherlv_7=(Token)match(input,109,FollowSets000.FOLLOW_109_in_ruleKDecoratorPlacementData15774); 
 
             	        	newLeafNode(otherlv_7, grammarAccess.getKDecoratorPlacementDataAccess().getYoffsetKeyword_3_1_0());
             	        
-            	    otherlv_8=(Token)match(input,30,FollowSets000.FOLLOW_30_in_ruleKDecoratorPlacementData15784); 
+            	    otherlv_8=(Token)match(input,30,FollowSets000.FOLLOW_30_in_ruleKDecoratorPlacementData15786); 
 
             	        	newLeafNode(otherlv_8, grammarAccess.getKDecoratorPlacementDataAccess().getEqualsSignKeyword_3_1_1());
             	        
@@ -17025,7 +17013,7 @@ public class InternalKGraphParser extends AbstractInternalAntlrParser {
             	     
             	    	        newCompositeNode(grammarAccess.getKDecoratorPlacementDataAccess().getYOffsetFloatParserRuleCall_3_1_2_0()); 
             	    	    
-            	    pushFollow(FollowSets000.FOLLOW_ruleFloat_in_ruleKDecoratorPlacementData15805);
+            	    pushFollow(FollowSets000.FOLLOW_ruleFloat_in_ruleKDecoratorPlacementData15807);
             	    lv_yOffset_9_0=ruleFloat();
 
             	    state._fsp--;
@@ -17089,11 +17077,11 @@ public class InternalKGraphParser extends AbstractInternalAntlrParser {
             	    // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:6708:16: (otherlv_10= 'width' otherlv_11= '=' ( (lv_width_12_0= ruleFloat ) ) )
             	    // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:6708:18: otherlv_10= 'width' otherlv_11= '=' ( (lv_width_12_0= ruleFloat ) )
             	    {
-            	    otherlv_10=(Token)match(input,37,FollowSets000.FOLLOW_37_in_ruleKDecoratorPlacementData15873); 
+            	    otherlv_10=(Token)match(input,37,FollowSets000.FOLLOW_37_in_ruleKDecoratorPlacementData15875); 
 
             	        	newLeafNode(otherlv_10, grammarAccess.getKDecoratorPlacementDataAccess().getWidthKeyword_3_2_0());
             	        
-            	    otherlv_11=(Token)match(input,30,FollowSets000.FOLLOW_30_in_ruleKDecoratorPlacementData15885); 
+            	    otherlv_11=(Token)match(input,30,FollowSets000.FOLLOW_30_in_ruleKDecoratorPlacementData15887); 
 
             	        	newLeafNode(otherlv_11, grammarAccess.getKDecoratorPlacementDataAccess().getEqualsSignKeyword_3_2_1());
             	        
@@ -17106,7 +17094,7 @@ public class InternalKGraphParser extends AbstractInternalAntlrParser {
             	     
             	    	        newCompositeNode(grammarAccess.getKDecoratorPlacementDataAccess().getWidthFloatParserRuleCall_3_2_2_0()); 
             	    	    
-            	    pushFollow(FollowSets000.FOLLOW_ruleFloat_in_ruleKDecoratorPlacementData15906);
+            	    pushFollow(FollowSets000.FOLLOW_ruleFloat_in_ruleKDecoratorPlacementData15908);
             	    lv_width_12_0=ruleFloat();
 
             	    state._fsp--;
@@ -17170,11 +17158,11 @@ public class InternalKGraphParser extends AbstractInternalAntlrParser {
             	    // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:6746:16: (otherlv_13= 'height' otherlv_14= '=' ( (lv_height_15_0= ruleFloat ) ) )
             	    // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:6746:18: otherlv_13= 'height' otherlv_14= '=' ( (lv_height_15_0= ruleFloat ) )
             	    {
-            	    otherlv_13=(Token)match(input,38,FollowSets000.FOLLOW_38_in_ruleKDecoratorPlacementData15974); 
+            	    otherlv_13=(Token)match(input,38,FollowSets000.FOLLOW_38_in_ruleKDecoratorPlacementData15976); 
 
             	        	newLeafNode(otherlv_13, grammarAccess.getKDecoratorPlacementDataAccess().getHeightKeyword_3_3_0());
             	        
-            	    otherlv_14=(Token)match(input,30,FollowSets000.FOLLOW_30_in_ruleKDecoratorPlacementData15986); 
+            	    otherlv_14=(Token)match(input,30,FollowSets000.FOLLOW_30_in_ruleKDecoratorPlacementData15988); 
 
             	        	newLeafNode(otherlv_14, grammarAccess.getKDecoratorPlacementDataAccess().getEqualsSignKeyword_3_3_1());
             	        
@@ -17187,7 +17175,7 @@ public class InternalKGraphParser extends AbstractInternalAntlrParser {
             	     
             	    	        newCompositeNode(grammarAccess.getKDecoratorPlacementDataAccess().getHeightFloatParserRuleCall_3_3_2_0()); 
             	    	    
-            	    pushFollow(FollowSets000.FOLLOW_ruleFloat_in_ruleKDecoratorPlacementData16007);
+            	    pushFollow(FollowSets000.FOLLOW_ruleFloat_in_ruleKDecoratorPlacementData16009);
             	    lv_height_15_0=ruleFloat();
 
             	    state._fsp--;
@@ -17251,11 +17239,11 @@ public class InternalKGraphParser extends AbstractInternalAntlrParser {
             	    // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:6784:16: (otherlv_16= 'relativePos' otherlv_17= '=' ( (lv_relative_18_0= ruleFloat ) ) )
             	    // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:6784:18: otherlv_16= 'relativePos' otherlv_17= '=' ( (lv_relative_18_0= ruleFloat ) )
             	    {
-            	    otherlv_16=(Token)match(input,110,FollowSets000.FOLLOW_110_in_ruleKDecoratorPlacementData16075); 
+            	    otherlv_16=(Token)match(input,110,FollowSets000.FOLLOW_110_in_ruleKDecoratorPlacementData16077); 
 
             	        	newLeafNode(otherlv_16, grammarAccess.getKDecoratorPlacementDataAccess().getRelativePosKeyword_3_4_0());
             	        
-            	    otherlv_17=(Token)match(input,30,FollowSets000.FOLLOW_30_in_ruleKDecoratorPlacementData16087); 
+            	    otherlv_17=(Token)match(input,30,FollowSets000.FOLLOW_30_in_ruleKDecoratorPlacementData16089); 
 
             	        	newLeafNode(otherlv_17, grammarAccess.getKDecoratorPlacementDataAccess().getEqualsSignKeyword_3_4_1());
             	        
@@ -17268,7 +17256,7 @@ public class InternalKGraphParser extends AbstractInternalAntlrParser {
             	     
             	    	        newCompositeNode(grammarAccess.getKDecoratorPlacementDataAccess().getRelativeFloatParserRuleCall_3_4_2_0()); 
             	    	    
-            	    pushFollow(FollowSets000.FOLLOW_ruleFloat_in_ruleKDecoratorPlacementData16108);
+            	    pushFollow(FollowSets000.FOLLOW_ruleFloat_in_ruleKDecoratorPlacementData16110);
             	    lv_relative_18_0=ruleFloat();
 
             	    state._fsp--;
@@ -17332,11 +17320,11 @@ public class InternalKGraphParser extends AbstractInternalAntlrParser {
             	    // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:6822:16: (otherlv_19= 'absolutePos' otherlv_20= '=' ( (lv_absolute_21_0= ruleFloat ) ) )
             	    // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:6822:18: otherlv_19= 'absolutePos' otherlv_20= '=' ( (lv_absolute_21_0= ruleFloat ) )
             	    {
-            	    otherlv_19=(Token)match(input,111,FollowSets000.FOLLOW_111_in_ruleKDecoratorPlacementData16176); 
+            	    otherlv_19=(Token)match(input,111,FollowSets000.FOLLOW_111_in_ruleKDecoratorPlacementData16178); 
 
             	        	newLeafNode(otherlv_19, grammarAccess.getKDecoratorPlacementDataAccess().getAbsolutePosKeyword_3_5_0());
             	        
-            	    otherlv_20=(Token)match(input,30,FollowSets000.FOLLOW_30_in_ruleKDecoratorPlacementData16188); 
+            	    otherlv_20=(Token)match(input,30,FollowSets000.FOLLOW_30_in_ruleKDecoratorPlacementData16190); 
 
             	        	newLeafNode(otherlv_20, grammarAccess.getKDecoratorPlacementDataAccess().getEqualsSignKeyword_3_5_1());
             	        
@@ -17349,7 +17337,7 @@ public class InternalKGraphParser extends AbstractInternalAntlrParser {
             	     
             	    	        newCompositeNode(grammarAccess.getKDecoratorPlacementDataAccess().getAbsoluteFloatParserRuleCall_3_5_2_0()); 
             	    	    
-            	    pushFollow(FollowSets000.FOLLOW_ruleFloat_in_ruleKDecoratorPlacementData16209);
+            	    pushFollow(FollowSets000.FOLLOW_ruleFloat_in_ruleKDecoratorPlacementData16211);
             	    lv_absolute_21_0=ruleFloat();
 
             	    state._fsp--;
@@ -17413,11 +17401,11 @@ public class InternalKGraphParser extends AbstractInternalAntlrParser {
             	    // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:6860:16: (otherlv_22= 'rotateWithLine' otherlv_23= '=' ( (lv_rotateWithLine_24_0= RULE_BOOLEAN ) ) )
             	    // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:6860:18: otherlv_22= 'rotateWithLine' otherlv_23= '=' ( (lv_rotateWithLine_24_0= RULE_BOOLEAN ) )
             	    {
-            	    otherlv_22=(Token)match(input,112,FollowSets000.FOLLOW_112_in_ruleKDecoratorPlacementData16277); 
+            	    otherlv_22=(Token)match(input,112,FollowSets000.FOLLOW_112_in_ruleKDecoratorPlacementData16279); 
 
             	        	newLeafNode(otherlv_22, grammarAccess.getKDecoratorPlacementDataAccess().getRotateWithLineKeyword_3_6_0());
             	        
-            	    otherlv_23=(Token)match(input,30,FollowSets000.FOLLOW_30_in_ruleKDecoratorPlacementData16289); 
+            	    otherlv_23=(Token)match(input,30,FollowSets000.FOLLOW_30_in_ruleKDecoratorPlacementData16291); 
 
             	        	newLeafNode(otherlv_23, grammarAccess.getKDecoratorPlacementDataAccess().getEqualsSignKeyword_3_6_1());
             	        
@@ -17427,7 +17415,7 @@ public class InternalKGraphParser extends AbstractInternalAntlrParser {
             	    // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:6869:1: (lv_rotateWithLine_24_0= RULE_BOOLEAN )
             	    // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:6870:3: lv_rotateWithLine_24_0= RULE_BOOLEAN
             	    {
-            	    lv_rotateWithLine_24_0=(Token)match(input,RULE_BOOLEAN,FollowSets000.FOLLOW_RULE_BOOLEAN_in_ruleKDecoratorPlacementData16306); 
+            	    lv_rotateWithLine_24_0=(Token)match(input,RULE_BOOLEAN,FollowSets000.FOLLOW_RULE_BOOLEAN_in_ruleKDecoratorPlacementData16308); 
 
             	    			newLeafNode(lv_rotateWithLine_24_0, grammarAccess.getKDecoratorPlacementDataAccess().getRotateWithLineBOOLEANTerminalRuleCall_3_6_2_0()); 
             	    		
@@ -17516,13 +17504,13 @@ public class InternalKGraphParser extends AbstractInternalAntlrParser {
             // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:6910:2: iv_ruleKAction= ruleKAction EOF
             {
              newCompositeNode(grammarAccess.getKActionRule()); 
-            pushFollow(FollowSets000.FOLLOW_ruleKAction_in_entryRuleKAction16388);
+            pushFollow(FollowSets000.FOLLOW_ruleKAction_in_entryRuleKAction16390);
             iv_ruleKAction=ruleKAction();
 
             state._fsp--;
 
              current =iv_ruleKAction; 
-            match(input,EOF,FollowSets000.FOLLOW_EOF_in_entryRuleKAction16398); 
+            match(input,EOF,FollowSets000.FOLLOW_EOF_in_entryRuleKAction16400); 
 
             }
 
@@ -17568,7 +17556,7 @@ public class InternalKGraphParser extends AbstractInternalAntlrParser {
              
             	        newCompositeNode(grammarAccess.getKActionAccess().getTriggerTriggerEnumRuleCall_0_0()); 
             	    
-            pushFollow(FollowSets000.FOLLOW_ruleTrigger_in_ruleKAction16444);
+            pushFollow(FollowSets000.FOLLOW_ruleTrigger_in_ruleKAction16446);
             lv_trigger_0_0=ruleTrigger();
 
             state._fsp--;
@@ -17590,7 +17578,7 @@ public class InternalKGraphParser extends AbstractInternalAntlrParser {
 
             }
 
-            otherlv_1=(Token)match(input,113,FollowSets000.FOLLOW_113_in_ruleKAction16456); 
+            otherlv_1=(Token)match(input,113,FollowSets000.FOLLOW_113_in_ruleKAction16458); 
 
                 	newLeafNode(otherlv_1, grammarAccess.getKActionAccess().getEqualsSignGreaterThanSignKeyword_1());
                 
@@ -17603,7 +17591,7 @@ public class InternalKGraphParser extends AbstractInternalAntlrParser {
              
             	        newCompositeNode(grammarAccess.getKActionAccess().getIdQualifiedIDParserRuleCall_2_0()); 
             	    
-            pushFollow(FollowSets000.FOLLOW_ruleQualifiedID_in_ruleKAction16477);
+            pushFollow(FollowSets000.FOLLOW_ruleQualifiedID_in_ruleKAction16479);
             lv_id_2_0=ruleQualifiedID();
 
             state._fsp--;
@@ -17658,13 +17646,13 @@ public class InternalKGraphParser extends AbstractInternalAntlrParser {
             // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:6971:2: iv_ruleKPosition= ruleKPosition EOF
             {
              newCompositeNode(grammarAccess.getKPositionRule()); 
-            pushFollow(FollowSets000.FOLLOW_ruleKPosition_in_entryRuleKPosition16513);
+            pushFollow(FollowSets000.FOLLOW_ruleKPosition_in_entryRuleKPosition16515);
             iv_ruleKPosition=ruleKPosition();
 
             state._fsp--;
 
              current =iv_ruleKPosition; 
-            match(input,EOF,FollowSets000.FOLLOW_EOF_in_entryRuleKPosition16523); 
+            match(input,EOF,FollowSets000.FOLLOW_EOF_in_entryRuleKPosition16525); 
 
             }
 
@@ -17710,7 +17698,7 @@ public class InternalKGraphParser extends AbstractInternalAntlrParser {
              
             	        newCompositeNode(grammarAccess.getKPositionAccess().getXKXPositionParserRuleCall_0_0()); 
             	    
-            pushFollow(FollowSets000.FOLLOW_ruleKXPosition_in_ruleKPosition16569);
+            pushFollow(FollowSets000.FOLLOW_ruleKXPosition_in_ruleKPosition16571);
             lv_x_0_0=ruleKXPosition();
 
             state._fsp--;
@@ -17732,7 +17720,7 @@ public class InternalKGraphParser extends AbstractInternalAntlrParser {
 
             }
 
-            otherlv_1=(Token)match(input,47,FollowSets000.FOLLOW_47_in_ruleKPosition16581); 
+            otherlv_1=(Token)match(input,47,FollowSets000.FOLLOW_47_in_ruleKPosition16583); 
 
                 	newLeafNode(otherlv_1, grammarAccess.getKPositionAccess().getCommaKeyword_1());
                 
@@ -17745,7 +17733,7 @@ public class InternalKGraphParser extends AbstractInternalAntlrParser {
              
             	        newCompositeNode(grammarAccess.getKPositionAccess().getYKYPositionParserRuleCall_2_0()); 
             	    
-            pushFollow(FollowSets000.FOLLOW_ruleKYPosition_in_ruleKPosition16602);
+            pushFollow(FollowSets000.FOLLOW_ruleKYPosition_in_ruleKPosition16604);
             lv_y_2_0=ruleKYPosition();
 
             state._fsp--;
@@ -17800,13 +17788,13 @@ public class InternalKGraphParser extends AbstractInternalAntlrParser {
             // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7032:2: iv_ruleKXPosition= ruleKXPosition EOF
             {
              newCompositeNode(grammarAccess.getKXPositionRule()); 
-            pushFollow(FollowSets000.FOLLOW_ruleKXPosition_in_entryRuleKXPosition16638);
+            pushFollow(FollowSets000.FOLLOW_ruleKXPosition_in_entryRuleKXPosition16640);
             iv_ruleKXPosition=ruleKXPosition();
 
             state._fsp--;
 
              current =iv_ruleKXPosition; 
-            match(input,EOF,FollowSets000.FOLLOW_EOF_in_entryRuleKXPosition16648); 
+            match(input,EOF,FollowSets000.FOLLOW_EOF_in_entryRuleKXPosition16650); 
 
             }
 
@@ -17870,7 +17858,7 @@ public class InternalKGraphParser extends AbstractInternalAntlrParser {
                      
                             newCompositeNode(grammarAccess.getKXPositionAccess().getKLeftPositionParserRuleCall_0_0()); 
                         
-                    pushFollow(FollowSets000.FOLLOW_ruleKLeftPosition_in_ruleKXPosition16696);
+                    pushFollow(FollowSets000.FOLLOW_ruleKLeftPosition_in_ruleKXPosition16698);
                     this_KLeftPosition_0=ruleKLeftPosition();
 
                     state._fsp--;
@@ -17888,7 +17876,7 @@ public class InternalKGraphParser extends AbstractInternalAntlrParser {
                      
                             newCompositeNode(grammarAccess.getKXPositionAccess().getKRightPositionParserRuleCall_0_1()); 
                         
-                    pushFollow(FollowSets000.FOLLOW_ruleKRightPosition_in_ruleKXPosition16723);
+                    pushFollow(FollowSets000.FOLLOW_ruleKRightPosition_in_ruleKXPosition16725);
                     this_KRightPosition_1=ruleKRightPosition();
 
                     state._fsp--;
@@ -17930,7 +17918,7 @@ public class InternalKGraphParser extends AbstractInternalAntlrParser {
                     // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7063:1: (lv_relative_2_0= RULE_PERCENT )
                     // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7064:3: lv_relative_2_0= RULE_PERCENT
                     {
-                    lv_relative_2_0=(Token)match(input,RULE_PERCENT,FollowSets000.FOLLOW_RULE_PERCENT_in_ruleKXPosition16741); 
+                    lv_relative_2_0=(Token)match(input,RULE_PERCENT,FollowSets000.FOLLOW_RULE_PERCENT_in_ruleKXPosition16743); 
 
                     			newLeafNode(lv_relative_2_0, grammarAccess.getKXPositionAccess().getRelativePERCENTTerminalRuleCall_1_0_0()); 
                     		
@@ -17976,7 +17964,7 @@ public class InternalKGraphParser extends AbstractInternalAntlrParser {
                             // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7082:1: (lv_relative_3_0= RULE_PERCENT )
                             // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7083:3: lv_relative_3_0= RULE_PERCENT
                             {
-                            lv_relative_3_0=(Token)match(input,RULE_PERCENT,FollowSets000.FOLLOW_RULE_PERCENT_in_ruleKXPosition16771); 
+                            lv_relative_3_0=(Token)match(input,RULE_PERCENT,FollowSets000.FOLLOW_RULE_PERCENT_in_ruleKXPosition16773); 
 
                             			newLeafNode(lv_relative_3_0, grammarAccess.getKXPositionAccess().getRelativePERCENTTerminalRuleCall_1_1_0_0_0()); 
                             		
@@ -17996,7 +17984,7 @@ public class InternalKGraphParser extends AbstractInternalAntlrParser {
 
                             }
 
-                            otherlv_4=(Token)match(input,114,FollowSets000.FOLLOW_114_in_ruleKXPosition16788); 
+                            otherlv_4=(Token)match(input,114,FollowSets000.FOLLOW_114_in_ruleKXPosition16790); 
 
                                 	newLeafNode(otherlv_4, grammarAccess.getKXPositionAccess().getPlusSignKeyword_1_1_0_1());
                                 
@@ -18015,7 +18003,7 @@ public class InternalKGraphParser extends AbstractInternalAntlrParser {
                      
                     	        newCompositeNode(grammarAccess.getKXPositionAccess().getAbsoluteFloatParserRuleCall_1_1_1_0()); 
                     	    
-                    pushFollow(FollowSets000.FOLLOW_ruleFloat_in_ruleKXPosition16811);
+                    pushFollow(FollowSets000.FOLLOW_ruleFloat_in_ruleKXPosition16813);
                     lv_absolute_5_0=ruleFloat();
 
                     state._fsp--;
@@ -18079,13 +18067,13 @@ public class InternalKGraphParser extends AbstractInternalAntlrParser {
             // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7131:2: iv_ruleKLeftPosition= ruleKLeftPosition EOF
             {
              newCompositeNode(grammarAccess.getKLeftPositionRule()); 
-            pushFollow(FollowSets000.FOLLOW_ruleKLeftPosition_in_entryRuleKLeftPosition16850);
+            pushFollow(FollowSets000.FOLLOW_ruleKLeftPosition_in_entryRuleKLeftPosition16852);
             iv_ruleKLeftPosition=ruleKLeftPosition();
 
             state._fsp--;
 
              current =iv_ruleKLeftPosition; 
-            match(input,EOF,FollowSets000.FOLLOW_EOF_in_entryRuleKLeftPosition16860); 
+            match(input,EOF,FollowSets000.FOLLOW_EOF_in_entryRuleKLeftPosition16862); 
 
             }
 
@@ -18129,7 +18117,7 @@ public class InternalKGraphParser extends AbstractInternalAntlrParser {
 
             }
 
-            otherlv_1=(Token)match(input,43,FollowSets000.FOLLOW_43_in_ruleKLeftPosition16906); 
+            otherlv_1=(Token)match(input,43,FollowSets000.FOLLOW_43_in_ruleKLeftPosition16908); 
 
                 	newLeafNode(otherlv_1, grammarAccess.getKLeftPositionAccess().getLeftKeyword_1());
                 
@@ -18166,13 +18154,13 @@ public class InternalKGraphParser extends AbstractInternalAntlrParser {
             // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7162:2: iv_ruleKRightPosition= ruleKRightPosition EOF
             {
              newCompositeNode(grammarAccess.getKRightPositionRule()); 
-            pushFollow(FollowSets000.FOLLOW_ruleKRightPosition_in_entryRuleKRightPosition16942);
+            pushFollow(FollowSets000.FOLLOW_ruleKRightPosition_in_entryRuleKRightPosition16944);
             iv_ruleKRightPosition=ruleKRightPosition();
 
             state._fsp--;
 
              current =iv_ruleKRightPosition; 
-            match(input,EOF,FollowSets000.FOLLOW_EOF_in_entryRuleKRightPosition16952); 
+            match(input,EOF,FollowSets000.FOLLOW_EOF_in_entryRuleKRightPosition16954); 
 
             }
 
@@ -18216,7 +18204,7 @@ public class InternalKGraphParser extends AbstractInternalAntlrParser {
 
             }
 
-            otherlv_1=(Token)match(input,44,FollowSets000.FOLLOW_44_in_ruleKRightPosition16998); 
+            otherlv_1=(Token)match(input,44,FollowSets000.FOLLOW_44_in_ruleKRightPosition17000); 
 
                 	newLeafNode(otherlv_1, grammarAccess.getKRightPositionAccess().getRightKeyword_1());
                 
@@ -18253,13 +18241,13 @@ public class InternalKGraphParser extends AbstractInternalAntlrParser {
             // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7193:2: iv_ruleKYPosition= ruleKYPosition EOF
             {
              newCompositeNode(grammarAccess.getKYPositionRule()); 
-            pushFollow(FollowSets000.FOLLOW_ruleKYPosition_in_entryRuleKYPosition17034);
+            pushFollow(FollowSets000.FOLLOW_ruleKYPosition_in_entryRuleKYPosition17036);
             iv_ruleKYPosition=ruleKYPosition();
 
             state._fsp--;
 
              current =iv_ruleKYPosition; 
-            match(input,EOF,FollowSets000.FOLLOW_EOF_in_entryRuleKYPosition17044); 
+            match(input,EOF,FollowSets000.FOLLOW_EOF_in_entryRuleKYPosition17046); 
 
             }
 
@@ -18323,7 +18311,7 @@ public class InternalKGraphParser extends AbstractInternalAntlrParser {
                      
                             newCompositeNode(grammarAccess.getKYPositionAccess().getKTopPositionParserRuleCall_0_0()); 
                         
-                    pushFollow(FollowSets000.FOLLOW_ruleKTopPosition_in_ruleKYPosition17092);
+                    pushFollow(FollowSets000.FOLLOW_ruleKTopPosition_in_ruleKYPosition17094);
                     this_KTopPosition_0=ruleKTopPosition();
 
                     state._fsp--;
@@ -18341,7 +18329,7 @@ public class InternalKGraphParser extends AbstractInternalAntlrParser {
                      
                             newCompositeNode(grammarAccess.getKYPositionAccess().getKBottomPositionParserRuleCall_0_1()); 
                         
-                    pushFollow(FollowSets000.FOLLOW_ruleKBottomPosition_in_ruleKYPosition17119);
+                    pushFollow(FollowSets000.FOLLOW_ruleKBottomPosition_in_ruleKYPosition17121);
                     this_KBottomPosition_1=ruleKBottomPosition();
 
                     state._fsp--;
@@ -18383,7 +18371,7 @@ public class InternalKGraphParser extends AbstractInternalAntlrParser {
                     // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7224:1: (lv_relative_2_0= RULE_PERCENT )
                     // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7225:3: lv_relative_2_0= RULE_PERCENT
                     {
-                    lv_relative_2_0=(Token)match(input,RULE_PERCENT,FollowSets000.FOLLOW_RULE_PERCENT_in_ruleKYPosition17137); 
+                    lv_relative_2_0=(Token)match(input,RULE_PERCENT,FollowSets000.FOLLOW_RULE_PERCENT_in_ruleKYPosition17139); 
 
                     			newLeafNode(lv_relative_2_0, grammarAccess.getKYPositionAccess().getRelativePERCENTTerminalRuleCall_1_0_0()); 
                     		
@@ -18429,7 +18417,7 @@ public class InternalKGraphParser extends AbstractInternalAntlrParser {
                             // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7243:1: (lv_relative_3_0= RULE_PERCENT )
                             // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7244:3: lv_relative_3_0= RULE_PERCENT
                             {
-                            lv_relative_3_0=(Token)match(input,RULE_PERCENT,FollowSets000.FOLLOW_RULE_PERCENT_in_ruleKYPosition17167); 
+                            lv_relative_3_0=(Token)match(input,RULE_PERCENT,FollowSets000.FOLLOW_RULE_PERCENT_in_ruleKYPosition17169); 
 
                             			newLeafNode(lv_relative_3_0, grammarAccess.getKYPositionAccess().getRelativePERCENTTerminalRuleCall_1_1_0_0_0()); 
                             		
@@ -18449,7 +18437,7 @@ public class InternalKGraphParser extends AbstractInternalAntlrParser {
 
                             }
 
-                            otherlv_4=(Token)match(input,114,FollowSets000.FOLLOW_114_in_ruleKYPosition17184); 
+                            otherlv_4=(Token)match(input,114,FollowSets000.FOLLOW_114_in_ruleKYPosition17186); 
 
                                 	newLeafNode(otherlv_4, grammarAccess.getKYPositionAccess().getPlusSignKeyword_1_1_0_1());
                                 
@@ -18468,7 +18456,7 @@ public class InternalKGraphParser extends AbstractInternalAntlrParser {
                      
                     	        newCompositeNode(grammarAccess.getKYPositionAccess().getAbsoluteFloatParserRuleCall_1_1_1_0()); 
                     	    
-                    pushFollow(FollowSets000.FOLLOW_ruleFloat_in_ruleKYPosition17207);
+                    pushFollow(FollowSets000.FOLLOW_ruleFloat_in_ruleKYPosition17209);
                     lv_absolute_5_0=ruleFloat();
 
                     state._fsp--;
@@ -18532,13 +18520,13 @@ public class InternalKGraphParser extends AbstractInternalAntlrParser {
             // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7292:2: iv_ruleKTopPosition= ruleKTopPosition EOF
             {
              newCompositeNode(grammarAccess.getKTopPositionRule()); 
-            pushFollow(FollowSets000.FOLLOW_ruleKTopPosition_in_entryRuleKTopPosition17246);
+            pushFollow(FollowSets000.FOLLOW_ruleKTopPosition_in_entryRuleKTopPosition17248);
             iv_ruleKTopPosition=ruleKTopPosition();
 
             state._fsp--;
 
              current =iv_ruleKTopPosition; 
-            match(input,EOF,FollowSets000.FOLLOW_EOF_in_entryRuleKTopPosition17256); 
+            match(input,EOF,FollowSets000.FOLLOW_EOF_in_entryRuleKTopPosition17258); 
 
             }
 
@@ -18582,7 +18570,7 @@ public class InternalKGraphParser extends AbstractInternalAntlrParser {
 
             }
 
-            otherlv_1=(Token)match(input,41,FollowSets000.FOLLOW_41_in_ruleKTopPosition17302); 
+            otherlv_1=(Token)match(input,41,FollowSets000.FOLLOW_41_in_ruleKTopPosition17304); 
 
                 	newLeafNode(otherlv_1, grammarAccess.getKTopPositionAccess().getTopKeyword_1());
                 
@@ -18619,13 +18607,13 @@ public class InternalKGraphParser extends AbstractInternalAntlrParser {
             // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7323:2: iv_ruleKBottomPosition= ruleKBottomPosition EOF
             {
              newCompositeNode(grammarAccess.getKBottomPositionRule()); 
-            pushFollow(FollowSets000.FOLLOW_ruleKBottomPosition_in_entryRuleKBottomPosition17338);
+            pushFollow(FollowSets000.FOLLOW_ruleKBottomPosition_in_entryRuleKBottomPosition17340);
             iv_ruleKBottomPosition=ruleKBottomPosition();
 
             state._fsp--;
 
              current =iv_ruleKBottomPosition; 
-            match(input,EOF,FollowSets000.FOLLOW_EOF_in_entryRuleKBottomPosition17348); 
+            match(input,EOF,FollowSets000.FOLLOW_EOF_in_entryRuleKBottomPosition17350); 
 
             }
 
@@ -18669,7 +18657,7 @@ public class InternalKGraphParser extends AbstractInternalAntlrParser {
 
             }
 
-            otherlv_1=(Token)match(input,42,FollowSets000.FOLLOW_42_in_ruleKBottomPosition17394); 
+            otherlv_1=(Token)match(input,42,FollowSets000.FOLLOW_42_in_ruleKBottomPosition17396); 
 
                 	newLeafNode(otherlv_1, grammarAccess.getKBottomPositionAccess().getBottomKeyword_1());
                 
@@ -18706,13 +18694,13 @@ public class InternalKGraphParser extends AbstractInternalAntlrParser {
             // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7354:2: iv_ruleKColor= ruleKColor EOF
             {
              newCompositeNode(grammarAccess.getKColorRule()); 
-            pushFollow(FollowSets000.FOLLOW_ruleKColor_in_entryRuleKColor17430);
+            pushFollow(FollowSets000.FOLLOW_ruleKColor_in_entryRuleKColor17432);
             iv_ruleKColor=ruleKColor();
 
             state._fsp--;
 
              current =iv_ruleKColor; 
-            match(input,EOF,FollowSets000.FOLLOW_EOF_in_entryRuleKColor17440); 
+            match(input,EOF,FollowSets000.FOLLOW_EOF_in_entryRuleKColor17442); 
 
             }
 
@@ -18788,7 +18776,7 @@ public class InternalKGraphParser extends AbstractInternalAntlrParser {
                     // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7366:1: (lv_red_0_0= RULE_RED )
                     // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7367:3: lv_red_0_0= RULE_RED
                     {
-                    lv_red_0_0=(Token)match(input,RULE_RED,FollowSets000.FOLLOW_RULE_RED_in_ruleKColor17483); 
+                    lv_red_0_0=(Token)match(input,RULE_RED,FollowSets000.FOLLOW_RULE_RED_in_ruleKColor17485); 
 
                     			newLeafNode(lv_red_0_0, grammarAccess.getKColorAccess().getRedREDTerminalRuleCall_0_0_0()); 
                     		
@@ -18823,7 +18811,7 @@ public class InternalKGraphParser extends AbstractInternalAntlrParser {
                         case 1 :
                             // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7383:4: otherlv_1= ',' ( (lv_green_2_0= RULE_GREEN ) )
                             {
-                            otherlv_1=(Token)match(input,47,FollowSets000.FOLLOW_47_in_ruleKColor17501); 
+                            otherlv_1=(Token)match(input,47,FollowSets000.FOLLOW_47_in_ruleKColor17503); 
 
                                 	newLeafNode(otherlv_1, grammarAccess.getKColorAccess().getCommaKeyword_0_1_0());
                                 
@@ -18833,7 +18821,7 @@ public class InternalKGraphParser extends AbstractInternalAntlrParser {
                             // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7388:1: (lv_green_2_0= RULE_GREEN )
                             // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7389:3: lv_green_2_0= RULE_GREEN
                             {
-                            lv_green_2_0=(Token)match(input,RULE_GREEN,FollowSets000.FOLLOW_RULE_GREEN_in_ruleKColor17518); 
+                            lv_green_2_0=(Token)match(input,RULE_GREEN,FollowSets000.FOLLOW_RULE_GREEN_in_ruleKColor17520); 
 
                             			newLeafNode(lv_green_2_0, grammarAccess.getKColorAccess().getGreenGREENTerminalRuleCall_0_1_1_0()); 
                             		
@@ -18874,7 +18862,7 @@ public class InternalKGraphParser extends AbstractInternalAntlrParser {
                         case 1 :
                             // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7405:6: otherlv_3= ',' ( (lv_blue_4_0= RULE_BLUE ) )
                             {
-                            otherlv_3=(Token)match(input,47,FollowSets000.FOLLOW_47_in_ruleKColor17538); 
+                            otherlv_3=(Token)match(input,47,FollowSets000.FOLLOW_47_in_ruleKColor17540); 
 
                                 	newLeafNode(otherlv_3, grammarAccess.getKColorAccess().getCommaKeyword_0_2_0());
                                 
@@ -18884,7 +18872,7 @@ public class InternalKGraphParser extends AbstractInternalAntlrParser {
                             // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7410:1: (lv_blue_4_0= RULE_BLUE )
                             // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7411:3: lv_blue_4_0= RULE_BLUE
                             {
-                            lv_blue_4_0=(Token)match(input,RULE_BLUE,FollowSets000.FOLLOW_RULE_BLUE_in_ruleKColor17555); 
+                            lv_blue_4_0=(Token)match(input,RULE_BLUE,FollowSets000.FOLLOW_RULE_BLUE_in_ruleKColor17557); 
 
                             			newLeafNode(lv_blue_4_0, grammarAccess.getKColorAccess().getBlueBLUETerminalRuleCall_0_2_1_0()); 
                             		
@@ -18928,7 +18916,7 @@ public class InternalKGraphParser extends AbstractInternalAntlrParser {
                     // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7429:1: (lv_green_5_0= RULE_GREEN )
                     // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7430:3: lv_green_5_0= RULE_GREEN
                     {
-                    lv_green_5_0=(Token)match(input,RULE_GREEN,FollowSets000.FOLLOW_RULE_GREEN_in_ruleKColor17587); 
+                    lv_green_5_0=(Token)match(input,RULE_GREEN,FollowSets000.FOLLOW_RULE_GREEN_in_ruleKColor17589); 
 
                     			newLeafNode(lv_green_5_0, grammarAccess.getKColorAccess().getGreenGREENTerminalRuleCall_1_0_0()); 
                     		
@@ -18963,7 +18951,7 @@ public class InternalKGraphParser extends AbstractInternalAntlrParser {
                         case 1 :
                             // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7446:4: otherlv_6= ',' ( (lv_blue_7_0= RULE_BLUE ) )
                             {
-                            otherlv_6=(Token)match(input,47,FollowSets000.FOLLOW_47_in_ruleKColor17605); 
+                            otherlv_6=(Token)match(input,47,FollowSets000.FOLLOW_47_in_ruleKColor17607); 
 
                                 	newLeafNode(otherlv_6, grammarAccess.getKColorAccess().getCommaKeyword_1_1_0());
                                 
@@ -18973,7 +18961,7 @@ public class InternalKGraphParser extends AbstractInternalAntlrParser {
                             // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7451:1: (lv_blue_7_0= RULE_BLUE )
                             // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7452:3: lv_blue_7_0= RULE_BLUE
                             {
-                            lv_blue_7_0=(Token)match(input,RULE_BLUE,FollowSets000.FOLLOW_RULE_BLUE_in_ruleKColor17622); 
+                            lv_blue_7_0=(Token)match(input,RULE_BLUE,FollowSets000.FOLLOW_RULE_BLUE_in_ruleKColor17624); 
 
                             			newLeafNode(lv_blue_7_0, grammarAccess.getKColorAccess().getBlueBLUETerminalRuleCall_1_1_1_0()); 
                             		
@@ -19014,7 +19002,7 @@ public class InternalKGraphParser extends AbstractInternalAntlrParser {
                     // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7470:1: (lv_blue_8_0= RULE_BLUE )
                     // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7471:3: lv_blue_8_0= RULE_BLUE
                     {
-                    lv_blue_8_0=(Token)match(input,RULE_BLUE,FollowSets000.FOLLOW_RULE_BLUE_in_ruleKColor17653); 
+                    lv_blue_8_0=(Token)match(input,RULE_BLUE,FollowSets000.FOLLOW_RULE_BLUE_in_ruleKColor17655); 
 
                     			newLeafNode(lv_blue_8_0, grammarAccess.getKColorAccess().getBlueBLUETerminalRuleCall_2_0()); 
                     		
@@ -19070,13 +19058,13 @@ public class InternalKGraphParser extends AbstractInternalAntlrParser {
             // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7497:2: iv_ruleQualifiedID= ruleQualifiedID EOF
             {
              newCompositeNode(grammarAccess.getQualifiedIDRule()); 
-            pushFollow(FollowSets000.FOLLOW_ruleQualifiedID_in_entryRuleQualifiedID17695);
+            pushFollow(FollowSets000.FOLLOW_ruleQualifiedID_in_entryRuleQualifiedID17697);
             iv_ruleQualifiedID=ruleQualifiedID();
 
             state._fsp--;
 
              current =iv_ruleQualifiedID.getText(); 
-            match(input,EOF,FollowSets000.FOLLOW_EOF_in_entryRuleQualifiedID17706); 
+            match(input,EOF,FollowSets000.FOLLOW_EOF_in_entryRuleQualifiedID17708); 
 
             }
 
@@ -19111,7 +19099,7 @@ public class InternalKGraphParser extends AbstractInternalAntlrParser {
             // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7508:1: (this_ID_0= RULE_ID (kw= '.' this_ID_2= RULE_ID )* )
             // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7508:6: this_ID_0= RULE_ID (kw= '.' this_ID_2= RULE_ID )*
             {
-            this_ID_0=(Token)match(input,RULE_ID,FollowSets000.FOLLOW_RULE_ID_in_ruleQualifiedID17746); 
+            this_ID_0=(Token)match(input,RULE_ID,FollowSets000.FOLLOW_RULE_ID_in_ruleQualifiedID17748); 
 
             		current.merge(this_ID_0);
                 
@@ -19133,12 +19121,12 @@ public class InternalKGraphParser extends AbstractInternalAntlrParser {
             	case 1 :
             	    // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7516:2: kw= '.' this_ID_2= RULE_ID
             	    {
-            	    kw=(Token)match(input,115,FollowSets000.FOLLOW_115_in_ruleQualifiedID17765); 
+            	    kw=(Token)match(input,115,FollowSets000.FOLLOW_115_in_ruleQualifiedID17767); 
 
             	            current.merge(kw);
             	            newLeafNode(kw, grammarAccess.getQualifiedIDAccess().getFullStopKeyword_1_0()); 
             	        
-            	    this_ID_2=(Token)match(input,RULE_ID,FollowSets000.FOLLOW_RULE_ID_in_ruleQualifiedID17780); 
+            	    this_ID_2=(Token)match(input,RULE_ID,FollowSets000.FOLLOW_RULE_ID_in_ruleQualifiedID17782); 
 
             	    		current.merge(this_ID_2);
             	        
@@ -19187,13 +19175,13 @@ public class InternalKGraphParser extends AbstractInternalAntlrParser {
             // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7538:2: iv_rulePropertyValue= rulePropertyValue EOF
             {
              newCompositeNode(grammarAccess.getPropertyValueRule()); 
-            pushFollow(FollowSets000.FOLLOW_rulePropertyValue_in_entryRulePropertyValue17828);
+            pushFollow(FollowSets000.FOLLOW_rulePropertyValue_in_entryRulePropertyValue17830);
             iv_rulePropertyValue=rulePropertyValue();
 
             state._fsp--;
 
              current =iv_rulePropertyValue.getText(); 
-            match(input,EOF,FollowSets000.FOLLOW_EOF_in_entryRulePropertyValue17839); 
+            match(input,EOF,FollowSets000.FOLLOW_EOF_in_entryRulePropertyValue17841); 
 
             }
 
@@ -19263,7 +19251,7 @@ public class InternalKGraphParser extends AbstractInternalAntlrParser {
                 case 1 :
                     // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7549:6: this_BOOLEAN_0= RULE_BOOLEAN
                     {
-                    this_BOOLEAN_0=(Token)match(input,RULE_BOOLEAN,FollowSets000.FOLLOW_RULE_BOOLEAN_in_rulePropertyValue17879); 
+                    this_BOOLEAN_0=(Token)match(input,RULE_BOOLEAN,FollowSets000.FOLLOW_RULE_BOOLEAN_in_rulePropertyValue17881); 
 
                     		current.merge(this_BOOLEAN_0);
                         
@@ -19276,7 +19264,7 @@ public class InternalKGraphParser extends AbstractInternalAntlrParser {
                 case 2 :
                     // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7557:10: this_STRING_1= RULE_STRING
                     {
-                    this_STRING_1=(Token)match(input,RULE_STRING,FollowSets000.FOLLOW_RULE_STRING_in_rulePropertyValue17905); 
+                    this_STRING_1=(Token)match(input,RULE_STRING,FollowSets000.FOLLOW_RULE_STRING_in_rulePropertyValue17907); 
 
                     		current.merge(this_STRING_1);
                         
@@ -19292,7 +19280,7 @@ public class InternalKGraphParser extends AbstractInternalAntlrParser {
                      
                             newCompositeNode(grammarAccess.getPropertyValueAccess().getFloatParserRuleCall_2()); 
                         
-                    pushFollow(FollowSets000.FOLLOW_ruleFloat_in_rulePropertyValue17938);
+                    pushFollow(FollowSets000.FOLLOW_ruleFloat_in_rulePropertyValue17940);
                     this_Float_2=ruleFloat();
 
                     state._fsp--;
@@ -19312,7 +19300,7 @@ public class InternalKGraphParser extends AbstractInternalAntlrParser {
                      
                             newCompositeNode(grammarAccess.getPropertyValueAccess().getQualifiedIDParserRuleCall_3()); 
                         
-                    pushFollow(FollowSets000.FOLLOW_ruleQualifiedID_in_rulePropertyValue17971);
+                    pushFollow(FollowSets000.FOLLOW_ruleQualifiedID_in_rulePropertyValue17973);
                     this_QualifiedID_3=ruleQualifiedID();
 
                     state._fsp--;
@@ -19359,13 +19347,13 @@ public class InternalKGraphParser extends AbstractInternalAntlrParser {
             // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7598:2: iv_ruleFloat= ruleFloat EOF
             {
              newCompositeNode(grammarAccess.getFloatRule()); 
-            pushFollow(FollowSets000.FOLLOW_ruleFloat_in_entryRuleFloat18017);
+            pushFollow(FollowSets000.FOLLOW_ruleFloat_in_entryRuleFloat18019);
             iv_ruleFloat=ruleFloat();
 
             state._fsp--;
 
              current =iv_ruleFloat.getText(); 
-            match(input,EOF,FollowSets000.FOLLOW_EOF_in_entryRuleFloat18028); 
+            match(input,EOF,FollowSets000.FOLLOW_EOF_in_entryRuleFloat18030); 
 
             }
 
@@ -19416,7 +19404,7 @@ public class InternalKGraphParser extends AbstractInternalAntlrParser {
                 case 1 :
                     // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7609:6: this_TFLOAT_0= RULE_TFLOAT
                     {
-                    this_TFLOAT_0=(Token)match(input,RULE_TFLOAT,FollowSets000.FOLLOW_RULE_TFLOAT_in_ruleFloat18068); 
+                    this_TFLOAT_0=(Token)match(input,RULE_TFLOAT,FollowSets000.FOLLOW_RULE_TFLOAT_in_ruleFloat18070); 
 
                     		current.merge(this_TFLOAT_0);
                         
@@ -19429,7 +19417,7 @@ public class InternalKGraphParser extends AbstractInternalAntlrParser {
                 case 2 :
                     // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7617:10: this_NATURAL_1= RULE_NATURAL
                     {
-                    this_NATURAL_1=(Token)match(input,RULE_NATURAL,FollowSets000.FOLLOW_RULE_NATURAL_in_ruleFloat18094); 
+                    this_NATURAL_1=(Token)match(input,RULE_NATURAL,FollowSets000.FOLLOW_RULE_NATURAL_in_ruleFloat18096); 
 
                     		current.merge(this_NATURAL_1);
                         
@@ -19505,7 +19493,7 @@ public class InternalKGraphParser extends AbstractInternalAntlrParser {
                     // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7635:2: (enumLiteral_0= 'open' )
                     // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7635:4: enumLiteral_0= 'open'
                     {
-                    enumLiteral_0=(Token)match(input,116,FollowSets000.FOLLOW_116_in_ruleArc18153); 
+                    enumLiteral_0=(Token)match(input,116,FollowSets000.FOLLOW_116_in_ruleArc18155); 
 
                             current = grammarAccess.getArcAccess().getOPENEnumLiteralDeclaration_0().getEnumLiteral().getInstance();
                             newLeafNode(enumLiteral_0, grammarAccess.getArcAccess().getOPENEnumLiteralDeclaration_0()); 
@@ -19522,7 +19510,7 @@ public class InternalKGraphParser extends AbstractInternalAntlrParser {
                     // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7641:6: (enumLiteral_1= 'chord' )
                     // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7641:8: enumLiteral_1= 'chord'
                     {
-                    enumLiteral_1=(Token)match(input,117,FollowSets000.FOLLOW_117_in_ruleArc18170); 
+                    enumLiteral_1=(Token)match(input,117,FollowSets000.FOLLOW_117_in_ruleArc18172); 
 
                             current = grammarAccess.getArcAccess().getCHORDEnumLiteralDeclaration_1().getEnumLiteral().getInstance();
                             newLeafNode(enumLiteral_1, grammarAccess.getArcAccess().getCHORDEnumLiteralDeclaration_1()); 
@@ -19539,7 +19527,7 @@ public class InternalKGraphParser extends AbstractInternalAntlrParser {
                     // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7647:6: (enumLiteral_2= 'pie' )
                     // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7647:8: enumLiteral_2= 'pie'
                     {
-                    enumLiteral_2=(Token)match(input,118,FollowSets000.FOLLOW_118_in_ruleArc18187); 
+                    enumLiteral_2=(Token)match(input,118,FollowSets000.FOLLOW_118_in_ruleArc18189); 
 
                             current = grammarAccess.getArcAccess().getPIEEnumLiteralDeclaration_2().getEnumLiteral().getInstance();
                             newLeafNode(enumLiteral_2, grammarAccess.getArcAccess().getPIEEnumLiteralDeclaration_2()); 
@@ -19616,7 +19604,7 @@ public class InternalKGraphParser extends AbstractInternalAntlrParser {
                     // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7660:2: (enumLiteral_0= 'left' )
                     // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7660:4: enumLiteral_0= 'left'
                     {
-                    enumLiteral_0=(Token)match(input,43,FollowSets000.FOLLOW_43_in_ruleHorizontalAlignment18232); 
+                    enumLiteral_0=(Token)match(input,43,FollowSets000.FOLLOW_43_in_ruleHorizontalAlignment18234); 
 
                             current = grammarAccess.getHorizontalAlignmentAccess().getLEFTEnumLiteralDeclaration_0().getEnumLiteral().getInstance();
                             newLeafNode(enumLiteral_0, grammarAccess.getHorizontalAlignmentAccess().getLEFTEnumLiteralDeclaration_0()); 
@@ -19633,7 +19621,7 @@ public class InternalKGraphParser extends AbstractInternalAntlrParser {
                     // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7666:6: (enumLiteral_1= 'center' )
                     // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7666:8: enumLiteral_1= 'center'
                     {
-                    enumLiteral_1=(Token)match(input,119,FollowSets000.FOLLOW_119_in_ruleHorizontalAlignment18249); 
+                    enumLiteral_1=(Token)match(input,119,FollowSets000.FOLLOW_119_in_ruleHorizontalAlignment18251); 
 
                             current = grammarAccess.getHorizontalAlignmentAccess().getCENTEREnumLiteralDeclaration_1().getEnumLiteral().getInstance();
                             newLeafNode(enumLiteral_1, grammarAccess.getHorizontalAlignmentAccess().getCENTEREnumLiteralDeclaration_1()); 
@@ -19650,7 +19638,7 @@ public class InternalKGraphParser extends AbstractInternalAntlrParser {
                     // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7672:6: (enumLiteral_2= 'right' )
                     // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7672:8: enumLiteral_2= 'right'
                     {
-                    enumLiteral_2=(Token)match(input,44,FollowSets000.FOLLOW_44_in_ruleHorizontalAlignment18266); 
+                    enumLiteral_2=(Token)match(input,44,FollowSets000.FOLLOW_44_in_ruleHorizontalAlignment18268); 
 
                             current = grammarAccess.getHorizontalAlignmentAccess().getRIGHTEnumLiteralDeclaration_2().getEnumLiteral().getInstance();
                             newLeafNode(enumLiteral_2, grammarAccess.getHorizontalAlignmentAccess().getRIGHTEnumLiteralDeclaration_2()); 
@@ -19727,7 +19715,7 @@ public class InternalKGraphParser extends AbstractInternalAntlrParser {
                     // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7685:2: (enumLiteral_0= 'top' )
                     // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7685:4: enumLiteral_0= 'top'
                     {
-                    enumLiteral_0=(Token)match(input,41,FollowSets000.FOLLOW_41_in_ruleVerticalAlignment18311); 
+                    enumLiteral_0=(Token)match(input,41,FollowSets000.FOLLOW_41_in_ruleVerticalAlignment18313); 
 
                             current = grammarAccess.getVerticalAlignmentAccess().getTOPEnumLiteralDeclaration_0().getEnumLiteral().getInstance();
                             newLeafNode(enumLiteral_0, grammarAccess.getVerticalAlignmentAccess().getTOPEnumLiteralDeclaration_0()); 
@@ -19744,7 +19732,7 @@ public class InternalKGraphParser extends AbstractInternalAntlrParser {
                     // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7691:6: (enumLiteral_1= 'center' )
                     // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7691:8: enumLiteral_1= 'center'
                     {
-                    enumLiteral_1=(Token)match(input,119,FollowSets000.FOLLOW_119_in_ruleVerticalAlignment18328); 
+                    enumLiteral_1=(Token)match(input,119,FollowSets000.FOLLOW_119_in_ruleVerticalAlignment18330); 
 
                             current = grammarAccess.getVerticalAlignmentAccess().getCENTEREnumLiteralDeclaration_1().getEnumLiteral().getInstance();
                             newLeafNode(enumLiteral_1, grammarAccess.getVerticalAlignmentAccess().getCENTEREnumLiteralDeclaration_1()); 
@@ -19761,7 +19749,7 @@ public class InternalKGraphParser extends AbstractInternalAntlrParser {
                     // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7697:6: (enumLiteral_2= 'bottom' )
                     // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7697:8: enumLiteral_2= 'bottom'
                     {
-                    enumLiteral_2=(Token)match(input,42,FollowSets000.FOLLOW_42_in_ruleVerticalAlignment18345); 
+                    enumLiteral_2=(Token)match(input,42,FollowSets000.FOLLOW_42_in_ruleVerticalAlignment18347); 
 
                             current = grammarAccess.getVerticalAlignmentAccess().getBOTTOMEnumLiteralDeclaration_2().getEnumLiteral().getInstance();
                             newLeafNode(enumLiteral_2, grammarAccess.getVerticalAlignmentAccess().getBOTTOMEnumLiteralDeclaration_2()); 
@@ -19856,7 +19844,7 @@ public class InternalKGraphParser extends AbstractInternalAntlrParser {
                     // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7710:2: (enumLiteral_0= 'none' )
                     // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7710:4: enumLiteral_0= 'none'
                     {
-                    enumLiteral_0=(Token)match(input,120,FollowSets000.FOLLOW_120_in_ruleUnderline18390); 
+                    enumLiteral_0=(Token)match(input,120,FollowSets000.FOLLOW_120_in_ruleUnderline18392); 
 
                             current = grammarAccess.getUnderlineAccess().getNONEEnumLiteralDeclaration_0().getEnumLiteral().getInstance();
                             newLeafNode(enumLiteral_0, grammarAccess.getUnderlineAccess().getNONEEnumLiteralDeclaration_0()); 
@@ -19873,7 +19861,7 @@ public class InternalKGraphParser extends AbstractInternalAntlrParser {
                     // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7716:6: (enumLiteral_1= 'single' )
                     // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7716:8: enumLiteral_1= 'single'
                     {
-                    enumLiteral_1=(Token)match(input,121,FollowSets000.FOLLOW_121_in_ruleUnderline18407); 
+                    enumLiteral_1=(Token)match(input,121,FollowSets000.FOLLOW_121_in_ruleUnderline18409); 
 
                             current = grammarAccess.getUnderlineAccess().getSINGLEEnumLiteralDeclaration_1().getEnumLiteral().getInstance();
                             newLeafNode(enumLiteral_1, grammarAccess.getUnderlineAccess().getSINGLEEnumLiteralDeclaration_1()); 
@@ -19890,7 +19878,7 @@ public class InternalKGraphParser extends AbstractInternalAntlrParser {
                     // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7722:6: (enumLiteral_2= 'double' )
                     // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7722:8: enumLiteral_2= 'double'
                     {
-                    enumLiteral_2=(Token)match(input,122,FollowSets000.FOLLOW_122_in_ruleUnderline18424); 
+                    enumLiteral_2=(Token)match(input,122,FollowSets000.FOLLOW_122_in_ruleUnderline18426); 
 
                             current = grammarAccess.getUnderlineAccess().getDOUBLEEnumLiteralDeclaration_2().getEnumLiteral().getInstance();
                             newLeafNode(enumLiteral_2, grammarAccess.getUnderlineAccess().getDOUBLEEnumLiteralDeclaration_2()); 
@@ -19907,7 +19895,7 @@ public class InternalKGraphParser extends AbstractInternalAntlrParser {
                     // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7728:6: (enumLiteral_3= 'error' )
                     // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7728:8: enumLiteral_3= 'error'
                     {
-                    enumLiteral_3=(Token)match(input,123,FollowSets000.FOLLOW_123_in_ruleUnderline18441); 
+                    enumLiteral_3=(Token)match(input,123,FollowSets000.FOLLOW_123_in_ruleUnderline18443); 
 
                             current = grammarAccess.getUnderlineAccess().getERROREnumLiteralDeclaration_3().getEnumLiteral().getInstance();
                             newLeafNode(enumLiteral_3, grammarAccess.getUnderlineAccess().getERROREnumLiteralDeclaration_3()); 
@@ -19924,7 +19912,7 @@ public class InternalKGraphParser extends AbstractInternalAntlrParser {
                     // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7734:6: (enumLiteral_4= 'squiggle' )
                     // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7734:8: enumLiteral_4= 'squiggle'
                     {
-                    enumLiteral_4=(Token)match(input,124,FollowSets000.FOLLOW_124_in_ruleUnderline18458); 
+                    enumLiteral_4=(Token)match(input,124,FollowSets000.FOLLOW_124_in_ruleUnderline18460); 
 
                             current = grammarAccess.getUnderlineAccess().getSQUIGGLEEnumLiteralDeclaration_4().getEnumLiteral().getInstance();
                             newLeafNode(enumLiteral_4, grammarAccess.getUnderlineAccess().getSQUIGGLEEnumLiteralDeclaration_4()); 
@@ -19941,7 +19929,7 @@ public class InternalKGraphParser extends AbstractInternalAntlrParser {
                     // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7740:6: (enumLiteral_5= 'link' )
                     // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7740:8: enumLiteral_5= 'link'
                     {
-                    enumLiteral_5=(Token)match(input,125,FollowSets000.FOLLOW_125_in_ruleUnderline18475); 
+                    enumLiteral_5=(Token)match(input,125,FollowSets000.FOLLOW_125_in_ruleUnderline18477); 
 
                             current = grammarAccess.getUnderlineAccess().getLINKEnumLiteralDeclaration_5().getEnumLiteral().getInstance();
                             newLeafNode(enumLiteral_5, grammarAccess.getUnderlineAccess().getLINKEnumLiteralDeclaration_5()); 
@@ -20030,7 +20018,7 @@ public class InternalKGraphParser extends AbstractInternalAntlrParser {
                     // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7753:2: (enumLiteral_0= 'solid' )
                     // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7753:4: enumLiteral_0= 'solid'
                     {
-                    enumLiteral_0=(Token)match(input,126,FollowSets000.FOLLOW_126_in_ruleLineStyle18520); 
+                    enumLiteral_0=(Token)match(input,126,FollowSets000.FOLLOW_126_in_ruleLineStyle18522); 
 
                             current = grammarAccess.getLineStyleAccess().getSOLIDEnumLiteralDeclaration_0().getEnumLiteral().getInstance();
                             newLeafNode(enumLiteral_0, grammarAccess.getLineStyleAccess().getSOLIDEnumLiteralDeclaration_0()); 
@@ -20047,7 +20035,7 @@ public class InternalKGraphParser extends AbstractInternalAntlrParser {
                     // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7759:6: (enumLiteral_1= 'dash' )
                     // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7759:8: enumLiteral_1= 'dash'
                     {
-                    enumLiteral_1=(Token)match(input,127,FollowSets000.FOLLOW_127_in_ruleLineStyle18537); 
+                    enumLiteral_1=(Token)match(input,127,FollowSets000.FOLLOW_127_in_ruleLineStyle18539); 
 
                             current = grammarAccess.getLineStyleAccess().getDASHEnumLiteralDeclaration_1().getEnumLiteral().getInstance();
                             newLeafNode(enumLiteral_1, grammarAccess.getLineStyleAccess().getDASHEnumLiteralDeclaration_1()); 
@@ -20064,7 +20052,7 @@ public class InternalKGraphParser extends AbstractInternalAntlrParser {
                     // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7765:6: (enumLiteral_2= 'dot' )
                     // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7765:8: enumLiteral_2= 'dot'
                     {
-                    enumLiteral_2=(Token)match(input,128,FollowSets000.FOLLOW_128_in_ruleLineStyle18554); 
+                    enumLiteral_2=(Token)match(input,128,FollowSets000.FOLLOW_128_in_ruleLineStyle18556); 
 
                             current = grammarAccess.getLineStyleAccess().getDOTEnumLiteralDeclaration_2().getEnumLiteral().getInstance();
                             newLeafNode(enumLiteral_2, grammarAccess.getLineStyleAccess().getDOTEnumLiteralDeclaration_2()); 
@@ -20081,7 +20069,7 @@ public class InternalKGraphParser extends AbstractInternalAntlrParser {
                     // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7771:6: (enumLiteral_3= 'dash-dot' )
                     // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7771:8: enumLiteral_3= 'dash-dot'
                     {
-                    enumLiteral_3=(Token)match(input,129,FollowSets000.FOLLOW_129_in_ruleLineStyle18571); 
+                    enumLiteral_3=(Token)match(input,129,FollowSets000.FOLLOW_129_in_ruleLineStyle18573); 
 
                             current = grammarAccess.getLineStyleAccess().getDASHDOTEnumLiteralDeclaration_3().getEnumLiteral().getInstance();
                             newLeafNode(enumLiteral_3, grammarAccess.getLineStyleAccess().getDASHDOTEnumLiteralDeclaration_3()); 
@@ -20098,7 +20086,7 @@ public class InternalKGraphParser extends AbstractInternalAntlrParser {
                     // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7777:6: (enumLiteral_4= 'dash-dot-dot' )
                     // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7777:8: enumLiteral_4= 'dash-dot-dot'
                     {
-                    enumLiteral_4=(Token)match(input,130,FollowSets000.FOLLOW_130_in_ruleLineStyle18588); 
+                    enumLiteral_4=(Token)match(input,130,FollowSets000.FOLLOW_130_in_ruleLineStyle18590); 
 
                             current = grammarAccess.getLineStyleAccess().getDASHDOTDOTEnumLiteralDeclaration_4().getEnumLiteral().getInstance();
                             newLeafNode(enumLiteral_4, grammarAccess.getLineStyleAccess().getDASHDOTDOTEnumLiteralDeclaration_4()); 
@@ -20175,7 +20163,7 @@ public class InternalKGraphParser extends AbstractInternalAntlrParser {
                     // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7790:2: (enumLiteral_0= 'flat' )
                     // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7790:4: enumLiteral_0= 'flat'
                     {
-                    enumLiteral_0=(Token)match(input,131,FollowSets000.FOLLOW_131_in_ruleLineCap18633); 
+                    enumLiteral_0=(Token)match(input,131,FollowSets000.FOLLOW_131_in_ruleLineCap18635); 
 
                             current = grammarAccess.getLineCapAccess().getCAP_FLATEnumLiteralDeclaration_0().getEnumLiteral().getInstance();
                             newLeafNode(enumLiteral_0, grammarAccess.getLineCapAccess().getCAP_FLATEnumLiteralDeclaration_0()); 
@@ -20192,7 +20180,7 @@ public class InternalKGraphParser extends AbstractInternalAntlrParser {
                     // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7796:6: (enumLiteral_1= 'round' )
                     // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7796:8: enumLiteral_1= 'round'
                     {
-                    enumLiteral_1=(Token)match(input,132,FollowSets000.FOLLOW_132_in_ruleLineCap18650); 
+                    enumLiteral_1=(Token)match(input,132,FollowSets000.FOLLOW_132_in_ruleLineCap18652); 
 
                             current = grammarAccess.getLineCapAccess().getCAP_ROUNDEnumLiteralDeclaration_1().getEnumLiteral().getInstance();
                             newLeafNode(enumLiteral_1, grammarAccess.getLineCapAccess().getCAP_ROUNDEnumLiteralDeclaration_1()); 
@@ -20209,7 +20197,7 @@ public class InternalKGraphParser extends AbstractInternalAntlrParser {
                     // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7802:6: (enumLiteral_2= 'square' )
                     // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7802:8: enumLiteral_2= 'square'
                     {
-                    enumLiteral_2=(Token)match(input,133,FollowSets000.FOLLOW_133_in_ruleLineCap18667); 
+                    enumLiteral_2=(Token)match(input,133,FollowSets000.FOLLOW_133_in_ruleLineCap18669); 
 
                             current = grammarAccess.getLineCapAccess().getCAP_SQUAREEnumLiteralDeclaration_2().getEnumLiteral().getInstance();
                             newLeafNode(enumLiteral_2, grammarAccess.getLineCapAccess().getCAP_SQUAREEnumLiteralDeclaration_2()); 
@@ -20286,7 +20274,7 @@ public class InternalKGraphParser extends AbstractInternalAntlrParser {
                     // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7815:2: (enumLiteral_0= 'miter' )
                     // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7815:4: enumLiteral_0= 'miter'
                     {
-                    enumLiteral_0=(Token)match(input,134,FollowSets000.FOLLOW_134_in_ruleLineJoin18712); 
+                    enumLiteral_0=(Token)match(input,134,FollowSets000.FOLLOW_134_in_ruleLineJoin18714); 
 
                             current = grammarAccess.getLineJoinAccess().getJOIN_MITEREnumLiteralDeclaration_0().getEnumLiteral().getInstance();
                             newLeafNode(enumLiteral_0, grammarAccess.getLineJoinAccess().getJOIN_MITEREnumLiteralDeclaration_0()); 
@@ -20303,7 +20291,7 @@ public class InternalKGraphParser extends AbstractInternalAntlrParser {
                     // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7821:6: (enumLiteral_1= 'round' )
                     // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7821:8: enumLiteral_1= 'round'
                     {
-                    enumLiteral_1=(Token)match(input,132,FollowSets000.FOLLOW_132_in_ruleLineJoin18729); 
+                    enumLiteral_1=(Token)match(input,132,FollowSets000.FOLLOW_132_in_ruleLineJoin18731); 
 
                             current = grammarAccess.getLineJoinAccess().getJOIN_ROUNDEnumLiteralDeclaration_1().getEnumLiteral().getInstance();
                             newLeafNode(enumLiteral_1, grammarAccess.getLineJoinAccess().getJOIN_ROUNDEnumLiteralDeclaration_1()); 
@@ -20320,7 +20308,7 @@ public class InternalKGraphParser extends AbstractInternalAntlrParser {
                     // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7827:6: (enumLiteral_2= 'bevel' )
                     // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7827:8: enumLiteral_2= 'bevel'
                     {
-                    enumLiteral_2=(Token)match(input,135,FollowSets000.FOLLOW_135_in_ruleLineJoin18746); 
+                    enumLiteral_2=(Token)match(input,135,FollowSets000.FOLLOW_135_in_ruleLineJoin18748); 
 
                             current = grammarAccess.getLineJoinAccess().getJOIN_BEVELEnumLiteralDeclaration_2().getEnumLiteral().getInstance();
                             newLeafNode(enumLiteral_2, grammarAccess.getLineJoinAccess().getJOIN_BEVELEnumLiteralDeclaration_2()); 
@@ -20387,7 +20375,7 @@ public class InternalKGraphParser extends AbstractInternalAntlrParser {
                     // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7840:2: (enumLiteral_0= 'singleClick' )
                     // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7840:4: enumLiteral_0= 'singleClick'
                     {
-                    enumLiteral_0=(Token)match(input,136,FollowSets000.FOLLOW_136_in_ruleTrigger18791); 
+                    enumLiteral_0=(Token)match(input,136,FollowSets000.FOLLOW_136_in_ruleTrigger18793); 
 
                             current = grammarAccess.getTriggerAccess().getSINGLECLICKEnumLiteralDeclaration_0().getEnumLiteral().getInstance();
                             newLeafNode(enumLiteral_0, grammarAccess.getTriggerAccess().getSINGLECLICKEnumLiteralDeclaration_0()); 
@@ -20404,7 +20392,7 @@ public class InternalKGraphParser extends AbstractInternalAntlrParser {
                     // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7846:6: (enumLiteral_1= 'doubleClick' )
                     // ../de.cau.cs.kieler.core.kgraph.text/src-gen/de/cau/cs/kieler/core/kgraph/text/parser/antlr/internal/InternalKGraph.g:7846:8: enumLiteral_1= 'doubleClick'
                     {
-                    enumLiteral_1=(Token)match(input,137,FollowSets000.FOLLOW_137_in_ruleTrigger18808); 
+                    enumLiteral_1=(Token)match(input,137,FollowSets000.FOLLOW_137_in_ruleTrigger18810); 
 
                             current = grammarAccess.getTriggerAccess().getDOUBLECLICKEnumLiteralDeclaration_1().getEnumLiteral().getInstance();
                             newLeafNode(enumLiteral_1, grammarAccess.getTriggerAccess().getDOUBLECLICKEnumLiteralDeclaration_1()); 
@@ -20448,16 +20436,16 @@ public class InternalKGraphParser extends AbstractInternalAntlrParser {
     static final String DFA58_maxS =
         "\1\16\1\163\1\16\2\uffff\1\163";
     static final String DFA58_acceptS =
-        "\3\uffff\1\2\1\1\1\uffff";
+        "\3\uffff\1\1\1\2\1\uffff";
     static final String DFA58_specialS =
         "\6\uffff}>";
     static final String[] DFA58_transitionS = {
             "\1\1",
-            "\1\4\1\uffff\1\3\127\uffff\1\2",
+            "\1\3\1\uffff\1\4\127\uffff\1\2",
             "\1\5",
             "",
             "",
-            "\1\4\1\uffff\1\3\127\uffff\1\2"
+            "\1\3\1\uffff\1\4\127\uffff\1\2"
     };
 
     static final short[] DFA58_eot = DFA.unpackEncodedString(DFA58_eotS);
@@ -21115,128 +21103,128 @@ public class InternalKGraphParser extends AbstractInternalAntlrParser {
         public static final BitSet FOLLOW_30_in_ruleKGridPlacementData15245 = new BitSet(new long[]{0x0000000000008200L});
         public static final BitSet FOLLOW_ruleFloat_in_ruleKGridPlacementData15266 = new BitSet(new long[]{0x0000000000000002L,0x000007800C000000L});
         public static final BitSet FOLLOW_105_in_ruleKGridPlacementData15334 = new BitSet(new long[]{0x0000000040000000L});
-        public static final BitSet FOLLOW_30_in_ruleKGridPlacementData15346 = new BitSet(new long[]{0x0000000000008200L});
-        public static final BitSet FOLLOW_ruleFloat_in_ruleKGridPlacementData15367 = new BitSet(new long[]{0x0000000000000002L,0x000007800C000000L});
-        public static final BitSet FOLLOW_106_in_ruleKGridPlacementData15435 = new BitSet(new long[]{0x0000000040000000L});
-        public static final BitSet FOLLOW_30_in_ruleKGridPlacementData15447 = new BitSet(new long[]{0x0000000000008200L});
-        public static final BitSet FOLLOW_ruleFloat_in_ruleKGridPlacementData15468 = new BitSet(new long[]{0x0000000000000002L,0x000007800C000000L});
-        public static final BitSet FOLLOW_ruleKDecoratorPlacementData_in_entryRuleKDecoratorPlacementData15545 = new BitSet(new long[]{0x0000000000000000L});
-        public static final BitSet FOLLOW_EOF_in_entryRuleKDecoratorPlacementData15555 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_107_in_ruleKDecoratorPlacementData15601 = new BitSet(new long[]{0x0000000002000000L});
-        public static final BitSet FOLLOW_25_in_ruleKDecoratorPlacementData15613 = new BitSet(new long[]{0x0000006000000002L,0x0001F00000000000L});
-        public static final BitSet FOLLOW_108_in_ruleKDecoratorPlacementData15671 = new BitSet(new long[]{0x0000000040000000L});
-        public static final BitSet FOLLOW_30_in_ruleKDecoratorPlacementData15683 = new BitSet(new long[]{0x0000000000008200L});
-        public static final BitSet FOLLOW_ruleFloat_in_ruleKDecoratorPlacementData15704 = new BitSet(new long[]{0x0000006000000002L,0x0001F00000000000L});
-        public static final BitSet FOLLOW_109_in_ruleKDecoratorPlacementData15772 = new BitSet(new long[]{0x0000000040000000L});
-        public static final BitSet FOLLOW_30_in_ruleKDecoratorPlacementData15784 = new BitSet(new long[]{0x0000000000008200L});
-        public static final BitSet FOLLOW_ruleFloat_in_ruleKDecoratorPlacementData15805 = new BitSet(new long[]{0x0000006000000002L,0x0001F00000000000L});
-        public static final BitSet FOLLOW_37_in_ruleKDecoratorPlacementData15873 = new BitSet(new long[]{0x0000000040000000L});
-        public static final BitSet FOLLOW_30_in_ruleKDecoratorPlacementData15885 = new BitSet(new long[]{0x0000000000008200L});
-        public static final BitSet FOLLOW_ruleFloat_in_ruleKDecoratorPlacementData15906 = new BitSet(new long[]{0x0000006000000002L,0x0001F00000000000L});
-        public static final BitSet FOLLOW_38_in_ruleKDecoratorPlacementData15974 = new BitSet(new long[]{0x0000000040000000L});
-        public static final BitSet FOLLOW_30_in_ruleKDecoratorPlacementData15986 = new BitSet(new long[]{0x0000000000008200L});
-        public static final BitSet FOLLOW_ruleFloat_in_ruleKDecoratorPlacementData16007 = new BitSet(new long[]{0x0000006000000002L,0x0001F00000000000L});
-        public static final BitSet FOLLOW_110_in_ruleKDecoratorPlacementData16075 = new BitSet(new long[]{0x0000000040000000L});
-        public static final BitSet FOLLOW_30_in_ruleKDecoratorPlacementData16087 = new BitSet(new long[]{0x0000000000008200L});
-        public static final BitSet FOLLOW_ruleFloat_in_ruleKDecoratorPlacementData16108 = new BitSet(new long[]{0x0000006000000002L,0x0001F00000000000L});
-        public static final BitSet FOLLOW_111_in_ruleKDecoratorPlacementData16176 = new BitSet(new long[]{0x0000000040000000L});
-        public static final BitSet FOLLOW_30_in_ruleKDecoratorPlacementData16188 = new BitSet(new long[]{0x0000000000008200L});
-        public static final BitSet FOLLOW_ruleFloat_in_ruleKDecoratorPlacementData16209 = new BitSet(new long[]{0x0000006000000002L,0x0001F00000000000L});
-        public static final BitSet FOLLOW_112_in_ruleKDecoratorPlacementData16277 = new BitSet(new long[]{0x0000000040000000L});
-        public static final BitSet FOLLOW_30_in_ruleKDecoratorPlacementData16289 = new BitSet(new long[]{0x0000000000000080L});
-        public static final BitSet FOLLOW_RULE_BOOLEAN_in_ruleKDecoratorPlacementData16306 = new BitSet(new long[]{0x0000006000000002L,0x0001F00000000000L});
-        public static final BitSet FOLLOW_ruleKAction_in_entryRuleKAction16388 = new BitSet(new long[]{0x0000000000000000L});
-        public static final BitSet FOLLOW_EOF_in_entryRuleKAction16398 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_ruleTrigger_in_ruleKAction16444 = new BitSet(new long[]{0x0000000000000000L,0x0002000000000000L});
-        public static final BitSet FOLLOW_113_in_ruleKAction16456 = new BitSet(new long[]{0x0000000000004000L});
-        public static final BitSet FOLLOW_ruleQualifiedID_in_ruleKAction16477 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_ruleKPosition_in_entryRuleKPosition16513 = new BitSet(new long[]{0x0000000000000000L});
-        public static final BitSet FOLLOW_EOF_in_entryRuleKPosition16523 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_ruleKXPosition_in_ruleKPosition16569 = new BitSet(new long[]{0x0000800000000000L});
-        public static final BitSet FOLLOW_47_in_ruleKPosition16581 = new BitSet(new long[]{0x0000060000000000L});
-        public static final BitSet FOLLOW_ruleKYPosition_in_ruleKPosition16602 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_ruleKXPosition_in_entryRuleKXPosition16638 = new BitSet(new long[]{0x0000000000000000L});
-        public static final BitSet FOLLOW_EOF_in_entryRuleKXPosition16648 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_ruleKLeftPosition_in_ruleKXPosition16696 = new BitSet(new long[]{0x0000000000008602L});
-        public static final BitSet FOLLOW_ruleKRightPosition_in_ruleKXPosition16723 = new BitSet(new long[]{0x0000000000008602L});
-        public static final BitSet FOLLOW_RULE_PERCENT_in_ruleKXPosition16741 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_RULE_PERCENT_in_ruleKXPosition16771 = new BitSet(new long[]{0x0000000000000000L,0x0004000000000000L});
-        public static final BitSet FOLLOW_114_in_ruleKXPosition16788 = new BitSet(new long[]{0x0000000000008200L});
-        public static final BitSet FOLLOW_ruleFloat_in_ruleKXPosition16811 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_ruleKLeftPosition_in_entryRuleKLeftPosition16850 = new BitSet(new long[]{0x0000000000000000L});
-        public static final BitSet FOLLOW_EOF_in_entryRuleKLeftPosition16860 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_43_in_ruleKLeftPosition16906 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_ruleKRightPosition_in_entryRuleKRightPosition16942 = new BitSet(new long[]{0x0000000000000000L});
-        public static final BitSet FOLLOW_EOF_in_entryRuleKRightPosition16952 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_44_in_ruleKRightPosition16998 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_ruleKYPosition_in_entryRuleKYPosition17034 = new BitSet(new long[]{0x0000000000000000L});
-        public static final BitSet FOLLOW_EOF_in_entryRuleKYPosition17044 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_ruleKTopPosition_in_ruleKYPosition17092 = new BitSet(new long[]{0x0000000000008602L});
-        public static final BitSet FOLLOW_ruleKBottomPosition_in_ruleKYPosition17119 = new BitSet(new long[]{0x0000000000008602L});
-        public static final BitSet FOLLOW_RULE_PERCENT_in_ruleKYPosition17137 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_RULE_PERCENT_in_ruleKYPosition17167 = new BitSet(new long[]{0x0000000000000000L,0x0004000000000000L});
-        public static final BitSet FOLLOW_114_in_ruleKYPosition17184 = new BitSet(new long[]{0x0000000000008200L});
-        public static final BitSet FOLLOW_ruleFloat_in_ruleKYPosition17207 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_ruleKTopPosition_in_entryRuleKTopPosition17246 = new BitSet(new long[]{0x0000000000000000L});
-        public static final BitSet FOLLOW_EOF_in_entryRuleKTopPosition17256 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_41_in_ruleKTopPosition17302 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_ruleKBottomPosition_in_entryRuleKBottomPosition17338 = new BitSet(new long[]{0x0000000000000000L});
-        public static final BitSet FOLLOW_EOF_in_entryRuleKBottomPosition17348 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_42_in_ruleKBottomPosition17394 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_ruleKColor_in_entryRuleKColor17430 = new BitSet(new long[]{0x0000000000000000L});
-        public static final BitSet FOLLOW_EOF_in_entryRuleKColor17440 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_RULE_RED_in_ruleKColor17483 = new BitSet(new long[]{0x0000800000000002L});
-        public static final BitSet FOLLOW_47_in_ruleKColor17501 = new BitSet(new long[]{0x0000000000001000L});
-        public static final BitSet FOLLOW_RULE_GREEN_in_ruleKColor17518 = new BitSet(new long[]{0x0000800000000002L});
-        public static final BitSet FOLLOW_47_in_ruleKColor17538 = new BitSet(new long[]{0x0000000000002000L});
-        public static final BitSet FOLLOW_RULE_BLUE_in_ruleKColor17555 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_RULE_GREEN_in_ruleKColor17587 = new BitSet(new long[]{0x0000800000000002L});
-        public static final BitSet FOLLOW_47_in_ruleKColor17605 = new BitSet(new long[]{0x0000000000002000L});
-        public static final BitSet FOLLOW_RULE_BLUE_in_ruleKColor17622 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_RULE_BLUE_in_ruleKColor17653 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_ruleQualifiedID_in_entryRuleQualifiedID17695 = new BitSet(new long[]{0x0000000000000000L});
-        public static final BitSet FOLLOW_EOF_in_entryRuleQualifiedID17706 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_RULE_ID_in_ruleQualifiedID17746 = new BitSet(new long[]{0x0000000000000002L,0x0008000000000000L});
-        public static final BitSet FOLLOW_115_in_ruleQualifiedID17765 = new BitSet(new long[]{0x0000000000004000L});
-        public static final BitSet FOLLOW_RULE_ID_in_ruleQualifiedID17780 = new BitSet(new long[]{0x0000000000000002L,0x0008000000000000L});
-        public static final BitSet FOLLOW_rulePropertyValue_in_entryRulePropertyValue17828 = new BitSet(new long[]{0x0000000000000000L});
-        public static final BitSet FOLLOW_EOF_in_entryRulePropertyValue17839 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_RULE_BOOLEAN_in_rulePropertyValue17879 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_RULE_STRING_in_rulePropertyValue17905 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_ruleFloat_in_rulePropertyValue17938 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_ruleQualifiedID_in_rulePropertyValue17971 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_ruleFloat_in_entryRuleFloat18017 = new BitSet(new long[]{0x0000000000000000L});
-        public static final BitSet FOLLOW_EOF_in_entryRuleFloat18028 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_RULE_TFLOAT_in_ruleFloat18068 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_RULE_NATURAL_in_ruleFloat18094 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_116_in_ruleArc18153 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_117_in_ruleArc18170 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_118_in_ruleArc18187 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_43_in_ruleHorizontalAlignment18232 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_119_in_ruleHorizontalAlignment18249 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_44_in_ruleHorizontalAlignment18266 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_41_in_ruleVerticalAlignment18311 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_119_in_ruleVerticalAlignment18328 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_42_in_ruleVerticalAlignment18345 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_120_in_ruleUnderline18390 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_121_in_ruleUnderline18407 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_122_in_ruleUnderline18424 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_123_in_ruleUnderline18441 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_124_in_ruleUnderline18458 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_125_in_ruleUnderline18475 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_126_in_ruleLineStyle18520 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_127_in_ruleLineStyle18537 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_128_in_ruleLineStyle18554 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_129_in_ruleLineStyle18571 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_130_in_ruleLineStyle18588 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_131_in_ruleLineCap18633 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_132_in_ruleLineCap18650 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_133_in_ruleLineCap18667 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_134_in_ruleLineJoin18712 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_132_in_ruleLineJoin18729 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_135_in_ruleLineJoin18746 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_136_in_ruleTrigger18791 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_137_in_ruleTrigger18808 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_30_in_ruleKGridPlacementData15346 = new BitSet(new long[]{0x0000000000000080L});
+        public static final BitSet FOLLOW_RULE_BOOLEAN_in_ruleKGridPlacementData15363 = new BitSet(new long[]{0x0000000000000002L,0x000007800C000000L});
+        public static final BitSet FOLLOW_106_in_ruleKGridPlacementData15436 = new BitSet(new long[]{0x0000000040000000L});
+        public static final BitSet FOLLOW_30_in_ruleKGridPlacementData15448 = new BitSet(new long[]{0x0000000000000080L});
+        public static final BitSet FOLLOW_RULE_BOOLEAN_in_ruleKGridPlacementData15465 = new BitSet(new long[]{0x0000000000000002L,0x000007800C000000L});
+        public static final BitSet FOLLOW_ruleKDecoratorPlacementData_in_entryRuleKDecoratorPlacementData15547 = new BitSet(new long[]{0x0000000000000000L});
+        public static final BitSet FOLLOW_EOF_in_entryRuleKDecoratorPlacementData15557 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_107_in_ruleKDecoratorPlacementData15603 = new BitSet(new long[]{0x0000000002000000L});
+        public static final BitSet FOLLOW_25_in_ruleKDecoratorPlacementData15615 = new BitSet(new long[]{0x0000006000000002L,0x0001F00000000000L});
+        public static final BitSet FOLLOW_108_in_ruleKDecoratorPlacementData15673 = new BitSet(new long[]{0x0000000040000000L});
+        public static final BitSet FOLLOW_30_in_ruleKDecoratorPlacementData15685 = new BitSet(new long[]{0x0000000000008200L});
+        public static final BitSet FOLLOW_ruleFloat_in_ruleKDecoratorPlacementData15706 = new BitSet(new long[]{0x0000006000000002L,0x0001F00000000000L});
+        public static final BitSet FOLLOW_109_in_ruleKDecoratorPlacementData15774 = new BitSet(new long[]{0x0000000040000000L});
+        public static final BitSet FOLLOW_30_in_ruleKDecoratorPlacementData15786 = new BitSet(new long[]{0x0000000000008200L});
+        public static final BitSet FOLLOW_ruleFloat_in_ruleKDecoratorPlacementData15807 = new BitSet(new long[]{0x0000006000000002L,0x0001F00000000000L});
+        public static final BitSet FOLLOW_37_in_ruleKDecoratorPlacementData15875 = new BitSet(new long[]{0x0000000040000000L});
+        public static final BitSet FOLLOW_30_in_ruleKDecoratorPlacementData15887 = new BitSet(new long[]{0x0000000000008200L});
+        public static final BitSet FOLLOW_ruleFloat_in_ruleKDecoratorPlacementData15908 = new BitSet(new long[]{0x0000006000000002L,0x0001F00000000000L});
+        public static final BitSet FOLLOW_38_in_ruleKDecoratorPlacementData15976 = new BitSet(new long[]{0x0000000040000000L});
+        public static final BitSet FOLLOW_30_in_ruleKDecoratorPlacementData15988 = new BitSet(new long[]{0x0000000000008200L});
+        public static final BitSet FOLLOW_ruleFloat_in_ruleKDecoratorPlacementData16009 = new BitSet(new long[]{0x0000006000000002L,0x0001F00000000000L});
+        public static final BitSet FOLLOW_110_in_ruleKDecoratorPlacementData16077 = new BitSet(new long[]{0x0000000040000000L});
+        public static final BitSet FOLLOW_30_in_ruleKDecoratorPlacementData16089 = new BitSet(new long[]{0x0000000000008200L});
+        public static final BitSet FOLLOW_ruleFloat_in_ruleKDecoratorPlacementData16110 = new BitSet(new long[]{0x0000006000000002L,0x0001F00000000000L});
+        public static final BitSet FOLLOW_111_in_ruleKDecoratorPlacementData16178 = new BitSet(new long[]{0x0000000040000000L});
+        public static final BitSet FOLLOW_30_in_ruleKDecoratorPlacementData16190 = new BitSet(new long[]{0x0000000000008200L});
+        public static final BitSet FOLLOW_ruleFloat_in_ruleKDecoratorPlacementData16211 = new BitSet(new long[]{0x0000006000000002L,0x0001F00000000000L});
+        public static final BitSet FOLLOW_112_in_ruleKDecoratorPlacementData16279 = new BitSet(new long[]{0x0000000040000000L});
+        public static final BitSet FOLLOW_30_in_ruleKDecoratorPlacementData16291 = new BitSet(new long[]{0x0000000000000080L});
+        public static final BitSet FOLLOW_RULE_BOOLEAN_in_ruleKDecoratorPlacementData16308 = new BitSet(new long[]{0x0000006000000002L,0x0001F00000000000L});
+        public static final BitSet FOLLOW_ruleKAction_in_entryRuleKAction16390 = new BitSet(new long[]{0x0000000000000000L});
+        public static final BitSet FOLLOW_EOF_in_entryRuleKAction16400 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleTrigger_in_ruleKAction16446 = new BitSet(new long[]{0x0000000000000000L,0x0002000000000000L});
+        public static final BitSet FOLLOW_113_in_ruleKAction16458 = new BitSet(new long[]{0x0000000000004000L});
+        public static final BitSet FOLLOW_ruleQualifiedID_in_ruleKAction16479 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleKPosition_in_entryRuleKPosition16515 = new BitSet(new long[]{0x0000000000000000L});
+        public static final BitSet FOLLOW_EOF_in_entryRuleKPosition16525 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleKXPosition_in_ruleKPosition16571 = new BitSet(new long[]{0x0000800000000000L});
+        public static final BitSet FOLLOW_47_in_ruleKPosition16583 = new BitSet(new long[]{0x0000060000000000L});
+        public static final BitSet FOLLOW_ruleKYPosition_in_ruleKPosition16604 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleKXPosition_in_entryRuleKXPosition16640 = new BitSet(new long[]{0x0000000000000000L});
+        public static final BitSet FOLLOW_EOF_in_entryRuleKXPosition16650 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleKLeftPosition_in_ruleKXPosition16698 = new BitSet(new long[]{0x0000000000008602L});
+        public static final BitSet FOLLOW_ruleKRightPosition_in_ruleKXPosition16725 = new BitSet(new long[]{0x0000000000008602L});
+        public static final BitSet FOLLOW_RULE_PERCENT_in_ruleKXPosition16743 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_RULE_PERCENT_in_ruleKXPosition16773 = new BitSet(new long[]{0x0000000000000000L,0x0004000000000000L});
+        public static final BitSet FOLLOW_114_in_ruleKXPosition16790 = new BitSet(new long[]{0x0000000000008200L});
+        public static final BitSet FOLLOW_ruleFloat_in_ruleKXPosition16813 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleKLeftPosition_in_entryRuleKLeftPosition16852 = new BitSet(new long[]{0x0000000000000000L});
+        public static final BitSet FOLLOW_EOF_in_entryRuleKLeftPosition16862 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_43_in_ruleKLeftPosition16908 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleKRightPosition_in_entryRuleKRightPosition16944 = new BitSet(new long[]{0x0000000000000000L});
+        public static final BitSet FOLLOW_EOF_in_entryRuleKRightPosition16954 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_44_in_ruleKRightPosition17000 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleKYPosition_in_entryRuleKYPosition17036 = new BitSet(new long[]{0x0000000000000000L});
+        public static final BitSet FOLLOW_EOF_in_entryRuleKYPosition17046 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleKTopPosition_in_ruleKYPosition17094 = new BitSet(new long[]{0x0000000000008602L});
+        public static final BitSet FOLLOW_ruleKBottomPosition_in_ruleKYPosition17121 = new BitSet(new long[]{0x0000000000008602L});
+        public static final BitSet FOLLOW_RULE_PERCENT_in_ruleKYPosition17139 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_RULE_PERCENT_in_ruleKYPosition17169 = new BitSet(new long[]{0x0000000000000000L,0x0004000000000000L});
+        public static final BitSet FOLLOW_114_in_ruleKYPosition17186 = new BitSet(new long[]{0x0000000000008200L});
+        public static final BitSet FOLLOW_ruleFloat_in_ruleKYPosition17209 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleKTopPosition_in_entryRuleKTopPosition17248 = new BitSet(new long[]{0x0000000000000000L});
+        public static final BitSet FOLLOW_EOF_in_entryRuleKTopPosition17258 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_41_in_ruleKTopPosition17304 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleKBottomPosition_in_entryRuleKBottomPosition17340 = new BitSet(new long[]{0x0000000000000000L});
+        public static final BitSet FOLLOW_EOF_in_entryRuleKBottomPosition17350 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_42_in_ruleKBottomPosition17396 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleKColor_in_entryRuleKColor17432 = new BitSet(new long[]{0x0000000000000000L});
+        public static final BitSet FOLLOW_EOF_in_entryRuleKColor17442 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_RULE_RED_in_ruleKColor17485 = new BitSet(new long[]{0x0000800000000002L});
+        public static final BitSet FOLLOW_47_in_ruleKColor17503 = new BitSet(new long[]{0x0000000000001000L});
+        public static final BitSet FOLLOW_RULE_GREEN_in_ruleKColor17520 = new BitSet(new long[]{0x0000800000000002L});
+        public static final BitSet FOLLOW_47_in_ruleKColor17540 = new BitSet(new long[]{0x0000000000002000L});
+        public static final BitSet FOLLOW_RULE_BLUE_in_ruleKColor17557 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_RULE_GREEN_in_ruleKColor17589 = new BitSet(new long[]{0x0000800000000002L});
+        public static final BitSet FOLLOW_47_in_ruleKColor17607 = new BitSet(new long[]{0x0000000000002000L});
+        public static final BitSet FOLLOW_RULE_BLUE_in_ruleKColor17624 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_RULE_BLUE_in_ruleKColor17655 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleQualifiedID_in_entryRuleQualifiedID17697 = new BitSet(new long[]{0x0000000000000000L});
+        public static final BitSet FOLLOW_EOF_in_entryRuleQualifiedID17708 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_RULE_ID_in_ruleQualifiedID17748 = new BitSet(new long[]{0x0000000000000002L,0x0008000000000000L});
+        public static final BitSet FOLLOW_115_in_ruleQualifiedID17767 = new BitSet(new long[]{0x0000000000004000L});
+        public static final BitSet FOLLOW_RULE_ID_in_ruleQualifiedID17782 = new BitSet(new long[]{0x0000000000000002L,0x0008000000000000L});
+        public static final BitSet FOLLOW_rulePropertyValue_in_entryRulePropertyValue17830 = new BitSet(new long[]{0x0000000000000000L});
+        public static final BitSet FOLLOW_EOF_in_entryRulePropertyValue17841 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_RULE_BOOLEAN_in_rulePropertyValue17881 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_RULE_STRING_in_rulePropertyValue17907 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleFloat_in_rulePropertyValue17940 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleQualifiedID_in_rulePropertyValue17973 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleFloat_in_entryRuleFloat18019 = new BitSet(new long[]{0x0000000000000000L});
+        public static final BitSet FOLLOW_EOF_in_entryRuleFloat18030 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_RULE_TFLOAT_in_ruleFloat18070 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_RULE_NATURAL_in_ruleFloat18096 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_116_in_ruleArc18155 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_117_in_ruleArc18172 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_118_in_ruleArc18189 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_43_in_ruleHorizontalAlignment18234 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_119_in_ruleHorizontalAlignment18251 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_44_in_ruleHorizontalAlignment18268 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_41_in_ruleVerticalAlignment18313 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_119_in_ruleVerticalAlignment18330 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_42_in_ruleVerticalAlignment18347 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_120_in_ruleUnderline18392 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_121_in_ruleUnderline18409 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_122_in_ruleUnderline18426 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_123_in_ruleUnderline18443 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_124_in_ruleUnderline18460 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_125_in_ruleUnderline18477 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_126_in_ruleLineStyle18522 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_127_in_ruleLineStyle18539 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_128_in_ruleLineStyle18556 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_129_in_ruleLineStyle18573 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_130_in_ruleLineStyle18590 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_131_in_ruleLineCap18635 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_132_in_ruleLineCap18652 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_133_in_ruleLineCap18669 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_134_in_ruleLineJoin18714 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_132_in_ruleLineJoin18731 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_135_in_ruleLineJoin18748 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_136_in_ruleTrigger18793 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_137_in_ruleTrigger18810 = new BitSet(new long[]{0x0000000000000002L});
     }
 
 

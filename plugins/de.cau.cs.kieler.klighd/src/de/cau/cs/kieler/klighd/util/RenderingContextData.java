@@ -19,7 +19,6 @@ package de.cau.cs.kieler.klighd.util;
 import com.google.common.base.Predicate;
 
 import de.cau.cs.kieler.core.kgraph.KGraphElement;
-import de.cau.cs.kieler.core.kgraph.KNode;
 import de.cau.cs.kieler.core.kgraph.impl.KGraphDataImpl;
 import de.cau.cs.kieler.core.properties.IProperty;
 import de.cau.cs.kieler.klighd.internal.util.KlighdInternalProperties;
@@ -65,8 +64,8 @@ public class RenderingContextData extends KGraphDataImpl {
      * Currently all children of a node are active or non-active at a time, a selective filtering is
      * not done so far (see e.g. DiagramController#addExpansionListener). This might change in future.
      */
-    public static final Predicate<KNode> CHILD_ACTIVE = new Predicate<KNode>() {
-        public boolean apply(final KNode node) {
+    public static final Predicate<KGraphElement> IS_ACTIVE = new Predicate<KGraphElement>() {
+        public boolean apply(final KGraphElement node) {
             return !RenderingContextData.get(node).containsPoperty(KlighdInternalProperties.ACTIVE)
                     || RenderingContextData.get(node).getProperty(KlighdInternalProperties.ACTIVE);
         }

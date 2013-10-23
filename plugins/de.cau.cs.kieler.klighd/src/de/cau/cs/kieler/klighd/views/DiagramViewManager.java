@@ -226,19 +226,19 @@ public final class DiagramViewManager implements IPartListener {
             // update the view context and viewer
             Object theModel = (model != null ? model : currentInputModel);
             
-            viewContext.getProperty(LightDiagramServices.VIEWER).setRecording(true);
+            viewContext.getViewer().setRecording(true);
             if (!LightDiagramServices.getInstance().updateViewContext(viewContext, theModel,
                     propertyHolder)) {
                 return null;
             }
-            LightDiagramServices.getInstance().layoutDiagram(viewContext);
+            LightDiagramServices.layoutDiagram(viewContext);
         }
         
         
         // trigger the update status
         KlighdStatusState state =
                 new KlighdStatusState(KlighdStatusState.Status.UPDATE, id, viewContext,
-                        viewContext.getProperty(LightDiagramServices.VIEWER));
+                        viewContext.getViewer());
         if (KlighdStatusTrigger.getInstance() != null) {
             KlighdStatusTrigger.getInstance().trigger(state);
         }
@@ -346,10 +346,10 @@ public final class DiagramViewManager implements IPartListener {
                 diagramView.getContextViewer().setModel(viewContext);
 
                 // do an initial update of the view context
-                viewContext.getProperty(LightDiagramServices.VIEWER).setRecording(true);
+                viewContext.getViewer().setRecording(true);
                 LightDiagramServices.getInstance().updateViewContext(viewContext, model);
                 
-                LightDiagramServices.getInstance().layoutDiagram(viewContext, false);
+                LightDiagramServices.layoutDiagram(viewContext, false);
 
                 final IPreferenceStore preferenceStore = KlighdPlugin.getDefault().getPreferenceStore();
                 final boolean zoomToFit = preferenceStore.getBoolean(KlighdPreferences.ZOOM_TO_FIT);
@@ -363,7 +363,7 @@ public final class DiagramViewManager implements IPartListener {
                 // trigger the create success status
                 KlighdStatusState state =
                         new KlighdStatusState(KlighdStatusState.Status.CREATE_SUCCESS, id,
-                                viewContext, viewContext.getProperty(LightDiagramServices.VIEWER));
+                                viewContext, viewContext.getViewer());
                 if (KlighdStatusTrigger.getInstance() != null) {
                     KlighdStatusTrigger.getInstance().trigger(state);
                 }
@@ -423,7 +423,7 @@ public final class DiagramViewManager implements IPartListener {
                 // trigger the close status
                 KlighdStatusState state =
                         new KlighdStatusState(KlighdStatusState.Status.CLOSE, id, viewContext,
-                                viewContext.getProperty(LightDiagramServices.VIEWER));
+                                viewContext.getViewer());
                 if (KlighdStatusTrigger.getInstance() != null) {
                     KlighdStatusTrigger.getInstance().trigger(state);
                 }

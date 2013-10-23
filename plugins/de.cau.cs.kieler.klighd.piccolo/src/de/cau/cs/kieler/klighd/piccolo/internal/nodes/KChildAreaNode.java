@@ -24,6 +24,7 @@ import edu.umd.cs.piccolo.util.PPickPath;
  * A Piccolo node for the {@code KChildArea}.
  * 
  * @author mri
+ * @author chsch
  */
 public class KChildAreaNode extends PZIndexNode {
 
@@ -88,6 +89,15 @@ public class KChildAreaNode extends PZIndexNode {
     public void addEdge(final KEdgeNode edge) {
         addChild(edge, EDGE_LAYER);
     }
+
+    /**
+     * Returns whether this child area is expanded.
+     * 
+     * @return true if this child area is expanded; false else
+     */
+    public boolean isExpanded() {
+        return expanded;
+    }
     
     /**
      * Sets whether this child area is expanded.
@@ -111,16 +121,15 @@ public class KChildAreaNode extends PZIndexNode {
      * Unfortunately old and new value must be different, so I set the old value to the inverse.
      */
     public void touchExpanded() {
-        firePropertyChange(-1, PROPERTY_EXPANSION, !expanded, expanded);   
+        firePropertyChange(-1, PROPERTY_EXPANSION, !this.expanded, this.expanded);   
     }
 
     /**
-     * Returns whether this child area is expanded.
-     * 
-     * @return true if this child area is expanded; false else
+     * Toggles the expansion state of <code>this</code> {@link KChildAreaNode}.
      */
-    public boolean isExpanded() {
-        return expanded;
+    public void toggleExpansion() {
+        this.expanded = !this.expanded;
+        firePropertyChange(-1, PROPERTY_EXPANSION, !this.expanded, this.expanded);   
     }
 
     /**

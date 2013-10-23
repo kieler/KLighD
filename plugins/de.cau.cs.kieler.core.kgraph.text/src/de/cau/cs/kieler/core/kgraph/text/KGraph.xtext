@@ -166,7 +166,7 @@ KPolyline returns KPolyline:
 		& ('actions' ':' (actions+=KAction)*)?
 		& (placementData=KPlacementData)?
 		& (childPlacement=KPlacement)?)
-		('junction' jointPointRendering=KRendering)?
+		('junction' junctionPointRendering=KRendering)?
 		(children+=KRendering)*
 	'}')?;
 
@@ -315,8 +315,8 @@ KGridPlacementData returns KGridPlacementData:
 		& ('bottomRightAnchor' '=' bottomRight=KPosition)?
 		& ('minCellWidth' '=' minCellWidth=Float)?
 		& ('minCellHeight' '=' minCellHeight=Float)?
-		& ('maxCellWidth' '=' maxCellWidth=Float)?
-		& ('maxCellHeight' '=' maxCellHeight=Float)?);
+		& ('flexibleWidth' '=' flexibleWidth=BOOLEAN)?
+		& ('flexibleHeight' '=' flexibleHeight=BOOLEAN)?);
 
 KDecoratorPlacementData returns KDecoratorPlacementData:
 	{KDecoratorPlacementData}

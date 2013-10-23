@@ -51,7 +51,7 @@ public interface KPointPlacementData extends KPlacementData {
      * @return the value of the '<em>Reference Point</em>' containment reference.
      * @see #setReferencePoint(KPosition)
      * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKPointPlacementData_ReferencePoint()
-     * @model containment="true" required="true"
+     * @model containment="true"
      * @generated
      */
     KPosition getReferencePoint();
@@ -68,6 +68,7 @@ public interface KPointPlacementData extends KPlacementData {
 
     /**
      * Returns the value of the '<em><b>Vertical Alignment</b></em>' attribute.
+     * The default value is <code>"TOP"</code>.
      * The literals are from the enumeration {@link de.cau.cs.kieler.core.krendering.VerticalAlignment}.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -78,7 +79,7 @@ public interface KPointPlacementData extends KPlacementData {
      * @see de.cau.cs.kieler.core.krendering.VerticalAlignment
      * @see #setVerticalAlignment(VerticalAlignment)
      * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKPointPlacementData_VerticalAlignment()
-     * @model required="true"
+     * @model default="TOP"
      * @generated
      */
     VerticalAlignment getVerticalAlignment();
@@ -204,6 +205,7 @@ public interface KPointPlacementData extends KPlacementData {
 
     /**
      * Returns the value of the '<em><b>Horizontal Alignment</b></em>' attribute.
+     * The default value is <code>"LEFT"</code>.
      * The literals are from the enumeration {@link de.cau.cs.kieler.core.krendering.HorizontalAlignment}.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -214,7 +216,7 @@ public interface KPointPlacementData extends KPlacementData {
      * @see de.cau.cs.kieler.core.krendering.HorizontalAlignment
      * @see #setHorizontalAlignment(HorizontalAlignment)
      * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKPointPlacementData_HorizontalAlignment()
-     * @model required="true"
+     * @model default="LEFT"
      * @generated
      */
     HorizontalAlignment getHorizontalAlignment();

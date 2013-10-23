@@ -50,7 +50,7 @@ public class KGraphFactoryImpl extends EFactoryImpl implements KGraphFactory {
      */
     public static KGraphFactory init() {
         try {
-            KGraphFactory theKGraphFactory = (KGraphFactory)EPackage.Registry.INSTANCE.getEFactory("http://kieler.cs.cau.de/KGraph"); 
+            KGraphFactory theKGraphFactory = (KGraphFactory)EPackage.Registry.INSTANCE.getEFactory(KGraphPackage.eNS_URI);
             if (theKGraphFactory != null) {
                 return theKGraphFactory;
             }

@@ -25,6 +25,7 @@ import org.eclipse.ui.statushandlers.StatusManager;
 import com.google.common.collect.Maps;
 
 import de.cau.cs.kieler.core.WrappedException;
+import de.cau.cs.kieler.core.kgraph.KNode;
 
 /**
  * Singleton for accessing transformations, viewers, update strategies and layout post processors
@@ -75,10 +76,10 @@ public final class KlighdDataManager {
     private Map<String, ITransformation<?, ?>> idTransformationMapping = Maps.newHashMap();
     
     /** the mapping of ids on the associated viewer providers. */
-    private Map<String, IViewerProvider<?>> idViewerProviderMapping = Maps.newHashMap();
+    private Map<String, IViewerProvider<KNode>> idViewerProviderMapping = Maps.newHashMap();
     
     /** the mapping of ids on the associated update strategies. */
-    private Map<String, IUpdateStrategy<?>> idUpdateStrategyMapping = Maps.newHashMap();
+    private Map<String, IUpdateStrategy<KNode>> idUpdateStrategyMapping = Maps.newHashMap();
     
     /** the mapping of ids on the associated style modifiers. */
     private Map<String, IStyleModifier> idStyleModifierMapping = Maps.newHashMap();
@@ -149,7 +150,8 @@ public final class KlighdDataManager {
             try {
                 if (ELEMENT_VIEWER.equals(element.getName())) {
                     // initialize viewer provider from the extension point
-                    IViewerProvider<?> viewerProvider = (IViewerProvider<?>) element
+                    @SuppressWarnings("unchecked")
+                    IViewerProvider<KNode> viewerProvider = (IViewerProvider<KNode>) element
                             .createExecutableExtension(ATTRIBUTE_CLASS);
                     if (viewerProvider != null) {
                         String id = element.getAttribute(ATTRIBUTE_ID);
@@ -162,7 +164,8 @@ public final class KlighdDataManager {
                     }
                 } else if (ELEMENT_UPDATE_STRATEGY.equals(element.getName())) {
                     // initialize update strategy from the extension point
-                    IUpdateStrategy<?> updateStrategy = (IUpdateStrategy<?>) element
+                    @SuppressWarnings("unchecked")
+                    IUpdateStrategy<KNode> updateStrategy = (IUpdateStrategy<KNode>) element
                             .createExecutableExtension(ATTRIBUTE_CLASS);
                     if (updateStrategy != null) {
                         String id = element.getAttribute(ATTRIBUTE_ID);
@@ -277,7 +280,7 @@ public final class KlighdDataManager {
      *            the identifier
      * @return the viewer provider or null if there is no viewer provider with the given id
      */
-    public IViewerProvider<?> getViewerProviderById(final String id) {
+    public IViewerProvider<KNode> getViewerProviderById(final String id) {
         if (id == null) {
             return null;
         }
@@ -291,7 +294,7 @@ public final class KlighdDataManager {
      *            the identifier
      * @return the update strategy
      */
-    public IUpdateStrategy<?> getUpdateStrategyById(final String id) {
+    public IUpdateStrategy<KNode> getUpdateStrategyById(final String id) {
         return idUpdateStrategyMapping.get(id);
     }
     

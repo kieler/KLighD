@@ -86,7 +86,7 @@ public class KPortImpl extends KLabeledGraphElementImpl implements KPort {
      */
     public KNode getNode() {
         if (eContainerFeatureID() != KGraphPackage.KPORT__NODE) return null;
-        return (KNode)eContainer();
+        return (KNode)eInternalContainer();
     }
 
     /**

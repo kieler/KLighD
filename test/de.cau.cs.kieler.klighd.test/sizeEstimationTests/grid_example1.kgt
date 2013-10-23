@@ -1,40 +1,63 @@
-
 knode {
-	properties: klighd.testing.expected.^height = 96.0
-	klighd.testing.expected.^width = 329.0
-	krectangle {
-		styles: foreground = 255g
-		grid: columns = 1
-		krectangle {
-			ktext ("Einen ganz langenajajkgaskgakjsdgajksgdakjshdakj Text")
-			[klighd.testing.^height = 16.0 klighd.testing.^width = 329.0]
-		}
-		krectangle {
-			grid: columns = 2
-			krectangle {
-				gridData: maxCellWidth = 90
-				ktext ("name") [klighd.testing.^height = 16.0 klighd.testing.^width = 32.0]
-			}
-			krectangle {
-				ktext ("Hugo") [klighd.testing.^height = 16.0 klighd.testing.^width = 31.0]
-			}
-			krectangle {
-				ktext ("value") [klighd.testing.^height = 16.0 klighd.testing.^width =
-				31.0]
-			}
-			krectangle {
-				grid: columns = 1
-				ktext ("a)") [klighd.testing.^height = 16.0 klighd.testing.^width = 11.0]
-				ktext ("b)") [klighd.testing.^height = 16.0 klighd.testing.^width = 11.0]
-				ktext ("c)") [klighd.testing.^height = 16.0 klighd.testing.^width = 11.0]
-			}
-			krectangle {
-				ktext ("parent") [klighd.testing.^height = 16.0 klighd.testing.^width =
-				36.0]
-			}
-			krectangle {
-				ktext ("...") [klighd.testing.^height = 16.0 klighd.testing.^width = 12.0]
-			}
-		}
-	}
+    properties: klighd.testing.expected.^height = 92.0
+    klighd.testing.expected.^width = 156.0
+    krectangle {
+        styles: foreground = 255g
+        grid:
+            columns = 1
+        krectangle {
+            ktext ("Ein gaaaanz laaaaaaaanger Text") [
+                klighd.testing.^height = 12.0
+                klighd.testing.^width = 156.0
+            ]
+        }
+        krectangle {
+            grid: columns = 2
+            krectangle {
+                ktext ("name") [
+                    klighd.testing.^height = 16.0
+                    klighd.testing.^width = 32.0
+                ]
+            }
+            krectangle {
+                ktext ("Hugo") [
+                    klighd.testing.^height = 16.0
+                    klighd.testing.^width = 31.0
+                ]
+            }
+            krectangle {
+                ktext ("value") [
+                    klighd.testing.^height = 16.0
+                    klighd.testing.^width = 31.0
+                ]
+            }
+            krectangle {
+                grid: columns = 1
+                ktext ("a)") [
+                    klighd.testing.^height = 16.0
+                    klighd.testing.^width = 11.0
+                ]
+                ktext ("b)") [
+                    klighd.testing.^height = 16.0
+                    klighd.testing.^width = 11.0
+                ]
+                ktext ("c)") [
+                    klighd.testing.^height = 16.0
+                    klighd.testing.^width = 11.0
+                ]
+            }
+            krectangle {
+                ktext ("parent") [
+                    klighd.testing.^height = 16.0
+                    klighd.testing.^width = 36.0
+                ]
+            }
+            krectangle {
+                ktext ("...") [
+                    klighd.testing.^height = 16.0
+                    klighd.testing.^width = 12.0
+                ]
+            }
+        }
+    }
 }

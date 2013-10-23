@@ -35,6 +35,10 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
+import org.eclipse.jface.action.Action;
+import org.eclipse.jface.action.IAction;
+import org.eclipse.jface.action.IToolBarManager;
+import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
@@ -53,9 +57,11 @@ import de.cau.cs.kieler.core.kgraph.KNode;
 import de.cau.cs.kieler.core.properties.IPropertyHolder;
 import de.cau.cs.kieler.core.properties.MapPropertyHolder;
 import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout;
+import de.cau.cs.kieler.kiml.ui.KimlUiPlugin;
 import de.cau.cs.kieler.klighd.KlighdPlugin;
 import de.cau.cs.kieler.klighd.LightDiagramServices;
 import de.cau.cs.kieler.klighd.ViewContext;
+import de.cau.cs.kieler.klighd.internal.preferences.KlighdPreferences;
 import de.cau.cs.kieler.klighd.krendering.SimpleUpdateStrategy;
 import de.cau.cs.kieler.klighd.util.Iterables2;
 import de.cau.cs.kieler.klighd.viewers.ContextViewer;
@@ -105,6 +111,10 @@ public class DiagramEditorPart extends EditorPart implements IDiagramWorkbenchPa
         // create a context viewer
         viewer = new ContextViewer(parent, "diagramEditor:" + getEditorInput().toString(), this);
         
+        // add buttons to the editor toolbar
+        //  requires non-null 'viewer' field 
+        addButtons();
+        
         // create a view context for the viewer
         ViewContext viewContext = LightDiagramServices.getInstance().createViewContext(
                 model, configureKlighdProperties());
@@ -116,7 +126,7 @@ public class DiagramEditorPart extends EditorPart implements IDiagramWorkbenchPa
             DiagramViewManager.getInstance().registerView(this);
             
             if (requiresInitialLayout(viewContext)) {
-                LightDiagramServices.getInstance().layoutDiagram(viewContext, false, false);
+                LightDiagramServices.layoutDiagram(viewContext, false, false);
             }
             viewer.updateOptions(false);
 
@@ -407,5 +417,44 @@ public class DiagramEditorPart extends EditorPart implements IDiagramWorkbenchPa
             }
         }
     };
-            
+          
+    /**
+     * Add the buttons to the tool bar.
+     */
+    private void addButtons() {
+        final IToolBarManager toolBar = this.getEditorSite().getActionBars().getToolBarManager();
+
+        final IPreferenceStore preferenceStore = KlighdPlugin.getDefault().getPreferenceStore();
+
+        // toggle zoom to fit behavior
+        toolBar.add(new Action("Toggle Zoom to Fit", IAction.AS_CHECK_BOX) {
+            // Constructor
+            {
+                setImageDescriptor(KimlUiPlugin
+                        .getImageDescriptor("icons/menu16/kieler-zoomtofit.gif"));
+                final ViewContext vc =
+                        DiagramEditorPart.this.getContextViewer().getCurrentViewContext();
+                if (vc != null) {
+                    setChecked(vc.isZoomToFit());
+                } else {
+                    setChecked(preferenceStore.getBoolean(KlighdPreferences.ZOOM_TO_FIT));
+                }
+            }
+
+            @Override
+            public void run() {
+                final ViewContext vc =
+                        DiagramEditorPart.this.getContextViewer().getCurrentViewContext();
+                if (vc != null) {
+                    vc.setZoomToFit(this.isChecked());
+
+                    // perform zoom to fit upon activation of the toggle button
+                    if (this.isChecked()) {
+                        LightDiagramServices.layoutAndZoomDiagram(DiagramEditorPart.this);
+                    }
+
+                }
+            }
+        });
+    }
 }

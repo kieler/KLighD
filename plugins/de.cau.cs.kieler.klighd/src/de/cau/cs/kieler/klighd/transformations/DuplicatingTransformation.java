@@ -79,5 +79,12 @@ public class DuplicatingTransformation<S extends EObject> implements ITransforma
     public Set<TransformationOption> getTransformationOptions() {
         return Collections.emptySet();
     }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public boolean supports(final S model) {
+        return true;
+    }
 
 }

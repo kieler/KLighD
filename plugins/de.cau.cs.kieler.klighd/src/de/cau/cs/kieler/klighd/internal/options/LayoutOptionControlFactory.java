@@ -24,7 +24,7 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.events.SelectionListener;
+import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -168,7 +168,7 @@ public class LayoutOptionControlFactory {
      * @param animate whether the new layout shall be animated
      */
     private void refreshLayout(final boolean animate) {
-        LightDiagramServices.getInstance().layoutDiagram(workbenchPart, animate);
+        LightDiagramServices.layoutDiagram(workbenchPart, animate);
     }
     
     /**
@@ -406,7 +406,7 @@ public class LayoutOptionControlFactory {
     /**
      * A listener for sliders.
      */
-    private class SliderListener implements SelectionListener {
+    private class SliderListener extends SelectionAdapter {
         
         /** the layout option that is affected by the slider. */
         private LayoutOptionData<?> optionData;
@@ -433,9 +433,7 @@ public class LayoutOptionControlFactory {
             }
         }
 
-        /**
-         * {@inheritDoc}
-         */
+        @Override
         public void widgetSelected(final SelectionEvent event) {
             Scale slider = (Scale) event.widget;
             float sliderValue = (float) (slider.getSelection() - slider.getMinimum())
@@ -463,21 +461,14 @@ public class LayoutOptionControlFactory {
                 break;
             }
         }
-
-        /**
-         * {@inheritDoc}
-         */
-        public void widgetDefaultSelected(final SelectionEvent event) { }
     }
     
     /**
      * A listener for the layout algorithm selection button.
      */
-    private class AlgorithmListener implements SelectionListener {
+    private class AlgorithmListener extends SelectionAdapter {
 
-        /**
-         * {@inheritDoc}
-         */
+        @Override
         public void widgetSelected(final SelectionEvent event) {
             final LayoutOptionData<?> optionData = LayoutDataService.getInstance().getOptionData(
                     LayoutOptions.ALGORITHM.getId());
@@ -504,17 +495,12 @@ public class LayoutOptionControlFactory {
             // trigger a new layout on the displayed diagram
             refreshLayout(true);
         }
-
-        /**
-         * {@inheritDoc}
-         */
-        public void widgetDefaultSelected(final SelectionEvent event) { }
     }
     
     /**
      * A listener for enumeration values.
      */
-    private class EnumerationListener implements SelectionListener {
+    private class EnumerationListener extends SelectionAdapter {
         
         /** the layout option that is affected by the button. */
         private LayoutOptionData<?> optionData;
@@ -532,20 +518,12 @@ public class LayoutOptionControlFactory {
             this.value = value;
         }
 
-        /**
-         * {@inheritDoc}
-         */
+        @Override
         public void widgetSelected(final SelectionEvent event) {
             if (((Button) event.widget).getSelection()) {
                 lightLayoutConfig.setOption(optionData, value);
                 refreshLayout(true);
             }
         }
-
-        /**
-         * {@inheritDoc}
-         */
-        public void widgetDefaultSelected(final SelectionEvent event) { }
     }
-
 }

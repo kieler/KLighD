@@ -14,13 +14,10 @@
 package de.cau.cs.kieler.klighd.piccolo.internal.nodes;
 
 import de.cau.cs.kieler.core.kgraph.KPort;
-import de.cau.cs.kieler.core.properties.IProperty;
-import de.cau.cs.kieler.core.properties.Property;
 import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout;
 import de.cau.cs.kieler.klighd.piccolo.internal.controller.AbstractKGERenderingController;
 import de.cau.cs.kieler.klighd.piccolo.internal.controller.KPortRenderingController;
 import de.cau.cs.kieler.klighd.util.KlighdProperties;
-import de.cau.cs.kieler.klighd.util.RenderingContextData;
 
 /**
  * The Piccolo node for representing a {@code KPort}.
@@ -31,10 +28,6 @@ public class KPortNode extends PZIndexNode implements ILabeledGraphElement<KPort
 
     private static final long serialVersionUID = 6016725932024647084L;
 
-    /** the property for the Piccolo representation of a port. */
-    public static final IProperty<KPortNode> PORT_REP = new Property<KPortNode>(
-            "klighd.piccolo.prepresentation");
-    
     /** the number of z-layers (rendering and ports). */
     private static final int Z_LAYERS = 2;
     /** the z-index for the label layer. */
@@ -54,7 +47,6 @@ public class KPortNode extends PZIndexNode implements ILabeledGraphElement<KPort
     public KPortNode(final KPort port) {
         super(Z_LAYERS);
         this.port = port;
-        RenderingContextData.get(port).setProperty(PORT_REP, this);
         Boolean b = port.getData(KShapeLayout.class).getProperty(
                 KlighdProperties.KLIGHD_SELECTION_UNPICKABLE);
         setPickable(b != null && b.equals(Boolean.TRUE) ? false : true);

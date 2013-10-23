@@ -1,40 +1,60 @@
-
 knode {
-	knode {
-		size: width = 40 height = 50 knode {
-			size: width = 30 height = 70
-			kroundedRectangle (10, 10) {
-				styles: lineStyle = dash-dot-dot
-			}
-		}
-		krectangle {
-			grid: columns = 1
-			krectangle {
-				styles: lineStyle = dash-dot foreground = 122g, 122b
-				gridData: topLeftAnchor = left 10, top bottomRightAnchor = right 50%,
-				bottom maxCellHeight = 30
-			}
-			krectangle {
-				styles: lineStyle = dash-dot foreground = 122r, 122g
-				gridData: topLeftAnchor = left 10, top
-				kchildArea
-			}
-		}
-	}
-	krectangle {
-		grid: columns = 3
-		krectangle {
-			styles: foreground = 255r
-			gridData: minCellWidth = 50
-		}
-		kroundedRectangle (10, 10) {
-			styles: foreground = 255g
-			gridData:
-			kchildArea
-		}
-		krectangle {
-			styles: foreground = 255b
-			gridData:
-		}
-	}
+    krectangle {
+        grid: columns = 3
+        krectangle {
+            styles: foreground = 255r
+            gridData:
+            minCellWidth = 50
+        }
+        kroundedRectangle (10, 10) {
+            styles: foreground = 255g
+            gridData:
+            kchildArea
+        }
+        krectangle {
+            styles: foreground = 255b
+            gridData:
+                minCellWidth = 20
+        }
+    }
+    
+    knode {
+        size:
+            width = 40
+            height = 50
+
+        krectangle {
+            grid:
+                columns = 1
+            krectangle {
+                styles:
+                    lineStyle = dash-dot
+                    foreground = 122g, 122b
+                gridData:
+                    topLeftAnchor = left 10, top
+                    bottomRightAnchor = right 50%, bottom
+                    minCellHeight = 20
+            }
+            krectangle {
+                styles:
+                    lineStyle = dash-dot
+                    foreground = 122r, 122g
+                gridData:
+                    topLeftAnchor = left 10, top 10
+                kchildArea
+            }
+        }
+        
+        knode {
+            size:
+                width = 30
+                height = 70
+            properties:
+                klighd.testing.ignore = true
+            kroundedRectangle (10, 10) {
+                styles:
+                    lineStyle = dash-dot-dot
+            }
+        }
+    }
 }

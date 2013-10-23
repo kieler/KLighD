@@ -15,24 +15,15 @@ package de.cau.cs.kieler.klighd.piccolo.internal.util;
 
 import java.awt.geom.Point2D;
 
-import de.cau.cs.kieler.core.krendering.KBottomPosition;
 import de.cau.cs.kieler.core.krendering.KDecoratorPlacementData;
-import de.cau.cs.kieler.core.krendering.KAreaPlacementData;
-import de.cau.cs.kieler.core.krendering.KLeftPosition;
 import de.cau.cs.kieler.core.krendering.KPlacementData;
-import de.cau.cs.kieler.core.krendering.KPointPlacementData;
 import de.cau.cs.kieler.core.krendering.KPolyline;
 import de.cau.cs.kieler.core.krendering.KPosition;
 import de.cau.cs.kieler.core.krendering.KRendering;
 import de.cau.cs.kieler.core.krendering.KRenderingRef;
-import de.cau.cs.kieler.core.krendering.KRightPosition;
-import de.cau.cs.kieler.core.krendering.KTopPosition;
-import de.cau.cs.kieler.core.krendering.KXPosition;
-import de.cau.cs.kieler.core.krendering.KYPosition;
-import de.cau.cs.kieler.core.properties.IProperty;
-import de.cau.cs.kieler.core.properties.Property;
 import de.cau.cs.kieler.core.util.Pair;
 import de.cau.cs.kieler.klighd.microlayout.Bounds;
+import de.cau.cs.kieler.klighd.microlayout.PlacementUtil;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdPath;
 import edu.umd.cs.piccolo.util.PBounds;
 
@@ -48,130 +39,6 @@ public final class PiccoloPlacementUtil {
      */
     private PiccoloPlacementUtil() {
         // do nothing
-    }
-
-    /**
-     * Returns the bounds for a direct placement data in given parent bounds.
-     * 
-     * @param dpd
-     *            the direct placement data
-     * @param parentBounds
-     *            the parent bounds
-     * @return the bounds
-     */
-    public static Bounds evaluateAreaPlacement(final KAreaPlacementData dpd,
-            final PBounds parentBounds) {
-        if (dpd == null) {
-            return new Bounds(parentBounds.getWidth(), parentBounds.getHeight());
-        }
-
-        // determine the top-left
-        KPosition topLeft = dpd.getTopLeft();
-        Point2D.Float topLeftPoint;
-        if (topLeft == null) {
-            topLeftPoint = new Point2D.Float(0, 0);
-        } else {
-            topLeftPoint = evaluateDirectPosition(topLeft, parentBounds);
-        }
-
-        // determine the bottom-right
-        KPosition bottomRight = dpd.getBottomRight();
-        Point2D.Float bottomRightPoint;
-        if (bottomRight == null) {
-            bottomRightPoint = new Point2D.Float((float) parentBounds.getWidth(),
-                    (float) parentBounds.getHeight());
-        } else {
-            bottomRightPoint = evaluateDirectPosition(bottomRight, parentBounds);
-        }
-
-        return new Bounds(topLeftPoint.x, topLeftPoint.y, bottomRightPoint.x
-                - topLeftPoint.x, bottomRightPoint.y - topLeftPoint.y);
-    }
-
-
-    /**
-     * Property to save xPosition of placed element.
-     */
-    private static IProperty<Double> pointPlacedObjectXPos = 
-            new Property<Double>("PointPlacedObjectXPos");
-    /**
-     * Property to save yPosition of placed element.
-     */
-    private static IProperty<Double> pointPlacedObjectYPos = 
-            new Property<Double>("PointPlacedObjectYPos");
-    /**
-     * Property to save width of element.
-     */
-    private static IProperty<Float> pointPlacedObjectWidth = 
-            new Property<Float>("PointPlacedObjectWidth");
-    /**
-     * Property to save height of element.
-     */
-    private static IProperty<Float> pointPlacedObjectHeight = 
-            new Property<Float>("PointPlacedObjectHeight");
-    
-    /**
-     * Returns the bounds for a point placement data in given parent bounds.
-     * 
-     * @param ppd
-     *            the point placement data
-     * @param ownBounds
-     *            the size of the object to be placed
-     * @param parentBounds
-     *            the parent bounds
-     * @return the bounds
-     */
-    public static Bounds evaluatePointPlacement(final KPointPlacementData ppd, final Bounds ownBounds,
-            final PBounds parentBounds) {
-        if (ppd == null) {
-            return new Bounds(parentBounds.getWidth(), parentBounds.getHeight());
-        }
-
-        float width = Math.max(ownBounds.getWidth(), ppd.getMinWidth());
-        float height = Math.max(ownBounds.getHeight(), ppd.getMinHeight());
-        KPosition ref = ppd.getReferencePoint();
-        Point2D.Float refPoint;
-        if (ref == null) {
-            // if the reference point is missing, assume the center as reference
-            refPoint = new Point2D.Float((float) parentBounds.getWidth() / 2,
-                    (float) parentBounds.getHeight() / 2);
-        } else {
-            refPoint = evaluateDirectPosition(ref, parentBounds);
-        }
-
-        float x0, y0;
-
-        switch (ppd.getHorizontalAlignment()) {
-        case CENTER:
-            x0 = refPoint.x - width / 2;
-            break;
-        case RIGHT:
-            x0 = refPoint.x - width;
-            break;
-        default:
-        case LEFT:
-            x0 = refPoint.x;
-        }
-        
-        switch (ppd.getVerticalAlignment()) {
-        case BOTTOM:
-            y0 = refPoint.y - height;
-            break;
-        case CENTER:
-            y0 = refPoint.y - height / 2;
-            break;
-        default:
-        case TOP:
-            y0 = refPoint.y;
-        }
-        
-        //attach the calculated data to be able to export the image later
-        ((KRendering) ppd.eContainer()).setProperty(pointPlacedObjectXPos, x0);
-        ((KRendering) ppd.eContainer()).setProperty(pointPlacedObjectYPos, y0);
-        ((KRendering) ppd.eContainer()).setProperty(pointPlacedObjectWidth, width);
-        ((KRendering) ppd.eContainer()).setProperty(pointPlacedObjectHeight, height);
-        
-        return new Bounds(x0, y0, width, height);
     }
     
 
@@ -195,7 +62,7 @@ public final class PiccoloPlacementUtil {
         int i = 0;
         PBounds parentPBounds = new PBounds(parentBounds.toRectangle2D());
         for (KPosition point : line.getPoints()) {
-            points[i++] = evaluateDirectPosition(point, parentPBounds);
+            points[i++] = PlacementUtil.evaluateKPosition(point, parentPBounds, true);
         }
 
         return points;
@@ -252,41 +119,6 @@ public final class PiccoloPlacementUtil {
         }
 
         return decoration;
-    }
-
-    /**
-     * Evaluates a position inside given parent bounds.
-     * 
-     * @param position
-     *            the position
-     * @param parentBounds
-     *            the parent bounds
-     * @return the evaluated position
-     */
-    public static Point2D.Float evaluateDirectPosition(final KPosition position,
-            final PBounds parentBounds) {
-        float width = (float) parentBounds.getWidth();
-        float height = (float) parentBounds.getHeight();
-        Point2D.Float point = new Point2D.Float();
-        KXPosition xPos = position.getX();
-        KYPosition yPos = position.getY();
-        if (xPos instanceof KLeftPosition) {
-            point.x = xPos.getAbsolute() + xPos.getRelative() * width;
-        } else if (xPos instanceof KRightPosition) {
-            point.x = width - xPos.getAbsolute() - xPos.getRelative() * width;
-        } else { // SUPPRESS CHECKSTYLE EmptyBlock
-            // this branch is reached in case xPos has been set to 'null', e.g. by EMF Compare
-            // do nothing as the value will be re-set most certainly in near future :-)!
-        }
-        if (yPos instanceof KTopPosition) {
-            point.y = yPos.getAbsolute() + yPos.getRelative() * height;
-        } else if (yPos instanceof KBottomPosition) {
-            point.y = height - yPos.getAbsolute() - yPos.getRelative() * height;
-        } else { // SUPPRESS CHECKSTYLE EmptyBlock
-            // this branch is reached in case yPos has been set to 'null', e.g. by EMF Compare
-            // do nothing as the value will be re-set most certainly in near future :-)!
-        }
-        return point;
     }
 
     /**

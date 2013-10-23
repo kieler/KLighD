@@ -103,7 +103,7 @@ public class KEdgeImpl extends KLabeledGraphElementImpl implements KEdge {
      */
     public KNode getSource() {
         if (eContainerFeatureID() != KGraphPackage.KEDGE__SOURCE) return null;
-        return (KNode)eContainer();
+        return (KNode)eInternalContainer();
     }
 
     /**
@@ -291,30 +291,6 @@ public class KEdgeImpl extends KLabeledGraphElementImpl implements KEdge {
 
     /**
      * <!-- begin-user-doc -->
-     * {@inheritDoc}
-     * <!-- end-user-doc -->
-     * @generated NOT
-     * @deprecated See {@link KEdge#connectSourcePort(KPort)}
-     */
-    public void connectSourcePort(KPort port) {
-        setSource(port.getNode());
-        setSourcePort(port);
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * {@inheritDoc}
-     * <!-- end-user-doc -->
-     * @generated NOT
-     * @deprecated See {@link KEdge#connectTargetPort(KPort)}
-     */
-    public void connectTargetPort(KPort port) {
-        setTarget(port.getNode());
-        setTargetPort(port);
-    }
-
-    /**
-     * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      */
@@ -452,6 +428,18 @@ public class KEdgeImpl extends KLabeledGraphElementImpl implements KEdge {
                 return targetPort != null;
         }
         return super.eIsSet(featureID);
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String toString() {
+        KNode source = getSource();
+        if (source != null && target != null) {
+            return "KEdge:" + source.toString() + "->" + target.toString();
+        }
+        return super.toString();
     }
 
 } //KEdgeImpl

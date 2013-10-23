@@ -716,13 +716,14 @@ public class KlighdSWTGraphicsImpl extends Graphics2D implements KlighdSWTGraphi
     @Override
     public void clip(final Shape clip) {
         // important: clip bounds must not be adjusted in any way, since in combination with
-        //  usage of 'getClip()' those manipulations will accumulate and lead to unintended effects!! 
+        //  usage of 'getClip()' those manipulations will accumulate and lead to unintended effects!!
+        //  (PCamera.fullPaint() calls 'clip(getBoundsReference()', for example);
         
         if (clip == null) {
             this.gc.setClipping((Rectangle) null);
             
         } else if (clip instanceof Rectangle2D) {
-            final Rectangle2D rect = (Rectangle2D) clip;
+            final Rectangle2D rect = clip.getBounds2D();
             Rectangle2D.intersect(this.getClip().getBounds2D(), rect, rect);
             this.setClip(rect);
             

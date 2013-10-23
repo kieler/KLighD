@@ -715,7 +715,7 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
      * <!-- end-user-doc -->
      * @generated
      */
-    public EReference getKPolyline_JointPointRendering() {
+    public EReference getKPolyline_JunctionPointRendering() {
         return (EReference)kPolylineEClass.getEStructuralFeatures().get(1);
     }
 
@@ -1066,7 +1066,7 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
      * <!-- end-user-doc -->
      * @generated
      */
-    public EAttribute getKGridPlacementData_MaxCellWidth() {
+    public EAttribute getKGridPlacementData_MinCellHeight() {
         return (EAttribute)kGridPlacementDataEClass.getEStructuralFeatures().get(1);
     }
 
@@ -1075,7 +1075,7 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
      * <!-- end-user-doc -->
      * @generated
      */
-    public EAttribute getKGridPlacementData_MinCellHeight() {
+    public EAttribute getKGridPlacementData_FlexibleWidth() {
         return (EAttribute)kGridPlacementDataEClass.getEStructuralFeatures().get(2);
     }
 
@@ -1084,26 +1084,8 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
      * <!-- end-user-doc -->
      * @generated
      */
-    public EAttribute getKGridPlacementData_MaxCellHeight() {
+    public EAttribute getKGridPlacementData_FlexibleHeight() {
         return (EAttribute)kGridPlacementDataEClass.getEStructuralFeatures().get(3);
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    public EAttribute getKGridPlacementData_FixedWidth() {
-        return (EAttribute)kGridPlacementDataEClass.getEStructuralFeatures().get(4);
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    public EAttribute getKGridPlacementData_FixedHeight() {
-        return (EAttribute)kGridPlacementDataEClass.getEStructuralFeatures().get(5);
     }
 
     /**
@@ -2017,7 +1999,7 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
 
         kPolylineEClass = createEClass(KPOLYLINE);
         createEReference(kPolylineEClass, KPOLYLINE__POINTS);
-        createEReference(kPolylineEClass, KPOLYLINE__JOINT_POINT_RENDERING);
+        createEReference(kPolylineEClass, KPOLYLINE__JUNCTION_POINT_RENDERING);
 
         kPolygonEClass = createEClass(KPOLYGON);
 
@@ -2070,11 +2052,9 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
 
         kGridPlacementDataEClass = createEClass(KGRID_PLACEMENT_DATA);
         createEAttribute(kGridPlacementDataEClass, KGRID_PLACEMENT_DATA__MIN_CELL_WIDTH);
-        createEAttribute(kGridPlacementDataEClass, KGRID_PLACEMENT_DATA__MAX_CELL_WIDTH);
         createEAttribute(kGridPlacementDataEClass, KGRID_PLACEMENT_DATA__MIN_CELL_HEIGHT);
-        createEAttribute(kGridPlacementDataEClass, KGRID_PLACEMENT_DATA__MAX_CELL_HEIGHT);
-        createEAttribute(kGridPlacementDataEClass, KGRID_PLACEMENT_DATA__FIXED_WIDTH);
-        createEAttribute(kGridPlacementDataEClass, KGRID_PLACEMENT_DATA__FIXED_HEIGHT);
+        createEAttribute(kGridPlacementDataEClass, KGRID_PLACEMENT_DATA__FLEXIBLE_WIDTH);
+        createEAttribute(kGridPlacementDataEClass, KGRID_PLACEMENT_DATA__FLEXIBLE_HEIGHT);
 
         kAreaPlacementDataEClass = createEClass(KAREA_PLACEMENT_DATA);
         createEReference(kAreaPlacementDataEClass, KAREA_PLACEMENT_DATA__TOP_LEFT);
@@ -2308,7 +2288,7 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
 
         initEClass(kPolylineEClass, KPolyline.class, "KPolyline", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         initEReference(getKPolyline_Points(), this.getKPosition(), null, "points", null, 0, -1, KPolyline.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        initEReference(getKPolyline_JointPointRendering(), this.getKRendering(), null, "jointPointRendering", null, 0, 1, KPolyline.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEReference(getKPolyline_JunctionPointRendering(), this.getKRendering(), null, "junctionPointRendering", null, 0, 1, KPolyline.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         initEClass(kPolygonEClass, KPolygon.class, "KPolygon", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
@@ -2361,11 +2341,9 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
 
         initEClass(kGridPlacementDataEClass, KGridPlacementData.class, "KGridPlacementData", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         initEAttribute(getKGridPlacementData_MinCellWidth(), ecorePackage.getEFloat(), "minCellWidth", "0", 0, 1, KGridPlacementData.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        initEAttribute(getKGridPlacementData_MaxCellWidth(), ecorePackage.getEFloat(), "maxCellWidth", "-1", 0, 1, KGridPlacementData.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEAttribute(getKGridPlacementData_MinCellHeight(), ecorePackage.getEFloat(), "minCellHeight", "0", 0, 1, KGridPlacementData.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        initEAttribute(getKGridPlacementData_MaxCellHeight(), ecorePackage.getEFloat(), "maxCellHeight", "-1", 0, 1, KGridPlacementData.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        initEAttribute(getKGridPlacementData_FixedWidth(), ecorePackage.getEBooleanObject(), "fixedWidth", "true", 0, 1, KGridPlacementData.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        initEAttribute(getKGridPlacementData_FixedHeight(), ecorePackage.getEBooleanObject(), "fixedHeight", "true", 0, 1, KGridPlacementData.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEAttribute(getKGridPlacementData_FlexibleWidth(), ecorePackage.getEBooleanObject(), "flexibleWidth", "true", 0, 1, KGridPlacementData.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEAttribute(getKGridPlacementData_FlexibleHeight(), ecorePackage.getEBooleanObject(), "flexibleHeight", "true", 0, 1, KGridPlacementData.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         initEClass(kAreaPlacementDataEClass, KAreaPlacementData.class, "KAreaPlacementData", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         initEReference(getKAreaPlacementData_TopLeft(), this.getKPosition(), null, "topLeft", null, 0, 1, KAreaPlacementData.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -2458,9 +2436,9 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
         initEAttribute(getKAction_Trigger(), this.getTrigger(), "trigger", null, 1, 1, KAction.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         initEClass(kPointPlacementDataEClass, KPointPlacementData.class, "KPointPlacementData", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-        initEReference(getKPointPlacementData_ReferencePoint(), this.getKPosition(), null, "referencePoint", null, 1, 1, KPointPlacementData.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        initEAttribute(getKPointPlacementData_HorizontalAlignment(), this.getHorizontalAlignment(), "horizontalAlignment", null, 1, 1, KPointPlacementData.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        initEAttribute(getKPointPlacementData_VerticalAlignment(), this.getVerticalAlignment(), "verticalAlignment", null, 1, 1, KPointPlacementData.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEReference(getKPointPlacementData_ReferencePoint(), this.getKPosition(), null, "referencePoint", null, 0, 1, KPointPlacementData.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEAttribute(getKPointPlacementData_HorizontalAlignment(), this.getHorizontalAlignment(), "horizontalAlignment", "LEFT", 0, 1, KPointPlacementData.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEAttribute(getKPointPlacementData_VerticalAlignment(), this.getVerticalAlignment(), "verticalAlignment", "TOP", 0, 1, KPointPlacementData.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEAttribute(getKPointPlacementData_HorizontalMargin(), ecorePackage.getEFloat(), "horizontalMargin", null, 0, 1, KPointPlacementData.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEAttribute(getKPointPlacementData_VerticalMargin(), ecorePackage.getEFloat(), "verticalMargin", null, 0, 1, KPointPlacementData.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEAttribute(getKPointPlacementData_MinWidth(), ecorePackage.getEFloat(), "minWidth", null, 0, 1, KPointPlacementData.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);

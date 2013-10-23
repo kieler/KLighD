@@ -27,11 +27,9 @@ package de.cau.cs.kieler.core.krendering;
  * The following features are supported:
  * <ul>
  *   <li>{@link de.cau.cs.kieler.core.krendering.KGridPlacementData#getMinCellWidth <em>Min Cell Width</em>}</li>
- *   <li>{@link de.cau.cs.kieler.core.krendering.KGridPlacementData#getMaxCellWidth <em>Max Cell Width</em>}</li>
  *   <li>{@link de.cau.cs.kieler.core.krendering.KGridPlacementData#getMinCellHeight <em>Min Cell Height</em>}</li>
- *   <li>{@link de.cau.cs.kieler.core.krendering.KGridPlacementData#getMaxCellHeight <em>Max Cell Height</em>}</li>
- *   <li>{@link de.cau.cs.kieler.core.krendering.KGridPlacementData#getFixedWidth <em>Fixed Width</em>}</li>
- *   <li>{@link de.cau.cs.kieler.core.krendering.KGridPlacementData#getFixedHeight <em>Fixed Height</em>}</li>
+ *   <li>{@link de.cau.cs.kieler.core.krendering.KGridPlacementData#getFlexibleWidth <em>Flexible Width</em>}</li>
+ *   <li>{@link de.cau.cs.kieler.core.krendering.KGridPlacementData#getFlexibleHeight <em>Flexible Height</em>}</li>
  * </ul>
  * </p>
  *
@@ -72,38 +70,6 @@ public interface KGridPlacementData extends KAreaPlacementData {
     void setMinCellWidth(float value);
 
     /**
-     * Returns the value of the '<em><b>Max Cell Width</b></em>' attribute.
-     * The default value is <code>"-1"</code>.
-     * <!-- begin-user-doc -->
-     * <p>
-     * If the meaning of the '<em>Max Cell Width</em>' attribute isn't clear,
-     * there really should be more of a description here...
-     * </p>
-     * <!-- end-user-doc -->
-     * <!-- begin-model-doc -->
-     * hint layout to keep the width of the column the element is assigned to less than defined here. 
-     * If another element in this column has a minCellWidth that is higher than this maxWidth, 
-     * the maxWidth is ignored.
-     * <!-- end-model-doc -->
-     * @return the value of the '<em>Max Cell Width</em>' attribute.
-     * @see #setMaxCellWidth(float)
-     * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKGridPlacementData_MaxCellWidth()
-     * @model default="-1"
-     * @generated
-     */
-    float getMaxCellWidth();
-
-    /**
-     * Sets the value of the '{@link de.cau.cs.kieler.core.krendering.KGridPlacementData#getMaxCellWidth <em>Max Cell Width</em>}' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @param value the new value of the '<em>Max Cell Width</em>' attribute.
-     * @see #getMaxCellWidth()
-     * @generated
-     */
-    void setMaxCellWidth(float value);
-
-    /**
      * Returns the value of the '<em><b>Min Cell Height</b></em>' attribute.
      * The default value is <code>"0"</code>.
      * <!-- begin-user-doc -->
@@ -134,45 +100,9 @@ public interface KGridPlacementData extends KAreaPlacementData {
     void setMinCellHeight(float value);
 
     /**
-     * Returns the value of the '<em><b>Max Cell Height</b></em>' attribute.
-     * The default value is <code>"-1"</code>.
-     * <!-- begin-user-doc -->
-     * <p>
-     * If the meaning of the '<em>Max Cell Height</em>' attribute isn't clear,
-     * there really should be more of a description here...
-     * </p>
-     * <!-- end-user-doc -->
-     * <!-- begin-model-doc -->
-     * hint layout to keep the height of the column the element is assigned to less than defined here. 
-     * If another element in this column has a minCellHeight that is higher than this maxHeight, 
-     * the maxHeight is ignored.
-     * <!-- end-model-doc -->
-     * @return the value of the '<em>Max Cell Height</em>' attribute.
-     * @see #setMaxCellHeight(float)
-     * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKGridPlacementData_MaxCellHeight()
-     * @model default="-1"
-     * @generated
-     */
-    float getMaxCellHeight();
-
-    /**
-     * Sets the value of the '{@link de.cau.cs.kieler.core.krendering.KGridPlacementData#getMaxCellHeight <em>Max Cell Height</em>}' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @param value the new value of the '<em>Max Cell Height</em>' attribute.
-     * @see #getMaxCellHeight()
-     * @generated
-     */
-    void setMaxCellHeight(float value);
-
-    /**
-     * Returns the value of the '<em><b>Fixed Width</b></em>' attribute.
+     * Returns the value of the '<em><b>Flexible Width</b></em>' attribute.
      * The default value is <code>"true"</code>.
      * <!-- begin-user-doc -->
-     * <p>
-     * If the meaning of the '<em>Fixed Width</em>' attribute isn't clear,
-     * there really should be more of a description here...
-     * </p>
      * <!-- end-user-doc -->
      * <!-- begin-model-doc -->
      * This flag marks the child rendering to cover exactly the required width obtained by means of the minimal size estimation, except for width increases by the macro layout, i.e. by KIML, e.g. in a single column grid.
@@ -180,32 +110,28 @@ public interface KGridPlacementData extends KAreaPlacementData {
      * <br>
      * This flag is the replacement of the concrete 'maxCellWidth' value and not examined by KLighD, yet.
      * <!-- end-model-doc -->
-     * @return the value of the '<em>Fixed Width</em>' attribute.
-     * @see #setFixedWidth(Boolean)
-     * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKGridPlacementData_FixedWidth()
+     * @return the value of the '<em>Flexible Width</em>' attribute.
+     * @see #setFlexibleWidth(Boolean)
+     * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKGridPlacementData_FlexibleWidth()
      * @model default="true"
      * @generated
      */
-    Boolean getFixedWidth();
+    Boolean getFlexibleWidth();
 
     /**
-     * Sets the value of the '{@link de.cau.cs.kieler.core.krendering.KGridPlacementData#getFixedWidth <em>Fixed Width</em>}' attribute.
+     * Sets the value of the '{@link de.cau.cs.kieler.core.krendering.KGridPlacementData#getFlexibleWidth <em>Flexible Width</em>}' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @param value the new value of the '<em>Fixed Width</em>' attribute.
-     * @see #getFixedWidth()
+     * @param value the new value of the '<em>Flexible Width</em>' attribute.
+     * @see #getFlexibleWidth()
      * @generated
      */
-    void setFixedWidth(Boolean value);
+    void setFlexibleWidth(Boolean value);
 
     /**
-     * Returns the value of the '<em><b>Fixed Height</b></em>' attribute.
+     * Returns the value of the '<em><b>Flexible Height</b></em>' attribute.
      * The default value is <code>"true"</code>.
      * <!-- begin-user-doc -->
-     * <p>
-     * If the meaning of the '<em>Fixed Height</em>' attribute isn't clear,
-     * there really should be more of a description here...
-     * </p>
      * <!-- end-user-doc -->
      * <!-- begin-model-doc -->
      * This flag marks the child rendering to cover exactly the required height obtained by means of the minimal size estimation, except for height increases by the macro layout, i.e. by KIML, e.g. in a single row grid.
@@ -213,22 +139,22 @@ public interface KGridPlacementData extends KAreaPlacementData {
      * <br>
      * This flag is the replacement of the concrete 'maxCellHeight' value and not examined by KLighD, yet.
      * <!-- end-model-doc -->
-     * @return the value of the '<em>Fixed Height</em>' attribute.
-     * @see #setFixedHeight(Boolean)
-     * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKGridPlacementData_FixedHeight()
+     * @return the value of the '<em>Flexible Height</em>' attribute.
+     * @see #setFlexibleHeight(Boolean)
+     * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKGridPlacementData_FlexibleHeight()
      * @model default="true"
      * @generated
      */
-    Boolean getFixedHeight();
+    Boolean getFlexibleHeight();
 
     /**
-     * Sets the value of the '{@link de.cau.cs.kieler.core.krendering.KGridPlacementData#getFixedHeight <em>Fixed Height</em>}' attribute.
+     * Sets the value of the '{@link de.cau.cs.kieler.core.krendering.KGridPlacementData#getFlexibleHeight <em>Flexible Height</em>}' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @param value the new value of the '<em>Fixed Height</em>' attribute.
-     * @see #getFixedHeight()
+     * @param value the new value of the '<em>Flexible Height</em>' attribute.
+     * @see #getFlexibleHeight()
      * @generated
      */
-    void setFixedHeight(Boolean value);
+    void setFlexibleHeight(Boolean value);
 
 } // KGridPlacementData

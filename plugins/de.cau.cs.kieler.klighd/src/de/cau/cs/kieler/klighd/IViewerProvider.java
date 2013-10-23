@@ -15,6 +15,7 @@ package de.cau.cs.kieler.klighd;
 
 import org.eclipse.swt.widgets.Composite;
 
+import de.cau.cs.kieler.core.kgraph.KNode;
 import de.cau.cs.kieler.klighd.viewers.ContextViewer;
 
 /**
@@ -25,7 +26,7 @@ import de.cau.cs.kieler.klighd.viewers.ContextViewer;
  * @param <T>
  *            the type of the model class
  */
-public interface IViewerProvider<T> {
+public interface IViewerProvider<T extends KNode> {
 
     /**
      * Returns a viewer for models of the provided model class attached to the given composite.

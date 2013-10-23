@@ -62,10 +62,10 @@ class KPolylineExtensions {
                 val float modifiedScale = Math::sqrt(3*scale).floatValue;
                 it.rotateWithLine = true;
                 it.relative = 1f;
-                it.absolute = -7.5f * modifiedScale;
-                it.width = 15 * modifiedScale;
-                it.height = 15 * modifiedScale;
-                it.setXOffset(-7.5f * modifiedScale);
+                it.absolute = -5f * modifiedScale;
+                it.width = 10 * modifiedScale;
+                it.height = 10 * modifiedScale;
+                it.setXOffset(-5f * modifiedScale);
                 it.setYOffset(-it.height / 2);
             ];
         ];

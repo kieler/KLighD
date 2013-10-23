@@ -1,0 +1,17 @@
+knode {
+    properties:
+        klighd.testing.expected.^height = 100.0
+        klighd.testing.expected.^width = 100.0
+    krectangle {
+        styles: foreground = 255r 
+        krectangle {
+            areaData:
+                topLeftAnchor =  left 20, top 20
+                bottomRightAnchor = right 20, bottom 20
+            ktext ("Hello") [
+                klighd.testing.^height = 60.0
+                klighd.testing.^width = 60.0
+            ]
+        }
+    }
+}

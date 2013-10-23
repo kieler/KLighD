@@ -97,7 +97,7 @@ class EcoreDiagramSynthesis extends AbstractDiagramSynthesis<EModelElementCollec
     /**
      * Option to activate/deactivate the attribute lists.
      */
-    private static val TransformationOption RELATED_CLASSES_DEPTH = TransformationOption::createRangeOption("Reference depth", Pair::of(1, 3), 1, 1);
+    private static val TransformationOption RELATED_CLASSES_DEPTH = TransformationOption::createRangeOption("Reference depth", 1, 3, 1, 1);
     
     /**
      * Option choose the reference depth while determining the classes related to the selected ones.
@@ -258,7 +258,7 @@ class EcoreDiagramSynthesis extends AbstractDiagramSynthesis<EModelElementCollec
                                 it.addText(clazz.name.nullToEmpty).putToLookUpWith(clazz) => [
                                     it.fontSize = 15;
                                     it.fontBold = true;
-                                    it.setPointPlacementData(LEFT, 40, 0, TOP, 0, 0.5f, H_LEFT, V_CENTRAL, 20, 10, 0, 0);
+                                    it.setPointPlacementData(LEFT, 40, 0, TOP, 0, 0.5f, H_LEFT, V_CENTRAL, 10, 10, 0, 0);
                                 ];
                             };
                         ];
@@ -267,7 +267,7 @@ class EcoreDiagramSynthesis extends AbstractDiagramSynthesis<EModelElementCollec
                         return;
                     }
                     if (EcorePackage::eINSTANCE.getEClass.isInstance(clazz) && !(clazz as EClass).EAttributes.empty) {
-                        it.addHorizontalLine(1,1.5f).setGridPlacementData.maxCellHeight = 2;
+                        it.addHorizontalLine(1, 1.5f);
                         it.addRectangle => [
                             it.invisible = true;
                             it.foreground = "red".color;
@@ -292,7 +292,7 @@ class EcoreDiagramSynthesis extends AbstractDiagramSynthesis<EModelElementCollec
                         ];
                     }
                     if (EcorePackage::eINSTANCE.getEEnum.isInstance(clazz)) {
-                        it.addHorizontalLine(1,1.5f).setGridPlacementData.maxCellHeight = 2;
+                        it.addHorizontalLine(1, 1.5f);
                         it.addRectangle => [ rect |
                             rect.invisible = true;
                             rect.foreground = "red".color;

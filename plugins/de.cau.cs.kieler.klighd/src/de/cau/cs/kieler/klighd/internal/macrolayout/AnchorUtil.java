@@ -94,8 +94,6 @@ public final class AnchorUtil {
         }
     }
     
-
-    
     /**
      * Correct the given anchor point for rounded rectangle rendering.
      * The point must be transformed to the local coordinates of the corresponding node
@@ -252,4 +250,5 @@ public final class AnchorUtil {
             }
         }
     }
+    
 }

@@ -133,7 +133,7 @@ public class KNodeImpl extends KLabeledGraphElementImpl implements KNode {
      */
     public KNode getParent() {
         if (eContainerFeatureID() != KGraphPackage.KNODE__PARENT) return null;
-        return (KNode)eContainer();
+        return (KNode)eInternalContainer();
     }
 
     /**

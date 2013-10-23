@@ -13,11 +13,11 @@
  */
 package de.cau.cs.kieler.klighd.viewers;
 
-import org.eclipse.emf.ecore.EObject;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 
+import de.cau.cs.kieler.core.kgraph.KGraphElement;
 import de.cau.cs.kieler.klighd.LightDiagramServices;
 import de.cau.cs.kieler.klighd.ViewContext;
 
@@ -113,7 +113,7 @@ public class KlighdViewer extends AbstractViewer<Object> {
      * {@inheritDoc}
      */
     @Override
-    public void setSelection(final Iterable<EObject> diagramElements) {
+    public void setSelection(final Iterable<KGraphElement> diagramElements) {
         contextViewer.setSelection(diagramElements);
     }
 
@@ -129,7 +129,7 @@ public class KlighdViewer extends AbstractViewer<Object> {
      * {@inheritDoc}
      */
     @Override
-    public void select(final Iterable<EObject> diagramElements) {
+    public void select(final Iterable<KGraphElement> diagramElements) {
         contextViewer.select(diagramElements);
     }
 
@@ -137,7 +137,7 @@ public class KlighdViewer extends AbstractViewer<Object> {
      * {@inheritDoc}
      */
     @Override
-    public void unselect(final Iterable<EObject> diagramElements) {
+    public void unselect(final Iterable<KGraphElement> diagramElements) {
         contextViewer.unselect(diagramElements);
     }
 
@@ -161,7 +161,7 @@ public class KlighdViewer extends AbstractViewer<Object> {
      * {@inheritDoc}
      */
     @Override
-    public void reveal(final EObject diagramObject, final int duration) {
+    public void reveal(final KGraphElement diagramObject, final int duration) {
         contextViewer.reveal(diagramObject, duration);
     }
 
@@ -169,8 +169,16 @@ public class KlighdViewer extends AbstractViewer<Object> {
      * {@inheritDoc}
      */
     @Override
-    public void centerOn(final EObject diagramElement, final int duration) {
+    public void centerOn(final KGraphElement diagramElement, final int duration) {
         contextViewer.centerOn(diagramElement, duration);
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void centerOn(final Object semanticElement, final int duration) {
+        contextViewer.centerOn(semanticElement, duration);
     }
 
 }

@@ -145,11 +145,6 @@ public final class KlighdConstants {
     public static final Bounds MINIMAL_NODE_BOUNDS = Bounds.immutableCopy(new Bounds(10, 10));
 
     /**
-     * An identifier for the SVG image format.
-     */
-    public static final int IMAGE_SVG = 1337;
-
-    /**
      * Hidden default constructor.
      */
     private KlighdConstants() {

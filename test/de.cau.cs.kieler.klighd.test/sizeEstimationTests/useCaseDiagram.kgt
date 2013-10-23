@@ -1,105 +1,153 @@
+kgraph
+    properties: de.cau.cs.kieler.klay.layered.nodePlace = LINEAR_SEGMENTS
 
-properties: de.cau.cs.kieler.klay.layered.nodePlace = LINEAR_SEGMENTS
-knode Actor2 {
-	size: width = 60 height = 100
-	properties: de.cau.cs.kieler.nodeLabelPlacement =
-	"[H_CENTER, V_BOTTOM, OUTSIDE]" klighd.testing.ignore = true
-	klabel "Actor 2" {
-		ktext {
-			styles: fontName = "SansSerif" propagate scale fontSize = 10pt
-		}
-	}
-	kedge (-> useCaseC) {
-		kpolyline
-	}
-	kedge (-> useCaseB) {
-		kpolyline
-	}
-	krectangle {
-		styles: invisible = true 
-		kpolyline {
-			points: left 50% + -2, top 34 ; left 50% + -2, top 50% + -2 ; left, top 50%
-			+ -2 ; left, top 50% + 2 ; left 50% + -2, top 50% + 2 ; left 50% + -2, top
-			70% + -1 ; left, top 100% + -3 ; left 3, top 100% ; left 50%, top 70% + 2 ;
-			right 3, top 100% ; right, top 100% + -3 ; right 50% + -2, top 70% + -1 ;
-			right 50% + -2, top 50% + 2 ; right, top 50% + 2 ; right, top 50% + -2 ;
-			right 50% + -2, top 50% + -2 ; right 50% + -2, top 34
-		}
-		kellipse {
-			styles: background = 255r, 255g, 255b
-			pointData: referencePoint = left 50%, top minimalWidth = 35 minimalHeight =
-			35 horizontalAlignment = center
-		}
-	}
-}
-knode Actor1 {
-	size: width = 60 height = 100
-	properties: de.cau.cs.kieler.nodeLabelPlacement =
-	"[H_CENTER, V_BOTTOM, OUTSIDE]" klighd.testing.ignore = true
-	klabel "Actor 1" {
-		ktext {
-			styles: fontName = "SansSerif" propagate scale fontSize = 10pt
-		}
-	}
-	kedge (-> useCaseC) {
-		kpolyline
-	}
-	kedge (-> useCaseA) {
-		kpolyline
-	}
-	krectangle {
-		styles: invisible = true
-		kpolyline {
-			points: left 50% + -2, top 34 ; left 50% + -2, top 50% + -2 ; left, top 50%
-			+ -2 ; left, top 50% + 2 ; left 50% + -2, top 50% + 2 ; left 50% + -2, top
-			70% + -1 ; left, top 100% + -3 ; left 3, top 100% ; left 50%, top 70% + 2 ;
-			right 3, top 100% ; right, top 100% + -3 ; right 50% + -2, top 70% + -1 ;
-			right 50% + -2, top 50% + 2 ; right, top 50% + 2 ; right, top 50% + -2 ;
-			right 50% + -2, top 50% + -2 ; right 50% + -2, top 34
-		}
-		kellipse {
-			styles: background = 255r, 255g, 255b
-			pointData: referencePoint = left 50%, top minimalWidth = 35 minimalHeight =
-			35 horizontalAlignment = center
-		}
-	}
-}
-knode useCaseC {
-	properties: klighd.testing.expected.^height = 32.5
-	klighd.testing.expected.^width = 330.0
-	kellipse {
-		styles: foreground = 105r, 105g, 105b
-		ktext ("Very important UseCase requiring lot\'s of attention")
-		[klighd.testing.^height = 10.0 klighd.testing.^width = 248.0] {
-			styles: background = 255r, 255g, 255b
-			areaData: topLeftAnchor = left 10% + 10, top 10% + 10 bottomRightAnchor =
-			right 10% + 10, bottom 10% + 10
-		}
-	}
-}
-knode useCaseB {
-	properties: klighd.testing.expected.^height = 32.5
-	klighd.testing.expected.^width = 127.5
-	kellipse {
-		styles: foreground = 105r, 105g, 105b
-		ktext ("Simple UseCase B") [klighd.testing.^height = 10.0
-		klighd.testing.^width = 86.0] {
-			styles: background = 255r, 255g, 255b
-			areaData: topLeftAnchor = left 10% + 10, top 10% + 10 bottomRightAnchor =
-			right 10% + 10, bottom 10% + 10
-		}
-	}
-}
-knode useCaseA {
-	properties: klighd.testing.expected.^height = 32.5
-	klighd.testing.expected.^width = 128.75
-	kellipse {
-		styles: foreground = 105r, 105g, 105b
-		ktext ("Simple UseCase A") [klighd.testing.^height = 10.0
-		klighd.testing.^width = 87.0] {
-			styles: background = 255r, 255g, 255b
-			areaData: topLeftAnchor = left 10% + 10, top 10% + 10 bottomRightAnchor =
-			right 10% + 10, bottom 10% + 10
-		}
-	}
-}
+    knode Actor1 {
+        size:
+            width = 60
+            height = 100
+        properties:
+            de.cau.cs.kieler.nodeLabelPlacement = "[H_CENTER, V_BOTTOM, OUTSIDE]"
+            klighd.testing.ignore = true
+        klabel "Actor 1" {
+            ktext {
+                styles:
+                    fontName = "SansSerif"
+                    propagate fontSize = 10pt
+            }
+        }
+        kedge (-> useCaseA) {
+            kpolyline
+        }
+        kedge (-> useCaseC) {
+            kpolyline
+        }
+        krectangle {
+            styles:
+                invisible = true
+            kpolyline { 
+                points: left 50% + -2, top 34 ; left 50% + -2, top 50% + -2 ; left,
+                top 50% + -2 ; left, top 50% + 2 ; left 50% + -2, top 50% + 2 ;
+                left 50% + -2, top 70% + -1 ; left, top 100% + -3 ; left 3, top
+                100% ; left 50%, top 70% + 2 ; right 3, top 100% ; right, top 100%
+                + -3 ; right 50% + -2, top 70% + -1 ; right 50% + -2, top 50% + 2 ;
+                right, top 50% + 2 ; right, top 50% + -2 ; right 50% + -2, top 50%
+                + -2 ; right 50% + -2, top 34
+            }
+            kellipse {
+                styles:
+                    background = 255r, 255g, 255b
+                pointData:
+                    referencePoint = left 50%, top
+                    minimalWidth = 35
+                    minimalHeight = 35
+                    horizontalAlignment = center
+            }
+        }
+    }
+
+    knode Actor2 {
+        size:
+            width = 60
+            height = 100
+        properties:
+            de.cau.cs.kieler.nodeLabelPlacement = "[H_CENTER, V_BOTTOM, OUTSIDE]"
+            klighd.testing.ignore = true
+        klabel "Actor 2" {
+            ktext {
+                styles:
+                    fontName = "SansSerif"
+                    propagate fontSize = 10pt
+            }
+        }
+        kedge (-> useCaseB) {
+            kpolyline
+        }
+        kedge (-> useCaseC) {
+            kpolyline
+        }
+        krectangle {
+            styles:
+                invisible = true
+            kpolyline {
+                points: 
+                    left 50% + -2, top 34;
+                    left 50% + -2, top 50% + -2;
+                    left, top 50% + -2;
+                    left, top 50% + 2 ; left 50% + -2, top 50% + 2 ;
+                    left 50% + -2, top 70% + -1 ; left, top 100% + -3 ; left 3, top
+                    100% ; left 50%, top 70% + 2 ; right 3, top 100% ; right, top 100%
+                    + -3 ; right 50% + -2, top 70% + -1 ; right 50% + -2, top 50% + 2 ;
+                    right, top 50% + 2 ; right, top 50% + -2 ; right 50% + -2, top 50%
+                    + -2 ; right 50% + -2, top 34
+            }
+            kellipse {
+                styles:
+                    background = 255r, 255g, 255b
+                pointData:
+                    referencePoint = left 50%, top
+                    minimalWidth = 35
+                    minimalHeight = 35
+                    horizontalAlignment = center
+            }
+        }
+    }
+    
+    knode useCaseA {
+        properties:
+        klighd.testing.expected.^height = 40.0
+        klighd.testing.expected.^width = 133.75
+        kellipse {
+            styles:
+                foreground = 105r, 105g, 105b
+            ktext ("Simple UseCase A") [
+                klighd.testing.^height = 12.0
+                klighd.testing.^width = 87.0
+            ] {
+                styles:
+                    background = 255r, 255g, 255b
+                areaData:
+                    topLeftAnchor = left 10% + 10, top 10% + 10
+                    bottomRightAnchor = right 10% + 10, bottom 10% + 10
+            }
+        }
+    }
+
+    knode useCaseB {
+        properties:
+            klighd.testing.expected.^height = 40.0
+            klighd.testing.expected.^width = 132.5
+        kellipse {
+            styles:
+                foreground = 105r, 105g, 105b
+            ktext ("Simple UseCase B") [
+                klighd.testing.^height = 12.0
+                klighd.testing.^width = 86.0
+            ] {
+                styles:
+                    background = 255r, 255g, 255b
+                areaData:
+                    topLeftAnchor = left 10% + 10, top 10% + 10
+                    bottomRightAnchor = right 10% + 10, bottom 10% + 10
+            }
+        }
+    }
+
+    knode useCaseC {
+        properties:
+            klighd.testing.expected.^height = 40.0
+            klighd.testing.expected.^width = 335.0
+        kellipse {
+            styles:
+                foreground = 105r, 105g, 105b
+            ktext ("Very important UseCase requiring lot\'s of attention") [
+                klighd.testing.^height = 12.0
+                klighd.testing.^width = 248.0
+            ] {
+                styles:
+                    background = 255r, 255g, 255b
+                areaData:
+                    topLeftAnchor = left 10% + 10, top 10% + 10
+                    bottomRightAnchor = right 10% + 10, bottom 10% + 10
+            }
+        }
+    }

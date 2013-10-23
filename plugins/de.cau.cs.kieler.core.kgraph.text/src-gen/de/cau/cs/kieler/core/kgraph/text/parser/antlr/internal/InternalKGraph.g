@@ -3748,16 +3748,16 @@ ruleKPolyline returns [EObject current=null]
 (
 (
 		{ 
-	        newCompositeNode(grammarAccess.getKPolylineAccess().getJointPointRenderingKRenderingParserRuleCall_3_2_1_0()); 
+	        newCompositeNode(grammarAccess.getKPolylineAccess().getJunctionPointRenderingKRenderingParserRuleCall_3_2_1_0()); 
 	    }
-		lv_jointPointRendering_24_0=ruleKRendering		{
+		lv_junctionPointRendering_24_0=ruleKRendering		{
 	        if ($current==null) {
 	            $current = createModelElementForParent(grammarAccess.getKPolylineRule());
 	        }
        		set(
        			$current, 
-       			"jointPointRendering",
-        		lv_jointPointRendering_24_0, 
+       			"junctionPointRendering",
+        		lv_junctionPointRendering_24_0, 
         		"KRendering");
 	        afterParserOrEnumRuleCall();
 	    }
@@ -6502,9 +6502,9 @@ ruleKGridPlacementData returns [EObject current=null]
 					{ 
 	 				  getUnorderedGroupHelper().select(grammarAccess.getKGridPlacementDataAccess().getUnorderedGroup_3(), 4);
 	 				}
-					({true}?=>(	otherlv_16='maxCellWidth' 
+					({true}?=>(	otherlv_16='flexibleWidth' 
     {
-    	newLeafNode(otherlv_16, grammarAccess.getKGridPlacementDataAccess().getMaxCellWidthKeyword_3_4_0());
+    	newLeafNode(otherlv_16, grammarAccess.getKGridPlacementDataAccess().getFlexibleWidthKeyword_3_4_0());
     }
 	otherlv_17='=' 
     {
@@ -6512,19 +6512,19 @@ ruleKGridPlacementData returns [EObject current=null]
     }
 (
 (
-		{ 
-	        newCompositeNode(grammarAccess.getKGridPlacementDataAccess().getMaxCellWidthFloatParserRuleCall_3_4_2_0()); 
-	    }
-		lv_maxCellWidth_18_0=ruleFloat		{
+		lv_flexibleWidth_18_0=RULE_BOOLEAN
+		{
+			newLeafNode(lv_flexibleWidth_18_0, grammarAccess.getKGridPlacementDataAccess().getFlexibleWidthBOOLEANTerminalRuleCall_3_4_2_0()); 
+		}
+		{
 	        if ($current==null) {
-	            $current = createModelElementForParent(grammarAccess.getKGridPlacementDataRule());
+	            $current = createModelElement(grammarAccess.getKGridPlacementDataRule());
 	        }
-       		set(
+       		setWithLastConsumed(
        			$current, 
-       			"maxCellWidth",
-        		lv_maxCellWidth_18_0, 
-        		"Float");
-	        afterParserOrEnumRuleCall();
+       			"flexibleWidth",
+        		lv_flexibleWidth_18_0, 
+        		"BOOLEAN");
 	    }
 
 )
@@ -6540,9 +6540,9 @@ ruleKGridPlacementData returns [EObject current=null]
 					{ 
 	 				  getUnorderedGroupHelper().select(grammarAccess.getKGridPlacementDataAccess().getUnorderedGroup_3(), 5);
 	 				}
-					({true}?=>(	otherlv_19='maxCellHeight' 
+					({true}?=>(	otherlv_19='flexibleHeight' 
     {
-    	newLeafNode(otherlv_19, grammarAccess.getKGridPlacementDataAccess().getMaxCellHeightKeyword_3_5_0());
+    	newLeafNode(otherlv_19, grammarAccess.getKGridPlacementDataAccess().getFlexibleHeightKeyword_3_5_0());
     }
 	otherlv_20='=' 
     {
@@ -6550,19 +6550,19 @@ ruleKGridPlacementData returns [EObject current=null]
     }
 (
 (
-		{ 
-	        newCompositeNode(grammarAccess.getKGridPlacementDataAccess().getMaxCellHeightFloatParserRuleCall_3_5_2_0()); 
-	    }
-		lv_maxCellHeight_21_0=ruleFloat		{
+		lv_flexibleHeight_21_0=RULE_BOOLEAN
+		{
+			newLeafNode(lv_flexibleHeight_21_0, grammarAccess.getKGridPlacementDataAccess().getFlexibleHeightBOOLEANTerminalRuleCall_3_5_2_0()); 
+		}
+		{
 	        if ($current==null) {
-	            $current = createModelElementForParent(grammarAccess.getKGridPlacementDataRule());
+	            $current = createModelElement(grammarAccess.getKGridPlacementDataRule());
 	        }
-       		set(
+       		setWithLastConsumed(
        			$current, 
-       			"maxCellHeight",
-        		lv_maxCellHeight_21_0, 
-        		"Float");
-	        afterParserOrEnumRuleCall();
+       			"flexibleHeight",
+        		lv_flexibleHeight_21_0, 
+        		"BOOLEAN");
 	    }
 
 )

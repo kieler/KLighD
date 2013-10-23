@@ -32,9 +32,9 @@ import de.cau.cs.kieler.core.krendering.LineStyle;
 import de.cau.cs.kieler.core.krendering.Underline;
 import de.cau.cs.kieler.klighd.KlighdConstants;
 import de.cau.cs.kieler.klighd.microlayout.Bounds;
+import de.cau.cs.kieler.klighd.microlayout.PlacementUtil;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.PAlignmentNode.HAlignment;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.PAlignmentNode.VAlignment;
-import de.cau.cs.kieler.klighd.piccolo.internal.util.PiccoloPlacementUtil;
 import de.cau.cs.kieler.klighd.piccolo.internal.util.RGBGradient;
 import de.cau.cs.kieler.klighd.piccolo.internal.util.Styles;
 import edu.umd.cs.piccolo.PNode;
@@ -221,16 +221,16 @@ public abstract class PNodeController<T extends PNode> {
         
         Point2D point;
         if (prevRotationAnchor.equals(theAnchor)) {
-            point = PiccoloPlacementUtil.evaluateDirectPosition(theAnchor, getNode()
-                    .getBoundsReference());
+            point = PlacementUtil.evaluateKPosition(theAnchor, getNode()
+                    .getBoundsReference(), true);
             getNode().getTransformReference(true).rotate(Math.toRadians(rotation - prevRotation),
                     point.getX(), point.getY());
         } else {
             getNode().rotateAboutPoint(Math.toRadians(-prevRotation),
                     prevRotationPoint.getX(), prevRotationPoint.getY());
             
-            point = PiccoloPlacementUtil.evaluateDirectPosition(theAnchor, getNode()
-                    .getBoundsReference());
+            point = PlacementUtil.evaluateKPosition(theAnchor, getNode()
+                    .getBoundsReference(), true);
             
             getNode().getTransformReference(true).rotate(Math.toRadians(rotation),
                     point.getX(), point.getY());

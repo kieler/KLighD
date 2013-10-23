@@ -1002,8 +1002,8 @@ public abstract class AbstractKGraphSemanticSequencer extends AbstractDelegating
 	 *         bottomRight=KPosition? 
 	 *         minCellWidth=Float? 
 	 *         minCellHeight=Float? 
-	 *         maxCellWidth=Float? 
-	 *         maxCellHeight=Float?
+	 *         flexibleWidth=BOOLEAN? 
+	 *         flexibleHeight=BOOLEAN?
 	 *     )
 	 */
 	protected void sequence_KGridPlacementData(EObject context, KGridPlacementData semanticObject) {
@@ -1263,7 +1263,7 @@ public abstract class AbstractKGraphSemanticSequencer extends AbstractDelegating
 	 *             actions+=KAction* 
 	 *             placementData=KPlacementData? 
 	 *             childPlacement=KPlacement? 
-	 *             jointPointRendering=KRendering? 
+	 *             junctionPointRendering=KRendering? 
 	 *             children+=KRendering*
 	 *         )?
 	 *     )
@@ -1284,7 +1284,7 @@ public abstract class AbstractKGraphSemanticSequencer extends AbstractDelegating
 	 *             actions+=KAction* 
 	 *             placementData=KPlacementData? 
 	 *             childPlacement=KPlacement? 
-	 *             jointPointRendering=KRendering? 
+	 *             junctionPointRendering=KRendering? 
 	 *             children+=KRendering*
 	 *         )?
 	 *     )
@@ -1306,7 +1306,7 @@ public abstract class AbstractKGraphSemanticSequencer extends AbstractDelegating
 	 *             actions+=KAction* 
 	 *             placementData=KPlacementData? 
 	 *             childPlacement=KPlacement? 
-	 *             jointPointRendering=KRendering? 
+	 *             junctionPointRendering=KRendering? 
 	 *             children+=KRendering*
 	 *         )?
 	 *     )
@@ -1327,7 +1327,7 @@ public abstract class AbstractKGraphSemanticSequencer extends AbstractDelegating
 	 *             actions+=KAction* 
 	 *             placementData=KPlacementData? 
 	 *             childPlacement=KPlacement? 
-	 *             jointPointRendering=KRendering? 
+	 *             junctionPointRendering=KRendering? 
 	 *             children+=KRendering*
 	 *         )?
 	 *     )

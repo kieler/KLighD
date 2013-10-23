@@ -13,6 +13,8 @@
  */
 package de.cau.cs.kieler.klighd;
 
+import de.cau.cs.kieler.core.kgraph.KNode;
+
 /**
  * The interface for classes implementing an update strategy for a specific model class.
  * These update strategies are used for the purpose of updating a view model (KGraph)
@@ -23,7 +25,7 @@ package de.cau.cs.kieler.klighd;
  * @param <T>
  *            the type of the model class
  */
-public interface IUpdateStrategy<T> {
+public interface IUpdateStrategy<T extends KNode> {
 
     /**
      * Returns the priority for this update strategy. Higher value means higher priority.
