@@ -547,7 +547,8 @@ public abstract class AbstractKGERenderingController
             KRendering referencedRendering = renderingRef.getRendering();
 
             // proceed recursively with the referenced rendering
-            updateStyles(referencedRendering, styles, propagatedStyles);
+            updateStyles(referencedRendering, styles,
+                    Lists.newLinkedList(Iterables.concat(rendering.getStyles(), propagatedStyles)));
         }
         
         List<KStyle> renderingStyles = rendering.getStyles();
