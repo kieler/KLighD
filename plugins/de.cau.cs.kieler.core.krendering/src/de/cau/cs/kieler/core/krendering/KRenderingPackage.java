@@ -1540,13 +1540,22 @@ public interface KRenderingPackage extends EPackage {
     int KTEXT__TEXT = KRENDERING_FEATURE_COUNT + 0;
 
     /**
+     * The feature id for the '<em><b>Cursor Selectable</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KTEXT__CURSOR_SELECTABLE = KRENDERING_FEATURE_COUNT + 1;
+
+    /**
      * The number of structural features of the '<em>KText</em>' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int KTEXT_FEATURE_COUNT = KRENDERING_FEATURE_COUNT + 1;
+    int KTEXT_FEATURE_COUNT = KRENDERING_FEATURE_COUNT + 2;
 
     /**
      * The meta object id for the '{@link de.cau.cs.kieler.core.krendering.KPlacement <em>KPlacement</em>}' class.
@@ -4151,6 +4160,17 @@ public interface KRenderingPackage extends EPackage {
     EAttribute getKText_Text();
 
     /**
+     * Returns the meta object for the attribute '{@link de.cau.cs.kieler.core.krendering.KText#isCursorSelectable <em>Cursor Selectable</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the attribute '<em>Cursor Selectable</em>'.
+     * @see de.cau.cs.kieler.core.krendering.KText#isCursorSelectable()
+     * @see #getKText()
+     * @generated
+     */
+    EAttribute getKText_CursorSelectable();
+
+    /**
      * Returns the meta object for class '{@link de.cau.cs.kieler.core.krendering.KPlacement <em>KPlacement</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -5695,6 +5715,14 @@ public interface KRenderingPackage extends EPackage {
          * @generated
          */
         EAttribute KTEXT__TEXT = eINSTANCE.getKText_Text();
+
+        /**
+         * The meta object literal for the '<em><b>Cursor Selectable</b></em>' attribute feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EAttribute KTEXT__CURSOR_SELECTABLE = eINSTANCE.getKText_CursorSelectable();
 
         /**
          * The meta object literal for the '{@link de.cau.cs.kieler.core.krendering.KPlacement <em>KPlacement</em>}' class.
