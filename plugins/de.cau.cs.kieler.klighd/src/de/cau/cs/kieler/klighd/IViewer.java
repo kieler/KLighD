@@ -189,6 +189,25 @@ public interface IViewer<T> {
      *            the duration
      */
     void zoomToFit(int duration);
+    
+    /**
+     * Provides the expansion state of the given representation element.
+     * 
+     * @param semanticElement
+     *            being visualized by a (hierarchic) {@link KNode}
+     * @return true if the {@link KNode} related to <code>semanticElement</code> is expanded, false
+     *         otherwise.
+     */
+    boolean isExpanded(Object semanticElement);
+    
+    /**
+     * Provides the expansion state of the given diagram node.
+     * 
+     * @param diagramElement
+     *            a (hierarchic) {@link KNode}
+     * @return true if the {@link KNode} <code>diagramElement</code> is expanded, false otherwise.
+     */
+    boolean isExpanded(KNode diagramElement);
 
     /**
      * Collapses the representation of the given element. Note that there must exist related element

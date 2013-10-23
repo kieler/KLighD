@@ -762,6 +762,25 @@ public class ContextViewer extends AbstractViewer<Object> implements IViewerEven
     /**
      * {@inheritDoc}
      */
+    public boolean isExpanded(final Object semanticElement) {
+        Object diagramNode = getCurrentViewContext().getTargetElement(semanticElement);
+        if (diagramNode instanceof KNode) {
+            return currentViewer.isExpanded((KNode) diagramNode);
+        } else {
+            return false;
+        }
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public boolean isExpanded(final KNode diagramElement) {
+        return currentViewer.isExpanded(diagramElement);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void collapse(final Object semanticElement) {
         Object diagramNode = getCurrentViewContext().getTargetElement(semanticElement);

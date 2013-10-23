@@ -375,6 +375,13 @@ public class PiccoloViewer extends AbstractViewer<KNode> implements INodeSelecti
     /**
      * {@inheritDoc}
      */
+    public boolean isExpanded(final KNode diagramElement) {
+        return controller.isExpanded(diagramElement);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void collapse(final KNode diagramElement) {
         controller.collapse(diagramElement);

@@ -118,6 +118,20 @@ public abstract class AbstractViewer<T> implements IViewer<T> {
     /**
      * {@inheritDoc}
      */
+    public boolean isExpanded(final Object semanticElement) {
+        return false;
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public boolean isExpanded(final KNode diagramElement) {
+        return false;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public void collapse(final Object semanticElement) {
         // do nothing
     }
