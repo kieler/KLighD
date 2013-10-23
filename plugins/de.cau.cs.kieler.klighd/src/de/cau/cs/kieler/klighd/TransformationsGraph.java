@@ -330,9 +330,14 @@ public class TransformationsGraph {
         
         Predicate<Path> pathFilter = new Predicate<Path>() {
             public boolean apply(final Path path) {
+                if (path.edges.isEmpty()) {
+                    return true;
+                }
+                
                 // this line already assume that we have
                 //  only 1 transformation on the path to the view model
                 final TransformationEdge edge = path.edges.get(0);
+                
                 @SuppressWarnings("unchecked")
                 final ITransformation<Object, ?> traFo =
                         (ITransformation<Object, ?>) edge.transformation;
