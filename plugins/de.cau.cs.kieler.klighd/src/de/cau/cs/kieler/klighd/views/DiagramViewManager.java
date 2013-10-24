@@ -19,7 +19,6 @@ import java.util.Map;
 
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.ui.IPartListener;
 import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.IViewReference;
@@ -38,7 +37,6 @@ import de.cau.cs.kieler.core.properties.Property;
 import de.cau.cs.kieler.klighd.KlighdPlugin;
 import de.cau.cs.kieler.klighd.LightDiagramServices;
 import de.cau.cs.kieler.klighd.ViewContext;
-import de.cau.cs.kieler.klighd.internal.preferences.KlighdPreferences;
 import de.cau.cs.kieler.klighd.triggers.KlighdStatusTrigger;
 import de.cau.cs.kieler.klighd.triggers.KlighdStatusTrigger.KlighdStatusState;
 
@@ -226,19 +224,19 @@ public final class DiagramViewManager implements IPartListener {
             // update the view context and viewer
             Object theModel = (model != null ? model : currentInputModel);
             
-            viewContext.getProperty(LightDiagramServices.VIEWER).setRecording(true);
+            viewContext.getViewer().setRecording(true);
             if (!LightDiagramServices.getInstance().updateViewContext(viewContext, theModel,
                     propertyHolder)) {
                 return null;
             }
-            LightDiagramServices.getInstance().layoutDiagram(viewContext);
+            LightDiagramServices.layoutDiagram(viewContext);
         }
         
         
         // trigger the update status
         KlighdStatusState state =
                 new KlighdStatusState(KlighdStatusState.Status.UPDATE, id, viewContext,
-                        viewContext.getProperty(LightDiagramServices.VIEWER));
+                        viewContext.getViewer());
         if (KlighdStatusTrigger.getInstance() != null) {
             KlighdStatusTrigger.getInstance().trigger(state);
         }
@@ -346,16 +344,13 @@ public final class DiagramViewManager implements IPartListener {
                 diagramView.getContextViewer().setModel(viewContext);
 
                 // do an initial update of the view context
-                viewContext.getProperty(LightDiagramServices.VIEWER).setRecording(true);
+                viewContext.getViewer().setRecording(true);
                 LightDiagramServices.getInstance().updateViewContext(viewContext, model);
                 
-                LightDiagramServices.getInstance().layoutDiagram(viewContext, false);
-
-                final IPreferenceStore preferenceStore = KlighdPlugin.getDefault().getPreferenceStore();
-                final boolean zoomToFit = preferenceStore.getBoolean(KlighdPreferences.ZOOM_TO_FIT);
+                LightDiagramServices.layoutDiagram(viewContext, false);
 
                 // fill the options pane according to the the incorporated transformations
-                diagramView.getContextViewer().updateOptions(zoomToFit);
+                diagramView.getContextViewer().updateOptions(viewContext.isZoomToFit());
 
                 // make the view visible without giving it the focus
                 page.bringToTop(diagramView);
@@ -363,7 +358,7 @@ public final class DiagramViewManager implements IPartListener {
                 // trigger the create success status
                 KlighdStatusState state =
                         new KlighdStatusState(KlighdStatusState.Status.CREATE_SUCCESS, id,
-                                viewContext, viewContext.getProperty(LightDiagramServices.VIEWER));
+                                viewContext, viewContext.getViewer());
                 if (KlighdStatusTrigger.getInstance() != null) {
                     KlighdStatusTrigger.getInstance().trigger(state);
                 }
@@ -423,7 +418,7 @@ public final class DiagramViewManager implements IPartListener {
                 // trigger the close status
                 KlighdStatusState state =
                         new KlighdStatusState(KlighdStatusState.Status.CLOSE, id, viewContext,
-                                viewContext.getProperty(LightDiagramServices.VIEWER));
+                                viewContext.getViewer());
                 if (KlighdStatusTrigger.getInstance() != null) {
                     KlighdStatusTrigger.getInstance().trigger(state);
                 }

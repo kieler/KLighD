@@ -101,67 +101,93 @@ public final class TransformationOption {
      * Static factory method providing a 'Range' {@link TransformationOption}.<br>
      * <br>
      * Hint: Declare {@link TransformationOption TransformationOptions} by means of static fields if
-     * the transformation is a re-initialized one (determined in the registration).
+     * the transformation is a re-initialized one (determined in the registration).<br>
+     * <br>
+     * <b>Note:</b> Use <<OPTION_NAME>>.<code>optionFloatValue</code> while testing the option value
+     * if at least one of the parameters is a floating point value, and <<OPTION_NAME>>.
+     * <code>optionIntValue</code> otherwise (in Xtend).
      * 
-     * @param <S>
-     *            concrete type of the range's start value
      * @param <T>
      *            concrete type of the range's end value
      * @param name
      *            the name of the option
-     * @param values
-     *            the available option values.
+     * @param lowerBound
+     *            the range's lower bound
+     * @param upperBound
+     *            the range's upper bound
      * @param initialValue
      *            the initially selected option value.
      * @return an 'Choice' {@link TransformationOption}
      */
-    public static <S extends Number, T extends Number> TransformationOption createRangeOption(
-            final String name, final Pair<S, T> values, final Object initialValue) {
-        TransformationOption option = new TransformationOption(name,
+    public static <T extends Number> TransformationOption createRangeOption(
+            final String name, final T lowerBound, final T upperBound, final T initialValue) {
+        final TransformationOption option = new TransformationOption(name,
                 TransformationOptionType.RANGE, initialValue);
-        option.setValues(values);
-        option.setStepSize(DEFAULT_STEP_SIZE);
+        option.setValues(Pair.of(lowerBound, upperBound));
+        if (!lowerBound.equals(lowerBound.intValue())
+                || !upperBound.equals(upperBound.intValue())
+                || !initialValue.equals(initialValue.intValue())) {
+            option.setStepSize(DEFAULT_STEP_SIZE_FLOAT);
+        } else {
+            option.setStepSize(DEFAULT_STEP_SIZE_INTEGER);
+        }
         return option;
     }
     
     /**
-     * The standard step size of 'range' options.
+     * The standard step size of floating-point-based 'range' options.
      */
-    public static final float DEFAULT_STEP_SIZE = 10 ^ -2; // SUPPRESS CHECKSTYLE MagicNumber
+    public static final float DEFAULT_STEP_SIZE_FLOAT = 10 ^ -1; // SUPPRESS CHECKSTYLE MagicNumber
+    
+    /**
+     * The standard step size of integer-based 'range' options.
+     */
+    public static final float DEFAULT_STEP_SIZE_INTEGER = 1;
     
     /**
      * Static factory method providing a 'Range' {@link TransformationOption}.<br>
      * <br>
      * Hint: Declare {@link TransformationOption TransformationOptions} by means of static fields if
-     * the transformation is a re-initialized one (determined in the registration).
+     * the transformation is a re-initialized one (determined in the registration).<br>
+     * <br>
+     * <b>Note:</b> Use <<OPTION_NAME>>.<code>optionFloatValue</code> while testing the option value
+     * if at least one of the parameters is a floating point value, and <<OPTION_NAME>>.
+     * <code>optionIntValue</code> otherwise (in Xtend).
      * 
-     * @param <S>
-     *            concrete type of the range's start value
+     * 
      * @param <T>
      *            concrete type of the range's end value
      * @param name
      *            the name of the option
-     * @param values
-     *            the available option values.
+     * @param lowerBound
+     *            the range's lower bound
+     * @param upperBound
+     *            the range's upper bound
      * @param stepSize
      *            the step size determining the option value granularity
      * @param initialValue
      *            the initially selected option value.
      * @return an 'Choice' {@link TransformationOption}
      */
-    public static <S extends Number, T extends Number> TransformationOption createRangeOption(
-            final String name, final Pair<S, T> values, final Number stepSize,
-            final Object initialValue) {
+    public static <T extends Number> TransformationOption createRangeOption(final String name,
+            final T lowerBound, final T upperBound, final T stepSize, final T initialValue) {
         TransformationOption option = new TransformationOption(name,
                 TransformationOptionType.RANGE, initialValue);
-        option.setValues(values);
-        option.setStepSize(stepSize);
+        option.setValues(Pair.of(lowerBound, upperBound));
+        if (!lowerBound.equals(lowerBound.intValue())
+                || !upperBound.equals(upperBound.intValue())
+                || !stepSize.equals(stepSize.intValue())
+                || !initialValue.equals(initialValue.intValue())) {
+            option.setStepSize(stepSize.intValue());
+        } else {
+            option.setStepSize(Math.round(stepSize.floatValue()));
+        }
         return option;
     }
-    
+
+
     /* -- the internal part -- */
 
-    
     /**
      * Enumeration of types of {@link TransformationOption}s.
      * 

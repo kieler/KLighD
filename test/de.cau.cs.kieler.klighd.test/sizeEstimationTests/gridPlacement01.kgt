@@ -1,14 +1,19 @@
 knode {
-	properties:
-		klighd.testing.expected.^height = 32.0
-		klighd.testing.expected.^width = 38.0
-	krectangle {
-		grid: columns = 1
+    properties:
+        klighd.testing.expected.^height = 32.0
+        klighd.testing.expected.^width = 38.0
+    krectangle {
+        grid:
+            columns = 1
 		ktext ("Hugo") [
-			klighd.testing.^height = 16.0 klighd.testing.^width = 31.0
-		]
+			klighd.testing.^height = 16.0
+			klighd.testing.^width = 31.0
+		] {
+		    gridData:
+		}
 		ktext ("Hugos") [
-			klighd.testing.^height = 16.0 klighd.testing.^width = 38.0
+			klighd.testing.^height = 16.0
+			klighd.testing.^width = 38.0
 		]
 	}
 }

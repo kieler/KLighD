@@ -13,14 +13,18 @@
  */
 package de.cau.cs.kieler.klighd.piccolo.internal.controller;
 
+import java.awt.geom.Point2D;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.ui.statushandlers.StatusManager;
+
+import com.google.common.collect.Lists;
 
 import de.cau.cs.kieler.core.kgraph.KEdge;
 import de.cau.cs.kieler.core.krendering.KCustomRendering;
@@ -37,13 +41,29 @@ import de.cau.cs.kieler.klighd.piccolo.KlighdPiccoloPlugin;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KCustomConnectionFigureNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KEdgeNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdPath;
+import edu.umd.cs.piccolo.PCamera;
+import edu.umd.cs.piccolo.PLayer;
 import edu.umd.cs.piccolo.PNode;
 
 /**
+ * An {@link AbstractKGERenderingController} for {@link KEdge KEdges} generating the rendering
+ * PNodes according to the related KRendering rendering description.<br>
+ * <br>
+ * In addition it takes care about creating and moving the junction point rendering that may be
+ * attached to the edge's {@link KPolyline} rendering. This is done by creating a single
+ * {@link PNode} representation. The upscaling to multiple concrete junction points is realized by
+ * {@link PCamera cameras} that are added to the edge representation, one for each junction point,
+ * and positioned accordingly. Those cameras point to the junction point representation figure. This
+ * way a consistent update of the junction point figures in case of style changes is enabled. <br>
+ * <br>
+ * The junction point rendering is currently not implemented for edges with {@link KCustomRendering
+ * custom renderings}.
+ * 
  * @author mri
+ * @author chsch
  */
 public class KEdgeRenderingController extends AbstractKGERenderingController<KEdge, KEdgeNode> {
-
+    
     /**
      * Constructs a rendering controller for an edge.
      * 
@@ -131,8 +151,9 @@ public class KEdgeRenderingController extends AbstractKGERenderingController<KEd
         } else {
             controller.getNode().setPathToPolyline(parent.getBendPoints());
         }
+        
         parent.setRepresentationNode(controller.getNode());
-
+        
         // add a listener on the parent's bend points
         addListener(KEdgeNode.PROPERTY_BEND_POINTS, parent, controller.getNode(),
                 new PropertyChangeListener() {
@@ -148,7 +169,114 @@ public class KEdgeRenderingController extends AbstractKGERenderingController<KEd
                     }
                 });
 
+        
+        final KRendering jpR = rendering.getJunctionPointRendering();
+        
+        if (jpR == null) {
+            // if there is no junction point rendering determined, we're done!
+            return controller.getNode();
+        }
+                    
+        
+        /* ----------------------- */
+        /* junction point handling */
+        /* ----------------------- */
+        
+        final List<KStyle> propagatedStyles = determinePropagationStyles(rendering.getStyles(),
+                Lists.<KStyle>newLinkedList());
+        
+        // As explained in the class doc, the representation of multiple junction points is realized
+        //  by means of cameras. Since those support only PLayers as 'viewed' figures, create one
+        //  serving as container for the junction point figure:
+        final PLayer junctionParent = new PLayer();
+        
+        // Create the junction point figure the usual way
+        final PNode junctionFigure = handleAreaAndPointPlacementRendering(jpR, propagatedStyles,
+                junctionParent);
+
+        // Create a layer accommodating the concrete camera instances ... 
+        final PLayer displayedJunctions = new PLayer();
+
+        // ... and add it to the edge's rendering figure (I think it could be also added to the
+        //  parent 'edgeNode', but this is cleaner regarding the replacement/deletion of the current
+        //  KRendering):
+        controller.getNode().addChild(displayedJunctions);
+
+        // initially add the junction points (required if the initial layout run is suppressed)
+        updateJunctionPoints(parent, junctionFigure, displayedJunctions);
+        
+        // and finally add the listener that is keeping them up to date
+        addListener(KEdgeNode.PROPERTY_JUNCTION_POINTS, parent, controller.getNode(),
+                new PropertyChangeListener() {
+
+                    public void propertyChange(final PropertyChangeEvent e) {
+                        updateJunctionPoints(parent, junctionFigure, displayedJunctions);
+                    }
+                });
+
         return controller.getNode();
+    }
+
+    /**
+     * Updates the displayed junction point figures based on the junction point coordinates in
+     * <code>parent</code>. Puts the required amount of {@link PCamera} instances 'viewing'
+     * <code>junctionFigure</code> into the <code>displayedJunctions</code> layer.
+     * 
+     * @param parent
+     *            the {@link KEdgeNode} providing the junction point coordinates
+     * @param junctionFigure
+     *            the single {@link PNode} representing the junction point {@link KRendering}
+     * @param displayedJunctions
+     *            the container {@link PLayer layer} comprising the concrete {@link PCamera cameras}
+     */
+    private void updateJunctionPoints(final KEdgeNode parent, final PNode junctionFigure,
+            final PLayer displayedJunctions) {
+        
+        // get the points from the parent (structural) node
+        final Point2D[] newJunctionPoints = parent.getJunctionPoints();
+
+        // determine the number of cameras to be added (removed)
+        final int missingJuncts = newJunctionPoints.length - displayedJunctions.getChildrenCount();
+
+        // since a camera can be pointed to layers take the junctionFigures parent layer
+        //  (see handleEdgeRendering(final KPolyline rendering, final KEdgeNode parent) 
+        final PLayer junctionParent = (PLayer) junctionFigure.getParent();
+        
+        // remove superfluous cameras in case the number of required juncts has decreased
+        for (int i = 0; i < -missingJuncts; i++) {
+            ((PCamera) displayedJunctions.removeChild(displayedJunctions.getChildrenCount() - 1))
+                    .removeLayer(junctionParent);
+        }
+
+        // add further ones respectively
+        for (int i = 0; i < missingJuncts; i++) {
+            final PCamera cam = new PCamera();
+
+            // set the camera non-pickable as the junction points can be panned locally :-) 
+            cam.setPickable(false);
+
+            // add the layer to be shown by the camera
+            cam.addLayer(junctionParent);
+
+            // set the camera's bounds to the junctionFigure's bounds adjusted by the
+            //  junctionFigure's transform (which is done by getFullBoundsReference)
+            // in order to align the junction point figure as defined in attached
+            //  KPointPlacement data based on the given junction point coordinates
+            cam.setBounds(junctionFigure.getFullBoundsReference());
+
+            // put the camera into the "camera container" -> invalidates the parent and the polyline 
+            displayedJunctions.addChild(cam);
+        }
+
+        @SuppressWarnings("unchecked")
+        final List<PNode> cams = (List<PNode>) displayedJunctions.getChildrenReference();
+        
+        // update the position of the cameras to the given coordinates by modifying their transform
+        //  (their local bounds need not to be touched)
+        for (int i = 0; i < cams.size(); i++) {
+            final Point2D p = newJunctionPoints[i];
+            cams.get(i).setOffset(p.getX(), p.getY());
+        }
     }
     
     /**

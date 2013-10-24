@@ -97,7 +97,7 @@ public interface KPort extends KLabeledGraphElement {
      * <!-- end-model-doc -->
      * @return the value of the '<em>Edges</em>' reference list.
      * @see de.cau.cs.kieler.core.kgraph.KGraphPackage#getKPort_Edges()
-     * @model transient="true"
+     * @model transient="true" derived="true"
      * @generated
      */
     EList<KEdge> getEdges();

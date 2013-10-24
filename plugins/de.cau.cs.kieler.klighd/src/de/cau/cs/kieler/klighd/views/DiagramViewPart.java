@@ -15,28 +15,23 @@ package de.cau.cs.kieler.klighd.views;
 
 import org.eclipse.core.resources.IResource;
 import org.eclipse.jface.action.Action;
-import org.eclipse.jface.action.ActionContributionItem;
 import org.eclipse.jface.action.IAction;
-import org.eclipse.jface.action.IMenuCreator;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.preference.IPreferenceStore;
-import org.eclipse.jface.util.IPropertyChangeListener;
-import org.eclipse.jface.util.PropertyChangeEvent;
 import org.eclipse.swt.dnd.DND;
 import org.eclipse.swt.dnd.DropTarget;
 import org.eclipse.swt.dnd.DropTargetEvent;
 import org.eclipse.swt.dnd.DropTargetListener;
 import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Menu;
 import org.eclipse.ui.part.ResourceTransfer;
 import org.eclipse.ui.part.ViewPart;
 
 import de.cau.cs.kieler.kiml.ui.KimlUiPlugin;
 import de.cau.cs.kieler.klighd.KlighdPlugin;
 import de.cau.cs.kieler.klighd.LightDiagramServices;
+import de.cau.cs.kieler.klighd.ViewContext;
 import de.cau.cs.kieler.klighd.internal.preferences.KlighdPreferences;
 import de.cau.cs.kieler.klighd.triggers.KlighdResourceDropTrigger;
 import de.cau.cs.kieler.klighd.triggers.KlighdResourceDropTrigger.KlighdResourceDropState;
@@ -51,6 +46,9 @@ import de.cau.cs.kieler.klighd.viewers.ContextViewer;
  */
 public class DiagramViewPart extends ViewPart implements IDiagramWorkbenchPart {
 
+    /** The id this viewpart is registered with in the extension point. */
+    public static final String VIEW_ID = "de.cau.cs.kieler.klighd.lightDiagramView";
+    
     /** the default name for this view. */
     public static final String DEFAULT_NAME = "Light Diagram";
     /** the action identifier prefix for permanent menu contributions. */
@@ -70,11 +68,12 @@ public class DiagramViewPart extends ViewPart implements IDiagramWorkbenchPart {
      */
     @Override
     public void createPartControl(final Composite parent) {        
-        // add buttons to the view toolbar 
-        addButtons();
-        
         // create the context viewer
         viewer = new ContextViewer(parent, getViewSite().getSecondaryId(), this);
+        
+        // add buttons to the view toolbar
+        //  requires non-null 'viewer' field 
+        addButtons();
         
         // put some default actions into the view menu
         fillViewMenu(getViewSite().getActionBars().getMenuManager());
@@ -85,7 +84,7 @@ public class DiagramViewPart extends ViewPart implements IDiagramWorkbenchPart {
         
         // register the context viewer as selection provider on the workbench
         getSite().setSelectionProvider(viewer);
-                
+
         // the initialization of the context menu is done in PiccoloViewer#addContextMenu()
     }
     
@@ -137,72 +136,45 @@ public class DiagramViewPart extends ViewPart implements IDiagramWorkbenchPart {
 
         // toggle zoom to fit behavior
         toolBar.add(new Action("Toggle Zoom to Fit", IAction.AS_CHECK_BOX) {
+            // Constructor
             {
                 setImageDescriptor(KimlUiPlugin
                         .getImageDescriptor("icons/menu16/kieler-zoomtofit.gif"));
-                setChecked(preferenceStore.getBoolean(KlighdPreferences.ZOOM_TO_FIT));
-
-                // register a listener to adapt to changes within the preference pages
-                preferenceStore.addPropertyChangeListener(new IPropertyChangeListener() {
-
-                    public void propertyChange(final PropertyChangeEvent event) {
-                        if (event.getProperty().equals(KlighdPreferences.ZOOM_TO_FIT)) {
-                            setChecked((Boolean) event.getNewValue());
-                        }
-                    }
-                });
+                final ViewContext vc =
+                        DiagramViewPart.this.getContextViewer().getCurrentViewContext();
+                if (vc != null) {
+                    setChecked(vc.isZoomToFit());
+                } else {
+                    setChecked(preferenceStore.getBoolean(KlighdPreferences.ZOOM_TO_FIT));
+                }
             }
 
             @Override
             public void run() {
-                preferenceStore.setValue(KlighdPreferences.ZOOM_TO_FIT, this.isChecked());
+                final ViewContext vc =
+                        DiagramViewPart.this.getContextViewer().getCurrentViewContext();
+                if (vc != null) {
+                    vc.setZoomToFit(this.isChecked());
+
+                    // perform zoom to fit upon activation of the toggle button
+                    if (this.isChecked()) {
+                        LightDiagramServices.layoutAndZoomDiagram(DiagramViewPart.this);
+                    }
+
+                }
             }
         });
 
         // automatic layout button
-        toolBar.add(new Action("Arrange", IAction.AS_DROP_DOWN_MENU) {
-
-            private Menu menu;
+        toolBar.add(new Action("Arrange", IAction.AS_PUSH_BUTTON) {
+            // Constructor
             {
                 setImageDescriptor(KimlUiPlugin
                         .getImageDescriptor("icons/menu16/kieler-arrange.gif"));
-                setMenuCreator(new IMenuCreator() {
-
-                    public Menu getMenu(final Menu parent) {
-                        // not used
-                        return null;
-                    }
-
-                    public Menu getMenu(final Control parent) {
-                        // create the menu
-                        if (menu == null) {
-                            menu = new Menu(parent);
-                            ActionContributionItem item =
-                                    new ActionContributionItem(new Action("Force Zoom to Fit") {
-                                        public void run() {
-                                            boolean animate =
-                                                    preferenceStore
-                                                            .getBoolean(KlighdPreferences.ANIMATE_LAYOUT);
-                                            // force zoom to fit
-                                            LightDiagramServices.getInstance().layoutDiagram(
-                                                    DiagramViewPart.this, animate, true);
-                                        };
-                                    });
-                            item.fill(menu, -1);
-                        }
-                        return menu;
-                    }
-
-                    public void dispose() {
-                        if (menu != null) {
-                            menu.dispose();
-                        }
-                    }
-                });
             }
 
             public void run() {
-                LightDiagramServices.getInstance().layoutDiagram(DiagramViewPart.this);
+                LightDiagramServices.layoutDiagram(DiagramViewPart.this);
             }
         });
     }

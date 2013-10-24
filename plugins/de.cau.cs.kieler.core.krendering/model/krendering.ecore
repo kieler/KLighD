@@ -93,8 +93,8 @@
         <details key="documentation" value="points that are visited by the polyline in order of definition"/>
       </eAnnotations>
     </eStructuralFeatures>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="jointPointRendering" eType="#//KRendering"
-        containment="true">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="junctionPointRendering"
+        eType="#//KRendering" containment="true">
       <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
         <details key="documentation" value="Optional rendering defining the look of join point figures that are attached to the diagram for each edge join point computed by the automatic (macro) layout.&#xA;Setting is evaluated for KEdge renderings only, ignored for simple polylines being part of a complex rendering."/>
       </eAnnotations>
@@ -251,6 +251,8 @@
         <details key="documentation" value="the text to be displayed"/>
       </eAnnotations>
     </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="cursorSelectable" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"
+        defaultValueLiteral="false"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="KPlacement" abstract="true" interface="true">
     <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
@@ -295,31 +297,19 @@
         <details key="documentation" value="force layout to make the column that contains the element this placementdata is assigned to as wide as defined here. If another element in that column has a maxCellWidth that is less than this minWidth, the maxWidth is ignored."/>
       </eAnnotations>
     </eStructuralFeatures>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="maxCellWidth" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EFloat"
-        defaultValueLiteral="-1">
-      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-        <details key="documentation" value="hint layout to keep the width of the column the element is assigned to less than defined here. &#xA;If another element in this column has a minCellWidth that is higher than this maxWidth, &#xA;the maxWidth is ignored."/>
-      </eAnnotations>
-    </eStructuralFeatures>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="minCellHeight" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EFloat"
         defaultValueLiteral="0">
       <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
         <details key="documentation" value="force layout to make the row that contains the element this placementdata is assigned to as high as defined here. If another element in that column has a maxCellHeight that is less than this minHeight, the maxHeight is ignored."/>
       </eAnnotations>
     </eStructuralFeatures>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="maxCellHeight" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EFloat"
-        defaultValueLiteral="-1">
-      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-        <details key="documentation" value="hint layout to keep the height of the column the element is assigned to less than defined here. &#xA;If another element in this column has a minCellHeight that is higher than this maxHeight, &#xA;the maxHeight is ignored."/>
-      </eAnnotations>
-    </eStructuralFeatures>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="fixedWidth" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBooleanObject"
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="flexibleWidth" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBooleanObject"
         defaultValueLiteral="true">
       <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
         <details key="documentation" value="This flag marks the child rendering to cover exactly the required width obtained by means of the minimal size estimation, except for width increases by the macro layout, i.e. by KIML, e.g. in a single column grid.&#xA;If false, more space may be assigned to the related child rendering, if necessary.&lt;br>&#xA;&lt;br>&#xA;This flag is the replacement of the concrete 'maxCellWidth' value and not examined by KLighD, yet."/>
       </eAnnotations>
     </eStructuralFeatures>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="fixedHeight" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBooleanObject"
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="flexibleHeight" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBooleanObject"
         defaultValueLiteral="true">
       <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
         <details key="documentation" value="This flag marks the child rendering to cover exactly the required height obtained by means of the minimal size estimation, except for height increases by the macro layout, i.e. by KIML, e.g. in a single row grid.&#xA;If false, more space may be assigned to the related child rendering, if necessary.&lt;br>&#xA;&lt;br>&#xA;This flag is the replacement of the concrete 'maxCellHeight' value and not examined by KLighD, yet."/>
@@ -579,20 +569,20 @@
     <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
       <details key="documentation" value="with this placement it is possible to mount dynamic sized objects at a single point using the defined alignment"/>
     </eAnnotations>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="referencePoint" lowerBound="1"
-        eType="#//KPosition" containment="true">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="referencePoint" eType="#//KPosition"
+        containment="true">
       <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
         <details key="documentation" value="the point within the parent to use as reference to place element"/>
       </eAnnotations>
     </eStructuralFeatures>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="horizontalAlignment" lowerBound="1"
-        eType="#//HorizontalAlignment">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="horizontalAlignment" eType="#//HorizontalAlignment"
+        defaultValueLiteral="LEFT">
       <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
         <details key="documentation" value="Horizontal alignment of the child w.r.t. to the reference point that is based on the parent's bounds."/>
       </eAnnotations>
     </eStructuralFeatures>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="verticalAlignment" lowerBound="1"
-        eType="#//VerticalAlignment">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="verticalAlignment" eType="#//VerticalAlignment"
+        defaultValueLiteral="TOP">
       <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
         <details key="documentation" value="Vertical alignment of the child w.r.t. to the reference point that is based on the parent's bounds."/>
       </eAnnotations>

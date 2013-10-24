@@ -32,6 +32,24 @@ public final class ModelingUtil {
     
 
     /**
+     * Returns an {@link Iterable} containing all recursively contained elements of type
+     * {@code value}'s type.
+     * 
+     * @param <T>
+     *            the required type of {@code value}
+     * @param value
+     *            the value
+     * @param clazz
+     *            the required type
+     * @return the requested {@link Iterable}
+     */
+    public static <T extends EObject> Iterable<T> eAllContentsOfType(final EObject value,
+            final Class<T> clazz) {
+        return Iterables2.toIterable(Iterators.filter(value.eAllContents(), clazz));
+    }
+
+    
+    /**
      * Returns an {@link Iterable} containing {@code value} itself and all recursively contained
      * elements.
      * 
@@ -167,7 +185,19 @@ public final class ModelingUtil {
      * @return the an {@link Iterator} visiting all eContainers.
      */
     public static Iterator<EObject> eAllContainers(final EObject eObject) {
-        return new EContainerIterator(eObject);
+        return new EContainerIterator(eObject, false);
+    }
+    
+    /**
+     * Creates an iterator traversing along the 'eContainer' chain of an {@link EObject} including
+     * (starting with) <code>eOject</code> itself.
+     * 
+     * @param eObject
+     *            the element to start with
+     * @return the an {@link Iterator} visiting <code>eObject</code> and all eContainers.
+     */
+    public static Iterator<EObject> selfAndEAllContainers(final EObject eObject) {
+        return new EContainerIterator(eObject, true);
     }
     
     /**
@@ -180,21 +210,25 @@ public final class ModelingUtil {
 
         private EObject element;
         
-        public EContainerIterator(final EObject theElement) {
+        public EContainerIterator(final EObject theElement, final boolean includingSelf) {
             if (theElement == null) {
-                throw new IllegalArgumentException(
-                        "Constructor of EContainerIterator requires a non-null input.");
+                throw new IllegalArgumentException("Class EContainerIterator:"
+                        + "Constructor of EContainerIterator requires a non-null input.");
             }
-            this.element = theElement;
+            this.element = includingSelf ? theElement : theElement.eContainer();
         }
         
         public boolean hasNext() {
-            return element.eContainer() != null;
+            return element != null;
         }
 
         public EObject next() {
+            if (element == null) {
+                throw new IllegalStateException("Class EContainerIterator: There is no more element.");
+            }
+            final EObject res = element;
             element = element.eContainer();
-            return element;
+            return res;
         }
 
         public void remove() {

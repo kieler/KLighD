@@ -214,6 +214,17 @@ public class ReinitializingTransformationProxy<S, T> extends AbstractTransformat
     }
     
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean supports(final S model) {
+        if (this.transformationDelegate == null) {
+            this.transformationDelegate = getNewDelegateInstance();
+        }
+        return this.transformationDelegate.supports(model);
+    }
+    
+    /**
      * {@inheritDoc}<br>
      * Delegates to the 'delegate' object.
      */

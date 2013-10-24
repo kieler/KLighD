@@ -1,28 +1,89 @@
-
 knode {
-	properties: klighd.testing.expected.^height = 96.0
-	klighd.testing.expected.^width = 329.0
-	krectangle {
-		styles: foreground = 255g
+    properties:
+        klighd.testing.expected.^height = 104.0
+        klighd.testing.expected.^width = 150.0
+    knode a {
+        size:
+            width = 100
+            height = 60
+        properties:
+            klighd.testing.ignore = true
+        kedge ( -> b)
+        kroundedRectangle (30, 30)
+    }
+    knode b {
+        size:
+            width = 100
+            height = 60
+        properties:
+            klighd.testing.ignore = true
+        kedge ( -> a)
+        kroundedRectangle (30, 30)
+    }
+    krectangle {
+        styles: foreground = 255g
 		grid: columns = 1
 		krectangle {
-			ktext ("Einen ganz langenajajkgaskgakjsdgajksgdakjshdakj Text")
-			[klighd.testing.^height = 16.0 klighd.testing.^width = 329.0]
+			ktext ("Einer ganz langer Text") [
+			    klighd.testing.^height = 16.0
+			    klighd.testing.^width = 150.0
+			]
 		}
 		krectangle {
-			grid: columns = 2
+			grid: columns = 3
 			krectangle {
-				gridData: maxCellWidth = 90
-				ktext ("name") [klighd.testing.^height = 16.0 klighd.testing.^width = 32.0]
+				gridData:
+				ktext ("name") [
+				    klighd.testing.^height = 16.0
+				    klighd.testing.^width = 32.0
+				]
 			}
+            krectangle {
+                ktext ("Hugo") [
+                    klighd.testing.^height = 16.0
+                    klighd.testing.^width = 31.0
+                ]
+            }
+            krectangle {
+                ktext ("Hugo2") [
+                    klighd.testing.^height = 16.0
+                    klighd.testing.^width = 31.0
+                ]
+            }
 			krectangle {
-				ktext ("Hugo") [klighd.testing.^height = 16.0 klighd.testing.^width = 31.0]
+				ktext (" drüben\n ist\n eine\n childArea ") [
+				    klighd.testing.^height = 48.0
+                    klighd.testing.^width = 49.0
+                ]
+            }
+            krectangle {
+			    kchildArea
+			
 			}
-			krectangle {
-				ktext ("dr√ºben\n ist \n eine \n childArea") [klighd.testing.^height = 64.0
-				klighd.testing.^width = 54.0]
-			}
-			kchildArea
+            krectangle {
+                ktext ("Hugo3") [
+                    klighd.testing.^height = 16.0
+                    klighd.testing.^width = 31.0
+                ]
+            }
+            krectangle {
+                ktext ("Hugo4") [
+                    klighd.testing.^height = 16.0
+                    klighd.testing.^width = 31.0
+                ]
+            }
+            krectangle {
+                ktext ("Hugo5\nHugo5") [
+                    klighd.testing.^height = 24.0
+                    klighd.testing.^width = 33.0
+                ]
+            }
+            krectangle {
+                ktext ("Hugo6") [
+                    klighd.testing.^height = 16.0
+                    klighd.testing.^width = 31.0
+                ]
+            }
 		}
 	}
 }

@@ -109,6 +109,14 @@ public class KlighdStyledText extends PNode implements ITracingElement<KText> {
     }
 
     /**
+     * Get the text that is displayed by this node.
+     * @return The text that is displayed.
+     */
+    public String getText() {
+        return text;
+    }
+
+    /**
      * Updates the text string to be displayed by this node.<br>
      * <code>theText</code> may be empty or contain line breaks.
      * 
@@ -125,6 +133,19 @@ public class KlighdStyledText extends PNode implements ITracingElement<KText> {
      */
     public KText getGraphElement() {
         return this.kText;
+    }
+
+    /**
+     * Provides the currently set pen color.<br>
+     * It's currently used in order configure the text widget enabling the cursor-based text
+     * selection, see
+     * {@link de.cau.cs.kieler.klighd.piccolo.viewer.PiccoloViewer.KlighdTextInputHandler
+     * PiccoloViewer.KlighdTextInputHandler}.
+     * 
+     * @return the current pen color {@link RGB}.
+     */
+    public RGB getPenColor() {
+        return penColor;
     }
 
     /**
@@ -217,6 +238,19 @@ public class KlighdStyledText extends PNode implements ITracingElement<KText> {
         paintGradient = newPaint;
         // repaint();
         // firePropertyChange(PROPERTY_CODE_PAINT, PROPERTY_PAINT, oldPaint, penPaintGradient);
+    }
+
+    /**
+     * Provides the currently set {@link FontData}.<br>
+     * It's currently used in order configure the text widget enabling the cursor-based text
+     * selection, see
+     * {@link de.cau.cs.kieler.klighd.piccolo.viewer.PiccoloViewer.KlighdTextInputHandler
+     * PiccoloViewer.KlighdTextInputHandler}.
+     * 
+     * @return the current {@link FontData}
+     */
+    public FontData getFontData() {
+        return fontData;
     }
 
     /**

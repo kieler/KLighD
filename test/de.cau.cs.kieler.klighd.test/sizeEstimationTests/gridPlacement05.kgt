@@ -1,44 +1,31 @@
-
 knode {
-	properties: klighd.testing.expected.^height = 196.0
-	klighd.testing.expected.^width = 227.50002
-	krectangle {
-		grid: topLeftAnchor = left 30% + 10, top bottomRightAnchor = right 30% + 10,
-		bottom columns = 1
-		kroundedRectangle (10, 10) {
-			gridData: topLeftAnchor = left 10, top 10 bottomRightAnchor = right 10,
-			bottom 10
-			grid: columns = 1
-			krendering *text1
-			krendering *text1
-			ktext ("go") [klighd.testing.^height = 16.0 klighd.testing.^width = 14.0] {
-				gridData: topLeftAnchor = left, top 10 bottomRightAnchor = right, bottom 10
-			}
-		}
-		kroundedRectangle (10, 10) {
-			gridData: topLeftAnchor = left 10, top 10 bottomRightAnchor = right 10,
-			bottom 10
-			grid: columns = 1
-			ktext ("Hugo") [klighd.testing.^height = 16.0 klighd.testing.^width = 31.0]
-			{
-				gridData: topLeftAnchor = left 10, top 10 bottomRightAnchor = right 10,
-				bottom 10
-			}
-			ktext ("Hugo") [klighd.testing.^height = 16.0 klighd.testing.^width = 31.0]
-			{
-				gridData: topLeftAnchor = left 10, top 10 bottomRightAnchor = right 10,
-				bottom 10
-			}
-			ktext ("Hugo") [klighd.testing.^height = 16.0 klighd.testing.^width = 31.0]
-			{
-				gridData: topLeftAnchor = left 10, top 10 bottomRightAnchor = right 10,
-				bottom 10
-			}
-		}
-	}
-	ktext ("Hugo") text1 [klighd.testing.^height = 16.0 klighd.testing.^width =
-	31.0] {
-		gridData: topLeftAnchor = left 10, top 10 bottomRightAnchor = right 10,
-		bottom 10
-	}
+    properties:
+        klighd.testing.expected.^height = 87.0
+        klighd.testing.expected.^width = 92.5
+    kroundedRectangle (2, 2) {
+        grid:
+            columns = 1
+//            topLeftAnchor = left, top 30% + 10
+//            bottomRightAnchor = right, bottom 30% + 10
+        krendering *text1
+        krendering *text1
+        kellipse {
+            gridData:
+                topLeftAnchor = left 10%, top 10%
+                bottomRightAnchor = right 10%, bottom 10%
+            ktext ("booooooooooo") [
+                klighd.testing.^height = 12.0
+                klighd.testing.^width = 74.0
+            ]
+        }
+    }
+    krectangle text1 {
+        gridData:
+            topLeftAnchor = left, top 10
+            bottomRightAnchor = right, bottom 10
+            ktext ("Hugo") [
+                klighd.testing.^height = 16.0
+                klighd.testing.^width = 31.0
+            ]
+    }
 }

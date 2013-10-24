@@ -711,13 +711,13 @@ public interface KRenderingPackage extends EPackage {
     int KPOLYLINE__POINTS = KCONTAINER_RENDERING_FEATURE_COUNT + 0;
 
     /**
-     * The feature id for the '<em><b>Joint Point Rendering</b></em>' containment reference.
+     * The feature id for the '<em><b>Junction Point Rendering</b></em>' containment reference.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int KPOLYLINE__JOINT_POINT_RENDERING = KCONTAINER_RENDERING_FEATURE_COUNT + 1;
+    int KPOLYLINE__JUNCTION_POINT_RENDERING = KCONTAINER_RENDERING_FEATURE_COUNT + 1;
 
     /**
      * The number of structural features of the '<em>KPolyline</em>' class.
@@ -829,13 +829,13 @@ public interface KRenderingPackage extends EPackage {
     int KPOLYGON__POINTS = KPOLYLINE__POINTS;
 
     /**
-     * The feature id for the '<em><b>Joint Point Rendering</b></em>' containment reference.
+     * The feature id for the '<em><b>Junction Point Rendering</b></em>' containment reference.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int KPOLYGON__JOINT_POINT_RENDERING = KPOLYLINE__JOINT_POINT_RENDERING;
+    int KPOLYGON__JUNCTION_POINT_RENDERING = KPOLYLINE__JUNCTION_POINT_RENDERING;
 
     /**
      * The number of structural features of the '<em>KPolygon</em>' class.
@@ -1540,13 +1540,22 @@ public interface KRenderingPackage extends EPackage {
     int KTEXT__TEXT = KRENDERING_FEATURE_COUNT + 0;
 
     /**
+     * The feature id for the '<em><b>Cursor Selectable</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KTEXT__CURSOR_SELECTABLE = KRENDERING_FEATURE_COUNT + 1;
+
+    /**
      * The number of structural features of the '<em>KText</em>' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int KTEXT_FEATURE_COUNT = KRENDERING_FEATURE_COUNT + 1;
+    int KTEXT_FEATURE_COUNT = KRENDERING_FEATURE_COUNT + 2;
 
     /**
      * The meta object id for the '{@link de.cau.cs.kieler.core.krendering.KPlacement <em>KPlacement</em>}' class.
@@ -1688,49 +1697,31 @@ public interface KRenderingPackage extends EPackage {
     int KGRID_PLACEMENT_DATA__MIN_CELL_WIDTH = KAREA_PLACEMENT_DATA_FEATURE_COUNT + 0;
 
     /**
-     * The feature id for the '<em><b>Max Cell Width</b></em>' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int KGRID_PLACEMENT_DATA__MAX_CELL_WIDTH = KAREA_PLACEMENT_DATA_FEATURE_COUNT + 1;
-
-    /**
      * The feature id for the '<em><b>Min Cell Height</b></em>' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int KGRID_PLACEMENT_DATA__MIN_CELL_HEIGHT = KAREA_PLACEMENT_DATA_FEATURE_COUNT + 2;
+    int KGRID_PLACEMENT_DATA__MIN_CELL_HEIGHT = KAREA_PLACEMENT_DATA_FEATURE_COUNT + 1;
 
     /**
-     * The feature id for the '<em><b>Max Cell Height</b></em>' attribute.
+     * The feature id for the '<em><b>Flexible Width</b></em>' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int KGRID_PLACEMENT_DATA__MAX_CELL_HEIGHT = KAREA_PLACEMENT_DATA_FEATURE_COUNT + 3;
+    int KGRID_PLACEMENT_DATA__FLEXIBLE_WIDTH = KAREA_PLACEMENT_DATA_FEATURE_COUNT + 2;
 
     /**
-     * The feature id for the '<em><b>Fixed Width</b></em>' attribute.
+     * The feature id for the '<em><b>Flexible Height</b></em>' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int KGRID_PLACEMENT_DATA__FIXED_WIDTH = KAREA_PLACEMENT_DATA_FEATURE_COUNT + 4;
-
-    /**
-     * The feature id for the '<em><b>Fixed Height</b></em>' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int KGRID_PLACEMENT_DATA__FIXED_HEIGHT = KAREA_PLACEMENT_DATA_FEATURE_COUNT + 5;
+    int KGRID_PLACEMENT_DATA__FLEXIBLE_HEIGHT = KAREA_PLACEMENT_DATA_FEATURE_COUNT + 3;
 
     /**
      * The number of structural features of the '<em>KGrid Placement Data</em>' class.
@@ -1739,7 +1730,7 @@ public interface KRenderingPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int KGRID_PLACEMENT_DATA_FEATURE_COUNT = KAREA_PLACEMENT_DATA_FEATURE_COUNT + 6;
+    int KGRID_PLACEMENT_DATA_FEATURE_COUNT = KAREA_PLACEMENT_DATA_FEATURE_COUNT + 4;
 
     /**
      * The meta object id for the '{@link de.cau.cs.kieler.core.krendering.impl.KCustomRenderingImpl <em>KCustom Rendering</em>}' class.
@@ -2439,13 +2430,13 @@ public interface KRenderingPackage extends EPackage {
     int KSPLINE__POINTS = KPOLYLINE__POINTS;
 
     /**
-     * The feature id for the '<em><b>Joint Point Rendering</b></em>' containment reference.
+     * The feature id for the '<em><b>Junction Point Rendering</b></em>' containment reference.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int KSPLINE__JOINT_POINT_RENDERING = KPOLYLINE__JOINT_POINT_RENDERING;
+    int KSPLINE__JUNCTION_POINT_RENDERING = KPOLYLINE__JUNCTION_POINT_RENDERING;
 
     /**
      * The number of structural features of the '<em>KSpline</em>' class.
@@ -2996,13 +2987,13 @@ public interface KRenderingPackage extends EPackage {
     int KROUNDED_BENDS_POLYLINE__POINTS = KPOLYLINE__POINTS;
 
     /**
-     * The feature id for the '<em><b>Joint Point Rendering</b></em>' containment reference.
+     * The feature id for the '<em><b>Junction Point Rendering</b></em>' containment reference.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int KROUNDED_BENDS_POLYLINE__JOINT_POINT_RENDERING = KPOLYLINE__JOINT_POINT_RENDERING;
+    int KROUNDED_BENDS_POLYLINE__JUNCTION_POINT_RENDERING = KPOLYLINE__JUNCTION_POINT_RENDERING;
 
     /**
      * The feature id for the '<em><b>Bend Radius</b></em>' attribute.
@@ -3838,15 +3829,15 @@ public interface KRenderingPackage extends EPackage {
     EReference getKPolyline_Points();
 
     /**
-     * Returns the meta object for the containment reference '{@link de.cau.cs.kieler.core.krendering.KPolyline#getJointPointRendering <em>Joint Point Rendering</em>}'.
+     * Returns the meta object for the containment reference '{@link de.cau.cs.kieler.core.krendering.KPolyline#getJunctionPointRendering <em>Junction Point Rendering</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for the containment reference '<em>Joint Point Rendering</em>'.
-     * @see de.cau.cs.kieler.core.krendering.KPolyline#getJointPointRendering()
+     * @return the meta object for the containment reference '<em>Junction Point Rendering</em>'.
+     * @see de.cau.cs.kieler.core.krendering.KPolyline#getJunctionPointRendering()
      * @see #getKPolyline()
      * @generated
      */
-    EReference getKPolyline_JointPointRendering();
+    EReference getKPolyline_JunctionPointRendering();
 
     /**
      * Returns the meta object for class '{@link de.cau.cs.kieler.core.krendering.KPolygon <em>KPolygon</em>}'.
@@ -4169,6 +4160,17 @@ public interface KRenderingPackage extends EPackage {
     EAttribute getKText_Text();
 
     /**
+     * Returns the meta object for the attribute '{@link de.cau.cs.kieler.core.krendering.KText#isCursorSelectable <em>Cursor Selectable</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the attribute '<em>Cursor Selectable</em>'.
+     * @see de.cau.cs.kieler.core.krendering.KText#isCursorSelectable()
+     * @see #getKText()
+     * @generated
+     */
+    EAttribute getKText_CursorSelectable();
+
+    /**
      * Returns the meta object for class '{@link de.cau.cs.kieler.core.krendering.KPlacement <em>KPlacement</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -4253,17 +4255,6 @@ public interface KRenderingPackage extends EPackage {
     EAttribute getKGridPlacementData_MinCellWidth();
 
     /**
-     * Returns the meta object for the attribute '{@link de.cau.cs.kieler.core.krendering.KGridPlacementData#getMaxCellWidth <em>Max Cell Width</em>}'.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @return the meta object for the attribute '<em>Max Cell Width</em>'.
-     * @see de.cau.cs.kieler.core.krendering.KGridPlacementData#getMaxCellWidth()
-     * @see #getKGridPlacementData()
-     * @generated
-     */
-    EAttribute getKGridPlacementData_MaxCellWidth();
-
-    /**
      * Returns the meta object for the attribute '{@link de.cau.cs.kieler.core.krendering.KGridPlacementData#getMinCellHeight <em>Min Cell Height</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -4275,37 +4266,26 @@ public interface KRenderingPackage extends EPackage {
     EAttribute getKGridPlacementData_MinCellHeight();
 
     /**
-     * Returns the meta object for the attribute '{@link de.cau.cs.kieler.core.krendering.KGridPlacementData#getMaxCellHeight <em>Max Cell Height</em>}'.
+     * Returns the meta object for the attribute '{@link de.cau.cs.kieler.core.krendering.KGridPlacementData#getFlexibleWidth <em>Flexible Width</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for the attribute '<em>Max Cell Height</em>'.
-     * @see de.cau.cs.kieler.core.krendering.KGridPlacementData#getMaxCellHeight()
+     * @return the meta object for the attribute '<em>Flexible Width</em>'.
+     * @see de.cau.cs.kieler.core.krendering.KGridPlacementData#getFlexibleWidth()
      * @see #getKGridPlacementData()
      * @generated
      */
-    EAttribute getKGridPlacementData_MaxCellHeight();
+    EAttribute getKGridPlacementData_FlexibleWidth();
 
     /**
-     * Returns the meta object for the attribute '{@link de.cau.cs.kieler.core.krendering.KGridPlacementData#getFixedWidth <em>Fixed Width</em>}'.
+     * Returns the meta object for the attribute '{@link de.cau.cs.kieler.core.krendering.KGridPlacementData#getFlexibleHeight <em>Flexible Height</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for the attribute '<em>Fixed Width</em>'.
-     * @see de.cau.cs.kieler.core.krendering.KGridPlacementData#getFixedWidth()
+     * @return the meta object for the attribute '<em>Flexible Height</em>'.
+     * @see de.cau.cs.kieler.core.krendering.KGridPlacementData#getFlexibleHeight()
      * @see #getKGridPlacementData()
      * @generated
      */
-    EAttribute getKGridPlacementData_FixedWidth();
-
-    /**
-     * Returns the meta object for the attribute '{@link de.cau.cs.kieler.core.krendering.KGridPlacementData#getFixedHeight <em>Fixed Height</em>}'.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @return the meta object for the attribute '<em>Fixed Height</em>'.
-     * @see de.cau.cs.kieler.core.krendering.KGridPlacementData#getFixedHeight()
-     * @see #getKGridPlacementData()
-     * @generated
-     */
-    EAttribute getKGridPlacementData_FixedHeight();
+    EAttribute getKGridPlacementData_FlexibleHeight();
 
     /**
      * Returns the meta object for class '{@link de.cau.cs.kieler.core.krendering.KAreaPlacementData <em>KArea Placement Data</em>}'.
@@ -5469,12 +5449,12 @@ public interface KRenderingPackage extends EPackage {
         EReference KPOLYLINE__POINTS = eINSTANCE.getKPolyline_Points();
 
         /**
-         * The meta object literal for the '<em><b>Joint Point Rendering</b></em>' containment reference feature.
+         * The meta object literal for the '<em><b>Junction Point Rendering</b></em>' containment reference feature.
          * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
          * @generated
          */
-        EReference KPOLYLINE__JOINT_POINT_RENDERING = eINSTANCE.getKPolyline_JointPointRendering();
+        EReference KPOLYLINE__JUNCTION_POINT_RENDERING = eINSTANCE.getKPolyline_JunctionPointRendering();
 
         /**
          * The meta object literal for the '{@link de.cau.cs.kieler.core.krendering.impl.KPolygonImpl <em>KPolygon</em>}' class.
@@ -5737,6 +5717,14 @@ public interface KRenderingPackage extends EPackage {
         EAttribute KTEXT__TEXT = eINSTANCE.getKText_Text();
 
         /**
+         * The meta object literal for the '<em><b>Cursor Selectable</b></em>' attribute feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EAttribute KTEXT__CURSOR_SELECTABLE = eINSTANCE.getKText_CursorSelectable();
+
+        /**
          * The meta object literal for the '{@link de.cau.cs.kieler.core.krendering.KPlacement <em>KPlacement</em>}' class.
          * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
@@ -5809,14 +5797,6 @@ public interface KRenderingPackage extends EPackage {
         EAttribute KGRID_PLACEMENT_DATA__MIN_CELL_WIDTH = eINSTANCE.getKGridPlacementData_MinCellWidth();
 
         /**
-         * The meta object literal for the '<em><b>Max Cell Width</b></em>' attribute feature.
-         * <!-- begin-user-doc -->
-         * <!-- end-user-doc -->
-         * @generated
-         */
-        EAttribute KGRID_PLACEMENT_DATA__MAX_CELL_WIDTH = eINSTANCE.getKGridPlacementData_MaxCellWidth();
-
-        /**
          * The meta object literal for the '<em><b>Min Cell Height</b></em>' attribute feature.
          * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
@@ -5825,28 +5805,20 @@ public interface KRenderingPackage extends EPackage {
         EAttribute KGRID_PLACEMENT_DATA__MIN_CELL_HEIGHT = eINSTANCE.getKGridPlacementData_MinCellHeight();
 
         /**
-         * The meta object literal for the '<em><b>Max Cell Height</b></em>' attribute feature.
+         * The meta object literal for the '<em><b>Flexible Width</b></em>' attribute feature.
          * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
          * @generated
          */
-        EAttribute KGRID_PLACEMENT_DATA__MAX_CELL_HEIGHT = eINSTANCE.getKGridPlacementData_MaxCellHeight();
+        EAttribute KGRID_PLACEMENT_DATA__FLEXIBLE_WIDTH = eINSTANCE.getKGridPlacementData_FlexibleWidth();
 
         /**
-         * The meta object literal for the '<em><b>Fixed Width</b></em>' attribute feature.
+         * The meta object literal for the '<em><b>Flexible Height</b></em>' attribute feature.
          * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
          * @generated
          */
-        EAttribute KGRID_PLACEMENT_DATA__FIXED_WIDTH = eINSTANCE.getKGridPlacementData_FixedWidth();
-
-        /**
-         * The meta object literal for the '<em><b>Fixed Height</b></em>' attribute feature.
-         * <!-- begin-user-doc -->
-         * <!-- end-user-doc -->
-         * @generated
-         */
-        EAttribute KGRID_PLACEMENT_DATA__FIXED_HEIGHT = eINSTANCE.getKGridPlacementData_FixedHeight();
+        EAttribute KGRID_PLACEMENT_DATA__FLEXIBLE_HEIGHT = eINSTANCE.getKGridPlacementData_FlexibleHeight();
 
         /**
          * The meta object literal for the '{@link de.cau.cs.kieler.core.krendering.impl.KAreaPlacementDataImpl <em>KArea Placement Data</em>}' class.

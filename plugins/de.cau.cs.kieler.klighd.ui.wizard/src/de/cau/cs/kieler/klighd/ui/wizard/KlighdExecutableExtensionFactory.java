@@ -18,8 +18,6 @@ import org.osgi.framework.Bundle;
 
 import com.google.inject.Injector;
 
-import de.cau.cs.kieler.klighd.ui.KlighdUIPlugin;
-
 /**
  * A specialized {@link AbstractGuiceAwareExecutableExtensionFactory} required for using Guice in
  * combination with the Eclipse extension points.
@@ -30,12 +28,12 @@ public class KlighdExecutableExtensionFactory extends AbstractGuiceAwareExecutab
 
     @Override
     protected Bundle getBundle() {
-        return KlighdUIPlugin.getInstance().getBundle();
+        return KlighdWizardPlugin.getInstance().getBundle();
     }
 
     @Override
     protected Injector getInjector() {
-        return KlighdUIPlugin.getInstance().getInjector("bar");
+        return KlighdWizardPlugin.getInstance().getInjector("bar");
     }
 
 }

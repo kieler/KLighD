@@ -25,10 +25,13 @@ import java.util.Set;
 
 import org.eclipse.emf.ecore.EObject;
 
+import com.google.common.base.Predicate;
+import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 
+import de.cau.cs.kieler.core.kgraph.KNode;
 import de.cau.cs.kieler.core.util.Pair;
 import de.cau.cs.kieler.klighd.transformations.DuplicatingTransformation;
 
@@ -62,13 +65,13 @@ public class TransformationsGraph {
             .newHashMap();
 
     /** the viewer provider data. */
-    private Set<IViewerProvider<?>> viewerProviders = Sets.newLinkedHashSet();
+    private Set<IViewerProvider<KNode>> viewerProviders = Sets.newLinkedHashSet();
     /** the mapping of viewer providers on viewer provider data. */
-    private Map<IViewerProvider<?>, List<ViewerProviderData>> viewerProviderDataMapping = Maps
+    private Map<IViewerProvider<KNode>, List<ViewerProviderData>> viewerProviderDataMapping = Maps
             .newHashMap();
     
     /** the update strategies. */
-    private Set<IUpdateStrategy<?>> updateStrategies = Sets.newLinkedHashSet();
+    private Set<IUpdateStrategy<KNode>> updateStrategies = Sets.newLinkedHashSet();
     
     /**
      * Adds a model transformation to the graph.
@@ -98,7 +101,7 @@ public class TransformationsGraph {
      * @param viewerProvider
      *            the viewer provider
      */
-    public void addViewerProvider(final IViewerProvider<?> viewerProvider) {
+    public void addViewerProvider(final IViewerProvider<KNode> viewerProvider) {
         if (!viewerProviders.contains(viewerProvider)) {
             // only add the viewer provider if the model class can be determined
             Class<?> modelClass = viewerProvider.getModelClass();
@@ -118,7 +121,7 @@ public class TransformationsGraph {
      * @param updateStrategy
      *            the update strategy
      */
-    public void addUpdateStrategy(final IUpdateStrategy<?> updateStrategy) {
+    public void addUpdateStrategy(final IUpdateStrategy<KNode> updateStrategy) {
         if (updateStrategies.add(updateStrategy)) {
             // only add the update strategy if the model class can be determined
             Class<?> modelClass = updateStrategy.getModelClass();
@@ -145,7 +148,7 @@ public class TransformationsGraph {
      * @return true if the context has been configured; false else
      */
     public boolean configureViewContext(final ViewContext viewContext, final Object model,
-            final IUpdateStrategy<?> updateStrategy) {
+            final IUpdateStrategy<KNode> updateStrategy) {
         if (model == null) {
             return false;
         }
@@ -176,7 +179,7 @@ public class TransformationsGraph {
      * @return true if the context has been configured; false else
      */
     public boolean configureViewContext(final ViewContext viewContext, final Object model,
-            final IUpdateStrategy<?> updateStrategy,
+            final IUpdateStrategy<KNode> updateStrategy,
             final ITransformation<?, ?>... modelTransformations) {
         if (model == null) {
             return false;
@@ -219,7 +222,7 @@ public class TransformationsGraph {
      * @return true if the context has been configured; false else
      */
     public boolean configureViewContext(final ViewContext viewContext, final Object model,
-            final IViewerProvider<?> viewerProvider, final IUpdateStrategy<?> updateStrategy) {
+            final IViewerProvider<KNode> viewerProvider, final IUpdateStrategy<KNode> updateStrategy) {
         if (model == null) {
             return false;
         }
@@ -266,7 +269,7 @@ public class TransformationsGraph {
      * @return true if the context has been configured; false else
      */
     public boolean configureViewContext(final ViewContext viewContext, final Object model,
-            final IViewerProvider<?> viewerProvider, final IUpdateStrategy<?> updateStrategy,
+            final IViewerProvider<KNode> viewerProvider, final IUpdateStrategy<KNode> updateStrategy,
             final ITransformation<?, ?>... modelTransformations) {
         if (model == null) {
             return false;
@@ -322,10 +325,28 @@ public class TransformationsGraph {
      * @return true if the view context has been configured with one of the paths; false else
      */
     private boolean configureViewContext(final ViewContext viewContext, final List<Path> paths,
-            final Object model, final IUpdateStrategy<?> updateStrategy) {
+            final Object model, final IUpdateStrategy<KNode> updateStrategy) {
         viewContext.reset();
+        
+        Predicate<Path> pathFilter = new Predicate<Path>() {
+            public boolean apply(final Path path) {
+                if (path.edges.isEmpty()) {
+                    return true;
+                }
+                
+                // this line already assume that we have
+                //  only 1 transformation on the path to the view model
+                final TransformationEdge edge = path.edges.get(0);
+                
+                @SuppressWarnings("unchecked")
+                final ITransformation<Object, ?> traFo =
+                        (ITransformation<Object, ?>) edge.transformation;
+                return traFo.supports(model);
+            }
+        };
+        
         // get the shortest path
-        Path path = getShortestPath(paths);
+        Path path = getShortestPath(Iterables.filter(paths, pathFilter));
         if (path != null) {
             // keep the current input business model in the view context
             // this allows to update the visual representation e.g. in case of a transformation
@@ -592,7 +613,7 @@ public class TransformationsGraph {
     }
 
     /**
-     * Combines a path with a given listsof paths by concatenating the paths.
+     * Combines a path with a given list of paths by concatenating the paths.
      * 
      * @param prePath
      *            the prefix path
@@ -614,13 +635,14 @@ public class TransformationsGraph {
      * Returns the shortest path from a list of paths, that is the path with the fewest edges.
      * 
      * @param listOfPaths
-     *            the list of paths
+     *            the {@link Iterable} containing the possible paths
      */
-    private static Path getShortestPath(final List<Path> listOfPaths) {
-        if (listOfPaths.size() == 0) {
+    private static Path getShortestPath(final Iterable<Path> listOfPaths) {
+        if (!listOfPaths.iterator().hasNext()) {
             return null;
         }
-        Path shortestPath = listOfPaths.get(0);
+        
+        Path shortestPath = Iterables.getFirst(listOfPaths, null);
         for (Path path : listOfPaths) {
             if (path.edges.size() < shortestPath.edges.size()) {
                 shortestPath = path;
@@ -751,7 +773,7 @@ public class TransformationsGraph {
      * @param modelClass
      *            the model class
      */
-    private void createViewerProviderDatas(final IViewerProvider<?> viewerProvider,
+    private void createViewerProviderDatas(final IViewerProvider<KNode> viewerProvider,
             final Class<?> modelClass) {
         viewerProviderDataMapping.put(viewerProvider, new LinkedList<ViewerProviderData>());
         Collection<ClassNode> classNodes = classNodeMapping.values();
@@ -772,7 +794,7 @@ public class TransformationsGraph {
      *            the class node
      * @return the viewer provider data
      */
-    private void createViewerProviderData(final IViewerProvider<?> viewerProvider,
+    private void createViewerProviderData(final IViewerProvider<KNode> viewerProvider,
             final ClassNode classNode) {
         ViewerProviderData viewerProviderData = new ViewerProviderData();
         viewerProviderDataMapping.get(viewerProvider).add(viewerProviderData);
@@ -791,7 +813,7 @@ public class TransformationsGraph {
      */
     private void updateViewerProviderDatas(final ClassNode classNode) {
         Class<?> clazz = classNode.clazz;
-        for (IViewerProvider<?> viewerProvider : viewerProviders) {
+        for (IViewerProvider<KNode> viewerProvider : viewerProviders) {
             if (viewerProvider.getModelClass().isAssignableFrom(clazz)) {
                 createViewerProviderData(viewerProvider, classNode);
             }
@@ -806,7 +828,7 @@ public class TransformationsGraph {
      * @param modelClass
      *            the model class
      */
-    private void attachUpdateStrategy(final IUpdateStrategy<?> updateStrategy,
+    private void attachUpdateStrategy(final IUpdateStrategy<KNode> updateStrategy,
             final Class<?> modelClass) {
         for (List<ViewerProviderData> viewerProviderDatas : viewerProviderDataMapping.values()) {
             for (ViewerProviderData viewerProviderData : viewerProviderDatas) {
@@ -816,9 +838,9 @@ public class TransformationsGraph {
                     if (viewerProviderClass.isAssignableFrom(modelClass)) {
                         viewerProviderData.updateStrategies.add(updateStrategy);
                         Collections.sort(viewerProviderData.updateStrategies,
-                                new Comparator<IUpdateStrategy<?>>() {
-                                    public int compare(final IUpdateStrategy<?> arg0,
-                                            final IUpdateStrategy<?> arg1) {
+                                new Comparator<IUpdateStrategy<KNode>>() {
+                                    public int compare(final IUpdateStrategy<KNode> arg0,
+                                            final IUpdateStrategy<KNode> arg1) {
                                         return arg1.getPriority() - arg0.getPriority();
                                     }
                                 });
@@ -835,7 +857,7 @@ public class TransformationsGraph {
      *            the viewer provider data
      */
     private void updateUpdateStrategies(final ViewerProviderData viewerProviderData) {
-        for (IUpdateStrategy<?> updateStrategy : updateStrategies) {
+        for (IUpdateStrategy<KNode> updateStrategy : updateStrategies) {
             Class<?> modelClass = updateStrategy.getModelClass();
             Class<?> viewerProviderDataClass = viewerProviderData.classNode.clazz;
             if (modelClass.isAssignableFrom(viewerProviderDataClass)) {
@@ -869,9 +891,9 @@ public class TransformationsGraph {
     private static class ViewerProviderData {
 
         /** the viewer provider. */
-        private IViewerProvider<?> viewerProvider;
+        private IViewerProvider<KNode> viewerProvider;
         /** the update strategies which support model instances of the model class. */
-        private LinkedList<IUpdateStrategy<?>> updateStrategies = Lists.newLinkedList();
+        private LinkedList<IUpdateStrategy<KNode>> updateStrategies = Lists.newLinkedList();
         /** the class node this viewer provider data attaches to. */
         private ClassNode classNode;
 

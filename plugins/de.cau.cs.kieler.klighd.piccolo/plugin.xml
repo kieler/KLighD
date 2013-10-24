@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.4"?>
 <plugin>
+   <extension-point id="exporters" name="Piccolo View Exporter" schema="schema/exporters.exsd"/>
    <extension
          point="de.cau.cs.kieler.klighd.extensions">
       <viewer
@@ -17,6 +18,27 @@
             name="Tooltip"
             type="string">
       </layoutOption>
+   </extension>
+   <extension
+         point="de.cau.cs.kieler.klighd.piccolo.exporters">
+      <exporter
+            class="de.cau.cs.kieler.klighd.piccolo.export.BitmapExporter"
+            extension="png"
+            id="de.cau.cs.kieler.klighd.piccolo.exporter.png"
+            subFormat="png">
+      </exporter>
+      <exporter
+            class="de.cau.cs.kieler.klighd.piccolo.export.BitmapExporter"
+            extension="jpeg"
+            id="de.cau.cs.kieler.klighd.piccolo.exporter.jpeg"
+            subFormat="jpeg">
+      </exporter>
+      <exporter
+            class="de.cau.cs.kieler.klighd.piccolo.export.BitmapExporter"
+            extension="bmp"
+            id="de.cau.cs.kieler.klighd.piccolo.exporter.bmp"
+            subFormat="bmp">
+      </exporter>
    </extension>
 
 </plugin>

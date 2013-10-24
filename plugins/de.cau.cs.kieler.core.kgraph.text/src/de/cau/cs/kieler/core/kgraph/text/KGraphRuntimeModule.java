@@ -17,9 +17,11 @@ import org.eclipse.xtext.conversion.IValueConverterService;
 import org.eclipse.xtext.linking.ILinker;
 import org.eclipse.xtext.linking.impl.Linker;
 import org.eclipse.xtext.naming.IQualifiedNameProvider;
+import org.eclipse.xtext.parsetree.reconstr.ITransientValueService;
 import org.eclipse.xtext.resource.XtextResource;
 
 import de.cau.cs.kieler.core.kgraph.text.scoping.KGraphQualifiedNameProvider;
+import de.cau.cs.kieler.core.kgraph.text.serializer.KGraphTransientValueService;
 
 /**
  * This class defines some customizations on the textual KGraph editing tooling.
@@ -43,6 +45,25 @@ public class KGraphRuntimeModule extends AbstractKGraphRuntimeModule {
     @Override
     public Class<? extends IValueConverterService> bindIValueConverterService() {
         return KGraphValueConverters.class;
+    }
+    
+    /**
+     * Registers a customized {@link ITransientValueService}. Although the serialization is
+     * configured in the
+     * {@link de.cau.cs.kieler.core.kgraph.text.serializer.KGraphSemanticSequencer
+     * KGraphSemanticSequencer} the transient value service is obviously involved while serializing
+     * portions of models after apply semantic modification (quick fixes). This feature is used in
+     * combination with my test case trainer, see
+     * {@link de.cau.cs.kieler.core.kgraph.text.validation.KGraphJavaValidator KGraphJavaValidator}
+     * & quick fix provider.
+     * 
+     * @author chsch
+     * 
+     * @return the {@link KGraphTransientValueService} class
+     */
+    @Override
+    public Class<? extends ITransientValueService> bindITransientValueService() {
+        return KGraphTransientValueService.class;
     }
 
     /**

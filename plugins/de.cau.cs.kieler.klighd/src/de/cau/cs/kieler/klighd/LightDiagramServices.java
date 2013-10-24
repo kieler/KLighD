@@ -19,7 +19,6 @@ import java.util.List;
 
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.statushandlers.StatusManager;
@@ -57,9 +56,6 @@ public final class LightDiagramServices {
     /** the property for an update strategy. */
     public static final IProperty<String> REQUESTED_UPDATE_STRATEGY = new Property<String>(
             "klighd.updateStrategy");
-
-    /** the property for a viewer associated with the view context. */
-    public static final IProperty<IViewer<?>> VIEWER = new Property<IViewer<?>>("klighd.viewer");
 
     /** the singleton instance. */
     private static LightDiagramServices instance = new LightDiagramServices();
@@ -125,7 +121,7 @@ public final class LightDiagramServices {
 
         // get the viewer provider request
         String viewerProviderId = viewContext.getProperty(REQUESTED_VIEWER_PROVIDER);
-        IViewerProvider<?> viewerProvider = dataManager.getViewerProviderById(viewerProviderId);
+        IViewerProvider<KNode> viewerProvider = dataManager.getViewerProviderById(viewerProviderId);
 
         // get the transformations request
         List<String> transformationIds = viewContext.getProperty(REQUESTED_TRANSFORMATIONS);
@@ -136,7 +132,7 @@ public final class LightDiagramServices {
 
         // get the update strategy request
         String updateStrategyId = viewContext.getProperty(REQUESTED_UPDATE_STRATEGY);
-        IUpdateStrategy<?> updateStrategy = dataManager.getUpdateStrategyById(updateStrategyId);
+        IUpdateStrategy<KNode> updateStrategy = dataManager.getUpdateStrategyById(updateStrategyId);
 
         // call the fitting configure method on the transformations graph
         boolean success;
@@ -195,7 +191,7 @@ public final class LightDiagramServices {
         viewContext.clearSourceTargetMappings();
 
         // re-run the involved transformations
-        Object viewModel = performTransformations(viewContext, model);
+        KNode viewModel = (KNode) performTransformations(viewContext, model);
         if (viewModel == null) {
             return false;
         }
@@ -203,7 +199,7 @@ public final class LightDiagramServices {
         // use update strategy if possible
         if (viewContext.getUpdateStrategy() != null) {
             @SuppressWarnings("unchecked")
-            IUpdateStrategy<Object> updateStrategy = (IUpdateStrategy<Object>) viewContext
+            IUpdateStrategy<KNode> updateStrategy = (IUpdateStrategy<KNode>) viewContext
                     .getUpdateStrategy();
             try {
                 updateStrategy.update(viewContext.getViewModel(), viewModel, viewContext);
@@ -219,18 +215,16 @@ public final class LightDiagramServices {
             }
         } else {
             // if no update strategy is present just set the new model into the viewer
-            IViewer<?> viewer = viewContext.getProperty(VIEWER);
+            IViewer<KNode> viewer = viewContext.getViewer();
             if (viewer != null) {
-                @SuppressWarnings("unchecked")
-                IViewer<Object> objViewer = (IViewer<Object>) viewer;
                 try {
-                    objViewer.setModel(viewModel, true);
+                    viewer.setModel(viewModel, true);
                 } catch (Exception e) {
                     StatusManager.getManager().handle(
                             new Status(IStatus.ERROR, KlighdPlugin.PLUGIN_ID,
                                     "KLighD: LightDiagramService failed to update a view context:\n"
                                             + e.getClass().getSimpleName() + " updating "
-                                            + objViewer.getClass().getSimpleName() + ":\n"
+                                            + viewer.getClass().getSimpleName() + ":\n"
                                             + e.getMessage(), e), StatusManager.LOG);
                     return false;
                 }
@@ -256,16 +250,15 @@ public final class LightDiagramServices {
      */
     public IViewer<?> createViewer(final ContextViewer parentViewer, final ViewContext viewContext,
             final Composite parent) {
-        IViewerProvider<?> viewerProvider = viewContext.getViewerProvider();
+        IViewerProvider<KNode> viewerProvider = viewContext.getViewerProvider();
         if (viewerProvider != null) {
             // create a new viewer
-            IViewer<?> viewer = viewerProvider.createViewer(parentViewer, parent);
+            IViewer<KNode> viewer = viewerProvider.createViewer(parentViewer, parent);
             // remember the created viewer in a property
-            viewContext.setProperty(VIEWER, viewer);
+            viewContext.setViewer(viewer);
             // set the base model if possible
             if (viewContext.getViewModel() != null) {
-                @SuppressWarnings("unchecked")
-                IViewer<Object> objViewer = (IViewer<Object>) viewer;
+                IViewer<KNode> objViewer = viewer;
                 objViewer.setModel(viewContext.getViewModel(), true);
             }
             return viewer;
@@ -350,10 +343,27 @@ public final class LightDiagramServices {
      * @param viewContext
      *            the viewContext whose diagram diagram is to be arranged
      */
-    public void layoutDiagram(final ViewContext viewContext) {
+    public static void layoutDiagram(final ViewContext viewContext) {
         final IPreferenceStore preferenceStore = KlighdPlugin.getDefault().getPreferenceStore();
         final boolean animate = preferenceStore.getBoolean(KlighdPreferences.ANIMATE_LAYOUT);
-        final boolean zoomToFit = preferenceStore.getBoolean(KlighdPreferences.ZOOM_TO_FIT);
+        final boolean zoomToFit = viewContext.isZoomToFit();
+        
+        layoutDiagram(viewContext, animate, zoomToFit, Collections.<ILayoutConfig>emptyList());
+    }
+
+    /**
+     * Performs the automatic layout and zoomToFit on the diagram represented by the given view
+     * context.<br>
+     * <br>
+     * The configurations of 'animate' is taken from the preference settings.
+     * 
+     * @param viewContext
+     *            the viewContext whose diagram diagram is to be arranged
+     */
+    public static void layoutAndZoomDiagram(final ViewContext viewContext) {
+        final IPreferenceStore preferenceStore = KlighdPlugin.getDefault().getPreferenceStore();
+        final boolean animate = preferenceStore.getBoolean(KlighdPreferences.ANIMATE_LAYOUT);
+        final boolean zoomToFit = true;
         
         layoutDiagram(viewContext, animate, zoomToFit, Collections.<ILayoutConfig>emptyList());
     }
@@ -368,9 +378,8 @@ public final class LightDiagramServices {
      * @param animate
      *            layout with or without animation
      */
-    public void layoutDiagram(final ViewContext viewContext, final boolean animate) {
-        final IPreferenceStore preferenceStore = KlighdPlugin.getDefault().getPreferenceStore();
-        final boolean zoomToFit = preferenceStore.getBoolean(KlighdPreferences.ZOOM_TO_FIT);
+    public static void layoutDiagram(final ViewContext viewContext, final boolean animate) {
+        final boolean zoomToFit = viewContext.isZoomToFit();
 
         layoutDiagram(viewContext, animate, zoomToFit, Collections.<ILayoutConfig>emptyList());
     }
@@ -385,7 +394,7 @@ public final class LightDiagramServices {
      * @param zoomToFit
      *            layout with or without animation
      */
-    public void layoutDiagram(final ViewContext viewContext, final boolean animate,
+    public static void layoutDiagram(final ViewContext viewContext, final boolean animate,
             final boolean zoomToFit) {
         layoutDiagram(viewContext, animate, zoomToFit, Collections.<ILayoutConfig>emptyList());
     }
@@ -401,10 +410,10 @@ public final class LightDiagramServices {
      * @param options
      *            an optional list of layout options
      */
-    public void layoutDiagram(final ViewContext viewContext, final List<ILayoutConfig> options) {
+    public static void layoutDiagram(final ViewContext viewContext, final List<ILayoutConfig> options) {
         final IPreferenceStore preferenceStore = KlighdPlugin.getDefault().getPreferenceStore();
         final boolean animate = preferenceStore.getBoolean(KlighdPreferences.ANIMATE_LAYOUT);
-        final boolean zoomToFit = preferenceStore.getBoolean(KlighdPreferences.ZOOM_TO_FIT);
+        final boolean zoomToFit = viewContext.isZoomToFit();
         
         layoutDiagram(viewContext, animate, zoomToFit, options);
     }
@@ -422,10 +431,9 @@ public final class LightDiagramServices {
      * @param options
      *            an optional list of layout options
      */
-    public void layoutDiagram(final ViewContext viewContext, final boolean animate,
+    public static void layoutDiagram(final ViewContext viewContext, final boolean animate,
            final List<ILayoutConfig> options) {
-        final IPreferenceStore preferenceStore = KlighdPlugin.getDefault().getPreferenceStore();
-        final boolean zoomToFit = preferenceStore.getBoolean(KlighdPreferences.ZOOM_TO_FIT);
+        final boolean zoomToFit = viewContext.isZoomToFit();
         
         layoutDiagram(viewContext, animate, zoomToFit, options);
     }
@@ -442,13 +450,12 @@ public final class LightDiagramServices {
      * @param options
      *            an optional list of layout options
      */
-    public void layoutDiagram(final ViewContext viewContext, final boolean animate,
+    public static void layoutDiagram(final ViewContext viewContext, final boolean animate,
             final boolean zoomToFit, final List<ILayoutConfig> options) {
-        @SuppressWarnings("unchecked")
-        IViewer<? extends EObject> diagramViewer = (IViewer<? extends EObject>) viewContext
-                .getProperty(LightDiagramServices.VIEWER);
+        IViewer<KNode> diagramViewer = viewContext.getViewer();
         DiagramViewPart viewPart = DiagramViewManager.getInstance().getView(
                 diagramViewer.getContextViewer().getViewPartId());
+        
         layoutDiagram(viewPart, diagramViewer, animate, zoomToFit, options);
     }
     
@@ -461,11 +468,28 @@ public final class LightDiagramServices {
      * @param viewPart
      *            the diagram view part showing the diagram to layout
      */
-    public void layoutDiagram(final IDiagramWorkbenchPart viewPart) {
+    public static void layoutDiagram(final IDiagramWorkbenchPart viewPart) {
         final IPreferenceStore preferenceStore = KlighdPlugin.getDefault().getPreferenceStore();
         final boolean animate = preferenceStore.getBoolean(KlighdPreferences.ANIMATE_LAYOUT);
-        final boolean zoomToFit = preferenceStore.getBoolean(KlighdPreferences.ZOOM_TO_FIT);
+        final boolean zoomToFit = viewPart.getContextViewer().getCurrentViewContext().isZoomToFit();
         
+        layoutDiagram(viewPart, animate, zoomToFit, Collections.<ILayoutConfig>emptyList());
+    }
+    
+    /**
+     * Performs the automatic layout and zoomToFit on the diagram represented by the given
+     * {@link IDiagramWorkbenchPart}.<br>
+     * <br>
+     * The configurations of 'animate' is taken from the preference settings.
+     * 
+     * @param viewPart
+     *            the diagram view part showing the diagram to layout
+     */
+    public static void layoutAndZoomDiagram(final IDiagramWorkbenchPart viewPart) {
+        final IPreferenceStore preferenceStore = KlighdPlugin.getDefault().getPreferenceStore();
+        final boolean animate = preferenceStore.getBoolean(KlighdPreferences.ANIMATE_LAYOUT);
+        final boolean zoomToFit = true;
+
         layoutDiagram(viewPart, animate, zoomToFit, Collections.<ILayoutConfig>emptyList());
     }
     
@@ -480,9 +504,8 @@ public final class LightDiagramServices {
      * @param animate
      *            layout with or without animation
      */
-    public void layoutDiagram(final IDiagramWorkbenchPart viewPart, final boolean animate) {
-        final IPreferenceStore preferenceStore = KlighdPlugin.getDefault().getPreferenceStore();
-        final boolean zoomToFit = preferenceStore.getBoolean(KlighdPreferences.ZOOM_TO_FIT);
+    public static void layoutDiagram(final IDiagramWorkbenchPart viewPart, final boolean animate) {
+        final boolean zoomToFit = viewPart.getContextViewer().getCurrentViewContext().isZoomToFit();
         
         layoutDiagram(viewPart, animate, zoomToFit, Collections.<ILayoutConfig>emptyList());
     }
@@ -498,7 +521,7 @@ public final class LightDiagramServices {
      * @param zoomToFit
      *            layout with or without animation
      */
-    public void layoutDiagram(final IDiagramWorkbenchPart viewPart, final boolean animate,
+    public static void layoutDiagram(final IDiagramWorkbenchPart viewPart, final boolean animate,
             final boolean zoomToFit) {
         layoutDiagram(viewPart, animate, zoomToFit, Collections.<ILayoutConfig>emptyList());
     }
@@ -514,11 +537,11 @@ public final class LightDiagramServices {
      * @param options
      *            an optional list of layout options
      */
-    public void layoutDiagram(final IDiagramWorkbenchPart viewPart,
+    public static void layoutDiagram(final IDiagramWorkbenchPart viewPart,
             final List<ILayoutConfig> options) {
         final IPreferenceStore preferenceStore = KlighdPlugin.getDefault().getPreferenceStore();
         final boolean animate = preferenceStore.getBoolean(KlighdPreferences.ANIMATE_LAYOUT);
-        final boolean zoomToFit = preferenceStore.getBoolean(KlighdPreferences.ZOOM_TO_FIT);
+        final boolean zoomToFit = viewPart.getContextViewer().getCurrentViewContext().isZoomToFit();
         
         layoutDiagram(viewPart, animate, zoomToFit, options);
     }
@@ -536,10 +559,9 @@ public final class LightDiagramServices {
      * @param options
      *            an optional list of layout options
      */
-    public void layoutDiagram(final IDiagramWorkbenchPart viewPart, final boolean animate,
+    public static void layoutDiagram(final IDiagramWorkbenchPart viewPart, final boolean animate,
             final List<ILayoutConfig> options) {
-        final IPreferenceStore preferenceStore = KlighdPlugin.getDefault().getPreferenceStore();
-        final boolean zoomToFit = preferenceStore.getBoolean(KlighdPreferences.ZOOM_TO_FIT);
+        final boolean zoomToFit = viewPart.getContextViewer().getCurrentViewContext().isZoomToFit();
         
         layoutDiagram(viewPart, animate, zoomToFit, Collections.<ILayoutConfig>emptyList());
     }
@@ -557,7 +579,7 @@ public final class LightDiagramServices {
      * @param options
      *            an optional list of layout options
      */
-    public void layoutDiagram(final IDiagramWorkbenchPart viewPart, final boolean animate,
+    public static void layoutDiagram(final IDiagramWorkbenchPart viewPart, final boolean animate,
             final boolean zoomToFit, final List<ILayoutConfig> options) {
         layoutDiagram(viewPart, viewPart.getContextViewer(), animate, zoomToFit,
                 Collections.<ILayoutConfig>emptyList());
@@ -578,7 +600,7 @@ public final class LightDiagramServices {
      * @param options
      *            an optional list of layout options
      */
-    public void layoutDiagram(final IDiagramWorkbenchPart viewPart,
+    public static void layoutDiagram(final IDiagramWorkbenchPart viewPart,
             final IViewer<?> diagramViewer, final boolean animate,
             final boolean zoomToFit, final List<ILayoutConfig> options) {
         

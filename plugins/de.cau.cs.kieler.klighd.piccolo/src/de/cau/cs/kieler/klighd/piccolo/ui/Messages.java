@@ -33,6 +33,7 @@ public class Messages extends NLS {
     public static String SaveAsImageDialog_scale_factor;
     public static String SaveAsImageDialog_title;
     public static String SaveAsImageDialog_use_camera_viewport_caption;
+    public static String SaveAsImageDialog_text_as_shapes;
 
     public static String ExportKGraphAction_export_kgraph_error;
     public static String ExportKGraphDialog_browse_file_system_caption;

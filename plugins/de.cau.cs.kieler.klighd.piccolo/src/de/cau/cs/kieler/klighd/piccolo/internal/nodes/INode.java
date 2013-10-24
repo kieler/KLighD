@@ -17,8 +17,6 @@
 package de.cau.cs.kieler.klighd.piccolo.internal.nodes;
 
 import de.cau.cs.kieler.core.kgraph.KNode;
-import de.cau.cs.kieler.core.properties.IProperty;
-import de.cau.cs.kieler.core.properties.Property;
 
 /**
  * The interface for Piccolo nodes representing a {@code KNode}.
@@ -30,9 +28,6 @@ import de.cau.cs.kieler.core.properties.Property;
  * @author mri
  */
 public interface INode extends IGraphElement<KNode> {
-
-    /** the property for the Piccolo representation of a node. */
-    IProperty<INode> NODE_REP = new Property<INode>("klighd.piccolo.prepresentation");
 
     /**
      * Returns the child area of this parent node.
