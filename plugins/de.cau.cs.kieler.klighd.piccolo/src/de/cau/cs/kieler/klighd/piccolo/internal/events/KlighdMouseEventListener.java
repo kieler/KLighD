@@ -15,6 +15,7 @@ package de.cau.cs.kieler.klighd.piccolo.internal.events;
 
 import java.awt.Component;
 
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseListener;
@@ -57,7 +58,9 @@ public class KlighdMouseEventListener implements MouseListener, MouseMoveListene
      * {@inheritDoc}
      */
     public void mouseEnter(final MouseEvent e) {
-
+        if (!Platform.getOS().equals(Platform.OS_WIN32)) {
+            canvas.setFocus();
+        }
     }
 
     /**
@@ -96,6 +99,9 @@ public class KlighdMouseEventListener implements MouseListener, MouseMoveListene
      * {@inheritDoc}
      */
     public void mouseDown(final MouseEvent e) {
+        if (Platform.getOS().equals(Platform.OS_WIN32)) {
+            canvas.setFocus();
+        }
     }
 
     /**
