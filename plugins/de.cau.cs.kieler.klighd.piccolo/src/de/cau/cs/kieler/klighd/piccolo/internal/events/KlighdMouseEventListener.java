@@ -58,9 +58,6 @@ public class KlighdMouseEventListener implements MouseListener, MouseMoveListene
      * {@inheritDoc}
      */
     public void mouseEnter(final MouseEvent e) {
-        if (!Platform.getOS().equals(Platform.OS_WIN32)) {
-            canvas.setFocus();
-        }
     }
 
     /**
