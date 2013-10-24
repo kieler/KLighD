@@ -511,6 +511,11 @@ public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement>
         if (edgeLayout != null) {
             transferEdgeLayout(edgeLayout, layoutLayout, true);
         }
+        
+        // make sure to clear old junction points
+        // the new layouter might not calculate any and we don't want
+        // any floating junction points in the diagram
+        edgeLayout.setProperty(LayoutOptions.JUNCTION_POINTS, null);
 
         layoutEdge.setSource(layoutSource);
         layoutEdge.setTarget(layoutTarget);
