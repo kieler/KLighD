@@ -128,10 +128,4 @@ public final class KlighdProperties {
      */
     public static final IProperty<String> TOOLTIP = new Property<String>("klighd.tooltip", null);
     
-    /**
-     * Determines whether a node should be ignored during the layout process.
-     * FIXME Why not use {@link LayoutOptions#NO_LAYOUT} instead?
-     */
-    public static final IProperty<Boolean> LAYOUT_IGNORE = new Property<Boolean>(
-            "klighd.layoutIgnore", false);
 }

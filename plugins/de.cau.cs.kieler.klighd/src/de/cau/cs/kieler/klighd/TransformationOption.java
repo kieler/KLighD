@@ -185,6 +185,29 @@ public final class TransformationOption {
         return option;
     }
 
+    /**
+     * Static factory method providing a 'Range' {@link TransformationOption}.<br>
+     * <br>
+     * Hint: Declare {@link TransformationOption TransformationOptions} by means of static fields if
+     * the transformation is a re-initialized one (determined in the registration).
+     * 
+     * @deprecated use {@link #createRangeOption(String, Number, Number, Number)}
+     * 
+     * @param <T>
+     *            concrete type of the range's values
+     * @param name
+     *            the name of the option
+     * @param values
+     *            the available option values.
+     * @param initialValue
+     *            the initially selected option value.
+     * @return an 'Choice' {@link TransformationOption}
+     */
+    public static <T extends Number> TransformationOption createRangeOption(
+            final String name, final Pair<T, T> values, final T initialValue) {
+        return createRangeOption(name, values.getFirst(), values.getSecond(), initialValue);
+    }
+    
 
     /* -- the internal part -- */
 
