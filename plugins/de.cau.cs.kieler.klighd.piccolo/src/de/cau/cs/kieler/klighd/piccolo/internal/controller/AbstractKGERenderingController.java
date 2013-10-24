@@ -679,7 +679,7 @@ public abstract class AbstractKGERenderingController
         final Bounds bounds;
         if (pointPlacement) {
             bounds = PlacementUtil.evaluatePointPlacement(ppd,
-                    PlacementUtil.estimatePointPlacedChildSize(rendering, ppd),
+                    PlacementUtil.estimateSize(rendering, Bounds.of(0, 0)),
                     parent.getBoundsReference());
         } else {
             // determine the initial bounds
@@ -696,7 +696,7 @@ public abstract class AbstractKGERenderingController
                         public void propertyChange(final PropertyChangeEvent e) {
                             Bounds bounds = null;
                             bounds = PlacementUtil.evaluatePointPlacement(ppd,
-                                    PlacementUtil.estimatePointPlacedChildSize(rendering, ppd),
+                                    PlacementUtil.estimateSize(rendering, Bounds.of(0, 0)),
                                     parent.getBoundsReference());
                             // use the controller to apply the new bounds
                             controller.setBounds(bounds);
