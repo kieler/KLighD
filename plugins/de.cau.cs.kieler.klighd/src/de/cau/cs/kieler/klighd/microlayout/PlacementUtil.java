@@ -37,8 +37,10 @@ import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.widgets.Display;
 
+import com.google.common.base.Predicate;
 import com.google.common.base.Strings;
 import com.google.common.collect.Iterables;
+import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
@@ -62,6 +64,7 @@ import de.cau.cs.kieler.core.krendering.KPosition;
 import de.cau.cs.kieler.core.krendering.KRendering;
 import de.cau.cs.kieler.core.krendering.KRenderingPackage;
 import de.cau.cs.kieler.core.krendering.KRenderingRef;
+import de.cau.cs.kieler.core.krendering.KStyle;
 import de.cau.cs.kieler.core.krendering.KText;
 import de.cau.cs.kieler.core.krendering.KTopPosition;
 import de.cau.cs.kieler.core.krendering.KXPosition;
@@ -73,6 +76,8 @@ import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout;
 import de.cau.cs.kieler.klighd.KlighdConstants;
 import de.cau.cs.kieler.klighd.internal.util.KlighdInternalProperties;
 import de.cau.cs.kieler.klighd.krendering.KTextUtil;
+import de.cau.cs.kieler.klighd.util.Iterables2;
+import de.cau.cs.kieler.klighd.util.ModelingUtil;
 
 /**
  * A utility class for evaluating the micro layout of KRenderings.
@@ -541,6 +546,12 @@ public final class PlacementUtil {
         return estimateTextSize(kLabel.getData(KText.class), kLabel.getText());
     }
 
+    private static final Predicate<KStyle> FILTER = new Predicate<KStyle>() {
+        public boolean apply(final KStyle style) {
+            return style.isPropagateToChildren();
+        }
+    };
+    
     /**
      * Returns the minimal bounds for a string based on configurations of a {@link KText}. The
      * string is handed over separately in order to allow the text size estimation for
@@ -558,7 +569,7 @@ public final class PlacementUtil {
         KFontSize kFontSize = null;
         KFontBold kFontBold = null;
         KFontItalic kFontItalic = null;
-
+        
         if (kText != null) {
             PersistentEntry testHeight =
                     Iterables.find(kText.getPersistentEntries(),
@@ -577,27 +588,34 @@ public final class PlacementUtil {
                     return new Bounds(width, height);
                 }
             }
-            kFontName =
-                    Iterables.getFirst(Iterables.filter(kText.getStyles(), KFontName.class), null);
-            kFontSize =
-                    Iterables.getFirst(Iterables.filter(kText.getStyles(), KFontSize.class), null);
-            kFontBold =
-                    Iterables.getFirst(Iterables.filter(kText.getStyles(), KFontBold.class), null);
-            kFontItalic =
-                    Iterables
-                            .getFirst(Iterables.filter(kText.getStyles(), KFontItalic.class), null);
+            
+            // the following lines look for font styles propagated from parents
+            //  TODO also make allowance of styles propagated via KRenderingRefs
+            final List<KStyle> styles = Lists.newLinkedList(kText.getStyles());            
+            for (KRendering k : Iterables2.toIterable(Iterators.filter(
+                    ModelingUtil.eAllContainers(kText), KRendering.class))) {
+                Iterables.addAll(styles, Iterables.filter(k.getStyles(), FILTER));
+            }
+            
+            kFontName = Iterables.getLast(Iterables.filter(styles, KFontName.class), null);
+            kFontSize = Iterables.getLast(Iterables.filter(styles, KFontSize.class), null);
+            kFontBold = Iterables.getLast(Iterables.filter(styles, KFontBold.class), null);
+            kFontItalic = Iterables.getLast(Iterables.filter(styles, KFontItalic.class), null);
         }
 
-        String fontName =
-                kFontName != null ? kFontName.getName() : KlighdConstants.DEFAULT_FONT_NAME;
+        final String fontName = kFontName != null
+                ? kFontName.getName() : KlighdConstants.DEFAULT_FONT_NAME;
 
-        int fontSize = kFontSize != null ? kFontSize.getSize() : KlighdConstants.DEFAULT_FONT_SIZE;
+        final int fontSize = kFontSize != null
+                ? kFontSize.getSize() : KlighdConstants.DEFAULT_FONT_SIZE;
 
         int fontStyle =
-                kFontBold != null && kFontBold.isBold() ? KlighdConstants.DEFAULT_FONT_STYLE_SWT
+                kFontBold != null && kFontBold.isBold()
+                ? KlighdConstants.DEFAULT_FONT_STYLE_SWT
                         | SWT.BOLD : KlighdConstants.DEFAULT_FONT_STYLE_SWT;
-        fontStyle =
-                kFontItalic != null && kFontItalic.isItalic() ? fontStyle | SWT.ITALIC : fontStyle;
+
+        fontStyle = kFontItalic != null && kFontItalic.isItalic()
+                ? fontStyle | SWT.ITALIC : fontStyle;
 
         return estimateTextSize(new FontData(fontName, fontSize, fontStyle), text);
     }
