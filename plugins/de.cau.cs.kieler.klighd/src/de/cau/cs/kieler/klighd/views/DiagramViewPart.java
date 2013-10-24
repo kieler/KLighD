@@ -29,6 +29,7 @@ import org.eclipse.ui.part.ResourceTransfer;
 import org.eclipse.ui.part.ViewPart;
 
 import de.cau.cs.kieler.kiml.ui.KimlUiPlugin;
+import de.cau.cs.kieler.klighd.KlighdConstants;
 import de.cau.cs.kieler.klighd.KlighdPlugin;
 import de.cau.cs.kieler.klighd.LightDiagramServices;
 import de.cau.cs.kieler.klighd.ViewContext;
@@ -129,6 +130,13 @@ public class DiagramViewPart extends ViewPart implements IDiagramWorkbenchPart {
                 .getImageDescriptor("icons/full/elcl16/refresh.gif")) {
             public void run() {
                 DiagramViewManager.getInstance().updateView(viewer.getViewPartId());
+            }
+        });
+        
+        toolBar.add(new Action("1:1", IAction.AS_PUSH_BUTTON) {
+            @Override
+            public void run() {
+                DiagramViewPart.this.getContextViewer().zoom(1, KlighdConstants.DEFAULT_ANIMATION_TIME);
             }
         });
 

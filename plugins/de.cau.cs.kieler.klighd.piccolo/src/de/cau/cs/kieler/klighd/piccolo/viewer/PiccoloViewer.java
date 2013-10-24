@@ -46,7 +46,6 @@ import de.cau.cs.kieler.core.krendering.KText;
 import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout;
 import de.cau.cs.kieler.klighd.piccolo.Messages;
 import de.cau.cs.kieler.klighd.piccolo.internal.KlighdSWTGraphicsImpl;
-import de.cau.cs.kieler.klighd.piccolo.internal.activities.ZoomActivity;
 import de.cau.cs.kieler.klighd.piccolo.internal.controller.DiagramController;
 import de.cau.cs.kieler.klighd.piccolo.internal.controller.PNodeController;
 import de.cau.cs.kieler.klighd.piccolo.internal.events.KlighdActionEventHandler;
@@ -485,12 +484,13 @@ public class PiccoloViewer extends AbstractViewer<KNode> implements INodeSelecti
      */
     @Override
     public void zoom(final float zoomLevel, final int duration) {
-        ZoomActivity zoomActivity = new ZoomActivity(canvas.getCamera(), zoomLevel, duration);
-        if (duration > 0) {
-            canvas.getRoot().addActivity(zoomActivity);
-        } else {
-            zoomActivity.apply();
-        }
+//        ZoomActivity zoomActivity = new ZoomActivity(canvas.getCamera(), zoomLevel, duration);
+//        if (duration > 0) {
+//            canvas.getRoot().addActivity(zoomActivity);
+//        } else {
+//            zoomActivity.apply();
+//        }
+         controller.zoomToLevel(zoomLevel, duration);
     }
 
     /**
