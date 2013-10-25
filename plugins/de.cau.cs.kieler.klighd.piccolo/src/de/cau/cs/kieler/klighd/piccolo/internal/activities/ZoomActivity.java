@@ -20,6 +20,8 @@ import edu.umd.cs.piccolo.activities.PInterpolatingActivity;
  * The Piccolo activity to zoom a diagram.
  * 
  * @author mri
+ * 
+ * @deprecated will be deleted soon
  */
 public class ZoomActivity extends PInterpolatingActivity {
 

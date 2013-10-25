@@ -78,6 +78,7 @@ import de.cau.cs.kieler.klighd.LightDiagramServices;
 import de.cau.cs.kieler.klighd.TransformationContext;
 import de.cau.cs.kieler.klighd.TransformationOption;
 import de.cau.cs.kieler.klighd.ViewContext;
+import de.cau.cs.kieler.klighd.ZoomStyle;
 import de.cau.cs.kieler.klighd.internal.options.LayoutOptionControlFactory;
 import de.cau.cs.kieler.klighd.internal.options.LightLayoutConfig;
 import de.cau.cs.kieler.klighd.internal.options.SynthesisOptionControlFactory;
@@ -747,11 +748,27 @@ public class ContextViewer extends AbstractViewer<Object> implements IViewerEven
 
     /**
      * {@inheritDoc}
+     * @deprecated
      */
     public void setRecording(final boolean recording) {
         currentViewer.setRecording(recording);
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    public void startRecording() {
+        currentViewer.startRecording();
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public void stopRecording(final ZoomStyle zoomStyle,
+            final int animationTime) {
+        currentViewer.stopRecording(zoomStyle, animationTime);
+    }
+    
     /**
      * {@inheritDoc} 
      */

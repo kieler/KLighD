@@ -20,6 +20,7 @@ import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 import de.cau.cs.kieler.core.kgraph.KGraphElement;
 import de.cau.cs.kieler.klighd.LightDiagramServices;
 import de.cau.cs.kieler.klighd.ViewContext;
+import de.cau.cs.kieler.klighd.ZoomStyle;
 
 /**
  * The KLighD viewer can be embedded into a SWT component and is able to accept any type of input
@@ -97,11 +98,27 @@ public class KlighdViewer extends AbstractViewer<Object> {
 
     /**
      * {@inheritDoc}
+     * @deprecated 
      */
     public void setRecording(final boolean recording) {
         contextViewer.setRecording(recording);
     }
     
+    /**
+     * {@inheritDoc}
+     */
+    public void startRecording() {
+        contextViewer.startRecording();
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public void stopRecording(final ZoomStyle zoomStyle,
+            final int animationTime) {
+        contextViewer.stopRecording(zoomStyle, animationTime);
+    }
+
     /**
      * {@inheritDoc} 
      */

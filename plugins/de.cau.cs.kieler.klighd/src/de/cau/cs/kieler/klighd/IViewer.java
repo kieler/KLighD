@@ -91,8 +91,33 @@ public interface IViewer<T> {
      * 
      * @param recording
      *            true if layout changes should be recorded; false else
+     *            
+     * @deprecated use {@link #startRecording()} and {@link #stopRecording(boolean, ZoomStyle, int)}
      */
     void setRecording(final boolean recording);
+    
+    /**
+     * TODO comment
+     * Sets whether to record layout changes in the model instead of instantly applying them to the
+     * visualization.<br>
+     * <br>
+     * Setting the recording status to {@code false} applies all recorded layout changes.
+     */
+    void startRecording();
+    
+    /**
+     * TODO comment
+     * Sets whether to record layout changes in the model instead of instantly applying them to the
+     * visualization.<br>
+     * <br>
+     * Setting the recording status to {@code false} applies all recorded layout changes.
+     * 
+     * @param zoomStyle
+     *            the style used to zoom, eg zoom to fit or zoom to focus
+     * @param animationTime
+     *            duration of the animated layout
+     */
+    void stopRecording(final ZoomStyle zoomStyle, final int animationTime);
 
     /**
      * Instructs the viewer to perform 'zoom to fit' after layout has been applied.
@@ -100,6 +125,8 @@ public interface IViewer<T> {
      * @param zoomToFit
      *            true if 'zoom to fit' shall be performed.
      * @author chsch
+     * 
+     * @deprecated use 
      */
     void setZoomToFit(final boolean zoomToFit);
 

@@ -65,6 +65,7 @@ import de.cau.cs.kieler.klighd.KlighdConstants;
 import de.cau.cs.kieler.klighd.KlighdPlugin;
 import de.cau.cs.kieler.klighd.LightDiagramServices;
 import de.cau.cs.kieler.klighd.ViewContext;
+import de.cau.cs.kieler.klighd.ZoomStyle;
 import de.cau.cs.kieler.klighd.internal.preferences.KlighdPreferences;
 import de.cau.cs.kieler.klighd.krendering.SimpleUpdateStrategy;
 import de.cau.cs.kieler.klighd.util.Iterables2;
@@ -460,7 +461,7 @@ public class DiagramEditorPart extends EditorPart implements IDiagramWorkbenchPa
                 final ViewContext vc =
                         DiagramEditorPart.this.getContextViewer().getCurrentViewContext();
                 if (vc != null) {
-                    vc.setZoomToFit(this.isChecked());
+                    vc.setZoomStyle(ZoomStyle.create(this.isChecked(), false));
 
                     // perform zoom to fit upon activation of the toggle button
                     if (this.isChecked()) {
@@ -492,6 +493,10 @@ public class DiagramEditorPart extends EditorPart implements IDiagramWorkbenchPa
     /**
      * For edit parts only one common toolbar exists, hence we have to remove the buttons of one
      * editor as soon as a different editor is activated and add our own buttons.
+     * 
+     * TODO fix this. When closing an editor, the toolbar of the new editor is greyed out.
+     * The toolbar itself and its items are enabled however. This might be due
+     * to the partClosed event being invoked after the partActivate event.
      */
     private IPartListener toolBarListener = new IPartListener() {
 

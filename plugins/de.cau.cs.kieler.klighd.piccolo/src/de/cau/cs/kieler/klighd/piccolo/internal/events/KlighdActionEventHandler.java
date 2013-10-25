@@ -24,6 +24,8 @@ import de.cau.cs.kieler.klighd.IAction.ActionContext;
 import de.cau.cs.kieler.klighd.IAction.ActionResult;
 import de.cau.cs.kieler.klighd.KlighdDataManager;
 import de.cau.cs.kieler.klighd.LightDiagramServices;
+import de.cau.cs.kieler.klighd.ViewContext;
+import de.cau.cs.kieler.klighd.ZoomStyle;
 import de.cau.cs.kieler.klighd.piccolo.internal.controller.AbstractKGERenderingController;
 import de.cau.cs.kieler.klighd.piccolo.internal.events.KlighdMouseEventListener.KlighdMouseEvent;
 import de.cau.cs.kieler.klighd.piccolo.viewer.PiccoloViewer;
@@ -93,14 +95,14 @@ public class KlighdActionEventHandler implements PInputEventListener {
                                     rendering);
                         }
                         if (!anyActionPerformed) {
-                            viewer.setRecording(true);
-                            // the related 'setRecording(false)' will be performed after the layout
+                            viewer.startRecording();
+                            // the related 'stopRecording(...)' will be performed after the layout
                             // application
                         }
                         result = actionImpl.execute(context);
 
                         if (result == null) {
-                            viewer.setRecording(false);
+                            viewer.stopRecording(ZoomStyle.NONE, 0);
                             final String msg = "KLighD action event handler: Execution of "
                                     + actionImpl.getClass()
                                     + " returned 'null', expected an IAction.ActionResult.";
@@ -121,8 +123,15 @@ public class KlighdActionEventHandler implements PInputEventListener {
             
             final boolean zoomToFit = result.getZoomToFit() != null
                     ? result.getZoomToFit() : context.getViewContext().isZoomToFit();
+            final boolean zoomToFocus =
+                    result.getZoomToFocus() != null ? result.getZoomToFocus() : context
+                            .getViewContext().getZoomStyle() == ZoomStyle.ZOOM_TO_FOCUS;
 
-            LightDiagramServices.layoutDiagram(viewer.getContextViewer().getCurrentViewContext(),
+            // remember the desired zoom style in the view context
+            ViewContext vc = viewer.getContextViewer().getCurrentViewContext();
+            vc.setZoomStyle(ZoomStyle.create(zoomToFit, zoomToFocus));
+                    
+            LightDiagramServices.layoutDiagram(vc,
                     result.getAnimateLayout(), zoomToFit, result.getLayoutConfigs());
             
             KlighdStatusState state = new KlighdStatusState(KlighdStatusState.Status.UPDATE, viewer

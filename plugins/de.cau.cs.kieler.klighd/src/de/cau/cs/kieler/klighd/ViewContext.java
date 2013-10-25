@@ -92,10 +92,10 @@ public final class ViewContext extends MapPropertyHolder {
     /** the {@link IViewer} being in charge of showing this {@link ViewContext}. */
     private IViewer<KNode> viewer = null;
     
-    /** the view-specific zoomToFit setting. */
-    private boolean zoomToFit = KlighdPlugin.getDefault().getPreferenceStore()
-            .getBoolean(KlighdPreferences.ZOOM_TO_FIT);
-
+    /** the view-specific zoom style. */
+    private ZoomStyle zoomStyle = KlighdPlugin.getDefault().getPreferenceStore()
+            .getBoolean(KlighdPreferences.ZOOM_TO_FIT) ? ZoomStyle.ZOOM_TO_FIT : ZoomStyle.NONE;
+    
     /**
      * Default constructor.
      */
@@ -245,22 +245,33 @@ public final class ViewContext extends MapPropertyHolder {
     }
 
     /**
-     * Setter.
-     * 
-     * @param zoomToFit
-     *            the zoomToFit to set
+     * @return the zoomStyle
      */
-    public void setZoomToFit(final boolean zoomToFit) {
-        this.zoomToFit = zoomToFit;
+    public ZoomStyle getZoomStyle() {
+        return zoomStyle;
     }
-
+    
     /**
-     * @return the zoomToFit
+     * @return whether the zoom style is zoom to fit.
      */
     public boolean isZoomToFit() {
-        return zoomToFit;
-    }    
-
+        return zoomStyle == ZoomStyle.ZOOM_TO_FIT;
+    }
+    
+    /**
+     * @return whether the zoom style is zoom to focus.
+     */
+    public boolean isZoomToFocus() {
+        return zoomStyle == ZoomStyle.ZOOM_TO_FOCUS;
+    }
+    
+    /**
+     * @param zoomStyle the zoomStyle to set
+     */
+    public void setZoomStyle(final ZoomStyle zoomStyle) {
+        this.zoomStyle = zoomStyle;
+    }
+    
     /**
      * Adds a transformation context to the view context.
      * 

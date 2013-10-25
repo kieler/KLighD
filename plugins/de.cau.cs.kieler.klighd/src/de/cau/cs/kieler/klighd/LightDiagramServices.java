@@ -614,7 +614,8 @@ public final class LightDiagramServices {
         
         final KNode viewModel = (KNode) contextViewer.getCurrentViewContext().getViewModel();
         final KLayoutData layoutData = viewModel != null ? viewModel.getData(KLayoutData.class) : null;
-
+        final ViewContext vc = contextViewer.getCurrentViewContext(); 
+        
         if (layoutData != null) {
             final List<ILayoutConfig> extendedOptions;
             if (options == null || options.isEmpty()) {
@@ -629,7 +630,8 @@ public final class LightDiagramServices {
             DiagramLayoutEngine.INSTANCE.layout(viewPart, diagramViewer, animate, false, false,
                     zoomToFit, extendedOptions);
         } else {
-            diagramViewer.setRecording(false);
+            ZoomStyle zoomStyle = ZoomStyle.create(zoomToFit, vc.isZoomToFocus());
+            diagramViewer.stopRecording(zoomStyle, 0);
         }
     }
 

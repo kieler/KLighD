@@ -44,6 +44,7 @@ import de.cau.cs.kieler.core.kgraph.KLabel;
 import de.cau.cs.kieler.core.kgraph.KNode;
 import de.cau.cs.kieler.core.krendering.KText;
 import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout;
+import de.cau.cs.kieler.klighd.ZoomStyle;
 import de.cau.cs.kieler.klighd.piccolo.Messages;
 import de.cau.cs.kieler.klighd.piccolo.internal.KlighdSWTGraphicsImpl;
 import de.cau.cs.kieler.klighd.piccolo.internal.controller.DiagramController;
@@ -416,13 +417,30 @@ public class PiccoloViewer extends AbstractViewer<KNode> implements INodeSelecti
 
     /**
      * {@inheritDoc}
+     * @deprecated
      */
     public void setRecording(final boolean recording) {
         controller.setRecording(recording);
     }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public void startRecording() {
+        controller.startRecording();
+    }
 
     /**
      * {@inheritDoc}
+     */
+    public void stopRecording(final ZoomStyle zoomStyle,
+            final int animationTime) {
+        controller.stopRecording(zoomStyle, animationTime);
+    }
+    
+    /**
+     * {@inheritDoc}
+     * @deprecated
      */
     public void setZoomToFit(final boolean zoomToFit) {
         controller.setZoomToFit(zoomToFit);

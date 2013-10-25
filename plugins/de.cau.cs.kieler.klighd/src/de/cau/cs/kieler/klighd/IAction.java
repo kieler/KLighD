@@ -205,7 +205,7 @@ public interface IAction {
          */
         public ActionResult doZoomToFit() {
             this.zoomToFit = true;
-            this.zoomToFocus = true;
+            this.zoomToFocus = false;
             return this;
         }
         
@@ -225,7 +225,7 @@ public interface IAction {
          * @return <code>this</code> {@link ActionResult}
          */
         public ActionResult doZoomToFocus() {
-            this.zoomToFit = true;
+            this.zoomToFit = false;
             this.zoomToFocus = true;
             return this;
         }

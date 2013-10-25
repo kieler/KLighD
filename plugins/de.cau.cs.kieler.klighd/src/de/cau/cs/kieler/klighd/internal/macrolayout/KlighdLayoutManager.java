@@ -57,6 +57,7 @@ import de.cau.cs.kieler.kiml.util.KimlUtil;
 import de.cau.cs.kieler.klighd.IViewer;
 import de.cau.cs.kieler.klighd.KlighdConstants;
 import de.cau.cs.kieler.klighd.ViewContext;
+import de.cau.cs.kieler.klighd.ZoomStyle;
 import de.cau.cs.kieler.klighd.internal.util.KlighdInternalProperties;
 import de.cau.cs.kieler.klighd.microlayout.Bounds;
 import de.cau.cs.kieler.klighd.microlayout.PlacementUtil;
@@ -594,21 +595,21 @@ public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement>
      */
     public void applyLayout(final LayoutMapping<KGraphElement> mapping, final boolean zoomToFit,
             final int animationTime) {
-        // set the animation time as property on the root element
-        KShapeLayout parentLayout = mapping.getParentElement().getData(KShapeLayout.class);
-        if (parentLayout != null) {
-            parentLayout.setProperty(KlighdInternalProperties.APPLY_LAYOUT_DURATION, animationTime);
-        }
-
         // get the visualizing viewer if any
         IViewer<?> viewer = mapping.getProperty(KlighdInternalProperties.VIEWER);
 
         // apply the layout
         if (viewer != null) {
-            viewer.setRecording(true);
+            viewer.startRecording();
             applyLayout(mapping);
-            viewer.setZoomToFit(zoomToFit);
-            viewer.setRecording(false);
+            
+            // get the zoomStyle
+            ZoomStyle zoomStyle = ZoomStyle.NONE;
+            if (viewer.getContextViewer().getCurrentViewContext() != null) {
+                zoomStyle = viewer.getContextViewer().getCurrentViewContext().getZoomStyle();
+            }
+            
+            viewer.stopRecording(zoomStyle, animationTime);
         } else {
             applyLayout(mapping);
         }

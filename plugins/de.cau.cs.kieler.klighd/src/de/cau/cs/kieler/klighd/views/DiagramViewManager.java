@@ -224,7 +224,7 @@ public final class DiagramViewManager implements IPartListener {
             // update the view context and viewer
             Object theModel = (model != null ? model : currentInputModel);
             
-            viewContext.getViewer().setRecording(true);
+            viewContext.getViewer().startRecording();
             if (!LightDiagramServices.getInstance().updateViewContext(viewContext, theModel,
                     propertyHolder)) {
                 return null;
@@ -344,7 +344,7 @@ public final class DiagramViewManager implements IPartListener {
                 diagramView.getContextViewer().setModel(viewContext);
 
                 // do an initial update of the view context
-                viewContext.getViewer().setRecording(true);
+                viewContext.getViewer().startRecording();
                 LightDiagramServices.getInstance().updateViewContext(viewContext, model);
                 
                 LightDiagramServices.layoutDiagram(viewContext, false);

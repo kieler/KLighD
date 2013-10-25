@@ -33,6 +33,7 @@ import de.cau.cs.kieler.klighd.KlighdConstants;
 import de.cau.cs.kieler.klighd.KlighdPlugin;
 import de.cau.cs.kieler.klighd.LightDiagramServices;
 import de.cau.cs.kieler.klighd.ViewContext;
+import de.cau.cs.kieler.klighd.ZoomStyle;
 import de.cau.cs.kieler.klighd.internal.preferences.KlighdPreferences;
 import de.cau.cs.kieler.klighd.triggers.KlighdResourceDropTrigger;
 import de.cau.cs.kieler.klighd.triggers.KlighdResourceDropTrigger.KlighdResourceDropState;
@@ -155,7 +156,7 @@ public class DiagramViewPart extends ViewPart implements IDiagramWorkbenchPart {
                 final ViewContext vc =
                         DiagramViewPart.this.getContextViewer().getCurrentViewContext();
                 if (vc != null) {
-                    vc.setZoomToFit(this.isChecked());
+                    vc.setZoomStyle(ZoomStyle.create(this.isChecked(), false));
 
                     // perform zoom to fit upon activation of the toggle button
                     if (this.isChecked()) {
