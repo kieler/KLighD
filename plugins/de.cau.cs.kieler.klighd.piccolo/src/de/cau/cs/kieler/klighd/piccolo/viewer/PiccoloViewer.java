@@ -484,12 +484,6 @@ public class PiccoloViewer extends AbstractViewer<KNode> implements INodeSelecti
      */
     @Override
     public void zoom(final float zoomLevel, final int duration) {
-//        ZoomActivity zoomActivity = new ZoomActivity(canvas.getCamera(), zoomLevel, duration);
-//        if (duration > 0) {
-//            canvas.getRoot().addActivity(zoomActivity);
-//        } else {
-//            zoomActivity.apply();
-//        }
          controller.zoomToLevel(zoomLevel, duration);
     }
 

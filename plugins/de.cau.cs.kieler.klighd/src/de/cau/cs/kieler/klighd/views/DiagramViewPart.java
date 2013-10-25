@@ -133,17 +133,6 @@ public class DiagramViewPart extends ViewPart implements IDiagramWorkbenchPart {
             }
         });
         
-        toolBar.add(new Action("Scale to Original Size", IAction.AS_PUSH_BUTTON) {
-            {
-                setImageDescriptor(KimlUiPlugin
-                        .getImageDescriptor("icons/menu16/kieler-zoomtoone.gif"));
-            }
-            @Override
-            public void run() {
-                DiagramViewPart.this.getContextViewer().zoom(1, KlighdConstants.DEFAULT_ANIMATION_TIME);
-            }
-        });
-
         final IPreferenceStore preferenceStore = KlighdPlugin.getDefault().getPreferenceStore();
 
         // toggle zoom to fit behavior
@@ -177,6 +166,17 @@ public class DiagramViewPart extends ViewPart implements IDiagramWorkbenchPart {
             }
         });
 
+        toolBar.add(new Action("Scale to Original Size", IAction.AS_PUSH_BUTTON) {
+            {
+                setImageDescriptor(KimlUiPlugin
+                        .getImageDescriptor("icons/menu16/kieler-zoomtoone.gif"));
+            }
+            @Override
+            public void run() {
+                DiagramViewPart.this.getContextViewer().zoom(1, KlighdConstants.DEFAULT_ANIMATION_TIME);
+            }
+        });
+        
         // automatic layout button
         toolBar.add(new Action("Arrange", IAction.AS_PUSH_BUTTON) {
             // Constructor

@@ -90,7 +90,7 @@ public class DiagramEditorPart extends EditorPart implements IDiagramWorkbenchPa
     private IToolBarManager toolBar;
     /** a zoomToFit toolbar button exclusively for one instance of this editor part. */
     private ActionContributionItem zoomItem;
-    
+    /** a zoomToOne button. */
     private ActionContributionItem zoomToOneItem;
 
     /**
