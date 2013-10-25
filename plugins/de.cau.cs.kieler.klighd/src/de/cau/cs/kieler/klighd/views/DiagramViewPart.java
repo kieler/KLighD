@@ -133,7 +133,11 @@ public class DiagramViewPart extends ViewPart implements IDiagramWorkbenchPart {
             }
         });
         
-        toolBar.add(new Action("1:1", IAction.AS_PUSH_BUTTON) {
+        toolBar.add(new Action("Scale to Original Size", IAction.AS_PUSH_BUTTON) {
+            {
+                setImageDescriptor(KimlUiPlugin
+                        .getImageDescriptor("icons/menu16/kieler-zoomtoone.gif"));
+            }
             @Override
             public void run() {
                 DiagramViewPart.this.getContextViewer().zoom(1, KlighdConstants.DEFAULT_ANIMATION_TIME);

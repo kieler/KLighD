@@ -393,6 +393,9 @@ public class DiagramController {
                     new PBounds(topNodeLayout.getXpos(), topNodeLayout.getYpos(),
                             topNodeLayout.getWidth(), topNodeLayout.getHeight());
 
+            // it would be possible to use PCamera#scaleViewAboutPoint(scale, x, y), 
+            // however this method does not allow for animation
+            
             // calculate the bound as they would be if scaled by the new factor
             PBounds origBounds = camera.getViewBounds();
             double oldZoomLevel = camera.getViewTransformReference().getScale();

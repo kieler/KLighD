@@ -61,6 +61,7 @@ import de.cau.cs.kieler.core.properties.IPropertyHolder;
 import de.cau.cs.kieler.core.properties.MapPropertyHolder;
 import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout;
 import de.cau.cs.kieler.kiml.ui.KimlUiPlugin;
+import de.cau.cs.kieler.klighd.KlighdConstants;
 import de.cau.cs.kieler.klighd.KlighdPlugin;
 import de.cau.cs.kieler.klighd.LightDiagramServices;
 import de.cau.cs.kieler.klighd.ViewContext;
@@ -89,6 +90,8 @@ public class DiagramEditorPart extends EditorPart implements IDiagramWorkbenchPa
     private IToolBarManager toolBar;
     /** a zoomToFit toolbar button exclusively for one instance of this editor part. */
     private ActionContributionItem zoomItem;
+    
+    private ActionContributionItem zoomToOneItem;
 
     /**
      * Creates a diagram editor part.
@@ -470,6 +473,20 @@ public class DiagramEditorPart extends EditorPart implements IDiagramWorkbenchPa
         zoomToFitAction.setId("de.cau.cs.kieler.klighd.editor.zoomToFit.h" + hashCode());
         // create the contribution item
         zoomItem = new ActionContributionItem(zoomToFitAction);
+        
+        Action zoomToOne = new Action("Scale to Original Size", IAction.AS_PUSH_BUTTON) {
+            {
+                setImageDescriptor(KimlUiPlugin
+                        .getImageDescriptor("icons/menu16/kieler-zoomtoone.gif"));
+            }
+            @Override
+            public void run() {
+                DiagramEditorPart.this.getContextViewer().zoom(1,
+                        KlighdConstants.DEFAULT_ANIMATION_TIME);
+            }
+        };
+        zoomToOne.setId("de.cau.cs.kieler.klighd.editor.zoomToOne.h" + hashCode());
+        zoomToOneItem = new ActionContributionItem(zoomToOne);
     }
 
     /**
@@ -495,6 +512,7 @@ public class DiagramEditorPart extends EditorPart implements IDiagramWorkbenchPa
         public void partActivated(final IWorkbenchPart part) {
             if (part.equals(DiagramEditorPart.this)) {
                 toolBar.add(zoomItem);
+                toolBar.add(zoomToOneItem);
                 toolBar.update(true);
             }
         }
@@ -502,6 +520,7 @@ public class DiagramEditorPart extends EditorPart implements IDiagramWorkbenchPa
         private void remove(final IWorkbenchPart part) {
             if (part.equals(DiagramEditorPart.this)) {
                 toolBar.remove(zoomItem);
+                toolBar.remove(zoomToOneItem);
                 toolBar.update(true);
             }
         }
