@@ -101,41 +101,6 @@ public class KlighdNewProjectCreationPage extends WizardNewProjectCreationPage {
      *            parent composite
      */
     protected void createTransformationSelectionGroup(final Composite parent) {
-        Group transformationGroup = new Group(parent, SWT.NONE);
-        transformationGroup.setFont(parent.getFont());
-        transformationGroup.setText(
-                JavaUIMessages.KlighdNewProjectCreationPage_DiagramSynthesisGroupTitle);
-        transformationGroup.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false));
-        transformationGroup.setLayout(new GridLayout(1, false));
-
-        Composite composite = new Composite(transformationGroup, SWT.NONE);
-        composite.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false));
-        composite.setLayout(new GridLayout(2, false));
-
-        // Transformation Name
-        Label transformationLabel = new Label(composite, SWT.NONE);
-        GridData data = new GridData(GridData.FILL_HORIZONTAL);
-        data.horizontalSpan = 1;
-        transformationLabel.setText(JavaUIMessages.KlighdNewProjectCreationPage_Name);
-
-        transformationName = new Text(composite, SWT.BORDER);
-        data = new GridData(GridData.FILL_HORIZONTAL);
-        data.horizontalSpan = 1;
-        transformationName.setLayoutData(data);
-        transformationName.setFont(parent.getFont());
-
-        // Transformation Package
-        Label transformationPackageLabel = new Label(composite, SWT.NONE);
-        GridData data2 = new GridData(GridData.FILL_HORIZONTAL);
-        data.horizontalSpan = 1;
-        transformationPackageLabel.setText(JavaUIMessages.KlighdNewProjectCreationPage_Package);
-
-        transformationPackage = new Text(composite, SWT.BORDER);
-        data2 = new GridData(GridData.FILL_HORIZONTAL);
-        data2.horizontalSpan = 1;
-        transformationPackage.setLayoutData(data);
-        transformationPackage.setFont(parent.getFont());
-
         // Source Model
         final Group typeGroup = new Group(parent, SWT.NONE);
         typeGroup.setText(JavaUIMessages.KlighdNewProjectCreationPage_SourceModelGroupTitle);
@@ -193,6 +158,42 @@ public class KlighdNewProjectCreationPage extends WizardNewProjectCreationPage {
         };
         browseButton.addListener(SWT.MouseUp, browseListener);
 
+        // DiagramSynthesis group
+        Group transformationGroup = new Group(parent, SWT.NONE);
+        transformationGroup.setFont(parent.getFont());
+        transformationGroup.setText(
+                JavaUIMessages.KlighdNewProjectCreationPage_DiagramSynthesisGroupTitle);
+        transformationGroup.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false));
+        transformationGroup.setLayout(new GridLayout(1, false));
+
+        Composite composite = new Composite(transformationGroup, SWT.NONE);
+        composite.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false));
+        composite.setLayout(new GridLayout(2, false));
+
+        // Name
+        Label transformationLabel = new Label(composite, SWT.NONE);
+        GridData data = new GridData(GridData.FILL_HORIZONTAL);
+        data.horizontalSpan = 1;
+        transformationLabel.setText(JavaUIMessages.KlighdNewProjectCreationPage_Name);
+
+        transformationName = new Text(composite, SWT.BORDER);
+        data = new GridData(GridData.FILL_HORIZONTAL);
+        data.horizontalSpan = 1;
+        transformationName.setLayoutData(data);
+        transformationName.setFont(parent.getFont());
+
+        // Package
+        Label transformationPackageLabel = new Label(composite, SWT.NONE);
+        GridData data2 = new GridData(GridData.FILL_HORIZONTAL);
+        data.horizontalSpan = 1;
+        transformationPackageLabel.setText(JavaUIMessages.KlighdNewProjectCreationPage_Package);
+
+        transformationPackage = new Text(composite, SWT.BORDER);
+        data2 = new GridData(GridData.FILL_HORIZONTAL);
+        data2.horizontalSpan = 1;
+        transformationPackage.setLayoutData(data);
+        transformationPackage.setFont(parent.getFont());
+
         // Which language to use, Java or Xtend?
         final Group languageGroup = new Group(parent, SWT.NONE);
         languageGroup.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false));
@@ -205,17 +206,33 @@ public class KlighdNewProjectCreationPage extends WizardNewProjectCreationPage {
         useXtendLang.setText(JavaUIMessages.KlighdNewProjectCreationPage_LanguageXtend);
         useXtendLang.setLayoutData(new GridData());
 
-        // Listen to changes
-        Listener modifyListener = new Listener() {
-            public void handleEvent(final Event event) {
-                setPageComplete(validatePage());
-            }
-        };
         transformationName.addListener(SWT.Modify, modifyListener);
         transformationPackage.addListener(SWT.Modify, modifyListener);
         useJavaLang.addListener(SWT.Modify, modifyListener);
         useXtendLang.addListener(SWT.Modify, modifyListener);
         sourceModel.addListener(SWT.Modify, modifyListener);
+    }
+    
+    // Listen to changes
+    private Listener modifyListener = new Listener() {
+        public void handleEvent(final Event event) {
+            // be careful to call the super implementation as otherwise we'll get a
+            //  stack overflow due to #setPageComplete(boolean) below!
+            KlighdNewProjectCreationPage.super.setPageComplete(validatePage());
+        }
+    };
+ 
+    /**
+     * {@inheritDoc}
+     * 
+     * This specialization realizes the update of the package field in case the project name is
+     * changed. Unfortunately there is no other way to react on such changes.
+     */
+    public void setPageComplete(final boolean complete) {
+        if (this.transformationPackage != null) {
+            this.transformationPackage.setText(this.getProjectName());
+        }
+        super.setPageComplete(complete);
     }
 
     @Override
