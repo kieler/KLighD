@@ -21,7 +21,6 @@ import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.search.IJavaSearchScope;
 import org.eclipse.jdt.core.search.SearchEngine;
-import org.eclipse.jdt.internal.ui.JavaUIMessages;
 import org.eclipse.jdt.ui.IJavaElementSearchConstants;
 import org.eclipse.jdt.ui.JavaUI;
 import org.eclipse.jface.dialogs.Dialog;
@@ -44,11 +43,10 @@ import com.google.common.base.Strings;
 
 /**
  * A wizard page that lets the user specify the project, package, name, and language for a new
- * klighd diagram synthesis project.
+ * KLighD diagram synthesis project.
  * 
  * @author uru
  */
-@SuppressWarnings("restriction")
 public class KlighdNewProjectCreationPage extends WizardNewProjectCreationPage {
 
     private Text transformationPackage;
@@ -65,8 +63,8 @@ public class KlighdNewProjectCreationPage extends WizardNewProjectCreationPage {
      */
     public KlighdNewProjectCreationPage(final String pageName) {
         super(pageName);
-        setTitle("KlighD Project Wizard");
-        setDescription("Creates a new KlighD Project");
+        setTitle(JavaUIMessages.KlighdNewProjectCreationPage_PageTitle);
+        setDescription(JavaUIMessages.KlighdNewProjectCreationPage_PageDescr);
     }
 
     /**
@@ -105,7 +103,8 @@ public class KlighdNewProjectCreationPage extends WizardNewProjectCreationPage {
     protected void createTransformationSelectionGroup(final Composite parent) {
         Group transformationGroup = new Group(parent, SWT.NONE);
         transformationGroup.setFont(parent.getFont());
-        transformationGroup.setText("Transformation");
+        transformationGroup.setText(
+                JavaUIMessages.KlighdNewProjectCreationPage_DiagramSynthesisGroupTitle);
         transformationGroup.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false));
         transformationGroup.setLayout(new GridLayout(1, false));
 
@@ -117,7 +116,7 @@ public class KlighdNewProjectCreationPage extends WizardNewProjectCreationPage {
         Label transformationLabel = new Label(composite, SWT.NONE);
         GridData data = new GridData(GridData.FILL_HORIZONTAL);
         data.horizontalSpan = 1;
-        transformationLabel.setText("Name:");
+        transformationLabel.setText(JavaUIMessages.KlighdNewProjectCreationPage_Name);
 
         transformationName = new Text(composite, SWT.BORDER);
         data = new GridData(GridData.FILL_HORIZONTAL);
@@ -129,7 +128,7 @@ public class KlighdNewProjectCreationPage extends WizardNewProjectCreationPage {
         Label transformationPackageLabel = new Label(composite, SWT.NONE);
         GridData data2 = new GridData(GridData.FILL_HORIZONTAL);
         data.horizontalSpan = 1;
-        transformationPackageLabel.setText("Package:");
+        transformationPackageLabel.setText(JavaUIMessages.KlighdNewProjectCreationPage_Package);
 
         transformationPackage = new Text(composite, SWT.BORDER);
         data2 = new GridData(GridData.FILL_HORIZONTAL);
@@ -139,7 +138,7 @@ public class KlighdNewProjectCreationPage extends WizardNewProjectCreationPage {
 
         // Source Model
         final Group typeGroup = new Group(parent, SWT.NONE);
-        typeGroup.setText("Source Model");
+        typeGroup.setText(JavaUIMessages.KlighdNewProjectCreationPage_SourceModelGroupTitle);
         typeGroup.setLayoutData(new GridData(SWT.FILL, SWT.TOP, false, false));
         // CHECKSTYLEOFF MagicNumber
         typeGroup.setLayout(new GridLayout(2, false));
@@ -153,10 +152,11 @@ public class KlighdNewProjectCreationPage extends WizardNewProjectCreationPage {
         sourceModel.setLayoutData(textData);
         // button
         Button browseButton = new Button(typeGroup, SWT.PUSH);
-        browseButton.setText("Browse");
+        browseButton.setText(JavaUIMessages.KlighdNewProjectCreationPage_BrowseButtonText);
         browseButton.setFont(parent.getFont());
         Listener browseListener = new Listener() {
 
+            @SuppressWarnings("restriction")
             public void handleEvent(final Event event) {
                 try {
                     // open a dialog querying for the source model type
@@ -165,21 +165,24 @@ public class KlighdNewProjectCreationPage extends WizardNewProjectCreationPage {
                             JavaUI.createTypeDialog(parent.getShell(), new ProgressMonitorDialog(
                                     parent.getShell()), scope,
                                     IJavaElementSearchConstants.CONSIDER_ALL_TYPES, false);
-                    dialog.setTitle("Select Source Model Type");
-                    dialog.setMessage(JavaUIMessages.OpenTypeAction_dialogMessage);
+                    dialog.setTitle(JavaUIMessages.KlighdNewProjectCreationPage_SourceModelDialogTitle);
+                    dialog.setMessage(
+                            org.eclipse.jdt.internal.ui.JavaUIMessages.OpenTypeAction_dialogMessage);
 
                     int result = dialog.open();
                     if (result != IDialogConstants.OK_ID) {
                         return;
                     }
 
-                    // retrieve the qulaified name
+                    // retrieve the qualified name
                     Object[] res = dialog.getResult();
                     if (res != null && res.length > 0) {
                         IJavaElement element = (IJavaElement) res[0];
                         if (element.getElementType() == IJavaElement.TYPE) {
                             IType type = (IType) element;
                             sourceModel.setText(type.getFullyQualifiedName());
+                            transformationName.setText(type.getElementName()
+                                    + KlighdWizardSetup.DEFAULT_TRANSFORMATION_NAME);
                         }
                     }
                 } catch (JavaModelException e) {
@@ -194,12 +197,12 @@ public class KlighdNewProjectCreationPage extends WizardNewProjectCreationPage {
         final Group languageGroup = new Group(parent, SWT.NONE);
         languageGroup.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false));
         languageGroup.setLayout(new GridLayout(2, false));
-        languageGroup.setText("Language");
+        languageGroup.setText(JavaUIMessages.KlighdNewProjectCreationPage_LanguageGroupText);
         useJavaLang = new Button(languageGroup, SWT.RADIO);
-        useJavaLang.setText("Java");
+        useJavaLang.setText(JavaUIMessages.KlighdNewProjectCreationPage_LanguageJava);
         useJavaLang.setLayoutData(new GridData());
         useXtendLang = new Button(languageGroup, SWT.RADIO);
-        useXtendLang.setText("Xtend");
+        useXtendLang.setText(JavaUIMessages.KlighdNewProjectCreationPage_LanguageXtend);
         useXtendLang.setLayoutData(new GridData());
 
         // Listen to changes
@@ -226,7 +229,8 @@ public class KlighdNewProjectCreationPage extends WizardNewProjectCreationPage {
                 JavaConventions.validatePackageName(getProjectName(), JavaCore.VERSION_1_5,
                         JavaCore.VERSION_1_5);
         if (!status.isOK()) {
-            setErrorMessage("Invalid Project Name" + status.getMessage());
+            setErrorMessage(JavaUIMessages.KlighdNewProjectCreationPage_MsgInvalidProjectName
+                    + status.getMessage());
             return false;
         }
 
@@ -242,7 +246,8 @@ public class KlighdNewProjectCreationPage extends WizardNewProjectCreationPage {
                 JavaConventions.validateJavaTypeName(transformationName.getText(),
                         JavaCore.VERSION_1_5, JavaCore.VERSION_1_5);
         if (!status.isOK()) {
-            setErrorMessage("Invalid Transformation Name" + status.getMessage());
+            setErrorMessage(JavaUIMessages.KlighdNewProjectCreationPage_MsgInvalidTransformationName
+                    + status.getMessage());
             return false;
         }
 
@@ -257,7 +262,8 @@ public class KlighdNewProjectCreationPage extends WizardNewProjectCreationPage {
                 JavaConventions.validateJavaTypeName(sourceModel.getText(), JavaCore.VERSION_1_5,
                         JavaCore.VERSION_1_5);
         if (!status.isOK()) {
-            setErrorMessage("Invalid Source Model Type" + status.getMessage());
+            setErrorMessage(JavaUIMessages.KlighdNewProjectCreationPage_MsgInvalidSourceModelType
+                    + status.getMessage());
             return false;
         }
 

@@ -36,7 +36,7 @@ public class KlighdNewProjectWizard extends XtextNewProjectWizard {
     @Inject
     public KlighdNewProjectWizard(final IProjectCreator creator) {
         super(creator);
-        setWindowTitle("New KlighD Project");
+        setWindowTitle(JavaUIMessages.KlighdNewProjectWizard_WizardTitle);
     }
 
     /**
@@ -46,7 +46,7 @@ public class KlighdNewProjectWizard extends XtextNewProjectWizard {
     public void addPages() {
         super.addPages();
         // we just use one wizard page
-        mainPage = new KlighdNewProjectCreationPage("mainPage");
+        mainPage = new KlighdNewProjectCreationPage("mainPage"); //$NON-NLS-1$
         addPage(mainPage);
     }
 
