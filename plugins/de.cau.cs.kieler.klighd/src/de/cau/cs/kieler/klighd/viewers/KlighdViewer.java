@@ -98,14 +98,6 @@ public class KlighdViewer extends AbstractViewer<Object> {
 
     /**
      * {@inheritDoc}
-     * @deprecated 
-     */
-    public void setRecording(final boolean recording) {
-        contextViewer.setRecording(recording);
-    }
-    
-    /**
-     * {@inheritDoc}
      */
     public void startRecording() {
         contextViewer.startRecording();
@@ -119,13 +111,6 @@ public class KlighdViewer extends AbstractViewer<Object> {
         contextViewer.stopRecording(zoomStyle, animationTime);
     }
 
-    /**
-     * {@inheritDoc} 
-     */
-    public void setZoomToFit(final boolean zoomToFit) {
-        contextViewer.setZoomToFit(zoomToFit);
-    }
-    
     /**
      * {@inheritDoc}
      */

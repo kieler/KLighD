@@ -156,14 +156,6 @@ public class DiagramController {
     /** whether to record layout changes, will be set to true by the KlighdLayoutManager. */
     private boolean record = false;
 
-    /** whether to perform 'zoom to fit' while applying the layout. 
-     * @deprecated*/
-    private boolean zoomToFit = false;
-
-    /** whether to perform 'zoom to focus' while applying the layout. 
-     * @deprecated*/
-    private boolean zoomToFocus = true;
-    
     /** type of zoom style applied after layout. */
     private ZoomStyle zoomStyle = ZoomStyle.NONE;
     
@@ -215,73 +207,30 @@ public class DiagramController {
     }
 
     /**
-     * Sets whether to record layout changes in the graph instead of instantly applying them to the
-     * associated Piccolo nodes.<br>
-     * <br>
-     * Setting the recording status to {@code false} applies all recorded layout changes.
-     * 
-     * @param recording
-     *            true if layout changes should be recorded; false else
-     * 
-     * @author mri, chsch
-     * @deprecated
-     */
-    public void setRecording(final boolean recording) {
-        if (record && !recording) {
-            // due to deprecation
-            animationTime = 0;
-            
-            // apply recorded layout changes
-            handleRecordedChanges();
-        }
-        record = recording;
-    }
-    
-    /**
-     * TODO comment
-     * Sets whether to record layout changes in the graph instead of instantly applying them to
-     * the associated Piccolo nodes.<br>
-     * <br>
-     * Setting the recording status to {@code false} applies all recorded layout changes.
+     * @see de.cau.cs.kieler.klighd.IViewer IViewer#startRecording()
      */
     public void startRecording() {
         record = true;
     }
 
     /**
-     * TODO comment
-     * Sets whether to record layout changes in the graph instead of instantly applying them to the
-     * associated Piccolo nodes.<br>
-     * <br>
-     * Setting the recording status to {@code false} applies all recorded layout changes.
-     * 
      * @param theZoomStyle
      *            the style used to zoom, eg zoom to fit or zoom to focus
      * @param theAnimationTime
      *            duration of the animated layout
+     * 
+     * @see de.cau.cs.kieler.klighd.IViewer IViewer#stopRecording(ZoomStyle, int)
      */
     public void stopRecording(final ZoomStyle theZoomStyle, final int theAnimationTime) {
         if (record) {
             zoomStyle = theZoomStyle;
             animationTime = theAnimationTime;
-            
+
             // apply recorded layout changes
             handleRecordedChanges();
 
             record = false;
         }
-    }
-
-    /**
-     * Instructs controller to perform 'zoom to fit' after the layout has been applied.
-     * 
-     * @param zoomToFit
-     *            true if 'zoom to fit' should be applied.
-     * @author chsch
-     * @deprecated
-     */
-    public void setZoomToFit(final boolean zoomToFit) {
-        this.zoomToFit = zoomToFit;
     }
 
     /**

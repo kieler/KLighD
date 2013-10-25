@@ -414,14 +414,6 @@ public class PiccoloViewer extends AbstractViewer<KNode> implements INodeSelecti
             layer.removeAllChildren();
         }
     }
-
-    /**
-     * {@inheritDoc}
-     * @deprecated
-     */
-    public void setRecording(final boolean recording) {
-        controller.setRecording(recording);
-    }
     
     /**
      * {@inheritDoc}
@@ -436,14 +428,6 @@ public class PiccoloViewer extends AbstractViewer<KNode> implements INodeSelecti
     public void stopRecording(final ZoomStyle zoomStyle,
             final int animationTime) {
         controller.stopRecording(zoomStyle, animationTime);
-    }
-    
-    /**
-     * {@inheritDoc}
-     * @deprecated
-     */
-    public void setZoomToFit(final boolean zoomToFit) {
-        controller.setZoomToFit(zoomToFit);
     }
 
     /**

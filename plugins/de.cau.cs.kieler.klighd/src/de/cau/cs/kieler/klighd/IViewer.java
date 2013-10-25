@@ -84,33 +84,15 @@ public interface IViewer<T> {
     IContentOutlinePage getOutlinePage();
 
     /**
-     * Sets whether to record layout changes in the model instead of instantly applying them to the
+     * Starts to record layout changes in the model instead of instantly applying them to the
      * visualization.<br>
      * <br>
-     * Setting the recording status to {@code false} applies all recorded layout changes.
-     * 
-     * @param recording
-     *            true if layout changes should be recorded; false else
-     *            
-     * @deprecated use {@link #startRecording()} and {@link #stopRecording(boolean, ZoomStyle, int)}
-     */
-    void setRecording(final boolean recording);
-    
-    /**
-     * TODO comment
-     * Sets whether to record layout changes in the model instead of instantly applying them to the
-     * visualization.<br>
-     * <br>
-     * Setting the recording status to {@code false} applies all recorded layout changes.
+     * Executing {@link #stopRecording(ZoomStyle, int)} applies all recorded layout changes.
      */
     void startRecording();
     
     /**
-     * TODO comment
-     * Sets whether to record layout changes in the model instead of instantly applying them to the
-     * visualization.<br>
-     * <br>
-     * Setting the recording status to {@code false} applies all recorded layout changes.
+     * Stops to record layout changes, initialized by {@link #startRecording()}.
      * 
      * @param zoomStyle
      *            the style used to zoom, eg zoom to fit or zoom to focus
@@ -118,17 +100,6 @@ public interface IViewer<T> {
      *            duration of the animated layout
      */
     void stopRecording(final ZoomStyle zoomStyle, final int animationTime);
-
-    /**
-     * Instructs the viewer to perform 'zoom to fit' after layout has been applied.
-     * 
-     * @param zoomToFit
-     *            true if 'zoom to fit' shall be performed.
-     * @author chsch
-     * 
-     * @deprecated use 
-     */
-    void setZoomToFit(final boolean zoomToFit);
 
     /**
      * Sets the given selection of diagram elements as current selection.

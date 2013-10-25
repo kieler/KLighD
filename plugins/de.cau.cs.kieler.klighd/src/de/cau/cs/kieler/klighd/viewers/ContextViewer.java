@@ -748,14 +748,6 @@ public class ContextViewer extends AbstractViewer<Object> implements IViewerEven
 
     /**
      * {@inheritDoc}
-     * @deprecated
-     */
-    public void setRecording(final boolean recording) {
-        currentViewer.setRecording(recording);
-    }
-
-    /**
-     * {@inheritDoc}
      */
     public void startRecording() {
         currentViewer.startRecording();
@@ -768,14 +760,7 @@ public class ContextViewer extends AbstractViewer<Object> implements IViewerEven
             final int animationTime) {
         currentViewer.stopRecording(zoomStyle, animationTime);
     }
-    
-    /**
-     * {@inheritDoc} 
-     */
-    public void setZoomToFit(final boolean zoomToFit) {
-        currentViewer.setZoomToFit(zoomToFit);
-    }
-    
+
     /**
      * {@inheritDoc}
      */
