@@ -90,7 +90,10 @@ public class DiagramEditorPart extends EditorPart implements IDiagramWorkbenchPa
     /** the global, common toolbar for all editors. */
     private IToolBarManager toolBar;
     /** a zoomToFit toolbar button exclusively for one instance of this editor part. */
-    private ActionContributionItem zoomItem;
+    private ActionContributionItem zoomToFitItem;
+    private Action zoomToFitAction;
+    private ActionContributionItem zoomToFocusItem;
+    private Action zoomToFocusAction;
     /** a zoomToOne button. */
     private ActionContributionItem zoomToOneItem;
 
@@ -442,7 +445,8 @@ public class DiagramEditorPart extends EditorPart implements IDiagramWorkbenchPa
     private void createButtons() {
         final IPreferenceStore preferenceStore = KlighdPlugin.getDefault().getPreferenceStore();
 
-        Action zoomToFitAction = new Action("Toggle Zoom to Fit", IAction.AS_CHECK_BOX) {
+        // zoom to fit
+        zoomToFitAction = new Action("Toggle Zoom to Fit", IAction.AS_CHECK_BOX) {
             // Constructor
             {
                 setImageDescriptor(KimlUiPlugin
@@ -465,6 +469,10 @@ public class DiagramEditorPart extends EditorPart implements IDiagramWorkbenchPa
 
                     // perform zoom to fit upon activation of the toggle button
                     if (this.isChecked()) {
+                        // uncheck the zoom to focus button
+                        zoomToFocusAction.setChecked(false);
+                        
+                        
                         LightDiagramServices.layoutAndZoomDiagram(DiagramEditorPart.this);
                     }
 
@@ -473,8 +481,46 @@ public class DiagramEditorPart extends EditorPart implements IDiagramWorkbenchPa
         };
         zoomToFitAction.setId("de.cau.cs.kieler.klighd.editor.zoomToFit.h" + hashCode());
         // create the contribution item
-        zoomItem = new ActionContributionItem(zoomToFitAction);
+        zoomToFitItem = new ActionContributionItem(zoomToFitAction);
         
+        // zoom to focus
+        zoomToFocusAction = new Action("Toggle Zoom to Focus", IAction.AS_CHECK_BOX) {
+            // Constructor
+            {
+                setImageDescriptor(KimlUiPlugin
+                        .getImageDescriptor("icons/menu16/kieler-zoomtofocus.gif"));
+                final ViewContext vc =
+                        DiagramEditorPart.this.getContextViewer().getCurrentViewContext();
+                if (vc != null) {
+                    setChecked(vc.isZoomToFocus());
+                } else {
+                    // TODO correct preference page!
+                    //setChecked(preferenceStore.getBoolean(KlighdPreferences.ZOOM_TO_FIT));
+                }
+            }
+
+            @Override
+            public void run() {
+                final ViewContext vc =
+                        DiagramEditorPart.this.getContextViewer().getCurrentViewContext();
+                if (vc != null) {
+                    vc.setZoomStyle(ZoomStyle.create(false, this.isChecked()));
+
+                    // perform zoom to focus upon activation of the toggle button
+                    if (this.isChecked()) {
+                        LightDiagramServices.layoutAndZoomDiagram(DiagramEditorPart.this);
+                        
+                        // uncheck the zoom to fit button
+                        zoomToFitAction.setChecked(false);
+                    }
+
+                }
+            }
+        };
+        zoomToFocusAction.setId("de.cau.cs.kieler.klighd.editor.zoomToFocus.h" + hashCode());
+        zoomToFocusItem = new ActionContributionItem(zoomToFocusAction);
+        
+        // zoom to one ...
         Action zoomToOne = new Action("Scale to Original Size", IAction.AS_PUSH_BUTTON) {
             {
                 setImageDescriptor(KimlUiPlugin
@@ -516,7 +562,8 @@ public class DiagramEditorPart extends EditorPart implements IDiagramWorkbenchPa
 
         public void partActivated(final IWorkbenchPart part) {
             if (part.equals(DiagramEditorPart.this)) {
-                toolBar.add(zoomItem);
+                toolBar.add(zoomToFitItem);
+                toolBar.add(zoomToFocusItem);
                 toolBar.add(zoomToOneItem);
                 toolBar.update(true);
             }
@@ -524,7 +571,8 @@ public class DiagramEditorPart extends EditorPart implements IDiagramWorkbenchPa
         
         private void remove(final IWorkbenchPart part) {
             if (part.equals(DiagramEditorPart.this)) {
-                toolBar.remove(zoomItem);
+                toolBar.remove(zoomToFitItem);
+                toolBar.remove(zoomToFocusItem);
                 toolBar.remove(zoomToOneItem);
                 toolBar.update(true);
             }

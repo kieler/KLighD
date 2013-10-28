@@ -45,6 +45,7 @@ import de.cau.cs.kieler.klighd.viewers.ContextViewer;
  * @author mri
  * @author chsch
  * @author msp
+ * @author uru
  */
 public class DiagramViewPart extends ViewPart implements IDiagramWorkbenchPart {
 
@@ -121,6 +122,9 @@ public class DiagramViewPart extends ViewPart implements IDiagramWorkbenchPart {
         exportAction.setId(PERMANENT_ACTION_PREFIX + ".export");
         menuManager.add(exportAction);
     }
+    
+    private Action zoomToFitAction;
+    private Action zoomToFocusAction;
 
     /**
      * Add the buttons to the tool bar.
@@ -137,7 +141,7 @@ public class DiagramViewPart extends ViewPart implements IDiagramWorkbenchPart {
         final IPreferenceStore preferenceStore = KlighdPlugin.getDefault().getPreferenceStore();
 
         // toggle zoom to fit behavior
-        toolBar.add(new Action("Toggle Zoom to Fit", IAction.AS_CHECK_BOX) {
+        zoomToFitAction = new Action("Toggle Zoom to Fit", IAction.AS_CHECK_BOX) {
             // Constructor
             {
                 setImageDescriptor(KimlUiPlugin
@@ -161,11 +165,49 @@ public class DiagramViewPart extends ViewPart implements IDiagramWorkbenchPart {
                     // perform zoom to fit upon activation of the toggle button
                     if (this.isChecked()) {
                         LightDiagramServices.layoutAndZoomDiagram(DiagramViewPart.this);
+                        
+                        zoomToFocusAction.setChecked(false);
                     }
 
                 }
             }
-        });
+        };
+        toolBar.add(zoomToFitAction);
+        
+        zoomToFocusAction = new Action("Toggle Zoom to Focus", IAction.AS_CHECK_BOX) {
+            // Constructor
+            {
+                setImageDescriptor(KimlUiPlugin
+                        .getImageDescriptor("icons/menu16/kieler-zoomtofocus.gif"));
+                final ViewContext vc =
+                        DiagramViewPart.this.getContextViewer().getCurrentViewContext();
+                if (vc != null) {
+                    setChecked(vc.isZoomToFocus());
+                } else {
+                    // TODO correct preference page!
+                    //setChecked(preferenceStore.getBoolean(KlighdPreferences.ZOOM_TO_FIT));
+                }
+            }
+
+            @Override
+            public void run() {
+                final ViewContext vc =
+                        DiagramViewPart.this.getContextViewer().getCurrentViewContext();
+                if (vc != null) {
+                    vc.setZoomStyle(ZoomStyle.create(false, this.isChecked()));
+
+                    // perform zoom to focus upon activation of the toggle button
+                    if (this.isChecked()) {
+                        LightDiagramServices.layoutAndZoomDiagram(DiagramViewPart.this);
+                        
+                        // uncheck the zoom to fit button
+                        zoomToFitAction.setChecked(false);
+                    }
+
+                }
+            }
+        };
+        toolBar.add(zoomToFocusAction);
 
         toolBar.add(new Action("Scale to Original Size", IAction.AS_PUSH_BUTTON) {
             {
