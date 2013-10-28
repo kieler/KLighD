@@ -13,17 +13,15 @@
  */
 package de.cau.cs.kieler.klighd.ui.wizard;
 
-import java.util.Collections;
-import java.util.Map;
-
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.ui.IWorkbench;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.eclipse.xtext.service.AbstractGenericModule;
 import org.eclipse.xtext.ui.wizard.IProjectCreator;
 import org.osgi.framework.BundleContext;
 
-import com.google.common.collect.Maps;
 import com.google.inject.Binder;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
@@ -41,14 +39,11 @@ public class KlighdWizardPlugin extends AbstractUIPlugin {
     /** The plug-in ID. */
     public static final String PLUGIN_ID = "de.cau.cs.kieler.klighd.ui.wizard"; //$NON-NLS-1$
 
-    private Injector injector;
-    
     // The shared instance
     private static KlighdWizardPlugin plugin;
     
-    private Map<String, Injector> injectors = Collections.synchronizedMap(Maps
-            .<String, Injector>newHashMapWithExpectedSize(1));
-
+    private Injector injector;
+    
     /*
      * (non-Javadoc)
      * 
@@ -66,7 +61,6 @@ public class KlighdWizardPlugin extends AbstractUIPlugin {
      */
     @Override
     public void stop(final BundleContext bundleContext) throws Exception {
-        injectors.clear();
         plugin = null;
     }
 
@@ -99,9 +93,20 @@ public class KlighdWizardPlugin extends AbstractUIPlugin {
                     super.configure(binder);
 
                     binder.bind(IProjectCreator.class).to(KlighdProjectCreator.class);
+                    
                     binder.bind(IWorkspace.class).toProvider(new Provider<IWorkspace>() {
                         public IWorkspace get() {
                             return ResourcesPlugin.getWorkspace();
+                        }
+                    });
+
+                    binder.bind(IWorkbench.class).toProvider(new Provider<IWorkbench>() {
+                        public IWorkbench get() {
+                            if (PlatformUI.isWorkbenchRunning()) {
+                                return PlatformUI.getWorkbench();
+                            } else {
+                                return null;
+                            }
                         }
                     });
                 }
