@@ -449,8 +449,8 @@ public class DiagramEditorPart extends EditorPart implements IDiagramWorkbenchPa
         zoomToFitAction = new Action("Toggle Zoom to Fit", IAction.AS_CHECK_BOX) {
             // Constructor
             {
-                setImageDescriptor(KimlUiPlugin
-                        .getImageDescriptor("icons/menu16/kieler-zoomtofit.gif"));
+                setImageDescriptor(KlighdPlugin
+                        .getImageDescriptor("icons/kieler-zoomtofit.gif"));
                 final ViewContext vc =
                         DiagramEditorPart.this.getContextViewer().getCurrentViewContext();
                 if (vc != null) {
@@ -487,8 +487,8 @@ public class DiagramEditorPart extends EditorPart implements IDiagramWorkbenchPa
         zoomToFocusAction = new Action("Toggle Zoom to Focus", IAction.AS_CHECK_BOX) {
             // Constructor
             {
-                setImageDescriptor(KimlUiPlugin
-                        .getImageDescriptor("icons/menu16/kieler-zoomtofocus.gif"));
+                setImageDescriptor(KlighdPlugin
+                        .getImageDescriptor("icons/kieler-zoomtofocus.gif"));
                 final ViewContext vc =
                         DiagramEditorPart.this.getContextViewer().getCurrentViewContext();
                 if (vc != null) {
@@ -523,8 +523,8 @@ public class DiagramEditorPart extends EditorPart implements IDiagramWorkbenchPa
         // zoom to one ...
         Action zoomToOne = new Action("Scale to Original Size", IAction.AS_PUSH_BUTTON) {
             {
-                setImageDescriptor(KimlUiPlugin
-                        .getImageDescriptor("icons/menu16/kieler-zoomtoone.gif"));
+                setImageDescriptor(KlighdPlugin
+                        .getImageDescriptor("icons/kieler-zoomtoone.gif"));
             }
             @Override
             public void run() {
