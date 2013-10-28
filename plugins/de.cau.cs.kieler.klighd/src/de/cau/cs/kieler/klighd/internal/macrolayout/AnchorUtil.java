@@ -19,9 +19,20 @@ import de.cau.cs.kieler.core.krendering.KRoundedRectangle;
 import de.cau.cs.kieler.core.math.KVector;
 
 /**
- * Utility class for anchor point calculation of edges.
+ * <p>Utility class for anchor point calculation of edges. This class provides two public methods. The
+ * first, {@link #nearestBorderPoint(KVector, double, double, KRendering)}, takes a reference point and
+ * returns the point on the figure's border that is nearest to that reference point. This method is
+ * usually used to ensure that edges touch the border of nodes or ports they connect to. The second,
+ * {@link #collideTowardsCenter(KVector, double, double, KRendering)}, calculates the point where a
+ * line through a given reference point and the figure's center would intersect the figure's border.
+ * This is usually used to calculate the end points of edges not included in automatic layout.</p>
+ * 
+ * <p>All methods assume that the coordinates of the reference point and the returned intersection point
+ * are relative to the figure's top left corner.</p>
  *
- * @author msp, chsch
+ * @author msp
+ * @author chsch
+ * @author cds
  */
 public final class AnchorUtil {
 
@@ -31,163 +42,189 @@ public final class AnchorUtil {
     private AnchorUtil() {
     }
     
+    
+    ////////////////////////////////////////////////////////////////////////////////////////////////////
+    // Find Nearest Border Point
+    
     /**
-     * Correct the given anchor point.
-     * The point must be transformed to the local coordinates of the corresponding node
-     * (or port, if applicable) before this method is called.
-     * This means that the point (0,0) marks the upper left corner of the node or port,
-     * while (width,height) marks the bottom right corner.
+     * Returns the coordinates of the point on the border of the given figure that is nearest to the
+     * given point. For more information, please see the {@link AnchorUtil class documentation}.
      * 
-     * @param point an anchor point of an edge
-     * @param width the width of the corresponding node or port
-     * @param height the height of the corresponding node or port
-     * @param rendering the rendering associated with the node or port, or {@code null} if none
+     * @param point the other end point of the edge, relative to the upper left corner of the figure's
+     *              bounding box.
+     * @param width the width of the figure's bounding box. Must be {@code >=0}.
+     * @param height the height of the figure's bounding box. Must be {@code >=0}.
+     * @param rendering the rendering associated with the figure. If this is {@code null}, a simple
+     *                  rectangle will be assumed.
+     * @return the point on the figure's border that is nearest to the given point, relative to the
+     *         figure's upper left corner.
+     * @throws IllegalArgumentException if {@code width} or {@code height} are negative.
      */
-    public static void anchorPoint(final KVector point, final double width, final double height,
-            final KRendering rendering) {
-        if (rendering == null) {
-            // if no rendering is specified, assume a rectangle
-            anchorPointRectangle(point, width, height);
-        } else {
+    public static KVector nearestBorderPoint(final KVector point, final double width,
+            final double height, final KRendering rendering) {
+
+        if (width < 0 || height < 0) {
+            throw new IllegalArgumentException("width (" + width + ") and height (" + height
+                    + ") must be >= 0.");
+        }
+
+        if (rendering != null) {
             switch (rendering.eClass().getClassifierID()) {
             case KRenderingPackage.KROUNDED_RECTANGLE:
                 KRoundedRectangle roundedRectangle = (KRoundedRectangle) rendering;
+                
                 double cornerWidth = roundedRectangle.getCornerWidth();
                 cornerWidth = 2 * cornerWidth <= width ? cornerWidth : width / 2;
+                
                 double cornerHeight = roundedRectangle.getCornerHeight();
                 cornerHeight = 2 * cornerHeight <= height ? cornerHeight : height / 2;
                 
-                anchorPointRoundedRectangle(point, width, height, cornerWidth, cornerHeight);
-                break;
+                return nearestBorderPointRoundedRectangle(point, width, height, cornerWidth,
+                        cornerHeight);
             case KRenderingPackage.KELLIPSE:
-                anchorPointEllipse(point, width, height);
-                break;
-            default:
-                anchorPointRectangle(point, width, height);
+                return nearestBorderPointEllipse(point, width, height);
             }
         }
+        
+        return nearestBorderPointRectangle(point, width, height);
     }
     
     /**
-     * Correct the given anchor point for rectangle rendering.
-     * The point must be transformed to the local coordinates of the corresponding node
-     * (or port, if applicable) before this method is called.
-     * This means that the point (0,0) marks the upper left corner of the node or port,
-     * while (width,height) marks the bottom right corner.
+     * Implements {@link #nearestBorderPoint(KVector, double, double, KRendering)} for rectangles.
      * 
-     * @param point an anchor point of an edge
-     * @param width the width of the corresponding node or port
-     * @param height the height of the corresponding node or port
+     * @param point the other end point of the edge, relative to the upper left corner of the figure's
+     *              bounding box.
+     * @param width the width of the figure's bounding box. Must be {@code >=0}.
+     * @param height the height of the figure's bounding box. Must be {@code >=0}.
+     * @return the point on the figure's border that is nearest to the given point, relative to the
+     *         figure's upper left corner.
      */
-    public static void anchorPointRectangle(final KVector point, final double width,
+    private static KVector nearestBorderPointRectangle(final KVector point, final double width,
             final double height) {
+        
+        KVector result = new KVector(point);
+        
         if (point.x < 0) {
-            point.x = 0;
+            result.x = 0;
         } else if (point.x > width) {
-            point.x = width;
+            result.x = width;
         }
         
         if (point.y < 0) {
-            point.y = 0;
+            result.y = 0;
         } else if (point.y > height) {
-            point.y = height;
+            result.y = height;
         }
+        
+        return result;
     }
     
     /**
-     * Correct the given anchor point for rounded rectangle rendering.
-     * The point must be transformed to the local coordinates of the corresponding node
-     * (or port, if applicable) before this method is called.
-     * This means that the point (0,0) marks the upper left corner of the node or port,
-     * while (width,height) marks the bottom right corner.
+     * Implements {@link #nearestBorderPoint(KVector, double, double, KRendering)} for rounded
+     * rectangles with the given dimensions and corner specifications.
      * 
-     * @param point an anchor point of an edge
-     * @param rectWidth the width of the corresponding node or port
-     * @param rectHeight the height of the corresponding node or port
-     * @param cornerWidth the corner width
-     * @param cornerHeight the corner height
+     * @param point the other end point of the edge, relative to the upper left corner of the figure's
+     *              bounding box.
+     * @param width the width of the figure's bounding box. Must be {@code >=0}.
+     * @param height the height of the figure's bounding box. Must be {@code >=0}.
+     * @param cornerWidth corner width of the rounded rectangle.
+     * @param cornerHeight corner height of the rounded rectangle.
+     * @return the point on the figure's border that is nearest to the given point, relative to the
+     *         figure's upper left corner.
      */
-    public static void anchorPointRoundedRectangle(final KVector point, final double rectWidth,
-            final double rectHeight, final double cornerWidth, final double cornerHeight) {
+    private static KVector nearestBorderPointRoundedRectangle(final KVector point, final double width,
+            final double height, final double cornerWidth, final double cornerHeight) {
+
+        assert width >= 0 : "width = " + width;
+        assert height >= 0 : "height = " + height;
         
-        final double rectWidthWithoutCornerWidth = rectWidth - cornerWidth;
+        final double rectWidthWithoutCornerWidth = width - cornerWidth;
         final double rectWidthWithoutTwiceCornerWidth = rectWidthWithoutCornerWidth - cornerWidth;
-        final double rectHeightWidthoutCornerHeight = rectHeight - cornerHeight;
+        final double rectHeightWidthoutCornerHeight = height - cornerHeight;
         final double rectHeightWithoutTwiceCornerHeight = rectHeightWidthoutCornerHeight - cornerHeight;
         
-        final double x = point.x;
-        final double y = point.y;
+        KVector result = new KVector(point);
         
         // We determine the movement of the anchors by delegating to the ellipse case.
         //  To this end, we distinguish the following cases and adjust the width and height of the
         //  imaginary ellipse accordingly by subtracting the non rounded size fractions and re-adding
         //  them afterwards.
         
-        if (x <= 0) {
-            if (y <= cornerHeight) {                
-                anchorPointEllipse(point, 2 * cornerWidth, 2 * cornerHeight);
-            } else if (y >= rectHeightWidthoutCornerHeight) {
-                point.y -= rectHeightWithoutTwiceCornerHeight;
-                anchorPointEllipse(point, 2 * cornerWidth, 2 * cornerHeight);
-                point.y += rectHeightWithoutTwiceCornerHeight;
+        if (point.x <= 0) {
+            if (point.y <= cornerHeight) {                
+                result = nearestBorderPointEllipse(result, 2 * cornerWidth, 2 * cornerHeight);
+            } else if (point.y >= rectHeightWidthoutCornerHeight) {
+                result.y -= rectHeightWithoutTwiceCornerHeight;
+                result = nearestBorderPointEllipse(result, 2 * cornerWidth, 2 * cornerHeight);
+                result.y += rectHeightWithoutTwiceCornerHeight;
             } else {
-                point.x = 0;
+                result.x = 0;
             }
         }
         
-        if (x >= rectWidth) {
-            if (y <= cornerHeight) {                
-                point.x -= rectWidthWithoutTwiceCornerWidth;
-                anchorPointEllipse(point, 2 * cornerWidth, 2 * cornerHeight);
-                point.x += rectWidthWithoutTwiceCornerWidth;
-            } else if (y >= rectHeightWidthoutCornerHeight) {
-                point.x -= rectWidthWithoutTwiceCornerWidth;
-                point.y -= rectHeightWithoutTwiceCornerHeight;
-                anchorPointEllipse(point, 2 * cornerWidth, 2 * cornerHeight);
-                point.x += rectWidthWithoutTwiceCornerWidth;
-                point.y += rectHeightWithoutTwiceCornerHeight;
+        if (point.x >= width) {
+            if (point.y <= cornerHeight) {                
+                result.x -= rectWidthWithoutTwiceCornerWidth;
+                result = nearestBorderPointEllipse(result, 2 * cornerWidth, 2 * cornerHeight);
+                result.x += rectWidthWithoutTwiceCornerWidth;
+            } else if (point.y >= rectHeightWidthoutCornerHeight) {
+                result.x -= rectWidthWithoutTwiceCornerWidth;
+                result.y -= rectHeightWithoutTwiceCornerHeight;
+                result = nearestBorderPointEllipse(result, 2 * cornerWidth, 2 * cornerHeight);
+                result.x += rectWidthWithoutTwiceCornerWidth;
+                result.y += rectHeightWithoutTwiceCornerHeight;
             } else {
-                point.x = rectWidth;
-            }
-        }
-        if (y <= 0) {
-            if (x <= cornerWidth) {                
-                anchorPointEllipse(point, 2 * cornerWidth, 2 * cornerHeight);
-            } else if (x >= rectWidthWithoutCornerWidth) {
-                point.x -= rectWidthWithoutTwiceCornerWidth;
-                anchorPointEllipse(point, 2 * cornerWidth, 2 * cornerHeight);
-                point.x += rectWidthWithoutTwiceCornerWidth;
-            } else {
-                point.y = 0;
+                result.x = width;
             }
         }
         
-        if (y >= rectHeight) {
-            if (x <= cornerWidth) {                
-                point.y -= rectHeightWithoutTwiceCornerHeight;
-                anchorPointEllipse(point, 2 * cornerWidth, 2 * cornerHeight);
-                point.y += rectHeightWithoutTwiceCornerHeight;
-            } else if (x >= rectWidthWithoutCornerWidth) {
-                point.x -= rectWidthWithoutTwiceCornerWidth;
-                point.y -= rectHeightWithoutTwiceCornerHeight;
-                anchorPointEllipse(point, 2 * cornerWidth, 2 * cornerHeight);
-                point.x += rectWidthWithoutTwiceCornerWidth;
-                point.y += rectHeightWithoutTwiceCornerHeight;
+        if (point.y <= 0) {
+            if (point.x <= cornerWidth) {                
+                result = nearestBorderPointEllipse(result, 2 * cornerWidth, 2 * cornerHeight);
+            } else if (point.x >= rectWidthWithoutCornerWidth) {
+                result.x -= rectWidthWithoutTwiceCornerWidth;
+                result = nearestBorderPointEllipse(result, 2 * cornerWidth, 2 * cornerHeight);
+                result.x += rectWidthWithoutTwiceCornerWidth;
             } else {
-                point.y = rectHeight;
+                result.y = 0;
             }
         }
+        
+        if (point.y >= height) {
+            if (point.x <= cornerWidth) {                
+                result.y -= rectHeightWithoutTwiceCornerHeight;
+                result = nearestBorderPointEllipse(result, 2 * cornerWidth, 2 * cornerHeight);
+                result.y += rectHeightWithoutTwiceCornerHeight;
+            } else if (point.x >= rectWidthWithoutCornerWidth) {
+                result.x -= rectWidthWithoutTwiceCornerWidth;
+                result.y -= rectHeightWithoutTwiceCornerHeight;
+                result = nearestBorderPointEllipse(result, 2 * cornerWidth, 2 * cornerHeight);
+                result.x += rectWidthWithoutTwiceCornerWidth;
+                result.y += rectHeightWithoutTwiceCornerHeight;
+            } else {
+                result.y = height;
+            }
+        }
+        
+        return result;
     }
-    
-    /**
-     * Move anchorPoints of edges that are connected to ellipses to make the edge end on the line of the 
-     * Rendering.
-     * @param point the current end point of the edge to be changed by this method
-     * @param width the width of the ellipse
-     * @param height the height of the ellipse
-     */
-    public static void anchorPointEllipse(final KVector point, final double width, final double height) {
 
+    /**
+     * Implements {@link #nearestBorderPoint(KVector, double, double, KRendering)} for ellipses.
+     * 
+     * @param point the other end point of the edge, relative to the upper left corner of the figure's
+     *              bounding box.
+     * @param width the width of the figure's bounding box. Must be {@code >=0}.
+     * @param height the height of the figure's bounding box. Must be {@code >=0}.
+     * @return the point on the figure's border that is nearest to the given point, relative to the
+     *         figure's upper left corner.
+     */
+    private static KVector nearestBorderPointEllipse(final KVector point, final double width,
+            final double height) {
+        
+        assert width >= 0 : "width = " + width;
+        assert height >= 0 : "height = " + height;
+        
         // By means of the following width-height-ratio we can abstract the ellipse by a circle with
         // the radius 'rad'.
         final double heightRelation = width / height;
@@ -195,6 +232,8 @@ public final class AnchorUtil {
 
         final double normX = point.x;
         final double normY = point.y * heightRelation;
+        
+        KVector result = new KVector();
 
         // The basic idea of this anchor point movement is the shift along the axis of the center of the
         //  imaginary circle and the current point. In order to understand the process easier the
@@ -207,47 +246,196 @@ public final class AnchorUtil {
         if (point.x <= 0) {
             if (normY <= radius) {
                 double angle = Math.atan((radius - normY) / radius);
-                point.x = radius - Math.cos(angle) * radius;
-                point.y = (radius - Math.sin(angle) * radius) / heightRelation;
+                result.x = radius - Math.cos(angle) * radius;
+                result.y = (radius - Math.sin(angle) * radius) / heightRelation;
 
             } else {
                 double angle = Math.atan((normY - radius) / radius);
-                point.x = radius - Math.cos(angle) * radius;
-                point.y = (radius + Math.sin(angle) * radius) / heightRelation;
+                result.x = radius - Math.cos(angle) * radius;
+                result.y = (radius + Math.sin(angle) * radius) / heightRelation;
             }
         } else if (point.x >= width) {
             if (normY <= radius) {
                 double angle = Math.atan((radius - normY) / radius);
-                point.x = radius + Math.cos(angle) * radius;
-                point.y = (radius - Math.sin(angle) * radius) / heightRelation;
+                result.x = radius + Math.cos(angle) * radius;
+                result.y = (radius - Math.sin(angle) * radius) / heightRelation;
 
             } else {
                 double angle = Math.atan((normY - radius) / radius);
-                point.x = radius + Math.cos(angle) * radius;
-                point.y = (radius + Math.sin(angle) * radius) / heightRelation;
+                result.x = radius + Math.cos(angle) * radius;
+                result.y = (radius + Math.sin(angle) * radius) / heightRelation;
             }
         } else if (point.y <= 0) {
             if (normX <= radius) {
                 double angle = Math.atan((radius - normX) / radius);
-                point.x = radius - Math.sin(angle) * radius;
-                point.y = (radius - Math.cos(angle) * radius) / heightRelation;
+                result.x = radius - Math.sin(angle) * radius;
+                result.y = (radius - Math.cos(angle) * radius) / heightRelation;
 
             } else {
                 double angle = Math.atan((normX - radius) / radius);
-                point.x = radius + Math.sin(angle) * radius;
-                point.y = (radius - Math.cos(angle) * radius) / heightRelation;
+                result.x = radius + Math.sin(angle) * radius;
+                result.y = (radius - Math.cos(angle) * radius) / heightRelation;
             }
         } else if (point.y >= height) {
             if (normX <= radius) {
                 double angle = Math.atan((radius - normX) / radius);
-                point.x = radius - Math.sin(angle) * radius;
-                point.y = (radius + Math.cos(angle) * radius) / heightRelation;
+                result.x = radius - Math.sin(angle) * radius;
+                result.y = (radius + Math.cos(angle) * radius) / heightRelation;
 
             } else {
                 double angle = Math.atan((normX - radius) / radius);
-                point.x = radius + Math.sin(angle) * radius;
-                point.y = (radius + Math.cos(angle) * radius) / heightRelation;
+                result.x = radius + Math.sin(angle) * radius;
+                result.y = (radius + Math.cos(angle) * radius) / heightRelation;
             }
+        }
+        
+        return result;
+    }
+    
+    
+    ////////////////////////////////////////////////////////////////////////////////////////////////////
+    // Collide Towards Center
+    
+    /**
+     * Returns the coordinates of the point where an edge from the given point to the center of a figure
+     * with the given dimensions would intersect the figure. The coordinate {@code (0,0)} is assumed to
+     * mark the upper left corner of the figure's bounding box, while {@code (width, height)} marks the
+     * bottom right corner. The coordinates of the given end point of the edge must be relative to the
+     * upper left corner of the figure's bounding box. The returned point will be relative to it as well.
+     * 
+     * @param point the other end point of the edge.
+     * @param width the width of the figure's bounding box. Must be {@code >=0}.
+     * @param height the height of the figure's bounding box. Must be {@code >=0}.
+     * @param rendering the rendering associated with the figure. If this is {@code null}, a simple
+     *                  rectangle will be assumed.
+     * @return a point where the edge from the given end point to the figure's center would intersect
+     *         the figure.
+     * @throws IllegalArgumentException if {@code width} or {@code height} are negative.
+     */
+    public static KVector collideTowardsCenter(final KVector point, final double width,
+            final double height, final KRendering rendering) {
+        
+        if (width < 0 || height < 0) {
+            throw new IllegalArgumentException("width (" + width + ") and height (" + height
+                    + ") must be >= 0.");
+        }
+        
+        if (rendering != null) {
+            switch (rendering.eClass().getClassifierID()) {
+            default:
+                return collideTowardsRectangleCenter(point, width, height);
+            }
+        }
+
+        return collideTowardsRectangleCenter(point, width, height);
+    }
+    
+    /**
+     * Returns the point where a line starting at the given point and ending in the rectangle's center
+     * would intersect the rectangle's border.
+     * 
+     * @param point the point where the line should start.
+     * @param width the width of the figure's bounding box. Must be {@code >=0}.
+     * @param height the height of the figure's bounding box. Must be {@code >=0}.
+     * @return a point where the edge from the given end point to the figure's center would intersect
+     *         the figure.
+     */
+    private static KVector collideTowardsRectangleCenter(final KVector point, final double width,
+            final double height) {
+        
+        assert width >= 0 : "width = " + width;
+        assert height >= 0 : "height = " + height;
+        
+        KVector result;
+        KVector center = new KVector(width / 2.0, height / 2.0);
+        
+        // Check if the point is outside of the rectangle's bounds (only then do we need to calculate
+        // an intersection point)
+        if (point.y < 0 || point.y > height || point.x < 0 || point.x > width) {
+            // Intersection edge -> top border
+            result = intersectLines(0, 0, width, 0, point.x, point.y, center.x, center.y);
+            if (result != null) {
+                return result;
+            }
+            
+            // Intersection edge -> bottom border
+            result = intersectLines(0, height, width, height, point.x, point.y, center.x, center.y);
+            if (result != null) {
+                return result;
+            }
+            
+            // Intersection edge -> left border
+            result = intersectLines(0, 0, 0, height, point.x, point.y, center.x, center.y);
+            if (result != null) {
+                return result;
+            }
+            
+            // Intersection edge -> right border
+            result = intersectLines(width, 0, width, height, point.x, point.y, center.x, center.y);
+            if (result != null) {
+                return result;
+            }
+        }
+        
+        
+        // Return the point by default
+        return new KVector(point);
+    }
+    
+    
+    ////////////////////////////////////////////////////////////////////////////////////////////////////
+    // Utility Functions
+    
+    /**
+     * Returns the point where the two lines given by the four points intersect, if they do.
+     * 
+     * @param x1 x coordinate of the first line's start point.
+     * @param y1 y coordinate of the first line's start point.
+     * @param x2 x coordinate of the first line's end point.
+     * @param y2 y coordinate of the first line's end point.
+     * @param x3 x coordinate of the second line's start point.
+     * @param y3 y coordinate of the second line's start point.
+     * @param x4 x coordinate of the second line's end point.
+     * @param y4 y coordinate of the second line's end point.
+     * @return the point where the two lines intersect, or {@code null} if they don't.
+     */
+    private static KVector intersectLines(final double x1, final double y1, final double x2,
+            final double y2, final double x3, final double y3, final double x4, final double y4) {
+        
+        /* This code is based on calculating line intersections with determinants. See
+         * http://en.wikipedia.org/wiki/Line-line_intersection#Mathematics for the mathematical
+         * details.
+         */
+        
+        // Calculate the divisor
+        double divisor = (x1 - x2) * (y3 - y4) - (y1 - y2) * (x3 - x4);
+        
+        // If the divisor is 0, the lines are parallel
+        if (divisor == 0.0) {
+            // TODO: Implement properly
+            return null;
+        }
+        
+        // Calculate a few values that are used often
+        double x1y2minusy1x2 = x1 * y2 - y1 * x2;
+        double x3y4minusy3x4 = x3 * y4 - y3 * x4;
+        
+        // Calculate the coordinates of the intersection
+        KVector result = new KVector(
+                (x1y2minusy1x2 * (x3 - x4) - (x1 - x2) * x3y4minusy3x4) / divisor,
+                (x1y2minusy1x2 * (y3 - y4) - (y1 - y2) * x3y4minusy3x4) / divisor);
+        
+        // Check if the intersection is actually inside the rectangle defined by the end points of
+        // the two lines
+        if (((x1 <= result.x && result.x <= x2) || (x1 >= result.x && result.x >= x2))
+                && ((x3 <= result.x && result.x <= x4) || (x3 >= result.x && result.x >= x4))
+                && ((y1 <= result.y && result.y <= y2) || (y1 >= result.y && result.y >= y2))
+                && ((y3 <= result.y && result.y <= y4) || (y3 >= result.y && result.y >= y4))) {
+            
+            return result;
+        } else {
+            // The lines don't intersect
+            return null;
         }
     }
     

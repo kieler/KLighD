@@ -33,7 +33,7 @@ public class KlighdExecutableExtensionFactory extends AbstractGuiceAwareExecutab
 
     @Override
     protected Injector getInjector() {
-        return KlighdWizardPlugin.getInstance().getInjector("bar");
+        return KlighdWizardPlugin.getInstance().getInjector();
     }
 
 }

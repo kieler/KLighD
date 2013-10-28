@@ -27,60 +27,60 @@ import de.cau.cs.kieler.core.krendering.KRenderingRef
 @ViewSynthesisShared
 class KLibraryExtensions {
 
-	/** Rendering factory used to instantiate KRendering instances. */
-	public val renderingFactory = KRenderingFactory::eINSTANCE
+    /** Rendering factory used to instantiate KRendering instances. */
+    public val renderingFactory = KRenderingFactory::eINSTANCE
 
-	/**
+    /**
      * 
      */
-	def KRenderingLibrary getLibrary(KNode node) {
-		var parent = node
-		while (parent.parent != null) {
-			parent = parent.getParent()
-		}
+    def KRenderingLibrary getLibrary(KNode node) {
+        var parent = node
+        while (parent.parent != null) {
+            parent = parent.getParent()
+        }
 
-		var library = parent.getData(typeof(KRenderingLibrary))
-		if (library == null) {
-			library = renderingFactory.createKRenderingLibrary()
-			parent.data.add(library)
-		}
+        var library = parent.getData(typeof(KRenderingLibrary))
+        if (library == null) {
+            library = renderingFactory.createKRenderingLibrary()
+            parent.data.add(library)
+        }
 
-		return library
-	}
+        return library
+    }
 
-	/**
+    /**
      * 
      */
-	def KRenderingRef getFromLibrary(KRenderingLibrary library, String id) {
-		val rendering = library.renderings.findFirst[r|r.id == id] as KRendering
+    def KRenderingRef getFromLibrary(KRenderingLibrary library, String id) {
+        val rendering = library.renderings.findFirst[r|r.id == id] as KRendering
 
-		if (rendering != null) {
-			val ref = renderingFactory.createKRenderingRef()
-			ref.rendering = rendering
-			return ref
-		}
-	}
+        if (rendering != null) {
+            val ref = renderingFactory.createKRenderingRef()
+            ref.rendering = rendering
+            return ref
+        }
+    }
 
-	def KRenderingRef getFromLibrary(KNode node, String id) {
-		val library = node.library
-		return library.getFromLibrary(id)
-	}
+    def KRenderingRef getFromLibrary(KNode node, String id) {
+        val library = node.library
+        return library.getFromLibrary(id)
+    }
 
-	/**
+    /**
      * 
      */
-	def KRenderingRef addToLibrary(KRenderingLibrary library, String id, KRendering rendering) {
-		rendering.id = id
-		library.renderings.add(rendering)
+    def KRenderingRef addToLibrary(KRenderingLibrary library, String id, KRendering rendering) {
+        rendering.id = id
+        library.renderings.add(rendering)
 
-		val ref = renderingFactory.createKRenderingRef()
-		ref.rendering = rendering
-		return ref
-	}
+        val ref = renderingFactory.createKRenderingRef()
+        ref.rendering = rendering
+        return ref
+    }
 
-	def KRenderingRef addToLibrary(KNode node, String id, KRendering rendering) {
-		val library = node.library
-		return library.addToLibrary(id, rendering)
-	}
+    def KRenderingRef addToLibrary(KNode node, String id, KRendering rendering) {
+        val library = node.library
+        return library.addToLibrary(id, rendering)
+    }
 
 }

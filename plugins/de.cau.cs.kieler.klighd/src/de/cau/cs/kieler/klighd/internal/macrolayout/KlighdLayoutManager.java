@@ -919,19 +919,21 @@ public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement>
     private void checkAndCopyPoint(final KPoint originPoint, final KPoint destinationPoint,
             final KNode node, final KPort port, final KRendering nodeRendering,
             final KRendering portRendering, final KVector offset) {
+        
         KShapeLayout nodeLayout = node.getData(KShapeLayout.class);
         KVector p = originPoint.createVector();
         if (port == null) {
             p.add(offset);
-            AnchorUtil.anchorPoint(p, nodeLayout.getWidth(), nodeLayout.getHeight(),
+            p = AnchorUtil.nearestBorderPoint(p, nodeLayout.getWidth(), nodeLayout.getHeight(),
                     nodeRendering);
         } else {
             KShapeLayout portLayout = port.getData(KShapeLayout.class);
             offset.translate(-portLayout.getXpos(), -portLayout.getYpos());
             p.add(offset);
-            AnchorUtil.anchorPoint(p, portLayout.getWidth(), portLayout.getHeight(),
+            p = AnchorUtil.nearestBorderPoint(p, portLayout.getWidth(), portLayout.getHeight(),
                     portRendering);
         }
+        
         destinationPoint.applyVector(p.sub(offset));
     }
     
@@ -947,6 +949,7 @@ public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement>
      */
     private KVector toElementBorder(final KNode centerNode, final KPort centerPort,
             final KNode remoteNode, final KPort remotePort) {
+        
         KShapeLayout remoteNodeLayout = remoteNode.getData(KShapeLayout.class);
         KVector point = new KVector();
         if (remotePort == null) {
@@ -962,18 +965,26 @@ public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement>
             KimlUtil.toAbsolute(point, remoteNode.getParent());
             KimlUtil.toRelative(point, centerNode.getParent());
         }
+        
         KShapeLayout centerNodeLayout = centerNode.getData(KShapeLayout.class);
         point.translate(-centerNodeLayout.getXpos(), -centerNodeLayout.getYpos());
         if (centerPort == null) {
-            AnchorUtil.anchorPoint(point, centerNodeLayout.getWidth(), centerNodeLayout.getHeight(),
+            point = AnchorUtil.collideTowardsCenter(
+                    point,
+                    centerNodeLayout.getWidth(),
+                    centerNodeLayout.getHeight(),
                     centerNode.getData(KRendering.class));
         } else {
             KShapeLayout centerPortLayout = centerPort.getData(KShapeLayout.class);
             point.translate(-centerPortLayout.getXpos(), -centerPortLayout.getYpos());
-            AnchorUtil.anchorPoint(point, centerPortLayout.getWidth(), centerPortLayout.getHeight(),
+            point = AnchorUtil.collideTowardsCenter(
+                    point,
+                    centerPortLayout.getWidth(),
+                    centerPortLayout.getHeight(),
                     centerPort.getData(KRendering.class));
             point.translate(centerPortLayout.getXpos(), centerPortLayout.getYpos());
         }
+        
         return point;
     }
 

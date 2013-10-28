@@ -831,6 +831,70 @@ class KRenderingExtensions {
         ];
     }
     
+    def <T extends KRendering> T setLeftTopAlignedPointPlacementData(T rendering,
+        float leftMargin, float topMargin, float rightMargin, float bottomMargin) {
+        return rendering.setLeftTopAlignedPointPlacementData(
+            leftMargin, 0, topMargin, 0, rightMargin, bottomMargin, 0, 0
+        );
+    }
+
+    def <T extends KRendering> T setLeftTopAlignedPointPlacementData(T rendering,
+        float absoluteLR, float relativeLR,
+        float absoluteTB, float relativeTB,
+        float horizontalMargin, float verticalMargin, float minWidth, float minHeight) {
+        return rendering.setPointPlacementData(
+            LEFT, absoluteLR, relativeLR, TOP, absoluteTB, relativeTB, H_LEFT, V_TOP, 0, 0, 0, 0
+        );
+    }
+
+    def <T extends KRendering> T setLeftBottomAlignedPointPlacementData(T rendering,
+        float leftMargin, float topMargin, float rightMargin, float bottomMargin) {
+        return rendering.setLeftTopAlignedPointPlacementData(
+            leftMargin, 0, bottomMargin, 0, rightMargin, topMargin, 0, 0
+        );
+    }
+
+    def <T extends KRendering> T setLeftBottomAlignedPointPlacementData(T rendering,
+        float absoluteLR, float relativeLR,
+        float absoluteTB, float relativeTB,
+        float horizontalMargin, float verticalMargin, float minWidth, float minHeight) {
+        return rendering.setPointPlacementData(
+            LEFT, absoluteLR, relativeLR, BOTTOM, absoluteTB, relativeTB, H_LEFT, V_BOTTOM, 0, 0, 0, 0
+        );
+    }
+
+    def <T extends KRendering> T setRightTopAlignedPointPlacementData(T rendering,
+        float leftMargin, float topMargin, float rightMargin, float bottomMargin) {
+        return rendering.setLeftTopAlignedPointPlacementData(
+            rightMargin, 0, topMargin, 0, leftMargin, bottomMargin, 0, 0
+        );
+    }
+
+    def <T extends KRendering> T setRightTopAlignedPointPlacementData(T rendering,
+        float absoluteLR, float relativeLR,
+        float absoluteTB, float relativeTB,
+        float horizontalMargin, float verticalMargin, float minWidth, float minHeight) {
+        return rendering.setPointPlacementData(
+            RIGHT, absoluteLR, relativeLR, TOP, absoluteTB, relativeTB, H_RIGHT, V_TOP, 0, 0, 0, 0
+        );
+    }
+
+    def <T extends KRendering> T setRightBottomAlignedPointPlacementData(T rendering,
+        float leftMargin, float topMargin, float rightMargin, float bottomMargin) {
+        return rendering.setLeftTopAlignedPointPlacementData(
+            rightMargin, 0, bottomMargin, 0, leftMargin, topMargin, 0, 0
+        );
+    }
+
+    def <T extends KRendering> T setRightBottomAlignedPointPlacementData(T rendering,
+        float absoluteLR, float relativeLR,
+        float absoluteTB, float relativeTB,
+        float horizontalMargin, float verticalMargin, float minWidth, float minHeight) {
+        return rendering.setPointPlacementData(
+            RIGHT, absoluteLR, relativeLR, BOTTOM, absoluteTB, relativeTB, H_RIGHT, V_BOTTOM, 0, 0, 0, 0
+        );
+    }
+
     def <T extends KRendering> T setPointPlacementData(T rendering,
         PositionReferenceX px, float absoluteLR, float relativeLR,
         PositionReferenceY py, float absoluteTB, float relativeTB,
