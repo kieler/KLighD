@@ -93,6 +93,7 @@ import edu.umd.cs.piccolo.PLayer;
 import edu.umd.cs.piccolo.PNode;
 import edu.umd.cs.piccolo.activities.PInterpolatingActivity;
 import edu.umd.cs.piccolo.util.PBounds;
+import edu.umd.cs.piccolo.util.PDimension;
 
 
 /**
@@ -356,6 +357,67 @@ public class DiagramController {
                     topNodeLayout.getWidth(), topNodeLayout.getHeight());
             camera.animateViewToCenterBounds(newBounds, true, duration);
         }
+    }
+    
+    /**
+     * Sets the zoomlevel to {@code newZoomLevel}. A value below 1 results in smaller elements than
+     * in the original diagram, a value greater than 1 in a bigger elements than in the original.
+     * 
+     * The method tries retain the center point, i.e., to center over the currently centered point,
+     * however, it is assured that at least some parts of the underlying diagram are visible.
+     * 
+     * @param newZoomLevel
+     *            the new zoom level
+     * @param duration
+     *            time to animate
+     */
+    public void zoomToLevel(final float newZoomLevel, final int duration) {
+        if (topNode.getParent() instanceof PLayer) {
+            KShapeLayout topNodeLayout = topNode.getGraphElement().getData(KShapeLayout.class);
+
+            if (topNodeLayout == null) {
+                String msg = "KLighD DiagramController: "
+                        + "Failed to apply 'zoom to one' as the topNode's layout data are unavailable. "
+                        + "This is most likely due to a failed incremental update before.";
+                StatusManager.getManager().handle(
+                        new Status(IStatus.ERROR, KlighdPiccoloPlugin.PLUGIN_ID, msg),
+                        StatusManager.LOG);
+                return;
+            }
+
+            // chsch: I don't like this exploit of implicit knowledge!
+            // Would an API change be reasonable here?
+            // (leads to worse class structure, less encapsulation)
+            PCamera camera = ((PLayer) topNode.getParent()).getCamera(0);
+            PBounds nodeBounds =
+                    new PBounds(topNodeLayout.getXpos(), topNodeLayout.getYpos(),
+                            topNodeLayout.getWidth(), topNodeLayout.getHeight());
+
+            // it would be possible to use PCamera#scaleViewAboutPoint(scale, x, y), 
+            // however this method does not allow for animation
+            
+            // calculate the bound as they would be if scaled by the new factor
+            PBounds origBounds = camera.getViewBounds();
+            double oldZoomLevel = camera.getViewTransformReference().getScale();
+            PBounds newBounds =
+                    new PBounds(origBounds.x, origBounds.y, origBounds.width * oldZoomLevel
+                            / newZoomLevel, origBounds.height * oldZoomLevel / newZoomLevel);
+
+            // add the necessary translation
+            double normalizedWidth = origBounds.width * oldZoomLevel;
+            double normalizedHeight = origBounds.height * oldZoomLevel;
+            double transX = (origBounds.width - normalizedWidth / newZoomLevel) / 2f;
+            double transY = (origBounds.height - normalizedHeight / newZoomLevel) / 2f;
+            newBounds.moveBy(transX, transY);
+
+            // make sure at least some of the diagram is visible after zooming to scale 1
+            PDimension dim = newBounds.deltaRequiredToContain(nodeBounds);
+            newBounds.moveBy(dim.width, dim.height);
+
+            // perform the animation
+            camera.animateViewToCenterBounds(newBounds, true, duration);
+        }
+
     }
     
     /**

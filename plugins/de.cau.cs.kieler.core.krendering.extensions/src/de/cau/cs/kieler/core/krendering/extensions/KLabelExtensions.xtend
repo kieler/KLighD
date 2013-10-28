@@ -95,8 +95,17 @@ class KLabelExtensions {
     
     /**
      * Configures a central (main) edge label, e.g. a state transition guard/effect label!
+     * 
+     * @deprecated Use {@link #configureCenteralEdgeLabel(KLabel, String, int, String)} instead!
      */
     def KLabel configureCenteralLabel(KLabel label, String labelText, int fontSize, String fontName) {
+        return configureCenteralEdgeLabel(label, labelText, fontSize, fontName);
+    }
+    
+    /**
+     * Configures a central (main) edge label, e.g. a state transition guard/effect label!
+     */
+    def KLabel configureCenteralEdgeLabel(KLabel label, String labelText, int fontSize, String fontName) {
         return label => [
             it.text = labelText;
             it.data += renderingFactory.createKText().setFontName(fontName).setFontSize(fontSize);
@@ -107,9 +116,18 @@ class KLabelExtensions {
     }
     
     /**
-     * Configures a central (main) edge label, e.g. a state transition guard/effect label!
+     * Configures a head edge label, e.g. the cardinality of a relation in an class diagram!
+     * 
+     * @deprecated Use {@link #configureHeadEdgeLabel(KLabel, String, int, String)} instead!
      */
     def KLabel configureHeadLabel(KLabel label, String labelText, int fontSize, String fontName) {
+        return configureHeadEdgeLabel(label, labelText, fontSize, fontName);
+    }
+
+    /**
+     * Configures a head edge label, e.g. the cardinality of a relation in an class diagram!
+     */
+    def KLabel configureHeadEdgeLabel(KLabel label, String labelText, int fontSize, String fontName) {
         return label => [
             it.text = labelText;
             it.data += renderingFactory.createKText().setFontName(fontName).setFontSize(fontSize);
@@ -120,9 +138,18 @@ class KLabelExtensions {
     }
     
     /**
-     * Configures a central (main) edge label, e.g. a state transition guard/effect label!
+     * Configures a tail edge label, e.g. the cardinality of a relation in an class diagram!
+     * 
+     * @deprecated Use {@link #configureTailEdgeLabel(KLabel, String, int, String)} instead!
      */
     def KLabel configureTailLabel(KLabel label, String labelText, int fontSize, String fontName) {
+        return configureTailEdgeLabel(label, labelText, fontSize, fontName);
+    }
+
+    /**
+     * Configures a tail edge label, e.g. the cardinality of a relation in an class diagram!
+     */
+    def KLabel configureTailEdgeLabel(KLabel label, String labelText, int fontSize, String fontName) {
         return label => [
             it.text = labelText;
             it.data += renderingFactory.createKText().setFontName(fontName).setFontSize(fontSize);

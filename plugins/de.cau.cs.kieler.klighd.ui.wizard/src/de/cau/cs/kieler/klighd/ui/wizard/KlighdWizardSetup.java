@@ -18,9 +18,10 @@ import java.util.List;
 import com.google.common.collect.ImmutableList;
 
 /**
- * Hold some default values for the new klighd project wizard.
+ * Hold some default values for the new KLighD project wizard.
  * 
  * @author uru
+ * @author chsch
  */
 public final class KlighdWizardSetup {
 
@@ -31,10 +32,10 @@ public final class KlighdWizardSetup {
     public static final String SRC_FOLDER = "src/";
 
     /** default project name shown in the wizard. */
-    public static final String DEFAULT_PROJECT = "de.cau.cs.kieler.klighd.example";
+    public static final String DEFAULT_PROJECT = "my.klighd.diagrams.example";
 
     /** default transformation name shown in the wizard. */
-    public static final String DEFAULT_TRANSFORMATION_NAME = "MyTransformation";
+    public static final String DEFAULT_TRANSFORMATION_NAME = "DiagramSynthesis";
 
     /** required bundles for each klighd project. */
     public static final List<String> REQUIRED_BUNDLES = ImmutableList.of(
