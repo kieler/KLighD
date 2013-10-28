@@ -22,6 +22,7 @@ import de.cau.cs.kieler.core.kgraph.KGraphElement;
 import de.cau.cs.kieler.core.kgraph.KNode;
 import de.cau.cs.kieler.klighd.IViewer;
 import de.cau.cs.kieler.klighd.IViewerEventListener;
+import de.cau.cs.kieler.klighd.ZoomStyle;
 
 /**
  * An abstract base class for viewers which provides an implementation for the handling of listeners
@@ -75,18 +76,34 @@ public abstract class AbstractViewer<T> implements IViewer<T> {
 
     /**
      * {@inheritDoc}
+     * @deprecated use {@link #zoomToLevel(float, int)}
      */
     public void zoom(final float zoomLevel, final int duration) {
+        zoomToLevel(zoomLevel, duration);
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public void zoomToLevel(final float zoomLevel, final int duration) {
         // do nothing
     }
 
     /**
      * {@inheritDoc}
+     * @deprecated use {@link #zoom(ZoomStyle, int)}
      */
     public void zoomToFit(final int duration) {
+        zoom(ZoomStyle.ZOOM_TO_FIT, duration);
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public void zoom(final ZoomStyle style, final int duration) {
         // do nothing
     }
-
+    
     /**
      * {@inheritDoc}
      */

@@ -147,16 +147,8 @@ public class KlighdViewer extends AbstractViewer<Object> {
      * {@inheritDoc}
      */
     @Override
-    public void zoom(final float zoomLevel, final int duration) {
-        contextViewer.zoom(zoomLevel, duration);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void zoomToFit(final int duration) {
-        contextViewer.zoomToFit(duration);
+    public void zoomToLevel(final float zoomLevel, final int duration) {
+        contextViewer.zoomToLevel(zoomLevel, duration);
     }
 
     /**

@@ -226,7 +226,8 @@ public class DiagramViewPart extends ViewPart implements IDiagramWorkbenchPart {
             }
             @Override
             public void run() {
-                DiagramViewPart.this.getContextViewer().zoom(1, KlighdConstants.DEFAULT_ANIMATION_TIME);
+                DiagramViewPart.this.getContextViewer().zoomToLevel(1, 
+                        KlighdConstants.DEFAULT_ANIMATION_TIME);
             }
         });
         

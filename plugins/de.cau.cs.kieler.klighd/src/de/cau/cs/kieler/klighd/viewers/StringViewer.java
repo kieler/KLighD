@@ -111,13 +111,6 @@ public class StringViewer extends AbstractViewer<String> {
     public void setRecording(final boolean recording) {
         // do nothing
     }
-    
-    /**
-     * {@inheritDoc} 
-     */
-    public void setZoomToFit(final boolean zoomToFit) {
-        // do nothing
-    }
 
     /**
      * {@inheritDoc}

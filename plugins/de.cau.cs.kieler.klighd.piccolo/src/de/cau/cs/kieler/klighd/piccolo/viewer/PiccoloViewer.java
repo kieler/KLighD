@@ -485,7 +485,7 @@ public class PiccoloViewer extends AbstractViewer<KNode> implements INodeSelecti
      * {@inheritDoc}
      */
     @Override
-    public void zoom(final float zoomLevel, final int duration) {
+    public void zoomToLevel(final float zoomLevel, final int duration) {
          controller.zoomToLevel(zoomLevel, duration);
     }
 
@@ -493,8 +493,8 @@ public class PiccoloViewer extends AbstractViewer<KNode> implements INodeSelecti
      * {@inheritDoc}
      */
     @Override
-    public void zoomToFit(final int duration) {
-        controller.zoomToFit(duration);
+    public void zoom(final ZoomStyle style, final int duration) {
+        controller.zoom(style, duration);
     }
 
     /**

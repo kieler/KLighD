@@ -529,7 +529,7 @@ public class DiagramEditorPart extends EditorPart implements IDiagramWorkbenchPa
             }
             @Override
             public void run() {
-                DiagramEditorPart.this.getContextViewer().zoom(1,
+                DiagramEditorPart.this.getContextViewer().zoomToLevel(1,
                         KlighdConstants.DEFAULT_ANIMATION_TIME);
             }
         };

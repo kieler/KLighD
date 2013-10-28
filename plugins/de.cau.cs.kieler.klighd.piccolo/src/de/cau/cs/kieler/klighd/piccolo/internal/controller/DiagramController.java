@@ -333,13 +333,33 @@ public class DiagramController {
 
         add(diagramElement);
     }
-    
+
     /**
+     * Performs a zooming depending on the specified style.
      * 
+     * @param style
+     *            the desired style
      * @param duration
      *            time to animate
      */
-    public void zoomToFit(final int duration) {
+    public void zoom(final ZoomStyle style, final int duration) {
+        switch (style) {
+        case ZOOM_TO_FIT:
+            zoomToFit(duration);
+            break;
+        case ZOOM_TO_FOCUS:
+            zoomToFocus(focusNode, duration);
+            break;
+        default:
+            // nothing
+        }
+    }
+    
+    /**
+     * @param duration
+     *            time to animate
+     */
+    private void zoomToFit(final int duration) {
         if (topNode.getParent() instanceof PLayer) {
             KShapeLayout topNodeLayout = topNode.getGraphElement().getData(KShapeLayout.class);
             
@@ -370,7 +390,7 @@ public class DiagramController {
      * @param duration
      *            duration of the animation
      */
-    public void zoomToFocus(final KNode focus, final int duration) {
+    private void zoomToFocus(final KNode focus, final int duration) {
         KShapeLayout shapeLayout = focus.getData(KShapeLayout.class);
         PBounds newBounds =
                 new PBounds(shapeLayout.getXpos(), shapeLayout.getYpos(), shapeLayout.getWidth(),
@@ -395,7 +415,7 @@ public class DiagramController {
      * @param duration
      *            duration of the animation
      */
-    public void zoomToFocus(final PBounds focus, final int duration) {
+    private void zoomToFocus(final PBounds focus, final int duration) {
         PCamera camera = ((PLayer) topNode.getParent()).getCamera(0);
 
         PBounds viewBounds = camera.getViewBounds();
@@ -413,9 +433,7 @@ public class DiagramController {
                 viewBounds.getWidth() > newBounds.getWidth()
                         && viewBounds.getHeight() > newBounds.getHeight();
 
-//        System.out.println(focus + " " + scale + " " + fullyContains);
-
-        // TODO
+        // TODO ?? uru: what?
 
         if (fullyContains) {
             camera.animateViewToCenterBounds(newBounds, true, duration);
@@ -1113,13 +1131,7 @@ public class DiagramController {
         recordedChanges.clear();
 
         // apply a proper zoom handling if requested
-        if (zoomStyle == ZoomStyle.ZOOM_TO_FIT) {
-            zoomToFit(animationTime);
-        } else if (zoomStyle == ZoomStyle.ZOOM_TO_FOCUS) {
-            if (focusNode != null) {
-                zoomToFocus(focusNode, animationTime);
-            }
-        }
+        zoom(zoomStyle, animationTime);
     }
 
     /**

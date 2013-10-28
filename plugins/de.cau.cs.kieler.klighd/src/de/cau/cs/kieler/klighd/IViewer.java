@@ -171,6 +171,15 @@ public interface IViewer<T> {
     void centerOn(KGraphElement diagramElement, int duration);
     
     /**
+     * @param zoomLevel
+     *            the zoom level
+     * @param duration
+     *            the duration
+     * @deprecated use {@link #zoomToLevel(float, int)}
+     */
+    void zoom(float zoomLevel, int duration);
+
+    /**
      * Zooms to the given zoom level over the specified duration.
      * 
      * @param zoomLevel
@@ -178,15 +187,27 @@ public interface IViewer<T> {
      * @param duration
      *            the duration
      */
-    void zoom(float zoomLevel, int duration);
-
+    void zoomToLevel(float zoomLevel, int duration);
+    
     /**
      * Performs a zoom-to-fit over the specified duration.
      * 
      * @param duration
      *            the duration
+     *            
+     * @deprecated use {@link #zoom(ZoomStyle, int)} with {@link ZoomStyle#ZOOM_TO_FIT}.
      */
     void zoomToFit(int duration);
+    
+    /**
+     * Performs the specified zoom style over the specified duration.
+     * 
+     * @param style
+     *            the desired zoom stlye
+     * @param duration
+     *            the duration
+     */
+    void zoom(ZoomStyle style, int duration);
     
     /**
      * Provides the expansion state of the given representation element.
