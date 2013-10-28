@@ -78,7 +78,7 @@ public final class KlighdConstants {
     /**
      * Default animation time in ms.
      */
-    public static final int DEFAULT_ANIMATION_TIME = 400;
+    public static final int DEFAULT_ANIMATION_TIME = 500;
     
     
     /**

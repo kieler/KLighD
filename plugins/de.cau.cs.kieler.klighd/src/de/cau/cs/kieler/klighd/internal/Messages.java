@@ -26,6 +26,10 @@ public final class Messages extends NLS {
     public static String KlighdPreferencePage_generalOptions;
     public static String KlighdPreferencePage_zoomToFit_text;
     public static String KlighdPreferencePage_zoomToFit_tooltip;
+    public static String KlighdPreferencePage_zoomToFocus_text;
+    public static String KlighdPreferencePage_zoomToFocus_tooltip;
+    public static String KlighdPreferencePage_zoomNone_text;
+    public static String KlighdPreferencePage_zoomNone_tooltip;
     
     static {
         // initialize resource bundle

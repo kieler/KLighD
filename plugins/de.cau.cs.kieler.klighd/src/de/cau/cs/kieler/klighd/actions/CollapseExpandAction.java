@@ -47,6 +47,7 @@ public class CollapseExpandAction implements IAction {
         context.getViewer().toggleExpansion(context.getNode());
 
         return ActionResult.createResult(true);
+//         return ActionResult.createResult(true).doZoomToFocus();
     }
     
 }

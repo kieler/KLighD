@@ -33,6 +33,7 @@ import de.cau.cs.kieler.klighd.KlighdConstants;
 import de.cau.cs.kieler.klighd.KlighdPlugin;
 import de.cau.cs.kieler.klighd.LightDiagramServices;
 import de.cau.cs.kieler.klighd.ViewContext;
+import de.cau.cs.kieler.klighd.ZoomStyle;
 import de.cau.cs.kieler.klighd.internal.preferences.KlighdPreferences;
 import de.cau.cs.kieler.klighd.triggers.KlighdResourceDropTrigger;
 import de.cau.cs.kieler.klighd.triggers.KlighdResourceDropTrigger.KlighdResourceDropState;
@@ -44,6 +45,7 @@ import de.cau.cs.kieler.klighd.viewers.ContextViewer;
  * @author mri
  * @author chsch
  * @author msp
+ * @author uru
  */
 public class DiagramViewPart extends ViewPart implements IDiagramWorkbenchPart {
 
@@ -127,6 +129,9 @@ public class DiagramViewPart extends ViewPart implements IDiagramWorkbenchPart {
         exportAction.setId(PERMANENT_ACTION_PREFIX + ".export");
         menuManager.add(exportAction);
     }
+    
+    private Action zoomToFitAction;
+    private Action zoomToFocusAction;
 
     /**
      * Add the buttons to the tool bar.
@@ -143,17 +148,19 @@ public class DiagramViewPart extends ViewPart implements IDiagramWorkbenchPart {
         final IPreferenceStore preferenceStore = KlighdPlugin.getDefault().getPreferenceStore();
 
         // toggle zoom to fit behavior
-        toolBar.add(new Action("Toggle Zoom to Fit", IAction.AS_CHECK_BOX) {
+        zoomToFitAction = new Action("Toggle Zoom to Fit", IAction.AS_CHECK_BOX) {
             // Constructor
             {
-                setImageDescriptor(KimlUiPlugin
-                        .getImageDescriptor("icons/menu16/kieler-zoomtofit.gif"));
+                setImageDescriptor(KlighdPlugin
+                        .getImageDescriptor("icons/kieler-zoomtofit.gif"));
                 final ViewContext vc =
                         DiagramViewPart.this.getContextViewer().getCurrentViewContext();
                 if (vc != null) {
                     setChecked(vc.isZoomToFit());
                 } else {
-                    setChecked(preferenceStore.getBoolean(KlighdPreferences.ZOOM_TO_FIT));
+                    ZoomStyle style = ZoomStyle.valueOf(
+                            preferenceStore.getString(KlighdPreferences.ZOOM_STYLE));
+                    setChecked(style == ZoomStyle.ZOOM_TO_FIT);
                 }
             }
 
@@ -162,25 +169,65 @@ public class DiagramViewPart extends ViewPart implements IDiagramWorkbenchPart {
                 final ViewContext vc =
                         DiagramViewPart.this.getContextViewer().getCurrentViewContext();
                 if (vc != null) {
-                    vc.setZoomToFit(this.isChecked());
+                    vc.setZoomStyle(ZoomStyle.create(this.isChecked(), false));
 
                     // perform zoom to fit upon activation of the toggle button
                     if (this.isChecked()) {
                         LightDiagramServices.layoutAndZoomDiagram(DiagramViewPart.this);
+                        
+                        zoomToFocusAction.setChecked(false);
                     }
 
                 }
             }
-        });
+        };
+        toolBar.add(zoomToFitAction);
+        
+        zoomToFocusAction = new Action("Toggle Zoom to Focus", IAction.AS_CHECK_BOX) {
+            // Constructor
+            {
+                setImageDescriptor(KlighdPlugin
+                        .getImageDescriptor("icons/kieler-zoomtofocus.gif"));
+                final ViewContext vc =
+                        DiagramViewPart.this.getContextViewer().getCurrentViewContext();
+                if (vc != null) {
+                    setChecked(vc.isZoomToFocus());
+                } else {
+                    ZoomStyle style = ZoomStyle.valueOf(
+                            preferenceStore.getString(KlighdPreferences.ZOOM_STYLE));
+                    setChecked(style == ZoomStyle.ZOOM_TO_FOCUS);
+                }
+            }
+
+            @Override
+            public void run() {
+                final ViewContext vc =
+                        DiagramViewPart.this.getContextViewer().getCurrentViewContext();
+                if (vc != null) {
+                    vc.setZoomStyle(ZoomStyle.create(false, this.isChecked()));
+
+                    // perform zoom to focus upon activation of the toggle button
+                    if (this.isChecked()) {
+                        LightDiagramServices.layoutAndZoomDiagram(DiagramViewPart.this);
+                        
+                        // uncheck the zoom to fit button
+                        zoomToFitAction.setChecked(false);
+                    }
+
+                }
+            }
+        };
+        toolBar.add(zoomToFocusAction);
 
         toolBar.add(new Action("Scale to Original Size", IAction.AS_PUSH_BUTTON) {
             {
-                setImageDescriptor(KimlUiPlugin
-                        .getImageDescriptor("icons/menu16/kieler-zoomtoone.gif"));
+                setImageDescriptor(KlighdPlugin
+                        .getImageDescriptor("icons/kieler-zoomtoone.gif"));
             }
             @Override
             public void run() {
-                DiagramViewPart.this.getContextViewer().zoom(1, KlighdConstants.DEFAULT_ANIMATION_TIME);
+                DiagramViewPart.this.getContextViewer().zoomToLevel(1, 
+                        KlighdConstants.DEFAULT_ANIMATION_TIME);
             }
         });
         

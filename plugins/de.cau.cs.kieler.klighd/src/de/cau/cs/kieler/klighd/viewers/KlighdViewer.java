@@ -20,6 +20,7 @@ import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 import de.cau.cs.kieler.core.kgraph.KGraphElement;
 import de.cau.cs.kieler.klighd.LightDiagramServices;
 import de.cau.cs.kieler.klighd.ViewContext;
+import de.cau.cs.kieler.klighd.ZoomStyle;
 
 /**
  * The KLighD viewer can be embedded into a SWT component and is able to accept any type of input
@@ -98,17 +99,18 @@ public class KlighdViewer extends AbstractViewer<Object> {
     /**
      * {@inheritDoc}
      */
-    public void setRecording(final boolean recording) {
-        contextViewer.setRecording(recording);
+    public void startRecording() {
+        contextViewer.startRecording();
     }
     
     /**
-     * {@inheritDoc} 
+     * {@inheritDoc}
      */
-    public void setZoomToFit(final boolean zoomToFit) {
-        contextViewer.setZoomToFit(zoomToFit);
+    public void stopRecording(final ZoomStyle zoomStyle,
+            final int animationTime) {
+        contextViewer.stopRecording(zoomStyle, animationTime);
     }
-    
+
     /**
      * {@inheritDoc}
      */
@@ -145,16 +147,8 @@ public class KlighdViewer extends AbstractViewer<Object> {
      * {@inheritDoc}
      */
     @Override
-    public void zoom(final float zoomLevel, final int duration) {
-        contextViewer.zoom(zoomLevel, duration);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void zoomToFit(final int duration) {
-        contextViewer.zoomToFit(duration);
+    public void zoomToLevel(final float zoomLevel, final int duration) {
+        contextViewer.zoomToLevel(zoomLevel, duration);
     }
 
     /**

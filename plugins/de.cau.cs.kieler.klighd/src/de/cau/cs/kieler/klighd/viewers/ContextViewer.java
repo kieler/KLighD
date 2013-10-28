@@ -78,6 +78,7 @@ import de.cau.cs.kieler.klighd.LightDiagramServices;
 import de.cau.cs.kieler.klighd.TransformationContext;
 import de.cau.cs.kieler.klighd.TransformationOption;
 import de.cau.cs.kieler.klighd.ViewContext;
+import de.cau.cs.kieler.klighd.ZoomStyle;
 import de.cau.cs.kieler.klighd.internal.options.LayoutOptionControlFactory;
 import de.cau.cs.kieler.klighd.internal.options.LightLayoutConfig;
 import de.cau.cs.kieler.klighd.internal.options.SynthesisOptionControlFactory;
@@ -517,7 +518,7 @@ public class ContextViewer extends AbstractViewer<Object> implements IViewerEven
         // let the diagram fit the available space,
         //  should be dependent on a preference setting in future (TODO)
         if (zoomToFit) {
-            this.currentViewer.zoomToFit(0);
+            this.currentViewer.zoom(ZoomStyle.ZOOM_TO_FIT, 0);
         }
     }
     
@@ -762,17 +763,18 @@ public class ContextViewer extends AbstractViewer<Object> implements IViewerEven
     /**
      * {@inheritDoc}
      */
-    public void setRecording(final boolean recording) {
-        currentViewer.setRecording(recording);
-    }
-
-    /**
-     * {@inheritDoc} 
-     */
-    public void setZoomToFit(final boolean zoomToFit) {
-        currentViewer.setZoomToFit(zoomToFit);
+    public void startRecording() {
+        currentViewer.startRecording();
     }
     
+    /**
+     * {@inheritDoc}
+     */
+    public void stopRecording(final ZoomStyle zoomStyle,
+            final int animationTime) {
+        currentViewer.stopRecording(zoomStyle, animationTime);
+    }
+
     /**
      * {@inheritDoc}
      */
@@ -985,9 +987,9 @@ public class ContextViewer extends AbstractViewer<Object> implements IViewerEven
      * {@inheritDoc}
      */
     @Override
-    public void zoom(final float zoomLevel, final int duration) {
+    public void zoomToLevel(final float zoomLevel, final int duration) {
         if (currentViewer != null) {
-            currentViewer.zoom(zoomLevel, duration);
+            currentViewer.zoomToLevel(zoomLevel, duration);
         }
     }
 
@@ -995,9 +997,9 @@ public class ContextViewer extends AbstractViewer<Object> implements IViewerEven
      * {@inheritDoc}
      */
     @Override
-    public void zoomToFit(final int duration) {
+    public void zoom(final ZoomStyle style, final int duration) {
         if (currentViewer != null) {
-            currentViewer.zoomToFit(duration);
+            currentViewer.zoom(style, duration);
         }
     }
 

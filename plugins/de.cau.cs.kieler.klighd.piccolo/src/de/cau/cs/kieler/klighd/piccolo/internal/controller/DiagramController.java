@@ -65,6 +65,7 @@ import de.cau.cs.kieler.kiml.options.LayoutOptions;
 import de.cau.cs.kieler.klighd.KlighdPlugin;
 import de.cau.cs.kieler.klighd.LightDiagramServices;
 import de.cau.cs.kieler.klighd.ViewContext;
+import de.cau.cs.kieler.klighd.ZoomStyle;
 import de.cau.cs.kieler.klighd.internal.util.KlighdInternalProperties;
 import de.cau.cs.kieler.klighd.piccolo.KlighdPiccoloPlugin;
 import de.cau.cs.kieler.klighd.piccolo.internal.activities.ApplyBendPointsActivity;
@@ -155,9 +156,14 @@ public class DiagramController {
     /** whether to record layout changes, will be set to true by the KlighdLayoutManager. */
     private boolean record = false;
 
-    /** whether to perform 'zoom to fit' while applying the layout. */
-    private boolean zoomToFit = false;
-
+    /** type of zoom style applied after layout. */
+    private ZoomStyle zoomStyle = ZoomStyle.NONE;
+    
+    /** duration of a possible animation. */
+    private int animationTime = 0;
+    
+    private KNode focusNode = null;
+    
     /** the layout changes to graph elements while recording. */
     private Map<PNode, Object> recordedChanges = Maps.newLinkedHashMap();
 
@@ -201,33 +207,30 @@ public class DiagramController {
     }
 
     /**
-     * Sets whether to record layout changes in the graph instead of instantly applying them to the
-     * associated Piccolo nodes.<br>
-     * <br>
-     * Setting the recording status to {@code false} applies all recorded layout changes.
-     * 
-     * @param recording
-     *            true if layout changes should be recorded; false else
-     * 
-     * @author mri, chsch
+     * @see de.cau.cs.kieler.klighd.IViewer IViewer#startRecording()
      */
-    public void setRecording(final boolean recording) {
-        if (record && !recording) {
-            // apply recorded layout changes
-            handleRecordedChanges();
-        }
-        record = recording;
+    public void startRecording() {
+        record = true;
     }
 
     /**
-     * Instructs controller to perform 'zoom to fit' after the layout has been applied.
+     * @param theZoomStyle
+     *            the style used to zoom, eg zoom to fit or zoom to focus
+     * @param theAnimationTime
+     *            duration of the animated layout
      * 
-     * @param zoomToFit
-     *            true if 'zoom to fit' should be applied.
-     * @author chsch
+     * @see de.cau.cs.kieler.klighd.IViewer IViewer#stopRecording(ZoomStyle, int)
      */
-    public void setZoomToFit(final boolean zoomToFit) {
-        this.zoomToFit = zoomToFit;
+    public void stopRecording(final ZoomStyle theZoomStyle, final int theAnimationTime) {
+        if (record) {
+            zoomStyle = theZoomStyle;
+            animationTime = theAnimationTime;
+
+            // apply recorded layout changes
+            handleRecordedChanges();
+
+            record = false;
+        }
     }
 
     /**
@@ -292,6 +295,7 @@ public class DiagramController {
         if (nodeRep != null) {
             nodeRep.getChildArea().toggleExpansion();
         }
+        focusNode = node;
     }
 
     /**
@@ -329,13 +333,33 @@ public class DiagramController {
 
         add(diagramElement);
     }
-    
+
     /**
+     * Performs a zooming depending on the specified style.
      * 
+     * @param style
+     *            the desired style
      * @param duration
      *            time to animate
      */
-    public void zoomToFit(final int duration) {
+    public void zoom(final ZoomStyle style, final int duration) {
+        switch (style) {
+        case ZOOM_TO_FIT:
+            zoomToFit(duration);
+            break;
+        case ZOOM_TO_FOCUS:
+            zoomToFocus(focusNode, duration);
+            break;
+        default:
+            // nothing
+        }
+    }
+    
+    /**
+     * @param duration
+     *            time to animate
+     */
+    private void zoomToFit(final int duration) {
         if (topNode.getParent() instanceof PLayer) {
             KShapeLayout topNodeLayout = topNode.getGraphElement().getData(KShapeLayout.class);
             
@@ -357,6 +381,66 @@ public class DiagramController {
                     topNodeLayout.getWidth(), topNodeLayout.getHeight());
             camera.animateViewToCenterBounds(newBounds, true, duration);
         }
+    }
+    
+    /**
+     * 
+     * @param focus
+     *            the desired focus bounds
+     * @param duration
+     *            duration of the animation
+     */
+    private void zoomToFocus(final KNode focus, final int duration) {
+        KShapeLayout shapeLayout = focus.getData(KShapeLayout.class);
+        PBounds newBounds =
+                new PBounds(shapeLayout.getXpos(), shapeLayout.getYpos(), shapeLayout.getWidth(),
+                        shapeLayout.getHeight());
+
+        // we need the bounds in view coordinates (absolute), hence for
+        // a knode add the translations of all parent nodes
+        KNode parent = focus.getParent();
+        while (parent != null) {
+            KShapeLayout parentLayout = parent.getData(KShapeLayout.class);
+            newBounds.moveBy(parentLayout.getXpos(), parentLayout.getYpos());
+            parent = parent.getParent();
+        }
+
+        zoomToFocus(newBounds, duration);
+    }
+
+    /**
+     * 
+     * @param focus
+     *            the desired focus bounds
+     * @param duration
+     *            duration of the animation
+     */
+    private void zoomToFocus(final PBounds focus, final int duration) {
+        PCamera camera = ((PLayer) topNode.getParent()).getCamera(0);
+
+        PBounds viewBounds = camera.getViewBounds();
+        // check if we need to scale the view in order for the view to
+        // contain the whole focus
+        boolean scale =
+                viewBounds.getWidth() < focus.getWidth()
+                        || viewBounds.getHeight() < focus.getHeight();
+
+        KShapeLayout topNodeLayout = topNode.getGraphElement().getData(KShapeLayout.class);
+        PBounds newBounds =
+                new PBounds(topNodeLayout.getXpos(), topNodeLayout.getYpos(),
+                        topNodeLayout.getWidth(), topNodeLayout.getHeight());
+        boolean fullyContains =
+                viewBounds.getWidth() > newBounds.getWidth()
+                        && viewBounds.getHeight() > newBounds.getHeight();
+
+        // TODO ?? uru: what?
+
+        if (fullyContains) {
+            camera.animateViewToCenterBounds(newBounds, true, duration);
+        } else {
+            camera.animateViewToCenterBounds(focus, scale, duration);
+        }
+
     }
     
     /**
@@ -990,14 +1074,6 @@ public class DiagramController {
      * Applies the recorded layout changes by creating appropriate activities.
      */
     private void handleRecordedChanges() {
-        // get the duration for applying the layout
-        KShapeLayout shapeLayout = topNode.getGraphElement().getData(KShapeLayout.class);
-        int duration;
-        if (shapeLayout != null) {
-            duration = shapeLayout.getProperty(KlighdInternalProperties.APPLY_LAYOUT_DURATION);
-        } else {
-            duration = 0;
-        }
 
         // create activities to apply all recorded changes
         for (Map.Entry<PNode, Object> recordedChange : recordedChanges.entrySet()) {
@@ -1020,10 +1096,10 @@ public class DiagramController {
                     // the visibility is set to false for newly introduced edges in #addEdge
                     //  for avoiding unnecessary flickering and indicating to fade it in
                     activity = new FadeEdgeInActivity(edgeNode, bends, junctions,
-                            duration > 0 ? duration : 1);
+                            animationTime > 0 ? animationTime : 1);
                 } else {
                     activity = new ApplyBendPointsActivity(edgeNode, bends, junctions,
-                            duration > 0 ? duration : 1);
+                            animationTime > 0 ? animationTime : 1);
                 }
             } else {
                 // shape layout changed
@@ -1035,13 +1111,13 @@ public class DiagramController {
                     //  #addPort, and #addLabel for avoiding unnecessary flickering and indicating
                     //  to fade it in
                     activity = new FadeNodeInActivity(shapeNode, bounds,
-                            duration > 0 ? duration : 1);
+                            animationTime > 0 ? animationTime : 1);
                 } else { 
                     activity = new ApplySmartBoundsActivity(shapeNode, bounds,
-                            duration > 0 ? duration : 1);
+                            animationTime > 0 ? animationTime : 1);
                 }
             }
-            if (duration > 0) {
+            if (animationTime > 0) {
                 // schedule the activity
                 NodeUtil.schedulePrimaryActivity(shapeNode, activity);
             } else {
@@ -1054,9 +1130,8 @@ public class DiagramController {
         }
         recordedChanges.clear();
 
-        if (this.zoomToFit) {
-            zoomToFit(duration);
-        }
+        // apply a proper zoom handling if requested
+        zoom(zoomStyle, animationTime);
     }
 
     /**

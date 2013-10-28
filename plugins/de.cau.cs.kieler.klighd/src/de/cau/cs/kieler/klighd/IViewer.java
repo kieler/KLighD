@@ -84,24 +84,22 @@ public interface IViewer<T> {
     IContentOutlinePage getOutlinePage();
 
     /**
-     * Sets whether to record layout changes in the model instead of instantly applying them to the
+     * Starts to record layout changes in the model instead of instantly applying them to the
      * visualization.<br>
      * <br>
-     * Setting the recording status to {@code false} applies all recorded layout changes.
-     * 
-     * @param recording
-     *            true if layout changes should be recorded; false else
+     * Executing {@link #stopRecording(ZoomStyle, int)} applies all recorded layout changes.
      */
-    void setRecording(final boolean recording);
-
+    void startRecording();
+    
     /**
-     * Instructs the viewer to perform 'zoom to fit' after layout has been applied.
+     * Stops to record layout changes, initialized by {@link #startRecording()}.
      * 
-     * @param zoomToFit
-     *            true if 'zoom to fit' shall be performed.
-     * @author chsch
+     * @param zoomStyle
+     *            the style used to zoom, eg zoom to fit or zoom to focus
+     * @param animationTime
+     *            duration of the animated layout
      */
-    void setZoomToFit(final boolean zoomToFit);
+    void stopRecording(final ZoomStyle zoomStyle, final int animationTime);
 
     /**
      * Sets the given selection of diagram elements as current selection.
@@ -173,6 +171,15 @@ public interface IViewer<T> {
     void centerOn(KGraphElement diagramElement, int duration);
     
     /**
+     * @param zoomLevel
+     *            the zoom level
+     * @param duration
+     *            the duration
+     * @deprecated use {@link #zoomToLevel(float, int)}
+     */
+    void zoom(float zoomLevel, int duration);
+
+    /**
      * Zooms to the given zoom level over the specified duration.
      * 
      * @param zoomLevel
@@ -180,15 +187,27 @@ public interface IViewer<T> {
      * @param duration
      *            the duration
      */
-    void zoom(float zoomLevel, int duration);
-
+    void zoomToLevel(float zoomLevel, int duration);
+    
     /**
      * Performs a zoom-to-fit over the specified duration.
      * 
      * @param duration
      *            the duration
+     *            
+     * @deprecated use {@link #zoom(ZoomStyle, int)} with {@link ZoomStyle#ZOOM_TO_FIT}.
      */
     void zoomToFit(int duration);
+    
+    /**
+     * Performs the specified zoom style over the specified duration.
+     * 
+     * @param style
+     *            the desired zoom stlye
+     * @param duration
+     *            the duration
+     */
+    void zoom(ZoomStyle style, int duration);
     
     /**
      * Provides the expansion state of the given representation element.
