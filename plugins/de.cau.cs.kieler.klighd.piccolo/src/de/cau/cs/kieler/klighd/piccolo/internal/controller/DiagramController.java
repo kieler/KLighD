@@ -348,7 +348,8 @@ public class DiagramController {
             zoomToFit(duration);
             break;
         case ZOOM_TO_FOCUS:
-            zoomToFocus(focusNode, duration);
+            KNode focus = focusNode != null ? focusNode : topNode.getGraphElement();
+            zoomToFocus(focus, duration);
             break;
         default:
             // nothing
