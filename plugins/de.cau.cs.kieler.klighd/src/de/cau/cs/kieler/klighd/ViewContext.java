@@ -93,8 +93,8 @@ public final class ViewContext extends MapPropertyHolder {
     private IViewer<KNode> viewer = null;
     
     /** the view-specific zoom style. */
-    private ZoomStyle zoomStyle = KlighdPlugin.getDefault().getPreferenceStore()
-            .getBoolean(KlighdPreferences.ZOOM_TO_FIT) ? ZoomStyle.ZOOM_TO_FIT : ZoomStyle.NONE;
+    private ZoomStyle zoomStyle = ZoomStyle.valueOf(KlighdPlugin.getDefault().getPreferenceStore()
+            .getString(KlighdPreferences.ZOOM_STYLE));
     
     /**
      * Default constructor.

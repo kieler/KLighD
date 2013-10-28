@@ -60,7 +60,6 @@ import de.cau.cs.kieler.core.kgraph.KNode;
 import de.cau.cs.kieler.core.properties.IPropertyHolder;
 import de.cau.cs.kieler.core.properties.MapPropertyHolder;
 import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout;
-import de.cau.cs.kieler.kiml.ui.KimlUiPlugin;
 import de.cau.cs.kieler.klighd.KlighdConstants;
 import de.cau.cs.kieler.klighd.KlighdPlugin;
 import de.cau.cs.kieler.klighd.LightDiagramServices;
@@ -456,7 +455,9 @@ public class DiagramEditorPart extends EditorPart implements IDiagramWorkbenchPa
                 if (vc != null) {
                     setChecked(vc.isZoomToFit());
                 } else {
-                    setChecked(preferenceStore.getBoolean(KlighdPreferences.ZOOM_TO_FIT));
+                    ZoomStyle style = ZoomStyle.valueOf(
+                            preferenceStore.getString(KlighdPreferences.ZOOM_STYLE));
+                    setChecked(style == ZoomStyle.ZOOM_TO_FIT);
                 }
             }
 
@@ -471,8 +472,7 @@ public class DiagramEditorPart extends EditorPart implements IDiagramWorkbenchPa
                     if (this.isChecked()) {
                         // uncheck the zoom to focus button
                         zoomToFocusAction.setChecked(false);
-                        
-                        
+
                         LightDiagramServices.layoutAndZoomDiagram(DiagramEditorPart.this);
                     }
 
@@ -494,8 +494,9 @@ public class DiagramEditorPart extends EditorPart implements IDiagramWorkbenchPa
                 if (vc != null) {
                     setChecked(vc.isZoomToFocus());
                 } else {
-                    // TODO correct preference page!
-                    //setChecked(preferenceStore.getBoolean(KlighdPreferences.ZOOM_TO_FIT));
+                    ZoomStyle style = ZoomStyle.valueOf(
+                            preferenceStore.getString(KlighdPreferences.ZOOM_STYLE));
+                    setChecked(style == ZoomStyle.ZOOM_TO_FOCUS);
                 }
             }
 

@@ -158,7 +158,9 @@ public class DiagramViewPart extends ViewPart implements IDiagramWorkbenchPart {
                 if (vc != null) {
                     setChecked(vc.isZoomToFit());
                 } else {
-                    setChecked(preferenceStore.getBoolean(KlighdPreferences.ZOOM_TO_FIT));
+                    ZoomStyle style = ZoomStyle.valueOf(
+                            preferenceStore.getString(KlighdPreferences.ZOOM_STYLE));
+                    setChecked(style == ZoomStyle.ZOOM_TO_FIT);
                 }
             }
 
@@ -191,8 +193,9 @@ public class DiagramViewPart extends ViewPart implements IDiagramWorkbenchPart {
                 if (vc != null) {
                     setChecked(vc.isZoomToFocus());
                 } else {
-                    // TODO correct preference page!
-                    //setChecked(preferenceStore.getBoolean(KlighdPreferences.ZOOM_TO_FIT));
+                    ZoomStyle style = ZoomStyle.valueOf(
+                            preferenceStore.getString(KlighdPreferences.ZOOM_STYLE));
+                    setChecked(style == ZoomStyle.ZOOM_TO_FOCUS);
                 }
             }
 
