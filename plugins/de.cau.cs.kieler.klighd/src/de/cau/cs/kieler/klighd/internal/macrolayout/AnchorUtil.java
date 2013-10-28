@@ -13,10 +13,17 @@
  */
 package de.cau.cs.kieler.klighd.internal.macrolayout;
 
+import java.util.Iterator;
+import java.util.List;
+
+import de.cau.cs.kieler.core.krendering.KPolygon;
+import de.cau.cs.kieler.core.krendering.KPosition;
 import de.cau.cs.kieler.core.krendering.KRendering;
 import de.cau.cs.kieler.core.krendering.KRenderingPackage;
 import de.cau.cs.kieler.core.krendering.KRoundedRectangle;
 import de.cau.cs.kieler.core.math.KVector;
+import de.cau.cs.kieler.klighd.microlayout.Bounds;
+import de.cau.cs.kieler.klighd.microlayout.PlacementUtil;
 
 /**
  * <p>Utility class for anchor point calculation of edges. This class provides two public methods. The
@@ -322,6 +329,9 @@ public final class AnchorUtil {
         
         if (rendering != null) {
             switch (rendering.eClass().getClassifierID()) {
+            case KRenderingPackage.KPOLYGON:
+                KPolygon polygon = (KPolygon) rendering;
+                return collideTowardsPolygonCenter(point, width, height, polygon.getPoints());
             default:
                 return collideTowardsRectangleCenter(point, width, height);
             }
@@ -380,6 +390,74 @@ public final class AnchorUtil {
         
         // Return the point by default
         return new KVector(point);
+    }
+    
+    /**
+     * Returns the point where a line starting at the given point and ending in the rectangle's center
+     * would intersect the rectangle's border.
+     * 
+     * @param point the point where the line should start.
+     * @param width the width of the figure's bounding box. Must be {@code >=0}.
+     * @param height the height of the figure's bounding box. Must be {@code >=0}.
+     * @param polygonPoints the points that define the polygon. The first and the last point in the list
+     *                      are assumed to be connected by line as well.
+     * @return a point where the edge from the given end point to the figure's center would intersect
+     *         the figure.
+     */
+    private static KVector collideTowardsPolygonCenter(final KVector point, final double width,
+            final double height, final List<KPosition> polygonPoints) {
+        
+        assert width >= 0 : "width = " + width;
+        assert height >= 0 : "height = " + height;
+        
+        Bounds figureBounds = new Bounds(width, height);
+        
+        // We need at least three points to define a proper polygon (1 + 1 + 1 defeats Checkstyle's
+        // magic number warning...)
+        if (polygonPoints.size() < (1 + 1 + 1)) {
+            return new KVector(point);
+        }
+        
+        // We'll start by setting the result to the center of the figure. We then update the result to
+        // the intersection point whenever we find one, effectively shortening the edge from the
+        // reference point toward the figure's center
+        KVector result = new KVector(width / 2, height / 2);
+        
+        // Iterate over the polygon points, remembering the last two
+        Iterator<KPosition> polygonPointsIterator = polygonPoints.iterator();
+        KVector firstPoint = PlacementUtil.evaluateKPosition(
+                polygonPointsIterator.next(), figureBounds, true).toKVector();
+        
+        KVector segmentStart = null;
+        KVector segmentEnd = firstPoint;
+        
+        while (polygonPointsIterator.hasNext()) {
+            // Move to the next polygon segment
+            segmentStart = segmentEnd;
+            segmentEnd = PlacementUtil.evaluateKPosition(
+                    polygonPointsIterator.next(), figureBounds, true).toKVector();
+            
+            // Check if there is an intersection between the current segment and (point->result)
+            KVector intersection = intersectLines(
+                    segmentStart.x, segmentStart.y, segmentEnd.x, segmentEnd.y,
+                    point.x, point.y, result.x, result.y);
+            
+            if (intersection != null) {
+                result = intersection;
+            }
+        }
+        
+        // We now have the last point of the polygon's points in segmentEnd, but we have not yet checked
+        // the last segment (segmentEnd -> polygonPoints.get(0)) for an intersection
+        KVector intersection = intersectLines(
+                firstPoint.x, firstPoint.y, segmentEnd.x, segmentEnd.y,
+                point.x, point.y, result.x, result.y);
+        
+        if (intersection != null) {
+            result = intersection;
+        }
+        
+        return result;
     }
     
     
