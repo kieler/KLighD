@@ -84,6 +84,7 @@ import de.cau.cs.kieler.klighd.internal.options.SynthesisOptionControlFactory;
 import de.cau.cs.kieler.klighd.triggers.KlighdSelectionTrigger;
 import de.cau.cs.kieler.klighd.triggers.KlighdSelectionTrigger.KlighdSelectionState;
 import de.cau.cs.kieler.klighd.triggers.KlighdSelectionTrigger.KlighdSelectionState.SelectionElement;
+import de.cau.cs.kieler.klighd.views.DiagramViewPart;
 import de.cau.cs.kieler.klighd.views.IDiagramWorkbenchPart;
 
 /**
@@ -186,7 +187,6 @@ public class ContextViewer extends AbstractViewer<Object> implements IViewerEven
 
     /**
      * Update the options to be displayed in the options pane.
-     * TODO make the selection of options configurable through method arguments
      * 
      * @param fitSpace true if the diagram shall fit the available space
      */
@@ -248,6 +248,20 @@ public class ContextViewer extends AbstractViewer<Object> implements IViewerEven
         }
         
         this.enableOptionsSideBar(fitSpace, synthesisOptionsAvailable, layoutOptionsAvailable);
+        if (workbenchPart instanceof DiagramViewPart) {
+            DiagramViewPart viewPart = (DiagramViewPart) workbenchPart;
+            viewPart.getAction(DiagramViewPart.ACTION_ID_RESET_LAYOUT_OPTIONS)
+                    .setEnabled(layoutOptionsAvailable);
+        }
+    }
+    
+    /**
+     * Returns the layout option control factory.
+     * 
+     * @return the layout option control factory
+     */
+    public LayoutOptionControlFactory getLayoutOptionControlFactory() {
+        return layoutOptionControlFactory;
     }
     
     /** The initial width of the option pane and the diagram viewer. */

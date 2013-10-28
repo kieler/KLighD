@@ -34,6 +34,10 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Scale;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 
+import com.google.common.base.Predicate;
+import com.google.common.collect.Iterators;
+
+import de.cau.cs.kieler.core.math.KielerMath;
 import de.cau.cs.kieler.kiml.ILayoutData;
 import de.cau.cs.kieler.kiml.LayoutContext;
 import de.cau.cs.kieler.kiml.LayoutDataService;
@@ -73,9 +77,13 @@ public class LayoutOptionControlFactory {
     private LightLayoutConfig lightLayoutConfig;
     /** The set of controls to be disposed when {@link #clear()} is called. */
     private final Collection<Control> controls = new LinkedList<Control>();
+    /** Whether the layout shall be refreshed automatically. */
+    private boolean autoRefreshLayout = true;
     
     /** number of columns in the grid for enumeration value selection. */
     private static final int ENUM_GRID_COLS = 2;
+    /** widget data identifier for the attached selection listener. */
+    private static final String DATA_SELECTION_LISTENER = "klighd.selectionListener";
     
     /**
      * Create an option control factory.
@@ -168,7 +176,9 @@ public class LayoutOptionControlFactory {
      * @param animate whether the new layout shall be animated
      */
     private void refreshLayout(final boolean animate) {
-        LightDiagramServices.layoutDiagram(workbenchPart, animate);
+        if (autoRefreshLayout) {
+            LightDiagramServices.layoutDiagram(workbenchPart, animate);
+        }
     }
     
     /**
@@ -211,6 +221,62 @@ public class LayoutOptionControlFactory {
     }
     
     /**
+     * Reset all displayed layout options to their default values.
+     */
+    public void resetToDefaults() {
+        // temporarily disable auto-refresh to avoid multiple layout runs triggered by listeners
+        autoRefreshLayout = false;
+        lightLayoutConfig.clear();
+        for (Control control : controls) {
+            if (control.getData() instanceof LayoutOptionData<?>) {
+                LayoutOptionData<?> optionData = (LayoutOptionData<?>) control.getData();
+                final Object defaultValue = defaultLayoutConfig.getValue(optionData,
+                        defaultLayoutContext);
+                switch (optionData.getType()) {
+                
+                case INT:
+                case FLOAT: {
+                    Scale slider = (Scale) control;
+                    SliderListener sliderListener = (SliderListener) control.getData(
+                            DATA_SELECTION_LISTENER);
+                    if (sliderListener != null) {
+                        float initialValue = KielerMath.limit(((Number) defaultValue).floatValue(),
+                                sliderListener.minFloat, sliderListener.maxFloat);
+                        int selection = Math.round((initialValue - sliderListener.minFloat)
+                                / (sliderListener.maxFloat - sliderListener.minFloat)
+                                * (slider.getMaximum() - slider.getMinimum())) + slider.getMinimum();
+                        slider.setSelection(selection);
+                    }
+                    break;
+                }
+                
+                case BOOLEAN:
+                case ENUM: {
+                    // the composite's children store the available values in their 'Data' fields
+                    Composite composite = (Composite) control;
+                    Control selection = Iterators.find(Iterators.forArray(composite.getChildren()),
+                            new Predicate<Control>() {
+                        public boolean apply(final Control input) {
+                            if (input.getData() != null) {
+                                return input.getData().equals(defaultValue);
+                            }
+                            return false;
+                        }
+                    });
+                    for (Control c : composite.getChildren()) {
+                        ((Button) c).setSelection(c == selection);
+                    }
+                    break;
+                }
+                
+                }
+            }
+        }
+        autoRefreshLayout = true;
+        refreshLayout(true);
+    }
+    
+    /**
      * Create a control for the given layout option data instance with given bounds.
      * 
      * @param optionData a layout option data instance
@@ -229,6 +295,7 @@ public class LayoutOptionControlFactory {
             GridData gridData = new GridData(SWT.LEFT, SWT.TOP, false, false);
             // gridData.horizontalSpan = 2;
             button.setLayoutData(gridData);
+            button.setData(optionData);
             controls.add(button);
             // set initial value for the algorithm selection dialog
             String algorithmHint = defaultLayoutContext.getProperty(DefaultLayoutConfig.CONTENT_HINT);
@@ -258,16 +325,13 @@ public class LayoutOptionControlFactory {
                         getMinValue(optionData, minValue), getMaxValue(optionData, maxValue));
                 GridData gridData = new GridData(SWT.FILL, SWT.TOP, true, false);
                 slider.setLayoutData(gridData);
+                slider.setData(optionData);
                 controls.add(slider);
                 // set initial value for the slider
                 float initialValue = ((Number) defaultLayoutConfig.getValue(optionData,
                         defaultLayoutContext)).floatValue();
-                if (initialValue < sliderListener.minFloat) {
-                    initialValue = sliderListener.minFloat;
-                }
-                if (initialValue > sliderListener.maxFloat) {
-                    initialValue = sliderListener.maxFloat;
-                }
+                initialValue = KielerMath.limit(initialValue, sliderListener.minFloat,
+                        sliderListener.maxFloat);
                 sliderListener.setOptionValue(initialValue);
                 int selection = Math.round((initialValue - sliderListener.minFloat)
                         / (sliderListener.maxFloat - sliderListener.minFloat)
@@ -275,6 +339,7 @@ public class LayoutOptionControlFactory {
                 slider.setSelection(selection);
                 // add selection listener for instant layout updates
                 slider.addSelectionListener(sliderListener);
+                slider.setData(DATA_SELECTION_LISTENER, sliderListener);
                 break;
             }
             
@@ -284,9 +349,12 @@ public class LayoutOptionControlFactory {
                 Button trueButton = formToolkit.createButton(valuesContainer, "True", SWT.RADIO);
                 trueButton.setToolTipText(optionData.getDescription());
                 trueButton.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false));
+                trueButton.setData(true);
                 Button falseButton = formToolkit.createButton(valuesContainer, "False", SWT.RADIO);
                 falseButton.setToolTipText(optionData.getDescription());
                 falseButton.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false));
+                falseButton.setData(false);
+                valuesContainer.setData(optionData);
                 controls.add(valuesContainer);
                 // set initial value for the radio buttons
                 if ((Boolean) defaultLayoutConfig.getValue(optionData, defaultLayoutContext)) {
@@ -315,11 +383,13 @@ public class LayoutOptionControlFactory {
                             SWT.RADIO);
                     button.setToolTipText(optionData.getDescription());
                     button.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false));
+                    button.setData(value);
                     if (value.equals(initialValue)) {
                         button.setSelection(true);
                     }
                     button.addSelectionListener(new EnumerationListener(optionData, value));
                 }
+                valuesContainer.setData(optionData);
                 controls.add(valuesContainer);
                 break;
             }
