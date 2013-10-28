@@ -313,7 +313,7 @@ public class DiagramController {
             return;
         }
 
-        remove(diagramElement);
+        remove(diagramElement, false);
     }
     
     /**
@@ -599,24 +599,28 @@ public class DiagramController {
      * 
      * @param element
      *            the {@link KGraphElement} to be removed from the diagram
+     * @param releaseControllers
+     *            flag indicating whether controller instances shall be removed from lookup tables
+     *            because the element actually has been removed from the view model rather than just
+     *            hidden
      */
-    private void remove(final KGraphElement element) {
+    private void remove(final KGraphElement element, final boolean releaseControllers) {
         if (element.eContainer() == null) {
             return;
         }
         
         switch (element.eClass().getClassifierID()) {
         case KGraphPackage.KNODE:
-            removeNode((KNode) element);
+            removeNode((KNode) element, releaseControllers);
             break;
         case KGraphPackage.KPORT:
-            removePort((KPort) element);
+            removePort((KPort) element, releaseControllers);
             break;
         case KGraphPackage.KEDGE:
-            removeEdge((KEdge) element);
+            removeEdge((KEdge) element, releaseControllers);
             break;
         case KGraphPackage.KLABEL:
-            removeLabel((KLabel) element);
+            removeLabel((KLabel) element, releaseControllers);
             break;
         }
     }
@@ -759,7 +763,7 @@ public class DiagramController {
      */
     private void removeChildren(final KNode parentNode) {
         for (KNode child : parentNode.getChildren()) {
-            removeNode(child);
+            removeNode(child, false);
         }
         RenderingContextData.get(parentNode).setProperty(KlighdInternalProperties.POPULATED, false);
 
@@ -775,8 +779,12 @@ public class DiagramController {
      * 
      * @param node
      *            the node
+     * @param releaseControllers
+     *            flag indicating whether controller instances shall be removed from lookup tables
+     *            because the element actually has been removed from the view model rather than just
+     *            hidden
      */
-    private void removeNode(final KNode node) {
+    private void removeNode(final KNode node, final boolean releaseControllers) {
         INode nodeRep = RenderingContextData.get(node).getProperty(REP);
         if (nodeRep != null) {
             KNodeNode nodeNode;
@@ -798,22 +806,24 @@ public class DiagramController {
 
             // remove all incoming edges
             for (KEdge incomingEdge : node.getIncomingEdges()) {
-                removeEdge(incomingEdge);
+                removeEdge(incomingEdge, releaseControllers);
             }
 
             // remove all outgoing edges
             for (KEdge outgoingEdge : node.getOutgoingEdges()) {
-                removeEdge(outgoingEdge);
+                removeEdge(outgoingEdge, releaseControllers);
             }
 
             // remove the node representation from the containing child area
             nodeNode.removeFromParent();
             RenderingContextData.get(node).setProperty(KlighdInternalProperties.ACTIVE, false);
             
-            // release the objects kept in mind
-            nodeNode.getRenderingController().removeAllPNodeControllers();
-            // release the node rendering controller
-            // nodeNode.setRenderingController(null);
+            if (releaseControllers) {
+                // release the objects kept in mind
+                nodeNode.getRenderingController().removeAllPNodeControllers();
+                // release the node rendering controller
+                nodeNode.setRenderingController(null);
+            }
         }
     }
 
@@ -884,8 +894,12 @@ public class DiagramController {
      * 
      * @param edge
      *            the edge
+     * @param releaseControllers
+     *            flag indicating whether controller instances shall be removed from lookup tables
+     *            because the element actually has been removed from the view model rather than just
+     *            hidden
      */
-    private void removeEdge(final KEdge edge) {
+    private void removeEdge(final KEdge edge, final boolean releaseControllers) {
         KEdgeNode edgeNode = RenderingContextData.get(edge).getProperty(EDGE_REP);
         if (edgeNode != null) {
             // remove the edge offset listeners
@@ -904,12 +918,12 @@ public class DiagramController {
             edgeNode.removeFromParent();
             RenderingContextData.get(edge).setProperty(KlighdInternalProperties.ACTIVE, false);
             
-            // due to #deactivateSubgraph() this method will be performed multiple times so: 
-            if (edgeNode.getRenderingController() != null) {
+            // due to #removeNode() this method might be performed multiple times so: 
+            if (releaseControllers && edgeNode.getRenderingController() != null) {
                 // release the objects kept in mind
                 edgeNode.getRenderingController().removeAllPNodeControllers();
                 // release the node rendering controller
-//                edgeNode.setRenderingController(null);
+                edgeNode.setRenderingController(null);
             }
         }
     }
@@ -972,15 +986,19 @@ public class DiagramController {
      * 
      * @param port
      *            the port
+     * @param releaseControllers
+     *            flag indicating whether controller instances shall be removed from lookup tables
+     *            because the element actually has been removed from the view model rather than just
+     *            hidden
      */
-    private void removePort(final KPort port) {
+    private void removePort(final KPort port, final boolean releaseControllers) {
         KPortNode portNode = RenderingContextData.get(port).getProperty(PORT_REP);
         if (portNode != null) {
             // remove the port representation from the containing node
             portNode.removeFromParent();
             RenderingContextData.get(port).setProperty(KlighdInternalProperties.ACTIVE, false);
 
-            if (portNode.getRenderingController() != null) {
+            if (releaseControllers) {
                 // release the objects kept in mind
                 portNode.getRenderingController().removeAllPNodeControllers();
                 // release the node rendering controller
@@ -1052,16 +1070,19 @@ public class DiagramController {
      * 
      * @param label
      *            the label
+     * @param releaseControllers
+     *            flag indicating whether controller instances shall be removed from lookup tables
+     *            because the element actually has been removed from the view model rather than just
+     *            hidden
      */
-    private void removeLabel(final KLabel label) {
+    private void removeLabel(final KLabel label, final boolean releaseControllers) {
         KLabelNode labelNode = RenderingContextData.get(label).getProperty(LABEL_REP);
         if (labelNode != null) {
             // remove the label representation from the containing node
             labelNode.removeFromParent();
             RenderingContextData.get(label).setProperty(KlighdInternalProperties.ACTIVE, false);
 
-            if (labelNode.getRenderingController() != null) {
-                // TODO (chsch) Why may the rendering controller be 'null' here? 
+            if (releaseControllers) {
                 // release the objects kept in mind
                 labelNode.getRenderingController().removeAllPNodeControllers();
                 // release the node rendering controller
@@ -1553,7 +1574,7 @@ public class DiagramController {
                     }
                     case Notification.REMOVE: {
                         final KNode removedNode = (KNode) notification.getOldValue();
-                        removeNode(removedNode);
+                        removeNode(removedNode, true);
 
                         // Removing all contained nodes is required to remove all outgoing or
                         //  incoming edges, as in case of interlevel ones their representing
@@ -1561,7 +1582,7 @@ public class DiagramController {
                         //  be one of removedNode's parent representatives.
                         for (KNode n : Iterables2.toIterable(Iterators.filter(
                                 removedNode.eAllContents(), KNode.class))) {
-                            removeNode(n);
+                            removeNode(n, true);
                         }
                         break;
                     }
@@ -1570,7 +1591,7 @@ public class DiagramController {
                         final List<KNode> removedNodes = (List<KNode>) notification.getOldValue();
 
                         for (KNode removedNode : removedNodes) {
-                            removeNode(removedNode);
+                            removeNode(removedNode, true);
 
                             // Removing all contained nodes is required to remove all outgoing or
                             //  incoming edges, as in case of interlevel ones their representing
@@ -1578,7 +1599,7 @@ public class DiagramController {
                             //  be one of removedNode's parent representatives.
                             for (KNode n : Iterables2.toIterable(Iterators.filter(
                                     removedNode.eAllContents(), KNode.class))) {
-                                removeNode(n);
+                                removeNode(n, true);
                             }
                         }
                         break;
@@ -1645,7 +1666,7 @@ public class DiagramController {
                     }
                     case Notification.REMOVE: {
                         final KEdge removedEdge = (KEdge) notification.getOldValue();
-                        removeEdge(removedEdge);
+                        removeEdge(removedEdge, true);
                         break;
                     }
                     case Notification.REMOVE_MANY: {
@@ -1653,7 +1674,7 @@ public class DiagramController {
                         final List<KEdge> removedEdges = (List<KEdge>) notification.getOldValue();
 
                         for (KEdge removedEdge : removedEdges) {
-                            removeEdge(removedEdge);
+                            removeEdge(removedEdge, true);
                         }
                         break;
                     }
@@ -1716,7 +1737,7 @@ public class DiagramController {
                     }
                     case Notification.REMOVE: {
                         final KPort removedPort = (KPort) notification.getOldValue();
-                        removePort(removedPort);
+                        removePort(removedPort, true);
                         break;
                     }
                     case Notification.REMOVE_MANY: {
@@ -1724,7 +1745,7 @@ public class DiagramController {
                         final List<KPort> removedPorts = (List<KPort>) notification.getOldValue();
 
                         for (KPort removedPort : removedPorts) {
-                            removePort(removedPort);
+                            removePort(removedPort, true);
                         }
                         break;
                     }
@@ -1772,7 +1793,7 @@ public class DiagramController {
                     }
                     case Notification.REMOVE: {
                         final KLabel removedLabel = (KLabel) notification.getOldValue();
-                        removeLabel(removedLabel);
+                        removeLabel(removedLabel, true);
                         break;
                     }
                     case Notification.REMOVE_MANY: {
@@ -1781,7 +1802,7 @@ public class DiagramController {
                                 .getOldValue();
 
                         for (KLabel removedLabel : removedLabels) {
-                            removeLabel(removedLabel);
+                            removeLabel(removedLabel, true);
                         }
                         break;
                     }
