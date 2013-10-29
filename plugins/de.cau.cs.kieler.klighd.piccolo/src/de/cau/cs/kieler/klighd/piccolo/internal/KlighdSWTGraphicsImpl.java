@@ -83,7 +83,7 @@ public class KlighdSWTGraphicsImpl extends Graphics2D implements KlighdSWTGraphi
     /** An internal SWT {@link Rectangle} used for clip handling computations. */
     protected Transform swtTransform;
     
-    /** A {@link TextLayout} used to draw style texts (e.g. those with underline and/or strikeout. */
+    /** A {@link TextLayout} used to draw styled texts (e.g. those with underline and/or strikeout). */
     protected TextLayout textLayout;
     
     /** The current font to use when drawing text. */
@@ -105,7 +105,7 @@ public class KlighdSWTGraphicsImpl extends Graphics2D implements KlighdSWTGraphi
      *            Device onto which ultimately all gc operations are drawn onto
      */
     public KlighdSWTGraphicsImpl(final GC gc, final Device device) {
-        this(device, gc, null);
+        this(device, gc, new TextLayout(device));
     }
 
     /**
