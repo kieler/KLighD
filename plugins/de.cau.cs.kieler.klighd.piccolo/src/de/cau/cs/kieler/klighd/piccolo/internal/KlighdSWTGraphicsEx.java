@@ -77,4 +77,11 @@ public interface KlighdSWTGraphicsEx extends KlighdSWTGraphics {
      * @return an {@link RGB} record reflecting the currently set background (fill) color.
      */
     RGB getFillColor();
+    
+    /**
+     * Disposes incorporated {@link org.eclipse.swt.graphics.Resource Resources} like
+     * {@link org.eclipse.swt.graphics.Color Colors} {@link org.eclipse.swt.graphics.Font Fonts},
+     * {@link org.eclipse.swt.graphics.TextLayout TextLayouts}, etc.
+     */
+    void dispose();
 }

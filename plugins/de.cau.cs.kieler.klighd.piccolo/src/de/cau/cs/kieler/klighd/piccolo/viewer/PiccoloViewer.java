@@ -675,5 +675,6 @@ public class PiccoloViewer extends AbstractViewer<KNode> implements INodeSelecti
         final PPaintContext paintContext = new PPaintContext(g2);
         paintContext.setRenderQuality(PPaintContext.HIGH_QUALITY_RENDERING);
         camera.fullPaint(paintContext);
+        g2.dispose();
     }
 }
