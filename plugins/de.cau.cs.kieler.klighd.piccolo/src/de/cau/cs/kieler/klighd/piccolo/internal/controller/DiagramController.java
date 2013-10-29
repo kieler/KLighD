@@ -256,6 +256,8 @@ public class DiagramController {
         if (nodeRep != null) {
             nodeRep.getChildArea().setExpanded(false);
         }
+        
+        focusNode = node;
     }
 
     /**
@@ -269,6 +271,8 @@ public class DiagramController {
         if (nodeRep != null) {
             nodeRep.getChildArea().setExpanded(true);
         }
+        
+        focusNode = node;
     }
     
     /**
@@ -295,6 +299,7 @@ public class DiagramController {
         if (nodeRep != null) {
             nodeRep.getChildArea().toggleExpansion();
         }
+        
         focusNode = node;
     }
 
@@ -426,6 +431,7 @@ public class DiagramController {
                 viewBounds.getWidth() < focus.getWidth()
                         || viewBounds.getHeight() < focus.getHeight();
 
+        // fetch bounds of the whole diagram
         KShapeLayout topNodeLayout = topNode.getGraphElement().getData(KShapeLayout.class);
         PBounds newBounds =
                 new PBounds(topNodeLayout.getXpos(), topNodeLayout.getYpos(),
@@ -434,8 +440,7 @@ public class DiagramController {
                 viewBounds.getWidth() > newBounds.getWidth()
                         && viewBounds.getHeight() > newBounds.getHeight();
 
-        // TODO ?? uru: what?
-
+        // if the viewport can fully contain the diagram, we perform zoom to fit 
         if (fullyContains) {
             camera.animateViewToCenterBounds(newBounds, true, duration);
         } else {

@@ -19,8 +19,8 @@ import org.eclipse.swt.graphics.Device;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.widgets.Composite;
 
-import de.cau.cs.kieler.klighd.piccolo.KlighdSWTGraphics;
 import de.cau.cs.kieler.klighd.piccolo.internal.Constants;
+import de.cau.cs.kieler.klighd.piccolo.internal.KlighdSWTGraphicsEx;
 import de.cau.cs.kieler.klighd.piccolo.internal.KlighdSWTGraphicsImpl;
 import de.cau.cs.kieler.klighd.piccolo.internal.events.KlighdKeyEventListener;
 import de.cau.cs.kieler.klighd.piccolo.internal.events.KlighdMouseEventListener;
@@ -35,9 +35,10 @@ import edu.umd.cs.piccolox.swt.PSWTCanvas;
 public class KlighdCanvas extends PSWTCanvas {
 
     /**
-     * The {@link KlighdSWTGraphics} abstractor to be incorporated while drawing the diagram.
+     * The {@link de.cau.cs.kieler.klighd.piccolo.KlighdSWTGraphics KlighdSWTGraphics} abstractor to
+     * be incorporated while drawing the diagram.
      */
-    private KlighdSWTGraphics graphics;
+    private KlighdSWTGraphicsEx graphics;
 
     /**
      * Construct a canvas with the basic scene graph consisting of a root,
@@ -93,6 +94,15 @@ public class KlighdCanvas extends PSWTCanvas {
     public void repaint(final PBounds bounds) {
         if (!this.isDisposed()) {
             super.repaint(bounds);
+        }
+    }
+    
+    @Override
+    public void dispose() {
+        super.dispose();
+        
+        if (this.graphics != null) {
+            this.graphics.dispose();
         }
     }
 }

@@ -177,7 +177,11 @@ public class LayoutOptionControlFactory {
      */
     private void refreshLayout(final boolean animate) {
         if (autoRefreshLayout) {
-            LightDiagramServices.layoutDiagram(workbenchPart, animate);
+            if (animate) {
+                LightDiagramServices.layoutDiagram(workbenchPart);
+            } else {
+                LightDiagramServices.layoutDiagram(workbenchPart, false);
+            }
         }
     }
     

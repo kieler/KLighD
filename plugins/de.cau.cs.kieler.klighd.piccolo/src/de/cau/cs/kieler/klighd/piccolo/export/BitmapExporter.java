@@ -108,7 +108,9 @@ public class BitmapExporter implements IViewExporter {
         ImageLoader loader = new ImageLoader();
         loader.data = new ImageData[] { image.getImageData() };
         loader.save(stream, format);
+        
         // release all native resources
+        paintContext.getGraphics().dispose();
         gc.dispose();
         image.dispose();
     }
