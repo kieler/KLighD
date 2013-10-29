@@ -49,6 +49,11 @@ public final class AnchorUtil {
     private AnchorUtil() {
     }
     
+
+    // This is mathematics stuff; there will be magic numbers, but they are easy and don't require any
+    // bloody constants, for god's sake...
+    // CHECKSTYLEOFF MagicNumber
+    
     
     ////////////////////////////////////////////////////////////////////////////////////////////////////
     // Find Nearest Border Point
@@ -329,6 +334,8 @@ public final class AnchorUtil {
         
         if (rendering != null) {
             switch (rendering.eClass().getClassifierID()) {
+            case KRenderingPackage.KELLIPSE:
+                return collideTowardsEllipseCenter(point, width, height);
             case KRenderingPackage.KPOLYGON:
                 KPolygon polygon = (KPolygon) rendering;
                 return collideTowardsPolygonCenter(point, width, height, polygon.getPoints());
@@ -341,8 +348,7 @@ public final class AnchorUtil {
     }
     
     /**
-     * Returns the point where a line starting at the given point and ending in the rectangle's center
-     * would intersect the rectangle's border.
+     * Implements {@link #collideTowardsCenter(KVector, double, double, KRendering)} for rectangles.
      * 
      * @param point the point where the line should start.
      * @param width the width of the figure's bounding box. Must be {@code >=0}.
@@ -393,8 +399,51 @@ public final class AnchorUtil {
     }
     
     /**
-     * Returns the point where a line starting at the given point and ending in the rectangle's center
-     * would intersect the rectangle's border.
+     * Implements {@link #collideTowardsCenter(KVector, double, double, KRendering)} for ellipses.
+     * 
+     * @param point the point where the line should start.
+     * @param width the width of the figure's bounding box. Must be {@code >=0}.
+     * @param height the height of the figure's bounding box. Must be {@code >=0}.
+     * @return a point where the edge from the given end point to the figure's center would intersect
+     *         the figure.
+     */
+    private static KVector collideTowardsEllipseCenter(final KVector point, final double width,
+            final double height) {
+        
+        assert width >= 0 : "width = " + width;
+        assert height >= 0 : "height = " + height;
+        
+        // An ellipse can be defined by the equation x^2 / a^2 + y^2 / b^2 = 1, with the center being
+        // at coordinate (0,0)
+        double a = width * 0.5;
+        double b = height * 0.5;
+        
+        // Since we're assuming (0,0) to be the center of the ellipse instead of its top left corner,
+        // we will need to offset the point accordingly
+        KVector offsetPoint = new KVector(point.x - a, point.y - b);
+        
+        // We will describe our line through (0,0) and offsetPoint by two equations:
+        //   x(t) = offsetPoint.x * t
+        //   y(t) = offsetPoint.y * t
+        // The goal is to find 0 <= t0 <= 1 such, that (x(t0), y(t0)) is the intersection between
+        // the ellipse and the line
+        double determinant = offsetPoint.x * offsetPoint.x / a / a
+                + offsetPoint.y * offsetPoint.y / b / b;
+        if (determinant == 0) {
+            // This can only happen if offsetPoint == (0,0)
+            return null;
+        }
+        
+        // Find t0
+        double t0 = 1.0 / Math.sqrt(determinant);
+        
+        // The result is the intersection point, corrected by the offset we put on offsetPoint earlier
+        return new KVector(offsetPoint.x * t0 + a, offsetPoint.y * t0 + b);
+    }
+    
+    /**
+     * Returns the point where a line starting at the given point and ending in the polygon's center
+     * would intersect the polygon's border.
      * 
      * @param point the point where the line should start.
      * @param width the width of the figure's bounding box. Must be {@code >=0}.
@@ -412,9 +461,8 @@ public final class AnchorUtil {
         
         Bounds figureBounds = new Bounds(width, height);
         
-        // We need at least three points to define a proper polygon (1 + 1 + 1 defeats Checkstyle's
-        // magic number warning...)
-        if (polygonPoints.size() < (1 + 1 + 1)) {
+        // We need at least three points to define a proper polygon
+        if (polygonPoints.size() < 3) {
             return new KVector(point);
         }
         
@@ -490,7 +538,6 @@ public final class AnchorUtil {
         
         // If the divisor is 0, the lines are parallel
         if (divisor == 0.0) {
-            // TODO: Implement properly
             return null;
         }
         
