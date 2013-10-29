@@ -30,6 +30,7 @@ import de.cau.cs.kieler.core.properties.Property;
 import de.cau.cs.kieler.kiml.config.CompoundLayoutConfig;
 import de.cau.cs.kieler.kiml.config.ILayoutConfig;
 import de.cau.cs.kieler.kiml.klayoutdata.KLayoutData;
+import de.cau.cs.kieler.kiml.ui.KimlUiPlugin;
 import de.cau.cs.kieler.kiml.ui.diagram.DiagramLayoutEngine;
 import de.cau.cs.kieler.klighd.internal.preferences.KlighdPreferences;
 import de.cau.cs.kieler.klighd.transformations.ReinitializingTransformationProxy;
@@ -504,7 +505,14 @@ public final class LightDiagramServices {
      *            layout with or without animation
      */
     public static void layoutDiagram(final IDiagramWorkbenchPart viewPart, final boolean animate) {
-        final boolean zoomToFit = viewPart.getContextViewer().getCurrentViewContext().isZoomToFit();
+        final boolean zoomToFit;
+        if (viewPart.getContextViewer().getCurrentViewContext() != null) {
+            zoomToFit = viewPart.getContextViewer().getCurrentViewContext().isZoomToFit();
+        } else {
+            zoomToFit =
+                    ZoomStyle.valueOf(KlighdPlugin.getDefault().getPreferenceStore()
+                            .getString(KlighdPreferences.ZOOM_STYLE)) == ZoomStyle.ZOOM_TO_FIT;
+        }
         
         layoutDiagram(viewPart, animate, zoomToFit, Collections.<ILayoutConfig>emptyList());
     }
