@@ -151,6 +151,14 @@ public final class LightDiagramServices {
         if (success) {
             return viewContext;
         } else {
+            final String msg = "KLighD: Couldn't find any matching diagram synthesis & viewer "
+                    + "configuration for visualizing the model " + model.toString()
+                    + ". Is de.cau.cs.kieler.klighd.piccolo and the plug-in contributing "
+                    + "your diagram synthesis part of your product or run configuration?";
+            
+            StatusManager.getManager().handle(
+                    new Status(IStatus.WARNING, KlighdPlugin.PLUGIN_ID, msg), StatusManager.LOG);
+            
             return null;
         }
     }
