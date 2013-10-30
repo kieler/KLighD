@@ -285,12 +285,19 @@ public class ApplyBendPointsActivity extends PInterpolatingActivity implements
         for (int i = 0; i < sourceRels.length; ++i) {
             double sourceRel = sourceRels[i];
 
-            // chsch: the following code maybe erroneous, see foregoing method
-            if (targetRels[k] > sourceRel && sourceRels.length - i > targetRels.length - k) {
-                targetBendsTemp[i] = MathUtil.getPoint(targetBends, sourceRel);
+            // chsch: original code, produced an ArrayIndexOutOfBound exception...
+            // if (targetRels[k] > sourceRel && sourceRels.length - i > targetRels.length - k) {
+            // targetBendsTemp[i] = MathUtil.getPoint(targetBends, sourceRel);
+            // } else {
+            // targetBendsTemp[i] = (Point2D) targetBends[k].clone();
+            // ++k;
+            // }
+
+            // chsch: my replacement,
+            if (k < targetRels.length && targetRels[k] <= sourceRel) {
+                targetBendsTemp[i] = (Point2D) targetBends[k++].clone();
             } else {
-                targetBendsTemp[i] = (Point2D) targetBends[k].clone();
-                ++k;
+                targetBendsTemp[i] = MathUtil.getPoint(targetBends, sourceRel);
             }
         }
 
