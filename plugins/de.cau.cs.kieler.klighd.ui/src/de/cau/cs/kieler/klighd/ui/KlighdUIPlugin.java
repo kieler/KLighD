@@ -13,7 +13,6 @@
  */
 package de.cau.cs.kieler.klighd.ui;
 
-import org.apache.log4j.Logger;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
@@ -29,9 +28,6 @@ public class KlighdUIPlugin extends AbstractUIPlugin {
 
     // The shared instance
     private static KlighdUIPlugin plugin;
-
-    /** A logger. */
-    public static final Logger LOGGER = Logger.getLogger(KlighdUIPlugin.class);
 
     /**
      * The constructor.
